@@ -1,74 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C8D26D006
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 02:38:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E9926D091
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 03:26:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsJ3m5P10zDqvN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 10:38:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsK7F6fZ5zF1b9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 11:26:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.221.195;
- helo=mail-vk1-f195.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.208.196;
+ helo=mail-lj1-f196.google.com; envelope-from=festevam@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=JC1Ik0dT; dkim-atps=neutral
-Received: from mail-vk1-f195.google.com (mail-vk1-f195.google.com
- [209.85.221.195])
+ header.s=20161025 header.b=JjID6Ilf; dkim-atps=neutral
+Received: from mail-lj1-f196.google.com (mail-lj1-f196.google.com
+ [209.85.208.196])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsHj24146zDqmJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 10:22:12 +1000 (AEST)
-Received: by mail-vk1-f195.google.com with SMTP id t189so22876vka.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 17:22:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BsJcX49RZzDqwC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 11:03:24 +1000 (AEST)
+Received: by mail-lj1-f196.google.com with SMTP id a15so521005ljk.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 18:03:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=+L8r3i/llwp2Lmso2SJhe/RRr10LqwB0/nAV4JJW3s0=;
- b=JC1Ik0dTH25FUvJr+6hQ7ANFLhd84ikfThn/lnDI9H6v+KmSh8y0R5+6RDmpkXDNoS
- jrGyTNd/bMGzTyUALXM20m2tIv1i0eg2jUdFyK5P1SP0X1eKadn1e53/JCTcczHht8Z8
- 3SgmdZ3PDrm1nhNNjoy0+mbFThR122+YFS83dknywKFKv9eft48bVcHo97iDUnvKjQzR
- 9mhS4X/C3QT5FAPN8Vu0N7pwTZrrKxsQucrlMVaMsKXNWbHHWnymjZPby2YiyH2JGA1k
- GqL1mt9mdVOg/XNUiV/CMMVIOl0qCHSxIAn2tPIQLJ8fcW/pLs6o8WW1cpDbaV85nNVI
- Qe4Q==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=oUrT5gwD52MsR1wVTFrUE/WFQvwScZ/Kn5UNNx4HIXA=;
+ b=JjID6IlfOKBWQ4lGtoBOpv1ttQeatHSDCajwiJ0azKXbH3YYrtGydW+Gxgc9Piel58
+ YFhSrOBPjpmjpppbHq0U1XIL2d7aM4huBXm1h4WWTeRveWVq+kXGVPdqcbZUiqkY8pop
+ Wd86Q/TDYKOncWV1Y5HGdXg4ibithp/E8iohuJpujgMxmv3d/X2gB4S8O8jMFW/FikAq
+ FYHhoI1jGVqUqtPlRtThH8ISjo9nJmtJbc7R8zCOsqzCnsiOS6x38RzgGJY6PcCS1z4h
+ LRNXYbtrV+wpzUFIBRj6Vj/XisBq07u82l92zuLu4ecwxS7qL7Y5yT/EKsYpV7mrhasE
+ K9sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=+L8r3i/llwp2Lmso2SJhe/RRr10LqwB0/nAV4JJW3s0=;
- b=Cp2N4tri/p6mDTxRbTVFVUSQlkVk3SfTcvpnxJq/HtD+U+Ni9mxP22SYcRXzN7gRLB
- 0ESNA/ZxjE9MELgsIIZvraU8nXjX8GFTy67ixSNzDeDyPmo1mQ8aA3ezWXXpxP3Mv9Tg
- UwPu1euZKhf6CQM5hoP9B2fu2VTb4qyFmsChshbplifqvzBor5uZlOD2L5iGxBJjf4U4
- QXs+KJGr5GvVK5zB+rrTkj3wOMMXdwZ+ocdCG5f8xn46ICUISrFoeuJA0j4KV9yGQ+Zq
- cdDTXiO2xOYDFr5r0pH/hzOejq9VdIZbJ8ssx2h0DwSrJY6fcoqztzta6o2ulju9FrtM
- TNyQ==
-X-Gm-Message-State: AOAM5312/GFghCUPhmijbLPsw3dnkxjhIwdmqXnvjXqkipLaT9RiynPf
- pfIZ9GjLDziMJ4ug+Q16juMqd11wHHo=
-X-Google-Smtp-Source: ABdhPJwyRANoUnW2/ZYlnK9c+pZ3xu+Veuc7MK+f2qzGVSCXe5EsIqJOkORlG6/DMUY0bn9nyBY02g==
-X-Received: by 2002:a62:10a:0:b029:142:2501:39e1 with SMTP id
- 10-20020a62010a0000b0290142250139e1mr8640542pfb.48.1600301600950; 
- Wed, 16 Sep 2020 17:13:20 -0700 (PDT)
-Received: from Asurada-Nvidia (thunderhill.nvidia.com. [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id z4sm18491615pfr.197.2020.09.16.17.13.20
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 16 Sep 2020 17:13:20 -0700 (PDT)
-Date: Wed, 16 Sep 2020 17:10:08 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_audmix: make clock and output src write only
-Message-ID: <20200917001007.GA22566@Asurada-Nvidia>
-References: <1600104274-13110-1-git-send-email-viorel.suman@oss.nxp.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=oUrT5gwD52MsR1wVTFrUE/WFQvwScZ/Kn5UNNx4HIXA=;
+ b=DIfeTkfo5e9o0JVsEzuENZu3pdbtoAFpIW9TveVl69zbAPGxWYg6AWVpiEvVTQOrGN
+ t0eHBe3E8DgDLRX0NNvsuIxFGDziHFOpYISWzpKU3AcKK36MmneXMUDuG9iwejILjXJr
+ AhgPqQgO5scQv53QQsUNj/dkhhYibL6OFzGcStqq/M49IHwllZDr0RHyrfbfFVjgsnkg
+ C9uXFGbxw8pO7N5mYiyTr8cdA5QP/x6MVNvnjm9/Ptz3vOFivjjfwUBMv1Fyup/qzCMr
+ KZp8VNwiJhzcyDZ+K6CaMVl4qHSenIuOBuiz8X0+rgUBeZdnmy3IWu8ka5Uj36Ow670E
+ zwDg==
+X-Gm-Message-State: AOAM533v/zCt4RYHL+8HHaO6PsyFL19fvEV7BiS41Cs5Xd3pid8Hh+Fy
+ i/s+rRpnLfro4zeMHNRiAJQWHSFHedQCAyxi1H+yinO/
+X-Google-Smtp-Source: ABdhPJyHd0Ooh4IK/vHvj2P4gv3lfDfIBiO8RqhPNolmmBPPICV/UOwNTXFmvzSGmOtJPgxjXHBzXE9TuLHprQ7UyvE=
+X-Received: by 2002:a2e:a550:: with SMTP id e16mr9601438ljn.125.1600275845628; 
+ Wed, 16 Sep 2020 10:04:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1600104274-13110-1-git-send-email-viorel.suman@oss.nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <1600251387-1863-1-git-send-email-shengjiu.wang@nxp.com>
+ <1600251387-1863-2-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1600251387-1863-2-git-send-email-shengjiu.wang@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 16 Sep 2020 14:03:54 -0300
+Message-ID: <CAOMZO5CZtdxbZdnXrckgYE7bzW-PDo2XOfQobuTf91C1hp462g@mail.gmail.com>
+Subject: Re: [PATCH 1/3] ASoC: fsl_sai: Add new added registers and new bit
+ definition
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,60 +74,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
- Viorel Suman <viorel.suman@gmail.com>, Mark Brown <broonie@kernel.org>,
- NXP Linux Team <linux-imx@nxp.com>, Viorel Suman <viorel.suman@nxp.com>,
- Shengjiu Wang <shengjiu.wang@gmail.com>, linux-kernel@vger.kernel.org
+Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 14, 2020 at 08:24:34PM +0300, Viorel Suman (OSS) wrote:
-> From: Viorel Suman <viorel.suman@nxp.com>
-> 
-> "alsactl -f state.conf store/restore" sequence fails because setting
-> "mixing clock source" and "output source" requires active TDM clock
-> being started for configuration propagation. Make these two controls
-> write only so that their values are not stored at "alsactl store".
-> 
-> Signed-off-by: Viorel Suman <viorel.suman@nxp.com>
+Hi Shengjiu,
 
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+On Wed, Sep 16, 2020 at 7:23 AM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+>
+> On i.MX850/i.MX815/i.MX845 platform, the sai IP is upgraded.
 
-> ---
->  sound/soc/fsl/fsl_audmix.c | 16 ++++++++++++----
->  1 file changed, 12 insertions(+), 4 deletions(-)
-> 
-> diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
-> index a447baf..7ad5925 100644
-> --- a/sound/soc/fsl/fsl_audmix.c
-> +++ b/sound/soc/fsl/fsl_audmix.c
-> @@ -199,10 +199,18 @@ static int fsl_audmix_put_out_src(struct snd_kcontrol *kcontrol,
->  
->  static const struct snd_kcontrol_new fsl_audmix_snd_controls[] = {
->  	/* FSL_AUDMIX_CTR controls */
-> -	SOC_ENUM_EXT("Mixing Clock Source", fsl_audmix_enum[0],
-> -		     snd_soc_get_enum_double, fsl_audmix_put_mix_clk_src),
-> -	SOC_ENUM_EXT("Output Source", fsl_audmix_enum[1],
-> -		     snd_soc_get_enum_double, fsl_audmix_put_out_src),
-> +	{	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
-> +		.name = "Mixing Clock Source",
-> +		.info = snd_soc_info_enum_double,
-> +		.access = SNDRV_CTL_ELEM_ACCESS_WRITE,
-> +		.put = fsl_audmix_put_mix_clk_src,
-> +		.private_value = (unsigned long)&fsl_audmix_enum[0] },
-> +	{	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
-> +		.name = "Output Source",
-> +		.info = snd_soc_info_enum_double,
-> +		.access = SNDRV_CTL_ELEM_ACCESS_WRITE,
-> +		.put = fsl_audmix_put_out_src,
-> +		.private_value = (unsigned long)&fsl_audmix_enum[1] },
->  	SOC_ENUM("Output Width", fsl_audmix_enum[2]),
->  	SOC_ENUM("Frame Rate Diff Error", fsl_audmix_enum[3]),
->  	SOC_ENUM("Clock Freq Diff Error", fsl_audmix_enum[4]),
-> -- 
-> 2.7.4
-> 
+Please avoid such internal SoC namings and use i.MX8MQ/i.MX8MN/iMX8MM instead.
