@@ -2,51 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171F426D4F6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 09:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ECC326D597
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 10:05:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsTWz48fxzDqXB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 17:45:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsTzf06l3zDqTZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 18:05:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=netronome.com
+ (client-ip=2a00:1450:4864:20::341; helo=mail-wm1-x341.google.com;
+ envelope-from=simon.horman@netronome.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=netronome.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=netronome-com.20150623.gappssmtp.com
+ header.i=@netronome-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=Xm9muXpL; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsTRq3f2VzDqGX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 17:41:25 +1000 (AEST)
-IronPort-SDR: XfYA7bPYfNMT622c43NDKGvXLQsGD6b6kqBFFVjMfScIwaVt8OZbk/tIDyTOQER2UXtuu1Z0s5
- 8s+Y8b/jF/VA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9746"; a="147394016"
-X-IronPort-AV: E=Sophos;i="5.76,436,1592895600"; d="scan'208";a="147394016"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2020 00:41:23 -0700
-IronPort-SDR: FaJLppSCwfpJkcJ/mIM/a+470GTtJ43nIE4KuVqYXli8dlEI1SjfjihCp1LBzgcKRYxpwYpj1d
- bXY8PhOY58xA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,436,1592895600"; d="scan'208";a="508304629"
-Received: from lkp-server02.sh.intel.com (HELO bdcb92cf8b4e) ([10.239.97.151])
- by fmsmga005.fm.intel.com with ESMTP; 17 Sep 2020 00:41:21 -0700
-Received: from kbuild by bdcb92cf8b4e with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kIoXh-0000Ta-1U; Thu, 17 Sep 2020 07:41:21 +0000
-Date: Thu, 17 Sep 2020 15:40:38 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 10ea0d6512bcf308ed3d00b93571452448cea06c
-Message-ID: <5f6312f6.+NG4dSfta2eH2BMH%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BsTxX38PJzDqRK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 18:03:41 +1000 (AEST)
+Received: by mail-wm1-x341.google.com with SMTP id k18so1037640wmj.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 01:03:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=netronome-com.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=TUShtxADeMIRUv08jDyFnIdO2h4AVdi1g89uLOtrWXw=;
+ b=Xm9muXpLMfdw+3JTaQ5+6nxJDSneO0K8th2wgQ0VLh2VI2BmK+XWoQ9cDtIn8+KaRJ
+ B45Xbntr5JjNU8mF7nIZd8VP+CTHviEtF1Um5VazOhr6GEQCgh9bbRNIM6C+XWioNjmk
+ ImuOo8Gi8eD0FtSQ7hHZ1yPAo82BLFHJwGGg0UxKCYs0oMSSpMWIe45dJUN+DzUELaKQ
+ JzvvcS8KVPQMZJTfgm/lLBewbBl9UGKGHM3XV6hYGQwunOqgCSfJKO8sQaLl1M6X9BRD
+ K+XM2hJttDJQqNZl5Xftk9yd2fnhmTZR2ol6vfSH0itoQkT2+o/FcX7saxpuLl0f47l5
+ EzpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=TUShtxADeMIRUv08jDyFnIdO2h4AVdi1g89uLOtrWXw=;
+ b=mM8lTqEULgAiaKAu9jvkLddizwgRefxv+DKAscs3IdLLDB7biOuq60FFiSIegjxA48
+ 9zOJqhk8D0U8ai4vtguDke5uhKq7N/IM1yrTQT+tclyKlRjo7SMvIeNCHMC5yN6D/1j3
+ 1aph4yG9y7XRVX6vnVr6Xr8Ki4tIWPWaZJ28dnVfjlka4k1CmFlnN56xE5cIe0UKE7eW
+ gKq8EZn6YlAXLeUCeti3gWeMQ8zfBjttJYlHySqo+wMIFD2ph1KT/UaxOJT5fJlNW7vd
+ gbGA0pfytKXEM1rD2Px6k+0WwcSiTnjpSnMFOAeu7PVdjxO0dVBFi8Fej8b3IwUgQVDk
+ VXlA==
+X-Gm-Message-State: AOAM530BcT5uWnmoA2SsxPK/mK/9Cs2IlRwjn91gq3lq2MYOyg4X+VtA
+ /V3v+Lm+UU/+GacKkpXG4J/3Hw==
+X-Google-Smtp-Source: ABdhPJzTwzfeJOnCQh65prZummqH9JR09Yxja+zvv2OTSAZpPcom4k7xuvXSyH3Yv50qn/8+2aIWyQ==
+X-Received: by 2002:a1c:e256:: with SMTP id z83mr8793930wmg.33.1600329817598; 
+ Thu, 17 Sep 2020 01:03:37 -0700 (PDT)
+Received: from netronome.com ([2001:982:756:703:d63d:7eff:fe99:ac9d])
+ by smtp.gmail.com with ESMTPSA id a13sm9836030wme.26.2020.09.17.01.03.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 17 Sep 2020 01:03:36 -0700 (PDT)
+Date: Thu, 17 Sep 2020 10:03:35 +0200
+From: Simon Horman <simon.horman@netronome.com>
+To: Joe Perches <joe@perches.com>
+Subject: Re: [oss-drivers] [trivial PATCH] treewide: Convert switch/case
+ fallthrough; to break;
+Message-ID: <20200917080334.GB5769@netronome.com>
+References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,198 +82,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ oss-drivers@netronome.com, nouveau@lists.freedesktop.org,
+ alsa-devel <alsa-devel@alsa-project.org>, dri-devel@lists.freedesktop.org,
+ linux-mips@vger.kernel.org, linux-ide@vger.kernel.org, dm-devel@redhat.com,
+ linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org,
+ sparclinux@vger.kernel.org, kvmarm@lists.cs.columbia.edu,
+ linux-rtc@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, dccp@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-atm-general@lists.sourceforge.net, linux-afs@lists.infradead.org,
+ coreteam@netfilter.org, intel-wired-lan@lists.osuosl.org,
+ linux-serial@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-mmc@vger.kernel.org, Kees Cook <kees.cook@canonical.com>,
+ linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, linux-sctp@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-nvme@lists.infradead.org,
+ storagedev@microchip.com, ceph-devel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
+ Jiri Kosina <trivial@kernel.org>, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ LKML <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
+ netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: 10ea0d6512bcf308ed3d00b93571452448cea06c  powerpc/pseries: convert to use DEFINE_SEQ_ATTRIBUTE macro
+On Wed, Sep 09, 2020 at 01:06:39PM -0700, Joe Perches wrote:
+> fallthrough to a separate case/default label break; isn't very readable.
+> 
+> Convert pseudo-keyword fallthrough; statements to a simple break; when
+> the next label is case or default and the only statement in the next
+> label block is break;
+> 
+> Found using:
+> 
+> $ grep-2.5.4 -rP --include=*.[ch] -n "fallthrough;(\s*(case\s+\w+|default)\s*:\s*){1,7}break;" *
+> 
+> Miscellanea:
+> 
+> o Move or coalesce a couple label blocks above a default: block.
+> 
+> Signed-off-by: Joe Perches <joe@perches.com>
 
-elapsed time: 723m
+...
 
-configs tested: 172
-configs skipped: 2
+> diff --git a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
+> index 252fe06f58aa..1d5b87079104 100644
+> --- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
+> +++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
+> @@ -345,7 +345,7 @@ static int matching_bar(struct nfp_bar *bar, u32 tgt, u32 act, u32 tok,
+>  		baract = NFP_CPP_ACTION_RW;
+>  		if (act == 0)
+>  			act = NFP_CPP_ACTION_RW;
+> -		fallthrough;
+> +		break;
+>  	case NFP_PCIE_BAR_PCIE2CPP_MapType_FIXED:
+>  		break;
+>  	default:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This is a cascading fall-through handling all map types.
+I don't think this change improves readability.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                    vt8500_v6_v7_defconfig
-arm                       omap2plus_defconfig
-arc                     haps_hs_smp_defconfig
-sparc                               defconfig
-m68k                        mvme16x_defconfig
-sh                             espt_defconfig
-mips                        omega2p_defconfig
-arm                         lubbock_defconfig
-arm                           spitz_defconfig
-powerpc                        warp_defconfig
-sh                        dreamcast_defconfig
-m68k                          hp300_defconfig
-powerpc                      mgcoge_defconfig
-powerpc                 mpc832x_mds_defconfig
-arm                            u300_defconfig
-m68k                             allyesconfig
-powerpc                      pcm030_defconfig
-arm                            lart_defconfig
-powerpc                    mvme5100_defconfig
-powerpc                     sbc8548_defconfig
-sparc                       sparc64_defconfig
-arm                   milbeaut_m10v_defconfig
-arm                       netwinder_defconfig
-arm                       spear13xx_defconfig
-um                            kunit_defconfig
-arm                         ebsa110_defconfig
-openrisc                         alldefconfig
-arm                      tct_hammer_defconfig
-openrisc                 simple_smp_defconfig
-arm                      jornada720_defconfig
-mips                     decstation_defconfig
-mips                      malta_kvm_defconfig
-sh                        sh7763rdp_defconfig
-arm                          pcm027_defconfig
-powerpc                  storcenter_defconfig
-mips                         cobalt_defconfig
-nds32                               defconfig
-mips                         bigsur_defconfig
-sh                          sdk7780_defconfig
-sh                   secureedge5410_defconfig
-ia64                        generic_defconfig
-arm                         s3c2410_defconfig
-arm                           efm32_defconfig
-arm                             mxs_defconfig
-arc                            hsdk_defconfig
-arm                           u8500_defconfig
-arm                      integrator_defconfig
-powerpc                    sam440ep_defconfig
-arm                         axm55xx_defconfig
-arm                         at91_dt_defconfig
-powerpc                     kilauea_defconfig
-arm                          imote2_defconfig
-parisc                           allyesconfig
-mips                         rt305x_defconfig
-powerpc                  mpc866_ads_defconfig
-alpha                            alldefconfig
-m68k                         apollo_defconfig
-alpha                               defconfig
-powerpc                 mpc836x_mds_defconfig
-mips                           ip28_defconfig
-sh                          urquell_defconfig
-arm                         s3c6400_defconfig
-mips                      maltasmvp_defconfig
-arc                      axs103_smp_defconfig
-powerpc                   lite5200b_defconfig
-sh                           se7343_defconfig
-powerpc                 mpc85xx_cds_defconfig
-arm                       imx_v6_v7_defconfig
-arc                           tb10x_defconfig
-arm                             ezx_defconfig
-arm                        multi_v5_defconfig
-sh                         apsh4a3a_defconfig
-powerpc                       eiger_defconfig
-powerpc                mpc7448_hpc2_defconfig
-arm                       mainstone_defconfig
-arm                        mini2440_defconfig
-ia64                         bigsur_defconfig
-sh                            hp6xx_defconfig
-powerpc64                        alldefconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a006-20200916
-x86_64               randconfig-a004-20200916
-x86_64               randconfig-a003-20200916
-x86_64               randconfig-a002-20200916
-x86_64               randconfig-a001-20200916
-x86_64               randconfig-a005-20200916
-i386                 randconfig-a004-20200916
-i386                 randconfig-a006-20200916
-i386                 randconfig-a003-20200916
-i386                 randconfig-a001-20200916
-i386                 randconfig-a002-20200916
-i386                 randconfig-a005-20200916
-i386                 randconfig-a004-20200917
-i386                 randconfig-a006-20200917
-i386                 randconfig-a003-20200917
-i386                 randconfig-a001-20200917
-i386                 randconfig-a002-20200917
-i386                 randconfig-a005-20200917
-x86_64               randconfig-a014-20200917
-x86_64               randconfig-a011-20200917
-x86_64               randconfig-a016-20200917
-x86_64               randconfig-a012-20200917
-x86_64               randconfig-a015-20200917
-x86_64               randconfig-a013-20200917
-i386                 randconfig-a015-20200917
-i386                 randconfig-a014-20200917
-i386                 randconfig-a011-20200917
-i386                 randconfig-a013-20200917
-i386                 randconfig-a016-20200917
-i386                 randconfig-a012-20200917
-i386                 randconfig-a015-20200916
-i386                 randconfig-a014-20200916
-i386                 randconfig-a011-20200916
-i386                 randconfig-a013-20200916
-i386                 randconfig-a016-20200916
-i386                 randconfig-a012-20200916
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a006-20200917
-x86_64               randconfig-a004-20200917
-x86_64               randconfig-a003-20200917
-x86_64               randconfig-a002-20200917
-x86_64               randconfig-a001-20200917
-x86_64               randconfig-a005-20200917
-x86_64               randconfig-a014-20200916
-x86_64               randconfig-a011-20200916
-x86_64               randconfig-a016-20200916
-x86_64               randconfig-a012-20200916
-x86_64               randconfig-a015-20200916
-x86_64               randconfig-a013-20200916
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+...
