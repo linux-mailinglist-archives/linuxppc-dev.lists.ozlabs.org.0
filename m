@@ -1,47 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A9E26E56F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 21:46:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7672926E90B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 00:40:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsnXQ72LVzDqN1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 05:46:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BssNq2l1ZzDqgs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 08:40:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=keescook@chromium.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=davemloft.net
- (client-ip=2620:137:e000::1:9; helo=shards.monkeyblade.net;
- envelope-from=davem@davemloft.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=davemloft.net
-Received: from shards.monkeyblade.net (shards.monkeyblade.net
- [IPv6:2620:137:e000::1:9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=IKgCm7fp; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsnVc3yFLzDqJK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 05:44:54 +1000 (AEST)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
- (using TLSv1 with cipher AES256-SHA (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: davem-davemloft)
- by shards.monkeyblade.net (Postfix) with ESMTPSA id 7E0491359EF9C;
- Thu, 17 Sep 2020 12:28:01 -0700 (PDT)
-Date: Thu, 17 Sep 2020 12:44:45 -0700 (PDT)
-Message-Id: <20200917.124445.1786301672047605176.davem@davemloft.net>
-To: mpe@ellerman.id.au
-Subject: Re: [PATCH -next] ide: Fix symbol undeclared warnings
-From: David Miller <davem@davemloft.net>
-In-Reply-To: <87zh5oobnn.fsf@mpe.ellerman.id.au>
-References: <20200916092333.77158-1-wangwensheng4@huawei.com>
- <87zh5oobnn.fsf@mpe.ellerman.id.au>
-X-Mailer: Mew version 6.8 on Emacs 27.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12
- (shards.monkeyblade.net [2620:137:e000::1:9]);
- Thu, 17 Sep 2020 12:28:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BssKf0Yk6zDqg8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 08:37:22 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id k8so2155687pfk.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 15:37:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=rajz9PikgG3gC9n3hSwih8axQBgiqMcr2MSEy5EC2hE=;
+ b=IKgCm7fprYE6guOBHaJ8b25mZYLlrvPk/VPKlASuNTsk3thWY4WBG1wbQ0I4h4kqt8
+ n5lD/FeK/AD1anZIuSvxXr4jBDpDRzPXi5mBvjvtLegI/Nn8IIAub08KWyFywx3KhhO8
+ 5gvh2rLj0oWFfxECWCQCIOKizX9I7hK+h3BB4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=rajz9PikgG3gC9n3hSwih8axQBgiqMcr2MSEy5EC2hE=;
+ b=IgwcOJVQA0NsZBg3Md3lfMoFN4kkOs9CwM5SEcwppWYTaKWhJj/NqJUO4K5DQqBx6S
+ M5vUM0uvR55/Ndr2y1wwgTJZMX+IJQk7MFL6CtA7bdq4eztPvQjRKOnbG1XteFiwYsJR
+ pvJ66IDhP6IkTaWJLYNSlnw8NAu9+ZDOxQ8gDIHYICs53tnbTbG8HBEqpLPI3QPfYrGs
+ Ja/DM0znn0BOa4Fmsi7QLn1+7v5hUPWYG8344Xa09OnpgXuW6aOu65mEBrhiRZ5ZUpIy
+ wqyzFMU37VepxTCzGAm5H9bvw6sw1fh3e+cwBWMY+I3vi8JOgDW/Zs7ECQJRDy2f+zvz
+ D4bg==
+X-Gm-Message-State: AOAM530r8ieF3DiUCQt/iH1in0bAvMpv/MRZAPZ1qBcDj5vaCMlKrwDD
+ cXNw1nbA/f7I3Orwgg+QfiDa2Q==
+X-Google-Smtp-Source: ABdhPJwzlNUESDRWjOLfnSZtOQ0cDxcX2YDZYAgm6TunzxQqiCRXbQqtcdHWkb5mLwZFRGGL0Tbp9g==
+X-Received: by 2002:a63:3856:: with SMTP id h22mr4241223pgn.451.1600382238308; 
+ Thu, 17 Sep 2020 15:37:18 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id fs24sm652250pjb.8.2020.09.17.15.37.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 17 Sep 2020 15:37:17 -0700 (PDT)
+Date: Thu, 17 Sep 2020 15:37:16 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] selftests/seccomp: fix ptrace tests on powerpc
+Message-ID: <202009171536.7FACD19@keescook>
+References: <20200630164739.1268222-1-cascardo@canonical.com>
+ <202009081505.D9FE52510B@keescook>
+ <20200911180637.GI4002@mussarela>
+ <875z8hrh2o.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <875z8hrh2o.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,40 +78,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangwensheng4@huawei.com, linux-kernel@vger.kernel.org,
- linux-ide@vger.kernel.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
+ linuxppc-dev@lists.ozlabs.org, Shuah Khan <shuah@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 17 Sep 2020 22:01:00 +1000
-
-> Wang Wensheng <wangwensheng4@huawei.com> writes:
->> Build the object file with `C=2` and get the following warnings:
->> make allmodconfig ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-
->> make C=2 drivers/ide/pmac.o ARCH=powerpc64
->> CROSS_COMPILE=powerpc64-linux-gnu-
->>
->> drivers/ide/pmac.c:228:23: warning: symbol 'mdma_timings_33' was not
->> declared. Should it be static?
->> drivers/ide/pmac.c:241:23: warning: symbol 'mdma_timings_33k' was not
->> declared. Should it be static?
->> drivers/ide/pmac.c:254:23: warning: symbol 'mdma_timings_66' was not
->> declared. Should it be static?
->> drivers/ide/pmac.c:272:3: warning: symbol 'kl66_udma_timings' was not
->> declared. Should it be static?
->> drivers/ide/pmac.c:1418:12: warning: symbol 'pmac_ide_probe' was not
->> declared. Should it be static?
->>
->> Signed-off-by: Wang Wensheng <wangwensheng4@huawei.com>
->> ---
->>  drivers/ide/pmac.c | 10 +++++-----
->>  1 file changed, 5 insertions(+), 5 deletions(-)
+On Sun, Sep 13, 2020 at 10:34:23PM +1000, Michael Ellerman wrote:
+> Thadeu Lima de Souza Cascardo <cascardo@canonical.com> writes:
+> > On Tue, Sep 08, 2020 at 04:18:17PM -0700, Kees Cook wrote:
+> >> On Tue, Jun 30, 2020 at 01:47:39PM -0300, Thadeu Lima de Souza Cascardo wrote:
+> ...
+> >> > @@ -1809,10 +1818,15 @@ void tracer_ptrace(struct __test_metadata *_metadata, pid_t tracee,
+> >> >  	EXPECT_EQ(entry ? PTRACE_EVENTMSG_SYSCALL_ENTRY
+> >> >  			: PTRACE_EVENTMSG_SYSCALL_EXIT, msg);
+> >> >  
+> >> > -	if (!entry)
+> >> > +	if (!entry && !syscall_nr)
+> >> >  		return;
+> >> >  
+> >> > -	nr = get_syscall(_metadata, tracee);
+> >> > +	if (entry)
+> >> > +		nr = get_syscall(_metadata, tracee);
+> >> > +	else
+> >> > +		nr = *syscall_nr;
+> >> 
+> >> This is weird? Shouldn't get_syscall() be modified to do the right thing
+> >> here instead of depending on the extra arg?
+> >> 
+> >
+> > R0 might be clobered. Same documentation mentions it as volatile. So, during
+> > syscall exit, we can't tell for sure that R0 will have the original syscall
+> > number. So, we need to grab it during syscall enter, save it somewhere and
+> > reuse it. I used the test context/args for that.
 > 
-> TIL davem maintains IDE?
+> The user r0 (in regs->gpr[0]) shouldn't be clobbered.
 > 
-> But I suspect he isn't that interested in this powerpc only driver, so
-> I'll grab this.
+> But it is modified if the tracer skips the syscall, by setting the
+> syscall number to -1. Or if the tracer changes the syscall number.
+> 
+> So if you need the original syscall number in the exit path then I think
+> you do need to save it at entry.
 
-I did have it in my queue, but if you want to take it that's fine too :)
+... the selftest code wants to test the updated syscall (-1 or
+whatever), so this sounds correct. Was this test actually failing on
+powerpc? (I'd really rather not split entry/exit if I don't have to.)
+
+-- 
+Kees Cook
