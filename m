@@ -1,75 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5927326D47A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 09:19:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8EA26D4EE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 09:43:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsSyR4KsFzDqVS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 17:19:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsTV34n7mzDqGB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 17:43:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=kfSDwjK/; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsSwb407GzDqRk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 17:17:50 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id q12so633118plr.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 00:17:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=elJEb2l35w0tALnlBgQjk/9l2iBwh6a2tE1YVDZoSvk=;
- b=kfSDwjK/583sxlPWBU4K30L6qY5yFOHg4TaP/g2kKTHVrbUMxPsSo3cr0oNyd9kK/I
- n6Vsy1v7d/rgMZQrlIWuK1z3+RZOa/gSSCG7sYeMKhkJT2JQvSzqbc2e3raCr0dOVN39
- XKMDGl9vfQOTodpBHV1eD8EgozdndmaBbqOAdPaW/2wFZ/f37Bo0XjiDqxgvhN8ddvjp
- KfHvl91euVMXY62y1FCqAbvCidWS9MdrG3Y6DHzHbR8EOFMHVg964SXT9ELd/KN5nttG
- mHb47XyEK+kpFNYeCiT/8Q1sRDO+I1EIjMyYurStOuDBW3epttxcwxSpXCDTkUJOH4lp
- mVtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=elJEb2l35w0tALnlBgQjk/9l2iBwh6a2tE1YVDZoSvk=;
- b=I6aLI47K4CMts0h/0zF9wgOGzsF/jX3n9V/40NDvSV2KwND0ApiLSSzavR+9xV5EbZ
- W8JQ4IhKm8BVT8G+2NPoMvxH5iuSuNBKVwZc8Ao+Mkf92K81rbd9J053VSKxZ8vtYjgW
- uuuE0tNdXfE533HiMBj38IfPUICLLfm5nUUqFX25yqVpKmrY6Y/9Sx513Tkad6HTJS5k
- ANqSrvZlP60cGbAqSETNzXBHEGMltQTmxURDMo9/iTtUV98tWssE1f8dOjLFd70aXhQE
- uIUY7E9FPFfvkzHm5+HZkjdCURUyFOokRb72e8zecEbB8qpDtd682sp9AmdE2jnH30bw
- WSLw==
-X-Gm-Message-State: AOAM530+EUXfMYXeBxqURHynPISNvQUNMzqs7J443R9C9ZYyd0VLIdNC
- h9nyJh4cyrahncBl5g40O7Q=
-X-Google-Smtp-Source: ABdhPJyA7geCwMU1Brnj82CuOczTA8QY77ieRbYd6gK//+zTtaFvTP+ByLJcIbfYjqJna5Bxk8PXBg==
-X-Received: by 2002:a17:90a:6a4e:: with SMTP id
- d14mr6885754pjm.63.1600327067650; 
- Thu, 17 Sep 2020 00:17:47 -0700 (PDT)
-Received: from Asurada-Nvidia (thunderhill.nvidia.com. [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id 72sm18958272pfx.79.2020.09.17.00.17.46
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 17 Sep 2020 00:17:47 -0700 (PDT)
-Date: Thu, 17 Sep 2020 00:14:31 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
-Subject: Re: [PATCH 1/2] ASoC: fsl_xcvr: Add XCVR ASoC CPU DAI driver
-Message-ID: <20200917071431.GA17970@Asurada-Nvidia>
-References: <1600247876-8013-1-git-send-email-viorel.suman@oss.nxp.com>
- <1600247876-8013-2-git-send-email-viorel.suman@oss.nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BsTRq38SgzDqDp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 17:41:26 +1000 (AEST)
+IronPort-SDR: qE1CiLp0rxh1GW6oIaiJVKtRDoJsf0Z45LNnHu5zphWfawZ+EoozFBbVtvKw6U/pD2jCk694se
+ 3Nf5cENC5yIQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9746"; a="139154607"
+X-IronPort-AV: E=Sophos;i="5.76,436,1592895600"; d="scan'208";a="139154607"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2020 00:41:23 -0700
+IronPort-SDR: 65pt6cFH+WD06TWNRFEeSkUbQuSitetUl6H4zN4vZTP2+O98mAeFe0+HcMjIGEAUSG0axiJHtL
+ WEPlpjl4zDVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,436,1592895600"; d="scan'208";a="336325576"
+Received: from lkp-server02.sh.intel.com (HELO bdcb92cf8b4e) ([10.239.97.151])
+ by orsmga008.jf.intel.com with ESMTP; 17 Sep 2020 00:41:21 -0700
+Received: from kbuild by bdcb92cf8b4e with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1kIoXh-0000TX-00; Thu, 17 Sep 2020 07:41:21 +0000
+Date: Thu, 17 Sep 2020 15:40:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS b5c8a2934eecbba3d688a911b98e92f8670ff462
+Message-ID: <5f6312f3.DgrxIAS496Nmeukf%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1600247876-8013-2-git-send-email-viorel.suman@oss.nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,141 +57,193 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
- Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
- Viorel Suman <viorel.suman@nxp.com>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>,
- Rob Herring <robh+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Viorel Suman <viorel.suman@gmail.com>, Mark Brown <broonie@kernel.org>,
- NXP Linux Team <linux-imx@nxp.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Cosmin-Gabriel Samoila <cosmin.samoila@nxp.com>,
- Jaroslav Kysela <perex@perex.cz>, Fabio Estevam <festevam@gmail.com>,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Viorel,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next
+branch HEAD: b5c8a2934eecbba3d688a911b98e92f8670ff462  Merge coregroup support into next
 
-It looks pretty clean to me, though some small comments inline.
+elapsed time: 723m
 
-On Wed, Sep 16, 2020 at 12:17:55PM +0300, Viorel Suman (OSS) wrote:
-> From: Viorel Suman <viorel.suman@nxp.com>
-> 
-> XCVR (Audio Transceiver) is a on-chip functional module found
-> on i.MX8MP. It support HDMI2.1 eARC, HDMI1.4 ARC and SPDIF.
-> 
-> Signed-off-by: Viorel Suman <viorel.suman@nxp.com>
+configs tested: 167
+configs skipped: 2
 
-> +static const u32 fsl_xcvr_earc_channels[] = { 1, 2, 8, 16, 32, }; /* one bit 6, 12 ? */
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-What's the meaning of the comments?
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                    vt8500_v6_v7_defconfig
+arm                       omap2plus_defconfig
+arc                     haps_hs_smp_defconfig
+sparc                               defconfig
+m68k                        mvme16x_defconfig
+sh                             espt_defconfig
+m68k                          hp300_defconfig
+powerpc                      mgcoge_defconfig
+powerpc                 mpc832x_mds_defconfig
+arm                            u300_defconfig
+m68k                             allyesconfig
+c6x                        evmc6472_defconfig
+sh                  sh7785lcr_32bit_defconfig
+powerpc64                        alldefconfig
+arm                        oxnas_v6_defconfig
+mips                           ip22_defconfig
+powerpc                      pcm030_defconfig
+arm                       netwinder_defconfig
+arm                       spear13xx_defconfig
+um                            kunit_defconfig
+arm                         ebsa110_defconfig
+openrisc                         alldefconfig
+arm                      tct_hammer_defconfig
+openrisc                 simple_smp_defconfig
+arm                      jornada720_defconfig
+mips                     decstation_defconfig
+mips                      malta_kvm_defconfig
+sh                        sh7763rdp_defconfig
+arm                          pcm027_defconfig
+powerpc                  storcenter_defconfig
+mips                         cobalt_defconfig
+riscv                            alldefconfig
+sh                   secureedge5410_defconfig
+sh                            shmin_defconfig
+arm                           efm32_defconfig
+arm                             mxs_defconfig
+arc                            hsdk_defconfig
+arm                           u8500_defconfig
+arm                      integrator_defconfig
+powerpc                  mpc885_ads_defconfig
+sh                          kfr2r09_defconfig
+c6x                        evmc6678_defconfig
+c6x                                 defconfig
+arm                           stm32_defconfig
+mips                           ci20_defconfig
+powerpc                    sam440ep_defconfig
+arm                         axm55xx_defconfig
+arm                         at91_dt_defconfig
+powerpc                     kilauea_defconfig
+arm                          imote2_defconfig
+parisc                           allyesconfig
+mips                         rt305x_defconfig
+powerpc                  mpc866_ads_defconfig
+alpha                            alldefconfig
+m68k                         apollo_defconfig
+alpha                               defconfig
+powerpc                 mpc836x_mds_defconfig
+arc                      axs103_smp_defconfig
+powerpc                   lite5200b_defconfig
+sh                           se7343_defconfig
+powerpc                 mpc85xx_cds_defconfig
+arm                       imx_v6_v7_defconfig
+arc                           tb10x_defconfig
+arm                             ezx_defconfig
+arm                        multi_v5_defconfig
+xtensa                generic_kc705_defconfig
+sh                          rsk7264_defconfig
+mips                     loongson1c_defconfig
+powerpc                        icon_defconfig
+sh                           se7780_defconfig
+sh                         apsh4a3a_defconfig
+powerpc                       eiger_defconfig
+powerpc                mpc7448_hpc2_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allmodconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20200916
+x86_64               randconfig-a004-20200916
+x86_64               randconfig-a003-20200916
+x86_64               randconfig-a002-20200916
+x86_64               randconfig-a001-20200916
+x86_64               randconfig-a005-20200916
+i386                 randconfig-a004-20200916
+i386                 randconfig-a006-20200916
+i386                 randconfig-a003-20200916
+i386                 randconfig-a001-20200916
+i386                 randconfig-a002-20200916
+i386                 randconfig-a005-20200916
+i386                 randconfig-a004-20200917
+i386                 randconfig-a006-20200917
+i386                 randconfig-a003-20200917
+i386                 randconfig-a001-20200917
+i386                 randconfig-a002-20200917
+i386                 randconfig-a005-20200917
+x86_64               randconfig-a014-20200917
+x86_64               randconfig-a011-20200917
+x86_64               randconfig-a016-20200917
+x86_64               randconfig-a012-20200917
+x86_64               randconfig-a015-20200917
+x86_64               randconfig-a013-20200917
+i386                 randconfig-a015-20200916
+i386                 randconfig-a014-20200916
+i386                 randconfig-a011-20200916
+i386                 randconfig-a013-20200916
+i386                 randconfig-a016-20200916
+i386                 randconfig-a012-20200916
+i386                 randconfig-a015-20200917
+i386                 randconfig-a014-20200917
+i386                 randconfig-a011-20200917
+i386                 randconfig-a013-20200917
+i386                 randconfig-a016-20200917
+i386                 randconfig-a012-20200917
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-> +static const int fsl_xcvr_phy_arc_cfg[] = {
-> +	FSL_XCVR_PHY_CTRL_ARC_MODE_SE_EN, FSL_XCVR_PHY_CTRL_ARC_MODE_CM_EN,
-> +};
+clang tested configs:
+x86_64               randconfig-a014-20200916
+x86_64               randconfig-a011-20200916
+x86_64               randconfig-a016-20200916
+x86_64               randconfig-a012-20200916
+x86_64               randconfig-a015-20200916
+x86_64               randconfig-a013-20200916
+x86_64               randconfig-a006-20200917
+x86_64               randconfig-a004-20200917
+x86_64               randconfig-a003-20200917
+x86_64               randconfig-a002-20200917
+x86_64               randconfig-a001-20200917
+x86_64               randconfig-a005-20200917
 
-Nit: better be u32 vs. int?
-
-> +/** phy: true => phy, false => pll */
-> +static int fsl_xcvr_ai_write(struct fsl_xcvr *xcvr, u8 reg, u32 data, bool phy)
-> +{
-> +	u32 val, idx, tidx;
-> +
-> +	idx  = BIT(phy ? 26 : 24);
-> +	tidx = BIT(phy ? 27 : 25);
-> +
-> +	regmap_write(xcvr->regmap, FSL_XCVR_PHY_AI_CTRL_CLR, 0xFF);
-> +	regmap_write(xcvr->regmap, FSL_XCVR_PHY_AI_CTRL_SET, reg);
-> +	regmap_write(xcvr->regmap, FSL_XCVR_PHY_AI_WDATA, data);
-> +	regmap_write(xcvr->regmap, FSL_XCVR_PHY_AI_CTRL_TOG, idx);
-> +
-> +	do {
-> +		regmap_read(xcvr->regmap, FSL_XCVR_PHY_AI_CTRL, &val);
-> +	} while ((val & idx) != ((val & tidx) >> 1));
-
-Might regmap_read_poll_timeout() be better? And it seems to poll
-intentionally with no sleep nor timeout -- would be nice to have
-a line of comments to explain why.
-
-> > +static int fsl_xcvr_runtime_resume(struct device *dev)
-> +{
-> +	struct fsl_xcvr *xcvr = dev_get_drvdata(dev);
-> +	int ret;
-> +
-> +	ret = clk_prepare_enable(xcvr->ipg_clk);
-> +	if (ret) {
-> +		dev_err(dev, "failed to start IPG clock.\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = clk_prepare_enable(xcvr->pll_ipg_clk);
-> +	if (ret) {
-> +		dev_err(dev, "failed to start PLL IPG clock.\n");
-
-Should it disable ipg_clk?
-
-> +		return ret;
-> +	}
-> +
-> +	ret = clk_prepare_enable(xcvr->phy_clk);
-> +	if (ret) {
-> +		dev_err(dev, "failed to start PHY clock: %d\n", ret);
-> +		clk_disable_unprepare(xcvr->ipg_clk);
-
-Should it disable pll_ipg_clk?
-
-> +		return ret;
-> +	}
-> +
-> +	ret = clk_prepare_enable(xcvr->spba_clk);
-> +	if (ret) {
-> +		dev_err(dev, "failed to start SPBA clock.\n");
-> +		clk_disable_unprepare(xcvr->phy_clk);
-> +		clk_disable_unprepare(xcvr->ipg_clk);
-
-Ditto
-
-> +		return ret;
-> +	}
-> +
-> +	regcache_cache_only(xcvr->regmap, false);
-> +	regcache_mark_dirty(xcvr->regmap);
-> +	ret = regcache_sync(xcvr->regmap);
-> +
-> +	if (ret) {
-> +		dev_err(dev, "failed to sync regcache.\n");
-> +		return ret;
-
-What about those clocks? Probably better to have some error-out
-labels at the end of the function?
-
-> +	}
-> +
-> +	reset_control_assert(xcvr->reset);
-> +	reset_control_deassert(xcvr->reset);
-> +
-> +	ret = fsl_xcvr_load_firmware(xcvr);
-> +	if (ret) {
-> +		dev_err(dev, "failed to load firmware.\n");
-> +		return ret;
-
-Ditto
-
-> +	}
-> +
-> +	/* Release M0+ reset */
-> +	ret = regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_CTRL,
-> +				 FSL_XCVR_EXT_CTRL_CORE_RESET, 0);
-> +	if (ret < 0) {
-> +		dev_err(dev, "M0+ core release failed: %d\n", ret);
-> +		return ret;
-
-Ditto
-
-> +	}
-> +	mdelay(50);
-
-Any reason to use mdelay over msleep for a 50ms wait? May add a
-line of comments if mdelay is a must?
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
