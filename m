@@ -1,84 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5245026D01B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 02:44:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A072126D03D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 02:54:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsJBW5W14zDr6Y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 10:44:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsJQ93RyJzDrMK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 10:54:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.166.194;
+ helo=mail-il1-f194.google.com; envelope-from=tony.ambardar@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Fk0tpQDS; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=RmJlwLrT; dkim-atps=neutral
+Received: from mail-il1-f194.google.com (mail-il1-f194.google.com
+ [209.85.166.194])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsHvX41ZZzDqL2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 10:31:19 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 08GK1h3P078967; Wed, 16 Sep 2020 16:10:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject : date : message-id; s=pp1;
- bh=Hx1VXKQgy3Nm6HDgt3hWtGCgJ6pw/owXli8uNzyQmSE=;
- b=Fk0tpQDS1r+wOAQH4julULdyVJFO2tWqJABO3WPhIh+QcIxhElWcpgrrN+vbPVUy1P+H
- AK7993/b8CVrT+VwAbZkR+cF1+g5CVl0ETqIPMsYmTRquK1Mkxg+ml9oIxJmhtCPnYWR
- BIwxtuAX0nsoJTT0nHqrVeN0nYMMiddUk6h4+AzQQgtHETcaupMzK234cVFT7tQkqKWR
- A3gioaBjWEfwpxCZl8JaNCE4s4rQ99x4IKwkNbKP4L/+05y2W4GHKsNvkQXMptfLaRj/
- WLuCW8AiFg9M3pPFX21gLqm6jxaA3yUPberE0oAIZ+oY8nTrT0FGvK3+xwBWmO5mr/WP fg== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33kqb93jse-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Sep 2020 16:10:06 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08GK6hW2022173;
- Wed, 16 Sep 2020 20:10:05 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma02dal.us.ibm.com with ESMTP id 33k5v992cx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Sep 2020 20:10:05 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 08GKA4IB983758
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Sep 2020 20:10:04 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0C8236A04F;
- Wed, 16 Sep 2020 20:10:04 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 54BC76A051;
- Wed, 16 Sep 2020 20:10:03 +0000 (GMT)
-Received: from oc6034535106.ibm.com (unknown [9.160.112.131])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 16 Sep 2020 20:10:03 +0000 (GMT)
-From: Brian King <brking@linux.vnet.ibm.com>
-To: linux-scsi@vger.kernel.org
-Subject: [PATCH] ibmvfc: Protect vhost->task_set increment by the host lock
-Date: Wed, 16 Sep 2020 15:09:59 -0500
-Message-Id: <1600286999-22059-1-git-send-email-brking@linux.vnet.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-16_12:2020-09-16,
- 2020-09-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0
- suspectscore=1 priorityscore=1501 phishscore=0 mlxlogscore=999 spamscore=0
- lowpriorityscore=0 clxscore=1015 impostorscore=0 mlxscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009160138
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BsHz83lswzDqpR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 10:34:27 +1000 (AEST)
+Received: by mail-il1-f194.google.com with SMTP id a19so570776ilq.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 17:34:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=Na9A930XnJjifMT8ZHNAvuKYoJPnmdw7X5EjcY4GoqM=;
+ b=RmJlwLrTYhvd51TSGpjqRixx9s+/rFs3rOKnJtMPoG5DNNUh6Z++hIYiRWVMqrHsU0
+ ZlYBR/I4v8f6JQsGCMyLg/tZ98oiVf3aMVGYNIO/XqlrVmbUvPGyeO5YHCnpY7BDZkiJ
+ SBhG7dB+7Ogp5Bf7JyvOK6gRPB78H28J35zqfJYVHsbT4NrJ9Jq4syr+Pw28i2bonZkj
+ nDEKRKolvVvPOjTkZFstsLB4uNumBC+Hjy0jRnnZPMDDxWrSBFtH02UvlNeb2sgNo42Y
+ my+AKtRpfgMx52z5VfePbVNCQga2wAy2jq/TLJarcmwTh66Mx4EvF5I7f67yG2QKnqHa
+ JIHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=Na9A930XnJjifMT8ZHNAvuKYoJPnmdw7X5EjcY4GoqM=;
+ b=i8KJeIn/TNK2cgB1LQts+6cvw+lBuQ7Yq1EM9nEYJQtGXDryidaPod9Iv5dmr5Lirs
+ feOBejoNayVjzaDlLbMAElXa3pBVascr2NITMC8K1uyUAOBXOySTDtsMqKs0eU11P3GD
+ Y938hq8oXXm+ES2NhDP1h7tqBt3CPK7MhzKFD74lhCJ8+8ty8x+26F7eOedtd+rs7q40
+ s8owDXlr9+jCyVRdY9MrdNfSRlRYZ7vWJTMRTfD5vNUtHrP7Pthyoo7un5IGo4AuUt8y
+ gx8AOy53h8rDqzOTPDlfJc1c847fd8KezEWacNLLdSbVzGn678pycQO+guWu5kX/HW7Q
+ Ansg==
+X-Gm-Message-State: AOAM533eRNafqIa+0x+gwQUF8CWD+q6QZFt7GLwWrZPbp91+giAjIunX
+ mM/WT7P0kkMi7UXmEs1akdE05rPTlk4jIU2M
+X-Google-Smtp-Source: ABdhPJz1qpB9CoFcw5mzJ0L2g1fQqPftTDPav38YlicRSdcMy4AS+soddUEEi9bBAkBrY8QxF8Cq8w==
+X-Received: by 2002:a65:6888:: with SMTP id e8mr3241834pgt.375.1600301298990; 
+ Wed, 16 Sep 2020 17:08:18 -0700 (PDT)
+Received: from localhost.localdomain ([2001:470:e92d:10:68d8:fab6:907:5cf6])
+ by smtp.gmail.com with ESMTPSA id a13sm14300343pfl.184.2020.09.16.17.08.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Sep 2020 17:08:18 -0700 (PDT)
+From: Tony Ambardar <tony.ambardar@gmail.com>
+X-Google-Original-From: Tony Ambardar <Tony.Ambardar@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2] powerpc: fix EDEADLOCK redefinition error in
+ uapi/asm/errno.h
+Date: Wed, 16 Sep 2020 17:07:57 -0700
+Message-Id: <20200917000757.1232850-1-Tony.Ambardar@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200916074214.995128-1-Tony.Ambardar@gmail.com>
+References: <20200916074214.995128-1-Tony.Ambardar@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,41 +80,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Brian King <brking@linux.vnet.ibm.com>, tyreld@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, martin.petersen@oracle.com
+Cc: Tony Ambardar <Tony.Ambardar@gmail.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Rosen Penev <rosenp@gmail.com>,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the discovery thread, ibmvfc does a vhost->task_set++ without
-any lock held. This could result in two targets getting the same
-cancel key, which could have strange effects in error recovery.
-The actual probability of this occurring should be extremely
-small, since this should all be done in a single threaded loop
-from the discovery thread, but let's fix it up anyway to be safe.
+A few archs like powerpc have different errno.h values for macros
+EDEADLOCK and EDEADLK. In code including both libc and linux versions of
+errno.h, this can result in multiple definitions of EDEADLOCK in the
+include chain. Definitions to the same value (e.g. seen with mips) do
+not raise warnings, but on powerpc there are redefinitions changing the
+value, which raise warnings and errors (if using "-Werror").
 
-Signed-off-by: Brian King <brking@linux.vnet.ibm.com>
+Guard against these redefinitions to avoid build errors like the following,
+first seen cross-compiling libbpf v5.8.9 for powerpc using GCC 8.4.0 with
+musl 1.1.24:
+
+  In file included from ../../arch/powerpc/include/uapi/asm/errno.h:5,
+                   from ../../include/linux/err.h:8,
+                   from libbpf.c:29:
+  ../../include/uapi/asm-generic/errno.h:40: error: "EDEADLOCK" redefined [-Werror]
+   #define EDEADLOCK EDEADLK
+
+  In file included from toolchain-powerpc_8540_gcc-8.4.0_musl/include/errno.h:10,
+                   from libbpf.c:26:
+  toolchain-powerpc_8540_gcc-8.4.0_musl/include/bits/errno.h:58: note: this is the location of the previous definition
+   #define EDEADLOCK       58
+
+  cc1: all warnings being treated as errors
+
+Fixes: 95f28190aa01 ("tools include arch: Grab a copy of errno.h for arch's supported by perf")
+Fixes: c3617f72036c ("UAPI: (Scripted) Disintegrate arch/powerpc/include/asm")
+Reported-by: Rosen Penev <rosenp@gmail.com>
+Signed-off-by: Tony Ambardar <Tony.Ambardar@gmail.com>
 ---
- drivers/scsi/ibmvscsi/ibmvfc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v1 -> v2:
+ * clean up commit description formatting
+---
+ arch/powerpc/include/uapi/asm/errno.h       | 1 +
+ tools/arch/powerpc/include/uapi/asm/errno.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index 322bb30..b393587 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -4169,11 +4169,11 @@ static int ibmvfc_alloc_target(struct ibmvfc_host *vhost,struct ibmvfc_discover_
- 	tgt->wwpn = wwpn;
- 	tgt->vhost = vhost;
- 	tgt->need_login = 1;
--	tgt->cancel_key = vhost->task_set++;
- 	timer_setup(&tgt->timer, ibmvfc_adisc_timeout, 0);
- 	kref_init(&tgt->kref);
- 	ibmvfc_init_tgt(tgt, ibmvfc_tgt_implicit_logout);
- 	spin_lock_irqsave(vhost->host->host_lock, flags);
-+	tgt->cancel_key = vhost->task_set++;
- 	list_add_tail(&tgt->queue, &vhost->targets);
+diff --git a/arch/powerpc/include/uapi/asm/errno.h b/arch/powerpc/include/uapi/asm/errno.h
+index cc79856896a1..4ba87de32be0 100644
+--- a/arch/powerpc/include/uapi/asm/errno.h
++++ b/arch/powerpc/include/uapi/asm/errno.h
+@@ -2,6 +2,7 @@
+ #ifndef _ASM_POWERPC_ERRNO_H
+ #define _ASM_POWERPC_ERRNO_H
  
- unlock_out:
++#undef	EDEADLOCK
+ #include <asm-generic/errno.h>
+ 
+ #undef	EDEADLOCK
+diff --git a/tools/arch/powerpc/include/uapi/asm/errno.h b/tools/arch/powerpc/include/uapi/asm/errno.h
+index cc79856896a1..4ba87de32be0 100644
+--- a/tools/arch/powerpc/include/uapi/asm/errno.h
++++ b/tools/arch/powerpc/include/uapi/asm/errno.h
+@@ -2,6 +2,7 @@
+ #ifndef _ASM_POWERPC_ERRNO_H
+ #define _ASM_POWERPC_ERRNO_H
+ 
++#undef	EDEADLOCK
+ #include <asm-generic/errno.h>
+ 
+ #undef	EDEADLOCK
 -- 
-1.8.3.1
+2.25.1
 
