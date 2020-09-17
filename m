@@ -1,33 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F48126DB79
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 14:27:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 663DF26DB8B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 14:29:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsbnX2psYzDqW1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 22:27:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bsbqs60FBzDqbm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 22:29:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=zdtj=c2=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsZSq3Pp9zDqWZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 21:27:39 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BsZSp1r5Dz9sV6; Thu, 17 Sep 2020 21:27:38 +1000 (AEST)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Jason Yan <yanaijie@huawei.com>, geoff@infradead.org, mpe@ellerman.id.au,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org, benh@kernel.crashing.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20200911020121.1464585-1-yanaijie@huawei.com>
-References: <20200911020121.1464585-1-yanaijie@huawei.com>
-Subject: Re: [PATCH] powerpc/ps3: make two symbols static
-Message-Id: <160034201679.3339803.12983868854288470547.b4-ty@ellerman.id.au>
-Date: Thu, 17 Sep 2020 21:27:37 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BsZTW60lFzDqXV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 21:28:15 +1000 (AEST)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 209297] New: powerpc: MPC10X_BRIDGE violates Kconfig dependency
+ of PPC_INDIRECT_PCI on PCI
+Date: Thu, 17 Sep 2020 11:28:12 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: fazilyildiran@gmail.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version
+ cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
+ priority component assigned_to reporter cc cf_regression
+Message-ID: <bug-209297-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,22 +61,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hulk Robot <hulkci@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 11 Sep 2020 10:01:21 +0800, Jason Yan wrote:
-> This addresses the following sparse warning:
-> 
-> arch/powerpc/platforms/ps3/spu.c:451:33: warning: symbol
-> 'spu_management_ps3_ops' was not declared. Should it be static?
-> arch/powerpc/platforms/ps3/spu.c:592:28: warning: symbol
-> 'spu_priv1_ps3_ops' was not declared. Should it be static?
+https://bugzilla.kernel.org/show_bug.cgi?id=3D209297
 
-Applied to powerpc/next.
+            Bug ID: 209297
+           Summary: powerpc: MPC10X_BRIDGE violates Kconfig dependency of
+                    PPC_INDIRECT_PCI on PCI
+           Product: Platform Specific/Hardware
+           Version: 2.5
+    Kernel Version: 5.9-rc4
+          Hardware: PPC-32
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: PPC-32
+          Assignee: platform_ppc-32@kernel-bugs.osdl.org
+          Reporter: fazilyildiran@gmail.com
+                CC: mpe@ellerman.id.au, paulus@samba.org
+        Regression: No
 
-[1/1] powerpc/ps3: make two symbols static
-      https://git.kernel.org/powerpc/c/bbc4f40b5322b3e0b8678619f1c613dadc811669
+The commit 25635c71e441 ("ppc: Use the indirect_pci.c from
+arch/powerpc/sysdev")
+introduced PPC_INDIRECT_PCI as a non-visible config that depends on PCI.=20
 
-cheers
+Since it is non-visible, the dependency on PCI has no implications other
+than leading to Kbuild build warnings if !PCI. For example, disabling PCI
+and enabling LINKSTATION leads to the following Kbuild warning since
+PPC_INDIRECT_PCI is selected by MPC10X_BRIDGE, which is selected by
+LINKSTATION:
+
+WARNING: unmet direct dependencies detected for PPC_INDIRECT_PCI
+  Depends on [n]: PCI [=3Dn]
+  Selected by [y]:
+  - MPC10X_BRIDGE [=3Dy]
+
+There are many other configs that select PPC_INDIRECT_PCI but they seem
+to enable PCI one way or another, e.g., enabling FORCE_PCI or selecting
+PPC_INDIRECT_PCI if PCI. Among them, only MPC10X_BRIDGE and MV64X60 seem
+to not account for the dependency on PCI, and MV64X60 seem to be obsolete:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D209277
+
+I am not sure about the internals of the user subsystem. However, two fix
+options I see are: 1) --select FORCE_PCI-- by MPC10X_BRIDGE, 2) select
+PPC_INDIRECT_PCI --if PCI-- by MPC10X_BRIDGE.
+
+Thanks,
+Necip
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
