@@ -2,33 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2832B26DA68
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 13:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D9726DA59
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 13:35:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsZhJ121SzDqYW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 21:37:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsZf04ym4zDqBS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 21:35:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsZSP2sKvzDqWW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 21:27:17 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BsZSN69lFzDqSK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 21:27:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BsZSP0kmbz9sTq; Thu, 17 Sep 2020 21:27:16 +1000 (AEST)
+ id 4BsZSN2x0wz9sTp; Thu, 17 Sep 2020 21:27:16 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <f6ea2483c2c389567b007945948f704d18cfaeea.1598862623.git.christophe.leroy@csgroup.eu>
-References: <f6ea2483c2c389567b007945948f704d18cfaeea.1598862623.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 1/2] powerpc/8xx: Refactor calculation of number of
- entries per PTE in page tables
-Message-Id: <160034201341.3339803.11663256745878554872.b4-ty@ellerman.id.au>
+In-Reply-To: <a027d447022a006c9c4958ac734128e577a3c5c1.1599486108.git.christophe.leroy@csgroup.eu>
+References: <a027d447022a006c9c4958ac734128e577a3c5c1.1599486108.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 1/2] powerpc/32: Fix vmap stack - Do not activate MMU
+ before reading task struct
+Message-Id: <160034201451.3339803.5588442310335772695.b4-ty@ellerman.id.au>
 Date: Thu, 17 Sep 2020 21:27:16 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -46,22 +46,21 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 31 Aug 2020 08:30:43 +0000 (UTC), Christophe Leroy wrote:
-> On 8xx, the number of entries occupied by a PTE in the page tables
-> depends on the size of the page. At the time being, this calculation
-> is done in two places: in pte_update() and in set_huge_pte_at()
+On Mon, 7 Sep 2020 13:42:09 +0000 (UTC), Christophe Leroy wrote:
+> We need r1 to be properly set before activating MMU, so
+> reading task_struct->stack must be done with MMU off.
 > 
-> Refactor this calculation into a helper called
-> number_of_cells_per_pte(). For the time being, the val param is
-> unused. It will be used by following patch.
+> This means we need an additional register to play with MSR
+> bits while r11 now points to the stack. For that, move r10
+> back to CR (As is already done for hash MMU) and use r10.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/2] powerpc/8xx: Refactor calculation of number of entries per PTE in page tables
-      https://git.kernel.org/powerpc/c/175a99991511fed16108dcb823f0af8e72325a1f
-[2/2] powerpc/8xx: Support 16k hugepages with 4k pages
-      https://git.kernel.org/powerpc/c/e47168f3d1b14af5281cf50c59561d59d28201f9
+[1/2] powerpc/32: Fix vmap stack - Do not activate MMU before reading task struct
+      https://git.kernel.org/powerpc/c/c118c7303ad528be8ff2aea8cd1ee15452c763f0
+[2/2] powerpc/32: Fix vmap stack - Properly set r1 before activating MMU
+      https://git.kernel.org/powerpc/c/da7bb43ab9da39bcfed0d146ce94e1f0cbae4ca0
 
 cheers
