@@ -1,73 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7C526D0E9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 03:56:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F6626D0EC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 03:59:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsKnx72LSzF1mt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 11:56:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsKrl46JNzDqpG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 11:59:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.215.194;
- helo=mail-pg1-f194.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.193;
+ helo=mail-pf1-f193.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=QaaDzjuN; dkim-atps=neutral
-Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com
- [209.85.215.194])
+ header.s=20161025 header.b=kKCLvI75; dkim-atps=neutral
+Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com
+ [209.85.210.193])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsKl06VRXzDqDZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 11:54:03 +1000 (AEST)
-Received: by mail-pg1-f194.google.com with SMTP id j34so415329pgi.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 18:54:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BsKm747xpzDrSN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 11:55:03 +1000 (AEST)
+Received: by mail-pf1-f193.google.com with SMTP id f18so197137pfa.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 18:55:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to:user-agent;
- bh=HptUpY5ZPADmDsSUpnGfz+yVn/Le7O8Q8dkxi5ZCrro=;
- b=QaaDzjuN6yqg0oJMsY/Y8x631w+CTfJ4VNFORoGX9SW+khthjq4WzrPjaGfPtnq++e
- IofEvC/PRtKxxjc96qjz5bDiR8kJ60bw1cx9fLbSRX+s0hny8xYMUQu/ddhSQN2W0ehg
- Eu5u7ZDFSD/PpoxmOQFGa7FGDbFe3m+xkHDN2LonWO+/jepBGo/3QE9DGlz7XjBMikLQ
- 9EmlNDFnKCzM1DBC2FhcRh2IOsK3RoPXdONnJIlA3axHKclhC1ad1psBqAmgwC54f+Pf
- wZ8jHySqSd1npPylBy3OXSZdkD37m2RKIgragrm2n3kGDG01GLix9bICsEdHu7tIYibm
- RBKg==
+ bh=dgnODGIAWL13nIbhEz3ezEHyZ73l+QamiC/feoln9pA=;
+ b=kKCLvI754VQRS48l6o9prlDOUU+078HIdKfltH5m2ufXjuitexI7+27BaPPbM7YOID
+ U4w8RnHLvpLY6DPhDtH3pQ47Rn2QsEssszplv8yr+YnXJ+rGa7Z5m2m57TcVX7Ak+Oy1
+ HsAT+RyItKoLxTRjYInlcUVR46IQszNC9caKIBbvexWbuSURvAc4MRb7ULAPtnXFWxEl
+ 0SKF+LI7ZsEnX+o8uZzG1pKsT4P50TqHlS4lKHl8Qt/9CH5Q6Y7YqZxoZAf/k5zH6tAb
+ TUp/JF4nyi97FbyqS/39j2QdLJ2Vz7Ueo6qTZqvhHjxpgIPFFbbJpThvMPx6urXE0CfF
+ SDmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=HptUpY5ZPADmDsSUpnGfz+yVn/Le7O8Q8dkxi5ZCrro=;
- b=MoULmtbE7i8P9+h5I4WmfYx8PBi7gmdlJI/jwPekfKeIG0OBrsSBrBMCICVfwua/Wm
- 0K7iwIkRQ0pnrjS/zf5bHsh+V6T94TYQMjt/THDQelxq3hRrmRWWZfys3ZvVOWvadlh1
- pQUJ4JMBZa5Hqdhn4m4OHVcWZwb+MOo5cCr8eDYcI4wBfCO/HTvSlwC779VqGJMmOSqt
- 1BBEip26kRGH5Ovn9HL4EhOpjjQeJjtCBQqYz00b7bRdwBzdpBh/LSp8KlInBkwpRL4u
- pVowYqwbDxOBeHR2E8DsLHophj6vhYd1e1V8U3IF+5hNW/h2/BQ5NZFB3x2k3v5+8afe
- XrFw==
-X-Gm-Message-State: AOAM533fR2bIvpjKwXmMnZFchFhokAwMbxEnl//qJSHMxHRsMe19bZjS
- 67Eb6gYh4xgO71pNEn4tkFY=
-X-Google-Smtp-Source: ABdhPJx+w+YmbG8KZTbXzCyyEZZW96lMymsa7Uwppk+tAqf+WdxJ6BKWfJGYZi9hjgXeMN4Kh0mOHw==
-X-Received: by 2002:a63:595a:: with SMTP id j26mr21319515pgm.406.1600307580770; 
- Wed, 16 Sep 2020 18:53:00 -0700 (PDT)
+ bh=dgnODGIAWL13nIbhEz3ezEHyZ73l+QamiC/feoln9pA=;
+ b=AHfwb2afwzmqhkVwpSj480e9k4iM4cuCkWBkgWQwQyygtR5WjlzX4JoHhoa+hD5BHL
+ JwHnHgULjhHPCbtVk5NUoUq3zikuN/7QphXrsP9Dbt9k5riPDoUrqpV8Gnzw5G7k086x
+ wdgVphAYTeDf2X9x4HeHwuSXpMyJOwA6yZQQs+FAPnwpATD+IUwhT0ZEE5NJs87QXQWW
+ Z8z+uao7+6s+h6BQOTCD5/9CeNLoyfIMPHzmx7lnu7MibZJEotQwPfmlfW3CDgNsQ44h
+ O1VBAXmG9LvKMZTWkStkw984BY+1cNGf3ES2ra8P6JRh67i4ilSbPZUKyFv68XLntiwU
+ LuXg==
+X-Gm-Message-State: AOAM5313k//kcLBgCIhm0ZS6EvKapf65ICLC44dt7rSNqq40pfrdS7Yk
+ Fx4Di9DQ8WgRANwmdbpDsFc=
+X-Google-Smtp-Source: ABdhPJxnNOKTfJ7qLfSj/RIBwWtTsFveH5xnCH12xhYaBkeSNyJehUmbC9p4FCNpFJCk1tW0zIOOLg==
+X-Received: by 2002:aa7:9635:0:b029:142:2501:3980 with SMTP id
+ r21-20020aa796350000b029014225013980mr9025261pfg.69.1600307640882; 
+ Wed, 16 Sep 2020 18:54:00 -0700 (PDT)
 Received: from Asurada-Nvidia (thunderhill.nvidia.com. [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id g21sm18500564pfh.30.2020.09.16.18.53.00
+ by smtp.gmail.com with ESMTPSA id gd14sm4050934pjb.0.2020.09.16.18.54.00
  (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 16 Sep 2020 18:53:00 -0700 (PDT)
-Date: Wed, 16 Sep 2020 18:49:49 -0700
+ Wed, 16 Sep 2020 18:54:00 -0700 (PDT)
+Date: Wed, 16 Sep 2020 18:50:49 -0700
 From: Nicolin Chen <nicoleotsuka@gmail.com>
 To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 2/3] ASoC: fsl_sai: Add fsl_sai_check_version function
-Message-ID: <20200917014949.GC22566@Asurada-Nvidia>
+Subject: Re: [PATCH 3/3] ASoC: fsl_sai: Set MCLK input or output direction
+Message-ID: <20200917015048.GD22566@Asurada-Nvidia>
 References: <1600251387-1863-1-git-send-email-shengjiu.wang@nxp.com>
- <1600251387-1863-3-git-send-email-shengjiu.wang@nxp.com>
+ <1600251387-1863-4-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1600251387-1863-3-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1600251387-1863-4-git-send-email-shengjiu.wang@nxp.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -88,130 +89,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 16, 2020 at 06:16:26PM +0800, Shengjiu Wang wrote:
-> fsl_sai_check_version can help to parse the version info
-> in VERID and PARAM registers.
+On Wed, Sep 16, 2020 at 06:16:27PM +0800, Shengjiu Wang wrote:
+> SAI support select MCLK direction with version.major > 3
+> and version.minor > 1, the default direction is input,
+> set it to be output according to DT property.
 > 
 > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
 Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
 
 > ---
->  sound/soc/fsl/fsl_sai.c | 47 +++++++++++++++++++++++++++++++++++++++++
->  sound/soc/fsl/fsl_sai.h | 28 ++++++++++++++++++++++++
->  2 files changed, 75 insertions(+)
+>  sound/soc/fsl/fsl_sai.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
 > diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> index 24ca528ca2be..738b4dda7847 100644
+> index 738b4dda7847..5117c1cd5682 100644
 > --- a/sound/soc/fsl/fsl_sai.c
 > +++ b/sound/soc/fsl/fsl_sai.c
-> @@ -946,6 +946,48 @@ static struct regmap_config fsl_sai_regmap_config = {
->  	.cache_type = REGCACHE_FLAT,
->  };
+> @@ -1117,6 +1117,13 @@ static int fsl_sai_probe(struct platform_device *pdev)
+>  	if (ret < 0)
+>  		dev_warn(&pdev->dev, "Error reading SAI version: %d\n", ret);
 >  
-> +static int fsl_sai_check_version(struct device *dev)
-> +{
-> +	struct fsl_sai *sai = dev_get_drvdata(dev);
-> +	unsigned char ofs = sai->soc_data->reg_offset;
-> +	unsigned int val;
-> +	int ret;
-> +
-> +	if (FSL_SAI_TCSR(ofs) == FSL_SAI_VERID)
-> +		return 0;
-> +
-> +	ret = regmap_read(sai->regmap, FSL_SAI_VERID, &val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	dev_dbg(dev, "VERID: 0x%016X\n", val);
-> +
-> +	sai->verid.major = (val & FSL_SAI_VERID_MAJOR_MASK) >>
-> +			   FSL_SAI_VERID_MAJOR_SHIFT;
-> +	sai->verid.minor = (val & FSL_SAI_VERID_MINOR_MASK) >>
-> +			   FSL_SAI_VERID_MINOR_SHIFT;
-> +	sai->verid.feature = val & FSL_SAI_VERID_FEATURE_MASK;
-> +
-> +	ret = regmap_read(sai->regmap, FSL_SAI_PARAM, &val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	dev_dbg(dev, "PARAM: 0x%016X\n", val);
-> +
-> +	/* Max slots per frame, power of 2 */
-> +	sai->param.slot_num = 1 <<
-> +		((val & FSL_SAI_PARAM_SPF_MASK) >> FSL_SAI_PARAM_SPF_SHIFT);
-> +
-> +	/* Words per fifo, power of 2 */
-> +	sai->param.fifo_depth = 1 <<
-> +		((val & FSL_SAI_PARAM_WPF_MASK) >> FSL_SAI_PARAM_WPF_SHIFT);
-> +
-> +	/* Number of datalines implemented */
-> +	sai->param.dataline = val & FSL_SAI_PARAM_DLN_MASK;
-> +
-> +	return 0;
-> +}
-> +
->  static int fsl_sai_probe(struct platform_device *pdev)
->  {
->  	struct device_node *np = pdev->dev.of_node;
-> @@ -1070,6 +1112,11 @@ static int fsl_sai_probe(struct platform_device *pdev)
->  
->  	platform_set_drvdata(pdev, sai);
->  
-> +	/* Get sai version */
-> +	ret = fsl_sai_check_version(&pdev->dev);
-> +	if (ret < 0)
-> +		dev_warn(&pdev->dev, "Error reading SAI version: %d\n", ret);
+> +	/* Select MCLK direction */
+> +	if (of_find_property(np, "fsl,sai-mclk-direction-output", NULL) &&
+> +	    sai->verid.major >= 3 && sai->verid.minor >= 1) {
+> +		regmap_update_bits(sai->regmap, FSL_SAI_MCTL,
+> +				   FSL_SAI_MCTL_MCLK_EN, FSL_SAI_MCTL_MCLK_EN);
+> +	}
 > +
 >  	pm_runtime_enable(&pdev->dev);
 >  	regcache_cache_only(sai->regmap, true);
 >  
-> diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-> index d16fc4241f41..ba7425a9e217 100644
-> --- a/sound/soc/fsl/fsl_sai.h
-> +++ b/sound/soc/fsl/fsl_sai.h
-> @@ -223,6 +223,32 @@ struct fsl_sai_soc_data {
->  	unsigned int reg_offset;
->  };
->  
-> +/**
-> + * struct fsl_sai_verid - version id data
-> + * @major: major version number
-> + * @minor: minor version number
-> + * @feature: feature specification number
-> + *           0000000000000000b - Standard feature set
-> + *           0000000000000000b - Standard feature set
-> + */
-> +struct fsl_sai_verid {
-> +	u32 major;
-> +	u32 minor;
-> +	u32 feature;
-> +};
-> +
-> +/**
-> + * struct fsl_sai_param - parameter data
-> + * @slot_num: The maximum number of slots per frame
-> + * @fifo_depth: The number of words in each FIFO (depth)
-> + * @dataline: The number of datalines implemented
-> + */
-> +struct fsl_sai_param {
-> +	u32 slot_num;
-> +	u32 fifo_depth;
-> +	u32 dataline;
-> +};
-> +
->  struct fsl_sai {
->  	struct platform_device *pdev;
->  	struct regmap *regmap;
-> @@ -243,6 +269,8 @@ struct fsl_sai {
->  	const struct fsl_sai_soc_data *soc_data;
->  	struct snd_dmaengine_dai_dma_data dma_params_rx;
->  	struct snd_dmaengine_dai_dma_data dma_params_tx;
-> +	struct fsl_sai_verid verid;
-> +	struct fsl_sai_param param;
->  };
->  
->  #define TX 1
 > -- 
 > 2.27.0
 > 
