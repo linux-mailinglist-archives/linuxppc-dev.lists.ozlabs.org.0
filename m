@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D36BD26DA87
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 13:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 297AE26DA96
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 13:43:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsZnH3YNHzDqRM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 21:41:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsZqM4tf3zDqTR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 21:43:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsZSQ5kTqzDqWg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 21:27:18 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BsZSS1LxRzDqWn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 21:27:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BsZSQ31nsz9sTv; Thu, 17 Sep 2020 21:27:18 +1000 (AEST)
+ id 4BsZSR0Sg2z9sTQ; Thu, 17 Sep 2020 21:27:18 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <f0cb2a5477cd87d1eaadb128042e20aeb2bc2859.1598860677.git.christophe.leroy@csgroup.eu>
-References: <f0cb2a5477cd87d1eaadb128042e20aeb2bc2859.1598860677.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc: Fix random segfault when freeing hugetlb range
-Message-Id: <160034201310.3339803.17054626930223445609.b4-ty@ellerman.id.au>
+In-Reply-To: <8ae4554357da4882612644a74387ae05525b2aaa.1599800716.git.christophe.leroy@csgroup.eu>
+References: <8ae4554357da4882612644a74387ae05525b2aaa.1599800716.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/kasan: Fix CONFIG_KASAN_VMALLOC for 8xx
+Message-Id: <160034201660.3339803.1270264630243029470.b4-ty@ellerman.id.au>
 Date: Thu, 17 Sep 2020 21:27:18 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -45,20 +45,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 31 Aug 2020 07:58:19 +0000 (UTC), Christophe Leroy wrote:
-> The following random segfault is observed from time to time with
-> map_hugetlb selftest:
-> 
-> root@localhost:~# ./map_hugetlb 1 19
-> 524288 kB hugepages
-> Mapping 1 Mbytes
-> Segmentation fault
+On Fri, 11 Sep 2020 05:05:38 +0000 (UTC), Christophe Leroy wrote:
+> Before the commit identified below, pages tables allocation was
+> performed after the allocation of final shadow area for linear memory.
+> But that commit switched the order, leading to page tables being
+> already allocated at the time 8xx kasan_init_shadow_8M() is called.
+> Due to this, kasan_init_shadow_8M() doesn't map the needed
+> shadow entries because there are already page tables.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Fix random segfault when freeing hugetlb range
-      https://git.kernel.org/powerpc/c/542db12a9c42d1ce70c45091765e02f74c129f43
+[1/1] powerpc/kasan: Fix CONFIG_KASAN_VMALLOC for 8xx
+      https://git.kernel.org/powerpc/c/4c42dc5c69a8f24c467a6c997909d2f1d4efdc7f
 
 cheers
