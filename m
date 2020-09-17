@@ -1,35 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D9726DA59
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 13:35:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A861226DA73
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 13:39:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsZf04ym4zDqBS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 21:35:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsZkJ6BbNzDqXr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 21:39:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsZSN69lFzDqSK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 21:27:16 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BsZSQ00mZzDqWW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 21:27:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BsZSN2x0wz9sTp; Thu, 17 Sep 2020 21:27:16 +1000 (AEST)
+ id 4BsZSP52cjz9sTs; Thu, 17 Sep 2020 21:27:17 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <a027d447022a006c9c4958ac734128e577a3c5c1.1599486108.git.christophe.leroy@csgroup.eu>
-References: <a027d447022a006c9c4958ac734128e577a3c5c1.1599486108.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 1/2] powerpc/32: Fix vmap stack - Do not activate MMU
- before reading task struct
-Message-Id: <160034201451.3339803.5588442310335772695.b4-ty@ellerman.id.au>
-Date: Thu, 17 Sep 2020 21:27:16 +1000 (AEST)
+In-Reply-To: <94ba5a5138f99522e1562dbcdb38d31aa790dc89.1599216721.git.christophe.leroy@csgroup.eu>
+References: <94ba5a5138f99522e1562dbcdb38d31aa790dc89.1599216721.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 1/3] powerpc/uaccess: Switch __put_user_size_allowed() to
+ __put_user_asm_goto()
+Message-Id: <160034201413.3339803.2260455102175755865.b4-ty@ellerman.id.au>
+Date: Thu, 17 Sep 2020 21:27:17 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,21 +46,23 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 7 Sep 2020 13:42:09 +0000 (UTC), Christophe Leroy wrote:
-> We need r1 to be properly set before activating MMU, so
-> reading task_struct->stack must be done with MMU off.
+On Fri, 4 Sep 2020 11:01:30 +0000 (UTC), Christophe Leroy wrote:
+> __put_user_asm_goto() provides more flexibility to GCC and avoids using
+> a local variable to tell if the write succeeded or not.
+> GCC can then avoid implementing a cmp in the fast path.
 > 
-> This means we need an additional register to play with MSR
-> bits while r11 now points to the stack. For that, move r10
-> back to CR (As is already done for hash MMU) and use r10.
+> See the difference for a small function like the PPC64 version of
+> save_general_regs() in arch/powerpc/kernel/signal_32.c:
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/2] powerpc/32: Fix vmap stack - Do not activate MMU before reading task struct
-      https://git.kernel.org/powerpc/c/c118c7303ad528be8ff2aea8cd1ee15452c763f0
-[2/2] powerpc/32: Fix vmap stack - Properly set r1 before activating MMU
-      https://git.kernel.org/powerpc/c/da7bb43ab9da39bcfed0d146ce94e1f0cbae4ca0
+[1/3] powerpc/uaccess: Switch __put_user_size_allowed() to __put_user_asm_goto()
+      https://git.kernel.org/powerpc/c/ee0a49a6870ea75e25b4d4984c1bb6b3b7c65f2b
+[2/3] powerpc/uaccess: Switch __patch_instruction() to __put_user_asm_goto()
+      https://git.kernel.org/powerpc/c/e64ac41ab0c510b3f85199a585eb886cad92fb19
+[3/3] powerpc/uaccess: Remove __put_user_asm() and __put_user_asm2()
+      https://git.kernel.org/powerpc/c/7fdf966bed155b214f4f1f9b67825a40b2e9b998
 
 cheers
