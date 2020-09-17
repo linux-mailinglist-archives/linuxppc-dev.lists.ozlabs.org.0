@@ -1,42 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7B626E090
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 18:23:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B847426E187
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 19:00:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bsj1r46kMzDqLZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 02:23:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsjrM1HzJzDqfH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 03:00:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=lorenzo.pieralisi@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Bshyn5HLlzDqLZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 02:20:28 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4C88412FC;
- Thu, 17 Sep 2020 09:20:25 -0700 (PDT)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com
- [10.1.196.255])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D90443F68F;
- Thu, 17 Sep 2020 09:20:22 -0700 (PDT)
-Date: Thu, 17 Sep 2020 17:20:17 +0100
-From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To: Zhiqiang Hou <Zhiqiang.Hou@nxp.com>
-Subject: Re: [PATCHv7 00/12]PCI: dwc: Add the multiple PF support for DWC and
- Layerscape
-Message-ID: <20200917162017.GA6830@e121166-lin.cambridge.arm.com>
-References: <20200811095441.7636-1-Zhiqiang.Hou@nxp.com>
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=MJLfb4lm; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BsjnM4FjSzDqd9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 02:57:27 +1000 (AEST)
+Received: from localhost (52.sub-72-107-123.myvzw.com [72.107.123.52])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 818A72064B;
+ Thu, 17 Sep 2020 16:57:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1600361844;
+ bh=nu7RsY28LVyN+IsFpaXaxIpemXjC7Q2RYaAJUnnZ2r8=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=MJLfb4lmVitwKrAl4tGM9ILl8JGYXcXszpcpnzFEb6k8oJ5ax0iNsfFS8e9FxKUZ0
+ C+tYyN/wTuiXpcH172VU1aywBGTfhiTyQoi/GkH/kglPqRuVr8iRxX5dmmGUpJsFdS
+ AJ9Faia/pQLEdUCrc/vdPrdf69lvmoVPAZPBsylY=
+Date: Thu, 17 Sep 2020 11:57:23 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Qinglang Miao <miaoqinglang@huawei.com>
+Subject: Re: [PATCH -next] PCI: rpadlpar: use for_each_child_of_node() and
+ for_each_node_by_name
+Message-ID: <20200917165723.GA1708462@bjorn-Precision-5520>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200811095441.7636-1-Zhiqiang.Hou@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200916062128.190819-1-miaoqinglang@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,61 +55,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, andrew.murray@arm.com, roy.zang@nxp.com,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, leoyang.li@nxp.com,
- minghuan.Lian@nxp.com, jingoohan1@gmail.com, robh+dt@kernel.org,
- mingkai.hu@nxp.com, gustavo.pimentel@synopsys.com, bhelgaas@google.com,
- shawnguo@kernel.org, kishon@ti.com, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 11, 2020 at 05:54:29PM +0800, Zhiqiang Hou wrote:
-> From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+On Wed, Sep 16, 2020 at 02:21:28PM +0800, Qinglang Miao wrote:
+> Use for_each_child_of_node() and for_each_node_by_name macro
+> instead of open coding it.
 > 
-> Add the PCIe EP multiple PF support for DWC and Layerscape, and use
-> a list to manage the PFs of each PCIe controller; add the doorbell
-> MSIX function for DWC; and refactor the Layerscape EP driver due to
-> some difference in Layercape platforms PCIe integration.
+> Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
+
+Applied to pci/hotplug for v5.10, thanks!
+
+> ---
+>  drivers/pci/hotplug/rpadlpar_core.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> Hou Zhiqiang (1):
->   misc: pci_endpoint_test: Add driver data for Layerscape PCIe
->     controllers
+> diff --git a/drivers/pci/hotplug/rpadlpar_core.c b/drivers/pci/hotplug/rpadlpar_core.c
+> index f979b7098..0a3c80ba6 100644
+> --- a/drivers/pci/hotplug/rpadlpar_core.c
+> +++ b/drivers/pci/hotplug/rpadlpar_core.c
+> @@ -40,13 +40,13 @@ static DEFINE_MUTEX(rpadlpar_mutex);
+>  static struct device_node *find_vio_slot_node(char *drc_name)
+>  {
+>  	struct device_node *parent = of_find_node_by_name(NULL, "vdevice");
+> -	struct device_node *dn = NULL;
+> +	struct device_node *dn;
+>  	int rc;
+>  
+>  	if (!parent)
+>  		return NULL;
+>  
+> -	while ((dn = of_get_next_child(parent, dn))) {
+> +	for_each_child_of_node(parent, dn) {
+>  		rc = rpaphp_check_drc_props(dn, drc_name, NULL);
+>  		if (rc == 0)
+>  			break;
+> @@ -60,10 +60,10 @@ static struct device_node *find_vio_slot_node(char *drc_name)
+>  static struct device_node *find_php_slot_pci_node(char *drc_name,
+>  						  char *drc_type)
+>  {
+> -	struct device_node *np = NULL;
+> +	struct device_node *np;
+>  	int rc;
+>  
+> -	while ((np = of_find_node_by_name(np, "pci"))) {
+> +	for_each_node_by_name(np, "pci") {
+>  		rc = rpaphp_check_drc_props(np, drc_name, drc_type);
+>  		if (rc == 0)
+>  			break;
+> -- 
+> 2.23.0
 > 
-> Xiaowei Bao (11):
->   PCI: designware-ep: Add multiple PFs support for DWC
->   PCI: designware-ep: Add the doorbell mode of MSI-X in EP mode
->   PCI: designware-ep: Move the function of getting MSI capability
->     forward
->   PCI: designware-ep: Modify MSI and MSIX CAP way of finding
->   dt-bindings: pci: layerscape-pci: Add compatible strings for ls1088a
->     and ls2088a
->   PCI: layerscape: Fix some format issue of the code
->   PCI: layerscape: Modify the way of getting capability with different
->     PEX
->   PCI: layerscape: Modify the MSIX to the doorbell mode
->   PCI: layerscape: Add EP mode support for ls1088a and ls2088a
->   arm64: dts: layerscape: Add PCIe EP node for ls1088a
->   misc: pci_endpoint_test: Add LS1088a in pci_device_id table
-> 
->  .../bindings/pci/layerscape-pci.txt           |   2 +
->  .../arm64/boot/dts/freescale/fsl-ls1088a.dtsi |  31 +++
->  drivers/misc/pci_endpoint_test.c              |   8 +-
->  .../pci/controller/dwc/pci-layerscape-ep.c    | 100 +++++--
->  .../pci/controller/dwc/pcie-designware-ep.c   | 258 ++++++++++++++----
->  drivers/pci/controller/dwc/pcie-designware.c  |  59 ++--
->  drivers/pci/controller/dwc/pcie-designware.h  |  48 +++-
->  7 files changed, 410 insertions(+), 96 deletions(-)
-
-Side note: I will change it for you but please keep Signed-off-by:
-tags together in the log instead of mixing them with other tags
-randomly.
-
-Can you rebase this series against my pci/dwc branch please and
-send a v8 ?
-
-I will apply it then.
-
-Thanks,
-Lorenzo
