@@ -2,51 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0175826DC77
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 15:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE8A26DCC7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 15:28:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bschv1GNRzDq98
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 23:08:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bsd8F254kzDqSC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Sep 2020 23:28:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=rcardoso@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=mi3s2YQg; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Vxv6d3E8; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bscdf3q5bzDqK3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 23:05:26 +1000 (AEST)
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 52B782083B;
- Thu, 17 Sep 2020 13:05:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1600347923;
- bh=VWZZoKhUjroNLpll2eU5vjUqNxtnR3wkR+uu5Ss0zr8=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=mi3s2YQgpeZZBpneKJuKUPowYJRNqmmOg9EnsuaQ6g7HwF8jYnhjAbFZq+G1I7ATn
- qMvrjkVDAonhONz4GUA8SHPmq0sMe7Jov1R5tPypU7ue+bWqQFozkiUnzir8+uMs9H
- dLNQL6u2z+vGlf08u1vwiMKYG0Z94iXzUizJeZpM=
-Date: Thu, 17 Sep 2020 14:04:34 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Xu Wang <vulab@iscas.ac.cn>
-Subject: Re: [PATCH] fsl: imx-audmix : Replace seq_printf with seq_puts
-Message-ID: <20200917130434.GD4755@sirena.org.uk>
-References: <20200916061420.10403-1-vulab@iscas.ac.cn>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bsd4T0jMMzDqZF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Sep 2020 23:25:09 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 08HDC7k4042811; Thu, 17 Sep 2020 09:25:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=hnwSP26nUyxJVjfKriUNAIMcTHY25FLJy3FKVmmHnBU=;
+ b=Vxv6d3E8z4V5wRwQibk4PbHaLEnSXesYVfyNLvTMM2bR8E6UoRQI//Wg3qMaYq7KRLUC
+ qEXqaLteWDAH3pUr2k+r0B1rBcbyLk8uxN8JTbqqdSTEhDt9DENhfgfGW6sDdIk3ojqD
+ rHh004djUyeYdRQXCDahtXSeId/q+21O4zb5f9/tL/w5yv+XrF+3g8EW1Csqyd1PVqvS
+ ekie5uR1SZzGxIaDIPYLeOZ2sxLWWWDdOuyTKXJH6i9n6LrVPTs9pci+TkBWpgTED5lM
+ eZPrTd1kIyGLg++DZqzbo5LRjU6Zah8iDOsr/4LvYcT3F6GyJ2MbYZwd1FCA/FyjoKp1 8w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33m8fnrd8s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Sep 2020 09:25:01 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08HDCOB0043136;
+ Thu, 17 Sep 2020 09:25:00 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33m8fnrd8b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Sep 2020 09:25:00 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08HDMfZb008450;
+ Thu, 17 Sep 2020 13:25:00 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma03dal.us.ibm.com with ESMTP id 33k5v20xa9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Sep 2020 13:25:00 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 08HDOx6054067638
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 17 Sep 2020 13:24:59 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 45FCDAE060;
+ Thu, 17 Sep 2020 13:24:59 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 27FA8AE05F;
+ Thu, 17 Sep 2020 13:24:56 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.211.95.89])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 17 Sep 2020 13:24:55 +0000 (GMT)
+Subject: Re: [PATCH v6 0/8] powerpc/watchpoint: Bug fixes plus new feature flag
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mpe@ellerman.id.au,
+ christophe.leroy@c-s.fr
+References: <20200902042945.129369-1-ravi.bangoria@linux.ibm.com>
+From: Rogerio Alves <rcardoso@linux.ibm.com>
+Message-ID: <6927523d-de63-910a-e789-5fab424c7eb9@linux.ibm.com>
+Date: Thu, 17 Sep 2020 10:24:54 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="MAH+hnPXVZWQ5cD/"
-Content-Disposition: inline
-In-Reply-To: <20200916061420.10403-1-vulab@iscas.ac.cn>
-X-Cookie: If you fail to plan, plan to fail.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200902042945.129369-1-ravi.bangoria@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-17_09:2020-09-16,
+ 2020-09-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 suspectscore=0
+ mlxscore=0 spamscore=0 impostorscore=0 adultscore=0 mlxlogscore=999
+ clxscore=1011 priorityscore=1501 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009170098
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,43 +106,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- festevam@gmail.com, s.hauer@pengutronix.de, tiwai@suse.com,
- lgirdwood@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com, linux-imx@nxp.com,
- kernel@pengutronix.de, shawnguo@kernel.org, shengjiu.wang@gmail.com,
- linux-arm-kernel@lists.infradead.org
+Cc: mikey@neuling.org, jniethe5@gmail.com, pedromfc@linux.ibm.com,
+ linux-kernel@vger.kernel.org, paulus@samba.org, rogealve@linux.ibm.com,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---MAH+hnPXVZWQ5cD/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Sep 16, 2020 at 06:14:20AM +0000, Xu Wang wrote:
+On 9/2/20 1:29 AM, Ravi Bangoria wrote:
+> Patch #1 fixes issue for quardword instruction on p10 predecessors.
+> Patch #2 fixes issue for vector instructions.
+> Patch #3 fixes a bug about watchpoint not firing when created with
+>           ptrace PPC_PTRACE_SETHWDEBUG and CONFIG_HAVE_HW_BREAKPOINT=N.
+>           The fix uses HW_BRK_TYPE_PRIV_ALL for ptrace user which, I
+>           guess, should be fine because we don't leak any kernel
+>           addresses and PRIV_ALL will also help to cover scenarios when
+>           kernel accesses user memory.
+> Patch #4,#5 fixes infinite exception bug, again the bug happens only
+>           with CONFIG_HAVE_HW_BREAKPOINT=N.
+> Patch #6 fixes two places where we are missing to set hw_len.
+> Patch #7 introduce new feature bit PPC_DEBUG_FEATURE_DATA_BP_ARCH_31
+>           which will be set when running on ISA 3.1 compliant machine.
+> Patch #8 finally adds selftest to test scenarios fixed by patch#2,#3
+>           and also moves MODE_EXACT tests outside of BP_RANGE condition.
+> 
+> Christophe, let me know if this series breaks something for 8xx.
+> 
+> v5: https://lore.kernel.org/r/20200825043617.1073634-1-ravi.bangoria@linux.ibm.com
+> 
+> v5->v6:
+>   - Fix build faulure reported by kernel test robot
+>   - patch #5. Use more compact if condition, suggested by Christophe
+> 
+> 
+> Ravi Bangoria (8):
+>    powerpc/watchpoint: Fix quarword instruction handling on p10
+>      predecessors
+>    powerpc/watchpoint: Fix handling of vector instructions
+>    powerpc/watchpoint/ptrace: Fix SETHWDEBUG when
+>      CONFIG_HAVE_HW_BREAKPOINT=N
+>    powerpc/watchpoint: Move DAWR detection logic outside of
+>      hw_breakpoint.c
+>    powerpc/watchpoint: Fix exception handling for
+>      CONFIG_HAVE_HW_BREAKPOINT=N
+>    powerpc/watchpoint: Add hw_len wherever missing
+>    powerpc/watchpoint/ptrace: Introduce PPC_DEBUG_FEATURE_DATA_BP_ARCH_31
+>    powerpc/watchpoint/selftests: Tests for kernel accessing user memory
+> 
+>   Documentation/powerpc/ptrace.rst              |   1 +
+>   arch/powerpc/include/asm/hw_breakpoint.h      |  12 ++
+>   arch/powerpc/include/uapi/asm/ptrace.h        |   1 +
+>   arch/powerpc/kernel/Makefile                  |   3 +-
+>   arch/powerpc/kernel/hw_breakpoint.c           | 149 +---------------
+>   .../kernel/hw_breakpoint_constraints.c        | 162 ++++++++++++++++++
+>   arch/powerpc/kernel/process.c                 |  48 ++++++
+>   arch/powerpc/kernel/ptrace/ptrace-noadv.c     |   9 +-
+>   arch/powerpc/xmon/xmon.c                      |   1 +
+>   .../selftests/powerpc/ptrace/ptrace-hwbreak.c |  48 +++++-
+>   10 files changed, 282 insertions(+), 152 deletions(-)
+>   create mode 100644 arch/powerpc/kernel/hw_breakpoint_constraints.c
+> 
 
-> A multiplication for the size determination of a memory allocation
-> indicated that an array data structure should be processed.
-> Thus use the corresponding function "devm_kcalloc".
+Tested this patch set for:
+- SETHWDEBUG when CONFIG_HAVE_HW_BREAKPOINT=N = OK
+- Fix exception handling for CONFIG_HAVE_HW_BREAKPOINT=N = OK
+- Check for PPC_DEBUG_FEATURE_DATA_BP_ARCH_31 = OK
+- Fix quarword instruction handling on p10 predecessors = OK
+- Fix handling of vector instructions = OK
 
-This looks fine but the subject says it's about seq_puts() not
-kcalloc().
-
---MAH+hnPXVZWQ5cD/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9jXuEACgkQJNaLcl1U
-h9B3BQf/VarUuMPYus5VLpA+zmE+7JqUAcO3omQ6LMqaF7VBOQhDHlE45z4cWL+z
-puS/DV1XmM5bSGn+ZwcwBh6GvfamDg5oyGSTs8OkwMeWxCanjvexEE81RTAvzCgT
-qkAdheP90NZtRKHJImUV6KfmiTJXB2nokridUP+vC2L98aZjAYbVFuJ5CMkEuKOk
-jOzrE81vM69mIfnFnvcHRv7wH+WZszcgxc/WDTFDfYSQB5mMgBvVDT9mUPRJtjkj
-NdND/4RmGRSXcQ5l7iHszGwtUBSAGVVycv45pBPcm1z1Z/XXh0R4M9SbrICmDbZM
-g6zIaexA3gXNIUwR2p0czzGdbUD3ww==
-=AGo/
------END PGP SIGNATURE-----
-
---MAH+hnPXVZWQ5cD/--
+Also tested for:
+- Set second watchpoint (P10 Mambo) = OK
+- Infinity loop on sc instruction = OK
