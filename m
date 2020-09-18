@@ -1,53 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6A926F5DB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 08:24:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF7326F5E2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 08:28:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bt3h45lrbzDqlc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 16:24:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bt3mr0mdtzDql6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 16:28:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bt3fM29kxzDqkS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 16:22:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bt3kt5bgszDqkS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 16:26:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=l7dNtbkM; 
+ header.a=rsa-sha256 header.s=201909 header.b=cNndsfLt; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bt3fL2Pwyz9sRR;
- Fri, 18 Sep 2020 16:22:34 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bt3ks3H7qz9sRK;
+ Fri, 18 Sep 2020 16:26:28 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1600410154;
- bh=APF+Hu9MA5D4HnG4laKM+f7u7SvD7NRYuT//39Fs6VQ=;
+ s=201909; t=1600410390;
+ bh=66IDvfqYhq/cJ6uDCcpX38A3C0anTkFpn4s2F7mfs2w=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=l7dNtbkM9rdm64fN3MmtDmKbUJqqvo0XqjGPRY26OL/JuHsWcWAlU+fdVo9xHrHxR
- caKYIUL9BQg7CZQRu3ZxFtppBVoehgNzeHtHE8TpT95SV3M/T7SLVcAq6TW3wW5rqq
- dTAUGu3j0ue7ItvpsE6ERycHGQSWthnScq0Y+cte/bB+gJufIcwj8OQG9BknS5z/h4
- yUTALq2hbVNaQsWK0QW/kSxY//EkirQ7SA8bG5s/Iy1LHP7cr7TX947UBgh2LkCJbZ
- fbmJEMNRZur46nOD0pNayZUFMWdSq3EHlgf3jfGFg9f3Jd1sFexgRhz1+MoRu/nLi0
- sJFYRAP0mGe4g==
+ b=cNndsfLtGUdLGgOoCrinazk+VMr1KXMXy9dd2TGqt3E9JdBOhBYJ9X5DDzGCzTxw/
+ QIBS9Cqga2ubKLdDl76EuVj5250J8LufnfWTYIeNCmT4Jz9rV28Vg5Uin5Bz6v+0nN
+ +KmaGQDIox/B7y/w4B5YVcuVN8slvuESXvFFkTWIyHM3we4F+F8Hg1uU57M9LaK9XG
+ b6vTgFe5FzONVQJC1b2aDgb3L7MJqhX3VvYWYqsnmy4ivzdESlYSSb4VvSsLjLe+Pq
+ ilMpwno0Ic1x6jOw275XLuzCUUyx6rVicKSbOW/lkIof4m14Pp8g0PMDemepiLYQJI
+ xLwZlysNogciQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
- Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH] selftests/seccomp: fix ptrace tests on powerpc
-In-Reply-To: <20200917225100.GG314880@mussarela>
-References: <20200630164739.1268222-1-cascardo@canonical.com>
- <202009081505.D9FE52510B@keescook> <20200911180637.GI4002@mussarela>
- <875z8hrh2o.fsf@mpe.ellerman.id.au> <202009171536.7FACD19@keescook>
- <20200917225100.GG314880@mussarela>
-Date: Fri, 18 Sep 2020 16:22:31 +1000
-Message-ID: <87imcbob88.fsf@mpe.ellerman.id.au>
+To: David Miller <davem@davemloft.net>
+Subject: Re: [PATCH -next] ide: Fix symbol undeclared warnings
+In-Reply-To: <20200917.124445.1786301672047605176.davem@davemloft.net>
+References: <20200916092333.77158-1-wangwensheng4@huawei.com>
+ <87zh5oobnn.fsf@mpe.ellerman.id.au>
+ <20200917.124445.1786301672047605176.davem@davemloft.net>
+Date: Fri, 18 Sep 2020 16:26:28 +1000
+Message-ID: <87ft7fob1n.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -61,67 +59,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Shuah Khan <shuah@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, linux-kselftest@vger.kernel.org
+Cc: wangwensheng4@huawei.com, linux-kernel@vger.kernel.org,
+ linux-ide@vger.kernel.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thadeu Lima de Souza Cascardo <cascardo@canonical.com> writes:
-> On Thu, Sep 17, 2020 at 03:37:16PM -0700, Kees Cook wrote:
->> On Sun, Sep 13, 2020 at 10:34:23PM +1000, Michael Ellerman wrote:
->> > Thadeu Lima de Souza Cascardo <cascardo@canonical.com> writes:
->> > > On Tue, Sep 08, 2020 at 04:18:17PM -0700, Kees Cook wrote:
->> > >> On Tue, Jun 30, 2020 at 01:47:39PM -0300, Thadeu Lima de Souza Cascardo wrote:
->> > ...
->> > >> > @@ -1809,10 +1818,15 @@ void tracer_ptrace(struct __test_metadata *_metadata, pid_t tracee,
->> > >> >  	EXPECT_EQ(entry ? PTRACE_EVENTMSG_SYSCALL_ENTRY
->> > >> >  			: PTRACE_EVENTMSG_SYSCALL_EXIT, msg);
->> > >> >  
->> > >> > -	if (!entry)
->> > >> > +	if (!entry && !syscall_nr)
->> > >> >  		return;
->> > >> >  
->> > >> > -	nr = get_syscall(_metadata, tracee);
->> > >> > +	if (entry)
->> > >> > +		nr = get_syscall(_metadata, tracee);
->> > >> > +	else
->> > >> > +		nr = *syscall_nr;
->> > >> 
->> > >> This is weird? Shouldn't get_syscall() be modified to do the right thing
->> > >> here instead of depending on the extra arg?
->> > >> 
->> > >
->> > > R0 might be clobered. Same documentation mentions it as volatile. So, during
->> > > syscall exit, we can't tell for sure that R0 will have the original syscall
->> > > number. So, we need to grab it during syscall enter, save it somewhere and
->> > > reuse it. I used the test context/args for that.
->> > 
->> > The user r0 (in regs->gpr[0]) shouldn't be clobbered.
->> > 
->> > But it is modified if the tracer skips the syscall, by setting the
->> > syscall number to -1. Or if the tracer changes the syscall number.
->> > 
->> > So if you need the original syscall number in the exit path then I think
->> > you do need to save it at entry.
->> 
->> ... the selftest code wants to test the updated syscall (-1 or
->> whatever), so this sounds correct. Was this test actually failing on
->> powerpc? (I'd really rather not split entry/exit if I don't have to.)
+David Miller <davem@davemloft.net> writes:
+> From: Michael Ellerman <mpe@ellerman.id.au>
+> Date: Thu, 17 Sep 2020 22:01:00 +1000
 >
-> Yes, it started failing when the return code started being changed as well.
-> Though ptrace can change the syscall at entry (IIRC), it can't change the
-> return code. And that is part of the ABI. If ppc is changed so it allows
-> changing the return code during ptrace entry, some strace uses will break. So
-> that is not an option.
+>> Wang Wensheng <wangwensheng4@huawei.com> writes:
+>>> Build the object file with `C=2` and get the following warnings:
+>>> make allmodconfig ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-
+>>> make C=2 drivers/ide/pmac.o ARCH=powerpc64
+>>> CROSS_COMPILE=powerpc64-linux-gnu-
+>>>
+>>> drivers/ide/pmac.c:228:23: warning: symbol 'mdma_timings_33' was not
+>>> declared. Should it be static?
+>>> drivers/ide/pmac.c:241:23: warning: symbol 'mdma_timings_33k' was not
+>>> declared. Should it be static?
+>>> drivers/ide/pmac.c:254:23: warning: symbol 'mdma_timings_66' was not
+>>> declared. Should it be static?
+>>> drivers/ide/pmac.c:272:3: warning: symbol 'kl66_udma_timings' was not
+>>> declared. Should it be static?
+>>> drivers/ide/pmac.c:1418:12: warning: symbol 'pmac_ide_probe' was not
+>>> declared. Should it be static?
+>>>
+>>> Signed-off-by: Wang Wensheng <wangwensheng4@huawei.com>
+>>> ---
+>>>  drivers/ide/pmac.c | 10 +++++-----
+>>>  1 file changed, 5 insertions(+), 5 deletions(-)
+>> 
+>> TIL davem maintains IDE?
+>> 
+>> But I suspect he isn't that interested in this powerpc only driver, so
+>> I'll grab this.
+>
+> I did have it in my queue, but if you want to take it that's fine too :)
 
-Yep.
-
-I don't know that it would break anything to change that part of the
-ptrace ABI, but it definitely could break things and it would be subtle,
-so it's not really an option.
-
-So for powerpc we do need the return code change done in the exit hook,
-sorry.
+That's OK, if you've got it already you take it. Thanks.
 
 cheers
