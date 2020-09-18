@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D9826EDB0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 04:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F6226EE30
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 04:26:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsyKq0Gv6zDqjR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 12:22:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsyQP0nfQzDqMK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 12:26:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Tvnt+704; dkim-atps=neutral
+ header.s=default header.b=SJdls+FV; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bsxx24qr9zDqjn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 12:04:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bsxy2521VzDqg8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 12:05:46 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 290F62388E;
- Fri, 18 Sep 2020 02:04:51 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id CB1852376F;
+ Fri, 18 Sep 2020 02:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1600394692;
- bh=1p0mPBYyP+5pGBfPtHVqw/Ox9V+qSduw8oc0iYUP1wk=;
+ s=default; t=1600394744;
+ bh=AjbrJZmdKW8Io62ezgRXv08rXauDQyVkXIB2fU8/tOE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Tvnt+704tjNY28iaNUv1YsKcQNXtbGxZoaFiyOQZMKWLj6f0LnVibzkps9sY3OxfH
- gbS3Bk2+hFCP2ZMxhnfRXf68HHM0r22FcIFHV53iMeorsspDld5CPe4WdbjVA7nQm8
- 24gCJg9bZmbt+oU2fxJ/lc+4JoxeXoFr3Slku5P8=
+ b=SJdls+FVqCC4EQjPVPlrGC0CiKr8gUD2C7M9kowx5QRFAJVnnVlViM7gOUE3gJk2/
+ JnPWDeofHpvDicWE5CgF0vlviJIvOea4MmJZIcYPIGhXrEMgQ3efRucWPtiJjMrJig
+ 3kOOqN+Jj876o35zWHEGRPMV+xETMwt4Gr5J4nLY=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 180/330] KVM: PPC: Book3S HV: Treat TM-related
- invalid form instructions on P9 like the valid ones
-Date: Thu, 17 Sep 2020 21:58:40 -0400
-Message-Id: <20200918020110.2063155-180-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 224/330] powerpc/perf: Implement a global lock to
+ avoid races between trace, core and thread imc events.
+Date: Thu, 17 Sep 2020 21:59:24 -0400
+Message-Id: <20200918020110.2063155-224-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200918020110.2063155-1-sashal@kernel.org>
 References: <20200918020110.2063155-1-sashal@kernel.org>
@@ -60,219 +60,343 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Michael Neuling <mikey@neuling.org>,
- kvm@vger.kernel.org, Gustavo Romero <gromero@linux.ibm.com>,
- kvm-ppc@vger.kernel.org, Leonardo Bras <leonardo@linux.ibm.com>,
+Cc: Sasha Levin <sashal@kernel.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Gustavo Romero <gromero@linux.ibm.com>
+From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
 
-[ Upstream commit 1dff3064c764b5a51c367b949b341d2e38972bec ]
+[ Upstream commit a36e8ba60b991d563677227f172db69e030797e6 ]
 
-On P9 DD2.2 due to a CPU defect some TM instructions need to be emulated by
-KVM. This is handled at first by the hardware raising a softpatch interrupt
-when certain TM instructions that need KVM assistance are executed in the
-guest. Althought some TM instructions per Power ISA are invalid forms they
-can raise a softpatch interrupt too. For instance, 'tresume.' instruction
-as defined in the ISA must have bit 31 set (1), but an instruction that
-matches 'tresume.' PO and XO opcode fields but has bit 31 not set (0), like
-0x7cfe9ddc, also raises a softpatch interrupt. Similarly for 'treclaim.'
-and 'trechkpt.' instructions with bit 31 = 0, i.e. 0x7c00075c and
-0x7c0007dc, respectively. Hence, if a code like the following is executed
-in the guest it will raise a softpatch interrupt just like a 'tresume.'
-when the TM facility is enabled ('tabort. 0' in the example is used only
-to enable the TM facility):
+IMC(In-memory Collection Counters) does performance monitoring in
+two different modes, i.e accumulation mode(core-imc and thread-imc events),
+and trace mode(trace-imc events). A cpu thread can either be in
+accumulation-mode or trace-mode at a time and this is done via the LDBAR
+register in POWER architecture. The current design does not address the
+races between thread-imc and trace-imc events.
 
-int main() { asm("tabort. 0; .long 0x7cfe9ddc;"); }
+Patch implements a global id and lock to avoid the races between
+core, trace and thread imc events. With this global id-lock
+implementation, the system can either run core, thread or trace imc
+events at a time. i.e. to run any core-imc events, thread/trace imc events
+should not be enabled/monitored.
 
-Currently in such a case KVM throws a complete trace like:
-
-[345523.705984] WARNING: CPU: 24 PID: 64413 at arch/powerpc/kvm/book3s_hv_tm.c:211 kvmhv_p9_tm_emulation+0x68/0x620 [kvm_hv]
-[345523.705985] Modules linked in: kvm_hv(E) xt_conntrack ipt_REJECT nf_reject_ipv4 xt_tcpudp ip6table_mangle ip6table_nat
-iptable_mangle iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ebtable_filter ebtables ip6table_filter
-ip6_tables iptable_filter bridge stp llc sch_fq_codel ipmi_powernv at24 vmx_crypto ipmi_devintf ipmi_msghandler
-ibmpowernv uio_pdrv_genirq kvm opal_prd uio leds_powernv ib_iser rdma_cm iw_cm ib_cm ib_core iscsi_tcp libiscsi_tcp
-libiscsi scsi_transport_iscsi ip_tables x_tables autofs4 btrfs blake2b_generic zstd_compress raid10 raid456
-async_raid6_recov async_memcpy async_pq async_xor async_tx libcrc32c xor raid6_pq raid1 raid0 multipath linear tg3
-crct10dif_vpmsum crc32c_vpmsum ipr [last unloaded: kvm_hv]
-[345523.706030] CPU: 24 PID: 64413 Comm: CPU 0/KVM Tainted: G        W   E     5.5.0+ #1
-[345523.706031] NIP:  c0080000072cb9c0 LR: c0080000072b5e80 CTR: c0080000085c7850
-[345523.706034] REGS: c000000399467680 TRAP: 0700   Tainted: G        W   E      (5.5.0+)
-[345523.706034] MSR:  900000010282b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE,TM[E]>  CR: 24022428  XER: 00000000
-[345523.706042] CFAR: c0080000072b5e7c IRQMASK: 0
-                GPR00: c0080000072b5e80 c000000399467910 c0080000072db500 c000000375ccc720
-                GPR04: c000000375ccc720 00000003fbec0000 0000a10395dda5a6 0000000000000000
-                GPR08: 000000007cfe9ddc 7cfe9ddc000005dc 7cfe9ddc7c0005dc c0080000072cd530
-                GPR12: c0080000085c7850 c0000003fffeb800 0000000000000001 00007dfb737f0000
-                GPR16: c0002001edcca558 0000000000000000 0000000000000000 0000000000000001
-                GPR20: c000000001b21258 c0002001edcca558 0000000000000018 0000000000000000
-                GPR24: 0000000001000000 ffffffffffffffff 0000000000000001 0000000000001500
-                GPR28: c0002001edcc4278 c00000037dd80000 800000050280f033 c000000375ccc720
-[345523.706062] NIP [c0080000072cb9c0] kvmhv_p9_tm_emulation+0x68/0x620 [kvm_hv]
-[345523.706065] LR [c0080000072b5e80] kvmppc_handle_exit_hv.isra.53+0x3e8/0x798 [kvm_hv]
-[345523.706066] Call Trace:
-[345523.706069] [c000000399467910] [c000000399467940] 0xc000000399467940 (unreliable)
-[345523.706071] [c000000399467950] [c000000399467980] 0xc000000399467980
-[345523.706075] [c0000003994679f0] [c0080000072bd1c4] kvmhv_run_single_vcpu+0xa1c/0xb80 [kvm_hv]
-[345523.706079] [c000000399467ac0] [c0080000072bd8e0] kvmppc_vcpu_run_hv+0x5b8/0xb00 [kvm_hv]
-[345523.706087] [c000000399467b90] [c0080000085c93cc] kvmppc_vcpu_run+0x34/0x48 [kvm]
-[345523.706095] [c000000399467bb0] [c0080000085c582c] kvm_arch_vcpu_ioctl_run+0x244/0x420 [kvm]
-[345523.706101] [c000000399467c40] [c0080000085b7498] kvm_vcpu_ioctl+0x3d0/0x7b0 [kvm]
-[345523.706105] [c000000399467db0] [c0000000004adf9c] ksys_ioctl+0x13c/0x170
-[345523.706107] [c000000399467e00] [c0000000004adff8] sys_ioctl+0x28/0x80
-[345523.706111] [c000000399467e20] [c00000000000b278] system_call+0x5c/0x68
-[345523.706112] Instruction dump:
-[345523.706114] 419e0390 7f8a4840 409d0048 6d497c00 2f89075d 419e021c 6d497c00 2f8907dd
-[345523.706119] 419e01c0 6d497c00 2f8905dd 419e00a4 <0fe00000> 38210040 38600000 ebc1fff0
-
-and then treats the executed instruction as a 'nop'.
-
-However the POWER9 User's Manual, in section "4.6.10 Book II Invalid
-Forms", informs that for TM instructions bit 31 is in fact ignored, thus
-for the TM-related invalid forms ignoring bit 31 and handling them like the
-valid forms is an acceptable way to handle them. POWER8 behaves the same
-way too.
-
-This commit changes the handling of the cases here described by treating
-the TM-related invalid forms that can generate a softpatch interrupt
-just like their valid forms (w/ bit 31 = 1) instead of as a 'nop' and by
-gently reporting any other unrecognized case to the host and treating it as
-illegal instruction instead of throwing a trace and treating it as a 'nop'.
-
-Signed-off-by: Gustavo Romero <gromero@linux.ibm.com>
-Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
-Acked-By: Michael Neuling <mikey@neuling.org>
-Reviewed-by: Leonardo Bras <leonardo@linux.ibm.com>
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20200313055238.8656-1-anju@linux.vnet.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/kvm_asm.h      |  3 +++
- arch/powerpc/kvm/book3s_hv_tm.c         | 28 ++++++++++++++++++++-----
- arch/powerpc/kvm/book3s_hv_tm_builtin.c | 16 ++++++++++++--
- 3 files changed, 40 insertions(+), 7 deletions(-)
+ arch/powerpc/perf/imc-pmu.c | 173 +++++++++++++++++++++++++++++++-----
+ 1 file changed, 149 insertions(+), 24 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_asm.h b/arch/powerpc/include/asm/kvm_asm.h
-index 635fb154b33f9..a3633560493be 100644
---- a/arch/powerpc/include/asm/kvm_asm.h
-+++ b/arch/powerpc/include/asm/kvm_asm.h
-@@ -150,4 +150,7 @@
+diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+index cb50a9e1fd2d7..eb82dda884e51 100644
+--- a/arch/powerpc/perf/imc-pmu.c
++++ b/arch/powerpc/perf/imc-pmu.c
+@@ -44,6 +44,16 @@ static DEFINE_PER_CPU(u64 *, trace_imc_mem);
+ static struct imc_pmu_ref *trace_imc_refc;
+ static int trace_imc_mem_size;
  
- #define KVM_INST_FETCH_FAILED	-1
- 
-+/* Extract PO and XOP opcode fields */
-+#define PO_XOP_OPCODE_MASK 0xfc0007fe
++/*
++ * Global data structure used to avoid races between thread,
++ * core and trace-imc
++ */
++static struct imc_pmu_ref imc_global_refc = {
++	.lock = __MUTEX_INITIALIZER(imc_global_refc.lock),
++	.id = 0,
++	.refc = 0,
++};
 +
- #endif /* __POWERPC_KVM_ASM_H__ */
-diff --git a/arch/powerpc/kvm/book3s_hv_tm.c b/arch/powerpc/kvm/book3s_hv_tm.c
-index 0db9374971697..cc90b8b823291 100644
---- a/arch/powerpc/kvm/book3s_hv_tm.c
-+++ b/arch/powerpc/kvm/book3s_hv_tm.c
-@@ -3,6 +3,8 @@
-  * Copyright 2017 Paul Mackerras, IBM Corp. <paulus@au1.ibm.com>
-  */
+ static struct imc_pmu *imc_event_to_pmu(struct perf_event *event)
+ {
+ 	return container_of(event->pmu, struct imc_pmu, pmu);
+@@ -698,6 +708,16 @@ static int ppc_core_imc_cpu_offline(unsigned int cpu)
+ 			return -EINVAL;
  
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 		ref->refc = 0;
++		/*
++		 * Reduce the global reference count, if this is the
++		 * last cpu in this core and core-imc event running
++		 * in this cpu.
++		 */
++		mutex_lock(&imc_global_refc.lock);
++		if (imc_global_refc.id == IMC_DOMAIN_CORE)
++			imc_global_refc.refc--;
 +
- #include <linux/kvm_host.h>
- 
- #include <asm/kvm_ppc.h>
-@@ -44,7 +46,18 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
- 	u64 newmsr, bescr;
- 	int ra, rs;
- 
--	switch (instr & 0xfc0007ff) {
-+	/*
-+	 * rfid, rfebb, and mtmsrd encode bit 31 = 0 since it's a reserved bit
-+	 * in these instructions, so masking bit 31 out doesn't change these
-+	 * instructions. For treclaim., tsr., and trechkpt. instructions if bit
-+	 * 31 = 0 then they are per ISA invalid forms, however P9 UM, in section
-+	 * 4.6.10 Book II Invalid Forms, informs specifically that ignoring bit
-+	 * 31 is an acceptable way to handle these invalid forms that have
-+	 * bit 31 = 0. Moreover, for emulation purposes both forms (w/ and wo/
-+	 * bit 31 set) can generate a softpatch interrupt. Hence both forms
-+	 * are handled below for these instructions so they behave the same way.
-+	 */
-+	switch (instr & PO_XOP_OPCODE_MASK) {
- 	case PPC_INST_RFID:
- 		/* XXX do we need to check for PR=0 here? */
- 		newmsr = vcpu->arch.shregs.srr1;
-@@ -105,7 +118,8 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
- 		vcpu->arch.shregs.msr = newmsr;
- 		return RESUME_GUEST;
- 
--	case PPC_INST_TSR:
-+	/* ignore bit 31, see comment above */
-+	case (PPC_INST_TSR & PO_XOP_OPCODE_MASK):
- 		/* check for PR=1 and arch 2.06 bit set in PCR */
- 		if ((msr & MSR_PR) && (vcpu->arch.vcore->pcr & PCR_ARCH_206)) {
- 			/* generate an illegal instruction interrupt */
-@@ -140,7 +154,8 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
- 		vcpu->arch.shregs.msr = msr;
- 		return RESUME_GUEST;
- 
--	case PPC_INST_TRECLAIM:
-+	/* ignore bit 31, see comment above */
-+	case (PPC_INST_TRECLAIM & PO_XOP_OPCODE_MASK):
- 		/* check for TM disabled in the HFSCR or MSR */
- 		if (!(vcpu->arch.hfscr & HFSCR_TM)) {
- 			/* generate an illegal instruction interrupt */
-@@ -176,7 +191,8 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
- 		vcpu->arch.shregs.msr &= ~MSR_TS_MASK;
- 		return RESUME_GUEST;
- 
--	case PPC_INST_TRECHKPT:
-+	/* ignore bit 31, see comment above */
-+	case (PPC_INST_TRECHKPT & PO_XOP_OPCODE_MASK):
- 		/* XXX do we need to check for PR=0 here? */
- 		/* check for TM disabled in the HFSCR or MSR */
- 		if (!(vcpu->arch.hfscr & HFSCR_TM)) {
-@@ -208,6 +224,8 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
++		mutex_unlock(&imc_global_refc.lock);
  	}
- 
- 	/* What should we do here? We didn't recognize the instruction */
--	WARN_ON_ONCE(1);
-+	kvmppc_core_queue_program(vcpu, SRR1_PROGILL);
-+	pr_warn_ratelimited("Unrecognized TM-related instruction %#x for emulation", instr);
-+
- 	return RESUME_GUEST;
+ 	return 0;
  }
-diff --git a/arch/powerpc/kvm/book3s_hv_tm_builtin.c b/arch/powerpc/kvm/book3s_hv_tm_builtin.c
-index 217246279dfae..fad931f224efd 100644
---- a/arch/powerpc/kvm/book3s_hv_tm_builtin.c
-+++ b/arch/powerpc/kvm/book3s_hv_tm_builtin.c
-@@ -23,7 +23,18 @@ int kvmhv_p9_tm_emulation_early(struct kvm_vcpu *vcpu)
- 	u64 newmsr, msr, bescr;
- 	int rs;
+@@ -710,6 +730,23 @@ static int core_imc_pmu_cpumask_init(void)
+ 				 ppc_core_imc_cpu_offline);
+ }
  
--	switch (instr & 0xfc0007ff) {
++static void reset_global_refc(struct perf_event *event)
++{
++		mutex_lock(&imc_global_refc.lock);
++		imc_global_refc.refc--;
++
++		/*
++		 * If no other thread is running any
++		 * event for this domain(thread/core/trace),
++		 * set the global id to zero.
++		 */
++		if (imc_global_refc.refc <= 0) {
++			imc_global_refc.refc = 0;
++			imc_global_refc.id = 0;
++		}
++		mutex_unlock(&imc_global_refc.lock);
++}
++
+ static void core_imc_counters_release(struct perf_event *event)
+ {
+ 	int rc, core_id;
+@@ -759,6 +796,8 @@ static void core_imc_counters_release(struct perf_event *event)
+ 		ref->refc = 0;
+ 	}
+ 	mutex_unlock(&ref->lock);
++
++	reset_global_refc(event);
+ }
+ 
+ static int core_imc_event_init(struct perf_event *event)
+@@ -819,6 +858,29 @@ static int core_imc_event_init(struct perf_event *event)
+ 	++ref->refc;
+ 	mutex_unlock(&ref->lock);
+ 
 +	/*
-+	 * rfid, rfebb, and mtmsrd encode bit 31 = 0 since it's a reserved bit
-+	 * in these instructions, so masking bit 31 out doesn't change these
-+	 * instructions. For the tsr. instruction if bit 31 = 0 then it is per
-+	 * ISA an invalid form, however P9 UM, in section 4.6.10 Book II Invalid
-+	 * Forms, informs specifically that ignoring bit 31 is an acceptable way
-+	 * to handle TM-related invalid forms that have bit 31 = 0. Moreover,
-+	 * for emulation purposes both forms (w/ and wo/ bit 31 set) can
-+	 * generate a softpatch interrupt. Hence both forms are handled below
-+	 * for tsr. to make them behave the same way.
++	 * Since the system can run either in accumulation or trace-mode
++	 * of IMC at a time, core-imc events are allowed only if no other
++	 * trace/thread imc events are enabled/monitored.
++	 *
++	 * Take the global lock, and check the refc.id
++	 * to know whether any other trace/thread imc
++	 * events are running.
 +	 */
-+	switch (instr & PO_XOP_OPCODE_MASK) {
- 	case PPC_INST_RFID:
- 		/* XXX do we need to check for PR=0 here? */
- 		newmsr = vcpu->arch.shregs.srr1;
-@@ -73,7 +84,8 @@ int kvmhv_p9_tm_emulation_early(struct kvm_vcpu *vcpu)
- 		vcpu->arch.shregs.msr = newmsr;
- 		return 1;
++	mutex_lock(&imc_global_refc.lock);
++	if (imc_global_refc.id == 0 || imc_global_refc.id == IMC_DOMAIN_CORE) {
++		/*
++		 * No other trace/thread imc events are running in
++		 * the system, so set the refc.id to core-imc.
++		 */
++		imc_global_refc.id = IMC_DOMAIN_CORE;
++		imc_global_refc.refc++;
++	} else {
++		mutex_unlock(&imc_global_refc.lock);
++		return -EBUSY;
++	}
++	mutex_unlock(&imc_global_refc.lock);
++
+ 	event->hw.event_base = (u64)pcmi->vbase + (config & IMC_EVENT_OFFSET_MASK);
+ 	event->destroy = core_imc_counters_release;
+ 	return 0;
+@@ -877,7 +939,23 @@ static int ppc_thread_imc_cpu_online(unsigned int cpu)
  
--	case PPC_INST_TSR:
-+	/* ignore bit 31, see comment above */
-+	case (PPC_INST_TSR & PO_XOP_OPCODE_MASK):
- 		/* we know the MSR has the TS field = S (0b01) here */
- 		msr = vcpu->arch.shregs.msr;
- 		/* check for PR=1 and arch 2.06 bit set in PCR */
+ static int ppc_thread_imc_cpu_offline(unsigned int cpu)
+ {
+-	mtspr(SPRN_LDBAR, 0);
++	/*
++	 * Set the bit 0 of LDBAR to zero.
++	 *
++	 * If bit 0 of LDBAR is unset, it will stop posting
++	 * the counter data to memory.
++	 * For thread-imc, bit 0 of LDBAR will be set to 1 in the
++	 * event_add function. So reset this bit here, to stop the updates
++	 * to memory in the cpu_offline path.
++	 */
++	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) & (~(1UL << 63))));
++
++	/* Reduce the refc if thread-imc event running on this cpu */
++	mutex_lock(&imc_global_refc.lock);
++	if (imc_global_refc.id == IMC_DOMAIN_THREAD)
++		imc_global_refc.refc--;
++	mutex_unlock(&imc_global_refc.lock);
++
+ 	return 0;
+ }
+ 
+@@ -916,7 +994,22 @@ static int thread_imc_event_init(struct perf_event *event)
+ 	if (!target)
+ 		return -EINVAL;
+ 
++	mutex_lock(&imc_global_refc.lock);
++	/*
++	 * Check if any other trace/core imc events are running in the
++	 * system, if not set the global id to thread-imc.
++	 */
++	if (imc_global_refc.id == 0 || imc_global_refc.id == IMC_DOMAIN_THREAD) {
++		imc_global_refc.id = IMC_DOMAIN_THREAD;
++		imc_global_refc.refc++;
++	} else {
++		mutex_unlock(&imc_global_refc.lock);
++		return -EBUSY;
++	}
++	mutex_unlock(&imc_global_refc.lock);
++
+ 	event->pmu->task_ctx_nr = perf_sw_context;
++	event->destroy = reset_global_refc;
+ 	return 0;
+ }
+ 
+@@ -1063,10 +1156,12 @@ static void thread_imc_event_del(struct perf_event *event, int flags)
+ 	int core_id;
+ 	struct imc_pmu_ref *ref;
+ 
+-	mtspr(SPRN_LDBAR, 0);
+-
+ 	core_id = smp_processor_id() / threads_per_core;
+ 	ref = &core_imc_refc[core_id];
++	if (!ref) {
++		pr_debug("imc: Failed to get event reference count\n");
++		return;
++	}
+ 
+ 	mutex_lock(&ref->lock);
+ 	ref->refc--;
+@@ -1082,6 +1177,10 @@ static void thread_imc_event_del(struct perf_event *event, int flags)
+ 		ref->refc = 0;
+ 	}
+ 	mutex_unlock(&ref->lock);
++
++	/* Set bit 0 of LDBAR to zero, to stop posting updates to memory */
++	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) & (~(1UL << 63))));
++
+ 	/*
+ 	 * Take a snapshot and calculate the delta and update
+ 	 * the event counter values.
+@@ -1133,7 +1232,18 @@ static int ppc_trace_imc_cpu_online(unsigned int cpu)
+ 
+ static int ppc_trace_imc_cpu_offline(unsigned int cpu)
+ {
+-	mtspr(SPRN_LDBAR, 0);
++	/*
++	 * No need to set bit 0 of LDBAR to zero, as
++	 * it is set to zero for imc trace-mode
++	 *
++	 * Reduce the refc if any trace-imc event running
++	 * on this cpu.
++	 */
++	mutex_lock(&imc_global_refc.lock);
++	if (imc_global_refc.id == IMC_DOMAIN_TRACE)
++		imc_global_refc.refc--;
++	mutex_unlock(&imc_global_refc.lock);
++
+ 	return 0;
+ }
+ 
+@@ -1226,15 +1336,14 @@ static int trace_imc_event_add(struct perf_event *event, int flags)
+ 	local_mem = get_trace_imc_event_base_addr();
+ 	ldbar_value = ((u64)local_mem & THREAD_IMC_LDBAR_MASK) | TRACE_IMC_ENABLE;
+ 
+-	if (core_imc_refc)
+-		ref = &core_imc_refc[core_id];
++	/* trace-imc reference count */
++	if (trace_imc_refc)
++		ref = &trace_imc_refc[core_id];
+ 	if (!ref) {
+-		/* If core-imc is not enabled, use trace-imc reference count */
+-		if (trace_imc_refc)
+-			ref = &trace_imc_refc[core_id];
+-		if (!ref)
+-			return -EINVAL;
++		pr_debug("imc: Failed to get the event reference count\n");
++		return -EINVAL;
+ 	}
++
+ 	mtspr(SPRN_LDBAR, ldbar_value);
+ 	mutex_lock(&ref->lock);
+ 	if (ref->refc == 0) {
+@@ -1242,13 +1351,11 @@ static int trace_imc_event_add(struct perf_event *event, int flags)
+ 				get_hard_smp_processor_id(smp_processor_id()))) {
+ 			mutex_unlock(&ref->lock);
+ 			pr_err("trace-imc: Unable to start the counters for core %d\n", core_id);
+-			mtspr(SPRN_LDBAR, 0);
+ 			return -EINVAL;
+ 		}
+ 	}
+ 	++ref->refc;
+ 	mutex_unlock(&ref->lock);
+-
+ 	return 0;
+ }
+ 
+@@ -1274,16 +1381,13 @@ static void trace_imc_event_del(struct perf_event *event, int flags)
+ 	int core_id = smp_processor_id() / threads_per_core;
+ 	struct imc_pmu_ref *ref = NULL;
+ 
+-	if (core_imc_refc)
+-		ref = &core_imc_refc[core_id];
++	if (trace_imc_refc)
++		ref = &trace_imc_refc[core_id];
+ 	if (!ref) {
+-		/* If core-imc is not enabled, use trace-imc reference count */
+-		if (trace_imc_refc)
+-			ref = &trace_imc_refc[core_id];
+-		if (!ref)
+-			return;
++		pr_debug("imc: Failed to get event reference count\n");
++		return;
+ 	}
+-	mtspr(SPRN_LDBAR, 0);
++
+ 	mutex_lock(&ref->lock);
+ 	ref->refc--;
+ 	if (ref->refc == 0) {
+@@ -1297,6 +1401,7 @@ static void trace_imc_event_del(struct perf_event *event, int flags)
+ 		ref->refc = 0;
+ 	}
+ 	mutex_unlock(&ref->lock);
++
+ 	trace_imc_event_stop(event, flags);
+ }
+ 
+@@ -1314,10 +1419,30 @@ static int trace_imc_event_init(struct perf_event *event)
+ 	if (event->attr.sample_period == 0)
+ 		return -ENOENT;
+ 
++	/*
++	 * Take the global lock, and make sure
++	 * no other thread is running any core/thread imc
++	 * events
++	 */
++	mutex_lock(&imc_global_refc.lock);
++	if (imc_global_refc.id == 0 || imc_global_refc.id == IMC_DOMAIN_TRACE) {
++		/*
++		 * No core/thread imc events are running in the
++		 * system, so set the refc.id to trace-imc.
++		 */
++		imc_global_refc.id = IMC_DOMAIN_TRACE;
++		imc_global_refc.refc++;
++	} else {
++		mutex_unlock(&imc_global_refc.lock);
++		return -EBUSY;
++	}
++	mutex_unlock(&imc_global_refc.lock);
++
+ 	event->hw.idx = -1;
+ 	target = event->hw.target;
+ 
+ 	event->pmu->task_ctx_nr = perf_hw_context;
++	event->destroy = reset_global_refc;
+ 	return 0;
+ }
+ 
+@@ -1429,10 +1554,10 @@ static void cleanup_all_core_imc_memory(void)
+ static void thread_imc_ldbar_disable(void *dummy)
+ {
+ 	/*
+-	 * By Zeroing LDBAR, we disable thread-imc
+-	 * updates.
++	 * By setting 0th bit of LDBAR to zero, we disable thread-imc
++	 * updates to memory.
+ 	 */
+-	mtspr(SPRN_LDBAR, 0);
++	mtspr(SPRN_LDBAR, (mfspr(SPRN_LDBAR) & (~(1UL << 63))));
+ }
+ 
+ void thread_imc_disable(void)
 -- 
 2.25.1
 
