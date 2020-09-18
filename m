@@ -1,44 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EAB26FAAD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 12:35:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3A926FAFA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 12:52:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bt9Fk0qt3zDqkS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 20:35:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bt9f24hmVzDqg8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 20:52:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bt9CJ0lFPzDqkK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 20:32:58 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id EEFE7201194;
- Fri, 18 Sep 2020 12:32:54 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 7B6DE2014E3;
- Fri, 18 Sep 2020 12:32:50 +0200 (CEST)
-Received: from 10.192.242.69 (shlinux2.ap.freescale.net [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id A982F402AE;
- Fri, 18 Sep 2020 12:32:44 +0200 (CEST)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org, lgirdwood@gmail.com
-Subject: [PATCH] ASoC: fsl_sai: Instantiate snd_soc_dai_driver
-Date: Fri, 18 Sep 2020 18:26:00 +0800
-Message-Id: <1600424760-32071-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bt9bw1ksYzDqcG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 20:50:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=JR39dyMp; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bt9bt4QB0z9sPB;
+ Fri, 18 Sep 2020 20:50:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1600426251;
+ bh=mf+a8pf5ZaYuNLYLnxvD6YlcowRXP3LQ0p+3R0GfH0k=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=JR39dyMpiHGnRtE5mG6JzdY/wPUwi3OQ5Tkh/xcNLe3eTO6rshASI9hIDsVicesls
+ b42vBWhhzUxMFMUu3rsXE503BUkVmplLZM0q3AnFqX9UFZxMBYdjJguxzLOYmC2L/+
+ WE1FsO66HKv18T799dodEIenRXwlmFHqXg3RV+E/rdTbHMrKI7tAyf+G3Wd8OqIMR0
+ EyG/sUw4AeK2tuDFjmZEKNqOJMxinu6bKhEwJBapbKPe0E8SU24+98lmhj68+Wp6SQ
+ OXto/veJbOsfcyo3r1aobPmmG26KuSyZYBMxKGfrGzKwAF5mltLKa0blIzKZtMWiFy
+ Rbu5J/xqJW0Hw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Rogerio Alves <rcardoso@linux.ibm.com>,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>, christophe.leroy@c-s.fr
+Subject: Re: [PATCH v6 0/8] powerpc/watchpoint: Bug fixes plus new feature flag
+In-Reply-To: <6927523d-de63-910a-e789-5fab424c7eb9@linux.ibm.com>
+References: <20200902042945.129369-1-ravi.bangoria@linux.ibm.com>
+ <6927523d-de63-910a-e789-5fab424c7eb9@linux.ibm.com>
+Date: Fri, 18 Sep 2020 20:50:49 +1000
+Message-ID: <87h7rv73zq.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,88 +59,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: mikey@neuling.org, jniethe5@gmail.com, pedromfc@linux.ibm.com,
+ linux-kernel@vger.kernel.org, paulus@samba.org, rogealve@linux.ibm.com,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Instantiate snd_soc_dai_driver for independent symmetric control.
-Otherwise the symmetric setting may be overwritten by other
-instance.
+Rogerio Alves <rcardoso@linux.ibm.com> writes:
+> On 9/2/20 1:29 AM, Ravi Bangoria wrote:
+>> Patch #1 fixes issue for quardword instruction on p10 predecessors.
+>> Patch #2 fixes issue for vector instructions.
+>> Patch #3 fixes a bug about watchpoint not firing when created with
+>>           ptrace PPC_PTRACE_SETHWDEBUG and CONFIG_HAVE_HW_BREAKPOINT=N.
+>>           The fix uses HW_BRK_TYPE_PRIV_ALL for ptrace user which, I
+>>           guess, should be fine because we don't leak any kernel
+>>           addresses and PRIV_ALL will also help to cover scenarios when
+>>           kernel accesses user memory.
+>> Patch #4,#5 fixes infinite exception bug, again the bug happens only
+>>           with CONFIG_HAVE_HW_BREAKPOINT=N.
+>> Patch #6 fixes two places where we are missing to set hw_len.
+>> Patch #7 introduce new feature bit PPC_DEBUG_FEATURE_DATA_BP_ARCH_31
+>>           which will be set when running on ISA 3.1 compliant machine.
+>> Patch #8 finally adds selftest to test scenarios fixed by patch#2,#3
+>>           and also moves MODE_EXACT tests outside of BP_RANGE condition.
+>> 
+>> Christophe, let me know if this series breaks something for 8xx.
+>> 
+>> v5: https://lore.kernel.org/r/20200825043617.1073634-1-ravi.bangoria@linux.ibm.com
+>> 
+>> v5->v6:
+>>   - Fix build faulure reported by kernel test robot
+>>   - patch #5. Use more compact if condition, suggested by Christophe
+>> 
+>> 
+>> Ravi Bangoria (8):
+>>    powerpc/watchpoint: Fix quarword instruction handling on p10
+>>      predecessors
+>>    powerpc/watchpoint: Fix handling of vector instructions
+>>    powerpc/watchpoint/ptrace: Fix SETHWDEBUG when
+>>      CONFIG_HAVE_HW_BREAKPOINT=N
+>>    powerpc/watchpoint: Move DAWR detection logic outside of
+>>      hw_breakpoint.c
+>>    powerpc/watchpoint: Fix exception handling for
+>>      CONFIG_HAVE_HW_BREAKPOINT=N
+>>    powerpc/watchpoint: Add hw_len wherever missing
+>>    powerpc/watchpoint/ptrace: Introduce PPC_DEBUG_FEATURE_DATA_BP_ARCH_31
+>>    powerpc/watchpoint/selftests: Tests for kernel accessing user memory
+>> 
+>>   Documentation/powerpc/ptrace.rst              |   1 +
+>>   arch/powerpc/include/asm/hw_breakpoint.h      |  12 ++
+>>   arch/powerpc/include/uapi/asm/ptrace.h        |   1 +
+>>   arch/powerpc/kernel/Makefile                  |   3 +-
+>>   arch/powerpc/kernel/hw_breakpoint.c           | 149 +---------------
+>>   .../kernel/hw_breakpoint_constraints.c        | 162 ++++++++++++++++++
+>>   arch/powerpc/kernel/process.c                 |  48 ++++++
+>>   arch/powerpc/kernel/ptrace/ptrace-noadv.c     |   9 +-
+>>   arch/powerpc/xmon/xmon.c                      |   1 +
+>>   .../selftests/powerpc/ptrace/ptrace-hwbreak.c |  48 +++++-
+>>   10 files changed, 282 insertions(+), 152 deletions(-)
+>>   create mode 100644 arch/powerpc/kernel/hw_breakpoint_constraints.c
+>> 
+>
+> Tested this patch set for:
+> - SETHWDEBUG when CONFIG_HAVE_HW_BREAKPOINT=N = OK
+> - Fix exception handling for CONFIG_HAVE_HW_BREAKPOINT=N = OK
+> - Check for PPC_DEBUG_FEATURE_DATA_BP_ARCH_31 = OK
+> - Fix quarword instruction handling on p10 predecessors = OK
+> - Fix handling of vector instructions = OK
+>
+> Also tested for:
+> - Set second watchpoint (P10 Mambo) = OK
+> - Infinity loop on sc instruction = OK
 
-Fixes: 08fdf65e37d5 ("ASoC: fsl_sai: Add asynchronous mode support")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_sai.c | 19 +++++++++++--------
- sound/soc/fsl/fsl_sai.h |  1 +
- 2 files changed, 12 insertions(+), 8 deletions(-)
+Thanks.
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 5117c1cd5682..3e5c1eaccd5e 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -725,7 +725,7 @@ static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
- 	return 0;
- }
- 
--static struct snd_soc_dai_driver fsl_sai_dai = {
-+static struct snd_soc_dai_driver fsl_sai_dai_template = {
- 	.probe = fsl_sai_dai_probe,
- 	.playback = {
- 		.stream_name = "CPU-Playback",
-@@ -1062,12 +1062,15 @@ static int fsl_sai_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	memcpy(&sai->cpu_dai_drv, &fsl_sai_dai_template,
-+	       sizeof(fsl_sai_dai_template));
-+
- 	/* Sync Tx with Rx as default by following old DT binding */
- 	sai->synchronous[RX] = true;
- 	sai->synchronous[TX] = false;
--	fsl_sai_dai.symmetric_rates = 1;
--	fsl_sai_dai.symmetric_channels = 1;
--	fsl_sai_dai.symmetric_samplebits = 1;
-+	sai->cpu_dai_drv.symmetric_rates = 1;
-+	sai->cpu_dai_drv.symmetric_channels = 1;
-+	sai->cpu_dai_drv.symmetric_samplebits = 1;
- 
- 	if (of_find_property(np, "fsl,sai-synchronous-rx", NULL) &&
- 	    of_find_property(np, "fsl,sai-asynchronous", NULL)) {
-@@ -1084,9 +1087,9 @@ static int fsl_sai_probe(struct platform_device *pdev)
- 		/* Discard all settings for asynchronous mode */
- 		sai->synchronous[RX] = false;
- 		sai->synchronous[TX] = false;
--		fsl_sai_dai.symmetric_rates = 0;
--		fsl_sai_dai.symmetric_channels = 0;
--		fsl_sai_dai.symmetric_samplebits = 0;
-+		sai->cpu_dai_drv.symmetric_rates = 0;
-+		sai->cpu_dai_drv.symmetric_channels = 0;
-+		sai->cpu_dai_drv.symmetric_samplebits = 0;
- 	}
- 
- 	if (of_find_property(np, "fsl,sai-mclk-direction-output", NULL) &&
-@@ -1128,7 +1131,7 @@ static int fsl_sai_probe(struct platform_device *pdev)
- 	regcache_cache_only(sai->regmap, true);
- 
- 	ret = devm_snd_soc_register_component(&pdev->dev, &fsl_component,
--			&fsl_sai_dai, 1);
-+					      &sai->cpu_dai_drv, 1);
- 	if (ret)
- 		goto err_pm_disable;
- 
-diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-index ba7425a9e217..4bbcd0dbe8f1 100644
---- a/sound/soc/fsl/fsl_sai.h
-+++ b/sound/soc/fsl/fsl_sai.h
-@@ -267,6 +267,7 @@ struct fsl_sai {
- 	unsigned int bclk_ratio;
- 
- 	const struct fsl_sai_soc_data *soc_data;
-+	struct snd_soc_dai_driver cpu_dai_drv;
- 	struct snd_dmaengine_dai_dma_data dma_params_rx;
- 	struct snd_dmaengine_dai_dma_data dma_params_tx;
- 	struct fsl_sai_verid verid;
--- 
-2.27.0
+I wasn't able to pick up your Tested-by tags as I'd already applied the
+patches, but thanks for sending them anyway, they will live on in the
+mailing list archives for eternity.
 
+cheers
