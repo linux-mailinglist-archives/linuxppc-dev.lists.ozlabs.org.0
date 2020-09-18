@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6F726EB4C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 04:06:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6826426ECD1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 04:16:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsxyY2nSVzDq98
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 12:06:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsyB303hmzDqgl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 12:16:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=cl72sP8R; dkim-atps=neutral
+ header.s=default header.b=zvNU9bWe; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsxsT3vmyzDqD3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 12:01:49 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bsxv91YChzDqdx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 12:03:16 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 4373921973;
- Fri, 18 Sep 2020 02:01:46 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id C338C208DB;
+ Fri, 18 Sep 2020 02:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1600394506;
- bh=6cjJOA2M3eiMBSZe3NwpL92h0qu9NZbYN2525X0lxrg=;
+ s=default; t=1600394593;
+ bh=q8aSY4BrpykZOhPnaUpN26R7PA9NuLZectz/YVdYvOI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=cl72sP8RmhwoX43FoZxZ6r5/gPXVXndjeJ+omttxT2wWkw0dJbstqYS9RQg3pmEm3
- pVQRHC3UstXSkwZW1woXtQh/MFOHfyhYCRcSLGFcB4FjgbQBqOAKsBrNgc2sOUwEjA
- Ru2YdnLiKongJEF03IdDkmwr19CdKTxzD8qKMUWo=
+ b=zvNU9bWe4qeZMc1hzmC9NslCvWR8Hn0xFvMzu7yLKzpREQSks0TuhB0am8cKp7O+o
+ CpZgcHtJ5A06aM08EDv9EabWyz0IDjTED3EJ9ZRJGTqx7JDKO2SE9yQAYN/UwS2+Kp
+ lRzUTQ0K/kKoR3wmXZOqfATAk3/EAhmCsHtb+pKA=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 030/330] powerpc/64s: Always disable branch
- profiling for prom_init.o
-Date: Thu, 17 Sep 2020 21:56:10 -0400
-Message-Id: <20200918020110.2063155-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 101/330] powerpc/powernv/ioda: Fix ref count for
+ devices with their own PE
+Date: Thu, 17 Sep 2020 21:57:21 -0400
+Message-Id: <20200918020110.2063155-101-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200918020110.2063155-1-sashal@kernel.org>
 References: <20200918020110.2063155-1-sashal@kernel.org>
@@ -60,48 +60,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Andrew Donnellan <ajd@linux.ibm.com>, Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-[ Upstream commit 6266a4dadb1d0976490fdf5af4f7941e36f64e80 ]
+[ Upstream commit 05dd7da76986937fb288b4213b1fa10dbe0d1b33 ]
 
-Otherwise the build fails because prom_init is calling symbols it's
-not allowed to, eg:
+The pci_dn structure used to store a pointer to the struct pci_dev, so
+taking a reference on the device was required. However, the pci_dev
+pointer was later removed from the pci_dn structure, but the reference
+was kept for the npu device.
+See commit 902bdc57451c ("powerpc/powernv/idoa: Remove unnecessary
+pcidev from pci_dn").
 
-  Error: External symbol 'ftrace_likely_update' referenced from prom_init.c
-  make[3]: *** [arch/powerpc/kernel/Makefile:197: arch/powerpc/kernel/prom_init_check] Error 1
+We don't need to take a reference on the device when assigning the PE
+as the struct pnv_ioda_pe is cleaned up at the same time as
+the (physical) device is released. Doing so prevents the device from
+being released, which is a problem for opencapi devices, since we want
+to be able to remove them through PCI hotplug.
 
+Now the ugly part: nvlink npu devices are not meant to be
+released. Because of the above, we've always leaked a reference and
+simply removing it now is dangerous and would likely require more
+work. There's currently no release device callback for nvlink devices
+for example. So to be safe, this patch leaks a reference on the npu
+device, but only for nvlink and not opencapi.
+
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20191106051129.7626-1-mpe@ellerman.id.au
+Link: https://lore.kernel.org/r/20191121134918.7155-2-fbarrat@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/powernv/pci-ioda.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index dc0780f930d5b..59260eb962916 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -19,6 +19,7 @@ CFLAGS_btext.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
- CFLAGS_prom.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index 058223233088e..e9cda7e316a50 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -1062,14 +1062,13 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
+ 		return NULL;
+ 	}
  
- CFLAGS_prom_init.o += $(call cc-option, -fno-stack-protector)
-+CFLAGS_prom_init.o += -DDISABLE_BRANCH_PROFILING
+-	/* NOTE: We get only one ref to the pci_dev for the pdn, not for the
+-	 * pointer in the PE data structure, both should be destroyed at the
+-	 * same time. However, this needs to be looked at more closely again
+-	 * once we actually start removing things (Hotplug, SR-IOV, ...)
++	/* NOTE: We don't get a reference for the pointer in the PE
++	 * data structure, both the device and PE structures should be
++	 * destroyed at the same time. However, removing nvlink
++	 * devices will need some work.
+ 	 *
+ 	 * At some point we want to remove the PDN completely anyways
+ 	 */
+-	pci_dev_get(dev);
+ 	pdn->pe_number = pe->pe_number;
+ 	pe->flags = PNV_IODA_PE_DEV;
+ 	pe->pdev = dev;
+@@ -1084,7 +1083,6 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
+ 		pnv_ioda_free_pe(pe);
+ 		pdn->pe_number = IODA_INVALID_PE;
+ 		pe->pdev = NULL;
+-		pci_dev_put(dev);
+ 		return NULL;
+ 	}
  
- ifdef CONFIG_FUNCTION_TRACER
- # Do not trace early boot code
-@@ -36,7 +37,6 @@ KASAN_SANITIZE_btext.o := n
- ifdef CONFIG_KASAN
- CFLAGS_early_32.o += -DDISABLE_BRANCH_PROFILING
- CFLAGS_cputable.o += -DDISABLE_BRANCH_PROFILING
--CFLAGS_prom_init.o += -DDISABLE_BRANCH_PROFILING
- CFLAGS_btext.o += -DDISABLE_BRANCH_PROFILING
- endif
+@@ -1205,6 +1203,14 @@ static struct pnv_ioda_pe *pnv_ioda_setup_npu_PE(struct pci_dev *npu_pdev)
+ 	struct pci_controller *hose = pci_bus_to_host(npu_pdev->bus);
+ 	struct pnv_phb *phb = hose->private_data;
  
++	/*
++	 * Intentionally leak a reference on the npu device (for
++	 * nvlink only; this is not an opencapi path) to make sure it
++	 * never goes away, as it's been the case all along and some
++	 * work is needed otherwise.
++	 */
++	pci_dev_get(npu_pdev);
++
+ 	/*
+ 	 * Due to a hardware errata PE#0 on the NPU is reserved for
+ 	 * error handling. This means we only have three PEs remaining
+@@ -1228,7 +1234,6 @@ static struct pnv_ioda_pe *pnv_ioda_setup_npu_PE(struct pci_dev *npu_pdev)
+ 			 */
+ 			dev_info(&npu_pdev->dev,
+ 				"Associating to existing PE %x\n", pe_num);
+-			pci_dev_get(npu_pdev);
+ 			npu_pdn = pci_get_pdn(npu_pdev);
+ 			rid = npu_pdev->bus->number << 8 | npu_pdn->devfn;
+ 			npu_pdn->pe_number = pe_num;
 -- 
 2.25.1
 
