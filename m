@@ -2,102 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0A126FFBC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 16:23:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B40427007F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 17:06:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BtGKX5t62zDqth
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 00:23:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BtHGS54mXzDqfk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 01:06:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oss.nxp.com (client-ip=40.107.7.53;
- helo=eur04-he1-obe.outbound.protection.outlook.com;
+ smtp.mailfrom=oss.nxp.com (client-ip=40.107.5.60;
+ helo=eur03-ve1-obe.outbound.protection.outlook.com;
  envelope-from=viorel.suman@oss.nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-NXP1-onmicrosoft-com header.b=fPvum+n4;
+ header.a=rsa-sha256 header.s=selector2-NXP1-onmicrosoft-com header.b=lSAdTNuW;
  dkim-atps=neutral
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
- (mail-eopbgr70053.outbound.protection.outlook.com [40.107.7.53])
+Received: from EUR03-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr50060.outbound.protection.outlook.com [40.107.5.60])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BtGHD0mtgzDqcK
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 00:21:41 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BtHBg40zdzDqsq
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 01:02:49 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RxQKs5t6KtU2Xj/Ilc7xpe6t8R8OkSxF9P4oxwAXJWphoQv7Y3nuUsC+NIE4pfPN9u34VHQ/oNyV9wTOTT5KynvW/jQvBQaDF2m0NYfTm2W7gHxo7wgRPwI1num5LUjC2N16s4krnNIQ10KzyVIR38du0gzv4ryvwjND1fNnHAtGJG31nzpqqRGWCafoZLk+OTF8UlPCSh4rSAqlqfr5zsKVm2mVqn1CCvlRrxMMenCb0xooYGqMGqr4ipHySIU8YQb7k5S+uESrL+99FjVB5tonldPBHhIbqVJCvDojQeHHbQlmRkqSQwmhGp4S7jbRrfFQCtJlHh9zBZFuqpMcjw==
+ b=kXBzPFuvGlOlfC4uszlhesspAHkioSZmPM+3/R5Qjy7TCpzuMIAeBoJWyvcUei1GYECiGXoH39doyfvT9qqLeWY2qEFTXliueHPoqL4OHxnKSIjeeMSdnz56u1YFar+IoRmXvB4X30PN7OHGCvTzaomiqsQbXWy8S6sJBCaxGtNh1H0Ci8FnUiL5uTLBfS5X414aQWBT8K+5piAopZGevp6O7YLyGm3qfxLyPq0at6esbkUqfLZXXxByGQ+/QfH8hbB6Za8Hd5q7/MqzQWKHW7W0v9CYb7p03B3jRk3jaOMUkl0HL02qDafK/fpwYat0NWpPI4012o1Df65MH/67Jg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Kf+9JHemzgUGqRt041FNR8uy/cdOZuWl5UbLEczzYWE=;
- b=REYe5w55XlOo5LxJTz0qjTKKPVUmwLYPSGSCyFqijxTBOQEGhw8frtwpaGG6iGuyibDMny5pWVEUB46U2rl9rUKCD80SBWXzcew2vJoeby1MtNxzvO17Ru10w6madsMIHG2qkadpBz7oIW78Vs0uHRb4iOcw45D/ets5m0Hx9//wvHUHpK7x1S1L36MOSbdUqUR7/SZx/3UuF9/7bLd/zbAyCcvecMO9YiaD/dNkixxaChcHplMWex9D6P3kxdI8FYZjxv33Sw7P/OOUQO4TaAQ5vAUcB84J+2pN8hQpvrL6c75345/K562YLpHHu2PLSzdyi+THmMBSuYrp7mxGfA==
+ bh=SlIeSMnCaLfY13lLi8MyZdDSzbY0QUjcI/S7uB3nCjE=;
+ b=KgUjotR5QKrzhDabK6RzrgWazhH7AGw3J75lO2/SFSfw10ufdFSC+ldJxSaOf2zANB0eE2rF2KSVVbP+TDeeh8kWp2SitxFfD3MQ0wBD67JQsgtJBimWC3ovEj+cQnkPHqyUG1b+BEMlK+m/49PQ88T9tE+aMRlGtXa8SKCzjHcIjdYgjHHYz/OJ5vrrtZTTPD/pbVnc3IuVAoL/xvS8UOFnWY/m9CmImdH0krVvxVsRHYksFNfqKSoe/0q77IvyQfP1F4qpr4NoixCseQxIhyYVFzN0OtQiCZy/+NgGboECHpeeihmrWD66niC2e/mu6FE0RJKx+6nE0w68gTvPEA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com; 
  s=selector2-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Kf+9JHemzgUGqRt041FNR8uy/cdOZuWl5UbLEczzYWE=;
- b=fPvum+n4lBiJm1B/yO14fGuHwB4lU+dpqa6EEr2vCpkqKN52pzUQKaZBIZDxP8oEF2df9SFb6m6Au/Zk5YOVgirybMhy5YJoqeCFgpxNd8mIliNkWYLn91H+3gEK424yMxnAKQlSfhwEYuv5YeAz5IJizaMzpMeuf2Ie6tT8ZPg=
+ bh=SlIeSMnCaLfY13lLi8MyZdDSzbY0QUjcI/S7uB3nCjE=;
+ b=lSAdTNuW4OGZu9Wlgz+Lon6Bd8D/6G2yq95zrTe0dtYwpOgVO19m0xVVsL4OBpRksSO1VvKLBl5SnLpzPoQWDutHDf+yaOmEvdkQKAsVm2z0VKsZVCREE8xvXgMJOJveyKOMtsUieodK2d3yERCHdkdwoMZP2j3zpUC+Dt78kf4=
 Received: from VI1PR0401MB2272.eurprd04.prod.outlook.com
- (2603:10a6:800:31::12) by VI1PR04MB4093.eurprd04.prod.outlook.com
- (2603:10a6:803:40::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.15; Fri, 18 Sep
- 2020 14:21:32 +0000
+ (2603:10a6:800:31::12) by VI1PR0402MB2830.eurprd04.prod.outlook.com
+ (2603:10a6:800:b2::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.19; Fri, 18 Sep
+ 2020 15:02:39 +0000
 Received: from VI1PR0401MB2272.eurprd04.prod.outlook.com
  ([fe80::e00e:ad13:489b:8000]) by VI1PR0401MB2272.eurprd04.prod.outlook.com
  ([fe80::e00e:ad13:489b:8000%6]) with mapi id 15.20.3391.011; Fri, 18 Sep 2020
- 14:21:32 +0000
+ 15:02:39 +0000
 From: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
-To: Nicolin Chen <nicoleotsuka@gmail.com>, "Viorel Suman (OSS)"
+To: Mark Brown <broonie@kernel.org>, "Viorel Suman (OSS)"
  <viorel.suman@oss.nxp.com>
 Subject: RE: [PATCH 1/2] ASoC: fsl_xcvr: Add XCVR ASoC CPU DAI driver
 Thread-Topic: [PATCH 1/2] ASoC: fsl_xcvr: Add XCVR ASoC CPU DAI driver
-Thread-Index: AQHWjApN0GGys4KDOUW4RdRuflK20alsbEuAgAIJndA=
-Date: Fri, 18 Sep 2020 14:21:31 +0000
-Message-ID: <VI1PR0401MB2272659A8126D01D9A53F7C5923F0@VI1PR0401MB2272.eurprd04.prod.outlook.com>
+Thread-Index: AQHWjApN0GGys4KDOUW4RdRuflK20als26gAgAGlwnA=
+Date: Fri, 18 Sep 2020 15:02:39 +0000
+Message-ID: <VI1PR0401MB22726CC099099547A0502C27923F0@VI1PR0401MB2272.eurprd04.prod.outlook.com>
 References: <1600247876-8013-1-git-send-email-viorel.suman@oss.nxp.com>
  <1600247876-8013-2-git-send-email-viorel.suman@oss.nxp.com>
- <20200917071431.GA17970@Asurada-Nvidia>
-In-Reply-To: <20200917071431.GA17970@Asurada-Nvidia>
+ <20200917135306.GF4755@sirena.org.uk>
+In-Reply-To: <20200917135306.GF4755@sirena.org.uk>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-authentication-results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=oss.nxp.com;
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=oss.nxp.com;
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [86.127.156.60]
 x-ms-publictraffictype: Email
 x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: f3ab6e4b-08c5-4814-790e-08d85bde2429
-x-ms-traffictypediagnostic: VI1PR04MB4093:
+x-ms-office365-filtering-correlation-id: 60e08e04-a83b-4479-bded-08d85be3e308
+x-ms-traffictypediagnostic: VI1PR0402MB2830:
 x-ms-exchange-sharedmailbox-routingagent-processed: True
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR04MB4093C10CB11D4B0816A881EFD33F0@VI1PR04MB4093.eurprd04.prod.outlook.com>
+x-microsoft-antispam-prvs: <VI1PR0402MB28305697CF90C484787B4985D33F0@VI1PR0402MB2830.eurprd04.prod.outlook.com>
 x-ms-oob-tlc-oobclassifiers: OLM:10000;
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: C2u1dlHvvdM3gt095OcR/sO4baFd6ojSXih93e+q6t/Q5JPE2IWJF6L9mc51fPwRhHpVPmBuQ6BjwYJeGp51a/iTLZHCDPJyt74vP5CunyM5KGrqM2GLuSYg2TzZYVASLs48yw36+zujF5xYCdy/ZVArdbogVmrqz+9mWZNOKgCPxX90BJ2xWvzST5d/QgVesQoLtFeUJ1oQ8DMTZmPM5d13J/d3Pm/nCQ99rtaGNSSg/f9M1pG07yX33pSpoKrMSekgpNOIdzIb+DERRY/xDUR1AZVRls/GvSC3jUN9AJO2moh3G0MXJLchXAbP6X6HW+mVC3sphWlQlpzjV+0oLA==
+x-microsoft-antispam-message-info: 4jA1ylMRLN/nYb8hkxKCZYUbyHngXL3A6DGPn9nA+jtqFgWB39Bg4Rdf0C7ffa17P0n9BDKOsnf2jVo4hja6kjmLipdRKdpyzrNJlOzsf7q/if3yt9kwO1oLXKKZkc6V+EZ9P6lH+MlL2zrV2UIgAhEH8dlmWx6XY0G1zQUbxvg1hqNb8JjdIXfTClWsPc3cRCi2PwbIPL4wNp+XwthoTV3tr/FiuqnGTgd/NbIqJ6lnSRHVjndpSdSBEf3YgmFqt7GPj+G3nE1/K6hgOvheiEhEbeu4clgS1OQQYeAsiff3eZLne1jWU+quZmsOquhs1QVJA9ee4smmqauWKU3yiw==
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:VI1PR0401MB2272.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(376002)(346002)(39860400002)(396003)(366004)(136003)(33656002)(83380400001)(66946007)(66446008)(64756008)(66556008)(66476007)(316002)(8676002)(6506007)(4326008)(7696005)(71200400001)(26005)(5660300002)(186003)(86362001)(110136005)(54906003)(76116006)(2906002)(55016002)(478600001)(9686003)(7416002)(8936002)(52536014);
+ SFS:(4636009)(346002)(376002)(366004)(136003)(39860400002)(396003)(8936002)(86362001)(110136005)(478600001)(8676002)(4326008)(54906003)(186003)(26005)(7696005)(33656002)(83380400001)(66446008)(66476007)(66556008)(64756008)(76116006)(55016002)(66946007)(2906002)(6506007)(7416002)(52536014)(71200400001)(9686003)(5660300002)(316002);
  DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: M4mRlQSFvpzaB6KBtk9hhHu66/7JiXb9r9yTt+kwVAyRsDt1sDYLG7FnXldIYwOOwuvk90U1hFHt5qrchUe1y3hzqtIWV+3fjw6/WzCamIhEK0yOcUD1q5HxxwBgaoH9W962kgQ8/W/WZsK7izL7GP+C8Bi3Jj8ZxQlwCMuRzF+9ESrBSBrHRNMXFX3aQgUx4SpMT2rCO7adANt6Rokf1XXRgl2l/1gHtDTSx/tuQ3PGdYGUWviBSNywHhu1EmQ4/NpyyHaMoyBRgFpv2rUQBlu5Mz725SoYPEmq5fBd0X/wHTKdGSQpnGqCelR/Dz/1qvVeHTxJlEmgD98/Nxl1Hp44UA7aarNNfSxTwR1zgFARuaeV9AroYSFBRvjMBLsoT65WUC6Dvly1W9I1/2iWWVrcA5zX7Ke2bjr/889p9iI3sJwl4dg3/nNp0WD6fpWRjnz4WIrtExtGesLX2DawMEc6CfZWdADgwh1z6+GllmxkNKdH7hffpgvwQ+9vo2zbO01G6rrsKy6m8EnS1S0QDFG/c47kiPmr//KpN4z2yH/oLd/o2HBvJHErDHCuPQIR9/FwBwFjRuk2YrQH/RJksGFsSJoDR1JQ0iEkr8oSvTI66FoQr20MAGXFGqsTLJsrk89DMcddBXWF4zH/q6rklA==
+x-ms-exchange-antispam-messagedata: dWzlnS8iiajnYNTUvb5raRiTcAuPN7gCQFzxyD5H556rZipidKJ4KXT1Tik3fMKK7om9FliNeBCPhBtHQagFCKTd4oPWRDQbnmMZDoEQ6AWwTw7X5tVF7PGLQJ79Vru9n7YgKzbn1aYT3Qd6qbM+iXVZHE7fJ54QfV4ym00I+aTt1uIZDnZrsYwiv0w1tlAH3K+viC0yQZIC7fLEmLv7JqRD5CyrEJPGNHtT14GexjgyLSl/ljjHwm23kh7X76nFnYj+RXCZ7HF1h3CIVoFe63mshXIo2mSmSJ7PwwjpvqZuG/uWK8fQcN6xEFe8WFkLiXdP6IBGAmoUyZ6+AabQeLME3TtOC/52Ssx14WpYvCg7tGS7UwNj0FZRAmpT52Qmy09J3kWfEMaOrrnuIiSTgsYoLxLPda9bKsId1cp2+G1JD2oQ5zCTEXG7tDia3QOPTh9C9lrjnbiSo06HDcTAyj79kMxsosZ4pgXfQjYXY2R9xJ8OEyQ2MCSlwolfXwHILhDgCMEsmIUZOdS8Q5DClsjgLVTw5Qqumagy7aHre9oLXdHIR5TltzZOBnemSZlxMakofQ6+yBdk7Al1DWGL6Z4xCllJ4Dn0GuKOy7Ob0EILgRAMQCF88/4CjvvXDnBkuONKdzc2qc35lx+W9j0DMg==
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: oss.nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR0401MB2272.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3ab6e4b-08c5-4814-790e-08d85bde2429
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2020 14:21:31.9960 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60e08e04-a83b-4479-bded-08d85be3e308
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2020 15:02:39.6230 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ss/XjU7ErlcL2LdPktnZQHb3pEvD9FSAGOpOajFs2ZC5ox+8bVEAbVu2Qt8R9HqJAkTw4O80/xxucv+0+yxZOw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4093
+X-MS-Exchange-CrossTenant-userprincipalname: BSsY4KcWaqO3TCQ5T55X5pOG6vw2AMHrr46Se5AyocJmtJy2Hxl4qs/2b+wzLqJFjbhAWQ6PJ6+QiEEzCTE3yw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB2830
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,10 +115,10 @@ Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
  Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
  Shengjiu Wang <shengjiu.wang@gmail.com>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Takashi Iwai <tiwai@suse.com>, Rob Herring <robh+dt@kernel.org>,
- Liam Girdwood <lgirdwood@gmail.com>, Viorel Suman <viorel.suman@gmail.com>,
- Mark Brown <broonie@kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
- Philipp Zabel <p.zabel@pengutronix.de>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Rob Herring <robh+dt@kernel.org>,
+ dl-linux-imx <linux-imx@nxp.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Viorel Suman <viorel.suman@gmail.com>,
  Cosmin-Gabriel Samoila <cosmin.samoila@nxp.com>,
  Jaroslav Kysela <perex@perex.cz>, Fabio Estevam <festevam@gmail.com>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
@@ -126,153 +126,88 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nicolin,
+Hi Mark,
 
 Thank you for your review.
-
-> > +static const u32 fsl_xcvr_earc_channels[] =3D { 1, 2, 8, 16, 32, }; /*
-> > +one bit 6, 12 ? */
->=20
-> What's the meaning of the comments?
-
-Just a thought noted as comment. HDMI2.1 spec defines 6- and 12-channels la=
-yout when
-one bit audio stream is transmitted - I was wandering how can this be enfor=
-ced. Is a @todo like of comment.
-
->=20
-> > +static const int fsl_xcvr_phy_arc_cfg[] =3D {
-> > +	FSL_XCVR_PHY_CTRL_ARC_MODE_SE_EN,
-> FSL_XCVR_PHY_CTRL_ARC_MODE_CM_EN,
-> > +};
->=20
-> Nit: better be u32 vs. int?
-
-Yes, will fix it in v2.
-
->=20
-> > +/** phy: true =3D> phy, false =3D> pll */ static int
-> > +fsl_xcvr_ai_write(struct fsl_xcvr *xcvr, u8 reg, u32 data, bool phy)
-> > +{
-> > +	u32 val, idx, tidx;
+=20
+> On Wed, Sep 16, 2020 at 12:17:55PM +0300, Viorel Suman (OSS) wrote:
+> > +static int fsl_xcvr_load_firmware(struct fsl_xcvr *xcvr) {
+> > +	struct device *dev =3D &xcvr->pdev->dev;
+> > +	const struct firmware *fw;
+> > +	int ret =3D 0, rem, off, out, page =3D 0, size =3D FSL_XCVR_REG_OFFSE=
+T;
+> > +	u32 mask, val;
 > > +
-> > +	idx  =3D BIT(phy ? 26 : 24);
-> > +	tidx =3D BIT(phy ? 27 : 25);
-> > +
-> > +	regmap_write(xcvr->regmap, FSL_XCVR_PHY_AI_CTRL_CLR, 0xFF);
-> > +	regmap_write(xcvr->regmap, FSL_XCVR_PHY_AI_CTRL_SET, reg);
-> > +	regmap_write(xcvr->regmap, FSL_XCVR_PHY_AI_WDATA, data);
-> > +	regmap_write(xcvr->regmap, FSL_XCVR_PHY_AI_CTRL_TOG, idx);
-> > +
-> > +	do {
-> > +		regmap_read(xcvr->regmap, FSL_XCVR_PHY_AI_CTRL, &val);
-> > +	} while ((val & idx) !=3D ((val & tidx) >> 1));
->=20
-> Might regmap_read_poll_timeout() be better? And it seems to poll intentio=
-nally
-> with no sleep nor timeout -- would be nice to have a line of comments to =
-explain
-> why.
-
-No particular reason to do it with no sleep or timeout here, will check and=
- fix it in v2.
-
->=20
-> > > +static int fsl_xcvr_runtime_resume(struct device *dev)
-> > +{
-> > +	struct fsl_xcvr *xcvr =3D dev_get_drvdata(dev);
-> > +	int ret;
-> > +
-> > +	ret =3D clk_prepare_enable(xcvr->ipg_clk);
+> > +	ret =3D request_firmware(&fw, xcvr->fw_name, dev);
 > > +	if (ret) {
-> > +		dev_err(dev, "failed to start IPG clock.\n");
+> > +		dev_err(dev, "failed to request firmware.\n");
 > > +		return ret;
 > > +	}
 > > +
-> > +	ret =3D clk_prepare_enable(xcvr->pll_ipg_clk);
-> > +	if (ret) {
-> > +		dev_err(dev, "failed to start PLL IPG clock.\n");
+> > +	rem =3D fw->size;
 >=20
-> Should it disable ipg_clk?
+> It would be good to see some explicit validation of the image size, at le=
+ast
+> printing an error message if the image is bigger than can be loaded.  The=
+ code
+> should be safe in that it won't overflow the device region it's writing t=
+o but it
+> feels like it'd be better to tell people if we spot a problem rather than=
+ just silently
+> truncating the file.
 
-Yes, thank you, will fix in v2.
+Make sense, will improve this part in the next version.
 
->=20
-> > +		return ret;
-> > +	}
+> > +static irqreturn_t irq0_isr(int irq, void *devid) {
+> > +	struct fsl_xcvr *xcvr =3D (struct fsl_xcvr *)devid;
+> > +	struct device *dev =3D &xcvr->pdev->dev;
+> > +	struct regmap *regmap =3D xcvr->regmap;
+> > +	void __iomem *reg_ctrl, *reg_buff;
+> > +	u32 isr, val, i;
 > > +
-> > +	ret =3D clk_prepare_enable(xcvr->phy_clk);
-> > +	if (ret) {
-> > +		dev_err(dev, "failed to start PHY clock: %d\n", ret);
-> > +		clk_disable_unprepare(xcvr->ipg_clk);
+> > +	regmap_read(regmap, FSL_XCVR_EXT_ISR, &isr);
+> > +	regmap_write(regmap, FSL_XCVR_EXT_ISR_CLR, isr);
 >=20
-> Should it disable pll_ipg_clk?
+> This will unconditionally clear any interrupts, even those we don't under=
+stand - it
+> might be better to only clear bits that are supported so the IRQ core can
+> complain if there's something unexpected showing up.
 
-Yes, will fix in v2.
+The ARM core registers itself in "fsl_xcvr_prepare" (the code below) just f=
+or a subset of all supported interrupts:=20
+=3D=3D=3D=3D=3D
+	ret =3D regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_IER0,
+				 FSL_XCVR_IRQ_EARC_ALL, FSL_XCVR_IRQ_EARC_ALL);
+=3D=3D=3D=3D=3D
+FSL_XCVR_IRQ_EARC_ALL - this mask represents all the interrupts we are inte=
+rested in and we handle in interrupt handler,
+But this is just a subset of all interrupts the M0+ core is able to assert.=
+ Not very intuitive, I think I need to reword it somehow.
 
+> > +	if (isr & FSL_XCVR_IRQ_FIFO_UOFL_ERR)
+> > +		dev_dbg(dev, "RX/TX FIFO full/empty\n");
 >=20
-> > +		return ret;
-> > +	}
+> Should this be dev_err()?
+
+The interrupt may be asserted right before DMA starts to fill the TX FIFO i=
+f I recall correctly.
+I've added it just to debug the IP behavior, will check and change it to er=
+r it in next version if it is the case.
+
+> > +static irqreturn_t irq1_isr(int irq, void *devid) {
+> > +	struct fsl_xcvr *xcvr =3D (struct fsl_xcvr *)devid;
+> > +	struct device *dev =3D &xcvr->pdev->dev;
 > > +
-> > +	ret =3D clk_prepare_enable(xcvr->spba_clk);
-> > +	if (ret) {
-> > +		dev_err(dev, "failed to start SPBA clock.\n");
-> > +		clk_disable_unprepare(xcvr->phy_clk);
-> > +		clk_disable_unprepare(xcvr->ipg_clk);
->=20
-> Ditto
-
-Ok.
-
->=20
-> > +		return ret;
-> > +	}
+> > +	dev_dbg(dev, "irq[1]: %d\n", irq);
 > > +
-> > +	regcache_cache_only(xcvr->regmap, false);
-> > +	regcache_mark_dirty(xcvr->regmap);
-> > +	ret =3D regcache_sync(xcvr->regmap);
-> > +
-> > +	if (ret) {
-> > +		dev_err(dev, "failed to sync regcache.\n");
-> > +		return ret;
+> > +	return IRQ_HANDLED;
+> > +}
 >=20
-> What about those clocks? Probably better to have some error-out labels at=
- the
-> end of the function?
+> Is there any value in even requesting this and irq2 given the lack of mea=
+ningful
+> handling?
 
-Make sense, will fix in v2.
-
->=20
-> > +	}
-> > +
-> > +	reset_control_assert(xcvr->reset);
-> > +	reset_control_deassert(xcvr->reset);
-> > +
-> > +	ret =3D fsl_xcvr_load_firmware(xcvr);
-> > +	if (ret) {
-> > +		dev_err(dev, "failed to load firmware.\n");
-> > +		return ret;
->=20
-> Ditto
->=20
-> > +	}
-> > +
-> > +	/* Release M0+ reset */
-> > +	ret =3D regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_CTRL,
-> > +				 FSL_XCVR_EXT_CTRL_CORE_RESET, 0);
-> > +	if (ret < 0) {
-> > +		dev_err(dev, "M0+ core release failed: %d\n", ret);
-> > +		return ret;
->=20
-> Ditto
->=20
-> > +	}
-> > +	mdelay(50);
->=20
-> Any reason to use mdelay over msleep for a 50ms wait? May add a line of
-> comments if mdelay is a must?
-
-No particular reason, will fix it in v2.
+No, will remove it in v2.
 
 Thank you,
 Viorel
