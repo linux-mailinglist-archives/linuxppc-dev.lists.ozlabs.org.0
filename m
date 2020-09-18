@@ -2,39 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB29126F8E7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 11:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EB7E26F921
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 11:23:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bt7FV1JwxzDqkj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 19:04:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bt7gL3tlvzDqn5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 19:23:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=wangwensheng4@huawei.com; receiver=<UNKNOWN>)
+ envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
 Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bt7CJ6d9pzDqkd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 19:02:46 +1000 (AEST)
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id 3D334F8BEB1345A7A03A;
- Fri, 18 Sep 2020 17:02:41 +0800 (CST)
-Received: from huawei.com (10.175.112.208) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.487.0; Fri, 18 Sep 2020
- 17:02:25 +0800
-From: Wang Wensheng <wangwensheng4@huawei.com>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH -next] powerpc/papr_scm: Fix warnings about undeclared variable
-Date: Fri, 18 Sep 2020 08:59:51 +0000
-Message-ID: <20200918085951.44983-1-wangwensheng4@huawei.com>
-X-Mailer: git-send-email 2.25.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bt7dV0YSXzDqK3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 19:21:59 +1000 (AEST)
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 368553497E705AC97713;
+ Fri, 18 Sep 2020 17:21:55 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.487.0; Fri, 18 Sep 2020
+ 17:21:52 +0800
+From: Yang Yingliang <yangyingliang@huawei.com>
+To: <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH -next] tty: hvc: fix link error with
+ CONFIG_SERIAL_CORE_CONSOLE=n
+Date: Fri, 18 Sep 2020 17:20:30 +0800
+Message-ID: <20200918092030.3855438-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.175.112.208]
+X-Originating-IP: [10.175.124.27]
 X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -47,35 +48,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: santosh@fossix.org, linux-kernel@vger.kernel.org, paulus@samba.org,
- aneesh.kumar@linux.ibm.com, vaibhav@linux.ibm.com, dan.j.williams@intel.com,
- ira.weiny@intel.com
+Cc: gregkh@linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Build the kernel with 'make C=2':
-arch/powerpc/platforms/pseries/papr_scm.c:825:1: warning: symbol
-'dev_attr_perf_stats' was not declared. Should it be static?
+Fix the link error by selecting SERIAL_CORE_CONSOLE.
 
-Signed-off-by: Wang Wensheng <wangwensheng4@huawei.com>
+aarch64-linux-gnu-ld: drivers/tty/hvc/hvc_dcc.o: in function `dcc_early_write':
+hvc_dcc.c:(.text+0x164): undefined reference to `uart_console_write'
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- arch/powerpc/platforms/pseries/papr_scm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/hvc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 5493bc847bd0..a95aa425e7d4 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -823,7 +823,7 @@ static ssize_t perf_stats_show(struct device *dev,
- 	kfree(stats);
- 	return rc ? rc : (ssize_t)seq_buf_used(&s);
- }
--DEVICE_ATTR_ADMIN_RO(perf_stats);
-+static DEVICE_ATTR_ADMIN_RO(perf_stats);
- 
- static ssize_t flags_show(struct device *dev,
- 			  struct device_attribute *attr, char *buf)
+diff --git a/drivers/tty/hvc/Kconfig b/drivers/tty/hvc/Kconfig
+index d1b27b0522a3..8d60e0ff67b4 100644
+--- a/drivers/tty/hvc/Kconfig
++++ b/drivers/tty/hvc/Kconfig
+@@ -81,6 +81,7 @@ config HVC_DCC
+ 	bool "ARM JTAG DCC console"
+ 	depends on ARM || ARM64
+ 	select HVC_DRIVER
++	select SERIAL_CORE_CONSOLE
+ 	help
+ 	  This console uses the JTAG DCC on ARM to create a console under the HVC
+ 	  driver. This console is used through a JTAG only on ARM. If you don't have
 -- 
-2.25.0
+2.25.1
 
