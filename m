@@ -2,86 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C748626EA91
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 03:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6F726EB4C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 04:06:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BsxJD23ZHzDqdX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 11:36:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BsxyY2nSVzDq98
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 12:06:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BsxG35jDFzDqgq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 11:34:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=c8qMxsvB; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BsxG34StRz8xj8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 11:34:35 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4BsxG33ypdz9sT6; Fri, 18 Sep 2020 11:34:35 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=flex--ndesaulniers.bounces.google.com
- (client-ip=2607:f8b0:4864:20::84a; helo=mail-qt1-x84a.google.com;
- envelope-from=3ow5kxwwkdfi7xycue572ybc08805y.w86527eh99w-xyf8j5uvc.8b0@flex--ndesaulniers.bounces.google.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=c8qMxsvB; dkim-atps=neutral
-Received: from mail-qt1-x84a.google.com (mail-qt1-x84a.google.com
- [IPv6:2607:f8b0:4864:20::84a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=cl72sP8R; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BsxG26slWz9sT5
- for <linuxppc-dev@ozlabs.org>; Fri, 18 Sep 2020 11:34:32 +1000 (AEST)
-Received: by mail-qt1-x84a.google.com with SMTP id a16so3604975qtj.7
- for <linuxppc-dev@ozlabs.org>; Thu, 17 Sep 2020 18:34:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=sender:date:in-reply-to:message-id:mime-version:references:subject
- :from:to:cc; bh=h4DBk/5WkNHPXPPhovT87q0/qS2kLULMROgpGrI8Sbk=;
- b=c8qMxsvBptBC7l19hQyFMiYxS8rT9bWW6Er7flelv6GThJB8Tgm29Srt3OYRFd1npY
- 3PBcOqgl6QStlVBpHYzdVMXd8NJEwZHnBJrG5QbZLo6xcOX3iaTkMJjAsxS2ejOi0pyW
- 3FPWBJ5HXnekzCAhEIUM942YB+srfZwS58DKx36fRsBiHSU5UBKlto39KwWN+juRNDoA
- M8Lagt8uUjQkC77I7WbPNPCd7T57yi5QFQ3IkZMPg/xkUEHfTwK6PYLR/AT0CkibWQhV
- MKwb7kuObmD++fQ06qhTjtlVaV+9OtlPwdAtrVrIcc0QnXIMTE8RIw9zvOJjEuyGceWw
- IzNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
- :references:subject:from:to:cc;
- bh=h4DBk/5WkNHPXPPhovT87q0/qS2kLULMROgpGrI8Sbk=;
- b=DmBto/Xqy+oPr6CrsepZI/XTaAS3DyHqpemnAa27LcC5KPyhEDH/aYMElPqUKNCPQk
- sYA53e/M2lbAXOREDivs4vJ01JQTHBBkp5nNWdK7OunnZZcR0c8br7QiPJ9hpAT+hiRA
- 6I7EQc2xgEpBLJ/4AynenJtCjfcWe0RpjpFMPhxNgmInvTYoPLqmdT9dfMrMJRmn2v5o
- XOLQjHNYY3aZE4ZfA7HJX1U725yVlbpE2L7ilDS2WmbhIxAOst0pW0VVj3StkiwNqRn8
- nEiVm4o9wyDDc0Tc+MlovfibJWrqVh5LEPGJ5j9PfC0USg2h9dR3Ywmz8RK+Xaf6yhde
- VR+g==
-X-Gm-Message-State: AOAM533am6NcHJmifUk0FfTCk2BbWG93ZplKs919keZkdAUFgpCFJ7hz
- h5kxbtgAer3P0kT50iXGH2wAT22q/P05cRw1ays=
-X-Google-Smtp-Source: ABdhPJy4Aou6NncEzhaBiNd1L7Fk/QqrUG2xZaa+tpYnHECp9z8v8BAPOUZudAHm9z/8+v1noW8TitdTcQKx6PrX0lk=
-X-Received: from ndesaulniers1.mtv.corp.google.com
- ([2620:15c:211:202:f693:9fff:fef4:4d25])
- (user=ndesaulniers job=sendgmr) by 2002:a0c:fe8b:: with SMTP id
- d11mr15461547qvs.48.1600392867883; Thu, 17 Sep 2020 18:34:27 -0700 (PDT)
-Date: Thu, 17 Sep 2020 18:34:13 -0700
-In-Reply-To: <20200917024509.3253837-1-mpe@ellerman.id.au>
-Message-Id: <20200918013413.910549-1-ndesaulniers@google.com>
-Mime-Version: 1.0
-References: <20200917024509.3253837-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.28.0.681.g6f77f65b4e-goog
-Subject: Re: [PATCH] powerpc/process: Fix uninitialised variable error
-From: Nick Desaulniers <ndesaulniers@google.com>
-To: mpe@ellerman.id.au
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BsxsT3vmyzDqD3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 12:01:49 +1000 (AEST)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4373921973;
+ Fri, 18 Sep 2020 02:01:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1600394506;
+ bh=6cjJOA2M3eiMBSZe3NwpL92h0qu9NZbYN2525X0lxrg=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=cl72sP8RmhwoX43FoZxZ6r5/gPXVXndjeJ+omttxT2wWkw0dJbstqYS9RQg3pmEm3
+ pVQRHC3UstXSkwZW1woXtQh/MFOHfyhYCRcSLGFcB4FjgbQBqOAKsBrNgc2sOUwEjA
+ Ru2YdnLiKongJEF03IdDkmwr19CdKTxzD8qKMUWo=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 030/330] powerpc/64s: Always disable branch
+ profiling for prom_init.o
+Date: Thu, 17 Sep 2020 21:56:10 -0400
+Message-Id: <20200918020110.2063155-30-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200918020110.2063155-1-sashal@kernel.org>
+References: <20200918020110.2063155-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,13 +60,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, Nick Desaulniers <ndesaulniers@google.com>,
- clang-built-linux@googlegroups.com
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://lore.kernel.org/linuxppc-dev/20200917024509.3253837-1-mpe@ellerman.id.au/
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Tested-by: Nick Desaulniers <ndesaulniers@google.com>
+[ Upstream commit 6266a4dadb1d0976490fdf5af4f7941e36f64e80 ]
+
+Otherwise the build fails because prom_init is calling symbols it's
+not allowed to, eg:
+
+  Error: External symbol 'ftrace_likely_update' referenced from prom_init.c
+  make[3]: *** [arch/powerpc/kernel/Makefile:197: arch/powerpc/kernel/prom_init_check] Error 1
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191106051129.7626-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/kernel/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index dc0780f930d5b..59260eb962916 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -19,6 +19,7 @@ CFLAGS_btext.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+ CFLAGS_prom.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+ 
+ CFLAGS_prom_init.o += $(call cc-option, -fno-stack-protector)
++CFLAGS_prom_init.o += -DDISABLE_BRANCH_PROFILING
+ 
+ ifdef CONFIG_FUNCTION_TRACER
+ # Do not trace early boot code
+@@ -36,7 +37,6 @@ KASAN_SANITIZE_btext.o := n
+ ifdef CONFIG_KASAN
+ CFLAGS_early_32.o += -DDISABLE_BRANCH_PROFILING
+ CFLAGS_cputable.o += -DDISABLE_BRANCH_PROFILING
+-CFLAGS_prom_init.o += -DDISABLE_BRANCH_PROFILING
+ CFLAGS_btext.o += -DDISABLE_BRANCH_PROFILING
+ endif
+ 
+-- 
+2.25.1
+
