@@ -1,100 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8644926F22F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 04:58:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA5D26F4E7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 06:07:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bsz6f5TY9zDqLS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 12:58:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bt0fn2w3FzDqlW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Sep 2020 14:07:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gromero@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.8.83; helo=eur04-vi1-obe.outbound.protection.outlook.com;
- envelope-from=zhiqiang.hou@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=eSzaT7yE; 
- dkim-atps=neutral
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com
- (mail-eopbgr80083.outbound.protection.outlook.com [40.107.8.83])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=TqE8WxSV; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bsz372n72zDq9Z
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 12:55:14 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dBq7HW5aORqTXdn3+PDLwK7bRb+6Dhy7vuhoilnyHAVcVo+Xs1DbvvMI5ufqlFfRgbhXGzFVOrxT/aSYByhho1paV0ex3Uo3C06Op52ikUsm+kIZzGHHrxQxXCrjPMDfkhia3r0QUM5fwcvqF6rgEZhEV1qChgDMm4gF2LcX4R1/t+oB4I5OFLK0JqERNzXZkFJkCwp2XrxfWm3ClPp8FQxaQznji2Q2LLwsJQJvRLF2XFQ/oDOUQ2C0PaDAjkNCSW+sfzn5TRQa1WXfs0kgSgCWniqZYbSLX6eQErnQCKi3vlZUjQMUg5Vg9EKVIS0F9tsCMccn5R3gjXcsvWf3vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fJjzJrJhoL192jnGfOpoXgRiEMbK5SjqwX/iuYkag2Q=;
- b=GFhjOtJkegBMkRQjsv3owOys6etQnfmai4cGDF9c5Q756y8lsAksFrIBYRTxRMtqZj2t3qaeYwoWMp5FqqoagiiT74hCUWB9STzKb2H2rH+5ZLY4BPbaHrgeXbyqhWS7LZuB5cXhL2PrFSD3I10NPDHe+hHMDjesbTdpAQM4tuNEK46Appxo+1ZKzaeZQxre9OE82HUjZAz/0d/G18bsQNFtE9udnMdjXSeTXLugNiGAatrCNZFAhUKbvUYRalXaF1BUjbdGtVO9Z9YPyujQzgIgipCYgwkf7Y87oaCAfFtIHWGIMl2EUyime5JlOr5a7IM4lJhcXQdNKdsqeWGwNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fJjzJrJhoL192jnGfOpoXgRiEMbK5SjqwX/iuYkag2Q=;
- b=eSzaT7yETZ/UkglRpNgwmP5166v0SL2TLxHIueYaaBXUOAR3Q9m22MiYiD1bNdA4GLYiSnFNjC7TTCIeENe1RFqile8oO9MvEfn3w12jwhbgRhGTzJAjtfacKmR4GTI6osrEdNCJU72XRanypsK+DZyEaRVvIhAdxyb7fufq+cU=
-Received: from HE1PR0402MB3371.eurprd04.prod.outlook.com (2603:10a6:7:85::27)
- by HE1PR0402MB3369.eurprd04.prod.outlook.com (2603:10a6:7:81::30)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16; Fri, 18 Sep
- 2020 02:55:07 +0000
-Received: from HE1PR0402MB3371.eurprd04.prod.outlook.com
- ([fe80::c872:d354:7cf7:deb9]) by HE1PR0402MB3371.eurprd04.prod.outlook.com
- ([fe80::c872:d354:7cf7:deb9%3]) with mapi id 15.20.3370.019; Fri, 18 Sep 2020
- 02:55:07 +0000
-From: "Z.q. Hou" <zhiqiang.hou@nxp.com>
-To: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Subject: RE: [PATCHv7 00/12]PCI: dwc: Add the multiple PF support for DWC and
- Layerscape
-Thread-Topic: [PATCHv7 00/12]PCI: dwc: Add the multiple PF support for DWC and
- Layerscape
-Thread-Index: AQHWb8Z1yUZdrG8wQ0ytslGog8Y0mKltPU+AgACwpPA=
-Date: Fri, 18 Sep 2020 02:55:06 +0000
-Message-ID: <HE1PR0402MB3371BBECB380694B02EDB35B843F0@HE1PR0402MB3371.eurprd04.prod.outlook.com>
-References: <20200811095441.7636-1-Zhiqiang.Hou@nxp.com>
- <20200917162017.GA6830@e121166-lin.cambridge.arm.com>
-In-Reply-To: <20200917162017.GA6830@e121166-lin.cambridge.arm.com>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: arm.com; dkim=none (message not signed)
- header.d=none;arm.com; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [119.31.174.73]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 037f5fb6-0b11-44f3-6965-08d85b7e401c
-x-ms-traffictypediagnostic: HE1PR0402MB3369:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <HE1PR0402MB336959E3F4BE1AD119E83E05843F0@HE1PR0402MB3369.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Sm36AyrHDE/AyFE4v87euaYz16II/FWWAv0whF6Z2vL3WtkKFBxOJ8As6rUDUASU8HUbfmK+0b+pOLXhBZ/ShGrPjb6IRZYRV/XTb4DEP6irD9rvmMw3Jk4CsNkOk0A3BUk3pFWZOf6wxj9MciMHhu9uwMzGdo1qA5fZTFIrgSJ0u/gwj4e5ycbp3VxVKjyLE51mHgKsbs5M5PIotyn/wqGyotLPBjwAbfYYt9NdxzShGz+dOE9QZSJzgVJi3jdTNji/l4odngb7Nu+8IS0PyfLV97E83WMjgXQK4P8dBIZblmKwkE8/ID10eEFODqSgkvmBIntF4b0KLL/5uVwc/Q==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:HE1PR0402MB3371.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(396003)(366004)(136003)(376002)(39860400002)(346002)(6506007)(53546011)(26005)(86362001)(7696005)(9686003)(316002)(7416002)(8936002)(2906002)(8676002)(6916009)(55016002)(33656002)(54906003)(4326008)(478600001)(66446008)(66476007)(71200400001)(52536014)(64756008)(66946007)(76116006)(5660300002)(66556008)(83380400001)(186003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: 41x2nx+r4mnauO8WVM6VYLqV22zC/XM4NyiQNoG2UGpswWSI6Vv3RtnRGO/E3LtE6PNekyZk6RVqEDBll2KAjD0INe6JHWuEW6kC2e+hGBTKv7jBFw7md560EkEwj2zUQNfE8h7hc8GZs1xSMaapWJvDDX4z5sOxa+8KNZgkz59NEreTljtmPDhwuKJy3z33fzdphr4cK6N4KMHBjpFZb50WaQ22noZ/JfIByNl67ZjgQ9xfc2MdUAbr0K84MykGQuLj76VdWSaFgmTJWZrH1pGCxjgHFL1o/rIuVxBMfV31gFlLlWqETmQUqGYGTo6pC2MUHE8feQYUkLKcg3i4SmK/H6nDCqwbmcIdZGbPK4BSrFJBeKqf4lLfHC2MI8LLeDyx5l4zrz25LmPbZJ0y70hWXfeHMqd80sKqcMjXd1ehV2u52cuM1QDf4Dv2y7KK0SVnUAOQDCU+ZPQJ+/wITl5/c29XuwmgSxSpL8HPHmyFTOsEsKfVWgvGhpoerlRwpORC3Fu63Xu0tNvnUyGL7m9F5UhlSkJL+mk3y7N95Lxtc531lrqFg4qa4Ctoqn4Oh/ZZub/OIZwRiKysfthDtbxulon4KoGrAnOTz9v9zjuEmJ0AkM8QCzwPl38eYO3PUYqb8pDMB21/kqkGsSNKYw==
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0402MB3371.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 037f5fb6-0b11-44f3-6965-08d85b7e401c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2020 02:55:07.0177 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: R4ryCdWGbxvPbc1V+pp4X+seuBxacAHCcYYNSrSyJMX15AP+ZhKIAmihdFErkOWhfruhfZTyJKOpUwz/v8ApYQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0402MB3369
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bt0ch1yW1zDqkC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Sep 2020 14:05:53 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 08I43PtN060038; Fri, 18 Sep 2020 00:05:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=YAUrMVL4x2pUs7tqu1nZsTJ6sGbHVRcLIuJecU5LqtA=;
+ b=TqE8WxSVFfeZFxp+S+C32h6r8eyaXQ5/O6zjBPs9clgFH3cIJeF4zR6tqcfu4btygGiO
+ YpoYP1AAtUmLXy3MgXdGoA07wt1evevQtOYCKakadZD22IL2w7Y74vMq1DK3Dx0jnhKA
+ egAHAm7wisDSFU8YPsXewtyU3B/Bqgb9dD6RzygYe6slv5Jip1JCrC/VFT6u4qICMw7y
+ BHePryx7WCzDN+XdgumxSEih3VOdEE1QVQ6P/wdhR1HlK9dV+zI6GM20sNLB0m33lDxQ
+ GPkJnd25YuFIaTiAes74KWanrhAzflRIhCfJDvAAJEwAoa+AmTczoJwl2lmWEfLRks3t XQ== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33mnbh081u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 18 Sep 2020 00:05:45 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08I420Ew012226;
+ Fri, 18 Sep 2020 04:05:44 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma01wdc.us.ibm.com with ESMTP id 33k6769ccr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 18 Sep 2020 04:05:44 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 08I45irC54067550
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 18 Sep 2020 04:05:44 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0B283AC05B;
+ Fri, 18 Sep 2020 04:05:44 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C08B1AC059;
+ Fri, 18 Sep 2020 04:05:40 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.136.9])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 18 Sep 2020 04:05:40 +0000 (GMT)
+From: Gustavo Romero <gromero@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/tm: Save and restore AMR on treclaim and trechkpt
+Date: Fri, 18 Sep 2020 01:05:36 -0300
+Message-Id: <20200918040536.9046-1-gromero@linux.ibm.com>
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-18_02:2020-09-16,
+ 2020-09-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 malwarescore=0
+ clxscore=1011 mlxscore=0 spamscore=0 bulkscore=0 mlxlogscore=852
+ impostorscore=0 suspectscore=1 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2009180028
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,72 +89,181 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "andrew.murray@arm.com" <andrew.murray@arm.com>, Roy Zang <roy.zang@nxp.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>, "M.h. Lian" <minghuan.lian@nxp.com>,
- "jingoohan1@gmail.com" <jingoohan1@gmail.com>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>, Mingkai Hu <mingkai.hu@nxp.com>,
- "gustavo.pimentel@synopsys.com" <gustavo.pimentel@synopsys.com>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>, "kishon@ti.com" <kishon@ti.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: mikey@neuling.org, gromero@linux.ibm.com, aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGkgTG9yZW56bywNCg0KVGhhbmtzIGEgbG90IGZvciB5b3VyIGNvbW1lbnRzIQ0KDQo+IC0tLS0t
-T3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IExvcmVuem8gUGllcmFsaXNpIDxsb3Jlbnpv
-LnBpZXJhbGlzaUBhcm0uY29tPg0KPiBTZW50OiAyMDIwxOo51MIxOMjVIDA6MjANCj4gVG86IFou
-cS4gSG91IDx6aGlxaWFuZy5ob3VAbnhwLmNvbT4NCj4gQ2M6IGxpbnV4LXBjaUB2Z2VyLmtlcm5l
-bC5vcmc7IGRldmljZXRyZWVAdmdlci5rZXJuZWwub3JnOw0KPiBsaW51eC1rZXJuZWxAdmdlci5r
-ZXJuZWwub3JnOyBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7DQo+IGxpbnV4
-cHBjLWRldkBsaXN0cy5vemxhYnMub3JnOyByb2JoK2R0QGtlcm5lbC5vcmc7IGJoZWxnYWFzQGdv
-b2dsZS5jb207DQo+IHNoYXduZ3VvQGtlcm5lbC5vcmc7IExlbyBMaSA8bGVveWFuZy5saUBueHAu
-Y29tPjsga2lzaG9uQHRpLmNvbTsNCj4gZ3VzdGF2by5waW1lbnRlbEBzeW5vcHN5cy5jb207IFJv
-eSBaYW5nIDxyb3kuemFuZ0BueHAuY29tPjsNCj4gamluZ29vaGFuMUBnbWFpbC5jb207IGFuZHJl
-dy5tdXJyYXlAYXJtLmNvbTsgTWluZ2thaSBIdQ0KPiA8bWluZ2thaS5odUBueHAuY29tPjsgTS5o
-LiBMaWFuIDxtaW5naHVhbi5saWFuQG54cC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0h2NyAw
-MC8xMl1QQ0k6IGR3YzogQWRkIHRoZSBtdWx0aXBsZSBQRiBzdXBwb3J0IGZvciBEV0MNCj4gYW5k
-IExheWVyc2NhcGUNCj4gDQo+IE9uIFR1ZSwgQXVnIDExLCAyMDIwIGF0IDA1OjU0OjI5UE0gKzA4
-MDAsIFpoaXFpYW5nIEhvdSB3cm90ZToNCj4gPiBGcm9tOiBIb3UgWmhpcWlhbmcgPFpoaXFpYW5n
-LkhvdUBueHAuY29tPg0KPiA+DQo+ID4gQWRkIHRoZSBQQ0llIEVQIG11bHRpcGxlIFBGIHN1cHBv
-cnQgZm9yIERXQyBhbmQgTGF5ZXJzY2FwZSwgYW5kIHVzZSBhDQo+ID4gbGlzdCB0byBtYW5hZ2Ug
-dGhlIFBGcyBvZiBlYWNoIFBDSWUgY29udHJvbGxlcjsgYWRkIHRoZSBkb29yYmVsbCBNU0lYDQo+
-ID4gZnVuY3Rpb24gZm9yIERXQzsgYW5kIHJlZmFjdG9yIHRoZSBMYXllcnNjYXBlIEVQIGRyaXZl
-ciBkdWUgdG8gc29tZQ0KPiA+IGRpZmZlcmVuY2UgaW4gTGF5ZXJjYXBlIHBsYXRmb3JtcyBQQ0ll
-IGludGVncmF0aW9uLg0KPiA+DQo+ID4gSG91IFpoaXFpYW5nICgxKToNCj4gPiAgIG1pc2M6IHBj
-aV9lbmRwb2ludF90ZXN0OiBBZGQgZHJpdmVyIGRhdGEgZm9yIExheWVyc2NhcGUgUENJZQ0KPiA+
-ICAgICBjb250cm9sbGVycw0KPiA+DQo+ID4gWGlhb3dlaSBCYW8gKDExKToNCj4gPiAgIFBDSTog
-ZGVzaWdud2FyZS1lcDogQWRkIG11bHRpcGxlIFBGcyBzdXBwb3J0IGZvciBEV0MNCj4gPiAgIFBD
-STogZGVzaWdud2FyZS1lcDogQWRkIHRoZSBkb29yYmVsbCBtb2RlIG9mIE1TSS1YIGluIEVQIG1v
-ZGUNCj4gPiAgIFBDSTogZGVzaWdud2FyZS1lcDogTW92ZSB0aGUgZnVuY3Rpb24gb2YgZ2V0dGlu
-ZyBNU0kgY2FwYWJpbGl0eQ0KPiA+ICAgICBmb3J3YXJkDQo+ID4gICBQQ0k6IGRlc2lnbndhcmUt
-ZXA6IE1vZGlmeSBNU0kgYW5kIE1TSVggQ0FQIHdheSBvZiBmaW5kaW5nDQo+ID4gICBkdC1iaW5k
-aW5nczogcGNpOiBsYXllcnNjYXBlLXBjaTogQWRkIGNvbXBhdGlibGUgc3RyaW5ncyBmb3IgbHMx
-MDg4YQ0KPiA+ICAgICBhbmQgbHMyMDg4YQ0KPiA+ICAgUENJOiBsYXllcnNjYXBlOiBGaXggc29t
-ZSBmb3JtYXQgaXNzdWUgb2YgdGhlIGNvZGUNCj4gPiAgIFBDSTogbGF5ZXJzY2FwZTogTW9kaWZ5
-IHRoZSB3YXkgb2YgZ2V0dGluZyBjYXBhYmlsaXR5IHdpdGggZGlmZmVyZW50DQo+ID4gICAgIFBF
-WA0KPiA+ICAgUENJOiBsYXllcnNjYXBlOiBNb2RpZnkgdGhlIE1TSVggdG8gdGhlIGRvb3JiZWxs
-IG1vZGUNCj4gPiAgIFBDSTogbGF5ZXJzY2FwZTogQWRkIEVQIG1vZGUgc3VwcG9ydCBmb3IgbHMx
-MDg4YSBhbmQgbHMyMDg4YQ0KPiA+ICAgYXJtNjQ6IGR0czogbGF5ZXJzY2FwZTogQWRkIFBDSWUg
-RVAgbm9kZSBmb3IgbHMxMDg4YQ0KPiA+ICAgbWlzYzogcGNpX2VuZHBvaW50X3Rlc3Q6IEFkZCBM
-UzEwODhhIGluIHBjaV9kZXZpY2VfaWQgdGFibGUNCj4gPg0KPiA+ICAuLi4vYmluZGluZ3MvcGNp
-L2xheWVyc2NhcGUtcGNpLnR4dCAgICAgICAgICAgfCAgIDIgKw0KPiA+ICAuLi4vYXJtNjQvYm9v
-dC9kdHMvZnJlZXNjYWxlL2ZzbC1sczEwODhhLmR0c2kgfCAgMzEgKysrDQo+ID4gIGRyaXZlcnMv
-bWlzYy9wY2lfZW5kcG9pbnRfdGVzdC5jICAgICAgICAgICAgICB8ICAgOCArLQ0KPiA+ICAuLi4v
-cGNpL2NvbnRyb2xsZXIvZHdjL3BjaS1sYXllcnNjYXBlLWVwLmMgICAgfCAxMDAgKysrKystLQ0K
-PiA+ICAuLi4vcGNpL2NvbnRyb2xsZXIvZHdjL3BjaWUtZGVzaWdud2FyZS1lcC5jICAgfCAyNTgN
-Cj4gKysrKysrKysrKysrKystLS0tDQo+ID4gIGRyaXZlcnMvcGNpL2NvbnRyb2xsZXIvZHdjL3Bj
-aWUtZGVzaWdud2FyZS5jICB8ICA1OSArKy0tDQo+ID4gZHJpdmVycy9wY2kvY29udHJvbGxlci9k
-d2MvcGNpZS1kZXNpZ253YXJlLmggIHwgIDQ4ICsrKy0NCj4gPiAgNyBmaWxlcyBjaGFuZ2VkLCA0
-MTAgaW5zZXJ0aW9ucygrKSwgOTYgZGVsZXRpb25zKC0pDQo+IA0KPiBTaWRlIG5vdGU6IEkgd2ls
-bCBjaGFuZ2UgaXQgZm9yIHlvdSBidXQgcGxlYXNlIGtlZXAgU2lnbmVkLW9mZi1ieToNCj4gdGFn
-cyB0b2dldGhlciBpbiB0aGUgbG9nIGluc3RlYWQgb2YgbWl4aW5nIHRoZW0gd2l0aCBvdGhlciB0
-YWdzIHJhbmRvbWx5Lg0KPiANCj4gQ2FuIHlvdSByZWJhc2UgdGhpcyBzZXJpZXMgYWdhaW5zdCBt
-eSBwY2kvZHdjIGJyYW5jaCBwbGVhc2UgYW5kIHNlbmQgYSB2OCA/DQo+IA0KPiBJIHdpbGwgYXBw
-bHkgaXQgdGhlbi4NCg0KSSdsbCByZWJhc2UgdGhpcyBzZXJpZXMgYW5kIHB1dCB0aGUgU2lnbmVk
-LW9mZi1ieSB0YWdzIHRvZ2V0aGVyIHRvZGF5Lg0KDQpSZWdhcmRzLA0KWmhpcWlhbmcNCg0KPiAN
-Cj4gVGhhbmtzLA0KPiBMb3JlbnpvDQo=
+Althought AMR is stashed on the checkpoint area, currently we don't save
+it to the per thread checkpoint struct after a treclaim and so we don't
+restore it either from that struct when we trechkpt. As a consequence when
+the transaction is later rolled back kernel space AMR value when the
+trechkpt was done appears in userspace.
+
+That commit saves and restores AMR accordingly on treclaim and trechkpt.
+Since AMR value is also used in kernel space in other functions, it also
+takes care of stashing kernel live AMR into PACA before treclaim and before
+trechkpt, restoring it later, just before returning from tm_reclaim and
+__tm_recheckpoint.
+
+Is also fixes two nonrelated comments about CR and MSR.
+
+Signed-off-by: Gustavo Romero <gromero@linux.ibm.com>
+---
+ arch/powerpc/include/asm/paca.h      |  1 +
+ arch/powerpc/include/asm/processor.h |  1 +
+ arch/powerpc/kernel/asm-offsets.c    |  2 ++
+ arch/powerpc/kernel/tm.S             | 31 +++++++++++++++++++++++-----
+ 4 files changed, 30 insertions(+), 5 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
+index 9454d29ff4b4..44c605181529 100644
+--- a/arch/powerpc/include/asm/paca.h
++++ b/arch/powerpc/include/asm/paca.h
+@@ -179,6 +179,7 @@ struct paca_struct {
+ 	u64 sprg_vdso;			/* Saved user-visible sprg */
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	u64 tm_scratch;                 /* TM scratch area for reclaim */
++	u64 tm_amr;			/* Saved Kernel AMR for treclaim/trechkpt */
+ #endif
+ 
+ #ifdef CONFIG_PPC_POWERNV
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index ed0d633ab5aa..9f4f6cc033ac 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -220,6 +220,7 @@ struct thread_struct {
+ 	unsigned long	tm_tar;
+ 	unsigned long	tm_ppr;
+ 	unsigned long	tm_dscr;
++	unsigned long   tm_amr;
+ 
+ 	/*
+ 	 * Checkpointed FP and VSX 0-31 register set.
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index 8711c2164b45..cf1a6d68a91f 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -170,12 +170,14 @@ int main(void)
+ 
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	OFFSET(PACATMSCRATCH, paca_struct, tm_scratch);
++	OFFSET(PACATMAMR, paca_struct, tm_amr);
+ 	OFFSET(THREAD_TM_TFHAR, thread_struct, tm_tfhar);
+ 	OFFSET(THREAD_TM_TEXASR, thread_struct, tm_texasr);
+ 	OFFSET(THREAD_TM_TFIAR, thread_struct, tm_tfiar);
+ 	OFFSET(THREAD_TM_TAR, thread_struct, tm_tar);
+ 	OFFSET(THREAD_TM_PPR, thread_struct, tm_ppr);
+ 	OFFSET(THREAD_TM_DSCR, thread_struct, tm_dscr);
++	OFFSET(THREAD_TM_AMR, thread_struct, tm_amr);
+ 	OFFSET(PT_CKPT_REGS, thread_struct, ckpt_regs);
+ 	OFFSET(THREAD_CKVRSTATE, thread_struct, ckvr_state.vr);
+ 	OFFSET(THREAD_CKVRSAVE, thread_struct, ckvrsave);
+diff --git a/arch/powerpc/kernel/tm.S b/arch/powerpc/kernel/tm.S
+index 6ba0fdd1e7f8..e178ddb43619 100644
+--- a/arch/powerpc/kernel/tm.S
++++ b/arch/powerpc/kernel/tm.S
+@@ -152,6 +152,10 @@ _GLOBAL(tm_reclaim)
+ 	li	r5, 0
+ 	mtmsrd	r5, 1
+ 
++        /* Save AMR since it's used elsewhere in kernel space */
++	mfspr	r8, SPRN_AMR
++	std	r8, PACATMAMR(r13)
++
+ 	/*
+ 	 * BE CAREFUL HERE:
+ 	 * At this point we can't take an SLB miss since we have MSR_RI
+@@ -245,7 +249,7 @@ _GLOBAL(tm_reclaim)
+ 	 * but is used in signal return to 'wind back' to the abort handler.
+ 	 */
+ 
+-	/* ******************** CR,LR,CCR,MSR ********** */
++	/* ***************** CTR, LR, CR, XER ********** */
+ 	mfctr	r3
+ 	mflr	r4
+ 	mfcr	r5
+@@ -256,7 +260,6 @@ _GLOBAL(tm_reclaim)
+ 	std	r5, _CCR(r7)
+ 	std	r6, _XER(r7)
+ 
+-
+ 	/* ******************** TAR, DSCR ********** */
+ 	mfspr	r3, SPRN_TAR
+ 	mfspr	r4, SPRN_DSCR
+@@ -264,6 +267,10 @@ _GLOBAL(tm_reclaim)
+ 	std	r3, THREAD_TM_TAR(r12)
+ 	std	r4, THREAD_TM_DSCR(r12)
+ 
++        /* ******************** AMR **************** */
++        mfspr	r3, SPRN_AMR
++        std	r3, THREAD_TM_AMR(r12)
++
+ 	/*
+ 	 * MSR and flags: We don't change CRs, and we don't need to alter MSR.
+ 	 */
+@@ -308,8 +315,6 @@ _GLOBAL(tm_reclaim)
+ 	std	r3, THREAD_TM_TFHAR(r12)
+ 	std	r4, THREAD_TM_TFIAR(r12)
+ 
+-	/* AMR is checkpointed too, but is unsupported by Linux. */
+-
+ 	/* Restore original MSR/IRQ state & clear TM mode */
+ 	ld	r14, TM_FRAME_L0(r1)		/* Orig MSR */
+ 
+@@ -330,6 +335,10 @@ _GLOBAL(tm_reclaim)
+ 	ld	r0, PACA_DSCR_DEFAULT(r13)
+ 	mtspr	SPRN_DSCR, r0
+ 
++        /* Restore kernel saved AMR */
++	ld	r4, PACATMAMR(r13)
++	mtspr	SPRN_AMR, r4
++
+ 	blr
+ 
+ 
+@@ -355,6 +364,10 @@ _GLOBAL(__tm_recheckpoint)
+ 	 */
+ 	SAVE_NVGPRS(r1)
+ 
++	/* Save kernel AMR since it's used elsewhare in kernel space */
++	mfspr	r8, SPRN_AMR
++	std	r8, PACATMAMR(r13)
++
+ 	/* Load complete register state from ts_ckpt* registers */
+ 
+ 	addi	r7, r3, PT_CKPT_REGS		/* Thread's ckpt_regs */
+@@ -404,7 +417,7 @@ _GLOBAL(__tm_recheckpoint)
+ 
+ restore_gprs:
+ 
+-	/* ******************** CR,LR,CCR,MSR ********** */
++	/* ****************** CTR, LR, XER ************* */
+ 	ld	r4, _CTR(r7)
+ 	ld	r5, _LINK(r7)
+ 	ld	r8, _XER(r7)
+@@ -417,6 +430,10 @@ restore_gprs:
+ 	ld	r4, THREAD_TM_TAR(r3)
+ 	mtspr	SPRN_TAR,	r4
+ 
++	/* ******************** AMR ******************** */
++	ld	r4, THREAD_TM_AMR(r3)
++	mtspr	SPRN_AMR, r4
++
+ 	/* Load up the PPR and DSCR in GPRs only at this stage */
+ 	ld	r5, THREAD_TM_DSCR(r3)
+ 	ld	r6, THREAD_TM_PPR(r3)
+@@ -522,6 +539,10 @@ restore_gprs:
+ 	ld	r0, PACA_DSCR_DEFAULT(r13)
+ 	mtspr	SPRN_DSCR, r0
+ 
++	/* Restore kernel saved AMR */
++	ld	r4, PACATMAMR(r13)
++	mtspr	SPRN_AMR, r4
++
+ 	blr
+ 
+ 	/* ****************************************************************** */
+-- 
+2.17.1
+
