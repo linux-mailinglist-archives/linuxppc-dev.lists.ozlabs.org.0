@@ -2,47 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F9D270E3A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 15:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC68270E99
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 16:31:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Btsc11fB9zDqwP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 23:53:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BttRn2rJ0zDqRB
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Sep 2020 00:31:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
  helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=ACULAB.COM
 Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BtsY71wQCzDqNX
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 23:50:48 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BttKs5Gl4zDqhH
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Sep 2020 00:26:06 +1000 (AEST)
 Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
  TLS) by relay.mimecast.com with ESMTP id
- uk-mta-217-sBKr2MWsPJyQWXL4zt-j_w-1; Sat, 19 Sep 2020 14:50:42 +0100
-X-MC-Unique: sBKr2MWsPJyQWXL4zt-j_w-1
+ uk-mta-281-bAjbsE6rN1eTAY15huzJqA-1; Sat, 19 Sep 2020 15:24:11 +0100
+X-MC-Unique: bAjbsE6rN1eTAY15huzJqA-1
 Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
  AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Sat, 19 Sep 2020 14:50:41 +0100
+ Server (TLS) id 15.0.1347.2; Sat, 19 Sep 2020 15:24:10 +0100
 Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
  AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Sat, 19 Sep 2020 14:50:41 +0100
+ Sat, 19 Sep 2020 15:24:10 +0100
 From: David Laight <David.Laight@ACULAB.COM>
-To: 'Samuel Holland' <samuel@sholland.org>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Michael
- Ellerman" <mpe@ellerman.id.au>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>
-Subject: RE: [PATCH] powerpc: Select HAVE_FUTEX_CMPXCHG
-Thread-Topic: [PATCH] powerpc: Select HAVE_FUTEX_CMPXCHG
-Thread-Index: AQHWjjP8ICmOrEPCtEqSzubXo06uGalv9oPA
-Date: Sat, 19 Sep 2020 13:50:41 +0000
-Message-ID: <7c3e299f9c134eab9ba1e6d07a77f7b6@AcuMS.aculab.com>
-References: <20200919032009.8346-1-samuel@sholland.org>
-In-Reply-To: <20200919032009.8346-1-samuel@sholland.org>
+To: 'Christoph Hellwig' <hch@lst.de>, Alexander Viro <viro@zeniv.linux.org.uk>
+Subject: RE: let import_iovec deal with compat_iovecs as well
+Thread-Topic: let import_iovec deal with compat_iovecs as well
+Thread-Index: AQHWjbnKEn35LxofhEeT1lmdzdUiWqlwBNiw
+Date: Sat, 19 Sep 2020 14:24:10 +0000
+Message-ID: <2c7bf42ee4314484ae0177280cd8f5f3@AcuMS.aculab.com>
+References: <20200918124533.3487701-1-hch@lst.de>
+In-Reply-To: <20200918124533.3487701-1-hch@lst.de>
 Accept-Language: en-GB, en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
@@ -67,57 +64,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: "linux-aio@kvack.org" <linux-aio@kvack.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Jens Axboe <axboe@kernel.dk>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Samuel Holland
-> Sent: 19 September 2020 04:20
+From: Christoph Hellwig
+> Sent: 18 September 2020 13:45
 >=20
-> On powerpc, access_ok() succeeds for the NULL pointer. This breaks the
-> dynamic check in futex_detect_cmpxchg(), which expects -EFAULT. As a
-> result, robust futex operations are not functional on powerpc.
+> this series changes import_iovec to transparently deal with comat iovec
+> structures, and then cleanups up a lot of code dupliation.  But to get
+> there it first has to fix the pre-existing bug that io_uring compat
+> contexts don't trigger the in_compat_syscall() check.  This has so far
+> been relatively harmless as very little code callable from io_uring used
+> the check, and even that code that could be called usually wasn't.
 
-access_ok(NULL, sane_count) will succeed on all (maybe most) architectures.
-All access_ok() does is check that kernel addresses aren't referenced.
-(access_ok(kernel_adress, 0) is also likely to succeed.)
+I thought about that change while writing my import_iovec() =3D> iovec_impo=
+rt()
+patch - and thought that the io_uring code would (as usual) cause grief.
 
-It is the access to user-address 0 that is expected to fault.
-If this isn't faulting something else is wrong.
-
-Historically (at least pre-elf, if not before) user programs
-were linked to address zero - so the page was mapped.
-(Linux may be too new to actually require it.)
-Not sure what 'wine' requires for win-32 execuatbles.
-
-ISTR there are also some 'crazy' ARM? cpu that read the interrupt
-vectors from address 0 in user-space.
-
-So assuming:
-
-static void __init futex_detect_cmpxchg(void)
-{
-#ifndef CONFIG_HAVE_FUTEX_CMPXCHG
-        u32 curval;
-
-        /*
-         * This will fail and we want it. Some arch implementations do
-         * runtime detection of the futex_atomic_cmpxchg_inatomic()
-         * functionality. We want to know that before we call in any
-         * of the complex code paths. Also we want to prevent
-         * registration of robust lists in that case. NULL is
-         * guaranteed to fault and we get -EFAULT on functional
-         * implementation, the non-functional ones will return
-         * -ENOSYS.
-         */
-        if (cmpxchg_futex_value_locked(&curval, NULL, 0, 0) =3D=3D -EFAULT)
-                futex_cmpxchg_enabled =3D 1;
-#endif
-}
-
-will fail -EFAULT because user address 0 is invalid seems hopeful.
-
+Christoph - did you see those patches?
 =09David
 
 -
