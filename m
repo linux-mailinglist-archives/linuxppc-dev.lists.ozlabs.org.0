@@ -1,69 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB676270BC0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 10:13:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C105F270CBA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 11:59:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Btk3h2ZywzDqs6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 18:13:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BtmQC0rKyzDr0r
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 19:59:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
+ helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=f0OFDsET; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+ dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
+ header.s=2020 header.b=ul0AzmKX; 
+ dkim=pass header.d=linutronix.de header.i=@linutronix.de
+ header.a=ed25519-sha256 header.s=2020e header.b=KbJ6GiNR; 
+ dkim-atps=neutral
+Received: from galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BtjwD2KS7zDqrn
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 18:06:51 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id g29so4866475pgl.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 01:06:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=4mjAsO6i14BLDGSTSdDKCE/ErMpri2AIzn0P8gVWa8M=;
- b=f0OFDsETa78EaeXMDCZ1RlCfxiwXc9SrnugxfxtZMcxjpwzsQZOe/tYIDistENL+3n
- 8aJ8UY7gOEmoL3ldEcxG/KpWw2K2lmPViEdyK2GebPCprnlzSQiPqZqOPp3m2hjzte7U
- XTdyC+J3wSoKeBaYrzyy/kuZdk1+t7cxQEEzc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=4mjAsO6i14BLDGSTSdDKCE/ErMpri2AIzn0P8gVWa8M=;
- b=XolilUAZ+c7B/0Vq6Fyf3Fvf9FsGjk8U0b9bECR07Ogab7NBg5vSMhvfElopiAwWdk
- WUSyZJwhsGH5dBcQR16GzUGHdbVtI4v/p6BGs+V+iqOX1wTWRXrxOvdKzOrlDQPVjKOv
- JeNIPDjgjtHNPy607Tl+eWDAe1/9IN0GrP7UbcL5iFkTIv1T2H8vtdvDVJdE4vA5uM7G
- uOCUM0jMp4vPuo76Em1njxeMtdtYcY+Arw5u8Z+8S/qCydP37fTMazpowtjA4+G4ZeNu
- Hn9ABwtXgQOWHQQT256XDQUZ8dSv3ZSrDu68DXrFbWHgFFJ2nDVCce8Xv7l0jU0Ccacf
- dE1w==
-X-Gm-Message-State: AOAM530EJHdsfpHcOJq+oBM6L3bCCflabSlUuUlHZMwnxK4AOIuOmQ9E
- r3zTziRM1MEKpdFe/wAiGnloUQ==
-X-Google-Smtp-Source: ABdhPJzoDBiiDd/qwVg2H2idKKM+EA63R2fRTH/k5PeOCGXyrSeLjPAUUIbnlIzg8EvmDnpbjiiFuA==
-X-Received: by 2002:a63:491:: with SMTP id 139mr13312846pge.147.1600502808858; 
- Sat, 19 Sep 2020 01:06:48 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id s3sm5443116pgc.61.2020.09.19.01.06.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 19 Sep 2020 01:06:45 -0700 (PDT)
-From: Kees Cook <keescook@chromium.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/4] selftests/clone3: Avoid OS-defined clone_args
-Date: Sat, 19 Sep 2020 01:06:37 -0700
-Message-Id: <20200919080637.259478-5-keescook@chromium.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200919080637.259478-1-keescook@chromium.org>
-References: <20200919080637.259478-1-keescook@chromium.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BtmCS0Yx7zDqsD
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 19:50:12 +1000 (AEST)
+Message-Id: <20200919091751.011116649@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1600509000;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=wXMSkZdDTGr2cnZMoKDSJw7MNirhJVzX4vOCHJbvoN0=;
+ b=ul0AzmKXYj0qCi93y+r/rwwgxSXPin2sTe3PYhi7zjaY3NKa41EvWRmaZkAKju2f4qLfIs
+ i1aVPwNRkUKTlsYfZfyyB/zi5KZf7ZY7OD58PCvZV59UcRuCOhEQsNPck5r1VuTJtHi72C
+ +LNe+RY18cKtN3h7SPt+666fUzU5ch+DkMG/6qPFHiUag3Vd24Fa5TJBueGpK9wLzW3bo0
+ IscYJhM/dQECgU1ilCEI7V6IMnuxdAonST0geBGtFlUWgd5xXJJx546wfo5abrk+4cO8Sx
+ euhWyLJDvleHSJCh+QF6n/GwOhvNr9+hHKu+6tM3Z9VRQSgIOxJikgFGusnWsg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1600509000;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=wXMSkZdDTGr2cnZMoKDSJw7MNirhJVzX4vOCHJbvoN0=;
+ b=KbJ6GiNRGpCyvVdElEw4H+4LtrSHxOXy5YeKjcqGSrhkBp5nKWiHepRirVJ50oI9WjzN2D
+ 1DCAFhaD9E835KBw==
+Date: Sat, 19 Sep 2020 11:17:51 +0200
+From: Thomas Gleixner <tglx@linutronix.de>
+To: LKML <linux-kernel@vger.kernel.org>
+Subject: [patch RFC 00/15] mm/highmem: Provide a preemptible variant of
+ kmap_atomic & friends
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,283 +67,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
- Will Drewry <wad@chromium.org>, Kees Cook <keescook@chromium.org>,
- linux-xtensa@linux-xtensa.org, linux-mips@vger.kernel.org,
- Andy Lutomirski <luto@amacapital.net>, Max Filippov <jcmvbkbc@gmail.com>,
- linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Christian Brauner <christian@brauner.io>
+Cc: Juri Lelli <juri.lelli@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>, Ben Segall <bsegall@google.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ sparclinux@vger.kernel.org, Vincent Chen <deanbo422@gmail.com>,
+ Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ linux-arch@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Mel Gorman <mgorman@suse.de>,
+ linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+ Paul McKenney <paulmck@kernel.org>,
+ intel-gfx <intel-gfx@lists.freedesktop.org>, linuxppc-dev@lists.ozlabs.org,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Linus Torvalds <torvalds@linuxfoundation.org>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Nick Hu <nickhu@andestech.com>, Linux-MM <linux-mm@kvack.org>,
+ Vineet Gupta <vgupta@synopsys.com>, linux-mips@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel@ffwll.ch>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As the UAPI headers start to appear in distros, we need to avoid outdated
-versions of struct clone_args to be able to test modern features;
-rename to "struct __clone_args". Additionally update the struct size
-macro names to match UAPI names.
-
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- tools/testing/selftests/clone3/clone3.c       | 45 ++++++++-----------
- .../clone3/clone3_cap_checkpoint_restore.c    |  4 +-
- .../selftests/clone3/clone3_clear_sighand.c   |  2 +-
- .../selftests/clone3/clone3_selftests.h       | 24 +++++-----
- .../testing/selftests/clone3/clone3_set_tid.c |  4 +-
- tools/testing/selftests/seccomp/seccomp_bpf.c |  4 +-
- 6 files changed, 40 insertions(+), 43 deletions(-)
-
-diff --git a/tools/testing/selftests/clone3/clone3.c b/tools/testing/selftests/clone3/clone3.c
-index b7e6dec36173..42be3b925830 100644
---- a/tools/testing/selftests/clone3/clone3.c
-+++ b/tools/testing/selftests/clone3/clone3.c
-@@ -20,13 +20,6 @@
- #include "../kselftest.h"
- #include "clone3_selftests.h"
- 
--/*
-- * Different sizes of struct clone_args
-- */
--#ifndef CLONE3_ARGS_SIZE_V0
--#define CLONE3_ARGS_SIZE_V0 64
--#endif
--
- enum test_mode {
- 	CLONE3_ARGS_NO_TEST,
- 	CLONE3_ARGS_ALL_0,
-@@ -38,13 +31,13 @@ enum test_mode {
- 
- static int call_clone3(uint64_t flags, size_t size, enum test_mode test_mode)
- {
--	struct clone_args args = {
-+	struct __clone_args args = {
- 		.flags = flags,
- 		.exit_signal = SIGCHLD,
- 	};
- 
- 	struct clone_args_extended {
--		struct clone_args args;
-+		struct __clone_args args;
- 		__aligned_u64 excess_space[2];
- 	} args_ext;
- 
-@@ -52,11 +45,11 @@ static int call_clone3(uint64_t flags, size_t size, enum test_mode test_mode)
- 	int status;
- 
- 	memset(&args_ext, 0, sizeof(args_ext));
--	if (size > sizeof(struct clone_args))
-+	if (size > sizeof(struct __clone_args))
- 		args_ext.excess_space[1] = 1;
- 
- 	if (size == 0)
--		size = sizeof(struct clone_args);
-+		size = sizeof(struct __clone_args);
- 
- 	switch (test_mode) {
- 	case CLONE3_ARGS_ALL_0:
-@@ -77,9 +70,9 @@ static int call_clone3(uint64_t flags, size_t size, enum test_mode test_mode)
- 		break;
- 	}
- 
--	memcpy(&args_ext.args, &args, sizeof(struct clone_args));
-+	memcpy(&args_ext.args, &args, sizeof(struct __clone_args));
- 
--	pid = sys_clone3((struct clone_args *)&args_ext, size);
-+	pid = sys_clone3((struct __clone_args *)&args_ext, size);
- 	if (pid < 0) {
- 		ksft_print_msg("%s - Failed to create new process\n",
- 				strerror(errno));
-@@ -144,14 +137,14 @@ int main(int argc, char *argv[])
- 	else
- 		ksft_test_result_skip("Skipping clone3() with CLONE_NEWPID\n");
- 
--	/* Do a clone3() with CLONE3_ARGS_SIZE_V0. */
--	test_clone3(0, CLONE3_ARGS_SIZE_V0, 0, CLONE3_ARGS_NO_TEST);
-+	/* Do a clone3() with CLONE_ARGS_SIZE_VER0. */
-+	test_clone3(0, CLONE_ARGS_SIZE_VER0, 0, CLONE3_ARGS_NO_TEST);
- 
--	/* Do a clone3() with CLONE3_ARGS_SIZE_V0 - 8 */
--	test_clone3(0, CLONE3_ARGS_SIZE_V0 - 8, -EINVAL, CLONE3_ARGS_NO_TEST);
-+	/* Do a clone3() with CLONE_ARGS_SIZE_VER0 - 8 */
-+	test_clone3(0, CLONE_ARGS_SIZE_VER0 - 8, -EINVAL, CLONE3_ARGS_NO_TEST);
- 
- 	/* Do a clone3() with sizeof(struct clone_args) + 8 */
--	test_clone3(0, sizeof(struct clone_args) + 8, 0, CLONE3_ARGS_NO_TEST);
-+	test_clone3(0, sizeof(struct __clone_args) + 8, 0, CLONE3_ARGS_NO_TEST);
- 
- 	/* Do a clone3() with exit_signal having highest 32 bits non-zero */
- 	test_clone3(0, 0, -EINVAL, CLONE3_ARGS_INVAL_EXIT_SIGNAL_BIG);
-@@ -165,31 +158,31 @@ int main(int argc, char *argv[])
- 	/* Do a clone3() with NSIG < exit_signal < CSIG */
- 	test_clone3(0, 0, -EINVAL, CLONE3_ARGS_INVAL_EXIT_SIGNAL_NSIG);
- 
--	test_clone3(0, sizeof(struct clone_args) + 8, 0, CLONE3_ARGS_ALL_0);
-+	test_clone3(0, sizeof(struct __clone_args) + 8, 0, CLONE3_ARGS_ALL_0);
- 
--	test_clone3(0, sizeof(struct clone_args) + 16, -E2BIG,
-+	test_clone3(0, sizeof(struct __clone_args) + 16, -E2BIG,
- 			CLONE3_ARGS_ALL_0);
- 
--	test_clone3(0, sizeof(struct clone_args) * 2, -E2BIG,
-+	test_clone3(0, sizeof(struct __clone_args) * 2, -E2BIG,
- 			CLONE3_ARGS_ALL_0);
- 
- 	/* Do a clone3() with > page size */
- 	test_clone3(0, getpagesize() + 8, -E2BIG, CLONE3_ARGS_NO_TEST);
- 
--	/* Do a clone3() with CLONE3_ARGS_SIZE_V0 in a new PID NS. */
-+	/* Do a clone3() with CLONE_ARGS_SIZE_VER0 in a new PID NS. */
- 	if (uid == 0)
--		test_clone3(CLONE_NEWPID, CLONE3_ARGS_SIZE_V0, 0,
-+		test_clone3(CLONE_NEWPID, CLONE_ARGS_SIZE_VER0, 0,
- 				CLONE3_ARGS_NO_TEST);
- 	else
- 		ksft_test_result_skip("Skipping clone3() with CLONE_NEWPID\n");
- 
--	/* Do a clone3() with CLONE3_ARGS_SIZE_V0 - 8 in a new PID NS */
--	test_clone3(CLONE_NEWPID, CLONE3_ARGS_SIZE_V0 - 8, -EINVAL,
-+	/* Do a clone3() with CLONE_ARGS_SIZE_VER0 - 8 in a new PID NS */
-+	test_clone3(CLONE_NEWPID, CLONE_ARGS_SIZE_VER0 - 8, -EINVAL,
- 			CLONE3_ARGS_NO_TEST);
- 
- 	/* Do a clone3() with sizeof(struct clone_args) + 8 in a new PID NS */
- 	if (uid == 0)
--		test_clone3(CLONE_NEWPID, sizeof(struct clone_args) + 8, 0,
-+		test_clone3(CLONE_NEWPID, sizeof(struct __clone_args) + 8, 0,
- 				CLONE3_ARGS_NO_TEST);
- 	else
- 		ksft_test_result_skip("Skipping clone3() with CLONE_NEWPID\n");
-diff --git a/tools/testing/selftests/clone3/clone3_cap_checkpoint_restore.c b/tools/testing/selftests/clone3/clone3_cap_checkpoint_restore.c
-index 9562425aa0a9..55bd387ce7ec 100644
---- a/tools/testing/selftests/clone3/clone3_cap_checkpoint_restore.c
-+++ b/tools/testing/selftests/clone3/clone3_cap_checkpoint_restore.c
-@@ -44,13 +44,13 @@ static int call_clone3_set_tid(struct __test_metadata *_metadata,
- 	int status;
- 	pid_t pid = -1;
- 
--	struct clone_args args = {
-+	struct __clone_args args = {
- 		.exit_signal = SIGCHLD,
- 		.set_tid = ptr_to_u64(set_tid),
- 		.set_tid_size = set_tid_size,
- 	};
- 
--	pid = sys_clone3(&args, sizeof(struct clone_args));
-+	pid = sys_clone3(&args, sizeof(args));
- 	if (pid < 0) {
- 		TH_LOG("%s - Failed to create new process", strerror(errno));
- 		return -errno;
-diff --git a/tools/testing/selftests/clone3/clone3_clear_sighand.c b/tools/testing/selftests/clone3/clone3_clear_sighand.c
-index db5fc9c5edcf..47a8c0fc3676 100644
---- a/tools/testing/selftests/clone3/clone3_clear_sighand.c
-+++ b/tools/testing/selftests/clone3/clone3_clear_sighand.c
-@@ -47,7 +47,7 @@ static void test_clone3_clear_sighand(void)
- {
- 	int ret;
- 	pid_t pid;
--	struct clone_args args = {};
-+	struct __clone_args args = {};
- 	struct sigaction act;
- 
- 	/*
-diff --git a/tools/testing/selftests/clone3/clone3_selftests.h b/tools/testing/selftests/clone3/clone3_selftests.h
-index 91c1a78ddb39..e81ffaaee02b 100644
---- a/tools/testing/selftests/clone3/clone3_selftests.h
-+++ b/tools/testing/selftests/clone3/clone3_selftests.h
-@@ -19,13 +19,11 @@
- #define CLONE_INTO_CGROUP 0x200000000ULL /* Clone into a specific cgroup given the right permissions. */
- #endif
- 
--#ifndef CLONE_ARGS_SIZE_VER0
--#define CLONE_ARGS_SIZE_VER0 64
--#endif
--
- #ifndef __NR_clone3
- #define __NR_clone3 -1
--struct clone_args {
-+#endif
-+
-+struct __clone_args {
- 	__aligned_u64 flags;
- 	__aligned_u64 pidfd;
- 	__aligned_u64 child_tid;
-@@ -34,15 +32,21 @@ struct clone_args {
- 	__aligned_u64 stack;
- 	__aligned_u64 stack_size;
- 	__aligned_u64 tls;
--#define CLONE_ARGS_SIZE_VER1 80
-+#ifndef CLONE_ARGS_SIZE_VER0
-+#define CLONE_ARGS_SIZE_VER0 64	/* sizeof first published struct */
-+#endif
- 	__aligned_u64 set_tid;
- 	__aligned_u64 set_tid_size;
--#define CLONE_ARGS_SIZE_VER2 88
-+#ifndef CLONE_ARGS_SIZE_VER1
-+#define CLONE_ARGS_SIZE_VER1 80	/* sizeof second published struct */
-+#endif
- 	__aligned_u64 cgroup;
-+#ifndef CLONE_ARGS_SIZE_VER2
-+#define CLONE_ARGS_SIZE_VER2 88	/* sizeof third published struct */
-+#endif
- };
--#endif /* __NR_clone3 */
- 
--static pid_t sys_clone3(struct clone_args *args, size_t size)
-+static pid_t sys_clone3(struct __clone_args *args, size_t size)
- {
- 	fflush(stdout);
- 	fflush(stderr);
-@@ -52,7 +56,7 @@ static pid_t sys_clone3(struct clone_args *args, size_t size)
- static inline void test_clone3_supported(void)
- {
- 	pid_t pid;
--	struct clone_args args = {};
-+	struct __clone_args args = {};
- 
- 	if (__NR_clone3 < 0)
- 		ksft_exit_skip("clone3() syscall is not supported\n");
-diff --git a/tools/testing/selftests/clone3/clone3_set_tid.c b/tools/testing/selftests/clone3/clone3_set_tid.c
-index 5831c1082d6d..0229e9ebb995 100644
---- a/tools/testing/selftests/clone3/clone3_set_tid.c
-+++ b/tools/testing/selftests/clone3/clone3_set_tid.c
-@@ -46,14 +46,14 @@ static int call_clone3_set_tid(pid_t *set_tid,
- 	int status;
- 	pid_t pid = -1;
- 
--	struct clone_args args = {
-+	struct __clone_args args = {
- 		.flags = flags,
- 		.exit_signal = SIGCHLD,
- 		.set_tid = ptr_to_u64(set_tid),
- 		.set_tid_size = set_tid_size,
- 	};
- 
--	pid = sys_clone3(&args, sizeof(struct clone_args));
-+	pid = sys_clone3(&args, sizeof(args));
- 	if (pid < 0) {
- 		ksft_print_msg("%s - Failed to create new process\n",
- 			       strerror(errno));
-diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
-index 894c2404d321..4a180439ee9e 100644
---- a/tools/testing/selftests/seccomp/seccomp_bpf.c
-+++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
-@@ -3817,7 +3817,7 @@ TEST(user_notification_filter_empty)
- 	long ret;
- 	int status;
- 	struct pollfd pollfd;
--	struct clone_args args = {
-+	struct __clone_args args = {
- 		.flags = CLONE_FILES,
- 		.exit_signal = SIGCHLD,
- 	};
-@@ -3871,7 +3871,7 @@ TEST(user_notification_filter_empty_threaded)
- 	long ret;
- 	int status;
- 	struct pollfd pollfd;
--	struct clone_args args = {
-+	struct __clone_args args = {
- 		.flags = CLONE_FILES,
- 		.exit_signal = SIGCHLD,
- 	};
--- 
-2.25.1
-
+Rmlyc3Qgb2YgYWxsLCBzb3JyeSBmb3IgdGhlIGhvcnJpYmx5IGJpZyBDYyBsaXN0IQoKRm9sbG93
+aW5nIHVwIHRvIHRoZSBkaXNjdXNzaW9uIGluOgoKICBodHRwczovL2xvcmUua2VybmVsLm9yZy9y
+LzIwMjAwOTE0MjA0MjA5LjI1NjI2NjA5M0BsaW51dHJvbml4LmRlCgp0aGlzIHByb3ZpZGVzIGEg
+cHJlZW1wdGlibGUgdmFyaWFudCBvZiBrbWFwX2F0b21pYyAmIHJlbGF0ZWQKaW50ZXJmYWNlcy4g
+VGhpcyBpcyBhY2hpZXZlZCBieToKCiAtIENvbnNvbGlkYXRpbmcgYWxsIGttYXAgYXRvbWljIGlt
+cGxlbWVudGF0aW9ucyBpbiBnZW5lcmljIGNvZGUKCiAtIFN3aXRjaGluZyBmcm9tIHBlciBDUFUg
+c3RvcmFnZSBvZiB0aGUga21hcCBpbmRleCB0byBhIHBlciB0YXNrIHN0b3JhZ2UKCiAtIEFkZGlu
+ZyBhIHB0ZXZhbCBhcnJheSB0byB0aGUgcGVyIHRhc2sgc3RvcmFnZSB3aGljaCBjb250YWlucyB0
+aGUgcHRldmFscwogICBvZiB0aGUgY3VycmVudGx5IGFjdGl2ZSB0ZW1wb3Jhcnkga21hcHMKCiAt
+IEFkZGluZyBjb250ZXh0IHN3aXRjaCBjb2RlIHdoaWNoIGNoZWNrcyB3aGV0aGVyIHRoZSBvdXRn
+b2luZyBvciB0aGUKICAgaW5jb21pbmcgdGFzayBoYXMgYWN0aXZlIHRlbXBvcmFyeSBrbWFwcy4g
+SWYgc28sIHRoZSBvdXRnb2luZyB0YXNrJ3MKICAga21hcHMgYXJlIHJlbW92ZWQgYW5kIHRoZSBp
+bmNvbWluZyB0YXNrJ3Mga21hcHMgYXJlIHJlc3RvcmVkLgoKIC0gQWRkaW5nIG5ldyBpbnRlcmZh
+Y2VzIGtbdW5dbWFwX3RlbXBvcmFyeSooKSB3aGljaCBhcmUgbm90IGRpc2FibGluZwogICBwcmVl
+bXB0aW9uIGFuZCBjYW4gYmUgY2FsbGVkIGZyb20gYW55IGNvbnRleHQgKGV4Y2VwdCBOTUkpLgoK
+ICAgQ29udHJhcnkgdG8ga21hcCgpIHdoaWNoIHByb3ZpZGVzIHByZWVtcHRpYmxlIGFuZCAicGVy
+c2lzdGFudCIgbWFwcGluZ3MsCiAgIHRoZXNlIGludGVyZmFjZXMgYXJlIG1lYW50IHRvIHJlcGxh
+Y2UgdGhlIHRlbXBvcmFyeSBtYXBwaW5ncyBwcm92aWRlZCBieQogICBrbWFwX2F0b21pYyooKSB0
+b2RheS4KClRoaXMgYWxsb3dzIHRvIGdldCByaWQgb2YgY29uZGl0aW9uYWwgbWFwcGluZyBjaG9p
+Y2VzIGFuZCBhbGxvd3MgdG8gaGF2ZQpwcmVlbXB0aWJsZSBzaG9ydCB0ZXJtIG1hcHBpbmdzIG9u
+IDY0Yml0IHdoaWNoIGFyZSB0b2RheSBlbmZvcmNlZCB0byBiZQpub24tcHJlZW1wdGlibGUgZHVl
+IHRvIHRoZSBoaWdobWVtIGNvbnN0cmFpbnRzLiBJdCBjbGVhcmx5IHB1dHMgb3ZlcmhlYWQgb24K
+dGhlIGhpZ2htZW0gdXNlcnMsIGJ1dCBoaWdobWVtIGlzIHNsb3cgYW55d2F5LgoKVGhpcyBpcyBu
+b3QgYSB3aG9sZXNhbGUgY29udmVyc2lvbiB3aGljaCBtYWtlcyBrbWFwX2F0b21pYyBtYWdpY2Fs
+bHkKcHJlZW1wdGlibGUgYmVjYXVzZSB0aGVyZSBtaWdodCBiZSB1c2FnZSBzaXRlcyB3aGljaCBy
+ZWx5IG9uIHRoZSBpbXBsaWNpdApwcmVlbXB0IGRpc2FibGUuIFNvIHRoaXMgbmVlZHMgdG8gYmUg
+ZG9uZSBvbiBhIGNhc2UgYnkgY2FzZSBiYXNpcyBhbmQgdGhlCmNhbGwgc2l0ZXMgY29udmVydGVk
+IHRvIGttYXBfdGVtcG9yYXJ5LgoKTm90ZSwgdGhhdCB0aGlzIGlzIG9ubHkgbGlnaHRseSB0ZXN0
+ZWQgb24gWDg2IGFuZCBjb21wbGV0ZWx5IHVudGVzdGVkIG9uCmFsbCBvdGhlciBhcmNoaXRlY3R1
+cmVzLgoKVGhlIGxvdCBpcyBhbHNvIGF2YWlsYWJsZSBmcm9tCgogICBnaXQ6Ly9naXQua2VybmVs
+Lm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvdGdseC9kZXZlbC5naXQgaGlnaG1lbQoKVGhh
+bmtzLAoKCXRnbHgKLS0tCiBhL2FyY2gvYXJtL21tL2hpZ2htZW0uYyAgICAgICAgICAgICAgIHwg
+IDEyMSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGEvYXJjaC9taWNyb2JsYXplL21tL2hpZ2htZW0u
+YyAgICAgICAgfCAgIDc4IC0tLS0tLS0tLS0tLS0KIGEvYXJjaC9uZHMzMi9tbS9oaWdobWVtLmMg
+ICAgICAgICAgICAgfCAgIDQ4IC0tLS0tLS0tCiBhL2FyY2gvcG93ZXJwYy9tbS9oaWdobWVtLmMg
+ICAgICAgICAgIHwgICA2NyAtLS0tLS0tLS0tLQogYS9hcmNoL3NwYXJjL21tL2hpZ2htZW0uYyAg
+ICAgICAgICAgICB8ICAxMTUgLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGFyY2gvYXJjL0tjb25maWcg
+ICAgICAgICAgICAgICAgICAgICAgfCAgICAxIAogYXJjaC9hcmMvaW5jbHVkZS9hc20vaGlnaG1l
+bS5oICAgICAgICB8ICAgIDggKwogYXJjaC9hcmMvbW0vaGlnaG1lbS5jICAgICAgICAgICAgICAg
+ICB8ICAgNDQgLS0tLS0tLQogYXJjaC9hcm0vS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICB8
+ICAgIDEgCiBhcmNoL2FybS9pbmNsdWRlL2FzbS9oaWdobWVtLmggICAgICAgIHwgICAzMCArKyst
+LQogYXJjaC9hcm0vbW0vTWFrZWZpbGUgICAgICAgICAgICAgICAgICB8ICAgIDEgCiBhcmNoL2Nz
+a3kvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgIHwgICAgMSAKIGFyY2gvY3NreS9pbmNsdWRl
+L2FzbS9oaWdobWVtLmggICAgICAgfCAgICA0IAogYXJjaC9jc2t5L21tL2hpZ2htZW0uYyAgICAg
+ICAgICAgICAgICB8ICAgNzUgLS0tLS0tLS0tLS0tLQogYXJjaC9taWNyb2JsYXplL0tjb25maWcg
+ICAgICAgICAgICAgICB8ICAgIDEgCiBhcmNoL21pY3JvYmxhemUvaW5jbHVkZS9hc20vaGlnaG1l
+bS5oIHwgICAgNiAtCiBhcmNoL21pY3JvYmxhemUvbW0vTWFrZWZpbGUgICAgICAgICAgIHwgICAg
+MSAKIGFyY2gvbWljcm9ibGF6ZS9tbS9pbml0LmMgICAgICAgICAgICAgfCAgICA2IC0KIGFyY2gv
+bWlwcy9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgfCAgICAxIAogYXJjaC9taXBzL2luY2x1
+ZGUvYXNtL2hpZ2htZW0uaCAgICAgICB8ICAgIDQgCiBhcmNoL21pcHMvbW0vaGlnaG1lbS5jICAg
+ICAgICAgICAgICAgIHwgICA3NyAtLS0tLS0tLS0tLS0tCiBhcmNoL21pcHMvbW0vaW5pdC5jICAg
+ICAgICAgICAgICAgICAgIHwgICAgMyAKIGFyY2gvbmRzMzIvS2NvbmZpZy5jcHUgICAgICAgICAg
+ICAgICAgfCAgICAxIAogYXJjaC9uZHMzMi9pbmNsdWRlL2FzbS9oaWdobWVtLmggICAgICB8ICAg
+MjEgKystCiBhcmNoL25kczMyL21tL01ha2VmaWxlICAgICAgICAgICAgICAgIHwgICAgMSAKIGFy
+Y2gvcG93ZXJwYy9LY29uZmlnICAgICAgICAgICAgICAgICAgfCAgICAxIAogYXJjaC9wb3dlcnBj
+L2luY2x1ZGUvYXNtL2hpZ2htZW0uaCAgICB8ICAgIDYgLQogYXJjaC9wb3dlcnBjL21tL01ha2Vm
+aWxlICAgICAgICAgICAgICB8ICAgIDEgCiBhcmNoL3Bvd2VycGMvbW0vbWVtLmMgICAgICAgICAg
+ICAgICAgIHwgICAgNyAtCiBhcmNoL3NwYXJjL0tjb25maWcgICAgICAgICAgICAgICAgICAgIHwg
+ICAgMSAKIGFyY2gvc3BhcmMvaW5jbHVkZS9hc20vaGlnaG1lbS5oICAgICAgfCAgICA3IC0KIGFy
+Y2gvc3BhcmMvbW0vTWFrZWZpbGUgICAgICAgICAgICAgICAgfCAgICAzIAogYXJjaC9zcGFyYy9t
+bS9zcm1tdS5jICAgICAgICAgICAgICAgICB8ICAgIDIgCiBhcmNoL3g4Ni9pbmNsdWRlL2FzbS9m
+aXhtYXAuaCAgICAgICAgIHwgICAgMSAKIGFyY2gveDg2L2luY2x1ZGUvYXNtL2hpZ2htZW0uaCAg
+ICAgICAgfCAgIDEyICstCiBhcmNoL3g4Ni9pbmNsdWRlL2FzbS9pb21hcC5oICAgICAgICAgIHwg
+ICAyOSArKystLQogYXJjaC94ODYvbW0vaGlnaG1lbV8zMi5jICAgICAgICAgICAgICB8ICAgNTkg
+LS0tLS0tLS0tLQogYXJjaC94ODYvbW0vaW5pdF8zMi5jICAgICAgICAgICAgICAgICB8ICAgMTUg
+LS0KIGFyY2gveDg2L21tL2lvbWFwXzMyLmMgICAgICAgICAgICAgICAgfCAgIDU3IC0tLS0tLS0t
+LS0KIGFyY2gveHRlbnNhL0tjb25maWcgICAgICAgICAgICAgICAgICAgfCAgICAxIAogYXJjaC94
+dGVuc2EvaW5jbHVkZS9hc20vaGlnaG1lbS5oICAgICB8ICAgIDkgKwogYXJjaC94dGVuc2EvbW0v
+aGlnaG1lbS5jICAgICAgICAgICAgICB8ICAgNDQgLS0tLS0tLQogYi9hcmNoL3g4Ni9LY29uZmln
+ICAgICAgICAgICAgICAgICAgICB8ICAgIDMgCiBpbmNsdWRlL2xpbnV4L2hpZ2htZW0uaCAgICAg
+ICAgICAgICAgIHwgIDE0MSArKysrKysrKysrKysrKystLS0tLS0tLS0KIGluY2x1ZGUvbGludXgv
+aW8tbWFwcGluZy5oICAgICAgICAgICAgfCAgICAyIAogaW5jbHVkZS9saW51eC9zY2hlZC5oICAg
+ICAgICAgICAgICAgICB8ICAgIDkgKwoga2VybmVsL3NjaGVkL2NvcmUuYyAgICAgICAgICAgICAg
+ICAgICB8ICAgMTAgKwogbW0vS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
+IDMgCiBtbS9oaWdobWVtLmMgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDE5MiArKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKy0tCiA0OSBmaWxlcyBjaGFuZ2VkLCA0MjIgaW5zZXJ0
+aW9ucygrKSwgOTA5IGRlbGV0aW9ucygtKQo=
