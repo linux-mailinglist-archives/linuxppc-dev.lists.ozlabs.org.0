@@ -2,40 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6713D270B27
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 08:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 074BB270B5E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 09:13:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Btgyb2SMFzDqsM
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 16:38:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bthl316kszDqwT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 17:13:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=huawei.com;
- envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=jingxiangfeng@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Btgwv711bzDqpC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 16:37:14 +1000 (AEST)
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id AE9DCAF8C0271C6EA084;
- Sat, 19 Sep 2020 14:37:03 +0800 (CST)
-Received: from huawei.com (10.175.124.27) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Sat, 19 Sep 2020
- 14:36:59 +0800
-From: Yang Yingliang <yangyingliang@huawei.com>
-To: <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH -next v2] tty: hvc: fix link error with
- CONFIG_SERIAL_CORE_CONSOLE=n
-Date: Sat, 19 Sep 2020 14:35:35 +0800
-Message-ID: <20200919063535.2809707-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BthjQ6qHLzDqsG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 17:12:19 +1000 (AEST)
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 064361527795F6012CE4;
+ Sat, 19 Sep 2020 15:12:16 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.487.0; Sat, 19 Sep 2020 15:12:07 +0800
+From: Jing Xiangfeng <jingxiangfeng@huawei.com>
+To: <paulus@ozlabs.org>, <mpe@ellerman.id.au>, <benh@kernel.crashing.org>
+Subject: [PATCH] KVM: PPC: Book3S: Remove redundant initialization of variable
+ ret
+Date: Sat, 19 Sep 2020 15:12:30 +0800
+Message-ID: <20200919071230.125798-1-jingxiangfeng@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.175.124.27]
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -48,37 +48,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, jingxiangfeng@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-aarch64-linux-gnu-ld: drivers/tty/hvc/hvc_dcc.o: in function `dcc_early_write':
-hvc_dcc.c:(.text+0x164): undefined reference to `uart_console_write'
+The variable ret is being initialized with '-ENOMEM' that is meaningless.
+So remove it.
 
-The driver uses the uart_console_write(), but SERIAL_CORE_CONSOLE is not
-selected, so uart_console_write is not defined, then we get the error.
-Fix this by selecting SERIAL_CORE_CONSOLE.
-
-Fixes: d1a1af2cdf19 ("hvc: dcc: Add earlycon support")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
 ---
- drivers/tty/hvc/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kvm/book3s_64_vio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/hvc/Kconfig b/drivers/tty/hvc/Kconfig
-index d1b27b0522a3..8d60e0ff67b4 100644
---- a/drivers/tty/hvc/Kconfig
-+++ b/drivers/tty/hvc/Kconfig
-@@ -81,6 +81,7 @@ config HVC_DCC
- 	bool "ARM JTAG DCC console"
- 	depends on ARM || ARM64
- 	select HVC_DRIVER
-+	select SERIAL_CORE_CONSOLE
- 	help
- 	  This console uses the JTAG DCC on ARM to create a console under the HVC
- 	  driver. This console is used through a JTAG only on ARM. If you don't have
+diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
+index 1a529df0ab44..b277a75cd1be 100644
+--- a/arch/powerpc/kvm/book3s_64_vio.c
++++ b/arch/powerpc/kvm/book3s_64_vio.c
+@@ -283,7 +283,7 @@ long kvm_vm_ioctl_create_spapr_tce(struct kvm *kvm,
+ 	struct kvmppc_spapr_tce_table *siter;
+ 	struct mm_struct *mm = kvm->mm;
+ 	unsigned long npages, size = args->size;
+-	int ret = -ENOMEM;
++	int ret;
+ 
+ 	if (!args->size || args->page_shift < 12 || args->page_shift > 34 ||
+ 		(args->offset + args->size > (ULLONG_MAX >> args->page_shift)))
 -- 
-2.25.1
+2.17.1
 
