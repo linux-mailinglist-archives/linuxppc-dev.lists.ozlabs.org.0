@@ -1,55 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721CE270FDA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 19:42:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30693270FEF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 20:12:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Btygs4kpzzDqty
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Sep 2020 03:42:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BtzLW22GtzDqRr
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Sep 2020 04:12:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=GA8JmFgA; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=cpvwH2Kr; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BtyfK1SVmzDqXX
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Sep 2020 03:40:41 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=K7cFTcsHe45qv1JJ+UknwUT4mvbkrB+z2Jy5+goIZf0=; b=GA8JmFgANuCgqfeQ26a1OMpRZE
- ZlbdTi1XaGMnZkdmimNhxcmAfB4GoKEHChTyR/daa8IK0MpK+Ph2ryH9b//aJ7p80Ibs7l4BswfKA
- sIzYu18LtoXosTxZAkge/rc7Gjb4PaaE+FfoSKec+IBx6JDUvF50gAZCGBJozVv3Q9TlSsMTvnq4U
- keH99iWU1/g/8GqcgNItUNMFJkFHNg8zhSjOTYLGYkT6E6wJJ/7Hz/Yg8vF2N30AJY+JgAxJpcH7t
- m+E+NNmErAuLXNLlz9CT3fJe5cNWm4y9wNwF8wRjFWgpkB/kQEiLyYiDCjBe1dWILsbbqWV9yJF6I
- kDktgdcw==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1kJgpG-0007zK-4s; Sat, 19 Sep 2020 17:39:06 +0000
-Date: Sat, 19 Sep 2020 18:39:06 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [patch RFC 00/15] mm/highmem: Provide a preemptible variant of
- kmap_atomic & friends
-Message-ID: <20200919173906.GQ32101@casper.infradead.org>
-References: <20200919091751.011116649@linutronix.de>
- <CAHk-=wiYGyrFRbA1cc71D2-nc5U9LM9jUJesXGqpPnB7E4X1YQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BtzJn2y2kzDqRr
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Sep 2020 04:10:33 +1000 (AEST)
+Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 7DC222075E;
+ Sat, 19 Sep 2020 18:10:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1600539030;
+ bh=ng7qoQuro8I40AS+rk/GWBwGyH15HMQ2lDGOq46y4z4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=cpvwH2KrCL/Wnp9RLnIilCAmFNGJnA/Xz3AeEVRdVfqGVPzVfVP0VofE667VVToHs
+ jwuf3LzAoLV6m+kZlGbQJM0pqhCaQGX9sb9Q+5Pml3db5kddP3elGivYKzJVOST361
+ sxBp9dKbdTYoXsXbuK/Lzs7A2Rtdn2z8KHlU/og8=
+Date: Sat, 19 Sep 2020 14:10:29 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Frederic Barrat <fbarrat@linux.ibm.com>
+Subject: Re: [PATCH AUTOSEL 5.4 101/330] powerpc/powernv/ioda: Fix ref count
+ for devices with their own PE
+Message-ID: <20200919181029.GI2431@sasha-vm>
+References: <20200918020110.2063155-1-sashal@kernel.org>
+ <20200918020110.2063155-101-sashal@kernel.org>
+ <52532d8a-8e90-8a68-07bd-5a3e08c58475@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wiYGyrFRbA1cc71D2-nc5U9LM9jUJesXGqpPnB7E4X1YQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <52532d8a-8e90-8a68-07bd-5a3e08c58475@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,84 +59,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>, linux-mips@vger.kernel.org,
- Ben Segall <bsegall@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Guo Ren <guoren@kernel.org>, linux-sparc <sparclinux@vger.kernel.org>,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- the arch/x86 maintainers <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Mel Gorman <mgorman@suse.de>,
- "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
- linux-xtensa@linux-xtensa.org, Paul McKenney <paulmck@kernel.org>,
- intel-gfx <intel-gfx@lists.freedesktop.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Steven Rostedt <rostedt@goodmis.org>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>, Linux-MM <linux-mm@kvack.org>,
- Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel@ffwll.ch>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- Daniel Bristot de Oliveira <bristot@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Sep 19, 2020 at 10:18:54AM -0700, Linus Torvalds wrote:
-> On Sat, Sep 19, 2020 at 2:50 AM Thomas Gleixner <tglx@linutronix.de> wrote:
-> >
-> > this provides a preemptible variant of kmap_atomic & related
-> > interfaces. This is achieved by:
-> 
-> Ack. This looks really nice, even apart from the new capability.
-> 
-> The only thing I really reacted to is that the name doesn't make sense
-> to me: "kmap_temporary()" seems a bit odd.
-> 
-> Particularly for an interface that really is basically meant as a
-> better replacement of "kmap_atomic()" (but is perhaps also a better
-> replacement for "kmap()").
-> 
-> I think I understand how the name came about: I think the "temporary"
-> is there as a distinction from the "longterm" regular kmap(). So I
-> think it makes some sense from an internal implementation angle, but I
-> don't think it makes a lot of sense from an interface name.
-> 
-> I don't know what might be a better name, but if we want to emphasize
-> that it's thread-private and a one-off, maybe "local" would be a
-> better naming, and make it distinct from the "global" nature of the
-> old kmap() interface?
-> 
-> However, another solution might be to just use this new preemptible
-> "local" kmap(), and remove the old global one entirely. Yes, the old
-> global one caches the page table mapping and that sounds really
-> efficient and nice. But it's actually horribly horribly bad, because
-> it means that we need to use locking for them. Your new "temporary"
-> implementation seems to be fundamentally better locking-wise, and only
-> need preemption disabling as locking (and is equally fast for the
-> non-highmem case).
-> 
-> So I wonder if the single-page TLB flush isn't a better model, and
-> whether it wouldn't be a lot simpler to just get rid of the old
-> complex kmap() entirely, and replace it with this?
-> 
-> I agree we can't replace the kmap_atomic() version, because maybe
-> people depend on the preemption disabling it also implied. But what
-> about replacing the non-atomic kmap()?
+On Fri, Sep 18, 2020 at 08:35:06AM +0200, Frederic Barrat wrote:
+>
+>
+>Le 18/09/2020 à 03:57, Sasha Levin a écrit :
+>>From: Frederic Barrat <fbarrat@linux.ibm.com>
+>>
+>>[ Upstream commit 05dd7da76986937fb288b4213b1fa10dbe0d1b33 ]
+>>
+>
+>This patch is not desirable for stable, for 5.4 and 4.19 (it was 
+>already flagged by autosel back in April. Not sure why it's showing 
+>again now)
 
-My concern with that is people might use kmap() and then pass the address
-to a different task.  So we need to audit the current users of kmap()
-and convert any that do that into using vmap() instead.
+Hey Fred,
 
-I like kmap_local().  Or kmap_thread().
+This was a bit of a "lie", it wasn't a run of AUTOSEL, but rather an
+audit of patches that went into distro/vendor trees but not into the
+upstream stable trees.
+
+I can see that this patch was pulled into Ubuntu's 5.4 tree, is it not
+needed in the upstream stable tree?
+
+-- 
+Thanks,
+Sasha
