@@ -2,50 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B846827094F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 01:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A523E2709A9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 03:29:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BtW5b1Mj5zDqvg
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 09:59:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BtY5n2yQWzDqwN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 11:29:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=miaoqinglang@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BtW443MKQzDqsN
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 09:57:51 +1000 (AEST)
-IronPort-SDR: 49uK6Lmm4XgE6OxBxKWRSLNIqolJ+oPixOw5uij+Xc0fMh267IFbfuqi4tKqTtnHQ2CdoieLkx
- 5/HFe7GDWCuA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9748"; a="157450169"
-X-IronPort-AV: E=Sophos;i="5.77,276,1596524400"; d="scan'208";a="157450169"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2020 16:57:48 -0700
-IronPort-SDR: 8PMfcOPDYTXn2BEFnYu5gWLDJj1v1Lf1sVcdhK0261JOxQc0sdvCMdryF/1G/bnD0W/aNTHyLx
- uwX6zex0px2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,276,1596524400"; d="scan'208";a="509095004"
-Received: from lkp-server01.sh.intel.com (HELO a05db971c861) ([10.239.97.150])
- by fmsmga005.fm.intel.com with ESMTP; 18 Sep 2020 16:57:46 -0700
-Received: from kbuild by a05db971c861 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kJQG9-0000mw-Kf; Fri, 18 Sep 2020 23:57:45 +0000
-Date: Sat, 19 Sep 2020 07:57:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS ace1986562a0814f179ecd2f1e648215ebc6625a
-Message-ID: <5f65494f.l7EPZKaGHhp5FMEV%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BtY4127WqzDqtV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 11:27:59 +1000 (AEST)
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id 23CC91B64D794E1EAAC7;
+ Sat, 19 Sep 2020 09:27:52 +0800 (CST)
+Received: from [10.174.179.91] (10.174.179.91) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.487.0; Sat, 19 Sep 2020 09:27:47 +0800
+Subject: Re: [PATCH -next] powerpc: Convert to DEFINE_SHOW_ATTRIBUTE
+To: Paul Mackerras <paulus@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <20200716090712.14375-1-miaoqinglang@huawei.com>
+ <20200902045118.GD272502@thinks.paulus.ozlabs.org>
+From: miaoqinglang <miaoqinglang@huawei.com>
+Message-ID: <088368fc-1bad-d973-39c7-86e8ba5c0f69@huawei.com>
+Date: Sat, 19 Sep 2020 09:27:46 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200902045118.GD272502@thinks.paulus.ozlabs.org>
+Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.91]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,136 +51,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: ace1986562a0814f179ecd2f1e648215ebc6625a  Automatic merge of 'master', 'next' and 'fixes' (2020-09-18 21:04)
 
-elapsed time: 724m
 
-configs tested: 110
-configs skipped: 2
+ÔÚ 2020/9/2 12:51, Paul Mackerras Ð´µÀ:
+> On Thu, Jul 16, 2020 at 05:07:12PM +0800, Qinglang Miao wrote:
+>> From: Chen Huang <chenhuang5@huawei.com>
+>>
+>> Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
+>>
+>> Signed-off-by: Chen Huang <chenhuang5@huawei.com>
+> 
+> For the arch/powerpc/kvm part:
+> 
+> Acked-by: Paul Mackerras <paulus@ozlabs.org>
+> 
+> I expect Michael Ellerman will take the patch through his tree.
+> 
+> Paul.
+> .
+Hi Michael and Paul,
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I spilited this patch and resent them because I noticed that 
+<4d4901c6d7>(turn .read -> .read_iter) in linux-next has been reverted.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                     akebono_defconfig
-arc                 nsimosci_hs_smp_defconfig
-powerpc                     rainier_defconfig
-mips                       capcella_defconfig
-powerpc                     kilauea_defconfig
-arm                       imx_v6_v7_defconfig
-powerpc                 mpc832x_mds_defconfig
-arm                             rpc_defconfig
-arm                            u300_defconfig
-sh                           se7750_defconfig
-xtensa                         virt_defconfig
-arm                           corgi_defconfig
-powerpc                     tqm5200_defconfig
-powerpc                    klondike_defconfig
-arc                         haps_hs_defconfig
-arm                          lpd270_defconfig
-arm                          simpad_defconfig
-mips                           ci20_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a004-20200917
-i386                 randconfig-a006-20200917
-i386                 randconfig-a003-20200917
-i386                 randconfig-a001-20200917
-i386                 randconfig-a002-20200917
-i386                 randconfig-a005-20200917
-i386                 randconfig-a004-20200918
-i386                 randconfig-a001-20200918
-i386                 randconfig-a003-20200918
-i386                 randconfig-a006-20200918
-i386                 randconfig-a002-20200918
-i386                 randconfig-a005-20200918
-x86_64               randconfig-a014-20200917
-x86_64               randconfig-a011-20200917
-x86_64               randconfig-a016-20200917
-x86_64               randconfig-a012-20200917
-x86_64               randconfig-a015-20200917
-x86_64               randconfig-a013-20200917
-i386                 randconfig-a015-20200917
-i386                 randconfig-a014-20200917
-i386                 randconfig-a011-20200917
-i386                 randconfig-a013-20200917
-i386                 randconfig-a016-20200917
-i386                 randconfig-a012-20200917
-i386                 randconfig-a015-20200918
-i386                 randconfig-a011-20200918
-i386                 randconfig-a014-20200918
-i386                 randconfig-a013-20200918
-i386                 randconfig-a012-20200918
-i386                 randconfig-a016-20200918
-x86_64               randconfig-a004-20200918
-x86_64               randconfig-a006-20200918
-x86_64               randconfig-a003-20200918
-x86_64               randconfig-a002-20200918
-x86_64               randconfig-a005-20200918
-x86_64               randconfig-a001-20200918
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+New patches are against linux-next(20200917), and they can
+be applied to mainline cleanly now.
 
-clang tested configs:
-x86_64               randconfig-a006-20200917
-x86_64               randconfig-a004-20200917
-x86_64               randconfig-a003-20200917
-x86_64               randconfig-a002-20200917
-x86_64               randconfig-a001-20200917
-x86_64               randconfig-a005-20200917
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Thanks.
+> 
