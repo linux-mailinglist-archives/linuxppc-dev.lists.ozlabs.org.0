@@ -1,87 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D14B7270A60
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 05:22:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D47270A66
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 05:28:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BtbbT4jXfzDqRg
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 13:21:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Btbkd2JQBzDqwL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 13:28:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=sholland.org (client-ip=64.147.123.25;
- helo=wout2-smtp.messagingengine.com; envelope-from=samuel@sholland.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=sholland.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=sholland.org header.i=@sholland.org header.a=rsa-sha256
- header.s=fm3 header.b=jQ0RJFmN; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=Qhr5ijpX; 
- dkim-atps=neutral
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com
- [64.147.123.25])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BtbYh0V7BzDqPG
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 13:20:17 +1000 (AEST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailout.west.internal (Postfix) with ESMTP id 5FDD8C85;
- Fri, 18 Sep 2020 23:20:12 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute3.internal (MEProxy); Fri, 18 Sep 2020 23:20:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sholland.org; h=
- from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding; s=fm3; bh=+klDHT4tIeJVl4fgQHq2RfH08C
- mREckooi3m30a5UCo=; b=jQ0RJFmNOpIwpCANwC4OJdLY4yyTqiSWbNqzQrBvIU
- yUeMnR2j/ohd+NhiZcavWACRKnql+z+0GbYFw05W9/D3QPD9/Ji10/a3GV5uex7B
- RA9AC4vD34GqfrnVvKhK35PCedstAEtmQZUJXSL9PgRdlm03iMQMQhRcsnL5aFHj
- pDuuhujCAKdbdN+/slMynwW4YQkQxpZ9iHotjVU4MmqdfJw9iJjzF3EtW8sniRgX
- KNKj8HBOG3nkvJW+0hUg1ekim0blgLkwH3rtQ2uQBPTAMqe8XSmcRuO9UmWP80Nf
- Biz43slSF8iNI2jptUPzkcy53D+C3JgdWuEEZqMgtL5w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:date:from
- :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=+klDHT4tIeJVl4fgQ
- Hq2RfH08CmREckooi3m30a5UCo=; b=Qhr5ijpX6iqjimQMjwfFdGgNVENqOM+TQ
- vTFRwZNrZNl0MXZ9bf6cdak9eTv+gVUpHzMZuE0KM1JJzG2NjENp77liHWBXXcgT
- drTz/1D6hbMyl9meC/3IpkHZYVkUuVk8AxhCbczFgqXJ5qSqlSyovI6wCVq2qsOM
- pkFVZcShuZ3paZj0dK+8dUAGcMVpQNYIbyHqHHztWYCG0YG9+yEpDmg9wNY1GTG5
- H8JUL+J3BUyzNuf2EyivN9dmgxj9Hlgv5JzTBGR3wZ+UlxiSPzUkxZ7rsMCJagQ4
- dggJK7dnKeKkQviLT0XY5+5tdXTzP0T6SoWl0cicHqDhg0pesn6HA==
-X-ME-Sender: <xms:6nhlXxKLHLjMB0bQu0mCRnsDvEMvfECIsSaeMYFKmgbqBIbeU1czOA>
- <xme:6nhlX9J-pyGgsUxuAjEOcybbG9p6jMBpRlUIsYdQ4gNqGvXPH7kDbxxS180BZkKQu
- Jt5SiWGZcGkSMzdzQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrtdejgdeikecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomhepufgrmhhuvghlucfj
- ohhllhgrnhguuceoshgrmhhuvghlsehshhholhhlrghnugdrohhrgheqnecuggftrfgrth
- htvghrnhepieetkefhheduudfgledtudefjeejfeegveehkeeufffhhfejkeehiefftdev
- tdevnecukfhppeejtddrudefhedrudegkedrudehudenucevlhhushhtvghrufhiiigvpe
- dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehsrghmuhgvlhesshhhohhllhgrnhgurdho
- rhhg
-X-ME-Proxy: <xmx:6nhlX5sDOs37MMY2eacFEHsazrIygWZuK8g8zE7WBZ8pAsU4YFQNMQ>
- <xmx:6nhlXyY3uILhrkEuHzLhJe8DTbQ6cWoSYti4fS_uvp9_XlWwwk1L-w>
- <xmx:6nhlX4ZjRzGVzloKhQOgeQyGu5SfASCQiXVjeGbKpm8DOUfiEpVOtw>
- <xmx:7HhlXwFybixx5eLHpPcwfxV-9-rtYjQMyVJ0C9K9-xwrTX-fSVVwdg>
-Received: from titanium.stl.sholland.net
- (70-135-148-151.lightspeed.stlsmo.sbcglobal.net [70.135.148.151])
- by mail.messagingengine.com (Postfix) with ESMTPA id 5C4D2306467E;
- Fri, 18 Sep 2020 23:20:10 -0400 (EDT)
-From: Samuel Holland <samuel@sholland.org>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: Select HAVE_FUTEX_CMPXCHG
-Date: Fri, 18 Sep 2020 22:20:09 -0500
-Message-Id: <20200919032009.8346-1-samuel@sholland.org>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Btbht4CwRzDqg1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 13:26:37 +1000 (AEST)
+IronPort-SDR: ozbV28S45ADxfYzb1xEuN/CWD56IVIIy06+Webs2XFFTXxK5QqXBX8uGvVRdtsULqRP9CLp2v8
+ /rlN1+kCZEKw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9748"; a="157470378"
+X-IronPort-AV: E=Sophos;i="5.77,277,1596524400"; d="scan'208";a="157470378"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2020 20:26:28 -0700
+IronPort-SDR: M36aIF4rVq1jEvBr3KwMlFZ388UN3h6gxh2MqxtOkpHXIhf85/z8ZTNH/iS4C5ZLe6XSIDreIc
+ 5c1G6sRn/zdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,277,1596524400"; d="scan'208";a="288212090"
+Received: from lkp-server01.sh.intel.com (HELO a05db971c861) ([10.239.97.150])
+ by fmsmga007.fm.intel.com with ESMTP; 18 Sep 2020 20:26:27 -0700
+Received: from kbuild by a05db971c861 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1kJTW7-0000qi-3r; Sat, 19 Sep 2020 03:26:27 +0000
+Date: Sat, 19 Sep 2020 11:26:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 2a671167b5546321e2d2245aeb6f5a0e056a8f71
+Message-ID: <5f657a5d.MUcy+2IRFdIcODLC%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,36 +58,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Samuel Holland <samuel@sholland.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On powerpc, access_ok() succeeds for the NULL pointer. This breaks the
-dynamic check in futex_detect_cmpxchg(), which expects -EFAULT. As a
-result, robust futex operations are not functional on powerpc.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
+branch HEAD: 2a671167b5546321e2d2245aeb6f5a0e056a8f71  powerpc/pseries/iommu: Rename "direct window" to "dma window"
 
-Since the architecture's futex_atomic_cmpxchg_inatomic() implementation
-requires no runtime feature detection, we can select HAVE_FUTEX_CMPXCHG
-to skip futex_detect_cmpxchg() and enable the use of robust futexes.
+elapsed time: 879m
 
-Signed-off-by: Samuel Holland <samuel@sholland.org>
+configs tested: 106
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+m68k                          amiga_defconfig
+ia64                             alldefconfig
+powerpc                 mpc832x_mds_defconfig
+arm                       imx_v6_v7_defconfig
+arm                             rpc_defconfig
+arm                            u300_defconfig
+c6x                              allyesconfig
+sh                           se7750_defconfig
+xtensa                         virt_defconfig
+arm                           corgi_defconfig
+sparc                               defconfig
+arm                  colibri_pxa300_defconfig
+mips                  maltasmvp_eva_defconfig
+sh                         microdev_defconfig
+powerpc                     tqm5200_defconfig
+powerpc                    klondike_defconfig
+arc                         haps_hs_defconfig
+arm                          lpd270_defconfig
+arm                          simpad_defconfig
+mips                           ci20_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20200917
+i386                 randconfig-a006-20200917
+i386                 randconfig-a003-20200917
+i386                 randconfig-a001-20200917
+i386                 randconfig-a002-20200917
+i386                 randconfig-a005-20200917
+i386                 randconfig-a004-20200918
+i386                 randconfig-a001-20200918
+i386                 randconfig-a003-20200918
+i386                 randconfig-a006-20200918
+i386                 randconfig-a002-20200918
+i386                 randconfig-a005-20200918
+x86_64               randconfig-a014-20200917
+x86_64               randconfig-a011-20200917
+x86_64               randconfig-a016-20200917
+x86_64               randconfig-a012-20200917
+x86_64               randconfig-a015-20200917
+x86_64               randconfig-a013-20200917
+x86_64               randconfig-a011-20200919
+x86_64               randconfig-a012-20200919
+i386                 randconfig-a015-20200917
+i386                 randconfig-a014-20200917
+i386                 randconfig-a011-20200917
+i386                 randconfig-a013-20200917
+i386                 randconfig-a016-20200917
+i386                 randconfig-a012-20200917
+i386                 randconfig-a015-20200918
+i386                 randconfig-a011-20200918
+i386                 randconfig-a014-20200918
+i386                 randconfig-a013-20200918
+i386                 randconfig-a012-20200918
+i386                 randconfig-a016-20200918
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a006-20200917
+x86_64               randconfig-a004-20200917
+x86_64               randconfig-a003-20200917
+x86_64               randconfig-a002-20200917
+x86_64               randconfig-a001-20200917
+x86_64               randconfig-a005-20200917
+
 ---
- arch/powerpc/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index ad620637cbd1..5ad1deb0c669 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -196,6 +196,7 @@ config PPC
- 	select HAVE_FUNCTION_ERROR_INJECTION
- 	select HAVE_FUNCTION_GRAPH_TRACER
- 	select HAVE_FUNCTION_TRACER
-+	select HAVE_FUTEX_CMPXCHG
- 	select HAVE_GCC_PLUGINS			if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
- 	select HAVE_HW_BREAKPOINT		if PERF_EVENTS && (PPC_BOOK3S || PPC_8xx)
- 	select HAVE_IDE
--- 
-2.26.2
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
