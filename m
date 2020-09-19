@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B029270CD0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 12:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A0F270CD9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 12:14:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Btmbr4PbRzDr70
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 20:07:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Btml52BNRzDr0Q
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Sep 2020 20:14:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,41 +17,41 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=SZys8l8Y; 
+ header.s=2020 header.b=2FnY2CgY; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=kGS/q/Sk; 
+ header.a=ed25519-sha256 header.s=2020e header.b=fMUgmEzq; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BtmCb18ptzDqjx
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 19:50:19 +1000 (AEST)
-Message-Id: <20200919092617.067494770@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BtmCg0WWPzDqf1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Sep 2020 19:50:23 +1000 (AEST)
+Message-Id: <20200919092617.183860899@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1600509015;
+ s=2020; t=1600509016;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=p42YpEs102zdkHi6IlAnR/QRadkLzykF1FXKDbrjYxU=;
- b=SZys8l8YhCmQxDDymvS1n7Oqu5I65LO+lGgZ541jfa4VNROJOkmKbUKNHtZrOzKYOWUwfN
- 25qH2SWeZGyQ66Dixv+rBtythKLtIB8T8C945ihdJMKQxX9YkjaOk8QUjpPW3TMDw1TJOk
- UfoKS1d3u+tsE7tDIV8e5EYJbOui78C3Qfw/GcPjB4A2dxvwuJBdlTdgt1T0XTEty/YuAO
- P25B5bLL4jjY8J3AYbsvzU7c/On9Obf01Flaupd+cmwyeJvDG06hHJi7VefqHoq5sEmzlh
- 28vNvCYvrlDxF7+5pM5K7e3ZGP95mbb9n6dPTM2WItH7CTHK+a4TRWfvO4JGqw==
+ bh=T76OE0hi3eXJr7P+BXpYE0pYDTNZ2r9R3SGulCeyUuU=;
+ b=2FnY2CgYWeCTW79kyvYexk7YWJ5xeg5RXZtJ9x9zc2OPN3Abm6p3LWSqAACGBBqDpxCXEK
+ AmJNM9ROty5cv5zC8ZMPGQFlgo5ozfsX3aCrBpUMsRRmNlSxk2Nb7ibaVsStTHAV+q1xhw
+ tyuUzA8HGEbMNGj37Qb4z+s6kZ5dVfT/fSBG8UTTSfIo/dViyeIUoDNoqWM41jUb1uRe8y
+ TNuoicaGFBrepBDOjFrsE5pU2M0/QYOnyyCI8Na1YuZRUl8nzPl97OPAYFEckcN1cPy7c7
+ tnTLXhL0lRIQLAXZHDTRcAsRcj8SYlsXc5v1Qks/4q2bDcL1VWyRREvxbaGmYw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1600509015;
+ s=2020e; t=1600509016;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=p42YpEs102zdkHi6IlAnR/QRadkLzykF1FXKDbrjYxU=;
- b=kGS/q/SkMOAvdHaEHvWz/Wp8eD3l+FyAcs0YzY6S816o9XccAA19n2UHSwrNt073lt3c5u
- ms/QxYysVK8FM0Cg==
-Date: Sat, 19 Sep 2020 11:18:03 +0200
+ bh=T76OE0hi3eXJr7P+BXpYE0pYDTNZ2r9R3SGulCeyUuU=;
+ b=fMUgmEzq+EZqCAGQZdywecGad01pST+RaIL5AkSyisvyVygac32pLGfvQZhYYgbpit1xXp
+ 4d6YjSdh1O9XNzCw==
+Date: Sat, 19 Sep 2020 11:18:04 +0200
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch RFC 12/15] xtensa/mm/highmem: Switch to generic kmap atomic
+Subject: [patch RFC 13/15] mm/highmem: Remove the old kmap_atomic cruft
 References: <20200919091751.011116649@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -100,114 +100,145 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-xtensa@linux-xtensa.org
 ---
-Note: Completely untested
----
- arch/xtensa/Kconfig               |    1 
- arch/xtensa/include/asm/highmem.h |    9 +++++++
- arch/xtensa/mm/highmem.c          |   44 +++-----------------------------------
- 3 files changed, 14 insertions(+), 40 deletions(-)
+ include/linux/highmem.h |   65 ++----------------------------------------------
+ mm/highmem.c            |   28 +++++++++++++++++---
+ 2 files changed, 28 insertions(+), 65 deletions(-)
 
---- a/arch/xtensa/Kconfig
-+++ b/arch/xtensa/Kconfig
-@@ -679,6 +679,7 @@ endchoice
- config HIGHMEM
- 	bool "High Memory Support"
- 	depends on MMU
-+        select KMAP_ATOMIC_GENERIC
- 	help
- 	  Linux can use the full amount of RAM in the system by
- 	  default. However, the default MMUv2 setup only maps the
---- a/arch/xtensa/include/asm/highmem.h
-+++ b/arch/xtensa/include/asm/highmem.h
-@@ -68,6 +68,15 @@ static inline void flush_cache_kmaps(voi
- 	flush_cache_all();
- }
- 
-+enum fixed_addresses kmap_temp_map_idx(int type, unsigned long pfn);
-+#define arch_kmap_temp_map_idx		kmap_temp_map_idx
-+
-+enum fixed_addresses kmap_temp_unmap_idx(int type, unsigned long addr);
-+#define arch_kmap_temp_unmap_idx	kmap_temp_unmap_idx
-+
-+#define arch_kmap_temp_post_unmap(vaddr)	\
-+	local_flush_tlb_kernel_range(vaddr, vaddr + PAGE_SIZE)
-+
- void kmap_init(void);
- 
- #endif
---- a/arch/xtensa/mm/highmem.c
-+++ b/arch/xtensa/mm/highmem.c
-@@ -12,8 +12,6 @@
- #include <linux/highmem.h>
- #include <asm/tlbflush.h>
- 
--static pte_t *kmap_pte;
+--- a/include/linux/highmem.h
++++ b/include/linux/highmem.h
+@@ -94,27 +94,6 @@ static inline void kunmap(struct page *p
+  * be used in IRQ contexts, so in some (very limited) cases we need
+  * it.
+  */
 -
- #if DCACHE_WAY_SIZE > PAGE_SIZE
- unsigned int last_pkmap_nr_arr[DCACHE_N_COLORS];
- wait_queue_head_t pkmap_map_wait_arr[DCACHE_N_COLORS];
-@@ -37,55 +35,21 @@ static inline enum fixed_addresses kmap_
- 		color;
- }
- 
--void *kmap_atomic_high_prot(struct page *page, pgprot_t prot)
-+enum fixed_addresses kmap_temp_map_idx(int type, unsigned long pfn)
+-#ifndef CONFIG_KMAP_ATOMIC_GENERIC
+-void *kmap_atomic_high_prot(struct page *page, pgprot_t prot);
+-void kunmap_atomic_high(void *kvaddr);
+-
+-static inline void *kmap_atomic_prot(struct page *page, pgprot_t prot)
+-{
+-	preempt_disable();
+-	pagefault_disable();
+-	if (!PageHighMem(page))
+-		return page_address(page);
+-	return kmap_atomic_high_prot(page, prot);
+-}
+-
+-static inline void __kunmap_atomic(void *vaddr)
+-{
+-	kunmap_atomic_high(vaddr);
+-	pagefault_enable();
+-}
+-#else /* !CONFIG_KMAP_ATOMIC_GENERIC */
+-
+ static inline void *kmap_atomic_prot(struct page *page, pgprot_t prot)
  {
--	enum fixed_addresses idx;
--	unsigned long vaddr;
+ 	preempt_disable();
+@@ -127,17 +106,14 @@ static inline void *kmap_atomic_pfn(unsi
+ 	return kmap_atomic_pfn_prot(pfn, kmap_prot);
+ }
+ 
+-static inline void __kunmap_atomic(void *addr)
++static inline void *kmap_atomic(struct page *page)
+ {
+-	kumap_atomic_indexed(addr);
++	return kmap_atomic_prot(page, kmap_prot);
+ }
+ 
 -
--	idx = kmap_idx(kmap_atomic_idx_push(),
--		       DCACHE_ALIAS(page_to_phys(page)));
--	vaddr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
+-#endif /* CONFIG_KMAP_ATOMIC_GENERIC */
+-
+-static inline void *kmap_atomic(struct page *page)
++static inline void __kunmap_atomic(void *addr)
+ {
+-	return kmap_atomic_prot(page, kmap_prot);
++	kumap_atomic_indexed(addr);
+ }
+ 
+ /* declarations for linux/mm/highmem.c */
+@@ -233,39 +209,6 @@ static inline void __kunmap_atomic(void
+ 
+ #endif /* CONFIG_HIGHMEM */
+ 
+-#if defined(CONFIG_HIGHMEM) || defined(CONFIG_X86_32)
+-
+-DECLARE_PER_CPU(int, __kmap_atomic_idx);
+-
+-static inline int kmap_atomic_idx_push(void)
+-{
+-	int idx = __this_cpu_inc_return(__kmap_atomic_idx) - 1;
+-
 -#ifdef CONFIG_DEBUG_HIGHMEM
--	BUG_ON(!pte_none(*(kmap_pte + idx)));
+-	WARN_ON_ONCE(in_irq() && !irqs_disabled());
+-	BUG_ON(idx >= KM_TYPE_NR);
 -#endif
--	set_pte(kmap_pte + idx, mk_pte(page, prot));
+-	return idx;
+-}
 -
--	return (void *)vaddr;
-+	return kmap_idx(type, DCACHE_ALIAS(pfn << PAGE_SHIFT);
- }
--EXPORT_SYMBOL(kmap_atomic_high_prot);
+-static inline int kmap_atomic_idx(void)
+-{
+-	return __this_cpu_read(__kmap_atomic_idx) - 1;
+-}
+-
+-static inline void kmap_atomic_idx_pop(void)
+-{
+-#ifdef CONFIG_DEBUG_HIGHMEM
+-	int idx = __this_cpu_dec_return(__kmap_atomic_idx);
+-
+-	BUG_ON(idx < 0);
+-#else
+-	__this_cpu_dec(__kmap_atomic_idx);
+-#endif
+-}
+-
+-#endif
+-
+ /*
+  * Prevent people trying to call kunmap_atomic() as if it were kunmap()
+  * kunmap_atomic() should get the return value of kmap_atomic, not the page.
+--- a/mm/highmem.c
++++ b/mm/highmem.c
+@@ -31,10 +31,6 @@
+ #include <asm/tlbflush.h>
+ #include <linux/vmalloc.h>
  
--void kunmap_atomic_high(void *kvaddr)
-+enum fixed_addresses kmap_temp_unmap_idx(int type, unsigned long addr)
- {
--	if (kvaddr >= (void *)FIXADDR_START &&
--	    kvaddr < (void *)FIXADDR_TOP) {
--		int idx = kmap_idx(kmap_atomic_idx(),
--				   DCACHE_ALIAS((unsigned long)kvaddr));
+-#if defined(CONFIG_HIGHMEM) || defined(CONFIG_X86_32)
+-DEFINE_PER_CPU(int, __kmap_atomic_idx);
+-#endif
 -
--		/*
--		 * Force other mappings to Oops if they'll try to access this
--		 * pte without first remap it.  Keeping stale mappings around
--		 * is a bad idea also, in case the page changes cacheability
--		 * attributes or becomes a protected page in a hypervisor.
--		 */
--		pte_clear(&init_mm, kvaddr, kmap_pte + idx);
--		local_flush_tlb_kernel_range((unsigned long)kvaddr,
--					     (unsigned long)kvaddr + PAGE_SIZE);
--
--		kmap_atomic_idx_pop();
--	}
-+	return kmap_idx(type, DCACHE_ALIAS(addr));
- }
--EXPORT_SYMBOL(kunmap_atomic_high);
+ /*
+  * Virtual_count is not a pure "count".
+  *  0 means that it is not mapped, and has not been mapped
+@@ -380,6 +376,30 @@ static inline void kmap_high_unmap_tempo
+ #endif /* CONFIG_HIGHMEM */
  
- void __init kmap_init(void)
- {
--	unsigned long kmap_vstart;
--
- 	/* Check if this memory layout is broken because PKMAP overlaps
- 	 * page table.
- 	 */
- 	BUILD_BUG_ON(PKMAP_BASE < TLBTEMP_BASE_1 + TLBTEMP_SIZE);
--	/* cache the first kmap pte */
--	kmap_vstart = __fix_to_virt(FIX_KMAP_BEGIN);
--	kmap_pte = virt_to_kpte(kmap_vstart);
- 	kmap_waitqueues_init();
- }
+ #ifdef CONFIG_KMAP_ATOMIC_GENERIC
++
++static DEFINE_PER_CPU(int, __kmap_atomic_idx);
++
++static inline int kmap_atomic_idx_push(void)
++{
++	int idx = __this_cpu_inc_return(__kmap_atomic_idx) - 1;
++
++	WARN_ON_ONCE(in_irq() && !irqs_disabled());
++	BUG_ON(idx >= KM_TYPE_NR);
++	return idx;
++}
++
++static inline int kmap_atomic_idx(void)
++{
++	return __this_cpu_read(__kmap_atomic_idx) - 1;
++}
++
++static inline void kmap_atomic_idx_pop(void)
++{
++	int idx = __this_cpu_dec_return(__kmap_atomic_idx);
++
++	BUG_ON(idx < 0);
++}
++
+ #ifndef arch_kmap_temp_post_map
+ # define arch_kmap_temp_post_map(vaddr, pteval)	do { } while (0)
+ #endif
 
