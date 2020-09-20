@@ -1,38 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357BC2717F7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Sep 2020 22:51:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3224271828
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Sep 2020 23:15:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BvfqW5N1wzDqfG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 06:51:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BvgMT029zzDqSv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 07:15:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.134; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bvfnj5VHCzDqcR
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 06:49:27 +1000 (AEST)
-Received: from mail-qt1-f174.google.com ([209.85.160.174]) by
- mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MtwIW-1kcbd73koG-00uHe9 for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Sep
- 2020 22:49:22 +0200
-Received: by mail-qt1-f174.google.com with SMTP id h6so10585290qtd.6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Sep 2020 13:49:21 -0700 (PDT)
-X-Gm-Message-State: AOAM5313PUKFi3jYb3gIT3aig8u77eAY8IRKfFRzHIj0PLmfqkIU2x6V
- XiB97JjqB6+DQU+Sn9kmUpz/XJTffncomXlxzZs=
-X-Google-Smtp-Source: ABdhPJwBXwBil3iRHV11f3BxYsgRD++l69TenwTYSqKgYe+2Dux9TFUrSKvqlq1FFlXpzrttVMSzDz47tEK6RfJnMjg=
-X-Received: by 2002:aed:2ce5:: with SMTP id g92mr30020804qtd.204.1600634960428; 
- Sun, 20 Sep 2020 13:49:20 -0700 (PDT)
-MIME-Version: 1.0
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BvgKf29JpzDqK5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 07:13:40 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-64-HkvgTllpM-iYq_Po-gc7vg-1; Sun, 20 Sep 2020 22:13:25 +0100
+X-MC-Unique: HkvgTllpM-iYq_Po-gc7vg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Sun, 20 Sep 2020 22:13:24 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Sun, 20 Sep 2020 22:13:24 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Arnd Bergmann' <arnd@arndb.de>, Andy Lutomirski <luto@kernel.org>
+Subject: RE: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
+Thread-Topic: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
+Thread-Index: AQHWj495LxbJUITJXkeWJwtHmAdwxKlyBKsQ
+Date: Sun, 20 Sep 2020 21:13:24 +0000
+Message-ID: <8363d874e503470f8caa201e85e9fbd4@AcuMS.aculab.com>
 References: <20200918124533.3487701-1-hch@lst.de>
  <20200918124533.3487701-2-hch@lst.de>
  <20200920151510.GS32101@casper.infradead.org>
@@ -41,34 +46,21 @@ References: <20200918124533.3487701-1-hch@lst.de>
  <20200920191031.GQ3421308@ZenIV.linux.org.uk>
  <20200920192259.GU32101@casper.infradead.org>
  <CALCETrXVtBkxNJcMxf9myaKT9snHKbCWUenKHGRfp8AOtORBPg@mail.gmail.com>
-In-Reply-To: <CALCETrXVtBkxNJcMxf9myaKT9snHKbCWUenKHGRfp8AOtORBPg@mail.gmail.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Sun, 20 Sep 2020 22:49:03 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a37BRFj_qg61gP2oVrjJzBrZ58y1vggeTk_5n55Ou5U2Q@mail.gmail.com>
-Message-ID: <CAK8P3a37BRFj_qg61gP2oVrjJzBrZ58y1vggeTk_5n55Ou5U2Q@mail.gmail.com>
-Subject: Re: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
-To: Andy Lutomirski <luto@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:tF9TCQw5lIg2NZZ07atGwdwzig7ixcDmZTV5roQ9LPJ1TtGCefg
- Vk1onuElp+7G+py8xGfjRSaIzJjk6rw8cEWxg3w/b/q/lUS/HE9lqdV110WiPaDCbLra4xo
- D0OLli1S+sR+q1hTs/YkOiw9REZKXL+UxeDwN7F6YEsfWDAINXlixrt4rpvKZk8cEZcQRGX
- 5LpToZLPlQn3ibGiCBOgA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:X2rR3gD86rs=:QHrX1a0kCRrKudyMYx+I1p
- hubGa4wIaipoUc3M6J366Zgws+mxWEJBTMET990oS7ng9Hf+d5MKIZmCAsJP2tqXo9YEoDkl0
- BylvG9Dg0eeOxKv6nqx3pIq3Pcls1UYzuq9+R158lDxVLxU5ZLVYR/Se2VBgM4UjT5MvWEgiF
- ai/xZDU0lG9EIXYhGbwlKmyXYOuCpMi3KVyMlDZtwIjioYMOFjrhhGmUTAVS8Ju6NYTbwHJ4D
- imPUE9kXpQOVaPsX9KJ3hMOiXxfVPxpkoVovQHT0v7JbG2K72NxAfyRLamyZfg436NdtWTORa
- p5AMpmVrOZ+QJyL0/xSbf3c6dG7UaZTXDzOSsKtNmOxiezE4CVctQX/nRtbXQfB5DUBPpZvOh
- 6T062fIcdljZEKOLisoD0EoC6xOV+7yeLQnmBJPIxxUssru5vZBzgdOVdD46NRdnq7Va2PsIO
- NhFOWgs+M2f5Ieqa4v+VwqNG8bwRLDxQ0BPZA4dEuvpwDg20k046TYV8h409SHIr9E/4Sbjh6
- yJo4Olt1Cpb56gCwT+PF46h1elNcTXY84xayYD7iGV4eJoA2A9Gw/JnPMarNp+ge83KP7KT10
- iH+/gJge8d6gJhUt2s0P6JBa5TVQBJEu+1D4g61UvohDjPVHQFPket3BD54bPCI5beZw0ITA/
- 2fuYs2M1fHtH4tPbcF2Y1GwdQae+4mTBJOBYVEFOpPlJYwFMgMZqA4Tnug8bh9sbIuhOAxiGs
- SAjjeLDAyaLoiygdv6mAxoXEEzn6xh/bB1GZ/r/eoo6ZCOXMa7aQgdPQJcz9s1r0twFjI2XAo
- Don6yhgtkFTm1GTAl8MSjzfo3Y4dzg9+nEdOH0+wRSDqIRAf9x7hRHaa7Y+IZ04N6jHngNE5R
- WZUc3h+lMN3/bIdLasqLAAqDmTRDqqlgO5Be9uSRRNocuQulYpyPysoMli4t2wNL8PKwrHqy5
- cANLkXVtVRkrtBpLQYKn87u0MM3tzkczTB753OCE28BxqGqZlI9k+
+ <CAK8P3a37BRFj_qg61gP2oVrjJzBrZ58y1vggeTk_5n55Ou5U2Q@mail.gmail.com>
+In-Reply-To: <CAK8P3a37BRFj_qg61gP2oVrjJzBrZ58y1vggeTk_5n55Ou5U2Q@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,13 +75,14 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: linux-aio <linux-aio@kvack.org>,
  "open list:MIPS" <linux-mips@vger.kernel.org>,
  David Howells <dhowells@redhat.com>, Linux-MM <linux-mm@kvack.org>,
- keyrings@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
+ "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
+ linux-arch <linux-arch@vger.kernel.org>,
  linux-s390 <linux-s390@vger.kernel.org>,
  Linux SCSI List <linux-scsi@vger.kernel.org>, X86 ML <x86@kernel.org>,
  Matthew Wilcox <willy@infradead.org>,
  linux-block <linux-block@vger.kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- io-uring@vger.kernel.org,
+ "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
  linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
  Jens Axboe <axboe@kernel.dk>, Parisc List <linux-parisc@vger.kernel.org>,
  Network Development <netdev@vger.kernel.org>,
@@ -102,28 +95,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Sep 20, 2020 at 9:28 PM Andy Lutomirski <luto@kernel.org> wrote:
-> On Sun, Sep 20, 2020 at 12:23 PM Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > On Sun, Sep 20, 2020 at 08:10:31PM +0100, Al Viro wrote:
-> > > IMO it's much saner to mark those and refuse to touch them from io_uring...
-> >
-> > Simpler solution is to remove io_uring from the 32-bit syscall list.
-> > If you're a 32-bit process, you don't get to use io_uring.  Would
-> > any real users actually care about that?
->
-> We could go one step farther and declare that we're done adding *any*
-> new compat syscalls :)
+RnJvbTogQXJuZCBCZXJnbWFubg0KPiBTZW50OiAyMCBTZXB0ZW1iZXIgMjAyMCAyMTo0OQ0KPiAN
+Cj4gT24gU3VuLCBTZXAgMjAsIDIwMjAgYXQgOToyOCBQTSBBbmR5IEx1dG9taXJza2kgPGx1dG9A
+a2VybmVsLm9yZz4gd3JvdGU6DQo+ID4gT24gU3VuLCBTZXAgMjAsIDIwMjAgYXQgMTI6MjMgUE0g
+TWF0dGhldyBXaWxjb3ggPHdpbGx5QGluZnJhZGVhZC5vcmc+IHdyb3RlOg0KPiA+ID4NCj4gPiA+
+IE9uIFN1biwgU2VwIDIwLCAyMDIwIGF0IDA4OjEwOjMxUE0gKzAxMDAsIEFsIFZpcm8gd3JvdGU6
+DQo+ID4gPiA+IElNTyBpdCdzIG11Y2ggc2FuZXIgdG8gbWFyayB0aG9zZSBhbmQgcmVmdXNlIHRv
+IHRvdWNoIHRoZW0gZnJvbSBpb191cmluZy4uLg0KPiA+ID4NCj4gPiA+IFNpbXBsZXIgc29sdXRp
+b24gaXMgdG8gcmVtb3ZlIGlvX3VyaW5nIGZyb20gdGhlIDMyLWJpdCBzeXNjYWxsIGxpc3QuDQo+
+ID4gPiBJZiB5b3UncmUgYSAzMi1iaXQgcHJvY2VzcywgeW91IGRvbid0IGdldCB0byB1c2UgaW9f
+dXJpbmcuICBXb3VsZA0KPiA+ID4gYW55IHJlYWwgdXNlcnMgYWN0dWFsbHkgY2FyZSBhYm91dCB0
+aGF0Pw0KPiA+DQo+ID4gV2UgY291bGQgZ28gb25lIHN0ZXAgZmFydGhlciBhbmQgZGVjbGFyZSB0
+aGF0IHdlJ3JlIGRvbmUgYWRkaW5nICphbnkqDQo+ID4gbmV3IGNvbXBhdCBzeXNjYWxscyA6KQ0K
+PiANCj4gV291bGQgeW91IGFsc28gc3RvcCBhZGRpbmcgc3lzdGVtIGNhbGxzIHRvIG5hdGl2ZSAz
+Mi1iaXQgc3lzdGVtcyB0aGVuPw0KPiANCj4gT24gbWVtb3J5IGNvbnN0cmFpbmVkIHN5c3RlbXMg
+KGxlc3MgdGhhbiAyR0IgYS50Lm0uKSwgdGhlcmUgaXMgc3RpbGwgYQ0KPiBzdHJvbmcgZGVtYW5k
+IGZvciBydW5uaW5nIDMyLWJpdCB1c2VyIHNwYWNlLCBidXQgYWxsIG9mIHRoZSByZWNlbnQgQXJt
+DQo+IGNvcmVzIChhZnRlciBDb3J0ZXgtQTU1KSBkcm9wcGVkIHRoZSBhYmlsaXR5IHRvIHJ1biAz
+Mi1iaXQga2VybmVscywgc28NCj4gdGhhdCBjb21wYXQgbW9kZSBtYXkgZXZlbnR1YWxseSBiZWNv
+bWUgdGhlIHByaW1hcnkgd2F5IHRvIHJ1bg0KPiBMaW51eCBvbiBjaGVhcCBlbWJlZGRlZCBzeXN0
+ZW1zLg0KPiANCj4gSSBkb24ndCB0aGluayB0aGVyZSBpcyBhbnkgY2hhbmNlIHdlIGNhbiByZWFs
+aXN0aWNhbGx5IHRha2UgYXdheSBpb191cmluZw0KPiBmcm9tIHRoZSAzMi1iaXQgQUJJIGFueSBt
+b3JlIG5vdy4NCg0KQ2FuJ3QgaXQganVzdCBydW4gcmVxdWVzdHMgZnJvbSAzMmJpdCBhcHBzIGlu
+IGEga2VybmVsIHRocmVhZCB0aGF0IGhhcw0KdGhlICdpbl9jb21wYXRfc3lzY2FsbCcgZmxhZyBz
+ZXQ/DQpOb3QgdGhhdCBpIHJlY2FsbCBzZWVpbmcgdGhlIGNvZGUgd2hlcmUgaXQgc2F2ZXMgdGhl
+ICdjb21wYXQnIG5hdHVyZQ0Kb2YgYW55IHJlcXVlc3RzLg0KDQpJdCBpcyBhbHJlYWR5IGNvbXBs
+ZXRlbHkgZipja2VkIGlmIHlvdSB0cnkgdG8gcGFzcyB0aGUgY29tbWFuZCByaW5nDQp0byBhIGNo
+aWxkIHByb2Nlc3MgLSBpdCB1c2VzIHRoZSB3cm9uZyAnbW0nLg0KSSBzdXNwZWN0IHRoZXJlIGFy
+ZSBzb21lIHJlYWxseSBob3JyaWQgc2VjdXJpdHkgaG9sZXMgaW4gdGhhdCBhcmVhLg0KDQoJRGF2
+aWQuDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3Vu
+dCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3
+Mzg2IChXYWxlcykNCg==
 
-Would you also stop adding system calls to native 32-bit systems then?
-
-On memory constrained systems (less than 2GB a.t.m.), there is still a
-strong demand for running 32-bit user space, but all of the recent Arm
-cores (after Cortex-A55) dropped the ability to run 32-bit kernels, so
-that compat mode may eventually become the primary way to run
-Linux on cheap embedded systems.
-
-I don't think there is any chance we can realistically take away io_uring
-from the 32-bit ABI any more now.
-
-      Arnd
