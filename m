@@ -2,53 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81D5271551
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Sep 2020 17:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DBFC27158A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Sep 2020 18:03:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BvWQg0mBXzDqnc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 01:17:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BvXRQ4HQYzDqhY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 02:03:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=217.72.192.75; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=BEHRWzks; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BvWNS0XrxzDqXZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 01:15:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=Ucf7HoNcpbOE1Nwd0GkK0r+4jGnJB6Awau+HMvD5QTQ=; b=BEHRWzksrTjJ0cz6kn/YL4kbO9
- O0S1oDQ5afrWGBLkgZVov0K5DX5P8n3kQPInesZq8Opmeexe0KTNU5zkAjvbPAa7Vu+AwqUEF9kkV
- s09ZOl4m8v1spojFIQBVRxpVintgH+lHEWDdjnkhUWSJDFXQaimPUKpk6c+gLvdLoxlpoR55UirIR
- C7FOSIh6C1I8oA+JRJOY1riBqiSdxp8JHhQOJrK3Az+Zf34gwu76Cu4rYBA3pcShPktuZzK8Fl9p+
- KTdDanCXPZQo05/zui4ihlNXLDU70euY+ORH9c4QQIqcTHg/9okYwp8yGFJLLvFCR++YjtJR+fDE0
- 5GxFYx2A==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1kK13W-00060V-36; Sun, 20 Sep 2020 15:15:10 +0000
-Date: Sun, 20 Sep 2020 16:15:10 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
-Message-ID: <20200920151510.GS32101@casper.infradead.org>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BvXNH0W80zDqWt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 02:00:29 +1000 (AEST)
+Received: from mail-qk1-f176.google.com ([209.85.222.176]) by
+ mrelayeu.kundenserver.de (mreue107 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1MaIGB-1jwWxs2JkL-00WFF8 for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Sep
+ 2020 18:00:21 +0200
+Received: by mail-qk1-f176.google.com with SMTP id o5so12381285qke.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Sep 2020 09:00:20 -0700 (PDT)
+X-Gm-Message-State: AOAM531883S597OeVzKRpBT4MhWMjid02A6dtXM9H0TKBVXTlotS7bXj
+ wowo6MgaEJAYwQeiyUgNYPVtZ3Ydsaslwg+01T8=
+X-Google-Smtp-Source: ABdhPJxWyfvCzQQBAWL//h6npTn88fQ05xaOWJspiDrXO43nFmdBtx69etP6R9R9/pXauFf/MfRV57t9JJqYkZya4Ms=
+X-Received: by 2002:a37:5d8:: with SMTP id 207mr42809575qkf.352.1600617619461; 
+ Sun, 20 Sep 2020 09:00:19 -0700 (PDT)
+MIME-Version: 1.0
 References: <20200918124533.3487701-1-hch@lst.de>
  <20200918124533.3487701-2-hch@lst.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200918124533.3487701-2-hch@lst.de>
+ <20200920151510.GS32101@casper.infradead.org>
+In-Reply-To: <20200920151510.GS32101@casper.infradead.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Sun, 20 Sep 2020 18:00:03 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0utXQj+yLh3n2mvi-mX_fPnxz3hKB7+wEof53EgNzDvQ@mail.gmail.com>
+Message-ID: <CAK8P3a0utXQj+yLh3n2mvi-mX_fPnxz3hKB7+wEof53EgNzDvQ@mail.gmail.com>
+Subject: Re: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
+To: Matthew Wilcox <willy@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:G76zNexhw61w0YDGSR6UgZ0ceRQVWOzMpA4R/YcaCUJRGFRsrOU
+ Dm/OjdwrqtFnQYr0LghPiEP9cUgzLcuxTCvnwsj1+wJ3Vbp2WbkF+kh/dBokaH3p04tcBm6
+ ++s/W+HP1hdfpzLxMahNi6zXM0y0pUTFnqJCGVn5zSf5TmFN1swthPV3ehoa27+qGrponF2
+ 1xWJkV71gpYuPbssPzpGg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:RDUn2VcE5Z8=:OWoJByWfHcrJUBqv72FchM
+ B25RQCnkZQRt+YxrVa5dJqI3KQcgXfNxBS0BxhLOu2Sxj8sGbGAtywzQ3NDp4+vGSxJe2eXev
+ AnU2wPGt6ux1PBJJID503eYAXwm7c//Ckhe9sysjD+SGsH4Lhgp/+L5xPEqXjX1QNmOjZPuZV
+ BBNpta9FpvgJCdALhTqZt50zLyiFKhl48gBFYcRcLyIRF4zQGj1xjHk/L53mPcPnZrHyF9c0h
+ ZxLXzqrPFw/CMwNxicBs4AtgcukYBt3r7por3Z7K1s9XwpH+1f27fteJGycq732aIEKs2QbpH
+ SzaWhy54mWKIxprjbAYpoSPrn8GGpx8uOvWepUxtXfLtsQI7hOcTh3LwFmskH9V/NI7pxzdH/
+ BA7MxlmZNZT/VpJVm0dtmD6w5Ub+g73tN33UWh+Vu/G6tGr7PAlWG1anQem3jUUmCAVdLdqfA
+ qVBj3DJ1aqFoahcp0HDOGYk8uSljvS2arM/qkaMggpgkYvsIlIvVgSSNXON4DtrhMafZDXFYt
+ iZ6uHjeWyTArER66OjOnH+arFdowoWdU3CfkU+bJ+MZHoFMBLXaRN2xsL4XpCAzwn1w1AsGn0
+ HlJJxFF202NXBo3TevxQzB7Mfa2SOCYVu2VqMbdAyS6uZmvSTj8bNc/xS13Kd4lD/OuYWaxCa
+ iTIgygrh6mk3ySb8bYlrmWeK8t7Vaj/zUEwd+BwE0m96GEVwvJ1Iz7U8g88U/NSYUWkN2B1fB
+ 0p5ssN1KaC3b9DfaAhR38Nh/XmxDnmhrKSNTQcshRvJt0+DaDHTC2aU6dpZBukQJ0gk0KTFBc
+ Ugq05s5t+Xub8YkyRLS23b/ypr6GYKlby9lzuFpcKiu9ImAV6Bik1tvQrlURtLYnTEkgiIfmL
+ XnKJhlvVOSmh3mA4rdJEuuihffnAwru/h0fwB+TXbYchDPuwwgMjO1oDrLwRb/bd5v88sDlJ/
+ yY1SrJdAG44eGxicVe9GHfysFxZyIxGbHqs8vfvBKKbT7nlpzhVVx
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,28 +75,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio@kvack.org, linux-mips@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
- keyrings@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, x86@kernel.org, Arnd Bergmann <arnd@arndb.de>,
- linux-block@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
- io-uring@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- Jens Axboe <axboe@kernel.dk>, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-security-module@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-aio <linux-aio@kvack.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>, Linux-MM <linux-mm@kvack.org>,
+ keyrings@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ linux-scsi <linux-scsi@vger.kernel.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ linux-block <linux-block@vger.kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, io-uring@vger.kernel.org,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Jens Axboe <axboe@kernel.dk>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Networking <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ LSM List <linux-security-module@vger.kernel.org>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 18, 2020 at 02:45:25PM +0200, Christoph Hellwig wrote:
-> Add a flag to force processing a syscall as a compat syscall.  This is
-> required so that in_compat_syscall() works for I/O submitted by io_uring
-> helper threads on behalf of compat syscalls.
+On Sun, Sep 20, 2020 at 5:15 PM Matthew Wilcox <willy@infradead.org> wrote:
+>
+> On Fri, Sep 18, 2020 at 02:45:25PM +0200, Christoph Hellwig wrote:
+> > Add a flag to force processing a syscall as a compat syscall.  This is
+> > required so that in_compat_syscall() works for I/O submitted by io_uring
+> > helper threads on behalf of compat syscalls.
+>
+> Al doesn't like this much, but my suggestion is to introduce two new
+> opcodes -- IORING_OP_READV32 and IORING_OP_WRITEV32.  The compat code
+> can translate IORING_OP_READV to IORING_OP_READV32 and then the core
+> code can know what that user pointer is pointing to.
 
-Al doesn't like this much, but my suggestion is to introduce two new
-opcodes -- IORING_OP_READV32 and IORING_OP_WRITEV32.  The compat code
-can translate IORING_OP_READV to IORING_OP_READV32 and then the core
-code can know what that user pointer is pointing to.
+How is that different from the current approach of storing the ABI as
+a flag in ctx->compat?
 
+     Arnd
