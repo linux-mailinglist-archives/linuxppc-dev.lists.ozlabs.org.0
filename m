@@ -1,45 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE2227153E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Sep 2020 17:06:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81D5271551
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Sep 2020 17:17:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BvW9J6j39zDqmh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 01:05:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BvWQg0mBXzDqnc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 01:17:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=ftp.linux.org.uk (client-ip=2002:c35c:fd02::1;
- helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=zeniv.linux.org.uk
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=BEHRWzks; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BvW684L70zDqjx
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 01:03:08 +1000 (AEST)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1kK0rT-002VoG-Vd; Sun, 20 Sep 2020 15:02:44 +0000
-Date: Sun, 20 Sep 2020 16:02:43 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Arnd Bergmann <arnd@arndb.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BvWNS0XrxzDqXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 01:15:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=Ucf7HoNcpbOE1Nwd0GkK0r+4jGnJB6Awau+HMvD5QTQ=; b=BEHRWzksrTjJ0cz6kn/YL4kbO9
+ O0S1oDQ5afrWGBLkgZVov0K5DX5P8n3kQPInesZq8Opmeexe0KTNU5zkAjvbPAa7Vu+AwqUEF9kkV
+ s09ZOl4m8v1spojFIQBVRxpVintgH+lHEWDdjnkhUWSJDFXQaimPUKpk6c+gLvdLoxlpoR55UirIR
+ C7FOSIh6C1I8oA+JRJOY1riBqiSdxp8JHhQOJrK3Az+Zf34gwu76Cu4rYBA3pcShPktuZzK8Fl9p+
+ KTdDanCXPZQo05/zui4ihlNXLDU70euY+ORH9c4QQIqcTHg/9okYwp8yGFJLLvFCR++YjtJR+fDE0
+ 5GxFYx2A==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1kK13W-00060V-36; Sun, 20 Sep 2020 15:15:10 +0000
+Date: Sun, 20 Sep 2020 16:15:10 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Christoph Hellwig <hch@lst.de>
 Subject: Re: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
-Message-ID: <20200920150243.GM3421308@ZenIV.linux.org.uk>
+Message-ID: <20200920151510.GS32101@casper.infradead.org>
 References: <20200918124533.3487701-1-hch@lst.de>
  <20200918124533.3487701-2-hch@lst.de>
- <20200918134012.GY3421308@ZenIV.linux.org.uk>
- <20200918134406.GA17064@lst.de>
- <20200918135822.GZ3421308@ZenIV.linux.org.uk>
- <20200918151615.GA23432@lst.de>
- <20200919220920.GI3421308@ZenIV.linux.org.uk>
- <CAK8P3a3QApj3isPu3TkLahArsfb5jaABb7DJ7EKMxey1T1YPbA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK8P3a3QApj3isPu3TkLahArsfb5jaABb7DJ7EKMxey1T1YPbA@mail.gmail.com>
+In-Reply-To: <20200918124533.3487701-2-hch@lst.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,92 +60,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio <linux-aio@kvack.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- David Howells <dhowells@redhat.com>, Linux-MM <linux-mm@kvack.org>,
- keyrings@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>,
- linux-scsi <linux-scsi@vger.kernel.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- linux-block <linux-block@vger.kernel.org>, io-uring@vger.kernel.org,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, Jens Axboe <axboe@kernel.dk>,
- Parisc List <linux-parisc@vger.kernel.org>,
- Networking <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- LSM List <linux-security-module@vger.kernel.org>,
- Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-aio@kvack.org, linux-mips@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
+ keyrings@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, x86@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ linux-block@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+ io-uring@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Jens Axboe <axboe@kernel.dk>, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Sep 20, 2020 at 03:55:47PM +0200, Arnd Bergmann wrote:
-> On Sun, Sep 20, 2020 at 12:09 AM Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > On Fri, Sep 18, 2020 at 05:16:15PM +0200, Christoph Hellwig wrote:
-> > > On Fri, Sep 18, 2020 at 02:58:22PM +0100, Al Viro wrote:
-> > > > Said that, why not provide a variant that would take an explicit
-> > > > "is it compat" argument and use it there?  And have the normal
-> > > > one pass in_compat_syscall() to that...
-> > >
-> > > That would help to not introduce a regression with this series yes.
-> > > But it wouldn't fix existing bugs when io_uring is used to access
-> > > read or write methods that use in_compat_syscall().  One example that
-> > > I recently ran into is drivers/scsi/sg.c.
-> >
-> > So screw such read/write methods - don't use them with io_uring.
-> > That, BTW, is one of the reasons I'm sceptical about burying the
-> > decisions deep into the callchain - we don't _want_ different
-> > data layouts on read/write depending upon the 32bit vs. 64bit
-> > caller, let alone the pointer-chasing garbage that is /dev/sg.
-> 
-> Would it be too late to limit what kind of file descriptors we allow
-> io_uring to read/write on?
-> 
-> If io_uring can get changed to return -EINVAL on trying to
-> read/write something other than S_IFREG file descriptors,
-> that particular problem space gets a lot simpler, but this
-> is of course only possible if nobody actually relies on it yet.
+On Fri, Sep 18, 2020 at 02:45:25PM +0200, Christoph Hellwig wrote:
+> Add a flag to force processing a syscall as a compat syscall.  This is
+> required so that in_compat_syscall() works for I/O submitted by io_uring
+> helper threads on behalf of compat syscalls.
 
-S_IFREG is almost certainly too heavy as a restriction.  Looking through
-the stuff sensitive to 32bit/64bit, we seem to have
-	* /dev/sg - pointer-chasing horror
-	* sysfs files for efivar - different layouts for compat and native,
-shitty userland ABI design (
-struct efi_variable {
-        efi_char16_t  VariableName[EFI_VAR_NAME_LEN/sizeof(efi_char16_t)];
-        efi_guid_t    VendorGuid;
-        unsigned long DataSize;
-        __u8          Data[1024];
-        efi_status_t  Status;
-        __u32         Attributes;
-} __attribute__((packed));
-) is the piece of crap in question; 'DataSize' is where the headache comes
-from.  Regular files, BTW...
-	* uhid - character device, milder pointer-chasing horror.  Trouble
-comes from this:
-/* Obsolete! Use UHID_CREATE2. */
-struct uhid_create_req {
-        __u8 name[128];
-        __u8 phys[64];
-        __u8 uniq[64];
-        __u8 __user *rd_data;
-        __u16 rd_size;
+Al doesn't like this much, but my suggestion is to introduce two new
+opcodes -- IORING_OP_READV32 and IORING_OP_WRITEV32.  The compat code
+can translate IORING_OP_READV to IORING_OP_READV32 and then the core
+code can know what that user pointer is pointing to.
 
-        __u16 bus;
-        __u32 vendor;
-        __u32 product;
-        __u32 version;
-        __u32 country;
-} __attribute__((__packed__));
-and suggested replacement doesn't do any pointer-chasing (rd_data is an
-embedded array in the end of struct uhid_create2_req).
-	* evdev, uinput - bitness-sensitive layout, due to timestamps
-	* /proc/bus/input/devices - weird crap with printing bitmap, different
-_text_ layouts seen by 32bit and 64bit readers.  Binary structures are PITA,
-but with sufficient effort you can screw the text just as hard...  Oh, and it's
-a regular file.
-	* similar in sysfs analogue
-
-And AFAICS, that's it for read/write-related method instances.
