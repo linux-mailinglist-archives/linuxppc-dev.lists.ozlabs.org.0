@@ -2,82 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F031271688
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Sep 2020 20:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACBE2716E5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Sep 2020 20:12:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bvb5634GtzDqd3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 04:02:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BvbJL36XTzDqd3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 04:12:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::543;
- helo=mail-ed1-x543.google.com; envelope-from=torvalds@linuxfoundation.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=ftp.linux.org.uk (client-ip=2002:c35c:fd02::1;
+ helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=aTcZkpnk; 
- dkim-atps=neutral
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
- [IPv6:2a00:1450:4864:20::543])
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bvb1J4hrLzDqWH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 03:59:12 +1000 (AEST)
-Received: by mail-ed1-x543.google.com with SMTP id k14so10733574edo.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Sep 2020 10:59:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=10vFh59zX+qrXR+btNd9keaZllR85H50W0pZVqW9mvg=;
- b=aTcZkpnkgiAVVoqRXBCAnYw8B8YS7QD0nmh7mtbe8Dtb85AdAYIiPcbXVjdrb/fbX9
- 3yTs920flMKnlnbAGz7q1CYoJs0994Dvfor1DakKOqSDUOemiqgeakXoqfK/+swxI5fB
- 0DUfGVYXrHTR7XO61iz2Eybc+W0Ekg5v+dkh0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=10vFh59zX+qrXR+btNd9keaZllR85H50W0pZVqW9mvg=;
- b=ijkpqAToa/UKZnbvEqWhTCzGs82LknRTAAyH/y88Emr/J6+gwx/i4jDiOpXMYy8Zag
- ck9p7Ss8COiUpszeLU/EhynXnPNdDR0waBe+6ijUfccG00u0BmBz6U1pfAXLeVjOrscc
- 4u0jiBVfTRQnR1KrdMkyIZUTa9v79aGEFVL5URWK+Nz1RFASis4k7xGYfoC9q5AmqfHI
- SZnlKSyD4kIh4tDpyGBzQ4hBti31ngcHgIzuKt+oQm7OhUFmMpKdHa32IbLTNgBJREOi
- /HPqlcGmdPoPXAvJ/UK3S7c4irHPA+fGs4KnZCEK6IVPRkCvduIitXoXd1Djq7oQLpL1
- BWHA==
-X-Gm-Message-State: AOAM530TNyL9Dp2saVbahaMpjHGu4sUk6zZC83l8nbpbM+QMkDKcb2yG
- L37uOyz8FUXQpTBSt4+rqcldk4X8MpaTRQ==
-X-Google-Smtp-Source: ABdhPJyWiGk5HvqiPvMQCSunJZww+Zj9n5y88jEv8S9XHYJpkjzjGgY8LJ9U6mU0/6T6/URfaYArqQ==
-X-Received: by 2002:a50:f418:: with SMTP id r24mr49004044edm.295.1600624749717; 
- Sun, 20 Sep 2020 10:59:09 -0700 (PDT)
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com.
- [209.85.218.46])
- by smtp.gmail.com with ESMTPSA id j3sm6918110edy.7.2020.09.20.10.59.08
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 20 Sep 2020 10:59:09 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id z23so14584495ejr.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Sep 2020 10:59:08 -0700 (PDT)
-X-Received: by 2002:ac2:4ec7:: with SMTP id p7mr12591149lfr.352.1600624746105; 
- Sun, 20 Sep 2020 10:59:06 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BvbCR42fqzDqWy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 04:08:01 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1kK3kU-002bOQ-WD; Sun, 20 Sep 2020 18:07:43 +0000
+Date: Sun, 20 Sep 2020 19:07:42 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
+Message-ID: <20200920180742.GN3421308@ZenIV.linux.org.uk>
+References: <20200918124533.3487701-1-hch@lst.de>
+ <20200918124533.3487701-2-hch@lst.de>
+ <20200920151510.GS32101@casper.infradead.org>
 MIME-Version: 1.0
-References: <20200919091751.011116649@linutronix.de>
- <CAHk-=wiYGyrFRbA1cc71D2-nc5U9LM9jUJesXGqpPnB7E4X1YQ@mail.gmail.com>
- <87mu1lc5mp.fsf@nanos.tec.linutronix.de>
- <87k0wode9a.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgbmwsTOKs23Z=71EBTrULoeaH2U3TNqT2atHEWvkBKdw@mail.gmail.com>
- <87eemwcpnq.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 20 Sep 2020 10:58:50 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wh_iVgA3H7CVvAzDoYC1gC1AKbLmv_mCeUnVxg79_9y8A@mail.gmail.com>
-Message-ID: <CAHk-=wh_iVgA3H7CVvAzDoYC1gC1AKbLmv_mCeUnVxg79_9y8A@mail.gmail.com>
-Subject: Re: [patch RFC 00/15] mm/highmem: Provide a preemptible variant of
- kmap_atomic & friends
-To: Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200920151510.GS32101@casper.infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,54 +46,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>, linux-mips@vger.kernel.org,
- Ben Segall <bsegall@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Guo Ren <guoren@kernel.org>, linux-sparc <sparclinux@vger.kernel.org>,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- the arch/x86 maintainers <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Mel Gorman <mgorman@suse.de>,
- "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
- linux-xtensa@linux-xtensa.org, Paul McKenney <paulmck@kernel.org>,
- intel-gfx <intel-gfx@lists.freedesktop.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Steven Rostedt <rostedt@goodmis.org>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>, Linux-MM <linux-mm@kvack.org>,
- Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel@ffwll.ch>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- Daniel Bristot de Oliveira <bristot@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
+Cc: linux-aio@kvack.org, linux-mips@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
+ keyrings@vger.kernel.org, sparclinux@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, x86@kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, linux-block@vger.kernel.org,
+ io-uring@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Jens Axboe <axboe@kernel.dk>, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Sep 20, 2020 at 10:42 AM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> Yeah, that looks much easier to explain. Ack.
+On Sun, Sep 20, 2020 at 04:15:10PM +0100, Matthew Wilcox wrote:
+> On Fri, Sep 18, 2020 at 02:45:25PM +0200, Christoph Hellwig wrote:
+> > Add a flag to force processing a syscall as a compat syscall.  This is
+> > required so that in_compat_syscall() works for I/O submitted by io_uring
+> > helper threads on behalf of compat syscalls.
+> 
+> Al doesn't like this much, but my suggestion is to introduce two new
+> opcodes -- IORING_OP_READV32 and IORING_OP_WRITEV32.  The compat code
+> can translate IORING_OP_READV to IORING_OP_READV32 and then the core
+> code can know what that user pointer is pointing to.
 
-Btw, one thing that might be a good idea at least initially is to add
-a check for p->kmap_ctrl.idx being zero at fork, exit and maybe
-syscall return time (but that last one may be too cumbersome to really
-worry about).
+Let's separate two issues:
+	1) compat syscalls want 32bit iovecs.  Nothing to do with the
+drivers, dealt with just fine.
+	2) a few drivers are really fucked in head.  They use different
+*DATA* layouts for reads/writes, depending upon the calling process.
+IOW, if you fork/exec a 32bit binary and your stdin is one of those,
+reads from stdin in parent and child will yield different data layouts.
+On the same struct file.
+	That's what Christoph worries about (/dev/sg he'd mentioned is
+one of those).
 
-The kmap_atomic() interface basically has a lot of coverage for leaked
-as part of all the "might_sleep()" checks sprinkled around,  The new
-kmap_temporary/local/whatever wouldn't have that kind of incidental
-debug checking, and any leaked kmap indexes would be rather hard to
-debug (much) later when they cause index overflows or whatever.
+	IMO we should simply have that dozen or so of pathological files
+marked with FMODE_SHITTY_ABI; it's not about how they'd been opened -
+it describes the userland ABI provided by those.  And it's cast in stone.
 
-                Linus
+	Any in_compat_syscall() in ->read()/->write() instances is an ABI
+bug, plain and simple.  Some are unfixable for compatibility reasons, but
+any new caller like that should be a big red flag.
+
+	How we import iovec array is none of the drivers' concern; we do
+not need to mess with in_compat_syscall() reporting the matching value,
+etc. for that.  It's about the instances that want in_compat_syscall() to
+decide between the 32bit and 64bit data layouts.  And I believe that
+we should simply have them marked as such and rejected by io_uring.  With
+any new occurences getting slapped down hard.
+
+	Current list of those turds:
+/dev/sg (pointer-chasing, generally insane)
+/sys/firmware/efi/vars/*/raw_var (fucked binary structure)
+/sys/firmware/efi/vars/new_var (fucked binary structure)
+/sys/firmware/efi/vars/del_var (fucked binary structure)
+/dev/uhid	(pointer-chasing for one obsolete command)
+/dev/input/event* (timestamps)
+/dev/uinput (timestamps)
+/proc/bus/input/devices (fucked bitmap-to-text representation)
+/sys/class/input/*/capabilities/* (fucked bitmap-to-text representation)
