@@ -2,63 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DD1273563
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 23:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9632735A8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 00:22:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BwJHj3q2fzDqtp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 07:59:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BwJpB4z2TzDqxf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 08:22:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.8.87; helo=eur04-vi1-obe.outbound.protection.outlook.com;
+ (client-ip=40.107.15.87; helo=eur01-db5-obe.outbound.protection.outlook.com;
  envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=kjCOSaAz; 
+ header.s=selector2 header.b=L/IATkV5; 
  dkim-atps=neutral
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com
- (mail-eopbgr80087.outbound.protection.outlook.com [40.107.8.87])
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com
+ (mail-eopbgr150087.outbound.protection.outlook.com [40.107.15.87])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BwJFv58vszDqsJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 07:57:38 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BwJlv2Tp3zDqtp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 08:20:09 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Y0z8N/6SRWCFrDOr7qNezmRtpGiJWX0BYFigvRwRg70nvdzKtGeFXZhomuyGJqa/I4uB+LUgN1AP3NDwkLAQTJZKJKPrZxD937JlUW21MMmdALKEyhcaZzc3HQRX1MinWmE8zfWBmvkDjjPRcf8RlHcK1MnGFsgSHjqmgN6sd8UXfUqg+n+Iag3sRGGkdkowmTQ+CNXSN4bZ94VTNuM3myYc5ow0KolaiRpl4iU24Oq50fiiVeHSCT69Y4F4azszaHV9BvZHW99JsAcYkgBF2/kcfbES36oOEBgXanDQpi4U5qG/W+Du5ww0CMjl0q0jIkJiFZ4xYlSAcodLy5yCvA==
+ b=Ccx/k8VZ93QIY4lPXBI7vND4MymVVJLoltajNH96WYkSryYZ/5S8FCgXtibzGMSowu1xPLT8izgvVsr4R/fgblDO4pBorPNUhlu3PZffSPGMDxhRB5eE/7M77be8ROInmVcU01LQTTwtGCD9Jqp6V6FQVHD6n8TfuXksQekpW7FSL10+YkQU4ro9aqFu1bzsDozjYTOADrxQ3ayJgTswhVSEz1JIJTg9Pt99S4Desdx13ObImNWt87VbgGkfMd7GndK6nt5c6ENmlQGNSs/xfE5HGPshOO5+QzHpW2HC+XLEuADx9i+P//8dUaP8JkSbca8+Ei1VqEHksHGGJj5I4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dZ20vA+CiomRWKrN0hAcQ5qW/x+xP4weEd/72EbmPog=;
- b=J89/HwC1WsFEO1BH3LMZnv93mIjpPNpZ75vdwNCOb2XhbLPulh1MsxGQn6bV2gcNflvzKWyq2vwMagqIovj1lFQDqKgKHjMQIH4pZTCTaUFQTm5shSSbov8MIZAVgmj7WK530SAtrPBU77uIk1rHcr0XHYZC7D5MU0oSNSpgx40LkPbHFN4s5jwUrZPhoolaKYdVyAZgBKMk76YqT2kOdzm0mJU9H6QbnIamN0QxYAx6y10Vk/zbkPxTuwZNDaP3EcvjQ9IzPaLNqPxf5BoX6shJTxmkIODbDn76vhir2z0/PjjOqQ6raEl51i7vg3VpAeqzZ5tlr5wsgvSNWFDj6Q==
+ bh=9vsRB3/qSKqX4q4pXlrwq8ZEQh96FZ9RtK+h/bIzed0=;
+ b=bvFdquS9VpJcqJZx5H9Cf1UREh/sOwJfPw5jtkvLB3JgE5+sOykfD43EGiD+SXC3mQl5mz0sYlaMDWJSLNXRa90qkn4yS6q384cVTyOBN/SYe8iH+yTDZTRO0ckWMGeQRj926ULT+nq5awjWu9aPVZmHBme9JtwAu/uaNstztZtn6XEfRWyLWUa2k6LRu7acRibQqD2NymYtr4APhyTW8IN34clBVLGreYPzFKXTzaR0D8jvRAT8UCHux6RdBV5ePQwflZkZJb/HcY1j7rQlbA3UE6M4IFoJNh1L/p1bvuu4gYhJkHocpkFgh3iOCsf5Iw24Kxap9yP+F4JUffUSzw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dZ20vA+CiomRWKrN0hAcQ5qW/x+xP4weEd/72EbmPog=;
- b=kjCOSaAzp7Mh/NC62T3eAJ5/A73MzAAgsiTf/3sz7yK7dBLO1BQkGV4uVbY42HB0+pr3sOfYeFGjPTmxmy78bUdyNCBuKU1IPah+n57znZbjOI6LlyCAXFL6bv+TEW8aYx2xH3cmvMefbSWUS+eop29a3XyQeS5/n9v556JYpMk=
+ bh=9vsRB3/qSKqX4q4pXlrwq8ZEQh96FZ9RtK+h/bIzed0=;
+ b=L/IATkV5n545heE2gsSnKZ2GDpQxaeah3TuB22p8HwWyRvN0WNwDhHP7H9A5phGFWCLaifPDSLIXoi//W89xZdBDp3sd4HM3f3vACpNygSIK5dsRxYbDR3+1M7auQ1B4ROMvEL8jaIThhNfboSkhFc87K4kBJJwhXuJHzsoDTOg=
 Received: from VE1PR04MB6687.eurprd04.prod.outlook.com (2603:10a6:803:121::30)
- by VI1PR0401MB2669.eurprd04.prod.outlook.com (2603:10a6:800:51::21)
+ by VI1PR04MB4976.eurprd04.prod.outlook.com (2603:10a6:803:57::25)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.17; Mon, 21 Sep
- 2020 21:57:32 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.14; Mon, 21 Sep
+ 2020 22:20:03 +0000
 Received: from VE1PR04MB6687.eurprd04.prod.outlook.com
  ([fe80::8db9:c62f:dac5:ee3d]) by VE1PR04MB6687.eurprd04.prod.outlook.com
  ([fe80::8db9:c62f:dac5:ee3d%3]) with mapi id 15.20.3391.023; Mon, 21 Sep 2020
- 21:57:31 +0000
+ 22:20:03 +0000
 From: Leo Li <leoyang.li@nxp.com>
 To: Ran Wang <ran.wang_1@nxp.com>, Rob Herring <robh+dt@kernel.org>, Shawn Guo
  <shawnguo@kernel.org>
-Subject: RE: [PATCH 5/5] arm: dts: ls1021a: fix rcpm failed to claim resource
-Thread-Topic: [PATCH 5/5] arm: dts: ls1021a: fix rcpm failed to claim resource
-Thread-Index: AQHWjAMizUXV2OSeWUSrl1GifobWbalzrFaw
-Date: Mon, 21 Sep 2020 21:57:31 +0000
-Message-ID: <VE1PR04MB66879DA9437534C3156384E98F3A0@VE1PR04MB6687.eurprd04.prod.outlook.com>
+Subject: RE: [PATCH 1/5] Documentation: dt: binding: fsl: Add
+ 'fsl,ippdexpcr1-alt-addr' property
+Thread-Topic: [PATCH 1/5] Documentation: dt: binding: fsl: Add
+ 'fsl,ippdexpcr1-alt-addr' property
+Thread-Index: AQHWjAMgLqk+44tRPE2+QRsXAFwruqlzsjoQ
+Date: Mon, 21 Sep 2020 22:20:03 +0000
+Message-ID: <VE1PR04MB6687A3E64431C16831D09C568F3A0@VE1PR04MB6687.eurprd04.prod.outlook.com>
 References: <20200916081831.24747-1-ran.wang_1@nxp.com>
- <20200916081831.24747-5-ran.wang_1@nxp.com>
-In-Reply-To: <20200916081831.24747-5-ran.wang_1@nxp.com>
+In-Reply-To: <20200916081831.24747-1-ran.wang_1@nxp.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -68,32 +69,32 @@ authentication-results: nxp.com; dkim=none (message not signed)
 x-originating-ip: [136.49.234.194]
 x-ms-publictraffictype: Email
 x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 6d3ed2af-c54c-47ad-3636-08d85e795733
-x-ms-traffictypediagnostic: VI1PR0401MB2669:
+x-ms-office365-filtering-correlation-id: f22dc04c-0038-4db9-1d44-08d85e7c7cf7
+x-ms-traffictypediagnostic: VI1PR04MB4976:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR0401MB2669C39C2CF6FAF6D495C9338F3A0@VI1PR0401MB2669.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:283;
+x-microsoft-antispam-prvs: <VI1PR04MB497680B26D993AD4FFD8E9958F3A0@VI1PR04MB4976.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4303;
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 9ddNPRRP7AZ2QSAO3QP6jrcDXykUKSPR4TEtoL0wuO0H9np5+XqM9KdzzzR2hd68sTlCSiE2iix3zA20S7Koh/JVa8g2wUJOwk6oFP6l899zl8v5A/DPK3MhexMn2UzzDSqjghymJixQdz7XsDXpRKzOhLAQFhe7iaJNpS2WT899v4hr+xmCSGicP4iEyQ1LygtLSKvo5GqyB+SrpP+swcz3LaDvanmGBP/ZDjqD7BZ2I+MMJvkjAPkHKoq+OrkoDKaGBFj/5qFBMDUY/IqolZFPwInRIIKzhl5emEUzinXkuota/FtlInTIcx1dKjUOC1iSv4MPQYFUPhzJBS7lZw==
+x-microsoft-antispam-message-info: naf4OFOtkKzKMhSysPoHZ2haYGMgJ/sAA2QFmAHXzMO7/uuR+3EMt/Lt/K6M6iTWexy3Lm3obtVol+1riXpY/hNo1LFv/Sqj08f3OrmSl5ElLP2FJ1ADsr3v1TsY1ssI0Gp9K2H+bjyty+pCoxb8fvIcXWUR6eMNlgbVj7d3WVncrWZTAKTeactcDImWAZx/WtQH87VNx1vMJUVpKazD0YrbvgrbWsu3JDTxVgq/UqdV3bcpMcmVNMucL+YMlbhaGeAvyqie0Xueu7jzxgXjmK5SkWsUWYvulHRQo3wFalKIbvpnww8cdYCcOKCOkwrNVbpJFdul9IOg1ec0JJMOn1MgX/0yGBHLqqbOnE1lyQ87G7LWWGuMt7GDTLGmNWpY
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:VE1PR04MB6687.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(396003)(346002)(39860400002)(366004)(136003)(376002)(478600001)(83380400001)(8676002)(5660300002)(71200400001)(9686003)(55016002)(52536014)(8936002)(76116006)(66476007)(66946007)(66446008)(66556008)(64756008)(316002)(2906002)(53546011)(33656002)(86362001)(110136005)(26005)(54906003)(186003)(7696005)(6506007)(4326008);
+ SFS:(4636009)(136003)(39850400004)(366004)(396003)(376002)(346002)(52536014)(8936002)(53546011)(6506007)(71200400001)(66476007)(2906002)(55016002)(83380400001)(66556008)(9686003)(8676002)(7696005)(478600001)(64756008)(66446008)(66946007)(86362001)(5660300002)(76116006)(186003)(4326008)(26005)(54906003)(33656002)(316002)(110136005)(142933001);
  DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: iS6kCuawBj0OBrfBNA3wKfBz5DEF6eKfpp4MIakB/NgRyFTsz9uSKycUo0il8CEoUJOAwL6p+tQgEUHJANrwgdin/SyrmJohpFJ05CR9WL2RY7twfhGDLR0oVZq9xrf+2OmYRXc//vclI9BfJI+3XqZaETgZ/SHIekjBHA/XpkkQ+jvvJrQu+WafBtlc1yiXi237P1j0BVhgytmYcMwrQnDwkG826nUGpBgO3NF5BKWIEFiOU0qlesnLmuDhKb0U+Wk8CKAPzEN+deYIQ0Zmq687aB7WceAGlhYBbClpwSrYH7kGY+H9gR3JqKjJnnUeBNQUfrkmPYSpTOJedTdzknbqLHhzlf7UDFWmkw93BAWryStkr8iCTm0QFQdpGyrZIBLqdc+73Isx3WnlNkbxD59dBxS4YBqZSKC4ch6f24ZF4K5F3JPaCEWDccxlWOFqV/bMf8McNB/tcd1/9mJzzoKQBTT8frRprZ1IBZS+Sh0yMy4HZF+jNx6sOVvVCIIFxxmFZIRNCgMRf33n6Av69xpHndSiE+WoZoPgX7kMijMxJIsZCoPpUltPAN2lXr8YUB2zzLkALFltX/Dh7b7ntgIbCruQKt1A1ct2PsoxTgJKwgWwFsbDcp8bYfnHac9NqRQ4KYTu7NQFE2WpaeC+UQ==
+x-ms-exchange-antispam-messagedata: 4IlulXS0M4fWy/2Nc4sE0g0sPEvbQdInzFrtLIXb0j5vYKA9hb7tFUVB2eY2WjzC8w+Q90Nu1NRkiznSXE/KVPaDf2anyG1X1zPF1cxmDnAgPYtI014rx7C8pPIAv4V1zQHC/E1PJ56b9QAbuRjJflk6I/X5ELNKMgcIQ/3xFs7zbKlvTr8C8y9woHMU/DKa45b3AZGGf6kbk3LsWedMc4X91dIGa16ZehMCPxhOhb5uytcH9/AZU7KWUX/CQ67O0Ge57d8WElQfLBCEm7gYvB3xuKnp1BW0jlaBUDBh5fOijVDgNrh+GUt+25LyTCUod3XwNXCbuXT/bPK8Wna9vu1Jijs6fNOZNoeHaOYIznokskOH82UoX9VdF+OVVG6llccdct0nJlPguuTUpIqLjl3fppCUT5qtcC2MyKuUF42+qB04hDb6O78u7pDfAKdxHT8/gJ6SRANQfgT9c+DQ/3Y01MWNICN23nSwS7bQBk49RxSIJbmxA5EmjeUYpMFOF1nPVNpBet80U3WPNifhxnH8DwkCW9PZiTmUy5SWuH2BScnI+uluDqjjMSsKYmRqgJKGoW8kSZeFsYJJP31bxlsJ0E434E/SGvJb2TuFbjIZg3sdc44o8gCTMe+l5ou0ZcibvQui53ldRCwcfLiHfw==
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB6687.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d3ed2af-c54c-47ad-3636-08d85e795733
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2020 21:57:31.8593 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f22dc04c-0038-4db9-1d44-08d85e7c7cf7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2020 22:20:03.7251 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Z1ntEwxdIAgJBf/E7eWF03Ax7Q9G2FhHIVBX6IvvdATc6Vf0fMGjARkHMla0HUriQHmYXwz6sNYguXuOk5H6fw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0401MB2669
+X-MS-Exchange-CrossTenant-userprincipalname: DyO85aheuHYZpwd+EFBvEuq5KwAo1f6grX1kPU+e8gmUrO+/cai3lycJ7Wj5ND9NBniRnKmIo5mwKhvc/3j2IA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4976
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,9 +107,10 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Biwen Li <biwen.li@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
  Ran Wang <ran.wang_1@nxp.com>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
  "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
@@ -118,41 +120,73 @@ Sender: "Linuxppc-dev"
 
 > -----Original Message-----
 > From: Ran Wang <ran.wang_1@nxp.com>
-> Sent: Wednesday, September 16, 2020 3:19 AM
+> Sent: Wednesday, September 16, 2020 3:18 AM
 > To: Leo Li <leoyang.li@nxp.com>; Rob Herring <robh+dt@kernel.org>;
 > Shawn Guo <shawnguo@kernel.org>
 > Cc: linuxppc-dev@lists.ozlabs.org; linux-arm-kernel@lists.infradead.org;
-> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; Ran Wang
-> <ran.wang_1@nxp.com>
-> Subject: [PATCH 5/5] arm: dts: ls1021a: fix rcpm failed to claim resource
+> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; Biwen Li
+> <biwen.li@nxp.com>; Ran Wang <ran.wang_1@nxp.com>
+> Subject: [PATCH 1/5] Documentation: dt: binding: fsl: Add 'fsl,ippdexpcr1=
+-alt-
+> addr' property
 >=20
-> The range of dcfg reg is wrong, which overlap with other device, such as =
-rcpm.
-> This issue causing rcpm driver failed to claim reg resource when calling
-> devm_ioremap_resource().
+> From: Biwen Li <biwen.li@nxp.com>
 >=20
+> The 'fsl,ippdexpcr1-alt-addr' property is used to handle an errata A-0086=
+46 on
+> LS1021A
+
+It looks like the previous version of this patch has gotten the reviewed-by=
+ from Rob.  It would be good to be added to the patch for new submission.
+
+>=20
+> Signed-off-by: Biwen Li <biwen.li@nxp.com>
 > Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
-
-Acked-by: Li Yang <leoyang.li@nxp.com>
-
 > ---
->  arch/arm/boot/dts/ls1021a.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  Documentation/devicetree/bindings/soc/fsl/rcpm.txt | 19
+> +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
 >=20
-> diff --git a/arch/arm/boot/dts/ls1021a.dtsi b/arch/arm/boot/dts/ls1021a.d=
-tsi
-> index e372630f..286c547 100644
-> --- a/arch/arm/boot/dts/ls1021a.dtsi
-> +++ b/arch/arm/boot/dts/ls1021a.dtsi
-> @@ -173,7 +173,7 @@
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> index 5a33619..1be58a3 100644
+> --- a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> +++ b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+> @@ -34,6 +34,11 @@ Chassis Version		Example Chips
+>  Optional properties:
+>   - little-endian : RCPM register block is Little Endian. Without it RCPM
+>     will be Big Endian (default case).
+> + - fsl,ippdexpcr1-alt-addr : The property is related to a hardware issue
+> +   on SoC LS1021A and only needed on SoC LS1021A.
+> +   Must include 2 entries:
+> +   The first entry must be a link to the SCFG device node.
+> +   The 2nd entry must be offset of register IPPDEXPCR1 in SCFG.
 >=20
->  		dcfg: dcfg@1ee0000 {
->  			compatible =3D "fsl,ls1021a-dcfg", "syscon";
-> -			reg =3D <0x0 0x1ee0000 0x0 0x10000>;
-> +			reg =3D <0x0 0x1ee0000 0x0 0x1000>;
->  			big-endian;
->  		};
+>  Example:
+>  The RCPM node for T4240:
+> @@ -43,6 +48,20 @@ The RCPM node for T4240:
+>  		#fsl,rcpm-wakeup-cells =3D <2>;
+>  	};
 >=20
+> +The RCPM node for LS1021A:
+> +	rcpm: rcpm@1ee2140 {
+> +		compatible =3D "fsl,ls1021a-rcpm", "fsl,qoriq-rcpm-2.1+";
+> +		reg =3D <0x0 0x1ee2140 0x0 0x8>;
+> +		#fsl,rcpm-wakeup-cells =3D <2>;
+> +
+> +		/*
+> +		 * The second and third entry compose an alt offset
+> +		 * address for IPPDEXPCR1(SCFG_SPARECR8)
+> +		 */
+> +		fsl,ippdexpcr1-alt-addr =3D <&scfg 0x51c>;
+> +	};
+> +
+> +
+>  * Freescale RCPM Wakeup Source Device Tree Bindings
+>  -------------------------------------------
+>  Required fsl,rcpm-wakeup property should be added to a device node if th=
+e
+> device
 > --
 > 2.7.4
 
