@@ -1,39 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD21271A30
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 06:43:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B59271ADB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 08:27:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BvsJ90XVQzDqgB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 14:43:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BvvcK1W3wzDqmY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 16:27:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+776a1a22abff015854b2+6238+infradead.org+hch@casper.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=RTAohrKQ; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BvsGM5gFyzDqTq
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 14:41:30 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 20EA168AFE; Mon, 21 Sep 2020 06:41:25 +0200 (CEST)
-Date: Mon, 21 Sep 2020 06:41:25 +0200
-From: 'Christoph Hellwig' <hch@lst.de>
-To: David Laight <David.Laight@ACULAB.COM>
-Subject: Re: let import_iovec deal with compat_iovecs as well
-Message-ID: <20200921044125.GA16522@lst.de>
-References: <20200918124533.3487701-1-hch@lst.de>
- <2c7bf42ee4314484ae0177280cd8f5f3@AcuMS.aculab.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BvvZM5sjfzDqSY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 16:25:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=xTLh23wHPG4TqC3FM8xjFZG4IFBTa9u/cbF3kBwK6Ds=; b=RTAohrKQEJ4d/+2FHmYCSfnjaU
+ 3Y1oN0bX+qNiXFWWNQ5Bx+rNc3TH1ppQwCVDi8zlXDOxk4uSGN0o6OjNUqN5ZaH5p/UcdOos6uaKX
+ vllToVdZRo/76JFQ3wTCiQ471CZFaX1BccaWpPpcB/IeKOoZaf90ILoLhkgXiVEZjCJAlFIHYK7cC
+ 2Idpp6EiVC1risOlIyV1ZZZgUcMQYapM6jn/nD1nDGMIF9n70bKhqPEdll9S2tBpls2hjZ8pj53jo
+ 5fqdSa3anAUXYCJg0H/nKgdpbgaLvqoX/s5XchLK7sAQ11cFqoLoPDGi8F3iJ/WzUGnXg/GC/FoHK
+ JVE5YMag==;
+Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1kKFEf-0000LF-P3; Mon, 21 Sep 2020 06:23:37 +0000
+Date: Mon, 21 Sep 2020 07:23:37 +0100
+From: Christoph Hellwig <hch@infradead.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch RFC 01/15] mm/highmem: Un-EXPORT __kmap_atomic_idx()
+Message-ID: <20200921062337.GA32081@infradead.org>
+References: <20200919091751.011116649@linutronix.de>
+ <20200919092615.879315697@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2c7bf42ee4314484ae0177280cd8f5f3@AcuMS.aculab.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20200919092615.879315697@linutronix.de>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,37 +63,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-aio@kvack.org" <linux-aio@kvack.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- David Howells <dhowells@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- 'Christoph Hellwig' <hch@lst.de>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Jens Axboe <axboe@kernel.dk>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>, linux-mips@vger.kernel.org,
+ Ben Segall <bsegall@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
+ Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>, linux-arch@vger.kernel.org,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Mel Gorman <mgorman@suse.de>,
+ linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+ Paul McKenney <paulmck@kernel.org>,
+ intel-gfx <intel-gfx@lists.freedesktop.org>, linuxppc-dev@lists.ozlabs.org,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Linus Torvalds <torvalds@linuxfoundation.org>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Nick Hu <nickhu@andestech.com>, Linux-MM <linux-mm@kvack.org>,
+ Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel@ffwll.ch>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Sep 19, 2020 at 02:24:10PM +0000, David Laight wrote:
-> I thought about that change while writing my import_iovec() => iovec_import()
-> patch - and thought that the io_uring code would (as usual) cause grief.
+On Sat, Sep 19, 2020 at 11:17:52AM +0200, Thomas Gleixner wrote:
+> Nothing in modules can use that.
 > 
-> Christoph - did you see those patches?
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
-No.
+Looks good,
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
