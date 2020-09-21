@@ -1,60 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17DB272202
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 13:13:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D06272269
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 13:27:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bw1yQ2RmGzDqhK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 21:13:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bw2H602xgzDqYV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 21:27:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
+ envelope-from=wangwensheng4@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bw1wP1MrFzDqLn
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 21:11:30 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-233-9UYq0ao9O6ejB4ujVxtO9g-1; Mon, 21 Sep 2020 12:11:22 +0100
-X-MC-Unique: 9UYq0ao9O6ejB4ujVxtO9g-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Mon, 21 Sep 2020 12:11:21 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Mon, 21 Sep 2020 12:11:21 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Christoph Hellwig' <hch@lst.de>
-Subject: RE: let import_iovec deal with compat_iovecs as well
-Thread-Topic: let import_iovec deal with compat_iovecs as well
-Thread-Index: AQHWjbnKEn35LxofhEeT1lmdzdUiWqlwBNiwgAJx3YCAAH2K4A==
-Date: Mon, 21 Sep 2020 11:11:21 +0000
-Message-ID: <ac8a3691c4f5442f908c51298260ca0e@AcuMS.aculab.com>
-References: <20200918124533.3487701-1-hch@lst.de>
- <2c7bf42ee4314484ae0177280cd8f5f3@AcuMS.aculab.com>
- <20200921044125.GA16522@lst.de>
-In-Reply-To: <20200921044125.GA16522@lst.de>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bw2D33cqvzDqYX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 21:25:02 +1000 (AEST)
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 26FF28EAE5C88EE86BD1;
+ Mon, 21 Sep 2020 19:24:56 +0800 (CST)
+Received: from huawei.com (10.175.112.208) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Mon, 21 Sep 2020
+ 19:24:50 +0800
+From: Wang Wensheng <wangwensheng4@huawei.com>
+To: <paulus@ozlabs.org>, <mpe@ellerman.id.au>, <benh@kernel.crashing.org>,
+ <kvm-ppc@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: [PATCH -next] powerpc/kvm/books: Fix symbol undeclared warnings
+Date: Mon, 21 Sep 2020 11:22:11 +0000
+Message-ID: <20200921112211.82830-1-wangwensheng4@huawei.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.208]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,46 +49,131 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-aio@kvack.org" <linux-aio@kvack.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- David Howells <dhowells@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Jens Axboe <axboe@kernel.dk>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> On Sat, Sep 19, 2020 at 02:24:10PM +0000, David Laight wrote:
-> > I thought about that change while writing my import_iovec() =3D> iovec_=
-import()
-> > patch - and thought that the io_uring code would (as usual) cause grief=
-.
-> >
-> > Christoph - did you see those patches?
+Build the kernel with `C=2`:
+arch/powerpc/kvm/book3s_hv_nested.c:572:25: warning: symbol
+'kvmhv_alloc_nested' was not declared. Should it be static?
+arch/powerpc/kvm/book3s_64_mmu_radix.c:350:6: warning: symbol
+'kvmppc_radix_set_pte_at' was not declared. Should it be static?
+arch/powerpc/kvm/book3s_hv.c:3568:5: warning: symbol
+'kvmhv_p9_guest_entry' was not declared. Should it be static?
+arch/powerpc/kvm/book3s_hv_rm_xics.c:767:15: warning: symbol 'eoi_rc'
+was not declared. Should it be static?
+arch/powerpc/kvm/book3s_64_vio_hv.c:240:13: warning: symbol
+'iommu_tce_kill_rm' was not declared. Should it be static?
+arch/powerpc/kvm/book3s_64_vio.c:492:6: warning: symbol
+'kvmppc_tce_iommu_do_map' was not declared. Should it be static?
+arch/powerpc/kvm/book3s_pr.c:572:6: warning: symbol 'kvmppc_set_pvr_pr'
+was not declared. Should it be static?
 
-Link to cover email.
+Those symbols are used only in the files that define them so make them
+static to fix the warnings.
 
-https://lkml.org/lkml/2020/9/15/661
+Signed-off-by: Wang Wensheng <wangwensheng4@huawei.com>
+---
+ arch/powerpc/kvm/book3s_64_mmu_radix.c | 2 +-
+ arch/powerpc/kvm/book3s_64_vio.c       | 2 +-
+ arch/powerpc/kvm/book3s_64_vio_hv.c    | 2 +-
+ arch/powerpc/kvm/book3s_hv.c           | 2 +-
+ arch/powerpc/kvm/book3s_hv_nested.c    | 2 +-
+ arch/powerpc/kvm/book3s_hv_rm_xics.c   | 2 +-
+ arch/powerpc/kvm/book3s_pr.c           | 2 +-
+ 7 files changed, 7 insertions(+), 7 deletions(-)
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+index 22a677b18695..bb35490400e9 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -347,7 +347,7 @@ static unsigned long kvmppc_radix_update_pte(struct kvm *kvm, pte_t *ptep,
+ 	return __radix_pte_update(ptep, clr, set);
+ }
+ 
+-void kvmppc_radix_set_pte_at(struct kvm *kvm, unsigned long addr,
++static void kvmppc_radix_set_pte_at(struct kvm *kvm, unsigned long addr,
+ 			     pte_t *ptep, pte_t pte)
+ {
+ 	radix__set_pte_at(kvm->mm, addr, ptep, pte, 0);
+diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
+index 1a529df0ab44..c2fbeb04bba2 100644
+--- a/arch/powerpc/kvm/book3s_64_vio.c
++++ b/arch/powerpc/kvm/book3s_64_vio.c
+@@ -489,7 +489,7 @@ static long kvmppc_tce_iommu_unmap(struct kvm *kvm,
+ 	return ret;
+ }
+ 
+-long kvmppc_tce_iommu_do_map(struct kvm *kvm, struct iommu_table *tbl,
++static long kvmppc_tce_iommu_do_map(struct kvm *kvm, struct iommu_table *tbl,
+ 		unsigned long entry, unsigned long ua,
+ 		enum dma_data_direction dir)
+ {
+diff --git a/arch/powerpc/kvm/book3s_64_vio_hv.c b/arch/powerpc/kvm/book3s_64_vio_hv.c
+index ac6ac192b8bb..470e7c518a10 100644
+--- a/arch/powerpc/kvm/book3s_64_vio_hv.c
++++ b/arch/powerpc/kvm/book3s_64_vio_hv.c
+@@ -237,7 +237,7 @@ static long iommu_tce_xchg_no_kill_rm(struct mm_struct *mm,
+ 	return ret;
+ }
+ 
+-extern void iommu_tce_kill_rm(struct iommu_table *tbl,
++static void iommu_tce_kill_rm(struct iommu_table *tbl,
+ 		unsigned long entry, unsigned long pages)
+ {
+ 	if (tbl->it_ops->tce_kill)
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index cb1d16a3730c..31407be44e57 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -3575,7 +3575,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+  * Virtual-mode guest entry for POWER9 and later when the host and
+  * guest are both using the radix MMU.  The LPIDR has already been set.
+  */
+-int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
++static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 			 unsigned long lpcr)
+ {
+ 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+index 6822d23a2da4..33b58549a9aa 100644
+--- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -569,7 +569,7 @@ static void kvmhv_update_ptbl_cache(struct kvm_nested_guest *gp)
+ 	kvmhv_set_nested_ptbl(gp);
+ }
+ 
+-struct kvm_nested_guest *kvmhv_alloc_nested(struct kvm *kvm, unsigned int lpid)
++static struct kvm_nested_guest *kvmhv_alloc_nested(struct kvm *kvm, unsigned int lpid)
+ {
+ 	struct kvm_nested_guest *gp;
+ 	long shadow_lpid;
+diff --git a/arch/powerpc/kvm/book3s_hv_rm_xics.c b/arch/powerpc/kvm/book3s_hv_rm_xics.c
+index 4d7e5610731a..c2c9c733f359 100644
+--- a/arch/powerpc/kvm/book3s_hv_rm_xics.c
++++ b/arch/powerpc/kvm/book3s_hv_rm_xics.c
+@@ -764,7 +764,7 @@ int xics_rm_h_eoi(struct kvm_vcpu *vcpu, unsigned long xirr)
+ 	return ics_rm_eoi(vcpu, irq);
+ }
+ 
+-unsigned long eoi_rc;
++static unsigned long eoi_rc;
+ 
+ static void icp_eoi(struct irq_chip *c, u32 hwirq, __be32 xirr, bool *again)
+ {
+diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
+index 88fac22fbf09..b1fefa63e125 100644
+--- a/arch/powerpc/kvm/book3s_pr.c
++++ b/arch/powerpc/kvm/book3s_pr.c
+@@ -569,7 +569,7 @@ static void kvmppc_set_msr_pr(struct kvm_vcpu *vcpu, u64 msr)
+ #endif
+ }
+ 
+-void kvmppc_set_pvr_pr(struct kvm_vcpu *vcpu, u32 pvr)
++static void kvmppc_set_pvr_pr(struct kvm_vcpu *vcpu, u32 pvr)
+ {
+ 	u32 host_pvr;
+ 
+-- 
+2.25.0
 
