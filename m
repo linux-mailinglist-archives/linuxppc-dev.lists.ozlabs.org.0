@@ -2,88 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5307C272629
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 15:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35775272892
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 16:44:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bw5Mv3XcQzDqV8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 23:47:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bw6f530VXzDqcy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 00:44:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+776a1a22abff015854b2+6238+infradead.org+hch@casper.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=NQD/UR4M; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=mbONURe7; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bw5Jc1BGzzDqWL
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 23:44:15 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 08LDVlvQ137138; Mon, 21 Sep 2020 09:43:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=id9rJErrcsnFHTNf15KR9DYs+NEq1DNwc5GOafgjtyA=;
- b=NQD/UR4MyXTIbT/tRs/cCzgBLdG/YmIyTliRnQcU/th9cDh3Ps1FpRhxwzlRooNjC9Gy
- AoIAB5FvNEhgbJ2gd2H/ekWDcQUfSnFKx3hx3od8BgbxT6u08AZtU35yNH9FwQewTpOh
- zHKTnlu+M10sbkfyYD8kcNtolKmmu4a4mkyPB/t8B90miTTei9J7IGn4djv8aPIofnLA
- GDCIjkQR7iXtjEesojLS4jm+Se59DCxtVkOujxBAGLVgEPuUt5CRVIsf2DLF/+JmQEOY
- VxWalV+GAtM32khwJcXD6XXZ7+0xQvai6GZ+rTY0UDyYfCmTaS2Su+hgwOc2BAa27Sca 3g== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 33pvvv8yqw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 21 Sep 2020 09:43:54 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08LDh6qS003646;
- Mon, 21 Sep 2020 13:43:53 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma02dal.us.ibm.com with ESMTP id 33n9m8udkm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 21 Sep 2020 13:43:53 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 08LDhqBQ22151560
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 21 Sep 2020 13:43:53 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DED95112062;
- Mon, 21 Sep 2020 13:43:52 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A9BA1112061;
- Mon, 21 Sep 2020 13:43:51 +0000 (GMT)
-Received: from localhost (unknown [9.85.203.227])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
- Mon, 21 Sep 2020 13:43:51 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Jing Xiangfeng <jingxiangfeng@huawei.com>, paulus@ozlabs.org,
- mpe@ellerman.id.au, benh@kernel.crashing.org
-Subject: Re: [PATCH] KVM: PPC: Book3S: Remove redundant initialization of
- variable ret
-In-Reply-To: <20200919071230.125798-1-jingxiangfeng@huawei.com>
-References: <20200919071230.125798-1-jingxiangfeng@huawei.com>
-Date: Mon, 21 Sep 2020 10:43:48 -0300
-Message-ID: <87o8lzp7mz.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bw6Qp40d3zDqdn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 00:34:39 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+ References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+ Content-Type:Content-ID:Content-Description;
+ bh=LCXn2FJbni+/tCTK8D6nVLYSdWCMV5d/zHCD2VrYDAs=; b=mbONURe77St7uQ3PnKdyMO8YWN
+ lHHxh8Rej95j3EcLKqhP+y4tGyd99cd/ffdxqZV8yebCrwLM4eoxys1lPtV4nVdcd41zESCOCPd2p
+ 95UzbhUrv2C0Zdd6/UauA1rhV5yGsydVTGeKguxbWl7TGmSbLoMHa4oxCvrISI4jXTzJPl9t/ozf0
+ 3zgYR6Q2PTzlKw8BHxuK6Qw05qaz8+AyJOCrLu1xBMHb4joZOGQAT0ZIWIWSX26qT2lyaclnBdPz4
+ K58eZEN+KtEyvxIyL1cW01OE8EcmQ61Ns90iHf2WcQeGgqx1xswzI6xvrLYFrpcdHJHk8/G7gWXzW
+ SBn8XVIg==;
+Received: from p4fdb0c34.dip0.t-ipconnect.de ([79.219.12.52] helo=localhost)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kKMta-0007rG-G7; Mon, 21 Sep 2020 14:34:23 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Alexander Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 03/11] iov_iter: move rw_copy_check_uvector() into
+ lib/iov_iter.c and mark it static
+Date: Mon, 21 Sep 2020 16:34:26 +0200
+Message-Id: <20200921143434.707844-4-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200921143434.707844-1-hch@lst.de>
+References: <20200921143434.707844-1-hch@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-21_05:2020-09-21,
- 2020-09-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- mlxlogscore=999 spamscore=0 malwarescore=0 impostorscore=0
- priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1011 phishscore=0
- mlxscore=0 suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009210093
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,35 +64,446 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, jingxiangfeng@huawei.com
+Cc: linux-aio@kvack.org, linux-mips@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
+ keyrings@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ linux-block@vger.kernel.org, io-uring@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
+ linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ David Laight <david.laight@aculab.com>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jing Xiangfeng <jingxiangfeng@huawei.com> writes:
+From: David Laight <David.Laight@ACULAB.COM>
 
-> The variable ret is being initialized with '-ENOMEM' that is meaningless.
-> So remove it.
->
-> Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
+This lets the compiler inline it into import_iovec() generating
+much better code.
 
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+Signed-off-by: David Laight <david.laight@aculab.com>
+[hch: drop the now pointless kerneldoc for a static function, and update
+      a few other comments]
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ fs/read_write.c        | 179 -----------------------------------------
+ include/linux/compat.h |   6 --
+ include/linux/fs.h     |  11 +--
+ lib/iov_iter.c         | 150 +++++++++++++++++++++++++++++++++-
+ 4 files changed, 151 insertions(+), 195 deletions(-)
 
-> ---
->  arch/powerpc/kvm/book3s_64_vio.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-> index 1a529df0ab44..b277a75cd1be 100644
-> --- a/arch/powerpc/kvm/book3s_64_vio.c
-> +++ b/arch/powerpc/kvm/book3s_64_vio.c
-> @@ -283,7 +283,7 @@ long kvm_vm_ioctl_create_spapr_tce(struct kvm *kvm,
->  	struct kvmppc_spapr_tce_table *siter;
->  	struct mm_struct *mm = kvm->mm;
->  	unsigned long npages, size = args->size;
-> -	int ret = -ENOMEM;
-> +	int ret;
->
->  	if (!args->size || args->page_shift < 12 || args->page_shift > 34 ||
->  		(args->offset + args->size > (ULLONG_MAX >> args->page_shift)))
+diff --git a/fs/read_write.c b/fs/read_write.c
+index 5db58b8c78d0dd..e5e891a88442ef 100644
+--- a/fs/read_write.c
++++ b/fs/read_write.c
+@@ -752,185 +752,6 @@ static ssize_t do_loop_readv_writev(struct file *filp, struct iov_iter *iter,
+ 	return ret;
+ }
+ 
+-/**
+- * rw_copy_check_uvector() - Copy an array of &struct iovec from userspace
+- *     into the kernel and check that it is valid.
+- *
+- * @type: One of %CHECK_IOVEC_ONLY, %READ, or %WRITE.
+- * @uvector: Pointer to the userspace array.
+- * @nr_segs: Number of elements in userspace array.
+- * @fast_segs: Number of elements in @fast_pointer.
+- * @fast_pointer: Pointer to (usually small on-stack) kernel array.
+- * @ret_pointer: (output parameter) Pointer to a variable that will point to
+- *     either @fast_pointer, a newly allocated kernel array, or NULL,
+- *     depending on which array was used.
+- *
+- * This function copies an array of &struct iovec of @nr_segs from
+- * userspace into the kernel and checks that each element is valid (e.g.
+- * it does not point to a kernel address or cause overflow by being too
+- * large, etc.).
+- *
+- * As an optimization, the caller may provide a pointer to a small
+- * on-stack array in @fast_pointer, typically %UIO_FASTIOV elements long
+- * (the size of this array, or 0 if unused, should be given in @fast_segs).
+- *
+- * @ret_pointer will always point to the array that was used, so the
+- * caller must take care not to call kfree() on it e.g. in case the
+- * @fast_pointer array was used and it was allocated on the stack.
+- *
+- * Return: The total number of bytes covered by the iovec array on success
+- *   or a negative error code on error.
+- */
+-ssize_t rw_copy_check_uvector(int type, const struct iovec __user * uvector,
+-			      unsigned long nr_segs, unsigned long fast_segs,
+-			      struct iovec *fast_pointer,
+-			      struct iovec **ret_pointer)
+-{
+-	unsigned long seg;
+-	ssize_t ret;
+-	struct iovec *iov = fast_pointer;
+-
+-	/*
+-	 * SuS says "The readv() function *may* fail if the iovcnt argument
+-	 * was less than or equal to 0, or greater than {IOV_MAX}.  Linux has
+-	 * traditionally returned zero for zero segments, so...
+-	 */
+-	if (nr_segs == 0) {
+-		ret = 0;
+-		goto out;
+-	}
+-
+-	/*
+-	 * First get the "struct iovec" from user memory and
+-	 * verify all the pointers
+-	 */
+-	if (nr_segs > UIO_MAXIOV) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-	if (nr_segs > fast_segs) {
+-		iov = kmalloc_array(nr_segs, sizeof(struct iovec), GFP_KERNEL);
+-		if (iov == NULL) {
+-			ret = -ENOMEM;
+-			goto out;
+-		}
+-	}
+-	if (copy_from_user(iov, uvector, nr_segs*sizeof(*uvector))) {
+-		ret = -EFAULT;
+-		goto out;
+-	}
+-
+-	/*
+-	 * According to the Single Unix Specification we should return EINVAL
+-	 * if an element length is < 0 when cast to ssize_t or if the
+-	 * total length would overflow the ssize_t return value of the
+-	 * system call.
+-	 *
+-	 * Linux caps all read/write calls to MAX_RW_COUNT, and avoids the
+-	 * overflow case.
+-	 */
+-	ret = 0;
+-	for (seg = 0; seg < nr_segs; seg++) {
+-		void __user *buf = iov[seg].iov_base;
+-		ssize_t len = (ssize_t)iov[seg].iov_len;
+-
+-		/* see if we we're about to use an invalid len or if
+-		 * it's about to overflow ssize_t */
+-		if (len < 0) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
+-		if (type >= 0
+-		    && unlikely(!access_ok(buf, len))) {
+-			ret = -EFAULT;
+-			goto out;
+-		}
+-		if (len > MAX_RW_COUNT - ret) {
+-			len = MAX_RW_COUNT - ret;
+-			iov[seg].iov_len = len;
+-		}
+-		ret += len;
+-	}
+-out:
+-	*ret_pointer = iov;
+-	return ret;
+-}
+-
+-#ifdef CONFIG_COMPAT
+-ssize_t compat_rw_copy_check_uvector(int type,
+-		const struct compat_iovec __user *uvector, unsigned long nr_segs,
+-		unsigned long fast_segs, struct iovec *fast_pointer,
+-		struct iovec **ret_pointer)
+-{
+-	compat_ssize_t tot_len;
+-	struct iovec *iov = *ret_pointer = fast_pointer;
+-	ssize_t ret = 0;
+-	int seg;
+-
+-	/*
+-	 * SuS says "The readv() function *may* fail if the iovcnt argument
+-	 * was less than or equal to 0, or greater than {IOV_MAX}.  Linux has
+-	 * traditionally returned zero for zero segments, so...
+-	 */
+-	if (nr_segs == 0)
+-		goto out;
+-
+-	ret = -EINVAL;
+-	if (nr_segs > UIO_MAXIOV)
+-		goto out;
+-	if (nr_segs > fast_segs) {
+-		ret = -ENOMEM;
+-		iov = kmalloc_array(nr_segs, sizeof(struct iovec), GFP_KERNEL);
+-		if (iov == NULL)
+-			goto out;
+-	}
+-	*ret_pointer = iov;
+-
+-	ret = -EFAULT;
+-	if (!access_ok(uvector, nr_segs*sizeof(*uvector)))
+-		goto out;
+-
+-	/*
+-	 * Single unix specification:
+-	 * We should -EINVAL if an element length is not >= 0 and fitting an
+-	 * ssize_t.
+-	 *
+-	 * In Linux, the total length is limited to MAX_RW_COUNT, there is
+-	 * no overflow possibility.
+-	 */
+-	tot_len = 0;
+-	ret = -EINVAL;
+-	for (seg = 0; seg < nr_segs; seg++) {
+-		compat_uptr_t buf;
+-		compat_ssize_t len;
+-
+-		if (__get_user(len, &uvector->iov_len) ||
+-		   __get_user(buf, &uvector->iov_base)) {
+-			ret = -EFAULT;
+-			goto out;
+-		}
+-		if (len < 0)	/* size_t not fitting in compat_ssize_t .. */
+-			goto out;
+-		if (type >= 0 &&
+-		    !access_ok(compat_ptr(buf), len)) {
+-			ret = -EFAULT;
+-			goto out;
+-		}
+-		if (len > MAX_RW_COUNT - tot_len)
+-			len = MAX_RW_COUNT - tot_len;
+-		tot_len += len;
+-		iov->iov_base = compat_ptr(buf);
+-		iov->iov_len = (compat_size_t) len;
+-		uvector++;
+-		iov++;
+-	}
+-	ret = tot_len;
+-
+-out:
+-	return ret;
+-}
+-#endif
+-
+ static ssize_t do_iter_read(struct file *file, struct iov_iter *iter,
+ 		loff_t *pos, rwf_t flags)
+ {
+diff --git a/include/linux/compat.h b/include/linux/compat.h
+index 654c1ec36671a4..b930de791ff16b 100644
+--- a/include/linux/compat.h
++++ b/include/linux/compat.h
+@@ -451,12 +451,6 @@ extern long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 
+ struct epoll_event;	/* fortunately, this one is fixed-layout */
+ 
+-extern ssize_t compat_rw_copy_check_uvector(int type,
+-		const struct compat_iovec __user *uvector,
+-		unsigned long nr_segs,
+-		unsigned long fast_segs, struct iovec *fast_pointer,
+-		struct iovec **ret_pointer);
+-
+ extern void __user *compat_alloc_user_space(unsigned long len);
+ 
+ int compat_restore_altstack(const compat_stack_t __user *uss);
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 7519ae003a082c..5420822104a99d 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -179,10 +179,8 @@ typedef int (dio_iodone_t)(struct kiocb *iocb, loff_t offset,
+ #define FMODE_BUF_RASYNC	((__force fmode_t)0x40000000)
+ 
+ /*
+- * Flag for rw_copy_check_uvector and compat_rw_copy_check_uvector
+- * that indicates that they should check the contents of the iovec are
+- * valid, but not check the memory that the iovec elements
+- * points too.
++ * Flag for import_iovec that indicates that it should check the contents of the
++ * iovec is valid, but not check the memory that the iovec elements points too.
+  */
+ #define CHECK_IOVEC_ONLY -1
+ 
+@@ -1887,11 +1885,6 @@ static inline int call_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return file->f_op->mmap(file, vma);
+ }
+ 
+-ssize_t rw_copy_check_uvector(int type, const struct iovec __user * uvector,
+-			      unsigned long nr_segs, unsigned long fast_segs,
+-			      struct iovec *fast_pointer,
+-			      struct iovec **ret_pointer);
+-
+ extern ssize_t vfs_read(struct file *, char __user *, size_t, loff_t *);
+ extern ssize_t vfs_write(struct file *, const char __user *, size_t, loff_t *);
+ extern ssize_t vfs_readv(struct file *, const struct iovec __user *,
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index db54588406dfae..d7e72343c360eb 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -1650,12 +1650,87 @@ const void *dup_iter(struct iov_iter *new, struct iov_iter *old, gfp_t flags)
+ }
+ EXPORT_SYMBOL(dup_iter);
+ 
++static ssize_t rw_copy_check_uvector(int type,
++		const struct iovec __user *uvector, unsigned long nr_segs,
++		unsigned long fast_segs, struct iovec *fast_pointer,
++		struct iovec **ret_pointer)
++{
++	unsigned long seg;
++	ssize_t ret;
++	struct iovec *iov = fast_pointer;
++
++	/*
++	 * SuS says "The readv() function *may* fail if the iovcnt argument
++	 * was less than or equal to 0, or greater than {IOV_MAX}.  Linux has
++	 * traditionally returned zero for zero segments, so...
++	 */
++	if (nr_segs == 0) {
++		ret = 0;
++		goto out;
++	}
++
++	/*
++	 * First get the "struct iovec" from user memory and
++	 * verify all the pointers
++	 */
++	if (nr_segs > UIO_MAXIOV) {
++		ret = -EINVAL;
++		goto out;
++	}
++	if (nr_segs > fast_segs) {
++		iov = kmalloc_array(nr_segs, sizeof(struct iovec), GFP_KERNEL);
++		if (iov == NULL) {
++			ret = -ENOMEM;
++			goto out;
++		}
++	}
++	if (copy_from_user(iov, uvector, nr_segs*sizeof(*uvector))) {
++		ret = -EFAULT;
++		goto out;
++	}
++
++	/*
++	 * According to the Single Unix Specification we should return EINVAL
++	 * if an element length is < 0 when cast to ssize_t or if the
++	 * total length would overflow the ssize_t return value of the
++	 * system call.
++	 *
++	 * Linux caps all read/write calls to MAX_RW_COUNT, and avoids the
++	 * overflow case.
++	 */
++	ret = 0;
++	for (seg = 0; seg < nr_segs; seg++) {
++		void __user *buf = iov[seg].iov_base;
++		ssize_t len = (ssize_t)iov[seg].iov_len;
++
++		/* see if we we're about to use an invalid len or if
++		 * it's about to overflow ssize_t */
++		if (len < 0) {
++			ret = -EINVAL;
++			goto out;
++		}
++		if (type >= 0
++		    && unlikely(!access_ok(buf, len))) {
++			ret = -EFAULT;
++			goto out;
++		}
++		if (len > MAX_RW_COUNT - ret) {
++			len = MAX_RW_COUNT - ret;
++			iov[seg].iov_len = len;
++		}
++		ret += len;
++	}
++out:
++	*ret_pointer = iov;
++	return ret;
++}
++
+ /**
+  * import_iovec() - Copy an array of &struct iovec from userspace
+  *     into the kernel, check that it is valid, and initialize a new
+  *     &struct iov_iter iterator to access it.
+  *
+- * @type: One of %READ or %WRITE.
++ * @type: One of %CHECK_IOVEC_ONLY, %READ, or %WRITE.
+  * @uvector: Pointer to the userspace array.
+  * @nr_segs: Number of elements in userspace array.
+  * @fast_segs: Number of elements in @iov.
+@@ -1695,6 +1770,79 @@ EXPORT_SYMBOL(import_iovec);
+ #ifdef CONFIG_COMPAT
+ #include <linux/compat.h>
+ 
++static ssize_t compat_rw_copy_check_uvector(int type,
++		const struct compat_iovec __user *uvector, unsigned long nr_segs,
++		unsigned long fast_segs, struct iovec *fast_pointer,
++		struct iovec **ret_pointer)
++{
++	compat_ssize_t tot_len;
++	struct iovec *iov = *ret_pointer = fast_pointer;
++	ssize_t ret = 0;
++	int seg;
++
++	/*
++	 * SuS says "The readv() function *may* fail if the iovcnt argument
++	 * was less than or equal to 0, or greater than {IOV_MAX}.  Linux has
++	 * traditionally returned zero for zero segments, so...
++	 */
++	if (nr_segs == 0)
++		goto out;
++
++	ret = -EINVAL;
++	if (nr_segs > UIO_MAXIOV)
++		goto out;
++	if (nr_segs > fast_segs) {
++		ret = -ENOMEM;
++		iov = kmalloc_array(nr_segs, sizeof(struct iovec), GFP_KERNEL);
++		if (iov == NULL)
++			goto out;
++	}
++	*ret_pointer = iov;
++
++	ret = -EFAULT;
++	if (!access_ok(uvector, nr_segs*sizeof(*uvector)))
++		goto out;
++
++	/*
++	 * Single unix specification:
++	 * We should -EINVAL if an element length is not >= 0 and fitting an
++	 * ssize_t.
++	 *
++	 * In Linux, the total length is limited to MAX_RW_COUNT, there is
++	 * no overflow possibility.
++	 */
++	tot_len = 0;
++	ret = -EINVAL;
++	for (seg = 0; seg < nr_segs; seg++) {
++		compat_uptr_t buf;
++		compat_ssize_t len;
++
++		if (__get_user(len, &uvector->iov_len) ||
++		   __get_user(buf, &uvector->iov_base)) {
++			ret = -EFAULT;
++			goto out;
++		}
++		if (len < 0)	/* size_t not fitting in compat_ssize_t .. */
++			goto out;
++		if (type >= 0 &&
++		    !access_ok(compat_ptr(buf), len)) {
++			ret = -EFAULT;
++			goto out;
++		}
++		if (len > MAX_RW_COUNT - tot_len)
++			len = MAX_RW_COUNT - tot_len;
++		tot_len += len;
++		iov->iov_base = compat_ptr(buf);
++		iov->iov_len = (compat_size_t) len;
++		uvector++;
++		iov++;
++	}
++	ret = tot_len;
++
++out:
++	return ret;
++}
++
+ ssize_t compat_import_iovec(int type,
+ 		const struct compat_iovec __user * uvector,
+ 		unsigned nr_segs, unsigned fast_segs,
+-- 
+2.28.0
+
