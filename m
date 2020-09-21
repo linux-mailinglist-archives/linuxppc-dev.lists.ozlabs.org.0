@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070A6272298
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 13:34:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A907272291
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 13:32:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bw2Qx3Y9VzDqfr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 21:34:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bw2Nl2NTMzDqkG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 21:32:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,22 +17,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bw2JN09yjzDqFm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 21:28:52 +1000 (AEST)
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 907C930B26541FB099A8;
- Mon, 21 Sep 2020 19:28:46 +0800 (CST)
-Received: from huawei.com (10.175.112.208) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Mon, 21 Sep 2020
- 19:28:36 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bw2JM3SgZzDq5n
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 21:28:51 +1000 (AEST)
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 61D5732AC86CC64EB1AB;
+ Mon, 21 Sep 2020 19:28:47 +0800 (CST)
+Received: from huawei.com (10.175.112.208) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.487.0; Mon, 21 Sep 2020
+ 19:28:40 +0800
 From: Wang Wensheng <wangwensheng4@huawei.com>
 To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
- <atrajeev@linux.vnet.ibm.com>, <wangwensheng4@huawei.com>,
- <maddy@linux.ibm.com>, <kjain@linux.ibm.com>, <anju@linux.vnet.ibm.com>,
+ <sourabhjain@linux.ibm.com>, <wangwensheng4@huawei.com>,
  <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH -next] powerpc/perf: Fix symbol undeclared warning
-Date: Mon, 21 Sep 2020 11:25:57 +0000
-Message-ID: <20200921112557.85471-1-wangwensheng4@huawei.com>
+Subject: [PATCH -next] powerpc/opalcore: Fix symbol undeclared warning
+Date: Mon, 21 Sep 2020 11:26:01 +0000
+Message-ID: <20200921112601.85543-1-wangwensheng4@huawei.com>
 X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -55,54 +54,27 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Build kernel with `C=2`:
-arch/powerpc/perf/isa207-common.c:24:18: warning: symbol
-'isa207_pmu_format_attr' was not declared. Should it be static?
-arch/powerpc/perf/power9-pmu.c:101:5: warning: symbol 'p9_dd21_bl_ev'
-was not declared. Should it be static?
-arch/powerpc/perf/power9-pmu.c:115:5: warning: symbol 'p9_dd22_bl_ev'
-was not declared. Should it be static?
+arch/powerpc/platforms/powernv/opal-core.c:74:16: warning: symbol
+'mpipl_kobj' was not declared. Should it be static?
 
 Signed-off-by: Wang Wensheng <wangwensheng4@huawei.com>
 ---
- arch/powerpc/perf/isa207-common.c | 2 +-
- arch/powerpc/perf/power9-pmu.c    | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/powernv/opal-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 964437adec18..85dc860b265b 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -21,7 +21,7 @@ PMU_FORMAT_ATTR(thresh_stop,	"config:32-35");
- PMU_FORMAT_ATTR(thresh_start,	"config:36-39");
- PMU_FORMAT_ATTR(thresh_cmp,	"config:40-49");
+diff --git a/arch/powerpc/platforms/powernv/opal-core.c b/arch/powerpc/platforms/powernv/opal-core.c
+index 6dba3b62269f..c25f9f254f05 100644
+--- a/arch/powerpc/platforms/powernv/opal-core.c
++++ b/arch/powerpc/platforms/powernv/opal-core.c
+@@ -71,7 +71,7 @@ static LIST_HEAD(opalcore_list);
+ static struct opalcore_config *oc_conf;
+ static const struct opal_mpipl_fadump *opalc_metadata;
+ static const struct opal_mpipl_fadump *opalc_cpu_metadata;
+-struct kobject *mpipl_kobj;
++static struct kobject *mpipl_kobj;
  
--struct attribute *isa207_pmu_format_attr[] = {
-+static struct attribute *isa207_pmu_format_attr[] = {
- 	&format_attr_event.attr,
- 	&format_attr_pmcxsel.attr,
- 	&format_attr_mark.attr,
-diff --git a/arch/powerpc/perf/power9-pmu.c b/arch/powerpc/perf/power9-pmu.c
-index 2a57e93a79dc..4a315fad1f99 100644
---- a/arch/powerpc/perf/power9-pmu.c
-+++ b/arch/powerpc/perf/power9-pmu.c
-@@ -98,7 +98,7 @@ extern u64 PERF_REG_EXTENDED_MASK;
- /* PowerISA v2.07 format attribute structure*/
- extern struct attribute_group isa207_pmu_format_group;
- 
--int p9_dd21_bl_ev[] = {
-+static int p9_dd21_bl_ev[] = {
- 	PM_MRK_ST_DONE_L2,
- 	PM_RADIX_PWC_L1_HIT,
- 	PM_FLOP_CMPL,
-@@ -112,7 +112,7 @@ int p9_dd21_bl_ev[] = {
- 	PM_DISP_HELD_SYNC_HOLD,
- };
- 
--int p9_dd22_bl_ev[] = {
-+static int p9_dd22_bl_ev[] = {
- 	PM_DTLB_MISS_16G,
- 	PM_DERAT_MISS_2M,
- 	PM_DTLB_MISS_2M,
+ /*
+  * Set crashing CPU's signal to SIGUSR1. if the kernel is triggered
 -- 
 2.25.0
 
