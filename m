@@ -1,67 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB51F271C30
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 09:41:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A684271C37
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 09:45:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BvxG12s8RzDqdP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 17:41:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BvxM31N89zDqTq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 17:45:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=gMaSuZ51; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=xr4r44cz; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=ubuntu.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=christian.brauner@ubuntu.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ubuntu.com
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BvxD367zyzDqcH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 17:39:47 +1000 (AEST)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1600673980;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wvyp0RounB/4LwU0Wfnprorn1wbUFCaaQDFAPWZa1lY=;
- b=gMaSuZ51Lbc6QPkc00DoVI0ZeYFw1anwmwmCpCgA9mSAGscjICMP76VBc9c5LYYHJhtr1V
- szZo7+Ww9dytWz1dbrc8RA2obQDOH1QUnyfZvjgPqxmDJsiP27s/hsVMbOD0Zjwlv+ber/
- qWGRVkhYTPW2tTmS4pYTCoYSiT9DI/ZTsnsQ80U+VCocs0lPSE8nq5758cGblIbk8SVdnx
- hPCPSLtdjkL9+573S5HhFCgk6FFXO/026nXOGnu4ti8sxk/fC+L2RQhONm/U5tVeg66C+O
- R0NLgGerMKEFgnb0uRm7Ot+c09xW+a47s/CiEhYERktxgUfSN56PQvvbENyzPg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1600673980;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wvyp0RounB/4LwU0Wfnprorn1wbUFCaaQDFAPWZa1lY=;
- b=xr4r44czYL0yv7MaHM0svfQR/cc+aXpFFvMpVd1kcucOlLs0NXid+7U1RRYcOhbAYMYtxi
- ganiHIU1DBLF2YCA==
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [patch RFC 00/15] mm/highmem: Provide a preemptible variant of
- kmap_atomic & friends
-In-Reply-To: <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
-References: <20200919091751.011116649@linutronix.de>
- <CAHk-=wiYGyrFRbA1cc71D2-nc5U9LM9jUJesXGqpPnB7E4X1YQ@mail.gmail.com>
- <87mu1lc5mp.fsf@nanos.tec.linutronix.de>
- <87k0wode9a.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgbmwsTOKs23Z=71EBTrULoeaH2U3TNqT2atHEWvkBKdw@mail.gmail.com>
- <87eemwcpnq.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
-Date: Mon, 21 Sep 2020 09:39:39 +0200
-Message-ID: <87a6xjd1dw.fsf@nanos.tec.linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BvxK41Kj2zDqcJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 17:44:08 +1000 (AEST)
+Received: from ip5f5af089.dynamic.kabel-deutschland.de ([95.90.240.137]
+ helo=wittgenstein) by youngberry.canonical.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <christian.brauner@ubuntu.com>)
+ id 1kKGUN-0001LG-Cy; Mon, 21 Sep 2020 07:43:55 +0000
+Date: Mon, 21 Sep 2020 09:43:54 +0200
+From: Christian Brauner <christian.brauner@ubuntu.com>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v2 1/4] selftests/seccomp: Record syscall during ptrace
+ entry
+Message-ID: <20200921074354.6shkt2e5yhzhj3sn@wittgenstein>
+References: <20200919080637.259478-1-keescook@chromium.org>
+ <20200919080637.259478-2-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200919080637.259478-2-keescook@chromium.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,68 +49,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>, linux-mips@vger.kernel.org,
- Ben Segall <bsegall@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Guo Ren <guoren@kernel.org>, linux-sparc <sparclinux@vger.kernel.org>,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- the arch/x86 maintainers <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Mel Gorman <mgorman@suse.de>,
- "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
- linux-xtensa@linux-xtensa.org, Paul McKenney <paulmck@kernel.org>,
- intel-gfx <intel-gfx@lists.freedesktop.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Steven Rostedt <rostedt@goodmis.org>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>, Linux-MM <linux-mm@kvack.org>,
- Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel@ffwll.ch>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- Daniel Bristot de Oliveira <bristot@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
+ Will Drewry <wad@chromium.org>, linux-xtensa@linux-xtensa.org,
+ linux-kernel@vger.kernel.org, Andy Lutomirski <luto@amacapital.net>,
+ Max Filippov <jcmvbkbc@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Christian Brauner <christian@brauner.io>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Sep 20 2020 at 10:42, Linus Torvalds wrote:
-> On Sun, Sep 20, 2020 at 10:40 AM Thomas Gleixner <tglx@linutronix.de> wrote:
->>
->> I think the more obvious solution is to split the whole exercise:
->>
->>   schedule()
->>      prepare_switch()
->>         unmap()
->>
->>     switch_to()
->>
->>     finish_switch()
->>         map()
->
-> Yeah, that looks much easier to explain. Ack.
+On Sat, Sep 19, 2020 at 01:06:34AM -0700, Kees Cook wrote:
+> In preparation for performing actions during ptrace syscall exit, save
+> the syscall number during ptrace syscall entry. Some architectures do
+> no have the syscall number available during ptrace syscall exit.
+> 
+> Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+> Link: https://lore.kernel.org/linux-kselftest/20200911181012.171027-1-cascardo@canonical.com/
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  tools/testing/selftests/seccomp/seccomp_bpf.c | 40 +++++++++++++------
+>  1 file changed, 27 insertions(+), 13 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
+> index bc0fb463c709..c0311b4c736b 100644
+> --- a/tools/testing/selftests/seccomp/seccomp_bpf.c
+> +++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
+> @@ -1949,12 +1949,19 @@ void tracer_seccomp(struct __test_metadata *_metadata, pid_t tracee,
+>  
+>  }
+>  
+> +FIXTURE(TRACE_syscall) {
+> +	struct sock_fprog prog;
+> +	pid_t tracer, mytid, mypid, parent;
+> +	long syscall_nr;
+> +};
+> +
+>  void tracer_ptrace(struct __test_metadata *_metadata, pid_t tracee,
+>  		   int status, void *args)
+>  {
+> -	int ret, nr;
+> +	int ret;
+>  	unsigned long msg;
+>  	static bool entry;
+> +	FIXTURE_DATA(TRACE_syscall) *self = args;
+>  
+>  	/*
+>  	 * The traditional way to tell PTRACE_SYSCALL entry/exit
+> @@ -1968,24 +1975,31 @@ void tracer_ptrace(struct __test_metadata *_metadata, pid_t tracee,
+>  	EXPECT_EQ(entry ? PTRACE_EVENTMSG_SYSCALL_ENTRY
+>  			: PTRACE_EVENTMSG_SYSCALL_EXIT, msg);
+>  
+> -	if (!entry)
+> +	/*
+> +	 * Some architectures only support setting return values during
+> +	 * syscall exit under ptrace, and on exit the syscall number may
+> +	 * no longer be available. Therefore, save the initial sycall
 
-So far so good, but Peter Z. just pointed out to me that I completely
-missed the fact that this cannot work.
+s/sycall/syscall/
 
-If a task is migrated to a different CPU then the mapping address will
-change which will explode in colourful ways.
+Otherwise looks good. Thanks!
+Acked-by: Christian Brauner <christian.brauner@ubuntu.com>
 
-On RT kernels this works because we ping the task to the CPU via
-migrate_disable(). On a !RT kernel migrate_disable() maps to
-preempt_disable() which brings us back to square one.
-
-/me goes back to the drawing board.
-
-Thanks,
-
-        tglx
+> +	 * number here, so it can be examined during both entry and exit
+> +	 * phases.
+> +	 */
+> +	if (entry)
+> +		self->syscall_nr = get_syscall(_metadata, tracee);
+> +	else
+>  		return;
+>  
+> -	nr = get_syscall(_metadata, tracee);
+> -
+> -	if (nr == __NR_getpid)
+> +	switch (self->syscall_nr) {
+> +	case __NR_getpid:
+>  		change_syscall(_metadata, tracee, __NR_getppid, 0);
+> -	if (nr == __NR_gettid)
+> +		break;
+> +	case __NR_gettid:
+>  		change_syscall(_metadata, tracee, -1, 45000);
+> -	if (nr == __NR_openat)
+> +		break;
+> +	case __NR_openat:
+>  		change_syscall(_metadata, tracee, -1, -ESRCH);
+> +		break;
+> +	}
+>  }
+>  
+> -FIXTURE(TRACE_syscall) {
+> -	struct sock_fprog prog;
+> -	pid_t tracer, mytid, mypid, parent;
+> -};
+> -
+>  FIXTURE_VARIANT(TRACE_syscall) {
+>  	/*
+>  	 * All of the SECCOMP_RET_TRACE behaviors can be tested with either
+> @@ -2044,7 +2058,7 @@ FIXTURE_SETUP(TRACE_syscall)
+>  	self->tracer = setup_trace_fixture(_metadata,
+>  					   variant->use_ptrace ? tracer_ptrace
+>  							       : tracer_seccomp,
+> -					   NULL, variant->use_ptrace);
+> +					   self, variant->use_ptrace);
+>  
+>  	ret = prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
+>  	ASSERT_EQ(0, ret);
+> -- 
+> 2.25.1
+> 
