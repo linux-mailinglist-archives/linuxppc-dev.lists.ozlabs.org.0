@@ -2,121 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9331A2730A9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 19:09:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD132730C7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 19:22:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bw9rz5wsJzDqmb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 03:09:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BwB8s6VL3zDqFw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 03:22:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::343;
- helo=mail-wm1-x343.google.com; envelope-from=asml.silence@gmail.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::144;
+ helo=mail-lf1-x144.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Sc96S6lf; dkim-atps=neutral
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
- [IPv6:2a00:1450:4864:20::343])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=a2Cw4ka1; 
+ dkim-atps=neutral
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com
+ [IPv6:2a00:1450:4864:20::144])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bw8rB4pQyzDqRC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 02:23:22 +1000 (AEST)
-Received: by mail-wm1-x343.google.com with SMTP id w2so115144wmi.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 09:23:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=IvRIyYO3t2SUgu0arXiDBfv6J5V0f2K0pu+NF0qCX5w=;
- b=Sc96S6lfmurSpfOzVka44PHPQYNuWoG7JxCB4XIUf9HPO88rqJ+GWaU7/Y9y20Ow8M
- Di7TJYVba9SsbXwHrsQvQvoBR2Nnm2mDgusw9rNGcnvKI4lT7c8atlnPUkT8nbzGd/E7
- MKgVHJkc+3wIQtro6A/DqbjOOTLY92BDRoYn0lM3n9CiOUzTJK/Gn2dgL4adn1jdQqgE
- GNxDUaobxhydr/wUBBdueva2w+Wf6ylcpl7wzPsamNhCaU6uo6ck2Wb1uRgTUuOUO+bU
- HGFzFO1HgQxb8gSQefH7PcwwxXwudPQ8DWavTZ9E2fjqDXcxcFOe//Zso6LpQiW58B+x
- UucA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bw90S5q6ZzDqVT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 02:30:32 +1000 (AEST)
+Received: by mail-lf1-x144.google.com with SMTP id q8so14721662lfb.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 09:30:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=LbpMl5lO0+qWgp9uAKdYj5ux1bx38Si35gqGXl7ChFs=;
+ b=a2Cw4ka1cjcNejUhLUZAAjSLNoYelCoyZSpmQCatftbiLw5qTc+pZIam7CQ+bzySoC
+ gGOBNlZFILF1rbb13VR5vHbBB6o7IPhfhEtjuIQ55GiefDbPErJYqMNF7ag3KHBM9T1M
+ Z1SXFFsw84dXXtq0Bg7SO0KF3jcdxFjvGihOo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=IvRIyYO3t2SUgu0arXiDBfv6J5V0f2K0pu+NF0qCX5w=;
- b=LQhfU+b/VLbFUOaBdYqyF+Bu/U0dW9irWo9eeY/E4REy+gmlxTZwnedY27jAlJLQuw
- k124/wkC0YilWWJh7dDRm1ip0ZGkWdX+ppBVOX/8jTGvNMIy7VDU/b7Hkx6gKoskEUAD
- QIXeQvyJ0qld4DvUhjU2Y1OM3RWXcUAuqueLOKRhHAo8VSAL9hHpXoP0raQFJ+JEH/vl
- jHD4GRqA6OIDIROabyUEgK3pvRhRllt+YWI7aw3Ao5QNqQE6CTq1KIoQNfzHpeXPaW8z
- 5V8AejdLlry4wd8waElp0yBxR3tQIO2iVzk8CXjC2wHxRwHNF4P9VCj+J4/rAjWNxh/j
- QV7g==
-X-Gm-Message-State: AOAM531YJKLHqPFnKNy/XXA/6B2qMz8QV0nJNXtwDE62ELozhlP/KNIs
- mdySR0XnX0wy8OvVnsDPZiI=
-X-Google-Smtp-Source: ABdhPJyYfk+EzbFnRftaSb6O/4j5H92Q+rKsLnOqJxPSmwFSmKmQaK8gbExjV0xQhTxCqhQoZcucgw==
-X-Received: by 2002:a05:600c:4142:: with SMTP id
- h2mr184584wmm.128.1600705395307; 
- Mon, 21 Sep 2020 09:23:15 -0700 (PDT)
-Received: from [192.168.43.240] ([5.100.192.97])
- by smtp.gmail.com with ESMTPSA id t6sm23571512wre.30.2020.09.21.09.23.11
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=LbpMl5lO0+qWgp9uAKdYj5ux1bx38Si35gqGXl7ChFs=;
+ b=eG6L2yKv8Vn9Hg0iab6PgPADZJA/UXFWG/MF/ty9ifXSmEsSMiytEK1GWEMcnAimtJ
+ drPszG41Gvbl/EHwDTKMpIjX4QHimlcKzxHXWg0n5EhU1zKg4vJ2OrZiVJnKzJhuaNOU
+ QMDBNYQiKN0IivvL5Eje396TPZINOfNlGOnKsYcjkfyuvy0GXHvzBlg7PATvUKqw48EU
+ wnprBUdTGC78gsmUaU/3Rod8HWhf3k5+kDdjUucrIOOB7ejgBNjU5MMqMctswAs00kEi
+ iirr5SGYpne2h/N6sJqk34zm+dEZvQKDBzrUYhjeTypeB7eessy9GoOv68O+QB1rqvzD
+ 8VRQ==
+X-Gm-Message-State: AOAM531FXC9ROZHpczTS0dh+ZKaZvaHfg/XCMaJciorHauQ7pyQchdOW
+ 7QWLSIZKePhxjQxVRjr4Nq1hkyDjRaUY2g==
+X-Google-Smtp-Source: ABdhPJywXLnzlHLDhr5SaOaBQu9I9XbawTKirQDQtk06TXBqjaMzwLePSDtGRn0ftnPVSH20rvma7w==
+X-Received: by 2002:a05:6512:2101:: with SMTP id
+ q1mr261275lfr.157.1600705825825; 
+ Mon, 21 Sep 2020 09:30:25 -0700 (PDT)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com.
+ [209.85.167.54])
+ by smtp.gmail.com with ESMTPSA id y21sm2831787ljk.110.2020.09.21.09.30.25
+ for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Sep 2020 09:23:14 -0700 (PDT)
-Subject: Re: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
-To: William Kucharski <kucharsk@gmail.com>,
- Matthew Wilcox <willy@infradead.org>
-References: <20200920151510.GS32101@casper.infradead.org>
- <76A432F3-4532-42A4-900E-16C0AC2D21D8@gmail.com>
-From: Pavel Begunkov <asml.silence@gmail.com>
-Autocrypt: addr=asml.silence@gmail.com; prefer-encrypt=mutual; keydata=
- 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 bA==
-Message-ID: <2f2ee014-688e-8835-369b-61deb0688c73@gmail.com>
-Date: Mon, 21 Sep 2020 19:20:42 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ Mon, 21 Sep 2020 09:30:25 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id y11so14732688lfl.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 09:30:25 -0700 (PDT)
+X-Received: by 2002:a2e:994a:: with SMTP id r10mr154392ljj.102.1600705501870; 
+ Mon, 21 Sep 2020 09:25:01 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <76A432F3-4532-42A4-900E-16C0AC2D21D8@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20200919091751.011116649@linutronix.de>
+ <CAHk-=wiYGyrFRbA1cc71D2-nc5U9LM9jUJesXGqpPnB7E4X1YQ@mail.gmail.com>
+ <87mu1lc5mp.fsf@nanos.tec.linutronix.de>
+ <87k0wode9a.fsf@nanos.tec.linutronix.de>
+ <CAHk-=wgbmwsTOKs23Z=71EBTrULoeaH2U3TNqT2atHEWvkBKdw@mail.gmail.com>
+ <87eemwcpnq.fsf@nanos.tec.linutronix.de>
+ <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
+ <87a6xjd1dw.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <87a6xjd1dw.fsf@nanos.tec.linutronix.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 21 Sep 2020 09:24:45 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjhxzx3KHHOMvdDj3Aw-_Mk5eRiNTUBB=tFf=vTkw1FeA@mail.gmail.com>
+Message-ID: <CAHk-=wjhxzx3KHHOMvdDj3Aw-_Mk5eRiNTUBB=tFf=vTkw1FeA@mail.gmail.com>
+Subject: Re: [patch RFC 00/15] mm/highmem: Provide a preemptible variant of
+ kmap_atomic & friends
+To: Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,40 +91,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio@kvack.org, linux-mips@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
- keyrings@vger.kernel.org, sparclinux@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, x86@kernel.org,
- Arnd Bergmann <arnd@arndb.de>, linux-block@vger.kernel.org,
- Alexander Viro <viro@zeniv.linux.org.uk>, io-uring@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
- linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Juri Lelli <juri.lelli@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>, linux-mips@vger.kernel.org,
+ Ben Segall <bsegall@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Guo Ren <guoren@kernel.org>, linux-sparc <sparclinux@vger.kernel.org>,
+ Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Mel Gorman <mgorman@suse.de>,
+ "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
+ linux-xtensa@linux-xtensa.org, Paul McKenney <paulmck@kernel.org>,
+ intel-gfx <intel-gfx@lists.freedesktop.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Nick Hu <nickhu@andestech.com>, Linux-MM <linux-mm@kvack.org>,
+ Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel@ffwll.ch>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20/09/2020 18:55, William Kucharski wrote:
-> I really like that as it’s self-documenting and anyone debugging it can see what is actually being used at a glance.
+On Mon, Sep 21, 2020 at 12:39 AM Thomas Gleixner <tglx@linutronix.de> wrote:
+>
+> If a task is migrated to a different CPU then the mapping address will
+> change which will explode in colourful ways.
 
-Also creates special cases for things that few people care about,
-and makes it a pain for cross-platform (cross-bitness) development.
+Heh.
 
-> 
->> On Sep 20, 2020, at 09:15, Matthew Wilcox <willy@infradead.org> wrote:
->>
->> ﻿On Fri, Sep 18, 2020 at 02:45:25PM +0200, Christoph Hellwig wrote:
->>> Add a flag to force processing a syscall as a compat syscall.  This is
->>> required so that in_compat_syscall() works for I/O submitted by io_uring
->>> helper threads on behalf of compat syscalls.
->>
->> Al doesn't like this much, but my suggestion is to introduce two new
->> opcodes -- IORING_OP_READV32 and IORING_OP_WRITEV32.  The compat code
->> can translate IORING_OP_READV to IORING_OP_READV32 and then the core
->> code can know what that user pointer is pointing to.
+Right you are.
 
--- 
-Pavel Begunkov
+Maybe we really *could* call this new kmap functionality something
+like "kmap_percpu()" (or maybe "local" is good enough), and make it
+act like your RT code does for spinlocks - not disable preemption, but
+only disabling CPU migration.
+
+That would probably be good enough for a lot of users that don't want
+to expose excessive latencies, but where it's really not a huge deal
+to say "stick to this CPU for a short while".
+
+The crypto code certainly sounds like one such case.
+
+             Linus
