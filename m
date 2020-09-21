@@ -2,36 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A907272291
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 13:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C72DC2722A8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 13:36:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bw2Nl2NTMzDqkG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 21:32:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bw2T86RVyzDq96
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Sep 2020 21:36:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=huawei.com;
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
  envelope-from=wangwensheng4@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bw2JM3SgZzDq5n
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 21:28:51 +1000 (AEST)
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 61D5732AC86CC64EB1AB;
- Mon, 21 Sep 2020 19:28:47 +0800 (CST)
-Received: from huawei.com (10.175.112.208) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.487.0; Mon, 21 Sep 2020
- 19:28:40 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bw2LS2xBLzDqZB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 21:30:40 +1000 (AEST)
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 7D983B3294659409B620;
+ Mon, 21 Sep 2020 19:30:33 +0800 (CST)
+Received: from huawei.com (10.175.112.208) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.487.0; Mon, 21 Sep 2020
+ 19:30:24 +0800
 From: Wang Wensheng <wangwensheng4@huawei.com>
 To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
- <sourabhjain@linux.ibm.com>, <wangwensheng4@huawei.com>,
+ <npiggin@gmail.com>, <gwalbon@linux.ibm.com>, <renesas@glider.be>,
+ <wangwensheng4@huawei.com>, <jniethe5@gmail.com>, <yuehaibing@huawei.com>,
  <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH -next] powerpc/opalcore: Fix symbol undeclared warning
-Date: Mon, 21 Sep 2020 11:26:01 +0000
-Message-ID: <20200921112601.85543-1-wangwensheng4@huawei.com>
+Subject: [PATCH -next] powerpc/security: Fix symbol undeclared warning
+Date: Mon, 21 Sep 2020 11:27:45 +0000
+Message-ID: <20200921112745.85968-1-wangwensheng4@huawei.com>
 X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -54,27 +55,27 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Build kernel with `C=2`:
-arch/powerpc/platforms/powernv/opal-core.c:74:16: warning: symbol
-'mpipl_kobj' was not declared. Should it be static?
+arch/powerpc/kernel/security.c:253:6: warning: symbol 'stf_barrier' was
+not declared. Should it be static?
 
 Signed-off-by: Wang Wensheng <wangwensheng4@huawei.com>
 ---
- arch/powerpc/platforms/powernv/opal-core.c | 2 +-
+ arch/powerpc/kernel/security.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-core.c b/arch/powerpc/platforms/powernv/opal-core.c
-index 6dba3b62269f..c25f9f254f05 100644
---- a/arch/powerpc/platforms/powernv/opal-core.c
-+++ b/arch/powerpc/platforms/powernv/opal-core.c
-@@ -71,7 +71,7 @@ static LIST_HEAD(opalcore_list);
- static struct opalcore_config *oc_conf;
- static const struct opal_mpipl_fadump *opalc_metadata;
- static const struct opal_mpipl_fadump *opalc_cpu_metadata;
--struct kobject *mpipl_kobj;
-+static struct kobject *mpipl_kobj;
+diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
+index c9876aab3142..fbcd5611a67e 100644
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -250,7 +250,7 @@ ssize_t cpu_show_spectre_v2(struct device *dev, struct device_attribute *attr, c
  
- /*
-  * Set crashing CPU's signal to SIGUSR1. if the kernel is triggered
+ static enum stf_barrier_type stf_enabled_flush_types;
+ static bool no_stf_barrier;
+-bool stf_barrier;
++static bool stf_barrier;
+ 
+ static int __init handle_no_stf_barrier(char *p)
+ {
 -- 
 2.25.0
 
