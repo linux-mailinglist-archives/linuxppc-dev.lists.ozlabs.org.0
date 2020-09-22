@@ -2,76 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B8227468D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 18:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C6B2748F1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 21:17:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BwmqG3NB0zDqXR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 02:24:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BwrfG4m3pzDqWc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 05:17:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=amacapital.net (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=luto@amacapital.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=amacapital.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=amacapital-net.20150623.gappssmtp.com
- header.i=@amacapital-net.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=vkrTbtOH; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=WoGpDfo+; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BwmkF308xzDqW3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 02:20:16 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id o25so7424788pgm.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 09:20:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amacapital-net.20150623.gappssmtp.com; s=20150623;
- h=content-transfer-encoding:from:mime-version:subject:date:message-id
- :references:cc:in-reply-to:to;
- bh=OuYZ36WnxwIp9b6camA1INonBCd7PS5F7n5lbvDtQoE=;
- b=vkrTbtOH4vHnR/84aYqVDHrQ5AGvI5gJZ+epaaRbPDginNWZ7IQOaHp0KiQGLoRIqK
- lCtpCBfEppwh5xdm5Fg2E09yGBsQ1omUh0FsVnB0AGbc0KabsZevsMs5kdugIv8CVE5/
- WA4g4A2X6yhuybhLsZ26G3b/9jK9koGpq3H8xumPWJXJrnSzbLUYbfDR++IgN0bKoBQq
- n0DG/oDelKPnE35WpGCvEELD66Jz17cs7lC56sr6mITihQA1DVJ1mt9BGhniHUyWF6Lh
- zzYPOu4uBf4nQ34xtWqSlA6XpnJ8NFviCNNpjE2H0nhrpatshwJ5hPmeTiRqtrX3VMpc
- QmhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:content-transfer-encoding:from:mime-version
- :subject:date:message-id:references:cc:in-reply-to:to;
- bh=OuYZ36WnxwIp9b6camA1INonBCd7PS5F7n5lbvDtQoE=;
- b=rkWYaLex2PBCiJkWNZ/TQQ433hpqxw/iy1UwdgZiycLs/i9o5JHpNEEglomBHR9wee
- b3mvc4Vq6hCvuPy9LiGR6puOPDvV3vQcmA60bujCtNPujDu3NHoXUHf7UHkw2wO/CE2s
- DtfGH40BYR3srpk5AEtxmJPralNYEXksUOmT+5DaOQDtl9n3L0C1yUFPCYn3QfyxGeL2
- EmOthA8mC6RerJhgaThZl48thZQrxQqNrd0/gkkiUrgSQmNfwez5PcgujBIaH4OEWqFR
- RQFO1QDqrvJyhz1LWVA2IxfU1hb0r1RxfYyyhNlu6hvFD37YrDP8lWhdgcGkXdVvrKHy
- ppIA==
-X-Gm-Message-State: AOAM531epeXYG2arc62hkED66M655wAn/3zCbjrM44R0sxfz3d74fcHI
- H1nqIF0TCXZAVHM7RFqvIHc+cA==
-X-Google-Smtp-Source: ABdhPJzVdW+N5Ufbpna8vjsXyt2h2YPelrT15cDlhJa791IGnC+04vroQZTdEBrKNKjccVmTF6OthA==
-X-Received: by 2002:a17:902:fe88:b029:d2:2a16:254 with SMTP id
- x8-20020a170902fe88b02900d22a160254mr5598643plm.23.1600791613205; 
- Tue, 22 Sep 2020 09:20:13 -0700 (PDT)
-Received: from localhost.localdomain ([2601:646:c200:1ef2:f4bd:fe2:85ed:ea92])
- by smtp.gmail.com with ESMTPSA id
- gk14sm2982522pjb.41.2020.09.22.09.20.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Sep 2020 09:20:12 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Andy Lutomirski <luto@amacapital.net>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
-Date: Tue, 22 Sep 2020 09:20:07 -0700
-Message-Id: <446566DF-ECBC-449C-92A1-A7D5AEBE9935@amacapital.net>
-References: <CAK8P3a39jN+t2hhLg0oKZnbYATQXmYE2-Z1JkmFyc1EPdg1HXw@mail.gmail.com>
-In-Reply-To: <CAK8P3a39jN+t2hhLg0oKZnbYATQXmYE2-Z1JkmFyc1EPdg1HXw@mail.gmail.com>
-To: Arnd Bergmann <arnd@arndb.de>
-X-Mailer: iPhone Mail (18A373)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bwrbj1R6fzDqVs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 05:14:57 +1000 (AEST)
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com
+ [209.85.210.42])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 836682371F
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 19:14:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1600802094;
+ bh=K+FrKaAh3M2RF05RFR8JYisPOdNOgL1KtkDgvvTgNw4=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=WoGpDfo+b71YQehweqKVvRVhUqpOX8wGCIr1D7KBVtECMtntprYcahScgc1FY6zMi
+ 67mN/XlmZiVY+yXTfx/NOnHITC5QaSjE6mFKCZqLaOWy2G3yorxWv/wBBwOuLoizNF
+ 93xXmtSBtCpMWcOoe67BfbQXFoTh6vL2Nx5q5APc=
+Received: by mail-ot1-f42.google.com with SMTP id n61so16650783ota.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 12:14:54 -0700 (PDT)
+X-Gm-Message-State: AOAM531hHez1DCSiQi4+bro2SAqdsAMe1CJ3zDjQu0UAlMmuxOURkquL
+ wmZ6mPunj13VwOHGOgM3mnG50rKUpNYNbiqrfA==
+X-Google-Smtp-Source: ABdhPJyVX7r0tEN2yw5zRjAYHq+1PnOgkxXKpqO5O9Azdg5etPRi/tvoNzgrgjii6rc0qrT18YB9L0+LKo50aovAoJg=
+X-Received: by 2002:a9d:6b0d:: with SMTP id g13mr3834273otp.129.1600802093800; 
+ Tue, 22 Sep 2020 12:14:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1599343429.git.chunkeey@gmail.com>
+ <47109d80c7bd481c7747c949e8a3ecd498d9c039.1599343429.git.chunkeey@gmail.com>
+ <20200915010543.GB612463@bogus>
+ <7bf866fd-6499-68e4-9825-5c3e2042ef65@gmail.com>
+In-Reply-To: <7bf866fd-6499-68e4-9825-5c3e2042ef65@gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 22 Sep 2020 13:14:42 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+x0jFh-2jVt9pVek6a2=UCv0z0sBJpuh5irxeQG+tbUg@mail.gmail.com>
+Message-ID: <CAL_Jsq+x0jFh-2jVt9pVek6a2=UCv0z0sBJpuh5irxeQG+tbUg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/5] powerpc: apm82181: create shared dtsi for APM
+ bluestone
+To: Christian Lamparter <chunkeey@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,85 +67,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio <linux-aio@kvack.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- David Howells <dhowells@redhat.com>, Linux-MM <linux-mm@kvack.org>,
- keyrings@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Linux SCSI List <linux-scsi@vger.kernel.org>, X86 ML <x86@kernel.org>,
- linux-block <linux-block@vger.kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- Andy Lutomirski <luto@kernel.org>, io-uring@vger.kernel.org,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Jens Axboe <axboe@kernel.dk>, Parisc List <linux-parisc@vger.kernel.org>,
- Network Development <netdev@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- LSM List <linux-security-module@vger.kernel.org>,
- Linux FS Devel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Pavel Begunkov <asml.silence@gmail.com>
+Cc: devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Chris Blake <chrisrblake93@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, Sep 19, 2020 at 2:23 PM Christian Lamparter <chunkeey@gmail.com> wrote:
+>
+> On 2020-09-15 03:05, Rob Herring wrote:
+> > On Sun, Sep 06, 2020 at 12:06:12AM +0200, Christian Lamparter wrote:
+> >> This patch adds an DTSI-File that can be used by various device-tree
+> >> files for APM82181-based devices.
+> >>
+> >> Some of the nodes (like UART, PCIE, SATA) are used by the uboot and
+> >> need to stick with the naming-conventions of the old times'.
+> >> I've added comments whenever this was the case.
+> >>
+> >> Signed-off-by: Chris Blake <chrisrblake93@gmail.com>
+> >> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+> >> ---
+> >> rfc v1 -> v2:
+> >>      - removed PKA (this CryptoPU will need driver)
+> >>      - stick with compatibles, nodes, ... from either
+> >>        Bluestone (APM82181) or Canyonlands (PPC460EX).
+> >>      - add labels for NAND and NOR to help with access.
+> >> v2 -> v3:
+> >>      - nodename of pciex@d.... was changed to pcie@d..
+> >>        due to upstream patch.
+> >>      - use simple-bus on the ebc, opb and plb nodes
+> >> ---
+> >>   arch/powerpc/boot/dts/apm82181.dtsi | 466 ++++++++++++++++++++++++++++
+> >>   1 file changed, 466 insertions(+)
+> >>   create mode 100644 arch/powerpc/boot/dts/apm82181.dtsi
+> >>
+> >> diff --git a/arch/powerpc/boot/dts/apm82181.dtsi b/arch/powerpc/boot/dts/apm82181.dtsi
+> >> new file mode 100644
+> >> index 000000000000..60283430978d
+> >> --- /dev/null
+> >> +++ b/arch/powerpc/boot/dts/apm82181.dtsi
+> >> @@ -0,0 +1,466 @@
+> >> +// SPDX-License-Identifier: GPL-2.0-or-later
+> >> +/*
+> >> + * Device Tree template include for various APM82181 boards.
+> >> + *
+> >> + * The SoC is an evolution of the PPC460EX predecessor.
+> >> + * This is why dt-nodes from the canyonlands EBC, OPB, USB,
+> >> + * DMA, SATA, EMAC, ... ended up in here.
+> >> + *
+> >> + * Copyright (c) 2010, Applied Micro Circuits Corporation
+> >> + * Author: Tirumala R Marri <tmarri@apm.com>,
+> >> + *     Christian Lamparter <chunkeey@gmail.com>,
+> >> + *     Chris Blake <chrisrblake93@gmail.com>
+> >> + */
+> >> +
+> >> +#include <dt-bindings/dma/dw-dmac.h>
+> >> +#include <dt-bindings/input/input.h>
+> >> +#include <dt-bindings/interrupt-controller/irq.h>
+> >> +#include <dt-bindings/gpio/gpio.h>
+> >> +
+> >> +/ {
+> >> +    #address-cells = <2>;
+> >> +    #size-cells = <1>;
+> >> +    dcr-parent = <&{/cpus/cpu@0}>;
+> >> +
+> >> +    aliases {
+> >> +            ethernet0 = &EMAC0; /* needed for BSP u-boot */
+> >> +    };
+> >> +
+> >> +    cpus {
+> >> +            #address-cells = <1>;
+> >> +            #size-cells = <0>;
+> >> +
+> >> +            CPU0: cpu@0 {
+> >> +                    device_type = "cpu";
+> >> +                    model = "PowerPC,apm82181";
+> >
+> > This doesn't match the existing bluestone dts file.
+> >
+> > Please separate any restructuring from changes.
+>
+>
+> "I see" (I'm including your comment of the dt-binding as well).
+>
+> I'm getting the vibe that I better should not touch that bluestone.dts.
+
+I don't know about that.
+
+> An honestly, looking at the series and patches that the APM-engineers
+> posted back in the day, I can see why this well is so poisoned... and
+> stuff like SATA/AHBDMA/USB/GPIO/CPM/... was missing.
+>
+> As for the devices. In the spirit of Arnd Bergmann's post of
+> <https://lkml.org/lkml/2020/3/30/195>
+>
+> |It would be nice to move over the the bluestone .dts to the apm82181.dtsi file
+> |when that gets added, if only to ensure they use the same description for each
+> |node, but that shouldn't stop the addition of the new file if that is needed for
+> |distros to make use of a popular device.
+> |I see a couple of additional files in openwrt.
+>
+> I mean I don't have the bluestone dev board, just the consumer devices.
+
+This stuff is old enough, I'd guess no one cares about a dev board.
+But we should figure that out and document that with any changes.
+
+> Would it be possible to support those? I can start from a "skeleton" apm82181.dtsi
+> This would just include CPU, Memory (SD-RAM+L2C+OCM), UIC (Interrupt-Controller),
+> the PLB+OBP+EBC Busses and UART. Just enough to make a board "boot from ram".
+
+This skeleton would be chunks moved over or duplicated? I don't think
+we want 2 of the same thing.
+
+The order I would go is split into an apm82181.dtsi with 0 changes to
+the built dtb(s). Then make changes/additions you need. As far as
+changes to existing bindings, it's only an ABI if someone notices.
 
 
-> On Sep 22, 2020, at 2:01 AM, Arnd Bergmann <arnd@arndb.de> wrote:
->=20
-> =EF=BB=BFOn Tue, Sep 22, 2020 at 9:59 AM Pavel Begunkov <asml.silence@gmai=
-l.com> wrote:
->>> On 22/09/2020 10:23, Arnd Bergmann wrote:
->>> On Tue, Sep 22, 2020 at 8:32 AM Pavel Begunkov <asml.silence@gmail.com> w=
-rote:
->>>> On 22/09/2020 03:58, Andy Lutomirski wrote:
->>>>> On Mon, Sep 21, 2020 at 5:24 PM Pavel Begunkov <asml.silence@gmail.com=
-> wrote:
->>>>> I may be looking at a different kernel than you, but aren't you
->>>>> preventing creating an io_uring regardless of whether SQPOLL is
->>>>> requested?
->>>>=20
->>>> I diffed a not-saved file on a sleepy head, thanks for noticing.
->>>> As you said, there should be an SQPOLL check.
->>>>=20
->>>> ...
->>>> if (ctx->compat && (p->flags & IORING_SETUP_SQPOLL))
->>>>        goto err;
->>>=20
->>> Wouldn't that mean that now 32-bit containers behave differently
->>> between compat and native execution?
->>>=20
->>> I think if you want to prevent 32-bit applications from using SQPOLL,
->>> it needs to be done the same way on both to be consistent:
->>=20
->> The intention was to disable only compat not native 32-bit.
->=20
-> I'm not following why that would be considered a valid option,
-> as that clearly breaks existing users that update from a 32-bit
-> kernel to a 64-bit one.
->=20
-> Taking away the features from users that are still on 32-bit kernels
-> already seems questionable to me, but being inconsistent
-> about it seems much worse, in particular when the regression
-> is on the upgrade path.
->=20
->>> Can we expect all existing and future user space to have a sane
->>> fallback when IORING_SETUP_SQPOLL fails?
->>=20
->> SQPOLL has a few differences with non-SQPOLL modes, but it's easy
->> to convert between them. Anyway, SQPOLL is a privileged special
->> case that's here for performance/latency reasons, I don't think
->> there will be any non-accidental users of it.
->=20
-> Ok, so the behavior of 32-bit tasks would be the same as running
-> the same application as unprivileged 64-bit tasks, with applications
-> already having to implement that fallback, right?
->=20
->=20
-
-I don=E2=80=99t have any real preference wrt SQPOLL, and it may be that we h=
-ave a problem even without SQPOLL when IO gets punted without one of the fix=
-es discussed.
-
-But banning the mismatched io_uring and io_uring_enter seems like it may be w=
-orthwhile regardless.=
+Rob
