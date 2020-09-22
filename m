@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8721274D28
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 01:15:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF85274D38
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 01:21:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bwxwn29PdzDqXs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 09:15:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bwy4068fmzDqW2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 09:21:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -20,49 +20,45 @@ Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bwxtm6HDYzDqQD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 09:13:18 +1000 (AEST)
-Received: by mail-oi1-f195.google.com with SMTP id a3so22958165oib.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 16:13:18 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bwy2438PRzDqVk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 09:19:38 +1000 (AEST)
+Received: by mail-oi1-f195.google.com with SMTP id m7so22976508oie.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 16:19:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=kGTx/Fj2zjNke6CRvCD9QIl8uae51LrS8iKAvA6PRAw=;
- b=oQsSFy1wuJihPipHHXIrDje/ETnSDwsMzpSFmZiDAdMEQFFj691RSYRxb661LuWChg
- o8ZX0sUTMvaJR7ioAyH5fvw5AV2SnQPpA6fuhGsFQfachpASZ8XCU+iI9+KjMfUDtSPQ
- MRdLsNWTZffio2n3zTsk5vU16dzCmc0jnevQyg4UHcDdZdfDHNDT42AuUPMRbUt9sVme
- 3ntNlh71UeLN6OqwwvwI+6ly/jmhs9VjkLh2JoVtxllH/r0Be3YQypkQvHlPaQE9fRoJ
- qBa62u8Z6/gX7geM+qfn0kdZP4aIEuTb+xIzVLhEecwL3YonKX3R9tdE4CD+vj0Z4Yi1
- 1EHg==
-X-Gm-Message-State: AOAM531rye70OmXv7V+QQVJ+lg60h7iizg6lJomfqBhzOxILES7jyCzF
- wOwwQMIBb2YanRN6HM8qFj2V9AjzpH7CUA==
-X-Google-Smtp-Source: ABdhPJzNPhuKFBS9r5jYdkJ5aIvuLg9hv6rTO568ISp/GvARQWuMweK2ebe9DV1oSexuMnE2+mgbBA==
-X-Received: by 2002:aca:f414:: with SMTP id s20mr3925982oih.42.1600816395798; 
- Tue, 22 Sep 2020 16:13:15 -0700 (PDT)
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com.
- [209.85.167.173])
- by smtp.gmail.com with ESMTPSA id w12sm8444818oow.22.2020.09.22.16.13.14
+ bh=cji0qFj1y7Q/mWiJAHJApgvwJbZGt2chl3dsq1MaaDY=;
+ b=cHNvehHoLaHOw9yqIJAdoq8U1gJHelLg8ev7ugYAyXuYkHZ7cMBE6nL8OgPCikO2ds
+ kKvzOlodXlvh/kAdxvNtDFHq2p4lGeyHHhDlDsSwxIHdaDBeFVFNg8nHcDMDaRtdKlbv
+ qY7tGNR9R9B14X6Uz4+H6vsrUIoD0JL9w/bvDQ7hrfDxDaVqV81UpNwR9ALcemRdcvQn
+ p948g5rgMoapoY0ITM3eNL9JWx7R2NXcjvkSg1ASfkdc0j9HStFcbsQzY2VA1edOEGdD
+ 7JvH3pjBJSGOgwiKQnfEZmw1MpOsOqwTDWuH2LCg3FpTgvhJKaDAsfGFh+nDQLC6f209
+ JySg==
+X-Gm-Message-State: AOAM533ZVl6Gw1JqD+U2doxu8mRib2qr661q8c13rFZWNnbOLdSBLgjh
+ c7QzGrQJuTPrBQeqVNt4g5EROFBgvE/U2Q==
+X-Google-Smtp-Source: ABdhPJyZ2lk3W298guAv7T3G4989QzipK+fGidAMxZkFgD3eWQYlxXaFUVSKjOAMFhfiPSoFr26RhQ==
+X-Received: by 2002:aca:f0e:: with SMTP id 14mr4101892oip.134.1600816776358;
+ Tue, 22 Sep 2020 16:19:36 -0700 (PDT)
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com.
+ [209.85.210.54])
+ by smtp.gmail.com with ESMTPSA id d17sm7131495oth.73.2020.09.22.16.19.35
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Sep 2020 16:13:14 -0700 (PDT)
-Received: by mail-oi1-f173.google.com with SMTP id 185so22892211oie.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 16:13:14 -0700 (PDT)
-X-Received: by 2002:a05:6808:2d7:: with SMTP id
- a23mr3898652oid.51.1600816394656; 
- Tue, 22 Sep 2020 16:13:14 -0700 (PDT)
+ Tue, 22 Sep 2020 16:19:35 -0700 (PDT)
+Received: by mail-ot1-f54.google.com with SMTP id e23so17239345otk.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 16:19:35 -0700 (PDT)
+X-Received: by 2002:a9d:5cc2:: with SMTP id r2mr4538615oti.63.1600816775237;
+ Tue, 22 Sep 2020 16:19:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200915110647.846-1-kuldip.dwivedi@puresoftware.com>
- <4e008f0a-69da-d5c2-4dfc-ef8695e17f47@arm.com>
- <AM6PR04MB5413903EAAEDB2EED2E254C6F1210@AM6PR04MB5413.eurprd04.prod.outlook.com>
- <caf01871-1c3d-bdf8-867d-daf7138966a8@arm.com>
-In-Reply-To: <caf01871-1c3d-bdf8-867d-daf7138966a8@arm.com>
+References: <20200914041752.3702104-1-liushixin2@huawei.com>
+In-Reply-To: <20200914041752.3702104-1-liushixin2@huawei.com>
 From: Li Yang <leoyang.li@nxp.com>
-Date: Tue, 22 Sep 2020 18:13:02 -0500
-X-Gmail-Original-Message-ID: <CADRPPNQAqoFTMRBnq6WZ+jqO8LG4n5fPFxEEh4hF4h=k_D+cLQ@mail.gmail.com>
-Message-ID: <CADRPPNQAqoFTMRBnq6WZ+jqO8LG4n5fPFxEEh4hF4h=k_D+cLQ@mail.gmail.com>
-Subject: Re: [PATCH v1] soc: fsl: rcpm: Add ACPI support
-To: Ard Biesheuvel <ard.biesheuvel@arm.com>
+Date: Tue, 22 Sep 2020 18:19:23 -0500
+X-Gmail-Original-Message-ID: <CADRPPNTf-SYkuZmTi+1bq_Fme_4M4aD4KnzJZnwKqQukD=JnQw@mail.gmail.com>
+Message-ID: <CADRPPNTf-SYkuZmTi+1bq_Fme_4M4aD4KnzJZnwKqQukD=JnQw@mail.gmail.com>
+Subject: Re: [PATCH -next] soc/qman: convert to use be32_add_cpu()
+To: Liu Shixin <liushixin2@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,143 +71,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Biwen Li <biwen.li@nxp.com>,
- kuldip dwivedi <kuldip.dwivedi@puresoftware.com>,
- Arokia Samy <arokia.samy@nxp.com>, Paul Yang <Paul.Yang@arm.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
- Varun Sethi <V.Sethi@nxp.com>, tanveer <tanveer.alam@puresoftware.com>,
- Ran Wang <ran.wang_1@nxp.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ lkml <linux-kernel@vger.kernel.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 16, 2020 at 1:12 AM Ard Biesheuvel <ard.biesheuvel@arm.com> wrote:
+On Sun, Sep 13, 2020 at 10:56 PM Liu Shixin <liushixin2@huawei.com> wrote:
 >
-> On 9/16/20 3:32 AM, Ran Wang wrote:
-> > Hi Ard,
-> >
-> > On Tuesday, September 15, 2020 7:10 PM, Ard Biesheuvel wrote:
-> >> Subject: Re: [PATCH v1] soc: fsl: rcpm: Add ACPI support
-> >>
-> >> On 9/15/20 1:06 PM, kuldip dwivedi wrote:
-> >>> Add ACPI support in fsl RCPM driver. This is required to support ACPI
-> >>> S3 state. S3 is the ACPI sleep state that is known as "sleep" or
-> >>> "suspend to RAM".
-> >>> It essentially turns off most power of the system but keeps memory
-> >>> powered.
-> >>>
-> >>> Signed-off-by: tanveer <tanveer.alam@puresoftware.com>
-> >>> Signed-off-by: kuldip dwivedi <kuldip.dwivedi@puresoftware.com>
-> >>
-> >> Why does the OS need to program this device? Can't this be done by
-> >> firmware?
-> >
-> > This device is use to tell HW which IP (such as USB, SDHC, SATA, etc) should not be
-> > clock gated during system enter low power state (to allow that IP work as a
-> > wakeup source). And user does this configuration in device tree.
->
-> The point of ACPI is *not* to describe a DT topology using a table
-> format that is not suited for it. The point of ACPI is to describe a
-> machine that is more abstracted from the hardware than is typically
-> possible with DT, where the abstractions are implemented by AML code
-> that is provided by the firmware, but executed in the context of the OS.
->
-> So the idea is *not* finding the shortest possible path to get your
-> existing DT driver code running on a system that boots via ACPI.
-> Instead, you should carefully think about the abstract ACPI machine that
-> you will expose to the OS, and hide everything else in firmware.
->
-> In this particular case, it seems like your USB, SDHC and SATA device
-> objects may need power state dependent AML methods that program this
-> block directly.
+> Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+> drivers/soc/fsl/qbman/qman_test_api.c---
 
-The platform PM driver was created to support PM on systems without a
-runtime PM firmware.   Even with PSCI firmware on later systems, there
-is no standard interface to communicate the wakeup source information
-directly from peripheral drivers to the PSCI firmware.  So we still
-need this platform power management driver in kernel to deal with this
-setup for non-ACPI scenarios.  From the code re-use perspective, I
-think it is probably better to keep this generic implementation in
-kernel instead of moving it to ACPI byte-code for each platform.
+The patch seems to be messed up here.
 
+I have fixed that, and applied for next.  Thanks.
+
+>  drivers/soc/fsl/qbman/qman_test_api.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
+> diff --git a/drivers/soc/fsl/qbman/qman_test_api.c b/drivers/soc/fsl/qbman/qman_test_api.c
+> index 2895d062cf51..7066b2f1467c 100644
+> --- a/drivers/soc/fsl/qbman/qman_test_api.c
+> +++ b/drivers/soc/fsl/qbman/qman_test_api.c
+> @@ -86,7 +86,7 @@ static void fd_inc(struct qm_fd *fd)
+>         len--;
+>         qm_fd_set_param(fd, fmt, off, len);
 >
+> -       fd->cmd = cpu_to_be32(be32_to_cpu(fd->cmd) + 1);
+> +       be32_add_cpu(&fd->cmd, 1);
+>  }
 >
-> > So implement
-> > this RCPM driver to do it in kernel rather than firmware.
-> >
-> > Regards,
-> > Ran
-> >
-> >>> ---
-> >>>
-> >>> Notes:
-> >>>       1. Add ACPI match table
-> >>>       2. NXP team members are added for confirming HID changes
-> >>>       3. There is only one node in ACPI so no need to check for
-> >>>          current device explicitly
-> >>>       4. These changes are tested on LX2160A and LS1046A platforms
-> >>>
-> >>>    drivers/soc/fsl/rcpm.c | 22 +++++++++++++++++++---
-> >>>    1 file changed, 19 insertions(+), 3 deletions(-)
-> >>>
-> >>> diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c index
-> >>> a093dbe6d2cb..e75a436fb159 100644
-> >>> --- a/drivers/soc/fsl/rcpm.c
-> >>> +++ b/drivers/soc/fsl/rcpm.c
-> >>> @@ -2,10 +2,12 @@
-> >>>    //
-> >>>    // rcpm.c - Freescale QorIQ RCPM driver
-> >>>    //
-> >>> -// Copyright 2019 NXP
-> >>> +// Copyright 2019-2020 NXP
-> >>> +// Copyright 2020 Puresoftware Ltd.
-> >>>    //
-> >>>    // Author: Ran Wang <ran.wang_1@nxp.com>
-> >>>
-> >>> +#include <linux/acpi.h>
-> >>>    #include <linux/init.h>
-> >>>    #include <linux/module.h>
-> >>>    #include <linux/platform_device.h>
-> >>> @@ -57,8 +59,13 @@ static int rcpm_pm_prepare(struct device *dev)
-> >>>                             rcpm->wakeup_cells + 1);
-> >>>
-> >>>             /*  Wakeup source should refer to current rcpm device */
-> >>> -           if (ret || (np->phandle != value[0]))
-> >>> -                   continue;
-> >>> +           if (is_acpi_node(dev->fwnode)) {
-> >>> +                   if (ret)
-> >>> +                           continue;
-> >>> +           } else {
-> >>> +                   if (ret || (np->phandle != value[0]))
-> >>> +                           continue;
-> >>> +           }
-> >>>
-> >>>             /* Property "#fsl,rcpm-wakeup-cells" of rcpm node defines the
-> >>>              * number of IPPDEXPCR register cells, and "fsl,rcpm-wakeup"
-> >>> @@ -139,10 +146,19 @@ static const struct of_device_id rcpm_of_match[]
-> >> = {
-> >>>    };
-> >>>    MODULE_DEVICE_TABLE(of, rcpm_of_match);
-> >>>
-> >>> +#ifdef CONFIG_ACPI
-> >>> +static const struct acpi_device_id rcpm_acpi_match[] = {
-> >>> +   { "NXP0015", },
-> >>> +   { }
-> >>> +};
-> >>> +MODULE_DEVICE_TABLE(acpi, rcpm_acpi_match); #endif
-> >>> +
-> >>>    static struct platform_driver rcpm_driver = {
-> >>>     .driver = {
-> >>>             .name = "rcpm",
-> >>>             .of_match_table = rcpm_of_match,
-> >>> +           .acpi_match_table = ACPI_PTR(rcpm_acpi_match),
-> >>>             .pm     = &rcpm_pm_ops,
-> >>>     },
-> >>>     .probe = rcpm_probe,
-> >>>
-> >
+>  /* The only part of the 'fd' we can't memcmp() is the ppid */
+> --
+> 2.25.1
 >
