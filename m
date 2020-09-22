@@ -2,85 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B00273873
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 04:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D82F273969
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 05:54:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BwQFp0sbHzDqxf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 12:27:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BwS9M4cwBzDqyn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 13:54:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::244;
+ helo=mail-oi1-x244.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=ybOKee4C; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=LUOZvtyY; dkim-atps=neutral
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BwQD75B4FzDqW6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 12:26:26 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id x123so11048539pfc.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 19:26:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=Pu0UCNU8a+/iVZS/XXkRFlt74wFB5FTnfIKuU4mGCVE=;
- b=ybOKee4ClYwnKomF/9bBGhUHbxGpBKV/qhY/uc7ZgMHyIxlFS3b8uQtTMkSVFuvury
- VRmgTWGWG1NXU7jfbn6rtBnaPAIBd9DibiuB5XQBJUq+bK/wD/93FWka2Ox3AsU1B/6K
- fELfk6TcMRASeGcAaTWS4cRrSONVoyUpJk0dFCPK0OKNyEjCkLPW3vgxq3unvl86R1fJ
- sCSKXwuyFYx8HjaY6ah/c9ivPhEbVQeV3+jbP3mBx8j2ZjFC64sPUmNRtq4ciL7+ovoA
- fA8mWoidtt7dtf9ZiaFpxgueD0jl/pG0baqp57IX5GuN7u5WXyJr3HnsXtKWPO7hpR81
- 9J0Q==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BwS7c6Y03zDqq5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 13:52:41 +1000 (AEST)
+Received: by mail-oi1-x244.google.com with SMTP id v20so19561808oiv.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Sep 2020 20:52:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=2ToM+kALjifaR31Wiy19sKnzA5cwERMurYOGT9ZOtdY=;
+ b=LUOZvtyYMQ2U4bfJborKaGgbqHtN0bms2STeHA3mR3P+mWFvNURoJLaDBpMMqAWx1m
+ LPciZl6q7My2NZ6mBUDPWqUTsnD5JbuTG854q+yMH4U+Le2AWEB5bj1nag04k0iWBUaz
+ LmHgTKZY7OsoKNTSUHhaD5a7d3AUxbiXTXmKbzNFufWGWegVTibqZMR8NXN2KgYxJVQV
+ Y1J74WOuBo2s77BW94+NjT1J5qthjvF0RMxTlG7sMQDl6zGeJr4/n5ojYRNSXSB95Y9v
+ aAMyCuKjaKilPSKVtYJe22PqyZEWbygRnR9MyU+QS/GuWM/z3ZPAjWPTzxMLZcijNCtO
+ gAag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=Pu0UCNU8a+/iVZS/XXkRFlt74wFB5FTnfIKuU4mGCVE=;
- b=i1ZZSyov2UTq370mrnn6ybR7zTKv5dFgo49paf2DV5R3/w+Du4LcoJm5jw2ouM18lc
- Q0E7gVfmcPKfdDWORXut41BQodo+W4er3E/UafNyI94KnqcDVyqRTg1BrgRHnq27SO8U
- MHjf9coXLfzuc+N98dG5Qq7NEcI21wVriKmErBltavnrSHR7atGn9WlNRG/wZwIwav+A
- MzmyfKR1I0TIPGRIidPZJC96aDcmY5AJPtVJy5dbl1rGdrChVWRHkWku2+0xnM97Hhxq
- AVoRR7im4yLzFBcP9uD5B55slf8FwI0aAASIfhi85TonW8QLVsazeNobjQQH/52ffUVG
- qszw==
-X-Gm-Message-State: AOAM530uwy7RvPxm6OCfDYdAXqbwd+4GqNU9uFsKSL2VeuVcJzcfRjm6
- 3yg65h0OPYEsQjlFFCDUfp73NkEBMkxr1W8j
-X-Google-Smtp-Source: ABdhPJzihIVUiHkkoDmwb7dD0TVGqibm6P0FTrPvxIqzr+qLpE+juchSR41nsWtL2W6kKnGCq2ubZw==
-X-Received: by 2002:a63:5d61:: with SMTP id o33mr1878993pgm.355.1600741583323; 
- Mon, 21 Sep 2020 19:26:23 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
- [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id a2sm13001658pfk.201.2020.09.21.19.26.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 21 Sep 2020 19:26:22 -0700 (PDT)
-Subject: Re: [PATCH kernel] powerpc/dma: Fix dma_map_ops::get_required_mask
-To: Christoph Hellwig <hch@lst.de>
-References: <20200908015106.79661-1-aik@ozlabs.ru>
- <20200908054416.GA13585@lst.de>
- <94353228-2262-cfa1-7177-7eed2288ca63@ozlabs.ru>
- <20200908121937.GA31559@lst.de>
- <1746dd66810.27bb.1ca38dd7e845b990cd13d431eb58563d@ozlabs.ru>
- <20200909075849.GA12282@lst.de>
- <0a7a992f-ad2e-e76a-7bee-1ed4ed607748@ozlabs.ru>
- <20200915065022.GA19658@lst.de>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <93424419-3476-fc07-8a83-8d9d39062810@ozlabs.ru>
-Date: Tue, 22 Sep 2020 12:26:18 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.2.2
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=2ToM+kALjifaR31Wiy19sKnzA5cwERMurYOGT9ZOtdY=;
+ b=mekjbqY0I7DsoKzvV1b/LYikgQ+jrVKYBNCibsEA3iL2KZQc2jpQkYgxBJqLh7YS1l
+ NU2e1thMmBBdCeAFncNVQgo/KqwCKcNJPy13dHnf33L3lVdVoh0HWxZnWbZ/v11AKnCo
+ qoAtIcn/62ftMlxKq9GaeTIIKQR2i8qWD+BYgiPsfS8eE/Y7FbnFkJEJRfiQX/5HYO4o
+ ZPNUz0ilSuR2ju/HAZ5y819yG6vo9CEJmBhZiDItUt8EuC9qzwHgHWmS72sUUtvXBTrK
+ ld8uoBnbu+C9abGLSQb9NYiDZqTOsgfHv4IjVu1S3DwRQlv3VMehjQUnF0oNxT8gUU79
+ gPGQ==
+X-Gm-Message-State: AOAM531PWD2jU8h6RZatT6ofko8rF9K29mWeEUYq2UplpA6gHVxh+ijb
+ PI15b8MvZa3j5W2DcZFhsNUmzjQLkrT47IAE4lw=
+X-Google-Smtp-Source: ABdhPJzG5I4S7pJRBXZmF8vBOhV3MMw+OApqPCmDtc4bckiWS416Gr/gAD2igx/Gq78r6Y9xaGD5r4b4UC0WcMgGLIs=
+X-Received: by 2002:aca:c44b:: with SMTP id u72mr1586217oif.12.1600746758515; 
+ Mon, 21 Sep 2020 20:52:38 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200915065022.GA19658@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200917091716.4631-1-jniethe5@gmail.com>
+ <877dsro8iy.fsf@mpe.ellerman.id.au>
+In-Reply-To: <877dsro8iy.fsf@mpe.ellerman.id.au>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Tue, 22 Sep 2020 13:52:27 +1000
+Message-ID: <CACzsE9oMiMm8pQKPhHoKy8XUTAJryeB0T=7y7SOGrB9p656sOA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] powerpc/64: Set up a kernel stack for secondaries
+ before cpu_restore()
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,65 +74,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver OHalloran <oliveroh@au1.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Cc: Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 15/09/2020 16:50, Christoph Hellwig wrote:
-> On Wed, Sep 09, 2020 at 07:36:04PM +1000, Alexey Kardashevskiy wrote:
->> I want dma_get_required_mask() to return the bigger mask always.
->>
->> Now it depends on (in dma_alloc_direct()):
->> 1. dev->dma_ops_bypass: set via pci_set_(coherent_)dma_mask();
->> 2. dev->coherent_dma_mask - the same;
->> 3. dev->bus_dma_limit - usually not set at all.
->>
->> So until we set the mask, dma_get_required_mask() returns smaller mask.
->> So aacraid and likes (which calls dma_get_required_mask() before setting
->> it) will remain prone for breaks.
-> 
-> Well, the original intent of dma_get_required_mask is to return the
-> mask that the driver then uses to figure out what to set, so what aacraid
-> does fits that use case. 
-
-What was the original intent exactly? The driver asks for the minimum or
-maximum DMA mask the platform supports?
-
-As for now, we (ppc64/powernv) can do:
-1. bypass (==64bit)
-2. a DMA window which used to be limited by 2GB but not anymore.
-
-I can understand if the driver asked for required mask in expectation to
-receive "less or equal than 32bit" and "more than 32 bit" and choose.
-And this probably was the intent as at the time when the bug was
-introduced, the window was always smaller than 4GB.
-
-But today the window is bigger than than (44 bits now, or a similar
-value, depends on max page order) so the returned mask is >32. Which
-still enables that DAC in aacraid but I suspect this is accidental.
-
-
-> Of course that idea is pretty bogus for
-> PCIe devices.
-
-Why? From the PHB side, there are windows. From the device side, there
-are many crippled devices, like, no GPU I saw in last years supported
-more than 48bit.
-
-
-> I suspect the right fix is to just not query dma_get_required_mask for
-> PCIe devices in aacraid (and other drivers that do something similar).
-
-May be, if you write nice and big comment next to
-dma_get_required_mask() explaining exactly what it does, then I will
-realize I am getting this all wrong and we will move to fixing the
-drivers :)
-
-
--- 
-Alexey
+On Fri, Sep 18, 2020 at 5:21 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> Hi Jordan,
+>
+> Jordan Niethe <jniethe5@gmail.com> writes:
+> > Currently in generic_secondary_smp_init(), cur_cpu_spec->cpu_restore()
+> > is called before a stack has been set up in r1. This was previously fine
+> > as the cpu_restore() functions were implemented in assembly and did not
+> > use a stack. However commit 5a61ef74f269 ("powerpc/64s: Support new
+> > device tree binding for discovering CPU features") used
+> > __restore_cpu_cpufeatures() as the cpu_restore() function for a
+> > device-tree features based cputable entry. This is a C function and
+> > hence uses a stack in r1.
+> >
+> > generic_secondary_smp_init() is entered on the secondary cpus via the
+> > primary cpu using the OPAL call opal_start_cpu(). In OPAL, each hardware
+> > thread has its own stack. The OPAL call is ran in the primary's hardware
+> > thread. During the call, a job is scheduled on a secondary cpu that will
+> > start executing at the address of generic_secondary_smp_init().  Hence
+> > the value that will be left in r1 when the secondary cpu enters the
+> > kernel is part of that secondary cpu's individual OPAL stack. This means
+> > that __restore_cpu_cpufeatures() will write to that OPAL stack. This is
+> > not horribly bad as each hardware thread has its own stack and the call
+> > that enters the kernel from OPAL never returns, but it is still wrong
+> > and should be corrected.
+> >
+> > Create the temp kernel stack before calling cpu_restore().
+> >
+> > Fixes: 5a61ef74f269 ("powerpc/64s: Support new device tree binding for discovering CPU features")
+> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> > ---
+> > v2: Add more detail to the commit message
+> > ---
+> >  arch/powerpc/kernel/head_64.S | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> Unfortunately this breaks booting via kexec.
+>
+> In that case the secondaries come in to 0x60 and spin until they're
+> released by smp_release_cpus(), which is before emergency_stack_init()
+> has run. That means they pick up a bad r1 value and crash/get stuck.
+>
+> I'm not sure what the best solution is.
+Would it be simplest to just call smp_release_cpus() after setting up the stack?
+>
+> I've thought in the past that it would be nicer if the CPU setup didn't
+> run until the secondary is told to start (via PACAPROCSTART), ie. more
+> the CPU setup call below there.
+>
+> But that opens the possibility that we run threads with different
+> settings of some SPRs until SMP bringup, and if the user has said not to
+> start secondaries then possibly for ever. And I haven't though hard
+> enough about whether that's actually problematic (running with different
+> SPR values).
+>
+> cheers
+>
+>
+> > diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+> > index 0e05a9a47a4b..4b7f4c6c2600 100644
+> > --- a/arch/powerpc/kernel/head_64.S
+> > +++ b/arch/powerpc/kernel/head_64.S
+> > @@ -420,6 +420,10 @@ generic_secondary_common_init:
+> >       /* From now on, r24 is expected to be logical cpuid */
+> >       mr      r24,r5
+> >
+> > +     /* Create a temp kernel stack for use before relocation is on.  */
+> > +     ld      r1,PACAEMERGSP(r13)
+> > +     subi    r1,r1,STACK_FRAME_OVERHEAD
+> > +
+> >       /* See if we need to call a cpu state restore handler */
+> >       LOAD_REG_ADDR(r23, cur_cpu_spec)
+> >       ld      r23,0(r23)
+> > @@ -448,10 +452,6 @@ generic_secondary_common_init:
+> >       sync                            /* order paca.run and cur_cpu_spec */
+> >       isync                           /* In case code patching happened */
+> >
+> > -     /* Create a temp kernel stack for use before relocation is on.  */
+> > -     ld      r1,PACAEMERGSP(r13)
+> > -     subi    r1,r1,STACK_FRAME_OVERHEAD
+> > -
+> >       b       __secondary_start
+> >  #endif /* SMP */
+> >
+> > --
+> > 2.17.1
