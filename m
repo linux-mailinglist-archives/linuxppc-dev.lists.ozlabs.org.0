@@ -1,84 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C42274B46
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 23:41:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13834274C61
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 00:45:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bwvrc4BjDzDqWm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 07:41:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BwxG10dxKzDqX6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 08:44:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=141.146.126.79; helo=aserp2130.oracle.com;
- envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
+ envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=w34FK/fi; 
- dkim-atps=neutral
-Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=nxp.com
+Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
+ [209.85.210.68])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bwvpn54wSzDqVZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 07:39:44 +1000 (AEST)
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
- by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08MLPSt4120802;
- Tue, 22 Sep 2020 21:39:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=to : cc : subject :
- from : message-id : references : date : in-reply-to : mime-version :
- content-type; s=corp-2020-01-29;
- bh=bKqjb3mPd/FBc/U8jba5rQrhQlBL5Tw/ZK1EsTH3wXk=;
- b=w34FK/fiMhH83aXlrNHCm/7IjPByMdEKIkmJs0ro6KLa9XHDSi76FX7s9sJeaBzum/OC
- 97rsoGplD5XSayYjAGwBVvtfxJS9xngjonOPUvDlBKSWdpM/+m6k3qvpgfRJCS//rti4
- MJ194Ku+gNRVFrXkI09NWEHUWqPixwpk+H2zBHQp3r5g/0LX2fRxp8NlQYC47Hbq1DPU
- bpwumjoyqvOTG0luZerWSG1Gixvfo3Rfm2Jho5/H7IEG08mlbSf321mF6GSdTdpPCHvH
- 33gWMTpvj8duOf9NA/+QCLJ9XICdgFI7V0weOfFrn8t5npmP9za0HOJHSW2Tfy14+O0X Iw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
- by aserp2130.oracle.com with ESMTP id 33qcptv7mp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Tue, 22 Sep 2020 21:39:39 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
- by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08MLPNhO019063;
- Tue, 22 Sep 2020 21:39:39 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
- by userp3030.oracle.com with ESMTP id 33nux028vc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 22 Sep 2020 21:39:38 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
- by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08MLdauB010911;
- Tue, 22 Sep 2020 21:39:37 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Tue, 22 Sep 2020 14:39:36 -0700
-To: Brian King <brking@linux.vnet.ibm.com>
-Subject: Re: [PATCH] ibmvfc: Protect vhost->task_set increment by the host lock
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1blhxpk36.fsf@ca-mkp.ca.oracle.com>
-References: <1600286999-22059-1-git-send-email-brking@linux.vnet.ibm.com>
-Date: Tue, 22 Sep 2020 17:39:34 -0400
-In-Reply-To: <1600286999-22059-1-git-send-email-brking@linux.vnet.ibm.com>
- (Brian King's message of "Wed, 16 Sep 2020 15:09:59 -0500")
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BwxCx1s0kzDqVq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 08:43:08 +1000 (AEST)
+Received: by mail-ot1-f68.google.com with SMTP id q21so17176102ota.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 15:43:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ujRFzrNNNsh5z7M9S1n/AHFDhC/eiAX1cUWK4oCO5/o=;
+ b=jlsgRVPAQVv7Ulp4Zcclri1kFIIbYWincleLOJJYEcFWeYrZFtSGGKUM4i0o9UfXdI
+ PsdqDWspsTPkYyCPVPMmJwKZrCsDa8kWNKp711nAwGhJB5hZYwPbonfuAGYlewJYEdiP
+ lJ9RHvcmZw19n1bQCxrt64l5lA22WeSlRT/Dokv88Mh4DcxuTck+lpnlCxWBBt5dbzo/
+ w79YxxxKyzc62BFoyQIGJSdOWwwWcm55Aw/RkMnnFIiDYSLm6+5WLfA21MicFi2bFtFw
+ cZsLszXU1tXORxn4Tp17/faebgh4tciUbaogzD93BrUjkl6rJOc6AnQ4FLGLF401kGn4
+ jQhw==
+X-Gm-Message-State: AOAM530OS6LBejGkpM+jgBEE5dBz6LAILdWQSw6PRkSf2gUob/ZtYoK8
+ 76gf9nSpZtIVxLwH+J1+yhIyvVuHEzM=
+X-Google-Smtp-Source: ABdhPJxktqTrv7dJDX5VbNNd/g3CWdCtmmkoVnARlyl4FVdMQq72WG9TnkvbkiCY6xSvxNDQHiEzsg==
+X-Received: by 2002:a9d:6a19:: with SMTP id g25mr4395920otn.267.1600814585228; 
+ Tue, 22 Sep 2020 15:43:05 -0700 (PDT)
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com.
+ [209.85.210.54])
+ by smtp.gmail.com with ESMTPSA id o9sm8626342oop.1.2020.09.22.15.43.04
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Sep 2020 15:43:04 -0700 (PDT)
+Received: by mail-ot1-f54.google.com with SMTP id o6so17184732ota.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 15:43:04 -0700 (PDT)
+X-Received: by 2002:a05:6830:196:: with SMTP id
+ q22mr4056424ota.221.1600814584178; 
+ Tue, 22 Sep 2020 15:43:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9752
- signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxscore=0 adultscore=0
- bulkscore=0 mlxlogscore=999 phishscore=0 suspectscore=1 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009220167
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9752
- signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1
- mlxlogscore=999
- adultscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501
- phishscore=0 spamscore=0 malwarescore=0 clxscore=1015 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009220167
+References: <20200920202625.11377-1-krzk@kernel.org>
+In-Reply-To: <20200920202625.11377-1-krzk@kernel.org>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Tue, 22 Sep 2020 17:42:52 -0500
+X-Gmail-Original-Message-ID: <CADRPPNTJ0GfZX6Ms43o1oP8hpA-jbZLJuM7gp8_XY97TtX+mog@mail.gmail.com>
+Message-ID: <CADRPPNTJ0GfZX6Ms43o1oP8hpA-jbZLJuM7gp8_XY97TtX+mog@mail.gmail.com>
+Subject: Re: [PATCH] soc: fsl: qbman: Fix return value on success
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,23 +71,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- martin.petersen@oracle.com, linux-scsi@vger.kernel.org
+Cc: Roy Pledge <roy.pledge@nxp.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ lkml <linux-kernel@vger.kernel.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sun, Sep 20, 2020 at 3:27 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>
+> On error the function was meant to return -ERRNO.  This also fixes
+> compile warning:
+>
+>   drivers/soc/fsl/qbman/bman.c:640:6: warning: variable 'err' set but not used [-Wunused-but-set-variable]
+>
+> Fixes: 0505d00c8dba ("soc/fsl/qbman: Cleanup buffer pools if BMan was initialized prior to bootup")
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Brian,
+Applied for next.  Thanks.
 
-> In the discovery thread, ibmvfc does a vhost->task_set++ without any
-> lock held. This could result in two targets getting the same cancel
-> key, which could have strange effects in error recovery.  The actual
-> probability of this occurring should be extremely small, since this
-> should all be done in a single threaded loop from the discovery
-> thread, but let's fix it up anyway to be safe.
-
-Applied to 5.10/scsi-staging, thanks!
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+> ---
+>  drivers/soc/fsl/qbman/bman.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/soc/fsl/qbman/bman.c b/drivers/soc/fsl/qbman/bman.c
+> index f4fb527d8301..c5dd026fe889 100644
+> --- a/drivers/soc/fsl/qbman/bman.c
+> +++ b/drivers/soc/fsl/qbman/bman.c
+> @@ -660,7 +660,7 @@ int bm_shutdown_pool(u32 bpid)
+>         }
+>  done:
+>         put_affine_portal();
+> -       return 0;
+> +       return err;
+>  }
+>
+>  struct gen_pool *bm_bpalloc;
+> --
+> 2.17.1
+>
