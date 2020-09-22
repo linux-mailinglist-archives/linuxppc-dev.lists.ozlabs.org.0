@@ -2,106 +2,126 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33437273CC8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 09:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B6F273CE0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 10:01:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BwYYx5HtKzDqW0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 17:57:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BwYfs2KPgzDqWG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Sep 2020 18:01:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BwYWk5fKgzDqW0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 17:55:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=LyzubX0Z; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BwYWj4jm2z8vv8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 17:55:29 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4BwYWh5qZ1z9sTW; Tue, 22 Sep 2020 17:55:28 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::343;
+ helo=mail-wm1-x343.google.com; envelope-from=asml.silence@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=LyzubX0Z; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=qRykHTLd; dkim-atps=neutral
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
+ [IPv6:2a00:1450:4864:20::343])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BwYWg2ct0z9sPB;
- Tue, 22 Sep 2020 17:55:27 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 08M7YHj5154377; Tue, 22 Sep 2020 03:55:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=P/sOaQTxIfxYAWbH6C6AEu3QhiaE9mXZKH/L2p+JUtE=;
- b=LyzubX0ZCPZFIiiz/AKC1w1HoJlav04Iqy2f9ekLucDOtJG4orkh71MPsmS7J6Dye4e6
- WvpNPfZ7QO36F5Ug/ROndvMAMAjjo8HT0LEVUR1AN0hqLujiHWqq9eSCL3UIssPpbJG5
- IX2pPcBiKfhkxkXRlObBJeWO6JaeKCCv/FyG8kHRs9zsLxIw6agTkyhuw2352RK33DOn
- kUI5suauwDCusAN6iM/SNDzoBLRVTkEGXW3irsQ9tgSjwuWNiIbGefr5mEKU5GTdGN6Q
- lBITO0Ix4ByWlpvQP5fi378wa8GlXiRaD/PTgFphF0n5j4GiCr3bJ3GSTFkHK+IaFz6I JQ== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33qag4mknq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Sep 2020 03:55:13 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08M7qCM0009474;
- Tue, 22 Sep 2020 07:55:11 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 33payu9jsg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Sep 2020 07:55:11 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 08M7t9NR19661114
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 22 Sep 2020 07:55:09 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4C052A4059;
- Tue, 22 Sep 2020 07:55:09 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ED618A4040;
- Tue, 22 Sep 2020 07:55:07 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Tue, 22 Sep 2020 07:55:07 +0000 (GMT)
-Date: Tue, 22 Sep 2020 13:25:07 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64: Make VDSO32 track COMPAT on 64-bit
-Message-ID: <20200922075507.3fgitavbbupmi53m@linux.vnet.ibm.com>
-References: <20200908125850.407939-1-mpe@ellerman.id.au>
- <160034211494.3342081.16977957933269532766.b4-ty@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BwYcl57snzDqTG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 17:59:48 +1000 (AEST)
+Received: by mail-wm1-x343.google.com with SMTP id s13so2301495wmh.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Sep 2020 00:59:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=to:cc:references:from:autocrypt:subject:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=yYZwD/JN41HSW2o2yBV5D0g97V44Y0rKO2sNnKdHUhE=;
+ b=qRykHTLdSJFSoQXfXO+yN4UNYJ/YVaOYc+nZp15yapRq/lAEKnzGieCh7z7YLtEsjm
+ l4HGRLWaSiCRKVXFiNVspJUY+JF5cbnmHTi3J8LBBnkc+fygy30wbUThbk7uN7G0MIbh
+ qCcmvDEycOYu5YiF9BMGHOXHpg5W6KtQfOxK6n37oPDSaJp9c5xVqilKUaO6HHuSutu+
+ Ov2YGd9bB9gGENnWxuPis5FvBUKubP3qwHaZu/9wEgNAKBIDYsWrvMbNXR4MG09Af+m8
+ wpIhb7tQvP9t7UOL3zfTROmtF4/bBDMBs3zrFg2ZNfCRwVJSOn1o18raTqrzVWYD+TIO
+ V0xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:to:cc:references:from:autocrypt:subject
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=yYZwD/JN41HSW2o2yBV5D0g97V44Y0rKO2sNnKdHUhE=;
+ b=fErGJjKsP+YBQD4TH6ZOfRgwTZm8Z9o8rb1lMi1EaLFimI3sai30JTf9Q3EG7gu3Rz
+ ajzGdd81HeZrLGEVFDjOFd3L9U1E6X30w08YmmJYxG/EUsCU4iTJ18gFP90E+9LNYIyz
+ xnPQZ75madUS3wai7JPPoZhh5aJ/jGM29EYPk7insKmzlcbqKMX6SwN9/P4HCVShjryF
+ inj9gkNyYy+0iNpJfdyk86aAhyyostzZg6lXMQZcPPNsLiAr1EaAt2pjDyBePUey52uU
+ zLdpaQLLJ/rVJpKQruC76aJZZWgSzsX6tuLdSEW5/nPqpHnIudavn/VD2NdpJP/4eDM7
+ WCvg==
+X-Gm-Message-State: AOAM533eepVXxMHkyZ3YIwo0kqL7Dp2xH1UPTCwwgzvHkgN2YXKM+QVs
+ m3CxvI7BBsI/oR17/7eWXkY=
+X-Google-Smtp-Source: ABdhPJyp+yvFLYLY/48JTev8mJO6XccKtCAi407VdoITx4a2DkqQ4UW1R3oWhs41QqIHG8+BiQ07BQ==
+X-Received: by 2002:a1c:2cc4:: with SMTP id s187mr3114615wms.36.1600761583858; 
+ Tue, 22 Sep 2020 00:59:43 -0700 (PDT)
+Received: from [192.168.43.240] ([5.100.192.97])
+ by smtp.gmail.com with ESMTPSA id 91sm27110787wrq.9.2020.09.22.00.59.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 22 Sep 2020 00:59:43 -0700 (PDT)
+To: Arnd Bergmann <arnd@arndb.de>
+References: <CAK8P3a2Mi+1yttyGk4k7HxRVrMtmFqJewouVhynqUL0PJycmog@mail.gmail.com>
+ <D0791499-1190-4C3F-A984-0A313ECA81C7@amacapital.net>
+ <563138b5-7073-74bc-f0c5-b2bad6277e87@gmail.com>
+ <486c92d0-0f2e-bd61-1ab8-302524af5e08@gmail.com>
+ <CALCETrW3rwGsgfLNnu_0JAcL5jvrPVTLTWM3JpbB5P9Hye6Fdw@mail.gmail.com>
+ <d5c6736a-2cb4-4e22-78da-a667bda5c05a@gmail.com>
+ <CALCETrUEC81va8-fuUXG1uA5rbKxnKDYsDOXC70_HtKD4LAeAg@mail.gmail.com>
+ <e0a1b4d1-ff47-18d1-d535-c62812cb3105@gmail.com>
+ <CAK8P3a2-6JNS38EbZcLrk=cTT526oP=Rf0aoqWNSJ-k4XTYehQ@mail.gmail.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
+Autocrypt: addr=asml.silence@gmail.com; prefer-encrypt=mutual; keydata=
+ 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 bA==
+Subject: Re: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
+Message-ID: <f25b4708-eba6-78d6-03f9-5bfb04e07627@gmail.com>
+Date: Tue, 22 Sep 2020 10:57:11 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <160034211494.3342081.16977957933269532766.b4-ty@ellerman.id.au>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-22_05:2020-09-21,
- 2020-09-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
- bulkscore=0 mlxscore=0 clxscore=1011 phishscore=0 adultscore=0
- mlxlogscore=921 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009220061
+In-Reply-To: <CAK8P3a2-6JNS38EbZcLrk=cTT526oP=Rf0aoqWNSJ-k4XTYehQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,56 +133,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: linuxppc-dev@ozlabs.org, msuchanek@suse.de, srikar@linux.vnet.ibm.com,
- Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: linux-aio <linux-aio@kvack.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>, Linux-MM <linux-mm@kvack.org>,
+ keyrings@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Linux SCSI List <linux-scsi@vger.kernel.org>, X86 ML <x86@kernel.org>,
+ linux-block <linux-block@vger.kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, io-uring@vger.kernel.org,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Jens Axboe <axboe@kernel.dk>, Parisc List <linux-parisc@vger.kernel.org>,
+ Network Development <netdev@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ LSM List <linux-security-module@vger.kernel.org>,
+ Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Michael Ellerman <patch-notifications@ellerman.id.au> [2020-09-17 21:28:46]:
-
-> On Tue, 8 Sep 2020 22:58:50 +1000, Michael Ellerman wrote:
-> > When we added the VDSO32 kconfig symbol, which controls building of
-> > the 32-bit VDSO, we made it depend on CPU_BIG_ENDIAN (for 64-bit).
-> > 
-> > That was because back then COMPAT was always enabled for 64-bit, so
-> > depending on it would have left the 32-bit VDSO always enabled, which
-> > we didn't want.
-> > 
-> > [...]
+On 22/09/2020 10:23, Arnd Bergmann wrote:
+> On Tue, Sep 22, 2020 at 8:32 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>> On 22/09/2020 03:58, Andy Lutomirski wrote:
+>>> On Mon, Sep 21, 2020 at 5:24 PM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>>> I may be looking at a different kernel than you, but aren't you
+>>> preventing creating an io_uring regardless of whether SQPOLL is
+>>> requested?
+>>
+>> I diffed a not-saved file on a sleepy head, thanks for noticing.
+>> As you said, there should be an SQPOLL check.
+>>
+>> ...
+>> if (ctx->compat && (p->flags & IORING_SETUP_SQPOLL))
+>>         goto err;
 > 
-> Applied to powerpc/next.
+> Wouldn't that mean that now 32-bit containers behave differently
+> between compat and native execution?
 > 
-> [1/1] powerpc/64: Make VDSO32 track COMPAT on 64-bit
->       https://git.kernel.org/powerpc/c/231b232df8f67e7d37af01259c21f2a131c3911e
+> I think if you want to prevent 32-bit applications from using SQPOLL,
+> it needs to be done the same way on both to be consistent:
+
+The intention was to disable only compat not native 32-bit.
+
 > 
-> cheers
+>    if ((!IS_ENABLED(CONFIG_64BIT) || ctx->compat) &&
+>         (p->flags & IORING_SETUP_SQPOLL))
+>             goto err;
+> 
+> I don't really see how taking away SQPOLL from 32-bit tasks is
+> any better than just preventing access to the known-broken files
+> as Al suggested, or adding the hack to make it work as in
+> Christoph's original patch.
 
-With this commit which is part of powerpc/next and with
-/opt/at12.0/bin/gcc --version
-gcc (GCC) 8.4.1 20191125 (Advance-Toolchain 12.0-3) [e25f27eea473]
-throws up a compile error on a witherspoon/PowerNV with CONFIG_COMPAT.
-CONFIG_COMPAT got carried from the distro config. (And looks like most
-distros seem to be having this config)
+That's why I'm hoping that Christoph's work and the discussion will
+reach consensus, but the bug should be patched in the end. IMHO,
+it's a good and easy enough fallback option (temporal?).
 
-cc1: error: _-m32_ not supported in this configuration
-make[4]: *** [arch/powerpc/kernel/vdso32/sigtramp.o] Error 1
-make[4]: *** Waiting for unfinished jobs....
-cc1: error: _-m32_ not supported in this configuration
-make[4]: *** [arch/powerpc/kernel/vdso32/gettimeofday.o] Error 1
-make[3]: *** [arch/powerpc/kernel/vdso32] Error 2
-make[3]: *** Waiting for unfinished jobs....
-make[2]: *** [arch/powerpc/kernel] Error 2
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [arch/powerpc] Error 2
-make[1]: *** Waiting for unfinished jobs....
-make: *** [__sub-make] Error 2
+> 
+> Can we expect all existing and future user space to have a sane
+> fallback when IORING_SETUP_SQPOLL fails?
 
-I don't seem to be facing with other compilers like "gcc (Ubuntu
-7.4.0-1ubuntu1~18.04.1) 7.4.0" and I was able to disable CONFIG_COMPAT and
-proceed with the build.
-
+SQPOLL has a few differences with non-SQPOLL modes, but it's easy
+to convert between them. Anyway, SQPOLL is a privileged special
+case that's here for performance/latency reasons, I don't think
+there will be any non-accidental users of it.
 -- 
-Thanks and Regards
-Srikar Dronamraju
+Pavel Begunkov
