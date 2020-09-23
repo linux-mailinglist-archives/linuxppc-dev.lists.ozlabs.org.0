@@ -2,53 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E124B2762F2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 23:15:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F175B276327
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 23:32:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BxWDc6C5mzDqGg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 07:15:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BxWbf30rGzDqdP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 07:32:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=m2l4=da=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=goodmis.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxW976mKNzDqcY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 07:12:43 +1000 (AEST)
-Received: from oasis.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0CA3D2145D;
- Wed, 23 Sep 2020 21:12:35 +0000 (UTC)
-Date: Wed, 23 Sep 2020 17:12:34 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch RFC 00/15] mm/highmem: Provide a preemptible variant of
- kmap_atomic & friends
-Message-ID: <20200923171234.0001402d@oasis.local.home>
-In-Reply-To: <874kno9pr9.fsf@nanos.tec.linutronix.de>
-References: <20200919091751.011116649@linutronix.de>
- <CAHk-=wiYGyrFRbA1cc71D2-nc5U9LM9jUJesXGqpPnB7E4X1YQ@mail.gmail.com>
- <87mu1lc5mp.fsf@nanos.tec.linutronix.de>
- <87k0wode9a.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgbmwsTOKs23Z=71EBTrULoeaH2U3TNqT2atHEWvkBKdw@mail.gmail.com>
- <87eemwcpnq.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
- <87a6xjd1dw.fsf@nanos.tec.linutronix.de>
- <CAHk-=wjhxzx3KHHOMvdDj3Aw-_Mk5eRiNTUBB=tFf=vTkw1FeA@mail.gmail.com>
- <87sgbbaq0y.fsf@nanos.tec.linutronix.de>
- <20200923084032.GU1362448@hirez.programming.kicks-ass.net>
- <20200923115251.7cc63a7e@oasis.local.home>
- <874kno9pr9.fsf@nanos.tec.linutronix.de>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BxWYm0kfQzDqcF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 07:30:33 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-222-k0JZSzTkPJOZPjS-rTcoJw-1; Wed, 23 Sep 2020 22:30:26 +0100
+X-MC-Unique: k0JZSzTkPJOZPjS-rTcoJw-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Wed, 23 Sep 2020 22:30:25 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Wed, 23 Sep 2020 22:30:25 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Arnd Bergmann' <arnd@arndb.de>, Al Viro <viro@zeniv.linux.org.uk>
+Subject: RE: [PATCH 5/9] fs: remove various compat readv/writev helpers
+Thread-Topic: [PATCH 5/9] fs: remove various compat readv/writev helpers
+Thread-Index: AQHWkdnPrERbulCBlEyrFz5+sRsKWql2urog
+Date: Wed, 23 Sep 2020 21:30:25 +0000
+Message-ID: <2e11ea867c644c5d96f8e4930e5c730d@AcuMS.aculab.com>
+References: <20200923060547.16903-1-hch@lst.de>
+ <20200923060547.16903-6-hch@lst.de>
+ <20200923142549.GK3421308@ZenIV.linux.org.uk> <20200923143251.GA14062@lst.de>
+ <20200923145901.GN3421308@ZenIV.linux.org.uk>
+ <20200923163831.GO3421308@ZenIV.linux.org.uk>
+ <CAK8P3a3nkLUOkR+jwz2_2LcYTUTqdVf8JOtZqKWbtEDotNhFZA@mail.gmail.com>
+In-Reply-To: <CAK8P3a3nkLUOkR+jwz2_2LcYTUTqdVf8JOtZqKWbtEDotNhFZA@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,76 +69,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, peterz@infradead.org,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>, linux-mips@vger.kernel.org,
- Ben Segall <bsegall@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Guo Ren <guoren@kernel.org>, linux-sparc <sparclinux@vger.kernel.org>,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- the arch/x86 maintainers <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Mel Gorman <mgorman@suse.de>,
- "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
- linux-xtensa@linux-xtensa.org, Paul McKenney <paulmck@kernel.org>,
- intel-gfx <intel-gfx@lists.freedesktop.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Jani Nikula <jani.nikula@linux.intel.com>, Greentime Hu <green.hu@gmail.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>, Linux-MM <linux-mm@kvack.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Daniel Vetter <daniel@ffwll.ch>, Vineet Gupta <vgupta@synopsys.com>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- Daniel Bristot de Oliveira <bristot@redhat.com>,
- "David S. Miller" <davem@davemloft.net>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-s390 <linux-s390@vger.kernel.org>,
+ linux-scsi <linux-scsi@vger.kernel.org>,
+ Parisc List <linux-parisc@vger.kernel.org>, linux-aio <linux-aio@kvack.org>,
+ Networking <netdev@vger.kernel.org>,
+ "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ LSM List <linux-security-module@vger.kernel.org>,
+ "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+ linux-block <linux-block@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 23 Sep 2020 22:55:54 +0200
-Thomas Gleixner <tglx@linutronix.de> wrote:
+RnJvbTogQXJuZCBCZXJnbWFubg0KPiBTZW50OiAyMyBTZXB0ZW1iZXIgMjAyMCAxOTo0Ng0KLi4u
+DQo+IFJlZ2FyZGxlc3Mgb2YgdGhhdCwgYW5vdGhlciBhZHZhbnRhZ2Ugb2YgaGF2aW5nIHRoZSBT
+WVNDQUxMX0RFQ0xBUkV4KCkNCj4gd291bGQgYmUgdGhlIGFiaWxpdHkgdG8gaW5jbHVkZSB0aGF0
+IGhlYWRlciBmaWxlIGZyb20gZWxzZXdoZXJlIHdpdGggYSBkaWZmZXJlbnQNCj4gbWFjcm8gZGVm
+aW5pdGlvbiB0byBjcmVhdGUgYSBtYWNoaW5lLXJlYWRhYmxlIHZlcnNpb24gb2YgdGhlIGludGVy
+ZmFjZSB3aGVuDQo+IGNvbWJpbmVkIHdpdGggdGhlIHN5c2NhbGwudGJsIGZpbGVzLiBUaGlzIGNv
+dWxkIGJlIHVzZWQgdG8gY3JlYXRlIGEgdXNlcg0KPiBzcGFjZSBzdHViIGZvciBjYWxsaW5nIGlu
+dG8gdGhlIGxvdy1sZXZlbCBzeXNjYWxsIHJlZ2FyZGxlc3Mgb2YgdGhlDQo+IGxpYmMgaW50ZXJm
+YWNlcywNCj4gb3IgZm9yIHN5bmNocm9uaXppbmcgdGhlIGludGVyZmFjZXMgd2l0aCBzdHJhY2Us
+IHFlbXUtdXNlciwgb3IgYW55dGhpbmcgdGhhdA0KPiBuZWVkcyB0byBkZWFsIHdpdGggdGhlIGxv
+dy1sZXZlbCBpbnRlcmZhY2UuDQoNCkEgc2ltaWxhciAndHJpY2snICh0aGF0IHByb2JhYmx5IHdv
+bid0IHdvcmsgaGVyZSkgaXMgdG8gcGFzcw0KdGhlIG5hbWUgb2YgYSAjZGVmaW5lIGZ1bmN0aW9u
+IGFzIGEgcGFyYW1ldGVyIHRvIGFub3RoZXIgZGVmaW5lLg0KVXNlZnVsIGZvciBkZWZpbmluZyBj
+b25zdGFudHMgYW5kIGVycm9yIHN0cmluZ3MgdG9nZXRoZXIuIGVnOg0KI2RlZmluZSBUUkFGRklD
+X0xJR0hUUyh4KSBcDQoJeChSRUQsIDAsICJSZWQiKSBcDQoJeChZRUxMT1csIDEsICJZZWxsb3cp
+IFwNCgl4KEdSRUVOLCAyLCAiR1JFRU4pDQoNCllvdSBjYW4gdGhlbiBkbyB0aGluZyBsaWtlOg0K
+I2RlZmluZSB4KHRva2VuLCB2YWx1ZSwgc3RyaW5nKSB0b2tlbiA9IHZhbHVlLA0KZW51bSB7VFJB
+RkZJQ19MSUdIVFMoeCkgTlVNX0xJR0hUU307DQojdW5kZWYgeA0KI2RlZmluZSB4KHRva2VuLCB2
+YWx1ZSwgc3RyaW5nKSBbdmFsdWVdID0gc3RyaW5nLA0KY29uc3QgY2hhciAqY29sb3Vyc1tdID0g
+e1RSQUZGSUNfTElHSFRTKHgpfTsNCiN1bmRlZiB4DQp0byBpbml0aWFsaXNlIGNvbnN0YW50cyBh
+bmQgYSBuYW1lIHRhYmxlIHRoYXQgYXJlIGFsd2F5cyBpbiBzeW5jLg0KDQpJdCBpcyBhbHNvIGEg
+Z29vZCB3YXkgdG8gZ2VuZXJhdGUgc291cmNlIGxpbmVzIHRoYXQgYXJlIG92ZXIgMU1CLg0KDQoJ
+RGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1v
+dW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEz
+OTczODYgKFdhbGVzKQ0K
 
-> > Perhaps make migrate_disable() an anonymous local_lock()?
-> >
-> > This should lower the SHC in theory, if you can't have stacked migrate
-> > disables on the same CPU.  
-> 
-> I'm pretty sure this ends up in locking hell pretty fast and aside of
-> that it's not working for scenarios like:
-> 
->      kmap_local();
->        migrate_disable();
->        ...
-> 
->      copy_from_user()
->         -> #PF
->            -> schedule()  
-> 
-> which brought us into that discussion in the first place. You would stop
-> any other migrate disable user from running until the page fault is
-> resolved...
-
-Then scratch the idea of having anonymous local_lock() and just bring
-local_lock in directly? Then have a kmap local lock, which would only
-block those that need to do a kmap.
-
-Now as for migration disabled nesting, at least now we would have
-groupings of this, and perhaps the theorists can handle that. I mean,
-how is this much different that having a bunch of tasks blocked on a
-mutex with the owner is pinned on a CPU?
-
-migrate_disable() is a BKL of pinning affinity. If we only have
-local_lock() available (even on !RT), then it makes the blocking in
-groups. At least this way you could grep for all the different
-local_locks in the system and plug that into the algorithm for WCS,
-just like one would with a bunch of mutexes.
-
--- Steve
