@@ -1,54 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A212E275264
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 09:42:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A78862752B9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 10:03:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bx9BT6TrhzDqXb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 17:42:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bx9f62YWbzDqcy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 18:03:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
- helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from smtpout1.mo529.mail-out.ovh.net
- (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bx98f1mzyzDqCq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 17:41:04 +1000 (AEST)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.156.217])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4699B5DE4DB2;
- Wed, 23 Sep 2020 09:41:01 +0200 (CEST)
-Received: from kaod.org (37.59.142.103) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Wed, 23 Sep
- 2020 09:41:00 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-103G005b624235e-9eb5-4f70-afc6-1ea022f220cb,
- 02880E72AE010FE39E8D16B72C25BF9AC4CDD967) smtp.auth=clg@kaod.org
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3] powerpc/pci: unmap legacy INTx interrupts when a PHB is
- removed
-Date: Wed, 23 Sep 2020 09:40:58 +0200
-Message-ID: <20200923074058.203393-1-clg@kaod.org>
-X-Mailer: git-send-email 2.25.4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bx9c46qspzDqXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 18:01:18 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4Bx9bq4QPjz9v09g;
+ Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id o-mWIuJAAecS; Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Bx9bq29Pnz9tx4Q;
+ Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F1A5C8B7F4;
+ Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id yJFG8sUqnTVC; Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
+Received: from [10.25.210.27] (unknown [10.25.210.27])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8777A8B7F1;
+ Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
+Subject: Re: [PATCH] i2c: cpm: Fix i2c_ram structure
+To: Vincent Nicolas <Nicolas.Vincent@vossloh.com>,
+ "jochen@scram.de" <jochen@scram.de>
+References: <20200922090400.6282-1-nicolas.vincent@vossloh.com>
+ <956c4b63-f859-df0c-2836-80a988ee6aa9@csgroup.eu>
+ <PR3P193MB0731945473A9F251C7F37608F1380@PR3P193MB0731.EURP193.PROD.OUTLOOK.COM>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <2ecfe18a-61f6-bb0e-22c5-b7ab79a77d03@csgroup.eu>
+Date: Wed, 23 Sep 2020 10:01:03 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <PR3P193MB0731945473A9F251C7F37608F1380@PR3P193MB0731.EURP193.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.103]
-X-ClientProxiedBy: DAG5EX2.mxp5.local (172.16.2.42) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 7d15ea20-79b6-4c59-99f2-74a07c68ac20
-X-Ovh-Tracer-Id: 18162172873625013155
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudehgdduvdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkffogggtgfhisehtkeertdertdejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepfedvuedtvdeikeekuefhkedujeejgffggffhtefglefgveevfeeghfdvgedtleevnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopegtlhhgsehkrghougdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,215 +66,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev@lists.ozlabs.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When a passthrough IO adapter is removed from a pseries machine using
-hash MMU and the XIVE interrupt mode, the POWER hypervisor expects the
-guest OS to clear all page table entries related to the adapter. If
-some are still present, the RTAS call which isolates the PCI slot
-returns error 9001 "valid outstanding translations" and the removal of
-the IO adapter fails. This is because when the PHBs are scanned, Linux
-maps automatically the INTx interrupts in the Linux interrupt number
-space but these are never removed.
 
-To solve this problem, we introduce a PPC platform specific
-pcibios_remove_bus() routine which clears all interrupt mappings when
-the bus is removed. This also clears the associated page table entries
-of the ESB pages when using XIVE.
 
-For this purpose, we record the logical interrupt numbers of the
-mapped interrupt under the PHB structure and let pcibios_remove_bus()
-do the clean up.
+Le 23/09/2020 à 09:18, Vincent Nicolas a écrit :
+> 
+> 
+> 
+> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Sent: Tuesday, 22 September 2020 14:38
+> To: Vincent Nicolas <Nicolas.Vincent@vossloh.com>; jochen@scram.de <jochen@scram.de>
+> Cc: linuxppc-dev@lists.ozlabs.org <linuxppc-dev@lists.ozlabs.org>; linux-i2c@vger.kernel.org <linux-i2c@vger.kernel.org>
+> Subject: Re: [PATCH] i2c: cpm: Fix i2c_ram structure
+>   
+> 
+> 
+> Le 22/09/2020 à 11:04, nico.vince@gmail.com a écrit :
+>> From: Nicolas VINCENT <nicolas.vincent@vossloh.com>
+>>
+>> the i2c_ram structure is missing the sdmatmp field mentionned in
+>> datasheet for MPC8272 at paragraph 36.5. With this field missing, the
+>> hardware would write past the allocated memory done through
+>> cpm_muram_alloc for the i2c_ram structure and land in memory allocated
+>> for the buffers descriptors corrupting the cbd_bufaddr field. Since this
+>> field is only set during setup(), the first i2c transaction would work
+>> and the following would send data read from an arbitrary memory
+>> location.
+>>
+>> Signed-off-by: Nicolas VINCENT <nicolas.vincent@vossloh.com>
+>> ---
+>>     drivers/i2c/busses/i2c-cpm.c | 3 ++-
+>>     1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
+>> index 1213e1932ccb..c5700addbf65 100644
+>> --- a/drivers/i2c/busses/i2c-cpm.c
+>> +++ b/drivers/i2c/busses/i2c-cpm.c
+>> @@ -64,7 +64,8 @@ struct i2c_ram {
+>>          uint    txtmp;          /* Internal */
+>>          char    res1[4];        /* Reserved */
+>>          ushort  rpbase;         /* Relocation pointer */
+>> -     char    res2[2];        /* Reserved */
+>> +     char    res2[6];        /* Reserved */
+>> +     uint    sdmatmp;        /* Internal */
+> 
+> On CPM1, I2C param RAM has size 0x30 (offset 0x1c80-0x1caf)
+> 
+> Your change overlaps the miscellaneous area that contains CP Microcode
+> Revision Number, ref MPC885 Reference Manual §18.7.3
+> 
+> As far as I understand the mpc885 contains in the dts the compatible=fsl,cpm1-i2c which is used in cpm-i2c.c to either determine the address of the i2c_ram structure (cpm1), or dynamically allocate it with cpm_muram_alloc (cpm2).
+> In the first case the structure will indeed overlaps with the miscellaneous section but since the sdmatmp is only used by cpm2 hardware it shall not be an issue.
+> 
+> Please, let me know if I am mistaken. If the patch cannot be accepted as is, I would gladly accept pointers on how to address this kind of issue.
 
-Since some PCI adapters, like GPUs, use the "interrupt-map" property
-to describe interrupt mappings other than the legacy INTx interrupts,
-we can not restrict the size of the mapping array to PCI_NUM_INTX. The
-number of interrupt mappings is computed from the "interrupt-map"
-property and the mapping array is allocated accordingly.
 
-Cc: "Oliver O'Halloran" <oohall@gmail.com>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
+Please use a mail client that properly sets the > in front of 
+original/answered text. Here your mailer has mixed you text and mine, 
+that's unusable on the long term.
 
- Changes in v3 :
 
- - NULLified 'irq_map' in pci_irq_map_dispose()
- 
- arch/powerpc/include/asm/pci-bridge.h |   6 ++
- arch/powerpc/kernel/pci-common.c      | 115 ++++++++++++++++++++++++++
- 2 files changed, 121 insertions(+)
+I think you are right on the fact that it doesn't seem to be an issue. 
+Nevertheless, that's confusing.
 
-diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
-index d2a2a14e56f9..d21e070352dc 100644
---- a/arch/powerpc/include/asm/pci-bridge.h
-+++ b/arch/powerpc/include/asm/pci-bridge.h
-@@ -48,6 +48,9 @@ struct pci_controller_ops {
- 
- /*
-  * Structure of a PCI controller (host bridge)
-+ *
-+ * @irq_count: number of interrupt mappings
-+ * @irq_map: interrupt mappings
-  */
- struct pci_controller {
- 	struct pci_bus *bus;
-@@ -127,6 +130,9 @@ struct pci_controller {
- 
- 	void *private_data;
- 	struct npu *npu;
-+
-+	unsigned int irq_count;
-+	unsigned int *irq_map;
- };
- 
- /* These are used for config access before all the PCI probing
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index be108616a721..fb492de6902e 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -353,6 +353,116 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
- 	return NULL;
- }
- 
-+/*
-+ * Assumption is made on the interrupt parent. All interrupt-map
-+ * entries are considered to have the same parent.
-+ */
-+static int pcibios_irq_map_count(struct pci_controller *phb)
-+{
-+	const __be32 *imap;
-+	int imaplen;
-+	struct device_node *parent;
-+	u32 intsize, addrsize, parintsize, paraddrsize;
-+
-+	if (of_property_read_u32(phb->dn, "#interrupt-cells", &intsize))
-+		return 0;
-+	if (of_property_read_u32(phb->dn, "#address-cells", &addrsize))
-+		return 0;
-+
-+	imap = of_get_property(phb->dn, "interrupt-map", &imaplen);
-+	if (!imap) {
-+		pr_debug("%pOF : no interrupt-map\n", phb->dn);
-+		return 0;
-+	}
-+	imaplen /= sizeof(u32);
-+	pr_debug("%pOF : imaplen=%d\n", phb->dn, imaplen);
-+
-+	if (imaplen < (addrsize + intsize + 1))
-+		return 0;
-+
-+	imap += intsize + addrsize;
-+	parent = of_find_node_by_phandle(be32_to_cpup(imap));
-+	if (!parent) {
-+		pr_debug("%pOF : no imap parent found !\n", phb->dn);
-+		return 0;
-+	}
-+
-+	if (of_property_read_u32(parent, "#interrupt-cells", &parintsize)) {
-+		pr_debug("%pOF : parent lacks #interrupt-cells!\n", phb->dn);
-+		return 0;
-+	}
-+
-+	if (of_property_read_u32(parent, "#address-cells", &paraddrsize))
-+		paraddrsize = 0;
-+
-+	return imaplen / (addrsize + intsize + 1 + paraddrsize + parintsize);
-+}
-+
-+static void pcibios_irq_map_init(struct pci_controller *phb)
-+{
-+	phb->irq_count = pcibios_irq_map_count(phb);
-+	if (phb->irq_count < PCI_NUM_INTX)
-+		phb->irq_count = PCI_NUM_INTX;
-+
-+	pr_debug("%pOF : interrupt map #%d\n", phb->dn, phb->irq_count);
-+
-+	phb->irq_map = kcalloc(phb->irq_count, sizeof(unsigned int),
-+			       GFP_KERNEL);
-+}
-+
-+static void pci_irq_map_register(struct pci_dev *pdev, unsigned int virq)
-+{
-+	struct pci_controller *phb = pci_bus_to_host(pdev->bus);
-+	int i;
-+
-+	if (!phb->irq_map)
-+		return;
-+
-+	for (i = 0; i < phb->irq_count; i++) {
-+		/*
-+		 * Look for an empty or an equivalent slot, as INTx
-+		 * interrupts can be shared between adapters.
-+		 */
-+		if (phb->irq_map[i] == virq || !phb->irq_map[i]) {
-+			phb->irq_map[i] = virq;
-+			break;
-+		}
-+	}
-+
-+	if (i == phb->irq_count)
-+		pr_err("PCI:%s all platform interrupts mapped\n",
-+		       pci_name(pdev));
-+}
-+
-+/*
-+ * Clearing the mapped interrupts will also clear the underlying
-+ * mappings of the ESB pages of the interrupts when under XIVE. It is
-+ * a requirement of PowerVM to clear all memory mappings before
-+ * removing a PHB.
-+ */
-+static void pci_irq_map_dispose(struct pci_bus *bus)
-+{
-+	struct pci_controller *phb = pci_bus_to_host(bus);
-+	int i;
-+
-+	if (!phb->irq_map)
-+		return;
-+
-+	pr_debug("PCI: Clearing interrupt mappings for PHB %04x:%02x...\n",
-+		 pci_domain_nr(bus), bus->number);
-+	for (i = 0; i < phb->irq_count; i++)
-+		irq_dispose_mapping(phb->irq_map[i]);
-+
-+	kfree(phb->irq_map);
-+	phb->irq_map = NULL;
-+}
-+
-+void pcibios_remove_bus(struct pci_bus *bus)
-+{
-+	pci_irq_map_dispose(bus);
-+}
-+EXPORT_SYMBOL_GPL(pcibios_remove_bus);
-+
- /*
-  * Reads the interrupt pin to determine if interrupt is use by card.
-  * If the interrupt is used, then gets the interrupt line from the
-@@ -401,6 +511,8 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
- 
- 	pci_dev->irq = virq;
- 
-+	/* Record all interrut mappings for later removal of a PHB */
-+	pci_irq_map_register(pci_dev, virq);
- 	return 0;
- }
- 
-@@ -1554,6 +1666,9 @@ void pcibios_scan_phb(struct pci_controller *hose)
- 
- 	pr_debug("PCI: Scanning PHB %pOF\n", node);
- 
-+	/* Allocate interrupt mappings array */
-+	pcibios_irq_map_init(hose);
-+
- 	/* Get some IO space for the new PHB */
- 	pcibios_setup_phb_io_space(hose);
- 
--- 
-2.25.4
+What I would suggest is to leave res2[2] as is, and add something like:
 
+	/* The following elements are only for CPM2 */
+	char res3[4];	/* Reserved */
+	uint sdmatmp;	/* Internal */
+
+
+Other solution (not sure that's the best solution thought) would be to 
+do as in spi-fsl-cpm: use iic_t structure from asm/cpm1.h when 
+CONFIG_CPM1 is selected and use iic_t from asm/cpm2.h when CONFIG_CPM2 
+is selected, taking into account that CONFIG_CPM1 and CONFIG_CPM2 are 
+mutually exclusive at the time being.
+
+Christophe
