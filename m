@@ -2,56 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D256227513D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 08:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0472751A8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 08:37:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bx7Cz12s3zDqZl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 16:13:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bx7lF3k4xzDqSY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 16:37:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
- helo=casper.infradead.org;
- envelope-from=batv+f986b76a317b29d19e9e+6240+infradead.org+hch@casper.srs.infradead.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=NIVOg9nk; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=ran.wang_1@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bx7372jb2zDqHY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 16:06:11 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
- Content-Type:Content-ID:Content-Description;
- bh=7X3/qUs2y75UUlnvdA2vy1FAPs/IUNMhWXsjmEB0AzE=; b=NIVOg9nkNP5R1AAXNIhM3YSXPM
- qQhZDIsOgqRm8F5L3u8NN/+6vxw3vIyqPjouVmp/wB6q7DNB/Mr8240Po/ZZvVU1mexPSNxxRUWjH
- ej15n9SxAKbmH+ewPeHB+B+fb+RgnttC95+9As75yawZIbjWNYflc0RQhEs6ynljtaBOCt6848rAc
- 3L4YG9CH6YdVJyf05/7o01+jdSXZWswvcEmEY71kAqtOpHNN698eeRE2lonXxdD3cfU06s7h0bUKC
- NCXb1r7MyzYJg/RzXohD63kQclT/Rqz0zknvzeGy+Z7SKuS8sh/zsZdStqWQAafANb22dniPP9/20
- sV56yCuw==;
-Received: from p4fdb0c34.dip0.t-ipconnect.de ([79.219.12.52] helo=localhost)
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kKxuj-0003Uu-Tz; Wed, 23 Sep 2020 06:06:02 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Alexander Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 9/9] security/keys: remove compat_keyctl_instantiate_key_iov
-Date: Wed, 23 Sep 2020 08:05:47 +0200
-Message-Id: <20200923060547.16903-10-hch@lst.de>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200923060547.16903-1-hch@lst.de>
-References: <20200923060547.16903-1-hch@lst.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bx7ft25SvzDq9j
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 16:33:41 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 7D3E22014BC;
+ Wed, 23 Sep 2020 08:33:37 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id BBEC62010BF;
+ Wed, 23 Sep 2020 08:33:33 +0200 (CEST)
+Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id CCF3D402BE;
+ Wed, 23 Sep 2020 08:33:28 +0200 (CEST)
+From: Ran Wang <ran.wang_1@nxp.com>
+To: Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH v2 1/5] Documentation: dt: binding: fsl: Add 'fsl,
+ ippdexpcr1-alt-addr' property
+Date: Wed, 23 Sep 2020 14:25:06 +0800
+Message-Id: <20200923062510.38253-1-ran.wang_1@nxp.com>
+X-Mailer: git-send-email 2.17.1
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,114 +50,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio@kvack.org, linux-mips@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
- keyrings@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- linux-block@vger.kernel.org, io-uring@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
- linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- David Laight <David.Laight@aculab.com>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, Biwen Li <biwen.li@nxp.com>,
+ linux-kernel@vger.kernel.org, Ran Wang <ran.wang_1@nxp.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that import_iovec handles compat iovecs, the native version of
-keyctl_instantiate_key_iov can be used for the compat case as well.
+From: Biwen Li <biwen.li@nxp.com>
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+The 'fsl,ippdexpcr1-alt-addr' property is used to handle an errata A-008646
+on LS1021A
+
+Signed-off-by: Biwen Li <biwen.li@nxp.com>
+Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
 ---
- security/keys/compat.c   | 36 ++----------------------------------
- security/keys/internal.h |  5 -----
- security/keys/keyctl.c   |  2 +-
- 3 files changed, 3 insertions(+), 40 deletions(-)
+Change in v2:
+ - None
 
-diff --git a/security/keys/compat.c b/security/keys/compat.c
-index 7ae531db031cf8..1545efdca56227 100644
---- a/security/keys/compat.c
-+++ b/security/keys/compat.c
-@@ -11,38 +11,6 @@
- #include <linux/slab.h>
- #include "internal.h"
+ Documentation/devicetree/bindings/soc/fsl/rcpm.txt | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+index 5a33619..1be58a3 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
++++ b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
+@@ -34,6 +34,11 @@ Chassis Version		Example Chips
+ Optional properties:
+  - little-endian : RCPM register block is Little Endian. Without it RCPM
+    will be Big Endian (default case).
++ - fsl,ippdexpcr1-alt-addr : The property is related to a hardware issue
++   on SoC LS1021A and only needed on SoC LS1021A.
++   Must include 2 entries:
++   The first entry must be a link to the SCFG device node.
++   The 2nd entry must be offset of register IPPDEXPCR1 in SCFG.
  
--/*
-- * Instantiate a key with the specified compatibility multipart payload and
-- * link the key into the destination keyring if one is given.
-- *
-- * The caller must have the appropriate instantiation permit set for this to
-- * work (see keyctl_assume_authority).  No other permissions are required.
-- *
-- * If successful, 0 will be returned.
-- */
--static long compat_keyctl_instantiate_key_iov(
--	key_serial_t id,
--	const struct compat_iovec __user *_payload_iov,
--	unsigned ioc,
--	key_serial_t ringid)
--{
--	struct iovec iovstack[UIO_FASTIOV], *iov = iovstack;
--	struct iov_iter from;
--	long ret;
--
--	if (!_payload_iov)
--		ioc = 0;
--
--	ret = import_iovec(WRITE, (const struct iovec __user *)_payload_iov,
--			   ioc, ARRAY_SIZE(iovstack), &iov, &from);
--	if (ret < 0)
--		return ret;
--
--	ret = keyctl_instantiate_key_common(id, &from, ringid);
--	kfree(iov);
--	return ret;
--}
--
- /*
-  * The key control system call, 32-bit compatibility version for 64-bit archs
-  */
-@@ -113,8 +81,8 @@ COMPAT_SYSCALL_DEFINE5(keyctl, u32, option,
- 		return keyctl_reject_key(arg2, arg3, arg4, arg5);
+ Example:
+ The RCPM node for T4240:
+@@ -43,6 +48,20 @@ The RCPM node for T4240:
+ 		#fsl,rcpm-wakeup-cells = <2>;
+ 	};
  
- 	case KEYCTL_INSTANTIATE_IOV:
--		return compat_keyctl_instantiate_key_iov(
--			arg2, compat_ptr(arg3), arg4, arg5);
-+		return keyctl_instantiate_key_iov(arg2, compat_ptr(arg3), arg4,
-+						  arg5);
- 
- 	case KEYCTL_INVALIDATE:
- 		return keyctl_invalidate_key(arg2);
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index 338a526cbfa516..9b9cf3b6fcbb4d 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -262,11 +262,6 @@ extern long keyctl_instantiate_key_iov(key_serial_t,
- 				       const struct iovec __user *,
- 				       unsigned, key_serial_t);
- extern long keyctl_invalidate_key(key_serial_t);
--
--struct iov_iter;
--extern long keyctl_instantiate_key_common(key_serial_t,
--					  struct iov_iter *,
--					  key_serial_t);
- extern long keyctl_restrict_keyring(key_serial_t id,
- 				    const char __user *_type,
- 				    const char __user *_restriction);
-diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index 9febd37a168fd0..e26bbccda7ccee 100644
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -1164,7 +1164,7 @@ static int keyctl_change_reqkey_auth(struct key *key)
-  *
-  * If successful, 0 will be returned.
-  */
--long keyctl_instantiate_key_common(key_serial_t id,
-+static long keyctl_instantiate_key_common(key_serial_t id,
- 				   struct iov_iter *from,
- 				   key_serial_t ringid)
- {
++The RCPM node for LS1021A:
++	rcpm: rcpm@1ee2140 {
++		compatible = "fsl,ls1021a-rcpm", "fsl,qoriq-rcpm-2.1+";
++		reg = <0x0 0x1ee2140 0x0 0x8>;
++		#fsl,rcpm-wakeup-cells = <2>;
++
++		/*
++		 * The second and third entry compose an alt offset
++		 * address for IPPDEXPCR1(SCFG_SPARECR8)
++		 */
++		fsl,ippdexpcr1-alt-addr = <&scfg 0x51c>;
++	};
++
++
+ * Freescale RCPM Wakeup Source Device Tree Bindings
+ -------------------------------------------
+ Required fsl,rcpm-wakeup property should be added to a device node if the device
 -- 
-2.28.0
+2.7.4
 
