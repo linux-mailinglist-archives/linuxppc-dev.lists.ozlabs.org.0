@@ -2,68 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF6C27560F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 12:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3192E2756C0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 12:59:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BxDlN4cmGzDqYk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 20:22:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BxFYz3z9dzDqY5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 20:59:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=vossloh.com (client-ip=40.107.14.44;
+ helo=eur01-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=nicolas.vincent@vossloh.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxDjG1D62zDqLn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 20:21:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=O4A3QRP4HEH7pkY19EFh0K5o5RX6GGVTm9jhhlkiNIA=; b=pNi62cLpz5Zta9gkWwEt4lfxLS
- MvhJOB6wShDmzS61MUaHO4PpqjGN9Sm/CRsoDDzFeOKdB1AsXqzPU0+ObaxataHs7GirJ6ZZrNA29
- JPWLW2cWAsjQWQbdxWBW0dcBjYBOhFdcukcR730OctenEgtMdnxXFf2H16Xmyh8kGL1vudzudnTWS
- vgNOihiXykvGZ4JuqnJtzxEEw21LcbXj/0WRtpi2vf37zyqZKGgA0xHxtS+lCluMZDHojS7jgks+j
- aId3Dnzk0AyXRqRRmekuY3B5xhsSuZTtpZucjls9NPVPsQXWrpdBaC7TpOBBrZeOKsQtIyaebVCjb
- X6rPNsiw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kL1sU-00033a-DF; Wed, 23 Sep 2020 10:19:58 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=none (p=none dis=none) header.from=vossloh.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=vosslohcorporate.onmicrosoft.com
+ header.i=@vosslohcorporate.onmicrosoft.com header.a=rsa-sha256
+ header.s=selector2-vosslohcorporate-onmicrosoft-com header.b=UuVvi6Ja; 
+ dkim-atps=neutral
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr140044.outbound.protection.outlook.com [40.107.14.44])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 0EA94301124;
- Wed, 23 Sep 2020 12:19:54 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id E35462B79EDA9; Wed, 23 Sep 2020 12:19:53 +0200 (CEST)
-Date: Wed, 23 Sep 2020 12:19:53 +0200
-From: peterz@infradead.org
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch RFC 00/15] mm/highmem: Provide a preemptible variant of
- kmap_atomic & friends
-Message-ID: <20200923101953.GT2674@hirez.programming.kicks-ass.net>
-References: <20200919091751.011116649@linutronix.de>
- <CAHk-=wiYGyrFRbA1cc71D2-nc5U9LM9jUJesXGqpPnB7E4X1YQ@mail.gmail.com>
- <87mu1lc5mp.fsf@nanos.tec.linutronix.de>
- <87k0wode9a.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgbmwsTOKs23Z=71EBTrULoeaH2U3TNqT2atHEWvkBKdw@mail.gmail.com>
- <87eemwcpnq.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
- <87a6xjd1dw.fsf@nanos.tec.linutronix.de>
- <CAHk-=wjhxzx3KHHOMvdDj3Aw-_Mk5eRiNTUBB=tFf=vTkw1FeA@mail.gmail.com>
- <87sgbbaq0y.fsf@nanos.tec.linutronix.de>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bx91m5SwmzDq7F
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 17:35:06 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JxDpHOSAOwUDoluZ3mJ3Ow5yppc3drOrcaO3QgSqX7d/Kj6RnbxRzTe12fHausP5sdU90A+j/vO0+QOYThiyvLW2+7zM/UWksJkKMF1VKXSCu6ue/f0lXyCeTRxKAI8lXoS6yLfKdjoaBOZtffX6Z8qDrZ9ZvndnJDrRxUtorlME8eugJSaAol1aUqyBWfqOocbswiEnXJ4dIH8ev6RNS5PrjJe/UMpu8Qk0Omsr55WlQasU3smXOgFsWZZMivw7b6N/Im13uWSAFS+i81pn02xCnVXQ8K2taJW35exU8qbGtfsqYgDtrryRq/9NTtnzVw5b32fFltfwz/JNLPzXXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=byYi2BztjqAnkavdhLNoFCpo/xZ0FODaw5IC0jOcFVc=;
+ b=jzIR7j0P8CkloEFG1iYMVY9G4bDffVTDM16EwLxCwcYZ/E0QMAKl+reJ5jzQKVhs+kpYz4XLra2TEClxWa92cherKlcjOfmezbLm8LqkHOgsQVbu8RC0AY1JR3SHXd12uLaq4RIjkLpRUpLIlmJX4SSEHflouX+d1qRHF19O4vW5+2JaL8Se1a0134Q/zto77zOgPvriI/TxFk6j457BXK13EYQw69J0yVIKdhZVLUCKp61DTWmJU5KxOnf7LeXdSg1LZYi2aWX2TMJJDiGJxV1AWVbUI7oYyj23wXdCxz1QcW+WrjijvuOP8dhLXrYjjyPhONAA4lwoKxHZJZJyHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vossloh.com; dmarc=pass action=none header.from=vossloh.com;
+ dkim=pass header.d=vossloh.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=vosslohcorporate.onmicrosoft.com;
+ s=selector2-vosslohcorporate-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=byYi2BztjqAnkavdhLNoFCpo/xZ0FODaw5IC0jOcFVc=;
+ b=UuVvi6Ja6iMaimic7M5+zrk5x0BSI5VKwcCu4zxD/qZBoHDvUH4Z0OPYZQ5oQTDIVjHjC2fIX72N3Bxc7ZYgVIXDX2L7L1yu80yze0+mzBNUM/Hwt1uEfIgnK8enL1Z2xPw9U3V02HSUcVlQ8BPVzZbI6vNbIil4P1fdyPGp7ZE=
+Received: from PR3P193MB0731.EURP193.PROD.OUTLOOK.COM (2603:10a6:102:32::22)
+ by PR3P193MB1088.EURP193.PROD.OUTLOOK.COM (2603:10a6:102:ac::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.14; Wed, 23 Sep
+ 2020 07:18:50 +0000
+Received: from PR3P193MB0731.EURP193.PROD.OUTLOOK.COM
+ ([fe80::21b9:7ba1:44b8:8510]) by PR3P193MB0731.EURP193.PROD.OUTLOOK.COM
+ ([fe80::21b9:7ba1:44b8:8510%2]) with mapi id 15.20.3391.015; Wed, 23 Sep 2020
+ 07:18:50 +0000
+From: Vincent Nicolas <Nicolas.Vincent@vossloh.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, "jochen@scram.de"
+ <jochen@scram.de>
+Subject: Re: [PATCH] i2c: cpm: Fix i2c_ram structure
+Thread-Topic: [PATCH] i2c: cpm: Fix i2c_ram structure
+Thread-Index: AQHWkL9nLTg1aV//8kC96RelQCrk9Kl0mRmAgAEzkEE=
+Date: Wed, 23 Sep 2020 07:18:50 +0000
+Message-ID: <PR3P193MB0731945473A9F251C7F37608F1380@PR3P193MB0731.EURP193.PROD.OUTLOOK.COM>
+References: <20200922090400.6282-1-nicolas.vincent@vossloh.com>,
+ <956c4b63-f859-df0c-2836-80a988ee6aa9@csgroup.eu>
+In-Reply-To: <956c4b63-f859-df0c-2836-80a988ee6aa9@csgroup.eu>
+Accept-Language: en-150, fr-FR, en-US
+Content-Language: aa
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: csgroup.eu; dkim=none (message not signed)
+ header.d=none;csgroup.eu; dmarc=none action=none header.from=vossloh.com;
+x-originating-ip: [2a01:e0a:287:860:29d1:d0a8:b1c3:1cbf]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 7d29a626-ad5b-4c59-f179-08d85f90ebbb
+x-ms-traffictypediagnostic: PR3P193MB1088:
+x-microsoft-antispam-prvs: <PR3P193MB10881DE9598B06E6B3639EA8F1380@PR3P193MB1088.EURP193.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: cN59qxkuJzV+PiAwnKTb9o2Q1jowuI78lOef6ERNL7RfOwLQhLCxJIej7nNCNqH4pKo3WYO3uartcxXTMGW9BIUfPhljLH6LBeyBHDQrKyh8CViOvFU4nq8uV8FqKk1a3YyG7IYvbKKO7KrUpbbovsAHuFKRinFOSfcTtZ5WAcwdnDupY5t69mzxnMlnu0enDgMWv9yzV0hfUhR6IRZSsX3PLxaIeoA+vH+y90JsNnsXuig3NVA58CyVdEVNa+TDPLd1UMHh09a68QVWeHpqAWfcABqgodlyM9vns+Lgg+gTHQZyyDL6X39nyDS5Bb5t
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PR3P193MB0731.EURP193.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(4636009)(376002)(39850400004)(396003)(366004)(136003)(346002)(53546011)(71200400001)(2906002)(52536014)(186003)(5660300002)(66446008)(9686003)(8676002)(66556008)(66476007)(66946007)(478600001)(83380400001)(64756008)(76116006)(55016002)(86362001)(8936002)(110136005)(6506007)(316002)(7696005)(33656002)(54906003)(4326008)(66574015);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata: 7M6LoAGE3BN52j7j8vp6ivxedoz3HmrAZHEE8S50e3e5CK0A6oTiXIZ7wcpgzUu0kr31Ry7ULk91U6E378r/aTBD8f9DiBxdYqcr9+JG2H4LL07T1NV8gclK1ByFVmyHwpJi76H/RRWRoX0bsVq1MU/55qlxaQoM6XFaueSkI3m4++tsjSgwTVhyMILyVFEEPEmS3uLSFZugaYoctUh8HCsetCoDbnluMveIkty+RKdabvnNYHJcTEobJFWroicYkG+6u1MR5TnamYrcPbBPzj3ZXjXRZhbKHy1cRaXU/urKG0pB8oeUjXXzjBTr3QDFSIQ3QDroX50CSGm9DsELTGE7aNpRIE414yy9b2H7SdO3ugsCQTzvlwATvOcmkc0iirziTS6Fdd77yUj3lVW8fM4K5+MAvn2wBgpNBYj8yHkjoLAHqDKTiKoVyI8VWyasGEYX6KRDzhWuM5La2vAvUQPfp0fGXs0YEKReIXwKHFWlYXP+GRz7t96lXNV0Fzbkehk9oCxyunxwyQiRWBX2dfeehBHDOvmnqieEEPTGa7bVjagCg9pC2SIdvqFvf4deWLwfJUffpXabaBuYbHaDh/apjJn4xhUZeUSxspRS2xlnTSpi9bv9+bPD3kdKqr/D2UdMI0kYUEYUPyrlYKtD8a/D9lgeYB05qa+Ohoz3WZi7TeQrcdqFmD4ZV/sfQNLlOP/fPtKFHylv5l9TZTBa4A==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87sgbbaq0y.fsf@nanos.tec.linutronix.de>
+X-OriginatorOrg: vossloh.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PR3P193MB0731.EURP193.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d29a626-ad5b-4c59-f179-08d85f90ebbb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2020 07:18:50.7379 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 1790b5b9-9585-4043-a430-926cf37fa9da
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xb55vRSavmPUeBovu1AMr1qxZCVp3Z0cvaGm7TfMB9jN3+i10H6h1T6YE8B4MWA1dh2WhNugPK+z5H5hTkqG2gfhSVjG82xoKkMBt7XAjK0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3P193MB1088
+X-Mailman-Approved-At: Wed, 23 Sep 2020 20:58:19 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,56 +108,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, David Airlie <airlied@linux.ie>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>, linux-mips@vger.kernel.org,
- Ben Segall <bsegall@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Guo Ren <guoren@kernel.org>, linux-sparc <sparclinux@vger.kernel.org>,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- the arch/x86 maintainers <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Mel Gorman <mgorman@suse.de>,
- "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
- linux-xtensa@linux-xtensa.org, Paul McKenney <paulmck@kernel.org>,
- intel-gfx <intel-gfx@lists.freedesktop.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Steven Rostedt <rostedt@goodmis.org>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>, Linux-MM <linux-mm@kvack.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Daniel Vetter <daniel@ffwll.ch>, Vineet Gupta <vgupta@synopsys.com>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- Daniel Bristot de Oliveira <bristot@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 21, 2020 at 09:27:57PM +0200, Thomas Gleixner wrote:
-> Alternatively this could of course be solved with per CPU page tables
-> which will come around some day anyway I fear.
-
-Previously (with PTI) we looked at making the entire kernel map per-CPU,
-and that takes a 2K copy on switch_mm() (or more general, the user part
-of whatever the top level directory is for architectures that have a
-shared kernel/user page-table setup in the first place).
-
-The idea was having a fixed per-cpu kernel page-table, share a bunch of
-(kernel) page-tables between all CPUs and then copy in the user part on
-switch.
-
-I've forgotten what the plan was for ASID/PCID in that scheme.
-
-For x86_64 we've been fearing the performance of that 2k copy, but I
-don't think we've ever actually bit the bullet and implemented it to see
-how bad it really is.
+=0A=
+=0A=
+=0A=
+From: Christophe Leroy <christophe.leroy@csgroup.eu>=0A=
+Sent: Tuesday, 22 September 2020 14:38=0A=
+To: Vincent Nicolas <Nicolas.Vincent@vossloh.com>; jochen@scram.de <jochen@=
+scram.de>=0A=
+Cc: linuxppc-dev@lists.ozlabs.org <linuxppc-dev@lists.ozlabs.org>; linux-i2=
+c@vger.kernel.org <linux-i2c@vger.kernel.org>=0A=
+Subject: Re: [PATCH] i2c: cpm: Fix i2c_ram structure =0A=
+=A0=0A=
+=0A=
+=0A=
+Le 22/09/2020 =E0 11:04, nico.vince@gmail.com a =E9crit=A0:=0A=
+> From: Nicolas VINCENT <nicolas.vincent@vossloh.com>=0A=
+> =0A=
+> the i2c_ram structure is missing the sdmatmp field mentionned in=0A=
+> datasheet for MPC8272 at paragraph 36.5. With this field missing, the=0A=
+> hardware would write past the allocated memory done through=0A=
+> cpm_muram_alloc for the i2c_ram structure and land in memory allocated=0A=
+> for the buffers descriptors corrupting the cbd_bufaddr field. Since this=
+=0A=
+> field is only set during setup(), the first i2c transaction would work=0A=
+> and the following would send data read from an arbitrary memory=0A=
+> location.=0A=
+> =0A=
+> Signed-off-by: Nicolas VINCENT <nicolas.vincent@vossloh.com>=0A=
+> ---=0A=
+>=A0=A0 drivers/i2c/busses/i2c-cpm.c | 3 ++-=0A=
+>=A0=A0 1 file changed, 2 insertions(+), 1 deletion(-)=0A=
+> =0A=
+> diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c=
+=0A=
+> index 1213e1932ccb..c5700addbf65 100644=0A=
+> --- a/drivers/i2c/busses/i2c-cpm.c=0A=
+> +++ b/drivers/i2c/busses/i2c-cpm.c=0A=
+> @@ -64,7 +64,8 @@ struct i2c_ram {=0A=
+>=A0=A0=A0=A0=A0=A0=A0 uint=A0=A0=A0 txtmp;=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* I=
+nternal */=0A=
+>=A0=A0=A0=A0=A0=A0=A0 char=A0=A0=A0 res1[4];=A0=A0=A0=A0=A0=A0=A0 /* Reser=
+ved */=0A=
+>=A0=A0=A0=A0=A0=A0=A0 ushort=A0 rpbase;=A0=A0=A0=A0=A0=A0=A0=A0 /* Relocat=
+ion pointer */=0A=
+> -=A0=A0=A0=A0 char=A0=A0=A0 res2[2];=A0=A0=A0=A0=A0=A0=A0 /* Reserved */=
+=0A=
+> +=A0=A0=A0=A0 char=A0=A0=A0 res2[6];=A0=A0=A0=A0=A0=A0=A0 /* Reserved */=
+=0A=
+> +=A0=A0=A0=A0 uint=A0=A0=A0 sdmatmp;=A0=A0=A0=A0=A0=A0=A0 /* Internal */=
+=0A=
+=0A=
+On CPM1, I2C param RAM has size 0x30 (offset 0x1c80-0x1caf)=0A=
+=0A=
+Your change overlaps the miscellaneous area that contains CP Microcode =0A=
+Revision Number, ref MPC885 Reference Manual =A718.7.3=0A=
+=0A=
+As far as I understand the mpc885 contains in the dts the compatible=3Dfsl,=
+cpm1-i2c which is used in cpm-i2c.c to either determine the address of the =
+i2c_ram structure (cpm1), or dynamically allocate it with cpm_muram_alloc (=
+cpm2).=0A=
+In the first case the structure will indeed overlaps with the miscellaneous=
+ section but since the sdmatmp is only used by cpm2 hardware it shall not b=
+e an issue.=0A=
+=0A=
+Please, let me know if I am mistaken. If the patch cannot be accepted as is=
+, I would gladly accept pointers on how to address this kind of issue.=0A=
+=0A=
+Thanks,=0A=
+Nicolas.=0A=
+=0A=
+>=A0=A0 };=0A=
+>=A0=A0 =0A=
+>=A0=A0 #define I2COM_START 0x80=0A=
+> =0A=
+=0A=
+=0A=
+Christophe=
