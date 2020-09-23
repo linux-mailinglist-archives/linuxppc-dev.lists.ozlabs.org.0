@@ -2,76 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE2C2762BC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 23:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E124B2762F2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 23:15:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BxVyW7220zDqTn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 07:03:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BxWDc6C5mzDqGg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 07:15:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alliedtelesis.co.nz (client-ip=2001:df5:b000:5::4;
- helo=gate2.alliedtelesis.co.nz;
- envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=alliedtelesis.co.nz
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.a=rsa-sha256 header.s=mail181024 header.b=teEEJ/nY; 
- dkim-atps=neutral
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [IPv6:2001:df5:b000:5::4])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=m2l4=da=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=goodmis.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxVw63TpczDqTR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 07:01:25 +1000 (AEST)
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BxW976mKNzDqcY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 07:12:43 +1000 (AEST)
+Received: from oasis.local.home (cpe-66-24-58-225.stny.res.rr.com
+ [66.24.58.225])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 88FAD806B5;
- Thu, 24 Sep 2020 09:01:20 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1600894880;
- bh=c/5Krfr7PvrTEyKZtronFLGYVTunfBjhz+LCV+z+3NQ=;
- h=From:To:CC:Subject:Date:References:In-Reply-To;
- b=teEEJ/nYFbBaMhLEvXeDfDE2xZ8BQ0g8bneGMe11MOFkNrucjKPfeeNK1Jg6flBvk
- +1dNjs1HCc2mInrPB4X4UHWafCsiDH0pS3puGDYhefX6Y+0eP8+XAoKcD+Y8hbdJz8
- lrq3LhF+9/XBfBqE1nBpPETxnrv97mDOXA198IzMsgcsX6P1u+b3HO3AUZEoAuS5uo
- omyDSOiVHKCblH1qEjwb16kE1SfmEIM47Evsha1Jlkit/hBeSYREC5fsRN1L31J04h
- c/ZIpWs/4Vpvd+beM2YE7Pmd6RSR+HESdjsAXSuwDwlT9RPSaXhBd3BeAslWA2e4pY
- z04laGF5STE0w==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
- mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
- id <B5f6bb79e0000>; Thu, 24 Sep 2020 09:01:19 +1200
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
- by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 24 Sep 2020 09:01:19 +1200
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.006; Thu, 24 Sep 2020 09:01:19 +1200
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: Heiner Kallweit <hkallweit1@gmail.com>, "broonie@kernel.org"
- <broonie@kernel.org>, "npiggin@gmail.com" <npiggin@gmail.com>
-Subject: Re: [PATCH] spi: fsl-espi: Only process interrupts for expected events
-Thread-Topic: [PATCH] spi: fsl-espi: Only process interrupts for expected
- events
-Thread-Index: AQHWglJIf7HpaAEB10myzqnWl8w4gal2AiCAgAAJbgA=
-Date: Wed, 23 Sep 2020 21:01:18 +0000
-Message-ID: <baac170f-4729-0519-2dca-fd8e90eba5fb@alliedtelesis.co.nz>
-References: <20200904002812.7300-1-chris.packham@alliedtelesis.co.nz>
- <ec77cf82-5ef1-c650-3e8a-80be749c2214@gmail.com>
-In-Reply-To: <ec77cf82-5ef1-c650-3e8a-80be749c2214@gmail.com>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.32.1.11]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <112C70DD5F3F4248843A2C4946A3BA9A@atlnz.lc>
-Content-Transfer-Encoding: base64
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0CA3D2145D;
+ Wed, 23 Sep 2020 21:12:35 +0000 (UTC)
+Date: Wed, 23 Sep 2020 17:12:34 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch RFC 00/15] mm/highmem: Provide a preemptible variant of
+ kmap_atomic & friends
+Message-ID: <20200923171234.0001402d@oasis.local.home>
+In-Reply-To: <874kno9pr9.fsf@nanos.tec.linutronix.de>
+References: <20200919091751.011116649@linutronix.de>
+ <CAHk-=wiYGyrFRbA1cc71D2-nc5U9LM9jUJesXGqpPnB7E4X1YQ@mail.gmail.com>
+ <87mu1lc5mp.fsf@nanos.tec.linutronix.de>
+ <87k0wode9a.fsf@nanos.tec.linutronix.de>
+ <CAHk-=wgbmwsTOKs23Z=71EBTrULoeaH2U3TNqT2atHEWvkBKdw@mail.gmail.com>
+ <87eemwcpnq.fsf@nanos.tec.linutronix.de>
+ <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
+ <87a6xjd1dw.fsf@nanos.tec.linutronix.de>
+ <CAHk-=wjhxzx3KHHOMvdDj3Aw-_Mk5eRiNTUBB=tFf=vTkw1FeA@mail.gmail.com>
+ <87sgbbaq0y.fsf@nanos.tec.linutronix.de>
+ <20200923084032.GU1362448@hirez.programming.kicks-ass.net>
+ <20200923115251.7cc63a7e@oasis.local.home>
+ <874kno9pr9.fsf@nanos.tec.linutronix.de>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,63 +60,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>, peterz@infradead.org,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>, linux-mips@vger.kernel.org,
+ Ben Segall <bsegall@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Guo Ren <guoren@kernel.org>, linux-sparc <sparclinux@vger.kernel.org>,
+ Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Mel Gorman <mgorman@suse.de>,
+ "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
+ linux-xtensa@linux-xtensa.org, Paul McKenney <paulmck@kernel.org>,
+ intel-gfx <intel-gfx@lists.freedesktop.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Jani Nikula <jani.nikula@linux.intel.com>, Greentime Hu <green.hu@gmail.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Nick Hu <nickhu@andestech.com>, Linux-MM <linux-mm@kvack.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Daniel Vetter <daniel@ffwll.ch>, Vineet Gupta <vgupta@synopsys.com>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQpPbiAyNC8wOS8yMCA4OjI3IGFtLCBIZWluZXIgS2FsbHdlaXQgd3JvdGU6DQo+IE9uIDA0LjA5
-LjIwMjAgMDI6MjgsIENocmlzIFBhY2toYW0gd3JvdGU6DQo+PiBUaGUgU1BJRSByZWdpc3RlciBj
-b250YWlucyBjb3VudHMgZm9yIHRoZSBUWCBGSUZPIHNvIGFueSB0aW1lIHRoZSBpcnENCj4+IGhh
-bmRsZXIgd2FzIGludm9rZWQgd2Ugd291bGQgYXR0ZW1wdCB0byBwcm9jZXNzIHRoZSBSWC9UWCBm
-aWZvcy4gVXNlIHRoZQ0KPj4gU1BJTSB2YWx1ZSB0byBtYXNrIHRoZSBldmVudHMgc28gdGhhdCB3
-ZSBvbmx5IHByb2Nlc3MgaW50ZXJydXB0cyB0aGF0DQo+PiB3ZXJlIGV4cGVjdGVkLg0KPj4NCj4+
-IFRoaXMgd2FzIGEgbGF0ZW50IGlzc3VlIGV4cG9zZWQgYnkgY29tbWl0IDMyODJhM2RhMjViZCAo
-InBvd2VycGMvNjQ6DQo+PiBJbXBsZW1lbnQgc29mdCBpbnRlcnJ1cHQgcmVwbGF5IGluIEMiKS4N
-Cj4+DQo+PiBTaWduZWQtb2ZmLWJ5OiBDaHJpcyBQYWNraGFtIDxjaHJpcy5wYWNraGFtQGFsbGll
-ZHRlbGVzaXMuY28ubno+DQo+PiBDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPj4gLS0tDQo+
-Pg0KPj4gTm90ZXM6DQo+PiAgICAgIEkndmUgdGVzdGVkIHRoaXMgb24gYSBUMjA4MFJEQiBhbmQg
-YSBjdXN0b20gYm9hcmQgdXNpbmcgdGhlIFQyMDgxIFNvQy4gV2l0aA0KPj4gICAgICB0aGlzIGNo
-YW5nZSBJIGRvbid0IHNlZSBhbnkgc3B1cmlvdXMgaW5zdGFuY2VzIG9mIHRoZSAiVHJhbnNmZXIg
-ZG9uZSBidXQNCj4+ICAgICAgU1BJRV9ET04gaXNuJ3Qgc2V0ISIgb3IgIlRyYW5zZmVyIGRvbmUg
-YnV0IHJ4L3R4IGZpZm8ncyBhcmVuJ3QgZW1wdHkhIiBtZXNzYWdlcw0KPj4gICAgICBhbmQgdGhl
-IHVwZGF0ZXMgdG8gc3BpIGZsYXNoIGFyZSBzdWNjZXNzZnVsLg0KPj4gICAgICANCj4+ICAgICAg
-SSB0aGluayB0aGlzIHNob3VsZCBnbyBpbnRvIHRoZSBzdGFibGUgdHJlZXMgdGhhdCBjb250YWlu
-IDMyODJhM2RhMjViZCBidXQgSQ0KPj4gICAgICBoYXZlbid0IGFkZGVkIGEgRml4ZXM6IHRhZyBi
-ZWNhdXNlIEkgdGhpbmsgMzI4MmEzZGEyNWJkIGV4cG9zZWQgdGhlIGlzc3VlIGFzDQo+PiAgICAg
-IG9wcG9zZWQgdG8gY2F1c2luZyBpdC4NCj4+DQo+PiAgIGRyaXZlcnMvc3BpL3NwaS1mc2wtZXNw
-aS5jIHwgNSArKystLQ0KPj4gICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAyIGRl
-bGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktZnNsLWVzcGku
-YyBiL2RyaXZlcnMvc3BpL3NwaS1mc2wtZXNwaS5jDQo+PiBpbmRleCA3ZTdjOTJjYWZkYmIuLmNi
-MTIwYjY4YzBlMiAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaS1mc2wtZXNwaS5jDQo+
-PiArKysgYi9kcml2ZXJzL3NwaS9zcGktZnNsLWVzcGkuYw0KPj4gQEAgLTU3NCwxMyArNTc0LDE0
-IEBAIHN0YXRpYyB2b2lkIGZzbF9lc3BpX2NwdV9pcnEoc3RydWN0IGZzbF9lc3BpICplc3BpLCB1
-MzIgZXZlbnRzKQ0KPj4gICBzdGF0aWMgaXJxcmV0dXJuX3QgZnNsX2VzcGlfaXJxKHMzMiBpcnEs
-IHZvaWQgKmNvbnRleHRfZGF0YSkNCj4+ICAgew0KPj4gICAJc3RydWN0IGZzbF9lc3BpICplc3Bp
-ID0gY29udGV4dF9kYXRhOw0KPj4gLQl1MzIgZXZlbnRzOw0KPj4gKwl1MzIgZXZlbnRzLCBtYXNr
-Ow0KPj4gICANCj4+ICAgCXNwaW5fbG9jaygmZXNwaS0+bG9jayk7DQo+PiAgIA0KPj4gICAJLyog
-R2V0IGludGVycnVwdCBldmVudHModHgvcngpICovDQo+PiAgIAlldmVudHMgPSBmc2xfZXNwaV9y
-ZWFkX3JlZyhlc3BpLCBFU1BJX1NQSUUpOw0KPj4gLQlpZiAoIWV2ZW50cykgew0KPj4gKwltYXNr
-ID0gZnNsX2VzcGlfcmVhZF9yZWcoZXNwaSwgRVNQSV9TUElNKTsNCj4+ICsJaWYgKCEoZXZlbnRz
-ICYgbWFzaykpIHsNCj4+ICAgCQlzcGluX3VubG9jaygmZXNwaS0+bG9jayk7DQo+PiAgIAkJcmV0
-dXJuIElSUV9OT05FOw0KPiBTb3JyeSwgSSB3YXMgb24gdmFjYXRpb24gYW5kIHRoZXJlZm9yZSBj
-b3VsZG4ndCBjb21tZW50IGVhcmxpZXIuDQo+IEknbSBmaW5lIHdpdGggdGhlIGNoYW5nZSwganVz
-dCBvbmUgdGhpbmcgY291bGQgYmUgaW1wcm92ZWQgSU1PLg0KPiBJZiB3ZSBza2lwIGFuIHVubmVl
-ZGVkIGludGVycnVwdCBub3csIHRoZW4gcmV0dXJuaW5nIElSUV9OT05FDQo+IGNhdXNlcyByZXBv
-cnRpbmcgdGhpcyBpbnRlcnJ1cHQgYXMgc3B1cmlvdXMuIFRoaXMgaXNuJ3QgdG9vIG5pY2UNCj4g
-YXMgc3B1cmlvdXMgaW50ZXJydXB0cyB0eXBpY2FsbHkgYXJlIHNlZW4gYXMgYSBwcm9ibGVtIGlu
-ZGljYXRvci4NCj4gVGhlcmVmb3JlIHJldHVybmluZyBJUlFfSEFORExFRCBzaG91bGQgYmUgbW9y
-ZSBhcHByb3ByaWF0ZS4NCj4gVGhpcyB3b3VsZCBqdXN0IHJlcXVpcmUgYSBjb21tZW50IGluIHRo
-ZSBjb2RlIGV4cGxhaW5pbmcgd2h5IHdlDQo+IGRvIHRoaXMsIGFuZCB3aHkgaXQgY2FuIGhhcHBl
-biB0aGF0IHdlIHJlY2VpdmUgaW50ZXJydXB0cw0KPiB3ZSdyZSBub3QgaW50ZXJlc3RlZCBpbi4N
-CkknZCBiZSBoYXBweSB0byBzZW5kIGEgZm9sbG93LXVwIHRvIGNoYW5nZSBJUlFfTk9ORSB0byBJ
-UlFfSEFORExFRC4gSSANCmRvbid0IHRoaW5rIHRoZSBvbGQgY29kZSBjb3VsZCBoYXZlIGV2ZXIg
-aGl0IHRoZSBJUlFfTk9ORSAoYmVjYXVzZSBldmVudCANCndpbGwgYWx3YXlzIGJlIG5vbi16ZXJv
-KSBzbyBpdCB3b24ndCByZWFsbHkgYmUgYSBjaGFuZ2UgaW4gYmVoYXZpb3VyLiANCldpdGggdGhl
-IHBhdGNoICh0aGF0IGlzIG5vdyBpbiBzcGkvZm9yLW5leHQpIHNvIGZhciBJIGRvIHNlZSBhIGxv
-dyANCm51bWJlciBvZiBzcHVyaW91cyBpbnRlcnJ1cHRzIG9uIHRoZSB0ZXN0IHNldHVwIHdoZXJl
-IHByZXZpb3VzbHkgSSB3b3VsZCANCmhhdmUgc2VlbiBmYWlsdXJlIHRvIHRhbGsgdG8gdGhlIHNw
-aS1mbGFzaC4NCg==
+On Wed, 23 Sep 2020 22:55:54 +0200
+Thomas Gleixner <tglx@linutronix.de> wrote:
+
+> > Perhaps make migrate_disable() an anonymous local_lock()?
+> >
+> > This should lower the SHC in theory, if you can't have stacked migrate
+> > disables on the same CPU.  
+> 
+> I'm pretty sure this ends up in locking hell pretty fast and aside of
+> that it's not working for scenarios like:
+> 
+>      kmap_local();
+>        migrate_disable();
+>        ...
+> 
+>      copy_from_user()
+>         -> #PF
+>            -> schedule()  
+> 
+> which brought us into that discussion in the first place. You would stop
+> any other migrate disable user from running until the page fault is
+> resolved...
+
+Then scratch the idea of having anonymous local_lock() and just bring
+local_lock in directly? Then have a kmap local lock, which would only
+block those that need to do a kmap.
+
+Now as for migration disabled nesting, at least now we would have
+groupings of this, and perhaps the theorists can handle that. I mean,
+how is this much different that having a bunch of tasks blocked on a
+mutex with the owner is pinned on a CPU?
+
+migrate_disable() is a BKL of pinning affinity. If we only have
+local_lock() available (even on !RT), then it makes the blocking in
+groups. At least this way you could grep for all the different
+local_locks in the system and plug that into the algorithm for WCS,
+just like one would with a bunch of mutexes.
+
+-- Steve
