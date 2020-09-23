@@ -1,53 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304D12759CE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 16:21:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C30C52759D3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 16:23:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BxL2d6r29zDqQ5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 00:21:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BxL510qVczDqX9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 00:23:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=scram.de (client-ip=2a01:4f8:130:2201::3; helo=mail.scram.de;
- envelope-from=jochen@scram.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=permerror header.from=scram.de
-X-Greylist: delayed 162 seconds by postgrey-1.36 at bilbo;
- Thu, 24 Sep 2020 00:16:26 AEST
-Received: from mail.scram.de (mail0.scram.de [IPv6:2a01:4f8:130:2201::3])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=ftp.linux.org.uk (client-ip=2002:c35c:fd02::1;
+ helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxKwp2GTQzDqNG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 00:16:25 +1000 (AEST)
-Received: from localhost (mail0.scram.de [78.47.204.202])
- by localhost (Postfix) with ESMTP id B8B2057377;
- Wed, 23 Sep 2020 16:13:27 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at scram.de
-X-Spam-Flag: NO
-X-Spam-Score: -2.524
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.524 required=5 tests=[AWL=0.076, BAYES_00=-2.599, 
- NO_RELAYS=-0.001]
-Received: from mail.scram.de ([78.47.204.202])
- by localhost (mail.scram.de [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 1OVkS7QmSj1S; Wed, 23 Sep 2020 16:12:49 +0200 (CEST)
-Received: (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (Client did not present a certificate) (Authenticated sender)
- by mail.scram.de (Postfix) with ESMTPSA id 8B9C156CC7;
- Wed, 23 Sep 2020 16:12:49 +0200 (CEST)
-Subject: Re: [PATCH v2] i2c: cpm: Fix i2c_ram structure
-To: nicolas.vincent@vossloh.com
-References: <20200923140840.8700-1-nicolas.vincent@vossloh.com>
-From: Jochen Friedrich <jochen@scram.de>
-Message-ID: <b518e49b-87d7-55bb-42f3-619b83f90b6d@scram.de>
-Date: Wed, 23 Sep 2020 16:12:49 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BxKxZ3z3fzDqQQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 00:17:06 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1kL5Zm-004aBB-Mq; Wed, 23 Sep 2020 14:16:54 +0000
+Date: Wed, 23 Sep 2020 15:16:54 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 3/9] iov_iter: refactor rw_copy_check_uvector and
+ import_iovec
+Message-ID: <20200923141654.GJ3421308@ZenIV.linux.org.uk>
+References: <20200923060547.16903-1-hch@lst.de>
+ <20200923060547.16903-4-hch@lst.de>
 MIME-Version: 1.0
-In-Reply-To: <20200923140840.8700-1-nicolas.vincent@vossloh.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200923060547.16903-4-hch@lst.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,42 +46,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org
+Cc: linux-aio@kvack.org, linux-mips@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
+ keyrings@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ Arnd Bergmann <arnd@arndb.de>, linux-block@vger.kernel.org,
+ io-uring@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Jens Axboe <axboe@kernel.dk>, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, David Laight <David.Laight@aculab.com>,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Acked-by: Jochen Friedrich <jochen@scram.de>
+On Wed, Sep 23, 2020 at 08:05:41AM +0200, Christoph Hellwig wrote:
 
-Am 23.09.2020 um 16:08 schrieb nico.vince@gmail.com:
-> From: Nicolas VINCENT <nicolas.vincent@vossloh.com>
-> 
-> the i2c_ram structure is missing the sdmatmp field mentionned in
-> datasheet for MPC8272 at paragraph 36.5. With this field missing, the
-> hardware would write past the allocated memory done through
-> cpm_muram_alloc for the i2c_ram structure and land in memory allocated
-> for the buffers descriptors corrupting the cbd_bufaddr field. Since this
-> field is only set during setup(), the first i2c transaction would work
-> and the following would send data read from an arbitrary memory
-> location.
-> 
-> Signed-off-by: Nicolas VINCENT <nicolas.vincent@vossloh.com>
-> ---
->   drivers/i2c/busses/i2c-cpm.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
-> index 1213e1932ccb..24d584a1c9a7 100644
-> --- a/drivers/i2c/busses/i2c-cpm.c
-> +++ b/drivers/i2c/busses/i2c-cpm.c
-> @@ -65,6 +65,9 @@ struct i2c_ram {
->   	char    res1[4];	/* Reserved */
->   	ushort  rpbase;		/* Relocation pointer */
->   	char    res2[2];	/* Reserved */
-> +	/* The following elements are only for CPM2 */
-> +	char    res3[4];	/* Reserved */
-> +	uint    sdmatmp;	/* Internal */
->   };
->   
->   #define I2COM_START	0x80
-> 
+> +struct iovec *iovec_from_user(const struct iovec __user *uvec,
+> +		unsigned long nr_segs, unsigned long fast_segs,
+
+Hmm...  For fast_segs unsigned long had always been ridiculous
+(4G struct iovec on caller stack frame?), but that got me wondering about
+nr_segs and I wish I'd thought of that when introducing import_iovec().
+
+The thing is, import_iovec() takes unsigned int there.  Which is fine
+(hell, the maximal value that can be accepted in 1024), except that
+we do pass unsigned long syscall argument to it in some places.
+
+E.g. vfs_readv() quietly truncates vlen to 32 bits, and vlen can
+come unchanged through sys_readv() -> do_readv() -> vfs_readv().
+With unsigned long passed by syscall glue.
+
+AFAICS, passing 4G+1 as the third argument to readv(2) on 64bit box
+will be quietly treated as 1 these days.  Which would be fine, except
+that before "switch {compat_,}do_readv_writev() to {compat_,}import_iovec()"
+it used to fail with -EINVAL.
+
+Userland, BTW, describes readv(2) iovcnt as int; process_vm_readv(),
+OTOH, has these counts unsigned long from the userland POV...
+
+I suppose we ought to switch import_iovec() to unsigned long for nr_segs ;-/
+Strictly speaking that had been a userland ABI change, even though nothing
+except regression tests checking for expected errors would've been likely
+to notice.  And it looks like no regression tests covered that one...
+
+Linus, does that qualify for your "if no userland has noticed the change,
+it's not a breakage"?
