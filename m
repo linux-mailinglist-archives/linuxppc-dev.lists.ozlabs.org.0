@@ -1,50 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916A1275CFA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 18:10:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D777275DA9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 18:40:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BxNSw5rLNzDqTw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 02:10:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BxP740MCszDqWl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 02:40:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=pcjhw9sp; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=ftp.linux.org.uk (client-ip=2002:c35c:fd02::1;
+ helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxNQD40bhzDqTw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 02:08:36 +1000 (AEST)
-Received: from localhost (p54b330c5.dip0.t-ipconnect.de [84.179.48.197])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 37618206B2;
- Wed, 23 Sep 2020 16:08:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1600877312;
- bh=an17JaWyOcVvUP7g5g5wS+0ARVwPjrcA8vaDrV6hcwc=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=pcjhw9splOjCesdaHdVG8sQLjOsqYHW5f8zq/dkndrMOEgiXsoYyT57vmkz3ve+WV
- +JT8SPqeN2NecwM9N8HAjpEiAPc2rJjd83QxQNfr+Yuy44Y+yUuBeY1FIfsErQ3rrt
- hzO7jd7WnL3xqbtru/bVyFrG1PJVOxsv6bzeTwD0=
-Date: Wed, 23 Sep 2020 18:08:29 +0200
-From: Wolfram Sang <wsa@kernel.org>
-To: nicolas.vincent@vossloh.com
-Subject: Re: [PATCH v2] i2c: cpm: Fix i2c_ram structure
-Message-ID: <20200923160829.GB6697@ninjato>
-References: <20200923140840.8700-1-nicolas.vincent@vossloh.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BxP5124fvzDqSp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 02:38:44 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1kL7mp-004f4D-Mx; Wed, 23 Sep 2020 16:38:31 +0000
+Date: Wed, 23 Sep 2020 17:38:31 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 5/9] fs: remove various compat readv/writev helpers
+Message-ID: <20200923163831.GO3421308@ZenIV.linux.org.uk>
+References: <20200923060547.16903-1-hch@lst.de>
+ <20200923060547.16903-6-hch@lst.de>
+ <20200923142549.GK3421308@ZenIV.linux.org.uk>
+ <20200923143251.GA14062@lst.de>
+ <20200923145901.GN3421308@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="NDin8bjvE/0mNLFQ"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200923140840.8700-1-nicolas.vincent@vossloh.com>
+In-Reply-To: <20200923145901.GN3421308@ZenIV.linux.org.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,75 +48,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org
+Cc: linux-aio@kvack.org, linux-mips@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
+ keyrings@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ linux-block@vger.kernel.org, io-uring@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
+ linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ David Laight <David.Laight@aculab.com>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Sep 23, 2020 at 03:59:01PM +0100, Al Viro wrote:
 
---NDin8bjvE/0mNLFQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > That's a very good question.  But it does not just compile but actually
+> > works.  Probably because all the syscall wrappers mean that we don't
+> > actually generate the normal names.  I just tried this:
+> > 
+> > --- a/include/linux/syscalls.h
+> > +++ b/include/linux/syscalls.h
+> > @@ -468,7 +468,7 @@ asmlinkage long sys_lseek(unsigned int fd, off_t offset,
+> >  asmlinkage long sys_read(unsigned int fd, char __user *buf, size_t count);
+> >  asmlinkage long sys_write(unsigned int fd, const char __user *buf,
+> >                             size_t count);
+> > -asmlinkage long sys_readv(unsigned long fd,
+> > +asmlinkage long sys_readv(void *fd,
+> > 
+> > for fun, and the compiler doesn't care either..
+> 
+> Try to build it for sparc or ppc...
 
-On Wed, Sep 23, 2020 at 04:08:40PM +0200, nico.vince@gmail.com wrote:
-> From: Nicolas VINCENT <nicolas.vincent@vossloh.com>
->=20
-> the i2c_ram structure is missing the sdmatmp field mentionned in
-> datasheet for MPC8272 at paragraph 36.5. With this field missing, the
-> hardware would write past the allocated memory done through
-> cpm_muram_alloc for the i2c_ram structure and land in memory allocated
-> for the buffers descriptors corrupting the cbd_bufaddr field. Since this
-> field is only set during setup(), the first i2c transaction would work
-> and the following would send data read from an arbitrary memory
-> location.
->=20
-> Signed-off-by: Nicolas VINCENT <nicolas.vincent@vossloh.com>
+FWIW, declarations in syscalls.h used to serve 4 purposes:
+	1) syscall table initializers needed symbols declared
+	2) direct calls needed the same
+	3) catching mismatches between the declarations and definitions
+	4) centralized list of all syscalls
 
-Thanks!
+(2) has been (thankfully) reduced for some time; in any case, ksys_... is
+used for the remaining ones.
 
-Is someone able to identify a Fixes: tag I could add?
+(1) and (3) are served by syscalls.h in architectures other than x86, arm64
+and s390.  On those 3 (1) is done otherwise (near the syscall table initializer)
+and (3) is not done at all.
 
-> ---
->  drivers/i2c/busses/i2c-cpm.c | 3 +++
->  1 file changed, 3 insertions(+)
->=20
-> diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
-> index 1213e1932ccb..24d584a1c9a7 100644
-> --- a/drivers/i2c/busses/i2c-cpm.c
-> +++ b/drivers/i2c/busses/i2c-cpm.c
-> @@ -65,6 +65,9 @@ struct i2c_ram {
->  	char    res1[4];	/* Reserved */
->  	ushort  rpbase;		/* Relocation pointer */
->  	char    res2[2];	/* Reserved */
-> +	/* The following elements are only for CPM2 */
-> +	char    res3[4];	/* Reserved */
-> +	uint    sdmatmp;	/* Internal */
->  };
-> =20
->  #define I2COM_START	0x80
-> --=20
-> 2.17.1
->=20
+I wonder if we should do something like
 
---NDin8bjvE/0mNLFQ
-Content-Type: application/pgp-signature; name="signature.asc"
+SYSCALL_DECLARE3(readv, unsigned long, fd, const struct iovec __user *, vec,
+		 unsigned long, vlen);
+in syscalls.h instead, and not under that ifdef.
 
------BEGIN PGP SIGNATURE-----
+Let it expand to declaration of sys_...() in generic case and, on x86, into
+__do_sys_...() and __ia32_sys_...()/__x64_sys_...(), with types matching
+what SYSCALL_DEFINE ends up using.
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl9rcvwACgkQFA3kzBSg
-KbYHIA//V7lQwDovwcbA5CXxljKHwr0KVgCuBYLvJQytcDn4O8unPLoB6G5OWCsw
-RgrrEIu346XQYrTsKqAtzkUmAmCZ/kzaARBgnFvsdz4vx0Cv/5LT//aKGM/n565o
-ERuDfgMbjjki4ItZa+jDc18kj75lkLLpS06SerQp7kbqvtyAgL+jpSYHnbg4Qql7
-MGRvCovoEAqjmEbs5zh/vqBIwsK5ytI3U2cpea1ymFxoPAMv62DOKX+EVMlm/y0k
-K8v1psq/bn2jq5pgWcc6+/7hZIA1Jt4KHOpIZm4ywOF8HY2pzVRdt2B3Kd24NKiD
-OSKZ7LG5JeuhDdoBKcH6RPfVHBbZuO/bt7tEdp8IA2fYdulExyl3Fu7V92IDVaIJ
-0tjwvDO4MZOi18niOwHDcG0ThrTjGbGtb3oUooH6EHwpoMA6NArmDw2ZKTDxrOYx
-JBy/Oh4QvgTouT3EXX+Hb6Vd7mLMa5NKm8uYbPd/u5Ci/T+nwHG760zt+iMdB2yY
-0E+6XyNU/SRApaviqzL3xvTHDL3rBUQhEbpluPWSvahOpHrD1UIJTTDT+3G+1COi
-S24J/RgrDgnycPipvMXEETklz5gI2zQ80MXaVoMHyI2pSnMNc43n1vyyOrpNSqm5
-8onLyXyWeKqPGYLPVzWog0KTnDinThoI8LOdzDYGcojKSd+DUb0=
-=YeFJ
------END PGP SIGNATURE-----
+Similar macro would cover compat_sys_...() declarations.  That would
+restore mismatch checking for x86 and friends.  AFAICS, the cost wouldn't
+be terribly high - cpp would have more to chew through in syscalls.h,
+but it shouldn't be all that costly.  Famous last words, of course...
 
---NDin8bjvE/0mNLFQ--
+Does anybody see fundamental problems with that?
