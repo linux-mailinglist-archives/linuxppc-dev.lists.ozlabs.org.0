@@ -1,52 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91960275C7C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 17:54:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 916A1275CFA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 18:10:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BxN6Q3z6gzDqVm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 01:54:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BxNSw5rLNzDqTw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 02:10:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=m2l4=da=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=goodmis.org
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=pcjhw9sp; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxN4L1XdnzDqRL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 01:53:05 +1000 (AEST)
-Received: from oasis.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BxNQD40bhzDqTw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 02:08:36 +1000 (AEST)
+Received: from localhost (p54b330c5.dip0.t-ipconnect.de [84.179.48.197])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 492262223E;
- Wed, 23 Sep 2020 15:52:54 +0000 (UTC)
-Date: Wed, 23 Sep 2020 11:52:51 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: peterz@infradead.org
-Subject: Re: [patch RFC 00/15] mm/highmem: Provide a preemptible variant of
- kmap_atomic & friends
-Message-ID: <20200923115251.7cc63a7e@oasis.local.home>
-In-Reply-To: <20200923084032.GU1362448@hirez.programming.kicks-ass.net>
-References: <20200919091751.011116649@linutronix.de>
- <CAHk-=wiYGyrFRbA1cc71D2-nc5U9LM9jUJesXGqpPnB7E4X1YQ@mail.gmail.com>
- <87mu1lc5mp.fsf@nanos.tec.linutronix.de>
- <87k0wode9a.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgbmwsTOKs23Z=71EBTrULoeaH2U3TNqT2atHEWvkBKdw@mail.gmail.com>
- <87eemwcpnq.fsf@nanos.tec.linutronix.de>
- <CAHk-=wgF-upZVpqJWK=TK7MS9H-Rp1ZxGfOG+dDW=JThtxAzVQ@mail.gmail.com>
- <87a6xjd1dw.fsf@nanos.tec.linutronix.de>
- <CAHk-=wjhxzx3KHHOMvdDj3Aw-_Mk5eRiNTUBB=tFf=vTkw1FeA@mail.gmail.com>
- <87sgbbaq0y.fsf@nanos.tec.linutronix.de>
- <20200923084032.GU1362448@hirez.programming.kicks-ass.net>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ by mail.kernel.org (Postfix) with ESMTPSA id 37618206B2;
+ Wed, 23 Sep 2020 16:08:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1600877312;
+ bh=an17JaWyOcVvUP7g5g5wS+0ARVwPjrcA8vaDrV6hcwc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=pcjhw9splOjCesdaHdVG8sQLjOsqYHW5f8zq/dkndrMOEgiXsoYyT57vmkz3ve+WV
+ +JT8SPqeN2NecwM9N8HAjpEiAPc2rJjd83QxQNfr+Yuy44Y+yUuBeY1FIfsErQ3rrt
+ hzO7jd7WnL3xqbtru/bVyFrG1PJVOxsv6bzeTwD0=
+Date: Wed, 23 Sep 2020 18:08:29 +0200
+From: Wolfram Sang <wsa@kernel.org>
+To: nicolas.vincent@vossloh.com
+Subject: Re: [PATCH v2] i2c: cpm: Fix i2c_ram structure
+Message-ID: <20200923160829.GB6697@ninjato>
+References: <20200923140840.8700-1-nicolas.vincent@vossloh.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="NDin8bjvE/0mNLFQ"
+Content-Disposition: inline
+In-Reply-To: <20200923140840.8700-1-nicolas.vincent@vossloh.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,66 +56,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, David Airlie <airlied@linux.ie>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>, linux-mips@vger.kernel.org,
- Ben Segall <bsegall@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Guo Ren <guoren@kernel.org>, linux-sparc <sparclinux@vger.kernel.org>,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- the arch/x86 maintainers <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Mel Gorman <mgorman@suse.de>,
- "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
- linux-xtensa@linux-xtensa.org, Paul McKenney <paulmck@kernel.org>,
- intel-gfx <intel-gfx@lists.freedesktop.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Jani Nikula <jani.nikula@linux.intel.com>, Greentime Hu <green.hu@gmail.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>, Linux-MM <linux-mm@kvack.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Daniel Vetter <daniel@ffwll.ch>, Vineet Gupta <vgupta@synopsys.com>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- Daniel Bristot de Oliveira <bristot@redhat.com>,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 23 Sep 2020 10:40:32 +0200
-peterz@infradead.org wrote:
 
-> However, with migrate_disable() we can have each task preempted in a
-> migrate_disable() region, worse we can stack them all on the _same_ CPU
-> (super ridiculous odds, sure). And then we end up only able to run one
-> task, with the rest of the CPUs picking their nose.
+--NDin8bjvE/0mNLFQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-What if we just made migrate_disable() a local_lock() available for !RT?
+On Wed, Sep 23, 2020 at 04:08:40PM +0200, nico.vince@gmail.com wrote:
+> From: Nicolas VINCENT <nicolas.vincent@vossloh.com>
+>=20
+> the i2c_ram structure is missing the sdmatmp field mentionned in
+> datasheet for MPC8272 at paragraph 36.5. With this field missing, the
+> hardware would write past the allocated memory done through
+> cpm_muram_alloc for the i2c_ram structure and land in memory allocated
+> for the buffers descriptors corrupting the cbd_bufaddr field. Since this
+> field is only set during setup(), the first i2c transaction would work
+> and the following would send data read from an arbitrary memory
+> location.
+>=20
+> Signed-off-by: Nicolas VINCENT <nicolas.vincent@vossloh.com>
 
-I mean make it a priority inheritance PER CPU lock.
+Thanks!
 
-That is, no two tasks could do a migrate_disable() on the same CPU? If
-one task does a migrate_disable() and then gets preempted and the
-preempting task does a migrate_disable() on the same CPU, it will block
-and wait for the first task to do a migrate_enable().
+Is someone able to identify a Fixes: tag I could add?
 
-No two tasks on the same CPU could enter the migrate_disable() section
-simultaneously, just like no two tasks could enter a preempt_disable()
-section.
+> ---
+>  drivers/i2c/busses/i2c-cpm.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>=20
+> diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
+> index 1213e1932ccb..24d584a1c9a7 100644
+> --- a/drivers/i2c/busses/i2c-cpm.c
+> +++ b/drivers/i2c/busses/i2c-cpm.c
+> @@ -65,6 +65,9 @@ struct i2c_ram {
+>  	char    res1[4];	/* Reserved */
+>  	ushort  rpbase;		/* Relocation pointer */
+>  	char    res2[2];	/* Reserved */
+> +	/* The following elements are only for CPM2 */
+> +	char    res3[4];	/* Reserved */
+> +	uint    sdmatmp;	/* Internal */
+>  };
+> =20
+>  #define I2COM_START	0x80
+> --=20
+> 2.17.1
+>=20
 
-In essence, we just allow local_lock() to be used for both RT and !RT.
+--NDin8bjvE/0mNLFQ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Perhaps make migrate_disable() an anonymous local_lock()?
+-----BEGIN PGP SIGNATURE-----
 
-This should lower the SHC in theory, if you can't have stacked migrate
-disables on the same CPU.
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl9rcvwACgkQFA3kzBSg
+KbYHIA//V7lQwDovwcbA5CXxljKHwr0KVgCuBYLvJQytcDn4O8unPLoB6G5OWCsw
+RgrrEIu346XQYrTsKqAtzkUmAmCZ/kzaARBgnFvsdz4vx0Cv/5LT//aKGM/n565o
+ERuDfgMbjjki4ItZa+jDc18kj75lkLLpS06SerQp7kbqvtyAgL+jpSYHnbg4Qql7
+MGRvCovoEAqjmEbs5zh/vqBIwsK5ytI3U2cpea1ymFxoPAMv62DOKX+EVMlm/y0k
+K8v1psq/bn2jq5pgWcc6+/7hZIA1Jt4KHOpIZm4ywOF8HY2pzVRdt2B3Kd24NKiD
+OSKZ7LG5JeuhDdoBKcH6RPfVHBbZuO/bt7tEdp8IA2fYdulExyl3Fu7V92IDVaIJ
+0tjwvDO4MZOi18niOwHDcG0ThrTjGbGtb3oUooH6EHwpoMA6NArmDw2ZKTDxrOYx
+JBy/Oh4QvgTouT3EXX+Hb6Vd7mLMa5NKm8uYbPd/u5Ci/T+nwHG760zt+iMdB2yY
+0E+6XyNU/SRApaviqzL3xvTHDL3rBUQhEbpluPWSvahOpHrD1UIJTTDT+3G+1COi
+S24J/RgrDgnycPipvMXEETklz5gI2zQ80MXaVoMHyI2pSnMNc43n1vyyOrpNSqm5
+8onLyXyWeKqPGYLPVzWog0KTnDinThoI8LOdzDYGcojKSd+DUb0=
+=YeFJ
+-----END PGP SIGNATURE-----
 
--- Steve
+--NDin8bjvE/0mNLFQ--
