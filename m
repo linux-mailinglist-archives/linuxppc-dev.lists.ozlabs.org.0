@@ -1,46 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0D62759C1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 16:18:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304D12759CE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 16:21:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BxKzH2yhwzDqPw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 00:18:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BxL2d6r29zDqQ5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 00:21:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=scram.de (client-ip=2a01:4f8:130:2201::3; helo=mail.scram.de;
+ envelope-from=jochen@scram.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=permerror header.from=scram.de
+X-Greylist: delayed 162 seconds by postgrey-1.36 at bilbo;
+ Thu, 24 Sep 2020 00:16:26 AEST
+Received: from mail.scram.de (mail0.scram.de [IPv6:2a01:4f8:130:2201::3])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxKnw5YG7zDqSt
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 00:10:26 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 851E86736F; Wed, 23 Sep 2020 16:10:20 +0200 (CEST)
-Date: Wed, 23 Sep 2020 16:10:20 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel] powerpc/dma: Fix dma_map_ops::get_required_mask
-Message-ID: <20200923141020.GA12374@lst.de>
-References: <20200908015106.79661-1-aik@ozlabs.ru>
- <20200908054416.GA13585@lst.de>
- <94353228-2262-cfa1-7177-7eed2288ca63@ozlabs.ru>
- <20200908121937.GA31559@lst.de>
- <1746dd66810.27bb.1ca38dd7e845b990cd13d431eb58563d@ozlabs.ru>
- <20200909075849.GA12282@lst.de>
- <0a7a992f-ad2e-e76a-7bee-1ed4ed607748@ozlabs.ru>
- <20200915065022.GA19658@lst.de>
- <93424419-3476-fc07-8a83-8d9d39062810@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BxKwp2GTQzDqNG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 00:16:25 +1000 (AEST)
+Received: from localhost (mail0.scram.de [78.47.204.202])
+ by localhost (Postfix) with ESMTP id B8B2057377;
+ Wed, 23 Sep 2020 16:13:27 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at scram.de
+X-Spam-Flag: NO
+X-Spam-Score: -2.524
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.524 required=5 tests=[AWL=0.076, BAYES_00=-2.599, 
+ NO_RELAYS=-0.001]
+Received: from mail.scram.de ([78.47.204.202])
+ by localhost (mail.scram.de [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 1OVkS7QmSj1S; Wed, 23 Sep 2020 16:12:49 +0200 (CEST)
+Received: (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (Client did not present a certificate) (Authenticated sender)
+ by mail.scram.de (Postfix) with ESMTPSA id 8B9C156CC7;
+ Wed, 23 Sep 2020 16:12:49 +0200 (CEST)
+Subject: Re: [PATCH v2] i2c: cpm: Fix i2c_ram structure
+To: nicolas.vincent@vossloh.com
+References: <20200923140840.8700-1-nicolas.vincent@vossloh.com>
+From: Jochen Friedrich <jochen@scram.de>
+Message-ID: <b518e49b-87d7-55bb-42f3-619b83f90b6d@scram.de>
+Date: Wed, 23 Sep 2020 16:12:49 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <93424419-3476-fc07-8a83-8d9d39062810@ozlabs.ru>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20200923140840.8700-1-nicolas.vincent@vossloh.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,59 +59,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver OHalloran <oliveroh@au1.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Christoph Hellwig <hch@lst.de>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 22, 2020 at 12:26:18PM +1000, Alexey Kardashevskiy wrote:
-> > Well, the original intent of dma_get_required_mask is to return the
-> > mask that the driver then uses to figure out what to set, so what aacraid
-> > does fits that use case. 
-> 
-> What was the original intent exactly? The driver asks for the minimum or
-> maximum DMA mask the platform supports?
-> 
-> As for now, we (ppc64/powernv) can do:
-> 1. bypass (==64bit)
-> 2. a DMA window which used to be limited by 2GB but not anymore.
-> 
-> I can understand if the driver asked for required mask in expectation to
-> receive "less or equal than 32bit" and "more than 32 bit" and choose.
-> And this probably was the intent as at the time when the bug was
-> introduced, the window was always smaller than 4GB.
-> 
-> But today the window is bigger than than (44 bits now, or a similar
-> value, depends on max page order) so the returned mask is >32. Which
-> still enables that DAC in aacraid but I suspect this is accidental.
+Acked-by: Jochen Friedrich <jochen@scram.de>
 
-I think for powernv returning 64-bit always would make a lot of sense.
-AFAIK all of powernv is PCIe and not legacy PCI, so returning anything
-less isn't going to help to optimize anything.
-
-> > Of course that idea is pretty bogus for
-> > PCIe devices.
+Am 23.09.2020 um 16:08 schrieb nico.vince@gmail.com:
+> From: Nicolas VINCENT <nicolas.vincent@vossloh.com>
 > 
-> Why? From the PHB side, there are windows. From the device side, there
-> are many crippled devices, like, no GPU I saw in last years supported
-> more than 48bit.
-
-Yes, but dma_get_required_mask is misnamed - the mask is not required,
-it is the optimal mask.  Even if the window is smaller we handle it
-some way, usually by using swiotlb, or by iommu tricks in your case.
-
-> > I suspect the right fix is to just not query dma_get_required_mask for
-> > PCIe devices in aacraid (and other drivers that do something similar).
+> the i2c_ram structure is missing the sdmatmp field mentionned in
+> datasheet for MPC8272 at paragraph 36.5. With this field missing, the
+> hardware would write past the allocated memory done through
+> cpm_muram_alloc for the i2c_ram structure and land in memory allocated
+> for the buffers descriptors corrupting the cbd_bufaddr field. Since this
+> field is only set during setup(), the first i2c transaction would work
+> and the following would send data read from an arbitrary memory
+> location.
 > 
-> May be, if you write nice and big comment next to
-> dma_get_required_mask() explaining exactly what it does, then I will
-> realize I am getting this all wrong and we will move to fixing the
-> drivers :)
-
-Yes, it needs a comment or two, and probaby be renamed to
-dma_get_optimal_dma_mask, and a cleanup of most users.  I've added it
-to my ever growing TODO list, but I would not be unhappy if someone
-else gives it a spin.
+> Signed-off-by: Nicolas VINCENT <nicolas.vincent@vossloh.com>
+> ---
+>   drivers/i2c/busses/i2c-cpm.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
+> index 1213e1932ccb..24d584a1c9a7 100644
+> --- a/drivers/i2c/busses/i2c-cpm.c
+> +++ b/drivers/i2c/busses/i2c-cpm.c
+> @@ -65,6 +65,9 @@ struct i2c_ram {
+>   	char    res1[4];	/* Reserved */
+>   	ushort  rpbase;		/* Relocation pointer */
+>   	char    res2[2];	/* Reserved */
+> +	/* The following elements are only for CPM2 */
+> +	char    res3[4];	/* Reserved */
+> +	uint    sdmatmp;	/* Internal */
+>   };
+>   
+>   #define I2COM_START	0x80
+> 
