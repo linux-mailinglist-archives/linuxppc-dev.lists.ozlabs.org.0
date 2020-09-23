@@ -1,59 +1,128 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78862752B9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 10:03:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20ECC2752DF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 10:06:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bx9f62YWbzDqcy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 18:03:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bx9kL02z8zDqF3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 18:06:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=asml.silence@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=MzoKpsZP; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bx9c46qspzDqXZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 18:01:18 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Bx9bq4QPjz9v09g;
- Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id o-mWIuJAAecS; Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Bx9bq29Pnz9tx4Q;
- Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F1A5C8B7F4;
- Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id yJFG8sUqnTVC; Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
-Received: from [10.25.210.27] (unknown [10.25.210.27])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8777A8B7F1;
- Wed, 23 Sep 2020 10:01:11 +0200 (CEST)
-Subject: Re: [PATCH] i2c: cpm: Fix i2c_ram structure
-To: Vincent Nicolas <Nicolas.Vincent@vossloh.com>,
- "jochen@scram.de" <jochen@scram.de>
-References: <20200922090400.6282-1-nicolas.vincent@vossloh.com>
- <956c4b63-f859-df0c-2836-80a988ee6aa9@csgroup.eu>
- <PR3P193MB0731945473A9F251C7F37608F1380@PR3P193MB0731.EURP193.PROD.OUTLOOK.COM>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <2ecfe18a-61f6-bb0e-22c5-b7ab79a77d03@csgroup.eu>
-Date: Wed, 23 Sep 2020 10:01:03 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bx9gS1ZK8zDqXb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 18:04:18 +1000 (AEST)
+Received: by mail-wm1-x341.google.com with SMTP id k18so6013128wmj.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 01:04:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=to:cc:references:from:autocrypt:subject:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=ONodeowpirgKu2fWGk3Tuj8MhxBtn1x7pOHZ1lVstcw=;
+ b=MzoKpsZPMOiF5yYvEPp759U2ZjK3YzIFcKVI0hpLf7Xd9waLnNI3KxdguoSDjC2A9q
+ kOy74+BBHOCeG9fgauj1WGJa2A3l55+l1D/9ayqSzfewV92N8zfOhh0jQ8KDwZdZ0Wc+
+ pm0vHUIhD3KPR6dJ3R6edydt4ho5TGTB5EjolCrD2s9tYuJyJFX/n8V58fGZLFbqgzWr
+ NNz67w0uK/ZROSVdeqbZC24nk0Qrbx6iFRMOAvkuOhm9cB7neMyc24Yf6OdJTHK3aRBz
+ PZ8JE8fGVOclR8F5cUNHMz9MlsxF06G2W8pUoDZama+JQgSY1+Esbu0GHunoAplzbWQs
+ UWXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:to:cc:references:from:autocrypt:subject
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=ONodeowpirgKu2fWGk3Tuj8MhxBtn1x7pOHZ1lVstcw=;
+ b=nitiBK9eefYjMaxcqmAk2cAic93Qc8XryFBW4/uAyZvRnyYt7ImIACQQphu39/CUAX
+ lHHGUWQr0WuhGpqUz9Txe3IC2Rz71zwi1Mmlo1VugPfoNyVCZctOIBJ/ZXkMXXX6MTyb
+ 77lvUCphbixHzLUHful13JVG4dC6nzLF4yfqnUKCUdmDjPGT/i5/oPuiKcJIbRk2F51c
+ OvBSDW053QzPlnPkPaDGmZcAkkg1ZekBPLAzrI0ttq4P71mLYPwYEukY1UmjMUSailU+
+ Lf+tpZwhs3xbFmqn+kQLrfHKnr4BDhpZz4Yh2Y5xnQhsQKl/9i2Lu/FNj7+CkjG8BnJ2
+ Hxog==
+X-Gm-Message-State: AOAM5308ijX8AgwxKLBINfJw1RyTg+fdUXfVc9zbbf/GPa9d7PS7AeQv
+ aP+yUwMvEtX7mvpWqzrscZ0=
+X-Google-Smtp-Source: ABdhPJyHjes2guPDIH/GjSt6urDwIAObxYd85bPxA03C5r6pWsFZBYQtPZnXFeWZykiGGKGD1MH1fA==
+X-Received: by 2002:a7b:c215:: with SMTP id x21mr4946654wmi.138.1600848253769; 
+ Wed, 23 Sep 2020 01:04:13 -0700 (PDT)
+Received: from [192.168.43.240] ([5.100.192.97])
+ by smtp.gmail.com with ESMTPSA id 63sm31416477wrh.71.2020.09.23.01.04.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Sep 2020 01:04:13 -0700 (PDT)
+To: Arnd Bergmann <arnd@arndb.de>
+References: <CAK8P3a2Mi+1yttyGk4k7HxRVrMtmFqJewouVhynqUL0PJycmog@mail.gmail.com>
+ <D0791499-1190-4C3F-A984-0A313ECA81C7@amacapital.net>
+ <563138b5-7073-74bc-f0c5-b2bad6277e87@gmail.com>
+ <486c92d0-0f2e-bd61-1ab8-302524af5e08@gmail.com>
+ <CALCETrW3rwGsgfLNnu_0JAcL5jvrPVTLTWM3JpbB5P9Hye6Fdw@mail.gmail.com>
+ <d5c6736a-2cb4-4e22-78da-a667bda5c05a@gmail.com>
+ <CALCETrUEC81va8-fuUXG1uA5rbKxnKDYsDOXC70_HtKD4LAeAg@mail.gmail.com>
+ <e0a1b4d1-ff47-18d1-d535-c62812cb3105@gmail.com>
+ <CAK8P3a2-6JNS38EbZcLrk=cTT526oP=Rf0aoqWNSJ-k4XTYehQ@mail.gmail.com>
+ <f25b4708-eba6-78d6-03f9-5bfb04e07627@gmail.com>
+ <CAK8P3a39jN+t2hhLg0oKZnbYATQXmYE2-Z1JkmFyc1EPdg1HXw@mail.gmail.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
+Autocrypt: addr=asml.silence@gmail.com; prefer-encrypt=mutual; keydata=
+ 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 bA==
+Subject: Re: [PATCH 1/9] kernel: add a PF_FORCE_COMPAT flag
+Message-ID: <91209170-dcb4-d9ee-afa0-a819f8877b86@gmail.com>
+Date: Wed, 23 Sep 2020 11:01:34 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-In-Reply-To: <PR3P193MB0731945473A9F251C7F37608F1380@PR3P193MB0731.EURP193.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+In-Reply-To: <CAK8P3a39jN+t2hhLg0oKZnbYATQXmYE2-Z1JkmFyc1EPdg1HXw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,85 +135,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
+Cc: linux-aio <linux-aio@kvack.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>, Linux-MM <linux-mm@kvack.org>,
+ keyrings@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Linux SCSI List <linux-scsi@vger.kernel.org>, X86 ML <x86@kernel.org>,
+ linux-block <linux-block@vger.kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, io-uring@vger.kernel.org,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Jens Axboe <axboe@kernel.dk>, Parisc List <linux-parisc@vger.kernel.org>,
+ Network Development <netdev@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ LSM List <linux-security-module@vger.kernel.org>,
+ Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 23/09/2020 à 09:18, Vincent Nicolas a écrit :
-> 
-> 
-> 
-> From: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Sent: Tuesday, 22 September 2020 14:38
-> To: Vincent Nicolas <Nicolas.Vincent@vossloh.com>; jochen@scram.de <jochen@scram.de>
-> Cc: linuxppc-dev@lists.ozlabs.org <linuxppc-dev@lists.ozlabs.org>; linux-i2c@vger.kernel.org <linux-i2c@vger.kernel.org>
-> Subject: Re: [PATCH] i2c: cpm: Fix i2c_ram structure
->   
-> 
-> 
-> Le 22/09/2020 à 11:04, nico.vince@gmail.com a écrit :
->> From: Nicolas VINCENT <nicolas.vincent@vossloh.com>
+On 22/09/2020 12:01, Arnd Bergmann wrote:
+> On Tue, Sep 22, 2020 at 9:59 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>> On 22/09/2020 10:23, Arnd Bergmann wrote:
+>>> On Tue, Sep 22, 2020 at 8:32 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>>>> On 22/09/2020 03:58, Andy Lutomirski wrote:
+>>>>> On Mon, Sep 21, 2020 at 5:24 PM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>>>>> I may be looking at a different kernel than you, but aren't you
+>>>>> preventing creating an io_uring regardless of whether SQPOLL is
+>>>>> requested?
+>>>>
+>>>> I diffed a not-saved file on a sleepy head, thanks for noticing.
+>>>> As you said, there should be an SQPOLL check.
+>>>>
+>>>> ...
+>>>> if (ctx->compat && (p->flags & IORING_SETUP_SQPOLL))
+>>>>         goto err;
+>>>
+>>> Wouldn't that mean that now 32-bit containers behave differently
+>>> between compat and native execution?
+>>>
+>>> I think if you want to prevent 32-bit applications from using SQPOLL,
+>>> it needs to be done the same way on both to be consistent:
 >>
->> the i2c_ram structure is missing the sdmatmp field mentionned in
->> datasheet for MPC8272 at paragraph 36.5. With this field missing, the
->> hardware would write past the allocated memory done through
->> cpm_muram_alloc for the i2c_ram structure and land in memory allocated
->> for the buffers descriptors corrupting the cbd_bufaddr field. Since this
->> field is only set during setup(), the first i2c transaction would work
->> and the following would send data read from an arbitrary memory
->> location.
+>> The intention was to disable only compat not native 32-bit.
+> 
+> I'm not following why that would be considered a valid option,
+> as that clearly breaks existing users that update from a 32-bit
+> kernel to a 64-bit one.
+
+Do you mean users who move 32-bit binaries (without recompiling) to a
+new x64 kernel? Does the kernel guarantees that to work? I'd personally
+care more native-bitness apps.
+
+> 
+> Taking away the features from users that are still on 32-bit kernels
+> already seems questionable to me, but being inconsistent
+> about it seems much worse, in particular when the regression
+> is on the upgrade path.
+
+TBH, this won't fix that entirely (e.g. passing non-compat io_uring
+to a compat process should yield the same problem). So, let's put
+it aside for now until this bikeshedding would be relevant.
+
+> 
+>>> Can we expect all existing and future user space to have a sane
+>>> fallback when IORING_SETUP_SQPOLL fails?
 >>
->> Signed-off-by: Nicolas VINCENT <nicolas.vincent@vossloh.com>
->> ---
->>     drivers/i2c/busses/i2c-cpm.c | 3 ++-
->>     1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
->> index 1213e1932ccb..c5700addbf65 100644
->> --- a/drivers/i2c/busses/i2c-cpm.c
->> +++ b/drivers/i2c/busses/i2c-cpm.c
->> @@ -64,7 +64,8 @@ struct i2c_ram {
->>          uint    txtmp;          /* Internal */
->>          char    res1[4];        /* Reserved */
->>          ushort  rpbase;         /* Relocation pointer */
->> -     char    res2[2];        /* Reserved */
->> +     char    res2[6];        /* Reserved */
->> +     uint    sdmatmp;        /* Internal */
+>> SQPOLL has a few differences with non-SQPOLL modes, but it's easy
+>> to convert between them. Anyway, SQPOLL is a privileged special
+>> case that's here for performance/latency reasons, I don't think
+>> there will be any non-accidental users of it.
 > 
-> On CPM1, I2C param RAM has size 0x30 (offset 0x1c80-0x1caf)
-> 
-> Your change overlaps the miscellaneous area that contains CP Microcode
-> Revision Number, ref MPC885 Reference Manual §18.7.3
-> 
-> As far as I understand the mpc885 contains in the dts the compatible=fsl,cpm1-i2c which is used in cpm-i2c.c to either determine the address of the i2c_ram structure (cpm1), or dynamically allocate it with cpm_muram_alloc (cpm2).
-> In the first case the structure will indeed overlaps with the miscellaneous section but since the sdmatmp is only used by cpm2 hardware it shall not be an issue.
-> 
-> Please, let me know if I am mistaken. If the patch cannot be accepted as is, I would gladly accept pointers on how to address this kind of issue.
+> Ok, so the behavior of 32-bit tasks would be the same as running
+> the same application as unprivileged 64-bit tasks, with applications
 
+Yes, something like that, but that's not automatic and in some
+(hopefully rare) cases there may be pitfalls. That's in short,
+I can expand the idea a bit if anyone would be interested.
 
-Please use a mail client that properly sets the > in front of 
-original/answered text. Here your mailer has mixed you text and mine, 
-that's unusable on the long term.
+> already having to implement that fallback, right?
 
+Well, not everyone _have_ to implement such a fallback, e.g.
+applications working only whilst privileged may use SQPOLL only.
 
-I think you are right on the fact that it doesn't seem to be an issue. 
-Nevertheless, that's confusing.
-
-What I would suggest is to leave res2[2] as is, and add something like:
-
-	/* The following elements are only for CPM2 */
-	char res3[4];	/* Reserved */
-	uint sdmatmp;	/* Internal */
-
-
-Other solution (not sure that's the best solution thought) would be to 
-do as in spi-fsl-cpm: use iic_t structure from asm/cpm1.h when 
-CONFIG_CPM1 is selected and use iic_t from asm/cpm2.h when CONFIG_CPM2 
-is selected, taking into account that CONFIG_CPM1 and CONFIG_CPM2 are 
-mutually exclusive at the time being.
-
-Christophe
+-- 
+Pavel Begunkov
