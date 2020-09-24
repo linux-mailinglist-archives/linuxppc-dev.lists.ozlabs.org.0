@@ -2,88 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B22F276AA3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 09:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32895276B0D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 09:43:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BxmgS2yqrzDqQW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 17:21:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bxn8Y6GHTzDqQD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 17:43:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=r/5u=db=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=j26AqMSG; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxmGd53DDzDqnF
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 17:03:19 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id r19so1197854pls.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 00:03:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=/zh4UOy6xq4nPNPs7UbUhF+dbhwKAFnwF4mgbqlS/ZM=;
- b=j26AqMSGHBrEEOemd6fbQQXtBoc5MFw7imnBbn9jhwtWu1PMhiOctFcLf53M2Yu/j+
- nJub70+VD+5O6U+eIS9ggVjCPcQFraMwdWBOdT3auFfviQzszbSOfNm5b8LCyslSv9YL
- mriFW1TyQdPY1CPG0EWN1qrtvBFchRJoaLwgS7Ew0jrjXmkaYQD9vrPolHWpGy5R/KYT
- 8SiRfx6/dqZVv2pRoWBk5S2Rqm+9U1poRNOrH6aebBFOgnQn9o2jwhuQEd6+OrRLlTbJ
- NZvul1XMhQ8VrcjWo5h4HjQR0HlYxyxOxGTCsiMjtlsDe9vOPvAbIKNblvN18bK1qinZ
- 3fwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=/zh4UOy6xq4nPNPs7UbUhF+dbhwKAFnwF4mgbqlS/ZM=;
- b=pMFY/wxof4tuP38j/MwqkrWy/18WvuuRstuHBljPcCkdD84f35IPVOqyONFozzr7Y4
- iIZapiVptnQT8aLFUEYqR+5+L2kXzsIDhBErrdgkgO67pHlDpwwhq0Qnt3BP+Mqs7b92
- m8/Ha3YK2ib/C+xFxp92mjcKqnj3D08BedJQ1hA9IGYz7Wef/LKXgdD8WhcHrqvIQO8j
- OCrt9IQU8ixlL1BGyRltGbOefq/2V7Fauffnl8VN4iFj3hfy3ZC/3JZqfvQO0s6+dqv5
- vA3VjtuqT0kHHzcwiJwwGLneVqM4im4TNwPXPuOZhleF8jCiS2Fs2a1p8QY3gnQzliTn
- iCRw==
-X-Gm-Message-State: AOAM530chIRELBGZw3wt8qB0K7lulml4HYn4jsyyT/3EALJPan0ez2dv
- 2PcCV7HytKovICT6Nqwwr5792Tr00kctyOnZ
-X-Google-Smtp-Source: ABdhPJzav/+jnOCIdv+iUXMrx38Zi/0WvWD0FKpuP+jG+0o2P0TY1cl1uPSrCq0G3MIOtY2Dtn2/kw==
-X-Received: by 2002:a17:902:ee83:b029:d0:cb2d:f271 with SMTP id
- a3-20020a170902ee83b02900d0cb2df271mr3386127pld.10.1600930996368; 
- Thu, 24 Sep 2020 00:03:16 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
- [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id n2sm1351102pja.41.2020.09.24.00.03.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Sep 2020 00:03:15 -0700 (PDT)
-Subject: Re: [PATCH kernel] powerpc/dma: Fix dma_map_ops::get_required_mask
-To: Christoph Hellwig <hch@lst.de>
-References: <20200908015106.79661-1-aik@ozlabs.ru>
- <20200908054416.GA13585@lst.de>
- <94353228-2262-cfa1-7177-7eed2288ca63@ozlabs.ru>
- <20200908121937.GA31559@lst.de>
- <1746dd66810.27bb.1ca38dd7e845b990cd13d431eb58563d@ozlabs.ru>
- <20200909075849.GA12282@lst.de>
- <0a7a992f-ad2e-e76a-7bee-1ed4ed607748@ozlabs.ru>
- <20200915065022.GA19658@lst.de>
- <93424419-3476-fc07-8a83-8d9d39062810@ozlabs.ru>
- <20200923141020.GA12374@lst.de>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <1acaab45-1796-7420-b4fd-b6add7f0d28f@ozlabs.ru>
-Date: Thu, 24 Sep 2020 17:03:11 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.2.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bxn6j5JRTzDqPT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 17:41:33 +1000 (AEST)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 195755] rcu_sched detected stalls on CPUs/tasks: (detected by
+ 0, t=6302 jiffies, g=11405, c=11404, q=1880), ppc64, G5
+Date: Thu, 24 Sep 2020 07:41:29 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: nigel@nigelreed.net
+X-Bugzilla-Status: REOPENED
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-195755-206035-oaOZpt2v1i@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-195755-206035@https.bugzilla.kernel.org/>
+References: <bug-195755-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <20200923141020.GA12374@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,75 +61,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver OHalloran <oliveroh@au1.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D195755
 
+Nigel Reed (nigel@nigelreed.net) changed:
 
-On 24/09/2020 00:10, Christoph Hellwig wrote:
-> On Tue, Sep 22, 2020 at 12:26:18PM +1000, Alexey Kardashevskiy wrote:
->>> Well, the original intent of dma_get_required_mask is to return the
->>> mask that the driver then uses to figure out what to set, so what aacraid
->>> does fits that use case. 
->>
->> What was the original intent exactly? The driver asks for the minimum or
->> maximum DMA mask the platform supports?
->>
->> As for now, we (ppc64/powernv) can do:
->> 1. bypass (==64bit)
->> 2. a DMA window which used to be limited by 2GB but not anymore.
->>
->> I can understand if the driver asked for required mask in expectation to
->> receive "less or equal than 32bit" and "more than 32 bit" and choose.
->> And this probably was the intent as at the time when the bug was
->> introduced, the window was always smaller than 4GB.
->>
->> But today the window is bigger than than (44 bits now, or a similar
->> value, depends on max page order) so the returned mask is >32. Which
->> still enables that DAC in aacraid but I suspect this is accidental.
-> 
-> I think for powernv returning 64-bit always would make a lot of sense.
-> AFAIK all of powernv is PCIe and not legacy PCI, so returning anything
-> less isn't going to help to optimize anything.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |nigel@nigelreed.net
 
-May be... The current behavior is not wrong (after the fix) but not
-optimal either. Even with legacy PCI it should just result in failing
-attempt to set 64bit mask which drivers should still handle, i.e. choose
-a shorter mask.
+--- Comment #29 from Nigel Reed (nigel@nigelreed.net) ---
+I know this is old but I have been having some issues for a while, I was
+finally able to get something useful:
 
-Why not ditch the whole dma_get_required_mask() and just fail on setting
-a bigger mask? Are these failures not handled in some drivers? Or there
-are cases when a shorter mask is better? Thanks,
+[165716.089703] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[165716.095949] rcu:    1-...!: (0 ticks this GP) idle=3D354/0/0x0
+softirq=3D2154363/2154363 fqs=3D0
+[165716.104512] rcu:    3-...!: (0 ticks this GP) idle=3D29c/0/0x0
+softirq=3D883832/883832 fqs=3D0
+[165716.112873] rcu:    4-...!: (8 GPs behind) idle=3Dad8/0/0x0
+softirq=3D2165586/2165586 fqs=3D0
+[165716.121179] rcu:    9-...!: (9 GPs behind) idle=3Dacc/0/0x0
+softirq=3D1340600/1340600 fqs=3D0
+[165716.129467] rcu:    11-...!: (2 GPs behind) idle=3Da18/0/0x0
+softirq=3D4538536/4538537 fqs=3D0
+[165716.137828] rcu:    12-...!: (0 ticks this GP) idle=3D870/0/0x0
+softirq=3D2158040/2158040 fqs=3D0
+[165775.697763] rcu: rcu_sched kthread starved for 29898 jiffies! g36134941
+f0x0 RCU_GP_WAIT_FQS(5) ->state=3D0x402 ->cpu=3D3
+[165775.709013] rcu: RCU grace-period kthread stack dump:
+[165837.494623] watchdog: BUG: soft lockup - CPU#6 stuck for 23s!
+[(resolved):52315]
+[165865.494840] watchdog: BUG: soft lockup - CPU#6 stuck for 23s!
+[(resolved):52315]
 
+This happened just after freshclam ran but I don't know if it's related.
 
->>> Of course that idea is pretty bogus for
->>> PCIe devices.
->>
->> Why? From the PHB side, there are windows. From the device side, there
->> are many crippled devices, like, no GPU I saw in last years supported
->> more than 48bit.
-> 
-> Yes, but dma_get_required_mask is misnamed - the mask is not required,
-> it is the optimal mask.  Even if the window is smaller we handle it
-> some way, usually by using swiotlb, or by iommu tricks in your case.
->
->>> I suspect the right fix is to just not query dma_get_required_mask for
->>> PCIe devices in aacraid (and other drivers that do something similar).
->>
->> May be, if you write nice and big comment next to
->> dma_get_required_mask() explaining exactly what it does, then I will
->> realize I am getting this all wrong and we will move to fixing the
->> drivers :)
-> 
-> Yes, it needs a comment or two, and probaby be renamed to
-> dma_get_optimal_dma_mask, and a cleanup of most users.  I've added it
-> to my ever growing TODO list, but I would not be unhappy if someone
-> else gives it a spin.
-> 
+This is with a Ryzen 7 1800X CPU.
+5.4.0-48-generic #52-Ubuntu
 
--- 
-Alexey
+I thought I had sysrq configured but it seems not so I can't really provide=
+ any
+more information, other than this is driving me crazy.
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
