@@ -1,72 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475FB27668A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 04:36:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C673127668F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 04:41:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BxfM40TB6zDqJg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 12:36:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BxfSq5tHvzDqLR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 12:41:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=dja@axtens.net;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=nMOilMQA; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=XV9NKNO1; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxfKG1PFVzDq97
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 12:35:12 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id v14so775515pjd.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 19:35:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=E3hzNOlv1EP95890wmnfMkV4k9D4ny9aKGSYsEXtBUw=;
- b=nMOilMQAZKbI4kE3ovsgZ2cjn+wn8nSGubG53jYjG18lksT/j/9v4F8y3yPPXcx91l
- L24AaUb3QK4MBYDi4xzDSVdOfy6Y1ExvIcqZXl5zx8pDnExTEB/5PZo7n43IDouE7M6S
- g+LCj4kt0VMqg7u/hJTOhtOSBcNPNktZx3usI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=E3hzNOlv1EP95890wmnfMkV4k9D4ny9aKGSYsEXtBUw=;
- b=THsifRkoRwTh6IwYxJmEZQF07Ogx5sotlTUr4al5BaWxdDJCHrSFM9CmXMCdsXuc9y
- ggpOHQUOCZNHykmM6KXuTa3376NYZzgBGAHA0aKiggNmoRUTpXUlHMxDkvqSgj/4Jbve
- lyxpUmE6tycYIbuxc0oEq92veS4nmwPmY/L7K+DK7BI2+PIC3qwBj5VsWkPIQYKZW0wg
- V5ZzI6YiuEU5GF3SHPncEUzSK6cPG0F5+WPbAXGC8o8d6mTNTJlf5qRDX0edyz32px4x
- AoGl880F3W9ru6Tu3XVkNv3GMAxPF14OHg7agzEUuPzfSFId/hDZCnkKDaAnBOF1PFcH
- BF4w==
-X-Gm-Message-State: AOAM533Yf43XS9PWXugdVNJOoj2xofLEv1vsIVHQeo3ZbOi4ipmBBQbL
- lmLNSJ3Q2qiIm+3eq5De7GPUTg==
-X-Google-Smtp-Source: ABdhPJz47+LNvgUyuIaJJL9T1IlY9xTaaWtnaJD2kJnJAzXshGQvgBuria81Opcd/bD/Bdq2d1E+Pw==
-X-Received: by 2002:a17:902:bc8a:b029:d2:2a0b:f09e with SMTP id
- bb10-20020a170902bc8ab02900d22a0bf09emr2568344plb.33.1600914909276; 
- Wed, 23 Sep 2020 19:35:09 -0700 (PDT)
-Received: from localhost
- (2001-44b8-111e-5c00-b45d-1a4b-2a15-d1fa.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:b45d:1a4b:2a15:d1fa])
- by smtp.gmail.com with ESMTPSA id 11sm999724pgp.21.2020.09.23.19.35.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Sep 2020 19:35:08 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] cpufreq: powernv: Fix frame-size-overflow in
- powernv_cpufreq_reboot_notifier
-In-Reply-To: <20200922080254.41497-1-srikar@linux.vnet.ibm.com>
-References: <20200922080254.41497-1-srikar@linux.vnet.ibm.com>
-Date: Thu, 24 Sep 2020 12:35:05 +1000
-Message-ID: <87wo0joqau.fsf@dja-thinkpad.axtens.net>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BxfR83D4HzDqLR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 12:40:18 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 08O25OxN008884
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 22:40:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=hyQLRizQ0W/0MifZTitqhI0W7E2sFfUDiKJshhDlkgo=;
+ b=XV9NKNO1y+fHVMsUyste8WWiDgq6wO0VGCVbIcpmwOUT0TIyE909UMFqB+hJ1FvDmIz6
+ 6mlcLCLfjumaVd6+pFPjqfaHGiAZbEb6MI5WCqH7X429pPWQsSkwFTzqiRL6cux+m1Bn
+ 1b/X1uWvXLmx6n84AYj+nfKnXFn8YiOJhlEAdL6c21cnKd0IsBW9VfpcRDUXw1mOtCzC
+ 2fpR02LBF/wITeHSTw+vAD3qY9byxY0TFfQQ+AF2shtbiRGX7HMG0CcIuEMDebWtptK6
+ ok017YVD26IHo4iAWWEJqVhH4PLPLP8mIb7hFOgI7bMxDCJTwquEB9DKrpjMCS0XTylF Ww== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33rhn0hey5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 22:40:16 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08O2cwA3020586
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 02:40:14 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma04fra.de.ibm.com with ESMTP id 33n9m7tfbm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 02:40:14 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 08O2ca3e24248772
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 24 Sep 2020 02:38:36 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1568EA4040;
+ Thu, 24 Sep 2020 02:40:12 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CE35A4051;
+ Thu, 24 Sep 2020 02:40:11 +0000 (GMT)
+Received: from [9.77.196.90] (unknown [9.77.196.90])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Thu, 24 Sep 2020 02:40:10 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
+Subject: Re: [PATCH V2] powerpc/perf: Exclude pmc5/6 from the irrelevant PMU
+ group constraints
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20200922104656.GA664163@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
+Date: Thu, 24 Sep 2020 08:10:08 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <6D9F8E55-2283-49F7-A050-E430A600FEC3@linux.vnet.ibm.com>
+References: <1600672204-1610-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <20200922104656.GA664163@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
+To: "Paul A. Clarke" <pc@us.ibm.com>
+X-Mailer: Apple Mail (2.3608.120.23.2.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-23_19:2020-09-23,
+ 2020-09-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 mlxlogscore=999
+ spamscore=0 clxscore=1015 impostorscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009240009
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,85 +101,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Pratik Rajesh Sampat <psampat@linux.ibm.com>
+Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Srikar,
 
-> The patch avoids allocating cpufreq_policy on stack hence fixing frame
-> size overflow in 'powernv_cpufreq_reboot_notifier'
->
-> ./drivers/cpufreq/powernv-cpufreq.c: In function _powernv_cpufreq_reboot_notifier_:
-> ./drivers/cpufreq/powernv-cpufreq.c:906:1: error: the frame size of 2064 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]
->  }
->  ^
-> cc1: all warnings being treated as errors
-> make[3]: *** [./scripts/Makefile.build:316: drivers/cpufreq/powernv-cpufreq.o] Error 1
-> make[2]: *** [./scripts/Makefile.build:556: drivers/cpufreq] Error 2
-> make[1]: *** [./Makefile:1072: drivers] Error 2
-> make[1]: *** Waiting for unfinished jobs....
-> make: *** [Makefile:157: sub-make] Error 2
->
 
-This looks a lot like commit d95fe371ecd2 ("cpufreq: powernv: Fix frame-size-overflow in powernv_cpufreq_work_fn").
+> On 22-Sep-2020, at 4:16 PM, Paul A. Clarke <pc@us.ibm.com> wrote:
+>=20
+> Just one nit in a comment below...
+> (and this is not worthy of tags like "reviewed-by" ;-)
+>=20
+> On Mon, Sep 21, 2020 at 03:10:04AM -0400, Athira Rajeev wrote:
+>> PMU counter support functions enforces event constraints for group of
+>> events to check if all events in a group can be monitored. Incase of
+>> event codes using PMC5 and PMC6 ( 500fa and 600f4 respectively ),
+>> not all constraints are applicable, say the threshold or sample bits.
+>> But current code includes pmc5 and pmc6 in some group constraints =
+(like
+>> IC_DC Qualifier bits) which is actually not applicable and hence =
+results
+>> in those events not getting counted when scheduled along with group =
+of
+>> other events. Patch fixes this by excluding PMC5/6 from constraints
+>> which are not relevant for it.
+>>=20
+>> Fixes: 7ffd948 ("powerpc/perf: factor out power8 pmu functions")
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>> ---
+>=20
+>> diff --git a/arch/powerpc/perf/isa207-common.c =
+b/arch/powerpc/perf/isa207-common.c
+>> index 964437a..12153da 100644
+>> --- a/arch/powerpc/perf/isa207-common.c
+>> +++ b/arch/powerpc/perf/isa207-common.c
+>> @@ -288,6 +288,15 @@ int isa207_get_constraint(u64 event, unsigned =
+long *maskp, unsigned long *valp)
+>>=20
+>> 		mask  |=3D CNST_PMC_MASK(pmc);
+>> 		value |=3D CNST_PMC_VAL(pmc);
+>> +
+>> +		/*
+>> +		 * PMC5 and PMC6 are used to count cycles and =
+instructions
+>> +		 * and these doesnot support most of the constraint =
+bits.
+>=20
+> s/doesnot/do not/
 
-As with that patch, I have checked for matching puts/gets and that all
-uses of '&' check out.
+Hi Paul,
 
-I tried to look at the snowpatch tests: they apparently reported a
-checkpatch warning but the file has since disappeared so I can't see
-what it was. Running checkpatch locally:
+Thanks for checking the patch and sharing the comment.=20
 
-$ scripts/checkpatch.pl -g HEAD -strict
-WARNING: Possible unwrapped commit description (prefer a maximum 75 chars per line)
-#15: 
-make[3]: *** [./scripts/Makefile.build:316: drivers/cpufreq/powernv-cpufreq.o] Error 1
+Athira
+>=20
+>> +		 * Add a check to exclude PMC5/6 from most of the =
+constraints
+>> +		 * except for ebb/bhrb.
+>> +		 */
+>> +		if (pmc >=3D 5)
+>> +			goto ebb_bhrb;
+>=20
+> PC
 
-This is benign and you shouldn't wrap that line anyway.
-
-On that basis:
-
-Reviewed-by: Daniel Axtens <dja@axtens.net>
-
-Kind regards,
-Daniel
-
-> Fixes: cf30af76 ("cpufreq: powernv: Set the cpus to nominal frequency during reboot/kexec")
-> Cc: Pratik Rajesh Sampat <psampat@linux.ibm.com>
-> Cc: Daniel Axtens <dja@axtens.net>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> ---
->  drivers/cpufreq/powernv-cpufreq.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-> index a9af15e..e439b43 100644
-> --- a/drivers/cpufreq/powernv-cpufreq.c
-> +++ b/drivers/cpufreq/powernv-cpufreq.c
-> @@ -885,12 +885,15 @@ static int powernv_cpufreq_reboot_notifier(struct notifier_block *nb,
->  				unsigned long action, void *unused)
->  {
->  	int cpu;
-> -	struct cpufreq_policy cpu_policy;
-> +	struct cpufreq_policy *cpu_policy;
->  
->  	rebooting = true;
->  	for_each_online_cpu(cpu) {
-> -		cpufreq_get_policy(&cpu_policy, cpu);
-> -		powernv_cpufreq_target_index(&cpu_policy, get_nominal_index());
-> +		cpu_policy = cpufreq_cpu_get(cpu);
-> +		if (!cpu_policy)
-> +			continue;
-> +		powernv_cpufreq_target_index(cpu_policy, get_nominal_index());
-> +		cpufreq_cpu_put(cpu_policy);
->  	}
->  
->  	return NOTIFY_DONE;
-> -- 
-> 1.8.3.1
