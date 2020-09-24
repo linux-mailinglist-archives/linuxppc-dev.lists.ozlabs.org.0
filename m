@@ -2,62 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F175B276327
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Sep 2020 23:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1579627660B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 03:51:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BxWbf30rGzDqdP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 07:32:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BxdLV4G8kzDqc3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 11:51:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=Yk9jK9Aw; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxWYm0kfQzDqcF
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 07:30:33 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-222-k0JZSzTkPJOZPjS-rTcoJw-1; Wed, 23 Sep 2020 22:30:26 +0100
-X-MC-Unique: k0JZSzTkPJOZPjS-rTcoJw-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Wed, 23 Sep 2020 22:30:25 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Wed, 23 Sep 2020 22:30:25 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Arnd Bergmann' <arnd@arndb.de>, Al Viro <viro@zeniv.linux.org.uk>
-Subject: RE: [PATCH 5/9] fs: remove various compat readv/writev helpers
-Thread-Topic: [PATCH 5/9] fs: remove various compat readv/writev helpers
-Thread-Index: AQHWkdnPrERbulCBlEyrFz5+sRsKWql2urog
-Date: Wed, 23 Sep 2020 21:30:25 +0000
-Message-ID: <2e11ea867c644c5d96f8e4930e5c730d@AcuMS.aculab.com>
-References: <20200923060547.16903-1-hch@lst.de>
- <20200923060547.16903-6-hch@lst.de>
- <20200923142549.GK3421308@ZenIV.linux.org.uk> <20200923143251.GA14062@lst.de>
- <20200923145901.GN3421308@ZenIV.linux.org.uk>
- <20200923163831.GO3421308@ZenIV.linux.org.uk>
- <CAK8P3a3nkLUOkR+jwz2_2LcYTUTqdVf8JOtZqKWbtEDotNhFZA@mail.gmail.com>
-In-Reply-To: <CAK8P3a3nkLUOkR+jwz2_2LcYTUTqdVf8JOtZqKWbtEDotNhFZA@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BxdJc4pkNzDqV9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 11:49:31 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id f1so743135plo.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 18:49:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=1lvjIDTva8N1ySD869ceE8O3gGD9oPrrGenAk18ANi8=;
+ b=Yk9jK9AwYpJViRYq1CAPbdTwrdZtbF3SAXYADXnA7ZJAPnB2l4Zf26EmMrUD92jYIW
+ D1hsIhLQT28BFuyLqRZAb0XO7R4caLMmnATNoKN/oSuMAX0I8EYZ/rIy1W/FScA8PcL9
+ 3NEISNydX2GtW7elc/evPlPoIrACU69TXPkKs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=1lvjIDTva8N1ySD869ceE8O3gGD9oPrrGenAk18ANi8=;
+ b=bDQTCXIbWCeMRrA+6dkKjZsiG7JrYHe0Xf3NmGiPwB8iTOPbDZlhtE7BnWX1wJ4a+b
+ /faKXHia+NjdC5qagDKzhKac/JrHWRS8UgrN0tUNDPTUYwWblB1SRiG6vxiCSi8wIZmd
+ q+Kpmb7sBzKR5lOzDskPaG+Zg2C0gQ1jZ3ykVM7QIPy9LbvaO58B78BdcL2F1Xy6Ip95
+ qMtad5ajGexCwTYnwqrxGt4+nWKAnNTjJCsBES7Te1V84PR5Td9P1GuG7tB1ivzVs+Lx
+ ymYGwveFwK8sTkgquGE2oKgk4R6LcTEJfi938CG2DUFoqFW621Hn6xMuL334F8+6K9CG
+ Lg0A==
+X-Gm-Message-State: AOAM5326jd6MV2ZMomBgbOaEVa1N1JODaDTXz3mftjEQfb1D2G4BUqXp
+ Wpiamq7OcnwjofBQdzjI5q73IZLNOQ0FmQ==
+X-Google-Smtp-Source: ABdhPJxusLwNDahaEeHsFieZqZKAFks0KNsijrgcZhivJO0XTxIweg4DCiu/Oqvh9pXtoJQ8xdmYLA==
+X-Received: by 2002:a17:90a:d152:: with SMTP id
+ t18mr1773111pjw.27.1600912167196; 
+ Wed, 23 Sep 2020 18:49:27 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-111e-5c00-b45d-1a4b-2a15-d1fa.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:b45d:1a4b:2a15:d1fa])
+ by smtp.gmail.com with ESMTPSA id i9sm835030pfq.53.2020.09.23.18.49.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 23 Sep 2020 18:49:26 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc: PPC_SECURE_BOOT should not require PowerNV
+Date: Thu, 24 Sep 2020 11:49:22 +1000
+Message-Id: <20200924014922.172914-1-dja@axtens.net>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,50 +76,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-s390 <linux-s390@vger.kernel.org>,
- linux-scsi <linux-scsi@vger.kernel.org>,
- Parisc List <linux-parisc@vger.kernel.org>, linux-aio <linux-aio@kvack.org>,
- Networking <netdev@vger.kernel.org>,
- "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- David Howells <dhowells@redhat.com>,
- Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
- LSM List <linux-security-module@vger.kernel.org>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- linux-block <linux-block@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
- linux-arch <linux-arch@vger.kernel.org>,
- sparclinux <sparclinux@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Nayna Jain <nayna@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogQXJuZCBCZXJnbWFubg0KPiBTZW50OiAyMyBTZXB0ZW1iZXIgMjAyMCAxOTo0Ng0KLi4u
-DQo+IFJlZ2FyZGxlc3Mgb2YgdGhhdCwgYW5vdGhlciBhZHZhbnRhZ2Ugb2YgaGF2aW5nIHRoZSBT
-WVNDQUxMX0RFQ0xBUkV4KCkNCj4gd291bGQgYmUgdGhlIGFiaWxpdHkgdG8gaW5jbHVkZSB0aGF0
-IGhlYWRlciBmaWxlIGZyb20gZWxzZXdoZXJlIHdpdGggYSBkaWZmZXJlbnQNCj4gbWFjcm8gZGVm
-aW5pdGlvbiB0byBjcmVhdGUgYSBtYWNoaW5lLXJlYWRhYmxlIHZlcnNpb24gb2YgdGhlIGludGVy
-ZmFjZSB3aGVuDQo+IGNvbWJpbmVkIHdpdGggdGhlIHN5c2NhbGwudGJsIGZpbGVzLiBUaGlzIGNv
-dWxkIGJlIHVzZWQgdG8gY3JlYXRlIGEgdXNlcg0KPiBzcGFjZSBzdHViIGZvciBjYWxsaW5nIGlu
-dG8gdGhlIGxvdy1sZXZlbCBzeXNjYWxsIHJlZ2FyZGxlc3Mgb2YgdGhlDQo+IGxpYmMgaW50ZXJm
-YWNlcywNCj4gb3IgZm9yIHN5bmNocm9uaXppbmcgdGhlIGludGVyZmFjZXMgd2l0aCBzdHJhY2Us
-IHFlbXUtdXNlciwgb3IgYW55dGhpbmcgdGhhdA0KPiBuZWVkcyB0byBkZWFsIHdpdGggdGhlIGxv
-dy1sZXZlbCBpbnRlcmZhY2UuDQoNCkEgc2ltaWxhciAndHJpY2snICh0aGF0IHByb2JhYmx5IHdv
-bid0IHdvcmsgaGVyZSkgaXMgdG8gcGFzcw0KdGhlIG5hbWUgb2YgYSAjZGVmaW5lIGZ1bmN0aW9u
-IGFzIGEgcGFyYW1ldGVyIHRvIGFub3RoZXIgZGVmaW5lLg0KVXNlZnVsIGZvciBkZWZpbmluZyBj
-b25zdGFudHMgYW5kIGVycm9yIHN0cmluZ3MgdG9nZXRoZXIuIGVnOg0KI2RlZmluZSBUUkFGRklD
-X0xJR0hUUyh4KSBcDQoJeChSRUQsIDAsICJSZWQiKSBcDQoJeChZRUxMT1csIDEsICJZZWxsb3cp
-IFwNCgl4KEdSRUVOLCAyLCAiR1JFRU4pDQoNCllvdSBjYW4gdGhlbiBkbyB0aGluZyBsaWtlOg0K
-I2RlZmluZSB4KHRva2VuLCB2YWx1ZSwgc3RyaW5nKSB0b2tlbiA9IHZhbHVlLA0KZW51bSB7VFJB
-RkZJQ19MSUdIVFMoeCkgTlVNX0xJR0hUU307DQojdW5kZWYgeA0KI2RlZmluZSB4KHRva2VuLCB2
-YWx1ZSwgc3RyaW5nKSBbdmFsdWVdID0gc3RyaW5nLA0KY29uc3QgY2hhciAqY29sb3Vyc1tdID0g
-e1RSQUZGSUNfTElHSFRTKHgpfTsNCiN1bmRlZiB4DQp0byBpbml0aWFsaXNlIGNvbnN0YW50cyBh
-bmQgYSBuYW1lIHRhYmxlIHRoYXQgYXJlIGFsd2F5cyBpbiBzeW5jLg0KDQpJdCBpcyBhbHNvIGEg
-Z29vZCB3YXkgdG8gZ2VuZXJhdGUgc291cmNlIGxpbmVzIHRoYXQgYXJlIG92ZXIgMU1CLg0KDQoJ
-RGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1v
-dW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEz
-OTczODYgKFdhbGVzKQ0K
+In commit 61f879d97ce4 ("powerpc/pseries: Detect secure and trusted
+boot state of the system.") we taught the kernel how to understand the
+secure-boot parameters used by a pseries guest.
+
+However, CONFIG_PPC_SECURE_BOOT still requires PowerNV. I didn't
+catch this because pseries_le_defconfig includes support for
+PowerNV and so everything still worked. Indeed, most configs will.
+Nonetheless, technically PPC_SECURE_BOOT doesn't require PowerNV
+any more.
+
+The secure variables support (PPC_SECVAR_SYSFS) doesn't do anything
+on pSeries yet, but I don't think it's worth adding a new condition -
+at some stage we'll want to add a backend for pSeries anyway.
+
+Fixes: 61f879d97ce4 ("powerpc/pseries: Detect secure and trusted boot state of the system.")
+Cc: Nayna Jain <nayna@linux.ibm.com>
+Signed-off-by: Daniel Axtens <dja@axtens.net>
+---
+ arch/powerpc/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 4b33477dafb8..f645fa934853 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -983,7 +983,7 @@ config PPC_MEM_KEYS
+ config PPC_SECURE_BOOT
+ 	prompt "Enable secure boot support"
+ 	bool
+-	depends on PPC_POWERNV
++	depends on PPC_POWERNV || PPC_PSERIES
+ 	depends on IMA_ARCH_POLICY
+ 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT
+ 	help
+-- 
+2.25.1
 
