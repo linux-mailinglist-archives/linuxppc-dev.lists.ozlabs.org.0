@@ -2,69 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1579627660B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 03:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 475FB27668A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 04:36:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BxdLV4G8kzDqc3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 11:51:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BxfM40TB6zDqJg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 12:36:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=Yk9jK9Aw; dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+ header.s=google header.b=nMOilMQA; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxdJc4pkNzDqV9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 11:49:31 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id f1so743135plo.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 18:49:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BxfKG1PFVzDq97
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 12:35:12 +1000 (AEST)
+Received: by mail-pj1-x1042.google.com with SMTP id v14so775515pjd.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 19:35:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=1lvjIDTva8N1ySD869ceE8O3gGD9oPrrGenAk18ANi8=;
- b=Yk9jK9AwYpJViRYq1CAPbdTwrdZtbF3SAXYADXnA7ZJAPnB2l4Zf26EmMrUD92jYIW
- D1hsIhLQT28BFuyLqRZAb0XO7R4caLMmnATNoKN/oSuMAX0I8EYZ/rIy1W/FScA8PcL9
- 3NEISNydX2GtW7elc/evPlPoIrACU69TXPkKs=
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=E3hzNOlv1EP95890wmnfMkV4k9D4ny9aKGSYsEXtBUw=;
+ b=nMOilMQAZKbI4kE3ovsgZ2cjn+wn8nSGubG53jYjG18lksT/j/9v4F8y3yPPXcx91l
+ L24AaUb3QK4MBYDi4xzDSVdOfy6Y1ExvIcqZXl5zx8pDnExTEB/5PZo7n43IDouE7M6S
+ g+LCj4kt0VMqg7u/hJTOhtOSBcNPNktZx3usI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=1lvjIDTva8N1ySD869ceE8O3gGD9oPrrGenAk18ANi8=;
- b=bDQTCXIbWCeMRrA+6dkKjZsiG7JrYHe0Xf3NmGiPwB8iTOPbDZlhtE7BnWX1wJ4a+b
- /faKXHia+NjdC5qagDKzhKac/JrHWRS8UgrN0tUNDPTUYwWblB1SRiG6vxiCSi8wIZmd
- q+Kpmb7sBzKR5lOzDskPaG+Zg2C0gQ1jZ3ykVM7QIPy9LbvaO58B78BdcL2F1Xy6Ip95
- qMtad5ajGexCwTYnwqrxGt4+nWKAnNTjJCsBES7Te1V84PR5Td9P1GuG7tB1ivzVs+Lx
- ymYGwveFwK8sTkgquGE2oKgk4R6LcTEJfi938CG2DUFoqFW621Hn6xMuL334F8+6K9CG
- Lg0A==
-X-Gm-Message-State: AOAM5326jd6MV2ZMomBgbOaEVa1N1JODaDTXz3mftjEQfb1D2G4BUqXp
- Wpiamq7OcnwjofBQdzjI5q73IZLNOQ0FmQ==
-X-Google-Smtp-Source: ABdhPJxusLwNDahaEeHsFieZqZKAFks0KNsijrgcZhivJO0XTxIweg4DCiu/Oqvh9pXtoJQ8xdmYLA==
-X-Received: by 2002:a17:90a:d152:: with SMTP id
- t18mr1773111pjw.27.1600912167196; 
- Wed, 23 Sep 2020 18:49:27 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=E3hzNOlv1EP95890wmnfMkV4k9D4ny9aKGSYsEXtBUw=;
+ b=THsifRkoRwTh6IwYxJmEZQF07Ogx5sotlTUr4al5BaWxdDJCHrSFM9CmXMCdsXuc9y
+ ggpOHQUOCZNHykmM6KXuTa3376NYZzgBGAHA0aKiggNmoRUTpXUlHMxDkvqSgj/4Jbve
+ lyxpUmE6tycYIbuxc0oEq92veS4nmwPmY/L7K+DK7BI2+PIC3qwBj5VsWkPIQYKZW0wg
+ V5ZzI6YiuEU5GF3SHPncEUzSK6cPG0F5+WPbAXGC8o8d6mTNTJlf5qRDX0edyz32px4x
+ AoGl880F3W9ru6Tu3XVkNv3GMAxPF14OHg7agzEUuPzfSFId/hDZCnkKDaAnBOF1PFcH
+ BF4w==
+X-Gm-Message-State: AOAM533Yf43XS9PWXugdVNJOoj2xofLEv1vsIVHQeo3ZbOi4ipmBBQbL
+ lmLNSJ3Q2qiIm+3eq5De7GPUTg==
+X-Google-Smtp-Source: ABdhPJz47+LNvgUyuIaJJL9T1IlY9xTaaWtnaJD2kJnJAzXshGQvgBuria81Opcd/bD/Bdq2d1E+Pw==
+X-Received: by 2002:a17:902:bc8a:b029:d2:2a0b:f09e with SMTP id
+ bb10-20020a170902bc8ab02900d22a0bf09emr2568344plb.33.1600914909276; 
+ Wed, 23 Sep 2020 19:35:09 -0700 (PDT)
 Received: from localhost
  (2001-44b8-111e-5c00-b45d-1a4b-2a15-d1fa.static.ipv6.internode.on.net.
  [2001:44b8:111e:5c00:b45d:1a4b:2a15:d1fa])
- by smtp.gmail.com with ESMTPSA id i9sm835030pfq.53.2020.09.23.18.49.26
+ by smtp.gmail.com with ESMTPSA id 11sm999724pgp.21.2020.09.23.19.35.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Sep 2020 18:49:26 -0700 (PDT)
+ Wed, 23 Sep 2020 19:35:08 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: PPC_SECURE_BOOT should not require PowerNV
-Date: Thu, 24 Sep 2020 11:49:22 +1000
-Message-Id: <20200924014922.172914-1-dja@axtens.net>
-X-Mailer: git-send-email 2.25.1
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] cpufreq: powernv: Fix frame-size-overflow in
+ powernv_cpufreq_reboot_notifier
+In-Reply-To: <20200922080254.41497-1-srikar@linux.vnet.ibm.com>
+References: <20200922080254.41497-1-srikar@linux.vnet.ibm.com>
+Date: Thu, 24 Sep 2020 12:35:05 +1000
+Message-ID: <87wo0joqau.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,45 +78,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nayna Jain <nayna@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Pratik Rajesh Sampat <psampat@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In commit 61f879d97ce4 ("powerpc/pseries: Detect secure and trusted
-boot state of the system.") we taught the kernel how to understand the
-secure-boot parameters used by a pseries guest.
+Hi Srikar,
 
-However, CONFIG_PPC_SECURE_BOOT still requires PowerNV. I didn't
-catch this because pseries_le_defconfig includes support for
-PowerNV and so everything still worked. Indeed, most configs will.
-Nonetheless, technically PPC_SECURE_BOOT doesn't require PowerNV
-any more.
+> The patch avoids allocating cpufreq_policy on stack hence fixing frame
+> size overflow in 'powernv_cpufreq_reboot_notifier'
+>
+> ./drivers/cpufreq/powernv-cpufreq.c: In function _powernv_cpufreq_reboot_notifier_:
+> ./drivers/cpufreq/powernv-cpufreq.c:906:1: error: the frame size of 2064 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]
+>  }
+>  ^
+> cc1: all warnings being treated as errors
+> make[3]: *** [./scripts/Makefile.build:316: drivers/cpufreq/powernv-cpufreq.o] Error 1
+> make[2]: *** [./scripts/Makefile.build:556: drivers/cpufreq] Error 2
+> make[1]: *** [./Makefile:1072: drivers] Error 2
+> make[1]: *** Waiting for unfinished jobs....
+> make: *** [Makefile:157: sub-make] Error 2
+>
 
-The secure variables support (PPC_SECVAR_SYSFS) doesn't do anything
-on pSeries yet, but I don't think it's worth adding a new condition -
-at some stage we'll want to add a backend for pSeries anyway.
+This looks a lot like commit d95fe371ecd2 ("cpufreq: powernv: Fix frame-size-overflow in powernv_cpufreq_work_fn").
 
-Fixes: 61f879d97ce4 ("powerpc/pseries: Detect secure and trusted boot state of the system.")
-Cc: Nayna Jain <nayna@linux.ibm.com>
-Signed-off-by: Daniel Axtens <dja@axtens.net>
----
- arch/powerpc/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+As with that patch, I have checked for matching puts/gets and that all
+uses of '&' check out.
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 4b33477dafb8..f645fa934853 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -983,7 +983,7 @@ config PPC_MEM_KEYS
- config PPC_SECURE_BOOT
- 	prompt "Enable secure boot support"
- 	bool
--	depends on PPC_POWERNV
-+	depends on PPC_POWERNV || PPC_PSERIES
- 	depends on IMA_ARCH_POLICY
- 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT
- 	help
--- 
-2.25.1
+I tried to look at the snowpatch tests: they apparently reported a
+checkpatch warning but the file has since disappeared so I can't see
+what it was. Running checkpatch locally:
 
+$ scripts/checkpatch.pl -g HEAD -strict
+WARNING: Possible unwrapped commit description (prefer a maximum 75 chars per line)
+#15: 
+make[3]: *** [./scripts/Makefile.build:316: drivers/cpufreq/powernv-cpufreq.o] Error 1
+
+This is benign and you shouldn't wrap that line anyway.
+
+On that basis:
+
+Reviewed-by: Daniel Axtens <dja@axtens.net>
+
+Kind regards,
+Daniel
+
+> Fixes: cf30af76 ("cpufreq: powernv: Set the cpus to nominal frequency during reboot/kexec")
+> Cc: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+> Cc: Daniel Axtens <dja@axtens.net>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> ---
+>  drivers/cpufreq/powernv-cpufreq.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+> index a9af15e..e439b43 100644
+> --- a/drivers/cpufreq/powernv-cpufreq.c
+> +++ b/drivers/cpufreq/powernv-cpufreq.c
+> @@ -885,12 +885,15 @@ static int powernv_cpufreq_reboot_notifier(struct notifier_block *nb,
+>  				unsigned long action, void *unused)
+>  {
+>  	int cpu;
+> -	struct cpufreq_policy cpu_policy;
+> +	struct cpufreq_policy *cpu_policy;
+>  
+>  	rebooting = true;
+>  	for_each_online_cpu(cpu) {
+> -		cpufreq_get_policy(&cpu_policy, cpu);
+> -		powernv_cpufreq_target_index(&cpu_policy, get_nominal_index());
+> +		cpu_policy = cpufreq_cpu_get(cpu);
+> +		if (!cpu_policy)
+> +			continue;
+> +		powernv_cpufreq_target_index(cpu_policy, get_nominal_index());
+> +		cpufreq_cpu_put(cpu_policy);
+>  	}
+>  
+>  	return NOTIFY_DONE;
+> -- 
+> 1.8.3.1
