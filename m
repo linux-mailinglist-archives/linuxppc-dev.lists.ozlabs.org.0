@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 452D12769C5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 08:55:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C022769DC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 08:58:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bxm5z3f5szDqdX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 16:55:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bxm8m2vpKzDqfc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Sep 2020 16:58:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
- helo=mail-pf1-x42f.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Xh2L1ibY; dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
+ header.s=20161025 header.b=UN3Tepgl; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BxlkR1YFVzDqbX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 16:38:55 +1000 (AEST)
-Received: by mail-pf1-x42f.google.com with SMTP id b124so1253012pfg.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 23:38:55 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BxlkT1DrDzDqc9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Sep 2020 16:38:57 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id y17so1144530plb.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Sep 2020 23:38:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=sW/UzNztx1LJZzb4Lv8dPnaVX4ry9sbuSemrP+m6GqM=;
- b=Xh2L1ibYpDGQH3WONK7Ynk3O9fXyrsrfT4JwE7MvDPVrVEuhC0yIC1WLk72b4DwbGW
- K9J/VgiO3PSMGTloAdMtKN3j9S5zCics4yjU4332z1HqnsMmxkCDkKju0H486iyZhTB5
- NAOkLgqwFH9DlNjwjONXEZUV4vw6h/racmgZJJPPBNjbQRzEpP4ZjETampAl8CNQsUIx
- jm8QhYsFAWhbuqSvgsoVsu7LHWi4vzHCdO9hUTAK0Cgw0jWhN+92oKQ6iR9fRQWT4cd1
- 0xL63LVXSRzmZ6Q8u2HDfQNARAlYNtFxCZkQyDVBfPypStDxcbwjruzUK0ELBSKhwJV5
- IgQg==
+ bh=ppYNoquUFvSDgQ0kDzqxFcaBErf141d6C668dXHzNKM=;
+ b=UN3TepglHmZVFZq8BFChRfOk5OnjNU2T5mkU9KTNtyySof9lexicwjsVVhld9gieId
+ VeLJFd7PBpWYa5ZGOSIvabAjVORn2JoJNHVmRT4P6M/S8skbaTrd0o8rlItrv+ogqKcm
+ Eko52va3oUXykOfUaWnG42ZR+M11f7CjDk23VNlIPvDssZ+tqy+f61GHPfMh9cYscKy9
+ 658DztRSaBNP07iDFEl9oEbWLwL7UvVSST6kGKb5nKcL692OHNQp8X82fT32qqGqPRvL
+ tNplUmC/CMthzQE55/j7ZaaZZlf1L/o8I1DBawGoe/F4tybk00XKSE8D2iqzpS/w1aJk
+ sD7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=sW/UzNztx1LJZzb4Lv8dPnaVX4ry9sbuSemrP+m6GqM=;
- b=Dl0sEgCPPBeVavvWB5KkxspYxy4MXKE3gPxk7fuHtErsE3vH6aiHuKet2I418Jcvpb
- 8IwvjhcuU5F16AHATewUgZSFRDSX8F7C58vN+IyFWhgY+Anu0P6+bRovTdG25+ohOBGW
- h91cnZCvu7O7LPhVaRuoPEnMYA5JKfoSVMfqsPpehOFLFnbAsxXPQYIWAlXA4Ur4j5om
- iu8O0NJ84WuIqKLdXhZ5rUX5jy79vvVVglrA7IOUfCjz9OtHr98PVT1Vqqc7NRIsHbn3
- /x2n15HyRWhlVo9/2CMWGT46qQ6E6x5eajwMgwwQnmbSjmtp6aVacbSYmoExGJ0iLHIA
- TUCA==
-X-Gm-Message-State: AOAM530+dc+z4Lfda9+AkVF0gjfUF9TA/NUD7vGgn8tlZUFiTLTSfGym
- vUrHsS2IT5N9x1cOf7joQ1E8h60QjWhREw==
-X-Google-Smtp-Source: ABdhPJxCalXqy7xB+qwH7dgAmxlQ43QE1PxdwRiaFJK3m8vFHCg0q59T4IQONRRti2B2XzfnrUkeQg==
-X-Received: by 2002:a62:520e:0:b029:142:2501:3979 with SMTP id
- g14-20020a62520e0000b029014225013979mr3256866pfb.62.1600929531889; 
- Wed, 23 Sep 2020 23:38:51 -0700 (PDT)
+ bh=ppYNoquUFvSDgQ0kDzqxFcaBErf141d6C668dXHzNKM=;
+ b=dqvBl7foqL0zvfMC8u2p3Wb0CUVIqYKKL/Pbr+X6t7H/AJk0VAZLgw6dudsWYM5mY4
+ UZi8NRbfI+MTdmfSWEQ2ZpvQ7TwrO85uYoIVf1StKVKbwykHZqxBgwhsE9m69BszfFiM
+ WArZ05KAx5jjnR1sXHgIpBh03oSzSSMIWp5Y6F9fI7kMy/SHxhvbqt1IJHbbwvTdT1D3
+ ttHEfGtOpELeUPseTyBhgacUr7pb3TCy1Y2xSItOhbm9oVdxKUA2Q4kBZKQfcxCcYmIB
+ r4GPuCUNrlN8PAaDxDjpW7r9Z0Xa9qAZ6TD1RNiTRAymTcMpXwoT/vEJbFP9yJi31ixG
+ 2SlA==
+X-Gm-Message-State: AOAM533r4cmzgfVdckXcMGmHWiG60wx/G+R7G+FwWouH4/dnjKcTqqSL
+ 1eOLlYgqeCT2n1bZKsRTUGeWn35U2BTCbw==
+X-Google-Smtp-Source: ABdhPJw7Nlp3y0rYOum2Vnmo5lUM3NQ7hVnTrTFoxZplbnLZ5ZRZT6O0CL0LU10J7ye5X9b325W8rA==
+X-Received: by 2002:a17:902:c3c9:b029:d1:e5e7:bdd9 with SMTP id
+ j9-20020a170902c3c9b02900d1e5e7bdd9mr3215123plj.57.1600929534370; 
+ Wed, 23 Sep 2020 23:38:54 -0700 (PDT)
 Received: from localhost.ibm.com (194-193-34-182.tpgi.com.au. [194.193.34.182])
- by smtp.gmail.com with ESMTPSA id y1sm1662930pgr.3.2020.09.23.23.38.50
+ by smtp.gmail.com with ESMTPSA id y1sm1662930pgr.3.2020.09.23.23.38.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Sep 2020 23:38:51 -0700 (PDT)
+ Wed, 23 Sep 2020 23:38:53 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 09/18] powerpc/82xx/*: Move PHB discovery
-Date: Thu, 24 Sep 2020 16:38:10 +1000
-Message-Id: <20200924063819.262830-9-oohall@gmail.com>
+Subject: [RFC PATCH 10/18] powerpc/83xx: Move PHB discovery
+Date: Thu, 24 Sep 2020 16:38:11 +1000
+Message-Id: <20200924063819.262830-10-oohall@gmail.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200924063819.262830-1-oohall@gmail.com>
 References: <20200924063819.262830-1-oohall@gmail.com>
@@ -86,53 +86,180 @@ Sender: "Linuxppc-dev"
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
-compile tested with pq2fads_defconfig
+compile tested with mpc83xx_defconfig
 ---
- arch/powerpc/platforms/82xx/mpc8272_ads.c | 2 +-
- arch/powerpc/platforms/82xx/pq2fads.c     | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/83xx/asp834x.c     | 1 +
+ arch/powerpc/platforms/83xx/km83xx.c      | 1 +
+ arch/powerpc/platforms/83xx/misc.c        | 2 --
+ arch/powerpc/platforms/83xx/mpc830x_rdb.c | 1 +
+ arch/powerpc/platforms/83xx/mpc831x_rdb.c | 1 +
+ arch/powerpc/platforms/83xx/mpc832x_mds.c | 1 +
+ arch/powerpc/platforms/83xx/mpc832x_rdb.c | 1 +
+ arch/powerpc/platforms/83xx/mpc834x_itx.c | 1 +
+ arch/powerpc/platforms/83xx/mpc834x_mds.c | 1 +
+ arch/powerpc/platforms/83xx/mpc836x_mds.c | 1 +
+ arch/powerpc/platforms/83xx/mpc836x_rdk.c | 1 +
+ arch/powerpc/platforms/83xx/mpc837x_mds.c | 1 +
+ arch/powerpc/platforms/83xx/mpc837x_rdb.c | 1 +
+ 13 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/82xx/mpc8272_ads.c b/arch/powerpc/platforms/82xx/mpc8272_ads.c
-index 3fe1a6593280..0b5b9dec16d5 100644
---- a/arch/powerpc/platforms/82xx/mpc8272_ads.c
-+++ b/arch/powerpc/platforms/82xx/mpc8272_ads.c
-@@ -171,7 +171,6 @@ static void __init mpc8272_ads_setup_arch(void)
- 	iounmap(bcsr);
- 
- 	init_ioports();
--	pq2_init_pci();
- 
- 	if (ppc_md.progress)
- 		ppc_md.progress("mpc8272_ads_setup_arch(), finish", 0);
-@@ -205,6 +204,7 @@ define_machine(mpc8272_ads)
- 	.name = "Freescale MPC8272 ADS",
- 	.probe = mpc8272_ads_probe,
- 	.setup_arch = mpc8272_ads_setup_arch,
-+	.discover_phbs = pq2_init_pci,
- 	.init_IRQ = mpc8272_ads_pic_init,
- 	.get_irq = cpm2_get_irq,
- 	.calibrate_decr = generic_calibrate_decr,
-diff --git a/arch/powerpc/platforms/82xx/pq2fads.c b/arch/powerpc/platforms/82xx/pq2fads.c
-index a74082140718..ac9113d524af 100644
---- a/arch/powerpc/platforms/82xx/pq2fads.c
-+++ b/arch/powerpc/platforms/82xx/pq2fads.c
-@@ -150,8 +150,6 @@ static void __init pq2fads_setup_arch(void)
- 	/* Enable external IRQs */
- 	clrbits32(&cpm2_immr->im_siu_conf.siu_82xx.sc_siumcr, 0x0c000000);
- 
--	pq2_init_pci();
+diff --git a/arch/powerpc/platforms/83xx/asp834x.c b/arch/powerpc/platforms/83xx/asp834x.c
+index 28474876f41b..68061c2a57c1 100644
+--- a/arch/powerpc/platforms/83xx/asp834x.c
++++ b/arch/powerpc/platforms/83xx/asp834x.c
+@@ -44,6 +44,7 @@ define_machine(asp834x) {
+ 	.name			= "ASP8347E",
+ 	.probe			= asp834x_probe,
+ 	.setup_arch		= asp834x_setup_arch,
++	.discover_phbs		= mpc83xx_setup_pci,
+ 	.init_IRQ		= mpc83xx_ipic_init_IRQ,
+ 	.get_irq		= ipic_get_irq,
+ 	.restart		= mpc83xx_restart,
+diff --git a/arch/powerpc/platforms/83xx/km83xx.c b/arch/powerpc/platforms/83xx/km83xx.c
+index bcdc2c203ec9..108e1e4d2683 100644
+--- a/arch/powerpc/platforms/83xx/km83xx.c
++++ b/arch/powerpc/platforms/83xx/km83xx.c
+@@ -180,6 +180,7 @@ define_machine(mpc83xx_km) {
+ 	.name		= "mpc83xx-km-platform",
+ 	.probe		= mpc83xx_km_probe,
+ 	.setup_arch	= mpc83xx_km_setup_arch,
++	.discover_phbs	= mpc83xx_setup_pci,
+ 	.init_IRQ	= mpc83xx_ipic_init_IRQ,
+ 	.get_irq	= ipic_get_irq,
+ 	.restart	= mpc83xx_restart,
+diff --git a/arch/powerpc/platforms/83xx/misc.c b/arch/powerpc/platforms/83xx/misc.c
+index a952e91db3ee..3285dabcf923 100644
+--- a/arch/powerpc/platforms/83xx/misc.c
++++ b/arch/powerpc/platforms/83xx/misc.c
+@@ -132,8 +132,6 @@ void __init mpc83xx_setup_arch(void)
+ 		setbat(-1, va, immrbase, immrsize, PAGE_KERNEL_NCG);
+ 		update_bats();
+ 	}
 -
- 	if (ppc_md.progress)
- 		ppc_md.progress("pq2fads_setup_arch(), finish", 0);
+-	mpc83xx_setup_pci();
  }
-@@ -184,6 +182,7 @@ define_machine(pq2fads)
- 	.name = "Freescale PQ2FADS",
- 	.probe = pq2fads_probe,
- 	.setup_arch = pq2fads_setup_arch,
-+	.discover_phbs = pq2_init_pci,
- 	.init_IRQ = pq2fads_pic_init,
- 	.get_irq = cpm2_get_irq,
- 	.calibrate_decr = generic_calibrate_decr,
+ 
+ int machine_check_83xx(struct pt_regs *regs)
+diff --git a/arch/powerpc/platforms/83xx/mpc830x_rdb.c b/arch/powerpc/platforms/83xx/mpc830x_rdb.c
+index 51426e88ec67..956d4389effa 100644
+--- a/arch/powerpc/platforms/83xx/mpc830x_rdb.c
++++ b/arch/powerpc/platforms/83xx/mpc830x_rdb.c
+@@ -48,6 +48,7 @@ define_machine(mpc830x_rdb) {
+ 	.name			= "MPC830x RDB",
+ 	.probe			= mpc830x_rdb_probe,
+ 	.setup_arch		= mpc830x_rdb_setup_arch,
++	.discover_phbs		= mpc83xx_setup_pci,
+ 	.init_IRQ		= mpc83xx_ipic_init_IRQ,
+ 	.get_irq		= ipic_get_irq,
+ 	.restart		= mpc83xx_restart,
+diff --git a/arch/powerpc/platforms/83xx/mpc831x_rdb.c b/arch/powerpc/platforms/83xx/mpc831x_rdb.c
+index 5ccd57a48492..3b578f080e3b 100644
+--- a/arch/powerpc/platforms/83xx/mpc831x_rdb.c
++++ b/arch/powerpc/platforms/83xx/mpc831x_rdb.c
+@@ -48,6 +48,7 @@ define_machine(mpc831x_rdb) {
+ 	.name			= "MPC831x RDB",
+ 	.probe			= mpc831x_rdb_probe,
+ 	.setup_arch		= mpc831x_rdb_setup_arch,
++	.discover_phbs		= mpc83xx_setup_pci,
+ 	.init_IRQ		= mpc83xx_ipic_init_IRQ,
+ 	.get_irq		= ipic_get_irq,
+ 	.restart		= mpc83xx_restart,
+diff --git a/arch/powerpc/platforms/83xx/mpc832x_mds.c b/arch/powerpc/platforms/83xx/mpc832x_mds.c
+index 6fa5402ebf20..850d566ef900 100644
+--- a/arch/powerpc/platforms/83xx/mpc832x_mds.c
++++ b/arch/powerpc/platforms/83xx/mpc832x_mds.c
+@@ -101,6 +101,7 @@ define_machine(mpc832x_mds) {
+ 	.name 		= "MPC832x MDS",
+ 	.probe 		= mpc832x_sys_probe,
+ 	.setup_arch 	= mpc832x_sys_setup_arch,
++	.discover_phbs	= mpc83xx_setup_pci,
+ 	.init_IRQ	= mpc83xx_ipic_init_IRQ,
+ 	.get_irq 	= ipic_get_irq,
+ 	.restart 	= mpc83xx_restart,
+diff --git a/arch/powerpc/platforms/83xx/mpc832x_rdb.c b/arch/powerpc/platforms/83xx/mpc832x_rdb.c
+index 622c625d5ce4..b6133a237a70 100644
+--- a/arch/powerpc/platforms/83xx/mpc832x_rdb.c
++++ b/arch/powerpc/platforms/83xx/mpc832x_rdb.c
+@@ -219,6 +219,7 @@ define_machine(mpc832x_rdb) {
+ 	.name		= "MPC832x RDB",
+ 	.probe		= mpc832x_rdb_probe,
+ 	.setup_arch	= mpc832x_rdb_setup_arch,
++	.discover_phbs  = mpc83xx_setup_pci,
+ 	.init_IRQ	= mpc83xx_ipic_init_IRQ,
+ 	.get_irq	= ipic_get_irq,
+ 	.restart	= mpc83xx_restart,
+diff --git a/arch/powerpc/platforms/83xx/mpc834x_itx.c b/arch/powerpc/platforms/83xx/mpc834x_itx.c
+index ebfd139bca20..9630f3aa4d9c 100644
+--- a/arch/powerpc/platforms/83xx/mpc834x_itx.c
++++ b/arch/powerpc/platforms/83xx/mpc834x_itx.c
+@@ -70,6 +70,7 @@ define_machine(mpc834x_itx) {
+ 	.name			= "MPC834x ITX",
+ 	.probe			= mpc834x_itx_probe,
+ 	.setup_arch		= mpc834x_itx_setup_arch,
++	.discover_phbs  	= mpc83xx_setup_pci,
+ 	.init_IRQ		= mpc83xx_ipic_init_IRQ,
+ 	.get_irq		= ipic_get_irq,
+ 	.restart		= mpc83xx_restart,
+diff --git a/arch/powerpc/platforms/83xx/mpc834x_mds.c b/arch/powerpc/platforms/83xx/mpc834x_mds.c
+index 356228e35279..6d91bdce0a18 100644
+--- a/arch/powerpc/platforms/83xx/mpc834x_mds.c
++++ b/arch/powerpc/platforms/83xx/mpc834x_mds.c
+@@ -91,6 +91,7 @@ define_machine(mpc834x_mds) {
+ 	.name			= "MPC834x MDS",
+ 	.probe			= mpc834x_mds_probe,
+ 	.setup_arch		= mpc834x_mds_setup_arch,
++	.discover_phbs  	= mpc83xx_setup_pci,
+ 	.init_IRQ		= mpc83xx_ipic_init_IRQ,
+ 	.get_irq		= ipic_get_irq,
+ 	.restart		= mpc83xx_restart,
+diff --git a/arch/powerpc/platforms/83xx/mpc836x_mds.c b/arch/powerpc/platforms/83xx/mpc836x_mds.c
+index 90d9cbfae659..da4cf52cb55b 100644
+--- a/arch/powerpc/platforms/83xx/mpc836x_mds.c
++++ b/arch/powerpc/platforms/83xx/mpc836x_mds.c
+@@ -201,6 +201,7 @@ define_machine(mpc836x_mds) {
+ 	.name		= "MPC836x MDS",
+ 	.probe		= mpc836x_mds_probe,
+ 	.setup_arch	= mpc836x_mds_setup_arch,
++	.discover_phbs  = mpc83xx_setup_pci,
+ 	.init_IRQ	= mpc83xx_ipic_init_IRQ,
+ 	.get_irq	= ipic_get_irq,
+ 	.restart	= mpc83xx_restart,
+diff --git a/arch/powerpc/platforms/83xx/mpc836x_rdk.c b/arch/powerpc/platforms/83xx/mpc836x_rdk.c
+index b4aac2cde849..3427ad0d9d38 100644
+--- a/arch/powerpc/platforms/83xx/mpc836x_rdk.c
++++ b/arch/powerpc/platforms/83xx/mpc836x_rdk.c
+@@ -41,6 +41,7 @@ define_machine(mpc836x_rdk) {
+ 	.name		= "MPC836x RDK",
+ 	.probe		= mpc836x_rdk_probe,
+ 	.setup_arch	= mpc836x_rdk_setup_arch,
++	.discover_phbs  = mpc83xx_setup_pci,
+ 	.init_IRQ	= mpc83xx_ipic_init_IRQ,
+ 	.get_irq	= ipic_get_irq,
+ 	.restart	= mpc83xx_restart,
+diff --git a/arch/powerpc/platforms/83xx/mpc837x_mds.c b/arch/powerpc/platforms/83xx/mpc837x_mds.c
+index 9d3721c965be..f28d166ea7db 100644
+--- a/arch/powerpc/platforms/83xx/mpc837x_mds.c
++++ b/arch/powerpc/platforms/83xx/mpc837x_mds.c
+@@ -93,6 +93,7 @@ define_machine(mpc837x_mds) {
+ 	.name			= "MPC837x MDS",
+ 	.probe			= mpc837x_mds_probe,
+ 	.setup_arch		= mpc837x_mds_setup_arch,
++	.discover_phbs  	= mpc83xx_setup_pci,
+ 	.init_IRQ		= mpc83xx_ipic_init_IRQ,
+ 	.get_irq		= ipic_get_irq,
+ 	.restart		= mpc83xx_restart,
+diff --git a/arch/powerpc/platforms/83xx/mpc837x_rdb.c b/arch/powerpc/platforms/83xx/mpc837x_rdb.c
+index 7c45f7ac2607..7fb7684c256b 100644
+--- a/arch/powerpc/platforms/83xx/mpc837x_rdb.c
++++ b/arch/powerpc/platforms/83xx/mpc837x_rdb.c
+@@ -73,6 +73,7 @@ define_machine(mpc837x_rdb) {
+ 	.name			= "MPC837x RDB/WLAN",
+ 	.probe			= mpc837x_rdb_probe,
+ 	.setup_arch		= mpc837x_rdb_setup_arch,
++	.discover_phbs  	= mpc83xx_setup_pci,
+ 	.init_IRQ		= mpc83xx_ipic_init_IRQ,
+ 	.get_irq		= ipic_get_irq,
+ 	.restart		= mpc83xx_restart,
 -- 
 2.26.2
 
