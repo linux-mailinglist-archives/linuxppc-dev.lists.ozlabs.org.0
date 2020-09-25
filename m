@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5153A277FBF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Sep 2020 07:06:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2F8277FBA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Sep 2020 07:01:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ByKd85n5FzDqPy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Sep 2020 15:06:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ByKWY6czRzDqtV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Sep 2020 15:01:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,33 +18,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=dvqVoHrr; 
+ header.s=casper.20170209 header.b=YRZ6UItj; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ByKJr1T9yzDqfC
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Sep 2020 14:52:10 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ByKJq479kzDqf3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Sep 2020 14:52:09 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=ayH6wB0p+odadUMA151Oa1/UBa/wAaRLDxK5Z5uObHU=; b=dvqVoHrr5a6FoZeyVyAzu0RzXO
- /ZBuVbluq6fCO/sDnJN9PppNzVwJ2/AWbmhOST1riJZK7nzfcZWZy59q3Yux3Fb0/vRsf2Y1glCcy
- Yqm3UTCB9q2zwp9c4+CGVfaI37bCDW+9Bg8pDlEj4SjE2kaz62bs51P6u14jM+RIO5CIiKttymnu+
- 8dyStDevGw1HntbTchUHp4KFY4D3brs9d/cpGzS5j2FV4yiNthi/IBCnwOb6MxERkVoWFa/hCtEWH
- swS87YnB0sM2NSVYe5gcJzX+wGdXfE/uFplAwEuy+JqqBpCJNbsRs3qChFts0+G1eLJwzMX9AgBq+
- H7U3noMg==;
+ bh=V2KQALojh4L6beBNImM13vl1+M9h9pbSNeu7cAMkUV4=; b=YRZ6UItjewrMGlnbC32fQHH0nL
+ X83aDncwPE4S+tAzXcTs147/MCyPcuKJjP5ADThQLA7wrBrzqeGAjrp6FjE1U9/h3zK4Fta7ItMLu
+ lGrL5xFgOYZtnSlKvTqMCC2ac3NXDeIKxxgzLrrtPBfi1Jiy5HlCKIyVDbgpIzLr9WxT80NGgYsvE
+ H0z53OI2xjmrSe5J9aFkHCJwR+vlS2kwDaUuJVRSZfZh7tDB4myry1cD4RgrJoOIoaCILBfUBIREx
+ eAdy9JLwmXYqD2E7xLRZ6TmqIe9rC3bo9UapR3RmAXGjgME/WMvQ21T+nPbJl0NHTUQJGLyKZ2wRF
+ HlTuMS7w==;
 Received: from p4fdb0c34.dip0.t-ipconnect.de ([79.219.12.52] helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kLfi3-0002pv-8H; Fri, 25 Sep 2020 04:51:52 +0000
+ id 1kLfi8-0002rL-Hy; Fri, 25 Sep 2020 04:51:56 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Alexander Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 3/9] iov_iter: refactor rw_copy_check_uvector and import_iovec
-Date: Fri, 25 Sep 2020 06:51:40 +0200
-Message-Id: <20200925045146.1283714-4-hch@lst.de>
+Subject: [PATCH 7/9] fs: remove compat_sys_vmsplice
+Date: Fri, 25 Sep 2020 06:51:44 +0200
+Message-Id: <20200925045146.1283714-8-hch@lst.de>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200925045146.1283714-1-hch@lst.de>
 References: <20200925045146.1283714-1-hch@lst.de>
@@ -78,532 +78,333 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Split rw_copy_check_uvector into two new helpers with more sensible
-calling conventions:
-
- - iovec_from_user copies a iovec from userspace either into the provided
-   stack buffer if it fits, or allocates a new buffer for it.  Returns
-   the actually used iovec.  It also verifies that iov_len does fit a
-   signed type, and handles compat iovecs if the compat flag is set.
- - __import_iovec consolidates the native and compat versions of
-   import_iovec. It calls iovec_from_user, then validates each iovec
-   actually points to user addresses, and ensures the total length
-   doesn't overflow.
-
-This has two major implications:
-
- - the access_process_vm case loses the total lenght checking, which
-   wasn't required anyway, given that each call receives two iovecs
-   for the local and remote side of the operation, and it verifies
-   the total length on the local side already.
- - instead of a single loop there now are two loops over the iovecs.
-   Given that the iovecs are cache hot this doesn't make a major
-   difference
+Now that import_iovec handles compat iovecs, the native vmsplice syscall
+can be used for the compat case as well.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/linux/compat.h |   6 -
- include/linux/fs.h     |  13 --
- include/linux/uio.h    |  12 +-
- lib/iov_iter.c         | 300 ++++++++++++++++-------------------------
- mm/process_vm_access.c |  34 +++--
- 5 files changed, 138 insertions(+), 227 deletions(-)
+ arch/arm64/include/asm/unistd32.h             |  2 +-
+ arch/mips/kernel/syscalls/syscall_n32.tbl     |  2 +-
+ arch/mips/kernel/syscalls/syscall_o32.tbl     |  2 +-
+ arch/parisc/kernel/syscalls/syscall.tbl       |  2 +-
+ arch/powerpc/kernel/syscalls/syscall.tbl      |  2 +-
+ arch/s390/kernel/syscalls/syscall.tbl         |  2 +-
+ arch/sparc/kernel/syscalls/syscall.tbl        |  2 +-
+ arch/x86/entry/syscall_x32.c                  |  1 +
+ arch/x86/entry/syscalls/syscall_32.tbl        |  2 +-
+ arch/x86/entry/syscalls/syscall_64.tbl        |  2 +-
+ fs/splice.c                                   | 57 +++++--------------
+ include/linux/compat.h                        |  4 --
+ include/uapi/asm-generic/unistd.h             |  2 +-
+ tools/include/uapi/asm-generic/unistd.h       |  2 +-
+ .../arch/powerpc/entry/syscalls/syscall.tbl   |  2 +-
+ .../perf/arch/s390/entry/syscalls/syscall.tbl |  2 +-
+ .../arch/x86/entry/syscalls/syscall_64.tbl    |  2 +-
+ 17 files changed, 28 insertions(+), 62 deletions(-)
 
-diff --git a/include/linux/compat.h b/include/linux/compat.h
-index 654c1ec36671a4..b930de791ff16b 100644
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -451,12 +451,6 @@ extern long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
+index 4a236493dca5b9..11dfae3a8563bd 100644
+--- a/arch/arm64/include/asm/unistd32.h
++++ b/arch/arm64/include/asm/unistd32.h
+@@ -697,7 +697,7 @@ __SYSCALL(__NR_sync_file_range2, compat_sys_aarch32_sync_file_range2)
+ #define __NR_tee 342
+ __SYSCALL(__NR_tee, sys_tee)
+ #define __NR_vmsplice 343
+-__SYSCALL(__NR_vmsplice, compat_sys_vmsplice)
++__SYSCALL(__NR_vmsplice, sys_vmsplice)
+ #define __NR_move_pages 344
+ __SYSCALL(__NR_move_pages, compat_sys_move_pages)
+ #define __NR_getcpu 345
+diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
+index c99a92646f8ee9..5a39d4de0ac85b 100644
+--- a/arch/mips/kernel/syscalls/syscall_n32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
+@@ -278,7 +278,7 @@
+ 267	n32	splice				sys_splice
+ 268	n32	sync_file_range			sys_sync_file_range
+ 269	n32	tee				sys_tee
+-270	n32	vmsplice			compat_sys_vmsplice
++270	n32	vmsplice			sys_vmsplice
+ 271	n32	move_pages			compat_sys_move_pages
+ 272	n32	set_robust_list			compat_sys_set_robust_list
+ 273	n32	get_robust_list			compat_sys_get_robust_list
+diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
+index 075064d10661bf..136efc6b8c5444 100644
+--- a/arch/mips/kernel/syscalls/syscall_o32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+@@ -318,7 +318,7 @@
+ 304	o32	splice				sys_splice
+ 305	o32	sync_file_range			sys_sync_file_range		sys32_sync_file_range
+ 306	o32	tee				sys_tee
+-307	o32	vmsplice			sys_vmsplice			compat_sys_vmsplice
++307	o32	vmsplice			sys_vmsplice
+ 308	o32	move_pages			sys_move_pages			compat_sys_move_pages
+ 309	o32	set_robust_list			sys_set_robust_list		compat_sys_set_robust_list
+ 310	o32	get_robust_list			sys_get_robust_list		compat_sys_get_robust_list
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+index 192abde0001d9d..a9e184192caedd 100644
+--- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -330,7 +330,7 @@
+ 292	32	sync_file_range		parisc_sync_file_range
+ 292	64	sync_file_range		sys_sync_file_range
+ 293	common	tee			sys_tee
+-294	common	vmsplice		sys_vmsplice			compat_sys_vmsplice
++294	common	vmsplice		sys_vmsplice
+ 295	common	move_pages		sys_move_pages			compat_sys_move_pages
+ 296	common	getcpu			sys_getcpu
+ 297	common	epoll_pwait		sys_epoll_pwait			compat_sys_epoll_pwait
+diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+index 6f1e2ecf0edad9..0d4985919ca34d 100644
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -369,7 +369,7 @@
+ 282	common	unshare				sys_unshare
+ 283	common	splice				sys_splice
+ 284	common	tee				sys_tee
+-285	common	vmsplice			sys_vmsplice			compat_sys_vmsplice
++285	common	vmsplice			sys_vmsplice
+ 286	common	openat				sys_openat			compat_sys_openat
+ 287	common	mkdirat				sys_mkdirat
+ 288	common	mknodat				sys_mknodat
+diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
+index 6101cf2e004cb4..b5495a42814bd1 100644
+--- a/arch/s390/kernel/syscalls/syscall.tbl
++++ b/arch/s390/kernel/syscalls/syscall.tbl
+@@ -316,7 +316,7 @@
+ 306  common	splice			sys_splice			sys_splice
+ 307  common	sync_file_range		sys_sync_file_range		compat_sys_s390_sync_file_range
+ 308  common	tee			sys_tee				sys_tee
+-309  common	vmsplice		sys_vmsplice			compat_sys_vmsplice
++309  common	vmsplice		sys_vmsplice			sys_vmsplice
+ 310  common	move_pages		sys_move_pages			compat_sys_move_pages
+ 311  common	getcpu			sys_getcpu			sys_getcpu
+ 312  common	epoll_pwait		sys_epoll_pwait			compat_sys_epoll_pwait
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index a87ddb282ab16f..f1810c1a35caa5 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -38,7 +38,7 @@
+ 23	64    	setuid			sys_setuid
+ 24	32	getuid			sys_getuid16
+ 24	64   	getuid			sys_getuid
+-25	common	vmsplice		sys_vmsplice			compat_sys_vmsplice
++25	common	vmsplice		sys_vmsplice
+ 26	common	ptrace			sys_ptrace			compat_sys_ptrace
+ 27	common	alarm			sys_alarm
+ 28	common	sigaltstack		sys_sigaltstack			compat_sys_sigaltstack
+diff --git a/arch/x86/entry/syscall_x32.c b/arch/x86/entry/syscall_x32.c
+index aa321444a41f63..a4840b9d50ad14 100644
+--- a/arch/x86/entry/syscall_x32.c
++++ b/arch/x86/entry/syscall_x32.c
+@@ -16,6 +16,7 @@
+ #define __x32_sys_writev	__x64_sys_writev
+ #define __x32_sys_getsockopt	__x64_sys_getsockopt
+ #define __x32_sys_setsockopt	__x64_sys_setsockopt
++#define __x32_sys_vmsplice	__x64_sys_vmsplice
  
- struct epoll_event;	/* fortunately, this one is fixed-layout */
+ #define __SYSCALL_64(nr, sym)
  
--extern ssize_t compat_rw_copy_check_uvector(int type,
--		const struct compat_iovec __user *uvector,
--		unsigned long nr_segs,
--		unsigned long fast_segs, struct iovec *fast_pointer,
--		struct iovec **ret_pointer);
--
- extern void __user *compat_alloc_user_space(unsigned long len);
- 
- int compat_restore_altstack(const compat_stack_t __user *uss);
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 7519ae003a082c..e69b45b6cc7b5f 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -178,14 +178,6 @@ typedef int (dio_iodone_t)(struct kiocb *iocb, loff_t offset,
- /* File supports async buffered reads */
- #define FMODE_BUF_RASYNC	((__force fmode_t)0x40000000)
- 
--/*
-- * Flag for rw_copy_check_uvector and compat_rw_copy_check_uvector
-- * that indicates that they should check the contents of the iovec are
-- * valid, but not check the memory that the iovec elements
-- * points too.
-- */
--#define CHECK_IOVEC_ONLY -1
--
- /*
-  * Attribute flags.  These should be or-ed together to figure out what
-  * has been changed!
-@@ -1887,11 +1879,6 @@ static inline int call_mmap(struct file *file, struct vm_area_struct *vma)
- 	return file->f_op->mmap(file, vma);
- }
- 
--ssize_t rw_copy_check_uvector(int type, const struct iovec __user * uvector,
--			      unsigned long nr_segs, unsigned long fast_segs,
--			      struct iovec *fast_pointer,
--			      struct iovec **ret_pointer);
--
- extern ssize_t vfs_read(struct file *, char __user *, size_t, loff_t *);
- extern ssize_t vfs_write(struct file *, const char __user *, size_t, loff_t *);
- extern ssize_t vfs_readv(struct file *, const struct iovec __user *,
-diff --git a/include/linux/uio.h b/include/linux/uio.h
-index 3835a8a8e9eae0..92c11fe41c6228 100644
---- a/include/linux/uio.h
-+++ b/include/linux/uio.h
-@@ -266,9 +266,15 @@ bool csum_and_copy_from_iter_full(void *addr, size_t bytes, __wsum *csum, struct
- size_t hash_and_copy_to_iter(const void *addr, size_t bytes, void *hashp,
- 		struct iov_iter *i);
- 
--ssize_t import_iovec(int type, const struct iovec __user * uvector,
--		 unsigned nr_segs, unsigned fast_segs,
--		 struct iovec **iov, struct iov_iter *i);
-+struct iovec *iovec_from_user(const struct iovec __user *uvector,
-+		unsigned long nr_segs, unsigned long fast_segs,
-+		struct iovec *fast_iov, bool compat);
-+ssize_t import_iovec(int type, const struct iovec __user *uvec,
-+		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
-+		 struct iov_iter *i);
-+ssize_t __import_iovec(int type, const struct iovec __user *uvec,
-+		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
-+		 struct iov_iter *i, bool compat);
- 
- #ifdef CONFIG_COMPAT
- struct compat_iovec;
-diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-index ccea9db3f72be8..d5d8afe31fca16 100644
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -7,6 +7,7 @@
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
- #include <linux/splice.h>
-+#include <linux/compat.h>
- #include <net/checksum.h>
- #include <linux/scatterlist.h>
- #include <linux/instrumented.h>
-@@ -1650,107 +1651,133 @@ const void *dup_iter(struct iov_iter *new, struct iov_iter *old, gfp_t flags)
- }
- EXPORT_SYMBOL(dup_iter);
- 
--/**
-- * rw_copy_check_uvector() - Copy an array of &struct iovec from userspace
-- *     into the kernel and check that it is valid.
-- *
-- * @type: One of %CHECK_IOVEC_ONLY, %READ, or %WRITE.
-- * @uvector: Pointer to the userspace array.
-- * @nr_segs: Number of elements in userspace array.
-- * @fast_segs: Number of elements in @fast_pointer.
-- * @fast_pointer: Pointer to (usually small on-stack) kernel array.
-- * @ret_pointer: (output parameter) Pointer to a variable that will point to
-- *     either @fast_pointer, a newly allocated kernel array, or NULL,
-- *     depending on which array was used.
-- *
-- * This function copies an array of &struct iovec of @nr_segs from
-- * userspace into the kernel and checks that each element is valid (e.g.
-- * it does not point to a kernel address or cause overflow by being too
-- * large, etc.).
-- *
-- * As an optimization, the caller may provide a pointer to a small
-- * on-stack array in @fast_pointer, typically %UIO_FASTIOV elements long
-- * (the size of this array, or 0 if unused, should be given in @fast_segs).
-- *
-- * @ret_pointer will always point to the array that was used, so the
-- * caller must take care not to call kfree() on it e.g. in case the
-- * @fast_pointer array was used and it was allocated on the stack.
-- *
-- * Return: The total number of bytes covered by the iovec array on success
-- *   or a negative error code on error.
-- */
--ssize_t rw_copy_check_uvector(int type, const struct iovec __user *uvector,
--		unsigned long nr_segs, unsigned long fast_segs,
--		struct iovec *fast_pointer, struct iovec **ret_pointer)
-+static int copy_compat_iovec_from_user(struct iovec *iov,
-+		const struct iovec __user *uvec, unsigned long nr_segs)
-+{
-+	const struct compat_iovec __user *uiov =
-+		(const struct compat_iovec __user *)uvec;
-+	int ret = -EFAULT, i;
-+
-+	if (!user_access_begin(uvec, nr_segs * sizeof(*uvec)))
-+		return -EFAULT;
-+
-+	for (i = 0; i < nr_segs; i++) {
-+		compat_uptr_t buf;
-+		compat_ssize_t len;
-+
-+		unsafe_get_user(len, &uiov[i].iov_len, uaccess_end);
-+		unsafe_get_user(buf, &uiov[i].iov_base, uaccess_end);
-+
-+		/* check for compat_size_t not fitting in compat_ssize_t .. */
-+		if (len < 0) {
-+			ret = -EINVAL;
-+			goto uaccess_end;
-+		}
-+		iov[i].iov_base = compat_ptr(buf);
-+		iov[i].iov_len = len;
-+	}
-+
-+	ret = 0;
-+uaccess_end:
-+	user_access_end();
-+	return ret;
-+}
-+		
-+static int copy_iovec_from_user(struct iovec *iov,
-+		const struct iovec __user *uvec, unsigned long nr_segs)
- {
- 	unsigned long seg;
--	ssize_t ret;
--	struct iovec *iov = fast_pointer;
- 
--	/*
--	 * SuS says "The readv() function *may* fail if the iovcnt argument
--	 * was less than or equal to 0, or greater than {IOV_MAX}.  Linux has
--	 * traditionally returned zero for zero segments, so...
--	 */
--	if (nr_segs == 0) {
--		ret = 0;
--		goto out;
-+	if (copy_from_user(iov, uvec, nr_segs * sizeof(*uvec)))
-+		return -EFAULT;
-+	for (seg = 0; seg < nr_segs; seg++) {
-+		if ((ssize_t)iov[seg].iov_len < 0)
-+			return -EINVAL;
- 	}
- 
-+	return 0;
-+}
-+
-+struct iovec *iovec_from_user(const struct iovec __user *uvec,
-+		unsigned long nr_segs, unsigned long fast_segs,
-+		struct iovec *fast_iov, bool compat)
-+{
-+	struct iovec *iov = fast_iov;
-+	int ret;
-+
- 	/*
--	 * First get the "struct iovec" from user memory and
--	 * verify all the pointers
-+	 * SuS says "The readv() function *may* fail if the iovcnt argument was
-+	 * less than or equal to 0, or greater than {IOV_MAX}.  Linux has
-+	 * traditionally returned zero for zero segments, so...
- 	 */
--	if (nr_segs > UIO_MAXIOV) {
--		ret = -EINVAL;
--		goto out;
--	}
-+	if (nr_segs == 0)
-+		return iov;
-+	if (nr_segs > UIO_MAXIOV)
-+		return ERR_PTR(-EINVAL);
- 	if (nr_segs > fast_segs) {
- 		iov = kmalloc_array(nr_segs, sizeof(struct iovec), GFP_KERNEL);
--		if (iov == NULL) {
--			ret = -ENOMEM;
--			goto out;
--		}
-+		if (!iov)
-+			return ERR_PTR(-ENOMEM);
- 	}
--	if (copy_from_user(iov, uvector, nr_segs*sizeof(*uvector))) {
--		ret = -EFAULT;
--		goto out;
-+
-+	if (compat)
-+		ret = copy_compat_iovec_from_user(iov, uvec, nr_segs);
-+	else
-+		ret = copy_iovec_from_user(iov, uvec, nr_segs);
-+	if (ret) {
-+		if (iov != fast_iov)
-+			kfree(iov);
-+		return ERR_PTR(ret);
-+	}
-+
-+	return iov;
-+}
-+
-+ssize_t __import_iovec(int type, const struct iovec __user *uvec,
-+		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
-+		 struct iov_iter *i, bool compat)
-+{
-+	ssize_t total_len = 0;
-+	unsigned long seg;
-+	struct iovec *iov;
-+
-+	iov = iovec_from_user(uvec, nr_segs, fast_segs, *iovp, compat);
-+	if (IS_ERR(iov)) {
-+		*iovp = NULL;
-+		return PTR_ERR(iov);
- 	}
- 
- 	/*
--	 * According to the Single Unix Specification we should return EINVAL
--	 * if an element length is < 0 when cast to ssize_t or if the
--	 * total length would overflow the ssize_t return value of the
--	 * system call.
-+	 * According to the Single Unix Specification we should return EINVAL if
-+	 * an element length is < 0 when cast to ssize_t or if the total length
-+	 * would overflow the ssize_t return value of the system call.
- 	 *
- 	 * Linux caps all read/write calls to MAX_RW_COUNT, and avoids the
- 	 * overflow case.
- 	 */
--	ret = 0;
- 	for (seg = 0; seg < nr_segs; seg++) {
--		void __user *buf = iov[seg].iov_base;
- 		ssize_t len = (ssize_t)iov[seg].iov_len;
- 
--		/* see if we we're about to use an invalid len or if
--		 * it's about to overflow ssize_t */
--		if (len < 0) {
--			ret = -EINVAL;
--			goto out;
-+		if (!access_ok(iov[seg].iov_base, len)) {
-+			if (iov != *iovp)
-+				kfree(iov);
-+			*iovp = NULL;
-+			return -EFAULT;
- 		}
--		if (type >= 0
--		    && unlikely(!access_ok(buf, len))) {
--			ret = -EFAULT;
--			goto out;
--		}
--		if (len > MAX_RW_COUNT - ret) {
--			len = MAX_RW_COUNT - ret;
-+
-+		if (len > MAX_RW_COUNT - total_len) {
-+			len = MAX_RW_COUNT - total_len;
- 			iov[seg].iov_len = len;
- 		}
--		ret += len;
-+		total_len += len;
- 	}
--out:
--	*ret_pointer = iov;
--	return ret;
-+
-+	iov_iter_init(i, type, iov, nr_segs, total_len);
-+	if (iov == *iovp)
-+		*iovp = NULL;
-+	else
-+		*iovp = iov;
-+	return total_len;
- }
- 
- /**
-@@ -1759,10 +1786,10 @@ ssize_t rw_copy_check_uvector(int type, const struct iovec __user *uvector,
-  *     &struct iov_iter iterator to access it.
-  *
-  * @type: One of %READ or %WRITE.
-- * @uvector: Pointer to the userspace array.
-+ * @uvec: Pointer to the userspace array.
-  * @nr_segs: Number of elements in userspace array.
-  * @fast_segs: Number of elements in @iov.
-- * @iov: (input and output parameter) Pointer to pointer to (usually small
-+ * @iovp: (input and output parameter) Pointer to pointer to (usually small
-  *     on-stack) kernel array.
-  * @i: Pointer to iterator that will be initialized on success.
-  *
-@@ -1775,120 +1802,21 @@ ssize_t rw_copy_check_uvector(int type, const struct iovec __user *uvector,
-  *
-  * Return: Negative error code on error, bytes imported on success
-  */
--ssize_t import_iovec(int type, const struct iovec __user * uvector,
-+ssize_t import_iovec(int type, const struct iovec __user *uvec,
- 		 unsigned nr_segs, unsigned fast_segs,
--		 struct iovec **iov, struct iov_iter *i)
-+		 struct iovec **iovp, struct iov_iter *i)
- {
--	ssize_t n;
--	struct iovec *p;
--	n = rw_copy_check_uvector(type, uvector, nr_segs, fast_segs,
--				  *iov, &p);
--	if (n < 0) {
--		if (p != *iov)
--			kfree(p);
--		*iov = NULL;
--		return n;
--	}
--	iov_iter_init(i, type, p, nr_segs, n);
--	*iov = p == *iov ? NULL : p;
--	return n;
-+	return __import_iovec(type, uvec, nr_segs, fast_segs, iovp, i, false);
- }
- EXPORT_SYMBOL(import_iovec);
- 
- #ifdef CONFIG_COMPAT
+diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+index 54ab4beb517f25..0fb2f172581e51 100644
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -327,7 +327,7 @@
+ 313	i386	splice			sys_splice
+ 314	i386	sync_file_range		sys_ia32_sync_file_range
+ 315	i386	tee			sys_tee
+-316	i386	vmsplice		sys_vmsplice			compat_sys_vmsplice
++316	i386	vmsplice		sys_vmsplice
+ 317	i386	move_pages		sys_move_pages			compat_sys_move_pages
+ 318	i386	getcpu			sys_getcpu
+ 319	i386	epoll_pwait		sys_epoll_pwait
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index b1e59957c5c51c..642af919183de4 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -388,7 +388,7 @@
+ 529	x32	waitid			compat_sys_waitid
+ 530	x32	set_robust_list		compat_sys_set_robust_list
+ 531	x32	get_robust_list		compat_sys_get_robust_list
+-532	x32	vmsplice		compat_sys_vmsplice
++532	x32	vmsplice		sys_vmsplice
+ 533	x32	move_pages		compat_sys_move_pages
+ 534	x32	preadv			compat_sys_preadv64
+ 535	x32	pwritev			compat_sys_pwritev64
+diff --git a/fs/splice.c b/fs/splice.c
+index 132d42b9871f9b..18d84544030b39 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -33,7 +33,6 @@
+ #include <linux/security.h>
+ #include <linux/gfp.h>
+ #include <linux/socket.h>
 -#include <linux/compat.h>
--
--ssize_t compat_rw_copy_check_uvector(int type,
--		const struct compat_iovec __user *uvector,
--		unsigned long nr_segs, unsigned long fast_segs,
--		struct iovec *fast_pointer, struct iovec **ret_pointer)
+ #include <linux/sched/signal.h>
+ 
+ #include "internal.h"
+@@ -1332,20 +1331,6 @@ static int vmsplice_type(struct fd f, int *type)
+  * Currently we punt and implement it as a normal copy, see pipe_to_user().
+  *
+  */
+-static long do_vmsplice(struct file *f, struct iov_iter *iter, unsigned int flags)
 -{
--	compat_ssize_t tot_len;
--	struct iovec *iov = *ret_pointer = fast_pointer;
--	ssize_t ret = 0;
--	int seg;
+-	if (unlikely(flags & ~SPLICE_F_ALL))
+-		return -EINVAL;
 -
--	/*
--	 * SuS says "The readv() function *may* fail if the iovcnt argument
--	 * was less than or equal to 0, or greater than {IOV_MAX}.  Linux has
--	 * traditionally returned zero for zero segments, so...
--	 */
--	if (nr_segs == 0)
--		goto out;
+-	if (!iov_iter_count(iter))
+-		return 0;
 -
--	ret = -EINVAL;
--	if (nr_segs > UIO_MAXIOV)
--		goto out;
--	if (nr_segs > fast_segs) {
--		ret = -ENOMEM;
--		iov = kmalloc_array(nr_segs, sizeof(struct iovec), GFP_KERNEL);
--		if (iov == NULL)
--			goto out;
--	}
--	*ret_pointer = iov;
--
--	ret = -EFAULT;
--	if (!access_ok(uvector, nr_segs*sizeof(*uvector)))
--		goto out;
--
--	/*
--	 * Single unix specification:
--	 * We should -EINVAL if an element length is not >= 0 and fitting an
--	 * ssize_t.
--	 *
--	 * In Linux, the total length is limited to MAX_RW_COUNT, there is
--	 * no overflow possibility.
--	 */
--	tot_len = 0;
--	ret = -EINVAL;
--	for (seg = 0; seg < nr_segs; seg++) {
--		compat_uptr_t buf;
--		compat_ssize_t len;
--
--		if (__get_user(len, &uvector->iov_len) ||
--		   __get_user(buf, &uvector->iov_base)) {
--			ret = -EFAULT;
--			goto out;
--		}
--		if (len < 0)	/* size_t not fitting in compat_ssize_t .. */
--			goto out;
--		if (type >= 0 &&
--		    !access_ok(compat_ptr(buf), len)) {
--			ret = -EFAULT;
--			goto out;
--		}
--		if (len > MAX_RW_COUNT - tot_len)
--			len = MAX_RW_COUNT - tot_len;
--		tot_len += len;
--		iov->iov_base = compat_ptr(buf);
--		iov->iov_len = (compat_size_t) len;
--		uvector++;
--		iov++;
--	}
--	ret = tot_len;
--
--out:
--	return ret;
+-	if (iov_iter_rw(iter) == WRITE)
+-		return vmsplice_to_pipe(f, iter, flags);
+-	else
+-		return vmsplice_to_user(f, iter, flags);
 -}
 -
--ssize_t compat_import_iovec(int type,
--		const struct compat_iovec __user * uvector,
--		unsigned nr_segs, unsigned fast_segs,
--		struct iovec **iov, struct iov_iter *i)
-+ssize_t compat_import_iovec(int type, const struct compat_iovec __user *uvec,
-+		unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
-+		struct iov_iter *i)
+ SYSCALL_DEFINE4(vmsplice, int, fd, const struct iovec __user *, uiov,
+ 		unsigned long, nr_segs, unsigned int, flags)
  {
--	ssize_t n;
--	struct iovec *p;
--	n = compat_rw_copy_check_uvector(type, uvector, nr_segs, fast_segs,
--				  *iov, &p);
--	if (n < 0) {
--		if (p != *iov)
--			kfree(p);
--		*iov = NULL;
--		return n;
--	}
--	iov_iter_init(i, type, p, nr_segs, n);
--	*iov = p == *iov ? NULL : p;
--	return n;
-+	return __import_iovec(type, (const struct iovec __user *)uvec, nr_segs,
-+			     fast_segs, iovp, i, true);
- }
- EXPORT_SYMBOL(compat_import_iovec);
- #endif
-diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
-index 29c052099affdc..5e728c20c2bead 100644
---- a/mm/process_vm_access.c
-+++ b/mm/process_vm_access.c
-@@ -276,20 +276,17 @@ static ssize_t process_vm_rw(pid_t pid,
- 	if (rc < 0)
- 		return rc;
- 	if (!iov_iter_count(&iter))
--		goto free_iovecs;
--
--	rc = rw_copy_check_uvector(CHECK_IOVEC_ONLY, rvec, riovcnt, UIO_FASTIOV,
--				   iovstack_r, &iov_r);
--	if (rc <= 0)
--		goto free_iovecs;
--
-+		goto free_iov_l;
-+	iov_r = iovec_from_user(rvec, riovcnt, UIO_FASTIOV, iovstack_r, false);
-+	if (IS_ERR(iov_r)) {
-+		rc = PTR_ERR(iov_r);
-+		goto free_iov_l;
-+	}
- 	rc = process_vm_rw_core(pid, &iter, iov_r, riovcnt, flags, vm_write);
--
--free_iovecs:
- 	if (iov_r != iovstack_r)
- 		kfree(iov_r);
-+free_iov_l:
- 	kfree(iov_l);
--
- 	return rc;
- }
+@@ -1356,6 +1341,9 @@ SYSCALL_DEFINE4(vmsplice, int, fd, const struct iovec __user *, uiov,
+ 	struct fd f;
+ 	int type;
  
-@@ -333,18 +330,17 @@ compat_process_vm_rw(compat_pid_t pid,
- 	if (rc < 0)
- 		return rc;
- 	if (!iov_iter_count(&iter))
--		goto free_iovecs;
--	rc = compat_rw_copy_check_uvector(CHECK_IOVEC_ONLY, rvec, riovcnt,
--					  UIO_FASTIOV, iovstack_r,
--					  &iov_r);
--	if (rc <= 0)
--		goto free_iovecs;
++	if (unlikely(flags & ~SPLICE_F_ALL))
++		return -EINVAL;
++
+ 	f = fdget(fd);
+ 	error = vmsplice_type(f, &type);
+ 	if (error)
+@@ -1363,40 +1351,21 @@ SYSCALL_DEFINE4(vmsplice, int, fd, const struct iovec __user *, uiov,
+ 
+ 	error = import_iovec(type, uiov, nr_segs,
+ 			     ARRAY_SIZE(iovstack), &iov, &iter);
+-	if (error >= 0) {
+-		error = do_vmsplice(f.file, &iter, flags);
+-		kfree(iov);
+-	}
+-	fdput(f);
+-	return error;
+-}
++	if (error < 0)
++		goto out_fdput;
+ 
+-#ifdef CONFIG_COMPAT
+-COMPAT_SYSCALL_DEFINE4(vmsplice, int, fd, const struct compat_iovec __user *, iov32,
+-		    unsigned int, nr_segs, unsigned int, flags)
+-{
+-	struct iovec iovstack[UIO_FASTIOV];
+-	struct iovec *iov = iovstack;
+-	struct iov_iter iter;
+-	ssize_t error;
+-	struct fd f;
+-	int type;
 -
-+		goto free_iov_l;
-+	iov_r = iovec_from_user((const struct iovec __user *)rvec, riovcnt,
-+				UIO_FASTIOV, iovstack_r, true);
-+	if (IS_ERR(iov_r)) {
-+		rc = PTR_ERR(iov_r);
-+		goto free_iov_l;
-+	}
- 	rc = process_vm_rw_core(pid, &iter, iov_r, riovcnt, flags, vm_write);
--
--free_iovecs:
- 	if (iov_r != iovstack_r)
- 		kfree(iov_r);
-+free_iov_l:
- 	kfree(iov_l);
- 	return rc;
+-	f = fdget(fd);
+-	error = vmsplice_type(f, &type);
+-	if (error)
+-		return error;
++	if (!iov_iter_count(&iter))
++		error = 0;
++	else if (iov_iter_rw(&iter) == WRITE)
++		error = vmsplice_to_pipe(f.file, &iter, flags);
++	else
++		error = vmsplice_to_user(f.file, &iter, flags);
+ 
+-	error = import_iovec(type, (struct iovec __user *)iov32, nr_segs,
+-			     ARRAY_SIZE(iovstack), &iov, &iter);
+-	if (error >= 0) {
+-		error = do_vmsplice(f.file, &iter, flags);
+-		kfree(iov);
+-	}
++	kfree(iov);
++out_fdput:
+ 	fdput(f);
+ 	return error;
  }
+-#endif
+ 
+ SYSCALL_DEFINE6(splice, int, fd_in, loff_t __user *, off_in,
+ 		int, fd_out, loff_t __user *, off_out,
+diff --git a/include/linux/compat.h b/include/linux/compat.h
+index 0f1620988267e6..9e8aa148651455 100644
+--- a/include/linux/compat.h
++++ b/include/linux/compat.h
+@@ -597,10 +597,6 @@ asmlinkage long compat_sys_signalfd4(int ufd,
+ 				     const compat_sigset_t __user *sigmask,
+ 				     compat_size_t sigsetsize, int flags);
+ 
+-/* fs/splice.c */
+-asmlinkage long compat_sys_vmsplice(int fd, const struct compat_iovec __user *,
+-				    unsigned int nr_segs, unsigned int flags);
+-
+ /* fs/stat.c */
+ asmlinkage long compat_sys_newfstatat(unsigned int dfd,
+ 				      const char __user *filename,
+diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
+index 211c9eacbda6eb..f2dcb0d5703014 100644
+--- a/include/uapi/asm-generic/unistd.h
++++ b/include/uapi/asm-generic/unistd.h
+@@ -237,7 +237,7 @@ __SC_COMP(__NR_signalfd4, sys_signalfd4, compat_sys_signalfd4)
+ 
+ /* fs/splice.c */
+ #define __NR_vmsplice 75
+-__SC_COMP(__NR_vmsplice, sys_vmsplice, compat_sys_vmsplice)
++__SYSCALL(__NR_vmsplice, sys_vmsplice)
+ #define __NR_splice 76
+ __SYSCALL(__NR_splice, sys_splice)
+ #define __NR_tee 77
+diff --git a/tools/include/uapi/asm-generic/unistd.h b/tools/include/uapi/asm-generic/unistd.h
+index 211c9eacbda6eb..f2dcb0d5703014 100644
+--- a/tools/include/uapi/asm-generic/unistd.h
++++ b/tools/include/uapi/asm-generic/unistd.h
+@@ -237,7 +237,7 @@ __SC_COMP(__NR_signalfd4, sys_signalfd4, compat_sys_signalfd4)
+ 
+ /* fs/splice.c */
+ #define __NR_vmsplice 75
+-__SC_COMP(__NR_vmsplice, sys_vmsplice, compat_sys_vmsplice)
++__SYSCALL(__NR_vmsplice, sys_vmsplice)
+ #define __NR_splice 76
+ __SYSCALL(__NR_splice, sys_splice)
+ #define __NR_tee 77
+diff --git a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+index 46be68029587f9..26f0347c15118b 100644
+--- a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+@@ -363,7 +363,7 @@
+ 282	common	unshare				sys_unshare
+ 283	common	splice				sys_splice
+ 284	common	tee				sys_tee
+-285	common	vmsplice			sys_vmsplice			compat_sys_vmsplice
++285	common	vmsplice			sys_vmsplice
+ 286	common	openat				sys_openat			compat_sys_openat
+ 287	common	mkdirat				sys_mkdirat
+ 288	common	mknodat				sys_mknodat
+diff --git a/tools/perf/arch/s390/entry/syscalls/syscall.tbl b/tools/perf/arch/s390/entry/syscalls/syscall.tbl
+index fb5e61ce9d5838..02ad81f69bb7e3 100644
+--- a/tools/perf/arch/s390/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/s390/entry/syscalls/syscall.tbl
+@@ -316,7 +316,7 @@
+ 306  common	splice			sys_splice			compat_sys_splice
+ 307  common	sync_file_range		sys_sync_file_range		compat_sys_s390_sync_file_range
+ 308  common	tee			sys_tee				compat_sys_tee
+-309  common	vmsplice		sys_vmsplice			compat_sys_vmsplice
++309  common	vmsplice		sys_vmsplice			sys_vmsplice
+ 310  common	move_pages		sys_move_pages			compat_sys_move_pages
+ 311  common	getcpu			sys_getcpu			compat_sys_getcpu
+ 312  common	epoll_pwait		sys_epoll_pwait			compat_sys_epoll_pwait
+diff --git a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
+index b1e59957c5c51c..642af919183de4 100644
+--- a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -388,7 +388,7 @@
+ 529	x32	waitid			compat_sys_waitid
+ 530	x32	set_robust_list		compat_sys_set_robust_list
+ 531	x32	get_robust_list		compat_sys_get_robust_list
+-532	x32	vmsplice		compat_sys_vmsplice
++532	x32	vmsplice		sys_vmsplice
+ 533	x32	move_pages		compat_sys_move_pages
+ 534	x32	preadv			compat_sys_preadv64
+ 535	x32	pwritev			compat_sys_pwritev64
 -- 
 2.28.0
 
