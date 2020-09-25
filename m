@@ -1,52 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C830E277DCB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Sep 2020 04:04:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 318BB277FAE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Sep 2020 06:54:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ByFbb0yRzzDqjT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Sep 2020 12:04:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ByKMp42TbzDqjM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Sep 2020 14:54:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+158bd042e2069d5d3a43+6242+infradead.org+hch@casper.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=OnPFnpeJ; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ByFXM4rtzzDqdM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Sep 2020 12:01:54 +1000 (AEST)
-IronPort-SDR: 8nlp3/A1b1VoXzz/Ze31vQdbWESsvtC7aRG4cOcjCIddzMIDtjbfP6qOMvPXpt22lwnBrFv3/R
- 61M86uJDKSYQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9754"; a="158755377"
-X-IronPort-AV: E=Sophos;i="5.77,300,1596524400"; d="scan'208";a="158755377"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Sep 2020 19:01:52 -0700
-IronPort-SDR: VUdnRHshe+OqcZZlYgN+Liw4dUryvE2ZpGoqriZKXsWZtdhKsJn9Wyf5XBE7Dd1cSmDtfR7k3+
- APOvvX/DAwlQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,300,1596524400"; d="scan'208";a="383300246"
-Received: from lkp-server01.sh.intel.com (HELO d1a6b931d9c6) ([10.239.97.150])
- by orsmga001.jf.intel.com with ESMTP; 24 Sep 2020 19:01:50 -0700
-Received: from kbuild by d1a6b931d9c6 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kLd3W-0000DW-1c; Fri, 25 Sep 2020 02:01:50 +0000
-Date: Fri, 25 Sep 2020 10:01:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD REGRESSION
- 2e60265c1feb6848c77dbea22d38bbe262ec49db
-Message-ID: <5f6d4f5d.+yaqJYQuo5UoavvV%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ByKJq41L7zDqdr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Sep 2020 14:52:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+ References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+ Content-Type:Content-ID:Content-Description;
+ bh=A1w/LQ8OkWuIFrWoMQToRKoMxSSZmXSepTFOY8KoKk4=; b=OnPFnpeJ3jvP6+sqXmYng7a63A
+ +Po739XsiMAWgUmrhcj1IRgFVGqMcBSOsUXOyjcU11CvvnHWLNf3AQoYOtY/rB0KEZ5yviq7TLjNw
+ DbQNPxVA0+B0WXcXw3uwuYsIiQfia2wfklZ9D70xD8AxGwfKu4kEQmh6tvxtrJvKsQNIk/+QL4xQE
+ EVfAcYoCUwxnv4IbumJHzD0+QPrZhTCHgrkNypjkfCqJETygdWuwzsHBGUUMCa00U9FjTPCIAUSrI
+ IeI28Fxe4TqvwRLRa9nCAKH/gN4oTWjVyom+ihC6nR7soNcbk8pvIx1xDqVuvRX0oMAa+AP2y/3wL
+ GtcddMnA==;
+Received: from p4fdb0c34.dip0.t-ipconnect.de ([79.219.12.52] helo=localhost)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kLfi5-0002qb-3M; Fri, 25 Sep 2020 04:51:53 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Alexander Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 4/9] iov_iter: transparently handle compat iovecs in
+ import_iovec
+Date: Fri, 25 Sep 2020 06:51:41 +0200
+Message-Id: <20200925045146.1283714-5-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200925045146.1283714-1-hch@lst.de>
+References: <20200925045146.1283714-1-hch@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,171 +64,279 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-aio@kvack.org, linux-mips@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
+ keyrings@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ linux-block@vger.kernel.org, io-uring@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
+ linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ David Laight <David.Laight@aculab.com>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: 2e60265c1feb6848c77dbea22d38bbe262ec49db  powerpc/perf: Exclude pmc5/6 from the irrelevant PMU group constraints
+Use in compat_syscall to import either native or the compat iovecs, and
+remove the now superflous compat_import_iovec.
 
-Error/Warning in current branch:
+This removes the need for special compat logic in most callers, and
+the remaining ones can still be simplified by using __import_iovec
+with a bool compat parameter.
 
-arch/powerpc/platforms/pseries/eeh_pseries.c:420:6: error: variable 'ret' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
-
-Error/Warning ids grouped by kconfigs:
-
-clang_recent_errors
-`-- powerpc64-randconfig-r035-20200923
-    `-- arch-powerpc-platforms-pseries-eeh_pseries.c:error:variable-ret-is-used-uninitialized-whenever-if-condition-is-true-Werror-Wsometimes-uninitialized
-
-elapsed time: 806m
-
-configs tested: 138
-configs skipped: 3
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-xtensa                generic_kc705_defconfig
-powerpc                    socrates_defconfig
-powerpc                     sbc8548_defconfig
-arm                            hisi_defconfig
-sh                     magicpanelr2_defconfig
-arm                        spear3xx_defconfig
-sh                          r7780mp_defconfig
-mips                 pnx8335_stb225_defconfig
-sh                          r7785rp_defconfig
-arm                            xcep_defconfig
-arm                          badge4_defconfig
-mips                  maltasmvp_eva_defconfig
-m68k                         apollo_defconfig
-mips                      bmips_stb_defconfig
-arc                     nsimosci_hs_defconfig
-sh                ecovec24-romimage_defconfig
-arm                           u8500_defconfig
-powerpc                        warp_defconfig
-arm                         assabet_defconfig
-sh                          rsk7201_defconfig
-arm                     davinci_all_defconfig
-m68k                       m5275evb_defconfig
-powerpc                     tqm8548_defconfig
-arm                         nhk8815_defconfig
-mips                         rt305x_defconfig
-arm                       mainstone_defconfig
-powerpc64                           defconfig
-xtensa                              defconfig
-m68k                        stmark2_defconfig
-arm                            qcom_defconfig
-powerpc                       ebony_defconfig
-xtensa                    smp_lx200_defconfig
-m68k                        m5272c3_defconfig
-openrisc                         alldefconfig
-powerpc                 mpc8313_rdb_defconfig
-powerpc                     pseries_defconfig
-powerpc                     akebono_defconfig
-powerpc                    adder875_defconfig
-arc                      axs103_smp_defconfig
-m68k                          amiga_defconfig
-powerpc                mpc7448_hpc2_defconfig
-powerpc                     tqm8540_defconfig
-m68k                          hp300_defconfig
-sparc                            allyesconfig
-sparc                       sparc32_defconfig
-powerpc                 mpc837x_mds_defconfig
-powerpc                      pcm030_defconfig
-parisc                           alldefconfig
-mips                          malta_defconfig
-arc                             nps_defconfig
-h8300                    h8300h-sim_defconfig
-powerpc                     tqm8541_defconfig
-sh                          rsk7269_defconfig
-arm                         s3c6400_defconfig
-mips                        omega2p_defconfig
-h8300                               defconfig
-arm                         axm55xx_defconfig
-sh                          polaris_defconfig
-sh                          lboxre2_defconfig
-nds32                             allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20200924
-i386                 randconfig-a006-20200924
-i386                 randconfig-a003-20200924
-i386                 randconfig-a004-20200924
-i386                 randconfig-a005-20200924
-i386                 randconfig-a001-20200924
-i386                 randconfig-a002-20200923
-i386                 randconfig-a006-20200923
-i386                 randconfig-a003-20200923
-i386                 randconfig-a004-20200923
-i386                 randconfig-a005-20200923
-i386                 randconfig-a001-20200923
-x86_64               randconfig-a011-20200923
-x86_64               randconfig-a013-20200923
-x86_64               randconfig-a014-20200923
-x86_64               randconfig-a015-20200923
-x86_64               randconfig-a012-20200923
-x86_64               randconfig-a016-20200923
-i386                 randconfig-a012-20200923
-i386                 randconfig-a014-20200923
-i386                 randconfig-a013-20200923
-i386                 randconfig-a011-20200923
-i386                 randconfig-a016-20200923
-i386                 randconfig-a015-20200923
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a005-20200923
-x86_64               randconfig-a003-20200923
-x86_64               randconfig-a004-20200923
-x86_64               randconfig-a002-20200923
-x86_64               randconfig-a006-20200923
-x86_64               randconfig-a001-20200923
-
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ block/scsi_ioctl.c     | 12 ++----------
+ drivers/scsi/sg.c      |  9 +--------
+ fs/aio.c               |  8 ++------
+ fs/io_uring.c          | 20 ++++++++------------
+ fs/read_write.c        |  6 ++++--
+ fs/splice.c            |  2 +-
+ include/linux/uio.h    |  8 --------
+ lib/iov_iter.c         | 14 ++------------
+ mm/process_vm_access.c |  3 ++-
+ net/compat.c           |  4 ++--
+ security/keys/compat.c |  5 ++---
+ 11 files changed, 26 insertions(+), 65 deletions(-)
+
+diff --git a/block/scsi_ioctl.c b/block/scsi_ioctl.c
+index ef722f04f88a93..e08df86866ee5d 100644
+--- a/block/scsi_ioctl.c
++++ b/block/scsi_ioctl.c
+@@ -333,16 +333,8 @@ static int sg_io(struct request_queue *q, struct gendisk *bd_disk,
+ 		struct iov_iter i;
+ 		struct iovec *iov = NULL;
+ 
+-#ifdef CONFIG_COMPAT
+-		if (in_compat_syscall())
+-			ret = compat_import_iovec(rq_data_dir(rq),
+-				   hdr->dxferp, hdr->iovec_count,
+-				   0, &iov, &i);
+-		else
+-#endif
+-			ret = import_iovec(rq_data_dir(rq),
+-				   hdr->dxferp, hdr->iovec_count,
+-				   0, &iov, &i);
++		ret = import_iovec(rq_data_dir(rq), hdr->dxferp,
++				   hdr->iovec_count, 0, &iov, &i);
+ 		if (ret < 0)
+ 			goto out_free_cdb;
+ 
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 20472aaaf630a4..bfa8d77322d732 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -1820,14 +1820,7 @@ sg_start_req(Sg_request *srp, unsigned char *cmd)
+ 		struct iovec *iov = NULL;
+ 		struct iov_iter i;
+ 
+-#ifdef CONFIG_COMPAT
+-		if (in_compat_syscall())
+-			res = compat_import_iovec(rw, hp->dxferp, iov_count,
+-						  0, &iov, &i);
+-		else
+-#endif
+-			res = import_iovec(rw, hp->dxferp, iov_count,
+-					   0, &iov, &i);
++		res = import_iovec(rw, hp->dxferp, iov_count, 0, &iov, &i);
+ 		if (res < 0)
+ 			return res;
+ 
+diff --git a/fs/aio.c b/fs/aio.c
+index d5ec303855669d..c45c20d875388c 100644
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -1489,12 +1489,8 @@ static ssize_t aio_setup_rw(int rw, const struct iocb *iocb,
+ 		*iovec = NULL;
+ 		return ret;
+ 	}
+-#ifdef CONFIG_COMPAT
+-	if (compat)
+-		return compat_import_iovec(rw, buf, len, UIO_FASTIOV, iovec,
+-				iter);
+-#endif
+-	return import_iovec(rw, buf, len, UIO_FASTIOV, iovec, iter);
++
++	return __import_iovec(rw, buf, len, UIO_FASTIOV, iovec, iter, compat);
+ }
+ 
+ static inline void aio_rw_done(struct kiocb *req, ssize_t ret)
+diff --git a/fs/io_uring.c b/fs/io_uring.c
+index 8b426aa29668cb..8c27dc28da182a 100644
+--- a/fs/io_uring.c
++++ b/fs/io_uring.c
+@@ -2852,13 +2852,8 @@ static ssize_t __io_import_iovec(int rw, struct io_kiocb *req,
+ 		return ret;
+ 	}
+ 
+-#ifdef CONFIG_COMPAT
+-	if (req->ctx->compat)
+-		return compat_import_iovec(rw, buf, sqe_len, UIO_FASTIOV,
+-						iovec, iter);
+-#endif
+-
+-	return import_iovec(rw, buf, sqe_len, UIO_FASTIOV, iovec, iter);
++	return __import_iovec(rw, buf, sqe_len, UIO_FASTIOV, iovec, iter,
++			      req->ctx->compat);
+ }
+ 
+ static ssize_t io_import_iovec(int rw, struct io_kiocb *req,
+@@ -4200,8 +4195,9 @@ static int __io_recvmsg_copy_hdr(struct io_kiocb *req,
+ 				sr->len);
+ 		iomsg->iov = NULL;
+ 	} else {
+-		ret = import_iovec(READ, uiov, iov_len, UIO_FASTIOV,
+-					&iomsg->iov, &iomsg->msg.msg_iter);
++		ret = __import_iovec(READ, uiov, iov_len, UIO_FASTIOV,
++				     &iomsg->iov, &iomsg->msg.msg_iter,
++				     false);
+ 		if (ret > 0)
+ 			ret = 0;
+ 	}
+@@ -4241,9 +4237,9 @@ static int __io_compat_recvmsg_copy_hdr(struct io_kiocb *req,
+ 		sr->len = iomsg->iov[0].iov_len;
+ 		iomsg->iov = NULL;
+ 	} else {
+-		ret = compat_import_iovec(READ, uiov, len, UIO_FASTIOV,
+-						&iomsg->iov,
+-						&iomsg->msg.msg_iter);
++		ret = __import_iovec(READ, (struct iovec __user *)uiov, len,
++				   UIO_FASTIOV, &iomsg->iov,
++				   &iomsg->msg.msg_iter, true);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
+diff --git a/fs/read_write.c b/fs/read_write.c
+index e5e891a88442ef..0a68037580b455 100644
+--- a/fs/read_write.c
++++ b/fs/read_write.c
+@@ -1078,7 +1078,8 @@ static size_t compat_readv(struct file *file,
+ 	struct iov_iter iter;
+ 	ssize_t ret;
+ 
+-	ret = compat_import_iovec(READ, vec, vlen, UIO_FASTIOV, &iov, &iter);
++	ret = import_iovec(READ, (const struct iovec __user *)vec, vlen,
++			   UIO_FASTIOV, &iov, &iter);
+ 	if (ret >= 0) {
+ 		ret = do_iter_read(file, &iter, pos, flags);
+ 		kfree(iov);
+@@ -1186,7 +1187,8 @@ static size_t compat_writev(struct file *file,
+ 	struct iov_iter iter;
+ 	ssize_t ret;
+ 
+-	ret = compat_import_iovec(WRITE, vec, vlen, UIO_FASTIOV, &iov, &iter);
++	ret = import_iovec(WRITE, (const struct iovec __user *)vec, vlen,
++			   UIO_FASTIOV, &iov, &iter);
+ 	if (ret >= 0) {
+ 		file_start_write(file);
+ 		ret = do_iter_write(file, &iter, pos, flags);
+diff --git a/fs/splice.c b/fs/splice.c
+index d7c8a7c4db07ff..132d42b9871f9b 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -1387,7 +1387,7 @@ COMPAT_SYSCALL_DEFINE4(vmsplice, int, fd, const struct compat_iovec __user *, io
+ 	if (error)
+ 		return error;
+ 
+-	error = compat_import_iovec(type, iov32, nr_segs,
++	error = import_iovec(type, (struct iovec __user *)iov32, nr_segs,
+ 			     ARRAY_SIZE(iovstack), &iov, &iter);
+ 	if (error >= 0) {
+ 		error = do_vmsplice(f.file, &iter, flags);
+diff --git a/include/linux/uio.h b/include/linux/uio.h
+index 92c11fe41c6228..daedc61ad3706e 100644
+--- a/include/linux/uio.h
++++ b/include/linux/uio.h
+@@ -275,14 +275,6 @@ ssize_t import_iovec(int type, const struct iovec __user *uvec,
+ ssize_t __import_iovec(int type, const struct iovec __user *uvec,
+ 		 unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
+ 		 struct iov_iter *i, bool compat);
+-
+-#ifdef CONFIG_COMPAT
+-struct compat_iovec;
+-ssize_t compat_import_iovec(int type, const struct compat_iovec __user * uvector,
+-		 unsigned nr_segs, unsigned fast_segs,
+-		 struct iovec **iov, struct iov_iter *i);
+-#endif
+-
+ int import_single_range(int type, void __user *buf, size_t len,
+ 		 struct iovec *iov, struct iov_iter *i);
+ 
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index d5d8afe31fca16..8c51e1b03814a3 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -1806,21 +1806,11 @@ ssize_t import_iovec(int type, const struct iovec __user *uvec,
+ 		 unsigned nr_segs, unsigned fast_segs,
+ 		 struct iovec **iovp, struct iov_iter *i)
+ {
+-	return __import_iovec(type, uvec, nr_segs, fast_segs, iovp, i, false);
++	return __import_iovec(type, uvec, nr_segs, fast_segs, iovp, i,
++			      in_compat_syscall());
+ }
+ EXPORT_SYMBOL(import_iovec);
+ 
+-#ifdef CONFIG_COMPAT
+-ssize_t compat_import_iovec(int type, const struct compat_iovec __user *uvec,
+-		unsigned nr_segs, unsigned fast_segs, struct iovec **iovp,
+-		struct iov_iter *i)
+-{
+-	return __import_iovec(type, (const struct iovec __user *)uvec, nr_segs,
+-			     fast_segs, iovp, i, true);
+-}
+-EXPORT_SYMBOL(compat_import_iovec);
+-#endif
+-
+ int import_single_range(int rw, void __user *buf, size_t len,
+ 		 struct iovec *iov, struct iov_iter *i)
+ {
+diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
+index 5e728c20c2bead..3f2156aab44263 100644
+--- a/mm/process_vm_access.c
++++ b/mm/process_vm_access.c
+@@ -326,7 +326,8 @@ compat_process_vm_rw(compat_pid_t pid,
+ 	if (flags != 0)
+ 		return -EINVAL;
+ 
+-	rc = compat_import_iovec(dir, lvec, liovcnt, UIO_FASTIOV, &iov_l, &iter);
++	rc = import_iovec(dir, (const struct iovec __user *)lvec, liovcnt,
++			  UIO_FASTIOV, &iov_l, &iter);
+ 	if (rc < 0)
+ 		return rc;
+ 	if (!iov_iter_count(&iter))
+diff --git a/net/compat.c b/net/compat.c
+index 95ce707a30a31d..ddd15af3a2837b 100644
+--- a/net/compat.c
++++ b/net/compat.c
+@@ -98,8 +98,8 @@ int get_compat_msghdr(struct msghdr *kmsg,
+ 	if (err)
+ 		return err;
+ 
+-	err = compat_import_iovec(save_addr ? READ : WRITE, compat_ptr(ptr),
+-				   len, UIO_FASTIOV, iov, &kmsg->msg_iter);
++	err = import_iovec(save_addr ? READ : WRITE, compat_ptr(ptr), len,
++			   UIO_FASTIOV, iov, &kmsg->msg_iter);
+ 	return err < 0 ? err : 0;
+ }
+ 
+diff --git a/security/keys/compat.c b/security/keys/compat.c
+index 6ee9d8f6a4a5bb..7ae531db031cf8 100644
+--- a/security/keys/compat.c
++++ b/security/keys/compat.c
+@@ -33,9 +33,8 @@ static long compat_keyctl_instantiate_key_iov(
+ 	if (!_payload_iov)
+ 		ioc = 0;
+ 
+-	ret = compat_import_iovec(WRITE, _payload_iov, ioc,
+-				  ARRAY_SIZE(iovstack), &iov,
+-				  &from);
++	ret = import_iovec(WRITE, (const struct iovec __user *)_payload_iov,
++			   ioc, ARRAY_SIZE(iovstack), &iov, &from);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-- 
+2.28.0
+
