@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E0027A049
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Sep 2020 11:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7497D27A04A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Sep 2020 11:37:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BzgWN1zG6zDqZC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Sep 2020 19:36:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BzgY96zg6zDqNJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Sep 2020 19:37:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,39 +17,38 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bzg4v2LNDzDqQ8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bzg4w1CZQzDqP2
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Sep 2020 19:16:31 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Bzg4l2Xhvz9vCxx;
- Sun, 27 Sep 2020 11:16:23 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4Bzg4m3M9vz9vCxy;
+ Sun, 27 Sep 2020 11:16:24 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id R4_S3vUDPNp0; Sun, 27 Sep 2020 11:16:23 +0200 (CEST)
+ with ESMTP id VP_C3gmyHNxg; Sun, 27 Sep 2020 11:16:24 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Bzg4l1NTMz9vCxw;
- Sun, 27 Sep 2020 11:16:23 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Bzg4m1Gdhz9vCxw;
+ Sun, 27 Sep 2020 11:16:24 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BBA3C8B771;
- Sun, 27 Sep 2020 11:16:27 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BB2238B771;
+ Sun, 27 Sep 2020 11:16:28 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id UdOeQkFTZf6D; Sun, 27 Sep 2020 11:16:27 +0200 (CEST)
+ with ESMTP id pbywM_hnMrAZ; Sun, 27 Sep 2020 11:16:28 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7F0018B75B;
- Sun, 27 Sep 2020 11:16:27 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 855F18B75B;
+ Sun, 27 Sep 2020 11:16:28 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 60B8065DE8; Sun, 27 Sep 2020 09:16:27 +0000 (UTC)
-Message-Id: <e7e5dfe0f93234e31051f2a610b4b07f50b0082f.1601197618.git.christophe.leroy@csgroup.eu>
+ id 6AED065DE8; Sun, 27 Sep 2020 09:16:28 +0000 (UTC)
+Message-Id: <373c66f768fa9cc8890f3b55462209a98c522326.1601197618.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1601197618.git.christophe.leroy@csgroup.eu>
 References: <cover.1601197618.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v1 10/30] powerpc/vdso: Move to _install_special_mapping() and
- remove arch_vma_name()
+Subject: [PATCH v1 11/30] powerpc/vdso: Provide vdso_remap()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Sun, 27 Sep 2020 09:16:27 +0000 (UTC)
+Date: Sun, 27 Sep 2020 09:16:28 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,134 +65,92 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Copied from commit 2fea7f6c98f5 ("arm64: vdso: move to
-_install_special_mapping and remove arch_vma_name").
+Provide vdso_remap() through _install_special_mapping() and
+drop arch_remap().
 
-Use the new _install_special_mapping() API added by
-commit a62c34bd2a8a ("x86, mm: Improve _install_special_mapping
-and fix x86 vdso naming") which obsolete install_special_mapping().
-
-And remove arch_vma_name() as the name is handled by the new API.
+This adds a test of the size and returns -EINVAL if the size
+is not correct.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/vdso.c | 45 +++++++++++++++++++-------------------
- 1 file changed, 22 insertions(+), 23 deletions(-)
+ arch/powerpc/include/asm/mm-arch-hooks.h | 25 ------------------------
+ arch/powerpc/kernel/vdso.c               | 24 +++++++++++++++++++++++
+ 2 files changed, 24 insertions(+), 25 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/mm-arch-hooks.h
 
+diff --git a/arch/powerpc/include/asm/mm-arch-hooks.h b/arch/powerpc/include/asm/mm-arch-hooks.h
+deleted file mode 100644
+index dce274be824a..000000000000
+--- a/arch/powerpc/include/asm/mm-arch-hooks.h
++++ /dev/null
+@@ -1,25 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-/*
+- * Architecture specific mm hooks
+- *
+- * Copyright (C) 2015, IBM Corporation
+- * Author: Laurent Dufour <ldufour@linux.vnet.ibm.com>
+- */
+-
+-#ifndef _ASM_POWERPC_MM_ARCH_HOOKS_H
+-#define _ASM_POWERPC_MM_ARCH_HOOKS_H
+-
+-static inline void arch_remap(struct mm_struct *mm,
+-			      unsigned long old_start, unsigned long old_end,
+-			      unsigned long new_start, unsigned long new_end)
+-{
+-	/*
+-	 * mremap() doesn't allow moving multiple vmas so we can limit the
+-	 * check to old_start == vdso_base.
+-	 */
+-	if (old_start == mm->context.vdso_base)
+-		mm->context.vdso_base = new_start;
+-}
+-#define arch_remap arch_remap
+-
+-#endif /* _ASM_POWERPC_MM_ARCH_HOOKS_H */
 diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
-index a976c5e4a7ac..9b2c91a963a6 100644
+index 9b2c91a963a6..971764d5b85b 100644
 --- a/arch/powerpc/kernel/vdso.c
 +++ b/arch/powerpc/kernel/vdso.c
-@@ -49,7 +49,6 @@
- 
- static unsigned int vdso32_pages;
- static void *vdso32_kbase;
--static struct page **vdso32_pagelist;
- unsigned long vdso32_sigtramp;
- unsigned long vdso32_rt_sigtramp;
- 
-@@ -57,7 +56,6 @@ extern char vdso32_start, vdso32_end;
- extern char vdso64_start, vdso64_end;
- static void *vdso64_kbase = &vdso64_start;
- static unsigned int vdso64_pages;
--static struct page **vdso64_pagelist;
- #ifdef CONFIG_PPC64
- unsigned long vdso64_rt_sigtramp;
- #endif /* CONFIG_PPC64 */
-@@ -118,6 +116,14 @@ struct lib64_elfinfo
+@@ -115,13 +115,37 @@ struct lib64_elfinfo
+ 	unsigned long	text;
  };
  
- 
-+static struct vm_special_mapping vdso32_spec __ro_after_init = {
-+	.name = "[vdso]",
-+};
++static int vdso_mremap(const struct vm_special_mapping *sm, struct vm_area_struct *new_vma,
++		       unsigned long text_size)
++{
++	unsigned long new_size = new_vma->vm_end - new_vma->vm_start;
 +
-+static struct vm_special_mapping vdso64_spec __ro_after_init = {
-+	.name = "[vdso]",
-+};
++	if (new_size != text_size + PAGE_SIZE)
++		return -EINVAL;
 +
- /*
-  * This is called from binfmt_elf, we create the special vma for the
-  * vDSO and insert it into the mm struct tree
-@@ -125,17 +131,17 @@ struct lib64_elfinfo
- static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- {
- 	struct mm_struct *mm = current->mm;
--	struct page **vdso_pagelist;
-+	struct vm_special_mapping *vdso_spec;
-+	struct vm_area_struct *vma;
- 	unsigned long vdso_size;
- 	unsigned long vdso_base;
--	int rc;
- 
- 	if (is_32bit_task()) {
--		vdso_pagelist = vdso32_pagelist;
-+		vdso_spec = &vdso32_spec;
- 		vdso_size = &vdso32_end - &vdso32_start;
- 		vdso_base = VDSO32_MBASE;
- 	} else {
--		vdso_pagelist = vdso64_pagelist;
-+		vdso_spec = &vdso64_spec;
- 		vdso_size = &vdso64_end - &vdso64_start;
- 		/*
- 		 * On 64bit we don't have a preferred map address. This
-@@ -166,7 +172,7 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
- 	/*
- 	 * Put vDSO base into mm struct. We need to do this before calling
- 	 * install_special_mapping or the perf counter mmap tracking code
--	 * will fail to recognise it as a vDSO (since arch_vma_name fails).
-+	 * will fail to recognise it as a vDSO.
- 	 */
- 	current->mm->context.vdso_base = vdso_base;
- 
-@@ -180,11 +186,13 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
- 	 * It's fine to use that for setting breakpoints in the vDSO code
- 	 * pages though.
- 	 */
--	rc = install_special_mapping(mm, vdso_base, vdso_size,
--				     VM_READ|VM_EXEC|
--				     VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC,
--				     vdso_pagelist);
--	return rc;
-+	vma = _install_special_mapping(mm, vdso_base, vdso_size,
-+				       VM_READ | VM_EXEC | VM_MAYREAD |
-+				       VM_MAYWRITE | VM_MAYEXEC, vdso_spec);
-+	if (IS_ERR(vma))
-+		return PTR_ERR(vma);
++	current->mm->context.vdso_base = new_vma->vm_start;
 +
 +	return 0;
- }
++}
++
++static int vdso32_mremap(const struct vm_special_mapping *sm, struct vm_area_struct *new_vma)
++{
++	return vdso_mremap(sm, new_vma, &vdso32_end - &vdso32_start);
++}
++
++static int vdso64_mremap(const struct vm_special_mapping *sm, struct vm_area_struct *new_vma)
++{
++	return vdso_mremap(sm, new_vma, &vdso64_end - &vdso64_start);
++}
  
- int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
-@@ -208,15 +216,6 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- 	return rc;
- }
+ static struct vm_special_mapping vdso32_spec __ro_after_init = {
+ 	.name = "[vdso]",
++	.mremap = vdso32_mremap,
+ };
  
--const char *arch_vma_name(struct vm_area_struct *vma)
--{
--	if (vma->vm_mm && vma->vm_start == vma->vm_mm->context.vdso_base)
--		return "[vdso]";
--	return NULL;
--}
--
--
--
- #ifdef CONFIG_VDSO32
- static void * __init find_section32(Elf32_Ehdr *ehdr, const char *secname,
- 				  unsigned long *size)
-@@ -737,10 +736,10 @@ static int __init vdso_init(void)
- 	}
+ static struct vm_special_mapping vdso64_spec __ro_after_init = {
+ 	.name = "[vdso]",
++	.mremap = vdso64_mremap,
+ };
  
- 	if (IS_ENABLED(CONFIG_VDSO32))
--		vdso32_pagelist = vdso_setup_pages(&vdso32_start, &vdso32_end);
-+		vdso32_spec.pages = vdso_setup_pages(&vdso32_start, &vdso32_end);
- 
- 	if (IS_ENABLED(CONFIG_PPC64))
--		vdso64_pagelist = vdso_setup_pages(&vdso64_start, &vdso64_end);
-+		vdso64_spec.pages = vdso_setup_pages(&vdso64_start, &vdso64_end);
- 
- 	smp_wmb();
- 	vdso_ready = 1;
+ /*
 -- 
 2.25.0
 
