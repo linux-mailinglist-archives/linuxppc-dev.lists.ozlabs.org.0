@@ -1,60 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6666927AF8B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Sep 2020 16:00:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3DD27AFCA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Sep 2020 16:14:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C0PLF6RyxzDqRg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 00:00:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C0PfT5JNfzDqQH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 00:14:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=vDmSUBpY; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=jarkko.sakkinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C0PGC38cBzDqMH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Sep 2020 23:57:07 +1000 (AEST)
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com
- [209.85.167.177])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 527C621941
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Sep 2020 13:57:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1601301423;
- bh=jpy86xlaUGPlUxTUN9/FT28T6TJmY9Ad8uRAhplOiLM=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=vDmSUBpYh7JEkaKpuSJodZASpvn5qYNR9WD7Zz+ui1FtxvuddwJe0WaOjmp/axHLo
- CvGi+htN93Dw+bCHcooMeEmLM6ROMwqzptJbER2UAJzI5Gc0Rbgm9qtlYuoiCTp2kJ
- kSRDYEYKPRHzv/MBnvBvucpR9bEchfKfyRLFlTYk=
-Received: by mail-oi1-f177.google.com with SMTP id 185so1368846oie.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Sep 2020 06:57:03 -0700 (PDT)
-X-Gm-Message-State: AOAM530uJspn5G5ZSCCkNFTNFFZCScu1hvCN+HSKDs3+ipD7TTiDd0IG
- FE4pAgWpf1V+KTdYXXFUg+b8IPNKI+TEEKIN8Q==
-X-Google-Smtp-Source: ABdhPJyYmZnCW5ClUtpTwg9oOuQczSxGPBFDOMMXF/U6MycG0QqSC1DUS8ybQXFW/wpG74B1ug8+ncnraesKmTdxWF0=
-X-Received: by 2002:aca:7543:: with SMTP id q64mr978362oic.147.1601301422618; 
- Mon, 28 Sep 2020 06:57:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C0PY807HfzDqNt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 00:10:03 +1000 (AEST)
+IronPort-SDR: DyGpuC64R/dBfTcLbJe48p+LEiYF9W7fZ4du8Z/Cjtm5R+reG1cF/GILszhMA20N6C59FB1pm0
+ v/GI/LVifsTQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9757"; a="149772520"
+X-IronPort-AV: E=Sophos;i="5.77,313,1596524400"; d="scan'208";a="149772520"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Sep 2020 07:09:57 -0700
+IronPort-SDR: YHKFCeCMdY+V43id/m9w5v+iLoHJB+6rsO9/fuI+9KrFSlgtL8srMAz2VH3zvDGshvmrjsrV+h
+ IF8kcM28ZpTw==
+X-IronPort-AV: E=Sophos;i="5.77,313,1596524400"; d="scan'208";a="514269821"
+Received: from schuethe-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.249.34.214])
+ by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Sep 2020 07:09:54 -0700
+Date: Mon, 28 Sep 2020 17:09:55 +0300
+From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH] tpm: of: avoid __va() translation for event log address
+Message-ID: <20200928140955.GA70098@linux.intel.com>
+References: <20200922094128.26245-1-ardb@kernel.org>
+ <20200925055626.GC165011@linux.intel.com>
+ <CAMj1kXFLWsFz7HV4sHLbwBkuiEu0gT4esSH8umVrvDDrJaOLrQ@mail.gmail.com>
+ <20200925102920.GA180915@linux.intel.com>
+ <20200925120018.GH9916@ziepe.ca>
+ <20200927234434.GA5283@linux.intel.com>
+ <9be9c7e7-c424-d241-2255-ad854221bd2e@csgroup.eu>
+ <CAMj1kXGxNgixUEocma-9F3fYgdJJJADh=bvyrCziXkuArErWdA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200916081831.24747-1-ran.wang_1@nxp.com>
- <20200923023234.GA3751572@bogus>
- <AM6PR04MB5413BB2F8D044B2312DAEC4FF1380@AM6PR04MB5413.eurprd04.prod.outlook.com>
-In-Reply-To: <AM6PR04MB5413BB2F8D044B2312DAEC4FF1380@AM6PR04MB5413.eurprd04.prod.outlook.com>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 28 Sep 2020 08:56:51 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+uzkr7CcvwQTe5vhpMPtdqL9v4EeqH5yZjMoT=JrDtDQ@mail.gmail.com>
-Message-ID: <CAL_Jsq+uzkr7CcvwQTe5vhpMPtdqL9v4EeqH5yZjMoT=JrDtDQ@mail.gmail.com>
-Subject: Re: [PATCH 1/5] Documentation: dt: binding: fsl: Add
- 'fsl,ippdexpcr1-alt-addr' property
-To: Ran Wang <ran.wang_1@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMj1kXGxNgixUEocma-9F3fYgdJJJADh=bvyrCziXkuArErWdA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,59 +66,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Biwen Li <biwen.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Paul Mackerras <paulus@samba.org>,
+ linux-integrity <linux-integrity@vger.kernel.org>,
+ "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
+ <linuxppc-dev@lists.ozlabs.org>, Peter Huewe <peterhuewe@gmx.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 23, 2020 at 1:44 AM Ran Wang <ran.wang_1@nxp.com> wrote:
->
-> Hi Rob,
->
-> On Wednesday, September 23, 2020 10:33 AM, Rob Herring wrote:
+On Mon, Sep 28, 2020 at 08:20:18AM +0200, Ard Biesheuvel wrote:
+> On Mon, 28 Sep 2020 at 07:56, Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
 > >
-> > On Wed, Sep 16, 2020 at 04:18:27PM +0800, Ran Wang wrote:
-> > > From: Biwen Li <biwen.li@nxp.com>
-> > >
-> > > The 'fsl,ippdexpcr1-alt-addr' property is used to handle an errata
-> > > A-008646 on LS1021A
-> > >
-> > > Signed-off-by: Biwen Li <biwen.li@nxp.com>
-> > > Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
-> > > ---
-> > >  Documentation/devicetree/bindings/soc/fsl/rcpm.txt | 19
-> > > +++++++++++++++++++
-> > >  1 file changed, 19 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > index 5a33619..1be58a3 100644
-> > > --- a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > +++ b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> > > @@ -34,6 +34,11 @@ Chassis Version          Example Chips
-> > >  Optional properties:
-> > >   - little-endian : RCPM register block is Little Endian. Without it RCPM
-> > >     will be Big Endian (default case).
-> > > + - fsl,ippdexpcr1-alt-addr : The property is related to a hardware issue
-> > > +   on SoC LS1021A and only needed on SoC LS1021A.
-> > > +   Must include 2 entries:
-> > > +   The first entry must be a link to the SCFG device node.
-> > > +   The 2nd entry must be offset of register IPPDEXPCR1 in SCFG.
 > >
-> > You don't need a DT change for this. You can find SCFG node by its compatible
-> > string and then the offset should be known given this issue is only on 1 SoC.
->
-> Did you mean that RCPM driver just to access IPPDEXPCR1 shadowed register in SCFG
-> directly without fetching it's offset info. from DT?
+> >
+> > Le 28/09/2020 à 01:44, Jarkko Sakkinen a écrit :
+> > > On Fri, Sep 25, 2020 at 09:00:18AM -0300, Jason Gunthorpe wrote:
+> > >> On Fri, Sep 25, 2020 at 01:29:20PM +0300, Jarkko Sakkinen wrote:
+> > >>> On Fri, Sep 25, 2020 at 09:00:56AM +0200, Ard Biesheuvel wrote:
+> > >>>> On Fri, 25 Sep 2020 at 07:56, Jarkko Sakkinen
+> > >>>> <jarkko.sakkinen@linux.intel.com> wrote:
+> > >>>>>
+> > >>>>> On Tue, Sep 22, 2020 at 11:41:28AM +0200, Ard Biesheuvel wrote:
+> > >>>>>> The TPM event log is provided to the OS by the firmware, by loading
+> > >>>>>> it into an area in memory and passing the physical address via a node
+> > >>>>>> in the device tree.
+> > >>>>>>
+> > >>>>>> Currently, we use __va() to access the memory via the kernel's linear
+> > >>>>>> map: however, it is not guaranteed that the linear map covers this
+> > >>>>>> particular address, as we may be running under HIGHMEM on a 32-bit
+> > >>>>>> architecture, or running firmware that uses a memory type for the
+> > >>>>>> event log that is omitted from the linear map (such as EfiReserved).
+> > >>>>>
+> > >>>>> Makes perfect sense to the level that I wonder if this should have a
+> > >>>>> fixes tag and/or needs to be backported to the stable kernels?
+> > >>>>>
+> > >>>>
+> > >>>> AIUI, the code was written specifically for ppc64, which is a
+> > >>>> non-highmem, non-EFI architecture. However, when we start reusing this
+> > >>>> driver for ARM, this issue could pop up.
+> > >>>>
+> > >>>> The code itself has been refactored a couple of times, so I think it
+> > >>>> will require different versions of the patch for different generations
+> > >>>> of stable kernels.
+> > >>>>
+> > >>>> So perhaps just add Cc: <stable@vger.kernel.org>, and wait and see how
+> > >>>> far back it applies cleanly?
+> > >>>
+> > >>> Yeah, I think I'll cc it with some note before the diffstat.
+> > >>>
+> > >>> I'm thinking to cap it to only 5.x kernels (at least first) unless it is
+> > >>> dead easy to backport below that.
+> > >>
+> > >> I have this vauge recollection of pointing at this before and being
+> > >> told that it had to be __va for some PPC reason?
+> > >>
+> > >> Do check with the PPC people first, I see none on the CC list.
+> > >>
+> > >> Jason
+> > >
+> > > Thanks, added arch/powerpc maintainers.
+> > >
+> >
+> > As far as I can see, memremap() won't work on PPC32 at least:
+> >
+> > IIUC, memremap() calls arch_memremap_wb()
+> > arch_memremap_wb() calls ioremap_cache()
+> > In case of failure, then ioremap_wt() and ioremap_wc() are tried.
+> >
+> > All ioremap calls end up in __ioremap_caller() which will return NULL in case you try to ioremap RAM.
+> >
+> > So the statement "So instead, use memremap(), which will reuse the linear mapping if
+> > it is valid, or create another mapping otherwise." seems to be wrong, at least for PPC32.
+> >
+> > Even for PPC64 which doesn't seem to have the RAM check, I can't see that it will "reuse the linear
+> > mapping".
+> >
+> 
+> It is there, please look again. Before any of the above happens,
+> memremap() will call try_ram_remap() for regions that are covered by a
+> IORESOURCE_SYSTEM_RAM, and map it using __va() if its PFN is valid and
+> it is not highmem.
+> 
+> So as far as I can tell, this change has no effect on PPC at all
+> unless its RAM is not described as IORESOURCE_SYSTEM_RAM.
 
-Yes. There's only 1 possible value of the offset because there's only
-one SoC, so the driver can hardcode the offset. And I assume there's
-only one SCFG node, so you can find it by its compatible string
-(of_find_compatible_node).
+Any chance for someone to test this on PPC32?
 
-Rob
+/Jarkko
