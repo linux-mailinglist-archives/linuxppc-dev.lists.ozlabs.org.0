@@ -2,59 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3DD27AFCA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Sep 2020 16:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 139F927B092
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Sep 2020 17:13:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C0PfT5JNfzDqQH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 00:14:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C0Qy31gB7zDqN2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 01:13:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=0x7f454c46@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=jarkko.sakkinen@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=dvDAoZ7W; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C0PY807HfzDqNt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 00:10:03 +1000 (AEST)
-IronPort-SDR: DyGpuC64R/dBfTcLbJe48p+LEiYF9W7fZ4du8Z/Cjtm5R+reG1cF/GILszhMA20N6C59FB1pm0
- v/GI/LVifsTQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9757"; a="149772520"
-X-IronPort-AV: E=Sophos;i="5.77,313,1596524400"; d="scan'208";a="149772520"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Sep 2020 07:09:57 -0700
-IronPort-SDR: YHKFCeCMdY+V43id/m9w5v+iLoHJB+6rsO9/fuI+9KrFSlgtL8srMAz2VH3zvDGshvmrjsrV+h
- IF8kcM28ZpTw==
-X-IronPort-AV: E=Sophos;i="5.77,313,1596524400"; d="scan'208";a="514269821"
-Received: from schuethe-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.249.34.214])
- by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Sep 2020 07:09:54 -0700
-Date: Mon, 28 Sep 2020 17:09:55 +0300
-From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH] tpm: of: avoid __va() translation for event log address
-Message-ID: <20200928140955.GA70098@linux.intel.com>
-References: <20200922094128.26245-1-ardb@kernel.org>
- <20200925055626.GC165011@linux.intel.com>
- <CAMj1kXFLWsFz7HV4sHLbwBkuiEu0gT4esSH8umVrvDDrJaOLrQ@mail.gmail.com>
- <20200925102920.GA180915@linux.intel.com>
- <20200925120018.GH9916@ziepe.ca>
- <20200927234434.GA5283@linux.intel.com>
- <9be9c7e7-c424-d241-2255-ad854221bd2e@csgroup.eu>
- <CAMj1kXGxNgixUEocma-9F3fYgdJJJADh=bvyrCziXkuArErWdA@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C0QrG60txzDqMm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 01:08:09 +1000 (AEST)
+Received: by mail-wm1-x341.google.com with SMTP id a9so1530285wmm.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Sep 2020 08:08:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=FXLhKYSWU/M1fd9MJuFy2+oKcbRHytB3lb3XoxsRGQs=;
+ b=dvDAoZ7WCYZ1ogO3zg4WvzNFS0WjYAH1ZHeo6qgZIzcTG/0QGchSs9u42gOKTVFVjm
+ Y93vm1Br97WyTt1/wl05iOzkkWca2FuIlXQcE3uiqb4bBP7eh7ABEdTasPuY/1VV2qSx
+ dz71BgGogHAqaEwGHlAM+fuxZrrRKFsFSw4aeAg6WF347xZHqrnRY+vrnZOZeczTdQvU
+ hYfVdYM3LyBiCNEgIQ9oVsH9v16OBILG4lnKoMIciT5AOF+3cgdbulradJzkNtgz9HmU
+ 1CTxrnh72o6XGGKNWV/bRCqZrSsuxnm9eJnTBHZsjbQ49FHF2LXKHw8A1AEvOLEAhZOn
+ E02w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=FXLhKYSWU/M1fd9MJuFy2+oKcbRHytB3lb3XoxsRGQs=;
+ b=QD6SHSS+uAccFAqd+6xBomSWqMQxfzQDUHH523nEZ/H3ZV3u2CD7QaTKWb2w6etEGq
+ DdqcOS92kxJ9XpleN/8Bu1TePiwEkrt7uRehA8LQ2jUQiq9WZrKducHQ/7CCVrER8J/L
+ LxA+/0eDCBKzLeg6JE5K+DF7eFuQxrPBpINrGqkyV86sMDO68W9Wf2hviJN9y4Ifm5Cn
+ z8tCBi4OBLH31nXGynLLry2ErqCdEcci42mDdKGZ/ywHhFD8/DooJHo01aYGGphE79ZJ
+ si5P++3LkboejdI6GGwkf5JvuG34HxwRsBo3+kB1MeTEzlWHW3auTsWg6f7hf0F/QDrv
+ Zojw==
+X-Gm-Message-State: AOAM531AxoZDpqvOAmC4bHOqrCtE73SLCH4W0y9+kRjtmZyOqWzwAkbq
+ Z47qkXFnoajwVtwg8oZ5Big=
+X-Google-Smtp-Source: ABdhPJwMqkizpfBHet4wCWb7GnvT4E/YNIH70bH6x5YTVoHc7ARnloVVYrAp/weuNGJZwyWj4yxKaw==
+X-Received: by 2002:a05:600c:2f8f:: with SMTP id
+ t15mr2173398wmn.41.1601305685437; 
+ Mon, 28 Sep 2020 08:08:05 -0700 (PDT)
+Received: from ?IPv6:2a02:8084:e84:2480:228:f8ff:fe6f:83a8?
+ ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
+ by smtp.gmail.com with ESMTPSA id 189sm1622730wmb.3.2020.09.28.08.08.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 28 Sep 2020 08:08:04 -0700 (PDT)
+Subject: Re: [PATCH v8 2/8] powerpc/vdso: Remove __kernel_datapage_offset and
+ simplify __get_datapage()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Will Deacon <will@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <cover.1588079622.git.christophe.leroy@c-s.fr>
+ <0d2201efe3c7727f2acc718aefd7c5bb22c66c57.1588079622.git.christophe.leroy@c-s.fr>
+ <87wo34tbas.fsf@mpe.ellerman.id.au>
+ <2f9b7d02-9e2f-4724-2608-c5573f6507a2@csgroup.eu>
+ <6862421a-5a14-2e38-b825-e39e6ad3d51d@csgroup.eu>
+ <87imd5h5kb.fsf@mpe.ellerman.id.au>
+ <CAJwJo6ZANqYkSHbQ+3b+Fi_VT80MtrzEV5yreQAWx-L8j8x2zA@mail.gmail.com>
+ <87a6yf34aj.fsf@mpe.ellerman.id.au> <20200921112638.GC2139@willie-the-truck>
+ <ad72ffd3-a552-cc98-7545-d30285fd5219@csgroup.eu>
+From: Dmitry Safonov <0x7f454c46@gmail.com>
+Message-ID: <542145eb-7d90-0444-867e-c9cbb6bdd8e3@gmail.com>
+Date: Mon, 28 Sep 2020 16:08:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <ad72ffd3-a552-cc98-7545-d30285fd5219@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMj1kXGxNgixUEocma-9F3fYgdJJJADh=bvyrCziXkuArErWdA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,92 +94,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Paul Mackerras <paulus@samba.org>,
- linux-integrity <linux-integrity@vger.kernel.org>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, Peter Huewe <peterhuewe@gmx.de>
+Cc: nathanl@linux.ibm.com, linux-arch <linux-arch@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, open list <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 28, 2020 at 08:20:18AM +0200, Ard Biesheuvel wrote:
-> On Mon, 28 Sep 2020 at 07:56, Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
-> >
-> >
-> >
-> > Le 28/09/2020 à 01:44, Jarkko Sakkinen a écrit :
-> > > On Fri, Sep 25, 2020 at 09:00:18AM -0300, Jason Gunthorpe wrote:
-> > >> On Fri, Sep 25, 2020 at 01:29:20PM +0300, Jarkko Sakkinen wrote:
-> > >>> On Fri, Sep 25, 2020 at 09:00:56AM +0200, Ard Biesheuvel wrote:
-> > >>>> On Fri, 25 Sep 2020 at 07:56, Jarkko Sakkinen
-> > >>>> <jarkko.sakkinen@linux.intel.com> wrote:
-> > >>>>>
-> > >>>>> On Tue, Sep 22, 2020 at 11:41:28AM +0200, Ard Biesheuvel wrote:
-> > >>>>>> The TPM event log is provided to the OS by the firmware, by loading
-> > >>>>>> it into an area in memory and passing the physical address via a node
-> > >>>>>> in the device tree.
-> > >>>>>>
-> > >>>>>> Currently, we use __va() to access the memory via the kernel's linear
-> > >>>>>> map: however, it is not guaranteed that the linear map covers this
-> > >>>>>> particular address, as we may be running under HIGHMEM on a 32-bit
-> > >>>>>> architecture, or running firmware that uses a memory type for the
-> > >>>>>> event log that is omitted from the linear map (such as EfiReserved).
-> > >>>>>
-> > >>>>> Makes perfect sense to the level that I wonder if this should have a
-> > >>>>> fixes tag and/or needs to be backported to the stable kernels?
-> > >>>>>
-> > >>>>
-> > >>>> AIUI, the code was written specifically for ppc64, which is a
-> > >>>> non-highmem, non-EFI architecture. However, when we start reusing this
-> > >>>> driver for ARM, this issue could pop up.
-> > >>>>
-> > >>>> The code itself has been refactored a couple of times, so I think it
-> > >>>> will require different versions of the patch for different generations
-> > >>>> of stable kernels.
-> > >>>>
-> > >>>> So perhaps just add Cc: <stable@vger.kernel.org>, and wait and see how
-> > >>>> far back it applies cleanly?
-> > >>>
-> > >>> Yeah, I think I'll cc it with some note before the diffstat.
-> > >>>
-> > >>> I'm thinking to cap it to only 5.x kernels (at least first) unless it is
-> > >>> dead easy to backport below that.
-> > >>
-> > >> I have this vauge recollection of pointing at this before and being
-> > >> told that it had to be __va for some PPC reason?
-> > >>
-> > >> Do check with the PPC people first, I see none on the CC list.
-> > >>
-> > >> Jason
-> > >
-> > > Thanks, added arch/powerpc maintainers.
-> > >
-> >
-> > As far as I can see, memremap() won't work on PPC32 at least:
-> >
-> > IIUC, memremap() calls arch_memremap_wb()
-> > arch_memremap_wb() calls ioremap_cache()
-> > In case of failure, then ioremap_wt() and ioremap_wc() are tried.
-> >
-> > All ioremap calls end up in __ioremap_caller() which will return NULL in case you try to ioremap RAM.
-> >
-> > So the statement "So instead, use memremap(), which will reuse the linear mapping if
-> > it is valid, or create another mapping otherwise." seems to be wrong, at least for PPC32.
-> >
-> > Even for PPC64 which doesn't seem to have the RAM check, I can't see that it will "reuse the linear
-> > mapping".
-> >
+On 9/27/20 8:43 AM, Christophe Leroy wrote:
 > 
-> It is there, please look again. Before any of the above happens,
-> memremap() will call try_ram_remap() for regions that are covered by a
-> IORESOURCE_SYSTEM_RAM, and map it using __va() if its PFN is valid and
-> it is not highmem.
 > 
-> So as far as I can tell, this change has no effect on PPC at all
-> unless its RAM is not described as IORESOURCE_SYSTEM_RAM.
+> Le 21/09/2020 Ã  13:26, Will Deacon a Ã©critÂ :
+>> On Fri, Aug 28, 2020 at 12:14:28PM +1000, Michael Ellerman wrote:
+>>> Dmitry Safonov <0x7f454c46@gmail.com> writes:
+[..]
+>>>> I'll cook a patch for vm_special_mapping if you don't mind :-)
+>>>
+>>> That would be great, thanks!
+>>
+>> I lost track of this one. Is there a patch kicking around to resolve
+>> this,
+>> or is the segfault expected behaviour?
+>>
+> 
+> IIUC dmitry said he will cook a patch. I have not seen any patch yet.
 
-Any chance for someone to test this on PPC32?
+Yes, sorry about the delay - I was a bit busy with xfrm patches.
 
-/Jarkko
+I'll send patches for .close() this week, working on them now.
+
+> AFAIKS, among the architectures having VDSO sigreturn trampolines, only
+> SH, X86 and POWERPC provide alternative trampoline on stack when VDSO is
+> not there.
+> 
+> All other architectures just having a VDSO don't expect VDSO to not be
+> mapped.
+> 
+> As far as nowadays stacks are mapped non-executable, getting a segfaut
+> is expected behaviour. However, I think we should really make it
+> cleaner. Today it segfaults because it is still pointing to the VDSO
+> trampoline that has been unmapped. But should the user map some other
+> code at the same address, we'll run in the weed on signal return instead
+> of segfaulting.
+
++1.
+
+> So VDSO unmapping should really be properly managed, the reference
+> should be properly cleared in order to segfault in a controllable manner.
+> 
+> Only powerpc has a hook to properly clear the VDSO pointer when VDSO is
+> unmapped.
+
+Thanks,
+         Dmitry
