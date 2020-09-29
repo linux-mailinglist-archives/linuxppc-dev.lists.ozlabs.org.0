@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD1BC27BD78
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 08:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBFD727BD7E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 08:59:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C0qvq5WsmzDqXK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 16:57:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C0qxd4xykzDqLf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 16:59:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,38 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C0qjN5KRhzDqWm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 16:48:40 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C0qjP5XmBzDqWf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 16:48:41 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4C0qjJ4XfMz9v2cK;
- Tue, 29 Sep 2020 08:48:36 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4C0qjK5L86z9v2cP;
+ Tue, 29 Sep 2020 08:48:37 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id GhW2mPq8tg6N; Tue, 29 Sep 2020 08:48:36 +0200 (CEST)
+ with ESMTP id HxjWnqY8l-RF; Tue, 29 Sep 2020 08:48:37 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4C0qjJ3fYfz9v2c7;
- Tue, 29 Sep 2020 08:48:36 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 95B638B7A0;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4C0qjK4dlTz9v2c7;
  Tue, 29 Sep 2020 08:48:37 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9295A8B79F;
+ Tue, 29 Sep 2020 08:48:38 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id lbcbEIQqdMmQ; Tue, 29 Sep 2020 08:48:37 +0200 (CEST)
+ with ESMTP id Ra4jW0KpaPAB; Tue, 29 Sep 2020 08:48:38 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4A4108B76C;
- Tue, 29 Sep 2020 08:48:37 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5072B8B76C;
+ Tue, 29 Sep 2020 08:48:38 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 2997165E8A; Tue, 29 Sep 2020 06:48:37 +0000 (UTC)
-Message-Id: <31c4cd093963f22831bf388449056ee045533d3b.1601362098.git.christophe.leroy@csgroup.eu>
+ id 30B1865E8A; Tue, 29 Sep 2020 06:48:38 +0000 (UTC)
+Message-Id: <4757e1ed21fe1968c761ae081d1f3d790a9673f8.1601362098.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <27951fa6c9a8f80724d1bc81a6117ac32343a55d.1601362098.git.christophe.leroy@csgroup.eu>
 References: <27951fa6c9a8f80724d1bc81a6117ac32343a55d.1601362098.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 6/8] powerpc: Tidy up a bit after removal of PowerPC 601.
+Subject: [PATCH v3 7/8] powerpc: Remove __USE_RTC()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 29 Sep 2020 06:48:37 +0000 (UTC)
+Date: Tue, 29 Sep 2020 06:48:38 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,103 +65,180 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The removal of the 601 left some standalone blocks from
-former if/else. Drop the { } and re-indent.
+Now that PowerPC 601 is gone, __USE_RTC() is never true.
+
+Remove it.
+
+That also leads to removing get_rtc() and get_rtcl()
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/btext.c    | 11 +++------
- arch/powerpc/mm/book3s32/mmu.c | 45 +++++++++++++++-------------------
- 2 files changed, 24 insertions(+), 32 deletions(-)
+v2: Also remove get_rtc() and get_rtcl()
+---
+ arch/powerpc/include/asm/time.h | 28 +-----------------
+ arch/powerpc/kernel/time.c      | 52 +++++----------------------------
+ 2 files changed, 9 insertions(+), 71 deletions(-)
 
-diff --git a/arch/powerpc/kernel/btext.c b/arch/powerpc/kernel/btext.c
-index b609fb39dba8..c22a8e0dbc93 100644
---- a/arch/powerpc/kernel/btext.c
-+++ b/arch/powerpc/kernel/btext.c
-@@ -95,13 +95,10 @@ void __init btext_prepare_BAT(void)
- 		boot_text_mapped = 0;
- 		return;
- 	}
--	{
--		/* 603, 604, G3, G4, ... */
--		lowbits = addr & ~0xFF000000UL;
--		addr &= 0xFF000000UL;
--		disp_BAT[0] = vaddr | (BL_16M<<2) | 2;
--		disp_BAT[1] = addr | (_PAGE_NO_CACHE | _PAGE_GUARDED | BPP_RW);	
--	}
-+	lowbits = addr & ~0xFF000000UL;
-+	addr &= 0xFF000000UL;
-+	disp_BAT[0] = vaddr | (BL_16M<<2) | 2;
-+	disp_BAT[1] = addr | (_PAGE_NO_CACHE | _PAGE_GUARDED | BPP_RW);
- 	logicalDisplayBase = (void *) (vaddr + lowbits);
- }
- #endif
-diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-index 771d607f1a3d..741e4fc990c7 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -73,16 +73,13 @@ unsigned long p_block_mapped(phys_addr_t pa)
- static int find_free_bat(void)
- {
- 	int b;
-+	int n = mmu_has_feature(MMU_FTR_USE_HIGH_BATS) ? 8 : 4;
+diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
+index ce065589192a..caf68a4bc19e 100644
+--- a/arch/powerpc/include/asm/time.h
++++ b/arch/powerpc/include/asm/time.h
+@@ -38,9 +38,6 @@ struct div_result {
+ 	u64 result_low;
+ };
  
--	{
--		int n = mmu_has_feature(MMU_FTR_USE_HIGH_BATS) ? 8 : 4;
-+	for (b = 0; b < n; b++) {
-+		struct ppc_bat *bat = BATS[b];
- 
--		for (b = 0; b < n; b++) {
--			struct ppc_bat *bat = BATS[b];
+-/* Accessor functions for the timebase (RTC on 601) registers. */
+-#define __USE_RTC()	(0)
 -
--			if (!(bat[1].batu & 3))
--				return b;
--		}
-+		if (!(bat[1].batu & 3))
-+			return b;
- 	}
- 	return -1;
+ #ifdef CONFIG_PPC64
+ 
+ /* For compatibility, get_tbl() is defined as get_tb() on ppc64 */
+@@ -59,25 +56,6 @@ static inline unsigned int get_tbu(void)
  }
-@@ -280,24 +277,22 @@ void __init setbat(int index, unsigned long virt, phys_addr_t phys,
- 		flags &= ~_PAGE_COHERENT;
+ #endif /* !CONFIG_PPC64 */
  
- 	bl = (size >> 17) - 1;
--	{
--		/* Do DBAT first */
--		wimgxpp = flags & (_PAGE_WRITETHRU | _PAGE_NO_CACHE
--				   | _PAGE_COHERENT | _PAGE_GUARDED);
--		wimgxpp |= (flags & _PAGE_RW)? BPP_RW: BPP_RX;
--		bat[1].batu = virt | (bl << 2) | 2; /* Vs=1, Vp=0 */
--		bat[1].batl = BAT_PHYS_ADDR(phys) | wimgxpp;
--		if (flags & _PAGE_USER)
--			bat[1].batu |= 1; 	/* Vp = 1 */
--		if (flags & _PAGE_GUARDED) {
--			/* G bit must be zero in IBATs */
--			flags &= ~_PAGE_EXEC;
--		}
--		if (flags & _PAGE_EXEC)
--			bat[0] = bat[1];
--		else
--			bat[0].batu = bat[0].batl = 0;
-+	/* Do DBAT first */
-+	wimgxpp = flags & (_PAGE_WRITETHRU | _PAGE_NO_CACHE
-+			   | _PAGE_COHERENT | _PAGE_GUARDED);
-+	wimgxpp |= (flags & _PAGE_RW)? BPP_RW: BPP_RX;
-+	bat[1].batu = virt | (bl << 2) | 2; /* Vs=1, Vp=0 */
-+	bat[1].batl = BAT_PHYS_ADDR(phys) | wimgxpp;
-+	if (flags & _PAGE_USER)
-+		bat[1].batu |= 1; 	/* Vp = 1 */
-+	if (flags & _PAGE_GUARDED) {
-+		/* G bit must be zero in IBATs */
-+		flags &= ~_PAGE_EXEC;
- 	}
-+	if (flags & _PAGE_EXEC)
-+		bat[0] = bat[1];
-+	else
-+		bat[0].batu = bat[0].batl = 0;
+-static inline unsigned int get_rtcl(void)
+-{
+-	unsigned int rtcl;
+-
+-	asm volatile("mfrtcl %0" : "=r" (rtcl));
+-	return rtcl;
+-}
+-
+-static inline u64 get_rtc(void)
+-{
+-	unsigned int hi, lo, hi2;
+-
+-	do {
+-		asm volatile("mfrtcu %0; mfrtcl %1; mfrtcu %2"
+-			     : "=r" (hi), "=r" (lo), "=r" (hi2));
+-	} while (hi2 != hi);
+-	return (u64)hi * 1000000000 + lo;
+-}
+-
+ static inline u64 get_vtb(void)
+ {
+ #ifdef CONFIG_PPC_BOOK3S_64
+@@ -109,7 +87,7 @@ static inline u64 get_tb(void)
  
- 	bat_addrs[index].start = virt;
- 	bat_addrs[index].limit = virt + ((bl + 1) << 17) - 1;
+ static inline u64 get_tb_or_rtc(void)
+ {
+-	return __USE_RTC() ? get_rtc() : get_tb();
++	return get_tb();
+ }
+ 
+ static inline void set_tb(unsigned int upper, unsigned int lower)
+@@ -153,10 +131,6 @@ static inline void set_dec(u64 val)
+ 
+ static inline unsigned long tb_ticks_since(unsigned long tstamp)
+ {
+-	if (__USE_RTC()) {
+-		int delta = get_rtcl() - (unsigned int) tstamp;
+-		return delta < 0 ? delta + 1000000000 : delta;
+-	}
+ 	return get_tbl() - tstamp;
+ }
+ 
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index f85539ebb513..13c820c15d37 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -75,15 +75,6 @@
+ #include <linux/clockchips.h>
+ #include <linux/timekeeper_internal.h>
+ 
+-static u64 rtc_read(struct clocksource *);
+-static struct clocksource clocksource_rtc = {
+-	.name         = "rtc",
+-	.rating       = 400,
+-	.flags        = CLOCK_SOURCE_IS_CONTINUOUS,
+-	.mask         = CLOCKSOURCE_MASK(64),
+-	.read         = rtc_read,
+-};
+-
+ static u64 timebase_read(struct clocksource *);
+ static struct clocksource clocksource_timebase = {
+ 	.name         = "timebase",
+@@ -447,19 +438,9 @@ void vtime_flush(struct task_struct *tsk)
+ void __delay(unsigned long loops)
+ {
+ 	unsigned long start;
+-	int diff;
+ 
+ 	spin_begin();
+-	if (__USE_RTC()) {
+-		start = get_rtcl();
+-		do {
+-			/* the RTCL register wraps at 1000000000 */
+-			diff = get_rtcl() - start;
+-			if (diff < 0)
+-				diff += 1000000000;
+-			spin_cpu_relax();
+-		} while (diff < loops);
+-	} else if (tb_invalid) {
++	if (tb_invalid) {
+ 		/*
+ 		 * TB is in error state and isn't ticking anymore.
+ 		 * HMI handler was unable to recover from TB error.
+@@ -696,8 +677,6 @@ EXPORT_SYMBOL_GPL(tb_to_ns);
+  */
+ notrace unsigned long long sched_clock(void)
+ {
+-	if (__USE_RTC())
+-		return get_rtc();
+ 	return mulhdu(get_tb() - boot_tb, tb_to_ns_scale) << tb_to_ns_shift;
+ }
+ 
+@@ -847,11 +826,6 @@ void read_persistent_clock64(struct timespec64 *ts)
+ }
+ 
+ /* clocksource code */
+-static notrace u64 rtc_read(struct clocksource *cs)
+-{
+-	return (u64)get_rtc();
+-}
+-
+ static notrace u64 timebase_read(struct clocksource *cs)
+ {
+ 	return (u64)get_tb();
+@@ -948,12 +922,7 @@ void update_vsyscall_tz(void)
+ 
+ static void __init clocksource_init(void)
+ {
+-	struct clocksource *clock;
+-
+-	if (__USE_RTC())
+-		clock = &clocksource_rtc;
+-	else
+-		clock = &clocksource_timebase;
++	struct clocksource *clock = &clocksource_timebase;
+ 
+ 	if (clocksource_register_hz(clock, tb_ticks_per_sec)) {
+ 		printk(KERN_ERR "clocksource: %s is already registered\n",
+@@ -1071,17 +1040,12 @@ void __init time_init(void)
+ 	u64 scale;
+ 	unsigned shift;
+ 
+-	if (__USE_RTC()) {
+-		/* 601 processor: dec counts down by 128 every 128ns */
+-		ppc_tb_freq = 1000000000;
+-	} else {
+-		/* Normal PowerPC with timebase register */
+-		ppc_md.calibrate_decr();
+-		printk(KERN_DEBUG "time_init: decrementer frequency = %lu.%.6lu MHz\n",
+-		       ppc_tb_freq / 1000000, ppc_tb_freq % 1000000);
+-		printk(KERN_DEBUG "time_init: processor frequency   = %lu.%.6lu MHz\n",
+-		       ppc_proc_freq / 1000000, ppc_proc_freq % 1000000);
+-	}
++	/* Normal PowerPC with timebase register */
++	ppc_md.calibrate_decr();
++	printk(KERN_DEBUG "time_init: decrementer frequency = %lu.%.6lu MHz\n",
++	       ppc_tb_freq / 1000000, ppc_tb_freq % 1000000);
++	printk(KERN_DEBUG "time_init: processor frequency   = %lu.%.6lu MHz\n",
++	       ppc_proc_freq / 1000000, ppc_proc_freq % 1000000);
+ 
+ 	tb_ticks_per_jiffy = ppc_tb_freq / HZ;
+ 	tb_ticks_per_sec = ppc_tb_freq;
 -- 
 2.25.0
 
