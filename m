@@ -2,46 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5008827C52B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 13:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F251027CADB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 14:23:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C0y0W1VxfzDqYC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 21:32:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C0z894pTBzDqVT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 22:23:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
- envelope-from=miaoqinglang@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=pzTEk7wK; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C0xxx5CyNzDqWN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 21:29:52 +1000 (AEST)
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id 5097DC68BBB112D265BD;
- Tue, 29 Sep 2020 19:29:43 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 29 Sep 2020 19:29:32 +0800
-From: Qinglang Miao <miaoqinglang@huawei.com>
-To: Timur Tabi <timur@kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- "Shengjiu Wang" <shengjiu.wang@gmail.com>, Liam Girdwood
- <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, Jaroslav Kysela
- <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, NXP Linux Team <linux-imx@nxp.com>
-Subject: [PATCH -next] ASoC: fsl: imx-mc13783: use devm_snd_soc_register_card()
-Date: Tue, 29 Sep 2020 19:29:30 +0800
-Message-ID: <20200929112930.46848-1-miaoqinglang@huawei.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C0z2s3SxwzDqLV;
+ Tue, 29 Sep 2020 22:19:16 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 08TC3FHK047398; Tue, 29 Sep 2020 08:19:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=kEHD+cQpmfemM7C0NRn7bh4gvqCkE44K91jAWZBlJDI=;
+ b=pzTEk7wKPvqs6+i9WNtPrTGnqhdZcek5AmOTpVZlgfyND3KJOeoKXCR7D7Cf0R+LuzbW
+ xAK3Z8rCWQqFnSDkyG04xtAVJlvHY9GSSs8On5NCs5NzHb32Mjp5upJvYfPLS5yX74c6
+ b5aInWb7aTYbv/+2YttH/6VgKTHjEh+6ZlZG9LR4yo5TlHE7LqdzwPytxkV9w8QStYV0
+ 75bmSv/MIdvscxmj2epHzHFiElpAZrdPDH3mnDjQKpvA/KYFMinJMmQ/ZC3vJiADUIPO
+ uVDc2uSAe22ieY28mdQlpl9VBuObNJIryjwuTgM0lo22IeT4SfkCRIpG1aTISbljWIH9 vA== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33v4h78na6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 29 Sep 2020 08:19:13 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08TCD9NT025548;
+ Tue, 29 Sep 2020 12:19:11 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma02fra.de.ibm.com with ESMTP id 33sw981q00-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 29 Sep 2020 12:19:11 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 08TCJ8LH28377456
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 29 Sep 2020 12:19:08 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 866A3A4051;
+ Tue, 29 Sep 2020 12:19:08 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5E130A404D;
+ Tue, 29 Sep 2020 12:19:07 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown
+ [9.160.84.239])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 29 Sep 2020 12:19:07 +0000 (GMT)
+Message-ID: <1f0be5fa1c261180399b87495f175856af2de209.camel@linux.ibm.com>
+Subject: Re: [PATCH] linux: configure CONFIG_I2C_OPAL as in-built.
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Joel Stanley <joel@jms.id.au>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Date: Tue, 29 Sep 2020 08:19:06 -0400
+In-Reply-To: <CACPK8XdeAzbXcm2w6kJuAQzckdyFQ2P9h+fC36ZArpkubqC1mg@mail.gmail.com>
+References: <1600885506-18734-1-git-send-email-nayna@linux.ibm.com>
+ <8dc1ad002dcdc02122725dcc3ba27e1fd8c78b78.camel@linux.ibm.com>
+ <CACPK8XdeAzbXcm2w6kJuAQzckdyFQ2P9h+fC36ZArpkubqC1mg@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-12.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-29_03:2020-09-29,
+ 2020-09-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 spamscore=0
+ impostorscore=0 malwarescore=0 bulkscore=0 clxscore=1015
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 suspectscore=0
+ mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2009290108
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,54 +100,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Qinglang Miao <miaoqinglang@huawei.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: openpower-firmware@lists.ozlabs.org, Nayna Jain <nayna@linux.ibm.com>,
+ klaus@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Using devm_snd_soc_register_card() can make the code
-shorter and cleaner.
+Hi Joel,
 
-Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
----
- sound/soc/fsl/imx-mc13783.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+On Tue, 2020-09-29 at 06:14 +0000, Joel Stanley wrote:
+> On Fri, 25 Sep 2020 at 18:19, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> >
+> > Hi Nayna,
+> >
+> > On Wed, 2020-09-23 at 14:25 -0400, Nayna Jain wrote:
+> > > Currently, skiroot_defconfig CONFIG_I2C_OPAL is built as a loadable
+> > > module rather than builtin, even if CONFIG_I2C=y is defined. This
+> > > results in a delay in the TPM initialization, causing IMA to go into
+> > > TPM bypass mode. As a result, the IMA measurements are added to the
+> > > measurement list, but do not extend the TPM. Because of this, it is
+> > > impossible to verify or attest to the system's integrity, either from
+> > > skiroot or the target Host OS.
+> >
+> > The patch description is good, but perhaps we could provide a bit more
+> > context before.
+> >
+> > The concept of trusted boot requires the measurement to be added to the
+> > measurement list and extend the TPM, prior to allowing access to the
+> > file. By allowing access to a file before its measurement is included
+> > in the measurement list and extended into the TPM PCR, a malicious file
+> > could potentially prevent its own measurement from being added. As the
+> > PCRs are tamper proof, measuring and extending the TPM prior to giving
+> > access to the file, guarantees that all file measurements are included
+> > in the measurement list, including the malicious file.
+> >
+> > IMA needs to be enabled before any files are accessed in order to
+> > verify a file's integrity and extend the TPM with the file
+> > measurement.  Queueing file measurements breaks the measure and extend,
+> > before usage, trusted boot paradigm.
+> >
+> > The ima-evm-utils package includes a test for walking the IMA
+> > measurement list, calculating the expected TPM PCRs, and comparing the
+> > calculated PCR values with the physical TPM.  Testing is important to
+> > ensure the TPM is initialized prior to IMA.  Failure to validate the
+> > IMA measurement list may indicate IMA went into TPM bypass mode, like
+> > in this case.
+> 
+> Thanks for the explanation Mimi. It's lucky that the TPM drivers can
+> be loaded early enough!
+> 
+> Should we add something like this to security/integrity/ima/Kconfig?
+> 
+> select I2C_OPAL if PPC_POWERNV
+> 
+> It's generally frowned upon to select user visible symbols, but IMA
+> does this for the TCG options already.
 
-diff --git a/sound/soc/fsl/imx-mc13783.c b/sound/soc/fsl/imx-mc13783.c
-index dd9c1ac81..d9dca7bbc 100644
---- a/sound/soc/fsl/imx-mc13783.c
-+++ b/sound/soc/fsl/imx-mc13783.c
-@@ -96,7 +96,7 @@ static int imx_mc13783_probe(struct platform_device *pdev)
- 
- 	imx_mc13783.dev = &pdev->dev;
- 
--	ret = snd_soc_register_card(&imx_mc13783);
-+	ret = devm_snd_soc_register_card(&pdev->dev, &imx_mc13783);
- 	if (ret) {
- 		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n",
- 			ret);
-@@ -140,19 +140,11 @@ static int imx_mc13783_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int imx_mc13783_remove(struct platform_device *pdev)
--{
--	snd_soc_unregister_card(&imx_mc13783);
--
--	return 0;
--}
--
- static struct platform_driver imx_mc13783_audio_driver = {
- 	.driver = {
- 		.name = "imx_mc13783",
- 	},
- 	.probe = imx_mc13783_probe,
--	.remove = imx_mc13783_remove
- };
- 
- module_platform_driver(imx_mc13783_audio_driver);
--- 
-2.23.0
+The other examples enable the TPM.  I2C_OPAL is dependent on I2C being
+builtin.  I'm not sure if this select is complete, nor if this is where
+it belongs.
+
+Mimi
 
