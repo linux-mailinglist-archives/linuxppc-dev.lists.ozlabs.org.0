@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCE927BD84
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 09:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D2227BEE2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 10:09:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C0r020ZpyzDqDK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 17:01:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C0sVh5TFQzDqTD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 18:09:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,37 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C0qjR2vdvzDqWS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 16:48:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C0sFz4PhVzDqS9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 17:58:31 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4C0qjL6l32z9v2cQ;
- Tue, 29 Sep 2020 08:48:38 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4C0sFn2p3rz9tyZQ;
+ Tue, 29 Sep 2020 09:58:21 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id F3MwH_Ln5k8e; Tue, 29 Sep 2020 08:48:38 +0200 (CEST)
+ with ESMTP id mbEkuZLQQ3B7; Tue, 29 Sep 2020 09:58:21 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4C0qjL4G8Kz9v2c7;
- Tue, 29 Sep 2020 08:48:38 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4C0sFn1rZYz9tyZP;
+ Tue, 29 Sep 2020 09:58:21 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9BD358B79F;
- Tue, 29 Sep 2020 08:48:39 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 593C48B7A4;
+ Tue, 29 Sep 2020 09:58:22 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Kz0F3K92a1fH; Tue, 29 Sep 2020 08:48:39 +0200 (CEST)
+ with ESMTP id z5cP4InGEJbW; Tue, 29 Sep 2020 09:58:22 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 541EA8B76C;
- Tue, 29 Sep 2020 08:48:39 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E986A8B76C;
+ Tue, 29 Sep 2020 09:58:21 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 3540465E8A; Tue, 29 Sep 2020 06:48:39 +0000 (UTC)
-Message-Id: <3e8a13ee83418630c753c30cb722ae682d5b2d39.1601362098.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <27951fa6c9a8f80724d1bc81a6117ac32343a55d.1601362098.git.christophe.leroy@csgroup.eu>
-References: <27951fa6c9a8f80724d1bc81a6117ac32343a55d.1601362098.git.christophe.leroy@csgroup.eu>
+ id 243D065EBA; Tue, 29 Sep 2020 07:58:22 +0000 (UTC)
+Message-Id: <cover.1601365869.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 8/8] powerpc: Remove get_tb_or_rtc()
+Subject: [PATCH v12 0/5] powerpc: switch VDSO to C implementation
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 29 Sep 2020 06:48:39 +0000 (UTC)
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ nathanl@linux.ibm.com, anton@ozlabs.org
+Date: Tue, 29 Sep 2020 07:58:22 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,82 +59,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, arnd@arndb.de, linux-kernel@vger.kernel.org,
+ luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-601 is gone, get_tb_or_rtc() is equivalent to get_tb().
+This is a series to switch powerpc VDSO to generic C implementation.
 
-Replace the former by the later.
+Changes in v12:
+- Rebased to today's powerpc/merge branch (Conflicts on VDSO Makefiles)
+- Added missing prototype for __kernel_clock_gettime64()
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/time.h | 5 -----
- arch/powerpc/kernel/irq.c       | 2 +-
- arch/powerpc/kernel/time.c      | 6 +++---
- 3 files changed, 4 insertions(+), 9 deletions(-)
+Changes in v11:
+- Rebased to today's powerpc/merge branch
+- Prototype of __arch_get_hw_counter() was modified in mainline (patch 2)
 
-diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
-index caf68a4bc19e..410ed72eef1c 100644
---- a/arch/powerpc/include/asm/time.h
-+++ b/arch/powerpc/include/asm/time.h
-@@ -85,11 +85,6 @@ static inline u64 get_tb(void)
- }
- #endif /* !CONFIG_PPC64 */
- 
--static inline u64 get_tb_or_rtc(void)
--{
--	return get_tb();
--}
--
- static inline void set_tb(unsigned int upper, unsigned int lower)
- {
- 	mtspr(SPRN_TBWL, 0);
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index bf21ebd36190..2d188f81ebdb 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -104,7 +104,7 @@ static inline notrace unsigned long get_irq_happened(void)
- 
- static inline notrace int decrementer_check_overflow(void)
- {
-- 	u64 now = get_tb_or_rtc();
-+	u64 now = get_tb();
- 	u64 *next_tb = this_cpu_ptr(&decrementers_next_tb);
-  
- 	return now >= *next_tb;
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index 13c820c15d37..760ea359a7f7 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -595,7 +595,7 @@ void timer_interrupt(struct pt_regs *regs)
- 		irq_work_run();
- 	}
- 
--	now = get_tb_or_rtc();
-+	now = get_tb();
- 	if (now >= *next_tb) {
- 		*next_tb = ~(u64)0;
- 		if (evt->event_handler)
-@@ -937,7 +937,7 @@ static void __init clocksource_init(void)
- static int decrementer_set_next_event(unsigned long evt,
- 				      struct clock_event_device *dev)
- {
--	__this_cpu_write(decrementers_next_tb, get_tb_or_rtc() + evt);
-+	__this_cpu_write(decrementers_next_tb, get_tb() + evt);
- 	set_dec(evt);
- 
- 	/* We may have raced with new irq work */
-@@ -1071,7 +1071,7 @@ void __init time_init(void)
- 	tb_to_ns_scale = scale;
- 	tb_to_ns_shift = shift;
- 	/* Save the current timebase to pretty up CONFIG_PRINTK_TIME */
--	boot_tb = get_tb_or_rtc();
-+	boot_tb = get_tb();
- 
- 	/* If platform provided a timezone (pmac), we correct the time */
- 	if (timezone_offset) {
+Changes in v10 are:
+- Added a comment explaining the reason for the double stack frame
+- Moved back .cfi_register lr next to mflr
+
+Main changes in v9 are:
+- Dropped the patches which put the VDSO datapage in front of VDSO text in the mapping
+- Adds a second stack frame because the caller doesn't set one, at least on PPC64
+- Saving the TOC pointer on PPC64 (is that really needed ?)
+
+This series applies on today's powerpc/merge branch.
+
+See the last patches for details on changes and performance.
+
+Christophe Leroy (5):
+  powerpc/processor: Move cpu_relax() into asm/vdso/processor.h
+  powerpc/vdso: Prepare for switching VDSO to generic C implementation.
+  powerpc/vdso: Save and restore TOC pointer on PPC64
+  powerpc/vdso: Switch VDSO to generic C implementation.
+  powerpc/vdso: Provide __kernel_clock_gettime64() on vdso32
+
+ arch/powerpc/Kconfig                         |   2 +
+ arch/powerpc/include/asm/clocksource.h       |   7 +
+ arch/powerpc/include/asm/processor.h         |  13 +-
+ arch/powerpc/include/asm/vdso/clocksource.h  |   7 +
+ arch/powerpc/include/asm/vdso/gettimeofday.h | 200 +++++++++++++
+ arch/powerpc/include/asm/vdso/processor.h    |  23 ++
+ arch/powerpc/include/asm/vdso/vsyscall.h     |  25 ++
+ arch/powerpc/include/asm/vdso_datapage.h     |  40 +--
+ arch/powerpc/kernel/asm-offsets.c            |  49 +--
+ arch/powerpc/kernel/time.c                   |  91 +-----
+ arch/powerpc/kernel/vdso.c                   |   5 +-
+ arch/powerpc/kernel/vdso32/Makefile          |  32 +-
+ arch/powerpc/kernel/vdso32/config-fake32.h   |  34 +++
+ arch/powerpc/kernel/vdso32/gettimeofday.S    | 300 +------------------
+ arch/powerpc/kernel/vdso32/vdso32.lds.S      |   1 +
+ arch/powerpc/kernel/vdso32/vgettimeofday.c   |  35 +++
+ arch/powerpc/kernel/vdso64/Makefile          |  23 +-
+ arch/powerpc/kernel/vdso64/gettimeofday.S    | 242 +--------------
+ arch/powerpc/kernel/vdso64/vgettimeofday.c   |  29 ++
+ 19 files changed, 456 insertions(+), 702 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/clocksource.h
+ create mode 100644 arch/powerpc/include/asm/vdso/clocksource.h
+ create mode 100644 arch/powerpc/include/asm/vdso/gettimeofday.h
+ create mode 100644 arch/powerpc/include/asm/vdso/processor.h
+ create mode 100644 arch/powerpc/include/asm/vdso/vsyscall.h
+ create mode 100644 arch/powerpc/kernel/vdso32/config-fake32.h
+ create mode 100644 arch/powerpc/kernel/vdso32/vgettimeofday.c
+ create mode 100644 arch/powerpc/kernel/vdso64/vgettimeofday.c
+
 -- 
 2.25.0
 
