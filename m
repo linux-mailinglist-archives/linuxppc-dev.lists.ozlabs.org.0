@@ -2,51 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E5527BB3C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 05:01:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3BB27BBA8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 05:57:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C0kgH1lmBzDqRm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 13:01:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C0lwK3T9czDqQm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 13:57:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=informatik.wtf (client-ip=131.153.2.42;
- helo=h1.fbrelay.privateemail.com; envelope-from=cmr@informatik.wtf;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-X-Greylist: delayed 640 seconds by postgrey-1.36 at bilbo;
- Tue, 29 Sep 2020 12:59:47 AEST
-Received: from h1.fbrelay.privateemail.com (h1.fbrelay.privateemail.com
- [131.153.2.42])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=gCZ8Sr7H; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C0kdH4txYzDqLY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 12:59:47 +1000 (AEST)
-Received: from MTA-09-3.privateemail.com (mta-09.privateemail.com
- [198.54.127.58])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id 4AEA380CA7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Sep 2020 22:49:04 -0400 (EDT)
-Received: from MTA-09.privateemail.com (localhost [127.0.0.1])
- by MTA-09.privateemail.com (Postfix) with ESMTP id 584A160045;
- Mon, 28 Sep 2020 22:48:57 -0400 (EDT)
-Received: from localhost (unknown [10.20.151.217])
- by MTA-09.privateemail.com (Postfix) with ESMTPA id CE3C060034;
- Tue, 29 Sep 2020 02:48:56 +0000 (UTC)
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Subject: Re: [PATCH v2 23/25] powerpc/signal: Create 'unsafe' versions of
- copy_[ck][fpr/vsx]_to_user()
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Benjamin
- Herrenschmidt" <benh@kernel.crashing.org>, "Paul Mackerras"
- <paulus@samba.org>, "Michael Ellerman" <mpe@ellerman.id.au>
-Date: Mon, 28 Sep 2020 21:04:37 -0500
-Message-Id: <C5ZHGD1JVX0H.1UI1PWMZN73UX@geist>
-In-Reply-To: <29f6c4b8e7a5bbc61e6a8801b78bbf493f9f819e.1597770847.git.christophe.leroy@csgroup.eu>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C0ltR259kzDqJL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 13:56:10 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id s31so2759377pga.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Sep 2020 20:56:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=+WyGxxGBlNZ962YbFLNz7WL2psy7ACRuUaWQ8pj9+p4=;
+ b=gCZ8Sr7Hns50U6uu4+a3HPe1h5ShhdrsvWJQ3tnj5kp68Us+g4pZDsMwZLaf5OvYp1
+ 1IaHbsnWIuHcPahiBxTq04a9jGM2Lf+hDPWDKnKeaa9qIALfOEUNtT6ATDzH5Qm15TyU
+ tuRRqmsRFHs6jFH+ZZ4kDO+qin8CUAP4xvJl6zuGnqklYwvjzyyXs66PBiH0v/Lrvpiw
+ GZmmOYTGx32dE8TxTUeHJnYjUwlhEB9TMdmIdUCPWpavTG4rU0UM8KgQgqWyBJQ8wa3F
+ LVhvELpdqPtoG1c8qSVaThKO33+ROUSnVqH8in2ZE2legcG0uCyGQ64gO8zzugkZSFbd
+ IliQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=+WyGxxGBlNZ962YbFLNz7WL2psy7ACRuUaWQ8pj9+p4=;
+ b=EbHuPMNPnLmJJCCxofEnU4PX+OA/NpqeuOi4rEfvVOl/75l9S9yF09kvXxG3GxMmM6
+ ZkCCoo1VLaezFbM4BiAqoiysevkQzwn+ZfObRHjFYwXbJlOByMj51/ZUwtNSuQIycP8c
+ KcSTXDfsPOuZAo7HOr94g1jT5v8wV1FdQ8XEzJGsceErb5toNSBCMKM62R/L6E6vU48H
+ cmqm6Fe8Lf4/BVjR52dcbZGQUZE59B4zWF6Vpgq+bNBZBRmJB0wD3CP5GF+ovAoRZ1Jr
+ 4iP9/NorHQPgTKsBZQ2F7UIMSvnSZPmNCMfAQ13puFK1w/MVzyRm+jv/7S9J9kjQBNON
+ oIDQ==
+X-Gm-Message-State: AOAM533QXBBQaH6sjRFGr5MiOZ9NralDv3Z4tu4aSDY4AkPJBzBLP4+T
+ xxB5G9FcI/4VSgLqsD349faLCxk5EDCIe01w
+X-Google-Smtp-Source: ABdhPJyTNdGGc0bqmncoIjPQU1C6mClnpnecPqB07At35Ro6Ij1NnYU5oySkZhVT6RghSlGVEXK8+A==
+X-Received: by 2002:a17:902:9e95:b029:d2:4276:1ddc with SMTP id
+ e21-20020a1709029e95b02900d242761ddcmr2629757plq.81.1601351766864; 
+ Mon, 28 Sep 2020 20:56:06 -0700 (PDT)
+Received: from [192.168.10.88] (124-171-83-152.dyn.iinet.net.au.
+ [124.171.83.152])
+ by smtp.gmail.com with UTF8SMTPSA id gl17sm2732665pjb.49.2020.09.28.20.56.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 28 Sep 2020 20:56:05 -0700 (PDT)
+Subject: Re: [PATCH v2 14/14] powerpc/pseries/iommu: Rename "direct window" to
+ "dma window"
+To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai
+ <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
+ Murilo Fossa Vicentini <muvic@linux.ibm.com>,
+ David Dai <zdai@linux.vnet.ibm.com>
+References: <20200911170738.82818-1-leobras.c@gmail.com>
+ <20200911170738.82818-15-leobras.c@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Message-ID: <2ba89065-4e9c-57c2-3825-aed9a7d8451a@ozlabs.ru>
+Date: Tue, 29 Sep 2020 13:55:59 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:82.0) Gecko/20100101
+ Thunderbird/82.0
+MIME-Version: 1.0
+In-Reply-To: <20200911170738.82818-15-leobras.c@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,238 +95,353 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Aug 18, 2020 at 12:19 PM CDT, Christophe Leroy wrote:
-> For the non VSX version, that's trivial. Just use unsafe_copy_to_user()
-> instead of __copy_to_user().
->
-> For the VSX version, remove the intermediate step through a buffer and
-> use unsafe_put_user() directly. This generates a far smaller code which
-> is acceptable to inline, see below:
->
-> Standard VSX version:
->
-> 0000000000000000 <.copy_fpr_to_user>:
-> 0: 7c 08 02 a6 mflr r0
-> 4: fb e1 ff f8 std r31,-8(r1)
-> 8: 39 00 00 20 li r8,32
-> c: 39 24 0b 80 addi r9,r4,2944
-> 10: 7d 09 03 a6 mtctr r8
-> 14: f8 01 00 10 std r0,16(r1)
-> 18: f8 21 fe 71 stdu r1,-400(r1)
-> 1c: 39 41 00 68 addi r10,r1,104
-> 20: e9 09 00 00 ld r8,0(r9)
-> 24: 39 4a 00 08 addi r10,r10,8
-> 28: 39 29 00 10 addi r9,r9,16
-> 2c: f9 0a 00 00 std r8,0(r10)
-> 30: 42 00 ff f0 bdnz 20 <.copy_fpr_to_user+0x20>
-> 34: e9 24 0d 80 ld r9,3456(r4)
-> 38: 3d 42 00 00 addis r10,r2,0
-> 3a: R_PPC64_TOC16_HA .toc
-> 3c: eb ea 00 00 ld r31,0(r10)
-> 3e: R_PPC64_TOC16_LO_DS .toc
-> 40: f9 21 01 70 std r9,368(r1)
-> 44: e9 3f 00 00 ld r9,0(r31)
-> 48: 81 29 00 20 lwz r9,32(r9)
-> 4c: 2f 89 00 00 cmpwi cr7,r9,0
-> 50: 40 9c 00 18 bge cr7,68 <.copy_fpr_to_user+0x68>
-> 54: 4c 00 01 2c isync
-> 58: 3d 20 40 00 lis r9,16384
-> 5c: 79 29 07 c6 rldicr r9,r9,32,31
-> 60: 7d 3d 03 a6 mtspr 29,r9
-> 64: 4c 00 01 2c isync
-> 68: 38 a0 01 08 li r5,264
-> 6c: 38 81 00 70 addi r4,r1,112
-> 70: 48 00 00 01 bl 70 <.copy_fpr_to_user+0x70>
-> 70: R_PPC64_REL24 .__copy_tofrom_user
-> 74: 60 00 00 00 nop
-> 78: e9 3f 00 00 ld r9,0(r31)
-> 7c: 81 29 00 20 lwz r9,32(r9)
-> 80: 2f 89 00 00 cmpwi cr7,r9,0
-> 84: 40 9c 00 18 bge cr7,9c <.copy_fpr_to_user+0x9c>
-> 88: 4c 00 01 2c isync
-> 8c: 39 20 ff ff li r9,-1
-> 90: 79 29 00 44 rldicr r9,r9,0,1
-> 94: 7d 3d 03 a6 mtspr 29,r9
-> 98: 4c 00 01 2c isync
-> 9c: 38 21 01 90 addi r1,r1,400
-> a0: e8 01 00 10 ld r0,16(r1)
-> a4: eb e1 ff f8 ld r31,-8(r1)
-> a8: 7c 08 03 a6 mtlr r0
-> ac: 4e 80 00 20 blr
->
-> 'unsafe' simulated VSX version (The ... are only nops) using
-> unsafe_copy_fpr_to_user() macro:
->
-> unsigned long copy_fpr_to_user(void __user *to,
-> struct task_struct *task)
-> {
-> unsafe_copy_fpr_to_user(to, task, failed);
-> return 0;
-> failed:
-> return 1;
-> }
->
-> 0000000000000000 <.copy_fpr_to_user>:
-> 0: 39 00 00 20 li r8,32
-> 4: 39 44 0b 80 addi r10,r4,2944
-> 8: 7d 09 03 a6 mtctr r8
-> c: 7c 69 1b 78 mr r9,r3
-> ...
-> 20: e9 0a 00 00 ld r8,0(r10)
-> 24: f9 09 00 00 std r8,0(r9)
-> 28: 39 4a 00 10 addi r10,r10,16
-> 2c: 39 29 00 08 addi r9,r9,8
-> 30: 42 00 ff f0 bdnz 20 <.copy_fpr_to_user+0x20>
-> 34: e9 24 0d 80 ld r9,3456(r4)
-> 38: f9 23 01 00 std r9,256(r3)
-> 3c: 38 60 00 00 li r3,0
-> 40: 4e 80 00 20 blr
-> ...
-> 50: 38 60 00 01 li r3,1
-> 54: 4e 80 00 20 blr
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+
+On 12/09/2020 03:07, Leonardo Bras wrote:
+> Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+> 
+> A previous change introduced the usage of DDW as a bigger indirect DMA
+> mapping when the DDW available size does not map the whole partition.
+> 
+> As most of the code that manipulates direct mappings was reused for
+> indirect mappings, it's necessary to rename all names and debug/info
+> messages to reflect that it can be used for both kinds of mapping.
+> 
+> Also, defines DEFAULT_DMA_WIN as "ibm,dma-window" to document that
+> it's the name of the default DMA window.
+
+"ibm,dma-window" is so old so it does not need a macro (which btw would 
+be DMA_WIN_PROPNAME to match the other names) :)
+
+
+> Those changes are not supposed to change how the code works in any
+> way, just adjust naming.
+
+I simply have this in my .vimrc for the cases like this one:
+
+===
+This should cause no behavioural change.
+===
+
+
+> 
+> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 > ---
-> arch/powerpc/kernel/signal.h | 53 ++++++++++++++++++++++++++++++++++++
-> 1 file changed, 53 insertions(+)
->
-> diff --git a/arch/powerpc/kernel/signal.h b/arch/powerpc/kernel/signal.h
-> index f610cfafa478..2559a681536e 100644
-> --- a/arch/powerpc/kernel/signal.h
-> +++ b/arch/powerpc/kernel/signal.h
-> @@ -32,7 +32,54 @@ unsigned long copy_fpr_to_user(void __user *to,
-> struct task_struct *task);
-> unsigned long copy_ckfpr_to_user(void __user *to, struct task_struct
-> *task);
-> unsigned long copy_fpr_from_user(struct task_struct *task, void __user
-> *from);
-> unsigned long copy_ckfpr_from_user(struct task_struct *task, void __user
-> *from);
-> +
-> +#define unsafe_copy_fpr_to_user(to, task, label) do { \
-> + struct task_struct *__t =3D task; \
-> + u64 __user *buf =3D (u64 __user *)to; \
-> + int i; \
-> + \
-> + for (i =3D 0; i < ELF_NFPREG - 1 ; i++) \
-> + unsafe_put_user(__t->thread.TS_FPR(i), &buf[i], label); \
-> + unsafe_put_user(__t->thread.fp_state.fpscr, &buf[i], label); \
-> +} while (0)
-> +
+>   arch/powerpc/platforms/pseries/iommu.c | 102 +++++++++++++------------
+>   1 file changed, 53 insertions(+), 49 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> index c4de23080d1b..56638b7f07fc 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -349,7 +349,7 @@ struct dynamic_dma_window_prop {
+>   	__be32	window_shift;	/* ilog2(tce_window_size) */
+>   };
+>   
+> -struct direct_window {
+> +struct dma_win {
+>   	struct device_node *device;
+>   	const struct dynamic_dma_window_prop *prop;
+>   	struct list_head list;
+> @@ -369,13 +369,14 @@ struct ddw_create_response {
+>   	u32 addr_lo;
+>   };
+>   
+> -static LIST_HEAD(direct_window_list);
+> +static LIST_HEAD(dma_win_list);
+>   /* prevents races between memory on/offline and window creation */
+> -static DEFINE_SPINLOCK(direct_window_list_lock);
+> +static DEFINE_SPINLOCK(dma_win_list_lock);
+>   /* protects initializing window twice for same device */
+> -static DEFINE_MUTEX(direct_window_init_mutex);
+> +static DEFINE_MUTEX(dma_win_init_mutex);
+>   #define DIRECT64_PROPNAME "linux,direct64-ddr-window-info"
+>   #define DMA64_PROPNAME "linux,dma64-ddr-window-info"
+> +#define DEFAULT_DMA_WIN "ibm,dma-window"
+>   
+>   static int tce_clearrange_multi_pSeriesLP(unsigned long start_pfn,
+>   					unsigned long num_pfn, const void *arg)
+> @@ -706,15 +707,18 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
+>   	pr_debug("pci_dma_bus_setup_pSeriesLP: setting up bus %pOF\n",
+>   		 dn);
+>   
+> -	/* Find nearest ibm,dma-window, walking up the device tree */
+> +	/*
+> +	 * Find nearest ibm,dma-window (default DMA window), walking up the
+> +	 * device tree
+> +	 */
+>   	for (pdn = dn; pdn != NULL; pdn = pdn->parent) {
+> -		dma_window = of_get_property(pdn, "ibm,dma-window", NULL);
+> +		dma_window = of_get_property(pdn, DEFAULT_DMA_WIN, NULL);
+>   		if (dma_window != NULL)
+>   			break;
+>   	}
+>   
+>   	if (dma_window == NULL) {
+> -		pr_debug("  no ibm,dma-window property !\n");
+> +		pr_debug("  no %s property !\n", DEFAULT_DMA_WIN);
+>   		return;
+>   	}
+>   
+> @@ -810,11 +814,11 @@ static void remove_dma_window(struct device_node *np, u32 *ddw_avail,
+>   
+>   	ret = rtas_call(ddw_avail[DDW_REMOVE_PE_DMA_WIN], 1, 1, NULL, liobn);
+>   	if (ret)
+> -		pr_warn("%pOF: failed to remove direct window: rtas returned "
+> +		pr_warn("%pOF: failed to remove dma window: rtas returned "
+>   			"%d to ibm,remove-pe-dma-window(%x) %llx\n",
+>   			np, ret, ddw_avail[DDW_REMOVE_PE_DMA_WIN], liobn);
+>   	else
+> -		pr_debug("%pOF: successfully removed direct window: rtas returned "
+> +		pr_debug("%pOF: successfully removed dma window: rtas returned "
 
-I've been working on the PPC64 side of this "unsafe" rework using this
-series as a basis. One question here - I don't really understand what
-the benefit of re-implementing this logic in macros (similarly for the
-other copy_* functions below) is?
 
-I am considering  a "__unsafe_copy_*" implementation in signal.c for
-each (just the original implementation w/ using the "unsafe_" variants
-of the uaccess stuff) which gets called by the "safe" functions w/ the
-appropriate "user_*_access_begin/user_*_access_end". Something like
-(pseudo-ish code):
+s/dma/DMA/ in all user visible strings.
 
-	/* signal.c */
-	unsigned long __unsafe_copy_fpr_to_user(...)
-	{
-		...
-		unsafe_copy_to_user(..., bad);
-		return 0;
-	bad:
-		return 1; /* -EFAULT? */
-	}
 
-	unsigned long copy_fpr_to_user(...)
-	{
-		unsigned long err;
-		if (!user_write_access_begin(...))
-			return 1; /* -EFAULT? */
 
-		err =3D __unsafe_copy_fpr_to_user(...);
+>   			"%d to ibm,remove-pe-dma-window(%x) %llx\n",
+>   			np, ret, ddw_avail[DDW_REMOVE_PE_DMA_WIN], liobn);
+>   }
+> @@ -842,7 +846,7 @@ static int remove_ddw(struct device_node *np, bool remove_prop, const char *win_
+>   
+>   	ret = of_remove_property(np, win);
+>   	if (ret)
+> -		pr_warn("%pOF: failed to remove direct window property: %d\n",
+> +		pr_warn("%pOF: failed to remove dma window property: %d\n",
+>   			np, ret);
+>   	return 0;
+>   }
+> @@ -886,34 +890,34 @@ static phys_addr_t ddw_memory_hotplug_max(void)
+>   
+>   static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, bool *direct_mapping)
+>   {
+> -	struct direct_window *window;
+> -	const struct dynamic_dma_window_prop *direct64;
+> +	struct dma_win *window;
+> +	const struct dynamic_dma_window_prop *dma64;
+>   	unsigned long window_size;
+>   	bool found = false;
+>   
+> -	spin_lock(&direct_window_list_lock);
+> +	spin_lock(&dma_win_list_lock);
+>   	/* check if we already created a window and dupe that config if so */
+> -	list_for_each_entry(window, &direct_window_list, list) {
+> +	list_for_each_entry(window, &dma_win_list, list) {
+>   		if (window->device == pdn) {
+> -			direct64 = window->prop;
+> -			*dma_addr = be64_to_cpu(direct64->dma_base);
+> +			dma64 = window->prop;
+> +			*dma_addr = be64_to_cpu(dma64->dma_base);
+>   
+> -			window_size = (1UL << be32_to_cpu(direct64->window_shift));
+> +			window_size = (1UL << be32_to_cpu(dma64->window_shift));
+>   			*direct_mapping = (window_size >= ddw_memory_hotplug_max());
+>   
+>   			found = true;
+>   			break;
+>   		}
+>   	}
+> -	spin_unlock(&direct_window_list_lock);
+> +	spin_unlock(&dma_win_list_lock);
+>   
+>   	return found;
+>   }
+>   
+> -static struct direct_window *ddw_list_new_entry(struct device_node *pdn,
+> -						const struct dynamic_dma_window_prop *dma64)
+> +static struct dma_win *ddw_list_new_entry(struct device_node *pdn,
+> +					  const struct dynamic_dma_window_prop *dma64)
+>   {
+> -	struct direct_window *window;
+> +	struct dma_win *window;
+>   
+>   	window = kzalloc(sizeof(*window), GFP_KERNEL);
+>   	if (!window)
+> @@ -929,7 +933,7 @@ static void find_existing_ddw_windows_named(const char *name)
+>   {
+>   	int len;
+>   	struct device_node *pdn;
+> -	struct direct_window *window;
+> +	struct dma_win *window;
+>   	const struct dynamic_dma_window_prop *dma64;
+>   
+>   	for_each_node_with_property(pdn, name) {
+> @@ -943,9 +947,9 @@ static void find_existing_ddw_windows_named(const char *name)
+>   		if (!window)
+>   			break;
+>   
+> -		spin_lock(&direct_window_list_lock);
+> -		list_add(&window->list, &direct_window_list);
+> -		spin_unlock(&direct_window_list_lock);
+> +		spin_lock(&dma_win_list_lock);
+> +		list_add(&window->list, &dma_win_list);
+> +		spin_unlock(&dma_win_list_lock);
+>   	}
+>   }
+>   
+> @@ -1179,7 +1183,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   	u64 max_addr, win_addr;
+>   	struct device_node *dn;
+>   	u32 ddw_avail[DDW_APPLICABLE_SIZE];
+> -	struct direct_window *window;
+> +	struct dma_win *window;
+>   	const char *win_name;
+>   	struct property *win64 = NULL;
+>   	struct failed_ddw_pdn *fpdn;
+> @@ -1187,10 +1191,10 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   	struct pci_dn *pci = PCI_DN(pdn);
+>   	struct iommu_table *tbl = pci->table_group->tables[0];
+>   
+> -	mutex_lock(&direct_window_init_mutex);
+> +	mutex_lock(&dma_win_init_mutex);
+>   
+>   	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &direct_mapping)) {
+> -		mutex_unlock(&direct_window_init_mutex);
+> +		mutex_unlock(&dma_win_init_mutex);
+>   		return direct_mapping;
+>   	}
+>   
+> @@ -1241,7 +1245,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   		struct property *default_win;
+>   		int reset_win_ext;
+>   
+> -		default_win = of_find_property(pdn, "ibm,dma-window", NULL);
+> +		default_win = of_find_property(pdn, DEFAULT_DMA_WIN, NULL);
+>   		if (!default_win)
+>   			goto out_failed;
+>   
+> @@ -1272,8 +1276,8 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   	} else if ((query.page_size & 1) && PAGE_SHIFT >= 12) {
+>   		page_shift = 12; /* 4kB */
+>   	} else {
+> -		dev_dbg(&dev->dev, "no supported direct page size in mask %x",
+> -			  query.page_size);
+> +		dev_dbg(&dev->dev, "no supported page size in mask %x",
+> +			query.page_size);
+>   		goto out_failed;
+>   	}
+>   
+> @@ -1331,7 +1335,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
+>   					    win64->value, tce_setrange_multi_pSeriesLP_walk);
+>   		if (ret) {
+> -			dev_info(&dev->dev, "failed to map direct window for %pOF: %d\n",
+> +			dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
+>   				 dn, ret);
+>   			goto out_list_del;
+>   		}
+> @@ -1354,9 +1358,9 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   		set_iommu_table_base(&dev->dev, tbl);
+>   	}
+>   
+> -	spin_lock(&direct_window_list_lock);
+> -	list_add(&window->list, &direct_window_list);
+> -	spin_unlock(&direct_window_list_lock);
+> +	spin_lock(&dma_win_list_lock);
+> +	list_add(&window->list, &dma_win_list);
+> +	spin_unlock(&dma_win_list_lock);
+>   
+>   	dev->dev.archdata.dma_offset = win_addr;
+>   	goto out_unlock;
+> @@ -1387,7 +1391,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   	list_add(&fpdn->list, &failed_ddw_pdn_list);
+>   
+>   out_unlock:
+> -	mutex_unlock(&direct_window_init_mutex);
+> +	mutex_unlock(&dma_win_init_mutex);
+>   	return win64 && direct_mapping;
+>   }
+>   
+> @@ -1411,7 +1415,7 @@ static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
+>   
+>   	for (pdn = dn; pdn && PCI_DN(pdn) && !PCI_DN(pdn)->table_group;
+>   	     pdn = pdn->parent) {
+> -		dma_window = of_get_property(pdn, "ibm,dma-window", NULL);
+> +		dma_window = of_get_property(pdn, DEFAULT_DMA_WIN, NULL);
+>   		if (dma_window)
+>   			break;
+>   	}
+> @@ -1461,7 +1465,7 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
+>   	 */
+>   	for (pdn = dn; pdn && PCI_DN(pdn) && !PCI_DN(pdn)->table_group;
+>   			pdn = pdn->parent) {
+> -		dma_window = of_get_property(pdn, "ibm,dma-window", NULL);
+> +		dma_window = of_get_property(pdn, DEFAULT_DMA_WIN, NULL);
+>   		if (dma_window)
+>   			break;
+>   	}
+> @@ -1475,29 +1479,29 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
+>   static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+>   		void *data)
+>   {
+> -	struct direct_window *window;
+> +	struct dma_win *window;
+>   	struct memory_notify *arg = data;
+>   	int ret = 0;
+>   
+>   	switch (action) {
+>   	case MEM_GOING_ONLINE:
+> -		spin_lock(&direct_window_list_lock);
+> -		list_for_each_entry(window, &direct_window_list, list) {
+> +		spin_lock(&dma_win_list_lock);
+> +		list_for_each_entry(window, &dma_win_list, list) {
+>   			ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
+>   					arg->nr_pages, window->prop);
+>   			/* XXX log error */
+>   		}
+> -		spin_unlock(&direct_window_list_lock);
+> +		spin_unlock(&dma_win_list_lock);
+>   		break;
+>   	case MEM_CANCEL_ONLINE:
+>   	case MEM_OFFLINE:
+> -		spin_lock(&direct_window_list_lock);
+> -		list_for_each_entry(window, &direct_window_list, list) {
+> +		spin_lock(&dma_win_list_lock);
+> +		list_for_each_entry(window, &dma_win_list, list) {
+>   			ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
+>   					arg->nr_pages, window->prop);
+>   			/* XXX log error */
+>   		}
+> -		spin_unlock(&direct_window_list_lock);
+> +		spin_unlock(&dma_win_list_lock);
+>   		break;
+>   	default:
+>   		break;
+> @@ -1518,7 +1522,7 @@ static int iommu_reconfig_notifier(struct notifier_block *nb, unsigned long acti
+>   	struct of_reconfig_data *rd = data;
+>   	struct device_node *np = rd->dn;
+>   	struct pci_dn *pci = PCI_DN(np);
+> -	struct direct_window *window;
+> +	struct dma_win *window;
+>   
+>   	switch (action) {
+>   	case OF_RECONFIG_DETACH_NODE:
+> @@ -1537,15 +1541,15 @@ static int iommu_reconfig_notifier(struct notifier_block *nb, unsigned long acti
+>   			iommu_pseries_free_group(pci->table_group,
+>   					np->full_name);
+>   
+> -		spin_lock(&direct_window_list_lock);
+> -		list_for_each_entry(window, &direct_window_list, list) {
+> +		spin_lock(&dma_win_list_lock);
+> +		list_for_each_entry(window, &dma_win_list, list) {
+>   			if (window->device == np) {
+>   				list_del(&window->list);
+>   				kfree(window);
+>   				break;
+>   			}
+>   		}
+> -		spin_unlock(&direct_window_list_lock);
+> +		spin_unlock(&dma_win_list_lock);
+>   		break;
+>   	default:
+>   		err = NOTIFY_DONE;
+> 
 
-		user_write_access_end();
-		return err;
-	}
-
-	/* signal.h */
-	unsigned long __unsafe_copy_fpr_to_user(...);
-	#define unsafe_copy_fpr_to_user(..., label) \
-		unsafe_op_wrap(__unsafe_copy_fpr_to_user(...), label)
-
-This way there is a single implementation for each copy routine "body".
-The "unsafe" wrappers then just exist as simple macros similar to what
-x86 does: "unsafe_" macro wraps "__unsafe" functions for the goto label.
-
-Granted this does pollute "signal.h" w/ the "__unsafe_copy_*"
-prototypes...
-
-> +#define unsafe_copy_vsx_to_user(to, task, label) do { \
-> + struct task_struct *__t =3D task; \
-> + u64 __user *buf =3D (u64 __user *)to; \
-> + int i; \
-> + \
-> + for (i =3D 0; i < ELF_NVSRHALFREG ; i++) \
-> + unsafe_put_user(__t->thread.fp_state.fpr[i][TS_VSRLOWOFFSET], \
-> + &buf[i], label);\
-> +} while (0)
-> +
-> +#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-> +#define unsafe_copy_ckfpr_to_user(to, task, label) do { \
-> + struct task_struct *__t =3D task; \
-> + u64 __user *buf =3D (u64 __user *)to; \
-> + int i; \
-> + \
-> + for (i =3D 0; i < ELF_NFPREG - 1 ; i++) \
-> + unsafe_put_user(__t->thread.TS_CKFPR(i), &buf[i], label);\
-> + unsafe_put_user(__t->thread.ckfp_state.fpscr, &buf[i], label); \
-> +} while (0)
-> +
-> +#define unsafe_copy_ckvsx_to_user(to, task, label) do { \
-> + struct task_struct *__t =3D task; \
-> + u64 __user *buf =3D (u64 __user *)to; \
-> + int i; \
-> + \
-> + for (i =3D 0; i < ELF_NVSRHALFREG ; i++) \
-> + unsafe_put_user(__t->thread.ckfp_state.fpr[i][TS_VSRLOWOFFSET], \
-> + &buf[i], label);\
-> +} while (0)
-> +#endif
-> #elif defined(CONFIG_PPC_FPU_REGS)
-> +
-> +#define unsafe_copy_fpr_to_user(to, task, label) \
-> + unsafe_copy_to_user(to, (task)->thread.fp_state.fpr, \
-> + ELF_NFPREG * sizeof(double), label)
-> +
-> static inline unsigned long
-> copy_fpr_to_user(void __user *to, struct task_struct *task)
-> {
-> @@ -48,6 +95,10 @@ copy_fpr_from_user(struct task_struct *task, void
-> __user *from)
-> }
-> =20
-> #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-> +#define unsafe_copy_ckfpr_to_user(to, task, label) \
-> + unsafe_copy_to_user(to, (task)->thread.ckfp_state.fpr, \
-> + ELF_NFPREG * sizeof(double), label)
-> +
-> inline unsigned long copy_ckfpr_to_user(void __user *to, struct
-> task_struct *task)
-> {
-> return __copy_to_user(to, task->thread.ckfp_state.fpr,
-> @@ -62,6 +113,8 @@ copy_ckfpr_from_user(struct task_struct *task, void
-> __user *from)
-> }
-> #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
-> #else
-> +#define unsafe_copy_fpr_to_user(to, task, label) do { } while (0)
-> +
-> static inline unsigned long
-> copy_fpr_to_user(void __user *to, struct task_struct *task)
-> {
-> --
-> 2.25.0
-
+-- 
+Alexey
