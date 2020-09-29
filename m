@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D2227BEE2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 10:09:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCA727BED1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 10:05:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C0sVh5TFQzDqTD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 18:09:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C0sQS5SMJzDqXV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 18:05:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,37 +17,40 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C0sFz4PhVzDqS9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 17:58:31 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C0sFx49C7zDqSF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 17:58:27 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4C0sFn2p3rz9tyZQ;
- Tue, 29 Sep 2020 09:58:21 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4C0sFp4561z9tyfL;
+ Tue, 29 Sep 2020 09:58:22 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id mbEkuZLQQ3B7; Tue, 29 Sep 2020 09:58:21 +0200 (CEST)
+ with ESMTP id jmtQtMHdNtLU; Tue, 29 Sep 2020 09:58:22 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4C0sFn1rZYz9tyZP;
- Tue, 29 Sep 2020 09:58:21 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 593C48B7A4;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4C0sFp1kNyz9tyZP;
  Tue, 29 Sep 2020 09:58:22 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7FB398B7A9;
+ Tue, 29 Sep 2020 09:58:23 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id z5cP4InGEJbW; Tue, 29 Sep 2020 09:58:22 +0200 (CEST)
+ with ESMTP id nEnV5Iv5WQaV; Tue, 29 Sep 2020 09:58:23 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E986A8B76C;
- Tue, 29 Sep 2020 09:58:21 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E87848B76C;
+ Tue, 29 Sep 2020 09:58:22 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 243D065EBA; Tue, 29 Sep 2020 07:58:22 +0000 (UTC)
-Message-Id: <cover.1601365869.git.christophe.leroy@csgroup.eu>
+ id 2C51265EBA; Tue, 29 Sep 2020 07:58:23 +0000 (UTC)
+Message-Id: <e031dc308c6395180554f3f63aa7864f1f92ce46.1601365869.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <cover.1601365869.git.christophe.leroy@csgroup.eu>
+References: <cover.1601365869.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v12 0/5] powerpc: switch VDSO to C implementation
+Subject: [PATCH v12 1/5] powerpc/processor: Move cpu_relax() into
+ asm/vdso/processor.h
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  nathanl@linux.ibm.com, anton@ozlabs.org
-Date: Tue, 29 Sep 2020 07:58:22 +0000 (UTC)
+Date: Tue, 29 Sep 2020 07:58:23 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,65 +69,94 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a series to switch powerpc VDSO to generic C implementation.
+cpu_relax() need to be in asm/vdso/processor.h to be used by
+the C VDSO generic library.
 
-Changes in v12:
-- Rebased to today's powerpc/merge branch (Conflicts on VDSO Makefiles)
-- Added missing prototype for __kernel_clock_gettime64()
+Move it there.
 
-Changes in v11:
-- Rebased to today's powerpc/merge branch
-- Prototype of __arch_get_hw_counter() was modified in mainline (patch 2)
-
-Changes in v10 are:
-- Added a comment explaining the reason for the double stack frame
-- Moved back .cfi_register lr next to mflr
-
-Main changes in v9 are:
-- Dropped the patches which put the VDSO datapage in front of VDSO text in the mapping
-- Adds a second stack frame because the caller doesn't set one, at least on PPC64
-- Saving the TOC pointer on PPC64 (is that really needed ?)
-
-This series applies on today's powerpc/merge branch.
-
-See the last patches for details on changes and performance.
-
-Christophe Leroy (5):
-  powerpc/processor: Move cpu_relax() into asm/vdso/processor.h
-  powerpc/vdso: Prepare for switching VDSO to generic C implementation.
-  powerpc/vdso: Save and restore TOC pointer on PPC64
-  powerpc/vdso: Switch VDSO to generic C implementation.
-  powerpc/vdso: Provide __kernel_clock_gettime64() on vdso32
-
- arch/powerpc/Kconfig                         |   2 +
- arch/powerpc/include/asm/clocksource.h       |   7 +
- arch/powerpc/include/asm/processor.h         |  13 +-
- arch/powerpc/include/asm/vdso/clocksource.h  |   7 +
- arch/powerpc/include/asm/vdso/gettimeofday.h | 200 +++++++++++++
- arch/powerpc/include/asm/vdso/processor.h    |  23 ++
- arch/powerpc/include/asm/vdso/vsyscall.h     |  25 ++
- arch/powerpc/include/asm/vdso_datapage.h     |  40 +--
- arch/powerpc/kernel/asm-offsets.c            |  49 +--
- arch/powerpc/kernel/time.c                   |  91 +-----
- arch/powerpc/kernel/vdso.c                   |   5 +-
- arch/powerpc/kernel/vdso32/Makefile          |  32 +-
- arch/powerpc/kernel/vdso32/config-fake32.h   |  34 +++
- arch/powerpc/kernel/vdso32/gettimeofday.S    | 300 +------------------
- arch/powerpc/kernel/vdso32/vdso32.lds.S      |   1 +
- arch/powerpc/kernel/vdso32/vgettimeofday.c   |  35 +++
- arch/powerpc/kernel/vdso64/Makefile          |  23 +-
- arch/powerpc/kernel/vdso64/gettimeofday.S    | 242 +--------------
- arch/powerpc/kernel/vdso64/vgettimeofday.c   |  29 ++
- 19 files changed, 456 insertions(+), 702 deletions(-)
- create mode 100644 arch/powerpc/include/asm/clocksource.h
- create mode 100644 arch/powerpc/include/asm/vdso/clocksource.h
- create mode 100644 arch/powerpc/include/asm/vdso/gettimeofday.h
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v9: Forgot to remove cpu_relax() from processor.h in v8
+---
+ arch/powerpc/include/asm/processor.h      | 13 ++-----------
+ arch/powerpc/include/asm/vdso/processor.h | 23 +++++++++++++++++++++++
+ 2 files changed, 25 insertions(+), 11 deletions(-)
  create mode 100644 arch/powerpc/include/asm/vdso/processor.h
- create mode 100644 arch/powerpc/include/asm/vdso/vsyscall.h
- create mode 100644 arch/powerpc/kernel/vdso32/config-fake32.h
- create mode 100644 arch/powerpc/kernel/vdso32/vgettimeofday.c
- create mode 100644 arch/powerpc/kernel/vdso64/vgettimeofday.c
 
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index 22ffe85a91b8..e8642e1bfb96 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -6,6 +6,8 @@
+  * Copyright (C) 2001 PPC 64 Team, IBM Corp
+  */
+ 
++#include <vdso/processor.h>
++
+ #include <asm/reg.h>
+ 
+ #ifdef CONFIG_VSX
+@@ -63,14 +65,6 @@ extern int _chrp_type;
+ 
+ #endif /* defined(__KERNEL__) && defined(CONFIG_PPC32) */
+ 
+-/* Macros for adjusting thread priority (hardware multi-threading) */
+-#define HMT_very_low()   asm volatile("or 31,31,31   # very low priority")
+-#define HMT_low()	 asm volatile("or 1,1,1	     # low priority")
+-#define HMT_medium_low() asm volatile("or 6,6,6      # medium low priority")
+-#define HMT_medium()	 asm volatile("or 2,2,2	     # medium priority")
+-#define HMT_medium_high() asm volatile("or 5,5,5      # medium high priority")
+-#define HMT_high()	 asm volatile("or 3,3,3	     # high priority")
+-
+ #ifdef __KERNEL__
+ 
+ #ifdef CONFIG_PPC64
+@@ -350,7 +344,6 @@ static inline unsigned long __pack_fe01(unsigned int fpmode)
+ }
+ 
+ #ifdef CONFIG_PPC64
+-#define cpu_relax()	do { HMT_low(); HMT_medium(); barrier(); } while (0)
+ 
+ #define spin_begin()	HMT_low()
+ 
+@@ -369,8 +362,6 @@ do {								\
+ 	}							\
+ } while (0)
+ 
+-#else
+-#define cpu_relax()	barrier()
+ #endif
+ 
+ /* Check that a certain kernel stack pointer is valid in task_struct p */
+diff --git a/arch/powerpc/include/asm/vdso/processor.h b/arch/powerpc/include/asm/vdso/processor.h
+new file mode 100644
+index 000000000000..39b9beace9ca
+--- /dev/null
++++ b/arch/powerpc/include/asm/vdso/processor.h
+@@ -0,0 +1,23 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __ASM_VDSO_PROCESSOR_H
++#define __ASM_VDSO_PROCESSOR_H
++
++#ifndef __ASSEMBLY__
++
++/* Macros for adjusting thread priority (hardware multi-threading) */
++#define HMT_very_low()		asm volatile("or 31, 31, 31	# very low priority")
++#define HMT_low()		asm volatile("or 1, 1, 1	# low priority")
++#define HMT_medium_low()	asm volatile("or 6, 6, 6	# medium low priority")
++#define HMT_medium()		asm volatile("or 2, 2, 2	# medium priority")
++#define HMT_medium_high()	asm volatile("or 5, 5, 5	# medium high priority")
++#define HMT_high()		asm volatile("or 3, 3, 3	# high priority")
++
++#ifdef CONFIG_PPC64
++#define cpu_relax()	do { HMT_low(); HMT_medium(); barrier(); } while (0)
++#else
++#define cpu_relax()	barrier()
++#endif
++
++#endif /* __ASSEMBLY__ */
++
++#endif /* __ASM_VDSO_PROCESSOR_H */
 -- 
 2.25.0
 
