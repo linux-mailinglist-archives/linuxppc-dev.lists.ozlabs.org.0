@@ -1,88 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A109127BBD3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 06:13:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C597827BC64
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 07:23:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C0mGp615yzDqTs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 14:13:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C0npn0mS8zDqSq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Sep 2020 15:23:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=0OSlCrt8; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C0lw9195SzDqJL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 13:57:44 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id 5so2772630pgf.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Sep 2020 20:57:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=HL69zotpWAOcyBCJkjYTUA9J0pLf7f/zHJ4uvfJOVZc=;
- b=0OSlCrt8IeuBJUzDeUm5NStjfWUfJA4u4WTVLWkXsVnHakm8SzF1LcoGHzh0wfTQ/j
- g2BOkB1Q5/rB1rD9vdG6ydD0CcdkTcku3HFn1J+J40UBO51CeChgiKsijrRtNoF3Kdo/
- TipyByuuSnjwdOarAXRXfhlh5IgunQuHTgyAcL9U8iP6dDzBPNo1X+QZ49qnu98HKaI5
- U5JGkQdj0yv27qYqha1kPlnWolhQvbg5SSFGaXSZUvoetZu80B4kqvePGvimAkbfoRAs
- kf0XZHq7slnX1XsV4aGmNv4Y6HwoTxhPoK3INCY44a0AkmHSjJmeCJqZqb7OG3cpXlfi
- xB8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=HL69zotpWAOcyBCJkjYTUA9J0pLf7f/zHJ4uvfJOVZc=;
- b=ecUn2CTkHXfdSmY1t04CPAAQHzfJO8covNmsArAJFu8F+NPIppcdG666924gWqEGeR
- H8ukXEUFg3/ZGp4rhgu66hroUbXNoZgkCcg3xFz/TbfKAdR+WaJwJXJoNCAg3p9lgeIJ
- xIj7wDCx6vaABW6CsRobvrSMc/E7+MvBs5dNsmp5+DRaEBCkXnn/smQgMPPAKRn6yTIg
- U4TZjHWwDblZQ5roDz6HjKk5L9QBvdPeq66K2lxofGsxlMnaWI9KEt4TCaHqpmPH+G9/
- KxyJr2w8j+CM2PzvVdF5nOXwLXqTQb76hdZ+qZOrL5qY9b0sYEXwOwiFWJUOFshCaLFz
- 8P2Q==
-X-Gm-Message-State: AOAM532G7enVNzbP6hoAWOA8amww1iuepzO9suHFbY5Lone6QapUsSCB
- q5mvJpeKEodzOle8YcdqLIsQLQHg8IYifBbf
-X-Google-Smtp-Source: ABdhPJzod/8VJylhDivx8Xp06Qz0XYFwZpHrtg9DPCMZosi+G+oD6Lq0zx+N94DqgxXTqOjgPby9Pg==
-X-Received: by 2002:a65:51c7:: with SMTP id i7mr1820016pgq.325.1601351862430; 
- Mon, 28 Sep 2020 20:57:42 -0700 (PDT)
-Received: from [192.168.10.88] (124-171-83-152.dyn.iinet.net.au.
- [124.171.83.152])
- by smtp.gmail.com with UTF8SMTPSA id y6sm2947256pji.1.2020.09.28.20.57.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Sep 2020 20:57:41 -0700 (PDT)
-Subject: Re: [PATCH v2 07/14] powerpc/pseries/iommu: Add ddw_list_new_entry()
- helper
-To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
- Christophe Leroy <christophe.leroy@c-s.fr>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai
- <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
- Murilo Fossa Vicentini <muvic@linux.ibm.com>,
- David Dai <zdai@linux.vnet.ibm.com>
-References: <20200911170738.82818-1-leobras.c@gmail.com>
- <20200911170738.82818-8-leobras.c@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <903f88a7-af27-a1a9-e810-769be412cb9e@ozlabs.ru>
-Date: Tue, 29 Sep 2020 13:57:36 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:82.0) Gecko/20100101
- Thunderbird/82.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C0nn249vKzDqSg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Sep 2020 15:21:37 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4C0nmp11djz9txQS;
+ Tue, 29 Sep 2020 07:21:30 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Xv5OGtZ92lmC; Tue, 29 Sep 2020 07:21:30 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4C0nmn6QJkz9txQR;
+ Tue, 29 Sep 2020 07:21:29 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DB55B8B79F;
+ Tue, 29 Sep 2020 07:21:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id x_ywH_gjOjI2; Tue, 29 Sep 2020 07:21:30 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 20E898B76C;
+ Tue, 29 Sep 2020 07:21:30 +0200 (CEST)
+Subject: Re: [PATCH v2 25/25] powerpc/signal32: Transform save_user_regs() and
+ save_tm_user_regs() in 'unsafe' version
+To: "Christopher M. Riedl" <cmr@informatik.wtf>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <C5ZIJ5D6XYSA.191D18GH311GD@geist>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <6fffc2fd-484c-c3d8-73ba-1048b5809b69@csgroup.eu>
+Date: Tue, 29 Sep 2020 07:21:26 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <20200911170738.82818-8-leobras.c@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <C5ZIJ5D6XYSA.191D18GH311GD@geist>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,98 +66,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 12/09/2020 03:07, Leonardo Bras wrote:
-> Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+Le 29/09/2020 à 04:55, Christopher M. Riedl a écrit :
+> On Tue Aug 18, 2020 at 12:19 PM CDT, Christophe Leroy wrote:
+>> Change those two functions to be used within a user access block.
+>>
+>> For that, change save_general_regs() to and unsafe_save_general_regs(),
+>> then replace all user accesses by unsafe_ versions.
+>>
+>> This series leads to a reduction from 2.55s to 1.73s of
+>> the system CPU time with the following microbench app
+>> on an mpc832x with KUAP (approx 32%)
+>>
+>> Without KUAP, the difference is in the noise.
+>>
+>> void sigusr1(int sig) { }
+>>
+>> int main(int argc, char **argv)
+>> {
+>> int i = 100000;
+>>
+>> signal(SIGUSR1, sigusr1);
+>> for (;i--;)
+>> raise(SIGUSR1);
+>> exit(0);
+>> }
+>>
+>> An additional 0.10s reduction is achieved by removing
+>> CONFIG_PPC_FPU, as the mpc832x has no FPU.
+>>
+>> A bit less spectacular on an 8xx as KUAP is less heavy, prior to
+>> the series (with KUAP) it ran in 8.10 ms. Once applies the removal
+>> of FPU regs handling, we get 7.05s. With the full series, we get 6.9s.
+>> If artificially re-activating FPU regs handling with the full series,
+>> we get 7.6s.
+>>
+>> So for the 8xx, the removal of the FPU regs copy is what makes the
+>> difference, but the rework of handle_signal also have a benefit.
+>>
+>> Same as above, without KUAP the difference is in the noise.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>> arch/powerpc/kernel/signal_32.c | 224 ++++++++++++++++----------------
+>> 1 file changed, 111 insertions(+), 113 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kernel/signal_32.c
+>> b/arch/powerpc/kernel/signal_32.c
+>> index 86539a4e0514..f795fe0240a1 100644
+>> --- a/arch/powerpc/kernel/signal_32.c
+>> +++ b/arch/powerpc/kernel/signal_32.c
+>> @@ -93,8 +93,8 @@ static inline int get_sigset_t(sigset_t *set,
+>> #define to_user_ptr(p) ptr_to_compat(p)
+>> #define from_user_ptr(p) compat_ptr(p)
+>>   
+>> -static inline int save_general_regs(struct pt_regs *regs,
+>> - struct mcontext __user *frame)
+>> +static __always_inline int
+>> +save_general_regs_unsafe(struct pt_regs *regs, struct mcontext __user
+>> *frame)
+>> {
+>> elf_greg_t64 *gregs = (elf_greg_t64 *)regs;
+>> int val, i;
+>> @@ -108,10 +108,12 @@ static inline int save_general_regs(struct pt_regs
+>> *regs,
+>> else
+>> val = gregs[i];
+>>   
+>> - if (__put_user(val, &frame->mc_gregs[i]))
+>> - return -EFAULT;
+>> + unsafe_put_user(val, &frame->mc_gregs[i], failed);
+>> }
+>> return 0;
+>> +
+>> +failed:
+>> + return 1;
+>> }
+>>   
+>> static inline int restore_general_regs(struct pt_regs *regs,
+>> @@ -148,11 +150,15 @@ static inline int get_sigset_t(sigset_t *set,
+>> const sigset_t __user *uset)
+>> #define to_user_ptr(p) ((unsigned long)(p))
+>> #define from_user_ptr(p) ((void __user *)(p))
+>>   
+>> -static inline int save_general_regs(struct pt_regs *regs,
+>> - struct mcontext __user *frame)
+>> +static __always_inline int
+>> +save_general_regs_unsafe(struct pt_regs *regs, struct mcontext __user
+>> *frame)
+>> {
+>> WARN_ON(!FULL_REGS(regs));
+>> - return __copy_to_user(&frame->mc_gregs, regs, GP_REGS_SIZE);
+>> + unsafe_copy_to_user(&frame->mc_gregs, regs, GP_REGS_SIZE, failed);
+>> + return 0;
+>> +
+>> +failed:
+>> + return 1;
+>> }
+>>   
+>> static inline int restore_general_regs(struct pt_regs *regs,
+>> @@ -170,6 +176,11 @@ static inline int restore_general_regs(struct
+>> pt_regs *regs,
+>> }
+>> #endif
+>>   
+>> +#define unsafe_save_general_regs(regs, frame, label) do { \
+>> + if (save_general_regs_unsafe(regs, frame)) \
 > 
-> There are two functions creating direct_window_list entries in a
-> similar way, so create a ddw_list_new_entry() to avoid duplicity and
-> simplify those functions.
-> 
-> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+> Minor nitpick (sorry); this naming seems a bit strange to me, in x86 it
+> is "__unsafe_" as a prefix instead of "_unsafe" as a suffix. That sounds
+> a bit better to me, what do you think? Unless there is some convention I
+> am not aware of here apart from "unsafe_" using a goto label for errors.
 
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+You are probably right, I have never been good at naming stuff.
 
-
-> ---
->   arch/powerpc/platforms/pseries/iommu.c | 32 +++++++++++++++++---------
->   1 file changed, 21 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> index 49008d2e217d..e4c17d27dcf3 100644
-> --- a/arch/powerpc/platforms/pseries/iommu.c
-> +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -869,6 +869,21 @@ static u64 find_existing_ddw(struct device_node *pdn)
->   	return dma_addr;
->   }
->   
-> +static struct direct_window *ddw_list_new_entry(struct device_node *pdn,
-> +						const struct dynamic_dma_window_prop *dma64)
-> +{
-> +	struct direct_window *window;
-> +
-> +	window = kzalloc(sizeof(*window), GFP_KERNEL);
-> +	if (!window)
-> +		return NULL;
-> +
-> +	window->device = pdn;
-> +	window->prop = dma64;
-> +
-> +	return window;
-> +}
-> +
->   static int find_existing_ddw_windows(void)
->   {
->   	int len;
-> @@ -881,18 +896,15 @@ static int find_existing_ddw_windows(void)
->   
->   	for_each_node_with_property(pdn, DIRECT64_PROPNAME) {
->   		direct64 = of_get_property(pdn, DIRECT64_PROPNAME, &len);
-> -		if (!direct64)
-> -			continue;
-> -
-> -		window = kzalloc(sizeof(*window), GFP_KERNEL);
-> -		if (!window || len < sizeof(struct dynamic_dma_window_prop)) {
-> -			kfree(window);
-> +		if (!direct64 || len < sizeof(*direct64)) {
->   			remove_ddw(pdn, true);
->   			continue;
->   		}
->   
-> -		window->device = pdn;
-> -		window->prop = direct64;
-> +		window = ddw_list_new_entry(pdn, direct64);
-> +		if (!window)
-> +			break;
-> +
->   		spin_lock(&direct_window_list_lock);
->   		list_add(&window->list, &direct_window_list);
->   		spin_unlock(&direct_window_list_lock);
-> @@ -1261,7 +1273,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->   	dev_dbg(&dev->dev, "created tce table LIOBN 0x%x for %pOF\n",
->   		  create.liobn, dn);
->   
-> -	window = kzalloc(sizeof(*window), GFP_KERNEL);
-> +	window = ddw_list_new_entry(pdn, ddwprop);
->   	if (!window)
->   		goto out_clear_window;
->   
-> @@ -1280,8 +1292,6 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->   		goto out_free_window;
->   	}
->   
-> -	window->device = pdn;
-> -	window->prop = ddwprop;
->   	spin_lock(&direct_window_list_lock);
->   	list_add(&window->list, &direct_window_list);
->   	spin_unlock(&direct_window_list_lock);
-> 
-
--- 
-Alexey
+Christophe
