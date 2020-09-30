@@ -2,82 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE03F27DF08
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Sep 2020 05:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FC227E2A4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Sep 2020 09:31:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C1MPS3GxkzDqbq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Sep 2020 13:36:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C1ScR71WWzDqYp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Sep 2020 17:31:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=eHWtNZx9; 
- dkim-atps=neutral
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=OD25q2e2; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C1MMR596dzDqHp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Sep 2020 13:34:59 +1000 (AEST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08U3NwKK178171;
- Wed, 30 Sep 2020 03:34:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=0s9DPxq9WNkXg/S4URXBUJpyzJOLxk0th48yVckNwjg=;
- b=eHWtNZx9HamhG2G50d/2KORCzx6KQSz+f1T6kAhhUoLVDJJnUoDcfUj0VrL0+bd/sF6G
- MrG6wqO5HnVtRlaTh5CCnuHOrV9MTQv1+1Uhn0A8eiI3LLC0aUTjZbafNzr6mVJhlW0f
- 3DejusXzQGM61mSer+2zg+BsHJehSsHmLF79do+tUHGBXz4ldBdk+iD2wCCsZbKnL0Y3
- 5fnzUKS0rBhoFuVaNk2HlZdm4WnygUnX/Bh323N01KKIMjHo+Vm/XY36hxvxJqzLVMJS
- kwfGAc/VhP8gKU7EPbN7hKmoYcHZ2BiM8irLGL8hD1BFDutxDFOKj85UGnj/u4jaXzXm 5w== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
- by aserp2120.oracle.com with ESMTP id 33swkkx9pn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Wed, 30 Sep 2020 03:34:54 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
- by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08U3PuRX024598;
- Wed, 30 Sep 2020 03:34:54 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
- by userp3030.oracle.com with ESMTP id 33tfjxwcmg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 30 Sep 2020 03:34:53 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
- by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08U3Yqha027453;
- Wed, 30 Sep 2020 03:34:52 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Tue, 29 Sep 2020 20:34:52 -0700
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: linux-scsi@vger.kernel.org, Brian King <brking@linux.vnet.ibm.com>
-Subject: Re: [PATCH] ibmvfc: Protect vhost->task_set increment by the host lock
-Date: Tue, 29 Sep 2020 23:34:45 -0400
-Message-Id: <160143685412.27701.17223336650096895762.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <1600286999-22059-1-git-send-email-brking@linux.vnet.ibm.com>
-References: <1600286999-22059-1-git-send-email-brking@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C1SZJ4dJZzDqTV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Sep 2020 17:29:39 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id y14so533808pgf.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Sep 2020 00:29:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=ttjWabQRau3CSv1NZHdvKgdGtvh6Z/VK2a6nGv/LF2M=;
+ b=OD25q2e2XCUDocehJX95Mlok4AlDpgPtWt0gZ0DBurQ/JBCiZMVBkDa99TMTvvMICD
+ AJmgshelncbjhLWln8OoUyUeHS6Ynoya/KZlwb9DQ7YZzOjnn7sRWok40Yn5z21I0XR+
+ 9a0is9Gs0FRntLSPsQKdXmBkwVYXo+rP9AIt8R2IoGyoauSwhWgVIJP6QcwBRE1zY+Rt
+ jJ+H5R3FtqTWYYP5Rx+O/PYIDw5rwgHOWPRSUPyp7kEa5FTCU764JPv6MzVGnCVhN+zy
+ oB7cChdWTcrXkvq2lO4FvfiCNnng9/WbgR//zlAowTbk7Mj+rpz0MlUl8V+uAta+VlYF
+ B/cQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=ttjWabQRau3CSv1NZHdvKgdGtvh6Z/VK2a6nGv/LF2M=;
+ b=H52PxPWOnLuG1NUkdfUMGw6V3yhIIZNOH+T14k2LbeyPMVLgrWmXCfc2i8yqEPBuxt
+ yWEAT2x2RwJ37Ee1klwRyJ9WvWkryoeyZmTM71i+eovzNUOfOOpbIqE4//H6MuuzyVyr
+ 6l7ycswAG6cHwN3DXBD7fuNz6BuXgdQbCW6YHN0eiuJcYgWbpEFSApcOneiZJ5G/8Xe7
+ dneZn1B0dTK22KdfzxRhFM9m1v7PKc+X05/QZHg4OWRNbX7IFLl7gHWLFp7Q5w6ZFEB3
+ Gw8rpHWCJR32VZ8uMMLSk54MGYLOnnCV8EL9dMrM/Cl+XneUW/ivypvMN2QfK4vamINE
+ nFwA==
+X-Gm-Message-State: AOAM5330V284B2g4/TriIdydgXLJTcM71+ALsjs3NANiaJKm/S+CC7RB
+ Vxcq+o+cKKSrhDc9WnRv+v5MLOXWYQhYS/e7
+X-Google-Smtp-Source: ABdhPJzDAwbFyeq9hHNslWbeb5fIy2d9wdWFyoAosW8hNavBPE1n1GhZy2J+o9mcAuTKS6RqPwmmAA==
+X-Received: by 2002:a63:f90a:: with SMTP id h10mr1104428pgi.361.1601450975968; 
+ Wed, 30 Sep 2020 00:29:35 -0700 (PDT)
+Received: from [192.168.10.88] (124-171-83-152.dyn.iinet.net.au.
+ [124.171.83.152])
+ by smtp.gmail.com with UTF8SMTPSA id y4sm1132513pgl.67.2020.09.30.00.29.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Sep 2020 00:29:35 -0700 (PDT)
+Subject: Re: [PATCH v2 14/14] powerpc/pseries/iommu: Rename "direct window" to
+ "dma window"
+To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai
+ <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
+ Murilo Fossa Vicentini <muvic@linux.ibm.com>,
+ David Dai <zdai@linux.vnet.ibm.com>
+References: <20200911170738.82818-1-leobras.c@gmail.com>
+ <20200911170738.82818-15-leobras.c@gmail.com>
+ <2ba89065-4e9c-57c2-3825-aed9a7d8451a@ozlabs.ru>
+ <1b813ab38869e2e6770ed09487a3fba7befaca86.camel@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Message-ID: <1167e804-eddb-345e-539d-009b7c8d35fe@ozlabs.ru>
+Date: Wed, 30 Sep 2020 17:29:28 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:82.0) Gecko/20100101
+ Thunderbird/82.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9759
- signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- spamscore=0 mlxscore=0
- phishscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009300023
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9759
- signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxscore=0 phishscore=0
- suspectscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009300023
+In-Reply-To: <1b813ab38869e2e6770ed09487a3fba7befaca86.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,25 +96,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 16 Sep 2020 15:09:59 -0500, Brian King wrote:
 
-> In the discovery thread, ibmvfc does a vhost->task_set++ without
-> any lock held. This could result in two targets getting the same
-> cancel key, which could have strange effects in error recovery.
-> The actual probability of this occurring should be extremely
-> small, since this should all be done in a single threaded loop
-> from the discovery thread, but let's fix it up anyway to be safe.
 
-Applied to 5.10/scsi-queue, thanks!
+On 30/09/2020 06:54, Leonardo Bras wrote:
+> On Tue, 2020-09-29 at 13:55 +1000, Alexey Kardashevskiy wrote:
+>>
+>> On 12/09/2020 03:07, Leonardo Bras wrote:
+>>> Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+>>>
+>>> A previous change introduced the usage of DDW as a bigger indirect DMA
+>>> mapping when the DDW available size does not map the whole partition.
+>>>
+>>> As most of the code that manipulates direct mappings was reused for
+>>> indirect mappings, it's necessary to rename all names and debug/info
+>>> messages to reflect that it can be used for both kinds of mapping.
+>>>
+>>> Also, defines DEFAULT_DMA_WIN as "ibm,dma-window" to document that
+>>> it's the name of the default DMA window.
+>>
+>> "ibm,dma-window" is so old so it does not need a macro (which btw would
+>> be DMA_WIN_PROPNAME to match the other names) :)
+> 
+> Thanks for bringing that to my attention!
+> In fact, DMA_WIN_PROPNAME makes more sense, but it's still generic and
+> doesn't look to point to a generic one.
+> 
+> Would that be ok to call it DEFAULT_WIN_PROPNAME ?
 
-[1/1] scsi: ibmvfc: Protect vhost->task_set increment by the host lock
-      https://git.kernel.org/mkp/scsi/c/2584e5aef87a
+
+I would not touch it at all, the property name is painfully known and 
+not going to change ever. Does anyone else define it as a macro? I do 
+not see any:
+
+[fstn1-p1 kernel-dma-bypass]$ git grep "ibm,dma-window"  | wc -l
+8
+[fstn1-p1 kernel-dma-bypass]$ git grep "define.*ibm,dma-window"  | wc -l
+0
+
+
+
+> 
+> 
+>>
+>>
+>>> Those changes are not supposed to change how the code works in any
+>>> way, just adjust naming.
+>>
+>> I simply have this in my .vimrc for the cases like this one:
+>>
+>> ===
+>> This should cause no behavioural change.
+>> ===
+> 
+> Great tip! I will make sure to have this saved here :)
+> 
+> Thank you!
+> 
 
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+Alexey
