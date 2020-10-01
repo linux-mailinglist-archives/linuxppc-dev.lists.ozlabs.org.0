@@ -1,52 +1,117 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D562802FB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Oct 2020 17:38:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9016A280492
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Oct 2020 19:07:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C2HMv1N7WzDqZq
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Oct 2020 01:38:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C2KLr6MRGzDqbv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Oct 2020 03:07:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=infinera.com (client-ip=40.107.94.40;
+ helo=nam10-mw2-obe.outbound.protection.outlook.com;
+ envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=infinera.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
+ header.s=selector2 header.b=DJHuAXiR; 
+ dkim-atps=neutral
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2040.outbound.protection.outlook.com [40.107.94.40])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C2HJj4sPKzDqKw
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Oct 2020 01:35:43 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4C2HJS3YKzz9v3bX;
- Thu,  1 Oct 2020 17:35:36 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id s9DFAf4VuOt8; Thu,  1 Oct 2020 17:35:36 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4C2HJS2lBnz9v3bW;
- Thu,  1 Oct 2020 17:35:36 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 814338B992;
- Thu,  1 Oct 2020 17:35:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id JkVP7JSc9UYM; Thu,  1 Oct 2020 17:35:38 +0200 (CEST)
-Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 344598B986;
- Thu,  1 Oct 2020 17:35:38 +0200 (CEST)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 0FD7B65ED9; Thu,  1 Oct 2020 15:35:38 +0000 (UTC)
-Message-Id: <b8f8101c368b8a6451844a58d7bd7d83c14cf2aa.1601566529.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/32s: Setup the early hash table at all time.
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu,  1 Oct 2020 15:35:38 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C2KJy09fbzDqWP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Oct 2020 03:06:09 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MJEPFheskFjuSCC9kXtw/NGDb155n4KqaPx2+Uh0PRSiw3cNp+UVZkOdXd7ls/FPU1y/XGFfR06J1mSCFOX6Mj/Ved2oMOBjmFB8O75wCt2IGNRjCJfnN84FL/VA8gP7DVVvROOaY3SM9xiZYx1JVMlM8Gd+vhJNZhWaf+BaiwPJHkucCuspgRLn7SdMom988VawiXR5j0g7/WMPliOhpTBbfcqkLYw+K19+Xs8yBd4lVi8yg8UAB1mf0T75zRHYemH83uaqerHDYWbGrc6jYuyFuRM+9QMRlykN5cgG++4A7WW3BNPbEVjj5q5ZuaL6irOGG5I9VXGGiO1OtLvMBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=17/z3nqeT9R1RBpePT/obQi9DayyCzIi6xeksZXprbI=;
+ b=cIJU5XaNqjNYDpWiwdAG8JnCQMLLgrIERHp4EtShGTGMKgA8Gt44PMY4B+h3jhsrcoKLm/3HyWpt9hlSJSxZyyjbe21F3YUqOP1SjCzP4QlJkwrEFaYjr9TrqQ/nh2elqhoWoVDJBAXiN6UzzZnq/r5n4Y404BL+VJ7/CyHa71oyQQgr8vyIB76/vuGJISfMXbnw4fWWpP1I+NfLK009RXYQCFerwqHLKqc9R3VsJ6Hvd4Qe9BTCn7nT1K+cxFYgAF+ORiqqDhDCMovypLi8vJF0lCDmPtJaR5zLUIi3WYOwhrYx622/SjCKAhTt3IafSHrNLd9ALRztZMFxnBfOlA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 8.4.225.191) smtp.rcpttodomain=lists.ozlabs.org smtp.mailfrom=infinera.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=infinera.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=17/z3nqeT9R1RBpePT/obQi9DayyCzIi6xeksZXprbI=;
+ b=DJHuAXiR2fTDfxJViKsRcQY9IgMnSjpS+IN9BnE/u//JSOHfM6pijclqRdOJOQcUkBz5xWRPUgeV4myLItYEYmyQncAL09ym67xWqDjk3Udb7KLV7lE+JKpFM8x3sIsZwOp66f85RkpjX9wgn/C+BWDveXlCLB/myeFkl78P/dQ=
+Received: from BN6PR08CA0083.namprd08.prod.outlook.com (2603:10b6:404:b6::21)
+ by BYAPR10MB2951.namprd10.prod.outlook.com (2603:10b6:a03:84::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.36; Thu, 1 Oct
+ 2020 17:06:02 +0000
+Received: from BN8NAM11FT060.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:404:b6:cafe::9d) by BN6PR08CA0083.outlook.office365.com
+ (2603:10b6:404:b6::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.35 via Frontend
+ Transport; Thu, 1 Oct 2020 17:06:02 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 8.4.225.191)
+ smtp.mailfrom=infinera.com; lists.ozlabs.org; dkim=none (message not signed)
+ header.d=none;lists.ozlabs.org; dmarc=pass action=none
+ header.from=infinera.com;
+Received-SPF: Pass (protection.outlook.com: domain of infinera.com designates
+ 8.4.225.191 as permitted sender) receiver=protection.outlook.com; 
+ client-ip=8.4.225.191; helo=owa.infinera.com;
+Received: from owa.infinera.com (8.4.225.191) by
+ BN8NAM11FT060.mail.protection.outlook.com (10.13.177.211) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.3433.35 via Frontend Transport; Thu, 1 Oct 2020 17:06:01 +0000
+Received: from sv-ex16-prd.infinera.com (10.100.96.229) by
+ sv-ex16-prd.infinera.com (10.100.96.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1847.3; Thu, 1 Oct 2020 10:06:00 -0700
+Received: from sv-smtp-prod2.infinera.com (10.100.98.82) by
+ sv-ex16-prd.infinera.com (10.100.96.229) with Microsoft SMTP Server id
+ 15.1.1847.3 via Frontend Transport; Thu, 1 Oct 2020 10:06:00 -0700
+Received: from se-metroit-prd1.infinera.com ([10.210.32.58]) by
+ sv-smtp-prod2.infinera.com with Microsoft SMTPSVC(7.5.7601.17514); 
+ Thu, 1 Oct 2020 10:06:00 -0700
+Received: from gentoo-jocke.infinera.com (gentoo-jocke.infinera.com
+ [10.210.71.2])
+ by se-metroit-prd1.infinera.com (Postfix) with ESMTP id 9F9522BB17A5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Oct 2020 19:05:59 +0200 (CEST)
+Received: by gentoo-jocke.infinera.com (Postfix, from userid 1001)
+ id 9979FE54C; Thu,  1 Oct 2020 19:05:59 +0200 (CEST)
+From: Joakim Tjernlund <joakim.tjernlund@infinera.com>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc: Send SIGBUS from machine_check
+Date: Thu, 1 Oct 2020 19:05:57 +0200
+Message-ID: <20201001170557.10915-1-joakim.tjernlund@infinera.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 01 Oct 2020 17:06:00.0607 (UTC)
+ FILETIME=[232FAAF0:01D69815]
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8c0b8736-2979-4ba2-7992-08d8662c4661
+X-MS-TrafficTypeDiagnostic: BYAPR10MB2951:
+X-Microsoft-Antispam-PRVS: <BYAPR10MB2951C910AB374CC599404095F4300@BYAPR10MB2951.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1751;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Nfj8Aw58tgM7eYbCjF6wcKEX6ueuHTH5IaSRxsM8Fgn3Fyo0/u7WG9qIBtNTFxn+eTNs13txiCAbwx5d4KlR0Rx/b136dQBqq1ER2UvgY+1ECwZ3LBSzg3/xJ9qOzkQI2aP84fFyp5WGoxFJ4l4jss+mIXDPweoJmgmzbxwdj2uDyHmW9dYhZo/5g3eea7TplaaOgvzH9fnGd+44GE+CReloZICJQnCH3sBDcx1HwqBEG2ru/fVWVf/DFd6fKqC9xe+LX044Z8cUHCEYveCQrUHR7F3Sb2z5Ib+IWQSt5XB4MAXA9yUxtfUYFqL3gjlX0nV35aVSPwMaWEQFNBK4sGcKjr7M/5wiAqF4Oix4V4oYm5ztLJZOgk14yn9H26qzC26Jxgz0xOHdyrXuoOCPJw==
+X-Forefront-Antispam-Report: CIP:8.4.225.191; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:owa.infinera.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(4636009)(396003)(136003)(346002)(376002)(39860400002)(46966005)(186003)(336012)(86362001)(70586007)(70206006)(82310400003)(36756003)(5660300002)(81166007)(356005)(107886003)(6266002)(8936002)(42186006)(44832011)(82740400003)(478600001)(2616005)(316002)(1076003)(36906005)(426003)(8676002)(2906002)(47076004)(4326008)(6916009)(26005);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: infinera.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2020 17:06:01.6813 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c0b8736-2979-4ba2-7992-08d8662c4661
+X-MS-Exchange-CrossTenant-Id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=285643de-5f5b-4b03-a153-0ae2dc8aaf77; Ip=[8.4.225.191];
+ Helo=[owa.infinera.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT060.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR10MB2951
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,212 +123,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-At the time being, an early hash table is set up when
-CONFIG_KASAN is selected.
+Embedded PPC CPU should send SIGBUS to user space when applicable.
 
-There is nothing wrong with setting such an early hash table
-all the time, even if it is not used. This is a statically
-allocated 256 kB table which lies in the init data section.
-
-This makes the code simpler and may in the future allow to
-setup early IO mappings with fixmap instead of hard coding BATs.
-
-Put create_hpte() and flush_hash_pages() in the .ref.text section
-in order to avoid warning for the reference to early_hash[]. This
-reference is removed by MMU_init_hw_patch() before init memory is
-freed.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Joakim Tjernlund <joakim.tjernlund@infinera.com>
 ---
- arch/powerpc/kernel/head_32.S         | 13 +++++--------
- arch/powerpc/mm/book3s32/hash_low.S   |  9 +++++++--
- arch/powerpc/mm/book3s32/mmu.c        | 14 +++++---------
- arch/powerpc/mm/kasan/kasan_init_32.c | 19 -------------------
- 4 files changed, 17 insertions(+), 38 deletions(-)
+ arch/powerpc/kernel/traps.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/powerpc/kernel/head_32.S b/arch/powerpc/kernel/head_32.S
-index 2bd0aa3a4cc7..b5458113e0b0 100644
---- a/arch/powerpc/kernel/head_32.S
-+++ b/arch/powerpc/kernel/head_32.S
-@@ -166,9 +166,9 @@ __after_mmu_off:
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 0381242920d9..12715d24141c 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -621,6 +621,11 @@ int machine_check_e500mc(struct pt_regs *regs)
+ 		       reason & MCSR_MEA ? "Effective" : "Physical", addr);
+ 	}
  
- 	bl	initial_bats
- 	bl	load_segment_registers
--#ifdef CONFIG_KASAN
-+BEGIN_MMU_FTR_SECTION
- 	bl	early_hash_table
--#endif
-+END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
- #if defined(CONFIG_BOOTX_TEXT)
- 	bl	setup_disp_bat
- #endif
-@@ -953,7 +953,6 @@ _ENTRY(__restore_cpu_setup)
-  * Load stuff into the MMU.  Intended to be called with
-  * IR=0 and DR=0.
-  */
--#ifdef CONFIG_KASAN
- early_hash_table:
- 	sync			/* Force all PTE updates to finish */
- 	isync
-@@ -964,8 +963,10 @@ early_hash_table:
- 	lis	r6, early_hash - PAGE_OFFSET@h
- 	ori	r6, r6, 3	/* 256kB table */
- 	mtspr	SPRN_SDR1, r6
-+	lis	r6, early_hash@h
-+	lis	r3, Hash@ha
-+	stw	r6, Hash@l(r3)
- 	blr
--#endif
- 
- load_up_mmu:
- 	sync			/* Force all PTE updates to finish */
-@@ -1055,11 +1056,7 @@ start_here:
- 	bl	machine_init
- 	bl	__save_cpu_setup
- 	bl	MMU_init
--#ifdef CONFIG_KASAN
--BEGIN_MMU_FTR_SECTION
- 	bl	MMU_init_hw_patch
--END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
--#endif
- 
- /*
-  * Go back to running unmapped so we can load up new values
-diff --git a/arch/powerpc/mm/book3s32/hash_low.S b/arch/powerpc/mm/book3s32/hash_low.S
-index 1690d369688b..8fc594ff7286 100644
---- a/arch/powerpc/mm/book3s32/hash_low.S
-+++ b/arch/powerpc/mm/book3s32/hash_low.S
-@@ -15,6 +15,7 @@
-  */
- 
- #include <linux/pgtable.h>
-+#include <linux/init.h>
- #include <asm/reg.h>
- #include <asm/page.h>
- #include <asm/cputable.h>
-@@ -287,9 +288,9 @@ _ASM_NOKPROBE_SYMBOL(add_hash_page)
-  *
-  * For speed, 4 of the instructions get patched once the size and
-  * physical address of the hash table are known.  These definitions
-- * of Hash_base and Hash_bits below are just an example.
-+ * of Hash_base and Hash_bits below are for the early hash table.
-  */
--Hash_base = 0xc0180000
-+Hash_base = early_hash
- Hash_bits = 12				/* e.g. 256kB hash table */
- Hash_msk = (((1 << Hash_bits) - 1) * 64)
- 
-@@ -310,6 +311,7 @@ Hash_msk = (((1 << Hash_bits) - 1) * 64)
- #define HASH_LEFT	31-(LG_PTEG_SIZE+Hash_bits-1)
- #define HASH_RIGHT	31-LG_PTEG_SIZE
- 
-+__REF
- _GLOBAL(create_hpte)
- 	/* Convert linux-style PTE (r5) to low word of PPC-style PTE (r8) */
- 	rlwinm	r8,r5,32-9,30,30	/* _PAGE_RW -> PP msb */
-@@ -476,6 +478,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_NEED_COHERENT)
- 
- 	sync		/* make sure pte updates get to memory */
- 	blr
-+	.previous
- _ASM_NOKPROBE_SYMBOL(create_hpte)
- 
- 	.section .bss
-@@ -496,6 +499,7 @@ htab_hash_searches:
-  *
-  * We assume that there is a hash table in use (Hash != 0).
-  */
-+__REF
- _GLOBAL(flush_hash_pages)
- 	/*
- 	 * We disable interrupts here, even on UP, because we want
-@@ -632,6 +636,7 @@ _GLOBAL(flush_hash_pages)
- 	SYNC_601
- 	isync
- 	blr
-+	.previous
- EXPORT_SYMBOL(flush_hash_pages)
- _ASM_NOKPROBE_SYMBOL(flush_hash_pages)
- 
-diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-index d426eaf76bb0..3cf1177738ea 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -31,6 +31,8 @@
- 
- #include <mm/mmu_decl.h>
- 
-+u8 __initdata early_hash[SZ_256K] __aligned(SZ_256K) = {0};
++	if ((user_mode(regs))) {
++		_exception(SIGBUS, regs, reason, regs->nip);
++		recoverable = 1;
++	}
 +
- struct hash_pte *Hash;
- static unsigned long Hash_size, Hash_mask;
- unsigned long _SDR1;
-@@ -425,15 +427,6 @@ void __init MMU_init_hw(void)
- 	hash_mb2 = hash_mb = 32 - LG_HPTEG_SIZE - lg_n_hpteg;
- 	if (lg_n_hpteg > 16)
- 		hash_mb2 = 16 - LG_HPTEG_SIZE;
--
--	/*
--	 * When KASAN is selected, there is already an early temporary hash
--	 * table and the switch to the final hash table is done later.
--	 */
--	if (IS_ENABLED(CONFIG_KASAN))
--		return;
--
--	MMU_init_hw_patch();
+ silent_out:
+ 	mtspr(SPRN_MCSR, mcsr);
+ 	return mfspr(SPRN_MCSR) == 0 && recoverable;
+@@ -665,6 +670,10 @@ int machine_check_e500(struct pt_regs *regs)
+ 	if (reason & MCSR_BUS_RPERR)
+ 		printk("Bus - Read Parity Error\n");
+ 
++	if ((user_mode(regs))) {
++		_exception(SIGBUS, regs, reason, regs->nip);
++		return 1;
++	}
+ 	return 0;
  }
  
- void __init MMU_init_hw_patch(void)
-@@ -441,6 +434,9 @@ void __init MMU_init_hw_patch(void)
- 	unsigned int hmask = Hash_mask >> (16 - LG_HPTEG_SIZE);
- 	unsigned int hash = (unsigned int)Hash - PAGE_OFFSET;
+@@ -695,6 +704,10 @@ int machine_check_e200(struct pt_regs *regs)
+ 	if (reason & MCSR_BUS_WRERR)
+ 		printk("Bus - Write Bus Error on buffered store or cache line push\n");
  
-+	if (!mmu_has_feature(MMU_FTR_HPTE_TABLE))
-+		return;
-+
- 	if (ppc_md.progress)
- 		ppc_md.progress("hash:patch", 0x345);
- 	if (ppc_md.progress)
-diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
-index 929716ea21e9..59f61efc43af 100644
---- a/arch/powerpc/mm/kasan/kasan_init_32.c
-+++ b/arch/powerpc/mm/kasan/kasan_init_32.c
-@@ -174,22 +174,6 @@ void __init kasan_late_init(void)
- 		kasan_unmap_early_shadow_vmalloc();
++	if ((user_mode(regs))) {
++		_exception(SIGBUS, regs, reason, regs->nip);
++		return 1;
++	}
+ 	return 0;
  }
- 
--#ifdef CONFIG_PPC_BOOK3S_32
--u8 __initdata early_hash[256 << 10] __aligned(256 << 10) = {0};
--
--static void __init kasan_early_hash_table(void)
--{
--	unsigned int hash = __pa(early_hash);
--
--	modify_instruction_site(&patch__hash_page_A0, 0xffff, hash >> 16);
--	modify_instruction_site(&patch__flush_hash_A0, 0xffff, hash >> 16);
--
--	Hash = (struct hash_pte *)early_hash;
--}
--#else
--static void __init kasan_early_hash_table(void) {}
--#endif
--
- void __init kasan_early_init(void)
- {
- 	unsigned long addr = KASAN_SHADOW_START;
-@@ -205,7 +189,4 @@ void __init kasan_early_init(void)
- 		next = pgd_addr_end(addr, end);
- 		pmd_populate_kernel(&init_mm, pmd, kasan_early_shadow_pte);
- 	} while (pmd++, addr = next, addr != end);
--
--	if (early_mmu_has_feature(MMU_FTR_HPTE_TABLE))
--		kasan_early_hash_table();
+ #elif defined(CONFIG_PPC32)
+@@ -731,6 +744,10 @@ int machine_check_generic(struct pt_regs *regs)
+ 	default:
+ 		printk("Unknown values in msr\n");
+ 	}
++	if ((user_mode(regs))) {
++		_exception(SIGBUS, regs, reason, regs->nip);
++		return 1;
++	}
+ 	return 0;
  }
+ #endif /* everything else */
 -- 
-2.25.0
+2.26.2
 
