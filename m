@@ -1,53 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE15280805
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Oct 2020 21:48:16 +0200 (CEST)
-Received: from bilbo.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C2Nvw1XgYzDqcV
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Oct 2020 05:48:12 +1000 (AEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35560280840
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Oct 2020 22:11:58 +0200 (CEST)
+Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C2PRG6PtRzDqcv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Oct 2020 06:11:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4C2Nt20pBNzDqX2
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Oct 2020 05:46:30 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 091Jdd8m014394;
- Thu, 1 Oct 2020 14:39:39 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 091Jdccq014393;
- Thu, 1 Oct 2020 14:39:38 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Thu, 1 Oct 2020 14:39:37 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Subject: Re: [RFC PATCH next-20200930] treewide: Convert macro and uses of
- __section(foo) to __section("foo")
-Message-ID: <20201001193937.GM28786@gate.crashing.org>
-References: <20200929192549.501516-1-ndesaulniers@google.com>
- <CA+icZUVgfnVQ1=zjUGhGKnJAs9g3Q06sWN3ffNdrfZMZLCEkbA@mail.gmail.com>
- <133589afbe999347454dfcc46ae782897bf9e3a2.camel@perches.com>
- <46f69161e60b802488ba8c8f3f8bbf922aa3b49b.camel@perches.com>
- <CAKwvOdkhyvTpY6pHT+CLSsBFuKRWsXucjbwN_tyJAsryZXvG1A@mail.gmail.com>
- <417ffa3fd3fba5d4a481db6a0b0c9b48cbbb17c4.camel@perches.com>
- <CAKwvOd=P+j0RaQfHsXPfB0EL3oRgAu8Q0+spUOn_v-p2+3=3pw@mail.gmail.com>
- <aefe941251d5d58062d06099afb58dea1d1d4e17.camel@perches.com>
- <46040e2776a4848add06126ce1cb8f846709294f.camel@perches.com>
- <CANiq72mSjs4myQQtUoegjRggjTx9UF70nAcWoXRoTeLMOuf0xQ@mail.gmail.com>
+ spf=none (no SPF record) smtp.mailfrom=davemloft.net
+ (client-ip=2620:137:e000::1:9; helo=shards.monkeyblade.net;
+ envelope-from=davem@davemloft.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=davemloft.net
+Received: from shards.monkeyblade.net (shards.monkeyblade.net
+ [IPv6:2620:137:e000::1:9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C2PPL33sczDqXq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Oct 2020 06:10:13 +1000 (AEST)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+ (using TLSv1 with cipher AES256-SHA (256/256 bits))
+ (Client did not present a certificate)
+ (Authenticated sender: davem-davemloft)
+ by shards.monkeyblade.net (Postfix) with ESMTPSA id C3252148489AD;
+ Thu,  1 Oct 2020 12:53:18 -0700 (PDT)
+Date: Thu, 01 Oct 2020 13:10:05 -0700 (PDT)
+Message-Id: <20201001.131005.812058315852168053.davem@davemloft.net>
+To: vladimir.oltean@nxp.com
+Subject: Re: [PATCH v3 devicetree 0/2] Add Seville Ethernet switch to T1040RDB
+From: David Miller <davem@davemloft.net>
+In-Reply-To: <20201001132013.1866299-1-vladimir.oltean@nxp.com>
+References: <20201001132013.1866299-1-vladimir.oltean@nxp.com>
+X-Mailer: Mew version 6.8 on Emacs 27.1
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72mSjs4myQQtUoegjRggjTx9UF70nAcWoXRoTeLMOuf0xQ@mail.gmail.com>
-User-Agent: Mutt/1.4.2.3i
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12
+ (shards.monkeyblade.net [2620:137:e000::1:9]);
+ Thu, 01 Oct 2020 12:53:19 -0700 (PDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,34 +52,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, "Paul E . McKenney" <paulmck@kernel.org>,
- Sedat Dilek <sedat.dilek@gmail.com>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Josh Triplett <josh@joshtriplett.org>,
- Steven Rostedt <rostedt@goodmis.org>, LKML <linux-kernel@vger.kernel.org>,
- rcu@vger.kernel.org, Clang-Built-Linux ML <clang-built-linux@googlegroups.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Joe Perches <joe@perches.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, andrew@lunn.ch, madalin.bucur@oss.nxp.com,
+ radu-andrei.bulie@nxp.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, fido_max@inbox.ru, robh+dt@kernel.org,
+ paulus@samba.org, shawnguo@kernel.org, netdev@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+Date: Thu,  1 Oct 2020 16:20:11 +0300
 
-On Thu, Oct 01, 2020 at 12:15:39PM +0200, Miguel Ojeda wrote:
-> > So it looks like the best option is to exclude these
-> > 2 files from conversion.
+> Seville is a DSA switch that is embedded inside the T1040 SoC, and
+> supported by the mscc_seville DSA driver inside drivers/net/dsa/ocelot.
 > 
-> Agreed. Nevertheless, is there any reason arch/powerpc/* should not be
-> compiling cleanly with compiler.h? (CC'ing the rest of the PowerPC
-> reviewers and ML).
+> This series adds this switch to the SoC's dtsi files and to the T1040RDB
+> board file.
 
-You need to #include compiler_types.h to get this #define?
+I am assuming the devicetree folks will pick this series up.
 
-(The twice-defined thing is a warning, not an error.  It should be fixed
-of course, but it is less important; although it may be pointing to a
-deeper problem.)
+Thanks.
 
-
-Segher
