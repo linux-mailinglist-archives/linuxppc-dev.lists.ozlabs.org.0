@@ -2,98 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58788280BC7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Oct 2020 02:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F7728146A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Oct 2020 15:45:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C2WfZ0YTkzDqf6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Oct 2020 10:52:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C2rpj4NBfzDqQT
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Oct 2020 23:45:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.2.41; helo=eur02-ve1-obe.outbound.protection.outlook.com;
+ (client-ip=40.107.20.43; helo=eur05-db8-obe.outbound.protection.outlook.com;
  envelope-from=vladimir.oltean@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=g5NYXKHl; 
+ header.s=selector2 header.b=obG65JtS; 
  dkim-atps=neutral
-Received: from EUR02-VE1-obe.outbound.protection.outlook.com
- (mail-eopbgr20041.outbound.protection.outlook.com [40.107.2.41])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com
+ (mail-db8eur05on2043.outbound.protection.outlook.com [40.107.20.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C2Wcd0dw7zDqST
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Oct 2020 10:50:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C2rkW3j6YzDqGm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Oct 2020 23:41:31 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hVTdg1dz5h18Ogx3F/d5BlbrHPscTg9HMseWfsGLfEngFYbTPd4BU27POd9oU3+aeFriTe3obmYBOpZfk1ljsoJjb1Ah7UKeN/18aeEhdBzhMOkLRRHlmwb4KhQM02NDOvNPCJgRJvjHZwsUkjfRC9tgXcy/zvqOWs/cNITBDKuCNuu3vBRfA8CpKHJFGXEBmM34BjJFCaQFwnjgAJOF5yQAKIhgr7sCReCmjFc+7lEszxpuI/uKaWlZ//mMmISv72lVb9bGU/OkTDWAKWwEozfreKtUluCNEon56ZnkfhFDn2kkhTwm6Fgdl/A2j6usxY04Bji79o+B/8oAGw4FXw==
+ b=Ip4s/KWVPRvvi3lQYdP8x+wUnOCCOQSCDq3oTgBmg/s5Zu6E3i3K2PGtT9l4qSahlPnpgSxWMC2Sg1jZLruk3ws5z6pULOyv2lSkE4h+9HSEBVuZuq3Ev3vCjMWBH4ZUA39fFGwoBIWZEFGih/769ZxOAL0cty9Od1YzN3d98uYEB7n3mzWYS02O6vku7I1vHgGcx1TcjYsmN6eha/IE8hhTdMzhJ5NmwEQCbObQQBP98gjiLY8xBHHvSWnX+/yDocTcd4cLxQY3B/d9prnlQjLNsC6HdBBn59P4/nuGfEGAdJDakUBKl2/V4ww390lHs7NjcGfQ59bIrBKFLctqZw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sel3YY351kS7xH6iNnPEnOJxfxjwtWAd9znLidf9wis=;
- b=RE3o/o3qe4VYVUzdSxJUKUB/dYsPigC5k39Pc9b4n8I5dJjRaNk96q8n8Xgy4EDw6CHc/3IqIglweIqdWMRgsf6qFVt3Ni25kkm+EMZ9bs5cYMCE7BVW0su1VqPHRHVcM3JKFHO8SrBC1wbO0knFkp8V5jSkhVuViKjxG89eRozHNO7KcA1RzP5e3KRMYmniuUBBIhhr2+ZjIdPh8/DIND/1ARkr4vYMHScdlOZSsWgsC4PyCC6RC4Dr08bQYzwXdbhNFPZjtUSVnvKDFtNkZ123FeYWerCgy/zvmnmbDfYyJug2OYH6mteJBy4Nqnh9kTFQc1RPLB/ljHn204zyig==
+ bh=4yZzyE3Y6L0G/GxlNwC2VNKQ+0D00VSK/nZm5Z1Nj1s=;
+ b=K9Gw7romRUmCV0+I7MUonOm/UpDITi6nM0ANs0T/yKvX6M9c5EVuIrgIo5vr0QByy2fReNHyx1uPdWs6YQq3xdVbShbSHeotgvUJk2mWePJVZRBH+/8InN0XMWU6Z+SE5fXrcONr8Xanb7Uv0W9WDkqU42ltnlPJ1w5lNmcjaWgQEAhX51dl0uJzyEpDLA4FqkEDHJ2+c4cfX9DQU0tp4gGOy0/ZziS4r2C5XzyChY2+aD5O2c6vwuJD2Y8M+kEmrLjnG6nnwxDXjg5AMU5Kiyq926Jj6rCcfHbb04gw7u1TvlZ4UaeXHeEt87C4A9toO9C6CF4zaJ+gW2pnVifBjw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sel3YY351kS7xH6iNnPEnOJxfxjwtWAd9znLidf9wis=;
- b=g5NYXKHlBluEQBK3ry/9vKsAfLM4eY1vlT+acYwPP8SFPzva9mc/zb4yv41Lgl9XzXjdUGtsmr0oC6TxcqSLhQajssJsMF1G0OkM3vbk4bifW/29sIhtCQeGrOPdSOyB2oKtelqOYjak8sqF3jBoHPBEI5B0p5ufMmxI6d3zxZw=
+ bh=4yZzyE3Y6L0G/GxlNwC2VNKQ+0D00VSK/nZm5Z1Nj1s=;
+ b=obG65JtSAuMgomofK3qxVSABou/g1pWfG9ENbxioFjPxeeAvHBa8TuBRAI3zFGlxt/HBbreBQZ2tTOme30z3Xxete46xUKvRZHRCdkLSO4QXunVOsVIionrHinnXSxumtwctGoDwZTykZHzC762QX+zLfmwk8yDzJo6+PouRMuw=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=nxp.com;
 Received: from VI1PR04MB5696.eurprd04.prod.outlook.com (2603:10a6:803:e7::13)
- by VI1PR04MB4816.eurprd04.prod.outlook.com (2603:10a6:803:5b::15)
+ by VI1PR04MB5504.eurprd04.prod.outlook.com (2603:10a6:803:d8::29)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.24; Fri, 2 Oct
- 2020 00:50:16 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.38; Fri, 2 Oct
+ 2020 13:41:23 +0000
 Received: from VI1PR04MB5696.eurprd04.prod.outlook.com
  ([fe80::983b:73a7:cc93:e63d]) by VI1PR04MB5696.eurprd04.prod.outlook.com
- ([fe80::983b:73a7:cc93:e63d%3]) with mapi id 15.20.3433.032; Fri, 2 Oct 2020
- 00:50:16 +0000
+ ([fe80::983b:73a7:cc93:e63d%3]) with mapi id 15.20.3433.038; Fri, 2 Oct 2020
+ 13:41:23 +0000
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: David Miller <davem@davemloft.net>
-Subject: Re: [PATCH v3 devicetree 0/2] Add Seville Ethernet switch to T1040RDB
-Thread-Topic: [PATCH v3 devicetree 0/2] Add Seville Ethernet switch to T1040RDB
-Thread-Index: AQHWl/WnnE50IayoQkG0H2c1fXcQZqmDLcmAgABOR4A=
-Date: Fri, 2 Oct 2020 00:50:16 +0000
-Message-ID: <20201002005015.hxtsu7igdfd352zb@skbuf>
-References: <20201001132013.1866299-1-vladimir.oltean@nxp.com>
- <20201001.131005.812058315852168053.davem@davemloft.net>
-In-Reply-To: <20201001.131005.812058315852168053.davem@davemloft.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: davemloft.net; dkim=none (message not signed)
- header.d=none;davemloft.net; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [188.26.229.171]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 1c81ea1b-c717-400e-9a21-08d8666d2139
-x-ms-traffictypediagnostic: VI1PR04MB4816:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR04MB4816CDF4E4CB0C2A67DF7902E0310@VI1PR04MB4816.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4303;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: D6ucpyMGYVBHRy1MLTbl0CgiNXR3BQexZ+2Mn2FR+vTFAyIw3MUklx0r5wk4I3zqTiH0BoAuNct2VpMMj7rC9xCPndusL3zPFtqbkxQS+73W8i46MELpb0xfz2XTsMBA3+7fZfBAVK4phNbMWMPT7SE2VSsjEozYaZcOxZ7OUAlO1o006R0YKsKdDE/b2/G4XYWQ7vG/1oHJp9tUR2T1bSI3F8xKh/0+Wz5Zr4Q+sefdlULoNEuaz9W8xG3FryXVhnacCJBnDAaT2vO/HerSUWomlpGlYKb5eoOVpEOu3aUKbUgUeFdlc/EuJM9+LAUPcupQyDO5IcjWrDvc5NLjJyiVYRmdu1nEkQJWhIMags4UwMEQfXeOzA7KwAPqgmOz
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR04MB5696.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(7916004)(4636009)(376002)(346002)(39860400002)(136003)(396003)(366004)(6506007)(2906002)(4326008)(44832011)(6486002)(54906003)(4744005)(8936002)(8676002)(66446008)(66476007)(316002)(66556008)(64756008)(66946007)(76116006)(478600001)(1076003)(91956017)(83380400001)(71200400001)(86362001)(6916009)(5660300002)(6512007)(26005)(7416002)(9686003)(186003)(33716001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: i9JUU7Q/4lp7rIHxumPj1NBRGHjipUqHTMY6h+d4UXxzLOkQatza6UUnW2p47kNrnvgj1B9BPqNv9VM1vcHneErB7SLSnq8EllCVqokdW8a5ABz7AZWSuJQwrbF9L5MkyirUApNs1PE6n76BmgF7KgCk5tpkuGo9SBij5ofcGQ31YBxSpnq4mj5Io4/OY2wyma7fGogmKp+IgnIweD1y4JWtp5JwAmjVU4qQ4RgQC8ABOo6puSbeDDYbN10ZaQzki+5bSUp7FsY49duqA9Qz+rIsGwEH9tnM+D/ufaR/nDjHZTA2CDgeYKRm6rO+6zN2GYPmz/lswcCpSrghXOMF0OLszlaP9N1YRYvEhscAsgMqvfod7xN1UAyOknBNgMnDqoTsyUYkMt8i5hBWeXUo9wUZwsHZopB2VsTiuuK0fjZtHw3E37r0HtGzxH/j2HstKh055NrWBjRjUrIRYMfXvE4WgHaBHUT9+0j42RcEo4kws+vU27+A8mC6YeUfiqEKS0BExzUGiV/yoe3t2BfGolaHAUXMfwZ+E8figQG0belip+2/wBbQc3jcqIzs3JUZXJRY05fcdbY7ZljZPx6BGMXslTc505F5aH734fi9ApFt5VbRK+Qo9HAQG6SjT115vN4GTTqlxsSoqXb7JveQBA==
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <C84A2490DA0CB249994B0FE521FB6194@eurprd04.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+To: netdev@vger.kernel.org,
+	davem@davemloft.net,
+	kuba@kernel.org
+Subject: [PATCH v4 net-next 0/2] Add Seville Ethernet switch to T1040RDB
+Date: Fri,  2 Oct 2020 16:41:04 +0300
+Message-Id: <20201002134106.3485970-1-vladimir.oltean@nxp.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [188.26.229.171]
+X-ClientProxiedBy: AM0PR10CA0041.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:150::21) To VI1PR04MB5696.eurprd04.prod.outlook.com
+ (2603:10a6:803:e7::13)
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from localhost.localdomain (188.26.229.171) by
+ AM0PR10CA0041.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:150::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.38 via Frontend
+ Transport; Fri, 2 Oct 2020 13:41:21 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 78307599-4edf-402c-dabc-08d866d8d9de
+X-MS-TrafficTypeDiagnostic: VI1PR04MB5504:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <VI1PR04MB5504F950368583BF6F26CCCFE0310@VI1PR04MB5504.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: SRdQ/BeIRwdyYDm9U5yOAmlcuNZjJn3bU4DGUqWNmLUAXxoC5ouCqdZNzD2F+RJyDpKPR9StSqv0YWTHhxVeOOjYPEv0FgbLvOXO4jUghnc/c5qnamEKuGMA2+Z2oWyfDeQpxEukVdiz7ZSHMOVsoy+puF21kYkXbn1qjLroE/ExvlqMRnW0EJ2R+UBYrBDbA17toXYm6QmHT3h6HlEEs/jOLI3Bo6vewJeWQ/idUYPxqy1BQSUT0IZgotMAY2ScFitt1KnrxsYeC2OiuZcY5tqJXy0/Te7oSlL00r2ZTCyTvIVbNr+zcASzBcFojWyoRawXRWpx2dPrREKX3eIDj0X7ZxuGK7/JErK4dV1LLRrVXyyO6iLoBc4raYnGn4rX
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI1PR04MB5696.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(376002)(396003)(136003)(39860400002)(346002)(366004)(8936002)(1076003)(478600001)(4326008)(44832011)(52116002)(26005)(4744005)(5660300002)(7416002)(69590400008)(6512007)(16526019)(186003)(6506007)(8676002)(66476007)(66946007)(86362001)(6486002)(66556008)(6666004)(2906002)(2616005)(956004)(316002)(36756003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: hwa8Dj0VGGew6BcVTQqpN1W2CELFl1aJS1ObcVBMsusbAzi09wn+koOw+GTeFWhf18y3oP8/sGV20i/KRnYO13eSr2WRxK5GcF2ZUqMOqAzoyd7s95lIQtI/Ld7InIGUBQ2XYAIe8/MLpWdyzARWcmJqHtx4m1XhZhI+jdYVXMpMvXW5AiJ1WkwR18gKkkp5Mg7rBHvBrhCmVzW0CNZCOkDa2Fh8xzghiftmpi2VCwtq2e6vJYktA/fL6fGcr7cu2iDqPJjMVJPqxETQyko0WIlXwC6T6Ck0d0ykX9URoDibJjNifTcNZ41Fkwn12F8h7Mn+NkC3e6mwz/guKLydrkzI+n4wEJLYjCZp/pYCASTg0LdHC/tFgT+e+4ahGXyzVFldwVrdrt9tak2RCgfCvVDQmIiSkQLgWe1eKsFpxwUtMM6HRFFjs4iAggNrYpJIGz9JluRmu1aKCUJN0u55ilY+Wb5YiK6f1YnPqE5ryLKC3PePHxoxnS8Myc0ovsHO7Bioq5u7/9CfADYPXATAamweaxY3sCR79H7Hhd665kEG1/nq+tg8ux4Hf6AHobSG4DD6ODCo57J0UfxuW7FWmH5GdTk3r55ZTZjHNZsVdu+tvGkGLYfcpJ2cd2zIM6l1VU5PfIAyfaop6n8VMfzTrg==
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78307599-4edf-402c-dabc-08d866d8d9de
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5696.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1c81ea1b-c717-400e-9a21-08d8666d2139
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Oct 2020 00:50:16.6747 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: O/ziGaoXZ8Uvx+waduTXaACg7V9xV7IhSt67FlUstTUNA2Ds98xtS4L0qU5fRKEXUdhuGev+BjdreFVurFEmEg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4816
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2020 13:41:23.4420 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WDa/XkgL2keJnvum38qvaY5NqE5UMmBkpYOHd6YxqsZ2SqgN2KFEndImQBsyN4tsgsWaZ4taeEuplcvT2KnRNw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5504
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,40 +107,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "andrew@lunn.ch" <andrew@lunn.ch>,
- "Madalin Bucur \(OSS\)" <madalin.bucur@oss.nxp.com>,
- Radu-andrei Bulie <radu-andrei.bulie@nxp.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "fido_max@inbox.ru" <fido_max@inbox.ru>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>,
- "paulus@samba.org" <paulus@samba.org>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc: devicetree@vger.kernel.org, andrew@lunn.ch, madalin.bucur@oss.nxp.com,
+ radu-andrei.bulie@nxp.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, fido_max@inbox.ru, robh+dt@kernel.org,
+ paulus@samba.org, shawnguo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 01, 2020 at 01:10:05PM -0700, David Miller wrote:
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Date: Thu,  1 Oct 2020 16:20:11 +0300
->=20
-> > Seville is a DSA switch that is embedded inside the T1040 SoC, and
-> > supported by the mscc_seville DSA driver inside drivers/net/dsa/ocelot.
-> >=20
-> > This series adds this switch to the SoC's dtsi files and to the T1040RD=
-B
-> > board file.
->=20
-> I am assuming the devicetree folks will pick this series up.
->=20
-> Thanks.
->=20
+Seville is a DSA switch that is embedded inside the T1040 SoC, and
+supported by the mscc_seville DSA driver inside drivers/net/dsa/ocelot.
 
-I can also resend via net-next if that's easier (the last commit on
-arch/powerpc/boot/dts/fsl/t104*, as per today's linux-next, has been in
-2018, so there is no conflict).
+This series adds this switch to the SoC's dtsi files and to the T1040RDB
+board file.
 
-I need to resend anyway, due to an epic failure where I got the port
-numbering wrong...=
+I would like to send this series through net-next. There is no conflict
+with other patches submitted to T1040 device tree. Maybe this could at
+least get an ACK from devicetree maintainers.
+
+Vladimir Oltean (2):
+  powerpc: dts: t1040: add bindings for Seville Ethernet switch
+  powerpc: dts: t1040rdb: add ports for Seville Ethernet switch
+
+ arch/powerpc/boot/dts/fsl/t1040rdb.dts      | 107 ++++++++++++++++++++
+ arch/powerpc/boot/dts/fsl/t1040si-post.dtsi |  78 ++++++++++++++
+ 2 files changed, 185 insertions(+)
+
+-- 
+2.25.1
+
