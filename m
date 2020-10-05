@@ -2,96 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0D5283562
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Oct 2020 14:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 891AC283E6E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Oct 2020 20:38:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C4fW91497zDqH6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Oct 2020 23:08:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C4q8c4Fz1zF1SW
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Oct 2020 05:37:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ananth@linux.ibm.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Zo0WRq4G; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=vBtU369t; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C4ck82k7gzDqFJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Oct 2020 21:47:21 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 095AVpUe170630
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 5 Oct 2020 06:47:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=reply-to : subject : to
- : references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=jCN7XCeIJbOmKn5HP8p/CUyobzvQBBSm6UVRqiZAwJE=;
- b=Zo0WRq4GuQX9rdWuDDwz/bq7+drAYTPSpJ2JwbTCzItPwt0glf8p5h0BPEjtRg+IEsxi
- yAC3z26n6/pnOS4Y/AuXqzZm7483jyUFl9HLfTKDkzzHUTQknLR2gxBeK+RqrMpGNqF0
- PA1fW1eLn6D4Ng+Rx346FVwy1jhlGEK41Dme5gCQZE5RltwtzdY1NRqshgrQ4QA4OoPA
- 9wAHrchGj9+er9eOUMcCIbUJFXp3KgccfRUFtqr5gwKe8kaIPlP5m9tyNIeSXKtJ2oL2
- qCCGwbmEbzGG99rjCdVGnw9jIjhFCZYB0QNZtc7HgB5fJ3R5kb4fl7wdTHUbqVhok0Fm yw== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3401p2rm8g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Oct 2020 06:47:18 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 095AcGeK030535
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 5 Oct 2020 10:47:17 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma03wdc.us.ibm.com with ESMTP id 33xgx8et3y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Oct 2020 10:47:17 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 095AlCjh14221994
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 5 Oct 2020 10:47:12 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE2E1C6059
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Oct 2020 10:47:16 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 18221C605B
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Oct 2020 10:47:16 +0000 (GMT)
-Received: from [9.77.193.77] (unknown [9.77.193.77])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Oct 2020 10:47:15 +0000 (GMT)
-Subject: Re: [PATCH v2] powernv/elog: Fix the race while processing OPAL error
- log event.
-To: linuxppc-dev@lists.ozlabs.org
-References: <160187115555.1589942.2124270585910076829.stgit@jupiter>
-From: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
-Organization: IBM
-Message-ID: <df7cebd0-bec3-d716-5514-61c4043a6d30@linux.ibm.com>
-Date: Mon, 5 Oct 2020 16:17:14 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C4q7F6j7LzDsqB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Oct 2020 05:36:19 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id i2so2846181pgh.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Oct 2020 11:36:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=0wHD81aAh3Ob3GJ5aVvlWW4RHIkMZdoKTAx2sVZ9fTk=;
+ b=vBtU369tbtM2Jid7AFMAhuTduuwSTM4AyN8H4Up07kr8IkkyV4rAC4JG1Fo3Ud/WKw
+ ftULS/+AH1HaOFKMLvxqvmghjmqtP+IdxCZvtqdgAiaoW+vIQSms6DS2eDfMi3rPBtdZ
+ gxXo00BFLa7vp5wCYmdO3wnLSIhAtRPM9rH4YLuuiqnFNB2xQnGdTepJdHgm70n5o19g
+ La9EcHaAVaYi+XoWApK6eTv0t9Jmx2LpV8TUI+8IJk1Xr88aOnVUnTqxi1IRNLpXowOq
+ HYgtVuWWJErS+krhYgKuL/+bMVWFZ3xm2/l7IpBM8VCYtnvyqkgKkzueiRKPlH110m5Z
+ uIdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=0wHD81aAh3Ob3GJ5aVvlWW4RHIkMZdoKTAx2sVZ9fTk=;
+ b=ASHS841Ss5FKdwdV3WiiIEs8tqvjJvKT5ke7pD2A0trjPsp8tsaAAcYaIZJWscF3fI
+ a1NeqYwS0v6+f0DEUOCKPnqZq3NIlRSQs8vdYYhJD1PEv6NClmxFq8Jq82kn6U6InQRt
+ JrXzASma9YbBF3griZ94uj+Pnh91m7liRbGJm6oNgWFBs8VTDFtm97KSwd31P/p+f4hH
+ xyfBK7A4ztTlAFbxBmllMczF0ITmP8ay4ElD2lOFx77DLvffib6+dD8MDZtjbdR2x4U4
+ 6unXjnIlPakNGs9EWKHSStGC4Th4+4iC3pOtF4dS23wX2ofFCEq+SiNhQT4HLPjlJAsu
+ uirA==
+X-Gm-Message-State: AOAM531VExmYkADLPPn9xplAGGp09o3/uoiltlSUwBWsN47wSIuwIQez
+ tSKlpXiojQ6sV0xAT5wvmg402a5cUbbs+pdjhHu6PQ==
+X-Google-Smtp-Source: ABdhPJyVasB7vnS5oomfZBIDxakgYFf6vf6IbI/3OgIQwWM8b/4BVU4p6FTFIja4W5oPmwJ2iOgszfcF385NslzeVpg=
+X-Received: by 2002:a65:6858:: with SMTP id q24mr837940pgt.10.1601922977033;
+ Mon, 05 Oct 2020 11:36:17 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <160187115555.1589942.2124270585910076829.stgit@jupiter>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-05_06:2020-10-02,
- 2020-10-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- lowpriorityscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
- bulkscore=0 mlxlogscore=999 suspectscore=3 adultscore=0 clxscore=1011
- phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2010050075
-X-Mailman-Approved-At: Mon, 05 Oct 2020 23:06:02 +1100
+References: <20200929192549.501516-1-ndesaulniers@google.com>
+ <CA+icZUVgfnVQ1=zjUGhGKnJAs9g3Q06sWN3ffNdrfZMZLCEkbA@mail.gmail.com>
+ <133589afbe999347454dfcc46ae782897bf9e3a2.camel@perches.com>
+ <46f69161e60b802488ba8c8f3f8bbf922aa3b49b.camel@perches.com>
+ <CAKwvOdkhyvTpY6pHT+CLSsBFuKRWsXucjbwN_tyJAsryZXvG1A@mail.gmail.com>
+ <417ffa3fd3fba5d4a481db6a0b0c9b48cbbb17c4.camel@perches.com>
+ <CAKwvOd=P+j0RaQfHsXPfB0EL3oRgAu8Q0+spUOn_v-p2+3=3pw@mail.gmail.com>
+ <aefe941251d5d58062d06099afb58dea1d1d4e17.camel@perches.com>
+ <46040e2776a4848add06126ce1cb8f846709294f.camel@perches.com>
+ <CANiq72mSjs4myQQtUoegjRggjTx9UF70nAcWoXRoTeLMOuf0xQ@mail.gmail.com>
+ <20201001193937.GM28786@gate.crashing.org>
+ <61445711991c2d6eb7c8fb05bed2814458e2593b.camel@perches.com>
+In-Reply-To: <61445711991c2d6eb7c8fb05bed2814458e2593b.camel@perches.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Mon, 5 Oct 2020 11:36:06 -0700
+Message-ID: <CAKwvOdmW4ZSo0yz9ZUjFhjzzDkNAghKYk_hxn9tvrKLBgCXx-A@mail.gmail.com>
+Subject: Re: [RFC PATCH next-20200930] treewide: Convert macro and uses of
+ __section(foo) to __section("foo")
+To: Joe Perches <joe@perches.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,33 +84,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ananth@linux.ibm.com
+Cc: Kees Cook <keescook@chromium.org>, "Paul E . McKenney" <paulmck@kernel.org>,
+ Clang-Built-Linux ML <clang-built-linux@googlegroups.com>,
+ LKML <linux-kernel@vger.kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+ Josh Triplett <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>,
+ rcu@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Sedat Dilek <sedat.dilek@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/5/20 9:42 AM, Mahesh Salgaonkar wrote:
-> Every error log reported by OPAL is exported to userspace through a sysfs
-> interface and notified using kobject_uevent(). The userspace daemon
-> (opal_errd) then reads the error log and acknowledges it error log is saved
-> safely to disk. Once acknowledged the kernel removes the respective sysfs
-> file entry causing respective resources getting released including kobject.
-> 
-> However there are chances where user daemon may already be scanning elog
-> entries while new sysfs elog entry is being created by kernel. User daemon
-> may read this new entry and ack it even before kernel can notify userspace
-> about it through kobject_uevent() call. If that happens then we have a
-> potential race between elog_ack_store->kobject_put() and kobject_uevent
-> which can lead to use-after-free issue of a kernfs object resulting into a
-> kernel crash. This patch fixes this race by protecting a sysfs file
-> creation/notification by holding an additional reference count on kobject
-> until we safely send kobject_uevent().
-> 
-> Reported-by: Oliver O'Halloran <oohall@gmail.com>
-> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+On Thu, Oct 1, 2020 at 1:19 PM Joe Perches <joe@perches.com> wrote:
+>
+> On Thu, 2020-10-01 at 14:39 -0500, Segher Boessenkool wrch/ote:
+> > Hi!
+> >
+> > On Thu, Oct 01, 2020 at 12:15:39PM +0200, Miguel Ojeda wrote:
+> > > > So it looks like the best option is to exclude these
+> > > > 2 files from conversion.
+> > >
+> > > Agreed. Nevertheless, is there any reason arch/powerpc/* should not be
+> > > compiling cleanly with compiler.h? (CC'ing the rest of the PowerPC
+> > > reviewers and ML).
+> >
+> > You need to #include compiler_types.h to get this #define?
+>
+> Actually no, you need to add
+>
+> #include <linux/compiler_attributes.h>
+>
+> to both files and then it builds properly.
+>
+> Ideally though nothing should include this file directly.
 
-cc stable?
+That's because Kbuild injects it via command line flag `-include`.
+(Well, it injects compiler_types.h which includes this).  If part of
+the tree reset KBUILD_CFLAGS, that `-include` gets dropped.  I don't
+think there's anything wrong with manually including it and adding `-I
+<path>` (capital i) if needed.
+
+>
+> > (The twice-defined thing is a warning, not an error.  It should be fixed
+> > of course, but it is less important; although it may be pointing to a
+> > deeper problem.)
+> >
+> >
+> > Segher
+>
+
 
 -- 
-Ananth
+Thanks,
+~Nick Desaulniers
