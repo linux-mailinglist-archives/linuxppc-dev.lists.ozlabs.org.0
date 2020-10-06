@@ -1,55 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C222848F7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Oct 2020 11:07:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3B9284B93
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Oct 2020 14:25:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C5BRw0gtmzDqCY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Oct 2020 20:07:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C5GrF5BlzzDqBN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Oct 2020 23:25:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C5BQG13s7zDqDh
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Oct 2020 20:05:41 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4C5BQ92skmz9tyfQ;
- Tue,  6 Oct 2020 11:05:37 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id I0kuODAj476l; Tue,  6 Oct 2020 11:05:37 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4C5BQ90w0dz9tyf5;
- Tue,  6 Oct 2020 11:05:37 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1596E8B7C3;
- Tue,  6 Oct 2020 11:05:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 4ioz5Kq1wCci; Tue,  6 Oct 2020 11:05:38 +0200 (CEST)
-Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CD6578B7C5;
- Tue,  6 Oct 2020 11:05:37 +0200 (CEST)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id A80FD65DE8; Tue,  6 Oct 2020 09:05:37 +0000 (UTC)
-Message-Id: <1b68632425d8866d147aea9005004e4594672211.1601975100.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <319d379f696412681c66a987cc75e6abf8f958d2.1601975100.git.christophe.leroy@csgroup.eu>
-References: <319d379f696412681c66a987cc75e6abf8f958d2.1601975100.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 2/2] powerpc/32s: Remove #ifdef CONFIG_PPC_BOOK3S_32 in
- head_book3s_32.S
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue,  6 Oct 2020 09:05:37 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C5Glb3kB4zDqK3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Oct 2020 23:20:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=go3kc30A; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4C5GlX73bMz9sTf; Tue,  6 Oct 2020 23:20:56 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4C5GlX4BTvz9sTm; Tue,  6 Oct 2020 23:20:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1601986856;
+ bh=6nmyE1bNPBbC5a4bo7vQRjQ4M0Cs5B11lgHwVLwzBhY=;
+ h=From:To:Cc:Subject:Date:From;
+ b=go3kc30AcuKE6oAPSVpEH3ZvoUo6WtALhtilH84QKMmtL6PakfCozczqgqxTxRHFE
+ Y/7Yyhp7H25xRXvnNQKC4Gy9WR08IUElFnnDYsYLLCE5r0xKCVe53WYBC/D7eB+uAb
+ LU6/iCgIp+P5EjU7+uR2hWCpomUmW4Lr1VwzZwQ+jP/ya/hnSpBH8cFmMrORln3qWa
+ jnwL/a0eCEn9iVbpAC8coNedU42D9P0k3Ors7amPdk1srlzFPgv9HaRG/K9RsZOY4N
+ zdQCgf9ECVOy9qUOulGlwRqjLRV0EtJWQopO9gSH89r6QVvtSnh2MuH1eZL8R3182W
+ sOvAtc8Y4TGqg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v5] powerpc/powernv/elog: Fix race while processing OPAL error
+ log event.
+Date: Tue,  6 Oct 2020 23:20:51 +1100
+Message-Id: <20201006122051.190176-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,64 +56,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: aneesh.kumar@linux.ibm.com, oohall@gmail.com, hegdevasant@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-head_book3s_32.S is only built when CONFIG_PPC_BOOK3S_32 is selected.
+From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 
-Remove all conditions based on CONFIG_PPC_BOOK3S_32 in the file.
+Every error log reported by OPAL is exported to userspace through a
+sysfs interface and notified using kobject_uevent(). The userspace
+daemon (opal_errd) then reads the error log and acknowledges the error
+log is saved safely to disk. Once acknowledged the kernel removes the
+respective sysfs file entry causing respective resources to be
+released including kobject.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+However it's possible the userspace daemon may already be scanning
+elog entries when a new sysfs elog entry is created by the kernel.
+User daemon may read this new entry and ack it even before kernel can
+notify userspace about it through kobject_uevent() call. If that
+happens then we have a potential race between
+elog_ack_store->kobject_put() and kobject_uevent which can lead to
+use-after-free of a kernfs object resulting in a kernel crash. eg:
+
+  BUG: Unable to handle kernel data access on read at 0x6b6b6b6b6b6b6bfb
+  Faulting instruction address: 0xc0000000008ff2a0
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA PowerNV
+  CPU: 27 PID: 805 Comm: irq/29-opal-elo Not tainted 5.9.0-rc2-gcc-8.2.0-00214-g6f56a67bcbb5-dirty #363
+  ...
+  NIP kobject_uevent_env+0xa0/0x910
+  LR  elog_event+0x1f4/0x2d0
+  Call Trace:
+    0x5deadbeef0000122 (unreliable)
+    elog_event+0x1f4/0x2d0
+    irq_thread_fn+0x4c/0xc0
+    irq_thread+0x1c0/0x2b0
+    kthread+0x1c4/0x1d0
+    ret_from_kernel_thread+0x5c/0x6c
+
+This patch fixes this race by protecting the sysfs file
+creation/notification by holding a reference count on kobject until we
+safely send kobject_uevent().
+
+The function create_elog_obj() returns the elog object which if used
+by caller function will end up in use-after-free problem again.
+However, the return value of create_elog_obj() function isn't being
+used today and there is no need as well. Hence change it to return
+void to make this fix complete.
+
+Fixes: 774fea1a38c6 ("powerpc/powernv: Read OPAL error log and export it through sysfs")
+Cc: stable@vger.kernel.org # v3.15+
+Reported-by: Oliver O'Halloran <oohall@gmail.com>
+Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
+Reviewed-by: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+[mpe: Rework the logic to use a single return, reword comments, add oops]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/kernel/head_book3s_32.S | 15 ---------------
- 1 file changed, 15 deletions(-)
+ arch/powerpc/platforms/powernv/opal-elog.c | 33 +++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index e07a2c07ffe4..f659378adaf3 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -183,10 +183,8 @@ __after_mmu_off:
- 	bl	reloc_offset
- 	li	r24,0			/* cpu# */
- 	bl	call_setup_cpu		/* Call setup_cpu for this CPU */
--#ifdef CONFIG_PPC_BOOK3S_32
- 	bl	reloc_offset
- 	bl	init_idle_6xx
--#endif /* CONFIG_PPC_BOOK3S_32 */
+v5: mpe: Rework the logic to use a single return, ie. move the kobject_uevent()
+         into the success case of the if.
+	 Reword comments.
+	 Add example oops to change log.
+
+Change in v4:
+  - Re-worded comments. No code change.
+Change in v3:
+  - Change create_elog_obj function signature to return void.
+Change in v2:
+  - Instead of mutex and use extra reference count on kobject to avoid the race.
+
+diff --git a/arch/powerpc/platforms/powernv/opal-elog.c b/arch/powerpc/platforms/powernv/opal-elog.c
+index 62ef7ad995da..5e33b1fc67c2 100644
+--- a/arch/powerpc/platforms/powernv/opal-elog.c
++++ b/arch/powerpc/platforms/powernv/opal-elog.c
+@@ -179,14 +179,14 @@ static ssize_t raw_attr_read(struct file *filep, struct kobject *kobj,
+ 	return count;
+ }
  
+-static struct elog_obj *create_elog_obj(uint64_t id, size_t size, uint64_t type)
++static void create_elog_obj(uint64_t id, size_t size, uint64_t type)
+ {
+ 	struct elog_obj *elog;
+ 	int rc;
  
- /*
-@@ -892,10 +890,8 @@ __secondary_start:
- 	lis	r3,-KERNELBASE@h
- 	mr	r4,r24
- 	bl	call_setup_cpu		/* Call setup_cpu for this CPU */
--#ifdef CONFIG_PPC_BOOK3S_32
- 	lis	r3,-KERNELBASE@h
- 	bl	init_idle_6xx
--#endif /* CONFIG_PPC_BOOK3S_32 */
+ 	elog = kzalloc(sizeof(*elog), GFP_KERNEL);
+ 	if (!elog)
+-		return NULL;
++		return;
  
- 	/* get current's stack and current */
- 	lis	r2,secondary_current@ha
-@@ -936,17 +932,6 @@ __secondary_start:
- #include "../kvm/book3s_rmhandlers.S"
- #endif
+ 	elog->kobj.kset = elog_kset;
  
--/*
-- * Those generic dummy functions are kept for CPUs not
-- * included in CONFIG_PPC_BOOK3S_32
-- */
--#if !defined(CONFIG_PPC_BOOK3S_32)
--_ENTRY(__save_cpu_setup)
--	blr
--_ENTRY(__restore_cpu_setup)
--	blr
--#endif /* !defined(CONFIG_PPC_BOOK3S_32) */
--
- /*
-  * Load stuff into the MMU.  Intended to be called with
-  * IR=0 and DR=0.
+@@ -219,18 +219,37 @@ static struct elog_obj *create_elog_obj(uint64_t id, size_t size, uint64_t type)
+ 	rc = kobject_add(&elog->kobj, NULL, "0x%llx", id);
+ 	if (rc) {
+ 		kobject_put(&elog->kobj);
+-		return NULL;
++		return;
+ 	}
+ 
++	/*
++	 * As soon as the sysfs file for this elog is created/activated there is
++	 * a chance the opal_errd daemon (or any userspace) might read and
++	 * acknowledge the elog before kobject_uevent() is called. If that
++	 * happens then there is a potential race between
++	 * elog_ack_store->kobject_put() and kobject_uevent() which leads to a
++	 * use-after-free of a kernfs object resulting in a kernel crash.
++	 *
++	 * To avoid that, we need to take a reference on behalf of the bin file,
++	 * so that our reference remains valid while we call kobject_uevent().
++	 * We then drop our reference before exiting the function, leaving the
++	 * bin file to drop the last reference (if it hasn't already).
++	 */
++
++	/* Take a reference for the bin file */
++	kobject_get(&elog->kobj);
+ 	rc = sysfs_create_bin_file(&elog->kobj, &elog->raw_attr);
+-	if (rc) {
++	if (rc == 0) {
++		kobject_uevent(&elog->kobj, KOBJ_ADD);
++	} else {
++		/* Drop the reference taken for the bin file */
+ 		kobject_put(&elog->kobj);
+-		return NULL;
+ 	}
+ 
+-	kobject_uevent(&elog->kobj, KOBJ_ADD);
++	/* Drop our reference */
++	kobject_put(&elog->kobj);
+ 
+-	return elog;
++	return;
+ }
+ 
+ static irqreturn_t elog_event(int irq, void *data)
 -- 
-2.25.0
+2.25.1
 
