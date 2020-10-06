@@ -1,50 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3B9284B93
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Oct 2020 14:25:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E39284C45
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Oct 2020 15:09:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C5GrF5BlzzDqBN
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Oct 2020 23:25:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C5HqV5nLnzDqDJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 00:09:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C5Glb3kB4zDqK3
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Oct 2020 23:20:59 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C5HlK0y1rzDqCt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Oct 2020 00:05:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+ header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=go3kc30A; 
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=Z3LhaWQ6; 
  dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4C5GlX73bMz9sTf; Tue,  6 Oct 2020 23:20:56 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4C5GlX4BTvz9sTm; Tue,  6 Oct 2020 23:20:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1601986856;
- bh=6nmyE1bNPBbC5a4bo7vQRjQ4M0Cs5B11lgHwVLwzBhY=;
- h=From:To:Cc:Subject:Date:From;
- b=go3kc30AcuKE6oAPSVpEH3ZvoUo6WtALhtilH84QKMmtL6PakfCozczqgqxTxRHFE
- Y/7Yyhp7H25xRXvnNQKC4Gy9WR08IUElFnnDYsYLLCE5r0xKCVe53WYBC/D7eB+uAb
- LU6/iCgIp+P5EjU7+uR2hWCpomUmW4Lr1VwzZwQ+jP/ya/hnSpBH8cFmMrORln3qWa
- jnwL/a0eCEn9iVbpAC8coNedU42D9P0k3Ors7amPdk1srlzFPgv9HaRG/K9RsZOY4N
- zdQCgf9ECVOy9qUOulGlwRqjLRV0EtJWQopO9gSH89r6QVvtSnh2MuH1eZL8R3182W
- sOvAtc8Y4TGqg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v5] powerpc/powernv/elog: Fix race while processing OPAL error
- log event.
-Date: Tue,  6 Oct 2020 23:20:51 +1100
-Message-Id: <20201006122051.190176-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4C5HlG0kH8z9sTK;
+ Wed,  7 Oct 2020 00:05:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1601989546;
+ bh=q9mpa/0KffrcwWOYPGlh8L15Eanc/pISr+9iZYcDjTA=;
+ h=Date:From:To:Cc:Subject:From;
+ b=Z3LhaWQ63AkrZnv4Ays2nvFojIu78WkcEqwEcpcfR2TpahT2qxQhpUeye3fY6EV/W
+ osa/GG+0YVOV7nTv71lQZslfZSiQj6Ptm5zkmYzVXW0G8D0fU32eGtOhJXQCJ8x4cC
+ iW6wsPBN1sQPBlCtshTpUXjOs3jl0FAMqObGTLztYreYUUDHt0ApWTOKAxDcUeFgai
+ b/piRFkgtm508Jj4P+V+R6DUoyMr9hLRvMdJyO354YFVzzULJlmvGf37Vn68q5Vt1y
+ HvlVXnrPEHLjJ61+L03NVCKirVfH77NscHYP02QJK4C7C2iOIXsoef37YGJregrNXD
+ rfWJPGT2vmbmA==
+Date: Wed, 7 Oct 2020 00:05:44 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: Fixes tag needs some work in the powerpc tree
+Message-ID: <20201007000544.48aabc91@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/F60SFxaoty6HOU9ZG//eX4x";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,143 +57,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, oohall@gmail.com, hegdevasant@linux.ibm.com
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+--Sig_/F60SFxaoty6HOU9ZG//eX4x
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Every error log reported by OPAL is exported to userspace through a
-sysfs interface and notified using kobject_uevent(). The userspace
-daemon (opal_errd) then reads the error log and acknowledges the error
-log is saved safely to disk. Once acknowledged the kernel removes the
-respective sysfs file entry causing respective resources to be
-released including kobject.
+Hi all,
 
-However it's possible the userspace daemon may already be scanning
-elog entries when a new sysfs elog entry is created by the kernel.
-User daemon may read this new entry and ack it even before kernel can
-notify userspace about it through kobject_uevent() call. If that
-happens then we have a potential race between
-elog_ack_store->kobject_put() and kobject_uevent which can lead to
-use-after-free of a kernfs object resulting in a kernel crash. eg:
+In commit
 
-  BUG: Unable to handle kernel data access on read at 0x6b6b6b6b6b6b6bfb
-  Faulting instruction address: 0xc0000000008ff2a0
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA PowerNV
-  CPU: 27 PID: 805 Comm: irq/29-opal-elo Not tainted 5.9.0-rc2-gcc-8.2.0-00214-g6f56a67bcbb5-dirty #363
-  ...
-  NIP kobject_uevent_env+0xa0/0x910
-  LR  elog_event+0x1f4/0x2d0
-  Call Trace:
-    0x5deadbeef0000122 (unreliable)
-    elog_event+0x1f4/0x2d0
-    irq_thread_fn+0x4c/0xc0
-    irq_thread+0x1c0/0x2b0
-    kthread+0x1c4/0x1d0
-    ret_from_kernel_thread+0x5c/0x6c
+  3b6c3adbb2fa ("powerpc/perf: Exclude pmc5/6 from the irrelevant PMU group=
+ constraints")
 
-This patch fixes this race by protecting the sysfs file
-creation/notification by holding a reference count on kobject until we
-safely send kobject_uevent().
+Fixes tag
 
-The function create_elog_obj() returns the elog object which if used
-by caller function will end up in use-after-free problem again.
-However, the return value of create_elog_obj() function isn't being
-used today and there is no need as well. Hence change it to return
-void to make this fix complete.
+  Fixes: 7ffd948 ("powerpc/perf: factor out power8 pmu functions")
 
-Fixes: 774fea1a38c6 ("powerpc/powernv: Read OPAL error log and export it through sysfs")
-Cc: stable@vger.kernel.org # v3.15+
-Reported-by: Oliver O'Halloran <oohall@gmail.com>
-Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
-Reviewed-by: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
-[mpe: Rework the logic to use a single return, reword comments, add oops]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/platforms/powernv/opal-elog.c | 33 +++++++++++++++++-----
- 1 file changed, 26 insertions(+), 7 deletions(-)
+has these problem(s):
 
-v5: mpe: Rework the logic to use a single return, ie. move the kobject_uevent()
-         into the success case of the if.
-	 Reword comments.
-	 Add example oops to change log.
+  - SHA1 should be at least 12 digits long
+    Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11
+    or later) just making sure it is not set (or set to "auto").
 
-Change in v4:
-  - Re-worded comments. No code change.
-Change in v3:
-  - Change create_elog_obj function signature to return void.
-Change in v2:
-  - Instead of mutex and use extra reference count on kobject to avoid the race.
+Since Michael doesn't generally rebase his tree, this is more to be
+remebered for next time.
 
-diff --git a/arch/powerpc/platforms/powernv/opal-elog.c b/arch/powerpc/platforms/powernv/opal-elog.c
-index 62ef7ad995da..5e33b1fc67c2 100644
---- a/arch/powerpc/platforms/powernv/opal-elog.c
-+++ b/arch/powerpc/platforms/powernv/opal-elog.c
-@@ -179,14 +179,14 @@ static ssize_t raw_attr_read(struct file *filep, struct kobject *kobj,
- 	return count;
- }
- 
--static struct elog_obj *create_elog_obj(uint64_t id, size_t size, uint64_t type)
-+static void create_elog_obj(uint64_t id, size_t size, uint64_t type)
- {
- 	struct elog_obj *elog;
- 	int rc;
- 
- 	elog = kzalloc(sizeof(*elog), GFP_KERNEL);
- 	if (!elog)
--		return NULL;
-+		return;
- 
- 	elog->kobj.kset = elog_kset;
- 
-@@ -219,18 +219,37 @@ static struct elog_obj *create_elog_obj(uint64_t id, size_t size, uint64_t type)
- 	rc = kobject_add(&elog->kobj, NULL, "0x%llx", id);
- 	if (rc) {
- 		kobject_put(&elog->kobj);
--		return NULL;
-+		return;
- 	}
- 
-+	/*
-+	 * As soon as the sysfs file for this elog is created/activated there is
-+	 * a chance the opal_errd daemon (or any userspace) might read and
-+	 * acknowledge the elog before kobject_uevent() is called. If that
-+	 * happens then there is a potential race between
-+	 * elog_ack_store->kobject_put() and kobject_uevent() which leads to a
-+	 * use-after-free of a kernfs object resulting in a kernel crash.
-+	 *
-+	 * To avoid that, we need to take a reference on behalf of the bin file,
-+	 * so that our reference remains valid while we call kobject_uevent().
-+	 * We then drop our reference before exiting the function, leaving the
-+	 * bin file to drop the last reference (if it hasn't already).
-+	 */
-+
-+	/* Take a reference for the bin file */
-+	kobject_get(&elog->kobj);
- 	rc = sysfs_create_bin_file(&elog->kobj, &elog->raw_attr);
--	if (rc) {
-+	if (rc == 0) {
-+		kobject_uevent(&elog->kobj, KOBJ_ADD);
-+	} else {
-+		/* Drop the reference taken for the bin file */
- 		kobject_put(&elog->kobj);
--		return NULL;
- 	}
- 
--	kobject_uevent(&elog->kobj, KOBJ_ADD);
-+	/* Drop our reference */
-+	kobject_put(&elog->kobj);
- 
--	return elog;
-+	return;
- }
- 
- static irqreturn_t elog_event(int irq, void *data)
--- 
-2.25.1
+--=20
+Cheers,
+Stephen Rothwell
 
+--Sig_/F60SFxaoty6HOU9ZG//eX4x
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl98a6gACgkQAVBC80lX
+0GyhGgf/dKuWO59GS1sTLc4QQFWvP5GchwtYC0M3p6TOGGoofD6TtCvxmxR4DPG8
+DcOvgvWF5hMq4LOE0Ts2fUpGpps4HdYewvgi4SiCBr7VWYZHWNEVhSO/VQZ66gn5
+vEMVEozGw2JOwtSHvk/oNmT6sLeqpbYLzsQtdG32I5Oe+gh/odT6Eaz23T4NGW7J
+r/TINbteFZezngchveOIGyN0lb4cOuHMbu3LClivARydqzHFhftgEnh5JHhOWSAY
+ORrEHC5XkGPSv+OOTtfsWHYI6y4bjt1KkQ7vJ4IVbjxuYmQJcE7sNYy9Ku5/9kA3
+/aNNq1R8B5To65aFGwfPHxroB/uYoA==
+=oBxs
+-----END PGP SIGNATURE-----
+
+--Sig_/F60SFxaoty6HOU9ZG//eX4x--
