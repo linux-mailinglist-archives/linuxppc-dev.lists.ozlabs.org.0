@@ -1,32 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFBDF28571D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 05:36:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A96285726
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 05:38:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C5g3R6gMWzDqLJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 14:36:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C5g5m6m2TzDqQD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 14:38:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C5fkR4GDnzDqFC
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Oct 2020 14:21:19 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C5fkS35NtzDqFH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Oct 2020 14:21:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4C5fkR1Svxz9sV0; Wed,  7 Oct 2020 14:21:18 +1100 (AEDT)
+ id 4C5fkR6NJRz9sTm; Wed,  7 Oct 2020 14:21:19 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20200825075612.224656-1-npiggin@gmail.com>
-References: <20200825075612.224656-1-npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/pseries: add new branch prediction security bits
- for link stack
-Message-Id: <160204082882.257875.3484166683472347134.b4-ty@ellerman.id.au>
-Date: Wed,  7 Oct 2020 14:21:18 +1100 (AEDT)
+In-Reply-To: <20200916030234.4110379-1-npiggin@gmail.com>
+References: <20200916030234.4110379-1-npiggin@gmail.com>
+Subject: Re: [PATCH v2 1/2] powerpc: untangle cputable mce include
+Message-Id: <160204082841.257875.1230697242563109012.b4-ty@ellerman.id.au>
+Date: Wed,  7 Oct 2020 14:21:19 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,13 +41,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 25 Aug 2020 17:56:12 +1000, Nicholas Piggin wrote:
-> The hypervisor interface has defined branch prediction security bits for
-> handling the link stack. Wire them up.
+On Wed, 16 Sep 2020 13:02:33 +1000, Nicholas Piggin wrote:
+> Having cputable.h include mce.h means it pulls in a bunch of low level
+> headers (e.g., synch.h) which then can't use CPU_FTR_ definitions.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/pseries: add new branch prediction security bits for link stack
-      https://git.kernel.org/powerpc/c/cdb1ea0276bd6a225aa1203b4829b8c3c0d4d069
+[1/2] powerpc: untangle cputable mce include
+      https://git.kernel.org/powerpc/c/9983efa83b0a98da33807ccf5c047e204fdcac4c
+[2/2] powerpc/64s: Add cp_abort after tlbiel to invalidate copy-buffer address
+      https://git.kernel.org/powerpc/c/05504b42562066ae27ce3e7dcec37f81dea476cb
 
 cheers
