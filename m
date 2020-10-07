@@ -2,53 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CABA028584B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 07:58:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34ED4285873
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 08:05:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C5kCK0NXkzDqNX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 16:58:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C5kNL34y0zDqNj
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 17:05:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C5k9g6rTFzDqB7
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Oct 2020 16:56:39 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=RMxxfWIg; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4C5k9g2W4hz9sSG;
- Wed,  7 Oct 2020 16:56:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1602050199;
- bh=4fuWDigsRGvfFAX9Wylr16jfrxZcWj+lq7FzJQnfwg4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=RMxxfWIg+VF+ujDcY7ZZ4nlauNl2+IAv96MVMG0hiS/Xic9usad1fW8leS6aFJKyH
- O+cE/zOhlHD/m3M3hhZflxDJl+gUeSHuDVYvJdYG/vltCIKM7EvmvfywWHJgPFx4Oq
- atGXEQr9bNouNruMirp1GpRARtJmAqzH5R8dLqNX9oeFQohnVGdY4SCTYt3Lp8BYkI
- tLBEZ2N92wqIqoqpvaMCUzvPQrkYk1CqP2ry7gxcJAoUfdGM4H9dLGogRi4aX4kYS6
- GqL9rFuLm8Yumw8YWRpI+uOWSw4qel1254/6zdbb7AsDxO1YB+S8kD4yCo9XcV5Knb
- ZPZHejNtEhfGA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nathan Lynch <nathanl@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v2 3/4] powerpc/memhotplug: Make lmb size 64bit
-In-Reply-To: <87pn7lxe5k.fsf@linux.ibm.com>
-References: <20200806162329.276534-1-aneesh.kumar@linux.ibm.com>
- <20200806162329.276534-3-aneesh.kumar@linux.ibm.com>
- <87pn7lxe5k.fsf@linux.ibm.com>
-Date: Wed, 07 Oct 2020 16:56:36 +1100
-Message-ID: <878sci37fv.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C5kLY5tpTzDqMK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Oct 2020 17:04:14 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4C5kLJ6hhDz9v0Mg;
+ Wed,  7 Oct 2020 08:04:08 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id C3Q4p0VCWNtv; Wed,  7 Oct 2020 08:04:08 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4C5kLJ5Xg3z9v0Mf;
+ Wed,  7 Oct 2020 08:04:08 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B489A8B801;
+ Wed,  7 Oct 2020 08:04:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id MTwXJtHzQ69o; Wed,  7 Oct 2020 08:04:09 +0200 (CEST)
+Received: from [172.25.230.104] (po15451.idsi0.si.c-s.fr [172.25.230.104])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A6AC8B75E;
+ Wed,  7 Oct 2020 08:04:09 +0200 (CEST)
+Subject: Re: [powerpc:next-test 76/183]
+ arch/powerpc/kernel/vdso32/gettimeofday.S:40: Error: syntax error; found `@',
+ expected `,'
+To: kernel test robot <lkp@intel.com>, Michael Ellerman <mpe@ellerman.id.au>
+References: <202010070441.K8Bb46Rt-lkp@intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <9d8b2abf-000f-bad8-ae76-719a592584ff@csgroup.eu>
+Date: Wed, 7 Oct 2020 08:03:51 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <202010070441.K8Bb46Rt-lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,34 +65,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
+Cc: clang-built-linux@googlegroups.com, kbuild-all@lists.01.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Lynch <nathanl@linux.ibm.com> writes:
-> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->> @@ -322,12 +322,16 @@ static int pseries_remove_mem_node(struct device_node *np)
->>  	/*
->>  	 * Find the base address and size of the memblock
->>  	 */
->> -	regs = of_get_property(np, "reg", NULL);
->> -	if (!regs)
->> +	prop = of_get_property(np, "reg", NULL);
->> +	if (!prop)
->>  		return ret;
->>  
->> -	base = be64_to_cpu(*(unsigned long *)regs);
->> -	lmb_size = be32_to_cpu(regs[3]);
->> +	/*
->> +	 * "reg" property represents (addr,size) tuple.
->> +	 */
->> +	base = of_read_number(prop, mem_addr_cells);
->> +	prop += mem_addr_cells;
->> +	lmb_size = of_read_number(prop, mem_size_cells);
->
-> Would of_n_size_cells() and of_n_addr_cells() work here?
 
-Yes that should work and be cleaner.
 
-cheers
+Le 06/10/2020 à 22:41, kernel test robot a écrit :
+> Hi Michael,
+> 
+> First bad commit (maybe != root cause):
+> 
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+> head:   72cdd117c449896c707fc6cfe5b90978160697d0
+> commit: 231b232df8f67e7d37af01259c21f2a131c3911e [76/183] powerpc/64: Make VDSO32 track COMPAT on 64-bit
+> config: powerpc-randconfig-r033-20201005 (attached as .config)
+> compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project 1127662c6dc2a276839c75a42238b11a3ad00f32)
+
+There has been already a discussion on this, see 
+https://groups.google.com/g/clang-built-linux/c/ayNmi3HoNdY/m/ROdg7avVBwAJ
+
+This apparently is a clang issue. The commit mentionned here is only exposing the issue, but the 
+issue is not in the commit itself.
+
+Regardless, this error should go away when we switch to the generic C VDSO.
+
+Christophe
