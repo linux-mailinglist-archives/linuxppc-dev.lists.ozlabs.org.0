@@ -1,82 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4332867E5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 20:58:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1252867D2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 20:56:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C63Wn3t48zDqSn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 05:58:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C63Tf6XLgzDqD9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 05:56:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
  header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=M7CP0ZMw; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=bruOniTt; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C635N5R8fzDqDl
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 05:39:04 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 097IZgTZ055731; Wed, 7 Oct 2020 14:38:50 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C635M2xMKzDqFs
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 05:39:03 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 097IaMNN127765; Wed, 7 Oct 2020 14:38:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=pfWPAGyke+qFeG9FqTdwNmA9D5u7aKnmbAFSyM26SU4=;
- b=M7CP0ZMw3NHbYTMb09tufqMKZy3mNgX/uCrIhStP4S2sv1NcFVSvWqy1vh+vwImQkohG
- khuEWVWOb5MExz2cF9HM795dmyfnR7yyRqQS724HxmG51eqce6jDGBcRfEgE4vsJduX+
- YmqPEAftusCNje2Tdr8KySYTMgiiHzlQWawoA2OJbNVWhgIdq3HSx9EqQBd1a7irZ6J0
- xuz1wlTYf39AR0HLFC3ziIBC/IkBhw4y7Ed8rGCHqzDQ5Fn9XScJa3lkEzAilup1IUPn
- 1YH/RiEtDZo1gCNb9ZcjUPnFOPdoqCvTKpHdUjjOspR6pse685Sytyk6YXgI8GIpZfu9 jg== 
+ bh=YhTr57ybxkDYrEZhQrF86XWHP9TAEuy26lA34g/lbtY=;
+ b=bruOniTtYlohBhFWelPacxV2VvZCCoK8m2nlNw58u3ieNNhnKQspTASLuPmmnQycSBFL
+ TGUC8mCEHMb4T/Dt+uZipuTW44ENyvzQp/fshE3act6h73nplT9GPbqakBO7KJYW+V3s
+ Hgx5DbX/rNeAmhfU0b9LKd7IeWg6MCUhnRw9ZfBbOdV6Ym3DTtB0FbWhRvpz9Dok8E2g
+ p8y06iW4sR1faWyeWoBtkRYgXE+lm8+lMpMWhBqa3tAZe1Sj8K4nmWL0RUQfsb0IudgA
+ S2JFAdk8O93cRX22qwosaymrfj+b22A9+2WgTjlkNruOaKXtz1CCp3lL82NIiw5HmxVj 9g== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 341jun0cn1-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 341jak1exh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Oct 2020 14:38:50 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 097IZmFA056017;
- Wed, 7 Oct 2020 14:38:49 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 341jun0ck8-1
+ Wed, 07 Oct 2020 14:38:52 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 097IcpeA141119;
+ Wed, 7 Oct 2020 14:38:51 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 341jak1ewn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Oct 2020 14:38:49 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 097IQulo011843;
- Wed, 7 Oct 2020 18:38:45 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma06ams.nl.ibm.com with ESMTP id 33xgjh4js7-1
+ Wed, 07 Oct 2020 14:38:51 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 097IROEP021725;
+ Wed, 7 Oct 2020 18:38:49 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 33xgx84jfx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Oct 2020 18:38:45 +0000
+ Wed, 07 Oct 2020 18:38:49 +0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 097Ichnl33554932
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 097IclgD28115216
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 7 Oct 2020 18:38:43 GMT
+ Wed, 7 Oct 2020 18:38:47 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 99D98A405C;
+ by IMSVA (Postfix) with ESMTP id 5C155A4060;
+ Wed,  7 Oct 2020 18:38:47 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E3C83A4054;
  Wed,  7 Oct 2020 18:38:43 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 37C66A4054;
- Wed,  7 Oct 2020 18:38:40 +0000 (GMT)
 Received: from srikart450.in.ibm.com (unknown [9.85.90.101])
  by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  7 Oct 2020 18:38:39 +0000 (GMT)
+ Wed,  7 Oct 2020 18:38:43 +0000 (GMT)
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3 09/11] powerpc/smp: Optimize update_mask_by_l2
-Date: Thu,  8 Oct 2020 00:07:58 +0530
-Message-Id: <20201007183800.27415-10-srikar@linux.vnet.ibm.com>
+Subject: [PATCH v3 10/11] powerpc/smp: Move coregroup mask updation to a new
+ function
+Date: Thu,  8 Oct 2020 00:07:59 +0530
+Message-Id: <20201007183800.27415-11-srikar@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20201007183800.27415-1-srikar@linux.vnet.ibm.com>
 References: <20201007183800.27415-1-srikar@linux.vnet.ibm.com>
@@ -87,11 +88,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-10-07_10:2020-10-07,
  2020-10-07 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 bulkscore=0
- mlxscore=0 spamscore=0 clxscore=1015 malwarescore=0 priorityscore=1501
- suspectscore=2 impostorscore=0 phishscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2010070118
+ adultscore=0 impostorscore=0
+ mlxlogscore=999 malwarescore=0 suspectscore=0 clxscore=1015 phishscore=0
+ mlxscore=0 priorityscore=1501 bulkscore=0 spamscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2010070116
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,14 +117,9 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All threads of a SMT4 core can either be part of this CPU's l2-cache
-mask or not related to this CPU l2-cache mask. Use this relation to
-reduce the number of iterations needed to find all the CPUs that share
-the same l2-cache.
-
-Use a temporary mask to iterate through the CPUs that may share l2_cache
-mask. Also instead of setting one CPU at a time into cpu_l2_cache_mask,
-copy the SMT4/sub mask at one shot.
+Move the logic for updating the coregroup mask of a CPU to its own
+function. This will help in reworking the updation of coregroup mask in
+subsequent patch.
 
 Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
@@ -141,102 +137,59 @@ Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Valentin Schneider <valentin.schneider@arm.com>
 Cc: Qian Cai <cai@redhat.com>
 ---
-Changelog v2->v3:
-	Use GFP_ATOMIC instead of GFP_KERNEL since allocations need to
-	atomic at the time of CPU HotPlug
-	Reported by Qian Cai <cai@redhat.com>
-
- arch/powerpc/kernel/smp.c | 52 +++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 46 insertions(+), 6 deletions(-)
+ arch/powerpc/kernel/smp.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
 diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 6f866e6b12f8..17e90c2414af 100644
+index 17e90c2414af..b48ae4e306d3 100644
 --- a/arch/powerpc/kernel/smp.c
 +++ b/arch/powerpc/kernel/smp.c
-@@ -671,6 +671,28 @@ static void set_cpus_unrelated(int i, int j,
- #endif
+@@ -1338,6 +1338,23 @@ static inline void add_cpu_to_smallcore_masks(int cpu)
+ 	}
+ }
  
- /*
-+ * Extends set_cpus_related. Instead of setting one CPU at a time in
-+ * dstmask, set srcmask at oneshot. dstmask should be super set of srcmask.
-+ */
-+static void or_cpumasks_related(int i, int j, struct cpumask *(*srcmask)(int),
-+				struct cpumask *(*dstmask)(int))
++static void update_coregroup_mask(int cpu)
 +{
-+	struct cpumask *mask;
-+	int k;
++	int first_thread = cpu_first_thread_sibling(cpu);
++	int coregroup_id = cpu_to_coregroup_id(cpu);
++	int i;
 +
-+	mask = srcmask(j);
-+	for_each_cpu(k, srcmask(i))
-+		cpumask_or(dstmask(k), dstmask(k), mask);
++	cpumask_set_cpu(cpu, cpu_coregroup_mask(cpu));
++	for_each_cpu_and(i, cpu_online_mask, cpu_cpu_mask(cpu)) {
++		int fcpu = cpu_first_thread_sibling(i);
 +
-+	if (i == j)
-+		return;
-+
-+	mask = srcmask(i);
-+	for_each_cpu(k, srcmask(j))
-+		cpumask_or(dstmask(k), dstmask(k), mask);
++		if (fcpu == first_thread)
++			set_cpus_related(cpu, i, cpu_coregroup_mask);
++		else if (coregroup_id == cpu_to_coregroup_id(i))
++			set_cpus_related(cpu, i, cpu_coregroup_mask);
++	}
 +}
 +
-+/*
-  * parse_thread_groups: Parses the "ibm,thread-groups" device tree
-  *                      property for the CPU device node @dn and stores
-  *                      the parsed output in the thread_groups
-@@ -1220,7 +1242,9 @@ static struct device_node *cpu_to_l2cache(int cpu)
- 
- static bool update_mask_by_l2(int cpu)
+ static void add_cpu_to_masks(int cpu)
  {
-+	struct cpumask *(*submask_fn)(int) = cpu_sibling_mask;
- 	struct device_node *l2_cache, *np;
-+	cpumask_var_t mask;
- 	int i;
+ 	int first_thread = cpu_first_thread_sibling(cpu);
+@@ -1356,19 +1373,8 @@ static void add_cpu_to_masks(int cpu)
+ 	add_cpu_to_smallcore_masks(cpu);
+ 	update_mask_by_l2(cpu);
  
- 	l2_cache = cpu_to_l2cache(cpu);
-@@ -1240,22 +1264,38 @@ static bool update_mask_by_l2(int cpu)
- 		return false;
- 	}
- 
--	cpumask_set_cpu(cpu, cpu_l2_cache_mask(cpu));
--	for_each_cpu_and(i, cpu_online_mask, cpu_cpu_mask(cpu)) {
-+	/* In CPU-hotplug path, hence use GFP_ATOMIC */
-+	alloc_cpumask_var_node(&mask, GFP_ATOMIC, cpu_to_node(cpu));
-+	cpumask_and(mask, cpu_online_mask, cpu_cpu_mask(cpu));
-+
-+	if (has_big_cores)
-+		submask_fn = cpu_smallcore_mask;
-+
-+	/* Update l2-cache mask with all the CPUs that are part of submask */
-+	or_cpumasks_related(cpu, cpu, submask_fn, cpu_l2_cache_mask);
-+
-+	/* Skip all CPUs already part of current CPU l2-cache mask */
-+	cpumask_andnot(mask, mask, cpu_l2_cache_mask(cpu));
-+
-+	for_each_cpu(i, mask) {
- 		/*
- 		 * when updating the marks the current CPU has not been marked
- 		 * online, but we need to update the cache masks
- 		 */
- 		np = cpu_to_l2cache(i);
--		if (!np)
--			continue;
- 
--		if (np == l2_cache)
--			set_cpus_related(cpu, i, cpu_l2_cache_mask);
-+		/* Skip all CPUs already part of current CPU l2-cache */
-+		if (np == l2_cache) {
-+			or_cpumasks_related(cpu, i, submask_fn, cpu_l2_cache_mask);
-+			cpumask_andnot(mask, mask, submask_fn(i));
-+		} else {
-+			cpumask_andnot(mask, mask, cpu_l2_cache_mask(i));
-+		}
- 
- 		of_node_put(np);
- 	}
- 	of_node_put(l2_cache);
-+	free_cpumask_var(mask);
- 
- 	return true;
+-	if (has_coregroup_support()) {
+-		int coregroup_id = cpu_to_coregroup_id(cpu);
+-
+-		cpumask_set_cpu(cpu, cpu_coregroup_mask(cpu));
+-		for_each_cpu_and(i, cpu_online_mask, cpu_cpu_mask(cpu)) {
+-			int fcpu = cpu_first_thread_sibling(i);
+-
+-			if (fcpu == first_thread)
+-				set_cpus_related(cpu, i, cpu_coregroup_mask);
+-			else if (coregroup_id == cpu_to_coregroup_id(i))
+-				set_cpus_related(cpu, i, cpu_coregroup_mask);
+-		}
+-	}
++	if (has_coregroup_support())
++		update_coregroup_mask(cpu);
  }
+ 
+ /* Activate a secondary processor. */
 -- 
 2.17.1
 
