@@ -2,96 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046482867EA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 21:00:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6A62868E2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 22:16:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C63Yb2zRFzDqVW
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 06:00:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C65G91yrTzDqDy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 07:16:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
+ envelope-from=khalid.aziz@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=DA/TlB+Z; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=FjAO07Pb; 
+ dkim-atps=neutral
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C63Jf5g5HzDqR5
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 05:48:50 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 097IXxl8154201; Wed, 7 Oct 2020 14:48:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=3l7EmI1rLmUxp/ulwT0rD8TTtWYOCKblDswff8SjiME=;
- b=DA/TlB+Zmil9jPgrkt1Q5eTzV5cCpIkfCPkHmzwfT4kPKvyMSeymjw/tS7kRMGQx5ZcF
- K9p1XOCtkV86jjgFjgikY2Lfcs3sa1HviuGtrWtTyAGb7Fslm36oX5/YdYK1h/bJkbBJ
- GzmqK9LwWGAgZgmuRcblIVyAhf6n0CaR86O/5DWn6uqPPyOaDxeB1XCR0Ro9VvbCnnkm
- bvyyBi+NF+P3lJxciBUmq4VljO4TG2nHvQEA6IpkU1JinSJynEWAE8R7oZC6Xv0HtcVY
- cnoO9Xh7mi4p2ybGDjYBPTh5EAP42FdMhhpxg8zsVR8gYGCa1XXDbpzhLh1Upf2ng9hg IQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 341jgys91n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Oct 2020 14:48:39 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 097IY2TY154418;
- Wed, 7 Oct 2020 14:48:38 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 341jgys8yb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Oct 2020 14:48:38 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 097ISjXR014251;
- Wed, 7 Oct 2020 18:38:53 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06fra.de.ibm.com with ESMTP id 33xgjhac76-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Oct 2020 18:38:53 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 097IcpxJ27656648
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 7 Oct 2020 18:38:51 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3601FA405F;
- Wed,  7 Oct 2020 18:38:51 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DCB39A4054;
- Wed,  7 Oct 2020 18:38:47 +0000 (GMT)
-Received: from srikart450.in.ibm.com (unknown [9.85.90.101])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  7 Oct 2020 18:38:47 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3 11/11] powerpc/smp: Optimize update_coregroup_mask
-Date: Thu,  8 Oct 2020 00:08:00 +0530
-Message-Id: <20201007183800.27415-12-srikar@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201007183800.27415-1-srikar@linux.vnet.ibm.com>
-References: <20201007183800.27415-1-srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C65D91g7GzDqQm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 07:14:58 +1100 (AEDT)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+ by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 097K9TXd155018;
+ Wed, 7 Oct 2020 20:14:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=0e/WSQywy08TzR1PbeoUl0NQLoa6r1TN03v8dKdC7U0=;
+ b=FjAO07Pb2c79haWCsZs0ux00POmzGfuH57r6caG0cGfcojOyTKVFFPuHVW+Yr2RzIT+3
+ TB4a36iJNtdmqutsHUDflCeeXakvsA/xWUAX9Fb2Tm2TrmarfvKjzvW25CjSB/BHbFK3
+ qpb7E0WXBbuf9SUhgR2ON+APMr7v9HeSPsuyJZyBlc049jKaC0zS5cy/QJgGEAFbrOSG
+ HpT74sNrtVAA1n+4SlUp50gV8BUootrJO3Fcxfh2iPuzGgmSbAR10V0h5oNy9jWxo0lR
+ W7Wz2ZRsGADnTPa3pQOtAlwgO0kMX8CsETwOwywHoiMIvZy5fxaCG9i42OerZiNoukJt lw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by userp2120.oracle.com with ESMTP id 33xhxn41dx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Wed, 07 Oct 2020 20:14:27 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 097KBKgS061221;
+ Wed, 7 Oct 2020 20:14:26 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+ by aserp3030.oracle.com with ESMTP id 33y2vpxjex-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 07 Oct 2020 20:14:26 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+ by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 097KEBt6031273;
+ Wed, 7 Oct 2020 20:14:13 GMT
+Received: from [10.65.129.34] (/10.65.129.34)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Wed, 07 Oct 2020 13:14:11 -0700
+Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
+ and with length
+To: Jann Horn <jannh@google.com>, "David S. Miller" <davem@davemloft.net>,
+ sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org
+References: <20201007073932.865218-1-jannh@google.com>
+From: Khalid Aziz <khalid.aziz@oracle.com>
+Organization: Oracle Corp
+X-Pep-Version: 2.0
+Message-ID: <d5332a7b-c300-6d28-18b9-4b7d4110ef86@oracle.com>
+Date: Wed, 7 Oct 2020 14:14:09 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-07_10:2020-10-07,
- 2020-10-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0
- priorityscore=1501 adultscore=0 spamscore=0 lowpriorityscore=0
- phishscore=0 bulkscore=0 mlxscore=0 suspectscore=2 mlxlogscore=999
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2010070116
+In-Reply-To: <20201007073932.865218-1-jannh@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9767
+ signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxlogscore=999
+ malwarescore=0 suspectscore=0 spamscore=0 phishscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2010070128
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9767
+ signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ malwarescore=0 bulkscore=0
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
+ mlxlogscore=999 adultscore=0 clxscore=1011 spamscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2010070128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,98 +97,210 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Paul Mackerras <paulus@samba.org>, Anthony Yznaga <anthony.yznaga@oracle.com>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All threads of a SMT4/SMT8 core can either be part of CPU's coregroup
-mask or outside the coregroup. Use this relation to reduce the
-number of iterations needed to find all the CPUs that share the same
-coregroup
+On 10/7/20 1:39 AM, Jann Horn wrote:
+> arch_validate_prot() is a hook that can validate whether a given set of=
 
-Use a temporary mask to iterate through the CPUs that may share
-coregroup mask. Also instead of setting one CPU at a time into
-cpu_coregroup_mask, copy the SMT4/SMT8/submask at one shot.
+> protection flags is valid in an mprotect() operation. It is given the s=
+et
+> of protection flags and the address being modified.
+>=20
+> However, the address being modified can currently not actually be used =
+in
+> a meaningful way because:
+>=20
+> 1. Only the address is given, but not the length, and the operation can=
 
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: LKML <linux-kernel@vger.kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Anton Blanchard <anton@ozlabs.org>
-Cc: Oliver O'Halloran <oohall@gmail.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Michael Neuling <mikey@neuling.org>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Valentin Schneider <valentin.schneider@arm.com>
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
----
-Changelog v2->v3:
-	Use GFP_ATOMIC instead of GFP_KERNEL since allocations need to
-	atomic at the time of CPU HotPlug
-	Reported by Qian Cai <cai@redhat.com>
+>    span multiple VMAs. Therefore, the callee can't actually tell which
+>    virtual address range, or which VMAs, are being targeted.
+> 2. The mmap_lock is not held, meaning that if the callee were to check
+>    the VMA at @addr, that VMA would be unrelated to the one the
+>    operation is performed on.
+>=20
+> Currently, custom arch_validate_prot() handlers are defined by
+> arm64, powerpc and sparc.
+> arm64 and powerpc don't care about the address range, they just check t=
+he
+> flags against CPU support masks.
+> sparc's arch_validate_prot() attempts to look at the VMA, but doesn't t=
+ake
+> the mmap_lock.
+>=20
+> Change the function signature to also take a length, and move the
+> arch_validate_prot() call in mm/mprotect.c down into the locked region.=
 
- arch/powerpc/kernel/smp.c | 31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 9035cf9a97e4 ("mm: Add address parameter to arch_validate_prot()=
+")
+> Suggested-by: Khalid Aziz <khalid.aziz@oracle.com>
+> Suggested-by: Christoph Hellwig <hch@infradead.org>
+> Signed-off-by: Jann Horn <jannh@google.com>
+> ---
+>  arch/arm64/include/asm/mman.h   | 4 ++--
+>  arch/powerpc/include/asm/mman.h | 3 ++-
+>  arch/powerpc/kernel/syscalls.c  | 2 +-
+>  arch/sparc/include/asm/mman.h   | 6 ++++--
+>  include/linux/mman.h            | 3 ++-
+>  mm/mprotect.c                   | 6 ++++--
+>  6 files changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index b48ae4e306d3..bbaea93dc558 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1340,19 +1340,34 @@ static inline void add_cpu_to_smallcore_masks(int cpu)
- 
- static void update_coregroup_mask(int cpu)
- {
--	int first_thread = cpu_first_thread_sibling(cpu);
-+	struct cpumask *(*submask_fn)(int) = cpu_sibling_mask;
-+	cpumask_var_t mask;
- 	int coregroup_id = cpu_to_coregroup_id(cpu);
- 	int i;
- 
--	cpumask_set_cpu(cpu, cpu_coregroup_mask(cpu));
--	for_each_cpu_and(i, cpu_online_mask, cpu_cpu_mask(cpu)) {
--		int fcpu = cpu_first_thread_sibling(i);
-+	/* In CPU-hotplug path, hence use GFP_ATOMIC */
-+	alloc_cpumask_var_node(&mask, GFP_ATOMIC, cpu_to_node(cpu));
-+	cpumask_and(mask, cpu_online_mask, cpu_cpu_mask(cpu));
-+
-+	if (shared_caches)
-+		submask_fn = cpu_l2_cache_mask;
- 
--		if (fcpu == first_thread)
--			set_cpus_related(cpu, i, cpu_coregroup_mask);
--		else if (coregroup_id == cpu_to_coregroup_id(i))
--			set_cpus_related(cpu, i, cpu_coregroup_mask);
-+	/* Update coregroup mask with all the CPUs that are part of submask */
-+	or_cpumasks_related(cpu, cpu, submask_fn, cpu_coregroup_mask);
-+
-+	/* Skip all CPUs already part of coregroup mask */
-+	cpumask_andnot(mask, mask, cpu_coregroup_mask(cpu));
-+
-+	for_each_cpu(i, mask) {
-+		/* Skip all CPUs not part of this coregroup */
-+		if (coregroup_id == cpu_to_coregroup_id(i)) {
-+			or_cpumasks_related(cpu, i, submask_fn, cpu_coregroup_mask);
-+			cpumask_andnot(mask, mask, submask_fn(i));
-+		} else {
-+			cpumask_andnot(mask, mask, cpu_coregroup_mask(i));
-+		}
- 	}
-+	free_cpumask_var(mask);
- }
- 
- static void add_cpu_to_masks(int cpu)
--- 
-2.17.1
+
+This looks good to me.
+
+As Chris pointed out, the call to arch_validate_prot() from do_mmap2()
+is made without holding mmap_lock. Lock is not acquired until
+vm_mmap_pgoff(). This variance is uncomfortable but I am more
+uncomfortable forcing all implementations of validate_prot to require
+mmap_lock be held when non-sparc implementations do not have such need
+yet. Since do_mmap2() is in powerpc specific code, for now this patch
+solves a current problem. That leaves open the question of should
+generic mmap call arch_validate_prot and return EINVAL for invalid
+combination of protection bits, but that is better addressed in a
+separate patch.
+
+Reviewed-by: Khalid Aziz <khalid.aziz@oracle.com>
+
+>=20
+> diff --git a/arch/arm64/include/asm/mman.h b/arch/arm64/include/asm/mma=
+n.h
+> index 081ec8de9ea6..0876a87986dc 100644
+> --- a/arch/arm64/include/asm/mman.h
+> +++ b/arch/arm64/include/asm/mman.h
+> @@ -23,7 +23,7 @@ static inline pgprot_t arch_vm_get_page_prot(unsigned=
+ long vm_flags)
+>  #define arch_vm_get_page_prot(vm_flags) arch_vm_get_page_prot(vm_flags=
+)
+> =20
+>  static inline bool arch_validate_prot(unsigned long prot,
+> -	unsigned long addr __always_unused)
+> +	unsigned long addr __always_unused, unsigned long len __always_unused=
+)
+>  {
+>  	unsigned long supported =3D PROT_READ | PROT_WRITE | PROT_EXEC | PROT=
+_SEM;
+> =20
+> @@ -32,6 +32,6 @@ static inline bool arch_validate_prot(unsigned long p=
+rot,
+> =20
+>  	return (prot & ~supported) =3D=3D 0;
+>  }
+> -#define arch_validate_prot(prot, addr) arch_validate_prot(prot, addr)
+> +#define arch_validate_prot(prot, addr, len) arch_validate_prot(prot, a=
+ddr, len)
+> =20
+>  #endif /* ! __ASM_MMAN_H__ */
+> diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm=
+/mman.h
+> index 7cb6d18f5cd6..65dd9b594985 100644
+> --- a/arch/powerpc/include/asm/mman.h
+> +++ b/arch/powerpc/include/asm/mman.h
+> @@ -36,7 +36,8 @@ static inline pgprot_t arch_vm_get_page_prot(unsigned=
+ long vm_flags)
+>  }
+>  #define arch_vm_get_page_prot(vm_flags) arch_vm_get_page_prot(vm_flags=
+)
+> =20
+> -static inline bool arch_validate_prot(unsigned long prot, unsigned lon=
+g addr)
+> +static inline bool arch_validate_prot(unsigned long prot, unsigned lon=
+g addr,
+> +				      unsigned long len)
+>  {
+>  	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_SAO=
+))
+>  		return false;
+> diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/sysca=
+lls.c
+> index 078608ec2e92..b1fabb97d138 100644
+> --- a/arch/powerpc/kernel/syscalls.c
+> +++ b/arch/powerpc/kernel/syscalls.c
+> @@ -43,7 +43,7 @@ static inline long do_mmap2(unsigned long addr, size_=
+t len,
+>  {
+>  	long ret =3D -EINVAL;
+> =20
+> -	if (!arch_validate_prot(prot, addr))
+> +	if (!arch_validate_prot(prot, addr, len))
+>  		goto out;
+> =20
+>  	if (shift) {
+> diff --git a/arch/sparc/include/asm/mman.h b/arch/sparc/include/asm/mma=
+n.h
+> index f94532f25db1..e85222c76585 100644
+> --- a/arch/sparc/include/asm/mman.h
+> +++ b/arch/sparc/include/asm/mman.h
+> @@ -52,9 +52,11 @@ static inline pgprot_t sparc_vm_get_page_prot(unsign=
+ed long vm_flags)
+>  	return (vm_flags & VM_SPARC_ADI) ? __pgprot(_PAGE_MCD_4V) : __pgprot(=
+0);
+>  }
+> =20
+> -#define arch_validate_prot(prot, addr) sparc_validate_prot(prot, addr)=
+
+> -static inline int sparc_validate_prot(unsigned long prot, unsigned lon=
+g addr)
+> +#define arch_validate_prot(prot, addr, len) sparc_validate_prot(prot, =
+addr, len)
+> +static inline int sparc_validate_prot(unsigned long prot, unsigned lon=
+g addr,
+> +				      unsigned long len)
+>  {
+> +	mmap_assert_write_locked(current->mm);
+>  	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_ADI=
+))
+>  		return 0;
+>  	if (prot & PROT_ADI) {
+> diff --git a/include/linux/mman.h b/include/linux/mman.h
+> index 6f34c33075f9..5b4d554d3189 100644
+> --- a/include/linux/mman.h
+> +++ b/include/linux/mman.h
+> @@ -96,7 +96,8 @@ static inline void vm_unacct_memory(long pages)
+>   *
+>   * Returns true if the prot flags are valid
+>   */
+> -static inline bool arch_validate_prot(unsigned long prot, unsigned lon=
+g addr)
+> +static inline bool arch_validate_prot(unsigned long prot, unsigned lon=
+g addr,
+> +				      unsigned long len)
+>  {
+>  	return (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM)) =3D=3D=
+ 0;
+>  }
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index ce8b8a5eacbb..e2d6b51acbf8 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -533,14 +533,16 @@ static int do_mprotect_pkey(unsigned long start, =
+size_t len,
+>  	end =3D start + len;
+>  	if (end <=3D start)
+>  		return -ENOMEM;
+> -	if (!arch_validate_prot(prot, start))
+> -		return -EINVAL;
+> =20
+>  	reqprot =3D prot;
+> =20
+>  	if (mmap_write_lock_killable(current->mm))
+>  		return -EINTR;
+> =20
+> +	error =3D -EINVAL;
+> +	if (!arch_validate_prot(prot, start, len))
+> +		goto out;
+> +
+>  	/*
+>  	 * If userspace did not allocate the pkey, do not let
+>  	 * them use it here.
+>=20
+> base-commit: c85fb28b6f999db9928b841f63f1beeb3074eeca
+>=20
+
 
