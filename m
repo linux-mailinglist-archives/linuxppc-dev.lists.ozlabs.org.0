@@ -2,73 +2,105 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CFE28577A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 06:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED2428580C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 07:12:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C5gsV4zC8zDq9l
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 15:12:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C5jBB5BXQzDqNg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 16:12:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=GGX6rwAK; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=szEnWsEf; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C5gnw2vK8zDqDd
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Oct 2020 15:09:21 +1100 (AEDT)
-Received: by mail-pj1-x1043.google.com with SMTP id az3so388669pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Oct 2020 21:09:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=gOvEyfBie8ExKwi3KVqlWE8kb2DNxYPhK7wk+w7sjSY=;
- b=GGX6rwAKR8FoVefamHSsT7Derf74cNRHVpqqn/pC55SvOkmAqa5g8aMr1R3NcR9Nzj
- J/WW+wbwjRCRMHV+iFyWRaw71GqqS3vfGBD+QvGTlC5yT9Qa0Mg8pJLjz8+V4DnuwgcH
- 2YIVFqHGGvifRWpqwJHuiIMHwpVpPBK+pM8lAJf2gbMPpNb974wBBGJPN49DgVegum4r
- 55THEd2Dr05rE0KZDVzyzr0bAvHb1GThf8AoEaPuoIVexKVKQXQxZl6uiKoQTfWfB6bd
- 7fgYIkwYbYjn7RirNkT8BDzklRxntw/4DcAMRtCjpwSXnchLaz3ujX8u8Ifh3W1LtAvM
- athg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=gOvEyfBie8ExKwi3KVqlWE8kb2DNxYPhK7wk+w7sjSY=;
- b=BV7k8TOTqkGJQcgrUTdOJBEEAfd6RCGkOPXHySVPFdbnzKTXIgIocNUgcmas3h6OgY
- RPw2dq3ICzD+kU5MnWQhI0+8ro8ekYfzEhnrDGnX1imCvleyQCznsHXbl0ZW4LQnn+zQ
- rCH5CpkGb+ixIMCIJ0V8CzPYgzH8SkHRQimHCs6owpNXml2UWQVAoik+pwohAxF00soQ
- ms/2DQb3mL4IYub1Bb5wgcAWQURBLX262S0ijEEhgwWWfxAISNbFgfUUMuVOgkKePvVd
- B0n2IrcT4yNTcCwsdAw0SgXznmo5k+o0/9spftRCvI9jWBFqm7zQTzLgV4RgZ7Q8gZyf
- NpSg==
-X-Gm-Message-State: AOAM531OgC62ogRE6ym7pDzsM0HPRB4trWf01hp4YFN0Wf0ou99wXM/d
- 86HCHaIYI8DEC5q+u1gWmNHRtmDjh/4+tw==
-X-Google-Smtp-Source: ABdhPJwQh+bGEaFimEP/9hpgJNtX154IqOF2XvZI32iPM31z1NqY/lm3cO18cNlf+0Igh+2YSMtEmw==
-X-Received: by 2002:a17:90b:30d2:: with SMTP id
- hi18mr1239595pjb.86.1602043757992; 
- Tue, 06 Oct 2020 21:09:17 -0700 (PDT)
-Received: from localhost.ibm.com (14-200-206-90.tpgi.com.au. [14.200.206.90])
- by smtp.gmail.com with ESMTPSA id
- x3sm829552pgg.54.2020.10.06.21.09.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Oct 2020 21:09:17 -0700 (PDT)
-From: Oliver O'Halloran <oohall@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/pseries/eeh: Fix use of uninitialised variable
-Date: Wed,  7 Oct 2020 15:09:03 +1100
-Message-Id: <20201007040903.819081-2-oohall@gmail.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201007040903.819081-1-oohall@gmail.com>
-References: <20201007040903.819081-1-oohall@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C5j8J6GM4zDqMT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Oct 2020 16:10:24 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0974XOE4063737; Wed, 7 Oct 2020 01:10:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=BeLgSRRyePvDsbUzJJIPXqvE4mGEMjgnMEsZNh/CarQ=;
+ b=szEnWsEfwVBQ9YsLZGOumHqPCoTcG0gK7UT1Wjtzkqg1gXe5QMFVVwCnmNmafCxlCRwF
+ oeb534RGrtHn09hstcwOfvWHx/D7oEmC0zDphikN5oqjwTJDWGcKlWDX9+11B4zlvPVa
+ yW0gLRDuAtw7UDhmav8LJbX1eQD9VpXN18h3xVAOr5jqdS/5ZobzqT/pOMbRjtkR4qca
+ sxpECsueXt6s5BTukv/BqgWtdXponFsYXOtHoVDjz75aobIkNEQX7cKndfPdfnDm4BmF
+ t23KLGURe5LUKexGK+6sk0OZKROfHfttvikOpQ7jTq0UOTbTDb09I+vp/O0InJ9e5R4h 9Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 341559b1u3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Oct 2020 01:10:15 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0974XsYe065086;
+ Wed, 7 Oct 2020 01:10:15 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 341559b1th-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Oct 2020 01:10:15 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09751Zbi008110;
+ Wed, 7 Oct 2020 05:10:12 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma02fra.de.ibm.com with ESMTP id 33xgx8a1cq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Oct 2020 05:10:12 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0975AA2932112914
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 7 Oct 2020 05:10:10 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8BE554C052;
+ Wed,  7 Oct 2020 05:10:10 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 363364C05A;
+ Wed,  7 Oct 2020 05:10:10 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  7 Oct 2020 05:10:10 +0000 (GMT)
+Received: from [9.206.128.123] (unknown [9.206.128.123])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C5088A0218;
+ Wed,  7 Oct 2020 16:10:08 +1100 (AEDT)
+Subject: Re: [PATCH v2 1/2] powerpc/rtas: Restrict RTAS requests from userspace
+To: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
+References: <20200820044512.7543-1-ajd@linux.ibm.com>
+ <20200826135348.AD06422B4B@mail.kernel.org>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Message-ID: <421cba41-20bf-f874-c81a-8b7f9944c845@linux.ibm.com>
+Date: Wed, 7 Oct 2020 16:10:08 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200826135348.AD06422B4B@mail.kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-10-07_03:2020-10-06,
+ 2020-10-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 mlxlogscore=999
+ clxscore=1011 spamscore=0 adultscore=0 impostorscore=0 bulkscore=0
+ mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2010070028
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,65 +112,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>
+Cc: nathanl@linux.ibm.com, leobras.c@gmail.com, stable@vger.kernel.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If the RTAS call to query the PE address for a device fails we jump the
-err: label where an error message is printed along with the return code.
-However, the printed return code is from the "ret" variable which isn't set
-at that point since we assigned the result to "addr" instead. Fix this by
-consistently using the "ret" variable for the result of the RTAS call
-helpers an dropping the "addr" local variable"
+On 26/8/20 11:53 pm, Sasha Levin wrote:
+> How should we proceed with this patch?
 
-Fixes: 98ba956f6a38 ("powerpc/pseries/eeh: Rework device EEH PE determination")
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
----
- arch/powerpc/platforms/pseries/eeh_pseries.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+mpe: I believe we came to the conclusion that we shouldn't put this in 
+stable just yet?
 
-diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
-index d8fd5f7b2143..cf024fa37bda 100644
---- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-+++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-@@ -363,7 +363,6 @@ void pseries_eeh_init_edev(struct pci_dn *pdn)
- {
- 	struct eeh_pe pe, *parent;
- 	struct eeh_dev *edev;
--	int addr;
- 	u32 pcie_flags;
- 	int ret;
- 
-@@ -422,8 +421,8 @@ void pseries_eeh_init_edev(struct pci_dn *pdn)
- 	}
- 
- 	/* first up, find the pe_config_addr for the PE containing the device */
--	addr = pseries_eeh_get_pe_config_addr(pdn);
--	if (addr < 0) {
-+	ret = pseries_eeh_get_pe_config_addr(pdn);
-+	if (ret < 0) {
- 		eeh_edev_dbg(edev, "Unable to find pe_config_addr\n");
- 		goto err;
- 	}
-@@ -431,7 +430,7 @@ void pseries_eeh_init_edev(struct pci_dn *pdn)
- 	/* Try enable EEH on the fake PE */
- 	memset(&pe, 0, sizeof(struct eeh_pe));
- 	pe.phb = pdn->phb;
--	pe.addr = addr;
-+	pe.addr = ret;
- 
- 	eeh_edev_dbg(edev, "Enabling EEH on device\n");
- 	ret = eeh_ops->set_option(&pe, EEH_OPT_ENABLE);
-@@ -440,7 +439,7 @@ void pseries_eeh_init_edev(struct pci_dn *pdn)
- 		goto err;
- 	}
- 
--	edev->pe_config_addr = addr;
-+	edev->pe_config_addr = pe.addr;
- 
- 	eeh_add_flag(EEH_ENABLED);
- 
 -- 
-2.26.2
-
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
