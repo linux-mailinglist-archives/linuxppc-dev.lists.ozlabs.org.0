@@ -2,30 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FF2285706
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 05:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2362A285707
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 05:24:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C5fmB2FVKzDqFC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 14:22:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C5fns1vkqzDqLY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 14:24:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C5fkH6v6BzDqFB
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Oct 2020 14:21:11 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C5fkJ0JckzDqFC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Oct 2020 14:21:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4C5fkH5K1Xz9sSf; Wed,  7 Oct 2020 14:21:11 +1100 (AEDT)
+ id 4C5fkH1lfVz9sTR; Wed,  7 Oct 2020 14:21:11 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <1600672204-1610-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-References: <1600672204-1610-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2] powerpc/perf: Exclude pmc5/6 from the irrelevant PMU
- group constraints
-Message-Id: <160204083688.257875.9574572368861589810.b4-ty@ellerman.id.au>
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20200820044512.7543-1-ajd@linux.ibm.com>
+References: <20200820044512.7543-1-ajd@linux.ibm.com>
+Subject: Re: [PATCH v2 1/2] powerpc/rtas: Restrict RTAS requests from userspace
+Message-Id: <160204083771.257875.2183236339326581440.b4-ty@ellerman.id.au>
 Date: Wed,  7 Oct 2020 14:21:11 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -38,25 +37,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: nathanl@linux.ibm.com, leobras.c@gmail.com, stable@vger.kernel.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 21 Sep 2020 03:10:04 -0400, Athira Rajeev wrote:
-> PMU counter support functions enforces event constraints for group of
-> events to check if all events in a group can be monitored. Incase of
-> event codes using PMC5 and PMC6 ( 500fa and 600f4 respectively ),
-> not all constraints are applicable, say the threshold or sample bits.
-> But current code includes pmc5 and pmc6 in some group constraints (like
-> IC_DC Qualifier bits) which is actually not applicable and hence results
-> in those events not getting counted when scheduled along with group of
-> other events. Patch fixes this by excluding PMC5/6 from constraints
-> which are not relevant for it.
+On Thu, 20 Aug 2020 14:45:12 +1000, Andrew Donnellan wrote:
+> A number of userspace utilities depend on making calls to RTAS to retrieve
+> information and update various things.
+> 
+> The existing API through which we expose RTAS to userspace exposes more
+> RTAS functionality than we actually need, through the sys_rtas syscall,
+> which allows root (or anyone with CAP_SYS_ADMIN) to make any RTAS call they
+> want with arbitrary arguments.
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/perf: Exclude pmc5/6 from the irrelevant PMU group constraints
-      https://git.kernel.org/powerpc/c/3b6c3adbb2fa42749c3d38cfc4d4d0b7e096bb7b
+[1/2] powerpc/rtas: Restrict RTAS requests from userspace
+      https://git.kernel.org/powerpc/c/bd59380c5ba4147dcbaad3e582b55ccfd120b764
+[2/2] selftests/powerpc: Add a rtas_filter selftest
+      https://git.kernel.org/powerpc/c/dc9af82ea0614bb138705d1f5230d53b3b1dfb83
 
 cheers
