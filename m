@@ -2,34 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91BD828572F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 05:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B375285731
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 05:47:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C5gG253rczDqfr
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 14:45:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C5gJ317b4zDqT1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 14:46:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C5fqG0ZlfzDqL2
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Oct 2020 14:25:30 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C5fqJ3DrkzDqJl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Oct 2020 14:25:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 4C5fqF6DsSz9ryj; Wed,  7 Oct 2020 14:25:29 +1100 (AEDT)
+ id 4C5fqH0Nhzz9sTm; Wed,  7 Oct 2020 14:25:31 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4C5fqF3rhhz9sTR; Wed,  7 Oct 2020 14:25:29 +1100 (AEDT)
+ id 4C5fqG4YKLz9ryj; Wed,  7 Oct 2020 14:25:30 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Scott Cheloha <cheloha@linux.ibm.com>, linuxppc-dev@ozlabs.org
-In-Reply-To: <20200916145122.3408129-1-cheloha@linux.ibm.com>
-References: <20200916145122.3408129-1-cheloha@linux.ibm.com>
-Subject: Re: [PATCH v4] pseries/hotplug-memory: hot-add: skip redundant LMB
- lookup
-Message-Id: <160204111852.262680.375632836046760908.b4-ty@ellerman.id.au>
-Date: Wed,  7 Oct 2020 14:25:29 +1100 (AEDT)
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+In-Reply-To: <20201006122051.190176-1-mpe@ellerman.id.au>
+References: <20201006122051.190176-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH v5] powerpc/powernv/elog: Fix race while processing OPAL
+ error log event.
+Message-Id: <160204111833.262680.16327366891660217531.b4-ty@ellerman.id.au>
+Date: Wed,  7 Oct 2020 14:25:30 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,28 +41,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Laurent Dufour <ldufour@linux.vnet.ibm.com>,
- Michal Suchanek <msuchanek@suse.de>, David Hildenbrand <david@redhat.com>,
- Rick Lindsley <ricklind@linux.vnet.ibm.com>
+Cc: aneesh.kumar@linux.ibm.com, oohall@gmail.com, hegdevasant@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 16 Sep 2020 09:51:22 -0500, Scott Cheloha wrote:
-> During memory hot-add, dlpar_add_lmb() calls memory_add_physaddr_to_nid()
-> to determine which node id (nid) to use when later calling __add_memory().
-> 
-> This is wasteful.  On pseries, memory_add_physaddr_to_nid() finds an
-> appropriate nid for a given address by looking up the LMB containing the
-> address and then passing that LMB to of_drconf_to_nid_single() to get the
-> nid.  In dlpar_add_lmb() we get this address from the LMB itself.
+On Tue, 6 Oct 2020 23:20:51 +1100, Michael Ellerman wrote:
+> Every error log reported by OPAL is exported to userspace through a
+> sysfs interface and notified using kobject_uevent(). The userspace
+> daemon (opal_errd) then reads the error log and acknowledges the error
+> log is saved safely to disk. Once acknowledged the kernel removes the
+> respective sysfs file entry causing respective resources to be
+> released including kobject.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] pseries/hotplug-memory: hot-add: skip redundant LMB lookup
-      https://git.kernel.org/powerpc/c/72cdd117c449896c707fc6cfe5b90978160697d0
+[1/1] powerpc/powernv/elog: Fix race while processing OPAL error log event.
+      https://git.kernel.org/powerpc/c/aea948bb80b478ddc2448f7359d574387521a52d
 
 cheers
