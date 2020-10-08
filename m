@@ -1,56 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964B028729D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 12:36:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B852872DA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 12:54:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C6SKg4LGXzDqWh
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 21:36:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C6SkR6cZ4zDqVj
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 21:54:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C6SHn4KChzDqQX
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 21:34:29 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=cWs1KMEa; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4C6SHl4dK5z9sSn;
- Thu,  8 Oct 2020 21:34:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1602153269;
- bh=LVtl5nr/q4t2nV3LYF3G4kWXm+va37pz+aPH8LOpKog=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=cWs1KMEaYPIHFLKt3tm8qrs03CszzjSPP5q0xVKRn9Hn3zFNRVahF6lfh0MKdhxjB
- myao6SRqHxi5r7AIFSktP6UwOfMkhZcWVsS+myD8KpnOc6g7IC/nBUhqVvm5k5M1k1
- cw4AS1KSHlBzSOiBjTm0firCtfG41Vlv0huKMmMWhHEpu+soMLxVrVkiSujXE+yJDf
- kh+L1o+9TDY4fUsuF2jNr6iQTDQc3TyX8+pGOq/dLpkUmxo8WLUpSmVqkgr3mLQFNV
- Km5DJveTKD7nMu4z0RGyGh5hcjF9UfVYh+VBAd2aUbEBY1ax50rZ+DFL+xCvkLHBhy
- 9agFLcX2/GqNw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jann Horn <jannh@google.com>, Christoph Hellwig <hch@infradead.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
- and with length
-In-Reply-To: <CAG48ez3kjTeVtQcjQerYYRs7sX5qq3O7SU-FEaYLNXisFmAeOg@mail.gmail.com>
-References: <20201007073932.865218-1-jannh@google.com>
- <20201007123544.GA11433@infradead.org>
- <CAG48ez3kjTeVtQcjQerYYRs7sX5qq3O7SU-FEaYLNXisFmAeOg@mail.gmail.com>
-Date: Thu, 08 Oct 2020 21:34:26 +1100
-Message-ID: <87o8ld0zwt.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=mlmItPyi; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C6ShQ5TYNzDqT6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 21:52:22 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 098Agoqm024378; Thu, 8 Oct 2020 06:52:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=d2cWcdNK4/f5exs7n6jTUKcNQTFK23/fkj7dhijbc/w=;
+ b=mlmItPyia9NvdiEEvmb8RcgtjncsCRMqqiNiSnGe2JjDHoXWvOKmthbsYFkFgwbabeCT
+ 7wHHODMeUZquck3aPbKARIRQd0ggqWHGbWJRvHqW2N0F63lNV31LsdTsVXVEgXGdbET+
+ a/Slx0pEatbgM5uL3PBPe0tSefjPjkc20cGPphKacPseqFEKJAw8dbAc+2kxiv6qtqWJ
+ JtbskL0m+TDT+mHNw+em4ZZD4/kT+r/Ns7yalAJ0eZjWSbZdSCVY5yXZDCcxPiPw7MFu
+ HSCdfVEyIVKkEhsGxgF6W/xVNRmz75agZ+NwQnQehcDeqiK/t4N74G45LW5w35VkLACL Bg== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34218s08tm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Oct 2020 06:52:17 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 098AmKA7021216;
+ Thu, 8 Oct 2020 10:52:14 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03fra.de.ibm.com with ESMTP id 33xgx7tr0p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Oct 2020 10:52:14 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 098AqCmf28574092
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 8 Oct 2020 10:52:12 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1B0104C04E;
+ Thu,  8 Oct 2020 10:52:12 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9BC264C044;
+ Thu,  8 Oct 2020 10:52:10 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.79.255.65])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  8 Oct 2020 10:52:10 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH 0/4] powerpc/perf: Power PMU fixes for power10 DD1
+Date: Thu,  8 Oct 2020 06:52:05 -0400
+Message-Id: <1602154329-2092-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-10-08_04:2020-10-08,
+ 2020-10-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 clxscore=1015
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 spamscore=0
+ mlxlogscore=751 adultscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2010080075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,81 +90,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Kleikamp <shaggy@linux.vnet.ibm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- kernel list <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
- Khalid Aziz <khalid.aziz@oracle.com>, sparclinux@vger.kernel.org,
- Anthony Yznaga <anthony.yznaga@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: mikey@neuling.org, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jann Horn <jannh@google.com> writes:
-> On Wed, Oct 7, 2020 at 2:35 PM Christoph Hellwig <hch@infradead.org> wrote:
->> On Wed, Oct 07, 2020 at 09:39:31AM +0200, Jann Horn wrote:
->> > diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscalls.c
->> > index 078608ec2e92..b1fabb97d138 100644
->> > --- a/arch/powerpc/kernel/syscalls.c
->> > +++ b/arch/powerpc/kernel/syscalls.c
->> > @@ -43,7 +43,7 @@ static inline long do_mmap2(unsigned long addr, size_t len,
->> >  {
->> >       long ret = -EINVAL;
->> >
->> > -     if (!arch_validate_prot(prot, addr))
->> > +     if (!arch_validate_prot(prot, addr, len))
->>
->> This call isn't under mmap lock.  I also find it rather weird as the
->> generic code only calls arch_validate_prot from mprotect, only powerpc
->> also calls it from mmap.
->>
->> This seems to go back to commit ef3d3246a0d0
->> ("powerpc/mm: Add Strong Access Ordering support")
->
-> I'm _guessing_ the idea in the generic case might be that mmap()
-> doesn't check unknown bits in the protection flags, and therefore
-> maybe people wanted to avoid adding new error cases that could be
-> caused by random high bits being set?
+The patch series addresses PMU fixes for power10 DD1
 
-I suspect it's just that when we added it we updated our do_mmap2() and
-didn't touch the generic version because we didn't need to. ie. it's not
-intentional it's just a buglet.
+Patch1 introduces a new power pmu flag to include
+conditional code changes for power10 DD1.
+Patch2 and Patch3 includes fixes in core-book3s to address
+issues with marked events during sampling.
+Patch4 includes fix to drop kernel samples while
+userspace profiling.
 
-I think this is the original submission:
+Athira Rajeev (4):
+  powerpc/perf: Add new power pmu flag "PPMU_P10_DD1" for power10 DD1
+  powerpc/perf: Using SIER[CMPL] instead of SIER[SIAR_VALID]
+  powerpc/perf: Use the address from SIAR register to set cpumode flags
+  powerpc/perf: Exclude kernel samples while counting events in user
+    space.
 
-  https://lore.kernel.org/linuxppc-dev/20080610220055.10257.84465.sendpatchset@norville.austin.ibm.com/
+ arch/powerpc/include/asm/perf_event_server.h |  1 +
+ arch/powerpc/perf/core-book3s.c              | 35 +++++++++++++++++++++++++++-
+ arch/powerpc/perf/power10-pmu.c              |  6 +++++
+ 3 files changed, 41 insertions(+), 1 deletion(-)
 
-Which only calls arch_validate_prot() from mprotect and the powerpc
-code, and there was no discussion about adding it elsewhere.
+-- 
+1.8.3.1
 
-> So while the mprotect() case
-> checks the flags and refuses unknown values, the mmap() code just lets
-> the architecture figure out which bits are actually valid to set (via
-> arch_calc_vm_prot_bits()) and silently ignores the rest?
->
-> And powerpc apparently decided that they do want to error out on bogus
-> prot values passed to their version of mmap(), and in exchange, assume
-> in arch_calc_vm_prot_bits() that the protection bits are valid?
-
-I don't think we really decided that, it just happened by accident and
-no one noticed/complained.
-
-Seems userspace is pretty well behaved when it comes to passing prot
-values to mmap().
-
-> powerpc's arch_validate_prot() doesn't actually need the mmap lock, so
-> I think this is fine-ish for now (as in, while the code is a bit
-> unclean, I don't think I'm making it worse, and I don't think it's
-> actually buggy). In theory, we could move the arch_validate_prot()
-> call over into the mmap guts, where we're holding the lock, and gate
-> it on the architecture or on some feature CONFIG that powerpc can
-> activate in its Kconfig. But I'm not sure whether that'd be helping or
-> making things worse, so when I sent this patch, I deliberately left
-> the powerpc stuff as-is.
-
-I think what you've done is fine, and anything more elaborate is not
-worth the effort.
-
-cheers
