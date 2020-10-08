@@ -1,41 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B35E28724C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 12:13:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 964B028729D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 12:36:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C6Rqw2TT3zDqVF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 21:13:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C6SKg4LGXzDqWh
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 21:36:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=arm.com
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C6RpC3J8XzDqBc
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 21:12:19 +1100 (AEDT)
-Received: from gaia (unknown [95.149.105.49])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id AE8312145D;
- Thu,  8 Oct 2020 10:12:12 +0000 (UTC)
-Date: Thu, 8 Oct 2020 11:12:10 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Jann Horn <jannh@google.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C6SHn4KChzDqQX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 21:34:29 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=cWs1KMEa; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4C6SHl4dK5z9sSn;
+ Thu,  8 Oct 2020 21:34:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1602153269;
+ bh=LVtl5nr/q4t2nV3LYF3G4kWXm+va37pz+aPH8LOpKog=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=cWs1KMEaYPIHFLKt3tm8qrs03CszzjSPP5q0xVKRn9Hn3zFNRVahF6lfh0MKdhxjB
+ myao6SRqHxi5r7AIFSktP6UwOfMkhZcWVsS+myD8KpnOc6g7IC/nBUhqVvm5k5M1k1
+ cw4AS1KSHlBzSOiBjTm0firCtfG41Vlv0huKMmMWhHEpu+soMLxVrVkiSujXE+yJDf
+ kh+L1o+9TDY4fUsuF2jNr6iQTDQc3TyX8+pGOq/dLpkUmxo8WLUpSmVqkgr3mLQFNV
+ Km5DJveTKD7nMu4z0RGyGh5hcjF9UfVYh+VBAd2aUbEBY1ax50rZ+DFL+xCvkLHBhy
+ 9agFLcX2/GqNw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jann Horn <jannh@google.com>, Christoph Hellwig <hch@infradead.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
  and with length
-Message-ID: <20201008101209.GD7661@gaia>
+In-Reply-To: <CAG48ez3kjTeVtQcjQerYYRs7sX5qq3O7SU-FEaYLNXisFmAeOg@mail.gmail.com>
 References: <20201007073932.865218-1-jannh@google.com>
+ <20201007123544.GA11433@infradead.org>
+ <CAG48ez3kjTeVtQcjQerYYRs7sX5qq3O7SU-FEaYLNXisFmAeOg@mail.gmail.com>
+Date: Thu, 08 Oct 2020 21:34:26 +1100
+Message-ID: <87o8ld0zwt.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201007073932.865218-1-jannh@google.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,61 +62,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
- Khalid Aziz <khalid.aziz@oracle.com>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Anthony Yznaga <anthony.yznaga@oracle.com>,
+Cc: Dave Kleikamp <shaggy@linux.vnet.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ kernel list <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
+ Khalid Aziz <khalid.aziz@oracle.com>, sparclinux@vger.kernel.org,
+ Anthony Yznaga <anthony.yznaga@oracle.com>,
  Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
+ "David S. Miller" <davem@davemloft.net>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 07, 2020 at 09:39:31AM +0200, Jann Horn wrote:
-> arch_validate_prot() is a hook that can validate whether a given set of
-> protection flags is valid in an mprotect() operation. It is given the set
-> of protection flags and the address being modified.
-> 
-> However, the address being modified can currently not actually be used in
-> a meaningful way because:
-> 
-> 1. Only the address is given, but not the length, and the operation can
->    span multiple VMAs. Therefore, the callee can't actually tell which
->    virtual address range, or which VMAs, are being targeted.
-> 2. The mmap_lock is not held, meaning that if the callee were to check
->    the VMA at @addr, that VMA would be unrelated to the one the
->    operation is performed on.
-> 
-> Currently, custom arch_validate_prot() handlers are defined by
-> arm64, powerpc and sparc.
-> arm64 and powerpc don't care about the address range, they just check the
-> flags against CPU support masks.
-> sparc's arch_validate_prot() attempts to look at the VMA, but doesn't take
-> the mmap_lock.
-> 
-> Change the function signature to also take a length, and move the
-> arch_validate_prot() call in mm/mprotect.c down into the locked region.
+Jann Horn <jannh@google.com> writes:
+> On Wed, Oct 7, 2020 at 2:35 PM Christoph Hellwig <hch@infradead.org> wrote:
+>> On Wed, Oct 07, 2020 at 09:39:31AM +0200, Jann Horn wrote:
+>> > diff --git a/arch/powerpc/kernel/syscalls.c b/arch/powerpc/kernel/syscalls.c
+>> > index 078608ec2e92..b1fabb97d138 100644
+>> > --- a/arch/powerpc/kernel/syscalls.c
+>> > +++ b/arch/powerpc/kernel/syscalls.c
+>> > @@ -43,7 +43,7 @@ static inline long do_mmap2(unsigned long addr, size_t len,
+>> >  {
+>> >       long ret = -EINVAL;
+>> >
+>> > -     if (!arch_validate_prot(prot, addr))
+>> > +     if (!arch_validate_prot(prot, addr, len))
+>>
+>> This call isn't under mmap lock.  I also find it rather weird as the
+>> generic code only calls arch_validate_prot from mprotect, only powerpc
+>> also calls it from mmap.
+>>
+>> This seems to go back to commit ef3d3246a0d0
+>> ("powerpc/mm: Add Strong Access Ordering support")
+>
+> I'm _guessing_ the idea in the generic case might be that mmap()
+> doesn't check unknown bits in the protection flags, and therefore
+> maybe people wanted to avoid adding new error cases that could be
+> caused by random high bits being set?
 
-For arm64 mte, I noticed the arch_validate_prot() issue with multiple
-vmas and addressed this in a different way:
+I suspect it's just that when we added it we updated our do_mmap2() and
+didn't touch the generic version because we didn't need to. ie. it's not
+intentional it's just a buglet.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/commit/?h=for-next/mte&id=c462ac288f2c97e0c1d9ff6a65955317e799f958
-https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/commit/?h=for-next/mte&id=0042090548740921951f31fc0c20dcdb96638cb0
+I think this is the original submission:
 
-Both patches queued for 5.10.
+  https://lore.kernel.org/linuxppc-dev/20080610220055.10257.84465.sendpatchset@norville.austin.ibm.com/
 
-Basically, arch_calc_vm_prot_bits() returns a VM_MTE if PROT_MTE has
-been requested. The newly introduced arch_validate_flags() will check
-the VM_MTE flag against what the system supports and this covers both
-mmap() and mprotect(). Note that arch_validate_prot() only handles the
-latter and I don't think it's sufficient for SPARC ADI. For arm64 MTE we
-definitely wanted mmap() flags to be validated.
+Which only calls arch_validate_prot() from mprotect and the powerpc
+code, and there was no discussion about adding it elsewhere.
 
-In addition, there's a new arch_calc_vm_flag_bits() which allows us to
-set a VM_MTE_ALLOWED on a vma if the conditions are right (MAP_ANONYMOUS
-or shmem_mmap():
+> So while the mprotect() case
+> checks the flags and refuses unknown values, the mmap() code just lets
+> the architecture figure out which bits are actually valid to set (via
+> arch_calc_vm_prot_bits()) and silently ignores the rest?
+>
+> And powerpc apparently decided that they do want to error out on bogus
+> prot values passed to their version of mmap(), and in exchange, assume
+> in arch_calc_vm_prot_bits() that the protection bits are valid?
 
-https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/commit/?h=for-next/mte&id=b3fbbea4c00220f62e6f7e2514466e6ee81f7f60
+I don't think we really decided that, it just happened by accident and
+no one noticed/complained.
 
--- 
-Catalin
+Seems userspace is pretty well behaved when it comes to passing prot
+values to mmap().
+
+> powerpc's arch_validate_prot() doesn't actually need the mmap lock, so
+> I think this is fine-ish for now (as in, while the code is a bit
+> unclean, I don't think I'm making it worse, and I don't think it's
+> actually buggy). In theory, we could move the arch_validate_prot()
+> call over into the mmap guts, where we're holding the lock, and gate
+> it on the architecture or on some feature CONFIG that powerpc can
+> activate in its Kconfig. But I'm not sure whether that'd be helping or
+> making things worse, so when I sent this patch, I deliberately left
+> the powerpc stuff as-is.
+
+I think what you've done is fine, and anything more elaborate is not
+worth the effort.
+
+cheers
