@@ -2,90 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEC52868EC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Oct 2020 22:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C03A1286CBA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 04:25:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C65JS3znwzDqRD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 07:18:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C6FR926WpzDqSG
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 13:25:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
- envelope-from=khalid.aziz@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d41;
+ helo=mail-io1-xd41.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=gmE2LdZ8; 
- dkim-atps=neutral
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=MrTISALN; dkim-atps=neutral
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
+ [IPv6:2607:f8b0:4864:20::d41])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C65F05mCPzDqRK
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 07:15:48 +1100 (AEDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 097K9k4Z155286;
- Wed, 7 Oct 2020 20:15:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=sEc3+JOY4GEUw7wZjFGU94rrw05aoMQl93fhhWlYcUM=;
- b=gmE2LdZ8E+KF4wjs2C0rOpLG6fnheNQFNiI5jZsAgeMD20tsilNtf+YluYt5qq/uALMI
- +hk9rjugah/1hM1Hjxlr/7pNRCkpKXS4EcgOw8ZH1ZeNcG3lPp8GXOqnwtGgGttnjdIk
- 8tkD7VyFl2EqivTy3StxYDikwthvfNjAjGvMbVBEGFxv7E44K0SAiBVmin2r9y4lp+Fm
- GEW/1V1JdfDAdmGxLr+o5Mb0BkbTbR9Cnaafsuf95itcPPqRm8WHm0Lbv2Y2aRcZwxc5
- NQ0HZarITCobHJ6IkCkyVwQeAp5pTucJq9OEM7ujHIHO0D4wls+zDlJCeRif1yEg22L+ LQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
- by userp2120.oracle.com with ESMTP id 33xhxn41kf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Wed, 07 Oct 2020 20:15:31 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
- by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 097KBCu4119070;
- Wed, 7 Oct 2020 20:15:31 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by userp3020.oracle.com with ESMTP id 33yyjhnk1c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 07 Oct 2020 20:15:31 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 097KFUlB031996;
- Wed, 7 Oct 2020 20:15:30 GMT
-Received: from [10.65.129.34] (/10.65.129.34)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Wed, 07 Oct 2020 13:15:29 -0700
-Subject: Re: [PATCH 2/2] sparc: Check VMA range in sparc_validate_prot()
-To: Jann Horn <jannh@google.com>, "David S. Miller" <davem@davemloft.net>,
- sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org
-References: <20201007073932.865218-1-jannh@google.com>
- <20201007073932.865218-2-jannh@google.com>
-From: Khalid Aziz <khalid.aziz@oracle.com>
-X-Pep-Version: 2.0
-Organization: Oracle Corp
-Message-ID: <230d612d-75e8-34e0-00d6-b0f7274e692c@oracle.com>
-Date: Wed, 7 Oct 2020 14:15:28 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C6FPh5rjRzDqRc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 13:23:52 +1100 (AEDT)
+Received: by mail-io1-xd41.google.com with SMTP id 67so4652960iob.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Oct 2020 19:23:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=INuLJfBeUmEH0uw1bq9WIrK5i8dKmvSaFB92Q9UojBM=;
+ b=MrTISALNzlXJ3QturtANcCCaH81gaQRCvQaKmxGXiT1m7ZQDBPIYxg9XvvMH6q6VzC
+ eYN2wQQ24Q5uhbPjRvNNbGVkjUtSwUAfp5RBGdGK5on6rFkHH6tzET+iGK81n9gL6RWG
+ Fby/zu30BO2aiHkUx4/tObTTfJ9Nsv3EzNmBEamA0C/kCaSpplFFWbPi2R8QmLS/rEe+
+ NSxO49PFtRdAJFJ70oFbmMVsgy2GK6GlRSI4RY8dEiC+YiLwgFI6eiYjmFTEpi1lllBZ
+ scXqdVXjNulHWr4KPdJuWW7kzhTTc5DE1maMVfseZ6F5pvNUeAAA3Z7tP96xsQ2S/evT
+ fUUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=INuLJfBeUmEH0uw1bq9WIrK5i8dKmvSaFB92Q9UojBM=;
+ b=PslnnocQOyyO8RQCvkxYmOM5aMm3Y0bpbW4NEJtqstLR+4pAsA3dAcwf8vK+Z6wMp4
+ aMuVwRhBBh1ARh/F/DOtAZNgzx5GUBnW4MxTjNjQ8SLKUCgfXpLfCC0w9IT51geDctut
+ KOdjYX8kHt5Pr11wNdHmuPTqjHhkiTzzvh6NU62yFs7+R/uClIBTgM+kzKtaAWCtzO5H
+ zFOJRh7J7x4UajNMNrIpirmlWS8x/Dtcs8eBbnIPz7U50mX2x93TbfM0zAPn0qH2e6+z
+ HblLSOfeNacKZB9O8zE5DCIIvdccOH9qaFxmBDgVlxGk2xQPUBwgQ1Io+69DYxIqjtTQ
+ Dyvg==
+X-Gm-Message-State: AOAM532Fy89y8oSu+b8iDlw1Z1BkqSnDQS2r8EpLh6CkPVhENFgLvQ+E
+ nGjRF2OPkYecv6veQZ7FywP3MVOsV/aLt/lMS9U=
+X-Google-Smtp-Source: ABdhPJwF6c8p7byaDZ5CZ7geEmWRHlc118O6oGWP7oHgpK6Pe3PVCKbbt6qqxjFcqUyRy/3SySScPNlFxuN3oRTjWME=
+X-Received: by 2002:a6b:5907:: with SMTP id n7mr4451249iob.75.1602123828699;
+ Wed, 07 Oct 2020 19:23:48 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20201007073932.865218-2-jannh@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+References: <20200925092258.525079-1-clg@kaod.org>
+In-Reply-To: <20200925092258.525079-1-clg@kaod.org>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Thu, 8 Oct 2020 13:23:37 +1100
+Message-ID: <CAOSf1CGW7ocYm2BXFiy9Nmi+G+xwVcqQzTqPo_nss_tmpG_V=w@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/pci: Fix PHB removal/rescan on PowerNV
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9767
- signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- adultscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 mlxscore=0 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2010070128
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9767
- signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- malwarescore=0 bulkscore=0
- impostorscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
- mlxlogscore=999 adultscore=0 clxscore=1015 spamscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2010070128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,123 +74,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Paul Mackerras <paulus@samba.org>, Anthony Yznaga <anthony.yznaga@oracle.com>,
- Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-pci <linux-pci@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/7/20 1:39 AM, Jann Horn wrote:
-> sparc_validate_prot() is called from do_mprotect_pkey() as
-> arch_validate_prot(); it tries to ensure that an mprotect() call can't
-> enable ADI on incompatible VMAs.
-> The current implementation only checks that the VMA at the start addres=
-s
-> matches the rules for ADI mappings; instead, check all VMAs that will b=
-e
-> affected by mprotect().
->=20
-> (This hook is called before mprotect() makes sure that the specified ra=
-nge
-> is actually covered by VMAs, and mprotect() returns specific error code=
-s
-> when that's not the case. In order for mprotect() to still generate the=
+On Fri, Sep 25, 2020 at 7:23 PM C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+>
+> To fix an issue with PHB hotplug on pSeries machine (HPT/XIVE), commit
+> 3a3181e16fbd introduced a PPC specific pcibios_remove_bus() routine to
+> clear all interrupt mappings when the bus is removed. This routine
+> frees an array allocated in pcibios_scan_phb().
+>
+> This broke PHB hotplug on PowerNV because, when a PHB is removed and
+> re-scanned through sysfs, the PCI layer un-assigns and re-assigns
+> resources to the PHB but does not destroy and recreate the PCI
+> controller structure. Since pcibios_remove_bus() does not clear the
+> 'irq_map' array pointer, a second removal of the PHB will try to free
+> the array a second time and corrupt memory.
 
-> same error codes for mprotect(<unmapped_ptr>, <len>, ...|PROT_ADI), we =
-need
-> to *accept* cases where the range is not fully covered by VMAs.)
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 74a04967482f ("sparc64: Add support for ADI (Application Data In=
-tegrity)")
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
-> compile-tested only, I don't have a Sparc ADI setup - might be nice if =
-some
-> Sparc person could test this?
->=20
->  arch/sparc/include/asm/mman.h | 50 +++++++++++++++++++++--------------=
+"PHB hotplug" and "hot-plugging devices under a PHB" are different
+things. What you're saying here doesn't make a whole lot of sense to
+me unless you're conflating the two. The distinction is important
+since on pseries we can use DLPAR to add and remove actual PHBs (i.e.
+the pci_controller) at runtime, but there's no corresponding mechanism
+on PowerNV.
 
->  1 file changed, 30 insertions(+), 20 deletions(-)
+> Free the 'irq_map' array in pcibios_free_controller() to fix
+> corruption and clear interrupt mapping after it has been
+> disposed. This to avoid filling up the array with successive
+> remove/rescan of a bus.
 
+Even with this patch I think we're still broken. With this patch
+applied the init path is something like:
 
-Looks good to me.
+per-phb init:
+    allocate phb->irq_map array
+per-bus init:
+    nothing
+per-device init:
+    pcibios_bus_add_device()
+       pci_read_irq_line()
+            pci_irq_map_register(pci_dev, virq)
+               *record the device's interrupt in phb->irq_map*
 
-Reviewed-by: Khalid Aziz <khalid.aziz@oracle.com>
+And the teardown path:
 
+per-device teardown:
+    nothing
+per-bus teardown:
+    pcibios_remove_bus()
+        pci_irq_map_dispose()
+            *walk phb->irq_map and dispose of each mapped interrupt*
+per-phb teardown:
+    free(phb->irq_map)
 
->=20
-> diff --git a/arch/sparc/include/asm/mman.h b/arch/sparc/include/asm/mma=
-n.h
-> index e85222c76585..6dced75567c3 100644
-> --- a/arch/sparc/include/asm/mman.h
-> +++ b/arch/sparc/include/asm/mman.h
-> @@ -60,31 +60,41 @@ static inline int sparc_validate_prot(unsigned long=
- prot, unsigned long addr,
->  	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_ADI=
-))
->  		return 0;
->  	if (prot & PROT_ADI) {
-> +		struct vm_area_struct *vma, *next;
-> +
->  		if (!adi_capable())
->  			return 0;
-> =20
-> -		if (addr) {
-> -			struct vm_area_struct *vma;
-> +		vma =3D find_vma(current->mm, addr);
-> +		/* if @addr is unmapped, let mprotect() deal with it */
-> +		if (!vma || vma->vm_start > addr)
-> +			return 1;
-> +		while (1) {
-> +			/* ADI can not be enabled on PFN
-> +			 * mapped pages
-> +			 */
-> +			if (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
-> +				return 0;
-> =20
-> -			vma =3D find_vma(current->mm, addr);
-> -			if (vma) {
-> -				/* ADI can not be enabled on PFN
-> -				 * mapped pages
-> -				 */
-> -				if (vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
-> -					return 0;
-> +			/* Mergeable pages can become unmergeable
-> +			 * if ADI is enabled on them even if they
-> +			 * have identical data on them. This can be
-> +			 * because ADI enabled pages with identical
-> +			 * data may still not have identical ADI
-> +			 * tags on them. Disallow ADI on mergeable
-> +			 * pages.
-> +			 */
-> +			if (vma->vm_flags & VM_MERGEABLE)
-> +				return 0;
-> =20
-> -				/* Mergeable pages can become unmergeable
-> -				 * if ADI is enabled on them even if they
-> -				 * have identical data on them. This can be
-> -				 * because ADI enabled pages with identical
-> -				 * data may still not have identical ADI
-> -				 * tags on them. Disallow ADI on mergeable
-> -				 * pages.
-> -				 */
-> -				if (vma->vm_flags & VM_MERGEABLE)
-> -					return 0;
-> -			}
-> +			/* reached the end of the range without errors? */
-> +			if (addr+len <=3D vma->vm_end)
-> +				return 1;
-> +			next =3D vma->vm_next;
-> +			/* if a VMA hole follows, let mprotect() deal with it */
-> +			if (!next || next->vm_start !=3D vma->vm_end)
-> +				return 1;
-> +			vma =3D next;
->  		}
->  	}
->  	return 1;
->=20
+There's a lot of asymmetry here, which is a problem in itself, but the
+real issue is that when removing *any* pci_bus under a PHB we dispose
+of the LSI\ for *every* device under that PHB. Not good.
 
-
+Ideally we should be fixing this by having the per-device teardown
+handle disposing the mapping. Unfortunately, there's no pcibios hook
+that's called when removing a pci_dev. However, we can register a bus
+notifier which will be called when the pci_dev is removed from its bus
+and we already do that for the per-device EEH teardown and to handle
+IOMMU TCE invalidation when the device is removed.
