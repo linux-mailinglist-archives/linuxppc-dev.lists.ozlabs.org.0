@@ -2,58 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF12286EA7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 08:23:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F764286F71
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 09:31:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C6Lkb5ryRzDqP5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 17:23:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C6NDg2db7zDqRg
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 18:31:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
- helo=casper.infradead.org;
- envelope-from=batv+84bc492865ddab46dda0+6255+infradead.org+hch@casper.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=hdRv5sr7; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=HRvATTP7; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C6Lhg0TsNzDqLx
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 17:22:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=yUoIc9I8zBFW1l1RUkMTpa9dMjCgFjwiUO5I2agyv3s=; b=hdRv5sr7QtXVOGXnAnhUe3FNGb
- SRotAyEmN3rCMEJEhz3DikQcIqwCTG7CrAXiGiJWRUiku6BDUa42w6DZZiCTkfkbxFoXIe7hgn76r
- +C3TZkRE3oivb3DH5SBC/7jmkOXuTxXsYCUrSeefXQOupAXXmHcOAHPsplH9Um35Qqw3L/7lh0c2R
- i2QFfuqlGN1tfs6y+SyuJJCpyrrrN502ektDR3lor/9mvl6TtW94LyJ01rK7Nbdg2H7PMHKQIP93E
- NeJhUT3dXGmvhbe8Yp0AXOEET4abmXiWKvn13m9skKm3U05B8wtsNCsN+hd1Ih2h7T+f9vwrEqpAW
- cwLC1J/Q==;
-Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1kQPJ6-00070T-71; Thu, 08 Oct 2020 06:21:40 +0000
-Date: Thu, 8 Oct 2020 07:21:40 +0100
-From: Christoph Hellwig <hch@infradead.org>
-To: Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
- and with length
-Message-ID: <20201008062140.GA24315@infradead.org>
-References: <20201007073932.865218-1-jannh@google.com>
- <20201007123544.GA11433@infradead.org>
- <CAG48ez3kjTeVtQcjQerYYRs7sX5qq3O7SU-FEaYLNXisFmAeOg@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C6N8P3KxTzDqRW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 18:27:48 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09872bp4079588; Thu, 8 Oct 2020 03:27:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Lt+hq3aMXp51vgfmXUSE3RG9gwB/Zyn+/BLXNdnI0dU=;
+ b=HRvATTP7KlCJCXuFqbNavSO0oUOT+TcVBO8dQ7E7nUG9wFzRvPrk6jwhidgwbJ8Ql41m
+ 7A+uARTHhf2p3m14TNhokbPsSYAGHNJjQP4BFx6+LXedjn1lrzP5aOJJMKTqvYTedKbv
+ EEeJ1RoMKDdzaY5qSTihAqoRzbcSjL00ga140/tYN5uIv7WHDfpptU5BEtW3rvEkebDY
+ nqVG4bhJ2+aK8GD4/xSYDQWESx6mmYDu6c4LS0AAwsCf8jV9g7+U8lKxqDG2RP8X4xd9
+ sLZkF8AWQbPRUrQH1eteaE8p7f4eEXJsMQiUYM796k4OGq/lcNhTyjNTv01KKyIw76uM jg== 
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 341wa5t0er-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Oct 2020 03:27:40 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0987P2Sb022320;
+ Thu, 8 Oct 2020 07:27:37 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma05fra.de.ibm.com with ESMTP id 33xgx82n1c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Oct 2020 07:27:37 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0987RZBE20250938
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 8 Oct 2020 07:27:35 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EDF5A4C046;
+ Thu,  8 Oct 2020 07:27:34 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 061394C040;
+ Thu,  8 Oct 2020 07:27:33 +0000 (GMT)
+Received: from bangoria.ibmuc.com (unknown [9.199.37.242])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  8 Oct 2020 07:27:32 +0000 (GMT)
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v4 0/4] powerpc/sstep: VSX 32-byte vector paired load/store
+ instructions
+Date: Thu,  8 Oct 2020 12:57:22 +0530
+Message-Id: <20201008072726.233086-1-ravi.bangoria@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAG48ez3kjTeVtQcjQerYYRs7sX5qq3O7SU-FEaYLNXisFmAeOg@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-10-08_03:2020-10-08,
+ 2020-10-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 priorityscore=1501 malwarescore=0
+ mlxlogscore=999 impostorscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2010080050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,60 +94,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Kleikamp <shaggy@linux.vnet.ibm.com>, Will Deacon <will@kernel.org>,
- Linux-MM <linux-mm@kvack.org>, kernel list <linux-kernel@vger.kernel.org>,
- Christoph Hellwig <hch@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Khalid Aziz <khalid.aziz@oracle.com>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Anthony Yznaga <anthony.yznaga@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: ravi.bangoria@linux.ibm.com, bala24@linux.ibm.com, paulus@samba.org,
+ sandipan@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 07, 2020 at 04:42:55PM +0200, Jann Horn wrote:
-> > > @@ -43,7 +43,7 @@ static inline long do_mmap2(unsigned long addr, size_t len,
-> > >  {
-> > >       long ret = -EINVAL;
-> > >
-> > > -     if (!arch_validate_prot(prot, addr))
-> > > +     if (!arch_validate_prot(prot, addr, len))
-> >
-> > This call isn't under mmap lock.  I also find it rather weird as the
-> > generic code only calls arch_validate_prot from mprotect, only powerpc
-> > also calls it from mmap.
-> >
-> > This seems to go back to commit ef3d3246a0d0
-> > ("powerpc/mm: Add Strong Access Ordering support")
-> 
-> I'm _guessing_ the idea in the generic case might be that mmap()
-> doesn't check unknown bits in the protection flags, and therefore
-> maybe people wanted to avoid adding new error cases that could be
-> caused by random high bits being set? So while the mprotect() case
-> checks the flags and refuses unknown values, the mmap() code just lets
-> the architecture figure out which bits are actually valid to set (via
-> arch_calc_vm_prot_bits()) and silently ignores the rest?
-> 
-> And powerpc apparently decided that they do want to error out on bogus
-> prot values passed to their version of mmap(), and in exchange, assume
-> in arch_calc_vm_prot_bits() that the protection bits are valid?
+VSX vector paired instructions operates with octword (32-byte)
+operand for loads and stores between storage and a pair of two
+sequential Vector-Scalar Registers (VSRs). There are 4 word
+instructions and 2 prefixed instructions that provides this
+32-byte storage access operations - lxvp, lxvpx, stxvp, stxvpx,
+plxvp, pstxvp.
 
-The problem really is that now programs behave different on powerpc
-compared to all other architectures.
+Emulation infrastructure doesn't have support for these instructions,
+to operate with 32-byte storage access and to operate with 2 VSX
+registers. This patch series enables the instruction emulation
+support and adds test cases for them respectively.
 
-> powerpc's arch_validate_prot() doesn't actually need the mmap lock, so
-> I think this is fine-ish for now (as in, while the code is a bit
-> unclean, I don't think I'm making it worse, and I don't think it's
-> actually buggy). In theory, we could move the arch_validate_prot()
-> call over into the mmap guts, where we're holding the lock, and gate
-> it on the architecture or on some feature CONFIG that powerpc can
-> activate in its Kconfig. But I'm not sure whether that'd be helping or
-> making things worse, so when I sent this patch, I deliberately left
-> the powerpc stuff as-is.
+v3: https://lore.kernel.org/linuxppc-dev/20200731081637.1837559-1-bala24@linux.ibm.com/ 
 
-For now I'd just duplicate the trivial logic from arch_validate_prot
-in the powerpc version of do_mmap2 and add a comment that this check
-causes a gratious incompatibility to all other architectures.  And then
-hope that the powerpc maintainers fix it up :)
+Changes in v4:
+-------------
+* Patch #1 is (kind of) new.
+* Patch #2 now enables both analyse_instr() and emulate_step()
+  unlike prev series where both were in separate patches.
+* Patch #2 also has important fix for emulation on LE.
+* Patch #3 and #4. Added XSP/XTP, D0/D1 instruction operands,
+  removed *_EX_OP, __PPC_T[P][X] macros which are incorrect,
+  and adhered to PPC_RAW_* convention.
+* Added `CPU_FTR_ARCH_31` check in testcases to avoid failing
+  in p8/p9.
+* Some consmetic changes.
+* Rebased to powerpc/next
+
+Changes in v3:
+-------------
+Worked on review comments and suggestions from Ravi and Naveen,
+
+* Fix the do_vsx_load() to handle vsx instructions if MSR_FP/MSR_VEC
+  cleared in exception conditions and it reaches to read/write to
+  thread_struct member fp_state/vr_state respectively.
+* Fix wrongly used `__vector128 v[2]` in struct vsx_reg as it should
+  hold a single vsx register size.
+* Remove unnecessary `VSX_CHECK_VEC` flag set and condition to check
+  `VSX_LDLEFT` that is not applicable for these vsx instructions.
+* Fix comments in emulate_vsx_load() that were misleading.
+* Rebased on latest powerpc next branch.
+
+Changes in v2:
+-------------
+* Fix suggestion from Sandipan, wrap ISA 3.1 instructions with
+  cpu_has_feature(CPU_FTR_ARCH_31) check.
+* Rebase on latest powerpc next branch.
+
+
+Balamuruhan S (4):
+  powerpc/sstep: Emulate prefixed instructions only when CPU_FTR_ARCH_31
+    is set
+  powerpc/sstep: Support VSX vector paired storage access instructions
+  powerpc/ppc-opcode: Add encoding macros for VSX vector paired
+    instructions
+  powerpc/sstep: Add testcases for VSX vector paired load/store
+    instructions
+
+ arch/powerpc/include/asm/ppc-opcode.h |  13 ++
+ arch/powerpc/lib/sstep.c              | 152 +++++++++++++--
+ arch/powerpc/lib/test_emulate_step.c  | 270 ++++++++++++++++++++++++++
+ 3 files changed, 414 insertions(+), 21 deletions(-)
+
+-- 
+2.26.2
+
