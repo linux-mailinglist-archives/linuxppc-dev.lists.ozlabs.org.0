@@ -1,52 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6BC28723B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 12:07:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F1D28723C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 12:09:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C6Rj25fLWzDqVv
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 21:07:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C6Rkv6q40zDqWP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Oct 2020 21:09:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C6RgH414TzDqR6
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 21:06:19 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C6RhQ4YpXzDqBj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Oct 2020 21:07:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=rk18GFBM; 
+ header.a=rsa-sha256 header.s=201909 header.b=ixnS8cV4; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4C6RgG0Wqkz9sSn;
- Thu,  8 Oct 2020 21:06:18 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4C6RhP00Qvz9sT6;
+ Thu,  8 Oct 2020 21:07:16 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1602151578;
- bh=uzcQtunbIyI7pt736Imzp1NEubPV5O7L5FOd/FEjg4Y=;
+ s=201909; t=1602151637;
+ bh=eNG1RyjqNmOm7441Ouc9ni/lGO8jgy6V8+FrXQf4kmE=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=rk18GFBMMlbyxIn5M25XRkAkieZXp5TOWji69AxWF2fgqD3oGT/xY+yphxUUh+wQM
- YxMSEvGvt/risrJye6SYaAjfb3vThJ2mijNlov+8crsPWYPljC26bu6iYEKnpQWJo6
- TURmjds8zDr19SW6GAkU7F5NOH0lUsBMqmmTSaeXHnyV8TEQiOxvLt2wkuLze3Fphw
- u/paMF+UYGZ21mpd8lVcop6hME0C1eFkPo+/2MvwUlmsydSCgo7+AAMp79gGWaZcID
- hsda3L+6DJmjJ/j519F/dbdX+70B79kmWFisqRTpPJMEig7DiQ8Gou7BKoNi802/nt
- 9RDs6/5786zsg==
+ b=ixnS8cV4Q4MSAGho2zjlIKJJgNmnrvBVFjwDxHWNwsbJaAGA8W9fiKzWBlwLQI+CW
+ cP7//cRdNpcodhyaIIesDXI9Pytf38ooJ8OZ0kiqQ1uE6iaoKe9c7ZaEX3GPLjcsBm
+ /h/SUVum41uWKLr66a0yv6Z+wABkvxDe7MHwVD5g5lLtfSwIW96KlDn3EtVudTeCzX
+ inJNjToJOuirp0ZMHIqpBuSFG8TPtmlN0HZAGSFiwPMSixe472j2YL4rnD/HMGtvuS
+ FxTMHwuDDUBdeRj1/Nfu+cZy9GV6fB+oVzI/ccDHkEAt/Kci6O2RJ+0CfjGQZuTNfm
+ ltjSQgJfYQNtA==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Andrew Donnellan <ajd@linux.ibm.com>, Sasha Levin <sashal@kernel.org>,
  linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH v2 1/2] powerpc/rtas: Restrict RTAS requests from userspace
-In-Reply-To: <421cba41-20bf-f874-c81a-8b7f9944c845@linux.ibm.com>
+In-Reply-To: <87v9fl117r.fsf@mpe.ellerman.id.au>
 References: <20200820044512.7543-1-ajd@linux.ibm.com>
  <20200826135348.AD06422B4B@mail.kernel.org>
  <421cba41-20bf-f874-c81a-8b7f9944c845@linux.ibm.com>
-Date: Thu, 08 Oct 2020 21:06:16 +1100
-Message-ID: <87v9fl117r.fsf@mpe.ellerman.id.au>
+ <87v9fl117r.fsf@mpe.ellerman.id.au>
+Date: Thu, 08 Oct 2020 21:07:16 +1100
+Message-ID: <87sgap1163.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -66,16 +67,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrew Donnellan <ajd@linux.ibm.com> writes:
-> On 26/8/20 11:53 pm, Sasha Levin wrote:
->> How should we proceed with this patch?
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Andrew Donnellan <ajd@linux.ibm.com> writes:
+>> On 26/8/20 11:53 pm, Sasha Levin wrote:
+>>> How should we proceed with this patch?
+>>
+>> mpe: I believe we came to the conclusion that we shouldn't put this in 
+>> stable just yet?
 >
-> mpe: I believe we came to the conclusion that we shouldn't put this in 
-> stable just yet?
+> Yeah.
+>
+> Let's give it a little time to get some wider testing before we backport
+> it.
 
-Yeah.
-
-Let's give it a little time to get some wider testing before we backport
-it.
+So my fault for not dropping the Cc: stable on the commit, sorry.
 
 cheers
