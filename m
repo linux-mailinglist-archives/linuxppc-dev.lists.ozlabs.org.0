@@ -2,53 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE65288199
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 07:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A6A2881BE
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 07:38:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C6x0R2sTvzDqY7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 16:07:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C6xgp59f1zDqZn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 16:38:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C6wyx4lrszDqBc
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Oct 2020 16:06:33 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=UGj9q5W1; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4C6wyx4JYdz9sTK; Fri,  9 Oct 2020 16:06:33 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4C6wyx22WYz9sSC;
- Fri,  9 Oct 2020 16:06:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1602219993;
- bh=u/tC6kBNuTt1DLx2MDnVvp5ksb9SRbHet77yVS5sp94=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=UGj9q5W1y29ncbaf5d9vHMAsq7u4kBtOrW4Ly3fqLPyMjqPkuI4CI9bCbTJ2yTYtc
- v5Vj38kfbQlwdWX+cEfbTy0FzovBVHI12wQcWl+9Bp8atKTpnwQpsx22cLaPN4IgeG
- kWk43Ikxbt3GEWeZ2oF75vXMWB7U5EGd/WXl21ftOesFTwWRL2DaECtSLa8ywjX2sF
- 7QUEIsw2NEOSICj7lVt8ZfPct3d8qXpDaF/CWkX5LDq80qVWGpuJsvLL16/oyLoeio
- LXX2t8aUhGz6FeJSsIYxKtO4dxd1disgHrLfkzEaa+jqJXbPAdgHl+5lNiT1xNx/4l
- 0+8tNmsw0MpMg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH] powerpc/powernv/dump: Fix race while processing OPAL dump
-In-Reply-To: <20201007101742.40757-1-hegdevasant@linux.vnet.ibm.com>
-References: <20201007101742.40757-1-hegdevasant@linux.vnet.ibm.com>
-Date: Fri, 09 Oct 2020 16:06:32 +1100
-Message-ID: <87a6ww0yzr.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C6xfC2d2DzDqTL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Oct 2020 16:37:03 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4C6xf20sQfzB09bJ;
+ Fri,  9 Oct 2020 07:36:58 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Xegd8rSQVMv5; Fri,  9 Oct 2020 07:36:58 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4C6xf201WBzB09bG;
+ Fri,  9 Oct 2020 07:36:58 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B3B418B86F;
+ Fri,  9 Oct 2020 07:36:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id P_C4BzXRRlQv; Fri,  9 Oct 2020 07:36:57 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 761D58B76C;
+ Fri,  9 Oct 2020 07:36:57 +0200 (CEST)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 02EA1663BB; Fri,  9 Oct 2020 05:36:57 +0000 (UTC)
+Message-Id: <a584afe92c886cbf5ba8664a600afd0282a0a59c.1602221789.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/8xx: Fix instruction TLB miss exception with perf
+ enabled
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri,  9 Oct 2020 05:36:57 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,62 +59,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vasant Hegde <hegdevasant@linux.vnet.ibm.com> writes:
-> diff --git a/arch/powerpc/platforms/powernv/opal-dump.c b/arch/powerpc/platforms/powernv/opal-dump.c
-> index 543c816fa99e..7e6eeedec32b 100644
-> --- a/arch/powerpc/platforms/powernv/opal-dump.c
-> +++ b/arch/powerpc/platforms/powernv/opal-dump.c
-> @@ -346,21 +345,39 @@ static struct dump_obj *create_dump_obj(uint32_t id, size_t size,
->  	rc = kobject_add(&dump->kobj, NULL, "0x%x-0x%x", type, id);
->  	if (rc) {
->  		kobject_put(&dump->kobj);
-> -		return NULL;
-> +		return;
->  	}
->  
-> +	/*
-> +	 * As soon as the sysfs file for this dump is created/activated there is
-> +	 * a chance the opal_errd daemon (or any userspace) might read and
-> +	 * acknowledge the dump before kobject_uevent() is called. If that
-> +	 * happens then there is a potential race between
-> +	 * dump_ack_store->kobject_put() and kobject_uevent() which leads to a
-> +	 * use-after-free of a kernfs object resulting in a kernel crash.
-> +	 *
-> +	 * To avoid that, we need to take a reference on behalf of the bin file,
-> +	 * so that our reference remains valid while we call kobject_uevent().
-> +	 * We then drop our reference before exiting the function, leaving the
-> +	 * bin file to drop the last reference (if it hasn't already).
-> +	 */
-> +
-> +	/* Take a reference for the bin file */
-> +	kobject_get(&dump->kobj);
->  	rc = sysfs_create_bin_file(&dump->kobj, &dump->dump_attr);
->  	if (rc) {
->  		kobject_put(&dump->kobj);
-> -		return NULL;
-> +		/* Drop reference count taken for bin file */
-> +		kobject_put(&dump->kobj);
-> +		return;
->  	}
->  
->  	pr_info("%s: New platform dump. ID = 0x%x Size %u\n",
->  		__func__, dump->id, dump->size);
->  
->  	kobject_uevent(&dump->kobj, KOBJ_ADD);
-> -
-> -	return dump;
-> +	/* Drop reference count taken for bin file */
-> +	kobject_put(&dump->kobj);
->  }
+When perf is enabled, r11 must also be restored when CONFIG_HUGETLBFS
+is selected.
 
-I think this would be better if it was reworked along the lines of:
+Fixes: a891c43b97d3 ("powerpc/8xx: Prepare handlers for _PAGE_HUGE for 512k pages.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/head_8xx.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-aea948bb80b4 ("powerpc/powernv/elog: Fix race while processing OPAL error log event.")
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 9f359d3fba74..32d85387bdc5 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -268,7 +268,7 @@ InstructionTLBMiss:
+ 	addi	r10, r10, 1
+ 	stw	r10, (itlb_miss_counter - PAGE_OFFSET)@l(0)
+ 	mfspr	r10, SPRN_SPRG_SCRATCH0
+-#if defined(ITLB_MISS_KERNEL) || defined(CONFIG_SWAP)
++#if defined(ITLB_MISS_KERNEL) || defined(CONFIG_SWAP) || defined(CONFIG_HUGETLBFS)
+ 	mfspr	r11, SPRN_SPRG_SCRATCH1
+ #endif
+ 	rfi
+-- 
+2.25.0
 
-cheers
