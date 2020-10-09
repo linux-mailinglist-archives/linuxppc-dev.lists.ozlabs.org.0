@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D3D2881F9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 08:11:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605182881FD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 08:12:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C6yPb6QSfzDqdS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 17:11:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C6yRT6VwCzDqdD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 17:12:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C6yFF2gcDzDqWT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C6yFF2mtLzDqWY
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Oct 2020 17:04:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4C6yFD157tz9sVD; Fri,  9 Oct 2020 17:03:59 +1100 (AEDT)
+ id 4C6yFD4wxNz9sTK; Fri,  9 Oct 2020 17:04:00 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
  Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <b8f8101c368b8a6451844a58d7bd7d83c14cf2aa.1601566529.git.christophe.leroy@csgroup.eu>
-References: <b8f8101c368b8a6451844a58d7bd7d83c14cf2aa.1601566529.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/32s: Setup the early hash table at all time.
-Message-Id: <160222339303.867048.111533174340819831.b4-ty@ellerman.id.au>
-Date: Fri,  9 Oct 2020 17:03:59 +1100 (AEDT)
+In-Reply-To: <3c9a6eb0fc040868ac59be66f338d08fd017668d.1601549945.git.christophe.leroy@csgroup.eu>
+References: <3c9a6eb0fc040868ac59be66f338d08fd017668d.1601549945.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/time: Remove ifdef in get_dec() and set_dec()
+Message-Id: <160222339270.867048.7781470173395952813.b4-ty@ellerman.id.au>
+Date: Fri,  9 Oct 2020 17:04:00 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,19 +44,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 1 Oct 2020 15:35:38 +0000 (UTC), Christophe Leroy wrote:
-> At the time being, an early hash table is set up when
-> CONFIG_KASAN is selected.
+On Thu, 1 Oct 2020 10:59:19 +0000 (UTC), Christophe Leroy wrote:
+> Move SPRN_PIT definition in reg.h.
 > 
-> There is nothing wrong with setting such an early hash table
-> all the time, even if it is not used. This is a statically
-> allocated 256 kB table which lies in the init data section.
-> 
-> [...]
+> This allows to remove ifdef in get_dec() and set_dec() and
+> makes them more readable.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/32s: Setup the early hash table at all time.
-      https://git.kernel.org/powerpc/c/69a1593abdbcf03a76367320d929a8ae7a5e3d71
+[1/1] powerpc/time: Remove ifdef in get_dec() and set_dec()
+      https://git.kernel.org/powerpc/c/63f9d9df5ed0d4f3a2c0cd08730e1cae1edd11bf
 
 cheers
