@@ -2,97 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DEF52882EE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 08:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D15282895F2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 21:59:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C6zBW5j5JzDqbW
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 17:46:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C7Jmk4ykBzDqDm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Oct 2020 06:59:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=E+ih/Lly; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C6z3r0pMrzDqQs
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Oct 2020 17:40:52 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0996V0Rv079335; Fri, 9 Oct 2020 02:40:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=cCUp47y8g2rsUgg084HFXzBNL4fpEzPvpOGAQhy+n3w=;
- b=E+ih/LlyEW9Hd7ZzoN3PNR8vI7xjCnwojNY1lpCo3CW2oyojZzXzZxgNg8FlQW19S5MF
- JFYp0elvObzNvOTKrRAb2M6CwCcF+DCY3tF5jvtkRxxQL7M8O8oyfgDt8vgD8DwkgGFG
- +HbY2g9PQHtNNwBcZYs15SLHMzPBOOVmX6DsjXbuyx2cM4/ZL7zIx8kYMVVZ20/KOGZG
- /WKf49LZumFme5tbxeVmfQb0Rc2t2RVNXN5S2AyKUPXYWuo4zi3wN7SXd8q/F062Tb+r
- NNfSYV8bPVeEHiqafSNBIHeBhlVCqh0b+nO/QnKSZFzgjsKpTjcWp1kN+FQPczD+azLw FA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 342hha21gb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 09 Oct 2020 02:40:44 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0996Voh7082295;
- Fri, 9 Oct 2020 02:40:43 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 342hha21em-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 09 Oct 2020 02:40:43 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0996S2RZ031925;
- Fri, 9 Oct 2020 06:40:42 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 3429hugc6v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 09 Oct 2020 06:40:41 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0996edoC32834026
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 9 Oct 2020 06:40:39 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0A3F711C050;
- Fri,  9 Oct 2020 06:40:39 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2FF8811C052;
- Fri,  9 Oct 2020 06:40:37 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.85.89.116])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  9 Oct 2020 06:40:36 +0000 (GMT)
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v4 2/2] lkdtm/powerpc: Add SLB multihit test
-Date: Fri,  9 Oct 2020 12:10:05 +0530
-Message-Id: <20201009064005.19777-3-ganeshgr@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201009064005.19777-1-ganeshgr@linux.ibm.com>
-References: <20201009064005.19777-1-ganeshgr@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C7JbB6MXwzDqXt;
+ Sat, 10 Oct 2020 06:50:45 +1100 (AEDT)
+IronPort-SDR: pUremmhSpP/u1Pj1r5HCLTFoaVFVRd+SBbZbQaN8aflvHsHjFqQEAT9IE7ZGIigZzNeStLhjX1
+ tFzLLzGkoRaQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9769"; a="250225858"
+X-IronPort-AV: E=Sophos;i="5.77,355,1596524400"; d="scan'208";a="250225858"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2020 12:50:41 -0700
+IronPort-SDR: wgvSBhlinBwJf2eRaqYm1d4mOPDeheaaBRmvXZpaWhx0BsPjq5MOqCRmfglsuVIrge+HvLIvQ5
+ IT741lyNdN2Q==
+X-IronPort-AV: E=Sophos;i="5.77,355,1596524400"; d="scan'208";a="419536654"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+ by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2020 12:50:41 -0700
+From: ira.weiny@intel.com
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH RFC PKS/PMEM 00/58] PMEM: Introduce stray write protection for
+ PMEM
+Date: Fri,  9 Oct 2020 12:49:35 -0700
+Message-Id: <20201009195033.3208459-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.28.0.rc0.12.gb6a658bd00c9
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-09_02:2020-10-09,
- 2020-10-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 mlxscore=0 phishscore=0
- malwarescore=0 impostorscore=0 clxscore=1015 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010090044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,238 +57,330 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: msuchanek@suse.de, Ganesh Goudar <ganeshgr@linux.ibm.com>,
- keescook@chromium.org, npiggin@gmail.com, mahesh@linux.ibm.com
+Cc: linux-aio@kvack.org, linux-efi@vger.kernel.org, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-mmc@vger.kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, target-devel@vger.kernel.org,
+ linux-mtd@lists.infradead.org, linux-kselftest@vger.kernel.org,
+ samba-technical@lists.samba.org, Ira Weiny <ira.weiny@intel.com>,
+ ceph-devel@vger.kernel.org, drbd-dev@lists.linbit.com,
+ devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
+ linux-nilfs@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org, x86@kernel.org,
+ amd-gfx@lists.freedesktop.org, linux-afs@lists.infradead.org,
+ cluster-devel@redhat.com, linux-cachefs@redhat.com,
+ intel-wired-lan@lists.osuosl.org, xen-devel@lists.xenproject.org,
+ linux-ext4@vger.kernel.org, Fenghua Yu <fenghua.yu@intel.com>,
+ linux-um@lists.infradead.org, intel-gfx@lists.freedesktop.org,
+ ecryptfs@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ reiserfs-devel@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-bcache@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ io-uring@vger.kernel.org, linux-nfs@vger.kernel.org,
+ linux-ntfs-dev@lists.sourceforge.net, netdev@vger.kernel.org,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To check machine check handling, add support to inject slb
-multihit errors.
+From: Ira Weiny <ira.weiny@intel.com>
 
-Cc: Kees Cook <keescook@chromium.org>
-Reviewed-by: Michal Suchánek <msuchanek@suse.de>
-Co-developed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
----
- drivers/misc/lkdtm/Makefile             |   1 +
- drivers/misc/lkdtm/core.c               |   3 +
- drivers/misc/lkdtm/lkdtm.h              |   3 +
- drivers/misc/lkdtm/powerpc.c            | 156 ++++++++++++++++++++++++
- tools/testing/selftests/lkdtm/tests.txt |   1 +
- 5 files changed, 164 insertions(+)
- create mode 100644 drivers/misc/lkdtm/powerpc.c
+Should a stray write in the kernel occur persistent memory is affected more
+than regular memory.  A write to the wrong area of memory could result in
+latent data corruption which will will persist after a reboot.  PKS provides a
+nice way to restrict access to persistent memory kernel mappings, while
+providing fast access when needed.
 
-diff --git a/drivers/misc/lkdtm/Makefile b/drivers/misc/lkdtm/Makefile
-index c70b3822013f..f37ecfb0a707 100644
---- a/drivers/misc/lkdtm/Makefile
-+++ b/drivers/misc/lkdtm/Makefile
-@@ -10,6 +10,7 @@ lkdtm-$(CONFIG_LKDTM)		+= rodata_objcopy.o
- lkdtm-$(CONFIG_LKDTM)		+= usercopy.o
- lkdtm-$(CONFIG_LKDTM)		+= stackleak.o
- lkdtm-$(CONFIG_LKDTM)		+= cfi.o
-+lkdtm-$(CONFIG_PPC64)		+= powerpc.o
- 
- KASAN_SANITIZE_stackleak.o	:= n
- KCOV_INSTRUMENT_rodata.o	:= n
-diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-index a5e344df9166..8d5db42baa90 100644
---- a/drivers/misc/lkdtm/core.c
-+++ b/drivers/misc/lkdtm/core.c
-@@ -178,6 +178,9 @@ static const struct crashtype crashtypes[] = {
- #ifdef CONFIG_X86_32
- 	CRASHTYPE(DOUBLE_FAULT),
- #endif
-+#ifdef CONFIG_PPC64
-+	CRASHTYPE(PPC_SLB_MULTIHIT),
-+#endif
- };
- 
- 
-diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
-index 8878538b2c13..b305bd511ee5 100644
---- a/drivers/misc/lkdtm/lkdtm.h
-+++ b/drivers/misc/lkdtm/lkdtm.h
-@@ -104,4 +104,7 @@ void lkdtm_STACKLEAK_ERASING(void);
- /* cfi.c */
- void lkdtm_CFI_FORWARD_PROTO(void);
- 
-+/* powerpc.c */
-+void lkdtm_PPC_SLB_MULTIHIT(void);
-+
- #endif
-diff --git a/drivers/misc/lkdtm/powerpc.c b/drivers/misc/lkdtm/powerpc.c
-new file mode 100644
-index 000000000000..f388b53dccba
---- /dev/null
-+++ b/drivers/misc/lkdtm/powerpc.c
-@@ -0,0 +1,156 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "lkdtm.h"
-+#include <linux/slab.h>
-+#include <linux/vmalloc.h>
-+
-+/* Gets index for new slb entry */
-+static inline unsigned long get_slb_index(void)
-+{
-+	unsigned long index;
-+
-+	index = get_paca()->stab_rr;
-+
-+	/*
-+	 * simple round-robin replacement of slb starting at SLB_NUM_BOLTED.
-+	 */
-+	if (index < (mmu_slb_size - 1))
-+		index++;
-+	else
-+		index = SLB_NUM_BOLTED;
-+	get_paca()->stab_rr = index;
-+	return index;
-+}
-+
-+#define slb_esid_mask(ssize)	\
-+	(((ssize) == MMU_SEGSIZE_256M) ? ESID_MASK : ESID_MASK_1T)
-+
-+/* Form the operand for slbmte */
-+static inline unsigned long mk_esid_data(unsigned long ea, int ssize,
-+					 unsigned long slot)
-+{
-+	return (ea & slb_esid_mask(ssize)) | SLB_ESID_V | slot;
-+}
-+
-+#define slb_vsid_shift(ssize)	\
-+	((ssize) == MMU_SEGSIZE_256M ? SLB_VSID_SHIFT : SLB_VSID_SHIFT_1T)
-+
-+/* Form the operand for slbmte */
-+static inline unsigned long mk_vsid_data(unsigned long ea, int ssize,
-+					 unsigned long flags)
-+{
-+	return (get_kernel_vsid(ea, ssize) << slb_vsid_shift(ssize)) | flags |
-+		((unsigned long)ssize << SLB_VSID_SSIZE_SHIFT);
-+}
-+
-+/* Inserts new slb entry */
-+static void insert_slb_entry(char *p, int ssize)
-+{
-+	unsigned long flags, entry;
-+
-+	flags = SLB_VSID_KERNEL | mmu_psize_defs[MMU_PAGE_64K].sllp;
-+	preempt_disable();
-+
-+	entry = get_slb_index();
-+	asm volatile("slbmte %0,%1" :
-+			: "r" (mk_vsid_data((unsigned long)p, ssize, flags)),
-+			  "r" (mk_esid_data((unsigned long)p, ssize, entry))
-+			: "memory");
-+
-+	entry = get_slb_index();
-+	asm volatile("slbmte %0,%1" :
-+			: "r" (mk_vsid_data((unsigned long)p, ssize, flags)),
-+			  "r" (mk_esid_data((unsigned long)p, ssize, entry))
-+			: "memory");
-+	preempt_enable();
-+	/*
-+	 * This triggers exception, If handled correctly we must recover
-+	 * from this error.
-+	 */
-+	p[0] = '!';
-+}
-+
-+/* Inject slb multihit on vmalloc-ed address i.e 0xD00... */
-+static void inject_vmalloc_slb_multihit(void)
-+{
-+	char *p;
-+
-+	p = vmalloc(2048);
-+	if (!p)
-+		return;
-+
-+	insert_slb_entry(p, MMU_SEGSIZE_1T);
-+	vfree(p);
-+}
-+
-+/* Inject slb multihit on kmalloc-ed address i.e 0xC00... */
-+static void inject_kmalloc_slb_multihit(void)
-+{
-+	char *p;
-+
-+	p = kmalloc(2048, GFP_KERNEL);
-+	if (!p)
-+		return;
-+
-+	insert_slb_entry(p, MMU_SEGSIZE_1T);
-+	kfree(p);
-+}
-+
-+/*
-+ * Few initial SLB entries are bolted. Add a test to inject
-+ * multihit in bolted entry 0.
-+ */
-+static void insert_dup_slb_entry_0(void)
-+{
-+	unsigned long test_address = 0xC000000000000000;
-+	volatile unsigned long *test_ptr;
-+	unsigned long entry, i = 0;
-+	unsigned long esid, vsid;
-+
-+	test_ptr = (unsigned long *)test_address;
-+	preempt_disable();
-+
-+	asm volatile("slbmfee  %0,%1" : "=r" (esid) : "r" (i));
-+	asm volatile("slbmfev  %0,%1" : "=r" (vsid) : "r" (i));
-+	entry = get_slb_index();
-+
-+	/* for i !=0 we would need to mask out the old entry number */
-+	asm volatile("slbmte %0,%1" :
-+			: "r" (vsid),
-+			  "r" (esid | entry)
-+			: "memory");
-+
-+	asm volatile("slbmfee  %0,%1" : "=r" (esid) : "r" (i));
-+	asm volatile("slbmfev  %0,%1" : "=r" (vsid) : "r" (i));
-+	entry = get_slb_index();
-+
-+	/* for i !=0 we would need to mask out the old entry number */
-+	asm volatile("slbmte %0,%1" :
-+			: "r" (vsid),
-+			  "r" (esid | entry)
-+			: "memory");
-+
-+	pr_info("%s accessing test address 0x%lx: 0x%lx\n",
-+		__func__, test_address, *test_ptr);
-+
-+	preempt_enable();
-+}
-+
-+void lkdtm_PPC_SLB_MULTIHIT(void)
-+{
-+	if (mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
-+		pr_info("Injecting SLB multihit errors\n");
-+		/*
-+		 * These need not be separate tests, And they do pretty
-+		 * much same thing. In any case we must recover from the
-+		 * errors introduced by these functions, machine would not
-+		 * survive these tests in case of failure to handle.
-+		 */
-+		inject_vmalloc_slb_multihit();
-+		inject_kmalloc_slb_multihit();
-+		insert_dup_slb_entry_0();
-+		pr_info("Recovered from SLB multihit errors\n");
-+	} else {
-+		pr_err("XFAIL: This test is for ppc64 and with hash mode MMU only\n");
-+	}
-+}
-diff --git a/tools/testing/selftests/lkdtm/tests.txt b/tools/testing/selftests/lkdtm/tests.txt
-index 9d266e79c6a2..7eb3cf91c89e 100644
---- a/tools/testing/selftests/lkdtm/tests.txt
-+++ b/tools/testing/selftests/lkdtm/tests.txt
-@@ -70,3 +70,4 @@ USERCOPY_KERNEL
- USERCOPY_KERNEL_DS
- STACKLEAK_ERASING OK: the rest of the thread stack is properly erased
- CFI_FORWARD_PROTO
-+PPC_SLB_MULTIHIT Recovered
+Since the last RFC[1] this patch set has grown quite a bit.  It now depends on
+the core patches submitted separately.
+
+	https://lore.kernel.org/lkml/20201009194258.3207172-1-ira.weiny@intel.com/
+
+And contained in the git tree here:
+
+	https://github.com/weiny2/linux-kernel/tree/pks-rfc-v3
+
+However, functionally there is only 1 major change from the last RFC.
+Specifically, kmap() is most often used within a single thread in a 'map/do
+something/unmap' pattern.  In fact this is the pattern used in ~90% of the
+callers of kmap().  This pattern works very well for the pmem use case and the
+testing which was done.  However, there were another ~20-30 kmap users which do
+not follow this pattern.  Some of them seem to expect the mapping to be
+'global' while others require a detailed audit to be sure.[2][3]
+
+While we don't anticipate global mappings to pmem there is a danger in
+changing the semantics of kmap().  Effectively, this would cause an unresolved
+page fault with little to no information about why.
+
+There were a number of options considered.
+
+1) Attempt to change all the thread local kmap() calls to kmap_atomic()
+2) Introduce a flags parameter to kmap() to indicate if the mapping should be
+   global or not
+3) Change ~20-30 call sites to 'kmap_global()' to indicate that they require a
+   global mapping of the pages
+4) Change ~209 call sites to 'kmap_thread()' to indicate that the mapping is to
+   be used within that thread of execution only
+
+Option 1 is simply not feasible kmap_atomic() is not the same semantic as
+kmap() within a single tread.  Option 2 would require all of the call sites of
+kmap() to change.  Option 3 seems like a good minimal change but there is a
+danger that new code may miss the semantic change of kmap() and not get the
+behavior intended for future users.  Therefore, option #4 was chosen.
+
+To handle the global PKRS state in the most efficient manner possible.  We
+lazily override the thread specific PKRS key value only when needed because we
+anticipate PKS to not be needed will not be needed most of the time.  And even
+when it is used 90% of the time it is a thread local call.
+
+
+[1] https://lore.kernel.org/lkml/20200717072056.73134-1-ira.weiny@intel.com/
+
+[2] The following list of callers continue calling kmap() (utilizing the global
+PKRS).  It would be nice if more of them could be converted to kmap_thread()
+
+	drivers/firewire/net.c:         ptr = kmap(dev->broadcast_rcv_buffer.pages[u]);
+	drivers/gpu/drm/i915/gem/i915_gem_pages.c:              return kmap(sg_page(sgt->sgl));
+	drivers/gpu/drm/ttm/ttm_bo_util.c:              map->virtual = kmap(map->page);
+	drivers/infiniband/hw/qib/qib_user_sdma.c:      mpage = kmap(page);
+	drivers/misc/vmw_vmci/vmci_host.c:      context->notify = kmap(context->notify_page) + (uva & (PAGE_SIZE - 1));
+	drivers/misc/xilinx_sdfec.c:            addr = kmap(pages[i]);
+	drivers/mmc/host/usdhi6rol0.c:  host->pg.mapped         = kmap(host->pg.page);
+	drivers/mmc/host/usdhi6rol0.c:  host->pg.mapped = kmap(host->pg.page);
+	drivers/mmc/host/usdhi6rol0.c:  host->pg.mapped = kmap(host->pg.page);
+	drivers/nvme/target/tcp.c:              iov->iov_base = kmap(sg_page(sg)) + sg->offset + sg_offset;
+	drivers/scsi/libiscsi_tcp.c:            segment->sg_mapped = kmap(sg_page(sg));
+	drivers/target/iscsi/iscsi_target.c:            iov[i].iov_base = kmap(sg_page(sg)) + sg->offset + page_off;
+	drivers/target/target_core_transport.c:         return kmap(sg_page(sg)) + sg->offset;
+	fs/btrfs/check-integrity.c:             block_ctx->datav[i] = kmap(block_ctx->pagev[i]);
+	fs/ceph/dir.c:          cache_ctl->dentries = kmap(cache_ctl->page);
+	fs/ceph/inode.c:                ctl->dentries = kmap(ctl->page);
+	fs/erofs/zpvec.h:               kmap_atomic(ctor->curr) : kmap(ctor->curr);
+	lib/scatterlist.c:              miter->addr = kmap(miter->page) + miter->__offset;
+	net/ceph/pagelist.c:    pl->mapped_tail = kmap(page);
+	net/ceph/pagelist.c:            pl->mapped_tail = kmap(page);
+	virt/kvm/kvm_main.c:                    hva = kmap(page);
+
+[3] The following appear to follow the same pattern as ext2 which was converted
+after some code audit.  So I _think_ they too could be converted to
+k[un]map_thread().
+
+	fs/freevxfs/vxfs_subr.c|75| kmap(pp);
+	fs/jfs/jfs_metapage.c|102| kmap(page);
+	fs/jfs/jfs_metapage.c|156| kmap(page);
+	fs/minix/dir.c|72| kmap(page);
+	fs/nilfs2/dir.c|195| kmap(page);
+	fs/nilfs2/ifile.h|24| void *kaddr = kmap(ibh->b_page);
+	fs/ntfs/aops.h|78| kmap(page);
+	fs/ntfs/compress.c|574| kmap(page);
+	fs/qnx6/dir.c|32| kmap(page);
+	fs/qnx6/dir.c|58| kmap(*p = page);
+	fs/qnx6/inode.c|190| kmap(page);
+	fs/qnx6/inode.c|557| kmap(page);
+	fs/reiserfs/inode.c|2397| kmap(bh_result->b_page);
+	fs/reiserfs/xattr.c|444| kmap(page);
+	fs/sysv/dir.c|60| kmap(page);
+	fs/sysv/dir.c|262| kmap(page);
+	fs/ufs/dir.c|194| kmap(page);
+	fs/ufs/dir.c|562| kmap(page);
+
+
+Ira Weiny (58):
+  x86/pks: Add a global pkrs option
+  x86/pks/test: Add testing for global option
+  memremap: Add zone device access protection
+  kmap: Add stray access protection for device pages
+  kmap: Introduce k[un]map_thread
+  kmap: Introduce k[un]map_thread debugging
+  drivers/drbd: Utilize new kmap_thread()
+  drivers/firmware_loader: Utilize new kmap_thread()
+  drivers/gpu: Utilize new kmap_thread()
+  drivers/rdma: Utilize new kmap_thread()
+  drivers/net: Utilize new kmap_thread()
+  fs/afs: Utilize new kmap_thread()
+  fs/btrfs: Utilize new kmap_thread()
+  fs/cifs: Utilize new kmap_thread()
+  fs/ecryptfs: Utilize new kmap_thread()
+  fs/gfs2: Utilize new kmap_thread()
+  fs/nilfs2: Utilize new kmap_thread()
+  fs/hfs: Utilize new kmap_thread()
+  fs/hfsplus: Utilize new kmap_thread()
+  fs/jffs2: Utilize new kmap_thread()
+  fs/nfs: Utilize new kmap_thread()
+  fs/f2fs: Utilize new kmap_thread()
+  fs/fuse: Utilize new kmap_thread()
+  fs/freevxfs: Utilize new kmap_thread()
+  fs/reiserfs: Utilize new kmap_thread()
+  fs/zonefs: Utilize new kmap_thread()
+  fs/ubifs: Utilize new kmap_thread()
+  fs/cachefiles: Utilize new kmap_thread()
+  fs/ntfs: Utilize new kmap_thread()
+  fs/romfs: Utilize new kmap_thread()
+  fs/vboxsf: Utilize new kmap_thread()
+  fs/hostfs: Utilize new kmap_thread()
+  fs/cramfs: Utilize new kmap_thread()
+  fs/erofs: Utilize new kmap_thread()
+  fs: Utilize new kmap_thread()
+  fs/ext2: Use ext2_put_page
+  fs/ext2: Utilize new kmap_thread()
+  fs/isofs: Utilize new kmap_thread()
+  fs/jffs2: Utilize new kmap_thread()
+  net: Utilize new kmap_thread()
+  drivers/target: Utilize new kmap_thread()
+  drivers/scsi: Utilize new kmap_thread()
+  drivers/mmc: Utilize new kmap_thread()
+  drivers/xen: Utilize new kmap_thread()
+  drivers/firmware: Utilize new kmap_thread()
+  drives/staging: Utilize new kmap_thread()
+  drivers/mtd: Utilize new kmap_thread()
+  drivers/md: Utilize new kmap_thread()
+  drivers/misc: Utilize new kmap_thread()
+  drivers/android: Utilize new kmap_thread()
+  kernel: Utilize new kmap_thread()
+  mm: Utilize new kmap_thread()
+  lib: Utilize new kmap_thread()
+  powerpc: Utilize new kmap_thread()
+  samples: Utilize new kmap_thread()
+  dax: Stray access protection for dax_direct_access()
+  nvdimm/pmem: Stray access protection for pmem->virt_addr
+  [dax|pmem]: Enable stray access protection
+
+ Documentation/core-api/protection-keys.rst    |  11 +-
+ arch/powerpc/mm/mem.c                         |   4 +-
+ arch/x86/entry/common.c                       |  28 +++
+ arch/x86/include/asm/pkeys.h                  |   6 +-
+ arch/x86/include/asm/pkeys_common.h           |   8 +-
+ arch/x86/kernel/process.c                     |  74 ++++++-
+ arch/x86/mm/fault.c                           | 193 ++++++++++++++----
+ arch/x86/mm/pkeys.c                           |  88 ++++++--
+ drivers/android/binder_alloc.c                |   4 +-
+ drivers/base/firmware_loader/fallback.c       |   4 +-
+ drivers/base/firmware_loader/main.c           |   4 +-
+ drivers/block/drbd/drbd_main.c                |   4 +-
+ drivers/block/drbd/drbd_receiver.c            |  12 +-
+ drivers/dax/device.c                          |   2 +
+ drivers/dax/super.c                           |   2 +
+ drivers/firmware/efi/capsule-loader.c         |   6 +-
+ drivers/firmware/efi/capsule.c                |   4 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c       |  12 +-
+ drivers/gpu/drm/gma500/gma_display.c          |   4 +-
+ drivers/gpu/drm/gma500/mmu.c                  |  10 +-
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c     |   4 +-
+ .../drm/i915/gem/selftests/i915_gem_context.c |   4 +-
+ .../drm/i915/gem/selftests/i915_gem_mman.c    |   8 +-
+ drivers/gpu/drm/i915/gt/intel_ggtt_fencing.c  |   4 +-
+ drivers/gpu/drm/i915/gt/intel_gtt.c           |   4 +-
+ drivers/gpu/drm/i915/gt/shmem_utils.c         |   4 +-
+ drivers/gpu/drm/i915/i915_gem.c               |   8 +-
+ drivers/gpu/drm/i915/i915_gpu_error.c         |   4 +-
+ drivers/gpu/drm/i915/selftests/i915_perf.c    |   4 +-
+ drivers/gpu/drm/radeon/radeon_ttm.c           |   4 +-
+ drivers/infiniband/hw/hfi1/sdma.c             |   4 +-
+ drivers/infiniband/hw/i40iw/i40iw_cm.c        |  10 +-
+ drivers/infiniband/sw/siw/siw_qp_tx.c         |  14 +-
+ drivers/md/bcache/request.c                   |   4 +-
+ drivers/misc/vmw_vmci/vmci_queue_pair.c       |  12 +-
+ drivers/mmc/host/mmc_spi.c                    |   4 +-
+ drivers/mmc/host/sdricoh_cs.c                 |   4 +-
+ drivers/mtd/mtd_blkdevs.c                     |  12 +-
+ drivers/net/ethernet/intel/igb/igb_ethtool.c  |   4 +-
+ .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  |   4 +-
+ drivers/nvdimm/pmem.c                         |   6 +
+ drivers/scsi/ipr.c                            |   8 +-
+ drivers/scsi/pmcraid.c                        |   8 +-
+ drivers/staging/rts5208/rtsx_transport.c      |   4 +-
+ drivers/target/target_core_iblock.c           |   4 +-
+ drivers/target/target_core_rd.c               |   4 +-
+ drivers/target/target_core_transport.c        |   4 +-
+ drivers/xen/gntalloc.c                        |   4 +-
+ fs/afs/dir.c                                  |  16 +-
+ fs/afs/dir_edit.c                             |  16 +-
+ fs/afs/mntpt.c                                |   4 +-
+ fs/afs/write.c                                |   4 +-
+ fs/aio.c                                      |   4 +-
+ fs/binfmt_elf.c                               |   4 +-
+ fs/binfmt_elf_fdpic.c                         |   4 +-
+ fs/btrfs/check-integrity.c                    |   4 +-
+ fs/btrfs/compression.c                        |   4 +-
+ fs/btrfs/inode.c                              |  16 +-
+ fs/btrfs/lzo.c                                |  24 +--
+ fs/btrfs/raid56.c                             |  34 +--
+ fs/btrfs/reflink.c                            |   8 +-
+ fs/btrfs/send.c                               |   4 +-
+ fs/btrfs/zlib.c                               |  32 +--
+ fs/btrfs/zstd.c                               |  20 +-
+ fs/cachefiles/rdwr.c                          |   4 +-
+ fs/cifs/cifsencrypt.c                         |   6 +-
+ fs/cifs/file.c                                |  16 +-
+ fs/cifs/smb2ops.c                             |   8 +-
+ fs/cramfs/inode.c                             |  10 +-
+ fs/ecryptfs/crypto.c                          |   8 +-
+ fs/ecryptfs/read_write.c                      |   8 +-
+ fs/erofs/super.c                              |   4 +-
+ fs/erofs/xattr.c                              |   4 +-
+ fs/exec.c                                     |  10 +-
+ fs/ext2/dir.c                                 |   8 +-
+ fs/ext2/ext2.h                                |   8 +
+ fs/ext2/namei.c                               |  15 +-
+ fs/f2fs/f2fs.h                                |   8 +-
+ fs/freevxfs/vxfs_immed.c                      |   4 +-
+ fs/fuse/readdir.c                             |   4 +-
+ fs/gfs2/bmap.c                                |   4 +-
+ fs/gfs2/ops_fstype.c                          |   4 +-
+ fs/hfs/bnode.c                                |  14 +-
+ fs/hfs/btree.c                                |  20 +-
+ fs/hfsplus/bitmap.c                           |  20 +-
+ fs/hfsplus/bnode.c                            | 102 ++++-----
+ fs/hfsplus/btree.c                            |  18 +-
+ fs/hostfs/hostfs_kern.c                       |  12 +-
+ fs/io_uring.c                                 |   4 +-
+ fs/isofs/compress.c                           |   4 +-
+ fs/jffs2/file.c                               |   8 +-
+ fs/jffs2/gc.c                                 |   4 +-
+ fs/nfs/dir.c                                  |  20 +-
+ fs/nilfs2/alloc.c                             |  34 +--
+ fs/nilfs2/cpfile.c                            |   4 +-
+ fs/ntfs/aops.c                                |   4 +-
+ fs/reiserfs/journal.c                         |   4 +-
+ fs/romfs/super.c                              |   4 +-
+ fs/splice.c                                   |   4 +-
+ fs/ubifs/file.c                               |  16 +-
+ fs/vboxsf/file.c                              |  12 +-
+ fs/zonefs/super.c                             |   4 +-
+ include/linux/entry-common.h                  |   3 +
+ include/linux/highmem.h                       |  63 +++++-
+ include/linux/memremap.h                      |   1 +
+ include/linux/mm.h                            |  43 ++++
+ include/linux/pkeys.h                         |   6 +-
+ include/linux/sched.h                         |   8 +
+ include/trace/events/kmap_thread.h            |  56 +++++
+ init/init_task.c                              |   6 +
+ kernel/fork.c                                 |  18 ++
+ kernel/kexec_core.c                           |   8 +-
+ lib/Kconfig.debug                             |   8 +
+ lib/iov_iter.c                                |  12 +-
+ lib/pks/pks_test.c                            | 138 +++++++++++--
+ lib/test_bpf.c                                |   4 +-
+ lib/test_hmm.c                                |   8 +-
+ mm/Kconfig                                    |  13 ++
+ mm/debug.c                                    |  23 +++
+ mm/memory.c                                   |   8 +-
+ mm/memremap.c                                 |  90 ++++++++
+ mm/swapfile.c                                 |   4 +-
+ mm/userfaultfd.c                              |   4 +-
+ net/ceph/messenger.c                          |   4 +-
+ net/core/datagram.c                           |   4 +-
+ net/core/sock.c                               |   8 +-
+ net/ipv4/ip_output.c                          |   4 +-
+ net/sunrpc/cache.c                            |   4 +-
+ net/sunrpc/xdr.c                              |   8 +-
+ net/tls/tls_device.c                          |   4 +-
+ samples/vfio-mdev/mbochs.c                    |   4 +-
+ 131 files changed, 1284 insertions(+), 565 deletions(-)
+ create mode 100644 include/trace/events/kmap_thread.h
+
 -- 
-2.26.2
+2.28.0.rc0.12.gb6a658bd00c9
 
