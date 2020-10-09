@@ -1,98 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0950287FF9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 03:22:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFB5288007
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 03:33:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C6r0Y2ggkzDqXW
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 12:22:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C6rFM374FzDqV9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Oct 2020 12:33:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=YjylQrWG; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C6qyn31LBzDqMH
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Oct 2020 12:21:03 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09911rh4021445; Thu, 8 Oct 2020 21:20:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : subject : to :
- message-id : date : mime-version : content-type :
- content-transfer-encoding; s=pp1;
- bh=uF8fs5jp9NKhNTm/2bRa7cgMgIdF+dgMy600hHy9/LQ=;
- b=YjylQrWGOHKr95XNu1buKk/6nUjARFcKmIB+5plreqiz1y3692GEvfqCi6/8w1nzsVUL
- FzyBsFhNu44RNKbvfhle5wTmXxDiaQYcgBhvCo0OLtor6luYHipuXU5CgBEZLfGRo/ex
- 29H9GQJfUFPre09ydSw5zhig/1Mj15CgqQWpvo5JXo31yzwizIIqGTsQJPXgkaKN/nii
- 4wkgfXmQAw5pCHe+ZOoU8iZczDlJARnBa/0KJMCudpW8oJMyrd42CEXcnx8N7Fq3pYxg
- Ta8quEN8AY9QlniCfPQjGOZ3xSyuXYaVVWqDhFhmqim8z9Q5fCuGNXnzxt0t+CSLL4Yv WQ== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 342dsargxc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Oct 2020 21:20:45 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0991JFue008111;
- Fri, 9 Oct 2020 01:20:43 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma02fra.de.ibm.com with ESMTP id 3429hrg2ye-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 09 Oct 2020 01:20:43 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0991Kekk32244024
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 9 Oct 2020 01:20:41 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D1A58A405B;
- Fri,  9 Oct 2020 01:20:40 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3544EA4054;
- Fri,  9 Oct 2020 01:20:40 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  9 Oct 2020 01:20:40 +0000 (GMT)
-Received: from [9.206.219.109] (unknown [9.206.219.109])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 00FECA01DA;
- Fri,  9 Oct 2020 12:20:38 +1100 (AEDT)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Subject: Linux kernel: powerpc: RTAS calls can be used to compromise kernel
- integrity
-To: oss-security@lists.openwall.com,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Message-ID: <09cb1e1e-c71b-83a3-4c04-4e47e7c85342@linux.ibm.com>
-Date: Fri, 9 Oct 2020 12:20:38 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C6rCr0wH6zDqLg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Oct 2020 12:32:22 +1100 (AEDT)
+IronPort-SDR: hUAxT6SH14qGf/anrsCSdQjrs4QW1czfeA3jvUolkCl7daTOeIAD/IKOOWIWX892EiWvSQHeY2
+ PLyUVl4Ldfdg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9768"; a="229615231"
+X-IronPort-AV: E=Sophos;i="5.77,353,1596524400"; d="scan'208";a="229615231"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2020 18:32:18 -0700
+IronPort-SDR: Y0ZCBlTi5yOa2nk5RMztkDiJKf0Msj4kjtIl9/QazDF4fC7vR6Pb+GRGSwnpzduD64hxFSKiv6
+ v/Vpsy4vPvQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,353,1596524400"; d="scan'208";a="298121191"
+Received: from lkp-server02.sh.intel.com (HELO 80eb06af76cf) ([10.239.97.151])
+ by fmsmga007.fm.intel.com with ESMTP; 08 Oct 2020 18:32:17 -0700
+Received: from kbuild by 80eb06af76cf with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1kQhGa-00003n-Rm; Fri, 09 Oct 2020 01:32:16 +0000
+Date: Fri, 09 Oct 2020 09:32:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 118be7377c97e35c33819bcb3bbbae5a42a4ac43
+Message-ID: <5f7fbd9d.SiIN0woNztU39/J+%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-08_15:2020-10-08,
- 2020-10-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 mlxscore=0
- clxscore=1034 bulkscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
- priorityscore=1501 phishscore=0 impostorscore=0 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010090003
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,83 +57,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Linux kernel for powerpc has an issue with the Run-Time Abstraction 
-Services (RTAS) interface, allowing root (or CAP_SYS_ADMIN users) in a 
-VM to overwrite some parts of memory, including kernel memory.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: 118be7377c97e35c33819bcb3bbbae5a42a4ac43  Automatic merge of 'next' into merge (2020-10-08 21:55)
 
-This issue impacts guests running on top of PowerVM or KVM hypervisors 
-(pseries platform), and does *not* impact bare-metal machines (powernv 
-platform).
+elapsed time: 871m
 
-Description
-===========
+configs tested: 176
+configs skipped: 2
 
-The RTAS interface, defined in the Power Architecture Platform 
-Reference, provides various platform hardware services to operating 
-systems running on PAPR platforms (e.g. the "pseries" platform in Linux, 
-running in a LPAR/VM on PowerVM or KVM).
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Some userspace daemons require access to certain RTAS calls for system 
-maintenance and monitoring purposes.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                  colibri_pxa300_defconfig
+m68k                       m5475evb_defconfig
+mips                      fuloong2e_defconfig
+arm                          exynos_defconfig
+mips                         bigsur_defconfig
+powerpc                       eiger_defconfig
+mips                       rbtx49xx_defconfig
+arm                           tegra_defconfig
+powerpc                        icon_defconfig
+powerpc                  mpc885_ads_defconfig
+mips                      bmips_stb_defconfig
+arm                      footbridge_defconfig
+sh                         ap325rxa_defconfig
+powerpc                 xes_mpc85xx_defconfig
+m68k                        m5307c3_defconfig
+arm                             mxs_defconfig
+h8300                               defconfig
+xtensa                generic_kc705_defconfig
+sh                   secureedge5410_defconfig
+sh                        apsh4ad0a_defconfig
+arm                       multi_v4t_defconfig
+m68k                           sun3_defconfig
+sh                          rsk7203_defconfig
+sh                 kfr2r09-romimage_defconfig
+c6x                        evmc6678_defconfig
+powerpc                      ppc64e_defconfig
+powerpc                        warp_defconfig
+m68k                             allmodconfig
+arm                             ezx_defconfig
+powerpc                     tqm8540_defconfig
+powerpc                       maple_defconfig
+sh                          urquell_defconfig
+powerpc               mpc834x_itxgp_defconfig
+powerpc                         ps3_defconfig
+arm                           h3600_defconfig
+powerpc                     mpc512x_defconfig
+parisc                           allyesconfig
+arm                       omap2plus_defconfig
+m68k                         apollo_defconfig
+powerpc                          g5_defconfig
+mips                          ath25_defconfig
+sh                          landisk_defconfig
+mips                     decstation_defconfig
+sparc                               defconfig
+powerpc                     pseries_defconfig
+arm                       netwinder_defconfig
+arm                          ep93xx_defconfig
+i386                             alldefconfig
+powerpc                 mpc834x_itx_defconfig
+powerpc                     powernv_defconfig
+powerpc                      mgcoge_defconfig
+arm                             pxa_defconfig
+mips                           mtx1_defconfig
+mips                          malta_defconfig
+powerpc                      pmac32_defconfig
+arc                     haps_hs_smp_defconfig
+sh                          r7780mp_defconfig
+sh                          r7785rp_defconfig
+um                             i386_defconfig
+powerpc                     tqm8548_defconfig
+sh                           se7712_defconfig
+mips                         mpc30x_defconfig
+powerpc                     kilauea_defconfig
+powerpc                      makalu_defconfig
+arm                            qcom_defconfig
+arm                             rpc_defconfig
+c6x                              alldefconfig
+arm                      integrator_defconfig
+sh                        sh7757lcr_defconfig
+arm                         assabet_defconfig
+sparc                       sparc32_defconfig
+h8300                            alldefconfig
+arm                           viper_defconfig
+powerpc                      ppc44x_defconfig
+h8300                       h8s-sim_defconfig
+m68k                       m5249evb_defconfig
+xtensa                    smp_lx200_defconfig
+arm                        keystone_defconfig
+powerpc                      ppc6xx_defconfig
+riscv                               defconfig
+powerpc                    ge_imp3a_defconfig
+arm                         axm55xx_defconfig
+powerpc                      ep88xc_defconfig
+powerpc                    gamecube_defconfig
+arm                         bcm2835_defconfig
+sh                             espt_defconfig
+mips                      loongson3_defconfig
+powerpc                      cm5200_defconfig
+sh                   sh7770_generic_defconfig
+arm                           spitz_defconfig
+arm                          iop32x_defconfig
+mips                           ip28_defconfig
+arm                        shmobile_defconfig
+powerpc                      arches_defconfig
+powerpc                     ksi8560_defconfig
+powerpc                     ppa8548_defconfig
+powerpc                      obs600_defconfig
+mips                       capcella_defconfig
+powerpc                     kmeter1_defconfig
+openrisc                    or1ksim_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20201008
+x86_64               randconfig-a003-20201008
+x86_64               randconfig-a005-20201008
+x86_64               randconfig-a001-20201008
+x86_64               randconfig-a002-20201008
+x86_64               randconfig-a006-20201008
+i386                 randconfig-a006-20201008
+i386                 randconfig-a005-20201008
+i386                 randconfig-a001-20201008
+i386                 randconfig-a004-20201008
+i386                 randconfig-a002-20201008
+i386                 randconfig-a003-20201008
+x86_64               randconfig-a012-20201009
+x86_64               randconfig-a015-20201009
+x86_64               randconfig-a013-20201009
+x86_64               randconfig-a014-20201009
+x86_64               randconfig-a011-20201009
+x86_64               randconfig-a016-20201009
+i386                 randconfig-a015-20201008
+i386                 randconfig-a013-20201008
+i386                 randconfig-a014-20201008
+i386                 randconfig-a016-20201008
+i386                 randconfig-a011-20201008
+i386                 randconfig-a012-20201008
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-The kernel exposes a syscall, sys_rtas, that allows root (or any user 
-with CAP_SYS_ADMIN) to make arbitrary RTAS calls. For the RTAS calls 
-which require a work area, it allocates a buffer (the "RMO buffer") and 
-exposes the physical address in /proc so that the userspace tool can 
-pass addresses within that buffer as an argument to the RTAS call.
+clang tested configs:
+x86_64               randconfig-a012-20201008
+x86_64               randconfig-a015-20201008
+x86_64               randconfig-a013-20201008
+x86_64               randconfig-a014-20201008
+x86_64               randconfig-a011-20201008
+x86_64               randconfig-a016-20201008
 
-The syscall doesn't check that the work area arguments to RTAS calls are 
-within the RMO buffer, which makes it trivial to read and write to any 
-guest physical address within the LPAR's Real Memory Area, including 
-overwriting the guest kernel's text.
-
-At the time the RTAS syscall interface was first developed, it was 
-generally assumed that root had unlimited ability to modify system 
-state, so this would not have been considered an integrity violation. 
-However, with the advent of Secure Boot, Lockdown etc, root should not 
-be able to arbitrarily modify the kernel text or read arbitrary kernel data.
-
-Therefore, while this issue impacts all kernels since the RTAS interface 
-was first implemented, we are only considering it a vulnerability for 
-upstream kernels from 5.3 onwards, which is when the Lockdown LSM was 
-merged. Lockdown was widely included in pre-5.3 distribution kernels, so 
-distribution vendors should consider whether they need to backport the 
-patch to their pre-5.3 distro trees.
-
-(A CVE for this issue is pending; we requested one some time ago but it 
-has not yet been assigned.)
-
-Fixes
-=====
-
-A patch is currently in powerpc-next[0] and is expected to be included 
-in mainline kernel 5.10. The patch has not yet been backported to 
-upstream stable trees.
-
-The approach taken by the patch is to maintain the existing RTAS 
-interface, but restrict requests to the list of RTAS calls actually used 
-by the librtas userspace library, and restrict work area pointer 
-arguments to the region within the RMO buffer.
-
-All RTAS-using applications that we are aware of are system 
-management/monitoring tools, maintained by IBM, that use the librtas 
-library. We don't anticipate there being any real world legitimate 
-applications that require an RTAS call that isn't in the librtas list, 
-however if such an application exists, the filtering can be disabled by 
-a Kconfig option specified during kernel build.
-
-Credit
-======
-
-Thanks to Daniel Axtens (IBM) for initial discovery of this issue.
-
-[0] 
-https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?h=next&id=bd59380c5ba4147dcbaad3e582b55ccfd120b764
-
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
