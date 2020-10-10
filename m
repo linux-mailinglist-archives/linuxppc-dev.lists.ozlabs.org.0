@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A9C7289BB1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Oct 2020 00:19:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C73289CC5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Oct 2020 02:42:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C7Mtg0WTNzDr3S
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Oct 2020 09:19:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C7R3s2vxlzDqsC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Oct 2020 11:42:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=ebiggers@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=FggwccN5; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=F41ki3gR; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C7Mbz1T3PzDqVB
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Oct 2020 09:06:38 +1100 (AEDT)
-Received: from sol.localdomain (172-10-235-113.lightspeed.sntcca.sbcglobal.net
- [172.10.235.113])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3638622258;
- Fri,  9 Oct 2020 22:06:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1602281195;
- bh=BSdsYnSsWQ2YK6s+0hwikbexRRTi6RzXd6Oify0LIKU=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=FggwccN5I5AZiuE+Vm843foxykXLgY3+2Ve5JGwMxqNB3E+xShPYydixbERiidVVi
- QW9J0tz5mlsoo600M7a+WgeVErDk1b1VMW5mDMvhyrS14K46mLfNtrpVvaVMMeP9LF
- 2DCRbted8w1IYRD5exRfS6+MpJtndCuG5tnmVNDU=
-Date: Fri, 9 Oct 2020 15:06:33 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 05/14] fs: don't allow kernel reads and writes without
- iter ops
-Message-ID: <20201009220633.GA1122@sol.localdomain>
-References: <20200903142242.925828-1-hch@lst.de>
- <20200903142242.925828-6-hch@lst.de>
- <20201001223852.GA855@sol.localdomain>
- <20201001224051.GI3421308@ZenIV.linux.org.uk>
- <CAHk-=wgj=mKeN-EfV5tKwJNeHPLG0dybq+R5ZyGuc4WeUnqcmA@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C7R285nHCzDqpJ;
+ Sat, 10 Oct 2020 11:40:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=wylOEgAZGPAkxCdlobMzyIfu/ZrVv1Os6TQldUFLziM=; b=F41ki3gR7FBgwnVausn+Ym7HP1
+ XlPOrKIoC49hpvUE9/aWBoH68sW9nzN+roolJxog6JtW0hinw+GJGJQweM2tJ1u8x4huOElOun4HX
+ OLG5RHoBoAf3CSIzFNHpVgsRU+TgTIZh4srysDUduyMdIIxPlPK5JA/amN/knuZnCqa9Zv6UObB0o
+ hZnMFz1K/YCtH1pW7cz6Th6CIA0I8ero69lmDRA42tDkhymN2BfqXsEeqYlbw/xTqpsZhH92AuKGR
+ +ciamleDZuZCDFfE/FcJg9XsXU418hEml49KDOM/rl5J3rO0lFNTAWXDAV5Z24k3Ay+VgEnmqYlhx
+ rI3nBVLQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1kR2vS-0004My-FJ; Sat, 10 Oct 2020 00:39:54 +0000
+Date: Sat, 10 Oct 2020 01:39:54 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Eric Biggers <ebiggers@kernel.org>
+Subject: Re: [PATCH RFC PKS/PMEM 22/58] fs/f2fs: Utilize new kmap_thread()
+Message-ID: <20201010003954.GW20115@casper.infradead.org>
+References: <20201009195033.3208459-1-ira.weiny@intel.com>
+ <20201009195033.3208459-23-ira.weiny@intel.com>
+ <20201009213434.GA839@sol.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wgj=mKeN-EfV5tKwJNeHPLG0dybq+R5ZyGuc4WeUnqcmA@mail.gmail.com>
+In-Reply-To: <20201009213434.GA839@sol.localdomain>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,47 +61,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Kees Cook <keescook@chromium.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>, Luis Chamberlain <mcgrof@kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alexey Dobriyan <adobriyan@gmail.com>
+Cc: linux-aio@kvack.org, linux-efi@vger.kernel.org, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ linux-mmc@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ target-devel@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-kselftest@vger.kernel.org, ira.weiny@intel.com,
+ Thomas Gleixner <tglx@linutronix.de>, drbd-dev@lists.linbit.com,
+ devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
+ linux-nilfs@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org, x86@kernel.org,
+ amd-gfx@lists.freedesktop.org, linux-afs@lists.infradead.org,
+ cluster-devel@redhat.com, Ingo Molnar <mingo@redhat.com>,
+ intel-wired-lan@lists.osuosl.org, kexec@lists.infradead.org,
+ xen-devel@lists.xenproject.org, linux-ext4@vger.kernel.org,
+ bpf@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ Fenghua Yu <fenghua.yu@intel.com>, intel-gfx@lists.freedesktop.org,
+ ecryptfs@vger.kernel.org, linux-um@lists.infradead.org,
+ reiserfs-devel@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-bcache@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+ ceph-devel@vger.kernel.org, io-uring@vger.kernel.org, linux-cachefs@redhat.com,
+ linux-nfs@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
+ netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ samba-technical@lists.samba.org, linux-kernel@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linux-erofs@lists.ozlabs.org,
+ linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 02, 2020 at 09:27:09AM -0700, Linus Torvalds wrote:
-> On Thu, Oct 1, 2020 at 3:41 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
+On Fri, Oct 09, 2020 at 02:34:34PM -0700, Eric Biggers wrote:
+> On Fri, Oct 09, 2020 at 12:49:57PM -0700, ira.weiny@intel.com wrote:
+> > The kmap() calls in this FS are localized to a single thread.  To avoid
+> > the over head of global PKRS updates use the new kmap_thread() call.
 > >
-> > Better
-> >         loff_t dummy = 0;
-> > ...
-> >                 wr = __kernel_write(file, data, bytes, &dummy);
+> > @@ -2410,12 +2410,12 @@ static inline struct page *f2fs_pagecache_get_page(
+> >  
+> >  static inline void f2fs_copy_page(struct page *src, struct page *dst)
+> >  {
+> > -	char *src_kaddr = kmap(src);
+> > -	char *dst_kaddr = kmap(dst);
+> > +	char *src_kaddr = kmap_thread(src);
+> > +	char *dst_kaddr = kmap_thread(dst);
+> >  
+> >  	memcpy(dst_kaddr, src_kaddr, PAGE_SIZE);
+> > -	kunmap(dst);
+> > -	kunmap(src);
+> > +	kunmap_thread(dst);
+> > +	kunmap_thread(src);
+> >  }
 > 
-> No, just fix __kernel_write() to work correctly.
-> 
-> The fact is, NULL _is_ the right pointer for ppos these days.
-> 
-> That commit by Christoph is buggy: it replaces new_sync_write() with a
-> buggy open-coded version.
-> 
-> Notice how new_sync_write does
-> 
->         kiocb.ki_pos = (ppos ? *ppos : 0);
-> ,,,
->         if (ret > 0 && ppos)
->                 *ppos = kiocb.ki_pos;
-> 
-> but the open-coded version doesn't.
-> 
-> So just fix that in linux-next. The *last* thing we want is to have
-> different semantics for the "same" kernel functions.
+> Wouldn't it make more sense to switch cases like this to kmap_atomic()?
+> The pages are only mapped to do a memcpy(), then they're immediately unmapped.
 
-It's a bit unintuitive that ppos=NULL means "use pos 0", not "use file->f_pos".
+Maybe you missed the earlier thread from Thomas trying to do something
+similar for rather different reasons ...
 
-Anyway, it works.  The important thing is, this is still broken in linux-next...
-
-- Eric
+https://lore.kernel.org/lkml/20200919091751.011116649@linutronix.de/
