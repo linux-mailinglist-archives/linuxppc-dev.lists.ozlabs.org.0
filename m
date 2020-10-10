@@ -2,98 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84F3289D55
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Oct 2020 04:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F25289D6F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Oct 2020 04:22:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C7Snt5JHvzDqxf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Oct 2020 13:00:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C7TH737zpzDqtS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Oct 2020 13:22:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.20.77; helo=eur05-db8-obe.outbound.protection.outlook.com;
- envelope-from=ran.wang_1@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=ErMqVof9; 
- dkim-atps=neutral
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com
- (mail-db8eur05on2077.outbound.protection.outlook.com [40.107.20.77])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C7Sjy4BBbzDqnR
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Oct 2020 12:57:08 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RMrmQJDSBaExhQmud0gxBcxw6zp/ieyJ5RFn63nPd/GbS0ftNL7RGJzHriSPU627as2h9zZbeJsYm9tyenfjnMk/qOmtiL/XzCiuR2KIVcgxGZRHMVZXNk/xaT1FngTJA/OREWlYGvISzOILjtA3WPVdxAE1E29S124lBT4anU8e/K3tTc/3OMxu1E1Xui/GhsPsvEGzHOHixjdv3LTVnp6Gz1lilFb/G0Ln2arMkWfq2CiPUao7y7TIgxrZwbft4UhTog1M8yy/OCLw+zMUDDlVkQI2amYHx5onx7+B48jSzpkxavVna17AeaisJkzNCrhc2mzankiN0jX6S9AeJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g9ZZKBAjLSgLCGu6nSzJAehkzb2h9tX98IkBiB4lvR0=;
- b=Dk1R6FdkqKXiT2kF5epP0No1nqE4NUl5+wLiyS0hGJW0WyA76USJU1pZpwYyN9sxIOSddkCfDNZ0zC0CYCgKNYUQsJGZTRjX47HE0LK6Som8bezA4F7SS0CXjNJ1kCVKblPlG6Mp2G5EZkX4cz2qOnJcE/PBhw8mIho+L14sz3ky4fCuXTb+8UfUyp49/BJF6la9L/s87kCzu5EQx8uMbkWlRIvlRp2MIe+Drp0tcDTTp8w82vftNRYwisvdv9KA4YmpVWhKleAVn2obTmrMBEViRyCJzmKd3mYQv4OHaFWbvtZEDNnP4DDxPuiXzGSsE1nbLn+Z68ODRWB+PZJU9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g9ZZKBAjLSgLCGu6nSzJAehkzb2h9tX98IkBiB4lvR0=;
- b=ErMqVof9VC/NoW459tM6wAaOfOIanvt9cmE4XW8kLqzDaeDE4mU39pwUXeHkabO5kesqiS+iXWGFugQMimT5Pr7wBK9MGWFBF+x7DKlf+xU35sJF8oGGSN9I22L6AfDBZBOVb/i8jFqSqZBBUQyKwAYGR6dvK5tNzom7qcNoQ3s=
-Received: from AM6PR04MB5413.eurprd04.prod.outlook.com (2603:10a6:20b:96::28)
- by AM6PR04MB4965.eurprd04.prod.outlook.com (2603:10a6:20b:3::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.26; Sat, 10 Oct
- 2020 01:57:00 +0000
-Received: from AM6PR04MB5413.eurprd04.prod.outlook.com
- ([fe80::1953:c81a:cca2:60ec]) by AM6PR04MB5413.eurprd04.prod.outlook.com
- ([fe80::1953:c81a:cca2:60ec%7]) with mapi id 15.20.3455.024; Sat, 10 Oct 2020
- 01:57:00 +0000
-From: Ran Wang <ran.wang_1@nxp.com>
-To: Rob Herring <robh+dt@kernel.org>
-Subject: RE: [PATCH v3 1/5] Documentation: dt: binding: fsl: Add
- 'fsl,ippdexpcr1-alt-reg' property
-Thread-Topic: [PATCH v3 1/5] Documentation: dt: binding: fsl: Add
- 'fsl,ippdexpcr1-alt-reg' property
-Thread-Index: AQHWljrqSTvZaBY98UGNWSX3I/ZV+KmQJBKA
-Date: Sat, 10 Oct 2020 01:57:00 +0000
-Message-ID: <AM6PR04MB54130FE1CC9B6A4C8DF2D538F1090@AM6PR04MB5413.eurprd04.prod.outlook.com>
-References: <20200929082234.36619-1-ran.wang_1@nxp.com>
-In-Reply-To: <20200929082234.36619-1-ran.wang_1@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [119.31.174.73]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 4ffc9f5f-7d72-4258-fb8d-08d86cbfc705
-x-ms-traffictypediagnostic: AM6PR04MB4965:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <AM6PR04MB4965ABC209C31B861089608CF1090@AM6PR04MB4965.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: mMTlQjG5DLlj/Z0op+fNPbkiz08/Ky/Yq32mvILQcCHwzN6iWHdpnUuFPXa3Lt0OWtsRB2swc+H9eAK6Kj4JqDV3SV2AryFdHDv/taLJyWIkDX7oKutV9NmcxzaMm198SIryXlWbHjPIbZg9TxyOpNCap6WU1d6TpHaZrEQRl3Vu/iKNR6uYV4mKIz9LZUwZcivH3OPT05t+CgiU3Jdoth6K8q5iPDR0QsfGhFRXoIEso6t4bWGS3kdzGLFQEx9qHh5UC+zSqk1udjVNKcbmtsAYji513e08Wtip+A2rSwOb1e3iAobUIBSrZe7gRqtthx/F85EJ2xmIAwx9fOs9NQ==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM6PR04MB5413.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(39850400004)(376002)(346002)(396003)(136003)(8936002)(66946007)(6506007)(64756008)(53546011)(76116006)(186003)(54906003)(4326008)(66556008)(316002)(66476007)(71200400001)(86362001)(55016002)(478600001)(26005)(66446008)(7696005)(33656002)(5660300002)(52536014)(83380400001)(2906002)(8676002)(9686003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: vkveVCP1PSVYbKvOFOeEfb+folAydrkLkOEGEhGBO7gdrwT/2kyw3WTzEB49aamjvWlSlmZdywmYr94AbWzyKyVEeMnUHIa/G6hpGLETKeq2hvxEN4MTvZggEjmFiRMczbJHkK7/uyD/9FSuFpql2I5Cn7P+HXnwl9PiU3pWQiVGVqDeqvCWvej/JHrTs/nZe4yyO4UDuzAp7NYRgQz01qbtTXZW+FP+tsyHXFEhJ5hI0XhU0K+FpRARpanRXvXeBr1Z6/d6fRk5NOUNYXPf9mi7fwMuRjf38LeKNONXqcbK/CW4gAb644LDYtHcE6xCCNn9lyGKbTl9/V14Az9j0jVQ+Phie6ILpzNGqCl3CIt+w+mO5QEy1eYfajL3STSg/t3wfNU9R8Y+20RR5r7QyKU7viWk9yrUmGaY45Vsapp+2p88FgOKvHoRJepENc+sK46I/oedSjhKounp7VUHEQEkluUwXAKYXorA+KWGeD/B0IlFJgnc2apAOjtW9tix0Pv6DeypJQX6KRLIS6oM+/6cM+bzAxlG9e5xikF3bHdtCKsBqZKgcHViPZUZv84D0LTfvnqmFIzbmq2kx+HQ0dr0iafSt+PjqDgQf5b0Xu4c2BLlmuRajaGiG9ea3T4oHAmmUSHnpXZ5TGmRL4fyKA==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C7TFV6dM5zDqrW;
+ Sat, 10 Oct 2020 13:20:59 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id B0EF9AC65;
+ Sat, 10 Oct 2020 02:20:53 +0000 (UTC)
+Subject: Re: [PATCH RFC PKS/PMEM 48/58] drivers/md: Utilize new kmap_thread()
+To: ira.weiny@intel.com
+References: <20201009195033.3208459-1-ira.weiny@intel.com>
+ <20201009195033.3208459-49-ira.weiny@intel.com>
+From: Coly Li <colyli@suse.de>
+Autocrypt: addr=colyli@suse.de; keydata=
+ mQINBFYX6S8BEAC9VSamb2aiMTQREFXK4K/W7nGnAinca7MRuFUD4JqWMJ9FakNRd/E0v30F
+ qvZ2YWpidPjaIxHwu3u9tmLKqS+2vnP0k7PRHXBYbtZEMpy3kCzseNfdrNqwJ54A430BHf2S
+ GMVRVENiScsnh4SnaYjFVvB8SrlhTsgVEXEBBma5Ktgq9YSoy5miatWmZvHLFTQgFMabCz/P
+ j5/xzykrF6yHo0rHZtwzQzF8rriOplAFCECp/t05+OeHHxjSqSI0P/G79Ll+AJYLRRm9til/
+ K6yz/1hX5xMToIkYrshDJDrUc8DjEpISQQPhG19PzaUf3vFpmnSVYprcWfJWsa2wZyyjRFkf
+ J51S82WfclafNC6N7eRXedpRpG6udUAYOA1YdtlyQRZa84EJvMzW96iSL1Gf+ZGtRuM3k49H
+ 1wiWOjlANiJYSIWyzJjxAd/7Xtiy/s3PRKL9u9y25ftMLFa1IljiDG+mdY7LyAGfvdtIkanr
+ iBpX4gWXd7lNQFLDJMfShfu+CTMCdRzCAQ9hIHPmBeZDJxKq721CyBiGAhRxDN+TYiaG/UWT
+ 7IB7LL4zJrIe/xQ8HhRO+2NvT89o0LxEFKBGg39yjTMIrjbl2ZxY488+56UV4FclubrG+t16
+ r2KrandM7P5RjR+cuHhkKseim50Qsw0B+Eu33Hjry7YCihmGswARAQABtBhDb2x5IExpIDxj
+ b2x5bGlAc3VzZS5kZT6JAlYEEwEIAEACGyMHCwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgBYh
+ BOo+RS/0+Uhgjej60Mc5B5Nrffj8BQJcR84dBQkY++fuAAoJEMc5B5Nrffj8ixcP/3KAKg1X
+ EcoW4u/0z+Ton5rCyb/NpAww8MuRjNW82UBUac7yCi1y3OW7NtLjuBLw5SaVG5AArb7IF3U0
+ qTOobqfl5XHsT0o5wFHZaKUrnHb6y7V3SplsJWfkP3JmOooJsQB3z3K96ZTkFelsNb0ZaBRu
+ gV+LA4MomhQ+D3BCDR1it1OX/tpvm2uaDF6s/8uFtcDEM9eQeqATN/QAJ49nvU/I8zDSY9rc
+ 0x9mP0x+gH4RccbnoPu/rUG6Fm1ZpLrbb6NpaYBBJ/V1BC4lIOjnd24bsoQrQmnJn9dSr60X
+ 1MY60XDszIyzRw7vbJcUn6ZzPNFDxFFT9diIb+wBp+DD8ZlD/hnVpl4f921ZbvfOSsXAJrKB
+ 1hGY17FPwelp1sPcK2mDT+pfHEMV+OQdZzD2OCKtza/5IYismJJm3oVUYMogb5vDNAw9X2aP
+ XgwUuG+FDEFPamFMUwIfzYHcePfqf0mMsaeSgtA/xTxzx/0MLjUJHl46Bc0uKDhv7QUyGz0j
+ Ywgr2mHTvG+NWQ/mDeHNGkcnsnp3IY7koDHnN2xMFXzY4bn9m8ctqKo2roqjCzoxD/njoAhf
+ KBzdybLHATqJG/yiZSbCxDA1n/J4FzPyZ0rNHUAJ/QndmmVspE9syFpFCKigvvyrzm016+k+
+ FJ59Q6RG4MSy/+J565Xj+DNY3/dCuQINBFYX6S8BEADZP+2cl4DRFaSaBms08W8/smc5T2CO
+ YhAoygZn71rB7Djml2ZdvrLRjR8Qbn0Q/2L2gGUVc63pJnbrjlXSx2LfAFE0SlfYIJ11aFdF
+ 9w7RvqWByQjDJor3Z0fWvPExplNgMvxpD0U0QrVT5dIGTx9hadejCl/ug09Lr6MPQn+a4+qs
+ aRWwgCSHaIuDkH3zI1MJXiqXXFKUzJ/Fyx6R72rqiMPHH2nfwmMu6wOXAXb7+sXjZz5Po9GJ
+ g2OcEc+rpUtKUJGyeQsnCDxUcqJXZDBi/GnhPCcraQuqiQ7EGWuJfjk51vaI/rW4bZkA9yEP
+ B9rBYngbz7cQymUsfxuTT8OSlhxjP3l4ZIZFKIhDaQeZMj8pumBfEVUyiF6KVSfgfNQ/5PpM
+ R4/pmGbRqrAAElhrRPbKQnCkGWDr8zG+AjN1KF6rHaFgAIO7TtZ+F28jq4reLkur0N5tQFww
+ wFwxzROdeLHuZjL7eEtcnNnzSkXHczLkV4kQ3+vr/7Gm65mQfnVpg6JpwpVrbDYQeOFlxZ8+
+ GERY5Dag4KgKa/4cSZX2x/5+KkQx9wHwackw5gDCvAdZ+Q81nm6tRxEYBBiVDQZYqO73stgT
+ ZyrkxykUbQIy8PI+g7XMDCMnPiDncQqgf96KR3cvw4wN8QrgA6xRo8xOc2C3X7jTMQUytCz9
+ 0MyV1QARAQABiQI8BBgBCAAmAhsMFiEE6j5FL/T5SGCN6PrQxzkHk2t9+PwFAlxHziAFCRj7
+ 5/EACgkQxzkHk2t9+PxgfA//cH5R1DvpJPwraTAl24SUcG9EWe+NXyqveApe05nk15zEuxxd
+ e4zFEjo+xYZilSveLqYHrm/amvQhsQ6JLU+8N60DZHVcXbw1Eb8CEjM5oXdbcJpXh1/1BEwl
+ 4phsQMkxOTns51bGDhTQkv4lsZKvNByB9NiiMkT43EOx14rjkhHw3rnqoI7ogu8OO7XWfKcL
+ CbchjJ8t3c2XK1MUe056yPpNAT2XPNF2EEBPG2Y2F4vLgEbPv1EtpGUS1+JvmK3APxjXUl5z
+ 6xrxCQDWM5AAtGfM/IswVjbZYSJYyH4BQKrShzMb0rWUjkpXvvjsjt8rEXpZEYJgX9jvCoxt
+ oqjCKiVLpwje9WkEe9O9VxljmPvxAhVqJjX62S+TGp93iD+mvpCoHo3+CcvyRcilz+Ko8lfO
+ hS9tYT0HDUiDLvpUyH1AR2xW9RGDevGfwGTpF0K6cLouqyZNdhlmNciX48tFUGjakRFsxRmX
+ K0Jx4CEZubakJe+894sX6pvNFiI7qUUdB882i5GR3v9ijVPhaMr8oGuJ3kvwBIA8lvRBGVGn
+ 9xvzkQ8Prpbqh30I4NMp8MjFdkwCN6znBKPHdjNTwE5PRZH0S9J0o67IEIvHfH0eAWAsgpTz
+ +jwc7VKH7vkvgscUhq/v1/PEWCAqh9UHy7R/jiUxwzw/288OpgO+i+2l11Y=
+Message-ID: <c802fbf4-f67a-b205-536d-9c71b440f9c8@suse.de>
+Date: Sat, 10 Oct 2020 10:20:34 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.12.1
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5413.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ffc9f5f-7d72-4258-fb8d-08d86cbfc705
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Oct 2020 01:57:00.5717 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0UnVgVCXoVdaJe+62QQYjbklA8r57LwLb2tKvpsxcW981SjHZg50IyaPYmSjMo+o7tOKyyF96lN/jR5zIwf6Uw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR04MB4965
+In-Reply-To: <20201009195033.3208459-49-ira.weiny@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,76 +92,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Biwen Li <biwen.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>, Ran Wang <ran.wang_1@nxp.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: linux-aio@kvack.org, linux-efi@vger.kernel.org, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ linux-mmc@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ target-devel@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-kselftest@vger.kernel.org, samba-technical@lists.samba.org,
+ Thomas Gleixner <tglx@linutronix.de>, drbd-dev@lists.linbit.com,
+ devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
+ linux-nilfs@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org, x86@kernel.org,
+ ceph-devel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ io-uring@vger.kernel.org, cluster-devel@redhat.com,
+ Ingo Molnar <mingo@redhat.com>, intel-wired-lan@lists.osuosl.org,
+ xen-devel@lists.xenproject.org, linux-ext4@vger.kernel.org,
+ Kent Overstreet <kent.overstreet@gmail.com>, Fenghua Yu <fenghua.yu@intel.com>,
+ linux-afs@lists.infradead.org, linux-um@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, ecryptfs@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, reiserfs-devel@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-bcache@vger.kernel.org,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-cachefs@redhat.com,
+ linux-nfs@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
+ netdev@vger.kernel.org, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+ linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rob,
+On 2020/10/10 03:50, ira.weiny@intel.com wrote:
+> From: Ira Weiny <ira.weiny@intel.com>
+> 
+> These kmap() calls are localized to a single thread.  To avoid the over
+> head of global PKRS updates use the new kmap_thread() call.
+> 
 
-On Tuesday, September 29, 2020 4:23 PM, Ran Wang wrote:
->=20
-> From: Biwen Li <biwen.li@nxp.com>
->=20
-> The 'fsl,ippdexpcr1-alt-reg' property is used to handle an errata A-00864=
-6 on
-> LS1021A.
->=20
-> Signed-off-by: Biwen Li <biwen.li@nxp.com>
-> Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+Hi Ira,
+
+There were a number of options considered.
+
+1) Attempt to change all the thread local kmap() calls to kmap_atomic()
+2) Introduce a flags parameter to kmap() to indicate if the mapping
+should be global or not
+3) Change ~20-30 call sites to 'kmap_global()' to indicate that they
+require a global mapping of the pages
+4) Change ~209 call sites to 'kmap_thread()' to indicate that the
+mapping is to be used within that thread of execution only
+
+
+I copied the above information from patch 00/58 to this message. The
+idea behind kmap_thread() is fine to me, but as you said the new api is
+very easy to be missed in new code (even for me). I would like to be
+supportive to option 2) introduce a flag to kmap(), then we won't forget
+the new thread-localized kmap method, and people won't ask why a
+_thread() function is called but no kthread created.
+
+Thanks.
+
+
+Coly Li
+
+
+
+> Cc: Coly Li <colyli@suse.de> (maintainer:BCACHE (BLOCK LAYER CACHE))
+> Cc: Kent Overstreet <kent.overstreet@gmail.com> (maintainer:BCACHE (BLOCK LAYER CACHE))
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 > ---
-> Change in v3:
->  - Simplize related proterty definition and rename it.
-
-Could you please comment for this version? Thanks in advance.
-
-Regards,
-Ran
-
-> Change in v2:
->  - None
->=20
->  Documentation/devicetree/bindings/soc/fsl/rcpm.txt | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> index 5a33619..62a22fc 100644
-> --- a/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> +++ b/Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-> @@ -34,6 +34,9 @@ Chassis Version		Example Chips
->  Optional properties:
->   - little-endian : RCPM register block is Little Endian. Without it RCPM
->     will be Big Endian (default case).
-> + - fsl,ippdexpcr1-alt-reg : The property is trying to workaround a
-> +   hardware issue (found on SoC LS1021A only), if pressent, RCPM driver
-> +   will use SCFG_SPARECR8 as a shadow register for RCPM_IPPDEXPCR1.
->=20
->  Example:
->  The RCPM node for T4240:
-> @@ -43,6 +46,15 @@ The RCPM node for T4240:
->  		#fsl,rcpm-wakeup-cells =3D <2>;
->  	};
->=20
-> +The RCPM node for LS1021A:
-> +	rcpm: rcpm@1ee2140 {
-> +		compatible =3D "fsl,ls1021a-rcpm", "fsl,qoriq-rcpm-2.1+";
-> +		reg =3D <0x0 0x1ee2140 0x0 0x8>;
-> +		#fsl,rcpm-wakeup-cells =3D <2>;
-> +		fsl,ippdexpcr1-alt-reg;
-> +	};
-> +
-> +
->  * Freescale RCPM Wakeup Source Device Tree Bindings
->  -------------------------------------------
->  Required fsl,rcpm-wakeup property should be added to a device node if th=
-e
-> device
-> --
-> 2.7.4
+>  drivers/md/bcache/request.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
+> index c7cadaafa947..a4571f6d09dd 100644
+> --- a/drivers/md/bcache/request.c
+> +++ b/drivers/md/bcache/request.c
+> @@ -44,10 +44,10 @@ static void bio_csum(struct bio *bio, struct bkey *k)
+>  	uint64_t csum = 0;
+>  
+>  	bio_for_each_segment(bv, bio, iter) {
+> -		void *d = kmap(bv.bv_page) + bv.bv_offset;
+> +		void *d = kmap_thread(bv.bv_page) + bv.bv_offset;
+>  
+>  		csum = bch_crc64_update(csum, d, bv.bv_len);
+> -		kunmap(bv.bv_page);
+> +		kunmap_thread(bv.bv_page);
+>  	}
+>  
+>  	k->ptr[KEY_PTRS(k)] = csum & (~0ULL >> 1);
+> 
 
