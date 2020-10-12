@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D564728AFF3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 10:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 344AD28AFF6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 10:20:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C8s5D6KdXzDqQR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 19:18:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C8s7D2RG4zDqtN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 19:20:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,37 +17,40 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C8rrh5tcqzDqQM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 19:07:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C8rrj66LGzDqQb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 19:07:49 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4C8rrX1C9zz9typT;
- Mon, 12 Oct 2020 10:07:40 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4C8rrY0hRRz9typb;
+ Mon, 12 Oct 2020 10:07:41 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ot1FmGUkMhuK; Mon, 12 Oct 2020 10:07:40 +0200 (CEST)
+ with ESMTP id 5YKrQxSuBvs0; Mon, 12 Oct 2020 10:07:41 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4C8rrW6DKKz9typR;
- Mon, 12 Oct 2020 10:07:39 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4C8rrX6x21z9typR;
+ Mon, 12 Oct 2020 10:07:40 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F1C6E8B788;
- Mon, 12 Oct 2020 10:07:44 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 101448B788;
+ Mon, 12 Oct 2020 10:07:46 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id G2uxDPjYNPCb; Mon, 12 Oct 2020 10:07:44 +0200 (CEST)
+ with ESMTP id n5snybjw_F_5; Mon, 12 Oct 2020 10:07:45 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C4B068B783;
- Mon, 12 Oct 2020 10:07:44 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CB6CA8B783;
+ Mon, 12 Oct 2020 10:07:45 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 9197266441; Mon, 12 Oct 2020 08:07:44 +0000 (UTC)
-Message-Id: <181da5d3c4f07dca6662cdc7c72d81297eef5f1e.1602490050.git.christophe.leroy@csgroup.eu>
+ id 9A83866441; Mon, 12 Oct 2020 08:07:45 +0000 (UTC)
+Message-Id: <154ed46d581ece2d22ab70a0ed2b04824de682de.1602490050.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <181da5d3c4f07dca6662cdc7c72d81297eef5f1e.1602490050.git.christophe.leroy@csgroup.eu>
+References: <181da5d3c4f07dca6662cdc7c72d81297eef5f1e.1602490050.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 1/2] powerpc/44x: Don't support 440 when CONFIG_PPC_47x is set
+Subject: [PATCH 2/2] powerpc/44x: Don't support 47x code and non 47x code at
+ the same time
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 12 Oct 2020 08:07:44 +0000 (UTC)
+Date: Mon, 12 Oct 2020 08:07:45 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,135 +67,120 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As stated in platform/44x/Kconfig, CONFIG_PPC_47x is not
-compatible with 440 and 460 variants.
+440/460 variants and 470 variants are not compatible, no
+need to make code supporting both and using MMU features.
 
-This is confirmed in asm/cache.h as L1_CACHE_SHIFT is different
-for 47x, meaning a kernel built for 47x will not run correctly
-on a 440.
-
-In cputable, opt out all 440 and 460 variants when CONFIG_PPC_47x
-is set. Also add a default match dedicated to 470.
+Just use CONFIG_PPC_47x to decide what to build.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/cputable.h |  9 +++++----
- arch/powerpc/include/asm/mmu.h      |  7 +++----
- arch/powerpc/kernel/cputable.c      | 29 +++++++++++++++++++++--------
- 3 files changed, 29 insertions(+), 16 deletions(-)
+ arch/powerpc/kernel/entry_32.S   | 11 +++--------
+ arch/powerpc/mm/nohash/tlb_low.S | 29 +++++++----------------------
+ 2 files changed, 10 insertions(+), 30 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
-index d88bcb79f16d..4a0ddf66bd4a 100644
---- a/arch/powerpc/include/asm/cputable.h
-+++ b/arch/powerpc/include/asm/cputable.h
-@@ -523,11 +523,10 @@ enum {
- #ifdef CONFIG_40x
- 	    CPU_FTRS_40X |
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 8cdc8bcde703..a7727006d6f5 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -439,15 +439,13 @@ syscall_exit_cont:
+ 	andis.	r10,r0,DBCR0_IDM@h
+ 	bnel-	load_dbcr0
  #endif
 -#ifdef CONFIG_44x
--	    CPU_FTRS_44X | CPU_FTRS_440x6 |
--#endif
- #ifdef CONFIG_PPC_47x
- 	    CPU_FTRS_47X | CPU_FTR_476_DD2 |
-+#elif defined(CONFIG_44x)
-+	    CPU_FTRS_44X | CPU_FTRS_440x6 |
- #endif
- #ifdef CONFIG_E200
- 	    CPU_FTRS_E200 |
-@@ -596,7 +595,9 @@ enum {
- #ifdef CONFIG_40x
- 	    CPU_FTRS_40X &
- #endif
--#ifdef CONFIG_44x
+-BEGIN_MMU_FTR_SECTION
 +#ifdef CONFIG_PPC_47x
-+	    CPU_FTRS_47X &
-+#elif defined(CONFIG_44x)
- 	    CPU_FTRS_44X & CPU_FTRS_440x6 &
- #endif
- #ifdef CONFIG_E200
-diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-index 097f23c28c68..49d2c09b7175 100644
---- a/arch/powerpc/include/asm/mmu.h
-+++ b/arch/powerpc/include/asm/mmu.h
-@@ -162,15 +162,14 @@ enum {
- #ifdef CONFIG_40x
- 		MMU_FTR_TYPE_40x |
- #endif
--#ifdef CONFIG_44x
-+#ifdef CONFIG_PPC_47x
-+		MMU_FTR_TYPE_47x | MMU_FTR_USE_TLBIVAX_BCAST | MMU_FTR_LOCK_BCAST_INVAL |
-+#elif defined(CONFIG_44x)
- 		MMU_FTR_TYPE_44x |
- #endif
- #if defined(CONFIG_E200) || defined(CONFIG_E500)
- 		MMU_FTR_TYPE_FSL_E | MMU_FTR_BIG_PHYS | MMU_FTR_USE_TLBILX |
- #endif
--#ifdef CONFIG_PPC_47x
--		MMU_FTR_TYPE_47x | MMU_FTR_USE_TLBIVAX_BCAST | MMU_FTR_LOCK_BCAST_INVAL |
--#endif
- #ifdef CONFIG_PPC_BOOK3S_32
- 		MMU_FTR_USE_HIGH_BATS |
- #endif
-diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
-index 492c0b36aff6..cf80e6c8ed5e 100644
---- a/arch/powerpc/kernel/cputable.c
-+++ b/arch/powerpc/kernel/cputable.c
-@@ -1533,6 +1533,7 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 
- #endif /* CONFIG_40x */
- #ifdef CONFIG_44x
-+#ifndef CONFIG_PPC_47x
- 	{
- 		.pvr_mask		= 0xf0000fff,
- 		.pvr_value		= 0x40000850,
-@@ -1815,7 +1816,19 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check		= machine_check_440A,
- 		.platform		= "ppc440",
- 	},
--#ifdef CONFIG_PPC_47x
-+	{	/* default match */
-+		.pvr_mask		= 0x00000000,
-+		.pvr_value		= 0x00000000,
-+		.cpu_name		= "(generic 44x PPC)",
-+		.cpu_features		= CPU_FTRS_44X,
-+		.cpu_user_features	= COMMON_USER_BOOKE,
-+		.mmu_features		= MMU_FTR_TYPE_44x,
-+		.icache_bsize		= 32,
-+		.dcache_bsize		= 32,
-+		.machine_check		= machine_check_4xx,
-+		.platform		= "ppc440",
-+	}
-+#else /* CONFIG_PPC_47x */
- 	{ /* 476 DD2 core */
- 		.pvr_mask		= 0xffffffff,
- 		.pvr_value		= 0x11a52080,
-@@ -1872,19 +1885,19 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check		= machine_check_47x,
- 		.platform		= "ppc470",
- 	},
--#endif /* CONFIG_PPC_47x */
- 	{	/* default match */
- 		.pvr_mask		= 0x00000000,
- 		.pvr_value		= 0x00000000,
--		.cpu_name		= "(generic 44x PPC)",
--		.cpu_features		= CPU_FTRS_44X,
-+		.cpu_name		= "(generic 47x PPC)",
-+		.cpu_features		= CPU_FTRS_47X,
- 		.cpu_user_features	= COMMON_USER_BOOKE,
--		.mmu_features		= MMU_FTR_TYPE_44x,
-+		.mmu_features		= MMU_FTR_TYPE_47x,
- 		.icache_bsize		= 32,
--		.dcache_bsize		= 32,
--		.machine_check		= machine_check_4xx,
--		.platform		= "ppc440",
-+		.dcache_bsize		= 128,
-+		.machine_check		= machine_check_47x,
-+		.platform		= "ppc470",
- 	}
+ 	lis	r4,icache_44x_need_flush@ha
+ 	lwz	r5,icache_44x_need_flush@l(r4)
+ 	cmplwi	cr0,r5,0
+ 	bne-	2f
+ 1:
+-END_MMU_FTR_SECTION_IFCLR(MMU_FTR_TYPE_47x)
+-#endif /* CONFIG_44x */
 +#endif /* CONFIG_PPC_47x */
- #endif /* CONFIG_44x */
- #ifdef CONFIG_E200
- 	{	/* e200z5 */
+ BEGIN_FTR_SECTION
+ 	lwarx	r7,0,r1
+ END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
+@@ -948,10 +946,7 @@ restore_kuap:
+ 
+ 	/* interrupts are hard-disabled at this point */
+ restore:
+-#ifdef CONFIG_44x
+-BEGIN_MMU_FTR_SECTION
+-	b	1f
+-END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_47x)
++#if defined(CONFIG_44x) && !defined(CONFIG_PPC_47x)
+ 	lis	r4,icache_44x_need_flush@ha
+ 	lwz	r5,icache_44x_need_flush@l(r4)
+ 	cmplwi	cr0,r5,0
+diff --git a/arch/powerpc/mm/nohash/tlb_low.S b/arch/powerpc/mm/nohash/tlb_low.S
+index eaeee402f96e..68797e072f55 100644
+--- a/arch/powerpc/mm/nohash/tlb_low.S
++++ b/arch/powerpc/mm/nohash/tlb_low.S
+@@ -92,36 +92,25 @@ _GLOBAL(__tlbil_va)
+ 	tlbsx.	r6,0,r3
+ 	bne	10f
+ 	sync
+-BEGIN_MMU_FTR_SECTION
+-	b	2f
+-END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_47x)
++#ifndef CONFIG_PPC_47x
+ 	/* On 440 There are only 64 TLB entries, so r3 < 64, which means bit
+ 	 * 22, is clear.  Since 22 is the V bit in the TLB_PAGEID, loading this
+ 	 * value will invalidate the TLB entry.
+ 	 */
+ 	tlbwe	r6,r6,PPC44x_TLB_PAGEID
+-	isync
+-10:	wrtee	r10
+-	blr
+-2:
+-#ifdef CONFIG_PPC_47x
++#else
+ 	oris	r7,r6,0x8000	/* specify way explicitly */
+ 	clrrwi	r4,r3,12	/* get an EPN for the hashing with V = 0 */
+ 	ori	r4,r4,PPC47x_TLBE_SIZE
+ 	tlbwe   r4,r7,0		/* write it */
++#endif /* !CONFIG_PPC_47x */
+ 	isync
+-	wrtee	r10
++10:	wrtee	r10
+ 	blr
+-#else /* CONFIG_PPC_47x */
+-1:	trap
+-	EMIT_BUG_ENTRY 1b,__FILE__,__LINE__,0;
+-#endif /* !CONFIG_PPC_47x */
+ 
+ _GLOBAL(_tlbil_all)
+ _GLOBAL(_tlbil_pid)
+-BEGIN_MMU_FTR_SECTION
+-	b	2f
+-END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_47x)
++#ifndef CONFIG_PPC_47x
+ 	li	r3,0
+ 	sync
+ 
+@@ -136,8 +125,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_47x)
+ 
+ 	isync
+ 	blr
+-2:
+-#ifdef CONFIG_PPC_47x
++#else
+ 	/* 476 variant. There's not simple way to do this, hopefully we'll
+ 	 * try to limit the amount of such full invalidates
+ 	 */
+@@ -179,11 +167,8 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_47x)
+ 	b	1b		/* Then loop */
+ 1:	isync			/* Sync shadows */
+ 	wrtee	r11
+-#else /* CONFIG_PPC_47x */
+-1:	trap
+-	EMIT_BUG_ENTRY 1b,__FILE__,__LINE__,0;
+-#endif /* !CONFIG_PPC_47x */
+ 	blr
++#endif /* !CONFIG_PPC_47x */
+ 
+ #ifdef CONFIG_PPC_47x
+ 
 -- 
 2.25.0
 
