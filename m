@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B16628AF17
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 09:32:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A6D28AF19
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 09:34:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C8r423S74zDqlZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 18:32:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C8r642Zk2zDqqJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 18:34:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,69 +17,69 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=us.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=FflmIhKq; dkim-atps=neutral
+ header.s=pp1 header.b=pvI2nITx; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C8qzD4wdtzDqhF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 18:28:23 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C8qzF3SBbzDqhF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 18:28:25 +1100 (AEDT)
 Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09C7QmY0183282; Mon, 12 Oct 2020 03:28:21 -0400
+ 09C7QoRg183616; Mon, 12 Oct 2020 03:28:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references; s=pp1;
- bh=Cs3WAJjF4glDOr9ImFAe1X9S34sQ9JDjpkCs9DWNGEI=;
- b=FflmIhKqopEholMkef6GAd/QESvbmWYOEQgWzb47MfiLb/dZRoI1fjFzRTfwBlTbbqL3
- CfugM/jplcAW03TpIHcLew87DGGCePBgPLe4oS3SA2YYnDxystuntQUYqkb3LLoXWt5G
- q26wfHRaH2Fcl6k0vp8hnJeotu5bZ/S5iN4ShdjZwH24CR1ASyx8TFuGzFKagQi923iP
- ekZ9h4Ks0k5QsTPM1eUx9rlYS65FFhPTGyi4c1RoipfRj43CJX36n4Bfz73GDMZAx3ob
- q/F97hSFdF93BsKsW1zwwCfw+tbHPbPZkLIPUqgyhr+AEpAhHUtObJxdZE+gVak7pF38 Og== 
+ bh=NIK5f2UUHuJyNgkERq7s0ziP9CQlS+CiwNvOsX1iegI=;
+ b=pvI2nITxQMvXCo612nBtpETZqXjABcjnVs01VrIi0JWChT3r17ZTphviW8gsECZe91iB
+ Vej9zDr05HaV61Mz3rQEWRZk0FmGTouZ7Yb8tyVVjzg2fU5LxXvA41piDymX8b0Bdnj9
+ tsM4hIH1Nw9DyUk1V04ap5TdOP2wz8+GNbm6+ZE8NmieQ8OOx/z4U7ZWrV/TaGIKIk2b
+ PbqU+Yh8JKTGw2RlHdhBWohNe1f1LDHULAvGhbs1NKPsm5Jx8dTLAzdYUw6uM1oAloTY
+ NWb3POamuJuFFjJ3gvLKXwbuGrS4CRV6wrDW27KNGB2maUx4LpPZdf+5oQj1l73+mtCB QA== 
 Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
  [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 344jrwg0mp-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 344jrwg0n5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Oct 2020 03:28:21 -0400
+ Mon, 12 Oct 2020 03:28:23 -0400
 Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09C7R31N009570;
- Mon, 12 Oct 2020 07:28:18 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06fra.de.ibm.com with ESMTP id 34347h0w88-1
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09C7RL8f009588;
+ Mon, 12 Oct 2020 07:28:21 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma06fra.de.ibm.com with ESMTP id 34347h0w89-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Oct 2020 07:28:18 +0000
+ Mon, 12 Oct 2020 07:28:20 +0000
 Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
  [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 09C7SFjL20316566
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 09C7SHpF33947988
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Oct 2020 07:28:15 GMT
+ Mon, 12 Oct 2020 07:28:17 GMT
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 81DF2A404D;
+ by IMSVA (Postfix) with ESMTP id 8C4ACA4040;
+ Mon, 12 Oct 2020 07:28:17 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E191FA404D;
  Mon, 12 Oct 2020 07:28:15 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C6380A4053;
- Mon, 12 Oct 2020 07:28:13 +0000 (GMT)
 Received: from ram-ibm-com.ibm.com (unknown [9.85.204.94])
  by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 12 Oct 2020 07:28:13 +0000 (GMT)
+ Mon, 12 Oct 2020 07:28:15 +0000 (GMT)
 From: Ram Pai <linuxram@us.ibm.com>
 To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [RFC v1 1/2] KVM: PPC: Book3S HV: rename all variables in
- book3s_hv_uvmem.c
-Date: Mon, 12 Oct 2020 00:27:42 -0700
-Message-Id: <1602487663-7321-2-git-send-email-linuxram@us.ibm.com>
+Subject: [RFC v1 2/2] KVM: PPC: Book3S HV: abstract secure VM related calls.
+Date: Mon, 12 Oct 2020 00:27:43 -0700
+Message-Id: <1602487663-7321-3-git-send-email-linuxram@us.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1602487663-7321-1-git-send-email-linuxram@us.ibm.com>
+In-Reply-To: <1602487663-7321-2-git-send-email-linuxram@us.ibm.com>
 References: <1602487663-7321-1-git-send-email-linuxram@us.ibm.com>
+ <1602487663-7321-2-git-send-email-linuxram@us.ibm.com>
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-10-12_03:2020-10-12,
  2020-10-12 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  malwarescore=0
- impostorscore=0 adultscore=0 mlxscore=0 mlxlogscore=893 priorityscore=1501
+ impostorscore=0 adultscore=0 mlxscore=0 mlxlogscore=999 priorityscore=1501
  spamscore=0 bulkscore=0 suspectscore=2 phishscore=0 lowpriorityscore=0
  clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2010120056
@@ -99,660 +99,739 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Preparing this file to be one of the many backends. Since this file
-supports Ultravisor backend, renaming all variable from kvmppc_*
-to uvmem_*.  This is to avoid clash with some generic top level
-functions to be defined in the next patch.
+Abstract the secure VM related calls into generic calls.
+
+These generic calls will call the corresponding method of the
+backend that prvoides the implementation to support secure VM.
+
+Currently there is only the ultravisor based implementation.
+Modify that implementation to act as a backed to the generic calls.
+
+This plumbing will provide the flexibility to add more backends
+in the future.
 
 Signed-off-by: Ram Pai <linuxram@us.ibm.com>
 ---
- arch/powerpc/kvm/book3s_hv_uvmem.c | 210 ++++++++++++++++++-------------------
- 1 file changed, 105 insertions(+), 105 deletions(-)
+ arch/powerpc/include/asm/kvm_book3s_uvmem.h   | 100 -----------
+ arch/powerpc/include/asm/kvmppc_svm_backend.h | 250 ++++++++++++++++++++++++++
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        |   6 +-
+ arch/powerpc/kvm/book3s_hv.c                  |  28 +--
+ arch/powerpc/kvm/book3s_hv_uvmem.c            |  78 ++++++--
+ 5 files changed, 327 insertions(+), 135 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/kvm_book3s_uvmem.h
+ create mode 100644 arch/powerpc/include/asm/kvmppc_svm_backend.h
 
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 7705d55..b79affc 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -95,9 +95,9 @@
- #include <asm/kvm_ppc.h>
- #include <asm/kvm_book3s_uvmem.h>
- 
--static struct dev_pagemap kvmppc_uvmem_pgmap;
--static unsigned long *kvmppc_uvmem_bitmap;
--static DEFINE_SPINLOCK(kvmppc_uvmem_bitmap_lock);
-+static struct dev_pagemap uvmem_pgmap;
-+static unsigned long *uvmem_bitmap;
-+static DEFINE_SPINLOCK(uvmem_bitmap_lock);
+diff --git a/arch/powerpc/include/asm/kvm_book3s_uvmem.h b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+deleted file mode 100644
+index 0a63194..0000000
+--- a/arch/powerpc/include/asm/kvm_book3s_uvmem.h
++++ /dev/null
+@@ -1,100 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef __ASM_KVM_BOOK3S_UVMEM_H__
+-#define __ASM_KVM_BOOK3S_UVMEM_H__
+-
+-#ifdef CONFIG_PPC_UV
+-int kvmppc_uvmem_init(void);
+-void kvmppc_uvmem_free(void);
+-bool kvmppc_uvmem_available(void);
+-int kvmppc_uvmem_slot_init(struct kvm *kvm, const struct kvm_memory_slot *slot);
+-void kvmppc_uvmem_slot_free(struct kvm *kvm,
+-			    const struct kvm_memory_slot *slot);
+-unsigned long kvmppc_h_svm_page_in(struct kvm *kvm,
+-				   unsigned long gra,
+-				   unsigned long flags,
+-				   unsigned long page_shift);
+-unsigned long kvmppc_h_svm_page_out(struct kvm *kvm,
+-				    unsigned long gra,
+-				    unsigned long flags,
+-				    unsigned long page_shift);
+-unsigned long kvmppc_h_svm_init_start(struct kvm *kvm);
+-unsigned long kvmppc_h_svm_init_done(struct kvm *kvm);
+-int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn);
+-unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm);
+-void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+-			     struct kvm *kvm, bool skip_page_out);
+-int kvmppc_uvmem_memslot_create(struct kvm *kvm,
+-		const struct kvm_memory_slot *new);
+-void kvmppc_uvmem_memslot_delete(struct kvm *kvm,
+-		const struct kvm_memory_slot *old);
+-#else
+-static inline int kvmppc_uvmem_init(void)
+-{
+-	return 0;
+-}
+-
+-static inline void kvmppc_uvmem_free(void) { }
+-
+-static inline bool kvmppc_uvmem_available(void)
+-{
+-	return false;
+-}
+-
+-static inline int
+-kvmppc_uvmem_slot_init(struct kvm *kvm, const struct kvm_memory_slot *slot)
+-{
+-	return 0;
+-}
+-
+-static inline void
+-kvmppc_uvmem_slot_free(struct kvm *kvm, const struct kvm_memory_slot *slot) { }
+-
+-static inline unsigned long
+-kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gra,
+-		     unsigned long flags, unsigned long page_shift)
+-{
+-	return H_UNSUPPORTED;
+-}
+-
+-static inline unsigned long
+-kvmppc_h_svm_page_out(struct kvm *kvm, unsigned long gra,
+-		      unsigned long flags, unsigned long page_shift)
+-{
+-	return H_UNSUPPORTED;
+-}
+-
+-static inline unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+-{
+-	return H_UNSUPPORTED;
+-}
+-
+-static inline unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
+-{
+-	return H_UNSUPPORTED;
+-}
+-
+-static inline unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
+-{
+-	return H_UNSUPPORTED;
+-}
+-
+-static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
+-{
+-	return -EFAULT;
+-}
+-
+-static inline void
+-kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+-			struct kvm *kvm, bool skip_page_out) { }
+-
+-static inline int  kvmppc_uvmem_memslot_create(struct kvm *kvm,
+-		const struct kvm_memory_slot *new)
+-{
+-	return H_UNSUPPORTED;
+-}
+-
+-static inline void  kvmppc_uvmem_memslot_delete(struct kvm *kvm,
+-		const struct kvm_memory_slot *old) { }
+-
+-#endif /* CONFIG_PPC_UV */
+-#endif /* __ASM_KVM_BOOK3S_UVMEM_H__ */
+diff --git a/arch/powerpc/include/asm/kvmppc_svm_backend.h b/arch/powerpc/include/asm/kvmppc_svm_backend.h
+new file mode 100644
+index 0000000..be60d80
+--- /dev/null
++++ b/arch/powerpc/include/asm/kvmppc_svm_backend.h
+@@ -0,0 +1,250 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ *
++ * Copyright IBM Corp. 2020
++ *
++ * Authors: Ram Pai <linuxram@us.ibm.com>
++ */
++
++#ifndef __POWERPC_KVMPPC_SVM_BACKEND_H__
++#define __POWERPC_KVMPPC_SVM_BACKEND_H__
++
++#include <linux/mutex.h>
++#include <linux/timer.h>
++#include <linux/types.h>
++#include <linux/kvm_types.h>
++#include <linux/kvm_host.h>
++#include <linux/bug.h>
++#ifdef CONFIG_PPC_BOOK3S
++#include <asm/kvm_book3s.h>
++#else
++#include <asm/kvm_booke.h>
++#endif
++#ifdef CONFIG_KVM_BOOK3S_64_HANDLER
++#include <asm/paca.h>
++#include <asm/xive.h>
++#include <asm/cpu_has_feature.h>
++#endif
++
++struct kvmppc_hmm_backend {
++	/* initialize */
++	int (*kvmppc_secmem_init)(void);
++
++	/* cleanup */
++	void (*kvmppc_secmem_free)(void);
++
++	/* is memory available */
++	bool (*kvmppc_secmem_available)(void);
++
++	/* allocate a protected/secure page for the secure VM */
++	unsigned long (*kvmppc_svm_page_in)(struct kvm *kvm,
++			unsigned long gra,
++			unsigned long flags,
++			unsigned long page_shift);
++
++	/* recover the protected/secure page from the secure VM */
++	unsigned long (*kvmppc_svm_page_out)(struct kvm *kvm,
++			unsigned long gra,
++			unsigned long flags,
++			unsigned long page_shift);
++
++	/* initiate the transition of a VM to secure VM */
++	unsigned long (*kvmppc_svm_init_start)(struct kvm *kvm);
++
++	/* finalize the transition of a secure VM */
++	unsigned long (*kvmppc_svm_init_done)(struct kvm *kvm);
++
++	/* share the page on page fault */
++	int (*kvmppc_svm_page_share)(struct kvm *kvm, unsigned long gfn);
++
++	/* abort the transition to a secure VM */
++	unsigned long (*kvmppc_svm_init_abort)(struct kvm *kvm);
++
++	/* add a memory slot */
++	int (*kvmppc_svm_memslot_create)(struct kvm *kvm,
++		const struct kvm_memory_slot *new);
++
++	/* free a memory slot */
++	void (*kvmppc_svm_memslot_delete)(struct kvm *kvm,
++		const struct kvm_memory_slot *old);
++
++	/* drop pages allocated to the secure VM */
++	void (*kvmppc_svm_drop_pages)(const struct kvm_memory_slot *free,
++			     struct kvm *kvm, bool skip_page_out);
++};
++
++extern const struct kvmppc_hmm_backend *kvmppc_svm_backend;
++
++static inline int kvmppc_svm_page_share(struct kvm *kvm, unsigned long gfn)
++{
++	if (!kvmppc_svm_backend)
++		return -ENODEV;
++
++	return kvmppc_svm_backend->kvmppc_svm_page_share(kvm,
++				gfn);
++}
++
++static inline void kvmppc_svm_drop_pages(const struct kvm_memory_slot *memslot,
++			struct kvm *kvm, bool skip_page_out)
++{
++	if (!kvmppc_svm_backend)
++		return;
++
++	kvmppc_svm_backend->kvmppc_svm_drop_pages(memslot,
++			kvm, skip_page_out);
++}
++
++static inline int kvmppc_svm_page_in(struct kvm *kvm,
++			unsigned long gpa,
++			unsigned long flags,
++			unsigned long page_shift)
++{
++	if (!kvmppc_svm_backend)
++		return -ENODEV;
++
++	return kvmppc_svm_backend->kvmppc_svm_page_in(kvm,
++			gpa, flags, page_shift);
++}
++
++static inline int kvmppc_svm_page_out(struct kvm *kvm,
++			unsigned long gpa,
++			unsigned long flags,
++			unsigned long page_shift)
++{
++	if (!kvmppc_svm_backend)
++		return -ENODEV;
++
++	return kvmppc_svm_backend->kvmppc_svm_page_out(kvm,
++			gpa, flags, page_shift);
++}
++
++static inline int kvmppc_svm_init_start(struct kvm *kvm)
++{
++	if (!kvmppc_svm_backend)
++		return -ENODEV;
++
++	return kvmppc_svm_backend->kvmppc_svm_init_start(kvm);
++}
++
++static inline int kvmppc_svm_init_done(struct kvm *kvm)
++{
++	if (!kvmppc_svm_backend)
++		return -ENODEV;
++
++	return kvmppc_svm_backend->kvmppc_svm_init_done(kvm);
++}
++
++static inline int kvmppc_svm_init_abort(struct kvm *kvm)
++{
++	if (!kvmppc_svm_backend)
++		return -ENODEV;
++
++	return kvmppc_svm_backend->kvmppc_svm_init_abort(kvm);
++}
++
++static inline void kvmppc_svm_memslot_create(struct kvm *kvm,
++		const struct kvm_memory_slot *memslot)
++{
++	if (!kvmppc_svm_backend)
++		return;
++
++	kvmppc_svm_backend->kvmppc_svm_memslot_create(kvm,
++			memslot);
++}
++
++static inline void kvmppc_svm_memslot_delete(struct kvm *kvm,
++		const struct kvm_memory_slot *memslot)
++{
++	if (!kvmppc_svm_backend)
++		return;
++
++	kvmppc_svm_backend->kvmppc_svm_memslot_delete(kvm,
++			memslot);
++}
++
++static inline int kvmppc_secmem_init(void)
++{
++#ifdef CONFIG_PPC_UV
++	extern const struct kvmppc_hmm_backend kvmppc_uvmem_backend;
++
++	kvmppc_svm_backend = NULL;
++	if (kvmhv_on_pseries()) {
++		/* @TODO add the protected memory backend */
++		return 0;
++	}
++
++	kvmppc_svm_backend = &kvmppc_uvmem_backend;
++
++	if (!kvmppc_svm_backend->kvmppc_secmem_init) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no %s\n", __func__);
++		goto err;
++	}
++	if (!kvmppc_svm_backend->kvmppc_secmem_free) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no kvmppc_secmem_free()\n");
++		goto err;
++	}
++	if (!kvmppc_svm_backend->kvmppc_secmem_available) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no kvmppc_secmem_available()\n");
++		goto err;
++	}
++	if (!kvmppc_svm_backend->kvmppc_svm_page_in) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no kvmppc_svm_page_in()\n");
++		goto err;
++	}
++	if (!kvmppc_svm_backend->kvmppc_svm_page_out) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no kvmppc_svm_page_out()\n");
++		goto err;
++	}
++	if (!kvmppc_svm_backend->kvmppc_svm_init_start) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no kvmppc_svm_init_start()\n");
++		goto err;
++	}
++	if (!kvmppc_svm_backend->kvmppc_svm_init_done) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no kvmppc_svm_init_done()\n");
++		goto err;
++	}
++	if (!kvmppc_svm_backend->kvmppc_svm_page_share) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no kvmppc_svm_page_share()\n");
++		goto err;
++	}
++	if (!kvmppc_svm_backend->kvmppc_svm_init_abort) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no kvmppc_svm_init_abort()\n");
++		goto err;
++	}
++	if (!kvmppc_svm_backend->kvmppc_svm_memslot_create) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no kvmppc_svm_memslot_create()\n");
++		goto err;
++	}
++	if (!kvmppc_svm_backend->kvmppc_svm_memslot_delete) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no kvmppc_svm_memslot_delete()\n");
++		goto err;
++	}
++	if (!kvmppc_svm_backend->kvmppc_svm_drop_pages) {
++		pr_err("KVM-HV: kvmppc_svm_backend has no kvmppc_svm_drop_pages()\n");
++		goto err;
++	}
++
++	return kvmppc_svm_backend->kvmppc_secmem_init();
++
++err:	kvmppc_svm_backend = NULL;
++	return -ENODEV;
++#endif
++	return 0;
++}
++
++static inline void kvmppc_secmem_free(void)
++{
++	if (!kvmppc_svm_backend)
++		return;
++
++	return kvmppc_svm_backend->kvmppc_secmem_free();
++}
++
++static inline int kvmppc_secmem_available(void)
++{
++	if (!kvmppc_svm_backend)
++		return 0;
++
++	return kvmppc_svm_backend->kvmppc_secmem_available();
++}
++#endif /* __POWERPC_KVMPPC_SVM_BACKEND_H__ */
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+index 22a677b..1a559b3 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -20,7 +20,7 @@
+ #include <asm/pgalloc.h>
+ #include <asm/pte-walk.h>
+ #include <asm/ultravisor.h>
+-#include <asm/kvm_book3s_uvmem.h>
++#include <asm/kvmppc_svm_backend.h>
  
  /*
-  * States of a GFN
-@@ -221,13 +221,13 @@
- #define KVMPPC_GFN_FLAG_MASK	(KVMPPC_GFN_SECURE | KVMPPC_GFN_SHARED)
- #define KVMPPC_GFN_PFN_MASK	(~KVMPPC_GFN_FLAG_MASK)
+  * Supported radix tree geometry.
+@@ -941,7 +941,7 @@ int kvmppc_book3s_radix_page_fault(struct kvm_vcpu *vcpu,
+ 		gpa |= ea & 0xfff;
  
--struct kvmppc_uvmem_slot {
-+struct uvmem_slot {
- 	struct list_head list;
- 	unsigned long nr_pfns;
- 	unsigned long base_pfn;
- 	unsigned long *pfns;
- };
--struct kvmppc_uvmem_page_pvt {
-+struct uvmem_page_pvt {
- 	struct kvm *kvm;
- 	unsigned long gpa;
- 	bool skip_page_out;
-@@ -237,15 +237,15 @@ struct kvmppc_uvmem_page_pvt {
- bool kvmppc_uvmem_available(void)
- {
- 	/*
--	 * If kvmppc_uvmem_bitmap != NULL, then there is an ultravisor
-+	 * If uvmem_bitmap != NULL, then there is an ultravisor
- 	 * and our data structures have been initialized successfully.
- 	 */
--	return !!kvmppc_uvmem_bitmap;
-+	return !!uvmem_bitmap;
- }
+ 	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)
+-		return kvmppc_send_page_to_uv(kvm, gfn);
++		return kvmppc_svm_page_share(kvm, gfn);
  
--int kvmppc_uvmem_slot_init(struct kvm *kvm, const struct kvm_memory_slot *slot)
-+static int uvmem_slot_init(struct kvm *kvm, const struct kvm_memory_slot *slot)
- {
--	struct kvmppc_uvmem_slot *p;
-+	struct uvmem_slot *p;
+ 	/* Get the corresponding memslot */
+ 	memslot = gfn_to_memslot(kvm, gfn);
+@@ -1148,7 +1148,7 @@ void kvmppc_radix_flush_memslot(struct kvm *kvm,
+ 	unsigned int shift;
  
- 	p = kzalloc(sizeof(*p), GFP_KERNEL);
- 	if (!p)
-@@ -268,9 +268,9 @@ int kvmppc_uvmem_slot_init(struct kvm *kvm, const struct kvm_memory_slot *slot)
- /*
-  * All device PFNs are already released by the time we come here.
+ 	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_START)
+-		kvmppc_uvmem_drop_pages(memslot, kvm, true);
++		kvmppc_svm_drop_pages(memslot, kvm, true);
+ 
+ 	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)
+ 		return;
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 4ba06a2..9c093b4 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -72,7 +72,7 @@
+ #include <asm/xics.h>
+ #include <asm/xive.h>
+ #include <asm/hw_breakpoint.h>
+-#include <asm/kvm_book3s_uvmem.h>
++#include <asm/kvmppc_svm_backend.h>
+ #include <asm/ultravisor.h>
+ #include <asm/dtl.h>
+ 
+@@ -81,6 +81,8 @@
+ #define CREATE_TRACE_POINTS
+ #include "trace_hv.h"
+ 
++const struct kvmppc_hmm_backend *kvmppc_svm_backend;
++
+ /* #define EXIT_DEBUG */
+ /* #define EXIT_DEBUG_SIMPLE */
+ /* #define EXIT_DEBUG_INT */
+@@ -1079,7 +1081,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 	case H_SVM_PAGE_IN:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_page_in(vcpu->kvm,
++			ret = kvmppc_svm_page_in(vcpu->kvm,
+ 						   kvmppc_get_gpr(vcpu, 4),
+ 						   kvmppc_get_gpr(vcpu, 5),
+ 						   kvmppc_get_gpr(vcpu, 6));
+@@ -1087,7 +1089,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 	case H_SVM_PAGE_OUT:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_page_out(vcpu->kvm,
++			ret = kvmppc_svm_page_out(vcpu->kvm,
+ 						    kvmppc_get_gpr(vcpu, 4),
+ 						    kvmppc_get_gpr(vcpu, 5),
+ 						    kvmppc_get_gpr(vcpu, 6));
+@@ -1095,12 +1097,12 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 	case H_SVM_INIT_START:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_init_start(vcpu->kvm);
++			ret = kvmppc_svm_init_start(vcpu->kvm);
+ 		break;
+ 	case H_SVM_INIT_DONE:
+ 		ret = H_UNSUPPORTED;
+ 		if (kvmppc_get_srr1(vcpu) & MSR_S)
+-			ret = kvmppc_h_svm_init_done(vcpu->kvm);
++			ret = kvmppc_svm_init_done(vcpu->kvm);
+ 		break;
+ 	case H_SVM_INIT_ABORT:
+ 		/*
+@@ -1110,7 +1112,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 		 * Instead the kvm->arch.secure_guest flag is checked inside
+ 		 * kvmppc_h_svm_init_abort().
+ 		 */
+-		ret = kvmppc_h_svm_init_abort(vcpu->kvm);
++		ret = kvmppc_svm_init_abort(vcpu->kvm);
+ 		break;
+ 
+ 	default:
+@@ -4564,10 +4566,10 @@ static void kvmppc_core_commit_memory_region_hv(struct kvm *kvm,
+ 		 * @TODO kvmppc_uvmem_memslot_create() can fail and
+ 		 * return error. Fix this.
+ 		 */
+-		kvmppc_uvmem_memslot_create(kvm, new);
++		kvmppc_svm_memslot_create(kvm, new);
+ 		break;
+ 	case KVM_MR_DELETE:
+-		kvmppc_uvmem_memslot_delete(kvm, old);
++		kvmppc_svm_memslot_delete(kvm, old);
+ 		break;
+ 	default:
+ 		/* TODO: Handle KVM_MR_MOVE */
+@@ -5473,7 +5475,7 @@ static void unpin_vpa_reset(struct kvm *kvm, struct kvmppc_vpa *vpa)
   */
--void kvmppc_uvmem_slot_free(struct kvm *kvm, const struct kvm_memory_slot *slot)
-+static void uvmem_slot_free(struct kvm *kvm, const struct kvm_memory_slot *slot)
+ static int kvmhv_enable_svm(struct kvm *kvm)
  {
--	struct kvmppc_uvmem_slot *p, *next;
-+	struct uvmem_slot *p, *next;
+-	if (!kvmppc_uvmem_available())
++	if (!kvmppc_secmem_available())
+ 		return -EINVAL;
+ 	if (kvm)
+ 		kvm->arch.svm_enabled = 1;
+@@ -5521,7 +5523,7 @@ static int kvmhv_svm_off(struct kvm *kvm)
+ 			continue;
  
- 	mutex_lock(&kvm->arch.uvmem_lock);
- 	list_for_each_entry_safe(p, next, &kvm->arch.uvmem_pfns, list) {
-@@ -284,10 +284,10 @@ void kvmppc_uvmem_slot_free(struct kvm *kvm, const struct kvm_memory_slot *slot)
- 	mutex_unlock(&kvm->arch.uvmem_lock);
- }
- 
--static void kvmppc_mark_gfn(unsigned long gfn, struct kvm *kvm,
-+static void uvmem_mark_gfn(unsigned long gfn, struct kvm *kvm,
- 			unsigned long flag, unsigned long uvmem_pfn)
- {
--	struct kvmppc_uvmem_slot *p;
-+	struct uvmem_slot *p;
- 
- 	list_for_each_entry(p, &kvm->arch.uvmem_pfns, list) {
- 		if (gfn >= p->base_pfn && gfn < p->base_pfn + p->nr_pfns) {
-@@ -303,35 +303,35 @@ static void kvmppc_mark_gfn(unsigned long gfn, struct kvm *kvm,
- }
- 
- /* mark the GFN as secure-GFN associated with @uvmem pfn device-PFN. */
--static void kvmppc_gfn_secure_uvmem_pfn(unsigned long gfn,
-+static void uvmem_gfn_secure_uvmem_pfn(unsigned long gfn,
- 			unsigned long uvmem_pfn, struct kvm *kvm)
- {
--	kvmppc_mark_gfn(gfn, kvm, KVMPPC_GFN_UVMEM_PFN, uvmem_pfn);
-+	uvmem_mark_gfn(gfn, kvm, KVMPPC_GFN_UVMEM_PFN, uvmem_pfn);
- }
- 
- /* mark the GFN as secure-GFN associated with a memory-PFN. */
--static void kvmppc_gfn_secure_mem_pfn(unsigned long gfn, struct kvm *kvm)
-+static void uvmem_gfn_secure_mem_pfn(unsigned long gfn, struct kvm *kvm)
- {
--	kvmppc_mark_gfn(gfn, kvm, KVMPPC_GFN_MEM_PFN, 0);
-+	uvmem_mark_gfn(gfn, kvm, KVMPPC_GFN_MEM_PFN, 0);
- }
- 
- /* mark the GFN as a shared GFN. */
--static void kvmppc_gfn_shared(unsigned long gfn, struct kvm *kvm)
-+static void uvmem_gfn_shared(unsigned long gfn, struct kvm *kvm)
- {
--	kvmppc_mark_gfn(gfn, kvm, KVMPPC_GFN_SHARED, 0);
-+	uvmem_mark_gfn(gfn, kvm, KVMPPC_GFN_SHARED, 0);
- }
- 
- /* mark the GFN as a non-existent GFN. */
--static void kvmppc_gfn_remove(unsigned long gfn, struct kvm *kvm)
-+static void uvmem_gfn_remove(unsigned long gfn, struct kvm *kvm)
- {
--	kvmppc_mark_gfn(gfn, kvm, 0, 0);
-+	uvmem_mark_gfn(gfn, kvm, 0, 0);
- }
- 
- /* return true, if the GFN is a secure-GFN backed by a secure-PFN */
--static bool kvmppc_gfn_is_uvmem_pfn(unsigned long gfn, struct kvm *kvm,
-+static bool uvmem_gfn_is_uvmem_pfn(unsigned long gfn, struct kvm *kvm,
- 				    unsigned long *uvmem_pfn)
- {
--	struct kvmppc_uvmem_slot *p;
-+	struct uvmem_slot *p;
- 
- 	list_for_each_entry(p, &kvm->arch.uvmem_pfns, list) {
- 		if (gfn >= p->base_pfn && gfn < p->base_pfn + p->nr_pfns) {
-@@ -356,10 +356,10 @@ static bool kvmppc_gfn_is_uvmem_pfn(unsigned long gfn, struct kvm *kvm,
-  *
-  * Must be called with kvm->arch.uvmem_lock  held.
-  */
--static bool kvmppc_next_nontransitioned_gfn(const struct kvm_memory_slot *memslot,
-+static bool uvmem_next_nontransitioned_gfn(const struct kvm_memory_slot *memslot,
- 		struct kvm *kvm, unsigned long *gfn)
- {
--	struct kvmppc_uvmem_slot *p;
-+	struct uvmem_slot *p;
- 	bool ret = false;
- 	unsigned long i;
- 
-@@ -370,7 +370,7 @@ static bool kvmppc_next_nontransitioned_gfn(const struct kvm_memory_slot *memslo
- 		return ret;
- 	/*
- 	 * The code below assumes, one to one correspondence between
--	 * kvmppc_uvmem_slot and memslot.
-+	 * uvmem_slot and memslot.
- 	 */
- 	for (i = *gfn; i < p->base_pfn + p->nr_pfns; i++) {
- 		unsigned long index = i - p->base_pfn;
-@@ -384,7 +384,7 @@ static bool kvmppc_next_nontransitioned_gfn(const struct kvm_memory_slot *memslo
- 	return ret;
- }
- 
--static int kvmppc_memslot_page_merge(struct kvm *kvm,
-+static int uvmem_memslot_page_merge(struct kvm *kvm,
- 		const struct kvm_memory_slot *memslot, bool merge)
- {
- 	unsigned long gfn = memslot->base_gfn;
-@@ -418,23 +418,23 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
- 	return ret;
- }
- 
--static void __kvmppc_uvmem_memslot_delete(struct kvm *kvm,
-+static void __uvmem_memslot_delete(struct kvm *kvm,
- 		const struct kvm_memory_slot *memslot)
- {
- 	uv_unregister_mem_slot(kvm->arch.lpid, memslot->id);
--	kvmppc_uvmem_slot_free(kvm, memslot);
--	kvmppc_memslot_page_merge(kvm, memslot, true);
-+	uvmem_slot_free(kvm, memslot);
-+	uvmem_memslot_page_merge(kvm, memslot, true);
- }
- 
--static int __kvmppc_uvmem_memslot_create(struct kvm *kvm,
-+static int __uvmem_memslot_create(struct kvm *kvm,
- 		const struct kvm_memory_slot *memslot)
- {
- 	int ret = H_PARAMETER;
- 
--	if (kvmppc_memslot_page_merge(kvm, memslot, false))
-+	if (uvmem_memslot_page_merge(kvm, memslot, false))
- 		return ret;
- 
--	if (kvmppc_uvmem_slot_init(kvm, memslot))
-+	if (uvmem_slot_init(kvm, memslot))
- 		goto out1;
- 
- 	ret = uv_register_mem_slot(kvm->arch.lpid,
-@@ -447,9 +447,9 @@ static int __kvmppc_uvmem_memslot_create(struct kvm *kvm,
- 	}
- 	return 0;
- out:
--	kvmppc_uvmem_slot_free(kvm, memslot);
-+	uvmem_slot_free(kvm, memslot);
- out1:
--	kvmppc_memslot_page_merge(kvm, memslot, true);
-+	uvmem_memslot_page_merge(kvm, memslot, true);
- 	return ret;
- }
- 
-@@ -462,7 +462,7 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
- 
- 	kvm->arch.secure_guest = KVMPPC_SECURE_INIT_START;
- 
--	if (!kvmppc_uvmem_bitmap)
-+	if (!uvmem_bitmap)
- 		return H_UNSUPPORTED;
- 
- 	/* Only radix guests can be secure guests */
-@@ -478,7 +478,7 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
- 	/* register the memslot */
- 	slots = kvm_memslots(kvm);
- 	kvm_for_each_memslot(memslot, slots) {
--		ret = __kvmppc_uvmem_memslot_create(kvm, memslot);
-+		ret = __uvmem_memslot_create(kvm, memslot);
- 		if (ret)
- 			break;
- 	}
-@@ -488,7 +488,7 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
- 		kvm_for_each_memslot(m, slots) {
- 			if (m == memslot)
- 				break;
--			__kvmppc_uvmem_memslot_delete(kvm, memslot);
-+			__uvmem_memslot_delete(kvm, memslot);
+ 		kvm_for_each_memslot(memslot, slots) {
+-			kvmppc_uvmem_drop_pages(memslot, kvm, true);
++			kvmppc_svm_drop_pages(memslot, kvm, true);
+ 			uv_unregister_mem_slot(kvm->arch.lpid, memslot->id);
  		}
  	}
+@@ -5710,16 +5712,16 @@ static int kvmppc_book3s_init_hv(void)
+ 			no_mixing_hpt_and_radix = true;
+ 	}
  
-@@ -501,7 +501,7 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
-  * from secure memory using UV_PAGE_OUT uvcall.
-  * Caller must held kvm->arch.uvmem_lock.
-  */
--static int __kvmppc_svm_page_out(struct vm_area_struct *vma,
-+static int __uvmem_svm_page_out(struct vm_area_struct *vma,
- 		unsigned long start,
- 		unsigned long end, unsigned long page_shift,
- 		struct kvm *kvm, unsigned long gpa)
-@@ -509,7 +509,7 @@ static int __kvmppc_svm_page_out(struct vm_area_struct *vma,
- 	unsigned long src_pfn, dst_pfn = 0;
- 	struct migrate_vma mig;
- 	struct page *dpage, *spage;
--	struct kvmppc_uvmem_page_pvt *pvt;
-+	struct uvmem_page_pvt *pvt;
- 	unsigned long pfn;
- 	int ret = U_SUCCESS;
+-	r = kvmppc_uvmem_init();
++	r = kvmppc_secmem_init();
+ 	if (r < 0)
+-		pr_err("KVM-HV: kvmppc_uvmem_init failed %d\n", r);
++		pr_err("KVM-HV: kvmppc_secmem_init failed %d\n", r);
  
-@@ -519,11 +519,11 @@ static int __kvmppc_svm_page_out(struct vm_area_struct *vma,
- 	mig.end = end;
- 	mig.src = &src_pfn;
- 	mig.dst = &dst_pfn;
--	mig.pgmap_owner = &kvmppc_uvmem_pgmap;
-+	mig.pgmap_owner = &uvmem_pgmap;
- 	mig.flags = MIGRATE_VMA_SELECT_DEVICE_PRIVATE;
+ 	return r;
+ }
  
- 	/* The requested page is already paged-out, nothing to do */
--	if (!kvmppc_gfn_is_uvmem_pfn(gpa >> page_shift, kvm, NULL))
-+	if (!uvmem_gfn_is_uvmem_pfn(gpa >> page_shift, kvm, NULL))
- 		return ret;
+ static void kvmppc_book3s_exit_hv(void)
+ {
+-	kvmppc_uvmem_free();
++	kvmppc_secmem_free();
+ 	kvmppc_free_host_rm_ops();
+ 	if (kvmppc_radix_possible())
+ 		kvmppc_radix_exit();
+diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+index b79affc..12d10c1 100644
+--- a/arch/powerpc/kvm/book3s_hv_uvmem.c
++++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+@@ -93,7 +93,7 @@
+ #include <asm/ultravisor.h>
+ #include <asm/mman.h>
+ #include <asm/kvm_ppc.h>
+-#include <asm/kvm_book3s_uvmem.h>
++#include <asm/kvmppc_svm_backend.h>
  
- 	ret = migrate_vma_setup(&mig);
-@@ -573,7 +573,7 @@ static int __kvmppc_svm_page_out(struct vm_area_struct *vma,
+ static struct dev_pagemap uvmem_pgmap;
+ static unsigned long *uvmem_bitmap;
+@@ -234,7 +234,7 @@ struct uvmem_page_pvt {
+ 	bool remove_gfn;
+ };
+ 
+-bool kvmppc_uvmem_available(void)
++static bool uvmem_available(void)
+ {
+ 	/*
+ 	 * If uvmem_bitmap != NULL, then there is an ultravisor
+@@ -453,7 +453,7 @@ static int __uvmem_memslot_create(struct kvm *kvm,
  	return ret;
  }
  
--static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
-+static inline int uvmem_svm_page_out(struct vm_area_struct *vma,
- 				      unsigned long start, unsigned long end,
- 				      unsigned long page_shift,
- 				      struct kvm *kvm, unsigned long gpa)
-@@ -581,7 +581,7 @@ static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
- 	int ret;
- 
- 	mutex_lock(&kvm->arch.uvmem_lock);
--	ret = __kvmppc_svm_page_out(vma, start, end, page_shift, kvm, gpa);
-+	ret = __uvmem_svm_page_out(vma, start, end, page_shift, kvm, gpa);
- 	mutex_unlock(&kvm->arch.uvmem_lock);
- 
- 	return ret;
-@@ -599,7 +599,7 @@ void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
+-unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
++static unsigned long uvmem_h_svm_init_start(struct kvm *kvm)
+ {
+ 	struct kvm_memslots *slots;
+ 	struct kvm_memory_slot *memslot, *m;
+@@ -595,7 +595,7 @@ static inline int uvmem_svm_page_out(struct vm_area_struct *vma,
+  * fault on them, do fault time migration to replace the device PTEs in
+  * QEMU page table with normal PTEs from newly allocated pages.
+  */
+-void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
++static void uvmem_drop_pages(const struct kvm_memory_slot *slot,
  			     struct kvm *kvm, bool skip_page_out)
  {
  	int i;
--	struct kvmppc_uvmem_page_pvt *pvt;
-+	struct uvmem_page_pvt *pvt;
- 	struct page *uvmem_page;
- 	struct vm_area_struct *vma = NULL;
- 	unsigned long uvmem_pfn, gfn;
-@@ -623,19 +623,19 @@ void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
- 
- 		mutex_lock(&kvm->arch.uvmem_lock);
- 
--		if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
-+		if (uvmem_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
- 			uvmem_page = pfn_to_page(uvmem_pfn);
- 			pvt = uvmem_page->zone_device_data;
- 			pvt->skip_page_out = skip_page_out;
- 			pvt->remove_gfn = true;
- 
--			if (__kvmppc_svm_page_out(vma, addr, addr + PAGE_SIZE,
-+			if (__uvmem_svm_page_out(vma, addr, addr + PAGE_SIZE,
- 						  PAGE_SHIFT, kvm, pvt->gpa))
- 				pr_err("Can't page out gpa:0x%lx addr:0x%lx\n",
- 				       pvt->gpa, addr);
- 		} else {
- 			/* Remove the shared flag if any */
--			kvmppc_gfn_remove(gfn, kvm);
-+			uvmem_gfn_remove(gfn, kvm);
- 		}
- 
- 		mutex_unlock(&kvm->arch.uvmem_lock);
-@@ -680,31 +680,31 @@ unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
-  *
-  * Called with kvm->arch.uvmem_lock held
-  */
--static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
-+static struct page *uvmem_get_page(unsigned long gpa, struct kvm *kvm)
- {
- 	struct page *dpage = NULL;
- 	unsigned long bit, uvmem_pfn;
--	struct kvmppc_uvmem_page_pvt *pvt;
-+	struct uvmem_page_pvt *pvt;
- 	unsigned long pfn_last, pfn_first;
- 
--	pfn_first = kvmppc_uvmem_pgmap.res.start >> PAGE_SHIFT;
-+	pfn_first = uvmem_pgmap.res.start >> PAGE_SHIFT;
- 	pfn_last = pfn_first +
--		   (resource_size(&kvmppc_uvmem_pgmap.res) >> PAGE_SHIFT);
-+		   (resource_size(&uvmem_pgmap.res) >> PAGE_SHIFT);
- 
--	spin_lock(&kvmppc_uvmem_bitmap_lock);
--	bit = find_first_zero_bit(kvmppc_uvmem_bitmap,
-+	spin_lock(&uvmem_bitmap_lock);
-+	bit = find_first_zero_bit(uvmem_bitmap,
- 				  pfn_last - pfn_first);
- 	if (bit >= (pfn_last - pfn_first))
- 		goto out;
--	bitmap_set(kvmppc_uvmem_bitmap, bit, 1);
--	spin_unlock(&kvmppc_uvmem_bitmap_lock);
-+	bitmap_set(uvmem_bitmap, bit, 1);
-+	spin_unlock(&uvmem_bitmap_lock);
- 
- 	pvt = kzalloc(sizeof(*pvt), GFP_KERNEL);
- 	if (!pvt)
- 		goto out_clear;
- 
- 	uvmem_pfn = bit + pfn_first;
--	kvmppc_gfn_secure_uvmem_pfn(gpa >> PAGE_SHIFT, uvmem_pfn, kvm);
-+	uvmem_gfn_secure_uvmem_pfn(gpa >> PAGE_SHIFT, uvmem_pfn, kvm);
- 
- 	pvt->gpa = gpa;
- 	pvt->kvm = kvm;
-@@ -715,10 +715,10 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
- 	lock_page(dpage);
- 	return dpage;
- out_clear:
--	spin_lock(&kvmppc_uvmem_bitmap_lock);
--	bitmap_clear(kvmppc_uvmem_bitmap, bit, 1);
-+	spin_lock(&uvmem_bitmap_lock);
-+	bitmap_clear(uvmem_bitmap, bit, 1);
- out:
--	spin_unlock(&kvmppc_uvmem_bitmap_lock);
-+	spin_unlock(&uvmem_bitmap_lock);
- 	return NULL;
+@@ -644,7 +644,7 @@ void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
+ 	mmap_read_unlock(kvm->mm);
  }
  
-@@ -726,7 +726,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
-  * Alloc a PFN from private device memory pool. If @pagein is true,
-  * copy page from normal memory to secure memory using UV_PAGE_IN uvcall.
-  */
--static int kvmppc_svm_page_in(struct vm_area_struct *vma,
-+static int uvmem_svm_page_in(struct vm_area_struct *vma,
- 		unsigned long start,
- 		unsigned long end, unsigned long gpa, struct kvm *kvm,
- 		unsigned long page_shift,
-@@ -756,7 +756,7 @@ static int kvmppc_svm_page_in(struct vm_area_struct *vma,
- 		goto out_finalize;
- 	}
+-unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
++static unsigned long uvmem_h_svm_init_abort(struct kvm *kvm)
+ {
+ 	int srcu_idx;
+ 	struct kvm_memory_slot *memslot;
+@@ -662,7 +662,7 @@ unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
+ 	srcu_idx = srcu_read_lock(&kvm->srcu);
  
--	dpage = kvmppc_uvmem_get_page(gpa, kvm);
-+	dpage = uvmem_get_page(gpa, kvm);
- 	if (!dpage) {
- 		ret = -1;
- 		goto out_finalize;
-@@ -780,7 +780,7 @@ static int kvmppc_svm_page_in(struct vm_area_struct *vma,
+ 	kvm_for_each_memslot(memslot, kvm_memslots(kvm))
+-		kvmppc_uvmem_drop_pages(memslot, kvm, false);
++		uvmem_drop_pages(memslot, kvm, false);
+ 
+ 	srcu_read_unlock(&kvm->srcu, srcu_idx);
+ 
+@@ -816,7 +816,7 @@ static int uvmem_uv_migrate_mem_slot(struct kvm *kvm,
  	return ret;
  }
  
--static int kvmppc_uv_migrate_mem_slot(struct kvm *kvm,
-+static int uvmem_uv_migrate_mem_slot(struct kvm *kvm,
- 		const struct kvm_memory_slot *memslot)
+-unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
++static unsigned long uvmem_h_svm_init_done(struct kvm *kvm)
  {
- 	unsigned long gfn = memslot->base_gfn;
-@@ -790,7 +790,7 @@ static int kvmppc_uv_migrate_mem_slot(struct kvm *kvm,
- 
- 	mmap_read_lock(kvm->mm);
- 	mutex_lock(&kvm->arch.uvmem_lock);
--	while (kvmppc_next_nontransitioned_gfn(memslot, kvm, &gfn)) {
-+	while (uvmem_next_nontransitioned_gfn(memslot, kvm, &gfn)) {
- 		ret = H_STATE;
- 		start = gfn_to_hva(kvm, gfn);
- 		if (kvm_is_error_hva(start))
-@@ -801,7 +801,7 @@ static int kvmppc_uv_migrate_mem_slot(struct kvm *kvm,
- 		if (!vma || vma->vm_start > start || vma->vm_end < end)
- 			break;
- 
--		ret = kvmppc_svm_page_in(vma, start, end,
-+		ret = uvmem_svm_page_in(vma, start, end,
- 				(gfn << PAGE_SHIFT), kvm, PAGE_SHIFT, false);
- 		if (ret) {
- 			ret = H_STATE;
-@@ -830,7 +830,7 @@ unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
- 	srcu_idx = srcu_read_lock(&kvm->srcu);
- 	slots = kvm_memslots(kvm);
- 	kvm_for_each_memslot(memslot, slots) {
--		ret = kvmppc_uv_migrate_mem_slot(kvm, memslot);
-+		ret = uvmem_uv_migrate_mem_slot(kvm, memslot);
- 		if (ret) {
- 			/*
- 			 * The pages will remain transitioned.
-@@ -863,13 +863,13 @@ unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
-  * In the former case, uses dev_pagemap_ops.migrate_to_ram handler
-  * to unmap the device page from QEMU's page tables.
+ 	struct kvm_memslots *slots;
+ 	struct kvm_memory_slot *memslot;
+@@ -922,7 +922,7 @@ static unsigned long uvmem_share_page(struct kvm *kvm, unsigned long gpa,
+  * H_PAGE_IN_SHARED flag makes the page shared which means that the same
+  * memory in is visible from both UV and HV.
   */
--static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
-+static unsigned long uvmem_share_page(struct kvm *kvm, unsigned long gpa,
+-unsigned long kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
++static unsigned long uvmem_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
+ 		unsigned long flags,
  		unsigned long page_shift)
  {
- 
- 	int ret = H_PARAMETER;
- 	struct page *uvmem_page;
--	struct kvmppc_uvmem_page_pvt *pvt;
-+	struct uvmem_page_pvt *pvt;
- 	unsigned long pfn;
- 	unsigned long gfn = gpa >> page_shift;
- 	int srcu_idx;
-@@ -877,7 +877,7 @@ static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
- 
- 	srcu_idx = srcu_read_lock(&kvm->srcu);
- 	mutex_lock(&kvm->arch.uvmem_lock);
--	if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
-+	if (uvmem_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
- 		uvmem_page = pfn_to_page(uvmem_pfn);
- 		pvt = uvmem_page->zone_device_data;
- 		pvt->skip_page_out = true;
-@@ -895,7 +895,7 @@ static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
- 		goto out;
- 
- 	mutex_lock(&kvm->arch.uvmem_lock);
--	if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
-+	if (uvmem_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
- 		uvmem_page = pfn_to_page(uvmem_pfn);
- 		pvt = uvmem_page->zone_device_data;
- 		pvt->skip_page_out = true;
-@@ -906,7 +906,7 @@ static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
- 
- 	if (!uv_page_in(kvm->arch.lpid, pfn << page_shift, gpa, 0,
- 				page_shift)) {
--		kvmppc_gfn_shared(gfn, kvm);
-+		uvmem_gfn_shared(gfn, kvm);
- 		ret = H_SUCCESS;
- 	}
- 	kvm_release_pfn_clean(pfn);
-@@ -942,7 +942,7 @@ unsigned long kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
- 		return H_P2;
- 
- 	if (flags & H_PAGE_IN_SHARED)
--		return kvmppc_share_page(kvm, gpa, page_shift);
-+		return uvmem_share_page(kvm, gpa, page_shift);
- 
- 	ret = H_PARAMETER;
- 	srcu_idx = srcu_read_lock(&kvm->srcu);
-@@ -954,7 +954,7 @@ unsigned long kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
- 
- 	mutex_lock(&kvm->arch.uvmem_lock);
- 	/* Fail the page-in request of an already paged-in page */
--	if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, NULL))
-+	if (uvmem_gfn_is_uvmem_pfn(gfn, kvm, NULL))
- 		goto out_unlock;
- 
- 	end = start + (1UL << page_shift);
-@@ -962,7 +962,7 @@ unsigned long kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
- 	if (!vma || vma->vm_start > start || vma->vm_end < end)
- 		goto out_unlock;
- 
--	if (kvmppc_svm_page_in(vma, start, end, gpa, kvm, page_shift,
-+	if (uvmem_svm_page_in(vma, start, end, gpa, kvm, page_shift,
- 				true))
- 		goto out_unlock;
- 
-@@ -987,9 +987,9 @@ unsigned long kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
+@@ -985,7 +985,7 @@ unsigned long kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
+  * This eventually results in dropping of device PFN and the newly
+  * provisioned page/PFN gets populated in QEMU page tables.
   */
- static vm_fault_t kvmppc_uvmem_migrate_to_ram(struct vm_fault *vmf)
+-static vm_fault_t kvmppc_uvmem_migrate_to_ram(struct vm_fault *vmf)
++static vm_fault_t uvmem_migrate_to_ram(struct vm_fault *vmf)
  {
--	struct kvmppc_uvmem_page_pvt *pvt = vmf->page->zone_device_data;
-+	struct uvmem_page_pvt *pvt = vmf->page->zone_device_data;
+ 	struct uvmem_page_pvt *pvt = vmf->page->zone_device_data;
  
--	if (kvmppc_svm_page_out(vmf->vma, vmf->address,
-+	if (uvmem_svm_page_out(vmf->vma, vmf->address,
- 				vmf->address + PAGE_SIZE, PAGE_SHIFT,
- 				pvt->kvm, pvt->gpa))
- 		return VM_FAULT_SIGBUS;
-@@ -1007,23 +1007,23 @@ static vm_fault_t kvmppc_uvmem_migrate_to_ram(struct vm_fault *vmf)
- static void kvmppc_uvmem_page_free(struct page *page)
+@@ -1004,7 +1004,7 @@ static vm_fault_t kvmppc_uvmem_migrate_to_ram(struct vm_fault *vmf)
+  * to a normal PFN during H_SVM_PAGE_OUT.
+  * Gets called with kvm->arch.uvmem_lock held.
+  */
+-static void kvmppc_uvmem_page_free(struct page *page)
++static void uvmem_page_free(struct page *page)
  {
  	unsigned long pfn = page_to_pfn(page) -
--			(kvmppc_uvmem_pgmap.res.start >> PAGE_SHIFT);
--	struct kvmppc_uvmem_page_pvt *pvt;
-+			(uvmem_pgmap.res.start >> PAGE_SHIFT);
-+	struct uvmem_page_pvt *pvt;
- 
--	spin_lock(&kvmppc_uvmem_bitmap_lock);
--	bitmap_clear(kvmppc_uvmem_bitmap, pfn, 1);
--	spin_unlock(&kvmppc_uvmem_bitmap_lock);
-+	spin_lock(&uvmem_bitmap_lock);
-+	bitmap_clear(uvmem_bitmap, pfn, 1);
-+	spin_unlock(&uvmem_bitmap_lock);
- 
- 	pvt = page->zone_device_data;
- 	page->zone_device_data = NULL;
- 	if (pvt->remove_gfn)
--		kvmppc_gfn_remove(pvt->gpa >> PAGE_SHIFT, pvt->kvm);
-+		uvmem_gfn_remove(pvt->gpa >> PAGE_SHIFT, pvt->kvm);
- 	else
--		kvmppc_gfn_secure_mem_pfn(pvt->gpa >> PAGE_SHIFT, pvt->kvm);
-+		uvmem_gfn_secure_mem_pfn(pvt->gpa >> PAGE_SHIFT, pvt->kvm);
- 	kfree(pvt);
+ 			(uvmem_pgmap.res.start >> PAGE_SHIFT);
+@@ -1024,15 +1024,15 @@ static void kvmppc_uvmem_page_free(struct page *page)
  }
  
--static const struct dev_pagemap_ops kvmppc_uvmem_ops = {
-+static const struct dev_pagemap_ops uvmem_ops = {
- 	.page_free = kvmppc_uvmem_page_free,
- 	.migrate_to_ram	= kvmppc_uvmem_migrate_to_ram,
+ static const struct dev_pagemap_ops uvmem_ops = {
+-	.page_free = kvmppc_uvmem_page_free,
+-	.migrate_to_ram	= kvmppc_uvmem_migrate_to_ram,
++	.page_free = uvmem_page_free,
++	.migrate_to_ram	= uvmem_migrate_to_ram,
  };
-@@ -1062,7 +1062,7 @@ static void kvmppc_uvmem_page_free(struct page *page)
- 	if (!vma || vma->vm_start > start || vma->vm_end < end)
- 		goto out;
  
--	if (!kvmppc_svm_page_out(vma, start, end, page_shift, kvm, gpa))
-+	if (!uvmem_svm_page_out(vma, start, end, page_shift, kvm, gpa))
- 		ret = H_SUCCESS;
- out:
- 	mmap_read_unlock(kvm->mm);
-@@ -1080,7 +1080,7 @@ int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
- 		return -EFAULT;
- 
- 	mutex_lock(&kvm->arch.uvmem_lock);
--	if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, NULL))
-+	if (uvmem_gfn_is_uvmem_pfn(gfn, kvm, NULL))
- 		goto out;
- 
- 	ret = uv_page_in(kvm->arch.lpid, pfn << PAGE_SHIFT, gfn << PAGE_SHIFT,
-@@ -1093,20 +1093,20 @@ int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
- 
- int kvmppc_uvmem_memslot_create(struct kvm *kvm, const struct kvm_memory_slot *new)
+ /*
+  * H_SVM_PAGE_OUT: Move page from secure memory to normal memory.
+  */
+-unsigned long
+-kvmppc_h_svm_page_out(struct kvm *kvm, unsigned long gpa,
++static unsigned long
++uvmem_h_svm_page_out(struct kvm *kvm, unsigned long gpa,
+ 		      unsigned long flags, unsigned long page_shift)
  {
--	int ret = __kvmppc_uvmem_memslot_create(kvm, new);
-+	int ret = __uvmem_memslot_create(kvm, new);
- 
- 	if (!ret)
--		ret = kvmppc_uv_migrate_mem_slot(kvm, new);
-+		ret = uvmem_uv_migrate_mem_slot(kvm, new);
- 
+ 	unsigned long gfn = gpa >> page_shift;
+@@ -1070,7 +1070,7 @@ static void kvmppc_uvmem_page_free(struct page *page)
  	return ret;
  }
  
- void kvmppc_uvmem_memslot_delete(struct kvm *kvm, const struct kvm_memory_slot *old)
+-int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
++static int uvmem_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
  {
--	__kvmppc_uvmem_memslot_delete(kvm, old);
-+	__uvmem_memslot_delete(kvm, old);
+ 	unsigned long pfn;
+ 	int ret = U_SUCCESS;
+@@ -1091,7 +1091,8 @@ int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
+ 	return (ret == U_SUCCESS) ? RESUME_GUEST : -EFAULT;
  }
  
--static u64 kvmppc_get_secmem_size(void)
-+static u64 uvmem_get_secmem_size(void)
+-int kvmppc_uvmem_memslot_create(struct kvm *kvm, const struct kvm_memory_slot *new)
++static int uvmem_memslot_create(struct kvm *kvm,
++		const struct kvm_memory_slot *new)
  {
- 	struct device_node *np;
- 	int i, len;
-@@ -1152,7 +1152,7 @@ int kvmppc_uvmem_init(void)
- 	void *addr;
- 	unsigned long pfn_last, pfn_first;
+ 	int ret = __uvmem_memslot_create(kvm, new);
  
--	size = kvmppc_get_secmem_size();
-+	size = uvmem_get_secmem_size();
- 	if (!size) {
- 		/*
- 		 * Don't fail the initialization of kvm-hv module if
-@@ -1163,18 +1163,18 @@ int kvmppc_uvmem_init(void)
- 		goto out;
- 	}
- 
--	res = request_free_mem_region(&iomem_resource, size, "kvmppc_uvmem");
-+	res = request_free_mem_region(&iomem_resource, size, "uvmem");
- 	if (IS_ERR(res)) {
- 		ret = PTR_ERR(res);
- 		goto out;
- 	}
- 
--	kvmppc_uvmem_pgmap.type = MEMORY_DEVICE_PRIVATE;
--	kvmppc_uvmem_pgmap.res = *res;
--	kvmppc_uvmem_pgmap.ops = &kvmppc_uvmem_ops;
-+	uvmem_pgmap.type = MEMORY_DEVICE_PRIVATE;
-+	uvmem_pgmap.res = *res;
-+	uvmem_pgmap.ops = &uvmem_ops;
- 	/* just one global instance: */
--	kvmppc_uvmem_pgmap.owner = &kvmppc_uvmem_pgmap;
--	addr = memremap_pages(&kvmppc_uvmem_pgmap, NUMA_NO_NODE);
-+	uvmem_pgmap.owner = &uvmem_pgmap;
-+	addr = memremap_pages(&uvmem_pgmap, NUMA_NO_NODE);
- 	if (IS_ERR(addr)) {
- 		ret = PTR_ERR(addr);
- 		goto out_free_region;
-@@ -1182,9 +1182,9 @@ int kvmppc_uvmem_init(void)
- 
- 	pfn_first = res->start >> PAGE_SHIFT;
- 	pfn_last = pfn_first + (resource_size(res) >> PAGE_SHIFT);
--	kvmppc_uvmem_bitmap = kcalloc(BITS_TO_LONGS(pfn_last - pfn_first),
-+	uvmem_bitmap = kcalloc(BITS_TO_LONGS(pfn_last - pfn_first),
- 				      sizeof(unsigned long), GFP_KERNEL);
--	if (!kvmppc_uvmem_bitmap) {
-+	if (!uvmem_bitmap) {
- 		ret = -ENOMEM;
- 		goto out_unmap;
- 	}
-@@ -1192,7 +1192,7 @@ int kvmppc_uvmem_init(void)
- 	pr_info("KVMPPC-UVMEM: Secure Memory size 0x%lx\n", size);
+@@ -1101,7 +1102,8 @@ int kvmppc_uvmem_memslot_create(struct kvm *kvm, const struct kvm_memory_slot *n
  	return ret;
- out_unmap:
--	memunmap_pages(&kvmppc_uvmem_pgmap);
-+	memunmap_pages(&uvmem_pgmap);
- out_free_region:
- 	release_mem_region(res->start, size);
- out:
-@@ -1201,11 +1201,11 @@ int kvmppc_uvmem_init(void)
+ }
  
- void kvmppc_uvmem_free(void)
+-void kvmppc_uvmem_memslot_delete(struct kvm *kvm, const struct kvm_memory_slot *old)
++static void uvmem_memslot_delete(struct kvm *kvm,
++		const struct kvm_memory_slot *old)
  {
--	if (!kvmppc_uvmem_bitmap)
-+	if (!uvmem_bitmap)
+ 	__uvmem_memslot_delete(kvm, old);
+ }
+@@ -1144,7 +1146,7 @@ static u64 uvmem_get_secmem_size(void)
+ 	return size;
+ }
+ 
+-int kvmppc_uvmem_init(void)
++static int uvmem_init(void)
+ {
+ 	int ret = 0;
+ 	unsigned long size;
+@@ -1199,7 +1201,7 @@ int kvmppc_uvmem_init(void)
+ 	return ret;
+ }
+ 
+-void kvmppc_uvmem_free(void)
++static void uvmem_free(void)
+ {
+ 	if (!uvmem_bitmap)
  		return;
- 
--	memunmap_pages(&kvmppc_uvmem_pgmap);
--	release_mem_region(kvmppc_uvmem_pgmap.res.start,
--			   resource_size(&kvmppc_uvmem_pgmap.res));
--	kfree(kvmppc_uvmem_bitmap);
-+	memunmap_pages(&uvmem_pgmap);
-+	release_mem_region(uvmem_pgmap.res.start,
-+			   resource_size(&uvmem_pgmap.res));
-+	kfree(uvmem_bitmap);
+@@ -1209,3 +1211,41 @@ void kvmppc_uvmem_free(void)
+ 			   resource_size(&uvmem_pgmap.res));
+ 	kfree(uvmem_bitmap);
  }
++
++const struct kvmppc_hmm_backend kvmppc_uvmem_backend = {
++	/* initialize */
++	.kvmppc_secmem_init = uvmem_init,
++
++	/* cleanup */
++	.kvmppc_secmem_free = uvmem_free,
++
++	/* is memory available */
++	.kvmppc_secmem_available = uvmem_available,
++
++	/* allocate a protected/secure page for the secure VM */
++	.kvmppc_svm_page_in = uvmem_h_svm_page_in,
++
++	/* recover the protected/secure page from the secure VM */
++	.kvmppc_svm_page_out = uvmem_h_svm_page_out,
++
++	/* initiate the transition of a VM to secure VM */
++	.kvmppc_svm_init_start = uvmem_h_svm_init_start,
++
++	/* finalize the transition of a secure VM */
++	.kvmppc_svm_init_done = uvmem_h_svm_init_done,
++
++	/* send a page to uv on page fault */
++	.kvmppc_svm_page_share = uvmem_send_page_to_uv,
++
++	/* abort the transition to a secure VM */
++	.kvmppc_svm_init_abort = uvmem_h_svm_init_abort,
++
++	/* add a memory slot */
++	.kvmppc_svm_memslot_create = uvmem_memslot_create,
++
++	/* free a memory slot */
++	.kvmppc_svm_memslot_delete = uvmem_memslot_delete,
++
++	/* drop pages allocated to the secure VM */
++	.kvmppc_svm_drop_pages = uvmem_drop_pages,
++};
 -- 
 1.8.3.1
 
