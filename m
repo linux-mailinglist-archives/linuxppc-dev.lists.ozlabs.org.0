@@ -1,85 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA74828B246
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 12:33:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC34F28B35A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 13:04:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C8w4q4f8bzDqg3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 21:33:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C8wmw0zcnzDqR7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 22:04:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=tWHLov0c; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C8w2z4p4dzDqmq
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 21:31:55 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09CADvO5179671; Mon, 12 Oct 2020 06:31:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=Wc0IAiIxNr30cA1nXrWSq+IkxKZov4iUoMljSASi0Ug=;
- b=tWHLov0cNbROURRptFIk8RLbBM7b1Wk2MIw6yjkNMXPsQBVTlMmPL7Xq7hC39+ek/Aml
- fSYT4siSefRI2uYOsYTAW/p2j46R9aeh7MA+5my+ZeZ0QILSEnrJxT00DksbSwOUoQC7
- KRUoGaO6yaU/A79B/v1u7ysiuS51CDJyaVKpf6v/Av2tHdyDK5udMpW7ofwJukkUDek7
- N7d9nyW+z1Gu5GKUxDWzp2Cj8BB4s4JPm61ddFiFmR5aM9siLm4aFCpmurYIHKkd+mi1
- 4E8xY+c+kIl4C8i48/kLNR6aVp9i9fEjv0GBU1uKJy7c/ClSYu3F7vbkykan37fhhZol jQ== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 344n6y0esy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Oct 2020 06:31:46 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09CAVjSQ000902;
- Mon, 12 Oct 2020 10:31:45 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 3434k7swxe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Oct 2020 10:31:45 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 09CAVhhj29950244
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Oct 2020 10:31:43 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BCB8E5205A;
- Mon, 12 Oct 2020 10:31:42 +0000 (GMT)
-Received: from Madhavan.com (unknown [9.102.26.211])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id AF2A75204E;
- Mon, 12 Oct 2020 10:31:41 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/perf: fix Threshold Event CounterMultiplier width for
- P10
-Date: Mon, 12 Oct 2020 16:01:28 +0530
-Message-Id: <20201012103128.53243-1-maddy@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C8wl46JzNzDqgC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 22:03:08 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4C8wkq4M1Qz9tyxp;
+ Mon, 12 Oct 2020 13:02:59 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id HC-RA1I_1qin; Mon, 12 Oct 2020 13:02:59 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4C8wkq3Gt8z9tyxm;
+ Mon, 12 Oct 2020 13:02:59 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 389D08B788;
+ Mon, 12 Oct 2020 13:02:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 60P1PKY0it_H; Mon, 12 Oct 2020 13:02:57 +0200 (CEST)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B5F268B78B;
+ Mon, 12 Oct 2020 13:02:56 +0200 (CEST)
+Subject: Re: [PATCH -next v2] powerpc/mm: ptdump: Convert to
+ DEFINE_SHOW_ATTRIBUTE
+To: Qinglang Miao <miaoqinglang@huawei.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+References: <20200919012901.174233-1-miaoqinglang@huawei.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <43d67a2b-6e44-9349-e0b5-80d1f50ed000@csgroup.eu>
+Date: Mon, 12 Oct 2020 13:02:58 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
+In-Reply-To: <20200919012901.174233-1-miaoqinglang@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-12_08:2020-10-12,
- 2020-10-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
- score=100 lowpriorityscore=0
- priorityscore=1501 mlxscore=0 adultscore=0 spamscore=0 clxscore=1011
- phishscore=0 impostorscore=0 mlxlogscore=547 malwarescore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010120083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,55 +67,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Power9 and isa v3.1 has 7bit mantissa field for Threshold Event Counter
-Multiplier (TECM). TECM is part of Monitor Mode Control Register A (MMCRA).
-This field along with Threshold Event Counter Exponent (TECE) is used to
-get threshould counter value. In Power10, the width of TECM field is
-increase to 8bits. Patch fixes the current code to modify the MMCRA[TECM]
-extraction macro to handling this changes.
+Hi,
 
-Fixes: 170a315f41c64 ('powerpc/perf: Support to export MMCRA[TEC*] field to userspace')
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
- arch/powerpc/perf/isa207-common.c | 3 +++
- arch/powerpc/perf/isa207-common.h | 4 ++++
- 2 files changed, 7 insertions(+)
+Le 19/09/2020 à 03:29, Qinglang Miao a écrit :
+> Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
+> 
+> Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
+> ---
+> v2: based on linux-next(20200917), and can be applied to
+>      mainline cleanly now.
 
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 964437adec18..5fe129f02290 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -247,6 +247,9 @@ void isa207_get_mem_weight(u64 *weight)
- 	u64 sier = mfspr(SPRN_SIER);
- 	u64 val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
- 
-+	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		mantissa = P10_MMCRA_THR_CTR_MANT(mmcra);
-+
- 	if (val == 0 || val == 7)
- 		*weight = 0;
- 	else
-diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
-index 044de65e96b9..71380e854f48 100644
---- a/arch/powerpc/perf/isa207-common.h
-+++ b/arch/powerpc/perf/isa207-common.h
-@@ -219,6 +219,10 @@
- #define MMCRA_THR_CTR_EXP(v)		(((v) >> MMCRA_THR_CTR_EXP_SHIFT) &\
- 						MMCRA_THR_CTR_EXP_MASK)
- 
-+#define P10_MMCRA_THR_CTR_MANT_MASK	0xFFul
-+#define P10_MMCRA_THR_CTR_MANT(v)	(((v) >> MMCRA_THR_CTR_MANT_SHIFT) &\
-+						P10_MMCRA_THR_CTR_MANT_MASK)
-+
- /* MMCRA Threshold Compare bit constant for power9 */
- #define p9_MMCRA_THR_CMP_SHIFT	45
- 
--- 
-2.26.2
+After the removal of powerpc 601, this patch needs to be rebased (as of linux-next 20201012)
 
+I think now, bats_show_603() should simply be renamed bats_show()
+
+Christophe
+
+> 
+>   arch/powerpc/mm/ptdump/bats.c          | 24 +++++++-----------------
+>   arch/powerpc/mm/ptdump/hashpagetable.c | 12 +-----------
+>   arch/powerpc/mm/ptdump/ptdump.c        | 13 +------------
+>   arch/powerpc/mm/ptdump/segment_regs.c  | 12 +-----------
+>   4 files changed, 10 insertions(+), 51 deletions(-)
+> 
+> diff --git a/arch/powerpc/mm/ptdump/bats.c b/arch/powerpc/mm/ptdump/bats.c
+> index e29b338d4..a24495e93 100644
+> --- a/arch/powerpc/mm/ptdump/bats.c
+> +++ b/arch/powerpc/mm/ptdump/bats.c
+> @@ -56,7 +56,7 @@ static void bat_show_601(struct seq_file *m, int idx, u32 lower, u32 upper)
+>   
+>   #define BAT_SHOW_601(_m, _n, _l, _u) bat_show_601(_m, _n, mfspr(_l), mfspr(_u))
+>   
+> -static int bats_show_601(struct seq_file *m, void *v)
+> +static int bats_601_show(struct seq_file *m, void *v)
+>   {
+>   	seq_puts(m, "---[ Block Address Translation ]---\n");
+>   
+> @@ -113,7 +113,7 @@ static void bat_show_603(struct seq_file *m, int idx, u32 lower, u32 upper, bool
+>   
+>   #define BAT_SHOW_603(_m, _n, _l, _u, _d) bat_show_603(_m, _n, mfspr(_l), mfspr(_u), _d)
+>   
+> -static int bats_show_603(struct seq_file *m, void *v)
+> +static int bats_603_show(struct seq_file *m, void *v)
+>   {
+>   	seq_puts(m, "---[ Instruction Block Address Translation ]---\n");
+>   
+> @@ -144,25 +144,15 @@ static int bats_show_603(struct seq_file *m, void *v)
+>   	return 0;
+>   }
+>   
+> -static int bats_open(struct inode *inode, struct file *file)
+> -{
+> -	if (IS_ENABLED(CONFIG_PPC_BOOK3S_601))
+> -		return single_open(file, bats_show_601, NULL);
+> -
+> -	return single_open(file, bats_show_603, NULL);
+> -}
+> -
+> -static const struct file_operations bats_fops = {
+> -	.open		= bats_open,
+> -	.read		= seq_read,
+> -	.llseek		= seq_lseek,
+> -	.release	= single_release,
+> -};
+> +DEFINE_SHOW_ATTRIBUTE(bats_601);
+> +DEFINE_SHOW_ATTRIBUTE(bats_603);
+>   
+>   static int __init bats_init(void)
+>   {
+>   	debugfs_create_file("block_address_translation", 0400,
+> -			    powerpc_debugfs_root, NULL, &bats_fops);
+> +			    powerpc_debugfs_root, NULL,
+> +			    IS_ENABLED(CONFIG_PPC_BOOK3S_601) ?
+> +			    &bats_601_fops : & bats_603_fops);
+>   	return 0;
+>   }
+>   device_initcall(bats_init);
+> diff --git a/arch/powerpc/mm/ptdump/hashpagetable.c b/arch/powerpc/mm/ptdump/hashpagetable.c
+> index ad6df9a2e..c7f824d29 100644
+> --- a/arch/powerpc/mm/ptdump/hashpagetable.c
+> +++ b/arch/powerpc/mm/ptdump/hashpagetable.c
+> @@ -526,17 +526,7 @@ static int ptdump_show(struct seq_file *m, void *v)
+>   	return 0;
+>   }
+>   
+> -static int ptdump_open(struct inode *inode, struct file *file)
+> -{
+> -	return single_open(file, ptdump_show, NULL);
+> -}
+> -
+> -static const struct file_operations ptdump_fops = {
+> -	.open		= ptdump_open,
+> -	.read		= seq_read,
+> -	.llseek		= seq_lseek,
+> -	.release	= single_release,
+> -};
+> +DEFINE_SHOW_ATTRIBUTE(ptdump);
+>   
+>   static int ptdump_init(void)
+>   {
+> diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+> index aca354fb6..6bbf85ff2 100644
+> --- a/arch/powerpc/mm/ptdump/ptdump.c
+> +++ b/arch/powerpc/mm/ptdump/ptdump.c
+> @@ -413,18 +413,7 @@ static int ptdump_show(struct seq_file *m, void *v)
+>   	return 0;
+>   }
+>   
+> -
+> -static int ptdump_open(struct inode *inode, struct file *file)
+> -{
+> -	return single_open(file, ptdump_show, NULL);
+> -}
+> -
+> -static const struct file_operations ptdump_fops = {
+> -	.open		= ptdump_open,
+> -	.read		= seq_read,
+> -	.llseek		= seq_lseek,
+> -	.release	= single_release,
+> -};
+> +DEFINE_SHOW_ATTRIBUTE(ptdump);
+>   
+>   static void build_pgtable_complete_mask(void)
+>   {
+> diff --git a/arch/powerpc/mm/ptdump/segment_regs.c b/arch/powerpc/mm/ptdump/segment_regs.c
+> index dde2fe8de..9e870d44c 100644
+> --- a/arch/powerpc/mm/ptdump/segment_regs.c
+> +++ b/arch/powerpc/mm/ptdump/segment_regs.c
+> @@ -41,17 +41,7 @@ static int sr_show(struct seq_file *m, void *v)
+>   	return 0;
+>   }
+>   
+> -static int sr_open(struct inode *inode, struct file *file)
+> -{
+> -	return single_open(file, sr_show, NULL);
+> -}
+> -
+> -static const struct file_operations sr_fops = {
+> -	.open		= sr_open,
+> -	.read		= seq_read,
+> -	.llseek		= seq_lseek,
+> -	.release	= single_release,
+> -};
+> +DEFINE_SHOW_ATTRIBUTE(sr);
+>   
+>   static int __init sr_init(void)
+>   {
+> 
