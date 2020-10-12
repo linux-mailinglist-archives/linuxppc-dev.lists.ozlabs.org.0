@@ -1,49 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFAE528AB7F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 03:47:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF2B28AB88
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 03:53:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C8hPd2t09zDqsJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 12:47:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C8hXW53KTzDqkp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 12:53:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=MZeqM+G0; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C8hMl6f75zDqnx
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 12:45:39 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=G2SILhc5; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4C8hMf0qsMz9sRK;
- Mon, 12 Oct 2020 12:45:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1602467138;
- bh=QMZkogI/gfDoyPHm/Lw5pjXwd5LTspyIiIIxRsHsUhE=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=G2SILhc5zkJv94KDxb2kWB4/qyoGwraRecRHH+4IQoyIvFEaqLhtooHgvfyzzuZFl
- YPzWUvHFRZjWnq1p1acv2p2D2YbjTyAUNMFR4dAEuVcXaxgVmIhpeIb9mzH9gwkLOg
- CHCnaovOIHeORhIoMTGfpSQTRcwjmYcm/3NQPYBgEjT33tl/8LxYGXrDI8kpbjmQMq
- 9bQiWKxfSPNGHzMZNRC27yLVwkYbcNr1BZAo8z3LRmRTEZv8wGMlCy18gVmp3TpRwu
- DxUjK2O/IPbDNOvuqm5k2QTF8awhYHFfcM13Ag5PYgQr+XefpUFtjhDs38pcQFyTlR
- sBDe+EGxPLyfg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/smp: Use GFP_ATOMIC while allocating tmp mask
-In-Reply-To: <20201008034240.34059-1-srikar@linux.vnet.ibm.com>
-References: <20201008034240.34059-1-srikar@linux.vnet.ibm.com>
-Date: Mon, 12 Oct 2020 12:45:33 +1100
-Message-ID: <874kn01aki.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C8hVw392gzDqp7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 12:51:51 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id b193so11891503pga.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Oct 2020 18:51:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=bVo49Qxmrd/VNqOY3fspHtw1vy6qQK6RQgUft1Z7OAg=;
+ b=MZeqM+G0oRvw4X1i1it8vuEJDS73HJxsl2oal4RxaREoQ5Swqqn6uYW47JUXIvdkPu
+ bD7cHB1SPk7XULfqfearUp7pf2O6ZaaY+sv8K6tk/M/LEXsHVb3c5VjBRG5UVpXQQFlq
+ 5UH8ZM2sRuTUZ6KnRtZhtb+DzxEQ8IwzZ7Wp8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=bVo49Qxmrd/VNqOY3fspHtw1vy6qQK6RQgUft1Z7OAg=;
+ b=QwJwtqO2+FDny3icgYoPLW/xmxqtDLkd78sKfCj5p7zD3+gLKE2kqvAPGtjbEFSMjo
+ Gftjxpcyhk57oErkOqLil+usjUN+f+K9GZ7I9m0ejiONwOcq1SyMUITdsrvRu9c0DcWQ
+ n4TiXgdqLLrdztNhHDDFP64ga/Lbkb1h53oL//YZMLab/9KdTqq0KUIcnJfZB0RnhXBT
+ CjKzNVfEDrkNQNH5PlTywgVgVaVklZq57zncq/5sodv3HIPsRiOEGpluB8024O38TCGj
+ XivPDr0yFuhsGQoe0zFd9aZz9ztAdkorRpLnmxT8h+DooXol9yLg44Wbllf5J5TaDwtT
+ 25Mw==
+X-Gm-Message-State: AOAM530Adx6IZhvlY0hvX6kNlWLnxYrrr4uPdKj+CwLyjSO5DT/rWeUB
+ n8y+zulf/XxSaMfpQr3/59IghQ==
+X-Google-Smtp-Source: ABdhPJzDlI2jcqpXh8pc1IFJz5rATBl0wPOEnylkH8T6jnCZz0elMUAfQ9nLWZfZ0LSG15Wy62akaw==
+X-Received: by 2002:a17:90a:f0d7:: with SMTP id
+ fa23mr16580238pjb.108.1602467507550; 
+ Sun, 11 Oct 2020 18:51:47 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-1113-6700-2428-55d4-1def-c9e5.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:2428:55d4:1def:c9e5])
+ by smtp.gmail.com with ESMTPSA id k206sm20050544pfd.126.2020.10.11.18.51.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 11 Oct 2020 18:51:46 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mpe@ellerman.id.au
+Subject: Re: [PATCH v5 1/5] powerpc/sstep: Emulate prefixed instructions only
+ when CPU_FTR_ARCH_31 is set
+In-Reply-To: <20201011050908.72173-2-ravi.bangoria@linux.ibm.com>
+References: <20201011050908.72173-1-ravi.bangoria@linux.ibm.com>
+ <20201011050908.72173-2-ravi.bangoria@linux.ibm.com>
+Date: Mon, 12 Oct 2020 12:51:43 +1100
+Message-ID: <87h7r0w6s0.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -57,94 +78,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Qian Cai <cai@redhat.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Peter Zijlstra <peterz@infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com, bala24@linux.ibm.com,
+ paulus@samba.org, sandipan@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+Hi,
 
-> Qian Cai reported a regression where CPU Hotplug fails with the latest
-> powerpc/next
->
-> BUG: sleeping function called from invalid context at mm/slab.h:494
-> in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/88
-> no locks held by swapper/88/0.
-> irq event stamp: 18074448
-> hardirqs last  enabled at (18074447): [<c0000000001a2a7c>] tick_nohz_idle_enter+0x9c/0x110
-> hardirqs last disabled at (18074448): [<c000000000106798>] do_idle+0x138/0x3b0
-> do_idle at kernel/sched/idle.c:253 (discriminator 1)
-> softirqs last  enabled at (18074440): [<c0000000000bbec4>] irq_enter_rcu+0x94/0xa0
-> softirqs last disabled at (18074439): [<c0000000000bbea0>] irq_enter_rcu+0x70/0xa0
-> CPU: 88 PID: 0 Comm: swapper/88 Tainted: G        W         5.9.0-rc8-next-20201007 #1
-> Call Trace:
-> [c00020000a4bfcf0] [c000000000649e98] dump_stack+0xec/0x144 (unreliable)
-> [c00020000a4bfd30] [c0000000000f6c34] ___might_sleep+0x2f4/0x310
-> [c00020000a4bfdb0] [c000000000354f94] slab_pre_alloc_hook.constprop.82+0x124/0x190
-> [c00020000a4bfe00] [c00000000035e9e8] __kmalloc_node+0x88/0x3a0
-> slab_alloc_node at mm/slub.c:2817
-> (inlined by) __kmalloc_node at mm/slub.c:4013
-> [c00020000a4bfe80] [c0000000006494d8] alloc_cpumask_var_node+0x38/0x80
-> kmalloc_node at include/linux/slab.h:577
-> (inlined by) alloc_cpumask_var_node at lib/cpumask.c:116
-> [c00020000a4bfef0] [c00000000003eedc] start_secondary+0x27c/0x800
-> update_mask_by_l2 at arch/powerpc/kernel/smp.c:1267
-> (inlined by) add_cpu_to_masks at arch/powerpc/kernel/smp.c:1387
-> (inlined by) start_secondary at arch/powerpc/kernel/smp.c:1420
-> [c00020000a4bff90] [c00000000000c468] start_secondary_resume+0x10/0x14
->
-> Allocating a temporary mask while performing a CPU Hotplug operation
-> with CONFIG_CPUMASK_OFFSTACK enabled, leads to calling a sleepable
-> function from a atomic context. Fix this by allocating the temporary
-> mask with GFP_ATOMIC flag.
->
-> If there is a failure to allocate a mask, scheduler is going to observe
-> that this CPU's topology is broken. Instead of having to speculate why
-> the topology is broken, add a WARN_ON_ONCE.
->
-> Fixes: 70a94089d7f7 ("powerpc/smp: Optimize update_coregroup_mask")
-> Fixes: 3ab33d6dc3e9 ("powerpc/smp: Optimize update_mask_by_l2")
-> Reported-by: Qian Cai <cai@redhat.com>
-> Suggested-by: Qian Cai <cai@redhat.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-> Cc: LKML <linux-kernel@vger.kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Valentin Schneider <valentin.schneider@arm.com>
-> Cc: Qian Cai <cai@redhat.com>
-> ---
->  arch/powerpc/kernel/smp.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index 0dc1b85..1268558 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -1264,7 +1264,8 @@ static bool update_mask_by_l2(int cpu)
->  		return false;
->  	}
->  
-> -	alloc_cpumask_var_node(&mask, GFP_KERNEL, cpu_to_node(cpu));
-> +	/* In CPU-hotplug path, hence use GFP_ATOMIC */
-> +	WARN_ON_ONCE(!alloc_cpumask_var_node(&mask, GFP_ATOMIC, cpu_to_node(cpu)));
+Apologies if this has come up in a previous revision.
 
-A failed memory allocation is not something that should trigger a WARN,
-a pr_warn() maybe.
 
-But ...
+>  	case 1:
+> +		if (!cpu_has_feature(CPU_FTR_ARCH_31))
+> +			return -1;
+> +
+>  		prefix_r = GET_PREFIX_R(word);
+>  		ra = GET_PREFIX_RA(suffix);
 
->  	cpumask_and(mask, cpu_online_mask, cpu_cpu_mask(cpu));
+The comment above analyse_instr reads in part:
 
-If the allocation failed this will oops (mask will be NULL).
+ * Return value is 1 if the instruction can be emulated just by
+ * updating *regs with the information in *op, -1 if we need the
+ * GPRs but *regs doesn't contain the full register set, or 0
+ * otherwise.
 
-cheers
+I was wondering why returning -1 if the instruction isn't supported the
+right thing to do - it seemed to me that it should return 0?
+
+I did look and see that there are other cases where the code returns -1
+for an unsupported operation, e.g.:
+
+#ifdef __powerpc64__
+	case 4:
+		if (!cpu_has_feature(CPU_FTR_ARCH_300))
+			return -1;
+
+		switch (word & 0x3f) {
+		case 48:	/* maddhd */
+
+That's from commit 930d6288a267 ("powerpc: sstep: Add support for
+maddhd, maddhdu, maddld instructions"), but it's not explained there either
+
+I see the same pattern in a number of commits: commit 6324320de609
+("powerpc sstep: Add support for modsd, modud instructions"), commit
+6c180071509a ("powerpc sstep: Add support for modsw, moduw
+instructions"), commit a23987ef267a ("powerpc: sstep: Add support for
+darn instruction") and a few others, all of which seem to have come
+through Sandipan in February 2019. I haven't spotted any explanation for
+why -1 was chosen, but I haven't checked the mailing list archives.
+
+If -1 is OK, would it be possible to update the comment to explain why?
+
+Kind regards,
+Daniel
