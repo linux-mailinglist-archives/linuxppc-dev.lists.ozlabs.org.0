@@ -2,43 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D33628C1C6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 21:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E4B28C209
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 22:05:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C98Z45GfZzDqgP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 06:56:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C98n14tpJzDqRg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 07:05:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=90.155.50.34; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=osm7lCKh; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C98Wd2h83zDqZG;
- Tue, 13 Oct 2020 06:53:59 +1100 (AEDT)
-IronPort-SDR: kssJ0/UzvlndVR4KqV3aX02KSMA0M3P2X1idP9GYNK0Oaq9uaoe9vsXOXcd7ysxTY7jSE4Y7Ir
- mSGaJ5FKlYXQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9772"; a="165907664"
-X-IronPort-AV: E=Sophos;i="5.77,367,1596524400"; d="scan'208";a="165907664"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Oct 2020 12:53:55 -0700
-IronPort-SDR: fkO3cV1AstS50IlWJFeIR7IMIWTUvxOVu0RxBH9tBAb2aFjzmjvlioAsa4gAQcEu3X0zxNtHVX
- KqidbmrXoAPg==
-X-IronPort-AV: E=Sophos;i="5.77,367,1596524400"; d="scan'208";a="530096227"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
- by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Oct 2020 12:53:54 -0700
-Date: Mon, 12 Oct 2020 12:53:54 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Matthew Wilcox <willy@infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C98l66XVzzDqPG;
+ Tue, 13 Oct 2020 07:04:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=bCWIFHvT8FvIPrDMc3maof4qHUnzu6oS60i9lgfyu+w=; b=osm7lCKhtCxcgsJVmnbUIZHhMp
+ 5nvioHkxA8AhlfbRA0tXQBSBlQdovP0UNFUmlu/tYL30pdEacRnzwKeBjNLJ8YRj+D/sF4f+x4FRA
+ 68EE5VyuQPlhkPgzE4vuiuikkji/6lzFKcK2qIYtpBfSW0scT+5xZ65/me+9ijMgWVh8NM56bexcy
+ gJZd0qYjXWzdg4a2mFecVVyLa3Rwg0gTTp9KEwoseCi8fLlQXob3uBfLwA1anIPkZvUKPjVJpvK3u
+ UT+9cSbb34PGNNH3jL974SwKTCytz2qfL4ONXzbZAaSn1ZoiKQGnXIIuZa+WQOp/Awa/qjp/ly6GK
+ H6D/8XHQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1kS422-0000HA-AX; Mon, 12 Oct 2020 20:02:54 +0000
+Date: Mon, 12 Oct 2020 21:02:54 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Ira Weiny <ira.weiny@intel.com>
 Subject: Re: [PATCH RFC PKS/PMEM 22/58] fs/f2fs: Utilize new kmap_thread()
-Message-ID: <20201012195354.GC2046448@iweiny-DESK2.sc.intel.com>
+Message-ID: <20201012200254.GB20115@casper.infradead.org>
 References: <20201009195033.3208459-1-ira.weiny@intel.com>
  <20201009195033.3208459-23-ira.weiny@intel.com>
  <20201009213434.GA839@sol.localdomain>
@@ -48,11 +51,11 @@ References: <20201009195033.3208459-1-ira.weiny@intel.com>
  <20201012161946.GA858@sol.localdomain>
  <5d621db9-23d4-e140-45eb-d7fca2093d2b@intel.com>
  <20201012164438.GA20115@casper.infradead.org>
+ <20201012195354.GC2046448@iweiny-DESK2.sc.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201012164438.GA20115@casper.infradead.org>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <20201012195354.GC2046448@iweiny-DESK2.sc.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,38 +98,42 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 12, 2020 at 05:44:38PM +0100, Matthew Wilcox wrote:
-> On Mon, Oct 12, 2020 at 09:28:29AM -0700, Dave Hansen wrote:
-> > kmap_atomic() is always preferred over kmap()/kmap_thread().
-> > kmap_atomic() is _much_ more lightweight since its TLB invalidation is
-> > always CPU-local and never broadcast.
+On Mon, Oct 12, 2020 at 12:53:54PM -0700, Ira Weiny wrote:
+> On Mon, Oct 12, 2020 at 05:44:38PM +0100, Matthew Wilcox wrote:
+> > On Mon, Oct 12, 2020 at 09:28:29AM -0700, Dave Hansen wrote:
+> > > kmap_atomic() is always preferred over kmap()/kmap_thread().
+> > > kmap_atomic() is _much_ more lightweight since its TLB invalidation is
+> > > always CPU-local and never broadcast.
+> > > 
+> > > So, basically, unless you *must* sleep while the mapping is in place,
+> > > kmap_atomic() is preferred.
 > > 
-> > So, basically, unless you *must* sleep while the mapping is in place,
-> > kmap_atomic() is preferred.
+> > But kmap_atomic() disables preemption, so the _ideal_ interface would map
+> > it only locally, then on preemption make it global.  I don't even know
+> > if that _can_ be done.  But this email makes it seem like kmap_atomic()
+> > has no downsides.
 > 
-> But kmap_atomic() disables preemption, so the _ideal_ interface would map
-> it only locally, then on preemption make it global.  I don't even know
-> if that _can_ be done.  But this email makes it seem like kmap_atomic()
-> has no downsides.
+> And that is IIUC what Thomas was trying to solve.
+> 
+> Also, Linus brought up that kmap_atomic() has quirks in nesting.[1]
+> 
+> >From what I can see all of these discussions support the need to have something
+> between kmap() and kmap_atomic().
+> 
+> However, the reason behind converting call sites to kmap_thread() are different
+> between Thomas' patch set and mine.  Both require more kmap granularity.
+> However, they do so with different reasons and underlying implementations but
+> with the _same_ resulting semantics; a thread local mapping which is
+> preemptable.[2]  Therefore they each focus on changing different call sites.
+> 
+> While this patch set is huge I think it serves a valuable purpose to identify a
+> large number of call sites which are candidates for this new semantic.
 
-And that is IIUC what Thomas was trying to solve.
+Yes, I agree.  My problem with this patch-set is that it ties it to
+some Intel feature that almost nobody cares about.  Maybe we should
+care about it, but you didn't try very hard to make anyone care about
+it in the cover letter.
 
-Also, Linus brought up that kmap_atomic() has quirks in nesting.[1]
-
-From what I can see all of these discussions support the need to have something
-between kmap() and kmap_atomic().
-
-However, the reason behind converting call sites to kmap_thread() are different
-between Thomas' patch set and mine.  Both require more kmap granularity.
-However, they do so with different reasons and underlying implementations but
-with the _same_ resulting semantics; a thread local mapping which is
-preemptable.[2]  Therefore they each focus on changing different call sites.
-
-While this patch set is huge I think it serves a valuable purpose to identify a
-large number of call sites which are candidates for this new semantic.
-
-Ira
-
-[1] https://lore.kernel.org/lkml/CAHk-=wgbmwsTOKs23Z=71EBTrULoeaH2U3TNqT2atHEWvkBKdw@mail.gmail.com/
-[2] It is important to note these implementations are not incompatible with
-each other.  So I don't see yet another 'kmap_something()' being required.
+For a future patch-set, I'd like to see you just introduce the new
+API.  Then you can optimise the Intel implementation of it afterwards.
+Those patch-sets have entirely different reviewers.
