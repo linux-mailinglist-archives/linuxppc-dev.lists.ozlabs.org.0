@@ -1,54 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D53B28AE9D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 08:58:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AC628AF11
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 09:30:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C8qJv3bFJzDql0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 17:58:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C8r1W3GgdzDqkD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 18:30:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ dmarc=pass (p=none dis=none) header.from=us.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=DHBhZ54f; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C8qGm08jwzDqdt;
- Mon, 12 Oct 2020 17:56:42 +1100 (AEDT)
-IronPort-SDR: mDmZdktoQCJ9/S4DlOU3KpnuaSJXzEWOIPTIqY+utctNAjVQrLoLndWzxenVN6oD0NbpQ86/U2
- KqdYyTG+rdpw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9771"; a="227344242"
-X-IronPort-AV: E=Sophos;i="5.77,366,1596524400"; d="scan'208";a="227344242"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Oct 2020 23:56:37 -0700
-IronPort-SDR: DSpSIoZKV7KPLq4zxFvBA+ZLKNkpgmuUQCwMmUi8wsqk6OFxxWBKXoVpyUUZRY9EN2DChpPczf
- 4EPhWIQlBVGQ==
-X-IronPort-AV: E=Sophos;i="5.77,366,1596524400"; d="scan'208";a="529842687"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
- by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Oct 2020 23:56:35 -0700
-Date: Sun, 11 Oct 2020 23:56:35 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Eric Biggers <ebiggers@kernel.org>
-Subject: Re: [PATCH RFC PKS/PMEM 22/58] fs/f2fs: Utilize new kmap_thread()
-Message-ID: <20201012065635.GB2046448@iweiny-DESK2.sc.intel.com>
-References: <20201009195033.3208459-1-ira.weiny@intel.com>
- <20201009195033.3208459-23-ira.weiny@intel.com>
- <20201009213434.GA839@sol.localdomain>
- <20201010003954.GW20115@casper.infradead.org>
- <20201010013036.GD1122@sol.localdomain>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201010013036.GD1122@sol.localdomain>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C8qz81vSDzDqP9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 18:28:12 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09C73i5t136077; Mon, 12 Oct 2020 03:28:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=MV10Bu4IT96mlbyfXjgvHbCX1OVkXR5VOhKmyKvOBtQ=;
+ b=DHBhZ54f+yGpNCtPDur9eu9wbSnZryPDp26NbG+vTpmrK3lxfuOf77VBvPrWP/+vpUQM
+ jJHOmRDlivWw8lJn725uFBcOcmh8B/HA3fSzY01KzKowB/Mn2Ox/V6e/VvFKKcL932RU
+ 5gi7qQtRLrsYmifBlvqNt25kIfcuxxJol5+oBv+fp9bQmmu7UoMEKyJBfYwu1/mTCyz4
+ xTTjm8Ispb8imkHuI7EinXGgefEdMpeajxsfwW7zgsVBu7zMOmagV4cX4KrQs7WMwZUF
+ f0TKXHWbTF3h7AwMnlgY6KINhjeL6da8anKWCiQ+F+FT9X+tsKOaf41Jd1LygSOIjshd dQ== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 344jcdrmwu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Oct 2020 03:28:10 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09C7MYIn017156;
+ Mon, 12 Oct 2020 07:28:07 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 3434k81s8m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Oct 2020 07:28:07 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 09C7S4UC25035080
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 12 Oct 2020 07:28:04 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C619BA406F;
+ Mon, 12 Oct 2020 07:28:04 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 33A10A405E;
+ Mon, 12 Oct 2020 07:28:03 +0000 (GMT)
+Received: from ram-ibm-com.ibm.com (unknown [9.85.204.94])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 12 Oct 2020 07:28:02 +0000 (GMT)
+From: Ram Pai <linuxram@us.ibm.com>
+To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [RFC v1 0/2] Plumbing to support multiple secure memory backends.
+Date: Mon, 12 Oct 2020 00:27:41 -0700
+Message-Id: <1602487663-7321-1-git-send-email-linuxram@us.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-10-12_03:2020-10-12,
+ 2020-10-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 spamscore=0 adultscore=0 mlxscore=0 mlxlogscore=812
+ bulkscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2009150000 definitions=main-2010120061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,113 +90,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio@kvack.org, linux-efi@vger.kernel.org, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- linux-mmc@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- target-devel@vger.kernel.org, linux-mtd@lists.infradead.org,
- amd-gfx@lists.freedesktop.org, linux-kselftest@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, drbd-dev@lists.linbit.com,
- devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
- linux-nilfs@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org, x86@kernel.org,
- Matthew Wilcox <willy@infradead.org>, linux-afs@lists.infradead.org,
- cluster-devel@redhat.com, Ingo Molnar <mingo@redhat.com>,
- intel-wired-lan@lists.osuosl.org, kexec@lists.infradead.org,
- xen-devel@lists.xenproject.org, linux-ext4@vger.kernel.org,
- bpf@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
- Fenghua Yu <fenghua.yu@intel.com>, intel-gfx@lists.freedesktop.org,
- ecryptfs@vger.kernel.org, linux-um@lists.infradead.org,
- reiserfs-devel@vger.kernel.org, linux-block@vger.kernel.org,
- linux-bcache@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
- ceph-devel@vger.kernel.org, io-uring@vger.kernel.org, linux-cachefs@redhat.com,
- linux-nfs@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- samba-technical@lists.samba.org, linux-kernel@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linux-erofs@lists.ozlabs.org,
- linux-btrfs@vger.kernel.org
+Cc: farosas@linux.ibm.com, linuxram@us.ibm.com, bharata@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 09, 2020 at 06:30:36PM -0700, Eric Biggers wrote:
-> On Sat, Oct 10, 2020 at 01:39:54AM +0100, Matthew Wilcox wrote:
-> > On Fri, Oct 09, 2020 at 02:34:34PM -0700, Eric Biggers wrote:
-> > > On Fri, Oct 09, 2020 at 12:49:57PM -0700, ira.weiny@intel.com wrote:
-> > > > The kmap() calls in this FS are localized to a single thread.  To avoid
-> > > > the over head of global PKRS updates use the new kmap_thread() call.
-> > > >
-> > > > @@ -2410,12 +2410,12 @@ static inline struct page *f2fs_pagecache_get_page(
-> > > >  
-> > > >  static inline void f2fs_copy_page(struct page *src, struct page *dst)
-> > > >  {
-> > > > -	char *src_kaddr = kmap(src);
-> > > > -	char *dst_kaddr = kmap(dst);
-> > > > +	char *src_kaddr = kmap_thread(src);
-> > > > +	char *dst_kaddr = kmap_thread(dst);
-> > > >  
-> > > >  	memcpy(dst_kaddr, src_kaddr, PAGE_SIZE);
-> > > > -	kunmap(dst);
-> > > > -	kunmap(src);
-> > > > +	kunmap_thread(dst);
-> > > > +	kunmap_thread(src);
-> > > >  }
-> > > 
-> > > Wouldn't it make more sense to switch cases like this to kmap_atomic()?
-> > > The pages are only mapped to do a memcpy(), then they're immediately unmapped.
-> > 
-> > Maybe you missed the earlier thread from Thomas trying to do something
-> > similar for rather different reasons ...
-> > 
-> > https://lore.kernel.org/lkml/20200919091751.011116649@linutronix.de/
-> 
-> I did miss it.  I'm not subscribed to any of the mailing lists it was sent to.
-> 
-> Anyway, it shouldn't matter.  Patchsets should be standalone, and not require
-> reading random prior threads on linux-kernel to understand.
+Secure VMs are currently supported by the Ultravisor backend.
 
-Sorry, but I did not think that the discussion above was directly related.  If
-I'm not mistaken, Thomas' work was directed at relaxing kmap_atomic() into
-kmap_thread() calls.  While interesting, it is not the point of this series.  I
-want to restrict kmap() callers into kmap_thread().
+Enhance the plumbing to support multiple backends. Each backend shall
+provide the implementation for the necessary and sufficient calls
+in order to support secure VM.
 
-For this series it was considered to change the kmap_thread() call sites to
-kmap_atomic().  But like I said in the cover letter kmap_atomic() is not the
-same semantic.  It is too strict.  Perhaps I should have expanded that
-explanation.
+Also as part of this change, modify the ultravisor implementation to
+be a plugin that provides an implementation of the backend.
 
-> 
-> And I still don't really understand.  After this patchset, there is still code
-> nearly identical to the above (doing a temporary mapping just for a memcpy) that
-> would still be using kmap_atomic().
+Ram Pai (2):
+  KVM: PPC: Book3S HV: rename all variables in book3s_hv_uvmem.c
+  KVM: PPC: Book3S HV: abstract secure VM related calls.
 
-I don't understand.  You mean there would be other call sites calling:
+ arch/powerpc/include/asm/kvm_book3s_uvmem.h   | 100 ---------
+ arch/powerpc/include/asm/kvmppc_svm_backend.h | 250 ++++++++++++++++++++++
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        |   6 +-
+ arch/powerpc/kvm/book3s_hv.c                  |  28 +--
+ arch/powerpc/kvm/book3s_hv_uvmem.c            | 288 +++++++++++++++-----------
+ 5 files changed, 432 insertions(+), 240 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/kvm_book3s_uvmem.h
+ create mode 100644 arch/powerpc/include/asm/kvmppc_svm_backend.h
 
-kmap_atomic()
-memcpy()
-kunmap_atomic()
+-- 
+1.8.3.1
 
-?
-
-> Is the idea that later, such code will be
-> converted to use kmap_thread() instead?  If not, why use one over the other?
- 
-
-The reason for the new call is that with PKS added behind kmap we have 3 levels
-of mapping we want.
-
-global kmap (can span threads and sleep)
-'thread' kmap (can sleep but not span threads)
-'atomic' kmap (can't sleep nor span threads [by definition])
-
-As Matthew said perhaps 'global kmaps' may be best changed to vmaps?  I just
-don't know the details of every call site.
-
-And since I don't know the call site details if there are kmap_thread() calls
-which are better off as kmap_atomic() calls I think it is worth converting
-them.  But I made the assumption that kmap users would already be calling
-kmap_atomic() if they could (because it is more efficient).
-
-Ira
