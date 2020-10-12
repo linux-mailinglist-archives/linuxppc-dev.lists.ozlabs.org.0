@@ -2,55 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA3428B0F2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 10:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA74828B246
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 12:33:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C8sz13rFWzDqd9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 19:58:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C8w4q4f8bzDqg3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 21:33:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=tWHLov0c; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C8stp6jpvzDqcW
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 19:54:42 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4C8stf27mQz9tyQB;
- Mon, 12 Oct 2020 10:54:34 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id XeC7sGU9_Mg2; Mon, 12 Oct 2020 10:54:34 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4C8stf14pzz9tyQ9;
- Mon, 12 Oct 2020 10:54:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 78C5E8B78D;
- Mon, 12 Oct 2020 10:54:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id sp7t6gW6OcR4; Mon, 12 Oct 2020 10:54:33 +0200 (CEST)
-Received: from po17688vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0CC798B788;
- Mon, 12 Oct 2020 10:54:33 +0200 (CEST)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 030B866441; Mon, 12 Oct 2020 08:54:33 +0000 (UTC)
-Message-Id: <80f488db230c6b0e7b3b990d72bd94a8a069e93e.1602492856.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <af834e8a0f1fa97bfae65664950f0984a70c4750.1602492856.git.christophe.leroy@csgroup.eu>
-References: <af834e8a0f1fa97bfae65664950f0984a70c4750.1602492856.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 2/2] powerpc/8xx: Manage _PAGE_ACCESSED through APG bits in
- L1 entry
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 12 Oct 2020 08:54:33 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C8w2z4p4dzDqmq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 21:31:55 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09CADvO5179671; Mon, 12 Oct 2020 06:31:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Wc0IAiIxNr30cA1nXrWSq+IkxKZov4iUoMljSASi0Ug=;
+ b=tWHLov0cNbROURRptFIk8RLbBM7b1Wk2MIw6yjkNMXPsQBVTlMmPL7Xq7hC39+ek/Aml
+ fSYT4siSefRI2uYOsYTAW/p2j46R9aeh7MA+5my+ZeZ0QILSEnrJxT00DksbSwOUoQC7
+ KRUoGaO6yaU/A79B/v1u7ysiuS51CDJyaVKpf6v/Av2tHdyDK5udMpW7ofwJukkUDek7
+ N7d9nyW+z1Gu5GKUxDWzp2Cj8BB4s4JPm61ddFiFmR5aM9siLm4aFCpmurYIHKkd+mi1
+ 4E8xY+c+kIl4C8i48/kLNR6aVp9i9fEjv0GBU1uKJy7c/ClSYu3F7vbkykan37fhhZol jQ== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 344n6y0esy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Oct 2020 06:31:46 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09CAVjSQ000902;
+ Mon, 12 Oct 2020 10:31:45 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 3434k7swxe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Oct 2020 10:31:45 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 09CAVhhj29950244
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 12 Oct 2020 10:31:43 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BCB8E5205A;
+ Mon, 12 Oct 2020 10:31:42 +0000 (GMT)
+Received: from Madhavan.com (unknown [9.102.26.211])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id AF2A75204E;
+ Mon, 12 Oct 2020 10:31:41 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/perf: fix Threshold Event CounterMultiplier width for
+ P10
+Date: Mon, 12 Oct 2020 16:01:28 +0530
+Message-Id: <20201012103128.53243-1-maddy@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-10-12_08:2020-10-12,
+ 2020-10-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
+ score=100 lowpriorityscore=0
+ priorityscore=1501 mlxscore=0 adultscore=0 spamscore=0 clxscore=1011
+ phishscore=0 impostorscore=0 mlxlogscore=547 malwarescore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010120083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,235 +91,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When _PAGE_ACCESSED is not set, a minor fault is expected.
-To do this, TLB miss exception ANDs _PAGE_PRESENT and _PAGE_ACCESSED
-into the L2 entry valid bit.
+Power9 and isa v3.1 has 7bit mantissa field for Threshold Event Counter
+Multiplier (TECM). TECM is part of Monitor Mode Control Register A (MMCRA).
+This field along with Threshold Event Counter Exponent (TECE) is used to
+get threshould counter value. In Power10, the width of TECM field is
+increase to 8bits. Patch fixes the current code to modify the MMCRA[TECM]
+extraction macro to handling this changes.
 
-To simplify the processing and reduce the number of instructions in
-TLB miss exceptions, manage it as an APG bit and get it next to
-_PAGE_GUARDED bit to allow a copy in one go. Then declare the
-corresponding groups as handling all accesses as user accesses.
-As the PP bits always define user as No Access, it will generate
-a fault.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 170a315f41c64 ('powerpc/perf: Support to export MMCRA[TEC*] field to userspace')
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 ---
- arch/powerpc/include/asm/nohash/32/kup-8xx.h |  2 +-
- arch/powerpc/include/asm/nohash/32/mmu-8xx.h | 47 +++++++-------------
- arch/powerpc/include/asm/nohash/32/pte-8xx.h |  9 ++--
- arch/powerpc/kernel/head_8xx.S               | 36 +++------------
- 4 files changed, 28 insertions(+), 66 deletions(-)
+ arch/powerpc/perf/isa207-common.c | 3 +++
+ arch/powerpc/perf/isa207-common.h | 4 ++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-index 85ed2390fb99..567cdc557402 100644
---- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-@@ -63,7 +63,7 @@ static inline void restore_user_access(unsigned long flags)
- static inline bool
- bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- {
--	return WARN(!((regs->kuap ^ MD_APG_KUAP) & 0xf0000000),
-+	return WARN(!((regs->kuap ^ MD_APG_KUAP) & 0xff000000),
- 		    "Bug: fault blocked by AP register !");
- }
+diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
+index 964437adec18..5fe129f02290 100644
+--- a/arch/powerpc/perf/isa207-common.c
++++ b/arch/powerpc/perf/isa207-common.c
+@@ -247,6 +247,9 @@ void isa207_get_mem_weight(u64 *weight)
+ 	u64 sier = mfspr(SPRN_SIER);
+ 	u64 val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
  
-diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-index 1d9ac0f9c794..0bd1b144eb76 100644
---- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-@@ -33,19 +33,18 @@
-  * respectively NA for All or X for Supervisor and no access for User.
-  * Then we use the APG to say whether accesses are according to Page rules or
-  * "all Supervisor" rules (Access to all)
-- * Therefore, we define 2 APG groups. lsb is _PMD_USER
-- * 0 => Kernel => 01 (all accesses performed according to page definition)
-- * 1 => User => 00 (all accesses performed as supervisor iaw page definition)
-- * 2-15 => Not Used
-- */
--#define MI_APG_INIT	0x40000000
--
--/*
-- * 0 => Kernel => 01 (all accesses performed according to page definition)
-- * 1 => User => 10 (all accesses performed according to swaped page definition)
-- * 2-15 => Not Used
-- */
--#define MI_APG_KUEP	0x60000000
-+ * _PAGE_ACCESSED is also managed via APG. When _PAGE_ACCESSED is not set, say
-+ * "all User" rules, that will lead to NA for all.
-+ * Therefore, we define 4 APG groups. lsb is _PAGE_ACCESSED
-+ * 0 => Kernel => 11 (all accesses performed according as user iaw page definition)
-+ * 1 => Kernel+Accessed => 01 (all accesses performed according to page definition)
-+ * 2 => User => 11 (all accesses performed according as user iaw page definition)
-+ * 3 => User+Accessed => 00 (all accesses performed as supervisor iaw page definition) for INIT
-+ *                    => 10 (all accesses performed according to swaped page definition) for KUEP
-+ * 4-15 => Not Used
-+ */
-+#define MI_APG_INIT	0xdc000000
-+#define MI_APG_KUEP	0xde000000
++	if (cpu_has_feature(CPU_FTR_ARCH_31))
++		mantissa = P10_MMCRA_THR_CTR_MANT(mmcra);
++
+ 	if (val == 0 || val == 7)
+ 		*weight = 0;
+ 	else
+diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
+index 044de65e96b9..71380e854f48 100644
+--- a/arch/powerpc/perf/isa207-common.h
++++ b/arch/powerpc/perf/isa207-common.h
+@@ -219,6 +219,10 @@
+ #define MMCRA_THR_CTR_EXP(v)		(((v) >> MMCRA_THR_CTR_EXP_SHIFT) &\
+ 						MMCRA_THR_CTR_EXP_MASK)
  
- /* The effective page number register.  When read, contains the information
-  * about the last instruction TLB miss.  When MI_RPN is written, bits in
-@@ -106,25 +105,9 @@
- #define MD_Ks		0x80000000	/* Should not be set */
- #define MD_Kp		0x40000000	/* Should always be set */
++#define P10_MMCRA_THR_CTR_MANT_MASK	0xFFul
++#define P10_MMCRA_THR_CTR_MANT(v)	(((v) >> MMCRA_THR_CTR_MANT_SHIFT) &\
++						P10_MMCRA_THR_CTR_MANT_MASK)
++
+ /* MMCRA Threshold Compare bit constant for power9 */
+ #define p9_MMCRA_THR_CMP_SHIFT	45
  
--/*
-- * All pages' PP data bits are set to either 000 or 011 or 001, which means
-- * respectively RW for Supervisor and no access for User, or RO for
-- * Supervisor and no access for user and NA for ALL.
-- * Then we use the APG to say whether accesses are according to Page rules or
-- * "all Supervisor" rules (Access to all)
-- * Therefore, we define 2 APG groups. lsb is _PMD_USER
-- * 0 => Kernel => 01 (all accesses performed according to page definition)
-- * 1 => User => 00 (all accesses performed as supervisor iaw page definition)
-- * 2-15 => Not Used
-- */
--#define MD_APG_INIT	0x40000000
--
--/*
-- * 0 => No user => 01 (all accesses performed according to page definition)
-- * 1 => User => 10 (all accesses performed according to swaped page definition)
-- * 2-15 => Not Used
-- */
--#define MD_APG_KUAP	0x60000000
-+/* See explanation above at the definition of MI_APG_INIT */
-+#define MD_APG_INIT	0xdc000000
-+#define MD_APG_KUAP	0xde000000
- 
- /* The effective page number register.  When read, contains the information
-  * about the last instruction TLB miss.  When MD_RPN is written, bits in
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-index 66f403a7da44..1581204467e1 100644
---- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-@@ -39,9 +39,9 @@
-  * into the TLB.
-  */
- #define _PAGE_GUARDED	0x0010	/* Copied to L1 G entry in DTLB */
--#define _PAGE_SPECIAL	0x0020	/* SW entry */
-+#define _PAGE_ACCESSED	0x0020	/* Copied to L1 APG 1 entry in I/DTLB */
- #define _PAGE_EXEC	0x0040	/* Copied to PP (bit 21) in ITLB */
--#define _PAGE_ACCESSED	0x0080	/* software: page referenced */
-+#define _PAGE_SPECIAL	0x0080	/* SW entry */
- 
- #define _PAGE_NA	0x0200	/* Supervisor NA, User no access */
- #define _PAGE_RO	0x0600	/* Supervisor RO, User no access */
-@@ -59,11 +59,12 @@
- 
- #define _PMD_PRESENT	0x0001
- #define _PMD_PRESENT_MASK	_PMD_PRESENT
--#define _PMD_BAD	0x0fd0
-+#define _PMD_BAD	0x0f90
- #define _PMD_PAGE_MASK	0x000c
- #define _PMD_PAGE_8M	0x000c
- #define _PMD_PAGE_512K	0x0004
--#define _PMD_USER	0x0020	/* APG 1 */
-+#define _PMD_ACCESSED	0x0020	/* APG 1 */
-+#define _PMD_USER	0x0040	/* APG 2 */
- 
- #define _PTE_NONE_MASK	0
- 
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 6f3799a04121..ee0bfebc375f 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -222,23 +222,13 @@ InstructionTLBMiss:
- 3:
- 	mtcr	r11
- #endif
--#if defined(CONFIG_HUGETLBFS) || !defined(CONFIG_PIN_TLB_TEXT)
- 	lwz	r11, (swapper_pg_dir-PAGE_OFFSET)@l(r10)	/* Get level 1 entry */
- 	mtspr	SPRN_MD_TWC, r11
--#else
--	lwz	r10, (swapper_pg_dir-PAGE_OFFSET)@l(r10)	/* Get level 1 entry */
--	mtspr	SPRN_MI_TWC, r10	/* Set segment attributes */
--	mtspr	SPRN_MD_TWC, r10
--#endif
- 	mfspr	r10, SPRN_MD_TWC
- 	lwz	r10, 0(r10)	/* Get the pte */
--#if defined(CONFIG_HUGETLBFS) || !defined(CONFIG_PIN_TLB_TEXT)
-+	rlwimi	r11, r10, 0, _PAGE_GUARDED | _PAGE_ACCESSED
- 	rlwimi	r11, r10, 32 - 9, _PMD_PAGE_512K
- 	mtspr	SPRN_MI_TWC, r11
--#endif
--	rlwinm	r11, r10, 32-7, _PAGE_PRESENT
--	and	r11, r11, r10
--	rlwimi	r10, r11, 0, _PAGE_PRESENT
- 	/* The Linux PTE won't go exactly into the MMU TLB.
- 	 * Software indicator bits 20 and 23 must be clear.
- 	 * Software indicator bits 22, 24, 25, 26, and 27 must be
-@@ -289,28 +279,16 @@ DataStoreTLBMiss:
- 	mfspr	r10, SPRN_MD_TWC
- 	lwz	r10, 0(r10)	/* Get the pte */
- 
--	/* Insert the Guarded flag into the TWC from the Linux PTE.
-+	/* Insert Guarded and Accessed flags into the TWC from the Linux PTE.
- 	 * It is bit 27 of both the Linux PTE and the TWC (at least
- 	 * I got that right :-).  It will be better when we can put
- 	 * this into the Linux pgd/pmd and load it in the operation
- 	 * above.
- 	 */
--	rlwimi	r11, r10, 0, _PAGE_GUARDED
-+	rlwimi	r11, r10, 0, _PAGE_GUARDED | _PAGE_ACCESSED
- 	rlwimi	r11, r10, 32 - 9, _PMD_PAGE_512K
- 	mtspr	SPRN_MD_TWC, r11
- 
--	/* Both _PAGE_ACCESSED and _PAGE_PRESENT has to be set.
--	 * We also need to know if the insn is a load/store, so:
--	 * Clear _PAGE_PRESENT and load that which will
--	 * trap into DTLB Error with store bit set accordinly.
--	 */
--	/* PRESENT=0x1, ACCESSED=0x20
--	 * r11 = ((r10 & PRESENT) & ((r10 & ACCESSED) >> 5));
--	 * r10 = (r10 & ~PRESENT) | r11;
--	 */
--	rlwinm	r11, r10, 32-7, _PAGE_PRESENT
--	and	r11, r11, r10
--	rlwimi	r10, r11, 0, _PAGE_PRESENT
- 	/* The Linux PTE won't go exactly into the MMU TLB.
- 	 * Software indicator bits 24, 25, 26, and 27 must be
- 	 * set.  All other Linux PTE bits control the behavior
-@@ -701,7 +679,7 @@ initial_mmu:
- 	li	r9, 4				/* up to 4 pages of 8M */
- 	mtctr	r9
- 	lis	r9, KERNELBASE@h		/* Create vaddr for TLB */
--	li	r10, MI_PS8MEG | MI_SVALID	/* Set 8M byte page */
-+	li	r10, MI_PS8MEG | _PMD_ACCESSED | MI_SVALID
- 	li	r11, MI_BOOTINIT		/* Create RPN for address 0 */
- 1:
- 	mtspr	SPRN_MI_CTR, r8	/* Set instruction MMU control */
-@@ -765,7 +743,7 @@ _GLOBAL(mmu_pin_tlb)
- #ifdef CONFIG_PIN_TLB_TEXT
- 	LOAD_REG_IMMEDIATE(r5, 28 << 8)
- 	LOAD_REG_IMMEDIATE(r6, PAGE_OFFSET)
--	LOAD_REG_IMMEDIATE(r7, MI_SVALID | MI_PS8MEG)
-+	LOAD_REG_IMMEDIATE(r7, MI_SVALID | MI_PS8MEG | _PMD_ACCESSED)
- 	LOAD_REG_IMMEDIATE(r8, 0xf0 | _PAGE_RO | _PAGE_SPS | _PAGE_SH | _PAGE_PRESENT)
- 	LOAD_REG_ADDR(r9, _sinittext)
- 	li	r0, 4
-@@ -787,7 +765,7 @@ _GLOBAL(mmu_pin_tlb)
- 	LOAD_REG_IMMEDIATE(r5, 28 << 8 | MD_TWAM)
- #ifdef CONFIG_PIN_TLB_DATA
- 	LOAD_REG_IMMEDIATE(r6, PAGE_OFFSET)
--	LOAD_REG_IMMEDIATE(r7, MI_SVALID | MI_PS8MEG)
-+	LOAD_REG_IMMEDIATE(r7, MI_SVALID | MI_PS8MEG | _PMD_ACCESSED)
- #ifdef CONFIG_PIN_TLB_IMMR
- 	li	r0, 3
- #else
-@@ -824,7 +802,7 @@ _GLOBAL(mmu_pin_tlb)
- #endif
- #ifdef CONFIG_PIN_TLB_IMMR
- 	LOAD_REG_IMMEDIATE(r0, VIRT_IMMR_BASE | MD_EVALID)
--	LOAD_REG_IMMEDIATE(r7, MD_SVALID | MD_PS512K | MD_GUARDED)
-+	LOAD_REG_IMMEDIATE(r7, MD_SVALID | MD_PS512K | MD_GUARDED | _PMD_ACCESSED)
- 	mfspr   r8, SPRN_IMMR
- 	rlwinm	r8, r8, 0, 0xfff80000
- 	ori	r8, r8, 0xf0 | _PAGE_DIRTY | _PAGE_SPS | _PAGE_SH | \
 -- 
-2.25.0
+2.26.2
 
