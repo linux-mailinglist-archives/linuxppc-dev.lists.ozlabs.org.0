@@ -1,45 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52CB728B0EB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 10:56:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940C528B10B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 11:00:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C8swq1bVTzDqcG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 19:56:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C8t1647g4zDqkW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 20:00:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C8stc6ShdzDqbv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 19:54:31 +1100 (AEDT)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id AF2B11A0EFE;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C8stp6p3dzDqcX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 19:54:36 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4C8stX0ccLz9tyQ8;
+ Mon, 12 Oct 2020 10:54:28 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Ialckm9zXcR1; Mon, 12 Oct 2020 10:54:28 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4C8stW4QBYz9tyQ9;
  Mon, 12 Oct 2020 10:54:27 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 676E11A0F14;
- Mon, 12 Oct 2020 10:54:23 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 28325402AA;
- Mon, 12 Oct 2020 10:54:18 +0200 (CEST)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org
-Subject: [PATCH] ASoC: fsl_spdif: Add support for higher sample rates
-Date: Mon, 12 Oct 2020 16:49:42 +0800
-Message-Id: <1602492582-3558-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 613FC8B783;
+ Mon, 12 Oct 2020 10:54:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id p8ERK12fs8Fg; Mon, 12 Oct 2020 10:54:32 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0B03B8B788;
+ Mon, 12 Oct 2020 10:54:32 +0200 (CEST)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id F278166441; Mon, 12 Oct 2020 08:54:31 +0000 (UTC)
+Message-Id: <af834e8a0f1fa97bfae65664950f0984a70c4750.1602492856.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 1/2] powerpc/8xx: Always fault when _PAGE_ACCESSED is not
+ set
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon, 12 Oct 2020 08:54:31 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,104 +65,91 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add 88200Hz and 176400Hz sample rates support for TX.
-Add 88200Hz, 176400Hz, 192000Hz sample rates support for RX.
+The kernel expects pte_young() to work regardless of CONFIG_SWAP.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Signed-off-by: Viorel Suman <viorel.suman@nxp.com>
+Make sure a minor fault is taken to set _PAGE_ACCESSED when it
+is not already set, regardless of the selection of CONFIG_SWAP.
+
+This adds at least 3 instructions to the TLB miss exception
+handlers fast path. Following patch will reduce this overhead.
+
+Also update the rotation instruction to the correct number of bits
+to reflect all changes done to _PAGE_ACCESSED over time.
+
+Fixes: d069cb4373fe ("powerpc/8xx: Don't touch ACCESSED when no SWAP.")
+Fixes: 5f356497c384 ("powerpc/8xx: remove unused _PAGE_WRITETHRU")
+Fixes: e0a8e0d90a9f ("powerpc/8xx: Handle PAGE_USER via APG bits")
+Fixes: 5b2753fc3e8a ("powerpc/8xx: Implementation of PAGE_EXEC")
+Fixes: a891c43b97d3 ("powerpc/8xx: Prepare handlers for _PAGE_HUGE for 512k pages.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- sound/soc/fsl/fsl_spdif.c | 16 +++++++++++++---
- sound/soc/fsl/fsl_spdif.h |  9 ++++++++-
- 2 files changed, 21 insertions(+), 4 deletions(-)
+v2: Backporting to stable will have to be done manually. Squashed
+    the first 3 patches in order to ease that backporting.
+---
+ arch/powerpc/kernel/head_8xx.S | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-index b0f643fefe1e..f41496cf5b63 100644
---- a/sound/soc/fsl/fsl_spdif.c
-+++ b/sound/soc/fsl/fsl_spdif.c
-@@ -429,10 +429,18 @@ static int spdif_set_sample_rate(struct snd_pcm_substream *substream,
- 		rate = SPDIF_TXRATE_48000;
- 		csfs = IEC958_AES3_CON_FS_48000;
- 		break;
-+	case 88200:
-+		rate = SPDIF_TXRATE_88200;
-+		csfs = IEC958_AES3_CON_FS_88200;
-+		break;
- 	case 96000:
- 		rate = SPDIF_TXRATE_96000;
- 		csfs = IEC958_AES3_CON_FS_96000;
- 		break;
-+	case 176400:
-+		rate = SPDIF_TXRATE_176400;
-+		csfs = IEC958_AES3_CON_FS_176400;
-+		break;
- 	case 192000:
- 		rate = SPDIF_TXRATE_192000;
- 		csfs = IEC958_AES3_CON_FS_192000;
-@@ -827,7 +835,7 @@ static int fsl_spdif_rxrate_info(struct snd_kcontrol *kcontrol,
- 	uinfo->type = SNDRV_CTL_ELEM_TYPE_INTEGER;
- 	uinfo->count = 1;
- 	uinfo->value.integer.min = 16000;
--	uinfo->value.integer.max = 96000;
-+	uinfo->value.integer.max = 192000;
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 9f359d3fba74..6f3799a04121 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -202,9 +202,7 @@ SystemCall:
  
- 	return 0;
- }
-@@ -1145,7 +1153,8 @@ static u32 fsl_spdif_txclk_caldiv(struct fsl_spdif_priv *spdif_priv,
- 				struct clk *clk, u64 savesub,
- 				enum spdif_txrate index, bool round)
- {
--	static const u32 rate[] = { 32000, 44100, 48000, 96000, 192000 };
-+	static const u32 rate[] = { 32000, 44100, 48000, 88200, 96000, 176400,
-+				    192000, };
- 	bool is_sysclk = clk_is_match(clk, spdif_priv->sysclk);
- 	u64 rate_ideal, rate_actual, sub;
- 	u32 arate;
-@@ -1205,7 +1214,8 @@ static u32 fsl_spdif_txclk_caldiv(struct fsl_spdif_priv *spdif_priv,
- static int fsl_spdif_probe_txclk(struct fsl_spdif_priv *spdif_priv,
- 				enum spdif_txrate index)
- {
--	static const u32 rate[] = { 32000, 44100, 48000, 96000, 192000 };
-+	static const u32 rate[] = { 32000, 44100, 48000, 88200, 96000, 176400,
-+				    192000, };
- 	struct platform_device *pdev = spdif_priv->pdev;
- 	struct device *dev = &pdev->dev;
- 	u64 savesub = 100000, ret;
-diff --git a/sound/soc/fsl/fsl_spdif.h b/sound/soc/fsl/fsl_spdif.h
-index e6c61e07bc1a..d5f1dfd58740 100644
---- a/sound/soc/fsl/fsl_spdif.h
-+++ b/sound/soc/fsl/fsl_spdif.h
-@@ -163,7 +163,9 @@ enum spdif_txrate {
- 	SPDIF_TXRATE_32000 = 0,
- 	SPDIF_TXRATE_44100,
- 	SPDIF_TXRATE_48000,
-+	SPDIF_TXRATE_88200,
- 	SPDIF_TXRATE_96000,
-+	SPDIF_TXRATE_176400,
- 	SPDIF_TXRATE_192000,
- };
- #define SPDIF_TXRATE_MAX		(SPDIF_TXRATE_192000 + 1)
-@@ -177,15 +179,20 @@ enum spdif_txrate {
- #define FSL_SPDIF_RATES_PLAYBACK	(SNDRV_PCM_RATE_32000 |	\
- 					 SNDRV_PCM_RATE_44100 |	\
- 					 SNDRV_PCM_RATE_48000 |	\
-+					 SNDRV_PCM_RATE_88200 | \
- 					 SNDRV_PCM_RATE_96000 |	\
-+					 SNDRV_PCM_RATE_176400 | \
- 					 SNDRV_PCM_RATE_192000)
+ InstructionTLBMiss:
+ 	mtspr	SPRN_SPRG_SCRATCH0, r10
+-#if defined(ITLB_MISS_KERNEL) || defined(CONFIG_SWAP) || defined(CONFIG_HUGETLBFS)
+ 	mtspr	SPRN_SPRG_SCRATCH1, r11
+-#endif
  
- #define FSL_SPDIF_RATES_CAPTURE		(SNDRV_PCM_RATE_16000 | \
- 					 SNDRV_PCM_RATE_32000 |	\
- 					 SNDRV_PCM_RATE_44100 | \
- 					 SNDRV_PCM_RATE_48000 |	\
-+					 SNDRV_PCM_RATE_88200 | \
- 					 SNDRV_PCM_RATE_64000 | \
--					 SNDRV_PCM_RATE_96000)
-+					 SNDRV_PCM_RATE_96000 | \
-+					 SNDRV_PCM_RATE_176400 | \
-+					 SNDRV_PCM_RATE_192000)
+ 	/* If we are faulting a kernel address, we have to use the
+ 	 * kernel page tables.
+@@ -238,11 +236,9 @@ InstructionTLBMiss:
+ 	rlwimi	r11, r10, 32 - 9, _PMD_PAGE_512K
+ 	mtspr	SPRN_MI_TWC, r11
+ #endif
+-#ifdef CONFIG_SWAP
+-	rlwinm	r11, r10, 32-5, _PAGE_PRESENT
++	rlwinm	r11, r10, 32-7, _PAGE_PRESENT
+ 	and	r11, r11, r10
+ 	rlwimi	r10, r11, 0, _PAGE_PRESENT
+-#endif
+ 	/* The Linux PTE won't go exactly into the MMU TLB.
+ 	 * Software indicator bits 20 and 23 must be clear.
+ 	 * Software indicator bits 22, 24, 25, 26, and 27 must be
+@@ -256,9 +252,7 @@ InstructionTLBMiss:
  
- #define FSL_SPDIF_FORMATS_PLAYBACK	(SNDRV_PCM_FMTBIT_S16_LE | \
- 					 SNDRV_PCM_FMTBIT_S20_3LE | \
+ 	/* Restore registers */
+ 0:	mfspr	r10, SPRN_SPRG_SCRATCH0
+-#if defined(ITLB_MISS_KERNEL) || defined(CONFIG_SWAP) || defined(CONFIG_HUGETLBFS)
+ 	mfspr	r11, SPRN_SPRG_SCRATCH1
+-#endif
+ 	rfi
+ 	patch_site	0b, patch__itlbmiss_exit_1
+ 
+@@ -268,9 +262,7 @@ InstructionTLBMiss:
+ 	addi	r10, r10, 1
+ 	stw	r10, (itlb_miss_counter - PAGE_OFFSET)@l(0)
+ 	mfspr	r10, SPRN_SPRG_SCRATCH0
+-#if defined(ITLB_MISS_KERNEL) || defined(CONFIG_SWAP)
+ 	mfspr	r11, SPRN_SPRG_SCRATCH1
+-#endif
+ 	rfi
+ #endif
+ 
+@@ -316,11 +308,9 @@ DataStoreTLBMiss:
+ 	 * r11 = ((r10 & PRESENT) & ((r10 & ACCESSED) >> 5));
+ 	 * r10 = (r10 & ~PRESENT) | r11;
+ 	 */
+-#ifdef CONFIG_SWAP
+-	rlwinm	r11, r10, 32-5, _PAGE_PRESENT
++	rlwinm	r11, r10, 32-7, _PAGE_PRESENT
+ 	and	r11, r11, r10
+ 	rlwimi	r10, r11, 0, _PAGE_PRESENT
+-#endif
+ 	/* The Linux PTE won't go exactly into the MMU TLB.
+ 	 * Software indicator bits 24, 25, 26, and 27 must be
+ 	 * set.  All other Linux PTE bits control the behavior
 -- 
-2.27.0
+2.25.0
 
