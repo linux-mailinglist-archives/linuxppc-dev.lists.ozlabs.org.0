@@ -1,75 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0692328AA0E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Oct 2020 22:04:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAE528AB7F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 03:47:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C8XpJ2fH9zDqs2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 07:04:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C8hPd2t09zDqsJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Oct 2020 12:47:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c43;
- helo=mail-oo1-xc43.google.com; envelope-from=groeck7@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VgT/nWtf; dkim-atps=neutral
-Received: from mail-oo1-xc43.google.com (mail-oo1-xc43.google.com
- [IPv6:2607:f8b0:4864:20::c43])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C8XmT07sDzDqqD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 07:03:04 +1100 (AEDT)
-Received: by mail-oo1-xc43.google.com with SMTP id c10so229262oon.6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Oct 2020 13:03:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=32meTpfUtWaR0Qq1/bwY0Ndf2COTimexjjPCdFogtfE=;
- b=VgT/nWtfnjojQR/tIQUFEqsHBZta/9Rwj6zyOS4VuiqoywN7it+DajLOqcsIu7j4G1
- 6/spCpcVy6aFOwf0qIG2n4GhAEKW6gxfPEuq/Q/v8ZVXke/iSgFArrykJIQZ3vvuejk9
- 2gXlPIFRFZ8Uy751TlXJHDYbZjfTx4KoF+s/reSx6SEGY83HLRaQo/rF4R3gX+/4KcCN
- fRMTkmj5aSwIfk2pu+cnZ5ru0Om33jivzo6Wgfb7A8fSRzd8jKwmNMr197oFtHWYZDVj
- nN3osQb/lkRiQObbRvKLcY2WH5LP6BDGOpUubhoYljTG0+1mBBSXuZLFb8H9nPDttUfB
- elNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to:user-agent;
- bh=32meTpfUtWaR0Qq1/bwY0Ndf2COTimexjjPCdFogtfE=;
- b=RZmWjcEUe6JrYivLD5k+NQ070t3wsvgER0Nr9OlPSWiCnUOKzxhoTTHKJAJikabfFx
- 97SA4PJd77hOwxMfzhj348fPrqCo188FwM5hlFN6c1t8gy+V82MUAcPNN2U170M9PAf9
- KRiBniORP2QYXPjFkiP4hVCCv6N/26895z6+YsbgRhPM3EutCf/e2FBrstIPhwUKCYYX
- YuVDc3Mpn/QBDWKVdVN1ISNqWubBfPr3ILzJ3PvoxOSPMCIMZvb4un8FpicH6FwSIjqK
- m7/oXsB8Pht1q+/iQnqJeLT6Y+Yw9sLKlRNyctToScQKTTNLODSq5l4mWiCsR2ycWp3X
- 9FAQ==
-X-Gm-Message-State: AOAM532WosY/1TpzkuJiDJK3mK+HIErxlsd9bKMQlxCuMTHj+5axDWYl
- ufd0JylIfCNpVTiq06d1b10=
-X-Google-Smtp-Source: ABdhPJytsfVAwgPeX1X8d22eJs0RZ/tPyGMJh8rwcc3ivJvoWusoN4Lhh3OJ1s5LJ8BI6k3IknrpMQ==
-X-Received: by 2002:a4a:3b91:: with SMTP id s139mr16212015oos.34.1602446580609; 
- Sun, 11 Oct 2020 13:03:00 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id n12sm7812086oor.7.2020.10.11.13.02.59
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Sun, 11 Oct 2020 13:02:59 -0700 (PDT)
-Date: Sun, 11 Oct 2020 13:02:58 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v4 13/13] mm/debug_vm_pgtable: Avoid none pte in
- pte_clear_test
-Message-ID: <20201011200258.GA91021@roeck-us.net>
-References: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
- <20200902114222.181353-14-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C8hMl6f75zDqnx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Oct 2020 12:45:39 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=G2SILhc5; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4C8hMf0qsMz9sRK;
+ Mon, 12 Oct 2020 12:45:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1602467138;
+ bh=QMZkogI/gfDoyPHm/Lw5pjXwd5LTspyIiIIxRsHsUhE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=G2SILhc5zkJv94KDxb2kWB4/qyoGwraRecRHH+4IQoyIvFEaqLhtooHgvfyzzuZFl
+ YPzWUvHFRZjWnq1p1acv2p2D2YbjTyAUNMFR4dAEuVcXaxgVmIhpeIb9mzH9gwkLOg
+ CHCnaovOIHeORhIoMTGfpSQTRcwjmYcm/3NQPYBgEjT33tl/8LxYGXrDI8kpbjmQMq
+ 9bQiWKxfSPNGHzMZNRC27yLVwkYbcNr1BZAo8z3LRmRTEZv8wGMlCy18gVmp3TpRwu
+ DxUjK2O/IPbDNOvuqm5k2QTF8awhYHFfcM13Ag5PYgQr+XefpUFtjhDs38pcQFyTlR
+ sBDe+EGxPLyfg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/smp: Use GFP_ATOMIC while allocating tmp mask
+In-Reply-To: <20201008034240.34059-1-srikar@linux.vnet.ibm.com>
+References: <20201008034240.34059-1-srikar@linux.vnet.ibm.com>
+Date: Mon, 12 Oct 2020 12:45:33 +1100
+Message-ID: <874kn01aki.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200902114222.181353-14-aneesh.kumar@linux.ibm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,61 +57,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
- Anshuman Khandual <anshuman.khandual@arm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Qian Cai <cai@redhat.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 02, 2020 at 05:12:22PM +0530, Aneesh Kumar K.V wrote:
-> pte_clear_tests operate on an existing pte entry. Make sure that
-> is not a none pte entry.
-> 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
 
-This patch causes all riscv64 images to crash. Reverting it
-as well as the follow-up patch fixes the problem, but there are
-still several warning messages starting with
-	BUG kmem_cache (Not tainted): Freechain corrupt
-I did not try to track down this other problem.
+> Qian Cai reported a regression where CPU Hotplug fails with the latest
+> powerpc/next
+>
+> BUG: sleeping function called from invalid context at mm/slab.h:494
+> in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/88
+> no locks held by swapper/88/0.
+> irq event stamp: 18074448
+> hardirqs last  enabled at (18074447): [<c0000000001a2a7c>] tick_nohz_idle_enter+0x9c/0x110
+> hardirqs last disabled at (18074448): [<c000000000106798>] do_idle+0x138/0x3b0
+> do_idle at kernel/sched/idle.c:253 (discriminator 1)
+> softirqs last  enabled at (18074440): [<c0000000000bbec4>] irq_enter_rcu+0x94/0xa0
+> softirqs last disabled at (18074439): [<c0000000000bbea0>] irq_enter_rcu+0x70/0xa0
+> CPU: 88 PID: 0 Comm: swapper/88 Tainted: G        W         5.9.0-rc8-next-20201007 #1
+> Call Trace:
+> [c00020000a4bfcf0] [c000000000649e98] dump_stack+0xec/0x144 (unreliable)
+> [c00020000a4bfd30] [c0000000000f6c34] ___might_sleep+0x2f4/0x310
+> [c00020000a4bfdb0] [c000000000354f94] slab_pre_alloc_hook.constprop.82+0x124/0x190
+> [c00020000a4bfe00] [c00000000035e9e8] __kmalloc_node+0x88/0x3a0
+> slab_alloc_node at mm/slub.c:2817
+> (inlined by) __kmalloc_node at mm/slub.c:4013
+> [c00020000a4bfe80] [c0000000006494d8] alloc_cpumask_var_node+0x38/0x80
+> kmalloc_node at include/linux/slab.h:577
+> (inlined by) alloc_cpumask_var_node at lib/cpumask.c:116
+> [c00020000a4bfef0] [c00000000003eedc] start_secondary+0x27c/0x800
+> update_mask_by_l2 at arch/powerpc/kernel/smp.c:1267
+> (inlined by) add_cpu_to_masks at arch/powerpc/kernel/smp.c:1387
+> (inlined by) start_secondary at arch/powerpc/kernel/smp.c:1420
+> [c00020000a4bff90] [c00000000000c468] start_secondary_resume+0x10/0x14
+>
+> Allocating a temporary mask while performing a CPU Hotplug operation
+> with CONFIG_CPUMASK_OFFSTACK enabled, leads to calling a sleepable
+> function from a atomic context. Fix this by allocating the temporary
+> mask with GFP_ATOMIC flag.
+>
+> If there is a failure to allocate a mask, scheduler is going to observe
+> that this CPU's topology is broken. Instead of having to speculate why
+> the topology is broken, add a WARN_ON_ONCE.
+>
+> Fixes: 70a94089d7f7 ("powerpc/smp: Optimize update_coregroup_mask")
+> Fixes: 3ab33d6dc3e9 ("powerpc/smp: Optimize update_mask_by_l2")
+> Reported-by: Qian Cai <cai@redhat.com>
+> Suggested-by: Qian Cai <cai@redhat.com>
+> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> Cc: LKML <linux-kernel@vger.kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Valentin Schneider <valentin.schneider@arm.com>
+> Cc: Qian Cai <cai@redhat.com>
+> ---
+>  arch/powerpc/kernel/smp.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index 0dc1b85..1268558 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -1264,7 +1264,8 @@ static bool update_mask_by_l2(int cpu)
+>  		return false;
+>  	}
+>  
+> -	alloc_cpumask_var_node(&mask, GFP_KERNEL, cpu_to_node(cpu));
+> +	/* In CPU-hotplug path, hence use GFP_ATOMIC */
+> +	WARN_ON_ONCE(!alloc_cpumask_var_node(&mask, GFP_ATOMIC, cpu_to_node(cpu)));
 
-A detailed crash log is at
-	https://kerneltests.org/builders/qemu-riscv64-next/builds/523/steps/qemubuildcommand/logs/stdio
+A failed memory allocation is not something that should trigger a WARN,
+a pr_warn() maybe.
 
-Bisect log is attached.
+But ...
 
-Guenter
+>  	cpumask_and(mask, cpu_online_mask, cpu_cpu_mask(cpu));
 
----
-# bad: [d67bc7812221606e1886620a357b13f906814af7] Add linux-next specific files for 20201009
-# good: [549738f15da0e5a00275977623be199fbbf7df50] Linux 5.9-rc8
-git bisect start 'HEAD' 'v5.9-rc8'
-# good: [b71be15b496cc71a3434a198fc1a1b9e08af6c57] Merge remote-tracking branch 'bpf-next/master' into master
-git bisect good b71be15b496cc71a3434a198fc1a1b9e08af6c57
-# good: [3542e5a87341bdca83e3d7f061b0f4e0f4c23f73] Merge remote-tracking branch 'spi/for-next' into master
-git bisect good 3542e5a87341bdca83e3d7f061b0f4e0f4c23f73
-# good: [65f9c957115c749ba79fb469083caf14101a93bb] Merge remote-tracking branch 'char-misc/char-misc-next' into master
-git bisect good 65f9c957115c749ba79fb469083caf14101a93bb
-# good: [aadfe5ecb55641d5994a5f3b27f074beead8f49b] Merge remote-tracking branch 'scsi-mkp/for-next' into master
-git bisect good aadfe5ecb55641d5994a5f3b27f074beead8f49b
-# good: [060196553d119d5c252f09ed5b0316929cc25983] Merge remote-tracking branch 'memblock/for-next' into master
-git bisect good 060196553d119d5c252f09ed5b0316929cc25983
-# bad: [d2340d89ffa6d2643f0689600dbf0969d86fdd3c] x86/setup: simplify initrd relocation and reservation
-git bisect bad d2340d89ffa6d2643f0689600dbf0969d86fdd3c
-# bad: [4b23734f5ba1a0487b2b569a9e64e4e5360009c1] mm/swapfile.c: remove unnecessary goto out in _swap_info_get()
-git bisect bad 4b23734f5ba1a0487b2b569a9e64e4e5360009c1
-# good: [b30f5277e97be65a99ca5af3d4337cb9acbf8fa7] device-dax: introduce 'struct dev_dax' typed-driver operations
-git bisect good b30f5277e97be65a99ca5af3d4337cb9acbf8fa7
-# good: [8c2075296dbbbce685fa14bbf46d29fba54f8a62] mm/debug_vm_pgtable: drop hugetlb_advanced_tests()
-git bisect good 8c2075296dbbbce685fa14bbf46d29fba54f8a62
-# bad: [52ce97889b3c85826995d22a690cd1430c14f316] mm/filemap: fix filemap_map_pages for THP
-git bisect bad 52ce97889b3c85826995d22a690cd1430c14f316
-# bad: [1ddc0b707be99faece6cdd77f34544f408c6617d] proc: optimise smaps for shmem entries
-git bisect bad 1ddc0b707be99faece6cdd77f34544f408c6617d
-# bad: [5d685be3785638202430b6baa2ecde482b52c41e] mm: factor find_get_incore_page out of mincore_page
-git bisect bad 5d685be3785638202430b6baa2ecde482b52c41e
-# bad: [0797f84d689b9f1e7256d954280b28bfeaf5b1fc] mm/debug_vm_pgtable: avoid doing memory allocation with pgtable_t mapped.
-git bisect bad 0797f84d689b9f1e7256d954280b28bfeaf5b1fc
-# bad: [4f9a78e6bcd60a25b187adc1526ab3815fc40dae] mm/debug_vm_pgtable: avoid none pte in pte_clear_test
-git bisect bad 4f9a78e6bcd60a25b187adc1526ab3815fc40dae
-# first bad commit: [4f9a78e6bcd60a25b187adc1526ab3815fc40dae] mm/debug_vm_pgtable: avoid none pte in pte_clear_test
+If the allocation failed this will oops (mask will be NULL).
+
+cheers
