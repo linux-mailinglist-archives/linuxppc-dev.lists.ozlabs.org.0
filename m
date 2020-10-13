@@ -2,51 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484F228D611
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 23:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 198B828D71D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 01:45:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C9nxv4dxJzDqgP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 08:00:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C9sbc43rkzDqK5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 10:45:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C9sY30fFlzDqfp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 10:42:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=BL+zK0lz; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C9nw64zFZzDqcV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 07:59:02 +1100 (AEDT)
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net
- [73.231.172.41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 57AD620878;
- Tue, 13 Oct 2020 20:58:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1602622739;
- bh=LBtRmpzbTHp9NFKCOBgUHz5pM1wIf4PakEUrUA0pucs=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=BL+zK0lzFyOro1XILCI/FUV95to++ADhTHWGrLCUpkL0rleELizdVs8AdiqZqPVAk
- lt0r46HRelSMF7oqA+80HhIAXklH6M3Y7CazZzMTrwnakVh5ObY3g2akRTqvoeJX8x
- Zsc/BgoCJEYtDXCRnIQYo5LgJfLTfWVKZhYxTu9Y=
-Date: Tue, 13 Oct 2020 13:58:58 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v4 00/13] mm/debug_vm_pgtable fixes
-Message-Id: <20201013135858.f4a7f0c5f3b0a69a2a304cfe@linux-foundation.org>
-In-Reply-To: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
-References: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=c89tubCZ; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4C9sY21xJrz9sSs;
+ Wed, 14 Oct 2020 10:42:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1602632566;
+ bh=+8RyoDLMFzreOntocD8MmB6tkfPzeL+BTWjzBX1T9v4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=c89tubCZfxUFVdVaNfg1zCZGZni9WmGy0pGadJpxfmztYJy7XSY296aMWhD1XdDMl
+ FW32VW5JzIJqKVchFmF7seTXxF40q+xP/tNLk5HUBNIrLBoBgSOsWNScMjPF7ns7tT
+ 28K9LlRgf0Q56x0AAr64Ifhaxe4/6UsN9/dL0TMCihMJjDVlM2W/Wgdv97qyl0gFC6
+ ek5mOnPZKRThm0MPt3qldw8zZNC9KRD0TPI9Acj5kiYR6ynnX2u9nfZTMsAfVOImvh
+ zBeXZdphTxNmpeX8V/U2P+pCrn0l6+yWhB5ksnKAeoXc/ldZkkKh+fddRiTopE4gTC
+ Le6/LRva41uZQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Qian Cai <cai@redhat.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH v2] powerpc/pci: unmap legacy INTx interrupts when a PHB
+ is removed
+In-Reply-To: <90922c43c670e4b55e6cf421be19146333e2ae7b.camel@redhat.com>
+References: <20200807101854.844619-1-clg@kaod.org>
+ <9c5eca863c63e360662fae7597213e8927c2a885.camel@redhat.com>
+ <fce8ffe1-521c-8344-c7ad-53550e408cdc@kaod.org>
+ <90922c43c670e4b55e6cf421be19146333e2ae7b.camel@redhat.com>
+Date: Wed, 14 Oct 2020 10:42:45 +1100
+Message-ID: <87tuuxzo96.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,31 +62,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, Anshuman Khandual <anshuman.khandual@arm.com>,
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org,
+ linux-next@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed,  2 Sep 2020 17:12:09 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
+Qian Cai <cai@redhat.com> writes:
+> On Wed, 2020-09-23 at 09:06 +0200, C=C3=A9dric Le Goater wrote:
+>> On 9/23/20 2:33 AM, Qian Cai wrote:
+>> > On Fri, 2020-08-07 at 12:18 +0200, C=C3=A9dric Le Goater wrote:
+>> > > When a passthrough IO adapter is removed from a pseries machine using
+>> > > hash MMU and the XIVE interrupt mode, the POWER hypervisor expects t=
+he
+>> > > guest OS to clear all page table entries related to the adapter. If
+>> > > some are still present, the RTAS call which isolates the PCI slot
+>> > > returns error 9001 "valid outstanding translations" and the removal =
+of
+>> > > the IO adapter fails. This is because when the PHBs are scanned, Lin=
+ux
+>> > > maps automatically the INTx interrupts in the Linux interrupt number
+>> > > space but these are never removed.
+>> > >=20
+>> > > To solve this problem, we introduce a PPC platform specific
+>> > > pcibios_remove_bus() routine which clears all interrupt mappings when
+>> > > the bus is removed. This also clears the associated page table entri=
+es
+>> > > of the ESB pages when using XIVE.
+>> > >=20
+>> > > For this purpose, we record the logical interrupt numbers of the
+>> > > mapped interrupt under the PHB structure and let pcibios_remove_bus()
+>> > > do the clean up.
+>> > >=20
+>> > > Since some PCI adapters, like GPUs, use the "interrupt-map" property
+>> > > to describe interrupt mappings other than the legacy INTx interrupts,
+>> > > we can not restrict the size of the mapping array to PCI_NUM_INTX. T=
+he
+>> > > number of interrupt mappings is computed from the "interrupt-map"
+>> > > property and the mapping array is allocated accordingly.
+>> > >=20
+>> > > Cc: "Oliver O'Halloran" <oohall@gmail.com>
+>> > > Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
+>> > > Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+>> >=20
+>> > Some syscall fuzzing will trigger this on POWER9 NV where the traces p=
+ointed
+>> > to
+>> > this patch.
+>> >=20
+>> > .config: https://gitlab.com/cailca/linux-mm/-/blob/master/powerpc.conf=
+ig
+>>=20
+>> OK. The patch is missing a NULL assignement after kfree() and that
+>> might be the issue.=20
+>>=20
+>> I did try PHB removal under PowerNV, so I would like to understand=20
+>> how we managed to remove twice the PCI bus and possibly reproduce.=20
+>> Any chance we could grab what the syscall fuzzer (syzkaller) did ?=20
+>
+> Any update on this? Maybe Michael or Stephen could drop this for now, so =
+our
+> fuzzing could continue to find something else new?
 
-> This patch series includes fixes for debug_vm_pgtable test code so that
-> they follow page table updates rules correctly. The first two patches introduce
-> changes w.r.t ppc64. The patches are included in this series for completeness. We can
-> merge them via ppc64 tree if required.
+Someone send me a revert?
 
-Do you think this series is ready to be merged?
-
-Possibly-unresolved issues which I have recorded are
-
-Against
-mm-debug_vm_pgtable-locks-move-non-page-table-modifying-test-together.patch:
-
-https://lkml.kernel.org/r/56830efb-887e-0000-a46e-ae015e5854cd@arm.com
-https://lkml.kernel.org/r/20200910075752.GC26874@shao2-debian
-
-Against mm-debug_vm_pgtable-avoid-none-pte-in-pte_clear_test.patch:
-
-https://lkml.kernel.org/r/87zh5wx51b.fsf@linux.ibm.com
-https://lkml.kernel.org/r/37a9facc-ca36-290f-3748-16c4a7a778fa@arm.com
-https://lkml.kernel.org/r/20201011200258.GA91021@roeck-us.net
+cheers
