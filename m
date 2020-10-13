@@ -1,59 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E11D28D2BF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 19:01:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5306828D3E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 20:44:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C9hdj14SCzDqgq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 04:01:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C9kwy6JCSzDqYd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 05:44:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=fluxnic.net (client-ip=64.147.108.86;
+ helo=pb-sasl-trial2.pobox.com; envelope-from=nico@fluxnic.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=none (p=none dis=none) header.from=fluxnic.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=BVgO/RpF; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=pobox.com header.i=@pobox.com header.a=rsa-sha1
+ header.s=sasl header.b=Epy+q5an; 
+ dkim=pass (1024-bit key;
+ secure) header.d=fluxnic.net header.i=@fluxnic.net header.a=rsa-sha256
+ header.s=2016-12.pbsmtp header.b=v5OoWtfl; 
+ dkim-atps=neutral
+X-Greylist: delayed 337 seconds by postgrey-1.36 at bilbo;
+ Wed, 14 Oct 2020 05:42:47 AEDT
+Received: from pb-sasl-trial2.pobox.com (pb-sasl-trial2.pobox.com
+ [64.147.108.86])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C9hbr6M9DzDqSk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 03:59:36 +1100 (AEDT)
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com
- [209.85.167.175])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C9ktv0sBHzDqVP;
+ Wed, 14 Oct 2020 05:42:46 +1100 (AEDT)
+Received: from pb-sasl-trial2.pobox.com (localhost.local [127.0.0.1])
+ by pb-sasl-trial2.pobox.com (Postfix) with ESMTP id B35092F08C;
+ Tue, 13 Oct 2020 14:36:58 -0400 (EDT)
+ (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=date:from:to
+ :cc:subject:in-reply-to:message-id:references:mime-version
+ :content-type; s=sasl; bh=1qdRcPgrMg9PaaTRWeHMHkWBgn4=; b=Epy+q5
+ ans9ahJwXxlQvxdjICPrBYTo3ECIn9AzWxzmuo835zX7Go5RA+la+QVdJswbYHqY
+ OA9uOWP+RHqwo1f/1Hjwskkbh9itwsmr5IKrZUme2Q4YRp5bQABuumhmd/Yh0NKM
+ sMhZUgbkZQs79wJJn2wtIPZ7EN0v5uRSG8bTQ=
+Received: from pb-smtp1.nyi.icgroup.com (pb-smtp1.pobox.com [10.90.30.53])
+ by pb-sasl-trial2.pobox.com (Postfix) with ESMTP id 7910C2F08B;
+ Tue, 13 Oct 2020 14:36:58 -0400 (EDT)
+ (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=fluxnic.net;
+ h=date:from:to:cc:subject:in-reply-to:message-id:references:mime-version:content-type;
+ s=2016-12.pbsmtp; bh=/xoWviDLFg5PKRQ9rObRWDXVC++pmZtYhfbDb0DFq7E=;
+ b=v5OoWtflZD131TYsBl2A9g0L/PCRe2nu6sy2IJY2ys8stI3sGPGydjk9hbVpZeTUKIjemrnRhLwKFlAM+dXEIGXz5t0LfwSiRA8m7hrB4WLH79+9F2ww8ICEhYu0fLjFgoDc1lKWqG4ZKNRDYjtbn/p6CJBipu1Te7ZvLuk/HMw=
+Received: from yoda.home (unknown [24.203.50.76])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 7013625309
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Oct 2020 16:59:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1602608373;
- bh=osZ8tJsN1XJAdwSi1ibvFjOI4ppbEHzl507BtoRa3RY=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=BVgO/RpFUbXU0rUhiHQ4PV7seCBjZCA5VZpjLt9fb7pnoZxE7/J2v8gFkpMq7al/x
- NMjFN0+OeJ/sVOOsN2LLPY3YNMD8GoZ5ncaUEdxxceVdpuik78E54GRrZLBAYex/Fk
- VhTmOSSHk5b6rOkFbDuFk7NR3TEllYJasaYjeEQ4=
-Received: by mail-oi1-f175.google.com with SMTP id h10so112334oie.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Oct 2020 09:59:33 -0700 (PDT)
-X-Gm-Message-State: AOAM530tTOJcKFr87dlfDRWhLQEkQMRQ6Ll/8SM4yZNqkam4/DYjSDzB
- veeMgynRKSmJ5sPbZCG1IfIktTaYyameQ8jRYP4=
-X-Google-Smtp-Source: ABdhPJyCyAZiLNWtZEpxTAWgjVYup7xXC2n8Dw2lOiZtXYQDhs3t2O/klyNtVYYJ8v1GO87o7QPqDtWtI4WZYBPYbfs=
-X-Received: by 2002:aca:d845:: with SMTP id p66mr382549oig.47.1602608372672;
- Tue, 13 Oct 2020 09:59:32 -0700 (PDT)
+ by pb-smtp1.pobox.com (Postfix) with ESMTPSA id CD98F955F4;
+ Tue, 13 Oct 2020 14:36:57 -0400 (EDT)
+ (envelope-from nico@fluxnic.net)
+Received: from xanadu.home (xanadu.home [192.168.2.2])
+ by yoda.home (Postfix) with ESMTPSA id CF7492DA0BC7;
+ Tue, 13 Oct 2020 14:36:56 -0400 (EDT)
+Date: Tue, 13 Oct 2020 14:36:56 -0400 (EDT)
+From: Nicolas Pitre <nico@fluxnic.net>
+To: Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [PATCH RFC PKS/PMEM 33/58] fs/cramfs: Utilize new
+ kmap_thread()
+In-Reply-To: <20201009195033.3208459-34-ira.weiny@intel.com>
+Message-ID: <nycvar.YSQ.7.78.906.2010131436200.2184@knanqh.ubzr>
+References: <20201009195033.3208459-1-ira.weiny@intel.com>
+ <20201009195033.3208459-34-ira.weiny@intel.com>
 MIME-Version: 1.0
-References: <20201013081804.17332-1-ardb@kernel.org>
- <ae9ab2560f6d7b114726efb1ec26f0a36f695335.camel@linux.ibm.com>
-In-Reply-To: <ae9ab2560f6d7b114726efb1ec26f0a36f695335.camel@linux.ibm.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 13 Oct 2020 18:59:21 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFZVR46_oeYTxJ59q-7u+zFCFtOQuSQoiEzKLhXzpydow@mail.gmail.com>
-Message-ID: <CAMj1kXFZVR46_oeYTxJ59q-7u+zFCFtOQuSQoiEzKLhXzpydow@mail.gmail.com>
-Subject: Re: [PATCH v2] ima: defer arch_ima_get_secureboot() call to IMA init
- time
-To: Mimi Zohar <zohar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+X-Pobox-Relay-ID: 13301A02-0D83-11EB-84D0-D152C8D8090B-78420484!pb-smtp1.pobox.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,61 +80,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi <linux-efi@vger.kernel.org>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, James Morris <jmorris@namei.org>,
- Chester Lin <clin@suse.com>, linux-security-module@vger.kernel.org,
- linux-integrity <linux-integrity@vger.kernel.org>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, "Serge E. Hallyn" <serge@hallyn.com>
+Cc: linux-aio@kvack.org, linux-efi@vger.kernel.org, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ linux-mmc@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ target-devel@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-kselftest@vger.kernel.org, samba-technical@lists.samba.org,
+ Thomas Gleixner <tglx@linutronix.de>, drbd-dev@lists.linbit.com,
+ devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
+ linux-nilfs@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org, x86@kernel.org,
+ ceph-devel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ io-uring@vger.kernel.org, cluster-devel@redhat.com,
+ Ingo Molnar <mingo@redhat.com>, intel-wired-lan@lists.osuosl.org,
+ xen-devel@lists.xenproject.org, linux-ext4@vger.kernel.org,
+ Fenghua Yu <fenghua.yu@intel.com>, linux-afs@lists.infradead.org,
+ linux-um@lists.infradead.org, intel-gfx@lists.freedesktop.org,
+ ecryptfs@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ reiserfs-devel@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-bcache@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-cachefs@redhat.com,
+ linux-nfs@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
+ netdev@vger.kernel.org, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+ linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 13 Oct 2020 at 18:46, Mimi Zohar <zohar@linux.ibm.com> wrote:
->
-> [Cc'ing linuxppc-dev@lists.ozlabs.org]
->
-> On Tue, 2020-10-13 at 10:18 +0200, Ard Biesheuvel wrote:
-> > Chester reports that it is necessary to introduce a new way to pass
-> > the EFI secure boot status between the EFI stub and the core kernel
-> > on ARM systems. The usual way of obtaining this information is by
-> > checking the SecureBoot and SetupMode EFI variables, but this can
-> > only be done after the EFI variable workqueue is created, which
-> > occurs in a subsys_initcall(), whereas arch_ima_get_secureboot()
-> > is called much earlier by the IMA framework.
-> >
-> > However, the IMA framework itself is started as a late_initcall,
-> > and the only reason the call to arch_ima_get_secureboot() occurs
-> > so early is because it happens in the context of a __setup()
-> > callback that parses the ima_appraise= command line parameter.
-> >
-> > So let's refactor this code a little bit, by using a core_param()
-> > callback to capture the command line argument, and deferring any
-> > reasoning based on its contents to the IMA init routine.
-> >
-> > Cc: Chester Lin <clin@suse.com>
-> > Cc: Mimi Zohar <zohar@linux.ibm.com>
-> > Cc: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
-> > Cc: James Morris <jmorris@namei.org>
-> > Cc: "Serge E. Hallyn" <serge@hallyn.com>
-> > Link: https://lore.kernel.org/linux-arm-kernel/20200904072905.25332-2-clin@suse.com/
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> > v2: rebase onto series 'integrity: improve user feedback for invalid bootparams'
->
-> Thanks, Ard.  Based on my initial, limited testing on Power, it looks
-> good, but I'm hesistant to include it in the integrity 5.10 pull
-> request without it having been in linux-next and some additional
-> testing.  It's now queued in the next-integrity-testing branch awaiting
-> some tags.
->
+On Fri, 9 Oct 2020, ira.weiny@intel.com wrote:
 
-Thanks. No rush as far as I am concerned, although I suppose Chester
-may want to rebase his arm64 IMA enablement series on this.
+> From: Ira Weiny <ira.weiny@intel.com>
+> 
+> The kmap() calls in this FS are localized to a single thread.  To avoid
+> the over head of global PKRS updates use the new kmap_thread() call.
+> 
+> Cc: Nicolas Pitre <nico@fluxnic.net>
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 
-Suggestion: can we take the get_sb_mode() code from ima_arch.c in
-arch/x86, and generalize it for all EFI architectures? That way, we
-can enable 32-bit ARM and RISC-V seamlessly once someone gets around
-to enabling IMA on those platforms. In fact, get_sb_mode() itself
-should probably be factored out into a generic helper for use outside
-of IMA as well (Xen/x86 has code that does roughly the same already)
+Acked-by: Nicolas Pitre <nico@fluxnic.net>
+
+>  fs/cramfs/inode.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
+> index 912308600d39..003c014a42ed 100644
+> --- a/fs/cramfs/inode.c
+> +++ b/fs/cramfs/inode.c
+> @@ -247,8 +247,8 @@ static void *cramfs_blkdev_read(struct super_block *sb, unsigned int offset,
+>  		struct page *page = pages[i];
+>  
+>  		if (page) {
+> -			memcpy(data, kmap(page), PAGE_SIZE);
+> -			kunmap(page);
+> +			memcpy(data, kmap_thread(page), PAGE_SIZE);
+> +			kunmap_thread(page);
+>  			put_page(page);
+>  		} else
+>  			memset(data, 0, PAGE_SIZE);
+> @@ -826,7 +826,7 @@ static int cramfs_readpage(struct file *file, struct page *page)
+>  
+>  	maxblock = (inode->i_size + PAGE_SIZE - 1) >> PAGE_SHIFT;
+>  	bytes_filled = 0;
+> -	pgdata = kmap(page);
+> +	pgdata = kmap_thread(page);
+>  
+>  	if (page->index < maxblock) {
+>  		struct super_block *sb = inode->i_sb;
+> @@ -914,13 +914,13 @@ static int cramfs_readpage(struct file *file, struct page *page)
+>  
+>  	memset(pgdata + bytes_filled, 0, PAGE_SIZE - bytes_filled);
+>  	flush_dcache_page(page);
+> -	kunmap(page);
+> +	kunmap_thread(page);
+>  	SetPageUptodate(page);
+>  	unlock_page(page);
+>  	return 0;
+>  
+>  err:
+> -	kunmap(page);
+> +	kunmap_thread(page);
+>  	ClearPageUptodate(page);
+>  	SetPageError(page);
+>  	unlock_page(page);
+> -- 
+> 2.28.0.rc0.12.gb6a658bd00c9
+> 
+> 
