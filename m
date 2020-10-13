@@ -2,56 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D4B28CB77
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 12:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E45F528CBE3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 12:42:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C9Wgj53mgzDqfq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 21:17:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C9XDt5q2HzDqgD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 21:42:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::444;
+ helo=mail-wr1-x444.google.com; envelope-from=daniel.baluta@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=gyi1yunu; dkim-atps=neutral
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
+ [IPv6:2a00:1450:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C9Wdp5WsSzDqT7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Oct 2020 21:15:42 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=KMycuC8k; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4C9Wdp0WCgz9sVH;
- Tue, 13 Oct 2020 21:15:42 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1602584142;
- bh=SQPNY+N9Jz8DH/0ADaruUwdPNuZlX8z+oBbq3gOlFTg=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=KMycuC8kT6PHLlYV79o7xJsj3BgonMFxzrXRX5HLu1IB6bKup+zZ7BZigT6Vy8pAs
- sJnjApueZWxgymV6aWQW16fzi6xUahpkQBRBukKizq0TtOq0VQFU/+TTMugeOPlD+T
- Y33c2nz2s0jxYhsvVCMlfhvkItZE19O7BS5ZqjO2YrJkwzyBw2yo5cwm9g7jMKz8WA
- 9fgFerkIIzcmBQc2jsHW11hilGANJKSiwpOGxdF4uIscWPmERVHHBbnucPZqz/n+3O
- cKpP9rcWnYtOprDjYxqxpT6XCy8bAmlASMd+RuSCfysuHZwg8jseuzvDKpgKRTQs6E
- Ox2tsVl8+z0pQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH] powerpc/features: Remove CPU_FTR_NODSISRALIGN
-In-Reply-To: <cb22e9a8-4a8c-38d9-66f1-24af5ebd7520@csgroup.eu>
-References: <0346768708b69bdbfec82f6e5b0364962b9b6932.1602489812.git.christophe.leroy@csgroup.eu>
- <875z7ea8t7.fsf@linux.ibm.com>
- <cb22e9a8-4a8c-38d9-66f1-24af5ebd7520@csgroup.eu>
-Date: Tue, 13 Oct 2020 21:15:38 +1100
-Message-ID: <87wnzuzb1x.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C9XCJ02HzzDqcY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Oct 2020 21:41:12 +1100 (AEDT)
+Received: by mail-wr1-x444.google.com with SMTP id s9so11305785wro.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Oct 2020 03:41:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=KGnQd8MQizROEGVqO6LoZ2ESTC7FDdoCCXNt1igE99k=;
+ b=gyi1yunutoZhUD0/UEF8Y2W7tQM6TS5jmKeONpakXd2rTbWB+a2FoTlYShvboHRUjb
+ o+OiIauitVyuRzkw2wlp8deQWzBGISweHB6VZlAgDRaF0NoeuVxg847l/A2/LVMRQJqe
+ 042rOdRRsmODzQaUz5KmsV7PXCm2iIfq/P9NJvooXN0tU08fjejHSQ+S9ueQ+aE27whw
+ px2Vdl4kOBetB0bVfcXL//2xS1Y1bR9G5Y4/SYldp92Mjw39RR00M5wScVXdpvR7CZUV
+ HboDSnXSXkCB4XgTJW74jjaWEffi5v3Pi6A7v7NtoKMWoS6bakwtXPTJFSMiRY2Akdqr
+ 3LJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=KGnQd8MQizROEGVqO6LoZ2ESTC7FDdoCCXNt1igE99k=;
+ b=UD8qlcImhgvOQrEPFwvTBFEDeZ7LvT4uVlXFNunp4et6tzk3wRvCHCfg4UB7CQDjgO
+ OC0C0EuDpouZDLczKVlughytEWDDIDAvgZzOyb5rdV+f0QXnfdCYYVS+NlOVb/nL4prH
+ xn3Nr8+LTh+i7oFvb2CUwi7UvOI2Q3MVsM6AUASGA5Yetc5CJgc1Zdayphg4WI2zDMNZ
+ /U3a4k+yB67KBg9orLYYJVJPqzr0rqJZrFa6oooE/yc6m1nAIxDE2/1zcsM30Up1LK22
+ 6jHAtVComGFrvQiJC+OK96/6MJKjRwWknXTEunfBzY9T/Gby3SDyqE3kfiXTFrXK3Fs+
+ ilEw==
+X-Gm-Message-State: AOAM533auJGPjZH6LUD6gM890pU7HTbE6oSkdkpD9/udc+6Yabgvzm7a
+ Uw1Jipauu2o7vR41erotIPK2Pp6imrgqgDKyq+g=
+X-Google-Smtp-Source: ABdhPJwhYcYmIneqQARWgsNSZNyQDfcQXjguTWYNKrh+uvUlyMNyvJ07AParV+DeJy+VXRrdkVj2tk2+qAGXHb/6jhw=
+X-Received: by 2002:adf:ec0e:: with SMTP id x14mr37900205wrn.204.1602585668012; 
+ Tue, 13 Oct 2020 03:41:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <1602492582-3558-1-git-send-email-shengjiu.wang@nxp.com>
+ <20201012190037.GB17643@Asurada-Nvidia>
+In-Reply-To: <20201012190037.GB17643@Asurada-Nvidia>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 13 Oct 2020 13:40:56 +0300
+Message-ID: <CAEnQRZBrXNgMDNgQ=dMJfZQpZvdq6sUx2y21_fuk9teRd5UM0Q@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_spdif: Add support for higher sample rates
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,102 +73,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
+ Jaroslav Kysela <perex@perex.cz>, Mark Brown <broonie@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 13/10/2020 =C3=A0 09:23, Aneesh Kumar K.V a =C3=A9crit=C2=A0:
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>=20
->>> CPU_FTR_NODSISRALIGN has not been used since
->>> commit 31bfdb036f12 ("powerpc: Use instruction emulation
->>> infrastructure to handle alignment faults")
->>>
->>> Remove it.
->>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> ---
->>>   arch/powerpc/include/asm/cputable.h | 22 ++++++++++------------
->>>   arch/powerpc/kernel/dt_cpu_ftrs.c   |  8 --------
->>>   arch/powerpc/kernel/prom.c          |  2 +-
->>>   3 files changed, 11 insertions(+), 21 deletions(-)
->>>
->>> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt=
-_cpu_ftrs.c
->>> index 1098863e17ee..c598961d9f15 100644
->>> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
->>> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
->>> @@ -273,13 +273,6 @@ static int __init feat_enable_idle_nap(struct dt_c=
-pu_feature *f)
->>>   	return 1;
->>>   }
->>>=20=20=20
->>> -static int __init feat_enable_align_dsisr(struct dt_cpu_feature *f)
->>> -{
->>> -	cur_cpu_spec->cpu_features &=3D ~CPU_FTR_NODSISRALIGN;
->>> -
->>> -	return 1;
->>> -}
->>> -
->>>   static int __init feat_enable_idle_stop(struct dt_cpu_feature *f)
->>>   {
->>>   	u64 lpcr;
->>> @@ -641,7 +634,6 @@ static struct dt_cpu_feature_match __initdata
->>>   	{"tm-suspend-hypervisor-assist", feat_enable, CPU_FTR_P9_TM_HV_ASSIS=
-T},
->>>   	{"tm-suspend-xer-so-bug", feat_enable, CPU_FTR_P9_TM_XER_SO_BUG},
->>>   	{"idle-nap", feat_enable_idle_nap, 0},
->>> -	{"alignment-interrupt-dsisr", feat_enable_align_dsisr, 0},
-
-Rather than removing it entirely, I'd rather we left a comment, so that
-it's obvious that we are ignoring that feature on purpose, not because
-we forget about it.
-
-eg:
-
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu=
-_ftrs.c
-index f204ad79b6b5..45cb7e59bd13 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -640,7 +640,7 @@ static struct dt_cpu_feature_match __initdata
- 	{"tm-suspend-hypervisor-assist", feat_enable, CPU_FTR_P9_TM_HV_ASSIST},
- 	{"tm-suspend-xer-so-bug", feat_enable, CPU_FTR_P9_TM_XER_SO_BUG},
- 	{"idle-nap", feat_enable_idle_nap, 0},
--	{"alignment-interrupt-dsisr", feat_enable_align_dsisr, 0},
-+	// "alignment-interrupt-dsisr" ignored
- 	{"idle-stop", feat_enable_idle_stop, 0},
- 	{"machine-check-power8", feat_enable_mce_power8, 0},
- 	{"performance-monitor-power8", feat_enable_pmu_power8, 0},
-
-
->>>   	{"idle-stop", feat_enable_idle_stop, 0},
->>>   	{"machine-check-power8", feat_enable_mce_power8, 0},
->>>   	{"performance-monitor-power8", feat_enable_pmu_power8, 0},
->>> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
->>> index c1545f22c077..a5a5acb627fe 100644
->>> --- a/arch/powerpc/kernel/prom.c
->>> +++ b/arch/powerpc/kernel/prom.c
->>> @@ -165,7 +165,7 @@ static struct ibm_pa_feature {
->>>   #ifdef CONFIG_PPC_RADIX_MMU
->>>   	{ .pabyte =3D 40, .pabit =3D 0, .mmu_features  =3D MMU_FTR_TYPE_RADI=
-X | MMU_FTR_GTSE },
->>>   #endif
->>> -	{ .pabyte =3D 1,  .pabit =3D 1, .invert =3D 1, .cpu_features =3D CPU_=
-FTR_NODSISRALIGN },
->>> +	{ .pabyte =3D 1,  .pabit =3D 1, .invert =3D 1, },
->>>   	{ .pabyte =3D 5,  .pabit =3D 0, .cpu_features  =3D CPU_FTR_REAL_LE,
->>>   				    .cpu_user_ftrs =3D PPC_FEATURE_TRUE_LE },
->>=20
->> I didn't follow this change. Should the line be dropped?
->>=20
+On Tue, Oct 13, 2020 at 12:29 PM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
 >
-> Don't know. I have to look closer, I don't know what it is used for.
+> Hi Shengjiu,
+>
+> On Mon, Oct 12, 2020 at 04:49:42PM +0800, Shengjiu Wang wrote:
+> > Add 88200Hz and 176400Hz sample rates support for TX.
+> > Add 88200Hz, 176400Hz, 192000Hz sample rates support for RX.
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > Signed-off-by: Viorel Suman <viorel.suman@nxp.com>
+>
+> Probably should put your own Signed-off at the bottom?
 
-All it does is clear the CPU feature if firmware tells us to. So if
-we're dropping the CPU feature we can drop the whole entry in the
-feature array.
+Hi Shengjiu,
 
-cheers
+Also please keep the original author of the patch. You can change that
+using git commit --amend --author="Viorel Suman <viorel.suman@nxp.com>".
+
+With that,
+
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
