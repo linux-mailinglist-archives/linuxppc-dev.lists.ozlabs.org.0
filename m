@@ -1,72 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8462D28D4D4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 21:43:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DDDD28D4EA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 21:47:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C9mF50Sj1zDqMg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 06:43:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C9mKd3hhyzDqdt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 06:47:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::642;
- helo=mail-ej1-x642.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=kTjS5KS3; dkim-atps=neutral
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com
- [IPv6:2a00:1450:4864:20::642])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ofbmEHpj; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C9mC7060bzDqXd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 06:41:53 +1100 (AEDT)
-Received: by mail-ej1-x642.google.com with SMTP id x7so1438078eje.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Oct 2020 12:41:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=jlOzF1QhqikCoQxsvfJV6M6Hjgbrow9dB9uNs1AoGLE=;
- b=kTjS5KS3nYcf/wrvTsuRt1BvzGw557kJOoPvyzYoBgiqb4b8bKtbI2/mMLiZYyRjFR
- J9ydTuu0x47x+MEvbUBFhFH3/2QgRWgMVRtg9k6OLuYDe131Mp/cuPa30fJMGhSFjepr
- cqBBXWNROTwzHkSN49lY/psarWhxU27El5EYWXEJaiWvhTqo66L6QK98x3Y0Yvi2nF9y
- UTW/CUag9LBP+VfPW+1mn8JfLpPCSXoAzeg5FBjWoJMu0+7UEW9Ka5T8iigFwOd+JDvR
- rrctnvxFOZW164mxjZq4IMmZGZxG4l2jAUbsCf6skOMzcKIRAwJ8OakZ/jL0rfexuXSd
- 7ngQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=jlOzF1QhqikCoQxsvfJV6M6Hjgbrow9dB9uNs1AoGLE=;
- b=AIwsrNyz2bqCpRKmmxJTBAiM5IXD/dARksHPD3jClo4LgHtsYeATjsbLJrwvTFZ90R
- PqWXVNylY2aykMx4ZqPaWr+0XuFYzDWzq6TQmu98tLlxWZqRHMYtBjAgbJxMH3+2Qki7
- 8BMDUDY2qyfNYqR/YviuSowyPJTAU15Zl3acrtcJiDc572RQalftHbIuPV0lRimtGloM
- hQIPHlViQiTX5S4I5tgSpt6goPKXV66msQl0qIOD69MlgyXyPVbTMPD6TqrTa/Gk2LkH
- X5jflWJhAnj9Tzylupw+/SOnNzjpQSj+Z0lwnDuciqxaIdnWaLi8V92XQOEzZGHaADHR
- saZw==
-X-Gm-Message-State: AOAM532fdkY/gBDgKTpD1xHSKgLnAKIlBSPv1kQHmIGdUmxvM2KgOsN7
- V9/Ndh02WTlOiJddVK3P9qISow3PQ+5XWSpl41uMWA==
-X-Google-Smtp-Source: ABdhPJxGxhMZ7o2BYtIDXOupUr3pSHVXck0tIwC9HMZ0nIbp0pU6AQKRljKqMwVkoxmX0BYp74elTVEnpYvo3LWFH24=
-X-Received: by 2002:a17:906:7e47:: with SMTP id
- z7mr1390518ejr.418.1602618108255; 
- Tue, 13 Oct 2020 12:41:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201009195033.3208459-1-ira.weiny@intel.com>
- <20201009195033.3208459-34-ira.weiny@intel.com>
- <CAPcyv4gL3jfw4d+SJGPqAD3Dp4F_K=X3domuN4ndAA1FQDGcPg@mail.gmail.com>
- <20201013193643.GK20115@casper.infradead.org>
-In-Reply-To: <20201013193643.GK20115@casper.infradead.org>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 13 Oct 2020 12:41:36 -0700
-Message-ID: <CAPcyv4gL70FcLe8az7ezmpcZV=bG0Cka7daKWcCdmV4GoenSZw@mail.gmail.com>
-Subject: Re: [PATCH RFC PKS/PMEM 33/58] fs/cramfs: Utilize new kmap_thread()
-To: Matthew Wilcox <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C9mHq4fByzDqXv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 06:45:58 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09DJY4d0179336; Tue, 13 Oct 2020 15:45:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=wjgRi0JKXCA+0MevYmBRStAWxi1vVqqvVpMDV3OGaHY=;
+ b=ofbmEHpj/HiqpFVYoUpJc1CptudDCiqJuewrLBlLd6fhph58Ir1kclCkuSUK3j5p/MFY
+ FUoYrmA4nYUwMkULfI4E4GgR4bXVatntZGhq4QDgtZ+KxJxJfQHR2WtMDvdNXnhVsc2p
+ ivS4wEeclmH6hZb3G116bEJYT8Pho6nMCSMgFA5ZWhEDoxaHnF0nt14Dwd+lfYDRAYCJ
+ kUL4KuoOa8hascylFLRFbKk3K8BtRPSGjoU8xyoA/bo0Vk/kcZ0UdRWHezWBq8ZLRuLS
+ FZusq++dnZSSJ9Akli9JVrLK28+6vAZS5HrgVgZnoxXGRbogqhvx0xAsZkQMOOUGiGSJ AQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 345jac8k3x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 13 Oct 2020 15:45:50 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09DJYlcD184984;
+ Tue, 13 Oct 2020 15:45:49 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 345jac8k37-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 13 Oct 2020 15:45:49 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09DJbP5F001513;
+ Tue, 13 Oct 2020 19:45:47 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma05fra.de.ibm.com with ESMTP id 3434k81s1j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 13 Oct 2020 19:45:47 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 09DJjiBN17236448
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 13 Oct 2020 19:45:45 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DEDA511C050;
+ Tue, 13 Oct 2020 19:45:44 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D215111C054;
+ Tue, 13 Oct 2020 19:45:42 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown
+ [9.160.65.195])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 13 Oct 2020 19:45:42 +0000 (GMT)
+Message-ID: <6a4ad1dbf6d7a59b3728f3847fdbea04b73aff69.camel@linux.ibm.com>
+Subject: Re: [PATCH v2] ima: defer arch_ima_get_secureboot() call to IMA
+ init time
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 13 Oct 2020 15:45:41 -0400
+In-Reply-To: <CAMj1kXFZVR46_oeYTxJ59q-7u+zFCFtOQuSQoiEzKLhXzpydow@mail.gmail.com>
+References: <20201013081804.17332-1-ardb@kernel.org>
+ <ae9ab2560f6d7b114726efb1ec26f0a36f695335.camel@linux.ibm.com>
+ <CAMj1kXFZVR46_oeYTxJ59q-7u+zFCFtOQuSQoiEzKLhXzpydow@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-12.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-10-13_13:2020-10-13,
+ 2020-10-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0
+ adultscore=0 spamscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
+ malwarescore=0 mlxscore=0 priorityscore=1501 clxscore=1015 mlxlogscore=995
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010130137
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,86 +108,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio@kvack.org, linux-efi <linux-efi@vger.kernel.org>,
- KVM list <kvm@vger.kernel.org>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, linux-mmc@vger.kernel.org,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- Linux MM <linux-mm@kvack.org>, target-devel@vger.kernel.org,
- linux-mtd@lists.infradead.org, linux-kselftest@vger.kernel.org,
- samba-technical@lists.samba.org, "Weiny, Ira" <ira.weiny@intel.com>,
- ceph-devel@vger.kernel.org, drbd-dev@lists.linbit.com,
- devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
- linux-nilfs@vger.kernel.org, linux-scsi <linux-scsi@vger.kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- linux-rdma <linux-rdma@vger.kernel.org>, X86 ML <x86@kernel.org>,
- amd-gfx list <amd-gfx@lists.freedesktop.org>, io-uring@vger.kernel.org,
- cluster-devel@redhat.com, Ingo Molnar <mingo@redhat.com>,
- intel-wired-lan@lists.osuosl.org, xen-devel <xen-devel@lists.xenproject.org>,
- linux-ext4 <linux-ext4@vger.kernel.org>, Fenghua Yu <fenghua.yu@intel.com>,
- linux-afs@lists.infradead.org, linux-um@lists.infradead.org,
- intel-gfx@lists.freedesktop.org, ecryptfs@vger.kernel.org,
- linux-erofs@lists.ozlabs.org, reiserfs-devel@vger.kernel.org,
- linux-block@vger.kernel.org, linux-bcache@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andrew Morton <akpm@linux-foundation.org>, linux-cachefs@redhat.com,
- linux-nfs@vger.kernel.org, Nicolas Pitre <nico@fluxnic.net>,
- linux-ntfs-dev@lists.sourceforge.net, Netdev <netdev@vger.kernel.org>,
- Kexec Mailing List <kexec@lists.infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-f2fs-devel@lists.sourceforge.net,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>, bpf@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-btrfs <linux-btrfs@vger.kernel.org>
+Cc: linux-efi <linux-efi@vger.kernel.org>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, James Morris <jmorris@namei.org>,
+ Chester Lin <clin@suse.com>, linux-security-module@vger.kernel.org,
+ linux-integrity <linux-integrity@vger.kernel.org>,
+ "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
+ <linuxppc-dev@lists.ozlabs.org>, "Serge E. Hallyn" <serge@hallyn.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 13, 2020 at 12:37 PM Matthew Wilcox <willy@infradead.org> wrote:
->
-> On Tue, Oct 13, 2020 at 11:44:29AM -0700, Dan Williams wrote:
-> > On Fri, Oct 9, 2020 at 12:52 PM <ira.weiny@intel.com> wrote:
-> > >
-> > > From: Ira Weiny <ira.weiny@intel.com>
-> > >
-> > > The kmap() calls in this FS are localized to a single thread.  To avoid
-> > > the over head of global PKRS updates use the new kmap_thread() call.
-> > >
-> > > Cc: Nicolas Pitre <nico@fluxnic.net>
-> > > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> > > ---
-> > >  fs/cramfs/inode.c | 10 +++++-----
-> > >  1 file changed, 5 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
-> > > index 912308600d39..003c014a42ed 100644
-> > > --- a/fs/cramfs/inode.c
-> > > +++ b/fs/cramfs/inode.c
-> > > @@ -247,8 +247,8 @@ static void *cramfs_blkdev_read(struct super_block *sb, unsigned int offset,
-> > >                 struct page *page = pages[i];
-> > >
-> > >                 if (page) {
-> > > -                       memcpy(data, kmap(page), PAGE_SIZE);
-> > > -                       kunmap(page);
-> > > +                       memcpy(data, kmap_thread(page), PAGE_SIZE);
-> > > +                       kunmap_thread(page);
-> >
-> > Why does this need a sleepable kmap? This looks like a textbook
-> > kmap_atomic() use case.
->
-> There's a lot of code of this form.  Could we perhaps have:
->
-> static inline void copy_to_highpage(struct page *to, void *vfrom, unsigned int size)
-> {
->         char *vto = kmap_atomic(to);
->
->         memcpy(vto, vfrom, size);
->         kunmap_atomic(vto);
-> }
->
-> in linux/highmem.h ?
+On Tue, 2020-10-13 at 18:59 +0200, Ard Biesheuvel wrote:
+> Suggestion: can we take the get_sb_mode() code from ima_arch.c in
+> arch/x86, and generalize it for all EFI architectures? That way, we
+> can enable 32-bit ARM and RISC-V seamlessly once someone gets around
+> to enabling IMA on those platforms. In fact, get_sb_mode() itself
+> should probably be factored out into a generic helper for use outside
+> of IMA as well (Xen/x86 has code that does roughly the same already)
 
-Nice, yes, that could also replace the local ones in lib/iov_iter.c
-(memcpy_{to,from}_page())
+On Power, there are three different policies - secure, trusted, and
+secure & trusted boot policy rules.  Based on whether secure or trusted
+boot is enabled, the appropriate policy is enabled.  On x86, if
+secure_boot is enabled (and CONFIG_IMA_ARCH_POLICY is enabled) both the
+secure and trusted boot rules are defined.  Is this design fine enough
+granularity or should should there be a get_trustedboot_mode() function
+as well?
+
+Agreed, the code should not be duplicated across arch's.  As for making
+get_sb_mode() generic, not dependent on IMA, where would it reside? 
+Would this be in EFI?
+
+thanks,
+
+Mimi
+
