@@ -1,114 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 193E228CE4B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 14:26:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A8A28CED8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 15:00:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C9ZXH0SKMzDqYK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Oct 2020 23:26:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C9bHm3d0ZzDqYn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 00:00:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oss.nxp.com (client-ip=40.107.20.87;
- helo=eur05-db8-obe.outbound.protection.outlook.com;
- envelope-from=viorel.suman@oss.nxp.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-NXP1-onmicrosoft-com header.b=QZZemehQ;
- dkim-atps=neutral
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com
- (mail-db8eur05on2087.outbound.protection.outlook.com [40.107.20.87])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=KX+JTrgs; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C9ZLp3QJ0zDqTg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Oct 2020 23:17:54 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NWGyBxG3aPayi00lO9agfZfDl3OrayteQx3Y07vSkWRzfEWxEuqoNBJhtRAlyY+D5yVExBA8tjPbYrdsPnzs6YFe8hkoj3OSNRqismf0k43mLG8aQ/y1vSAYsG5G1+1VnkRCkbQDg9ZD/wE9XwjyFN+w+5iqucWPG0Ye9NbNQkstU1fKnitLi3KVOtgTWDLA8X6H0PP6joX6gJPNvwknQzujIJUHooQNkbTp3va0MXLJTBkKEkMjt3z2BN/ZsdkD/+uLItf96IIYKXsLu90pu7Q2XVm4kEq1nrkUZ+79EXSHKeuuSCxSbDz2ruvW5oSa+lB1DWSVylhFHSr2rL2cCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IEmLAKoGOck/B2qWs94DgUNXN0XetiA7Mvy/QsLu9+I=;
- b=QvgiOtVIxryiF4JZ8d1WZT/8g4SZynUeg8CgNw3a/OGfo6n4K4jxsZfnHvNklEucbizNBLWcwQD5W6ziPG+W0Y0bKLbeoNbVMa2Jp9f5FyvhpaFGkHCf69Gpi5zwlLkL6ObkI6zroTjM5Fr7IUsA7CidvoEJu53qi89/5mcYK3plGwEcX8aNlnFKLTFBX3UMaX9dcD7LjGs5db2gePTdia3YTVhswAlAi9tbAvgL0gMpPcNxo/ABZFKj8i6xXcvDusniDlx/CDfOyPHSzW/DQJAfXM7JhG2l1RKec9CZWTDRMVQBJH463EfW/RCuEPjEl1XHsgtEn2PvrW4nIBQZpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com; 
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IEmLAKoGOck/B2qWs94DgUNXN0XetiA7Mvy/QsLu9+I=;
- b=QZZemehQWWtdpsDpXqbSi9HzBObDJFPhGlvNuqyV7uFBlxAQyt1M/9Obtctlj6CQ2ncPlLHH6QmahcBKK7BJreCtj7t4k6P2R8sA1iI2Nka35cwzcfq+rl2khaa7+2FAvWeN7lkX8j++L69pJAMBkaItq5jOSgfeahywlnW84RE=
-Authentication-Results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=oss.nxp.com;
-Received: from VI1PR0401MB2272.eurprd04.prod.outlook.com
- (2603:10a6:800:31::12) by VI1PR04MB5198.eurprd04.prod.outlook.com
- (2603:10a6:803:56::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.23; Tue, 13 Oct
- 2020 12:17:45 +0000
-Received: from VI1PR0401MB2272.eurprd04.prod.outlook.com
- ([fe80::e00e:ad13:489b:8000]) by VI1PR0401MB2272.eurprd04.prod.outlook.com
- ([fe80::e00e:ad13:489b:8000%6]) with mapi id 15.20.3455.030; Tue, 13 Oct 2020
- 12:17:45 +0000
-From: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
-To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Timur Tabi <timur@kernel.org>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@gmail.com>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
- Viorel Suman <viorel.suman@nxp.com>,
- Cosmin-Gabriel Samoila <cosmin.samoila@nxp.com>,
- alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 2/2] ASoC: dt-bindings: fsl_xcvr: Add document for XCVR
-Date: Tue, 13 Oct 2020 15:17:33 +0300
-Message-Id: <20201013121733.83684-3-viorel.suman@oss.nxp.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201013121733.83684-1-viorel.suman@oss.nxp.com>
-References: <20201013121733.83684-1-viorel.suman@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [86.127.156.60]
-X-ClientProxiedBy: VI1PR0602CA0007.eurprd06.prod.outlook.com
- (2603:10a6:800:bc::17) To VI1PR0401MB2272.eurprd04.prod.outlook.com
- (2603:10a6:800:31::12)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C9bDJ5tdhzDqWW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Oct 2020 23:57:20 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09DCX3Im186717; Tue, 13 Oct 2020 08:57:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=HU3ez8iPPOQHeAieHip9pJ/o8bmHny7oOPGA3c1d3ag=;
+ b=KX+JTrgsdZVR1j3BreD3ETk6JADliWThQqUN7SssqQ04HmDkgop1dDL6284vOzRPP2Ud
+ JAT2taDxg1nVlW+oq9FR2+z2o+gDsASgBqcuB/5JEkTOXgHIHUseuOswiijfDxpe6MjB
+ ohi4CdSeptvkP5zlk2n11jSR+cwnTeQJrrOpjGFIvj7PjRhNL7NkiE9o8UFxMpE8bTNJ
+ ffs1xaOzoMA2imWfTSnY+1dtEiOkPGgb/x2PJ0HDt2ZodO8KBJk70qQbTjvJDGrls1YK
+ AGM5Q7c3M6ng4vUF0coeTsVUJ6ZraY4j2YhcOPnwwXgV6S6NNdzcCaonLZswIN1ZlgrB 3w== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 345c8ds151-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 13 Oct 2020 08:57:11 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09DClci7030932;
+ Tue, 13 Oct 2020 12:57:09 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma01fra.de.ibm.com with ESMTP id 344558ryh4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 13 Oct 2020 12:57:09 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 09DCv7Xp18284878
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 13 Oct 2020 12:57:07 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 29795A4057;
+ Tue, 13 Oct 2020 12:57:07 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 53BE4A4053;
+ Tue, 13 Oct 2020 12:57:06 +0000 (GMT)
+Received: from Madhavan.PrimaryTP (unknown [9.85.92.151])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 13 Oct 2020 12:57:06 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/perf: fix Threshold Event CounterMultiplier width
+ for P10
+To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
+References: <20201012103128.53243-1-maddy@linux.ibm.com>
+ <20201012112905.GQ29778@kitsune.suse.cz>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+Message-ID: <b840fcf3-6546-159e-e23a-c8fe00123539@linux.ibm.com>
+Date: Tue, 13 Oct 2020 18:27:05 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (86.127.156.60) by
- VI1PR0602CA0007.eurprd06.prod.outlook.com (2603:10a6:800:bc::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.20 via Frontend
- Transport; Tue, 13 Oct 2020 12:17:44 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: c44225f1-9238-4e1f-62f7-08d86f71fdde
-X-MS-TrafficTypeDiagnostic: VI1PR04MB5198:
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VI1PR04MB51988CEC080AA9FAFACA90F1D3040@VI1PR04MB5198.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1169;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: jkmiROD8iVPE0RiQxstSC5FWSBJolNi64xpz5AvmFzxpOyUOSKgFkix6mbvskYlpTxckNs92V1hD+fDVY3ys8S17AOOjWWy4ghwNxhxkvdyvwJN+DbFLQqyzEUQexQ/rY3lpFQaXRberfxaWDiLhPOPqD7TcijwSBVTzLevuaQDQKJv/6f7Nz8/WffkuyASxesuAeZwtmX7hCpx0PBC5q58m8qc+uaoD5QmXGe2tR27lbkk8V2KfEBAuqbRNdMvTbqLlvsGlCggaBfnqtpTah5ljYVKxunc/7PYqnfa+9z5ih55D1cozgNCdTHmyWYIBQC0YaqPOOK8G7kIc0puxbbL5w7164mNANk5dQj2B+df69zZzEqaRGP5GM2DTzU1F8Cy1O9oTD1Sza7BNE1fsyOC7E1zQ4x+l8gAeVhqDSmQeZl5ftjk46n1CtggwCsRXHtvydVWsDLSYUquf2WstTYnNmtlHoqb2utJT+Gk+o9A=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR0401MB2272.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(83080400001)(86362001)(186003)(8676002)(8936002)(5660300002)(66476007)(6506007)(7416002)(498600001)(66556008)(16526019)(66946007)(1076003)(69590400008)(956004)(2616005)(966005)(6512007)(6486002)(26005)(6666004)(52116002)(110136005)(2906002)(83380400001)(921003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData: gjPZWDTajjYEmIgC5dRH5gQA2Mie8mR2AfWROVU8p6T73WsXWXLBGKCdhb5+rWrBtNs4JGqOZn49B8q78fL2r7FZlGBcwfRHu02Tws22aujbJXdrGXs0yMe56XD5StCIUGJfT+5YTwJIK4Q9oQm/3fRD9fMAqQvzcYxaVoANJGg4pCNdLYRPC4vCgpbkWnzOcmu1sfsS8+3c7KhVtXLhL2LOBKijkiWgFaaRwAVQY/xLYPcwP+84bZ1pODRTF0RqMmebSPbo5PTYtH2fHYaskUjyJtoGrc+SDb3hG24ccC1VCQCts6skPssQeS28KkWPQ04KVtIamcb5WSYSJ//8cigOw1CEy0eSnrWbqA/uV7OSzZ4m/os16tlwD8DwoqDnoshOInaKIchr3giAvR48Za7I1oxP9TbFX8Y7KfgOQB9gw4URnLWZ4cW9azHJuDrMGJgTgGgFEfJESv2T0AphQ7mWeAbeKT8mBKH9H30GraNGAIyk/0PNul+HFLc5qSyodL7tIy0DqA9VWmKwJqgs7/gUAhVKCMyI18ECswChN3q65d5rPe0ovyuwu5E2g6dCdpS04PqayGpGHVIRu/LkHn3fLC19KyUf7Mip7pFvC2zZX/zRZepyMrTP6zlQxE0u89Y5bOcJMI/MoibR3jm2Iw==
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c44225f1-9238-4e1f-62f7-08d86f71fdde
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR0401MB2272.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2020 12:17:45.6581 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 78XvgaJOkLjBCWosoMpUPstSkEY9Zl/W68Td5tI0Z+PMqlO1L5TRthXfkWN7NV4OcM24TLlk+5JZijy5OmWHUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5198
+In-Reply-To: <20201012112905.GQ29778@kitsune.suse.cz>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-10-13_03:2020-10-13,
+ 2020-10-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ suspectscore=0 phishscore=0 impostorscore=0 clxscore=1011 spamscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 mlxscore=0 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010130096
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,130 +101,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Viorel Suman <viorel.suman@nxp.com>
 
-XCVR (Audio Transceiver) is a new IP module found on i.MX8MP.
+On 10/12/20 4:59 PM, Michal Suchánek wrote:
+> Hello,
+>
+> On Mon, Oct 12, 2020 at 04:01:28PM +0530, Madhavan Srinivasan wrote:
+>> Power9 and isa v3.1 has 7bit mantissa field for Threshold Event Counter
+>                    ^^^ Shouldn't his be 3.0?
 
-Signed-off-by: Viorel Suman <viorel.suman@nxp.com>
----
- .../devicetree/bindings/sound/fsl,xcvr.yaml   | 104 ++++++++++++++++++
- 1 file changed, 104 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+My bad, What I meant was
 
-diff --git a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
-new file mode 100644
-index 000000000000..223b8ea693dc
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
-@@ -0,0 +1,104 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/fsl,xcvr.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: NXP Audio Transceiver (XCVR) Controller
-+
-+maintainers:
-+  - Viorel Suman <viorel.suman@nxp.com>
-+
-+description: |
-+  NXP XCVR (Audio Transceiver) is a on-chip functional module
-+  that allows CPU to receive and transmit digital audio via
-+  HDMI2.1 eARC, HDMI1.4 ARC and SPDIF.
-+
-+properties:
-+  $nodename:
-+    pattern: "^xcvr@.*"
-+
-+  compatible:
-+    enum:
-+      - fsl,imx8mp-xcvr
-+
-+  reg:
-+    items:
-+      - description: 20K RAM for code and data
-+      - description: registers space
-+      - description: RX FIFO address
-+      - description: TX FIFO address
-+
-+  reg-names:
-+    items:
-+      - const: ram
-+      - const: regs
-+      - const: rxfifo
-+      - const: txfifo
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: Peripheral clock
-+      - description: PHY clock
-+      - description: SPBA clock
-+      - description: PLL clock
-+
-+  clock-names:
-+    items:
-+      - const: ipg
-+      - const: phy
-+      - const: spba
-+      - const: pll_ipg
-+
-+  dmas:
-+    items:
-+      - description: DMA controller phandle and request line for RX
-+      - description: DMA controller phandle and request line for TX
-+
-+  dma-names:
-+    items:
-+      - const: rx
-+      - const: tx
-+
-+  resets:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - reg-names
-+  - interrupts
-+  - clocks
-+  - clock-names
-+  - dmas
-+  - dma-names
-+  - resets
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/clock/imx8mp-clock.h>
-+    #include <dt-bindings/reset/imx8mp-reset.h>
-+
-+    xcvr: xcvr@30cc0000 {
-+           compatible = "fsl,imx8mp-xcvr";
-+           reg = <0x30cc0000 0x800>,
-+                 <0x30cc0800 0x400>,
-+                 <0x30cc0c00 0x080>,
-+                 <0x30cc0e00 0x080>;
-+           reg-names = "ram", "regs", "rxfifo", "txfifo";
-+           interrupts = <0x0 128 IRQ_TYPE_LEVEL_HIGH>;
-+           clocks = <&audiomix_clk IMX8MP_CLK_AUDIOMIX_EARC_IPG>,
-+                    <&audiomix_clk IMX8MP_CLK_AUDIOMIX_EARC_PHY>,
-+                    <&audiomix_clk IMX8MP_CLK_AUDIOMIX_SPBA2_ROOT>,
-+                    <&audiomix_clk IMX8MP_CLK_AUDIOMIX_AUDPLL_ROOT>;
-+           clock-names = "ipg", "phy", "spba", "pll_ipg";
-+           dmas = <&sdma2 30 2 0>, <&sdma2 31 2 0>;
-+           dma-names = "rx", "tx";
-+           resets = <&audiomix_reset 0>;
-+    };
--- 
-2.26.2
+Power9, ISA v3.0 and ISA v3.1 define a 7 bit mantissa field for 
+Threshold Event Counter Multiplier(TECM).
 
+Maddy
+
+>
+>> Multiplier (TECM). TECM is part of Monitor Mode Control Register A (MMCRA).
+>> This field along with Threshold Event Counter Exponent (TECE) is used to
+>> get threshould counter value. In Power10, the width of TECM field is
+>> increase to 8bits. Patch fixes the current code to modify the MMCRA[TECM]
+>> extraction macro to handling this changes.
+>>
+>> Fixes: 170a315f41c64 ('powerpc/perf: Support to export MMCRA[TEC*] field to userspace')
+>> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> ---
+>>   arch/powerpc/perf/isa207-common.c | 3 +++
+>>   arch/powerpc/perf/isa207-common.h | 4 ++++
+>>   2 files changed, 7 insertions(+)
+>>
+>> diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
+>> index 964437adec18..5fe129f02290 100644
+>> --- a/arch/powerpc/perf/isa207-common.c
+>> +++ b/arch/powerpc/perf/isa207-common.c
+>> @@ -247,6 +247,9 @@ void isa207_get_mem_weight(u64 *weight)
+>>   	u64 sier = mfspr(SPRN_SIER);
+>>   	u64 val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
+>>   
+>> +	if (cpu_has_feature(CPU_FTR_ARCH_31))
+>> +		mantissa = P10_MMCRA_THR_CTR_MANT(mmcra);
+>> +
+>>   	if (val == 0 || val == 7)
+>>   		*weight = 0;
+>>   	else
+>> diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
+>> index 044de65e96b9..71380e854f48 100644
+>> --- a/arch/powerpc/perf/isa207-common.h
+>> +++ b/arch/powerpc/perf/isa207-common.h
+>> @@ -219,6 +219,10 @@
+>>   #define MMCRA_THR_CTR_EXP(v)		(((v) >> MMCRA_THR_CTR_EXP_SHIFT) &\
+>>   						MMCRA_THR_CTR_EXP_MASK)
+>>   
+>> +#define P10_MMCRA_THR_CTR_MANT_MASK	0xFFul
+>> +#define P10_MMCRA_THR_CTR_MANT(v)	(((v) >> MMCRA_THR_CTR_MANT_SHIFT) &\
+>> +						P10_MMCRA_THR_CTR_MANT_MASK)
+>> +
+>>   /* MMCRA Threshold Compare bit constant for power9 */
+>>   #define p9_MMCRA_THR_CMP_SHIFT	45
+>>   
+>> -- 
+>> 2.26.2
+>>
