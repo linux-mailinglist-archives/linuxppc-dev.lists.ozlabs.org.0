@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3DFC28E86B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 23:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC6D28E86E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 23:34:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CBQcc5QmyzDrQg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 08:32:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBQfY18fzzDrGG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 08:34:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,29 +15,30 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sergey.semin@baikalelectronics.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=baikalelectronics.ru
-Received: from mail.baikalelectronics.ru (ns2.baikalchip.com [94.125.187.42])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CBK9J2mCTzDqnV
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 04:27:15 +1100 (AEDT)
+Received: from mail.baikalelectronics.ru (mx.baikalelectronics.ru
+ [94.125.187.42])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CBKNl0z3dzDqnV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 04:37:10 +1100 (AEDT)
 Received: from localhost (unknown [127.0.0.1])
- by mail.baikalelectronics.ru (Postfix) with ESMTP id 68971803017E;
- Wed, 14 Oct 2020 17:27:13 +0000 (UTC)
+ by mail.baikalelectronics.ru (Postfix) with ESMTP id 0B34B803073E;
+ Wed, 14 Oct 2020 17:37:09 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
  by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id PkbvMsci3JDb; Wed, 14 Oct 2020 20:27:12 +0300 (MSK)
-Date: Wed, 14 Oct 2020 20:27:10 +0300
+ with ESMTP id qiTZazrqpn09; Wed, 14 Oct 2020 20:37:08 +0300 (MSK)
+Date: Wed, 14 Oct 2020 20:37:06 +0300
 From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 04/20] dt-bindings: usb: usb-hcd: Add "tpl-support"
- property
-Message-ID: <20201014172710.iay3lvb37saeksaj@mobilestation>
+Subject: Re: [PATCH 09/20] dt-bindings: usb: Convert DWC USB3 bindings to DT
+ schema
+Message-ID: <20201014173706.jojxkhdicyg62hlo@mobilestation>
 References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
- <20201014101402.18271-5-Sergey.Semin@baikalelectronics.ru>
- <20201014132756.GA1538723@bogus>
+ <20201014101402.18271-10-Sergey.Semin@baikalelectronics.ru>
+ <20201014133219.GA1545403@bogus>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20201014132756.GA1538723@bogus>
+In-Reply-To: <20201014133219.GA1545403@bogus>
 X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
 X-Mailman-Approved-At: Thu, 15 Oct 2020 07:49:50 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -51,70 +52,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Neil Armstrong <narmstrong@baylibre.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
+Cc: Neil Armstrong <narmstrong@baylibre.com>, linux-mips@vger.kernel.org,
  Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
  Kevin Hilman <khilman@baylibre.com>, Andy Gross <agross@kernel.org>,
  linux-snps-arc@lists.infradead.org, devicetree@vger.kernel.org,
  Mathias Nyman <mathias.nyman@intel.com>,
  Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
  Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
- Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org,
- Roger Quadros <rogerq@ti.com>, Felipe Balbi <balbi@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>, Bjorn Andersson <bjorn.andersson@linaro.org>,
+ linux-arm-kernel@lists.infradead.org, Roger Quadros <rogerq@ti.com>,
+ Felipe Balbi <balbi@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
- Serge Semin <fancer.lancer@gmail.com>, linux-kernel@vger.kernel.org,
- Manu Gautam <mgautam@codeaurora.org>, linuxppc-dev@lists.ozlabs.org
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Serge Semin <fancer.lancer@gmail.com>, Manu Gautam <mgautam@codeaurora.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 14, 2020 at 08:27:56AM -0500, Rob Herring wrote:
-> On Wed, 14 Oct 2020 13:13:46 +0300, Serge Semin wrote:
-> > The host controller device might be designed to work for the particular
-> > products or applications. In that case its DT node is supposed to be
-> > equipped with the tpl-support property.
+On Wed, Oct 14, 2020 at 08:32:19AM -0500, Rob Herring wrote:
+> On Wed, 14 Oct 2020 13:13:51 +0300, Serge Semin wrote:
+> > DWC USB3 DT node is supposed to be compliant with the Generic xHCI
+> > Controller schema, but with additional vendor-specific properties, the
+> > controller-specific reference clocks and PHYs. So let's convert the
+> > currently available legacy text-based DWC USB3 bindings to the DT schema
+> > and make sure the DWC USB3 nodes are also validated against the
+> > usb-xhci.yaml schema.
+> > 
+> > Note we have to discard the nodename restriction of being prefixed with
+> > "dwc3@" string, since in accordance with the usb-hcd.yaml schema USB nodes
+> > are supposed to be named as "^usb(@.*)".
 > > 
 > > Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 > > 
 > > ---
 > > 
 > > Changelog v2:
-> > - Grammar fix: "s/it'/its"
-> > - Discard '|' from the property description, since we don't need to preserve
-> >   the text formatting.
+> > - Discard '|' from the descriptions, since we don't need to preserve
+> >   the text formatting in any of them.
+> > - Drop quotes from around the string constants.
+> > - Fix the "clock-names" prop description to be referring the enumerated
+> >   clock-names instead of the ones from the Databook.
 > > ---
-> >  Documentation/devicetree/bindings/usb/usb-hcd.yaml | 6 ++++++
-> >  1 file changed, 6 insertions(+)
+> >  .../devicetree/bindings/usb/dwc3.txt          | 125 --------
+> >  .../devicetree/bindings/usb/snps,dwc3.yaml    | 295 ++++++++++++++++++
+> >  2 files changed, 295 insertions(+), 125 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/usb/dwc3.txt
+> >  create mode 100644 Documentation/devicetree/bindings/usb/snps,dwc3.yaml
 > > 
 > 
 > 
+
 > My bot found errors running 'make dt_binding_check' on your patch:
 > 
-> Traceback (most recent call last):
->   File "/usr/local/bin/dt-extract-example", line 45, in <module>
->     binding = yaml.load(open(args.yamlfile, encoding='utf-8').read())
->   File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/main.py", line 343, in load
->     return constructor.get_single_data()
->   File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/constructor.py", line 111, in get_single_data
->     node = self.composer.get_single_node()
->   File "_ruamel_yaml.pyx", line 706, in _ruamel_yaml.CParser.get_single_node
->   File "_ruamel_yaml.pyx", line 724, in _ruamel_yaml.CParser._compose_document
->   File "_ruamel_yaml.pyx", line 775, in _ruamel_yaml.CParser._compose_node
->   File "_ruamel_yaml.pyx", line 891, in _ruamel_yaml.CParser._compose_mapping_node
->   File "_ruamel_yaml.pyx", line 904, in _ruamel_yaml.CParser._parse_next_event
-> ruamel.yaml.scanner.ScannerError: mapping values are not allowed in this context
->   in "<unicode string>", line 27, column 14
-> make[1]: *** [Documentation/devicetree/bindings/Makefile:20: Documentation/devicetree/bindings/usb/usb-hcd.example.dts] Error 1
-> make[1]: *** Deleting file 'Documentation/devicetree/bindings/usb/usb-hcd.example.dts'
-> make[1]: *** Waiting for unfinished jobs....
-> ./Documentation/devicetree/bindings/usb/usb-hcd.yaml:27:14: [error] syntax error: mapping values are not allowed here (syntax)
-> make[1]: *** [Documentation/devicetree/bindings/Makefile:59: Documentation/devicetree/bindings/processed-schema-examples.json] Error 123
-> make: *** [Makefile:1366: dt_binding_check] Error 2
+> ./Documentation/devicetree/bindings/usb/snps,dwc3.yaml:44:4: [warning] wrong indentation: expected 4 but found 3 (indentation)
+> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/usb/qcom,dwc3.example.dt.yaml: dwc3@a600000: $nodename:0: 'dwc3@a600000' does not match '^usb(@.*)?'
+> 	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
+> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/usb/amlogic,meson-g12a-usb-ctrl.example.dt.yaml: usb@ff500000: snps,quirk-frame-length-adjustment: True is not of type 'array'
+> 	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
 > 
 > 
-> See https://patchwork.ozlabs.org/patch/1382001
+> See https://patchwork.ozlabs.org/patch/1382003
 > 
 > If you already ran 'make dt_binding_check' and didn't see the above
 > error(s), then make sure dt-schema is up to date:
@@ -122,18 +121,14 @@ On Wed, Oct 14, 2020 at 08:27:56AM -0500, Rob Herring wrote:
 > pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
 > 
 > Please check and re-submit.
+> 
 
-Hm, that's weird. Of course I did the dt_binding_check before submission, but
-even after the dt-schema repo update I failed to see the error:
+Both of these errors are fixed in the following patches of the series:
+[PATCH 17/20] dt-bindings: usb: qcom,dwc3: Validate DWC3 sub-node
+[PATCH 15/20] dt-bindings: usb: meson-g12a-usb: Fix FL-adj property value
 
-$ make -j8 ARCH=mips CROSS_COMPILE=mipsel-baikal-linux- dt_binding_check DT_SCHEMA_FILES=Documentation/devicetree/bindings/usb/usb-hcd.yaml
-  CHKDT   Documentation/devicetree/bindings/usb/usb-hcd.yaml
-  SCHEMA  Documentation/devicetree/bindings/processed-schema-examples.yaml
-  DTC     Documentation/devicetree/bindings/usb/usb-hcd.example.dt.yaml
-  CHECK   Documentation/devicetree/bindings/usb/usb-hcd.example.dt.yaml
-
-Rob, any idea why has the bot got mad at me?
+This patch preserves the original legacy bindings and doesn't touch the
+depended bogus DT schemas.
 
 -Sergey
 
-> 
