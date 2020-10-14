@@ -2,95 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE99828DA5E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 09:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D3328DA95
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 09:39:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CB3d16tLQzDqZC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 18:16:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CB46r1vd4zDqZ2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 18:39:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=zte.com.cn (client-ip=202.103.147.172; helo=mxct.zte.com.cn;
+ envelope-from=wang.yi59@zte.com.cn; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=nabLuPxE; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=zte.com.cn
+X-Greylist: delayed 926 seconds by postgrey-1.36 at bilbo;
+ Wed, 14 Oct 2020 18:37:38 AEDT
+Received: from mxct.zte.com.cn (out1.zte.com.cn [202.103.147.172])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CB3b50MT8zDqTC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 18:15:12 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09E72rt5179730; Wed, 14 Oct 2020 03:14:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=ueJPysgPbJcMoEPaJmeRWSlqh1gk/6rZ0K7WlG/tuz0=;
- b=nabLuPxEDNen5WpyVBfoA8ZsGe68imxgLNSQzoXHPV+34BnpoUTXbBOs0uYbzIys5zlM
- mRcllTveHoTGeG290FhRLyNVdWn1Qdk8GgPv+dKKE3ublrkSMsJEJ8pStjFVkY2YrDJ9
- BXgww8ktjJ2JHArPszEJgZbFdl1D9mKn9eY9ve7W76T64Rmo9w/D5Zchs+XjnOV4xyRe
- 9e3XUef+QWXcaZslOly3JHYPoc6wWOuKJ/vL3cCwX7+58GYDmzteNRTUJiYgUGuGi/1r
- NJZaP2Qtlemf9LhYbpCAEsaPu6pKjkkDLLveBes2TMfJifURI4Oqp++erAt13op4jAaN NA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 345uvc1r3s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Oct 2020 03:14:43 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09E73iBe183167;
- Wed, 14 Oct 2020 03:14:42 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 345uvc1r2q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Oct 2020 03:14:42 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09E77EnZ013286;
- Wed, 14 Oct 2020 07:14:41 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06ams.nl.ibm.com with ESMTP id 34347guvhc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Oct 2020 07:14:40 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 09E7Ecb129819256
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Oct 2020 07:14:39 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D63DC42042;
- Wed, 14 Oct 2020 07:14:38 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F0A9142041;
- Wed, 14 Oct 2020 07:14:37 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.85.68.106])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Wed, 14 Oct 2020 07:14:37 +0000 (GMT)
-Date: Wed, 14 Oct 2020 12:44:35 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/opal_elog: Handle multiple writes to ack attribute
-Message-ID: <20201014071435.dylsc72ucfsckhqe@in.ibm.com>
-References: <20201014064813.109515-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CB44y1BydzDqXr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 18:37:36 +1100 (AEDT)
+Received: from mse-fl2.zte.com.cn (unknown [10.30.14.239])
+ by Forcepoint Email with ESMTPS id 317529D58780FE449193;
+ Wed, 14 Oct 2020 15:21:55 +0800 (CST)
+Received: from kjyxapp05.zte.com.cn ([10.30.12.204])
+ by mse-fl2.zte.com.cn with SMTP id 09E7LrQ3056847;
+ Wed, 14 Oct 2020 15:21:53 +0800 (GMT-8)
+ (envelope-from wang.yi59@zte.com.cn)
+Received: from fox-host8.localdomain (unknown [10.234.72.110])
+ by smtp (Zmail) with SMTP; Wed, 14 Oct 2020 15:21:53 +0800
+X-Zmail-TransId: 3e885f86a710005-b53e2
+From: Yi Wang <wang.yi59@zte.com.cn>
+To: Roy.Pledge@nxp.com
+Subject: [PATCH] soc: fsl: dpio: Change 'cpumask_t mask' to global variable
+Date: Wed, 14 Oct 2020 15:27:33 +0800
+Message-Id: <20201014072733.15175-1-wang.yi59@zte.com.cn>
+X-Mailer: X-Zmail-Txt
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201014064813.109515-1-aneesh.kumar@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-14_03:2020-10-14,
- 2020-10-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=998 spamscore=0
- clxscore=1011 adultscore=0 mlxscore=0 suspectscore=1 priorityscore=1501
- lowpriorityscore=0 impostorscore=0 phishscore=0 malwarescore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010140048
+Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed;
+	boundary="=====_001_next====="
+X-MAIL: mse-fl2.zte.com.cn 09E7LrQ3056847
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,54 +53,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: mahesh@linux.ibm.com
-Cc: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: wang.yi59@zte.com.cn, jiang.xuexin@zte.com.cn, Hao Si <si.hao@zte.com.cn>,
+ linux-kernel@vger.kernel.org, leoyang.li@nxp.com, xue.zhihong@zte.com.cn,
+ Lin Chen <chen.lin5@zte.com.cn>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-10-14 12:18:13 Wed, Aneesh Kumar K.V wrote:
-> Even though we use self removing sysfs helper, we still need
-> to make sure we do the final kobject delete conditionally.
-> sysfs_remove_file_self() will handle parallel calls to remove
-> the sysfs attribute file and returns true only in the caller
-> that removed the attribute file. The other parallel callers
-> are returned false. Do the final kobject delete checking
-> the return value of sysfs_remove_file_self().
-> 
-> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Cc: Oliver O'Halloran <oohall@gmail.com>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/powernv/opal-elog.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/opal-elog.c b/arch/powerpc/platforms/powernv/opal-elog.c
-> index 5e33b1fc67c2..37b380eef41a 100644
-> --- a/arch/powerpc/platforms/powernv/opal-elog.c
-> +++ b/arch/powerpc/platforms/powernv/opal-elog.c
-> @@ -72,9 +72,14 @@ static ssize_t elog_ack_store(struct elog_obj *elog_obj,
->  			      const char *buf,
->  			      size_t count)
->  {
-> -	opal_send_ack_elog(elog_obj->id);
-> -	sysfs_remove_file_self(&elog_obj->kobj, &attr->attr);
-> -	kobject_put(&elog_obj->kobj);
-> +	/*
-> +	 * Try to self remove this attribute. If we are successful,
-> +	 * delete the kobject itself.
-> +	 */
-> +	if (sysfs_remove_file_self(&elog_obj->kobj, &attr->attr)) {
-> +		opal_send_ack_elog(elog_obj->id);
-> +		kobject_put(&elog_obj->kobj);
-> +	}
->  	return count;
->  }
 
-Looks good.
 
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+--=====_001_next=====
+Content-Type: multipart/alternative;
+	boundary="=====_003_next====="
 
-Thanks,
--Mahesh.
+
+--=====_003_next=====
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+RnJvbTogSGFvIFNpIDxzaS5oYW9AenRlLmNvbS5jbj4NCg0KVGhlIGxvY2FsIHZhcmlhYmxlICdj
+cHVtYXNrX3QgbWFzaycgaXMgaW4gdGhlIHN0YWNrIG1lbW9yeSwgYW5kIGl0cyBhZGRyZXNzDQpp
+cyBhc3NpZ25lZCB0byAnZGVzYy0+YWZmaW5pdHknIGluICdpcnFfc2V0X2FmZmluaXR5X2hpbnQo
+KScuDQpCdXQgdGhlIG1lbW9yeSBhcmVhIHdoZXJlIHRoaXMgdmFyaWFibGUgaXMgbG9jYXRlZCBp
+cyBhdCByaXNrIG9mIGJlaW5nDQptb2RpZmllZC4NCg0KRHVyaW5nIExUUCB0ZXN0aW5nLCB0aGUg
+Zm9sbG93aW5nIGVycm9yIHdhcyBnZW5lcmF0ZWQ6DQoNClVuYWJsZSB0byBoYW5kbGUga2VybmVs
+IHBhZ2luZyByZXF1ZXN0IGF0IHZpcnR1YWwgYWRkcmVzcyBmZmZmMDAwMDEyZTliNzkwDQpNZW0g
+YWJvcnQgaW5mbzoNCiAgRVNSID0gMHg5NjAwMDAwNw0KICBFeGNlcHRpb24gY2xhc3MgPSBEQUJU
+IChjdXJyZW50IEVMKSwgSUwgPSAzMiBiaXRzDQogIFNFVCA9IDAsIEZuViA9IDANCiAgRUEgPSAw
+LCBTMVBUVyA9IDANCkRhdGEgYWJvcnQgaW5mbzoNCiAgSVNWID0gMCwgSVNTID0gMHgwMDAwMDAw
+Nw0KICBDTSA9IDAsIFduUiA9IDANCnN3YXBwZXIgcGd0YWJsZTogNGsgcGFnZXMsIDQ4LWJpdCBW
+QXMsIHBnZHAgPSAwMDAwMDAwMDc1YWM1ZTA3DQpbZmZmZjAwMDAxMmU5Yjc5MF0gcGdkPTAwMDAw
+MDI3ZGJmZmUwMDMsIHB1ZD0wMDAwMDAyN2RiZmZkMDAzLA0KcG1kPTAwMDAwMDI3YjZkNjEwMDMs
+IHB0ZT0wMDAwMDAwMDAwMDAwMDAwDQpJbnRlcm5hbCBlcnJvcjogT29wczogOTYwMDAwMDcgWyMx
+XSBQUkVFTVBUIFNNUA0KTW9kdWxlcyBsaW5rZWQgaW46IHh0X2Nvbm50cmFjaw0KUHJvY2VzcyBy
+ZWFkX2FsbCAocGlkOiAyMDE3MSwgc3RhY2sgbGltaXQgPSAweDAwMDAwMDAwNDRlYTQwOTUpDQpD
+UFU6IDE0IFBJRDogMjAxNzEgQ29tbTogcmVhZF9hbGwgVGFpbnRlZDogRyAgICBCICAgVw0KSGFy
+ZHdhcmUgbmFtZTogTlhQIExheWVyc2NhcGUgTFgyMTYwQVJEQiAoRFQpDQpwc3RhdGU6IDgwMDAw
+MDg1IChOemN2IGRhSWYgLVBBTiAtVUFPKQ0KcGMgOiBpcnFfYWZmaW5pdHlfaGludF9wcm9jX3No
+b3crMHg1NC8weGIwDQpsciA6IGlycV9hZmZpbml0eV9oaW50X3Byb2Nfc2hvdysweDRjLzB4YjAN
+CnNwIDogZmZmZjAwMDAxMTM4YmMxMA0KeDI5OiBmZmZmMDAwMDExMzhiYzEwIHgyODogMDAwMGZm
+ZmZkMTMxZDFlMA0KeDI3OiAwMDAwMDAwMDAwNzAwMGMwIHgyNjogZmZmZjgwMjViOTQ4MGRjMA0K
+eDI1OiBmZmZmODAyNWI5NDgwZGE4IHgyNDogMDAwMDAwMDAwMDAwMDNmZg0KeDIzOiBmZmZmODAy
+NzMzNGY4MzAwIHgyMjogZmZmZjgwMjcyZTk3ZDAwMA0KeDIxOiBmZmZmODAyNzJlOTdkMGIwIHgy
+MDogZmZmZjgwMjViOTQ4MGQ4MA0KeDE5OiBmZmZmMDAwMDA5YTQ5MDAwIHgxODogMDAwMDAwMDAw
+MDAwMDAwMA0KeDE3OiAwMDAwMDAwMDAwMDAwMDAwIHgxNjogMDAwMDAwMDAwMDAwMDAwMA0KeDE1
+OiAwMDAwMDAwMDAwMDAwMDAwIHgxNDogMDAwMDAwMDAwMDAwMDAwMA0KeDEzOiAwMDAwMDAwMDAw
+MDAwMDAwIHgxMjogMDAwMDAwMDAwMDAwMDA0MA0KeDExOiAwMDAwMDAwMDAwMDAwMDAwIHgxMDog
+ZmZmZjgwMjczNWI3OWI4OA0KeDkgOiAwMDAwMDAwMDAwMDAwMDAwIHg4IDogMDAwMDAwMDAwMDAw
+MDAwMA0KeDcgOiBmZmZmMDAwMDA5YTQ5ODQ4IHg2IDogMDAwMDAwMDAwMDAwMDAwMw0KeDUgOiAw
+MDAwMDAwMDAwMDAwMDAwIHg0IDogZmZmZjAwMDAwODE1N2Q2Yw0KeDMgOiBmZmZmMDAwMDExMzhi
+YzEwIHgyIDogZmZmZjAwMDAxMmU5Yjc5MA0KeDEgOiAwMDAwMDAwMDAwMDAwMDAwIHgwIDogMDAw
+MDAwMDAwMDAwMDAwMA0KQ2FsbCB0cmFjZToNCiBpcnFfYWZmaW5pdHlfaGludF9wcm9jX3Nob3cr
+MHg1NC8weGIwDQogc2VxX3JlYWQrMHgxYjAvMHg0NDANCiBwcm9jX3JlZ19yZWFkKzB4ODAvMHhk
+OA0KIF9fdmZzX3JlYWQrMHg2MC8weDE3OA0KIHZmc19yZWFkKzB4OTQvMHgxNTANCiBrc3lzX3Jl
+YWQrMHg3NC8weGYwDQogX19hcm02NF9zeXNfcmVhZCsweDI0LzB4MzANCiBlbDBfc3ZjX2NvbW1v
+bi5jb25zdHByb3AuMCsweGQ4LzB4MWEwDQogZWwwX3N2Y19oYW5kbGVyKzB4MzQvMHg4OA0KIGVs
+MF9zdmMrMHgxMC8weDE0DQpDb2RlOiBmOTAwMWJiZiA5NDNlMDczMiBmOTQwNjZjMiBiNDAwMDA2
+MiAoZjk0MDAwNDEpDQotLS1bIGVuZCB0cmFjZSBiNDk1YmRjYjBiM2I3MzJiIF0tLS0NCktlcm5l
+bCBwYW5pYyAtIG5vdCBzeW5jaW5nOiBGYXRhbCBleGNlcHRpb24NClNNUDogc3RvcHBpbmcgc2Vj
+b25kYXJ5IENQVXMNClNNUDogZmFpbGVkIHRvIHN0b3Agc2Vjb25kYXJ5IENQVXMgMCwyLTQsNiw4
+LDExLDEzLTE1DQpLZXJuZWwgT2Zmc2V0OiBkaXNhYmxlZA0KQ1BVIGZlYXR1cmVzOiAweDAsMjEw
+MDYwMDgNCk1lbW9yeSBMaW1pdDogbm9uZQ0KLS0tWyBlbmQgS2VybmVsIHBhbmljIC0gbm90IHN5
+bmNpbmc6IEZhdGFsIGV4Y2VwdGlvbiBdLS0tDQoNCkZpeCBpdCBieSBjaGFuZ2luZyAnY3B1bWFz
+a190IG1hc2snIHRvIGdsb2JhbCB2YXJpYWJsZS4NCg0KU2lnbmVkLW9mZi1ieTogSGFvIFNpIDxz
+aS5oYW9AenRlLmNvbS5jbj4NClNpZ25lZC1vZmYtYnk6IExpbiBDaGVuIDxjaGVuLmxpbjVAenRl
+LmNvbS5jbj4NClNpZ25lZC1vZmYtYnk6IFlpIFdhbmcgPHdhbmcueWk1OUB6dGUuY29tLmNuPg0K
+LS0tDQogZHJpdmVycy9zb2MvZnNsL2RwaW8vZHBpby1kcml2ZXIuYyB8IDIgKy0NCiAxIGZpbGUg
+Y2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCg0KZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvc29jL2ZzbC9kcGlvL2RwaW8tZHJpdmVyLmMgYi9kcml2ZXJzL3NvYy9mc2wvZHBpby9k
+cGlvLWRyaXZlci5jDQppbmRleCA3YjY0MmMzLi5iMzFlYzUzIDEwMDY0NA0KLS0tIGEvZHJpdmVy
+cy9zb2MvZnNsL2RwaW8vZHBpby1kcml2ZXIuYw0KKysrIGIvZHJpdmVycy9zb2MvZnNsL2RwaW8v
+ZHBpby1kcml2ZXIuYw0KQEAgLTMxLDYgKzMxLDcgQEAgc3RydWN0IGRwaW9fcHJpdiB7DQogCXN0
+cnVjdCBkcGFhMl9pbyAqaW87DQogfTsNCiANCitzdGF0aWMgY3B1bWFza190IG1hc2s7DQogc3Rh
+dGljIGNwdW1hc2tfdmFyX3QgY3B1c191bnVzZWRfbWFzazsNCiANCiBzdGF0aWMgY29uc3Qgc3Ry
+dWN0IHNvY19kZXZpY2VfYXR0cmlidXRlIGxzMTA4OGFfc29jW10gPSB7DQpAQCAtOTUsNyArOTYs
+NiBAQCBzdGF0aWMgaW50IHJlZ2lzdGVyX2RwaW9faXJxX2hhbmRsZXJzKHN0cnVjdCBmc2xfbWNf
+ZGV2aWNlICpkcGlvX2RldiwgaW50IGNwdSkNCiB7DQogCWludCBlcnJvcjsNCiAJc3RydWN0IGZz
+bF9tY19kZXZpY2VfaXJxICppcnE7DQotCWNwdW1hc2tfdCBtYXNrOw0KIA0KIAlpcnEgPSBkcGlv
+X2Rldi0+aXJxc1swXTsNCiAJZXJyb3IgPSBkZXZtX3JlcXVlc3RfaXJxKCZkcGlvX2Rldi0+ZGV2
+LA0KLS0gDQoyLjE1LjI=
+
+
+--=====_003_next=====--
+
+--=====_001_next=====--
 
