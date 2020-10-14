@@ -1,72 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A73528E8C3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 00:32:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D9C28E915
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 01:03:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CBRxf5krGzDqWL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 09:32:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBSck69Z8zDqPM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 10:03:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::242;
- helo=mail-lj1-x242.google.com; envelope-from=jannh@google.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d33;
+ helo=mail-io1-xd33.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=AoTo3+pY; dkim-atps=neutral
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
- [IPv6:2a00:1450:4864:20::242])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=TCnK8mL9; dkim-atps=neutral
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com
+ [IPv6:2607:f8b0:4864:20::d33])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CBRtx2z3QzDqVD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 09:30:15 +1100 (AEDT)
-Received: by mail-lj1-x242.google.com with SMTP id d24so1061389ljg.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 15:30:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CBSZV19lJzDqHS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 10:01:04 +1100 (AEDT)
+Received: by mail-io1-xd33.google.com with SMTP id r4so1778445ioh.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 16:01:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=jjl4waKkIn07fAHZxpQYfL1cJey++l2ULCvo+NpmtTI=;
- b=AoTo3+pYyDr0w6VWhfEzWtgMAa6u5EqUtIbZQ2wdSG8KrCn9aVrqk/7yhPB35QnD2m
- JalK+SeaQ3hXLo+S8bYDoNpWfnWxpQB/o00c26w91a14/A6mI5fG/jqus5sDeNFJLDuf
- BsNxJpUzCDXQHeObfZmnVJDuNlP1hv7yxDec4f6BOhh0CaTaty/5CVDrrONvhaHafpy3
- WWTj3p+df5fee81/4WgRdKVsueCgR7C+1tyNM57ZEFJuZcNf1kD37XwCnPAbjSh/vXPz
- 6/Tp/AIlfr9HFwxC0w941Ocrco7hY/ksvJfhYETS8inE9HqwSVgikBfXguqBqfsPqKay
- 3D5g==
+ :cc; bh=ikC4LAwwb2/OL3dDYceqRFTwnIoFZSQn/I33psN0qjs=;
+ b=TCnK8mL9NI6hpr3zEveS0JTuNaHtXCx/qfHBGzgIQgrYKIyFfbL469h0Y911PX4qYA
+ HA3PFnu9h7bUViHMzKVqrdtDhIfan/01bAJrm+iH8HVsCMbrGoUBCi+EwDuHU09Bq9xD
+ 0zniDvdoMkczvwrfTymICG2b2JPXMk43+A7TFV6EwFWXjhcXv0Zr0g7isA+HBzM1ygDz
+ HielqMai2yM1V5M7vYrESoEcbxMQbPPGpBkxbresU1sEHhWVlG/vNZSnpIukEp2FJExo
+ 3VAds5Vc5Pir8QMG6owXKfyujHcVGoAHhUjdCq3iSTks6Ul93abkR08dX/ws2fLr75Qd
+ P1CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=jjl4waKkIn07fAHZxpQYfL1cJey++l2ULCvo+NpmtTI=;
- b=ufzcb5N4YcK3owh4wdnrmJoaBeUrZVZl/FCms05yirNocQqaLtvkZsR/+2EloP2URe
- kXGiffesGMT7Fzax+GMv/O8dM6eqr12iaZxb6sQalCbzq5JHI8ccEmfq+Aur930ZWEE4
- +JSTl/Xc5EzY0H/lGs7MV1Y7yEvz5q0V+I48AtOELHLVRgVWK8mjHFxdisDdVsFNilZq
- LS1KoH8fQgJ6eJZzDoaBP8SF1JbGQA1T9dLAcfFZTOOuwr+QE/PwxEp3Kz870SSGecrg
- BvEfDYNYHtidHRxgvS1iBQpaOnCGDToA4aiNlwKL8Pd8JXqcgFGHpnbdgEey+t03RNFm
- urZw==
-X-Gm-Message-State: AOAM533FPI4IlTVII2u1w/9/TWt9/YONI+J+x6TGz8peM7oHxgJOu1o2
- T1TqKIpUvQ8QqY00esjFxd3l+fLkxTOLy5CViANUyg==
-X-Google-Smtp-Source: ABdhPJzccfdlAK+SRaf7zIcMIaXsyDc7g+LulQbCIaLDti9pJSokw7/xfAWa5vfRRrUMlssMAS3ed5P4pPE1EvYM4fA=
-X-Received: by 2002:a2e:9f13:: with SMTP id u19mr119925ljk.160.1602714609293; 
- Wed, 14 Oct 2020 15:30:09 -0700 (PDT)
+ bh=ikC4LAwwb2/OL3dDYceqRFTwnIoFZSQn/I33psN0qjs=;
+ b=t6Ojw1O4zW1qYDbLYiBZ6LUsvEaw3j75CyBMc9BRRWz92jiRgxWCRKK55GrIboC6Ec
+ Zzw8o2zgxVQDuwu22vdDD4YscGYcQKesEWRBIGPJFIsH8k5+paEJHSGcize0HPWbAjWN
+ WtOuZZT6I3n49qThOlq735Gmfjv3uUBV8oKa9/84BiTK9Ok3i9+RlSCXgcRlPGtEki1z
+ kqK4d6CVrcF2lm2iiRi8ssU7RbaMjCdvBqCUAajThhUyjaKxugNl0mThVZj0bZZVNS8S
+ OotAmj/xNVpOtsqyY4zePiMgZZsgzTMXnGeUFtEBqEJATRcEVFpS5ax4PODS7RAL94QZ
+ jpgQ==
+X-Gm-Message-State: AOAM533CtseRujgTtUM9Q3wAZKmrd7Go7u+JIjSQ6VIfpWmhn7a9pBVA
+ 0H7V2L7bulrgqJRyMIAnF6odrqor9tfZawu4hwE=
+X-Google-Smtp-Source: ABdhPJzGna7kT8ytBKEMRmafA605hdoj/96Adf60Do8VLRmdj9ntw6bzrJXYjfcdcZHwC8be0AHpI8yUwC0EME90ntk=
+X-Received: by 2002:a5d:80cc:: with SMTP id h12mr1218936ior.73.1602716460855; 
+ Wed, 14 Oct 2020 16:01:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201007073932.865218-1-jannh@google.com>
- <d5332a7b-c300-6d28-18b9-4b7d4110ef86@oracle.com>
- <20201010110949.GA32545@gaia>
- <af207cf8-3049-85eb-349d-5fed6b9be49c@oracle.com>
- <20201012172218.GE6493@gaia> <20c85633-b559-c299-3e57-ae136b201526@oracle.com>
- <20201013091638.GA10778@gaia>
- <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
-In-Reply-To: <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
-From: Jann Horn <jannh@google.com>
-Date: Thu, 15 Oct 2020 00:29:42 +0200
-Message-ID: <CAG48ez0hoNb+DsMtzanGMXWdU63GwSvpzFCx5CkQa3Xxxo+Abg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
- and with length
-To: Khalid Aziz <khalid.aziz@oracle.com>
+References: <20201014182811.12027-1-cai@lca.pw>
+In-Reply-To: <20201014182811.12027-1-cai@lca.pw>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Thu, 15 Oct 2020 10:00:49 +1100
+Message-ID: <CAOSf1CFT_Y67Q8caH2uFOYtwpRgFozh30ZWWZzzR-x18LBsG8g@mail.gmail.com>
+Subject: Re: [PATCH -next] Revert "powerpc/pci: unmap legacy INTx interrupts
+ when a PHB is removed"
+To: Qian Cai <cai@lca.pw>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,24 +73,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev@lists.ozlabs.org,
- kernel list <linux-kernel@vger.kernel.org>,
- Christoph Hellwig <hch@infradead.org>, Linux-MM <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Anthony Yznaga <anthony.yznaga@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux-Next Mailing List <linux-next@vger.kernel.org>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 14, 2020 at 11:24 PM Khalid Aziz <khalid.aziz@oracle.com> wrote:
-[...]
-> current code? What FreeBSD does seems like a reasonable thing to do. Any
-> way first thing to do is to update sparc to use arch_validate_flags()
-> and update sparc_validate_prot() to not peek into vma without lock. I
-> can do that unless Jann wants to rework this 2 patch series with these
-> changes.
+On Thu, Oct 15, 2020 at 5:28 AM Qian Cai <cai@lca.pw> wrote:
+>
+> This reverts commit 3a3181e16fbde752007759f8759d25e0ff1fc425 which
+> causes memory corruptions on POWER9 NV.
 
-Ah, if you're willing to take care of that, that'd be nice, please do. :)
+I was going to post this along with a fix for Cedric's original bug,
+but I can do that separately so:
+
+Acked-by: Oliver O'Halloran <oohall@gmail.com>
