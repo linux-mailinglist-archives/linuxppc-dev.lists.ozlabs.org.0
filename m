@@ -1,88 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2BA28DEC7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 12:18:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E96E28DEFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 12:35:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CB7fT1Hv8zDqWx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 21:18:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CB8245q5gzDqTn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 21:35:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=krzk@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=sfwo52CP; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=P18xeYxT; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CB7cn6cpzzDqYM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 21:16:57 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09EA2KED127165; Wed, 14 Oct 2020 06:16:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=b7knItebmpDrZGI+BOnxc1QOzQhGDQnMQiEWSg89u3A=;
- b=sfwo52CPwNuhPd+03rdJ66mZxpyD5EFTJILWCQQapl0J5cVBdimoNVuLCMwVQ13THpJU
- Ew8uCaw7xFWTYmy8AoLIMZ/96GJbELobT4WjUYrD3i7XHgIrUDLkO5LZQQzcm1+J+zur
- iVKei9PU8GWQxqqAdGZx4dd171alwIWAT5T9NZkqEuHSLYZ0vuAnb/+WfX6oKR9x/IBd
- AeHITacPFqAjfZ1g2Mdm5Kvdxy5M+zizFWV+21ahU1Vn1I4EAQL3WgVHHQowaqNPuD/6
- sbn2ycTJZof6+cLKpMRRceynnPRwaFoYLstgviknQ/RZNIZ4fnUNP2UIpFNCLuU5JRCC 3A== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 345y2sh1s0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Oct 2020 06:16:49 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09EADFnS021075;
- Wed, 14 Oct 2020 10:16:47 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06fra.de.ibm.com with ESMTP id 34347h22rf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Oct 2020 10:16:47 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 09EAGiZG32702962
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Oct 2020 10:16:44 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AFA8CA4054;
- Wed, 14 Oct 2020 10:16:44 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C117CA405B;
- Wed, 14 Oct 2020 10:16:43 +0000 (GMT)
-Received: from Madhavan.com (unknown [9.85.85.77])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 14 Oct 2020 10:16:43 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc/perf: Fix Threshold Event Counter Multiplier width
- for P10
-Date: Wed, 14 Oct 2020 15:46:31 +0530
-Message-Id: <20201014101631.292445-1-maddy@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CB8076PJxzDqM3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 21:33:43 +1100 (AEDT)
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com
+ [209.85.167.49])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id DD30A2224F
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 10:33:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1602671620;
+ bh=YTNSXcW0k5VpGDP+ALIpIyuW3iLRTmD54rqCQ1oyiyA=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=P18xeYxTPqMpemlQKPvTd5nwNgVotG/C9hUhYFrwNcoqdW1OKmWITForEr9NE9YGe
+ ztHjLq5Vkt9oWxZS/7llHQJxy+88QHQLNoNMaqGwd903m9QfEQI/1Y/AaHfdx1T5ec
+ WHD/ATMq1RBPTU/qjQVRFitg7PDDX2RqEDzRUdxU=
+Received: by mail-lf1-f49.google.com with SMTP id 77so3139752lfl.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 03:33:39 -0700 (PDT)
+X-Gm-Message-State: AOAM5300wyQCbBkgWgBoLAVpyDI/Id8dx2IZ9zIJiaekfm3dkE8oUh4O
+ RN1Fib/hrc8qx/40UBiHZfPyYebMzQVE9KUUvEU=
+X-Google-Smtp-Source: ABdhPJxZBjfPkS/DAl69mvwOwG4fxUYT0dQEW6rrgGKRXDR2yPgf5o4BRFNdNiVveb84vPHaKXSGoZA2E31iHMoZKKE=
+X-Received: by 2002:a17:906:1a11:: with SMTP id
+ i17mr4430823ejf.381.1602671617348; 
+ Wed, 14 Oct 2020 03:33:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-14_06:2020-10-14,
- 2020-10-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
- score=100 mlxscore=0
- phishscore=0 suspectscore=0 bulkscore=0 mlxlogscore=603 adultscore=0
- malwarescore=0 spamscore=0 impostorscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2010140069
+References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
+ <20201014101402.18271-21-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20201014101402.18271-21-Sergey.Semin@baikalelectronics.ru>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Date: Wed, 14 Oct 2020 12:33:25 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPeErocR5-3xCDqBR3-k3w_2EQ_768d71n229cbzeo4TtQ@mail.gmail.com>
+Message-ID: <CAJKOXPeErocR5-3xCDqBR3-k3w_2EQ_768d71n229cbzeo4TtQ@mail.gmail.com>
+Subject: Re: [PATCH 20/20] arch: dts: Fix DWC USB3 DT nodes name
+To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,72 +65,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, linux-usb@vger.kernel.org,
+ Neil Armstrong <narmstrong@baylibre.com>, Tony Lindgren <tony@atomide.com>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+ "linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
+ Kevin Hilman <khilman@baylibre.com>,
+ Gregory Clement <gregory.clement@bootlin.com>, Wei Xu <xuwei5@hisilicon.com>,
+ Chen-Yu Tsai <wens@csie.org>, Kukjin Kim <kgene@kernel.org>,
+ Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ devicetree@vger.kernel.org, Jason Cooper <jason@lakedaemon.net>,
+ Mathias Nyman <mathias.nyman@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+ Rob Herring <robh+dt@kernel.org>, Santosh Shilimkar <ssantosh@kernel.org>,
+ linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Roger Quadros <rogerq@ti.com>, Felipe Balbi <balbi@kernel.org>,
+ linux-mips@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ linuxppc-dev@lists.ozlabs.org, Patrice Chotard <patrice.chotard@st.com>,
+ Serge Semin <fancer.lancer@gmail.com>, Li Yang <leoyang.li@nxp.com>,
+ Manu Gautam <mgautam@codeaurora.org>,
+ =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+ Shawn Guo <shawnguo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Threshold Event Counter Multiplier (TECM) is part of Monitor Mode
-Control Register A (MMCRA). This field along with Threshold Event
-Counter Exponent (TECE) is used to get threshould counter value.
-ISA v3.1 has 7bit mantissa field for TECM, but in Power10, the
-width of TECM field is increase to 8bits. Patch fixes the current
-code to modify the MMCRA[TECM] extraction macro to handle this changes.
+On Wed, 14 Oct 2020 at 12:23, Serge Semin
+<Sergey.Semin@baikalelectronics.ru> wrote:
+>
+> In accordance with the DWC USB3 bindings the corresponding node name is
+> suppose to comply with Generic USB HCD DT schema, which requires the USB
+> nodes to have the name acceptable by the regexp: "^usb(@.*)?" . But a lot
+> of the DWC USB3-compatible nodes defined in the ARM/ARM64 DTS files have
+> name as "^dwc3@.*" or "^usb[1-3]@.*" or even "^dwusb@.*", which will cause
+> the dtbs_check procedure failure. Let's fix the nodes naming to be
+> compatible with the DWC USB3 DT schema to make dtbs_check happy.
+>
+> Note we don't change the DWC USB3-compatible nodes names of
+> arch/arm64/boot/dts/apm/{apm-storm.dtsi,apm-shadowcat.dtsi} since the
+> in-source comment says that the nodes name need to be preserved as
+> "^dwusb@.*" for some backward compatibility.
+>
+> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+>
+> ---
+>
+> Please, test the patch out to make sure it doesn't brake the dependent DTS
+> files. I did only a manual grepping of the possible nodes dependencies.
 
-Fixes: 170a315f41c64 ('powerpc/perf: Support to export MMCRA[TEC*] field to userspace')
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
-Changelog v1:
-- Fixed the commit message
-- Fixed the condition check
+1. It is you who should compare the decompiled DTS, not us. For example:
+$ for i in dts-old/*/*dtb dts-old/*/*/*dtb; do echo $i; crosc64
+scripts/dtc/dtx_diff ${i} dts-new/${i#dts-old/} ; done
 
- arch/powerpc/include/asm/reg.h    | 1 +
- arch/powerpc/perf/isa207-common.c | 3 +++
- arch/powerpc/perf/isa207-common.h | 4 ++++
- 3 files changed, 8 insertions(+)
+$ for i in dts-old/*/*dtb dts-old/*/*/*dtb; do echo $i; crosc64
+fdtdump ${i} > ${i}.fdt ; crosc64 fdtdump dts-new/${i#dts-old/} >
+dts-new/${i#dts-old/}.fdt ; diff -ubB ${i}.fdt
+dts-new/${i#dts-old/}.fdt ; done
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 88fb88491fe9..a1bb0ebb3a46 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -1355,6 +1355,7 @@
- #define PVR_POWER9	0x004E
- #define PVR_BE		0x0070
- #define PVR_PA6T	0x0090
-+#define PVR_POWER10	0x0080
- 
- /* "Logical" PVR values defined in PAPR, representing architecture levels */
- #define PVR_ARCH_204	0x0f000001
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 964437adec18..480bbe525904 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -247,6 +247,9 @@ void isa207_get_mem_weight(u64 *weight)
- 	u64 sier = mfspr(SPRN_SIER);
- 	u64 val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
- 
-+	if (pvr_version_is(PVR_POWER10))
-+		mantissa = P10_MMCRA_THR_CTR_MANT(mmcra);
-+
- 	if (val == 0 || val == 7)
- 		*weight = 0;
- 	else
-diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
-index 044de65e96b9..71380e854f48 100644
---- a/arch/powerpc/perf/isa207-common.h
-+++ b/arch/powerpc/perf/isa207-common.h
-@@ -219,6 +219,10 @@
- #define MMCRA_THR_CTR_EXP(v)		(((v) >> MMCRA_THR_CTR_EXP_SHIFT) &\
- 						MMCRA_THR_CTR_EXP_MASK)
- 
-+#define P10_MMCRA_THR_CTR_MANT_MASK	0xFFul
-+#define P10_MMCRA_THR_CTR_MANT(v)	(((v) >> MMCRA_THR_CTR_MANT_SHIFT) &\
-+						P10_MMCRA_THR_CTR_MANT_MASK)
-+
- /* MMCRA Threshold Compare bit constant for power9 */
- #define p9_MMCRA_THR_CMP_SHIFT	45
- 
--- 
-2.26.2
+2. Split it per arm architectures (and proper subject prefix - not
+"arch") and subarchitectures so maintainers can pick it up.
 
+3. The subject title could be more accurate - there is no fix here
+because there was no errors in the first place. Requirement of DWC
+node names comes recently, so it is more alignment with dtschema.
+Otherwise automatic-pickup-stable-bot might want to pick up... and it
+should not go to stable.
+
+Best regards,
+Krzysztof
+
+>  arch/arm/boot/dts/armada-375.dtsi              | 2 +-
+>  arch/arm/boot/dts/exynos5250.dtsi              | 2 +-
+>  arch/arm/boot/dts/exynos54xx.dtsi              | 4 ++--
+>  arch/arm/boot/dts/keystone-k2e.dtsi            | 4 ++--
+>  arch/arm/boot/dts/keystone.dtsi                | 2 +-
+>  arch/arm/boot/dts/ls1021a.dtsi                 | 2 +-
+>  arch/arm/boot/dts/omap5-l4.dtsi                | 2 +-
+>  arch/arm/boot/dts/stih407-family.dtsi          | 2 +-
+>  arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi   | 2 +-
+>  arch/arm64/boot/dts/exynos/exynos5433.dtsi     | 4 ++--
+>  arch/arm64/boot/dts/exynos/exynos7.dtsi        | 2 +-
+>  arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi | 4 ++--
+>  arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi | 6 +++---
+>  arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi | 4 ++--
+>  arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi | 4 ++--
+>  arch/arm64/boot/dts/hisilicon/hi3660.dtsi      | 2 +-
+>  arch/arm64/boot/dts/qcom/apq8096-db820c.dtsi   | 4 ++--
+>  arch/arm64/boot/dts/qcom/ipq8074.dtsi          | 4 ++--
+>  arch/arm64/boot/dts/qcom/msm8996.dtsi          | 4 ++--
+>  arch/arm64/boot/dts/qcom/msm8998.dtsi          | 2 +-
+>  arch/arm64/boot/dts/qcom/qcs404-evb.dtsi       | 2 +-
+>  arch/arm64/boot/dts/qcom/qcs404.dtsi           | 4 ++--
+>  arch/arm64/boot/dts/qcom/sc7180.dtsi           | 2 +-
+>  arch/arm64/boot/dts/qcom/sdm845.dtsi           | 4 ++--
+>  arch/arm64/boot/dts/qcom/sm8150.dtsi           | 2 +-
+>  25 files changed, 38 insertions(+), 38 deletions(-)
+>
