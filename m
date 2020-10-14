@@ -2,68 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B2F28DA76
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 09:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD5028DA7F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 09:32:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CB3wQ5gwHzDqb5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 18:30:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CB3yN57z5zDqt3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 18:31:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=BTFivi4U; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=mKwZMTi6; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CB3tq3YCzzDqXv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 18:28:49 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id d6so1284872plo.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 00:28:49 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CB3ts1ddCzDqXv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 18:28:52 +1100 (AEDT)
+Received: by mail-pl1-x644.google.com with SMTP id b19so1324654pld.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 00:28:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=QgW2cpLym9Tc4Y7+2M30sSgz7DG9JnxPN18mAIZWfYk=;
- b=BTFivi4UT+XARp+orhp/nMiofOWNmmdN5ZdmUsXRnojjEoRsZ7ge/WdgoObwA2uhtX
- lWSidsjswLHJJyaui/G9WV6p3z/x+0frtLnp+owv7kG22/mhVtBUnG+FBmbvDkhpQ8oZ
- cK9/Abjf1Frx+LX5iU2+oHrsTy4n5Ls9TaMc0nBYFK65rdchz8P/1i5BYliwgXQREvlj
- mFE1PuvlB0Bwq9kNEnLs2PnleWRm8Nuq6NtA2o+zVXiMzEp+wtsaeSLQbtvFKCJp8wDj
- o6q4fyE1lvJlH+rcCVtwHYtDrOniKJ5rwirPDThC7+kShT16tl3ruATQh1KIVtHRy9iC
- LvoA==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references;
+ bh=JtKjZjjDsCr8CXYDJ6FZv4ZR3zbsD3bKFLU901cIlRE=;
+ b=mKwZMTi6l8NW2OqV0et6NEiCU30xsN72H0y9y5VA8X2rPC4w+5WtULFSAXpuGNu5Py
+ cZFZEHTwdZzO9ZoZE4d2szNwi5nsgjGlxrNtcuPK484x7HfKCOsSzgxXcMfAHxRkzwTI
+ U1N9iFHPj3YzObJUn+LZh4YoT4xod3hPgckDek2eFir1QY9Xqg7bynqqwgEUItXI29jP
+ Bh+kFLV0nP1MG2KvwwbtPdzZfPCDK3f51TbmTNIOt4jeQIu8K2kByYedjwsFf/JBT/Ll
+ 1NkEXxm2l3ZE4aqF7sqUa0fMszEvLytJoyS1F8TIL4pSemjrUM0g2JLsHq7fb56QVZJB
+ cP3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=QgW2cpLym9Tc4Y7+2M30sSgz7DG9JnxPN18mAIZWfYk=;
- b=sVj/E0FHD0DU8uITHzhJ2hF9BD8mboUJVh//87W51k/ksR/M6OfD2UOt0IyGhvJIxS
- vBX+ENnVkzk31SE1Nl3Dvg7n6EgHv31zfiOiehXbw3dlHX+H7LSbHGf9WhZoSo8bCS4H
- X6smgVFmjFjLIWG7sB+TV+v7KadV7Z+/Uolst2A2yMMDhe4t8XFdCeeWRk79GK5is8+O
- 4Z3f5I1PUPK+gdhfJ+N1ExylUvJZLeTksRj4TU78CqTQ22bjkzbEaGt+a0yqf9/NcpkK
- 1KT8qB54iU1rHPxEVXtTXTRBF+cKCZzSTF6nkCH+mWWBLw68/G6wY63oMSER5ZPdMZB4
- e6xg==
-X-Gm-Message-State: AOAM53155Mw0rijM99mc1jqKVIbX2TpUkhxaQM3fZHb1zIorL17/4Xac
- suvUbkqKXyLElQJmsYNcrHDizxQWZ/f5mw==
-X-Google-Smtp-Source: ABdhPJySqUXkPx8kUBajPAjI1AhCIEKSoAhGQBTpRcanyLKWhokFr07RgY+NpeR85/05Z8bYJMY9TQ==
-X-Received: by 2002:a17:90a:7c03:: with SMTP id
- v3mr2191402pjf.233.1602660526262; 
- Wed, 14 Oct 2020 00:28:46 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references;
+ bh=JtKjZjjDsCr8CXYDJ6FZv4ZR3zbsD3bKFLU901cIlRE=;
+ b=Wx8p+szD0xLoiD6KbcdlC1q+ob6mYCbGuvfIUdMKORYHuGhaMkx947a9ihiCrR0z8S
+ fcLXmxSW3gmQHaXJoZsOvOUehy9zxnZ7qWYgvdyloOoT0e1+Vhajy4FXaI8vx3T7Ne8Z
+ 4ugcN86Tpt1KirQ9XwfsAxfPUdGfiljCSpZzEl7ti3e+pMxrYLA/A/XPACjZOUaJ4eLn
+ 97cMBmN8r2L6LC1CFFkppxTjKMNZsajOv5Zs1HRxxWnoEWpEfJq1ckAMc2B75iLvvSus
+ 8+zD+VzQEpjFI69FE/ptTijVueRrvR0ESp1KfC0JwJV90mJ8DcDdR99j8Rl2UbQcaWPz
+ q3bA==
+X-Gm-Message-State: AOAM530O4/Ae1D6skGs5nqplP+n+4DoPsqsL056So1gha2QwXs2lqjie
+ nOCrHH4sfZYsmcicOCoxzY3eb/ceF2gY/A==
+X-Google-Smtp-Source: ABdhPJwEDYH2J59bR/FoQk0Px06MbQRdyecKoFteFC0ubP1Umux0707SxQomqhmEtYUiRQwNbcDyog==
+X-Received: by 2002:a17:90a:7d09:: with SMTP id
+ g9mr2142916pjl.63.1602660529766; 
+ Wed, 14 Oct 2020 00:28:49 -0700 (PDT)
 Received: from tee480.ibm.com (180-150-65-4.b49641.syd.nbn.aussiebb.net.
  [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id 198sm2082740pfx.26.2020.10.14.00.28.42
+ by smtp.gmail.com with ESMTPSA id 198sm2082740pfx.26.2020.10.14.00.28.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Oct 2020 00:28:45 -0700 (PDT)
+ Wed, 14 Oct 2020 00:28:49 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 1/2] powerpc/64: Set up a kernel stack for secondaries
- before cpu_restore()
-Date: Wed, 14 Oct 2020 18:28:36 +1100
-Message-Id: <20201014072837.24539-1-jniethe5@gmail.com>
+Subject: [PATCH v4 2/2] powerpc/64s: Convert some cpu_setup() and
+ cpu_restore() functions to C
+Date: Wed, 14 Oct 2020 18:28:37 +1100
+Message-Id: <20201014072837.24539-2-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20201014072837.24539-1-jniethe5@gmail.com>
+References: <20201014072837.24539-1-jniethe5@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,99 +83,606 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently in generic_secondary_smp_init(), cur_cpu_spec->cpu_restore()
-is called before a stack has been set up in r1. This was previously fine
-as the cpu_restore() functions were implemented in assembly and did not
-use a stack. However commit 5a61ef74f269 ("powerpc/64s: Support new
-device tree binding for discovering CPU features") used
-__restore_cpu_cpufeatures() as the cpu_restore() function for a
-device-tree features based cputable entry. This is a C function and
-hence uses a stack in r1.
+The only thing keeping the cpu_setup() and cpu_restore() functions used
+in the cputable entries for Power7, Power8, Power9 and Power10 in
+assembly was cpu_restore() being called before there was a stack in
+generic_secondary_smp_init(). Commit ("powerpc/64: Set up a kernel stack
+for secondaries before cpu_restore()") means that it is now possible to
+use C.
 
-generic_secondary_smp_init() is entered on the secondary cpus via the
-primary cpu using the OPAL call opal_start_cpu(). In OPAL, each hardware
-thread has its own stack. The OPAL call is ran in the primary's hardware
-thread. During the call, a job is scheduled on a secondary cpu that will
-start executing at the address of generic_secondary_smp_init().  Hence
-the value that will be left in r1 when the secondary cpu enters the
-kernel is part of that secondary cpu's individual OPAL stack. This means
-that __restore_cpu_cpufeatures() will write to that OPAL stack. This is
-not horribly bad as each hardware thread has its own stack and the call
-that enters the kernel from OPAL never returns, but it is still wrong
-and should be corrected.
+Rewrite the functions in C so they are a little bit easier to read. This
+is not changing their functionality.
 
-Create the temp kernel stack before calling cpu_restore().
-
-As noted by mpe, for a kexec boot, the secondary CPUs are released from
-the spin loop at address 0x60 by smp_release_cpus() and then jump to
-generic_secondary_smp_init(). The call to smp_release_cpus() is in
-setup_arch(), and it comes before the call to emergency_stack_init().
-emergency_stack_init() allocates an emergency stack in the PACA for each
-CPU.  This address in the PACA is what is used to set up the temp kernel
-stack in generic_secondary_smp_init(). Move releasing the secondary CPUs
-to after the PACAs have been allocated an emergency stack, otherwise the
-PACA stack pointer will contain garbage and hence the temp kernel stack
-created from it will be broken.
-
-Fixes: 5a61ef74f269 ("powerpc/64s: Support new device tree binding for discovering CPU features")
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v2: Add more detail to the commit message
-v3: Release secondary CPUs after the emergency stack is created
-v4: No need to guard smp_release_cpus() with #ifdef CONFIG_SMP
----
- arch/powerpc/kernel/head_64.S      | 8 ++++----
- arch/powerpc/kernel/setup-common.c | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/powerpc/include/asm/cpu_setup_power.h |  12 +
+ arch/powerpc/kernel/cpu_setup_power.S      | 252 -------------------
+ arch/powerpc/kernel/cpu_setup_power.c      | 269 +++++++++++++++++++++
+ arch/powerpc/kernel/cputable.c             |  12 +-
+ 4 files changed, 285 insertions(+), 260 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/cpu_setup_power.h
+ delete mode 100644 arch/powerpc/kernel/cpu_setup_power.S
+ create mode 100644 arch/powerpc/kernel/cpu_setup_power.c
 
-diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
-index 0e05a9a47a4b..4b7f4c6c2600 100644
---- a/arch/powerpc/kernel/head_64.S
-+++ b/arch/powerpc/kernel/head_64.S
-@@ -420,6 +420,10 @@ generic_secondary_common_init:
- 	/* From now on, r24 is expected to be logical cpuid */
- 	mr	r24,r5
- 
-+	/* Create a temp kernel stack for use before relocation is on.	*/
-+	ld	r1,PACAEMERGSP(r13)
-+	subi	r1,r1,STACK_FRAME_OVERHEAD
-+
- 	/* See if we need to call a cpu state restore handler */
- 	LOAD_REG_ADDR(r23, cur_cpu_spec)
- 	ld	r23,0(r23)
-@@ -448,10 +452,6 @@ generic_secondary_common_init:
- 	sync				/* order paca.run and cur_cpu_spec */
- 	isync				/* In case code patching happened */
- 
--	/* Create a temp kernel stack for use before relocation is on.	*/
--	ld	r1,PACAEMERGSP(r13)
--	subi	r1,r1,STACK_FRAME_OVERHEAD
+diff --git a/arch/powerpc/include/asm/cpu_setup_power.h b/arch/powerpc/include/asm/cpu_setup_power.h
+new file mode 100644
+index 000000000000..24be9131f803
+--- /dev/null
++++ b/arch/powerpc/include/asm/cpu_setup_power.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Copyright (C) 2020 IBM Corporation
++ */
++void __setup_cpu_power7(unsigned long offset, struct cpu_spec *spec);
++void __restore_cpu_power7(void);
++void __setup_cpu_power8(unsigned long offset, struct cpu_spec *spec);
++void __restore_cpu_power8(void);
++void __setup_cpu_power9(unsigned long offset, struct cpu_spec *spec);
++void __restore_cpu_power9(void);
++void __setup_cpu_power10(unsigned long offset, struct cpu_spec *spec);
++void __restore_cpu_power10(void);
+diff --git a/arch/powerpc/kernel/cpu_setup_power.S b/arch/powerpc/kernel/cpu_setup_power.S
+deleted file mode 100644
+index 704e8b9501ee..000000000000
+--- a/arch/powerpc/kernel/cpu_setup_power.S
++++ /dev/null
+@@ -1,252 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/*
+- * This file contains low level CPU setup functions.
+- *    Copyright (C) 2003 Benjamin Herrenschmidt (benh@kernel.crashing.org)
+- */
 -
- 	b	__secondary_start
- #endif /* SMP */
- 
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 808ec9fab605..da8c71f321ad 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -919,8 +919,6 @@ void __init setup_arch(char **cmdline_p)
- 
- 	/* On BookE, setup per-core TLB data structures. */
- 	setup_tlb_core_data();
+-#include <asm/processor.h>
+-#include <asm/page.h>
+-#include <asm/cputable.h>
+-#include <asm/ppc_asm.h>
+-#include <asm/asm-offsets.h>
+-#include <asm/cache.h>
+-#include <asm/book3s/64/mmu-hash.h>
 -
--	smp_release_cpus();
- #endif
- 
- 	/* Print various info about the machine that has been gathered so far. */
-@@ -944,6 +942,8 @@ void __init setup_arch(char **cmdline_p)
- 	exc_lvl_early_init();
- 	emergency_stack_init();
- 
-+	smp_release_cpus();
+-/* Entry: r3 = crap, r4 = ptr to cputable entry
+- *
+- * Note that we can be called twice for pseudo-PVRs
+- */
+-_GLOBAL(__setup_cpu_power7)
+-	mflr	r11
+-	bl	__init_hvmode_206
+-	mtlr	r11
+-	beqlr
+-	li	r0,0
+-	mtspr	SPRN_LPID,r0
+-	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+-	mtspr	SPRN_PCR,r0
+-	mfspr	r3,SPRN_LPCR
+-	li	r4,(LPCR_LPES1 >> LPCR_LPES_SH)
+-	bl	__init_LPCR_ISA206
+-	mtlr	r11
+-	blr
+-
+-_GLOBAL(__restore_cpu_power7)
+-	mflr	r11
+-	mfmsr	r3
+-	rldicl.	r0,r3,4,63
+-	beqlr
+-	li	r0,0
+-	mtspr	SPRN_LPID,r0
+-	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+-	mtspr	SPRN_PCR,r0
+-	mfspr	r3,SPRN_LPCR
+-	li	r4,(LPCR_LPES1 >> LPCR_LPES_SH)
+-	bl	__init_LPCR_ISA206
+-	mtlr	r11
+-	blr
+-
+-_GLOBAL(__setup_cpu_power8)
+-	mflr	r11
+-	bl	__init_FSCR
+-	bl	__init_PMU
+-	bl	__init_PMU_ISA207
+-	bl	__init_hvmode_206
+-	mtlr	r11
+-	beqlr
+-	li	r0,0
+-	mtspr	SPRN_LPID,r0
+-	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+-	mtspr	SPRN_PCR,r0
+-	mfspr	r3,SPRN_LPCR
+-	ori	r3, r3, LPCR_PECEDH
+-	li	r4,0 /* LPES = 0 */
+-	bl	__init_LPCR_ISA206
+-	bl	__init_HFSCR
+-	bl	__init_PMU_HV
+-	bl	__init_PMU_HV_ISA207
+-	mtlr	r11
+-	blr
+-
+-_GLOBAL(__restore_cpu_power8)
+-	mflr	r11
+-	bl	__init_FSCR
+-	bl	__init_PMU
+-	bl	__init_PMU_ISA207
+-	mfmsr	r3
+-	rldicl.	r0,r3,4,63
+-	mtlr	r11
+-	beqlr
+-	li	r0,0
+-	mtspr	SPRN_LPID,r0
+-	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+-	mtspr	SPRN_PCR,r0
+-	mfspr   r3,SPRN_LPCR
+-	ori	r3, r3, LPCR_PECEDH
+-	li	r4,0 /* LPES = 0 */
+-	bl	__init_LPCR_ISA206
+-	bl	__init_HFSCR
+-	bl	__init_PMU_HV
+-	bl	__init_PMU_HV_ISA207
+-	mtlr	r11
+-	blr
+-
+-_GLOBAL(__setup_cpu_power10)
+-	mflr	r11
+-	bl	__init_FSCR_power10
+-	bl	__init_PMU
+-	bl	__init_PMU_ISA31
+-	b	1f
+-
+-_GLOBAL(__setup_cpu_power9)
+-	mflr	r11
+-	bl	__init_FSCR_power9
+-	bl	__init_PMU
+-1:	bl	__init_hvmode_206
+-	mtlr	r11
+-	beqlr
+-	li	r0,0
+-	mtspr	SPRN_PSSCR,r0
+-	mtspr	SPRN_LPID,r0
+-	mtspr	SPRN_PID,r0
+-	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+-	mtspr	SPRN_PCR,r0
+-	mfspr	r3,SPRN_LPCR
+-	LOAD_REG_IMMEDIATE(r4, LPCR_PECEDH | LPCR_PECE_HVEE | LPCR_HVICE  | LPCR_HEIC)
+-	or	r3, r3, r4
+-	LOAD_REG_IMMEDIATE(r4, LPCR_UPRT | LPCR_HR)
+-	andc	r3, r3, r4
+-	li	r4,0 /* LPES = 0 */
+-	bl	__init_LPCR_ISA300
+-	bl	__init_HFSCR
+-	bl	__init_PMU_HV
+-	mtlr	r11
+-	blr
+-
+-_GLOBAL(__restore_cpu_power10)
+-	mflr	r11
+-	bl	__init_FSCR_power10
+-	bl	__init_PMU
+-	bl	__init_PMU_ISA31
+-	b	1f
+-
+-_GLOBAL(__restore_cpu_power9)
+-	mflr	r11
+-	bl	__init_FSCR_power9
+-	bl	__init_PMU
+-1:	mfmsr	r3
+-	rldicl.	r0,r3,4,63
+-	mtlr	r11
+-	beqlr
+-	li	r0,0
+-	mtspr	SPRN_PSSCR,r0
+-	mtspr	SPRN_LPID,r0
+-	mtspr	SPRN_PID,r0
+-	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
+-	mtspr	SPRN_PCR,r0
+-	mfspr   r3,SPRN_LPCR
+-	LOAD_REG_IMMEDIATE(r4, LPCR_PECEDH | LPCR_PECE_HVEE | LPCR_HVICE | LPCR_HEIC)
+-	or	r3, r3, r4
+-	LOAD_REG_IMMEDIATE(r4, LPCR_UPRT | LPCR_HR)
+-	andc	r3, r3, r4
+-	li	r4,0 /* LPES = 0 */
+-	bl	__init_LPCR_ISA300
+-	bl	__init_HFSCR
+-	bl	__init_PMU_HV
+-	mtlr	r11
+-	blr
+-
+-__init_hvmode_206:
+-	/* Disable CPU_FTR_HVMODE and exit if MSR:HV is not set */
+-	mfmsr	r3
+-	rldicl.	r0,r3,4,63
+-	bnelr
+-	ld	r5,CPU_SPEC_FEATURES(r4)
+-	LOAD_REG_IMMEDIATE(r6,CPU_FTR_HVMODE | CPU_FTR_P9_TM_HV_ASSIST)
+-	andc	r5,r5,r6
+-	std	r5,CPU_SPEC_FEATURES(r4)
+-	blr
+-
+-__init_LPCR_ISA206:
+-	/* Setup a sane LPCR:
+-	 *   Called with initial LPCR in R3 and desired LPES 2-bit value in R4
+-	 *
+-	 *   LPES = 0b01 (HSRR0/1 used for 0x500)
+-	 *   PECE = 0b111
+-	 *   DPFD = 4
+-	 *   HDICE = 0
+-	 *   VC = 0b100 (VPM0=1, VPM1=0, ISL=0)
+-	 *   VRMASD = 0b10000 (L=1, LP=00)
+-	 *
+-	 * Other bits untouched for now
+-	 */
+-	li	r5,0x10
+-	rldimi	r3,r5, LPCR_VRMASD_SH, 64-LPCR_VRMASD_SH-5
+-
+-	/* POWER9 has no VRMASD */
+-__init_LPCR_ISA300:
+-	rldimi	r3,r4, LPCR_LPES_SH, 64-LPCR_LPES_SH-2
+-	ori	r3,r3,(LPCR_PECE0|LPCR_PECE1|LPCR_PECE2)
+-	li	r5,4
+-	rldimi	r3,r5, LPCR_DPFD_SH, 64-LPCR_DPFD_SH-3
+-	clrrdi	r3,r3,1		/* clear HDICE */
+-	li	r5,4
+-	rldimi	r3,r5, LPCR_VC_SH, 0
+-	mtspr	SPRN_LPCR,r3
+-	isync
+-	blr
+-
+-__init_FSCR_power10:
+-	mfspr	r3, SPRN_FSCR
+-	ori	r3, r3, FSCR_PREFIX
+-	mtspr	SPRN_FSCR, r3
+-	// fall through
+-
+-__init_FSCR_power9:
+-	mfspr	r3, SPRN_FSCR
+-	ori	r3, r3, FSCR_SCV
+-	mtspr	SPRN_FSCR, r3
+-	// fall through
+-
+-__init_FSCR:
+-	mfspr	r3,SPRN_FSCR
+-	ori	r3,r3,FSCR_TAR|FSCR_EBB
+-	mtspr	SPRN_FSCR,r3
+-	blr
+-
+-__init_HFSCR:
+-	mfspr	r3,SPRN_HFSCR
+-	ori	r3,r3,HFSCR_TAR|HFSCR_TM|HFSCR_BHRB|HFSCR_PM|\
+-		      HFSCR_DSCR|HFSCR_VECVSX|HFSCR_FP|HFSCR_EBB|HFSCR_MSGP
+-	mtspr	SPRN_HFSCR,r3
+-	blr
+-
+-__init_PMU_HV:
+-	li	r5,0
+-	mtspr	SPRN_MMCRC,r5
+-	blr
+-
+-__init_PMU_HV_ISA207:
+-	li	r5,0
+-	mtspr	SPRN_MMCRH,r5
+-	blr
+-
+-__init_PMU:
+-	li	r5,0
+-	mtspr	SPRN_MMCRA,r5
+-	mtspr	SPRN_MMCR0,r5
+-	mtspr	SPRN_MMCR1,r5
+-	mtspr	SPRN_MMCR2,r5
+-	blr
+-
+-__init_PMU_ISA207:
+-	li	r5,0
+-	mtspr	SPRN_MMCRS,r5
+-	blr
+-
+-__init_PMU_ISA31:
+-	li	r5,0
+-	mtspr	SPRN_MMCR3,r5
+-	LOAD_REG_IMMEDIATE(r5, MMCRA_BHRB_DISABLE)
+-	mtspr	SPRN_MMCRA,r5
+-	blr
+diff --git a/arch/powerpc/kernel/cpu_setup_power.c b/arch/powerpc/kernel/cpu_setup_power.c
+new file mode 100644
+index 000000000000..cf5201b0579d
+--- /dev/null
++++ b/arch/powerpc/kernel/cpu_setup_power.c
+@@ -0,0 +1,269 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2020 IBM Corporation
++ * This file contains low level CPU setup functions.
++ * Originally written in assembly by
++ * Benjamin Herrenschmidt (benh@kernel.crashing.org)
++ */
++#include <asm/reg.h>
++#include <asm/synch.h>
++#include <linux/bitops.h>
++#include <asm/cputable.h>
++#include <asm/cpu_setup_power.h>
 +
- 	initmem_init();
- 
- 	early_memtest(min_low_pfn << PAGE_SHIFT, max_low_pfn << PAGE_SHIFT);
++/* Disable CPU_FTR_HVMODE and return false if MSR:HV is not set */
++static bool init_hvmode_206(struct cpu_spec *t)
++{
++	u64 msr;
++
++	msr = mfmsr();
++	if (msr & MSR_HV)
++		return true;
++
++	t->cpu_features &= ~(CPU_FTR_HVMODE | CPU_FTR_P9_TM_HV_ASSIST);
++	return false;
++}
++
++static void init_LPCR_ISA300(u64 lpcr, u64 lpes)
++{
++	/* POWER9 has no VRMASD */
++	lpcr |= (lpes << LPCR_LPES_SH) & LPCR_LPES;
++	lpcr |= LPCR_PECE0|LPCR_PECE1|LPCR_PECE2;
++	lpcr |= (4ull << LPCR_DPFD_SH) & LPCR_DPFD;
++	lpcr &= ~LPCR_HDICE;	/* clear HDICE */
++	lpcr |= (4ull << LPCR_VC_SH);
++	mtspr(SPRN_LPCR, lpcr);
++	isync();
++}
++
++/*
++ * Setup a sane LPCR:
++ *   Called with initial LPCR and desired LPES 2-bit value
++ *
++ *   LPES = 0b01 (HSRR0/1 used for 0x500)
++ *   PECE = 0b111
++ *   DPFD = 4
++ *   HDICE = 0
++ *   VC = 0b100 (VPM0=1, VPM1=0, ISL=0)
++ *   VRMASD = 0b10000 (L=1, LP=00)
++ *
++ * Other bits untouched for now
++ */
++static void init_LPCR_ISA206(u64 lpcr, u64 lpes)
++{
++	lpcr |= (0x10ull << LPCR_VRMASD_SH) & LPCR_VRMASD;
++	init_LPCR_ISA300(lpcr, lpes);
++}
++
++static void init_FSCR(void)
++{
++	u64 fscr;
++
++	fscr = mfspr(SPRN_FSCR);
++	fscr |= FSCR_TAR|FSCR_EBB;
++	mtspr(SPRN_FSCR, fscr);
++}
++
++static void init_FSCR_power9(void)
++{
++	u64 fscr;
++
++	fscr = mfspr(SPRN_FSCR);
++	fscr |= FSCR_SCV;
++	mtspr(SPRN_FSCR, fscr);
++	init_FSCR();
++}
++
++static void init_FSCR_power10(void)
++{
++	u64 fscr;
++
++	fscr = mfspr(SPRN_FSCR);
++	fscr |= FSCR_PREFIX;
++	mtspr(SPRN_FSCR, fscr);
++	init_FSCR_power9();
++}
++
++static void init_HFSCR(void)
++{
++	u64 hfscr;
++
++	hfscr = mfspr(SPRN_HFSCR);
++	hfscr |= HFSCR_TAR|HFSCR_TM|HFSCR_BHRB|HFSCR_PM|HFSCR_DSCR|\
++		 HFSCR_VECVSX|HFSCR_FP|HFSCR_EBB|HFSCR_MSGP;
++	mtspr(SPRN_HFSCR, hfscr);
++}
++
++static void init_PMU_HV(void)
++{
++	mtspr(SPRN_MMCRC, 0);
++}
++
++static void init_PMU_HV_ISA207(void)
++{
++	mtspr(SPRN_MMCRH, 0);
++}
++
++static void init_PMU(void)
++{
++	mtspr(SPRN_MMCRA, 0);
++	mtspr(SPRN_MMCR0, 0);
++	mtspr(SPRN_MMCR1, 0);
++	mtspr(SPRN_MMCR2, 0);
++}
++
++static void init_PMU_ISA207(void)
++{
++	mtspr(SPRN_MMCRS, 0);
++}
++
++static void init_PMU_ISA31(void)
++{
++	mtspr(SPRN_MMCR3, 0);
++	mtspr(SPRN_MMCRA, MMCRA_BHRB_DISABLE);
++}
++
++/*
++ * Note that we can be called twice of pseudo-PVRs.
++ * The parameter offset is not used.
++ */
++
++void __setup_cpu_power7(unsigned long offset, struct cpu_spec *t)
++{
++	if (!init_hvmode_206(t))
++		return;
++
++	mtspr(SPRN_LPID, 0);
++	mtspr(SPRN_PCR, PCR_MASK);
++	init_LPCR_ISA206(mfspr(SPRN_LPCR), LPCR_LPES1 >> LPCR_LPES_SH);
++}
++
++void __restore_cpu_power7(void)
++{
++	u64 msr;
++
++	msr = mfmsr();
++	if (!(msr & MSR_HV))
++		return;
++
++	mtspr(SPRN_LPID, 0);
++	mtspr(SPRN_PCR, PCR_MASK);
++	init_LPCR_ISA206(mfspr(SPRN_LPCR), LPCR_LPES1 >> LPCR_LPES_SH);
++}
++
++void __setup_cpu_power8(unsigned long offset, struct cpu_spec *t)
++{
++	init_FSCR();
++	init_PMU();
++	init_PMU_ISA207();
++
++	if (!init_hvmode_206(t))
++		return;
++
++	mtspr(SPRN_LPID, 0);
++	mtspr(SPRN_PCR, PCR_MASK);
++	init_LPCR_ISA206(mfspr(SPRN_LPCR) | LPCR_PECEDH, 0); /* LPES = 0 */
++	init_HFSCR();
++	init_PMU_HV();
++	init_PMU_HV_ISA207();
++}
++
++void __restore_cpu_power8(void)
++{
++	u64 msr;
++
++	init_FSCR();
++	init_PMU();
++	init_PMU_ISA207();
++
++	msr = mfmsr();
++	if (!(msr & MSR_HV))
++		return;
++
++	mtspr(SPRN_LPID, 0);
++	mtspr(SPRN_PCR, PCR_MASK);
++	init_LPCR_ISA206(mfspr(SPRN_LPCR) | LPCR_PECEDH, 0); /* LPES = 0 */
++	init_HFSCR();
++	init_PMU_HV();
++	init_PMU_HV_ISA207();
++}
++
++void __setup_cpu_power9(unsigned long offset, struct cpu_spec *t)
++{
++	init_FSCR_power9();
++	init_PMU();
++
++	if (!init_hvmode_206(t))
++		return;
++
++	mtspr(SPRN_PSSCR, 0);
++	mtspr(SPRN_LPID, 0);
++	mtspr(SPRN_PID, 0);
++	mtspr(SPRN_PCR, PCR_MASK);
++	init_LPCR_ISA300((mfspr(SPRN_LPCR) | LPCR_PECEDH | LPCR_PECE_HVEE |\
++			 LPCR_HVICE | LPCR_HEIC) & ~(LPCR_UPRT | LPCR_HR), 0);
++	init_HFSCR();
++	init_PMU_HV();
++}
++
++void __restore_cpu_power9(void)
++{
++	u64 msr;
++
++	init_FSCR_power9();
++	init_PMU();
++
++	msr = mfmsr();
++	if (!(msr & MSR_HV))
++		return;
++
++	mtspr(SPRN_PSSCR, 0);
++	mtspr(SPRN_LPID, 0);
++	mtspr(SPRN_PID, 0);
++	mtspr(SPRN_PCR, PCR_MASK);
++	init_LPCR_ISA300((mfspr(SPRN_LPCR) | LPCR_PECEDH | LPCR_PECE_HVEE |\
++			 LPCR_HVICE | LPCR_HEIC) & ~(LPCR_UPRT | LPCR_HR), 0);
++	init_HFSCR();
++	init_PMU_HV();
++}
++
++void __setup_cpu_power10(unsigned long offset, struct cpu_spec *t)
++{
++	init_FSCR_power10();
++	init_PMU();
++	init_PMU_ISA31();
++
++	if (!init_hvmode_206(t))
++		return;
++
++	mtspr(SPRN_PSSCR, 0);
++	mtspr(SPRN_LPID, 0);
++	mtspr(SPRN_PID, 0);
++	mtspr(SPRN_PCR, PCR_MASK);
++	init_LPCR_ISA300((mfspr(SPRN_LPCR) | LPCR_PECEDH | LPCR_PECE_HVEE |\
++			 LPCR_HVICE | LPCR_HEIC) & ~(LPCR_UPRT | LPCR_HR), 0);
++	init_HFSCR();
++	init_PMU_HV();
++}
++
++void __restore_cpu_power10(void)
++{
++	u64 msr;
++
++	init_FSCR_power10();
++	init_PMU();
++	init_PMU_ISA31();
++
++	msr = mfmsr();
++	if (!(msr & MSR_HV))
++		return;
++
++	mtspr(SPRN_PSSCR, 0);
++	mtspr(SPRN_LPID, 0);
++	mtspr(SPRN_PID, 0);
++	mtspr(SPRN_PCR, PCR_MASK);
++	init_LPCR_ISA300((mfspr(SPRN_LPCR) | LPCR_PECEDH | LPCR_PECE_HVEE |\
++			 LPCR_HVICE | LPCR_HEIC) & ~(LPCR_UPRT | LPCR_HR), 0);
++	init_HFSCR();
++	init_PMU_HV();
++}
+diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
+index 2aa89c6b2896..26a56c9d6650 100644
+--- a/arch/powerpc/kernel/cputable.c
++++ b/arch/powerpc/kernel/cputable.c
+@@ -59,19 +59,15 @@ extern void __setup_cpu_7410(unsigned long offset, struct cpu_spec* spec);
+ extern void __setup_cpu_745x(unsigned long offset, struct cpu_spec* spec);
+ #endif /* CONFIG_PPC32 */
+ #ifdef CONFIG_PPC64
++#include <asm/cpu_setup_power.h>
+ extern void __setup_cpu_ppc970(unsigned long offset, struct cpu_spec* spec);
+ extern void __setup_cpu_ppc970MP(unsigned long offset, struct cpu_spec* spec);
+ extern void __setup_cpu_pa6t(unsigned long offset, struct cpu_spec* spec);
+ extern void __restore_cpu_pa6t(void);
+ extern void __restore_cpu_ppc970(void);
+-extern void __setup_cpu_power7(unsigned long offset, struct cpu_spec* spec);
+-extern void __restore_cpu_power7(void);
+-extern void __setup_cpu_power8(unsigned long offset, struct cpu_spec* spec);
+-extern void __restore_cpu_power8(void);
+-extern void __setup_cpu_power9(unsigned long offset, struct cpu_spec* spec);
+-extern void __restore_cpu_power9(void);
+-extern void __setup_cpu_power10(unsigned long offset, struct cpu_spec* spec);
+-extern void __restore_cpu_power10(void);
++extern long __machine_check_early_realmode_p7(struct pt_regs *regs);
++extern long __machine_check_early_realmode_p8(struct pt_regs *regs);
++extern long __machine_check_early_realmode_p9(struct pt_regs *regs);
+ #endif /* CONFIG_PPC64 */
+ #if defined(CONFIG_E500)
+ extern void __setup_cpu_e5500(unsigned long offset, struct cpu_spec* spec);
 -- 
 2.17.1
 
