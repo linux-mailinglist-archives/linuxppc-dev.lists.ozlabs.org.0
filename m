@@ -1,47 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D3328DA95
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 09:39:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B2F28DA76
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 09:30:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CB46r1vd4zDqZ2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 18:39:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CB3wQ5gwHzDqb5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 18:30:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=zte.com.cn (client-ip=202.103.147.172; helo=mxct.zte.com.cn;
- envelope-from=wang.yi59@zte.com.cn; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=zte.com.cn
-X-Greylist: delayed 926 seconds by postgrey-1.36 at bilbo;
- Wed, 14 Oct 2020 18:37:38 AEDT
-Received: from mxct.zte.com.cn (out1.zte.com.cn [202.103.147.172])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=BTFivi4U; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CB44y1BydzDqXr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 18:37:36 +1100 (AEDT)
-Received: from mse-fl2.zte.com.cn (unknown [10.30.14.239])
- by Forcepoint Email with ESMTPS id 317529D58780FE449193;
- Wed, 14 Oct 2020 15:21:55 +0800 (CST)
-Received: from kjyxapp05.zte.com.cn ([10.30.12.204])
- by mse-fl2.zte.com.cn with SMTP id 09E7LrQ3056847;
- Wed, 14 Oct 2020 15:21:53 +0800 (GMT-8)
- (envelope-from wang.yi59@zte.com.cn)
-Received: from fox-host8.localdomain (unknown [10.234.72.110])
- by smtp (Zmail) with SMTP; Wed, 14 Oct 2020 15:21:53 +0800
-X-Zmail-TransId: 3e885f86a710005-b53e2
-From: Yi Wang <wang.yi59@zte.com.cn>
-To: Roy.Pledge@nxp.com
-Subject: [PATCH] soc: fsl: dpio: Change 'cpumask_t mask' to global variable
-Date: Wed, 14 Oct 2020 15:27:33 +0800
-Message-Id: <20201014072733.15175-1-wang.yi59@zte.com.cn>
-X-Mailer: X-Zmail-Txt
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: multipart/mixed;
-	boundary="=====_001_next====="
-X-MAIL: mse-fl2.zte.com.cn 09E7LrQ3056847
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CB3tq3YCzzDqXv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 18:28:49 +1100 (AEDT)
+Received: by mail-pl1-x643.google.com with SMTP id d6so1284872plo.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 00:28:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=QgW2cpLym9Tc4Y7+2M30sSgz7DG9JnxPN18mAIZWfYk=;
+ b=BTFivi4UT+XARp+orhp/nMiofOWNmmdN5ZdmUsXRnojjEoRsZ7ge/WdgoObwA2uhtX
+ lWSidsjswLHJJyaui/G9WV6p3z/x+0frtLnp+owv7kG22/mhVtBUnG+FBmbvDkhpQ8oZ
+ cK9/Abjf1Frx+LX5iU2+oHrsTy4n5Ls9TaMc0nBYFK65rdchz8P/1i5BYliwgXQREvlj
+ mFE1PuvlB0Bwq9kNEnLs2PnleWRm8Nuq6NtA2o+zVXiMzEp+wtsaeSLQbtvFKCJp8wDj
+ o6q4fyE1lvJlH+rcCVtwHYtDrOniKJ5rwirPDThC7+kShT16tl3ruATQh1KIVtHRy9iC
+ LvoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=QgW2cpLym9Tc4Y7+2M30sSgz7DG9JnxPN18mAIZWfYk=;
+ b=sVj/E0FHD0DU8uITHzhJ2hF9BD8mboUJVh//87W51k/ksR/M6OfD2UOt0IyGhvJIxS
+ vBX+ENnVkzk31SE1Nl3Dvg7n6EgHv31zfiOiehXbw3dlHX+H7LSbHGf9WhZoSo8bCS4H
+ X6smgVFmjFjLIWG7sB+TV+v7KadV7Z+/Uolst2A2yMMDhe4t8XFdCeeWRk79GK5is8+O
+ 4Z3f5I1PUPK+gdhfJ+N1ExylUvJZLeTksRj4TU78CqTQ22bjkzbEaGt+a0yqf9/NcpkK
+ 1KT8qB54iU1rHPxEVXtTXTRBF+cKCZzSTF6nkCH+mWWBLw68/G6wY63oMSER5ZPdMZB4
+ e6xg==
+X-Gm-Message-State: AOAM53155Mw0rijM99mc1jqKVIbX2TpUkhxaQM3fZHb1zIorL17/4Xac
+ suvUbkqKXyLElQJmsYNcrHDizxQWZ/f5mw==
+X-Google-Smtp-Source: ABdhPJySqUXkPx8kUBajPAjI1AhCIEKSoAhGQBTpRcanyLKWhokFr07RgY+NpeR85/05Z8bYJMY9TQ==
+X-Received: by 2002:a17:90a:7c03:: with SMTP id
+ v3mr2191402pjf.233.1602660526262; 
+ Wed, 14 Oct 2020 00:28:46 -0700 (PDT)
+Received: from tee480.ibm.com (180-150-65-4.b49641.syd.nbn.aussiebb.net.
+ [180.150.65.4])
+ by smtp.gmail.com with ESMTPSA id 198sm2082740pfx.26.2020.10.14.00.28.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 14 Oct 2020 00:28:45 -0700 (PDT)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4 1/2] powerpc/64: Set up a kernel stack for secondaries
+ before cpu_restore()
+Date: Wed, 14 Oct 2020 18:28:36 +1100
+Message-Id: <20201014072837.24539-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,90 +75,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wang.yi59@zte.com.cn, jiang.xuexin@zte.com.cn, Hao Si <si.hao@zte.com.cn>,
- linux-kernel@vger.kernel.org, leoyang.li@nxp.com, xue.zhihong@zte.com.cn,
- Lin Chen <chen.lin5@zte.com.cn>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: oohall@gmail.com, npiggin@gmail.com, Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Currently in generic_secondary_smp_init(), cur_cpu_spec->cpu_restore()
+is called before a stack has been set up in r1. This was previously fine
+as the cpu_restore() functions were implemented in assembly and did not
+use a stack. However commit 5a61ef74f269 ("powerpc/64s: Support new
+device tree binding for discovering CPU features") used
+__restore_cpu_cpufeatures() as the cpu_restore() function for a
+device-tree features based cputable entry. This is a C function and
+hence uses a stack in r1.
 
+generic_secondary_smp_init() is entered on the secondary cpus via the
+primary cpu using the OPAL call opal_start_cpu(). In OPAL, each hardware
+thread has its own stack. The OPAL call is ran in the primary's hardware
+thread. During the call, a job is scheduled on a secondary cpu that will
+start executing at the address of generic_secondary_smp_init().  Hence
+the value that will be left in r1 when the secondary cpu enters the
+kernel is part of that secondary cpu's individual OPAL stack. This means
+that __restore_cpu_cpufeatures() will write to that OPAL stack. This is
+not horribly bad as each hardware thread has its own stack and the call
+that enters the kernel from OPAL never returns, but it is still wrong
+and should be corrected.
 
---=====_001_next=====
-Content-Type: multipart/alternative;
-	boundary="=====_003_next====="
+Create the temp kernel stack before calling cpu_restore().
 
+As noted by mpe, for a kexec boot, the secondary CPUs are released from
+the spin loop at address 0x60 by smp_release_cpus() and then jump to
+generic_secondary_smp_init(). The call to smp_release_cpus() is in
+setup_arch(), and it comes before the call to emergency_stack_init().
+emergency_stack_init() allocates an emergency stack in the PACA for each
+CPU.  This address in the PACA is what is used to set up the temp kernel
+stack in generic_secondary_smp_init(). Move releasing the secondary CPUs
+to after the PACAs have been allocated an emergency stack, otherwise the
+PACA stack pointer will contain garbage and hence the temp kernel stack
+created from it will be broken.
 
---=====_003_next=====
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
+Fixes: 5a61ef74f269 ("powerpc/64s: Support new device tree binding for discovering CPU features")
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+---
+v2: Add more detail to the commit message
+v3: Release secondary CPUs after the emergency stack is created
+v4: No need to guard smp_release_cpus() with #ifdef CONFIG_SMP
+---
+ arch/powerpc/kernel/head_64.S      | 8 ++++----
+ arch/powerpc/kernel/setup-common.c | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-RnJvbTogSGFvIFNpIDxzaS5oYW9AenRlLmNvbS5jbj4NCg0KVGhlIGxvY2FsIHZhcmlhYmxlICdj
-cHVtYXNrX3QgbWFzaycgaXMgaW4gdGhlIHN0YWNrIG1lbW9yeSwgYW5kIGl0cyBhZGRyZXNzDQpp
-cyBhc3NpZ25lZCB0byAnZGVzYy0+YWZmaW5pdHknIGluICdpcnFfc2V0X2FmZmluaXR5X2hpbnQo
-KScuDQpCdXQgdGhlIG1lbW9yeSBhcmVhIHdoZXJlIHRoaXMgdmFyaWFibGUgaXMgbG9jYXRlZCBp
-cyBhdCByaXNrIG9mIGJlaW5nDQptb2RpZmllZC4NCg0KRHVyaW5nIExUUCB0ZXN0aW5nLCB0aGUg
-Zm9sbG93aW5nIGVycm9yIHdhcyBnZW5lcmF0ZWQ6DQoNClVuYWJsZSB0byBoYW5kbGUga2VybmVs
-IHBhZ2luZyByZXF1ZXN0IGF0IHZpcnR1YWwgYWRkcmVzcyBmZmZmMDAwMDEyZTliNzkwDQpNZW0g
-YWJvcnQgaW5mbzoNCiAgRVNSID0gMHg5NjAwMDAwNw0KICBFeGNlcHRpb24gY2xhc3MgPSBEQUJU
-IChjdXJyZW50IEVMKSwgSUwgPSAzMiBiaXRzDQogIFNFVCA9IDAsIEZuViA9IDANCiAgRUEgPSAw
-LCBTMVBUVyA9IDANCkRhdGEgYWJvcnQgaW5mbzoNCiAgSVNWID0gMCwgSVNTID0gMHgwMDAwMDAw
-Nw0KICBDTSA9IDAsIFduUiA9IDANCnN3YXBwZXIgcGd0YWJsZTogNGsgcGFnZXMsIDQ4LWJpdCBW
-QXMsIHBnZHAgPSAwMDAwMDAwMDc1YWM1ZTA3DQpbZmZmZjAwMDAxMmU5Yjc5MF0gcGdkPTAwMDAw
-MDI3ZGJmZmUwMDMsIHB1ZD0wMDAwMDAyN2RiZmZkMDAzLA0KcG1kPTAwMDAwMDI3YjZkNjEwMDMs
-IHB0ZT0wMDAwMDAwMDAwMDAwMDAwDQpJbnRlcm5hbCBlcnJvcjogT29wczogOTYwMDAwMDcgWyMx
-XSBQUkVFTVBUIFNNUA0KTW9kdWxlcyBsaW5rZWQgaW46IHh0X2Nvbm50cmFjaw0KUHJvY2VzcyBy
-ZWFkX2FsbCAocGlkOiAyMDE3MSwgc3RhY2sgbGltaXQgPSAweDAwMDAwMDAwNDRlYTQwOTUpDQpD
-UFU6IDE0IFBJRDogMjAxNzEgQ29tbTogcmVhZF9hbGwgVGFpbnRlZDogRyAgICBCICAgVw0KSGFy
-ZHdhcmUgbmFtZTogTlhQIExheWVyc2NhcGUgTFgyMTYwQVJEQiAoRFQpDQpwc3RhdGU6IDgwMDAw
-MDg1IChOemN2IGRhSWYgLVBBTiAtVUFPKQ0KcGMgOiBpcnFfYWZmaW5pdHlfaGludF9wcm9jX3No
-b3crMHg1NC8weGIwDQpsciA6IGlycV9hZmZpbml0eV9oaW50X3Byb2Nfc2hvdysweDRjLzB4YjAN
-CnNwIDogZmZmZjAwMDAxMTM4YmMxMA0KeDI5OiBmZmZmMDAwMDExMzhiYzEwIHgyODogMDAwMGZm
-ZmZkMTMxZDFlMA0KeDI3OiAwMDAwMDAwMDAwNzAwMGMwIHgyNjogZmZmZjgwMjViOTQ4MGRjMA0K
-eDI1OiBmZmZmODAyNWI5NDgwZGE4IHgyNDogMDAwMDAwMDAwMDAwMDNmZg0KeDIzOiBmZmZmODAy
-NzMzNGY4MzAwIHgyMjogZmZmZjgwMjcyZTk3ZDAwMA0KeDIxOiBmZmZmODAyNzJlOTdkMGIwIHgy
-MDogZmZmZjgwMjViOTQ4MGQ4MA0KeDE5OiBmZmZmMDAwMDA5YTQ5MDAwIHgxODogMDAwMDAwMDAw
-MDAwMDAwMA0KeDE3OiAwMDAwMDAwMDAwMDAwMDAwIHgxNjogMDAwMDAwMDAwMDAwMDAwMA0KeDE1
-OiAwMDAwMDAwMDAwMDAwMDAwIHgxNDogMDAwMDAwMDAwMDAwMDAwMA0KeDEzOiAwMDAwMDAwMDAw
-MDAwMDAwIHgxMjogMDAwMDAwMDAwMDAwMDA0MA0KeDExOiAwMDAwMDAwMDAwMDAwMDAwIHgxMDog
-ZmZmZjgwMjczNWI3OWI4OA0KeDkgOiAwMDAwMDAwMDAwMDAwMDAwIHg4IDogMDAwMDAwMDAwMDAw
-MDAwMA0KeDcgOiBmZmZmMDAwMDA5YTQ5ODQ4IHg2IDogMDAwMDAwMDAwMDAwMDAwMw0KeDUgOiAw
-MDAwMDAwMDAwMDAwMDAwIHg0IDogZmZmZjAwMDAwODE1N2Q2Yw0KeDMgOiBmZmZmMDAwMDExMzhi
-YzEwIHgyIDogZmZmZjAwMDAxMmU5Yjc5MA0KeDEgOiAwMDAwMDAwMDAwMDAwMDAwIHgwIDogMDAw
-MDAwMDAwMDAwMDAwMA0KQ2FsbCB0cmFjZToNCiBpcnFfYWZmaW5pdHlfaGludF9wcm9jX3Nob3cr
-MHg1NC8weGIwDQogc2VxX3JlYWQrMHgxYjAvMHg0NDANCiBwcm9jX3JlZ19yZWFkKzB4ODAvMHhk
-OA0KIF9fdmZzX3JlYWQrMHg2MC8weDE3OA0KIHZmc19yZWFkKzB4OTQvMHgxNTANCiBrc3lzX3Jl
-YWQrMHg3NC8weGYwDQogX19hcm02NF9zeXNfcmVhZCsweDI0LzB4MzANCiBlbDBfc3ZjX2NvbW1v
-bi5jb25zdHByb3AuMCsweGQ4LzB4MWEwDQogZWwwX3N2Y19oYW5kbGVyKzB4MzQvMHg4OA0KIGVs
-MF9zdmMrMHgxMC8weDE0DQpDb2RlOiBmOTAwMWJiZiA5NDNlMDczMiBmOTQwNjZjMiBiNDAwMDA2
-MiAoZjk0MDAwNDEpDQotLS1bIGVuZCB0cmFjZSBiNDk1YmRjYjBiM2I3MzJiIF0tLS0NCktlcm5l
-bCBwYW5pYyAtIG5vdCBzeW5jaW5nOiBGYXRhbCBleGNlcHRpb24NClNNUDogc3RvcHBpbmcgc2Vj
-b25kYXJ5IENQVXMNClNNUDogZmFpbGVkIHRvIHN0b3Agc2Vjb25kYXJ5IENQVXMgMCwyLTQsNiw4
-LDExLDEzLTE1DQpLZXJuZWwgT2Zmc2V0OiBkaXNhYmxlZA0KQ1BVIGZlYXR1cmVzOiAweDAsMjEw
-MDYwMDgNCk1lbW9yeSBMaW1pdDogbm9uZQ0KLS0tWyBlbmQgS2VybmVsIHBhbmljIC0gbm90IHN5
-bmNpbmc6IEZhdGFsIGV4Y2VwdGlvbiBdLS0tDQoNCkZpeCBpdCBieSBjaGFuZ2luZyAnY3B1bWFz
-a190IG1hc2snIHRvIGdsb2JhbCB2YXJpYWJsZS4NCg0KU2lnbmVkLW9mZi1ieTogSGFvIFNpIDxz
-aS5oYW9AenRlLmNvbS5jbj4NClNpZ25lZC1vZmYtYnk6IExpbiBDaGVuIDxjaGVuLmxpbjVAenRl
-LmNvbS5jbj4NClNpZ25lZC1vZmYtYnk6IFlpIFdhbmcgPHdhbmcueWk1OUB6dGUuY29tLmNuPg0K
-LS0tDQogZHJpdmVycy9zb2MvZnNsL2RwaW8vZHBpby1kcml2ZXIuYyB8IDIgKy0NCiAxIGZpbGUg
-Y2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCg0KZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvc29jL2ZzbC9kcGlvL2RwaW8tZHJpdmVyLmMgYi9kcml2ZXJzL3NvYy9mc2wvZHBpby9k
-cGlvLWRyaXZlci5jDQppbmRleCA3YjY0MmMzLi5iMzFlYzUzIDEwMDY0NA0KLS0tIGEvZHJpdmVy
-cy9zb2MvZnNsL2RwaW8vZHBpby1kcml2ZXIuYw0KKysrIGIvZHJpdmVycy9zb2MvZnNsL2RwaW8v
-ZHBpby1kcml2ZXIuYw0KQEAgLTMxLDYgKzMxLDcgQEAgc3RydWN0IGRwaW9fcHJpdiB7DQogCXN0
-cnVjdCBkcGFhMl9pbyAqaW87DQogfTsNCiANCitzdGF0aWMgY3B1bWFza190IG1hc2s7DQogc3Rh
-dGljIGNwdW1hc2tfdmFyX3QgY3B1c191bnVzZWRfbWFzazsNCiANCiBzdGF0aWMgY29uc3Qgc3Ry
-dWN0IHNvY19kZXZpY2VfYXR0cmlidXRlIGxzMTA4OGFfc29jW10gPSB7DQpAQCAtOTUsNyArOTYs
-NiBAQCBzdGF0aWMgaW50IHJlZ2lzdGVyX2RwaW9faXJxX2hhbmRsZXJzKHN0cnVjdCBmc2xfbWNf
-ZGV2aWNlICpkcGlvX2RldiwgaW50IGNwdSkNCiB7DQogCWludCBlcnJvcjsNCiAJc3RydWN0IGZz
-bF9tY19kZXZpY2VfaXJxICppcnE7DQotCWNwdW1hc2tfdCBtYXNrOw0KIA0KIAlpcnEgPSBkcGlv
-X2Rldi0+aXJxc1swXTsNCiAJZXJyb3IgPSBkZXZtX3JlcXVlc3RfaXJxKCZkcGlvX2Rldi0+ZGV2
-LA0KLS0gDQoyLjE1LjI=
-
-
---=====_003_next=====--
-
---=====_001_next=====--
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index 0e05a9a47a4b..4b7f4c6c2600 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -420,6 +420,10 @@ generic_secondary_common_init:
+ 	/* From now on, r24 is expected to be logical cpuid */
+ 	mr	r24,r5
+ 
++	/* Create a temp kernel stack for use before relocation is on.	*/
++	ld	r1,PACAEMERGSP(r13)
++	subi	r1,r1,STACK_FRAME_OVERHEAD
++
+ 	/* See if we need to call a cpu state restore handler */
+ 	LOAD_REG_ADDR(r23, cur_cpu_spec)
+ 	ld	r23,0(r23)
+@@ -448,10 +452,6 @@ generic_secondary_common_init:
+ 	sync				/* order paca.run and cur_cpu_spec */
+ 	isync				/* In case code patching happened */
+ 
+-	/* Create a temp kernel stack for use before relocation is on.	*/
+-	ld	r1,PACAEMERGSP(r13)
+-	subi	r1,r1,STACK_FRAME_OVERHEAD
+-
+ 	b	__secondary_start
+ #endif /* SMP */
+ 
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 808ec9fab605..da8c71f321ad 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -919,8 +919,6 @@ void __init setup_arch(char **cmdline_p)
+ 
+ 	/* On BookE, setup per-core TLB data structures. */
+ 	setup_tlb_core_data();
+-
+-	smp_release_cpus();
+ #endif
+ 
+ 	/* Print various info about the machine that has been gathered so far. */
+@@ -944,6 +942,8 @@ void __init setup_arch(char **cmdline_p)
+ 	exc_lvl_early_init();
+ 	emergency_stack_init();
+ 
++	smp_release_cpus();
++
+ 	initmem_init();
+ 
+ 	early_memtest(min_low_pfn << PAGE_SHIFT, max_low_pfn << PAGE_SHIFT);
+-- 
+2.17.1
 
