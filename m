@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A2E28E827
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 22:59:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B1D228E83C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 23:13:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CBPss4ysvzDq9p
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 07:59:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBQBD4fBtzDr86
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 08:13:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,31 +15,31 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sergey.semin@baikalelectronics.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=baikalelectronics.ru
-Received: from mail.baikalelectronics.ru (mx.baikalelectronics.com
- [94.125.187.42])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CBDQJ6vMdzDqlr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 00:53:12 +1100 (AEDT)
+Received: from mail.baikalelectronics.ru (ns2.baikalchip.com [94.125.187.42])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CBDQN13yDzDqpJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 00:53:15 +1100 (AEDT)
 Received: from localhost (unknown [127.0.0.1])
- by mail.baikalelectronics.ru (Postfix) with ESMTP id 99950800254B;
- Wed, 14 Oct 2020 10:14:16 +0000 (UTC)
+ by mail.baikalelectronics.ru (Postfix) with ESMTP id 595658002548;
+ Wed, 14 Oct 2020 10:14:17 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
  by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id bLgVXv8eo580; Wed, 14 Oct 2020 13:14:16 +0300 (MSK)
+ with ESMTP id GjCpbGu3yfxE; Wed, 14 Oct 2020 13:14:16 +0300 (MSK)
 From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To: Mathias Nyman <mathias.nyman@intel.com>, Felipe Balbi <balbi@kernel.org>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring
- <robh+dt@kernel.org>, Roger Quadros <rogerq@ti.com>
-Subject: [PATCH 16/20] dt-bindings: usb: keystone-dwc3: Validate DWC3 sub-node
-Date: Wed, 14 Oct 2020 13:13:58 +0300
-Message-ID: <20201014101402.18271-17-Sergey.Semin@baikalelectronics.ru>
+ <robh+dt@kernel.org>, Andy Gross <agross@kernel.org>, Bjorn Andersson
+ <bjorn.andersson@linaro.org>, Manu Gautam <mgautam@codeaurora.org>
+Subject: [PATCH 17/20] dt-bindings: usb: qcom,dwc3: Validate DWC3 sub-node
+Date: Wed, 14 Oct 2020 13:13:59 +0300
+Message-ID: <20201014101402.18271-18-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
-X-Mailman-Approved-At: Thu, 15 Oct 2020 07:49:48 +1100
+X-Mailman-Approved-At: Thu, 15 Oct 2020 07:49:49 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,53 +51,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-mips@vger.kernel.org, Neil Armstrong <narmstrong@baylibre.com>,
- Kevin Hilman <khilman@baylibre.com>,
+Cc: devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
+ Neil Armstrong <narmstrong@baylibre.com>, Kevin Hilman <khilman@baylibre.com>,
  Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
  linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
  Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
  Serge Semin <fancer.lancer@gmail.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Serge Semin <Sergey.Semin@baikalelectronics.ru>,
- Manu Gautam <mgautam@codeaurora.org>, Andy Gross <agross@kernel.org>,
- Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
  Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+ Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+ Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+ linux-arm-msm@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ Roger Quadros <rogerq@ti.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-TI Keystone DWC3 compatible DT node is supposed to have a DWC USB3
-compatible sub-node to describe a fully functioning USB interface.
-Since DWC USB3 has now got a DT schema describing its DT node, let's make
-sure the TI Keystone DWC3 sub-node passes validation against it.
+Qualcomm msm8996/sc7180/sdm845 DWC3 compatible DT nodes are supposed to
+have a DWC USB3 compatible sub-node to describe a fully functioning USB
+interface. Let's use the available DWC USB3 DT schema to validate the
+Qualcomm DWC3 sub-nodes.
+
+Note since the generic DWC USB3 DT node is supposed to be named as generic
+USB HCD ("^usb(@.*)?") one we have to accordingly fix the sub-nodes name
+regexp and fix the DT node example.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 
 ---
 
 Changelog v2:
-- Grammar fix: "s/it'/its"
+- Discard the "^dwc3@[0-9a-f]+$" nodes from being acceptable as sub-nodes.
 ---
- Documentation/devicetree/bindings/usb/ti,keystone-dwc3.yaml | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ Documentation/devicetree/bindings/usb/qcom,dwc3.yaml | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/usb/ti,keystone-dwc3.yaml b/Documentation/devicetree/bindings/usb/ti,keystone-dwc3.yaml
-index c1b19fc5d0a2..ca7fbe3ed22e 100644
---- a/Documentation/devicetree/bindings/usb/ti,keystone-dwc3.yaml
-+++ b/Documentation/devicetree/bindings/usb/ti,keystone-dwc3.yaml
-@@ -64,9 +64,7 @@ properties:
+diff --git a/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml b/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
+index dac10848dd7f..8f8d781e73a0 100644
+--- a/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
++++ b/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
+@@ -103,11 +103,8 @@ properties:
+ # Required child node:
  
  patternProperties:
-   "usb@[a-f0-9]+$":
+-  "^dwc3@[0-9a-f]+$":
 -    type: object
--    description: This is the node representing the DWC3 controller instance
--      Documentation/devicetree/bindings/usb/dwc3.txt
+-    description:
+-      A child node must exist to represent the core DWC3 IP block
+-      The content of the node is defined in dwc3.txt.
++  "^usb@[0-9a-f]+$":
 +    $ref: snps,dwc3.yaml#
  
  required:
    - compatible
+@@ -160,7 +157,7 @@ examples:
+ 
+             resets = <&gcc GCC_USB30_PRIM_BCR>;
+ 
+-            dwc3@a600000 {
++            usb@a600000 {
+                 compatible = "snps,dwc3";
+                 reg = <0 0x0a600000 0 0xcd00>;
+                 interrupts = <GIC_SPI 133 IRQ_TYPE_LEVEL_HIGH>;
 -- 
 2.27.0
 
