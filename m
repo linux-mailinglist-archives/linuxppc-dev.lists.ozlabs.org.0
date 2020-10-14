@@ -2,93 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5904F28D9B0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 07:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 501D428D9B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 07:54:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CB1lS3LcRzDqlJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 16:52:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CB1ng5y4DzDqg9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 16:54:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+b5550e02a2edd4696799+6261+infradead.org+hch@casper.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gKHuCF/x; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=OMo7hmfN; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CB1jN3C45zDqTb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 16:50:32 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09E5Xhsu139407; Wed, 14 Oct 2020 01:50:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=pO0QDP3LZBu82xPwMh0tH9zjOKZAsRTJGlqjBgp5jYc=;
- b=gKHuCF/x9DSNa/t04Hxz84AKf0otwZNhZkFmlVcJZsxNEA1NYndsK57Ou2pc7Gom7AZ6
- MyRLxiNCf5j915n7+bzNfF5ljhpSzie5kkQh91d0uWDcPzoX7JO+eJsoDHzc+MLGmHHl
- MZnXQO5GHe2VCkMM8aXIqr5R5DXggnzlX5OLx83/JQDR4Knhsq/Z1WZ4aaIWwrsIy2UQ
- UALzFMcJfwfUjkWfkswyPkif7A1k9rmHV8Z6e6N+XuGog+txLAUyK9cB064w+ziFARGn
- GPM8fhA9TLmeyrMBg84B9ZZQ9ykn31AI1kybNnssrONawUonkln8PZbJ15GAjXGmBCEr Ug== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 345u44rmja-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Oct 2020 01:50:25 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09E5iSNs023328;
- Wed, 14 Oct 2020 05:50:23 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04fra.de.ibm.com with ESMTP id 3434k7sy2q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Oct 2020 05:50:23 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 09E5oK1i13500802
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Oct 2020 05:50:21 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CE7235205A;
- Wed, 14 Oct 2020 05:50:20 +0000 (GMT)
-Received: from Madhavan.PrimaryTP (unknown [9.199.39.122])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id D3F4652051;
- Wed, 14 Oct 2020 05:50:19 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/perf: fix Threshold Event CounterMultiplier width
- for P10
-To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
-References: <20201012103128.53243-1-maddy@linux.ibm.com>
- <20201012112905.GQ29778@kitsune.suse.cz>
- <b840fcf3-6546-159e-e23a-c8fe00123539@linux.ibm.com>
- <20201013155842.GY29778@kitsune.suse.cz>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Message-ID: <e24fef80-9f72-b4cb-3bf8-866eeeba0a80@linux.ibm.com>
-Date: Wed, 14 Oct 2020 11:20:18 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CB1kg619DzDqkb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 16:51:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=Zj/mSELh0gkQiJzxNFapB7VTFgX/SPaMVeSie4q6aLI=; b=OMo7hmfNufPo6rVhRGuQHzLQ0b
+ 1VAPwm7au3dwZhP2U8KCBzhdLGuGCJg4Y6BujKWfQq2J1qHSQizXWY3eydQmN9Z/I4vBdS6zYKs5j
+ 8G4vo2y4z0B+BuZzAKnFd/zlkgAkwf4/KGUd29HlOFzuWZb9K09Z7harllEIKARBJ+lNl3gcIyJwx
+ IgDSWugwC2Wi8bsLi3iEMqOtFQSkJCi/2zicQQg/+6U0CE8rkkSKMimmb2xrSDPfAVVBj7aqg8wnj
+ QMZqWCmfY9u5oHJiUeflNjGtB6dSKh1s54zSdXMn8V4HVtnycq0plQXp5B1021lCYA4/A3ZxNhsFb
+ Ml0gOVXw==;
+Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1kSZgx-0005RW-Py; Wed, 14 Oct 2020 05:51:15 +0000
+Date: Wed, 14 Oct 2020 06:51:15 +0100
+From: Christoph Hellwig <hch@infradead.org>
+To: Alexander Viro <aviro@redhat.com>
+Subject: Re: [PATCH 05/14] fs: don't allow kernel reads and writes without
+ iter ops
+Message-ID: <20201014055115.GA19844@infradead.org>
+References: <20200903142242.925828-1-hch@lst.de>
+ <20200903142242.925828-6-hch@lst.de>
+ <20201001223852.GA855@sol.localdomain>
+ <20201001224051.GI3421308@ZenIV.linux.org.uk>
+ <CAHk-=wgj=mKeN-EfV5tKwJNeHPLG0dybq+R5ZyGuc4WeUnqcmA@mail.gmail.com>
+ <20201009220633.GA1122@sol.localdomain>
+ <CAHk-=whcEzYjkqdpZciHh+iAdUttvfWZYoiHiF67XuTXB1YJLw@mail.gmail.com>
+ <20201010011919.GC1122@sol.localdomain>
+ <CAHk-=wigvcmp-jcgoNCbx45W7j3=0jA320CfpskwuoEjefM7nQ@mail.gmail.com>
+ <20201010015524.GB101464@shell-el7.hosts.prod.upshift.rdu2.redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20201013155842.GY29778@kitsune.suse.cz>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-14_03:2020-10-14,
- 2020-10-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- malwarescore=0 phishscore=0 suspectscore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 adultscore=0 mlxscore=0 priorityscore=1501
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2010140038
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201010015524.GB101464@shell-el7.hosts.prod.upshift.rdu2.redhat.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,79 +72,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Kees Cook <keescook@chromium.org>, the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Alexey Dobriyan <adobriyan@gmail.com>, Eric Biggers <ebiggers@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, Oct 10, 2020 at 01:55:24AM +0000, Alexander Viro wrote:
+> FWIW, I hadn't pushed that branch out (or merged it into #for-next yet);
+> for one thing, uml part (mconsole) is simply broken, for another...
+> IMO ##5--8 are asking for kernel_pread() and if you look at binfmt_elf.c,
+> you'll see elf_read() being pretty much that.  acct.c, keys and usermode
+> parts are asking for kernel_pwrite() as well.
+> 
+> I've got stuck looking through the drivers/target stuff - it would've
+> been another kernel_pwrite() candidate, but it smells like its use of
+> filp_open() is really asking for trouble, starting with symlink attacks.
+> Not sure - I'm not familiar with the area, but...
 
-On 10/13/20 9:28 PM, Michal Suchánek wrote:
-> On Tue, Oct 13, 2020 at 06:27:05PM +0530, Madhavan Srinivasan wrote:
->> On 10/12/20 4:59 PM, Michal Suchánek wrote:
->>> Hello,
->>>
->>> On Mon, Oct 12, 2020 at 04:01:28PM +0530, Madhavan Srinivasan wrote:
->>>> Power9 and isa v3.1 has 7bit mantissa field for Threshold Event Counter
->>>                     ^^^ Shouldn't his be 3.0?
->> My bad, What I meant was
->>
->> Power9, ISA v3.0 and ISA v3.1 define a 7 bit mantissa field for Threshold
->> Event Counter Multiplier(TECM).
-> I am really confused.
->
-> The following text and the code suggests that the mantissa is 8bit on
-> POWER10 and ISA v3.1.
-
-Ok got it. Will fix the CPU_FTR_ARCH_31 check.
-
-Thanks for review
-
-Maddy
->
-> Thanks
->
-> Michal
->> Maddy
->>
->>>> Multiplier (TECM). TECM is part of Monitor Mode Control Register A (MMCRA).
->>>> This field along with Threshold Event Counter Exponent (TECE) is used to
->>>> get threshould counter value. In Power10, the width of TECM field is
->>>> increase to 8bits. Patch fixes the current code to modify the MMCRA[TECM]
->>>> extraction macro to handling this changes.
->>>>
->>>> Fixes: 170a315f41c64 ('powerpc/perf: Support to export MMCRA[TEC*] field to userspace')
->>>> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->>>> ---
->>>>    arch/powerpc/perf/isa207-common.c | 3 +++
->>>>    arch/powerpc/perf/isa207-common.h | 4 ++++
->>>>    2 files changed, 7 insertions(+)
->>>>
->>>> diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
->>>> index 964437adec18..5fe129f02290 100644
->>>> --- a/arch/powerpc/perf/isa207-common.c
->>>> +++ b/arch/powerpc/perf/isa207-common.c
->>>> @@ -247,6 +247,9 @@ void isa207_get_mem_weight(u64 *weight)
->>>>    	u64 sier = mfspr(SPRN_SIER);
->>>>    	u64 val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
->>>> +	if (cpu_has_feature(CPU_FTR_ARCH_31))
->>>> +		mantissa = P10_MMCRA_THR_CTR_MANT(mmcra);
->>>> +
->>>>    	if (val == 0 || val == 7)
->>>>    		*weight = 0;
->>>>    	else
->>>> diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
->>>> index 044de65e96b9..71380e854f48 100644
->>>> --- a/arch/powerpc/perf/isa207-common.h
->>>> +++ b/arch/powerpc/perf/isa207-common.h
->>>> @@ -219,6 +219,10 @@
->>>>    #define MMCRA_THR_CTR_EXP(v)		(((v) >> MMCRA_THR_CTR_EXP_SHIFT) &\
->>>>    						MMCRA_THR_CTR_EXP_MASK)
->>>> +#define P10_MMCRA_THR_CTR_MANT_MASK	0xFFul
->>>> +#define P10_MMCRA_THR_CTR_MANT(v)	(((v) >> MMCRA_THR_CTR_MANT_SHIFT) &\
->>>> +						P10_MMCRA_THR_CTR_MANT_MASK)
->>>> +
->>>>    /* MMCRA Threshold Compare bit constant for power9 */
->>>>    #define p9_MMCRA_THR_CMP_SHIFT	45
->>>> -- 
->>>> 2.26.2
->>>>
+Can you just pull in the minimal fix so that the branch gets fixed
+for this merge window?  All the cleanups can come later.
