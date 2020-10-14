@@ -2,56 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7042D28E23A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 16:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C34228E84A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 23:19:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CBFJX1ntXzDqxZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 01:33:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBQKg5v01zDqhS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 08:19:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
- helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=groug@kaod.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from smtpout1.mo804.mail-out.ovh.net
- (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CBFGY2nWXzDqlr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 01:31:31 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.4.51])
- by mo804.mail-out.ovh.net (Postfix) with ESMTPS id 3D0A36C2DB23;
- Wed, 14 Oct 2020 16:24:19 +0200 (CEST)
-Received: from kaod.org (37.59.142.106) by DAG8EX2.mxp5.local (172.16.2.72)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Wed, 14 Oct
- 2020 16:24:18 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-106R00689b05b96-c54c-41c6-80c0-fcfcc1cbbabc,
- 7756CE0ACB29AF3C5E7C930ECAC39FAF42B28156) smtp.auth=groug@kaod.org
-Date: Wed, 14 Oct 2020 16:24:16 +0200
-From: Greg Kurz <groug@kaod.org>
-To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
-Subject: Re: [PATCH] powerpc/pci: Fix PHB removal/rescan on PowerNV
-Message-ID: <20201014162416.5e29e477@bahia.lan>
-In-Reply-To: <06bf1b7b-e9b4-44b0-1aad-60b938f8e924@kaod.org>
-References: <20200925092258.525079-1-clg@kaod.org>
- <CAOSf1CGW7ocYm2BXFiy9Nmi+G+xwVcqQzTqPo_nss_tmpG_V=w@mail.gmail.com>
- <06bf1b7b-e9b4-44b0-1aad-60b938f8e924@kaod.org>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ smtp.mailfrom=baikalelectronics.ru (client-ip=94.125.187.42;
+ helo=mail.baikalelectronics.ru;
+ envelope-from=sergey.semin@baikalelectronics.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=baikalelectronics.ru
+Received: from mail.baikalelectronics.ru (ns2.baikalelectronics.ru
+ [94.125.187.42])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CBFPN3kWpzDqnV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 01:37:28 +1100 (AEDT)
+Received: from localhost (unknown [127.0.0.1])
+ by mail.baikalelectronics.ru (Postfix) with ESMTP id 0C2A5803073E;
+ Wed, 14 Oct 2020 14:37:25 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at baikalelectronics.ru
+Received: from mail.baikalelectronics.ru ([127.0.0.1])
+ by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id f5w4yWjMzAZv; Wed, 14 Oct 2020 17:37:23 +0300 (MSK)
+Date: Wed, 14 Oct 2020 17:37:20 +0300
+From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+To: Felipe Balbi <balbi@kernel.org>
+Subject: Re: [PATCH 20/20] arch: dts: Fix DWC USB3 DT nodes name
+Message-ID: <20201014143720.yny3jco5pkb7dr4b@mobilestation>
+References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
+ <20201014101402.18271-21-Sergey.Semin@baikalelectronics.ru>
+ <878sc8lx0e.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [37.59.142.106]
-X-ClientProxiedBy: DAG9EX2.mxp5.local (172.16.2.82) To DAG8EX2.mxp5.local
- (172.16.2.72)
-X-Ovh-Tracer-GUID: 122b0630-0bca-4820-9f76-70f6754687f5
-X-Ovh-Tracer-Id: 725642493523696035
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedriedugdejiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepveelhfdtudffhfeiveehhfelgeellefgteffteekudegheejfffghefhfeeuudffnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopegtlhhgsehkrghougdrohhrgh
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <878sc8lx0e.fsf@kernel.org>
+X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+X-Mailman-Approved-At: Thu, 15 Oct 2020 07:49:49 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,95 +51,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Oliver O'Halloran <oohall@gmail.com>, linux-pci <linux-pci@vger.kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, linux-usb@vger.kernel.org,
+ Neil Armstrong <narmstrong@baylibre.com>, Tony Lindgren <tony@atomide.com>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>, Wei Xu <xuwei5@hisilicon.com>,
+ linux-samsung-soc@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+ Kukjin Kim <kgene@kernel.org>, Andy Gross <agross@kernel.org>,
+ linux-arm-msm@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ devicetree@vger.kernel.org, Jason Cooper <jason@lakedaemon.net>,
+ Mathias Nyman <mathias.nyman@intel.com>, linux-kernel@vger.kernel.org,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+ Rob Herring <robh+dt@kernel.org>, Santosh Shilimkar <ssantosh@kernel.org>,
+ linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Roger Quadros <rogerq@ti.com>, linux-mips@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ linuxppc-dev@lists.ozlabs.org, Patrice Chotard <patrice.chotard@st.com>,
+ Serge Semin <fancer.lancer@gmail.com>, Li Yang <leoyang.li@nxp.com>,
+ Manu Gautam <mgautam@codeaurora.org>,
+ =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+ Shawn Guo <shawnguo@kernel.org>,
+ Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 8 Oct 2020 06:37:02 +0200
-C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+On Wed, Oct 14, 2020 at 05:09:37PM +0300, Felipe Balbi wrote:
+> 
+> Hi Serge,
+> 
+> Serge Semin <Sergey.Semin@baikalelectronics.ru> writes:
+> > In accordance with the DWC USB3 bindings the corresponding node name is
+> > suppose to comply with Generic USB HCD DT schema, which requires the USB
+> 
 
-> On 10/8/20 4:23 AM, Oliver O'Halloran wrote:
-> > On Fri, Sep 25, 2020 at 7:23 PM C=C3=A9dric Le Goater <clg@kaod.org> wr=
-ote:
-> >>
-> >> To fix an issue with PHB hotplug on pSeries machine (HPT/XIVE), commit
-> >> 3a3181e16fbd introduced a PPC specific pcibios_remove_bus() routine to
-> >> clear all interrupt mappings when the bus is removed. This routine
-> >> frees an array allocated in pcibios_scan_phb().
-> >>
-> >> This broke PHB hotplug on PowerNV because, when a PHB is removed and
-> >> re-scanned through sysfs, the PCI layer un-assigns and re-assigns
-> >> resources to the PHB but does not destroy and recreate the PCI
-> >> controller structure. Since pcibios_remove_bus() does not clear the
-> >> 'irq_map' array pointer, a second removal of the PHB will try to free
-> >> the array a second time and corrupt memory.
-> >=20
-> > "PHB hotplug" and "hot-plugging devices under a PHB" are different
-> > things. What you're saying here doesn't make a whole lot of sense to
-> > me unless you're conflating the two. The distinction is important
-> > since on pseries we can use DLPAR to add and remove actual PHBs (i.e.
-> > the pci_controller) at runtime, but there's no corresponding mechanism
-> > on PowerNV.
->=20
-> And it's even different on QEMU.=20
->=20
+> DWC3 is not a simple HDC, though.
 
-If the real HW doesn't have the notion of adding/removing a PHB at
-runtime, then QEMU should stick to that, ie. setting dc->hotpluggable
-to false for PNV PHB device types.
+Yeah, strictly speaking it is equipped with a lot of vendor-specific stuff,
+which are tuned by the DWC USB3 driver in the kernel. But after that the
+controller is registered as xhci-hcd device so it's serviced by the xHCI driver,
+which then registers the HCD device so the corresponding DT node is supposed
+to be compatible with the next bindings: usb/usb-hcd.yaml, usb/usb-xhci.yaml
+and usb/snps,dwc3,yaml. I've created the later one so to validate the denoted
+compatibility.
 
-> >> Free the 'irq_map' array in pcibios_free_controller() to fix
-> >> corruption and clear interrupt mapping after it has been
-> >> disposed. This to avoid filling up the array with successive
-> >> remove/rescan of a bus.
-> >=20
-> > Even with this patch I think we're still broken. With this patch
-> > applied the init path is something like:
-> >=20
-> > per-phb init:
-> >     allocate phb->irq_map array
-> > per-bus init:
-> >     nothing
-> > per-device init:
-> >     pcibios_bus_add_device()
-> >        pci_read_irq_line()
-> >             pci_irq_map_register(pci_dev, virq)
-> >                *record the device's interrupt in phb->irq_map*
-> >=20
-> > And the teardown path:
-> >=20
-> > per-device teardown:
-> >     nothing
-> > per-bus teardown:
-> >     pcibios_remove_bus()
-> >         pci_irq_map_dispose()
-> >             *walk phb->irq_map and dispose of each mapped interrupt*
-> > per-phb teardown:
-> >     free(phb->irq_map)
-> >=20
-> > There's a lot of asymmetry here, which is a problem in itself, but the
-> > real issue is that when removing *any* pci_bus under a PHB we dispose
-> > of the LSI\ for *every* device under that PHB. Not good.
-> >=20
-> > Ideally we should be fixing this by having the per-device teardown
-> > handle disposing the mapping. Unfortunately, there's no pcibios hook
-> > that's called when removing a pci_dev. However, we can register a bus
-> > notifier which will be called when the pci_dev is removed from its bus
-> > and we already do that for the per-device EEH teardown and to handle
-> > IOMMU TCE invalidation when the device is removed.
->=20
-> I lack the knowledge here and I think some else should take over,
-> as I am not doing a good job.=20
->=20
-> Michael, can you drop the initial patch again :/ It is better not
-> to merge anything.
->=20
-> Thanks,
->=20
-> C.=20
->=20
->=20
+> 
+> > nodes to have the name acceptable by the regexp: "^usb(@.*)?" . But a lot
+> > of the DWC USB3-compatible nodes defined in the ARM/ARM64 DTS files have
+> > name as "^dwc3@.*" or "^usb[1-3]@.*" or even "^dwusb@.*", which will cause
+> > the dtbs_check procedure failure. Let's fix the nodes naming to be
+> > compatible with the DWC USB3 DT schema to make dtbs_check happy.
+> >
+> > Note we don't change the DWC USB3-compatible nodes names of
+> > arch/arm64/boot/dts/apm/{apm-storm.dtsi,apm-shadowcat.dtsi} since the
+> > in-source comment says that the nodes name need to be preserved as
+> > "^dwusb@.*" for some backward compatibility.
+> 
+
+> interesting, compatibility with what? Some debugfs files, perhaps? :-)
+
+Don't really know.) In my experience the worst type of such compatibility is
+connected with some bootloader magic, which may add/remove/modify properties
+to nodes with pre-defined names.
+
+-Sergey
+
+> 
+> In any case, I don't have any problems with this, so I'll let other
+> folks comment.
+> 
+> -- 
+> balbi
+
 
