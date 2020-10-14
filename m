@@ -2,101 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2514C28DFEE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 13:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C5E428E154
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 15:31:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CB9W62rSlzDqcg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 22:42:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBCxW1GlXzDqq8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 00:31:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.66; helo=mail-ot1-f66.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=DdPbZfv2; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com
+ [209.85.210.66])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CB9Rh50lRzDqZQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 22:39:11 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09EBV9pr128561; Wed, 14 Oct 2020 07:38:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=ybbBBc1ubBi+MYs3l37BnscOxOb29Z2bSOcLI0t8Q84=;
- b=DdPbZfv2bcZKQ2yY003LFhSgm52urs3ER9lhahzoSBPPJQ3uuuXqXQvNhrqJvaMVEL+Q
- 70WhTwaMHxyA0Iszv7UuUxzgHbfnkkszcfdGlwmig/bvtC7HO+EQ0k1KAjQtT6B/8xUW
- l4Az2CDLsfnEKCdkxFSalWagAIiHx5pGQbp7v7QZzu2kz74riMdAwvgkNJ+AM9e9J6ul
- gAwEzI2cwB9oP+rrNF5x1ilEVE+zbCyq69Rooo5KYgY19d/2SQcNYcgCni6n9Bur14p/
- bfvkKBIR6SRsuNPVBEFpxhy7GTkxSitnl+bx0wLCSYe00zmO+we0iqsuJl4kPlnlpqAz zQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3460a68jb1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Oct 2020 07:38:58 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09EBVGIF129173;
- Wed, 14 Oct 2020 07:38:57 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3460a68jae-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Oct 2020 07:38:57 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09EBbwd6021184;
- Wed, 14 Oct 2020 11:38:55 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04ams.nl.ibm.com with ESMTP id 3434k7v31m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 Oct 2020 11:38:55 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 09EBcrN629032888
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Oct 2020 11:38:53 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5004CA4062;
- Wed, 14 Oct 2020 11:38:53 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B4D3A4054;
- Wed, 14 Oct 2020 11:38:51 +0000 (GMT)
-Received: from sig-9-65-216-73.ibm.com (unknown [9.65.216.73])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 14 Oct 2020 11:38:51 +0000 (GMT)
-Message-ID: <98b04c130708893ebefdf81e127a66356b4a6129.camel@linux.ibm.com>
-Subject: Re: [PATCH v2] ima: defer arch_ima_get_secureboot() call to IMA
- init time
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Chester Lin <clin@suse.com>, Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 14 Oct 2020 07:38:50 -0400
-In-Reply-To: <20201014093531.GA9408@linux-8mug>
-References: <20201013081804.17332-1-ardb@kernel.org>
- <ae9ab2560f6d7b114726efb1ec26f0a36f695335.camel@linux.ibm.com>
- <CAMj1kXFZVR46_oeYTxJ59q-7u+zFCFtOQuSQoiEzKLhXzpydow@mail.gmail.com>
- <20201014093531.GA9408@linux-8mug>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-12.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-14_07:2020-10-14,
- 2020-10-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 priorityscore=1501
- malwarescore=0 mlxlogscore=999 suspectscore=0 impostorscore=0 mlxscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010140081
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CBCsL27vGzDqjd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 00:28:03 +1100 (AEDT)
+Received: by mail-ot1-f66.google.com with SMTP id e20so3363691otj.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 06:28:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=ZL5zSCW4abwqO0FHpIH/hdReN6zUDlAhI8F0pVQ1+U0=;
+ b=nPlaU+Z7qzezH9+xEo/CR/J8/4VbCd4bpGAOz5N32AHYCvhTm+MV50jKmR0g3ZTDcL
+ cGZ7kFApzxPZ7EAOEgk3S6E3BKED7WOpXa7kqpr0hpitYu9faQ3Kv+hUelyqCu7BkKGw
+ ui/1DL8R/iWkEocVjN+E02iM9TG26Kjd6GFiONTzBPeQhQpVh+gr7mbuZ0HPBuMPWoH4
+ nSqqV6Eun5XumYQ9htMZTQWJa7N/W+ZKSpHz8/w7w7Rrpvzvs34ZyET+eAp6Yceo9gBO
+ V5ZdDB5/DjLuSQjMV+7hvjda0Dm+knLW8NUiWMk/+S9IBJLtvDMgWmpldh8OHf43lRRl
+ 6iSA==
+X-Gm-Message-State: AOAM530bl4FDpGLnd3cFFhxmcdos8BeK8/cB9/EQWMGYZTVghu+Wm3SA
+ rtb14W4DFk5OqVpC95A9+Q==
+X-Google-Smtp-Source: ABdhPJx7vWvJU+mgKZyS7+CbeUNCduplAaoDS6csoJj2fWAGBxKcFikhthRG5g2vB1JTOE0K/Kpwlg==
+X-Received: by 2002:a9d:bd1:: with SMTP id 75mr1500221oth.1.1602682078846;
+ Wed, 14 Oct 2020 06:27:58 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+ by smtp.gmail.com with ESMTPSA id h25sm1165503otj.41.2020.10.14.06.27.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 14 Oct 2020 06:27:58 -0700 (PDT)
+Received: (nullmailer pid 1539238 invoked by uid 1000);
+ Wed, 14 Oct 2020 13:27:56 -0000
+Date: Wed, 14 Oct 2020 08:27:56 -0500
+From: Rob Herring <robh@kernel.org>
+To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Subject: Re: [PATCH 04/20] dt-bindings: usb: usb-hcd: Add "tpl-support"
+ property
+Message-ID: <20201014132756.GA1538723@bogus>
+References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
+ <20201014101402.18271-5-Sergey.Semin@baikalelectronics.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201014101402.18271-5-Sergey.Semin@baikalelectronics.ru>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,98 +68,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi <linux-efi@vger.kernel.org>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, James Morris <jmorris@namei.org>,
- jlee@suse.com, linux-security-module@vger.kernel.org,
- linux-integrity <linux-integrity@vger.kernel.org>, "open
- list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>,
- "Serge E. Hallyn" <serge@hallyn.com>
+Cc: Neil Armstrong <narmstrong@baylibre.com>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+ Kevin Hilman <khilman@baylibre.com>, Andy Gross <agross@kernel.org>,
+ linux-snps-arc@lists.infradead.org, devicetree@vger.kernel.org,
+ Mathias Nyman <mathias.nyman@intel.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+ Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ Roger Quadros <rogerq@ti.com>, Felipe Balbi <balbi@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
+ Serge Semin <fancer.lancer@gmail.com>, linux-kernel@vger.kernel.org,
+ Manu Gautam <mgautam@codeaurora.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-10-14 at 17:35 +0800, Chester Lin wrote:
-> Hi Ard & Mimi,
+On Wed, 14 Oct 2020 13:13:46 +0300, Serge Semin wrote:
+> The host controller device might be designed to work for the particular
+> products or applications. In that case its DT node is supposed to be
+> equipped with the tpl-support property.
 > 
-> On Tue, Oct 13, 2020 at 06:59:21PM +0200, Ard Biesheuvel wrote:
-> > On Tue, 13 Oct 2020 at 18:46, Mimi Zohar <zohar@linux.ibm.com> wrote:
-> > >
-> > > [Cc'ing linuxppc-dev@lists.ozlabs.org]
-> > >
-> > > On Tue, 2020-10-13 at 10:18 +0200, Ard Biesheuvel wrote:
-> > > > Chester reports that it is necessary to introduce a new way to pass
-> > > > the EFI secure boot status between the EFI stub and the core kernel
-> > > > on ARM systems. The usual way of obtaining this information is by
-> > > > checking the SecureBoot and SetupMode EFI variables, but this can
-> > > > only be done after the EFI variable workqueue is created, which
-> > > > occurs in a subsys_initcall(), whereas arch_ima_get_secureboot()
-> > > > is called much earlier by the IMA framework.
-> > > >
-> > > > However, the IMA framework itself is started as a late_initcall,
-> > > > and the only reason the call to arch_ima_get_secureboot() occurs
-> > > > so early is because it happens in the context of a __setup()
-> > > > callback that parses the ima_appraise= command line parameter.
-> > > >
-> > > > So let's refactor this code a little bit, by using a core_param()
-> > > > callback to capture the command line argument, and deferring any
-> > > > reasoning based on its contents to the IMA init routine.
-> > > >
-> > > > Cc: Chester Lin <clin@suse.com>
-> > > > Cc: Mimi Zohar <zohar@linux.ibm.com>
-> > > > Cc: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
-> > > > Cc: James Morris <jmorris@namei.org>
-> > > > Cc: "Serge E. Hallyn" <serge@hallyn.com>
-> > > > Link: https://lore.kernel.org/linux-arm-kernel/20200904072905.25332-2-clin@suse.com/
-> > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > > ---
-> > > > v2: rebase onto series 'integrity: improve user feedback for invalid bootparams'
-> > >
-> > > Thanks, Ard.  Based on my initial, limited testing on Power, it looks
-> > > good, but I'm hesistant to include it in the integrity 5.10 pull
-> > > request without it having been in linux-next and some additional
-> > > testing.  It's now queued in the next-integrity-testing branch awaiting
-> > > some tags.
-> > >
+> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 > 
-> Tested-by: Chester Lin <clin@suse.com>
+> ---
 > 
-> I have tested this patch on x86 VM.
+> Changelog v2:
+> - Grammar fix: "s/it'/its"
+> - Discard '|' from the property description, since we don't need to preserve
+>   the text formatting.
+> ---
+>  Documentation/devicetree/bindings/usb/usb-hcd.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> * System configuration:
->   - Platform: QEMU/KVM
->   - Firmware: EDK2/OVMF + secure boot enabled.
->   - OS: SLE15-SP2 + SUSE's kernel-vanilla (=linux v5.9) + the follow commits
->     from linux-next and upstream:
->     * [PATCH v2] ima: defer arch_ima_get_secureboot() call to IMA init time
->       https://www.spinics.net/lists/linux-efi/msg20645.html
->     * e4d7e2df3a09 "ima: limit secure boot feedback scope for appraise"
->     * 7fe2bb7e7e5c "integrity: invalid kernel parameters feedback"
->     * 4afb28ab03d5 "ima: add check for enforced appraise option"
-> 
-> * Logs with UEFI secure boot enabled:
-> 
->   [    0.000000] Linux version 5.9.0-858-g865c50e1d279-1.g8764d18-vanilla (geeko@b
->   uildhost) (gcc (SUSE Linux) 10.2.1 20200825 [revision c0746a1beb1ba073c7981eb09f
->   55b3d993b32e5c], GNU ld (GNU Binutils; openSUSE Tumbleweed) 2.34.0.20200325-1) #
->   1 SMP Wed Oct 14 04:00:11 UTC 2020 (8764d18)
->   [    0.000000] Command line: BOOT_IMAGE=/boot/vmlinuz-5.9.0-858-g865c50e1d279-1.
->   g8764d18-vanilla root=UUID=5304c03e-4d8a-4d67-873a-32a32e57cdeb console=ttyS0,11
->   5200 resume=/dev/disk/by-path/pci-0000:04:00.0-part4 mitigations=auto ignore_log
->   level crashkernel=192M,high crashkernel=72M,low ima_appraise=off
->   [    0.000000] x86/fpu: Supporting XSAVE feature 0x001: 'x87 floating point regi
->   sters'
->   [    0.000000] x86/fpu: Supporting XSAVE feature 0x002: 'SSE registers'
->   [    0.000000] x86/fpu: Supporting XSAVE feature 0x004: 'AVX registers'
->   ....
->   ....
->   [    1.720309] ima: Secure boot enabled: ignoring ima_appraise=off option
->   [    1.720314] ima: No TPM chip found, activating TPM-bypass!
->   [    1.722129] ima: Allocated hash algorithm: sha256
 
 
-Thank you for testing the options aren't being set in secure boot mode.
-My main concern, however, is that IMA doesn't go into TPM-bypass mode. 
-Does this system have a TPM?
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Mimi
+Traceback (most recent call last):
+  File "/usr/local/bin/dt-extract-example", line 45, in <module>
+    binding = yaml.load(open(args.yamlfile, encoding='utf-8').read())
+  File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/main.py", line 343, in load
+    return constructor.get_single_data()
+  File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/constructor.py", line 111, in get_single_data
+    node = self.composer.get_single_node()
+  File "_ruamel_yaml.pyx", line 706, in _ruamel_yaml.CParser.get_single_node
+  File "_ruamel_yaml.pyx", line 724, in _ruamel_yaml.CParser._compose_document
+  File "_ruamel_yaml.pyx", line 775, in _ruamel_yaml.CParser._compose_node
+  File "_ruamel_yaml.pyx", line 891, in _ruamel_yaml.CParser._compose_mapping_node
+  File "_ruamel_yaml.pyx", line 904, in _ruamel_yaml.CParser._parse_next_event
+ruamel.yaml.scanner.ScannerError: mapping values are not allowed in this context
+  in "<unicode string>", line 27, column 14
+make[1]: *** [Documentation/devicetree/bindings/Makefile:20: Documentation/devicetree/bindings/usb/usb-hcd.example.dts] Error 1
+make[1]: *** Deleting file 'Documentation/devicetree/bindings/usb/usb-hcd.example.dts'
+make[1]: *** Waiting for unfinished jobs....
+./Documentation/devicetree/bindings/usb/usb-hcd.yaml:27:14: [error] syntax error: mapping values are not allowed here (syntax)
+make[1]: *** [Documentation/devicetree/bindings/Makefile:59: Documentation/devicetree/bindings/processed-schema-examples.json] Error 123
+make: *** [Makefile:1366: dt_binding_check] Error 2
+
+
+See https://patchwork.ozlabs.org/patch/1382001
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure dt-schema is up to date:
+
+pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
+
+Please check and re-submit.
 
