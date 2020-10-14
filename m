@@ -2,60 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEBD28E7D0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 22:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 433AC28E7EF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 22:37:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CBP0P0fMzzDqqJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 07:19:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBPP03qGZzDqrn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 07:37:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.218.68; helo=mail-ej1-f68.google.com;
- envelope-from=k.kozlowski.k@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com
- [209.85.218.68])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=YOSWf8zU; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CBNyr07lbzDqQx
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 07:18:26 +1100 (AEDT)
-Received: by mail-ej1-f68.google.com with SMTP id qp15so366265ejb.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 13:18:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=0MyUw0Y3gJD9KhX/3YhqYIS6k+1q8f/JNR3G4Oc+mO0=;
- b=Gs3ULYV/XNVwoFHLwo5HnE1eGbahQzl1vCBlXegN4ZkA1VB8idfCvkkR/RuCFXNWvn
- g2WCSfyKvuh3i5Ftn7Woom/f/Zze/6IAny8Kof0bTEV2Vl+GWml90rGtTneoqYU2WIU/
- ZkaB5pWRufR4Qcf7T8LFbeQKNmZHoa1LL4npk5mNZRFv3I1RFdXoFhGrY4hm7exCSgGX
- db4asEvM+U5e30kOcBA7VG0PiyOe1mkc0gFObEhbmsRRlN+RtyDI5UadONLJHex0hJbp
- fwIWKFRUe6WdlchRV/+ZUqOkmP7qi+a3VrmDFK1wV3axNpvl3MtIyYWXDLs7vEeJ0rA8
- BoHQ==
-X-Gm-Message-State: AOAM531RdWb1Ti8bm0lbYTAb/JyyxrQBCNAhdIl6ciJ5D78d5ueHgnye
- KRfpcpwh54jI2drmaxLFtFY=
-X-Google-Smtp-Source: ABdhPJyD9mvSdzTeswKoJSSkNRNYZJV/A491oP4RLt7gITN4T+XTScFWRX+EpK8W5zlRYXEzJ8uEig==
-X-Received: by 2002:a17:906:1e45:: with SMTP id
- i5mr798232ejj.203.1602706702595; 
- Wed, 14 Oct 2020 13:18:22 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.171])
- by smtp.googlemail.com with ESMTPSA id i18sm222556ejr.59.2020.10.14.13.18.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Oct 2020 13:18:21 -0700 (PDT)
-Date: Wed, 14 Oct 2020 22:18:18 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Subject: Re: [PATCH 11/20] dt-bindings: usb: dwc3: Add synopsys,dwc3
- compatible string
-Message-ID: <20201014201818.GA6926@kozik-lap>
-References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
- <20201014101402.18271-12-Sergey.Semin@baikalelectronics.ru>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201014101402.18271-12-Sergey.Semin@baikalelectronics.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CBPMJ3yjfzDqlY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 07:36:11 +1100 (AEDT)
+Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net
+ [73.231.172.41])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4A69022249;
+ Wed, 14 Oct 2020 20:36:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1602707768;
+ bh=nDZMRzWG7gYP7mjsXiRsPfXA6cL+zIi6JULaouk468E=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=YOSWf8zUI42En+qWKtnoLC0kblv7jVr5ZG+fS4a+WgjNqRiQx6xikSMctmczqBPsN
+ IxEgFLKKRV9H4kRX+chwy6Wa+tahUFGLMgW/jtSHjaVT59wTsP+SnnsEXsYdxk4cTC
+ 5FS3TQIJGUlEfMHk+/PnVmZAjbnqlcpaaiFXj3g4=
+Date: Wed, 14 Oct 2020 13:36:07 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v4 00/13] mm/debug_vm_pgtable fixes
+Message-Id: <20201014133607.fbf63d060e331fcd6007b624@linux-foundation.org>
+In-Reply-To: <034db663-a5bd-fd5e-b7f6-3ec31310e8e5@linux.ibm.com>
+References: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
+ <20201013135858.f4a7f0c5f3b0a69a2a304cfe@linux-foundation.org>
+ <034db663-a5bd-fd5e-b7f6-3ec31310e8e5@linux.ibm.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,34 +60,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Neil Armstrong <narmstrong@baylibre.com>, linux-kernel@vger.kernel.org,
- Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
- Kevin Hilman <khilman@baylibre.com>, Andy Gross <agross@kernel.org>,
- linux-snps-arc@lists.infradead.org, devicetree@vger.kernel.org,
- Mathias Nyman <mathias.nyman@intel.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
- Rob Herring <robh+dt@kernel.org>, Bjorn Andersson <bjorn.andersson@linaro.org>,
- linux-arm-kernel@lists.infradead.org, Roger Quadros <rogerq@ti.com>,
- Felipe Balbi <balbi@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
- Serge Semin <fancer.lancer@gmail.com>, Manu Gautam <mgautam@codeaurora.org>,
+Cc: linux-mm@kvack.org, Anshuman Khandual <anshuman.khandual@arm.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 14, 2020 at 01:13:53PM +0300, Serge Semin wrote:
-> The DWC USB3 driver and some DTS files like Exynos 5250, Keystone k2e, etc
-> expects the DWC USB3 DT node to have the compatible string with the
-> "synopsys" vendor prefix. Let's add the corresponding compatible string to
-> the controller DT schema, but mark it as deprecated seeing the Synopsys,
-> Inc. is presented with just "snps" vendor prefix.
+On Wed, 14 Oct 2020 08:45:16 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
 
-Instead of adding deprecated schema just correct the DTSes to use snps.
-The "synopsys" is not even in vendor prefixes.
+> > Against mm-debug_vm_pgtable-avoid-none-pte-in-pte_clear_test.patch:
+> > 
+> > https://lkml.kernel.org/r/87zh5wx51b.fsf@linux.ibm.com
+> 
+> 
+> yes this one we should get fixed. I was hoping someone familiar with 
+> Riscv pte updates rules would pitch in. IIUC we need to update 
+> RANDON_ORVALUE similar to how we updated it for s390 and ppc64.
+> 
+> 
+>   Alternatively we can do this
+> 
+> modified   mm/debug_vm_pgtable.c
+> @@ -548,7 +548,7 @@ static void __init pte_clear_tests(struct mm_struct 
+> *mm, pte_t *ptep,
+>   	pte_t pte = pfn_pte(pfn, prot);
+> 
+>   	pr_debug("Validating PTE clear\n");
+> -	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+> +//	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+>   	set_pte_at(mm, vaddr, ptep, pte);
+>   	barrier();
+>   	pte_clear(mm, vaddr, ptep);
+> 
+> till we get that feedback from RiscV team?
 
-Best regards,
-Krzysztof
+Would it be better to do
+
+#ifdef CONFIG_S390
+	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+#endif
+
+?
+
