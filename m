@@ -1,52 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8536F28D784
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 02:34:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94CFC28D8B3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 04:49:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4C9th849x8zDqsd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 11:34:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4C9xhH5gRwzDqnV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Oct 2020 13:49:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430;
+ helo=mail-pf1-x430.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=oK3lseUv; dkim-atps=neutral
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com
+ [IPv6:2607:f8b0:4864:20::430])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4C9tfj0YJSzDqWN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 11:32:45 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=isquPztE; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4C9tfh3tJDz9sSs;
- Wed, 14 Oct 2020 11:32:44 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1602635564;
- bh=aaFXn0s8LXNBACeN5QqauoEt7/W0th4b6zZ3+2X5Ur4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=isquPztE8yN6BTroYKarHtiWcECSrsds2PfW2N2BXFJ/sMnRyjkAdRn4f2lsifvzP
- b3Ku6pZMwPgitHT2xtrU9XZ5PtZvri3rfl3IQb5/Y+9CzW6ENl8b5lVCxnv9nxB09j
- 4ocFGgbyHb3dfSM7SP40ZX0e3Zg9m+xQvvR7syXC6lnMYOjRiDwR5nqwg8HA0qXj02
- d6j9LprKL/Qvknk5gXlMRSiOy8uNpPR7dU3nf2SB+cpcjTW0SrR7Vl0/7RTxMzfJRq
- dEQRWxoBMzUXZnQ/aqp3gZLuUBLOBE2+zRGo9BHWS9fKihWaHvsKA5XpfJ5ffMbEbq
- 4zAcvSHG8fDjw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michael Neuling <mikey@neuling.org>
-Subject: Re: [PATCH 1/2] powerpc: Fix user data corruption with P9N DD2.1 VSX
- CI load workaround emulation
-In-Reply-To: <20201013043741.743413-1-mikey@neuling.org>
-References: <20201013043741.743413-1-mikey@neuling.org>
-Date: Wed, 14 Oct 2020 11:32:43 +1100
-Message-ID: <87imbdzlxw.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4C9xfZ4GjBzDqW4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Oct 2020 13:47:45 +1100 (AEDT)
+Received: by mail-pf1-x430.google.com with SMTP id x13so1091249pfa.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Oct 2020 19:47:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Av/BLpgAn6P46+TW3WzA91m/eJdrqrTeYGbRPv+P6zA=;
+ b=oK3lseUveczg+SShyTwjzwjHRoHUfPmnN/H3xp7aufC4gzWqpQC+5X+WqAb9G1nx4Q
+ cHrXXgVy+mXbfP1JExO3ckAQQ5MfPUTS1XnKBf9GrSEThOwlfmIQrg5YDK4r0CQT4Dam
+ WrKSUkdmM1W+P8I5PcMev9F/2EgcGabIQ+2gZywdBUtsZJQ+h1+bhbPqXb8At440VJCq
+ HWww43vRc6NQQvpHwZXRIISTxufLS99LpE4PnoxkBb7TpbsneWMqzZEiTauyd8a3DyAN
+ tMbdiOWp+6vcPRKeofbs+FReXdGhD1cO6v7SkW8H/ErlhxFk1rfBtNY5uM+9rVv1EMso
+ uOkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Av/BLpgAn6P46+TW3WzA91m/eJdrqrTeYGbRPv+P6zA=;
+ b=TEqwFSDFqVc5gZT2aqfYX5S+YuP7gi4MJrOgKxyGBhd6aXFr8ERuuAH8t0Gm1zwdIP
+ eBBvE9OWft3tKjg8FxAcSCZgU+5jG94D6WOaKM+EheOC3r6S8MkFY6sRnMJXaU0S5WVv
+ Tf0qM2xDfZngjz0nHHy3YG+FQx5z7208nm++SD4u12EHq1TWE0F2VnqODv35N7KM7f2F
+ Nkgn2DXCwDIJ6DH/kBn3BVJcW1CUekcYxnw1ec/1GuR8jnWC2LQdJgBBJwVH2Zz66qMM
+ 7tOQczNc88VA8fuP5lFfvk0O2XFW0+hKMIsiyVRp4diXPMiOY8ONoGUdr+SDImd29/Um
+ NDkA==
+X-Gm-Message-State: AOAM531hsSCNa6ue7NIvB8x2R5rfLUJ53G9wo0LyGNb1b4WpUCZhUTr6
+ aa2m7M7/k/rJJqE57Z0EeFg81mV1I6hy0Q==
+X-Google-Smtp-Source: ABdhPJyyK5d1rAe1+ztbV+vin5RZpwVkWiDninpFLfUXs/LZpKZNMu4IODOh5Mn+GiJW4hTmuOcsrw==
+X-Received: by 2002:a62:7d14:0:b029:155:2add:290e with SMTP id
+ y20-20020a627d140000b02901552add290emr2380538pfc.41.1602643661729; 
+ Tue, 13 Oct 2020 19:47:41 -0700 (PDT)
+Received: from localhost.ibm.com (14-200-206-90.tpgi.com.au. [14.200.206.90])
+ by smtp.gmail.com with ESMTPSA id
+ r201sm1227493pfc.98.2020.10.13.19.47.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 Oct 2020 19:47:41 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] selftests/powerpc: Fix eeh-basic.sh exit codes
+Date: Wed, 14 Oct 2020 13:47:11 +1100
+Message-Id: <20201014024711.1138386-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,182 +78,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, linuxppc-dev@lists.ozlabs.org
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Neuling <mikey@neuling.org> writes:
-> __get_user_atomic_128_aligned() stores to kaddr using stvx which is a
-> VMX store instruction, hence kaddr must be 16 byte aligned otherwise
-> the store won't occur as expected.
->
-> Unfortunately when we call __get_user_atomic_128_aligned() in
-> p9_hmi_special_emu(), the buffer we pass as kaddr (ie. vbuf) isn't
-> guaranteed to be 16B aligned. This means that the write to vbuf in
-> __get_user_atomic_128_aligned() has the bottom bits of the address
-> truncated. This results in other local variables being
-> overwritten. Also vbuf will not contain the correct data which results
-> in the userspace emulation being wrong and hence user data corruption.
->
-> In the past we've been mostly lucky as vbuf has ended up aligned but
-> this is fragile and isn't always true. CONFIG_STACKPROTECTOR in
-> particular can change the stack arrangement enough that our luck runs
-> out.
+The kselftests test running infrastructure expects tests to finish with an
+exit code of 4 if the test decided it should be skipped. Currently
+eeh-basic.sh exits with the number of devices that failed to recover, so if
+four devices didn't recover we'll report a skip instead of a fail.
 
-Below is a script which takes a System.map and vmlinux (or objdump
-output) and tries to check if the stack layout is susceptible to the
-bug.
+Fix this by checking if the return code is non-zero and report success
+and failure by returning 0 or 1 respectively. For the cases where should
+actually skip return 4.
 
-cheers
+Fixes: 85d86c8aa52e ("selftests/powerpc: Add basic EEH selftest")
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+---
+ tools/testing/selftests/powerpc/eeh/eeh-basic.sh | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
+diff --git a/tools/testing/selftests/powerpc/eeh/eeh-basic.sh b/tools/testing/selftests/powerpc/eeh/eeh-basic.sh
+index 8a8d0f456946..0d783e1065c8 100755
+--- a/tools/testing/selftests/powerpc/eeh/eeh-basic.sh
++++ b/tools/testing/selftests/powerpc/eeh/eeh-basic.sh
+@@ -1,17 +1,19 @@
+ #!/bin/sh
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
++KSELFTESTS_SKIP=4
++
+ . ./eeh-functions.sh
+ 
+ if ! eeh_supported ; then
+ 	echo "EEH not supported on this system, skipping"
+-	exit 0;
++	exit $KSELFTESTS_SKIP;
+ fi
+ 
+ if [ ! -e "/sys/kernel/debug/powerpc/eeh_dev_check" ] && \
+    [ ! -e "/sys/kernel/debug/powerpc/eeh_dev_break" ] ; then
+ 	echo "debugfs EEH testing files are missing. Is debugfs mounted?"
+-	exit 1;
++	exit $KSELFTESTS_SKIP;
+ fi
+ 
+ pre_lspci=`mktemp`
+@@ -84,4 +86,5 @@ echo "$failed devices failed to recover ($dev_count tested)"
+ lspci | diff -u $pre_lspci -
+ rm -f $pre_lspci
+ 
+-exit $failed
++test "$failed" == 0
++exit $?
+-- 
+2.26.2
 
-
-#!/usr/bin/python3
-
-import os
-import sys
-import re
-from subprocess import Popen, PIPE
-
-
-# eg: c00000000002ea88:       ce 49 00 7c     stvx    v0,0,r9
-stvx_pattern = re.compile('^c[0-9a-f]{15}:\s+(?:[0-9a-f]{2} ){4}\s+stvx\s+v0,0,(r\d+)\s*')
-
-# eg: c00000000002ea80:       28 00 21 39     addi    r9,r1,40
-addi_pattern = '^c[0-9a-f]{15}:\s+(?:[0-9a-f]{2} ){4}\s+addi\s+%s,r1,(\d+)\s*'
-
-
-def main(args):
-    if len(args) != 2:
-        print('Usage: %s <objdump|vmlinux> <System.map>' % sys.argv[0])
-        return -1
-
-    if os.path.basename(sys.argv[1]).startswith('vmlinu'):
-        dump = Popen(['objdump', '-d', sys.argv[1]], stdout=PIPE, encoding='utf-8').stdout
-    else:
-        dump = open(sys.argv[1])
-
-    syms = read_symbols(sys.argv[2])
-
-    func_lines = extract_func(dump, 'handle_hmi_exception', syms)
-    if func_lines is None:
-        print("Error: couldn't find handle_hmi_exception in objdump output")
-        return -1
-
-    match = None
-    i = 0
-    while i < len(func_lines):
-        match = stvx_pattern.match(func_lines[i])
-        if match:
-            break
-        i += 1
-
-    if match is None:
-        print("Error: couldn't find stvx in handle_hmi_exception")
-        return -1
-
-    stvx_reg = match.group(1)
-    print('stvx found using register %s:\n%s\n' % (stvx_reg, match.group(0).rstrip()))
-
-    match = None
-    i -= 1
-    while i > 0:
-        pattern = re.compile(addi_pattern % stvx_reg)
-        match = pattern.match(func_lines[i])
-        if match:
-            break
-        i -= 1
-
-    if match is None:
-        print("Error: couldn't find addi in handle_hmi_exception")
-        return -1
-
-    stack_offset = int(match.group(1))
-    print('addi found using offset %d:\n%s\n' % (stack_offset, match.group(0).rstrip()))
-
-    if stack_offset & 0xf:
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        print('!! Offset is misaligned - bug present !!')
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        return 1
-    else:
-        print('OK - offset is aligned')
-
-    return 0
-
-
-def extract_func(f, func_name, syms):
-    func_addr, func_size = find_symbol_and_size(syms, func_name)
-    num_lines = int(func_size / 4)
-
-    pattern = re.compile('^%016x:' % func_addr)
-
-    match = None
-    line = f.readline()
-    while len(line):
-        match = pattern.match(line)
-        if match:
-            break
-        line = f.readline()
-
-    if match is None:
-        return None
-
-    lines = []
-    for i in range(0, num_lines):
-        lines.append(f.readline())
-
-    return lines
-
-
-def read_symbols(map_path):
-    last_function = ''
-    last_addr = 0
-
-    lines = open(map_path).readlines()
-
-    addrs = []
-    last_addr = 0
-    for line in lines:
-        tokens = line.split()
-        if len(tokens) == 3:
-            addr = int(tokens[0], 16)
-            sym_type = tokens[1]
-            name = tokens[2]
-        elif len(tokens) == 2:
-            addr = last_addr
-            sym_type = tokens[0]
-            name = tokens[1]
-        else:
-            raise Exception("Couldn't grok System.map")
-
-        addrs.append((addr, name, sym_type))
-        last_addr = addr
-
-    return addrs
-
-
-def find_symbol_and_size(symbol_map, name):
-    dot_name = '.%s' % name
-    saddr = None
-    i = 0
-    for addr, cur_name, sym_type in symbol_map:
-        if cur_name == name or cur_name == dot_name:
-            saddr = addr
-            break
-        i += 1
-
-    if saddr is None:
-        return (None, None)
-
-    i += 1
-    if i >= len(symbol_map):
-        size = -1
-    else:
-        size = symbol_map[i][0] - saddr
-
-    return (saddr, size)
-
-
-sys.exit(main(sys.argv[1:]))
