@@ -2,53 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F5028E972
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 02:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12AE728EB5A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 05:01:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CBVL71D7JzDqX9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 11:20:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBYw30FG7zDqRf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 14:01:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CBVJQ0J3LzDqVC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 11:19:02 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=ik7VxBvm; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CBVJK6H5dz9sT6;
- Thu, 15 Oct 2020 11:18:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1602721141;
- bh=Mb2bFDMqNicXNfC4Ps43K7SfZoXJq9Lfw7aztaE6atg=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=ik7VxBvmeMXfqSGhAW8lWf8cRG/yithYAwWRPa6YI/JKJ/f4+z1s4yMujMzFdXWp7
- nkwGUqiNoJV16swjd+4OYVmKYsADXp7/7HTKFgEfg4suAukZm1imym1Ic+WDNUDhnq
- YDYrFW+coLLSgoSZeJbfwG7RVmc9839VX/D/ODGhNe0B6eBTTKV0naWAmjmwfpkQy6
- XcXeOfvlUEY00cKnybz3hRQpNV/TmoMml3gZtVURHnOWaxlqsOJUCqXaagTOA2L8z9
- 9AZ9CIIDZXf2NZjvGDpNrnVFbDKm+ZNdi6vGndbF4sqgxUi79cplQSfUdpAgu5quDj
- AfsTdaKkHRwSQ==
-Date: Thu, 15 Oct 2020 11:18:57 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: "Oliver O'Halloran" <oohall@gmail.com>
-Subject: Re: [PATCH -next] Revert "powerpc/pci: unmap legacy INTx interrupts
- when a PHB is removed"
-Message-ID: <20201015111857.3a197732@canb.auug.org.au>
-In-Reply-To: <CAOSf1CFT_Y67Q8caH2uFOYtwpRgFozh30ZWWZzzR-x18LBsG8g@mail.gmail.com>
-References: <20201014182811.12027-1-cai@lca.pw>
- <CAOSf1CFT_Y67Q8caH2uFOYtwpRgFozh30ZWWZzzR-x18LBsG8g@mail.gmail.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CBYtN3lZQzDqQt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 14:00:10 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EE6F831B;
+ Wed, 14 Oct 2020 20:00:07 -0700 (PDT)
+Received: from [192.168.0.130] (unknown [172.31.20.19])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2459F3F719;
+ Wed, 14 Oct 2020 20:00:05 -0700 (PDT)
+Subject: Re: [PATCH v4 00/13] mm/debug_vm_pgtable fixes
+To: Andrew Morton <akpm@linux-foundation.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+References: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
+ <20201013135858.f4a7f0c5f3b0a69a2a304cfe@linux-foundation.org>
+ <034db663-a5bd-fd5e-b7f6-3ec31310e8e5@linux.ibm.com>
+ <20201014133607.fbf63d060e331fcd6007b624@linux-foundation.org>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <6669114f-8522-c0cf-8b99-53f064b5b946@arm.com>
+Date: Thu, 15 Oct 2020 08:29:25 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/F8wNrQpMx3RT1ZliEaacCX9";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+In-Reply-To: <20201014133607.fbf63d060e331fcd6007b624@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,54 +52,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux-Next Mailing List <linux-next@vger.kernel.org>, Qian Cai <cai@lca.pw>,
- =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/F8wNrQpMx3RT1ZliEaacCX9
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
 
-Hi Oliver,
 
-On Thu, 15 Oct 2020 10:00:49 +1100 "Oliver O'Halloran" <oohall@gmail.com> w=
-rote:
->
-> On Thu, Oct 15, 2020 at 5:28 AM Qian Cai <cai@lca.pw> wrote:
-> >
-> > This reverts commit 3a3181e16fbde752007759f8759d25e0ff1fc425 which
-> > causes memory corruptions on POWER9 NV. =20
->=20
-> I was going to post this along with a fix for Cedric's original bug,
-> but I can do that separately so:
->=20
-> Acked-by: Oliver O'Halloran <oohall@gmail.com>
+On 10/15/2020 02:06 AM, Andrew Morton wrote:
+> On Wed, 14 Oct 2020 08:45:16 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
+> 
+>>> Against mm-debug_vm_pgtable-avoid-none-pte-in-pte_clear_test.patch:
+>>>
+>>> https://lkml.kernel.org/r/87zh5wx51b.fsf@linux.ibm.com
+>>
+>>
+>> yes this one we should get fixed. I was hoping someone familiar with 
+>> Riscv pte updates rules would pitch in. IIUC we need to update 
+>> RANDON_ORVALUE similar to how we updated it for s390 and ppc64.
+>>
+>>
+>>   Alternatively we can do this
+>>
+>> modified   mm/debug_vm_pgtable.c
+>> @@ -548,7 +548,7 @@ static void __init pte_clear_tests(struct mm_struct 
+>> *mm, pte_t *ptep,
+>>   	pte_t pte = pfn_pte(pfn, prot);
+>>
+>>   	pr_debug("Validating PTE clear\n");
+>> -	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+>> +//	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+>>   	set_pte_at(mm, vaddr, ptep, pte);
+>>   	barrier();
+>>   	pte_clear(mm, vaddr, ptep);
+>>
+>> till we get that feedback from RiscV team?
+> 
+> Would it be better to do
+> 
+> #ifdef CONFIG_S390
+> 	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+> #endif
 
-I added that to linux-next today.
+I would suggest just dropping RANDOM_ORVALUE from pte_clear_tests()
+possibly with a comment saying it needs to be fixed on RISCV before
+being added back later.
 
---=20
-Cheers,
-Stephen Rothwell
+	pte = __pte(pte_val(pte));
 
---Sig_/F8wNrQpMx3RT1ZliEaacCX9
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+OR
 
------BEGIN PGP SIGNATURE-----
+Disable RANDOM_ORVALUE only for RISCV.
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl+HlXEACgkQAVBC80lX
-0Gzl4ggAjsFTjV/ekYiFVurllVs8uhLgiJiyX9kc2/avzMyjh4YlPjJaamjMQq0A
-QkosvP4MD+YceuyeCtP813DCfhvfp/QY2uMLWeaUPVTn3V8FvtQ3lxIECpq/m3KY
-F6ruVH65ndcsJu1Z+da5+3/g8JiPBIrED00G/rOT4RmfBLLng41G7OfJGUDqOrtk
-8WR7MCNqk1neiJMPdXMOe5IohTDW33yoxaiFWNZO9IuNzcHRuYHJ1xP1MG7m2SSA
-Kdwn+L4Rrm//cW00kRZOBV3S5Y+GvCFTiR7N2RpsA/b/4+H4oDU6JeOmpZYl3ugO
-uk1Vb2NnlTf9AaPBmccafR4mAe5MFQ==
-=vTaC
------END PGP SIGNATURE-----
-
---Sig_/F8wNrQpMx3RT1ZliEaacCX9--
+#ifndef CONFIG_RISCV
+	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+#endif
