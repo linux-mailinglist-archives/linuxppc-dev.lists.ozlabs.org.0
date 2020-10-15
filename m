@@ -1,53 +1,125 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1002B28F065
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 12:53:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16EC28F1EA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 14:19:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CBmNs1zFrzDqWH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 21:53:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBpHX1KbczDqQG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 23:19:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=suse.com (client-ip=51.163.158.102;
+ helo=de-smtp-delivery-102.mimecast.com; envelope-from=clin@suse.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=suse.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=mimecast20200619 header.b=WO9auTZA; 
+ dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com
+ header.a=rsa-sha256 header.s=mimecast20200619 header.b=e1Z2EzBS; 
+ dkim-atps=neutral
+Received: from de-smtp-delivery-102.mimecast.com
+ (de-smtp-delivery-102.mimecast.com [51.163.158.102])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CBmMN1KcFzDqTd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 21:52:26 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CBmM90Gq1zB09ZT;
- Thu, 15 Oct 2020 12:52:21 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id SbMnJxog58-1; Thu, 15 Oct 2020 12:52:20 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CBmM85vf7zB09ZS;
- Thu, 15 Oct 2020 12:52:20 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1251D8B809;
- Thu, 15 Oct 2020 12:52:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id OFAG28YBprpN; Thu, 15 Oct 2020 12:52:21 +0200 (CEST)
-Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 960618B7FF;
- Thu, 15 Oct 2020 12:52:21 +0200 (CEST)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id BC4976646A; Thu, 15 Oct 2020 10:52:20 +0000 (UTC)
-Message-Id: <a1d31f84ddb0926813b17fcd5cc7f3fa7b4deac2.1602759123.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc: force inlining of csum_partial() to avoid multiple
- csum_partial() with GCC10
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 15 Oct 2020 10:52:20 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CBpF106KnzDqTd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 23:17:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com;
+ s=mimecast20200619; t=1602764219;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=V32FRI8vjGEyULrlSVnHeFvjBrj2PFylPSC1V3EZx18=;
+ b=WO9auTZAp2fIQNNzUe7OLENCfXo9pERBuZvLF+5lvYT4cLQqr8auo0IPTtYN8GJtMXd3Om
+ 4Tks9dZc9HjcCOX/ZM8fbps7WZ07YrxUx2qtFBOSCVmFWif/PVJfT4j5/gH6s3a5M9hIY+
+ 0kZsty+1U0SNrmNF3LvQu7MW+DLleLE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com;
+ s=mimecast20200619; t=1602764220;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=V32FRI8vjGEyULrlSVnHeFvjBrj2PFylPSC1V3EZx18=;
+ b=e1Z2EzBSpM6PoRVCxEDlT6YLlVxYlkBgiZmOCf2lFcdbX5Y78Sm9HmaifTELKu1PMQaM5e
+ 9I3IJTdWgcT+hN47wApMXe0KeUQDg+v96+gIP2J1JTofqPXtwQHawRcQYrFky8N9ZHaocv
+ AQ/1mCy29JufrYnqDOW3RelTnsbNoIA=
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com
+ (mail-db5eur01lp2054.outbound.protection.outlook.com [104.47.2.54]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ de-mta-29-kNa5JcGHMFWy-ICGj6D_3g-1; Thu, 15 Oct 2020 14:16:57 +0200
+X-MC-Unique: kNa5JcGHMFWy-ICGj6D_3g-1
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GXbhemr1Z2hHwIFbHP8VLt7yajqvfnKIAQw5/JblaRqwbIBL1aE6MhWIGEkCwhcaQST1dxQ243qMrf8Y12GjHkueo5ZMz6JFnDI7wAI7xqXVxy1gET1yB3nsKtnXiLJ1MzK39/LXkXynWK7eX/2wcvkXvZeV3PDv7hkAJTPZpafSU1SZCaC1RpXZdljHN/INRD8iwFklNZzp6GlcaWcnKl0bSOTI8bkaCQGRyLLlQdtaSB+WxRUq+TyNqdysX6LiHResAAwqV5OX1PZiLEutvrQWoO2cCfw05FNZ5ePFBxxotkOpuLZ4dTYV1UJmwIBbRTXYhgZDy+6sHz23rRAVuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V32FRI8vjGEyULrlSVnHeFvjBrj2PFylPSC1V3EZx18=;
+ b=ENFlXjHx6nE2zzI5oW5EhuQ69P0P3jth+GPIub/Nis/aEhOJgUTN0Dc1EP3RCPBLHAuiCtl2ezIlf58aKmJo4h09QJgmrpuDcARxU+RfxZaPz6ZmyDlb3E3C0fOu6XrvPaVvDhq+ZEBvb6Gg3PAPFbyHu5sRzrA3PGTc39/A3H6QYbYEDFtXzLcdsHR18Jlbm741Na6+eIAHZ3/IeTloW9sr95GVWsWDU/yEukUzbhlBwdwtTT+RZ3dHHCDykqP2SYs2Y4GXJGLGToEm3z+yvmGvxPZts9eXcDzEmFQS+zwW+Dz6oG5ee4mnCTl+FUdDGp6aSbpCU0UDWFDy4g+pqg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+Authentication-Results: linux.ibm.com; dkim=none (message not signed)
+ header.d=none;linux.ibm.com; dmarc=none action=none header.from=suse.com;
+Received: from VI1PR04MB4928.eurprd04.prod.outlook.com (2603:10a6:803:57::13)
+ by VI1PR0401MB2479.eurprd04.prod.outlook.com (2603:10a6:800:53::8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.24; Thu, 15 Oct
+ 2020 12:16:54 +0000
+Received: from VI1PR04MB4928.eurprd04.prod.outlook.com
+ ([fe80::e922:583c:a9bf:66e0]) by VI1PR04MB4928.eurprd04.prod.outlook.com
+ ([fe80::e922:583c:a9bf:66e0%6]) with mapi id 15.20.3477.020; Thu, 15 Oct 2020
+ 12:16:54 +0000
+Date: Thu, 15 Oct 2020 20:16:38 +0800
+From: Chester Lin <clin@suse.com>
+To: Mimi Zohar <zohar@linux.ibm.com>
+Subject: Re: [PATCH v2] ima: defer arch_ima_get_secureboot() call to IMA init
+ time
+Message-ID: <20201015121638.GA18969@linux-8mug>
+References: <20201013081804.17332-1-ardb@kernel.org>
+ <ae9ab2560f6d7b114726efb1ec26f0a36f695335.camel@linux.ibm.com>
+ <CAMj1kXFZVR46_oeYTxJ59q-7u+zFCFtOQuSQoiEzKLhXzpydow@mail.gmail.com>
+ <20201014093531.GA9408@linux-8mug>
+ <98b04c130708893ebefdf81e127a66356b4a6129.camel@linux.ibm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <98b04c130708893ebefdf81e127a66356b4a6129.camel@linux.ibm.com>
+X-Originating-IP: [220.141.82.61]
+X-ClientProxiedBy: AM4PR0302CA0002.eurprd03.prod.outlook.com
+ (2603:10a6:205:2::15) To VI1PR04MB4928.eurprd04.prod.outlook.com
+ (2603:10a6:803:57::13)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from linux-8mug (220.141.82.61) by
+ AM4PR0302CA0002.eurprd03.prod.outlook.com (2603:10a6:205:2::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.20 via Frontend
+ Transport; Thu, 15 Oct 2020 12:16:50 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0e060a3c-10c6-42df-be25-08d8710433dc
+X-MS-TrafficTypeDiagnostic: VI1PR0401MB2479:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <VI1PR0401MB2479173B86C6EDDA35283C96AD020@VI1PR0401MB2479.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: VKV25l7QRIE8RErTjOabO/4S9b/iJsjNr8iU8t6/rbOl5xbwOE7gtr8zLFcMSNRCOiUjUmY1MQyVNQTX0QOCRKiSWgQLbTKtMCb5XF4hanDvrUfiBSvyhGSJ+9tXBql8K5bDVB6pMOFXO7RAP/ZYLkuuiQA1yaTJPIWmJcfWJjje9pudSr0gW79AcWXgGHWaeuko2uf9WDh50L29Y+rj+HD1YShJ7fPCLkoATNiCj+I784Ls2H45ZV8QSkAzFIohiFoJtLLU0dp9m4DknqBP3rqLx8aaV0qpdSnRTqBTlRLcq6eBtCDFEzHhGPOHHxL2maUMSYrhXhd0jMVuEAclOA+8GgHMg4UL9XbG0BMC0jVBHRekjx3mOHEN4CJHIT4XSQRLWe5DkODTDdm7In/9sA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI1PR04MB4928.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(39850400004)(136003)(366004)(396003)(376002)(346002)(8676002)(26005)(16526019)(186003)(6666004)(1076003)(4326008)(33656002)(2906002)(86362001)(956004)(4001150100001)(6916009)(52116002)(8936002)(5660300002)(107886003)(6496006)(66476007)(33716001)(478600001)(83080400001)(66946007)(966005)(54906003)(55016002)(9686003)(83380400001)(66556008)(316002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: i8f+Wo71UyZ4/2QqNqOZ968FZ8gXn0kHNApvSjsJdk2ym0RUgJLkg15ZAHSRK7QcISSUzkvEVZBCJZIKpH1AIam0TR2o3qSLXccImdDB+VjSOgmj5gFYw19nBM8+UYASfBZM0/lZKMia8GlsBoU8izeZzc2e01pEgaqp2EEnI7B7ktpb1qp/l38qDMrvXcnOIsk9U8yz9befrnRi0jH7wayMCQr7U5juESitgMmiHoYncAk2kjZ8qVlKHOocyb3YTzXENXgtlNC9Nc7s8cno/tPclEZWo4bjaSAanq58CLPLpbEkUKr7bxUsG+naec16eCHcpw3INvMiaQcFowPtwx7pYdxAKwUOApkeswzpodSBeMsW3e4JHzPJw3jM9ac5PA4fahuCfKsB8iwLG5Vl3DPCVX58RJbK7lOheSTXimdJmxq7MbSOdhCu8dRTn93wQzvE803m9LkYgUdg69UljvtlO9426W8h4evw0w0lG1vciG2bCCqH+JJ+q/SVntErEHvK/vVYPmK542L75LL+gPKFIqnWbN9XR4SK7FjX4jE7ksH8OpRF2lJrSToZeRtAWBNQyWmzAT+DWKwr1MtQyBSEoenw5NJilhNrul8oMSUtq3Yg2K154CnkWmO/FvYL4IOWJhvp/7GZIP+Q0aNJlQ==
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e060a3c-10c6-42df-be25-08d8710433dc
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4928.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2020 12:16:54.2194 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cgjrhnZH+uKNqqpKMPqJmkkzDfCYZV2lLZfcmgG5ki2kuHy7ECyZnRyOpqma8FNm
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0401MB2479
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,140 +131,200 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: clin@suse.com, linux-efi <linux-efi@vger.kernel.org>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, James Morris <jmorris@namei.org>,
+ jlee@suse.com, linux-security-module@vger.kernel.org,
+ linux-integrity <linux-integrity@vger.kernel.org>,
+ "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
+ <linuxppc-dev@lists.ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-	ppc-linux-objdump -d vmlinux | grep -e "<csum_partial>" -e "<__csum_partial>"
+On Wed, Oct 14, 2020 at 07:38:50AM -0400, Mimi Zohar wrote:
+> On Wed, 2020-10-14 at 17:35 +0800, Chester Lin wrote:
+> > Hi Ard & Mimi,
+> > 
+> > On Tue, Oct 13, 2020 at 06:59:21PM +0200, Ard Biesheuvel wrote:
+> > > On Tue, 13 Oct 2020 at 18:46, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> > > >
+> > > > [Cc'ing linuxppc-dev@lists.ozlabs.org]
+> > > >
+> > > > On Tue, 2020-10-13 at 10:18 +0200, Ard Biesheuvel wrote:
+> > > > > Chester reports that it is necessary to introduce a new way to pass
+> > > > > the EFI secure boot status between the EFI stub and the core kernel
+> > > > > on ARM systems. The usual way of obtaining this information is by
+> > > > > checking the SecureBoot and SetupMode EFI variables, but this can
+> > > > > only be done after the EFI variable workqueue is created, which
+> > > > > occurs in a subsys_initcall(), whereas arch_ima_get_secureboot()
+> > > > > is called much earlier by the IMA framework.
+> > > > >
+> > > > > However, the IMA framework itself is started as a late_initcall,
+> > > > > and the only reason the call to arch_ima_get_secureboot() occurs
+> > > > > so early is because it happens in the context of a __setup()
+> > > > > callback that parses the ima_appraise= command line parameter.
+> > > > >
+> > > > > So let's refactor this code a little bit, by using a core_param()
+> > > > > callback to capture the command line argument, and deferring any
+> > > > > reasoning based on its contents to the IMA init routine.
+> > > > >
+> > > > > Cc: Chester Lin <clin@suse.com>
+> > > > > Cc: Mimi Zohar <zohar@linux.ibm.com>
+> > > > > Cc: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
+> > > > > Cc: James Morris <jmorris@namei.org>
+> > > > > Cc: "Serge E. Hallyn" <serge@hallyn.com>
+> > > > > Link: https://lore.kernel.org/linux-arm-kernel/20200904072905.25332-2-clin@suse.com/
+> > > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > > > > ---
+> > > > > v2: rebase onto series 'integrity: improve user feedback for invalid bootparams'
+> > > >
+> > > > Thanks, Ard.  Based on my initial, limited testing on Power, it looks
+> > > > good, but I'm hesistant to include it in the integrity 5.10 pull
+> > > > request without it having been in linux-next and some additional
+> > > > testing.  It's now queued in the next-integrity-testing branch awaiting
+> > > > some tags.
+> > > >
+> > 
+> > Tested-by: Chester Lin <clin@suse.com>
+> > 
+> > I have tested this patch on x86 VM.
+> > 
+> > * System configuration:
+> >   - Platform: QEMU/KVM
+> >   - Firmware: EDK2/OVMF + secure boot enabled.
+> >   - OS: SLE15-SP2 + SUSE's kernel-vanilla (=linux v5.9) + the follow commits
+> >     from linux-next and upstream:
+> >     * [PATCH v2] ima: defer arch_ima_get_secureboot() call to IMA init time
+> >       https://www.spinics.net/lists/linux-efi/msg20645.html
+> >     * e4d7e2df3a09 "ima: limit secure boot feedback scope for appraise"
+> >     * 7fe2bb7e7e5c "integrity: invalid kernel parameters feedback"
+> >     * 4afb28ab03d5 "ima: add check for enforced appraise option"
+> > 
+> > * Logs with UEFI secure boot enabled:
+> > 
+> >   [    0.000000] Linux version 5.9.0-858-g865c50e1d279-1.g8764d18-vanilla (geeko@b
+> >   uildhost) (gcc (SUSE Linux) 10.2.1 20200825 [revision c0746a1beb1ba073c7981eb09f
+> >   55b3d993b32e5c], GNU ld (GNU Binutils; openSUSE Tumbleweed) 2.34.0.20200325-1) #
+> >   1 SMP Wed Oct 14 04:00:11 UTC 2020 (8764d18)
+> >   [    0.000000] Command line: BOOT_IMAGE=/boot/vmlinuz-5.9.0-858-g865c50e1d279-1.
+> >   g8764d18-vanilla root=UUID=5304c03e-4d8a-4d67-873a-32a32e57cdeb console=ttyS0,11
+> >   5200 resume=/dev/disk/by-path/pci-0000:04:00.0-part4 mitigations=auto ignore_log
+> >   level crashkernel=192M,high crashkernel=72M,low ima_appraise=off
+> >   [    0.000000] x86/fpu: Supporting XSAVE feature 0x001: 'x87 floating point regi
+> >   sters'
+> >   [    0.000000] x86/fpu: Supporting XSAVE feature 0x002: 'SSE registers'
+> >   [    0.000000] x86/fpu: Supporting XSAVE feature 0x004: 'AVX registers'
+> >   ....
+> >   ....
+> >   [    1.720309] ima: Secure boot enabled: ignoring ima_appraise=off option
+> >   [    1.720314] ima: No TPM chip found, activating TPM-bypass!
+> >   [    1.722129] ima: Allocated hash algorithm: sha256
+> 
+> 
+> Thank you for testing the options aren't being set in secure boot mode.
+> My main concern, however, is that IMA doesn't go into TPM-bypass mode. 
+> Does this system have a TPM?
+> 
+> Mimi
+>
 
-With gcc9 I get:
+Last time I didn't emulate a TPM device in KVM so that's why the kernel couldn't
+find a TPM chip. I have tested this patch again with a virtual TPM 1.2 by
+running swtpm and here are some logs:
 
-	c0017ef8 <__csum_partial>:
-	c00182fc:	4b ff fb fd 	bl      c0017ef8 <__csum_partial>
-	c0018478:	4b ff fa 80 	b       c0017ef8 <__csum_partial>
-	c03e8458:	4b c2 fa a0 	b       c0017ef8 <__csum_partial>
-	c03e8518:	4b c2 f9 e1 	bl      c0017ef8 <__csum_partial>
-	c03ef410:	4b c2 8a e9 	bl      c0017ef8 <__csum_partial>
-	c03f0b24:	4b c2 73 d5 	bl      c0017ef8 <__csum_partial>
-	c04279a4:	4b bf 05 55 	bl      c0017ef8 <__csum_partial>
-	c0429820:	4b be e6 d9 	bl      c0017ef8 <__csum_partial>
-	c0429944:	4b be e5 b5 	bl      c0017ef8 <__csum_partial>
-	c042b478:	4b be ca 81 	bl      c0017ef8 <__csum_partial>
-	c042b554:	4b be c9 a5 	bl      c0017ef8 <__csum_partial>
-	c045f15c:	4b bb 8d 9d 	bl      c0017ef8 <__csum_partial>
-	c0492190:	4b b8 5d 69 	bl      c0017ef8 <__csum_partial>
-	c0492310:	4b b8 5b e9 	bl      c0017ef8 <__csum_partial>
-	c0495594:	4b b8 29 65 	bl      c0017ef8 <__csum_partial>
-	c049c420:	4b b7 ba d9 	bl      c0017ef8 <__csum_partial>
-	c049c870:	4b b7 b6 89 	bl      c0017ef8 <__csum_partial>
-	c049c930:	4b b7 b5 c9 	bl      c0017ef8 <__csum_partial>
-	c04a9ca0:	4b b6 e2 59 	bl      c0017ef8 <__csum_partial>
-	c04bdde4:	4b b5 a1 15 	bl      c0017ef8 <__csum_partial>
-	c04be480:	4b b5 9a 79 	bl      c0017ef8 <__csum_partial>
-	c04be710:	4b b5 97 e9 	bl      c0017ef8 <__csum_partial>
-	c04c969c:	4b b4 e8 5d 	bl      c0017ef8 <__csum_partial>
-	c04ca2fc:	4b b4 db fd 	bl      c0017ef8 <__csum_partial>
-	c04cf5bc:	4b b4 89 3d 	bl      c0017ef8 <__csum_partial>
-	c04d0440:	4b b4 7a b9 	bl      c0017ef8 <__csum_partial>
+-----
+[    0.000000] Linux version 5.9.0-858-g865c50e1d279-1.g8764d18-vanilla (geeko@b
+uildhost) (gcc (SUSE Linux) 10.2.1 20200825 [revision c0746a1beb1ba073c7981eb09f
+55b3d993b32e5c], GNU ld (GNU Binutils; openSUSE Tumbleweed) 2.34.0.20200325-1) #
+1 SMP Wed Oct 14 04:00:11 UTC 2020 (8764d18)
+[    0.000000] Command line: BOOT_IMAGE=/boot/vmlinuz-5.9.0-858-g865c50e1d279-1.
+g8764d18-vanilla root=UUID=5304c03e-4d8a-4d67-873a-32a32e57cdeb console=ttyS0,11
+5200 resume=/dev/disk/by-path/pci-0000:04:00.0-part4 mitigations=auto ignore_log
+level crashkernel=192M,high crashkernel=72M,low ima_appraise=off
+[    0.000000] x86/fpu: Supporting XSAVE feature 0x001: 'x87 floating point regi
+sters'
+.....
+.....
+[    0.000000] efi: EFI v2.60 by EDK II
+[    0.000000] efi: SMBIOS=0x7fe82000 ACPI=0x7feb0000 ACPI 2.0=0x7feb0014 MEMATTT
+R=0x7ef89698 RNG=0x7ea12e18
+[    0.000000] efi: seeding entropy pool
+[    0.000000] random: fast init done
+[    0.000000] SMBIOS 2.8 present.
+[    0.000000] DMI: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+[    0.000000] Hypervisor detected: KVM
+.....
+.....
+[    1.957625] Linux agpgart interface v0.103
+[    1.961903] tpm_tis 00:04: 1.2 TPM (device-id 0x1, rev-id 1)
+[    1.966306] tpm tpm0: starting up the TPM manually
+[    1.981753] ahci 0000:00:1f.2: version 3.0
+[    1.984503] PCI Interrupt Link [GSIA] enabled at IRQ 16
+.....
+.....
+[    2.086645] ima: Secure boot enabled: ignoring ima_appraise=off option
+[    2.086650] ima: Allocated hash algorithm: sha256
+[    2.100662] evm: Initialising EVM extended attributes:
+[    2.100689] audit: type=1807 audit(1602760724.564:2): action=measure func=KEX
+EC_KERNEL_CHECK res=1
+[    2.101849] evm: security.selinux
+[    2.101849] evm: security.apparmor
+[    2.101849] evm: security.ima
+[    2.101850] evm: security.capability
+[    2.101850] evm: HMAC attrs: 0x1
+[    2.102083] PM:   Magic number: 8:588:327
+[    2.106723] audit: type=1807 audit(1602760724.564:3): action=measure func=MODD
+ULE_CHECK res=1
+[    2.118761] RAS: Correctable Errors collector initialized.
+.....
+-----
 
-With gcc10 I get:
 
-	c0018d08 <__csum_partial>:
-	c0019020 <csum_partial>:
-	c0019020:	4b ff fc e8 	b       c0018d08 <__csum_partial>
-	c001914c:	4b ff fe d4 	b       c0019020 <csum_partial>
-	c0019250:	4b ff fd d1 	bl      c0019020 <csum_partial>
-	c03e404c <csum_partial>:
-	c03e404c:	4b c3 4c bc 	b       c0018d08 <__csum_partial>
-	c03e4050:	4b ff ff fc 	b       c03e404c <csum_partial>
-	c03e40fc:	4b ff ff 51 	bl      c03e404c <csum_partial>
-	c03e6680:	4b ff d9 cd 	bl      c03e404c <csum_partial>
-	c03e68c4:	4b ff d7 89 	bl      c03e404c <csum_partial>
-	c03e7934:	4b ff c7 19 	bl      c03e404c <csum_partial>
-	c03e7bf8:	4b ff c4 55 	bl      c03e404c <csum_partial>
-	c03eb148:	4b ff 8f 05 	bl      c03e404c <csum_partial>
-	c03ecf68:	4b c2 bd a1 	bl      c0018d08 <__csum_partial>
-	c04275b8 <csum_partial>:
-	c04275b8:	4b bf 17 50 	b       c0018d08 <__csum_partial>
-	c0427884:	4b ff fd 35 	bl      c04275b8 <csum_partial>
-	c0427b18:	4b ff fa a1 	bl      c04275b8 <csum_partial>
-	c0427bd8:	4b ff f9 e1 	bl      c04275b8 <csum_partial>
-	c0427cd4:	4b ff f8 e5 	bl      c04275b8 <csum_partial>
-	c0427e34:	4b ff f7 85 	bl      c04275b8 <csum_partial>
-	c045a1c0:	4b bb eb 49 	bl      c0018d08 <__csum_partial>
-	c0489464 <csum_partial>:
-	c0489464:	4b b8 f8 a4 	b       c0018d08 <__csum_partial>
-	c04896b0:	4b ff fd b5 	bl      c0489464 <csum_partial>
-	c048982c:	4b ff fc 39 	bl      c0489464 <csum_partial>
-	c0490158:	4b b8 8b b1 	bl      c0018d08 <__csum_partial>
-	c0492f0c <csum_partial>:
-	c0492f0c:	4b b8 5d fc 	b       c0018d08 <__csum_partial>
-	c049326c:	4b ff fc a1 	bl      c0492f0c <csum_partial>
-	c049333c:	4b ff fb d1 	bl      c0492f0c <csum_partial>
-	c0493b18:	4b ff f3 f5 	bl      c0492f0c <csum_partial>
-	c0493f50:	4b ff ef bd 	bl      c0492f0c <csum_partial>
-	c0493ffc:	4b ff ef 11 	bl      c0492f0c <csum_partial>
-	c04a0f78:	4b b7 7d 91 	bl      c0018d08 <__csum_partial>
-	c04b3e3c:	4b b6 4e cd 	bl      c0018d08 <__csum_partial>
-	c04b40d0 <csum_partial>:
-	c04b40d0:	4b b6 4c 38 	b       c0018d08 <__csum_partial>
-	c04b4448:	4b ff fc 89 	bl      c04b40d0 <csum_partial>
-	c04b46f4:	4b ff f9 dd 	bl      c04b40d0 <csum_partial>
-	c04bf448:	4b b5 98 c0 	b       c0018d08 <__csum_partial>
-	c04c5264:	4b b5 3a a5 	bl      c0018d08 <__csum_partial>
-	c04c61e4:	4b b5 2b 25 	bl      c0018d08 <__csum_partial>
+In terms of TPM 2.0, swtpm seems to have issues while running the selftest so
+I verified this patch on my laptop as well because it has a real TPM 2.0 chip:
 
-gcc10 defines multiple versions of csum_partial() which are just
-an unconditionnal branch to __csum_partial().
-
-To enforce inlining of that branch to __csum_partial(),
-mark csum_partial() as __always_inline.
-
-With this patch with gcc10:
-
-	c0018d08 <__csum_partial>:
-	c0019148:	4b ff fb c0 	b       c0018d08 <__csum_partial>
-	c001924c:	4b ff fa bd 	bl      c0018d08 <__csum_partial>
-	c03e40ec:	4b c3 4c 1d 	bl      c0018d08 <__csum_partial>
-	c03e4120:	4b c3 4b e8 	b       c0018d08 <__csum_partial>
-	c03eb004:	4b c2 dd 05 	bl      c0018d08 <__csum_partial>
-	c03ecef4:	4b c2 be 15 	bl      c0018d08 <__csum_partial>
-	c0427558:	4b bf 17 b1 	bl      c0018d08 <__csum_partial>
-	c04286e4:	4b bf 06 25 	bl      c0018d08 <__csum_partial>
-	c0428cd8:	4b bf 00 31 	bl      c0018d08 <__csum_partial>
-	c0428d84:	4b be ff 85 	bl      c0018d08 <__csum_partial>
-	c045a17c:	4b bb eb 8d 	bl      c0018d08 <__csum_partial>
-	c0489450:	4b b8 f8 b9 	bl      c0018d08 <__csum_partial>
-	c0491860:	4b b8 74 a9 	bl      c0018d08 <__csum_partial>
-	c0492eec:	4b b8 5e 1d 	bl      c0018d08 <__csum_partial>
-	c04a0eac:	4b b7 7e 5d 	bl      c0018d08 <__csum_partial>
-	c04b3e34:	4b b6 4e d5 	bl      c0018d08 <__csum_partial>
-	c04b426c:	4b b6 4a 9d 	bl      c0018d08 <__csum_partial>
-	c04b463c:	4b b6 46 cd 	bl      c0018d08 <__csum_partial>
-	c04c004c:	4b b5 8c bd 	bl      c0018d08 <__csum_partial>
-	c04c0368:	4b b5 89 a1 	bl      c0018d08 <__csum_partial>
-	c04c5254:	4b b5 3a b5 	bl      c0018d08 <__csum_partial>
-	c04c60d4:	4b b5 2c 35 	bl      c0018d08 <__csum_partial>
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/checksum.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/checksum.h b/arch/powerpc/include/asm/checksum.h
-index 9cce06194dcc..cab8fec60005 100644
---- a/arch/powerpc/include/asm/checksum.h
-+++ b/arch/powerpc/include/asm/checksum.h
-@@ -164,7 +164,7 @@ static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
-  */
- __wsum __csum_partial(const void *buff, int len, __wsum sum);
- 
--static inline __wsum csum_partial(const void *buff, int len, __wsum sum)
-+static __always_inline __wsum csum_partial(const void *buff, int len, __wsum sum)
- {
- 	if (__builtin_constant_p(len) && len <= 16 && (len & 1) == 0) {
- 		if (len == 2)
--- 
-2.25.0
+-----
+[    0.000000] microcode: microcode updated early to revision 0xd6, date = 2020-
+04-27
+[    0.000000] Linux version 5.9.0-858-g865c50e1d279-1.g8764d18-vanilla (geeko@b
+uildhost) (gcc (SUSE Linux) 10.2.1 20200825 [revision c0746a1beb1ba073c7981eb09f
+55b3d993b32e5c], GNU ld (GNU Binutils; openSUSE Tumbleweed) 2.34.0.20200325-1) #
+1 SMP Wed Oct 1404:00:11 UTC 2020 (8764d18)
+[    0.000000] Command line: BOOT_IMAGE=/boot/vmlinuz-5.9.0-858-g865c50e1d279-1.
+g8764d18-vanilla root=UUID=2184bbb7-780e-48a2-98b8-3a8cd3366e5e splash=silent re
+sume=/dev/disk/by-id/ata-INTEL_SSDSCKKF512G8_SATA_512GB_BTLA82850G3E512K-part3 i
+gnore_loglevel crashkernel=222M,high crashkernel=72M,low ima_appraise=log
+[    0.000000] x86/fpu: Supporting XSAVE feature 0x001: 'x87 floating point regi
+sters'
+.....
+.....
+[    0.000000] efi: EFI v2.60 by American Megatrends
+[    0.000000] efi: ACPI=0x7a34e000 ACPI 2.0=0x7a34e000 SMBIOS=0xf0000 SMBIOS 3.
+0=0xf0020 TPMFinalLog=0x7ac8b000 ESRT=0x7b0e0018 MEMATTR=0x7762d018 RNG=0x7b133f
+18 TPMEventLog=0x6ab96018
+[    0.000000] efi: seeding entropy pool
+[    0.000000] random: fast init done
+[    0.000000] SMBIOS 3.1.0 present.
+[    0.000000] DMI: Dell Inc. Latitude 7490/0KP0FT, BIOS 1.14.0 01/22/2020
+.....
+.....
+[    7.182711] Non-volatile memory driver v1.3
+[    7.182748] Linux agpgart interface v0.103
+[    7.210826] tpm_tis MSFT0101:00: 2.0 TPM (device-id 0xFC, rev-id 1)
+[    7.234324] ahci 0000:00:17.0: version 3.0
+.....
+.....
+[    7.288573] integrity: Loading X.509 certificate: UEFI:MokListRT
+[    7.289299] integrity: Loaded X.509 cert 'openSUSE Secure Boot CA: 6842600de22c4c477e95be23dfea9513e5971762'
+[    7.289913] ima: Secure boot enabled: ignoring ima_appraise=log option
+[    7.289921] ima: Allocated hash algorithm: sha256
+[    7.314854] evm: Initialising EVM extended attributes:
+[    7.314878] audit: type=1807 audit(1602778176.572:2): action=measure func=KEXEC_KERNEL_CHECK res=1
+[    7.316656] evm: security.selinux
+[    7.316659] evm: security.apparmor
+[    7.318493] audit: type=1807 audit(1602778176.572:3): action=measure func=MODULE_CHECK res=1
+[    7.320092] evm: security.ima
+[    7.320093] evm: security.capability
+[    7.322554] evm: HMAC attrs: 0x1
 
