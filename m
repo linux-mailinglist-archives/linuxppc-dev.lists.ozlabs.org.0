@@ -1,91 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBA728EF2D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 11:11:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5073828EF0E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 11:06:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CBk6m1l6DzDqWR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 20:11:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBk1K0q3MzDqXR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 20:06:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=st.com
- (client-ip=185.132.182.106; helo=mx07-00178001.pphosted.com;
- envelope-from=amelie.delaunay@st.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=st.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=st.com header.i=@st.com header.a=rsa-sha256
- header.s=STMicroelectronics header.b=0oTWPBOx; 
- dkim-atps=neutral
-X-Greylist: delayed 1853 seconds by postgrey-1.36 at bilbo;
- Thu, 15 Oct 2020 19:37:48 AEDT
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com
- [185.132.182.106])
+ dmarc=fail (p=none dis=none) header.from=arm.com
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CBjMw124BzDqSn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 19:37:47 +1100 (AEDT)
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
- by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09F810KF022265; Thu, 15 Oct 2020 10:05:56 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=STMicroelectronics;
- bh=glhTCKVcnbc8lpjOZBjcwL/WddjOBnrvQMsvFgpIX9U=;
- b=0oTWPBOxS3dHCpvop3Yn8LtnhruTiBArA0yscaywKM5jRBukrtlORwr/OlTPsO/MuqpZ
- NxiXz4Nvydwfc6H86n+++QoVfKWlkVK6RwSl08U860IelLWDFi6VfYxV1c49lArFXN0l
- AFDe3yXM7+VozPw8LXqj2LRtKWO4kRrD6cgMmP7U9tLEM1gC6uz4J1P7UBVkolbWZPMC
- 0c23ip1jx4I4AYDVB506N+iPL276OKcmTrJwevYifEHpP48qXDA8TdK71per8cKZVT4H
- PfdxOAWlYV0XFPa9ElhEi0cBzBscOmgtycug9z9NV8KOyMMJP+rSe/YeUgH1QAaLqKx4 LA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
- by mx07-00178001.pphosted.com with ESMTP id 34356ekf4q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 Oct 2020 10:05:56 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
- by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0884E100034;
- Thu, 15 Oct 2020 10:05:47 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
- by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8D2CD20602D;
- Thu, 15 Oct 2020 10:05:47 +0200 (CEST)
-Received: from lmecxl0995.lme.st.com (10.75.127.49) by SFHDAG3NODE2.st.com
- (10.75.127.8) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 15 Oct
- 2020 10:05:44 +0200
-Subject: Re: [PATCH 18/20] arch: dts: Fix EHCI/OHCI DT nodes name
-To: Serge Semin <Sergey.Semin@baikalelectronics.ru>, Mathias Nyman
- <mathias.nyman@intel.com>, Felipe Balbi <balbi@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh+dt@kernel.org>, Alexey Brodkin <abrodkin@synopsys.com>,
- Vineet Gupta <vgupta@synopsys.com>, Hauke Mehrtens <hauke@hauke-m.de>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- <bcm-kernel-feedback-list@broadcom.com>, Wei Xu
- <xuwei5@hisilicon.com>, Vladimir Zapolskiy <vz@mleia.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@st.com>,
- Paul Cercueil <paul@crapouillou.net>, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>, Matthias Brugger <matthias.bgg@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
- <20201014101402.18271-19-Sergey.Semin@baikalelectronics.ru>
-From: Amelie DELAUNAY <amelie.delaunay@st.com>
-Message-ID: <a68552c5-3284-7196-3873-61711aaf5007@st.com>
-Date: Thu, 15 Oct 2020 10:05:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CBjzg63hLzDqTK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 20:05:19 +1100 (AEDT)
+Received: from gaia (unknown [95.149.105.49])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9F9102145D;
+ Thu, 15 Oct 2020 09:05:14 +0000 (UTC)
+Date: Thu, 15 Oct 2020 10:05:12 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Khalid Aziz <khalid.aziz@oracle.com>
+Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
+ and with length
+Message-ID: <20201015084936.GC20197@gaia>
+References: <20201007073932.865218-1-jannh@google.com>
+ <d5332a7b-c300-6d28-18b9-4b7d4110ef86@oracle.com>
+ <20201010110949.GA32545@gaia>
+ <af207cf8-3049-85eb-349d-5fed6b9be49c@oracle.com>
+ <20201012172218.GE6493@gaia>
+ <20c85633-b559-c299-3e57-ae136b201526@oracle.com>
+ <20201013091638.GA10778@gaia>
+ <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
 MIME-Version: 1.0
-In-Reply-To: <20201014101402.18271-19-Sergey.Semin@baikalelectronics.ru>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.49]
-X-ClientProxiedBy: SFHDAG4NODE3.st.com (10.75.127.12) To SFHDAG3NODE2.st.com
- (10.75.127.8)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-15_03:2020-10-14,
- 2020-10-15 signatures=0
-X-Mailman-Approved-At: Thu, 15 Oct 2020 20:09:47 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,61 +54,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-mips@vger.kernel.org, Neil Armstrong <narmstrong@baylibre.com>,
- Kevin Hilman <khilman@baylibre.com>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Serge Semin <fancer.lancer@gmail.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Manu Gautam <mgautam@codeaurora.org>, Andy Gross <agross@kernel.org>,
- linux-mediatek@lists.infradead.org,
- Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
- Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
- linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, Roger Quadros <rogerq@ti.com>
+Cc: Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, Anthony Yznaga <anthony.yznaga@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Serge,
-
-On 10/14/20 12:14 PM, Serge Semin wrote:
-> In accordance with the Generic EHCI/OHCI bindings the corresponding node
-> name is suppose to comply with the Generic USB HCD DT schema, which
-> requires the USB nodes to have the name acceptable by the regexp:
-> "^usb(@.*)?"  . Let's fix the DTS files, which have the nodes defined with
-> incompatible names.
+On Wed, Oct 14, 2020 at 03:21:16PM -0600, Khalid Aziz wrote:
+> On 10/13/20 3:16 AM, Catalin Marinas wrote:
+> > On Mon, Oct 12, 2020 at 01:14:50PM -0600, Khalid Aziz wrote:
+> >> On 10/12/20 11:22 AM, Catalin Marinas wrote:
+> >>> On Mon, Oct 12, 2020 at 11:03:33AM -0600, Khalid Aziz wrote:
+> >>>> On 10/10/20 5:09 AM, Catalin Marinas wrote:
+> >>>>> I still think sparc should avoid walking the vmas in
+> >>>>> arch_validate_prot(). The core code already has the vmas, though not
+> >>>>> when calling arch_validate_prot(). That's one of the reasons I added
+> >>>>> arch_validate_flags() with the MTE patches. For sparc, this could be
+> >>>>> (untested, just copied the arch_validate_prot() code):
+> >>>>
+> >>>> I am little uncomfortable with the idea of validating protection bits
+> >>>> inside the VMA walk loop in do_mprotect_pkey(). When ADI is being
+> >>>> enabled across multiple VMAs and arch_validate_flags() fails on a VMA
+> >>>> later, do_mprotect_pkey() will bail out with error leaving ADI enabled
+> >>>> on earlier VMAs. This will apply to protection bits other than ADI as
+> >>>> well of course. This becomes a partial failure of mprotect() call. I
+> >>>> think it should be all or nothing with mprotect() - when one calls
+> >>>> mprotect() from userspace, either the entire address range passed in
+> >>>> gets its protection bits updated or none of it does. That requires
+> >>>> validating protection bits upfront or undoing what earlier iterations of
+> >>>> VMA walk loop might have done.
+> >>>
+> >>> I thought the same initially but mprotect() already does this with the
+> >>> VM_MAY* flag checking. If you ask it for an mprotect() that crosses
+> >>> multiple vmas and one of them fails, it doesn't roll back the changes to
+> >>> the prior ones. I considered that a similar approach is fine for MTE
+> >>> (it's most likely a user error).
+> >>
+> >> You are right about the current behavior with VM_MAY* flags, but that is
+> >> not the right behavior. Adding more cases to this just perpetuates
+> >> incorrect behavior. It is not easy to roll back changes after VMAs have
+> >> potentially been split/merged which is probably why the current code
+> >> simply throws in the towel and returns with partially modified address
+> >> space. It is lot easier to do all the checks upfront and then proceed or
+> >> not proceed with modifying VMAs. One approach might be to call
+> >> arch_validate_flags() in a loop before modifying VMAs and walk all VMAs
+> >> with a read lock held. Current code also bails out with ENOMEM if it
+> >> finds a hole in the address range and leaves any modifications already
+> >> made in place. This is another case where a hole could have been
+> >> detected earlier.
+> > 
+> > This should be ideal indeed though with the risk of breaking the current
+> > ABI (FWIW, FreeBSD seems to do a first pass to check for violations:
+> > https://github.com/freebsd/freebsd/blob/master/sys/vm/vm_map.c#L2630).
 > 
-> Signed-off-by: Serge Semin<Sergey.Semin@baikalelectronics.ru>
-> 
-> diff --git a/arch/arm/boot/dts/stm32mp151.dtsi b/arch/arm/boot/dts/stm32mp151.dtsi
-> index bfe29023fbd5..576f7da564c5 100644
-> --- a/arch/arm/boot/dts/stm32mp151.dtsi
-> +++ b/arch/arm/boot/dts/stm32mp151.dtsi
-> @@ -1404,7 +1404,7 @@ ethernet0: ethernet@5800a000 {
->   			status = "disabled";
->   		};
->   
-> -		usbh_ohci: usbh-ohci@5800c000 {
-> +		usbh_ohci: usb@5800c000 {
->   			compatible = "generic-ohci";
->   			reg = <0x5800c000 0x1000>;
->   			clocks = <&rcc USBH>;
-> @@ -1413,7 +1413,7 @@ usbh_ohci: usbh-ohci@5800c000 {
->   			status = "disabled";
->   		};
->   
-> -		usbh_ehci: usbh-ehci@5800d000 {
-> +		usbh_ehci: usb@5800d000 {
->   			compatible = "generic-ehci";
->   			reg = <0x5800d000 0x1000>;
->   			clocks = <&rcc USBH>;
+> I am not sure I understand where the ABI breakage would be. Are we aware
+> of apps that intentionally modify address space partially using the
+> current code?
 
-For STM32MP151:
+I hope there aren't any but you never know until you make the change and
+someone complains. Arguably, such user code is already broken since
+mprotect() doesn't even tell where the failure occurred.
 
-Acked-by: Amelie Delaunay <amelie.delaunay@st.com>
+> What FreeBSD does seems like a reasonable thing to do. Any way first
+> thing to do is to update sparc to use arch_validate_flags() and update
+> sparc_validate_prot() to not peek into vma without lock.
 
-Thanks,
-Amelie
+If you go for arch_validate_flags(), I think sparc_validate_prot()
+doesn't need the vma at all.
+
+BTW, on the ADI topic, I think you have a race in do_swap_page() since
+set_pte_at() is called before arch_do_swap_page(). So a thread in the
+same process would see the new mapping but the tags have not been
+updated yet. Unless sparc relies on the new user pte to be set, I think
+you can just swap the two calls.
+
+-- 
+Catalin
