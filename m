@@ -1,97 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFEB528F566
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 16:58:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE0428F5B9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 17:22:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CBspg1gsnzDqXv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Oct 2020 01:58:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBtM339dTzDqGY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Oct 2020 02:22:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
- envelope-from=khalid.aziz@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=codefail.de (client-ip=198.54.127.69;
+ helo=se14-2.privateemail.com; envelope-from=cmr@codefail.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=kaDhG2k7; 
- dkim-atps=neutral
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+ dmarc=none (p=none dis=none) header.from=codefail.de
+X-Greylist: delayed 1286 seconds by postgrey-1.36 at bilbo;
+ Fri, 16 Oct 2020 02:20:26 AEDT
+Received: from se14-2.privateemail.com (se14-2.privateemail.com
+ [198.54.127.69])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CBslg3yRMzDqRJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 01:55:27 +1100 (AEDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09FEhrZB052451;
- Thu, 15 Oct 2020 14:54:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=ueK+5z08xx09zYAdi9VimFxxn1I5v3nWGR96uKYJNFM=;
- b=kaDhG2k74OiAbUFy7+baU2RnCsv0qY5hkd+J6ISe3wwppx0JwAw5X/xQm6L+Bf+FmzEQ
- 0V/Wh5IUgVavHCqYBDjypsA4GV4lO2kDUP9JOlC3cigQOoQM8SsN8W39IjyUxOoFNEdn
- TMutc8TBvAQgJjl5oprrpzoFRTMhLOlZxMHMaOMHMPwxWVL3w5VLv2fMq/3UGDp7JjWV
- uwjaxMhA4+QNnXnZzieerA6sSVdIjQRWhf86YlX4fbeQIBEpAWtG0rDd2eXuGSmWFfJG
- jMObM+6fcAlF4uosfUpdmizujuHqPAmLAuQx+vtDASBWcZiIVLDgWrMaOOkkM5p8KJCm vg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
- by userp2120.oracle.com with ESMTP id 343vaekf7n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Thu, 15 Oct 2020 14:54:58 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
- by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09FEjd1J027747;
- Thu, 15 Oct 2020 14:54:57 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
- by userp3020.oracle.com with ESMTP id 344by5a1nn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 Oct 2020 14:54:57 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
- by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09FEsrOX006866;
- Thu, 15 Oct 2020 14:54:53 GMT
-Received: from [10.154.134.81] (/10.154.134.81)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Thu, 15 Oct 2020 07:54:52 -0700
-Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
- and with length
-To: Catalin Marinas <catalin.marinas@arm.com>
-References: <20201007073932.865218-1-jannh@google.com>
- <d5332a7b-c300-6d28-18b9-4b7d4110ef86@oracle.com>
- <20201010110949.GA32545@gaia>
- <af207cf8-3049-85eb-349d-5fed6b9be49c@oracle.com>
- <20201012172218.GE6493@gaia>
- <20c85633-b559-c299-3e57-ae136b201526@oracle.com>
- <20201013091638.GA10778@gaia>
- <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
- <20201015084936.GC20197@gaia>
-From: Khalid Aziz <khalid.aziz@oracle.com>
-X-Pep-Version: 2.0
-Organization: Oracle Corp
-Message-ID: <09d9cb95-3414-ef29-de08-f4f2b22b7f77@oracle.com>
-Date: Thu, 15 Oct 2020 08:53:59 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CBtJV0D8JzDqF3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 02:20:25 +1100 (AEDT)
+Received: from new-01-3.privateemail.com ([198.54.122.47])
+ by se14.registrar-servers.com with esmtpsa (TLSv1.2:AES128-GCM-SHA256:128)
+ (Exim 4.92) (envelope-from <cmr@codefail.de>) id 1kT4iT-0005PL-Nz
+ for linuxppc-dev@lists.ozlabs.org; Thu, 15 Oct 2020 07:59:01 -0700
+Received: from MTA-11.privateemail.com (unknown [10.20.147.23])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by NEW-01-3.privateemail.com (Postfix) with ESMTPS id B02B1A6F
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 14:58:52 +0000 (UTC)
+Received: from mta-11.privateemail.com (localhost [127.0.0.1])
+ by mta-11.privateemail.com (Postfix) with ESMTP id 9350580046
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 10:58:52 -0400 (EDT)
+Received: from geist.attlocal.net (unknown [10.20.151.235])
+ by mta-11.privateemail.com (Postfix) with ESMTPA id 6541A80041
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 14:58:52 +0000 (UTC)
+From: "Christopher M. Riedl" <cmr@codefail.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/8] Improve signal performance on PPC64 with KUAP
+Date: Thu, 15 Oct 2020 10:01:51 -0500
+Message-Id: <20201015150159.28933-1-cmr@codefail.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <20201015084936.GC20197@gaia>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9774
- signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- spamscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 adultscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010150102
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9774
- signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- clxscore=1015
- impostorscore=0 phishscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
- mlxscore=0 suspectscore=0 spamscore=0 adultscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010150102
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
+X-Originating-IP: 198.54.122.47
+X-SpamExperts-Domain: o3.privateemail.com
+X-SpamExperts-Username: out-03
+Authentication-Results: registrar-servers.com;
+ auth=pass (plain) smtp.auth=out-03@o3.privateemail.com
+X-SpamExperts-Outgoing-Class: ham
+X-SpamExperts-Outgoing-Evidence: Combined (0.05)
+X-Recommended-Action: accept
+X-Filter-ID: Mvzo4OR0dZXEDF/gcnlw0ZXzIHSbE2lF8iY6Od2jmSypSDasLI4SayDByyq9LIhViSvBvoGA1PKw
+ 0/ADnCN/+ETNWdUk1Ol2OGx3IfrIJKywOmJyM1qr8uRnWBrbSAGD34MCL/enst4vEtpA4leDRT1y
+ xwOMUv2um0QcmoO8mg24Dcwf+CZK8NXgy3In+fX7tsjNGt6ga+gOd82cI5iPfFO05s+oip5EC/YK
+ rMQ9+O92RfE6OSObaNx/GIkER/ho6hfscI36S5ZyZNhIm1qgix6Fhd62KY0TvtygpLSFJ3Lw5N/o
+ jaomCoWWiTtol8oIjMLSPcwmNI0TQjQbbn/msxmYvSRMYhU3cO2EzUHwVXEwQzgH3ZUltkgdVMpa
+ zhNDPjwfaB2rE/S2BhQBkwlK0UgKCrov1GasWV1vj2C+0pcXuAT86WptVNwo/cWcelODMVhfRAfm
+ ME3CBgei5d0ipWZHuZ2luxkemtGoNxZUQqTo/wKPvFA5qTwvBasVtSz0gfFrL3927nPLXidUYhzT
+ L3iFCDAL0QosIifn4ScHG4ifU642KNtk4n/u8nyV2xsjehIqUczFWeS6sE8e1b5/Uj/i4hYVfUxI
+ FxiN15g3w5xXw7ICF89SRx911u2+L1VDWTXxQxalx1UzmAX+Mm3XrPEJxD5mbm+QYi3GBj11aazW
+ 78ZTQ7i5CZLcqOLpLJxz1m+Kp1KCPGoyG38yARaHof3QzxUBjDlIxq/CY6GWA8+LBDMrD7q/cJog
+ wbqzsuoky0Qu9o0UsJYe8KzUZOzYBJq7nLN6wi0+LTtGPl8kCiqRsjtBYSmMAZnDo+4asne4/G1I
+ l1bfb2jzXa+qJgNxdnLYM3A6BXfvel8OEFDbU52Uoxy7ZVs22aLE5aXKh2Z2/SyswYYxeanpYW+O
+ DenQmhIuIkxkuoNHoZV8ALzej/7m/TG6mPfH0STtFp8lq4mlVm2lHuINJIGiJ73RKeuKpUVINNG3
+ OVUHjoaAVY6FvR05Ix7/C9VwqPH/5QpQnZ0BJh1tDfjT4hz4J/ncsYb09chmWIDGRew9XvW9QFDz
+ YgSG3lyuFjEDwoOBw76gv6dU
+X-Report-Abuse-To: spam@se5.registrar-servers.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,41 +82,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Anthony Yznaga <anthony.yznaga@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/15/20 3:05 AM, Catalin Marinas wrote:
-> On Wed, Oct 14, 2020 at 03:21:16PM -0600, Khalid Aziz wrote:
->> What FreeBSD does seems like a reasonable thing to do. Any way first
->> thing to do is to update sparc to use arch_validate_flags() and update=
+As reported by Anton, there is a large penalty to signal handling
+performance on radix systems using KUAP. The signal handling code
+performs many user access operations, each of which needs to switch the
+KUAP permissions bit to open and then close user access. This involves a
+costly 'mtspr' operation [0].
 
->> sparc_validate_prot() to not peek into vma without lock.
->=20
-> If you go for arch_validate_flags(), I think sparc_validate_prot()
-> doesn't need the vma at all.
+There is existing work done on x86 and by Christopher Leroy for PPC32 to
+instead open up user access in "blocks" using user_*_access_{begin,end}.
+We can do the same in PPC64 to bring performance back up on KUAP-enabled
+radix systems.
 
-Yes, the plan is to move vma flag check from sparc_validate_prot() to
-arch_validate_flags()..
+This series applies on top of Christophe Leroy's work for PPC32 [1] (I'm
+sure patchwork won't be too happy about that).
 
->=20
-> BTW, on the ADI topic, I think you have a race in do_swap_page() since
-> set_pte_at() is called before arch_do_swap_page(). So a thread in the
-> same process would see the new mapping but the tags have not been
-> updated yet. Unless sparc relies on the new user pte to be set, I think=
+The first two patches add some needed 'unsafe' versions of copy-from
+functions. While these do not make use of asm-goto they still allow for
+avoiding the repeated uaccess switches. The third patch adds 'notrace'
+to any functions expected to be called in a uaccess block context.
+Normally functions called in such a context should be inlined, but this
+is not feasible everywhere. Marking them 'notrace' should provide _some_
+protection against leaving the user access window open.
 
-> you can just swap the two calls.
->=20
+The next three patches rewrite some of the signal64 helper functions to
+be 'unsafe'. Finally, the last two patches update the main signal
+handling functions to make use of the new 'unsafe' helpers and eliminate
+some additional uaccess switching.
 
-Thanks for pointing that out. I will take a look at it.
+I used the will-it-scale signal1 benchmark to measure and compare
+performance [2]. The below results are from a P9 Blackbird system. Note
+that currently hash does not support KUAP and is therefore used as the
+"baseline" comparison. Bigger numbers are better:
 
---
-Khalid
+	signal1_threads -t1 -s10
 
+	|                 | hash   | radix  |
+	| --------------- | ------ | ------ |
+	| linuxppc/next   | 289014 | 158408 |
+	| unsafe-signal64 | 298506 | 253053 |
+
+[0]: https://github.com/linuxppc/issues/issues/277
+[1]: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=196278
+[2]: https://github.com/antonblanchard/will-it-scale/blob/master/tests/signal1.c
+
+Christopher M. Riedl (5):
+  powerpc/uaccess: Add unsafe_copy_from_user
+  powerpc/signal: Add unsafe_copy_{vsx,fpr}_from_user()
+  powerpc: Mark functions called inside uaccess blocks w/ 'notrace'
+  powerpc/signal64: Replace setup_sigcontext() w/
+    unsafe_setup_sigcontext()
+  powerpc/signal64: Replace restore_sigcontext() w/
+    unsafe_restore_sigcontext()
+
+Daniel Axtens (3):
+  powerpc/signal64: Replace setup_trampoline() w/
+    unsafe_setup_trampoline()
+  powerpc/signal64: Rewrite handle_rt_signal64() to minimise uaccess
+    switches
+  powerpc/signal64: Rewrite rt_sigreturn() to minimise uaccess switches
+
+ arch/powerpc/include/asm/uaccess.h |  28 ++--
+ arch/powerpc/kernel/process.c      |  20 +--
+ arch/powerpc/kernel/signal.h       |  33 +++++
+ arch/powerpc/kernel/signal_64.c    | 216 +++++++++++++++++------------
+ arch/powerpc/mm/mem.c              |   4 +-
+ 5 files changed, 194 insertions(+), 107 deletions(-)
+
+-- 
+2.28.0
 
