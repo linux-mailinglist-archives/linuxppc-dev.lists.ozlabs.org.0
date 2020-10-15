@@ -1,48 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5073828EF0E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 11:06:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E4828EFF8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 12:17:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CBk1K0q3MzDqXR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 20:06:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBlZn4XvSzDqWx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 21:17:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=balbi@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=arm.com
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=WCURctuR; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CBjzg63hLzDqTK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 20:05:19 +1100 (AEDT)
-Received: from gaia (unknown [95.149.105.49])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CBlY80bQ3zDqTK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 21:15:56 +1100 (AEDT)
+Received: from saruman (88-113-213-94.elisa-laajakaista.fi [88.113.213.94])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9F9102145D;
- Thu, 15 Oct 2020 09:05:14 +0000 (UTC)
-Date: Thu, 15 Oct 2020 10:05:12 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Khalid Aziz <khalid.aziz@oracle.com>
-Subject: Re: [PATCH 1/2] mm/mprotect: Call arch_validate_prot under mmap_lock
- and with length
-Message-ID: <20201015084936.GC20197@gaia>
-References: <20201007073932.865218-1-jannh@google.com>
- <d5332a7b-c300-6d28-18b9-4b7d4110ef86@oracle.com>
- <20201010110949.GA32545@gaia>
- <af207cf8-3049-85eb-349d-5fed6b9be49c@oracle.com>
- <20201012172218.GE6493@gaia>
- <20c85633-b559-c299-3e57-ae136b201526@oracle.com>
- <20201013091638.GA10778@gaia>
- <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
+ by mail.kernel.org (Postfix) with ESMTPSA id 2533920BED;
+ Thu, 15 Oct 2020 10:15:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1602756952;
+ bh=Z6L85tl0hUzxc/Wf2yAWwRbRBy0g42YVSMNsAOso/ic=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=WCURctuRAO7apKBpnigKSW4w0RrSEIpplBnDIjs+ve/o+8+46MlY5TmxYzakNSnGt
+ wshd18tKRcbQS+ist8JlaxoOpSixojILJcBphDceJNvzEVJ7nc77SPULh7DZu7zIN5
+ MdYW0FZqoioit4bvm377ZfhSD1iKvlH90Ra8372k=
+From: Felipe Balbi <balbi@kernel.org>
+To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Subject: Re: [PATCH 20/20] arch: dts: Fix DWC USB3 DT nodes name
+In-Reply-To: <20201014143720.yny3jco5pkb7dr4b@mobilestation>
+References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
+ <20201014101402.18271-21-Sergey.Semin@baikalelectronics.ru>
+ <878sc8lx0e.fsf@kernel.org>
+ <20201014143720.yny3jco5pkb7dr4b@mobilestation>
+Date: Thu, 15 Oct 2020 13:15:37 +0300
+Message-ID: <875z7blrqu.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e4c2c56b-3dbe-73dd-ea72-a5378de7de6a@oracle.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: multipart/signed; boundary="=-=-=";
+ micalg=pgp-sha256; protocol="application/pgp-signature"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,83 +58,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Anthony Yznaga <anthony.yznaga@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
+Cc: Andrew Lunn <andrew@lunn.ch>, linux-usb@vger.kernel.org,
+ Neil Armstrong <narmstrong@baylibre.com>, Tony Lindgren <tony@atomide.com>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>, Wei Xu <xuwei5@hisilicon.com>,
+ linux-samsung-soc@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+ Kukjin Kim <kgene@kernel.org>, Andy Gross <agross@kernel.org>,
+ linux-arm-msm@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ devicetree@vger.kernel.org, Jason Cooper <jason@lakedaemon.net>,
+ Mathias Nyman <mathias.nyman@intel.com>, linux-kernel@vger.kernel.org,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+ Rob Herring <robh+dt@kernel.org>, Santosh Shilimkar <ssantosh@kernel.org>,
+ linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Roger Quadros <rogerq@ti.com>, linux-mips@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ linuxppc-dev@lists.ozlabs.org, Patrice Chotard <patrice.chotard@st.com>,
+ Serge Semin <fancer.lancer@gmail.com>, Li Yang <leoyang.li@nxp.com>,
+ Manu Gautam <mgautam@codeaurora.org>,
+ =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+ Shawn Guo <shawnguo@kernel.org>,
+ Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 14, 2020 at 03:21:16PM -0600, Khalid Aziz wrote:
-> On 10/13/20 3:16 AM, Catalin Marinas wrote:
-> > On Mon, Oct 12, 2020 at 01:14:50PM -0600, Khalid Aziz wrote:
-> >> On 10/12/20 11:22 AM, Catalin Marinas wrote:
-> >>> On Mon, Oct 12, 2020 at 11:03:33AM -0600, Khalid Aziz wrote:
-> >>>> On 10/10/20 5:09 AM, Catalin Marinas wrote:
-> >>>>> I still think sparc should avoid walking the vmas in
-> >>>>> arch_validate_prot(). The core code already has the vmas, though not
-> >>>>> when calling arch_validate_prot(). That's one of the reasons I added
-> >>>>> arch_validate_flags() with the MTE patches. For sparc, this could be
-> >>>>> (untested, just copied the arch_validate_prot() code):
-> >>>>
-> >>>> I am little uncomfortable with the idea of validating protection bits
-> >>>> inside the VMA walk loop in do_mprotect_pkey(). When ADI is being
-> >>>> enabled across multiple VMAs and arch_validate_flags() fails on a VMA
-> >>>> later, do_mprotect_pkey() will bail out with error leaving ADI enabled
-> >>>> on earlier VMAs. This will apply to protection bits other than ADI as
-> >>>> well of course. This becomes a partial failure of mprotect() call. I
-> >>>> think it should be all or nothing with mprotect() - when one calls
-> >>>> mprotect() from userspace, either the entire address range passed in
-> >>>> gets its protection bits updated or none of it does. That requires
-> >>>> validating protection bits upfront or undoing what earlier iterations of
-> >>>> VMA walk loop might have done.
-> >>>
-> >>> I thought the same initially but mprotect() already does this with the
-> >>> VM_MAY* flag checking. If you ask it for an mprotect() that crosses
-> >>> multiple vmas and one of them fails, it doesn't roll back the changes to
-> >>> the prior ones. I considered that a similar approach is fine for MTE
-> >>> (it's most likely a user error).
-> >>
-> >> You are right about the current behavior with VM_MAY* flags, but that is
-> >> not the right behavior. Adding more cases to this just perpetuates
-> >> incorrect behavior. It is not easy to roll back changes after VMAs have
-> >> potentially been split/merged which is probably why the current code
-> >> simply throws in the towel and returns with partially modified address
-> >> space. It is lot easier to do all the checks upfront and then proceed or
-> >> not proceed with modifying VMAs. One approach might be to call
-> >> arch_validate_flags() in a loop before modifying VMAs and walk all VMAs
-> >> with a read lock held. Current code also bails out with ENOMEM if it
-> >> finds a hole in the address range and leaves any modifications already
-> >> made in place. This is another case where a hole could have been
-> >> detected earlier.
-> > 
-> > This should be ideal indeed though with the risk of breaking the current
-> > ABI (FWIW, FreeBSD seems to do a first pass to check for violations:
-> > https://github.com/freebsd/freebsd/blob/master/sys/vm/vm_map.c#L2630).
-> 
-> I am not sure I understand where the ABI breakage would be. Are we aware
-> of apps that intentionally modify address space partially using the
-> current code?
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-I hope there aren't any but you never know until you make the change and
-someone complains. Arguably, such user code is already broken since
-mprotect() doesn't even tell where the failure occurred.
+Serge Semin <Sergey.Semin@baikalelectronics.ru> writes:
 
-> What FreeBSD does seems like a reasonable thing to do. Any way first
-> thing to do is to update sparc to use arch_validate_flags() and update
-> sparc_validate_prot() to not peek into vma without lock.
+> On Wed, Oct 14, 2020 at 05:09:37PM +0300, Felipe Balbi wrote:
+>>=20
+>> Hi Serge,
+>>=20
+>> Serge Semin <Sergey.Semin@baikalelectronics.ru> writes:
+>> > In accordance with the DWC USB3 bindings the corresponding node name is
+>> > suppose to comply with Generic USB HCD DT schema, which requires the U=
+SB
+>>=20
+>
+>> DWC3 is not a simple HDC, though.
+>
+> Yeah, strictly speaking it is equipped with a lot of vendor-specific stuf=
+f,
+> which are tuned by the DWC USB3 driver in the kernel. But after that the
+> controller is registered as xhci-hcd device so it's serviced by the xHCI =
+driver,
 
-If you go for arch_validate_flags(), I think sparc_validate_prot()
-doesn't need the vma at all.
+in Dual-role or host-only builds, that's correct. We can also have
+peripheral-only builds (both SW or HW versions) which means xhci isn't
+even in the picture.
 
-BTW, on the ADI topic, I think you have a race in do_swap_page() since
-set_pte_at() is called before arch_do_swap_page(). So a thread in the
-same process would see the new mapping but the tags have not been
-updated yet. Unless sparc relies on the new user pte to be set, I think
-you can just swap the two calls.
+=2D-=20
+balbi
 
--- 
-Catalin
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJFBAEBCAAvFiEElLzh7wn96CXwjh2IzL64meEamQYFAl+IIUoRHGJhbGJpQGtl
+cm5lbC5vcmcACgkQzL64meEamQZO3Q//SiuQrPc8kbjk55HntU2Nq2ql7KHubHOj
+ZhrcegAbPbzA0vqIIasxjkXAC8Abbz3Bn59kDuu0ohRtTG1sKXMrN1aqkIo1tTh+
+zkF7t+k5cdunzJ19jb0lohFu/eDK0JPuXRoByJfUhbxIZfWbacO7bG8TkClU7zhL
+denO6pfQG1nOetdAaHZV9imMuTKJOrnl+bcHx5tNcV9sH02sC6OVXBn4dN5ZnABf
+/FdDd671tZMcz43t7jm1vNk7yxgZPSqQ6myBeXQ45ZL2mn9i0gyi4eEWy29vLwu9
+kVUhb9nrliaBsf/X/+oh05qRACLg/noIcuSpXMtu8tmR2DIcwDijYG8XOsBaDLEj
+ZYSJju7/JQ2XUmrS2s/xWtjcqQN0ZxVsJx0Vy4JZNRQ404qs2cqjDeUFdclP+fdJ
+90W74TKzXS1/t52pQyG84LSM648I/7PhUWara2RV9jds7XPgFuFCwWTxEKkyQCSW
+ayPWVASHrKX0Kzp77GW2UUILCIo+luyMMd7V/BraTI6L+PMBL6+etB/O72UUXdb9
+E2hQyJojMpg7BZ6dnpLcvbtHetLtW1hLisTOfD3NbPUyJzPJAgLt8D77SN5ncTUy
+nC8/57GA0Bs2uzYEB6TlPV4i7c9tLT3MJrlVE/p4uziQ7R/b34xbHDX3xNcspk9Q
+vO7uMM8lF9I=
+=XrV0
+-----END PGP SIGNATURE-----
+--=-=-=--
