@@ -2,82 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A498428F6F1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 18:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B43728F6FE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Oct 2020 18:41:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CBw2r3NjMzDqFw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Oct 2020 03:38:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CBw5y1PZwzDqdW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Oct 2020 03:41:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=f.fainelli@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=f.fainelli@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=hCNXfrGU; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ header.s=20161025 header.b=qQZd5xTU; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CBw133mf7zDqY3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 03:37:10 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id e10so2366771pfj.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 09:37:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CBw4F29z3zDqFH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 03:39:57 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id b23so2254078pgb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Oct 2020 09:39:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=YWBB1tNjSVqbpAQ46aLKFVE5AjRjWL3r4Ab3QA5/ays=;
- b=hCNXfrGUsg7H+0N2587CoFp6PRzA1+cUtNOT/VHEx3tdTq4TU0bs3+xBIACNvvhH2L
- w5kAlmgn1HxNTD6EiJF78B4N+5B1vuyi95gDuXvOBWtEiObTsqUqSBnT0aQ+Tfb3+KEi
- SNl4ErMdYcQfhs4Cbk6LCY1ym2RvR1Od3sHAXN7S9sEWoDTxDjuQeKS3VkIemOxztkbd
- w2MKCuwY5tB1vWv9+cIiLrJCNPo2Wn+DNn7xQTWCQ3MUYsHDXCKlqcRE4J9LfiNmHwdP
- CHIMUOz7+4gPj3n1Ooc8wA0s1mnIGvPjTR/bUwk2hh+GKewjjRwJzneiAZHdLw3ZHUPO
- 9syw==
+ bh=gqWIMQYBUG7yq8NtnkvmW24LTsh1QU6pWh/+ugrYrxg=;
+ b=qQZd5xTUnsF3HRylAKoGTioMFW7uqnoMXRtBLq+c1p4V/aRRTXrGb8cTFAc3nvALjp
+ aquNHctfkqLrSvEdPhxpeTSHfctsGe2UI7sEhajhMS700kAS9Y5xnWGK1BfZupaY0PWN
+ Y7Yow4982zp9cphiZsHNFyV/jjhZCQ3xy/8lxe6JoYN93I4GDpYX4OoQOteSfMdEFtQX
+ RbYeMftNCsU9AahTo+KF8hh5DeHEdWySDzZmbfS3yW3blX1ceQcfA7DfKPts1+hoSdWY
+ 15siQyc5iyGg71kJ9IQrBvubOFT2B1xxUMsoiffkxULFpacN7amxN/R35qegSCEu+VTQ
+ 6X8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=YWBB1tNjSVqbpAQ46aLKFVE5AjRjWL3r4Ab3QA5/ays=;
- b=oT+3TFRYxbgR5dS14MlTmnnmujHggUAqQsr5u62tG0K83X67arWI0M/kNCSVqBj3W6
- JJlf89oyMaz8XtNc7zYLePLcmlHIalic643SIJifFffjp7fX5zjQO1S4fol1CqHySRrv
- aSdYbgF90ETIPutVIBIvZiJpMNf7GZb5MLwrCU/RuDgaYHAJX2iaIVacHB9EoahGhXRc
- dYZLUSMPs4gbHY/e3xtrJqoH9hqH17mXBKdp4dIbZQqWLN7Cyhj4JJ2hACcdqcBqXwSf
- BQE2tEkLuz8VwHyk9s0h2Agz6qvOVlE1H3KWj8/gdPlQkd2s9bAoRNqZSF7aYaR63ll5
- uang==
-X-Gm-Message-State: AOAM5303M0FkUaMLFJ8ikjAXdY1SWL9Wlx+kYqgiOMyhKyvB54VKH7D0
- hAba+yNyBR+UJIsNk3nVBpY=
-X-Google-Smtp-Source: ABdhPJwmDS3Vi5aXAC+G4xDfoACzvAax5MX+Zi2h2BRQvZdLVRnvx2/yyCqMIoUsI4TFC86wRFhuNg==
-X-Received: by 2002:aa7:94a4:0:b029:151:d786:d5c2 with SMTP id
- a4-20020aa794a40000b0290151d786d5c2mr4673216pfl.50.1602779826806; 
- Thu, 15 Oct 2020 09:37:06 -0700 (PDT)
+ bh=gqWIMQYBUG7yq8NtnkvmW24LTsh1QU6pWh/+ugrYrxg=;
+ b=dFcvIzf61LIuIo/W9XMNdnMQ5qlZTfNzhc6aWes9Bi78Z08Khk8sBt1QD0SpUnBSbG
+ 3fMmgKke+hbMBorl/Qfh9iUfXXlUG5vx8ZhuVBYupmZVu16X6dfsy9YeIkcGwuCzG6EG
+ +fjujY7Eomr2JIgki7RsgMru7B29sWWlvYn1+6wKinbvwk51ToS1W31fUrk4kB7XO8SW
+ VBR2dnOll4j8ZIGsGl7i5mOs8O9VmIvuJFWH0IkttBVfaC+oUFfo/OMekHobakt2GvM2
+ TRinNqOMHPe2eSlX9nN9OaO+eRQidmXkg295srJDDm0e6ja/zNV9VGjmuoahfJBycgNz
+ GGdg==
+X-Gm-Message-State: AOAM532ekzTOmwE+KB3sNQnmVII/llsa1eESsEWpLeV7wP3gLV10qv84
+ I1edfzqaAuRdZOcOEiQ4plhYJcLbPX4=
+X-Google-Smtp-Source: ABdhPJwgDSuInYqELEMF2gM4bang7qs6+eCuObab8CoTswYVwtM747vlKk75TLuWENwkNpd4KmIYcw==
+X-Received: by 2002:a62:5b85:0:b029:142:2501:34e1 with SMTP id
+ p127-20020a625b850000b0290142250134e1mr4860567pfb.58.1602779993043; 
+ Thu, 15 Oct 2020 09:39:53 -0700 (PDT)
 Received: from [10.67.48.230] ([192.19.223.252])
- by smtp.googlemail.com with ESMTPSA id q21sm3700834pgg.45.2020.10.15.09.37.02
+ by smtp.googlemail.com with ESMTPSA id y5sm3858293pgo.5.2020.10.15.09.39.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Oct 2020 09:37:05 -0700 (PDT)
-Subject: Re: [PATCH 18/20] arch: dts: Fix EHCI/OHCI DT nodes name
+ Thu, 15 Oct 2020 09:39:51 -0700 (PDT)
+Subject: Re: [PATCH 07/20] dt-bindings: usb: xhci: Add Broadcom STB v2
+ compatible device
 To: Serge Semin <Sergey.Semin@baikalelectronics.ru>,
  Mathias Nyman <mathias.nyman@intel.com>, Felipe Balbi <balbi@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh+dt@kernel.org>, Alexey Brodkin <abrodkin@synopsys.com>,
- Vineet Gupta <vgupta@synopsys.com>, Hauke Mehrtens <hauke@hauke-m.de>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- bcm-kernel-feedback-list@broadcom.com, Wei Xu <xuwei5@hisilicon.com>,
- Vladimir Zapolskiy <vz@mleia.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@st.com>,
- Paul Cercueil <paul@crapouillou.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
+ Rob Herring <robh+dt@kernel.org>
 References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
- <20201014101402.18271-19-Sergey.Semin@baikalelectronics.ru>
+ <20201014101402.18271-8-Sergey.Semin@baikalelectronics.ru>
 From: Florian Fainelli <f.fainelli@gmail.com>
 Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  mQGiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
@@ -133,12 +122,12 @@ Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  caxTGgc5zzQHeX67eMzrGomG3ZnIxmd1sAbgvJUDaD2GrYlulfwGWwWyTNbWRvMighVdPkSF
  6XFgQaosWxkV0OELLy2N485YrTr2Uq64VKyxpncLh50e2RnyAJ9Za0Dx0yyp44iD1OvHtkEI
  M5kY0ACeNhCZJvZ5g4C2Lc9fcTHu8jxmEkI=
-Message-ID: <8c0f6dee-ee59-e8b4-b7b6-4ca64b342c83@gmail.com>
-Date: Thu, 15 Oct 2020 09:37:02 -0700
+Message-ID: <385b0c37-a22f-3c13-71be-803f39c391af@gmail.com>
+Date: Thu, 15 Oct 2020 09:39:48 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20201014101402.18271-19-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20201014101402.18271-8-Sergey.Semin@baikalelectronics.ru>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -162,32 +151,21 @@ Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
  Manu Gautam <mgautam@codeaurora.org>, Andy Gross <agross@kernel.org>,
  Bjorn Andersson <bjorn.andersson@linaro.org>,
  Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
- linux-mediatek@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+ linux-snps-arc@lists.infradead.org,
  Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- linux-stm32@st-md-mailman.stormreply.com,
  Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
  Roger Quadros <rogerq@ti.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/14/20 3:14 AM, Serge Semin wrote:
-> In accordance with the Generic EHCI/OHCI bindings the corresponding node
-> name is suppose to comply with the Generic USB HCD DT schema, which
-> requires the USB nodes to have the name acceptable by the regexp:
-> "^usb(@.*)?" . Let's fix the DTS files, which have the nodes defined with
-> incompatible names.
+On 10/14/20 3:13 AM, Serge Semin wrote:
+> For some reason the "brcm,xhci-brcm-v2" compatible string has been missing
+> in the original bindings file. Add it to the Generic xHCI Controllers DT
+> schema since the controller driver expects it to be supported.
 > 
 > Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-> 
-> ---
-> 
-> Please, test the patch out to make sure it doesn't brake the dependent DTS
-> files. I did only a manual grepping of the possible nodes dependencies.
-> ---
 
->  arch/arm/boot/dts/bcm5301x.dtsi                | 4 ++--
->  arch/arm/boot/dts/bcm53573.dtsi                | 4 ++--
 Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 -- 
 Florian
