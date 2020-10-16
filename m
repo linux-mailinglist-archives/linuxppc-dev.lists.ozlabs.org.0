@@ -1,62 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8045A290B70
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Oct 2020 20:38:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41B3290BAC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Oct 2020 20:49:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CCZfh5TKbzDqfL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 05:38:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CCZv51GxfzDqNb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 05:49:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.195;
+ helo=mail-oi1-f195.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
- [209.85.210.68])
+Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com
+ [209.85.167.195])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CCZYk1VKgzDqb5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 05:34:18 +1100 (AEDT)
-Received: by mail-ot1-f68.google.com with SMTP id f37so3279576otf.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 11:34:17 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CCZrb0DKkzDqj1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 05:47:09 +1100 (AEDT)
+Received: by mail-oi1-f195.google.com with SMTP id u17so3546216oie.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 11:47:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=Qwu3JG9+LDlewH987hNzyQoOEX0CL8g7zvaZjjCcw4U=;
- b=OaoF6Lu4u4lwJCupeq74cyqxqKEKM4bNxqK45lkjQqySPq94CSGqhCu6ST1mf/C9SS
- nCycr0hiGEg9AIDlNCWU1Oi8Lr/wuetNrMvPCR/kKs8oYYQJ0wwmcHuLQulNtRw9T9m0
- W+h4WpL/SRRctSnskb4mDh+OLd3W+cUqoORbcdL0jsKBWLYldR2PsI4KPvEhYKSQEZCl
- b1k1YL826PGov1aX5RMEutfUdzeI5tisjU0XqbuN8xJvKgd728paTTakxmHS5zQXFqiy
- pwqYv2/Le6PpxuQ72OJDYyQeqSveEYJ5rCldEox4zg4/uLuOvHC2E9nqZWmdLy5rTppf
- FBmA==
-X-Gm-Message-State: AOAM532koozfKBrNptt2nEyk0ssSa5+DYo3FyJST2kcqrkvcu4MaDFzJ
- Gg12GO4q61NFigImol/sqg==
-X-Google-Smtp-Source: ABdhPJyi6z0hP/x6L+MrsJNmQGndEN2hAnyiGpicmxYQV/nKNfR9ytGgBHm+fPvoXX+6vbcG4GvIAA==
-X-Received: by 2002:a9d:53cc:: with SMTP id i12mr3447418oth.215.1602873254082; 
- Fri, 16 Oct 2020 11:34:14 -0700 (PDT)
+ bh=8zDeag4KGqmKT8c+d4RekR3O6YxnQntnp7Q/reDb+L8=;
+ b=deBVvrZPKw2Z1PSY9TZTi4a1Llwd2r15EZTOBqngOiJ1kT0cTSRk7E3RrG9b4DS8pM
+ 5uI7A1BbxQmt7iO3TSfDM8Id2JZ3Ed2F9X+AUhhsVekAJWyatm36MLtEFsAkH4/AC/ll
+ kv7xJdZOoUc1pUeKIwFrzDDEtnunHrBH0NlMp09jMSQNPSItA59R+7q3z4JUk15+z1m5
+ 411/L2ONPTeZ60MZKfV12JKwbcOsNurnZDeV7MG0waE0quLsW+84kXQbYj9+UKgSscgH
+ nWk7XgSXFg4dA4I+htDYOy6UlMNWfHcmi04RKnu2GnuyLEsQU57Xl6G3bzEpls8tNTPY
+ Rgzw==
+X-Gm-Message-State: AOAM532gexyLVD2NLzNL3IR9BqEnes+4KVOnBystz+qSGrGypNQwquLY
+ 0+wDAyRCy9ApNI/f+brdXw==
+X-Google-Smtp-Source: ABdhPJyENso3SKw3F4zLfI0AJYdmFcov/RsupjIYFRIArytE0XwOHw7L8ThI9GD3vqlzQ1CWLvOUKQ==
+X-Received: by 2002:a54:438f:: with SMTP id u15mr3503365oiv.162.1602874027264; 
+ Fri, 16 Oct 2020 11:47:07 -0700 (PDT)
 Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id m23sm1354610ooq.30.2020.10.16.11.34.12
+ by smtp.gmail.com with ESMTPSA id k23sm1379873ool.5.2020.10.16.11.47.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Oct 2020 11:34:13 -0700 (PDT)
-Received: (nullmailer pid 1699483 invoked by uid 1000);
- Fri, 16 Oct 2020 18:34:12 -0000
-Date: Fri, 16 Oct 2020 13:34:12 -0500
+ Fri, 16 Oct 2020 11:47:06 -0700 (PDT)
+Received: (nullmailer pid 1729036 invoked by uid 1000);
+ Fri, 16 Oct 2020 18:47:05 -0000
+Date: Fri, 16 Oct 2020 13:47:05 -0500
 From: Rob Herring <robh@kernel.org>
 To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Subject: Re: [PATCH 03/20] dt-bindings: usb: usb-hcd: Add "ulpi/serial/hsic"
- PHY types
-Message-ID: <20201016183412.GA1699346@bogus>
+Subject: Re: [PATCH 04/20] dt-bindings: usb: usb-hcd: Add "tpl-support"
+ property
+Message-ID: <20201016184705.GA1728990@bogus>
 References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
- <20201014101402.18271-4-Sergey.Semin@baikalelectronics.ru>
+ <20201014101402.18271-5-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201014101402.18271-4-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20201014101402.18271-5-Sergey.Semin@baikalelectronics.ru>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,21 +88,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 14 Oct 2020 13:13:45 +0300, Serge Semin wrote:
-> Aside from the UTMI+ there are also ULPI, Serial and HSIC PHY types
-> that can be specified in the phy_type HCD property. Add them to the
-> enumeration of the acceptable values.
+On Wed, 14 Oct 2020 13:13:46 +0300, Serge Semin wrote:
+> The host controller device might be designed to work for the particular
+> products or applications. In that case its DT node is supposed to be
+> equipped with the tpl-support property.
 > 
 > Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 > 
 > ---
 > 
 > Changelog v2:
-> - Grammar fix: "s/PHY types can be/PHY types that can be"
-> - Drop quotes from around the string constants.
+> - Grammar fix: "s/it'/its"
+> - Discard '|' from the property description, since we don't need to preserve
+>   the text formatting.
 > ---
->  Documentation/devicetree/bindings/usb/usb-hcd.yaml | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
+>  Documentation/devicetree/bindings/usb/usb-hcd.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
 
 Reviewed-by: Rob Herring <robh@kernel.org>
