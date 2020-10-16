@@ -1,62 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0837290C0C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Oct 2020 21:03:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8870290C16
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Oct 2020 21:06:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CCbCr6qnFzDqv9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 06:03:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CCbGx4rR0zDqvn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 06:06:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.161.65; helo=mail-oo1-f65.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.161.68; helo=mail-oo1-f68.google.com;
  envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-oo1-f65.google.com (mail-oo1-f65.google.com
- [209.85.161.65])
+Received: from mail-oo1-f68.google.com (mail-oo1-f68.google.com
+ [209.85.161.68])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CCZwZ4XDtzDql8
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 05:50:37 +1100 (AEDT)
-Received: by mail-oo1-f65.google.com with SMTP id f26so851493oou.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 11:50:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CCb0C1H05zDqHV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 05:53:45 +1100 (AEDT)
+Received: by mail-oo1-f68.google.com with SMTP id w25so853608oos.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 11:53:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=tQIAtcfZOgzbTee3ynuA+97EgTw4Y5zn1K5sehyraYU=;
- b=f2b5WG7BbSChrTr0S0jFMIJZC7flV2/57NJLOg6d6z+J39zDtd1sPgppkv0fglmaU2
- cN2nMcEtc+4XeqM30iQ0rnUf5szQy9jKSYDQdqfYUcgvIBl24DdkSGOwHSd+YrfV55Fk
- 3OD0gCzU/pJpFu2qccz18i6f55nZB+nPQ24IdImVpZEtF3Mo8eJBc+IlQTxgjA7tie2t
- /BpR7t0LI0SQIe8liQllIimjwZIi68wbkfTF5cfsC3V/HE9FDHEadMFroBsTtXU/LOVb
- Px7uev370JA66E+2nYKvV0zAQ+sGUG2T4nQb1rc5HBPyVp1Xauo3ZZNBBf4cvQErHkxi
- /YVA==
-X-Gm-Message-State: AOAM530sVcz+s0JiaBfW1YzwCak/4BOX3Ir2Hhtx553FL2JKfc5NT02o
- cWfmmkUPYDqw20LY+fdCWw==
-X-Google-Smtp-Source: ABdhPJxlpklNvXwoGw9+00fyPv9Ov10bBunf9ANT94mdSsa1luXvKLcFtohW6R2sBFI6b/zUGoM++g==
-X-Received: by 2002:a4a:d815:: with SMTP id f21mr3846003oov.44.1602874234188; 
- Fri, 16 Oct 2020 11:50:34 -0700 (PDT)
+ bh=/BLMOeuNPLg/1+rmux5PnQpwOXbVITQef6gQqf/xRV4=;
+ b=p6Gj1mzl4bMCOuTPaBMYpb4GT4PCnGXPc6wPOTr9StehEGHDw2G7PL2k7VyByZlzG8
+ p78BCKwKRCPBpBZgIi5pwicZq8C7WmJ6kCsktt+785FmZRzdhNAU50HbyDOt4X5Q0bq7
+ ijzhIvzodTI63UU1RWYqeXZ++9tzJeCppIraAi+mm6e00jP3uvrGkyTsu6F7AhVXj16r
+ Es/yT/jx43aAozq+0urQFN9bhCZrwKSzRF73yyUeSSurTBXzDyGAOfV8+PLAHtfkDC72
+ PvqiJZvWAoEAEDs9CuiAtYQlgoFEGDlZ9jU+NzFg/itvypLr5QbXTabn4cls78tq0Y8+
+ akiQ==
+X-Gm-Message-State: AOAM530UeMQaNyoy722+6/wPOGTniGKjTDI8YGRGT3zTg8hNX6EvMSW7
+ CI7b6dd+gUGc5AiWpq5Eqv5BsYN1Uw==
+X-Google-Smtp-Source: ABdhPJxtoraofuhC22sxyo8Q42rEuTESh7JvVkC+ACDOtuWNWIg2F8VJBGdmwUM7JkujSl0LOdhDaw==
+X-Received: by 2002:a4a:e93a:: with SMTP id a26mr3885560ooe.58.1602874422546; 
+ Fri, 16 Oct 2020 11:53:42 -0700 (PDT)
 Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id x13sm1372705oot.24.2020.10.16.11.50.32
+ by smtp.gmail.com with ESMTPSA id 33sm1194275otr.25.2020.10.16.11.53.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Oct 2020 11:50:33 -0700 (PDT)
-Received: (nullmailer pid 1734139 invoked by uid 1000);
- Fri, 16 Oct 2020 18:50:32 -0000
-Date: Fri, 16 Oct 2020 13:50:32 -0500
+ Fri, 16 Oct 2020 11:53:41 -0700 (PDT)
+Received: (nullmailer pid 1738434 invoked by uid 1000);
+ Fri, 16 Oct 2020 18:53:40 -0000
+Date: Fri, 16 Oct 2020 13:53:40 -0500
 From: Rob Herring <robh@kernel.org>
 To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Subject: Re: [PATCH 10/20] dt-bindings: usb: dwc3: Add interrupt-names
- property support
-Message-ID: <20201016185032.GA1734092@bogus>
+Subject: Re: [PATCH 11/20] dt-bindings: usb: dwc3: Add synopsys,dwc3
+ compatible string
+Message-ID: <20201016185340.GA1734346@bogus>
 References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
- <20201014101402.18271-11-Sergey.Semin@baikalelectronics.ru>
+ <20201014101402.18271-12-Sergey.Semin@baikalelectronics.ru>
+ <20201014201818.GA6926@kozik-lap>
+ <20201014213554.turskjyuntk35syj@mobilestation>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201014101402.18271-11-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20201014213554.turskjyuntk35syj@mobilestation>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,40 +70,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Neil Armstrong <narmstrong@baylibre.com>, linux-mips@vger.kernel.org,
+Cc: Neil Armstrong <narmstrong@baylibre.com>, linux-kernel@vger.kernel.org,
  Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
- Kevin Hilman <khilman@baylibre.com>, Andy Gross <agross@kernel.org>,
- linux-snps-arc@lists.infradead.org, devicetree@vger.kernel.org,
- Mathias Nyman <mathias.nyman@intel.com>,
+ Kevin Hilman <khilman@baylibre.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Andy Gross <agross@kernel.org>, linux-snps-arc@lists.infradead.org,
+ devicetree@vger.kernel.org, Mathias Nyman <mathias.nyman@intel.com>,
  Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
  Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
- Rob Herring <robh+dt@kernel.org>, Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
  linux-arm-kernel@lists.infradead.org, Roger Quadros <rogerq@ti.com>,
  Felipe Balbi <balbi@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
  Serge Semin <fancer.lancer@gmail.com>, Manu Gautam <mgautam@codeaurora.org>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 14 Oct 2020 13:13:52 +0300, Serge Semin wrote:
-> The controller driver supports two types of DWC USB3 devices: with a
-> common interrupt lane and with individual interrupts for each mode. Add
-> support for both these cases to the DWC USB3 DT schema.
+On Thu, Oct 15, 2020 at 12:35:54AM +0300, Serge Semin wrote:
+> On Wed, Oct 14, 2020 at 10:18:18PM +0200, Krzysztof Kozlowski wrote:
+> > On Wed, Oct 14, 2020 at 01:13:53PM +0300, Serge Semin wrote:
+> > > The DWC USB3 driver and some DTS files like Exynos 5250, Keystone k2e, etc
+> > > expects the DWC USB3 DT node to have the compatible string with the
+> > > "synopsys" vendor prefix. Let's add the corresponding compatible string to
+> > > the controller DT schema, but mark it as deprecated seeing the Synopsys,
+> > > Inc. is presented with just "snps" vendor prefix.
+> > 
 > 
-> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+> > Instead of adding deprecated schema just correct the DTSes to use snps.
+> > The "synopsys" is not even in vendor prefixes.
 > 
-> ---
-> 
-> Changelog v2:
-> - Grammar fix: "s/both of these cases support/support for both these cases"
-> - Drop quotes from around the string constants.
-> ---
->  Documentation/devicetree/bindings/usb/snps,dwc3.yaml | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
+> Yeah, it's not, but the driver and some dts'es use it this way. I am not sure
+> that the solution suggested by you is much better than mine. So let's hear the
+> Rob'es opinion out in this matter. @Rob, what do you think?
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+I think we should fix the dts files given there's only 5.
+
+Rob
