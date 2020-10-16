@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC416290BCB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Oct 2020 20:52:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2CE1290BEF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Oct 2020 20:56:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CCZz314wdzDqNg
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 05:52:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CCb2s6ssZzDqN0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 05:56:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.161.65; helo=mail-oo1-f65.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.195;
+ helo=mail-oi1-f195.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-oo1-f65.google.com (mail-oo1-f65.google.com
- [209.85.161.65])
+Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com
+ [209.85.167.195])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CCZsJ754LzDqlJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 05:47:48 +1100 (AEDT)
-Received: by mail-oo1-f65.google.com with SMTP id w25so849314oos.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 11:47:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CCZv90ggkzDqSv
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 05:49:24 +1100 (AEDT)
+Received: by mail-oi1-f195.google.com with SMTP id w204so3570736oiw.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 11:49:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=ah4l6QAR2mQ0/oHGxUZvIiL/bIHnlL8stCXNgxk0zPU=;
- b=TUEo8jss/a1WFF+a4aeoVn/k4p1QGr1rMzVqNtdz9m02dBDhuZvjATv85PA0S9Y5is
- xZIfwNkN899qt7JB61JHbp6839i+pSQ7pCYbM5lyFH1unTQAK/jmosQsH+THbS5CUGYp
- l/dcsb9blwc+J8p9Pxr0XOdUklFCGXm9SZpOo6T5JKRMCtrBCZG48nf6d+mumT2pmSzD
- Cj0QLGuivT5fkVzolOb39IARHfXHuIRLkYj/w7ygR61oIDvWrm1n+gErfqqYohIu+iqb
- zuIEG5sRZr8WotBopOY1kiuUA8nXKLoKw0VOqps93gbX53buNVb29nwwDxMG6vjNty9a
- HADQ==
-X-Gm-Message-State: AOAM530oun6ALvGUQNBHmApi69KyZPxOSVvlacppd4/KqPV4r0DVxIcd
- 4m0HihalqlHP/dX4aD99Yg==
-X-Google-Smtp-Source: ABdhPJwi2sSg9TbyxlBb9FKSGQY3aAdhbGYA8TNts9SijJNIvpVCDN/KL4oZNOHs+2wFaZc9X3ZX/w==
-X-Received: by 2002:a4a:e592:: with SMTP id o18mr3759398oov.28.1602874065319; 
- Fri, 16 Oct 2020 11:47:45 -0700 (PDT)
+ bh=3MxugCiE5y0heSpZifDkccjElq8hTuw4iGDrR5HUSmI=;
+ b=CX4Kk1P1m2BUbQ8S9aLUc4/77gIwJqemXqMATPOu87Rzn+Gv0hgvZfSfq9IovwV7R0
+ USUOG/EJ/AzVfwBaFVTaXEtpwM7PNgdy32dJo9I1RrRGjDGG843FK+Kuoqqz9+O836QG
+ hHqWw6SZFzwww2+Q8eH/Fnov99gKp3jrSvwh07YMUcdGwxUv2pBd+bNq0kxfcLl/SEmX
+ qp3shJOa8OoH1HWQI+JRI2noV2cE2RoQkdaZkigOdvU9NKcogNyrPDEzsO68QcZR9NMd
+ 4FySkihgOhMSY9EBtB9lZFN1DOjy1o6I2pjlHvoNe4+72ZfnO/279nHUKoS0quDDa2Ou
+ +WaQ==
+X-Gm-Message-State: AOAM5306xGzDT9SmsCaE7F0fsnqah7/fQ9N7glnXe4s4VgX0QyWCleNd
+ rjeOhsoqt1OMsfm40UUDQA==
+X-Google-Smtp-Source: ABdhPJxhlHWdR759W2/ZwO3kHuI+wtcySV279kCyDwV40mkUK/8z3O06wkP5ssZVrgQY5g1y7yDEXA==
+X-Received: by 2002:aca:bf82:: with SMTP id p124mr3170755oif.133.1602874162686; 
+ Fri, 16 Oct 2020 11:49:22 -0700 (PDT)
 Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id 189sm1239683oid.40.2020.10.16.11.47.43
+ by smtp.gmail.com with ESMTPSA id d11sm1192131otf.44.2020.10.16.11.49.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Oct 2020 11:47:44 -0700 (PDT)
-Received: (nullmailer pid 1729968 invoked by uid 1000);
- Fri, 16 Oct 2020 18:47:43 -0000
-Date: Fri, 16 Oct 2020 13:47:43 -0500
+ Fri, 16 Oct 2020 11:49:22 -0700 (PDT)
+Received: (nullmailer pid 1732283 invoked by uid 1000);
+ Fri, 16 Oct 2020 18:49:21 -0000
+Date: Fri, 16 Oct 2020 13:49:21 -0500
 From: Rob Herring <robh@kernel.org>
 To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Subject: Re: [PATCH 05/20] dt-bindings: usb: usb-hcd: Add generic "usb-phy"
- property
-Message-ID: <20201016184743.GA1729897@bogus>
+Subject: Re: [PATCH 06/20] dt-bindings: usb: Convert xHCI bindings to DT schema
+Message-ID: <20201016184921.GA1732241@bogus>
 References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
- <20201014101402.18271-6-Sergey.Semin@baikalelectronics.ru>
+ <20201014101402.18271-7-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201014101402.18271-6-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20201014101402.18271-7-Sergey.Semin@baikalelectronics.ru>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,25 +87,40 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 14 Oct 2020 13:13:47 +0300, Serge Semin wrote:
-> Even though the Generic PHY framework is the more preferable way of
-> setting the USB PHY up, there are still many dts-files and DT bindings
-> which rely on having the legacy "usb-phy" specified to attach particular
-> USB PHYs to USB cores. Let's have the "usb-phy" property described in
-> the generic USB HCD binding file so it would be validated against the
-> nodes in which it's specified. Mark the property as deprecated to
-> discourage the developers from using it.
+On Wed, 14 Oct 2020 13:13:48 +0300, Serge Semin wrote:
+> Currently the DT bindings of Generic xHCI Controllers are described by means
+> of the legacy text file. Since such format is deprecated in favor of the
+> DT schema, let's convert the Generic xHCI Controllers bindings file to the
+> corresponding yaml files. There will be two of them: a DT schema for the
+> xHCI controllers on a generic platform and a DT schema validating a generic
+> xHCI controllers properties. The later will be used to validate the xHCI
+> controllers, which aside from some vendor-specific features support the
+> basic xHCI functionality.
+> 
+> An xHCI-compatible DT node shall support the standard USB HCD properties
+> and custom ones like: usb2-lpm-disable, usb3-lpm-capable,
+> quirk-broken-port-ped and imod-interval-ns. In addition if a generic xHCI
+> controller is being validated against the DT schema it is also supposed to
+> be equipped with mandatory compatible string, single registers range,
+> single interrupts source, and is supposed to optionally contain up to two
+> reference clocks for the controller core and CSRs.
 > 
 > Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 > 
 > ---
 > 
 > Changelog v2:
-> - Discard '|' from the property description, since we don't need to preserve
->   the text formatting.
+> - Add explicit "additionalProperties: true" to the usb-xhci.yaml schema,
+>   since additionalProperties/unevaluatedProperties are going to be mandary
+>   for each binding.
 > ---
->  Documentation/devicetree/bindings/usb/usb-hcd.yaml | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  .../devicetree/bindings/usb/generic-xhci.yaml | 63 +++++++++++++++++++
+>  .../devicetree/bindings/usb/usb-xhci.txt      | 41 ------------
+>  .../devicetree/bindings/usb/usb-xhci.yaml     | 42 +++++++++++++
+>  3 files changed, 105 insertions(+), 41 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/usb/generic-xhci.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/usb/usb-xhci.txt
+>  create mode 100644 Documentation/devicetree/bindings/usb/usb-xhci.yaml
 > 
 
 Reviewed-by: Rob Herring <robh@kernel.org>
