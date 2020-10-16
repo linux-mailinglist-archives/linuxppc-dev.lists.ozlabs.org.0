@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F64290E09
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 01:13:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A23290E0B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 01:15:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CChmD2Ry9zDr0d
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 10:13:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CChns69zxzDqxj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 10:15:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=googlemail.com (client-ip=2a00:1450:4864:20::642;
- helo=mail-ej1-x642.google.com;
+ smtp.mailfrom=googlemail.com (client-ip=2a00:1450:4864:20::544;
+ helo=mail-ed1-x544.google.com;
  envelope-from=martin.blumenstingl@googlemail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
  header.from=googlemail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=googlemail.com header.i=@googlemail.com
- header.a=rsa-sha256 header.s=20161025 header.b=Pge7Xeim; 
+ header.a=rsa-sha256 header.s=20161025 header.b=YX9YE4pr; 
  dkim-atps=neutral
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com
- [IPv6:2a00:1450:4864:20::642])
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
+ [IPv6:2a00:1450:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CCdVX1yfwzDqwr
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 07:46:38 +1100 (AEDT)
-Received: by mail-ej1-x642.google.com with SMTP id p5so5104835ejj.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 13:46:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CCdWD2z9KzDqwr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 07:47:20 +1100 (AEDT)
+Received: by mail-ed1-x544.google.com with SMTP id p13so3842297edi.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Oct 2020 13:47:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=googlemail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=mAY0QDFqvIDjx5HUOQ+MdvNYA3kylWMqxJWjR23AFzk=;
- b=Pge7XeimtOGQPWwobIeFhAVFY6hovQZpX0ZLcKzZ8AVgQQQ672h2NV6G4tVk7cpmI+
- 1+gpE/GaiJ6rOXia2sUQl2tkgPYRwpujI/1jI9yUuZbMHNhhdIPSSFFZisDCvdGyMNCm
- Bv7XKMjurquBEjLiG0g7MIjYLAxlPxapoizFVEWiVkAHI83UW9jV/Zr0Oj+Y0jv0AGkL
- cttkNhvMmB1Ql9iOu8/GJqu+JOcP+inoZKVjC8g7gRUssTThoHFHguWhzOQMKNXZP0Bi
- /t44sdZ14d2mGGgRgIH93pq2zHZDD0h2Gi9RGZg69aSc7fX52eFBBVlYAcrwgabfDNox
- 6p+A==
+ :cc; bh=cM0Y06ICfSsoQ7UyBgP3+N66oWYmNuuTL9tZcHXPGCQ=;
+ b=YX9YE4prYIppUA6bWnjFZ1SlFrt/2+Clwt/Y2HOaFsDQzC62RsyOpLMDHdZRq05zfT
+ oI/clGG8Wwp2uI3zODlg24vIR8B/Htq8McDYf1W7QK3oGDMpWznzASoFSXWHrH01hjDt
+ 9XeAgl969QeMhMjdXEfAEqQaPDHxl/FTduIQvEeC4cnXu5e1kiWb/4hD9M41+uVV4cfe
+ 5H3xhmf8eHN0rg93ykx/fi1xUJpSXfnawqwK+EblahRFKhuHpDMu1dcksPXMovgNM1DQ
+ fYO6fnu/GvwZsfRs2OdOMn3qipwnLIl6sZsuRxGMwuzH17TOHn5w7AdnOe24CHKjHgoF
+ ZQdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=mAY0QDFqvIDjx5HUOQ+MdvNYA3kylWMqxJWjR23AFzk=;
- b=aYsGi4RYDy+oPjSL8SP1+oT6qvYFFyQJ2Vv58UanMbH3Tjrd7bqTizMQdGwsDKqqvb
- cik4sIvp/7jbapmhGSlSecy2TfZ3tg8kosWZ0CTm0/winkDk6Y66owqFkbcyOzPnV30Q
- r1etfExsDJuZGWvGsYguaSgoyaHuUvkriU5nuMjbhArCAjb6v80vviKfZEc9cYqJgFYq
- ydXqPXgcPR331lQ3KW/Lsrcw3IrSl4rLZ9T2cG67MTQP7mjSteMLRR0kLlnAd5TYKsUC
- yT9hIVMJrsQ0SZvevF1t26zZoFJx7fZvpAYpvc2MMeqH2Kyl80JQg+yzw2UXrx910lZ7
- QLVw==
-X-Gm-Message-State: AOAM532CCZtOwsS4xHeCAi0NuLS5BXHBCf8feNOM+epmBsaHsgG4rLtU
- g2TclMGRGoiU60Tswwy9tdM79Cnirs8K/OR/ZpM=
-X-Google-Smtp-Source: ABdhPJzZH9WV53owno/ZkjiRehR4EVV/83Ve6RR9ZDeTZs5Z1Fi5I5Jf9JSdZ0IMRjggvROTLl8Mkpi59PwKfkncEXs=
-X-Received: by 2002:a17:906:cc0d:: with SMTP id
- ml13mr5630435ejb.2.1602881195652; 
- Fri, 16 Oct 2020 13:46:35 -0700 (PDT)
+ bh=cM0Y06ICfSsoQ7UyBgP3+N66oWYmNuuTL9tZcHXPGCQ=;
+ b=MFK9r9Q+jFhcis08Tdrv2hnAEGrFXIVSU8i3jZ+Imx3yylW8JQOGX1c6NFjdQkHces
+ VeDYBpA+1BoiqefiWj2w0Gjv9LSU+DyLCBKiScBRGamTmAq8+DerruweW5KqOUwoOFxj
+ 9DK/FJzdy86+oIsCHiMmIfAcj92l1LNtt8M5DhmN3Uy4s3Bm0MjyrB0vgME5Fh4SYHjp
+ kV6c8487DaFY/06CUwehR88hLbGEyCl2q5HCk3wmHcMgKJvYHplUesOy06Y2Vno4Nbkv
+ lev7EUqaN1MZyNnjbJLl7s3UjiXlvx/QAlth5UIxph1/kGmScb9FUxKXPbsI725CscRV
+ VFxg==
+X-Gm-Message-State: AOAM531ARn7ryx5GW6wFdL72/UUhWcoymxP5HZ1sAz9ki5ysIFhz5pJZ
+ 1V9yeoQj4r+AQuqYVZv7630Shm48txe44JP2BXg=
+X-Google-Smtp-Source: ABdhPJyY7U/2059vdl/trPuz5QmTks+M1tCJlzB3pZYDFJT8/0Yi++X7QL+PvBI+5qrHrP47VENdS6ZsuDkZG+Z/RX4=
+X-Received: by 2002:aa7:d690:: with SMTP id d16mr6142313edr.301.1602881233657; 
+ Fri, 16 Oct 2020 13:47:13 -0700 (PDT)
 MIME-Version: 1.0
 References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
- <20201014101402.18271-15-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20201014101402.18271-15-Sergey.Semin@baikalelectronics.ru>
+ <20201014101402.18271-16-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20201014101402.18271-16-Sergey.Semin@baikalelectronics.ru>
 From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Fri, 16 Oct 2020 22:46:24 +0200
-Message-ID: <CAFBinCDYu+C62P37QjY75xG8iXa+MwZEL-agNhoOsaXQ0OQpgQ@mail.gmail.com>
-Subject: Re: [PATCH 14/20] dt-bindings: usb: meson-g12a-usb: Fix FL-adj
- property value
+Date: Fri, 16 Oct 2020 22:47:02 +0200
+Message-ID: <CAFBinCCRobE1kQhUrh3oorQTKcQZwYEJ_MaHRtr=f=sYFCoD8g@mail.gmail.com>
+Subject: Re: [PATCH 15/20] dt-bindings: usb: meson-g12a-usb: Validate
+ DWC2/DWC3 sub-nodes
 To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Sat, 17 Oct 2020 10:12:34 +1100
@@ -101,13 +100,11 @@ Sender: "Linuxppc-dev"
 On Wed, Oct 14, 2020 at 12:14 PM Serge Semin
 <Sergey.Semin@baikalelectronics.ru> wrote:
 >
-> An empty snps,quirk-frame-length-adjustment won't cause any change
-> performed by the driver. Moreover the DT schema validation will fail,
-> since it expects the property being assigned with some value. So set
-> fix the example by setting a valid FL-adj value in accordance with
-> Neil Armstrong comment.
+> Amlogic G12A USB DT sub-nodes are supposed to be compatible with the
+> generic DWC USB2 and USB3 devices. Since now we've got DT schemas for
+> both of the later IP cores let's make sure that the Amlogic G12A USB
+> DT nodes are fully evaluated including the DWC sub-nodes.
 >
-> Link: https://lore.kernel.org/linux-usb/20201010224121.12672-16-Sergey.Semin@baikalelectronics.ru/
 > Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-> Acked-by: Neil Armstrong <narmstrong@baylibre.com>
+> Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
 Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
