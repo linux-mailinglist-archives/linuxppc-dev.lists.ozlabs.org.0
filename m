@@ -1,54 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316532912C8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 17:57:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324C529133B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Oct 2020 18:44:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CD71x23zPzDqst
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Oct 2020 02:57:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CD83y02S7zDqnf
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Oct 2020 03:43:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CD82F2pLZzDqSh
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Oct 2020 03:42:29 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=THPvMWyC; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4CD82F1ZVMz8tWl
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Oct 2020 03:42:29 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4CD82F12xnz9sTc; Sun, 18 Oct 2020 03:42:29 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hegdevasant@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=THPvMWyC; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CD70B0NttzDqm6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Oct 2020 02:55:28 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CD6zs339Vz9v4h3;
- Sat, 17 Oct 2020 17:55:21 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id MhA9Gwx4xqNd; Sat, 17 Oct 2020 17:55:21 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CD6zs1qBZz9v4h1;
- Sat, 17 Oct 2020 17:55:21 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F21C48B778;
- Sat, 17 Oct 2020 17:55:21 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id wtrs88iciF0T; Sat, 17 Oct 2020 17:55:21 +0200 (CEST)
-Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BD8BD8B75E;
- Sat, 17 Oct 2020 17:55:21 +0200 (CEST)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 77B5866461; Sat, 17 Oct 2020 15:55:21 +0000 (UTC)
-Message-Id: <96c6172d619c51acc5c1c4884b80785c59af4102.1602949927.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] asm-generic: Force inlining of get_order() to work around
- gcc10 poor decision
-To: Arnd Bergmann <arnd@arndb.de>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Date: Sat, 17 Oct 2020 15:55:21 +0000 (UTC)
+ by ozlabs.org (Postfix) with ESMTPS id 4CD82D1YN9z9sSf;
+ Sun, 18 Oct 2020 03:42:27 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09HGVSWA003914; Sat, 17 Oct 2020 12:42:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=TJrrx6CbW4YGaKcttkF/rcLBpQLzi/KpdcKJxAa+Ij4=;
+ b=THPvMWyCTKR4OuVfQbFpbnRgUF0BWGmsKT3hpyKoOK3vGqHwiB8mDrXIU1aH5hjbWKlZ
+ y/yjpLTcd+OGP/rQXGRdaPcB45iz2use388lZZHY3KKTNwWfHa3F5TSjkyv/S/zxaooN
+ eUPC2GwNS8lj+4U+KD4qnCdq28hlzyFLTayzPFh3agumtwfRwxGlUEtsHCcJQwZO/UIA
+ fZ7A4tc0ofZYgAJHHaWH8LS2eZxtRZxlVqIQSU9BGn9dI0i+uUO0XKZLJODB2xB4Xm5E
+ MBBsqTo40Ad1e7qGnpIjuNGcMzUm31SI+iNe4kkO7+rDPSC837LUg3evJC9wKHguYfDd aQ== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3483wyre32-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 17 Oct 2020 12:42:22 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09HGcTfs015532;
+ Sat, 17 Oct 2020 16:42:21 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma01fra.de.ibm.com with ESMTP id 347r88086s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 17 Oct 2020 16:42:20 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 09HGgIsu32899362
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 17 Oct 2020 16:42:18 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 99A4052050;
+ Sat, 17 Oct 2020 16:42:18 +0000 (GMT)
+Received: from hegdevasant.in.ibm.com (unknown [9.199.43.235])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 94BBE52052;
+ Sat, 17 Oct 2020 16:42:17 +0000 (GMT)
+From: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v2] powerpc/powernv/dump: Fix race while processing OPAL dump
+Date: Sat, 17 Oct 2020 22:12:10 +0530
+Message-Id: <20201017164210.264619-1-hegdevasant@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-10-17_11:2020-10-16,
+ 2020-10-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0
+ phishscore=0 adultscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
+ malwarescore=0 mlxlogscore=999 clxscore=1015 bulkscore=0 suspectscore=3
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010170111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,65 +107,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When building mpc885_ads_defconfig with gcc 10.1,
-the function get_order() appears 50 times in vmlinux:
+Every dump reported by OPAL is exported to userspace through a sysfs
+interface and notified using kobject_uevent(). The userspace daemon
+(opal_errd) then reads the dump and acknowledges that the dump is
+saved safely to disk. Once acknowledged the kernel removes the
+respective sysfs file entry causing respective resources to be
+released including kobject.
 
-[linux]# ppc-linux-objdump -x vmlinux | grep get_order | wc -l
-50
+However it's possible the userspace daemon may already be scanning
+dump entries when a new sysfs dump entry is created by the kernel.
+User daemon may read this new entry and ack it even before kernel can
+notify userspace about it through kobject_uevent() call. If that
+happens then we have a potential race between
+dump_ack_store->kobject_put() and kobject_uevent which can lead to
+use-after-free of a kernfs object resulting in a kernel crash.
 
-[linux]# size vmlinux
-   text	   data	    bss	    dec	    hex	filename
-3842620	 675624	 135160	4653404	 47015c	vmlinux
+This patch fixes this race by protecting the sysfs file
+creation/notification by holding a reference count on kobject until we
+safely send kobject_uevent().
 
-In the old days, marking a function 'static inline' was forcing
-GCC to inline, but since commit ac7c3e4ff401 ("compiler: enable
-CONFIG_OPTIMIZE_INLINING forcibly") GCC may decide to not inline
-a function.
+The function create_dump_obj() returns the dump object which if used
+by caller function will end up in use-after-free problem again.
+However, the return value of create_dump_obj() function isn't being
+used today and there is no need as well. Hence change it to return
+void to make this fix complete.
 
-It looks like GCC 10 is taking poor decisions on this.
-
-get_order() compiles into the following tiny function,
-occupying 20 bytes of text.
-
-0000007c <get_order>:
-  7c:   38 63 ff ff     addi    r3,r3,-1
-  80:   54 63 a3 3e     rlwinm  r3,r3,20,12,31
-  84:   7c 63 00 34     cntlzw  r3,r3
-  88:   20 63 00 20     subfic  r3,r3,32
-  8c:   4e 80 00 20     blr
-
-By forcing get_order() to be __always_inline, the size of text is
-reduced by 1940 bytes, that is almost twice the space occupied by
-50 times get_order()
-
-[linux-powerpc]# size vmlinux
-   text	   data	    bss	    dec	    hex	filename
-3840680	 675588	 135176	4651444	 46f9b4	vmlinux
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: c7e64b9c ("powerpc/powernv Platform dump interface")
+CC: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
 ---
- include/asm-generic/getorder.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/powernv/opal-dump.c | 41 +++++++++++++++-------
+ 1 file changed, 29 insertions(+), 12 deletions(-)
 
-diff --git a/include/asm-generic/getorder.h b/include/asm-generic/getorder.h
-index e9f20b813a69..f2979e3a96b6 100644
---- a/include/asm-generic/getorder.h
-+++ b/include/asm-generic/getorder.h
-@@ -26,7 +26,7 @@
-  *
-  * The result is undefined if the size is 0.
-  */
--static inline __attribute_const__ int get_order(unsigned long size)
-+static __always_inline __attribute_const__ int get_order(unsigned long size)
+diff --git a/arch/powerpc/platforms/powernv/opal-dump.c b/arch/powerpc/platforms/powernv/opal-dump.c
+index 543c816fa99e..0e6693bacb7e 100644
+--- a/arch/powerpc/platforms/powernv/opal-dump.c
++++ b/arch/powerpc/platforms/powernv/opal-dump.c
+@@ -318,15 +318,14 @@ static ssize_t dump_attr_read(struct file *filep, struct kobject *kobj,
+ 	return count;
+ }
+ 
+-static struct dump_obj *create_dump_obj(uint32_t id, size_t size,
+-					uint32_t type)
++static void create_dump_obj(uint32_t id, size_t size, uint32_t type)
  {
- 	if (__builtin_constant_p(size)) {
- 		if (!size)
+ 	struct dump_obj *dump;
+ 	int rc;
+ 
+ 	dump = kzalloc(sizeof(*dump), GFP_KERNEL);
+ 	if (!dump)
+-		return NULL;
++		return;
+ 
+ 	dump->kobj.kset = dump_kset;
+ 
+@@ -346,21 +345,39 @@ static struct dump_obj *create_dump_obj(uint32_t id, size_t size,
+ 	rc = kobject_add(&dump->kobj, NULL, "0x%x-0x%x", type, id);
+ 	if (rc) {
+ 		kobject_put(&dump->kobj);
+-		return NULL;
++		return;
+ 	}
+ 
++	/*
++	 * As soon as the sysfs file for this dump is created/activated there is
++	 * a chance the opal_errd daemon (or any userspace) might read and
++	 * acknowledge the dump before kobject_uevent() is called. If that
++	 * happens then there is a potential race between
++	 * dump_ack_store->kobject_put() and kobject_uevent() which leads to a
++	 * use-after-free of a kernfs object resulting in a kernel crash.
++	 *
++	 * To avoid that, we need to take a reference on behalf of the bin file,
++	 * so that our reference remains valid while we call kobject_uevent().
++	 * We then drop our reference before exiting the function, leaving the
++	 * bin file to drop the last reference (if it hasn't already).
++	 */
++
++	/* Take a reference for the bin file */
++	kobject_get(&dump->kobj);
+ 	rc = sysfs_create_bin_file(&dump->kobj, &dump->dump_attr);
+-	if (rc) {
++	if (rc == 0) {
++		kobject_uevent(&dump->kobj, KOBJ_ADD);
++
++		pr_info("%s: New platform dump. ID = 0x%x Size %u\n",
++			__func__, dump->id, dump->size);
++	} else {
++		/* Drop reference count taken for bin file */
+ 		kobject_put(&dump->kobj);
+-		return NULL;
+ 	}
+ 
+-	pr_info("%s: New platform dump. ID = 0x%x Size %u\n",
+-		__func__, dump->id, dump->size);
+-
+-	kobject_uevent(&dump->kobj, KOBJ_ADD);
+-
+-	return dump;
++	/* Drop our reference */
++	kobject_put(&dump->kobj);
++	return;
+ }
+ 
+ static irqreturn_t process_dump(int irq, void *data)
 -- 
-2.25.0
+2.26.2
 
