@@ -2,75 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4342D291573
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Oct 2020 05:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE048291575
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Oct 2020 05:52:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CDQsG3JPxzDqjk
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Oct 2020 14:50:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CDQv31PPCzDql2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Oct 2020 14:52:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=sandipan.osd@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=sandipan.osd@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Lox7NMqZ; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ header.s=20161025 header.b=hxq2s5R7; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CDQqb3CDrzDqBd
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Oct 2020 14:49:14 +1100 (AEDT)
-Received: by mail-pj1-x1044.google.com with SMTP id hk7so3679817pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 20:49:14 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CDQrn1N0hzDqdX
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Oct 2020 14:50:16 +1100 (AEDT)
+Received: by mail-pf1-x441.google.com with SMTP id j18so3945880pfa.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 20:50:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=subject:to:references:cc:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=X4qHoygSzqTKRDzkJq6t6yBpbF+Ft2yq/15kwOh1m9g=;
- b=Lox7NMqZexy2YU1ftxw1t4lIbQMYzOkHl7rwr3JhCoNKYKdKr3PEUL7mOjoLp1SRwG
- 0Tg0bE3Q66j/ZVxMyVQTBZuhr+ODN79ahVSAjPWmlEmcLbK3jsHaDGm/y0kd6Xb4bYLE
- AF3wZC6xLon/vbhFYKC/fdk87Q8Sm0+1VanlnSB+PbK4JQlOYIsAHsPk/CuqQlzIotHw
- LQobuRSOdq7WhP3CCn8YJwvosox3zqyw7BHEcUlaqsxn57ZsnQalS1fRnQtxG83MNFw5
- io9KmBZEkHCbCZ2YtZmyxOaSH6N7orfWnlGpheDSOtD3OrUddUqsMR6AR4GLUmGLgKR7
- VqYQ==
+ bh=7vDXU9ifoi0WuNyoHN2eIP6cIJ4RR2aqpnMNqijwAnY=;
+ b=hxq2s5R7z/2xW7AsNBBlZxDM21FFeyr4ejNhOsJ4AOIZWz4mFi0Bu6AGhl18CwDJMZ
+ K1loNfx0hbwHVm+PNJUK/dWsyQMp/X4OuaFNepKMtACd3d1J2r/X8jq0eYwFAm5XwAkG
+ PYClDkLvh+JkV6kdi69CdoD0KJgFYpGc+Q49e2KvxyBAsj24513ieOSXb8UnEQUEVViZ
+ 1V07RI3u5ppAuOpKi3GAJ2QGK73c9pyjlo8uFclWByOKHsjqigGM43Y4G9fNbvQUI6XY
+ vieLcGfgsb8H3fyJqWIO0NV7T8umsQV/dLCe7kdOEL6WEAooDU3MkPxJH9yOIpnyZ+m8
+ K9yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:references:cc:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=X4qHoygSzqTKRDzkJq6t6yBpbF+Ft2yq/15kwOh1m9g=;
- b=CnDJraVySVPJpA2zBvo8uRFb/+ZSSrd0nzImDdR5u6U0IiUx6AMWE5PxOQSh6S1WtF
- fXGL6AqPU0M8CtEtHIBl9zWbfS1dHEAi5cKB9WgnTCk9XRFV0b1nnpX9intqfbVCUxqJ
- qk5ul49+V0TQjVE5k+BqXBsCb/KN+6vLuADxoSih/SIoEHYFG40BFsoRFUrifYop6Fwl
- XZYvlGiRBDef8kdsZgE0Ybxy9MzEsPmvdbTvuec8X5RIly0eeS1KP5LJSh6J8GrdO+MM
- gytwCUjZoHrniZrTPeM3XNwlH6Gjw6OzVaxJH7a/qIJMokA5o5bwRvgu0j4iEul23APg
- OSbQ==
-X-Gm-Message-State: AOAM532J3M3XiSTudqIDsTQD1cLo+EZ5vRSIgFpB+06FxFGBiO1ffsKt
- mXt2S3TXLroCLi6rHI7x4zIGgfmnp0k=
-X-Google-Smtp-Source: ABdhPJx1W2qisQbSC7OHbU2SgYHsG2uE0LaC25LfPMHme4tCOUfEQMikfqttr1JFhIrkiT3WoW151A==
-X-Received: by 2002:a17:902:8341:b029:d4:e3fa:e464 with SMTP id
- z1-20020a1709028341b02900d4e3fae464mr11449474pln.66.1602992953138; 
- Sat, 17 Oct 2020 20:49:13 -0700 (PDT)
+ bh=7vDXU9ifoi0WuNyoHN2eIP6cIJ4RR2aqpnMNqijwAnY=;
+ b=hvHPIHf7vxt/nVbA/Z8qea/a3gU6m22sAsm4CRYQyT7A80J3vEwRJzAr/TBWo4miXX
+ ghBEXVjdPf9dctpOwYLyTgstoUCF9u59F35AfKEuye0aKh0XCZqmGEmI3X7CybkJ/rwk
+ sll81e0UJM6BeGJHSYiPeUCExRrbBr0wQQHjFum4/m+TmVu/55G5340UM1tsATxm1MFu
+ OuWnhmHvoozbORh/hOt77eV4Ms7V/Z0QMWjQas5cJNGSpnfgGzaHMQKixqQxzUgUAA8z
+ Uuscf/S3dHyO1u2BotAn+aGnsoIe1Tf/HM3fEdJLIm74zwkyDsCZs+SiE+egszP+aLXP
+ Nwxg==
+X-Gm-Message-State: AOAM532gnhQvMAg6enC13b5/q4bG/R15FjHcDqj7hdW0w6g2qZTVEaKu
+ wPnw8aMYUkWu/LsuYo2Y90yzQWve1Mo=
+X-Google-Smtp-Source: ABdhPJxiVr5Le5UCZuamnHBOM/6UWlf9Fxi4FO+SsT6Rmp7CJQygxgxMNu+AIRjAa9fyXhYQlNKLzw==
+X-Received: by 2002:a63:191b:: with SMTP id z27mr9326134pgl.373.1602993013490; 
+ Sat, 17 Oct 2020 20:50:13 -0700 (PDT)
 Received: from [192.168.0.102] ([49.207.205.150])
- by smtp.gmail.com with ESMTPSA id p22sm7261478pju.48.2020.10.17.20.49.11
+ by smtp.gmail.com with ESMTPSA id j6sm7288044pfi.129.2020.10.17.20.50.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 17 Oct 2020 20:49:12 -0700 (PDT)
-Subject: Re: [PATCH v5 11/23] powerpc/book3s64/pkeys: Store/restore userspace
- AMR/IAMR correctly on entry and exit from kernel
+ Sat, 17 Oct 2020 20:50:13 -0700 (PDT)
+Subject: Re: [PATCH v5 13/23] powerpc/book3s64/pkeys: Reset userspace AMR
+ correctly on exec
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 References: <20200827040931.297759-1-aneesh.kumar@linux.ibm.com>
- <20200827040931.297759-12-aneesh.kumar@linux.ibm.com>
+ <20200827040931.297759-14-aneesh.kumar@linux.ibm.com>
 From: Sandipan Das <sandipan.osd@gmail.com>
-Message-ID: <ef174ccb-62b1-9385-b213-42c1718d5cfa@gmail.com>
-Date: Sun, 18 Oct 2020 09:19:09 +0530
+Message-ID: <454561c6-733d-7ef0-e6f1-47c983486e48@gmail.com>
+Date: Sun, 18 Oct 2020 09:20:10 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.3.1
 MIME-Version: 1.0
-In-Reply-To: <20200827040931.297759-12-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20200827040931.297759-14-aneesh.kumar@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -93,34 +92,17 @@ Sender: "Linuxppc-dev"
 
 
 On 27/08/20 9:39 am, Aneesh Kumar K.V wrote:
-> This prepare kernel to operate with a different value than userspace AMR/IAMR.
-> For this, AMR/IAMR need to be saved and restored on entry and return from the
-> kernel.
+> On fork, we inherit from the parent and on exec, we should switch to default_amr values.
 > 
-> With KUAP we modify kernel AMR when accessing user address from the kernel
-> via copy_to/from_user interfaces. We don't need to modify IAMR value in
-> similar fashion.
-> 
-> If MMU_FTR_PKEY is enabled we need to save AMR/IAMR in pt_regs on entering
-> kernel from userspace. If not we can assume that AMR/IAMR is not modified
-> from userspace.
-> 
-> We need to save AMR if we have MMU_FTR_KUAP feature enabled and we are
-> interrupted within kernel. This is required so that if we get interrupted
-> within copy_to/from_user we continue with the right AMR value.
-> 
-> If we hae MMU_FTR_KUEP enabled we need to restore IAMR on return to userspace
-> beause kernel will be running with a different IAMR value.
+> Also, avoid changing the AMR register value within the kernel. The kernel now runs with
+> different AMR values.
 > 
 > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > ---
->  arch/powerpc/include/asm/book3s/64/kup.h | 177 ++++++++++++++++++++---
->  arch/powerpc/include/asm/ptrace.h        |   4 +-
->  arch/powerpc/kernel/asm-offsets.c        |   2 +
->  arch/powerpc/kernel/entry_64.S           |   6 +-
->  arch/powerpc/kernel/exceptions-64s.S     |   4 +-
->  arch/powerpc/kernel/syscall_64.c         |  30 +++-
->  6 files changed, 192 insertions(+), 31 deletions(-)
+>  arch/powerpc/include/asm/book3s/64/pkeys.h |  2 ++
+>  arch/powerpc/kernel/process.c              |  6 +++++-
+>  arch/powerpc/mm/book3s64/pkeys.c           | 16 ++--------------
+>  3 files changed, 9 insertions(+), 15 deletions(-)
 > 
 
 Reviewed-by: Sandipan Das <sandipan@linux.ibm.com>
