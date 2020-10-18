@@ -1,76 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0103029157D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Oct 2020 06:03:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD11129157E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Oct 2020 06:05:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CDR8N3PqdzDqnZ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Oct 2020 15:03:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CDRBB73gzzDqq0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Oct 2020 15:05:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=sandipan.osd@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=sandipan.osd@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=E2UKg5nL; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ header.s=20161025 header.b=LNx33XwE; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CDR4z2ky1zDqg6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Oct 2020 15:00:50 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id c20so3931823pfr.8
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 21:00:50 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CDR5t0qNMzDqdd
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Oct 2020 15:01:38 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id y14so3920995pfp.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Oct 2020 21:01:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=subject:to:references:cc:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=Iw/NWcsHha9jkXHtjvanpLfn8hEmgA1RsRWy0+Uvlmk=;
- b=E2UKg5nLNq6a2+oIsv4gMrcRWMSv98oosfP341EZJpKabLIMTasWgOHDPHp0ykdTuL
- hLtAx6ixhUnRtKhMihb34lfLUOq7zMVHz//txG+bYyi/KVvzpCGpWalSb1XynYvKDheN
- ac0dWEFzDVVCvK1YRTjj4sVbPFZ/tpB2umHzBwUtqTicJTx+E2HjLSwpe0bVpcHBy6L0
- tTUbhxXna3VyyeB0VTzbhtV9c5cIR2nv4DYzP6SSqVQP0J7ZEChZrfYeRWglwLPXW+CV
- yGxR+nwT7Uwnd8LeRHKVPolnpLtIwE42Nk6RVHVvHtDoyQZMl/U0pNem+qZDXzSGlG7E
- QOFw==
+ bh=8rGOKLGuRQNPcyMczskkdoxaYG78HVGom6kgLBGar+A=;
+ b=LNx33XwEgOXeVYgx4/LZyQNaaTtAvIEoMIfyy4godOyhhYPr/+QQ1+Ivsnkm6N/tkT
+ cMkkibSeZ51RVprhNHqPznTrV03UOPBwRYJ047ACJhEDiwoWNOOYRV4zCyBtOfqu0RJs
+ zAGPlHfc5bTbzHs9Nnp9pPDOCzP9n6piR5u0KWdJ8GRMGAOvtMvIULRycY8lRvsu8lPb
+ 7E8BV0mZwx/wfDC+g4ajPsCqRUnIEranmBFBXXZAJFhD2ayKo5HtaWy7ITYYDHVLPq7O
+ TZ8SyJlJCAUpdXpzcX6mi4pVNwpmJaoJ870wmHDRDcQNcpRyKquIDKJRJR7YoqAoJdyL
+ AcpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:references:cc:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=Iw/NWcsHha9jkXHtjvanpLfn8hEmgA1RsRWy0+Uvlmk=;
- b=VRsp187hOKFk+IdI3GBOIw1pgbgaYZSwuyFTRlDnGla5FOLIpXaImW0bR0kDckKwQQ
- SBrPPS129LFYo4Ei53AfXtRVnBs0diseKOZ3cHs6HEWp1jrCHQbyZHKFqqHc10ryy7Ha
- 6fz5L+VhUZjQofRCELyhSqmOeb+Dtj1tLSCO6fcfYC/Qf8DLhiqf6RYOO2bqmVIj4b+H
- cz0O0FZtsYdkKWZp3bxHAHfRLkg6MvZvsbmuTgLQaVx5RkMyPX+L+/N/vQv0zQh4HVnX
- DRfPOb+PERSWd6gw/8ZLefTLby0VhWpS4ehrg/13pJBTw9eLYTb/zjqU79gzBXljMGhE
- C8Ow==
-X-Gm-Message-State: AOAM533Ed9uNjJWtA+VXqcI/v1uf32pdJ2jkNl42nbOj/LR02x6ZHn58
- Ac61JZzAISP6ASrEftYxOL1sZKjpx7Q=
-X-Google-Smtp-Source: ABdhPJyW4IJ7QkLUarvjIUnOytPOqksVutTj1o2hdN736A3ygbza3qJTAobj6/iqAZmzj3v1f4tstw==
-X-Received: by 2002:a62:2985:0:b029:142:2501:3969 with SMTP id
- p127-20020a6229850000b029014225013969mr11209281pfp.46.1602993648549; 
- Sat, 17 Oct 2020 21:00:48 -0700 (PDT)
+ bh=8rGOKLGuRQNPcyMczskkdoxaYG78HVGom6kgLBGar+A=;
+ b=i+ORPoSBj7FT84RCA+zIe0A/PiwJ3vZnzgTHiBjIocrQP7mJmjPI2VXszOoNr5aL+X
+ i4TQ0Tjz/udj34LzZ+v2cD8ZRmTSMGhb94sjJOx8Gdfl26yzGqHsvWWapkcf7NC+kC6M
+ 1PQu8JMu2zONwVulYD63OLFwrAUyJMNc10879g9qym7w1MghzeCN8TQhpsaSdEDd4qhX
+ Wxs7mgkISxyEk+OA15drfVkKMSlWXQfqLXzmFyFVz9hh+yoiuZKfpYZ1F993Zw/NwA4E
+ X2XXeZTzfw413f8LraForPaRlXOW0slCVnnP6lV7IcdO7VhSC1IySC4i4al30UN+9YcU
+ qGWg==
+X-Gm-Message-State: AOAM53307w2n9U+E3eKD5ZQ5NsvHQSFRBzHsvjvpmWliPGiNX5MrOSzj
+ HRHTFWk+5/pGfm2ucaTKRo47cUt3O9I=
+X-Google-Smtp-Source: ABdhPJxYpAEnltmiJnbJCVsrXeexo+thXO07+fGRYjaRoRI/hscSCPRuXGdlg1E0LO0VPeapgTXpDg==
+X-Received: by 2002:a63:f815:: with SMTP id n21mr9606162pgh.410.1602993696275; 
+ Sat, 17 Oct 2020 21:01:36 -0700 (PDT)
 Received: from [192.168.0.102] ([49.207.205.150])
- by smtp.gmail.com with ESMTPSA id 8sm7203579pge.7.2020.10.17.21.00.46
+ by smtp.gmail.com with ESMTPSA id w6sm7192261pgw.28.2020.10.17.21.01.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 17 Oct 2020 21:00:48 -0700 (PDT)
-Subject: Re: [PATCH v5 18/23] powerpc/book3s64/kuap: Use Key 3 to implement
- KUAP with hash translation.
+ Sat, 17 Oct 2020 21:01:36 -0700 (PDT)
+Subject: Re: [PATCH v5 19/23] powerpc/book3s64/kuep: Use Key 3 to implement
+ KUEP with hash translation.
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 References: <20200827040931.297759-1-aneesh.kumar@linux.ibm.com>
- <20200827040931.297759-19-aneesh.kumar@linux.ibm.com>
+ <20200827040931.297759-20-aneesh.kumar@linux.ibm.com>
 From: Sandipan Das <sandipan.osd@gmail.com>
-Message-ID: <98db93d0-91fd-486e-237d-bfef8b74acc3@gmail.com>
-Date: Sun, 18 Oct 2020 09:30:45 +0530
+Message-ID: <3f9c6eb1-d45f-24cb-fdff-cd51b67f1b28@gmail.com>
+Date: Sun, 18 Oct 2020 09:31:32 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.3.1
 MIME-Version: 1.0
-In-Reply-To: <20200827040931.297759-19-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20200827040931.297759-20-aneesh.kumar@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -93,12 +92,12 @@ Sender: "Linuxppc-dev"
 
 
 On 27/08/20 9:39 am, Aneesh Kumar K.V wrote:
-> Radix use AMR Key 0 and hash translation use AMR key 3.
+> Radix use IAMR Key 0 and hash translation use IAMR key 3.
 > 
 > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > ---
->  arch/powerpc/include/asm/book3s/64/kup.h | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+>  arch/powerpc/include/asm/book3s/64/kup.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 
 Reviewed-by: Sandipan Das <sandipan@linux.ibm.com>
