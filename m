@@ -1,46 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8683292B64
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 18:25:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BCB3292D47
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 20:00:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CFMY65T3fzDqcT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 03:24:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CFPg83brPzDqby
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 05:00:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=baikalelectronics.ru (client-ip=94.125.187.42;
- helo=mail.baikalelectronics.ru;
- envelope-from=sergey.semin@baikalelectronics.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=baikalelectronics.ru
-Received: from mail.baikalelectronics.ru (mx.chip.baikal.ru [94.125.187.42])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CFMVq2942zDqXf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Oct 2020 03:22:55 +1100 (AEDT)
-Received: from localhost (unknown [127.0.0.1])
- by mail.baikalelectronics.ru (Postfix) with ESMTP id 060F18030865;
- Mon, 19 Oct 2020 16:22:48 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at baikalelectronics.ru
-Received: from mail.baikalelectronics.ru ([127.0.0.1])
- by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 3fyZBKMOX3_k; Mon, 19 Oct 2020 19:22:47 +0300 (MSK)
-Date: Mon, 19 Oct 2020 19:22:45 +0300
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 11/20] dt-bindings: usb: dwc3: Add synopsys,dwc3
- compatible string
-Message-ID: <20201019162245.j5fsvv355wchuhza@mobilestation.baikal.int>
-References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
- <20201014101402.18271-12-Sergey.Semin@baikalelectronics.ru>
- <20201014201818.GA6926@kozik-lap>
- <20201014213554.turskjyuntk35syj@mobilestation>
- <20201016185340.GA1734346@bogus>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CFPcy3dDVzDqYS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Oct 2020 04:58:23 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 09JHt4hN012442;
+ Mon, 19 Oct 2020 12:55:05 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 09JHt2nP012434;
+ Mon, 19 Oct 2020 12:55:02 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Mon, 19 Oct 2020 12:55:02 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] asm-generic: Force inlining of get_order() to work around
+ gcc10 poor decision
+Message-ID: <20201019175502.GO2672@gate.crashing.org>
+References: <96c6172d619c51acc5c1c4884b80785c59af4102.1602949927.git.christophe.leroy@csgroup.eu>
+ <CACPK8XfgK0Bj3sLjKCi80jS6vK34FN5BTkU8FvBGcMR=RQn4Xw@mail.gmail.com>
+ <0bd0afae-f043-2811-944b-c94d90e231d2@csgroup.eu>
+ <20201019083225.GN2672@gate.crashing.org>
+ <188e00e1-ae41-693e-1d05-f8d87e7ee696@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20201016185340.GA1734346@bogus>
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <188e00e1-ae41-693e-1d05-f8d87e7ee696@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,49 +55,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Neil Armstrong <narmstrong@baylibre.com>, linux-kernel@vger.kernel.org,
- Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
- Kevin Hilman <khilman@baylibre.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- Andy Gross <agross@kernel.org>, linux-snps-arc@lists.infradead.org,
- devicetree@vger.kernel.org, Mathias Nyman <mathias.nyman@intel.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- linux-arm-kernel@lists.infradead.org, Roger Quadros <rogerq@ti.com>,
- Felipe Balbi <balbi@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
- Serge Semin <fancer.lancer@gmail.com>, Manu Gautam <mgautam@codeaurora.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>, Joel Stanley <joel@jms.id.au>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 16, 2020 at 01:53:40PM -0500, Rob Herring wrote:
-> On Thu, Oct 15, 2020 at 12:35:54AM +0300, Serge Semin wrote:
-> > On Wed, Oct 14, 2020 at 10:18:18PM +0200, Krzysztof Kozlowski wrote:
-> > > On Wed, Oct 14, 2020 at 01:13:53PM +0300, Serge Semin wrote:
-> > > > The DWC USB3 driver and some DTS files like Exynos 5250, Keystone k2e, etc
-> > > > expects the DWC USB3 DT node to have the compatible string with the
-> > > > "synopsys" vendor prefix. Let's add the corresponding compatible string to
-> > > > the controller DT schema, but mark it as deprecated seeing the Synopsys,
-> > > > Inc. is presented with just "snps" vendor prefix.
-> > > 
-> > 
-> > > Instead of adding deprecated schema just correct the DTSes to use snps.
-> > > The "synopsys" is not even in vendor prefixes.
-> > 
-> > Yeah, it's not, but the driver and some dts'es use it this way. I am not sure
-> > that the solution suggested by you is much better than mine. So let's hear the
-> > Rob'es opinion out in this matter. @Rob, what do you think?
+On Mon, Oct 19, 2020 at 10:54:40AM +0200, Christophe Leroy wrote:
+> Le 19/10/2020 à 10:32, Segher Boessenkool a écrit :
+> >The kernel should just use __always_inline if that is what it *wants*;
+> >that is true here most likely.  GCC could perhaps improve its heuristics
+> >so that it no longer thinks these functions are often too big for
+> >inlining (they *are* pretty big, but not after basic optimisations with
+> >constant integer arguments).
 > 
-
-> I think we should fix the dts files given there's only 5.
-
-Ok. I'll do that.
-
--Sergey
-
+> Yes I guess __always_inline is to be added on functions like this defined 
+> in headers for exactly that, and that's the purpose of this patch.
 > 
-> Rob
+> However I find it odd that get_order() is outlined by GCC even in some 
+> object files that don't use it at all, for instance in fs/pipe.o
+
+It is (arguably) too big too always inline if you do not consider that
+__builtin_constant_p will remove half of the function one way or
+another.  Not sure if that is what happens here, but now we have a PR
+(thanks!) and we will find out.
+
+
+Segher
