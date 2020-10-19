@@ -1,79 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4520292203
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 06:52:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCFF29220A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 06:57:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CF49z5cgxzDqZb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 15:52:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CF4J11jPMzDqdv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 15:57:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
+ helo=mail-qk1-x742.google.com; envelope-from=joel.stan@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=U02Q9Imz; dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+ dmarc=none (p=none dis=none) header.from=jms.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
+ header.s=google header.b=XQl3RjUC; dkim-atps=neutral
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
+ [IPv6:2607:f8b0:4864:20::742])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CF48N6PvCzDqNT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 15:51:00 +1100 (AEDT)
-Received: by mail-pl1-x642.google.com with SMTP id 1so4376782ple.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Oct 2020 21:51:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=VP/SJWlyjIPk8BZHzgCHKYeG7WO6++eqQoSElHzrNws=;
- b=U02Q9Imz2JnxVFRQ+rzeHXF4MBXM5UFe1sK5UiUZ2v6yK/pVUo4TWAlrVHFGau4z66
- HA7wtdJPF9Sp9r4za8ukVZw8lCeDDPZD1U+j/xLbb/c2KmbKJ9+XlRFPSzGgPxNmTXQ1
- ti2jzQXOsZ72LbgDavDwhZTy1+UxijdKdIDDe5TttvVsi7x3OyPk2GTWhrkB+QL7TK1y
- M+ZOSmLV74akbc5MUrO0cCQOLko0zCKP8SNuakFCRzLgB2jK37v+G06K5IOCs+KyV9KN
- cXOpR25O40TVkxKhs7uVC2hf6ntYU9Uo6ft1u+kthzebhxrZ19UmPUsMPvNz0axtWQa5
- Z6zQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CF4GP3HSfzDqTZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 15:56:11 +1100 (AEDT)
+Received: by mail-qk1-x742.google.com with SMTP id a23so6838484qkg.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Oct 2020 21:56:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=+DdX9ApBECm+ZbNtZ5Vnyo8TdWHP3VGSlELnREVWBNY=;
+ b=XQl3RjUCuFc72C5e68vkhmCKQQgsZkb9Vh0Thw8hzOZzbVkTFD4oW0HJS4kZ6wZnO5
+ h7qwyL+8o43sy9jIkDfnRYdrivkw96E6c/JE7XY/e1BYCz2dIVIdYZHQkRQXmsM5lbNr
+ GUEcOVIgdW6FRDAW2PwuDztW/r9zSpXdfmjCw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=VP/SJWlyjIPk8BZHzgCHKYeG7WO6++eqQoSElHzrNws=;
- b=cBTxq3aWnJ6rjTuUB9h9kv/8I0S1BDKAAWA0IfIGVUuJ5YWu6PYNdrz7RrNya38ScK
- A+5iSLbYo0QKlLYEalByHNmjygO+2z/0EAEtnUqAaQBX0Rr4y9vXboyoeO+zULbJcO1I
- 3EzUlFcOh3xxH1IveHG19touFrub30IoL2ObBg27l02Vz7qpmfwdiJQJy8etEAk8wHyp
- DfFRguAPnrPuucgX1vJqm15FAwvwf5o/ydLCg6jXo6QpU3YFVMDnEntVOgpLuwoEXnVL
- 8fT0tYk9KvI2384ybhhgssvBVf1Ba6vM+3pZDGc7HlWP5M1Zi78gBpXo0PDiH/BAePBQ
- nO5w==
-X-Gm-Message-State: AOAM533NTJlAf4iAAWFegfbavXp1okLjZkpwDut5jh5OpO8GpezGT/Kn
- 0u4KdUa6jozSEYBzMMlsn6A=
-X-Google-Smtp-Source: ABdhPJyY3nDmpxcFzbcWd57NkUhVZYzMu0aJYcB+T8R0dR9f6ubJn5ZQV+bR0QtpjJO025QRP9abVA==
-X-Received: by 2002:a17:902:b78c:b029:d4:da94:8766 with SMTP id
- e12-20020a170902b78cb02900d4da948766mr15798700pls.31.1603083057319; 
- Sun, 18 Oct 2020 21:50:57 -0700 (PDT)
-Received: from localhost ([1.129.224.124])
- by smtp.gmail.com with ESMTPSA id y14sm10204222pfe.107.2020.10.18.21.50.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Oct 2020 21:50:56 -0700 (PDT)
-Date: Mon, 19 Oct 2020 14:50:51 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: KVM on POWER8 host lock up since 10d91611f426 ("powerpc/64s:
- Reimplement book3s idle code in C")
-To: Michal =?iso-8859-1?q?Such=E1nek?= <msuchanek@suse.de>
-References: <20200830201145.GA29521@kitsune.suse.cz>
- <1598835313.5688ngko4f.astroid@bobo.none>
- <20200831091523.GC29521@kitsune.suse.cz> <87y2lv1430.fsf@mpe.ellerman.id.au>
- <1599484062.vgmycu6q5i.astroid@bobo.none>
- <20201016201410.GH29778@kitsune.suse.cz>
- <1603066878.gtbyofrzyo.astroid@bobo.none>
-In-Reply-To: <1603066878.gtbyofrzyo.astroid@bobo.none>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=+DdX9ApBECm+ZbNtZ5Vnyo8TdWHP3VGSlELnREVWBNY=;
+ b=NM8kZpWQHbegAIXH5nCkXmlZsJGkOvtl8qiGKNjNzFOR1UREFktRXmmcXx1AyvT1Jf
+ jmrpr3c50ONQK7ZLS8sWRHNfrHF2ZpiZ+cooI0JIllBuy2G0mvJnVm0PnlqIo8i5EZ0t
+ OHPuE/SHIKIikfIETc7JsOIOpomm2jehlks6iJQRcmJYBY0mbGWQ4ctG6StfWM97lOfX
+ QxMq9mzNP33GFHUACOK9lFCpGrV0YwqLZI3XkLkWg1hvgY0/sO4JlfrCxFfbYk0JYL01
+ 87871X2g4JB8z2kvSTCBQM02Of+3MwDlIBgLWkYO8RTs4ZTAB88LCj/W1fdrl+9Sc0yN
+ 92ag==
+X-Gm-Message-State: AOAM530yLtAvQI7QitgAY/e9V3g6jwLEiYcp2KnVpKKTc+YpkelHakAD
+ BUtv5/gU/Sb/csAzZ6RB5gqez4cnE7NzzKPmwRQ=
+X-Google-Smtp-Source: ABdhPJyar9udlZPgCCqFMvDSZwmLzCPi0LxWbnXc6wqf6/x0UQyWB6Sox4JOJ3/KAzY0OBVi6VParLwqDvMXazd9S60=
+X-Received: by 2002:a37:48cc:: with SMTP id v195mr15006360qka.66.1603083367899; 
+ Sun, 18 Oct 2020 21:56:07 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <1603082970.5545yt7raj.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <96c6172d619c51acc5c1c4884b80785c59af4102.1602949927.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <96c6172d619c51acc5c1c4884b80785c59af4102.1602949927.git.christophe.leroy@csgroup.eu>
+From: Joel Stanley <joel@jms.id.au>
+Date: Mon, 19 Oct 2020 04:55:55 +0000
+Message-ID: <CACPK8XfgK0Bj3sLjKCi80jS6vK34FN5BTkU8FvBGcMR=RQn4Xw@mail.gmail.com>
+Subject: Re: [PATCH] asm-generic: Force inlining of get_order() to work around
+ gcc10 poor decision
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Segher Boessenkool <segher@kernel.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,123 +71,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ro@suse.de, linuxppc-dev@lists.ozlabs.org,
- Hari Bathini <hbathini@linux.ibm.com>
+Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nicholas Piggin's message of October 19, 2020 11:00 am:
-> Excerpts from Michal Such=C3=A1nek's message of October 17, 2020 6:14 am:
->> On Mon, Sep 07, 2020 at 11:13:47PM +1000, Nicholas Piggin wrote:
->>> Excerpts from Michael Ellerman's message of August 31, 2020 8:50 pm:
->>> > Michal Such=C3=A1nek <msuchanek@suse.de> writes:
->>> >> On Mon, Aug 31, 2020 at 11:14:18AM +1000, Nicholas Piggin wrote:
->>> >>> Excerpts from Michal Such=C3=A1nek's message of August 31, 2020 6:1=
-1 am:
->>> >>> > Hello,
->>> >>> >=20
->>> >>> > on POWER8 KVM hosts lock up since commit 10d91611f426 ("powerpc/6=
-4s:
->>> >>> > Reimplement book3s idle code in C").
->>> >>> >=20
->>> >>> > The symptom is host locking up completely after some hours of KVM
->>> >>> > workload with messages like
->>> >>> >=20
->>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't gra=
-b cpu 47
->>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't gra=
-b cpu 71
->>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't gra=
-b cpu 47
->>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't gra=
-b cpu 71
->>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't gra=
-b cpu 47
->>> >>> >=20
->>> >>> > printed before the host locks up.
->>> >>> >=20
->>> >>> > The machines run sandboxed builds which is a mixed workload resul=
-ting in
->>> >>> > IO/single core/mutiple core load over time and there are periods =
-of no
->>> >>> > activity and no VMS runnig as well. The VMs are shortlived so VM
->>> >>> > setup/terdown is somewhat excercised as well.
->>> >>> >=20
->>> >>> > POWER9 with the new guest entry fast path does not seem to be aff=
-ected.
->>> >>> >=20
->>> >>> > Reverted the patch and the followup idle fixes on top of 5.2.14 a=
-nd
->>> >>> > re-applied commit a3f3072db6ca ("powerpc/powernv/idle: Restore IA=
-MR
->>> >>> > after idle") which gives same idle code as 5.1.16 and the kernel =
-seems
->>> >>> > stable.
->>> >>> >=20
->>> >>> > Config is attached.
->>> >>> >=20
->>> >>> > I cannot easily revert this commit, especially if I want to use t=
-he same
->>> >>> > kernel on POWER8 and POWER9 - many of the POWER9 fixes are applic=
-able
->>> >>> > only to the new idle code.
->>> >>> >=20
->>> >>> > Any idea what can be the problem?
->>> >>>=20
->>> >>> So hwthread_state is never getting back to to HWTHREAD_IN_IDLE on
->>> >>> those threads. I wonder what they are doing. POWER8 doesn't have a =
-good
->>> >>> NMI IPI and I don't know if it supports pdbg dumping registers from=
- the
->>> >>> BMC unfortunately.
->>> >>
->>> >> It may be possible to set up fadump with a later kernel version that
->>> >> supports it on powernv and dump the whole kernel.
->>> >=20
->>> > Your firmware won't support it AFAIK.
->>> >=20
->>> > You could try kdump, but if we have CPUs stuck in KVM then there's a
->>> > good chance it won't work :/
->>>=20
->>> I haven't had any luck yet reproducing this still. Testing with sub=20
->>> cores of various different combinations, etc. I'll keep trying though.
->>=20
->> Hello,
->>=20
->> I tried running some KVM guests to simulate the workload and what I get
->> is guests failing to start with a rcu stall. Tried both 5.3 and 5.9
->> kernel and qemu 4.2.1 and 5.1.0
->>=20
->> To start some guests I run
->>=20
->> for i in $(seq 0 9) ; do /opt/qemu/bin/qemu-system-ppc64 -m 2048 -accel =
-kvm -smp 8 -kernel /boot/vmlinux -initrd /boot/initrd -nodefaults -nographi=
-c -serial mon:telnet::444$i,server,wait & done
->>=20
->> To simulate some workload I run
->>=20
->> xz -zc9T0 < /dev/zero > /dev/null &
->> while true; do
->>     killall -STOP xz; sleep 1; killall -CONT xz; sleep 1;
->> done &
->>=20
->> on the host and add a job that executes this to the ramdisk. However, mo=
-st
->> guests never get to the point where the job is executed.
->>=20
->> Any idea what might be the problem?
->=20
-> I would say try without pv queued spin locks (but if the same thing is=20
-> happening with 5.3 then it must be something else I guess).=20
->=20
-> I'll try to test a similar setup on a POWER8 here.
+On Sat, 17 Oct 2020 at 15:55, Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> When building mpc885_ads_defconfig with gcc 10.1,
+> the function get_order() appears 50 times in vmlinux:
+>
+> [linux]# ppc-linux-objdump -x vmlinux | grep get_order | wc -l
+> 50
+>
+> [linux]# size vmlinux
+>    text    data     bss     dec     hex filename
+> 3842620  675624  135160 4653404  47015c vmlinux
+>
+> In the old days, marking a function 'static inline' was forcing
+> GCC to inline, but since commit ac7c3e4ff401 ("compiler: enable
+> CONFIG_OPTIMIZE_INLINING forcibly") GCC may decide to not inline
+> a function.
+>
+> It looks like GCC 10 is taking poor decisions on this.
+>
+> get_order() compiles into the following tiny function,
+> occupying 20 bytes of text.
+>
+> 0000007c <get_order>:
+>   7c:   38 63 ff ff     addi    r3,r3,-1
+>   80:   54 63 a3 3e     rlwinm  r3,r3,20,12,31
+>   84:   7c 63 00 34     cntlzw  r3,r3
+>   88:   20 63 00 20     subfic  r3,r3,32
+>   8c:   4e 80 00 20     blr
+>
+> By forcing get_order() to be __always_inline, the size of text is
+> reduced by 1940 bytes, that is almost twice the space occupied by
+> 50 times get_order()
+>
+> [linux-powerpc]# size vmlinux
+>    text    data     bss     dec     hex filename
+> 3840680  675588  135176 4651444  46f9b4 vmlinux
 
-Couldn't reproduce the guest hang, they seem to run fine even with=20
-queued spinlocks. Might have a different .config.
+I see similar results with GCC 10.2 building for arm32. There are 143
+instances of get_order with aspeed_g5_defconfig.
 
-I might have got a lockup in the host (although different symptoms than=20
-the original report). I'll look into that a bit further.
+Before:
+ 9071838 2630138  186468 11888444         b5673c vmlinux
+After:
+ 9069886 2630126  186468 11886480         b55f90 vmlinux
 
-Thanks,
-Nick
+1952 bytes smaller with your patch applied. Did you raise this with
+anyone from GCC?
+
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+
+
+
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  include/asm-generic/getorder.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/include/asm-generic/getorder.h b/include/asm-generic/getorder.h
+> index e9f20b813a69..f2979e3a96b6 100644
+> --- a/include/asm-generic/getorder.h
+> +++ b/include/asm-generic/getorder.h
+> @@ -26,7 +26,7 @@
+>   *
+>   * The result is undefined if the size is 0.
+>   */
+> -static inline __attribute_const__ int get_order(unsigned long size)
+> +static __always_inline __attribute_const__ int get_order(unsigned long size)
+>  {
+>         if (__builtin_constant_p(size)) {
+>                 if (!size)
+> --
+> 2.25.0
+>
