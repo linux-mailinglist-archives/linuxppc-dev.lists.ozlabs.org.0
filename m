@@ -2,64 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCFF29220A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 06:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 388CA292227
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 07:28:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CF4J11jPMzDqdv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 15:57:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CF4z13fMHzDqfD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 16:27:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
- helo=mail-qk1-x742.google.com; envelope-from=joel.stan@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=XQl3RjUC; dkim-atps=neutral
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
- [IPv6:2607:f8b0:4864:20::742])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=PIHM+ntz; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CF4GP3HSfzDqTZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 15:56:11 +1100 (AEDT)
-Received: by mail-qk1-x742.google.com with SMTP id a23so6838484qkg.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Oct 2020 21:56:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=+DdX9ApBECm+ZbNtZ5Vnyo8TdWHP3VGSlELnREVWBNY=;
- b=XQl3RjUCuFc72C5e68vkhmCKQQgsZkb9Vh0Thw8hzOZzbVkTFD4oW0HJS4kZ6wZnO5
- h7qwyL+8o43sy9jIkDfnRYdrivkw96E6c/JE7XY/e1BYCz2dIVIdYZHQkRQXmsM5lbNr
- GUEcOVIgdW6FRDAW2PwuDztW/r9zSpXdfmjCw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=+DdX9ApBECm+ZbNtZ5Vnyo8TdWHP3VGSlELnREVWBNY=;
- b=NM8kZpWQHbegAIXH5nCkXmlZsJGkOvtl8qiGKNjNzFOR1UREFktRXmmcXx1AyvT1Jf
- jmrpr3c50ONQK7ZLS8sWRHNfrHF2ZpiZ+cooI0JIllBuy2G0mvJnVm0PnlqIo8i5EZ0t
- OHPuE/SHIKIikfIETc7JsOIOpomm2jehlks6iJQRcmJYBY0mbGWQ4ctG6StfWM97lOfX
- QxMq9mzNP33GFHUACOK9lFCpGrV0YwqLZI3XkLkWg1hvgY0/sO4JlfrCxFfbYk0JYL01
- 87871X2g4JB8z2kvSTCBQM02Of+3MwDlIBgLWkYO8RTs4ZTAB88LCj/W1fdrl+9Sc0yN
- 92ag==
-X-Gm-Message-State: AOAM530yLtAvQI7QitgAY/e9V3g6jwLEiYcp2KnVpKKTc+YpkelHakAD
- BUtv5/gU/Sb/csAzZ6RB5gqez4cnE7NzzKPmwRQ=
-X-Google-Smtp-Source: ABdhPJyar9udlZPgCCqFMvDSZwmLzCPi0LxWbnXc6wqf6/x0UQyWB6Sox4JOJ3/KAzY0OBVi6VParLwqDvMXazd9S60=
-X-Received: by 2002:a37:48cc:: with SMTP id v195mr15006360qka.66.1603083367899; 
- Sun, 18 Oct 2020 21:56:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CF4xN4f9KzDqY4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 16:26:32 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09J53JYc069816; Mon, 19 Oct 2020 01:26:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=uzkqErjeNqwQx+7pJF/5/F7vENlKNJCUN5Tt+L3Ucw4=;
+ b=PIHM+ntz7NCIwOyAbFyZy7PcM1kwY5f05VItWboBgnPJhvvWRG7upmHdpaDZjpaFQ+sy
+ BPZJOOo5ya4YK5zoEqcL9w0ySfdGVxrKIhsydXuVOzOstTdlEGKadsziZpUQC7sEDbeM
+ zvsBdoymNzYzMFIPHx7Esx8b6KOvqWg8y1ZxRMbsryO9bpLmbv73Lb6Dz4nlsWAWB+vY
+ jRFeomWh53qZ04QvMAvex/6wXuAKTiJc+RECxNEnJTVbqCl+QEn4kG46PG2WBneWz0RD
+ RW9gbk+bRgKT/HPNoby+J5YYlTFH1ovCuxaTSibxlbBa+hUhZGEe9UxF02Cb7629BLiW nQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3490banc9e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Oct 2020 01:26:26 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09J53Vjp070577;
+ Mon, 19 Oct 2020 01:26:26 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3490banc8e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Oct 2020 01:26:26 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09J5MqpR005521;
+ Mon, 19 Oct 2020 05:26:24 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma01fra.de.ibm.com with ESMTP id 347r880vjw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Oct 2020 05:26:23 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 09J5QLgZ22872554
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 19 Oct 2020 05:26:21 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 822BAA4060;
+ Mon, 19 Oct 2020 05:26:21 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 174DDA405C;
+ Mon, 19 Oct 2020 05:26:19 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.102.18.74])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 19 Oct 2020 05:26:18 +0000 (GMT)
+Subject: Re: [PATCH v4 0/2] powerpc/mce: Fix mce handler and add selftest
+To: Michael Ellerman <patch-notifications@ellerman.id.au>, mpe@ellerman.id.au, 
+ linuxppc-dev@lists.ozlabs.org
+References: <20201009064005.19777-1-ganeshgr@linux.ibm.com>
+ <160284791867.1794337.3709853894956238598.b4-ty@ellerman.id.au>
+From: Ganesh <ganeshgr@linux.ibm.com>
+Message-ID: <b31a5269-98d4-fb78-9a10-47995dcd55de@linux.ibm.com>
+Date: Mon, 19 Oct 2020 10:56:17 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <96c6172d619c51acc5c1c4884b80785c59af4102.1602949927.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <96c6172d619c51acc5c1c4884b80785c59af4102.1602949927.git.christophe.leroy@csgroup.eu>
-From: Joel Stanley <joel@jms.id.au>
-Date: Mon, 19 Oct 2020 04:55:55 +0000
-Message-ID: <CACPK8XfgK0Bj3sLjKCi80jS6vK34FN5BTkU8FvBGcMR=RQn4Xw@mail.gmail.com>
-Subject: Re: [PATCH] asm-generic: Force inlining of get_order() to work around
- gcc10 poor decision
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Segher Boessenkool <segher@kernel.crashing.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <160284791867.1794337.3709853894956238598.b4-ty@ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-10-18_13:2020-10-16,
+ 2020-10-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ mlxlogscore=910 lowpriorityscore=0 adultscore=0 clxscore=1011 mlxscore=0
+ malwarescore=0 impostorscore=0 bulkscore=0 spamscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010190041
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,86 +108,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: msuchanek@suse.de, mahesh@linux.ibm.com, npiggin@gmail.com,
+ keescook@chromium.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 17 Oct 2020 at 15:55, Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
-> When building mpc885_ads_defconfig with gcc 10.1,
-> the function get_order() appears 50 times in vmlinux:
->
-> [linux]# ppc-linux-objdump -x vmlinux | grep get_order | wc -l
-> 50
->
-> [linux]# size vmlinux
->    text    data     bss     dec     hex filename
-> 3842620  675624  135160 4653404  47015c vmlinux
->
-> In the old days, marking a function 'static inline' was forcing
-> GCC to inline, but since commit ac7c3e4ff401 ("compiler: enable
-> CONFIG_OPTIMIZE_INLINING forcibly") GCC may decide to not inline
-> a function.
->
-> It looks like GCC 10 is taking poor decisions on this.
->
-> get_order() compiles into the following tiny function,
-> occupying 20 bytes of text.
->
-> 0000007c <get_order>:
->   7c:   38 63 ff ff     addi    r3,r3,-1
->   80:   54 63 a3 3e     rlwinm  r3,r3,20,12,31
->   84:   7c 63 00 34     cntlzw  r3,r3
->   88:   20 63 00 20     subfic  r3,r3,32
->   8c:   4e 80 00 20     blr
->
-> By forcing get_order() to be __always_inline, the size of text is
-> reduced by 1940 bytes, that is almost twice the space occupied by
-> 50 times get_order()
->
-> [linux-powerpc]# size vmlinux
->    text    data     bss     dec     hex filename
-> 3840680  675588  135176 4651444  46f9b4 vmlinux
+On 10/16/20 5:02 PM, Michael Ellerman wrote:
 
-I see similar results with GCC 10.2 building for arm32. There are 143
-instances of get_order with aspeed_g5_defconfig.
-
-Before:
- 9071838 2630138  186468 11888444         b5673c vmlinux
-After:
- 9069886 2630126  186468 11886480         b55f90 vmlinux
-
-1952 bytes smaller with your patch applied. Did you raise this with
-anyone from GCC?
-
-Reviewed-by: Joel Stanley <joel@jms.id.au>
-
-
-
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  include/asm-generic/getorder.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> On Fri, 9 Oct 2020 12:10:03 +0530, Ganesh Goudar wrote:
+>> This patch series fixes mce handling for pseries, Adds LKDTM test
+>> for SLB multihit recovery and enables selftest for the same,
+>> basically to test MCE handling on pseries/powernv machines running
+>> in hash mmu mode.
+>>
+>> v4:
+>> * Use radix_enabled() to check if its in Hash or Radix mode.
+>> * Use FW_FEATURE_LPAR instead of machine_is_pseries().
+>>
+>> [...]
+> Patch 1 applied to powerpc/fixes.
 >
-> diff --git a/include/asm-generic/getorder.h b/include/asm-generic/getorder.h
-> index e9f20b813a69..f2979e3a96b6 100644
-> --- a/include/asm-generic/getorder.h
-> +++ b/include/asm-generic/getorder.h
-> @@ -26,7 +26,7 @@
->   *
->   * The result is undefined if the size is 0.
->   */
-> -static inline __attribute_const__ int get_order(unsigned long size)
-> +static __always_inline __attribute_const__ int get_order(unsigned long size)
->  {
->         if (__builtin_constant_p(size)) {
->                 if (!size)
-> --
-> 2.25.0
+> [1/2] powerpc/mce: Avoid nmi_enter/exit in real mode on pseries hash
+>        https://git.kernel.org/powerpc/c/8d0e2101274358d9b6b1f27232b40253ca48bab5
 >
+> cheers
+Thank you, Any comments on patch 2.
