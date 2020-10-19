@@ -1,57 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096002924C6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 11:42:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5236F292629
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 13:01:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CFBd748jVzDqcX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 20:42:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CFDN15SzbzDqdk
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 22:01:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CFBYr59TGzDqQ9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 20:39:53 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CFBYX4NWwz9tyZN;
- Mon, 19 Oct 2020 11:39:44 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-X-Amavis-Alert: BAD HEADER SECTION, Non-encoded 8-bit data (char C3 hex): To:
- ...er@amd.com>, "Christian K\303\203\302\266nig" <christia[...]
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id a-YTapLndcIH; Mon, 19 Oct 2020 11:39:44 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CFBYX3XMHz9tyZK;
- Mon, 19 Oct 2020 11:39:44 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 807278B79C;
- Mon, 19 Oct 2020 11:39:49 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-X-Amavis-Alert: BAD HEADER SECTION, Non-encoded 8-bit data (char C3 hex): To:
- ...er@amd.com>, "Christian K\303\203\302\266nig" <christia[...]
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id MPAOOITwO4ip; Mon, 19 Oct 2020 11:39:49 +0200 (CEST)
-Received: from po17688vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [10.25.210.27])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DA7EC8B79A;
- Mon, 19 Oct 2020 11:39:48 +0200 (CEST)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id BBD4266467; Mon, 19 Oct 2020 09:39:48 +0000 (UTC)
-Message-Id: <1a5d454cf080a00c04ae488ef6e98d5fcc933550.1603100151.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] drm/amd/display: Fix missing declaration of
- enable_kernel_vsx()
-To: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, Alex Deucher <alexander.deucher@amd.com>, "Christian König" <christian.koenig@amd.com>, David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>
-Date: Mon, 19 Oct 2020 09:39:48 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CFDLB4SC1zDqQK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 22:00:02 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=aWkFs2fx; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CFDL94Glbz9sRk;
+ Mon, 19 Oct 2020 22:00:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1603105202;
+ bh=GkEuEzz2xbPqel1o+vjt6i7tS/K4O4jcgOAX4pO3Txc=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=aWkFs2fxZN6nBDOq7FUqNp3yzaYB4TXjJiKfdZl5YWHjvWoK2h5a7ZzoLoUOjxqRT
+ eklMoLpLJHokdcu3CoozL1Y0GnHFrHRsjNEBSP0GIYBRW1u4iXKzdiNxvw+DEd9fWS
+ g0/4OPwlBtj83iGYkV7hnkXgtBoPrG595aOUPmXSbmjcmLJYe+1kLawsJa8+CzKLSt
+ KkTbBLEtmcloWVxNyz7DVLzN10/UXd3siM9twD648gmVmLgNuv24EsS19sy+dnvFOz
+ wi26WnkgoVk93MCHe5yBMLyVXkC1juo/fhtmLaug3HYqtEfasiPaBY7dGoilhTVao9
+ XIKOvxyGYKfBw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v4 2/2] lkdtm/powerpc: Add SLB multihit test
+In-Reply-To: <20201009064005.19777-3-ganeshgr@linux.ibm.com>
+References: <20201009064005.19777-1-ganeshgr@linux.ibm.com>
+ <20201009064005.19777-3-ganeshgr@linux.ibm.com>
+Date: Mon, 19 Oct 2020 21:59:57 +1100
+Message-ID: <87362azdjm.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,54 +59,293 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dri-devel@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org
+Cc: msuchanek@suse.de, Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ keescook@chromium.org, npiggin@gmail.com, mahesh@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Include <asm/switch-to.h> in order to avoid following build failure
-because of missing declaration of enable_kernel_vsx()
+Hi Ganesh,
 
-  CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.o
-In file included from ./drivers/gpu/drm/amd/amdgpu/../display/dc/dm_services_types.h:29,
-                 from ./drivers/gpu/drm/amd/amdgpu/../display/dc/dm_services.h:37,
-                 from drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:27:
-drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c: In function 'dcn_bw_apply_registry_override':
-./drivers/gpu/drm/amd/amdgpu/../display/dc/os_types.h:64:3: error: implicit declaration of function 'enable_kernel_vsx'; did you mean 'enable_kernel_fp'? [-Werror=implicit-function-declaration]
-   64 |   enable_kernel_vsx(); \
-      |   ^~~~~~~~~~~~~~~~~
-drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:640:2: note: in expansion of macro 'DC_FP_START'
-  640 |  DC_FP_START();
-      |  ^~~~~~~~~~~
-./drivers/gpu/drm/amd/amdgpu/../display/dc/os_types.h:75:3: error: implicit declaration of function 'disable_kernel_vsx'; did you mean 'disable_kernel_fp'? [-Werror=implicit-function-declaration]
-   75 |   disable_kernel_vsx(); \
-      |   ^~~~~~~~~~~~~~~~~~
-drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.c:676:2: note: in expansion of macro 'DC_FP_END'
-  676 |  DC_FP_END();
-      |  ^~~~~~~~~
-cc1: some warnings being treated as errors
-make[5]: *** [drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dcn_calcs.o] Error 1
+Some comments below ...
 
-Fixes: 16a9dea110a6 ("amdgpu: Enable initial DCN support on POWER")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- drivers/gpu/drm/amd/display/dc/os_types.h | 1 +
- 1 file changed, 1 insertion(+)
+Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
+> To check machine check handling, add support to inject slb
+> multihit errors.
+>
+> Cc: Kees Cook <keescook@chromium.org>
+> Reviewed-by: Michal Such=C3=A1nek <msuchanek@suse.de>
+> Co-developed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+> ---
+>  drivers/misc/lkdtm/Makefile             |   1 +
+>  drivers/misc/lkdtm/core.c               |   3 +
+>  drivers/misc/lkdtm/lkdtm.h              |   3 +
+>  drivers/misc/lkdtm/powerpc.c            | 156 ++++++++++++++++++++++++
+>  tools/testing/selftests/lkdtm/tests.txt |   1 +
+>  5 files changed, 164 insertions(+)
+>  create mode 100644 drivers/misc/lkdtm/powerpc.c
+>
+..
+> diff --git a/drivers/misc/lkdtm/powerpc.c b/drivers/misc/lkdtm/powerpc.c
+> new file mode 100644
+> index 000000000000..f388b53dccba
+> --- /dev/null
+> +++ b/drivers/misc/lkdtm/powerpc.c
+> @@ -0,0 +1,156 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include "lkdtm.h"
+> +#include <linux/slab.h>
+> +#include <linux/vmalloc.h>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/os_types.h b/drivers/gpu/drm/amd/display/dc/os_types.h
-index c3bbfe397e8d..9000cf188544 100644
---- a/drivers/gpu/drm/amd/display/dc/os_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/os_types.h
-@@ -33,6 +33,7 @@
- #include <linux/slab.h>
- 
- #include <asm/byteorder.h>
-+#include <asm/switch-to.h>
- 
- #include <drm/drm_print.h>
- 
--- 
-2.25.0
+Usual style is to include the linux headers first and then the local header.
 
+> +
+> +/* Gets index for new slb entry */
+> +static inline unsigned long get_slb_index(void)
+> +{
+> +	unsigned long index;
+> +
+> +	index =3D get_paca()->stab_rr;
+> +
+> +	/*
+> +	 * simple round-robin replacement of slb starting at SLB_NUM_BOLTED.
+> +	 */
+> +	if (index < (mmu_slb_size - 1))
+> +		index++;
+> +	else
+> +		index =3D SLB_NUM_BOLTED;
+> +	get_paca()->stab_rr =3D index;
+> +	return index;
+> +}
+
+I'm not sure we need that really?
+
+We can just always insert at SLB_MUM_BOLTED and SLB_NUM_BOLTED + 1.
+
+Or we could allocate from the top down using mmu_slb_size - 1, and
+mmu_slb_size - 2.
+
+
+> +#define slb_esid_mask(ssize)	\
+> +	(((ssize) =3D=3D MMU_SEGSIZE_256M) ? ESID_MASK : ESID_MASK_1T)
+> +
+> +/* Form the operand for slbmte */
+> +static inline unsigned long mk_esid_data(unsigned long ea, int ssize,
+> +					 unsigned long slot)
+> +{
+> +	return (ea & slb_esid_mask(ssize)) | SLB_ESID_V | slot;
+> +}
+> +
+> +#define slb_vsid_shift(ssize)	\
+> +	((ssize) =3D=3D MMU_SEGSIZE_256M ? SLB_VSID_SHIFT : SLB_VSID_SHIFT_1T)
+> +
+> +/* Form the operand for slbmte */
+> +static inline unsigned long mk_vsid_data(unsigned long ea, int ssize,
+> +					 unsigned long flags)
+> +{
+> +	return (get_kernel_vsid(ea, ssize) << slb_vsid_shift(ssize)) | flags |
+> +		((unsigned long)ssize << SLB_VSID_SSIZE_SHIFT);
+> +}
+
+I realise it's not much code, but I'd rather those were in a header,
+rather than copied from slb.c. That way they can never skew vs the
+versions in slb.c
+
+Best place I think would be arch/powerpc/include/asm/book3s/64/mmu-hash.h
+
+
+> +
+> +/* Inserts new slb entry */
+
+It inserts two.
+
+> +static void insert_slb_entry(char *p, int ssize)
+> +{
+> +	unsigned long flags, entry;
+> +
+> +	flags =3D SLB_VSID_KERNEL | mmu_psize_defs[MMU_PAGE_64K].sllp;
+
+That won't work if the kernel is built for 4K pages. Or at least it
+won't work the way we want it to.
+
+You should use mmu_linear_psize.
+
+But for vmalloc you should use mmu_vmalloc_psize, so it will need to be
+a parameter.
+
+> +	preempt_disable();
+> +
+> +	entry =3D get_slb_index();
+> +	asm volatile("slbmte %0,%1" :
+> +			: "r" (mk_vsid_data((unsigned long)p, ssize, flags)),
+> +			  "r" (mk_esid_data((unsigned long)p, ssize, entry))
+> +			: "memory");
+> +
+> +	entry =3D get_slb_index();
+> +	asm volatile("slbmte %0,%1" :
+> +			: "r" (mk_vsid_data((unsigned long)p, ssize, flags)),
+> +			  "r" (mk_esid_data((unsigned long)p, ssize, entry))
+> +			: "memory");
+> +	preempt_enable();
+> +	/*
+> +	 * This triggers exception, If handled correctly we must recover
+> +	 * from this error.
+> +	 */
+> +	p[0] =3D '!';
+
+That doesn't belong in here, it should be done by the caller.
+
+That would also mean p could be unsigned long in here, so you wouldn't
+have to cast it four times.
+
+> +}
+> +
+> +/* Inject slb multihit on vmalloc-ed address i.e 0xD00... */
+> +static void inject_vmalloc_slb_multihit(void)
+> +{
+> +	char *p;
+> +
+> +	p =3D vmalloc(2048);
+
+vmalloc() allocates whole pages, so it may as well be vmalloc(PAGE_SIZE).
+
+> +	if (!p)
+> +		return;
+
+That's unlikely, but it should be an error that's propagated up to the call=
+er.
+
+> +
+> +	insert_slb_entry(p, MMU_SEGSIZE_1T);
+> +	vfree(p);
+> +}
+> +
+> +/* Inject slb multihit on kmalloc-ed address i.e 0xC00... */
+> +static void inject_kmalloc_slb_multihit(void)
+> +{
+> +	char *p;
+> +
+> +	p =3D kmalloc(2048, GFP_KERNEL);
+> +	if (!p)
+> +		return;
+> +
+> +	insert_slb_entry(p, MMU_SEGSIZE_1T);
+> +	kfree(p);
+> +}
+> +
+> +/*
+> + * Few initial SLB entries are bolted. Add a test to inject
+> + * multihit in bolted entry 0.
+> + */
+> +static void insert_dup_slb_entry_0(void)
+> +{
+> +	unsigned long test_address =3D 0xC000000000000000;
+
+Should use PAGE_OFFSET;
+
+> +	volatile unsigned long *test_ptr;
+
+Does it need to be a volatile?
+The slbmte should act as a compiler barrier (it has a memory clobber)
+and a CPU barrier as well?
+
+> +	unsigned long entry, i =3D 0;
+> +	unsigned long esid, vsid;
+
+Please group your variables:
+
+  unsigned long esid, vsid, entry, test_address, i;
+  volatile unsigned long *test_ptr;
+
+And then initialise them as appropriate.
+
+> +	test_ptr =3D (unsigned long *)test_address;
+> +	preempt_disable();
+> +
+> +	asm volatile("slbmfee  %0,%1" : "=3Dr" (esid) : "r" (i));
+> +	asm volatile("slbmfev  %0,%1" : "=3Dr" (vsid) : "r" (i));
+
+Why do we need to read them out of the SLB rather than just computing
+the values?
+
+> +	entry =3D get_slb_index();
+> +
+> +	/* for i !=3D0 we would need to mask out the old entry number */
+
+Or you could just compute esid and then it wouldn't be an issue.
+
+> +	asm volatile("slbmte %0,%1" :
+> +			: "r" (vsid),
+> +			  "r" (esid | entry)
+> +			: "memory");
+
+At this point we've just inserted a duplicate of entry 0. So you don't
+need to insert a third entry do you?
+
+> +	asm volatile("slbmfee  %0,%1" : "=3Dr" (esid) : "r" (i));
+> +	asm volatile("slbmfev  %0,%1" : "=3Dr" (vsid) : "r" (i));
+> +	entry =3D get_slb_index();
+> +
+> +	/* for i !=3D0 we would need to mask out the old entry number */
+> +	asm volatile("slbmte %0,%1" :
+> +			: "r" (vsid),
+> +			  "r" (esid | entry)
+> +			: "memory");
+> +
+> +	pr_info("%s accessing test address 0x%lx: 0x%lx\n",
+> +		__func__, test_address, *test_ptr);
+
+This prints the first two instructions of the kernel. I happen to know
+what values they should have, but most people won't understand what
+they're seeing. A better test would be to read the value at the top of
+the function and then load it again here and check we got the right
+thing.
+
+eg.
+  unsigned long val;
+
+  val =3D *test_ptr;
+  ...
+  if (val =3D=3D *test_ptr)
+    pr_info("Success ...")
+  else
+    pr_info("Fail ...")
+
+
+> +
+> +	preempt_enable();
+> +}
+> +
+> +void lkdtm_PPC_SLB_MULTIHIT(void)
+> +{
+> +	if (mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
+
+That will be true even if radix is enabled. You need to use radix_enabled().
+
+> +		pr_info("Injecting SLB multihit errors\n");
+> +		/*
+> +		 * These need not be separate tests, And they do pretty
+> +		 * much same thing. In any case we must recover from the
+> +		 * errors introduced by these functions, machine would not
+> +		 * survive these tests in case of failure to handle.
+> +		 */
+> +		inject_vmalloc_slb_multihit();
+> +		inject_kmalloc_slb_multihit();
+> +		insert_dup_slb_entry_0();
+> +		pr_info("Recovered from SLB multihit errors\n");
+> +	} else {
+> +		pr_err("XFAIL: This test is for ppc64 and with hash mode MMU only\n");
+
+The whole file is only built if CONFIG_PPC64, so you don't need to
+mention ppc64 in the message.
+
+It should say something more like:
+
+  XFAIL: can't test SLB multi-hit when using Radix MMU
+
+
+
+cheers
