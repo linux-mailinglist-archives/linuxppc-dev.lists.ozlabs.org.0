@@ -2,96 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0D82921F7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 06:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4520292203
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 06:52:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CF3lZ2K5rzDqf5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 15:32:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CF49z5cgxzDqZb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 15:52:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=U1ZFN2VC; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=U02Q9Imz; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CF3dd17JzzDqZD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 15:27:48 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09J42Nq2135534; Mon, 19 Oct 2020 00:27:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=9o1kNGYWf321ixQGxPr1DGpxv0IeGFh+c+sb/uYgNdU=;
- b=U1ZFN2VCNS+6zAyIQgPE/oeSd+lA7nFa+oAuaSY97af5WRkiRzFaw/y+FO87YYAa7ThW
- 51/mA05WH6i8CwzaK06b2ICXsP1f+ebsvvVD0rOpilrtF/VXD0lRdT8cd68p13p5buj+
- sxM87ZW/WOXozjw99rNh8WJEcnL/5uf+CcgdMkTVSwI3RQ8vX6y4GT3Y6UlwWfoedSyj
- MDVwLtWePgIqe+1veIHMVfbb4lX+5GBn+TmNGQXtl3IfBvAr0MOERN/hQM1ke2yRVV4D
- tN8ucR4obuMHEN6I+ZHg/7Au2Tz1e8iiJ8WyjL5oUF7KaT0Ni87Sct/qU3xfdN2jIwMl uA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3493d4rgg5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Oct 2020 00:27:35 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09J4JpZO178155;
- Mon, 19 Oct 2020 00:27:35 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3493d4rgft-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Oct 2020 00:27:35 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09J4RXAc031948;
- Mon, 19 Oct 2020 04:27:33 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03ams.nl.ibm.com with ESMTP id 348d5qrump-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Oct 2020 04:27:33 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 09J4RVpV32964898
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Oct 2020 04:27:31 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 374BDA404D;
- Mon, 19 Oct 2020 04:27:31 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C7D34A4055;
- Mon, 19 Oct 2020 04:27:28 +0000 (GMT)
-Received: from srikart450.in.ibm.com (unknown [9.79.221.103])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 19 Oct 2020 04:27:28 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 2/2] powerpc/smp: Use GFP_ATOMIC while allocating tmp mask
-Date: Mon, 19 Oct 2020 09:57:16 +0530
-Message-Id: <20201019042716.106234-3-srikar@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201019042716.106234-1-srikar@linux.vnet.ibm.com>
-References: <20201019042716.106234-1-srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CF48N6PvCzDqNT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 15:51:00 +1100 (AEDT)
+Received: by mail-pl1-x642.google.com with SMTP id 1so4376782ple.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Oct 2020 21:51:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=VP/SJWlyjIPk8BZHzgCHKYeG7WO6++eqQoSElHzrNws=;
+ b=U02Q9Imz2JnxVFRQ+rzeHXF4MBXM5UFe1sK5UiUZ2v6yK/pVUo4TWAlrVHFGau4z66
+ HA7wtdJPF9Sp9r4za8ukVZw8lCeDDPZD1U+j/xLbb/c2KmbKJ9+XlRFPSzGgPxNmTXQ1
+ ti2jzQXOsZ72LbgDavDwhZTy1+UxijdKdIDDe5TttvVsi7x3OyPk2GTWhrkB+QL7TK1y
+ M+ZOSmLV74akbc5MUrO0cCQOLko0zCKP8SNuakFCRzLgB2jK37v+G06K5IOCs+KyV9KN
+ cXOpR25O40TVkxKhs7uVC2hf6ntYU9Uo6ft1u+kthzebhxrZ19UmPUsMPvNz0axtWQa5
+ Z6zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=VP/SJWlyjIPk8BZHzgCHKYeG7WO6++eqQoSElHzrNws=;
+ b=cBTxq3aWnJ6rjTuUB9h9kv/8I0S1BDKAAWA0IfIGVUuJ5YWu6PYNdrz7RrNya38ScK
+ A+5iSLbYo0QKlLYEalByHNmjygO+2z/0EAEtnUqAaQBX0Rr4y9vXboyoeO+zULbJcO1I
+ 3EzUlFcOh3xxH1IveHG19touFrub30IoL2ObBg27l02Vz7qpmfwdiJQJy8etEAk8wHyp
+ DfFRguAPnrPuucgX1vJqm15FAwvwf5o/ydLCg6jXo6QpU3YFVMDnEntVOgpLuwoEXnVL
+ 8fT0tYk9KvI2384ybhhgssvBVf1Ba6vM+3pZDGc7HlWP5M1Zi78gBpXo0PDiH/BAePBQ
+ nO5w==
+X-Gm-Message-State: AOAM533NTJlAf4iAAWFegfbavXp1okLjZkpwDut5jh5OpO8GpezGT/Kn
+ 0u4KdUa6jozSEYBzMMlsn6A=
+X-Google-Smtp-Source: ABdhPJyY3nDmpxcFzbcWd57NkUhVZYzMu0aJYcB+T8R0dR9f6ubJn5ZQV+bR0QtpjJO025QRP9abVA==
+X-Received: by 2002:a17:902:b78c:b029:d4:da94:8766 with SMTP id
+ e12-20020a170902b78cb02900d4da948766mr15798700pls.31.1603083057319; 
+ Sun, 18 Oct 2020 21:50:57 -0700 (PDT)
+Received: from localhost ([1.129.224.124])
+ by smtp.gmail.com with ESMTPSA id y14sm10204222pfe.107.2020.10.18.21.50.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 18 Oct 2020 21:50:56 -0700 (PDT)
+Date: Mon, 19 Oct 2020 14:50:51 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: KVM on POWER8 host lock up since 10d91611f426 ("powerpc/64s:
+ Reimplement book3s idle code in C")
+To: Michal =?iso-8859-1?q?Such=E1nek?= <msuchanek@suse.de>
+References: <20200830201145.GA29521@kitsune.suse.cz>
+ <1598835313.5688ngko4f.astroid@bobo.none>
+ <20200831091523.GC29521@kitsune.suse.cz> <87y2lv1430.fsf@mpe.ellerman.id.au>
+ <1599484062.vgmycu6q5i.astroid@bobo.none>
+ <20201016201410.GH29778@kitsune.suse.cz>
+ <1603066878.gtbyofrzyo.astroid@bobo.none>
+In-Reply-To: <1603066878.gtbyofrzyo.astroid@bobo.none>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-18_13:2020-10-16,
- 2020-10-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0
- clxscore=1015 phishscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0
- malwarescore=0 adultscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010190028
+Message-Id: <1603082970.5545yt7raj.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,220 +85,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Qian Cai <cai@redhat.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Peter Zijlstra <peterz@infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Cc: ro@suse.de, linuxppc-dev@lists.ozlabs.org,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Qian Cai reported a regression where CPU Hotplug fails with the latest
-powerpc/next
+Excerpts from Nicholas Piggin's message of October 19, 2020 11:00 am:
+> Excerpts from Michal Such=C3=A1nek's message of October 17, 2020 6:14 am:
+>> On Mon, Sep 07, 2020 at 11:13:47PM +1000, Nicholas Piggin wrote:
+>>> Excerpts from Michael Ellerman's message of August 31, 2020 8:50 pm:
+>>> > Michal Such=C3=A1nek <msuchanek@suse.de> writes:
+>>> >> On Mon, Aug 31, 2020 at 11:14:18AM +1000, Nicholas Piggin wrote:
+>>> >>> Excerpts from Michal Such=C3=A1nek's message of August 31, 2020 6:1=
+1 am:
+>>> >>> > Hello,
+>>> >>> >=20
+>>> >>> > on POWER8 KVM hosts lock up since commit 10d91611f426 ("powerpc/6=
+4s:
+>>> >>> > Reimplement book3s idle code in C").
+>>> >>> >=20
+>>> >>> > The symptom is host locking up completely after some hours of KVM
+>>> >>> > workload with messages like
+>>> >>> >=20
+>>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't gra=
+b cpu 47
+>>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't gra=
+b cpu 71
+>>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't gra=
+b cpu 47
+>>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't gra=
+b cpu 71
+>>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't gra=
+b cpu 47
+>>> >>> >=20
+>>> >>> > printed before the host locks up.
+>>> >>> >=20
+>>> >>> > The machines run sandboxed builds which is a mixed workload resul=
+ting in
+>>> >>> > IO/single core/mutiple core load over time and there are periods =
+of no
+>>> >>> > activity and no VMS runnig as well. The VMs are shortlived so VM
+>>> >>> > setup/terdown is somewhat excercised as well.
+>>> >>> >=20
+>>> >>> > POWER9 with the new guest entry fast path does not seem to be aff=
+ected.
+>>> >>> >=20
+>>> >>> > Reverted the patch and the followup idle fixes on top of 5.2.14 a=
+nd
+>>> >>> > re-applied commit a3f3072db6ca ("powerpc/powernv/idle: Restore IA=
+MR
+>>> >>> > after idle") which gives same idle code as 5.1.16 and the kernel =
+seems
+>>> >>> > stable.
+>>> >>> >=20
+>>> >>> > Config is attached.
+>>> >>> >=20
+>>> >>> > I cannot easily revert this commit, especially if I want to use t=
+he same
+>>> >>> > kernel on POWER8 and POWER9 - many of the POWER9 fixes are applic=
+able
+>>> >>> > only to the new idle code.
+>>> >>> >=20
+>>> >>> > Any idea what can be the problem?
+>>> >>>=20
+>>> >>> So hwthread_state is never getting back to to HWTHREAD_IN_IDLE on
+>>> >>> those threads. I wonder what they are doing. POWER8 doesn't have a =
+good
+>>> >>> NMI IPI and I don't know if it supports pdbg dumping registers from=
+ the
+>>> >>> BMC unfortunately.
+>>> >>
+>>> >> It may be possible to set up fadump with a later kernel version that
+>>> >> supports it on powernv and dump the whole kernel.
+>>> >=20
+>>> > Your firmware won't support it AFAIK.
+>>> >=20
+>>> > You could try kdump, but if we have CPUs stuck in KVM then there's a
+>>> > good chance it won't work :/
+>>>=20
+>>> I haven't had any luck yet reproducing this still. Testing with sub=20
+>>> cores of various different combinations, etc. I'll keep trying though.
+>>=20
+>> Hello,
+>>=20
+>> I tried running some KVM guests to simulate the workload and what I get
+>> is guests failing to start with a rcu stall. Tried both 5.3 and 5.9
+>> kernel and qemu 4.2.1 and 5.1.0
+>>=20
+>> To start some guests I run
+>>=20
+>> for i in $(seq 0 9) ; do /opt/qemu/bin/qemu-system-ppc64 -m 2048 -accel =
+kvm -smp 8 -kernel /boot/vmlinux -initrd /boot/initrd -nodefaults -nographi=
+c -serial mon:telnet::444$i,server,wait & done
+>>=20
+>> To simulate some workload I run
+>>=20
+>> xz -zc9T0 < /dev/zero > /dev/null &
+>> while true; do
+>>     killall -STOP xz; sleep 1; killall -CONT xz; sleep 1;
+>> done &
+>>=20
+>> on the host and add a job that executes this to the ramdisk. However, mo=
+st
+>> guests never get to the point where the job is executed.
+>>=20
+>> Any idea what might be the problem?
+>=20
+> I would say try without pv queued spin locks (but if the same thing is=20
+> happening with 5.3 then it must be something else I guess).=20
+>=20
+> I'll try to test a similar setup on a POWER8 here.
 
-BUG: sleeping function called from invalid context at mm/slab.h:494
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/88
-no locks held by swapper/88/0.
-irq event stamp: 18074448
-hardirqs last  enabled at (18074447): [<c0000000001a2a7c>] tick_nohz_idle_enter+0x9c/0x110
-hardirqs last disabled at (18074448): [<c000000000106798>] do_idle+0x138/0x3b0
-do_idle at kernel/sched/idle.c:253 (discriminator 1)
-softirqs last  enabled at (18074440): [<c0000000000bbec4>] irq_enter_rcu+0x94/0xa0
-softirqs last disabled at (18074439): [<c0000000000bbea0>] irq_enter_rcu+0x70/0xa0
-CPU: 88 PID: 0 Comm: swapper/88 Tainted: G        W         5.9.0-rc8-next-20201007 #1
-Call Trace:
-[c00020000a4bfcf0] [c000000000649e98] dump_stack+0xec/0x144 (unreliable)
-[c00020000a4bfd30] [c0000000000f6c34] ___might_sleep+0x2f4/0x310
-[c00020000a4bfdb0] [c000000000354f94] slab_pre_alloc_hook.constprop.82+0x124/0x190
-[c00020000a4bfe00] [c00000000035e9e8] __kmalloc_node+0x88/0x3a0
-slab_alloc_node at mm/slub.c:2817
-(inlined by) __kmalloc_node at mm/slub.c:4013
-[c00020000a4bfe80] [c0000000006494d8] alloc_cpumask_var_node+0x38/0x80
-kmalloc_node at include/linux/slab.h:577
-(inlined by) alloc_cpumask_var_node at lib/cpumask.c:116
-[c00020000a4bfef0] [c00000000003eedc] start_secondary+0x27c/0x800
-update_mask_by_l2 at arch/powerpc/kernel/smp.c:1267
-(inlined by) add_cpu_to_masks at arch/powerpc/kernel/smp.c:1387
-(inlined by) start_secondary at arch/powerpc/kernel/smp.c:1420
-[c00020000a4bff90] [c00000000000c468] start_secondary_resume+0x10/0x14
+Couldn't reproduce the guest hang, they seem to run fine even with=20
+queued spinlocks. Might have a different .config.
 
-Allocating a temporary mask while performing a CPU Hotplug operation
-with CONFIG_CPUMASK_OFFSTACK enabled, leads to calling a sleepable
-function from a atomic context. Fix this by allocating the temporary
-mask with GFP_ATOMIC flag. Also instead of having to allocate twice,
-allocate the mask in the caller so that we only have to allocate once.
-If the allocation fails, assume the mask to be same as sibling mask, which
-will make the scheduler to drop this domain for this CPU.
+I might have got a lockup in the host (although different symptoms than=20
+the original report). I'll look into that a bit further.
 
-Fixes: 70a94089d7f7 ("powerpc/smp: Optimize update_coregroup_mask")
-Fixes: 3ab33d6dc3e9 ("powerpc/smp: Optimize update_mask_by_l2")
-Reported-by: Qian Cai <cai@redhat.com>
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: LKML <linux-kernel@vger.kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Valentin Schneider <valentin.schneider@arm.com>
-Cc: Qian Cai <cai@redhat.com>
----
-Changelog v1->v2:
-https://lore.kernel.org/linuxppc-dev/20201008034240.34059-1-srikar@linux.vnet.ibm.com/t/#u
-Updated 2nd patch based on comments from Michael Ellerman
-- Remove the WARN_ON.
-- Handle allocation failures in a more subtle fashion
-- Allocate in the caller so that we allocate once.
-
- arch/powerpc/kernel/smp.c | 57 +++++++++++++++++++++------------------
- 1 file changed, 31 insertions(+), 26 deletions(-)
-
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index a864b9b3228c..028479e9b66b 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1257,38 +1257,33 @@ static struct device_node *cpu_to_l2cache(int cpu)
- 	return cache;
- }
- 
--static bool update_mask_by_l2(int cpu)
-+static bool update_mask_by_l2(int cpu, cpumask_var_t *mask)
- {
- 	struct cpumask *(*submask_fn)(int) = cpu_sibling_mask;
- 	struct device_node *l2_cache, *np;
--	cpumask_var_t mask;
- 	int i;
- 
- 	if (has_big_cores)
- 		submask_fn = cpu_smallcore_mask;
- 
- 	l2_cache = cpu_to_l2cache(cpu);
--	if (!l2_cache) {
--		/*
--		 * If no l2cache for this CPU, assume all siblings to share
--		 * cache with this CPU.
--		 */
-+	if (!l2_cache || !*mask) {
-+		/* Assume only core siblings share cache with this CPU */
- 		for_each_cpu(i, submask_fn(cpu))
- 			set_cpus_related(cpu, i, cpu_l2_cache_mask);
- 
- 		return false;
- 	}
- 
--	alloc_cpumask_var_node(&mask, GFP_KERNEL, cpu_to_node(cpu));
--	cpumask_and(mask, cpu_online_mask, cpu_cpu_mask(cpu));
-+	cpumask_and(*mask, cpu_online_mask, cpu_cpu_mask(cpu));
- 
- 	/* Update l2-cache mask with all the CPUs that are part of submask */
- 	or_cpumasks_related(cpu, cpu, submask_fn, cpu_l2_cache_mask);
- 
- 	/* Skip all CPUs already part of current CPU l2-cache mask */
--	cpumask_andnot(mask, mask, cpu_l2_cache_mask(cpu));
-+	cpumask_andnot(*mask, *mask, cpu_l2_cache_mask(cpu));
- 
--	for_each_cpu(i, mask) {
-+	for_each_cpu(i, *mask) {
- 		/*
- 		 * when updating the marks the current CPU has not been marked
- 		 * online, but we need to update the cache masks
-@@ -1298,15 +1293,14 @@ static bool update_mask_by_l2(int cpu)
- 		/* Skip all CPUs already part of current CPU l2-cache */
- 		if (np == l2_cache) {
- 			or_cpumasks_related(cpu, i, submask_fn, cpu_l2_cache_mask);
--			cpumask_andnot(mask, mask, submask_fn(i));
-+			cpumask_andnot(*mask, *mask, submask_fn(i));
- 		} else {
--			cpumask_andnot(mask, mask, cpu_l2_cache_mask(i));
-+			cpumask_andnot(*mask, *mask, cpu_l2_cache_mask(i));
- 		}
- 
- 		of_node_put(np);
- 	}
- 	of_node_put(l2_cache);
--	free_cpumask_var(mask);
- 
- 	return true;
- }
-@@ -1349,40 +1343,46 @@ static inline void add_cpu_to_smallcore_masks(int cpu)
- 	}
- }
- 
--static void update_coregroup_mask(int cpu)
-+static void update_coregroup_mask(int cpu, cpumask_var_t *mask)
- {
- 	struct cpumask *(*submask_fn)(int) = cpu_sibling_mask;
--	cpumask_var_t mask;
- 	int coregroup_id = cpu_to_coregroup_id(cpu);
- 	int i;
- 
--	alloc_cpumask_var_node(&mask, GFP_KERNEL, cpu_to_node(cpu));
--	cpumask_and(mask, cpu_online_mask, cpu_cpu_mask(cpu));
--
- 	if (shared_caches)
- 		submask_fn = cpu_l2_cache_mask;
- 
-+	if (!*mask) {
-+		/* Assume only siblings are part of this CPU's coregroup */
-+		for_each_cpu(i, submask_fn(cpu))
-+			set_cpus_related(cpu, i, cpu_coregroup_mask);
-+
-+		return;
-+	}
-+
-+	cpumask_and(*mask, cpu_online_mask, cpu_cpu_mask(cpu));
-+
- 	/* Update coregroup mask with all the CPUs that are part of submask */
- 	or_cpumasks_related(cpu, cpu, submask_fn, cpu_coregroup_mask);
- 
- 	/* Skip all CPUs already part of coregroup mask */
--	cpumask_andnot(mask, mask, cpu_coregroup_mask(cpu));
-+	cpumask_andnot(*mask, *mask, cpu_coregroup_mask(cpu));
- 
--	for_each_cpu(i, mask) {
-+	for_each_cpu(i, *mask) {
- 		/* Skip all CPUs not part of this coregroup */
- 		if (coregroup_id == cpu_to_coregroup_id(i)) {
- 			or_cpumasks_related(cpu, i, submask_fn, cpu_coregroup_mask);
--			cpumask_andnot(mask, mask, submask_fn(i));
-+			cpumask_andnot(*mask, *mask, submask_fn(i));
- 		} else {
--			cpumask_andnot(mask, mask, cpu_coregroup_mask(i));
-+			cpumask_andnot(*mask, *mask, cpu_coregroup_mask(i));
- 		}
- 	}
--	free_cpumask_var(mask);
- }
- 
- static void add_cpu_to_masks(int cpu)
- {
- 	int first_thread = cpu_first_thread_sibling(cpu);
-+	cpumask_var_t mask;
- 	int i;
- 
- 	/*
-@@ -1396,10 +1396,15 @@ static void add_cpu_to_masks(int cpu)
- 			set_cpus_related(i, cpu, cpu_sibling_mask);
- 
- 	add_cpu_to_smallcore_masks(cpu);
--	update_mask_by_l2(cpu);
-+
-+	/* In CPU-hotplug path, hence use GFP_ATOMIC */
-+	alloc_cpumask_var_node(&mask, GFP_ATOMIC, cpu_to_node(cpu));
-+	update_mask_by_l2(cpu, &mask);
- 
- 	if (has_coregroup_support())
--		update_coregroup_mask(cpu);
-+		update_coregroup_mask(cpu, &mask);
-+
-+	free_cpumask_var(mask);
- }
- 
- /* Activate a secondary processor. */
--- 
-2.18.2
-
+Thanks,
+Nick
