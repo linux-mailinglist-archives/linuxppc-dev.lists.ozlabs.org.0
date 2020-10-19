@@ -2,52 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5236F292629
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 13:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC8E029265A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 13:29:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CFDN15SzbzDqdk
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 22:01:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CFF0X3Ck4zDqYn
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 22:29:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CFDLB4SC1zDqQK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 22:00:02 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=aWkFs2fx; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CFDL94Glbz9sRk;
- Mon, 19 Oct 2020 22:00:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1603105202;
- bh=GkEuEzz2xbPqel1o+vjt6i7tS/K4O4jcgOAX4pO3Txc=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=aWkFs2fxZN6nBDOq7FUqNp3yzaYB4TXjJiKfdZl5YWHjvWoK2h5a7ZzoLoUOjxqRT
- eklMoLpLJHokdcu3CoozL1Y0GnHFrHRsjNEBSP0GIYBRW1u4iXKzdiNxvw+DEd9fWS
- g0/4OPwlBtj83iGYkV7hnkXgtBoPrG595aOUPmXSbmjcmLJYe+1kLawsJa8+CzKLSt
- KkTbBLEtmcloWVxNyz7DVLzN10/UXd3siM9twD648gmVmLgNuv24EsS19sy+dnvFOz
- wi26WnkgoVk93MCHe5yBMLyVXkC1juo/fhtmLaug3HYqtEfasiPaBY7dGoilhTVao9
- XIKOvxyGYKfBw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v4 2/2] lkdtm/powerpc: Add SLB multihit test
-In-Reply-To: <20201009064005.19777-3-ganeshgr@linux.ibm.com>
-References: <20201009064005.19777-1-ganeshgr@linux.ibm.com>
- <20201009064005.19777-3-ganeshgr@linux.ibm.com>
-Date: Mon, 19 Oct 2020 21:59:57 +1100
-Message-ID: <87362azdjm.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=hTrW30JZ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CFDxH0yrKzDqY0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 22:26:58 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09JB3Jpe157546; Mon, 19 Oct 2020 07:26:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=bKokzyc5p4bqF8PhHn/sGau/OMjZRneFVC+CDaqBTBE=;
+ b=hTrW30JZN5v9iFtcBtBy8ezB9kzMbaOjkcByxnwztJzc/dnz6vyG4wF50DbR7X+xgMk3
+ M+71YQFoOsAww1K9zz/Z3kaaS8PU2N/d9OmtIoDAC7rlkfyyn4BHVyG/ltLNOis/r2we
+ 1+MF1BuN5rM6YFY0vQhRTKNltKW7T2vNO/ZQYpKPiA3l1EohceepWPZeCGjnYSAS2l/2
+ aPR3XOKDSO33Bag8Iv5k1XNvIK+KMPIAx2nG82c968c4qhDvsErzHPKkU8EszgUrqmZQ
+ qodJ46sGuRXf7VygdeVoLU3sft4UeV3wBrXPdC3NBC+ydaBw1AcZXzi+H/QEZpghbO4N zA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3498ua9vnq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Oct 2020 07:26:51 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09JBMYRK023837;
+ Mon, 19 Oct 2020 07:26:51 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3498ua9vmw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Oct 2020 07:26:51 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09JBLguX014897;
+ Mon, 19 Oct 2020 11:26:49 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06ams.nl.ibm.com with ESMTP id 347qvha1ff-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Oct 2020 11:26:49 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 09JBQkUY24773004
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 19 Oct 2020 11:26:46 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A14E7AE04D;
+ Mon, 19 Oct 2020 11:26:46 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4E26BAE056;
+ Mon, 19 Oct 2020 11:26:45 +0000 (GMT)
+Received: from bharata.ibmuc.com (unknown [9.85.73.75])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 19 Oct 2020 11:26:45 +0000 (GMT)
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v1 0/2] Use H_RPT_INVALIDATE for nested guest
+Date: Mon, 19 Oct 2020 16:56:40 +0530
+Message-Id: <20201019112642.53016-1-bharata@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-10-19_02:2020-10-16,
+ 2020-10-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 adultscore=0
+ malwarescore=0 phishscore=0 suspectscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 mlxlogscore=999 mlxscore=0 spamscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2010190079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,293 +102,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: msuchanek@suse.de, Ganesh Goudar <ganeshgr@linux.ibm.com>,
- keescook@chromium.org, npiggin@gmail.com, mahesh@linux.ibm.com
+Cc: aneesh.kumar@linux.ibm.com, Bharata B Rao <bharata@linux.ibm.com>,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Ganesh,
+This patchset adds support for the new hcall H_RPT_INVALIDATE
+(currently handles nested case only) and replaces the nested tlb flush
+calls with this new hcall if the support for the same exists.
 
-Some comments below ...
+Changes in v1:
+-------------
+- Removed the bits that added the FW_FEATURE_RPT_INVALIDATE feature
+  as they are already upstream.
 
-Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
-> To check machine check handling, add support to inject slb
-> multihit errors.
->
-> Cc: Kees Cook <keescook@chromium.org>
-> Reviewed-by: Michal Such=C3=A1nek <msuchanek@suse.de>
-> Co-developed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-> ---
->  drivers/misc/lkdtm/Makefile             |   1 +
->  drivers/misc/lkdtm/core.c               |   3 +
->  drivers/misc/lkdtm/lkdtm.h              |   3 +
->  drivers/misc/lkdtm/powerpc.c            | 156 ++++++++++++++++++++++++
->  tools/testing/selftests/lkdtm/tests.txt |   1 +
->  5 files changed, 164 insertions(+)
->  create mode 100644 drivers/misc/lkdtm/powerpc.c
->
-..
-> diff --git a/drivers/misc/lkdtm/powerpc.c b/drivers/misc/lkdtm/powerpc.c
-> new file mode 100644
-> index 000000000000..f388b53dccba
-> --- /dev/null
-> +++ b/drivers/misc/lkdtm/powerpc.c
-> @@ -0,0 +1,156 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include "lkdtm.h"
-> +#include <linux/slab.h>
-> +#include <linux/vmalloc.h>
+v0: https://lore.kernel.org/linuxppc-dev/20200703104420.21349-1-bharata@linux.ibm.com/T/#m1800c5f5b3d4f6a154ae58fc1c617c06f286358f
 
-Usual style is to include the linux headers first and then the local header.
+H_RPT_INVALIDATE
+================
+Syntax:
+int64   /* H_Success: Return code on successful completion */
+        /* H_Busy - repeat the call with the same */
+        /* H_Parameter, H_P2, H_P3, H_P4, H_P5 : Invalid parameters */
+        hcall(const uint64 H_RPT_INVALIDATE, /* Invalidate RPT translation lookaside information */
+              uint64 pid,       /* PID/LPID to invalidate */
+              uint64 target,    /* Invalidation target */
+              uint64 type,      /* Type of lookaside information */
+              uint64 pageSizes,     /* Page sizes */
+              uint64 start,     /* Start of Effective Address (EA) range (inclusive) */
+              uint64 end)       /* End of EA range (exclusive) */
 
-> +
-> +/* Gets index for new slb entry */
-> +static inline unsigned long get_slb_index(void)
-> +{
-> +	unsigned long index;
-> +
-> +	index =3D get_paca()->stab_rr;
-> +
-> +	/*
-> +	 * simple round-robin replacement of slb starting at SLB_NUM_BOLTED.
-> +	 */
-> +	if (index < (mmu_slb_size - 1))
-> +		index++;
-> +	else
-> +		index =3D SLB_NUM_BOLTED;
-> +	get_paca()->stab_rr =3D index;
-> +	return index;
-> +}
+Invalidation targets (target)
+-----------------------------
+Core MMU        0x01 /* All virtual processors in the partition */
+Core local MMU  0x02 /* Current virtual processor */
+Nest MMU        0x04 /* All nest/accelerator agents in use by the partition */
 
-I'm not sure we need that really?
+A combination of the above can be specified, except core and core local.
 
-We can just always insert at SLB_MUM_BOLTED and SLB_NUM_BOLTED + 1.
+Type of translation to invalidate (type)
+---------------------------------------
+NESTED       0x0001  /* Invalidate nested guest partition-scope */
+TLB          0x0002  /* Invalidate TLB */
+PWC          0x0004  /* Invalidate Page Walk Cache */
+PRT          0x0008  /* Invalidate Process Table Entries if NESTED is clear */
+PAT          0x0008  /* Invalidate Partition Table Entries if NESTED is set */
 
-Or we could allocate from the top down using mmu_slb_size - 1, and
-mmu_slb_size - 2.
+A combination of the above can be specified.
 
+Page size mask (pageSizes)
+--------------------------
+4K              0x01
+64K             0x02
+2M              0x04
+1G              0x08
+All sizes       (-1UL)
 
-> +#define slb_esid_mask(ssize)	\
-> +	(((ssize) =3D=3D MMU_SEGSIZE_256M) ? ESID_MASK : ESID_MASK_1T)
-> +
-> +/* Form the operand for slbmte */
-> +static inline unsigned long mk_esid_data(unsigned long ea, int ssize,
-> +					 unsigned long slot)
-> +{
-> +	return (ea & slb_esid_mask(ssize)) | SLB_ESID_V | slot;
-> +}
-> +
-> +#define slb_vsid_shift(ssize)	\
-> +	((ssize) =3D=3D MMU_SEGSIZE_256M ? SLB_VSID_SHIFT : SLB_VSID_SHIFT_1T)
-> +
-> +/* Form the operand for slbmte */
-> +static inline unsigned long mk_vsid_data(unsigned long ea, int ssize,
-> +					 unsigned long flags)
-> +{
-> +	return (get_kernel_vsid(ea, ssize) << slb_vsid_shift(ssize)) | flags |
-> +		((unsigned long)ssize << SLB_VSID_SSIZE_SHIFT);
-> +}
+A combination of the above can be specified.
+All page sizes can be selected with -1.
 
-I realise it's not much code, but I'd rather those were in a header,
-rather than copied from slb.c. That way they can never skew vs the
-versions in slb.c
+Semantics: Invalidate radix tree lookaside information
+           matching the parameters given.
+* Return H_P2, H_P3 or H_P4 if target, type, or pageSizes parameters are
+  different from the defined values.
+* Return H_PARAMETER if NESTED is set and pid is not a valid nested
+  LPID allocated to this partition
+* Return H_P5 if (start, end) doesn't form a valid range. Start and end
+  should be a valid Quadrant address and  end > start.
+* Return H_NotSupported if the partition is not in running in radix
+  translation mode.
+* May invalidate more translation information than requested.
+* If start = 0 and end = -1, set the range to cover all valid addresses.
+  Else start and end should be aligned to 4kB (lower 11 bits clear).
+* If NESTED is clear, then invalidate process scoped lookaside information.
+  Else pid specifies a nested LPID, and the invalidation is performed
+  on nested guest partition table and nested guest partition scope real
+  addresses.
+* If pid = 0 and NESTED is clear, then valid addresses are quadrant 3 and
+  quadrant 0 spaces, Else valid addresses are quadrant 0.
+* Pages which are fully covered by the range are to be invalidated.
+  Those which are partially covered are considered outside invalidation
+  range, which allows a caller to optimally invalidate ranges that may
+  contain mixed page sizes.
+* Return H_SUCCESS on success.
 
-Best place I think would be arch/powerpc/include/asm/book3s/64/mmu-hash.h
+Bharata B Rao (2):
+  KVM: PPC: Book3S HV: Add support for H_RPT_INVALIDATE (nested case
+    only)
+  KVM: PPC: Book3S HV: Use H_RPT_INVALIDATE in nested KVM
 
+ Documentation/virt/kvm/api.rst                |  17 +++
+ .../include/asm/book3s/64/tlbflush-radix.h    |  18 +++
+ arch/powerpc/include/asm/kvm_book3s.h         |   3 +
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        |  26 ++++-
+ arch/powerpc/kvm/book3s_hv.c                  |  32 ++++++
+ arch/powerpc/kvm/book3s_hv_nested.c           | 107 +++++++++++++++++-
+ arch/powerpc/kvm/powerpc.c                    |   3 +
+ arch/powerpc/mm/book3s64/radix_tlb.c          |   4 -
+ include/uapi/linux/kvm.h                      |   1 +
+ 9 files changed, 200 insertions(+), 11 deletions(-)
 
-> +
-> +/* Inserts new slb entry */
+-- 
+2.26.2
 
-It inserts two.
-
-> +static void insert_slb_entry(char *p, int ssize)
-> +{
-> +	unsigned long flags, entry;
-> +
-> +	flags =3D SLB_VSID_KERNEL | mmu_psize_defs[MMU_PAGE_64K].sllp;
-
-That won't work if the kernel is built for 4K pages. Or at least it
-won't work the way we want it to.
-
-You should use mmu_linear_psize.
-
-But for vmalloc you should use mmu_vmalloc_psize, so it will need to be
-a parameter.
-
-> +	preempt_disable();
-> +
-> +	entry =3D get_slb_index();
-> +	asm volatile("slbmte %0,%1" :
-> +			: "r" (mk_vsid_data((unsigned long)p, ssize, flags)),
-> +			  "r" (mk_esid_data((unsigned long)p, ssize, entry))
-> +			: "memory");
-> +
-> +	entry =3D get_slb_index();
-> +	asm volatile("slbmte %0,%1" :
-> +			: "r" (mk_vsid_data((unsigned long)p, ssize, flags)),
-> +			  "r" (mk_esid_data((unsigned long)p, ssize, entry))
-> +			: "memory");
-> +	preempt_enable();
-> +	/*
-> +	 * This triggers exception, If handled correctly we must recover
-> +	 * from this error.
-> +	 */
-> +	p[0] =3D '!';
-
-That doesn't belong in here, it should be done by the caller.
-
-That would also mean p could be unsigned long in here, so you wouldn't
-have to cast it four times.
-
-> +}
-> +
-> +/* Inject slb multihit on vmalloc-ed address i.e 0xD00... */
-> +static void inject_vmalloc_slb_multihit(void)
-> +{
-> +	char *p;
-> +
-> +	p =3D vmalloc(2048);
-
-vmalloc() allocates whole pages, so it may as well be vmalloc(PAGE_SIZE).
-
-> +	if (!p)
-> +		return;
-
-That's unlikely, but it should be an error that's propagated up to the call=
-er.
-
-> +
-> +	insert_slb_entry(p, MMU_SEGSIZE_1T);
-> +	vfree(p);
-> +}
-> +
-> +/* Inject slb multihit on kmalloc-ed address i.e 0xC00... */
-> +static void inject_kmalloc_slb_multihit(void)
-> +{
-> +	char *p;
-> +
-> +	p =3D kmalloc(2048, GFP_KERNEL);
-> +	if (!p)
-> +		return;
-> +
-> +	insert_slb_entry(p, MMU_SEGSIZE_1T);
-> +	kfree(p);
-> +}
-> +
-> +/*
-> + * Few initial SLB entries are bolted. Add a test to inject
-> + * multihit in bolted entry 0.
-> + */
-> +static void insert_dup_slb_entry_0(void)
-> +{
-> +	unsigned long test_address =3D 0xC000000000000000;
-
-Should use PAGE_OFFSET;
-
-> +	volatile unsigned long *test_ptr;
-
-Does it need to be a volatile?
-The slbmte should act as a compiler barrier (it has a memory clobber)
-and a CPU barrier as well?
-
-> +	unsigned long entry, i =3D 0;
-> +	unsigned long esid, vsid;
-
-Please group your variables:
-
-  unsigned long esid, vsid, entry, test_address, i;
-  volatile unsigned long *test_ptr;
-
-And then initialise them as appropriate.
-
-> +	test_ptr =3D (unsigned long *)test_address;
-> +	preempt_disable();
-> +
-> +	asm volatile("slbmfee  %0,%1" : "=3Dr" (esid) : "r" (i));
-> +	asm volatile("slbmfev  %0,%1" : "=3Dr" (vsid) : "r" (i));
-
-Why do we need to read them out of the SLB rather than just computing
-the values?
-
-> +	entry =3D get_slb_index();
-> +
-> +	/* for i !=3D0 we would need to mask out the old entry number */
-
-Or you could just compute esid and then it wouldn't be an issue.
-
-> +	asm volatile("slbmte %0,%1" :
-> +			: "r" (vsid),
-> +			  "r" (esid | entry)
-> +			: "memory");
-
-At this point we've just inserted a duplicate of entry 0. So you don't
-need to insert a third entry do you?
-
-> +	asm volatile("slbmfee  %0,%1" : "=3Dr" (esid) : "r" (i));
-> +	asm volatile("slbmfev  %0,%1" : "=3Dr" (vsid) : "r" (i));
-> +	entry =3D get_slb_index();
-> +
-> +	/* for i !=3D0 we would need to mask out the old entry number */
-> +	asm volatile("slbmte %0,%1" :
-> +			: "r" (vsid),
-> +			  "r" (esid | entry)
-> +			: "memory");
-> +
-> +	pr_info("%s accessing test address 0x%lx: 0x%lx\n",
-> +		__func__, test_address, *test_ptr);
-
-This prints the first two instructions of the kernel. I happen to know
-what values they should have, but most people won't understand what
-they're seeing. A better test would be to read the value at the top of
-the function and then load it again here and check we got the right
-thing.
-
-eg.
-  unsigned long val;
-
-  val =3D *test_ptr;
-  ...
-  if (val =3D=3D *test_ptr)
-    pr_info("Success ...")
-  else
-    pr_info("Fail ...")
-
-
-> +
-> +	preempt_enable();
-> +}
-> +
-> +void lkdtm_PPC_SLB_MULTIHIT(void)
-> +{
-> +	if (mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
-
-That will be true even if radix is enabled. You need to use radix_enabled().
-
-> +		pr_info("Injecting SLB multihit errors\n");
-> +		/*
-> +		 * These need not be separate tests, And they do pretty
-> +		 * much same thing. In any case we must recover from the
-> +		 * errors introduced by these functions, machine would not
-> +		 * survive these tests in case of failure to handle.
-> +		 */
-> +		inject_vmalloc_slb_multihit();
-> +		inject_kmalloc_slb_multihit();
-> +		insert_dup_slb_entry_0();
-> +		pr_info("Recovered from SLB multihit errors\n");
-> +	} else {
-> +		pr_err("XFAIL: This test is for ppc64 and with hash mode MMU only\n");
-
-The whole file is only built if CONFIG_PPC64, so you don't need to
-mention ppc64 in the message.
-
-It should say something more like:
-
-  XFAIL: can't test SLB multi-hit when using Radix MMU
-
-
-
-cheers
