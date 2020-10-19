@@ -2,96 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5EFA292667
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 13:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6B029271C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 14:19:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CFF4064g9zDqLg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 22:32:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CFG631VXdzDqbw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Oct 2020 23:19:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Jp99cC6h; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CFDxJ0wzXzDqYC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 22:26:59 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09JBDtdV085740; Mon, 19 Oct 2020 07:26:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=CiFKV1MX+NQ+/OcKIHWa4p2Lv8EgjrO3LBjVA2x5jMk=;
- b=Jp99cC6hPfHybUReqAh7GXmaCjg+UIZHwvVobCfU2nEc2RlUp34CHTVojhTDXQC+ih20
- u5LoDPti0lWnvVAh8THPfgioZl16tb2gyE1y/seGU07dgPlvV+InT3c7IEOM+SdHvy73
- you0s6SyLF5OozR9AxfoRXc0mWBdFJCn469SYnUoDVx8/fXad3rt8VJWLbTkGT8KdmNL
- 502LProVWlz3ogmZ1eelpaVZt6mCuVRtKqhcQuvwFbezHnDXL+fDdkKYYMRHdu/UK79A
- aJWRHi7a9vWzFnHDVVz9VFrkatJ7EzCN9+NSye2fVEL8Tr5gmm6KNmXF6By8cMXocct3 Lg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3499r98avh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Oct 2020 07:26:55 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09JBEd3c087548;
- Mon, 19 Oct 2020 07:26:55 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3499r98aut-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Oct 2020 07:26:55 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09JBMpHD017154;
- Mon, 19 Oct 2020 11:26:52 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03ams.nl.ibm.com with ESMTP id 348d5qs6gw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Oct 2020 11:26:52 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 09JBQoYd32178678
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Oct 2020 11:26:50 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DFBD8AE053;
- Mon, 19 Oct 2020 11:26:49 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8CA5BAE045;
- Mon, 19 Oct 2020 11:26:48 +0000 (GMT)
-Received: from bharata.ibmuc.com (unknown [9.85.73.75])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 19 Oct 2020 11:26:48 +0000 (GMT)
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v1 2/2] KVM: PPC: Book3S HV: Use H_RPT_INVALIDATE in nested KVM
-Date: Mon, 19 Oct 2020 16:56:42 +0530
-Message-Id: <20201019112642.53016-3-bharata@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201019112642.53016-1-bharata@linux.ibm.com>
-References: <20201019112642.53016-1-bharata@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-10-19_02:2020-10-16,
- 2020-10-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- impostorscore=0 phishscore=0 spamscore=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 adultscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010190079
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CFFyJ6WVLzDqWY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Oct 2020 23:12:53 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CFFy16H0Vz9tx00;
+ Mon, 19 Oct 2020 14:12:41 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id xJGeoSiQjUb4; Mon, 19 Oct 2020 14:12:41 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CFFy14yYgz9twyp;
+ Mon, 19 Oct 2020 14:12:41 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8FBBB8B7A2;
+ Mon, 19 Oct 2020 14:12:46 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 20zdV455j0Xe; Mon, 19 Oct 2020 14:12:46 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [10.25.210.27])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 59F0C8B7A1;
+ Mon, 19 Oct 2020 14:12:46 +0200 (CEST)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 43E636678A; Mon, 19 Oct 2020 12:12:46 +0000 (UTC)
+Message-Id: <5ffcb064f695d5285bf1faab91bffa3f9245fc26.1603109522.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 1/3] powerpc/uaccess: Don't use "m<>" constraint with GCC 4.9
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon, 19 Oct 2020 12:12:46 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,105 +59,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, Bharata B Rao <bharata@linux.ibm.com>,
- npiggin@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the nested KVM case, replace H_TLB_INVALIDATE by the new hcall
-H_RPT_INVALIDATE if available. The availability of this hcall
-is determined from "hcall-rpt-invalidate" string in ibm,hypertas-functions
-DT property.
+GCC 4.9 sometimes fails to build with "m<>" constraint in
+inline assembly.
 
-Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+  CC      lib/iov_iter.o
+In file included from ./arch/powerpc/include/asm/cmpxchg.h:6:0,
+                 from ./arch/powerpc/include/asm/atomic.h:11,
+                 from ./include/linux/atomic.h:7,
+                 from ./include/linux/crypto.h:15,
+                 from ./include/crypto/hash.h:11,
+                 from lib/iov_iter.c:2:
+lib/iov_iter.c: In function 'iovec_from_user.part.30':
+./arch/powerpc/include/asm/uaccess.h:287:2: error: 'asm' operand has impossible constraints
+  __asm__ __volatile__(    \
+  ^
+./include/linux/compiler.h:78:42: note: in definition of macro 'unlikely'
+ # define unlikely(x) __builtin_expect(!!(x), 0)
+                                          ^
+./arch/powerpc/include/asm/uaccess.h:583:34: note: in expansion of macro 'unsafe_op_wrap'
+ #define unsafe_get_user(x, p, e) unsafe_op_wrap(__get_user_allowed(x, p), e)
+                                  ^
+./arch/powerpc/include/asm/uaccess.h:329:10: note: in expansion of macro '__get_user_asm'
+  case 4: __get_user_asm(x, (u32 __user *)ptr, retval, "lwz"); break; \
+          ^
+./arch/powerpc/include/asm/uaccess.h:363:3: note: in expansion of macro '__get_user_size_allowed'
+   __get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err); \
+   ^
+./arch/powerpc/include/asm/uaccess.h:100:2: note: in expansion of macro '__get_user_nocheck'
+  __get_user_nocheck((x), (ptr), sizeof(*(ptr)), false)
+  ^
+./arch/powerpc/include/asm/uaccess.h:583:49: note: in expansion of macro '__get_user_allowed'
+ #define unsafe_get_user(x, p, e) unsafe_op_wrap(__get_user_allowed(x, p), e)
+                                                 ^
+lib/iov_iter.c:1663:3: note: in expansion of macro 'unsafe_get_user'
+   unsafe_get_user(len, &uiov[i].iov_len, uaccess_end);
+   ^
+make[1]: *** [scripts/Makefile.build:283: lib/iov_iter.o] Error 1
+
+Define a UPD_CONSTR macro that is "<>" by default and
+only "" with GCC prior to GCC 5.
+
+Fixes: fcf1f26895a4 ("powerpc/uaccess: Add pre-update addressing to __put_user_asm_goto()")
+Fixes: 2f279eeb68b8 ("powerpc/uaccess: Add pre-update addressing to __get_user_asm() and __put_user_asm()")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kvm/book3s_64_mmu_radix.c | 26 +++++++++++++++++++++-----
- arch/powerpc/kvm/book3s_hv_nested.c    | 13 +++++++++++--
- 2 files changed, 32 insertions(+), 7 deletions(-)
+ arch/powerpc/include/asm/ppc_asm.h | 14 ++++++++++++++
+ arch/powerpc/include/asm/uaccess.h |  4 ++--
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-index 22a677b18695e..9934a91adcc3b 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -21,6 +21,7 @@
- #include <asm/pte-walk.h>
- #include <asm/ultravisor.h>
- #include <asm/kvm_book3s_uvmem.h>
-+#include <asm/plpar_wrappers.h>
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index 511786f0e40d..471c7c57fc98 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -803,6 +803,20 @@ END_FTR_SECTION_NESTED(CPU_FTR_CELL_TB_BUG, CPU_FTR_CELL_TB_BUG, 96)
+ 
+ #endif /* !CONFIG_PPC_BOOK3E */
+ 
++#else /* __ASSEMBLY */
++
++/*
++ * Inline assembly memory constraint
++ *
++ * GCC 4.9 doesn't properly handle pre update memory constraint "m<>"
++ *
++ */
++#if defined(GCC_VERSION) && GCC_VERSION < 50000
++#define UPD_CONSTR ""
++#else
++#define UPD_CONSTR "<>"
++#endif
++
+ #endif /*  __ASSEMBLY__ */
  
  /*
-  * Supported radix tree geometry.
-@@ -318,9 +319,17 @@ void kvmppc_radix_tlbie_page(struct kvm *kvm, unsigned long addr,
- 	}
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 604d705f1bb8..8f27ea48fadb 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -223,7 +223,7 @@ do {								\
+ 		"1:	" op "%U1%X1 %0,%1	# put_user\n"	\
+ 		EX_TABLE(1b, %l2)				\
+ 		:						\
+-		: "r" (x), "m<>" (*addr)				\
++		: "r" (x), "m"UPD_CONSTR (*addr)		\
+ 		:						\
+ 		: label)
  
- 	psi = shift_to_mmu_psize(pshift);
--	rb = addr | (mmu_get_ap(psi) << PPC_BITLSHIFT(58));
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(0, 0, 1),
--				lpid, rb);
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE)) {
-+		rb = addr | (mmu_get_ap(psi) << PPC_BITLSHIFT(58));
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE,
-+					H_TLBIE_P1_ENC(0, 0, 1), lpid, rb);
-+	} else {
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_TLB,
-+					    psize_to_rpti_pgsize(psi),
-+					    addr, addr + psize);
-+	}
- 	if (rc)
- 		pr_err("KVM: TLB page invalidation hcall failed, rc=%ld\n", rc);
- }
-@@ -334,8 +343,15 @@ static void kvmppc_radix_flush_pwc(struct kvm *kvm, unsigned int lpid)
- 		return;
- 	}
+@@ -294,7 +294,7 @@ extern long __get_user_bad(void);
+ 		".previous\n"				\
+ 		EX_TABLE(1b, 3b)			\
+ 		: "=r" (err), "=r" (x)			\
+-		: "m<>" (*addr), "i" (-EFAULT), "0" (err))
++		: "m"UPD_CONSTR (*addr), "i" (-EFAULT), "0" (err))
  
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(1, 0, 1),
--				lpid, TLBIEL_INVAL_SET_LPID);
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE))
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE,
-+					H_TLBIE_P1_ENC(1, 0, 1),
-+					lpid, TLBIEL_INVAL_SET_LPID);
-+	else
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_PWC, H_RPTI_PAGE_ALL,
-+					    0, -1UL);
- 	if (rc)
- 		pr_err("KVM: TLB PWC invalidation hcall failed, rc=%ld\n", rc);
- }
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 3ec0231628b42..2a187c782e89b 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -19,6 +19,7 @@
- #include <asm/pgalloc.h>
- #include <asm/pte-walk.h>
- #include <asm/reg.h>
-+#include <asm/plpar_wrappers.h>
- 
- static struct patb_entry *pseries_partition_tb;
- 
-@@ -402,8 +403,16 @@ static void kvmhv_flush_lpid(unsigned int lpid)
- 		return;
- 	}
- 
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(2, 0, 1),
--				lpid, TLBIEL_INVAL_SET_LPID);
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE))
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE,
-+					H_TLBIE_P1_ENC(2, 0, 1),
-+					lpid, TLBIEL_INVAL_SET_LPID);
-+	else
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
-+					    H_RPTI_TYPE_PAT,
-+					    H_RPTI_PAGE_ALL, 0, -1UL);
- 	if (rc)
- 		pr_err("KVM: TLB LPID invalidation hcall failed, rc=%ld\n", rc);
- }
+ #ifdef __powerpc64__
+ #define __get_user_asm2(x, addr, err)			\
 -- 
-2.26.2
+2.25.0
 
