@@ -2,57 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246CF29342F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 07:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FBE5293436
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 07:15:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CFhPZ4D34zDqTg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 16:04:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CFhfg15RkzDqWg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 16:15:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CFhM30CntzDqVB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Oct 2020 16:02:12 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CFhLg5HtSz9txtR;
- Tue, 20 Oct 2020 07:02:03 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id elafoaXxs01Q; Tue, 20 Oct 2020 07:02:03 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CFhLf4jfdz9ttgF;
- Tue, 20 Oct 2020 07:02:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CF0378B7C5;
- Tue, 20 Oct 2020 07:02:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id YE6--pccSxaw; Tue, 20 Oct 2020 07:02:02 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C20638B767;
- Tue, 20 Oct 2020 07:02:01 +0200 (CEST)
-Subject: Re: [PATCH 6/8] powerpc/signal64: Replace setup_trampoline() w/
- unsafe_setup_trampoline()
-To: "Christopher M. Riedl" <cmr@codefail.de>, linuxppc-dev@lists.ozlabs.org
-References: <C6HDEHRYN1HT.16V34IHMSGUK8@geist>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <15e1155b-f48b-2aa7-c60e-eac14930c332@csgroup.eu>
-Date: Tue, 20 Oct 2020 07:02:00 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CFhbv27HpzDqLS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Oct 2020 16:13:29 +1100 (AEDT)
+IronPort-SDR: 33wQkwy8LCFvMhSRtZp1AfEJXWgUDGrmFG0o0gC2g4zqzzgJcknrAYW34cQZIB8NV0QG8QmVZg
+ JrderuPwEing==
+X-IronPort-AV: E=McAfee;i="6000,8403,9779"; a="231352085"
+X-IronPort-AV: E=Sophos;i="5.77,396,1596524400"; d="scan'208";a="231352085"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Oct 2020 22:13:26 -0700
+IronPort-SDR: x8beOuRhU7ZpRn4f2Nl+wme5Cjnt9HEeRwQMQqNQ2JXekVwjdN+9YOGlXulnc4BkeN5D5Srq96
+ 9DF5u92rB3Vw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,396,1596524400"; d="scan'208";a="348127210"
+Received: from lkp-server01.sh.intel.com (HELO 88424da292e0) ([10.239.97.150])
+ by orsmga008.jf.intel.com with ESMTP; 19 Oct 2020 22:13:25 -0700
+Received: from kbuild by 88424da292e0 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1kUjxc-0000PO-KI; Tue, 20 Oct 2020 05:13:24 +0000
+Date: Tue, 20 Oct 2020 13:13:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes] BUILD SUCCESS 358ab796ce78ba271a6ff82834183ffb2cb68c4c
+Message-ID: <5f8e71e6.NrAP43dcdHgQIOVt%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <C6HDEHRYN1HT.16V34IHMSGUK8@geist>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,116 +57,249 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes
+branch HEAD: 358ab796ce78ba271a6ff82834183ffb2cb68c4c  powerpc/powernv/dump: Handle multiple writes to ack attribute
 
+elapsed time: 993m
 
-Le 20/10/2020 à 04:42, Christopher M. Riedl a écrit :
-> On Fri Oct 16, 2020 at 10:56 AM CDT, Christophe Leroy wrote:
->>
->>
->> Le 15/10/2020 à 17:01, Christopher M. Riedl a écrit :
->>> From: Daniel Axtens <dja@axtens.net>
->>>
->>> Previously setup_trampoline() performed a costly KUAP switch on every
->>> uaccess operation. These repeated uaccess switches cause a significant
->>> drop in signal handling performance.
->>>
->>> Rewrite setup_trampoline() to assume that a userspace write access
->>> window is open. Replace all uaccess functions with their 'unsafe'
->>> versions to avoid the repeated uaccess switches.
->>>
->>> Signed-off-by: Daniel Axtens <dja@axtens.net>
->>> Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
->>> ---
->>>    arch/powerpc/kernel/signal_64.c | 32 +++++++++++++++++++-------------
->>>    1 file changed, 19 insertions(+), 13 deletions(-)
->>>
->>> diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
->>> index bd92064e5576..6d4f7a5c4fbf 100644
->>> --- a/arch/powerpc/kernel/signal_64.c
->>> +++ b/arch/powerpc/kernel/signal_64.c
->>> @@ -600,30 +600,33 @@ static long restore_tm_sigcontexts(struct task_struct *tsk,
->>>    /*
->>>     * Setup the trampoline code on the stack
->>>     */
->>> -static long setup_trampoline(unsigned int syscall, unsigned int __user *tramp)
->>> +#define unsafe_setup_trampoline(syscall, tramp, e) \
->>> +	unsafe_op_wrap(__unsafe_setup_trampoline(syscall, tramp), e)
->>> +static long notrace __unsafe_setup_trampoline(unsigned int syscall,
->>> +					unsigned int __user *tramp)
->>>    {
->>>    	int i;
->>> -	long err = 0;
->>>    
->>>    	/* bctrl # call the handler */
->>> -	err |= __put_user(PPC_INST_BCTRL, &tramp[0]);
->>> +	unsafe_put_user(PPC_INST_BCTRL, &tramp[0], err);
->>>    	/* addi r1, r1, __SIGNAL_FRAMESIZE  # Pop the dummy stackframe */
->>> -	err |= __put_user(PPC_INST_ADDI | __PPC_RT(R1) | __PPC_RA(R1) |
->>> -			  (__SIGNAL_FRAMESIZE & 0xffff), &tramp[1]);
->>> +	unsafe_put_user(PPC_INST_ADDI | __PPC_RT(R1) | __PPC_RA(R1) |
->>> +			  (__SIGNAL_FRAMESIZE & 0xffff), &tramp[1], err);
->>>    	/* li r0, __NR_[rt_]sigreturn| */
->>> -	err |= __put_user(PPC_INST_ADDI | (syscall & 0xffff), &tramp[2]);
->>> +	unsafe_put_user(PPC_INST_ADDI | (syscall & 0xffff), &tramp[2], err);
->>>    	/* sc */
->>> -	err |= __put_user(PPC_INST_SC, &tramp[3]);
->>> +	unsafe_put_user(PPC_INST_SC, &tramp[3], err);
->>>    
->>>    	/* Minimal traceback info */
->>>    	for (i=TRAMP_TRACEBACK; i < TRAMP_SIZE ;i++)
->>> -		err |= __put_user(0, &tramp[i]);
->>> +		unsafe_put_user(0, &tramp[i], err);
->>>    
->>> -	if (!err)
->>> -		flush_icache_range((unsigned long) &tramp[0],
->>> -			   (unsigned long) &tramp[TRAMP_SIZE]);
->>> +	flush_icache_range((unsigned long)&tramp[0],
->>> +			   (unsigned long)&tramp[TRAMP_SIZE]);
->>
->> This flush should be done outside the user_write_access block.
->>
-> 
-> Hmm, I suppose that means setup_trampoline() cannot be completely
-> "unsafe". I'll see if I can re-arrange the code which calls this
-> function to avoid an additional uaccess block instead and push the
-> start()/end() into setup_trampoline() directly.
+configs tested: 223
+configs skipped: 3
 
-I think we shouldn't put too much effort on setup_trampoline(). Nowadays 99.999% of applications use 
-the VDSO. Using the trampoline on stack requires to unmap the VDSO and remap the STACK RW. That's 
-really a corner case, I think it would be good enough to call it outside the main access begin/end 
-block, and let it do its own access_begin/end.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-This corner functionnality can be tested using the sigreturn_vdso selftest in selftests/powerpc/signal/
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+xtensa                    xip_kc705_defconfig
+mips                            ar7_defconfig
+arm                            mmp2_defconfig
+powerpc                      ppc64e_defconfig
+mips                        nlm_xlr_defconfig
+nds32                            alldefconfig
+c6x                        evmc6457_defconfig
+parisc                generic-32bit_defconfig
+arm                     am200epdkit_defconfig
+powerpc                     redwood_defconfig
+arc                     haps_hs_smp_defconfig
+mips                      malta_kvm_defconfig
+powerpc                  storcenter_defconfig
+sh                     sh7710voipgw_defconfig
+mips                           ip27_defconfig
+s390                             allyesconfig
+arm                             rpc_defconfig
+sh                        apsh4ad0a_defconfig
+arc                           tb10x_defconfig
+arm                        keystone_defconfig
+mips                malta_qemu_32r6_defconfig
+m68k                             allmodconfig
+mips                  decstation_64_defconfig
+powerpc                 mpc837x_mds_defconfig
+riscv                    nommu_virt_defconfig
+m68k                       m5475evb_defconfig
+powerpc                          g5_defconfig
+csky                             alldefconfig
+powerpc                       eiger_defconfig
+powerpc                     tqm8540_defconfig
+arm                        neponset_defconfig
+powerpc                      mgcoge_defconfig
+arm                           spitz_defconfig
+xtensa                  audio_kc705_defconfig
+sh                  sh7785lcr_32bit_defconfig
+powerpc                     kmeter1_defconfig
+nios2                               defconfig
+arm                             pxa_defconfig
+arc                    vdk_hs38_smp_defconfig
+arm                      pxa255-idp_defconfig
+m68k                       bvme6000_defconfig
+arm                        magician_defconfig
+powerpc                     mpc5200_defconfig
+arm                          pxa3xx_defconfig
+sh                          landisk_defconfig
+openrisc                    or1ksim_defconfig
+arm                         nhk8815_defconfig
+powerpc                 mpc834x_itx_defconfig
+arm                         palmz72_defconfig
+powerpc                      acadia_defconfig
+arm                          collie_defconfig
+nios2                         3c120_defconfig
+arm                           sama5_defconfig
+sh                            migor_defconfig
+powerpc                      makalu_defconfig
+powerpc                   bluestone_defconfig
+arm                           corgi_defconfig
+powerpc                      ep88xc_defconfig
+sh                             sh03_defconfig
+powerpc                      tqm8xx_defconfig
+sh                               alldefconfig
+m68k                          sun3x_defconfig
+powerpc                       holly_defconfig
+mips                       lemote2f_defconfig
+mips                           ip28_defconfig
+sh                 kfr2r09-romimage_defconfig
+arm                          lpd270_defconfig
+sh                           se7751_defconfig
+arm                          ep93xx_defconfig
+arm                      integrator_defconfig
+sh                         ap325rxa_defconfig
+arm                          moxart_defconfig
+powerpc                      pasemi_defconfig
+um                             i386_defconfig
+mips                            e55_defconfig
+powerpc                 mpc832x_rdb_defconfig
+mips                     cu1000-neo_defconfig
+mips                        bcm47xx_defconfig
+mips                           ip32_defconfig
+sh                           se7780_defconfig
+xtensa                generic_kc705_defconfig
+mips                           jazz_defconfig
+arm                        multi_v5_defconfig
+powerpc                        cell_defconfig
+arm                              alldefconfig
+mips                         tb0287_defconfig
+arm                            hisi_defconfig
+arm                          badge4_defconfig
+h8300                            alldefconfig
+alpha                            alldefconfig
+arm                          pcm027_defconfig
+sh                            shmin_defconfig
+arm                           sunxi_defconfig
+sparc                               defconfig
+arm                        realview_defconfig
+mips                         tb0226_defconfig
+sh                             shx3_defconfig
+arm                           efm32_defconfig
+powerpc                    amigaone_defconfig
+powerpc                     powernv_defconfig
+sh                               j2_defconfig
+mips                  cavium_octeon_defconfig
+arm                       omap2plus_defconfig
+sh                ecovec24-romimage_defconfig
+arm                       cns3420vb_defconfig
+arm                         s5pv210_defconfig
+powerpc                         ps3_defconfig
+sh                          rsk7269_defconfig
+arm                        mvebu_v7_defconfig
+m68k                        mvme147_defconfig
+arc                              allyesconfig
+sh                           se7724_defconfig
+powerpc                      ppc40x_defconfig
+powerpc                 mpc85xx_cds_defconfig
+sh                           se7750_defconfig
+sh                          kfr2r09_defconfig
+powerpc                     mpc512x_defconfig
+powerpc                    socrates_defconfig
+c6x                        evmc6678_defconfig
+powerpc                     skiroot_defconfig
+arm                            zeus_defconfig
+powerpc                      katmai_defconfig
+mips                    maltaup_xpa_defconfig
+arm                           tegra_defconfig
+powerpc                  mpc866_ads_defconfig
+mips                        nlm_xlp_defconfig
+sh                          rsk7264_defconfig
+sh                     magicpanelr2_defconfig
+powerpc                 mpc8272_ads_defconfig
+sh                          sdk7786_defconfig
+arm                        oxnas_v6_defconfig
+arc                     nsimosci_hs_defconfig
+arm                    vt8500_v6_v7_defconfig
+mips                        workpad_defconfig
+mips                     loongson1b_defconfig
+h8300                     edosk2674_defconfig
+powerpc                   currituck_defconfig
+powerpc                  iss476-smp_defconfig
+arm                        spear3xx_defconfig
+arm                  colibri_pxa300_defconfig
+powerpc                    ge_imp3a_defconfig
+mips                             allmodconfig
+mips                         mpc30x_defconfig
+alpha                               defconfig
+mips                         tb0219_defconfig
+sh                          urquell_defconfig
+nios2                         10m50_defconfig
+sparc64                             defconfig
+arm                           omap1_defconfig
+mips                        vocore2_defconfig
+sh                        edosk7705_defconfig
+powerpc                     akebono_defconfig
+mips                         bigsur_defconfig
+sh                        dreamcast_defconfig
+m68k                        m5407c3_defconfig
+sh                           se7343_defconfig
+arc                        nsimosci_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+mips                             allyesconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20201019
+x86_64               randconfig-a002-20201019
+x86_64               randconfig-a006-20201019
+x86_64               randconfig-a003-20201019
+x86_64               randconfig-a005-20201019
+x86_64               randconfig-a001-20201019
+i386                 randconfig-a006-20201019
+i386                 randconfig-a005-20201019
+i386                 randconfig-a001-20201019
+i386                 randconfig-a003-20201019
+i386                 randconfig-a004-20201019
+i386                 randconfig-a002-20201019
+i386                 randconfig-a015-20201019
+i386                 randconfig-a013-20201019
+i386                 randconfig-a016-20201019
+i386                 randconfig-a012-20201019
+i386                 randconfig-a011-20201019
+i386                 randconfig-a014-20201019
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-Christophe
+clang tested configs:
+x86_64               randconfig-a016-20201019
+x86_64               randconfig-a015-20201019
+x86_64               randconfig-a012-20201019
+x86_64               randconfig-a013-20201019
+x86_64               randconfig-a011-20201019
+x86_64               randconfig-a014-20201019
 
-> 
->>>    
->>> -	return err;
->>> +	return 0;
->>> +err:
->>> +	return 1;
->>>    }
->>>    
->>>    /*
->>> @@ -888,7 +891,10 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
->>>    	if (vdso64_rt_sigtramp && tsk->mm->context.vdso_base) {
->>>    		regs->nip = tsk->mm->context.vdso_base + vdso64_rt_sigtramp;
->>>    	} else {
->>> -		err |= setup_trampoline(__NR_rt_sigreturn, &frame->tramp[0]);
->>> +		if (!user_write_access_begin(frame, sizeof(struct rt_sigframe)))
->>> +			return -EFAULT;
->>> +		err |= __unsafe_setup_trampoline(__NR_rt_sigreturn, &frame->tramp[0]);
->>> +		user_write_access_end();
->>>    		if (err)
->>>    			goto badframe;
->>>    		regs->nip = (unsigned long) &frame->tramp[0];
->>>
->>
->> Christophe
-> 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
