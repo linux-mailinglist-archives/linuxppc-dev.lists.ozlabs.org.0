@@ -2,54 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B1129422B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 20:33:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B27294236
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 20:37:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CG2M04D3GzDqft
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 05:33:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CG2RQ0NynzDqcW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 05:37:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ smtp.mailfrom=cmpxchg.org (client-ip=2607:f8b0:4864:20::744;
+ helo=mail-qk1-x744.google.com; envelope-from=hannes@cmpxchg.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=JYdQL3Wq; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=cmpxchg.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=cmpxchg-org.20150623.gappssmtp.com
+ header.i=@cmpxchg-org.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=eDpMzgLF; dkim-atps=neutral
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
+ [IPv6:2607:f8b0:4864:20::744])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CG2KN3sxCzDqgn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 05:32:08 +1100 (AEDT)
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id AA27B21534;
- Tue, 20 Oct 2020 18:32:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1603218725;
- bh=rYkBj1ZJWTczz5/r0ofs7bNB91o9zGiASSEmBN2me+w=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=JYdQL3WqM7p6HeQ0EeMAIo5Q2YOfnLuT4iVy5ZEoFobMfwLlGD4IAPVmgw+BUTYAb
- EqhiJi5sA+fXVSNRzB+d6NDWeOqxt4Y137jjticPgIoqKRJ55sa6oAYaWiKzjhDLiV
- tkHoaxu4fBh4Yu4mpzIN7rlSt59KQPCq8o4o/hCw=
-Date: Tue, 20 Oct 2020 20:32:46 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Laurent Vivier <laurent@vivier.eu>
-Subject: Re: [PATCH] serial: pmac_zilog: don't init if zilog is not available
-Message-ID: <20201020183246.GA912431@kroah.com>
-References: <20201020162303.1730562-1-laurent@vivier.eu>
- <20201020162844.GA865546@kroah.com>
- <468bbbef-4745-3b16-b6f4-30b46ebcdc33@vivier.eu>
- <20201020173745.GA882703@kroah.com>
- <387fd2aa-b181-c41f-0581-0a7e79a44e41@vivier.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CG2PY6dDvzDqHn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 05:35:40 +1100 (AEDT)
+Received: by mail-qk1-x744.google.com with SMTP id z6so2532620qkz.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Oct 2020 11:35:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cmpxchg-org.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=3bEaFKRFPS/Sh2t/CI7BcAkihd22K7XwWCcLf9zY4qI=;
+ b=eDpMzgLFh+ac8jAdLmXWxs6dOFK/N7u2zhExMvQXU8gLIswGz9dNocWqqJLN/Xmuyt
+ rBZ11B5sKUn96yasph0hl8x+8p+BefVuTBQ57aVaVezZHGTE+dm7xTQUyZgeXJkWn5W+
+ oERWzaHuOUxRgFPRQORIMQtYcxgIHrWVgfWZux9HU6I7iOtcWighiB11uEEK5eshXa4E
+ /Kbn72MSSNUyOKG4Q+P0k7AMskR5VssEg83c6RQlKEjv4LmdJawNB7uv3SRRo07tmzSY
+ 81pzjCbWB2Jcp/mOXq+/LutPBIhoueU67Qr4WAOrQCbjpgCIbW+OKz5ZPM9mgII8Cjd2
+ 5CHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=3bEaFKRFPS/Sh2t/CI7BcAkihd22K7XwWCcLf9zY4qI=;
+ b=gZSgenUG0sveAoSs443k9YuCtimrFvCpFu8Do06snCKoOLyzOQjJ1cWhOlknC/iyyz
+ QMwJtLJhmh1jW5O3vTrxLnPQqy3ZDvhpLIvxr1CLz1QAM9iBE85dL5d7XZUGSkFg/9EG
+ FgeiAKTkdMReqF23iDTRRa06d/QuPTev0rh8WpyanNeInrqjVOVUbXOY0MlsAW1kEv3g
+ pwDvv2OKJb0L6fxO1g7qKJqPdDE+KzN7SgURCY1l5Z/0StOS67pEbEoKwHv4O91mGHzH
+ vEoUU3Ezfx0IcEbi7xtEnMGHZjg8ITD5qutBlpN8DIARvVDGX+VZVTos+nCOTosQgjoR
+ pK/Q==
+X-Gm-Message-State: AOAM530t1jJo4nBQsS08+MmQ11j11zuDvjPITLHIoPN4y7tcJlq6lUsI
+ aAFYGjWStZICDs/VaW0hzT4kpg==
+X-Google-Smtp-Source: ABdhPJx8oRW/tNaZSiG9aS3bionlit1W0IoCBu7VK3t7uOuxJeysus0w6e9BOQuYqJS0NUhYqBefDg==
+X-Received: by 2002:a37:a5cd:: with SMTP id o196mr3952603qke.374.1603218933224; 
+ Tue, 20 Oct 2020 11:35:33 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:480::1:c52c])
+ by smtp.gmail.com with ESMTPSA id o2sm1151174qkm.96.2020.10.20.11.35.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Oct 2020 11:35:32 -0700 (PDT)
+Date: Tue, 20 Oct 2020 14:33:55 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: mm: Question about the use of 'accessed' flags and pte_young()
+ helper
+Message-ID: <20201020183355.GB397401@cmpxchg.org>
+References: <31ef1305-1fd4-8159-a2ca-e9968a568ff0@csgroup.eu>
+ <ed3d1e19-b18b-d10e-2c86-0fb7ce3a431d@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <387fd2aa-b181-c41f-0581-0a7e79a44e41@vivier.eu>
+In-Reply-To: <ed3d1e19-b18b-d10e-2c86-0fb7ce3a431d@suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,89 +82,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-serial@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- Joshua Thompson <funaho@jurai.org>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, linux-mm <linux-mm@kvack.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 20, 2020 at 08:19:26PM +0200, Laurent Vivier wrote:
-> Le 20/10/2020 à 19:37, Greg KH a écrit :
-> > On Tue, Oct 20, 2020 at 06:37:41PM +0200, Laurent Vivier wrote:
-> >> Le 20/10/2020 à 18:28, Greg KH a écrit :
-> >>> On Tue, Oct 20, 2020 at 06:23:03PM +0200, Laurent Vivier wrote:
-> >>>> We can avoid to probe for the Zilog device (and generate ugly kernel warning)
-> >>>> if kernel is built for Mac but not on a Mac.
-> >>>>
-> >>>> Signed-off-by: Laurent Vivier <laurent@vivier.eu>
-> >>>> ---
-> >>>>  drivers/tty/serial/pmac_zilog.c | 11 +++++++++++
-> >>>>  1 file changed, 11 insertions(+)
-> >>>>
-> >>>> diff --git a/drivers/tty/serial/pmac_zilog.c b/drivers/tty/serial/pmac_zilog.c
-> >>>> index 063484b22523..d1d2e55983c3 100644
-> >>>> --- a/drivers/tty/serial/pmac_zilog.c
-> >>>> +++ b/drivers/tty/serial/pmac_zilog.c
-> >>>> @@ -1867,6 +1867,12 @@ static struct platform_driver pmz_driver = {
-> >>>>  static int __init init_pmz(void)
-> >>>>  {
-> >>>>  	int rc, i;
-> >>>> +
-> >>>> +#ifdef CONFIG_MAC
-> >>>> +	if (!MACH_IS_MAC)
-> >>>> +		return -ENODEV;
-> >>>> +#endif
-> >>>
-> >>> Why is the #ifdef needed?
-> >>>
-> >>> We don't like putting #ifdef in .c files for good reasons.  Can you make
-> >>> the api check for this work with and without that #ifdef needed?
-> >>
-> >> The #ifdef is needed because this file can be compiled for PowerMac and
-> >> m68k Mac. For PowerMac, the MACH_IS_MAC is not defined, so we need the
-> >> #ifdef.
-> >>
-> >> We need the MAC_IS_MAC because the same kernel can be used with several
-> >> m68k machines, so the init_pmz can be called on a m68k machine without
-> >> the zilog device (it's a multi-targets kernel).
-> >>
-> >> You can check it's the good way to do by looking inside:
-> >>
-> >>     drivers/video/fbdev/valkyriefb.c +317
-> >>     drivers/macintosh/adb.c +316
-> >>
-> >> That are two files used by both, mac and pmac.
+On Tue, Oct 20, 2020 at 05:52:07PM +0200, Vlastimil Babka wrote:
+> On 10/8/20 11:49 AM, Christophe Leroy wrote:
+> > In a 10 years old commit
+> > (https://github.com/linuxppc/linux/commit/d069cb4373fe0d451357c4d3769623a7564dfa9f), powerpc 8xx has
+> > made the handling of PTE accessed bit conditional to CONFIG_SWAP.
+> > Since then, this has been extended to some other powerpc variants.
 > > 
-> > Why not fix it to work properly like other arch checks are done
-> I would be happy to do the same.
+> > That commit means that when CONFIG_SWAP is not selected, the accessed bit is not set by SW TLB miss
+> > handlers, leading to pte_young() returning garbage, or should I say possibly returning false
+> > allthough a page has been accessed since its access flag was reset.
+> > 
+> > Looking at various mm/ places, pte_young() is used independent of CONFIG_SWAP
+> > 
+> > Is it still valid the not manage accessed flags when CONFIG_SWAP is not selected ?
 > 
-> > Put it in a .h file and do the #ifdef there.  Why is this "special"?
-> 
-> I don't know.
-> 
-> Do you mean something like:
-> 
-> drivers/tty/serial/pmac_zilog.h
-> ...
-> #ifndef MACH_IS_MAC
-> #define MACH_IS_MAC (0)
-> #endif
-> ...
-> 
-> drivers/tty/serial/pmac_zilog.c
-> ...
-> static int __init pmz_console_init(void)
-> {
->         if (!MACH_IS_MAC)
->                 return -ENODEV;
-> ...
+> AFAIK it's wrong, reclaim needs it to detect accessed pages on inactive
+> list, via page_referenced(), including file pages (page cache) where
+> CONFIG_SWAP plays no role. Maybe it was different 10 years ago.
 
-Yup, that would be a good start, but why is the pmac_zilog.h file
-responsible for this?  Shouldn't this be in some arch-specific file
-somewhere?
+Yes, we require this bit for properly aging mmapped file pages. The
+underlying assumption in the referenced commit is incorrect.
 
-thanks,
+> > If yes, should pte_young() always return true in that case ?
+> 
+> It should best work as intended. If not possible, true is maybe better, as
+> false will lead to inactive file list thrashing.
 
-greg k-h
+An unconditional true will cause mmapped file pages to be permanently
+mlocked / unevictable.
+
+Either way will break some workloads. The only good answer is the
+truth :-)
