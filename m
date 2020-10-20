@@ -2,47 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC52294000
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 17:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CA529408B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 18:31:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CFyqS43bNzDqdb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 02:54:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CFzff4xJ0zDqfk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 03:31:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
- receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=vivier.eu
+ (client-ip=217.72.192.74; helo=mout.kundenserver.de;
+ envelope-from=laurent@vivier.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CFymx1XcqzDqK5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 02:52:12 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 2661AAE95;
- Tue, 20 Oct 2020 15:52:08 +0000 (UTC)
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linux-mm <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>
-References: <31ef1305-1fd4-8159-a2ca-e9968a568ff0@csgroup.eu>
-From: Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: mm: Question about the use of 'accessed' flags and pte_young()
- helper
-Message-ID: <ed3d1e19-b18b-d10e-2c86-0fb7ce3a431d@suse.cz>
-Date: Tue, 20 Oct 2020 17:52:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.2
+ dmarc=none (p=none dis=none) header.from=vivier.eu
+X-Greylist: delayed 340 seconds by postgrey-1.36 at bilbo;
+ Wed, 21 Oct 2020 03:29:13 AEDT
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CFzbY2pbmzDqf0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 03:29:13 +1100 (AEDT)
+Received: from localhost.localdomain ([82.252.146.14]) by
+ mrelayeu.kundenserver.de (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis)
+ id 1MvrRB-1kBaLT25Nn-00stxd; Tue, 20 Oct 2020 18:23:08 +0200
+From: Laurent Vivier <laurent@vivier.eu>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH] serial: pmac_zilog: don't init if zilog is not available
+Date: Tue, 20 Oct 2020 18:23:03 +0200
+Message-Id: <20201020162303.1730562-1-laurent@vivier.eu>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <31ef1305-1fd4-8159-a2ca-e9968a568ff0@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:bKHy5QQSiE77OMXPCG5t3IA6kn0O8DJhl6MV+YUQP93v0wYpsUL
+ coTYiKGAtOBLA3PVaVWj8x5zDK9kGX+W2jYNGYsoMOJ+HEuJCUxIACpOjZfKt0VmMqsTss8
+ oVtH8p5n8HCTCqiQGfX6xdIAfG94PL2nv6jie7AOlG5rdMQJGKfXBCXpbqfcyprrUMeyXxf
+ NqH1bsfQST/Ym95UPoE9g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jLcdZxQQ/jk=:s20Da3hP6S9SPdnAfUuWLQ
+ vJ/XDq5qM5R1XMLm29A5BPAZUPZa4wSLR1UWNXnwE3OnFMDkjy1zUaeN5USNDDCPx3mjvD2ev
+ IR/Jk9x1ifbY9pBkLzqu16bF0sIJlqU6fryqBxqzWSSK3JxFXcyHcjxhkD2zJa95TYEnyw4ee
+ GdpGZPzVtzDx6RX6shOqMRr2lRxdaklxRGFm/6iKJJBHJe+HEnep8jG0t8L0kulj/mt30woS5
+ 4RFfRTxMZLZqCU9daULLrw/AayyCmLEVdMLY8tZcYKLI0qIDvo3zsDHlVZGvuf3nNYOObdDxw
+ qBx4JWJkW+/1VRX6CwkYi28jNOsdO/I9rSkuhmYF7v+zTRICeG4ItLiBtdPL4OsVvoYk7UXA3
+ iysr4IosTI83elPB//JKbtpXIeidrgcaYkszR74oOfqjYHfGDEr2kmGGscSZS7JWfVUnEtOFR
+ qoUI95A40g==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,38 +58,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Laurent Vivier <laurent@vivier.eu>, linux-m68k@lists.linux-m68k.org,
+ Paul Mackerras <paulus@samba.org>, linux-serial@vger.kernel.org,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linuxppc-dev@lists.ozlabs.org,
+ Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/8/20 11:49 AM, Christophe Leroy wrote:
-> In a 10 years old commit
-> (https://github.com/linuxppc/linux/commit/d069cb4373fe0d451357c4d3769623a7564dfa9f), powerpc 8xx has
-> made the handling of PTE accessed bit conditional to CONFIG_SWAP.
-> Since then, this has been extended to some other powerpc variants.
-> 
-> That commit means that when CONFIG_SWAP is not selected, the accessed bit is not set by SW TLB miss
-> handlers, leading to pte_young() returning garbage, or should I say possibly returning false
-> allthough a page has been accessed since its access flag was reset.
-> 
-> Looking at various mm/ places, pte_young() is used independent of CONFIG_SWAP
-> 
-> Is it still valid the not manage accessed flags when CONFIG_SWAP is not selected ?
+We can avoid to probe for the Zilog device (and generate ugly kernel warning)
+if kernel is built for Mac but not on a Mac.
 
-AFAIK it's wrong, reclaim needs it to detect accessed pages on inactive list, 
-via page_referenced(), including file pages (page cache) where CONFIG_SWAP plays 
-no role. Maybe it was different 10 years ago.
+Signed-off-by: Laurent Vivier <laurent@vivier.eu>
+---
+ drivers/tty/serial/pmac_zilog.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-> If yes, should pte_young() always return true in that case ?
-
-It should best work as intended. If not possible, true is maybe better, as false 
-will lead to inactive file list thrashing.
-
-> While we are at it, I'm wondering whether powerpc should redefine arch_faults_on_old_pte()
-> On some variants of powerpc, accessed flag is managed by HW. On others, it is managed by SW TLB miss
-> handlers via page fault handling.
-> 
-> Thanks
-> Christophe
-> 
+diff --git a/drivers/tty/serial/pmac_zilog.c b/drivers/tty/serial/pmac_zilog.c
+index 063484b22523..d1d2e55983c3 100644
+--- a/drivers/tty/serial/pmac_zilog.c
++++ b/drivers/tty/serial/pmac_zilog.c
+@@ -1867,6 +1867,12 @@ static struct platform_driver pmz_driver = {
+ static int __init init_pmz(void)
+ {
+ 	int rc, i;
++
++#ifdef CONFIG_MAC
++	if (!MACH_IS_MAC)
++		return -ENODEV;
++#endif
++
+ 	printk(KERN_INFO "%s\n", version);
+ 
+ 	/* 
+@@ -2034,6 +2040,11 @@ static int __init pmz_console_setup(struct console *co, char *options)
+ 
+ static int __init pmz_console_init(void)
+ {
++#ifdef CONFIG_MAC
++	if (!MACH_IS_MAC)
++		return -ENODEV;
++#endif
++
+ 	/* Probe ports */
+ 	pmz_probe();
+ 
+-- 
+2.26.2
 
