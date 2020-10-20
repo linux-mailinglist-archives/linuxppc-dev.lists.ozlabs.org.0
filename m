@@ -2,75 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B27294236
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 20:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3155029426A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 20:44:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CG2RQ0NynzDqcW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 05:37:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CG2c0214fzDqcQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 05:44:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cmpxchg.org (client-ip=2607:f8b0:4864:20::744;
- helo=mail-qk1-x744.google.com; envelope-from=hannes@cmpxchg.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=cmpxchg-org.20150623.gappssmtp.com
- header.i=@cmpxchg-org.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=eDpMzgLF; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
+ spf=none (no SPF record) smtp.mailfrom=vivier.eu
+ (client-ip=212.227.126.130; helo=mout.kundenserver.de;
+ envelope-from=laurent@vivier.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=vivier.eu
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CG2PY6dDvzDqHn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 05:35:40 +1100 (AEDT)
-Received: by mail-qk1-x744.google.com with SMTP id z6so2532620qkz.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Oct 2020 11:35:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cmpxchg-org.20150623.gappssmtp.com; s=20150623;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=3bEaFKRFPS/Sh2t/CI7BcAkihd22K7XwWCcLf9zY4qI=;
- b=eDpMzgLFh+ac8jAdLmXWxs6dOFK/N7u2zhExMvQXU8gLIswGz9dNocWqqJLN/Xmuyt
- rBZ11B5sKUn96yasph0hl8x+8p+BefVuTBQ57aVaVezZHGTE+dm7xTQUyZgeXJkWn5W+
- oERWzaHuOUxRgFPRQORIMQtYcxgIHrWVgfWZux9HU6I7iOtcWighiB11uEEK5eshXa4E
- /Kbn72MSSNUyOKG4Q+P0k7AMskR5VssEg83c6RQlKEjv4LmdJawNB7uv3SRRo07tmzSY
- 81pzjCbWB2Jcp/mOXq+/LutPBIhoueU67Qr4WAOrQCbjpgCIbW+OKz5ZPM9mgII8Cjd2
- 5CHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=3bEaFKRFPS/Sh2t/CI7BcAkihd22K7XwWCcLf9zY4qI=;
- b=gZSgenUG0sveAoSs443k9YuCtimrFvCpFu8Do06snCKoOLyzOQjJ1cWhOlknC/iyyz
- QMwJtLJhmh1jW5O3vTrxLnPQqy3ZDvhpLIvxr1CLz1QAM9iBE85dL5d7XZUGSkFg/9EG
- FgeiAKTkdMReqF23iDTRRa06d/QuPTev0rh8WpyanNeInrqjVOVUbXOY0MlsAW1kEv3g
- pwDvv2OKJb0L6fxO1g7qKJqPdDE+KzN7SgURCY1l5Z/0StOS67pEbEoKwHv4O91mGHzH
- vEoUU3Ezfx0IcEbi7xtEnMGHZjg8ITD5qutBlpN8DIARvVDGX+VZVTos+nCOTosQgjoR
- pK/Q==
-X-Gm-Message-State: AOAM530t1jJo4nBQsS08+MmQ11j11zuDvjPITLHIoPN4y7tcJlq6lUsI
- aAFYGjWStZICDs/VaW0hzT4kpg==
-X-Google-Smtp-Source: ABdhPJx8oRW/tNaZSiG9aS3bionlit1W0IoCBu7VK3t7uOuxJeysus0w6e9BOQuYqJS0NUhYqBefDg==
-X-Received: by 2002:a37:a5cd:: with SMTP id o196mr3952603qke.374.1603218933224; 
- Tue, 20 Oct 2020 11:35:33 -0700 (PDT)
-Received: from localhost ([2620:10d:c091:480::1:c52c])
- by smtp.gmail.com with ESMTPSA id o2sm1151174qkm.96.2020.10.20.11.35.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Oct 2020 11:35:32 -0700 (PDT)
-Date: Tue, 20 Oct 2020 14:33:55 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: mm: Question about the use of 'accessed' flags and pte_young()
- helper
-Message-ID: <20201020183355.GB397401@cmpxchg.org>
-References: <31ef1305-1fd4-8159-a2ca-e9968a568ff0@csgroup.eu>
- <ed3d1e19-b18b-d10e-2c86-0fb7ce3a431d@suse.cz>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CG2ZD6ZwJzDqHl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 05:43:16 +1100 (AEDT)
+Received: from [192.168.100.1] ([82.252.146.14]) by mrelayeu.kundenserver.de
+ (mreue011 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1MhULz-1jzTKE2NYB-00eZ1L; Tue, 20 Oct 2020 20:42:57 +0200
+To: Greg KH <gregkh@linuxfoundation.org>
+References: <20201020162303.1730562-1-laurent@vivier.eu>
+ <20201020162844.GA865546@kroah.com>
+ <468bbbef-4745-3b16-b6f4-30b46ebcdc33@vivier.eu>
+ <20201020173745.GA882703@kroah.com>
+ <387fd2aa-b181-c41f-0581-0a7e79a44e41@vivier.eu>
+ <20201020183246.GA912431@kroah.com>
+From: Laurent Vivier <laurent@vivier.eu>
+Autocrypt: addr=laurent@vivier.eu; prefer-encrypt=mutual; keydata=
+ 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
+Subject: Re: [PATCH] serial: pmac_zilog: don't init if zilog is not available
+Message-ID: <b52e7fde-8874-3c53-ca13-7709656b69fb@vivier.eu>
+Date: Tue, 20 Oct 2020 20:42:53 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ed3d1e19-b18b-d10e-2c86-0fb7ce3a431d@suse.cz>
+In-Reply-To: <20201020183246.GA912431@kroah.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:LVCUWwI+zZFntH1rA8fpDbRR/bSvaB+7jWvNS3VeIVPYSoK+F6m
+ JuuCEfwpoYL/yZQxVJB2T2pEddNPCzJV0xjLW1xjMCUdkTG3OZyFcBmJN7PO+f4/FowZfOq
+ ydyovoc921qx4v7T2Qlro5v2cR4mhaifPurXJokMNxmiJQtGUBZDAMqvm0El5oqo+/AQBQh
+ h/ojDU62zlOB+wfNYnR0Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:QdXngQqRe+g=:SbR9BTlVBSHinTuH6lbPjh
+ 6TO5+RyMEFWvq9nOsq15h0WNYsVBkGjeI4ZY3lvKcajZowcVxPYlOXS/spT047i0RJa8KXlrg
+ pxvVg1FJVixv+9gFj2YnUj1lTC51tL83G6Ce2wP2Pc7Qg70sEO9Wmlv03s/bVTvb3H22wFfSn
+ JoYHw3xl5cJ76HP3zY8tu0hGK7vXpM/r8ynYa3upH/8KMfdl+HlF5u5eHU0h1T85q+zdvIZ6x
+ ptCqYtexf36rH8RRWYOu/0WJEa1BZKH3OO+5G6ZAia6LpB5GsxyQ0WwTIoIiY2xAHK0gAhdno
+ P7bc6ZmcXN18i6nYPIIJBkqGAF1Gduf7wTktbase426oWqyGhwNiGJiiuiHrb0qS7P/oHkt6m
+ Kp7RRuTD6FQ6mFKdUNxst/S6r3OLKvxl0eXXrzFbeEgrXeLF/Obx7Jw2riO4J
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,43 +107,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, linux-mm <linux-mm@kvack.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>
+Cc: linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-serial@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 20, 2020 at 05:52:07PM +0200, Vlastimil Babka wrote:
-> On 10/8/20 11:49 AM, Christophe Leroy wrote:
-> > In a 10 years old commit
-> > (https://github.com/linuxppc/linux/commit/d069cb4373fe0d451357c4d3769623a7564dfa9f), powerpc 8xx has
-> > made the handling of PTE accessed bit conditional to CONFIG_SWAP.
-> > Since then, this has been extended to some other powerpc variants.
-> > 
-> > That commit means that when CONFIG_SWAP is not selected, the accessed bit is not set by SW TLB miss
-> > handlers, leading to pte_young() returning garbage, or should I say possibly returning false
-> > allthough a page has been accessed since its access flag was reset.
-> > 
-> > Looking at various mm/ places, pte_young() is used independent of CONFIG_SWAP
-> > 
-> > Is it still valid the not manage accessed flags when CONFIG_SWAP is not selected ?
+Le 20/10/2020 à 20:32, Greg KH a écrit :
+> On Tue, Oct 20, 2020 at 08:19:26PM +0200, Laurent Vivier wrote:
+>> Le 20/10/2020 à 19:37, Greg KH a écrit :
+>>> On Tue, Oct 20, 2020 at 06:37:41PM +0200, Laurent Vivier wrote:
+>>>> Le 20/10/2020 à 18:28, Greg KH a écrit :
+>>>>> On Tue, Oct 20, 2020 at 06:23:03PM +0200, Laurent Vivier wrote:
+>>>>>> We can avoid to probe for the Zilog device (and generate ugly kernel warning)
+>>>>>> if kernel is built for Mac but not on a Mac.
+>>>>>>
+>>>>>> Signed-off-by: Laurent Vivier <laurent@vivier.eu>
+>>>>>> ---
+>>>>>>  drivers/tty/serial/pmac_zilog.c | 11 +++++++++++
+>>>>>>  1 file changed, 11 insertions(+)
+>>>>>>
+>>>>>> diff --git a/drivers/tty/serial/pmac_zilog.c b/drivers/tty/serial/pmac_zilog.c
+>>>>>> index 063484b22523..d1d2e55983c3 100644
+>>>>>> --- a/drivers/tty/serial/pmac_zilog.c
+>>>>>> +++ b/drivers/tty/serial/pmac_zilog.c
+>>>>>> @@ -1867,6 +1867,12 @@ static struct platform_driver pmz_driver = {
+>>>>>>  static int __init init_pmz(void)
+>>>>>>  {
+>>>>>>  	int rc, i;
+>>>>>> +
+>>>>>> +#ifdef CONFIG_MAC
+>>>>>> +	if (!MACH_IS_MAC)
+>>>>>> +		return -ENODEV;
+>>>>>> +#endif
+>>>>>
+>>>>> Why is the #ifdef needed?
+>>>>>
+>>>>> We don't like putting #ifdef in .c files for good reasons.  Can you make
+>>>>> the api check for this work with and without that #ifdef needed?
+>>>>
+>>>> The #ifdef is needed because this file can be compiled for PowerMac and
+>>>> m68k Mac. For PowerMac, the MACH_IS_MAC is not defined, so we need the
+>>>> #ifdef.
+>>>>
+>>>> We need the MAC_IS_MAC because the same kernel can be used with several
+>>>> m68k machines, so the init_pmz can be called on a m68k machine without
+>>>> the zilog device (it's a multi-targets kernel).
+>>>>
+>>>> You can check it's the good way to do by looking inside:
+>>>>
+>>>>     drivers/video/fbdev/valkyriefb.c +317
+>>>>     drivers/macintosh/adb.c +316
+>>>>
+>>>> That are two files used by both, mac and pmac.
+>>>
+>>> Why not fix it to work properly like other arch checks are done
+>> I would be happy to do the same.
+>>
+>>> Put it in a .h file and do the #ifdef there.  Why is this "special"?
+>>
+>> I don't know.
+>>
+>> Do you mean something like:
+>>
+>> drivers/tty/serial/pmac_zilog.h
+>> ...
+>> #ifndef MACH_IS_MAC
+>> #define MACH_IS_MAC (0)
+>> #endif
+>> ...
+>>
+>> drivers/tty/serial/pmac_zilog.c
+>> ...
+>> static int __init pmz_console_init(void)
+>> {
+>>         if (!MACH_IS_MAC)
+>>                 return -ENODEV;
+>> ...
 > 
-> AFAIK it's wrong, reclaim needs it to detect accessed pages on inactive
-> list, via page_referenced(), including file pages (page cache) where
-> CONFIG_SWAP plays no role. Maybe it was different 10 years ago.
+> Yup, that would be a good start, but why is the pmac_zilog.h file
+> responsible for this?  Shouldn't this be in some arch-specific file
+> somewhere?
 
-Yes, we require this bit for properly aging mmapped file pages. The
-underlying assumption in the referenced commit is incorrect.
+For m68k, MACH_IS_MAC is defined in arch/m68k/include/asm/setup.h
 
-> > If yes, should pte_young() always return true in that case ?
-> 
-> It should best work as intended. If not possible, true is maybe better, as
-> false will lead to inactive file list thrashing.
+If I want to define it for any other archs I don't know in which file we
+can put it.
 
-An unconditional true will cause mmapped file pages to be permanently
-mlocked / unevictable.
+But as m68k mac is only sharing drivers with pmac perhaps we can put
+this in arch/powerpc/include/asm/setup.h?
 
-Either way will break some workloads. The only good answer is the
-truth :-)
+Thanks,
+Laurent
+
