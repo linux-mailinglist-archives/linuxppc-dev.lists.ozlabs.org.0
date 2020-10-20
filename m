@@ -1,51 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D6962932E9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 03:59:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 267C8293340
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 04:40:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CFcHj49Y6zDqVv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 12:59:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CFdC45qXRzDqW2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 13:40:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=codefail.de (client-ip=198.54.127.69;
- helo=se14-2.privateemail.com; envelope-from=cmr@codefail.de;
+ smtp.mailfrom=codefail.de (client-ip=198.54.127.87;
+ helo=se18-4.privateemail.com; envelope-from=cmr@codefail.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=codefail.de
-Received: from se14-2.privateemail.com (se14-2.privateemail.com
- [198.54.127.69])
+Received: from se18-4.privateemail.com (se18-4.privateemail.com
+ [198.54.127.87])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CFcGC1TgDzDqMf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Oct 2020 12:57:54 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CFd97656lzDqRF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Oct 2020 13:38:34 +1100 (AEDT)
 Received: from new-01-3.privateemail.com ([198.54.122.47])
- by se14.registrar-servers.com with esmtpsa (TLSv1.2:AES128-GCM-SHA256:128)
+ by se18.registrar-servers.com with esmtpsa (TLSv1.2:AES128-GCM-SHA256:128)
  (Exim 4.92) (envelope-from <cmr@codefail.de>)
- id 1kUguD-0000C1-Eq; Mon, 19 Oct 2020 18:57:51 -0700
-Received: from MTA-08-1.privateemail.com (unknown [10.20.147.18])
+ id 1kUhXf-00091K-4B; Mon, 19 Oct 2020 19:38:31 -0700
+Received: from MTA-07-1.privateemail.com (unknown [10.20.147.17])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by NEW-01-3.privateemail.com (Postfix) with ESMTPS id 588F7A72;
- Tue, 20 Oct 2020 01:57:39 +0000 (UTC)
-Received: from MTA-08.privateemail.com (localhost [127.0.0.1])
- by MTA-08.privateemail.com (Postfix) with ESMTP id 42E296003E;
- Mon, 19 Oct 2020 21:57:39 -0400 (EDT)
-Received: from localhost (unknown [10.20.151.214])
- by MTA-08.privateemail.com (Postfix) with ESMTPA id 0E69260038;
- Tue, 20 Oct 2020 01:57:38 +0000 (UTC)
+ by NEW-01-3.privateemail.com (Postfix) with ESMTPS id 1A766A70;
+ Tue, 20 Oct 2020 02:38:25 +0000 (UTC)
+Received: from MTA-07.privateemail.com (localhost [127.0.0.1])
+ by MTA-07.privateemail.com (Postfix) with ESMTP id 04AF660047;
+ Mon, 19 Oct 2020 22:38:25 -0400 (EDT)
+Received: from localhost (unknown [10.20.151.241])
+ by MTA-07.privateemail.com (Postfix) with ESMTPA id C2C6160045;
+ Tue, 20 Oct 2020 02:38:24 +0000 (UTC)
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH 2/8] powerpc/signal: Add unsafe_copy_{vsx,fpr}_from_user()
+From: "Christopher M. Riedl" <cmr@codefail.de>
 To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
  <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH 3/8] powerpc: Mark functions called inside uaccess
- blocks w/ 'notrace'
-From: "Christopher M. Riedl" <cmr@codefail.de>
-Date: Mon, 19 Oct 2020 20:59:52 -0500
-Message-Id: <C6HCI5ZCNOK7.38L522D7VL2QR@geist>
-In-Reply-To: <30d9ccba-20a5-37b4-1629-d0f9e0da4c84@csgroup.eu>
+Date: Mon, 19 Oct 2020 21:01:21 -0500
+Message-Id: <C6HCJAJH1QOC.1U5G1AHURT3NJ@geist>
+In-Reply-To: <5e15b794-e33e-a871-3296-df1154b7d408@csgroup.eu>
 X-Virus-Scanned: ClamAV using ClamSMTP
 X-Originating-IP: 198.54.122.47
 X-SpamExperts-Domain: o3.privateemail.com
@@ -53,24 +52,23 @@ X-SpamExperts-Username: out-03
 Authentication-Results: registrar-servers.com;
  auth=pass (plain) smtp.auth=out-03@o3.privateemail.com
 X-SpamExperts-Outgoing-Class: ham
-X-SpamExperts-Outgoing-Evidence: SB/global_tokens (0.00023020979305)
+X-SpamExperts-Outgoing-Evidence: Combined (0.04)
 X-Recommended-Action: accept
-X-Filter-ID: Mvzo4OR0dZXEDF/gcnlw0acxlbLX9+ibl6ixChE10xOpSDasLI4SayDByyq9LIhVdoCmd7d8XIQ6
- RgdxWoJK+kTNWdUk1Ol2OGx3IfrIJKyP9eGNFz9TW9u+Jt8z2T3Kwi4BXSuOO65HxJws2e+QTrd8
+X-Filter-ID: Mvzo4OR0dZXEDF/gcnlw0acxlbLX9+ibl6ixChE10xOpSDasLI4SayDByyq9LIhVIYEIrI1+IPiB
+ u3xbjzdyyUTNWdUk1Ol2OGx3IfrIJKyP9eGNFz9TW9u+Jt8z2T3Kwi4BXSuOO65HxJws2e+QTrd8
  cnMVGQoZ8W9SqygcY4DfgwIv96ey3i8S2kDiV4NFL0mKUVqHu+m9KLsR0ilyGUGlz8CJSOMrvzx9
- TVg3RkVvtszCBXJ+SJ3GQRXVcU0Op8jZ4AoGBlDR94YkH0RjFRfL4EkKxU9ObJV0pa6ww8AiiPMZ
- yTxq5Zj1313L44OSSUJOjKBJNHzJF8ycSHMaEvDk3+iNqiYKhZaJO2iXygjDQWjOmI87Lh7Y8XsC
+ TVg3RkUfEwfhAQRayU9yh7uUCyW4p8jZ4AoGBlDR94YkH0RjFRfL4EkKxU9ObJV0pa6ww8AiiPMZ
+ yTxq5Zj1313L44OSS1ueBonkNzcqLq2LIe51i/Dk3+iNqiYKhZaJO2iXygjDQWjOmI87Lh7Y8XsC
  bZWVvRkWzsAgaWolxIxCj2GHto6atsxaFkWS/KO9ggVt7y11v0HCq9Ij3WgoQoezM+scaWWR7drM
- d0qbJIo1RVCXie2VXGdtLyog7ui50fJvZPWymVBEglNuNDdi9xAbizrHQe+bc+r9MxWEuItVKVsO
- chW6PYU7vZf9hpAifuf5iKzfX8TdqEXkwxwMjsp2mNAp/RfNE82Z0j/SGVOKzpZStLLrEkdjWooj
- rxhIwxLjxK3LgKffTIgl7nuGO/IJU1342OUMeHyTpNN0eXybX/w7/4a+Zyc1sUYlckMDbruAhxcr
- zyR3yXPdggqRch5qYBgdiEv3LcyF4PeZ2Kcbyk5JAruiXLLmj1s/Ik6HjO34HfVogUE8PQu6GTAc
- nRPAXQn76cR0wOIgRm2hJfLmYEHLuNO6UlGm0ycQh0Ylbt1+Ear3Y80OmAux3oN13+ztUzne3jdp
- YBMFjVxNUx8bpJ4bPiG/x2hyPJvsEORuxUz9b6ETMFFQ36qcvKwKb8V+SJ+wsNsIDXCdzswXjwto
- Hmi4tVz1pRXWhjh9fdbl44I0Df2OsG3EZZg2uoCaGUazTdO7HUifxNxi/vr+xe0awpy3/ac9nHrO
- TNZtkVLPUrmUqzE1N30qb7V+5A0U/gKkK9k9/8Rp6VG8MMj91VO6Xp0YgpWAX6frP3SxSkEBDMTz
- FORFgwmpUOXPcPeresbPjCmptaly/uPaPGs4IuAYIIDnnqEO+NQBOd/FKlhsdD5U1GS+QVH2BVkH
- vSrZKgwA8kr3
+ d0qbJIo1RVCXie2VXGdtLyog7ui50fJvZPWymVBEglNuNDdi9xAbizrH5OsVdOhXIGZEKBBVfrNX
+ IVS7yrN4xA/q5McvR31SN9iB8Wsvf3buc8teJ1RiHNMvIwZgYFwjw1mzO+UJiTlJpdvpo2UgV9PP
+ 0GtOSQCD3Wp6EipRzMVZ5LqwTx7Vvn9SWQRihqWRcCaa7yMGNcHiKrDnA3wXPkA2INjAw9EFTL7j
+ 9F/zRLt6ogdwVndq1MMDmdLMVjKL1rrZibSGL3heGOgLajiYZlmwZdifT41pqqED3WbML0pHvwic
+ IIZgSSF9KjOelVZXLMA29DfEruL6DYsEMysPur9wmiDBurOy6iTDrd0x+3YQnB0RHLi/vQmrViIQ
+ n70lBYH88dpo7a4LbTlCkrnRSCw5DxM8/gaaExwqRf2mnYGPQXhTkxZo1zKSctgzcDoFd+96Xw4Q
+ UNtTnTj+sNQbfmTcbCI4bP4Q2wTKDIqtF9zdULrTh6VP35X/OeA38wHfD4EgRY6r4dAy/Ob9MbqY
+ 98fRJO0WnyWriaVOP34VGRo5L8M2MA2Zvy07Qp3F8cjyBYzOHeaMieHYbzkjHv8L1XCo8f/lClCd
+ nQEV4c33O1R/KGaKK9RjaKoDpQVQQrINKHxdrweiF9kFyBNoYrJRVwuktqDPF7HQoew=
 X-Report-Abuse-To: spam@se5.registrar-servers.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -87,166 +85,131 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri Oct 16, 2020 at 4:02 AM CDT, Christophe Leroy wrote:
+On Fri Oct 16, 2020 at 10:48 AM CDT, Christophe Leroy wrote:
 >
 >
 > Le 15/10/2020 =C3=A0 17:01, Christopher M. Riedl a =C3=A9crit :
-> > Functions called between user_*_access_begin() and user_*_access_end()
-> > should be either inlined or marked 'notrace' to prevent leaving
-> > userspace access exposed. Mark any such functions relevant to signal
-> > handling so that subsequent patches can call them inside uaccess blocks=
-.
+> > Reuse the "safe" implementation from signal.c except for calling
+> > unsafe_copy_from_user() to copy into a local buffer. Unlike the
+> > unsafe_copy_{vsx,fpr}_to_user() functions the "copy from" functions
+> > cannot use unsafe_get_user() directly to bypass the local buffer since
+> > doing so significantly reduces signal handling performance.
 >
-> Is it enough to mark it "notrace" ? I see that when I activate KASAN,
-> there are still KASAN calls in
-> those functions.
->
-
-Maybe not enough after all :(
-
-> In my series for 32 bits, I re-ordered stuff in order to do all those
-> calls before doing the
-> _access_begin(), can't you do the same on PPC64 ? (See
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/f6eac65781b4a5722=
-0477c8864bca2b57f29a5d5.1597770847.git.christophe.leroy@csgroup.eu/)
+> Why can't the functions use unsafe_get_user(), why does it significantly
+> reduces signal handling
+> performance ? How much significant ? I would expect that not going
+> through an intermediate memory
+> area would be more efficient
 >
 
-Yes, I will give this another shot in the next spin.
+Here is a comparison, 'unsafe-signal64-regs' avoids the intermediate buffer=
+:
+
+	|                      | hash   | radix  |
+	| -------------------- | ------ | ------ |
+	| linuxppc/next        | 289014 | 158408 |
+	| unsafe-signal64      | 298506 | 253053 |
+	| unsafe-signal64-regs | 254898 | 220831 |
+
+I have not figured out the 'why' yet. As you mentioned in your series,
+technically calling __copy_tofrom_user() is overkill for these
+operations. The only obvious difference between unsafe_put_user() and
+unsafe_get_user() is that we don't have asm-goto for the 'get' variant.
+Instead we wrap with unsafe_op_wrap() which inserts a conditional and
+then goto to the label.
+
+Implemenations:
+
+	#define unsafe_copy_fpr_from_user(task, from, label)   do {            \
+	       struct task_struct *__t =3D task;                                 \
+	       u64 __user *buf =3D (u64 __user *)from;                           \
+	       int i;                                                          \
+									       \
+	       for (i =3D 0; i < ELF_NFPREG - 1; i++)                            \
+		       unsafe_get_user(__t->thread.TS_FPR(i), &buf[i], label); \
+	       unsafe_get_user(__t->thread.fp_state.fpscr, &buf[i], label);    \
+	} while (0)
+
+	#define unsafe_copy_vsx_from_user(task, from, label)   do {            \
+	       struct task_struct *__t =3D task;                                 \
+	       u64 __user *buf =3D (u64 __user *)from;                           \
+	       int i;                                                          \
+									       \
+	       for (i =3D 0; i < ELF_NVSRHALFREG ; i++)                          \
+		       unsafe_get_user(__t->thread.fp_state.fpr[i][TS_VSRLOWOFFSET], \
+				       &buf[i], label);                        \
+	} while (0)
 
 > Christophe
+>
 >
 > >=20
 > > Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
 > > ---
-> >   arch/powerpc/kernel/process.c | 20 ++++++++++----------
-> >   arch/powerpc/mm/mem.c         |  4 ++--
-> >   2 files changed, 12 insertions(+), 12 deletions(-)
+> >   arch/powerpc/kernel/signal.h | 33 +++++++++++++++++++++++++++++++++
+> >   1 file changed, 33 insertions(+)
 > >=20
-> > diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/proces=
-s.c
-> > index ba2c987b8403..bf5d9654bd2c 100644
-> > --- a/arch/powerpc/kernel/process.c
-> > +++ b/arch/powerpc/kernel/process.c
-> > @@ -84,7 +84,7 @@ extern unsigned long _get_SP(void);
-> >    */
-> >   bool tm_suspend_disabled __ro_after_init =3D false;
+> > diff --git a/arch/powerpc/kernel/signal.h b/arch/powerpc/kernel/signal.=
+h
+> > index 2559a681536e..e9aaeac0da37 100644
+> > --- a/arch/powerpc/kernel/signal.h
+> > +++ b/arch/powerpc/kernel/signal.h
+> > @@ -53,6 +53,33 @@ unsigned long copy_ckfpr_from_user(struct task_struc=
+t *task, void __user *from);
+> >   				&buf[i], label);\
+> >   } while (0)
 > >  =20
-> > -static void check_if_tm_restore_required(struct task_struct *tsk)
-> > +static void notrace check_if_tm_restore_required(struct task_struct *t=
-sk)
+> > +#define unsafe_copy_fpr_from_user(task, from, label)	do {		\
+> > +	struct task_struct *__t =3D task;					\
+> > +	u64 __user *__f =3D (u64 __user *)from;				\
+> > +	u64 buf[ELF_NFPREG];						\
+> > +	int i;								\
+> > +									\
+> > +	unsafe_copy_from_user(buf, __f, ELF_NFPREG * sizeof(double),	\
+> > +				label);					\
+> > +	for (i =3D 0; i < ELF_NFPREG - 1; i++)				\
+> > +		__t->thread.TS_FPR(i) =3D buf[i];				\
+> > +	__t->thread.fp_state.fpscr =3D buf[i];				\
+> > +} while (0)
+> > +
+> > +#define unsafe_copy_vsx_from_user(task, from, label)	do {		\
+> > +	struct task_struct *__t =3D task;					\
+> > +	u64 __user *__f =3D (u64 __user *)from;				\
+> > +	u64 buf[ELF_NVSRHALFREG];					\
+> > +	int i;								\
+> > +									\
+> > +	unsafe_copy_from_user(buf, __f,					\
+> > +				ELF_NVSRHALFREG * sizeof(double),	\
+> > +				label);					\
+> > +	for (i =3D 0; i < ELF_NVSRHALFREG ; i++)				\
+> > +		__t->thread.fp_state.fpr[i][TS_VSRLOWOFFSET] =3D buf[i];	\
+> > +} while (0)
+> > +
+> > +
+> >   #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+> >   #define unsafe_copy_ckfpr_to_user(to, task, label)	do {		\
+> >   	struct task_struct *__t =3D task;					\
+> > @@ -80,6 +107,10 @@ unsigned long copy_ckfpr_from_user(struct task_stru=
+ct *task, void __user *from);
+> >   	unsafe_copy_to_user(to, (task)->thread.fp_state.fpr,	\
+> >   			    ELF_NFPREG * sizeof(double), label)
+> >  =20
+> > +#define unsafe_copy_fpr_from_user(task, from, label)		\
+> > +	unsafe_copy_from_user((task)->thread.fp_state.fpr, from	\
+> > +			    ELF_NFPREG * sizeof(double), label)
+> > +
+> >   static inline unsigned long
+> >   copy_fpr_to_user(void __user *to, struct task_struct *task)
 > >   {
-> >   	/*
-> >   	 * If we are saving the current thread's registers, and the
-> > @@ -151,7 +151,7 @@ void notrace __msr_check_and_clear(unsigned long bi=
-ts)
-> >   EXPORT_SYMBOL(__msr_check_and_clear);
+> > @@ -115,6 +146,8 @@ copy_ckfpr_from_user(struct task_struct *task, void=
+ __user *from)
+> >   #else
+> >   #define unsafe_copy_fpr_to_user(to, task, label) do { } while (0)
 > >  =20
-> >   #ifdef CONFIG_PPC_FPU
-> > -static void __giveup_fpu(struct task_struct *tsk)
-> > +static void notrace __giveup_fpu(struct task_struct *tsk)
+> > +#define unsafe_copy_fpr_from_user(task, from, label) do { } while (0)
+> > +
+> >   static inline unsigned long
+> >   copy_fpr_to_user(void __user *to, struct task_struct *task)
 > >   {
-> >   	unsigned long msr;
-> >  =20
-> > @@ -163,7 +163,7 @@ static void __giveup_fpu(struct task_struct *tsk)
-> >   	tsk->thread.regs->msr =3D msr;
-> >   }
-> >  =20
-> > -void giveup_fpu(struct task_struct *tsk)
-> > +void notrace giveup_fpu(struct task_struct *tsk)
-> >   {
-> >   	check_if_tm_restore_required(tsk);
-> >  =20
-> > @@ -177,7 +177,7 @@ EXPORT_SYMBOL(giveup_fpu);
-> >    * Make sure the floating-point register state in the
-> >    * the thread_struct is up to date for task tsk.
-> >    */
-> > -void flush_fp_to_thread(struct task_struct *tsk)
-> > +void notrace flush_fp_to_thread(struct task_struct *tsk)
-> >   {
-> >   	if (tsk->thread.regs) {
-> >   		/*
-> > @@ -234,7 +234,7 @@ static inline void __giveup_fpu(struct task_struct =
-*tsk) { }
-> >   #endif /* CONFIG_PPC_FPU */
-> >  =20
-> >   #ifdef CONFIG_ALTIVEC
-> > -static void __giveup_altivec(struct task_struct *tsk)
-> > +static void notrace __giveup_altivec(struct task_struct *tsk)
-> >   {
-> >   	unsigned long msr;
-> >  =20
-> > @@ -246,7 +246,7 @@ static void __giveup_altivec(struct task_struct *ts=
-k)
-> >   	tsk->thread.regs->msr =3D msr;
-> >   }
-> >  =20
-> > -void giveup_altivec(struct task_struct *tsk)
-> > +void notrace giveup_altivec(struct task_struct *tsk)
-> >   {
-> >   	check_if_tm_restore_required(tsk);
-> >  =20
-> > @@ -285,7 +285,7 @@ EXPORT_SYMBOL(enable_kernel_altivec);
-> >    * Make sure the VMX/Altivec register state in the
-> >    * the thread_struct is up to date for task tsk.
-> >    */
-> > -void flush_altivec_to_thread(struct task_struct *tsk)
-> > +void notrace flush_altivec_to_thread(struct task_struct *tsk)
-> >   {
-> >   	if (tsk->thread.regs) {
-> >   		preempt_disable();
-> > @@ -300,7 +300,7 @@ EXPORT_SYMBOL_GPL(flush_altivec_to_thread);
-> >   #endif /* CONFIG_ALTIVEC */
-> >  =20
-> >   #ifdef CONFIG_VSX
-> > -static void __giveup_vsx(struct task_struct *tsk)
-> > +static void notrace __giveup_vsx(struct task_struct *tsk)
-> >   {
-> >   	unsigned long msr =3D tsk->thread.regs->msr;
-> >  =20
-> > @@ -317,7 +317,7 @@ static void __giveup_vsx(struct task_struct *tsk)
-> >   		__giveup_altivec(tsk);
-> >   }
-> >  =20
-> > -static void giveup_vsx(struct task_struct *tsk)
-> > +static void notrace giveup_vsx(struct task_struct *tsk)
-> >   {
-> >   	check_if_tm_restore_required(tsk);
-> >  =20
-> > @@ -352,7 +352,7 @@ void enable_kernel_vsx(void)
-> >   }
-> >   EXPORT_SYMBOL(enable_kernel_vsx);
-> >  =20
-> > -void flush_vsx_to_thread(struct task_struct *tsk)
-> > +void notrace flush_vsx_to_thread(struct task_struct *tsk)
-> >   {
-> >   	if (tsk->thread.regs) {
-> >   		preempt_disable();
-> > diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> > index ddc32cc1b6cf..da2345a2abc6 100644
-> > --- a/arch/powerpc/mm/mem.c
-> > +++ b/arch/powerpc/mm/mem.c
-> > @@ -378,7 +378,7 @@ static inline bool flush_coherent_icache(unsigned l=
-ong addr)
-> >    * @start: the start address
-> >    * @stop: the stop address (exclusive)
-> >    */
-> > -static void invalidate_icache_range(unsigned long start, unsigned long=
- stop)
-> > +static void notrace invalidate_icache_range(unsigned long start, unsig=
-ned long stop)
-> >   {
-> >   	unsigned long shift =3D l1_icache_shift();
-> >   	unsigned long bytes =3D l1_icache_bytes();
-> > @@ -402,7 +402,7 @@ static void invalidate_icache_range(unsigned long s=
-tart, unsigned long stop)
-> >    * @start: the start address
-> >    * @stop: the stop address (exclusive)
-> >    */
-> > -void flush_icache_range(unsigned long start, unsigned long stop)
-> > +void notrace flush_icache_range(unsigned long start, unsigned long sto=
-p)
-> >   {
-> >   	if (flush_coherent_icache(start))
-> >   		return;
 > >=20
 
