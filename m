@@ -1,45 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB3A293B90
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 14:28:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E93293B97
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 14:30:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CFtFq1CjzzDqFp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 23:28:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CFtJZ3klxzDqh3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 23:30:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=baikalelectronics.ru (client-ip=94.125.187.42;
- helo=mail.baikalelectronics.ru;
- envelope-from=sergey.semin@baikalelectronics.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=baikalelectronics.ru
-Received: from mail.baikalelectronics.ru (unknown [94.125.187.42])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CFsdQ0lsYzDq9Z
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Oct 2020 23:00:25 +1100 (AEDT)
-Received: from localhost (unknown [127.0.0.1])
- by mail.baikalelectronics.ru (Postfix) with ESMTP id 6D1D4803017C;
- Tue, 20 Oct 2020 12:00:23 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at baikalelectronics.ru
-Received: from mail.baikalelectronics.ru ([127.0.0.1])
- by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id KUtGQohIc08n; Tue, 20 Oct 2020 15:00:22 +0300 (MSK)
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To: Felipe Balbi <balbi@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Florian Fainelli <f.fainelli@gmail.com>, Rob Herring <robh+dt@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul
- Mackerras <paulus@samba.org>
-Subject: [PATCH 15/29] powerpc: dts: akebono: Harmonize EHCI/OHCI DT nodes name
-Date: Tue, 20 Oct 2020 14:59:45 +0300
-Message-ID: <20201020115959.2658-16-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20201020115959.2658-1-Sergey.Semin@baikalelectronics.ru>
-References: <20201020115959.2658-1-Sergey.Semin@baikalelectronics.ru>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CFt3d6kXQzDqJf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Oct 2020 23:19:41 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 09KCGBUp025510;
+ Tue, 20 Oct 2020 07:16:16 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 09KCGAIq025509;
+ Tue, 20 Oct 2020 07:16:10 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Tue, 20 Oct 2020 07:16:10 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 3/3] powerpc: Fix update form addressing in inline
+ assembly
+Message-ID: <20201020121610.GZ2672@gate.crashing.org>
+References: <212d3bc4a52ca71523759517bb9c61f7e477c46a.1603179582.git.christophe.leroy@csgroup.eu>
+ <fcff4199459890d107a06dbc39c52668ccd0921b.1603179582.git.christophe.leroy@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fcff4199459890d107a06dbc39c52668ccd0921b.1603179582.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,55 +51,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, Serge Semin <fancer.lancer@gmail.com>,
- Serge Semin <Sergey.Semin@baikalelectronics.ru>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, mathieu.desnoyers@efficios.com,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In accordance with the Generic EHCI/OHCI bindings the corresponding node
-name is suppose to comply with the Generic USB HCD DT schema, which
-requires the USB nodes to have the name acceptable by the regexp:
-"^usb(@.*)?" . Make sure the "generic-ehci" and "generic-ohci"-compatible
-nodes are correctly named.
+Hi!
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
----
- arch/powerpc/boot/dts/akebono.dts | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On Tue, Oct 20, 2020 at 07:40:09AM +0000, Christophe Leroy wrote:
+> In several places, inline assembly uses the "%Un" modifier
+> to enable the use of instruction with update form addressing,
+> but the associated "<>" constraint is missing.
+> 
+> As mentioned in previous patch, this fails with gcc 4.9, so
+> "<>" can't be used directly.
+> 
+> Use UPD_CONSTR macro everywhere %Un modifier is used.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-diff --git a/arch/powerpc/boot/dts/akebono.dts b/arch/powerpc/boot/dts/akebono.dts
-index df18f8dc4642..343326c30380 100644
---- a/arch/powerpc/boot/dts/akebono.dts
-+++ b/arch/powerpc/boot/dts/akebono.dts
-@@ -126,7 +126,7 @@ SATA0: sata@30000010000 {
- 			interrupts = <93 2>;
- 		};
- 
--		EHCI0: ehci@30010000000 {
-+		EHCI0: usb@30010000000 {
- 			compatible = "ibm,476gtr-ehci", "generic-ehci";
- 			reg = <0x300 0x10000000 0x0 0x10000>;
- 			interrupt-parent = <&MPIC>;
-@@ -140,14 +140,14 @@ SD0: sd@30000000000 {
- 			interrupt-parent = <&MPIC>;
- 		};
- 
--		OHCI0: ohci@30010010000 {
-+		OHCI0: usb@30010010000 {
- 			compatible = "ibm,476gtr-ohci", "generic-ohci";
- 			reg = <0x300 0x10010000 0x0 0x10000>;
- 			interrupt-parent = <&MPIC>;
- 			interrupts = <89 1>;
- 			};
- 
--		OHCI1: ohci@30010020000 {
-+		OHCI1: usb@30010020000 {
- 			compatible = "ibm,476gtr-ohci", "generic-ohci";
- 			reg = <0x300 0x10020000 0x0 0x10000>;
- 			interrupt-parent = <&MPIC>;
--- 
-2.27.0
+Oh well, it will be easy enough to remove this wart later, so
 
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+
+> --- a/arch/powerpc/include/asm/book3s/32/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
+> @@ -525,7 +525,7 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
+>  		stw%U0%X0 %2,%0\n\
+>  		eieio\n\
+>  		stw%U1%X1 %L2,%1"
+> -	: "=m" (*ptep), "=m" (*((unsigned char *)ptep+4))
+> +	: "=m"UPD_CONSTR (*ptep), "=m"UPD_CONSTR (*((unsigned char *)ptep+4))
+>  	: "r" (pte) : "memory");
+
+Here it would pre-increment ptep+4.  That can never be something useful
+afaics?  The order the two operands are (either or not) pre-modified in
+the asm is not specified (GCC does not parse the asm template, by
+design), so I fail to see how this could ever work.
+
+> --- a/arch/powerpc/include/asm/nohash/pgtable.h
+> +++ b/arch/powerpc/include/asm/nohash/pgtable.h
+> @@ -200,7 +200,7 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
+>  			stw%U0%X0 %2,%0\n\
+>  			eieio\n\
+>  			stw%U1%X1 %L2,%1"
+> -		: "=m" (*ptep), "=m" (*((unsigned char *)ptep+4))
+> +		: "=m"UPD_CONSTR (*ptep), "=m"UPD_CONSTR (*((unsigned char *)ptep+4))
+>  		: "r" (pte) : "memory");
+
+Same here.
+
+The rest looks fine.
+
+
+Segher
