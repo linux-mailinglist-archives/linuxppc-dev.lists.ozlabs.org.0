@@ -2,69 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45338294362
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Oct 2020 21:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69464294574
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 01:30:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CG3tv6QkNzDqdj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 06:42:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CG8x93fzNzDqft
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 10:30:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=googlemail.com (client-ip=2a00:1450:4864:20::143;
- helo=mail-lf1-x143.google.com;
- envelope-from=martin.blumenstingl@googlemail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
- header.from=googlemail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=googlemail.com header.i=@googlemail.com
- header.a=rsa-sha256 header.s=20161025 header.b=GX3Yqx/L; 
- dkim-atps=neutral
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
- [IPv6:2a00:1450:4864:20::143])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=allandria.com
+ (client-ip=50.242.82.17; helo=cynthia.allandria.com;
+ envelope-from=flar@allandria.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=allandria.com
+X-Greylist: delayed 2612 seconds by postgrey-1.36 at bilbo;
+ Wed, 21 Oct 2020 10:28:36 AEDT
+Received: from cynthia.allandria.com (cynthia.allandria.com [50.242.82.17])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CG3rp00M7zDqXw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 06:40:56 +1100 (AEDT)
-Received: by mail-lf1-x143.google.com with SMTP id 184so3583996lfd.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Oct 2020 12:40:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=googlemail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=SW+VSHIXtiXnaj2ApmMbMQMGmNjny+0l3tNBxFDXzPQ=;
- b=GX3Yqx/LGzHLUIjGjsF1kKPysogDyG2vVY+8s+N8PTYhKPTyh4ACcyF24+wMsvDkWV
- HoMpNTIC+E6bYuB8fDaKiYToCjnyJy6T5P8ksA6DbiLXI/qy2awow9Wiy4i+9ico7tmr
- g6jxHMX3ONcndVRYk8KlG6vNoPIB1NwOrTcKrEG/xos8ZEWNISy0RXB0os+sLxmUtWNF
- mgBSgcXSWHi7HK7kT9NbcjuAFZmSoLbt447t0YfPcndqwk592RUbYmWW1b5IBWZnDxKd
- 4tKQPDU3IsTlwgNvOBhPO3gCVZHDTNVuPZstd9pobY90Gnq6dtOLbL4656x9U1Qqpt1D
- D3og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=SW+VSHIXtiXnaj2ApmMbMQMGmNjny+0l3tNBxFDXzPQ=;
- b=mF0sJRZK/0vwF0+fjxGRl72UbwRu8LNzf9NHHC6abhgl4GPhH2CJ4Bn12c9icdB2Yj
- jynGdAflSsTpKfi/Sy2Z0QOgttdVUo5KgLCEYGwnvPEYIt6rSsJR1SG8Ycm/Kow0/AA+
- OOZBlRRVFL+weJigW6oYjCpMLb3s46MffGhl2D6C048zycq9tV9On3RhWGQlD146e6li
- Gywp2/F0wGAzT0dPyoXhAL8d4zqiC2Oegzsi7jI8lEPZOBLMaCpCxWj1V0rxHWyYqSFB
- MokKSgClc4dbursCNl0TOz42FBYc6g+urNs5stn7x8rvVeqEuyOkWTtHU+k/PiTnZ9NQ
- 4OhQ==
-X-Gm-Message-State: AOAM530ig8bK6vzBdmfZqGnWrmAcVt++6YvE8s6uUMYp8+JKSjNbx1ZT
- NHMmaumT4xx9kzP8ib5AHN3RrvINyPKwQaLPVw4j5LJWqyw=
-X-Google-Smtp-Source: ABdhPJyz+B9K91a/msM+dSi3tWDZXEiIxtxc7t7+Nz5WVzNWfdgNtM43dsiSzf+FIStCK900mQNbeVT/50ZkdTQrSrg=
-X-Received: by 2002:aa7:c683:: with SMTP id n3mr4407224edq.146.1603222460451; 
- Tue, 20 Oct 2020 12:34:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CG8vS5fnMzDqRg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 10:28:36 +1100 (AEDT)
+Received: from flar by cynthia.allandria.com with local (Exim 4.84_2)
+ (envelope-from <flar@allandria.com>)
+ id 1kV0N4-00040j-JM; Tue, 20 Oct 2020 15:44:46 -0700
+Date: Tue, 20 Oct 2020 15:44:46 -0700
+From: Brad Boyer <brad@allandria.com>
+To: Laurent Vivier <laurent@vivier.eu>
+Subject: Re: [PATCH] serial: pmac_zilog: don't init if zilog is not available
+Message-ID: <20201020224446.GA15066@allandria.com>
+References: <20201020162303.1730562-1-laurent@vivier.eu>
+ <20201020162844.GA865546@kroah.com>
+ <468bbbef-4745-3b16-b6f4-30b46ebcdc33@vivier.eu>
+ <20201020173745.GA882703@kroah.com>
+ <387fd2aa-b181-c41f-0581-0a7e79a44e41@vivier.eu>
+ <20201020183246.GA912431@kroah.com>
+ <b52e7fde-8874-3c53-ca13-7709656b69fb@vivier.eu>
 MIME-Version: 1.0
-References: <20201020112101.19077-1-Sergey.Semin@baikalelectronics.ru>
- <20201020112101.19077-6-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20201020112101.19077-6-Sergey.Semin@baikalelectronics.ru>
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Tue, 20 Oct 2020 21:34:09 +0200
-Message-ID: <CAFBinCA+4c6pjYFx3MW3-G=rCKon_jUXQ77pYSxXpRE9k0mpAA@mail.gmail.com>
-Subject: Re: [PATCH v3 05/16] dt-bindings: usb: usb-hcd: Add generic "usb-phy"
- property
-To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b52e7fde-8874-3c53-ca13-7709656b69fb@vivier.eu>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,37 +53,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Neil Armstrong <narmstrong@baylibre.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
- Rob Herring <robh@kernel.org>, Kevin Hilman <khilman@baylibre.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Andy Gross <agross@kernel.org>,
- linux-snps-arc@lists.infradead.org, devicetree@vger.kernel.org,
- Mathias Nyman <mathias.nyman@intel.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
- Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org,
- Roger Quadros <rogerq@ti.com>, Felipe Balbi <balbi@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
- Serge Semin <fancer.lancer@gmail.com>, linux-kernel@vger.kernel.org,
- Manu Gautam <mgautam@codeaurora.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Greg KH <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-serial@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 20, 2020 at 1:21 PM Serge Semin
-<Sergey.Semin@baikalelectronics.ru> wrote:
->
-> Even though the Generic PHY framework is the more preferable way of
-> setting the USB PHY up, there are still many dts-files and DT bindings
-> which rely on having the legacy "usb-phy" specified to attach particular
-> USB PHYs to USB cores. Let's have the "usb-phy" property described in
-> the generic USB HCD binding file so it would be validated against the
-> nodes in which it's specified. Mark the property as deprecated to
-> discourage the developers from using it.
->
-> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-> Reviewed-by: Rob Herring <robh@kernel.org>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+On Tue, Oct 20, 2020 at 08:42:53PM +0200, Laurent Vivier wrote:
+> Le 20/10/2020 ?? 20:32, Greg KH a ??crit??:
+> > On Tue, Oct 20, 2020 at 08:19:26PM +0200, Laurent Vivier wrote:
+> >> Le 20/10/2020 ?? 19:37, Greg KH a ??crit??:
+> >>> Why not fix it to work properly like other arch checks are done
+> >> I would be happy to do the same.
+> >>
+> >>> Put it in a .h file and do the #ifdef there.  Why is this "special"?
+> >>
+> >> I don't know.
+> >>
+> > 
+> > Yup, that would be a good start, but why is the pmac_zilog.h file
+> > responsible for this?  Shouldn't this be in some arch-specific file
+> > somewhere?
+> 
+> For m68k, MACH_IS_MAC is defined in arch/m68k/include/asm/setup.h
+> 
+> If I want to define it for any other archs I don't know in which file we
+> can put it.
+> 
+> But as m68k mac is only sharing drivers with pmac perhaps we can put
+> this in arch/powerpc/include/asm/setup.h?
+
+Wouldn't it be better to rearrange this code to only run if the devices
+are present? This is a macio driver on pmac and a platform driver on mac,
+so shouldn't it be possible to only run this code when the appropriate
+entries are present in the right data structures?
+
+I didn't look at a lot of the other serial drivers, but some other mac
+drivers have recently been updated to no longer have MACH_IS_MAC checks
+due to being converted to platform drivers.
+
+	Brad Boyer
+	brad@allandria.com
+
