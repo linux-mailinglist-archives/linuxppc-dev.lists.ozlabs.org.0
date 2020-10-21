@@ -2,61 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1F12953C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 23:01:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A65E29551B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 01:27:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CGjbc3CRZzDqTM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 08:01:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CGmqt6M6MzDqTC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 10:27:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=u+R02rUg; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CGjYR14MrzDqSR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 07:59:52 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-133-TE6JN5gZMAinUsbykq2bUQ-1; Wed, 21 Oct 2020 21:59:44 +0100
-X-MC-Unique: TE6JN5gZMAinUsbykq2bUQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Wed, 21 Oct 2020 21:59:43 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Wed, 21 Oct 2020 21:59:43 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Greg KH' <gregkh@linuxfoundation.org>, Christoph Hellwig <hch@lst.de>,
- "kernel-team@android.com" <kernel-team@android.com>
-Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Thread-Index: AQHWp8T3NDfnH4y9nkGWtfqJueR1KKmiiApA
-Date: Wed, 21 Oct 2020 20:59:43 +0000
-Message-ID: <b416290b76684ac392e8c43d764645f8@AcuMS.aculab.com>
-References: <20200925045146.1283714-1-hch@lst.de>
- <20200925045146.1283714-3-hch@lst.de> <20201021161301.GA1196312@kroah.com>
-In-Reply-To: <20201021161301.GA1196312@kroah.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CGmp96QyvzDqQY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 10:26:09 +1100 (AEDT)
+Received: by mail-pl1-x644.google.com with SMTP id h2so2012603pll.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 16:26:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=M/YlRIGUDw0sbUairDpiWe0TrBQOAqb1qM3ElVI35/U=;
+ b=u+R02rUg5hyO9QE29Oxc6gfVuvjTbDqLhod03pYFxRWoN1A5LYSssTGDn9FF998u6x
+ /k3qCry3tM9Rf08tKZ/MjTD9cwdV/LdlPC0OnrCJv02HvgOzpFiF3HF4mUPfL1F/ipPQ
+ JKw4iQxx00IQAQZM23AquOdHXjlvRFc2SRkxx+FUVlGeLc3edx2OM4mem84lwctmkATI
+ G4Xnf5xQSTJJ+ApDo4v618x3KbBHnZSpe3G1EEKamnCdW/WVuIAsAQCt9yA9pYhmVSMF
+ dJxGwEbqhNWbQ/z+a1bzXHzN5vCyRJRIu3gFtx3wVNWm6ysRlx8tphbb4gABWx758oER
+ Z6PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=M/YlRIGUDw0sbUairDpiWe0TrBQOAqb1qM3ElVI35/U=;
+ b=EMUGU3jJFwRK4ERUj6Y0Y5GDUh1Yn35s6sbSqO+vsuYok7OQ8AhZ4+7PkUTcWhUeA6
+ 1oE8zMwVkHq8QNn/3FeMQnnXQ2yX6qLj+VHXnOdqyUAQj7ZJ3AsyZif2afQSrEov60pI
+ 98EPWGjHHfhj6uOG9ZiERU6CeqVo6wvOiHswqg+9UFEWMM8l1zgJHti21HIZ1KWr+lgN
+ g/PXF01My2lAlQe8jDCDUKBXFKm8OSwfAs85xu8re4kiyfB5mPVnYaIUhRcDNLAnptu2
+ bbTDEMmeIFOPKoWXr8By5s58C7O6wHRqhLxpMPECr7DKU1rRcuOo8ZSiOh7jT9IRy4gN
+ 2ljg==
+X-Gm-Message-State: AOAM5308PH3WcnX+K7o4a0gVEDQwpLFB0obIijjmTwB0ZEftMDAeMVeU
+ 3a5vUXZMvpueukA7xFKJucvW/D+dFkg=
+X-Google-Smtp-Source: ABdhPJyEPJ+ZlwIavcCr2ic9zp9IOObocv0gLw/mPIl3BdvOe/3qRuTpC4O0qOEOxjS3I3TclIIrOQ==
+X-Received: by 2002:a17:902:d392:b029:d3:dd95:d89a with SMTP id
+ e18-20020a170902d392b02900d3dd95d89amr5548968pld.41.1603322766023; 
+ Wed, 21 Oct 2020 16:26:06 -0700 (PDT)
+Received: from localhost.ibm.com (14-200-206-90.tpgi.com.au. [14.200.206.90])
+ by smtp.gmail.com with ESMTPSA id
+ z21sm3407016pfr.43.2020.10.21.16.26.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Oct 2020 16:26:05 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/eeh: Fix eeh_dev_check_failure() for PE#0
+Date: Thu, 22 Oct 2020 10:25:54 +1100
+Message-Id: <20201021232554.1434687-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,72 +78,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-aio@kvack.org" <linux-aio@kvack.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- David Howells <dhowells@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Jens Axboe <axboe@kernel.dk>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Greg KH
-> Sent: 21 October 2020 17:13
->=20
-> On Fri, Sep 25, 2020 at 06:51:39AM +0200, Christoph Hellwig wrote:
-> > From: David Laight <David.Laight@ACULAB.COM>
-> >
-> > This lets the compiler inline it into import_iovec() generating
-> > much better code.
-> >
-> > Signed-off-by: David Laight <david.laight@aculab.com>
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > ---
-> >  fs/read_write.c | 179 ------------------------------------------------
-> >  lib/iov_iter.c  | 176 +++++++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 176 insertions(+), 179 deletions(-)
->=20
-> Strangely, this commit causes a regression in Linus's tree right now.
->=20
-> I can't really figure out what the regression is, only that this commit
-> triggers a "large Android system binary" from working properly.  There's
-> no kernel log messages anywhere, and I don't have any way to strace the
-> thing in the testing framework, so any hints that people can provide
-> would be most appreciated.
+In commit 269e583357df ("powerpc/eeh: Delete eeh_pe->config_addr") the
+following simplification was made:
 
-My original commit just moved the function source from one file to another.
-So it is odd that it makes any difference.
-I don't even know if it gets inlined by Christoph's actual patch.
-(I have another patch that depended on it that I need to resubmit.)
+-       if (!pe->addr && !pe->config_addr) {
++       if (!pe->addr) {
+                eeh_stats.no_cfg_addr++;
+                return 0;
+        }
 
-Some of the other changes from Christoph's same patch set might
-make a difference though.
+This introduced a bug which causes EEH checking to be skipped for devices
+in PE#0.
 
-Might be worth forcing it to be not inlined - so it is no change.
-Or try adding a kernel log to import_iovec() or the associated
-copy failing.
+Before the change above the check would always pass since atleast one of
+the two PE addresses would be non-zero in all circumstances. On PowerNV
+pe->config_addr was the be the BDFN of the first device added to the PE.
+The zero BDFN is reserved for the PHB's root port, but this is fine since
+for obscure platform reasons the root port is never assigned to PE#0.
 
-=09David
+Similarly, on pseries pe->addr has always been non-zero for the reasons
+outlined in commit 42de19d5ef71 ("powerpc/pseries/eeh: Allow zero to be a
+valid PE configuration address").
 
+We can fix the problem by deleting the block entirely The original
+purpose of this test was to avoid performing EEH checks on devices there
+were not on an EEH capable bus. In modern Linux the edev->pe pointer will
+be NULL for devices that are not on an EEH capable bus. The code block
+immediately above this one already checks for the edev->pe == NULL case
+so this test (new and old) is entirely redundant.
+
+Ideally we'd delete eeh_stats.no_cfg_addr too since nothing increments it
+any more. Unfortunately, that information is exposed via /proc/powerpc/eeh
+which means it's technically ABI. We could make it hard-coded, but that's
+a change for another patch.
+
+Fixes: 269e583357df ("powerpc/eeh: Delete eeh_pe->config_addr")
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+---
+ arch/powerpc/kernel/eeh.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index 4da880759a8b..7dd03d47693f 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -470,11 +470,6 @@ int eeh_dev_check_failure(struct eeh_dev *edev)
+ 		return 0;
+ 	}
+ 
+-	if (!pe->addr) {
+-		eeh_stats.no_cfg_addr++;
+-		return 0;
+-	}
 -
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+ 	/*
+ 	 * On PowerNV platform, we might already have fenced PHB
+ 	 * there and we need take care of that firstly.
+-- 
+2.26.2
 
