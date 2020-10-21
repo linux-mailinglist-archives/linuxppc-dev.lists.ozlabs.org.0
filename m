@@ -2,49 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC72294726
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 06:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F18F294875
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 08:47:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CGH9D4ML0zDqP1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 15:10:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CGLdM1lw5zDqkT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Oct 2020 17:47:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mchehab+huawei@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=yIfZmq8t; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CGH492GkDzDqXw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 15:06:30 +1100 (AEDT)
-IronPort-SDR: jJ2SRgGgNVJC3DmZ4utkmsGlZgwCUwWb5NEoTMCwSmmKeZLVcUEqbyhnAlYkRUMoh/KSbvX5wC
- w41aY2Nj20Rg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9780"; a="167402037"
-X-IronPort-AV: E=Sophos;i="5.77,400,1596524400"; d="scan'208";a="167402037"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2020 21:06:26 -0700
-IronPort-SDR: Umkha6M3Z7eEk1NF+lbnFbGJ8NZmGhOv/CpWHo6X8sE3x3mfPgZHT9y/lSilTh5xrG1p5By3nV
- KKWaR5BgIE5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,400,1596524400"; d="scan'208";a="301954102"
-Received: from lkp-server02.sh.intel.com (HELO fbeef087c6a9) ([10.239.97.151])
- by fmsmga007.fm.intel.com with ESMTP; 20 Oct 2020 21:06:25 -0700
-Received: from kbuild by fbeef087c6a9 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kV5OK-00001l-M4; Wed, 21 Oct 2020 04:06:24 +0000
-Date: Wed, 21 Oct 2020 12:05:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS 598b738031de83cadbcf745ad0ad2bd69a0ee012
-Message-ID: <5f8fb399.Yq0DVNzm4NRUKBhY%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CGLbb0BmWzDqfr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 17:45:30 +1100 (AEDT)
+Received: from coco.lan (ip5f5ad5a8.dynamic.kabel-deutschland.de
+ [95.90.213.168])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8B8222075B;
+ Wed, 21 Oct 2020 06:45:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1603262726;
+ bh=Wyw5We1ji398r6jEKsyOv1d233CBQmez+NyANTjly/w=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=yIfZmq8tDOVAVBY0McNrJzGl5Swv/H/EpWWIBkmQCxhCiH+eVKyXKJITzMWcvTRlt
+ SmbXzzl3/YB4iZjdBJJj4+VO6ZOmzpbh1EfiQSS6N4VjPgEog4Pf0qQpWpKGc0NLA4
+ OJsKcl8Z86Ihu0x+0Kjf/jw7WNL/2KnPTV0d5f9Y=
+Date: Wed, 21 Oct 2020 08:45:18 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 2/2] dt: Remove booting-without-of.rst
+Message-ID: <20201021084518.1eab6481@coco.lan>
+In-Reply-To: <20201008142420.2083861-2-robh@kernel.org>
+References: <20201008142420.2083861-1-robh@kernel.org>
+ <20201008142420.2083861-2-robh@kernel.org>
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -57,154 +58,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Jonathan Corbet <corbet@lwn.net>,
+ linux-sh@vger.kernel.org, x86@kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Rich Felker <dalias@libc.org>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Frank Rowand <frowand.list@gmail.com>, Ingo Molnar <mingo@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: 598b738031de83cadbcf745ad0ad2bd69a0ee012  Automatic merge of 'master' into merge (2020-10-20 23:14)
+Hi Rob,
 
-elapsed time: 928m
+Em Thu,  8 Oct 2020 09:24:20 -0500
+Rob Herring <robh@kernel.org> escreveu:
 
-configs tested: 128
-configs skipped: 2
+> booting-without-of.rstt is an ancient document that first outlined
+> Flattened DeviceTree on PowerPC initially. The DT world has evolved a
+> lot in the 15 years since and booting-without-of.rst is pretty stale.
+> The name of the document itself is confusing if you don't understand the
+> evolution from real 'OpenFirmware'. Most of what booting-without-of.rst
+> contains is now in the DT specification (which evolved out of the
+> ePAPR). The few things that weren't documented in the DT specification
+> are now.
+> 
+> All that remains is the boot entry details, so let's move these to arch
+> specific documents. The exception is arm which already has the same
+> details documented.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Removing this document caused a warning at Documentation/arm/booting.rst:
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                  colibri_pxa300_defconfig
-sh                          kfr2r09_defconfig
-mips                  maltasmvp_eva_defconfig
-m68k                         apollo_defconfig
-arm                       aspeed_g5_defconfig
-sh                           se7722_defconfig
-alpha                            alldefconfig
-m68k                         amcore_defconfig
-mips                            e55_defconfig
-sh                        sh7757lcr_defconfig
-ia64                             allmodconfig
-m68k                        mvme16x_defconfig
-sh                ecovec24-romimage_defconfig
-mips                      loongson3_defconfig
-mips                malta_kvm_guest_defconfig
-mips                        workpad_defconfig
-powerpc                    klondike_defconfig
-sh                         ecovec24_defconfig
-xtensa                  nommu_kc705_defconfig
-nios2                               defconfig
-arm                         ebsa110_defconfig
-powerpc                      pcm030_defconfig
-csky                                defconfig
-powerpc64                        alldefconfig
-mips                       lemote2f_defconfig
-powerpc                 mpc836x_rdk_defconfig
-s390                          debug_defconfig
-powerpc                       ppc64_defconfig
-sh                            shmin_defconfig
-arm                           viper_defconfig
-powerpc                  iss476-smp_defconfig
-powerpc                   bluestone_defconfig
-sh                         ap325rxa_defconfig
-arm                         at91_dt_defconfig
-arm                   milbeaut_m10v_defconfig
-mips                         mpc30x_defconfig
-mips                          ath79_defconfig
-arm                    vt8500_v6_v7_defconfig
-powerpc                 mpc832x_rdb_defconfig
-mips                          rm200_defconfig
-parisc                generic-64bit_defconfig
-arm                            mps2_defconfig
-sh                          urquell_defconfig
-arm                           stm32_defconfig
-powerpc                 canyonlands_defconfig
-openrisc                 simple_smp_defconfig
-h8300                     edosk2674_defconfig
-x86_64                              defconfig
-powerpc                 mpc836x_mds_defconfig
-arc                          axs103_defconfig
-sh                   sh7724_generic_defconfig
-openrisc                            defconfig
-mips                          malta_defconfig
-powerpc                     stx_gp3_defconfig
-powerpc                  mpc866_ads_defconfig
-arm                          pxa3xx_defconfig
-nios2                            alldefconfig
-powerpc                 mpc8560_ads_defconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20201020
-i386                 randconfig-a005-20201020
-i386                 randconfig-a003-20201020
-i386                 randconfig-a001-20201020
-i386                 randconfig-a006-20201020
-i386                 randconfig-a004-20201020
-x86_64               randconfig-a011-20201020
-x86_64               randconfig-a013-20201020
-x86_64               randconfig-a016-20201020
-x86_64               randconfig-a015-20201020
-x86_64               randconfig-a012-20201020
-x86_64               randconfig-a014-20201020
-i386                 randconfig-a016-20201020
-i386                 randconfig-a014-20201020
-i386                 randconfig-a015-20201020
-i386                 randconfig-a013-20201020
-i386                 randconfig-a012-20201020
-i386                 randconfig-a011-20201020
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
+	$ ./scripts/documentation-file-ref-check 
+	Documentation/arm/booting.rst: Documentation/devicetree/booting-without-of.rst
 
-clang tested configs:
-x86_64               randconfig-a001-20201020
-x86_64               randconfig-a002-20201020
-x86_64               randconfig-a003-20201020
-x86_64               randconfig-a006-20201020
-x86_64               randconfig-a005-20201020
-x86_64               randconfig-a004-20201020
+as it mentions that the DTB format is described on booting-without-of.rst:
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+	4b. Setup the device tree
+	-------------------------
+
+	The boot loader must load a device tree image (dtb) into system ram
+	at a 64bit aligned address and initialize it with the boot data.  The
+	dtb format is documented in Documentation/devicetree/booting-without-of.rst.
+	The kernel will look for the dtb magic value of 0xd00dfeed at the dtb
+	physical address to determine if a dtb has been passed instead of a
+	tagged list.
+
+So, I guess that such part of the document needs to be moved to booting.rst.
+
+Thanks,
+Mauro
