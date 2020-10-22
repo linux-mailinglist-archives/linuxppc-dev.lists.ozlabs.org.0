@@ -2,51 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED532956F7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 05:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 346C82957B2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 07:13:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CGthm3Jz3zDqNv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 14:51:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CGwW72Lq7zDqCK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 16:13:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::243;
+ helo=mail-oi1-x243.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=C94vMxYa; dkim-atps=neutral
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
+ [IPv6:2607:f8b0:4864:20::243])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CGtg56Z3GzDqL9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 14:50:25 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=qdjdbLEa; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CGtg535WZz9sSn;
- Thu, 22 Oct 2020 14:50:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1603338625;
- bh=lsZwz7oexS7NI4f864MVbdAVW0JuASw1nHlNuPx4uAg=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=qdjdbLEaL72KVFXT165gLGpe8irNx1qUB1USTObEALsj2YyfRG6JSchdSicODH9d0
- CtgqXK6aPDzX3pMruhfLex8z9SvlA2Ed8upsXz+gx9j9wb88nkgxX528lAoYRjotUj
- 0JguvgJl+uhdoJs/gTGh9M7JCXROKo+n/fxgtbFVuLUNwNs3/DKrO7mXh54lq4bxHa
- Hts0Kb7ZUQEFt3nGsS6anFZJbAgdru9ZpH9PA27A61EibTnZl/ugbsflgrsNa92iPl
- L3o9xLqbzT88SqPMZWOjeFS+4EIeYbVEDhA35tE1/8vrWsq4OS1vhblcUPXsNXVfGT
- azphV5kCMgfJQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ganesh <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v4] powerpc/pseries: Avoid using addr_to_pfn in real mode
-In-Reply-To: <566dfec7-4574-b518-f55b-5d34ca3bed08@linux.ibm.com>
-References: <20200724063946.21378-1-ganeshgr@linux.ibm.com>
- <566dfec7-4574-b518-f55b-5d34ca3bed08@linux.ibm.com>
-Date: Thu, 22 Oct 2020 14:50:22 +1100
-Message-ID: <87imb2yl4x.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CGwT95ww6zDqTk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 16:11:56 +1100 (AEDT)
+Received: by mail-oi1-x243.google.com with SMTP id w141so481261oia.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Oct 2020 22:11:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=Z4Zqf681VKO5sjug4U8sIywKeQCBPnc5TqWqazFZUxA=;
+ b=C94vMxYaxrWzOUdT8dpDEoMFyogGQZRJ+jP3sUS/H4WyR6uV2C3XYrgHODoRBTQxNf
+ v+fAIQuknpMhsqIUmiA18qVfLFqdo0UyoX8ZH8knHVv0o3AhQw/zO23qe14pQA1P9LGK
+ qboibMdbRCC2cEOCIH4cmn5P2Iqz9IezoeJNG5L7Mc5r3jRtEbduCz814M94ojFH0FB5
+ A07vn7W16V2rTHiTKs3saxfbvMlme6Hg9JRZb8xZleRISCAhA96Yd/WZF3I0xFw887Z3
+ 7i64eNRDz/IOeHR+jkChLVnAsW5h2mu/PSt7OOYilu4ScYNnRRb1C8MutUOKukEknsme
+ bYoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Z4Zqf681VKO5sjug4U8sIywKeQCBPnc5TqWqazFZUxA=;
+ b=FtItgjTh14zArMDliLklxh1RKCkXAgBSDy9fXKwFJUpXS3HPK0uC2+3TQNnIg5ei8h
+ AIra6E98Q8ojX9Y/6aUo8g0mOFjeOAJBgTQHo3XvAOMgBws/S/nAPMB4Sl9Yly3i71gA
+ VOEDXvnlRkmeTWre/7US/Miu9Pa1hnrc6xO662jGXsPSYUygj8uKnIOospEzMEK4HW8Y
+ m4uhadhv5KokF+IUQjLaYa/9UhMDzBy8u2ureOnmJAGIOUBuQEm5Qy/rAbqwH9x7vo8z
+ ZBEj+sjjDjV5RvJM13ixS92K9CRxieEdFOXSAXalNlCTwYJ65iitfTL2f2wOoN++8gdp
+ pnYw==
+X-Gm-Message-State: AOAM530KYl9QtzFEODVR5SBLDDBAoGnYAG/IWUk3lJam0LwZikTSK54E
+ xYzPttYUmiEWFLV8Cc6k0BVpAs04g7EoR/HJqMw=
+X-Google-Smtp-Source: ABdhPJyvu9af8xZKaVSJ7DVc1HZY5+loZGLFoubeOoIzaItDzNOrAkwi4sUm+nfKDl4rN9sPyHxZqNuq44KVfC+Ok3Q=
+X-Received: by 2002:aca:32d5:: with SMTP id y204mr396622oiy.126.1603343512878; 
+ Wed, 21 Oct 2020 22:11:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20201022034039.330365-1-ravi.bangoria@linux.ibm.com>
+In-Reply-To: <20201022034039.330365-1-ravi.bangoria@linux.ibm.com>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Thu, 22 Oct 2020 16:11:41 +1100
+Message-ID: <CACzsE9q2nYN88bupu5Ce4Eb6r5c-_8wRciWx6qZg2RdF3Ar8Yw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] powerpc: Introduce POWER10_DD1 feature
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,32 +72,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, npiggin@gmail.com, aneesh.kumar@linux.ibm.com
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Michael Neuling <mikey@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ maddy@linux.ibm.com, Paul Mackerras <paulus@samba.org>,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ganesh <ganeshgr@linux.ibm.com> writes:
-> On 7/24/20 12:09 PM, Ganesh Goudar wrote:
+On Thu, Oct 22, 2020 at 2:40 PM Ravi Bangoria
+<ravi.bangoria@linux.ibm.com> wrote:
 >
->> When an UE or memory error exception is encountered the MCE handler
->> tries to find the pfn using addr_to_pfn() which takes effective
->> address as an argument, later pfn is used to poison the page where
->> memory error occurred, recent rework in this area made addr_to_pfn
->> to run in real mode, which can be fatal as it may try to access
->> memory outside RMO region.
->>
->> Have two helper functions to separate things to be done in real mode
->> and virtual mode without changing any functionality. This also fixes
->> the following error as the use of addr_to_pfn is now moved to virtual
->> mode.
->>
->> Without this change following kernel crash is seen on hitting UE.
-...
->>   
+> POWER10_DD1 feature flag will be needed while adding
+> conditional code that applies only for Power10 DD1.
 >
-> We need this fix as well to fix pseries mce handling, Any comments on this patch.
+> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/cputable.h | 8 ++++++--
+>  arch/powerpc/kernel/dt_cpu_ftrs.c   | 3 +++
+>  arch/powerpc/kernel/prom.c          | 9 +++++++++
+>  3 files changed, 18 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+> index 93bc70d4c9a1..d486f56c0d33 100644
+> --- a/arch/powerpc/include/asm/cputable.h
+> +++ b/arch/powerpc/include/asm/cputable.h
+> @@ -216,6 +216,7 @@ static inline void cpu_feature_keys_init(void) { }
+>  #define CPU_FTR_P9_RADIX_PREFETCH_BUG  LONG_ASM_CONST(0x0002000000000000)
+>  #define CPU_FTR_ARCH_31                        LONG_ASM_CONST(0x0004000000000000)
+>  #define CPU_FTR_DAWR1                  LONG_ASM_CONST(0x0008000000000000)
+> +#define CPU_FTR_POWER10_DD1            LONG_ASM_CONST(0x0010000000000000)
+>
+>  #ifndef __ASSEMBLY__
+>
+> @@ -479,6 +480,7 @@ static inline void cpu_feature_keys_init(void) { }
+>             CPU_FTR_DBELL | CPU_FTR_HAS_PPR | CPU_FTR_ARCH_207S | \
+>             CPU_FTR_TM_COMP | CPU_FTR_ARCH_300 | CPU_FTR_ARCH_31 | \
+>             CPU_FTR_DAWR | CPU_FTR_DAWR1)
+> +#define CPU_FTRS_POWER10_DD1   (CPU_FTRS_POWER10 | CPU_FTR_POWER10_DD1)
+>  #define CPU_FTRS_CELL  (CPU_FTR_LWSYNC | \
+>             CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | \
+>             CPU_FTR_ALTIVEC_COMP | CPU_FTR_MMCRA | CPU_FTR_SMT | \
+> @@ -497,14 +499,16 @@ static inline void cpu_feature_keys_init(void) { }
+>  #define CPU_FTRS_POSSIBLE      \
+>             (CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | CPU_FTRS_POWER8 | \
+>              CPU_FTR_ALTIVEC_COMP | CPU_FTR_VSX_COMP | CPU_FTRS_POWER9 | \
+> -            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10)
+> +            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10 | \
+> +            CPU_FTRS_POWER10_DD1)
+>  #else
+>  #define CPU_FTRS_POSSIBLE      \
+>             (CPU_FTRS_PPC970 | CPU_FTRS_POWER5 | \
+>              CPU_FTRS_POWER6 | CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | \
+>              CPU_FTRS_POWER8 | CPU_FTRS_CELL | CPU_FTRS_PA6T | \
+>              CPU_FTR_VSX_COMP | CPU_FTR_ALTIVEC_COMP | CPU_FTRS_POWER9 | \
+> -            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10)
+> +            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10 | \
+> +            CPU_FTRS_POWER10_DD1)
+>  #endif /* CONFIG_CPU_LITTLE_ENDIAN */
+>  #endif
+>  #else
+> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+> index 1098863e17ee..b2327f2967ff 100644
+> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
+> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+> @@ -811,6 +811,9 @@ static __init void cpufeatures_cpu_quirks(void)
+>         }
+>
+>         update_tlbie_feature_flag(version);
+> +
+> +       if ((version & 0xffffffff) == 0x00800100)
+> +               cur_cpu_spec->cpu_features |= CPU_FTR_POWER10_DD1;
+>  }
+>
+>  static void __init cpufeatures_setup_finished(void)
+> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+> index c1545f22c077..c778c81284f7 100644
+> --- a/arch/powerpc/kernel/prom.c
+> +++ b/arch/powerpc/kernel/prom.c
+> @@ -305,6 +305,14 @@ static void __init check_cpu_feature_properties(unsigned long node)
+>         }
+>  }
+>
+> +static void __init fixup_cpu_features(void)
+> +{
+> +       unsigned long version = mfspr(SPRN_PVR);
+> +
+> +       if ((version & 0xffffffff) == 0x00800100)
+> +               cur_cpu_spec->cpu_features |= CPU_FTR_POWER10_DD1;
+> +}
+> +
+I am just wondering why this is needed here, but the same thing is not
+done for, say, CPU_FTR_POWER9_DD2_1?
+And should we get a /* Power10 DD 1 */ added to cpu_specs[]?
 
-Looks OK. I'll pick it up.
-
-cheers
+>  static int __init early_init_dt_scan_cpus(unsigned long node,
+>                                           const char *uname, int depth,
+>                                           void *data)
+> @@ -378,6 +386,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+>
+>                 check_cpu_feature_properties(node);
+>                 check_cpu_pa_features(node);
+> +               fixup_cpu_features();
+>         }
+>
+>         identical_pvr_fixup(node);
+> --
+> 2.25.1
+>
