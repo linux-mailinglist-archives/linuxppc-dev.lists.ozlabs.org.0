@@ -1,58 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC3629642B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 19:56:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1EF29647D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 20:14:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CHFQt02sTzDqxQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 04:56:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CHFrK0B6rzDqx5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 05:14:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=ndesaulniers@google.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=BKV40KcF; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=82.165.159.8; helo=mout-xforward.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout-xforward.kundenserver.de (mout-xforward.kundenserver.de
+ [82.165.159.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CHFNy2MnJzDqsd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 04:54:22 +1100 (AEDT)
-Received: by mail-pj1-x1044.google.com with SMTP id g16so1447689pjv.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 10:54:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=fN98WKFQMgEXMlp8i3NGUVnGVw+6y+e2V0ke9rhUWSA=;
- b=BKV40KcFYv/RT7WI/LzYvQYye/7QuyEZeVOFKBpWDRGSNerYyXtKTvLxKg7AQQyR6a
- B6ov6UgSF+CT0yFZ5Kpm//JhG6JX+erMmrvxUD0nM2EPok7DJ1dyb0csZXVH+J57G76o
- JEKNKLPukNE3mXje8tahLR4x5JyOobyLEq7zPqSmgsU53Cxt6nYjuHUBVcdVMcbrcilK
- K/V95Mavbng7Vx66laYlk4QUwTrTI6xWi8qckIoCQ5E2cwAi2ki1g0yQJTA0k1YggZ8N
- +hx8KG1AyjINmebjC8dKCAdqeNm9iI1l37J/7olC9z6B/lTJyWVJjteE9X9SnKXuuDmh
- S8ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=fN98WKFQMgEXMlp8i3NGUVnGVw+6y+e2V0ke9rhUWSA=;
- b=K1NvYAheMT+RjyLHKTko/P+jWXBu1ohCd1uQPlNDjud8nbVyGSQGIWIZ2Iib5yePmE
- JWaxvYR0T8H5HmjfOFYalPrZg9BoW6euq37cd2lQY45D0u6v/JJUP3qpEb2PzhQkmc5n
- HB82ynd9IBBywW8BHEeNQe1n6eQRcUsycNW57PopRtl/WFO51nvQAuO8lXoJU1ZDceKF
- KFAXXJ6efbsdekz/gFqASd7v8djaid8fJ0JCx4Z93uJt/3g9P6Y3NFe/xTXtS2V9WrJl
- MbhdHVREKBa4s4LlCFpL6EQYPhE7y3iINrx90NE9bNdHwXGYB+2iYi1oHq40qmyrUW2t
- zWwA==
-X-Gm-Message-State: AOAM531e4gLp4S0zPqaX7AePwbm9liouywadMNiTD6lXF2ey5a9lttNS
- qlc5mLCCauFtPx+WM8qJkCWcBmmkELoIJ7VqGGPP4g==
-X-Google-Smtp-Source: ABdhPJwKMlfWHWIfBAFNm3K11R3iXcLN/39e27pMOK/669Q9lQtbTX5Z9LF4v87HnqXK2It7QLj5rkKD4/EUsxOxOjE=
-X-Received: by 2002:a17:902:c40b:b029:d3:def2:d90f with SMTP id
- k11-20020a170902c40bb02900d3def2d90fmr3352248plk.29.1603389258899; Thu, 22
- Oct 2020 10:54:18 -0700 (PDT)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CHFpl2bqKzDqJm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 05:13:16 +1100 (AEDT)
+Received: from mail-qk1-f181.google.com ([209.85.222.181]) by
+ mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MlwBf-1k5Qnv1Nkh-00j5lF for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct
+ 2020 20:13:08 +0200
+Received: by mail-qk1-f181.google.com with SMTP id b69so2548233qkg.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 11:13:07 -0700 (PDT)
+X-Gm-Message-State: AOAM530LFv8t9MMZcL+vhYowPZYw3TKcTIaGjqmTfb4ZHAuN35brZSh4
+ i6rkitYq+fwQ7Fp6qySJj7GstUQIBV4JwfT7rik=
+X-Google-Smtp-Source: ABdhPJzQkCdsAEzOH97JlGBle9/SdVwDzxpXvJqxWrt3Kp+S5wDOXz+F9Pi6NLPQk2A3sIN6d0NiTlYy33fWAPxqKDk=
+X-Received: by 2002:a05:620a:215d:: with SMTP id
+ m29mr2210077qkm.138.1603390386870; 
+ Thu, 22 Oct 2020 11:13:06 -0700 (PDT)
 MIME-Version: 1.0
 References: <20201021233914.GR3576660@ZenIV.linux.org.uk>
  <20201022082654.GA1477657@kroah.com>
@@ -66,14 +47,31 @@ References: <20201021233914.GR3576660@ZenIV.linux.org.uk>
  <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
  <20201022132342.GB8781@lst.de>
  <8f1fff0c358b4b669d51cc80098dbba1@AcuMS.aculab.com>
-In-Reply-To: <8f1fff0c358b4b669d51cc80098dbba1@AcuMS.aculab.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Thu, 22 Oct 2020 10:54:06 -0700
-Message-ID: <CAKwvOdnix6YGFhsmT_mY8ORNPTOsN3HwS33Dr0Ykn-pyJ6e-Bw@mail.gmail.com>
+ <CAKwvOdnix6YGFhsmT_mY8ORNPTOsN3HwS33Dr0Ykn-pyJ6e-Bw@mail.gmail.com>
+In-Reply-To: <CAKwvOdnix6YGFhsmT_mY8ORNPTOsN3HwS33Dr0Ykn-pyJ6e-Bw@mail.gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Thu, 22 Oct 2020 20:12:49 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3LjG+ZvmQrkb9zpgov8xBkQQWrkHBPgjfYSqBKGrwT4w@mail.gmail.com>
+Message-ID: <CAK8P3a3LjG+ZvmQrkb9zpgov8xBkQQWrkHBPgjfYSqBKGrwT4w@mail.gmail.com>
 Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
  rw_copy_check_uvector() into lib/iov_iter.c"
-To: David Laight <David.Laight@aculab.com>
-Content-Type: multipart/mixed; boundary="0000000000003743e505b2462753"
+To: Nick Desaulniers <ndesaulniers@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:7ZxWSY7OkmAgWFHg0Rd2cL+FNoXmGxBbFdXIs5jxyWHTs9lNcOl
+ 6M7PONZAeRYoKh9XkSdK9GsHWjfpfqZWR8l/DrtmGAnnPd+PA7uLiBSZOJStH9vJomFRTfH
+ +b4tbGCqGAuTA1/kSAN5YEQw4IQbCtbYjpCWDs/MrAu8N6fw3kauWO5F3ruHrZxlf9MxrmL
+ pxCK/3tPpTExGFV9LaScw==
+X-Spam-Flag: YES
+X-UI-Out-Filterresults: junk:10;V03:K0:xMhVyNkwr7M=:cta2qAZV7aZ9lAON5JQ8qXFr
+ ZQzuQBHl143dmjLMLa/o3FfcIxu0kFypU4OYcgwI6e6jDhPxr+viwrL/hZV2c3Mf87X9r6IlA
+ iAc4fAPEds5s83uug/cXJ0yjXrJq5QzWHvNWkr9rpgEh3ngg5pUkIYjq4HNPysQc9D7VB5mfk
+ 2z6TGHlRyMPv+/E3HW50M/+6+5I6VJn569PAj1i+RLykYjoqixJ9WLQe2TUNKdShydI9s7Rkg
+ bm1eIlyvbvWUc1oUb5jbqUbKfrmvfdu2NY+p4/Xnm/cMR7KADyAAcSmdkSPbhf38A0dTJI1V5
+ uulgw/WPubohmMKx9i8Yh1R9KWCIxvtRtGLlNUx5QkhUniH8GIdOQu/9zJ9l3is0EapNkHsby
+ KhtiSE+ZPNrJBPk0ImF1SnfklLdm2FQWAMv8TAXevKtLtvJHy5KIaOB34hnZVu+nOYk3mt64r
+ Jv+Ao0Eu6QXpcY1RbG4wMf75tSCRUKHxoQTARC7k1pRBJ1aMudN48UnOT3jIYTQOxhu9Vso6i
+ qcJcnB79Vr44GgMa9UtqqZ/XxKYvyhSpj86KZ1B2Y3zLybVt7rIhgUArWkkL7bg9tVbS5P6aS
+ dB9nxxTqSMHEiX7Lu5lJKTY5lpUWclc3FucRUrkvgsp6cMfEvtoeXQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,7 +94,6 @@ Cc: "linux-aio@kvack.org" <linux-aio@kvack.org>,
  "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
  "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
  "kernel-team@android.com" <kernel-team@android.com>,
- Arnd Bergmann <arnd@arndb.de>,
  "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
  Al Viro <viro@zeniv.linux.org.uk>,
  "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
@@ -107,6 +104,7 @@ Cc: "linux-aio@kvack.org" <linux-aio@kvack.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
  "linux-security-module@vger.kernel.org"
  <linux-security-module@vger.kernel.org>,
+ David Laight <David.Laight@aculab.com>,
  "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
  "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -115,163 +113,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---0000000000003743e505b2462753
-Content-Type: text/plain; charset="UTF-8"
-
-On Thu, Oct 22, 2020 at 9:35 AM David Laight <David.Laight@aculab.com> wrote:
->
-> From: Christoph Hellwig
-> > Sent: 22 October 2020 14:24
+On Thu, Oct 22, 2020 at 7:54 PM Nick Desaulniers
+<ndesaulniers@google.com> wrote:
+> On Thu, Oct 22, 2020 at 9:35 AM David Laight <David.Laight@aculab.com> wrote:
 > >
-> > On Thu, Oct 22, 2020 at 11:36:40AM +0200, David Hildenbrand wrote:
-> > > My thinking: if the compiler that calls import_iovec() has garbage in
-> > > the upper 32 bit
-> > >
-> > > a) gcc will zero it out and not rely on it being zero.
-> > > b) clang will not zero it out, assuming it is zero.
-> > >
-> > > But
-> > >
-> > > a) will zero it out when calling the !inlined variant
-> > > b) clang will zero it out when calling the !inlined variant
-> > >
-> > > When inlining, b) strikes. We access garbage. That would mean that we
-> > > have calling code that's not generated by clang/gcc IIUC.
-> >
-> > Most callchains of import_iovec start with the assembly syscall wrappers.
+> > Which makes it a bug in the kernel C syscall wrappers.
+> > They need to explicitly mask the high bits of 32bit
+> > arguments on arm64 but not x86-64.
 >
-> Wait...
-> readv(2) defines:
->         ssize_t readv(int fd, const struct iovec *iov, int iovcnt);
->
-> But the syscall is defined as:
->
-> SYSCALL_DEFINE3(readv, unsigned long, fd, const struct iovec __user *, vec,
->                 unsigned long, vlen)
-> {
->         return do_readv(fd, vec, vlen, 0);
-> }
->
-> I'm guessing that nothing actually masks the high bits that come
-> from an application that is compiled with clang?
->
-> The vlen is 'unsigned long' through the first few calls.
-> So unless there is a non-inlined function than takes vlen
-> as 'int' the high garbage bits from userspace are kept.
+> Why not x86-64? Wouldn't it be *any* LP64 ISA?
 
-Yeah, that's likely a bug: https://godbolt.org/z/KfsPKs
+x86-64 is slightly special because most instructions on a 32-bit
+argument clear the upper 32 bits, while on most architectures
+the same instruction would leave the upper bits unchanged.
 
->
-> Which makes it a bug in the kernel C syscall wrappers.
-> They need to explicitly mask the high bits of 32bit
-> arguments on arm64 but not x86-64.
+> Attaching a patch that uses the proper width, but I'm pretty sure
+> there's still a signedness issue .  Greg, would you mind running this
+> through the wringer?
 
-Why not x86-64? Wouldn't it be *any* LP64 ISA?
+I would not expect this to change anything for the bug that Greg
+is chasing, unless there is also a bug in clang.
 
-Attaching a patch that uses the proper width, but I'm pretty sure
-there's still a signedness issue .  Greg, would you mind running this
-through the wringer?
+In the version before the patch, we get a 64-bit argument from
+user space, which may consist of the intended value in the lower
+bits plus garbage in the upper bits. However, vlen only gets
+passed down  into import_iovec() without any other operations
+on it, and ince import_iovec takes a 32-bit argument, this is
+where it finally gets narrowed.
 
->
-> What does the ARM EABI say about register parameters?
+After your patch, the SYSCALL_DEFINE3() does the narrowing
+conversion with the same clearing of the upper bits.
 
-AAPCS is the ABI for 64b ARM, IIUC, which is the ISA GKH is reporting
-the problem against. IIUC, EABI is one of the 32b ABIs.  aarch64 is
-LP64 just like x86_64.
+If there is a problem somewhere leading up to import_iovec(),
+it would have to in some code that expects to get a 32-bit
+register argument but gets called with a register that has
+garbage in the upper bits /without/ going through a correct
+sanitizing function like SYSCALL_DEFINE3().
 
---
-Thanks,
-~Nick Desaulniers
-
---0000000000003743e505b2462753
-Content-Type: application/octet-stream; 
-	name="0001-fs-fix-up-type-confusion-in-readv-writev.patch"
-Content-Disposition: attachment; 
-	filename="0001-fs-fix-up-type-confusion-in-readv-writev.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kgl4e4rn0>
-X-Attachment-Id: f_kgl4e4rn0
-
-RnJvbSBhYWUyNmIxM2ZmYjllMzhiYjQ2YjhjODU5ODU3NjFiNWYxOTZiNmY2IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBOaWNrIERlc2F1bG5pZXJzIDxuZGVzYXVsbmllcnNAZ29vZ2xl
-LmNvbT4KRGF0ZTogVGh1LCAyMiBPY3QgMjAyMCAxMDoyMzo0NyAtMDcwMApTdWJqZWN0OiBbUEFU
-Q0hdIGZzOiBmaXggdXAgdHlwZSBjb25mdXNpb24gaW4gcmVhZHYvd3JpdGV2CgpUaGUgc3lzY2Fs
-bCBpbnRlcmZhY2UgZG9lc24ndCBtYXRjaCB1cCB3aXRoIHRoZSBpbnRlcmZhY2UgbGliYyBpcyB1
-c2luZwpvciB0aGF0J3MgZGVmaW5lZCBpbiB0aGUgbWFudWFsIHBhZ2VzLgoKc3NpemVfdCByZWFk
-dihpbnQgZmQsIGNvbnN0IHN0cnVjdCBpb3ZlYyAqaW92LCBpbnQgaW92Y250KTsKc3NpemVfdCB3
-cml0ZXYoaW50IGZkLCBjb25zdCBzdHJ1Y3QgaW92ZWMgKmlvdiwgaW50IGlvdmNudCk7CgpUaGUg
-a2VybmVsIHdhcyBkZWZpbmluZyBgaW92Y250YCBhcyBgdW5zaWduZWQgbG9uZ2Agd2hpY2ggaXMg
-YSBwcm9ibGVtCndoZW4gdXNlcnNwYWNlIHVuZGVyc3RhbmRzIHRoaXMgdG8gYmUgYGludGAuCgoo
-VGhlcmUncyBzdGlsbCBsaWtlbHkgYSBzaWduZWRuZXNzIGJ1ZyBoZXJlLCBidXQgdXNlIHRoZSBw
-cm9wZXIgd2lkdGhzCnRoYXQgaW1wb3J0X2lvdmVjKCkgZXhwZWN0cy4pCgpTaWduZWQtb2ZmLWJ5
-OiBOaWNrIERlc2F1bG5pZXJzIDxuZGVzYXVsbmllcnNAZ29vZ2xlLmNvbT4KLS0tCiBmcy9yZWFk
-X3dyaXRlLmMgICAgfCAxMCArKysrKy0tLS0tCiBmcy9zcGxpY2UuYyAgICAgICAgfCAgMiArLQog
-aW5jbHVkZS9saW51eC9mcy5oIHwgIDIgKy0KIGxpYi9pb3ZfaXRlci5jICAgICB8ICA0ICsrLS0K
-IDQgZmlsZXMgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQoKZGlmZiAt
-LWdpdCBhL2ZzL3JlYWRfd3JpdGUuYyBiL2ZzL3JlYWRfd3JpdGUuYwppbmRleCAxOWY1YzRiZjc1
-YWEuLmI4NThmMzlhNDQ3NSAxMDA2NDQKLS0tIGEvZnMvcmVhZF93cml0ZS5jCisrKyBiL2ZzL3Jl
-YWRfd3JpdGUuYwpAQCAtODkwLDcgKzg5MCw3IEBAIHNzaXplX3QgdmZzX2l0ZXJfd3JpdGUoc3Ry
-dWN0IGZpbGUgKmZpbGUsIHN0cnVjdCBpb3ZfaXRlciAqaXRlciwgbG9mZl90ICpwcG9zLAogRVhQ
-T1JUX1NZTUJPTCh2ZnNfaXRlcl93cml0ZSk7CiAKIHNzaXplX3QgdmZzX3JlYWR2KHN0cnVjdCBm
-aWxlICpmaWxlLCBjb25zdCBzdHJ1Y3QgaW92ZWMgX191c2VyICp2ZWMsCi0JCSAgdW5zaWduZWQg
-bG9uZyB2bGVuLCBsb2ZmX3QgKnBvcywgcndmX3QgZmxhZ3MpCisJCSAgdW5zaWduZWQgaW50IHZs
-ZW4sIGxvZmZfdCAqcG9zLCByd2ZfdCBmbGFncykKIHsKIAlzdHJ1Y3QgaW92ZWMgaW92c3RhY2tb
-VUlPX0ZBU1RJT1ZdOwogCXN0cnVjdCBpb3ZlYyAqaW92ID0gaW92c3RhY2s7CkBAIC05MDcsNyAr
-OTA3LDcgQEAgc3NpemVfdCB2ZnNfcmVhZHYoc3RydWN0IGZpbGUgKmZpbGUsIGNvbnN0IHN0cnVj
-dCBpb3ZlYyBfX3VzZXIgKnZlYywKIH0KIAogc3RhdGljIHNzaXplX3QgdmZzX3dyaXRldihzdHJ1
-Y3QgZmlsZSAqZmlsZSwgY29uc3Qgc3RydWN0IGlvdmVjIF9fdXNlciAqdmVjLAotCQkgICB1bnNp
-Z25lZCBsb25nIHZsZW4sIGxvZmZfdCAqcG9zLCByd2ZfdCBmbGFncykKKwkJICAgdW5zaWduZWQg
-aW50IHZsZW4sIGxvZmZfdCAqcG9zLCByd2ZfdCBmbGFncykKIHsKIAlzdHJ1Y3QgaW92ZWMgaW92
-c3RhY2tbVUlPX0ZBU1RJT1ZdOwogCXN0cnVjdCBpb3ZlYyAqaW92ID0gaW92c3RhY2s7CkBAIC05
-MjUsNyArOTI1LDcgQEAgc3RhdGljIHNzaXplX3QgdmZzX3dyaXRldihzdHJ1Y3QgZmlsZSAqZmls
-ZSwgY29uc3Qgc3RydWN0IGlvdmVjIF9fdXNlciAqdmVjLAogfQogCiBzdGF0aWMgc3NpemVfdCBk
-b19yZWFkdih1bnNpZ25lZCBsb25nIGZkLCBjb25zdCBzdHJ1Y3QgaW92ZWMgX191c2VyICp2ZWMs
-Ci0JCQl1bnNpZ25lZCBsb25nIHZsZW4sIHJ3Zl90IGZsYWdzKQorCQkJdW5zaWduZWQgaW50IHZs
-ZW4sIHJ3Zl90IGZsYWdzKQogewogCXN0cnVjdCBmZCBmID0gZmRnZXRfcG9zKGZkKTsKIAlzc2l6
-ZV90IHJldCA9IC1FQkFERjsKQEAgLTEwMjUsMTMgKzEwMjUsMTMgQEAgc3RhdGljIHNzaXplX3Qg
-ZG9fcHdyaXRldih1bnNpZ25lZCBsb25nIGZkLCBjb25zdCBzdHJ1Y3QgaW92ZWMgX191c2VyICp2
-ZWMsCiB9CiAKIFNZU0NBTExfREVGSU5FMyhyZWFkdiwgdW5zaWduZWQgbG9uZywgZmQsIGNvbnN0
-IHN0cnVjdCBpb3ZlYyBfX3VzZXIgKiwgdmVjLAotCQl1bnNpZ25lZCBsb25nLCB2bGVuKQorCQl1
-bnNpZ25lZCBpbnQsIHZsZW4pCiB7CiAJcmV0dXJuIGRvX3JlYWR2KGZkLCB2ZWMsIHZsZW4sIDAp
-OwogfQogCiBTWVNDQUxMX0RFRklORTMod3JpdGV2LCB1bnNpZ25lZCBsb25nLCBmZCwgY29uc3Qg
-c3RydWN0IGlvdmVjIF9fdXNlciAqLCB2ZWMsCi0JCXVuc2lnbmVkIGxvbmcsIHZsZW4pCisJCXVu
-c2lnbmVkIGludCwgdmxlbikKIHsKIAlyZXR1cm4gZG9fd3JpdGV2KGZkLCB2ZWMsIHZsZW4sIDAp
-OwogfQpkaWZmIC0tZ2l0IGEvZnMvc3BsaWNlLmMgYi9mcy9zcGxpY2UuYwppbmRleCA3MGNjNTJh
-Zjc4MGIuLjc1MDhlY2NmYTE0MyAxMDA2NDQKLS0tIGEvZnMvc3BsaWNlLmMKKysrIGIvZnMvc3Bs
-aWNlLmMKQEAgLTM0Miw3ICszNDIsNyBAQCBjb25zdCBzdHJ1Y3QgcGlwZV9idWZfb3BlcmF0aW9u
-cyBub3N0ZWFsX3BpcGVfYnVmX29wcyA9IHsKIEVYUE9SVF9TWU1CT0wobm9zdGVhbF9waXBlX2J1
-Zl9vcHMpOwogCiBzdGF0aWMgc3NpemVfdCBrZXJuZWxfcmVhZHYoc3RydWN0IGZpbGUgKmZpbGUs
-IGNvbnN0IHN0cnVjdCBrdmVjICp2ZWMsCi0JCQkgICAgdW5zaWduZWQgbG9uZyB2bGVuLCBsb2Zm
-X3Qgb2Zmc2V0KQorCQkJICAgIHVuc2lnbmVkIGludCB2bGVuLCBsb2ZmX3Qgb2Zmc2V0KQogewog
-CW1tX3NlZ21lbnRfdCBvbGRfZnM7CiAJbG9mZl90IHBvcyA9IG9mZnNldDsKZGlmZiAtLWdpdCBh
-L2luY2x1ZGUvbGludXgvZnMuaCBiL2luY2x1ZGUvbGludXgvZnMuaAppbmRleCBjNGFlOWNhZmJi
-YmEuLjIxMWJjZTVlNmU2MCAxMDA2NDQKLS0tIGEvaW5jbHVkZS9saW51eC9mcy5oCisrKyBiL2lu
-Y2x1ZGUvbGludXgvZnMuaApAQCAtMTg5NSw3ICsxODk1LDcgQEAgc3RhdGljIGlubGluZSBpbnQg
-Y2FsbF9tbWFwKHN0cnVjdCBmaWxlICpmaWxlLCBzdHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QgKnZtYSkK
-IGV4dGVybiBzc2l6ZV90IHZmc19yZWFkKHN0cnVjdCBmaWxlICosIGNoYXIgX191c2VyICosIHNp
-emVfdCwgbG9mZl90ICopOwogZXh0ZXJuIHNzaXplX3QgdmZzX3dyaXRlKHN0cnVjdCBmaWxlICos
-IGNvbnN0IGNoYXIgX191c2VyICosIHNpemVfdCwgbG9mZl90ICopOwogZXh0ZXJuIHNzaXplX3Qg
-dmZzX3JlYWR2KHN0cnVjdCBmaWxlICosIGNvbnN0IHN0cnVjdCBpb3ZlYyBfX3VzZXIgKiwKLQkJ
-dW5zaWduZWQgbG9uZywgbG9mZl90ICosIHJ3Zl90KTsKKwkJdW5zaWduZWQgaW50LCBsb2ZmX3Qg
-KiwgcndmX3QpOwogZXh0ZXJuIHNzaXplX3QgdmZzX2NvcHlfZmlsZV9yYW5nZShzdHJ1Y3QgZmls
-ZSAqLCBsb2ZmX3QgLCBzdHJ1Y3QgZmlsZSAqLAogCQkJCSAgIGxvZmZfdCwgc2l6ZV90LCB1bnNp
-Z25lZCBpbnQpOwogZXh0ZXJuIHNzaXplX3QgZ2VuZXJpY19jb3B5X2ZpbGVfcmFuZ2Uoc3RydWN0
-IGZpbGUgKmZpbGVfaW4sIGxvZmZfdCBwb3NfaW4sCmRpZmYgLS1naXQgYS9saWIvaW92X2l0ZXIu
-YyBiL2xpYi9pb3ZfaXRlci5jCmluZGV4IDE2MzUxMTFjNWJkMi4uZGVkOWQ5YzRlYjI4IDEwMDY0
-NAotLS0gYS9saWIvaW92X2l0ZXIuYworKysgYi9saWIvaW92X2l0ZXIuYwpAQCAtMTczNCw3ICsx
-NzM0LDcgQEAgc3RydWN0IGlvdmVjICppb3ZlY19mcm9tX3VzZXIoY29uc3Qgc3RydWN0IGlvdmVj
-IF9fdXNlciAqdXZlYywKIH0KIAogc3NpemVfdCBfX2ltcG9ydF9pb3ZlYyhpbnQgdHlwZSwgY29u
-c3Qgc3RydWN0IGlvdmVjIF9fdXNlciAqdXZlYywKLQkJIHVuc2lnbmVkIG5yX3NlZ3MsIHVuc2ln
-bmVkIGZhc3Rfc2Vncywgc3RydWN0IGlvdmVjICoqaW92cCwKKwkJIHVuc2lnbmVkIGludCBucl9z
-ZWdzLCB1bnNpZ25lZCBpbnQgZmFzdF9zZWdzLCBzdHJ1Y3QgaW92ZWMgKippb3ZwLAogCQkgc3Ry
-dWN0IGlvdl9pdGVyICppLCBib29sIGNvbXBhdCkKIHsKIAlzc2l6ZV90IHRvdGFsX2xlbiA9IDA7
-CkBAIC0xODAzLDcgKzE4MDMsNyBAQCBzc2l6ZV90IF9faW1wb3J0X2lvdmVjKGludCB0eXBlLCBj
-b25zdCBzdHJ1Y3QgaW92ZWMgX191c2VyICp1dmVjLAogICogUmV0dXJuOiBOZWdhdGl2ZSBlcnJv
-ciBjb2RlIG9uIGVycm9yLCBieXRlcyBpbXBvcnRlZCBvbiBzdWNjZXNzCiAgKi8KIHNzaXplX3Qg
-aW1wb3J0X2lvdmVjKGludCB0eXBlLCBjb25zdCBzdHJ1Y3QgaW92ZWMgX191c2VyICp1dmVjLAot
-CQkgdW5zaWduZWQgbnJfc2VncywgdW5zaWduZWQgZmFzdF9zZWdzLAorCQkgdW5zaWduZWQgaW50
-IG5yX3NlZ3MsIHVuc2lnbmVkIGludCBmYXN0X3NlZ3MsCiAJCSBzdHJ1Y3QgaW92ZWMgKippb3Zw
-LCBzdHJ1Y3QgaW92X2l0ZXIgKmkpCiB7CiAJcmV0dXJuIF9faW1wb3J0X2lvdmVjKHR5cGUsIHV2
-ZWMsIG5yX3NlZ3MsIGZhc3Rfc2VncywgaW92cCwgaSwKLS0gCjIuMjkuMC5yYzEuMjk3LmdmYTk3
-NDNlNTAxLWdvb2cKCg==
---0000000000003743e505b2462753--
+      Arnd
