@@ -2,86 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAAEB295B77
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 11:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5007295B83
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 11:16:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CH1qL64H5zDqkB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 20:13:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CH1vR0rhBzDqY2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 20:16:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=NsdNlgrZ; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CH1np3VqRzDq7j
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 20:11:42 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09M96K77132116; Thu, 22 Oct 2020 05:11:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=5iESia0HrN0BFigjd3/Hi0G+qlHfTjzk73ldrvqU3hE=;
- b=NsdNlgrZ4SpeepHU/ePaKR34aipWJ3Vc28YVoSEJ10pa8ARzVtrI/gN7RgPZlmJ7LkcY
- n6mT4g06vdotqScyx5jbvb1Ss2i4Bv12h8TNvGMQFeCGd4hPOi6vEcQend3AjYl5jmYg
- kQS2S0cd5dVAfeSR/9SLwOrLsi2NYGJ6g9Agj71qI0Li+UoCpmUite81UZVFtHAX/81R
- lcQ5fENsVEGcbdkJDBIXXIiy1AnHqc7SHXzUh3/v92Rpfo3MC5dZAXtMJiyz3oT3NCwW
- 73jRz7X3pO9uMLXx1j//T3IEB/FA2DRNPoAkA0pEODya9o4FKi7Y357kf5lk+tk5Y8C/ HA== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34b082aw5h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Oct 2020 05:11:33 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09M97Hso003378;
- Thu, 22 Oct 2020 09:11:32 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma05wdc.us.ibm.com with ESMTP id 347r896tf9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Oct 2020 09:11:32 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 09M9BQ9b28705184
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Oct 2020 09:11:26 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 280FD6A057;
- Thu, 22 Oct 2020 09:11:31 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7964F6A04D;
- Thu, 22 Oct 2020 09:11:28 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.85.97.120])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 22 Oct 2020 09:11:27 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc/mm: move setting pte specific flags to pfn_pmd
-Date: Thu, 22 Oct 2020 14:41:15 +0530
-Message-Id: <20201022091115.39568-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=82.165.159.5; helo=mout-xforward.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout-xforward.kundenserver.de (mout-xforward.kundenserver.de
+ [82.165.159.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CH1sg3GwrzDqDS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 20:15:02 +1100 (AEDT)
+Received: from mail-qv1-f42.google.com ([209.85.219.42]) by
+ mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MStKw-1kzjHt0uMw-00UIoc for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct
+ 2020 11:14:55 +0200
+Received: by mail-qv1-f42.google.com with SMTP id s1so492975qvm.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 02:14:54 -0700 (PDT)
+X-Gm-Message-State: AOAM531v+TD+BsRoNAhxb/FFR2rz+H91hIvvAbQmS8t6eE7jFJq9xl5F
+ WLOFoolG3WbIlsnMlsRB3hAhEMLAafG6RADYQjY=
+X-Google-Smtp-Source: ABdhPJyTQBP0dRJbJWfua3xJHbrzKFctWdjW5mWFM7znxD+V4Hq2X1+XUh9kTr1iPtXJJ6khyzLRdADy4UPQw27hWss=
+X-Received: by 2002:ad4:4203:: with SMTP id k3mr1295968qvp.8.1603358093425;
+ Thu, 22 Oct 2020 02:14:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.737
- definitions=2020-10-22_02:2020-10-20,
- 2020-10-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- priorityscore=1501 adultscore=0 impostorscore=0 bulkscore=0 phishscore=0
- suspectscore=0 spamscore=0 mlxscore=0 malwarescore=0 mlxlogscore=863
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010220060
+References: <20200925045146.1283714-1-hch@lst.de>
+ <20200925045146.1283714-3-hch@lst.de>
+ <20201021161301.GA1196312@kroah.com>
+ <20201021233914.GR3576660@ZenIV.linux.org.uk>
+ <20201022082654.GA1477657@kroah.com>
+In-Reply-To: <20201022082654.GA1477657@kroah.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Thu, 22 Oct 2020 11:14:37 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2h1iDaqnji00jtKS8ER2KKL5Sd14BsYo5mu8E-NM7D6g@mail.gmail.com>
+Message-ID: <CAK8P3a2h1iDaqnji00jtKS8ER2KKL5Sd14BsYo5mu8E-NM7D6g@mail.gmail.com>
+Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+To: Greg KH <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:BeeWGPXuRvg147a9tUL4x7YUTvAPAsCnou/CcUgndt6+tgUpaHk
+ IH88guCFyqc8ntmaDjjSOPD2MR04JV/P3VwgERUlM/S3U4IAlOOZrDq+nxa5YYzfmdgwn+R
+ XwK7Z4/mGbHLi7APOq1Lo8mmuui0tzaxgM9GAhUc502FAK4K2knEaqyfVrXpb3bMr0M2gcu
+ DC6HftSLR6UxGqfXTN9Uw==
+X-Spam-Flag: YES
+X-UI-Out-Filterresults: junk:10;V03:K0:+lfnhZTqoYU=:v2jKl02qpnRxX/+tTFOoV2Sv
+ wQObLrJeGg9gOVEjmMl7WBof2SYYvz3vrrt9u1R6xmOFOAzyHSk1G2fw1O7+34G30YinQhq6F
+ QcT+Ts6BehOQl9QByECfonqgl4LkgaDpX4qUtsGVW21N8zQQmXy7W4TJ7veNonmypxxFDRCgA
+ QW++gQCwjrLJq/yeOc7/xoV+7Apwd5z5t4gxqjp9DNdvs/C49+OIIMc1KC0PJVXSJuspGfVqc
+ WkzjoENIMOzfLzn5NR7kH+Lf1N9c+fl6NZq3X4/tTkuv6RMhPzIvENJx/B9wLtUxFunA68N9K
+ XzcKtNoHUogSpbneoIcxCmZGiM3iri1Ab36jUdAsPyyfaY8XlxUMavuOr1EaPP0otL3AEMQfi
+ 46uKHBsWsEF8S9Cnj8+XjMPJkJu2amx86/3kcqqCO9FOixXz1TqGhI1Beq5mtatEtiZ6KLKp9
+ gZva4YcCT2Jat5jZH5hBDwIQB51SGxBxImjuOYkRWSu+9LkyojrRdKpWYOJ52+2vtG2u2bEp4
+ LJXC5QUCgANzwoWpmFTKdUjTFKJ7EgPln4U5mpB0mTwhPzkZFTsMSvPNzpGFYSPZogrTLEXK8
+ G5HLN1BeqUJ8jpZ36+V45reQOfkre3yyWeo5ME1TpnUJAjWSpx8xag==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,91 +74,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: linux-aio <linux-aio@kvack.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>, Linux-MM <linux-mm@kvack.org>,
+ keyrings@vger.kernel.org, sparclinux <sparclinux@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ linux-scsi <linux-scsi@vger.kernel.org>,
+ Android Kernel Team <kernel-team@android.com>,
+ linux-block <linux-block@vger.kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ io-uring@vger.kernel.org, Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Jens Axboe <axboe@kernel.dk>, Parisc List <linux-parisc@vger.kernel.org>,
+ Networking <netdev@vger.kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ LSM List <linux-security-module@vger.kernel.org>,
+ David Laight <David.Laight@aculab.com>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc used to set the pte specific flags in set_pte_at().  This is
-different from other architectures. To be consistent with other
-architecture powerpc updated pfn_pte to set _PAGE_PTE with
-commit 379c926d6334 ("powerpc/mm: move setting pte specific flags to pfn_pte")
+On Thu, Oct 22, 2020 at 10:26 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> On Thu, Oct 22, 2020 at 12:39:14AM +0100, Al Viro wrote:
+> > On Wed, Oct 21, 2020 at 06:13:01PM +0200, Greg KH wrote:
+> > > On Fri, Sep 25, 2020 at 06:51:39AM +0200, Christoph Hellwig wrote:
+> > >
+> > > I can't really figure out what the regression is, only that this commit
+> > > triggers a "large Android system binary" from working properly.  There's
+> > > no kernel log messages anywhere, and I don't have any way to strace the
+> > > thing in the testing framework, so any hints that people can provide
+> > > would be most appreciated.
+> >
+> > It's a pure move - modulo changed line breaks in the argument lists
+> > the functions involved are identical before and after that (just checked
+> > that directly, by checking out the trees before and after, extracting two
+> > functions in question from fs/read_write.c and lib/iov_iter.c (before and
+> > after, resp.) and checking the diff between those.
+> >
+> > How certain is your bisection?
+>
+> The bisection is very reproducable.
+>
+> But, this looks now to be a compiler bug.  I'm using the latest version
+> of clang and if I put "noinline" at the front of the function,
+> everything works.
+>
+> Nick, any ideas here as to who I should report this to?
+>
+> I'll work on a fixup patch for the Android kernel tree to see if I can
+> work around it there, but others will hit this in Linus's tree sooner or
+> later...
 
-The commit didn't do the same w.r.t pfn_pmd because we expect pmd_mkhuge
-to do that. But as per Linus that is a bad rule [1].
-Hence update pfn_pmd to set _PAGE_PTE.
+I see that Christoph rewrote the function again in bfdc59701d6d
+("iov_iter: refactor rw_copy_check_uvector and import_iovec"),
+do you know if the current mainline version is also affected?
 
-[1]
-" The rule that you must use "pmd_mkhuge()" seems _completely_ wrong.
-It's insane. The only valid use to ever make a pmd out of a pfn is to
-make a huge-page."
+Do you know if it happens across multiple architectures or might
+be specific to either x86 or arm64?
 
-message-id: CAHk-=whG+Z2mBFTT026PZAdjn=gSsLk9bk0wnYJ5peyuVGfwyg@mail.gmail.com
+https://bugs.llvm.org/ is obviously the place for reporting the
+issue if it does turn out to be a bug in clang, but that requires
+a specific thing going wrong in the output.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/include/asm/book3s/64/pgtable.h | 17 ++++++++++++++++-
- arch/powerpc/mm/book3s64/pgtable.c           |  8 +++++++-
- 2 files changed, 23 insertions(+), 2 deletions(-)
+One idea I have for debugging it is to sprinkle the inlined
+function with lots of barrier()s to prevent a lot of the optimizations.
+If that solves the issue, you can bisect through those until you
+find one barrier that makes the difference between working and
+broken and then look at diff of the assembler output.
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index cd3feeac6e87..a39886681629 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1231,13 +1231,28 @@ static inline int pmd_same(pmd_t pmd_a, pmd_t pmd_b)
- 	return hash__pmd_same(pmd_a, pmd_b);
- }
- 
--static inline pmd_t pmd_mkhuge(pmd_t pmd)
-+static inline pmd_t __pmd_mkhuge(pmd_t pmd)
- {
- 	if (radix_enabled())
- 		return radix__pmd_mkhuge(pmd);
- 	return hash__pmd_mkhuge(pmd);
- }
- 
-+/*
-+ * pfn_pmd return a pmd_t that can be used as pmd pte entry.
-+ */
-+static inline pmd_t pmd_mkhuge(pmd_t pmd)
-+{
-+#ifdef CONFIG_DEBUG_VM
-+	if (radix_enabled())
-+		WARN_ON((pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE)) == 0);
-+	else
-+		WARN_ON((pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE | H_PAGE_THP_HUGE)) !=
-+			cpu_to_be64(_PAGE_PTE | H_PAGE_THP_HUGE));
-+#endif
-+	return pmd;
-+}
-+
- #define __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
- extern int pmdp_set_access_flags(struct vm_area_struct *vma,
- 				 unsigned long address, pmd_t *pmdp,
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index e18ae50a275c..5b3a3bae21aa 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -136,12 +136,18 @@ static pmd_t pmd_set_protbits(pmd_t pmd, pgprot_t pgprot)
- 	return __pmd(pmd_val(pmd) | pgprot_val(pgprot));
- }
- 
-+/*
-+ * At some point we should be able to get rid of
-+ * pmd_mkhuge() and mk_huge_pmd() when we update all the
-+ * other archs to mark the pmd huge in pfn_pmd()
-+ */
- pmd_t pfn_pmd(unsigned long pfn, pgprot_t pgprot)
- {
- 	unsigned long pmdv;
- 
- 	pmdv = (pfn << PAGE_SHIFT) & PTE_RPN_MASK;
--	return pmd_set_protbits(__pmd(pmdv), pgprot);
-+
-+	return __pmd_mkhuge(pmd_set_protbits(__pmd(pmdv), pgprot));
- }
- 
- pmd_t mk_pmd(struct page *page, pgprot_t pgprot)
--- 
-2.26.2
-
+        Arnd
