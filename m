@@ -1,41 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45828295546
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 01:41:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F2F295612
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 03:27:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CGn7n1YcwzDqTW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 10:41:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CGqTw5zdXzDqTM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 12:27:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=ftp.linux.org.uk (client-ip=2002:c35c:fd02::1;
- helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=zeniv.linux.org.uk
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CGn5v0ptCzDqQb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 10:39:45 +1100 (AEDT)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1kVNhK-005pSF-DC; Wed, 21 Oct 2020 23:39:14 +0000
-Date: Thu, 22 Oct 2020 00:39:14 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Message-ID: <20201021233914.GR3576660@ZenIV.linux.org.uk>
-References: <20200925045146.1283714-1-hch@lst.de>
- <20200925045146.1283714-3-hch@lst.de>
- <20201021161301.GA1196312@kroah.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CGqSM1kcVzDqPk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 12:25:55 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=khduU1Fe; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CGqSL1NcTz9sSs;
+ Thu, 22 Oct 2020 12:25:53 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1603329954;
+ bh=68bf+e7qgn9t6IspaKKAZFvKbPtMo54nW9Tq19GmrbI=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=khduU1FeaFRXgpJ3UXiPb7TvY+L++QDEWMpSX0nJHI3xNpJBflpHKVyiuaVJtoExu
+ gYiZHKQoXXtwouww9L250il4qTK3ZmkmFgNyny9vR8zS4NfdQTfciHAz3chdxfptUd
+ UxooONT3sjJF2O7L/ZYsYrdhr7I8KAvdGMv09x6KUdNNmJ7oBnk1jMxg5tBk6jO5Fb
+ 6ln3ttRIEQgDnlGUNNrhMImgLdHd1tBCjNmkJthpvca9qRmIJossHwiAwAGrLceeSY
+ +PQqnqFeALRoS+Rs33sA0nnRGl2BhnsS5hyFF1wtdVJM3mIPeqgqk1MjtAlENrGUop
+ 5mQ8ulvVVhe3w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: Re: [PATCH 5/5] powerpc/perf: use regs->nip when siar is zero
+In-Reply-To: <6ad49bc4-6fc8-0cb9-2228-3da9fea3f0dc@csgroup.eu>
+References: <20201021085329.384535-1-maddy@linux.ibm.com>
+ <20201021085329.384535-5-maddy@linux.ibm.com>
+ <6ad49bc4-6fc8-0cb9-2228-3da9fea3f0dc@csgroup.eu>
+Date: Thu, 22 Oct 2020 12:25:49 +1100
+Message-ID: <87r1prxd9e.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201021161301.GA1196312@kroah.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,48 +61,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio@kvack.org, linux-mips@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
- keyrings@vger.kernel.org, sparclinux@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
- kernel-team@android.com, Arnd Bergmann <arnd@arndb.de>,
- linux-block@vger.kernel.org, io-uring@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
- linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- David Laight <David.Laight@aculab.com>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 21, 2020 at 06:13:01PM +0200, Greg KH wrote:
-> On Fri, Sep 25, 2020 at 06:51:39AM +0200, Christoph Hellwig wrote:
-> > From: David Laight <David.Laight@ACULAB.COM>
-> > 
-> > This lets the compiler inline it into import_iovec() generating
-> > much better code.
-> > 
-> > Signed-off-by: David Laight <david.laight@aculab.com>
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > ---
-> >  fs/read_write.c | 179 ------------------------------------------------
-> >  lib/iov_iter.c  | 176 +++++++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 176 insertions(+), 179 deletions(-)
-> 
-> Strangely, this commit causes a regression in Linus's tree right now.
-> 
-> I can't really figure out what the regression is, only that this commit
-> triggers a "large Android system binary" from working properly.  There's
-> no kernel log messages anywhere, and I don't have any way to strace the
-> thing in the testing framework, so any hints that people can provide
-> would be most appreciated.
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 21/10/2020 =C3=A0 10:53, Madhavan Srinivasan a =C3=A9crit=C2=A0:
+>> In power10 DD1, there is an issue where the
+>> Sampled Instruction Address Register (SIAR)
+>> not latching to the sampled address during
+>> random sampling. This results in value of 0s
+>> in the SIAR. Patch adds a check to use regs->nip
+>> when SIAR is zero.
+>
+> Why not use regs->nip at all time in that case, and not read SPRN_SIAR at=
+ all ?
 
-It's a pure move - modulo changed line breaks in the argument lists
-the functions involved are identical before and after that (just checked
-that directly, by checking out the trees before and after, extracting two
-functions in question from fs/read_write.c and lib/iov_iter.c (before and
-after, resp.) and checking the diff between those.
+Yeah that's a reasonable question.
 
-How certain is your bisection?
+I can't really find anywhere in the ISA that explains it.
+
+I believe the main (or only?) reason is that interrupts might be
+disabled when the PMU samples the instruction. So in that case the SIAR
+will point at an instruction somewhere in interrupts-off code, whereas
+the NIP will point to the location where we re-enabled interrupts and
+took the PMU interrupt.
+
+cheers
