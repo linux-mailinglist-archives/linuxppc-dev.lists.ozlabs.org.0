@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9D3295BD5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 11:32:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02313295BE4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 11:34:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CH2Ft2BMmzDqs2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 20:32:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CH2Hf2LjHzDqpf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 20:34:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,40 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CH2BJ1MCMzDqg3
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CH2BJ2JPhzDqkB
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 20:29:26 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CH2B64pPTz9tx11;
- Thu, 22 Oct 2020 11:29:18 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4CH2B73g1Kz9tx13;
+ Thu, 22 Oct 2020 11:29:19 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id LVNi8__7y1oz; Thu, 22 Oct 2020 11:29:18 +0200 (CEST)
+ with ESMTP id quqaCaYB4bad; Thu, 22 Oct 2020 11:29:19 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CH2B63ydhzB09bQ;
- Thu, 22 Oct 2020 11:29:18 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B63638B769;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CH2B72q98z9tx12;
  Thu, 22 Oct 2020 11:29:19 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8B16D8B809;
+ Thu, 22 Oct 2020 11:29:20 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id TPw1l00OW4rb; Thu, 22 Oct 2020 11:29:19 +0200 (CEST)
+ with ESMTP id R9U9MPz6umlj; Thu, 22 Oct 2020 11:29:20 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 601B28B807;
- Thu, 22 Oct 2020 11:29:19 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4176F8B807;
+ Thu, 22 Oct 2020 11:29:20 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 179756680D; Thu, 22 Oct 2020 09:29:19 +0000 (UTC)
-Message-Id: <25e6fca46fda3e2a4298448edbf654f64756eee7.1603358942.git.christophe.leroy@csgroup.eu>
+ id 210DD6680D; Thu, 22 Oct 2020 09:29:20 +0000 (UTC)
+Message-Id: <96354bd77977a6a933fe9020da57629007fdb920.1603358942.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <25e6fca46fda3e2a4298448edbf654f64756eee7.1603358942.git.christophe.leroy@csgroup.eu>
+References: <25e6fca46fda3e2a4298448edbf654f64756eee7.1603358942.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 1/3] powerpc/uaccess: Don't use "m<>" constraint with GCC
- 4.9
+Subject: [PATCH v3 2/3] powerpc: Fix incorrect stw{, ux, u, x} instructions in
+ __set_pte_at
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  mathieu.desnoyers@efficios.com
-Date: Thu, 22 Oct 2020 09:29:19 +0000 (UTC)
+Date: Thu, 22 Oct 2020 09:29:20 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,101 +67,72 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-GCC 4.9 sometimes fails to build with "m<>" constraint in
-inline assembly.
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-  CC      lib/iov_iter.o
-In file included from ./arch/powerpc/include/asm/cmpxchg.h:6:0,
-                 from ./arch/powerpc/include/asm/atomic.h:11,
-                 from ./include/linux/atomic.h:7,
-                 from ./include/linux/crypto.h:15,
-                 from ./include/crypto/hash.h:11,
-                 from lib/iov_iter.c:2:
-lib/iov_iter.c: In function 'iovec_from_user.part.30':
-./arch/powerpc/include/asm/uaccess.h:287:2: error: 'asm' operand has impossible constraints
-  __asm__ __volatile__(    \
-  ^
-./include/linux/compiler.h:78:42: note: in definition of macro 'unlikely'
- # define unlikely(x) __builtin_expect(!!(x), 0)
-                                          ^
-./arch/powerpc/include/asm/uaccess.h:583:34: note: in expansion of macro 'unsafe_op_wrap'
- #define unsafe_get_user(x, p, e) unsafe_op_wrap(__get_user_allowed(x, p), e)
-                                  ^
-./arch/powerpc/include/asm/uaccess.h:329:10: note: in expansion of macro '__get_user_asm'
-  case 4: __get_user_asm(x, (u32 __user *)ptr, retval, "lwz"); break; \
-          ^
-./arch/powerpc/include/asm/uaccess.h:363:3: note: in expansion of macro '__get_user_size_allowed'
-   __get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err); \
-   ^
-./arch/powerpc/include/asm/uaccess.h:100:2: note: in expansion of macro '__get_user_nocheck'
-  __get_user_nocheck((x), (ptr), sizeof(*(ptr)), false)
-  ^
-./arch/powerpc/include/asm/uaccess.h:583:49: note: in expansion of macro '__get_user_allowed'
- #define unsafe_get_user(x, p, e) unsafe_op_wrap(__get_user_allowed(x, p), e)
-                                                 ^
-lib/iov_iter.c:1663:3: note: in expansion of macro 'unsafe_get_user'
-   unsafe_get_user(len, &uiov[i].iov_len, uaccess_end);
-   ^
-make[1]: *** [scripts/Makefile.build:283: lib/iov_iter.o] Error 1
+The placeholder for instruction selection should use the second
+argument's operand, which is %1, not %0. This could generate incorrect
+assembly code if the memory addressing of operand %0 is a different
+form from that of operand %1.
 
-Define a UPD_CONSTR macro that is "<>" by default and
-only "" with GCC prior to GCC 5.
+Also remove the %Un placeholder because having %Un placeholders
+for two operands which are based on the same local var (ptep) doesn't
+make much sense. By the way, it doesn't change the current behaviour
+because "<>" constraint is missing for the associated "=m".
 
-Fixes: fcf1f26895a4 ("powerpc/uaccess: Add pre-update addressing to __put_user_asm_goto()")
-Fixes: 2f279eeb68b8 ("powerpc/uaccess: Add pre-update addressing to __get_user_asm() and __put_user_asm()")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 9bf2b5cdc5fe ("powerpc: Fixes for CONFIG_PTE_64BIT for SMP support")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Kumar Gala <galak@kernel.crashing.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: <stable@vger.kernel.org> # v2.6.28+
 Acked-by: Segher Boessenkool <segher@kernel.crashing.org>
+[chleroy: revised commit log iaw segher's comments and removed %U0]
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: Moved UPD_CONSTR to asm-const.h to avoid circular inclusion issues with patch 3.
----
- arch/powerpc/include/asm/asm-const.h | 13 +++++++++++++
- arch/powerpc/include/asm/uaccess.h   |  4 ++--
- 2 files changed, 15 insertions(+), 2 deletions(-)
+v3: Remove %Un
 
-diff --git a/arch/powerpc/include/asm/asm-const.h b/arch/powerpc/include/asm/asm-const.h
-index 082c1538c562..0ce2368bd20f 100644
---- a/arch/powerpc/include/asm/asm-const.h
-+++ b/arch/powerpc/include/asm/asm-const.h
-@@ -11,4 +11,17 @@
- #  define __ASM_CONST(x)	x##UL
- #  define ASM_CONST(x)		__ASM_CONST(x)
- #endif
-+
-+/*
-+ * Inline assembly memory constraint
-+ *
-+ * GCC 4.9 doesn't properly handle pre update memory constraint "m<>"
-+ *
-+ */
-+#if defined(GCC_VERSION) && GCC_VERSION < 50000
-+#define UPD_CONSTR ""
-+#else
-+#define UPD_CONSTR "<>"
-+#endif
-+
- #endif /* _ASM_POWERPC_ASM_CONST_H */
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 604d705f1bb8..8f27ea48fadb 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -223,7 +223,7 @@ do {								\
- 		"1:	" op "%U1%X1 %0,%1	# put_user\n"	\
- 		EX_TABLE(1b, %l2)				\
- 		:						\
--		: "r" (x), "m<>" (*addr)				\
-+		: "r" (x), "m"UPD_CONSTR (*addr)		\
- 		:						\
- 		: label)
+v2: Changed commit log.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/book3s/32/pgtable.h | 4 ++--
+ arch/powerpc/include/asm/nohash/pgtable.h    | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
+index 36443cda8dcf..41d8bc6db303 100644
+--- a/arch/powerpc/include/asm/book3s/32/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
+@@ -522,9 +522,9 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
+ 	if (pte_val(*ptep) & _PAGE_HASHPTE)
+ 		flush_hash_entry(mm, ptep, addr);
+ 	__asm__ __volatile__("\
+-		stw%U0%X0 %2,%0\n\
++		stw%X0 %2,%0\n\
+ 		eieio\n\
+-		stw%U0%X0 %L2,%1"
++		stw%X1 %L2,%1"
+ 	: "=m" (*ptep), "=m" (*((unsigned char *)ptep+4))
+ 	: "r" (pte) : "memory");
  
-@@ -294,7 +294,7 @@ extern long __get_user_bad(void);
- 		".previous\n"				\
- 		EX_TABLE(1b, 3b)			\
- 		: "=r" (err), "=r" (x)			\
--		: "m<>" (*addr), "i" (-EFAULT), "0" (err))
-+		: "m"UPD_CONSTR (*addr), "i" (-EFAULT), "0" (err))
- 
- #ifdef __powerpc64__
- #define __get_user_asm2(x, addr, err)			\
+diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+index 6277e7596ae5..ac75f4ab0dba 100644
+--- a/arch/powerpc/include/asm/nohash/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/pgtable.h
+@@ -192,9 +192,9 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
+ 	 */
+ 	if (IS_ENABLED(CONFIG_PPC32) && IS_ENABLED(CONFIG_PTE_64BIT) && !percpu) {
+ 		__asm__ __volatile__("\
+-			stw%U0%X0 %2,%0\n\
++			stw%X0 %2,%0\n\
+ 			eieio\n\
+-			stw%U0%X0 %L2,%1"
++			stw%X1 %L2,%1"
+ 		: "=m" (*ptep), "=m" (*((unsigned char *)ptep+4))
+ 		: "r" (pte) : "memory");
+ 		return;
 -- 
 2.25.0
 
