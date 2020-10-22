@@ -1,51 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C2AD295D78
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 13:37:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 328B1295E3C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 14:20:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CH5200YPPzDqsD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 22:37:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CH6045hK7zDqrX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 23:20:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=n8jf6tlU; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CH4zW6NcGzDqnV
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 22:35:19 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Ao9NFJ37; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CH4zS32sWz9sTL;
- Thu, 22 Oct 2020 22:35:16 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1603366517;
- bh=fLV/hBxweo+5+ydwjYlh3kzBZ5hO8ee2okOeHombnm0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Ao9NFJ37HrRHYRZrzPVa28sXhBGgtP5q3bQqoJfL/EaZ8J0jv2CGypjEKt1FyPA4C
- NGSHUv8kdsR6oAIaFKx6bgfs/BH6dwp1Db776qfNScb5OKYiB6JvcnefQv2znDwib+
- BjILb+CZSRX0xZ8UEX8rSCne76lXT7Vlq/plFsPdjAvlNS50/R4HWz3eHU/HzpD6Jr
- Sr3EOM3nRQRNsotfuBSVXlovWn1d46AaHm3yqe/u7ulNKhgeyKWgFU3sG8JZ4Q2tWb
- kEAymD14XhYO9iIQqDWZpqLerQSjDUlp9vl8PocYFR2YEgsVTHl/uLG+TETKcGIzjP
- wTD9m/ZMaExxQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Subject: Re: [PATCH 1/2] powerpc: Introduce POWER10_DD1 feature
-In-Reply-To: <20201020054454.194343-1-ravi.bangoria@linux.ibm.com>
-References: <20201020054454.194343-1-ravi.bangoria@linux.ibm.com>
-Date: Thu, 22 Oct 2020 22:35:12 +1100
-Message-ID: <87ft66xzm7.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CH5x40q9kzDqNj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 23:18:15 +1100 (AEDT)
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1C49F221FB;
+ Thu, 22 Oct 2020 12:18:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1603369091;
+ bh=f9fHT6RQINipQR9cdhFI9rs3NSFDci2lYjU5Ip8ZnP0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=n8jf6tlUdap5jlr4t0Cg2lsbhvnaH72P2gVCqZLKUuxs8bAAWAClanPfE+zPwidaB
+ ZFmAyLOFo2OtmjN/+QTkr1IWCvNwAi65T2ABP5/m/R1LV/h/GTeY9DsKfGHUUKRGmT
+ qWRzyp9nLifa3lkVAOBlw5wcV0RoEHaGv9ShJ/SY=
+Date: Thu, 22 Oct 2020 14:18:49 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Message-ID: <20201022121849.GA1664412@kroah.com>
+References: <20201022082654.GA1477657@kroah.com>
+ <80a2e5fa-718a-8433-1ab0-dd5b3e3b5416@redhat.com>
+ <5d2ecb24db1e415b8ff88261435386ec@AcuMS.aculab.com>
+ <df2e0758-b8ed-5aec-6adc-a18f499c0179@redhat.com>
+ <20201022090155.GA1483166@kroah.com>
+ <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
+ <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
+ <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
+ <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
+ <20201022104805.GA1503673@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201022104805.GA1503673@kroah.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,110 +66,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: christophe.leroy@c-s.fr, ravi.bangoria@linux.ibm.com, mikey@linux.ibm.com,
- jniethe5@gmail.com, npiggin@gmail.com, maddy@linux.ibm.com, paulus@samba.org,
- naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-aio@kvack.org" <linux-aio@kvack.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "kernel-team@android.com" <kernel-team@android.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Jens Axboe <axboe@kernel.dk>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>,
+ David Laight <David.Laight@aculab.com>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ravi Bangoria <ravi.bangoria@linux.ibm.com> writes:
-> POWER10_DD1 feature flag will be needed while adding
-> conditional code that applies only for Power10 DD1.
->
-> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/cputable.h | 8 ++++++--
->  arch/powerpc/kernel/dt_cpu_ftrs.c   | 3 +++
->  arch/powerpc/kernel/prom.c          | 9 +++++++++
->  3 files changed, 18 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
-> index 93bc70d4c9a1..d486f56c0d33 100644
-> --- a/arch/powerpc/include/asm/cputable.h
-> +++ b/arch/powerpc/include/asm/cputable.h
-> @@ -216,6 +216,7 @@ static inline void cpu_feature_keys_init(void) { }
->  #define CPU_FTR_P9_RADIX_PREFETCH_BUG	LONG_ASM_CONST(0x0002000000000000)
->  #define CPU_FTR_ARCH_31			LONG_ASM_CONST(0x0004000000000000)
->  #define CPU_FTR_DAWR1			LONG_ASM_CONST(0x0008000000000000)
-> +#define CPU_FTR_POWER10_DD1		LONG_ASM_CONST(0x0010000000000000)
->  
->  #ifndef __ASSEMBLY__
->  
-> @@ -479,6 +480,7 @@ static inline void cpu_feature_keys_init(void) { }
->  	    CPU_FTR_DBELL | CPU_FTR_HAS_PPR | CPU_FTR_ARCH_207S | \
->  	    CPU_FTR_TM_COMP | CPU_FTR_ARCH_300 | CPU_FTR_ARCH_31 | \
->  	    CPU_FTR_DAWR | CPU_FTR_DAWR1)
-> +#define CPU_FTRS_POWER10_DD1	(CPU_FTRS_POWER10 | CPU_FTR_POWER10_DD1)
->  #define CPU_FTRS_CELL	(CPU_FTR_LWSYNC | \
->  	    CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | \
->  	    CPU_FTR_ALTIVEC_COMP | CPU_FTR_MMCRA | CPU_FTR_SMT | \
-> @@ -497,14 +499,16 @@ static inline void cpu_feature_keys_init(void) { }
->  #define CPU_FTRS_POSSIBLE	\
->  	    (CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | CPU_FTRS_POWER8 | \
->  	     CPU_FTR_ALTIVEC_COMP | CPU_FTR_VSX_COMP | CPU_FTRS_POWER9 | \
-> -	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10)
-> +	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10 | \
-> +	     CPU_FTRS_POWER10_DD1)
->  #else
->  #define CPU_FTRS_POSSIBLE	\
->  	    (CPU_FTRS_PPC970 | CPU_FTRS_POWER5 | \
->  	     CPU_FTRS_POWER6 | CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | \
->  	     CPU_FTRS_POWER8 | CPU_FTRS_CELL | CPU_FTRS_PA6T | \
->  	     CPU_FTR_VSX_COMP | CPU_FTR_ALTIVEC_COMP | CPU_FTRS_POWER9 | \
-> -	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10)
-> +	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10 | \
-> +	     CPU_FTRS_POWER10_DD1)
->  #endif /* CONFIG_CPU_LITTLE_ENDIAN */
->  #endif
->  #else
-> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-> index 1098863e17ee..b2327f2967ff 100644
-> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-> @@ -811,6 +811,9 @@ static __init void cpufeatures_cpu_quirks(void)
->  	}
->  
->  	update_tlbie_feature_flag(version);
-> +
-> +	if ((version & 0xffffffff) == 0x00800100)
-> +		cur_cpu_spec->cpu_features |= CPU_FTR_POWER10_DD1;
->  }
->  
->  static void __init cpufeatures_setup_finished(void)
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index c1545f22c077..c778c81284f7 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -305,6 +305,14 @@ static void __init check_cpu_feature_properties(unsigned long node)
->  	}
->  }
->  
-> +static void __init fixup_cpu_features(void)
-> +{
-> +	unsigned long version = mfspr(SPRN_PVR);
-> +
-> +	if ((version & 0xffffffff) == 0x00800100)
-> +		cur_cpu_spec->cpu_features |= CPU_FTR_POWER10_DD1;
-> +}
-> +
->  static int __init early_init_dt_scan_cpus(unsigned long node,
->  					  const char *uname, int depth,
->  					  void *data)
-> @@ -378,6 +386,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
->  
->  		check_cpu_feature_properties(node);
->  		check_cpu_pa_features(node);
-> +		fixup_cpu_features();
->  	}
+On Thu, Oct 22, 2020 at 12:48:05PM +0200, Greg KH wrote:
+> On Thu, Oct 22, 2020 at 11:36:40AM +0200, David Hildenbrand wrote:
+> > On 22.10.20 11:32, David Laight wrote:
+> > > From: David Hildenbrand
+> > >> Sent: 22 October 2020 10:25
+> > > ...
+> > >> ... especially because I recall that clang and gcc behave slightly
+> > >> differently:
+> > >>
+> > >> https://github.com/hjl-tools/x86-psABI/issues/2
+> > >>
+> > >> "Function args are different: narrow types are sign or zero extended to
+> > >> 32 bits, depending on their type. clang depends on this for incoming
+> > >> args, but gcc doesn't make that assumption. But both compilers do it
+> > >> when calling, so gcc code can call clang code.
+> > > 
+> > > It really is best to use 'int' (or even 'long') for all numeric
+> > > arguments (and results) regardless of the domain of the value.
+> > > 
+> > > Related, I've always worried about 'bool'....
+> > > 
+> > >> The upper 32 bits of registers are always undefined garbage for types
+> > >> smaller than 64 bits."
+> > > 
+> > > On x86-64 the high bits are zeroed by all 32bit loads.
+> > 
+> > Yeah, but does not help here.
+> > 
+> > 
+> > My thinking: if the compiler that calls import_iovec() has garbage in
+> > the upper 32 bit
+> > 
+> > a) gcc will zero it out and not rely on it being zero.
+> > b) clang will not zero it out, assuming it is zero.
+> > 
+> > But
+> > 
+> > a) will zero it out when calling the !inlined variant
+> > b) clang will zero it out when calling the !inlined variant
+> > 
+> > When inlining, b) strikes. We access garbage. That would mean that we
+> > have calling code that's not generated by clang/gcc IIUC.
+> > 
+> > We can test easily by changing the parameters instead of adding an "inline".
+> 
+> Let me try that as well, as I seem to have a good reproducer, but it
+> takes a while to run...
 
-This is not the way we normally do CPU features.
+Ok, that didn't work.
 
-In the past we have always added a raw entry in cputable.c, see eg. the
-Power9 DD 2.0, 2.1 entries.
+And I can't seem to "fix" this by adding noinline to patches further
+along in the patch series (because this commit's function is no longer
+present due to later patches.)
 
-Doing it here is not really safe, if you're running with an architected
-PVR (via cpu-version property), you can't set the DD1 feature, because
-you might be migrated to a future CPU that doesn't have the DD1 quirks.
+Will keep digging...
 
-cheers
+greg k-h
