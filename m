@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D47E296560
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 21:28:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 351E02965B2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 22:08:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CHHTz5TGlzDqSQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 06:28:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CHJMX6n4nzDqyf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 07:08:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -19,16 +19,16 @@ Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CHHSN4gTZzDqvj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 06:27:32 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CHJKg263DzDqmY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 07:06:47 +1100 (AEDT)
 Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1kVgF8-006RYP-BX; Thu, 22 Oct 2020 19:27:22 +0000
-Date: Thu, 22 Oct 2020 20:27:22 +0100
+ Linux)) id 1kVgqz-006SmZ-1W; Thu, 22 Oct 2020 20:06:29 +0000
+Date: Thu, 22 Oct 2020 21:06:29 +0100
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: Nick Desaulniers <ndesaulniers@google.com>
 Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
  rw_copy_check_uvector() into lib/iov_iter.c"
-Message-ID: <20201022192722.GW3576660@ZenIV.linux.org.uk>
+Message-ID: <20201022200629.GX3576660@ZenIV.linux.org.uk>
 References: <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
  <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
  <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
@@ -85,18 +85,26 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Thu, Oct 22, 2020 at 08:24:58PM +0100, Al Viro wrote:
-> On Thu, Oct 22, 2020 at 12:04:52PM -0700, Nick Desaulniers wrote:
-> 
-> > Passing an `unsigned long` as an `unsigned int` does no such
-> > narrowing: https://godbolt.org/z/TvfMxe (same vice-versa, just tail
-> > calls, no masking instructions).
-> > So if rw_copy_check_uvector() is inlined into import_iovec() (looking
-> > at the mainline@1028ae406999), then children calls of
-> > `rw_copy_check_uvector()` will be interpreting the `nr_segs` register
-> > unmodified, ie. garbage in the upper 32b.
-> 
-> FWIW,
-> 
-> void f(unsinged long v)
 
-s/unsinged/unsigned/, obviously...
+> Depending upon the calling conventions, compiler might do truncation in caller or
+> in a callee, but it must be done _somewhere_.
+
+Unless I'm misreading AAPCS64,
+	"Unlike in the 32-bit AAPCS, named integral values must be narrowed by the callee
+	 rather than the caller"
+in 6.4.2 means that callee must not _not_ expect the upper 32 bits of %x0..%x7 to contain
+anything valid for 32bit arguments and it must zero-extend %w0..%w7 when passing that to
+something that expects a 64bit argument.  On inlining it should be the same situation as
+storing unsigned int argument into unsigned long local variable and working with that - if
+
+void f(unsigned int w)
+{
+	unsigned long x = w;
+	printf("%lx\n", x);
+}
+
+ends up passing %x0 to printf, it's an obvious bug - it must do something like
+	uxtw x0, w0
+first.
+
+What am I missing here?
