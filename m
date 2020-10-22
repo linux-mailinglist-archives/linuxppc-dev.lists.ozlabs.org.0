@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ECCC29588D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 08:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C38ED29588F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 08:50:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CGyct5kySzDqtQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 17:48:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CGyfx6MVXzDqQB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Oct 2020 17:50:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,39 +17,39 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CGyBr1shwzDqJM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 17:29:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CGyBs2cqSzDq7d
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 17:29:41 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CGyBm2dZhz9vBL1;
- Thu, 22 Oct 2020 08:29:36 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4CGyBn1z2yz9vBLM;
+ Thu, 22 Oct 2020 08:29:37 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id RhAmTarHPtHO; Thu, 22 Oct 2020 08:29:36 +0200 (CEST)
+ with ESMTP id hnvLZHpE6EO9; Thu, 22 Oct 2020 08:29:37 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CGyBm1qMhz9vBKl;
- Thu, 22 Oct 2020 08:29:36 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3774F8B769;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CGyBn1DV2z9vBKl;
  Thu, 22 Oct 2020 08:29:37 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 23F3C8B805;
+ Thu, 22 Oct 2020 08:29:38 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id DkbfXBubTpp5; Thu, 22 Oct 2020 08:29:37 +0200 (CEST)
+ with ESMTP id 7mqMKWf9G1QJ; Thu, 22 Oct 2020 08:29:38 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B8B0A8B805;
- Thu, 22 Oct 2020 08:29:36 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CC22A8B769;
+ Thu, 22 Oct 2020 08:29:37 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 9DFC4667EF; Thu, 22 Oct 2020 06:29:36 +0000 (UTC)
-Message-Id: <11e932ded41ba6d9b251d89b7afa33cc060d3aa4.1603348103.git.christophe.leroy@csgroup.eu>
+ id A4E8F667EF; Thu, 22 Oct 2020 06:29:37 +0000 (UTC)
+Message-Id: <c7029a78e78709ad9272d7a44260e06b649169b2.1603348103.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <648e2448e938d52d0b5887445e018ca584edc06d.1603348103.git.christophe.leroy@csgroup.eu>
 References: <648e2448e938d52d0b5887445e018ca584edc06d.1603348103.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v1 11/20] powerpc/32s: Split and inline flush_tlb_mm() and
- flush_tlb_page()
+Subject: [PATCH v1 12/20] powerpc/32s: Inline flush_tlb_range() and
+ flush_tlb_kernel_range()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 22 Oct 2020 06:29:36 +0000 (UTC)
+Date: Thu, 22 Oct 2020 06:29:37 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,107 +66,106 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-flush_tlb_mm() and flush_tlb_page() handle both the MMU_FTR_HPTE_TABLE
-case and the other case.
+flush_tlb_range() and flush_tlb_kernel_range() are trivial calls to
+flush_range().
 
-The non MMU_FTR_HPTE_TABLE case is trivial as it is only a call
-to _tlbie()/_tlbia() which is not worth a dedicated function.
-
-Make flush_tlb_mm() and flush_tlb_page() hash specific and call
-them from tlbflush.h based on mmu_has_feature(MMU_FTR_HPTE_TABLE).
+Make flush_range() global and inline flush_tlb_range()
+and flush_tlb_kernel_range().
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/book3s/32/tlbflush.h | 20 +++++++++++++++++--
- arch/powerpc/mm/book3s32/tlb.c                | 17 ++++------------
- 2 files changed, 22 insertions(+), 15 deletions(-)
+ arch/powerpc/include/asm/book3s/32/tlbflush.h | 15 ++++++++--
+ arch/powerpc/mm/book3s32/tlb.c                | 30 +++++--------------
+ 2 files changed, 19 insertions(+), 26 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-index f392a619138d..542765944531 100644
+index 542765944531..2f480d184526 100644
 --- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
 +++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-@@ -6,8 +6,8 @@
- /*
-  * TLB flushing for "classic" hash-MMU 32-bit CPUs, 6xx, 7xx, 7xxx
+@@ -8,9 +8,7 @@
   */
--extern void flush_tlb_mm(struct mm_struct *mm);
--extern void flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
-+void hash__flush_tlb_mm(struct mm_struct *mm);
-+void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
- extern void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 			    unsigned long end);
- extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
-@@ -22,6 +22,22 @@ static inline void _tlbie(unsigned long address)
- #endif
- void _tlbia(void);
+ void hash__flush_tlb_mm(struct mm_struct *mm);
+ void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
+-extern void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+-			    unsigned long end);
+-extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
++void flush_range(struct mm_struct *mm, unsigned long start, unsigned long end);
  
-+static inline void flush_tlb_mm(struct mm_struct *mm)
+ #ifdef CONFIG_SMP
+ void _tlbie(unsigned long address);
+@@ -38,6 +36,17 @@ static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long vmad
+ 		_tlbie(vmaddr);
+ }
+ 
++static inline void
++flush_tlb_range(struct vm_area_struct *vma, unsigned long start, unsigned long end)
 +{
-+	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
-+		hash__flush_tlb_mm(mm);
-+	else
-+		_tlbia();
++	flush_range(vma->vm_mm, start, end);
 +}
 +
-+static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
++static inline void flush_tlb_kernel_range(unsigned long start, unsigned long end)
 +{
-+	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
-+		hash__flush_tlb_page(vma, vmaddr);
-+	else
-+		_tlbie(vmaddr);
++	flush_range(&init_mm, start, end);
 +}
 +
  static inline void local_flush_tlb_page(struct vm_area_struct *vma,
  					unsigned long vmaddr)
  {
 diff --git a/arch/powerpc/mm/book3s32/tlb.c b/arch/powerpc/mm/book3s32/tlb.c
-index ae5dbba95805..65389bfe2eb8 100644
+index 65389bfe2eb8..f9b8e1ce4371 100644
 --- a/arch/powerpc/mm/book3s32/tlb.c
 +++ b/arch/powerpc/mm/book3s32/tlb.c
-@@ -118,15 +118,10 @@ EXPORT_SYMBOL(flush_tlb_kernel_range);
+@@ -71,8 +71,12 @@ void tlb_flush(struct mmu_gather *tlb)
+  *    -- Cort
+  */
+ 
+-static void flush_range(struct mm_struct *mm, unsigned long start,
+-			unsigned long end)
++/*
++ * For each address in the range, find the pte for the address
++ * and check _PAGE_HASHPTE bit; if it is set, find and destroy
++ * the corresponding HPTE.
++ */
++void flush_range(struct mm_struct *mm, unsigned long start, unsigned long end)
+ {
+ 	pmd_t *pmd;
+ 	unsigned long pmd_end;
+@@ -105,15 +109,7 @@ static void flush_range(struct mm_struct *mm, unsigned long start,
+ 		++pmd;
+ 	}
+ }
+-
+-/*
+- * Flush kernel TLB entries in the given range
+- */
+-void flush_tlb_kernel_range(unsigned long start, unsigned long end)
+-{
+-	flush_range(&init_mm, start, end);
+-}
+-EXPORT_SYMBOL(flush_tlb_kernel_range);
++EXPORT_SYMBOL(flush_range);
+ 
  /*
   * Flush all the (user) entries for the address space described by mm.
-  */
--void flush_tlb_mm(struct mm_struct *mm)
-+void hash__flush_tlb_mm(struct mm_struct *mm)
- {
- 	struct vm_area_struct *mp;
+@@ -145,18 +141,6 @@ void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
+ }
+ EXPORT_SYMBOL(hash__flush_tlb_page);
  
--	if (!mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
--		_tlbia();
--		return;
--	}
+-/*
+- * For each address in the range, find the pte for the address
+- * and check _PAGE_HASHPTE bit; if it is set, find and destroy
+- * the corresponding HPTE.
+- */
+-void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+-		     unsigned long end)
+-{
+-	flush_range(vma->vm_mm, start, end);
+-}
+-EXPORT_SYMBOL(flush_tlb_range);
 -
- 	/*
- 	 * It is safe to go down the mm's list of vmas when called
- 	 * from dup_mmap, holding mmap_lock.  It would also be safe from
-@@ -136,23 +131,19 @@ void flush_tlb_mm(struct mm_struct *mm)
- 	for (mp = mm->mmap; mp != NULL; mp = mp->vm_next)
- 		flush_range(mp->vm_mm, mp->vm_start, mp->vm_end);
- }
--EXPORT_SYMBOL(flush_tlb_mm);
-+EXPORT_SYMBOL(hash__flush_tlb_mm);
- 
--void flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
-+void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
+ void __init early_init_mmu(void)
  {
- 	struct mm_struct *mm;
- 	pmd_t *pmd;
- 
--	if (!mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
--		_tlbie(vmaddr);
--		return;
--	}
- 	mm = (vmaddr < TASK_SIZE)? vma->vm_mm: &init_mm;
- 	pmd = pmd_off(mm, vmaddr);
- 	if (!pmd_none(*pmd))
- 		flush_hash_pages(mm->context.id, vmaddr, pmd_val(*pmd), 1);
  }
--EXPORT_SYMBOL(flush_tlb_page);
-+EXPORT_SYMBOL(hash__flush_tlb_page);
- 
- /*
-  * For each address in the range, find the pte for the address
 -- 
 2.25.0
 
