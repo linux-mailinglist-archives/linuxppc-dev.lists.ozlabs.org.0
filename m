@@ -1,47 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5E62968D3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 05:35:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C63672968F1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 06:01:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CHVH61W65zDr3V
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 14:35:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CHVsQ4fT3zDr3F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 15:01:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CHVFR0hTGzDql9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 14:33:47 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CHVqq75TGzDqyS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 15:00:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=D10j4BBw; 
+ header.a=rsa-sha256 header.s=201909 header.b=TR21svSb; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 4CHVFR0CCRz9sSW; Fri, 23 Oct 2020 14:33:47 +1100 (AEDT)
+ id 4CHVqq5gxwz9sSW; Fri, 23 Oct 2020 15:00:07 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4CHVFQ6MvJz9sSs; Fri, 23 Oct 2020 14:33:46 +1100 (AEDT)
+ id 4CHVqq4vQ1z9sSn; Fri, 23 Oct 2020 15:00:07 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1603424026;
- bh=AwOSiExI8NbntUvUtGVI5OP3bq4Ymzz/W7ahgDUbvLY=;
- h=From:To:Cc:Subject:Date:From;
- b=D10j4BBwWTAKb5ZBcmye4YTVu192Aio1PIHlJoc0gPDo1/RvtnE1CjJxnTlMmw2vO
- xfA1Bq8AAl1zIdzdgkBYgQ1Y4Rt5hze4WKVymcV6nG8fCbcxCUnriJzp4fIyed2YtV
- maOOINbUB9y6sFyMXE6F14y5/zM6/il5Nu4ekBJGZTe0StrL0CfONe65QPTWh0wTL+
- as7pwNnbt2PSuYUECVqGmrXI6836PRw9UzyyYKjorsNTHJWV72CUEi0szipbRUeLMF
- dE8KYBp2hnkkJVXzQIJn3z2y40L0XxN8TXgd/TdsbUtQhXzo2cYLn0D8fMZtK+5gaB
- JiN5R9azn9MPw==
+ s=201909; t=1603425607;
+ bh=VhbbGh3y1UeQQdGvzohO13+IR1sQ8VT9mRNBUoiT6oQ=;
+ h=From:To:Subject:Date:From;
+ b=TR21svSbplTbZy8B65WsblUEpztoBwuQazPNqVxZaP6hvHg4DhmlJJdtgc1sBZYk2
+ sYw0+9ah8Kf8FZ0xFol1wdj7nnlwTnA3MW7jMyy0Kay2LKLHzDNi7gIzcS2WGqYDrr
+ dezxbI1QpkrrmToL35u6vScVneV4rioqgz2Dqo/8Zim1B6uibqG/pokC55ULcQHvXA
+ qkenhTNTFqu+H12TA7/G7F2wEU8NtOe+KoEihKrmjS/skQxh9iitdGvadhiwUs+gSZ
+ 2ofmAFmcH3rjKgaxio+YCfbUcjK7rg2qn27LNXh2NUAGVhHicdg90Bv8k7tFXWckhx
+ DbOe44F9kBNYA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org,
-	netdev@vger.kernel.org
-Subject: [PATCH] net: ucc_geth: Drop extraneous parentheses in comparison
-Date: Fri, 23 Oct 2020 14:32:36 +1100
-Message-Id: <20201023033236.3296988-1-mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc: Add config fragment for disabling -Werror
+Date: Fri, 23 Oct 2020 15:00:02 +1100
+Message-Id: <20201023040002.3313371-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -56,40 +55,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kuba@kernel.org, leoyang.li@nxp.com, davem@davemloft.net,
- linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Clang warns about the extra parentheses in this comparison:
+This makes it easy to disable building with -Werror:
 
-  drivers/net/ethernet/freescale/ucc_geth.c:1361:28:
-  warning: equality comparison with extraneous parentheses
-    if ((ugeth->phy_interface == PHY_INTERFACE_MODE_SGMII))
-         ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+  $ make defconfig
+  $ grep WERROR .config
+  # CONFIG_PPC_DISABLE_WERROR is not set
+  CONFIG_PPC_WERROR=y
 
-It seems clear the intent here is to do a comparison not an
-assignment, so drop the extra parentheses to avoid any confusion.
+  $ make disable-werror.config
+    GEN     Makefile
+  Using .config as base
+  Merging arch/powerpc/configs/disable-werror.config
+  Value of CONFIG_PPC_DISABLE_WERROR is redefined by fragment arch/powerpc/configs/disable-werror.config:
+  Previous value: # CONFIG_PPC_DISABLE_WERROR is not set
+  New value: CONFIG_PPC_DISABLE_WERROR=y
+  ...
+
+  $ grep WERROR .config
+  CONFIG_PPC_DISABLE_WERROR=y
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- drivers/net/ethernet/freescale/ucc_geth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/configs/disable-werror.config | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 arch/powerpc/configs/disable-werror.config
 
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index db791f60b884..d8ad478a0a13 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -1358,7 +1358,7 @@ static int adjust_enet_interface(struct ucc_geth_private *ugeth)
- 	    (ugeth->phy_interface == PHY_INTERFACE_MODE_RTBI)) {
- 		upsmr |= UCC_GETH_UPSMR_TBIM;
- 	}
--	if ((ugeth->phy_interface == PHY_INTERFACE_MODE_SGMII))
-+	if (ugeth->phy_interface == PHY_INTERFACE_MODE_SGMII)
- 		upsmr |= UCC_GETH_UPSMR_SGMM;
- 
- 	out_be32(&uf_regs->upsmr, upsmr);
+diff --git a/arch/powerpc/configs/disable-werror.config b/arch/powerpc/configs/disable-werror.config
+new file mode 100644
+index 000000000000..6ea12a12432c
+--- /dev/null
++++ b/arch/powerpc/configs/disable-werror.config
+@@ -0,0 +1 @@
++CONFIG_PPC_DISABLE_WERROR=y
 -- 
 2.25.1
 
