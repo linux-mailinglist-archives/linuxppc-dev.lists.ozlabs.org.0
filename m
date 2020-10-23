@@ -1,66 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B805296896
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 04:47:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 453D82968AB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 05:14:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CHTCh6RybzDr1N
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 13:47:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CHTq90yN2zDr2k
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 14:14:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=canonical.com
- (client-ip=91.189.89.112; helo=youngberry.canonical.com;
- envelope-from=po-hsu.lin@canonical.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=canonical.com
-Received: from youngberry.canonical.com (youngberry.canonical.com
- [91.189.89.112])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CHTB70yTnzDqwn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 13:45:50 +1100 (AEDT)
-Received: from mail-pf1-f198.google.com ([209.85.210.198])
- by youngberry.canonical.com with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
- (envelope-from <po-hsu.lin@canonical.com>) id 1kVn5P-0006lY-OC
- for linuxppc-dev@lists.ozlabs.org; Fri, 23 Oct 2020 02:45:48 +0000
-Received: by mail-pf1-f198.google.com with SMTP id y7so2546493pff.20
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Oct 2020 19:45:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=w+LvmvsmtGzZ1uHzJzeUdiay07yaHYmlemmh1WTIDHI=;
- b=hamm84z0ILyRmPPFPAhuqY4CR6pDcvFnBmWmXTO3oxl4Uf5kaLjeZT0hXkoX+iqTIO
- oLijgi4ujXdB4NpDOC5LHeL3h5p6a4HnnsFNWfP8XXD3dlR2HsiMnEDwXcCd1h10HJsL
- Cj7B4O10OA19AayVCIf4dnXYCFTIlFG+mDFhl4KtJluW9ZNTy+tHeup2XWmLhHL6NmhI
- vlrCQ6yl/ixCHzZClbkKTkgIkWqMtVRrATAxkTvOU5FCJ4AVncyk/uw5XInVRFvnqYEU
- JFZxtt8bV/WxW6eg5n+4zhxieg86+gyQ1hmSo59P9yEy+HyEUkMwcl7hKeBo1Nu6tTNQ
- 38gw==
-X-Gm-Message-State: AOAM530G4MKsCWNZsxCTh9P5Jchzr1PqaPoi5N5+z39Sd2LG16f5mwUL
- /e/DrSNQbjZr9DmSjE7oN+2BkSL9e7ubC8gaawP4lIce4Bbeseq9DoJUiukTIvgJdQA7BAjRnTy
- XJ/jTscIS6bl6Aug1sd0AJ5rUqCO0aryHD6i+Ge+X/g==
-X-Received: by 2002:aa7:93b6:0:b029:155:3b0b:d47a with SMTP id
- x22-20020aa793b60000b02901553b0bd47amr43920pff.47.1603421146345; 
- Thu, 22 Oct 2020 19:45:46 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyv5aNbWQd3UURPz7hMTf6/sNTaQY+8/+utv3JQsZSdOZBhomxuettop494BLNfghDk6NDxdA==
-X-Received: by 2002:aa7:93b6:0:b029:155:3b0b:d47a with SMTP id
- x22-20020aa793b60000b02901553b0bd47amr43896pff.47.1603421145874; 
- Thu, 22 Oct 2020 19:45:45 -0700 (PDT)
-Received: from Leggiero.taipei.internal (61-220-137-37.HINET-IP.hinet.net.
- [61.220.137.37])
- by smtp.gmail.com with ESMTPSA id b10sm101465pfr.135.2020.10.22.19.45.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Oct 2020 19:45:45 -0700 (PDT)
-From: Po-Hsu Lin <po-hsu.lin@canonical.com>
-To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kselftest@vger.kernel.org, mpe@ellerman.id.au
-Subject: [PATCHv2] selftests/powerpc/eeh: disable kselftest timeout setting
- for eeh-basic
-Date: Fri, 23 Oct 2020 10:45:39 +0800
-Message-Id: <20201023024539.9512-1-po-hsu.lin@canonical.com>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CHTnb5StJzDq7h
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 14:13:07 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=oAtYLZxN; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4CHTnb3vvZz9sSW; Fri, 23 Oct 2020 14:13:07 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4CHTnb3FYjz9sSs; Fri, 23 Oct 2020 14:13:07 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1603422787;
+ bh=8PW9lPGSO52SDim0e8XLAi1br9yNUTulB3fzW95nlEs=;
+ h=From:To:Subject:Date:From;
+ b=oAtYLZxNgk77FLBwhuG2gvpZuRke6pr81+ayhP1MO5daEgpI9wWITEodJOaqwjTHI
+ 1Hi8AYQVUufve/TMIbYLal2yUgno244pMCbEriUwTRHElv/DjZm8Qr4qeM0Qbdyp4x
+ 4y71EkeslUOj16ZFJ3Ecjbd9JdkUlwZpAZ+IJzj6vMr+WjfHdEpMtCpBpr+OsLuZCC
+ KBTvJ9Ok2OGskzg3PR20Qq9RSuXAfJlkB9tqX/VQoTn1l+9FBP0cABoqQnIIemTI1/
+ HTiJbFNeJew0/nqS69Hm8riYWp/Rfzv/8fPcU9r53rtdgdtI7JEKkZDySM5+QMygYG
+ QL5Wj9lEfFe7Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc/ps3: Drop unused DBG macro
+Date: Fri, 23 Oct 2020 14:13:05 +1100
+Message-Id: <20201023031305.3284819-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,52 +55,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: joe.lawrence@redhat.com, mathieu.desnoyers@efficios.com,
- po-hsu.lin@canonical.com, mbenes@suse.cz, shuah@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The eeh-basic test got its own 60 seconds timeout (defined in commit
-414f50434aa2 "selftests/eeh: Bump EEH wait time to 60s") per breakable
-device.
+This DBG macro is unused, and has been unused since the file was
+originally merged into mainline. Just drop it.
 
-And we have discovered that the number of breakable devices varies
-on different hardware. The device recovery time ranges from 0 to 35
-seconds. In our test pool it will take about 30 seconds to run on a
-Power8 system that with 5 breakable devices, 60 seconds to run on a
-Power9 system that with 4 breakable devices.
-
-Extend the timeout setting in the kselftest framework to 5 minutes
-to give it a chance to finish.
-
-Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- tools/testing/selftests/powerpc/eeh/Makefile | 2 +-
- tools/testing/selftests/powerpc/eeh/settings | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/powerpc/eeh/settings
+ arch/powerpc/boot/ps3.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/eeh/Makefile b/tools/testing/selftests/powerpc/eeh/Makefile
-index b397bab..ae963eb 100644
---- a/tools/testing/selftests/powerpc/eeh/Makefile
-+++ b/tools/testing/selftests/powerpc/eeh/Makefile
-@@ -3,7 +3,7 @@ noarg:
- 	$(MAKE) -C ../
+diff --git a/arch/powerpc/boot/ps3.c b/arch/powerpc/boot/ps3.c
+index 6e4efbdb6b7c..f157717ae814 100644
+--- a/arch/powerpc/boot/ps3.c
++++ b/arch/powerpc/boot/ps3.c
+@@ -21,13 +21,6 @@ extern int lv1_get_logical_ppe_id(u64 *out_1);
+ extern int lv1_get_repository_node_value(u64 in_1, u64 in_2, u64 in_3,
+ 	u64 in_4, u64 in_5, u64 *out_1, u64 *out_2);
  
- TEST_PROGS := eeh-basic.sh
--TEST_FILES := eeh-functions.sh
-+TEST_FILES := eeh-functions.sh settings
+-#ifdef DEBUG
+-#define DBG(fmt...) printf(fmt)
+-#else
+-static inline int __attribute__ ((format (printf, 1, 2))) DBG(
+-	const char *fmt, ...) {return 0;}
+-#endif
+-
+ BSS_STACK(4096);
  
- top_srcdir = ../../../../..
- include ../../lib.mk
-diff --git a/tools/testing/selftests/powerpc/eeh/settings b/tools/testing/selftests/powerpc/eeh/settings
-new file mode 100644
-index 0000000..694d707
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/eeh/settings
-@@ -0,0 +1 @@
-+timeout=300
+ /* A buffer that may be edited by tools operating on a zImage binary so as to
 -- 
-2.7.4
+2.25.1
 
