@@ -2,50 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB03297713
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 20:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C975029780C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 22:05:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CHtGM3rRczDqlB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Oct 2020 05:35:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CHwFh3LfQzDr3j
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Oct 2020 07:05:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b42;
+ helo=mail-yb1-xb42.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CHtCj5MH0zDqHG
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Oct 2020 05:33:37 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 09NIREDK014153;
- Fri, 23 Oct 2020 13:27:15 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 09NIRD8Q014147;
- Fri, 23 Oct 2020 13:27:13 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Fri, 23 Oct 2020 13:27:13 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Message-ID: <20201023182713.GG2672@gate.crashing.org>
-References: <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
- <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
- <20201022104805.GA1503673@kroah.com> <20201022121849.GA1664412@kroah.com>
- <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
- <20201022125759.GA1685526@kroah.com> <20201022135036.GA1787470@kroah.com>
- <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com>
- <935f7168-c2f5-dd14-7124-412b284693a2@redhat.com>
- <20201023175857.GA3576660@ZenIV.linux.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201023175857.GA3576660@ZenIV.linux.org.uk>
-User-Agent: Mutt/1.4.2.3i
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Xj60c/JJ; dkim-atps=neutral
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com
+ [IPv6:2607:f8b0:4864:20::b42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CHwCf1ks6zDqNK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Oct 2020 07:03:41 +1100 (AEDT)
+Received: by mail-yb1-xb42.google.com with SMTP id n142so2184340ybf.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 13:03:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=8sL+bG1sqMHkQncq4Op9T7TZBeUfdZ7Ectn5rHvgjdY=;
+ b=Xj60c/JJiEUDW/nQi3Zu+winDPCU+pFOwg1VSiH62tOwtrW0i290GH3JwGZoUHZtHx
+ XEOVI9KFxHSDicwA4vd4noZJQ+so5tQXC0QJyXjTWr1ow/eTB4f5cmXelY1eRlb0gBIo
+ ZqLoO4rDTAMJqkTWSgCrxVbJxNDPkMtHvkhAIP1XWzzJuOwZHWdLzg+QdmK5ya3OFtM+
+ BwZIsRINJCFWoe+7Wa3TElK8sun3aT/up/nWATxpHQ76pVdK3tpxCiCJdUIhJpuBgzVT
+ 7YyoPAPskCWXzrVJvp3/+nZTacsRulzLpUSWSLojruskOlI8mKTl6TDU58lPZaIrYoxX
+ q/Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=8sL+bG1sqMHkQncq4Op9T7TZBeUfdZ7Ectn5rHvgjdY=;
+ b=qFqoSnpD5+458yRxT3K/QNyZMzIVlT5DfG4f95C+VqO1zXdq/eG8dL/cENGLeOTP/R
+ pmJU0pGG8aH0iNyehp26bTsP/Rcezv2v/bz3tN5MsBXMEupEO6N7NauBXRArkbok5+u5
+ TfrtYVAsUoFdJ/RTnzz69UrCVuuEIhhvkPiI+gDdW2mUf4kEwAyOZwsbBXo93OOZP8w6
+ VjEOaTKPtTtILvxyC9tastt9Ncit7asBHyC2OocXLTKqGaYdWvvcFtEWX4+oPSSWeYHD
+ 7GxDWQsPB7RvOlD7IpE+HRv8t6bWDxkd0eTu9WvmGyPKd1C0WVZc0hT0nPIIHTPtA8Km
+ dKPQ==
+X-Gm-Message-State: AOAM531GersvowbP4K5iSEMxwJGhOSiPLarYgAC0e+oOnzdEqklfdJQ9
+ 8rnoA9A6NZQmIJjJ1BMeHnvBshSOQd8j4FOJLc0=
+X-Google-Smtp-Source: ABdhPJz5KsCW+JmSszBCoUsaIbeELOddhzELtCYLQyx0ud6rdY/6qViPIMKZAHt7zz9Jqh/2BWGpqAnhIQcbfduu2Uc=
+X-Received: by 2002:a25:ae97:: with SMTP id b23mr6341309ybj.26.1603483414252; 
+ Fri, 23 Oct 2020 13:03:34 -0700 (PDT)
+MIME-Version: 1.0
+References: <fe8abcc88cff676ead8ee48db1e993e63b0611c7.1603327264.git.joe@perches.com>
+ <CANiq72nfHjXkN65jy+unz0k66qvAALNhhhDZsxqPRLdtLKOW_Q@mail.gmail.com>
+ <64b49cd3680f45808dad286b408e7b196c31ec79.camel@perches.com>
+In-Reply-To: <64b49cd3680f45808dad286b408e7b196c31ec79.camel@perches.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 23 Oct 2020 22:03:23 +0200
+Message-ID: <CANiq72=AneP9=NBFpE2eFzqsYnQxEVjxHQQYSybBCeh6_vWHMg@mail.gmail.com>
+Subject: Re: [PATCH] treewide: Convert macro and uses of __section(foo) to
+ __section("foo")
+To: Joe Perches <joe@perches.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,70 +75,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-aio@kvack.org" <linux-aio@kvack.org>,
- David Hildenbrand <david@redhat.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- David Howells <dhowells@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "kernel-team@android.com" <kernel-team@android.com>,
- Arnd Bergmann <arnd@arndb.de>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Jens Axboe <axboe@kernel.dk>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- 'Greg KH' <gregkh@linuxfoundation.org>,
+Cc: clang-built-linux <clang-built-linux@googlegroups.com>,
  Nick Desaulniers <ndesaulniers@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- David Laight <David.Laight@aculab.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 23, 2020 at 06:58:57PM +0100, Al Viro wrote:
-> On Fri, Oct 23, 2020 at 03:09:30PM +0200, David Hildenbrand wrote:
-> 
-> > Now, I am not a compiler expert, but as I already cited, at least on
-> > x86-64 clang expects that the high bits were cleared by the caller - in
-> > contrast to gcc. I suspect it's the same on arm64, but again, I am no
-> > compiler expert.
-> > 
-> > If what I said and cites for x86-64 is correct, if the function expects
-> > an "unsigned int", it will happily use 64bit operations without further
-> > checks where valid when assuming high bits are zero. That's why even
-> > converting everything to "unsigned int" as proposed by me won't work on
-> > clang - it assumes high bits are zero (as indicated by Nick).
-> > 
-> > As I am neither a compiler experts (did I mention that already? ;) ) nor
-> > an arm64 experts, I can't tell if this is a compiler BUG or not.
-> 
-> On arm64 when callee expects a 32bit argument, the caller is *not* responsible
-> for clearing the upper half of 64bit register used to pass the value - it only
-> needs to store the actual value into the lower half.  The callee must consider
-> the contents of the upper half of that register as undefined.  See AAPCS64 (e.g.
-> https://github.com/ARM-software/abi-aa/blob/master/aapcs64/aapcs64.rst#parameter-passing-rules
-> ); AFAICS, the relevant bit is
-> 	"Unlike in the 32-bit AAPCS, named integral values must be narrowed by
-> the callee rather than the caller."
+On Fri, Oct 23, 2020 at 10:03 AM Joe Perches <joe@perches.com> wrote:
+>
+> Thanks Miguel, but IMO it doesn't need time in next.
 
-Or the formal rule:
+You're welcome! It never hurts to keep things for a bit there.
 
-C.9 	If the argument is an Integral or Pointer Type, the size of the
-	argument is less than or equal to 8 bytes and the NGRN is less
-	than 8, the argument is copied to the least significant bits in
-	x[NGRN]. The NGRN is incremented by one. The argument has now
-	been allocated.
+> Applying it just before an rc1 minimizes conflicts.
 
+There shouldn't be many conflicts after -rc1. The amount of changes is
+reasonable too, so no need to apply the script directly. In any case,
+if you prefer that Linus picks it up himself right away for this -rc1,
+it looks good to me (with the caveat that it isn't tested):
 
-Segher
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+
+Cheers,
+Miguel
