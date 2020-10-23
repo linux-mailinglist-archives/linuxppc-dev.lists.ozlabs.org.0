@@ -2,64 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A7C296F3D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 14:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 716D5296FB3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 14:49:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CHkB822tKzDr2N
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 23:31:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CHkZD1jbkzDqng
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 23:49:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CHk7H0nvtzDqwb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 23:29:07 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CHk722DKjz9v0CW;
- Fri, 23 Oct 2020 14:29:02 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 4Bi4vCxJo23W; Fri, 23 Oct 2020 14:29:02 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CHk720T1Pz9v0CM;
- Fri, 23 Oct 2020 14:29:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4193D8B86A;
- Fri, 23 Oct 2020 14:29:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id tdfQKIjC4FR2; Fri, 23 Oct 2020 14:29:03 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 341098B85E;
- Fri, 23 Oct 2020 14:29:02 +0200 (CEST)
-Subject: Re: [PATCH] x86/mpx: fix recursive munmap() corruption
-To: Laurent Dufour <ldufour@linux.vnet.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20190401141549.3F4721FE@viggo.jf.intel.com>
- <alpine.DEB.2.21.1904191248090.3174@nanos.tec.linutronix.de>
- <87d0lht1c0.fsf@concordia.ellerman.id.au>
- <6718ede2-1fcb-1a8f-a116-250eef6416c7@linux.vnet.ibm.com>
- <4f43d4d4-832d-37bc-be7f-da0da735bbec@intel.com>
- <4e1bbb14-e14f-8643-2072-17b4cdef5326@linux.vnet.ibm.com>
- <87k1faa2i0.fsf@concordia.ellerman.id.au>
- <9c2b2826-4083-fc9c-5a4d-c101858dd560@linux.vnet.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <12313ba8-75b5-d44d-dbc0-0bf2c87dfb59@csgroup.eu>
-Date: Fri, 23 Oct 2020 14:28:52 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CHkWX0pLFzDr1F
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 23:46:45 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-256-SaM_0Qo5N_as2A7LuQL-Wg-1; Fri, 23 Oct 2020 13:46:37 +0100
+X-MC-Unique: SaM_0Qo5N_as2A7LuQL-Wg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Fri, 23 Oct 2020 13:46:36 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Fri, 23 Oct 2020 13:46:36 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Greg KH' <gregkh@linuxfoundation.org>, David Hildenbrand
+ <david@redhat.com>
+Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Thread-Index: AQHWqE5GNDfnH4y9nkGWtfqJueR1KKmjTCJQgAAN4UiAAAD2IIAASOeCgAF+12A=
+Date: Fri, 23 Oct 2020 12:46:36 +0000
+Message-ID: <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com>
+References: <df2e0758-b8ed-5aec-6adc-a18f499c0179@redhat.com>
+ <20201022090155.GA1483166@kroah.com>
+ <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
+ <a1533569-948a-1d5b-e231-5531aa988047@redhat.com>
+ <bc0a091865f34700b9df332c6e9dcdfd@AcuMS.aculab.com>
+ <5fd6003b-55a6-2c3c-9a28-8fd3a575ca78@redhat.com>
+ <20201022104805.GA1503673@kroah.com> <20201022121849.GA1664412@kroah.com>
+ <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
+ <20201022125759.GA1685526@kroah.com> <20201022135036.GA1787470@kroah.com>
+In-Reply-To: <20201022135036.GA1787470@kroah.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-In-Reply-To: <9c2b2826-4083-fc9c-5a4d-c101858dd560@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,76 +75,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mhocko@suse.com, rguenther@suse.de, linux-mm@kvack.org,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Dave Hansen <dave.hansen@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- luto@amacapital.net, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>, vbabka@suse.cz
+Cc: "linux-aio@kvack.org" <linux-aio@kvack.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "kernel-team@android.com" <kernel-team@android.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Jens Axboe <axboe@kernel.dk>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Laurent
+From: Greg KH <gregkh@linuxfoundation.org>
+> Sent: 22 October 2020 14:51
 
-Le 07/05/2019 à 18:35, Laurent Dufour a écrit :
-> Le 01/05/2019 à 12:32, Michael Ellerman a écrit :
->> Laurent Dufour <ldufour@linux.vnet.ibm.com> writes:
->>> Le 23/04/2019 à 18:04, Dave Hansen a écrit :
->>>> On 4/23/19 4:16 AM, Laurent Dufour wrote:
->> ...
->>>>> There are 2 assumptions here:
->>>>>    1. 'start' and 'end' are page aligned (this is guaranteed by __do_munmap().
->>>>>    2. the VDSO is 1 page (this is guaranteed by the union vdso_data_store on powerpc)
->>>>
->>>> Are you sure about #2?  The 'vdso64_pages' variable seems rather
->>>> unnecessary if the VDSO is only 1 page. ;)
->>>
->>> Hum, not so sure now ;)
->>> I got confused, only the header is one page.
->>> The test is working as a best effort, and don't cover the case where
->>> only few pages inside the VDSO are unmmapped (start >
->>> mm->context.vdso_base). This is not what CRIU is doing and so this was
->>> enough for CRIU support.
->>>
->>> Michael, do you think there is a need to manage all the possibility
->>> here, since the only user is CRIU and unmapping the VDSO is not a so
->>> good idea for other processes ?
->>
->> Couldn't we implement the semantic that if any part of the VDSO is
->> unmapped then vdso_base is set to zero? That should be fairly easy, eg:
->>
->>     if (start < vdso_end && end >= mm->context.vdso_base)
->>         mm->context.vdso_base = 0;
->>
->>
->> We might need to add vdso_end to the mm->context, but that should be OK.
->>
->> That seems like it would work for CRIU and make sense in general?
-> 
-> Sorry for the late answer, yes this would make more sense.
-> 
-> Here is a patch doing that.
-> 
+I've rammed the code into godbolt.
 
-In your patch, the test seems overkill:
+https://godbolt.org/z/9v5PPW
 
-+	if ((start <= vdso_base && vdso_end <= end) ||  /* 1   */
-+	    (vdso_base <= start && start < vdso_end) || /* 3,4 */
-+	    (vdso_base < end && end <= vdso_end))       /* 2,3 */
-+		mm->context.vdso_base = mm->context.vdso_end = 0;
+Definitely a clang bug.
 
-What about
+Search for [wx]24 in the clang output.
+nr_segs comes in as w2 and the initial bound checks are done on w2.
+w24 is loaded from w2 - I don't believe this changes the high bits.
+There are no references to w24, just x24.
+So the kmalloc_array() is passed 'huge' and will fail.
+The iov_iter_init also gets the 64bit value.
 
-	if (start < vdso_end && vdso_start < end)
-		mm->context.vdso_base = mm->context.vdso_end = 0;
+Note that the gcc code has a sign-extend copy of w2.
 
-This should cover all cases, or am I missing something ?
+=09David
 
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
-And do we really need to store vdso_end in the context ?
-I think it should be possible to re-calculate it: the size of the VDSO should be (&vdso32_end - 
-&vdso32_start) + PAGE_SIZE for 32 bits VDSO, and (&vdso64_end - &vdso64_start) + PAGE_SIZE for the 
-64 bits VDSO.
-
-Christophe
