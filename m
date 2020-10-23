@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF84296E1F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 14:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A7C296F3D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 14:31:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CHjVW612FzDqyX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 23:00:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CHkB822tKzDr2N
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 23:31:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,48 +17,46 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CHjRj07QFzDqss
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 22:58:20 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CHk7H0nvtzDqwb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 23:29:07 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CHjRV0CCKz9v03C;
- Fri, 23 Oct 2020 13:58:14 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4CHk722DKjz9v0CW;
+ Fri, 23 Oct 2020 14:29:02 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 7G-FT5rRhz1r; Fri, 23 Oct 2020 13:58:13 +0200 (CEST)
+ with ESMTP id 4Bi4vCxJo23W; Fri, 23 Oct 2020 14:29:02 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CHjRT6NvJz9v036;
- Fri, 23 Oct 2020 13:58:13 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CHk720T1Pz9v0CM;
+ Fri, 23 Oct 2020 14:29:02 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4B5098B869;
- Fri, 23 Oct 2020 13:58:15 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4193D8B86A;
+ Fri, 23 Oct 2020 14:29:03 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 1m4yl6SK3FoB; Fri, 23 Oct 2020 13:58:15 +0200 (CEST)
+ with ESMTP id tdfQKIjC4FR2; Fri, 23 Oct 2020 14:29:03 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 73E308B85E;
- Fri, 23 Oct 2020 13:58:14 +0200 (CEST)
-Subject: Re: [PATCH v8 2/8] powerpc/vdso: Remove __kernel_datapage_offset and
- simplify __get_datapage()
-To: Will Deacon <will@kernel.org>
-References: <87wo34tbas.fsf@mpe.ellerman.id.au>
- <2f9b7d02-9e2f-4724-2608-c5573f6507a2@csgroup.eu>
- <6862421a-5a14-2e38-b825-e39e6ad3d51d@csgroup.eu>
- <87imd5h5kb.fsf@mpe.ellerman.id.au>
- <CAJwJo6ZANqYkSHbQ+3b+Fi_VT80MtrzEV5yreQAWx-L8j8x2zA@mail.gmail.com>
- <87a6yf34aj.fsf@mpe.ellerman.id.au> <20200921112638.GC2139@willie-the-truck>
- <ad72ffd3-a552-cc98-7545-d30285fd5219@csgroup.eu>
- <542145eb-7d90-0444-867e-c9cbb6bdd8e3@gmail.com>
- <ba9861da-2f5b-a649-5626-af00af634546@csgroup.eu>
- <20201023112514.GE20933@willie-the-truck>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 341098B85E;
+ Fri, 23 Oct 2020 14:29:02 +0200 (CEST)
+Subject: Re: [PATCH] x86/mpx: fix recursive munmap() corruption
+To: Laurent Dufour <ldufour@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20190401141549.3F4721FE@viggo.jf.intel.com>
+ <alpine.DEB.2.21.1904191248090.3174@nanos.tec.linutronix.de>
+ <87d0lht1c0.fsf@concordia.ellerman.id.au>
+ <6718ede2-1fcb-1a8f-a116-250eef6416c7@linux.vnet.ibm.com>
+ <4f43d4d4-832d-37bc-be7f-da0da735bbec@intel.com>
+ <4e1bbb14-e14f-8643-2072-17b4cdef5326@linux.vnet.ibm.com>
+ <87k1faa2i0.fsf@concordia.ellerman.id.au>
+ <9c2b2826-4083-fc9c-5a4d-c101858dd560@linux.vnet.ibm.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <284cacf4-9811-4b67-385c-2783a7cd9b31@csgroup.eu>
-Date: Fri, 23 Oct 2020 13:57:47 +0200
+Message-ID: <12313ba8-75b5-d44d-dbc0-0bf2c87dfb59@csgroup.eu>
+Date: Fri, 23 Oct 2020 14:28:52 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.1
 MIME-Version: 1.0
-In-Reply-To: <20201023112514.GE20933@willie-the-truck>
+In-Reply-To: <9c2b2826-4083-fc9c-5a4d-c101858dd560@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -73,56 +71,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, linux-arch <linux-arch@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Dmitry Safonov <0x7f454c46@gmail.com>,
- open list <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: mhocko@suse.com, rguenther@suse.de, linux-mm@kvack.org,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ luto@amacapital.net, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>, vbabka@suse.cz
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Laurent
 
-
-Le 23/10/2020 à 13:25, Will Deacon a écrit :
-> On Fri, Oct 23, 2020 at 01:22:04PM +0200, Christophe Leroy wrote:
->> Hi Dmitry,
->>
->> Le 28/09/2020 à 17:08, Dmitry Safonov a écrit :
->>> On 9/27/20 8:43 AM, Christophe Leroy wrote:
+Le 07/05/2019 à 18:35, Laurent Dufour a écrit :
+> Le 01/05/2019 à 12:32, Michael Ellerman a écrit :
+>> Laurent Dufour <ldufour@linux.vnet.ibm.com> writes:
+>>> Le 23/04/2019 à 18:04, Dave Hansen a écrit :
+>>>> On 4/23/19 4:16 AM, Laurent Dufour wrote:
+>> ...
+>>>>> There are 2 assumptions here:
+>>>>>    1. 'start' and 'end' are page aligned (this is guaranteed by __do_munmap().
+>>>>>    2. the VDSO is 1 page (this is guaranteed by the union vdso_data_store on powerpc)
 >>>>
->>>>
->>>> Le 21/09/2020 à 13:26, Will Deacon a écrit :
->>>>> On Fri, Aug 28, 2020 at 12:14:28PM +1000, Michael Ellerman wrote:
->>>>>> Dmitry Safonov <0x7f454c46@gmail.com> writes:
->>> [..]
->>>>>>> I'll cook a patch for vm_special_mapping if you don't mind :-)
->>>>>>
->>>>>> That would be great, thanks!
->>>>>
->>>>> I lost track of this one. Is there a patch kicking around to resolve
->>>>> this,
->>>>> or is the segfault expected behaviour?
->>>>>
->>>>
->>>> IIUC dmitry said he will cook a patch. I have not seen any patch yet.
+>>>> Are you sure about #2?  The 'vdso64_pages' variable seems rather
+>>>> unnecessary if the VDSO is only 1 page. ;)
 >>>
->>> Yes, sorry about the delay - I was a bit busy with xfrm patches.
+>>> Hum, not so sure now ;)
+>>> I got confused, only the header is one page.
+>>> The test is working as a best effort, and don't cover the case where
+>>> only few pages inside the VDSO are unmmapped (start >
+>>> mm->context.vdso_base). This is not what CRIU is doing and so this was
+>>> enough for CRIU support.
 >>>
->>> I'll send patches for .close() this week, working on them now.
+>>> Michael, do you think there is a need to manage all the possibility
+>>> here, since the only user is CRIU and unmapping the VDSO is not a so
+>>> good idea for other processes ?
 >>
->> I haven't seen the patches, did you sent them out finally ?
+>> Couldn't we implement the semantic that if any part of the VDSO is
+>> unmapped then vdso_base is set to zero? That should be fairly easy, eg:
+>>
+>>     if (start < vdso_end && end >= mm->context.vdso_base)
+>>         mm->context.vdso_base = 0;
+>>
+>>
+>> We might need to add vdso_end to the mm->context, but that should be OK.
+>>
+>> That seems like it would work for CRIU and make sense in general?
 > 
-> I think it's this series:
+> Sorry for the late answer, yes this would make more sense.
 > 
-> https://lore.kernel.org/r/20201013013416.390574-1-dima@arista.com
-> 
-> but they look really invasive to me, so I may cook a small hack for arm64
-> in the meantine / for stable.
+> Here is a patch doing that.
 > 
 
-Not sure we are talking about the same thing.
+In your patch, the test seems overkill:
 
-I can't see any new .close function added to vm_special_mapping in order to replace arch_unmap() hook.
++	if ((start <= vdso_base && vdso_end <= end) ||  /* 1   */
++	    (vdso_base <= start && start < vdso_end) || /* 3,4 */
++	    (vdso_base < end && end <= vdso_end))       /* 2,3 */
++		mm->context.vdso_base = mm->context.vdso_end = 0;
+
+What about
+
+	if (start < vdso_end && vdso_start < end)
+		mm->context.vdso_base = mm->context.vdso_end = 0;
+
+This should cover all cases, or am I missing something ?
+
+
+And do we really need to store vdso_end in the context ?
+I think it should be possible to re-calculate it: the size of the VDSO should be (&vdso32_end - 
+&vdso32_start) + PAGE_SIZE for 32 bits VDSO, and (&vdso64_end - &vdso64_start) + PAGE_SIZE for the 
+64 bits VDSO.
 
 Christophe
