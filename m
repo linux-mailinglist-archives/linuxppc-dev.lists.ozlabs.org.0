@@ -2,48 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453D82968AB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 05:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 490752968B9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 05:22:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CHTq90yN2zDr2k
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 14:14:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CHV0J2QDQzDr1F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 14:22:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CHTnb5StJzDq7h
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 14:13:07 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=telegraphics.com.au (client-ip=98.124.60.144;
+ helo=kvm5.telegraphics.com.au; envelope-from=fthain@telegraphics.com.au;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=oAtYLZxN; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4CHTnb3vvZz9sSW; Fri, 23 Oct 2020 14:13:07 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4CHTnb3FYjz9sSs; Fri, 23 Oct 2020 14:13:07 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1603422787;
- bh=8PW9lPGSO52SDim0e8XLAi1br9yNUTulB3fzW95nlEs=;
- h=From:To:Subject:Date:From;
- b=oAtYLZxNgk77FLBwhuG2gvpZuRke6pr81+ayhP1MO5daEgpI9wWITEodJOaqwjTHI
- 1Hi8AYQVUufve/TMIbYLal2yUgno244pMCbEriUwTRHElv/DjZm8Qr4qeM0Qbdyp4x
- 4y71EkeslUOj16ZFJ3Ecjbd9JdkUlwZpAZ+IJzj6vMr+WjfHdEpMtCpBpr+OsLuZCC
- KBTvJ9Ok2OGskzg3PR20Qq9RSuXAfJlkB9tqX/VQoTn1l+9FBP0cABoqQnIIemTI1/
- HTiJbFNeJew0/nqS69Hm8riYWp/Rfzv/8fPcU9r53rtdgdtI7JEKkZDySM5+QMygYG
- QL5Wj9lEfFe7Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/ps3: Drop unused DBG macro
-Date: Fri, 23 Oct 2020 14:13:05 +1100
-Message-Id: <20201023031305.3284819-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ header.from=telegraphics.com.au
+Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
+ [98.124.60.144])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CHTyq2NM0zDqxX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Oct 2020 14:21:07 +1100 (AEDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+ by kvm5.telegraphics.com.au (Postfix) with ESMTP id 4933A20696;
+ Thu, 22 Oct 2020 23:21:01 -0400 (EDT)
+Date: Fri, 23 Oct 2020 14:21:11 +1100 (AEDT)
+From: Finn Thain <fthain@telegraphics.com.au>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH] serial: pmac_zilog: don't init if zilog is not available
+In-Reply-To: <CAMuHMdVbo2C1yZ5E_A3L8J1zZigO8i8m5AFUTn9SjbY1sx16kA@mail.gmail.com>
+Message-ID: <alpine.LNX.2.23.453.2010231412260.6@nippy.intranet>
+References: <20201020162303.1730562-1-laurent@vivier.eu>
+ <20201020162844.GA865546@kroah.com>
+ <468bbbef-4745-3b16-b6f4-30b46ebcdc33@vivier.eu>
+ <20201020173745.GA882703@kroah.com>
+ <387fd2aa-b181-c41f-0581-0a7e79a44e41@vivier.eu>
+ <20201020183246.GA912431@kroah.com>
+ <b52e7fde-8874-3c53-ca13-7709656b69fb@vivier.eu>
+ <20201020224446.GA15066@allandria.com>
+ <alpine.LNX.2.23.453.2010211038390.6@nippy.intranet>
+ <311d17ed-75fa-a7fe-6c70-177a6eec4519@vivier.eu>
+ <alpine.LNX.2.23.453.2010221347000.6@nippy.intranet>
+ <CAMuHMdVbo2C1yZ5E_A3L8J1zZigO8i8m5AFUTn9SjbY1sx16kA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,36 +53,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Laurent Vivier <laurent@vivier.eu>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+ Brad Boyer <brad@allandria.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This DBG macro is unused, and has been unused since the file was
-originally merged into mainline. Just drop it.
+On Thu, 22 Oct 2020, Geert Uytterhoeven wrote:
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/boot/ps3.c | 7 -------
- 1 file changed, 7 deletions(-)
+> 
+> Thanks for your patch...
+> 
 
-diff --git a/arch/powerpc/boot/ps3.c b/arch/powerpc/boot/ps3.c
-index 6e4efbdb6b7c..f157717ae814 100644
---- a/arch/powerpc/boot/ps3.c
-+++ b/arch/powerpc/boot/ps3.c
-@@ -21,13 +21,6 @@ extern int lv1_get_logical_ppe_id(u64 *out_1);
- extern int lv1_get_repository_node_value(u64 in_1, u64 in_2, u64 in_3,
- 	u64 in_4, u64 in_5, u64 *out_1, u64 *out_2);
- 
--#ifdef DEBUG
--#define DBG(fmt...) printf(fmt)
--#else
--static inline int __attribute__ ((format (printf, 1, 2))) DBG(
--	const char *fmt, ...) {return 0;}
--#endif
--
- BSS_STACK(4096);
- 
- /* A buffer that may be edited by tools operating on a zImage binary so as to
--- 
-2.25.1
+You're welcome.
 
+> I can't say I'm a fan of this...
+> 
+
+Sorry.
+
+> 
+> The real issue is this "extern struct platform_device scc_a_pdev, 
+> scc_b_pdev", circumventing the driver framework.
+> 
+> Can we get rid of that?
+> 
+
+Is there a better alternative?
+
+pmz_probe() is called by console_initcall(pmz_console_init) when 
+CONFIG_SERIAL_PMACZILOG_CONSOLE=y because this has to happen earlier than 
+the normal platform bus probing which takes place later as a typical 
+module_initcall.
