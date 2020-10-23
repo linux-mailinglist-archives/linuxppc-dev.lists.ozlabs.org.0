@@ -2,69 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BE7297164
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 16:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E55297182
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Oct 2020 16:41:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CHmxc0j6xzDr1Z
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Oct 2020 01:36:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CHn3P4cZnzDr2w
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Oct 2020 01:41:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=63.128.21.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=RgZTviaS; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=RgZTviaS; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [63.128.21.124])
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CHmtW1BFDzDqL9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Oct 2020 01:33:20 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1603463597;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CNcKkabSWjxdlB9if9c65y0HaLkS2aARxhdVq9CbB84=;
- b=RgZTviaSdR7S1v4WSyKdNXpiKR0I4cepr4PlzBtm5onpd8D7rJQRtG2Kp+M+5C3QH071E2
- 7TdyG7+xrdM3VPZ/s0rd0RzlvJXgV5gVAdxhqJrdLC4Fz40jeglMuAEkWekJR4eVPuIISS
- WKns5e8z61xA4dR83ldxpS/D5/c9cbI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1603463597;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CNcKkabSWjxdlB9if9c65y0HaLkS2aARxhdVq9CbB84=;
- b=RgZTviaSdR7S1v4WSyKdNXpiKR0I4cepr4PlzBtm5onpd8D7rJQRtG2Kp+M+5C3QH071E2
- 7TdyG7+xrdM3VPZ/s0rd0RzlvJXgV5gVAdxhqJrdLC4Fz40jeglMuAEkWekJR4eVPuIISS
- WKns5e8z61xA4dR83ldxpS/D5/c9cbI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-106-GwdqF8yrPV2_n9bqFnB1rQ-1; Fri, 23 Oct 2020 10:33:12 -0400
-X-MC-Unique: GwdqF8yrPV2_n9bqFnB1rQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8331C804B6A;
- Fri, 23 Oct 2020 14:33:09 +0000 (UTC)
-Received: from [10.36.114.18] (ovpn-114-18.ams2.redhat.com [10.36.114.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 44FD05D9CC;
- Fri, 23 Oct 2020 14:33:04 +0000 (UTC)
-Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CHn1d1p35zDr1S
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Oct 2020 01:39:31 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-94-BnOzH0BRP8eF_eSYWlr_bA-1; Fri, 23 Oct 2020 15:39:25 +0100
+X-MC-Unique: BnOzH0BRP8eF_eSYWlr_bA-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Fri, 23 Oct 2020 15:39:24 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Fri, 23 Oct 2020 15:39:24 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'David Hildenbrand' <david@redhat.com>, 'Greg KH'
+ <gregkh@linuxfoundation.org>
+Subject: RE: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
  rw_copy_check_uvector() into lib/iov_iter.c"
-From: David Hildenbrand <david@redhat.com>
-To: David Laight <David.Laight@ACULAB.COM>,
- 'Greg KH' <gregkh@linuxfoundation.org>
+Thread-Topic: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Thread-Index: AQHWqE5GNDfnH4y9nkGWtfqJueR1KKmjTCJQgAAN4UiAAAD2IIAASOeCgAF+12CAAB+UKYAAAQNg
+Date: Fri, 23 Oct 2020 14:39:24 +0000
+Message-ID: <35d0ec90ef4f4a35a75b9df7d791f719@AcuMS.aculab.com>
 References: <df2e0758-b8ed-5aec-6adc-a18f499c0179@redhat.com>
  <20201022090155.GA1483166@kroah.com>
  <e04d0c5d-e834-a15b-7844-44dcc82785cc@redhat.com>
@@ -76,17 +52,21 @@ References: <df2e0758-b8ed-5aec-6adc-a18f499c0179@redhat.com>
  <20201022125759.GA1685526@kroah.com> <20201022135036.GA1787470@kroah.com>
  <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com>
  <935f7168-c2f5-dd14-7124-412b284693a2@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <999e2926-9a75-72fd-007a-1de0af341292@redhat.com>
-Date: Fri, 23 Oct 2020 16:33:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+ <999e2926-9a75-72fd-007a-1de0af341292@redhat.com>
+In-Reply-To: <999e2926-9a75-72fd-007a-1de0af341292@redhat.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-In-Reply-To: <935f7168-c2f5-dd14-7124-412b284693a2@redhat.com>
-Content-Type: text/plain; charset=utf-8
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -127,55 +107,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 23.10.20 15:09, David Hildenbrand wrote:
-> On 23.10.20 14:46, David Laight wrote:
->> From: Greg KH <gregkh@linuxfoundation.org>
->>> Sent: 22 October 2020 14:51
->>
->> I've rammed the code into godbolt.
->>
->> https://godbolt.org/z/9v5PPW
->>
->> Definitely a clang bug.
->>
->> Search for [wx]24 in the clang output.
->> nr_segs comes in as w2 and the initial bound checks are done on w2.
->> w24 is loaded from w2 - I don't believe this changes the high bits.
->> There are no references to w24, just x24.
->> So the kmalloc_array() is passed 'huge' and will fail.
->> The iov_iter_init also gets the 64bit value.
->>
->> Note that the gcc code has a sign-extend copy of w2.
-> 
-> Do we have a result from using "unsigned long" in the base function and
-> explicitly masking of the high bits? That should definitely work.
-> 
-> Now, I am not a compiler expert, but as I already cited, at least on
-> x86-64 clang expects that the high bits were cleared by the caller - in
-> contrast to gcc. I suspect it's the same on arm64, but again, I am no
-> compiler expert.
-> 
-> If what I said and cites for x86-64 is correct, if the function expects
-> an "unsigned int", it will happily use 64bit operations without further
-> checks where valid when assuming high bits are zero. That's why even
-> converting everything to "unsigned int" as proposed by me won't work on
-> clang - it assumes high bits are zero (as indicated by Nick).
-> 
-> As I am neither a compiler experts (did I mention that already? ;) ) nor
-> an arm64 experts, I can't tell if this is a compiler BUG or not.
-> 
-
-I just checked against upstream code generated by clang 10 and it
-properly discards the upper 32bit via a mov w23 w2.
-
-So at least clang 10 indeed properly assumes we could have garbage and
-masks it off.
-
-Maybe the issue is somewhere else, unrelated to nr_pages ... or clang 11
-behaves differently.
-
--- 
-Thanks,
-
-David / dhildenb
+RnJvbTogRGF2aWQgSGlsZGVuYnJhbmQNCj4gU2VudDogMjMgT2N0b2JlciAyMDIwIDE1OjMzDQou
+Li4NCj4gSSBqdXN0IGNoZWNrZWQgYWdhaW5zdCB1cHN0cmVhbSBjb2RlIGdlbmVyYXRlZCBieSBj
+bGFuZyAxMCBhbmQgaXQNCj4gcHJvcGVybHkgZGlzY2FyZHMgdGhlIHVwcGVyIDMyYml0IHZpYSBh
+IG1vdiB3MjMgdzIuDQo+IA0KPiBTbyBhdCBsZWFzdCBjbGFuZyAxMCBpbmRlZWQgcHJvcGVybHkg
+YXNzdW1lcyB3ZSBjb3VsZCBoYXZlIGdhcmJhZ2UgYW5kDQo+IG1hc2tzIGl0IG9mZi4NCj4gDQo+
+IE1heWJlIHRoZSBpc3N1ZSBpcyBzb21ld2hlcmUgZWxzZSwgdW5yZWxhdGVkIHRvIG5yX3BhZ2Vz
+IC4uLiBvciBjbGFuZyAxMQ0KPiBiZWhhdmVzIGRpZmZlcmVudGx5Lg0KDQpXZSdsbCBuZWVkIHRo
+ZSBkaXNhc3NlbWJseSBmcm9tIGEgZmFpbGluZyBrZXJuZWwgaW1hZ2UuDQpJdCBpc24ndCB0aGF0
+IGJpZyB0byBoYW5kIGFubm90YXRlLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNz
+IExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAx
+UFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
 
