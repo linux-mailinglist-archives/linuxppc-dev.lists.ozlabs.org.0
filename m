@@ -1,75 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF606297C11
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Oct 2020 13:19:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 053CF297DC7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Oct 2020 19:37:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CJJXJ2zlxzDqpk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Oct 2020 22:19:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CJSwF1whVzDqs3
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Oct 2020 04:37:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CJJTC4zmszDqTD
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Oct 2020 22:16:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4CJJTC2FCXz8tFl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Oct 2020 22:16:47 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4CJJTC1872z9sV7; Sat, 24 Oct 2020 22:16:47 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4CJJT8555Bz9sV0
- for <linuxppc-dev@ozlabs.org>; Sat, 24 Oct 2020 22:16:37 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CJJSv6r9dz9tyWt;
- Sat, 24 Oct 2020 13:16:31 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id HJ8MCfGbOvBC; Sat, 24 Oct 2020 13:16:31 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CJJSv57hSz9tyWs;
- Sat, 24 Oct 2020 13:16:31 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0FA6C8B78E;
- Sat, 24 Oct 2020 13:16:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 70EkutQL3fPr; Sat, 24 Oct 2020 13:16:32 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 95EC38B75E;
- Sat, 24 Oct 2020 13:16:32 +0200 (CEST)
-Subject: Re: C vdso
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <20200916165516.Horde.uocmo3irPb7BMg__NUSqRA9@messagerie.si.c-s.fr>
- <87r1r0oa4o.fsf@mpe.ellerman.id.au>
- <cc532aa8-a9e0-a105-b7b1-ee8d723b7ed6@csgroup.eu>
- <be21c7c8-6828-b757-064d-20f74e5c1a31@csgroup.eu>
- <877drhxeg8.fsf@mpe.ellerman.id.au> <874kmkx7gi.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <521fae8b-7c43-a87c-ab02-f4d027cff7fa@csgroup.eu>
-Date: Sat, 24 Oct 2020 13:16:21 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
-MIME-Version: 1.0
-In-Reply-To: <874kmkx7gi.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CJStK3xjxzDqpy
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Oct 2020 04:35:37 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 09OHTAUE029400;
+ Sat, 24 Oct 2020 12:29:10 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 09OHT4g2029397;
+ Sat, 24 Oct 2020 12:29:04 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Sat, 24 Oct 2020 12:29:03 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: David Laight <David.Laight@aculab.com>
+Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
+ rw_copy_check_uvector() into lib/iov_iter.c"
+Message-ID: <20201024172903.GK2672@gate.crashing.org>
+References: <20201022104805.GA1503673@kroah.com>
+ <20201022121849.GA1664412@kroah.com>
+ <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
+ <20201022125759.GA1685526@kroah.com> <20201022135036.GA1787470@kroah.com>
+ <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com>
+ <935f7168-c2f5-dd14-7124-412b284693a2@redhat.com>
+ <20201023175857.GA3576660@ZenIV.linux.org.uk>
+ <20201023182713.GG2672@gate.crashing.org>
+ <e9a3136ead214186877804aabde74b38@AcuMS.aculab.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e9a3136ead214186877804aabde74b38@AcuMS.aculab.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,70 +58,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
+Cc: "linux-aio@kvack.org" <linux-aio@kvack.org>,
+ David Hildenbrand <david@redhat.com>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "kernel-team@android.com" <kernel-team@android.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Jens Axboe <axboe@kernel.dk>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ 'Greg KH' <gregkh@linuxfoundation.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Oct 23, 2020 at 09:28:59PM +0000, David Laight wrote:
+> From: Segher Boessenkool
+> > Sent: 23 October 2020 19:27
+> > On Fri, Oct 23, 2020 at 06:58:57PM +0100, Al Viro wrote:
+> > > On Fri, Oct 23, 2020 at 03:09:30PM +0200, David Hildenbrand wrote:
+> > > On arm64 when callee expects a 32bit argument, the caller is *not* responsible
+> > > for clearing the upper half of 64bit register used to pass the value - it only
+> > > needs to store the actual value into the lower half.  The callee must consider
+> > > the contents of the upper half of that register as undefined.  See AAPCS64 (e.g.
+> > > https://github.com/ARM-software/abi-aa/blob/master/aapcs64/aapcs64.rst#parameter-passing-rules
+> > > ); AFAICS, the relevant bit is
+> > > 	"Unlike in the 32-bit AAPCS, named integral values must be narrowed by
+> > > the callee rather than the caller."
+> > 
+> > Or the formal rule:
+> > 
+> > C.9 	If the argument is an Integral or Pointer Type, the size of the
+> > 	argument is less than or equal to 8 bytes and the NGRN is less
+> > 	than 8, the argument is copied to the least significant bits in
+> > 	x[NGRN]. The NGRN is incremented by one. The argument has now
+> > 	been allocated.
+> 
+> So, in essence, if the value is in a 64bit register the calling
+> code is independent of the actual type of the formal parameter.
+> Clearly a value might need explicit widening.
+
+No, this says that if you pass a 32-bit integer in a 64-bit register,
+then the top 32 bits of that register hold an undefined value.
+
+> I've found a copy of the 64 bit arm instruction set.
+> Unfortunately it is alpha sorted and repetitive so shows none
+> of the symmetry and makes things difficult to find.
+
+All of this is ABI, not ISA.  Look at the AAPCS64 pointed to above.
+
+> But, contrary to what someone suggested most register writes
+> (eg from arithmetic) seem to zero/extend the high bits.
+
+Everything that writes a "w" does, yes.  But that has nothing to do with
+the parameter passing rules, that is ABI.  It just means that very often
+a 32-bit integer will be passed zero-extended in a 64-bit register, but
+that is just luck (or not, it makes finding bugs harder ;-) )
 
 
-Le 24/10/2020 à 12:07, Michael Ellerman a écrit :
-> Michael Ellerman <mpe@ellerman.id.au> writes:
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>> Le 24/09/2020 à 15:17, Christophe Leroy a écrit :
->>>> Le 17/09/2020 à 14:33, Michael Ellerman a écrit :
->>>>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>>>>>
->>>>>> What is the status with the generic C vdso merge ?
->>>>>> In some mail, you mentionned having difficulties getting it working on
->>>>>> ppc64, any progress ? What's the problem ? Can I help ?
->>>>>
->>>>> Yeah sorry I was hoping to get time to work on it but haven't been able
->>>>> to.
->>>>>
->>>>> It's causing crashes on ppc64 ie. big endian.
->> ...
->>>>
->>>> Can you tell what defconfig you are using ? I have been able to setup a full glibc PPC64 cross
->>>> compilation chain and been able to test it under QEMU with success, using Nathan's vdsotest tool.
->>>
->>> What config are you using ?
->>
->> ppc64_defconfig + guest.config
->>
->> Or pseries_defconfig.
->>
->> I'm using Ubuntu GCC 9.3.0 mostly, but it happens with other toolchains too.
-> 
-> I'm also seeing warnings because of the feature fixups:
-> 
-> 
-> That's happening because the 32-bit VDSO is built with CONFIG_PPC32=y,
-> due to config-fake32.h, and that causes the feature fixup entries to be
-> the wrong size.
-> 
-> See the logic in feature-fixup.h:
-> 
-> 
-> 
-> We expect the fixup entries to still use 64-bit values, even for the
-> 32-bit VDSO in a 64-bit kernel.
-> 
-> TBH I'm not sure how config-fake32.h can work long term, it's so fragile
-> to be defining/redefining a handful of CONFIG symbols like that.
-
-I took the idea from mips (arch/mips/vdso/config-n32-o32-env.c) after struggling in different 
-direction. At that time the generic VDSO code was far less careful and was including several linux 
-headers IIRC.
-I agree with you that it's rather fragile.
-
-> 
-> The generic VDSO code is fairly careful to only include uapi and vdso
-> headers, not linux ones. So I think we need to better split our headers
-> so that we can build the VDSO code with few or no linux headers, and so
-> avoid the need to define any (or most) CONFIG symbols.
-> 
-
-I'll revisit it when I'm back from vacation (I'm leaving now for two weeks).
-
-Christophe
+Segher
