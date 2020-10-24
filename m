@@ -1,49 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F1D297C02
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Oct 2020 12:51:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF606297C11
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Oct 2020 13:19:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CJHwW15YKzDqhT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Oct 2020 21:51:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CJJXJ2zlxzDqpk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Oct 2020 22:19:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CJHtm1sByzDqWM
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Oct 2020 21:50:24 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=h1bbSPWl; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CJHtk2PFBz9sV0;
- Sat, 24 Oct 2020 21:50:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1603536623;
- bh=futRN9+C9/VUFQoIxDl1M1NHrkygM2MfKid/iDdusPM=;
- h=From:To:Cc:Subject:Date:From;
- b=h1bbSPWlgE9sfQnrTURDeWhd4Hpc6xe2uSYYMVjKBreNFyFIZtgMVifk/jWlmJMOW
- rkmau2+wp/85KWciIbnUDJ58nRNGsKmAz83b9EgX2b6GzzwK8zSKSpRU0ybH1O1pjn
- XcFenP3nnhoz/gq1piCOWkbdG0L2owEOxDqiOT3aGEk74Xg/irbNnl9oJOS5jwgOPt
- 9g21JQwejXpvAVwvOJln0GIRYii31jeu6QWdYkvMHNUCvu1L1oNwdgVbCscBV6BHrZ
- SW6x6LP1jJ8FDbf/cKGbVto5Qej0X1B21yy1aYS7rYdhsfMfuQHUzLx26jva9bQEWm
- o3LZbJHXJoXwA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.10-2 tag
-Date: Sat, 24 Oct 2020 21:50:21 +1100
-Message-ID: <871rhnyk2a.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CJJTC4zmszDqTD
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Oct 2020 22:16:47 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4CJJTC2FCXz8tFl
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Oct 2020 22:16:47 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4CJJTC1872z9sV7; Sat, 24 Oct 2020 22:16:47 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4CJJT8555Bz9sV0
+ for <linuxppc-dev@ozlabs.org>; Sat, 24 Oct 2020 22:16:37 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CJJSv6r9dz9tyWt;
+ Sat, 24 Oct 2020 13:16:31 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id HJ8MCfGbOvBC; Sat, 24 Oct 2020 13:16:31 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CJJSv57hSz9tyWs;
+ Sat, 24 Oct 2020 13:16:31 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0FA6C8B78E;
+ Sat, 24 Oct 2020 13:16:33 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 70EkutQL3fPr; Sat, 24 Oct 2020 13:16:32 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 95EC38B75E;
+ Sat, 24 Oct 2020 13:16:32 +0200 (CEST)
+Subject: Re: C vdso
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20200916165516.Horde.uocmo3irPb7BMg__NUSqRA9@messagerie.si.c-s.fr>
+ <87r1r0oa4o.fsf@mpe.ellerman.id.au>
+ <cc532aa8-a9e0-a105-b7b1-ee8d723b7ed6@csgroup.eu>
+ <be21c7c8-6828-b757-064d-20f74e5c1a31@csgroup.eu>
+ <877drhxeg8.fsf@mpe.ellerman.id.au> <874kmkx7gi.fsf@mpe.ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <521fae8b-7c43-a87c-ab02-f4d027cff7fa@csgroup.eu>
+Date: Sat, 24 Oct 2020 13:16:21 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <874kmkx7gi.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,110 +81,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, srikar@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
- linux-kernel@vger.kernel.org, hegdevasant@linux.vnet.ibm.com,
- ganeshgr@linux.ibm.com, jniethe5@gmail.com, oohall@gmail.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
-
-Hi Linus,
-
-Please pull powerpc fixes for 5.10:
-
-The following changes since commit ffd0b25ca049a477cb757e5bcf2d5e1664d12e5d:
-
-  Revert "powerpc/pci: unmap legacy INTx interrupts when a PHB is removed" (2020-10-15 13:42:49 +1100)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.10-2
-
-for you to fetch changes up to 4ff753feab021242144818b9a3ba011238218145:
-
-  powerpc/pseries: Avoid using addr_to_pfn in real mode (2020-10-22 14:34:45 +1100)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.10 #2
-
-A fix for undetected data corruption on Power9 Nimbus <= DD2.1 in the emulation
-of VSX loads. The affected CPUs were not widely available.
-
-Two fixes for machine check handling in guests under PowerVM.
-
-A fix for our recent changes to SMP setup, when CONFIG_CPUMASK_OFFSTACK=y.
-
-Three fixes for races in the handling of some of our powernv sysfs attributes.
-
-One change to remove TM from the set of Power10 CPU features.
-
-A couple of other minor fixes.
-
-Thanks to:
-  Aneesh Kumar K.V, Christophe Leroy, Ganesh Goudar, Jordan Niethe, Mahesh
-  Salgaonkar, Michael Neuling, Oliver O'Halloran, Qian Cai, Srikar Dronamraju,
-  Vasant Hegde.
-
-- ------------------------------------------------------------------
-Aneesh Kumar K.V (1):
-      powerpc/opal_elog: Handle multiple writes to ack attribute
-
-Christophe Leroy (1):
-      powerpc/uaccess: Don't use "m<>" constraint with GCC 4.9
-
-Ganesh Goudar (2):
-      powerpc/mce: Avoid nmi_enter/exit in real mode on pseries hash
-      powerpc/pseries: Avoid using addr_to_pfn in real mode
-
-Jordan Niethe (1):
-      powerpc/64s: Remove TM from Power10 features
-
-Michael Neuling (2):
-      powerpc: Fix undetected data corruption with P9N DD2.1 VSX CI load emulation
-      selftests/powerpc: Make alignment handler test P9N DD2.1 vector CI load workaround
-
-Oliver O'Halloran (1):
-      powerpc/eeh: Fix eeh_dev_check_failure() for PE#0
-
-Srikar Dronamraju (2):
-      powerpc/smp: Remove unnecessary variable
-      powerpc/smp: Use GFP_ATOMIC while allocating tmp mask
-
-Vasant Hegde (2):
-      powerpc/powernv/dump: Fix race while processing OPAL dump
-      powerpc/powernv/dump: Handle multiple writes to ack attribute
 
 
- arch/powerpc/include/asm/asm-const.h                          |  13 +++
- arch/powerpc/include/asm/cputable.h                           |   2 +-
- arch/powerpc/include/asm/uaccess.h                            |   4 +-
- arch/powerpc/kernel/cputable.c                                |  13 ++-
- arch/powerpc/kernel/eeh.c                                     |   5 -
- arch/powerpc/kernel/mce.c                                     |   7 +-
- arch/powerpc/kernel/smp.c                                     |  70 ++++++------
- arch/powerpc/kernel/traps.c                                   |   2 +-
- arch/powerpc/platforms/powernv/opal-dump.c                    |  52 ++++++---
- arch/powerpc/platforms/powernv/opal-elog.c                    |  11 +-
- arch/powerpc/platforms/pseries/ras.c                          | 118 ++++++++++++--------
- tools/testing/selftests/powerpc/alignment/alignment_handler.c |   8 +-
- 12 files changed, 185 insertions(+), 120 deletions(-)
------BEGIN PGP SIGNATURE-----
+Le 24/10/2020 à 12:07, Michael Ellerman a écrit :
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>> Le 24/09/2020 à 15:17, Christophe Leroy a écrit :
+>>>> Le 17/09/2020 à 14:33, Michael Ellerman a écrit :
+>>>>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>>>>>
+>>>>>> What is the status with the generic C vdso merge ?
+>>>>>> In some mail, you mentionned having difficulties getting it working on
+>>>>>> ppc64, any progress ? What's the problem ? Can I help ?
+>>>>>
+>>>>> Yeah sorry I was hoping to get time to work on it but haven't been able
+>>>>> to.
+>>>>>
+>>>>> It's causing crashes on ppc64 ie. big endian.
+>> ...
+>>>>
+>>>> Can you tell what defconfig you are using ? I have been able to setup a full glibc PPC64 cross
+>>>> compilation chain and been able to test it under QEMU with success, using Nathan's vdsotest tool.
+>>>
+>>> What config are you using ?
+>>
+>> ppc64_defconfig + guest.config
+>>
+>> Or pseries_defconfig.
+>>
+>> I'm using Ubuntu GCC 9.3.0 mostly, but it happens with other toolchains too.
+> 
+> I'm also seeing warnings because of the feature fixups:
+> 
+> 
+> That's happening because the 32-bit VDSO is built with CONFIG_PPC32=y,
+> due to config-fake32.h, and that causes the feature fixup entries to be
+> the wrong size.
+> 
+> See the logic in feature-fixup.h:
+> 
+> 
+> 
+> We expect the fixup entries to still use 64-bit values, even for the
+> 32-bit VDSO in a 64-bit kernel.
+> 
+> TBH I'm not sure how config-fake32.h can work long term, it's so fragile
+> to be defining/redefining a handful of CONFIG symbols like that.
 
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl+UBeUACgkQUevqPMjh
-pYBHUA//THLt6DJlSPPqn8LQZQGT76Gx82cKyy9DQ7/Elcl13xcuq3XbhHD5asi0
-QbJGbLhRqpRhtmj3c8BCYAygi5FXZWH4IeN6FK8xoZGR2bi/gY7VkhIUSzFAHnRi
-PFXafzb8eWVS7O5k8xbxrjxdOAu8SjEzywG5I8PPn5IWFwhUwjGosv81QtxJOLVc
-V9WwuTBK87nfvoMdfcl3YJXRs+4vKOQQ0Gqa5vTVTUmgdbJOqJi1MvLULnSnKxTJ
-G+XplOeSI1N3gk+E2cycPasghTYziTtzEyrTHe0Uufgx+9t6VuN1g2zL81kDA7U9
-10Oqqry4Z66V2BhGrDMnXKYGeQNGRO8vNLT2DuuZd5XTN/LpV0knJHm/9F2E+5zl
-T+GgQwS0IhXDcbS70TcbxXHPyBe2/eXRH1+rkSlAEjl656JVbKefgi1VUsqSzkjH
-JBF2+zCodYelbbnRP89Aj5/03t+VeHbNC/1jixoYDHR7drXiU2XQqjfFZeCHvxOQ
-YCznpoC84gcDupGC5q4op3tHBmvULJn0KaHYWryaAEWlCxjdVcjBis48B+GQVww8
-JnDMC5WGVvAAxPHc74EkyEvdROx4Q+8UeOj+TXnrRlowEF8Wymxcvy7NUn2Bqq2J
-VsRCUzLIReKCckdJQ/+SxG8eb9JUxQRWG76+Q9zzTHbdaBSWuMc=
-=9Oxg
------END PGP SIGNATURE-----
+I took the idea from mips (arch/mips/vdso/config-n32-o32-env.c) after struggling in different 
+direction. At that time the generic VDSO code was far less careful and was including several linux 
+headers IIRC.
+I agree with you that it's rather fragile.
+
+> 
+> The generic VDSO code is fairly careful to only include uapi and vdso
+> headers, not linux ones. So I think we need to better split our headers
+> so that we can build the VDSO code with few or no linux headers, and so
+> avoid the need to define any (or most) CONFIG symbols.
+> 
+
+I'll revisit it when I'm back from vacation (I'm leaving now for two weeks).
+
+Christophe
