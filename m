@@ -1,52 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1AF3297FE1
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Oct 2020 03:51:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FFA298140
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Oct 2020 11:18:41 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CJjCC3GXszDqv9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Oct 2020 13:51:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CJv7W5jgnzDqdg
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Oct 2020 21:18:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=qa2weGH6; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CJj9d2J33zDqcn
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Oct 2020 13:49:37 +1100 (AEDT)
-IronPort-SDR: kKuOCkFgwf1voVdtkUgeS4qVOVTv9slzdsIgUnGgVg52jpzq4pJXI1qm1oaNVqS1VKdlWBfZgX
- U6H3F2D6clvQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9784"; a="147664336"
-X-IronPort-AV: E=Sophos;i="5.77,414,1596524400"; d="scan'208";a="147664336"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2020 19:49:34 -0700
-IronPort-SDR: kdjQ8HLL965MmBWwgHTl2fRD98POEDyWBMy7N4WdxIdbsCwhYwihPm5PBGLrv5RCTuYZTqwL5j
- ym17qd2FgTkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,414,1596524400"; d="scan'208";a="525116718"
-Received: from lkp-server01.sh.intel.com (HELO cda15bb6d7bd) ([10.239.97.150])
- by fmsmga005.fm.intel.com with ESMTP; 24 Oct 2020 19:49:33 -0700
-Received: from kbuild by cda15bb6d7bd with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kWW68-0000m0-Dd; Sun, 25 Oct 2020 02:49:32 +0000
-Date: Sun, 25 Oct 2020 10:48:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 29b535f8c5da3984d083068bd651af0631dcdca6
-Message-ID: <5f94e795.m6KYMRrdRyFilAaX%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CJv5D1MkKzDqcS
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Oct 2020 21:16:32 +1100 (AEDT)
+Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9367620936;
+ Sun, 25 Oct 2020 10:16:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1603620988;
+ bh=SiuR1TkXLt8pVCx+Td9BUZs9Xu69YJfgMkNHmXRMvWo=;
+ h=From:To:Cc:Subject:Date:From;
+ b=qa2weGH62Ey6qX84hU+Ot5aVXwwRoLNgnKOUHgs9ghvAxbHhRVvWd3MhX0yDFh3x6
+ QiQ64zFb4EmfrfNqAzwVN+SiucLwhUg0/C0RBfCRoQDqCeB+ld7C/ACnsjLZh7HL6P
+ 74srivpWsrDM7poNfUQfhh7/rLueLspAeQWJ5mYY=
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 0/4] arch, mm: improve robustness of direct map manipulation
+Date: Sun, 25 Oct 2020 12:15:51 +0200
+Message-Id: <20201025101555.3057-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,138 +53,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+ David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Pekka Enberg <penberg@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>, "Edgecombe,
+ Rick P" <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: 29b535f8c5da3984d083068bd651af0631dcdca6  selftests/powerpc/eeh: disable kselftest timeout setting for eeh-basic
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-elapsed time: 965m
+Hi,
 
-configs tested: 112
-configs skipped: 2
+During recent discussion about KVM protected memory, David raised a concern
+about usage of __kernel_map_pages() outside of DEBUG_PAGEALLOC scope [1].
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Indeed, for architectures that define CONFIG_ARCH_HAS_SET_DIRECT_MAP it is
+possible that __kernel_map_pages() would fail, but since this function is
+void, the failure will go unnoticed.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-mips                     cu1830-neo_defconfig
-powerpc                   bluestone_defconfig
-powerpc                 mpc8272_ads_defconfig
-arm                      tct_hammer_defconfig
-powerpc                 canyonlands_defconfig
-s390                       zfcpdump_defconfig
-mips                malta_kvm_guest_defconfig
-arm                         hackkit_defconfig
-m68k                       m5249evb_defconfig
-sh                           se7619_defconfig
-sh                            hp6xx_defconfig
-h8300                       h8s-sim_defconfig
-sh                           se7722_defconfig
-powerpc                          allyesconfig
-mips                malta_qemu_32r6_defconfig
-m68k                          multi_defconfig
-powerpc                     mpc5200_defconfig
-arm                              zx_defconfig
-mips                        bcm47xx_defconfig
-xtensa                           alldefconfig
-xtensa                  nommu_kc705_defconfig
-m68k                        m5407c3_defconfig
-powerpc                     pseries_defconfig
-arm                           tegra_defconfig
-m68k                        m5272c3_defconfig
-arm                      jornada720_defconfig
-m68k                         apollo_defconfig
-arm                            lart_defconfig
-m68k                             allmodconfig
-powerpc                 mpc834x_mds_defconfig
-um                            kunit_defconfig
-sh                      rts7751r2d1_defconfig
-arm                             pxa_defconfig
-mips                         tb0219_defconfig
-arm                        shmobile_defconfig
-sh                             sh03_defconfig
-powerpc                      ppc6xx_defconfig
-sparc64                          alldefconfig
-arm                        magician_defconfig
-arm                             ezx_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20201024
-i386                 randconfig-a003-20201024
-i386                 randconfig-a005-20201024
-i386                 randconfig-a001-20201024
-i386                 randconfig-a006-20201024
-i386                 randconfig-a004-20201024
-x86_64               randconfig-a013-20201024
-x86_64               randconfig-a016-20201024
-x86_64               randconfig-a015-20201024
-x86_64               randconfig-a012-20201024
-x86_64               randconfig-a014-20201024
-x86_64               randconfig-a011-20201024
-i386                 randconfig-a016-20201024
-i386                 randconfig-a015-20201024
-i386                 randconfig-a014-20201024
-i386                 randconfig-a013-20201024
-i386                 randconfig-a012-20201024
-i386                 randconfig-a011-20201024
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+Moreover, there's lack of consistency of __kernel_map_pages() semantics
+across architectures as some guard this function with
+#ifdef DEBUG_PAGEALLOC, some refuse to update the direct map if page
+allocation debugging is disabled at run time and some allow modifying the
+direct map regardless of DEBUG_PAGEALLOC settings.
 
-clang tested configs:
-x86_64               randconfig-a001-20201024
-x86_64               randconfig-a003-20201024
-x86_64               randconfig-a002-20201024
-x86_64               randconfig-a006-20201024
-x86_64               randconfig-a005-20201024
-x86_64               randconfig-a004-20201024
+This set straightens this out by restoring dependency of
+__kernel_map_pages() on DEBUG_PAGEALLOC and updating the call sites
+accordingly. 
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+[1] https://lore.kernel.org/lkml/2759b4bf-e1e3-d006-7d86-78a40348269d@redhat.com
+
+Mike Rapoport (4):
+  mm: introduce debug_pagealloc_map_pages() helper
+  PM: hibernate: improve robustness of mapping pages in the direct map
+  arch, mm: restore dependency of __kernel_map_pages() of DEBUG_PAGEALLOC
+  arch, mm: make kernel_page_present() always available
+
+ arch/Kconfig                        |  3 +++
+ arch/arm64/Kconfig                  |  4 +---
+ arch/arm64/include/asm/cacheflush.h |  1 +
+ arch/arm64/mm/pageattr.c            |  6 +++--
+ arch/powerpc/Kconfig                |  5 +----
+ arch/riscv/Kconfig                  |  4 +---
+ arch/riscv/include/asm/pgtable.h    |  2 --
+ arch/riscv/include/asm/set_memory.h |  1 +
+ arch/riscv/mm/pageattr.c            | 31 +++++++++++++++++++++++++
+ arch/s390/Kconfig                   |  4 +---
+ arch/sparc/Kconfig                  |  4 +---
+ arch/x86/Kconfig                    |  4 +---
+ arch/x86/include/asm/set_memory.h   |  1 +
+ arch/x86/mm/pat/set_memory.c        |  4 ++--
+ include/linux/mm.h                  | 35 +++++++++++++----------------
+ include/linux/set_memory.h          |  5 +++++
+ kernel/power/snapshot.c             | 24 ++++++++++++++++++--
+ mm/memory_hotplug.c                 |  3 +--
+ mm/page_alloc.c                     |  6 ++---
+ mm/slab.c                           |  8 +++----
+ 20 files changed, 97 insertions(+), 58 deletions(-)
+
+-- 
+2.28.0
+
