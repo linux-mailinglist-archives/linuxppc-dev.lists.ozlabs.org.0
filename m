@@ -1,49 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D82298A7F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Oct 2020 11:40:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB84298AAF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Oct 2020 11:48:15 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CKWZ42qMWzDqMh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Oct 2020 21:40:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CKWlH60whzDqM1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Oct 2020 21:48:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=collabora.com (client-ip=46.235.227.227;
- helo=bhuna.collabora.co.uk; envelope-from=chris.obbard@collabora.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=collabora.com
-X-Greylist: delayed 453 seconds by postgrey-1.36 at bilbo;
- Mon, 26 Oct 2020 21:25:02 AEDT
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CKWDZ5cgYzDqLr
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Oct 2020 21:25:02 +1100 (AEDT)
-Received: from [IPv6:2a00:23c5:9900:2d00:fa7c:ed23:2f0a:448d] (unknown
- [IPv6:2a00:23c5:9900:2d00:fa7c:ed23:2f0a:448d])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested) (Authenticated sender: obbardc)
- by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 49C851F44F40;
- Mon, 26 Oct 2020 10:17:18 +0000 (GMT)
-Subject: Re: Build regressions/improvements in v5.10-rc1
-To: Geert Uytterhoeven <geert@linux-m68k.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20201026081811.3934205-1-geert@linux-m68k.org>
- <CAMuHMdXbsJPnsXg6bA_e32zJkBG1Zzqj-ja5WzHDKL0d9OcfPg@mail.gmail.com>
-From: Christopher Obbard <chris.obbard@collabora.com>
-Message-ID: <ed39a579-62c9-de88-3550-f21382b804a8@collabora.com>
-Date: Mon, 26 Oct 2020 10:17:16 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <CAMuHMdXbsJPnsXg6bA_e32zJkBG1Zzqj-ja5WzHDKL0d9OcfPg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Mon, 26 Oct 2020 21:38:41 +1100
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CKWjV3D9LzDqGM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Oct 2020 21:46:36 +1100 (AEDT)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 155701A044D;
+ Mon, 26 Oct 2020 11:46:33 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id F17151A037D;
+ Mon, 26 Oct 2020 11:46:27 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 65BED402B1;
+ Mon, 26 Oct 2020 11:46:21 +0100 (CET)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org, lgirdwood@gmail.com, robh+dt@kernel.org,
+ devicetree@vger.kernel.org
+Subject: [PATCH 1/2] ASoC: dt-bindings: fsl_aud2htx: Add binding doc for
+ aud2htx module
+Date: Mon, 26 Oct 2020 18:40:54 +0800
+Message-Id: <1603708855-2663-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,60 +53,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joe Perches <joe@perches.com>, linux-um <linux-um@lists.infradead.org>,
- arcml <linux-snps-arc@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Geert,
+AUD2HTX (Audio Subsystem TO HDMI TX Subsystem) is a new
+IP module found on i.MX8MP.
 
-On 26/10/2020 09:48, Geert Uytterhoeven wrote:
-> On Mon, Oct 26, 2020 at 10:46 AM Geert Uytterhoeven
-> <geert@linux-m68k.org> wrote:
->> Below is the list of build error/warning regressions/improvements in
->> v5.10-rc1[1] compared to v5.9[2].
->>
->> Summarized:
->>    - build errors: +3/-7
->>    - build warnings: +26/-28
->>
->> Happy fixing! ;-)
->>
->> Thanks to the linux-next team for providing the build service.
->>
->> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/3650b228f83adda7e5ee532e2b90429c03f7b9ec/ (all 192 configs)
->> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/bbf5c979011a099af5dc76498918ed7df445635b/ (all 192 configs)
->>
->>
->> *** ERRORS ***
->>
->> 3 error regressions:
->>    + /kisskb/src/arch/um/kernel/skas/clone.c: error: expected declaration specifiers or '...' before string constant:  => 24:16
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ .../bindings/sound/fsl,aud2htx.yaml           | 67 +++++++++++++++++++
+ 1 file changed, 67 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,aud2htx.yaml
 
-For me, reverting commit 33def8498fdde180023444b08e12b72a9efed41d 
-("treewide: Convert macro and uses of __section(foo) to 
-__section("foo")") fixed this compile error and one other introduced by 
-the same patch.
-Unfortunately I wasn't able to come up with a fix for that, but I have 
-CC the author of that patch.
+diff --git a/Documentation/devicetree/bindings/sound/fsl,aud2htx.yaml b/Documentation/devicetree/bindings/sound/fsl,aud2htx.yaml
+new file mode 100644
+index 000000000000..18548d0889a8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/fsl,aud2htx.yaml
+@@ -0,0 +1,67 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sound/fsl,aud2htx.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP Audio Subsystem to HDMI RTX Subsystem Controller
++
++maintainers:
++  - Shengjiu Wang <shengjiu.wang@nxp.com>
++
++properties:
++  $nodename:
++    pattern: "^aud2htx@.*"
++
++  compatible:
++    const: fsl,imx8mp-aud2htx
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: Peripheral clock
++
++  clock-names:
++    items:
++      - const: bus
++
++  dmas:
++    items:
++      - description: DMA controller phandle and request line for TX
++
++  dma-names:
++    items:
++      - const: tx
++
++  power-domains:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++  - dmas
++  - dma-names
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/clock/imx8mp-clock.h>
++
++    aud2htx: aud2htx@30cb0000 {
++             compatible = "fsl,imx8mp-aud2htx";
++             reg = <0x30cb0000 0x10000>;
++             interrupts = <GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>;
++             clocks = <&audiomix_clk IMX8MP_CLK_AUDIOMIX_AUD2HTX_IPG>;
++             clock-names = "bus";
++             dmas = <&sdma2 26 2 0>;
++             dma-names = "tx";
++             power-domains = <&audiomix_pd>;
++    };
+-- 
+2.27.0
 
-Thanks!
-Christopher Obbard
-
-> 
-> um-all{mod,yes}config
-> 
->>    + error: hotplug-memory.c: undefined reference to `of_drconf_to_nid_single':  => .text+0x5e0)
-> 
-> powerpc-gcc5/pseries_le_defconfig+NO_NUMA
-> 
->>    + {standard input}: Error: inappropriate arguments for opcode 'adc':  => 170
-> 
-> arc-gcc10/axs101_defconfig
-> 
-> Gr{oetje,eeting}s,
-> 
->                          Geert
-> 
