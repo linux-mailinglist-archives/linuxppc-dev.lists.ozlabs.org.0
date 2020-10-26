@@ -1,51 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38306298970
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Oct 2020 10:33:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F582989C1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Oct 2020 10:50:50 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CKV4d4d59zDqQC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Oct 2020 20:33:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CKVT31jhLzDqK3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Oct 2020 20:50:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Gay4USUB; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
+ [209.85.210.65])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CKV2t2SsnzDqKb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Oct 2020 20:31:34 +1100 (AEDT)
-Received: from kernel.org (unknown [87.70.96.83])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 04E07223EA;
- Mon, 26 Oct 2020 09:31:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1603704688;
- bh=UPPnXviZXmutWijYpQ9tn9fnLcQibcRuGcgbK3gvCBw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Gay4USUBBIxHqVxLVBTGdS6UR/Xrw069y1WeVP2Fs7F0gpT/fVrp1lv3pe8IbHpLe
- RoEp88v8LxwsuyzDFoKwK7DyX3p6WzNTV//0uHT1Jgfz1rDyGmOBg1EeMCMd5+X4tM
- uKwPfXMr4FM1bIOQXZSKgycAvE2mT9oKkX0LymH4=
-Date: Mon, 26 Oct 2020 11:31:10 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH 4/4] arch, mm: make kernel_page_present() always available
-Message-ID: <20201026093110.GC1154158@kernel.org>
-References: <20201025101555.3057-1-rppt@kernel.org>
- <20201025101555.3057-5-rppt@kernel.org>
- <979889bf987fdc7268a973fe7398198bfad1644f.camel@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CKVRD5YwNzDq5f
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Oct 2020 20:49:09 +1100 (AEDT)
+Received: by mail-ot1-f65.google.com with SMTP id n15so7411602otl.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Oct 2020 02:49:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=314b+EPeJu8ztEUHKiEyh7Fe1KfnldWCCkTh7+28WEo=;
+ b=gOqNYf1gujMqCIbN4nQiOgT+U7jP96+hv97SNlmsw+0q5mmSajrKVPPiAIOv8SJcJ0
+ j7oH9EJNg2SiSSnR3IH1n/D44tNKlP6bNnokpjKB8Rp/v0Jv+mLRUA8YpldBug4bGmWt
+ Rj4fh9ATukshj95B9iR1i7lCJ0+8pq4ppD9Ki0lCJa+8RjGzkdyMsBz8oGIV+iGwpDrm
+ lU/626bC/GOiF0CKVQhqEDE05P1ljFtj5+hEr9E3zxKahVqnjsLuc/jynG/QosslIaag
+ Bu5F3wnmJJpmgACYLT3pC/tns3Jsco9PkyZeC0BZxQemwHmtWLN+Rw2/g/qtLoyR4nLs
+ um9g==
+X-Gm-Message-State: AOAM531gZ0Al5t8hyS8HaXquOyULyMorvUN8HQQDofjwpyIPIeULDMBj
+ 0OEH0HDTNg2Sw3A7RW/1M1rxsSPTkIjsd525isc=
+X-Google-Smtp-Source: ABdhPJz6Ac16eELMejGpA5pfteZH0S7xI3pqTk1GnO4kjTNW0lVeo7lq9J4RZJkz7zdoJDPT2VEy2pOJNu0QSN+3lS0=
+X-Received: by 2002:a9d:3b76:: with SMTP id
+ z109mr13819173otb.250.1603705746354; 
+ Mon, 26 Oct 2020 02:49:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <979889bf987fdc7268a973fe7398198bfad1644f.camel@intel.com>
+References: <20201026081811.3934205-1-geert@linux-m68k.org>
+In-Reply-To: <20201026081811.3934205-1-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 26 Oct 2020 10:48:55 +0100
+Message-ID: <CAMuHMdXbsJPnsXg6bA_e32zJkBG1Zzqj-ja5WzHDKL0d9OcfPg@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.10-rc1
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,82 +60,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "david@redhat.com" <david@redhat.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "paulus@samba.org" <paulus@samba.org>, "pavel@ucw.cz" <pavel@ucw.cz>,
- "hpa@zytor.com" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "cl@linux.com" <cl@linux.com>, "will@kernel.org" <will@kernel.org>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
- "borntraeger@de.ibm.com" <borntraeger@de.ibm.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "rientjes@google.com" <rientjes@google.com>, "Brown,
- Len" <len.brown@intel.com>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
- "gor@linux.ibm.com" <gor@linux.ibm.com>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "hca@linux.ibm.com" <hca@linux.ibm.com>, "bp@alien8.de" <bp@alien8.de>,
- "luto@kernel.org" <luto@kernel.org>,
- "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
- "kirill@shutemov.name" <kirill@shutemov.name>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "penberg@kernel.org" <penberg@kernel.org>,
- "palmer@dabbelt.com" <palmer@dabbelt.com>,
- "iamjoonsoo.kim@lge.com" <iamjoonsoo.kim@lge.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "davem@davemloft.net" <davem@davemloft.net>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ arcml <linux-snps-arc@lists.infradead.org>,
+ linux-um <linux-um@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 26, 2020 at 12:54:01AM +0000, Edgecombe, Rick P wrote:
-> On Sun, 2020-10-25 at 12:15 +0200, Mike Rapoport wrote:
-> > index 7f248fc45317..16f878c26667 100644
-> > --- a/arch/x86/mm/pat/set_memory.c
-> > +++ b/arch/x86/mm/pat/set_memory.c
-> > @@ -2228,7 +2228,6 @@ void __kernel_map_pages(struct page *page, int
-> > numpages, int enable)
-> >  }
-> >  #endif /* CONFIG_DEBUG_PAGEALLOC */
-> >  
-> > -#ifdef CONFIG_HIBERNATION
-> >  bool kernel_page_present(struct page *page)
-> >  {
-> >         unsigned int level;
-> > @@ -2240,7 +2239,6 @@ bool kernel_page_present(struct page *page)
-> >         pte = lookup_address((unsigned long)page_address(page),
-> > &level);
-> >         return (pte_val(*pte) & _PAGE_PRESENT);
-> >  }
-> > -#endif /* CONFIG_HIBERNATION */
-> 
-> This is only used by hibernate today right? Makes sense that it should
-> return a correct answer if someone starts to use it without looking too
-> closely at the header. But could we just remove the default static
-> inline return true implementation and let the linker fail if someone
-> starts to use it outside hibernate? Then we could leave it compiled out
-> until then.
+On Mon, Oct 26, 2020 at 10:46 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> Below is the list of build error/warning regressions/improvements in
+> v5.10-rc1[1] compared to v5.9[2].
+>
+> Summarized:
+>   - build errors: +3/-7
+>   - build warnings: +26/-28
+>
+> Happy fixing! ;-)
+>
+> Thanks to the linux-next team for providing the build service.
+>
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/3650b228f83adda7e5ee532e2b90429c03f7b9ec/ (all 192 configs)
+> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/bbf5c979011a099af5dc76498918ed7df445635b/ (all 192 configs)
+>
+>
+> *** ERRORS ***
+>
+> 3 error regressions:
+>   + /kisskb/src/arch/um/kernel/skas/clone.c: error: expected declaration specifiers or '...' before string constant:  => 24:16
 
-Hmm, I'm not sure I follow you here.
-We'd need some stub for architectures that have
-ARCH_HIBERNATION_POSSIBLE and do not have
-CONFIG_ARCH_HAS_SET_DIRECT_MAP.
+um-all{mod,yes}config
 
-I don't see how the kernel would compile for ppc or sparc with
-hibernation enabled if I remove the default implementation.
+>   + error: hotplug-memory.c: undefined reference to `of_drconf_to_nid_single':  => .text+0x5e0)
 
-> Also it looks like riscv does not have ARCH_HIBERNATION_POSSIBLE so the
-> new function added here couldn't be used yet. You could also just let
-> the linker catch it if riscv ever enables hibernate?
+powerpc-gcc5/pseries_le_defconfig+NO_NUMA
+
+>   + {standard input}: Error: inappropriate arguments for opcode 'adc':  => 170
+
+arc-gcc10/axs101_defconfig
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-Sincerely yours,
-Mike.
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
