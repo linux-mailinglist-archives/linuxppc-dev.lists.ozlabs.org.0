@@ -1,74 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 864DF29974B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Oct 2020 20:46:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1D62997D5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Oct 2020 21:19:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CKlhP5cgHzDqQ6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 06:46:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CKmQV2Vv0zDq8x
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 07:19:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::841;
- helo=mail-qt1-x841.google.com; envelope-from=natechancellor@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uGeZxrbK; dkim-atps=neutral
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
- [IPv6:2607:f8b0:4864:20::841])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=rzYdtO+S; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CKlfY21sqzDqMg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Oct 2020 06:44:50 +1100 (AEDT)
-Received: by mail-qt1-x841.google.com with SMTP id q26so7644277qtb.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Oct 2020 12:44:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=AZnYVCXpAdxGrITpeg/XVTk5Yy68LhIj/hc9zCI8ypk=;
- b=uGeZxrbKJi6sAOY7r8Tn8eofHKiRQfdpVT0GnYl/5gri+hoMA+6nTS4db4zc4DNNVd
- AF/bO9llDrW/i/WOaYI4/bLgzhsnNleyfOb8XUwrVLZmFWVEe7kRLDh7zd8IX/KLllOl
- cmkaFJfHWaDVWQB/R8q1b1DctxlfkXTRXynGWTD+ARycbLK9di9vnDjZmb8nboBI6tRF
- K5H70sqaEIO5VB3+kKwu06ZnO2gKiDoO5BXIYNEXthZxFCYM9lr0wcpkqiapN4UIcTcq
- dyOVR7s35zMMyZxX+Oa0UfLE6b9lNfIQvcPiFbQMFHnWF/tW6DJTipKqMjWILub2sTMK
- KFzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=AZnYVCXpAdxGrITpeg/XVTk5Yy68LhIj/hc9zCI8ypk=;
- b=Ov4fs8dmm6EYU6VkWVfAlLqicDd9oYYu3rEtuxUvbXaA1scUZlVLMMn8JbWy2LwTDR
- nF10cWI3ZSH75o2YIMk+yWYGp2FjDlSs1vYYdMWehgujaKdUWndWE6mzt55NNSSyiI29
- aNhNMqWPI9U8SZHQplMiJJxIlX/KLGwgEqTPCHHpiYD9HGWydSO/kHs0vYuc0OHrncgH
- QMaFm9TTCC348I7WYwCtlZINsWX/lRsqegmwqE3yiSy5GebnB2laGycNWob2cNL3C9cf
- 5aJUkeG/2wAJtUmKox2b/hDwsRabpWj+0qsTBUlWXX4hM94F3am+iNiqmCkqpiU4M0fV
- 0lVg==
-X-Gm-Message-State: AOAM530PmYM5X+RLaDe6KeEfGqEO24+xVmNssUfK/hD1A7zi4/H667el
- VE36k4vyfl6GOv2xrGP5/Js=
-X-Google-Smtp-Source: ABdhPJygnMN9Xs9zs5MNqgA1Pujx+ICimDfMyqNVnwOFTwjhGqttXktGFigCOyau3Gp1LJZAE03ymg==
-X-Received: by 2002:aed:2338:: with SMTP id h53mr19116043qtc.127.1603741486093; 
- Mon, 26 Oct 2020 12:44:46 -0700 (PDT)
-Received: from ubuntu-m3-large-x86 ([2604:1380:45d1:2600::3])
- by smtp.gmail.com with ESMTPSA id v5sm7068456qkv.89.2020.10.26.12.44.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Oct 2020 12:44:44 -0700 (PDT)
-Date: Mon, 26 Oct 2020 12:44:43 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] treewide: Convert macro and uses of __section(foo) to
- __section("foo")
-Message-ID: <20201026194443.GA2879078@ubuntu-m3-large-x86>
-References: <fe8abcc88cff676ead8ee48db1e993e63b0611c7.1603327264.git.joe@perches.com>
- <20201026193652.GA77796@roeck-us.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CKmNP4lLnzDqPG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Oct 2020 07:17:38 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09QK4Fxh104612; Mon, 26 Oct 2020 16:17:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=3W7VBlAWZqf5IJnHH5lVy1IrTIWI9VbzrkSRoY7HNsY=;
+ b=rzYdtO+SzxPSirq0VmZzyDLZKYR5mppSQc40evXNG1eRhmsQWsbNPnRL7jH1vRyEdnDi
+ cKpilxrnpDI0FuIPNgT+vCjz9aOrZR7pJz+aH3LHiVYtlprauyLNIy855M98rKybRSJL
+ 6yoXFhvjiz3Zc4vjur6DD4+OhInWQjCdSjHtg9dEk9AUo31Cyb3Ec2qgQpBXmK+MSz7Y
+ KMVS+ft2oJohkwYyovYxEJGZ8F31y1L44/nzRQIFAmnbyk4ehASUHH8OG+5ObPniaGb+
+ VnF+wOt3eHU/zp8qq2LyieTF9uniXXpTgownxzppae30xTbYVIjnC4F5XkADjDZII2YD vA== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34e4jvh52a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Oct 2020 16:17:32 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09QKHSVY032600;
+ Mon, 26 Oct 2020 20:17:31 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma05wdc.us.ibm.com with ESMTP id 34cbw8t8kq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Oct 2020 20:17:31 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 09QKHUC653346612
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 26 Oct 2020 20:17:30 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C9EE36A04F;
+ Mon, 26 Oct 2020 20:17:30 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 822AD6A04D;
+ Mon, 26 Oct 2020 20:17:30 +0000 (GMT)
+Received: from localhost (unknown [9.65.225.148])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 26 Oct 2020 20:17:30 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: Build regressions/improvements in v5.10-rc1
+In-Reply-To: <CAMuHMdXbsJPnsXg6bA_e32zJkBG1Zzqj-ja5WzHDKL0d9OcfPg@mail.gmail.com>
+References: <20201026081811.3934205-1-geert@linux-m68k.org>
+ <CAMuHMdXbsJPnsXg6bA_e32zJkBG1Zzqj-ja5WzHDKL0d9OcfPg@mail.gmail.com>
+Date: Mon, 26 Oct 2020 15:17:29 -0500
+Message-ID: <87tuugkahy.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201026193652.GA77796@roeck-us.net>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.737
+ definitions=2020-10-26_14:2020-10-26,
+ 2020-10-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ suspectscore=2 impostorscore=0 lowpriorityscore=0 clxscore=1011
+ priorityscore=1501 adultscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010260132
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,52 +95,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Nick Desaulniers <ndesaulniers@google.com>,
- linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
- Joe Perches <joe@perches.com>, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Scott Cheloha <cheloha@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 26, 2020 at 12:36:52PM -0700, Guenter Roeck wrote:
-> On Wed, Oct 21, 2020 at 07:36:07PM -0700, Joe Perches wrote:
-> > Use a more generic form for __section that requires quotes to avoid
-> > complications with clang and gcc differences.
-> > 
-> > Remove the quote operator # from compiler_attributes.h __section macro.
-> > 
-> > Convert all unquoted __section(foo) uses to quoted __section("foo").
-> > Also convert __attribute__((section("foo"))) uses to __section("foo")
-> > even if the __attribute__ has multiple list entry forms.
-> > 
-> > Conversion done using a script:
-> > 
-> > Link: https://lore.kernel.org/lkml/75393e5ddc272dc7403de74d645e6c6e0f4e70eb.camel@perches.com/2-convert_section.pl
-> > 
-> > Signed-off-by: Joe Perches <joe@perches.com>
-> > Reviewed-by: Nick Desaulniers <ndesaulniers@gooogle.com>
-> > Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-> 
-> s390 (all builds):
-> 
-> Error log:
-> error: section .boot.preserved.data differs between vmlinux and arch/s390/boot/compressed/vmlinux
-> make[2]: *** [arch/s390/boot/section_cmp.boot.preserved.data] Error 1
-> make[2]: *** Waiting for unfinished jobs....
-> error: section .boot.data differs between vmlinux and arch/s390/boot/compressed/vmlinux
-> make[2]: *** [arch/s390/boot/section_cmp.boot.data] Error 1
-> make[1]: *** [bzImage] Error 2
-> make[1]: *** Waiting for unfinished jobs....
-> make: *** [__sub-make] Error 2
-> 
-> Reverting this patch fixes the problem.
-> 
-> Guenter
-> 
+Geert Uytterhoeven <geert@linux-m68k.org> writes:
+> On Mon, Oct 26, 2020 at 10:46 AM Geert Uytterhoeven
+> <geert@linux-m68k.org> wrote:
+>> Below is the list of build error/warning regressions/improvements in
+>> v5.10-rc1[1] compared to v5.9[2].
+>>
+>> Summarized:
+>>   - build errors: +3/-7
+>>   - build warnings: +26/-28
+>>
+>> Happy fixing! ;-)
+>>
+>> Thanks to the linux-next team for providing the build service.
+>>
+>> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/3650b228f83adda7e5ee532e2b90429c03f7b9ec/ (all 192 configs)
+>> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/bbf5c979011a099af5dc76498918ed7df445635b/ (all 192 configs)
+>>
+>>
+>> *** ERRORS ***
+>>
+>> 3 error regressions:
+>>   + /kisskb/src/arch/um/kernel/skas/clone.c: error: expected declaration specifiers or '...' before string constant:  => 24:16
+>
+> um-all{mod,yes}config
+>
+>>   + error: hotplug-memory.c: undefined reference to `of_drconf_to_nid_single':  => .text+0x5e0)
+>
+> powerpc-gcc5/pseries_le_defconfig+NO_NUMA
 
-Seems like this should be fixed by commit 8e90b4b1305a ("s390: correct
-__bootdata / __bootdata_preserved macros").
+Probably introduced by:
 
-Cheers,
-Nathan
+commit 72cdd117c449896c707fc6cfe5b90978160697d0
+Author: Scott Cheloha <cheloha@linux.ibm.com>
+Date:   Wed Sep 16 09:51:22 2020 -0500
+
+    pseries/hotplug-memory: hot-add: skip redundant LMB lookup
+
+Scott?
