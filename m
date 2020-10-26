@@ -1,54 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C865529A1C2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 01:48:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACA5029A1F5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 01:58:15 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CKtPJ5K6jzDqHZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 11:48:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CKtc44d3PzDqTL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 11:58:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::d43;
+ helo=mail-io1-xd43.google.com; envelope-from=axboe@kernel.dk;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Gs9KdWOf; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=ZWDgA8+y; dkim-atps=neutral
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
+ [IPv6:2607:f8b0:4864:20::d43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CKsF41CgLzDqR2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Oct 2020 10:56:40 +1100 (AEDT)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 84990221F8;
- Mon, 26 Oct 2020 23:56:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1603756597;
- bh=sv97bN4R/Owwp2er2LlnrIh7YLwg4mKc63KJHodG0uM=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Gs9KdWOfkhoLbqMH1Ud4G/wy9JaVOoRF3bgi6XOV8jDJzmfaYrMUxtnZ2uCfIOlgq
- +3jjhcjM27ZhlXxXhbb8hrt1qBkKu5Ufs84wehN9YKvSXazIIuhJs7FJKPiPdtFehH
- fRpG+79mis1CodEd4Ta0nRmL1xxhqCxfdlYPPmTE=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 67/80] KVM: PPC: Book3S HV: Do not allocate HPT
- for a nested guest
-Date: Mon, 26 Oct 2020 19:55:03 -0400
-Message-Id: <20201026235516.1025100-67-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201026235516.1025100-1-sashal@kernel.org>
-References: <20201026235516.1025100-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CKsQD4q0XzDqRN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Oct 2020 11:04:34 +1100 (AEDT)
+Received: by mail-io1-xd43.google.com with SMTP id y20so13137536iod.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Oct 2020 17:04:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=wqqvkA3oKUwkO5eXRPOBy8lXyQg0CiUtokie2wwagwI=;
+ b=ZWDgA8+yUlKx2dZgiyZDe66Bv6aQYo4o4sBrgULvsJ7L1mqryuSoN/tRsTLtRNf5gl
+ QA5GzgrsJ4IIXk6KefYiWNloPp5dTgRya5PAi5H2X1Ck5liCNMZ9plZFbXAFJkRhGENX
+ zRADl3Fzwzqt5UTeMExAEl9+J6C00UJYGVeM9r+kQpMj10I4tNzbDp+KUhpG26z8ohQ5
+ u9LGW1VxEtuEY5uYo6W0qmYrYYX9WPLdyfh3K/l7hHXtbXds+UPAtJe/6QdzpKUrKNEa
+ IHnev7OPcOoKpcEMuZBXfSj3e5H/bPp0SHxbMGuGbkkGN2ORlWbNlGQCKJOUg6Ub1kcx
+ WOrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=wqqvkA3oKUwkO5eXRPOBy8lXyQg0CiUtokie2wwagwI=;
+ b=eORUnfMGPt2CSYiWBCVBQsaIOXIb4B0zvDmj+s5sKY8Q/vn6XrpeJx1PpfWtGq3Wd9
+ S1W2a87aq8E3fnguNui/a0P20HN9K+p6Dwu+g54o4Bn2H1wFHhez6HPdDtpWecm8Q0bj
+ 69WPmUl0jzqM7V34V4sAgyOqYFMJ4YdJbkbrNCEZYQhnwv5fd48x+ZDLPs1bZi3q4u1e
+ uNxpIuknXnx1smiUae/IA3slTsU3RZd1gPJfM4Rvd9x4wNrIzoKyOpAJmCd3Xk8THIWb
+ MhL58qkTbGnYEUGpaCfq51+sxkyBKHujyKCqSavi1awpcJ4Ua4f5VQqT0zbQDb21nm+j
+ xtCg==
+X-Gm-Message-State: AOAM5337UaPCJ79HrrYnJFNTAMr48g5n1Nu5m6KBCw8+6GTZQEYFhk1B
+ DXmGtJ1u8EMZ/ODrqu2j/mhG+pv0pTs79Q==
+X-Google-Smtp-Source: ABdhPJzXWytxnG400Dp//klgHvFRu6jftuSrTTs7sW7oWyETnW8LM2mlLlQ2a53Jfzf5mLG9B/rX/w==
+X-Received: by 2002:a63:5f42:: with SMTP id t63mr569296pgb.0.1603756574857;
+ Mon, 26 Oct 2020 16:56:14 -0700 (PDT)
+Received: from [192.168.1.134] ([66.219.217.173])
+ by smtp.gmail.com with ESMTPSA id s38sm3637009pgm.62.2020.10.26.16.56.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Oct 2020 16:56:14 -0700 (PDT)
+Subject: Re: [REGRESSION] mm: process_vm_readv testcase no longer works after
+ compat_prcoess_vm_readv removed
+To: Kyle Huey <me@kylehuey.com>, open list <linux-kernel@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>
+References: <CAP045Aqrsb=CXHDHx4nS-pgg+MUDj14r-kN8_Jcbn-NAUziVag@mail.gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
+Message-ID: <70d5569e-4ad6-988a-e047-5d12d298684c@kernel.dk>
+Date: Mon, 26 Oct 2020 17:56:11 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAP045Aqrsb=CXHDHx4nS-pgg+MUDj14r-kN8_Jcbn-NAUziVag@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,107 +86,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Fabiano Rosas <farosas@linux.ibm.com>,
- Greg Kurz <groug@kaod.org>, kvm-ppc@vger.kernel.org,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
+Cc: linux-aio@kvack.org, David Howells <dhowells@redhat.com>,
+ linux-mm@kvack.org, keyrings@vger.kernel.org, sparclinux@vger.kernel.org,
+ Robert O'Callahan <robert@ocallahan.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
+ linux-block@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+ io-uring@vger.kernel.org,
+ "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+ linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-security-module@vger.kernel.org,
+ "open list:FILESYSTEMS \(VFS and infrastructure\)"
+ <linux-fsdevel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Fabiano Rosas <farosas@linux.ibm.com>
+On 10/26/20 4:55 PM, Kyle Huey wrote:
+> A test program from the rr[0] test suite, vm_readv_writev[1], no
+> longer works on 5.10-rc1 when compiled as a 32 bit binary and executed
+> on a 64 bit kernel. The first process_vm_readv call (on line 35) now
+> fails with EFAULT. I have bisected this to
+> c3973b401ef2b0b8005f8074a10e96e3ea093823.
+> 
+> It should be fairly straightforward to extract the test case from our
+> repository into a standalone program.
 
-[ Upstream commit 05e6295dc7de859c9d56334805485c4d20bebf25 ]
+Can you check with this applied?
 
-The current nested KVM code does not support HPT guests. This is
-informed/enforced in some ways:
+diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
+index fd12da80b6f2..05676722d9cd 100644
+--- a/mm/process_vm_access.c
++++ b/mm/process_vm_access.c
+@@ -273,7 +273,8 @@ static ssize_t process_vm_rw(pid_t pid,
+ 		return rc;
+ 	if (!iov_iter_count(&iter))
+ 		goto free_iov_l;
+-	iov_r = iovec_from_user(rvec, riovcnt, UIO_FASTIOV, iovstack_r, false);
++	iov_r = iovec_from_user(rvec, riovcnt, UIO_FASTIOV, iovstack_r,
++				in_compat_syscall());
+ 	if (IS_ERR(iov_r)) {
+ 		rc = PTR_ERR(iov_r);
+ 		goto free_iov_l;
 
-- Hosts < P9 will not be able to enable the nested HV feature;
-
-- The nested hypervisor MMU capabilities will not contain
-  KVM_CAP_PPC_MMU_HASH_V3;
-
-- QEMU reflects the MMU capabilities in the
-  'ibm,arch-vec-5-platform-support' device-tree property;
-
-- The nested guest, at 'prom_parse_mmu_model' ignores the
-  'disable_radix' kernel command line option if HPT is not supported;
-
-- The KVM_PPC_CONFIGURE_V3_MMU ioctl will fail if trying to use HPT.
-
-There is, however, still a way to start a HPT guest by using
-max-compat-cpu=power8 at the QEMU machine options. This leads to the
-guest being set to use hash after QEMU calls the KVM_PPC_ALLOCATE_HTAB
-ioctl.
-
-With the guest set to hash, the nested hypervisor goes through the
-entry path that has no knowledge of nesting (kvmppc_run_vcpu) and
-crashes when it tries to execute an hypervisor-privileged (mtspr
-HDEC) instruction at __kvmppc_vcore_entry:
-
-root@L1:~ $ qemu-system-ppc64 -machine pseries,max-cpu-compat=power8 ...
-
-<snip>
-[  538.543303] CPU: 83 PID: 25185 Comm: CPU 0/KVM Not tainted 5.9.0-rc4 #1
-[  538.543355] NIP:  c00800000753f388 LR: c00800000753f368 CTR: c0000000001e5ec0
-[  538.543417] REGS: c0000013e91e33b0 TRAP: 0700   Not tainted  (5.9.0-rc4)
-[  538.543470] MSR:  8000000002843033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 22422882  XER: 20040000
-[  538.543546] CFAR: c00800000753f4b0 IRQMASK: 3
-               GPR00: c0080000075397a0 c0000013e91e3640 c00800000755e600 0000000080000000
-               GPR04: 0000000000000000 c0000013eab19800 c000001394de0000 00000043a054db72
-               GPR08: 00000000003b1652 0000000000000000 0000000000000000 c0080000075502e0
-               GPR12: c0000000001e5ec0 c0000007ffa74200 c0000013eab19800 0000000000000008
-               GPR16: 0000000000000000 c00000139676c6c0 c000000001d23948 c0000013e91e38b8
-               GPR20: 0000000000000053 0000000000000000 0000000000000001 0000000000000000
-               GPR24: 0000000000000001 0000000000000001 0000000000000000 0000000000000001
-               GPR28: 0000000000000001 0000000000000053 c0000013eab19800 0000000000000001
-[  538.544067] NIP [c00800000753f388] __kvmppc_vcore_entry+0x90/0x104 [kvm_hv]
-[  538.544121] LR [c00800000753f368] __kvmppc_vcore_entry+0x70/0x104 [kvm_hv]
-[  538.544173] Call Trace:
-[  538.544196] [c0000013e91e3640] [c0000013e91e3680] 0xc0000013e91e3680 (unreliable)
-[  538.544260] [c0000013e91e3820] [c0080000075397a0] kvmppc_run_core+0xbc8/0x19d0 [kvm_hv]
-[  538.544325] [c0000013e91e39e0] [c00800000753d99c] kvmppc_vcpu_run_hv+0x404/0xc00 [kvm_hv]
-[  538.544394] [c0000013e91e3ad0] [c0080000072da4fc] kvmppc_vcpu_run+0x34/0x48 [kvm]
-[  538.544472] [c0000013e91e3af0] [c0080000072d61b8] kvm_arch_vcpu_ioctl_run+0x310/0x420 [kvm]
-[  538.544539] [c0000013e91e3b80] [c0080000072c7450] kvm_vcpu_ioctl+0x298/0x778 [kvm]
-[  538.544605] [c0000013e91e3ce0] [c0000000004b8c2c] sys_ioctl+0x1dc/0xc90
-[  538.544662] [c0000013e91e3dc0] [c00000000002f9a4] system_call_exception+0xe4/0x1c0
-[  538.544726] [c0000013e91e3e20] [c00000000000d140] system_call_common+0xf0/0x27c
-[  538.544787] Instruction dump:
-[  538.544821] f86d1098 60000000 60000000 48000099 e8ad0fe8 e8c500a0 e9264140 75290002
-[  538.544886] 7d1602a6 7cec42a6 40820008 7d0807b4 <7d164ba6> 7d083a14 f90d10a0 480104fd
-[  538.544953] ---[ end trace 74423e2b948c2e0c ]---
-
-This patch makes the KVM_PPC_ALLOCATE_HTAB ioctl fail when running in
-the nested hypervisor, causing QEMU to abort.
-
-Reported-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/kvm/book3s_hv.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index e2183fed947d4..dd9b19b1f459a 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -5191,6 +5191,12 @@ static long kvm_arch_vm_ioctl_hv(struct file *filp,
- 	case KVM_PPC_ALLOCATE_HTAB: {
- 		u32 htab_order;
- 
-+		/* If we're a nested hypervisor, we currently only support radix */
-+		if (kvmhv_on_pseries()) {
-+			r = -EOPNOTSUPP;
-+			break;
-+		}
-+
- 		r = -EFAULT;
- 		if (get_user(htab_order, (u32 __user *)argp))
- 			break;
 -- 
-2.25.1
+Jens Axboe
 
