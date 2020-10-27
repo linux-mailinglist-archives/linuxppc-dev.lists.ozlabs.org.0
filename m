@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 229FB29A206
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 02:07:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2967929A207
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 02:09:00 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CKtpW1WfYzDqS7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 12:07:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CKtrS5VVdzDqBm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 12:08:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=CTrwRB29; dkim-atps=neutral
+ header.s=default header.b=kSOWYf/V; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CKsYQ3sKvzDqRH
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Oct 2020 11:10:50 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CKsZ94Ww8zDqBS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Oct 2020 11:11:29 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id BDFDF20709;
- Tue, 27 Oct 2020 00:10:45 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id E2182216FD;
+ Tue, 27 Oct 2020 00:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1603757446;
- bh=AfC3mZ9GwvcWqcBZYDemzYMgYwgpqgcV1BTz3fFw0QE=;
+ s=default; t=1603757485;
+ bh=ABhYRCy8GvmSsJk0IZvZEEcEhyjZSnGBoJJ1e4j2wfg=;
  h=From:To:Cc:Subject:Date:From;
- b=CTrwRB29j4KDS2lWq69kduKrd+0rK8jflFOYhQ67WJn2OZuC8QFywgAK+hu+iHpjX
- Vm7L/xBfmDgjQWT2+XDZLDpr5uktKNuqanlkUJN1zHm5HJ6pNiS3tcXtVlUrNng7v+
- NamrfN8TUAViBjcoQMP1yF2GVMlUdsJxhLDKaVxc=
+ b=kSOWYf/V7npr9qJxeMzaF3k8O6IQIzmwWdKLNlZ8u9T/Pf9VII4KsXiX9zDUM8x6/
+ uTKAYMdBHhe5TQTyr1KQ+ElFv72viZSfB9nqnWdarR9tZVKZMPKKzeFjKEE//mn/0l
+ kvVz1V94kJmthZ27yp4bno1AeoPb2GMIz0BxvxY8=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 01/30] powerpc/powernv/smp: Fix spurious DBG()
+Subject: [PATCH AUTOSEL 4.4 01/25] powerpc/powernv/smp: Fix spurious DBG()
  warning
-Date: Mon, 26 Oct 2020 20:10:15 -0400
-Message-Id: <20201027001044.1027349-1-sashal@kernel.org>
+Date: Mon, 26 Oct 2020 20:10:59 -0400
+Message-Id: <20201027001123.1027642-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -97,7 +97,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platforms/powernv/smp.c
-index eec0e8d0454d1..7e0f5fa0452b3 100644
+index ad7b1a3dbed09..c605c78a80896 100644
 --- a/arch/powerpc/platforms/powernv/smp.c
 +++ b/arch/powerpc/platforms/powernv/smp.c
 @@ -41,7 +41,7 @@
