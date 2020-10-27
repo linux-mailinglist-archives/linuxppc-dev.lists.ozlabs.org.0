@@ -1,54 +1,129 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C710B29A20B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 02:10:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6583E29A212
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 02:15:05 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CKttL429MzDqQh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 12:10:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CKtzV3w7LzDqP3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 12:15:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=rick.p.edgecombe@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=kXe+4/eJ; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=intel.onmicrosoft.com header.i=@intel.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-intel-onmicrosoft-com
+ header.b=nnrcytRs; dkim-atps=neutral
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CKsZd32KPzDqRf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Oct 2020 11:11:53 +1100 (AEDT)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C4D4B2151B;
- Tue, 27 Oct 2020 00:11:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1603757510;
- bh=hP7h/RRUoYHzprBdN0Vj4BtVDcb9zPDb6kdxUZX5yRU=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=kXe+4/eJueNx1rdYzZkiXeBeeZ7Y+pa/opJ6CxKKFSasonr6zkRUmEMkmNGhTdsKo
- HRLRMzHD2BrUJOsXi1q5XHNNsZOBoygaYv4IM9cCmxLrU3bcbivGucDKydDy17/TxQ
- FTpKPMd7dpygRDjHlv6w7a/AA7kDhLpVPNPyDm5A=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 21/25] KVM: PPC: Book3S HV: Do not allocate HPT
- for a nested guest
-Date: Mon, 26 Oct 2020 20:11:19 -0400
-Message-Id: <20201027001123.1027642-21-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201027001123.1027642-1-sashal@kernel.org>
-References: <20201027001123.1027642-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CKtt24w1bzDqLK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Oct 2020 12:10:16 +1100 (AEDT)
+IronPort-SDR: nVgconZz/Re3zJiL/rsoXxup+ELbSV+Jy/QyfUpYgOJLy1xmaJReNJGnBgqsQNz35C6ftclENF
+ cyiL8b9INF3A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9786"; a="168111009"
+X-IronPort-AV: E=Sophos;i="5.77,421,1596524400"; d="scan'208";a="168111009"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Oct 2020 18:10:14 -0700
+IronPort-SDR: WRLGEyye8GXNMU4+58poBfahyGzPWLiQ7DALjAphRQGpgrRz5GdM0ORU/MXMkfx1mOtY4qOlmM
+ hmGS0Znt8rcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,421,1596524400"; d="scan'208";a="535583959"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orsmga005.jf.intel.com with ESMTP; 26 Oct 2020 18:10:13 -0700
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 26 Oct 2020 18:10:13 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
+ via Frontend Transport; Mon, 26 Oct 2020 18:10:13 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.176)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.1713.5; Mon, 26 Oct 2020 18:10:13 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DrcVbDpz2WXFitAC8lvG5fHiYTHgqrPOA+rtVboDu0jw/N16ZN7jRjR8CZYvGAvBVLXoaTYP/LSoQCY8TPnqEHqNiw0NZbrWtyF27BoB+04hbxESvsC6Md6LEFgUQk2o1RVVB/4C5E/1IN6gG2sdIHWArF6UvOdv37KbicsNwMLCoFIxXbRBvNmWNI4/Zan8BK+l02J9FWDnTVhixuiDE8t5iEmzS8ukIFryQP8PR8rxUBAHOJvxwviFAesoPTGye3akoEGFNp5cPvAlJ5Ah/HLdL1hwF/oyqj1c2quAdxo8LvIdHbcxXcUJb5G9ToPiR6e7Hp5vaXNK6jx5k/X0/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ih1tvWmhfrkBZo7MJW7d95569Y2IjWWrKu98dvfFJoc=;
+ b=Lcxh/4PgqYtODBWmcJBYJRrMSpNrz68zjiruAotwuKchZLpr+smK9EqzWn48vcizanImmNPCxa0P0syH5A5nQsw9Fxo/6YBnMD8cBMNnLt981KOWCQC3g9oGEw1GHrgsQbPlhuGeaH4oKr0AArGftWV9bsY8CVpw/XNddLZG0CREwOfcl/6IfEKUHj7e0PepyPK/JKR+BayPx44GhPKd9vNcAZrTwkMXa81nlB+ozuTnCTKDOLRtKUluTtc98j+A1m//gQ2YTv73Fm6qGzZKRgQKhsIxT6WFhCGb+uV/2+e48b1cjugBqganez00Z3rd8QrPn+eX912fA0MZJMbALA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com; 
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ih1tvWmhfrkBZo7MJW7d95569Y2IjWWrKu98dvfFJoc=;
+ b=nnrcytRsAPLZ9AAk4XQ90i7NnR0JKNS4DRJloWbUfVKqvVIBS8GPxNGRIbwBl1R/cdSOIMZKebLUBQvr8dqrTWkZcc83G81pJu4K/+QWZNfhaHi0JkOiE70EhbjbjI/vKGMc2JS0W3pC6mKOb5C2Q1ga7XbDhDqXTkShtNRgbSc=
+Received: from SN6PR11MB3184.namprd11.prod.outlook.com (2603:10b6:805:bd::17)
+ by SA0PR11MB4768.namprd11.prod.outlook.com (2603:10b6:806:71::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.22; Tue, 27 Oct
+ 2020 01:10:12 +0000
+Received: from SN6PR11MB3184.namprd11.prod.outlook.com
+ ([fe80::b901:8e07:4340:6704]) by SN6PR11MB3184.namprd11.prod.outlook.com
+ ([fe80::b901:8e07:4340:6704%7]) with mapi id 15.20.3477.028; Tue, 27 Oct 2020
+ 01:10:12 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "rppt@kernel.org" <rppt@kernel.org>
+Subject: Re: [PATCH 2/4] PM: hibernate: improve robustness of mapping pages in
+ the direct map
+Thread-Topic: [PATCH 2/4] PM: hibernate: improve robustness of mapping pages
+ in the direct map
+Thread-Index: AQHWqrf6LRJhAvsqzE2DP+hB1ynbOKmpCzYAgACQkACAAQqeAA==
+Date: Tue, 27 Oct 2020 01:10:11 +0000
+Message-ID: <3568e23fb551ae4b8d583c3e6bfdbed505e460e9.camel@intel.com>
+References: <20201025101555.3057-1-rppt@kernel.org>
+ <20201025101555.3057-3-rppt@kernel.org>
+ <f20900a403bea9eb3f0814128e5ea46f6580f5a5.camel@intel.com>
+ <20201026091554.GB1154158@kernel.org>
+In-Reply-To: <20201026091554.GB1154158@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.1 (3.30.1-1.fc29) 
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [134.134.137.79]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 2d78955d-bfd4-4206-891c-08d87a150e12
+x-ms-traffictypediagnostic: SA0PR11MB4768:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <SA0PR11MB476872441823E8BD7F7754C4C9160@SA0PR11MB4768.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: etpjFjmNlhD5NPu8Lr9UaB2xe1ARUSY2KosIpK2nRC29xn9qw7OigPgNq4YGFm3pHAFAjBnZW4fHzPmmFG+PNhVNc4yftnZy3A8I1kq5+TPpJgzPXdlj4UDNFWHtrg5EJv9UOsSkgU7d3+h220YWHFohxYjxEqFG58kuyrRUCGGOV3S1cLjih1DkLsdXySQ/coNPfUlHe2gScJqawc79ORZq8Xwlxa8mrC9e+cF7XRMberTq1bpo8ceiiSbsr3LqwFnHuGrBYfInR82DPgu/xEMvsmZBRmq1xF0R/FqG72UsbX1sGAujBxH6Vbp+Fo5m
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SN6PR11MB3184.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(376002)(346002)(366004)(136003)(39860400002)(396003)(91956017)(8936002)(4744005)(54906003)(6916009)(2616005)(6506007)(2906002)(4001150100001)(26005)(86362001)(71200400001)(83380400001)(7406005)(186003)(6486002)(64756008)(66446008)(8676002)(66556008)(66476007)(36756003)(76116006)(66946007)(6512007)(5660300002)(4326008)(478600001)(316002)(7416002);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata: wEIFVyWFEQt2Phq1p3KXHe0P5Ion8FTuCwyO4PlkuXkF9faRg4VwqvJZlaS7EZrBdiYurTwEppG8KXSVeNrgt8OkBYrysaaAEc+jpuoIvikkP/K6AANHbQUR4BakrCNpccIORD/3imjZlunW3qreLUUIwTgnVuR2zMTWQprAGwD+2YCIv7exgMsRKzXDOmziopRaHnKP/1aQFL/KtQI1daxULS3x/xDAQFLCbsBBF52cw45ge1KRSFdgi70IisLvxtn0oIa0nNGRFcJLG28+M94U5Fqxq0xKzS8hn1G8ipk5ZyG2XkHLJcpbIhzvuvAV/bBFKuw8uuCtJDPbuqrx4BPR9TnsHoB/6XjaEr/kFvdT/yaxj8Q81n2DNCSov61CLzFIwWAcMCSIxJA+d0aZMfMIkYVlW4UnvVFVcMR20XTdLnr4BX6cUUQKmV07KHldzGtiyQ2rECddAX5iExbJKTncImp6QiqO+DE2cJEtZ+ScwVgdwASHhFl353OMhlyPhj8TyoMdLXkdMLqlqjMu5ghO5aQBg5RvuNfx+ydqmcuKNZutOkSFCK4iDCZX3asoSL4aCrStoPEBsgWmwc1WYQWA5HCd4E1Nb/eZAVleqeZe0RVqavNbdpNgUUARHfch5YZ7tf6RX4l+qBvGZtQzAg==
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E3779E710F79FF429E5DF57F8CC012D2@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB3184.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d78955d-bfd4-4206-891c-08d87a150e12
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Oct 2020 01:10:12.0243 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: otiJMahpdVYKdYd3f33b3xjCQYQ9IMUcS5XNV7Nbj+AjWdhXoHGKDTd/aYVIW8hfej1+KONuubl9stQp4W0yRnYpCjdEY3/lMeK1D0w4x6A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4768
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,107 +135,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Fabiano Rosas <farosas@linux.ibm.com>,
- Greg Kurz <groug@kaod.org>, kvm-ppc@vger.kernel.org,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
+Cc: "david@redhat.com" <david@redhat.com>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "paulus@samba.org" <paulus@samba.org>, "pavel@ucw.cz" <pavel@ucw.cz>,
+ "hpa@zytor.com" <hpa@zytor.com>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ "cl@linux.com" <cl@linux.com>, "will@kernel.org" <will@kernel.org>,
+ "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>, "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
+ "borntraeger@de.ibm.com" <borntraeger@de.ibm.com>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "rientjes@google.com" <rientjes@google.com>, "Brown,
+ Len" <len.brown@intel.com>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+ "gor@linux.ibm.com" <gor@linux.ibm.com>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "hca@linux.ibm.com" <hca@linux.ibm.com>, "bp@alien8.de" <bp@alien8.de>,
+ "luto@kernel.org" <luto@kernel.org>,
+ "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
+ "kirill@shutemov.name" <kirill@shutemov.name>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "iamjoonsoo.kim@lge.com" <iamjoonsoo.kim@lge.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "penberg@kernel.org" <penberg@kernel.org>,
+ "palmer@dabbelt.com" <palmer@dabbelt.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "davem@davemloft.net" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Fabiano Rosas <farosas@linux.ibm.com>
-
-[ Upstream commit 05e6295dc7de859c9d56334805485c4d20bebf25 ]
-
-The current nested KVM code does not support HPT guests. This is
-informed/enforced in some ways:
-
-- Hosts < P9 will not be able to enable the nested HV feature;
-
-- The nested hypervisor MMU capabilities will not contain
-  KVM_CAP_PPC_MMU_HASH_V3;
-
-- QEMU reflects the MMU capabilities in the
-  'ibm,arch-vec-5-platform-support' device-tree property;
-
-- The nested guest, at 'prom_parse_mmu_model' ignores the
-  'disable_radix' kernel command line option if HPT is not supported;
-
-- The KVM_PPC_CONFIGURE_V3_MMU ioctl will fail if trying to use HPT.
-
-There is, however, still a way to start a HPT guest by using
-max-compat-cpu=power8 at the QEMU machine options. This leads to the
-guest being set to use hash after QEMU calls the KVM_PPC_ALLOCATE_HTAB
-ioctl.
-
-With the guest set to hash, the nested hypervisor goes through the
-entry path that has no knowledge of nesting (kvmppc_run_vcpu) and
-crashes when it tries to execute an hypervisor-privileged (mtspr
-HDEC) instruction at __kvmppc_vcore_entry:
-
-root@L1:~ $ qemu-system-ppc64 -machine pseries,max-cpu-compat=power8 ...
-
-<snip>
-[  538.543303] CPU: 83 PID: 25185 Comm: CPU 0/KVM Not tainted 5.9.0-rc4 #1
-[  538.543355] NIP:  c00800000753f388 LR: c00800000753f368 CTR: c0000000001e5ec0
-[  538.543417] REGS: c0000013e91e33b0 TRAP: 0700   Not tainted  (5.9.0-rc4)
-[  538.543470] MSR:  8000000002843033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 22422882  XER: 20040000
-[  538.543546] CFAR: c00800000753f4b0 IRQMASK: 3
-               GPR00: c0080000075397a0 c0000013e91e3640 c00800000755e600 0000000080000000
-               GPR04: 0000000000000000 c0000013eab19800 c000001394de0000 00000043a054db72
-               GPR08: 00000000003b1652 0000000000000000 0000000000000000 c0080000075502e0
-               GPR12: c0000000001e5ec0 c0000007ffa74200 c0000013eab19800 0000000000000008
-               GPR16: 0000000000000000 c00000139676c6c0 c000000001d23948 c0000013e91e38b8
-               GPR20: 0000000000000053 0000000000000000 0000000000000001 0000000000000000
-               GPR24: 0000000000000001 0000000000000001 0000000000000000 0000000000000001
-               GPR28: 0000000000000001 0000000000000053 c0000013eab19800 0000000000000001
-[  538.544067] NIP [c00800000753f388] __kvmppc_vcore_entry+0x90/0x104 [kvm_hv]
-[  538.544121] LR [c00800000753f368] __kvmppc_vcore_entry+0x70/0x104 [kvm_hv]
-[  538.544173] Call Trace:
-[  538.544196] [c0000013e91e3640] [c0000013e91e3680] 0xc0000013e91e3680 (unreliable)
-[  538.544260] [c0000013e91e3820] [c0080000075397a0] kvmppc_run_core+0xbc8/0x19d0 [kvm_hv]
-[  538.544325] [c0000013e91e39e0] [c00800000753d99c] kvmppc_vcpu_run_hv+0x404/0xc00 [kvm_hv]
-[  538.544394] [c0000013e91e3ad0] [c0080000072da4fc] kvmppc_vcpu_run+0x34/0x48 [kvm]
-[  538.544472] [c0000013e91e3af0] [c0080000072d61b8] kvm_arch_vcpu_ioctl_run+0x310/0x420 [kvm]
-[  538.544539] [c0000013e91e3b80] [c0080000072c7450] kvm_vcpu_ioctl+0x298/0x778 [kvm]
-[  538.544605] [c0000013e91e3ce0] [c0000000004b8c2c] sys_ioctl+0x1dc/0xc90
-[  538.544662] [c0000013e91e3dc0] [c00000000002f9a4] system_call_exception+0xe4/0x1c0
-[  538.544726] [c0000013e91e3e20] [c00000000000d140] system_call_common+0xf0/0x27c
-[  538.544787] Instruction dump:
-[  538.544821] f86d1098 60000000 60000000 48000099 e8ad0fe8 e8c500a0 e9264140 75290002
-[  538.544886] 7d1602a6 7cec42a6 40820008 7d0807b4 <7d164ba6> 7d083a14 f90d10a0 480104fd
-[  538.544953] ---[ end trace 74423e2b948c2e0c ]---
-
-This patch makes the KVM_PPC_ALLOCATE_HTAB ioctl fail when running in
-the nested hypervisor, causing QEMU to abort.
-
-Reported-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/kvm/book3s_hv.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 54c6ba87a25ad..b005ce9dc8f04 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3157,6 +3157,12 @@ static long kvm_arch_vm_ioctl_hv(struct file *filp,
- 	case KVM_PPC_ALLOCATE_HTAB: {
- 		u32 htab_order;
- 
-+		/* If we're a nested hypervisor, we currently only support radix */
-+		if (kvmhv_on_pseries()) {
-+			r = -EOPNOTSUPP;
-+			break;
-+		}
-+
- 		r = -EFAULT;
- 		if (get_user(htab_order, (u32 __user *)argp))
- 			break;
--- 
-2.25.1
-
+T24gTW9uLCAyMDIwLTEwLTI2IGF0IDExOjE1ICswMjAwLCBNaWtlIFJhcG9wb3J0IHdyb3RlOg0K
+PiBUaGUgaW50ZW50aW9uIG9mIHRoaXMgc2VyaWVzIGlzIHRvIGRpc2FsbG93IHVzYWdlIG9mDQo+
+IF9fa2VybmVsX21hcF9wYWdlcygpIHdoZW4gREVCVUdfUEFHRUFMTE9DPW4uIEknbGwgdXBkYXRl
+IHRoaXMgcGF0Y2gNCj4gdG8NCj4gYmV0dGVyIGhhbmRsZSBwb3NzaWJsZSBlcnJvcnMsIGJ1dCBJ
+IHN0aWxsIHdhbnQgdG8ga2VlcCBXQVJOIGluIHRoZQ0KPiBjYWxsZXIuDQoNClNvcnJ5LCBJIG1p
+c3NlZCB0aGlzIHNuaXBwZXQgYXQgdGhlIGJvdHRvbSwgdGhhdCB5b3VyIGludGVudGlvbiB3YXMg
+dG8NCmFjdHVhbGx5IGhhbmRsZSBlcnJvcnMgc29tZWhvdyBpbiB0aGUgaGliZXJuYXRlIGNvZGUu
+IFBsZWFzZSBpZ25vcmUgbXkNCm90aGVyIGNvbW1lbnQgdGhhdCBhc3N1bWVkIHlvdSB3YW50ZWQg
+dG8ganVzdCBhZGQgYSB3YXJuLg0K
