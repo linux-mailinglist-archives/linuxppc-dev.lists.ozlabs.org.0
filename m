@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593D629CC8E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 00:05:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3356729CC95
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 00:09:02 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CLS3c0MwPzDqLZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 10:05:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CLS7b1Zv2zDqQb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 10:08:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,44 +17,43 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=ras1ZN9p; 
+ header.s=2020 header.b=3kp7YDf0; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=v4kTPiwV; 
+ header.a=ed25519-sha256 header.s=2020e header.b=xGAdgcHv; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CLRrV1DGTzDqPK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 09:55:53 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CLRrX3D3jzDqNJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 09:55:56 +1100 (AEDT)
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1603839347;
+ s=2020; t=1603839348;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NCh5w9ecP7hR6Lh6yrwLcXDxY3S9AS4A8O59ClkmQuc=;
- b=ras1ZN9p/0s71wAw6BiBK7tQahnylR+TBxJ5FU+RyyAUd654I45XroAagmXNcOhZGwycQU
- JuB4srVEeq8JEdNYcazZGYxW43kHEWBW5olkexuNTx+ROG4rW4+lIg6oh7RjFfnmiYIMSa
- wja8WVkTfnwqG5yCdjniR3JYvVzyFeZ5xY4gUgFa/48uACynrZzW+jFjl7+Gm1Ak37HK8p
- i/LKjYW8uioJWsvMjaEFv0DOxsaAb1xs+tCGlkELjceM3XFKR9pZVfCoL3oL63qwaBCct1
- uDLBmNS2D4JG5AgIEUYeAmWi2edcivpTlNAp8bjFhFJaHoQh3tvbl3SKJ1tFdA==
+ bh=ApwQCgaMixcuC9eYB2lgT0F8OtvMn3mKtyMgUXQslP0=;
+ b=3kp7YDf0JW3dUiXKR/lIkGaq9IUzvbof2U+ioaOEM0BXZ25zKHZ3VvKuUCeYh6GTrBpfNm
+ GRwCN13HX21o0SlkuNx5V3Vsv+ceb2O2cK7q2g/9RWMajdYHHyg7LbgRGpePukCXT+FW94
+ zxSs77FFszQUu3jBPzmNd0L9yWdS1ctJhQZJ4aPxrjFcMaUZeiA2uxMMbxrKJxSMeMh8cO
+ r/f2cAZmd40765LdmanfOcBrvIuywbt8AXl2532QDscJylvxZHgZvGB4lysvx4ioXvLOX1
+ thtT1pxIN/tGyj/2hDhPGcArtzXTAydNZAuzy7DpYVeva9MxWbS2OrkDypdpFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1603839347;
+ s=2020e; t=1603839348;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NCh5w9ecP7hR6Lh6yrwLcXDxY3S9AS4A8O59ClkmQuc=;
- b=v4kTPiwVtn0BHjC1H1qdUC0DOW5ocQSNsfxbnR+jglqhT5b2wBt7em4IRx8CX07gIiVoDE
- zxqH636veSWAMICg==
+ bh=ApwQCgaMixcuC9eYB2lgT0F8OtvMn3mKtyMgUXQslP0=;
+ b=xGAdgcHvBjsBbyq8waqxdv8AKE7ZVadlKCP9fhj2yu2LxgTB7Lwz1WNyHMgs1SQY6+RaF0
+ /TJFp2upKtsb3RBQ==
 To: netdev@vger.kernel.org
-Subject: [PATCH net-next 03/15] net: forcedeth: Replace context and lock check
- with a lockdep_assert()
-Date: Tue, 27 Oct 2020 23:54:42 +0100
-Message-Id: <20201027225454.3492351-4-bigeasy@linutronix.de>
+Subject: [PATCH net-next 04/15] net: mlx5: Replace in_irq() usage.
+Date: Tue, 27 Oct 2020 23:54:43 +0100
+Message-Id: <20201027225454.3492351-5-bigeasy@linutronix.de>
 In-Reply-To: <20201027225454.3492351-1-bigeasy@linutronix.de>
 References: <20201027225454.3492351-1-bigeasy@linutronix.de>
 MIME-Version: 1.0
@@ -89,41 +88,92 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-nv_update_stats() triggers a WARN_ON() when invoked from hard interrupt
-context because the locks in use are not hard interrupt safe. It also has
-an assert_spin_locked() which was the lock check before the lockdep era.
+mlx5_eq_async_int() uses in_irq() to decide whether eq::lock needs to be
+acquired and released with spin_[un]lock() or the irq saving/restoring
+variants.
 
-Lockdep has way broader locking correctness checks and covers both issues,
-so replace the warning and the lock assert with lockdep_assert_held().
+The usage of in_*() in drivers is phased out and Linus clearly requested
+that code which changes behaviour depending on context should either be
+seperated or the context be conveyed in an argument passed by the caller,
+which usually knows the context.
+
+mlx5_eq_async_int() knows the context via the action argument already so
+using it for the lock variant decision is a straight forward replacement
+for in_irq().
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Rain River <rain.1986.08.12@gmail.com>
-Cc: Zhu Yanjun <zyjzyj2000@gmail.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org
+Cc: linux-rdma@vger.kernel.org
 ---
- drivers/net/ethernet/nvidia/forcedeth.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/eq.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/nvidia/forcedeth.c b/drivers/net/ethernet=
-/nvidia/forcedeth.c
-index 2fc10a36afa4a..7e85cf943be11 100644
---- a/drivers/net/ethernet/nvidia/forcedeth.c
-+++ b/drivers/net/ethernet/nvidia/forcedeth.c
-@@ -1666,11 +1666,7 @@ static void nv_update_stats(struct net_device *dev)
- 	struct fe_priv *np =3D netdev_priv(dev);
- 	u8 __iomem *base =3D get_hwbase(dev);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eq.c b/drivers/net/eth=
+ernet/mellanox/mlx5/core/eq.c
+index 8ebfe782f95e5..3800e9415158b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
+@@ -189,19 +189,21 @@ u32 mlx5_eq_poll_irq_disabled(struct mlx5_eq_comp *eq)
+ 	return count_eqe;
+ }
 =20
--	/* If it happens that this is run in top-half context, then
--	 * replace the spin_lock of hwstats_lock with
--	 * spin_lock_irqsave() in calling functions. */
--	WARN_ONCE(in_irq(), "forcedeth: estats spin_lock(_bh) from top-half");
--	assert_spin_locked(&np->hwstats_lock);
-+	lockdep_assert_held(&np->hwstats_lock);
+-static void mlx5_eq_async_int_lock(struct mlx5_eq_async *eq, unsigned long=
+ *flags)
++static void mlx5_eq_async_int_lock(struct mlx5_eq_async *eq, bool recovery,
++				   unsigned long *flags)
+ 	__acquires(&eq->lock)
+ {
+-	if (in_irq())
++	if (!recovery)
+ 		spin_lock(&eq->lock);
+ 	else
+ 		spin_lock_irqsave(&eq->lock, *flags);
+ }
 =20
- 	/* query hardware */
- 	np->estats.tx_bytes +=3D readl(base + NvRegTxCnt);
+-static void mlx5_eq_async_int_unlock(struct mlx5_eq_async *eq, unsigned lo=
+ng *flags)
++static void mlx5_eq_async_int_unlock(struct mlx5_eq_async *eq, bool recove=
+ry,
++				     unsigned long *flags)
+ 	__releases(&eq->lock)
+ {
+-	if (in_irq())
++	if (!recovery)
+ 		spin_unlock(&eq->lock);
+ 	else
+ 		spin_unlock_irqrestore(&eq->lock, *flags);
+@@ -222,12 +224,14 @@ static int mlx5_eq_async_int(struct notifier_block *n=
+b,
+ 	struct mlx5_core_dev *dev;
+ 	struct mlx5_eqe *eqe;
+ 	unsigned long flags;
++	bool recovery;
+ 	int num_eqes =3D 0;
+=20
+ 	dev =3D eq->dev;
+ 	eqt =3D dev->priv.eq_table;
+=20
+-	mlx5_eq_async_int_lock(eq_async, &flags);
++	recovery =3D action =3D=3D ASYNC_EQ_RECOVER;
++	mlx5_eq_async_int_lock(eq_async, recovery, &flags);
+=20
+ 	eqe =3D next_eqe_sw(eq);
+ 	if (!eqe)
+@@ -249,9 +253,9 @@ static int mlx5_eq_async_int(struct notifier_block *nb,
+=20
+ out:
+ 	eq_update_ci(eq, 1);
+-	mlx5_eq_async_int_unlock(eq_async, &flags);
++	mlx5_eq_async_int_unlock(eq_async, recovery, &flags);
+=20
+-	return unlikely(action =3D=3D ASYNC_EQ_RECOVER) ? num_eqes : 0;
++	return unlikely(recovery) ? num_eqes : 0;
+ }
+=20
+ void mlx5_cmd_eq_recover(struct mlx5_core_dev *dev)
 --=20
 2.28.0
 
