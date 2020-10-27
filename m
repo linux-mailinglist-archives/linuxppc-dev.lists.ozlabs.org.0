@@ -1,40 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693B829BE08
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 17:52:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D35529CB96
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Oct 2020 22:54:55 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CLHmz6TxMzDqQv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 03:52:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CLQV45jRczDqP3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 08:54:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=RcKrCnQF; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CLHjK6XYZzDq8F
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 03:49:08 +1100 (AEDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 5CA9967373; Tue, 27 Oct 2020 17:48:58 +0100 (CET)
-Date: Tue, 27 Oct 2020 17:48:58 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel v2 1/2] dma: Allow mixing bypass and normal
- IOMMU operation
-Message-ID: <20201027164858.GA30651@lst.de>
-References: <20201027101841.96056-1-aik@ozlabs.ru>
- <20201027101841.96056-2-aik@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CLQR763FKzDqNy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 08:52:18 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09RLYf95097976; Tue, 27 Oct 2020 17:52:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=Z2oTYETLVeUyyEXJSIeR3dyBMOi2hnxHWzwwqVREkyI=;
+ b=RcKrCnQFkoOMNre1JTffqI0ApT6ghHeCTKZgIumMgWGPykSi20cuYY3d8gULdiphv686
+ alI1rfIhizEdgA+a9AxyI/MQXCl7qem0vPH32XA+LKoJTzPvZuIWhS4OLH7y0uKGiHje
+ VJW2lmMSSYcYQd/M6IBgdIH5/pbB1PtkezU71WEuKsir1kgHLgbVJrxVMZt8o3YbtReX
+ VjcFr0lLmIb9E4f0dzQdtxa5J94KJpqeQUQzLW3C5J8ZDjluirAcxZ2Q0G/Jp8A6d46O
+ XVNMNOzipXUtehEzn4yEKpbK1WPVW6NgUhOOxMI+gUMA2WkWZZEntagFASJGFB+w6kjz 6Q== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34e4jwqw8m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Oct 2020 17:52:14 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09RLpbpD009936;
+ Tue, 27 Oct 2020 21:52:13 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma04wdc.us.ibm.com with ESMTP id 34cbw9b533-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Oct 2020 21:52:13 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 09RLqCFC49348918
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Oct 2020 21:52:12 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 11E8BC6057;
+ Tue, 27 Oct 2020 21:52:12 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E40DDC6055;
+ Tue, 27 Oct 2020 21:52:10 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.160.55.172])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 27 Oct 2020 21:52:10 +0000 (GMT)
+Subject: Re: [PATCH] ibmvfc: add new fields for version 2 of several MADs
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+References: <20201026013649.10147-1-tyreld@linux.ibm.com>
+ <yq1v9ew4ekf.fsf@ca-mkp.ca.oracle.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <c94f0f87-1863-9c0a-3561-4cbc9330e011@linux.ibm.com>
+Date: Tue, 27 Oct 2020 14:52:09 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201027101841.96056-2-aik@ozlabs.ru>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <yq1v9ew4ekf.fsf@ca-mkp.ca.oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-10-27_15:2020-10-26,
+ 2020-10-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ suspectscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1015
+ priorityscore=1501 adultscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010270125
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,98 +100,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org
+Cc: james.bottomley@hansenpartnership.com, brking@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-scsi@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> +static inline bool dma_handle_direct(struct device *dev, dma_addr_t dma_handle)
-> +{
-> +       return dma_handle >= dev->archdata.dma_offset;
-> +}
+On 10/26/20 6:56 PM, Martin K. Petersen wrote:
+> 
+> Tyrel,
+> 
+>> Introduce a targetWWPN field to several MADs. Its possible that a scsi
+>> ID of a target can change due to some fabric changes. The WWPN of the
+>> scsi target provides a better way to identify the target. Also, add
+>> flags for receiving MAD versioning information and advertising client
+>> support for targetWWPN with the VIOS. This latter capability flag will
+>> be required for future clients capable of requesting multiple hardware
+>> queues from the host adapter.
+> 
+> Applied to 5.11/scsi-staging, thanks!
+> 
 
-This won't compile except for powerpc, and directly accesing arch members
-in common code is a bad idea.  Maybe both your helpers need to be
-supplied by arch code to better abstract this out.
+Hi Martin,
 
->  	if (dma_map_direct(dev, ops))
->  		addr = dma_direct_map_page(dev, page, offset, size, dir, attrs);
-> +#ifdef CONFIG_DMA_OPS_BYPASS_BUS_LIMIT
-> +	else if (dev->bus_dma_limit &&
-> +		 can_map_direct(dev, (phys_addr_t) page_to_phys(page) + offset + size))
-> +		addr = dma_direct_map_page(dev, page, offset, size, dir, attrs);
-> +#endif
+I'm going to have to ask that this patch be unstaged.
 
-I don't think page_to_phys needs a phys_addr_t on the return value.
-I'd also much prefer if we make this a little more beautiful, here
-are a few suggestions:
+After some clarification from our VIOS folks I made the assumption that the MAD
+size was staying the same and new fields just used up existing reserved padding.
+Turns out they chose to keep the same amount of padding increasing the size of
+those structures. So, this patch needs to be reworked.
 
- - hide the bus_dma_limit check inside can_map_direct, and provide a
-   stub so that we can avoid the ifdef
- - use a better name for can_map_direct, and maybe also a better calling
-   convention by passing the page (the sg code also has the page), and
-   maybe even hide the dma_map_direct inside it.
+Sorry about that,
 
-	if (dma_map_direct(dev, ops) ||
-	    arch_dma_map_page_direct(dev, page, offset, size))
-		addr = dma_direct_map_page(dev, page, offset, size, dir, attrs);
-
->  	BUG_ON(!valid_dma_direction(dir));
->  	if (dma_map_direct(dev, ops))
->  		dma_direct_unmap_page(dev, addr, size, dir, attrs);
-> +#ifdef CONFIG_DMA_OPS_BYPASS_BUS_LIMIT
-> +	else if (dev->bus_dma_limit && dma_handle_direct(dev, addr + size))
-> +		dma_direct_unmap_page(dev, addr, size, dir, attrs);
-> +#endif
-
-Same here.
-
->  	if (dma_map_direct(dev, ops))
->  		ents = dma_direct_map_sg(dev, sg, nents, dir, attrs);
-> +#ifdef CONFIG_DMA_OPS_BYPASS_BUS_LIMIT
-> +	else if (dev->bus_dma_limit) {
-> +		struct scatterlist *s;
-> +		bool direct = true;
-> +		int i;
-> +
-> +		for_each_sg(sg, s, nents, i) {
-> +			direct = can_map_direct(dev, sg_phys(s) + s->offset + s->length);
-> +			if (!direct)
-> +				break;
-> +		}
-> +		if (direct)
-> +			ents = dma_direct_map_sg(dev, sg, nents, dir, attrs);
-> +		else
-> +			ents = ops->map_sg(dev, sg, nents, dir, attrs);
-> +	}
-> +#endif
-
-This needs to go into a helper as well.  I think the same style as
-above would work pretty nicely as well:
-
- 	if (dma_map_direct(dev, ops) ||
-	    arch_dma_map_sg_direct(dev, sg, nents))
- 		ents = dma_direct_map_sg(dev, sg, nents, dir, attrs);
- 	else
- 		ents = ops->map_sg(dev, sg, nents, dir, attrs);
-
-> +#ifdef CONFIG_DMA_OPS_BYPASS_BUS_LIMIT
-> +	if (dev->bus_dma_limit) {
-> +		struct scatterlist *s;
-> +		bool direct = true;
-> +		int i;
-> +
-> +		for_each_sg(sg, s, nents, i) {
-> +			direct = dma_handle_direct(dev, s->dma_address + s->length);
-> +			if (!direct)
-> +				break;
-> +		}
-> +		if (direct) {
-> +			dma_direct_unmap_sg(dev, sg, nents, dir, attrs);
-> +			return;
-> +		}
-> +	}
-> +#endif
-
-One more time here..
+-Tyrel
