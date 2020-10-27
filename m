@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E25829CC91
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 00:07:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC17C29CC9B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 00:11:04 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CLS5b59s9zDqRv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 10:07:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CLS9y1kvBzDqDl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 10:11:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,44 +17,43 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=fx5mIpQN; 
+ header.s=2020 header.b=g9gqclAg; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=4fdK0Siy; 
+ header.a=ed25519-sha256 header.s=2020e header.b=3pu8A+mw; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CLRrW2VJxzDqPK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 09:55:55 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CLRrd4cYtzDqNS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 09:56:01 +1100 (AEDT)
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1603839351;
+ s=2020; t=1603839353;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mqMN4ct9VbfHqkFKNiMKAw2F6YYZ02CQk7qh9a7Lg6A=;
- b=fx5mIpQNf24U4OKtffNf9Wx02FQrkLRTetizyvfAXrbeWdNEOAM2YgkMLanZFK51opIXP/
- ht8Cb1LUWkJGi7cSpliYshIYT52WrVcVf/0Gox0l1wlFcE53nKSX+2CokYhxqgpt9vXhO8
- ENu95JqaoJDpxG1oTteDugBZtS33STVYV8JgCFBnkF6MCFgR83L00HjjJptOf900x1oadV
- s8ku6a2pCLtC6oySCmxKF5sWmw5RL76lfGGuvX1wXRcGO0gD0GTOHN6qHf/5SsS7Q78lMy
- lEtbvwp5O/rXYrGfai16ntN90coQz052mVktHDfiKLm8Xc3tFycNvJ7AvxuPbQ==
+ bh=rHsm8MJPK4Ur0LbpXXnCUbJyu0caOerJrH2+ye+Subo=;
+ b=g9gqclAgDAf3eJ1BzG/Tjo6c3Wjzvg/2fO6fd0T8GBNT+WzPxY2DVEYi+F9Gvd+ktf+TEC
+ WZu1xS6DQTgKQ6xtk5aRay4F1JP5dovJNmHPK/Jd/iC5z2TbEqpBOXFGIA6gGP1UD3DlBn
+ rPtlUrfNxA1kPVS1Jto98k1ccQzCwJ4D7PSTpzfyXH+r463MHvnIryOV7bKk9tCEWkYXLd
+ RR5zVi1h7i7bGbbI5c2HQPyzKxbOfTy6Hmj7lfCVkajbWk+v/hmoCUyU//Be0NoBUEgNIq
+ nDVhsDeb8kv7uGwK7UZh5McvCCDUdQSqx0foVktzkZ98kiWEDi2kv8nVlws46Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1603839351;
+ s=2020e; t=1603839353;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mqMN4ct9VbfHqkFKNiMKAw2F6YYZ02CQk7qh9a7Lg6A=;
- b=4fdK0Siy7UlwpuqDN1Jmg/r5/WOGzHcjo/YM4lJ802RgjezqZ/22VTwf/TimbgjRPnzsTk
- V9/4+4XMOa9YvSAw==
+ bh=rHsm8MJPK4Ur0LbpXXnCUbJyu0caOerJrH2+ye+Subo=;
+ b=3pu8A+mwxh3mhIXxUiir7K7vb09NmYUGtA31VB2CEtZ6pEKV8Cnze51kmc1BQ9Ksoyw8ug
+ oP8DR7dDU3HBjKBQ==
 To: netdev@vger.kernel.org
-Subject: [PATCH net-next 06/15] net: airo: Invoke airo_read_wireless_stats()
- directly
-Date: Tue, 27 Oct 2020 23:54:45 +0100
-Message-Id: <20201027225454.3492351-7-bigeasy@linutronix.de>
+Subject: [PATCH net-next 07/15] net: airo: Always use JOB_STATS and JOB_EVENT
+Date: Tue, 27 Oct 2020 23:54:46 +0100
+Message-Id: <20201027225454.3492351-8-bigeasy@linutronix.de>
 In-Reply-To: <20201027225454.3492351-1-bigeasy@linutronix.de>
 References: <20201027225454.3492351-1-bigeasy@linutronix.de>
 MIME-Version: 1.0
@@ -89,15 +88,21 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-airo_get_wireless_stats() is the iw_handler_if::get_wireless_stats()
-callback of this driver. This callback was not allowed to sleep until
-commit a160ee69c6a46 ("wext: let get_wireless_stats() sleep") in v2.6.32.
+issuecommand() is using in_atomic() to decide if it is safe to invoke
+schedule() while waiting for the command to be accepted.
 
-airo still delegates the readout to a thread, which is not longer
-necessary.
+Usage of in_atomic() for this is only half correct as it can not detect all
+condition where it is not allowed to schedule(). Also Linus clearly
+requested that code which changes behaviour depending on context should
+either be seperated or the context be conveyed in an argument passed by the
+caller, which usually knows the context.
 
-Invoke airo_read_wireless_stats() directly from the callback and remove
-the now unused JOB_WSTATS handling.
+Chasing the call chains leading up to issuecommand() is straight forward,
+but airo_link() and airo_get_stats() would require to pass the context
+through a quite large amount of functions.
+
+As this is ancient hardware, avoid the churn and enforce the invocation of
+those functions through the JOB machinery.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Cc: Kalle Valo <kvalo@codeaurora.org>
@@ -106,79 +111,45 @@ Cc: Jakub Kicinski <kuba@kernel.org>
 Cc: linux-wireless@vger.kernel.org
 Cc: netdev@vger.kernel.org
 ---
- drivers/net/wireless/cisco/airo.c | 22 +++++-----------------
- 1 file changed, 5 insertions(+), 17 deletions(-)
+ drivers/net/wireless/cisco/airo.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco=
 /airo.c
-index 87b9398b03fd4..ca423f3b6b3ea 100644
+index ca423f3b6b3ea..369a6ca44d1ff 100644
 --- a/drivers/net/wireless/cisco/airo.c
 +++ b/drivers/net/wireless/cisco/airo.c
-@@ -1144,7 +1144,6 @@ static int airo_thread(void *data);
- static void timer_func(struct net_device *dev);
- static int airo_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
- static struct iw_statistics *airo_get_wireless_stats(struct net_device *de=
-v);
--static void airo_read_wireless_stats(struct airo_info *local);
- #ifdef CISCO_EXT
- static int readrids(struct net_device *dev, aironet_ioctl *comp);
- static int writerids(struct net_device *dev, aironet_ioctl *comp);
-@@ -1200,7 +1199,6 @@ struct airo_info {
- #define JOB_MIC	5
- #define JOB_EVENT	6
- #define JOB_AUTOWEP	7
--#define JOB_WSTATS	8
- #define JOB_SCAN_RESULTS  9
- 	unsigned long jobs;
- 	int (*bap_read)(struct airo_info*, __le16 *pu16Dst, int bytelen,
-@@ -3155,8 +3153,6 @@ static int airo_thread(void *data)
- 			airo_end_xmit11(dev);
- 		else if (test_bit(JOB_STATS, &ai->jobs))
- 			airo_read_stats(dev);
--		else if (test_bit(JOB_WSTATS, &ai->jobs))
--			airo_read_wireless_stats(ai);
- 		else if (test_bit(JOB_PROMISC, &ai->jobs))
- 			airo_set_promisc(ai);
- 		else if (test_bit(JOB_MIC, &ai->jobs))
-@@ -7732,15 +7728,12 @@ static void airo_read_wireless_stats(struct airo_in=
-fo *local)
- 	__le32 *vals =3D stats_rid.vals;
-=20
- 	/* Get stats out of the card */
--	clear_bit(JOB_WSTATS, &local->jobs);
--	if (local->power.event) {
--		up(&local->sem);
-+	if (local->power.event)
- 		return;
--	}
-+
- 	readCapabilityRid(local, &cap_rid, 0);
- 	readStatusRid(local, &status_rid, 0);
- 	readStatsRid(local, &stats_rid, RID_STATS, 0);
--	up(&local->sem);
-=20
- 	/* The status */
- 	local->wstats.status =3D le16_to_cpu(status_rid.mode);
-@@ -7783,15 +7776,10 @@ static struct iw_statistics *airo_get_wireless_stat=
-s(struct net_device *dev)
- {
+@@ -2286,12 +2286,8 @@ static struct net_device_stats *airo_get_stats(struc=
+t net_device *dev)
  	struct airo_info *local =3D  dev->ml_priv;
 =20
--	if (!test_bit(JOB_WSTATS, &local->jobs)) {
+ 	if (!test_bit(JOB_STATS, &local->jobs)) {
 -		/* Get stats out of the card if available */
 -		if (down_trylock(&local->sem) !=3D 0) {
--			set_bit(JOB_WSTATS, &local->jobs);
+-			set_bit(JOB_STATS, &local->jobs);
 -			wake_up_interruptible(&local->thr_wait);
 -		} else
--			airo_read_wireless_stats(local);
-+	if (!down_interruptible(&local->sem)) {
-+		airo_read_wireless_stats(local);
-+		up(&local->sem);
+-			airo_read_stats(dev);
++		set_bit(JOB_STATS, &local->jobs);
++		wake_up_interruptible(&local->thr_wait);
  	}
--
- 	return &local->wstats;
- }
 =20
+ 	return &dev->stats;
+@@ -3277,11 +3273,9 @@ static void airo_handle_link(struct airo_info *ai)
+ 		set_bit(FLAG_UPDATE_UNI, &ai->flags);
+ 		set_bit(FLAG_UPDATE_MULTI, &ai->flags);
+=20
+-		if (down_trylock(&ai->sem) !=3D 0) {
+-			set_bit(JOB_EVENT, &ai->jobs);
+-			wake_up_interruptible(&ai->thr_wait);
+-		} else
+-			airo_send_event(ai->dev);
++		set_bit(JOB_EVENT, &ai->jobs);
++		wake_up_interruptible(&ai->thr_wait);
++
+ 		netif_carrier_on(ai->dev);
+ 	} else if (!scan_forceloss) {
+ 		if (auto_wep && !ai->expires) {
 --=20
 2.28.0
 
