@@ -1,34 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3370829CE76
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 08:05:35 +0100 (CET)
-Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CLfjS5RCZzDqRW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 18:05:32 +1100 (AEDT)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5AF29CE92
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 09:01:46 +0100 (CET)
+Received: from bilbo.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CLgyH15yczDqRZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 19:01:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CLfcR1m7RzDqMF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 18:01:10 +1100 (AEDT)
-Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 8E9DEAE80276;
- Wed, 28 Oct 2020 02:59:56 -0400 (EDT)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel v3 2/2] powerpc/dma: Fallback to dma_ops when
- persistent memory present
-Date: Wed, 28 Oct 2020 18:00:30 +1100
-Message-Id: <20201028070030.60643-3-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201028070030.60643-1-aik@ozlabs.ru>
-References: <20201028070030.60643-1-aik@ozlabs.ru>
+ smtp.mailfrom=nefkom.net (client-ip=212.18.0.9; helo=mail-out.m-online.net;
+ envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CLgwB5CzqzDqPS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 18:59:47 +1100 (AEDT)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 4CLgvx6Dwnz1qs0h;
+ Wed, 28 Oct 2020 08:59:41 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 4CLgvx4VDmz1qy5f;
+ Wed, 28 Oct 2020 08:59:41 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id F6Ke24xfduVy; Wed, 28 Oct 2020 08:59:40 +0100 (CET)
+X-Auth-Info: g6YLjoFgv0DoaMRKZby0YxkPV7g+CL2IBGQ4YndSz+j/jsZQYZy8k8hrvsK+kosi
+Received: from igel.home (ppp-46-244-182-148.dynamic.mnet-online.de
+ [46.244.182.148])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Wed, 28 Oct 2020 08:59:40 +0100 (CET)
+Received: by igel.home (Postfix, from userid 1000)
+ id 65E8C2C082A; Wed, 28 Oct 2020 08:59:40 +0100 (CET)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 1/3] powerpc/uaccess: Switch __put_user_size_allowed()
+ to __put_user_asm_goto()
+References: <94ba5a5138f99522e1562dbcdb38d31aa790dc89.1599216721.git.christophe.leroy__44535.5968013004$1599217383$gmane$org@csgroup.eu>
+ <87mu079ron.fsf@igel.home> <87imav9r64.fsf@igel.home>
+ <87pn53vsep.fsf@mpe.ellerman.id.au>
+X-Yow: YOW!!  I'm in a very clever and adorable INSANE ASYLUM!!
+Date: Wed, 28 Oct 2020 08:59:40 +0100
+In-Reply-To: <87pn53vsep.fsf@mpe.ellerman.id.au> (Michael Ellerman's message
+ of "Wed, 28 Oct 2020 16:19:42 +1100")
+Message-ID: <87blgm3hn7.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,246 +65,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, iommu@lists.linux-foundation.org,
- Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-So far we have been using huge DMA windows to map all the RAM available.
-The RAM is normally mapped to the VM address space contiguously, and
-there is always a reasonable upper limit for possible future hot plugged
-RAM which makes it easy to map all RAM via IOMMU.
+On Okt 28 2020, Michael Ellerman wrote:
 
-Now there is persistent memory ("ibm,pmemory" in the FDT) which (unlike
-normal RAM) can map anywhere in the VM space beyond the maximum RAM size
-and since it can be used for DMA, it requires extending the huge window
-up to MAX_PHYSMEM_BITS which requires hypervisor support for:
-1. huge TCE tables;
-2. multilevel TCE tables;
-3. huge IOMMU pages.
+> What config and compiler are you using?
 
-Certain hypervisors cannot do either so the only option left is
-restricting the huge DMA window to include only RAM and fallback to
-the default DMA window for persistent memory.
+gcc 4.9.
 
-This defines arch_dma_map_direct/etc to allow generic DMA code perform
-additional checks on whether direct DMA is still possible.
+Andreas.
 
-This checks if the system has persistent memory. If it does not,
-the DMA bypass mode is selected, i.e.
-* dev->bus_dma_limit = 0
-* dev->dma_ops_bypass = true <- this avoid calling dma_ops for mapping.
-
-If there is such memory, this creates identity mapping only for RAM and
-sets the dev->bus_dma_limit to let the generic code decide whether to
-call into the direct DMA or the indirect DMA ops.
-
-This should not change the existing behaviour when no persistent memory
-as dev->dma_ops_bypass is expected to be set.
-
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
----
- arch/powerpc/kernel/dma-iommu.c        | 70 +++++++++++++++++++++++++-
- arch/powerpc/platforms/pseries/iommu.c | 44 ++++++++++++----
- arch/powerpc/Kconfig                   |  1 +
- 3 files changed, 103 insertions(+), 12 deletions(-)
-
-diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
-index a1c744194018..21e2d9f059a9 100644
---- a/arch/powerpc/kernel/dma-iommu.c
-+++ b/arch/powerpc/kernel/dma-iommu.c
-@@ -10,6 +10,63 @@
- #include <linux/pci.h>
- #include <asm/iommu.h>
- 
-+#define can_map_direct(dev, addr) \
-+	((dev)->bus_dma_limit >= phys_to_dma((dev), (addr)))
-+
-+bool arch_dma_map_page_direct(struct device *dev, phys_addr_t addr)
-+{
-+	if (likely(!dev->bus_dma_limit))
-+		return false;
-+
-+	return can_map_direct(dev, addr);
-+}
-+EXPORT_SYMBOL_GPL(arch_dma_map_page_direct);
-+
-+#define is_direct_handle(dev, h) ((h) >= (dev)->archdata.dma_offset)
-+
-+bool arch_dma_unmap_page_direct(struct device *dev, dma_addr_t dma_handle)
-+{
-+	if (likely(!dev->bus_dma_limit))
-+		return false;
-+
-+	return is_direct_handle(dev, dma_handle);
-+}
-+EXPORT_SYMBOL_GPL(arch_dma_unmap_page_direct);
-+
-+bool arch_dma_map_sg_direct(struct device *dev, struct scatterlist *sg, int nents)
-+{
-+	struct scatterlist *s;
-+	int i;
-+
-+	if (likely(!dev->bus_dma_limit))
-+		return false;
-+
-+	for_each_sg(sg, s, nents, i) {
-+		if (!can_map_direct(dev, sg_phys(s) + s->offset + s->length))
-+			return false;
-+	}
-+
-+	return true;
-+}
-+EXPORT_SYMBOL(arch_dma_map_sg_direct);
-+
-+bool arch_dma_unmap_sg_direct(struct device *dev, struct scatterlist *sg, int nents)
-+{
-+	struct scatterlist *s;
-+	int i;
-+
-+	if (likely(!dev->bus_dma_limit))
-+		return false;
-+
-+	for_each_sg(sg, s, nents, i) {
-+		if (!is_direct_handle(dev, s->dma_address + s->length))
-+			return false;
-+	}
-+
-+	return true;
-+}
-+EXPORT_SYMBOL(arch_dma_unmap_sg_direct);
-+
- /*
-  * Generic iommu implementation
-  */
-@@ -90,8 +147,17 @@ int dma_iommu_dma_supported(struct device *dev, u64 mask)
- 	struct iommu_table *tbl = get_iommu_table_base(dev);
- 
- 	if (dev_is_pci(dev) && dma_iommu_bypass_supported(dev, mask)) {
--		dev->dma_ops_bypass = true;
--		dev_dbg(dev, "iommu: 64-bit OK, using fixed ops\n");
-+		/*
-+		 * dma_iommu_bypass_supported() sets dma_max when there is
-+		 * 1:1 mapping but it is somehow limited.
-+		 * ibm,pmemory is one example.
-+		 */
-+		dev->dma_ops_bypass = dev->bus_dma_limit == 0;
-+		if (!dev->dma_ops_bypass)
-+			dev_warn(dev, "iommu: 64-bit OK but direct DMA is limited by %llx\n",
-+				 dev->bus_dma_limit);
-+		else
-+			dev_dbg(dev, "iommu: 64-bit OK, using fixed ops\n");
- 		return 1;
- 	}
- 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index e4198700ed1a..91112e748491 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -839,7 +839,7 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
- 			np, ret);
- }
- 
--static u64 find_existing_ddw(struct device_node *pdn)
-+static u64 find_existing_ddw(struct device_node *pdn, int *window_shift)
- {
- 	struct direct_window *window;
- 	const struct dynamic_dma_window_prop *direct64;
-@@ -851,6 +851,7 @@ static u64 find_existing_ddw(struct device_node *pdn)
- 		if (window->device == pdn) {
- 			direct64 = window->prop;
- 			dma_addr = be64_to_cpu(direct64->dma_base);
-+			*window_shift = be32_to_cpu(direct64->window_shift);
- 			break;
- 		}
- 	}
-@@ -1111,11 +1112,13 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
-  */
- static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- {
--	int len, ret;
-+	int len = 0, ret;
-+	bool pmem_present = of_find_node_by_type(NULL, "ibm,pmemory") != NULL;
-+	int max_ram_len = order_base_2(ddw_memory_hotplug_max());
- 	struct ddw_query_response query;
- 	struct ddw_create_response create;
- 	int page_shift;
--	u64 dma_addr, max_addr;
-+	u64 dma_addr;
- 	struct device_node *dn;
- 	u32 ddw_avail[DDW_APPLICABLE_SIZE];
- 	struct direct_window *window;
-@@ -1126,7 +1129,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 
- 	mutex_lock(&direct_window_init_mutex);
- 
--	dma_addr = find_existing_ddw(pdn);
-+	dma_addr = find_existing_ddw(pdn, &len);
- 	if (dma_addr != 0)
- 		goto out_unlock;
- 
-@@ -1212,14 +1215,26 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	}
- 	/* verify the window * number of ptes will map the partition */
- 	/* check largest block * page size > max memory hotplug addr */
--	max_addr = ddw_memory_hotplug_max();
--	if (query.largest_available_block < (max_addr >> page_shift)) {
--		dev_dbg(&dev->dev, "can't map partition max 0x%llx with %llu "
--			  "%llu-sized pages\n", max_addr,  query.largest_available_block,
--			  1ULL << page_shift);
-+	/*
-+	 * The "ibm,pmemory" can appear anywhere in the address space.
-+	 * Assuming it is still backed by page structs, try MAX_PHYSMEM_BITS
-+	 * for the upper limit and fallback to max RAM otherwise but this
-+	 * disables device::dma_ops_bypass.
-+	 */
-+	len = max_ram_len;
-+	if (pmem_present) {
-+		if (query.largest_available_block >=
-+		    (1ULL << (MAX_PHYSMEM_BITS - page_shift)))
-+			len = MAX_PHYSMEM_BITS - page_shift;
-+		else
-+			dev_info(&dev->dev, "Skipping ibm,pmemory");
-+	}
-+
-+	if (query.largest_available_block < (1ULL << (len - page_shift))) {
-+		dev_dbg(&dev->dev, "can't map partition max 0x%llx with %llu %llu-sized pages\n",
-+			1ULL << len, query.largest_available_block, 1ULL << page_shift);
- 		goto out_failed;
- 	}
--	len = order_base_2(max_addr);
- 	win64 = kzalloc(sizeof(struct property), GFP_KERNEL);
- 	if (!win64) {
- 		dev_info(&dev->dev,
-@@ -1299,6 +1314,15 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 
- out_unlock:
- 	mutex_unlock(&direct_window_init_mutex);
-+
-+	/*
-+	 * If we have persistent memory and the window size is only as big
-+	 * as RAM, then we failed to create a window to cover persistent
-+	 * memory and need to set the DMA limit.
-+	 */
-+	if (pmem_present && dma_addr && (len == max_ram_len))
-+		dev->dev.bus_dma_limit = dma_addr + (1ULL << len);
-+
- 	return dma_addr;
- }
- 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index e9f13fe08492..b2d4580acf79 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -159,6 +159,7 @@ config PPC
- 	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
- 	select DMA_OPS				if PPC64
- 	select DMA_OPS_BYPASS			if PPC64
-+	select ARCH_HAS_DMA_MAP_DIRECT 		if PPC64 && PPC_PSERIES
- 	select DYNAMIC_FTRACE			if FUNCTION_TRACER
- 	select EDAC_ATOMIC_SCRUB
- 	select EDAC_SUPPORT
 -- 
-2.17.1
-
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
