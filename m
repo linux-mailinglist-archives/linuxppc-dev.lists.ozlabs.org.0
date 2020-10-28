@@ -1,55 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D04E29CFAB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 12:23:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B53729CFC1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 12:47:55 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CLmQg3tNCzDq9J
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 22:23:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CLmzC1M3FzDqTR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 22:47:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=nZtyj9b5; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CLmMZ2dRHzDqTh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 22:20:26 +1100 (AEDT)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 673E0246B9;
- Wed, 28 Oct 2020 11:20:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1603884023;
- bh=mTg9fm0maDJRILTxhkQjp8X0Lq65oDuCI72pj3yFYDE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=nZtyj9b5x6hecvlSEKot7wmBAZql8U1dePTmmXQiFrrzoaGBN9VqsVNPuzebn4sFU
- 1HxFke7nJaXnQn6G39t0fFfqokJ+mMYm+26TSIP2esL1hnqarlb48UzMIoRkRNzXTB
- QjioeXNRaTtnP6jlK5TH2GSPSYibVZ9M4SKhISmY=
-Date: Wed, 28 Oct 2020 11:20:12 +0000
-From: Will Deacon <will@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 0/4] arch, mm: improve robustness of direct map
- manipulation
-Message-ID: <20201028112011.GB27927@willie-the-truck>
-References: <20201025101555.3057-1-rppt@kernel.org>
- <ae82f905a0092adb7e0f0ac206335c1883b3170f.camel@intel.com>
- <20201026090526.GA1154158@kernel.org>
- <a0212b073b3b2f62c3dbf1bf398f03fa402997be.camel@intel.com>
- <20201027083816.GG1154158@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CLhVv2LhWzDqQl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 19:26:31 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4CLhVv0H5kz8t11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 19:26:31 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4CLhVt6xs3z9sVX; Wed, 28 Oct 2020 19:26:30 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=neutral (access neither permitted nor denied)
+ smtp.mailfrom=russell.cc (client-ip=140.211.168.157; helo=fox;
+ envelope-from=snowpatch@russell.cc; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=russell.cc
+X-Greylist: delayed 398 seconds by postgrey-1.36 at bilbo;
+ Wed, 28 Oct 2020 19:26:30 AEDT
+Received: from fox (140-211-168-157-openstack.osuosl.org [140.211.168.157])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4CLhVt0kgWz9sV7
+ for <linuxppc-dev@ozlabs.org>; Wed, 28 Oct 2020 19:26:29 +1100 (AEDT)
+Received: from fox (ip6-localhost [::1])
+ by fox (OpenSMTPD) with ESMTP id d9d6ea9a;
+ Wed, 28 Oct 2020 08:19:48 +0000 (UTC)
+Subject: Test Results: RE: powerpc: avoid broken GCC __attribute__((optimize))
+To: "Ard Biesheuvel" <ardb@kernel.org>, <linuxppc-dev@ozlabs.org>
+From: <snowpatch@russell.cc>
+In-Reply-To: <20201028080433.26799-1-ardb@kernel.org>
+Date: Wed, 28 Oct 2020 08:19:48 -0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201027083816.GG1154158@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID: <1ec72dd0-653c-49e6-bc98-5eb277e8c7a8.lettre@localhost>
+Content-Type: multipart/mixed; boundary=d9rsrrUMyxZkynvW3eZmZRJTsyTxGe
+X-Mailman-Approved-At: Wed, 28 Oct 2020 22:46:08 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,99 +60,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "david@redhat.com" <david@redhat.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "paulus@samba.org" <paulus@samba.org>, "pavel@ucw.cz" <pavel@ucw.cz>,
- "hpa@zytor.com" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "cl@linux.com" <cl@linux.com>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
- "borntraeger@de.ibm.com" <borntraeger@de.ibm.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "rientjes@google.com" <rientjes@google.com>, "Brown,
- Len" <len.brown@intel.com>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
- "gor@linux.ibm.com" <gor@linux.ibm.com>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "hca@linux.ibm.com" <hca@linux.ibm.com>, "bp@alien8.de" <bp@alien8.de>,
- "luto@kernel.org" <luto@kernel.org>,
- "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
- "kirill@shutemov.name" <kirill@shutemov.name>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "iamjoonsoo.kim@lge.com" <iamjoonsoo.kim@lge.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "penberg@kernel.org" <penberg@kernel.org>,
- "palmer@dabbelt.com" <palmer@dabbelt.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "Edgecombe,
- Rick P" <rick.p.edgecombe@intel.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "davem@davemloft.net" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 27, 2020 at 10:38:16AM +0200, Mike Rapoport wrote:
-> On Mon, Oct 26, 2020 at 06:05:30PM +0000, Edgecombe, Rick P wrote:
-> > On Mon, 2020-10-26 at 11:05 +0200, Mike Rapoport wrote:
-> > > On Mon, Oct 26, 2020 at 01:13:52AM +0000, Edgecombe, Rick P wrote:
-> > > > On Sun, 2020-10-25 at 12:15 +0200, Mike Rapoport wrote:
-> > > > > Indeed, for architectures that define
-> > > > > CONFIG_ARCH_HAS_SET_DIRECT_MAP
-> > > > > it is
-> > > > > possible that __kernel_map_pages() would fail, but since this
-> > > > > function is
-> > > > > void, the failure will go unnoticed.
-> > > > 
-> > > > Could you elaborate on how this could happen? Do you mean during
-> > > > runtime today or if something new was introduced?
-> > > 
-> > > A failure in__kernel_map_pages() may happen today. For instance, on
-> > > x86
-> > > if the kernel is built with DEBUG_PAGEALLOC.
-> > > 
-> > >         __kernel_map_pages(page, 1, 0);
-> > > 
-> > > will need to split, say, 2M page and during the split an allocation
-> > > of
-> > > page table could fail.
-> > 
-> > On x86 at least, DEBUG_PAGEALLOC expects to never have to break a page
-> > on the direct map and even disables locking in cpa because it assumes
-> > this. If this is happening somehow anyway then we should probably fix
-> > that. Even if it's a debug feature, it will not be as useful if it is
-> > causing its own crashes.
-> > 
-> > I'm still wondering if there is something I'm missing here. It seems
-> > like you are saying there is a bug in some arch's, so let's add a WARN
-> > in cross-arch code to log it as it crashes. A warn and making things
-> > clearer seem like good ideas, but if there is a bug we should fix it.
-> > The code around the callers still functionally assume re-mapping can't
-> > fail.
-> 
-> Oh, I've meant x86 kernel *without* DEBUG_PAGEALLOC, and indeed the call
-> that unmaps pages back in safe_copy_page will just reset a 4K page to
-> NP because whatever made it NP at the first place already did the split.
-> 
-> Still, on arm64 with DEBUG_PAGEALLOC=n there is a possibility of a race
-> between map/unmap dance in __vunmap() and safe_copy_page() that may
-> cause access to unmapped memory:
-> 
-> __vunmap()
->     vm_remove_mappings()
->         set_direct_map_invalid()
-> 					safe_copy_page()	
-> 					    __kernel_map_pages()
-> 					    	return
-> 					    do_copy_page() -> fault
-> 					   	
-> This is a theoretical bug, but it is still not nice :) 							
 
-Just to clarify: this patch series fixes this problem, right?
+--d9rsrrUMyxZkynvW3eZmZRJTsyTxGe
+Content-Type: text/plain; charset=utf-8
 
-Will
+Thanks for your contribution, unfortunately we've found some issues.
+
+Your patch was successfully applied on branch powerpc/merge (8cb17737940b156329cb5210669b9c9b23f4dd56)
+
+The test build-ppc64le reported the following: Build failed!
+
+ Full log: https://openpower.xyz/job/snowpatch/job/snowpatch-linux-sparse/21048//artifact/linux/report.txt
+
+
+Here's a preview of the log:
+
+arch/powerpc/kernel/paca.c:244:25: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'setup_paca'
+  244 | void __nostackprotector setup_paca(struct paca_struct *new_paca)
+      |                         ^~~~~~~~~~
+make[2]: *** [scripts/Makefile.build:283: arch/powerpc/kernel/paca.o] Error 1
+make[1]: *** [scripts/Makefile.build:500: arch/powerpc/kernel] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1799: arch/powerpc] Error 2
+make: *** Waiting for unfinished jobs....
+
+
+The test build-ppc64be reported the following: Build failed!
+
+ Full log: https://openpower.xyz/job/snowpatch/job/snowpatch-linux-sparse/21049//artifact/linux/report.txt
+
+
+Here's a preview of the log:
+
+arch/powerpc/kernel/paca.c:244:25: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'setup_paca'
+  244 | void __nostackprotector setup_paca(struct paca_struct *new_paca)
+      |                         ^~~~~~~~~~
+make[2]: *** [scripts/Makefile.build:283: arch/powerpc/kernel/paca.o] Error 1
+make[1]: *** [scripts/Makefile.build:500: arch/powerpc/kernel] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1799: arch/powerpc] Error 2
+make: *** Waiting for unfinished jobs....
+
+
+The test build-ppc64e reported the following: Build failed!
+
+ Full log: https://openpower.xyz/job/snowpatch/job/snowpatch-linux-sparse/21050//artifact/linux/report.txt
+
+
+Here's a preview of the log:
+
+arch/powerpc/kernel/paca.c:244:25: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'setup_paca'
+  244 | void __nostackprotector setup_paca(struct paca_struct *new_paca)
+      |                         ^~~~~~~~~~
+make[2]: *** [scripts/Makefile.build:283: arch/powerpc/kernel/paca.o] Error 1
+make[1]: *** [scripts/Makefile.build:500: arch/powerpc/kernel] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1799: arch/powerpc] Error 2
+make: *** Waiting for unfinished jobs....
+
+
+
+
+--d9rsrrUMyxZkynvW3eZmZRJTsyTxGe--
+
