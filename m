@@ -1,82 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF15029CFEE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 13:42:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2D529CFEC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 13:38:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CLpBH1RxTzDqRg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 23:42:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CLp571NVWzDqTj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 23:38:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
  header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=GZMmUyHD; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=NwJFu0bd; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CLp2l6lwyzDqRs
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 23:35:59 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 09SCWG32125281; Wed, 28 Oct 2020 08:35:49 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CLp2m60SszDqS6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 23:36:00 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09SCXV0U123184; Wed, 28 Oct 2020 08:35:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=z8Lye+4ks7c7dx3nmISYlHyV2Y6B6yQDB50LnC4pPUY=;
- b=GZMmUyHD9Pmu5SyCEr/0WY5XZ8AQdux9hnvkP/D1YZdtXqga66AQJrYUM49OaWvyBymi
- Q6KXgntpprxZ7R+tbw7FFh38ZBtJBEa4cZB3one4gk/L/0UCMhrkbrhJVGF0oj+AtdKi
- oljEFU2o4oiYpXzSidIplcaD3mZedsc5GcdRe7HKFbUJZz9psbLSrc47I8YdVSzSsWOo
- LS4riac4ymaSnd/ZSI3NCtGuuMNrCg0GGwWDe9oWuxO3BXOE8EH9juO7MZU0x/V3J3ii
- OOoS7wW1JRx2cdVFPC+XvRRG5O8WhFd8Hp/TOFl2CFxyXSDYBp8RbqHKi2p76HV48J4y lw== 
+ bh=rHF6Yz59thCYyjQXEOJ1jQe6RNpwoec7Q33DAyj1sg0=;
+ b=NwJFu0bdrOPw1NPOyLZcR5/P6fiQPXDoWRXoT6bKwvXrREuf1vitt1mc3LQIuYNiG0UB
+ fqijZ6qbe2DXFM29VLpuaemWm+YgypabyfPo8pVW8Gvp+PMh435zDvTf0oK/sRaHpKxK
+ aH/7mCYQr0MAiuiZDDbctn0Zo2jiKH3tdke5Ldf8x8egplagAHnizwlRozlJr7CFXLeO
+ 7bBvtGlWYFqw/jLskzF3z2OqJwlmFvBpu/4Lby7KoGY4ZHvaInJZXBq+a6wzfNYhBroa
+ Zp/ehDr+dYOaNIie08+Vo+8oU9YehfkJeQbHtjkg2mQXAn3+HYreHlaUQUWwLLKAok+p Ew== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34ejcnt088-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 34endju226-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Oct 2020 08:35:48 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09SCX8EZ131940;
- Wed, 28 Oct 2020 08:35:48 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34ejcnt066-1
+ Wed, 28 Oct 2020 08:35:51 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09SCXwOv125263;
+ Wed, 28 Oct 2020 08:35:51 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 34endju1xs-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Oct 2020 08:35:48 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09SCSTX4005495;
- Wed, 28 Oct 2020 12:35:45 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04ams.nl.ibm.com with ESMTP id 34f8cr80pk-1
+ Wed, 28 Oct 2020 08:35:51 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09SCQvYf027926;
+ Wed, 28 Oct 2020 12:35:47 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma06fra.de.ibm.com with ESMTP id 34ejqe8kwr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Oct 2020 12:35:45 +0000
+ Wed, 28 Oct 2020 12:35:47 +0000
 Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
  [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 09SCZhwX24314124
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 09SCZjds31457732
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 28 Oct 2020 12:35:43 GMT
+ Wed, 28 Oct 2020 12:35:45 GMT
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DBCC0A405D;
- Wed, 28 Oct 2020 12:35:42 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5AC79A4055;
+ Wed, 28 Oct 2020 12:35:45 +0000 (GMT)
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CEA12A4051;
- Wed, 28 Oct 2020 12:35:40 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3873DA4040;
+ Wed, 28 Oct 2020 12:35:43 +0000 (GMT)
 Received: from srikart450.in.ibm.com (unknown [9.79.210.102])
  by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 28 Oct 2020 12:35:40 +0000 (GMT)
+ Wed, 28 Oct 2020 12:35:43 +0000 (GMT)
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 1/4] powerpc: Refactor is_kvm_guest declaration to new header
-Date: Wed, 28 Oct 2020 18:05:09 +0530
-Message-Id: <20201028123512.871051-2-srikar@linux.vnet.ibm.com>
+Subject: [PATCH 2/4] powerpc: Rename is_kvm_guest to check_kvm_guest
+Date: Wed, 28 Oct 2020 18:05:10 +0530
+Message-Id: <20201028123512.871051-3-srikar@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20201028123512.871051-1-srikar@linux.vnet.ibm.com>
 References: <20201028123512.871051-1-srikar@linux.vnet.ibm.com>
@@ -87,10 +87,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
  definitions=2020-10-28_06:2020-10-26,
  2020-10-28 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- mlxlogscore=962 bulkscore=0 malwarescore=0 impostorscore=0 mlxscore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 priorityscore=1501
- clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ impostorscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 mlxlogscore=999 mlxscore=0
+ spamscore=0 priorityscore=1501 malwarescore=0 adultscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2010280083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -114,8 +114,8 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Only code/declaration movement, in anticipation of doing a kvm-aware
-vcpu_is_preempted. No additional changes.
+is_kvm_guest() will be reused in subsequent patch in a new avatar.  Hence
+rename is_kvm_guest to check_kvm_guest. No additional changes.
 
 Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
@@ -130,76 +130,67 @@ Cc: Juri Lelli <juri.lelli@redhat.com>
 Cc: Waiman Long <longman@redhat.com>
 Cc: Phil Auld <pauld@redhat.com>
 ---
- arch/powerpc/include/asm/firmware.h  |  6 ------
- arch/powerpc/include/asm/kvm_guest.h | 15 +++++++++++++++
- arch/powerpc/include/asm/kvm_para.h  |  2 +-
- arch/powerpc/platforms/pseries/smp.c |  1 +
- 4 files changed, 17 insertions(+), 7 deletions(-)
- create mode 100644 arch/powerpc/include/asm/kvm_guest.h
+ arch/powerpc/include/asm/kvm_guest.h | 4 ++--
+ arch/powerpc/include/asm/kvm_para.h  | 2 +-
+ arch/powerpc/kernel/firmware.c       | 2 +-
+ arch/powerpc/platforms/pseries/smp.c | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
-index 0b295bdb201e..aa6a5ef5d483 100644
---- a/arch/powerpc/include/asm/firmware.h
-+++ b/arch/powerpc/include/asm/firmware.h
-@@ -134,12 +134,6 @@ extern int ibm_nmi_interlock_token;
- 
- extern unsigned int __start___fw_ftr_fixup, __stop___fw_ftr_fixup;
- 
--#if defined(CONFIG_PPC_PSERIES) || defined(CONFIG_KVM_GUEST)
--bool is_kvm_guest(void);
--#else
--static inline bool is_kvm_guest(void) { return false; }
--#endif
--
- #ifdef CONFIG_PPC_PSERIES
- void pseries_probe_fw_features(void);
- #else
 diff --git a/arch/powerpc/include/asm/kvm_guest.h b/arch/powerpc/include/asm/kvm_guest.h
-new file mode 100644
-index 000000000000..c0ace884a0e8
---- /dev/null
+index c0ace884a0e8..ba8291e02ba9 100644
+--- a/arch/powerpc/include/asm/kvm_guest.h
 +++ b/arch/powerpc/include/asm/kvm_guest.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2020  IBM Corporation
-+ */
-+
-+#ifndef __POWERPC_KVM_GUEST_H__
-+#define __POWERPC_KVM_GUEST_H__
-+
-+#if defined(CONFIG_PPC_PSERIES) || defined(CONFIG_KVM_GUEST)
-+bool is_kvm_guest(void);
-+#else
-+static inline bool is_kvm_guest(void) { return false; }
-+#endif
-+
-+#endif /* __POWERPC_KVM_GUEST_H__ */
+@@ -7,9 +7,9 @@
+ #define __POWERPC_KVM_GUEST_H__
+ 
+ #if defined(CONFIG_PPC_PSERIES) || defined(CONFIG_KVM_GUEST)
+-bool is_kvm_guest(void);
++bool check_kvm_guest(void);
+ #else
+-static inline bool is_kvm_guest(void) { return false; }
++static inline bool check_kvm_guest(void) { return false; }
+ #endif
+ 
+ #endif /* __POWERPC_KVM_GUEST_H__ */
 diff --git a/arch/powerpc/include/asm/kvm_para.h b/arch/powerpc/include/asm/kvm_para.h
-index 744612054c94..abe1b5e82547 100644
+index abe1b5e82547..6fba06b6cfdb 100644
 --- a/arch/powerpc/include/asm/kvm_para.h
 +++ b/arch/powerpc/include/asm/kvm_para.h
-@@ -8,7 +8,7 @@
- #ifndef __POWERPC_KVM_PARA_H__
- #define __POWERPC_KVM_PARA_H__
+@@ -14,7 +14,7 @@
  
--#include <asm/firmware.h>
-+#include <asm/kvm_guest.h>
+ static inline int kvm_para_available(void)
+ {
+-	return IS_ENABLED(CONFIG_KVM_GUEST) && is_kvm_guest();
++	return IS_ENABLED(CONFIG_KVM_GUEST) && check_kvm_guest();
+ }
  
- #include <uapi/asm/kvm_para.h>
+ static inline unsigned int kvm_arch_para_features(void)
+diff --git a/arch/powerpc/kernel/firmware.c b/arch/powerpc/kernel/firmware.c
+index fe48d319d490..61243267d4cf 100644
+--- a/arch/powerpc/kernel/firmware.c
++++ b/arch/powerpc/kernel/firmware.c
+@@ -21,7 +21,7 @@ EXPORT_SYMBOL_GPL(powerpc_firmware_features);
+ #endif
+ 
+ #if defined(CONFIG_PPC_PSERIES) || defined(CONFIG_KVM_GUEST)
+-bool is_kvm_guest(void)
++bool check_kvm_guest(void)
+ {
+ 	struct device_node *hyper_node;
  
 diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
-index 92922491a81c..d578732c545d 100644
+index d578732c545d..c70b4be9f0a5 100644
 --- a/arch/powerpc/platforms/pseries/smp.c
 +++ b/arch/powerpc/platforms/pseries/smp.c
-@@ -42,6 +42,7 @@
- #include <asm/plpar_wrappers.h>
- #include <asm/code-patching.h>
- #include <asm/svm.h>
-+#include <asm/kvm_guest.h>
+@@ -211,7 +211,7 @@ static __init void pSeries_smp_probe(void)
+ 	if (!cpu_has_feature(CPU_FTR_SMT))
+ 		return;
  
- #include "pseries.h"
- 
+-	if (is_kvm_guest()) {
++	if (check_kvm_guest()) {
+ 		/*
+ 		 * KVM emulates doorbells by disabling FSCR[MSGP] so msgsndp
+ 		 * faults to the hypervisor which then reads the instruction
 -- 
 2.18.4
 
