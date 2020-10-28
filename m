@@ -2,86 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6FA29CFA8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 12:20:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D04E29CFAB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 12:23:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CLmMd2wtWzDqDT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 22:20:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CLmQg3tNCzDq9J
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 22:23:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=K+xPihw0; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=K+xPihw0; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=nZtyj9b5; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CLmJg3K86zDq9J
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 22:17:55 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1603883872;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3/QY+frjp1dnSTegbpUI0625UXdGYc+dVdsYJMjhKKw=;
- b=K+xPihw0cifYvMBWU7SzlMaRJfKqCzAXBJpfQcPlfRW//SiL6XkN0IWu37P6Ju9V3uOCgj
- qlRSURdYj17gT5tMuh/HfNo3tSRgye70KEhf1gujN/sHJLjJvgCgzwY0w0SPfsqojKkDIv
- DBl1UxdP1AVYINm2UQjJ+Qb7qP4tQOo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1603883872;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3/QY+frjp1dnSTegbpUI0625UXdGYc+dVdsYJMjhKKw=;
- b=K+xPihw0cifYvMBWU7SzlMaRJfKqCzAXBJpfQcPlfRW//SiL6XkN0IWu37P6Ju9V3uOCgj
- qlRSURdYj17gT5tMuh/HfNo3tSRgye70KEhf1gujN/sHJLjJvgCgzwY0w0SPfsqojKkDIv
- DBl1UxdP1AVYINm2UQjJ+Qb7qP4tQOo=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-195-5Kg-MYA4O2aB4WCrNYOgXA-1; Wed, 28 Oct 2020 07:17:50 -0400
-X-MC-Unique: 5Kg-MYA4O2aB4WCrNYOgXA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 90BEC809DE4;
- Wed, 28 Oct 2020 11:17:44 +0000 (UTC)
-Received: from [10.36.114.138] (ovpn-114-138.ams2.redhat.com [10.36.114.138])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 033EC6EF5E;
- Wed, 28 Oct 2020 11:17:35 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CLmMZ2dRHzDqTh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 22:20:26 +1100 (AEDT)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 673E0246B9;
+ Wed, 28 Oct 2020 11:20:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1603884023;
+ bh=mTg9fm0maDJRILTxhkQjp8X0Lq65oDuCI72pj3yFYDE=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=nZtyj9b5x6hecvlSEKot7wmBAZql8U1dePTmmXQiFrrzoaGBN9VqsVNPuzebn4sFU
+ 1HxFke7nJaXnQn6G39t0fFfqokJ+mMYm+26TSIP2esL1hnqarlb48UzMIoRkRNzXTB
+ QjioeXNRaTtnP6jlK5TH2GSPSYibVZ9M4SKhISmY=
+Date: Wed, 28 Oct 2020 11:20:12 +0000
+From: Will Deacon <will@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
 Subject: Re: [PATCH 0/4] arch, mm: improve robustness of direct map
  manipulation
-To: Mike Rapoport <rppt@kernel.org>
+Message-ID: <20201028112011.GB27927@willie-the-truck>
 References: <20201025101555.3057-1-rppt@kernel.org>
  <ae82f905a0092adb7e0f0ac206335c1883b3170f.camel@intel.com>
  <20201026090526.GA1154158@kernel.org>
  <a0212b073b3b2f62c3dbf1bf398f03fa402997be.camel@intel.com>
  <20201027083816.GG1154158@kernel.org>
- <e5fc62b6-f644-4ed5-de5b-ffd8337861e4@redhat.com>
- <20201028110945.GE1428094@kernel.org>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <5805fdd9-14e5-141c-773b-c46d2da57258@redhat.com>
-Date: Wed, 28 Oct 2020 12:17:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20201028110945.GE1428094@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201027083816.GG1154158@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,14 +61,15 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "peterz@infradead.org" <peterz@infradead.org>,
+Cc: "david@redhat.com" <david@redhat.com>,
+ "peterz@infradead.org" <peterz@infradead.org>,
  "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
  "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
  "linux-mm@kvack.org" <linux-mm@kvack.org>,
  "paulus@samba.org" <paulus@samba.org>, "pavel@ucw.cz" <pavel@ucw.cz>,
  "hpa@zytor.com" <hpa@zytor.com>,
  "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "cl@linux.com" <cl@linux.com>, "will@kernel.org" <will@kernel.org>,
+ "cl@linux.com" <cl@linux.com>,
  "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
  "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
  "x86@kernel.org" <x86@kernel.org>, "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
@@ -129,50 +98,62 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 28.10.20 12:09, Mike Rapoport wrote:
-> On Tue, Oct 27, 2020 at 09:46:35AM +0100, David Hildenbrand wrote:
->> On 27.10.20 09:38, Mike Rapoport wrote:
->>> On Mon, Oct 26, 2020 at 06:05:30PM +0000, Edgecombe, Rick P wrote:
->>>
->>>> Beyond whatever you are seeing, for the latter case of new things
->>>> getting introduced to an interface with hidden dependencies... Another
->>>> edge case could be a new caller to set_memory_np() could result in
->>>> large NP pages. None of the callers today should cause this AFAICT, but
->>>> it's not great to rely on the callers to know these details.
+On Tue, Oct 27, 2020 at 10:38:16AM +0200, Mike Rapoport wrote:
+> On Mon, Oct 26, 2020 at 06:05:30PM +0000, Edgecombe, Rick P wrote:
+> > On Mon, 2020-10-26 at 11:05 +0200, Mike Rapoport wrote:
+> > > On Mon, Oct 26, 2020 at 01:13:52AM +0000, Edgecombe, Rick P wrote:
+> > > > On Sun, 2020-10-25 at 12:15 +0200, Mike Rapoport wrote:
+> > > > > Indeed, for architectures that define
+> > > > > CONFIG_ARCH_HAS_SET_DIRECT_MAP
+> > > > > it is
+> > > > > possible that __kernel_map_pages() would fail, but since this
+> > > > > function is
+> > > > > void, the failure will go unnoticed.
+> > > > 
+> > > > Could you elaborate on how this could happen? Do you mean during
+> > > > runtime today or if something new was introduced?
+> > > 
+> > > A failure in__kernel_map_pages() may happen today. For instance, on
+> > > x86
+> > > if the kernel is built with DEBUG_PAGEALLOC.
+> > > 
+> > >         __kernel_map_pages(page, 1, 0);
+> > > 
+> > > will need to split, say, 2M page and during the split an allocation
+> > > of
+> > > page table could fail.
+> > 
+> > On x86 at least, DEBUG_PAGEALLOC expects to never have to break a page
+> > on the direct map and even disables locking in cpa because it assumes
+> > this. If this is happening somehow anyway then we should probably fix
+> > that. Even if it's a debug feature, it will not be as useful if it is
+> > causing its own crashes.
+> > 
+> > I'm still wondering if there is something I'm missing here. It seems
+> > like you are saying there is a bug in some arch's, so let's add a WARN
+> > in cross-arch code to log it as it crashes. A warn and making things
+> > clearer seem like good ideas, but if there is a bug we should fix it.
+> > The code around the callers still functionally assume re-mapping can't
+> > fail.
 > 
->>> A caller of set_memory_*() or set_direct_map_*() should expect a failure
->>> and be ready for that. So adding a WARN to safe_copy_page() is the first
->>> step in that direction :)
->>>
->>
->> I am probably missing something important, but why are we saving/restoring
->> the content of pages that were explicitly removed from the identity mapping
->> such that nobody will access them?
+> Oh, I've meant x86 kernel *without* DEBUG_PAGEALLOC, and indeed the call
+> that unmaps pages back in safe_copy_page will just reset a 4K page to
+> NP because whatever made it NP at the first place already did the split.
 > 
-> Actually, we should not be saving/restoring free pages during
-> hibernation as there are several calls to mark_free_pages() that should
-> exclude the free pages from the snapshot. I've tried to find why the fix
-> that maps/unmaps a page to save it was required at the first place, but
-> I could not find bug reports.
+> Still, on arm64 with DEBUG_PAGEALLOC=n there is a possibility of a race
+> between map/unmap dance in __vunmap() and safe_copy_page() that may
+> cause access to unmapped memory:
 > 
-> The closest I've got is an email from Rafael that asked to update
-> "hibernate: handle DEBUG_PAGEALLOC" patch:
-> 
-> https://lore.kernel.org/linux-pm/200802200133.44098.rjw@sisk.pl/
-> 
-> Could it be that safe_copy_page() tries to workaround a non-existent
-> problem?
-> 
+> __vunmap()
+>     vm_remove_mappings()
+>         set_direct_map_invalid()
+> 					safe_copy_page()	
+> 					    __kernel_map_pages()
+> 					    	return
+> 					    do_copy_page() -> fault
+> 					   	
+> This is a theoretical bug, but it is still not nice :) 							
 
-Clould be! Also see
+Just to clarify: this patch series fixes this problem, right?
 
-https://lkml.kernel.org/r/38de5bb0-5559-d069-0ce0-daec66ef2746@suse.cz
-
-which restores free page content based on more kernel parameters, not 
-based on the original content.
-
--- 
-Thanks,
-
-David / dhildenb
-
+Will
