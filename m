@@ -1,40 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7338C29D150
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 18:24:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A71DC29D174
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Oct 2020 19:25:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CLwRW2B92zDqTP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 04:24:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CLxnq4pDzzDqG8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 05:25:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=cai@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=hj3Ts0lw; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=hj3Ts0lw; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CLwNs27ZBzDqTP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 04:22:05 +1100 (AEDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 8D0A568BEB; Wed, 28 Oct 2020 18:22:01 +0100 (CET)
-Date: Wed, 28 Oct 2020 18:22:01 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel v3 1/2] dma: Allow mixing bypass and mapped DMA
- operation
-Message-ID: <20201028172201.GB10015@lst.de>
-References: <20201028070030.60643-1-aik@ozlabs.ru>
- <20201028070030.60643-2-aik@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CLxm84P3ZzDqDL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 05:23:52 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1603909430;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=oZiyvKbthkSVXmetaH/Tg/ylLfcMHsx8WKqlppb05Vw=;
+ b=hj3Ts0lwmOTOopdRiHoIBmgGvdg7qZr9VmC3J3KTIhPeigJfTyn8vH3+Qt8D7jZSTvJ0od
+ 5ey9JC4xWQXl0LLRQKGxFNL1YM/4n+PgUTUppWIyBGZ20zZ5HygAt8AMlKLNnTcF+hzdw8
+ qZpPerLZoxM6YmXgkjIOS6ccI90/Bxg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1603909430;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=oZiyvKbthkSVXmetaH/Tg/ylLfcMHsx8WKqlppb05Vw=;
+ b=hj3Ts0lwmOTOopdRiHoIBmgGvdg7qZr9VmC3J3KTIhPeigJfTyn8vH3+Qt8D7jZSTvJ0od
+ 5ey9JC4xWQXl0LLRQKGxFNL1YM/4n+PgUTUppWIyBGZ20zZ5HygAt8AMlKLNnTcF+hzdw8
+ qZpPerLZoxM6YmXgkjIOS6ccI90/Bxg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-477-NQE2bf9XOEqbiPyFFQ9_dg-1; Wed, 28 Oct 2020 14:23:46 -0400
+X-MC-Unique: NQE2bf9XOEqbiPyFFQ9_dg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4D3836408F;
+ Wed, 28 Oct 2020 18:23:44 +0000 (UTC)
+Received: from localhost.localdomain.com (ovpn-66-92.rdu2.redhat.com
+ [10.10.66.92])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 402CF6EF53;
+ Wed, 28 Oct 2020 18:23:40 +0000 (UTC)
+From: Qian Cai <cai@redhat.com>
+To: "Paul E . McKenney" <paulmck@kernel.org>
+Subject: [PATCH] powerpc/smp: Move rcu_cpu_starting() earlier
+Date: Wed, 28 Oct 2020 14:23:34 -0400
+Message-Id: <20201028182334.13466-1-cai@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201028070030.60643-2-aik@ozlabs.ru>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,50 +78,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+ Qian Cai <cai@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 28, 2020 at 06:00:29PM +1100, Alexey Kardashevskiy wrote:
-> At the moment we allow bypassing DMA ops only when we can do this for
-> the entire RAM. However there are configs with mixed type memory
-> where we could still allow bypassing IOMMU in most cases;
-> POWERPC with persistent memory is one example.
-> 
-> This adds an arch hook to determine where bypass can still work and
-> we invoke direct DMA API. The following patch checks the bus limit
-> on POWERPC to allow or disallow direct mapping.
-> 
-> This adds a CONFIG_ARCH_HAS_DMA_SET_MASK config option to make arch_xxxx
-> hooks no-op by default.
-> 
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> ---
->  kernel/dma/mapping.c | 24 ++++++++++++++++++++----
->  kernel/dma/Kconfig   |  4 ++++
->  2 files changed, 24 insertions(+), 4 deletions(-)
-> 
-> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-> index 51bb8fa8eb89..a0bc9eb876ed 100644
-> --- a/kernel/dma/mapping.c
-> +++ b/kernel/dma/mapping.c
-> @@ -137,6 +137,18 @@ static inline bool dma_map_direct(struct device *dev,
->  	return dma_go_direct(dev, *dev->dma_mask, ops);
->  }
->  
-> +#ifdef CONFIG_ARCH_HAS_DMA_MAP_DIRECT
-> +bool arch_dma_map_page_direct(struct device *dev, phys_addr_t addr);
-> +bool arch_dma_unmap_page_direct(struct device *dev, dma_addr_t dma_handle);
-> +bool arch_dma_map_sg_direct(struct device *dev, struct scatterlist *sg, int nents);
-> +bool arch_dma_unmap_sg_direct(struct device *dev, struct scatterlist *sg, int nents);
-> +#else
-> +#define arch_dma_map_page_direct(d, a) (0)
-> +#define arch_dma_unmap_page_direct(d, a) (0)
-> +#define arch_dma_map_sg_direct(d, s, n) (0)
-> +#define arch_dma_unmap_sg_direct(d, s, n) (0)
-> +#endif
+The call to rcu_cpu_starting() in start_secondary() is not early enough
+in the CPU-hotplug onlining process, which results in lockdep splats as
+follows:
 
-A bunch of overly long lines here.  Except for that this looks ok to me.
-If you want me to queue up the series I can just fix it up.
+ WARNING: suspicious RCU usage
+ -----------------------------
+ kernel/locking/lockdep.c:3497 RCU-list traversed in non-reader section!!
+
+ other info that might help us debug this:
+
+ RCU used illegally from offline CPU!
+ rcu_scheduler_active = 1, debug_locks = 1
+ no locks held by swapper/1/0.
+
+ Call Trace:
+ dump_stack+0xec/0x144 (unreliable)
+ lockdep_rcu_suspicious+0x128/0x14c
+ __lock_acquire+0x1060/0x1c60
+ lock_acquire+0x140/0x5f0
+ _raw_spin_lock_irqsave+0x64/0xb0
+ clockevents_register_device+0x74/0x270
+ register_decrementer_clockevent+0x94/0x110
+ start_secondary+0x134/0x800
+ start_secondary_prolog+0x10/0x14
+
+This is avoided by moving the call to rcu_cpu_starting up near the
+beginning of the start_secondary() function. Note that the
+raw_smp_processor_id() is required in order to avoid calling into
+lockdep before RCU has declared the CPU to be watched for readers.
+
+Link: https://lore.kernel.org/lkml/160223032121.7002.1269740091547117869.tip-bot2@tip-bot2/
+Signed-off-by: Qian Cai <cai@redhat.com>
+---
+ arch/powerpc/kernel/smp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 3c6b9822f978..8c2857cbd960 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -1393,13 +1393,14 @@ static void add_cpu_to_masks(int cpu)
+ /* Activate a secondary processor. */
+ void start_secondary(void *unused)
+ {
+-	unsigned int cpu = smp_processor_id();
++	unsigned int cpu = raw_smp_processor_id();
+ 
+ 	mmgrab(&init_mm);
+ 	current->active_mm = &init_mm;
+ 
+ 	smp_store_cpu_info(cpu);
+ 	set_dec(tb_ticks_per_jiffy);
++	rcu_cpu_starting(cpu);
+ 	preempt_disable();
+ 	cpu_callin_map[cpu] = 1;
+ 
+-- 
+2.28.0
+
