@@ -2,74 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC1629E5D2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 09:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD2D29E612
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 09:14:15 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMJ4C42pLzDqc3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 19:08:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMJBC1PqMzDqLp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 19:14:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=coiby.xu@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vQuYh02Y; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=g8myBvX3; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMHZT5PqszDqWX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 18:46:40 +1100 (AEDT)
-Received: by mail-pl1-x644.google.com with SMTP id p17so883521pli.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 00:46:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=YfuBmTvMg9MUKxvXP6ERdTgdyYc2LTvWkNxHfpwVAwc=;
- b=vQuYh02YfBH3Q+Cu83OMh2Zw+ddNnqCqUof8ZKGw2KlqXfKzFZgQ3CKG7n4D04vneY
- VIveM2fn6WoY+IaxjawuSGrxQac5F9E4ANI6VTeELqU82avE9JRXNCnS6LUEtmrH6thS
- 4OJMnyNpzOZU5Sd6GpLLXjgcS/OaTHx+D1IxWBTCTFNV6ZuPp5AUAZq+s4Se4VrpbL6i
- bJYrAPOy87/ZvYuzKR8N+zeFKT/b+nN02CPJqOMQkGz4XcOdkdss3dqVhGllpWfL8wm6
- it6HxpZ336KvN6kbphzOfgTxQ/D14TG9gEOA68EaBOGJeHX9+Y4PKt13gw3gykmzb/+I
- yCNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=YfuBmTvMg9MUKxvXP6ERdTgdyYc2LTvWkNxHfpwVAwc=;
- b=JZGJtswPk2ZLNB5jTI58q4XULJhxrSNN+CLgINpd5XqeoQ1F+FSyqST1+ULIl7TF0X
- k5t1PX2qntpsrIXScpdw1vBhx7+sqBdU6wenTTLIkPneDOYzU4J9Bk/dWiE1+LOypwny
- miRWw+8gi8Z5b1bXHBY4/bnfRPCZcCEX15G3D2TJXPmjDnkD2DGlXY5KkFs1mdhACWIX
- gF19foXZBZpqHKcZT5EpvTCHrJjGiBOq5jMc1ZRfxuOVEdAm+cabOuw47fyCvgqncT6T
- fgEE9HrUfcxuxV2PWOcFnarA71V48d3pSGVU/m7qy9bbJtLHCSuRDtdAJ1QM++1LGxAv
- rqbA==
-X-Gm-Message-State: AOAM533RWZ73alwyaYbyzL7BdIpu9xz+eud8TrfV64PUfD3+n0vqBufa
- SrUJDfGHbJTqjUZ0NLzVPbQ=
-X-Google-Smtp-Source: ABdhPJxf8E/8cKa23EfUte88B96UerFuRSXyvagG8YXcECd1HyINeZl2Eec9Usnqoet1h037d3io5A==
-X-Received: by 2002:a17:902:23:b029:d5:b88a:c782 with SMTP id
- 32-20020a1709020023b02900d5b88ac782mr2750215pla.5.1603957595930; 
- Thu, 29 Oct 2020 00:46:35 -0700 (PDT)
-Received: from localhost ([2409:8a28:3c42:6840:9efc:e8ff:fef2:1cdc])
- by smtp.gmail.com with ESMTPSA id s4sm1737502pjp.17.2020.10.29.00.46.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 Oct 2020 00:46:35 -0700 (PDT)
-From: Coiby Xu <coiby.xu@gmail.com>
-To: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH 25/25] ALSA: aoa: remove unnecessary CONFIG_PM_SLEEP
-Date: Thu, 29 Oct 2020 15:43:01 +0800
-Message-Id: <20201029074301.226644-25-coiby.xu@gmail.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201029074301.226644-1-coiby.xu@gmail.com>
-References: <20201029074301.226644-1-coiby.xu@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMJ8W3c51zDqCD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 19:12:43 +1100 (AEDT)
+Received: from kernel.org (unknown [87.70.96.83])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0A03F2071A;
+ Thu, 29 Oct 2020 08:12:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1603959160;
+ bh=qbXUodulHRIhZjPrnRC7qfAlGRyh2vibUSxi3f3gDIk=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=g8myBvX3F7QMVEVZGRZCadikKouzosKdPwphfxNmTb0706ye5JKArlIlOSA0g+35M
+ 6me55rfbMzVSIAa7goduVgsYpdWGNMWM5KuAGqTSniJqm2wv1rTdQ/V1NrKahAMSCR
+ IVJzOibzZsEV1oFExIFzDScBAXY1r5SLqohLdy6s=
+Date: Thu, 29 Oct 2020 10:12:25 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH 0/4] arch, mm: improve robustness of direct map
+ manipulation
+Message-ID: <20201029081225.GK1428094@kernel.org>
+References: <20201025101555.3057-1-rppt@kernel.org>
+ <ae82f905a0092adb7e0f0ac206335c1883b3170f.camel@intel.com>
+ <20201026090526.GA1154158@kernel.org>
+ <a0212b073b3b2f62c3dbf1bf398f03fa402997be.camel@intel.com>
+ <20201027083816.GG1154158@kernel.org>
+ <20201028112011.GB27927@willie-the-truck>
+ <20201028113059.GG1428094@kernel.org>
+ <9e77d0a939eda3029d6ae89bd14d7f1465b0559d.camel@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 29 Oct 2020 19:01:06 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9e77d0a939eda3029d6ae89bd14d7f1465b0559d.camel@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,52 +63,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- "open list:AOA Apple Onboard Audio ALSA DRIVER"
- <linuxppc-dev@lists.ozlabs.org>,
- "moderated list:AOA Apple Onboard Audio ALSA DRIVER"
- <alsa-devel@alsa-project.org>, open list <linux-kernel@vger.kernel.org>
+Cc: "david@redhat.com" <david@redhat.com>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "paulus@samba.org" <paulus@samba.org>, "pavel@ucw.cz" <pavel@ucw.cz>,
+ "hpa@zytor.com" <hpa@zytor.com>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ "cl@linux.com" <cl@linux.com>, "will@kernel.org" <will@kernel.org>,
+ "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>, "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
+ "borntraeger@de.ibm.com" <borntraeger@de.ibm.com>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "rientjes@google.com" <rientjes@google.com>, "Brown,
+ Len" <len.brown@intel.com>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+ "gor@linux.ibm.com" <gor@linux.ibm.com>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "hca@linux.ibm.com" <hca@linux.ibm.com>, "bp@alien8.de" <bp@alien8.de>,
+ "luto@kernel.org" <luto@kernel.org>,
+ "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
+ "kirill@shutemov.name" <kirill@shutemov.name>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "iamjoonsoo.kim@lge.com" <iamjoonsoo.kim@lge.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "penberg@kernel.org" <penberg@kernel.org>,
+ "palmer@dabbelt.com" <palmer@dabbelt.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "davem@davemloft.net" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SIMPLE_DEV_PM_OPS has already took good care of CONFIG_PM_CONFIG.
+On Wed, Oct 28, 2020 at 09:03:31PM +0000, Edgecombe, Rick P wrote:
 
-Signed-off-by: Coiby Xu <coiby.xu@gmail.com>
----
- sound/aoa/fabrics/layout.c | 4 ----
- 1 file changed, 4 deletions(-)
+> > On Wed, Oct 28, 2020 at 11:20:12AM +0000, Will Deacon wrote:
+> > > On Tue, Oct 27, 2020 at 10:38:16AM +0200, Mike Rapoport wrote:
+> > > > 					   	
+> > > > This is a theoretical bug, but it is still not nice :) 		
+> > > > 					
+> > > 
+> > > Just to clarify: this patch series fixes this problem, right?
+> > 
+> > Yes.
+> > 
+> 
+> Well, now I'm confused again.
+> 
+> As David pointed, __vunmap() should not be executing simultaneously
+> with the hibernate operation because hibernate can't snapshot while
+> data it needs to save is still updating. If a thread was paused when a
+> page was in an "invalid" state, it should be remapped by hibernate
+> before the copy.
+> 
+> To level set, before reading this mail, my takeaways from the
+> discussions on potential hibernate/debug page alloc problems were:
+> 
+> Potential RISC-V issue:
+> Doesn't have hibernate support
+> 
+> Potential ARM issue:
+> The logic around when it's cpa determines pages might be unmapped looks
+> correct for current callers.
+> 
+> Potential x86 page break issue:
+> Seems to be ok for now, but a new set_memory_np() caller could violate
+> assumptions in hibernate.
+> 
+> Non-obvious thorny logic: 
+> General agreement it would be good to separate dependencies.
+> 
+> Behavior of V1 of this patchset:
+> No functional change other than addition of a warn in hibernate.
 
-diff --git a/sound/aoa/fabrics/layout.c b/sound/aoa/fabrics/layout.c
-index d2e85b83f7ed..197d13f23141 100644
---- a/sound/aoa/fabrics/layout.c
-+++ b/sound/aoa/fabrics/layout.c
-@@ -1126,7 +1126,6 @@ static int aoa_fabric_layout_remove(struct soundbus_dev *sdev)
- 	return 0;
- }
- 
--#ifdef CONFIG_PM_SLEEP
- static int aoa_fabric_layout_suspend(struct device *dev)
- {
- 	struct layout_dev *ldev = dev_get_drvdata(dev);
-@@ -1150,7 +1149,6 @@ static int aoa_fabric_layout_resume(struct device *dev)
- static SIMPLE_DEV_PM_OPS(aoa_fabric_layout_pm_ops,
- 	aoa_fabric_layout_suspend, aoa_fabric_layout_resume);
- 
--#endif
- 
- static struct soundbus_driver aoa_soundbus_driver = {
- 	.name = "snd_aoa_soundbus_drv",
-@@ -1159,9 +1157,7 @@ static struct soundbus_driver aoa_soundbus_driver = {
- 	.remove = aoa_fabric_layout_remove,
- 	.driver = {
- 		.owner = THIS_MODULE,
--#ifdef CONFIG_PM_SLEEP
- 		.pm = &aoa_fabric_layout_pm_ops,
--#endif
- 	}
- };
- 
+There is a change that adds explicit use of set_direct_map() to
+hibernate. Currently, in case of arm64 with DEBUG_PAGEALLOC=n if a
+thread was paused when a page was in an "invalid" state hibernate will
+access an unmapped data because __kernel_map_pages() will bail out.
+After the change set_direct_map_default_noflush() would be used and the
+page will get mapped before copy.
+
+> So "does this fix the problem", "yes" leaves me a bit confused... Not
+> saying there couldn't be any problems, especially due to the thorniness
+> and cross arch stride, but what is it exactly and how does this series
+> fix it?
+
+This series goal was primarily to separate dependincies and make it
+clearer what DEBUG_PAGEALLOC and what SET_DIRECT_MAP are. As it turned
+out, there is also some lack of consistency between architectures that
+implement either of this so I tried to improve this as well.
+
+Honestly, I don't know if a thread can be paused at the time __vunmap()
+left invalid pages, but it could, there is an issue on arm64 with
+DEBUG_PAGEALLOC=n and this set fixes it.
+
+__vunmap()
+    vm_remove_mappings()
+        set_direct_map_invalid()
+	/* thread is frozen */
+ 					safe_copy_page()	
+ 					    __kernel_map_pages()
+						if (!debug_pagealloc())
+ 					    	    return
+ 					    do_copy_page() -> fault
+
 -- 
-2.28.0
-
+Sincerely yours,
+Mike.
