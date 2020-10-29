@@ -2,56 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD2D29E612
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 09:14:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A1E29E639
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 09:18:18 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMJBC1PqMzDqLp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 19:14:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMJGv1WTBzDqZV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 19:18:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=g8myBvX3; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=FzwQIOYu; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=FzwQIOYu; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMJ8W3c51zDqCD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 19:12:43 +1100 (AEDT)
-Received: from kernel.org (unknown [87.70.96.83])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMJDY47jSzDqPj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 19:16:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1603959368;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2gRwEwp+09CxPY3cDDGs5AqZnz2L4R+qK1xrKBZP/ZQ=;
+ b=FzwQIOYuQiYs8AOF0jSWfKko4kM786oPEch3YBrlcCg33I3RWV/PZlhcWMBvasAKZSkQo1
+ UuhP3NJLwgXzCgQEtlOh5mPQq4rCYOYgBbezoY3+SbQWYchutULQci4oL/QzuQ14pQ8ItF
+ 9+GZvbOb12lYwWmjY/pkzovIBd1ffUE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1603959368;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2gRwEwp+09CxPY3cDDGs5AqZnz2L4R+qK1xrKBZP/ZQ=;
+ b=FzwQIOYuQiYs8AOF0jSWfKko4kM786oPEch3YBrlcCg33I3RWV/PZlhcWMBvasAKZSkQo1
+ UuhP3NJLwgXzCgQEtlOh5mPQq4rCYOYgBbezoY3+SbQWYchutULQci4oL/QzuQ14pQ8ItF
+ 9+GZvbOb12lYwWmjY/pkzovIBd1ffUE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-521-GwWoSv2-OMqDqihE-45P3g-1; Thu, 29 Oct 2020 04:16:02 -0400
+X-MC-Unique: GwWoSv2-OMqDqihE-45P3g-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0A03F2071A;
- Thu, 29 Oct 2020 08:12:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1603959160;
- bh=qbXUodulHRIhZjPrnRC7qfAlGRyh2vibUSxi3f3gDIk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=g8myBvX3F7QMVEVZGRZCadikKouzosKdPwphfxNmTb0706ye5JKArlIlOSA0g+35M
- 6me55rfbMzVSIAa7goduVgsYpdWGNMWM5KuAGqTSniJqm2wv1rTdQ/V1NrKahAMSCR
- IVJzOibzZsEV1oFExIFzDScBAXY1r5SLqohLdy6s=
-Date: Thu, 29 Oct 2020 10:12:25 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5ED20809DC9;
+ Thu, 29 Oct 2020 08:15:57 +0000 (UTC)
+Received: from [10.36.112.181] (ovpn-112-181.ams2.redhat.com [10.36.112.181])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3EBE05D9CC;
+ Thu, 29 Oct 2020 08:15:48 +0000 (UTC)
 Subject: Re: [PATCH 0/4] arch, mm: improve robustness of direct map
  manipulation
-Message-ID: <20201029081225.GK1428094@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 References: <20201025101555.3057-1-rppt@kernel.org>
- <ae82f905a0092adb7e0f0ac206335c1883b3170f.camel@intel.com>
- <20201026090526.GA1154158@kernel.org>
- <a0212b073b3b2f62c3dbf1bf398f03fa402997be.camel@intel.com>
- <20201027083816.GG1154158@kernel.org>
- <20201028112011.GB27927@willie-the-truck>
- <20201028113059.GG1428094@kernel.org>
- <9e77d0a939eda3029d6ae89bd14d7f1465b0559d.camel@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Message-ID: <30075bb8-caed-c4de-c09e-e0f6fb964a8d@redhat.com>
+Date: Thu, 29 Oct 2020 09:15:47 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9e77d0a939eda3029d6ae89bd14d7f1465b0559d.camel@intel.com>
+In-Reply-To: <20201025101555.3057-1-rppt@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,114 +87,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "david@redhat.com" <david@redhat.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "paulus@samba.org" <paulus@samba.org>, "pavel@ucw.cz" <pavel@ucw.cz>,
- "hpa@zytor.com" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "cl@linux.com" <cl@linux.com>, "will@kernel.org" <will@kernel.org>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, "rppt@linux.ibm.com" <rppt@linux.ibm.com>,
- "borntraeger@de.ibm.com" <borntraeger@de.ibm.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "rientjes@google.com" <rientjes@google.com>, "Brown,
- Len" <len.brown@intel.com>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
- "gor@linux.ibm.com" <gor@linux.ibm.com>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "hca@linux.ibm.com" <hca@linux.ibm.com>, "bp@alien8.de" <bp@alien8.de>,
- "luto@kernel.org" <luto@kernel.org>,
- "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
- "kirill@shutemov.name" <kirill@shutemov.name>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "iamjoonsoo.kim@lge.com" <iamjoonsoo.kim@lge.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "penberg@kernel.org" <penberg@kernel.org>,
- "palmer@dabbelt.com" <palmer@dabbelt.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "davem@davemloft.net" <davem@davemloft.net>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+ David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Pekka Enberg <penberg@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>, "Edgecombe,
+ Rick P" <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 28, 2020 at 09:03:31PM +0000, Edgecombe, Rick P wrote:
+On 25.10.20 11:15, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> Hi,
+> 
+> During recent discussion about KVM protected memory, David raised a concern
+> about usage of __kernel_map_pages() outside of DEBUG_PAGEALLOC scope [1].
+> 
+> Indeed, for architectures that define CONFIG_ARCH_HAS_SET_DIRECT_MAP it is
+> possible that __kernel_map_pages() would fail, but since this function is
+> void, the failure will go unnoticed.
+> 
+> Moreover, there's lack of consistency of __kernel_map_pages() semantics
+> across architectures as some guard this function with
+> #ifdef DEBUG_PAGEALLOC, some refuse to update the direct map if page
+> allocation debugging is disabled at run time and some allow modifying the
+> direct map regardless of DEBUG_PAGEALLOC settings.
+> 
+> This set straightens this out by restoring dependency of
+> __kernel_map_pages() on DEBUG_PAGEALLOC and updating the call sites
+> accordingly.
+> 
 
-> > On Wed, Oct 28, 2020 at 11:20:12AM +0000, Will Deacon wrote:
-> > > On Tue, Oct 27, 2020 at 10:38:16AM +0200, Mike Rapoport wrote:
-> > > > 					   	
-> > > > This is a theoretical bug, but it is still not nice :) 		
-> > > > 					
-> > > 
-> > > Just to clarify: this patch series fixes this problem, right?
-> > 
-> > Yes.
-> > 
-> 
-> Well, now I'm confused again.
-> 
-> As David pointed, __vunmap() should not be executing simultaneously
-> with the hibernate operation because hibernate can't snapshot while
-> data it needs to save is still updating. If a thread was paused when a
-> page was in an "invalid" state, it should be remapped by hibernate
-> before the copy.
-> 
-> To level set, before reading this mail, my takeaways from the
-> discussions on potential hibernate/debug page alloc problems were:
-> 
-> Potential RISC-V issue:
-> Doesn't have hibernate support
-> 
-> Potential ARM issue:
-> The logic around when it's cpa determines pages might be unmapped looks
-> correct for current callers.
-> 
-> Potential x86 page break issue:
-> Seems to be ok for now, but a new set_memory_np() caller could violate
-> assumptions in hibernate.
-> 
-> Non-obvious thorny logic: 
-> General agreement it would be good to separate dependencies.
-> 
-> Behavior of V1 of this patchset:
-> No functional change other than addition of a warn in hibernate.
-
-There is a change that adds explicit use of set_direct_map() to
-hibernate. Currently, in case of arm64 with DEBUG_PAGEALLOC=n if a
-thread was paused when a page was in an "invalid" state hibernate will
-access an unmapped data because __kernel_map_pages() will bail out.
-After the change set_direct_map_default_noflush() would be used and the
-page will get mapped before copy.
-
-> So "does this fix the problem", "yes" leaves me a bit confused... Not
-> saying there couldn't be any problems, especially due to the thorniness
-> and cross arch stride, but what is it exactly and how does this series
-> fix it?
-
-This series goal was primarily to separate dependincies and make it
-clearer what DEBUG_PAGEALLOC and what SET_DIRECT_MAP are. As it turned
-out, there is also some lack of consistency between architectures that
-implement either of this so I tried to improve this as well.
-
-Honestly, I don't know if a thread can be paused at the time __vunmap()
-left invalid pages, but it could, there is an issue on arm64 with
-DEBUG_PAGEALLOC=n and this set fixes it.
-
-__vunmap()
-    vm_remove_mappings()
-        set_direct_map_invalid()
-	/* thread is frozen */
- 					safe_copy_page()	
- 					    __kernel_map_pages()
-						if (!debug_pagealloc())
- 					    	    return
- 					    do_copy_page() -> fault
+So, I was primarily wondering if we really have to touch direct mappings 
+in hibernation code, or if we can avoid doing that. I was wondering if 
+we cannot simply do something like kmap() when trying to access a 
+!mapped page. Similar to reading old-os memory after kexec when in 
+kdump. Just a thought.
 
 -- 
-Sincerely yours,
-Mike.
+Thanks,
+
+David / dhildenb
+
