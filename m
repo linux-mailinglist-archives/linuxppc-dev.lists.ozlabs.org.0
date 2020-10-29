@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20DFF29F155
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 17:25:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC32F29F160
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 17:27:02 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMW4Z3cwYzDqKP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 03:25:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMW6q2PjzzDqcQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 03:26:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,29 +16,30 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=iu1hGk5C; dkim-atps=neutral
+ header.s=default header.b=iWwh/udv; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMVyQ12tbzDqZH
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 03:19:42 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMVyc6hbtzDqWF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 03:19:52 +1100 (AEDT)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E196F20838;
- Thu, 29 Oct 2020 16:19:28 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 03BA620FC3;
+ Thu, 29 Oct 2020 16:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1603988379;
- bh=vBwurL4/Q9Hcp/7WaGQxkN1fGezdnq9akegXwjuyoXo=;
+ s=default; t=1603988390;
+ bh=Iz7KyN+V6YK56PqFtmhKd3TakWN2xra2g1SEksnbwVo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=iu1hGk5C+9KA0JuAZ9aELW2NgTQCTT7LskLXiHWtTRA4uwcYlzt218pXb7cTVqj74
- KFZPwNQijSQWol2FX9/4R0GtrYmSusx0ENyOCULN4uaa8YmjU2rVFqr972RKvBVtH4
- Js2pTF9s8Furil7Hm6afgBC8x7fq0sZqHqhgpjgc=
+ b=iWwh/udv6psprKZdwjB/YlWEY3V9aUIGxWhspe+BK019WtskP0vZrfStEaKajTzxe
+ xknmcrFXFFqtCs2sQ8Agir2vwZTHfN02Rok80acaSKPxeVupMqhAIQyjYz8LhBnpdP
+ qTdtY+jO3K1pgyk9l4BIkK96/jtl650ZRkYJtjkk=
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 1/4] mm: introduce debug_pagealloc_map_pages() helper
-Date: Thu, 29 Oct 2020 18:18:59 +0200
-Message-Id: <20201029161902.19272-2-rppt@kernel.org>
+Subject: [PATCH v2 2/4] PM: hibernate: make direct map manipulations more
+ explicit
+Date: Thu, 29 Oct 2020 18:19:00 +0200
+Message-Id: <20201029161902.19272-3-rppt@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201029161902.19272-1-rppt@kernel.org>
 References: <20201029161902.19272-1-rppt@kernel.org>
@@ -81,129 +82,110 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-When CONFIG_DEBUG_PAGEALLOC is enabled, it unmaps pages from the kernel
-direct mapping after free_pages(). The pages than need to be mapped back
-before they could be used. Theese mapping operations use
-__kernel_map_pages() guarded with with debug_pagealloc_enabled().
+When DEBUG_PAGEALLOC or ARCH_HAS_SET_DIRECT_MAP is enabled a page may be
+not present in the direct map and has to be explicitly mapped before it
+could be copied.
 
-The only place that calls __kernel_map_pages() without checking whether
-DEBUG_PAGEALLOC is enabled is the hibernation code that presumes
-availability of this function when ARCH_HAS_SET_DIRECT_MAP is set.
-Still, on arm64, __kernel_map_pages() will bail out when DEBUG_PAGEALLOC is
-not enabled but set_direct_map_invalid_noflush() may render some pages not
-present in the direct map and hibernation code won't be able to save such
-pages.
+On arm64 it is possible that a page would be removed from the direct map
+using set_direct_map_invalid_noflush() but __kernel_map_pages() will refuse
+to map this page back if DEBUG_PAGEALLOC is disabled.
 
-To make page allocation debugging and hibernation interaction more robust,
-the dependency on DEBUG_PAGEALLOC or ARCH_HAS_SET_DIRECT_MAP has to be made
-more explicit.
+Introduce hibernate_map_page() that will explicitly use
+set_direct_map_{default,invalid}_noflush() for ARCH_HAS_SET_DIRECT_MAP case
+and debug_pagealloc_map_pages() for DEBUG_PAGEALLOC case.
 
-Start with combining the guard condition and the call to
-__kernel_map_pages() into a single debug_pagealloc_map_pages() function to
-emphasize that __kernel_map_pages() should not be called without
-DEBUG_PAGEALLOC and use this new function to map/unmap pages when page
-allocation debug is enabled.
+The remapping of the pages in safe_copy_page() presumes that it only
+changes protection bits in an existing PTE and so it is safe to ignore
+return value of set_direct_map_{default,invalid}_noflush().
+
+Still, add a WARN_ON() so that future changes in set_memory APIs will not
+silently break hibernation.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/mm.h  | 10 ++++++++++
- mm/memory_hotplug.c |  3 +--
- mm/page_alloc.c     |  6 ++----
- mm/slab.c           |  8 +++-----
- 4 files changed, 16 insertions(+), 11 deletions(-)
+ include/linux/mm.h      | 12 ------------
+ kernel/power/snapshot.c | 30 ++++++++++++++++++++++++++++--
+ 2 files changed, 28 insertions(+), 14 deletions(-)
 
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index ef360fe70aaf..1fc0609056dc 100644
+index 1fc0609056dc..14e397f3752c 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -2936,12 +2936,22 @@ kernel_map_pages(struct page *page, int numpages, int enable)
+@@ -2927,16 +2927,6 @@ static inline bool debug_pagealloc_enabled_static(void)
+ #if defined(CONFIG_DEBUG_PAGEALLOC) || defined(CONFIG_ARCH_HAS_SET_DIRECT_MAP)
+ extern void __kernel_map_pages(struct page *page, int numpages, int enable);
+ 
+-/*
+- * When called in DEBUG_PAGEALLOC context, the call should most likely be
+- * guarded by debug_pagealloc_enabled() or debug_pagealloc_enabled_static()
+- */
+-static inline void
+-kernel_map_pages(struct page *page, int numpages, int enable)
+-{
+-	__kernel_map_pages(page, numpages, enable);
+-}
+-
+ static inline void debug_pagealloc_map_pages(struct page *page,
+ 					     int numpages, int enable)
  {
- 	__kernel_map_pages(page, numpages, enable);
- }
-+
-+static inline void debug_pagealloc_map_pages(struct page *page,
-+					     int numpages, int enable)
-+{
-+	if (debug_pagealloc_enabled_static())
-+		__kernel_map_pages(page, numpages, enable);
-+}
-+
- #ifdef CONFIG_HIBERNATION
+@@ -2948,8 +2938,6 @@ static inline void debug_pagealloc_map_pages(struct page *page,
  extern bool kernel_page_present(struct page *page);
  #endif	/* CONFIG_HIBERNATION */
  #else	/* CONFIG_DEBUG_PAGEALLOC || CONFIG_ARCH_HAS_SET_DIRECT_MAP */
- static inline void
- kernel_map_pages(struct page *page, int numpages, int enable) {}
-+static inline void debug_pagealloc_map_pages(struct page *page,
-+					     int numpages, int enable) {}
+-static inline void
+-kernel_map_pages(struct page *page, int numpages, int enable) {}
+ static inline void debug_pagealloc_map_pages(struct page *page,
+ 					     int numpages, int enable) {}
  #ifdef CONFIG_HIBERNATION
- static inline bool kernel_page_present(struct page *page) { return true; }
- #endif	/* CONFIG_HIBERNATION */
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index b44d4c7ba73b..e2b6043a4428 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -614,8 +614,7 @@ void generic_online_page(struct page *page, unsigned int order)
- 	 * so we should map it first. This is better than introducing a special
- 	 * case in page freeing fast path.
- 	 */
--	if (debug_pagealloc_enabled_static())
--		kernel_map_pages(page, 1 << order, 1);
-+	debug_pagealloc_map_pages(page, 1 << order, 1);
- 	__free_pages_core(page, order);
- 	totalram_pages_add(1UL << order);
- #ifdef CONFIG_HIGHMEM
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 23f5066bd4a5..9a66a1ff9193 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1272,8 +1272,7 @@ static __always_inline bool free_pages_prepare(struct page *page,
- 	 */
- 	arch_free_page(page, order);
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index 46b1804c1ddf..054c8cce4236 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -76,6 +76,32 @@ static inline void hibernate_restore_protect_page(void *page_address) {}
+ static inline void hibernate_restore_unprotect_page(void *page_address) {}
+ #endif /* CONFIG_STRICT_KERNEL_RWX  && CONFIG_ARCH_HAS_SET_MEMORY */
  
--	if (debug_pagealloc_enabled_static())
--		kernel_map_pages(page, 1 << order, 0);
-+	debug_pagealloc_map_pages(page, 1 << order, 0);
- 
- 	kasan_free_nondeferred_pages(page, order);
- 
-@@ -2270,8 +2269,7 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
- 	set_page_refcounted(page);
- 
- 	arch_alloc_page(page, order);
--	if (debug_pagealloc_enabled_static())
--		kernel_map_pages(page, 1 << order, 1);
-+	debug_pagealloc_map_pages(page, 1 << order, 1);
- 	kasan_alloc_pages(page, order);
- 	kernel_poison_pages(page, 1 << order, 1);
- 	set_page_owner(page, order, gfp_flags);
-diff --git a/mm/slab.c b/mm/slab.c
-index b1113561b98b..340db0ce74c4 100644
---- a/mm/slab.c
-+++ b/mm/slab.c
-@@ -1431,10 +1431,8 @@ static bool is_debug_pagealloc_cache(struct kmem_cache *cachep)
- #ifdef CONFIG_DEBUG_PAGEALLOC
- static void slab_kernel_map(struct kmem_cache *cachep, void *objp, int map)
- {
--	if (!is_debug_pagealloc_cache(cachep))
--		return;
--
--	kernel_map_pages(virt_to_page(objp), cachep->size / PAGE_SIZE, map);
-+	debug_pagealloc_map_pages(virt_to_page(objp),
-+				  cachep->size / PAGE_SIZE, map);
++static inline void hibernate_map_page(struct page *page, int enable)
++{
++	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
++		unsigned long addr = (unsigned long)page_address(page);
++		int ret;
++
++		/*
++		 * This should not fail because remapping a page here means
++		 * that we only update protection bits in an existing PTE.
++		 * It is still worth to have WARN_ON() here if something
++		 * changes and this will no longer be the case.
++		 */
++		if (enable)
++			ret = set_direct_map_default_noflush(page);
++		else
++			ret = set_direct_map_invalid_noflush(page);
++
++		if (WARN_ON(ret))
++			return;
++
++		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
++	} else {
++		debug_pagealloc_map_pages(page, 1, enable);
++	}
++}
++
+ static int swsusp_page_is_free(struct page *);
+ static void swsusp_set_page_forbidden(struct page *);
+ static void swsusp_unset_page_forbidden(struct page *);
+@@ -1355,9 +1381,9 @@ static void safe_copy_page(void *dst, struct page *s_page)
+ 	if (kernel_page_present(s_page)) {
+ 		do_copy_page(dst, page_address(s_page));
+ 	} else {
+-		kernel_map_pages(s_page, 1, 1);
++		hibernate_map_page(s_page, 1);
+ 		do_copy_page(dst, page_address(s_page));
+-		kernel_map_pages(s_page, 1, 0);
++		hibernate_map_page(s_page, 0);
+ 	}
  }
  
- #else
-@@ -2062,7 +2060,7 @@ int __kmem_cache_create(struct kmem_cache *cachep, slab_flags_t flags)
- 
- #if DEBUG
- 	/*
--	 * If we're going to use the generic kernel_map_pages()
-+	 * If we're going to use the generic debug_pagealloc_map_pages()
- 	 * poisoning, then it's going to smash the contents of
- 	 * the redzone and userword anyhow, so switch them off.
- 	 */
 -- 
 2.28.0
 
