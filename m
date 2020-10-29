@@ -2,86 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C3F29F7EF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 23:28:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED0029F86F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 23:36:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMg7L4C1SzDqf9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 09:27:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMgJk0snZzDqf5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 09:36:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=jingoohan1@gmail.com;
+ smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
+ helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Y9nHCkew; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
+ header.s=2020 header.b=QSHJIt7L; 
+ dkim=pass header.d=linutronix.de header.i=@linutronix.de
+ header.a=ed25519-sha256 header.s=2020e header.b=bG4zbqkg; 
+ dkim-atps=neutral
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMg5j5D5czDqMG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 09:26:32 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id 10so3576360pfp.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 15:26:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:thread-topic:thread-index:date:message-id
- :references:in-reply-to:accept-language:content-language
- :content-transfer-encoding:mime-version;
- bh=mkEgROIngf3O0w1+XcYDyb5JIBk2dNaftiZ6UBvH2VU=;
- b=Y9nHCkewbzooPqcIlQFiHkBNDQnXob8eGJMErBn5Kx5FzCfsDuykMaviTzO3vZ7Qnh
- 8zWQwRu8DPDT73CdsSIaxrCemeuUruBmPaHs6ieXkGYxgjSxFi/844DmgHOiojMnWXeQ
- NajtcKpsAZ9W/cfZb9bzIkHwOP7aMyTJ4e/LGWa2RGc99u7NDIEplSRzWdGJuhjGU+2O
- KKm4xeT85V500fvlJX8STmkmnn2dRn/OFxCbq1WY6zZ5uIl14OnSbjUgeNZZrEQ+THvZ
- Z2vRyPIq5jyc1DFSExiBvPSOpvbduMcgnKoUE9ixwXQNytNE+9ahAJxbj7dzXASdEjpf
- PsjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:thread-topic:thread-index
- :date:message-id:references:in-reply-to:accept-language
- :content-language:content-transfer-encoding:mime-version;
- bh=mkEgROIngf3O0w1+XcYDyb5JIBk2dNaftiZ6UBvH2VU=;
- b=FdLGV5CSi2VA6no5KaW+loPOw4Qpz7blgzku/YKWYHP4DtRXQZh8F/xFfJ2/gsKoSH
- 73CS89tb6i4OkuT0/SA7QAn+RXnFDQd26EyG3QO5ynerg34k1YEa4JqkDNqoNy/CGJSA
- gNtwstczj4fliBv0pEzRCDMjY3Vl1WwJucBSJhJ5ImD5VXi5qoeFa/l335zsGKAiZOwV
- ZsUu++WZ9Fcdw29S5o1KdgJHq55lCnd95yhu/oz8S4+suHaa/Euo/2DzggC1nVVXyAwW
- YE9BKS7D17q4IPZNhQXty1iNA6EKoG696J5dSAS7ZtTbX0tXD8S3HC5oIlhDAPFM2vgl
- Yg1w==
-X-Gm-Message-State: AOAM5323d56WLnOQxEx78UfB71Nq+sJ8BwJ2D42LS4HukabjjrAE+B5W
- nK04Z4zguOn2DUKse0Cy4f0=
-X-Google-Smtp-Source: ABdhPJxLiaVskm2lyywheCpLlw6KpmmKQnxfOGZyB+6+99Bzc075kKu5TiLbCw/mexj2EE4uIqrGNg==
-X-Received: by 2002:a62:dd56:0:b029:155:8165:c6c2 with SMTP id
- w83-20020a62dd560000b02901558165c6c2mr6220236pff.3.1604010389698; 
- Thu, 29 Oct 2020 15:26:29 -0700 (PDT)
-Received: from SL2P216MB0475.KORP216.PROD.OUTLOOK.COM ([2603:1046:100:19::5])
- by smtp.gmail.com with ESMTPSA id
- q123sm3967727pfq.56.2020.10.29.15.26.20
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 29 Oct 2020 15:26:28 -0700 (PDT)
-From: Jingoo Han <jingoohan1@gmail.com>
-To: Rob Herring <robh@kernel.org>, Lorenzo Pieralisi
- <lorenzo.pieralisi@arm.com>
-Subject: Re: [PATCH 11/13] PCI: dwc: Move dw_pcie_msi_init() into core
-Thread-Topic: [PATCH 11/13] PCI: dwc: Move dw_pcie_msi_init() into core
-Thread-Index: AQHWrWuMH1iwupoOnEKPhemhbtsXGKmvKimM
-X-MS-Exchange-MessageSentRepresentingType: 1
-Date: Thu, 29 Oct 2020 22:26:17 +0000
-Message-ID: <SL2P216MB0475B8EB98EF27395F5D381FAA140@SL2P216MB0475.KORP216.PROD.OUTLOOK.COM>
-References: <20201028204646.356535-1-robh@kernel.org>
- <20201028204646.356535-12-robh@kernel.org>
-In-Reply-To: <20201028204646.356535-12-robh@kernel.org>
-Accept-Language: ko-KR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-Exchange-Organization-SCL: -1
-X-MS-TNEF-Correlator: 
-X-MS-Exchange-Organization-RecordReviewCfmType: 0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMgDJ2kY2zDqWR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 09:32:13 +1100 (AEDT)
+Message-Id: <20201029221806.189523375@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1604010728;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=dHsj3bB6txbW51auQ1NY6Tbn9YUEP9hPQj+cerV4cH0=;
+ b=QSHJIt7LvlxNN9hJ0pBq2tvQAj6s9PRKwf9DDs+9wLl0TB3D07XB2aNc/P+jBNvq3OKdlB
+ 9uImGW8KQrL2/v2DDWGmYr3ItyplTubI+62xRgbsyi4IeFKyTQeBZLSpOp/k//RoMYNU0D
+ MRXq2PcsrvKw8tKj6JtpzI7I7c+m0/l1rgAB1Q7e0HTSfRHwiF/OYPDVhjJi/t5CuooKwL
+ 72rzQkellKlgnCIrCAJFk+1lKoYhevy2jnE7fElUwMoYj2u61NhwHpz39yR1AKfSxC9hiI
+ tHhi3pMD0MqXztTmwu1jN5JS5hiXfWpnm7xNyzYqMOICUggRy8lWVYhFp7D5AA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1604010728;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=dHsj3bB6txbW51auQ1NY6Tbn9YUEP9hPQj+cerV4cH0=;
+ b=bG4zbqkg1p92+Z0M4jQM3XbBv8SsS1VZa551XHoVYcBtO5FLMANBcd4TnLvpnuGvnhoALG
+ sOxX2o7Ksc9Qt8DQ==
+Date: Thu, 29 Oct 2020 23:18:06 +0100
+From: Thomas Gleixner <tglx@linutronix.de>
+To: LKML <linux-kernel@vger.kernel.org>
+Subject: [patch V2 00/18] mm/highmem: Preemptible variant of kmap_atomic &
+ friends
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,105 +66,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Neil Armstrong <narmstrong@baylibre.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- Binghui Wang <wangbinghui@hisilicon.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- Thierry Reding <thierry.reding@gmail.com>,
- "linux-arm-kernel@axis.com" <linux-arm-kernel@axis.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Jonathan Chocron <jonnyc@amazon.com>, Shawn Guo <shawnguo@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Fabio Estevam <festevam@gmail.com>,
- Jerome Brunet <jbrunet@baylibre.com>, Jesper Nilsson <jesper.nilsson@axis.com>,
- "linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
- Minghuan Lian <minghuan.Lian@nxp.com>, Kevin Hilman <khilman@baylibre.com>,
- Pratyush Anand <pratyush.anand@gmail.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
- Kukjin Kim <kgene@kernel.org>, NXP Linux Team <linux-imx@nxp.com>,
- Xiaowei Song <songxiaowei@hisilicon.com>, Richard Zhu <hongxing.zhu@nxp.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Yue Wang <yue.wang@Amlogic.com>,
- Murali Karicheri <m-karicheri2@ti.com>, Bjorn Helgaas <bhelgaas@google.com>,
- "linux-amlogic@lists.infradead.org" <linux-amlogic@lists.infradead.org>,
- "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
- Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
- Andy Gross <agross@kernel.org>, Stanimir Varbanov <svarbanov@mm-sol.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Han Jingoo <jingoohan1@gmail.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Lucas Stach <l.stach@pengutronix.de>
+Cc: Juri Lelli <juri.lelli@redhat.com>, linux-xtensa@linux-xtensa.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Ben Segall <bsegall@google.com>, linux-mm@kvack.org,
+ Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
+ Vincent Chen <deanbo422@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ linux-arch@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, David Airlie <airlied@linux.ie>,
+ Mel Gorman <mgorman@suse.de>, linux-snps-arc@lists.infradead.org,
+ Ard Biesheuvel <ardb@kernel.org>, Paul McKenney <paulmck@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Steven Rostedt <rostedt@goodmis.org>,
+ Linus Torvalds <torvalds@linuxfoundation.org>,
+ Greentime Hu <green.hu@gmail.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Nick Hu <nickhu@andestech.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Vineet Gupta <vgupta@synopsys.com>, linux-mips@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel@ffwll.ch>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/28/20, 4:47 PM, Rob Herring wrote:
->=20
-> The host drivers which call dw_pcie_msi_init() are all the ones using
-> the built-in MSI controller, so let's move it into the common DWC code.
->
-> Cc: Kishon Vijay Abraham I <kishon@ti.com>
-> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
-
-Acked-by: Jingoo Han <jingoohan1@gmail.com>
-
-Best regards,
-Jingoo Han
-
-> Cc: Kukjin Kim <kgene@kernel.org>
-> Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: Richard Zhu <hongxing.zhu@nxp.com>
-> Cc: Lucas Stach <l.stach@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: NXP Linux Team <linux-imx@nxp.com>
-> Cc: Yue Wang <yue.wang@Amlogic.com>
-> Cc: Kevin Hilman <khilman@baylibre.com>
-> Cc: Neil Armstrong <narmstrong@baylibre.com>
-> Cc: Jerome Brunet <jbrunet@baylibre.com>
-> Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Cc: Jesper Nilsson <jesper.nilsson@axis.com>
-> Cc: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
-> Cc: Xiaowei Song <songxiaowei@hisilicon.com>
-> Cc: Binghui Wang <wangbinghui@hisilicon.com>
-> Cc: Stanimir Varbanov <svarbanov@mm-sol.com>
-> Cc: Andy Gross <agross@kernel.org>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Pratyush Anand <pratyush.anand@gmail.com>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Jonathan Hunter <jonathanh@nvidia.com>
-> Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: linux-omap@vger.kernel.org
-> Cc: linux-samsung-soc@vger.kernel.org
-> Cc: linux-amlogic@lists.infradead.org
-> Cc: linux-arm-kernel@axis.com
-> Cc: linux-arm-msm@vger.kernel.org
-> Cc: linux-tegra@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  drivers/pci/controller/dwc/pci-dra7xx.c           |  2 --
->  drivers/pci/controller/dwc/pci-exynos.c           |  4 ----
->  drivers/pci/controller/dwc/pci-imx6.c             |  1 -
->  drivers/pci/controller/dwc/pci-meson.c            |  1 -
->  drivers/pci/controller/dwc/pcie-artpec6.c         |  1 -
->  drivers/pci/controller/dwc/pcie-designware-host.c |  8 +++++---
->  drivers/pci/controller/dwc/pcie-designware-plat.c |  1 -
->  drivers/pci/controller/dwc/pcie-designware.h      | 10 ----------
->  drivers/pci/controller/dwc/pcie-histb.c           |  2 --
->  drivers/pci/controller/dwc/pcie-kirin.c           |  1 -
->  drivers/pci/controller/dwc/pcie-qcom.c            |  2 --
->  drivers/pci/controller/dwc/pcie-spear13xx.c       |  6 +-----
->  drivers/pci/controller/dwc/pcie-tegra194.c        |  2 --
->  drivers/pci/controller/dwc/pcie-uniphier.c        |  1 -
->  14 files changed, 6 insertions(+), 36 deletions(-)
-
-[...]
+Rm9sbG93aW5nIHVwIHRvIHRoZSBkaXNjdXNzaW9uIGluOgoKICBodHRwczovL2xvcmUua2VybmVs
+Lm9yZy9yLzIwMjAwOTE0MjA0MjA5LjI1NjI2NjA5M0BsaW51dHJvbml4LmRlCgphbmQgdGhlIGlu
+aXRpYWwgdmVyc2lvbiBvZiB0aGlzOgoKICBodHRwczovL2xvcmUua2VybmVsLm9yZy9yLzIwMjAw
+OTE5MDkxNzUxLjAxMTExNjY0OUBsaW51dHJvbml4LmRlCgp0aGlzIHNlcmllcyBwcm92aWRlcyBh
+IHByZWVtcHRpYmxlIHZhcmlhbnQgb2Yga21hcF9hdG9taWMgJiByZWxhdGVkCmludGVyZmFjZXMu
+CgpOb3cgdGhhdCB0aGUgc2NoZWR1bGVyIGZvbGtzIGhhdmUgd3JhcHBlZCB0aGVpciBoZWFkcyBh
+cm91bmQgdGhlIG1pZ3JhdGlvbgpkaXNhYmxlIHNjaGVkdWxlciB3b2VzLCB0aGVyZSBpcyBub3Qg
+YSByZWFsIHJlYXNvbiBhbnltb3JlIHRvIGNvbmZpbmUKbWlncmF0aW9uIGRpc2FibGluZyB0byBS
+VC4KCkFzIGV4cHJlc3NlZCBpbiB0aGUgZWFybGllciBkaXNjdXNzaW9uIGJ5IGdyYXBoaWNzIGFu
+ZCBjcnlwdG8gZm9sa3MsIHRoZXJlCmlzIGludGVyZXN0IHRvIGdldCByaWQgb2YgdGhlaXIga21h
+cF9hdG9taWMqIHVzYWdlIGJlY2F1c2UgdGhleSBuZWVkIG9ubHkgYQp0ZW1wb3Jhcnkgc3RhYmxl
+IG1hcCBhbmQgbm90IGFsbCB0aGUgYmVsbHMgYW5kIHdoaXN0ZWxzIG9mIGttYXBfYXRvbWljKi4K
+ClRoaXMgc2VyaWVzIHByb3ZpZGVzIGttYXBfbG9jYWwuKiBpb21hcF9sb2NhbCB2YXJpYW50cyB3
+aGljaCBvbmx5IGRpc2FibGUKbWlncmF0aW9uIHRvIGtlZXAgdGhlIHZpcnR1YWwgbWFwcGluZyBh
+ZGRyZXNzIHN0YWJsZSBhY2Nyb3NzIHByZWVtcHRpb24sCmJ1dCBkbyBuZWl0aGVyIGRpc2FibGUg
+cGFnZWZhdWx0cyBub3IgcHJlZW1wdGlvbi4gVGhlIG5ldyBmdW5jdGlvbnMgY2FuIGJlCnVzZWQg
+aW4gYW55IGNvbnRleHQsIGJ1dCBpZiB1c2VkIGluIGF0b21pYyBjb250ZXh0IHRoZSBjYWxsZXIg
+aGFzIHRvIHRha2UKY2FyZSBvZiBldmVudHVhbGx5IGRpc2FibGluZyBwYWdlZmF1bHRzLgoKVGhp
+cyBpcyBhY2hpZXZlZCBieToKCiAtIFJlbW92aW5nIHRoZSBSVCBkZXBlbmRlbmN5IGZyb20gbWln
+cmF0ZV9kaXNhYmxlL2VuYWJsZSgpCgogLSBDb25zb2xpZGF0aW5nIGFsbCBrbWFwIGF0b21pYyBp
+bXBsZW1lbnRhdGlvbnMgaW4gZ2VuZXJpYyBjb2RlCgogLSBTd2l0Y2hpbmcgZnJvbSBwZXIgQ1BV
+IHN0b3JhZ2Ugb2YgdGhlIGttYXAgaW5kZXggdG8gYSBwZXIgdGFzayBzdG9yYWdlCgogLSBBZGRp
+bmcgYSBwdGV2YWwgYXJyYXkgdG8gdGhlIHBlciB0YXNrIHN0b3JhZ2Ugd2hpY2ggY29udGFpbnMg
+dGhlIHB0ZXZhbHMKICAgb2YgdGhlIGN1cnJlbnRseSBhY3RpdmUgdGVtcG9yYXJ5IGttYXBzCgog
+LSBBZGRpbmcgY29udGV4dCBzd2l0Y2ggY29kZSB3aGljaCBjaGVja3Mgd2hldGhlciB0aGUgb3V0
+Z29pbmcgb3IgdGhlCiAgIGluY29taW5nIHRhc2sgaGFzIGFjdGl2ZSB0ZW1wb3Jhcnkga21hcHMu
+IElmIHNvLCB0aGUgb3V0Z29pbmcgdGFzaydzCiAgIGttYXBzIGFyZSByZW1vdmVkIGFuZCB0aGUg
+aW5jb21pbmcgdGFzaydzIGttYXBzIGFyZSByZXN0b3JlZC4KCiAtIEFkZGluZyBuZXcgaW50ZXJm
+YWNlcyBrW3VuXW1hcF90ZW1wb3JhcnkqKCkgd2hpY2ggYXJlIG5vdCBkaXNhYmxpbmcKICAgcHJl
+ZW1wdGlvbiBhbmQgY2FuIGJlIGNhbGxlZCBmcm9tIGFueSBjb250ZXh0IChleGNlcHQgTk1JKS4K
+CiAgIENvbnRyYXJ5IHRvIGttYXAoKSB3aGljaCBwcm92aWRlcyBwcmVlbXB0aWJsZSBhbmQgInBl
+cnNpc3RhbnQiIG1hcHBpbmdzLAogICB0aGVzZSBpbnRlcmZhY2VzIGFyZSBtZWFudCB0byByZXBs
+YWNlIHRoZSB0ZW1wb3JhcnkgbWFwcGluZ3MgcHJvdmlkZWQgYnkKICAga21hcF9hdG9taWMqKCkg
+dG9kYXkuCgpUaGlzIGFsbG93cyB0byBnZXQgcmlkIG9mIGNvbmRpdGlvbmFsIG1hcHBpbmcgY2hv
+aWNlcyBhbmQgYWxsb3dzIHRvIGhhdmUKcHJlZW1wdGlibGUgc2hvcnQgdGVybSBtYXBwaW5ncyBv
+biA2NGJpdCB3aGljaCBhcmUgdG9kYXkgZW5mb3JjZWQgdG8gYmUKbm9uLXByZWVtcHRpYmxlIGR1
+ZSB0byB0aGUgaGlnaG1lbSBjb25zdHJhaW50cy4gSXQgY2xlYXJseSBwdXRzIG92ZXJoZWFkIG9u
+CnRoZSBoaWdobWVtIHVzZXJzLCBidXQgaGlnaG1lbSBpcyBzbG93IGFueXdheS4KClRoaXMgaXMg
+bm90IGEgd2hvbGVzYWxlIGNvbnZlcnNpb24gd2hpY2ggbWFrZXMga21hcF9hdG9taWMgbWFnaWNh
+bGx5CnByZWVtcHRpYmxlIGJlY2F1c2UgdGhlcmUgbWlnaHQgYmUgdXNhZ2Ugc2l0ZXMgd2hpY2gg
+cmVseSBvbiB0aGUgaW1wbGljaXQKcHJlZW1wdCBkaXNhYmxlLiBTbyB0aGlzIG5lZWRzIHRvIGJl
+IGRvbmUgb24gYSBjYXNlIGJ5IGNhc2UgYmFzaXMgYW5kIHRoZQpjYWxsIHNpdGVzIGNvbnZlcnRl
+ZCB0byBrbWFwX3RlbXBvcmFyeS4KCk5vdGUsIHRoYXQgdGhpcyBpcyBvbmx5IGxpZ2h0bHkgdGVz
+dGVkIG9uIFg4NiBhbmQgY29tcGxldGVseSB1bnRlc3RlZCBvbgphbGwgb3RoZXIgYXJjaGl0ZWN0
+dXJlcy4KClRoZXJlIGlzIGFsc28gYSBzdGlsbCB0byBiZSBpbnZlc3RpZ2F0ZWQgcXVlc3Rpb24g
+ZnJvbSBMaW51cyBvbiB0aGUgaW5pdGlhbApwb3N0aW5nIHZlcnN1cyB0aGUgcGVyIGNwdSAvIHBl
+ciB0YXNrIG1hcHBpbmcgc3RhY2sgZGVwdGggd2hpY2ggbWlnaHQgbmVlZAp0byBiZSBtYWRlIGxh
+cmdlciBkdWUgdG8gdGhlIGFiaWxpdHkgdG8gdGFrZSBwYWdlIGZhdWx0cyB3aXRoaW4gYSBtYXBw
+aW5nCnJlZ2lvbi4KClRob3VnaCBJIHdhbnRlZCB0byBzaGFyZSB0aGUgY3VycmVudCBzdGF0ZSBv
+ZiBhZmZhaXJzIGJlZm9yZSBpbnZlc3RpZ2F0aW5nCnRoYXQgZnVydGhlci4gSWYgdGhlcmUgaXMg
+Y29uc2Vuc3VzIGluIGdvaW5nIGZvcndhcmQgd2l0aCB0aGlzLCBJJ2xsIGhhdmUgYQpkZWVwZXIg
+bG9vayBpbnRvIHRoaXMgaXNzdWUuCgpUaGUgbG90IGlzIGF2YWlsYWJsZSBmcm9tCgogICBnaXQ6
+Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvdGdseC9kZXZlbC5naXQg
+aGlnaG1lbQoKSXQgaXMgYmFzZWQgb24gUGV0ZXIgWmlqbHN0cmFzIG1pZ3JhdGUgZGlzYWJsZSBi
+cmFuY2ggd2hpY2ggaXMgY2xvc2UgdG8gYmUKbWVyZ2VkIGludG8gdGhlIHRpcCB0cmVlLCBidXQg
+c3RpbGwgbm90IGZpbmFsaXplZDoKCiAgIGdpdDovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGlu
+dXgva2VybmVsL2dpdC9wZXRlcnovcXVldWUuZ2l0IHNjaGVkL21pZ3JhdGUtZGlzYWJsZQoKQ2hh
+bmdlcyB2cy4gVjE6CgogIC0gTWFrZSBpdCB0cnVseSBmdW5jdGlvbmFsIGJ5IGRlcGVuZGluZyBv
+biBtaWdyYXRlIGRpc2FibGUvZW5hYmxlIChCcm93biBwYXBlcmJhZykKICAtIFJlbmFtZSB0byBr
+bWFwX2xvY2FsLiogKExpbnVzKQogIC0gRml4IHRoZSBzY2hlZCBpbi9vdXQgaXNzdWUgTGludXMg
+cG9pbnRlZCBvdXQKICAtIEZpeCBhIGZldyBzdHlsZSBpc3N1ZXMgKENocmlzdG9waCkKICAtIFNw
+bGl0IGEgZmV3IHRoaW5ncyBvdXQgaW50byBzZXBlcmF0ZSBwYXRjaGVzIHRvIG1ha2UgcmV2aWV3
+IHNpbXBsZXIKICAtIFBpY2sgdXAgYWNrZWQvcmV2aWV3ZWQgdGFncyBhcyBhcHByb3ByaWF0ZQoK
+VGhhbmtzLAoKCXRnbHgKLS0tCiBhL2FyY2gvYXJtL21tL2hpZ2htZW0uYyAgICAgICAgICAgICAg
+IHwgIDEyMSAtLS0tLS0tLS0tLS0tLS0tLS0KIGEvYXJjaC9taWNyb2JsYXplL21tL2hpZ2htZW0u
+YyAgICAgICAgfCAgIDc4IC0tLS0tLS0tLS0tLQogYS9hcmNoL25kczMyL21tL2hpZ2htZW0uYyAg
+ICAgICAgICAgICB8ICAgNDggLS0tLS0tLQogYS9hcmNoL3Bvd2VycGMvbW0vaGlnaG1lbS5jICAg
+ICAgICAgICB8ICAgNjcgLS0tLS0tLS0tLQogYS9hcmNoL3NwYXJjL21tL2hpZ2htZW0uYyAgICAg
+ICAgICAgICB8ICAxMTUgLS0tLS0tLS0tLS0tLS0tLS0KIGFyY2gvYXJjL0tjb25maWcgICAgICAg
+ICAgICAgICAgICAgICAgfCAgICAxIAogYXJjaC9hcmMvaW5jbHVkZS9hc20vaGlnaG1lbS5oICAg
+ICAgICB8ICAgIDggKwogYXJjaC9hcmMvbW0vaGlnaG1lbS5jICAgICAgICAgICAgICAgICB8ICAg
+NDQgLS0tLS0tCiBhcmNoL2FybS9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgIHwgICAgMSAK
+IGFyY2gvYXJtL2luY2x1ZGUvYXNtL2hpZ2htZW0uaCAgICAgICAgfCAgIDMxICsrKy0KIGFyY2gv
+YXJtL21tL01ha2VmaWxlICAgICAgICAgICAgICAgICAgfCAgICAxIAogYXJjaC9jc2t5L0tjb25m
+aWcgICAgICAgICAgICAgICAgICAgICB8ICAgIDEgCiBhcmNoL2Nza3kvaW5jbHVkZS9hc20vaGln
+aG1lbS5oICAgICAgIHwgICAgNCAKIGFyY2gvY3NreS9tbS9oaWdobWVtLmMgICAgICAgICAgICAg
+ICAgfCAgIDc1IC0tLS0tLS0tLS0tCiBhcmNoL21pY3JvYmxhemUvS2NvbmZpZyAgICAgICAgICAg
+ICAgIHwgICAgMSAKIGFyY2gvbWljcm9ibGF6ZS9pbmNsdWRlL2FzbS9oaWdobWVtLmggfCAgICA2
+IAogYXJjaC9taWNyb2JsYXplL21tL01ha2VmaWxlICAgICAgICAgICB8ICAgIDEgCiBhcmNoL21p
+Y3JvYmxhemUvbW0vaW5pdC5jICAgICAgICAgICAgIHwgICAgNiAKIGFyY2gvbWlwcy9LY29uZmln
+ICAgICAgICAgICAgICAgICAgICAgfCAgICAxIAogYXJjaC9taXBzL2luY2x1ZGUvYXNtL2hpZ2ht
+ZW0uaCAgICAgICB8ICAgIDQgCiBhcmNoL21pcHMvbW0vaGlnaG1lbS5jICAgICAgICAgICAgICAg
+IHwgICA3NyAtLS0tLS0tLS0tLS0KIGFyY2gvbWlwcy9tbS9pbml0LmMgICAgICAgICAgICAgICAg
+ICAgfCAgICAzIAogYXJjaC9uZHMzMi9LY29uZmlnLmNwdSAgICAgICAgICAgICAgICB8ICAgIDEg
+CiBhcmNoL25kczMyL2luY2x1ZGUvYXNtL2hpZ2htZW0uaCAgICAgIHwgICAyMSArKy0KIGFyY2gv
+bmRzMzIvbW0vTWFrZWZpbGUgICAgICAgICAgICAgICAgfCAgICAxIAogYXJjaC9wb3dlcnBjL0tj
+b25maWcgICAgICAgICAgICAgICAgICB8ICAgIDEgCiBhcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20v
+aGlnaG1lbS5oICAgIHwgICAgNiAKIGFyY2gvcG93ZXJwYy9tbS9NYWtlZmlsZSAgICAgICAgICAg
+ICAgfCAgICAxIAogYXJjaC9wb3dlcnBjL21tL21lbS5jICAgICAgICAgICAgICAgICB8ICAgIDcg
+LQogYXJjaC9zcGFyYy9LY29uZmlnICAgICAgICAgICAgICAgICAgICB8ICAgIDEgCiBhcmNoL3Nw
+YXJjL2luY2x1ZGUvYXNtL2hpZ2htZW0uaCAgICAgIHwgICAgNyAtCiBhcmNoL3NwYXJjL21tL01h
+a2VmaWxlICAgICAgICAgICAgICAgIHwgICAgMyAKIGFyY2gvc3BhcmMvbW0vc3JtbXUuYyAgICAg
+ICAgICAgICAgICAgfCAgICAyIAogYXJjaC94ODYvaW5jbHVkZS9hc20vZml4bWFwLmggICAgICAg
+ICB8ICAgIDEgCiBhcmNoL3g4Ni9pbmNsdWRlL2FzbS9oaWdobWVtLmggICAgICAgIHwgICAxMiAr
+CiBhcmNoL3g4Ni9pbmNsdWRlL2FzbS9pb21hcC5oICAgICAgICAgIHwgICAxMyAtLQogYXJjaC94
+ODYvbW0vaGlnaG1lbV8zMi5jICAgICAgICAgICAgICB8ICAgNTkgLS0tLS0tLS0tCiBhcmNoL3g4
+Ni9tbS9pbml0XzMyLmMgICAgICAgICAgICAgICAgIHwgICAxNSAtLQogYXJjaC94ODYvbW0vaW9t
+YXBfMzIuYyAgICAgICAgICAgICAgICB8ICAgNTcgLS0tLS0tLS0KIGFyY2gveHRlbnNhL0tjb25m
+aWcgICAgICAgICAgICAgICAgICAgfCAgICAxIAogYXJjaC94dGVuc2EvaW5jbHVkZS9hc20vaGln
+aG1lbS5oICAgICB8ICAgIDkgKwogYXJjaC94dGVuc2EvbW0vaGlnaG1lbS5jICAgICAgICAgICAg
+ICB8ICAgNDQgLS0tLS0tCiBiL2FyY2gveDg2L0tjb25maWcgICAgICAgICAgICAgICAgICAgIHwg
+ICAgMyAKIGluY2x1ZGUvbGludXgvaGlnaG1lbS5oICAgICAgICAgICAgICAgfCAgMjAzICsrKysr
+KysrKysrKysrKysrKysrKystLS0tLS0tLS0KIGluY2x1ZGUvbGludXgvaW8tbWFwcGluZy5oICAg
+ICAgICAgICAgfCAgIDQyICsrKysrLQogaW5jbHVkZS9saW51eC9wcmVlbXB0LmggICAgICAgICAg
+ICAgICB8ICAgMzggLS0tLS0KIGluY2x1ZGUvbGludXgvc2NoZWQuaCAgICAgICAgICAgICAgICAg
+fCAgIDExICsKIGtlcm5lbC9lbnRyeS9jb21tb24uYyAgICAgICAgICAgICAgICAgfCAgICAyIAog
+a2VybmVsL2ZvcmsuYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDEgCiBrZXJuZWwvc2No
+ZWQvY29yZS5jICAgICAgICAgICAgICAgICAgIHwgICAzMCArKystCiBrZXJuZWwvc2NoZWQvc2No
+ZWQuaCAgICAgICAgICAgICAgICAgIHwgICAgMiAKIGxpYi9zbXBfcHJvY2Vzc29yX2lkLmMgICAg
+ICAgICAgICAgICAgfCAgICAyIAogbW0vS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAgIDMgCiBtbS9oaWdobWVtLmMgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDIxOCAr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tCiA1NCBmaWxlcyBjaGFuZ2VkLCA1NDIg
+aW5zZXJ0aW9ucygrKSwgOTY5IGRlbGV0aW9ucygtKQoK
