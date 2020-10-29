@@ -2,80 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A1E29E639
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 09:18:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A6A29E7F0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 10:57:29 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMJGv1WTBzDqZV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 19:18:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMLTL1p0ZzDqRm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 20:57:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=FzwQIOYu; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=FzwQIOYu; 
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMLRC1GKJzDqGh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 20:55:35 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=YohtxlNk; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMJDY47jSzDqPj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 19:16:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1603959368;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2gRwEwp+09CxPY3cDDGs5AqZnz2L4R+qK1xrKBZP/ZQ=;
- b=FzwQIOYuQiYs8AOF0jSWfKko4kM786oPEch3YBrlcCg33I3RWV/PZlhcWMBvasAKZSkQo1
- UuhP3NJLwgXzCgQEtlOh5mPQq4rCYOYgBbezoY3+SbQWYchutULQci4oL/QzuQ14pQ8ItF
- 9+GZvbOb12lYwWmjY/pkzovIBd1ffUE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1603959368;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2gRwEwp+09CxPY3cDDGs5AqZnz2L4R+qK1xrKBZP/ZQ=;
- b=FzwQIOYuQiYs8AOF0jSWfKko4kM786oPEch3YBrlcCg33I3RWV/PZlhcWMBvasAKZSkQo1
- UuhP3NJLwgXzCgQEtlOh5mPQq4rCYOYgBbezoY3+SbQWYchutULQci4oL/QzuQ14pQ8ItF
- 9+GZvbOb12lYwWmjY/pkzovIBd1ffUE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-521-GwWoSv2-OMqDqihE-45P3g-1; Thu, 29 Oct 2020 04:16:02 -0400
-X-MC-Unique: GwWoSv2-OMqDqihE-45P3g-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5ED20809DC9;
- Thu, 29 Oct 2020 08:15:57 +0000 (UTC)
-Received: from [10.36.112.181] (ovpn-112-181.ams2.redhat.com [10.36.112.181])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3EBE05D9CC;
- Thu, 29 Oct 2020 08:15:48 +0000 (UTC)
-Subject: Re: [PATCH 0/4] arch, mm: improve robustness of direct map
- manipulation
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-References: <20201025101555.3057-1-rppt@kernel.org>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <30075bb8-caed-c4de-c09e-e0f6fb964a8d@redhat.com>
-Date: Thu, 29 Oct 2020 09:15:47 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CMLRB4Xjhz9sRR;
+ Thu, 29 Oct 2020 20:55:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1603965334;
+ bh=pPb0aB9btC0IoWiJ/n8aYnf7SCRhymJbOyiHpUiPwqI=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=YohtxlNkEk3R8Lh0G91PkqvSgHhGhAmSb2IpNRUYxsa1EJedF6Jc794Dbuol7jcnw
+ L5pam1X/riHVUCBb2mcUYJIHOGNy0aq+YpvpJBLXcLXqY64913dhFFIHycPT+yeczd
+ HCOY9BfnkFeNgWtHuwR8MyvM4htdMMX3Roc0ffmKFD+pibw9wIUukXNUWQBYZ7D6tN
+ 5tV97PCBHYT5ivAx22/S5pY6tkXAsktrd+yz734fsBvNCYCMjc54WodP3NdcFAStV0
+ 4GFL8QQhancEk6AtpQxBTe1at6ZWT3EeX7VcZz8iUdC9cFsLppuwBhsi/sSPhNbLqa
+ Kndi83BW+6AbA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH kernel v3 2/2] powerpc/dma: Fallback to dma_ops when
+ persistent memory present
+In-Reply-To: <2f285412-9e19-7888-1102-f50658c43b9d@ozlabs.ru>
+References: <20201028070030.60643-1-aik@ozlabs.ru>
+ <20201028070030.60643-3-aik@ozlabs.ru> <87eelhx3t6.fsf@mpe.ellerman.id.au>
+ <2f285412-9e19-7888-1102-f50658c43b9d@ozlabs.ru>
+Date: Thu, 29 Oct 2020 20:55:33 +1100
+Message-ID: <87blglwe3u.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20201025101555.3057-1-rppt@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,61 +60,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Pekka Enberg <penberg@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>, "Edgecombe,
- Rick P" <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: iommu@lists.linux-foundation.org, Christoph Hellwig <hch@lst.de>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25.10.20 11:15, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> Hi,
-> 
-> During recent discussion about KVM protected memory, David raised a concern
-> about usage of __kernel_map_pages() outside of DEBUG_PAGEALLOC scope [1].
-> 
-> Indeed, for architectures that define CONFIG_ARCH_HAS_SET_DIRECT_MAP it is
-> possible that __kernel_map_pages() would fail, but since this function is
-> void, the failure will go unnoticed.
-> 
-> Moreover, there's lack of consistency of __kernel_map_pages() semantics
-> across architectures as some guard this function with
-> #ifdef DEBUG_PAGEALLOC, some refuse to update the direct map if page
-> allocation debugging is disabled at run time and some allow modifying the
-> direct map regardless of DEBUG_PAGEALLOC settings.
-> 
-> This set straightens this out by restoring dependency of
-> __kernel_map_pages() on DEBUG_PAGEALLOC and updating the call sites
-> accordingly.
-> 
+Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+> On 29/10/2020 11:40, Michael Ellerman wrote:
+>> Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+>>> @@ -1126,7 +1129,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>   
+>>>   	mutex_lock(&direct_window_init_mutex);
+>>>   
+>>> -	dma_addr = find_existing_ddw(pdn);
+>>> +	dma_addr = find_existing_ddw(pdn, &len);
+>> 
+>> I don't see len used anywhere?
+>> 
+>>>   	if (dma_addr != 0)
+>>>   		goto out_unlock;
+>>>   
+>>> @@ -1212,14 +1215,26 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>   	}
+>>>   	/* verify the window * number of ptes will map the partition */
+>>>   	/* check largest block * page size > max memory hotplug addr */
+>>> -	max_addr = ddw_memory_hotplug_max();
+>>> -	if (query.largest_available_block < (max_addr >> page_shift)) {
+>>> -		dev_dbg(&dev->dev, "can't map partition max 0x%llx with %llu "
+>>> -			  "%llu-sized pages\n", max_addr,  query.largest_available_block,
+>>> -			  1ULL << page_shift);
+>>> +	/*
+>>> +	 * The "ibm,pmemory" can appear anywhere in the address space.
+>>> +	 * Assuming it is still backed by page structs, try MAX_PHYSMEM_BITS
+>>> +	 * for the upper limit and fallback to max RAM otherwise but this
+>>> +	 * disables device::dma_ops_bypass.
+>>> +	 */
+>>> +	len = max_ram_len;
+>> 
+>> Here you override whatever find_existing_ddw() wrote to len?
+>
+> Not always, there is a bunch of gotos before this line to the end of the 
+> function and one (which returns the existing window) is legit. Thanks,
 
-So, I was primarily wondering if we really have to touch direct mappings 
-in hibernation code, or if we can avoid doing that. I was wondering if 
-we cannot simply do something like kmap() when trying to access a 
-!mapped page. Similar to reading old-os memory after kexec when in 
-kdump. Just a thought.
+Ah yep I see it.
 
--- 
-Thanks,
+Gotos considered confusing ;)
 
-David / dhildenb
-
+cheers
