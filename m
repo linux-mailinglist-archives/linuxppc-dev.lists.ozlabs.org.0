@@ -2,58 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90E529EC70
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 14:05:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB74229ED5C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 14:45:38 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMQfV5CjMzDqD9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 00:05:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMRXW1JTNzDqXm
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 00:45:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=srs0=tmae=ee=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=vRbJgsWw; dkim-atps=neutral
+ dmarc=none (p=none dis=none) header.from=goodmis.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMQZ66nzlzDqXf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 00:01:50 +1100 (AEDT)
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com
- [209.85.210.51])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMRQL2cF2zDqXf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 00:40:10 +1100 (AEDT)
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
+ [66.24.58.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0EE8620720
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 13:01:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1603976508;
- bh=OzIlRpXLdeGRcoA/MVFEQyHps4XuaG+UwlBrggFdE0A=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=vRbJgsWwtJ15XvouUgWp8lxFF9YEzz6sV39n8cr3LYXfuecObHTezLMamQSxer1Da
- zkYNr2fh0i0HxfH2ob7AS9aynsisAGunWZFHpffa0g+pBXnuWXijWCgE1UNZUyc+lq
- uoQ9II+lG7PtxjFrxXQpqGdKqRBmECQ0O3fH4UCY=
-Received: by mail-ot1-f51.google.com with SMTP id o14so2146731otj.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 06:01:48 -0700 (PDT)
-X-Gm-Message-State: AOAM533tca45AI54IJqgLxZye0PRzlp/hIyoapRB1DnC5A6wx2aGatWp
- 1LgQCxQpNFVE909qtS3jQBpj2oYS0b9r/ccDQQ==
-X-Google-Smtp-Source: ABdhPJy/bhS7KTF1WNqgQUUalxQA1GfpAd7FTQIi3yYFWyIBt0GxzCWPuCwRMAMfnaaUFyZdFb4NCZ8rTg453LUEqGQ=
-X-Received: by 2002:a9d:62d1:: with SMTP id z17mr3193317otk.192.1603976506229; 
- Thu, 29 Oct 2020 06:01:46 -0700 (PDT)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5577420796;
+ Thu, 29 Oct 2020 13:40:04 +0000 (UTC)
+Date: Thu, 29 Oct 2020 09:40:01 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Masami Hiramatsu <mhiramat@kernel.org>
+Subject: Re: [PATCH 5/9] kprobes/ftrace: Add recursion protection to the
+ ftrace callback
+Message-ID: <20201029094001.0cfab7aa@gandalf.local.home>
+In-Reply-To: <20201029165803.5f6b401e5bccca4e57c70181@kernel.org>
+References: <20201028115244.995788961@goodmis.org>
+ <20201028115613.140212174@goodmis.org>
+ <20201029165803.5f6b401e5bccca4e57c70181@kernel.org>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20201028204646.356535-1-robh@kernel.org>
- <20201028204646.356535-2-robh@kernel.org>
- <87h7qdx4oz.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87h7qdx4oz.fsf@mpe.ellerman.id.au>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 29 Oct 2020 08:01:35 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJWzmGNifrJEKGg582kZNtjnWHaUkG0EinWqjhGaeL1dg@mail.gmail.com>
-Message-ID: <CAL_JsqJWzmGNifrJEKGg582kZNtjnWHaUkG0EinWqjhGaeL1dg@mail.gmail.com>
-Subject: Re: [PATCH 01/13] PCI: dwc/imx6: Drop setting PCI_MSI_FLAGS_ENABLE
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,66 +50,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Neil Armstrong <narmstrong@baylibre.com>, PCI <linux-pci@vger.kernel.org>,
- Binghui Wang <wangbinghui@hisilicon.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Minghuan Lian <minghuan.Lian@nxp.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Jonathan Chocron <jonnyc@amazon.com>, Jonathan Hunter <jonathanh@nvidia.com>,
- Fabio Estevam <festevam@gmail.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Jesper Nilsson <jesper.nilsson@axis.com>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Kevin Hilman <khilman@baylibre.com>, Pratyush Anand <pratyush.anand@gmail.com>,
- linux-arm-kernel@axis.com, Kishon Vijay Abraham I <kishon@ti.com>,
- Kukjin Kim <kgene@kernel.org>, NXP Linux Team <linux-imx@nxp.com>,
- Xiaowei Song <songxiaowei@hisilicon.com>, Richard Zhu <hongxing.zhu@nxp.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- linux-arm-msm <linux-arm-msm@vger.kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Yue Wang <yue.wang@amlogic.com>,
- linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
- Murali Karicheri <m-karicheri2@ti.com>,
- linux-tegra <linux-tegra@vger.kernel.org>,
- "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
- linux-omap <linux-omap@vger.kernel.org>, Mingkai Hu <mingkai.hu@nxp.com>,
- Roy Zang <roy.zang@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Jingoo Han <jingoohan1@gmail.com>, Andy Gross <agross@kernel.org>,
- Stanimir Varbanov <svarbanov@mm-sol.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
- Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-s390@vger.kernel.org,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 28, 2020 at 7:21 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Rob Herring <robh@kernel.org> writes:
-> > No other host driver sets the PCI_MSI_FLAGS_ENABLE bit, so it must not
-> > be necessary. If it is, a comment is needed.
->
-> Yeah, but git blame directly points to:
->
->   75cb8d20c112 ("PCI: imx: Enable MSI from downstream components")
+On Thu, 29 Oct 2020 16:58:03 +0900
+Masami Hiramatsu <mhiramat@kernel.org> wrote:
 
-I think I did read this at some point and then forgot about it when I
-made the change later...
+> Hi Steve,
+> 
+> On Wed, 28 Oct 2020 07:52:49 -0400
+> Steven Rostedt <rostedt@goodmis.org> wrote:
+> 
+> > From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+> > 
+> > If a ftrace callback does not supply its own recursion protection and
+> > does not set the RECURSION_SAFE flag in its ftrace_ops, then ftrace will
+> > make a helper trampoline to do so before calling the callback instead of
+> > just calling the callback directly.  
+> 
+> So in that case the handlers will be called without preempt disabled?
+> 
+> 
+> > The default for ftrace_ops is going to assume recursion protection unless
+> > otherwise specified.  
+> 
+> This seems to skip entier handler if ftrace finds recursion.
+> I would like to increment the missed counter even in that case.
 
-> Which has a pretty long explanation. The relevant bit probably being:
->
->   ... on i.MX6, the MSI Enable bit controls delivery of MSI interrupts
->   from components below the Root Port.
+Note, this code does not change the functionality at this point, because
+without having the FL_RECURSION flag set (which kprobes does not even in
+this patch), it always gets called from the helper function that does this:
 
-The thing is that all seems not i.MX6 specific but DWC specific given
-MSI handling is contained within the DWC block. So I don't see how
-this could be an integration difference.
+	bit = trace_test_and_set_recursion(TRACE_LIST_START, TRACE_LIST_MAX);
+	if (bit < 0)
+		return;
 
-So maybe everyone else is still just setting CONFIG_PCIEPORTBUS
-typically and haven't noticed? Is it correct for the host driver to
-set MSI enable?
+	preempt_disable_notrace();
 
-Rob
+	op->func(ip, parent_ip, op, regs);
+
+	preempt_enable_notrace();
+	trace_clear_recursion(bit);
+
+Where this function gets called by op->func().
+
+In other words, you don't get that count anyway, and I don't think you want
+it. Because it means you traced something that your callback calls.
+
+That bit check is basically a nop, because the last patch in this series
+will make the default that everything has recursion protection, but at this
+patch the test does this:
+
+	/* A previous recursion check was made */
+	if ((val & TRACE_CONTEXT_MASK) > max)
+		return 0;
+
+Which would always return true, because this function is called via the
+helper that already did the trace_test_and_set_recursion() which, if it
+made it this far, the val would always be greater than max.
+
+> 
+> [...]
+> e.g.
+> 
+> > diff --git a/arch/csky/kernel/probes/ftrace.c b/arch/csky/kernel/probes/ftrace.c
+> > index 5264763d05be..5eb2604fdf71 100644
+> > --- a/arch/csky/kernel/probes/ftrace.c
+> > +++ b/arch/csky/kernel/probes/ftrace.c
+> > @@ -13,16 +13,21 @@ int arch_check_ftrace_location(struct kprobe *p)
+> >  void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+> >  			   struct ftrace_ops *ops, struct pt_regs *regs)
+> >  {
+> > +	int bit;
+> >  	bool lr_saver = false;
+> >  	struct kprobe *p;
+> >  	struct kprobe_ctlblk *kcb;
+> >  
+> > -	/* Preempt is disabled by ftrace */
+> > +	bit = ftrace_test_recursion_trylock();  
+> 
+> > +
+> > +	preempt_disable_notrace();
+> >  	p = get_kprobe((kprobe_opcode_t *)ip);
+> >  	if (!p) {
+> >  		p = get_kprobe((kprobe_opcode_t *)(ip - MCOUNT_INSN_SIZE));
+> >  		if (unlikely(!p) || kprobe_disabled(p))
+> > -			return;
+> > +			goto out;
+> >  		lr_saver = true;
+> >  	}  
+> 
+> 	if (bit < 0) {
+> 		kprobes_inc_nmissed_count(p);
+> 		goto out;
+> 	}
+
+If anything called in get_kprobe() or kprobes_inc_nmissed_count() gets
+traced here, you have zero recursion protection, and this will crash the
+machine with a likely reboot (triple fault).
+
+Note, the recursion handles interrupts and wont stop them. bit < 0 only
+happens if you recurse because this function called something that ends up
+calling itself. Really, why would you care about missing a kprobe on the
+same kprobe?
+
+-- Steve
