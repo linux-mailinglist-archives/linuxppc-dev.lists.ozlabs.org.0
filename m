@@ -1,27 +1,27 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E425829F912
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 00:27:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C8F29F916
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 00:29:02 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMhRy0sj8zDqZB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 10:27:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMhTl1pJvzDqd0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 10:28:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMhJ41HGGzDqMm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 10:20:36 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMhLH1H4QzDqYd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 10:22:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=russell.cc
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4CMhJ34zpYz8t2h
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 10:20:35 +1100 (AEDT)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4CMhLG51Smz8tB6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 10:22:30 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 4CMhHy4nLgz9sSG; Fri, 30 Oct 2020 10:20:30 +1100 (AEDT)
+ id 4CMhLG3ytsz9sSG; Fri, 30 Oct 2020 10:22:30 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=neutral (access neither permitted nor denied)
@@ -33,19 +33,20 @@ Received: from fox (140-211-168-157-openstack.osuosl.org [140.211.168.157])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4CMhHx5Xswz9sRk
- for <linuxppc-dev@ozlabs.org>; Fri, 30 Oct 2020 10:20:28 +1100 (AEDT)
+ by ozlabs.org (Postfix) with ESMTPS id 4CMhLF68H7z9sRk
+ for <linuxppc-dev@ozlabs.org>; Fri, 30 Oct 2020 10:22:29 +1100 (AEDT)
 Received: from fox (ip6-localhost [::1])
- by fox (OpenSMTPD) with ESMTP id 1314738a;
- Thu, 29 Oct 2020 23:20:26 +0000 (UTC)
-Subject: Test Results: RE: [V2,15/18] io-mapping: Cleanup atomic iomap
+ by fox (OpenSMTPD) with ESMTP id b19ddf98;
+ Thu, 29 Oct 2020 23:22:28 +0000 (UTC)
+Subject: Test Results: RE: [V2,14/18] mm/highmem: Remove the old kmap_atomic
+ cruft
 To: "Thomas Gleixner" <tglx@linutronix.de>, <linuxppc-dev@ozlabs.org>
 From: <snowpatch@russell.cc>
-In-Reply-To: <20201029222652.084086429@linutronix.de>
-Date: Thu, 29 Oct 2020 23:20:26 -0000
+In-Reply-To: <20201029222651.992069499@linutronix.de>
+Date: Thu, 29 Oct 2020 23:22:27 -0000
 MIME-Version: 1.0
-Message-ID: <8bceacdf-0d67-4508-b77c-07c3ce54f42c.lettre@localhost>
-Content-Type: multipart/mixed; boundary=DxzhDiCd767hXfkvMPsZyd5SGHhZGz
+Message-ID: <57f1afc9-cac0-4deb-b3cb-5eb91266576a.lettre@localhost>
+Content-Type: multipart/mixed; boundary=Ol0ZPWYZbPR3LZNwf4M4LHmxiTC9nf
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,7 +63,7 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---DxzhDiCd767hXfkvMPsZyd5SGHhZGz
+--Ol0ZPWYZbPR3LZNwf4M4LHmxiTC9nf
 Content-Type: text/plain; charset=utf-8
 
 Thanks for your contribution, unfortunately we've found some issues.
@@ -71,5 +72,5 @@ Your patch failed to apply to any branch.
 
 
 
---DxzhDiCd767hXfkvMPsZyd5SGHhZGz--
+--Ol0ZPWYZbPR3LZNwf4M4LHmxiTC9nf--
 
