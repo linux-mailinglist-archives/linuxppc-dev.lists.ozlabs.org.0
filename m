@@ -2,77 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466D529F7AB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 23:18:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D39829F7BD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 23:21:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMfwR2n6DzDqWP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 09:18:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMfzX2VgCzDqdx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 09:21:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=jingoohan1@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=jingoohan1@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ATMcJHxQ; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+ header.s=20161025 header.b=efjnQN8B; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMfsG6DZXzDqWZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 09:15:46 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id t14so3515649pgg.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 15:15:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMfwk1sBQzDqcn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 09:18:44 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id o3so3484859pgr.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 15:18:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:thread-topic:thread-index:date:message-id
  :references:in-reply-to:accept-language:content-language
  :content-transfer-encoding:mime-version;
- bh=wb9YwAxk2NQxLFpcYqM6hbPaI2aklAiVUdGq2NV0NhI=;
- b=ATMcJHxQmcMBWJSdahPYM75Ks+3p5JFHoEoVc7wKHtTMTbGrJ5GPrQzOTiqlY/O2FA
- WcTEd1DVFH8+A73QhQ7zJ1qFHeH931aweF+gFgULPrr0iJsUs9Arm7T0zDOQ7iGDiXIr
- K62PsZ6J0HRNE6V/79CiAYGV5qsWbEjJZ4U/s4YTUzibO5SupXBCGG4Yd4cmcB6LnzJL
- ucNZ9eyosFtlWjFHFpJ4JjOOjjyB8hIRnG42xcgmVOsrZkbJkz320MI+awHTrpziRXml
- 0CcGcuey+fWXuCZiaAV7DePF42FtnVFkTRchEYkAoEEQtmtloHnfynN+A7jngOoU0BUr
- hlDA==
+ bh=0JLyqfoztBsM4bd8GDzwKmcvHsdDBe0Vipxzr6rfQ6o=;
+ b=efjnQN8BYX87Tjs3cdlMM5rbHmXG6lM/LdGTA8BLHkD+wr3lwYOVZBW7+BdpO4MfuN
+ +TlDghiZ4ZXBSa0vZBgvec8u4PN3mBdzhbeITS/6g7uOmseOxMiweI6rZW6wgDEsELgA
+ 5GIEsVfBMgcdeomUPNI8IW0drzniTV6u41RzzzL1eFFz/g2M/b9y9C1bkx89HRd0ewsE
+ iKkqWm+ECzvRLnc685+eeX+FsIH9QcAI09kKGKWs6wHyiNsQxDhRzR8VRrcDoYOivPeO
+ LxUYW7C+uSJOblQZDGo0+yJIT7QWRCLremt1WF5O1mljBaXEUpv/5tugMPqYGftgdYCw
+ 41FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:thread-topic:thread-index
  :date:message-id:references:in-reply-to:accept-language
  :content-language:content-transfer-encoding:mime-version;
- bh=wb9YwAxk2NQxLFpcYqM6hbPaI2aklAiVUdGq2NV0NhI=;
- b=sNT4xrtv/holRsQGjMscdwHLwuuXeq4a1PN4JmQjncJu8GHlEoRmIw6TMUkyukyVpP
- 0JTuseTZniGhrgckApoxIrqDeVLvUwv3aYAzb9qaMgs+gYUDoW58YVwWDSOBgHepoUko
- EErIIrSXHWl7lfzc3JC/BOph6vo1ZXKXB0bRuqz5QyMVW9Oi66WNTH/m7r34cekk/k0O
- IxEI0NKqvTRuN734UJpWU3CkwgFPS+vaLPOjc+FXpQjBKIjGM44BP4cRVn8cAlldJTgZ
- ZjSCgcZ7ePvHB55sAACeOAKZr13Sl5ysdGs2eI51eM4pKvG57KY+IeNkRHoXDMm/iI9N
- EAUQ==
-X-Gm-Message-State: AOAM530xTSbs/NbxNIvC9Jpu2tIsOzkGu6V3Ty9G5hK4rvrPkrhXvlkA
- qPnrfGSVi6f8/VNmF8n851o=
-X-Google-Smtp-Source: ABdhPJxlHYl+cZgk+KIPjNe48JdRu/zKn8ZJifDV9M3gXsbKATnx6XuuuC+nrXnuW0dPRIEWcL42zA==
-X-Received: by 2002:a17:90a:bf05:: with SMTP id
- c5mr1353597pjs.11.1604009744576; 
- Thu, 29 Oct 2020 15:15:44 -0700 (PDT)
+ bh=0JLyqfoztBsM4bd8GDzwKmcvHsdDBe0Vipxzr6rfQ6o=;
+ b=T4YR9kBJgsagk01Y2oUaZQRIHH2HAC8UHJikLYQiNKwKPFjdkYvQ91xdF0UKUD6RHY
+ qWClJR2arJrm/AETYTR4jfoODJXszQPAxMYBKx7y/n54rUw1rOwCAXeEGz3KNXCqMIuz
+ XNa4ftjT21ZEjiP1Uk4TwrNwhJp/O3klTnjoP6jSVrVLuSl+WcFDfpzG+MAhyi8K1myq
+ OIOgwVFoMloRKHaXU6YW6kDxibIlobChsYXHnrHgfl9PZmbGhGOQKUgwJ96xioq2UwRK
+ xlhE78RS2Qn2FrYIqq+MOXmX/NSB+2WuZ+7fNsO2JlXGhrtGrC2YOcSMGs4SZeLUV/Rf
+ G7Mg==
+X-Gm-Message-State: AOAM533TzZCvmwtriiD2RSAanI0uTRP44av+GBauslpuABKXi+IkYtzX
+ zH420K9DU731FVAMa+ZO3pQ=
+X-Google-Smtp-Source: ABdhPJyKzky7Hlxd2ju++O4t3nei2/mY1jw3pY46QxIKFwE+ZIP26mYCGKOsIJiQiTBtuu8EYwlZAg==
+X-Received: by 2002:aa7:9811:0:b029:15d:2c0e:e947 with SMTP id
+ e17-20020aa798110000b029015d2c0ee947mr6362369pfl.76.1604009920927; 
+ Thu, 29 Oct 2020 15:18:40 -0700 (PDT)
 Received: from SL2P216MB0475.KORP216.PROD.OUTLOOK.COM ([2603:1046:100:19::5])
  by smtp.gmail.com with ESMTPSA id
- 34sm1704038pgv.53.2020.10.29.15.15.35
+ 20sm3913757pfh.219.2020.10.29.15.18.31
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 29 Oct 2020 15:15:43 -0700 (PDT)
+ Thu, 29 Oct 2020 15:18:40 -0700 (PDT)
 From: Jingoo Han <jingoohan1@gmail.com>
 To: Rob Herring <robh@kernel.org>, Lorenzo Pieralisi
  <lorenzo.pieralisi@arm.com>
-Subject: Re: [PATCH 07/13] PCI: dwc: Drop the .set_num_vectors() host op
-Thread-Topic: [PATCH 07/13] PCI: dwc: Drop the .set_num_vectors() host op
-Thread-Index: AQHWrWuFryq4LWMsWUG3+ygcwfeheamvJygg
+Subject: Re: [PATCH 08/13] PCI: dwc: Move MSI interrupt setup into DWC common
+ code
+Thread-Topic: [PATCH 08/13] PCI: dwc: Move MSI interrupt setup into DWC common
+ code
+Thread-Index: AQHWrWuFOQ/rIkS/ZEGWk+b2wGddk6mvJ/u9
 X-MS-Exchange-MessageSentRepresentingType: 1
-Date: Thu, 29 Oct 2020 22:15:32 +0000
-Message-ID: <SL2P216MB0475BFB1A3DF471129F61B93AA140@SL2P216MB0475.KORP216.PROD.OUTLOOK.COM>
+Date: Thu, 29 Oct 2020 22:18:28 +0000
+Message-ID: <SL2P216MB04754345E108C4B2DD752C1FAA140@SL2P216MB0475.KORP216.PROD.OUTLOOK.COM>
 References: <20201028204646.356535-1-robh@kernel.org>
- <20201028204646.356535-8-robh@kernel.org>
-In-Reply-To: <20201028204646.356535-8-robh@kernel.org>
+ <20201028204646.356535-9-robh@kernel.org>
+In-Reply-To: <20201028204646.356535-9-robh@kernel.org>
 Accept-Language: ko-KR, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -131,8 +133,13 @@ Sender: "Linuxppc-dev"
 
 On 10/28/20, 4:47 PM, Rob Herring wrote:
 >=20
-> There's no reason for the .set_num_vectors() host op. Drivers needing a
-> non-default value can just initialize pcie_port.num_vectors directly.
+> Platforms using the built-in DWC MSI controller all have a dedicated
+> interrupt with "msi" name or at index 0, so let's move setting up the
+> interrupt to the common DWC code.
+>
+> spear13xx and dra7xx are the 2 oddballs with muxed interrupts, so
+> we need to prevent configuring the MSI interrupt by setting msi_irq
+> to negative.
 >
 > Cc: Jingoo Han <jingoohan1@gmail.com>
 
@@ -141,18 +148,54 @@ Acked-by: Jingoo Han <jingoohan1@gmail.com>
 Best regards,
 Jingoo Han
 
-> Cc: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
 > Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 > Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Kukjin Kim <kgene@kernel.org>
+> Cc: Krzysztof Kozlowski <krzk@kernel.org>
+> Cc: Richard Zhu <hongxing.zhu@nxp.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: NXP Linux Team <linux-imx@nxp.com>
+> Cc: Yue Wang <yue.wang@Amlogic.com>
+> Cc: Kevin Hilman <khilman@baylibre.com>
+> Cc: Neil Armstrong <narmstrong@baylibre.com>
+> Cc: Jerome Brunet <jbrunet@baylibre.com>
+> Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Cc: Jesper Nilsson <jesper.nilsson@axis.com>
+> Cc: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+> Cc: Xiaowei Song <songxiaowei@hisilicon.com>
+> Cc: Binghui Wang <wangbinghui@hisilicon.com>
+> Cc: Stanimir Varbanov <svarbanov@mm-sol.com>
+> Cc: Andy Gross <agross@kernel.org>
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Pratyush Anand <pratyush.anand@gmail.com>
 > Cc: Thierry Reding <thierry.reding@gmail.com>
 > Cc: Jonathan Hunter <jonathanh@nvidia.com>
+> Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: linux-samsung-soc@vger.kernel.org
+> Cc: linux-amlogic@lists.infradead.org
+> Cc: linux-arm-kernel@axis.com
+> Cc: linux-arm-msm@vger.kernel.org
 > Cc: linux-tegra@vger.kernel.org
 > Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
->  .../pci/controller/dwc/pcie-designware-host.c | 19 ++++---------------
->  .../pci/controller/dwc/pcie-designware-plat.c |  7 +------
->  drivers/pci/controller/dwc/pcie-designware.h  |  1 -
->  drivers/pci/controller/dwc/pcie-tegra194.c    |  7 +------
->  4 files changed, 6 insertions(+), 28 deletions(-)
+>  drivers/pci/controller/dwc/pci-dra7xx.c       |  3 +++
+>  drivers/pci/controller/dwc/pci-exynos.c       |  6 -----
+>  drivers/pci/controller/dwc/pci-imx6.c         |  6 -----
+>  drivers/pci/controller/dwc/pci-meson.c        |  6 -----
+>  drivers/pci/controller/dwc/pcie-artpec6.c     |  6 -----
+> .../pci/controller/dwc/pcie-designware-host.c | 11 +++++++++-
+>  .../pci/controller/dwc/pcie-designware-plat.c |  6 -----
+>  drivers/pci/controller/dwc/pcie-histb.c       |  6 -----
+>  drivers/pci/controller/dwc/pcie-kirin.c       | 22 -------------------
+>  drivers/pci/controller/dwc/pcie-qcom.c        |  8 -------
+>  drivers/pci/controller/dwc/pcie-spear13xx.c   |  1 +
+>  drivers/pci/controller/dwc/pcie-tegra194.c    |  8 -------
+>  drivers/pci/controller/dwc/pcie-uniphier.c    |  6 -----
+>  13 files changed, 14 insertions(+), 81 deletions(-)
 
 [...]
