@@ -1,82 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E4B129DA35
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 00:17:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D6F29DB8F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 01:04:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CM4GT4w39zDqGm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 10:17:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CM5Jg27CdzDqWF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 11:04:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=longman@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=GORSieNJ; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=LTYaALsC; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=c7noJt53; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CM4DW0STCzDqCH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 10:15:22 +1100 (AEDT)
-Received: by mail-pg1-x544.google.com with SMTP id n16so754267pgv.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Oct 2020 16:15:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=CR2wnnNlKWCuS4v8a17nk31my7ihb+hmRpvNks7K5nk=;
- b=GORSieNJXfwskxaxCjowLoxfeZJAJBnAwv32Jxo7LchBcWcFZsNgs2td3VwO2FpDap
- 8VS39JtTsIkN16uJZ91UjVSKg4D3cjZTUmYyXQ4EdU4q/synSnECkjtEEBSLoN2otDf7
- WidryILLCwpaAcfIjcoMYYJeqknpRUgQLpKW8ZiXIT4GTH22ibwSOYE/7ay6ySN41mWG
- oBy2gdO7DYhHQrcSrV0NKdA93mlC3+0KwYn9PnadvEmLMuu4Vks70zDrrpf8Or7HUlKg
- V/RzNKoAwyVmp2MqwFjfjGLo55FVa9S6YmZfMC0064eqqicggyfyaL5fjTTN9yJRVcUS
- l80w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=CR2wnnNlKWCuS4v8a17nk31my7ihb+hmRpvNks7K5nk=;
- b=BimHB3a859jhw18QjfidNUjciMcX+vgkr8OHhFVEjFUGNlkvSN6eikUfPHkSkhQatn
- ApXG8UFP2UyM7PFlWNeLiZYUHY+Y9MhJIpNl0Zs3KH4DeUns5p641wKRNMiRr7gMq52G
- zHCrnYJlYB2JgP8CewZlkyZF1uAIG6pSrW9smW6K/zwwH5BITnA9JhGCPxRoqTFVAycZ
- fdHI3RzATqA/gp2LpUQ5mxqMoJUM7bQMFwcLVp6CjiK/EoZm26I2qYNH+q3okmHt0Wyd
- opPIgvHFejNwNYVrZhAU1NLwsOJtS3xSsCwF1A7vAWsvnN7gBne9PFUEk/9/GXFlUelJ
- H8ew==
-X-Gm-Message-State: AOAM531ASnBR/tRYSskMKLIrzXijlz9eLVRmKVeC52d25yasZHAwQPWI
- 3F94P0sh4jDZCxHX2HpdThDRwA==
-X-Google-Smtp-Source: ABdhPJxWh5VuvnxVzHg1hXVvHKS4O8oUFbCH3BrcZ/J9wYqZvKrr/xcdDBUJybZIB3+Txzd8Jp2CCg==
-X-Received: by 2002:a62:f846:0:b029:15f:f897:7647 with SMTP id
- c6-20020a62f8460000b029015ff8977647mr1225887pfm.75.1603926919318; 
- Wed, 28 Oct 2020 16:15:19 -0700 (PDT)
-Received: from [192.168.10.88] (124-171-72-187.dyn.iinet.net.au.
- [124.171.72.187])
- by smtp.gmail.com with UTF8SMTPSA id e6sm634704pfn.190.2020.10.28.16.15.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Oct 2020 16:15:18 -0700 (PDT)
-Subject: Re: [PATCH kernel v3 1/2] dma: Allow mixing bypass and mapped DMA
- operation
-To: Christoph Hellwig <hch@lst.de>
-References: <20201028070030.60643-1-aik@ozlabs.ru>
- <20201028070030.60643-2-aik@ozlabs.ru> <20201028172201.GB10015@lst.de>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <2d9957af-23b6-943f-faac-fc7607b6e250@ozlabs.ru>
-Date: Thu, 29 Oct 2020 10:15:13 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:83.0) Gecko/20100101
- Thunderbird/83.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CM5GD0GMMzDqWH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 11:01:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1603929708;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4TUZ6dDQwn0wEj7XRmQkFrwdAH8HqlgDOlYXF1sDMZs=;
+ b=LTYaALsCkwEzrGmeteaLVlTi8m65hLN3J4IFANhPpMBieLcqn4lq8s1dMfSTYLqowfIozZ
+ Zjxs8FuRv+ORIWmR4S+haRUgIAodL11X0K9i5obNji6ie+Cpb+QqZr67CUmQShyNy+h6x6
+ /f5l108yLxJACNKN42ZJgGf66Cgk7C8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1603929709;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4TUZ6dDQwn0wEj7XRmQkFrwdAH8HqlgDOlYXF1sDMZs=;
+ b=c7noJt53IiXgm3pxyRAZm+x8AMP4FK+gZM7b06yoE9xjz54US4QWCH9YhaDh/TfqzinG14
+ Y0QNLZ/UYNp5jneYjYALSoR0J1MjxeA1Prb6Y3jeqwJnE4iaFktK+u6IRovnnBp/5tlJJ1
+ fYhyZkMWRjpfuFQJeVZOV8hNDRQIoO4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-443-sqI62auCNZSammO79U46Aw-1; Wed, 28 Oct 2020 20:01:40 -0400
+X-MC-Unique: sqI62auCNZSammO79U46Aw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E19291018F61;
+ Thu, 29 Oct 2020 00:01:38 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-117-144.rdu2.redhat.com [10.10.117.144])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 39F6F5D9EF;
+ Thu, 29 Oct 2020 00:01:31 +0000 (UTC)
+Subject: Re: [PATCH 0/4] Powerpc: Better preemption for shared processor
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20201028123512.871051-1-srikar@linux.vnet.ibm.com>
+From: Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <da67d6ce-f120-f61a-19ff-0ae4f1f5dac0@redhat.com>
+Date: Wed, 28 Oct 2020 20:01:30 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <20201028172201.GB10015@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Language: en-US
+In-Reply-To: <20201028123512.871051-1-srikar@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,64 +87,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>, Phil Auld <pauld@redhat.com>,
+ Juri Lelli <juri.lelli@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Valentin Schneider <valentin.schneider@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 10/28/20 8:35 AM, Srikar Dronamraju wrote:
+> Currently, vcpu_is_preempted will return the yield_count for
+> shared_processor. On a PowerVM LPAR, Phyp schedules at SMT8 core boundary
+> i.e all CPUs belonging to a core are either group scheduled in or group
+> scheduled out. This can be used to better predict non-preempted CPUs on
+> PowerVM shared LPARs.
+>
+> perf stat -r 5 -a perf bench sched pipe -l 10000000 (lesser time is better)
+>
+> powerpc/next
+>       35,107,951.20 msec cpu-clock                 #  255.898 CPUs utilized            ( +-  0.31% )
+>          23,655,348      context-switches          #    0.674 K/sec                    ( +-  3.72% )
+>              14,465      cpu-migrations            #    0.000 K/sec                    ( +-  5.37% )
+>              82,463      page-faults               #    0.002 K/sec                    ( +-  8.40% )
+>   1,127,182,328,206      cycles                    #    0.032 GHz                      ( +-  1.60% )  (66.67%)
+>      78,587,300,622      stalled-cycles-frontend   #    6.97% frontend cycles idle     ( +-  0.08% )  (50.01%)
+>     654,124,218,432      stalled-cycles-backend    #   58.03% backend cycles idle      ( +-  1.74% )  (50.01%)
+>     834,013,059,242      instructions              #    0.74  insn per cycle
+>                                                    #    0.78  stalled cycles per insn  ( +-  0.73% )  (66.67%)
+>     132,911,454,387      branches                  #    3.786 M/sec                    ( +-  0.59% )  (50.00%)
+>       2,890,882,143      branch-misses             #    2.18% of all branches          ( +-  0.46% )  (50.00%)
+>
+>             137.195 +- 0.419 seconds time elapsed  ( +-  0.31% )
+>
+> powerpc/next + patchset
+>       29,981,702.64 msec cpu-clock                 #  255.881 CPUs utilized            ( +-  1.30% )
+>          40,162,456      context-switches          #    0.001 M/sec                    ( +-  0.01% )
+>               1,110      cpu-migrations            #    0.000 K/sec                    ( +-  5.20% )
+>              62,616      page-faults               #    0.002 K/sec                    ( +-  3.93% )
+>   1,430,030,626,037      cycles                    #    0.048 GHz                      ( +-  1.41% )  (66.67%)
+>      83,202,707,288      stalled-cycles-frontend   #    5.82% frontend cycles idle     ( +-  0.75% )  (50.01%)
+>     744,556,088,520      stalled-cycles-backend    #   52.07% backend cycles idle      ( +-  1.39% )  (50.01%)
+>     940,138,418,674      instructions              #    0.66  insn per cycle
+>                                                    #    0.79  stalled cycles per insn  ( +-  0.51% )  (66.67%)
+>     146,452,852,283      branches                  #    4.885 M/sec                    ( +-  0.80% )  (50.00%)
+>       3,237,743,996      branch-misses             #    2.21% of all branches          ( +-  1.18% )  (50.01%)
+>
+>              117.17 +- 1.52 seconds time elapsed  ( +-  1.30% )
+>
+> This is around 14.6% improvement in performance.
+>
+> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> Cc: LKML <linux-kernel@vger.kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Valentin Schneider <valentin.schneider@arm.com>
+> Cc: Juri Lelli <juri.lelli@redhat.com>
+> Cc: Waiman Long <longman@redhat.com>
+> Cc: Phil Auld <pauld@redhat.com>
+>
+> Srikar Dronamraju (4):
+>    powerpc: Refactor is_kvm_guest declaration to new header
+>    powerpc: Rename is_kvm_guest to check_kvm_guest
+>    powerpc: Reintroduce is_kvm_guest
+>    powerpc/paravirt: Use is_kvm_guest in vcpu_is_preempted
+>
+>   arch/powerpc/include/asm/firmware.h  |  6 ------
+>   arch/powerpc/include/asm/kvm_guest.h | 25 +++++++++++++++++++++++++
+>   arch/powerpc/include/asm/kvm_para.h  |  2 +-
+>   arch/powerpc/include/asm/paravirt.h  | 18 ++++++++++++++++++
+>   arch/powerpc/kernel/firmware.c       |  5 ++++-
+>   arch/powerpc/platforms/pseries/smp.c |  3 ++-
+>   6 files changed, 50 insertions(+), 9 deletions(-)
+>   create mode 100644 arch/powerpc/include/asm/kvm_guest.h
+>
+This patch series looks good to me and the performance is nice too.
 
+Acked-by: Waiman Long <longman@redhat.com>
 
-On 29/10/2020 04:22, Christoph Hellwig wrote:
-> On Wed, Oct 28, 2020 at 06:00:29PM +1100, Alexey Kardashevskiy wrote:
->> At the moment we allow bypassing DMA ops only when we can do this for
->> the entire RAM. However there are configs with mixed type memory
->> where we could still allow bypassing IOMMU in most cases;
->> POWERPC with persistent memory is one example.
->>
->> This adds an arch hook to determine where bypass can still work and
->> we invoke direct DMA API. The following patch checks the bus limit
->> on POWERPC to allow or disallow direct mapping.
->>
->> This adds a CONFIG_ARCH_HAS_DMA_SET_MASK config option to make arch_xxxx
->> hooks no-op by default.
->>
->> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
->> ---
->>   kernel/dma/mapping.c | 24 ++++++++++++++++++++----
->>   kernel/dma/Kconfig   |  4 ++++
->>   2 files changed, 24 insertions(+), 4 deletions(-)
->>
->> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
->> index 51bb8fa8eb89..a0bc9eb876ed 100644
->> --- a/kernel/dma/mapping.c
->> +++ b/kernel/dma/mapping.c
->> @@ -137,6 +137,18 @@ static inline bool dma_map_direct(struct device *dev,
->>   	return dma_go_direct(dev, *dev->dma_mask, ops);
->>   }
->>   
->> +#ifdef CONFIG_ARCH_HAS_DMA_MAP_DIRECT
->> +bool arch_dma_map_page_direct(struct device *dev, phys_addr_t addr);
->> +bool arch_dma_unmap_page_direct(struct device *dev, dma_addr_t dma_handle);
->> +bool arch_dma_map_sg_direct(struct device *dev, struct scatterlist *sg, int nents);
->> +bool arch_dma_unmap_sg_direct(struct device *dev, struct scatterlist *sg, int nents);
->> +#else
->> +#define arch_dma_map_page_direct(d, a) (0)
->> +#define arch_dma_unmap_page_direct(d, a) (0)
->> +#define arch_dma_map_sg_direct(d, s, n) (0)
->> +#define arch_dma_unmap_sg_direct(d, s, n) (0)
->> +#endif
-> 
-> A bunch of overly long lines here.  Except for that this looks ok to me.
-> If you want me to queue up the series I can just fix it up.
+Just curious, is the performance mainly from the use of static_branch 
+(patches 1 - 3) or from reducing call to yield_count_of().
 
-I thought 100 is the new limit since 
-https://lkml.org/lkml/2020/5/29/1038 (yeah that mentioned some Christoph 
-:) ) and having these multiline does not make a huge difference but feel 
-free fixing them up.
+Cheers,
+Longman
 
-Are you going to take both patches? Do you need mpe's ack? Thanks,
-
-
--- 
-Alexey
