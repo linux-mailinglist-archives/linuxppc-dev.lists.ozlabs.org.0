@@ -2,86 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D4129F8E1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 00:09:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F12B629F909
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 00:22:37 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMh2w3YKzzDqvK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 10:09:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMhLM1mddzDqXN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 10:22:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=jingoohan1@gmail.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::642;
+ helo=mail-ej1-x642.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gy+FevCW; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=SyS4Sffx; 
+ dkim-atps=neutral
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com
+ [IPv6:2a00:1450:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMgGS1kpnzDqWR
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 09:34:08 +1100 (AEDT)
-Received: by mail-pl1-x641.google.com with SMTP id b19so2011107pld.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 15:34:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:thread-topic:thread-index:date:message-id
- :references:in-reply-to:accept-language:content-language
- :content-transfer-encoding:mime-version;
- bh=odZpHbQegqT56U/cV/zJ1qrd6r3mGVChHF0VMSj69o0=;
- b=gy+FevCWq3xOKFvYbDpwz/v/EbxdJwTn9QVRUJOTJih66PW1TK/3NCZSJDPw9s+lse
- bkn74gnr4dgUfMBduEsxwTi2+ufO5e/+hUGIsMqkVs/R90SRyOZN7E7Oo/Uiz4+/kdKI
- XSLd+pdpeS8hOp+w4CCkgtaXITBk3FeqS/Atf8ilvae/ogwHTlVc0Ego1liS94BkKlv+
- 1upTB8XaECpXOjZFIGOHsSRwFVRuMF4SuobL1D0hQWgog7GripUtaiOtQDlhGkAE3kHv
- vTu7ty07GqlJzrf6WKLjk+wXp1xMQLRtLDu6cF6UfdcVzOs3s0GSgD61pl8eeKqYlUAH
- skUw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMhG41JhnzDqT2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 10:18:51 +1100 (AEDT)
+Received: by mail-ej1-x642.google.com with SMTP id p9so6139461eji.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 16:18:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=OAaBl/U7PBG+TlUp0N4qfJ0eDW1D/8YEA2bXCC674us=;
+ b=SyS4SffxYsNmj61H9VhYyfV30AKVcQI02I05R1QJ0WmBmFSO+bnQWo+8WU1Xmtdngw
+ /WCUakc82ksJGHGKm7uLpuzRi56V0rh71ThvreQzsj4AGwhIaWOkntvIB7PKONmne7aI
+ RS+5JSoq7Rynp7XqZeCI4Lh5y/aQJhenniqh8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:thread-topic:thread-index
- :date:message-id:references:in-reply-to:accept-language
- :content-language:content-transfer-encoding:mime-version;
- bh=odZpHbQegqT56U/cV/zJ1qrd6r3mGVChHF0VMSj69o0=;
- b=gBb9/RxgR7sbzrNJt++kaNSceYCs1LmdO+hR2bHXFR5g4Pv7OF9gCw0JuGmX6A8/ko
- KaIhqR4N/W5rDR13pW8789YNQ3n7jxOjwkrBO/ElpvNt2nwECl0Q0kh/1xIV5xvrNvX3
- rinQFTUyrDx7475d8e2EqnCojNmNd5MX7eIsLD3dijOaihrONqvFTPLOyIlo8a2kLQ6E
- oPcQyMJOCyLFK6PndxZE+/80kza2oGq5+arEcBuhEB4lrwoVGrMR4q+8Pm25rLZx8Dw1
- F5HVvXbzLxTLmt7e679s1i5TxO8hIM+MjVC5R7jM9jFS2ikwByh4p5WN3qO45MI8/9SG
- FLBA==
-X-Gm-Message-State: AOAM530x7ccOoQApxRs29ysa5QlU3MgU2/PN1Y1Ixt+tefx7xd1C1R0F
- ICz6SJDpOL+FJQ/2O05ApQ4=
-X-Google-Smtp-Source: ABdhPJz+1FMPSkLVT3GNpxHHfWtt2o0ojp3jORJQkn1z2v1aWL9snq6p3aEN0mFkDfNYztLrINb5ag==
-X-Received: by 2002:a17:902:bd01:b029:d4:d73d:7644 with SMTP id
- p1-20020a170902bd01b02900d4d73d7644mr6117533pls.69.1604010843618; 
- Thu, 29 Oct 2020 15:34:03 -0700 (PDT)
-Received: from SLXP216MB0477.KORP216.PROD.OUTLOOK.COM ([2603:1046:100:9::5])
- by smtp.gmail.com with ESMTPSA id i24sm3912204pfd.7.2020.10.29.15.33.53
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 29 Oct 2020 15:34:02 -0700 (PDT)
-From: Jingoo Han <jingoohan1@gmail.com>
-To: Rob Herring <robh@kernel.org>, Lorenzo Pieralisi
- <lorenzo.pieralisi@arm.com>
-Subject: Re: [PATCH 12/13] PCI: dwc: Move dw_pcie_setup_rc() to DWC common code
-Thread-Topic: [PATCH 12/13] PCI: dwc: Move dw_pcie_setup_rc() to DWC common
- code
-Thread-Index: AQHWrWuNe0SVTqZ+qUiqNCgd41OCHamvKtka
-X-MS-Exchange-MessageSentRepresentingType: 1
-Date: Thu, 29 Oct 2020 22:29:06 +0000
-Message-ID: <SLXP216MB047727F5D8FE67D796651A8BAA140@SLXP216MB0477.KORP216.PROD.OUTLOOK.COM>
-References: <20201028204646.356535-1-robh@kernel.org>
- <20201028204646.356535-13-robh@kernel.org>
-In-Reply-To: <20201028204646.356535-13-robh@kernel.org>
-Accept-Language: ko-KR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-Exchange-Organization-SCL: -1
-X-MS-TNEF-Correlator: 
-X-MS-Exchange-Organization-RecordReviewCfmType: 0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=OAaBl/U7PBG+TlUp0N4qfJ0eDW1D/8YEA2bXCC674us=;
+ b=E3wfoO423u5Di3MGdY34+x3avVYZ3J0puQ4bdnxK8iJNfJIfkkKqKXj3VJIfA2kcH8
+ tElOMsRoEvVVnu7b5JCG77DOczNOFJ0co+fWMDanzqMXGQvNSsNd8DNqhXVbFTdaVw67
+ Cnb+pNqtzrDU8RfmfJQA6ez5K3G0UBaH2JtiTpbxhgLQQSnxbKoH1nBTa+IDP/Mmf4ew
+ aTl5HEOJitdg4xMJWiweWUTZNkr+YCUPubNvzYl672ecnq/laixp5trFDzhzalQkWJot
+ Xq5WJWurC61HoGE8jqNaz0Altk4d8J2Q9wao3aaD7irZkF/d9zZfpMyHivbK3r/JX7AV
+ agoQ==
+X-Gm-Message-State: AOAM533TAx92n6LExVOqlgO+LDRHx7ZVeZzNScxLvsGIL364e4UXLW5t
+ tJVaq9lMXRZFxI0nj28fsPPWbxC/xm/Yfw==
+X-Google-Smtp-Source: ABdhPJx9/L8SII7gGHiek0CALlXED4sug0G1CemvDqK1LDKYdW33g/PJOfSFAfP6XL0AUVS6F2J8MQ==
+X-Received: by 2002:a17:906:cc8b:: with SMTP id
+ oq11mr6859855ejb.116.1604013526478; 
+ Thu, 29 Oct 2020 16:18:46 -0700 (PDT)
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com.
+ [209.85.221.50])
+ by smtp.gmail.com with ESMTPSA id v1sm2195879eds.47.2020.10.29.16.18.46
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Oct 2020 16:18:46 -0700 (PDT)
+Received: by mail-wr1-f50.google.com with SMTP id i1so4577970wro.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 16:18:46 -0700 (PDT)
+X-Received: by 2002:a2e:8815:: with SMTP id x21mr3018764ljh.312.1604013088281; 
+ Thu, 29 Oct 2020 16:11:28 -0700 (PDT)
 MIME-Version: 1.0
+References: <20201029221806.189523375@linutronix.de>
+In-Reply-To: <20201029221806.189523375@linutronix.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 29 Oct 2020 16:11:12 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiFxxGapdOyZHE-7LbFPk+jdfoqdeeJg0zWNQ86WvJGXg@mail.gmail.com>
+Message-ID: <CAHk-=wiFxxGapdOyZHE-7LbFPk+jdfoqdeeJg0zWNQ86WvJGXg@mail.gmail.com>
+Subject: Re: [patch V2 00/18] mm/highmem: Preemptible variant of kmap_atomic &
+ friends
+To: Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,112 +84,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Neil Armstrong <narmstrong@baylibre.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- Binghui Wang <wangbinghui@hisilicon.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- Thierry Reding <thierry.reding@gmail.com>,
- "linux-arm-kernel@axis.com" <linux-arm-kernel@axis.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Jonathan Chocron <jonnyc@amazon.com>, Shawn Guo <shawnguo@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Fabio Estevam <festevam@gmail.com>,
- Jerome Brunet <jbrunet@baylibre.com>, Jesper Nilsson <jesper.nilsson@axis.com>,
- "linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
- Minghuan Lian <minghuan.Lian@nxp.com>, Kevin Hilman <khilman@baylibre.com>,
- Pratyush Anand <pratyush.anand@gmail.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
- Kukjin Kim <kgene@kernel.org>, NXP Linux Team <linux-imx@nxp.com>,
- Xiaowei Song <songxiaowei@hisilicon.com>, Richard Zhu <hongxing.zhu@nxp.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Yue Wang <yue.wang@Amlogic.com>,
- Murali Karicheri <m-karicheri2@ti.com>, Bjorn Helgaas <bhelgaas@google.com>,
- "linux-amlogic@lists.infradead.org" <linux-amlogic@lists.infradead.org>,
- "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
- Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
- Andy Gross <agross@kernel.org>, Stanimir Varbanov <svarbanov@mm-sol.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Han Jingoo <jingoohan1@gmail.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Lucas Stach <l.stach@pengutronix.de>
+Cc: Juri Lelli <juri.lelli@redhat.com>, linux-xtensa@linux-xtensa.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-mips@vger.kernel.org,
+ Ben Segall <bsegall@google.com>, Linux-MM <linux-mm@kvack.org>,
+ Guo Ren <guoren@kernel.org>, linux-sparc <sparclinux@vger.kernel.org>,
+ Vincent Chen <deanbo422@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, David Airlie <airlied@linux.ie>,
+ Mel Gorman <mgorman@suse.de>,
+ "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
+ Ard Biesheuvel <ardb@kernel.org>, Paul McKenney <paulmck@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Greentime Hu <green.hu@gmail.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Nick Hu <nickhu@andestech.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel@ffwll.ch>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/28/20, 4:47 PM, Rob Herring wrote:
->=20
-> All RC complex drivers must call dw_pcie_setup_rc(). The ordering of the
-> call shouldn't be too important other than being after any RC resets.
+On Thu, Oct 29, 2020 at 3:32 PM Thomas Gleixner <tglx@linutronix.de> wrote:
 >
-> There's a few calls of dw_pcie_setup_rc() left as drivers implementing
-> suspend/resume need it.
 >
-> Cc: Kishon Vijay Abraham I <kishon@ti.com>
-> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
+> Though I wanted to share the current state of affairs before investigating
+> that further. If there is consensus in going forward with this, I'll have a
+> deeper look into this issue.
 
-Acked-by: Jingoo Han <jingoohan1@gmail.com>
+Me likee. I think this looks like the right thing to do.
 
-Best regards,
-Jingoo Han
+I didn't actually apply the patches, but just from reading them it
+_looks_ to me like you do the migrate_disable() unconditionally, even
+if it's not a highmem page..
 
-> Cc: Kukjin Kim <kgene@kernel.org>
-> Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: Richard Zhu <hongxing.zhu@nxp.com>
-> Cc: Lucas Stach <l.stach@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: NXP Linux Team <linux-imx@nxp.com>
-> Cc: Murali Karicheri <m-karicheri2@ti.com>
-> Cc: Minghuan Lian <minghuan.Lian@nxp.com>
-> Cc: Mingkai Hu <mingkai.hu@nxp.com>
-> Cc: Roy Zang <roy.zang@nxp.com>
-> Cc: Yue Wang <yue.wang@Amlogic.com>
-> Cc: Kevin Hilman <khilman@baylibre.com>
-> Cc: Neil Armstrong <narmstrong@baylibre.com>
-> Cc: Jerome Brunet <jbrunet@baylibre.com>
-> Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-> Cc: Jesper Nilsson <jesper.nilsson@axis.com>
-> Cc: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
-> Cc: Xiaowei Song <songxiaowei@hisilicon.com>
-> Cc: Binghui Wang <wangbinghui@hisilicon.com>
-> Cc: Andy Gross <agross@kernel.org>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Stanimir Varbanov <svarbanov@mm-sol.com>
-> Cc: Pratyush Anand <pratyush.anand@gmail.com>
-> Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: linux-omap@vger.kernel.org
-> Cc: linux-samsung-soc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-amlogic@lists.infradead.org
-> Cc: linux-arm-kernel@axis.com
-> Cc: linux-arm-msm@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  drivers/pci/controller/dwc/pci-dra7xx.c           | 1 -
->  drivers/pci/controller/dwc/pci-exynos.c           | 1 -
->  drivers/pci/controller/dwc/pci-imx6.c             | 1 -
->  drivers/pci/controller/dwc/pci-keystone.c         | 2 --
->  drivers/pci/controller/dwc/pci-layerscape.c       | 2 --
->  drivers/pci/controller/dwc/pci-meson.c            | 2 --
->  drivers/pci/controller/dwc/pcie-armada8k.c        | 2 --
->  drivers/pci/controller/dwc/pcie-artpec6.c         | 1 -
->  drivers/pci/controller/dwc/pcie-designware-host.c | 1 +
->  drivers/pci/controller/dwc/pcie-designware-plat.c | 8 --------
->  drivers/pci/controller/dwc/pcie-histb.c           | 3 ---
->  drivers/pci/controller/dwc/pcie-kirin.c           | 2 --
->  drivers/pci/controller/dwc/pcie-qcom.c            | 1 -
->  drivers/pci/controller/dwc/pcie-spear13xx.c       | 2 --
->  drivers/pci/controller/dwc/pcie-uniphier.c        | 2 --
->  15 files changed, 1 insertion(+), 30 deletions(-)
+That sounds like it might be a good thing for debugging, but not
+necessarily great in general.
 
-[...]
+Or am I misreading things?
+
+                Linus
