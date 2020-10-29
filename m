@@ -1,50 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC32F29F160
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 17:27:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C446029F16F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Oct 2020 17:29:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMW6q2PjzzDqcQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 03:26:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMW9s5pjQzDqMV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 03:29:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::144;
+ helo=mail-il1-x144.google.com; envelope-from=axboe@kernel.dk;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=iWwh/udv; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=gka0bYRv; dkim-atps=neutral
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com
+ [IPv6:2607:f8b0:4864:20::144])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMVyc6hbtzDqWF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 03:19:52 +1100 (AEDT)
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 03BA620FC3;
- Thu, 29 Oct 2020 16:19:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1603988390;
- bh=Iz7KyN+V6YK56PqFtmhKd3TakWN2xra2g1SEksnbwVo=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=iWwh/udv6psprKZdwjB/YlWEY3V9aUIGxWhspe+BK019WtskP0vZrfStEaKajTzxe
- xknmcrFXFFqtCs2sQ8Agir2vwZTHfN02Rok80acaSKPxeVupMqhAIQyjYz8LhBnpdP
- qTdtY+jO3K1pgyk9l4BIkK96/jtl650ZRkYJtjkk=
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 2/4] PM: hibernate: make direct map manipulations more
- explicit
-Date: Thu, 29 Oct 2020 18:19:00 +0200
-Message-Id: <20201029161902.19272-3-rppt@kernel.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201029161902.19272-1-rppt@kernel.org>
-References: <20201029161902.19272-1-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMVyp4Z5vzDqZH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 03:20:02 +1100 (AEDT)
+Received: by mail-il1-x144.google.com with SMTP id v18so3654855ilg.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 09:20:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+ h=to:from:subject:message-id:date:user-agent:mime-version
+ :content-language:content-transfer-encoding;
+ bh=NWjq0HGXwCwM8GCapDPc+3QPEzvanKKz5772LDgvbZo=;
+ b=gka0bYRveej9ZhiSi4Yt7hSWu6vahcvEcAlyd+/Yd7fL/GPMc+OAygxKiLjex9jpzw
+ SLYAsFTF3plKLxXTM1FGyV33ySDbn5P9uI4UAD7IUVh0F+3J7d2fZ1nGKFBxOpKPtaLe
+ +G4HuDSfvyQs72evf42/51O33hPKdzd1U3Ph+EVoE26Zg44WyOKYwW64iE7sIhXRdydS
+ IjFg+PlAWxPix1ZvvK3ibLtSERj9QJwC08P0HJiJfXbtx9M2MRkdVzdrOrUXPQnuzPI0
+ zS7HCZa/BXSwYE/apQTMJS4TnVRKNHunYsEhVI7c7XSUJOSXcUIj9qYA9NSb3facumwd
+ /bmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+ :mime-version:content-language:content-transfer-encoding;
+ bh=NWjq0HGXwCwM8GCapDPc+3QPEzvanKKz5772LDgvbZo=;
+ b=Udrlb3mBNXnobWWVwTsRMS+IZ6OHEAJMiQAuMbbsNpjGzn53sG0bUKEM2c6JV5rdyN
+ BVgKF/M54JwegD52bHoxaDC6biQf+QwFnxFvux8jg6JI5n8CRWhNTM6WVULMyk17TQ+X
+ PeHhl2XcLXaNU83dRaxPINHl0eIQse9IlKWWST1KYhlb2sTw4jGE7ENZZzudCSjV3/uW
+ iD+Xv82AJH4vdxPU/7V2AQ1enltJ07QPGceI2Or/NTKDID22vW7w0qEype7cKQ5A3HXK
+ DOxotZKKUB1C+g8+jaPN/d2djeH4692kJlNWYg9iJATjFSij/ygAZ1fVCMwR8KUB0bRl
+ L8zw==
+X-Gm-Message-State: AOAM533S1WgFKVgHJ6Lhy9LRgLprsIvLrM/FYLZO0KksB2gNNuolOBwJ
+ wYGrNB7K71WllJXy+gdEOXmyS4PN5lvRvg==
+X-Google-Smtp-Source: ABdhPJx/0b1SqpkmlVz4B/yfgHJvCz3QK3INcSUAgPNUHtG0ixjFV1ehCuQwLWmwZL1xaa/3fLnlQg==
+X-Received: by 2002:a92:c8c5:: with SMTP id c5mr3822156ilq.269.1603988397068; 
+ Thu, 29 Oct 2020 09:19:57 -0700 (PDT)
+Received: from [192.168.1.30] ([65.144.74.34])
+ by smtp.gmail.com with ESMTPSA id n28sm3320645ila.52.2020.10.29.09.19.56
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Oct 2020 09:19:56 -0700 (PDT)
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+From: Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH] powerpc: add support for TIF_NOTIFY_SIGNAL
+Message-ID: <7adea1eb-d193-9d31-6244-e8cd5b2084b2@kernel.dk>
+Date: Thu, 29 Oct 2020 10:19:56 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,136 +82,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Pekka Enberg <penberg@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>, "Edgecombe,
- Rick P" <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+Wire up TIF_NOTIFY_SIGNAL handling for powerpc.
 
-When DEBUG_PAGEALLOC or ARCH_HAS_SET_DIRECT_MAP is enabled a page may be
-not present in the direct map and has to be explicitly mapped before it
-could be copied.
-
-On arm64 it is possible that a page would be removed from the direct map
-using set_direct_map_invalid_noflush() but __kernel_map_pages() will refuse
-to map this page back if DEBUG_PAGEALLOC is disabled.
-
-Introduce hibernate_map_page() that will explicitly use
-set_direct_map_{default,invalid}_noflush() for ARCH_HAS_SET_DIRECT_MAP case
-and debug_pagealloc_map_pages() for DEBUG_PAGEALLOC case.
-
-The remapping of the pages in safe_copy_page() presumes that it only
-changes protection bits in an existing PTE and so it is safe to ignore
-return value of set_direct_map_{default,invalid}_noflush().
-
-Still, add a WARN_ON() so that future changes in set_memory APIs will not
-silently break hibernation.
-
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- include/linux/mm.h      | 12 ------------
- kernel/power/snapshot.c | 30 ++++++++++++++++++++++++++++--
- 2 files changed, 28 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1fc0609056dc..14e397f3752c 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2927,16 +2927,6 @@ static inline bool debug_pagealloc_enabled_static(void)
- #if defined(CONFIG_DEBUG_PAGEALLOC) || defined(CONFIG_ARCH_HAS_SET_DIRECT_MAP)
- extern void __kernel_map_pages(struct page *page, int numpages, int enable);
+5.11 has support queued up for TIF_NOTIFY_SIGNAL, see this posting
+for details:
+
+https://lore.kernel.org/io-uring/20201026203230.386348-1-axboe@kernel.dk/
+
+As part of that work, I'm adding TIF_NOTIFY_SIGNAL support to all archs,
+as that will enable a set of cleanups once all of them support it. I'm
+happy carrying this patch if need be, or it can be funelled through the
+arch tree. Let me know.
+
+ arch/powerpc/include/asm/thread_info.h | 5 ++++-
+ arch/powerpc/kernel/signal.c           | 2 +-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+index 46a210b03d2b..53115ae61495 100644
+--- a/arch/powerpc/include/asm/thread_info.h
++++ b/arch/powerpc/include/asm/thread_info.h
+@@ -90,6 +90,7 @@ void arch_setup_new_exec(void);
+ #define TIF_SYSCALL_TRACE	0	/* syscall trace active */
+ #define TIF_SIGPENDING		1	/* signal pending */
+ #define TIF_NEED_RESCHED	2	/* rescheduling necessary */
++#define TIF_NOTIFY_SIGNAL	3	/* signal notifications exist */
+ #define TIF_SYSCALL_EMU		4	/* syscall emulation active */
+ #define TIF_RESTORE_TM		5	/* need to restore TM FP/VEC/VSX */
+ #define TIF_PATCH_PENDING	6	/* pending live patching update */
+@@ -115,6 +116,7 @@ void arch_setup_new_exec(void);
+ #define _TIF_SYSCALL_TRACE	(1<<TIF_SYSCALL_TRACE)
+ #define _TIF_SIGPENDING		(1<<TIF_SIGPENDING)
+ #define _TIF_NEED_RESCHED	(1<<TIF_NEED_RESCHED)
++#define _TIF_NOTIFY_SIGNAL	(1<<TIF_NOTIFY_SIGNAL)
+ #define _TIF_POLLING_NRFLAG	(1<<TIF_POLLING_NRFLAG)
+ #define _TIF_32BIT		(1<<TIF_32BIT)
+ #define _TIF_RESTORE_TM		(1<<TIF_RESTORE_TM)
+@@ -136,7 +138,8 @@ void arch_setup_new_exec(void);
  
--/*
-- * When called in DEBUG_PAGEALLOC context, the call should most likely be
-- * guarded by debug_pagealloc_enabled() or debug_pagealloc_enabled_static()
-- */
--static inline void
--kernel_map_pages(struct page *page, int numpages, int enable)
--{
--	__kernel_map_pages(page, numpages, enable);
--}
--
- static inline void debug_pagealloc_map_pages(struct page *page,
- 					     int numpages, int enable)
- {
-@@ -2948,8 +2938,6 @@ static inline void debug_pagealloc_map_pages(struct page *page,
- extern bool kernel_page_present(struct page *page);
- #endif	/* CONFIG_HIBERNATION */
- #else	/* CONFIG_DEBUG_PAGEALLOC || CONFIG_ARCH_HAS_SET_DIRECT_MAP */
--static inline void
--kernel_map_pages(struct page *page, int numpages, int enable) {}
- static inline void debug_pagealloc_map_pages(struct page *page,
- 					     int numpages, int enable) {}
- #ifdef CONFIG_HIBERNATION
-diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-index 46b1804c1ddf..054c8cce4236 100644
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -76,6 +76,32 @@ static inline void hibernate_restore_protect_page(void *page_address) {}
- static inline void hibernate_restore_unprotect_page(void *page_address) {}
- #endif /* CONFIG_STRICT_KERNEL_RWX  && CONFIG_ARCH_HAS_SET_MEMORY */
+ #define _TIF_USER_WORK_MASK	(_TIF_SIGPENDING | _TIF_NEED_RESCHED | \
+ 				 _TIF_NOTIFY_RESUME | _TIF_UPROBE | \
+-				 _TIF_RESTORE_TM | _TIF_PATCH_PENDING)
++				 _TIF_RESTORE_TM | _TIF_PATCH_PENDING | \
++				 _TIF_NOTIFY_SIGNAL)
+ #define _TIF_PERSYSCALL_MASK	(_TIF_RESTOREALL|_TIF_NOERROR)
  
-+static inline void hibernate_map_page(struct page *page, int enable)
-+{
-+	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
-+		unsigned long addr = (unsigned long)page_address(page);
-+		int ret;
-+
-+		/*
-+		 * This should not fail because remapping a page here means
-+		 * that we only update protection bits in an existing PTE.
-+		 * It is still worth to have WARN_ON() here if something
-+		 * changes and this will no longer be the case.
-+		 */
-+		if (enable)
-+			ret = set_direct_map_default_noflush(page);
-+		else
-+			ret = set_direct_map_invalid_noflush(page);
-+
-+		if (WARN_ON(ret))
-+			return;
-+
-+		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-+	} else {
-+		debug_pagealloc_map_pages(page, 1, enable);
-+	}
-+}
-+
- static int swsusp_page_is_free(struct page *);
- static void swsusp_set_page_forbidden(struct page *);
- static void swsusp_unset_page_forbidden(struct page *);
-@@ -1355,9 +1381,9 @@ static void safe_copy_page(void *dst, struct page *s_page)
- 	if (kernel_page_present(s_page)) {
- 		do_copy_page(dst, page_address(s_page));
- 	} else {
--		kernel_map_pages(s_page, 1, 1);
-+		hibernate_map_page(s_page, 1);
- 		do_copy_page(dst, page_address(s_page));
--		kernel_map_pages(s_page, 1, 0);
-+		hibernate_map_page(s_page, 0);
+ /* Bits in local_flags */
+diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
+index d2c356f37077..a8bb0aca1d02 100644
+--- a/arch/powerpc/kernel/signal.c
++++ b/arch/powerpc/kernel/signal.c
+@@ -318,7 +318,7 @@ void do_notify_resume(struct pt_regs *regs, unsigned long thread_info_flags)
+ 	if (thread_info_flags & _TIF_PATCH_PENDING)
+ 		klp_update_patch_state(current);
+ 
+-	if (thread_info_flags & _TIF_SIGPENDING) {
++	if (thread_info_flags & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL)) {
+ 		BUG_ON(regs != current->thread.regs);
+ 		do_signal(current);
  	}
- }
- 
 -- 
-2.28.0
+2.29.0
+
+-- 
+Jens Axboe
 
