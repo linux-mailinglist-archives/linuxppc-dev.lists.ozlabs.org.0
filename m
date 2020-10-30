@@ -1,67 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B80E2A12AF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Oct 2020 02:29:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3392A12B2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Oct 2020 02:30:38 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CNM5r3XNVzDqwt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Oct 2020 12:29:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CNM7Z46T8zDr1V
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Oct 2020 12:30:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::141;
- helo=mail-il1-x141.google.com; envelope-from=mathieu.poirier@linaro.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=INVfZz/f; dkim-atps=neutral
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com
- [IPv6:2607:f8b0:4864:20::141])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=UWWtqWmX; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CN7R52R0dzDqvg
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Oct 2020 03:43:07 +1100 (AEDT)
-Received: by mail-il1-x141.google.com with SMTP id x20so7034490ilj.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 09:43:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=NZmqGfCg08N6iXx9q7TVWlSnhQqIDOwOjzOwbvXDxjI=;
- b=INVfZz/fkvsZivy8jdRFY4jjuumPUnT03fIMmAZxhr2j3OQtTxmqWeMui9FFLMvZFz
- QB2ePhBsJkuNysGjMHbU9DiLLxlLmss4JFzjBmUNAkJoiiGzYBFH/upOKm0AUQMizu+W
- okAB9PgkVOM5lyq7RfM3eZWziu4Lw6xFmIPsA3WEdWrepzCLkMsPGFysW4PIdG4Ix46W
- ABDHiqA089OjzR7YGXqWWnY73UPmGi5ssu5dObic6I8EipSHtDNSFTIEabkYZFtOUw53
- gKZFvyCe8mIA4cQPQ5Ji/NguzzOPrnGBpJ5jXdtWnz2BLO+k8PETRjkg1JznRZelvTOY
- uyUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=NZmqGfCg08N6iXx9q7TVWlSnhQqIDOwOjzOwbvXDxjI=;
- b=iQLCSLQB/LQacLE03XHYLUo03JPjBw8YkzfMbHBh6Hso8qqbdlK41r1uRs5zU+13WN
- Y0myfTnF6z11Scjy04aX7TwUJPIZynh/dpSjGyrYjYlKoPsXRs05AZMsNGHxO3+km66v
- wfxc4EuBkkAfjHgZTFUUr5oRn1VzmbsS+6ciKJ/M9YpP/d/L/XqZfQR+vx0dEEEPlX/1
- UDQxXQz5txxRMLuP4eKQI5EXDobetc4H2/LuYV6mvxAOFTHevG4pmBMfWI9qITt58zb6
- aGJRRCWs976kWlkT9VDZPR71pEcAtQadG/erVyeefUw3f75ubKyeuu0Ta1ixyxaSiOC4
- 7Gow==
-X-Gm-Message-State: AOAM531ToheYKv/BGfjHKIvDrjqsnXWx8dmHw93vg+6xtaIPdz4fgAmX
- zOtjdHgJONPzwrwPChiu3Y0HTx2Hikn94SU3G29LXQ==
-X-Google-Smtp-Source: ABdhPJwYf7SWuKIRh8xsBOBodbVLmuU+KCM1QaVpZsez95JZOYKTbDYung3PLxm+lfmttII+vBXdnzsUUs8NHjrseg0=
-X-Received: by 2002:a92:6403:: with SMTP id y3mr2528711ilb.72.1604076184121;
- Fri, 30 Oct 2020 09:43:04 -0700 (PDT)
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CN8Pp6gJlzDqvg
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Oct 2020 04:27:07 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09UH4JbG086980; Fri, 30 Oct 2020 13:26:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=kRv/mdN0gxrWM4bjmBGarbvn1q9ZLkvFoS6y5DzvQks=;
+ b=UWWtqWmXJl3nSrq5VxzL3fA7gftqPT2l/7zujH5kX5UvHZQ2eMEv18xIFli+pDzv7TND
+ NhYhOuFvYct9W6WTKfBbUytZ8/Cf+k1x8aeC7Oe5QD8YYyP+4VpoSpOUMvDWDIAhxnB6
+ c5FhsgKRalTM6aUBHcNHDfpT9wtGJzgUJ5nY4j/m0uXK5U6stXBYO3eHSNoVzcotT/Xy
+ 9WS3NIpRpBYAz5DKkKDBBTsOJC2EE7S2Jsz0m9qB01bvBxEWMhFx70vhSmjAfeVZzs6/
+ v05iYc3aUMt+dm/aSv5oejFCOaASxJm22fB+sZfWIK+97WfQXSV6rjYLkmgp0HqWCmHh bQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34gm93xm0w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Oct 2020 13:26:38 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 09UH5286089727;
+ Fri, 30 Oct 2020 13:26:37 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34gm93xm01-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Oct 2020 13:26:37 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09UHH2Ts031290;
+ Fri, 30 Oct 2020 17:26:35 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma01fra.de.ibm.com with ESMTP id 34dwh0jff3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Oct 2020 17:26:35 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 09UHQWf831130076
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 30 Oct 2020 17:26:32 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 81EE111C05C;
+ Fri, 30 Oct 2020 17:26:32 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 60F4211C050;
+ Fri, 30 Oct 2020 17:26:30 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.145.85.67])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 30 Oct 2020 17:26:30 +0000 (GMT)
+Subject: Re: [PATCH v2 20/39] docs: ABI: testing: make the files compatible
+ with ReST output
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>
 References: <cover.1604042072.git.mchehab+huawei@kernel.org>
- <5bc78e5b68ed1e9e39135173857cb2e753be868f.1604042072.git.mchehab+huawei@kernel.org>
-In-Reply-To: <5bc78e5b68ed1e9e39135173857cb2e753be868f.1604042072.git.mchehab+huawei@kernel.org>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Fri, 30 Oct 2020 10:42:53 -0600
-Message-ID: <CANLsYkxc2uzA57Hg5OX31JOx08JCZfynzebjABv=6H01796xGA@mail.gmail.com>
-Subject: Re: [PATCH v2 31/39] docs: ABI: cleanup several ABI documents
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+ <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Message-ID: <94520e35-6b73-c951-206e-0031d41ebf83@linux.ibm.com>
+Date: Fri, 30 Oct 2020 18:26:30 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
+MIME-Version: 1.0
+In-Reply-To: <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-10-30_07:2020-10-30,
+ 2020-10-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0
+ priorityscore=1501 spamscore=0 mlxscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 clxscore=1011 mlxlogscore=999 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010300122
 X-Mailman-Approved-At: Sat, 31 Oct 2020 12:27:37 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,106 +110,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Peter Chen <peter.chen@nxp.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Jerry Snitselaar <jsnitsel@redhat.com>, dri-devel@lists.freedesktop.org,
- Pavel Machek <pavel@ucw.cz>, Christian Gromm <christian.gromm@microchip.com>,
- ceph-devel@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
- linux-acpi@vger.kernel.org, Danil Kipnis <danil.kipnis@cloud.ionos.com>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Guenter Roeck <linux@roeck-us.net>, Ohad Ben-Cohen <ohad@wizery.com>,
- linux-pm@vger.kernel.org,
- Alexander Antonov <alexander.antonov@linux.intel.com>,
- Dan Murphy <dmurphy@ti.com>, Thomas Gleixner <tglx@linutronix.de>,
- Stefan Achatz <erazor_de@users.sourceforge.net>,
- Konstantin Khlebnikov <koct9i@gmail.com>, Jingoo Han <jingoohan1@gmail.com>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Hans Verkuil <hverkuil-cisco@xs4all.nl>, Wu Hao <hao.wu@intel.com>,
- Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
- Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Hanjun Guo <guohanjun@huawei.com>, Oleh Kravchenko <oleg@kaa.org.ua>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Andy Shevchenko <andriy.shevchenko@intel.com>,
- Saravana Kannan <saravanak@google.com>, Anton Vorontsov <anton@enomsg.org>,
- =?UTF-8?Q?Marek_Marczykowski=2DG=C3=B3recki?=
- <marmarek@invisiblethingslab.com>, linux-stm32@st-md-mailman.stormreply.com,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>, Len Brown <lenb@kernel.org>,
- Alexandre Torgue <alexandre.torgue@st.com>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Coresight ML <coresight@lists.linaro.org>, linux-media@vger.kernel.org,
- Frederic Barrat <fbarrat@linux.ibm.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Jaegeuk Kim <jaegeuk@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Oded Gabbay <oded.gabbay@gmail.com>, Tony Luck <tony.luck@intel.com>,
- Boris Brezillon <bbrezillon@kernel.org>,
- PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
- linux-gpio@vger.kernel.org, Dongsheng Yang <dongsheng.yang@easystack.cn>,
- linux-f2fs-devel@lists.sourceforge.net, Jarkko Sakkinen <jarkko@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>,
- =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
- "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Cezary Rojewski <cezary.rojewski@intel.com>,
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Peter Meerwald-Stadler <pmeerw@pmeerw.net>, Petr Mladek <pmladek@suse.com>,
  Mario Limonciello <mario.limonciello@dell.com>,
  Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Tom Rix <trix@redhat.com>, linux-fpga@vger.kernel.org,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Jonas Meurer <jonas@freesources.org>,
- Daniel Thompson <daniel.thompson@linaro.org>,
- Florian Fainelli <f.fainelli@gmail.com>, Mark Gross <mgross@linux.intel.com>,
- Jonathan Corbet <corbet@lwn.net>, Ilya Dryomov <idryomov@gmail.com>,
- Jack Wang <jinpu.wang@cloud.ionos.com>, Kees Cook <keescook@chromium.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Kranthi Kuntala <kranthi.kuntala@intel.com>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Sebastian Reichel <sre@kernel.org>, Colin Cross <ccross@android.com>,
- Enric Balletbo i Serra <enric.balletbo@collabora.com>,
- Roman Sudarikov <roman.sudarikov@linux.intel.com>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- linux-remoteproc <linux-remoteproc@vger.kernel.org>,
- Bjorn Andersson <bjorn.andersson@linaro.org>, linux-i3c@lists.infradead.org,
- Lee Jones <lee.jones@linaro.org>, Russell King <linux@armlinux.org.uk>,
- =?UTF-8?B?TWFyZWsgQmVow7pu?= <marek.behun@nic.cz>,
- Jason Gunthorpe <jgg@ziepe.ca>,
+ Tom Rix <trix@redhat.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, Sebastian Reichel <sre@kernel.org>,
+ linux-mm@kvack.org, Bruno Meneguele <bmeneg@redhat.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Pavel Machek <pavel@ucw.cz>,
+ Hanjun Guo <guohanjun@huawei.com>, Guenter Roeck <groeck@chromium.org>,
+ netdev@vger.kernel.org, Oleh Kravchenko <oleg@kaa.org.ua>,
+ Dan Williams <dan.j.williams@intel.com>, Andrew Donnellan <ajd@linux.ibm.com>,
+ =?UTF-8?Q?Javier_Gonz=c3=a1lez?= <javier@javigon.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Mark Gross <mgross@linux.intel.com>, linux-acpi@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, Chunyan Zhang <zhang.lyra@gmail.com>,
+ Nayna Jain <nayna@linux.ibm.com>, linux-stm32@st-md-mailman.stormreply.com,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Ludovic Desroches <ludovic.desroches@microchip.com>,
  Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Mike Leach <mike.leach@linaro.org>, Andrew Donnellan <ajd@linux.ibm.com>,
- Kajol Jain <kjain@linux.ibm.com>, Chao Yu <chao@kernel.org>,
- Johan Hovold <johan@kernel.org>, Andreas Klinger <ak@it-klinger.de>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- David Sterba <dsterba@suse.com>, Jens Axboe <axboe@kernel.dk>,
- netdev@vger.kernel.org, linux-iio@vger.kernel.org,
- Asutosh Das <asutoshd@codeaurora.org>, linuxppc-dev@lists.ozlabs.org
+ linux-arm-kernel@lists.infradead.org, Orson Zhai <orsonzhai@gmail.com>,
+ Niklas Cassel <niklas.cassel@wdc.com>, Len Brown <lenb@kernel.org>,
+ Juergen Gross <jgross@suse.com>, linuxppc-dev@lists.ozlabs.org,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Alexandre Torgue <alexandre.torgue@st.com>, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>,
+ Oded Gabbay <oded.gabbay@gmail.com>, Baolin Wang <baolin.wang7@gmail.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Dan Murphy <dmurphy@ti.com>,
+ xen-devel@lists.xenproject.org, Philippe Bergheaud <felix@linux.ibm.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Fabrice Gasnier <fabrice.gasnier@st.com>, Benson Leung <bleung@chromium.org>,
+ Konstantin Khlebnikov <koct9i@gmail.com>, Jens Axboe <axboe@kernel.dk>,
+ Felipe Balbi <balbi@kernel.org>, Kranthi Kuntala <kranthi.kuntala@intel.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, linux-iio@vger.kernel.org,
+ Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Leonid Maksymchuk <leonmaxx@gmail.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+ Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>,
+ Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
+ Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 30 Oct 2020 at 01:41, Mauro Carvalho Chehab
-<mchehab+huawei@kernel.org> wrote:
->
-> There are some ABI documents that, while they don't generate
-> any warnings, they have issues when parsed by get_abi.pl script
-> on its output result.
->
-> Address them, in order to provide a clean output.
->
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for IIO
-> Reviewed-by: Tom Rix <trix@redhat.com> # for fpga-manager
-> Reviewed-By: Kajol Jain<kjain@linux.ibm.com> # for sysfs-bus-event_source-devices-hv_gpci and sysfs-bus-event_source-devices-hv_24x7
-> Acked-by: Oded Gabbay <oded.gabbay@gmail.com> # for Habanalabs
-> Acked-by: Vaibhav Jain <vaibhav@linux.ibm.com> # for sysfs-bus-papr-pmem
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+
+Le 30/10/2020 à 08:40, Mauro Carvalho Chehab a écrit :
+> Some files over there won't parse well by Sphinx.
+> 
+> Fix them.
+> 
+> Acked-by: Jonathan Cameron<Jonathan.Cameron@huawei.com>  # for IIO
+> Signed-off-by: Mauro Carvalho Chehab<mchehab+huawei@kernel.org>
 > ---
+...
+>   Documentation/ABI/testing/sysfs-class-cxl     |  15 +-
+...
+>   Documentation/ABI/testing/sysfs-class-ocxl    |   3 +
 
->  .../testing/sysfs-bus-coresight-devices-etb10 |   5 +-
 
-For the CoreSight part:
+Patches 20, 28 and 31 look good for cxl and ocxl.
+Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+   Fred
