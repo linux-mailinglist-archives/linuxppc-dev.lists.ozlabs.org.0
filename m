@@ -2,80 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF9329FB64
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 03:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A27729FC45
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 04:47:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMmfX4vFlzDqg1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 13:36:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMpCX72mczDqp7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 14:47:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=axboe@kernel.dk;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kernel.dk
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel-dk.20150623.gappssmtp.com
- header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=CfnJcdGJ; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=fKh4wF+z; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMmch4MHqzDqVd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 13:35:13 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id x13so3980780pfa.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 19:35:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=kernel-dk.20150623.gappssmtp.com; s=20150623;
- h=subject:to:references:from:message-id:date:user-agent:mime-version
- :in-reply-to:content-language:content-transfer-encoding;
- bh=UXwBfYzI35aElg90LFgmr05lCvBRSC2pyvWhxHjEdr8=;
- b=CfnJcdGJs8SOs7Iyfbon0YokMsTEOdy7wIWJOxFfzMd6bwoNFKamSN4Lu66v75PVtz
- 31dW7xoDRk5ZkhX3tl2cXpXRMr0gLtHAIv34Fka11lwU1FjrdRRfmEEsnV0yKw3XIsS1
- T6Uby7R3Xk/Gr94rXiQzHUUkHWQvbgHZivCW2q947NSZkRdyUEit9XOcBjG8+K8ZDBBT
- 2tcovlyBjOaQ/tgESu+NMyag26bE8uEgJFn+siexk8Hv/dfmEAMG7Ux1TIi5wq4r6jaU
- NC1pLp4b14LEAkDXARH2Cdq+NcB7VlgL5Y+zf+mKh2c/OTsB5PTO6duNgmz1q2ZcwGYL
- 2xUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=UXwBfYzI35aElg90LFgmr05lCvBRSC2pyvWhxHjEdr8=;
- b=a2UivNcjVyLV2wCusrf93lKmf24xUIFWqdSnRgvxHDKZXYLWa+oq/HmpYXjJ1BvZjw
- Inup9YEt090+fAQA0rDixfBaZ0clFNEXFD+hCbDCqMTLCc5UtzQYeZTzQrlUtLvInukZ
- 3Qf824Dd99ns4akxuj0Mv+DmoaDT7Qz5A2IOVcjFVr0C93bGgpAIHCHtFC9QanyVjHzv
- 6s1neFRmL3fbEOaLkumB21YXE/6yfaLzLnRLE2zb0Ajk4WBq9RIsjp7if0sH9bSS9Jtd
- Q36LYNLrHZehvSUBeWb063H1lITr5i63KnkdvSf5WAqWMIaudrSCPZcWTTTjj3AoyJg5
- gtZA==
-X-Gm-Message-State: AOAM531Ek5POH89Det83KI4udBncbSMNqHoyJVfan0AMRiXt7lmgUQ2g
- 4THYdWBvPckd2urQChCSZ2p89T3D3bidPw==
-X-Google-Smtp-Source: ABdhPJwn8T97yctSQxi5OTHQMz+HYgvDmw/sXGa5xNT0uawd//Zq+N5B8cWPcdmjHM1c0eb8XHblqA==
-X-Received: by 2002:aa7:9ad7:0:b029:160:948:44a6 with SMTP id
- x23-20020aa79ad70000b0290160094844a6mr7131860pfp.25.1604025311560; 
- Thu, 29 Oct 2020 19:35:11 -0700 (PDT)
-Received: from [192.168.1.134] ([66.219.217.173])
- by smtp.gmail.com with ESMTPSA id f4sm1245479pjs.8.2020.10.29.19.35.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Oct 2020 19:35:10 -0700 (PDT)
-Subject: Re: [PATCH] powerpc: add support for TIF_NOTIFY_SIGNAL
-To: Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <7adea1eb-d193-9d31-6244-e8cd5b2084b2@kernel.dk>
- <871rhgwnc1.fsf@mpe.ellerman.id.au>
-From: Jens Axboe <axboe@kernel.dk>
-Message-ID: <724c3821-161b-a82c-a19d-03c7f4fc3741@kernel.dk>
-Date: Thu, 29 Oct 2020 20:35:10 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMp9f3pN5zDqc4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 14:45:24 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 09U3XL1Z094133
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 23:45:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=pliufXg0HiuQ4PaMo8uwGLI4pb1j0ZLhPKE7TovAoPw=;
+ b=fKh4wF+zDz3Nkf/drk4zg1g4PMGpBd2q+1ksgNmdFRchswsruuyufuCuMi1H1C1ChN/a
+ eA4SudL8JwWH8+Uhcgu+hZ8t0iK/5r/V2NxMhMUtLFP1o5xIU34WXWq1Lp95xCvp995c
+ wltunUZnqLmT724HgVWHIF9eg0FPO94asYsl3WBMeeh6c+BJ39aRP6TlViTDKza3P3pH
+ iw3iJNbLHS99se+EGrs//zvtaAtw9yqjg5F/bcYazW1agCrgh9qKoo70JlUvSBMx0PQJ
+ NFZymRUynIIJEf9LligfDn90gAayKboalahXfx/gsmw5hXBkkJReyGzLjOWTAigY6TQB 9Q== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34fww7pmm3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 23:45:21 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09U3RC4D003053
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 03:45:19 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03ams.nl.ibm.com with ESMTP id 34e56qumf2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 03:45:19 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 09U3jHJs28115408
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 03:45:17 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6C0465205A
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 03:45:17 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 19BB052052
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 03:45:17 +0000 (GMT)
+Received: from [9.206.155.107] (unknown [9.206.155.107])
+ (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C59BDA01E7;
+ Fri, 30 Oct 2020 14:45:15 +1100 (AEDT)
+Subject: Re: [PATCH 02/29] powerpc/rtas: prevent suspend-related sys_rtas use
+ on LE
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20201030011805.1224603-1-nathanl@linux.ibm.com>
+ <20201030011805.1224603-3-nathanl@linux.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Message-ID: <f7386a11-61b7-4ed5-65d4-e702755be16c@linux.ibm.com>
+Date: Fri, 30 Oct 2020 14:45:05 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <871rhgwnc1.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20201030011805.1224603-3-nathanl@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-10-29_12:2020-10-29,
+ 2020-10-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0
+ clxscore=1015 mlxscore=0 priorityscore=1501 phishscore=0 adultscore=0
+ malwarescore=0 mlxlogscore=728 bulkscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2010300025
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,34 +104,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: tyreld@linux.ibm.com, brking@linux.ibm.com, mmc@linux.vnet.ibm.com,
+ cforno12@linux.vnet.ibm.com, drt@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/29/20 6:48 PM, Michael Ellerman wrote:
-> Jens Axboe <axboe@kernel.dk> writes:
->> Wire up TIF_NOTIFY_SIGNAL handling for powerpc.
->>
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Signed-off-by: Jens Axboe <axboe@kernel.dk>
->> ---
->>
->> 5.11 has support queued up for TIF_NOTIFY_SIGNAL, see this posting
->> for details:
->>
->> https://lore.kernel.org/io-uring/20201026203230.386348-1-axboe@kernel.dk/
->>
->> As part of that work, I'm adding TIF_NOTIFY_SIGNAL support to all archs,
->> as that will enable a set of cleanups once all of them support it. I'm
->> happy carrying this patch if need be, or it can be funelled through the
->> arch tree. Let me know.
+On 30/10/20 12:17 pm, Nathan Lynch wrote:
+> While drmgr has had work in some areas to make its RTAS syscall
+> interactions endian-neutral, its code for performing partition
+> migration via the syscall has never worked on LE. While it is able to
+> complete ibm,suspend-me successfully, it crashes when attempting the
+> subsequent ibm,update-nodes call.
 > 
-> Happy for you to take it along with the rest of the series.
-> 
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+> drmgr is the only known (or plausible) user of these ibm,suspend-me,
+> ibm,update-nodes, and ibm,update-properties, so allow them only in
+> big-endian configurations.
 
-Great, thanks Michael! Added.
+And there's a zero chance that drmgr will ever be fixed on LE?
 
 -- 
-Jens Axboe
-
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
