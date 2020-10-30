@@ -2,61 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F5D2A0EC6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 20:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3099C2A0FA0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 21:37:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CNCHl5ZBDzDqxM
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Oct 2020 06:37:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CNDdv2VBczDqx5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Oct 2020 07:37:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::242;
+ helo=mail-lj1-x242.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=db633F26; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=il7YKHja; 
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=J8d/YD59; 
  dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
+ [IPv6:2a00:1450:4864:20::242])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CNCFm4JszzDqdP
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Oct 2020 06:35:24 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1604086519;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=KjnQMCzBdzGXaCOpmbjT8Ur9FZq3y7opRBflIXIldZw=;
- b=db633F26JvpFY6g0OD9+HbOB2bGDkf74GvzdnzaI3Jackio3Pxmuc4jaTjmmTn0rWAIpK+
- FwvojioAnGZiiH15k8FN/MiA2IKJM2U7IeHO0IsBZqBGgEsd8kwilqueFED/GNpoidpnzO
- yy2TxOvoKUkHNkNBXz892WSrXAjSj1bek74dJCnwm2fooU7rVOQjFed7q+Vvsmw9zNfHs4
- G2wInIc2Xh8w8e1+gsfiziPOVyn2tk/4xzLJndeycG1E0X5k3bHmibgmZZcOeJXy9ENlqt
- 1WjhiLEbUG/fvEPPOJsLp5CaNR4eEbW+SMl/VHUu0cW+yWNLKzRpz7CwuUxChg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1604086519;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=KjnQMCzBdzGXaCOpmbjT8Ur9FZq3y7opRBflIXIldZw=;
- b=il7YKHjaiUFmDOQKgI3UCsxgkMmYaTjOnYVZzaPy8He727Hr6NRROPSIn6WIMwC/jiW6Jw
- nlMa3TiG03b3UjDQ==
-To: Matthew Wilcox <willy@infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CNDbz0wvlzDqrs
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Oct 2020 07:36:14 +1100 (AEDT)
+Received: by mail-lj1-x242.google.com with SMTP id 2so8237942ljj.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 13:36:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=kjos0+S2Gon+fH3b26doFlCP2cxrfT62BjLoezK4rG4=;
+ b=J8d/YD59wQ/au5l1BQ7ue2vwfU1yPmEzaWIbs72/a3aDX73KGLSsh/e6e4T2ilr+m6
+ v7YctKloyJWKSYk1q7y81pi983c4f8E7/f/kLdP0CFwMkO7uyjtkdfJgwTbIAUd3yTgV
+ b5YrSxtLonkg9fnewHN7YslOk1fl6e5oIhge0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=kjos0+S2Gon+fH3b26doFlCP2cxrfT62BjLoezK4rG4=;
+ b=DogfZG84He4gr/Wo8dwtVWWFwiUjwu4sbD7HsZyiLVCpuqEQbZ1FR6HXzUB/Gz7HEQ
+ c/mgHc0kplxkrBI7JWL9Aa+y8OLPWZsH0tL1vDucriimDnYqd+agp2Htzme2irvEuNpj
+ cTj6w3jx0idnPRHLbJt0r2+UjE1fi8u1v1VhQvGGidajD1TZc07N5Ps7V6zT2cgnBqbB
+ iHGEQSXpJtDHvXXf6sJWvnTnsTHo0sWmrPnFURCMLcj4chLD3OHyTEn2oyLIVSooJGE1
+ f8hsdmfzM0HG24VmbOmFSYSRx3vC2assCzXFjFroZADDPH++TWnU3ysdaX3fV1bSxr8A
+ 1pAQ==
+X-Gm-Message-State: AOAM5339q2hFVg2IgbmeQgkzl3ZerwXzD9b0M1H4T81I8hsz5or2Z22+
+ 5Jw8uwzTvd0P9jSLZ+rDAmRAAuogeQbqTw==
+X-Google-Smtp-Source: ABdhPJy+GJe8/0h/w7qIheBUzWjBJALpMwbzUkGKnvKh3PKIgGC4+cIprlSFhHEmDPl7LIipqc/O1g==
+X-Received: by 2002:a2e:6e11:: with SMTP id j17mr1956944ljc.288.1604090169318; 
+ Fri, 30 Oct 2020 13:36:09 -0700 (PDT)
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com.
+ [209.85.208.175])
+ by smtp.gmail.com with ESMTPSA id n2sm719992lfa.24.2020.10.30.13.36.08
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 30 Oct 2020 13:36:09 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id v19so3344182lji.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 13:36:08 -0700 (PDT)
+X-Received: by 2002:a2e:760a:: with SMTP id r10mr1661953ljc.421.1604089720167; 
+ Fri, 30 Oct 2020 13:28:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20201029221806.189523375@linutronix.de>
+ <CAHk-=wiFxxGapdOyZHE-7LbFPk+jdfoqdeeJg0zWNQ86WvJGXg@mail.gmail.com>
+ <87pn50ob0s.fsf@nanos.tec.linutronix.de>
+ <87blgknjcw.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <87blgknjcw.fsf@nanos.tec.linutronix.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 30 Oct 2020 13:28:24 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whsJv0bwWRVZHsLoSe48ykAea6T7Oi=G+r8ckLrZ0YUpg@mail.gmail.com>
+Message-ID: <CAHk-=whsJv0bwWRVZHsLoSe48ykAea6T7Oi=G+r8ckLrZ0YUpg@mail.gmail.com>
 Subject: Re: [patch V2 00/18] mm/highmem: Preemptible variant of kmap_atomic &
  friends
-In-Reply-To: <20201030130627.GI27442@casper.infradead.org>
-References: <20201029221806.189523375@linutronix.de>
- <20201030130627.GI27442@casper.infradead.org>
-Date: Fri, 30 Oct 2020 20:35:18 +0100
-Message-ID: <87k0v7mrrd.fsf@nanos.tec.linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain
+To: Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,20 +89,23 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: Juri Lelli <juri.lelli@redhat.com>, linux-xtensa@linux-xtensa.org,
  Peter Zijlstra <peterz@infradead.org>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-mips@vger.kernel.org,
- Ben Segall <bsegall@google.com>, linux-mm@kvack.org,
- Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
+ Ben Segall <bsegall@google.com>, Linux-MM <linux-mm@kvack.org>,
+ Guo Ren <guoren@kernel.org>, linux-sparc <sparclinux@vger.kernel.org>,
  Vincent Chen <deanbo422@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- linux-arch@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org,
+ linux-arch <linux-arch@vger.kernel.org>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ the arch/x86 maintainers <x86@kernel.org>,
  Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
  Christoph Hellwig <hch@lst.de>, David Airlie <airlied@linux.ie>,
- Mel Gorman <mgorman@suse.de>, linux-snps-arc@lists.infradead.org,
+ Mel Gorman <mgorman@suse.de>,
+ "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
  Ard Biesheuvel <ardb@kernel.org>, Paul McKenney <paulmck@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Steven Rostedt <rostedt@goodmis.org>,
- Linus Torvalds <torvalds@linuxfoundation.org>,
- Greentime Hu <green.hu@gmail.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
- Michal Simek <monstr@monstr.eu>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Greentime Hu <green.hu@gmail.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
  Nick Hu <nickhu@andestech.com>, Max Filippov <jcmvbkbc@gmail.com>,
  Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
@@ -96,51 +117,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 30 2020 at 13:06, Matthew Wilcox wrote:
-> On Thu, Oct 29, 2020 at 11:18:06PM +0100, Thomas Gleixner wrote:
->> This series provides kmap_local.* iomap_local variants which only disable
->> migration to keep the virtual mapping address stable accross preemption,
->> but do neither disable pagefaults nor preemption. The new functions can be
->> used in any context, but if used in atomic context the caller has to take
->> care of eventually disabling pagefaults.
+On Fri, Oct 30, 2020 at 2:39 AM Thomas Gleixner <tglx@linutronix.de> wrote:
 >
-> Could I ask for a CONFIG_KMAP_DEBUG which aliases all the kmap variants
-> to vmap()?  I think we currently have a problem in iov_iter on HIGHMEM
-> configs:
+> But then we really should not name it kmap_local. 'local' suggests
+> locality, think local_irq*, local_bh* ... kmap_task would be more
+> accurate then.
 
-For kmap() that would work, but for kmap_atomic() not so much when it is
-called in non-preemptible context because vmap() might sleep.
+So the main reason I'd like to see it is because I think on a
+non-highmem machine, the new kmap should be a complete no-op. IOW,
+we'd make sure that there are no costs, no need to increment any
+"restrict migration" counts etc.
 
-> copy_page_to_iter() calls page_copy_sane() which checks:
->
->         head = compound_head(page);
->         if (likely(n <= v && v <= page_size(head)))
->                 return true;
->
-> but then:
->
->                 void *kaddr = kmap_atomic(page);
->                 size_t wanted = copy_to_iter(kaddr + offset, bytes, i);
->                 kunmap_atomic(kaddr);
->
-> so if offset to offset+bytes is larger than PAGE_SIZE, this is going to
-> work for lowmem pages and fail miserably for highmem pages.  I suggest
-> vmap() because vmap has a PAGE_SIZE gap between each allocation.
+It's been a bit of a pain to have kmap_atomic() have magical side
+semantics that people might then depend on.
 
-On 32bit highmem the kmap_atomic() case is easy: Double the number of
-mapping slots and only use every second one, which gives you a guard
-page between the maps.
+I think "local" could still work as a name, because it would have to
+be thread-local (and maybe we'd want a debug mode where that gets
+verified, as actual HIGHMEM machines are getting rare).
 
-For 64bit we could do something ugly: Enable the highmem kmap_atomic()
-crud and enforce an alias mapping (at least on the architectures where
-this is reasonable). Then you get the same as for 32bit.
+I'd avoid "task", because that implies (to me, at least) that it
+wouldn't be good for interrupts etc that don't have a task context.
 
-> Alternatively if we could have a kmap_atomic_compound(), that would
-> be awesome, but probably not realistic to implement.  I've more
-> or less resigned myself to having to map things one page at a time.
+I think the main issue is that it has to be released in the same
+context as it was created (ie no passing those things around to other
+contexts). I think "local" is fine for that, but I could imagine other
+names. The ones that come to mind are somewhat cumbersome, though
+("shortterm" or "local_ctx" or something along those lines).
 
-That might be horribly awesome on 32bit :)
+I dunno.
 
-Thanks,
-
-        tglx
+              Linus
