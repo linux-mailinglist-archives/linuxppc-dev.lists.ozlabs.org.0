@@ -2,54 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B01D29FE4F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 08:15:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCCD29FE6A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 08:26:50 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMtqb4QgtzDqsh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 18:15:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMv533DrTzDqvN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 18:26:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=mchehab+huawei@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=R7y6Bkg5; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMtlS2pYWzDqnl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 18:11:32 +1100 (AEDT)
-Received: from coco.lan (ip5f5ad5bb.dynamic.kabel-deutschland.de
- [95.90.213.187])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A5A6620729;
- Fri, 30 Oct 2020 07:11:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1604041889;
- bh=HMfalVRoys07ml7VPXGsddZqQtyxcaotzZe94CKTB5U=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=R7y6Bkg5GrGcYmjgIayZshuogEXNtD+N43HIj2ydphSqWHTpEKjdj+tkINZ9lO4pX
- +EzN06y8xtiLvvAwAlP7B2jMtZP7Xz5TMkR6xCd/tfAA7bm7KHEvTD9Bw/cC31SHKp
- JuVmtl721avx2j0rGBNlzZnqYSENceoWWYTIE5Wc=
-Date: Fri, 30 Oct 2020 08:11:09 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 20/33] docs: ABI: testing: make the files compatible
- with ReST output
-Message-ID: <20201030081109.5f7bbdaf@coco.lan>
-In-Reply-To: <20201029144912.3c0a239b@archlinux>
-References: <cover.1603893146.git.mchehab+huawei@kernel.org>
- <4ebaaa0320101479e392ce2db4b62e24fdf15ef1.1603893146.git.mchehab+huawei@kernel.org>
- <20201029144912.3c0a239b@archlinux>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMv3K1r37zDqfb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 18:25:15 +1100 (AEDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 1A01067373; Fri, 30 Oct 2020 08:25:08 +0100 (CET)
+Date: Fri, 30 Oct 2020 08:25:08 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch V2 00/18] mm/highmem: Preemptible variant of
+ kmap_atomic & friends
+Message-ID: <20201030072508.GA18471@lst.de>
+References: <20201029221806.189523375@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Fri, 30 Oct 2020 18:13:38 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201029221806.189523375@linutronix.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,85 +45,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Peter Meerwald-Stadler <pmeerw@pmeerw.net>, Petr Mladek <pmladek@suse.com>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Nayna Jain <nayna@linux.ibm.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Mimi Zohar <zohar@linux.ibm.com>, Sebastian Reichel <sre@kernel.org>,
- Guenter Roeck <groeck@chromium.org>, Bruno Meneguele <bmeneg@redhat.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Pavel Machek <pavel@ucw.cz>,
- Hanjun Guo <guohanjun@huawei.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, netdev@vger.kernel.org,
- Oleh Kravchenko <oleg@kaa.org.ua>, Dan Williams <dan.j.williams@intel.com>,
- Andrew Donnellan <ajd@linux.ibm.com>,
- Javier =?UTF-8?B?R29uesOhbGV6?= <javier@javigon.com>,
- Fabrice Gasnier <fabrice.gasnier@st.com>,
- Stefano Stabellini <sstabellini@kernel.org>, linux-acpi@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>, Chunyan Zhang <zhang.lyra@gmail.com>,
- Mario Limonciello <mario.limonciello@dell.com>,
- linux-stm32@st-md-mailman.stormreply.com,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Ludovic Desroches <ludovic.desroches@microchip.com>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org, Frederic Barrat <fbarrat@linux.ibm.com>,
- Niklas Cassel <niklas.cassel@wdc.com>, Len Brown <lenb@kernel.org>,
- Juergen Gross <jgross@suse.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Alexandre Torgue <alexandre.torgue@st.com>, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Baolin Wang <baolin.wang7@gmail.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Dan Murphy <dmurphy@ti.com>,
- Orson Zhai <orsonzhai@gmail.com>, Philippe Bergheaud <felix@linux.ibm.com>,
- xen-devel@lists.xenproject.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Benson Leung <bleung@chromium.org>, Konstantin Khlebnikov <koct9i@gmail.com>,
- Jens Axboe <axboe@kernel.dk>, Felipe Balbi <balbi@kernel.org>,
- Kranthi Kuntala <kranthi.kuntala@intel.com>, "Martin K.
- Petersen" <martin.petersen@oracle.com>, linux-mm@kvack.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Nicolas Ferre <nicolas.ferre@microchip.com>, linux-iio@vger.kernel.org,
- Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, Leonid Maksymchuk <leonmaxx@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Johannes Thumshirn <johannes.thumshirn@wdc.com>,
- Enric Balletbo i Serra <enric.balletbo@collabora.com>,
- Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
- Peter Rosin <peda@axentia.se>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>, linux-xtensa@linux-xtensa.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-mips@vger.kernel.org,
+ Ben Segall <bsegall@google.com>, linux-mm@kvack.org,
+ Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
+ Vincent Chen <deanbo422@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ linux-arch@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, David Airlie <airlied@linux.ie>,
+ Mel Gorman <mgorman@suse.de>, linux-snps-arc@lists.infradead.org,
+ Ard Biesheuvel <ardb@kernel.org>, Paul McKenney <paulmck@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Steven Rostedt <rostedt@goodmis.org>,
+ Linus Torvalds <torvalds@linuxfoundation.org>,
+ Greentime Hu <green.hu@gmail.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Nick Hu <nickhu@andestech.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel@ffwll.ch>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Thu, 29 Oct 2020 14:49:12 +0000
-Jonathan Cameron <jic23@kernel.org> escreveu:
+On Thu, Oct 29, 2020 at 11:18:06PM +0100, Thomas Gleixner wrote:
+> This is achieved by:
 
-> On Wed, 28 Oct 2020 15:23:18 +0100
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+...
+
 > 
-> > From: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-> > 
-> > Some files over there won't parse well by Sphinx.
-> > 
-> > Fix them.
-> > 
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>  
-> 
-> Query below...  I'm going to guess a rebase issue?
+>  - Consolidating all kmap atomic implementations in generic code
 
-Yes. I sent this series about 1,5 years ago. On that time, it
-ended by not being merged, as there were too much docs patches
-floating around. 
+...
 
-The second SoB is not there on my tree. It was added by
-git send-email ;-)
+> Though I wanted to share the current state of affairs before investigating
+> that further. If there is consensus in going forward with this, I'll have a
+> deeper look into this issue.
 
-Anyway, fixed.
-
-Thanks,
-Mauro
+I think the consolidation is a winner no matter where we go next.  Maybe
+split it out in a prep series so we can get it in ASAP?
