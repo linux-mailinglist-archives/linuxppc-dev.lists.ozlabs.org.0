@@ -2,85 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A7D29FB13
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 03:11:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF9329FB64
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 03:36:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CMm5X2D1qzDqrV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 13:11:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CMmfX4vFlzDqg1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Oct 2020 13:36:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=axboe@kernel.dk;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
+ dmarc=none (p=none dis=none) header.from=kernel.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=FFfxaeCe; 
- dkim-atps=neutral
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=CfnJcdGJ; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CMlnj0r23zDrBd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 12:58:00 +1100 (AEDT)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09U1nkJG194397;
- Fri, 30 Oct 2020 01:57:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=to : cc : subject :
- from : message-id : references : date : in-reply-to : mime-version :
- content-type; s=corp-2020-01-29;
- bh=k491AmM/Y+1/TVwdU3qb5wP/MX/pqSxeRxtsPbFX+Wo=;
- b=FFfxaeCegHHoeVKKlMdjBk/b0CJ11fojYVJxCMIsWel5kTKmAyMKIPUa7SWzM1XeJgUj
- x12zQ5vc5cn/40tp5BpSj/k2nk3QS7s3RhN4BAOr6Ker7PHbl0qdtA8wIpBCo+oS0KEY
- 6dHnZd4kZbYpdVn5+CFhoYvbMbtDDye7Va2GoT19/7EZ3lXUoKZ55vnEBsVG3uwWjjYV
- A8nOkTU8t5ZFRE2gaDSbPBErkGq7aalhHoGVDHcQlyG+VR4hRgD6exbiQUPbRAOx0N/5
- 32JhjF5BvGTRTavd+DdCvipKfYNdqlpPu43zK/5sTue/+T42pcga1j4sqgE1L1mTdXSm Sg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
- by aserp2120.oracle.com with ESMTP id 34cc7m7pht-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Fri, 30 Oct 2020 01:57:53 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
- by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09U1sXbu007434;
- Fri, 30 Oct 2020 01:57:53 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by aserp3030.oracle.com with ESMTP id 34cwuqf3e4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Oct 2020 01:57:53 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 09U1vpxP008819;
- Fri, 30 Oct 2020 01:57:51 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Thu, 29 Oct 2020 18:57:50 -0700
-To: Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: Re: [PATCH] ibmvfc: add new fields for version 2 of several MADs
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1h7qc1nmy.fsf@ca-mkp.ca.oracle.com>
-References: <20201026013649.10147-1-tyreld@linux.ibm.com>
- <yq1v9ew4ekf.fsf@ca-mkp.ca.oracle.com>
- <c94f0f87-1863-9c0a-3561-4cbc9330e011@linux.ibm.com>
-Date: Thu, 29 Oct 2020 21:57:48 -0400
-In-Reply-To: <c94f0f87-1863-9c0a-3561-4cbc9330e011@linux.ibm.com> (Tyrel
- Datwyler's message of "Tue, 27 Oct 2020 14:52:09 -0700")
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CMmch4MHqzDqVd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Oct 2020 13:35:13 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id x13so3980780pfa.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Oct 2020 19:35:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:references:from:message-id:date:user-agent:mime-version
+ :in-reply-to:content-language:content-transfer-encoding;
+ bh=UXwBfYzI35aElg90LFgmr05lCvBRSC2pyvWhxHjEdr8=;
+ b=CfnJcdGJs8SOs7Iyfbon0YokMsTEOdy7wIWJOxFfzMd6bwoNFKamSN4Lu66v75PVtz
+ 31dW7xoDRk5ZkhX3tl2cXpXRMr0gLtHAIv34Fka11lwU1FjrdRRfmEEsnV0yKw3XIsS1
+ T6Uby7R3Xk/Gr94rXiQzHUUkHWQvbgHZivCW2q947NSZkRdyUEit9XOcBjG8+K8ZDBBT
+ 2tcovlyBjOaQ/tgESu+NMyag26bE8uEgJFn+siexk8Hv/dfmEAMG7Ux1TIi5wq4r6jaU
+ NC1pLp4b14LEAkDXARH2Cdq+NcB7VlgL5Y+zf+mKh2c/OTsB5PTO6duNgmz1q2ZcwGYL
+ 2xUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=UXwBfYzI35aElg90LFgmr05lCvBRSC2pyvWhxHjEdr8=;
+ b=a2UivNcjVyLV2wCusrf93lKmf24xUIFWqdSnRgvxHDKZXYLWa+oq/HmpYXjJ1BvZjw
+ Inup9YEt090+fAQA0rDixfBaZ0clFNEXFD+hCbDCqMTLCc5UtzQYeZTzQrlUtLvInukZ
+ 3Qf824Dd99ns4akxuj0Mv+DmoaDT7Qz5A2IOVcjFVr0C93bGgpAIHCHtFC9QanyVjHzv
+ 6s1neFRmL3fbEOaLkumB21YXE/6yfaLzLnRLE2zb0Ajk4WBq9RIsjp7if0sH9bSS9Jtd
+ Q36LYNLrHZehvSUBeWb063H1lITr5i63KnkdvSf5WAqWMIaudrSCPZcWTTTjj3AoyJg5
+ gtZA==
+X-Gm-Message-State: AOAM531Ek5POH89Det83KI4udBncbSMNqHoyJVfan0AMRiXt7lmgUQ2g
+ 4THYdWBvPckd2urQChCSZ2p89T3D3bidPw==
+X-Google-Smtp-Source: ABdhPJwn8T97yctSQxi5OTHQMz+HYgvDmw/sXGa5xNT0uawd//Zq+N5B8cWPcdmjHM1c0eb8XHblqA==
+X-Received: by 2002:aa7:9ad7:0:b029:160:948:44a6 with SMTP id
+ x23-20020aa79ad70000b0290160094844a6mr7131860pfp.25.1604025311560; 
+ Thu, 29 Oct 2020 19:35:11 -0700 (PDT)
+Received: from [192.168.1.134] ([66.219.217.173])
+ by smtp.gmail.com with ESMTPSA id f4sm1245479pjs.8.2020.10.29.19.35.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Oct 2020 19:35:10 -0700 (PDT)
+Subject: Re: [PATCH] powerpc: add support for TIF_NOTIFY_SIGNAL
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <7adea1eb-d193-9d31-6244-e8cd5b2084b2@kernel.dk>
+ <871rhgwnc1.fsf@mpe.ellerman.id.au>
+From: Jens Axboe <axboe@kernel.dk>
+Message-ID: <724c3821-161b-a82c-a19d-03c7f4fc3741@kernel.dk>
+Date: Thu, 29 Oct 2020 20:35:10 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9789
- signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- mlxscore=0 bulkscore=0
- spamscore=0 adultscore=0 malwarescore=0 mlxlogscore=999 suspectscore=1
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010300012
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9789
- signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- lowpriorityscore=0 adultscore=0
- malwarescore=0 spamscore=0 clxscore=1015 mlxscore=0 suspectscore=1
- priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010300011
+In-Reply-To: <871rhgwnc1.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,20 +87,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
- james.bottomley@hansenpartnership.com, brking@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 10/29/20 6:48 PM, Michael Ellerman wrote:
+> Jens Axboe <axboe@kernel.dk> writes:
+>> Wire up TIF_NOTIFY_SIGNAL handling for powerpc.
+>>
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+>> ---
+>>
+>> 5.11 has support queued up for TIF_NOTIFY_SIGNAL, see this posting
+>> for details:
+>>
+>> https://lore.kernel.org/io-uring/20201026203230.386348-1-axboe@kernel.dk/
+>>
+>> As part of that work, I'm adding TIF_NOTIFY_SIGNAL support to all archs,
+>> as that will enable a set of cleanups once all of them support it. I'm
+>> happy carrying this patch if need be, or it can be funelled through the
+>> arch tree. Let me know.
+> 
+> Happy for you to take it along with the rest of the series.
+> 
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Tyrel,
-
-> I'm going to have to ask that this patch be unstaged.
-
-Done!
+Great, thanks Michael! Added.
 
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+Jens Axboe
+
