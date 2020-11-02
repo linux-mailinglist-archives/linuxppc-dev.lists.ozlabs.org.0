@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33102A315D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 18:21:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02EEC2A31C1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 18:39:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQ07c12d0zDqT6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 04:21:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQ0XC08CDzDqNR
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 04:39:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,25 +17,24 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQ05B5frYzDq94
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 04:19:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQ0VK631bzDqHm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 04:37:29 +1100 (AEDT)
 Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
  [66.24.58.225])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A960320691;
- Mon,  2 Nov 2020 17:19:04 +0000 (UTC)
-Date: Mon, 2 Nov 2020 12:19:02 -0500
+ by mail.kernel.org (Postfix) with ESMTPSA id 5BC1F207BB;
+ Mon,  2 Nov 2020 17:37:23 +0000 (UTC)
+Date: Mon, 2 Nov 2020 12:37:21 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
 To: Petr Mladek <pmladek@suse.com>
 Subject: Re: [PATCH 11/11 v2] ftrace: Add recording of functions that caused
  recursion
-Message-ID: <20201102121902.24d64aec@gandalf.local.home>
-In-Reply-To: <20201102120907.457ad2f7@gandalf.local.home>
+Message-ID: <20201102123721.4fcce2cb@gandalf.local.home>
+In-Reply-To: <20201102164147.GJ20201@alley>
 References: <20201030213142.096102821@goodmis.org>
  <20201030214014.801706340@goodmis.org>
  <20201102164147.GJ20201@alley>
- <20201102120907.457ad2f7@gandalf.local.home>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -75,117 +74,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2 Nov 2020 12:09:07 -0500
-Steven Rostedt <rostedt@goodmis.org> wrote:
+On Mon, 2 Nov 2020 17:41:47 +0100
+Petr Mladek <pmladek@suse.com> wrote:
 
-> > > +void ftrace_record_recursion(unsigned long ip, unsigned long parent_ip)
-> > > +{
-> > > +	int index;
-> > > +	int i = 0;
-> > > +	unsigned long old;
-> > > +
-> > > + again:
-> > > +	/* First check the last one recorded */
-> > > +	if (ip == cached_function)
-> > > +		return;
-> > > +
-> > > +	index = atomic_read(&nr_records);
-> > > +	/* nr_records is -1 when clearing records */
-> > > +	smp_mb__after_atomic();
-> > > +	if (index < 0)
-> > > +		return;
-> > > +
-> > > +	/* See below */
-> > > +	if (i > index)
-> > > +		index = i;    
-> > 
-> > This looks like a complicated way to do index++ via "i" variable.
-> > I guess that it was needed only in some older variant of the code.
-> > See below.  
+> > +	i = atomic_read(&nr_records);
+> > +	smp_mb__after_atomic();
+> > +	if (i < 0)
+> > +		cmpxchg(&recursed_functions[index].ip, ip, 0);
+> > +	else if (i <= index)
+> > +		atomic_cmpxchg(&nr_records, i, index + 1);  
 > 
-> Because we reread the index above, and index could be bigger than i (more
-> than index + 1).
-> 
-> >   
-> > > +	if (index >= CONFIG_FTRACE_RECORD_RECURSION_SIZE)
-> > > +		return;
-> > > +
-> > > +	for (i = index - 1; i >= 0; i--) {
-> > > +		if (recursed_functions[i].ip == ip) {
-> > > +			cached_function = ip;
-> > > +			return;
-> > > +		}
-> > > +	}
-> > > +
-> > > +	cached_function = ip;
-> > > +
-> > > +	/*
-> > > +	 * We only want to add a function if it hasn't been added before.
-> > > +	 * Add to the current location before incrementing the count.
-> > > +	 * If it fails to add, then increment the index (save in i)
-> > > +	 * and try again.
-> > > +	 */
-> > > +	old = cmpxchg(&recursed_functions[index].ip, 0, ip);
-> > > +	if (old != 0) {
-> > > +		/* Did something else already added this for us? */
-> > > +		if (old == ip)
-> > > +			return;
-> > > +		/* Try the next location (use i for the next index) */
-> > > +		i = index + 1;    
-> > 
-> > What about
-> > 
-> > 		index++;
-> > 
-> > We basically want to run the code again with index + 1 limit.  
-> 
-> But something else could update nr_records, and we want to use that if
-> nr_records is greater than i.
-> 
-> Now, we could swap the use case, and have
-> 
-> 	int index = 0;
-> 
-> 	[..]
-> 	i = atomic_read(&nr_records);
-> 	if (i > index)
-> 		index = i;
-> 
-> 	[..]
-> 
-> 		index++;
-> 		goto again;
-> 
-> 
-> > 
-> > Maybe, it even does not make sense to check the array again
-> > and we should just try to store the value into the next slot.  
-> 
-> We do this dance to prevent duplicates.
-> 
-> But you are correct, that this went through a few iterations. And the first
-> ones didn't have the cmpxchg on the ip itself, and that could make it so
-> that we don't need this index = i dance.
+> This looks weird. It would shift nr_records past the record added
+> in this call. It might skip many slots that were zeroed when clearing.
+> Also we do not know if our entry was not zeroed as well.
 
-Playing with this more, I remember why I did this song and dance.
+nr_records always holds the next position to write to.
 
-If we have two or more writers, and one beats the other in updating the ip
-(with a different function). This one will go and try again. The reason to
-look at one passed nr_records, is because of the race between the multiple
-writers. This one may loop before the other can update nr_records, and it
-will fail to apply it again.
+	index = nr_records;
+	recursed_functions[index].ip = ip;
+	nr_records++;
 
-You could just say, "hey we'll just keep looping until the other writer
-eventually updates nr_records". But this is where my paranoia gets in. What
-happens if that other writer takes an interrupt (interrupts are not
-disabled), and then deadlocks, or does something bad? This CPU will not get
-locked up spinning.
+Before clearing, we have:
 
-Unlikely scenario, and it would require a bug someplace else. But I don't
-want a bug report stating that it found this recursion locking locking up
-the CPU and hide the real culprit.
+	nr_records = -1;
+	smp_mb();
+	memset(recursed_functions, 0);
+	smp_wmb();
+	nr_records = 0;
 
-I'll add a comment to explain this in the code. And also swap the i and
-index around to make a little more sense.
+When we enter this function:
+
+	i = nr_records;
+	smp_mb();
+	if (i < 0)
+		return;
+
+
+Thus, we just stopped all new updates while clearing the records.
+
+But what about if something is currently updating?
+
+	i = nr_records;
+	smp_mb();
+	if (i < 0)
+		cmpxchg(recursed_functions, ip, 0);
+
+The above shows that if the current updating process notices that the
+clearing happens, it will clear the function it added.
+
+	else if (i <= index)
+		cmpxchg(nr_records, i, index + 1);
+
+This makes sure that nr_records only grows if it is greater or equal to
+zero.
+
+The only race that I see that can happen, is the one in the comment I
+showed. And that is after enabling the recursed functions again after
+clearing, one CPU could add a function while another CPU that just added
+that same function could be just exiting this routine, notice that a
+clearing of the array happened, and remove its function (which was the same
+as the one just happened). So we get a "zero" in the array. If this
+happens, it is likely that that function will recurse again and will be
+added later.
 
 -- Steve
