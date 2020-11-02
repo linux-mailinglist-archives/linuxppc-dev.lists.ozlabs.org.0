@@ -1,106 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634282A2F9C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 17:21:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A8E2A3027
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 17:43:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CPyp66CkczDqNs
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 03:21:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CPzJH249MzDqSD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 03:43:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oss.nxp.com (client-ip=40.107.21.77;
- helo=eur05-vi1-obe.outbound.protection.outlook.com;
- envelope-from=viorel.suman@oss.nxp.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+ dmarc=pass (p=none dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-NXP1-onmicrosoft-com header.b=Db/sB/6R;
- dkim-atps=neutral
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com
- (mail-vi1eur05on2077.outbound.protection.outlook.com [40.107.21.77])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CPylM4zh8zDqLs
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 03:18:37 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O+/VsncUlsaIGFPd/96na8iu+5rWBr7pqzF3S6De345nlcw573FKSv5f9XthXRstvxnIzMggQl0mfRfy6dQ/H+HASruD2eIKjbsqb2aWqhwQ3nIU2EcS72bXoNGY9VdOjsfkgzTViYw99eOnAXg6VDxNx5vb4PCPYyaFwgfWzvmZz75gNC+MvNck+AzdJQ+s/oT2NEiWHvQO+MG0IihjjyOpKpkYy8tUSykJBfOUZAmdCoC2+QcJt8uPCD2jhqRF8dSt/8skQ+npoJMveG+Z7VsqwXjzTXNT4n6PARiYW5uZDvbDdrAAivS9Ts6D3hOW779R6qzQH7Jn9IzcstoJww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CQucECVRfJAiUp25lU24CH6Tl5fSUwJsWHxeid69ixk=;
- b=PMcYKArHds22Mj6lfY3oeK5NInY8+IDxqXsVxVxqKPr28NhNEk8kMzUhQXtYLKuhMq4iV0DPnqiw0UYDRmr/XOvKtHi8A2Yi1sQJg9bht0OeRn4q4RU1sDiZbwJL8tgEu/Y9aE6wJyTtNGzD5fqZ62B/NGPR66myTY/YFCWt+17jjleow2hb2+coCYKSeFy0WSnMbg74BMUcwtqSOdR7vznznSMWfRooz19aNKfVwH0KNumpwQXuVBjGoiFAdvgbSRk5T0OAgONIrhSruIRNq2PJe7lKcgFIrjpxzkHjI1lnyuTmhzhnJVnMWZD2yc7HpO5gxp/VSl5PLz168dqUEA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com; 
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CQucECVRfJAiUp25lU24CH6Tl5fSUwJsWHxeid69ixk=;
- b=Db/sB/6RU6mDITGxBjrIJ8fO7SKjr++74mmL3tBLdpgkOs26p8KpFQlCUW+CmWRQvb4WG0oh+n34ehRRPFL5fL/oBiH2FLtk79EO1tSGpFKVq4ze6sdcmEVTjR9ECPA9keq7LZ8mIIruphd9BjZ/AdrwkIXmJ/mp8yAsG1Dkyhw=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=oss.nxp.com;
-Received: from VI1PR0401MB2272.eurprd04.prod.outlook.com
- (2603:10a6:800:31::12) by VI1PR04MB5517.eurprd04.prod.outlook.com
- (2603:10a6:803:d9::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18; Mon, 2 Nov
- 2020 16:18:30 +0000
-Received: from VI1PR0401MB2272.eurprd04.prod.outlook.com
- ([fe80::e00e:ad13:489b:8000]) by VI1PR0401MB2272.eurprd04.prod.outlook.com
- ([fe80::e00e:ad13:489b:8000%6]) with mapi id 15.20.3499.030; Mon, 2 Nov 2020
- 16:18:29 +0000
-From: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
-To: Timur Tabi <timur@kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@gmail.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: fsl_xcvr: fix break condition
-Date: Mon,  2 Nov 2020 18:18:10 +0200
-Message-Id: <20201102161810.902464-1-viorel.suman@oss.nxp.com>
-X-Mailer: git-send-email 2.26.2
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [5.12.106.221]
-X-ClientProxiedBy: VI1PR02CA0048.eurprd02.prod.outlook.com
- (2603:10a6:802:14::19) To VI1PR0401MB2272.eurprd04.prod.outlook.com
- (2603:10a6:800:31::12)
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=Ujz9LMja; dkim-atps=neutral
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CPzGJ5YpgzDqQD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 03:41:53 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1604335310;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZZ1+8t7uf1F7l3ZBHb45iCoO7eWd2o1ycVfihIUusH8=;
+ b=Ujz9LMjaN8SJhVxn50rnawrrA86tblFVcms0tvPZ6z30qdXkdWdaV8CVc/AUzHzdbFv1V2
+ IhoFIoAHPiRb7IWyVB1j/sUcCmK6cyUWjPXJIQKp023Mx82tNgLktFrqUxCnDxWjn5Juhp
+ fYdZ2HuY/J5qgBTErdjQxOEKWWeOSL4=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 13AC8AC65;
+ Mon,  2 Nov 2020 16:41:50 +0000 (UTC)
+Date: Mon, 2 Nov 2020 17:41:47 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH 11/11 v2] ftrace: Add recording of functions that caused
+ recursion
+Message-ID: <20201102164147.GJ20201@alley>
+References: <20201030213142.096102821@goodmis.org>
+ <20201030214014.801706340@goodmis.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (5.12.106.221) by
- VI1PR02CA0048.eurprd02.prod.outlook.com (2603:10a6:802:14::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3499.22 via Frontend Transport; Mon, 2 Nov 2020 16:18:29 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 1d589a03-ab26-44a4-9000-08d87f4aef77
-X-MS-TrafficTypeDiagnostic: VI1PR04MB5517:
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VI1PR04MB5517A193B9DBF14A27A5C1DFD3100@VI1PR04MB5517.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: l3cAyd6fULIaxPeSizHExz2tnDAgbuCCGNRaJdN/pywFuxcwj98wi1hQR5M0rSzOdlYMmLkAFNkOJNMu18PMoGCF+e4h4ynAl5t9RUj9+ZkDRlEf4nZK6aoNJqsNCE9VEmKOMJlkvq+krnfTSkG1ej1X+HG/Y1KsIlth0ohZQXaRhfTDSg/SgGMq/DjdS4PQrfbI4s82VkiCsgobCem+M3Jkl+nSK/jhK/rK+gBb7dMq1i3VavFYMX09CBSEJHvMqyMpMNN4FdpUSZOad058TbMRZO8ZJHlvJZYZz7NXDBSv08Wboqn953O0YmgwVA/phB/hBbuYM+pPyxvULOTSRJUCu5ZY/vIq3vEBm5r1Mpiqdu0GlzfAAGLLXBVdsH0TrgWVTUGQT+YOybDp09yi9Q==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR0401MB2272.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(39860400002)(376002)(346002)(136003)(396003)(366004)(69590400008)(26005)(956004)(186003)(83380400001)(2616005)(110136005)(66476007)(66946007)(478600001)(66556008)(16526019)(316002)(6506007)(4326008)(52116002)(8676002)(6486002)(6512007)(86362001)(8936002)(4744005)(6666004)(2906002)(5660300002)(7416002)(1076003)(921003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData: 4hweiy+ZCeRCV0hpTv09ywtj+D1NLx9vvNeLMEHfesh1Xw5KNrMwwKrRHI3RnQTK3ywFcAtkjxCJjyBoJWTZwc0244W6R72CPL1tHedzfrymQAHRL8NsvslRIgQHnPrT2ytm9ivoeohGDG2eEwrY3Jv4rlxJyPXQUWm8agVzzFTbVhlmyX5/PUIw/t44x+o0qp/lZX1vGkQxoHlFWevSUophu11oZWrrQNL+lRpU1UB1nsfQyO5jbeZQGEW8ZSv/jTw8gwRKA1PkPzqWhQfzpnop5CZkPsp0kEMTEoc1A5497r0XOzKNF5qO4YJjIR0bARTW8eaNrashuSoZ7BVGSZ/whqxHDXjGYgaRMxZVpILHnSNAslGJ6GmPCiOCG4PP0CIu7zYFuBCWdbJmEyzfLgeKZmEOiErLyJeFL8xXJWS4mC9Q8nDOy08qaj+rt/en2SJhbVHC9Wm0CySRF7WM+Uz92hn9MIhEycHenBNz3zMRiEGf367H3OuVIEk5gT2CibaCJP03CMbr9aW5rGRAx/uJjwbFQQsrMMpKzrIiMQMhu97NsECAN6RyGN56LX/uLVWHF0gnIPEN6T2RJHbEpKmvRO1CbLSAXp49DpR4gZtF+o3yHilgC/8PmO1yISIyiTD/+LIdyYNZxRmVpfnefg==
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d589a03-ab26-44a4-9000-08d87f4aef77
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR0401MB2272.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2020 16:18:29.6981 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +XvervRLink86RRMOrbDVnmPbNWmNZjYNCwKhQoVvETDkxws25wuh8MMO0ddrmaxBts4WfGu41Z/bXjPpnjlRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5517
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201030214014.801706340@goodmis.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,35 +56,247 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Viorel Suman <viorel.suman@nxp.com>
+Cc: Anton Vorontsov <anton@enomsg.org>, linux-doc@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ Joe Lawrence <joe.lawrence@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Tony Luck <tony.luck@intel.com>,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Masami Hiramatsu <mhiramat@kernel.org>, Colin Cross <ccross@android.com>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Viorel Suman <viorel.suman@nxp.com>
+On Fri 2020-10-30 17:31:53, Steven Rostedt wrote:
+> From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+> 
+> This adds CONFIG_FTRACE_RECORD_RECURSION that will record to a file
+> "recursed_functions" all the functions that caused recursion while a
+> callback to the function tracer was running.
+> 
 
-The break condition copied by mistake as same
-as loop condition in the previous version, but must
-be the opposite. So fix it.
+> --- /dev/null
+> +++ b/kernel/trace/trace_recursion_record.c
+> @@ -0,0 +1,220 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/seq_file.h>
+> +#include <linux/kallsyms.h>
+> +#include <linux/module.h>
+> +#include <linux/ftrace.h>
+> +#include <linux/fs.h>
+> +
+> +#include "trace_output.h"
+> +
+> +struct recursed_functions {
+> +	unsigned long		ip;
+> +	unsigned long		parent_ip;
+> +};
+> +
+> +static struct recursed_functions recursed_functions[CONFIG_FTRACE_RECORD_RECURSION_SIZE];
 
-Signed-off-by: Viorel Suman <viorel.suman@nxp.com>
----
- sound/soc/fsl/fsl_xcvr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The code tries to be lockless safe as much as possible. It would make
+sense to allign the array.
 
-diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index c055179e6d11..2a28810d0e29 100644
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -247,7 +247,7 @@ static int fsl_xcvr_ai_write(struct fsl_xcvr *xcvr, u8 reg, u32 data, bool phy)
- 	regmap_write(xcvr->regmap, FSL_XCVR_PHY_AI_CTRL_TOG, idx);
- 
- 	ret = regmap_read_poll_timeout(xcvr->regmap, FSL_XCVR_PHY_AI_CTRL, val,
--				       (val & idx) != ((val & tidx) >> 1),
-+				       (val & idx) == ((val & tidx) >> 1),
- 				       10, 10000);
- 	if (ret)
- 		dev_err(dev, "AI timeout: failed to set %s reg 0x%02x=0x%08x\n",
--- 
-2.26.2
 
+> +static atomic_t nr_records;
+> +
+> +/*
+> + * Cache the last found function. Yes, updates to this is racey, but
+> + * so is memory cache ;-)
+> + */
+> +static unsigned long cached_function;
+> +
+> +void ftrace_record_recursion(unsigned long ip, unsigned long parent_ip)
+> +{
+> +	int index;
+> +	int i = 0;
+> +	unsigned long old;
+> +
+> + again:
+> +	/* First check the last one recorded */
+> +	if (ip == cached_function)
+> +		return;
+> +
+> +	index = atomic_read(&nr_records);
+> +	/* nr_records is -1 when clearing records */
+> +	smp_mb__after_atomic();
+> +	if (index < 0)
+> +		return;
+> +
+> +	/* See below */
+> +	if (i > index)
+> +		index = i;
+
+This looks like a complicated way to do index++ via "i" variable.
+I guess that it was needed only in some older variant of the code.
+See below.
+
+> +	if (index >= CONFIG_FTRACE_RECORD_RECURSION_SIZE)
+> +		return;
+> +
+> +	for (i = index - 1; i >= 0; i--) {
+> +		if (recursed_functions[i].ip == ip) {
+> +			cached_function = ip;
+> +			return;
+> +		}
+> +	}
+> +
+> +	cached_function = ip;
+> +
+> +	/*
+> +	 * We only want to add a function if it hasn't been added before.
+> +	 * Add to the current location before incrementing the count.
+> +	 * If it fails to add, then increment the index (save in i)
+> +	 * and try again.
+> +	 */
+> +	old = cmpxchg(&recursed_functions[index].ip, 0, ip);
+> +	if (old != 0) {
+> +		/* Did something else already added this for us? */
+> +		if (old == ip)
+> +			return;
+> +		/* Try the next location (use i for the next index) */
+> +		i = index + 1;
+
+What about
+
+		index++;
+
+We basically want to run the code again with index + 1 limit.
+
+Maybe, it even does not make sense to check the array again
+and we should just try to store the value into the next slot.
+
+> +		goto again;
+> +	}
+> +
+> +	recursed_functions[index].parent_ip = parent_ip;
+
+WRITE_ONCE() ?
+
+> +
+> +	/*
+> +	 * It's still possible that we could race with the clearing
+> +	 *    CPU0                                    CPU1
+> +	 *    ----                                    ----
+> +	 *                                       ip = func
+> +	 *  nr_records = -1;
+> +	 *  recursed_functions[0] = 0;
+> +	 *                                       i = -1
+> +	 *                                       if (i < 0)
+> +	 *  nr_records = 0;
+> +	 *  (new recursion detected)
+> +	 *      recursed_functions[0] = func
+> +	 *                                            cmpxchg(recursed_functions[0],
+> +	 *                                                    func, 0)
+> +	 *
+> +	 * But the worse that could happen is that we get a zero in
+> +	 * the recursed_functions array, and it's likely that "func" will
+> +	 * be recorded again.
+> +	 */
+> +	i = atomic_read(&nr_records);
+> +	smp_mb__after_atomic();
+> +	if (i < 0)
+> +		cmpxchg(&recursed_functions[index].ip, ip, 0);
+> +	else if (i <= index)
+> +		atomic_cmpxchg(&nr_records, i, index + 1);
+
+This looks weird. It would shift nr_records past the record added
+in this call. It might skip many slots that were zeroed when clearing.
+Also we do not know if our entry was not zeroed as well.
+
+I would suggest to do it some other way (not even compile tested):
+
+void ftrace_record_recursion(unsigned long ip, unsigned long parent_ip)
+{
+	int index, old_index;
+	int i = 0;
+	unsigned long old_ip;
+
+ again:
+	/* First check the last one recorded. */
+	if (ip == READ_ONCE(cached_function))
+		return;
+
+	index = atomic_read(&nr_records);
+	/* nr_records is -1 when clearing records. */
+	smp_mb__after_atomic();
+	if (index < 0)
+		return;
+
+	/* Already cached? */
+	for (i = index - 1; i >= 0; i--) {
+		if (recursed_functions[i].ip == ip) {
+			WRITE_ONCE(cached_function, ip);
+			return;
+		}
+	}
+
+	if (index >= CONFIG_FTRACE_RECORD_RECURSION_SIZE)
+		return;
+
+	/*
+	 * Try to reserve the slot. It might be already taken
+	 * or the entire cache cleared.
+	 */
+	old_index = atomic_cmpxchg(&nr_records, index, index + 1);
+	if (old_index != index)
+		goto again;
+
+	/*
+	 * Be careful. The entire cache might have been cleared and reused in
+	 * the meantime. Replace only empty slot.
+	 */
+	old_ip = cmpxchg(&recursed_functions[index].ip, 0, ip);
+	if (old_ip != 0)
+		goto again;
+
+	old_ip = cmpxchg(&recursed_functions[index].parent_ip, 0, parrent_ip);
+	if (old_ip != 0)
+		goto again;
+
+	/*
+	 * No ip is better than non-consistent one. The race with
+	 * clearing should be rare and not worth a perfect solution.
+	 */
+	if (READ_ONCE(recursed_functions[index].ip) != ip) {
+		cmpxchg(&recursed_functions[index].ip, ip, 0UL)
+		goto again;
+	}
+}
+
+The last check probably is not needed. Inconsistent entries
+should be prevented by the way how this func is called:
+
+		static atomic_t paranoid_test;				\
+		if (!atomic_read(&paranoid_test)) {			\
+			atomic_inc(&paranoid_test);			\
+			ftrace_record_recursion(ip, pip);		\
+			atomic_dec(&paranoid_test);			\
+		}							\
+
+
+
+
+The rest of the patchset looks fine. I do not feel comfortable to give
+it Reviewed-by because I did not review it in depth.
+
+I spent more time with the above lockless code. I took it is a
+training. I need to improve this skill to feel more comfortable with
+the lockless printk ring buffer ;-)
+
+Best Regards,
+Petr
