@@ -1,60 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B570F2A2C2D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 14:55:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09AC02A2CB3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 15:25:07 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CPvZF3PTfzDqQq
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 00:55:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CPwDG5lVnzDqS0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 01:25:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::342;
+ helo=mail-wm1-x342.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=rpbg/1lE; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=oiIaP9Ba; dkim-atps=neutral
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
+ [IPv6:2a00:1450:4864:20::342])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CPvTF114HzDqQq
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 00:51:10 +1100 (AEDT)
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8C0442231B;
- Mon,  2 Nov 2020 13:51:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1604325067;
- bh=9qIUbE3lwH4ZvgtTC9bbV3+9hXUEaYm6WiiqQ4WE/Co=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=rpbg/1lEiVgNn9Ysvs/9LknHZYACC7zXQOCGCw264IRu8ax1gLK6WH9zSjr+uRe43
- j5PkmmIzKYvzuR6uPdj0UxdnGNyDn2tiAsnr4m+Rc6wtDwZreVMVedmDOCqs8DpK24
- uLH4O6s20Bi63bMTeguJmmwdpc+o+rm+otUlIokQ=
-Date: Mon, 2 Nov 2020 14:52:02 +0100
-From: 'Greg KH' <gregkh@linuxfoundation.org>
-To: David Laight <David.Laight@aculab.com>
-Subject: Re: Buggy commit tracked to: "Re: [PATCH 2/9] iov_iter: move
- rw_copy_check_uvector() into lib/iov_iter.c"
-Message-ID: <20201102135202.GA1016272@kroah.com>
-References: <20201022121849.GA1664412@kroah.com>
- <98d9df88-b7ef-fdfb-7d90-2fa7a9d7bab5@redhat.com>
- <20201022125759.GA1685526@kroah.com>
- <20201022135036.GA1787470@kroah.com>
- <134f162d711d466ebbd88906fae35b33@AcuMS.aculab.com>
- <935f7168-c2f5-dd14-7124-412b284693a2@redhat.com>
- <999e2926-9a75-72fd-007a-1de0af341292@redhat.com>
- <35d0ec90ef4f4a35a75b9df7d791f719@AcuMS.aculab.com>
- <20201023144718.GA2525489@kroah.com>
- <0ab5ac71f28d459db2f350c2e07b88ca@AcuMS.aculab.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CPw6k45YtzDqJH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 01:20:09 +1100 (AEDT)
+Received: by mail-wm1-x342.google.com with SMTP id e2so9670328wme.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Nov 2020 06:20:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=WMZ5E1t1qQDSNwAwpQ30Zb2v4pyVaA5GpDGSolOQX1Q=;
+ b=oiIaP9Badbgwu6QFpYJ9CsxpG5czjN2vku9ZNvB9kwytZowUyfn5yg5e7GsH5eW8i+
+ HvHd1MPW6YkXOEFu21i7+zAtirx2opS8FAGdXxByo+GH8iovk7bW76+knFUVPlZvn80z
+ bbXbT+LKuopP0Rqx0gUdeIxSmjn/ON5sFVUdhIVdUMrPYo7Exafg3O/eWZZdTtoW5LBX
+ qVVKY1FKlnRvE2JEAA/jCFm+Hqvs32Bnr2BIDc5wjpvqIJUnhivVymzYlTiR4ERXqV/9
+ q6JpXpILw8YhI1gNELoSTHceJjOa5EMn5KGh4hbQm2/C0PDcV3cqv8v3Q9TMcfNn4NiI
+ +wGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=WMZ5E1t1qQDSNwAwpQ30Zb2v4pyVaA5GpDGSolOQX1Q=;
+ b=smR6PBnHu6xEKlNe5MZ3YxXMQ13GKOVtNPmWTsQDoZWaTILjxpd8hm8U5ZTTaUprBS
+ 9MbiLG39cM5ngyjgj/Mtl18lnEIxUZU/8WNxLkUni44/hn7fBl+5MEHaxnlFfM5RwI61
+ sFPKRqv3zGFG+ZnfFDvfNIGFNUgvF7Lqy2BBp1MGTTpnhw8kau/5mBtypMlDcb+hy8N3
+ 7DE1ItQkp9yl9Vo6VebIE1UivopMpNWdKLDEVIKnzE/yhNu0CEXnha/AYgvm+YZUNojT
+ nJjFMqddwzY45Pv7Tne9vY/D3y4Pl2qBtZQ2mcc5drIB26AexI6h/x4TuP6xeUuHl1Ou
+ sVIQ==
+X-Gm-Message-State: AOAM531or5Ui/lghozT6Et84+AFh3AevGy5kDJEOYojBayeiDBlUHTWi
+ 9LoEKUNK2wCliMFiOW1n2rT63A==
+X-Google-Smtp-Source: ABdhPJytjMicCjCL83paCEpnhL0UDEWTAFZl6rkXpfqixkC7yRArs0HNsBUVxg5/5SbL4TgRS5uu3A==
+X-Received: by 2002:a7b:c418:: with SMTP id k24mr18745179wmi.118.1604326805546; 
+ Mon, 02 Nov 2020 06:20:05 -0800 (PST)
+Received: from dell.default ([91.110.221.242])
+ by smtp.gmail.com with ESMTPSA id 30sm22331472wrs.84.2020.11.02.06.20.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 02 Nov 2020 06:20:04 -0800 (PST)
+From: Lee Jones <lee.jones@linaro.org>
+To: gregkh@linuxfoundation.org,
+	arnd@arndb.de
+Subject: [PATCH v2 2/2] misc: ocxl: config: Rename function attribute
+ description
+Date: Mon,  2 Nov 2020 14:20:01 +0000
+Message-Id: <20201102142001.560490-2-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20201102142001.560490-1-lee.jones@linaro.org>
+References: <20201102142001.560490-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0ab5ac71f28d459db2f350c2e07b88ca@AcuMS.aculab.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,70 +80,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-aio@kvack.org" <linux-aio@kvack.org>,
- 'David Hildenbrand' <david@redhat.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- David Howells <dhowells@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "kernel-team@android.com" <kernel-team@android.com>,
- Arnd Bergmann <arnd@arndb.de>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>,
- "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Jens Axboe <axboe@kernel.dk>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
+ Andrew Donnellan <ajd@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 02, 2020 at 09:06:38AM +0000, David Laight wrote:
-> From: 'Greg KH'
-> > Sent: 23 October 2020 15:47
-> > 
-> > On Fri, Oct 23, 2020 at 02:39:24PM +0000, David Laight wrote:
-> > > From: David Hildenbrand
-> > > > Sent: 23 October 2020 15:33
-> > > ...
-> > > > I just checked against upstream code generated by clang 10 and it
-> > > > properly discards the upper 32bit via a mov w23 w2.
-> > > >
-> > > > So at least clang 10 indeed properly assumes we could have garbage and
-> > > > masks it off.
-> > > >
-> > > > Maybe the issue is somewhere else, unrelated to nr_pages ... or clang 11
-> > > > behaves differently.
-> > >
-> > > We'll need the disassembly from a failing kernel image.
-> > > It isn't that big to hand annotate.
-> > 
-> > I've worked around the merge at the moment in the android tree, but it
-> > is still quite reproducable, and will try to get a .o file to
-> > disassemble on Monday or so...
-> 
-> Did this get properly resolved?
+Fixes the following W=1 kernel build warning(s):
 
-For some reason, 5.10-rc2 fixed all of this up.  I backed out all of the
-patches I had to revert to get 5.10-rc1 to work properly, and then did
-the merge and all is well.
+ drivers/misc/ocxl/config.c:81: warning: Function parameter or member 'dev' not described in 'get_function_0'
+ drivers/misc/ocxl/config.c:81: warning: Excess function parameter 'device' description in 'get_function_0'
 
-It must have been something to do with the compat changes in this same
-area that went in after 5.10-rc1, and something got reorganized in the
-files somehow.  I really do not know, and at the moment, don't have the
-time to track it down anymore.  So for now, I'd say it's all good, sorry
-for the noise.
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+---
+ drivers/misc/ocxl/config.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-greg k-h
+diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
+index 4d490b92d951f..a68738f382521 100644
+--- a/drivers/misc/ocxl/config.c
++++ b/drivers/misc/ocxl/config.c
+@@ -73,7 +73,7 @@ static int find_dvsec_afu_ctrl(struct pci_dev *dev, u8 afu_idx)
+ 
+ /**
+  * get_function_0() - Find a related PCI device (function 0)
+- * @device: PCI device to match
++ * @dev: PCI device to match
+  *
+  * Returns a pointer to the related device, or null if not found
+  */
+-- 
+2.25.1
+
