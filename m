@@ -1,66 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342C12A355F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 21:47:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB8A2A35CF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 22:12:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQ4j21q76zDqV6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 07:47:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQ5G10640zDqVk
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 08:12:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=storix.com (client-ip=2607:f8b0:4864:20::d2d;
- helo=mail-io1-xd2d.google.com; envelope-from=cjacobsen@storix.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=storix.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=storix-com.20150623.gappssmtp.com
- header.i=@storix-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=iE3QjFoD; dkim-atps=neutral
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com
- [IPv6:2607:f8b0:4864:20::d2d])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.4.81; helo=eur03-db5-obe.outbound.protection.outlook.com;
+ envelope-from=horia.geanta@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=eou7idGm; 
+ dkim-atps=neutral
+Received: from EUR03-DB5-obe.outbound.protection.outlook.com
+ (mail-eopbgr40081.outbound.protection.outlook.com [40.107.4.81])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQ3zq2ZNMzDqQX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 07:14:42 +1100 (AEDT)
-Received: by mail-io1-xd2d.google.com with SMTP id s10so1912767ioe.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Nov 2020 12:14:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=storix-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:from:date:message-id:subject:to;
- bh=H4geEmwXafDDpnbgxnHCJ2fPSuTdmYc8sUKBC0JaHPc=;
- b=iE3QjFoD8T08cmuUh5QzXmLsybOxGyQ35oEmqm/fOHl6qXHabXsQwPnN/btpuxJ5wU
- cp7ZVWU8+JnEBd8lcPmu1HnMybq6+xbrMDYJWoSFNxqXO/H8y1MYFXDWCQPLi/KpxxJT
- JLxk8sNXArOQorhE2Ava88SrEJW0hqZIyNRonyBqSNaUjnJa0vyAFkYNelCCB0nav1hB
- rd8+bCqDR1cTylYvTM6mP+c1RBFIn1ch10UdKKst7cxgpOxJop47sSLz00vKuN9NDKAw
- C3D+MpLlqg3Cq9wiopxaW5aaQVBrag3YUIJZjI/aneoI1xFgoGRLNPzBNzsSVbODa4NK
- YVvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
- bh=H4geEmwXafDDpnbgxnHCJ2fPSuTdmYc8sUKBC0JaHPc=;
- b=sTi8iQRCVPgh7DmAgRvLUYstJx6ECYUZJGaT4uHw/C5f34fHtLF5vtklMve2uGOX9d
- blA1SVQMqewx9HKY/Jrki4J06Mxs+O+BRNmFJlPn8++SuAIfWzYos5Ykj0mb8jb2NX/m
- jH1jAk4GfALgby63PofR0SohuhDepVEZJU+YDm+8ihdx9jMy9iJ3mouHwaTPdhV5GF6W
- qEGQ4kBX53rIfWl2tUPzUM7ViTe6rnC+hc/ZMNOtUoiebM4D8Zr25eanjY2miPxQWehB
- Fh5tRozDiTyTar+GxX9JjXNKgqL+DVZxQXxEEz6nPwqWG01XyUZGgVjnYT+zKdb72yMD
- 0vRA==
-X-Gm-Message-State: AOAM532NrnCElXiO1HilIW/OZJX/PXQ1Rt3HldvG/pvtRtB4UFIu1/Q7
- 9YHxJDMrRLcjVK5BsC4lGfm7eIEXhkF5vc0e5KECDul1/0GMwJCe
-X-Google-Smtp-Source: ABdhPJznIn2jxL37XeHj14s68u2Sdl/bCgG2OLVAbC9QjNlZJA1HmRZ83lQC85TwiAAsjTmevGgbZAuYM9kzEGdk4J8=
-X-Received: by 2002:a5d:9813:: with SMTP id a19mr11996353iol.194.1604348078470; 
- Mon, 02 Nov 2020 12:14:38 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQ5DC38QhzDqLs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 08:10:33 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XUmUrLdMHWJ+XsEQedhyz9FZwykdrQpYyRn0HY7EB1MDp/cf8WkAVOiJ7M/J9qVXLtC0cC3/L2emDPC7q+/V8E1oQncR6gBqzkyOAp33lv8uXEbOezkfUxJ1x/V4zpSly72rktxNOSpo6vkHADQ6ycGKqK91IEda2Mkm2MmLc8Fh0H0AnMStQ+7MJ0fkg2nDqKBRkk2eRMveXCZ83YVsw/5ltX2HhMdARPRHarQTuxKW2+By04LBMdFvfvPv67IrrHGXVdDLcmgIoKH8Uh5hLcx00EOGkIrZLikmYi5LATGcAGG0M79n/l1NuuWUpbnzMm80TeKaT+7VhccLQ75kpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ovBsjrh7YRVXAmXkPV7MA7HDbomwBCymIH1Q4A9vc/Q=;
+ b=hFhnBh94tNie9yjXuoMVHl7Nys2zswJ/eTlt7BUw6O6REkhwS89DPNgAJjGPlsZ82DPgXleZk0dayHm266BW2QfphcTbkfIB3YQlfDLMvsOs2MD7/fI3oanTvkSArf6xjv0EV663fk5KiC6KWm3l2Nf8XXh2iTcEukFGPGX6IauO0tk6zUvx+MCRJ89qjOXZ4tNuvbQ1f2Pl0daj1Ufj0Ly+oaqiFPyp11lEwLds9QhW31I4y0r+tmxS6kIVAw1sn9XTlSTPPd0ghek83ZMFjYZGkO2+CPiEeRMdM2dxXzB8NxoqIUzQc6NWVGctgjMjK7Q6AyB6K+qEQRCrNfZyeg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ovBsjrh7YRVXAmXkPV7MA7HDbomwBCymIH1Q4A9vc/Q=;
+ b=eou7idGmtr5VGJZSAJItK+HDadpK77cidRLfWJiRNCPfixwi/beR/l4xgO2DhPOkVxHT/wBTMDROrqLqrDNQIQa+g+IOICv0afd8zVanwvNa/e2kXn4bLk8Mf7s5GHlNNwuEi9ruUiFitBnZ+EncUL+VF54CC5kGC9QvfPEYNGs=
+Authentication-Results: lists.infradead.org; dkim=none (message not signed)
+ header.d=none;lists.infradead.org; dmarc=none action=none
+ header.from=nxp.com;
+Received: from VI1PR04MB4046.eurprd04.prod.outlook.com (2603:10a6:803:4d::29)
+ by VI1PR0401MB2317.eurprd04.prod.outlook.com (2603:10a6:800:28::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18; Mon, 2 Nov
+ 2020 21:10:22 +0000
+Received: from VI1PR04MB4046.eurprd04.prod.outlook.com
+ ([fe80::dcb4:903:81f8:a8e2]) by VI1PR04MB4046.eurprd04.prod.outlook.com
+ ([fe80::dcb4:903:81f8:a8e2%6]) with mapi id 15.20.3499.030; Mon, 2 Nov 2020
+ 21:10:22 +0000
+Subject: Re: [PATCH v2 net-next 1/3] soc/fsl/qbman: Add an argument to signal
+ if NAPI processing is required.
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Priyanka Jain <priyanka.jain@nxp.com>, Vakul Garg <vakul.garg@nxp.com>
+References: <20201101232257.3028508-1-bigeasy@linutronix.de>
+ <20201101232257.3028508-2-bigeasy@linutronix.de>
+From: =?UTF-8?Q?Horia_Geant=c4=83?= <horia.geanta@nxp.com>
+Message-ID: <8e25b5d2-0c59-e756-8c04-479d1ad5a775@nxp.com>
+Date: Mon, 2 Nov 2020 23:10:18 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
+In-Reply-To: <20201101232257.3028508-2-bigeasy@linutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [78.97.206.147]
+X-ClientProxiedBy: AM0PR03CA0101.eurprd03.prod.outlook.com
+ (2603:10a6:208:69::42) To VI1PR04MB4046.eurprd04.prod.outlook.com
+ (2603:10a6:803:4d::29)
 MIME-Version: 1.0
-From: Carl Jacobsen <cjacobsen@storix.com>
-Date: Mon, 2 Nov 2020 12:14:27 -0800
-Message-ID: <CAKkwB_S6Bs_+5At2aajbQbJg==WE_4NLdhSK=Bj+td67215Htg@mail.gmail.com>
-Subject: Kernel panic from malloc() on SUSE 15.1?
-To: linuxppc-dev@lists.ozlabs.org
-Content-Type: multipart/alternative; boundary="000000000000504a9a05b325656f"
-X-Mailman-Approved-At: Tue, 03 Nov 2020 07:37:59 +1100
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.0.129] (78.97.206.147) by
+ AM0PR03CA0101.eurprd03.prod.outlook.com (2603:10a6:208:69::42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3499.18 via Frontend Transport; Mon, 2 Nov 2020 21:10:20 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 027faef6-949c-4642-ed47-08d87f73b5ae
+X-MS-TrafficTypeDiagnostic: VI1PR0401MB2317:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <VI1PR0401MB23170B061B0C48A0513E583198100@VI1PR0401MB2317.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2887;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vWtRhiRxyY/kjVj5xTBXJ9gvFCBttfedEBNiv+bvyRi523MF6PL2Nd3FBBN1F9Sptc+vfsFOrkASGRspZYhqJs7s3WgSoOqhTpZq67/fyxq9EMt/UEmQaNU4CVJwKyCS8M6wlA4MhA31e1P/T0ZFzT43cBnw+hKG4MadVkpVjt9zbUj6IKFLY7JCyIvekcESS+gD2vdGr6xqbtCj/Jb00aZ33N6cUNeBLruxV7jYeFSxbqU1jexxExi6tuRwZmYNsIJYRg4/3S1xRCAP0sdbhAv81oY7LA+zvInMAF4rSYp9DmAwEKUe1J5eS+FTSto5w1aTO5lg32BLKdHnUgAkcu6ePK+QTfnFCcMMWZ1KhtTky46f2A87qFgnwEsbIfMk6z2C+MWQJ650Gbvl5Ak6ljPBZ6WwlIlMlgFrNrWR/xR/1K8Ec7FhHGxkj+P0e65BF4LOwKX9NoIFMZ19paDz9CuepckYTDxHNTJq0r97qq8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI1PR04MB4046.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(366004)(136003)(396003)(39850400004)(376002)(346002)(316002)(110136005)(54906003)(16576012)(31686004)(966005)(956004)(2616005)(86362001)(478600001)(4326008)(66556008)(66476007)(186003)(16526019)(6636002)(66946007)(52116002)(26005)(8676002)(31696002)(2906002)(53546011)(36756003)(6486002)(8936002)(83380400001)(5660300002)(21314003)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: 9yGIIKjUE+lgX9oWhO1CCFaFB5leE1dnprbklkZN8ZWBM5bcqgpOa5MKErkjUVbn6JHy7T2Yjzy+Vk99Iz4PG42nzMaBzd8BVHPjxuzQrpg25Vbg+fN8Sn4KGvusDicjKKN7VXEAcBDS/1JW0wcEu2U42ua48mpyF06sYHCd7MRz8Gq0xZ/FI/rpQan1ABqKJN4TdP3E5jD3mFNUwM7eyAcOAAe+mLU6oGQgbsNdvq9E/Oh3tMwLqBN5Yfp93WJwt9y3cjn96tgxZLOhQh4swUX2gJJlVY9uZTPlK9thtdXvLPu3LAErVf2q24sIrw7ZOSQQrJhg6w79PV68pM8iR/dDT7xuUXNZJqFZyiILOmz8uN4rfPnWRXU+nyUilWDRd3kdUquJdJf+QNCVraiCmxtrTv5I1Dh4h+vIZ31k1VaoSD+e/DyojlUepNpRKqiIsnKGjlpqI6Rjs39TcN6J3Di0w5miRl9FzDddTlkFqnUMpn6bwEE4THQMHReGC/665SriqrLvoJzOESN2sxEP2BwHhZ9z9cyiRxpfZ00sxEhAahWx69ezEXB4kGDgEONfVN59L8Dp0zZ9ikvoCC997fnvgfqjB/wiv0VXNZFUN501zm9D/EGfmZ4HTJoHNggW7JInmrdhAaihYHQk89N2jg==
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 027faef6-949c-4642-ed47-08d87f73b5ae
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2020 21:10:22.1650 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Fb8tGOn+6EkkdSCvA3ZmKUaQmEGQvCNG6j5MvIsUPMF+qIzyes6FMYWYqk7mRuUa9vNljsNZa07SDg1pH9ATuA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0401MB2317
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,104 +113,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Aymen Sghaier <aymen.sghaier@nxp.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Madalin Bucur <madalin.bucur@nxp.com>, Leo Li <leoyang.li@nxp.com>,
+ "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000504a9a05b325656f
-Content-Type: text/plain; charset="UTF-8"
+On 11/2/2020 1:23 AM, Sebastian Andrzej Siewior wrote:
+> dpaa_eth_napi_schedule() and caam_qi_napi_schedule() schedule NAPI if
+> invoked from:
+> 
+>  - Hard interrupt context
+>  - Any context which is not serving soft interrupts
+> 
+> Any context which is not serving soft interrupts includes hard interrupts
+> so the in_irq() check is redundant. caam_qi_napi_schedule() has a comment
+> about this:
+> 
+>         /*
+>          * In case of threaded ISR, for RT kernels in_irq() does not return
+>          * appropriate value, so use in_serving_softirq to distinguish between
+>          * softirq and irq contexts.
+>          */
+>          if (in_irq() || !in_serving_softirq())
+> 
+> This has nothing to do with RT. Even on a non RT kernel force threaded
+> interrupts run obviously in thread context and therefore in_irq() returns
+> false when invoked from the handler.
+> 
+> The extension of the in_irq() check with !in_serving_softirq() was there
+> when the drivers were added, but in the out of tree FSL BSP the original
+> condition was in_irq() which got extended due to failures on RT.
+> 
+Looks like the initial FSL BSP commit adding this check is:
+edca0b7a448a ("dpaa_eth: Fix Rx-stall issue in threaded ISR")
+https://source.codeaurora.org/external/qoriq/qoriq-yocto-sdk/linux/commit/?h=fsl-sdk-v1.2&id=edca0b7a448ac18ef0a9b1238209b7595d511e19
 
-I've got a SUSE 15.1 install (on ppc64le) that kernel panics on a very
-simple
-test program, built in a slightly unusual way.
+This was done for dpaa_eth and the same logic was reused in caam.
+In the process of upstreaming the development history got lost and
+the comment in dpaa_eth was removed.
 
-I'm compiling on SUSE 12, using gcc 4.8.3. I'm linking to a static
-copy of libcrypto.a (from openssl-1.1.1g), built without threads.
-I have a 10 line C test program that compiles and runs fine on the
-SUSE 12 system. If I compile the same program on SUSE 15.1 (with
-gcc 7.4.1), it runs fine on SUSE 15.1.
+This was back in 2012 on a v3.0.34 kernel.
+Not sure if/how things changed in the meantime, i.e. whether in_irq()
+behaviour when called from softirq changed on -rt kernels (assuming this was
+the problem Priyanka tried solving).
 
-But, if I run the version that I compiled on SUSE 12, on the SUSE 15.1
-system, the call to RAND_status() gets to a malloc() and then panics.
-(And, of course, if I just compile a call to malloc(), that runs fine
-on both systems.) Here's the test program, it's really just a call to
-RAND_status():
+> The usage of in_xxx() in drivers is phased out and Linus clearly requested
+> that code which changes behaviour depending on context should either be
+> separated or the context be conveyed in an argument passed by the caller,
+> which usually knows the context. Right he is, the above construct is
+> clearly showing why.
+> 
+> The following callchains have been analyzed to end up in
+> dpaa_eth_napi_schedule():
+> 
+> qman_p_poll_dqrr()
+>   __poll_portal_fast()
+>     fq->cb.dqrr()
+>        dpaa_eth_napi_schedule()
+> 
+> portal_isr()
+>   __poll_portal_fast()
+>     fq->cb.dqrr()
+>        dpaa_eth_napi_schedule()
+> 
+> Both need to schedule NAPI.
+Only the call from interrupt context.
 
-    #include <stdio.h>
-    #include <openssl/rand.h>
+> The crypto part has another code path leading up to this:
+>   kill_fq()
+>      empty_retired_fq()
+>        qman_p_poll_dqrr()
+>          __poll_portal_fast()
+>             fq->cb.dqrr()
+>                dpaa_eth_napi_schedule()
+> 
+> kill_fq() is called from task context and ends up scheduling NAPI, but
+> that's pointless and an unintended side effect of the !in_serving_softirq()
+> check.
+> 
+Correct.
 
-    int main(int argc, char **argv)
-    {
-        int has_enough_data = RAND_status();
-        printf("The PRNG %s been seeded with enough data\n",
-               has_enough_data ? "HAS" : "has NOT");
-        return 0;
-    }
+> The code path:
+>   caam_qi_poll() -> qman_p_poll_dqrr()
+> 
+> is invoked from NAPI and I *assume* from crypto's NAPI device and not
+> from qbman's NAPI device. I *guess* it is okay to skip scheduling NAPI
+> (because this is what happens now) but could be changed if it is wrong
+> due to `budget' handling.
+> 
+Looks good to me.
 
-openssl is configured/built with:
-    ./config no-shared no-dso no-threads -fPIC -ggdb3 -debug -static
-    make
-
-and the test program is compiled with:
-    gcc -ggdb3 -o rand_test rand_test.c libcrypto.a
-
-The kernel on SUSE 12 is: 3.12.28-4-default
-And glibc is: 2.19
-
-The kernel on SUSE 15.1 is: 4.12.14-197.18-default
-And glibc is: 2.26
-
-In a previous iteration it was panicking in pthread_once(), so
-I compiled openssl without pthreads support, and now it panics
-calling malloc().
-
-If I link to the system-supplied libcrypto.so, it works fine, and
-running the same tests on x86_64 works fine, it's only ppc64le
-that panics, and only running code from the old system on the
-new one.
-
-I'm trying to dig further down into this to come up with a standalone
-test case, but I'm wondering if anything here stands out as a known
-problem, or if someone can point me in the right direction.
+> Add an argument to __poll_portal_fast() which is true if NAPI needs to be
+> scheduled. This requires propagating the value to the caller including
+> `qman_cb_dqrr' typedef which is used by the dpaa and the crypto driver.
+> 
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Cc: "Horia Geantă" <horia.geanta@nxp.com>
+> Cc: Aymen Sghaier <aymen.sghaier@nxp.com>
+> Cc: Herbert XS <herbert@gondor.apana.org.au>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Madalin Bucur <madalin.bucur@nxp.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Li Yang <leoyang.li@nxp.com>
+> Cc: linux-crypto@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-arm-kernel@lists.infradead.org
+Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
 
 Thanks,
-Carl Jacobsen
-
---000000000000504a9a05b325656f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>I&#39;ve got a SUSE 15.1 install (on ppc64le) that ke=
-rnel panics on a very simple<br>test program, built in a slightly unusual w=
-ay.<br><br>I&#39;m compiling on SUSE 12, using gcc 4.8.3. I&#39;m linking t=
-o a static<br>copy of libcrypto.a (from openssl-1.1.1g), built without thre=
-ads.<br>I have a 10 line C test program that compiles and runs fine on the<=
-br>SUSE 12 system. If I compile the same program on SUSE 15.1 (with</div><d=
-iv>gcc 7.4.1), it runs fine on SUSE 15.1.<br><br>But, if I run the version =
-that I compiled on SUSE 12, on the SUSE 15.1<br>system, the call to RAND_st=
-atus() gets to a malloc() and then panics.<br>(And, of course, if I just co=
-mpile a call to malloc(), that runs fine<br>on both systems.) Here&#39;s th=
-e test program, it&#39;s really just a call to<br>RAND_status():<br><br>=C2=
-=A0 =C2=A0 #include &lt;stdio.h&gt;<br>=C2=A0 =C2=A0 #include &lt;openssl/r=
-and.h&gt;<br><br>=C2=A0 =C2=A0 int main(int argc, char **argv)<br>=C2=A0 =
-=C2=A0 {<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 int has_enough_data =3D RAND_status=
-();<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 printf(&quot;The PRNG %s been seeded wit=
-h enough data\n&quot;,<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0has_enough_data ? &quot;HAS&quot; : &quot;has NOT&quot;);<br>=C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 return 0;<br>=C2=A0 =C2=A0 }<br><br>openssl is configu=
-red/built with:<br>=C2=A0 =C2=A0 ./config no-shared no-dso no-threads -fPIC=
- -ggdb3 -debug -static<br>=C2=A0 =C2=A0 make<br><br>and the test program is=
- compiled with:<br>=C2=A0 =C2=A0 gcc -ggdb3 -o rand_test rand_test.c libcry=
-pto.a<br><br>The kernel on SUSE 12 is: 3.12.28-4-default<br>And glibc is: 2=
-.19<br><br>The kernel on SUSE 15.1 is: 4.12.14-197.18-default<br>And glibc =
-is: 2.26<br><br>In a previous iteration it was panicking in pthread_once(),=
- so<br>I compiled openssl without pthreads support, and now it panics<br>ca=
-lling malloc().<br><br>If I link to the system-supplied libcrypto.so, it wo=
-rks fine, and<br>running the same tests on x86_64 works fine, it&#39;s only=
- ppc64le<br>that panics, and only running code from the old system on the</=
-div><div>new one.<br><br>I&#39;m trying to dig further down into this to co=
-me up with a standalone<br>test case, but I&#39;m wondering if anything her=
-e stands out as a known<br>problem, or if someone can point me in the right=
- direction.<br><br>Thanks,<br>Carl Jacobsen</div></div>
-
---000000000000504a9a05b325656f--
+Horia
