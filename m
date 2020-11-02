@@ -2,60 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533EC2A22B3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 02:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 626952A22DA
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 03:00:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CPZZm0N9RzDqXV
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 12:09:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CPbhq2wW8zDqWS
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Nov 2020 13:00:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=XrgDk26V; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=w804GlJ3; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CPZY82J8gzDqQd
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Nov 2020 12:08:27 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1604279303;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4uGtzWR3XDWVzxJPeTJwUrr+92QjqUI1P4Rl6d07MCc=;
- b=XrgDk26VSw3lMWxT80X6p2BiIELFfSd45uXmpqg40hcbZPvcaSEbWpk3R+GxKbboSmpFo7
- 63BVEl/BSGohNcNmokSUofaOuAyVB8TF4zkcITLfRQimdDp0/NzDabt6xoWCRv1KCKeW7F
- JBfHL2Zd4jfQiOa73d8ngQE8XEVUJ3AcbNTfvECT7y8NW8OaNw3Ie/CbXJDQBPmopC0hi6
- 3UpqoW4N6M5pY4xkTcBxiJGRWb665zE7gX5m+PKTKEvvjyV6Hoqyt5gxZLMHwAEcjlgo+r
- WdCkNHrQQLMZuU+RDrUNzqVy0E0MpRf3weVrn07sYqVIDzra4XxQNgHUkZAAnw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1604279303;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4uGtzWR3XDWVzxJPeTJwUrr+92QjqUI1P4Rl6d07MCc=;
- b=w804GlJ3cTjryaWI6xXsdwM5po9NFzF1/LMSPDCaZtr/gWtzM/1QwrA9gqRhs9hURGxtuJ
- nFG9PzKRhgh+hKBA==
-To: LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [patch V2 00/18] mm/highmem: Preemptible variant of kmap_atomic &
- friends
-In-Reply-To: <20201029221806.189523375@linutronix.de>
-References: <20201029221806.189523375@linutronix.de>
-Date: Mon, 02 Nov 2020 02:08:23 +0100
-Message-ID: <87k0v48t14.fsf@nanos.tec.linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CPbfy072WzDqSH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Nov 2020 12:58:32 +1100 (AEDT)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 044FC20140E;
+ Mon,  2 Nov 2020 02:58:28 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id E2269201418;
+ Mon,  2 Nov 2020 02:58:22 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 5A4044029C;
+ Mon,  2 Nov 2020 02:58:16 +0100 (CET)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org, lgirdwood@gmail.com, robh+dt@kernel.org,
+ devicetree@vger.kernel.org
+Subject: [PATCH v3 1/2] ASoC: dt-bindings: fsl_aud2htx: Add binding doc for
+ aud2htx module
+Date: Mon,  2 Nov 2020 09:52:26 +0800
+Message-Id: <1604281947-26874-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,63 +53,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, linux-xtensa@linux-xtensa.org,
- Peter Zijlstra <peterz@infradead.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Ben Segall <bsegall@google.com>, linux-mm@kvack.org,
- Guo Ren <guoren@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- sparclinux@vger.kernel.org, Vincent Chen <deanbo422@gmail.com>,
- Ingo Molnar <mingo@kernel.org>, linux-arch@vger.kernel.org,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, David Airlie <airlied@linux.ie>,
- Mel Gorman <mgorman@suse.de>, linux-snps-arc@lists.infradead.org,
- Ard Biesheuvel <ardb@kernel.org>, Paul McKenney <paulmck@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Steven Rostedt <rostedt@goodmis.org>,
- Linus Torvalds <torvalds@linuxfoundation.org>,
- Greentime Hu <green.hu@gmail.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
- Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Vineet Gupta <vgupta@synopsys.com>, linux-mips@vger.kernel.org,
- Arnd Bergmann <arnd@arndb.de>, Daniel Vetter <daniel@ffwll.ch>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- Daniel Bristot de Oliveira <bristot@redhat.com>, "David
- S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 29 2020 at 23:18, Thomas Gleixner wrote:
->
-> There is also a still to be investigated question from Linus on the initial
-> posting versus the per cpu / per task mapping stack depth which might need
-> to be made larger due to the ability to take page faults within a mapping
-> region.
+AUD2HTX (Audio Subsystem TO HDMI TX Subsystem) is a new
+IP module found on i.MX8MP.
 
-I looked deeper into that and we have a stack depth of 20. That's plenty
-and I couldn't find a way to get above 10 nested ones including faults,
-interrupts, softirqs. With some stress testing I was not able to get over
-a maximum of 6 according to the traceprintk I added.
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+changes in v3:
+- Add additionalProperties
 
-For some obscure reason when CONFIG_DEBUG_HIGHMEM is enabled the stack
-depth is increased from 20 to 41. But the only thing DEBUG_HIGHMEM does
-is to enable a few BUG_ON()'s in the mapping code.
+changes in v2:
+- fix indentation issue
+- remove nodename
 
-That's a leftover from the historical mapping code which had fixed
-entries for various purposes. DEBUG_HIGHMEM inserted guard mappings
-between the map types. But that got all ditched when kmap_atomic()
-switched to a stack based map management. Though the WITH_KM_FENCE magic
-survived without being functional. All the thing does today is to
-increase the stack depth.
+ .../bindings/sound/fsl,aud2htx.yaml           | 66 +++++++++++++++++++
+ 1 file changed, 66 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,aud2htx.yaml
 
-I just made that functional again by keeping the stack depth increase
-and utilizing every second slot. That should catch Willy's mapping
-problem nicely if he bothers to test on 32bit :)
-
-Thanks,
-
-        tglx
+diff --git a/Documentation/devicetree/bindings/sound/fsl,aud2htx.yaml b/Documentation/devicetree/bindings/sound/fsl,aud2htx.yaml
+new file mode 100644
+index 000000000000..aa4be7170717
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/fsl,aud2htx.yaml
+@@ -0,0 +1,66 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sound/fsl,aud2htx.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP Audio Subsystem to HDMI RTX Subsystem Controller
++
++maintainers:
++  - Shengjiu Wang <shengjiu.wang@nxp.com>
++
++properties:
++  compatible:
++    const: fsl,imx8mp-aud2htx
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: Peripheral clock
++
++  clock-names:
++    items:
++      - const: bus
++
++  dmas:
++    items:
++      - description: DMA controller phandle and request line for TX
++
++  dma-names:
++    items:
++      - const: tx
++
++  power-domains:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++  - dmas
++  - dma-names
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/clock/imx8mp-clock.h>
++
++    aud2htx: aud2htx@30cb0000 {
++        compatible = "fsl,imx8mp-aud2htx";
++        reg = <0x30cb0000 0x10000>;
++        interrupts = <GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>;
++        clocks = <&audiomix_clk IMX8MP_CLK_AUDIOMIX_AUD2HTX_IPG>;
++        clock-names = "bus";
++        dmas = <&sdma2 26 2 0>;
++        dma-names = "tx";
++        power-domains = <&audiomix_pd>;
++    };
+-- 
+2.27.0
 
