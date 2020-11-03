@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7DF02A3B8D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 05:55:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3103D2A3B90
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 05:57:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQHXZ6k6NzDqX8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 15:55:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQHZV3wvlzDqX8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 15:57:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=cHjSsYmQ; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+ header.s=20161025 header.b=fJdL0oyW; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQH674cx9zDqRg
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 15:35:59 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id w4so2466554pgg.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Nov 2020 20:35:59 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQH6836nFzDqSK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 15:36:00 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id o129so13118543pfb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Nov 2020 20:36:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=aL7nf5HtJg3suEXS4YOkIp0Q0gZ4/3ZocZ8b4EhkTCU=;
- b=cHjSsYmQ/MBh9G0f9uARXaVWQo+8St3i0wmu/e0d7Ia65160YPnVtkpg8nbR9Xz623
- nSd+VSldI9znwAJiOPVcVIHvuXw7tzS6PRKX4NiIhuaz2YqMwDxYW9bgVs/4lmjsAjsS
- 8RqQkkmWcEdgr7za0J2TvmOpUIDJcGQn2/82Fj+ot//gS1n0lNq77v9jqg/k+KUyRm0Q
- HcfapK715MRjJgtSR1GeU8FqFt4frC7bi7QUhD+WlroKnO7Cd7Ab5zRHZBAzXmtyaD1s
- /rv3yOxsyGSxaMhnJT5XJNy8PwEMw3CimPcGmGwJ1sjPMYfjH4dExWbMjruL/s78aoq2
- 7ZZQ==
+ bh=zZPqzei1Fv+qLr1ovU3GS5sWwxVaLo335Z4KS7ZGWxs=;
+ b=fJdL0oyWTL+Vm/i9FwT/uaT9ipLpQ6hHYfehKxCzfc8o4LjqcwM5nVonyZLH/oTEno
+ GGOqj3nJVOEPsIo9QbM/2mvJqmM9cIp1apVF7QvCqPBQ/zkdVeNrI65gtjsMsxM3YwiC
+ y3s879nQBGq6UeGxuzJqHt9X+i6K6R4vzC/n+/g7W4cHOM3dgpgLQA//DXr1iUexcbQw
+ sXrYqbcM1NzYVgz8xPv1aZb8iGc6QzkXSYqZR+Jcvd/3pnV8LqXBpmO77lB9iv7GRO2I
+ Yqe+I79aAirudLQKBv56iyv8nFGoMfdh05c9CBKASagt8rQB+LWRxVaaTULVxNi5WMsI
+ rHFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=aL7nf5HtJg3suEXS4YOkIp0Q0gZ4/3ZocZ8b4EhkTCU=;
- b=AcQiqw3anQjcCTde3JZaj5JOXRyE93sM0DuO048xUGEBVXEL14RqanfNtI0NGyF1Y3
- AqaRpl45uAvLkwO52SOdwK0P2dc/YLjwDOAu07qfne4wllYT05fJ00WRjmKD/u1fInAO
- rsv2FHKelutt3tVVMJrdTiw+pI0e3N0MdmZnEEPXBGDWsfcbTGHigahf/Trbv6aJas8e
- crsmfZ2HTTgjYhNn62X/8gp2arcCjFYZ+5xdJk7WVBIiIqQFflx2SxrwNXxnzX6S2G5C
- CN9+WFX5BuXeHM0DWWEZdYpfP+xxDHNLRshw8j6SqlKjuBFi8pzCb8OqMLZDsxJH+I6u
- SX/w==
-X-Gm-Message-State: AOAM530jrZJIIW691n4FwjrV+bQLbEP6FA2PQ7UCS+q8oKkculCPTU4M
- xAx8UAFhHFrJJaGlqiF2Qxofl4qsjLQ=
-X-Google-Smtp-Source: ABdhPJw7P/6SoGM1uKywgMGgdl403hwqWRuvrVQvpVZer9+DT9qeakVY6iMRmXHLCr7d4iodBsNIwg==
-X-Received: by 2002:a05:6a00:228a:b029:18b:212a:1af7 with SMTP id
- f10-20020a056a00228ab029018b212a1af7mr3787687pfe.55.1604378156571; 
- Mon, 02 Nov 2020 20:35:56 -0800 (PST)
+ bh=zZPqzei1Fv+qLr1ovU3GS5sWwxVaLo335Z4KS7ZGWxs=;
+ b=kvxouxNXMSaIyEA2GaWMiXmxeIyd3OEgIyDdWiPlSPb7TQM97wcO3abND39yfTzXeC
+ aTXaeKOVflgfgJfE/cwmo1OJVC5iF3OSxxzzd3pCjLOz5l0tiTKozonOvN2otjn/6XSN
+ 8DZG9Ko6la09pL0Hjk1hWBSOXgpIdliQGVIVxiuBDNwL6YFF/vKAfAFjNkvwXhNs+73A
+ rsPFIWRYk+u1vub+Isex2WGeWG35NyeeIRhOFYZnjbqIjeyNdjygJQ5Hgwm6VM/564Nb
+ /IxbE6/B71oOpEKP1BbpAu4xDEtq/QRRIKy2kjjupklQFHi8OkaYyIaJthM3L7xpiKht
+ /Fmg==
+X-Gm-Message-State: AOAM530w+5HEPIVjYFLdIB5+0dR+JrWNK3LpjgqAUHpln7k8tPDAHFVi
+ kvSSFsRcmOpFCfn/AvEip5R1pY9zgUQ=
+X-Google-Smtp-Source: ABdhPJyBV9R7+jJPa3HuIkgMbIzMHSrm7l0/thUO/5jwBMfxK5AlTTJGCiXseDLRxKSxQPQRwFCovw==
+X-Received: by 2002:a63:540d:: with SMTP id i13mr6892505pgb.37.1604378158513; 
+ Mon, 02 Nov 2020 20:35:58 -0800 (PST)
 Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com
  (110-175-254-242.static.tpgi.com.au. [110.175.254.242])
- by smtp.gmail.com with ESMTPSA id o16sm2579116pgn.66.2020.11.02.20.35.54
+ by smtp.gmail.com with ESMTPSA id o16sm2579116pgn.66.2020.11.02.20.35.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Nov 2020 20:35:56 -0800 (PST)
+ Mon, 02 Nov 2020 20:35:58 -0800 (PST)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 11/18] powerpc/amigaone: Move PHB discovery
-Date: Tue,  3 Nov 2020 15:35:16 +1100
-Message-Id: <20201103043523.916109-11-oohall@gmail.com>
+Subject: [PATCH 12/18] powerpc/chrp: Move PHB discovery
+Date: Tue,  3 Nov 2020 15:35:17 +1100
+Message-Id: <20201103043523.916109-12-oohall@gmail.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20201103043523.916109-1-oohall@gmail.com>
 References: <20201103043523.916109-1-oohall@gmail.com>
@@ -87,46 +86,66 @@ Sender: "Linuxppc-dev"
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
-compile tested with amigaone_defconfig
+compile tested with chrp32_defconfig
 ---
- arch/powerpc/platforms/amigaone/setup.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/chrp/pci.c   |  8 ++++++++
+ arch/powerpc/platforms/chrp/setup.c | 12 +-----------
+ 2 files changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/platforms/amigaone/setup.c b/arch/powerpc/platforms/amigaone/setup.c
-index f5d0bf999759..b25ddf39dd43 100644
---- a/arch/powerpc/platforms/amigaone/setup.c
-+++ b/arch/powerpc/platforms/amigaone/setup.c
-@@ -65,6 +65,12 @@ static int __init amigaone_add_bridge(struct device_node *dev)
- }
- 
- void __init amigaone_setup_arch(void)
-+{
-+	if (ppc_md.progress)
-+		ppc_md.progress("Linux/PPC "UTS_RELEASE"\n", 0);
-+}
+diff --git a/arch/powerpc/platforms/chrp/pci.c b/arch/powerpc/platforms/chrp/pci.c
+index b2c2bf35b76c..8c421dc78b28 100644
+--- a/arch/powerpc/platforms/chrp/pci.c
++++ b/arch/powerpc/platforms/chrp/pci.c
+@@ -314,6 +314,14 @@ chrp_find_bridges(void)
+ 		}
+ 	}
+ 	of_node_put(root);
 +
-+void __init amigaone_discover_phbs(void)
- {
- 	struct device_node *np;
- 	int phb = -ENODEV;
-@@ -74,9 +80,6 @@ void __init amigaone_setup_arch(void)
- 		phb = amigaone_add_bridge(np);
- 
- 	BUG_ON(phb != 0);
--
--	if (ppc_md.progress)
--		ppc_md.progress("Linux/PPC "UTS_RELEASE"\n", 0);
++	/*
++	 *  "Temporary" fixes for PCI devices.
++	 *  -- Geert
++	 */
++	hydra_init();		/* Mac I/O */
++
++	pci_create_OF_bus_map();
  }
  
- void __init amigaone_init_IRQ(void)
-@@ -159,6 +162,7 @@ define_machine(amigaone) {
- 	.name			= "AmigaOne",
- 	.probe			= amigaone_probe,
- 	.setup_arch		= amigaone_setup_arch,
-+	.discover_phbs		= amigaone_discover_phbs,
- 	.show_cpuinfo		= amigaone_show_cpuinfo,
- 	.init_IRQ		= amigaone_init_IRQ,
- 	.restart		= amigaone_restart,
+ /* SL82C105 IDE Control/Status Register */
+diff --git a/arch/powerpc/platforms/chrp/setup.c b/arch/powerpc/platforms/chrp/setup.c
+index c45435aa5e36..3cfc382841e5 100644
+--- a/arch/powerpc/platforms/chrp/setup.c
++++ b/arch/powerpc/platforms/chrp/setup.c
+@@ -334,22 +334,11 @@ static void __init chrp_setup_arch(void)
+ 	/* On pegasos, enable the L2 cache if not already done by OF */
+ 	pegasos_set_l2cr();
+ 
+-	/* Lookup PCI host bridges */
+-	chrp_find_bridges();
+-
+-	/*
+-	 *  Temporary fixes for PCI devices.
+-	 *  -- Geert
+-	 */
+-	hydra_init();		/* Mac I/O */
+-
+ 	/*
+ 	 *  Fix the Super I/O configuration
+ 	 */
+ 	sio_init();
+ 
+-	pci_create_OF_bus_map();
+-
+ 	/*
+ 	 * Print the banner, then scroll down so boot progress
+ 	 * can be printed.  -- Cort
+@@ -582,6 +571,7 @@ define_machine(chrp) {
+ 	.name			= "CHRP",
+ 	.probe			= chrp_probe,
+ 	.setup_arch		= chrp_setup_arch,
++	.discover_phbs		= chrp_find_bridges,
+ 	.init			= chrp_init2,
+ 	.show_cpuinfo		= chrp_show_cpuinfo,
+ 	.init_IRQ		= chrp_init_IRQ,
 -- 
 2.26.2
 
