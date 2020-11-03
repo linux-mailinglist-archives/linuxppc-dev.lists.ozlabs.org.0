@@ -1,77 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF1B2A46A1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 14:33:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B0D2A46AD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 14:36:34 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQW203zTlzDqcm
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 00:33:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQW5q0rP6zDqgk
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 00:36:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mhiramat@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=shutemov.name
- (client-ip=2a00:1450:4864:20::242; helo=mail-lj1-x242.google.com;
- envelope-from=kirill@shutemov.name; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=shutemov-name.20150623.gappssmtp.com
- header.i=@shutemov-name.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=izMTq7qx; dkim-atps=neutral
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
- [IPv6:2a00:1450:4864:20::242])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=RbJ7yISc; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQRz44StmzDqLT
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 22:15:28 +1100 (AEDT)
-Received: by mail-lj1-x242.google.com with SMTP id d24so18555542ljg.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Nov 2020 03:15:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=shutemov-name.20150623.gappssmtp.com; s=20150623;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=ncuj71puAub1y9k++6jjBlDK0kArgOgR8TXfNbxvsd8=;
- b=izMTq7qxXBvApfWEFsxvjdUJPgrZuhTimURmEAxHbNo4gFnz/aLq2b7VWGISw5z4df
- T4qAkIJ/wVC4TwenAjvns/G4eV3KtASB7SoA8G7okZ0DlaEStNAMb73QDSEutPwz7Cxr
- 9dwIgPWHz7UWHdA9P9qEfMywjEVY/N8zUXbSYG6q36rmSFiE581fBMYfvokjD/8gAh06
- qYdTpEzw9QcJY1be9GP/o6iEFZwXPue/WXhcJtWuRvtKWCdMX7XpnZXp5E2hc11zR/K7
- 2suAPN+eebeKUXh9rBamFs3h05hvuWg15bi4K5NGwazMJ1rOL7mta6TyCdehAzblBry8
- 3fFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=ncuj71puAub1y9k++6jjBlDK0kArgOgR8TXfNbxvsd8=;
- b=Gu872IwYiZbUQBOrCWJTYuk30WyxalWdSbL0rENwlhKDJBefWZvtjN7kWcKffQtf3n
- otk0Lu6JujdL1q7Yy6/QvPtKohuzeNPo6bFgy2PLNKrIbJam0P5Rk6tEDcERlJZbskXG
- nTKASVPcWYMII7FMXSrfa2Bcezngv5IOMKTlaluBZ6D05yWwvBCKsDNN+r7Gl/7VZkaG
- cedi0WUS5ZdBs0R1/nbwL0Wb8vIyO3SOcz2TK1KaX+t58GufwAraDJl4KZP2gYA4uk0/
- XrzkYeA4VDMhHEyALM3X3eUuT5fuHYYnk2pBiOnYuj91cEDyBTEHI0+vpsfs6CBohy/g
- Whmw==
-X-Gm-Message-State: AOAM530sHo38U53yuzeXaXnV6AT0YaD4jAMhpLYxEaGbBadByeI4bvZW
- 9h4mWQpgpEmeykRAywWtWgf2/g==
-X-Google-Smtp-Source: ABdhPJxjF5BnQdEHGsyL0gaT34gDeSETHtrYJVXOHHeYBc231eIiqfI8v+rYFTL2Y/vLhKT27dJQgw==
-X-Received: by 2002:a2e:b60e:: with SMTP id r14mr8731933ljn.77.1604402123506; 
- Tue, 03 Nov 2020 03:15:23 -0800 (PST)
-Received: from box.localdomain ([86.57.175.117])
- by smtp.gmail.com with ESMTPSA id q22sm3657427lfj.145.2020.11.03.03.15.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Nov 2020 03:15:22 -0800 (PST)
-Received: by box.localdomain (Postfix, from userid 1000)
- id D700710231C; Tue,  3 Nov 2020 14:15:23 +0300 (+03)
-Date: Tue, 3 Nov 2020 14:15:23 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 0/4] arch, mm: improve robustness of direct map
- manipulation
-Message-ID: <20201103111523.zt5q5ypnnccdlque@box>
-References: <20201101170815.9795-1-rppt@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201101170815.9795-1-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQS7w3T98zDqX7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 22:23:08 +1100 (AEDT)
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9561D20731;
+ Tue,  3 Nov 2020 11:22:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1604402584;
+ bh=miw1KmiC65f8YnprkC3dEffuvVzO9uPuxKpkGSzVRd4=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=RbJ7yISctA2KuiVcvuzg/xkeLNmB1YRY1HOsjzx9flqELBpJT1V9eFqxkOc8y30nl
+ f9AVijA5fewrw/jyjA/6vkbIYD43mSjj+o9xEcbJcu99j9cYQ7JyXEnkfrbMcLtlkq
+ iB4AtvCZiedYkRfwXzZKpJ9seDNbEaP4BeKC2E9w=
+Date: Tue, 3 Nov 2020 20:22:57 +0900
+From: Masami Hiramatsu <mhiramat@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH 05/11 v2] kprobes/ftrace: Add recursion protection to
+ the ftrace callback
+Message-Id: <20201103202257.029364fd78492fd8efc360dc@kernel.org>
+In-Reply-To: <20201030214013.824581418@goodmis.org>
+References: <20201030213142.096102821@goodmis.org>
+ <20201030214013.824581418@goodmis.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,39 +58,267 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- linux-arm-kernel@lists.infradead.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- linux-kernel@vger.kernel.org, Pekka Enberg <penberg@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Miroslav Benes <mbenes@suse.cz>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Petr Mladek <pmladek@suse.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Jiri Kosina <jikos@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Masami Hiramatsu <mhiramat@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 01, 2020 at 07:08:11PM +0200, Mike Rapoport wrote:
-> Mike Rapoport (4):
->   mm: introduce debug_pagealloc_map_pages() helper
->   PM: hibernate: make direct map manipulations more explicit
->   arch, mm: restore dependency of __kernel_map_pages() of DEBUG_PAGEALLOC
->   arch, mm: make kernel_page_present() always available
+On Fri, 30 Oct 2020 17:31:47 -0400
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-The series looks good to me (apart from the minor nit):
+> From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+> 
+> If a ftrace callback does not supply its own recursion protection and
+> does not set the RECURSION_SAFE flag in its ftrace_ops, then ftrace will
+> make a helper trampoline to do so before calling the callback instead of
+> just calling the callback directly.
+> 
+> The default for ftrace_ops is going to change. It will expect that handlers
+> provide their own recursion protection, unless its ftrace_ops states
+> otherwise.
+> 
+> Link: https://lkml.kernel.org/r/20201028115613.140212174@goodmis.org
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Guo Ren <guoren@kernel.org>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Heiko Carstens <hca@linux.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: x86@kernel.org
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+> Cc: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-csky@vger.kernel.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-s390@vger.kernel.org
+> Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+> ---
+>  arch/csky/kernel/probes/ftrace.c     | 12 ++++++++++--
+>  arch/parisc/kernel/ftrace.c          | 13 +++++++++++--
+>  arch/powerpc/kernel/kprobes-ftrace.c | 11 ++++++++++-
+>  arch/s390/kernel/ftrace.c            | 13 +++++++++++--
+>  arch/x86/kernel/kprobes/ftrace.c     | 12 ++++++++++--
+>  5 files changed, 52 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/csky/kernel/probes/ftrace.c b/arch/csky/kernel/probes/ftrace.c
+> index 5264763d05be..5eb2604fdf71 100644
+> --- a/arch/csky/kernel/probes/ftrace.c
+> +++ b/arch/csky/kernel/probes/ftrace.c
+> @@ -13,16 +13,21 @@ int arch_check_ftrace_location(struct kprobe *p)
+>  void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  			   struct ftrace_ops *ops, struct pt_regs *regs)
+>  {
+> +	int bit;
+>  	bool lr_saver = false;
+>  	struct kprobe *p;
+>  	struct kprobe_ctlblk *kcb;
+>  
+> -	/* Preempt is disabled by ftrace */
+> +	bit = ftrace_test_recursion_trylock();
+> +	if (bit < 0)
+> +		return;
+> +
+> +	preempt_disable_notrace();
+>  	p = get_kprobe((kprobe_opcode_t *)ip);
+>  	if (!p) {
+>  		p = get_kprobe((kprobe_opcode_t *)(ip - MCOUNT_INSN_SIZE));
+>  		if (unlikely(!p) || kprobe_disabled(p))
+> -			return;
+> +			goto out;
+>  		lr_saver = true;
+>  	}
+>  
+> @@ -56,6 +61,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  		 */
+>  		__this_cpu_write(current_kprobe, NULL);
+>  	}
+> +out:
+> +	preempt_enable_notrace();
+> +	ftrace_test_recursion_unlock(bit);
+>  }
+>  NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+>  
+> diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
+> index 63e3ecb9da81..4b1fdf15662c 100644
+> --- a/arch/parisc/kernel/ftrace.c
+> +++ b/arch/parisc/kernel/ftrace.c
+> @@ -208,13 +208,19 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  {
+>  	struct kprobe_ctlblk *kcb;
+>  	struct kprobe *p = get_kprobe((kprobe_opcode_t *)ip);
+> +	int bit;
+>  
+> -	if (unlikely(!p) || kprobe_disabled(p))
+> +	bit = ftrace_test_recursion_trylock();
+> +	if (bit < 0)
+>  		return;
+>  
+> +	preempt_disable_notrace();
 
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+If we disable preempt here, we also move the get_kprobe() here as below.
+(get_kprobe() accesses percpu variable)
+
+	p = get_kprobe((kprobe_opcode_t *)ip);
+
+
+> +	if (unlikely(!p) || kprobe_disabled(p))
+> +		goto out;
+> +
+>  	if (kprobe_running()) {
+>  		kprobes_inc_nmissed_count(p);
+> -		return;
+> +		goto out;
+>  	}
+>  
+>  	__this_cpu_write(current_kprobe, p);
+> @@ -235,6 +241,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  		}
+>  	}
+>  	__this_cpu_write(current_kprobe, NULL);
+> +out:
+> +	preempt_enable_notrace();
+> +	ftrace_test_recursion_unlock(bit);
+>  }
+>  NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+>  
+> diff --git a/arch/powerpc/kernel/kprobes-ftrace.c b/arch/powerpc/kernel/kprobes-ftrace.c
+> index 972cb28174b2..5df8d50c65ae 100644
+> --- a/arch/powerpc/kernel/kprobes-ftrace.c
+> +++ b/arch/powerpc/kernel/kprobes-ftrace.c
+> @@ -18,10 +18,16 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
+>  {
+>  	struct kprobe *p;
+>  	struct kprobe_ctlblk *kcb;
+> +	int bit;
+>  
+> +	bit = ftrace_test_recursion_trylock();
+> +	if (bit < 0)
+> +		return;
+> +
+> +	preempt_disable_notrace();
+>  	p = get_kprobe((kprobe_opcode_t *)nip);
+>  	if (unlikely(!p) || kprobe_disabled(p))
+> -		return;
+> +		goto out;
+>  
+>  	kcb = get_kprobe_ctlblk();
+>  	if (kprobe_running()) {
+> @@ -52,6 +58,9 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
+>  		 */
+>  		__this_cpu_write(current_kprobe, NULL);
+>  	}
+> +out:
+> +	preempt_enable_notrace();
+> +	ftrace_test_recursion_unlock(bit);
+>  }
+>  NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+>  
+> diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
+> index b388e87a08bf..88466d7fb6b2 100644
+> --- a/arch/s390/kernel/ftrace.c
+> +++ b/arch/s390/kernel/ftrace.c
+> @@ -202,13 +202,19 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  {
+>  	struct kprobe_ctlblk *kcb;
+>  	struct kprobe *p = get_kprobe((kprobe_opcode_t *)ip);
+> +	int bit;
+>  
+> -	if (unlikely(!p) || kprobe_disabled(p))
+> +	bit = ftrace_test_recursion_trylock();
+> +	if (bit < 0)
+>  		return;
+>  
+> +	preempt_disable_notrace();
+
+Ditto.
+
+Others look good to me.
+
+Thank you,
+
+> +	if (unlikely(!p) || kprobe_disabled(p))
+> +		goto out;
+> +
+>  	if (kprobe_running()) {
+>  		kprobes_inc_nmissed_count(p);
+> -		return;
+> +		goto out;
+>  	}
+>  
+>  	__this_cpu_write(current_kprobe, p);
+> @@ -228,6 +234,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  		}
+>  	}
+>  	__this_cpu_write(current_kprobe, NULL);
+> +out:
+> +	preempt_enable_notrace();
+> +	ftrace_test_recursion_unlock(bit);
+>  }
+>  NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+>  
+> diff --git a/arch/x86/kernel/kprobes/ftrace.c b/arch/x86/kernel/kprobes/ftrace.c
+> index 681a4b36e9bb..a40a6cdfcca3 100644
+> --- a/arch/x86/kernel/kprobes/ftrace.c
+> +++ b/arch/x86/kernel/kprobes/ftrace.c
+> @@ -18,11 +18,16 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  {
+>  	struct kprobe *p;
+>  	struct kprobe_ctlblk *kcb;
+> +	int bit;
+>  
+> -	/* Preempt is disabled by ftrace */
+> +	bit = ftrace_test_recursion_trylock();
+> +	if (bit < 0)
+> +		return;
+> +
+> +	preempt_disable_notrace();
+>  	p = get_kprobe((kprobe_opcode_t *)ip);
+>  	if (unlikely(!p) || kprobe_disabled(p))
+> -		return;
+> +		goto out;
+>  
+>  	kcb = get_kprobe_ctlblk();
+>  	if (kprobe_running()) {
+> @@ -52,6 +57,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>  		 */
+>  		__this_cpu_write(current_kprobe, NULL);
+>  	}
+> +out:
+> +	preempt_enable_notrace();
+> +	ftrace_test_recursion_unlock(bit);
+>  }
+>  NOKPROBE_SYMBOL(kprobe_ftrace_handler);
+>  
+> -- 
+> 2.28.0
+> 
+> 
+
 
 -- 
- Kirill A. Shutemov
+Masami Hiramatsu <mhiramat@kernel.org>
