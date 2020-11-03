@@ -1,56 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C132A455A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 13:42:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D4AB2A457A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 13:47:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQTtv3NnMzDqMX
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 23:41:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQV0f0Jh8zDqLF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 23:46:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
+ smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
  helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=UCiLeToK; 
+ header.s=2020 header.b=KJf8zms3; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=iNcZKx8F; 
+ header.a=ed25519-sha256 header.s=2020e header.b=VFptQlcV; 
  dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR3N4w9FzDqSk
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:34:07 +1100 (AEDT)
-Message-Id: <20201103095859.538827102@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR3P50l1zDqTn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:34:09 +1100 (AEDT)
+Message-Id: <20201103095859.632601906@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1604399639;
+ s=2020; t=1604399640;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=37l2/9hMoX995irJwwZT0VNkjmk/OwZo72GhT72QTX4=;
- b=UCiLeToK4AIC+9Dmx7LG5rV2mjuvYVd6Coif2Sdjhi7Si2K86UL165usKvCu+1M57a5ZTs
- 3lGdAzYJonKcTuvyMgrOXNx+UrIY8LVcTVNso2JLtpbkE1oygEe/wl748JnAW6AS6EsTrD
- c2VWZi0Trd4Jp1S58g19SzXtzA+u8eA2qRCth6y4qBL25KfIk14Y8/pIC7Pk9xx9opLe+Y
- fYTupCtZR4FQC2/b1qBabqi8Jfeh2ZKqUrq+V0zmNc17uiUhxxjlvxwBR152OCIcLA02mF
- vb+4tkvTlRO1TXdeUxGxjDkLW4Yer0R+EYHQyA+pAWiyVIPp/wbrw75o+T0ZJw==
+ bh=BkU+tnLkRKR9tWKe3hevtehunqdIqgczXq1AHqpv3q4=;
+ b=KJf8zms3zcTUg/g/XiQKKwBV2+EGVfb2u6h4vllDaW1ez/6EBzhuUPcV5jYjkgK7/2tTNT
+ qa9meb2s93/KBKnvJtf7CaHAT8ZFpd7v/uDOmyc6h4+65DvAL8nMOPTgxeMwXec71wKviC
+ gz+l4oJdNdRF681hb02MgaZ8n1LTFM12pOX0R3Y6kTHEtlSnwJNnKuWAQNeTkLaIi8i7t3
+ B7yCZDHpTZLzl/MKlFABrQ2M+t1vry/EDo/Dfbd7n6CnEj3z8AhqyHdXDUxHJtlLsKb9Iy
+ +K2WT76685XP/mxAZ6mzKSlMAP/ZbKhBPVY2/azsvsrUQ/qHyD8kIOTXSXqhkQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1604399639;
+ s=2020e; t=1604399640;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=37l2/9hMoX995irJwwZT0VNkjmk/OwZo72GhT72QTX4=;
- b=iNcZKx8Fg9QYlTcIp7Z3u6IBgHA5T+EwXNMLuSSTvrJb/3r4DH72OAUwbFyp58bawCPYfQ
- dJ5wikkjaG3JOhAw==
-Date: Tue, 03 Nov 2020 10:27:41 +0100
+ bh=BkU+tnLkRKR9tWKe3hevtehunqdIqgczXq1AHqpv3q4=;
+ b=VFptQlcVWRmmzZcgWUr7xM35WWw+Igz4v/KmNvEZ7Y4AvSm9gz9Y19AW04WlVkG++aOR3h
+ ADLKc+FsTUi0cTDA==
+Date: Tue, 03 Nov 2020 10:27:42 +0100
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 29/37] ARM: mm: Replace kmap_atomic_pfn()
+Subject: [patch V3 30/37] highmem: Remove kmap_atomic_pfn()
 References: <20201103092712.714480842@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -108,63 +109,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is no requirement to disable pagefaults and preemption for these
-cache management mappings.
-
-Replace kmap_atomic_pfn() with kmap_local_pfn(). This allows to remove
-kmap_atomic_pfn() in the next step.
+No more users.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org
 ---
 V3: New patch
 ---
- arch/arm/mm/cache-feroceon-l2.c |    6 +++---
- arch/arm/mm/cache-xsc3l2.c      |    4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ include/linux/highmem-internal.h |   12 ------------
+ 1 file changed, 12 deletions(-)
 
---- a/arch/arm/mm/cache-feroceon-l2.c
-+++ b/arch/arm/mm/cache-feroceon-l2.c
-@@ -49,9 +49,9 @@ static inline unsigned long l2_get_va(un
- 	 * we simply install a virtual mapping for it only for the
- 	 * TLB lookup to occur, hence no need to flush the untouched
- 	 * memory mapping afterwards (note: a cache flush may happen
--	 * in some circumstances depending on the path taken in kunmap_atomic).
-+	 * in some circumstances depending on the path taken in kunmap_local).
- 	 */
--	void *vaddr = kmap_atomic_pfn(paddr >> PAGE_SHIFT);
-+	void *vaddr = kmap_local_pfn(paddr >> PAGE_SHIFT);
- 	return (unsigned long)vaddr + (paddr & ~PAGE_MASK);
- #else
- 	return __phys_to_virt(paddr);
-@@ -61,7 +61,7 @@ static inline unsigned long l2_get_va(un
- static inline void l2_put_va(unsigned long vaddr)
- {
- #ifdef CONFIG_HIGHMEM
--	kunmap_atomic((void *)vaddr);
-+	kunmap_local((void *)vaddr);
- #endif
+--- a/include/linux/highmem-internal.h
++++ b/include/linux/highmem-internal.h
+@@ -99,13 +99,6 @@ static inline void *kmap_atomic(struct p
+ 	return kmap_atomic_prot(page, kmap_prot);
  }
  
---- a/arch/arm/mm/cache-xsc3l2.c
-+++ b/arch/arm/mm/cache-xsc3l2.c
-@@ -59,7 +59,7 @@ static inline void l2_unmap_va(unsigned
+-static inline void *kmap_atomic_pfn(unsigned long pfn)
+-{
+-	preempt_disable();
+-	pagefault_disable();
+-	return __kmap_local_pfn_prot(pfn, kmap_prot);
+-}
+-
+ static inline void __kunmap_atomic(void *addr)
  {
- #ifdef CONFIG_HIGHMEM
- 	if (va != -1)
--		kunmap_atomic((void *)va);
-+		kunmap_local((void *)va);
- #endif
+ 	kunmap_local_indexed(addr);
+@@ -193,11 +186,6 @@ static inline void *kmap_atomic_prot(str
+ 	return kmap_atomic(page);
  }
  
-@@ -75,7 +75,7 @@ static inline unsigned long l2_map_va(un
- 		 * in place for it.
- 		 */
- 		l2_unmap_va(prev_va);
--		va = (unsigned long)kmap_atomic_pfn(pa >> PAGE_SHIFT);
-+		va = (unsigned long)kmap_local_pfn(pa >> PAGE_SHIFT);
- 	}
- 	return va + (pa_offset >> (32 - PAGE_SHIFT));
- #else
+-static inline void *kmap_atomic_pfn(unsigned long pfn)
+-{
+-	return kmap_atomic(pfn_to_page(pfn));
+-}
+-
+ static inline void __kunmap_atomic(void *addr)
+ {
+ #ifdef ARCH_HAS_FLUSH_ON_KUNMAP
 
