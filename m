@@ -1,62 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8FA2A436A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 11:52:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6252A4378
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 11:56:43 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQRSs5NbYzDqXf
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 21:52:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQRYN4ZqDzDq9d
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 21:56:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
+ smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
  helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=rvT54BmE; 
+ header.s=2020 header.b=IBayNHLC; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=lkKBWdK1; 
+ header.a=ed25519-sha256 header.s=2020e header.b=ZQ5pkdX4; 
  dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR2c3xqxzDqTn
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:33:28 +1100 (AEDT)
-Message-Id: <20201103095856.732891880@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR2f1HPFzDqV1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:33:29 +1100 (AEDT)
+Message-Id: <20201103095856.870272797@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1604399605;
+ s=2020; t=1604399606;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=3HwBsgFv26sFcL/ZrR5QT7IdhKdyl722jNSTyAsMfhU=;
- b=rvT54BmES001fwkPfhre2195ODFh8EFwDZYAlKQRhVHUBxAXrQ4jz+GuDaq+7kANpwhtIs
- Odqznja1AON6wOyHEpYXOzN884r1utS39bCLsxNEulHhg56wkK85myPaXmlcyC0Iwy9aJH
- 7H/5d1lmCAyZsRrJM2yBsjEdO5LEmhyrq2wZg4iXyHs50gJQuJK3//uDTtWi4cGXwQajhE
- 6zcImoXr01WpyQwaIvad1lc/klKtM4lT0KI/sOHFnGRyhXmWoqmmzQFg3YIBBqGRZ2BmRY
- OjwLotmGcs5kT4ELYX86H43ZMMJAy6wm+tJXkQgUfKkVJUPub5l/USgVgx610A==
+ bh=mHGaObavEXdpklPpAdB/Vc9tQphwJ4HtjtNI7fLm1v8=;
+ b=IBayNHLC8hDXJPq5spbDcH2wKyiWbuyexwHwfVt89VcAakRhxfizYqbQCAAKER9L/0L/m1
+ Kn6tmBkR3xWZrx6tJ/BA5rsYN4HGNPFD48Ua4frK3vrnlVg9aLM4m5aIJw9ym5mSbN61k5
+ EHHJS0+GcvKD5mXRHapBzJaiaTtrRGQL9/oIkA+EXvVydTfP9WAjd4wBDbJghjylU6Hl+v
+ cbUiIXxIilBIpfO0gAqBvTDU+ZaYnr+9b9dZHzEpb1hZtXN8oqnkWtU4heJMQKd9pbhu3F
+ Udw+2wxDQStY2AooCfpVR6WbhoIEGNiJw2A//IRPpAYo18WAjI/Kj422cg4K+A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1604399605;
+ s=2020e; t=1604399606;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=3HwBsgFv26sFcL/ZrR5QT7IdhKdyl722jNSTyAsMfhU=;
- b=lkKBWdK1CIWHPlUI77sykNxUAemFnakZTPVr751NgUw5N/WO+Qg52P9pTni6F4JYuE0eLl
- 4W0KlbICECLDLgCA==
-Date: Tue, 03 Nov 2020 10:27:14 +0100
+ bh=mHGaObavEXdpklPpAdB/Vc9tQphwJ4HtjtNI7fLm1v8=;
+ b=ZQ5pkdX4DsEbSRpww8iUtueplpi1akZRVpDjtrypi3SvuIOi8H/SrYDmUdCkGKxD3wiqTh
+ yikxYY0p6mIHukBQ==
+Date: Tue, 03 Nov 2020 10:27:15 +0100
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 02/37] highmem: Remove unused functions
+Subject: [patch V3 03/37] fs: Remove asm/kmap_types.h includes
 References: <20201103092712.714480842@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-transfer-encoding: 8-bit
-X-Mailman-Approved-At: Tue, 03 Nov 2020 21:51:16 +1100
+X-Mailman-Approved-At: Tue, 03 Nov 2020 21:51:17 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,7 +72,7 @@ Cc: Juri Lelli <juri.lelli@redhat.com>, linux-aio@kvack.org,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
  Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
  dri-devel@lists.freedesktop.org, virtualization@lists.linux-foundation.org,
- Ben Segall <bsegall@google.com>, Chris Mason <clm@fb.com>,
+ Ben Segall <bsegall@google.com>, linux-mm@kvack.org,
  Huang Rui <ray.huang@amd.com>, Paul Mackerras <paulus@samba.org>,
  Gerd Hoffmann <kraxel@redhat.com>,
  Daniel Bristot de Oliveira <bristot@redhat.com>, sparclinux@vger.kernel.org,
@@ -98,7 +97,7 @@ Cc: Juri Lelli <juri.lelli@redhat.com>, linux-aio@kvack.org,
  Jani Nikula <jani.nikula@linux.intel.com>, Chris Zankel <chris@zankel.net>,
  Michal Simek <monstr@monstr.eu>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>, linux-mm@kvack.org,
+ Nick Hu <nickhu@andestech.com>, Chris Mason <clm@fb.com>,
  Vineet Gupta <vgupta@synopsys.com>, linux-mips@vger.kernel.org,
  Christian Koenig <christian.koenig@amd.com>, Benjamin LaHaise <bcrl@kvack.org>,
  Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
@@ -109,37 +108,40 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nothing uses totalhigh_pages_dec() and totalhigh_pages_set().
+Historical leftovers from the time where kmap() had fixed slots.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Benjamin LaHaise <bcrl@kvack.org>
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-aio@kvack.org
+Cc: Chris Mason <clm@fb.com>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: David Sterba <dsterba@suse.com>
+Cc: linux-btrfs@vger.kernel.org
 ---
-V3: New patch
----
- include/linux/highmem.h |   10 ----------
- 1 file changed, 10 deletions(-)
+ fs/aio.c         |    1 -
+ fs/btrfs/ctree.h |    1 -
+ 2 files changed, 2 deletions(-)
 
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -104,21 +104,11 @@ static inline void totalhigh_pages_inc(v
- 	atomic_long_inc(&_totalhigh_pages);
- }
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -43,7 +43,6 @@
+ #include <linux/mount.h>
+ #include <linux/pseudo_fs.h>
  
--static inline void totalhigh_pages_dec(void)
--{
--	atomic_long_dec(&_totalhigh_pages);
--}
--
- static inline void totalhigh_pages_add(long count)
- {
- 	atomic_long_add(count, &_totalhigh_pages);
- }
+-#include <asm/kmap_types.h>
+ #include <linux/uaccess.h>
+ #include <linux/nospec.h>
  
--static inline void totalhigh_pages_set(long val)
--{
--	atomic_long_set(&_totalhigh_pages, val);
--}
--
- void kmap_flush_unused(void);
- 
- struct page *kmap_to_page(void *addr);
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -17,7 +17,6 @@
+ #include <linux/wait.h>
+ #include <linux/slab.h>
+ #include <trace/events/btrfs.h>
+-#include <asm/kmap_types.h>
+ #include <asm/unaligned.h>
+ #include <linux/pagemap.h>
+ #include <linux/btrfs.h>
 
