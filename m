@@ -2,55 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FDA02A444C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 12:32:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 403C42A4492
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 12:51:59 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQSL71lCjzDq8t
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 22:31:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQSn81tkSzDqZG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 22:51:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
+ smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
  helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=MzJQcnG7; 
+ header.s=2020 header.b=ZQhpZJ3+; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=XmR8b31t; 
+ header.a=ed25519-sha256 header.s=2020e header.b=+Tr1EUdB; 
  dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR2x6jF6zDqVB
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:33:45 +1100 (AEDT)
-Message-Id: <20201103095858.087635810@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR310sF0zDqVD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:33:48 +1100 (AEDT)
+Message-Id: <20201103095858.311016780@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1604399621;
+ s=2020; t=1604399624;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=YX1PQTg2CYVli1gLl/q/qvYrCCx4yPjMZdQxpvOqb9s=;
- b=MzJQcnG7Hz+WnVjX/QphXqk0O0bntgN2gsDf5VGJElp4uliYNV4uOsp61pvjfprfC1w4ug
- dUbF1RL8+Cu7sxJNUd9ZE8BFMV4FMMQD7/dOCUsFl6P5RAvpA5qXrBZSNX4j+rYl1XPxUX
- AQIet4Bc0OzU01D4QqlmvIM8+8k06Btx8LRzmF7O20bC7xf0DwMZHAevt7fKp9hsN9QXm+
- iYKgejtDUgeX5WI+XWYUcgomj3zK5CtFEMlm7xWZmGSw/JwnrrN1VxLJ+3RuXXGUPW3Ctg
- Q1T9R/QFfU90UseKtdt/fOqZIuGj9SDYUse5TaGxhoXL1Sd2qLzKpxO3B3qNrg==
+ bh=Cjsm5AI/c+3evBtpF2KjlIuXYCPOCd9e8tBiUfMlUaw=;
+ b=ZQhpZJ3+kLwAZrJXydOt+PuVIPxDpjWDA6FzsVyeE1usg/G1RiAciJ+g/1ozN8xiuc0c17
+ RaNnUX66QFZ6g+/Md+sO3vjst9IGcsoVU4cMn4smorjv2YRBImN1+rgl0ttOs2hSC2+XZZ
+ G9avgq7GfrZw2d+qivd3YkgN3zLDG+gLAdqZlsS3S5CYxubpcYtuSYKuMNeCyyLY6xUfaB
+ 8CXdUxNwL64hRfu9SIduSwb1Bz7FjieyT0n/nq9XHMdRdrdAtLLKERmntXNNZ9KSP0MqyP
+ J/oz0kwJPhhq7GeT3Gvrytt4up4s+0ead/gIb6+lkesJN+z2l3Xs3f2lPm0k+w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1604399621;
+ s=2020e; t=1604399624;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=YX1PQTg2CYVli1gLl/q/qvYrCCx4yPjMZdQxpvOqb9s=;
- b=XmR8b31tbj1X0jVmftUMRFaXdEEDXToDqeXdj1/uIDvKxc37xVtwQREP5R4agOV29YcpEU
- 4J+a/Nz2vYvNhIDw==
-Date: Tue, 03 Nov 2020 10:27:27 +0100
+ bh=Cjsm5AI/c+3evBtpF2KjlIuXYCPOCd9e8tBiUfMlUaw=;
+ b=+Tr1EUdBI2nqN/XcIr0/XkDukOyzZt/P5QZvNyJzjJ2uWVy7DSbkYWtDbt8rT4wXfOusfx
+ pgPkyLWSr37o52Bw==
+Date: Tue, 03 Nov 2020 10:27:29 +0100
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 15/37] powerpc/mm/highmem: Switch to generic kmap atomic
+Subject: [patch V3 17/37] xtensa/mm/highmem: Switch to generic kmap atomic
 References: <20201103092712.714480842@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -110,196 +111,151 @@ Sender: "Linuxppc-dev"
 No reason having the same code in every architecture
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Cc: linux-xtensa@linux-xtensa.org
 ---
 V3: Remove the kmap types cruft
 ---
- arch/powerpc/Kconfig                  |    1 
- arch/powerpc/include/asm/fixmap.h     |    4 +-
- arch/powerpc/include/asm/highmem.h    |    7 ++-
- arch/powerpc/include/asm/kmap_types.h |   13 ------
- arch/powerpc/mm/Makefile              |    1 
- arch/powerpc/mm/highmem.c             |   67 ----------------------------------
- arch/powerpc/mm/mem.c                 |    7 ---
- 7 files changed, 8 insertions(+), 92 deletions(-)
+ arch/xtensa/Kconfig               |    1 
+ arch/xtensa/include/asm/fixmap.h  |    4 +--
+ arch/xtensa/include/asm/highmem.h |   12 ++++++++-
+ arch/xtensa/mm/highmem.c          |   46 ++++----------------------------------
+ 4 files changed, 18 insertions(+), 45 deletions(-)
 
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -409,6 +409,7 @@ menu "Kernel options"
+--- a/arch/xtensa/Kconfig
++++ b/arch/xtensa/Kconfig
+@@ -666,6 +666,7 @@ endchoice
  config HIGHMEM
- 	bool "High memory support"
- 	depends on PPC32
+ 	bool "High Memory Support"
+ 	depends on MMU
 +	select KMAP_LOCAL
- 
- source "kernel/Kconfig.hz"
- 
---- a/arch/powerpc/include/asm/fixmap.h
-+++ b/arch/powerpc/include/asm/fixmap.h
-@@ -20,7 +20,7 @@
- #include <asm/page.h>
+ 	help
+ 	  Linux can use the full amount of RAM in the system by
+ 	  default. However, the default MMUv2 setup only maps the
+--- a/arch/xtensa/include/asm/fixmap.h
++++ b/arch/xtensa/include/asm/fixmap.h
+@@ -16,7 +16,7 @@
  #ifdef CONFIG_HIGHMEM
  #include <linux/threads.h>
+ #include <linux/pgtable.h>
 -#include <asm/kmap_types.h>
 +#include <asm/kmap_size.h>
  #endif
  
- #ifdef CONFIG_KASAN
-@@ -55,7 +55,7 @@ enum fixed_addresses {
- 	FIX_EARLY_DEBUG_BASE = FIX_EARLY_DEBUG_TOP+(ALIGN(SZ_128K, PAGE_SIZE)/PAGE_SIZE)-1,
- #ifdef CONFIG_HIGHMEM
- 	FIX_KMAP_BEGIN,	/* reserved pte's for temporary kernel mappings */
--	FIX_KMAP_END = FIX_KMAP_BEGIN+(KM_TYPE_NR*NR_CPUS)-1,
-+	FIX_KMAP_END = FIX_KMAP_BEGIN + (KM_MAX_IDX * NR_CPUS) - 1,
- #endif
- #ifdef CONFIG_PPC_8xx
- 	/* For IMMR we need an aligned 512K area */
---- a/arch/powerpc/include/asm/highmem.h
-+++ b/arch/powerpc/include/asm/highmem.h
-@@ -24,12 +24,10 @@
- #ifdef __KERNEL__
- 
- #include <linux/interrupt.h>
--#include <asm/kmap_types.h>
- #include <asm/cacheflush.h>
- #include <asm/page.h>
- #include <asm/fixmap.h>
- 
--extern pte_t *kmap_pte;
- extern pte_t *pkmap_page_table;
- 
  /*
-@@ -60,6 +58,11 @@ extern pte_t *pkmap_page_table;
+@@ -39,7 +39,7 @@ enum fixed_addresses {
+ 	/* reserved pte's for temporary kernel mappings */
+ 	FIX_KMAP_BEGIN,
+ 	FIX_KMAP_END = FIX_KMAP_BEGIN +
+-		(KM_TYPE_NR * NR_CPUS * DCACHE_N_COLORS) - 1,
++		(KM_MAX_IDX * NR_CPUS * DCACHE_N_COLORS) - 1,
+ #endif
+ 	__end_of_fixed_addresses
+ };
+--- a/arch/xtensa/include/asm/highmem.h
++++ b/arch/xtensa/include/asm/highmem.h
+@@ -16,9 +16,8 @@
+ #include <linux/pgtable.h>
+ #include <asm/cacheflush.h>
+ #include <asm/fixmap.h>
+-#include <asm/kmap_types.h>
  
- #define flush_cache_kmaps()	flush_cache_all()
+-#define PKMAP_BASE		((FIXADDR_START - \
++#define PKMAP_BASE		((FIXADDR_START -			\
+ 				  (LAST_PKMAP + 1) * PAGE_SIZE) & PMD_MASK)
+ #define LAST_PKMAP		(PTRS_PER_PTE * DCACHE_N_COLORS)
+ #define LAST_PKMAP_MASK		(LAST_PKMAP - 1)
+@@ -68,6 +67,15 @@ static inline void flush_cache_kmaps(voi
+ 	flush_cache_all();
+ }
  
-+#define arch_kmap_local_post_map(vaddr, pteval)	\
-+	local_flush_tlb_page(NULL, vaddr)
-+#define arch_kmap_local_post_unmap(vaddr)	\
-+	local_flush_tlb_page(NULL, vaddr)
++enum fixed_addresses kmap_local_map_idx(int type, unsigned long pfn);
++#define arch_kmap_local_map_idx		kmap_local_map_idx
 +
- #endif /* __KERNEL__ */
++enum fixed_addresses kmap_local_unmap_idx(int type, unsigned long addr);
++#define arch_kmap_local_unmap_idx	kmap_local_unmap_idx
++
++#define arch_kmap_local_post_unmap(vaddr)	\
++	local_flush_tlb_kernel_range(vaddr, vaddr + PAGE_SIZE)
++
+ void kmap_init(void);
  
- #endif /* _ASM_HIGHMEM_H */
---- a/arch/powerpc/include/asm/kmap_types.h
-+++ /dev/null
-@@ -1,13 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--#ifndef _ASM_POWERPC_KMAP_TYPES_H
--#define _ASM_POWERPC_KMAP_TYPES_H
+ #endif
+--- a/arch/xtensa/mm/highmem.c
++++ b/arch/xtensa/mm/highmem.c
+@@ -12,8 +12,6 @@
+ #include <linux/highmem.h>
+ #include <asm/tlbflush.h>
+ 
+-static pte_t *kmap_pte;
 -
--#ifdef __KERNEL__
--
--/*
-- */
--
--#define KM_TYPE_NR 16
--
--#endif	/* __KERNEL__ */
--#endif	/* _ASM_POWERPC_KMAP_TYPES_H */
---- a/arch/powerpc/mm/Makefile
-+++ b/arch/powerpc/mm/Makefile
-@@ -16,7 +16,6 @@ obj-$(CONFIG_NEED_MULTIPLE_NODES) += num
- obj-$(CONFIG_PPC_MM_SLICES)	+= slice.o
- obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
- obj-$(CONFIG_NOT_COHERENT_CACHE) += dma-noncoherent.o
--obj-$(CONFIG_HIGHMEM)		+= highmem.o
- obj-$(CONFIG_PPC_COPRO_BASE)	+= copro_fault.o
- obj-$(CONFIG_PPC_PTDUMP)	+= ptdump/
- obj-$(CONFIG_KASAN)		+= kasan/
---- a/arch/powerpc/mm/highmem.c
-+++ /dev/null
-@@ -1,67 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * highmem.c: virtual kernel memory mappings for high memory
-- *
-- * PowerPC version, stolen from the i386 version.
-- *
-- * Used in CONFIG_HIGHMEM systems for memory pages which
-- * are not addressable by direct kernel virtual addresses.
-- *
-- * Copyright (C) 1999 Gerhard Wichert, Siemens AG
-- *		      Gerhard.Wichert@pdb.siemens.de
-- *
-- *
-- * Redesigned the x86 32-bit VM architecture to deal with
-- * up to 16 Terrabyte physical memory. With current x86 CPUs
-- * we now support up to 64 Gigabytes physical RAM.
-- *
-- * Copyright (C) 1999 Ingo Molnar <mingo@redhat.com>
-- *
-- * Reworked for PowerPC by various contributors. Moved from
-- * highmem.h by Benjamin Herrenschmidt (c) 2009 IBM Corp.
-- */
--
--#include <linux/highmem.h>
--#include <linux/module.h>
--
+ #if DCACHE_WAY_SIZE > PAGE_SIZE
+ unsigned int last_pkmap_nr_arr[DCACHE_N_COLORS];
+ wait_queue_head_t pkmap_map_wait_arr[DCACHE_N_COLORS];
+@@ -33,59 +31,25 @@ static inline void kmap_waitqueues_init(
+ 
+ static inline enum fixed_addresses kmap_idx(int type, unsigned long color)
+ {
+-	return (type + KM_TYPE_NR * smp_processor_id()) * DCACHE_N_COLORS +
++	return (type + KM_MAX_IDX * smp_processor_id()) * DCACHE_N_COLORS +
+ 		color;
+ }
+ 
 -void *kmap_atomic_high_prot(struct page *page, pgprot_t prot)
--{
++enum fixed_addresses kmap_local_map_idx(int type, unsigned long pfn)
+ {
+-	enum fixed_addresses idx;
 -	unsigned long vaddr;
--	int idx, type;
 -
--	type = kmap_atomic_idx_push();
--	idx = type + KM_TYPE_NR*smp_processor_id();
+-	idx = kmap_idx(kmap_atomic_idx_push(),
+-		       DCACHE_ALIAS(page_to_phys(page)));
 -	vaddr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
--	WARN_ON(IS_ENABLED(CONFIG_DEBUG_HIGHMEM) && !pte_none(*(kmap_pte - idx)));
--	__set_pte_at(&init_mm, vaddr, kmap_pte-idx, mk_pte(page, prot), 1);
--	local_flush_tlb_page(NULL, vaddr);
+-#ifdef CONFIG_DEBUG_HIGHMEM
+-	BUG_ON(!pte_none(*(kmap_pte + idx)));
+-#endif
+-	set_pte(kmap_pte + idx, mk_pte(page, prot));
 -
--	return (void*) vaddr;
--}
+-	return (void *)vaddr;
++	return kmap_idx(type, DCACHE_ALIAS(pfn << PAGE_SHIFT));
+ }
 -EXPORT_SYMBOL(kmap_atomic_high_prot);
--
+ 
 -void kunmap_atomic_high(void *kvaddr)
--{
--	unsigned long vaddr = (unsigned long) kvaddr & PAGE_MASK;
--
--	if (vaddr < __fix_to_virt(FIX_KMAP_END))
--		return;
--
--	if (IS_ENABLED(CONFIG_DEBUG_HIGHMEM)) {
--		int type = kmap_atomic_idx();
--		unsigned int idx;
--
--		idx = type + KM_TYPE_NR * smp_processor_id();
--		WARN_ON(vaddr != __fix_to_virt(FIX_KMAP_BEGIN + idx));
++enum fixed_addresses kmap_local_unmap_idx(int type, unsigned long addr)
+ {
+-	if (kvaddr >= (void *)FIXADDR_START &&
+-	    kvaddr < (void *)FIXADDR_TOP) {
+-		int idx = kmap_idx(kmap_atomic_idx(),
+-				   DCACHE_ALIAS((unsigned long)kvaddr));
 -
 -		/*
--		 * force other mappings to Oops if they'll try to access
--		 * this pte without first remap it
+-		 * Force other mappings to Oops if they'll try to access this
+-		 * pte without first remap it.  Keeping stale mappings around
+-		 * is a bad idea also, in case the page changes cacheability
+-		 * attributes or becomes a protected page in a hypervisor.
 -		 */
--		pte_clear(&init_mm, vaddr, kmap_pte-idx);
--		local_flush_tlb_page(NULL, vaddr);
+-		pte_clear(&init_mm, kvaddr, kmap_pte + idx);
+-		local_flush_tlb_kernel_range((unsigned long)kvaddr,
+-					     (unsigned long)kvaddr + PAGE_SIZE);
+-
+-		kmap_atomic_idx_pop();
 -	}
--
--	kmap_atomic_idx_pop();
--}
++	return kmap_idx(type, DCACHE_ALIAS(addr));
+ }
 -EXPORT_SYMBOL(kunmap_atomic_high);
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -61,11 +61,6 @@
- unsigned long long memory_limit;
- bool init_mem_is_free;
  
--#ifdef CONFIG_HIGHMEM
--pte_t *kmap_pte;
--EXPORT_SYMBOL(kmap_pte);
--#endif
--
- pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
- 			      unsigned long size, pgprot_t vma_prot)
+ void __init kmap_init(void)
  {
-@@ -235,8 +230,6 @@ void __init paging_init(void)
- 
- 	map_kernel_page(PKMAP_BASE, 0, __pgprot(0));	/* XXX gross */
- 	pkmap_page_table = virt_to_kpte(PKMAP_BASE);
+-	unsigned long kmap_vstart;
 -
--	kmap_pte = virt_to_kpte(__fix_to_virt(FIX_KMAP_BEGIN));
- #endif /* CONFIG_HIGHMEM */
- 
- 	printk(KERN_DEBUG "Top of RAM: 0x%llx, Total RAM: 0x%llx\n",
+ 	/* Check if this memory layout is broken because PKMAP overlaps
+ 	 * page table.
+ 	 */
+ 	BUILD_BUG_ON(PKMAP_BASE < TLBTEMP_BASE_1 + TLBTEMP_SIZE);
+-	/* cache the first kmap pte */
+-	kmap_vstart = __fix_to_virt(FIX_KMAP_BEGIN);
+-	kmap_pte = virt_to_kpte(kmap_vstart);
+ 	kmap_waitqueues_init();
+ }
 
