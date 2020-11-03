@@ -1,70 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59152A3B71
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 05:37:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5662A3B73
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 05:39:32 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQH7n3NZZzDqRh
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 15:37:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQHB85l0dzDq7F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 15:39:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=mOn5Qtwn; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ header.s=20161025 header.b=Hf1IB78L; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQH5q1fKyzDqRg
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 15:35:40 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id c20so13099933pfr.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Nov 2020 20:35:40 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQH5q1cwjzDqRf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 15:35:41 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id f21so7967076plr.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Nov 2020 20:35:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=AqH91wod4zhrH4JP+K+qkPgKJrzcevKNxf/fTHSp6M4=;
- b=mOn5Qtwn7PbKBhB16A5c3h6EI5yAQsE7iZyJXGSsBRTgHKE6WKcIc/ExNFbF4TnbfU
- GeHOyr43SWIYaxYDOTNrWUIuA0AgVBk2rWFlNmDxsN5ugpXxCm62vEX68bCty7xoAt/u
- g8Hdw7fl/PinNc8pJRmOFZ4ORrZug3cby5d1FsSyZ9SmyhnDUC08tKvyxX7pussFu54B
- GP67pFRwSAChK10woWkK2ndMr3UuuZ44SLDd0bRX3XQar1b3WoOi0bdYW7ukwFdATrPz
- nW/3MH4M/JBb2pGndpg73ivAhLpjSxxfjyqk7i0oHoxEmJafC3CDYIeI+2xPwy410IKE
- zioA==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=WWQy/KGpQazwEdkBoXJDExW1MCb5ecC1N581bBUcpKY=;
+ b=Hf1IB78Llrn2jHIxERu9ZAwC2jQ9/A4gsm16MfBeBrrK3QZ2YNl+CyH+Wi5Jv1xac7
+ zAAbTg0FhEbuGXkWdyDJMvcfB57m69+UMm1IVVddrRcL9sHI5pNtd5VolQkNklshuQ37
+ ru1fJmU5/eRvtEd/Qtod7ENcj7IFa+TbUu1WY2qOU4SQS4GUjvgbStgWP9RDPvk+AbZ4
+ HnrfdR9WWnPTp60PZFBSTdmPmxocfMui+unK5a17F0g76iaDNgEj3tRVp387ZSLvtUSM
+ 9GcK0eMrKgfWl+azgq1JBY+hI4YtaYNGvXqXJkqNliarJgrT116CQBB0Nae9zWlgbqOU
+ NF2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=AqH91wod4zhrH4JP+K+qkPgKJrzcevKNxf/fTHSp6M4=;
- b=n3fPn2mtADa/f5KDUnv93xJC4HbvEwVEQGk4h5bMq9/NjlhMJMrCBZPEUn6sNSjAtO
- /HBzu3gnvyYgHYoBruZ2BtZurwzjse0cR5N+i7FBPSyfReaP0SedRSW3e1B5W/Qf8OMP
- YQDHAIcywUJIOrsJ22Y24iCXyIieP/w6QWaFeE3mhlrNoW7gaaqWGnTDattfHYGZq3b0
- 2uko3B2ySvDq/P/QrAWXT+6mdPKqM43XzV7yumQpEaFibMBFnTt0mCUzDsRPvcPTXbCe
- QZzvQbPZKZP4YbY+tYLNbnVc7R4Snrhe2DVd+TJ9OcfB3xA2BV31IzENuwpNUycpIh0B
- TOfg==
-X-Gm-Message-State: AOAM5305wivhYG9fWvjl7EaA6Jq1937t4seH0iYKRiUS7spPwDjzyhx1
- grbSnBe/2lgu4bgw0N8HnCT0yRQpA44=
-X-Google-Smtp-Source: ABdhPJx4khg67NY2pkMd8E5bMkHFnYSQB3B9AMGhFlfdun0djEV+IUsho1BbPOXWwIOiufgWQj8d6A==
-X-Received: by 2002:a17:90a:cb91:: with SMTP id
- a17mr1725729pju.220.1604378136343; 
- Mon, 02 Nov 2020 20:35:36 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=WWQy/KGpQazwEdkBoXJDExW1MCb5ecC1N581bBUcpKY=;
+ b=tSoyXL7K6eVPU4PdQq/YAfJivFHJ4nTJzm6K6xnM6e1ilMkKGTq0gmw7uMI6OgQTbs
+ IaRgPnEeaAyukM/S2ubsXzcyf/tEpwb4EJJ2wCYTKz17xMbDVlAdzvvXDmYeK1ncU3TZ
+ cRsivFL6yNMq/5ozzazJhNPtQwZZtWE5bJsNywNg4zKXBOVrTDS81+SqlNolHWyQYb8B
+ 7ctcVRrikunr37PW/Ql3f+eh2CBr7XTVN4onKwzysBSouDAQDYEJCyeGRgUUlhncneXZ
+ 2lSnqlslXB0mbi13/OLsH5e6DDxmJBJIg6HXiyaQZ1MY9FapgscdlXkoWAtirkmhs6r4
+ z3MQ==
+X-Gm-Message-State: AOAM531SEZvA95wmFTEdDxfG7nVa6SMQC5MX2rCotRnHJjw6kQp55Qb8
+ +kY1QL3lLURmkyrJPzjiqCY04ph7a44=
+X-Google-Smtp-Source: ABdhPJyPW0mpxa0vKMcecTbbEuAQqb4YXagTI4+vImJUHJZuHZe9Pcdy2H89TxHjdYIMin8Nah4rbQ==
+X-Received: by 2002:a17:902:bc82:b029:d6:4ee5:87d0 with SMTP id
+ bb2-20020a170902bc82b02900d64ee587d0mr23409710plb.40.1604378138304; 
+ Mon, 02 Nov 2020 20:35:38 -0800 (PST)
 Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com
  (110-175-254-242.static.tpgi.com.au. [110.175.254.242])
- by smtp.gmail.com with ESMTPSA id o16sm2579116pgn.66.2020.11.02.20.35.33
+ by smtp.gmail.com with ESMTPSA id o16sm2579116pgn.66.2020.11.02.20.35.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Nov 2020 20:35:35 -0800 (PST)
+ Mon, 02 Nov 2020 20:35:37 -0800 (PST)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 01/18] powerpc/pci: Add ppc_md.discover_phbs()
-Date: Tue,  3 Nov 2020 15:35:06 +1100
-Message-Id: <20201103043523.916109-1-oohall@gmail.com>
+Subject: [PATCH 02/18] powerpc/{powernv,pseries}: Move PHB discovery
+Date: Tue,  3 Nov 2020 15:35:07 +1100
+Message-Id: <20201103043523.916109-2-oohall@gmail.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20201103043523.916109-1-oohall@gmail.com>
+References: <20201103043523.916109-1-oohall@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,86 +80,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, Oliver O'Halloran <oohall@gmail.com>
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On many powerpc platforms the discovery and initalisation of
-pci_controllers (PHBs) happens inside of setup_arch(). This is very early
-in boot (pre-initcalls) and means that we're initialising the PHB long
-before many basic kernel services (slab allocator, debugfs, a real ioremap)
-are available.
+Make powernv and pseries use ppc_mc.discover_phbs. These two platforms need
+to be done together because they both depends on pci_dn's being created
+from the DT. The pci_dn contains a pointer to the relevant pci_controller
+so they need to be created after the pci_controller structures are
+available, but before  and before PCI devices are scanned. Currently this
+ordering is provided by initcalls and the sequence is:
 
-On PowerNV this causes an additional problem since we map the PHB registers
-with ioremap(). As of commit d538aadc2718 ("powerpc/ioremap: warn on early
-use of ioremap()") a warning is printed because we're using the "incorrect"
-API to setup and MMIO mapping in searly boot. The kernel does provide
-early_ioremap(), but that is not intended to create long-lived MMIO
-mappings and a seperate warning is printed by generic code if
-early_ioremap() mappings are "leaked."
+1. PHBs are discovered (setup_arch) (early boot, pre-initcalls)
+2. pci_dn are created from the unflattended DT (core initcall)
+3. PHBs are scanned pcibios_init() (subsys initcall)
 
-This is all fixable with dumb hacks like using early_ioremap() to setup
-the initial mapping then replacing it with a real ioremap later on in
-boot, but it does raise the question: Why the hell are we setting up the
-PHB's this early in boot?
+The new ppc_md.discover_phbs() function is also a core_initcall so we can't
+guarantee ordering between the creations of pci_controllers and the
+creation of pci_dn's which require a pci_controller. We could use the
+postcore, or core_sync initcall levels, but it's cleaner to just move the
+pci_dn setup into the per-PHB inits which occur inside of .discover_phb()
+for these platforms. This brings the boot-time path in line with the PHB
+hotplug path that is used for pseries DLPAR operations too.
 
-The old and wise claim it's due to "hysterical rasins." Aside from amused
-grapes there doesn't appear to be any real reason to maintain the current
-behaviour. Already most of the newer embedded platforms perform PHB
-discovery in an arch_initcall and between the end of setup_arch() and the
-start of initcalls none of the generic kernel code does anything PCI
-related. On powerpc scanning PHBs occurs in a subsys_initcall so it should
-be possible to move the PHB discovery to a core, postcore or arch initcall.
-
-This patch adds the ppc_md.discover_phbs hook and a core_initcall stub that
-calls it. The core_initcalls are the earliest to be called so this will
-any possibly issues with dependency between initcalls. This isn't just an
-academic issue either since on pseries and PowerNV EEH init occurs in an
-arch_initcall and depends on the pci_controllers being available, similarly
-the creation of pci_dns occurs at core_initcall_sync (i.e. between core and
-postcore initcalls). These problems need to be addressed seperately.
-
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/include/asm/machdep.h |  3 +++
- arch/powerpc/kernel/pci-common.c   | 10 ++++++++++
- 2 files changed, 13 insertions(+)
+ arch/powerpc/kernel/pci_dn.c              | 22 ----------------------
+ arch/powerpc/platforms/powernv/pci-ioda.c |  3 +++
+ arch/powerpc/platforms/powernv/setup.c    |  4 +---
+ arch/powerpc/platforms/pseries/setup.c    |  7 +++++--
+ 4 files changed, 9 insertions(+), 27 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
-index 475687f24f4a..d319160d790c 100644
---- a/arch/powerpc/include/asm/machdep.h
-+++ b/arch/powerpc/include/asm/machdep.h
-@@ -59,6 +59,9 @@ struct machdep_calls {
- 	int		(*pcibios_root_bridge_prepare)(struct pci_host_bridge
- 				*bridge);
- 
-+	/* finds all the pci_controllers present at boot */
-+	void 		(*discover_phbs)(void);
-+
- 	/* To setup PHBs when using automatic OF platform driver for PCI */
- 	int		(*pci_setup_phb)(struct pci_controller *host);
- 
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index be108616a721..6265e7d1c697 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -1625,3 +1625,13 @@ static void fixup_hide_host_resource_fsl(struct pci_dev *dev)
+diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
+index 54e240597fd9..61571ae23953 100644
+--- a/arch/powerpc/kernel/pci_dn.c
++++ b/arch/powerpc/kernel/pci_dn.c
+@@ -481,28 +481,6 @@ void pci_devs_phb_init_dynamic(struct pci_controller *phb)
+ 	pci_traverse_device_nodes(dn, add_pdn, phb);
  }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MOTOROLA, PCI_ANY_ID, fixup_hide_host_resource_fsl);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_FREESCALE, PCI_ANY_ID, fixup_hide_host_resource_fsl);
+ 
+-/** 
+- * pci_devs_phb_init - Initialize phbs and pci devs under them.
+- * 
+- * This routine walks over all phb's (pci-host bridges) on the
+- * system, and sets up assorted pci-related structures 
+- * (including pci info in the device node structs) for each
+- * pci device found underneath.  This routine runs once,
+- * early in the boot sequence.
+- */
+-static int __init pci_devs_phb_init(void)
+-{
+-	struct pci_controller *phb, *tmp;
+-
+-	/* This must be done first so the device nodes have valid pci info! */
+-	list_for_each_entry_safe(phb, tmp, &hose_list, list_node)
+-		pci_devs_phb_init_dynamic(phb);
+-
+-	return 0;
+-}
+-
+-core_initcall(pci_devs_phb_init);
+-
+ static void pci_dev_pdn_setup(struct pci_dev *pdev)
+ {
+ 	struct pci_dn *pdn;
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index 2b4ceb5e6ce4..d6815f03fee3 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -3176,6 +3176,9 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
+ 	/* Remove M64 resource if we can't configure it successfully */
+ 	if (!phb->init_m64 || phb->init_m64(phb))
+ 		hose->mem_resources[1].flags = 0;
 +
++	/* create pci_dn's for DT nodes under this PHB */
++	pci_devs_phb_init_dynamic(hose);
+ }
+ 
+ void __init pnv_pci_init_ioda2_phb(struct device_node *np)
+diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
+index 9acaa0f131b9..92f5fa827909 100644
+--- a/arch/powerpc/platforms/powernv/setup.c
++++ b/arch/powerpc/platforms/powernv/setup.c
+@@ -162,9 +162,6 @@ static void __init pnv_setup_arch(void)
+ 	/* Initialize SMP */
+ 	pnv_smp_init();
+ 
+-	/* Setup PCI */
+-	pnv_pci_init();
+-
+ 	/* Setup RTC and NVRAM callbacks */
+ 	if (firmware_has_feature(FW_FEATURE_OPAL))
+ 		opal_nvram_init();
+@@ -524,6 +521,7 @@ define_machine(powernv) {
+ 	.init_IRQ		= pnv_init_IRQ,
+ 	.show_cpuinfo		= pnv_show_cpuinfo,
+ 	.get_proc_freq          = pnv_get_proc_freq,
++	.discover_phbs		= pnv_pci_init,
+ 	.progress		= pnv_progress,
+ 	.machine_shutdown	= pnv_shutdown,
+ 	.power_save             = NULL,
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 633c45ec406d..e88b30d4b6cd 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -463,7 +463,7 @@ void pseries_little_endian_exceptions(void)
+ }
+ #endif
+ 
+-static void __init find_and_init_phbs(void)
++static void __init pSeries_discover_phbs(void)
+ {
+ 	struct device_node *node;
+ 	struct pci_controller *phb;
+@@ -481,6 +481,9 @@ static void __init find_and_init_phbs(void)
+ 		pci_process_bridge_OF_ranges(phb, node, 0);
+ 		isa_bridge_find_early(phb);
+ 		phb->controller_ops = pseries_pci_controller_ops;
 +
-+int __init discover_phbs(void)
-+{
-+	if (ppc_md.discover_phbs)
-+		ppc_md.discover_phbs();
-+
-+	return 0;
-+}
-+core_initcall(discover_phbs);
++		/* create pci_dn's for DT nodes under this PHB */
++		pci_devs_phb_init_dynamic(phb);
+ 	}
+ 
+ 	of_node_put(root);
+@@ -777,7 +780,6 @@ static void __init pSeries_setup_arch(void)
+ 
+ 	/* Find and initialize PCI host bridges */
+ 	init_pci_config_tokens();
+-	find_and_init_phbs();
+ 	of_reconfig_notifier_register(&pci_dn_reconfig_nb);
+ 
+ 	pSeries_nvram_init();
+@@ -1041,6 +1043,7 @@ define_machine(pseries) {
+ 	.init_IRQ		= pseries_init_irq,
+ 	.show_cpuinfo		= pSeries_show_cpuinfo,
+ 	.log_error		= pSeries_log_error,
++	.discover_phbs		= pSeries_discover_phbs,
+ 	.pcibios_fixup		= pSeries_final_fixup,
+ 	.restart		= rtas_restart,
+ 	.halt			= rtas_halt,
 -- 
 2.26.2
 
