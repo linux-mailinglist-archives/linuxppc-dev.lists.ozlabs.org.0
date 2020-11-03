@@ -1,101 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D3B2A4C66
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 18:13:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9644D2A4C7C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 18:15:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQbw91rfZzDqjd
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 04:13:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQbyr4WnzzDqjd
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 04:15:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ZxIx8/86; dkim-atps=neutral
+ header.s=pp1 header.b=VYgLZZ40; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQbtJ1YvGzDqT5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 04:11:45 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQbwl1yc2zDqN1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 04:13:56 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0A3H4rTv155482; Tue, 3 Nov 2020 12:11:21 -0500
+ 0A3H2Cnk113142; Tue, 3 Nov 2020 12:13:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=7t6VQbq+UBMcFU+y3HOIFcGYkl/sQCQCIRqMqJzFNpU=;
- b=ZxIx8/86AdM8NgrtMHAVOjSE6ZucjR7JjpHqJFK4zf3I5/OfRhgUeMtrsKmJ36ffpf8k
- C9NBHxjYr6tPsuYbqckjzu+mdPKPYwsXiTS28uY/noqrWhLUsUEmTQ0GA0r1l+eX/khz
- UDXJHJM+LzTy6iKiXxqnBbeiiF4MxrqTfNRvlrOaR4HXaVemD403g0cuH69dMTwgM974
- t/GR8iR4Lw4gCuvgMwKkCbyJn7hl6oTRjBpiwEScxTpLZLs9/Z4oqpBs7qQHLS3za7Tr
- IRheA2KlZd0TpHHUOfSCMFnO7tTYtzKhnlCmyxCVvLNH54jWhLl29qoIsjnJ33fCsdo6 Rw== 
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=lRACQRLHLt6q2IrqORhaIKVO9hKLB13qlItsRN6SnwA=;
+ b=VYgLZZ40Pc8lZyr5ot7pllR5RnIwm4qvNRVPhkZo6kjeiLkFro0xr6CEstF10a57hEy+
+ YAeGiTwsC8vpde4IC1oRx0FAYjGGHwFQUF8m3v9GrNEVsmV9P4+fmmoj3qmYVOUTBRaQ
+ WYfVrR9hjKMzJkI+zkoTnCBFf84LY7mdhX0F2bDcfdGI1TmBZBl/rkA6K8P/icJL7+o8
+ ish7seD8XFbrxlxk6Wxl7W86EEWEPD0CQtVHCYSmvqYbr3Y3K/L9S92jXQr/eEQ8ized
+ a6s3ZYinWKGKvE/dEQln76UswfWYdK5rgmgx1be73FLzVd+YrTRb845gFCBYKQh4LYwO ww== 
 Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
  [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34k12uuv2r-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34jyytfcuy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 Nov 2020 12:11:21 -0500
+ Tue, 03 Nov 2020 12:13:42 -0500
 Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0A3H7Qhh018964;
- Tue, 3 Nov 2020 17:11:19 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03ams.nl.ibm.com with ESMTP id 34hm6haqfp-1
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0A3H7JtX018711;
+ Tue, 3 Nov 2020 17:13:40 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 34hm6haqht-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 Nov 2020 17:11:18 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0A3HBGxE2687652
+ Tue, 03 Nov 2020 17:13:40 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0A3HDcHx56033540
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 3 Nov 2020 17:11:16 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A1B51A4055;
- Tue,  3 Nov 2020 17:11:16 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 19EC4A404D;
- Tue,  3 Nov 2020 17:11:16 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.79.178])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  3 Nov 2020 17:11:16 +0000 (GMT)
-Subject: Re: [PATCH] x86/mpx: fix recursive munmap() corruption
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20190401141549.3F4721FE@viggo.jf.intel.com>
- <alpine.DEB.2.21.1904191248090.3174@nanos.tec.linutronix.de>
- <87d0lht1c0.fsf@concordia.ellerman.id.au>
- <6718ede2-1fcb-1a8f-a116-250eef6416c7@linux.vnet.ibm.com>
- <4f43d4d4-832d-37bc-be7f-da0da735bbec@intel.com>
- <4e1bbb14-e14f-8643-2072-17b4cdef5326@linux.vnet.ibm.com>
- <87k1faa2i0.fsf@concordia.ellerman.id.au>
- <9c2b2826-4083-fc9c-5a4d-c101858dd560@linux.vnet.ibm.com>
- <12313ba8-75b5-d44d-dbc0-0bf2c87dfb59@csgroup.eu>
-From: Laurent Dufour <ldufour@linux.vnet.ibm.com>
-Message-ID: <452b347c-0a86-c710-16ba-5a98c12a47e3@linux.vnet.ibm.com>
-Date: Tue, 3 Nov 2020 18:11:15 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.12.1
+ Tue, 3 Nov 2020 17:13:38 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1417952063;
+ Tue,  3 Nov 2020 17:13:38 +0000 (GMT)
+Received: from pomme.tlslab.ibm.com (unknown [9.145.79.178])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id BFEEB52051;
+ Tue,  3 Nov 2020 17:13:37 +0000 (GMT)
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/vdso: Fix VDSO unmap check
+Date: Tue,  3 Nov 2020 18:13:36 +0100
+Message-Id: <20201103171336.98883-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <12313ba8-75b5-d44d-dbc0-0bf2c87dfb59@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
  definitions=2020-11-03_08:2020-11-03,
  2020-11-03 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0
- lowpriorityscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999
- priorityscore=1501 clxscore=1011 impostorscore=0 phishscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ phishscore=0 bulkscore=0
+ impostorscore=0 clxscore=1011 suspectscore=1 priorityscore=1501
+ adultscore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=999 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2011030110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -108,87 +90,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mhocko@suse.com, rguenther@suse.de, linux-mm@kvack.org,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Dave Hansen <dave.hansen@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- luto@amacapital.net, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>, vbabka@suse.cz
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 23/10/2020 à 14:28, Christophe Leroy a écrit :
-> Hi Laurent
-> 
-> Le 07/05/2019 à 18:35, Laurent Dufour a écrit :
->> Le 01/05/2019 à 12:32, Michael Ellerman a écrit :
->>> Laurent Dufour <ldufour@linux.vnet.ibm.com> writes:
->>>> Le 23/04/2019 à 18:04, Dave Hansen a écrit :
->>>>> On 4/23/19 4:16 AM, Laurent Dufour wrote:
->>> ...
->>>>>> There are 2 assumptions here:
->>>>>>    1. 'start' and 'end' are page aligned (this is guaranteed by 
->>>>>> __do_munmap().
->>>>>>    2. the VDSO is 1 page (this is guaranteed by the union vdso_data_store 
->>>>>> on powerpc)
->>>>>
->>>>> Are you sure about #2?  The 'vdso64_pages' variable seems rather
->>>>> unnecessary if the VDSO is only 1 page. ;)
->>>>
->>>> Hum, not so sure now ;)
->>>> I got confused, only the header is one page.
->>>> The test is working as a best effort, and don't cover the case where
->>>> only few pages inside the VDSO are unmmapped (start >
->>>> mm->context.vdso_base). This is not what CRIU is doing and so this was
->>>> enough for CRIU support.
->>>>
->>>> Michael, do you think there is a need to manage all the possibility
->>>> here, since the only user is CRIU and unmapping the VDSO is not a so
->>>> good idea for other processes ?
->>>
->>> Couldn't we implement the semantic that if any part of the VDSO is
->>> unmapped then vdso_base is set to zero? That should be fairly easy, eg:
->>>
->>>     if (start < vdso_end && end >= mm->context.vdso_base)
->>>         mm->context.vdso_base = 0;
->>>
->>>
->>> We might need to add vdso_end to the mm->context, but that should be OK.
->>>
->>> That seems like it would work for CRIU and make sense in general?
->>
->> Sorry for the late answer, yes this would make more sense.
->>
->> Here is a patch doing that.
->>
-> 
-> In your patch, the test seems overkill:
-> 
-> +    if ((start <= vdso_base && vdso_end <= end) ||  /* 1   */
-> +        (vdso_base <= start && start < vdso_end) || /* 3,4 */
-> +        (vdso_base < end && end <= vdso_end))       /* 2,3 */
-> +        mm->context.vdso_base = mm->context.vdso_end = 0;
-> 
-> What about
-> 
->      if (start < vdso_end && vdso_start < end)
->          mm->context.vdso_base = mm->context.vdso_end = 0;
-> 
-> This should cover all cases, or am I missing something ?
-> 
-> 
-> And do we really need to store vdso_end in the context ?
-> I think it should be possible to re-calculate it: the size of the VDSO should be 
-> (&vdso32_end - &vdso32_start) + PAGE_SIZE for 32 bits VDSO, and (&vdso64_end - 
-> &vdso64_start) + PAGE_SIZE for the 64 bits VDSO.
+The check introduced by the commit 83d3f0e90c6c ("powerpc/mm: tracking vDSO
+remap") is wrong and is missing some partial unmaps of the VDSO.
 
-Thanks Christophe for the advise.
+To be complete the check needs the base and end address of the
+VDSO. Currently only the base is available in the mm_context of a task, but
+the end address can easily be computed because the size of VDSO is
+constant. However, there are 2 sizes for 32 or 64 bits task and they are
+stored in static variables in arch/powerpc/kernel/vdso.c.
 
-That is covering all the cases, and indeed is similar to the Michael's proposal 
-I missed last year.
+Exporting a new function called vdso_pages() to get the number of pages of
+the VDSO based on the static variables from arch/powerpc/kernel/vdso.c.
 
-I'll send a patch fixing this issue following your proposal.
+Fixes: 83d3f0e90c6c ("powerpc/mm: tracking vDSO remap")
 
-Cheers,
-Laurent.
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+---
+ arch/powerpc/include/asm/mmu_context.h | 18 ++++++++++++++++--
+ arch/powerpc/kernel/vdso.c             | 14 ++++++++++++++
+ 2 files changed, 30 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
+index e02aa793420b..ced80897b7a1 100644
+--- a/arch/powerpc/include/asm/mmu_context.h
++++ b/arch/powerpc/include/asm/mmu_context.h
+@@ -259,11 +259,25 @@ static inline void enter_lazy_tlb(struct mm_struct *mm,
+ 
+ extern void arch_exit_mmap(struct mm_struct *mm);
+ 
++extern int vdso_pages(void);
+ static inline void arch_unmap(struct mm_struct *mm,
+ 			      unsigned long start, unsigned long end)
+ {
+-	if (start <= mm->context.vdso_base && mm->context.vdso_base < end)
+-		mm->context.vdso_base = 0;
++	unsigned long vdso_end;
++
++	if (mm->context.vdso_base) {
++		/*
++		 * case 1   >  |     VDSO    |  <
++		 * case 2   >  |           < |
++		 * case 3      |  >        < |
++		 * case 4      |  >          |  <
++		 */
++		vdso_end = mm->context.vdso_base;
++		vdso_end += vdso_pages() << PAGE_SHIFT;
++
++		if (start < vdso_end && mm->context.vdso_base < end)
++			mm->context.vdso_base = 0;
++	}
+ }
+ 
+ #ifdef CONFIG_PPC_MEM_KEYS
+diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+index 8dad44262e75..9defa35a1eba 100644
+--- a/arch/powerpc/kernel/vdso.c
++++ b/arch/powerpc/kernel/vdso.c
+@@ -117,6 +117,20 @@ struct lib64_elfinfo
+ 	unsigned long	text;
+ };
+ 
++/*
++ * Return the number of pages of the VDSO for the current task.
++ */
++int vdso_pages(void)
++{
++	int vdso_pages = vdso32_pages;
++
++#ifdef CONFIG_PPC64
++	if (!is_32bit_task())
++		vdso_pages = vdso64_pages;
++#endif
++
++	return vdso_pages + 1; /* Add the data page */
++}
+ 
+ /*
+  * This is called from binfmt_elf, we create the special vma for the
+-- 
+2.29.2
+
