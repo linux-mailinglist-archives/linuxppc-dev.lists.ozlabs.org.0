@@ -2,53 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629C92A39DC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 02:28:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 697622A3A68
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 03:28:26 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQBxz6bJxzDqQG
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 12:28:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQDGv4bGKzDqTR
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 13:28:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=x0jK9pJ7; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQBmb4cv5zDqMg
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 12:20:31 +1100 (AEDT)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 4FEFB222B9;
- Tue,  3 Nov 2020 01:20:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1604366428;
- bh=IXYWi8RdgKIyTCtQm0YBY4aWVoi2cblTRqZHxzm2Psw=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=x0jK9pJ79VniywEftjXhW/+7LH0eqHpREHNoBLPaESOKaT6PpSf+j8x4dkNJjZPBq
- surNknw/JWDqkNeDq8cFtoyqVLPdop3WM6AjK3ch4JdxXVzVPxOuDjpcgmZgTiOhdI
- ZTO+blX+4yQ+crTru5lwZ8z9IVg2g2bEju2eJBXg=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 15/24] scsi: ibmvscsi: Fix potential race after
- loss of transport
-Date: Mon,  2 Nov 2020 20:19:58 -0500
-Message-Id: <20201103012007.183429-15-sashal@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201103012007.183429-1-sashal@kernel.org>
-References: <20201103012007.183429-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQDDz40DjzDqLH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 13:26:43 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=mOIZpq/4; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CQDDz1lnyz9s0b;
+ Tue,  3 Nov 2020 13:26:42 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1604370403;
+ bh=BqT7JctE/zlpiihTd1fDLn7PC/+kOybR9enb4DQTvbY=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=mOIZpq/4wRyJSRNFElpKDYQ2CFBdcjuHTpR3dpC/+EoEW7M95Szd3NNGnlTT5Io54
+ yxFyXBjDNWNULYLFX5llTqKmdfCtemJrfPUAie858ctDvNQaJzlLKXWt2kJMhiA0P2
+ gPvuN+HXhTLbJFYKQMpUUDBaV8U6XmLY9i/qWbV2ghuF9S87sgRU+rwQpM+WOl8pTg
+ jecPAgJjuPR5Fge4uMtDmDwDY0UN7na++d6K9ALTEaEU7C7zc7qvoxhs36rC4lJYqP
+ 9w40eE90uiTGr6KHC+p6M6fCTjUaKq+UGyymftjr9cjL6D8m4Qupi5N1d2ave3SXAc
+ 1bKi+/ylaZnAQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Carl Jacobsen <cjacobsen@storix.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: Kernel panic from malloc() on SUSE 15.1?
+In-Reply-To: <CAKkwB_S6Bs_+5At2aajbQbJg==WE_4NLdhSK=Bj+td67215Htg@mail.gmail.com>
+References: <CAKkwB_S6Bs_+5At2aajbQbJg==WE_4NLdhSK=Bj+td67215Htg@mail.gmail.com>
+Date: Tue, 03 Nov 2020 13:26:41 +1100
+Message-ID: <878sbjuqe6.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,154 +57,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Tyrel Datwyler <tyreld@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-scsi@vger.kernel.org,
- "Martin K . Petersen" <martin.petersen@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Carl Jacobsen <cjacobsen@storix.com> writes:
+> I've got a SUSE 15.1 install (on ppc64le) that kernel panics on a very
+> simple
+> test program, built in a slightly unusual way.
+>
+> I'm compiling on SUSE 12, using gcc 4.8.3. I'm linking to a static
+> copy of libcrypto.a (from openssl-1.1.1g), built without threads.
+> I have a 10 line C test program that compiles and runs fine on the
+> SUSE 12 system. If I compile the same program on SUSE 15.1 (with
+> gcc 7.4.1), it runs fine on SUSE 15.1.
+>
+> But, if I run the version that I compiled on SUSE 12, on the SUSE 15.1
+> system, the call to RAND_status() gets to a malloc() and then panics.
+> (And, of course, if I just compile a call to malloc(), that runs fine
+> on both systems.) Here's the test program, it's really just a call to
+> RAND_status():
+>
+>     #include <stdio.h>
+>     #include <openssl/rand.h>
+>
+>     int main(int argc, char **argv)
+>     {
+>         int has_enough_data = RAND_status();
+>         printf("The PRNG %s been seeded with enough data\n",
+>                has_enough_data ? "HAS" : "has NOT");
+>         return 0;
+>     }
+>
+> openssl is configured/built with:
+>     ./config no-shared no-dso no-threads -fPIC -ggdb3 -debug -static
+>     make
+>
+> and the test program is compiled with:
+>     gcc -ggdb3 -o rand_test rand_test.c libcrypto.a
+>
+> The kernel on SUSE 12 is: 3.12.28-4-default
+> And glibc is: 2.19
+>
+> The kernel on SUSE 15.1 is: 4.12.14-197.18-default
+> And glibc is: 2.26
+>
+> In a previous iteration it was panicking in pthread_once(), so
+> I compiled openssl without pthreads support, and now it panics
+> calling malloc().
 
-[ Upstream commit 665e0224a3d76f36da40bd9012270fa629aa42ed ]
+What's the panic look like?
 
-After a loss of transport due to an adapter migration or crash/disconnect
-from the host partner there is a tiny window where we can race adjusting
-the request_limit of the adapter. The request limit is atomically
-increased/decreased to track the number of inflight requests against the
-allowed limit of our VIOS partner.
-
-After a transport loss we set the request_limit to zero to reflect this
-state.  However, there is a window where the adapter may attempt to queue a
-command because the transport loss event hasn't been fully processed yet
-and request_limit is still greater than zero.  The hypercall to send the
-event will fail and the error path will increment the request_limit as a
-result.  If the adapter processes the transport event prior to this
-increment the request_limit becomes out of sync with the adapter state and
-can result in SCSI commands being submitted on the now reset connection
-prior to an SRP Login resulting in a protocol violation.
-
-Fix this race by protecting request_limit with the host lock when changing
-the value via atomic_set() to indicate no transport.
-
-Link: https://lore.kernel.org/r/20201025001355.4527-1-tyreld@linux.ibm.com
-Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/scsi/ibmvscsi/ibmvscsi.c | 36 +++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
-index c5711c659b517..1ab0a61e3fb59 100644
---- a/drivers/scsi/ibmvscsi/ibmvscsi.c
-+++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
-@@ -806,6 +806,22 @@ static void purge_requests(struct ibmvscsi_host_data *hostdata, int error_code)
- 	spin_unlock_irqrestore(hostdata->host->host_lock, flags);
- }
- 
-+/**
-+ * ibmvscsi_set_request_limit - Set the adapter request_limit in response to
-+ * an adapter failure, reset, or SRP Login. Done under host lock to prevent
-+ * race with SCSI command submission.
-+ * @hostdata:	adapter to adjust
-+ * @limit:	new request limit
-+ */
-+static void ibmvscsi_set_request_limit(struct ibmvscsi_host_data *hostdata, int limit)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(hostdata->host->host_lock, flags);
-+	atomic_set(&hostdata->request_limit, limit);
-+	spin_unlock_irqrestore(hostdata->host->host_lock, flags);
-+}
-+
- /**
-  * ibmvscsi_reset_host - Reset the connection to the server
-  * @hostdata:	struct ibmvscsi_host_data to reset
-@@ -813,7 +829,7 @@ static void purge_requests(struct ibmvscsi_host_data *hostdata, int error_code)
- static void ibmvscsi_reset_host(struct ibmvscsi_host_data *hostdata)
- {
- 	scsi_block_requests(hostdata->host);
--	atomic_set(&hostdata->request_limit, 0);
-+	ibmvscsi_set_request_limit(hostdata, 0);
- 
- 	purge_requests(hostdata, DID_ERROR);
- 	hostdata->action = IBMVSCSI_HOST_ACTION_RESET;
-@@ -1146,13 +1162,13 @@ static void login_rsp(struct srp_event_struct *evt_struct)
- 		dev_info(hostdata->dev, "SRP_LOGIN_REJ reason %u\n",
- 			 evt_struct->xfer_iu->srp.login_rej.reason);
- 		/* Login failed.  */
--		atomic_set(&hostdata->request_limit, -1);
-+		ibmvscsi_set_request_limit(hostdata, -1);
- 		return;
- 	default:
- 		dev_err(hostdata->dev, "Invalid login response typecode 0x%02x!\n",
- 			evt_struct->xfer_iu->srp.login_rsp.opcode);
- 		/* Login failed.  */
--		atomic_set(&hostdata->request_limit, -1);
-+		ibmvscsi_set_request_limit(hostdata, -1);
- 		return;
- 	}
- 
-@@ -1163,7 +1179,7 @@ static void login_rsp(struct srp_event_struct *evt_struct)
- 	 * This value is set rather than added to request_limit because
- 	 * request_limit could have been set to -1 by this client.
- 	 */
--	atomic_set(&hostdata->request_limit,
-+	ibmvscsi_set_request_limit(hostdata,
- 		   be32_to_cpu(evt_struct->xfer_iu->srp.login_rsp.req_lim_delta));
- 
- 	/* If we had any pending I/Os, kick them */
-@@ -1195,13 +1211,13 @@ static int send_srp_login(struct ibmvscsi_host_data *hostdata)
- 	login->req_buf_fmt = cpu_to_be16(SRP_BUF_FORMAT_DIRECT |
- 					 SRP_BUF_FORMAT_INDIRECT);
- 
--	spin_lock_irqsave(hostdata->host->host_lock, flags);
- 	/* Start out with a request limit of 0, since this is negotiated in
- 	 * the login request we are just sending and login requests always
- 	 * get sent by the driver regardless of request_limit.
- 	 */
--	atomic_set(&hostdata->request_limit, 0);
-+	ibmvscsi_set_request_limit(hostdata, 0);
- 
-+	spin_lock_irqsave(hostdata->host->host_lock, flags);
- 	rc = ibmvscsi_send_srp_event(evt_struct, hostdata, login_timeout * 2);
- 	spin_unlock_irqrestore(hostdata->host->host_lock, flags);
- 	dev_info(hostdata->dev, "sent SRP login\n");
-@@ -1781,7 +1797,7 @@ static void ibmvscsi_handle_crq(struct viosrp_crq *crq,
- 		return;
- 	case VIOSRP_CRQ_XPORT_EVENT:	/* Hypervisor telling us the connection is closed */
- 		scsi_block_requests(hostdata->host);
--		atomic_set(&hostdata->request_limit, 0);
-+		ibmvscsi_set_request_limit(hostdata, 0);
- 		if (crq->format == 0x06) {
- 			/* We need to re-setup the interpartition connection */
- 			dev_info(hostdata->dev, "Re-enabling adapter!\n");
-@@ -2137,12 +2153,12 @@ static void ibmvscsi_do_work(struct ibmvscsi_host_data *hostdata)
- 	}
- 
- 	hostdata->action = IBMVSCSI_HOST_ACTION_NONE;
-+	spin_unlock_irqrestore(hostdata->host->host_lock, flags);
- 
- 	if (rc) {
--		atomic_set(&hostdata->request_limit, -1);
-+		ibmvscsi_set_request_limit(hostdata, -1);
- 		dev_err(hostdata->dev, "error after %s\n", action);
- 	}
--	spin_unlock_irqrestore(hostdata->host->host_lock, flags);
- 
- 	scsi_unblock_requests(hostdata->host);
- }
-@@ -2226,7 +2242,7 @@ static int ibmvscsi_probe(struct vio_dev *vdev, const struct vio_device_id *id)
- 	init_waitqueue_head(&hostdata->work_wait_q);
- 	hostdata->host = host;
- 	hostdata->dev = dev;
--	atomic_set(&hostdata->request_limit, -1);
-+	ibmvscsi_set_request_limit(hostdata, -1);
- 	hostdata->host->max_sectors = IBMVSCSI_MAX_SECTORS_DEFAULT;
- 
- 	if (map_persist_bufs(hostdata)) {
--- 
-2.27.0
-
+cheers
