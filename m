@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863952A44F8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 13:20:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6667C2A44FC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 13:23:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQTQ06fLDzDqBZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 23:20:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQTV34mzvzDqdS
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 23:23:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,41 +17,40 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=1VOEfDVF; 
+ header.s=2020 header.b=Sm4ABGoP; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=k835MHfI; 
+ header.a=ed25519-sha256 header.s=2020e header.b=Eh0ljo4B; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR3C0B0PzDqTn
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:33:58 +1100 (AEDT)
-Message-Id: <20201103095858.928160966@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR3C6jkHzDqSk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:33:59 +1100 (AEDT)
+Message-Id: <20201103095859.038791330@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1604399631;
+ s=2020; t=1604399633;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=Sj7ujMQG8Pikgi1SaAA6FKKi3J+PrOgKR0lWBRPpqX0=;
- b=1VOEfDVFZmx2aRF7NIXJWbldvpbKmvKykyskU6rtkXPPBe5nnNLskI8lCCnqQNLk1P1c91
- 566zbE5metNSU87SvaJqZdO2LL+dj1GNHv5VXLRmIMhdOUP3rj4Dx8qV0B13wmRK1bFNxQ
- 4PLxmsGJ9vvRmK4Uu88EHppz5O8hwHizE5bXQlmqSNqaoNPB1luLQDZpvqOg9BqxoBPr/5
- K47wWQw+mNgWsMEn8ZxOVqc5BZXlwl6iZ6HvsxgxfqP3zKGi811pnavdbB0LYfzRw8LVQR
- 1EhOmQs8gjK34B0JgnnXR1HkV23Xx7Jf4rfwhSI5drdF0IeiHwORw9Crw3R5Ng==
+ bh=tCYMT9sD42/kNcpgoljL8m6JeBtj259te8UuGpYvQG8=;
+ b=Sm4ABGoPMJOkLZBj1oVzZ+HnTK7YHGuOEI4Uv2BAl9tmABdR62AcRa74ZjyaD3g8HF6yE/
+ ujL7vDS+VbIVxa4azdnI30MCkRLY0w3+iA6y+v0lLn/hfMN7KyOQP2XFb/CZpLDXkKmTyl
+ f26twI/m8lAwqaFavkF8uD2q0Xr1Pbaw2A+wroGedPRw0Da2kmybXpLfXusfnQwWtHBB1I
+ iuSV1rT2FNiYZx27pq14hXXiwjBqQkoD6pSUP8A4IzwwBvhrT54UsaTOloj2S2Ln2kjBtP
+ QStY+9c8EOnKLxVwKZKoWFgK9hrkcjG9zP6PReTPOZonWa9L41tknuThX1hNkQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1604399631;
+ s=2020e; t=1604399633;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=Sj7ujMQG8Pikgi1SaAA6FKKi3J+PrOgKR0lWBRPpqX0=;
- b=k835MHfI+zh7GQNJZBNkAIxMhS3d2ArgKIVieRXtccdpV7cLYn2RAMdfkD3wEmSj1touvr
- 5EH/hsWNFwf+bWAw==
-Date: Tue, 03 Nov 2020 10:27:35 +0100
+ bh=tCYMT9sD42/kNcpgoljL8m6JeBtj259te8UuGpYvQG8=;
+ b=Eh0ljo4BQlFahZvKHoH95zp8UlUpxfPJ5Oq+6DntBRNC1Z4InsLEvewUzqX4RaGxoO/QVw
+ sBRfP7YwA3GExYDg==
+Date: Tue, 03 Nov 2020 10:27:36 +0100
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 23/37] sched: Make migrate_disable/enable() independent of
- RT
+Subject: [patch V3 24/37] sched: highmem: Store local kmaps in task struct
 References: <20201103092712.714480842@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -75,17 +74,19 @@ Cc: Juri Lelli <juri.lelli@redhat.com>, linux-aio@kvack.org,
  dri-devel@lists.freedesktop.org, virtualization@lists.linux-foundation.org,
  Ben Segall <bsegall@google.com>, Chris Mason <clm@fb.com>,
  Huang Rui <ray.huang@amd.com>, Paul Mackerras <paulus@samba.org>,
- Gerd Hoffmann <kraxel@redhat.com>, sparclinux@vger.kernel.org,
- Vincent Chen <deanbo422@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Vincent Guittot <vincent.guittot@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- Max Filippov <jcmvbkbc@gmail.com>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, David Airlie <airlied@linux.ie>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>, sparclinux@vger.kernel.org,
+ Vincent Chen <deanbo422@gmail.com>, Christoph Hellwig <hch@lst.de>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Paul McKenney <paulmck@kernel.org>, Max Filippov <jcmvbkbc@gmail.com>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ linux-csky@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+ David Airlie <airlied@linux.ie>,
  VMware Graphics <linux-graphics-maintainer@vmware.com>,
  Mel Gorman <mgorman@suse.de>, nouveau@lists.freedesktop.org,
  Dave Airlie <airlied@redhat.com>, linux-snps-arc@lists.infradead.org,
  Ben Skeggs <bskeggs@redhat.com>, linux-xtensa@linux-xtensa.org,
- Paul McKenney <paulmck@kernel.org>, intel-gfx@lists.freedesktop.org,
+ Arnd Bergmann <arnd@arndb.de>, intel-gfx@lists.freedesktop.org,
  Roland Scheidegger <sroland@vmware.com>, Josef Bacik <josef@toxicpanda.com>,
  Steven Rostedt <rostedt@goodmis.org>,
  Linus Torvalds <torvalds@linuxfoundation.org>,
@@ -97,285 +98,303 @@ Cc: Juri Lelli <juri.lelli@redhat.com>, linux-aio@kvack.org,
  Michal Simek <monstr@monstr.eu>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
  Nick Hu <nickhu@andestech.com>, linux-mm@kvack.org,
- Vineet Gupta <vgupta@synopsys.com>, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
- Benjamin LaHaise <bcrl@kvack.org>, Daniel Vetter <daniel@ffwll.ch>,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Daniel Bristot de Oliveira <bristot@redhat.com>,
+ Vineet Gupta <vgupta@synopsys.com>, linux-mips@vger.kernel.org,
+ Christian Koenig <christian.koenig@amd.com>, Benjamin LaHaise <bcrl@kvack.org>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
  "David S. Miller" <davem@davemloft.net>, linux-btrfs@vger.kernel.org,
  Greentime Hu <green.hu@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that the scheduler can deal with migrate disable properly, there is no
-real compelling reason to make it only available for RT.
+Instead of storing the map per CPU provide and use per task storage. That
+prepares for local kmaps which are preemptible.
 
-There are quite some code pathes which needlessly disable preemption in
-order to prevent migration and some constructs like kmap_atomic() enforce
-it implicitly.
+The context switch code is preparatory and not yet in use because
+kmap_atomic() runs with preemption disabled. Will be made usable in the
+next step.
 
-Making it available independent of RT allows to provide a preemptible
-variant of kmap_atomic() and makes the code more consistent in general.
+The context switch logic is safe even when an interrupt happens after
+clearing or before restoring the kmaps. The kmap index in task struct is
+not modified so any nesting kmap in an interrupt will use unused indices
+and on return the counter is the same as before.
 
-FIXME: Rework the comment in preempt.h
+Also add an assert into the return to user space code. Going back to user
+space with an active kmap local is a nono.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
 ---
- include/linux/kernel.h  |   21 ++++++++++++++-------
- include/linux/preempt.h |   38 +++-----------------------------------
- include/linux/sched.h   |    2 +-
- kernel/sched/core.c     |   45 +++++++++++++++++++++++++++++++++++----------
- kernel/sched/sched.h    |    4 ++--
- lib/smp_processor_id.c  |    2 +-
- 6 files changed, 56 insertions(+), 56 deletions(-)
+V3: Handle the debug case correctly
+---
+ include/linux/highmem-internal.h |   10 +++
+ include/linux/sched.h            |    9 +++
+ kernel/entry/common.c            |    2 
+ kernel/fork.c                    |    1 
+ kernel/sched/core.c              |   18 +++++++
+ mm/highmem.c                     |   99 +++++++++++++++++++++++++++++++++++----
+ 6 files changed, 129 insertions(+), 10 deletions(-)
 
---- a/include/linux/kernel.h
-+++ b/include/linux/kernel.h
-@@ -204,6 +204,7 @@ extern int _cond_resched(void);
- extern void ___might_sleep(const char *file, int line, int preempt_offset);
- extern void __might_sleep(const char *file, int line, int preempt_offset);
- extern void __cant_sleep(const char *file, int line, int preempt_offset);
-+extern void __cant_migrate(const char *file, int line);
- 
- /**
-  * might_sleep - annotation for functions that can sleep
-@@ -227,6 +228,18 @@ extern void __cant_sleep(const char *fil
- # define cant_sleep() \
- 	do { __cant_sleep(__FILE__, __LINE__, 0); } while (0)
- # define sched_annotate_sleep()	(current->task_state_change = 0)
-+
-+/**
-+ * cant_migrate - annotation for functions that cannot migrate
-+ *
-+ * Will print a stack trace if executed in code which is migratable
-+ */
-+# define cant_migrate()							\
-+	do {								\
-+		if (IS_ENABLED(CONFIG_SMP))				\
-+			__cant_migrate(__FILE__, __LINE__);		\
-+	} while (0)
-+
- /**
-  * non_block_start - annotate the start of section where sleeping is prohibited
-  *
-@@ -251,6 +264,7 @@ extern void __cant_sleep(const char *fil
- 				   int preempt_offset) { }
- # define might_sleep() do { might_resched(); } while (0)
- # define cant_sleep() do { } while (0)
-+# define cant_migrate()		do { } while (0)
- # define sched_annotate_sleep() do { } while (0)
- # define non_block_start() do { } while (0)
- # define non_block_end() do { } while (0)
-@@ -258,13 +272,6 @@ extern void __cant_sleep(const char *fil
- 
- #define might_sleep_if(cond) do { if (cond) might_sleep(); } while (0)
- 
--#ifndef CONFIG_PREEMPT_RT
--# define cant_migrate()		cant_sleep()
--#else
--  /* Placeholder for now */
--# define cant_migrate()		do { } while (0)
--#endif
--
- /**
-  * abs - return absolute value of an argument
-  * @x: the value.  If it is unsigned type, it is converted to signed type first.
---- a/include/linux/preempt.h
-+++ b/include/linux/preempt.h
-@@ -322,7 +322,7 @@ static inline void preempt_notifier_init
- 
+--- a/include/linux/highmem-internal.h
++++ b/include/linux/highmem-internal.h
+@@ -9,6 +9,16 @@
+ void *__kmap_local_pfn_prot(unsigned long pfn, pgprot_t prot);
+ void *__kmap_local_page_prot(struct page *page, pgprot_t prot);
+ void kunmap_local_indexed(void *vaddr);
++void kmap_local_fork(struct task_struct *tsk);
++void __kmap_local_sched_out(void);
++void __kmap_local_sched_in(void);
++static inline void kmap_assert_nomap(void)
++{
++	DEBUG_LOCKS_WARN_ON(current->kmap_ctrl.idx);
++}
++#else
++static inline void kmap_local_fork(struct task_struct *tsk) { }
++static inline void kmap_assert_nomap(void) { }
  #endif
  
--#if defined(CONFIG_SMP) && defined(CONFIG_PREEMPT_RT)
-+#ifdef CONFIG_SMP
- 
- /*
-  * Migrate-Disable and why it is undesired.
-@@ -382,43 +382,11 @@ static inline void preempt_notifier_init
- extern void migrate_disable(void);
- extern void migrate_enable(void);
- 
--#elif defined(CONFIG_PREEMPT_RT)
-+#else
- 
- static inline void migrate_disable(void) { }
- static inline void migrate_enable(void) { }
- 
--#else /* !CONFIG_PREEMPT_RT */
--
--/**
-- * migrate_disable - Prevent migration of the current task
-- *
-- * Maps to preempt_disable() which also disables preemption. Use
-- * migrate_disable() to annotate that the intent is to prevent migration,
-- * but not necessarily preemption.
-- *
-- * Can be invoked nested like preempt_disable() and needs the corresponding
-- * number of migrate_enable() invocations.
-- */
--static __always_inline void migrate_disable(void)
--{
--	preempt_disable();
--}
--
--/**
-- * migrate_enable - Allow migration of the current task
-- *
-- * Counterpart to migrate_disable().
-- *
-- * As migrate_disable() can be invoked nested, only the outermost invocation
-- * reenables migration.
-- *
-- * Currently mapped to preempt_enable().
-- */
--static __always_inline void migrate_enable(void)
--{
--	preempt_enable();
--}
--
--#endif /* CONFIG_SMP && CONFIG_PREEMPT_RT */
-+#endif /* CONFIG_SMP */
- 
- #endif /* __LINUX_PREEMPT_H */
+ #ifdef CONFIG_HIGHMEM
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -715,7 +715,7 @@ struct task_struct {
- 	const cpumask_t			*cpus_ptr;
- 	cpumask_t			cpus_mask;
- 	void				*migration_pending;
--#if defined(CONFIG_SMP) && defined(CONFIG_PREEMPT_RT)
-+#ifdef CONFIG_SMP
- 	unsigned short			migration_disabled;
+@@ -34,6 +34,7 @@
+ #include <linux/rseq.h>
+ #include <linux/seqlock.h>
+ #include <linux/kcsan.h>
++#include <asm/kmap_size.h>
+ 
+ /* task_struct member predeclarations (sorted alphabetically): */
+ struct audit_context;
+@@ -629,6 +630,13 @@ struct wake_q_node {
+ 	struct wake_q_node *next;
+ };
+ 
++struct kmap_ctrl {
++#ifdef CONFIG_KMAP_LOCAL
++	int				idx;
++	pte_t				pteval[KM_TYPE_NR];
++#endif
++};
++
+ struct task_struct {
+ #ifdef CONFIG_THREAD_INFO_IN_TASK
+ 	/*
+@@ -1294,6 +1302,7 @@ struct task_struct {
+ 	unsigned int			sequential_io;
+ 	unsigned int			sequential_io_avg;
  #endif
- 	unsigned short			migration_flags;
++	struct kmap_ctrl		kmap_ctrl;
+ #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
+ 	unsigned long			task_state_change;
+ #endif
+--- a/kernel/entry/common.c
++++ b/kernel/entry/common.c
+@@ -2,6 +2,7 @@
+ 
+ #include <linux/context_tracking.h>
+ #include <linux/entry-common.h>
++#include <linux/highmem.h>
+ #include <linux/livepatch.h>
+ #include <linux/audit.h>
+ 
+@@ -194,6 +195,7 @@ static void exit_to_user_mode_prepare(st
+ 
+ 	/* Ensure that the address limit is intact and no locks are held */
+ 	addr_limit_user_check();
++	kmap_assert_nomap();
+ 	lockdep_assert_irqs_disabled();
+ 	lockdep_sys_exit();
+ }
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -930,6 +930,7 @@ static struct task_struct *dup_task_stru
+ 	account_kernel_stack(tsk, 1);
+ 
+ 	kcov_task_init(tsk);
++	kmap_local_fork(tsk);
+ 
+ #ifdef CONFIG_FAULT_INJECTION
+ 	tsk->fail_nth = 0;
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -1696,8 +1696,6 @@ void check_preempt_curr(struct rq *rq, s
+@@ -4053,6 +4053,22 @@ static inline void finish_lock_switch(st
+ # define finish_arch_post_lock_switch()	do { } while (0)
+ #endif
  
- #ifdef CONFIG_SMP
- 
--#ifdef CONFIG_PREEMPT_RT
--
- static void
- __do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask, u32 flags);
- 
-@@ -1772,8 +1770,6 @@ static inline bool rq_has_pinned_tasks(s
- 	return rq->nr_pinned;
++static inline void kmap_local_sched_out(void)
++{
++#ifdef CONFIG_KMAP_LOCAL
++	if (unlikely(current->kmap_ctrl.idx))
++		__kmap_local_sched_out();
++#endif
++}
++
++static inline void kmap_local_sched_in(void)
++{
++#ifdef CONFIG_KMAP_LOCAL
++	if (unlikely(current->kmap_ctrl.idx))
++		__kmap_local_sched_in();
++#endif
++}
++
+ /**
+  * prepare_task_switch - prepare to switch tasks
+  * @rq: the runqueue preparing to switch
+@@ -4075,6 +4091,7 @@ prepare_task_switch(struct rq *rq, struc
+ 	perf_event_task_sched_out(prev, next);
+ 	rseq_preempt(prev);
+ 	fire_sched_out_preempt_notifiers(prev, next);
++	kmap_local_sched_out();
+ 	prepare_task(next);
+ 	prepare_arch_switch(next);
  }
+@@ -4141,6 +4158,7 @@ static struct rq *finish_task_switch(str
+ 	finish_lock_switch(rq);
+ 	finish_arch_post_lock_switch();
+ 	kcov_finish_switch(current);
++	kmap_local_sched_in();
  
--#endif
+ 	fire_sched_in_preempt_notifiers(current);
+ 	/*
+--- a/mm/highmem.c
++++ b/mm/highmem.c
+@@ -365,8 +365,6 @@ EXPORT_SYMBOL(kunmap_high);
+ 
+ #include <asm/kmap_size.h>
+ 
+-static DEFINE_PER_CPU(int, __kmap_local_idx);
 -
  /*
-  * Per-CPU kthreads are allowed to run on !active && online CPUs, see
-  * __set_cpus_allowed_ptr() and select_fallback_rq().
-@@ -2841,7 +2837,7 @@ void sched_set_stop_task(int cpu, struct
- 	}
- }
+  * With DEBUG_HIGHMEM the stack depth is doubled and every second
+  * slot is unused which acts as a guard page
+@@ -379,23 +377,21 @@ static DEFINE_PER_CPU(int, __kmap_local_
  
--#else
-+#else /* CONFIG_SMP */
- 
- static inline int __set_cpus_allowed_ptr(struct task_struct *p,
- 					 const struct cpumask *new_mask,
-@@ -2850,10 +2846,6 @@ static inline int __set_cpus_allowed_ptr
- 	return set_cpus_allowed_ptr(p, new_mask);
- }
- 
--#endif /* CONFIG_SMP */
--
--#if !defined(CONFIG_SMP) || !defined(CONFIG_PREEMPT_RT)
--
- static inline void migrate_disable_switch(struct rq *rq, struct task_struct *p) { }
- 
- static inline bool rq_has_pinned_tasks(struct rq *rq)
-@@ -2861,7 +2853,7 @@ static inline bool rq_has_pinned_tasks(s
- 	return false;
- }
- 
--#endif
-+#endif /* !CONFIG_SMP */
- 
- static void
- ttwu_stat(struct task_struct *p, int cpu, int wake_flags)
-@@ -7883,6 +7875,39 @@ void __cant_sleep(const char *file, int
- 	add_taint(TAINT_WARN, LOCKDEP_STILL_OK);
- }
- EXPORT_SYMBOL_GPL(__cant_sleep);
-+
-+#ifdef CONFIG_SMP
-+void __cant_migrate(const char *file, int line)
-+{
-+	static unsigned long prev_jiffy;
-+
-+	if (irqs_disabled())
-+		return;
-+
-+	if (is_migration_disabled(current))
-+		return;
-+
-+	if (!IS_ENABLED(CONFIG_PREEMPT_COUNT))
-+		return;
-+
-+	if (preempt_count() > 0)
-+		return;
-+
-+	if (time_before(jiffies, prev_jiffy + HZ) && prev_jiffy)
-+		return;
-+	prev_jiffy = jiffies;
-+
-+	pr_err("BUG: assuming non migratable context at %s:%d\n", file, line);
-+	pr_err("in_atomic(): %d, irqs_disabled(): %d, migration_disabled() %u pid: %d, name: %s\n",
-+	       in_atomic(), irqs_disabled(), is_migration_disabled(current),
-+	       current->pid, current->comm);
-+
-+	debug_show_held_locks(current);
-+	dump_stack();
-+	add_taint(TAINT_WARN, LOCKDEP_STILL_OK);
-+}
-+EXPORT_SYMBOL_GPL(__cant_migrate);
-+#endif
- #endif
- 
- #ifdef CONFIG_MAGIC_SYSRQ
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1056,7 +1056,7 @@ struct rq {
- 	struct cpuidle_state	*idle_state;
- #endif
- 
--#if defined(CONFIG_PREEMPT_RT) && defined(CONFIG_SMP)
-+#ifdef CONFIG_SMP
- 	unsigned int		nr_pinned;
- #endif
- 	unsigned int		push_busy;
-@@ -1092,7 +1092,7 @@ static inline int cpu_of(struct rq *rq)
- 
- static inline bool is_migration_disabled(struct task_struct *p)
+ static inline int kmap_local_idx_push(void)
  {
--#if defined(CONFIG_SMP) && defined(CONFIG_PREEMPT_RT)
-+#ifdef CONFIG_SMP
- 	return p->migration_disabled;
- #else
- 	return false;
---- a/lib/smp_processor_id.c
-+++ b/lib/smp_processor_id.c
-@@ -26,7 +26,7 @@ unsigned int check_preemption_disabled(c
- 	if (current->nr_cpus_allowed == 1)
- 		goto out;
+-	int idx = __this_cpu_add_return(__kmap_local_idx, KM_INCR) - 1;
+-
+ 	WARN_ON_ONCE(in_irq() && !irqs_disabled());
+-	BUG_ON(idx >= KM_MAX_IDX);
+-	return idx;
++	current->kmap_ctrl.idx += KM_INCR;
++	BUG_ON(current->kmap_ctrl.idx >= KM_TYPE_NR);
++	return current->kmap_ctrl.idx - 1;
+ }
  
--#if defined(CONFIG_SMP) && defined(CONFIG_PREEMPT_RT)
-+#ifdef CONFIG_SMP
- 	if (current->migration_disabled)
- 		goto out;
+ static inline int kmap_local_idx(void)
+ {
+-	return __this_cpu_read(__kmap_local_idx) - 1;
++	return current->kmap_ctrl.idx - 1;
+ }
+ 
+ static inline void kmap_local_idx_pop(void)
+ {
+-	int idx = __this_cpu_sub_return(__kmap_local_idx, KM_INCR);
+-
+-	BUG_ON(idx < 0);
++	current->kmap_ctrl.idx -= KM_INCR;
++	BUG_ON(current->kmap_ctrl.idx < 0);
+ }
+ 
+ #ifndef arch_kmap_local_post_map
+@@ -461,6 +457,7 @@ void *__kmap_local_pfn_prot(unsigned lon
+ 	pteval = pfn_pte(pfn, prot);
+ 	set_pte_at(&init_mm, vaddr, kmap_pte - idx, pteval);
+ 	arch_kmap_local_post_map(vaddr, pteval);
++	current->kmap_ctrl.pteval[kmap_local_idx()] = pteval;
+ 	preempt_enable();
+ 
+ 	return (void *)vaddr;
+@@ -505,10 +502,92 @@ void kunmap_local_indexed(void *vaddr)
+ 	arch_kmap_local_pre_unmap(addr);
+ 	pte_clear(&init_mm, addr, kmap_pte - idx);
+ 	arch_kmap_local_post_unmap(addr);
++	current->kmap_ctrl.pteval[kmap_local_idx()] = __pte(0);
+ 	kmap_local_idx_pop();
+ 	preempt_enable();
+ }
+ EXPORT_SYMBOL(kunmap_local_indexed);
++
++/*
++ * Invoked before switch_to(). This is safe even when during or after
++ * clearing the maps an interrupt which needs a kmap_local happens because
++ * the task::kmap_ctrl.idx is not modified by the unmapping code so a
++ * nested kmap_local will use the next unused index and restore the index
++ * on unmap. The already cleared kmaps of the outgoing task are irrelevant
++ * because the interrupt context does not know about them. The same applies
++ * when scheduling back in for an interrupt which happens before the
++ * restore is complete.
++ */
++void __kmap_local_sched_out(void)
++{
++	struct task_struct *tsk = current;
++	pte_t *kmap_pte = kmap_get_pte();
++	int i;
++
++	/* Clear kmaps */
++	for (i = 0; i < tsk->kmap_ctrl.idx; i++) {
++		pte_t pteval = tsk->kmap_ctrl.pteval[i];
++		unsigned long addr;
++		int idx;
++
++		/* With debug all even slots are unmapped and act as guard */
++		if (IS_ENABLED(CONFIG_DEBUG_HIGHMEM) && !(i & 0x01)) {
++			WARN_ON_ONCE(!pte_none(pteval));
++			continue;
++		}
++		if (WARN_ON_ONCE(pte_none(pteval)))
++			continue;
++
++		/*
++		 * This is a horrible hack for XTENSA to calculate the
++		 * coloured PTE index. Uses the PFN encoded into the pteval
++		 * and the map index calculation because the actual mapped
++		 * virtual address is not stored in task::kmap_ctrl.
++		 * For any sane architecture this is optimized out.
++		 */
++		idx = arch_kmap_local_map_idx(i, pte_pfn(pteval));
++
++		addr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
++		arch_kmap_local_pre_unmap(addr);
++		pte_clear(&init_mm, addr, kmap_pte - idx);
++		arch_kmap_local_post_unmap(addr);
++	}
++}
++
++void __kmap_local_sched_in(void)
++{
++	struct task_struct *tsk = current;
++	pte_t *kmap_pte = kmap_get_pte();
++	int i;
++
++	/* Restore kmaps */
++	for (i = 0; i < tsk->kmap_ctrl.idx; i++) {
++		pte_t pteval = tsk->kmap_ctrl.pteval[i];
++		unsigned long addr;
++		int idx;
++
++		/* With debug all even slots are unmapped and act as guard */
++		if (IS_ENABLED(CONFIG_DEBUG_HIGHMEM) && !(i & 0x01)) {
++			WARN_ON_ONCE(!pte_none(pteval));
++			continue;
++		}
++		if (WARN_ON_ONCE(pte_none(pteval)))
++			continue;
++
++		/* See comment in __kmap_local_sched_out() */
++		idx = arch_kmap_local_map_idx(i, pte_pfn(pteval));
++		addr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
++		set_pte_at(&init_mm, addr, kmap_pte - idx, pteval);
++		arch_kmap_local_post_map(addr, pteval);
++	}
++}
++
++void kmap_local_fork(struct task_struct *tsk)
++{
++	if (WARN_ON_ONCE(tsk->kmap_ctrl.idx))
++		memset(&tsk->kmap_ctrl, 0, sizeof(tsk->kmap_ctrl));
++}
++
  #endif
+ 
+ #if defined(HASHED_PAGE_VIRTUAL)
 
