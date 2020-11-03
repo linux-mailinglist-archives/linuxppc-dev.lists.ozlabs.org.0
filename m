@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253792A396A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 02:25:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 629C92A39DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 02:28:44 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQBtC3rdVzDqJM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 12:25:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQBxz6bJxzDqQG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 12:28:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=PJPscnmS; dkim-atps=neutral
+ header.s=default header.b=x0jK9pJ7; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQBly5kGYzDqNn
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 12:19:58 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQBmb4cv5zDqMg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 12:20:31 +1100 (AEDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 990762242F;
- Tue,  3 Nov 2020 01:19:54 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4FEFB222B9;
+ Tue,  3 Nov 2020 01:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1604366395;
- bh=MFn+lT0FEPXXOUuY+A8vs8UyyMk4BzOoFskcLZtQJZ8=;
+ s=default; t=1604366428;
+ bh=IXYWi8RdgKIyTCtQm0YBY4aWVoi2cblTRqZHxzm2Psw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=PJPscnmS8zLshyGGJc3JcLEaGq+4oxAmfAmbZwTHVZXDKvC6YFbrjErAhUlNGn0ZB
- fYCuEXgLFYoXBe5luWhK2J7QsjYpvnKTKIuGjh+7qe7PLLzCorpurz6koTSeWEAiyp
- hgz6m2uJ3LxomL3B3FFT5vgyLPhlVVLQlibn18uM=
+ b=x0jK9pJ79VniywEftjXhW/+7LH0eqHpREHNoBLPaESOKaT6PpSf+j8x4dkNJjZPBq
+ surNknw/JWDqkNeDq8cFtoyqVLPdop3WM6AjK3ch4JdxXVzVPxOuDjpcgmZgTiOhdI
+ ZTO+blX+4yQ+crTru5lwZ8z9IVg2g2bEju2eJBXg=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.8 20/29] scsi: ibmvscsi: Fix potential race after
+Subject: [PATCH AUTOSEL 5.4 15/24] scsi: ibmvscsi: Fix potential race after
  loss of transport
-Date: Mon,  2 Nov 2020 20:19:19 -0500
-Message-Id: <20201103011928.183145-20-sashal@kernel.org>
+Date: Mon,  2 Nov 2020 20:19:58 -0500
+Message-Id: <20201103012007.183429-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201103011928.183145-1-sashal@kernel.org>
-References: <20201103011928.183145-1-sashal@kernel.org>
+In-Reply-To: <20201103012007.183429-1-sashal@kernel.org>
+References: <20201103012007.183429-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -99,7 +99,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 26 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
-index 14f687e9b1f44..62faeab47d905 100644
+index c5711c659b517..1ab0a61e3fb59 100644
 --- a/drivers/scsi/ibmvscsi/ibmvscsi.c
 +++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
 @@ -806,6 +806,22 @@ static void purge_requests(struct ibmvscsi_host_data *hostdata, int error_code)
