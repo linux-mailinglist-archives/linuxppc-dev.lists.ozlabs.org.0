@@ -2,73 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DDA2A4A07
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 16:40:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C7B2A4A79
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 16:58:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQYrZ0LwszDqMb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 02:40:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQZFT1Jp5zDqmT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 02:58:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::441;
- helo=mail-wr1-x441.google.com; envelope-from=lee.jones@linaro.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=JaziDNI2; dkim-atps=neutral
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=U5lRRB1N; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQYcX1X1WzDqhC
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 02:29:46 +1100 (AEDT)
-Received: by mail-wr1-x441.google.com with SMTP id x7so19027326wrl.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Nov 2020 07:29:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=qtstZ8Ss1ZAgmytvl8BCDCnRUt17GN9LrR/wkx5bkhc=;
- b=JaziDNI2dZRnNVL5YCwTqVWJum+QZWTUU+vs6VYmxJT7BLEQH5posc6/WC0AWBKwwX
- 4EA5q8jb1aDG1Qx8mSIZIvnF38Fmo9qbDB+CflrTNa5NulvbCNZXnBF9VEZQT8KG7DxU
- 6+3I7zAk4NLRGqNIWxSsf7NVHdlBanIQn/093/L5uzkRt/gwwkBjtCbRLH8IZ9FOlvIe
- 4mAv1E7ipUbKi6Ug07SR2idrs0IX2STzlguTxLvcvRsHMYITCo9255Iv6zU2eRFF1R3e
- NrSz765fBbjXJUk3Nfjy2gOSshWI1nJKMnhi+SZ6rf/XcpwkS7M6bwWro1jkNr6bymOa
- aDZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=qtstZ8Ss1ZAgmytvl8BCDCnRUt17GN9LrR/wkx5bkhc=;
- b=STk5gHoCAN/PiUq+eNjEyyhqv4JM5TmdgT59DIEg6+7bb+rw7No9LlarElfqoN+MxK
- ya8afq+QGK93OPU6vFbQ3SH1A7aL73FCoB1rmaFuhGG/u+Sg7aqq3hUJkmm0esvOfHyi
- euy0wRwQh6zQAVn+OvRU0DlTtWMVpUBxXaqs9ZH8Gnwnw9+e5XX9KClsKP8Zg6tGsUOD
- 2K/gl0qABiw3Ctf7DZ3sDNQu2uaLV23P2fsHv4rFl7uUhHmL07SOT9452tUrK/tn1x56
- +ttF34jZOaZ/8kO2ZVCQDa4oRRYrqtVEhs+srZsfMIR+Z9nkkHbGwOzRilPdZNSj2yO/
- y01Q==
-X-Gm-Message-State: AOAM530Z19amqfnP564+9UI9TtwvR7q6Dz/tTh9cenOrHa3ksHGgdtCc
- wP3m7ZmqTsnZqs0PRd+jbwklVQ==
-X-Google-Smtp-Source: ABdhPJwfFIvO98y22nwny1fM75XJYeVuQtBFhjTRJDvug6VV5vIaDlVpdV8Lsm6ohJKNfWsYSxQtRg==
-X-Received: by 2002:adf:c101:: with SMTP id r1mr25707250wre.87.1604417382870; 
- Tue, 03 Nov 2020 07:29:42 -0800 (PST)
-Received: from dell.default ([91.110.221.242])
- by smtp.gmail.com with ESMTPSA id j127sm3491779wma.31.2020.11.03.07.29.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Nov 2020 07:29:42 -0800 (PST)
-From: Lee Jones <lee.jones@linaro.org>
-To: lee.jones@linaro.org
-Subject: [PATCH 25/25] soc: fsl: qbman: qman: Remove unused variable
- 'dequeue_wq'
-Date: Tue,  3 Nov 2020 15:28:38 +0000
-Message-Id: <20201103152838.1290217-26-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201103152838.1290217-1-lee.jones@linaro.org>
-References: <20201103152838.1290217-1-lee.jones@linaro.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQZCn4MPczDqZP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 02:56:53 +1100 (AEDT)
+Received: from kernel.org (unknown [87.71.17.26])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 7B47820870;
+ Tue,  3 Nov 2020 15:56:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1604419010;
+ bh=PdZbTZgg1JmpGp2bwjsENk8fgDYDWqJbhtmXs83/fs4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=U5lRRB1N1MmXeOH2myvsU+QScNFs2bqbrupv/pQ4irlpmZwooHX8QWAG7Auq1KyAR
+ BKUUy9aydAOF9vLJs/4y281FnWsGIjtK6pWCGXyL7y2ETSAe5RqnViQPWzk/w9t3W5
+ 2kvBIUagkYLvCz/jLs5zwUcf94hBrrkoIybAauvg=
+Date: Tue, 3 Nov 2020 17:56:36 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Subject: Re: [PATCH v3 2/4] PM: hibernate: make direct map manipulations more
+ explicit
+Message-ID: <20201103155636.GJ4879@kernel.org>
+References: <20201101170815.9795-1-rppt@kernel.org>
+ <20201101170815.9795-3-rppt@kernel.org>
+ <20201103110816.t6a3ebtgcm7mfogy@box>
+ <20201103121350.GI4879@kernel.org>
+ <20201103143916.otz2o4h2dlmewn3h@box>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201103143916.otz2o4h2dlmewn3h@box>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,68 +60,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, YueHaibing <yuehaibing@huawei.com>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- Li Yang <leoyang.li@nxp.com>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+ David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ linux-arm-kernel@lists.infradead.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linux-kernel@vger.kernel.org, Pekka Enberg <penberg@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fixes the following W=1 kernel build warning(s):
+On Tue, Nov 03, 2020 at 05:39:16PM +0300, Kirill A. Shutemov wrote:
+> On Tue, Nov 03, 2020 at 02:13:50PM +0200, Mike Rapoport wrote:
+> > > > +
+> > > > +		if (WARN_ON(ret))
+> > > 
+> > > _ONCE?
+> > 
+> > I've changed it to pr_warn() after David said people enable panic on
+> > warn in production kernels.
+> 
+> pr_warn_once()? :P
 
- drivers/soc/fsl/qbman/qman.c: In function ‘qman_shutdown_fq’:
- drivers/soc/fsl/qbman/qman.c:2700:8: warning: variable ‘dequeue_wq’ set but not used [-Wunused-but-set-variable]
+Sure :)
 
-Cc: Li Yang <leoyang.li@nxp.com>
-Cc: YueHaibing <yuehaibing@huawei.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- drivers/soc/fsl/qbman/qman.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index 9888a70618730..62b182c3a8b04 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -2622,7 +2622,7 @@ int qman_shutdown_fq(u32 fqid)
- 	union qm_mc_command *mcc;
- 	union qm_mc_result *mcr;
- 	int orl_empty, drain = 0, ret = 0;
--	u32 channel, wq, res;
-+	u32 channel, res;
- 	u8 state;
- 
- 	p = get_affine_portal();
-@@ -2655,7 +2655,7 @@ int qman_shutdown_fq(u32 fqid)
- 	DPAA_ASSERT((mcr->verb & QM_MCR_VERB_MASK) == QM_MCR_VERB_QUERYFQ);
- 	/* Need to store these since the MCR gets reused */
- 	channel = qm_fqd_get_chan(&mcr->queryfq.fqd);
--	wq = qm_fqd_get_wq(&mcr->queryfq.fqd);
-+	qm_fqd_get_wq(&mcr->queryfq.fqd);
- 
- 	if (channel < qm_channel_pool1) {
- 		channel_portal = get_portal_for_channel(channel);
-@@ -2697,7 +2697,6 @@ int qman_shutdown_fq(u32 fqid)
- 			 * to dequeue from the channel the FQ is scheduled on
- 			 */
- 			int found_fqrn = 0;
--			u16 dequeue_wq = 0;
- 
- 			/* Flag that we need to drain FQ */
- 			drain = 1;
-@@ -2705,11 +2704,8 @@ int qman_shutdown_fq(u32 fqid)
- 			if (channel >= qm_channel_pool1 &&
- 			    channel < qm_channel_pool1 + 15) {
- 				/* Pool channel, enable the bit in the portal */
--				dequeue_wq = (channel -
--					      qm_channel_pool1 + 1)<<4 | wq;
- 			} else if (channel < qm_channel_pool1) {
- 				/* Dedicated channel */
--				dequeue_wq = wq;
- 			} else {
- 				dev_err(dev, "Can't recover FQ 0x%x, ch: 0x%x",
- 					fqid, channel);
 -- 
-2.25.1
-
+Sincerely yours,
+Mike.
