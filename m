@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8358D2A4557
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 13:38:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C132A455A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 13:42:02 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQTq65WLwzDqdx
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 23:38:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQTtv3NnMzDqMX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 23:41:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,40 +17,40 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=uf64q9LX; 
+ header.s=2020 header.b=UCiLeToK; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=9UUmg4St; 
+ header.a=ed25519-sha256 header.s=2020e header.b=iNcZKx8F; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR3L1wpBzDqV8
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:34:05 +1100 (AEDT)
-Message-Id: <20201103095859.429620021@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR3N4w9FzDqSk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:34:07 +1100 (AEDT)
+Message-Id: <20201103095859.538827102@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1604399638;
+ s=2020; t=1604399639;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=K8tv6h9J8+1UjPWtbytb7n5SLceTF9zssV9oZox9W+U=;
- b=uf64q9LXpQapNhFORU08nfOObcnFcEm4O++QW3WS6I7k3PJKYg+0B5NUxZRCRpxpJWSJho
- 6xCfQbqF5SWvLd2UYygGAALn2A2cjEifSfE4kf1+lKthwGt5ShPb/JyjRiq2V4kL9NKneV
- tvQ85atLaLObNYw1Jsdictp7672OClv95UAV+BsfoahjIYRt6P7B73zNvPr/RXHjqQjiYX
- vqMn0VJZZuCLL83EiOOEEIiubdkjOyq0xQINIUxnhAvI+2Q8C2Ufm8JbRZw6Epe6CCDO+G
- IFnnudgMnXS/B/7Pn2ZHYkeEolyKh/60lfi2O9rR4T7flfqnXTUrlacqqg4vtA==
+ bh=37l2/9hMoX995irJwwZT0VNkjmk/OwZo72GhT72QTX4=;
+ b=UCiLeToK4AIC+9Dmx7LG5rV2mjuvYVd6Coif2Sdjhi7Si2K86UL165usKvCu+1M57a5ZTs
+ 3lGdAzYJonKcTuvyMgrOXNx+UrIY8LVcTVNso2JLtpbkE1oygEe/wl748JnAW6AS6EsTrD
+ c2VWZi0Trd4Jp1S58g19SzXtzA+u8eA2qRCth6y4qBL25KfIk14Y8/pIC7Pk9xx9opLe+Y
+ fYTupCtZR4FQC2/b1qBabqi8Jfeh2ZKqUrq+V0zmNc17uiUhxxjlvxwBR152OCIcLA02mF
+ vb+4tkvTlRO1TXdeUxGxjDkLW4Yer0R+EYHQyA+pAWiyVIPp/wbrw75o+T0ZJw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1604399638;
+ s=2020e; t=1604399639;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=K8tv6h9J8+1UjPWtbytb7n5SLceTF9zssV9oZox9W+U=;
- b=9UUmg4StD1+gf6xD44eY0tbCb4Wv9S+7TAD5110OmAjL1mF4moT3f8RAipzm2mr9CGQRvT
- 96qYqMQSY/G9MBCw==
-Date: Tue, 03 Nov 2020 10:27:40 +0100
+ bh=37l2/9hMoX995irJwwZT0VNkjmk/OwZo72GhT72QTX4=;
+ b=iNcZKx8Fg9QYlTcIp7Z3u6IBgHA5T+EwXNMLuSSTvrJb/3r4DH72OAUwbFyp58bawCPYfQ
+ dJ5wikkjaG3JOhAw==
+Date: Tue, 03 Nov 2020 10:27:41 +0100
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 28/37] mips/crashdump: Simplify copy_oldmem_page()
+Subject: [patch V3 29/37] ARM: mm: Replace kmap_atomic_pfn()
 References: <20201103092712.714480842@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -108,89 +108,63 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace kmap_atomic_pfn() with kmap_local_pfn() which is preemptible and
-can take page faults.
+There is no requirement to disable pagefaults and preemption for these
+cache management mappings.
 
-Remove the indirection of the dump page and the related cruft which is not
-longer required.
+Replace kmap_atomic_pfn() with kmap_local_pfn(). This allows to remove
+kmap_atomic_pfn() in the next step.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@vger.kernel.org
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org
 ---
 V3: New patch
 ---
- arch/mips/kernel/crash_dump.c |   42 +++++++-----------------------------------
- 1 file changed, 7 insertions(+), 35 deletions(-)
+ arch/arm/mm/cache-feroceon-l2.c |    6 +++---
+ arch/arm/mm/cache-xsc3l2.c      |    4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/mips/kernel/crash_dump.c
-+++ b/arch/mips/kernel/crash_dump.c
-@@ -5,8 +5,6 @@
- #include <linux/uaccess.h>
- #include <linux/slab.h>
- 
--static void *kdump_buf_page;
--
- /**
-  * copy_oldmem_page - copy one page from "oldmem"
-  * @pfn: page frame number to be copied
-@@ -17,51 +15,25 @@ static void *kdump_buf_page;
-  * @userbuf: if set, @buf is in user address space, use copy_to_user(),
-  *	otherwise @buf is in kernel address space, use memcpy().
-  *
-- * Copy a page from "oldmem". For this page, there is no pte mapped
-+ * Copy a page from "oldmem". For this page, there might be no pte mapped
-  * in the current kernel.
-- *
-- * Calling copy_to_user() in atomic context is not desirable. Hence first
-- * copying the data to a pre-allocated kernel page and then copying to user
-- * space in non-atomic context.
-  */
--ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
--			 size_t csize, unsigned long offset, int userbuf)
-+ssize_t copy_oldmem_page(unsigned long pfn, char *buf, size_t csize,
-+			 unsigned long offset, int userbuf)
+--- a/arch/arm/mm/cache-feroceon-l2.c
++++ b/arch/arm/mm/cache-feroceon-l2.c
+@@ -49,9 +49,9 @@ static inline unsigned long l2_get_va(un
+ 	 * we simply install a virtual mapping for it only for the
+ 	 * TLB lookup to occur, hence no need to flush the untouched
+ 	 * memory mapping afterwards (note: a cache flush may happen
+-	 * in some circumstances depending on the path taken in kunmap_atomic).
++	 * in some circumstances depending on the path taken in kunmap_local).
+ 	 */
+-	void *vaddr = kmap_atomic_pfn(paddr >> PAGE_SHIFT);
++	void *vaddr = kmap_local_pfn(paddr >> PAGE_SHIFT);
+ 	return (unsigned long)vaddr + (paddr & ~PAGE_MASK);
+ #else
+ 	return __phys_to_virt(paddr);
+@@ -61,7 +61,7 @@ static inline unsigned long l2_get_va(un
+ static inline void l2_put_va(unsigned long vaddr)
  {
- 	void  *vaddr;
- 
- 	if (!csize)
- 		return 0;
- 
--	vaddr = kmap_atomic_pfn(pfn);
-+	vaddr = kmap_local_pfn(pfn);
- 
- 	if (!userbuf) {
--		memcpy(buf, (vaddr + offset), csize);
--		kunmap_atomic(vaddr);
-+		memcpy(buf, vaddr + offset, csize);
- 	} else {
--		if (!kdump_buf_page) {
--			pr_warn("Kdump: Kdump buffer page not allocated\n");
--
--			return -EFAULT;
--		}
--		copy_page(kdump_buf_page, vaddr);
--		kunmap_atomic(vaddr);
--		if (copy_to_user(buf, (kdump_buf_page + offset), csize))
--			return -EFAULT;
-+		if (copy_to_user(buf, vaddr + offset, csize))
-+			csize = -EFAULT;
- 	}
- 
- 	return csize;
+ #ifdef CONFIG_HIGHMEM
+-	kunmap_atomic((void *)vaddr);
++	kunmap_local((void *)vaddr);
+ #endif
  }
--
--static int __init kdump_buf_page_init(void)
--{
--	int ret = 0;
--
--	kdump_buf_page = kmalloc(PAGE_SIZE, GFP_KERNEL);
--	if (!kdump_buf_page) {
--		pr_warn("Kdump: Failed to allocate kdump buffer page\n");
--		ret = -ENOMEM;
--	}
--
--	return ret;
--}
--arch_initcall(kdump_buf_page_init);
+ 
+--- a/arch/arm/mm/cache-xsc3l2.c
++++ b/arch/arm/mm/cache-xsc3l2.c
+@@ -59,7 +59,7 @@ static inline void l2_unmap_va(unsigned
+ {
+ #ifdef CONFIG_HIGHMEM
+ 	if (va != -1)
+-		kunmap_atomic((void *)va);
++		kunmap_local((void *)va);
+ #endif
+ }
+ 
+@@ -75,7 +75,7 @@ static inline unsigned long l2_map_va(un
+ 		 * in place for it.
+ 		 */
+ 		l2_unmap_va(prev_va);
+-		va = (unsigned long)kmap_atomic_pfn(pa >> PAGE_SHIFT);
++		va = (unsigned long)kmap_local_pfn(pa >> PAGE_SHIFT);
+ 	}
+ 	return va + (pa_offset >> (32 - PAGE_SHIFT));
+ #else
 
