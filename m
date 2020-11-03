@@ -1,73 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F01F2A500F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 20:24:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E8A2A502E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 20:33:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQfqJ3V3JzDqQn
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 06:24:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQg2C680czDqkK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 06:33:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQfnQ5PMTzDqg7
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 06:22:50 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=saeed@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4CQfnQ4HxLz8tVV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 06:22:50 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4CQfnQ3gYwz9sTL; Wed,  4 Nov 2020 06:22:50 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=k04pehKH; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4CQfnN57msz9sT6
- for <linuxppc-dev@ozlabs.org>; Wed,  4 Nov 2020 06:22:41 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CQfnB6jf2z9v1x2;
- Tue,  3 Nov 2020 20:22:38 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id aXaB3QGDvAPG; Tue,  3 Nov 2020 20:22:38 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CQfnB5hq2z9v1x1;
- Tue,  3 Nov 2020 20:22:38 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CF268B7DC;
- Tue,  3 Nov 2020 20:22:37 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id yeXrxSvxsMzB; Tue,  3 Nov 2020 20:22:37 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0BF998B7DB;
- Tue,  3 Nov 2020 20:22:37 +0100 (CET)
-Subject: Re: [PATCH] powerpc: Don't use asm goto for put_user() with GCC 4.9
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <20201103132915.529337-1-mpe@ellerman.id.au>
- <4fe837f8-ecae-f009-c193-8da386a70705@csgroup.eu>
- <20201103185829.GM2672@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <04ba7852-be06-dcda-3f91-7739025035e2@csgroup.eu>
-Date: Tue, 3 Nov 2020 20:22:35 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQfzx0BZqzDqgp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 06:31:56 +1100 (AEDT)
+Received: from lt-jalone-7480.mtl.com (c-24-6-56-119.hsd1.ca.comcast.net
+ [24.6.56.119])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id C8D632080D;
+ Tue,  3 Nov 2020 19:31:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1604431913;
+ bh=S+XTa/Ddbvh+IsyG31DYZypsQ7ugisv/L9FbS0/2MT0=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=k04pehKHXgSp1gCBIIxlvyMNlN4PLVoxEtSR7x5/ZEXOffB4o52TItFE+b2KZHrSW
+ SwG4YWmCouheXFGspowoxdbzUcr7oLJZsERO8RhQv1Z0b4p6KyHByvoVgVxn9pD+7V
+ zZfoeuawcOmpYjV+yEzum15EHJsBhYetDi8Izc74=
+Message-ID: <2eeb1f2ccce034455babdef88a275b4e5ebfba81.camel@kernel.org>
+Subject: Re: [PATCH net-next 04/15] net: mlx5: Replace in_irq() usage.
+From: Saeed Mahameed <saeed@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>, Leon Romanovsky <leon@kernel.org>
+Date: Tue, 03 Nov 2020 11:31:50 -0800
+In-Reply-To: <20201031095938.3878412e@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+References: <20201027225454.3492351-1-bigeasy@linutronix.de>
+ <20201027225454.3492351-5-bigeasy@linutronix.de>
+ <20201031095938.3878412e@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
 MIME-Version: 1.0
-In-Reply-To: <20201103185829.GM2672@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,27 +59,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: schwab@linux-m68k.org, linuxppc-dev@ozlabs.org
+Cc: Aymen Sghaier <aymen.sghaier@nxp.com>,
+ Madalin Bucur <madalin.bucur@nxp.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Zhu Yanjun <zyjzyj2000@gmail.com>, Samuel Chessman <chessman@tux.org>,
+ Ping-Ke Shih <pkshih@realtek.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Horia =?UTF-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+ linux-rdma@vger.kernel.org, Rain River <rain.1986.08.12@gmail.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Ulrich Kunitz <kune@deine-taler.de>,
+ Jouni Malinen <j@w1.fi>, Daniel Drake <dsd@gentoo.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ Li Yang <leoyang.li@nxp.com>, linux-crypto@vger.kernel.org,
+ Jon Mason <jdmason@kudzu.us>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 03/11/2020 à 19:58, Segher Boessenkool a écrit :
-> On Tue, Nov 03, 2020 at 03:43:55PM +0100, Christophe Leroy wrote:
->> Le 03/11/2020 à 14:29, Michael Ellerman a écrit :
->>> For now though let's just not use asm goto with GCC 4.9, to avoid this
->>> bug and any other issues we haven't noticed yet. Possibly in future we
->>> can find a smaller workaround.
->>
->> Is that https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58670 ?
+On Sat, 2020-10-31 at 09:59 -0700, Jakub Kicinski wrote:
+> On Tue, 27 Oct 2020 23:54:43 +0100 Sebastian Andrzej Siewior wrote:
+> > mlx5_eq_async_int() uses in_irq() to decide whether eq::lock needs
+> > to be
+> > acquired and released with spin_[un]lock() or the irq
+> > saving/restoring
+> > variants.
+> > 
+> > The usage of in_*() in drivers is phased out and Linus clearly
+> > requested
+> > that code which changes behaviour depending on context should
+> > either be
+> > seperated or the context be conveyed in an argument passed by the
+> > caller,
+> > which usually knows the context.
+> > 
+> > mlx5_eq_async_int() knows the context via the action argument
+> > already so
+> > using it for the lock variant decision is a straight forward
+> > replacement
+> > for in_irq().
+> > 
+> > Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> > Cc: Saeed Mahameed <saeedm@nvidia.com>
+> > Cc: Leon Romanovsky <leon@kernel.org>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: Jakub Kicinski <kuba@kernel.org>
+> > Cc: linux-rdma@vger.kernel.org
 > 
-> That was fixed in 4.8.1 (and all 4.9), so probably not.
-> 
+> Saeed, please pick this up into your tree.
 
-Ok.
+Applied to net-next-mlx5 will submit to net-next shortly.
 
-Regardless, using "asm_volatile_goto()" instead of "asm volatile goto()" fixes the issue it seems.
-
-Christophe
