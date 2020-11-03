@@ -2,69 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65BF2A49EE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 16:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7212A49FF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 16:36:43 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQYhn3KcNzDqf9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 02:33:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQYmS3PKLzDqjv
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 02:36:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::42a;
- helo=mail-wr1-x42a.google.com; envelope-from=lee.jones@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=cX7YnHDv; dkim-atps=neutral
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com
- [IPv6:2a00:1450:4864:20::42a])
+ header.s=google header.b=FavDb9p/; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQYbv6sq3zDqFF
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 02:29:15 +1100 (AEDT)
-Received: by mail-wr1-x42a.google.com with SMTP id y12so18995996wrp.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Nov 2020 07:29:15 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQYby5pzWzDqFF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 02:29:18 +1100 (AEDT)
+Received: by mail-wm1-x341.google.com with SMTP id d142so4537730wmd.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Nov 2020 07:29:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=cinjSse47w4OyBjCwL2P/oafcagxHnLlboUEJDujNWw=;
- b=cX7YnHDv9m5+T7PbYX1ejAYBuULrQQ+M0omEMTQnojpGH8v/C5HKpdzGwPJOa5ab2J
- hWvr65vepL8wyiP+0aMOixJkRcMW5S6eaXcMWPrYmd/7G58lnJBRA7mZOEsNleDYa0yr
- SKIlBUDn2JHHV9/9oFL2tnLHsBG8k26M+lqdFa2vY0c/HN4q7AYGC48aRoGa/vyC4lH/
- my/WLOeYp1lwX1+QNh/x7yP9dEPhbwuo7fSZHgNeLSf8FfpoUnTAFo5BL3I2Y+E4p++O
- Hbne+HYaqgTlebyKrpkPS6jDswYcHoysUa1ZTvtvRAVDOBwaryaj9SVgIWvC0yOjixW6
- hI3A==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=jfZrsuegqx+OmRO4GpwLy9Cb2wkLW2cpKd0ybvPvY8c=;
+ b=FavDb9p/+6vVsi5kkU5BM2yQpZuZMCuDxbCNPZ3i2ikOvdmu9oq9Wh+VBTzxnjRzvP
+ 1iMendN7Uq0YKDs1reiHHl4zQn3OrDfwrCM4qs8hgBK/oa3nwgnJ6pDqcrm4O8ER7bsN
+ mz0l2zEiXnVbgU5XQQViAXUfN3GxwCvg19E4iBGPaj+qZMFaYb3M9ngKgm6cOKI9U6lS
+ pPFRLfZfnZhb9MGFuKkpzp377YE0q4oZ3J3LIs4MHROhnVzX7VIINTCasqDAQ/+j8HJX
+ xGgHPPYizzw14MsJKLzCqBevf+rG0b6ONujwXxMJRCK0/XdcAJJNXw43SC3Zku3Esoqu
+ 88Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=cinjSse47w4OyBjCwL2P/oafcagxHnLlboUEJDujNWw=;
- b=WxMrrFJk5BpMu898/Yh1cOEdKJEpC3O7OHaiq3xHtFImonszIOtvalSJlpapQ/P2QZ
- XSVdqB4bQrCJCMVGCgnDHWTNF1FuVXTNHtddjUCCecg2lrsNepeZzh8TCsk2s3GlHyCl
- zbnrVMMdkuXhLiMtfw/+Oi4pFRzraV8a+SaEqKfs6Vhn/5AyTX8cO+z5cZvWLOLmPmYn
- AodB4sxZKlX/AP2DQbNCbpeZ0dvCPvZkbnBy64DsKHpS9e9uHG7N4uVdXaGraZB2/wqS
- vwymH8aHiP/eUAPdKA+DZXDejRyoT9vbGlH4wWFcuQPQFTpXCLgJdxLJNXDZ6QBjtpB0
- XI3w==
-X-Gm-Message-State: AOAM533C/dlPXRWdIF1ZFZAVWi5C5Cy+1ctvlaX/i8uka4WPDaetxlsb
- 2NGMUxcgeKXf1A1/su7Woewa5A==
-X-Google-Smtp-Source: ABdhPJyzlV0HXdTidCRBprYLkp0uWjD8RuYpiqDZS7BW//F1Q+dvuU4dB6/3Ff6PqbhKnABb0CWqEw==
-X-Received: by 2002:adf:c803:: with SMTP id d3mr11847040wrh.108.1604417350540; 
- Tue, 03 Nov 2020 07:29:10 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=jfZrsuegqx+OmRO4GpwLy9Cb2wkLW2cpKd0ybvPvY8c=;
+ b=C1E8C5jOUoze8gKRe79Hb+V/ycvyPkj50BcUZTRCjiUhf6YVsnsh9hfpE1/AJMJKvM
+ aZZ2VfT31zcgdyiVnbrgPlRBM29D9+5iNL7XeVWldzpJ4VCYSb/jL950P4uvScPMj859
+ tFNQAwZHcSBNedCLojKgJu1Dzwgh2eH8vBflxMV/iyX/FLhh4K4UzBgS1PGAFjLv6LPq
+ xt7i1QEmhLHFYtYvhyx0al2P4ZFb8H3RRJYvV9YmV0mAFKdAj5H9SzuDnuJndp3ZnhRb
+ y1x7A8f3S8RPg3zXxib4NQ7kPt3zuQTSGTmUg0ohx1VL93Rdp6i8SkC5c79YWnG8kyc2
+ K4Qw==
+X-Gm-Message-State: AOAM5310XFM76kktBEPhSRTTswcYove1ARKh3pBbRYOypZSRRKsxRMoK
+ wz23KsaG3uYQJqJQWlTgKecAeg==
+X-Google-Smtp-Source: ABdhPJzliMylxUcb30fC3RVeqyOpaETp603v3eHDKWTv3/UzCu2Bz6MbuvwQNgVnJm4Khpek01d44A==
+X-Received: by 2002:a1c:a982:: with SMTP id s124mr308897wme.65.1604417355037; 
+ Tue, 03 Nov 2020 07:29:15 -0800 (PST)
 Received: from dell.default ([91.110.221.242])
- by smtp.gmail.com with ESMTPSA id j127sm3491779wma.31.2020.11.03.07.29.08
+ by smtp.gmail.com with ESMTPSA id j127sm3491779wma.31.2020.11.03.07.29.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Nov 2020 07:29:09 -0800 (PST)
+ Tue, 03 Nov 2020 07:29:14 -0800 (PST)
 From: Lee Jones <lee.jones@linaro.org>
 To: lee.jones@linaro.org
-Subject: [PATCH 00/25] Rid W=1 warnings in SoC
-Date: Tue,  3 Nov 2020 15:28:13 +0000
-Message-Id: <20201103152838.1290217-1-lee.jones@linaro.org>
+Subject: [PATCH 04/25] soc: fsl: dpio: qbman-portal: Fix a bunch of kernel-doc
+ misdemeanours
+Date: Tue,  3 Nov 2020 15:28:17 +0000
+Message-Id: <20201103152838.1290217-5-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20201103152838.1290217-1-lee.jones@linaro.org>
+References: <20201103152838.1290217-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -77,122 +79,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Stuebner <heiko@sntech.de>, Roy Pledge <Roy.Pledge@nxp.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Scott Wood <scottwood@freescale.com>,
- Thierry Reding <thierry.reding@gmail.com>, Li Yang <leoyang.li@nxp.com>,
- Qiang Zhao <qiang.zhao@nxp.com>, linux-samsung-soc@vger.kernel.org,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- YueHaibing <yuehaibing@huawei.com>, Sandeep Nair <sandeep_n@ti.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>,
- linux-rockchip@lists.infradead.org, act <dmalek@jlc.net>,
- Andy Gross <agross@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
- Cyril Chemparathy <cyril@ti.com>, linux-arm-msm@vger.kernel.org,
- Florian Fainelli <f.fainelli@gmail.com>,
- Santosh Shilimkar <ssantosh@kernel.org>, linux-tegra@vger.kernel.org,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- linux-arm-kernel@lists.infradead.org, "Software, Inc" <source@mvista.com>,
- Dave Gerlach <d-gerlach@ti.com>, Doug Anderson <dianders@chromium.org>,
- linux-kernel@vger.kernel.org, Ben Dooks <ben@simtec.co.uk>,
- Mark Brown <broonie@kernel.org>, Dan Malek <dan@embeddedalley.com>,
- Vitaly Bordug <vbordug@ru.mvista.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Roy Pledge <Roy.Pledge@nxp.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Li Yang <leoyang.li@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This set is part of a larger effort attempting to clean-up W=1
-kernel builds, which are currently overwhelmingly riddled with
-niggly little warnings.
+Fixes the following W=1 kernel build warning(s):
 
-Lee Jones (25):
-  soc: bcm: brcmstb: pm: pm-arm: Provide prototype for
-    brcmstb_pm_s3_finish()
-  soc: qcom: qcom_aoss: Remove set but unused variable 'tlen'
-  soc: qcom: qcom_aoss: Add missing description for 'cooling_devs'
-  soc: fsl: dpio: qbman-portal: Fix a bunch of kernel-doc misdemeanours
-  soc: rockchip: io-domain: Remove incorrect and incomplete comment
-    header
-  soc: ti: knav_qmss_queue: Remove set but unchecked variable 'ret'
-  soc: ti: knav_qmss_queue: Fix a whole host of function documentation
-    issues
-  soc: ti: knav_dma: Fix a kernel function doc formatting issue
-  soc: ti: pm33xx: Remove set but unused variable 'ret'
-  soc: ti: wkup_m3_ipc: Document 'm3_ipc' parameter throughout
-  soc: fsl: qe: qe_common: Fix misnamed function attribute 'addr'
-  soc: qcom: qcom-geni-se: Fix misnamed function parameter 'rx_rfr'
-  soc: tegra: fuse: speedo-tegra124: Remove some set but unused
-    variables
-  soc: samsung: s3c-pm-check: Fix incorrectly named variable 'val'
-  soc: qcom: rpmh: Fix possible doc-rot in rpmh_write()'s header
-  soc: qcom: smem: Fix formatting and missing documentation issues
-  soc: qcom: smsm: Fix some kernel-doc formatting and naming problems
-  soc: qcom: wcnss_ctrl: Demote non-conformant struct header and fix
-    function headers
-  soc: qcom: smp2p: Remove unused struct attribute provide another
-  soc: qcom: llcc-qcom: Fix expected kernel-doc formatting
-  soc: qcom: rpmhpd: Provide some missing struct member descriptions
-  soc: qcom: kryo-l2-accessors: Fix misnaming of 'val'
-  soc: ti: k3-ringacc: Provide documentation for 'k3_ring's 'state'
-  soc: tegra: fuse: speedo-tegra210: Remove a group of set but unused
-    variables
-  soc: fsl: qbman: qman: Remove unused variable 'dequeue_wq'
+ drivers/soc/fsl/dpio/qbman-portal.c:430: warning: Function parameter or member 'inhibit' not described in 'qbman_swp_interrupt_set_inhibit'
+ drivers/soc/fsl/dpio/qbman-portal.c:430: warning: Excess function parameter 'mask' description in 'qbman_swp_interrupt_set_inhibit'
+ drivers/soc/fsl/dpio/qbman-portal.c:518: warning: Function parameter or member 'd' not described in 'qbman_eq_desc_clear'
+ drivers/soc/fsl/dpio/qbman-portal.c:529: warning: Function parameter or member 'respond_success' not described in 'qbman_eq_desc_set_no_orp'
+ drivers/soc/fsl/dpio/qbman-portal.c:529: warning: Excess function parameter 'response_success' description in 'qbman_eq_desc_set_no_orp'
+ drivers/soc/fsl/dpio/qbman-portal.c:941: warning: Function parameter or member 's' not described in 'qbman_swp_push_get'
+ drivers/soc/fsl/dpio/qbman-portal.c:941: warning: Excess function parameter 'p' description in 'qbman_swp_push_get'
+ drivers/soc/fsl/dpio/qbman-portal.c:955: warning: Function parameter or member 's' not described in 'qbman_swp_push_set'
+ drivers/soc/fsl/dpio/qbman-portal.c:955: warning: Excess function parameter 'p' description in 'qbman_swp_push_set'
+ drivers/soc/fsl/dpio/qbman-portal.c:1052: warning: Function parameter or member 'd' not described in 'qbman_pull_desc_set_fq'
+ drivers/soc/fsl/dpio/qbman-portal.c:1065: warning: Function parameter or member 'd' not described in 'qbman_pull_desc_set_wq'
+ drivers/soc/fsl/dpio/qbman-portal.c:1079: warning: Function parameter or member 'd' not described in 'qbman_pull_desc_set_channel'
+ drivers/soc/fsl/dpio/qbman-portal.c:1403: warning: Function parameter or member 'd' not described in 'qbman_release_desc_clear'
+ drivers/soc/fsl/dpio/qbman-portal.c:1412: warning: Function parameter or member 'd' not described in 'qbman_release_desc_set_bpid'
+ drivers/soc/fsl/dpio/qbman-portal.c:1412: warning: Function parameter or member 'bpid' not described in 'qbman_release_desc_set_bpid'
+ drivers/soc/fsl/dpio/qbman-portal.c:1421: warning: Function parameter or member 'd' not described in 'qbman_release_desc_set_rcdi'
+ drivers/soc/fsl/dpio/qbman-portal.c:1421: warning: Function parameter or member 'enable' not described in 'qbman_release_desc_set_rcdi'
 
- drivers/soc/bcm/brcmstb/pm/pm-arm.c      |  2 +
- drivers/soc/fsl/dpio/qbman-portal.c      | 18 +++++--
- drivers/soc/fsl/qbman/qman.c             |  8 +--
- drivers/soc/fsl/qe/qe_common.c           |  2 +-
- drivers/soc/qcom/kryo-l2-accessors.c     |  2 +-
- drivers/soc/qcom/llcc-qcom.c             |  2 +-
- drivers/soc/qcom/qcom-geni-se.c          |  5 +-
- drivers/soc/qcom/qcom_aoss.c             |  4 +-
- drivers/soc/qcom/rpmh.c                  |  2 +-
- drivers/soc/qcom/rpmhpd.c                |  3 ++
- drivers/soc/qcom/smem.c                  |  3 +-
- drivers/soc/qcom/smp2p.c                 |  3 +-
- drivers/soc/qcom/smsm.c                  |  4 +-
- drivers/soc/qcom/wcnss_ctrl.c            |  8 +--
- drivers/soc/rockchip/io-domain.c         |  3 --
- drivers/soc/samsung/s3c-pm-check.c       |  2 +-
- drivers/soc/tegra/fuse/speedo-tegra124.c |  7 ++-
- drivers/soc/tegra/fuse/speedo-tegra210.c |  8 +--
- drivers/soc/ti/k3-ringacc.c              |  1 +
- drivers/soc/ti/knav_dma.c                |  2 +-
- drivers/soc/ti/knav_qmss_queue.c         | 62 ++++++++++++------------
- drivers/soc/ti/pm33xx.c                  |  4 +-
- drivers/soc/ti/wkup_m3_ipc.c             |  8 ++-
- 23 files changed, 86 insertions(+), 77 deletions(-)
-
-Cc: act <dmalek@jlc.net>
-Cc: Andy Gross <agross@kernel.org>
-Cc: bcm-kernel-feedback-list@broadcom.com
-Cc: Ben Dooks <ben@simtec.co.uk>
-Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc: Cyril Chemparathy <cyril@ti.com>
-Cc: Dan Malek <dan@embeddedalley.com>
-Cc: Dave Gerlach <d-gerlach@ti.com>
-Cc: Doug Anderson <dianders@chromium.org>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Heiko Stuebner <heiko@sntech.de>
-Cc: Jonathan Hunter <jonathanh@nvidia.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-rockchip@lists.infradead.org
-Cc: linux-samsung-soc@vger.kernel.org
-Cc: linux-tegra@vger.kernel.org
-Cc: Li Yang <leoyang.li@nxp.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Qiang Zhao <qiang.zhao@nxp.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 Cc: Roy Pledge <Roy.Pledge@nxp.com>
-Cc: Sandeep Nair <sandeep_n@ti.com>
-Cc: Santosh Shilimkar <ssantosh@kernel.org>
-Cc: Scott Wood <scottwood@freescale.com>
-Cc: "Software, Inc" <source@mvista.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Vitaly Bordug <vbordug@ru.mvista.com>
-Cc: YueHaibing <yuehaibing@huawei.com>
+Cc: Li Yang <leoyang.li@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+---
+ drivers/soc/fsl/dpio/qbman-portal.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
+index 659b4a570d5b5..f13da4d7d1c52 100644
+--- a/drivers/soc/fsl/dpio/qbman-portal.c
++++ b/drivers/soc/fsl/dpio/qbman-portal.c
+@@ -424,7 +424,7 @@ int qbman_swp_interrupt_get_inhibit(struct qbman_swp *p)
+ /**
+  * qbman_swp_interrupt_set_inhibit() - write interrupt mask register
+  * @p: the given software portal object
+- * @mask: The mask to set in SWP_IIR register
++ * @inhibit: whether to inhibit the IRQs
+  */
+ void qbman_swp_interrupt_set_inhibit(struct qbman_swp *p, int inhibit)
+ {
+@@ -510,7 +510,7 @@ enum qb_enqueue_commands {
+ #define QB_ENQUEUE_CMD_TARGET_TYPE_SHIFT     4
+ #define QB_ENQUEUE_CMD_DCA_EN_SHIFT          7
+ 
+-/**
++/*
+  * qbman_eq_desc_clear() - Clear the contents of a descriptor to
+  *                         default/starting state.
+  */
+@@ -522,7 +522,7 @@ void qbman_eq_desc_clear(struct qbman_eq_desc *d)
+ /**
+  * qbman_eq_desc_set_no_orp() - Set enqueue descriptor without orp
+  * @d:                the enqueue descriptor.
+- * @response_success: 1 = enqueue with response always; 0 = enqueue with
++ * @respond_success:  1 = enqueue with response always; 0 = enqueue with
+  *                    rejections returned on a FQ.
+  */
+ void qbman_eq_desc_set_no_orp(struct qbman_eq_desc *d, int respond_success)
+@@ -932,7 +932,7 @@ int qbman_swp_enqueue_multiple_desc_mem_back(struct qbman_swp *s,
+ 
+ /**
+  * qbman_swp_push_get() - Get the push dequeue setup
+- * @p:           the software portal object
++ * @s:           the software portal object
+  * @channel_idx: the channel index to query
+  * @enabled:     returned boolean to show whether the push dequeue is enabled
+  *               for the given channel
+@@ -947,7 +947,7 @@ void qbman_swp_push_get(struct qbman_swp *s, u8 channel_idx, int *enabled)
+ 
+ /**
+  * qbman_swp_push_set() - Enable or disable push dequeue
+- * @p:           the software portal object
++ * @s:           the software portal object
+  * @channel_idx: the channel index (0 to 15)
+  * @enable:      enable or disable push dequeue
+  */
+@@ -1046,6 +1046,7 @@ void qbman_pull_desc_set_numframes(struct qbman_pull_desc *d, u8 numframes)
+ 
+ /**
+  * qbman_pull_desc_set_fq() - Set fqid from which the dequeue command dequeues
++ * @d:    the pull dequeue descriptor to be set
+  * @fqid: the frame queue index of the given FQ
+  */
+ void qbman_pull_desc_set_fq(struct qbman_pull_desc *d, u32 fqid)
+@@ -1057,6 +1058,7 @@ void qbman_pull_desc_set_fq(struct qbman_pull_desc *d, u32 fqid)
+ 
+ /**
+  * qbman_pull_desc_set_wq() - Set wqid from which the dequeue command dequeues
++ * @d:    the pull dequeue descriptor to be set
+  * @wqid: composed of channel id and wqid within the channel
+  * @dct:  the dequeue command type
+  */
+@@ -1071,6 +1073,7 @@ void qbman_pull_desc_set_wq(struct qbman_pull_desc *d, u32 wqid,
+ /**
+  * qbman_pull_desc_set_channel() - Set channelid from which the dequeue command
+  *                                 dequeues
++ * @d:    the pull dequeue descriptor to be set
+  * @chid: the channel id to be dequeued
+  * @dct:  the dequeue command type
+  */
+@@ -1398,6 +1401,7 @@ int qbman_result_has_new_result(struct qbman_swp *s, const struct dpaa2_dq *dq)
+ /**
+  * qbman_release_desc_clear() - Clear the contents of a descriptor to
+  *                              default/starting state.
++ * @d: the pull dequeue descriptor to be cleared
+  */
+ void qbman_release_desc_clear(struct qbman_release_desc *d)
+ {
+@@ -1407,6 +1411,8 @@ void qbman_release_desc_clear(struct qbman_release_desc *d)
+ 
+ /**
+  * qbman_release_desc_set_bpid() - Set the ID of the buffer pool to release to
++ * @d:    the pull dequeue descriptor to be set
++ * @bpid: the bpid value to be set
+  */
+ void qbman_release_desc_set_bpid(struct qbman_release_desc *d, u16 bpid)
+ {
+@@ -1416,6 +1422,8 @@ void qbman_release_desc_set_bpid(struct qbman_release_desc *d, u16 bpid)
+ /**
+  * qbman_release_desc_set_rcdi() - Determines whether or not the portal's RCDI
+  * interrupt source should be asserted after the release command is completed.
++ * @d:      the pull dequeue descriptor to be set
++ * @enable: enable (1) or disable (0) value
+  */
+ void qbman_release_desc_set_rcdi(struct qbman_release_desc *d, int enable)
+ {
 -- 
 2.25.1
 
