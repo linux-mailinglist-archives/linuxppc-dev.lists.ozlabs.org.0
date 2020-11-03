@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6CA2A4370
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 11:54:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8FA2A436A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 11:52:49 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQRVv0qW2zDqWf
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 21:54:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQRSs5NbYzDqXf
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 21:52:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,46 +17,46 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=pFNBIUaU; 
+ header.s=2020 header.b=rvT54BmE; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=vJq9Z56+; 
+ header.a=ed25519-sha256 header.s=2020e header.b=lkKBWdK1; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR2c1FsNzDqSk
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:33:27 +1100 (AEDT)
-Message-Id: <20201103095856.595767588@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQR2c3xqxzDqTn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 21:33:28 +1100 (AEDT)
+Message-Id: <20201103095856.732891880@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1604399603;
+ s=2020; t=1604399605;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=i3kbbtl9EePeHW2/ft3bZDh5NUwHcPcZYxbBfPjNZc8=;
- b=pFNBIUaUf/b+er6ZJJKFPRaV2u4PtSdJsN8nQKFW+3bXEIGGzauhyZgtOmkXMrq1suOcr7
- NcENhiNwm9wv4CatQ10cEcB/Hga7PsNIkM2NHzGMcjMO0pPAyOZDvNyIJoXLKsL1vmgsip
- aGloHmLDgrw+W4wL2vfGcSgi1keU2rGsBVoiLE6uxlSAbx8JfmJeKHVkcIWqPXtrdAIc+T
- /vDeotqyoJPGfzQAcXVKUcZWQA64kJReuOK5qjoOZ2yJB18jBRKtjvtQBw3wHTXNfLKG8L
- eC+4mOqr3aswQyLp4fDizQxCFpjS2lhKgFUx0jY2VcwOKrUeYn31Z+o4PrrUkg==
+ bh=3HwBsgFv26sFcL/ZrR5QT7IdhKdyl722jNSTyAsMfhU=;
+ b=rvT54BmES001fwkPfhre2195ODFh8EFwDZYAlKQRhVHUBxAXrQ4jz+GuDaq+7kANpwhtIs
+ Odqznja1AON6wOyHEpYXOzN884r1utS39bCLsxNEulHhg56wkK85myPaXmlcyC0Iwy9aJH
+ 7H/5d1lmCAyZsRrJM2yBsjEdO5LEmhyrq2wZg4iXyHs50gJQuJK3//uDTtWi4cGXwQajhE
+ 6zcImoXr01WpyQwaIvad1lc/klKtM4lT0KI/sOHFnGRyhXmWoqmmzQFg3YIBBqGRZ2BmRY
+ OjwLotmGcs5kT4ELYX86H43ZMMJAy6wm+tJXkQgUfKkVJUPub5l/USgVgx610A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1604399603;
+ s=2020e; t=1604399605;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:  references:references;
- bh=i3kbbtl9EePeHW2/ft3bZDh5NUwHcPcZYxbBfPjNZc8=;
- b=vJq9Z56+nB4hb6l6NzZWsUYvY6gKGZm9NfNVMELVLZameB9s0fxKXRavsDsjIUrnG3aw2e
- hJoPkAXyDaK+qQBw==
-Date: Tue, 03 Nov 2020 10:27:13 +0100
+ bh=3HwBsgFv26sFcL/ZrR5QT7IdhKdyl722jNSTyAsMfhU=;
+ b=lkKBWdK1CIWHPlUI77sykNxUAemFnakZTPVr751NgUw5N/WO+Qg52P9pTni6F4JYuE0eLl
+ 4W0KlbICECLDLgCA==
+Date: Tue, 03 Nov 2020 10:27:14 +0100
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 01/37] mm/highmem: Un-EXPORT __kmap_atomic_idx()
+Subject: [patch V3 02/37] highmem: Remove unused functions
 References: <20201103092712.714480842@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-transfer-encoding: 8-bit
-X-Mailman-Approved-At: Tue, 03 Nov 2020 21:51:17 +1100
+X-Mailman-Approved-At: Tue, 03 Nov 2020 21:51:16 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,25 +109,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nothing in modules can use that.
+Nothing uses totalhigh_pages_dec() and totalhigh_pages_set().
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
 ---
- mm/highmem.c |    2 --
- 1 file changed, 2 deletions(-)
+V3: New patch
+---
+ include/linux/highmem.h |   10 ----------
+ 1 file changed, 10 deletions(-)
 
---- a/mm/highmem.c
-+++ b/mm/highmem.c
-@@ -108,8 +108,6 @@ static inline wait_queue_head_t *get_pkm
- atomic_long_t _totalhigh_pages __read_mostly;
- EXPORT_SYMBOL(_totalhigh_pages);
+--- a/include/linux/highmem.h
++++ b/include/linux/highmem.h
+@@ -104,21 +104,11 @@ static inline void totalhigh_pages_inc(v
+ 	atomic_long_inc(&_totalhigh_pages);
+ }
  
--EXPORT_PER_CPU_SYMBOL(__kmap_atomic_idx);
+-static inline void totalhigh_pages_dec(void)
+-{
+-	atomic_long_dec(&_totalhigh_pages);
+-}
 -
- unsigned int nr_free_highpages (void)
+ static inline void totalhigh_pages_add(long count)
  {
- 	struct zone *zone;
+ 	atomic_long_add(count, &_totalhigh_pages);
+ }
+ 
+-static inline void totalhigh_pages_set(long val)
+-{
+-	atomic_long_set(&_totalhigh_pages, val);
+-}
+-
+ void kmap_flush_unused(void);
+ 
+ struct page *kmap_to_page(void *addr);
 
