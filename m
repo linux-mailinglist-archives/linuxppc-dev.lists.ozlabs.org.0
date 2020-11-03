@@ -1,49 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E3B2A4704
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 14:54:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE5A2A47CB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 15:16:13 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQWW14fhFzDqjJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 00:54:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQWzX4rdGzDqfr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 01:16:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQVxb6zFDzDqQT
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 00:29:23 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=XeKpGeFt; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4CQVxZ1vqdz9sVZ; Wed,  4 Nov 2020 00:29:22 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4CQVxY6JLCz9sVW; Wed,  4 Nov 2020 00:29:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1604410161;
- bh=bSaHqAWLPvKvWz8UBYj9Yhq+nHvHiyQvhy2Bqzr9AL4=;
- h=From:To:Cc:Subject:Date:From;
- b=XeKpGeFtDeDGZto0GKAW6gLBUYtV66VLhC6X22qJoEYNJN8zYFfnPRklCEfDqcEF5
- UGpPS71gScnsrr9hPS9fkVgmr6EAGjNgXjJ0k7+dKHnAXh493xMZLf7xdQl9r5sl2u
- J0LM22amOfwkk9fQmxd4ogPkSkSS2Wu8JT7PW6HyT3s44mAffEtrxaaJLysQ5If4De
- L/mZKYR8azxP8i4bmQvlM3ALTwPCh+1IUx6fwl1X+bi3c+kKFGAZzOldVUwhvEIJ3+
- 2zwpbZN3Fk5EgUjjHoemyPSHJVtc1eEHAp6RdarJ7AyzEtoWZBo+hjoYlrzKRaMFFS
- Gp2RXIatgh5YA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc: Don't use asm goto for put_user() with GCC 4.9
-Date: Wed,  4 Nov 2020 00:29:15 +1100
-Message-Id: <20201103132915.529337-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=suse.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=IN3VErPd; dkim-atps=neutral
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CQWsQ4vPhzDqHL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 01:10:48 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1604412645;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ba9qeE3P97TbQ2yvwB2ubaFiLUcB36w6IpkZF8tbKnk=;
+ b=IN3VErPdp1WBPWe8s7Z/Hom6zeEPN00JGakf0pmbE0tHXmmxXEWD5++Vr61N/M6YEB54w7
+ TkpVK9DRs5pQGU2sXeGrOyjWu6VljkU4rvLr/rLgtbNpT6gEfg2GSAQckNPRAvbykm4vni
+ bo/mIe9ANXQW2mhX2JkXe/I7Xbftp1o=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id C3BEFABF4;
+ Tue,  3 Nov 2020 14:10:44 +0000 (UTC)
+Date: Tue, 3 Nov 2020 15:10:43 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH 11/11 v2.2] ftrace: Add recording of functions that
+ caused recursion
+Message-ID: <20201103141043.GO20201@alley>
+References: <20201030213142.096102821@goodmis.org>
+ <20201030214014.801706340@goodmis.org>
+ <20201102164147.GJ20201@alley>
+ <20201102123721.4fcce2cb@gandalf.local.home>
+ <20201102124606.72bd89c5@gandalf.local.home>
+ <20201102142254.7e148f8a@gandalf.local.home>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201102142254.7e148f8a@gandalf.local.home>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,184 +60,251 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: schwab@linux-m68k.org
+Cc: Anton Vorontsov <anton@enomsg.org>, linux-doc@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ Joe Lawrence <joe.lawrence@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Tony Luck <tony.luck@intel.com>,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Masami Hiramatsu <mhiramat@kernel.org>, Colin Cross <ccross@android.com>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andreas reported that commit ee0a49a6870e ("powerpc/uaccess: Switch
-__put_user_size_allowed() to __put_user_asm_goto()") broke
-CLONE_CHILD_SETTID.
+On Mon 2020-11-02 14:23:14, Steven Rostedt wrote:
+> From c532ff6b048dd4a12943b05c7b8ce30666c587c8 Mon Sep 17 00:00:00 2001
+> From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+> Date: Thu, 29 Oct 2020 15:27:06 -0400
+> Subject: [PATCH] ftrace: Add recording of functions that caused recursion
+> 
+> This adds CONFIG_FTRACE_RECORD_RECURSION that will record to a file
+> "recursed_functions" all the functions that caused recursion while a
+> callback to the function tracer was running.
+> 
+> diff --git a/include/linux/trace_recursion.h b/include/linux/trace_recursion.h
+> index ac3d73484cb2..1cba5fe8777a 100644
+> --- a/include/linux/trace_recursion.h
+> +++ b/include/linux/trace_recursion.h
+> @@ -142,7 +142,28 @@ static __always_inline int trace_get_context_bit(void)
+>  			pc & HARDIRQ_MASK ? TRACE_CTX_IRQ : TRACE_CTX_SOFTIRQ;
+>  }
+>  
+> -static __always_inline int trace_test_and_set_recursion(int start, int max)
+> +#ifdef CONFIG_FTRACE_RECORD_RECURSION
+> +extern void ftrace_record_recursion(unsigned long ip, unsigned long parent_ip);
+> +/*
+> +* The paranoid_test check can cause dropped reports (unlikely), but
+> +* if the recursion is common, it will likely still be recorded later.
+> +* But the paranoid_test is needed to make sure we don't crash.
+> +*/
+> +# define do_ftrace_record_recursion(ip, pip)				\
+> +	do {								\
+> +		static atomic_t paranoid_test;				\
+> +		if (!atomic_read(&paranoid_test)) {			\
+> +			atomic_inc(&paranoid_test);			\
+> +			ftrace_record_recursion(ip, pip);		\
+> +			atomic_dec(&paranoid_test);			\
 
-Further inspection showed that the put_user() in schedule_tail() was
-missing entirely, the store not emitted by the compiler.
+BTW: What is actually the purpose of paranoid_test, please?
 
-  <.schedule_tail>:
-    mflr    r0
-    std     r0,16(r1)
-    stdu    r1,-112(r1)
-    bl      <.finish_task_switch>
-    ld      r9,2496(r3)
-    cmpdi   cr7,r9,0
-    bne     cr7,<.schedule_tail+0x60>
-    ld      r3,392(r13)
-    ld      r9,1392(r3)
-    cmpdi   cr7,r9,0
-    beq     cr7,<.schedule_tail+0x3c>
-    li      r4,0
-    li      r5,0
-    bl      <.__task_pid_nr_ns>
-    nop
-    bl      <.calculate_sigpending>
-    nop
-    addi    r1,r1,112
-    ld      r0,16(r1)
-    mtlr    r0
-    blr
-    nop
-    nop
-    nop
-    bl      <.__balance_callback>
-    b       <.schedule_tail+0x1c>
+It prevents nested ftrace_record_recursion() calls on the same CPU
+(recursion, nesting from IRQ, NMI context).
 
-Notice there are no stores other than to the stack. There should be a
-stw in there for the store to current->set_child_tid.
+Parallel calls from different CPUs are still possible:
 
-This is only seen with GCC 4.9 era compilers (tested with 4.9.3 and
-4.9.4), and only when CONFIG_PPC_KUAP is disabled.
+CPU0					CPU1
+if (!atomic_read(&paranoid_test))	if (!atomic_read(&paranoid_test))
+   // passes				  // passes
+   atomic_inc(&paranoid_test);            atomic_inc(&paranoid_test);
 
-When CONFIG_PPC_KUAP=y, the memory clobber that's part of the isync()
-and mtspr() inlined via allow_user_access() seems to be enough to
-avoid the bug.
 
-For now though let's just not use asm goto with GCC 4.9, to avoid this
-bug and any other issues we haven't noticed yet. Possibly in future we
-can find a smaller workaround.
+I do not see how a nested call could cause crash while a parallel
+one would be OK.
 
-This is basically a revert of commit ee0a49a6870e ("powerpc/uaccess:
-Switch __put_user_size_allowed() to __put_user_asm_goto()") and commit
-7fdf966bed15 ("powerpc/uaccess: Remove __put_user_asm() and
-__put_user_asm2()"), but only for GCC 4.9.
 
-With this applied the code generation looks more like it will work:
+> --- /dev/null
+> +++ b/kernel/trace/trace_recursion_record.c
+> @@ -0,0 +1,236 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/seq_file.h>
+> +#include <linux/kallsyms.h>
+> +#include <linux/module.h>
+> +#include <linux/ftrace.h>
+> +#include <linux/fs.h>
+> +
+> +#include "trace_output.h"
+> +
+> +struct recursed_functions {
+> +	unsigned long		ip;
+> +	unsigned long		parent_ip;
+> +};
+> +
+> +static struct recursed_functions recursed_functions[CONFIG_FTRACE_RECORD_RECURSION_SIZE];
+> +static atomic_t nr_records;
+> +
+> +/*
+> + * Cache the last found function. Yes, updates to this is racey, but
+> + * so is memory cache ;-)
+> + */
+> +static unsigned long cached_function;
+> +
+> +void ftrace_record_recursion(unsigned long ip, unsigned long parent_ip)
+> +{
+> +	int index = 0;
+> +	int i;
+> +	unsigned long old;
+> +
+> + again:
+> +	/* First check the last one recorded */
+> +	if (ip == cached_function)
+> +		return;
+> +
+> +	i = atomic_read(&nr_records);
+> +	/* nr_records is -1 when clearing records */
+> +	smp_mb__after_atomic();
+> +	if (i < 0)
+> +		return;
+> +
+> +	/*
+> +	 * If there's two writers and this writer comes in second,
+> +	 * the cmpxchg() below to update the ip will fail. Then this
+> +	 * writer will try again. It is possible that index will now
+> +	 * be greater than nr_records. This is because the writer
+> +	 * that succeeded has not updated the nr_records yet.
+> +	 * This writer could keep trying again until the other writer
+> +	 * updates nr_records. But if the other writer takes an
+> +	 * interrupt, and that interrupt locks up that CPU, we do
+> +	 * not want this CPU to lock up due to the recursion protection,
+> +	 * and have a bug report showing this CPU as the cause of
+> +	 * locking up the computer. To not lose this record, this
+> +	 * writer will simply use the next position to update the
+> +	 * recursed_functions, and it will update the nr_records
+> +	 * accordingly.
+> +	 */
+> +	if (index < i)
+> +		index = i;
+> +	if (index >= CONFIG_FTRACE_RECORD_RECURSION_SIZE)
+> +		return;
+> +
+> +	for (i = index - 1; i >= 0; i--) {
+> +		if (recursed_functions[i].ip == ip) {
+> +			cached_function = ip;
+> +			return;
+> +		}
+> +	}
+> +
+> +	cached_function = ip;
+> +
+> +	/*
+> +	 * We only want to add a function if it hasn't been added before.
+> +	 * Add to the current location before incrementing the count.
+> +	 * If it fails to add, then increment the index (save in i)
+> +	 * and try again.
+> +	 */
+> +	old = cmpxchg(&recursed_functions[index].ip, 0, ip);
+> +	if (old != 0) {
+> +		/* Did something else already added this for us? */
+> +		if (old == ip)
+> +			return;
+> +		/* Try the next location (use i for the next index) */
+> +		index++;
+> +		goto again;
+> +	}
+> +
+> +	recursed_functions[index].parent_ip = parent_ip;
+> +
+> +	/*
+> +	 * It's still possible that we could race with the clearing
+> +	 *    CPU0                                    CPU1
+> +	 *    ----                                    ----
+> +	 *                                       ip = func
+> +	 *  nr_records = -1;
+> +	 *  recursed_functions[0] = 0;
+> +	 *                                       i = -1
+> +	 *                                       if (i < 0)
+> +	 *  nr_records = 0;
+> +	 *  (new recursion detected)
+> +	 *      recursed_functions[0] = func
+> +	 *                                            cmpxchg(recursed_functions[0],
+> +	 *                                                    func, 0)
+> +	 *
+> +	 * But the worse that could happen is that we get a zero in
+> +	 * the recursed_functions array, and it's likely that "func" will
+> +	 * be recorded again.
+> +	 */
+> +	i = atomic_read(&nr_records);
+> +	smp_mb__after_atomic();
+> +	if (i < 0)
+> +		cmpxchg(&recursed_functions[index].ip, ip, 0);
+> +	else if (i <= index)
+> +		atomic_cmpxchg(&nr_records, i, index + 1);
 
-  <.schedule_tail>:
-    mflr    r0
-    std     r31,-8(r1)
-    std     r0,16(r1)
-    stdu    r1,-144(r1)
-    std     r3,112(r1)
-    bl      <._mcount>
-    nop
-    ld      r3,112(r1)
-    bl      <.finish_task_switch>
-    ld      r9,2624(r3)
-    cmpdi   cr7,r9,0
-    bne     cr7,<.schedule_tail+0xa0>
-    ld      r3,2408(r13)
-    ld      r31,1856(r3)
-    cmpdi   cr7,r31,0
-    beq     cr7,<.schedule_tail+0x80>
-    li      r4,0
-    li      r5,0
-    bl      <.__task_pid_nr_ns>
-    nop
-    li      r9,-1
-    clrldi  r9,r9,12
-    cmpld   cr7,r31,r9
-    bgt     cr7,<.schedule_tail+0x80>
-    lis     r9,16
-    rldicr  r9,r9,32,31
-    subf    r9,r31,r9
-    cmpldi  cr7,r9,3
-    ble     cr7,<.schedule_tail+0x80>
-    li      r9,0
-    stw     r3,0(r31)				<-- stw
-    nop
-    bl      <.calculate_sigpending>
-    nop
-    addi    r1,r1,144
-    ld      r0,16(r1)
-    ld      r31,-8(r1)
-    mtlr    r0
-    blr
-    nop
-    bl      <.__balance_callback>
-    b       <.schedule_tail+0x30>
+Are you aware of the following race, please?
 
-Fixes: ee0a49a6870e ("powerpc/uaccess: Switch __put_user_size_allowed() to __put_user_asm_goto()")
-Reported-by: Andreas Schwab <schwab@linux-m68k.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/include/asm/uaccess.h | 48 ++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+CPU0					CPU1
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index ef5bbb705c08..526a6658946b 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -110,6 +110,52 @@ static inline bool __access_ok(unsigned long addr, unsigned long size)
- 
- extern long __put_user_bad(void);
- 
-+#if defined(GCC_VERSION) && GCC_VERSION < 50000
-+#define __put_user_asm(x, addr, err, op)			\
-+	__asm__ __volatile__(					\
-+		"1:	" op "%U2%X2 %1,%2	# put_user\n"	\
-+		"2:\n"						\
-+		".section .fixup,\"ax\"\n"			\
-+		"3:	li %0,%3\n"				\
-+		"	b 2b\n"					\
-+		".previous\n"					\
-+		EX_TABLE(1b, 3b)				\
-+		: "=r" (err)					\
-+		: "r" (x), "m<>" (*addr), "i" (-EFAULT), "0" (err))
-+
-+#ifdef __powerpc64__
-+#define __put_user_asm2(x, ptr, retval)				\
-+	  __put_user_asm(x, ptr, retval, "std")
-+#else /* __powerpc64__ */
-+#define __put_user_asm2(x, addr, err)				\
-+	__asm__ __volatile__(					\
-+		"1:	stw%X2 %1,%2\n"			\
-+		"2:	stw%X2 %L1,%L2\n"			\
-+		"3:\n"						\
-+		".section .fixup,\"ax\"\n"			\
-+		"4:	li %0,%3\n"				\
-+		"	b 3b\n"					\
-+		".previous\n"					\
-+		EX_TABLE(1b, 4b)				\
-+		EX_TABLE(2b, 4b)				\
-+		: "=r" (err)					\
-+		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
-+#endif /* __powerpc64__ */
-+
-+#define __put_user_size_allowed(x, ptr, size, retval)		\
-+do {								\
-+	retval = 0;						\
-+	switch (size) {						\
-+	  case 1: __put_user_asm(x, ptr, retval, "stb"); break;	\
-+	  case 2: __put_user_asm(x, ptr, retval, "sth"); break;	\
-+	  case 4: __put_user_asm(x, ptr, retval, "stw"); break;	\
-+	  case 8: __put_user_asm2(x, ptr, retval); break;	\
-+	  default: __put_user_bad();				\
-+	}							\
-+} while (0)
-+
-+#else
-+
- #define __put_user_size_allowed(x, ptr, size, retval)		\
- do {								\
- 	__label__ __pu_failed;					\
-@@ -122,6 +168,8 @@ __pu_failed:							\
- 	retval = -EFAULT;					\
- } while (0)
- 
-+#endif /* GCC_VERSION */
-+
- #define __put_user_size(x, ptr, size, retval)			\
- do {								\
- 	allow_write_to_user(ptr, size);				\
--- 
-2.25.1
+ftrace_record_recursion()
 
+   i = atomic_read(&nr_records);
+   // i = 20   (for example)
+   if (i < index)
+     index = i;
+     // index = 20;
+
+					recursed_function_open()
+					atomic_set(&nr_records, -1);
+					memset(recursed_functions, 0, );
+					atomic_set(&nr_records, 0);
+
+   // successfully store ip at index == 20
+   cmpxchg(&recursed_functions[index].ip, 0, ip);
+   recursed_functions[index].parent_ip = parent_ip;
+
+   // check race with clearing
+   i = atomic_read(&nr_records);
+   // i == 0
+   if (i < 0)
+      // no
+   else
+	atomic_cmpxchg(&nr_records, i, index + 1);
+
+RESULT:
+
+   + nr_records == 21
+   + and slots 0..19 are zeroed
+
+
+I played with the code and ended with head entangled by chicken & egg
+like problems.
+
+I believe that a solution might be a combined atomic variable from
+nr_records + cleanup_count.
+
+ftrace_record_recursion() would be allowed to increase nr_records
+only when cleanup_count is still the same. cleanup_count would
+be incremented together with clearing nr_records.
+
+
+Well, I am not sure if it is worth the effort. The race is rather
+theoretical. In the worst case, the cache might contain many
+zero values.
+
+Anyway, it is yet another experience for me that lockless algorithms
+are more tricky that one would expect.
+
+Best Regards,
+Petr
