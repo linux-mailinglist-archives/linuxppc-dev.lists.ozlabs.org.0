@@ -2,69 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3042A3BBA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 06:17:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 565702A3BBD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 06:19:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQJ2R2ZVGzDqWS
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 16:17:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQJ4M5CF4zDqD8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 16:19:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=i35ly/+5; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=DI9WvxbX; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQHzj5D80zDqXs
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQHzk25cYzDqYL
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Nov 2020 16:15:28 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id t22so8003775plr.9
+Received: by mail-pl1-x644.google.com with SMTP id p4so688115plr.1
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Nov 2020 21:15:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=Ail4gPbM6KYhcHl/X1E86yuCBJMivDSBFsI62nnOZZI=;
- b=i35ly/+5tSJBMlc6oh6Z2u6MqAFEoYXqT5fbVnsPAF3r/Pt9QXivANWSkY5n0588TV
- ZiGxwwKpGrPaiz00rOrDQv5Uq7knbVX6mjbpCchVaykaSf7/Q9+LWr/91Tx/cUZ+QRwZ
- cOkPp7Dsid5iEYmo3P5TpcfKLPu8jPLVOJluSqnOsSbLVgCOzcdElQ/4jA/hD37pvTQr
- 6k5u1Nx5QTm4+FCpFHdCiXRCYT/k/1AlTcJ8KoCpn5wQ2PLiMdlpv3zNIr+UewkjPNcf
- uql90uDs5btkOmz/DAmV0HvwNWkfywfUXKBg8ULGv4eaL2rD8ea6F5EAGEvA/Js3gyTd
- oHGQ==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=/8SIl9t4EdzHmTbWoJI841YI1z4iRoVO0uV2E5/2YaI=;
+ b=DI9WvxbXiVJQrGfLgCL9j/d2RB14rxTiXGlrN+OHhr9ylkeFh1p2e8S1jd5MPbkPeJ
+ 7GNIoMTBb4DqxfkZaWOzJFglIOzToxMc3qZRnIy6aSeM9oLv7t5H5jKugvA/906iX48I
+ s6w9RAC/zHDPSvu8yQ8FFri80DVPSMvV13oeoyo1xDzKhlrwRCfTPhZJGndBCDCPO7ME
+ zDA41XMFrlP0GEBZhPFG2LIDMi8rRVpEFOwbbpwRf8X1mYQ8f7b4t2+1YKpdqwkERbkG
+ Xxzhs00N7ZZ71u9torAVZlcm1Qg2CochIKLAY4rtigq1rQMCwfvlbACw6A9Ds40v0VMv
+ bhAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=Ail4gPbM6KYhcHl/X1E86yuCBJMivDSBFsI62nnOZZI=;
- b=nZ4T8aFX0x6DSd6ZikW60776MLXfiHpCohrwzfyO15MkECOf/k9EdM/8Mkqp/rCdj/
- fVxrGMddTKwlhaPPEEy/9lUJCDAq9J6/kF9oMBz3SZJnwnFG4kmAudZ+w32YJrF2loUR
- hWpwAbSlADJEFNFsm+ScLY6ygAYeKqZ6DXj3uV7sJUMQswqg/XdB5CJer9WDtF9pcLFX
- lC10ZwvduJldefN9w6om4uNgR38+a0WsT9+J749gwdHrXFSnTBCOs+/WwHWJqTq0gKLs
- 3sJmWGTSjy+jlP7bmfBFLgyWMkVjMOq6RRP4hx8FSjPVb5Oeux3hfWswu9jYbX2bl0yg
- /XWw==
-X-Gm-Message-State: AOAM533CJJTt77gCespkJcHyR1v01scGtk7xyfjblXF0pKSZG7H3aDg8
- eQWYOrPPqgt3vFDbxj5Xp6ex5nfaMDE=
-X-Google-Smtp-Source: ABdhPJzHhRHZ9e+taImMI0DE83pc38IhFJ6v3j9w30SeeXMaaiCukc0CCPOVo6HaapkQRao4NbPLjw==
-X-Received: by 2002:a17:902:c3c9:b029:d6:7e88:cfa9 with SMTP id
- j9-20020a170902c3c9b02900d67e88cfa9mr23077620plj.64.1604380522380; 
- Mon, 02 Nov 2020 21:15:22 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=/8SIl9t4EdzHmTbWoJI841YI1z4iRoVO0uV2E5/2YaI=;
+ b=VIcKdFGBfNYkrlZ6pl6BJDAp9cEz2AX0DAa/ZXIc9md1VoED7lWJJ5n5pBICoKE40J
+ oHZYlH8Pzd+d92HvoYu0L6lMz4mn3MTRNczH02UFoNn7Cvor7biTlK1iniCqsg7vWalI
+ YqwKxkby+QCgY2SfP2zIazGIneXsibugvC+U4epyp5csOjgKJM2ZkyzjdsCK4be0XTxu
+ uMwxrDhITJ49bGFjCCNd2OqWqXJhSyyTORGPyBQGlCBQlkp26wjW5+xJoqadDzRLpB4i
+ mFDfyY919VOkjSn/TXtxttwFDqKw9X17WJJv9K9MPyqyvg3Ys2FXr0iEdTnXelGM1hBz
+ ycWg==
+X-Gm-Message-State: AOAM532IvWKYy+girTlSYQJiFL1eq1GVHyoC4xUEga33CMMVJ8VvKWzk
+ uVTxtCr6FsTmMIfyu0gyy7qOfxdLaYM=
+X-Google-Smtp-Source: ABdhPJzBOUQt1GqbG9fPE/YDnqpOiKRtfdvdS35q5K+ygQYevI8MDeLxcooopbwRWSdfW4TbXQCPaQ==
+X-Received: by 2002:a17:902:c152:b029:d6:33a:c46f with SMTP id
+ 18-20020a170902c152b02900d6033ac46fmr24514229plj.38.1604380524549; 
+ Mon, 02 Nov 2020 21:15:24 -0800 (PST)
 Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com
  (110-175-254-242.static.tpgi.com.au. [110.175.254.242])
- by smtp.gmail.com with ESMTPSA id 26sm4225357pgm.92.2020.11.02.21.15.20
+ by smtp.gmail.com with ESMTPSA id 26sm4225357pgm.92.2020.11.02.21.15.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Nov 2020 21:15:21 -0800 (PST)
+ Mon, 02 Nov 2020 21:15:24 -0800 (PST)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/2] powerpc/eeh: Rework pci_dev lookup in debugfs attributes
-Date: Tue,  3 Nov 2020 16:15:11 +1100
-Message-Id: <20201103051512.919333-1-oohall@gmail.com>
+Subject: [PATCH 2/2] powerpc/eeh: Add a debugfs interface to check if a driver
+ supports recovery
+Date: Tue,  3 Nov 2020 16:15:12 +1100
+Message-Id: <20201103051512.919333-2-oohall@gmail.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20201103051512.919333-1-oohall@gmail.com>
+References: <20201103051512.919333-1-oohall@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,123 +86,90 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Pull the string -> pci_dev lookup stuff into a helper function. No functional change.
+If a PCI device's current driver implements the error handling callbacks
+EEH can use them to recover the device after an error occurs. For devices
+without the error handling callbacks we recover them by removing the device
+and re-scanning it so the PCI core puts the device back into a known good
+state.
+
+Currently there's no way for userspace to determine if the driver supports
+recovery or not which makes it difficult to write automated tests for EEH.
+This patch addressing that by adding a debugfs interface for querying if
+a specific device can be recovered or not.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/kernel/eeh.c | 71 ++++++++++++++++++++-------------------
- 1 file changed, 37 insertions(+), 34 deletions(-)
+ arch/powerpc/kernel/eeh.c | 50 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
 diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index 813713c9120c..f9182ff57804 100644
+index f9182ff57804..cd60bc1c8701 100644
 --- a/arch/powerpc/kernel/eeh.c
 +++ b/arch/powerpc/kernel/eeh.c
-@@ -1596,6 +1596,35 @@ static int proc_eeh_show(struct seq_file *m, void *v)
- }
+@@ -1868,6 +1868,53 @@ static const struct file_operations eeh_dev_break_fops = {
+ 	.read   = eeh_debugfs_dev_usage,
+ };
  
- #ifdef CONFIG_DEBUG_FS
-+
-+
-+static struct pci_dev *eeh_debug_lookup_pdev(struct file *filp,
-+					     const char __user *user_buf,
-+					     size_t count, loff_t *ppos)
++static ssize_t eeh_dev_can_recover(struct file *filp,
++				   const char __user *user_buf,
++				   size_t count, loff_t *ppos)
 +{
-+	uint32_t domain, bus, dev, fn;
++	struct pci_driver *drv;
 +	struct pci_dev *pdev;
-+	char buf[20];
-+	int ret;
++	size_t ret;
 +
-+	memset(buf, 0, sizeof(buf));
-+	ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
-+	if (!ret)
-+		return ERR_PTR(-EFAULT);
++	pdev = eeh_debug_lookup_pdev(filp, user_buf, count, ppos);
++	if (IS_ERR(pdev))
++		return PTR_ERR(pdev);
 +
-+	ret = sscanf(buf, "%x:%x:%x.%x", &domain, &bus, &dev, &fn);
-+	if (ret != 4) {
-+		pr_err("%s: expected 4 args, got %d\n", __func__, ret);
-+		return ERR_PTR(-EINVAL);
++	/*
++	 * In order for error recovery to work the driver needs to implement
++	 * .error_detected(), so it can quiesce IO to the device, and
++	 * .slot_reset() so it can re-initialise the device after a reset.
++	 *
++	 * Ideally they'd implement .resume() too, but some drivers which
++	 * we need to support (notably IPR) don't so I guess we can tolerate
++	 * that.
++	 *
++	 * .mmio_enabled() is mostly there as a work-around for devices which
++	 * take forever to re-init after a hot reset. Implementing that is
++	 * strictly optional.
++	 */
++	drv = pci_dev_driver(pdev);
++	if (drv &&
++	    drv->err_handler &&
++	    drv->err_handler->error_detected &&
++	    drv->err_handler->slot_reset) {
++		ret = count;
++	} else {
++		ret = -EOPNOTSUPP;
 +	}
 +
-+	pdev = pci_get_domain_bus_and_slot(domain, bus, (dev << 3) | fn);
-+	if (!pdev)
-+		return ERR_PTR(-ENODEV);
++	pci_dev_put(pdev);
 +
-+	return pdev;
++	return ret;
 +}
 +
- static int eeh_enable_dbgfs_set(void *data, u64 val)
- {
- 	if (val)
-@@ -1688,26 +1717,13 @@ static ssize_t eeh_dev_check_write(struct file *filp,
- 				const char __user *user_buf,
- 				size_t count, loff_t *ppos)
- {
--	uint32_t domain, bus, dev, fn;
- 	struct pci_dev *pdev;
- 	struct eeh_dev *edev;
--	char buf[20];
- 	int ret;
++static const struct file_operations eeh_dev_can_recover_fops = {
++	.open	= simple_open,
++	.llseek	= no_llseek,
++	.write	= eeh_dev_can_recover,
++	.read   = eeh_debugfs_dev_usage,
++};
++
+ #endif
  
--	memset(buf, 0, sizeof(buf));
--	ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
--	if (!ret)
--		return -EFAULT;
--
--	ret = sscanf(buf, "%x:%x:%x.%x", &domain, &bus, &dev, &fn);
--	if (ret != 4) {
--		pr_err("%s: expected 4 args, got %d\n", __func__, ret);
--		return -EINVAL;
--	}
--
--	pdev = pci_get_domain_bus_and_slot(domain, bus, (dev << 3) | fn);
--	if (!pdev)
--		return -ENODEV;
-+	pdev = eeh_debug_lookup_pdev(filp, user_buf, count, ppos);
-+	if (IS_ERR(pdev))
-+		return PTR_ERR(pdev);
- 
- 	edev = pci_dev_to_eeh_dev(pdev);
- 	if (!edev) {
-@@ -1717,8 +1733,8 @@ static ssize_t eeh_dev_check_write(struct file *filp,
+ static int __init eeh_init_proc(void)
+@@ -1892,6 +1939,9 @@ static int __init eeh_init_proc(void)
+ 		debugfs_create_file_unsafe("eeh_force_recover", 0600,
+ 				powerpc_debugfs_root, NULL,
+ 				&eeh_force_recover_fops);
++		debugfs_create_file_unsafe("eeh_dev_can_recover", 0600,
++				powerpc_debugfs_root, NULL,
++				&eeh_dev_can_recover_fops);
+ 		eeh_cache_debugfs_init();
+ #endif
  	}
- 
- 	ret = eeh_dev_check_failure(edev);
--	pci_info(pdev, "eeh_dev_check_failure(%04x:%02x:%02x.%01x) = %d\n",
--			domain, bus, dev, fn, ret);
-+	pci_info(pdev, "eeh_dev_check_failure(%s) = %d\n",
-+			pci_name(pdev), ret);
- 
- 	pci_dev_put(pdev);
- 
-@@ -1829,25 +1845,12 @@ static ssize_t eeh_dev_break_write(struct file *filp,
- 				const char __user *user_buf,
- 				size_t count, loff_t *ppos)
- {
--	uint32_t domain, bus, dev, fn;
- 	struct pci_dev *pdev;
--	char buf[20];
- 	int ret;
- 
--	memset(buf, 0, sizeof(buf));
--	ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
--	if (!ret)
--		return -EFAULT;
--
--	ret = sscanf(buf, "%x:%x:%x.%x", &domain, &bus, &dev, &fn);
--	if (ret != 4) {
--		pr_err("%s: expected 4 args, got %d\n", __func__, ret);
--		return -EINVAL;
--	}
--
--	pdev = pci_get_domain_bus_and_slot(domain, bus, (dev << 3) | fn);
--	if (!pdev)
--		return -ENODEV;
-+	pdev = eeh_debug_lookup_pdev(filp, user_buf, count, ppos);
-+	if (IS_ERR(pdev))
-+		return PTR_ERR(pdev);
- 
- 	ret = eeh_debugfs_break_device(pdev);
- 	pci_dev_put(pdev);
 -- 
 2.26.2
 
