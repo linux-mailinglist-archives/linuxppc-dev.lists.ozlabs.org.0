@@ -2,63 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F502A536B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 22:01:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F712A5497
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Nov 2020 22:12:54 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQhzJ6mNPzDqN2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 08:01:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQjDL4pXTzDqP3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 08:12:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=0x7f454c46@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linutronix.de
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=Wh43mnWM; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=STcwQ6Ra; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=e1HtMVuc; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQfHd6xHbzDqcH
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 06:00:29 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1604430021;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=p7vA0Pp8Yw32NcCmeGMglrNZNTsusNNmUR0JbokXn0s=;
- b=Wh43mnWM8kdYti+K6Ejg70IQfa+GmZ8DCSo20FQE/hkLNmxVT4iphQnlk6m40FPrmWktQO
- 8ayXKz0ztE1cqx/iEhmcbhojQh9yCHEkFANOGr1w8fGEwrPOcrWAWxi/OenSb5evTEILWa
- oclhRZDu2W0eltn+sc+1j25HCEzKjNSXz+4io/CbYUyMFuxTbNnNJEiCm1jMBn8PGej5s3
- E3JpbZR0aFWpI6lV+SZv22HUNUyPWbXG8oMYz+BmJikgi+ivLhTWpXqqgXf53DcJR+Ltrn
- dCfpJUdQQNPCTgPlSMPzbs0whzNCaCVS/fZbTm34UVovthqkFff3qyFpeY0sbA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1604430021;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=p7vA0Pp8Yw32NcCmeGMglrNZNTsusNNmUR0JbokXn0s=;
- b=STcwQ6RaI64DeextSGHfCvrA9zLqnmZlfhd6kn3GgHfcpWRfVbJIkhHpoM7lA8B8jXR4lp
- QBLUYE/euA+zomCg==
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [patch V3 22/37] highmem: High implementation details and
- document API
-In-Reply-To: <CAHk-=wg2D_yjgKYkXCybD3uf0dtwYh6HxZ9BQJfV5t+EBqLGQQ@mail.gmail.com>
-References: <20201103092712.714480842@linutronix.de>
- <20201103095858.827582066@linutronix.de>
- <CAHk-=wg2D_yjgKYkXCybD3uf0dtwYh6HxZ9BQJfV5t+EBqLGQQ@mail.gmail.com>
-Date: Tue, 03 Nov 2020 20:00:20 +0100
-Message-ID: <87y2ji1d17.fsf@nanos.tec.linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQj7m4q5vzDqFC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 08:08:52 +1100 (AEDT)
+Received: by mail-wm1-x341.google.com with SMTP id d142so594372wmd.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Nov 2020 13:08:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=Jb4L9Y0z8nLo50iZlILjChqFx1sExeynBE0hY/3lq9A=;
+ b=e1HtMVuchX9lW5ljiK0edzPzBVkUdZTnodYqjYdH2t8sqrrkvoNp0OuEhyf0wRTGGy
+ 70A/XvZauAfK4hEpzB6ZExqq0EzxQeuisU9fTSJytV+6YZ3ftOxx0CIGtbJC52N+aNB5
+ XNAt++eOZHiRnkNIN9Ny8pqLbmWXgrg+pJTfUbvFzC0q/EzNIl9j4AitmbhQNGqihUgh
+ o1bvxEWxO/7wObJvyxE99kJyaXQ5gTXfHXOglbeqBKhbUjUsif5l/NsfwzSCXK18r5Wj
+ EeOen8wgWfZiNvahyIQ8OPleJeCq8WD/APsMECg03Kk61UD0LDTBZQ0MQPUtlZZEh7Dh
+ ZeTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=Jb4L9Y0z8nLo50iZlILjChqFx1sExeynBE0hY/3lq9A=;
+ b=KoHNxknAqSGoGxWfEQMgeEF1SfNIx7r28VWDfYI6toRPv2V15XeuEnRrXNjKnKA2Y6
+ +y7IMDgBzmMqVfSyfFHCG6lpxCrhVixWliz8zEdkb2nS8jA8HAjxbxElNDojUnAMdrqI
+ lhScmZs9cgTgmnVXTEuwxCtKvN/xdFSFQmRbPbwQ96s2u3G1PqVq5pNnmpByyof/gg2a
+ nv++wcCVp6qTh35BOO8lkv8huxrv9quX7ksFNCg+D4qz6gcuxYrJnoCbC9sKHk09DKzx
+ 8LXcNmuW/oUaC78/LyoYxGwXRbuFnPfXCNb+9dwMY06TEx89tGV5C5/A70xYrVhNNZXI
+ 5tnQ==
+X-Gm-Message-State: AOAM5311KWW40949WYveX3FY+FdYhc6Ri3lTwsOkwv/0MU9r2EQVDirZ
+ 1ftDxgTt07zTpnC/tlGxE5Y=
+X-Google-Smtp-Source: ABdhPJw+AQf6Xpm9J1SSsCBbcQyWzCWO0a+i1Eid/o/iRToCXeerTMSeRckyKfp4bAROQf3wBrNRDw==
+X-Received: by 2002:a1c:4b04:: with SMTP id y4mr1080469wma.93.1604437727422;
+ Tue, 03 Nov 2020 13:08:47 -0800 (PST)
+Received: from ?IPv6:2a02:8084:e84:2480:228:f8ff:fe6f:83a8?
+ ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
+ by smtp.gmail.com with ESMTPSA id y10sm26483889wru.94.2020.11.03.13.08.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Nov 2020 13:08:46 -0800 (PST)
+Subject: Re: [PATCH] x86/mpx: fix recursive munmap() corruption
+To: Laurent Dufour <ldufour@linux.vnet.ibm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20190401141549.3F4721FE@viggo.jf.intel.com>
+ <alpine.DEB.2.21.1904191248090.3174@nanos.tec.linutronix.de>
+ <87d0lht1c0.fsf@concordia.ellerman.id.au>
+ <6718ede2-1fcb-1a8f-a116-250eef6416c7@linux.vnet.ibm.com>
+ <4f43d4d4-832d-37bc-be7f-da0da735bbec@intel.com>
+ <4e1bbb14-e14f-8643-2072-17b4cdef5326@linux.vnet.ibm.com>
+ <87k1faa2i0.fsf@concordia.ellerman.id.au>
+ <9c2b2826-4083-fc9c-5a4d-c101858dd560@linux.vnet.ibm.com>
+ <12313ba8-75b5-d44d-dbc0-0bf2c87dfb59@csgroup.eu>
+ <452b347c-0a86-c710-16ba-5a98c12a47e3@linux.vnet.ibm.com>
+From: Dmitry Safonov <0x7f454c46@gmail.com>
+Message-ID: <02389b9c-141c-f5b7-756a-516599063766@gmail.com>
+Date: Tue, 3 Nov 2020 21:08:45 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Mailman-Approved-At: Wed, 04 Nov 2020 07:56:20 +1100
+In-Reply-To: <452b347c-0a86-c710-16ba-5a98c12a47e3@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,82 +94,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, linux-aio@kvack.org,
- Peter Zijlstra <peterz@infradead.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>, linux-mips@vger.kernel.org,
- Ben Segall <bsegall@google.com>, Chris Mason <clm@fb.com>,
- Huang Rui <ray.huang@amd.com>, Paul Mackerras <paulus@samba.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Daniel Bristot de Oliveira <bristot@redhat.com>,
- linux-sparc <sparclinux@vger.kernel.org>, Vincent Chen <deanbo422@gmail.com>,
- Christoph Hellwig <hch@lst.de>, Vincent Guittot <vincent.guittot@linaro.org>,
- Paul McKenney <paulmck@kernel.org>, Max Filippov <jcmvbkbc@gmail.com>,
- the arch/x86 maintainers <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Ingo Molnar <mingo@kernel.org>, David Airlie <airlied@linux.ie>,
- VMware Graphics <linux-graphics-maintainer@vmware.com>,
- Mel Gorman <mgorman@suse.de>, nouveau@lists.freedesktop.org,
- Dave Airlie <airlied@redhat.com>,
- "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
- Ben Skeggs <bskeggs@redhat.com>, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>, intel-gfx <intel-gfx@lists.freedesktop.org>,
- Roland Scheidegger <sroland@vmware.com>, Josef Bacik <josef@toxicpanda.com>,
- Steven Rostedt <rostedt@goodmis.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, spice-devel@lists.freedesktop.org,
- David Sterba <dsterba@suse.com>, virtualization@lists.linux-foundation.org,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Jani Nikula <jani.nikula@linux.intel.com>, Chris Zankel <chris@zankel.net>,
- Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>, Linux-MM <linux-mm@kvack.org>,
- Vineet Gupta <vgupta@synopsys.com>, LKML <linux-kernel@vger.kernel.org>,
- Christian Koenig <christian.koenig@amd.com>, Benjamin LaHaise <bcrl@kvack.org>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>,
- linux-btrfs <linux-btrfs@vger.kernel.org>, Greentime Hu <green.hu@gmail.com>
+Cc: mhocko@suse.com, rguenther@suse.de, linux-mm@kvack.org,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ luto@amacapital.net, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>, vbabka@suse.cz
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 03 2020 at 09:48, Linus Torvalds wrote:
-> I have no complaints about the patch, but it strikes me that if people
-> want to actually have much better debug coverage, this is where it
-> should be (I like the "every other address" thing too, don't get me
-> wrong).
->
-> In particular, instead of these PageHighMem(page) tests, I think
-> something like this would be better:
->
->    #ifdef CONFIG_DEBUG_HIGHMEM
->      #define page_use_kmap(page) ((page),1)
->    #else
->      #define page_use_kmap(page) PageHighMem(page)
->    #endif
->
-> adn then replace those "if (!PageHighMem(page))" tests with "if
-> (!page_use_kmap())" instead.
->
-> IOW, in debug mode, it would _always_ remap the page, whether it's
-> highmem or not. That would really stress the highmem code and find any
-> fragilities.
+Hi Laurent, Christophe, Michael, all,
 
-Yes, that makes a lot of sense. We just have to avoid that for the
-architectures with aliasing issues.
+On 11/3/20 5:11 PM, Laurent Dufour wrote:
+> Le 23/10/2020 à 14:28, Christophe Leroy a écrit :
+[..]
+>>>> That seems like it would work for CRIU and make sense in general?
+>>>
+>>> Sorry for the late answer, yes this would make more sense.
+>>>
+>>> Here is a patch doing that.
+>>>
+>>
+>> In your patch, the test seems overkill:
+>>
+>> +    if ((start <= vdso_base && vdso_end <= end) ||  /* 1   */
+>> +        (vdso_base <= start && start < vdso_end) || /* 3,4 */
+>> +        (vdso_base < end && end <= vdso_end))       /* 2,3 */
+>> +        mm->context.vdso_base = mm->context.vdso_end = 0;
+>>
+>> What about
+>>
+>>      if (start < vdso_end && vdso_start < end)
+>>          mm->context.vdso_base = mm->context.vdso_end = 0;
+>>
+>> This should cover all cases, or am I missing something ?
+>>
+>>
+>> And do we really need to store vdso_end in the context ?
+>> I think it should be possible to re-calculate it: the size of the VDSO
+>> should be (&vdso32_end - &vdso32_start) + PAGE_SIZE for 32 bits VDSO,
+>> and (&vdso64_end - &vdso64_start) + PAGE_SIZE for the 64 bits VDSO.
+> 
+> Thanks Christophe for the advise.
+> 
+> That is covering all the cases, and indeed is similar to the Michael's
+> proposal I missed last year.
+> 
+> I'll send a patch fixing this issue following your proposal.
 
-> Anyway, this is all sepatrate from the series, which still looks fine
-> to me. Just a reaction to seeing the patch, and Thomas' earlier
-> mention that the highmem debugging doesn't actually do much.
+It's probably not necessary anymore. I've sent patches [1], currently in
+akpm, the last one forbids splitting of vm_special_mapping.
+So, a user is able munmap() or mremap() vdso as a whole, but not partly.
 
-Right, forcing it for both kmap and kmap_local is straight forward. I'll
-cook a patch on top for that.
+[1]:
+https://lore.kernel.org/linux-mm/20201013013416.390574-1-dima@arista.com/
 
 Thanks,
-
-        tglx
-
-
+          Dmitry
