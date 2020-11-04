@@ -2,51 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A7A22A616F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 11:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 629372A62DC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 12:06:20 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CR2n50Vl8zDqbv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 21:23:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CR3k13bcxzDqYn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 22:06:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CR2lc0nT2zDqWf
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 21:22:36 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CR3gs3HTyzDqRC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 22:04:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=oDkd83Ut; 
+ header.a=rsa-sha256 header.s=201909 header.b=P120VnX3; 
  dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4CR3gr4vkTz9sTL; Wed,  4 Nov 2020 22:04:24 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CR2lS6ZW8z9sTL;
- Wed,  4 Nov 2020 21:22:28 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CR3gr39kVz9sTK;
+ Wed,  4 Nov 2020 22:04:24 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1604485355;
- bh=L70AG7tzTd7Z55u+Fj8DTKuCWP9ecgUCCOxcamNMHIs=;
+ s=201909; t=1604487864;
+ bh=phfnyClVnFM/Mn8K1hyCeEY+8JtX8MY3JTdk7X3KCLw=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=oDkd83UtH0Srm5gou9o8FbK7V4IaynA9LCA2YJKhl+5lUnI+xkZjuVD5VI7pJ+a2M
- HfsMI0MoloEkD3kwT+0vUtyCVb5PM2a9WPF6rkPmZB+9idXkIb7EMvyH3VOFzyp/Ps
- 68txSVLNJRowCRuykY+i+5Ewg7c/SwxbVOrNc5RWW00H/82L7EDvL4Qy2KV2oBLDUb
- 2yVheHA/7sjVh0E3O3cAIx/q6Zcp5FGUuuzsq1Mfee0O7JtPXB0z7fnfD69DrTlxhD
- Ug36BFsOA8q9k55mb81BwQUF1fU4SM3xLLRlc5FTkEqiwDPXMtmP7ZL6xkIZIdCtj0
- qdybn2J+0q8JQ==
+ b=P120VnX3osPQxkjNVADsew6SzuCrgPLJB8YiOXaXOHF7uHqcBw72zDvJNRoA+W4Hl
+ RpEj15tDcE8dcF7DEk+LXhFjQ0ogakddloBxGD5WPMQO3TwBKuN56hJyEI3p+wXU58
+ +a0OeSaYreTs8JRKMYV1SKN7HybDm371pSggva57bNgtqTZmgZo5DRcZmvhPNpA1Nr
+ hFb5BIsExXQIVyRt9+E5wrikMnD5VniP87pxo08R+zyqbozVyVhWeoceNidPzN/L9V
+ dKTn5u+8CDHPP4os99tIxvyRf2O9T3WLWSnkcDKRESLvUrk25Zv2lqCsQn9p3Y8euQ
+ qrKKG51RujKBA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: YiFei Zhu <zhuyifei1999@gmail.com>, containers@lists.linux-foundation.org
-Subject: Re: [PATCH seccomp 3/8] powerpc: Enable seccomp architecture tracking
-In-Reply-To: <4ec2970fcc819eb4d5dac2bd35233ccdadfda845.1604410035.git.yifeifz2@illinois.edu>
-References: <cover.1604410035.git.yifeifz2@illinois.edu>
- <4ec2970fcc819eb4d5dac2bd35233ccdadfda845.1604410035.git.yifeifz2@illinois.edu>
-Date: Wed, 04 Nov 2020 21:22:28 +1100
-Message-ID: <87wnz1to9n.fsf@mpe.ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH] powerpc: Don't use asm goto for put_user() with GCC 4.9
+In-Reply-To: <4fe837f8-ecae-f009-c193-8da386a70705@csgroup.eu>
+References: <20201103132915.529337-1-mpe@ellerman.id.au>
+ <4fe837f8-ecae-f009-c193-8da386a70705@csgroup.eu>
+Date: Wed, 04 Nov 2020 22:04:23 +1100
+Message-ID: <87tuu5tmbs.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,90 +62,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-sh@vger.kernel.org, Tobin Feldman-Fitzthum <tobin@ibm.com>,
- Hubertus Franke <frankeh@us.ibm.com>, Jack Chen <jianyan2@illinois.edu>,
- linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>,
- linux-s390@vger.kernel.org, YiFei Zhu <yifeifz2@illinois.edu>,
- linux-csky@vger.kernel.org, Tianyin Xu <tyxu@illinois.edu>,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Jann Horn <jannh@google.com>, Valentin Rothberg <vrothber@redhat.com>,
- Aleksa Sarai <cyphar@cyphar.com>, Josep Torrellas <torrella@illinois.edu>,
- Will Drewry <wad@chromium.org>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andy Lutomirski <luto@amacapital.net>,
- Dimitrios Skarlatos <dskarlat@cs.cmu.edu>,
- David Laight <David.Laight@aculab.com>,
- Giuseppe Scrivano <gscrivan@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- Tycho Andersen <tycho@tycho.pizza>
+Cc: schwab@linux-m68k.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-YiFei Zhu <zhuyifei1999@gmail.com> writes:
-> From: YiFei Zhu <yifeifz2@illinois.edu>
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 03/11/2020 =C3=A0 14:29, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Andreas reported that commit ee0a49a6870e ("powerpc/uaccess: Switch
+>> __put_user_size_allowed() to __put_user_asm_goto()") broke
+>> CLONE_CHILD_SETTID.
+>>=20
+>> Further inspection showed that the put_user() in schedule_tail() was
+>> missing entirely, the store not emitted by the compiler.
+>>=20
+>> Notice there are no stores other than to the stack. There should be a
+>> stw in there for the store to current->set_child_tid.
+>>=20
+>> This is only seen with GCC 4.9 era compilers (tested with 4.9.3 and
+>> 4.9.4), and only when CONFIG_PPC_KUAP is disabled.
+>>=20
+>> When CONFIG_PPC_KUAP=3Dy, the memory clobber that's part of the isync()
+>> and mtspr() inlined via allow_user_access() seems to be enough to
+>> avoid the bug.
+>>=20
+>> For now though let's just not use asm goto with GCC 4.9, to avoid this
+>> bug and any other issues we haven't noticed yet. Possibly in future we
+>> can find a smaller workaround.
 >
-> To enable seccomp constant action bitmaps, we need to have a static
-> mapping to the audit architecture and system call table size. Add these
-> for powerpc.
+> Is that https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D58670 ?
 >
-> Signed-off-by: YiFei Zhu <yifeifz2@illinois.edu>
-> ---
->  arch/powerpc/include/asm/seccomp.h | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
->
-> diff --git a/arch/powerpc/include/asm/seccomp.h b/arch/powerpc/include/asm/seccomp.h
-> index 51209f6071c5..3efcc83e9cc6 100644
-> --- a/arch/powerpc/include/asm/seccomp.h
-> +++ b/arch/powerpc/include/asm/seccomp.h
-> @@ -8,4 +8,25 @@
->  
->  #include <asm-generic/seccomp.h>
->  
-> +#ifdef __LITTLE_ENDIAN__
+> Should we use asm_volatile_goto() defined in include/linux/compiler-gcc.h=
+ ?
 
-As Kees mentioned this should (must?!) match the configured endian.
+Ugh. I knew of that work around, but thought we'd dropped it when we
+moved up to GCC 4.9. I should have looked more closely.
 
-But I think it would still be better to use the CONFIG symbol, which is
-CONFIG_CPU_LITTLE_ENDIAN.
-
-> +#define __SECCOMP_ARCH_LE_BIT		__AUDIT_ARCH_LE
-> +#else
-> +#define __SECCOMP_ARCH_LE_BIT		0
-> +#endif
-> +
-> +#ifdef CONFIG_PPC64
-> +# define SECCOMP_ARCH_NATIVE		(AUDIT_ARCH_PPC64 | __SECCOMP_ARCH_LE)
-
-You use __SECCOMP_ARCH_LE there, but previously you only defined
-__SECCOMP_ARCH_LE_BIT.
-
-Is there some magic somewhere that defines __SECCOMP_ARCH_LE based on
-__SECCOMP_ARCH_LE_BIT ?
-
-> +# define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
-> +# define SECCOMP_ARCH_NATIVE_NAME	"ppc64"
-
-What's the name used for?
-
-Usually we use "ppc64" for 64-bit big endian and "ppc64le" for 64-bit
-little endian.
-
-> +# ifdef CONFIG_COMPAT
-> +#  define SECCOMP_ARCH_COMPAT		(AUDIT_ARCH_PPC | __SECCOMP_ARCH_LE)
-> +#  define SECCOMP_ARCH_COMPAT_NR	NR_syscalls
-> +#  define SECCOMP_ARCH_COMPAT_NAME	"powerpc"
-
-And usually we use "ppc" for 32-bit.
-
-> +# endif
-> +#else /* !CONFIG_PPC64 */
-> +# define SECCOMP_ARCH_NATIVE		(AUDIT_ARCH_PPC | __SECCOMP_ARCH_LE)
-> +# define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
-> +# define SECCOMP_ARCH_NATIVE_NAME	"powerpc"
-> +#endif
-> +
->  #endif	/* _ASM_POWERPC_SECCOMP_H */
-> -- 
-> 2.29.2
-
+I'll send a patch to switch to it.
 
 cheers
