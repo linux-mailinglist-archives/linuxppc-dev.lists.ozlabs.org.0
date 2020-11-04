@@ -2,70 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17B22A5AE9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 01:13:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B1A2A5BA6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 02:16:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CQnF05DpszDqSY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 11:13:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CQpcs4Y0czDqZm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 12:15:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=keescook@chromium.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=mPTbV2Uh; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CQnBx4Mf9zDqRH
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 11:11:46 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id z24so15033473pgk.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Nov 2020 16:11:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=NFjsAF4kgpQCHVIlKmgYN6bEVL36r1XibqsUv152D08=;
- b=mPTbV2UhVfnJP2OoJL4D5QLosesGivMu0Yj5j7pkCrVtHA6dueaCzR1JSWWklnSxS2
- Wgzos2joCi+Wlp8KUeVXQhCOJbK/Z4g4eTF82BJYkvr8uaU2CIt3++/EZgLF7nCLiPmR
- RFfDgHAz/9hjV1ZrPMZTrZyKkXhcZM/AoX3+w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=NFjsAF4kgpQCHVIlKmgYN6bEVL36r1XibqsUv152D08=;
- b=N/ViB20SDSfBSfASGhKCkRKTJF4sam/nwsIiERCPbiT2/tWytKViU+HR+9iLTDJwT3
- mYyZoSCsZJDHz2H9PbZS3B1LKzdFMqFxC61zcE7FKNa0QhhvmEoaySdgMF6zKWb7stVj
- +cmOYCN9ZqnDwc/PDKnoB5MXnTqeEy5uHdZKS7Q+DPVINEipPLu3UPpXBzerKsb9rxOH
- OXrGjsxEJpOo/Fv4i0tvKnkjrypS7wLlnyW+y+yqGAp6vkodqqFCFTbVuNMlrh3ktUVM
- DzihacnkQlw6wTtzXG/I0SscDbgmmFFRLCeq1pQpRUiSY15i8fcdCWmjuN/eZ1k0X6Nl
- 1S2g==
-X-Gm-Message-State: AOAM530ePOyoADp/m+5yHOOC+qLwTT1U2UCeTbBRsHFIYNmOODJlhb6P
- RV7bigMrxeK/7IJNMFjeBN4a0w==
-X-Google-Smtp-Source: ABdhPJybME+aS3qtjx8JuwpcYMqCGEp0y1Q8idII2QCmSunt2ifzlNcehSCk1E6c+iZLzWwdlgTh0g==
-X-Received: by 2002:a17:90a:5285:: with SMTP id
- w5mr1762165pjh.50.1604448702345; 
- Tue, 03 Nov 2020 16:11:42 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id j20sm118311pgl.40.2020.11.03.16.11.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Nov 2020 16:11:41 -0800 (PST)
-Date: Tue, 3 Nov 2020 16:11:40 -0800
-From: Kees Cook <keescook@chromium.org>
-To: YiFei Zhu <zhuyifei1999@gmail.com>
-Subject: Re: [PATCH seccomp 0/8] seccomp: add bitmap cache support on
- remaining arches and report cache in procfs
-Message-ID: <202011031606.423EC9E@keescook>
-References: <cover.1604410035.git.yifeifz2@illinois.edu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CQpZv6M6KzDqZC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 12:14:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=ibXCrtZz; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4CQpZv4rVPz9sRK; Wed,  4 Nov 2020 12:14:15 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4CQpZv09RBz9sT6; Wed,  4 Nov 2020 12:14:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1604452455;
+ bh=L9+aN6uN2wgac4rv/jHRrYhBNqmampUYZI4+b+mvtBY=;
+ h=From:To:Cc:Subject:Date:From;
+ b=ibXCrtZzs7jfeUQi/EC7Dj82Al1W+o0KGfOhSNW+CvlQ7SP5aW0R67XglvUj1o/+u
+ l5sQxbrX5SdrAtw4IlYSUJHPScXYDgY98UtKip7Yg901AA1OBcdfnz4GdeoXTNjV6x
+ YARGmI6w+xg9i/zBM2cHwdp1xBLH69fptx4KSJzWgzX3yUe26LFiXaaCikYTJjrD3L
+ w40EWyAGHEZwilJvm//WEZiEJ0o6l5HsAEpEDa5dOBhXNTYl0haYAGpRLgyc7ibi29
+ 6H8Vk7am17V1ytAnGeZwyNm+N3luO+ge6TDMxjn6d0/podAJGNzMgL4feNCfzg0/gf
+ /t6LnuL2wJIJQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: stable@vger.kernel.org
+Subject: [PATCH 4.19] mm: fix exec activate_mm vs TLB shootdown and lazy tlb
+ switching race
+Date: Wed,  4 Nov 2020 12:14:06 +1100
+Message-Id: <20201104011406.598487-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1604410035.git.yifeifz2@illinois.edu>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,97 +56,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-sh@vger.kernel.org, Tobin Feldman-Fitzthum <tobin@ibm.com>,
- Hubertus Franke <frankeh@us.ibm.com>, Jack Chen <jianyan2@illinois.edu>,
- linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>,
- linux-s390@vger.kernel.org, YiFei Zhu <yifeifz2@illinois.edu>,
- linux-csky@vger.kernel.org, Tianyin Xu <tyxu@illinois.edu>,
- linux-xtensa@linux-xtensa.org, Jann Horn <jannh@google.com>,
- Valentin Rothberg <vrothber@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>,
- Josep Torrellas <torrella@illinois.edu>, Will Drewry <wad@chromium.org>,
- linux-parisc@vger.kernel.org, containers@lists.linux-foundation.org,
- linux-kernel@vger.kernel.org, Andy Lutomirski <luto@amacapital.net>,
- Dimitrios Skarlatos <dskarlat@cs.cmu.edu>,
- David Laight <David.Laight@aculab.com>,
- Giuseppe Scrivano <gscrivan@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- Tycho Andersen <tycho@tycho.pizza>
+Cc: peterz@infradead.org, linuxppc-dev@ozlabs.org, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com, gregkh@linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 03, 2020 at 07:42:56AM -0600, YiFei Zhu wrote:
-> From: YiFei Zhu <yifeifz2@illinois.edu>
-> 
-> This patch series enables bitmap cache for the remaining arches with
-> SECCOMP_FILTER, other than MIPS.
-> 
-> I was unable to find any of the arches having subarch-specific NR_syscalls
-> macros, so generic NR_syscalls is used. SH's syscall_get_arch seems to
-> only have the 32-bit subarch implementation. I'm not sure if this is
-> expected.
-> 
-> This series has not been tested; I have not built all the cross compilers
-> necessary to build test, let alone run the kernel or benchmark the
-> performance, so help on making sure the bitmap cache works as expected
-> would be appreciated. The series applies on top of Kees's for-next/seccomp
-> branch.
+From: Nicholas Piggin <npiggin@gmail.com>
 
-Thank you! This looks good. I wonder if the different handling of little
-endian is worth solving -- I'm suspicious about powerpc's use of
-__LITTLE_ENDIAN__ vs a CONFIG, but I guess the compiler would match the
-target endian-ness. Regardless, it captures what the architectures are
-doing, and gets things standardized.
+commit d53c3dfb23c45f7d4f910c3a3ca84bf0a99c6143 upstream.
 
-> 
-> YiFei Zhu (8):
->   csky: Enable seccomp architecture tracking
->   parisc: Enable seccomp architecture tracking
+Reading and modifying current->mm and current->active_mm and switching
+mm should be done with irqs off, to prevent races seeing an intermediate
+state.
 
-I don't have compilers for these.
+This is similar to commit 38cf307c1f20 ("mm: fix kthread_use_mm() vs TLB
+invalidate"). At exec-time when the new mm is activated, the old one
+should usually be single-threaded and no longer used, unless something
+else is holding an mm_users reference (which may be possible).
 
->   powerpc: Enable seccomp architecture tracking
->   riscv: Enable seccomp architecture tracking
->   s390: Enable seccomp architecture tracking
+Absent other mm_users, there is also a race with preemption and lazy tlb
+switching. Consider the kernel_execve case where the current thread is
+using a lazy tlb active mm:
 
-These I can build-test immediately.
+  call_usermodehelper()
+    kernel_execve()
+      old_mm = current->mm;
+      active_mm = current->active_mm;
+      *** preempt *** -------------------->  schedule()
+                                               prev->active_mm = NULL;
+                                               mmdrop(prev active_mm);
+                                             ...
+                      <--------------------  schedule()
+      current->mm = mm;
+      current->active_mm = mm;
+      if (!old_mm)
+          mmdrop(active_mm);
 
->   sh: Enable seccomp architecture tracking
->   xtensa: Enable seccomp architecture tracking
+If we switch back to the kernel thread from a different mm, there is a
+double free of the old active_mm, and a missing free of the new one.
 
-These two are available in Ubuntu's cross compiler set, so I'll get them
-added to my cross-builders.
+Closing this race only requires interrupts to be disabled while ->mm
+and ->active_mm are being switched, but the TLB problem requires also
+holding interrupts off over activate_mm. Unfortunately not all archs
+can do that yet, e.g., arm defers the switch if irqs are disabled and
+expects finish_arch_post_lock_switch() to be called to complete the
+flush; um takes a blocking lock in activate_mm().
 
->   seccomp/cache: Report cache data through /proc/pid/seccomp_cache
+So as a first step, disable interrupts across the mm/active_mm updates
+to close the lazy tlb preempt race, and provide an arch option to
+extend that to activate_mm which allows architectures doing IPI based
+TLB shootdowns to close the second race.
 
-In the meantime, I'll wait a bit to see if we can get some Acks/Reviews
-from arch maintainers. :)
+This is a bit ugly, but in the interest of fixing the bug and backporting
+before all architectures are converted this is a compromise.
 
--Kees
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+[mpe: Manual backport to 4.19 due to membarrier_exec_mmap(mm) changes]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20200914045219.3736466-2-npiggin@gmail.com
+---
+ arch/Kconfig |  7 +++++++
+ fs/exec.c    | 15 ++++++++++++++-
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-> 
->  arch/Kconfig                       | 15 ++++++++
->  arch/csky/include/asm/Kbuild       |  1 -
->  arch/csky/include/asm/seccomp.h    | 11 ++++++
->  arch/parisc/include/asm/Kbuild     |  1 -
->  arch/parisc/include/asm/seccomp.h  | 22 +++++++++++
->  arch/powerpc/include/asm/seccomp.h | 21 +++++++++++
->  arch/riscv/include/asm/seccomp.h   | 10 +++++
->  arch/s390/include/asm/seccomp.h    |  9 +++++
->  arch/sh/include/asm/seccomp.h      | 10 +++++
->  arch/xtensa/include/asm/Kbuild     |  1 -
->  arch/xtensa/include/asm/seccomp.h  | 11 ++++++
->  fs/proc/base.c                     |  6 +++
->  include/linux/seccomp.h            |  7 ++++
->  kernel/seccomp.c                   | 59 ++++++++++++++++++++++++++++++
->  14 files changed, 181 insertions(+), 3 deletions(-)
->  create mode 100644 arch/csky/include/asm/seccomp.h
->  create mode 100644 arch/parisc/include/asm/seccomp.h
->  create mode 100644 arch/xtensa/include/asm/seccomp.h
-> 
-> 
-> base-commit: 38c37e8fd3d2590c4234d8cfbc22158362f0eb04
-> --
-> 2.29.2
-
+diff --git a/arch/Kconfig b/arch/Kconfig
+index a336548487e6..e3a030f7a722 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -366,6 +366,13 @@ config HAVE_RCU_TABLE_FREE
+ config HAVE_RCU_TABLE_INVALIDATE
+ 	bool
+ 
++config ARCH_WANT_IRQS_OFF_ACTIVATE_MM
++	bool
++	help
++	  Temporary select until all architectures can be converted to have
++	  irqs disabled over activate_mm. Architectures that do IPI based TLB
++	  shootdowns should enable this.
++
+ config ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	bool
+ 
+diff --git a/fs/exec.c b/fs/exec.c
+index cece8c14f377..52788644c4af 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1028,10 +1028,23 @@ static int exec_mmap(struct mm_struct *mm)
+ 		}
+ 	}
+ 	task_lock(tsk);
++
++	local_irq_disable();
+ 	active_mm = tsk->active_mm;
+-	tsk->mm = mm;
+ 	tsk->active_mm = mm;
++	tsk->mm = mm;
++	/*
++	 * This prevents preemption while active_mm is being loaded and
++	 * it and mm are being updated, which could cause problems for
++	 * lazy tlb mm refcounting when these are updated by context
++	 * switches. Not all architectures can handle irqs off over
++	 * activate_mm yet.
++	 */
++	if (!IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
++		local_irq_enable();
+ 	activate_mm(active_mm, mm);
++	if (IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
++		local_irq_enable();
+ 	tsk->mm->vmacache_seqnum = 0;
+ 	vmacache_flush(tsk);
+ 	task_unlock(tsk);
 -- 
-Kees Cook
+2.25.1
+
