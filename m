@@ -2,30 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA3A2A6385
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 12:44:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9312A640D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 13:17:54 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CR4Yl2CnVzDqZG
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 22:44:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CR5Jb1xpLzDqVq
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 23:17:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CR4RG3vmbzDqW2
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 22:38:34 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4CR4RG0Fdjz9sVN; Wed,  4 Nov 2020 22:38:32 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: "Paul E . McKenney" <paulmck@kernel.org>, Qian Cai <cai@redhat.com>
-In-Reply-To: <20201028182334.13466-1-cai@redhat.com>
-References: <20201028182334.13466-1-cai@redhat.com>
-Subject: Re: [PATCH] powerpc/smp: Move rcu_cpu_starting() earlier
-Message-Id: <160448988356.674824.15131006402948740998.b4-ty@ellerman.id.au>
-Date: Wed,  4 Nov 2020 22:38:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=loongson.cn;
+ envelope-from=tangyouling@loongson.cn; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=loongson.cn
+X-Greylist: delayed 431 seconds by postgrey-1.36 at bilbo;
+ Wed, 04 Nov 2020 22:06:34 AEDT
+Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CR3kL5cPwzDqY6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 22:06:34 +1100 (AEDT)
+Received: from bogon.localdomain (unknown [113.200.148.30])
+ by mail.loongson.cn (Coremail) with SMTP id AQAAf9AxCtF_iaJfXqQFAA--.7999S2;
+ Wed, 04 Nov 2020 18:59:11 +0800 (CST)
+From: Youling Tang <tangyouling@loongson.cn>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: [PATCH] powerpc: Use the common INIT_DATA_SECTION macro in
+ vmlinux.lds.S
+Date: Wed,  4 Nov 2020 18:59:10 +0800
+Message-Id: <1604487550-20040-1-git-send-email-tangyouling@loongson.cn>
+X-Mailer: git-send-email 2.1.0
+X-CM-TRANSID: AQAAf9AxCtF_iaJfXqQFAA--.7999S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrur1fXw43AFyfWF4xAr1kKrg_yoWkCrX_Ga
+ sIva1ftr1kCrsIya1kAr1fXFyDtayrGr1S93ZI9ws7AF1fZwsxJ3Z7Ga17Zw18Wr1Ikrsx
+ ZF45ZF90yF10yjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUIcSsGvfJTRUUUb2xYjsxI4VWDJwAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I
+ 6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
+ 8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
+ cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4
+ A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
+ w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4j6F4UMc
+ vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY02Avz4vE14v_Gw1l42xK82IY
+ c2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s
+ 026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF
+ 0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0x
+ vE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
+ 87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4SdgDUUUU
+X-CM-SenderInfo: 5wdqw5prxox03j6o00pqjv00gofq/
+X-Mailman-Approved-At: Wed, 04 Nov 2020 23:09:28 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,26 +60,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 28 Oct 2020 14:23:34 -0400, Qian Cai wrote:
-> The call to rcu_cpu_starting() in start_secondary() is not early enough
-> in the CPU-hotplug onlining process, which results in lockdep splats as
-> follows:
-> 
->  WARNING: suspicious RCU usage
->  -----------------------------
->  kernel/locking/lockdep.c:3497 RCU-list traversed in non-reader section!!
-> 
-> [...]
+Use the common INIT_DATA_SECTION rule for the linker script in an effort
+to regularize the linker script.
 
-Applied to powerpc/fixes.
+Signed-off-by: Youling Tang <tangyouling@loongson.cn>
+---
+ arch/powerpc/kernel/vmlinux.lds.S | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
 
-[1/1] powerpc/smp: Call rcu_cpu_starting() earlier
-      https://git.kernel.org/powerpc/c/99f070b62322a4b8c1252952735806d09eb44b68
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index e0548b4..5dc05f3 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -186,21 +186,7 @@ SECTIONS
+ 		EXIT_TEXT
+ 	}
+ 
+-	.init.data : AT(ADDR(.init.data) - LOAD_OFFSET) {
+-		INIT_DATA
+-	}
+-
+-	.init.setup : AT(ADDR(.init.setup) - LOAD_OFFSET) {
+-		INIT_SETUP(16)
+-	}
+-
+-	.initcall.init : AT(ADDR(.initcall.init) - LOAD_OFFSET) {
+-		INIT_CALLS
+-	}
+-
+-	.con_initcall.init : AT(ADDR(.con_initcall.init) - LOAD_OFFSET) {
+-		CON_INITCALL
+-	}
++	INIT_DATA_SECTION(16)
+ 
+ 	. = ALIGN(8);
+ 	__ftr_fixup : AT(ADDR(__ftr_fixup) - LOAD_OFFSET) {
+@@ -228,9 +214,6 @@ SECTIONS
+ 		__stop___fw_ftr_fixup = .;
+ 	}
+ #endif
+-	.init.ramfs : AT(ADDR(.init.ramfs) - LOAD_OFFSET) {
+-		INIT_RAM_FS
+-	}
+ 
+ 	PERCPU_SECTION(L1_CACHE_BYTES)
+ 
+-- 
+2.1.0
 
-cheers
