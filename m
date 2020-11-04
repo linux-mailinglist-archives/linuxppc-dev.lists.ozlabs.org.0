@@ -2,43 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7420C2A6BED
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 18:42:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B73432A6C44
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 18:56:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CRDVj33sFzDqdk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 04:42:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CRDpt6PqFzDqdD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 04:56:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=drt@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=aeEWS0hb; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CRDSw6S9ZzDqLT
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 04:40:32 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id D157CAC92;
- Wed,  4 Nov 2020 17:40:29 +0000 (UTC)
-Subject: Re: [PATCH v4 2/4] PM: hibernate: make direct map manipulations more
- explicit
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-References: <20201103162057.22916-1-rppt@kernel.org>
- <20201103162057.22916-3-rppt@kernel.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Message-ID: <9a0780b4-35f8-0ded-c473-d8ab4a26ade5@suse.cz>
-Date: Wed, 4 Nov 2020 18:40:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CRDn65GMLzDqY6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 04:54:31 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0A4HXnx0018078; Wed, 4 Nov 2020 12:54:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=mime-version : date :
+ from : to : cc : subject : in-reply-to : references : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=uoGKHjVI9qCmgMT7Z13+wCWlgoPk1FdTmCEv9WQfshk=;
+ b=aeEWS0hb1HQX8G0wD6qXlogTejASPSaHGEYeXKnii7xoNkWjNlXDIXRiqCvxxiS0mQ3F
+ lwoh/SjoFBfEXjGySionVF5nw7I0zJ5JLnFe1TsMbb44wWY8GQBc5Q1fFAlP630tya2X
+ S2vhuMKZwSOelDOU4e8OdJ7iYZiZ4arCegcl2uLy9G6Sr1SFVlEzYIiRHmSWWnfMUWZ5
+ TO+WuxZfSx/yFJKLiJ9TcfAvxWsmmnCB5CPEvuisU/gCpwBhKNtqMhg/sqzCWIvpbejP
+ ND1HO3uU+PY0D/DYeehu4sF3Ab5w7/HWuJJexawo8rf2wb7vefBYXx2rDCcl/jyCqF4w lA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 34kxep5vcv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Nov 2020 12:54:15 -0500
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0A4HXxCZ019183;
+ Wed, 4 Nov 2020 12:54:15 -0500
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 34kxep5vcm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Nov 2020 12:54:15 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0A4HppCV001558;
+ Wed, 4 Nov 2020 17:54:14 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma04wdc.us.ibm.com with ESMTP id 34h0ej06xw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Nov 2020 17:54:14 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0A4HsEkb4260454
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Nov 2020 17:54:14 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 35A59124054;
+ Wed,  4 Nov 2020 17:54:14 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BF419124052;
+ Wed,  4 Nov 2020 17:54:12 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.16.170.189])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  4 Nov 2020 17:54:12 +0000 (GMT)
 MIME-Version: 1.0
-In-Reply-To: <20201103162057.22916-3-rppt@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Date: Wed, 04 Nov 2020 09:54:12 -0800
+From: drt <drt@linux.vnet.ibm.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH 09/12] net: ethernet: ibm: ibmvnic: Fix some kernel-doc
+ misdemeanours
+In-Reply-To: <20201104133815.GC933237@lunn.ch>
+References: <20201104090610.1446616-1-lee.jones@linaro.org>
+ <20201104090610.1446616-10-lee.jones@linaro.org>
+ <20201104133815.GC933237@lunn.ch>
+Message-ID: <85bc60fb363b95bc87627607d20b3616@linux.vnet.ibm.com>
+X-Sender: drt@linux.vnet.ibm.com
+User-Agent: Roundcube Webmail/1.0.1
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-04_11:2020-11-04,
+ 2020-11-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxlogscore=999
+ impostorscore=0 malwarescore=0 suspectscore=0 adultscore=0 clxscore=1011
+ phishscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011040126
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,146 +108,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Pekka Enberg <penberg@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>, "Edgecombe,
- Rick P" <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Falcon <tlfalcon@linux.vnet.ibm.com>,
+ Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
+ Santiago Leon <santi_leon@yahoo.com>, John Allen <jallen@linux.vnet.ibm.com>,
+ netdev@vger.kernel.org, Lijun Pan <ljp@linux.ibm.com>,
+ linux-arm-kernel@lists.infradead.org, Dany Madden <drt@linux.ibm.com>,
+ kuba@kernel.org, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/3/20 5:20 PM, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
+On 2020-11-04 05:38, Andrew Lunn wrote:
+> On Wed, Nov 04, 2020 at 09:06:07AM +0000, Lee Jones wrote:
+>> Fixes the following W=1 kernel build warning(s):
+>> 
+>>  from drivers/net/ethernet/ibm/ibmvnic.c:35:
+>>  inlined from ‘handle_vpd_rsp’ at 
+>> drivers/net/ethernet/ibm/ibmvnic.c:4124:3:
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter 
+>> or member 'hdr_field' not described in 'build_hdr_data'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter 
+>> or member 'skb' not described in 'build_hdr_data'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter 
+>> or member 'hdr_len' not described in 'build_hdr_data'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter 
+>> or member 'hdr_data' not described in 'build_hdr_data'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter 
+>> or member 'hdr_field' not described in 'create_hdr_descs'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter 
+>> or member 'hdr_data' not described in 'create_hdr_descs'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter 
+>> or member 'len' not described in 'create_hdr_descs'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter 
+>> or member 'hdr_len' not described in 'create_hdr_descs'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter 
+>> or member 'scrq_arr' not described in 'create_hdr_descs'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1474: warning: Function parameter 
+>> or member 'txbuff' not described in 'build_hdr_descs_arr'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1474: warning: Function parameter 
+>> or member 'num_entries' not described in 'build_hdr_descs_arr'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1474: warning: Function parameter 
+>> or member 'hdr_field' not described in 'build_hdr_descs_arr'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1832: warning: Function parameter 
+>> or member 'adapter' not described in 'do_change_param_reset'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1832: warning: Function parameter 
+>> or member 'rwi' not described in 'do_change_param_reset'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1832: warning: Function parameter 
+>> or member 'reset_state' not described in 'do_change_param_reset'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1911: warning: Function parameter 
+>> or member 'adapter' not described in 'do_reset'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1911: warning: Function parameter 
+>> or member 'rwi' not described in 'do_reset'
+>>  drivers/net/ethernet/ibm/ibmvnic.c:1911: warning: Function parameter 
+>> or member 'reset_state' not described in 'do_reset'
+>> 
+>> Cc: Dany Madden <drt@linux.ibm.com>
+>> Cc: Lijun Pan <ljp@linux.ibm.com>
+>> Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: Jakub Kicinski <kuba@kernel.org>
+>> Cc: Santiago Leon <santi_leon@yahoo.com>
+>> Cc: Thomas Falcon <tlfalcon@linux.vnet.ibm.com>
+>> Cc: John Allen <jallen@linux.vnet.ibm.com>
+>> Cc: netdev@vger.kernel.org
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Signed-off-by: Lee Jones <lee.jones@linaro.org>
 > 
-> When DEBUG_PAGEALLOC or ARCH_HAS_SET_DIRECT_MAP is enabled a page may be
-> not present in the direct map and has to be explicitly mapped before it
-> could be copied.
-> 
-> Introduce hibernate_map_page() that will explicitly use
-> set_direct_map_{default,invalid}_noflush() for ARCH_HAS_SET_DIRECT_MAP case
-> and debug_pagealloc_map_pages() for DEBUG_PAGEALLOC case.
-> 
-> The remapping of the pages in safe_copy_page() presumes that it only
-> changes protection bits in an existing PTE and so it is safe to ignore
-> return value of set_direct_map_{default,invalid}_noflush().
-> 
-> Still, add a pr_warn() so that future changes in set_memory APIs will not
-> silently break hibernation.
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Dany Madden <drt@linux.ibm.com>
 
-The bool param is a bit more acceptable here, being a private API. But if 
-debug_pagealloc_map_pages() becomes split, then it might be easier to split this 
-one too...
-
-> ---
->   include/linux/mm.h      | 12 ------------
->   kernel/power/snapshot.c | 32 ++++++++++++++++++++++++++++++--
->   2 files changed, 30 insertions(+), 14 deletions(-)
+Thanks, Lee.
+Dany
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 1fc0609056dc..14e397f3752c 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2927,16 +2927,6 @@ static inline bool debug_pagealloc_enabled_static(void)
->   #if defined(CONFIG_DEBUG_PAGEALLOC) || defined(CONFIG_ARCH_HAS_SET_DIRECT_MAP)
->   extern void __kernel_map_pages(struct page *page, int numpages, int enable);
->   
-> -/*
-> - * When called in DEBUG_PAGEALLOC context, the call should most likely be
-> - * guarded by debug_pagealloc_enabled() or debug_pagealloc_enabled_static()
-> - */
-> -static inline void
-> -kernel_map_pages(struct page *page, int numpages, int enable)
-> -{
-> -	__kernel_map_pages(page, numpages, enable);
-> -}
-> -
->   static inline void debug_pagealloc_map_pages(struct page *page,
->   					     int numpages, int enable)
->   {
-> @@ -2948,8 +2938,6 @@ static inline void debug_pagealloc_map_pages(struct page *page,
->   extern bool kernel_page_present(struct page *page);
->   #endif	/* CONFIG_HIBERNATION */
->   #else	/* CONFIG_DEBUG_PAGEALLOC || CONFIG_ARCH_HAS_SET_DIRECT_MAP */
-> -static inline void
-> -kernel_map_pages(struct page *page, int numpages, int enable) {}
->   static inline void debug_pagealloc_map_pages(struct page *page,
->   					     int numpages, int enable) {}
->   #ifdef CONFIG_HIBERNATION
-> diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-> index 46b1804c1ddf..57d54b9d84bb 100644
-> --- a/kernel/power/snapshot.c
-> +++ b/kernel/power/snapshot.c
-> @@ -76,6 +76,34 @@ static inline void hibernate_restore_protect_page(void *page_address) {}
->   static inline void hibernate_restore_unprotect_page(void *page_address) {}
->   #endif /* CONFIG_STRICT_KERNEL_RWX  && CONFIG_ARCH_HAS_SET_MEMORY */
->   
-> +static inline void hibernate_map_page(struct page *page, int enable)
-> +{
-> +	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
-> +		unsigned long addr = (unsigned long)page_address(page);
-> +		int ret;
-> +
-> +		/*
-> +		 * This should not fail because remapping a page here means
-> +		 * that we only update protection bits in an existing PTE.
-> +		 * It is still worth to have a warning here if something
-> +		 * changes and this will no longer be the case.
-> +		 */
-> +		if (enable)
-> +			ret = set_direct_map_default_noflush(page);
-> +		else
-> +			ret = set_direct_map_invalid_noflush(page);
-> +
-> +		if (ret) {
-> +			pr_warn_once("Failed to remap page\n");
-> +			return;
-> +		}
-> +
-> +		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-> +	} else {
-> +		debug_pagealloc_map_pages(page, 1, enable);
-> +	}
-> +}
-> +
->   static int swsusp_page_is_free(struct page *);
->   static void swsusp_set_page_forbidden(struct page *);
->   static void swsusp_unset_page_forbidden(struct page *);
-> @@ -1355,9 +1383,9 @@ static void safe_copy_page(void *dst, struct page *s_page)
->   	if (kernel_page_present(s_page)) {
->   		do_copy_page(dst, page_address(s_page));
->   	} else {
-> -		kernel_map_pages(s_page, 1, 1);
-> +		hibernate_map_page(s_page, 1);
->   		do_copy_page(dst, page_address(s_page));
-> -		kernel_map_pages(s_page, 1, 0);
-> +		hibernate_map_page(s_page, 0);
->   	}
->   }
->   
-> 
-
+>     Andrew
