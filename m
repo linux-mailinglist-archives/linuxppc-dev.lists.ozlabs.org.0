@@ -1,46 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6854A2A6C23
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 18:48:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7420C2A6BED
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 18:42:08 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CRDfX4npFzDqGZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 04:48:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CRDVj33sFzDqdk
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 04:42:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bootlin.com (client-ip=217.70.178.242;
- helo=mslow2.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=vbabka@suse.cz;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=bootlin.com
-Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CRDcj4q1lzDqVs
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 04:47:14 +1100 (AEDT)
-Received: from relay12.mail.gandi.net (unknown [217.70.178.232])
- by mslow2.mail.gandi.net (Postfix) with ESMTP id 284A93A88B2
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 17:39:37 +0000 (UTC)
-Received: from xps13 (unknown [91.224.148.103])
- (Authenticated sender: miquel.raynal@bootlin.com)
- by relay12.mail.gandi.net (Postfix) with ESMTPSA id 99DDE200008;
- Wed,  4 Nov 2020 17:39:00 +0000 (UTC)
-Date: Wed, 4 Nov 2020 18:38:59 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: Kernel 5.10-rc1 not mounting NAND flash (Bisected to
- d7157ff49a5b ("mtd: rawnand: Use the ECC framework user input parsing
- bits"))
-Message-ID: <20201104183859.590f0806@xps13>
-In-Reply-To: <20201104183353.Horde.FyqZycHkfr5KHDjPaOEBpQ7@messagerie.c-s.fr>
-References: <20201104183353.Horde.FyqZycHkfr5KHDjPaOEBpQ7@messagerie.c-s.fr>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CRDSw6S9ZzDqLT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 04:40:32 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id D157CAC92;
+ Wed,  4 Nov 2020 17:40:29 +0000 (UTC)
+Subject: Re: [PATCH v4 2/4] PM: hibernate: make direct map manipulations more
+ explicit
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+References: <20201103162057.22916-1-rppt@kernel.org>
+ <20201103162057.22916-3-rppt@kernel.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Message-ID: <9a0780b4-35f8-0ded-c473-d8ab4a26ade5@suse.cz>
+Date: Wed, 4 Nov 2020 18:40:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20201103162057.22916-3-rppt@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,67 +50,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mtd@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+ David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Pekka Enberg <penberg@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>, "Edgecombe,
+ Rick P" <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+On 11/3/20 5:20 PM, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> When DEBUG_PAGEALLOC or ARCH_HAS_SET_DIRECT_MAP is enabled a page may be
+> not present in the direct map and has to be explicitly mapped before it
+> could be copied.
+> 
+> Introduce hibernate_map_page() that will explicitly use
+> set_direct_map_{default,invalid}_noflush() for ARCH_HAS_SET_DIRECT_MAP case
+> and debug_pagealloc_map_pages() for DEBUG_PAGEALLOC case.
+> 
+> The remapping of the pages in safe_copy_page() presumes that it only
+> changes protection bits in an existing PTE and so it is safe to ignore
+> return value of set_direct_map_{default,invalid}_noflush().
+> 
+> Still, add a pr_warn() so that future changes in set_memory APIs will not
+> silently break hibernation.
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote on Wed, 04 Nov
-2020 18:33:53 +0100:
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-> Hi Miquel,
->=20
-> I'm unable to boot 5.10-rc1 on my boards. I get the following error:
->=20
-> [    4.125811] nand: device found, Manufacturer ID: 0xad, Chip ID: 0x76
-> [    4.131992] nand: Hynix NAND 64MiB 3,3V 8-bit
-> [    4.136173] nand: 64 MiB, SLC, erase size: 16 KiB, page size: 512, OOB=
- size: 16
-> [    4.143534] ------------[ cut here ]------------
-> [    4.147934] Unsupported ECC algorithm!
-> [    4.152142] WARNING: CPU: 0 PID: 1 at drivers/mtd/nand/raw/nand_base.c=
-:5244 nand_scan_with_ids+0x1260/0x1640
-> ...
-> [    4.332052] ---[ end trace e3a36f62cae4ac56 ]---
-> [    4.336882] gpio-nand: probe of c0000000.nand failed with error -22
->=20
-> Bisected to commit d7157ff49a5b ("mtd: rawnand: Use the ECC framework use=
-r input parsing bits")
->=20
-> My first impression is that with that change, the value set in chip->ecc.=
-algo
-> by gpio_nand_probe() in drivers/mtd/nand/raw/gpio.c gets overwritten in r=
-awnand_dt_init()
->=20
-> The following change fixes the problem, though I'm not sure it is the rig=
-ht fix. Can you have a look ?
->=20
-> diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand=
-_base.c
-> index 1f0d542d5923..aa74797cf2da 100644
-> --- a/drivers/mtd/nand/raw/nand_base.c
-> +++ b/drivers/mtd/nand/raw/nand_base.c
-> @@ -5032,7 +5032,8 @@ static int rawnand_dt_init(struct nand_chip *chip)
->   		chip->ecc.engine_type =3D nand->ecc.defaults.engine_type;
->=20
->   	chip->ecc.placement =3D nand->ecc.user_conf.placement;
-> -	chip->ecc.algo =3D nand->ecc.user_conf.algo;
-> +	if (chip->ecc.algo =3D=3D NAND_ECC_ALGO_UNKNOWN)
-> +		chip->ecc.algo =3D nand->ecc.user_conf.algo;
->   	chip->ecc.strength =3D nand->ecc.user_conf.strength;
->   	chip->ecc.size =3D nand->ecc.user_conf.step_size;
->=20
+The bool param is a bit more acceptable here, being a private API. But if 
+debug_pagealloc_map_pages() becomes split, then it might be easier to split this 
+one too...
+
 > ---
->=20
-> Thanks
-> Christophe
+>   include/linux/mm.h      | 12 ------------
+>   kernel/power/snapshot.c | 32 ++++++++++++++++++++++++++++++--
+>   2 files changed, 30 insertions(+), 14 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 1fc0609056dc..14e397f3752c 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2927,16 +2927,6 @@ static inline bool debug_pagealloc_enabled_static(void)
+>   #if defined(CONFIG_DEBUG_PAGEALLOC) || defined(CONFIG_ARCH_HAS_SET_DIRECT_MAP)
+>   extern void __kernel_map_pages(struct page *page, int numpages, int enable);
+>   
+> -/*
+> - * When called in DEBUG_PAGEALLOC context, the call should most likely be
+> - * guarded by debug_pagealloc_enabled() or debug_pagealloc_enabled_static()
+> - */
+> -static inline void
+> -kernel_map_pages(struct page *page, int numpages, int enable)
+> -{
+> -	__kernel_map_pages(page, numpages, enable);
+> -}
+> -
+>   static inline void debug_pagealloc_map_pages(struct page *page,
+>   					     int numpages, int enable)
+>   {
+> @@ -2948,8 +2938,6 @@ static inline void debug_pagealloc_map_pages(struct page *page,
+>   extern bool kernel_page_present(struct page *page);
+>   #endif	/* CONFIG_HIBERNATION */
+>   #else	/* CONFIG_DEBUG_PAGEALLOC || CONFIG_ARCH_HAS_SET_DIRECT_MAP */
+> -static inline void
+> -kernel_map_pages(struct page *page, int numpages, int enable) {}
+>   static inline void debug_pagealloc_map_pages(struct page *page,
+>   					     int numpages, int enable) {}
+>   #ifdef CONFIG_HIBERNATION
+> diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+> index 46b1804c1ddf..57d54b9d84bb 100644
+> --- a/kernel/power/snapshot.c
+> +++ b/kernel/power/snapshot.c
+> @@ -76,6 +76,34 @@ static inline void hibernate_restore_protect_page(void *page_address) {}
+>   static inline void hibernate_restore_unprotect_page(void *page_address) {}
+>   #endif /* CONFIG_STRICT_KERNEL_RWX  && CONFIG_ARCH_HAS_SET_MEMORY */
+>   
+> +static inline void hibernate_map_page(struct page *page, int enable)
+> +{
+> +	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
+> +		unsigned long addr = (unsigned long)page_address(page);
+> +		int ret;
+> +
+> +		/*
+> +		 * This should not fail because remapping a page here means
+> +		 * that we only update protection bits in an existing PTE.
+> +		 * It is still worth to have a warning here if something
+> +		 * changes and this will no longer be the case.
+> +		 */
+> +		if (enable)
+> +			ret = set_direct_map_default_noflush(page);
+> +		else
+> +			ret = set_direct_map_invalid_noflush(page);
+> +
+> +		if (ret) {
+> +			pr_warn_once("Failed to remap page\n");
+> +			return;
+> +		}
+> +
+> +		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> +	} else {
+> +		debug_pagealloc_map_pages(page, 1, enable);
+> +	}
+> +}
+> +
+>   static int swsusp_page_is_free(struct page *);
+>   static void swsusp_set_page_forbidden(struct page *);
+>   static void swsusp_unset_page_forbidden(struct page *);
+> @@ -1355,9 +1383,9 @@ static void safe_copy_page(void *dst, struct page *s_page)
+>   	if (kernel_page_present(s_page)) {
+>   		do_copy_page(dst, page_address(s_page));
+>   	} else {
+> -		kernel_map_pages(s_page, 1, 1);
+> +		hibernate_map_page(s_page, 1);
+>   		do_copy_page(dst, page_address(s_page));
+> -		kernel_map_pages(s_page, 1, 0);
+> +		hibernate_map_page(s_page, 0);
+>   	}
+>   }
+>   
+> 
 
-Sorry for introducing this issue, I didn't had the time to send the
-Fixes PR yet but I think this issue has been solved already. Could
-you please try with a recent linux-next?
-
-Thanks,
-Miqu=C3=A8l
