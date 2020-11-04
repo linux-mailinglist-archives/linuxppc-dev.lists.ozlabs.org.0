@@ -2,73 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B79D2A6E4A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 20:44:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 539422A709F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 23:36:29 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CRHCq4FvlzDqlJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 06:44:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CRM2L1GVszDqjy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 09:36:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::342;
- helo=mail-wm1-x342.google.com; envelope-from=lee.jones@linaro.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.67; helo=mail-ot1-f67.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=pX29kLlm; dkim-atps=neutral
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
- [IPv6:2a00:1450:4864:20::342])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com
+ [209.85.210.67])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CRH386RrDzDqf5
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 06:36:51 +1100 (AEDT)
-Received: by mail-wm1-x342.google.com with SMTP id h62so3434948wme.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Nov 2020 11:36:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=ErfYpYEPgr7SyR0IGrTLDHOPTVsMeF+NG57/GEyOHB0=;
- b=pX29kLlmBcSPTSQCXTO8Lo9d4QG+nqnnImw6YFxmstscNqOOswbExguUzzT4L2axlU
- D3GWk5jA11ZzA+AZVtegLCVhl2Ob2ZmAEEHVzMHCsciCYwyQTL8h89K8WzLvAsv7TRcu
- 7yI+7qd87nij+dGvWnf+2yyWANiI/xOXRymlotH13o1iY4W7M550ffyUTs+i/hqzxRcZ
- TKhz+VRg0g9MO6Q9omYUAHnyYyG0b/tNB7yPcru/BSqEkR7LGsnBTwhTnSMhBAoFeI05
- ZFKQqxZhOGvRVRNlQ6UmnNU504R2+m9kxBQlMwaHA65WTwkPAt9WKivfMsX/iLNdWsoh
- CY8A==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CRM0N4k6jzDqXS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 09:34:44 +1100 (AEDT)
+Received: by mail-ot1-f67.google.com with SMTP id g19so250533otp.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Nov 2020 14:34:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=ErfYpYEPgr7SyR0IGrTLDHOPTVsMeF+NG57/GEyOHB0=;
- b=SrJdjEmbqijaW6iLzYyeTniakMGSbN7ojAJpbLuhsDVi0a8+/0bZUYsM1hJrdwzEqX
- 7VijYgr5McfkRa+rtVtPxs+i7UYYy/SzwjuPIJRroVk7h3by1em/Yzb6nRN1CDvkUD+r
- AozbB2FZCD2AjWuog5oM0BAB2SILpseW55vDuS0Fd5A4llIGCJUaiMgTCxAkse+okrFi
- 3VvYJ4IkXZze+p1pYSlzrljNUfArDNX+UGnpNcCodje6nXHetYaDw7tLIcXR5dG+0TXd
- 5pE6+5PL3JgqG7cezD9IE1Tl2aUK6ayz2LUY5N7lHh3XRv48jSaKFFBVVBa7ljya3agN
- a3Pg==
-X-Gm-Message-State: AOAM532MvvzD4QhaZgnpBdrV0gPhZLqvEKMvUwx1a6fTkFFMqqR2P5oW
- 4TsKmykCEm0ONpE8p4AWoDeS3Q==
-X-Google-Smtp-Source: ABdhPJztfIELyaPKKHSKpD48Wccw9fHxSvlItbhEYnm/xRNIcnSe+Wnjs2/1thwCJMJZLY6LsZDnhw==
-X-Received: by 2002:a1c:a90e:: with SMTP id s14mr6477604wme.46.1604518608351; 
- Wed, 04 Nov 2020 11:36:48 -0800 (PST)
-Received: from dell.default ([91.110.221.242])
- by smtp.gmail.com with ESMTPSA id x10sm4034444wrp.62.2020.11.04.11.36.47
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=De/asBW+7ACsxJA0V0dI5OfXqmfuP7smHiv8mpwjXZ0=;
+ b=Lxh127BIuc8DB8wcNEGC/Or3JtI5CwC9RzDHcQaDRic0af07yRrltR7SQ4S34GB2lS
+ kzUr3YGjsoJ6tlmSpAsVtl7I8SZnuurj6sb97481ONxoIIw/dALen3kGS6YUU/nbPPHl
+ YZLOeJucinc2STw1lMUE0PoSMq/ffU3IG1+AoK/Hso026G+ZfLuBLfhMih2O+u/gzFIr
+ Aq/bjEsw6ueDl6yUt62jHDxm/eWGjYkfmfXpdY2zBkLKWg62h+MtdJbojLDOcC0XJRex
+ l2vZkUFPJPPFwA2m1POZ+NPPsjmkCSVKctyBYDKqhdF4EzcXp3JFhZ4RgcImXPttXxww
+ oD5A==
+X-Gm-Message-State: AOAM531WwSg3uU8OCeYKCVoyjjLCbXrUZtTpoU9I/OQBdcGKNciYQYT9
+ bp/J25WtrAXkZ1MrCVKEBQ==
+X-Google-Smtp-Source: ABdhPJydVci5YTxHwBge3dnN274lTktXyAPo9XcUv0uObEVs8L/tBdqo/1r1n3NVYXAsKnCx7SfmbA==
+X-Received: by 2002:a9d:6e81:: with SMTP id a1mr19441014otr.303.1604529281700; 
+ Wed, 04 Nov 2020 14:34:41 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+ by smtp.gmail.com with ESMTPSA id t83sm789898oie.58.2020.11.04.14.34.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Nov 2020 11:36:47 -0800 (PST)
-From: Lee Jones <lee.jones@linaro.org>
-To: lee.jones@linaro.org
-Subject: [PATCH 34/36] tty: serial: pmac_zilog: Make disposable variable
- __always_unused
-Date: Wed,  4 Nov 2020 19:35:47 +0000
-Message-Id: <20201104193549.4026187-35-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201104193549.4026187-1-lee.jones@linaro.org>
-References: <20201104193549.4026187-1-lee.jones@linaro.org>
+ Wed, 04 Nov 2020 14:34:41 -0800 (PST)
+Received: (nullmailer pid 48871 invoked by uid 1000);
+ Wed, 04 Nov 2020 22:34:40 -0000
+Date: Wed, 4 Nov 2020 16:34:40 -0600
+From: Rob Herring <robh@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v3 1/2] ASoC: dt-bindings: fsl_aud2htx: Add binding doc
+ for aud2htx module
+Message-ID: <20201104223440.GA48821@bogus>
+References: <1604281947-26874-1-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1604281947-26874-1-git-send-email-shengjiu.wang@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,43 +67,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linux-serial@vger.kernel.org,
- Jiri Slaby <jirislaby@kernel.org>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, timur@kernel.org,
+ Xiubo.Lee@gmail.com, festevam@gmail.com, lgirdwood@gmail.com,
+ robh+dt@kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, broonie@kernel.org,
+ perex@perex.cz, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fixes the following W=1 kernel build warning(s):
+On Mon, 02 Nov 2020 09:52:26 +0800, Shengjiu Wang wrote:
+> AUD2HTX (Audio Subsystem TO HDMI TX Subsystem) is a new
+> IP module found on i.MX8MP.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+> changes in v3:
+> - Add additionalProperties
+> 
+> changes in v2:
+> - fix indentation issue
+> - remove nodename
+> 
+>  .../bindings/sound/fsl,aud2htx.yaml           | 66 +++++++++++++++++++
+>  1 file changed, 66 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl,aud2htx.yaml
+> 
 
- drivers/tty/serial/pmac_zilog.h:365:58: warning: variable ‘garbage’ set but not used [-Wunused-but-set-variable]
-
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linux-serial@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- drivers/tty/serial/pmac_zilog.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/tty/serial/pmac_zilog.h b/drivers/tty/serial/pmac_zilog.h
-index bb874e76810e0..968aec7c1cf82 100644
---- a/drivers/tty/serial/pmac_zilog.h
-+++ b/drivers/tty/serial/pmac_zilog.h
-@@ -362,7 +362,7 @@ static inline void zssync(struct uart_pmac_port *port)
- 
- /* Misc macros */
- #define ZS_CLEARERR(port)    (write_zsreg(port, 0, ERR_RES))
--#define ZS_CLEARFIFO(port)   do { volatile unsigned char garbage; \
-+#define ZS_CLEARFIFO(port)   do { volatile unsigned char __always_unused garbage; \
- 				     garbage = read_zsdata(port); \
- 				     garbage = read_zsdata(port); \
- 				     garbage = read_zsdata(port); \
--- 
-2.25.1
-
+Reviewed-by: Rob Herring <robh@kernel.org>
