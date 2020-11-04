@@ -1,70 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F5F2A603D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 10:09:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2382A6051
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 10:10:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CR16b4x2SzDqXl
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 20:08:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CR18s5nJfzDqbC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 20:10:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::444;
- helo=mail-wr1-x444.google.com; envelope-from=lee.jones@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=K1+Rdz5o; dkim-atps=neutral
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
+ header.s=google header.b=q3O/SXd4; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CR13p0TKLzDqY6
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 20:06:28 +1100 (AEDT)
-Received: by mail-wr1-x444.google.com with SMTP id g12so21152583wrp.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Nov 2020 01:06:28 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CR13z6J0qzDqXv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 20:06:39 +1100 (AEDT)
+Received: by mail-wm1-x341.google.com with SMTP id e2so1604323wme.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Nov 2020 01:06:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=ZVySsFYAxVyvKjZwFTKaFMnVATseHBsi4tJ0dIp9TLE=;
- b=K1+Rdz5ogf/5T2jMdF3v9m88jLY/gNqsMKJm061QdgaEQGjK4st39GT4kTZK6c7eAv
- 3cJicgPoZBh9YEvxLFGZcZyHE0XnNqBy1XOiWQuoMPDL9faO4RhxQ9VP++HCtvthQR9S
- 799P3oQD3ZEWTAn8Z+1PDWW2WOSIRjZ/YNizWauRHAov45YgSsQGFvDCGkpGdXI1KiOg
- QyMiZ+qAf84rNKlDHGrCMb3Z298LfBhK4STT2/MKrClXtDUj1+DxmNn50j9f2xT6h0lS
- 2FLRla4Vx5B06Pb85+k62n0XQr8agXXsfRziu37OjAXEKgzSYzjV1kzmZ4S3HLfgeg3X
- jRpA==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=/B2umlHEGwiWmUzcbuvTIa6aaDkptaAOjJxXB95ER8o=;
+ b=q3O/SXd4LV8Ycy1SNvZO/331iDTMCBCi8rZ58FfA5rgOfwOMV3xdfcQ3fXzVezQH0G
+ +kWKkHrxzkgm88APVQPS3NRojiXIMSF6xaiJ/b1UvLhT2GvLse1x6a7/Zl0XGL2K1cfG
+ S1FVBL26Ka6AoRQ//rNLtIaWg/HUa0NJLSAHQUJ18bmofOY7Q6RIlslTHkHYnGKPZh0S
+ TCWisaLpOSszO/NlsTXsYORH9y+dPxCSPAPlAYpIoQVZe6HD8xvTGj4b8UGE78ZaDHFP
+ cMpv0UoPO7nSdYIzAwSNmWBTV6mG0RtmxCCSH3/neHoVNHpEu8DwyiHz0j6+zhIWG36V
+ /M+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=ZVySsFYAxVyvKjZwFTKaFMnVATseHBsi4tJ0dIp9TLE=;
- b=eh7v+h6NUhpzTb5rkhxn0iPqLL1RCEFbrKXyjqTTBE0bExExZRaHRp+5H+fqzcUe4n
- JHNfFD1/q4C2SsZhNHy0fBGgxC5O4F0mA5+ydTs9mNYXvxlCyHlLYhYAYPCszw1LPVuU
- FuwRzsBTQthd1vC4CzFTDInmfqLX1s86j9TSeegRwdol1Wut1wWFX/wG/qNSwxXVvIH/
- YW9NEveaxreBv2FzGCOTMH5TPMGkFeD4HlIB5bYPVXI4u7CbS4qCeNp03z8Y9bdK0l5M
- 1KrQBkfjtJGEznsQB5os5t1D6nDPSP4VmG17jTz7+OX/kFhpFBwNsg9EZ0L87ZsQR8LG
- Rtlg==
-X-Gm-Message-State: AOAM531Elw0yRUBCOPIKJcxbs/FQsi63dt2fgDpzlbi/NKKNi8vD7XyV
- O0EL+sPJpOZL8rThPVADz/j3KQ==
-X-Google-Smtp-Source: ABdhPJzn8d8Abh2QVS+FdXToKUqdpB6TwiMSAYlD5+ls0hMcq+h/pWmcBsJhdaEKInesWzdpNiQxsw==
-X-Received: by 2002:adf:e384:: with SMTP id e4mr31089426wrm.227.1604480782887; 
- Wed, 04 Nov 2020 01:06:22 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=/B2umlHEGwiWmUzcbuvTIa6aaDkptaAOjJxXB95ER8o=;
+ b=VNlwpdfxPdFkKWyTuj2KEtNmXwJyzYMWBGBWEGhbyoxRct/CMz19YXbz0ToHhWnqjH
+ 8AhvyTr/+QO85XsWSSKuyCfjsc9LMjpszedHQiqDjjmpXsRxIWJsFzB3wdrPCI52X0KM
+ 9X3JLZUoyRl0tAgNi6cEA23WLTKNXYKeENC4cGtxp4VTqjUnDZ8/jbgzxM6gutj/z1ly
+ N4BOI9tvTEbPRAFcRcnaYnSZX0iAyxN/HSG2oxj9/0k0xgoeh5q7G+f5cvi1VpzLrhQL
+ ra2GnKg9M/bocYQk1P2YfuyHIdP4mzmswKtCNRahuDaAsKJYwDxRyFPvm6Z3ZEN9RXlR
+ ACIw==
+X-Gm-Message-State: AOAM530lgS174cQXhac9D8DmophTzlQkbk2eZRMaL49q3T9bW7hC3egn
+ cN2NlWQuJOkSvrlkx3hmH1in8Q==
+X-Google-Smtp-Source: ABdhPJzo+OegKdhy8F4t60EOE90G4mmOxUJrXbpS2bCT6Vg8Nm6O2AnmaKTkL6KQlAZoEbrT3oNfRg==
+X-Received: by 2002:a1c:df89:: with SMTP id w131mr3289237wmg.164.1604480795182; 
+ Wed, 04 Nov 2020 01:06:35 -0800 (PST)
 Received: from dell.default ([91.110.221.242])
- by smtp.gmail.com with ESMTPSA id e25sm1607823wrc.76.2020.11.04.01.06.20
+ by smtp.gmail.com with ESMTPSA id e25sm1607823wrc.76.2020.11.04.01.06.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Nov 2020 01:06:22 -0800 (PST)
+ Wed, 04 Nov 2020 01:06:34 -0800 (PST)
 From: Lee Jones <lee.jones@linaro.org>
 To: davem@davemloft.net,
 	kuba@kernel.org
-Subject: [PATCH 00/12] [Set 2] Rid W=1 warnings in Net
-Date: Wed,  4 Nov 2020 09:05:58 +0000
-Message-Id: <20201104090610.1446616-1-lee.jones@linaro.org>
+Subject: [PATCH 09/12] net: ethernet: ibm: ibmvnic: Fix some kernel-doc
+ misdemeanours
+Date: Wed,  4 Nov 2020 09:06:07 +0000
+Message-Id: <20201104090610.1446616-10-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20201104090610.1446616-1-lee.jones@linaro.org>
+References: <20201104090610.1446616-1-lee.jones@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -77,136 +81,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Martin Habets <mhabets@solarflare.com>, Kurt Kanzenbach <kurt@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, Peter Cammaert <pc@denkart.be>,
- Paul Mackerras <paulus@samba.org>, Dustin McIntire <dustin@sensoria.com>,
- Sukadev Bhattiprolu <sukadev@linux.ibm.com>, Lee Jones <lee.jones@linaro.org>,
- Michal Simek <michal.simek@xilinx.com>, Wei Liu <wei.liu@kernel.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Paul Durrant <paul@xen.org>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- John Williams <john.williams@xilinx.com>, xen-devel@lists.xenproject.org,
- Woojung Huh <woojung.huh@microchip.com>,
- Grygorii Strashko <grygorii.strashko@ti.com>,
- Thomas Falcon <tlfalcon@linux.vnet.ibm.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Jens Osterkamp <Jens.Osterkamp@de.ibm.com>,
- Rusty Russell <rusty@rustcorp.com.au>, Daris A Nevil <dnevil@snmc.com>,
- Lijun Pan <ljp@linux.ibm.com>, Yonghong Song <yhs@fb.com>,
- KP Singh <kpsingh@chromium.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Santiago Leon <santi_leon@yahoo.com>, linux-arm-kernel@lists.infradead.org,
- Juergen Gross <jgross@suse.com>, Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
- Nicolas Pitre <nico@fluxnic.net>, Geoff Levand <geoff@infradead.org>,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
- Erik Stahlman <erik@vt.edu>, John Allen <jallen@linux.vnet.ibm.com>,
- Utz Bacher <utz.bacher@de.ibm.com>, Dany Madden <drt@linux.ibm.com>,
- bpf@vger.kernel.org, Shannon Nelson <snelson@pensando.io>,
- linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>,
- Russell King <rmk@arm.linux.org.uk>
+Cc: Thomas Falcon <tlfalcon@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Santiago Leon <santi_leon@yahoo.com>,
+ John Allen <jallen@linux.vnet.ibm.com>, netdev@vger.kernel.org,
+ Lijun Pan <ljp@linux.ibm.com>, Dany Madden <drt@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+ Lee Jones <lee.jones@linaro.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Fixes the following W=1 kernel build warning(s):
 
-This set is part of a larger effort attempting to clean-up W=1
-kernel builds, which are currently overwhelmingly riddled with
-niggly little warnings.
+ from drivers/net/ethernet/ibm/ibmvnic.c:35:
+ inlined from ‘handle_vpd_rsp’ at drivers/net/ethernet/ibm/ibmvnic.c:4124:3:
+ drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter or member 'hdr_field' not described in 'build_hdr_data'
+ drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter or member 'skb' not described in 'build_hdr_data'
+ drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter or member 'hdr_len' not described in 'build_hdr_data'
+ drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter or member 'hdr_data' not described in 'build_hdr_data'
+ drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter or member 'hdr_field' not described in 'create_hdr_descs'
+ drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter or member 'hdr_data' not described in 'create_hdr_descs'
+ drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter or member 'len' not described in 'create_hdr_descs'
+ drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter or member 'hdr_len' not described in 'create_hdr_descs'
+ drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter or member 'scrq_arr' not described in 'create_hdr_descs'
+ drivers/net/ethernet/ibm/ibmvnic.c:1474: warning: Function parameter or member 'txbuff' not described in 'build_hdr_descs_arr'
+ drivers/net/ethernet/ibm/ibmvnic.c:1474: warning: Function parameter or member 'num_entries' not described in 'build_hdr_descs_arr'
+ drivers/net/ethernet/ibm/ibmvnic.c:1474: warning: Function parameter or member 'hdr_field' not described in 'build_hdr_descs_arr'
+ drivers/net/ethernet/ibm/ibmvnic.c:1832: warning: Function parameter or member 'adapter' not described in 'do_change_param_reset'
+ drivers/net/ethernet/ibm/ibmvnic.c:1832: warning: Function parameter or member 'rwi' not described in 'do_change_param_reset'
+ drivers/net/ethernet/ibm/ibmvnic.c:1832: warning: Function parameter or member 'reset_state' not described in 'do_change_param_reset'
+ drivers/net/ethernet/ibm/ibmvnic.c:1911: warning: Function parameter or member 'adapter' not described in 'do_reset'
+ drivers/net/ethernet/ibm/ibmvnic.c:1911: warning: Function parameter or member 'rwi' not described in 'do_reset'
+ drivers/net/ethernet/ibm/ibmvnic.c:1911: warning: Function parameter or member 'reset_state' not described in 'do_reset'
 
-This is the last set.
-
-Lee Jones (12):
-  net: usb: lan78xx: Remove lots of set but unused 'ret' variables
-  net: ethernet: smsc: smc911x: Mark 'status' as __maybe_unused
-  net: ethernet: xilinx: xilinx_emaclite: Document 'txqueue' even if it
-    is unused
-  net: ethernet: smsc: smc91x: Demote non-conformant kernel function
-    header
-  net: xen-netback: xenbus: Demote nonconformant kernel-doc headers
-  net: ethernet: ti: am65-cpsw-qos: Demote non-conformant function
-    header
-  net: ethernet: ti: am65-cpts: Document am65_cpts_rx_enable()'s 'en'
-    parameter
-  net: xen-netfront: Demote non-kernel-doc headers to standard comment
-    blocks
-  net: ethernet: ibm: ibmvnic: Fix some kernel-doc misdemeanours
-  net: ethernet: toshiba: ps3_gelic_net: Fix some kernel-doc
-    misdemeanours
-  net: ethernet: toshiba: spider_net: Document a whole bunch of function
-    parameters
-  net: ethernet: ibm: ibmvnic: Fix some kernel-doc issues
-
- drivers/net/ethernet/ibm/ibmvnic.c            |  27 ++-
- drivers/net/ethernet/smsc/smc911x.c           |   6 +-
- drivers/net/ethernet/smsc/smc91x.c            |   2 +-
- drivers/net/ethernet/ti/am65-cpsw-qos.c       |   2 +-
- drivers/net/ethernet/ti/am65-cpts.c           |   2 +-
- drivers/net/ethernet/toshiba/ps3_gelic_net.c  |   9 +-
- drivers/net/ethernet/toshiba/spider_net.c     |  18 +-
- drivers/net/ethernet/xilinx/xilinx_emaclite.c |   1 +
- drivers/net/usb/lan78xx.c                     | 212 +++++++++---------
- drivers/net/xen-netback/xenbus.c              |   4 +-
- drivers/net/xen-netfront.c                    |   6 +-
- 11 files changed, 141 insertions(+), 148 deletions(-)
-
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: bpf@vger.kernel.org
-Cc: Daniel Borkmann <daniel@iogearbox.net>
 Cc: Dany Madden <drt@linux.ibm.com>
-Cc: Daris A Nevil <dnevil@snmc.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Dustin McIntire <dustin@sensoria.com>
-Cc: Erik Stahlman <erik@vt.edu>
-Cc: Geoff Levand <geoff@infradead.org>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Ishizaki Kou <kou.ishizaki@toshiba.co.jp>
-Cc: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jens Osterkamp <Jens.Osterkamp@de.ibm.com>
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: John Allen <jallen@linux.vnet.ibm.com>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: John Williams <john.williams@xilinx.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: KP Singh <kpsingh@chromium.org>
-Cc: Kurt Kanzenbach <kurt@linutronix.de>
 Cc: Lijun Pan <ljp@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-usb@vger.kernel.org
-Cc: Martin Habets <mhabets@solarflare.com>
-Cc: Martin KaFai Lau <kafai@fb.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Michal Simek <michal.simek@xilinx.com>
-Cc: Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>
-Cc: netdev@vger.kernel.org
-Cc: Nicolas Pitre <nico@fluxnic.net>
-Cc: Paul Durrant <paul@xen.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Peter Cammaert <pc@denkart.be>
-Cc: Russell King <rmk@arm.linux.org.uk>
-Cc: Rusty Russell <rusty@rustcorp.com.au>
-Cc: Santiago Leon <santi_leon@yahoo.com>
-Cc: Shannon Nelson <snelson@pensando.io>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Stefano Stabellini <sstabellini@kernel.org>
 Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Santiago Leon <santi_leon@yahoo.com>
 Cc: Thomas Falcon <tlfalcon@linux.vnet.ibm.com>
-Cc: Utz Bacher <utz.bacher@de.ibm.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Woojung Huh <woojung.huh@microchip.com>
-Cc: xen-devel@lists.xenproject.org
-Cc: Yonghong Song <yhs@fb.com>
+Cc: John Allen <jallen@linux.vnet.ibm.com>
+Cc: netdev@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+---
+ drivers/net/ethernet/ibm/ibmvnic.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 1dc3cfdb38abc..b30e1f5784bad 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -1357,10 +1357,10 @@ static int ibmvnic_close(struct net_device *netdev)
+ 
+ /**
+  * build_hdr_data - creates L2/L3/L4 header data buffer
+- * @hdr_field - bitfield determining needed headers
+- * @skb - socket buffer
+- * @hdr_len - array of header lengths
+- * @tot_len - total length of data
++ * @hdr_field: bitfield determining needed headers
++ * @skb: socket buffer
++ * @hdr_len: array of header lengths
++ * @tot_len: total length of data
+  *
+  * Reads hdr_field to determine which headers are needed by firmware.
+  * Builds a buffer containing these headers.  Saves individual header
+@@ -1417,11 +1417,11 @@ static int build_hdr_data(u8 hdr_field, struct sk_buff *skb,
+ 
+ /**
+  * create_hdr_descs - create header and header extension descriptors
+- * @hdr_field - bitfield determining needed headers
+- * @data - buffer containing header data
+- * @len - length of data buffer
+- * @hdr_len - array of individual header lengths
+- * @scrq_arr - descriptor array
++ * @hdr_field: bitfield determining needed headers
++ * @data: buffer containing header data
++ * @len: length of data buffer
++ * @hdr_len: array of individual header lengths
++ * @scrq_arr: descriptor array
+  *
+  * Creates header and, if needed, header extension descriptors and
+  * places them in a descriptor array, scrq_arr
+@@ -1469,10 +1469,10 @@ static int create_hdr_descs(u8 hdr_field, u8 *hdr_data, int len, int *hdr_len,
+ 
+ /**
+  * build_hdr_descs_arr - build a header descriptor array
+- * @skb - socket buffer
+- * @num_entries - number of descriptors to be sent
+- * @subcrq - first TX descriptor
+- * @hdr_field - bit field determining which headers will be sent
++ * @skb: socket buffer
++ * @num_entries: number of descriptors to be sent
++ * @subcrq: first TX descriptor
++ * @hdr_field: bit field determining which headers will be sent
+  *
+  * This function will build a TX descriptor array with applicable
+  * L2/L3/L4 packet header descriptors to be sent by send_subcrq_indirect.
+@@ -1835,7 +1835,7 @@ static int ibmvnic_set_mac(struct net_device *netdev, void *p)
+ 	return rc;
+ }
+ 
+-/**
++/*
+  * do_reset returns zero if we are able to keep processing reset events, or
+  * non-zero if we hit a fatal error and must halt.
+  */
 -- 
 2.25.1
 
