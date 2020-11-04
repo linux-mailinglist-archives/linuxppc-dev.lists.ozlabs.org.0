@@ -1,68 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612A92A6023
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 10:06:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F5F2A603D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 10:09:00 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CR14B1p2mzDqWv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 20:06:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CR16b4x2SzDqXl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Nov 2020 20:08:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CR11q06yCzDqWF
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 20:04:47 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=h14XOFR8; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4CR11p5v83z8tXJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 20:04:46 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4CR11p4YWbz9sVM; Wed,  4 Nov 2020 20:04:46 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::444;
+ helo=mail-wr1-x444.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=h14XOFR8; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=K1+Rdz5o; dkim-atps=neutral
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
+ [IPv6:2a00:1450:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4CR11n5sVKz9sTK
- for <linuxppc-dev@ozlabs.org>; Wed,  4 Nov 2020 20:04:45 +1100 (AEDT)
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 183D52220B;
- Wed,  4 Nov 2020 09:04:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1604480682;
- bh=fiKr+4M13c3O/9I8tqfhGSntV11bltH8OUZ8CPb8g+A=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=h14XOFR8+DlEMu/Wr1h6LbSob/cRFLVeP6h0rJYASP+TVNgPKkIgDMKreBSU8nPaU
- s9G0pXru898BZUhzP9bsk9BAV2Egp2aw8jgAZH1D4NBcEjCxNu3R6DD83p3TI4Omhq
- qznu5xHb51B/aP8xQUT4NhnDDTIPIeZ8GMwWEKVQ=
-Date: Wed, 4 Nov 2020 10:05:33 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 4.19] mm: fix exec activate_mm vs TLB shootdown and lazy
- tlb switching race
-Message-ID: <20201104090533.GA1588160@kroah.com>
-References: <20201104011406.598487-1-mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CR13p0TKLzDqY6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Nov 2020 20:06:28 +1100 (AEDT)
+Received: by mail-wr1-x444.google.com with SMTP id g12so21152583wrp.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Nov 2020 01:06:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=ZVySsFYAxVyvKjZwFTKaFMnVATseHBsi4tJ0dIp9TLE=;
+ b=K1+Rdz5ogf/5T2jMdF3v9m88jLY/gNqsMKJm061QdgaEQGjK4st39GT4kTZK6c7eAv
+ 3cJicgPoZBh9YEvxLFGZcZyHE0XnNqBy1XOiWQuoMPDL9faO4RhxQ9VP++HCtvthQR9S
+ 799P3oQD3ZEWTAn8Z+1PDWW2WOSIRjZ/YNizWauRHAov45YgSsQGFvDCGkpGdXI1KiOg
+ QyMiZ+qAf84rNKlDHGrCMb3Z298LfBhK4STT2/MKrClXtDUj1+DxmNn50j9f2xT6h0lS
+ 2FLRla4Vx5B06Pb85+k62n0XQr8agXXsfRziu37OjAXEKgzSYzjV1kzmZ4S3HLfgeg3X
+ jRpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=ZVySsFYAxVyvKjZwFTKaFMnVATseHBsi4tJ0dIp9TLE=;
+ b=eh7v+h6NUhpzTb5rkhxn0iPqLL1RCEFbrKXyjqTTBE0bExExZRaHRp+5H+fqzcUe4n
+ JHNfFD1/q4C2SsZhNHy0fBGgxC5O4F0mA5+ydTs9mNYXvxlCyHlLYhYAYPCszw1LPVuU
+ FuwRzsBTQthd1vC4CzFTDInmfqLX1s86j9TSeegRwdol1Wut1wWFX/wG/qNSwxXVvIH/
+ YW9NEveaxreBv2FzGCOTMH5TPMGkFeD4HlIB5bYPVXI4u7CbS4qCeNp03z8Y9bdK0l5M
+ 1KrQBkfjtJGEznsQB5os5t1D6nDPSP4VmG17jTz7+OX/kFhpFBwNsg9EZ0L87ZsQR8LG
+ Rtlg==
+X-Gm-Message-State: AOAM531Elw0yRUBCOPIKJcxbs/FQsi63dt2fgDpzlbi/NKKNi8vD7XyV
+ O0EL+sPJpOZL8rThPVADz/j3KQ==
+X-Google-Smtp-Source: ABdhPJzn8d8Abh2QVS+FdXToKUqdpB6TwiMSAYlD5+ls0hMcq+h/pWmcBsJhdaEKInesWzdpNiQxsw==
+X-Received: by 2002:adf:e384:: with SMTP id e4mr31089426wrm.227.1604480782887; 
+ Wed, 04 Nov 2020 01:06:22 -0800 (PST)
+Received: from dell.default ([91.110.221.242])
+ by smtp.gmail.com with ESMTPSA id e25sm1607823wrc.76.2020.11.04.01.06.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Nov 2020 01:06:22 -0800 (PST)
+From: Lee Jones <lee.jones@linaro.org>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Subject: [PATCH 00/12] [Set 2] Rid W=1 warnings in Net
+Date: Wed,  4 Nov 2020 09:05:58 +0000
+Message-Id: <20201104090610.1446616-1-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201104011406.598487-1-mpe@ellerman.id.au>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,72 +77,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, linuxppc-dev@ozlabs.org, npiggin@gmail.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: Song Liu <songliubraving@fb.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Martin Habets <mhabets@solarflare.com>, Kurt Kanzenbach <kurt@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, Peter Cammaert <pc@denkart.be>,
+ Paul Mackerras <paulus@samba.org>, Dustin McIntire <dustin@sensoria.com>,
+ Sukadev Bhattiprolu <sukadev@linux.ibm.com>, Lee Jones <lee.jones@linaro.org>,
+ Michal Simek <michal.simek@xilinx.com>, Wei Liu <wei.liu@kernel.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Paul Durrant <paul@xen.org>,
+ John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+ John Williams <john.williams@xilinx.com>, xen-devel@lists.xenproject.org,
+ Woojung Huh <woojung.huh@microchip.com>,
+ Grygorii Strashko <grygorii.strashko@ti.com>,
+ Thomas Falcon <tlfalcon@linux.vnet.ibm.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Jens Osterkamp <Jens.Osterkamp@de.ibm.com>,
+ Rusty Russell <rusty@rustcorp.com.au>, Daris A Nevil <dnevil@snmc.com>,
+ Lijun Pan <ljp@linux.ibm.com>, Yonghong Song <yhs@fb.com>,
+ KP Singh <kpsingh@chromium.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Santiago Leon <santi_leon@yahoo.com>, linux-arm-kernel@lists.infradead.org,
+ Juergen Gross <jgross@suse.com>, Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+ Nicolas Pitre <nico@fluxnic.net>, Geoff Levand <geoff@infradead.org>,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+ Erik Stahlman <erik@vt.edu>, John Allen <jallen@linux.vnet.ibm.com>,
+ Utz Bacher <utz.bacher@de.ibm.com>, Dany Madden <drt@linux.ibm.com>,
+ bpf@vger.kernel.org, Shannon Nelson <snelson@pensando.io>,
+ linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>,
+ Russell King <rmk@arm.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 04, 2020 at 12:14:06PM +1100, Michael Ellerman wrote:
-> From: Nicholas Piggin <npiggin@gmail.com>
-> 
-> commit d53c3dfb23c45f7d4f910c3a3ca84bf0a99c6143 upstream.
-> 
-> Reading and modifying current->mm and current->active_mm and switching
-> mm should be done with irqs off, to prevent races seeing an intermediate
-> state.
-> 
-> This is similar to commit 38cf307c1f20 ("mm: fix kthread_use_mm() vs TLB
-> invalidate"). At exec-time when the new mm is activated, the old one
-> should usually be single-threaded and no longer used, unless something
-> else is holding an mm_users reference (which may be possible).
-> 
-> Absent other mm_users, there is also a race with preemption and lazy tlb
-> switching. Consider the kernel_execve case where the current thread is
-> using a lazy tlb active mm:
-> 
->   call_usermodehelper()
->     kernel_execve()
->       old_mm = current->mm;
->       active_mm = current->active_mm;
->       *** preempt *** -------------------->  schedule()
->                                                prev->active_mm = NULL;
->                                                mmdrop(prev active_mm);
->                                              ...
->                       <--------------------  schedule()
->       current->mm = mm;
->       current->active_mm = mm;
->       if (!old_mm)
->           mmdrop(active_mm);
-> 
-> If we switch back to the kernel thread from a different mm, there is a
-> double free of the old active_mm, and a missing free of the new one.
-> 
-> Closing this race only requires interrupts to be disabled while ->mm
-> and ->active_mm are being switched, but the TLB problem requires also
-> holding interrupts off over activate_mm. Unfortunately not all archs
-> can do that yet, e.g., arm defers the switch if irqs are disabled and
-> expects finish_arch_post_lock_switch() to be called to complete the
-> flush; um takes a blocking lock in activate_mm().
-> 
-> So as a first step, disable interrupts across the mm/active_mm updates
-> to close the lazy tlb preempt race, and provide an arch option to
-> extend that to activate_mm which allows architectures doing IPI based
-> TLB shootdowns to close the second race.
-> 
-> This is a bit ugly, but in the interest of fixing the bug and backporting
-> before all architectures are converted this is a compromise.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> [mpe: Manual backport to 4.19 due to membarrier_exec_mmap(mm) changes]
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> Link: https://lore.kernel.org/r/20200914045219.3736466-2-npiggin@gmail.com
-> ---
->  arch/Kconfig |  7 +++++++
->  fs/exec.c    | 15 ++++++++++++++-
->  2 files changed, 21 insertions(+), 1 deletion(-)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Now queued up, thanks!
+This set is part of a larger effort attempting to clean-up W=1
+kernel builds, which are currently overwhelmingly riddled with
+niggly little warnings.
 
-greg k-h
+This is the last set.
+
+Lee Jones (12):
+  net: usb: lan78xx: Remove lots of set but unused 'ret' variables
+  net: ethernet: smsc: smc911x: Mark 'status' as __maybe_unused
+  net: ethernet: xilinx: xilinx_emaclite: Document 'txqueue' even if it
+    is unused
+  net: ethernet: smsc: smc91x: Demote non-conformant kernel function
+    header
+  net: xen-netback: xenbus: Demote nonconformant kernel-doc headers
+  net: ethernet: ti: am65-cpsw-qos: Demote non-conformant function
+    header
+  net: ethernet: ti: am65-cpts: Document am65_cpts_rx_enable()'s 'en'
+    parameter
+  net: xen-netfront: Demote non-kernel-doc headers to standard comment
+    blocks
+  net: ethernet: ibm: ibmvnic: Fix some kernel-doc misdemeanours
+  net: ethernet: toshiba: ps3_gelic_net: Fix some kernel-doc
+    misdemeanours
+  net: ethernet: toshiba: spider_net: Document a whole bunch of function
+    parameters
+  net: ethernet: ibm: ibmvnic: Fix some kernel-doc issues
+
+ drivers/net/ethernet/ibm/ibmvnic.c            |  27 ++-
+ drivers/net/ethernet/smsc/smc911x.c           |   6 +-
+ drivers/net/ethernet/smsc/smc91x.c            |   2 +-
+ drivers/net/ethernet/ti/am65-cpsw-qos.c       |   2 +-
+ drivers/net/ethernet/ti/am65-cpts.c           |   2 +-
+ drivers/net/ethernet/toshiba/ps3_gelic_net.c  |   9 +-
+ drivers/net/ethernet/toshiba/spider_net.c     |  18 +-
+ drivers/net/ethernet/xilinx/xilinx_emaclite.c |   1 +
+ drivers/net/usb/lan78xx.c                     | 212 +++++++++---------
+ drivers/net/xen-netback/xenbus.c              |   4 +-
+ drivers/net/xen-netfront.c                    |   6 +-
+ 11 files changed, 141 insertions(+), 148 deletions(-)
+
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: bpf@vger.kernel.org
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Dany Madden <drt@linux.ibm.com>
+Cc: Daris A Nevil <dnevil@snmc.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Dustin McIntire <dustin@sensoria.com>
+Cc: Erik Stahlman <erik@vt.edu>
+Cc: Geoff Levand <geoff@infradead.org>
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Ishizaki Kou <kou.ishizaki@toshiba.co.jp>
+Cc: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Jens Osterkamp <Jens.Osterkamp@de.ibm.com>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: John Allen <jallen@linux.vnet.ibm.com>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: John Williams <john.williams@xilinx.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: KP Singh <kpsingh@chromium.org>
+Cc: Kurt Kanzenbach <kurt@linutronix.de>
+Cc: Lijun Pan <ljp@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-usb@vger.kernel.org
+Cc: Martin Habets <mhabets@solarflare.com>
+Cc: Martin KaFai Lau <kafai@fb.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Michal Simek <michal.simek@xilinx.com>
+Cc: Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>
+Cc: netdev@vger.kernel.org
+Cc: Nicolas Pitre <nico@fluxnic.net>
+Cc: Paul Durrant <paul@xen.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Peter Cammaert <pc@denkart.be>
+Cc: Russell King <rmk@arm.linux.org.uk>
+Cc: Rusty Russell <rusty@rustcorp.com.au>
+Cc: Santiago Leon <santi_leon@yahoo.com>
+Cc: Shannon Nelson <snelson@pensando.io>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+Cc: Thomas Falcon <tlfalcon@linux.vnet.ibm.com>
+Cc: Utz Bacher <utz.bacher@de.ibm.com>
+Cc: Wei Liu <wei.liu@kernel.org>
+Cc: Woojung Huh <woojung.huh@microchip.com>
+Cc: xen-devel@lists.xenproject.org
+Cc: Yonghong Song <yhs@fb.com>
+-- 
+2.25.1
+
