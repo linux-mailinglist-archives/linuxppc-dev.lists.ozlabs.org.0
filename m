@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4E72A7D98
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 12:55:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 687652A7DB6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 13:04:15 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CRhmJ6QGjzDqvp
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 22:55:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CRhxz28FDzDqCl
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 23:03:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=HHJruZEG; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CRhTK1fBmzDqv5
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 22:42:28 +1100 (AEDT)
-Received: from kernel.org (unknown [2.55.183.164])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 2AF252071A;
- Thu,  5 Nov 2020 11:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1604576542;
- bh=wBBJASevkpsRXZMXJL2OiMK6CtZhq8iWhEgufgr/S4E=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=HHJruZEGepbkqow1qhwuCKDkVoe/lpKxogvFghtL/5RowA6qyrxSq531Gliqcbzyu
- tDTgfPvrJ9vN7jvSKObEIq9kiRh1xeaKbxhp+zX6zw46ZOu6eW7fSqiBEMlywA8zjt
- Ph/W2QEvA7Z47iM8NgnnYxvGybdML21CtLacZNig=
-Date: Thu, 5 Nov 2020 13:42:00 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH v4 3/4] arch, mm: restore dependency of
- __kernel_map_pages() of DEBUG_PAGEALLOC
-Message-ID: <20201105114200.GZ4879@kernel.org>
-References: <20201103162057.22916-1-rppt@kernel.org>
- <20201103162057.22916-4-rppt@kernel.org>
- <f9c1dc66-fc60-db4d-9670-0271adb2ed07@suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CRhTZ3XM9zDqtV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 22:42:38 +1100 (AEDT)
+IronPort-SDR: vYJElZZVs7isNPn+gIKmmtIuxfQyrLRuD5ZNSpOTTDYYldaUY/tkpBXP9nvKXAN+DxtdKDplgG
+ B+OvcBohrJVQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9795"; a="233533607"
+X-IronPort-AV: E=Sophos;i="5.77,453,1596524400"; d="scan'208";a="233533607"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2020 03:42:21 -0800
+IronPort-SDR: GqxdQaCH5F7EzHCq6/J07Y2eemZqcvxpvQJlS2lfJrEyJYltubVzRMk+2+t2QMj1TALk0OIVJ7
+ P/zq8I454htQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,453,1596524400"; d="scan'208";a="527936723"
+Received: from lkp-server02.sh.intel.com (HELO e61783667810) ([10.239.97.151])
+ by fmsmga006.fm.intel.com with ESMTP; 05 Nov 2020 03:42:20 -0800
+Received: from kbuild by e61783667810 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1kadel-0001KY-Ol; Thu, 05 Nov 2020 11:42:19 +0000
+Date: Thu, 05 Nov 2020 19:41:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ eeb96257fc7f7f820ad019b6e26d225aded059bf
+Message-ID: <5fa3e4f1.5+3d1Usw6nFonMHT%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f9c1dc66-fc60-db4d-9670-0271adb2ed07@suse.cz>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,142 +58,226 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- linux-arm-kernel@lists.infradead.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- linux-kernel@vger.kernel.org, Pekka Enberg <penberg@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 04, 2020 at 07:02:20PM +0100, Vlastimil Babka wrote:
-> On 11/3/20 5:20 PM, Mike Rapoport wrote:
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> Subject should have "on DEBUG_PAGEALLOC" ?
-> 
-> > The design of DEBUG_PAGEALLOC presumes that __kernel_map_pages() must never
-> > fail. With this assumption is wouldn't be safe to allow general usage of
-> > this function.
-> > 
-> > Moreover, some architectures that implement __kernel_map_pages() have this
-> > function guarded by #ifdef DEBUG_PAGEALLOC and some refuse to map/unmap
-> > pages when page allocation debugging is disabled at runtime.
-> > 
-> > As all the users of __kernel_map_pages() were converted to use
-> > debug_pagealloc_map_pages() it is safe to make it available only when
-> > DEBUG_PAGEALLOC is set.
-> > 
-> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> > Acked-by: David Hildenbrand <david@redhat.com>
-> > Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > ---
-> >   arch/Kconfig                     |  3 +++
-> >   arch/arm64/Kconfig               |  4 +---
-> >   arch/arm64/mm/pageattr.c         |  8 ++++++--
-> >   arch/powerpc/Kconfig             |  5 +----
-> >   arch/riscv/Kconfig               |  4 +---
-> >   arch/riscv/include/asm/pgtable.h |  2 --
-> >   arch/riscv/mm/pageattr.c         |  2 ++
-> >   arch/s390/Kconfig                |  4 +---
-> >   arch/sparc/Kconfig               |  4 +---
-> >   arch/x86/Kconfig                 |  4 +---
-> >   arch/x86/mm/pat/set_memory.c     |  2 ++
-> >   include/linux/mm.h               | 10 +++++++---
-> >   12 files changed, 26 insertions(+), 26 deletions(-)
-> > 
-> > diff --git a/arch/Kconfig b/arch/Kconfig
-> > index 56b6ccc0e32d..56d4752b6db6 100644
-> > --- a/arch/Kconfig
-> > +++ b/arch/Kconfig
-> > @@ -1028,6 +1028,9 @@ config HAVE_STATIC_CALL_INLINE
-> >   	bool
-> >   	depends on HAVE_STATIC_CALL
-> > +config ARCH_SUPPORTS_DEBUG_PAGEALLOC
-> > +	bool
-> > +
-> >   source "kernel/gcov/Kconfig"
-> >   source "scripts/gcc-plugins/Kconfig"
-> > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> > index 1d466addb078..a932810cfd90 100644
-> > --- a/arch/arm64/Kconfig
-> > +++ b/arch/arm64/Kconfig
-> > @@ -71,6 +71,7 @@ config ARM64
-> >   	select ARCH_USE_QUEUED_RWLOCKS
-> >   	select ARCH_USE_QUEUED_SPINLOCKS
-> >   	select ARCH_USE_SYM_ANNOTATIONS
-> > +	select ARCH_SUPPORTS_DEBUG_PAGEALLOC
-> >   	select ARCH_SUPPORTS_MEMORY_FAILURE
-> >   	select ARCH_SUPPORTS_SHADOW_CALL_STACK if CC_HAVE_SHADOW_CALL_STACK
-> >   	select ARCH_SUPPORTS_ATOMIC_RMW
-> > @@ -1025,9 +1026,6 @@ config HOLES_IN_ZONE
-> >   source "kernel/Kconfig.hz"
-> > -config ARCH_SUPPORTS_DEBUG_PAGEALLOC
-> > -	def_bool y
-> > -
-> >   config ARCH_SPARSEMEM_ENABLE
-> >   	def_bool y
-> >   	select SPARSEMEM_VMEMMAP_ENABLE
-> > diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-> > index 1b94f5b82654..439325532be1 100644
-> > --- a/arch/arm64/mm/pageattr.c
-> > +++ b/arch/arm64/mm/pageattr.c
-> > @@ -155,7 +155,7 @@ int set_direct_map_invalid_noflush(struct page *page)
-> >   		.clear_mask = __pgprot(PTE_VALID),
-> >   	};
-> > -	if (!rodata_full)
-> > +	if (!debug_pagealloc_enabled() && !rodata_full)
-> >   		return 0;
-> >   	return apply_to_page_range(&init_mm,
-> > @@ -170,7 +170,7 @@ int set_direct_map_default_noflush(struct page *page)
-> >   		.clear_mask = __pgprot(PTE_RDONLY),
-> >   	};
-> > -	if (!rodata_full)
-> > +	if (!debug_pagealloc_enabled() && !rodata_full)
-> >   		return 0;
-> >   	return apply_to_page_range(&init_mm,
-> 
-> I don't understand these two hunks. Previous patch calls this for
-> hibernation when CONFIG_ARCH_HAS_SET_DIRECT_MAP, which is true for arm64.
-> Why suddenly this starts to depend on debug_pagealloc_enabled()?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
+branch HEAD: eeb96257fc7f7f820ad019b6e26d225aded059bf  powerpc/vdso: Provide __kernel_clock_gettime64() on vdso32
 
-I was confused about this for quite a long :)
+elapsed time: 1411m
 
-On arm64 the changes to direct^w linear map are allowed when 
+configs tested: 200
+configs skipped: 2
 
-	debug_page_alloc() || rodata_full
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-In hibernation we essentially have now
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                      bmips_stb_defconfig
+powerpc                  storcenter_defconfig
+arm                      pxa255-idp_defconfig
+sh                             shx3_defconfig
+powerpc                      makalu_defconfig
+sh                           se7206_defconfig
+m68k                       bvme6000_defconfig
+m68k                           sun3_defconfig
+h8300                               defconfig
+arm                        shmobile_defconfig
+sh                           se7751_defconfig
+arm                        vexpress_defconfig
+mips                          ath25_defconfig
+arm                            u300_defconfig
+powerpc                  mpc885_ads_defconfig
+mips                  maltasmvp_eva_defconfig
+sh                   secureedge5410_defconfig
+powerpc                 canyonlands_defconfig
+xtensa                              defconfig
+microblaze                    nommu_defconfig
+arm                           efm32_defconfig
+arm                     davinci_all_defconfig
+riscv                    nommu_k210_defconfig
+sh                               alldefconfig
+arm                          prima2_defconfig
+powerpc                        fsp2_defconfig
+sh                          rsk7269_defconfig
+mips                        maltaup_defconfig
+arm                          tango4_defconfig
+parisc                           alldefconfig
+powerpc               mpc834x_itxgp_defconfig
+arm                           tegra_defconfig
+mips                         cobalt_defconfig
+s390                       zfcpdump_defconfig
+powerpc                 mpc834x_itx_defconfig
+ia64                                defconfig
+m68k                       m5249evb_defconfig
+arm                          pxa910_defconfig
+openrisc                            defconfig
+mips                         tb0226_defconfig
+alpha                            allyesconfig
+powerpc                    sam440ep_defconfig
+mips                         db1xxx_defconfig
+arm                            pleb_defconfig
+arm                        mvebu_v7_defconfig
+sh                        sh7785lcr_defconfig
+arm                        spear3xx_defconfig
+mips                       capcella_defconfig
+mips                       rbtx49xx_defconfig
+arc                              alldefconfig
+um                            kunit_defconfig
+powerpc                      cm5200_defconfig
+arc                            hsdk_defconfig
+mips                        jmr3927_defconfig
+powerpc                      ppc6xx_defconfig
+arm                      integrator_defconfig
+powerpc                 mpc837x_rdb_defconfig
+powerpc                      tqm8xx_defconfig
+mips                     cu1000-neo_defconfig
+mips                           xway_defconfig
+arm                          exynos_defconfig
+mips                          ath79_defconfig
+powerpc                     mpc5200_defconfig
+m68k                       m5475evb_defconfig
+m68k                          atari_defconfig
+sh                            titan_defconfig
+sh                          landisk_defconfig
+m68k                          amiga_defconfig
+arm                            mmp2_defconfig
+arm                        clps711x_defconfig
+sh                        edosk7760_defconfig
+parisc                generic-64bit_defconfig
+powerpc                     tqm8555_defconfig
+i386                             allyesconfig
+sh                ecovec24-romimage_defconfig
+mips                malta_qemu_32r6_defconfig
+arm                          ep93xx_defconfig
+i386                             alldefconfig
+sh                           se7722_defconfig
+powerpc                       holly_defconfig
+mips                        bcm47xx_defconfig
+mips                            gpr_defconfig
+m68k                          hp300_defconfig
+openrisc                         alldefconfig
+mips                          malta_defconfig
+arc                          axs103_defconfig
+powerpc                      chrp32_defconfig
+mips                  decstation_64_defconfig
+ia64                      gensparse_defconfig
+riscv                          rv32_defconfig
+powerpc                     kilauea_defconfig
+mips                        nlm_xlp_defconfig
+mips                         tb0287_defconfig
+sh                         ap325rxa_defconfig
+powerpc                     stx_gp3_defconfig
+sh                     magicpanelr2_defconfig
+powerpc                     taishan_defconfig
+riscv                    nommu_virt_defconfig
+powerpc                      katmai_defconfig
+sh                     sh7710voipgw_defconfig
+arm                         orion5x_defconfig
+sh                   sh7724_generic_defconfig
+powerpc                    klondike_defconfig
+mips                       lemote2f_defconfig
+riscv                            allmodconfig
+mips                            ar7_defconfig
+powerpc                        cell_defconfig
+sh                  sh7785lcr_32bit_defconfig
+powerpc                  iss476-smp_defconfig
+arm                          moxart_defconfig
+m68k                             allmodconfig
+arc                           tb10x_defconfig
+ia64                        generic_defconfig
+arm                         mv78xx0_defconfig
+sh                            shmin_defconfig
+m68k                          multi_defconfig
+arm                          gemini_defconfig
+powerpc                     asp8347_defconfig
+powerpc                      ppc64e_defconfig
+powerpc                     tqm8548_defconfig
+powerpc                     ksi8560_defconfig
+arc                     nsimosci_hs_defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20201104
+i386                 randconfig-a006-20201104
+i386                 randconfig-a005-20201104
+i386                 randconfig-a001-20201104
+i386                 randconfig-a002-20201104
+i386                 randconfig-a003-20201104
+i386                 randconfig-a004-20201105
+i386                 randconfig-a006-20201105
+i386                 randconfig-a005-20201105
+i386                 randconfig-a001-20201105
+i386                 randconfig-a002-20201105
+i386                 randconfig-a003-20201105
+x86_64               randconfig-a004-20201105
+x86_64               randconfig-a003-20201105
+x86_64               randconfig-a005-20201105
+x86_64               randconfig-a002-20201105
+x86_64               randconfig-a006-20201105
+x86_64               randconfig-a001-20201105
+x86_64               randconfig-a012-20201104
+x86_64               randconfig-a015-20201104
+x86_64               randconfig-a013-20201104
+x86_64               randconfig-a011-20201104
+x86_64               randconfig-a014-20201104
+x86_64               randconfig-a016-20201104
+i386                 randconfig-a015-20201104
+i386                 randconfig-a013-20201104
+i386                 randconfig-a014-20201104
+i386                 randconfig-a016-20201104
+i386                 randconfig-a011-20201104
+i386                 randconfig-a012-20201104
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-	if (1)
-		set_direct_map(something)
-	else
-		debug_page_alloc_map()
+clang tested configs:
+x86_64               randconfig-a004-20201104
+x86_64               randconfig-a003-20201104
+x86_64               randconfig-a005-20201104
+x86_64               randconfig-a002-20201104
+x86_64               randconfig-a006-20201104
+x86_64               randconfig-a001-20201104
 
-With debug_pagealloc enabled but with rodata_full disabled arm64
-versions of set_direct_map_*() will become a nop, so a page that was
-unmapped by debug_pagealloc() will not be mapped back.
-
-I'm still puzzled how hibernation might ever need to save a free page,
-but that's another story.
-
--- 
-Sincerely yours,
-Mike.
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
