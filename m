@@ -2,54 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6008D2A88D7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 22:20:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8F82A88DE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 22:22:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CRxHv2Z4SzDqfY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 08:20:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CRxLK6PgMzDrCt
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 08:22:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.66; helo=mail-ot1-f66.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.193;
+ helo=mail-oi1-f193.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com
- [209.85.210.66])
+Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com
+ [209.85.167.193])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CRx6n0zghzDr7N
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 08:12:17 +1100 (AEDT)
-Received: by mail-ot1-f66.google.com with SMTP id 32so2793012otm.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Nov 2020 13:12:17 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CRx6w1vm2zDr7x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 08:12:24 +1100 (AEDT)
+Received: by mail-oi1-f193.google.com with SMTP id x1so3139371oic.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Nov 2020 13:12:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=qSeAzIAtX0I+mR++aZnxjxhWoWE9gqtpuXmmBMEpUoM=;
- b=AhjKLHNbPkvxXweuJ+lpFaOE+GaMVbmhTaI8VmRU9n9zf8izx/7GAO525DcGfTH+RZ
- +Kg2FBwFcnp7KuvriZy3qL6I/Tr4WuvTZMhqsBo7qvlg8qEWhOfwJpQXXFOKaX+nsV+1
- c1KQc50wOBgWbZ5E/MIWH9MXZiFg3KvtqWKLlYZqRwHwLVoaaJo6y/3/Rh6BAZVhM6Vq
- 7N+03E5KVB/RYP8i49ILc9YtSmS/nPf4gTnE8wCZyDsVRpVuLaotL3cbl5WWiIA3GuU0
- BOadM9w+JlEz8Wxyqjmaz3LHCJkPveRc877r1RY6AILjNPYHt6d7DIotLH2UE/eylirr
- EkJQ==
-X-Gm-Message-State: AOAM531bPasW20TJWpzPCcXAjoyjCuirn3NTLlPconfFmgvxFYdf4Dt4
- XkkWH3Z8aAfqOc+jniXUdQ==
-X-Google-Smtp-Source: ABdhPJxLhEme/efGkGRWlMX+cxnoYw1OzFM15/yHz5m09H/AvTEAigpq0ts1OPzmcZCznOfNDj12aA==
-X-Received: by 2002:a05:6830:4c6:: with SMTP id
- s6mr2857246otd.31.1604610735164; 
- Thu, 05 Nov 2020 13:12:15 -0800 (PST)
+ bh=ZVeJIfWlxUTgrZqRPHjctK3jnjQfy5YPhbh3+XYgmn4=;
+ b=Ol+8IbbWtiMniVPv3oIPwSQjo6kUsnf0nhgZ+IUho6OlNXAGd4aSYBPQF2WypsTONo
+ ANdTPWqn5RmklBG76Tc0x/6HhBvB7Z6ZudS5HQ5hCyEAXOH9lTv70/jPe2Z8wCQEFLvs
+ LSsez5GnS0CWw93xZ/V5Gph6j9V0hq+rDnMbvfALiSQo6VDQ8vHMcEgxOF1b9DJZgJSp
+ Qhwf+cuL4S9yi5hKo8++9jlG2pS8ixBElnm8+w6iGSt593iwI/L2XrZFh3JDaRhjMUgY
+ XrOtjjLFd6h22QCROxEqoLsVOF5Nrvso1mP11yHlPeVWjwceJWq7LGdw0T/O0uXOyYGT
+ +Tew==
+X-Gm-Message-State: AOAM5300vfhdQv4PNspnQc2lTrUPWNEZHKfOjjXrRB/evzJh3zdAtXx/
+ fta4dcfqd8HYF3vQndeAuQ==
+X-Google-Smtp-Source: ABdhPJw+47/D3qnF5mU7Eedns1tPtQUDx6M5jpVs/y82aLzeZ7fJtbLHYBuCzEI8RMIwgkcdafqtfQ==
+X-Received: by 2002:aca:5d07:: with SMTP id r7mr811608oib.87.1604610742131;
+ Thu, 05 Nov 2020 13:12:22 -0800 (PST)
 Received: from xps15.herring.priv (24-155-109-49.dyn.grandenetworks.net.
  [24.155.109.49])
- by smtp.googlemail.com with ESMTPSA id z19sm622549ooi.32.2020.11.05.13.12.13
+ by smtp.googlemail.com with ESMTPSA id z19sm622549ooi.32.2020.11.05.13.12.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Nov 2020 13:12:14 -0800 (PST)
+ Thu, 05 Nov 2020 13:12:21 -0800 (PST)
 From: Rob Herring <robh@kernel.org>
 To: 
-Subject: [PATCH v2 09/16] PCI: dwc: Rework MSI initialization
-Date: Thu,  5 Nov 2020 15:11:52 -0600
-Message-Id: <20201105211159.1814485-10-robh@kernel.org>
+Subject: [PATCH v2 12/16] PCI: dwc: Move dw_pcie_setup_rc() to DWC common code
+Date: Thu,  5 Nov 2020 15:11:55 -0600
+Message-Id: <20201105211159.1814485-13-robh@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201105211159.1814485-1-robh@kernel.org>
 References: <20201105211159.1814485-1-robh@kernel.org>
@@ -66,218 +66,296 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roy Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Jingoo Han <jingoohan1@gmail.com>, linux-pci@vger.kernel.org,
- Minghuan Lian <minghuan.Lian@nxp.com>, Murali Karicheri <m-karicheri2@ti.com>,
- Mingkai Hu <mingkai.hu@nxp.com>,
+Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Neil Armstrong <narmstrong@baylibre.com>, linux-pci@vger.kernel.org,
+ Binghui Wang <wangbinghui@hisilicon.com>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Minghuan Lian <minghuan.Lian@nxp.com>, linux-arm-kernel@axis.com,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Fabio Estevam <festevam@gmail.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Jesper Nilsson <jesper.nilsson@axis.com>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Kevin Hilman <khilman@baylibre.com>, Pratyush Anand <pratyush.anand@gmail.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
+ Murali Karicheri <m-karicheri2@ti.com>, NXP Linux Team <linux-imx@nxp.com>,
+ Xiaowei Song <songxiaowei@hisilicon.com>, Richard Zhu <hongxing.zhu@nxp.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Yue Wang <yue.wang@Amlogic.com>,
+ linux-samsung-soc@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+ linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
+ Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org,
+ Roy Zang <roy.zang@nxp.com>, Masahiro Yamada <yamada.masahiro@socionext.com>,
  Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
- Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+ Andy Gross <agross@kernel.org>, Stanimir Varbanov <svarbanov@mm-sol.com>,
+ Kukjin Kim <kgene@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Jingoo Han <jingoohan1@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are 3 possible MSI implementations for the DWC host. The first is
-using the built-in DWC MSI controller. The 2nd is a custom MSI
-controller as part of the PCI host (keystone only). The 3rd is an
-external MSI controller (typically GICv3 ITS). Currently, the last 2
-are distinguished with a .msi_host_init() hook with the 3rd option using
-an empty function. However we can detect the 3rd case with the presence
-of 'msi-parent' or 'msi-map' properties, so let's do that instead and
-remove the empty functions.
+All RC complex drivers must call dw_pcie_setup_rc(). The ordering of the
+call shouldn't be too important other than being after any RC resets.
 
-Cc: Murali Karicheri <m-karicheri2@ti.com>
+There's a few calls of dw_pcie_setup_rc() left as drivers implementing
+suspend/resume need it.
+
+Cc: Kishon Vijay Abraham I <kishon@ti.com>
 Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Kukjin Kim <kgene@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: NXP Linux Team <linux-imx@nxp.com>
+Cc: Murali Karicheri <m-karicheri2@ti.com>
 Cc: Minghuan Lian <minghuan.Lian@nxp.com>
 Cc: Mingkai Hu <mingkai.hu@nxp.com>
 Cc: Roy Zang <roy.zang@nxp.com>
+Cc: Yue Wang <yue.wang@Amlogic.com>
+Cc: Kevin Hilman <khilman@baylibre.com>
+Cc: Neil Armstrong <narmstrong@baylibre.com>
+Cc: Jerome Brunet <jbrunet@baylibre.com>
+Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Jesper Nilsson <jesper.nilsson@axis.com>
 Cc: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+Cc: Xiaowei Song <songxiaowei@hisilicon.com>
+Cc: Binghui Wang <wangbinghui@hisilicon.com>
+Cc: Andy Gross <agross@kernel.org>
+Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc: Stanimir Varbanov <svarbanov@mm-sol.com>
+Cc: Pratyush Anand <pratyush.anand@gmail.com>
+Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: linux-omap@vger.kernel.org
+Cc: linux-samsung-soc@vger.kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-amlogic@lists.infradead.org
+Cc: linux-arm-kernel@axis.com
+Cc: linux-arm-msm@vger.kernel.org
 Acked-by: Jingoo Han <jingoohan1@gmail.com>
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c     |  9 -------
- drivers/pci/controller/dwc/pci-layerscape.c   | 25 -------------------
- .../pci/controller/dwc/pcie-designware-host.c | 20 +++++++++------
- drivers/pci/controller/dwc/pcie-designware.h  |  1 +
- drivers/pci/controller/dwc/pcie-intel-gw.c    |  9 -------
- 5 files changed, 13 insertions(+), 51 deletions(-)
+ drivers/pci/controller/dwc/pci-dra7xx.c           | 1 -
+ drivers/pci/controller/dwc/pci-exynos.c           | 1 -
+ drivers/pci/controller/dwc/pci-imx6.c             | 1 -
+ drivers/pci/controller/dwc/pci-keystone.c         | 2 --
+ drivers/pci/controller/dwc/pci-layerscape.c       | 2 --
+ drivers/pci/controller/dwc/pci-meson.c            | 2 --
+ drivers/pci/controller/dwc/pcie-armada8k.c        | 2 --
+ drivers/pci/controller/dwc/pcie-artpec6.c         | 1 -
+ drivers/pci/controller/dwc/pcie-designware-host.c | 1 +
+ drivers/pci/controller/dwc/pcie-designware-plat.c | 8 --------
+ drivers/pci/controller/dwc/pcie-histb.c           | 3 ---
+ drivers/pci/controller/dwc/pcie-kirin.c           | 2 --
+ drivers/pci/controller/dwc/pcie-qcom.c            | 1 -
+ drivers/pci/controller/dwc/pcie-spear13xx.c       | 2 --
+ drivers/pci/controller/dwc/pcie-uniphier.c        | 2 --
+ 15 files changed, 1 insertion(+), 30 deletions(-)
 
+diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+index 72a5a2bf933b..b105af63854a 100644
+--- a/drivers/pci/controller/dwc/pci-dra7xx.c
++++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+@@ -181,7 +181,6 @@ static int dra7xx_pcie_host_init(struct pcie_port *pp)
+ 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+ 	struct dra7xx_pcie *dra7xx = to_dra7xx_pcie(pci);
+ 
+-	dw_pcie_setup_rc(pp);
+ 	dra7xx_pcie_enable_interrupts(dra7xx);
+ 
+ 	return 0;
+diff --git a/drivers/pci/controller/dwc/pci-exynos.c b/drivers/pci/controller/dwc/pci-exynos.c
+index 3939fe22e8a2..5c10a5432896 100644
+--- a/drivers/pci/controller/dwc/pci-exynos.c
++++ b/drivers/pci/controller/dwc/pci-exynos.c
+@@ -372,7 +372,6 @@ static int exynos_pcie_host_init(struct pcie_port *pp)
+ 	phy_init(ep->phy);
+ 
+ 	exynos_pcie_deassert_core_reset(ep);
+-	dw_pcie_setup_rc(pp);
+ 	exynos_pcie_assert_reset(ep);
+ 
+ 	exynos_pcie_enable_interrupts(ep);
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 9e30fbf4efbe..f9547bb2cf1b 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -834,7 +834,6 @@ static int imx6_pcie_host_init(struct pcie_port *pp)
+ 	imx6_pcie_init_phy(imx6_pcie);
+ 	imx6_pcie_deassert_core_reset(imx6_pcie);
+ 	imx6_setup_phy_mpll(imx6_pcie);
+-	dw_pcie_setup_rc(pp);
+ 
+ 	return 0;
+ }
 diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 9cf14f13798b..784385ae6074 100644
+index 90b222b020a3..5a4bcc2b1ddb 100644
 --- a/drivers/pci/controller/dwc/pci-keystone.c
 +++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -272,14 +272,6 @@ static void ks_pcie_handle_legacy_irq(struct keystone_pcie *ks_pcie,
- 	ks_pcie_app_writel(ks_pcie, IRQ_EOI, offset);
- }
+@@ -807,8 +807,6 @@ static int __init ks_pcie_host_init(struct pcie_port *pp)
+ 	if (ret)
+ 		return ret;
  
--/*
-- * Dummy function so that DW core doesn't configure MSI
-- */
--static int ks_pcie_am654_msi_host_init(struct pcie_port *pp)
--{
--	return 0;
--}
+-	dw_pcie_setup_rc(pp);
 -
- static void ks_pcie_enable_error_irq(struct keystone_pcie *ks_pcie)
- {
- 	ks_pcie_app_writel(ks_pcie, ERR_IRQ_ENABLE_SET, ERR_IRQ_ALL);
-@@ -854,7 +846,6 @@ static const struct dw_pcie_host_ops ks_pcie_host_ops = {
- 
- static const struct dw_pcie_host_ops ks_pcie_am654_host_ops = {
- 	.host_init = ks_pcie_host_init,
--	.msi_host_init = ks_pcie_am654_msi_host_init,
- };
- 
- static irqreturn_t ks_pcie_err_irq_handler(int irq, void *priv)
+ 	ks_pcie_stop_link(pci);
+ 	ks_pcie_setup_rc_app_regs(ks_pcie);
+ 	writew(PCI_IO_RANGE_TYPE_32 | (PCI_IO_RANGE_TYPE_32 << 8),
 diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-index 53e56d54c482..0d84986c4c16 100644
+index 0d84986c4c16..400ebbebd00f 100644
 --- a/drivers/pci/controller/dwc/pci-layerscape.c
 +++ b/drivers/pci/controller/dwc/pci-layerscape.c
-@@ -168,37 +168,12 @@ static int ls1021_pcie_host_init(struct pcie_port *pp)
- 	return ls_pcie_host_init(pp);
+@@ -136,8 +136,6 @@ static int ls_pcie_host_init(struct pcie_port *pp)
+ 
+ 	ls_pcie_drop_msg_tlp(pcie);
+ 
+-	dw_pcie_setup_rc(pp);
+-
+ 	return 0;
  }
  
--static int ls_pcie_msi_host_init(struct pcie_port *pp)
--{
--	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
--	struct device *dev = pci->dev;
--	struct device_node *np = dev->of_node;
--	struct device_node *msi_node;
--
--	/*
--	 * The MSI domain is set by the generic of_msi_configure().  This
--	 * .msi_host_init() function keeps us from doing the default MSI
--	 * domain setup in dw_pcie_host_init() and also enforces the
--	 * requirement that "msi-parent" exists.
--	 */
--	msi_node = of_parse_phandle(np, "msi-parent", 0);
--	if (!msi_node) {
--		dev_err(dev, "failed to find msi-parent\n");
--		return -EINVAL;
--	}
--
--	of_node_put(msi_node);
--	return 0;
--}
--
- static const struct dw_pcie_host_ops ls1021_pcie_host_ops = {
- 	.host_init = ls1021_pcie_host_init,
--	.msi_host_init = ls_pcie_msi_host_init,
- };
+diff --git a/drivers/pci/controller/dwc/pci-meson.c b/drivers/pci/controller/dwc/pci-meson.c
+index 2df0adcf0bf2..04589f0decb2 100644
+--- a/drivers/pci/controller/dwc/pci-meson.c
++++ b/drivers/pci/controller/dwc/pci-meson.c
+@@ -380,8 +380,6 @@ static int meson_pcie_host_init(struct pcie_port *pp)
+ 	meson_set_max_payload(mp, MAX_PAYLOAD_SIZE);
+ 	meson_set_max_rd_req_size(mp, MAX_READ_REQ_SIZE);
  
- static const struct dw_pcie_host_ops ls_pcie_host_ops = {
- 	.host_init = ls_pcie_host_init,
--	.msi_host_init = ls_pcie_msi_host_init,
- };
+-	dw_pcie_setup_rc(pp);
+-
+ 	return 0;
+ }
  
- static const struct dw_pcie_ops dw_ls1021_pcie_ops = {
+diff --git a/drivers/pci/controller/dwc/pcie-armada8k.c b/drivers/pci/controller/dwc/pcie-armada8k.c
+index dd2926bbb901..4e2552dcf982 100644
+--- a/drivers/pci/controller/dwc/pcie-armada8k.c
++++ b/drivers/pci/controller/dwc/pcie-armada8k.c
+@@ -171,8 +171,6 @@ static int armada8k_pcie_host_init(struct pcie_port *pp)
+ 	u32 reg;
+ 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+ 
+-	dw_pcie_setup_rc(pp);
+-
+ 	if (!dw_pcie_link_up(pci)) {
+ 		/* Disable LTSSM state machine to enable configuration */
+ 		reg = dw_pcie_readl_dbi(pci, PCIE_GLOBAL_CONTROL_REG);
+diff --git a/drivers/pci/controller/dwc/pcie-artpec6.c b/drivers/pci/controller/dwc/pcie-artpec6.c
+index 7ee8f3c83f8f..fcba9915a606 100644
+--- a/drivers/pci/controller/dwc/pcie-artpec6.c
++++ b/drivers/pci/controller/dwc/pcie-artpec6.c
+@@ -328,7 +328,6 @@ static int artpec6_pcie_host_init(struct pcie_port *pp)
+ 	artpec6_pcie_init_phy(artpec6_pcie);
+ 	artpec6_pcie_deassert_core_reset(artpec6_pcie);
+ 	artpec6_pcie_wait_for_phy(artpec6_pcie);
+-	dw_pcie_setup_rc(pp);
+ 
+ 	return 0;
+ }
 diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index 95deef0eaadf..9b952639d020 100644
+index ebea2c814448..f2b0a15ad72b 100644
 --- a/drivers/pci/controller/dwc/pcie-designware-host.c
 +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -365,6 +365,10 @@ int dw_pcie_host_init(struct pcie_port *pp)
- 		pci->link_gen = of_pci_get_max_link_speed(np);
- 
- 	if (pci_msi_enabled()) {
-+		pp->has_msi_ctrl = !(pp->ops->msi_host_init ||
-+				     of_property_read_bool(np, "msi-parent") ||
-+				     of_property_read_bool(np, "msi-map"));
-+
- 		if (!pp->num_vectors) {
- 			pp->num_vectors = MSI_DEF_NUM_VECTORS;
- 		} else if (pp->num_vectors > MAX_MSI_IRQS) {
-@@ -372,7 +376,11 @@ int dw_pcie_host_init(struct pcie_port *pp)
- 			return -EINVAL;
- 		}
- 
--		if (!pp->ops->msi_host_init) {
-+		if (pp->ops->msi_host_init) {
-+			ret = pp->ops->msi_host_init(pp);
-+			if (ret < 0)
-+				return ret;
-+		} else if (pp->has_msi_ctrl) {
- 			if (!pp->msi_irq) {
- 				pp->msi_irq = platform_get_irq_byname_optional(pdev, "msi");
- 				if (pp->msi_irq < 0) {
-@@ -402,10 +410,6 @@ int dw_pcie_host_init(struct pcie_port *pp)
- 				pp->msi_data = 0;
- 				goto err_free_msi;
- 			}
--		} else {
--			ret = pp->ops->msi_host_init(pp);
--			if (ret < 0)
--				return ret;
- 		}
+@@ -422,6 +422,7 @@ int dw_pcie_host_init(struct pcie_port *pp)
+ 			goto err_free_msi;
  	}
  
-@@ -426,7 +430,7 @@ int dw_pcie_host_init(struct pcie_port *pp)
- 		return 0;
++	dw_pcie_setup_rc(pp);
+ 	dw_pcie_msi_init(pp);
  
- err_free_msi:
--	if (pci_msi_enabled() && !pp->ops->msi_host_init)
-+	if (pp->has_msi_ctrl)
- 		dw_pcie_free_msi(pp);
- 	return ret;
- }
-@@ -436,7 +440,7 @@ void dw_pcie_host_deinit(struct pcie_port *pp)
- {
- 	pci_stop_root_bus(pp->bridge->bus);
- 	pci_remove_root_bus(pp->bridge->bus);
--	if (pci_msi_enabled() && !pp->ops->msi_host_init)
-+	if (pp->has_msi_ctrl)
- 		dw_pcie_free_msi(pp);
- }
- EXPORT_SYMBOL_GPL(dw_pcie_host_deinit);
-@@ -544,7 +548,7 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
+ 	if (!dw_pcie_link_up(pci) && pci->ops->start_link) {
+diff --git a/drivers/pci/controller/dwc/pcie-designware-plat.c b/drivers/pci/controller/dwc/pcie-designware-plat.c
+index dec24e595c3e..9b397c807261 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-plat.c
++++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
+@@ -33,15 +33,7 @@ struct dw_plat_pcie_of_data {
  
- 	dw_pcie_setup(pci);
+ static const struct of_device_id dw_plat_pcie_of_match[];
  
--	if (pci_msi_enabled() && !pp->ops->msi_host_init) {
-+	if (pp->has_msi_ctrl) {
- 		num_ctrls = pp->num_vectors / MAX_MSI_IRQS_PER_CTRL;
- 
- 		/* Initialize IRQ Status array */
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index 96382dcb2859..5d374bab10d1 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -175,6 +175,7 @@ struct dw_pcie_host_ops {
- };
- 
- struct pcie_port {
-+	bool			has_msi_ctrl:1;
- 	u64			cfg0_base;
- 	void __iomem		*va_cfg0_base;
- 	u32			cfg0_size;
-diff --git a/drivers/pci/controller/dwc/pcie-intel-gw.c b/drivers/pci/controller/dwc/pcie-intel-gw.c
-index c562eb7454b1..292b9de86532 100644
---- a/drivers/pci/controller/dwc/pcie-intel-gw.c
-+++ b/drivers/pci/controller/dwc/pcie-intel-gw.c
-@@ -385,14 +385,6 @@ static int intel_pcie_rc_init(struct pcie_port *pp)
- 	return intel_pcie_host_setup(lpp);
- }
- 
--/*
-- * Dummy function so that DW core doesn't configure MSI
-- */
--static int intel_pcie_msi_init(struct pcie_port *pp)
+-static int dw_plat_pcie_host_init(struct pcie_port *pp)
 -{
+-	dw_pcie_setup_rc(pp);
+-
 -	return 0;
 -}
 -
- static u64 intel_pcie_cpu_addr(struct dw_pcie *pcie, u64 cpu_addr)
- {
- 	return cpu_addr + BUS_IATU_OFFSET;
-@@ -404,7 +396,6 @@ static const struct dw_pcie_ops intel_pcie_ops = {
- 
- static const struct dw_pcie_host_ops intel_pcie_dw_ops = {
- 	.host_init =		intel_pcie_rc_init,
--	.msi_host_init =	intel_pcie_msi_init,
+ static const struct dw_pcie_host_ops dw_plat_pcie_host_ops = {
+-	.host_init = dw_plat_pcie_host_init,
  };
  
- static const struct intel_pcie_soc pcie_data = {
+ static int dw_plat_pcie_establish_link(struct dw_pcie *pci)
+diff --git a/drivers/pci/controller/dwc/pcie-histb.c b/drivers/pci/controller/dwc/pcie-histb.c
+index 210777c793ea..86f9d16c50d7 100644
+--- a/drivers/pci/controller/dwc/pcie-histb.c
++++ b/drivers/pci/controller/dwc/pcie-histb.c
+@@ -196,9 +196,6 @@ static int histb_pcie_host_init(struct pcie_port *pp)
+ 	regval |= PCIE_WM_RC;
+ 	histb_pcie_writel(hipcie, PCIE_SYS_CTRL0, regval);
+ 
+-	/* setup root complex */
+-	dw_pcie_setup_rc(pp);
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/pci/controller/dwc/pcie-kirin.c b/drivers/pci/controller/dwc/pcie-kirin.c
+index f84ac1b36b2c..ac4bbdaf5324 100644
+--- a/drivers/pci/controller/dwc/pcie-kirin.c
++++ b/drivers/pci/controller/dwc/pcie-kirin.c
+@@ -405,8 +405,6 @@ static int kirin_pcie_host_init(struct pcie_port *pp)
+ {
+ 	pp->bridge->ops = &kirin_pci_ops;
+ 
+-	dw_pcie_setup_rc(pp);
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index eb107179d544..e49791c4f846 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -1280,7 +1280,6 @@ static int qcom_pcie_host_init(struct pcie_port *pp)
+ 			goto err_disable_phy;
+ 	}
+ 
+-	dw_pcie_setup_rc(pp);
+ 	qcom_ep_reset_deassert(pcie);
+ 
+ 	return 0;
+diff --git a/drivers/pci/controller/dwc/pcie-spear13xx.c b/drivers/pci/controller/dwc/pcie-spear13xx.c
+index 31475e4493a7..1a9e353bef55 100644
+--- a/drivers/pci/controller/dwc/pcie-spear13xx.c
++++ b/drivers/pci/controller/dwc/pcie-spear13xx.c
+@@ -130,8 +130,6 @@ static int spear13xx_pcie_host_init(struct pcie_port *pp)
+ 
+ 	spear13xx_pcie->app_base = pci->dbi_base + 0x2000;
+ 
+-	dw_pcie_setup_rc(pp);
+-
+ 	/*
+ 	 * this controller support only 128 bytes read size, however its
+ 	 * default value in capability register is 512 bytes. So force
+diff --git a/drivers/pci/controller/dwc/pcie-uniphier.c b/drivers/pci/controller/dwc/pcie-uniphier.c
+index e6616408a29c..2457e9dd098d 100644
+--- a/drivers/pci/controller/dwc/pcie-uniphier.c
++++ b/drivers/pci/controller/dwc/pcie-uniphier.c
+@@ -314,8 +314,6 @@ static int uniphier_pcie_host_init(struct pcie_port *pp)
+ 
+ 	uniphier_pcie_irq_enable(priv);
+ 
+-	dw_pcie_setup_rc(pp);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.25.1
 
