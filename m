@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489922A7ED3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 13:43:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 376E12A7EE3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 13:46:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CRjqG2ZZNzDqxM
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 23:43:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CRjth2JFPzDqX7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 23:46:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::443;
- helo=mail-wr1-x443.google.com; envelope-from=lee.jones@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::42d;
+ helo=mail-wr1-x42d.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=EXaeU/gL; dkim-atps=neutral
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
- [IPv6:2a00:1450:4864:20::443])
+ header.s=google header.b=SthxV1eu; dkim-atps=neutral
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com
+ [IPv6:2a00:1450:4864:20::42d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CRjd35QZfzDqjy
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 23:34:13 +1100 (AEDT)
-Received: by mail-wr1-x443.google.com with SMTP id x12so1561927wrm.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Nov 2020 04:34:13 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CRjd42VKjzDqfd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 23:34:16 +1100 (AEDT)
+Received: by mail-wr1-x42d.google.com with SMTP id b8so1578673wrn.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Nov 2020 04:34:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=wlXH0kxNJD8CDhXLwRoz5XZg/Jz+8sYK/e874l8CriQ=;
- b=EXaeU/gLcr3mS0j3s+dAyWHhQ1PurhGIfB8tYdj6HillnO0uJiQXLljb5lS8JfQT64
- ETvawX2bn01oPLpwOasEuMAy/Mz88HxIgT9P55VpFcfsEu+IU6tw9IfLS1GVZj0sWGNa
- sXUQGr7bFxqG/t8f2eZwJ9OyeqPn0nrbuTyi+GSUC8TWLwF11moiXYVnf1hGIZfhdEhR
- 7f3k9m7oG6FrvYR8BgI+kRtiqrs4ftFQBhGvc6NCxNVgSOUMU0aPfl85Uz2xs8G51Y3n
- +f3ZLKsDNu1gmJdaTzDEV20Y4Wh9fapfQmVe1dxlgBweP5EzJoITe/uiZlv1zti9rv0u
- IJCQ==
+ bh=Xz//VlkyzSuFUDYJJAdkAFuecM4h3ucnRuAay+Wrh6w=;
+ b=SthxV1euNvm3UGA6snsKy/Pzz94nTgWS9EA9VG4ISwsbF8wl++LLq4wME8xe2RrV4+
+ DKNIdHbSaXHROBgMy3nYL4vGE9B0hypEonaSR4IVCinpQz+fytBkQLhkGwWw9eUaXIfJ
+ CKpNyVlHgvTxbcDftV8q/wAL3Xax+9uAqykvVcHDueBq2gFx6rCUlE9+q4F+3nOJHZJK
+ lZ1pMbkIODYHlO0rjJZQlzIjoF7qDmqMNNaEugiiVHgI48HMFJE6ASG+4Ru/4HeOs8Eo
+ XjBqPEbdnKGZ8cFUuBHZqJEsgIjSBC7yl37ierwy5n0saKDqXQKy2YjuVSvNNcqmD7o6
+ Qz6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=wlXH0kxNJD8CDhXLwRoz5XZg/Jz+8sYK/e874l8CriQ=;
- b=dQCnVqTY1yi9qOPYvrj5HM34qDy6zrZZEMHNWcC/b8ZwecnX+VyqL+xMOPQBatlvl4
- wbGrdiFIyK5dlUicyBVyBpLNFkJP61TYyaw9QPysl3tdRsP1Wz9SuKBRDLR37hTxuvWW
- 7pDVWJ6E194Loa5XbDxOVXuKyJpvhnUeXCleILyWN/cdS9ZhnUOysJ2I2+OqwZutHMKo
- 5g3zIGqTQC3/8BXt9WOSJt3mJ7iEC708Hk77Xm3yMnauNKvdBqoZJeIwTH+QrKp/hKRs
- WOJDTf4DUeeAismjU5eM6BFPlb8uD6Q+cJo8zgO0sLN5rfSFajUKpq5YPglJQ7XTptfQ
- a4FA==
-X-Gm-Message-State: AOAM530otqgob5xafg70scryoYg2pYAXAawqjqmRThXjVkqVUPV0P14c
- Ir0BYROMRMls8mlI04iYHU6jsA==
-X-Google-Smtp-Source: ABdhPJwCZgZ+EZSAyGLDWXJZ4ZTmpPl5O+ZYQPbQLCRtTXTrwtU7Y7jq/M6zi/nYVIB+XrJjc89s8A==
-X-Received: by 2002:a5d:4747:: with SMTP id o7mr2772022wrs.423.1604579648173; 
- Thu, 05 Nov 2020 04:34:08 -0800 (PST)
+ bh=Xz//VlkyzSuFUDYJJAdkAFuecM4h3ucnRuAay+Wrh6w=;
+ b=a2DhCiG5lPXH6ReDeXQz+d8jVbq/VxOTUXl+0iqh6Z991yqsOSFgP6NCfiQudY8QY3
+ 3JXBPG3Dnu3FCxa4uoHqwTgDfsb7yJzKcPuAFHsfirVRFKWoN+++Fovl/CZVWUSHy/GV
+ TNpK52gv5TNUQ0EUx1E1p2siCGn1EZrx2YVTkBRuoDIB/JCyX2VfXkV+/ciCR3S/6eFL
+ IUIDJI8kZaHseEgkTzyISdOmafyLdwKWAwWCI9LGKddftu9LZrVVc5vl0KWT7gG8Ipur
+ yXOz9/E9xwnjJn0gHD96yOYsCmNuV9H12/T2UjRxBRDlWIHiM9H3MkDeS3C8O0ZDox0F
+ ivBg==
+X-Gm-Message-State: AOAM530Lkm2w1zbF/SjnHPSChhIFucy1NQLhcECJ0oXLBdAURVO0NBfe
+ ZQJN+fKohn9dnpHqp7eWNyB5rA==
+X-Google-Smtp-Source: ABdhPJxPGbVwwRd4rUB7SX1lH3uCCiZDsQ7ch3vphk4JkXGLAsWO36sukiIyshvnqs0RLFMXCcJREQ==
+X-Received: by 2002:adf:f043:: with SMTP id t3mr2642311wro.234.1604579650501; 
+ Thu, 05 Nov 2020 04:34:10 -0800 (PST)
 Received: from dell.default ([91.110.221.242])
- by smtp.gmail.com with ESMTPSA id o7sm2346689wrp.23.2020.11.05.04.34.05
+ by smtp.gmail.com with ESMTPSA id o7sm2346689wrp.23.2020.11.05.04.34.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Nov 2020 04:34:06 -0800 (PST)
+ Thu, 05 Nov 2020 04:34:09 -0800 (PST)
 From: Lee Jones <lee.jones@linaro.org>
 To: lee.jones@linaro.org
-Subject: [PATCH 1/2] tty: Remove redundant synclink driver
-Date: Thu,  5 Nov 2020 12:33:56 +0000
-Message-Id: <20201105123357.708813-2-lee.jones@linaro.org>
+Subject: [PATCH 2/2] tty: Remove redundant synclinkmp driver
+Date: Thu,  5 Nov 2020 12:33:57 +0000
+Message-Id: <20201105123357.708813-3-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201105123357.708813-1-lee.jones@linaro.org>
 References: <20201105123357.708813-1-lee.jones@linaro.org>
@@ -105,72 +105,73 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
  arch/powerpc/configs/ppc6xx_defconfig |    1 -
- drivers/tty/Kconfig                   |   13 -
+ drivers/tty/Kconfig                   |   14 -
  drivers/tty/Makefile                  |    1 -
- drivers/tty/synclink.c                | 7899 -------------------------
- 4 files changed, 7914 deletions(-)
- delete mode 100644 drivers/tty/synclink.c
+ drivers/tty/synclinkmp.c              | 5580 -------------------------
+ 4 files changed, 5596 deletions(-)
+ delete mode 100644 drivers/tty/synclinkmp.c
 
 diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index 66e9a0fd64ff2..c2052093f70c6 100644
+index c2052093f70c6..e8ce81a5e60cd 100644
 --- a/arch/powerpc/configs/ppc6xx_defconfig
 +++ b/arch/powerpc/configs/ppc6xx_defconfig
 @@ -598,7 +598,6 @@ CONFIG_GAMEPORT_FM801=m
  CONFIG_SERIAL_NONSTANDARD=y
  CONFIG_ROCKETPORT=m
  CONFIG_CYCLADES=m
--CONFIG_SYNCLINK=m
- CONFIG_SYNCLINKMP=m
+-CONFIG_SYNCLINKMP=m
  CONFIG_SYNCLINK_GT=m
  CONFIG_NOZOMI=m
+ CONFIG_N_HDLC=m
 diff --git a/drivers/tty/Kconfig b/drivers/tty/Kconfig
-index 93fd984eb2f5a..61bf4ba37c06b 100644
+index 61bf4ba37c06b..e15cd6b5bb99a 100644
 --- a/drivers/tty/Kconfig
 +++ b/drivers/tty/Kconfig
-@@ -259,19 +259,6 @@ config MOXA_SMARTIO
+@@ -259,20 +259,6 @@ config MOXA_SMARTIO
  	  This driver can also be built as a module. The module will be called
  	  mxser. If you want to do that, say M here.
  
--config SYNCLINK
--	tristate "Microgate SyncLink card support"
--	depends on SERIAL_NONSTANDARD && PCI && ISA_DMA_API
+-config SYNCLINKMP
+-	tristate "SyncLink Multiport support"
+-	depends on SERIAL_NONSTANDARD && PCI
 -	help
--	  Provides support for the SyncLink ISA and PCI multiprotocol serial
--	  adapters. These adapters support asynchronous and HDLC bit
--	  synchronous communication up to 10Mbps (PCI adapter).
+-	  Enable support for the SyncLink Multiport (2 or 4 ports)
+-	  serial adapter, running asynchronous and HDLC communications up
+-	  to 2.048Mbps. Each ports is independently selectable for
+-	  RS-232, V.35, RS-449, RS-530, and X.21
 -
--	  This driver can only be built as a module ( = code which can be
+-	  This driver may be built as a module ( = code which can be
 -	  inserted in and removed from the running kernel whenever you want).
--	  The module will be called synclink.  If you want to do that, say M
+-	  The module will be called synclinkmp.  If you want to do that, say M
 -	  here.
 -
- config SYNCLINKMP
- 	tristate "SyncLink Multiport support"
+ config SYNCLINK_GT
+ 	tristate "SyncLink GT/AC support"
  	depends on SERIAL_NONSTANDARD && PCI
 diff --git a/drivers/tty/Makefile b/drivers/tty/Makefile
-index 020b1cd9294fd..f3dd47cad4397 100644
+index f3dd47cad4397..b3ccae9326601 100644
 --- a/drivers/tty/Makefile
 +++ b/drivers/tty/Makefile
-@@ -29,7 +29,6 @@ obj-$(CONFIG_NULL_TTY)	        += ttynull.o
+@@ -28,7 +28,6 @@ obj-$(CONFIG_NOZOMI)		+= nozomi.o
+ obj-$(CONFIG_NULL_TTY)	        += ttynull.o
  obj-$(CONFIG_ROCKETPORT)	+= rocket.o
  obj-$(CONFIG_SYNCLINK_GT)	+= synclink_gt.o
- obj-$(CONFIG_SYNCLINKMP)	+= synclinkmp.o
--obj-$(CONFIG_SYNCLINK)		+= synclink.o
+-obj-$(CONFIG_SYNCLINKMP)	+= synclinkmp.o
  obj-$(CONFIG_PPC_EPAPR_HV_BYTECHAN) += ehv_bytechan.o
  obj-$(CONFIG_GOLDFISH_TTY)	+= goldfish.o
  obj-$(CONFIG_MIPS_EJTAG_FDC_TTY) += mips_ejtag_fdc.o
-diff --git a/drivers/tty/synclink.c b/drivers/tty/synclink.c
+diff --git a/drivers/tty/synclinkmp.c b/drivers/tty/synclinkmp.c
 deleted file mode 100644
-index cbe9ad0683fc9..0000000000000
---- a/drivers/tty/synclink.c
+index 75f494bfdcbed..0000000000000
+--- a/drivers/tty/synclinkmp.c
 +++ /dev/null
-@@ -1,7899 +0,0 @@
+@@ -1,5580 +0,0 @@
 -// SPDX-License-Identifier: GPL-1.0+
 -/*
-- * $Id: synclink.c,v 4.38 2005/11/07 16:30:34 paulkf Exp $
+- * $Id: synclinkmp.c,v 4.38 2005/07/15 13:29:44 paulkf Exp $
 - *
-- * Device driver for Microgate SyncLink ISA and PCI
-- * high speed multiprotocol serial adapters.
+- * Device driver for Microgate SyncLink Multiport
+- * high speed multiprotocol serial adapter.
 - *
 - * written by Paul Fulghum for Microgate Corporation
 - * paulkf@microgate.com
@@ -178,31 +179,6 @@ index cbe9ad0683fc9..0000000000000
 - * Microgate and SyncLink are trademarks of Microgate Corporation
 - *
 - * Derived from serial.c written by Theodore Ts'o and Linus Torvalds
-- *
-- * Original release 01/11/99
-- *
-- * This driver is primarily intended for use in synchronous
-- * HDLC mode. Asynchronous mode is also provided.
-- *
-- * When operating in synchronous mode, each call to mgsl_write()
-- * contains exactly one complete HDLC frame. Calling mgsl_put_char
-- * will start assembling an HDLC frame that will not be sent until
-- * mgsl_flush_chars or mgsl_write is called.
-- * 
-- * Synchronous receive data is reported as complete frames. To accomplish
-- * this, the TTY flip buffer is bypassed (too small to hold largest
-- * frame and may fragment frames) and the line discipline
-- * receive entry point is called directly.
-- *
-- * This driver has been tested with a slightly modified ppp.c driver
-- * for synchronous PPP.
-- *
-- * 2000/02/16
-- * Added interface for syncppp.c driver (an alternate synchronous PPP
-- * implementation that also supports Cisco HDLC). Each device instance
-- * registers as a tty device AND a network device (if dosyncppp option
-- * is set for the device). The functionality is determined by which
-- * device interface is opened.
 - *
 - * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
 - * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
@@ -217,15 +193,14 @@ index cbe9ad0683fc9..0000000000000
 - * OF THE POSSIBILITY OF SUCH DAMAGE.
 - */
 -
+-#define VERSION(ver,rel,seq) (((ver)<<16) | ((rel)<<8) | (seq))
 -#if defined(__i386__)
 -#  define BREAKPOINT() asm("   int $3");
 -#else
 -#  define BREAKPOINT() { }
 -#endif
 -
--#define MAX_ISA_DEVICES 10
--#define MAX_PCI_DEVICES 10
--#define MAX_TOTAL_DEVICES 20
+-#define MAX_DEVICES 12
 -
 -#include <linux/module.h>
 -#include <linux/errno.h>
@@ -245,12 +220,11 @@ index cbe9ad0683fc9..0000000000000
 -#include <linux/mm.h>
 -#include <linux/seq_file.h>
 -#include <linux/slab.h>
--#include <linux/delay.h>
 -#include <linux/netdevice.h>
 -#include <linux/vmalloc.h>
 -#include <linux/init.h>
+-#include <linux/delay.h>
 -#include <linux/ioctl.h>
--#include <linux/synclink.h>
 -
 -#include <asm/io.h>
 -#include <asm/irq.h>
@@ -260,9 +234,9 @@ index cbe9ad0683fc9..0000000000000
 -#include <linux/termios.h>
 -#include <linux/workqueue.h>
 -#include <linux/hdlc.h>
--#include <linux/dma-mapping.h>
+-#include <linux/synclink.h>
 -
--#if defined(CONFIG_HDLC) || (defined(CONFIG_HDLC_MODULE) && defined(CONFIG_SYNCLINK_MODULE))
+-#if defined(CONFIG_HDLC) || (defined(CONFIG_HDLC_MODULE) && defined(CONFIG_SYNCLINKMP_MODULE))
 -#define SYNCLINK_GENERIC_HDLC 1
 -#else
 -#define SYNCLINK_GENERIC_HDLC 0
@@ -274,8 +248,6 @@ index cbe9ad0683fc9..0000000000000
 -#define COPY_TO_USER(error,dest,src,size) error = copy_to_user(dest,src,size) ? -EFAULT : 0
 -
 -#include <linux/uaccess.h>
--
--#define RCLRVALUE 0xffff
 -
 -static MGSL_PARAMS default_params = {
 -	MGSL_MODE_HDLC,			/* unsigned long mode */
@@ -293,23 +265,34 @@ index cbe9ad0683fc9..0000000000000
 -	ASYNC_PARITY_NONE		/* unsigned char parity; */
 -};
 -
--#define SHARED_MEM_ADDRESS_SIZE 0x40000
--#define BUFFERLISTSIZE 4096
--#define DMABUFFERSIZE 4096
--#define MAXRXFRAMES 7
+-/* size in bytes of DMA data buffers */
+-#define SCABUFSIZE 	1024
+-#define SCA_MEM_SIZE	0x40000
+-#define SCA_BASE_SIZE   512
+-#define SCA_REG_SIZE    16
+-#define SCA_MAX_PORTS   4
+-#define SCAMAXDESC 	128
 -
--typedef struct _DMABUFFERENTRY
+-#define	BUFFERLISTSIZE	4096
+-
+-/* SCA-I style DMA buffer descriptor */
+-typedef struct _SCADESC
 -{
--	u32 phys_addr;	/* 32-bit flat physical address of data buffer */
--	volatile u16 count;	/* buffer size/data count */
--	volatile u16 status;	/* Control/status field */
--	volatile u16 rcc;	/* character count field */
--	u16 reserved;	/* padding required by 16C32 */
--	u32 link;	/* 32-bit flat link to next buffer entry */
--	char *virt_addr;	/* virtual address of data buffer */
--	u32 phys_entry;	/* physical address of this buffer entry */
--	dma_addr_t dma_addr;
--} DMABUFFERENTRY, *DMAPBUFFERENTRY;
+-	u16	next;		/* lower l6 bits of next descriptor addr */
+-	u16	buf_ptr;	/* lower 16 bits of buffer addr */
+-	u8	buf_base;	/* upper 8 bits of buffer addr */
+-	u8	pad1;
+-	u16	length;		/* length of buffer */
+-	u8	status;		/* status of buffer */
+-	u8	pad2;
+-} SCADESC, *PSCADESC;
+-
+-typedef struct _SCADESC_EX
+-{
+-	/* device driver bookkeeping section */
+-	char 	*virt_addr;    	/* virtual address of data buffer */
+-	u16	phys_entry;	/* lower 16-bits of physical address of this descriptor */
+-} SCADESC_EX, *PSCADESC_EX;
 -
 -/* The queue of BH actions to be performed */
 -
@@ -320,7 +303,7 @@ index cbe9ad0683fc9..0000000000000
 -#define IO_PIN_SHUTDOWN_LIMIT 100
 -
 -struct	_input_signal_events {
--	int	ri_up;	
+-	int	ri_up;
 -	int	ri_down;
 -	int	dsr_up;
 -	int	dsr_down;
@@ -330,740 +313,355 @@ index cbe9ad0683fc9..0000000000000
 -	int	cts_down;
 -};
 -
--/* transmit holding buffer definitions*/
--#define MAX_TX_HOLDING_BUFFERS 5
--struct tx_holding_buffer {
--	int	buffer_size;
--	unsigned char *	buffer;
--};
--
--
 -/*
 - * Device instance data structure
 - */
-- 
--struct mgsl_struct {
+-typedef struct _synclinkmp_info {
+-	void *if_ptr;				/* General purpose pointer (used by SPPP) */
 -	int			magic;
 -	struct tty_port		port;
 -	int			line;
--	int                     hw_version;
--	
+-	unsigned short		close_delay;
+-	unsigned short		closing_wait;	/* time to wait before closing */
+-
 -	struct mgsl_icount	icount;
--	
+-
 -	int			timeout;
 -	int			x_char;		/* xon/xoff character */
--	u16			read_status_mask;
--	u16			ignore_status_mask;	
--	unsigned char 		*xmit_buf;
--	int			xmit_head;
--	int			xmit_tail;
--	int			xmit_cnt;
--	
+-	u16			read_status_mask1;  /* break detection (SR1 indications) */
+-	u16			read_status_mask2;  /* parity/framing/overun (SR2 indications) */
+-	unsigned char 		ignore_status_mask1;  /* break detection (SR1 indications) */
+-	unsigned char		ignore_status_mask2;  /* parity/framing/overun (SR2 indications) */
+-	unsigned char 		*tx_buf;
+-	int			tx_put;
+-	int			tx_get;
+-	int			tx_count;
+-
 -	wait_queue_head_t	status_event_wait_q;
 -	wait_queue_head_t	event_wait_q;
 -	struct timer_list	tx_timer;	/* HDLC transmit timeout timer */
--	struct mgsl_struct	*next_device;	/* device list link */
--	
--	spinlock_t irq_spinlock;		/* spinlock for synchronizing with ISR */
--	struct work_struct task;		/* task structure for scheduling bh */
+-	struct _synclinkmp_info	*next_device;	/* device list link */
+-	struct timer_list	status_timer;	/* input signal status check timer */
 -
--	u32 EventMask;			/* event trigger mask */
--	u32 RecordedEvents;		/* pending events */
+-	spinlock_t lock;		/* spinlock for synchronizing with ISR */
+-	struct work_struct task;	 		/* task structure for scheduling bh */
 -
--	u32 max_frame_size;		/* as set by device config */
+-	u32 max_frame_size;			/* as set by device config */
 -
 -	u32 pending_bh;
 -
--	bool bh_running;		/* Protection from multiple */
+-	bool bh_running;				/* Protection from multiple */
 -	int isr_overflow;
 -	bool bh_requested;
--	
--	int dcd_chkcount;		/* check counts to prevent */
--	int cts_chkcount;		/* too many IRQs if a signal */
--	int dsr_chkcount;		/* is floating */
+-
+-	int dcd_chkcount;			/* check counts to prevent */
+-	int cts_chkcount;			/* too many IRQs if a signal */
+-	int dsr_chkcount;			/* is floating */
 -	int ri_chkcount;
 -
--	char *buffer_list;		/* virtual address of Rx & Tx buffer lists */
--	u32 buffer_list_phys;
--	dma_addr_t buffer_list_dma_addr;
+-	char *buffer_list;			/* virtual address of Rx & Tx buffer lists */
+-	unsigned long buffer_list_phys;
 -
--	unsigned int rx_buffer_count;	/* count of total allocated Rx buffers */
--	DMABUFFERENTRY *rx_buffer_list;	/* list of receive buffer entries */
--	unsigned int current_rx_buffer;
+-	unsigned int rx_buf_count;		/* count of total allocated Rx buffers */
+-	SCADESC *rx_buf_list;   		/* list of receive buffer entries */
+-	SCADESC_EX rx_buf_list_ex[SCAMAXDESC]; /* list of receive buffer entries */
+-	unsigned int current_rx_buf;
 -
--	int num_tx_dma_buffers;		/* number of tx dma frames required */
-- 	int tx_dma_buffers_used;
--	unsigned int tx_buffer_count;	/* count of total allocated Tx buffers */
--	DMABUFFERENTRY *tx_buffer_list;	/* list of transmit buffer entries */
--	int start_tx_dma_buffer;	/* tx dma buffer to start tx dma operation */
--	int current_tx_buffer;          /* next tx dma buffer to be loaded */
--	
--	unsigned char *intermediate_rxbuffer;
+-	unsigned int tx_buf_count;		/* count of total allocated Tx buffers */
+-	SCADESC *tx_buf_list;		/* list of transmit buffer entries */
+-	SCADESC_EX tx_buf_list_ex[SCAMAXDESC]; /* list of transmit buffer entries */
+-	unsigned int last_tx_buf;
 -
--	int num_tx_holding_buffers;	/* number of tx holding buffer allocated */
--	int get_tx_holding_index;  	/* next tx holding buffer for adapter to load */
--	int put_tx_holding_index;  	/* next tx holding buffer to store user request */
--	int tx_holding_count;		/* number of tx holding buffers waiting */
--	struct tx_holding_buffer tx_holding_buffers[MAX_TX_HOLDING_BUFFERS];
+-	unsigned char *tmp_rx_buf;
+-	unsigned int tmp_rx_buf_count;
 -
 -	bool rx_enabled;
 -	bool rx_overflow;
--	bool rx_rcc_underrun;
 -
 -	bool tx_enabled;
 -	bool tx_active;
 -	u32 idle_mode;
 -
--	u16 cmr_value;
--	u16 tcsr_value;
+-	unsigned char ie0_value;
+-	unsigned char ie1_value;
+-	unsigned char ie2_value;
+-	unsigned char ctrlreg_value;
+-	unsigned char old_signals;
 -
--	char device_name[25];		/* device instance name */
+-	char device_name[25];			/* device instance name */
 -
--	unsigned char bus;		/* expansion bus number (zero based) */
--	unsigned char function;		/* PCI device number */
+-	int port_count;
+-	int adapter_num;
+-	int port_num;
 -
--	unsigned int io_base;		/* base I/O address of adapter */
--	unsigned int io_addr_size;	/* size of the I/O address range */
--	bool io_addr_requested;		/* true if I/O address requested */
--	
--	unsigned int irq_level;		/* interrupt level */
+-	struct _synclinkmp_info *port_array[SCA_MAX_PORTS];
+-
+-	unsigned int bus_type;			/* expansion bus type (ISA,EISA,PCI) */
+-
+-	unsigned int irq_level;			/* interrupt level */
 -	unsigned long irq_flags;
--	bool irq_requested;		/* true if IRQ requested */
--	
--	unsigned int dma_level;		/* DMA channel */
--	bool dma_requested;		/* true if dma channel requested */
+-	bool irq_requested;			/* true if IRQ requested */
 -
--	u16 mbre_bit;
--	u16 loopback_bits;
--	u16 usc_idle_mode;
+-	MGSL_PARAMS params;			/* communications parameters */
 -
--	MGSL_PARAMS params;		/* communications parameters */
+-	unsigned char serial_signals;		/* current serial signal states */
 -
--	unsigned char serial_signals;	/* current serial signal states */
--
--	bool irq_occurred;		/* for diagnostics use */
--	unsigned int init_error;	/* Initialization startup error 		(DIAGS)	*/
--	int	fDiagnosticsmode;	/* Driver in Diagnostic mode?			(DIAGS)	*/
+-	bool irq_occurred;			/* for diagnostics use */
+-	unsigned int init_error;		/* Initialization startup error */
 -
 -	u32 last_mem_alloc;
--	unsigned char* memory_base;	/* shared memory address (PCI only) */
+-	unsigned char* memory_base;		/* shared memory address (PCI only) */
 -	u32 phys_memory_base;
--	bool shared_mem_requested;
+-    	int shared_mem_requested;
 -
--	unsigned char* lcr_base;	/* local config registers (PCI only) */
+-	unsigned char* sca_base;		/* HD64570 SCA Memory address */
+-	u32 phys_sca_base;
+-	u32 sca_offset;
+-	bool sca_base_requested;
+-
+-	unsigned char* lcr_base;		/* local config registers (PCI only) */
 -	u32 phys_lcr_base;
 -	u32 lcr_offset;
--	bool lcr_mem_requested;
+-	int lcr_mem_requested;
+-
+-	unsigned char* statctrl_base;		/* status/control register memory */
+-	u32 phys_statctrl_base;
+-	u32 statctrl_offset;
+-	bool sca_statctrl_requested;
 -
 -	u32 misc_ctrl_value;
 -	char *flag_buf;
 -	bool drop_rts_on_tx_done;
 -
--	bool loopmode_insert_requested;
--	bool loopmode_send_done_requested;
--	
 -	struct	_input_signal_events	input_signal_events;
 -
--	/* generic HDLC device parts */
+-	/* SPPP/Cisco HDLC device parts */
 -	int netcount;
 -	spinlock_t netlock;
 -
 -#if SYNCLINK_GENERIC_HDLC
 -	struct net_device *netdev;
 -#endif
--};
+-
+-} SLMP_INFO;
 -
 -#define MGSL_MAGIC 0x5401
 -
 -/*
-- * The size of the serial xmit buffer is 1 page, or 4096 bytes
+- * define serial signal status change macros
 - */
--#ifndef SERIAL_XMIT_SIZE
--#define SERIAL_XMIT_SIZE 4096
--#endif
+-#define	MISCSTATUS_DCD_LATCHED	(SerialSignal_DCD<<8)	/* indicates change in DCD */
+-#define MISCSTATUS_RI_LATCHED	(SerialSignal_RI<<8)	/* indicates change in RI */
+-#define MISCSTATUS_CTS_LATCHED	(SerialSignal_CTS<<8)	/* indicates change in CTS */
+-#define MISCSTATUS_DSR_LATCHED	(SerialSignal_DSR<<8)	/* change in DSR */
+-
+-/* Common Register macros */
+-#define LPR	0x00
+-#define PABR0	0x02
+-#define PABR1	0x03
+-#define WCRL	0x04
+-#define WCRM	0x05
+-#define WCRH	0x06
+-#define DPCR	0x08
+-#define DMER	0x09
+-#define ISR0	0x10
+-#define ISR1	0x11
+-#define ISR2	0x12
+-#define IER0	0x14
+-#define IER1	0x15
+-#define IER2	0x16
+-#define ITCR	0x18
+-#define INTVR 	0x1a
+-#define IMVR	0x1c
+-
+-/* MSCI Register macros */
+-#define TRB	0x20
+-#define TRBL	0x20
+-#define TRBH	0x21
+-#define SR0	0x22
+-#define SR1	0x23
+-#define SR2	0x24
+-#define SR3	0x25
+-#define FST	0x26
+-#define IE0	0x28
+-#define IE1	0x29
+-#define IE2	0x2a
+-#define FIE	0x2b
+-#define CMD	0x2c
+-#define MD0	0x2e
+-#define MD1	0x2f
+-#define MD2	0x30
+-#define CTL	0x31
+-#define SA0	0x32
+-#define SA1	0x33
+-#define IDL	0x34
+-#define TMC	0x35
+-#define RXS	0x36
+-#define TXS	0x37
+-#define TRC0	0x38
+-#define TRC1	0x39
+-#define RRC	0x3a
+-#define CST0	0x3c
+-#define CST1	0x3d
+-
+-/* Timer Register Macros */
+-#define TCNT	0x60
+-#define TCNTL	0x60
+-#define TCNTH	0x61
+-#define TCONR	0x62
+-#define TCONRL	0x62
+-#define TCONRH	0x63
+-#define TMCS	0x64
+-#define TEPR	0x65
+-
+-/* DMA Controller Register macros */
+-#define DARL	0x80
+-#define DARH	0x81
+-#define DARB	0x82
+-#define BAR	0x80
+-#define BARL	0x80
+-#define BARH	0x81
+-#define BARB	0x82
+-#define SAR	0x84
+-#define SARL	0x84
+-#define SARH	0x85
+-#define SARB	0x86
+-#define CPB	0x86
+-#define CDA	0x88
+-#define CDAL	0x88
+-#define CDAH	0x89
+-#define EDA	0x8a
+-#define EDAL	0x8a
+-#define EDAH	0x8b
+-#define BFL	0x8c
+-#define BFLL	0x8c
+-#define BFLH	0x8d
+-#define BCR	0x8e
+-#define BCRL	0x8e
+-#define BCRH	0x8f
+-#define DSR	0x90
+-#define DMR	0x91
+-#define FCT	0x93
+-#define DIR	0x94
+-#define DCMD	0x95
+-
+-/* combine with timer or DMA register address */
+-#define TIMER0	0x00
+-#define TIMER1	0x08
+-#define TIMER2	0x10
+-#define TIMER3	0x18
+-#define RXDMA 	0x00
+-#define TXDMA 	0x20
+-
+-/* SCA Command Codes */
+-#define NOOP		0x00
+-#define TXRESET		0x01
+-#define TXENABLE	0x02
+-#define TXDISABLE	0x03
+-#define TXCRCINIT	0x04
+-#define TXCRCEXCL	0x05
+-#define TXEOM		0x06
+-#define TXABORT		0x07
+-#define MPON		0x08
+-#define TXBUFCLR	0x09
+-#define RXRESET		0x11
+-#define RXENABLE	0x12
+-#define RXDISABLE	0x13
+-#define RXCRCINIT	0x14
+-#define RXREJECT	0x15
+-#define SEARCHMP	0x16
+-#define RXCRCEXCL	0x17
+-#define RXCRCCALC	0x18
+-#define CHRESET		0x21
+-#define HUNT		0x31
+-
+-/* DMA command codes */
+-#define SWABORT		0x01
+-#define FEICLEAR	0x02
+-
+-/* IE0 */
+-#define TXINTE 		BIT7
+-#define RXINTE 		BIT6
+-#define TXRDYE 		BIT1
+-#define RXRDYE 		BIT0
+-
+-/* IE1 & SR1 */
+-#define UDRN   	BIT7
+-#define IDLE   	BIT6
+-#define SYNCD  	BIT4
+-#define FLGD   	BIT4
+-#define CCTS   	BIT3
+-#define CDCD   	BIT2
+-#define BRKD   	BIT1
+-#define ABTD   	BIT1
+-#define GAPD   	BIT1
+-#define BRKE   	BIT0
+-#define IDLD	BIT0
+-
+-/* IE2 & SR2 */
+-#define EOM	BIT7
+-#define PMP	BIT6
+-#define SHRT	BIT6
+-#define PE	BIT5
+-#define ABT	BIT5
+-#define FRME	BIT4
+-#define RBIT	BIT4
+-#define OVRN	BIT3
+-#define CRCE	BIT2
 -
--/*
-- * These macros define the offsets used in calculating the
-- * I/O address of the specified USC registers.
-- */
--
--
--#define DCPIN 2		/* Bit 1 of I/O address */
--#define SDPIN 4		/* Bit 2 of I/O address */
--
--#define DCAR 0		/* DMA command/address register */
--#define CCAR SDPIN		/* channel command/address register */
--#define DATAREG DCPIN + SDPIN	/* serial data register */
--#define MSBONLY 0x41
--#define LSBONLY 0x40
--
--/*
-- * These macros define the register address (ordinal number)
-- * used for writing address/value pairs to the USC.
-- */
--
--#define CMR	0x02	/* Channel mode Register */
--#define CCSR	0x04	/* Channel Command/status Register */
--#define CCR	0x06	/* Channel Control Register */
--#define PSR	0x08	/* Port status Register */
--#define PCR	0x0a	/* Port Control Register */
--#define TMDR	0x0c	/* Test mode Data Register */
--#define TMCR	0x0e	/* Test mode Control Register */
--#define CMCR	0x10	/* Clock mode Control Register */
--#define HCR	0x12	/* Hardware Configuration Register */
--#define IVR	0x14	/* Interrupt Vector Register */
--#define IOCR	0x16	/* Input/Output Control Register */
--#define ICR	0x18	/* Interrupt Control Register */
--#define DCCR	0x1a	/* Daisy Chain Control Register */
--#define MISR	0x1c	/* Misc Interrupt status Register */
--#define SICR	0x1e	/* status Interrupt Control Register */
--#define RDR	0x20	/* Receive Data Register */
--#define RMR	0x22	/* Receive mode Register */
--#define RCSR	0x24	/* Receive Command/status Register */
--#define RICR	0x26	/* Receive Interrupt Control Register */
--#define RSR	0x28	/* Receive Sync Register */
--#define RCLR	0x2a	/* Receive count Limit Register */
--#define RCCR	0x2c	/* Receive Character count Register */
--#define TC0R	0x2e	/* Time Constant 0 Register */
--#define TDR	0x30	/* Transmit Data Register */
--#define TMR	0x32	/* Transmit mode Register */
--#define TCSR	0x34	/* Transmit Command/status Register */
--#define TICR	0x36	/* Transmit Interrupt Control Register */
--#define TSR	0x38	/* Transmit Sync Register */
--#define TCLR	0x3a	/* Transmit count Limit Register */
--#define TCCR	0x3c	/* Transmit Character count Register */
--#define TC1R	0x3e	/* Time Constant 1 Register */
--
--
--/*
-- * MACRO DEFINITIONS FOR DMA REGISTERS
-- */
--
--#define DCR	0x06	/* DMA Control Register (shared) */
--#define DACR	0x08	/* DMA Array count Register (shared) */
--#define BDCR	0x12	/* Burst/Dwell Control Register (shared) */
--#define DIVR	0x14	/* DMA Interrupt Vector Register (shared) */	
--#define DICR	0x18	/* DMA Interrupt Control Register (shared) */
--#define CDIR	0x1a	/* Clear DMA Interrupt Register (shared) */
--#define SDIR	0x1c	/* Set DMA Interrupt Register (shared) */
--
--#define TDMR	0x02	/* Transmit DMA mode Register */
--#define TDIAR	0x1e	/* Transmit DMA Interrupt Arm Register */
--#define TBCR	0x2a	/* Transmit Byte count Register */
--#define TARL	0x2c	/* Transmit Address Register (low) */
--#define TARU	0x2e	/* Transmit Address Register (high) */
--#define NTBCR	0x3a	/* Next Transmit Byte count Register */
--#define NTARL	0x3c	/* Next Transmit Address Register (low) */
--#define NTARU	0x3e	/* Next Transmit Address Register (high) */
--
--#define RDMR	0x82	/* Receive DMA mode Register (non-shared) */
--#define RDIAR	0x9e	/* Receive DMA Interrupt Arm Register */
--#define RBCR	0xaa	/* Receive Byte count Register */
--#define RARL	0xac	/* Receive Address Register (low) */
--#define RARU	0xae	/* Receive Address Register (high) */
--#define NRBCR	0xba	/* Next Receive Byte count Register */
--#define NRARL	0xbc	/* Next Receive Address Register (low) */
--#define NRARU	0xbe	/* Next Receive Address Register (high) */
--
--
--/*
-- * MACRO DEFINITIONS FOR MODEM STATUS BITS
-- */
--
--#define MODEMSTATUS_DTR 0x80
--#define MODEMSTATUS_DSR 0x40
--#define MODEMSTATUS_RTS 0x20
--#define MODEMSTATUS_CTS 0x10
--#define MODEMSTATUS_RI  0x04
--#define MODEMSTATUS_DCD 0x01
--
--
--/*
-- * Channel Command/Address Register (CCAR) Command Codes
-- */
--
--#define RTCmd_Null			0x0000
--#define RTCmd_ResetHighestIus		0x1000
--#define RTCmd_TriggerChannelLoadDma	0x2000
--#define RTCmd_TriggerRxDma		0x2800
--#define RTCmd_TriggerTxDma		0x3000
--#define RTCmd_TriggerRxAndTxDma		0x3800
--#define RTCmd_PurgeRxFifo		0x4800
--#define RTCmd_PurgeTxFifo		0x5000
--#define RTCmd_PurgeRxAndTxFifo		0x5800
--#define RTCmd_LoadRcc			0x6800
--#define RTCmd_LoadTcc			0x7000
--#define RTCmd_LoadRccAndTcc		0x7800
--#define RTCmd_LoadTC0			0x8800
--#define RTCmd_LoadTC1			0x9000
--#define RTCmd_LoadTC0AndTC1		0x9800
--#define RTCmd_SerialDataLSBFirst	0xa000
--#define RTCmd_SerialDataMSBFirst	0xa800
--#define RTCmd_SelectBigEndian		0xb000
--#define RTCmd_SelectLittleEndian	0xb800
--
--
--/*
-- * DMA Command/Address Register (DCAR) Command Codes
-- */
--
--#define DmaCmd_Null			0x0000
--#define DmaCmd_ResetTxChannel		0x1000
--#define DmaCmd_ResetRxChannel		0x1200
--#define DmaCmd_StartTxChannel		0x2000
--#define DmaCmd_StartRxChannel		0x2200
--#define DmaCmd_ContinueTxChannel	0x3000
--#define DmaCmd_ContinueRxChannel	0x3200
--#define DmaCmd_PauseTxChannel		0x4000
--#define DmaCmd_PauseRxChannel		0x4200
--#define DmaCmd_AbortTxChannel		0x5000
--#define DmaCmd_AbortRxChannel		0x5200
--#define DmaCmd_InitTxChannel		0x7000
--#define DmaCmd_InitRxChannel		0x7200
--#define DmaCmd_ResetHighestDmaIus	0x8000
--#define DmaCmd_ResetAllChannels		0x9000
--#define DmaCmd_StartAllChannels		0xa000
--#define DmaCmd_ContinueAllChannels	0xb000
--#define DmaCmd_PauseAllChannels		0xc000
--#define DmaCmd_AbortAllChannels		0xd000
--#define DmaCmd_InitAllChannels		0xf000
--
--#define TCmd_Null			0x0000
--#define TCmd_ClearTxCRC			0x2000
--#define TCmd_SelectTicrTtsaData		0x4000
--#define TCmd_SelectTicrTxFifostatus	0x5000
--#define TCmd_SelectTicrIntLevel		0x6000
--#define TCmd_SelectTicrdma_level		0x7000
--#define TCmd_SendFrame			0x8000
--#define TCmd_SendAbort			0x9000
--#define TCmd_EnableDleInsertion		0xc000
--#define TCmd_DisableDleInsertion	0xd000
--#define TCmd_ClearEofEom		0xe000
--#define TCmd_SetEofEom			0xf000
--
--#define RCmd_Null			0x0000
--#define RCmd_ClearRxCRC			0x2000
--#define RCmd_EnterHuntmode		0x3000
--#define RCmd_SelectRicrRtsaData		0x4000
--#define RCmd_SelectRicrRxFifostatus	0x5000
--#define RCmd_SelectRicrIntLevel		0x6000
--#define RCmd_SelectRicrdma_level		0x7000
--
--/*
-- * Bits for enabling and disabling IRQs in Interrupt Control Register (ICR)
-- */
-- 
--#define RECEIVE_STATUS		BIT5
--#define RECEIVE_DATA		BIT4
--#define TRANSMIT_STATUS		BIT3
--#define TRANSMIT_DATA		BIT2
--#define IO_PIN			BIT1
--#define MISC			BIT0
--
--
--/*
-- * Receive status Bits in Receive Command/status Register RCSR
-- */
--
--#define RXSTATUS_SHORT_FRAME		BIT8
--#define RXSTATUS_CODE_VIOLATION		BIT8
--#define RXSTATUS_EXITED_HUNT		BIT7
--#define RXSTATUS_IDLE_RECEIVED		BIT6
--#define RXSTATUS_BREAK_RECEIVED		BIT5
--#define RXSTATUS_ABORT_RECEIVED		BIT5
--#define RXSTATUS_RXBOUND		BIT4
--#define RXSTATUS_CRC_ERROR		BIT3
--#define RXSTATUS_FRAMING_ERROR		BIT3
--#define RXSTATUS_ABORT			BIT2
--#define RXSTATUS_PARITY_ERROR		BIT2
--#define RXSTATUS_OVERRUN		BIT1
--#define RXSTATUS_DATA_AVAILABLE		BIT0
--#define RXSTATUS_ALL			0x01f6
--#define usc_UnlatchRxstatusBits(a,b) usc_OutReg( (a), RCSR, (u16)((b) & RXSTATUS_ALL) )
--
--/*
-- * Values for setting transmit idle mode in 
-- * Transmit Control/status Register (TCSR)
-- */
--#define IDLEMODE_FLAGS			0x0000
--#define IDLEMODE_ALT_ONE_ZERO		0x0100
--#define IDLEMODE_ZERO			0x0200
--#define IDLEMODE_ONE			0x0300
--#define IDLEMODE_ALT_MARK_SPACE		0x0500
--#define IDLEMODE_SPACE			0x0600
--#define IDLEMODE_MARK			0x0700
--#define IDLEMODE_MASK			0x0700
--
--/*
-- * IUSC revision identifiers
-- */
--#define	IUSC_SL1660			0x4d44
--#define IUSC_PRE_SL1660			0x4553
--
--/*
-- * Transmit status Bits in Transmit Command/status Register (TCSR)
-- */
--
--#define TCSR_PRESERVE			0x0F00
--
--#define TCSR_UNDERWAIT			BIT11
--#define TXSTATUS_PREAMBLE_SENT		BIT7
--#define TXSTATUS_IDLE_SENT		BIT6
--#define TXSTATUS_ABORT_SENT		BIT5
--#define TXSTATUS_EOF_SENT		BIT4
--#define TXSTATUS_EOM_SENT		BIT4
--#define TXSTATUS_CRC_SENT		BIT3
--#define TXSTATUS_ALL_SENT		BIT2
--#define TXSTATUS_UNDERRUN		BIT1
--#define TXSTATUS_FIFO_EMPTY		BIT0
--#define TXSTATUS_ALL			0x00fa
--#define usc_UnlatchTxstatusBits(a,b) usc_OutReg( (a), TCSR, (u16)((a)->tcsr_value + ((b) & 0x00FF)) )
--				
--
--#define MISCSTATUS_RXC_LATCHED		BIT15
--#define MISCSTATUS_RXC			BIT14
--#define MISCSTATUS_TXC_LATCHED		BIT13
--#define MISCSTATUS_TXC			BIT12
--#define MISCSTATUS_RI_LATCHED		BIT11
--#define MISCSTATUS_RI			BIT10
--#define MISCSTATUS_DSR_LATCHED		BIT9
--#define MISCSTATUS_DSR			BIT8
--#define MISCSTATUS_DCD_LATCHED		BIT7
--#define MISCSTATUS_DCD			BIT6
--#define MISCSTATUS_CTS_LATCHED		BIT5
--#define MISCSTATUS_CTS			BIT4
--#define MISCSTATUS_RCC_UNDERRUN		BIT3
--#define MISCSTATUS_DPLL_NO_SYNC		BIT2
--#define MISCSTATUS_BRG1_ZERO		BIT1
--#define MISCSTATUS_BRG0_ZERO		BIT0
--
--#define usc_UnlatchIostatusBits(a,b) usc_OutReg((a),MISR,(u16)((b) & 0xaaa0))
--#define usc_UnlatchMiscstatusBits(a,b) usc_OutReg((a),MISR,(u16)((b) & 0x000f))
--
--#define SICR_RXC_ACTIVE			BIT15
--#define SICR_RXC_INACTIVE		BIT14
--#define SICR_RXC			(BIT15|BIT14)
--#define SICR_TXC_ACTIVE			BIT13
--#define SICR_TXC_INACTIVE		BIT12
--#define SICR_TXC			(BIT13|BIT12)
--#define SICR_RI_ACTIVE			BIT11
--#define SICR_RI_INACTIVE		BIT10
--#define SICR_RI				(BIT11|BIT10)
--#define SICR_DSR_ACTIVE			BIT9
--#define SICR_DSR_INACTIVE		BIT8
--#define SICR_DSR			(BIT9|BIT8)
--#define SICR_DCD_ACTIVE			BIT7
--#define SICR_DCD_INACTIVE		BIT6
--#define SICR_DCD			(BIT7|BIT6)
--#define SICR_CTS_ACTIVE			BIT5
--#define SICR_CTS_INACTIVE		BIT4
--#define SICR_CTS			(BIT5|BIT4)
--#define SICR_RCC_UNDERFLOW		BIT3
--#define SICR_DPLL_NO_SYNC		BIT2
--#define SICR_BRG1_ZERO			BIT1
--#define SICR_BRG0_ZERO			BIT0
--
--void usc_DisableMasterIrqBit( struct mgsl_struct *info );
--void usc_EnableMasterIrqBit( struct mgsl_struct *info );
--void usc_EnableInterrupts( struct mgsl_struct *info, u16 IrqMask );
--void usc_DisableInterrupts( struct mgsl_struct *info, u16 IrqMask );
--void usc_ClearIrqPendingBits( struct mgsl_struct *info, u16 IrqMask );
--
--#define usc_EnableInterrupts( a, b ) \
--	usc_OutReg( (a), ICR, (u16)((usc_InReg((a),ICR) & 0xff00) + 0xc0 + (b)) )
--
--#define usc_DisableInterrupts( a, b ) \
--	usc_OutReg( (a), ICR, (u16)((usc_InReg((a),ICR) & 0xff00) + 0x80 + (b)) )
--
--#define usc_EnableMasterIrqBit(a) \
--	usc_OutReg( (a), ICR, (u16)((usc_InReg((a),ICR) & 0x0f00) + 0xb000) )
--
--#define usc_DisableMasterIrqBit(a) \
--	usc_OutReg( (a), ICR, (u16)(usc_InReg((a),ICR) & 0x7f00) )
--
--#define usc_ClearIrqPendingBits( a, b ) usc_OutReg( (a), DCCR, 0x40 + (b) )
--
--/*
-- * Transmit status Bits in Transmit Control status Register (TCSR)
-- * and Transmit Interrupt Control Register (TICR) (except BIT2, BIT0)
-- */
--
--#define TXSTATUS_PREAMBLE_SENT	BIT7
--#define TXSTATUS_IDLE_SENT	BIT6
--#define TXSTATUS_ABORT_SENT	BIT5
--#define TXSTATUS_EOF		BIT4
--#define TXSTATUS_CRC_SENT	BIT3
--#define TXSTATUS_ALL_SENT	BIT2
--#define TXSTATUS_UNDERRUN	BIT1
--#define TXSTATUS_FIFO_EMPTY	BIT0
--
--#define DICR_MASTER		BIT15
--#define DICR_TRANSMIT		BIT0
--#define DICR_RECEIVE		BIT1
--
--#define usc_EnableDmaInterrupts(a,b) \
--	usc_OutDmaReg( (a), DICR, (u16)(usc_InDmaReg((a),DICR) | (b)) )
--
--#define usc_DisableDmaInterrupts(a,b) \
--	usc_OutDmaReg( (a), DICR, (u16)(usc_InDmaReg((a),DICR) & ~(b)) )
--
--#define usc_EnableStatusIrqs(a,b) \
--	usc_OutReg( (a), SICR, (u16)(usc_InReg((a),SICR) | (b)) )
--
--#define usc_DisablestatusIrqs(a,b) \
--	usc_OutReg( (a), SICR, (u16)(usc_InReg((a),SICR) & ~(b)) )
--
--/* Transmit status Bits in Transmit Control status Register (TCSR) */
--/* and Transmit Interrupt Control Register (TICR) (except BIT2, BIT0) */
--
--
--#define DISABLE_UNCONDITIONAL    0
--#define DISABLE_END_OF_FRAME     1
--#define ENABLE_UNCONDITIONAL     2
--#define ENABLE_AUTO_CTS          3
--#define ENABLE_AUTO_DCD          3
--#define usc_EnableTransmitter(a,b) \
--	usc_OutReg( (a), TMR, (u16)((usc_InReg((a),TMR) & 0xfffc) | (b)) )
--#define usc_EnableReceiver(a,b) \
--	usc_OutReg( (a), RMR, (u16)((usc_InReg((a),RMR) & 0xfffc) | (b)) )
--
--static u16  usc_InDmaReg( struct mgsl_struct *info, u16 Port );
--static void usc_OutDmaReg( struct mgsl_struct *info, u16 Port, u16 Value );
--static void usc_DmaCmd( struct mgsl_struct *info, u16 Cmd );
--
--static u16  usc_InReg( struct mgsl_struct *info, u16 Port );
--static void usc_OutReg( struct mgsl_struct *info, u16 Port, u16 Value );
--static void usc_RTCmd( struct mgsl_struct *info, u16 Cmd );
--void usc_RCmd( struct mgsl_struct *info, u16 Cmd );
--void usc_TCmd( struct mgsl_struct *info, u16 Cmd );
--
--#define usc_TCmd(a,b) usc_OutReg((a), TCSR, (u16)((a)->tcsr_value + (b)))
--#define usc_RCmd(a,b) usc_OutReg((a), RCSR, (b))
--
--#define usc_SetTransmitSyncChars(a,s0,s1) usc_OutReg((a), TSR, (u16)(((u16)s0<<8)|(u16)s1))
--
--static void usc_process_rxoverrun_sync( struct mgsl_struct *info );
--static void usc_start_receiver( struct mgsl_struct *info );
--static void usc_stop_receiver( struct mgsl_struct *info );
--
--static void usc_start_transmitter( struct mgsl_struct *info );
--static void usc_stop_transmitter( struct mgsl_struct *info );
--static void usc_set_txidle( struct mgsl_struct *info );
--static void usc_load_txfifo( struct mgsl_struct *info );
--
--static void usc_enable_aux_clock( struct mgsl_struct *info, u32 DataRate );
--static void usc_enable_loopback( struct mgsl_struct *info, int enable );
--
--static void usc_get_serial_signals( struct mgsl_struct *info );
--static void usc_set_serial_signals( struct mgsl_struct *info );
--
--static void usc_reset( struct mgsl_struct *info );
--
--static void usc_set_sync_mode( struct mgsl_struct *info );
--static void usc_set_sdlc_mode( struct mgsl_struct *info );
--static void usc_set_async_mode( struct mgsl_struct *info );
--static void usc_enable_async_clock( struct mgsl_struct *info, u32 DataRate );
--
--static void usc_loopback_frame( struct mgsl_struct *info );
--
--static void mgsl_tx_timeout(struct timer_list *t);
--
--
--static void usc_loopmode_cancel_transmit( struct mgsl_struct * info );
--static void usc_loopmode_insert_request( struct mgsl_struct * info );
--static int usc_loopmode_active( struct mgsl_struct * info);
--static void usc_loopmode_send_done( struct mgsl_struct * info );
--
--static int mgsl_ioctl_common(struct mgsl_struct *info, unsigned int cmd, unsigned long arg);
--
--#if SYNCLINK_GENERIC_HDLC
--#define dev_to_port(D) (dev_to_hdlc(D)->priv)
--static void hdlcdev_tx_done(struct mgsl_struct *info);
--static void hdlcdev_rx(struct mgsl_struct *info, char *buf, int size);
--static int  hdlcdev_init(struct mgsl_struct *info);
--static void hdlcdev_exit(struct mgsl_struct *info);
--#endif
--
--/*
-- * Defines a BUS descriptor value for the PCI adapter
-- * local bus address ranges.
-- */
--
--#define BUS_DESCRIPTOR( WrHold, WrDly, RdDly, Nwdd, Nwad, Nxda, Nrdd, Nrad ) \
--(0x00400020 + \
--((WrHold) << 30) + \
--((WrDly)  << 28) + \
--((RdDly)  << 26) + \
--((Nwdd)   << 20) + \
--((Nwad)   << 15) + \
--((Nxda)   << 13) + \
--((Nrdd)   << 11) + \
--((Nrad)   <<  6) )
--
--static void mgsl_trace_block(struct mgsl_struct *info,const char* data, int count, int xmit);
--
--/*
-- * Adapter diagnostic routines
-- */
--static bool mgsl_register_test( struct mgsl_struct *info );
--static bool mgsl_irq_test( struct mgsl_struct *info );
--static bool mgsl_dma_test( struct mgsl_struct *info );
--static bool mgsl_memory_test( struct mgsl_struct *info );
--static int mgsl_adapter_test( struct mgsl_struct *info );
--
--/*
-- * device and resource management routines
-- */
--static int mgsl_claim_resources(struct mgsl_struct *info);
--static void mgsl_release_resources(struct mgsl_struct *info);
--static void mgsl_add_device(struct mgsl_struct *info);
--static struct mgsl_struct* mgsl_allocate_device(void);
--
--/*
-- * DMA buffer manupulation functions.
-- */
--static void mgsl_free_rx_frame_buffers( struct mgsl_struct *info, unsigned int StartIndex, unsigned int EndIndex );
--static bool mgsl_get_rx_frame( struct mgsl_struct *info );
--static bool mgsl_get_raw_rx_frame( struct mgsl_struct *info );
--static void mgsl_reset_rx_dma_buffers( struct mgsl_struct *info );
--static void mgsl_reset_tx_dma_buffers( struct mgsl_struct *info );
--static int num_free_tx_dma_buffers(struct mgsl_struct *info);
--static void mgsl_load_tx_dma_buffer( struct mgsl_struct *info, const char *Buffer, unsigned int BufferSize);
--static void mgsl_load_pci_memory(char* TargetPtr, const char* SourcePtr, unsigned short count);
--
--/*
-- * DMA and Shared Memory buffer allocation and formatting
-- */
--static int  mgsl_allocate_dma_buffers(struct mgsl_struct *info);
--static void mgsl_free_dma_buffers(struct mgsl_struct *info);
--static int  mgsl_alloc_frame_memory(struct mgsl_struct *info, DMABUFFERENTRY *BufferList,int Buffercount);
--static void mgsl_free_frame_memory(struct mgsl_struct *info, DMABUFFERENTRY *BufferList,int Buffercount);
--static int  mgsl_alloc_buffer_list_memory(struct mgsl_struct *info);
--static void mgsl_free_buffer_list_memory(struct mgsl_struct *info);
--static int mgsl_alloc_intermediate_rxbuffer_memory(struct mgsl_struct *info);
--static void mgsl_free_intermediate_rxbuffer_memory(struct mgsl_struct *info);
--static int mgsl_alloc_intermediate_txbuffer_memory(struct mgsl_struct *info);
--static void mgsl_free_intermediate_txbuffer_memory(struct mgsl_struct *info);
--static bool load_next_tx_holding_buffer(struct mgsl_struct *info);
--static int save_tx_buffer_request(struct mgsl_struct *info,const char *Buffer, unsigned int BufferSize);
--
--/*
-- * Bottom half interrupt handlers
-- */
--static void mgsl_bh_handler(struct work_struct *work);
--static void mgsl_bh_receive(struct mgsl_struct *info);
--static void mgsl_bh_transmit(struct mgsl_struct *info);
--static void mgsl_bh_status(struct mgsl_struct *info);
--
--/*
-- * Interrupt handler routines and dispatch table.
-- */
--static void mgsl_isr_null( struct mgsl_struct *info );
--static void mgsl_isr_transmit_data( struct mgsl_struct *info );
--static void mgsl_isr_receive_data( struct mgsl_struct *info );
--static void mgsl_isr_receive_status( struct mgsl_struct *info );
--static void mgsl_isr_transmit_status( struct mgsl_struct *info );
--static void mgsl_isr_io_pin( struct mgsl_struct *info );
--static void mgsl_isr_misc( struct mgsl_struct *info );
--static void mgsl_isr_receive_dma( struct mgsl_struct *info );
--static void mgsl_isr_transmit_dma( struct mgsl_struct *info );
--
--typedef void (*isr_dispatch_func)(struct mgsl_struct *);
--
--static isr_dispatch_func UscIsrTable[7] =
--{
--	mgsl_isr_null,
--	mgsl_isr_misc,
--	mgsl_isr_io_pin,
--	mgsl_isr_transmit_data,
--	mgsl_isr_transmit_status,
--	mgsl_isr_receive_data,
--	mgsl_isr_receive_status
--};
--
--/*
-- * ioctl call handlers
-- */
--static int tiocmget(struct tty_struct *tty);
--static int tiocmset(struct tty_struct *tty,
--		    unsigned int set, unsigned int clear);
--static int mgsl_get_stats(struct mgsl_struct * info, struct mgsl_icount
--	__user *user_icount);
--static int mgsl_get_params(struct mgsl_struct * info, MGSL_PARAMS  __user *user_params);
--static int mgsl_set_params(struct mgsl_struct * info, MGSL_PARAMS  __user *new_params);
--static int mgsl_get_txidle(struct mgsl_struct * info, int __user *idle_mode);
--static int mgsl_set_txidle(struct mgsl_struct * info, int idle_mode);
--static int mgsl_txenable(struct mgsl_struct * info, int enable);
--static int mgsl_txabort(struct mgsl_struct * info);
--static int mgsl_rxenable(struct mgsl_struct * info, int enable);
--static int mgsl_wait_event(struct mgsl_struct * info, int __user *mask);
--static int mgsl_loopmode_send_done( struct mgsl_struct * info );
--
--/* set non-zero on successful registration with PCI subsystem */
--static bool pci_registered;
 -
 -/*
 - * Global linked list of SyncLink devices
 - */
--static struct mgsl_struct *mgsl_device_list;
--static int mgsl_device_count;
+-static SLMP_INFO *synclinkmp_device_list = NULL;
+-static int synclinkmp_adapter_count = -1;
+-static int synclinkmp_device_count = 0;
 -
 -/*
 - * Set this param to non-zero to load eax with the
 - * .text section address and breakpoint on module load.
 - * This is useful for use with gdb and add-symbol-file command.
 - */
--static bool break_on_load;
+-static bool break_on_load = 0;
 -
 -/*
 - * Driver major number, defaults to zero to get auto
 - * assigned major number. May be forced as module parameter.
 - */
--static int ttymajor;
+-static int ttymajor = 0;
 -
 -/*
 - * Array of user specified options for ISA adapters.
 - */
--static int io[MAX_ISA_DEVICES];
--static int irq[MAX_ISA_DEVICES];
--static int dma[MAX_ISA_DEVICES];
--static int debug_level;
--static int maxframe[MAX_TOTAL_DEVICES];
--static int txdmabufs[MAX_TOTAL_DEVICES];
--static int txholdbufs[MAX_TOTAL_DEVICES];
--	
+-static int debug_level = 0;
+-static int maxframe[MAX_DEVICES] = {0,};
+-
 -module_param(break_on_load, bool, 0);
 -module_param(ttymajor, int, 0);
--module_param_hw_array(io, int, ioport, NULL, 0);
--module_param_hw_array(irq, int, irq, NULL, 0);
--module_param_hw_array(dma, int, dma, NULL, 0);
 -module_param(debug_level, int, 0);
 -module_param_array(maxframe, int, NULL, 0);
--module_param_array(txdmabufs, int, NULL, 0);
--module_param_array(txholdbufs, int, NULL, 0);
 -
--static char *driver_name = "SyncLink serial driver";
+-static char *driver_name = "SyncLink MultiPort driver";
 -static char *driver_version = "$Revision: 4.38 $";
 -
--static int synclink_init_one (struct pci_dev *dev,
--				     const struct pci_device_id *ent);
--static void synclink_remove_one (struct pci_dev *dev);
+-static int synclinkmp_init_one(struct pci_dev *dev,const struct pci_device_id *ent);
+-static void synclinkmp_remove_one(struct pci_dev *dev);
 -
--static const struct pci_device_id synclink_pci_tbl[] = {
--	{ PCI_VENDOR_ID_MICROGATE, PCI_DEVICE_ID_MICROGATE_USC, PCI_ANY_ID, PCI_ANY_ID, },
--	{ PCI_VENDOR_ID_MICROGATE, 0x0210, PCI_ANY_ID, PCI_ANY_ID, },
+-static const struct pci_device_id synclinkmp_pci_tbl[] = {
+-	{ PCI_VENDOR_ID_MICROGATE, PCI_DEVICE_ID_MICROGATE_SCA, PCI_ANY_ID, PCI_ANY_ID, },
 -	{ 0, }, /* terminate list */
 -};
--MODULE_DEVICE_TABLE(pci, synclink_pci_tbl);
+-MODULE_DEVICE_TABLE(pci, synclinkmp_pci_tbl);
 -
 -MODULE_LICENSE("GPL");
 -
--static struct pci_driver synclink_pci_driver = {
--	.name		= "synclink",
--	.id_table	= synclink_pci_tbl,
--	.probe		= synclink_init_one,
--	.remove		= synclink_remove_one,
+-static struct pci_driver synclinkmp_pci_driver = {
+-	.name		= "synclinkmp",
+-	.id_table	= synclinkmp_pci_tbl,
+-	.probe		= synclinkmp_init_one,
+-	.remove		= synclinkmp_remove_one,
 -};
+-
 -
 -static struct tty_driver *serial_driver;
 -
@@ -1071,8 +669,156 @@ index cbe9ad0683fc9..0000000000000
 -#define WAKEUP_CHARS 256
 -
 -
--static void mgsl_change_params(struct mgsl_struct *info);
--static void mgsl_wait_until_sent(struct tty_struct *tty, int timeout);
+-/* tty callbacks */
+-
+-static int  open(struct tty_struct *tty, struct file * filp);
+-static void close(struct tty_struct *tty, struct file * filp);
+-static void hangup(struct tty_struct *tty);
+-static void set_termios(struct tty_struct *tty, struct ktermios *old_termios);
+-
+-static int  write(struct tty_struct *tty, const unsigned char *buf, int count);
+-static int put_char(struct tty_struct *tty, unsigned char ch);
+-static void send_xchar(struct tty_struct *tty, char ch);
+-static void wait_until_sent(struct tty_struct *tty, int timeout);
+-static int  write_room(struct tty_struct *tty);
+-static void flush_chars(struct tty_struct *tty);
+-static void flush_buffer(struct tty_struct *tty);
+-static void tx_hold(struct tty_struct *tty);
+-static void tx_release(struct tty_struct *tty);
+-
+-static int  ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg);
+-static int  chars_in_buffer(struct tty_struct *tty);
+-static void throttle(struct tty_struct * tty);
+-static void unthrottle(struct tty_struct * tty);
+-static int set_break(struct tty_struct *tty, int break_state);
+-
+-#if SYNCLINK_GENERIC_HDLC
+-#define dev_to_port(D) (dev_to_hdlc(D)->priv)
+-static void hdlcdev_tx_done(SLMP_INFO *info);
+-static void hdlcdev_rx(SLMP_INFO *info, char *buf, int size);
+-static int  hdlcdev_init(SLMP_INFO *info);
+-static void hdlcdev_exit(SLMP_INFO *info);
+-#endif
+-
+-/* ioctl handlers */
+-
+-static int  get_stats(SLMP_INFO *info, struct mgsl_icount __user *user_icount);
+-static int  get_params(SLMP_INFO *info, MGSL_PARAMS __user *params);
+-static int  set_params(SLMP_INFO *info, MGSL_PARAMS __user *params);
+-static int  get_txidle(SLMP_INFO *info, int __user *idle_mode);
+-static int  set_txidle(SLMP_INFO *info, int idle_mode);
+-static int  tx_enable(SLMP_INFO *info, int enable);
+-static int  tx_abort(SLMP_INFO *info);
+-static int  rx_enable(SLMP_INFO *info, int enable);
+-static int  modem_input_wait(SLMP_INFO *info,int arg);
+-static int  wait_mgsl_event(SLMP_INFO *info, int __user *mask_ptr);
+-static int  tiocmget(struct tty_struct *tty);
+-static int  tiocmset(struct tty_struct *tty,
+-			unsigned int set, unsigned int clear);
+-static int  set_break(struct tty_struct *tty, int break_state);
+-
+-static int  add_device(SLMP_INFO *info);
+-static int  device_init(int adapter_num, struct pci_dev *pdev);
+-static int  claim_resources(SLMP_INFO *info);
+-static void release_resources(SLMP_INFO *info);
+-
+-static int  startup(SLMP_INFO *info);
+-static int  block_til_ready(struct tty_struct *tty, struct file * filp,SLMP_INFO *info);
+-static int carrier_raised(struct tty_port *port);
+-static void shutdown(SLMP_INFO *info);
+-static void program_hw(SLMP_INFO *info);
+-static void change_params(SLMP_INFO *info);
+-
+-static bool init_adapter(SLMP_INFO *info);
+-static bool register_test(SLMP_INFO *info);
+-static bool irq_test(SLMP_INFO *info);
+-static bool loopback_test(SLMP_INFO *info);
+-static int  adapter_test(SLMP_INFO *info);
+-static bool memory_test(SLMP_INFO *info);
+-
+-static void reset_adapter(SLMP_INFO *info);
+-static void reset_port(SLMP_INFO *info);
+-static void async_mode(SLMP_INFO *info);
+-static void hdlc_mode(SLMP_INFO *info);
+-
+-static void rx_stop(SLMP_INFO *info);
+-static void rx_start(SLMP_INFO *info);
+-static void rx_reset_buffers(SLMP_INFO *info);
+-static void rx_free_frame_buffers(SLMP_INFO *info, unsigned int first, unsigned int last);
+-static bool rx_get_frame(SLMP_INFO *info);
+-
+-static void tx_start(SLMP_INFO *info);
+-static void tx_stop(SLMP_INFO *info);
+-static void tx_load_fifo(SLMP_INFO *info);
+-static void tx_set_idle(SLMP_INFO *info);
+-static void tx_load_dma_buffer(SLMP_INFO *info, const char *buf, unsigned int count);
+-
+-static void get_signals(SLMP_INFO *info);
+-static void set_signals(SLMP_INFO *info);
+-static void enable_loopback(SLMP_INFO *info, int enable);
+-static void set_rate(SLMP_INFO *info, u32 data_rate);
+-
+-static int  bh_action(SLMP_INFO *info);
+-static void bh_handler(struct work_struct *work);
+-static void bh_receive(SLMP_INFO *info);
+-static void bh_transmit(SLMP_INFO *info);
+-static void bh_status(SLMP_INFO *info);
+-static void isr_timer(SLMP_INFO *info);
+-static void isr_rxint(SLMP_INFO *info);
+-static void isr_rxrdy(SLMP_INFO *info);
+-static void isr_txint(SLMP_INFO *info);
+-static void isr_txrdy(SLMP_INFO *info);
+-static void isr_rxdmaok(SLMP_INFO *info);
+-static void isr_rxdmaerror(SLMP_INFO *info);
+-static void isr_txdmaok(SLMP_INFO *info);
+-static void isr_txdmaerror(SLMP_INFO *info);
+-static void isr_io_pin(SLMP_INFO *info, u16 status);
+-
+-static int  alloc_dma_bufs(SLMP_INFO *info);
+-static void free_dma_bufs(SLMP_INFO *info);
+-static int  alloc_buf_list(SLMP_INFO *info);
+-static int  alloc_frame_bufs(SLMP_INFO *info, SCADESC *list, SCADESC_EX *list_ex,int count);
+-static int  alloc_tmp_rx_buf(SLMP_INFO *info);
+-static void free_tmp_rx_buf(SLMP_INFO *info);
+-
+-static void load_pci_memory(SLMP_INFO *info, char* dest, const char* src, unsigned short count);
+-static void trace_block(SLMP_INFO *info, const char* data, int count, int xmit);
+-static void tx_timeout(struct timer_list *t);
+-static void status_timeout(struct timer_list *t);
+-
+-static unsigned char read_reg(SLMP_INFO *info, unsigned char addr);
+-static void write_reg(SLMP_INFO *info, unsigned char addr, unsigned char val);
+-static u16 read_reg16(SLMP_INFO *info, unsigned char addr);
+-static void write_reg16(SLMP_INFO *info, unsigned char addr, u16 val);
+-static unsigned char read_status_reg(SLMP_INFO * info);
+-static void write_control_reg(SLMP_INFO * info);
+-
+-
+-static unsigned char rx_active_fifo_level = 16;	// rx request FIFO activation level in bytes
+-static unsigned char tx_active_fifo_level = 16;	// tx request FIFO activation level in bytes
+-static unsigned char tx_negate_fifo_level = 32;	// tx request FIFO negation level in bytes
+-
+-static u32 misc_ctrl_value = 0x007e4040;
+-static u32 lcr1_brdr_value = 0x00800028;
+-
+-static u32 read_ahead_count = 8;
+-
+-/* DPCR, DMA Priority Control
+- *
+- * 07..05  Not used, must be 0
+- * 04      BRC, bus release condition: 0=all transfers complete
+- *              1=release after 1 xfer on all channels
+- * 03      CCC, channel change condition: 0=every cycle
+- *              1=after each channel completes all xfers
+- * 02..00  PR<2..0>, priority 100=round robin
+- *
+- * 00000100 = 0x00
+- */
+-static unsigned char dma_priority = 0x04;
+-
+-// Number of bytes that can be written to shared RAM
+-// in a single write operation
+-static u32 sca_pci_load_interval = 64;
 -
 -/*
 - * 1st function defined in .text section. Calling this function in
@@ -1080,19 +826,17 @@ index cbe9ad0683fc9..0000000000000
 - * (gdb) to get the .text address for the add-symbol-file command.
 - * This allows remote debugging of dynamically loadable modules.
 - */
--static void* mgsl_get_text_ptr(void)
--{
--	return mgsl_get_text_ptr;
--}
+-static void* synclinkmp_get_text_ptr(void);
+-static void* synclinkmp_get_text_ptr(void) {return synclinkmp_get_text_ptr;}
 -
--static inline int mgsl_paranoia_check(struct mgsl_struct *info,
--					char *name, const char *routine)
+-static inline int sanity_check(SLMP_INFO *info,
+-			       char *name, const char *routine)
 -{
--#ifdef MGSL_PARANOIA_CHECK
+-#ifdef SANITY_CHECK
 -	static const char *badmagic =
--		"Warning: bad magic number for mgsl struct (%s) in %s\n";
+-		"Warning: bad magic number for synclinkmp_struct (%s) in %s\n";
 -	static const char *badinfo =
--		"Warning: null mgsl_struct for (%s) in %s\n";
+-		"Warning: null synclinkmp_struct for (%s) in %s\n";
 -
 -	if (!info) {
 -		printk(badinfo, name, routine);
@@ -1132,2418 +876,48 @@ index cbe9ad0683fc9..0000000000000
 -	}
 -}
 -
--/* mgsl_stop()		throttle (stop) transmitter
-- * 	
-- * Arguments:		tty	pointer to tty info structure
-- * Return Value:	None
-- */
--static void mgsl_stop(struct tty_struct *tty)
+-/* tty callbacks */
+-
+-static int install(struct tty_driver *driver, struct tty_struct *tty)
 -{
--	struct mgsl_struct *info = tty->driver_data;
--	unsigned long flags;
--	
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_stop"))
--		return;
--	
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk("mgsl_stop(%s)\n",info->device_name);	
--		
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	if (info->tx_enabled)
--	 	usc_stop_transmitter(info);
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	
--}	/* end of mgsl_stop() */
--
--/* mgsl_start()		release (start) transmitter
-- * 	
-- * Arguments:		tty	pointer to tty info structure
-- * Return Value:	None
-- */
--static void mgsl_start(struct tty_struct *tty)
--{
--	struct mgsl_struct *info = tty->driver_data;
--	unsigned long flags;
--	
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_start"))
--		return;
--	
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk("mgsl_start(%s)\n",info->device_name);	
--		
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	if (!info->tx_enabled)
--	 	usc_start_transmitter(info);
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	
--}	/* end of mgsl_start() */
--
--/*
-- * Bottom half work queue access functions
-- */
--
--/* mgsl_bh_action()	Return next bottom half action to perform.
-- * Return Value:	BH action code or 0 if nothing to do.
-- */
--static int mgsl_bh_action(struct mgsl_struct *info)
--{
--	unsigned long flags;
--	int rc = 0;
--	
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--
--	if (info->pending_bh & BH_RECEIVE) {
--		info->pending_bh &= ~BH_RECEIVE;
--		rc = BH_RECEIVE;
--	} else if (info->pending_bh & BH_TRANSMIT) {
--		info->pending_bh &= ~BH_TRANSMIT;
--		rc = BH_TRANSMIT;
--	} else if (info->pending_bh & BH_STATUS) {
--		info->pending_bh &= ~BH_STATUS;
--		rc = BH_STATUS;
--	}
--
--	if (!rc) {
--		/* Mark BH routine as complete */
--		info->bh_running = false;
--		info->bh_requested = false;
--	}
--	
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	
--	return rc;
--}
--
--/*
-- * 	Perform bottom half processing of work items queued by ISR.
-- */
--static void mgsl_bh_handler(struct work_struct *work)
--{
--	struct mgsl_struct *info =
--		container_of(work, struct mgsl_struct, task);
--	int action;
--
--	if ( debug_level >= DEBUG_LEVEL_BH )
--		printk( "%s(%d):mgsl_bh_handler(%s) entry\n",
--			__FILE__,__LINE__,info->device_name);
--	
--	info->bh_running = true;
--
--	while((action = mgsl_bh_action(info)) != 0) {
--	
--		/* Process work item */
--		if ( debug_level >= DEBUG_LEVEL_BH )
--			printk( "%s(%d):mgsl_bh_handler() work item action=%d\n",
--				__FILE__,__LINE__,action);
--
--		switch (action) {
--		
--		case BH_RECEIVE:
--			mgsl_bh_receive(info);
--			break;
--		case BH_TRANSMIT:
--			mgsl_bh_transmit(info);
--			break;
--		case BH_STATUS:
--			mgsl_bh_status(info);
--			break;
--		default:
--			/* unknown work item ID */
--			printk("Unknown work item ID=%08X!\n", action);
--			break;
--		}
--	}
--
--	if ( debug_level >= DEBUG_LEVEL_BH )
--		printk( "%s(%d):mgsl_bh_handler(%s) exit\n",
--			__FILE__,__LINE__,info->device_name);
--}
--
--static void mgsl_bh_receive(struct mgsl_struct *info)
--{
--	bool (*get_rx_frame)(struct mgsl_struct *info) =
--		(info->params.mode == MGSL_MODE_HDLC ? mgsl_get_rx_frame : mgsl_get_raw_rx_frame);
--
--	if ( debug_level >= DEBUG_LEVEL_BH )
--		printk( "%s(%d):mgsl_bh_receive(%s)\n",
--			__FILE__,__LINE__,info->device_name);
--	
--	do
--	{
--		if (info->rx_rcc_underrun) {
--			unsigned long flags;
--			spin_lock_irqsave(&info->irq_spinlock,flags);
--			usc_start_receiver(info);
--			spin_unlock_irqrestore(&info->irq_spinlock,flags);
--			return;
--		}
--	} while(get_rx_frame(info));
--}
--
--static void mgsl_bh_transmit(struct mgsl_struct *info)
--{
--	struct tty_struct *tty = info->port.tty;
--	unsigned long flags;
--	
--	if ( debug_level >= DEBUG_LEVEL_BH )
--		printk( "%s(%d):mgsl_bh_transmit() entry on %s\n",
--			__FILE__,__LINE__,info->device_name);
--
--	if (tty)
--		tty_wakeup(tty);
--
--	/* if transmitter idle and loopmode_send_done_requested
--	 * then start echoing RxD to TxD
--	 */
--	spin_lock_irqsave(&info->irq_spinlock,flags);
-- 	if ( !info->tx_active && info->loopmode_send_done_requested )
-- 		usc_loopmode_send_done( info );
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--}
--
--static void mgsl_bh_status(struct mgsl_struct *info)
--{
--	if ( debug_level >= DEBUG_LEVEL_BH )
--		printk( "%s(%d):mgsl_bh_status() entry on %s\n",
--			__FILE__,__LINE__,info->device_name);
--
--	info->ri_chkcount = 0;
--	info->dsr_chkcount = 0;
--	info->dcd_chkcount = 0;
--	info->cts_chkcount = 0;
--}
--
--/* mgsl_isr_receive_status()
-- * 
-- *	Service a receive status interrupt. The type of status
-- *	interrupt is indicated by the state of the RCSR.
-- *	This is only used for HDLC mode.
-- *
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void mgsl_isr_receive_status( struct mgsl_struct *info )
--{
--	u16 status = usc_InReg( info, RCSR );
--
--	if ( debug_level >= DEBUG_LEVEL_ISR )
--		printk("%s(%d):mgsl_isr_receive_status status=%04X\n",
--			__FILE__,__LINE__,status);
--			
-- 	if ( (status & RXSTATUS_ABORT_RECEIVED) && 
--		info->loopmode_insert_requested &&
-- 		usc_loopmode_active(info) )
-- 	{
--		++info->icount.rxabort;
--	 	info->loopmode_insert_requested = false;
-- 
-- 		/* clear CMR:13 to start echoing RxD to TxD */
--		info->cmr_value &= ~BIT13;
-- 		usc_OutReg(info, CMR, info->cmr_value);
-- 
--		/* disable received abort irq (no longer required) */
--	 	usc_OutReg(info, RICR,
-- 			(usc_InReg(info, RICR) & ~RXSTATUS_ABORT_RECEIVED));
-- 	}
--
--	if (status & (RXSTATUS_EXITED_HUNT | RXSTATUS_IDLE_RECEIVED)) {
--		if (status & RXSTATUS_EXITED_HUNT)
--			info->icount.exithunt++;
--		if (status & RXSTATUS_IDLE_RECEIVED)
--			info->icount.rxidle++;
--		wake_up_interruptible(&info->event_wait_q);
--	}
--
--	if (status & RXSTATUS_OVERRUN){
--		info->icount.rxover++;
--		usc_process_rxoverrun_sync( info );
--	}
--
--	usc_ClearIrqPendingBits( info, RECEIVE_STATUS );
--	usc_UnlatchRxstatusBits( info, status );
--
--}	/* end of mgsl_isr_receive_status() */
--
--/* mgsl_isr_transmit_status()
-- * 
-- * 	Service a transmit status interrupt
-- *	HDLC mode :end of transmit frame
-- *	Async mode:all data is sent
-- * 	transmit status is indicated by bits in the TCSR.
-- * 
-- * Arguments:		info	       pointer to device instance data
-- * Return Value:	None
-- */
--static void mgsl_isr_transmit_status( struct mgsl_struct *info )
--{
--	u16 status = usc_InReg( info, TCSR );
--
--	if ( debug_level >= DEBUG_LEVEL_ISR )	
--		printk("%s(%d):mgsl_isr_transmit_status status=%04X\n",
--			__FILE__,__LINE__,status);
--	
--	usc_ClearIrqPendingBits( info, TRANSMIT_STATUS );
--	usc_UnlatchTxstatusBits( info, status );
--	
--	if ( status & (TXSTATUS_UNDERRUN | TXSTATUS_ABORT_SENT) )
--	{
--		/* finished sending HDLC abort. This may leave	*/
--		/* the TxFifo with data from the aborted frame	*/
--		/* so purge the TxFifo. Also shutdown the DMA	*/
--		/* channel in case there is data remaining in 	*/
--		/* the DMA buffer				*/
-- 		usc_DmaCmd( info, DmaCmd_ResetTxChannel );
-- 		usc_RTCmd( info, RTCmd_PurgeTxFifo );
--	}
-- 
--	if ( status & TXSTATUS_EOF_SENT )
--		info->icount.txok++;
--	else if ( status & TXSTATUS_UNDERRUN )
--		info->icount.txunder++;
--	else if ( status & TXSTATUS_ABORT_SENT )
--		info->icount.txabort++;
--	else
--		info->icount.txunder++;
--			
--	info->tx_active = false;
--	info->xmit_cnt = info->xmit_head = info->xmit_tail = 0;
--	del_timer(&info->tx_timer);	
--	
--	if ( info->drop_rts_on_tx_done ) {
--		usc_get_serial_signals( info );
--		if ( info->serial_signals & SerialSignal_RTS ) {
--			info->serial_signals &= ~SerialSignal_RTS;
--			usc_set_serial_signals( info );
--		}
--		info->drop_rts_on_tx_done = false;
--	}
--
--#if SYNCLINK_GENERIC_HDLC
--	if (info->netcount)
--		hdlcdev_tx_done(info);
--	else 
--#endif
--	{
--		if (info->port.tty->stopped || info->port.tty->hw_stopped) {
--			usc_stop_transmitter(info);
--			return;
--		}
--		info->pending_bh |= BH_TRANSMIT;
--	}
--
--}	/* end of mgsl_isr_transmit_status() */
--
--/* mgsl_isr_io_pin()
-- * 
-- * 	Service an Input/Output pin interrupt. The type of
-- * 	interrupt is indicated by bits in the MISR
-- * 	
-- * Arguments:		info	       pointer to device instance data
-- * Return Value:	None
-- */
--static void mgsl_isr_io_pin( struct mgsl_struct *info )
--{
-- 	struct	mgsl_icount *icount;
--	u16 status = usc_InReg( info, MISR );
--
--	if ( debug_level >= DEBUG_LEVEL_ISR )	
--		printk("%s(%d):mgsl_isr_io_pin status=%04X\n",
--			__FILE__,__LINE__,status);
--			
--	usc_ClearIrqPendingBits( info, IO_PIN );
--	usc_UnlatchIostatusBits( info, status );
--
--	if (status & (MISCSTATUS_CTS_LATCHED | MISCSTATUS_DCD_LATCHED |
--	              MISCSTATUS_DSR_LATCHED | MISCSTATUS_RI_LATCHED) ) {
--		icount = &info->icount;
--		/* update input line counters */
--		if (status & MISCSTATUS_RI_LATCHED) {
--			if ((info->ri_chkcount)++ >= IO_PIN_SHUTDOWN_LIMIT)
--				usc_DisablestatusIrqs(info,SICR_RI);
--			icount->rng++;
--			if ( status & MISCSTATUS_RI )
--				info->input_signal_events.ri_up++;	
--			else
--				info->input_signal_events.ri_down++;	
--		}
--		if (status & MISCSTATUS_DSR_LATCHED) {
--			if ((info->dsr_chkcount)++ >= IO_PIN_SHUTDOWN_LIMIT)
--				usc_DisablestatusIrqs(info,SICR_DSR);
--			icount->dsr++;
--			if ( status & MISCSTATUS_DSR )
--				info->input_signal_events.dsr_up++;
--			else
--				info->input_signal_events.dsr_down++;
--		}
--		if (status & MISCSTATUS_DCD_LATCHED) {
--			if ((info->dcd_chkcount)++ >= IO_PIN_SHUTDOWN_LIMIT)
--				usc_DisablestatusIrqs(info,SICR_DCD);
--			icount->dcd++;
--			if (status & MISCSTATUS_DCD) {
--				info->input_signal_events.dcd_up++;
--			} else
--				info->input_signal_events.dcd_down++;
--#if SYNCLINK_GENERIC_HDLC
--			if (info->netcount) {
--				if (status & MISCSTATUS_DCD)
--					netif_carrier_on(info->netdev);
--				else
--					netif_carrier_off(info->netdev);
--			}
--#endif
--		}
--		if (status & MISCSTATUS_CTS_LATCHED)
--		{
--			if ((info->cts_chkcount)++ >= IO_PIN_SHUTDOWN_LIMIT)
--				usc_DisablestatusIrqs(info,SICR_CTS);
--			icount->cts++;
--			if ( status & MISCSTATUS_CTS )
--				info->input_signal_events.cts_up++;
--			else
--				info->input_signal_events.cts_down++;
--		}
--		wake_up_interruptible(&info->status_event_wait_q);
--		wake_up_interruptible(&info->event_wait_q);
--
--		if (tty_port_check_carrier(&info->port) &&
--		     (status & MISCSTATUS_DCD_LATCHED) ) {
--			if ( debug_level >= DEBUG_LEVEL_ISR )
--				printk("%s CD now %s...", info->device_name,
--				       (status & MISCSTATUS_DCD) ? "on" : "off");
--			if (status & MISCSTATUS_DCD)
--				wake_up_interruptible(&info->port.open_wait);
--			else {
--				if ( debug_level >= DEBUG_LEVEL_ISR )
--					printk("doing serial hangup...");
--				if (info->port.tty)
--					tty_hangup(info->port.tty);
--			}
--		}
--	
--		if (tty_port_cts_enabled(&info->port) &&
--		     (status & MISCSTATUS_CTS_LATCHED) ) {
--			if (info->port.tty->hw_stopped) {
--				if (status & MISCSTATUS_CTS) {
--					if ( debug_level >= DEBUG_LEVEL_ISR )
--						printk("CTS tx start...");
--					info->port.tty->hw_stopped = 0;
--					usc_start_transmitter(info);
--					info->pending_bh |= BH_TRANSMIT;
--					return;
--				}
--			} else {
--				if (!(status & MISCSTATUS_CTS)) {
--					if ( debug_level >= DEBUG_LEVEL_ISR )
--						printk("CTS tx stop...");
--					if (info->port.tty)
--						info->port.tty->hw_stopped = 1;
--					usc_stop_transmitter(info);
--				}
--			}
--		}
--	}
--
--	info->pending_bh |= BH_STATUS;
--	
--	/* for diagnostics set IRQ flag */
--	if ( status & MISCSTATUS_TXC_LATCHED ){
--		usc_OutReg( info, SICR,
--			(unsigned short)(usc_InReg(info,SICR) & ~(SICR_TXC_ACTIVE+SICR_TXC_INACTIVE)) );
--		usc_UnlatchIostatusBits( info, MISCSTATUS_TXC_LATCHED );
--		info->irq_occurred = true;
--	}
--
--}	/* end of mgsl_isr_io_pin() */
--
--/* mgsl_isr_transmit_data()
-- * 
-- * 	Service a transmit data interrupt (async mode only).
-- * 
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void mgsl_isr_transmit_data( struct mgsl_struct *info )
--{
--	if ( debug_level >= DEBUG_LEVEL_ISR )	
--		printk("%s(%d):mgsl_isr_transmit_data xmit_cnt=%d\n",
--			__FILE__,__LINE__,info->xmit_cnt);
--			
--	usc_ClearIrqPendingBits( info, TRANSMIT_DATA );
--	
--	if (info->port.tty->stopped || info->port.tty->hw_stopped) {
--		usc_stop_transmitter(info);
--		return;
--	}
--	
--	if ( info->xmit_cnt )
--		usc_load_txfifo( info );
--	else
--		info->tx_active = false;
--		
--	if (info->xmit_cnt < WAKEUP_CHARS)
--		info->pending_bh |= BH_TRANSMIT;
--
--}	/* end of mgsl_isr_transmit_data() */
--
--/* mgsl_isr_receive_data()
-- * 
-- * 	Service a receive data interrupt. This occurs
-- * 	when operating in asynchronous interrupt transfer mode.
-- *	The receive data FIFO is flushed to the receive data buffers. 
-- * 
-- * Arguments:		info		pointer to device instance data
-- * Return Value:	None
-- */
--static void mgsl_isr_receive_data( struct mgsl_struct *info )
--{
--	int Fifocount;
--	u16 status;
--	int work = 0;
--	unsigned char DataByte;
-- 	struct	mgsl_icount *icount = &info->icount;
--	
--	if ( debug_level >= DEBUG_LEVEL_ISR )	
--		printk("%s(%d):mgsl_isr_receive_data\n",
--			__FILE__,__LINE__);
--
--	usc_ClearIrqPendingBits( info, RECEIVE_DATA );
--	
--	/* select FIFO status for RICR readback */
--	usc_RCmd( info, RCmd_SelectRicrRxFifostatus );
--
--	/* clear the Wordstatus bit so that status readback */
--	/* only reflects the status of this byte */
--	usc_OutReg( info, RICR+LSBONLY, (u16)(usc_InReg(info, RICR+LSBONLY) & ~BIT3 ));
--
--	/* flush the receive FIFO */
--
--	while( (Fifocount = (usc_InReg(info,RICR) >> 8)) ) {
--		int flag;
--
--		/* read one byte from RxFIFO */
--		outw( (inw(info->io_base + CCAR) & 0x0780) | (RDR+LSBONLY),
--		      info->io_base + CCAR );
--		DataByte = inb( info->io_base + CCAR );
--
--		/* get the status of the received byte */
--		status = usc_InReg(info, RCSR);
--		if ( status & (RXSTATUS_FRAMING_ERROR | RXSTATUS_PARITY_ERROR |
--				RXSTATUS_OVERRUN | RXSTATUS_BREAK_RECEIVED) )
--			usc_UnlatchRxstatusBits(info,RXSTATUS_ALL);
--		
--		icount->rx++;
--		
--		flag = 0;
--		if ( status & (RXSTATUS_FRAMING_ERROR | RXSTATUS_PARITY_ERROR |
--				RXSTATUS_OVERRUN | RXSTATUS_BREAK_RECEIVED) ) {
--			printk("rxerr=%04X\n",status);
--			/* update error statistics */
--			if ( status & RXSTATUS_BREAK_RECEIVED ) {
--				status &= ~(RXSTATUS_FRAMING_ERROR | RXSTATUS_PARITY_ERROR);
--				icount->brk++;
--			} else if (status & RXSTATUS_PARITY_ERROR)
--				icount->parity++;
--			else if (status & RXSTATUS_FRAMING_ERROR)
--				icount->frame++;
--			else if (status & RXSTATUS_OVERRUN) {
--				/* must issue purge fifo cmd before */
--				/* 16C32 accepts more receive chars */
--				usc_RTCmd(info,RTCmd_PurgeRxFifo);
--				icount->overrun++;
--			}
--
--			/* discard char if tty control flags say so */
--			if (status & info->ignore_status_mask)
--				continue;
--				
--			status &= info->read_status_mask;
--		
--			if (status & RXSTATUS_BREAK_RECEIVED) {
--				flag = TTY_BREAK;
--				if (info->port.flags & ASYNC_SAK)
--					do_SAK(info->port.tty);
--			} else if (status & RXSTATUS_PARITY_ERROR)
--				flag = TTY_PARITY;
--			else if (status & RXSTATUS_FRAMING_ERROR)
--				flag = TTY_FRAME;
--		}	/* end of if (error) */
--		tty_insert_flip_char(&info->port, DataByte, flag);
--		if (status & RXSTATUS_OVERRUN) {
--			/* Overrun is special, since it's
--			 * reported immediately, and doesn't
--			 * affect the current character
--			 */
--			work += tty_insert_flip_char(&info->port, 0, TTY_OVERRUN);
--		}
--	}
--
--	if ( debug_level >= DEBUG_LEVEL_ISR ) {
--		printk("%s(%d):rx=%d brk=%d parity=%d frame=%d overrun=%d\n",
--			__FILE__,__LINE__,icount->rx,icount->brk,
--			icount->parity,icount->frame,icount->overrun);
--	}
--			
--	if(work)
--		tty_flip_buffer_push(&info->port);
--}
--
--/* mgsl_isr_misc()
-- * 
-- * 	Service a miscellaneous interrupt source.
-- * 	
-- * Arguments:		info		pointer to device extension (instance data)
-- * Return Value:	None
-- */
--static void mgsl_isr_misc( struct mgsl_struct *info )
--{
--	u16 status = usc_InReg( info, MISR );
--
--	if ( debug_level >= DEBUG_LEVEL_ISR )	
--		printk("%s(%d):mgsl_isr_misc status=%04X\n",
--			__FILE__,__LINE__,status);
--			
--	if ((status & MISCSTATUS_RCC_UNDERRUN) &&
--	    (info->params.mode == MGSL_MODE_HDLC)) {
--
--		/* turn off receiver and rx DMA */
--		usc_EnableReceiver(info,DISABLE_UNCONDITIONAL);
--		usc_DmaCmd(info, DmaCmd_ResetRxChannel);
--		usc_UnlatchRxstatusBits(info, RXSTATUS_ALL);
--		usc_ClearIrqPendingBits(info, RECEIVE_DATA | RECEIVE_STATUS);
--		usc_DisableInterrupts(info, RECEIVE_DATA | RECEIVE_STATUS);
--
--		/* schedule BH handler to restart receiver */
--		info->pending_bh |= BH_RECEIVE;
--		info->rx_rcc_underrun = true;
--	}
--
--	usc_ClearIrqPendingBits( info, MISC );
--	usc_UnlatchMiscstatusBits( info, status );
--
--}	/* end of mgsl_isr_misc() */
--
--/* mgsl_isr_null()
-- *
-- * 	Services undefined interrupt vectors from the
-- * 	USC. (hence this function SHOULD never be called)
-- * 
-- * Arguments:		info		pointer to device extension (instance data)
-- * Return Value:	None
-- */
--static void mgsl_isr_null( struct mgsl_struct *info )
--{
--
--}	/* end of mgsl_isr_null() */
--
--/* mgsl_isr_receive_dma()
-- * 
-- * 	Service a receive DMA channel interrupt.
-- * 	For this driver there are two sources of receive DMA interrupts
-- * 	as identified in the Receive DMA mode Register (RDMR):
-- * 
-- * 	BIT3	EOA/EOL		End of List, all receive buffers in receive
-- * 				buffer list have been filled (no more free buffers
-- * 				available). The DMA controller has shut down.
-- * 
-- * 	BIT2	EOB		End of Buffer. This interrupt occurs when a receive
-- * 				DMA buffer is terminated in response to completion
-- * 				of a good frame or a frame with errors. The status
-- * 				of the frame is stored in the buffer entry in the
-- * 				list of receive buffer entries.
-- * 
-- * Arguments:		info		pointer to device instance data
-- * Return Value:	None
-- */
--static void mgsl_isr_receive_dma( struct mgsl_struct *info )
--{
--	u16 status;
--	
--	/* clear interrupt pending and IUS bit for Rx DMA IRQ */
--	usc_OutDmaReg( info, CDIR, BIT9 | BIT1 );
--
--	/* Read the receive DMA status to identify interrupt type. */
--	/* This also clears the status bits. */
--	status = usc_InDmaReg( info, RDMR );
--
--	if ( debug_level >= DEBUG_LEVEL_ISR )	
--		printk("%s(%d):mgsl_isr_receive_dma(%s) status=%04X\n",
--			__FILE__,__LINE__,info->device_name,status);
--			
--	info->pending_bh |= BH_RECEIVE;
--	
--	if ( status & BIT3 ) {
--		info->rx_overflow = true;
--		info->icount.buf_overrun++;
--	}
--
--}	/* end of mgsl_isr_receive_dma() */
--
--/* mgsl_isr_transmit_dma()
-- *
-- *	This function services a transmit DMA channel interrupt.
-- *
-- *	For this driver there is one source of transmit DMA interrupts
-- *	as identified in the Transmit DMA Mode Register (TDMR):
-- *
-- *     	BIT2  EOB       End of Buffer. This interrupt occurs when a
-- *     			transmit DMA buffer has been emptied.
-- *
-- *     	The driver maintains enough transmit DMA buffers to hold at least
-- *     	one max frame size transmit frame. When operating in a buffered
-- *     	transmit mode, there may be enough transmit DMA buffers to hold at
-- *     	least two or more max frame size frames. On an EOB condition,
-- *     	determine if there are any queued transmit buffers and copy into
-- *     	transmit DMA buffers if we have room.
-- *
-- * Arguments:		info		pointer to device instance data
-- * Return Value:	None
-- */
--static void mgsl_isr_transmit_dma( struct mgsl_struct *info )
--{
--	u16 status;
--
--	/* clear interrupt pending and IUS bit for Tx DMA IRQ */
--	usc_OutDmaReg(info, CDIR, BIT8 | BIT0 );
--
--	/* Read the transmit DMA status to identify interrupt type. */
--	/* This also clears the status bits. */
--
--	status = usc_InDmaReg( info, TDMR );
--
--	if ( debug_level >= DEBUG_LEVEL_ISR )
--		printk("%s(%d):mgsl_isr_transmit_dma(%s) status=%04X\n",
--			__FILE__,__LINE__,info->device_name,status);
--
--	if ( status & BIT2 ) {
--		--info->tx_dma_buffers_used;
--
--		/* if there are transmit frames queued,
--		 *  try to load the next one
--		 */
--		if ( load_next_tx_holding_buffer(info) ) {
--			/* if call returns non-zero value, we have
--			 * at least one free tx holding buffer
--			 */
--			info->pending_bh |= BH_TRANSMIT;
--		}
--	}
--
--}	/* end of mgsl_isr_transmit_dma() */
--
--/* mgsl_interrupt()
-- * 
-- * 	Interrupt service routine entry point.
-- * 	
-- * Arguments:
-- * 
-- * 	irq		interrupt number that caused interrupt
-- * 	dev_id		device ID supplied during interrupt registration
-- * 	
-- * Return Value: None
-- */
--static irqreturn_t mgsl_interrupt(int dummy, void *dev_id)
--{
--	struct mgsl_struct *info = dev_id;
--	u16 UscVector;
--	u16 DmaVector;
--
--	if ( debug_level >= DEBUG_LEVEL_ISR )	
--		printk(KERN_DEBUG "%s(%d):mgsl_interrupt(%d)entry.\n",
--			__FILE__, __LINE__, info->irq_level);
--
--	spin_lock(&info->irq_spinlock);
--
--	for(;;) {
--		/* Read the interrupt vectors from hardware. */
--		UscVector = usc_InReg(info, IVR) >> 9;
--		DmaVector = usc_InDmaReg(info, DIVR);
--		
--		if ( debug_level >= DEBUG_LEVEL_ISR )	
--			printk("%s(%d):%s UscVector=%08X DmaVector=%08X\n",
--				__FILE__,__LINE__,info->device_name,UscVector,DmaVector);
--			
--		if ( !UscVector && !DmaVector )
--			break;
--			
--		/* Dispatch interrupt vector */
--		if ( UscVector )
--			(*UscIsrTable[UscVector])(info);
--		else if ( (DmaVector&(BIT10|BIT9)) == BIT10)
--			mgsl_isr_transmit_dma(info);
--		else
--			mgsl_isr_receive_dma(info);
--
--		if ( info->isr_overflow ) {
--			printk(KERN_ERR "%s(%d):%s isr overflow irq=%d\n",
--				__FILE__, __LINE__, info->device_name, info->irq_level);
--			usc_DisableMasterIrqBit(info);
--			usc_DisableDmaInterrupts(info,DICR_MASTER);
--			break;
--		}
--	}
--	
--	/* Request bottom half processing if there's something 
--	 * for it to do and the bh is not already running
--	 */
--
--	if ( info->pending_bh && !info->bh_running && !info->bh_requested ) {
--		if ( debug_level >= DEBUG_LEVEL_ISR )	
--			printk("%s(%d):%s queueing bh task.\n",
--				__FILE__,__LINE__,info->device_name);
--		schedule_work(&info->task);
--		info->bh_requested = true;
--	}
--
--	spin_unlock(&info->irq_spinlock);
--	
--	if ( debug_level >= DEBUG_LEVEL_ISR )	
--		printk(KERN_DEBUG "%s(%d):mgsl_interrupt(%d)exit.\n",
--			__FILE__, __LINE__, info->irq_level);
--
--	return IRQ_HANDLED;
--}	/* end of mgsl_interrupt() */
--
--/* startup()
-- * 
-- * 	Initialize and start device.
-- * 	
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	0 if success, otherwise error code
-- */
--static int startup(struct mgsl_struct * info)
--{
--	int retval = 0;
--
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk("%s(%d):mgsl_startup(%s)\n",__FILE__,__LINE__,info->device_name);
--
--	if (tty_port_initialized(&info->port))
--		return 0;
--
--	if (!info->xmit_buf) {
--		/* allocate a page of memory for a transmit buffer */
--		info->xmit_buf = (unsigned char *)get_zeroed_page(GFP_KERNEL);
--		if (!info->xmit_buf) {
--			printk(KERN_ERR"%s(%d):%s can't allocate transmit buffer\n",
--				__FILE__,__LINE__,info->device_name);
--			return -ENOMEM;
--		}
--	}
--
--	info->pending_bh = 0;
--	
--	memset(&info->icount, 0, sizeof(info->icount));
--
--	timer_setup(&info->tx_timer, mgsl_tx_timeout, 0);
--	
--	/* Allocate and claim adapter resources */
--	retval = mgsl_claim_resources(info);
--	
--	/* perform existence check and diagnostics */
--	if ( !retval )
--		retval = mgsl_adapter_test(info);
--		
--	if ( retval ) {
--  		if (capable(CAP_SYS_ADMIN) && info->port.tty)
--			set_bit(TTY_IO_ERROR, &info->port.tty->flags);
--		mgsl_release_resources(info);
--  		return retval;
--  	}
--
--	/* program hardware for current parameters */
--	mgsl_change_params(info);
--
--	if (info->port.tty)
--		clear_bit(TTY_IO_ERROR, &info->port.tty->flags);
--
--	tty_port_set_initialized(&info->port, 1);
--
--	return 0;
--}	/* end of startup() */
--
--/* shutdown()
-- *
-- * Called by mgsl_close() and mgsl_hangup() to shutdown hardware
-- *
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void shutdown(struct mgsl_struct * info)
--{
--	unsigned long flags;
--
--	if (!tty_port_initialized(&info->port))
--		return;
--
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_shutdown(%s)\n",
--			 __FILE__,__LINE__, info->device_name );
--
--	/* clear status wait queue because status changes */
--	/* can't happen after shutting down the hardware */
--	wake_up_interruptible(&info->status_event_wait_q);
--	wake_up_interruptible(&info->event_wait_q);
--
--	del_timer_sync(&info->tx_timer);
--
--	if (info->xmit_buf) {
--		free_page((unsigned long) info->xmit_buf);
--		info->xmit_buf = NULL;
--	}
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	usc_DisableMasterIrqBit(info);
--	usc_stop_receiver(info);
--	usc_stop_transmitter(info);
--	usc_DisableInterrupts(info,RECEIVE_DATA | RECEIVE_STATUS |
--		TRANSMIT_DATA | TRANSMIT_STATUS | IO_PIN | MISC );
--	usc_DisableDmaInterrupts(info,DICR_MASTER + DICR_TRANSMIT + DICR_RECEIVE);
--
--	/* Disable DMAEN (Port 7, Bit 14) */
--	/* This disconnects the DMA request signal from the ISA bus */
--	/* on the ISA adapter. This has no effect for the PCI adapter */
--	usc_OutReg(info, PCR, (u16)((usc_InReg(info, PCR) | BIT15) | BIT14));
--
--	/* Disable INTEN (Port 6, Bit12) */
--	/* This disconnects the IRQ request signal to the ISA bus */
--	/* on the ISA adapter. This has no effect for the PCI adapter */
--	usc_OutReg(info, PCR, (u16)((usc_InReg(info, PCR) | BIT13) | BIT12));
--
--	if (!info->port.tty || info->port.tty->termios.c_cflag & HUPCL) {
--		info->serial_signals &= ~(SerialSignal_RTS | SerialSignal_DTR);
--		usc_set_serial_signals(info);
--	}
--
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--	mgsl_release_resources(info);
--
--	if (info->port.tty)
--		set_bit(TTY_IO_ERROR, &info->port.tty->flags);
--
--	tty_port_set_initialized(&info->port, 0);
--}	/* end of shutdown() */
--
--static void mgsl_program_hw(struct mgsl_struct *info)
--{
--	unsigned long flags;
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	
--	usc_stop_receiver(info);
--	usc_stop_transmitter(info);
--	info->xmit_cnt = info->xmit_head = info->xmit_tail = 0;
--	
--	if (info->params.mode == MGSL_MODE_HDLC ||
--	    info->params.mode == MGSL_MODE_RAW ||
--	    info->netcount)
--		usc_set_sync_mode(info);
--	else
--		usc_set_async_mode(info);
--		
--	usc_set_serial_signals(info);
--	
--	info->dcd_chkcount = 0;
--	info->cts_chkcount = 0;
--	info->ri_chkcount = 0;
--	info->dsr_chkcount = 0;
--
--	usc_EnableStatusIrqs(info,SICR_CTS+SICR_DSR+SICR_DCD+SICR_RI);
--	usc_EnableInterrupts(info, IO_PIN);
--	usc_get_serial_signals(info);
--		
--	if (info->netcount || info->port.tty->termios.c_cflag & CREAD)
--		usc_start_receiver(info);
--		
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--}
--
--/* Reconfigure adapter based on new parameters
-- */
--static void mgsl_change_params(struct mgsl_struct *info)
--{
--	unsigned cflag;
--	int bits_per_char;
--
--	if (!info->port.tty)
--		return;
--		
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_change_params(%s)\n",
--			 __FILE__,__LINE__, info->device_name );
--			 
--	cflag = info->port.tty->termios.c_cflag;
--
--	/* if B0 rate (hangup) specified then negate RTS and DTR */
--	/* otherwise assert RTS and DTR */
-- 	if (cflag & CBAUD)
--		info->serial_signals |= SerialSignal_RTS | SerialSignal_DTR;
--	else
--		info->serial_signals &= ~(SerialSignal_RTS | SerialSignal_DTR);
--	
--	/* byte size and parity */
--	
--	switch (cflag & CSIZE) {
--	      case CS5: info->params.data_bits = 5; break;
--	      case CS6: info->params.data_bits = 6; break;
--	      case CS7: info->params.data_bits = 7; break;
--	      case CS8: info->params.data_bits = 8; break;
--	      /* Never happens, but GCC is too dumb to figure it out */
--	      default:  info->params.data_bits = 7; break;
--	      }
--	      
--	if (cflag & CSTOPB)
--		info->params.stop_bits = 2;
--	else
--		info->params.stop_bits = 1;
--
--	info->params.parity = ASYNC_PARITY_NONE;
--	if (cflag & PARENB) {
--		if (cflag & PARODD)
--			info->params.parity = ASYNC_PARITY_ODD;
--		else
--			info->params.parity = ASYNC_PARITY_EVEN;
--#ifdef CMSPAR
--		if (cflag & CMSPAR)
--			info->params.parity = ASYNC_PARITY_SPACE;
--#endif
--	}
--
--	/* calculate number of jiffies to transmit a full
--	 * FIFO (32 bytes) at specified data rate
--	 */
--	bits_per_char = info->params.data_bits + 
--			info->params.stop_bits + 1;
--
--	/* if port data rate is set to 460800 or less then
--	 * allow tty settings to override, otherwise keep the
--	 * current data rate.
--	 */
--	if (info->params.data_rate <= 460800)
--		info->params.data_rate = tty_get_baud_rate(info->port.tty);
--	
--	if ( info->params.data_rate ) {
--		info->timeout = (32*HZ*bits_per_char) / 
--				info->params.data_rate;
--	}
--	info->timeout += HZ/50;		/* Add .02 seconds of slop */
--
--	tty_port_set_cts_flow(&info->port, cflag & CRTSCTS);
--	tty_port_set_check_carrier(&info->port, ~cflag & CLOCAL);
--
--	/* process tty input control flags */
--	
--	info->read_status_mask = RXSTATUS_OVERRUN;
--	if (I_INPCK(info->port.tty))
--		info->read_status_mask |= RXSTATUS_PARITY_ERROR | RXSTATUS_FRAMING_ERROR;
-- 	if (I_BRKINT(info->port.tty) || I_PARMRK(info->port.tty))
-- 		info->read_status_mask |= RXSTATUS_BREAK_RECEIVED;
--	
--	if (I_IGNPAR(info->port.tty))
--		info->ignore_status_mask |= RXSTATUS_PARITY_ERROR | RXSTATUS_FRAMING_ERROR;
--	if (I_IGNBRK(info->port.tty)) {
--		info->ignore_status_mask |= RXSTATUS_BREAK_RECEIVED;
--		/* If ignoring parity and break indicators, ignore 
--		 * overruns too.  (For real raw support).
--		 */
--		if (I_IGNPAR(info->port.tty))
--			info->ignore_status_mask |= RXSTATUS_OVERRUN;
--	}
--
--	mgsl_program_hw(info);
--
--}	/* end of mgsl_change_params() */
--
--/* mgsl_put_char()
-- * 
-- * 	Add a character to the transmit buffer.
-- * 	
-- * Arguments:		tty	pointer to tty information structure
-- * 			ch	character to add to transmit buffer
-- * 		
-- * Return Value:	None
-- */
--static int mgsl_put_char(struct tty_struct *tty, unsigned char ch)
--{
--	struct mgsl_struct *info = tty->driver_data;
--	unsigned long flags;
--	int ret = 0;
--
--	if (debug_level >= DEBUG_LEVEL_INFO) {
--		printk(KERN_DEBUG "%s(%d):mgsl_put_char(%d) on %s\n",
--			__FILE__, __LINE__, ch, info->device_name);
--	}		
--	
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_put_char"))
--		return 0;
--
--	if (!info->xmit_buf)
--		return 0;
--
--	spin_lock_irqsave(&info->irq_spinlock, flags);
--	
--	if ((info->params.mode == MGSL_MODE_ASYNC ) || !info->tx_active) {
--		if (info->xmit_cnt < SERIAL_XMIT_SIZE - 1) {
--			info->xmit_buf[info->xmit_head++] = ch;
--			info->xmit_head &= SERIAL_XMIT_SIZE-1;
--			info->xmit_cnt++;
--			ret = 1;
--		}
--	}
--	spin_unlock_irqrestore(&info->irq_spinlock, flags);
--	return ret;
--	
--}	/* end of mgsl_put_char() */
--
--/* mgsl_flush_chars()
-- * 
-- * 	Enable transmitter so remaining characters in the
-- * 	transmit buffer are sent.
-- * 	
-- * Arguments:		tty	pointer to tty information structure
-- * Return Value:	None
-- */
--static void mgsl_flush_chars(struct tty_struct *tty)
--{
--	struct mgsl_struct *info = tty->driver_data;
--	unsigned long flags;
--				
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk( "%s(%d):mgsl_flush_chars() entry on %s xmit_cnt=%d\n",
--			__FILE__,__LINE__,info->device_name,info->xmit_cnt);
--	
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_flush_chars"))
--		return;
--
--	if (info->xmit_cnt <= 0 || tty->stopped || tty->hw_stopped ||
--	    !info->xmit_buf)
--		return;
--
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk( "%s(%d):mgsl_flush_chars() entry on %s starting transmitter\n",
--			__FILE__,__LINE__,info->device_name );
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	
--	if (!info->tx_active) {
--		if ( (info->params.mode == MGSL_MODE_HDLC ||
--			info->params.mode == MGSL_MODE_RAW) && info->xmit_cnt ) {
--			/* operating in synchronous (frame oriented) mode */
--			/* copy data from circular xmit_buf to */
--			/* transmit DMA buffer. */
--			mgsl_load_tx_dma_buffer(info,
--				 info->xmit_buf,info->xmit_cnt);
--		}
--	 	usc_start_transmitter(info);
--	}
--	
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	
--}	/* end of mgsl_flush_chars() */
--
--/* mgsl_write()
-- * 
-- * 	Send a block of data
-- * 	
-- * Arguments:
-- * 
-- * 	tty		pointer to tty information structure
-- * 	buf		pointer to buffer containing send data
-- * 	count		size of send data in bytes
-- * 	
-- * Return Value:	number of characters written
-- */
--static int mgsl_write(struct tty_struct * tty,
--		    const unsigned char *buf, int count)
--{
--	int	c, ret = 0;
--	struct mgsl_struct *info = tty->driver_data;
--	unsigned long flags;
--	
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk( "%s(%d):mgsl_write(%s) count=%d\n",
--			__FILE__,__LINE__,info->device_name,count);
--	
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_write"))
--		goto cleanup;
--
--	if (!info->xmit_buf)
--		goto cleanup;
--
--	if ( info->params.mode == MGSL_MODE_HDLC ||
--			info->params.mode == MGSL_MODE_RAW ) {
--		/* operating in synchronous (frame oriented) mode */
--		if (info->tx_active) {
--
--			if ( info->params.mode == MGSL_MODE_HDLC ) {
--				ret = 0;
--				goto cleanup;
--			}
--			/* transmitter is actively sending data -
--			 * if we have multiple transmit dma and
--			 * holding buffers, attempt to queue this
--			 * frame for transmission at a later time.
--			 */
--			if (info->tx_holding_count >= info->num_tx_holding_buffers ) {
--				/* no tx holding buffers available */
--				ret = 0;
--				goto cleanup;
--			}
--
--			/* queue transmit frame request */
--			ret = count;
--			save_tx_buffer_request(info,buf,count);
--
--			/* if we have sufficient tx dma buffers,
--			 * load the next buffered tx request
--			 */
--			spin_lock_irqsave(&info->irq_spinlock,flags);
--			load_next_tx_holding_buffer(info);
--			spin_unlock_irqrestore(&info->irq_spinlock,flags);
--			goto cleanup;
--		}
--	
--		/* if operating in HDLC LoopMode and the adapter  */
--		/* has yet to be inserted into the loop, we can't */
--		/* transmit					  */
--
--		if ( (info->params.flags & HDLC_FLAG_HDLC_LOOPMODE) &&
--			!usc_loopmode_active(info) )
--		{
--			ret = 0;
--			goto cleanup;
--		}
--
--		if ( info->xmit_cnt ) {
--			/* Send accumulated from send_char() calls */
--			/* as frame and wait before accepting more data. */
--			ret = 0;
--			
--			/* copy data from circular xmit_buf to */
--			/* transmit DMA buffer. */
--			mgsl_load_tx_dma_buffer(info,
--				info->xmit_buf,info->xmit_cnt);
--			if ( debug_level >= DEBUG_LEVEL_INFO )
--				printk( "%s(%d):mgsl_write(%s) sync xmit_cnt flushing\n",
--					__FILE__,__LINE__,info->device_name);
--		} else {
--			if ( debug_level >= DEBUG_LEVEL_INFO )
--				printk( "%s(%d):mgsl_write(%s) sync transmit accepted\n",
--					__FILE__,__LINE__,info->device_name);
--			ret = count;
--			info->xmit_cnt = count;
--			mgsl_load_tx_dma_buffer(info,buf,count);
--		}
--	} else {
--		while (1) {
--			spin_lock_irqsave(&info->irq_spinlock,flags);
--			c = min_t(int, count,
--				min(SERIAL_XMIT_SIZE - info->xmit_cnt - 1,
--				    SERIAL_XMIT_SIZE - info->xmit_head));
--			if (c <= 0) {
--				spin_unlock_irqrestore(&info->irq_spinlock,flags);
--				break;
--			}
--			memcpy(info->xmit_buf + info->xmit_head, buf, c);
--			info->xmit_head = ((info->xmit_head + c) &
--					   (SERIAL_XMIT_SIZE-1));
--			info->xmit_cnt += c;
--			spin_unlock_irqrestore(&info->irq_spinlock,flags);
--			buf += c;
--			count -= c;
--			ret += c;
--		}
--	}	
--	
-- 	if (info->xmit_cnt && !tty->stopped && !tty->hw_stopped) {
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--		if (!info->tx_active)
--		 	usc_start_transmitter(info);
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
-- 	}
--cleanup:	
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk( "%s(%d):mgsl_write(%s) returning=%d\n",
--			__FILE__,__LINE__,info->device_name,ret);
--			
--	return ret;
--	
--}	/* end of mgsl_write() */
--
--/* mgsl_write_room()
-- *
-- *	Return the count of free bytes in transmit buffer
-- * 	
-- * Arguments:		tty	pointer to tty info structure
-- * Return Value:	None
-- */
--static int mgsl_write_room(struct tty_struct *tty)
--{
--	struct mgsl_struct *info = tty->driver_data;
--	int	ret;
--				
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_write_room"))
--		return 0;
--	ret = SERIAL_XMIT_SIZE - info->xmit_cnt - 1;
--	if (ret < 0)
--		ret = 0;
--		
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_write_room(%s)=%d\n",
--			 __FILE__,__LINE__, info->device_name,ret );
--			 
--	if ( info->params.mode == MGSL_MODE_HDLC ||
--		info->params.mode == MGSL_MODE_RAW ) {
--		/* operating in synchronous (frame oriented) mode */
--		if ( info->tx_active )
--			return 0;
--		else
--			return HDLC_MAX_FRAME_SIZE;
--	}
--	
--	return ret;
--	
--}	/* end of mgsl_write_room() */
--
--/* mgsl_chars_in_buffer()
-- *
-- *	Return the count of bytes in transmit buffer
-- * 	
-- * Arguments:		tty	pointer to tty info structure
-- * Return Value:	None
-- */
--static int mgsl_chars_in_buffer(struct tty_struct *tty)
--{
--	struct mgsl_struct *info = tty->driver_data;
--			 
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_chars_in_buffer(%s)\n",
--			 __FILE__,__LINE__, info->device_name );
--			 
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_chars_in_buffer"))
--		return 0;
--		
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_chars_in_buffer(%s)=%d\n",
--			 __FILE__,__LINE__, info->device_name,info->xmit_cnt );
--			 
--	if ( info->params.mode == MGSL_MODE_HDLC ||
--		info->params.mode == MGSL_MODE_RAW ) {
--		/* operating in synchronous (frame oriented) mode */
--		if ( info->tx_active )
--			return info->max_frame_size;
--		else
--			return 0;
--	}
--			 
--	return info->xmit_cnt;
--}	/* end of mgsl_chars_in_buffer() */
--
--/* mgsl_flush_buffer()
-- *
-- *	Discard all data in the send buffer
-- * 	
-- * Arguments:		tty	pointer to tty info structure
-- * Return Value:	None
-- */
--static void mgsl_flush_buffer(struct tty_struct *tty)
--{
--	struct mgsl_struct *info = tty->driver_data;
--	unsigned long flags;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_flush_buffer(%s) entry\n",
--			 __FILE__,__LINE__, info->device_name );
--	
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_flush_buffer"))
--		return;
--		
--	spin_lock_irqsave(&info->irq_spinlock,flags); 
--	info->xmit_cnt = info->xmit_head = info->xmit_tail = 0;
--	del_timer(&info->tx_timer);	
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	
--	tty_wakeup(tty);
--}
--
--/* mgsl_send_xchar()
-- *
-- *	Send a high-priority XON/XOFF character
-- * 	
-- * Arguments:		tty	pointer to tty info structure
-- *			ch	character to send
-- * Return Value:	None
-- */
--static void mgsl_send_xchar(struct tty_struct *tty, char ch)
--{
--	struct mgsl_struct *info = tty->driver_data;
--	unsigned long flags;
--
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_send_xchar(%s,%d)\n",
--			 __FILE__,__LINE__, info->device_name, ch );
--			 
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_send_xchar"))
--		return;
--
--	info->x_char = ch;
--	if (ch) {
--		/* Make sure transmit interrupts are on */
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--		if (!info->tx_enabled)
--		 	usc_start_transmitter(info);
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	}
--}	/* end of mgsl_send_xchar() */
--
--/* mgsl_throttle()
-- * 
-- * 	Signal remote device to throttle send data (our receive data)
-- * 	
-- * Arguments:		tty	pointer to tty info structure
-- * Return Value:	None
-- */
--static void mgsl_throttle(struct tty_struct * tty)
--{
--	struct mgsl_struct *info = tty->driver_data;
--	unsigned long flags;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_throttle(%s) entry\n",
--			 __FILE__,__LINE__, info->device_name );
--
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_throttle"))
--		return;
--	
--	if (I_IXOFF(tty))
--		mgsl_send_xchar(tty, STOP_CHAR(tty));
--
--	if (C_CRTSCTS(tty)) {
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--		info->serial_signals &= ~SerialSignal_RTS;
--	 	usc_set_serial_signals(info);
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	}
--}	/* end of mgsl_throttle() */
--
--/* mgsl_unthrottle()
-- * 
-- * 	Signal remote device to stop throttling send data (our receive data)
-- * 	
-- * Arguments:		tty	pointer to tty info structure
-- * Return Value:	None
-- */
--static void mgsl_unthrottle(struct tty_struct * tty)
--{
--	struct mgsl_struct *info = tty->driver_data;
--	unsigned long flags;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_unthrottle(%s) entry\n",
--			 __FILE__,__LINE__, info->device_name );
--
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_unthrottle"))
--		return;
--	
--	if (I_IXOFF(tty)) {
--		if (info->x_char)
--			info->x_char = 0;
--		else
--			mgsl_send_xchar(tty, START_CHAR(tty));
--	}
--
--	if (C_CRTSCTS(tty)) {
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--		info->serial_signals |= SerialSignal_RTS;
--	 	usc_set_serial_signals(info);
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	}
--	
--}	/* end of mgsl_unthrottle() */
--
--/* mgsl_get_stats()
-- * 
-- * 	get the current serial parameters information
-- *
-- * Arguments:	info		pointer to device instance data
-- * 		user_icount	pointer to buffer to hold returned stats
-- * 	
-- * Return Value:	0 if success, otherwise error code
-- */
--static int mgsl_get_stats(struct mgsl_struct * info, struct mgsl_icount __user *user_icount)
--{
--	int err;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_get_params(%s)\n",
--			 __FILE__,__LINE__, info->device_name);
--			
--	if (!user_icount) {
--		memset(&info->icount, 0, sizeof(info->icount));
--	} else {
--		mutex_lock(&info->port.mutex);
--		COPY_TO_USER(err, user_icount, &info->icount, sizeof(struct mgsl_icount));
--		mutex_unlock(&info->port.mutex);
--		if (err)
--			return -EFAULT;
--	}
--	
--	return 0;
--	
--}	/* end of mgsl_get_stats() */
--
--/* mgsl_get_params()
-- * 
-- * 	get the current serial parameters information
-- *
-- * Arguments:	info		pointer to device instance data
-- * 		user_params	pointer to buffer to hold returned params
-- * 	
-- * Return Value:	0 if success, otherwise error code
-- */
--static int mgsl_get_params(struct mgsl_struct * info, MGSL_PARAMS __user *user_params)
--{
--	int err;
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_get_params(%s)\n",
--			 __FILE__,__LINE__, info->device_name);
--			
--	mutex_lock(&info->port.mutex);
--	COPY_TO_USER(err,user_params, &info->params, sizeof(MGSL_PARAMS));
--	mutex_unlock(&info->port.mutex);
--	if (err) {
--		if ( debug_level >= DEBUG_LEVEL_INFO )
--			printk( "%s(%d):mgsl_get_params(%s) user buffer copy failed\n",
--				__FILE__,__LINE__,info->device_name);
--		return -EFAULT;
--	}
--	
--	return 0;
--	
--}	/* end of mgsl_get_params() */
--
--/* mgsl_set_params()
-- * 
-- * 	set the serial parameters
-- * 	
-- * Arguments:
-- * 
-- * 	info		pointer to device instance data
-- * 	new_params	user buffer containing new serial params
-- *
-- * Return Value:	0 if success, otherwise error code
-- */
--static int mgsl_set_params(struct mgsl_struct * info, MGSL_PARAMS __user *new_params)
--{
-- 	unsigned long flags;
--	MGSL_PARAMS tmp_params;
--	int err;
-- 
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_set_params %s\n", __FILE__,__LINE__,
--			info->device_name );
--	COPY_FROM_USER(err,&tmp_params, new_params, sizeof(MGSL_PARAMS));
--	if (err) {
--		if ( debug_level >= DEBUG_LEVEL_INFO )
--			printk( "%s(%d):mgsl_set_params(%s) user buffer copy failed\n",
--				__FILE__,__LINE__,info->device_name);
--		return -EFAULT;
--	}
--	
--	mutex_lock(&info->port.mutex);
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	memcpy(&info->params,&tmp_params,sizeof(MGSL_PARAMS));
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	
-- 	mgsl_change_params(info);
--	mutex_unlock(&info->port.mutex);
--	
--	return 0;
--	
--}	/* end of mgsl_set_params() */
--
--/* mgsl_get_txidle()
-- * 
-- * 	get the current transmit idle mode
-- *
-- * Arguments:	info		pointer to device instance data
-- * 		idle_mode	pointer to buffer to hold returned idle mode
-- * 	
-- * Return Value:	0 if success, otherwise error code
-- */
--static int mgsl_get_txidle(struct mgsl_struct * info, int __user *idle_mode)
--{
--	int err;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_get_txidle(%s)=%d\n",
--			 __FILE__,__LINE__, info->device_name, info->idle_mode);
--			
--	COPY_TO_USER(err,idle_mode, &info->idle_mode, sizeof(int));
--	if (err) {
--		if ( debug_level >= DEBUG_LEVEL_INFO )
--			printk( "%s(%d):mgsl_get_txidle(%s) user buffer copy failed\n",
--				__FILE__,__LINE__,info->device_name);
--		return -EFAULT;
--	}
--	
--	return 0;
--	
--}	/* end of mgsl_get_txidle() */
--
--/* mgsl_set_txidle()	service ioctl to set transmit idle mode
-- * 	
-- * Arguments:	 	info		pointer to device instance data
-- * 			idle_mode	new idle mode
-- *
-- * Return Value:	0 if success, otherwise error code
-- */
--static int mgsl_set_txidle(struct mgsl_struct * info, int idle_mode)
--{
-- 	unsigned long flags;
-- 
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_set_txidle(%s,%d)\n", __FILE__,__LINE__,
--			info->device_name, idle_mode );
--			
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	info->idle_mode = idle_mode;
--	usc_set_txidle( info );
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	return 0;
--	
--}	/* end of mgsl_set_txidle() */
--
--/* mgsl_txenable()
-- * 
-- * 	enable or disable the transmitter
-- * 	
-- * Arguments:
-- * 
-- * 	info		pointer to device instance data
-- * 	enable		1 = enable, 0 = disable
-- *
-- * Return Value:	0 if success, otherwise error code
-- */
--static int mgsl_txenable(struct mgsl_struct * info, int enable)
--{
-- 	unsigned long flags;
-- 
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_txenable(%s,%d)\n", __FILE__,__LINE__,
--			info->device_name, enable);
--			
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	if ( enable ) {
--		if ( !info->tx_enabled ) {
--
--			usc_start_transmitter(info);
--			/*--------------------------------------------------
--			 * if HDLC/SDLC Loop mode, attempt to insert the
--			 * station in the 'loop' by setting CMR:13. Upon
--			 * receipt of the next GoAhead (RxAbort) sequence,
--			 * the OnLoop indicator (CCSR:7) should go active
--			 * to indicate that we are on the loop
--			 *--------------------------------------------------*/
--			if ( info->params.flags & HDLC_FLAG_HDLC_LOOPMODE )
--				usc_loopmode_insert_request( info );
--		}
--	} else {
--		if ( info->tx_enabled )
--			usc_stop_transmitter(info);
--	}
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	return 0;
--	
--}	/* end of mgsl_txenable() */
--
--/* mgsl_txabort()	abort send HDLC frame
-- * 	
-- * Arguments:	 	info		pointer to device instance data
-- * Return Value:	0 if success, otherwise error code
-- */
--static int mgsl_txabort(struct mgsl_struct * info)
--{
-- 	unsigned long flags;
-- 
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_txabort(%s)\n", __FILE__,__LINE__,
--			info->device_name);
--			
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	if ( info->tx_active && info->params.mode == MGSL_MODE_HDLC )
--	{
--		if ( info->params.flags & HDLC_FLAG_HDLC_LOOPMODE )
--			usc_loopmode_cancel_transmit( info );
--		else
--			usc_TCmd(info,TCmd_SendAbort);
--	}
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	return 0;
--	
--}	/* end of mgsl_txabort() */
--
--/* mgsl_rxenable() 	enable or disable the receiver
-- * 	
-- * Arguments:	 	info		pointer to device instance data
-- * 			enable		1 = enable, 0 = disable
-- * Return Value:	0 if success, otherwise error code
-- */
--static int mgsl_rxenable(struct mgsl_struct * info, int enable)
--{
-- 	unsigned long flags;
-- 
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_rxenable(%s,%d)\n", __FILE__,__LINE__,
--			info->device_name, enable);
--			
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	if ( enable ) {
--		if ( !info->rx_enabled )
--			usc_start_receiver(info);
--	} else {
--		if ( info->rx_enabled )
--			usc_stop_receiver(info);
--	}
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	return 0;
--	
--}	/* end of mgsl_rxenable() */
--
--/* mgsl_wait_event() 	wait for specified event to occur
-- * 	
-- * Arguments:	 	info	pointer to device instance data
-- * 			mask	pointer to bitmask of events to wait for
-- * Return Value:	0 	if successful and bit mask updated with
-- *				of events triggerred,
-- * 			otherwise error code
-- */
--static int mgsl_wait_event(struct mgsl_struct * info, int __user * mask_ptr)
--{
-- 	unsigned long flags;
--	int s;
--	int rc=0;
--	struct mgsl_icount cprev, cnow;
--	int events;
--	int mask;
--	struct	_input_signal_events oldsigs, newsigs;
--	DECLARE_WAITQUEUE(wait, current);
--
--	COPY_FROM_USER(rc,&mask, mask_ptr, sizeof(int));
--	if (rc) {
--		return  -EFAULT;
--	}
--		 
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_wait_event(%s,%d)\n", __FILE__,__LINE__,
--			info->device_name, mask);
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--
--	/* return immediately if state matches requested events */
--	usc_get_serial_signals(info);
--	s = info->serial_signals;
--	events = mask &
--		( ((s & SerialSignal_DSR) ? MgslEvent_DsrActive:MgslEvent_DsrInactive) +
-- 		  ((s & SerialSignal_DCD) ? MgslEvent_DcdActive:MgslEvent_DcdInactive) +
--		  ((s & SerialSignal_CTS) ? MgslEvent_CtsActive:MgslEvent_CtsInactive) +
--		  ((s & SerialSignal_RI)  ? MgslEvent_RiActive :MgslEvent_RiInactive) );
--	if (events) {
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--		goto exit;
--	}
--
--	/* save current irq counts */
--	cprev = info->icount;
--	oldsigs = info->input_signal_events;
--	
--	/* enable hunt and idle irqs if needed */
--	if (mask & (MgslEvent_ExitHuntMode + MgslEvent_IdleReceived)) {
--		u16 oldreg = usc_InReg(info,RICR);
--		u16 newreg = oldreg +
--			 (mask & MgslEvent_ExitHuntMode ? RXSTATUS_EXITED_HUNT:0) +
--			 (mask & MgslEvent_IdleReceived ? RXSTATUS_IDLE_RECEIVED:0);
--		if (oldreg != newreg)
--			usc_OutReg(info, RICR, newreg);
--	}
--	
--	set_current_state(TASK_INTERRUPTIBLE);
--	add_wait_queue(&info->event_wait_q, &wait);
--	
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	
--
--	for(;;) {
--		schedule();
--		if (signal_pending(current)) {
--			rc = -ERESTARTSYS;
--			break;
--		}
--			
--		/* get current irq counts */
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--		cnow = info->icount;
--		newsigs = info->input_signal_events;
--		set_current_state(TASK_INTERRUPTIBLE);
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--		/* if no change, wait aborted for some reason */
--		if (newsigs.dsr_up   == oldsigs.dsr_up   &&
--		    newsigs.dsr_down == oldsigs.dsr_down &&
--		    newsigs.dcd_up   == oldsigs.dcd_up   &&
--		    newsigs.dcd_down == oldsigs.dcd_down &&
--		    newsigs.cts_up   == oldsigs.cts_up   &&
--		    newsigs.cts_down == oldsigs.cts_down &&
--		    newsigs.ri_up    == oldsigs.ri_up    &&
--		    newsigs.ri_down  == oldsigs.ri_down  &&
--		    cnow.exithunt    == cprev.exithunt   &&
--		    cnow.rxidle      == cprev.rxidle) {
--			rc = -EIO;
--			break;
--		}
--
--		events = mask &
--			( (newsigs.dsr_up   != oldsigs.dsr_up   ? MgslEvent_DsrActive:0)   +
--			(newsigs.dsr_down != oldsigs.dsr_down ? MgslEvent_DsrInactive:0) +
--			(newsigs.dcd_up   != oldsigs.dcd_up   ? MgslEvent_DcdActive:0)   +
--			(newsigs.dcd_down != oldsigs.dcd_down ? MgslEvent_DcdInactive:0) +
--			(newsigs.cts_up   != oldsigs.cts_up   ? MgslEvent_CtsActive:0)   +
--			(newsigs.cts_down != oldsigs.cts_down ? MgslEvent_CtsInactive:0) +
--			(newsigs.ri_up    != oldsigs.ri_up    ? MgslEvent_RiActive:0)    +
--			(newsigs.ri_down  != oldsigs.ri_down  ? MgslEvent_RiInactive:0)  +
--			(cnow.exithunt    != cprev.exithunt   ? MgslEvent_ExitHuntMode:0) +
--			  (cnow.rxidle      != cprev.rxidle     ? MgslEvent_IdleReceived:0) );
--		if (events)
--			break;
--		
--		cprev = cnow;
--		oldsigs = newsigs;
--	}
--	
--	remove_wait_queue(&info->event_wait_q, &wait);
--	set_current_state(TASK_RUNNING);
--
--	if (mask & (MgslEvent_ExitHuntMode + MgslEvent_IdleReceived)) {
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--		if (!waitqueue_active(&info->event_wait_q)) {
--			/* disable enable exit hunt mode/idle rcvd IRQs */
--			usc_OutReg(info, RICR, usc_InReg(info,RICR) &
--				~(RXSTATUS_EXITED_HUNT | RXSTATUS_IDLE_RECEIVED));
--		}
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	}
--exit:
--	if ( rc == 0 )
--		PUT_USER(rc, events, mask_ptr);
--		
--	return rc;
--	
--}	/* end of mgsl_wait_event() */
--
--static int modem_input_wait(struct mgsl_struct *info,int arg)
--{
-- 	unsigned long flags;
--	int rc;
--	struct mgsl_icount cprev, cnow;
--	DECLARE_WAITQUEUE(wait, current);
--
--	/* save current irq counts */
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	cprev = info->icount;
--	add_wait_queue(&info->status_event_wait_q, &wait);
--	set_current_state(TASK_INTERRUPTIBLE);
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--	for(;;) {
--		schedule();
--		if (signal_pending(current)) {
--			rc = -ERESTARTSYS;
--			break;
--		}
--
--		/* get new irq counts */
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--		cnow = info->icount;
--		set_current_state(TASK_INTERRUPTIBLE);
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--		/* if no change, wait aborted for some reason */
--		if (cnow.rng == cprev.rng && cnow.dsr == cprev.dsr &&
--		    cnow.dcd == cprev.dcd && cnow.cts == cprev.cts) {
--			rc = -EIO;
--			break;
--		}
--
--		/* check for change in caller specified modem input */
--		if ((arg & TIOCM_RNG && cnow.rng != cprev.rng) ||
--		    (arg & TIOCM_DSR && cnow.dsr != cprev.dsr) ||
--		    (arg & TIOCM_CD  && cnow.dcd != cprev.dcd) ||
--		    (arg & TIOCM_CTS && cnow.cts != cprev.cts)) {
--			rc = 0;
--			break;
--		}
--
--		cprev = cnow;
--	}
--	remove_wait_queue(&info->status_event_wait_q, &wait);
--	set_current_state(TASK_RUNNING);
--	return rc;
--}
--
--/* return the state of the serial control and status signals
-- */
--static int tiocmget(struct tty_struct *tty)
--{
--	struct mgsl_struct *info = tty->driver_data;
--	unsigned int result;
-- 	unsigned long flags;
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
-- 	usc_get_serial_signals(info);
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--	result = ((info->serial_signals & SerialSignal_RTS) ? TIOCM_RTS:0) +
--		((info->serial_signals & SerialSignal_DTR) ? TIOCM_DTR:0) +
--		((info->serial_signals & SerialSignal_DCD) ? TIOCM_CAR:0) +
--		((info->serial_signals & SerialSignal_RI)  ? TIOCM_RNG:0) +
--		((info->serial_signals & SerialSignal_DSR) ? TIOCM_DSR:0) +
--		((info->serial_signals & SerialSignal_CTS) ? TIOCM_CTS:0);
--
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):%s tiocmget() value=%08X\n",
--			 __FILE__,__LINE__, info->device_name, result );
--	return result;
--}
--
--/* set modem control signals (DTR/RTS)
-- */
--static int tiocmset(struct tty_struct *tty,
--				    unsigned int set, unsigned int clear)
--{
--	struct mgsl_struct *info = tty->driver_data;
-- 	unsigned long flags;
--
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):%s tiocmset(%x,%x)\n",
--			__FILE__,__LINE__,info->device_name, set, clear);
--
--	if (set & TIOCM_RTS)
--		info->serial_signals |= SerialSignal_RTS;
--	if (set & TIOCM_DTR)
--		info->serial_signals |= SerialSignal_DTR;
--	if (clear & TIOCM_RTS)
--		info->serial_signals &= ~SerialSignal_RTS;
--	if (clear & TIOCM_DTR)
--		info->serial_signals &= ~SerialSignal_DTR;
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
-- 	usc_set_serial_signals(info);
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--	return 0;
--}
--
--/* mgsl_break()		Set or clear transmit break condition
-- *
-- * Arguments:		tty		pointer to tty instance data
-- *			break_state	-1=set break condition, 0=clear
-- * Return Value:	error code
-- */
--static int mgsl_break(struct tty_struct *tty, int break_state)
--{
--	struct mgsl_struct * info = tty->driver_data;
--	unsigned long flags;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_break(%s,%d)\n",
--			 __FILE__,__LINE__, info->device_name, break_state);
--			 
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_break"))
--		return -EINVAL;
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
-- 	if (break_state == -1)
--		usc_OutReg(info,IOCR,(u16)(usc_InReg(info,IOCR) | BIT7));
--	else 
--		usc_OutReg(info,IOCR,(u16)(usc_InReg(info,IOCR) & ~BIT7));
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	return 0;
--	
--}	/* end of mgsl_break() */
--
--/*
-- * Get counter of input serial line interrupts (DCD,RI,DSR,CTS)
-- * Return: write counters to the user passed counter struct
-- * NB: both 1->0 and 0->1 transitions are counted except for
-- *     RI where only 0->1 is counted.
-- */
--static int msgl_get_icount(struct tty_struct *tty,
--				struct serial_icounter_struct *icount)
--
--{
--	struct mgsl_struct * info = tty->driver_data;
--	struct mgsl_icount cnow;	/* kernel counter temps */
--	unsigned long flags;
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	cnow = info->icount;
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--	icount->cts = cnow.cts;
--	icount->dsr = cnow.dsr;
--	icount->rng = cnow.rng;
--	icount->dcd = cnow.dcd;
--	icount->rx = cnow.rx;
--	icount->tx = cnow.tx;
--	icount->frame = cnow.frame;
--	icount->overrun = cnow.overrun;
--	icount->parity = cnow.parity;
--	icount->brk = cnow.brk;
--	icount->buf_overrun = cnow.buf_overrun;
--	return 0;
--}
--
--/* mgsl_ioctl()	Service an IOCTL request
-- * 	
-- * Arguments:
-- * 
-- * 	tty	pointer to tty instance data
-- * 	cmd	IOCTL command code
-- * 	arg	command argument/context
-- * 	
-- * Return Value:	0 if success, otherwise error code
-- */
--static int mgsl_ioctl(struct tty_struct *tty,
--		    unsigned int cmd, unsigned long arg)
--{
--	struct mgsl_struct * info = tty->driver_data;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_ioctl %s cmd=%08X\n", __FILE__,__LINE__,
--			info->device_name, cmd );
--	
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_ioctl"))
--		return -ENODEV;
--
--	if (cmd != TIOCMIWAIT) {
--		if (tty_io_error(tty))
--		    return -EIO;
--	}
--
--	return mgsl_ioctl_common(info, cmd, arg);
--}
--
--static int mgsl_ioctl_common(struct mgsl_struct *info, unsigned int cmd, unsigned long arg)
--{
--	void __user *argp = (void __user *)arg;
--	
--	switch (cmd) {
--		case MGSL_IOCGPARAMS:
--			return mgsl_get_params(info, argp);
--		case MGSL_IOCSPARAMS:
--			return mgsl_set_params(info, argp);
--		case MGSL_IOCGTXIDLE:
--			return mgsl_get_txidle(info, argp);
--		case MGSL_IOCSTXIDLE:
--			return mgsl_set_txidle(info,(int)arg);
--		case MGSL_IOCTXENABLE:
--			return mgsl_txenable(info,(int)arg);
--		case MGSL_IOCRXENABLE:
--			return mgsl_rxenable(info,(int)arg);
--		case MGSL_IOCTXABORT:
--			return mgsl_txabort(info);
--		case MGSL_IOCGSTATS:
--			return mgsl_get_stats(info, argp);
--		case MGSL_IOCWAITEVENT:
--			return mgsl_wait_event(info, argp);
--		case MGSL_IOCLOOPTXDONE:
--			return mgsl_loopmode_send_done(info);
--		/* Wait for modem input (DCD,RI,DSR,CTS) change
--		 * as specified by mask in arg (TIOCM_RNG/DSR/CD/CTS)
--		 */
--		case TIOCMIWAIT:
--			return modem_input_wait(info,(int)arg);
--
--		default:
--			return -ENOIOCTLCMD;
--	}
--	return 0;
--}
--
--/* mgsl_set_termios()
-- * 
-- * 	Set new termios settings
-- * 	
-- * Arguments:
-- * 
-- * 	tty		pointer to tty structure
-- * 	termios		pointer to buffer to hold returned old termios
-- * 	
-- * Return Value:		None
-- */
--static void mgsl_set_termios(struct tty_struct *tty, struct ktermios *old_termios)
--{
--	struct mgsl_struct *info = tty->driver_data;
--	unsigned long flags;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_set_termios %s\n", __FILE__,__LINE__,
--			tty->driver->name );
--	
--	mgsl_change_params(info);
--
--	/* Handle transition to B0 status */
--	if ((old_termios->c_cflag & CBAUD) && !C_BAUD(tty)) {
--		info->serial_signals &= ~(SerialSignal_RTS | SerialSignal_DTR);
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--	 	usc_set_serial_signals(info);
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	}
--
--	/* Handle transition away from B0 status */
--	if (!(old_termios->c_cflag & CBAUD) && C_BAUD(tty)) {
--		info->serial_signals |= SerialSignal_DTR;
--		if (!C_CRTSCTS(tty) || !tty_throttled(tty))
--			info->serial_signals |= SerialSignal_RTS;
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--	 	usc_set_serial_signals(info);
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	}
--
--	/* Handle turning off CRTSCTS */
--	if (old_termios->c_cflag & CRTSCTS && !C_CRTSCTS(tty)) {
--		tty->hw_stopped = 0;
--		mgsl_start(tty);
--	}
--
--}	/* end of mgsl_set_termios() */
--
--/* mgsl_close()
-- * 
-- * 	Called when port is closed. Wait for remaining data to be
-- * 	sent. Disable port and free resources.
-- * 	
-- * Arguments:
-- * 
-- * 	tty	pointer to open tty structure
-- * 	filp	pointer to open file object
-- * 	
-- * Return Value:	None
-- */
--static void mgsl_close(struct tty_struct *tty, struct file * filp)
--{
--	struct mgsl_struct * info = tty->driver_data;
--
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_close"))
--		return;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_close(%s) entry, count=%d\n",
--			 __FILE__,__LINE__, info->device_name, info->port.count);
--
--	if (tty_port_close_start(&info->port, tty, filp) == 0)
--		goto cleanup;
--
--	mutex_lock(&info->port.mutex);
--	if (tty_port_initialized(&info->port))
-- 		mgsl_wait_until_sent(tty, info->timeout);
--	mgsl_flush_buffer(tty);
--	tty_ldisc_flush(tty);
--	shutdown(info);
--	mutex_unlock(&info->port.mutex);
--
--	tty_port_close_end(&info->port, tty);	
--	info->port.tty = NULL;
--cleanup:			
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_close(%s) exit, count=%d\n", __FILE__,__LINE__,
--			tty->driver->name, info->port.count);
--			
--}	/* end of mgsl_close() */
--
--/* mgsl_wait_until_sent()
-- *
-- *	Wait until the transmitter is empty.
-- *
-- * Arguments:
-- *
-- *	tty		pointer to tty info structure
-- *	timeout		time to wait for send completion
-- *
-- * Return Value:	None
-- */
--static void mgsl_wait_until_sent(struct tty_struct *tty, int timeout)
--{
--	struct mgsl_struct * info = tty->driver_data;
--	unsigned long orig_jiffies, char_time;
--
--	if (!info )
--		return;
--
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_wait_until_sent(%s) entry\n",
--			 __FILE__,__LINE__, info->device_name );
--
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_wait_until_sent"))
--		return;
--
--	if (!tty_port_initialized(&info->port))
--		goto exit;
--
--	orig_jiffies = jiffies;
--
--	/* Set check interval to 1/5 of estimated time to
--	 * send a character, and make it at least 1. The check
--	 * interval should also be less than the timeout.
--	 * Note: use tight timings here to satisfy the NIST-PCTS.
--	 */ 
--
--	if ( info->params.data_rate ) {
--	       	char_time = info->timeout/(32 * 5);
--		if (!char_time)
--			char_time++;
--	} else
--		char_time = 1;
--		
--	if (timeout)
--		char_time = min_t(unsigned long, char_time, timeout);
--		
--	if ( info->params.mode == MGSL_MODE_HDLC ||
--		info->params.mode == MGSL_MODE_RAW ) {
--		while (info->tx_active) {
--			msleep_interruptible(jiffies_to_msecs(char_time));
--			if (signal_pending(current))
--				break;
--			if (timeout && time_after(jiffies, orig_jiffies + timeout))
--				break;
--		}
--	} else {
--		while (!(usc_InReg(info,TCSR) & TXSTATUS_ALL_SENT) &&
--			info->tx_enabled) {
--			msleep_interruptible(jiffies_to_msecs(char_time));
--			if (signal_pending(current))
--				break;
--			if (timeout && time_after(jiffies, orig_jiffies + timeout))
--				break;
--		}
--	}
--      
--exit:
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_wait_until_sent(%s) exit\n",
--			 __FILE__,__LINE__, info->device_name );
--			 
--}	/* end of mgsl_wait_until_sent() */
--
--/* mgsl_hangup()
-- *
-- *	Called by tty_hangup() when a hangup is signaled.
-- *	This is the same as to closing all open files for the port.
-- *
-- * Arguments:		tty	pointer to associated tty object
-- * Return Value:	None
-- */
--static void mgsl_hangup(struct tty_struct *tty)
--{
--	struct mgsl_struct * info = tty->driver_data;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_hangup(%s)\n",
--			 __FILE__,__LINE__, info->device_name );
--			 
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_hangup"))
--		return;
--
--	mgsl_flush_buffer(tty);
--	shutdown(info);
--	
--	info->port.count = 0;	
--	tty_port_set_active(&info->port, 0);
--	info->port.tty = NULL;
--
--	wake_up_interruptible(&info->port.open_wait);
--	
--}	/* end of mgsl_hangup() */
--
--/*
-- * carrier_raised()
-- *
-- *	Return true if carrier is raised
-- */
--
--static int carrier_raised(struct tty_port *port)
--{
--	unsigned long flags;
--	struct mgsl_struct *info = container_of(port, struct mgsl_struct, port);
--	
--	spin_lock_irqsave(&info->irq_spinlock, flags);
-- 	usc_get_serial_signals(info);
--	spin_unlock_irqrestore(&info->irq_spinlock, flags);
--	return (info->serial_signals & SerialSignal_DCD) ? 1 : 0;
--}
--
--static void dtr_rts(struct tty_port *port, int on)
--{
--	struct mgsl_struct *info = container_of(port, struct mgsl_struct, port);
--	unsigned long flags;
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	if (on)
--		info->serial_signals |= SerialSignal_RTS | SerialSignal_DTR;
--	else
--		info->serial_signals &= ~(SerialSignal_RTS | SerialSignal_DTR);
-- 	usc_set_serial_signals(info);
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--}
--
--
--/* block_til_ready()
-- * 
-- * 	Block the current process until the specified port
-- * 	is ready to be opened.
-- * 	
-- * Arguments:
-- * 
-- * 	tty		pointer to tty info structure
-- * 	filp		pointer to open file object
-- * 	info		pointer to device instance data
-- * 	
-- * Return Value:	0 if success, otherwise error code
-- */
--static int block_til_ready(struct tty_struct *tty, struct file * filp,
--			   struct mgsl_struct *info)
--{
--	DECLARE_WAITQUEUE(wait, current);
--	int		retval;
--	bool		do_clocal = false;
--	unsigned long	flags;
--	int		dcd;
--	struct tty_port *port = &info->port;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):block_til_ready on %s\n",
--			 __FILE__,__LINE__, tty->driver->name );
--
--	if (filp->f_flags & O_NONBLOCK || tty_io_error(tty)) {
--		/* nonblock mode is set or port is not enabled */
--		tty_port_set_active(port, 1);
--		return 0;
--	}
--
--	if (C_CLOCAL(tty))
--		do_clocal = true;
--
--	/* Wait for carrier detect and the line to become
--	 * free (i.e., not in use by the callout).  While we are in
--	 * this loop, port->count is dropped by one, so that
--	 * mgsl_close() knows when to free things.  We restore it upon
--	 * exit, either normal or abnormal.
--	 */
--	 
--	retval = 0;
--	add_wait_queue(&port->open_wait, &wait);
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):block_til_ready before block on %s count=%d\n",
--			 __FILE__,__LINE__, tty->driver->name, port->count );
--
--	spin_lock_irqsave(&info->irq_spinlock, flags);
--	port->count--;
--	spin_unlock_irqrestore(&info->irq_spinlock, flags);
--	port->blocked_open++;
--
--	while (1) {
--		if (C_BAUD(tty) && tty_port_initialized(port))
--			tty_port_raise_dtr_rts(port);
--
--		set_current_state(TASK_INTERRUPTIBLE);
--
--		if (tty_hung_up_p(filp) || !tty_port_initialized(port)) {
--			retval = (port->flags & ASYNC_HUP_NOTIFY) ?
--					-EAGAIN : -ERESTARTSYS;
--			break;
--		}
--
--		dcd = tty_port_carrier_raised(&info->port);
--		if (do_clocal || dcd)
--			break;
--
--		if (signal_pending(current)) {
--			retval = -ERESTARTSYS;
--			break;
--		}
--		
--		if (debug_level >= DEBUG_LEVEL_INFO)
--			printk("%s(%d):block_til_ready blocking on %s count=%d\n",
--				 __FILE__,__LINE__, tty->driver->name, port->count );
--				 
--		tty_unlock(tty);
--		schedule();
--		tty_lock(tty);
--	}
--	
--	set_current_state(TASK_RUNNING);
--	remove_wait_queue(&port->open_wait, &wait);
--	
--	/* FIXME: Racy on hangup during close wait */
--	if (!tty_hung_up_p(filp))
--		port->count++;
--	port->blocked_open--;
--	
--	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):block_til_ready after blocking on %s count=%d\n",
--			 __FILE__,__LINE__, tty->driver->name, port->count );
--			 
--	if (!retval)
--		tty_port_set_active(port, 1);
--		
--	return retval;
--	
--}	/* end of block_til_ready() */
--
--static int mgsl_install(struct tty_driver *driver, struct tty_struct *tty)
--{
--	struct mgsl_struct *info;
+-	SLMP_INFO *info;
 -	int line = tty->index;
 -
--	/* verify range of specified line number */
--	if (line >= mgsl_device_count) {
--		printk("%s(%d):mgsl_open with invalid line #%d.\n",
--			__FILE__, __LINE__, line);
+-	if (line >= synclinkmp_device_count) {
+-		printk("%s(%d): open with invalid line #%d.\n",
+-			__FILE__,__LINE__,line);
 -		return -ENODEV;
 -	}
 -
--	/* find the info structure for the specified line */
--	info = mgsl_device_list;
+-	info = synclinkmp_device_list;
 -	while (info && info->line != line)
 -		info = info->next_device;
--	if (mgsl_paranoia_check(info, tty->name, "mgsl_open"))
+-	if (sanity_check(info, tty->name, "open"))
 -		return -ENODEV;
+-	if (info->init_error) {
+-		printk("%s(%d):%s device is not allocated, init error=%d\n",
+-			__FILE__, __LINE__, info->device_name,
+-			info->init_error);
+-		return -ENODEV;
+-	}
+-
 -	tty->driver_data = info;
 -
 -	return tty_port_install(&info->port, driver, tty);
 -}
 -
--/* mgsl_open()
-- *
-- *	Called when a port is opened.  Init and enable port.
-- *	Perform serial-specific initialization for the tty structure.
-- *
-- * Arguments:		tty	pointer to tty info structure
-- *			filp	associated file pointer
-- *
-- * Return Value:	0 if success, otherwise error code
+-/* Called when a port is opened.  Init and enable port.
 - */
--static int mgsl_open(struct tty_struct *tty, struct file * filp)
+-static int open(struct tty_struct *tty, struct file *filp)
 -{
--	struct mgsl_struct *info = tty->driver_data;
+-	SLMP_INFO *info = tty->driver_data;
 -	unsigned long flags;
 -	int retval;
 -
 -	info->port.tty = tty;
--		
+-
 -	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_open(%s), old ref count = %d\n",
+-		printk("%s(%d):%s open(), old ref count = %d\n",
 -			 __FILE__,__LINE__,tty->driver->name, info->port.count);
 -
 -	info->port.low_latency = (info->port.flags & ASYNC_LOW_LATENCY) ? 1 : 0;
@@ -3567,46 +941,586 @@ index cbe9ad0683fc9..0000000000000
 -	retval = block_til_ready(tty, filp, info);
 -	if (retval) {
 -		if (debug_level >= DEBUG_LEVEL_INFO)
--			printk("%s(%d):block_til_ready(%s) returned %d\n",
+-			printk("%s(%d):%s block_til_ready() returned %d\n",
 -				 __FILE__,__LINE__, info->device_name, retval);
 -		goto cleanup;
 -	}
 -
 -	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("%s(%d):mgsl_open(%s) success\n",
+-		printk("%s(%d):%s open() success\n",
 -			 __FILE__,__LINE__, info->device_name);
 -	retval = 0;
--	
--cleanup:			
+-
+-cleanup:
 -	if (retval) {
 -		if (tty->count == 1)
 -			info->port.tty = NULL; /* tty layer will release tty struct */
 -		if(info->port.count)
 -			info->port.count--;
 -	}
--	
+-
 -	return retval;
--	
--}	/* end of mgsl_open() */
+-}
+-
+-/* Called when port is closed. Wait for remaining data to be
+- * sent. Disable port and free resources.
+- */
+-static void close(struct tty_struct *tty, struct file *filp)
+-{
+-	SLMP_INFO * info = tty->driver_data;
+-
+-	if (sanity_check(info, tty->name, "close"))
+-		return;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s close() entry, count=%d\n",
+-			 __FILE__,__LINE__, info->device_name, info->port.count);
+-
+-	if (tty_port_close_start(&info->port, tty, filp) == 0)
+-		goto cleanup;
+-
+-	mutex_lock(&info->port.mutex);
+-	if (tty_port_initialized(&info->port))
+- 		wait_until_sent(tty, info->timeout);
+-
+-	flush_buffer(tty);
+-	tty_ldisc_flush(tty);
+-	shutdown(info);
+-	mutex_unlock(&info->port.mutex);
+-
+-	tty_port_close_end(&info->port, tty);
+-	info->port.tty = NULL;
+-cleanup:
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s close() exit, count=%d\n", __FILE__,__LINE__,
+-			tty->driver->name, info->port.count);
+-}
+-
+-/* Called by tty_hangup() when a hangup is signaled.
+- * This is the same as closing all open descriptors for the port.
+- */
+-static void hangup(struct tty_struct *tty)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned long flags;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s hangup()\n",
+-			 __FILE__,__LINE__, info->device_name );
+-
+-	if (sanity_check(info, tty->name, "hangup"))
+-		return;
+-
+-	mutex_lock(&info->port.mutex);
+-	flush_buffer(tty);
+-	shutdown(info);
+-
+-	spin_lock_irqsave(&info->port.lock, flags);
+-	info->port.count = 0;
+-	info->port.tty = NULL;
+-	spin_unlock_irqrestore(&info->port.lock, flags);
+-	tty_port_set_active(&info->port, 1);
+-	mutex_unlock(&info->port.mutex);
+-
+-	wake_up_interruptible(&info->port.open_wait);
+-}
+-
+-/* Set new termios settings
+- */
+-static void set_termios(struct tty_struct *tty, struct ktermios *old_termios)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned long flags;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s set_termios()\n", __FILE__,__LINE__,
+-			tty->driver->name );
+-
+-	change_params(info);
+-
+-	/* Handle transition to B0 status */
+-	if ((old_termios->c_cflag & CBAUD) && !C_BAUD(tty)) {
+-		info->serial_signals &= ~(SerialSignal_RTS | SerialSignal_DTR);
+-		spin_lock_irqsave(&info->lock,flags);
+-	 	set_signals(info);
+-		spin_unlock_irqrestore(&info->lock,flags);
+-	}
+-
+-	/* Handle transition away from B0 status */
+-	if (!(old_termios->c_cflag & CBAUD) && C_BAUD(tty)) {
+-		info->serial_signals |= SerialSignal_DTR;
+-		if (!C_CRTSCTS(tty) || !tty_throttled(tty))
+-			info->serial_signals |= SerialSignal_RTS;
+-		spin_lock_irqsave(&info->lock,flags);
+-	 	set_signals(info);
+-		spin_unlock_irqrestore(&info->lock,flags);
+-	}
+-
+-	/* Handle turning off CRTSCTS */
+-	if (old_termios->c_cflag & CRTSCTS && !C_CRTSCTS(tty)) {
+-		tty->hw_stopped = 0;
+-		tx_release(tty);
+-	}
+-}
+-
+-/* Send a block of data
+- *
+- * Arguments:
+- *
+- * 	tty		pointer to tty information structure
+- * 	buf		pointer to buffer containing send data
+- * 	count		size of send data in bytes
+- *
+- * Return Value:	number of characters written
+- */
+-static int write(struct tty_struct *tty,
+-		 const unsigned char *buf, int count)
+-{
+-	int	c, ret = 0;
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned long flags;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s write() count=%d\n",
+-		       __FILE__,__LINE__,info->device_name,count);
+-
+-	if (sanity_check(info, tty->name, "write"))
+-		goto cleanup;
+-
+-	if (!info->tx_buf)
+-		goto cleanup;
+-
+-	if (info->params.mode == MGSL_MODE_HDLC) {
+-		if (count > info->max_frame_size) {
+-			ret = -EIO;
+-			goto cleanup;
+-		}
+-		if (info->tx_active)
+-			goto cleanup;
+-		if (info->tx_count) {
+-			/* send accumulated data from send_char() calls */
+-			/* as frame and wait before accepting more data. */
+-			tx_load_dma_buffer(info, info->tx_buf, info->tx_count);
+-			goto start;
+-		}
+-		ret = info->tx_count = count;
+-		tx_load_dma_buffer(info, buf, count);
+-		goto start;
+-	}
+-
+-	for (;;) {
+-		c = min_t(int, count,
+-			min(info->max_frame_size - info->tx_count - 1,
+-			    info->max_frame_size - info->tx_put));
+-		if (c <= 0)
+-			break;
+-			
+-		memcpy(info->tx_buf + info->tx_put, buf, c);
+-
+-		spin_lock_irqsave(&info->lock,flags);
+-		info->tx_put += c;
+-		if (info->tx_put >= info->max_frame_size)
+-			info->tx_put -= info->max_frame_size;
+-		info->tx_count += c;
+-		spin_unlock_irqrestore(&info->lock,flags);
+-
+-		buf += c;
+-		count -= c;
+-		ret += c;
+-	}
+-
+-	if (info->params.mode == MGSL_MODE_HDLC) {
+-		if (count) {
+-			ret = info->tx_count = 0;
+-			goto cleanup;
+-		}
+-		tx_load_dma_buffer(info, info->tx_buf, info->tx_count);
+-	}
+-start:
+- 	if (info->tx_count && !tty->stopped && !tty->hw_stopped) {
+-		spin_lock_irqsave(&info->lock,flags);
+-		if (!info->tx_active)
+-		 	tx_start(info);
+-		spin_unlock_irqrestore(&info->lock,flags);
+- 	}
+-
+-cleanup:
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk( "%s(%d):%s write() returning=%d\n",
+-			__FILE__,__LINE__,info->device_name,ret);
+-	return ret;
+-}
+-
+-/* Add a character to the transmit buffer.
+- */
+-static int put_char(struct tty_struct *tty, unsigned char ch)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned long flags;
+-	int ret = 0;
+-
+-	if ( debug_level >= DEBUG_LEVEL_INFO ) {
+-		printk( "%s(%d):%s put_char(%d)\n",
+-			__FILE__,__LINE__,info->device_name,ch);
+-	}
+-
+-	if (sanity_check(info, tty->name, "put_char"))
+-		return 0;
+-
+-	if (!info->tx_buf)
+-		return 0;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-
+-	if ( (info->params.mode != MGSL_MODE_HDLC) ||
+-	     !info->tx_active ) {
+-
+-		if (info->tx_count < info->max_frame_size - 1) {
+-			info->tx_buf[info->tx_put++] = ch;
+-			if (info->tx_put >= info->max_frame_size)
+-				info->tx_put -= info->max_frame_size;
+-			info->tx_count++;
+-			ret = 1;
+-		}
+-	}
+-
+-	spin_unlock_irqrestore(&info->lock,flags);
+-	return ret;
+-}
+-
+-/* Send a high-priority XON/XOFF character
+- */
+-static void send_xchar(struct tty_struct *tty, char ch)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned long flags;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s send_xchar(%d)\n",
+-			 __FILE__,__LINE__, info->device_name, ch );
+-
+-	if (sanity_check(info, tty->name, "send_xchar"))
+-		return;
+-
+-	info->x_char = ch;
+-	if (ch) {
+-		/* Make sure transmit interrupts are on */
+-		spin_lock_irqsave(&info->lock,flags);
+-		if (!info->tx_enabled)
+-		 	tx_start(info);
+-		spin_unlock_irqrestore(&info->lock,flags);
+-	}
+-}
+-
+-/* Wait until the transmitter is empty.
+- */
+-static void wait_until_sent(struct tty_struct *tty, int timeout)
+-{
+-	SLMP_INFO * info = tty->driver_data;
+-	unsigned long orig_jiffies, char_time;
+-
+-	if (!info )
+-		return;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s wait_until_sent() entry\n",
+-			 __FILE__,__LINE__, info->device_name );
+-
+-	if (sanity_check(info, tty->name, "wait_until_sent"))
+-		return;
+-
+-	if (!tty_port_initialized(&info->port))
+-		goto exit;
+-
+-	orig_jiffies = jiffies;
+-
+-	/* Set check interval to 1/5 of estimated time to
+-	 * send a character, and make it at least 1. The check
+-	 * interval should also be less than the timeout.
+-	 * Note: use tight timings here to satisfy the NIST-PCTS.
+-	 */
+-
+-	if ( info->params.data_rate ) {
+-	       	char_time = info->timeout/(32 * 5);
+-		if (!char_time)
+-			char_time++;
+-	} else
+-		char_time = 1;
+-
+-	if (timeout)
+-		char_time = min_t(unsigned long, char_time, timeout);
+-
+-	if ( info->params.mode == MGSL_MODE_HDLC ) {
+-		while (info->tx_active) {
+-			msleep_interruptible(jiffies_to_msecs(char_time));
+-			if (signal_pending(current))
+-				break;
+-			if (timeout && time_after(jiffies, orig_jiffies + timeout))
+-				break;
+-		}
+-	} else {
+-		/*
+-		 * TODO: determine if there is something similar to USC16C32
+-		 * 	 TXSTATUS_ALL_SENT status
+-		 */
+-		while ( info->tx_active && info->tx_enabled) {
+-			msleep_interruptible(jiffies_to_msecs(char_time));
+-			if (signal_pending(current))
+-				break;
+-			if (timeout && time_after(jiffies, orig_jiffies + timeout))
+-				break;
+-		}
+-	}
+-
+-exit:
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s wait_until_sent() exit\n",
+-			 __FILE__,__LINE__, info->device_name );
+-}
+-
+-/* Return the count of free bytes in transmit buffer
+- */
+-static int write_room(struct tty_struct *tty)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	int ret;
+-
+-	if (sanity_check(info, tty->name, "write_room"))
+-		return 0;
+-
+-	if (info->params.mode == MGSL_MODE_HDLC) {
+-		ret = (info->tx_active) ? 0 : HDLC_MAX_FRAME_SIZE;
+-	} else {
+-		ret = info->max_frame_size - info->tx_count - 1;
+-		if (ret < 0)
+-			ret = 0;
+-	}
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s write_room()=%d\n",
+-		       __FILE__, __LINE__, info->device_name, ret);
+-
+-	return ret;
+-}
+-
+-/* enable transmitter and send remaining buffered characters
+- */
+-static void flush_chars(struct tty_struct *tty)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned long flags;
+-
+-	if ( debug_level >= DEBUG_LEVEL_INFO )
+-		printk( "%s(%d):%s flush_chars() entry tx_count=%d\n",
+-			__FILE__,__LINE__,info->device_name,info->tx_count);
+-
+-	if (sanity_check(info, tty->name, "flush_chars"))
+-		return;
+-
+-	if (info->tx_count <= 0 || tty->stopped || tty->hw_stopped ||
+-	    !info->tx_buf)
+-		return;
+-
+-	if ( debug_level >= DEBUG_LEVEL_INFO )
+-		printk( "%s(%d):%s flush_chars() entry, starting transmitter\n",
+-			__FILE__,__LINE__,info->device_name );
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-
+-	if (!info->tx_active) {
+-		if ( (info->params.mode == MGSL_MODE_HDLC) &&
+-			info->tx_count ) {
+-			/* operating in synchronous (frame oriented) mode */
+-			/* copy data from circular tx_buf to */
+-			/* transmit DMA buffer. */
+-			tx_load_dma_buffer(info,
+-				 info->tx_buf,info->tx_count);
+-		}
+-	 	tx_start(info);
+-	}
+-
+-	spin_unlock_irqrestore(&info->lock,flags);
+-}
+-
+-/* Discard all data in the send buffer
+- */
+-static void flush_buffer(struct tty_struct *tty)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned long flags;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s flush_buffer() entry\n",
+-			 __FILE__,__LINE__, info->device_name );
+-
+-	if (sanity_check(info, tty->name, "flush_buffer"))
+-		return;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	info->tx_count = info->tx_put = info->tx_get = 0;
+-	del_timer(&info->tx_timer);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	tty_wakeup(tty);
+-}
+-
+-/* throttle (stop) transmitter
+- */
+-static void tx_hold(struct tty_struct *tty)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned long flags;
+-
+-	if (sanity_check(info, tty->name, "tx_hold"))
+-		return;
+-
+-	if ( debug_level >= DEBUG_LEVEL_INFO )
+-		printk("%s(%d):%s tx_hold()\n",
+-			__FILE__,__LINE__,info->device_name);
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	if (info->tx_enabled)
+-	 	tx_stop(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-}
+-
+-/* release (start) transmitter
+- */
+-static void tx_release(struct tty_struct *tty)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned long flags;
+-
+-	if (sanity_check(info, tty->name, "tx_release"))
+-		return;
+-
+-	if ( debug_level >= DEBUG_LEVEL_INFO )
+-		printk("%s(%d):%s tx_release()\n",
+-			__FILE__,__LINE__,info->device_name);
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	if (!info->tx_enabled)
+-	 	tx_start(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-}
+-
+-/* Service an IOCTL request
+- *
+- * Arguments:
+- *
+- * 	tty	pointer to tty instance data
+- * 	cmd	IOCTL command code
+- * 	arg	command argument/context
+- *
+- * Return Value:	0 if success, otherwise error code
+- */
+-static int ioctl(struct tty_struct *tty,
+-		 unsigned int cmd, unsigned long arg)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	void __user *argp = (void __user *)arg;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s ioctl() cmd=%08X\n", __FILE__,__LINE__,
+-			info->device_name, cmd );
+-
+-	if (sanity_check(info, tty->name, "ioctl"))
+-		return -ENODEV;
+-
+-	if (cmd != TIOCMIWAIT) {
+-		if (tty_io_error(tty))
+-		    return -EIO;
+-	}
+-
+-	switch (cmd) {
+-	case MGSL_IOCGPARAMS:
+-		return get_params(info, argp);
+-	case MGSL_IOCSPARAMS:
+-		return set_params(info, argp);
+-	case MGSL_IOCGTXIDLE:
+-		return get_txidle(info, argp);
+-	case MGSL_IOCSTXIDLE:
+-		return set_txidle(info, (int)arg);
+-	case MGSL_IOCTXENABLE:
+-		return tx_enable(info, (int)arg);
+-	case MGSL_IOCRXENABLE:
+-		return rx_enable(info, (int)arg);
+-	case MGSL_IOCTXABORT:
+-		return tx_abort(info);
+-	case MGSL_IOCGSTATS:
+-		return get_stats(info, argp);
+-	case MGSL_IOCWAITEVENT:
+-		return wait_mgsl_event(info, argp);
+-	case MGSL_IOCLOOPTXDONE:
+-		return 0; // TODO: Not supported, need to document
+-		/* Wait for modem input (DCD,RI,DSR,CTS) change
+-		 * as specified by mask in arg (TIOCM_RNG/DSR/CD/CTS)
+-		 */
+-	case TIOCMIWAIT:
+-		return modem_input_wait(info,(int)arg);
+-		
+-		/*
+-		 * Get counter of input serial line interrupts (DCD,RI,DSR,CTS)
+-		 * Return: write counters to the user passed counter struct
+-		 * NB: both 1->0 and 0->1 transitions are counted except for
+-		 *     RI where only 0->1 is counted.
+-		 */
+-	default:
+-		return -ENOIOCTLCMD;
+-	}
+-	return 0;
+-}
+-
+-static int get_icount(struct tty_struct *tty,
+-				struct serial_icounter_struct *icount)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	struct mgsl_icount cnow;	/* kernel counter temps */
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	cnow = info->icount;
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	icount->cts = cnow.cts;
+-	icount->dsr = cnow.dsr;
+-	icount->rng = cnow.rng;
+-	icount->dcd = cnow.dcd;
+-	icount->rx = cnow.rx;
+-	icount->tx = cnow.tx;
+-	icount->frame = cnow.frame;
+-	icount->overrun = cnow.overrun;
+-	icount->parity = cnow.parity;
+-	icount->brk = cnow.brk;
+-	icount->buf_overrun = cnow.buf_overrun;
+-
+-	return 0;
+-}
 -
 -/*
 - * /proc fs routines....
 - */
 -
--static inline void line_info(struct seq_file *m, struct mgsl_struct *info)
+-static inline void line_info(struct seq_file *m, SLMP_INFO *info)
 -{
 -	char	stat_buf[30];
 -	unsigned long flags;
 -
--	seq_printf(m, "%s:PCI io:%04X irq:%d mem:%08X lcr:%08X",
--		info->device_name, info->io_base, info->irq_level,
--		info->phys_memory_base, info->phys_lcr_base);
+-	seq_printf(m, "%s: SCABase=%08x Mem=%08X StatusControl=%08x LCR=%08X\n"
+-		       "\tIRQ=%d MaxFrameSize=%u\n",
+-		info->device_name,
+-		info->phys_sca_base,
+-		info->phys_memory_base,
+-		info->phys_statctrl_base,
+-		info->phys_lcr_base,
+-		info->irq_level,
+-		info->max_frame_size );
 -
 -	/* output current serial signal states */
--	spin_lock_irqsave(&info->irq_spinlock,flags);
-- 	usc_get_serial_signals(info);
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	
+-	spin_lock_irqsave(&info->lock,flags);
+- 	get_signals(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
 -	stat_buf[0] = 0;
 -	stat_buf[1] = 0;
 -	if (info->serial_signals & SerialSignal_RTS)
@@ -3622,9 +1536,8 @@ index cbe9ad0683fc9..0000000000000
 -	if (info->serial_signals & SerialSignal_RI)
 -		strcat(stat_buf, "|RI");
 -
--	if (info->params.mode == MGSL_MODE_HDLC ||
--	    info->params.mode == MGSL_MODE_RAW ) {
--		seq_printf(m, " HDLC txok:%d rxok:%d",
+-	if (info->params.mode == MGSL_MODE_HDLC) {
+-		seq_printf(m, "\tHDLC txok:%d rxok:%d",
 -			      info->icount.txok, info->icount.rxok);
 -		if (info->icount.txunder)
 -			seq_printf(m, " txunder:%d", info->icount.txunder);
@@ -3637,9 +1550,9 @@ index cbe9ad0683fc9..0000000000000
 -		if (info->icount.rxover)
 -			seq_printf(m, " rxover:%d", info->icount.rxover);
 -		if (info->icount.rxcrc)
--			seq_printf(m, " rxcrc:%d", info->icount.rxcrc);
+-			seq_printf(m, " rxlong:%d", info->icount.rxcrc);
 -	} else {
--		seq_printf(m, " ASYNC tx:%d rx:%d",
+-		seq_printf(m, "\tASYNC tx:%d rx:%d",
 -			      info->icount.tx, info->icount.rx);
 -		if (info->icount.frame)
 -			seq_printf(m, " fe:%d", info->icount.frame);
@@ -3650,42 +1563,24 @@ index cbe9ad0683fc9..0000000000000
 -		if (info->icount.overrun)
 -			seq_printf(m, " oe:%d", info->icount.overrun);
 -	}
--	
+-
 -	/* Append serial signal status to end */
 -	seq_printf(m, " %s\n", stat_buf+1);
--	
--	seq_printf(m, "txactive=%d bh_req=%d bh_run=%d pending_bh=%x\n",
+-
+-	seq_printf(m, "\ttxactive=%d bh_req=%d bh_run=%d pending_bh=%x\n",
 -	 info->tx_active,info->bh_requested,info->bh_running,
 -	 info->pending_bh);
--	 
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	{	
--	u16 Tcsr = usc_InReg( info, TCSR );
--	u16 Tdmr = usc_InDmaReg( info, TDMR );
--	u16 Ticr = usc_InReg( info, TICR );
--	u16 Rscr = usc_InReg( info, RCSR );
--	u16 Rdmr = usc_InDmaReg( info, RDMR );
--	u16 Ricr = usc_InReg( info, RICR );
--	u16 Icr = usc_InReg( info, ICR );
--	u16 Dccr = usc_InReg( info, DCCR );
--	u16 Tmr = usc_InReg( info, TMR );
--	u16 Tccr = usc_InReg( info, TCCR );
--	u16 Ccar = inw( info->io_base + CCAR );
--	seq_printf(m, "tcsr=%04X tdmr=%04X ticr=%04X rcsr=%04X rdmr=%04X\n"
--                        "ricr=%04X icr =%04X dccr=%04X tmr=%04X tccr=%04X ccar=%04X\n",
--	 		Tcsr,Tdmr,Ticr,Rscr,Rdmr,Ricr,Icr,Dccr,Tmr,Tccr,Ccar );
--	}
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
 -}
 -
--/* Called to print information about devices */
--static int mgsl_proc_show(struct seq_file *m, void *v)
+-/* Called to print information about devices
+- */
+-static int synclinkmp_proc_show(struct seq_file *m, void *v)
 -{
--	struct mgsl_struct *info;
--	
--	seq_printf(m, "synclink driver:%s\n", driver_version);
--	
--	info = mgsl_device_list;
+-	SLMP_INFO *info;
+-
+-	seq_printf(m, "synclinkmp driver:%s\n", driver_version);
+-
+-	info = synclinkmp_device_list;
 -	while( info ) {
 -		line_info(m, info);
 -		info = info->next_device;
@@ -3693,3894 +1588,101 @@ index cbe9ad0683fc9..0000000000000
 -	return 0;
 -}
 -
--/* mgsl_allocate_dma_buffers()
-- * 
-- * 	Allocate and format DMA buffers (ISA adapter)
-- * 	or format shared memory buffers (PCI adapter).
-- * 
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	0 if success, otherwise error
+-/* Return the count of bytes in transmit buffer
 - */
--static int mgsl_allocate_dma_buffers(struct mgsl_struct *info)
+-static int chars_in_buffer(struct tty_struct *tty)
 -{
--	unsigned short BuffersPerFrame;
+-	SLMP_INFO *info = tty->driver_data;
 -
--	info->last_mem_alloc = 0;
+-	if (sanity_check(info, tty->name, "chars_in_buffer"))
+-		return 0;
 -
--	/* Calculate the number of DMA buffers necessary to hold the */
--	/* largest allowable frame size. Note: If the max frame size is */
--	/* not an even multiple of the DMA buffer size then we need to */
--	/* round the buffer count per frame up one. */
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s chars_in_buffer()=%d\n",
+-		       __FILE__, __LINE__, info->device_name, info->tx_count);
 -
--	BuffersPerFrame = (unsigned short)(info->max_frame_size/DMABUFFERSIZE);
--	if ( info->max_frame_size % DMABUFFERSIZE )
--		BuffersPerFrame++;
--
--	/*
--	 * The PCI adapter has 256KBytes of shared memory to use.  This is 64
--	 * PAGE_SIZE buffers.
--	 *
--	 * The first page is used for padding at this time so the buffer list
--	 * does not begin at offset 0 of the PCI adapter's shared memory.
--	 *
--	 * The 2nd page is used for the buffer list. A 4K buffer list can hold
--	 * 128 DMA_BUFFER structures at 32 bytes each.
--	 *
--	 * This leaves 62 4K pages.
--	 *
--	 * The next N pages are used for transmit frame(s).  We reserve enough
--	 * 4K page blocks to hold the required number of transmit dma buffers
--	 * (num_tx_dma_buffers), each of MaxFrameSize size.
--	 *
--	 * Of the remaining pages (62-N), determine how many can be used to
--	 * receive full MaxFrameSize inbound frames
--	 */
--	info->tx_buffer_count = info->num_tx_dma_buffers * BuffersPerFrame;
--	info->rx_buffer_count = 62 - info->tx_buffer_count;
--
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk("%s(%d):Allocating %d TX and %d RX DMA buffers.\n",
--			__FILE__,__LINE__, info->tx_buffer_count,info->rx_buffer_count);
--	
--	if ( mgsl_alloc_buffer_list_memory( info ) < 0 ||
--		  mgsl_alloc_frame_memory(info, info->rx_buffer_list, info->rx_buffer_count) < 0 || 
--		  mgsl_alloc_frame_memory(info, info->tx_buffer_list, info->tx_buffer_count) < 0 || 
--		  mgsl_alloc_intermediate_rxbuffer_memory(info) < 0  ||
--		  mgsl_alloc_intermediate_txbuffer_memory(info) < 0 ) {
--		printk("%s(%d):Can't allocate DMA buffer memory\n",__FILE__,__LINE__);
--		return -ENOMEM;
--	}
--	
--	mgsl_reset_rx_dma_buffers( info );
--  	mgsl_reset_tx_dma_buffers( info );
--
--	return 0;
--
--}	/* end of mgsl_allocate_dma_buffers() */
--
--/*
-- * mgsl_alloc_buffer_list_memory()
-- * 
-- * Allocate a common DMA buffer for use as the
-- * receive and transmit buffer lists.
-- * 
-- * A buffer list is a set of buffer entries where each entry contains
-- * a pointer to an actual buffer and a pointer to the next buffer entry
-- * (plus some other info about the buffer).
-- * 
-- * The buffer entries for a list are built to form a circular list so
-- * that when the entire list has been traversed you start back at the
-- * beginning.
-- * 
-- * This function allocates memory for just the buffer entries.
-- * The links (pointer to next entry) are filled in with the physical
-- * address of the next entry so the adapter can navigate the list
-- * using bus master DMA. The pointers to the actual buffers are filled
-- * out later when the actual buffers are allocated.
-- * 
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	0 if success, otherwise error
-- */
--static int mgsl_alloc_buffer_list_memory( struct mgsl_struct *info )
--{
--	unsigned int i;
--
--	/* PCI adapter uses shared memory. */
--	info->buffer_list = info->memory_base + info->last_mem_alloc;
--	info->buffer_list_phys = info->last_mem_alloc;
--	info->last_mem_alloc += BUFFERLISTSIZE;
--
--	/* We got the memory for the buffer entry lists. */
--	/* Initialize the memory block to all zeros. */
--	memset( info->buffer_list, 0, BUFFERLISTSIZE );
--
--	/* Save virtual address pointers to the receive and */
--	/* transmit buffer lists. (Receive 1st). These pointers will */
--	/* be used by the processor to access the lists. */
--	info->rx_buffer_list = (DMABUFFERENTRY *)info->buffer_list;
--	info->tx_buffer_list = (DMABUFFERENTRY *)info->buffer_list;
--	info->tx_buffer_list += info->rx_buffer_count;
--
--	/*
--	 * Build the links for the buffer entry lists such that
--	 * two circular lists are built. (Transmit and Receive).
--	 *
--	 * Note: the links are physical addresses
--	 * which are read by the adapter to determine the next
--	 * buffer entry to use.
--	 */
--
--	for ( i = 0; i < info->rx_buffer_count; i++ ) {
--		/* calculate and store physical address of this buffer entry */
--		info->rx_buffer_list[i].phys_entry =
--			info->buffer_list_phys + (i * sizeof(DMABUFFERENTRY));
--
--		/* calculate and store physical address of */
--		/* next entry in cirular list of entries */
--
--		info->rx_buffer_list[i].link = info->buffer_list_phys;
--
--		if ( i < info->rx_buffer_count - 1 )
--			info->rx_buffer_list[i].link += (i + 1) * sizeof(DMABUFFERENTRY);
--	}
--
--	for ( i = 0; i < info->tx_buffer_count; i++ ) {
--		/* calculate and store physical address of this buffer entry */
--		info->tx_buffer_list[i].phys_entry = info->buffer_list_phys +
--			((info->rx_buffer_count + i) * sizeof(DMABUFFERENTRY));
--
--		/* calculate and store physical address of */
--		/* next entry in cirular list of entries */
--
--		info->tx_buffer_list[i].link = info->buffer_list_phys +
--			info->rx_buffer_count * sizeof(DMABUFFERENTRY);
--
--		if ( i < info->tx_buffer_count - 1 )
--			info->tx_buffer_list[i].link += (i + 1) * sizeof(DMABUFFERENTRY);
--	}
--
--	return 0;
--
--}	/* end of mgsl_alloc_buffer_list_memory() */
--
--/* Free DMA buffers allocated for use as the
-- * receive and transmit buffer lists.
-- * Warning:
-- * 
-- * 	The data transfer buffers associated with the buffer list
-- * 	MUST be freed before freeing the buffer list itself because
-- * 	the buffer list contains the information necessary to free
-- * 	the individual buffers!
-- */
--static void mgsl_free_buffer_list_memory( struct mgsl_struct *info )
--{
--	info->buffer_list = NULL;
--	info->rx_buffer_list = NULL;
--	info->tx_buffer_list = NULL;
--
--}	/* end of mgsl_free_buffer_list_memory() */
--
--/*
-- * mgsl_alloc_frame_memory()
-- * 
-- * 	Allocate the frame DMA buffers used by the specified buffer list.
-- * 	Each DMA buffer will be one memory page in size. This is necessary
-- * 	because memory can fragment enough that it may be impossible
-- * 	contiguous pages.
-- * 
-- * Arguments:
-- * 
-- *	info		pointer to device instance data
-- * 	BufferList	pointer to list of buffer entries
-- * 	Buffercount	count of buffer entries in buffer list
-- * 
-- * Return Value:	0 if success, otherwise -ENOMEM
-- */
--static int mgsl_alloc_frame_memory(struct mgsl_struct *info,DMABUFFERENTRY *BufferList,int Buffercount)
--{
--	int i;
--
--	/* Allocate page sized buffers for the receive buffer list */
--
--	for ( i = 0; i < Buffercount; i++ ) {
--		BufferList[i].virt_addr = info->memory_base + info->last_mem_alloc;
--		BufferList[i].phys_addr = info->last_mem_alloc;
--		info->last_mem_alloc += DMABUFFERSIZE;
--	}
--
--	return 0;
--
--}	/* end of mgsl_alloc_frame_memory() */
--
--/*
-- * mgsl_free_frame_memory()
-- * 
-- * 	Free the buffers associated with
-- * 	each buffer entry of a buffer list.
-- * 
-- * Arguments:
-- * 
-- *	info		pointer to device instance data
-- * 	BufferList	pointer to list of buffer entries
-- * 	Buffercount	count of buffer entries in buffer list
-- * 
-- * Return Value:	None
-- */
--static void mgsl_free_frame_memory(struct mgsl_struct *info, DMABUFFERENTRY *BufferList, int Buffercount)
--{
--	int i;
--
--	if ( BufferList ) {
--		for ( i = 0 ; i < Buffercount ; i++ ) {
--			if ( BufferList[i].virt_addr ) {
--				BufferList[i].virt_addr = NULL;
--			}
--		}
--	}
--
--}	/* end of mgsl_free_frame_memory() */
--
--/* mgsl_free_dma_buffers()
-- * 
-- * 	Free DMA buffers
-- * 	
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void mgsl_free_dma_buffers( struct mgsl_struct *info )
--{
--	mgsl_free_frame_memory( info, info->rx_buffer_list, info->rx_buffer_count );
--	mgsl_free_frame_memory( info, info->tx_buffer_list, info->tx_buffer_count );
--	mgsl_free_buffer_list_memory( info );
--
--}	/* end of mgsl_free_dma_buffers() */
--
--
--/*
-- * mgsl_alloc_intermediate_rxbuffer_memory()
-- * 
-- * 	Allocate a buffer large enough to hold max_frame_size. This buffer
-- *	is used to pass an assembled frame to the line discipline.
-- * 
-- * Arguments:
-- * 
-- *	info		pointer to device instance data
-- * 
-- * Return Value:	0 if success, otherwise -ENOMEM
-- */
--static int mgsl_alloc_intermediate_rxbuffer_memory(struct mgsl_struct *info)
--{
--	info->intermediate_rxbuffer = kmalloc(info->max_frame_size, GFP_KERNEL | GFP_DMA);
--	if ( info->intermediate_rxbuffer == NULL )
--		return -ENOMEM;
--	/* unused flag buffer to satisfy receive_buf calling interface */
--	info->flag_buf = kzalloc(info->max_frame_size, GFP_KERNEL);
--	if (!info->flag_buf) {
--		kfree(info->intermediate_rxbuffer);
--		info->intermediate_rxbuffer = NULL;
--		return -ENOMEM;
--	}
--	return 0;
--
--}	/* end of mgsl_alloc_intermediate_rxbuffer_memory() */
--
--/*
-- * mgsl_free_intermediate_rxbuffer_memory()
-- * 
-- * 
-- * Arguments:
-- * 
-- *	info		pointer to device instance data
-- * 
-- * Return Value:	None
-- */
--static void mgsl_free_intermediate_rxbuffer_memory(struct mgsl_struct *info)
--{
--	kfree(info->intermediate_rxbuffer);
--	info->intermediate_rxbuffer = NULL;
--	kfree(info->flag_buf);
--	info->flag_buf = NULL;
--
--}	/* end of mgsl_free_intermediate_rxbuffer_memory() */
--
--/*
-- * mgsl_alloc_intermediate_txbuffer_memory()
-- *
-- * 	Allocate intermdiate transmit buffer(s) large enough to hold max_frame_size.
-- * 	This buffer is used to load transmit frames into the adapter's dma transfer
-- * 	buffers when there is sufficient space.
-- *
-- * Arguments:
-- *
-- *	info		pointer to device instance data
-- *
-- * Return Value:	0 if success, otherwise -ENOMEM
-- */
--static int mgsl_alloc_intermediate_txbuffer_memory(struct mgsl_struct *info)
--{
--	int i;
--
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk("%s %s(%d)  allocating %d tx holding buffers\n",
--				info->device_name, __FILE__,__LINE__,info->num_tx_holding_buffers);
--
--	memset(info->tx_holding_buffers,0,sizeof(info->tx_holding_buffers));
--
--	for ( i=0; i<info->num_tx_holding_buffers; ++i) {
--		info->tx_holding_buffers[i].buffer =
--			kmalloc(info->max_frame_size, GFP_KERNEL);
--		if (info->tx_holding_buffers[i].buffer == NULL) {
--			for (--i; i >= 0; i--) {
--				kfree(info->tx_holding_buffers[i].buffer);
--				info->tx_holding_buffers[i].buffer = NULL;
--			}
--			return -ENOMEM;
--		}
--	}
--
--	return 0;
--
--}	/* end of mgsl_alloc_intermediate_txbuffer_memory() */
--
--/*
-- * mgsl_free_intermediate_txbuffer_memory()
-- *
-- *
-- * Arguments:
-- *
-- *	info		pointer to device instance data
-- *
-- * Return Value:	None
-- */
--static void mgsl_free_intermediate_txbuffer_memory(struct mgsl_struct *info)
--{
--	int i;
--
--	for ( i=0; i<info->num_tx_holding_buffers; ++i ) {
--		kfree(info->tx_holding_buffers[i].buffer);
--		info->tx_holding_buffers[i].buffer = NULL;
--	}
--
--	info->get_tx_holding_index = 0;
--	info->put_tx_holding_index = 0;
--	info->tx_holding_count = 0;
--
--}	/* end of mgsl_free_intermediate_txbuffer_memory() */
--
--
--/*
-- * load_next_tx_holding_buffer()
-- *
-- * attempts to load the next buffered tx request into the
-- * tx dma buffers
-- *
-- * Arguments:
-- *
-- *	info		pointer to device instance data
-- *
-- * Return Value:	true if next buffered tx request loaded
-- * 			into adapter's tx dma buffer,
-- * 			false otherwise
-- */
--static bool load_next_tx_holding_buffer(struct mgsl_struct *info)
--{
--	bool ret = false;
--
--	if ( info->tx_holding_count ) {
--		/* determine if we have enough tx dma buffers
--		 * to accommodate the next tx frame
--		 */
--		struct tx_holding_buffer *ptx =
--			&info->tx_holding_buffers[info->get_tx_holding_index];
--		int num_free = num_free_tx_dma_buffers(info);
--		int num_needed = ptx->buffer_size / DMABUFFERSIZE;
--		if ( ptx->buffer_size % DMABUFFERSIZE )
--			++num_needed;
--
--		if (num_needed <= num_free) {
--			info->xmit_cnt = ptx->buffer_size;
--			mgsl_load_tx_dma_buffer(info,ptx->buffer,ptx->buffer_size);
--
--			--info->tx_holding_count;
--			if ( ++info->get_tx_holding_index >= info->num_tx_holding_buffers)
--				info->get_tx_holding_index=0;
--
--			/* restart transmit timer */
--			mod_timer(&info->tx_timer, jiffies + msecs_to_jiffies(5000));
--
--			ret = true;
--		}
--	}
--
--	return ret;
+-	return info->tx_count;
 -}
 -
--/*
-- * save_tx_buffer_request()
-- *
-- * attempt to store transmit frame request for later transmission
-- *
-- * Arguments:
-- *
-- *	info		pointer to device instance data
-- * 	Buffer		pointer to buffer containing frame to load
-- * 	BufferSize	size in bytes of frame in Buffer
-- *
-- * Return Value:	1 if able to store, 0 otherwise
+-/* Signal remote device to throttle send data (our receive data)
 - */
--static int save_tx_buffer_request(struct mgsl_struct *info,const char *Buffer, unsigned int BufferSize)
+-static void throttle(struct tty_struct * tty)
 -{
--	struct tx_holding_buffer *ptx;
--
--	if ( info->tx_holding_count >= info->num_tx_holding_buffers ) {
--		return 0;	        /* all buffers in use */
--	}
--
--	ptx = &info->tx_holding_buffers[info->put_tx_holding_index];
--	ptx->buffer_size = BufferSize;
--	memcpy( ptx->buffer, Buffer, BufferSize);
--
--	++info->tx_holding_count;
--	if ( ++info->put_tx_holding_index >= info->num_tx_holding_buffers)
--		info->put_tx_holding_index=0;
--
--	return 1;
--}
--
--static int mgsl_claim_resources(struct mgsl_struct *info)
--{
--	if (request_region(info->io_base,info->io_addr_size,"synclink") == NULL) {
--		printk( "%s(%d):I/O address conflict on device %s Addr=%08X\n",
--			__FILE__,__LINE__,info->device_name, info->io_base);
--		return -ENODEV;
--	}
--	info->io_addr_requested = true;
--	
--	if ( request_irq(info->irq_level,mgsl_interrupt,info->irq_flags,
--		info->device_name, info ) < 0 ) {
--		printk( "%s(%d):Can't request interrupt on device %s IRQ=%d\n",
--			__FILE__,__LINE__,info->device_name, info->irq_level );
--		goto errout;
--	}
--	info->irq_requested = true;
--	
--	if (request_mem_region(info->phys_memory_base,0x40000,"synclink") == NULL) {
--		printk( "%s(%d):mem addr conflict device %s Addr=%08X\n",
--			__FILE__,__LINE__,info->device_name, info->phys_memory_base);
--		goto errout;
--	}
--	info->shared_mem_requested = true;
--	if (request_mem_region(info->phys_lcr_base + info->lcr_offset,128,"synclink") == NULL) {
--		printk( "%s(%d):lcr mem addr conflict device %s Addr=%08X\n",
--			__FILE__,__LINE__,info->device_name, info->phys_lcr_base + info->lcr_offset);
--		goto errout;
--	}
--	info->lcr_mem_requested = true;
--
--	info->memory_base = ioremap(info->phys_memory_base, 0x40000);
--	if (!info->memory_base) {
--		printk( "%s(%d):Can't map shared memory on device %s MemAddr=%08X\n",
--			__FILE__,__LINE__,info->device_name, info->phys_memory_base );
--		goto errout;
--	}
--		
--	if ( !mgsl_memory_test(info) ) {
--		printk( "%s(%d):Failed shared memory test %s MemAddr=%08X\n",
--			__FILE__,__LINE__,info->device_name, info->phys_memory_base );
--		goto errout;
--	}
--		
--	info->lcr_base = ioremap(info->phys_lcr_base, PAGE_SIZE);
--	if (!info->lcr_base) {
--		printk( "%s(%d):Can't map LCR memory on device %s MemAddr=%08X\n",
--			__FILE__,__LINE__,info->device_name, info->phys_lcr_base );
--		goto errout;
--	}
--	info->lcr_base += info->lcr_offset;
--		
--	if ( mgsl_allocate_dma_buffers(info) < 0 ) {
--		printk( "%s(%d):Can't allocate DMA buffers on device %s DMA=%d\n",
--			__FILE__,__LINE__,info->device_name, info->dma_level );
--		goto errout;
--	}	
--	
--	return 0;
--errout:
--	mgsl_release_resources(info);
--	return -ENODEV;
--
--}	/* end of mgsl_claim_resources() */
--
--static void mgsl_release_resources(struct mgsl_struct *info)
--{
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk( "%s(%d):mgsl_release_resources(%s) entry\n",
--			__FILE__,__LINE__,info->device_name );
--			
--	if ( info->irq_requested ) {
--		free_irq(info->irq_level, info);
--		info->irq_requested = false;
--	}
--	if ( info->dma_requested ) {
--		disable_dma(info->dma_level);
--		free_dma(info->dma_level);
--		info->dma_requested = false;
--	}
--	mgsl_free_dma_buffers(info);
--	mgsl_free_intermediate_rxbuffer_memory(info);
--     	mgsl_free_intermediate_txbuffer_memory(info);
--	
--	if ( info->io_addr_requested ) {
--		release_region(info->io_base,info->io_addr_size);
--		info->io_addr_requested = false;
--	}
--	if ( info->shared_mem_requested ) {
--		release_mem_region(info->phys_memory_base,0x40000);
--		info->shared_mem_requested = false;
--	}
--	if ( info->lcr_mem_requested ) {
--		release_mem_region(info->phys_lcr_base + info->lcr_offset,128);
--		info->lcr_mem_requested = false;
--	}
--	if (info->memory_base){
--		iounmap(info->memory_base);
--		info->memory_base = NULL;
--	}
--	if (info->lcr_base){
--		iounmap(info->lcr_base - info->lcr_offset);
--		info->lcr_base = NULL;
--	}
--	
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk( "%s(%d):mgsl_release_resources(%s) exit\n",
--			__FILE__,__LINE__,info->device_name );
--			
--}	/* end of mgsl_release_resources() */
--
--/* mgsl_add_device()
-- * 
-- * 	Add the specified device instance data structure to the
-- * 	global linked list of devices and increment the device count.
-- * 	
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void mgsl_add_device( struct mgsl_struct *info )
--{
--	info->next_device = NULL;
--	info->line = mgsl_device_count;
--	sprintf(info->device_name,"ttySL%d",info->line);
--	
--	if (info->line < MAX_TOTAL_DEVICES) {
--		if (maxframe[info->line])
--			info->max_frame_size = maxframe[info->line];
--
--		if (txdmabufs[info->line]) {
--			info->num_tx_dma_buffers = txdmabufs[info->line];
--			if (info->num_tx_dma_buffers < 1)
--				info->num_tx_dma_buffers = 1;
--		}
--
--		if (txholdbufs[info->line]) {
--			info->num_tx_holding_buffers = txholdbufs[info->line];
--			if (info->num_tx_holding_buffers < 1)
--				info->num_tx_holding_buffers = 1;
--			else if (info->num_tx_holding_buffers > MAX_TX_HOLDING_BUFFERS)
--				info->num_tx_holding_buffers = MAX_TX_HOLDING_BUFFERS;
--		}
--	}
--
--	mgsl_device_count++;
--	
--	if ( !mgsl_device_list )
--		mgsl_device_list = info;
--	else {	
--		struct mgsl_struct *current_dev = mgsl_device_list;
--		while( current_dev->next_device )
--			current_dev = current_dev->next_device;
--		current_dev->next_device = info;
--	}
--	
--	if ( info->max_frame_size < 4096 )
--		info->max_frame_size = 4096;
--	else if ( info->max_frame_size > 65535 )
--		info->max_frame_size = 65535;
--	
--	printk( "SyncLink PCI v%d %s: IO=%04X IRQ=%d Mem=%08X,%08X MaxFrameSize=%u\n",
--		info->hw_version + 1, info->device_name, info->io_base, info->irq_level,
--		info->phys_memory_base, info->phys_lcr_base,
--	     	info->max_frame_size );
--
--#if SYNCLINK_GENERIC_HDLC
--	hdlcdev_init(info);
--#endif
--
--}	/* end of mgsl_add_device() */
--
--static const struct tty_port_operations mgsl_port_ops = {
--	.carrier_raised = carrier_raised,
--	.dtr_rts = dtr_rts,
--};
--
--
--/* mgsl_allocate_device()
-- * 
-- * 	Allocate and initialize a device instance structure
-- * 	
-- * Arguments:		none
-- * Return Value:	pointer to mgsl_struct if success, otherwise NULL
-- */
--static struct mgsl_struct* mgsl_allocate_device(void)
--{
--	struct mgsl_struct *info;
--	
--	info = kzalloc(sizeof(struct mgsl_struct),
--		 GFP_KERNEL);
--		 
--	if (!info) {
--		printk("Error can't allocate device instance data\n");
--	} else {
--		tty_port_init(&info->port);
--		info->port.ops = &mgsl_port_ops;
--		info->magic = MGSL_MAGIC;
--		INIT_WORK(&info->task, mgsl_bh_handler);
--		info->max_frame_size = 4096;
--		info->port.close_delay = 5*HZ/10;
--		info->port.closing_wait = 30*HZ;
--		init_waitqueue_head(&info->status_event_wait_q);
--		init_waitqueue_head(&info->event_wait_q);
--		spin_lock_init(&info->irq_spinlock);
--		spin_lock_init(&info->netlock);
--		memcpy(&info->params,&default_params,sizeof(MGSL_PARAMS));
--		info->idle_mode = HDLC_TXIDLE_FLAGS;
--		info->num_tx_dma_buffers = 1;
--		info->num_tx_holding_buffers = 0;
--	}
--	
--	return info;
--
--}	/* end of mgsl_allocate_device()*/
--
--static const struct tty_operations mgsl_ops = {
--	.install = mgsl_install,
--	.open = mgsl_open,
--	.close = mgsl_close,
--	.write = mgsl_write,
--	.put_char = mgsl_put_char,
--	.flush_chars = mgsl_flush_chars,
--	.write_room = mgsl_write_room,
--	.chars_in_buffer = mgsl_chars_in_buffer,
--	.flush_buffer = mgsl_flush_buffer,
--	.ioctl = mgsl_ioctl,
--	.throttle = mgsl_throttle,
--	.unthrottle = mgsl_unthrottle,
--	.send_xchar = mgsl_send_xchar,
--	.break_ctl = mgsl_break,
--	.wait_until_sent = mgsl_wait_until_sent,
--	.set_termios = mgsl_set_termios,
--	.stop = mgsl_stop,
--	.start = mgsl_start,
--	.hangup = mgsl_hangup,
--	.tiocmget = tiocmget,
--	.tiocmset = tiocmset,
--	.get_icount = msgl_get_icount,
--	.proc_show = mgsl_proc_show,
--};
--
--/*
-- * perform tty device initialization
-- */
--static int mgsl_init_tty(void)
--{
--	int rc;
--
--	serial_driver = alloc_tty_driver(128);
--	if (!serial_driver)
--		return -ENOMEM;
--	
--	serial_driver->driver_name = "synclink";
--	serial_driver->name = "ttySL";
--	serial_driver->major = ttymajor;
--	serial_driver->minor_start = 64;
--	serial_driver->type = TTY_DRIVER_TYPE_SERIAL;
--	serial_driver->subtype = SERIAL_TYPE_NORMAL;
--	serial_driver->init_termios = tty_std_termios;
--	serial_driver->init_termios.c_cflag =
--		B9600 | CS8 | CREAD | HUPCL | CLOCAL;
--	serial_driver->init_termios.c_ispeed = 9600;
--	serial_driver->init_termios.c_ospeed = 9600;
--	serial_driver->flags = TTY_DRIVER_REAL_RAW;
--	tty_set_operations(serial_driver, &mgsl_ops);
--	if ((rc = tty_register_driver(serial_driver)) < 0) {
--		printk("%s(%d):Couldn't register serial driver\n",
--			__FILE__,__LINE__);
--		put_tty_driver(serial_driver);
--		serial_driver = NULL;
--		return rc;
--	}
--			
-- 	printk("%s %s, tty major#%d\n",
--		driver_name, driver_version,
--		serial_driver->major);
--	return 0;
--}
--
--static void synclink_cleanup(void)
--{
--	int rc;
--	struct mgsl_struct *info;
--	struct mgsl_struct *tmp;
--
--	printk("Unloading %s: %s\n", driver_name, driver_version);
--
--	if (serial_driver) {
--		rc = tty_unregister_driver(serial_driver);
--		if (rc)
--			printk("%s(%d) failed to unregister tty driver err=%d\n",
--			       __FILE__,__LINE__,rc);
--		put_tty_driver(serial_driver);
--	}
--
--	info = mgsl_device_list;
--	while(info) {
--#if SYNCLINK_GENERIC_HDLC
--		hdlcdev_exit(info);
--#endif
--		mgsl_release_resources(info);
--		tmp = info;
--		info = info->next_device;
--		tty_port_destroy(&tmp->port);
--		kfree(tmp);
--	}
--	
--	if (pci_registered)
--		pci_unregister_driver(&synclink_pci_driver);
--}
--
--static int __init synclink_init(void)
--{
--	int rc;
--
--	if (break_on_load) {
--	 	mgsl_get_text_ptr();
--  		BREAKPOINT();
--	}
--
-- 	printk("%s %s\n", driver_name, driver_version);
--
--	if ((rc = pci_register_driver(&synclink_pci_driver)) < 0)
--		printk("%s:failed to register PCI driver, error=%d\n",__FILE__,rc);
--	else
--		pci_registered = true;
--
--	if ((rc = mgsl_init_tty()) < 0)
--		goto error;
--
--	return 0;
--
--error:
--	synclink_cleanup();
--	return rc;
--}
--
--static void __exit synclink_exit(void)
--{
--	synclink_cleanup();
--}
--
--module_init(synclink_init);
--module_exit(synclink_exit);
--
--/*
-- * usc_RTCmd()
-- *
-- * Issue a USC Receive/Transmit command to the
-- * Channel Command/Address Register (CCAR).
-- *
-- * Notes:
-- *
-- *    The command is encoded in the most significant 5 bits <15..11>
-- *    of the CCAR value. Bits <10..7> of the CCAR must be preserved
-- *    and Bits <6..0> must be written as zeros.
-- *
-- * Arguments:
-- *
-- *    info   pointer to device information structure
-- *    Cmd    command mask (use symbolic macros)
-- *
-- * Return Value:
-- *
-- *    None
-- */
--static void usc_RTCmd( struct mgsl_struct *info, u16 Cmd )
--{
--	/* output command to CCAR in bits <15..11> */
--	/* preserve bits <10..7>, bits <6..0> must be zero */
--
--	outw( Cmd + info->loopback_bits, info->io_base + CCAR );
--
--	/* Read to flush write to CCAR */
--	inw( info->io_base + CCAR );
--
--}	/* end of usc_RTCmd() */
--
--/*
-- * usc_DmaCmd()
-- *
-- *    Issue a DMA command to the DMA Command/Address Register (DCAR).
-- *
-- * Arguments:
-- *
-- *    info   pointer to device information structure
-- *    Cmd    DMA command mask (usc_DmaCmd_XX Macros)
-- *
-- * Return Value:
-- *
-- *       None
-- */
--static void usc_DmaCmd( struct mgsl_struct *info, u16 Cmd )
--{
--	/* write command mask to DCAR */
--	outw( Cmd + info->mbre_bit, info->io_base );
--
--	/* Read to flush write to DCAR */
--	inw( info->io_base );
--
--}	/* end of usc_DmaCmd() */
--
--/*
-- * usc_OutDmaReg()
-- *
-- *    Write a 16-bit value to a USC DMA register
-- *
-- * Arguments:
-- *
-- *    info      pointer to device info structure
-- *    RegAddr   register address (number) for write
-- *    RegValue  16-bit value to write to register
-- *
-- * Return Value:
-- *
-- *    None
-- *
-- */
--static void usc_OutDmaReg( struct mgsl_struct *info, u16 RegAddr, u16 RegValue )
--{
--	/* Note: The DCAR is located at the adapter base address */
--	/* Note: must preserve state of BIT8 in DCAR */
--
--	outw( RegAddr + info->mbre_bit, info->io_base );
--	outw( RegValue, info->io_base );
--
--	/* Read to flush write to DCAR */
--	inw( info->io_base );
--
--}	/* end of usc_OutDmaReg() */
-- 
--/*
-- * usc_InDmaReg()
-- *
-- *    Read a 16-bit value from a DMA register
-- *
-- * Arguments:
-- *
-- *    info     pointer to device info structure
-- *    RegAddr  register address (number) to read from
-- *
-- * Return Value:
-- *
-- *    The 16-bit value read from register
-- *
-- */
--static u16 usc_InDmaReg( struct mgsl_struct *info, u16 RegAddr )
--{
--	/* Note: The DCAR is located at the adapter base address */
--	/* Note: must preserve state of BIT8 in DCAR */
--
--	outw( RegAddr + info->mbre_bit, info->io_base );
--	return inw( info->io_base );
--
--}	/* end of usc_InDmaReg() */
--
--/*
-- *
-- * usc_OutReg()
-- *
-- *    Write a 16-bit value to a USC serial channel register 
-- *
-- * Arguments:
-- *
-- *    info      pointer to device info structure
-- *    RegAddr   register address (number) to write to
-- *    RegValue  16-bit value to write to register
-- *
-- * Return Value:
-- *
-- *    None
-- *
-- */
--static void usc_OutReg( struct mgsl_struct *info, u16 RegAddr, u16 RegValue )
--{
--	outw( RegAddr + info->loopback_bits, info->io_base + CCAR );
--	outw( RegValue, info->io_base + CCAR );
--
--	/* Read to flush write to CCAR */
--	inw( info->io_base + CCAR );
--
--}	/* end of usc_OutReg() */
--
--/*
-- * usc_InReg()
-- *
-- *    Reads a 16-bit value from a USC serial channel register
-- *
-- * Arguments:
-- *
-- *    info       pointer to device extension
-- *    RegAddr    register address (number) to read from
-- *
-- * Return Value:
-- *
-- *    16-bit value read from register
-- */
--static u16 usc_InReg( struct mgsl_struct *info, u16 RegAddr )
--{
--	outw( RegAddr + info->loopback_bits, info->io_base + CCAR );
--	return inw( info->io_base + CCAR );
--
--}	/* end of usc_InReg() */
--
--/* usc_set_sdlc_mode()
-- *
-- *    Set up the adapter for SDLC DMA communications.
-- *
-- * Arguments:		info    pointer to device instance data
-- * Return Value: 	NONE
-- */
--static void usc_set_sdlc_mode( struct mgsl_struct *info )
--{
--	u16 RegValue;
--	bool PreSL1660;
--	
--	/*
--	 * determine if the IUSC on the adapter is pre-SL1660. If
--	 * not, take advantage of the UnderWait feature of more
--	 * modern chips. If an underrun occurs and this bit is set,
--	 * the transmitter will idle the programmed idle pattern
--	 * until the driver has time to service the underrun. Otherwise,
--	 * the dma controller may get the cycles previously requested
--	 * and begin transmitting queued tx data.
--	 */
--	usc_OutReg(info,TMCR,0x1f);
--	RegValue=usc_InReg(info,TMDR);
--	PreSL1660 = (RegValue == IUSC_PRE_SL1660);
--
-- 	if ( info->params.flags & HDLC_FLAG_HDLC_LOOPMODE )
-- 	{
-- 	   /*
-- 	   ** Channel Mode Register (CMR)
-- 	   **
-- 	   ** <15..14>    10    Tx Sub Modes, Send Flag on Underrun
-- 	   ** <13>        0     0 = Transmit Disabled (initially)
-- 	   ** <12>        0     1 = Consecutive Idles share common 0
-- 	   ** <11..8>     1110  Transmitter Mode = HDLC/SDLC Loop
-- 	   ** <7..4>      0000  Rx Sub Modes, addr/ctrl field handling
-- 	   ** <3..0>      0110  Receiver Mode = HDLC/SDLC
-- 	   **
-- 	   ** 1000 1110 0000 0110 = 0x8e06
-- 	   */
-- 	   RegValue = 0x8e06;
-- 
-- 	   /*--------------------------------------------------
-- 	    * ignore user options for UnderRun Actions and
-- 	    * preambles
-- 	    *--------------------------------------------------*/
-- 	}
-- 	else
-- 	{	
--		/* Channel mode Register (CMR)
--		 *
--		 * <15..14>  00    Tx Sub modes, Underrun Action
--		 * <13>      0     1 = Send Preamble before opening flag
--		 * <12>      0     1 = Consecutive Idles share common 0
--		 * <11..8>   0110  Transmitter mode = HDLC/SDLC
--		 * <7..4>    0000  Rx Sub modes, addr/ctrl field handling
--		 * <3..0>    0110  Receiver mode = HDLC/SDLC
--		 *
--		 * 0000 0110 0000 0110 = 0x0606
--		 */
--		if (info->params.mode == MGSL_MODE_RAW) {
--			RegValue = 0x0001;		/* Set Receive mode = external sync */
--
--			usc_OutReg( info, IOCR,		/* Set IOCR DCD is RxSync Detect Input */
--				(unsigned short)((usc_InReg(info, IOCR) & ~(BIT13|BIT12)) | BIT12));
--
--			/*
--			 * TxSubMode:
--			 * 	CMR <15>		0	Don't send CRC on Tx Underrun
--			 * 	CMR <14>		x	undefined
--			 * 	CMR <13>		0	Send preamble before openning sync
--			 * 	CMR <12>		0	Send 8-bit syncs, 1=send Syncs per TxLength
--			 *
--			 * TxMode:
--			 * 	CMR <11-8)	0100	MonoSync
--			 *
--			 * 	0x00 0100 xxxx xxxx  04xx
--			 */
--			RegValue |= 0x0400;
--		}
--		else {
--
--		RegValue = 0x0606;
--
--		if ( info->params.flags & HDLC_FLAG_UNDERRUN_ABORT15 )
--			RegValue |= BIT14;
--		else if ( info->params.flags & HDLC_FLAG_UNDERRUN_FLAG )
--			RegValue |= BIT15;
--		else if ( info->params.flags & HDLC_FLAG_UNDERRUN_CRC )
--			RegValue |= BIT15 | BIT14;
--		}
--
--		if ( info->params.preamble != HDLC_PREAMBLE_PATTERN_NONE )
--			RegValue |= BIT13;
--	}
--
--	if ( info->params.mode == MGSL_MODE_HDLC &&
--		(info->params.flags & HDLC_FLAG_SHARE_ZERO) )
--		RegValue |= BIT12;
--
--	if ( info->params.addr_filter != 0xff )
--	{
--		/* set up receive address filtering */
--		usc_OutReg( info, RSR, info->params.addr_filter );
--		RegValue |= BIT4;
--	}
--
--	usc_OutReg( info, CMR, RegValue );
--	info->cmr_value = RegValue;
--
--	/* Receiver mode Register (RMR)
--	 *
--	 * <15..13>  000    encoding
--	 * <12..11>  00     FCS = 16bit CRC CCITT (x15 + x12 + x5 + 1)
--	 * <10>      1      1 = Set CRC to all 1s (use for SDLC/HDLC)
--	 * <9>       0      1 = Include Receive chars in CRC
--	 * <8>       1      1 = Use Abort/PE bit as abort indicator
--	 * <7..6>    00     Even parity
--	 * <5>       0      parity disabled
--	 * <4..2>    000    Receive Char Length = 8 bits
--	 * <1..0>    00     Disable Receiver
--	 *
--	 * 0000 0101 0000 0000 = 0x0500
--	 */
--
--	RegValue = 0x0500;
--
--	switch ( info->params.encoding ) {
--	case HDLC_ENCODING_NRZB:               RegValue |= BIT13; break;
--	case HDLC_ENCODING_NRZI_MARK:          RegValue |= BIT14; break;
--	case HDLC_ENCODING_NRZI_SPACE:	       RegValue |= BIT14 | BIT13; break;
--	case HDLC_ENCODING_BIPHASE_MARK:       RegValue |= BIT15; break;
--	case HDLC_ENCODING_BIPHASE_SPACE:      RegValue |= BIT15 | BIT13; break;
--	case HDLC_ENCODING_BIPHASE_LEVEL:      RegValue |= BIT15 | BIT14; break;
--	case HDLC_ENCODING_DIFF_BIPHASE_LEVEL: RegValue |= BIT15 | BIT14 | BIT13; break;
--	}
--
--	if ( (info->params.crc_type & HDLC_CRC_MASK) == HDLC_CRC_16_CCITT )
--		RegValue |= BIT9;
--	else if ( (info->params.crc_type & HDLC_CRC_MASK) == HDLC_CRC_32_CCITT )
--		RegValue |= ( BIT12 | BIT10 | BIT9 );
--
--	usc_OutReg( info, RMR, RegValue );
--
--	/* Set the Receive count Limit Register (RCLR) to 0xffff. */
--	/* When an opening flag of an SDLC frame is recognized the */
--	/* Receive Character count (RCC) is loaded with the value in */
--	/* RCLR. The RCC is decremented for each received byte.  The */
--	/* value of RCC is stored after the closing flag of the frame */
--	/* allowing the frame size to be computed. */
--
--	usc_OutReg( info, RCLR, RCLRVALUE );
--
--	usc_RCmd( info, RCmd_SelectRicrdma_level );
--
--	/* Receive Interrupt Control Register (RICR)
--	 *
--	 * <15..8>	?	RxFIFO DMA Request Level
--	 * <7>		0	Exited Hunt IA (Interrupt Arm)
--	 * <6>		0	Idle Received IA
--	 * <5>		0	Break/Abort IA
--	 * <4>		0	Rx Bound IA
--	 * <3>		1	Queued status reflects oldest 2 bytes in FIFO
--	 * <2>		0	Abort/PE IA
--	 * <1>		1	Rx Overrun IA
--	 * <0>		0	Select TC0 value for readback
--	 *
--	 *	0000 0000 0000 1000 = 0x000a
--	 */
--
--	/* Carry over the Exit Hunt and Idle Received bits */
--	/* in case they have been armed by usc_ArmEvents.   */
--
--	RegValue = usc_InReg( info, RICR ) & 0xc0;
--
--	usc_OutReg( info, RICR, (u16)(0x030a | RegValue) );
--
--	/* Unlatch all Rx status bits and clear Rx status IRQ Pending */
--
--	usc_UnlatchRxstatusBits( info, RXSTATUS_ALL );
--	usc_ClearIrqPendingBits( info, RECEIVE_STATUS );
--
--	/* Transmit mode Register (TMR)
--	 *	
--	 * <15..13>	000	encoding
--	 * <12..11>	00	FCS = 16bit CRC CCITT (x15 + x12 + x5 + 1)
--	 * <10>		1	1 = Start CRC as all 1s (use for SDLC/HDLC)
--	 * <9>		0	1 = Tx CRC Enabled
--	 * <8>		0	1 = Append CRC to end of transmit frame
--	 * <7..6>	00	Transmit parity Even
--	 * <5>		0	Transmit parity Disabled
--	 * <4..2>	000	Tx Char Length = 8 bits
--	 * <1..0>	00	Disable Transmitter
--	 *
--	 * 	0000 0100 0000 0000 = 0x0400
--	 */
--
--	RegValue = 0x0400;
--
--	switch ( info->params.encoding ) {
--	case HDLC_ENCODING_NRZB:               RegValue |= BIT13; break;
--	case HDLC_ENCODING_NRZI_MARK:          RegValue |= BIT14; break;
--	case HDLC_ENCODING_NRZI_SPACE:         RegValue |= BIT14 | BIT13; break;
--	case HDLC_ENCODING_BIPHASE_MARK:       RegValue |= BIT15; break;
--	case HDLC_ENCODING_BIPHASE_SPACE:      RegValue |= BIT15 | BIT13; break;
--	case HDLC_ENCODING_BIPHASE_LEVEL:      RegValue |= BIT15 | BIT14; break;
--	case HDLC_ENCODING_DIFF_BIPHASE_LEVEL: RegValue |= BIT15 | BIT14 | BIT13; break;
--	}
--
--	if ( (info->params.crc_type & HDLC_CRC_MASK) == HDLC_CRC_16_CCITT )
--		RegValue |= BIT9 | BIT8;
--	else if ( (info->params.crc_type & HDLC_CRC_MASK) == HDLC_CRC_32_CCITT )
--		RegValue |= ( BIT12 | BIT10 | BIT9 | BIT8);
--
--	usc_OutReg( info, TMR, RegValue );
--
--	usc_set_txidle( info );
--
--
--	usc_TCmd( info, TCmd_SelectTicrdma_level );
--
--	/* Transmit Interrupt Control Register (TICR)
--	 *
--	 * <15..8>	?	Transmit FIFO DMA Level
--	 * <7>		0	Present IA (Interrupt Arm)
--	 * <6>		0	Idle Sent IA
--	 * <5>		1	Abort Sent IA
--	 * <4>		1	EOF/EOM Sent IA
--	 * <3>		0	CRC Sent IA
--	 * <2>		1	1 = Wait for SW Trigger to Start Frame
--	 * <1>		1	Tx Underrun IA
--	 * <0>		0	TC0 constant on read back
--	 *
--	 *	0000 0000 0011 0110 = 0x0036
--	 */
--
--	usc_OutReg( info, TICR, 0x0736 );
--
--	usc_UnlatchTxstatusBits( info, TXSTATUS_ALL );
--	usc_ClearIrqPendingBits( info, TRANSMIT_STATUS );
--
--	/*
--	** Transmit Command/Status Register (TCSR)
--	**
--	** <15..12>	0000	TCmd
--	** <11> 	0/1	UnderWait
--	** <10..08>	000	TxIdle
--	** <7>		x	PreSent
--	** <6>         	x	IdleSent
--	** <5>         	x	AbortSent
--	** <4>         	x	EOF/EOM Sent
--	** <3>         	x	CRC Sent
--	** <2>         	x	All Sent
--	** <1>         	x	TxUnder
--	** <0>         	x	TxEmpty
--	** 
--	** 0000 0000 0000 0000 = 0x0000
--	*/
--	info->tcsr_value = 0;
--
--	if ( !PreSL1660 )
--		info->tcsr_value |= TCSR_UNDERWAIT;
--		
--	usc_OutReg( info, TCSR, info->tcsr_value );
--
--	/* Clock mode Control Register (CMCR)
--	 *
--	 * <15..14>	00	counter 1 Source = Disabled
--	 * <13..12> 	00	counter 0 Source = Disabled
--	 * <11..10> 	11	BRG1 Input is TxC Pin
--	 * <9..8>	11	BRG0 Input is TxC Pin
--	 * <7..6>	01	DPLL Input is BRG1 Output
--	 * <5..3>	XXX	TxCLK comes from Port 0
--	 * <2..0>   	XXX	RxCLK comes from Port 1
--	 *
--	 *	0000 1111 0111 0111 = 0x0f77
--	 */
--
--	RegValue = 0x0f40;
--
--	if ( info->params.flags & HDLC_FLAG_RXC_DPLL )
--		RegValue |= 0x0003;	/* RxCLK from DPLL */
--	else if ( info->params.flags & HDLC_FLAG_RXC_BRG )
--		RegValue |= 0x0004;	/* RxCLK from BRG0 */
-- 	else if ( info->params.flags & HDLC_FLAG_RXC_TXCPIN)
-- 		RegValue |= 0x0006;	/* RxCLK from TXC Input */
--	else
--		RegValue |= 0x0007;	/* RxCLK from Port1 */
--
--	if ( info->params.flags & HDLC_FLAG_TXC_DPLL )
--		RegValue |= 0x0018;	/* TxCLK from DPLL */
--	else if ( info->params.flags & HDLC_FLAG_TXC_BRG )
--		RegValue |= 0x0020;	/* TxCLK from BRG0 */
-- 	else if ( info->params.flags & HDLC_FLAG_TXC_RXCPIN)
-- 		RegValue |= 0x0038;	/* RxCLK from TXC Input */
--	else
--		RegValue |= 0x0030;	/* TxCLK from Port0 */
--
--	usc_OutReg( info, CMCR, RegValue );
--
--
--	/* Hardware Configuration Register (HCR)
--	 *
--	 * <15..14>	00	CTR0 Divisor:00=32,01=16,10=8,11=4
--	 * <13>		0	CTR1DSel:0=CTR0Div determines CTR0Div
--	 * <12>		0	CVOK:0=report code violation in biphase
--	 * <11..10>	00	DPLL Divisor:00=32,01=16,10=8,11=4
--	 * <9..8>	XX	DPLL mode:00=disable,01=NRZ,10=Biphase,11=Biphase Level
--	 * <7..6>	00	reserved
--	 * <5>		0	BRG1 mode:0=continuous,1=single cycle
--	 * <4>		X	BRG1 Enable
--	 * <3..2>	00	reserved
--	 * <1>		0	BRG0 mode:0=continuous,1=single cycle
--	 * <0>		0	BRG0 Enable
--	 */
--
--	RegValue = 0x0000;
--
--	if ( info->params.flags & (HDLC_FLAG_RXC_DPLL | HDLC_FLAG_TXC_DPLL) ) {
--		u32 XtalSpeed;
--		u32 DpllDivisor;
--		u16 Tc;
--
--		/*  DPLL is enabled. Use BRG1 to provide continuous reference clock  */
--		/*  for DPLL. DPLL mode in HCR is dependent on the encoding used. */
--
--		XtalSpeed = 11059200;
--
--		if ( info->params.flags & HDLC_FLAG_DPLL_DIV16 ) {
--			DpllDivisor = 16;
--			RegValue |= BIT10;
--		}
--		else if ( info->params.flags & HDLC_FLAG_DPLL_DIV8 ) {
--			DpllDivisor = 8;
--			RegValue |= BIT11;
--		}
--		else
--			DpllDivisor = 32;
--
--		/*  Tc = (Xtal/Speed) - 1 */
--		/*  If twice the remainder of (Xtal/Speed) is greater than Speed */
--		/*  then rounding up gives a more precise time constant. Instead */
--		/*  of rounding up and then subtracting 1 we just don't subtract */
--		/*  the one in this case. */
--
-- 		/*--------------------------------------------------
-- 		 * ejz: for DPLL mode, application should use the
-- 		 * same clock speed as the partner system, even 
-- 		 * though clocking is derived from the input RxData.
-- 		 * In case the user uses a 0 for the clock speed,
-- 		 * default to 0xffffffff and don't try to divide by
-- 		 * zero
-- 		 *--------------------------------------------------*/
-- 		if ( info->params.clock_speed )
-- 		{
--			Tc = (u16)((XtalSpeed/DpllDivisor)/info->params.clock_speed);
--			if ( !((((XtalSpeed/DpllDivisor) % info->params.clock_speed) * 2)
--			       / info->params.clock_speed) )
--				Tc--;
-- 		}
-- 		else
-- 			Tc = -1;
-- 				  
--
--		/* Write 16-bit Time Constant for BRG1 */
--		usc_OutReg( info, TC1R, Tc );
--
--		RegValue |= BIT4;		/* enable BRG1 */
--
--		switch ( info->params.encoding ) {
--		case HDLC_ENCODING_NRZ:
--		case HDLC_ENCODING_NRZB:
--		case HDLC_ENCODING_NRZI_MARK:
--		case HDLC_ENCODING_NRZI_SPACE: RegValue |= BIT8; break;
--		case HDLC_ENCODING_BIPHASE_MARK:
--		case HDLC_ENCODING_BIPHASE_SPACE: RegValue |= BIT9; break;
--		case HDLC_ENCODING_BIPHASE_LEVEL:
--		case HDLC_ENCODING_DIFF_BIPHASE_LEVEL: RegValue |= BIT9 | BIT8; break;
--		}
--	}
--
--	usc_OutReg( info, HCR, RegValue );
--
--
--	/* Channel Control/status Register (CCSR)
--	 *
--	 * <15>		X	RCC FIFO Overflow status (RO)
--	 * <14>		X	RCC FIFO Not Empty status (RO)
--	 * <13>		0	1 = Clear RCC FIFO (WO)
--	 * <12>		X	DPLL Sync (RW)
--	 * <11>		X	DPLL 2 Missed Clocks status (RO)
--	 * <10>		X	DPLL 1 Missed Clock status (RO)
--	 * <9..8>	00	DPLL Resync on rising and falling edges (RW)
--	 * <7>		X	SDLC Loop On status (RO)
--	 * <6>		X	SDLC Loop Send status (RO)
--	 * <5>		1	Bypass counters for TxClk and RxClk (RW)
--	 * <4..2>   	000	Last Char of SDLC frame has 8 bits (RW)
--	 * <1..0>   	00	reserved
--	 *
--	 *	0000 0000 0010 0000 = 0x0020
--	 */
--
--	usc_OutReg( info, CCSR, 0x1020 );
--
--
--	if ( info->params.flags & HDLC_FLAG_AUTO_CTS ) {
--		usc_OutReg( info, SICR,
--			    (u16)(usc_InReg(info,SICR) | SICR_CTS_INACTIVE) );
--	}
--	
--
--	/* enable Master Interrupt Enable bit (MIE) */
--	usc_EnableMasterIrqBit( info );
--
--	usc_ClearIrqPendingBits( info, RECEIVE_STATUS | RECEIVE_DATA |
--				TRANSMIT_STATUS | TRANSMIT_DATA | MISC);
--
--	/* arm RCC underflow interrupt */
--	usc_OutReg(info, SICR, (u16)(usc_InReg(info,SICR) | BIT3));
--	usc_EnableInterrupts(info, MISC);
--
--	info->mbre_bit = 0;
--	outw( 0, info->io_base ); 			/* clear Master Bus Enable (DCAR) */
--	usc_DmaCmd( info, DmaCmd_ResetAllChannels );	/* disable both DMA channels */
--	info->mbre_bit = BIT8;
--	outw( BIT8, info->io_base );			/* set Master Bus Enable (DCAR) */
--
--	/* DMA Control Register (DCR)
--	 *
--	 * <15..14>	10	Priority mode = Alternating Tx/Rx
--	 *		01	Rx has priority
--	 *		00	Tx has priority
--	 *
--	 * <13>		1	Enable Priority Preempt per DCR<15..14>
--	 *			(WARNING DCR<11..10> must be 00 when this is 1)
--	 *		0	Choose activate channel per DCR<11..10>
--	 *
--	 * <12>		0	Little Endian for Array/List
--	 * <11..10>	00	Both Channels can use each bus grant
--	 * <9..6>	0000	reserved
--	 * <5>		0	7 CLK - Minimum Bus Re-request Interval
--	 * <4>		0	1 = drive D/C and S/D pins
--	 * <3>		1	1 = Add one wait state to all DMA cycles.
--	 * <2>		0	1 = Strobe /UAS on every transfer.
--	 * <1..0>	11	Addr incrementing only affects LS24 bits
--	 *
--	 *	0110 0000 0000 1011 = 0x600b
--	 */
--
--	/* PCI adapter does not need DMA wait state */
--	usc_OutDmaReg( info, DCR, 0xa00b );
--
--	/* Receive DMA mode Register (RDMR)
--	 *
--	 * <15..14>	11	DMA mode = Linked List Buffer mode
--	 * <13>		1	RSBinA/L = store Rx status Block in Arrary/List entry
--	 * <12>		1	Clear count of List Entry after fetching
--	 * <11..10>	00	Address mode = Increment
--	 * <9>		1	Terminate Buffer on RxBound
--	 * <8>		0	Bus Width = 16bits
--	 * <7..0>	?	status Bits (write as 0s)
--	 *
--	 * 1111 0010 0000 0000 = 0xf200
--	 */
--
--	usc_OutDmaReg( info, RDMR, 0xf200 );
--
--
--	/* Transmit DMA mode Register (TDMR)
--	 *
--	 * <15..14>	11	DMA mode = Linked List Buffer mode
--	 * <13>		1	TCBinA/L = fetch Tx Control Block from List entry
--	 * <12>		1	Clear count of List Entry after fetching
--	 * <11..10>	00	Address mode = Increment
--	 * <9>		1	Terminate Buffer on end of frame
--	 * <8>		0	Bus Width = 16bits
--	 * <7..0>	?	status Bits (Read Only so write as 0)
--	 *
--	 *	1111 0010 0000 0000 = 0xf200
--	 */
--
--	usc_OutDmaReg( info, TDMR, 0xf200 );
--
--
--	/* DMA Interrupt Control Register (DICR)
--	 *
--	 * <15>		1	DMA Interrupt Enable
--	 * <14>		0	1 = Disable IEO from USC
--	 * <13>		0	1 = Don't provide vector during IntAck
--	 * <12>		1	1 = Include status in Vector
--	 * <10..2>	0	reserved, Must be 0s
--	 * <1>		0	1 = Rx DMA Interrupt Enabled
--	 * <0>		0	1 = Tx DMA Interrupt Enabled
--	 *
--	 *	1001 0000 0000 0000 = 0x9000
--	 */
--
--	usc_OutDmaReg( info, DICR, 0x9000 );
--
--	usc_InDmaReg( info, RDMR );		/* clear pending receive DMA IRQ bits */
--	usc_InDmaReg( info, TDMR );		/* clear pending transmit DMA IRQ bits */
--	usc_OutDmaReg( info, CDIR, 0x0303 );	/* clear IUS and Pending for Tx and Rx */
--
--	/* Channel Control Register (CCR)
--	 *
--	 * <15..14>	10	Use 32-bit Tx Control Blocks (TCBs)
--	 * <13>		0	Trigger Tx on SW Command Disabled
--	 * <12>		0	Flag Preamble Disabled
--	 * <11..10>	00	Preamble Length
--	 * <9..8>	00	Preamble Pattern
--	 * <7..6>	10	Use 32-bit Rx status Blocks (RSBs)
--	 * <5>		0	Trigger Rx on SW Command Disabled
--	 * <4..0>	0	reserved
--	 *
--	 *	1000 0000 1000 0000 = 0x8080
--	 */
--
--	RegValue = 0x8080;
--
--	switch ( info->params.preamble_length ) {
--	case HDLC_PREAMBLE_LENGTH_16BITS: RegValue |= BIT10; break;
--	case HDLC_PREAMBLE_LENGTH_32BITS: RegValue |= BIT11; break;
--	case HDLC_PREAMBLE_LENGTH_64BITS: RegValue |= BIT11 | BIT10; break;
--	}
--
--	switch ( info->params.preamble ) {
--	case HDLC_PREAMBLE_PATTERN_FLAGS: RegValue |= BIT8 | BIT12; break;
--	case HDLC_PREAMBLE_PATTERN_ONES:  RegValue |= BIT8; break;
--	case HDLC_PREAMBLE_PATTERN_10:    RegValue |= BIT9; break;
--	case HDLC_PREAMBLE_PATTERN_01:    RegValue |= BIT9 | BIT8; break;
--	}
--
--	usc_OutReg( info, CCR, RegValue );
--
--
--	/*
--	 * Burst/Dwell Control Register
--	 *
--	 * <15..8>	0x20	Maximum number of transfers per bus grant
--	 * <7..0>	0x00	Maximum number of clock cycles per bus grant
--	 */
--
--	/* don't limit bus occupancy on PCI adapter */
--	usc_OutDmaReg( info, BDCR, 0x0000 );
--
--	usc_stop_transmitter(info);
--	usc_stop_receiver(info);
--	
--}	/* end of usc_set_sdlc_mode() */
--
--/* usc_enable_loopback()
-- *
-- * Set the 16C32 for internal loopback mode.
-- * The TxCLK and RxCLK signals are generated from the BRG0 and
-- * the TxD is looped back to the RxD internally.
-- *
-- * Arguments:		info	pointer to device instance data
-- *			enable	1 = enable loopback, 0 = disable
-- * Return Value:	None
-- */
--static void usc_enable_loopback(struct mgsl_struct *info, int enable)
--{
--	if (enable) {
--		/* blank external TXD output */
--		usc_OutReg(info,IOCR,usc_InReg(info,IOCR) | (BIT7 | BIT6));
--	
--		/* Clock mode Control Register (CMCR)
--		 *
--		 * <15..14>	00	counter 1 Disabled
--		 * <13..12> 	00	counter 0 Disabled
--		 * <11..10> 	11	BRG1 Input is TxC Pin
--		 * <9..8>	11	BRG0 Input is TxC Pin
--		 * <7..6>	01	DPLL Input is BRG1 Output
--		 * <5..3>	100	TxCLK comes from BRG0
--		 * <2..0>   	100	RxCLK comes from BRG0
--		 *
--		 * 0000 1111 0110 0100 = 0x0f64
--		 */
--
--		usc_OutReg( info, CMCR, 0x0f64 );
--
--		/* Write 16-bit Time Constant for BRG0 */
--		/* use clock speed if available, otherwise use 8 for diagnostics */
--		if (info->params.clock_speed) {
--			usc_OutReg(info, TC0R, (u16)((11059200/info->params.clock_speed)-1));
--		} else
--			usc_OutReg(info, TC0R, (u16)8);
--
--		/* Hardware Configuration Register (HCR) Clear Bit 1, BRG0
--		   mode = Continuous Set Bit 0 to enable BRG0.  */
--		usc_OutReg( info, HCR, (u16)((usc_InReg( info, HCR ) & ~BIT1) | BIT0) );
--
--		/* Input/Output Control Reg, <2..0> = 100, Drive RxC pin with BRG0 */
--		usc_OutReg(info, IOCR, (u16)((usc_InReg(info, IOCR) & 0xfff8) | 0x0004));
--
--		/* set Internal Data loopback mode */
--		info->loopback_bits = 0x300;
--		outw( 0x0300, info->io_base + CCAR );
--	} else {
--		/* enable external TXD output */
--		usc_OutReg(info,IOCR,usc_InReg(info,IOCR) & ~(BIT7 | BIT6));
--	
--		/* clear Internal Data loopback mode */
--		info->loopback_bits = 0;
--		outw( 0,info->io_base + CCAR );
--	}
--	
--}	/* end of usc_enable_loopback() */
--
--/* usc_enable_aux_clock()
-- *
-- * Enabled the AUX clock output at the specified frequency.
-- *
-- * Arguments:
-- *
-- *	info		pointer to device extension
-- *	data_rate	data rate of clock in bits per second
-- *			A data rate of 0 disables the AUX clock.
-- *
-- * Return Value:	None
-- */
--static void usc_enable_aux_clock( struct mgsl_struct *info, u32 data_rate )
--{
--	u32 XtalSpeed;
--	u16 Tc;
--
--	if ( data_rate ) {
--		XtalSpeed = 11059200;
--
--
--		/* Tc = (Xtal/Speed) - 1 */
--		/* If twice the remainder of (Xtal/Speed) is greater than Speed */
--		/* then rounding up gives a more precise time constant. Instead */
--		/* of rounding up and then subtracting 1 we just don't subtract */
--		/* the one in this case. */
--
--
--		Tc = (u16)(XtalSpeed/data_rate);
--		if ( !(((XtalSpeed % data_rate) * 2) / data_rate) )
--			Tc--;
--
--		/* Write 16-bit Time Constant for BRG0 */
--		usc_OutReg( info, TC0R, Tc );
--
--		/*
--		 * Hardware Configuration Register (HCR)
--		 * Clear Bit 1, BRG0 mode = Continuous
--		 * Set Bit 0 to enable BRG0.
--		 */
--
--		usc_OutReg( info, HCR, (u16)((usc_InReg( info, HCR ) & ~BIT1) | BIT0) );
--
--		/* Input/Output Control Reg, <2..0> = 100, Drive RxC pin with BRG0 */
--		usc_OutReg( info, IOCR, (u16)((usc_InReg(info, IOCR) & 0xfff8) | 0x0004) );
--	} else {
--		/* data rate == 0 so turn off BRG0 */
--		usc_OutReg( info, HCR, (u16)(usc_InReg( info, HCR ) & ~BIT0) );
--	}
--
--}	/* end of usc_enable_aux_clock() */
--
--/*
-- *
-- * usc_process_rxoverrun_sync()
-- *
-- *		This function processes a receive overrun by resetting the
-- *		receive DMA buffers and issuing a Purge Rx FIFO command
-- *		to allow the receiver to continue receiving.
-- *
-- * Arguments:
-- *
-- *	info		pointer to device extension
-- *
-- * Return Value: None
-- */
--static void usc_process_rxoverrun_sync( struct mgsl_struct *info )
--{
--	int start_index;
--	int end_index;
--	int frame_start_index;
--	bool start_of_frame_found = false;
--	bool end_of_frame_found = false;
--	bool reprogram_dma = false;
--
--	DMABUFFERENTRY *buffer_list = info->rx_buffer_list;
--	u32 phys_addr;
--
--	usc_DmaCmd( info, DmaCmd_PauseRxChannel );
--	usc_RCmd( info, RCmd_EnterHuntmode );
--	usc_RTCmd( info, RTCmd_PurgeRxFifo );
--
--	/* CurrentRxBuffer points to the 1st buffer of the next */
--	/* possibly available receive frame. */
--	
--	frame_start_index = start_index = end_index = info->current_rx_buffer;
--
--	/* Search for an unfinished string of buffers. This means */
--	/* that a receive frame started (at least one buffer with */
--	/* count set to zero) but there is no terminiting buffer */
--	/* (status set to non-zero). */
--
--	while( !buffer_list[end_index].count )
--	{
--		/* Count field has been reset to zero by 16C32. */
--		/* This buffer is currently in use. */
--
--		if ( !start_of_frame_found )
--		{
--			start_of_frame_found = true;
--			frame_start_index = end_index;
--			end_of_frame_found = false;
--		}
--
--		if ( buffer_list[end_index].status )
--		{
--			/* Status field has been set by 16C32. */
--			/* This is the last buffer of a received frame. */
--
--			/* We want to leave the buffers for this frame intact. */
--			/* Move on to next possible frame. */
--
--			start_of_frame_found = false;
--			end_of_frame_found = true;
--		}
--
--  		/* advance to next buffer entry in linked list */
--  		end_index++;
--  		if ( end_index == info->rx_buffer_count )
--  			end_index = 0;
--
--		if ( start_index == end_index )
--		{
--			/* The entire list has been searched with all Counts == 0 and */
--			/* all Status == 0. The receive buffers are */
--			/* completely screwed, reset all receive buffers! */
--			mgsl_reset_rx_dma_buffers( info );
--			frame_start_index = 0;
--			start_of_frame_found = false;
--			reprogram_dma = true;
--			break;
--		}
--	}
--
--	if ( start_of_frame_found && !end_of_frame_found )
--	{
--		/* There is an unfinished string of receive DMA buffers */
--		/* as a result of the receiver overrun. */
--
--		/* Reset the buffers for the unfinished frame */
--		/* and reprogram the receive DMA controller to start */
--		/* at the 1st buffer of unfinished frame. */
--
--		start_index = frame_start_index;
--
--		do
--		{
--			*((unsigned long *)&(info->rx_buffer_list[start_index++].count)) = DMABUFFERSIZE;
--
--  			/* Adjust index for wrap around. */
--  			if ( start_index == info->rx_buffer_count )
--  				start_index = 0;
--
--		} while( start_index != end_index );
--
--		reprogram_dma = true;
--	}
--
--	if ( reprogram_dma )
--	{
--		usc_UnlatchRxstatusBits(info,RXSTATUS_ALL);
--		usc_ClearIrqPendingBits(info, RECEIVE_DATA|RECEIVE_STATUS);
--		usc_UnlatchRxstatusBits(info, RECEIVE_DATA|RECEIVE_STATUS);
--		
--		usc_EnableReceiver(info,DISABLE_UNCONDITIONAL);
--		
--		/* This empties the receive FIFO and loads the RCC with RCLR */
--		usc_OutReg( info, CCSR, (u16)(usc_InReg(info,CCSR) | BIT13) );
--
--		/* program 16C32 with physical address of 1st DMA buffer entry */
--		phys_addr = info->rx_buffer_list[frame_start_index].phys_entry;
--		usc_OutDmaReg( info, NRARL, (u16)phys_addr );
--		usc_OutDmaReg( info, NRARU, (u16)(phys_addr >> 16) );
--
--		usc_UnlatchRxstatusBits( info, RXSTATUS_ALL );
--		usc_ClearIrqPendingBits( info, RECEIVE_DATA | RECEIVE_STATUS );
--		usc_EnableInterrupts( info, RECEIVE_STATUS );
--
--		/* 1. Arm End of Buffer (EOB) Receive DMA Interrupt (BIT2 of RDIAR) */
--		/* 2. Enable Receive DMA Interrupts (BIT1 of DICR) */
--
--		usc_OutDmaReg( info, RDIAR, BIT3 | BIT2 );
--		usc_OutDmaReg( info, DICR, (u16)(usc_InDmaReg(info,DICR) | BIT1) );
--		usc_DmaCmd( info, DmaCmd_InitRxChannel );
--		if ( info->params.flags & HDLC_FLAG_AUTO_DCD )
--			usc_EnableReceiver(info,ENABLE_AUTO_DCD);
--		else
--			usc_EnableReceiver(info,ENABLE_UNCONDITIONAL);
--	}
--	else
--	{
--		/* This empties the receive FIFO and loads the RCC with RCLR */
--		usc_OutReg( info, CCSR, (u16)(usc_InReg(info,CCSR) | BIT13) );
--		usc_RTCmd( info, RTCmd_PurgeRxFifo );
--	}
--
--}	/* end of usc_process_rxoverrun_sync() */
--
--/* usc_stop_receiver()
-- *
-- *	Disable USC receiver
-- *
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void usc_stop_receiver( struct mgsl_struct *info )
--{
--	if (debug_level >= DEBUG_LEVEL_ISR)
--		printk("%s(%d):usc_stop_receiver(%s)\n",
--			 __FILE__,__LINE__, info->device_name );
--			 
--	/* Disable receive DMA channel. */
--	/* This also disables receive DMA channel interrupts */
--	usc_DmaCmd( info, DmaCmd_ResetRxChannel );
--
--	usc_UnlatchRxstatusBits( info, RXSTATUS_ALL );
--	usc_ClearIrqPendingBits( info, RECEIVE_DATA | RECEIVE_STATUS );
--	usc_DisableInterrupts( info, RECEIVE_DATA | RECEIVE_STATUS );
--
--	usc_EnableReceiver(info,DISABLE_UNCONDITIONAL);
--
--	/* This empties the receive FIFO and loads the RCC with RCLR */
--	usc_OutReg( info, CCSR, (u16)(usc_InReg(info,CCSR) | BIT13) );
--	usc_RTCmd( info, RTCmd_PurgeRxFifo );
--
--	info->rx_enabled = false;
--	info->rx_overflow = false;
--	info->rx_rcc_underrun = false;
--	
--}	/* end of stop_receiver() */
--
--/* usc_start_receiver()
-- *
-- *	Enable the USC receiver 
-- *
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void usc_start_receiver( struct mgsl_struct *info )
--{
--	u32 phys_addr;
--	
--	if (debug_level >= DEBUG_LEVEL_ISR)
--		printk("%s(%d):usc_start_receiver(%s)\n",
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned long flags;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s throttle() entry\n",
 -			 __FILE__,__LINE__, info->device_name );
 -
--	mgsl_reset_rx_dma_buffers( info );
--	usc_stop_receiver( info );
+-	if (sanity_check(info, tty->name, "throttle"))
+-		return;
 -
--	usc_OutReg( info, CCSR, (u16)(usc_InReg(info,CCSR) | BIT13) );
--	usc_RTCmd( info, RTCmd_PurgeRxFifo );
+-	if (I_IXOFF(tty))
+-		send_xchar(tty, STOP_CHAR(tty));
 -
--	if ( info->params.mode == MGSL_MODE_HDLC ||
--		info->params.mode == MGSL_MODE_RAW ) {
--		/* DMA mode Transfers */
--		/* Program the DMA controller. */
--		/* Enable the DMA controller end of buffer interrupt. */
--
--		/* program 16C32 with physical address of 1st DMA buffer entry */
--		phys_addr = info->rx_buffer_list[0].phys_entry;
--		usc_OutDmaReg( info, NRARL, (u16)phys_addr );
--		usc_OutDmaReg( info, NRARU, (u16)(phys_addr >> 16) );
--
--		usc_UnlatchRxstatusBits( info, RXSTATUS_ALL );
--		usc_ClearIrqPendingBits( info, RECEIVE_DATA | RECEIVE_STATUS );
--		usc_EnableInterrupts( info, RECEIVE_STATUS );
--
--		/* 1. Arm End of Buffer (EOB) Receive DMA Interrupt (BIT2 of RDIAR) */
--		/* 2. Enable Receive DMA Interrupts (BIT1 of DICR) */
--
--		usc_OutDmaReg( info, RDIAR, BIT3 | BIT2 );
--		usc_OutDmaReg( info, DICR, (u16)(usc_InDmaReg(info,DICR) | BIT1) );
--		usc_DmaCmd( info, DmaCmd_InitRxChannel );
--		if ( info->params.flags & HDLC_FLAG_AUTO_DCD )
--			usc_EnableReceiver(info,ENABLE_AUTO_DCD);
--		else
--			usc_EnableReceiver(info,ENABLE_UNCONDITIONAL);
--	} else {
--		usc_UnlatchRxstatusBits(info, RXSTATUS_ALL);
--		usc_ClearIrqPendingBits(info, RECEIVE_DATA | RECEIVE_STATUS);
--		usc_EnableInterrupts(info, RECEIVE_DATA);
--
--		usc_RTCmd( info, RTCmd_PurgeRxFifo );
--		usc_RCmd( info, RCmd_EnterHuntmode );
--
--		usc_EnableReceiver(info,ENABLE_UNCONDITIONAL);
+-	if (C_CRTSCTS(tty)) {
+-		spin_lock_irqsave(&info->lock,flags);
+-		info->serial_signals &= ~SerialSignal_RTS;
+-		set_signals(info);
+-		spin_unlock_irqrestore(&info->lock,flags);
 -	}
+-}
 -
--	usc_OutReg( info, CCSR, 0x1020 );
--
--	info->rx_enabled = true;
--
--}	/* end of usc_start_receiver() */
--
--/* usc_start_transmitter()
-- *
-- *	Enable the USC transmitter and send a transmit frame if
-- *	one is loaded in the DMA buffers.
-- *
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
+-/* Signal remote device to stop throttling send data (our receive data)
 - */
--static void usc_start_transmitter( struct mgsl_struct *info )
+-static void unthrottle(struct tty_struct * tty)
 -{
--	u32 phys_addr;
--	unsigned int FrameSize;
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned long flags;
 -
--	if (debug_level >= DEBUG_LEVEL_ISR)
--		printk("%s(%d):usc_start_transmitter(%s)\n",
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s unthrottle() entry\n",
 -			 __FILE__,__LINE__, info->device_name );
--			 
--	if ( info->xmit_cnt ) {
 -
--		/* If auto RTS enabled and RTS is inactive, then assert */
--		/* RTS and set a flag indicating that the driver should */
--		/* negate RTS when the transmission completes. */
+-	if (sanity_check(info, tty->name, "unthrottle"))
+-		return;
 -
--		info->drop_rts_on_tx_done = false;
--
--		if ( info->params.flags & HDLC_FLAG_AUTO_RTS ) {
--			usc_get_serial_signals( info );
--			if ( !(info->serial_signals & SerialSignal_RTS) ) {
--				info->serial_signals |= SerialSignal_RTS;
--				usc_set_serial_signals( info );
--				info->drop_rts_on_tx_done = true;
--			}
--		}
--
--
--		if ( info->params.mode == MGSL_MODE_ASYNC ) {
--			if ( !info->tx_active ) {
--				usc_UnlatchTxstatusBits(info, TXSTATUS_ALL);
--				usc_ClearIrqPendingBits(info, TRANSMIT_STATUS + TRANSMIT_DATA);
--				usc_EnableInterrupts(info, TRANSMIT_DATA);
--				usc_load_txfifo(info);
--			}
--		} else {
--			/* Disable transmit DMA controller while programming. */
--			usc_DmaCmd( info, DmaCmd_ResetTxChannel );
--			
--			/* Transmit DMA buffer is loaded, so program USC */
--			/* to send the frame contained in the buffers.	 */
--
--			FrameSize = info->tx_buffer_list[info->start_tx_dma_buffer].rcc;
--
--			/* if operating in Raw sync mode, reset the rcc component
--			 * of the tx dma buffer entry, otherwise, the serial controller
--			 * will send a closing sync char after this count.
--			 */
--	    		if ( info->params.mode == MGSL_MODE_RAW )
--				info->tx_buffer_list[info->start_tx_dma_buffer].rcc = 0;
--
--			/* Program the Transmit Character Length Register (TCLR) */
--			/* and clear FIFO (TCC is loaded with TCLR on FIFO clear) */
--			usc_OutReg( info, TCLR, (u16)FrameSize );
--
--			usc_RTCmd( info, RTCmd_PurgeTxFifo );
--
--			/* Program the address of the 1st DMA Buffer Entry in linked list */
--			phys_addr = info->tx_buffer_list[info->start_tx_dma_buffer].phys_entry;
--			usc_OutDmaReg( info, NTARL, (u16)phys_addr );
--			usc_OutDmaReg( info, NTARU, (u16)(phys_addr >> 16) );
--
--			usc_UnlatchTxstatusBits( info, TXSTATUS_ALL );
--			usc_ClearIrqPendingBits( info, TRANSMIT_STATUS );
--			usc_EnableInterrupts( info, TRANSMIT_STATUS );
--
--			if ( info->params.mode == MGSL_MODE_RAW &&
--					info->num_tx_dma_buffers > 1 ) {
--			   /* When running external sync mode, attempt to 'stream' transmit  */
--			   /* by filling tx dma buffers as they become available. To do this */
--			   /* we need to enable Tx DMA EOB Status interrupts :               */
--			   /*                                                                */
--			   /* 1. Arm End of Buffer (EOB) Transmit DMA Interrupt (BIT2 of TDIAR) */
--			   /* 2. Enable Transmit DMA Interrupts (BIT0 of DICR) */
--
--			   usc_OutDmaReg( info, TDIAR, BIT2|BIT3 );
--			   usc_OutDmaReg( info, DICR, (u16)(usc_InDmaReg(info,DICR) | BIT0) );
--			}
--
--			/* Initialize Transmit DMA Channel */
--			usc_DmaCmd( info, DmaCmd_InitTxChannel );
--			
--			usc_TCmd( info, TCmd_SendFrame );
--			
--			mod_timer(&info->tx_timer, jiffies +
--					msecs_to_jiffies(5000));
--		}
--		info->tx_active = true;
--	}
--
--	if ( !info->tx_enabled ) {
--		info->tx_enabled = true;
--		if ( info->params.flags & HDLC_FLAG_AUTO_CTS )
--			usc_EnableTransmitter(info,ENABLE_AUTO_CTS);
+-	if (I_IXOFF(tty)) {
+-		if (info->x_char)
+-			info->x_char = 0;
 -		else
--			usc_EnableTransmitter(info,ENABLE_UNCONDITIONAL);
+-			send_xchar(tty, START_CHAR(tty));
 -	}
 -
--}	/* end of usc_start_transmitter() */
--
--/* usc_stop_transmitter()
-- *
-- *	Stops the transmitter and DMA
-- *
-- * Arguments:		info	pointer to device isntance data
-- * Return Value:	None
-- */
--static void usc_stop_transmitter( struct mgsl_struct *info )
--{
--	if (debug_level >= DEBUG_LEVEL_ISR)
--		printk("%s(%d):usc_stop_transmitter(%s)\n",
--			 __FILE__,__LINE__, info->device_name );
--			 
--	del_timer(&info->tx_timer);	
--			 
--	usc_UnlatchTxstatusBits( info, TXSTATUS_ALL );
--	usc_ClearIrqPendingBits( info, TRANSMIT_STATUS + TRANSMIT_DATA );
--	usc_DisableInterrupts( info, TRANSMIT_STATUS + TRANSMIT_DATA );
--
--	usc_EnableTransmitter(info,DISABLE_UNCONDITIONAL);
--	usc_DmaCmd( info, DmaCmd_ResetTxChannel );
--	usc_RTCmd( info, RTCmd_PurgeTxFifo );
--
--	info->tx_enabled = false;
--	info->tx_active = false;
--
--}	/* end of usc_stop_transmitter() */
--
--/* usc_load_txfifo()
-- *
-- *	Fill the transmit FIFO until the FIFO is full or
-- *	there is no more data to load.
-- *
-- * Arguments:		info	pointer to device extension (instance data)
-- * Return Value:	None
-- */
--static void usc_load_txfifo( struct mgsl_struct *info )
--{
--	int Fifocount;
--	u8 TwoBytes[2];
--	
--	if ( !info->xmit_cnt && !info->x_char )
--		return; 
--		
--	/* Select transmit FIFO status readback in TICR */
--	usc_TCmd( info, TCmd_SelectTicrTxFifostatus );
--
--	/* load the Transmit FIFO until FIFOs full or all data sent */
--
--	while( (Fifocount = usc_InReg(info, TICR) >> 8) && info->xmit_cnt ) {
--		/* there is more space in the transmit FIFO and */
--		/* there is more data in transmit buffer */
--
--		if ( (info->xmit_cnt > 1) && (Fifocount > 1) && !info->x_char ) {
-- 			/* write a 16-bit word from transmit buffer to 16C32 */
--				
--			TwoBytes[0] = info->xmit_buf[info->xmit_tail++];
--			info->xmit_tail = info->xmit_tail & (SERIAL_XMIT_SIZE-1);
--			TwoBytes[1] = info->xmit_buf[info->xmit_tail++];
--			info->xmit_tail = info->xmit_tail & (SERIAL_XMIT_SIZE-1);
--			
--			outw( *((u16 *)TwoBytes), info->io_base + DATAREG);
--				
--			info->xmit_cnt -= 2;
--			info->icount.tx += 2;
--		} else {
--			/* only 1 byte left to transmit or 1 FIFO slot left */
--			
--			outw( (inw( info->io_base + CCAR) & 0x0780) | (TDR+LSBONLY),
--				info->io_base + CCAR );
--			
--			if (info->x_char) {
--				/* transmit pending high priority char */
--				outw( info->x_char,info->io_base + CCAR );
--				info->x_char = 0;
--			} else {
--				outw( info->xmit_buf[info->xmit_tail++],info->io_base + CCAR );
--				info->xmit_tail = info->xmit_tail & (SERIAL_XMIT_SIZE-1);
--				info->xmit_cnt--;
--			}
--			info->icount.tx++;
--		}
+-	if (C_CRTSCTS(tty)) {
+-		spin_lock_irqsave(&info->lock,flags);
+-		info->serial_signals |= SerialSignal_RTS;
+-		set_signals(info);
+-		spin_unlock_irqrestore(&info->lock,flags);
 -	}
--
--}	/* end of usc_load_txfifo() */
--
--/* usc_reset()
-- *
-- *	Reset the adapter to a known state and prepare it for further use.
-- *
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void usc_reset( struct mgsl_struct *info )
--{
--	int i;
--	u32 __always_unused readval;
--
--	/* Set BIT30 of Misc Control Register */
--	/* (Local Control Register 0x50) to force reset of USC. */
--
--	volatile u32 *MiscCtrl = (u32 *)(info->lcr_base + 0x50);
--	u32 *LCR0BRDR = (u32 *)(info->lcr_base + 0x28);
--
--	info->misc_ctrl_value |= BIT30;
--	*MiscCtrl = info->misc_ctrl_value;
--
--	/*
--	 * Force at least 170ns delay before clearing reset bit.  Each read from
--	 * LCR takes at least 30ns so 10 times for 300ns to be safe.
--	 */
--	for(i=0;i<10;i++)
--		readval = *MiscCtrl;
--
--	info->misc_ctrl_value &= ~BIT30;
--	*MiscCtrl = info->misc_ctrl_value;
--
--	*LCR0BRDR = BUS_DESCRIPTOR(
--		1,		// Write Strobe Hold (0-3)
--		2,		// Write Strobe Delay (0-3)
--		2,		// Read Strobe Delay  (0-3)
--		0,		// NWDD (Write data-data) (0-3)
--		4,		// NWAD (Write Addr-data) (0-31)
--		0,		// NXDA (Read/Write Data-Addr) (0-3)
--		0,		// NRDD (Read Data-Data) (0-3)
--		5		// NRAD (Read Addr-Data) (0-31)
--		);
--
--	info->mbre_bit = 0;
--	info->loopback_bits = 0;
--	info->usc_idle_mode = 0;
--
--	/*
--	 * Program the Bus Configuration Register (BCR)
--	 *
--	 * <15>		0	Don't use separate address
--	 * <14..6>	0	reserved
--	 * <5..4>	00	IAckmode = Default, don't care
--	 * <3>		1	Bus Request Totem Pole output
--	 * <2>		1	Use 16 Bit data bus
--	 * <1>		0	IRQ Totem Pole output
--	 * <0>		0	Don't Shift Right Addr
--	 *
--	 * 0000 0000 0000 1100 = 0x000c
--	 *
--	 * By writing to io_base + SDPIN the Wait/Ack pin is
--	 * programmed to work as a Wait pin.
--	 */
--	
--	outw( 0x000c,info->io_base + SDPIN );
--
--
--	outw( 0,info->io_base );
--	outw( 0,info->io_base + CCAR );
--
--	/* select little endian byte ordering */
--	usc_RTCmd( info, RTCmd_SelectLittleEndian );
--
--
--	/* Port Control Register (PCR)
--	 *
--	 * <15..14>	11	Port 7 is Output (~DMAEN, Bit 14 : 0 = Enabled)
--	 * <13..12>	11	Port 6 is Output (~INTEN, Bit 12 : 0 = Enabled)
--	 * <11..10> 	00	Port 5 is Input (No Connect, Don't Care)
--	 * <9..8> 	00	Port 4 is Input (No Connect, Don't Care)
--	 * <7..6>	11	Port 3 is Output (~RTS, Bit 6 : 0 = Enabled )
--	 * <5..4>	11	Port 2 is Output (~DTR, Bit 4 : 0 = Enabled )
--	 * <3..2>	01	Port 1 is Input (Dedicated RxC)
--	 * <1..0>	01	Port 0 is Input (Dedicated TxC)
--	 *
--	 *	1111 0000 1111 0101 = 0xf0f5
--	 */
--
--	usc_OutReg( info, PCR, 0xf0f5 );
--
--
--	/*
--	 * Input/Output Control Register
--	 *
--	 * <15..14>	00	CTS is active low input
--	 * <13..12>	00	DCD is active low input
--	 * <11..10>	00	TxREQ pin is input (DSR)
--	 * <9..8>	00	RxREQ pin is input (RI)
--	 * <7..6>	00	TxD is output (Transmit Data)
--	 * <5..3>	000	TxC Pin in Input (14.7456MHz Clock)
--	 * <2..0>	100	RxC is Output (drive with BRG0)
--	 *
--	 *	0000 0000 0000 0100 = 0x0004
--	 */
--
--	usc_OutReg( info, IOCR, 0x0004 );
--
--}	/* end of usc_reset() */
--
--/* usc_set_async_mode()
-- *
-- *	Program adapter for asynchronous communications.
-- *
-- * Arguments:		info		pointer to device instance data
-- * Return Value:	None
-- */
--static void usc_set_async_mode( struct mgsl_struct *info )
--{
--	u16 RegValue;
--
--	/* disable interrupts while programming USC */
--	usc_DisableMasterIrqBit( info );
--
--	outw( 0, info->io_base ); 			/* clear Master Bus Enable (DCAR) */
--	usc_DmaCmd( info, DmaCmd_ResetAllChannels );	/* disable both DMA channels */
--
--	usc_loopback_frame( info );
--
--	/* Channel mode Register (CMR)
--	 *
--	 * <15..14>	00	Tx Sub modes, 00 = 1 Stop Bit
--	 * <13..12>	00	              00 = 16X Clock
--	 * <11..8>	0000	Transmitter mode = Asynchronous
--	 * <7..6>	00	reserved?
--	 * <5..4>	00	Rx Sub modes, 00 = 16X Clock
--	 * <3..0>	0000	Receiver mode = Asynchronous
--	 *
--	 * 0000 0000 0000 0000 = 0x0
--	 */
--
--	RegValue = 0;
--	if ( info->params.stop_bits != 1 )
--		RegValue |= BIT14;
--	usc_OutReg( info, CMR, RegValue );
--
--	
--	/* Receiver mode Register (RMR)
--	 *
--	 * <15..13>	000	encoding = None
--	 * <12..08>	00000	reserved (Sync Only)
--	 * <7..6>   	00	Even parity
--	 * <5>		0	parity disabled
--	 * <4..2>	000	Receive Char Length = 8 bits
--	 * <1..0>	00	Disable Receiver
--	 *
--	 * 0000 0000 0000 0000 = 0x0
--	 */
--
--	RegValue = 0;
--
--	if ( info->params.data_bits != 8 )
--		RegValue |= BIT4 | BIT3 | BIT2;
--
--	if ( info->params.parity != ASYNC_PARITY_NONE ) {
--		RegValue |= BIT5;
--		if ( info->params.parity != ASYNC_PARITY_ODD )
--			RegValue |= BIT6;
--	}
--
--	usc_OutReg( info, RMR, RegValue );
--
--
--	/* Set IRQ trigger level */
--
--	usc_RCmd( info, RCmd_SelectRicrIntLevel );
--
--	
--	/* Receive Interrupt Control Register (RICR)
--	 *
--	 * <15..8>	?		RxFIFO IRQ Request Level
--	 *
--	 * Note: For async mode the receive FIFO level must be set
--	 * to 0 to avoid the situation where the FIFO contains fewer bytes
--	 * than the trigger level and no more data is expected.
--	 *
--	 * <7>		0		Exited Hunt IA (Interrupt Arm)
--	 * <6>		0		Idle Received IA
--	 * <5>		0		Break/Abort IA
--	 * <4>		0		Rx Bound IA
--	 * <3>		0		Queued status reflects oldest byte in FIFO
--	 * <2>		0		Abort/PE IA
--	 * <1>		0		Rx Overrun IA
--	 * <0>		0		Select TC0 value for readback
--	 *
--	 * 0000 0000 0100 0000 = 0x0000 + (FIFOLEVEL in MSB)
--	 */
--	
--	usc_OutReg( info, RICR, 0x0000 );
--
--	usc_UnlatchRxstatusBits( info, RXSTATUS_ALL );
--	usc_ClearIrqPendingBits( info, RECEIVE_STATUS );
--
--	
--	/* Transmit mode Register (TMR)
--	 *
--	 * <15..13>	000	encoding = None
--	 * <12..08>	00000	reserved (Sync Only)
--	 * <7..6>	00	Transmit parity Even
--	 * <5>		0	Transmit parity Disabled
--	 * <4..2>	000	Tx Char Length = 8 bits
--	 * <1..0>	00	Disable Transmitter
--	 *
--	 * 0000 0000 0000 0000 = 0x0
--	 */
--
--	RegValue = 0;
--
--	if ( info->params.data_bits != 8 )
--		RegValue |= BIT4 | BIT3 | BIT2;
--
--	if ( info->params.parity != ASYNC_PARITY_NONE ) {
--		RegValue |= BIT5;
--		if ( info->params.parity != ASYNC_PARITY_ODD )
--			RegValue |= BIT6;
--	}
--
--	usc_OutReg( info, TMR, RegValue );
--
--	usc_set_txidle( info );
--
--
--	/* Set IRQ trigger level */
--
--	usc_TCmd( info, TCmd_SelectTicrIntLevel );
--
--	
--	/* Transmit Interrupt Control Register (TICR)
--	 *
--	 * <15..8>	?	Transmit FIFO IRQ Level
--	 * <7>		0	Present IA (Interrupt Arm)
--	 * <6>		1	Idle Sent IA
--	 * <5>		0	Abort Sent IA
--	 * <4>		0	EOF/EOM Sent IA
--	 * <3>		0	CRC Sent IA
--	 * <2>		0	1 = Wait for SW Trigger to Start Frame
--	 * <1>		0	Tx Underrun IA
--	 * <0>		0	TC0 constant on read back
--	 *
--	 *	0000 0000 0100 0000 = 0x0040
--	 */
--
--	usc_OutReg( info, TICR, 0x1f40 );
--
--	usc_UnlatchTxstatusBits( info, TXSTATUS_ALL );
--	usc_ClearIrqPendingBits( info, TRANSMIT_STATUS );
--
--	usc_enable_async_clock( info, info->params.data_rate );
--
--	
--	/* Channel Control/status Register (CCSR)
--	 *
--	 * <15>		X	RCC FIFO Overflow status (RO)
--	 * <14>		X	RCC FIFO Not Empty status (RO)
--	 * <13>		0	1 = Clear RCC FIFO (WO)
--	 * <12>		X	DPLL in Sync status (RO)
--	 * <11>		X	DPLL 2 Missed Clocks status (RO)
--	 * <10>		X	DPLL 1 Missed Clock status (RO)
--	 * <9..8>	00	DPLL Resync on rising and falling edges (RW)
--	 * <7>		X	SDLC Loop On status (RO)
--	 * <6>		X	SDLC Loop Send status (RO)
--	 * <5>		1	Bypass counters for TxClk and RxClk (RW)
--	 * <4..2>   	000	Last Char of SDLC frame has 8 bits (RW)
--	 * <1..0>   	00	reserved
--	 *
--	 *	0000 0000 0010 0000 = 0x0020
--	 */
--	
--	usc_OutReg( info, CCSR, 0x0020 );
--
--	usc_DisableInterrupts( info, TRANSMIT_STATUS + TRANSMIT_DATA +
--			      RECEIVE_DATA + RECEIVE_STATUS );
--
--	usc_ClearIrqPendingBits( info, TRANSMIT_STATUS + TRANSMIT_DATA +
--				RECEIVE_DATA + RECEIVE_STATUS );
--
--	usc_EnableMasterIrqBit( info );
--
--	if (info->params.loopback) {
--		info->loopback_bits = 0x300;
--		outw(0x0300, info->io_base + CCAR);
--	}
--
--}	/* end of usc_set_async_mode() */
--
--/* usc_loopback_frame()
-- *
-- *	Loop back a small (2 byte) dummy SDLC frame.
-- *	Interrupts and DMA are NOT used. The purpose of this is to
-- *	clear any 'stale' status info left over from running in	async mode.
-- *
-- *	The 16C32 shows the strange behaviour of marking the 1st
-- *	received SDLC frame with a CRC error even when there is no
-- *	CRC error. To get around this a small dummy from of 2 bytes
-- *	is looped back when switching from async to sync mode.
-- *
-- * Arguments:		info		pointer to device instance data
-- * Return Value:	None
-- */
--static void usc_loopback_frame( struct mgsl_struct *info )
--{
--	int i;
--	unsigned long oldmode = info->params.mode;
--
--	info->params.mode = MGSL_MODE_HDLC;
--	
--	usc_DisableMasterIrqBit( info );
--
--	usc_set_sdlc_mode( info );
--	usc_enable_loopback( info, 1 );
--
--	/* Write 16-bit Time Constant for BRG0 */
--	usc_OutReg( info, TC0R, 0 );
--	
--	/* Channel Control Register (CCR)
--	 *
--	 * <15..14>	00	Don't use 32-bit Tx Control Blocks (TCBs)
--	 * <13>		0	Trigger Tx on SW Command Disabled
--	 * <12>		0	Flag Preamble Disabled
--	 * <11..10>	00	Preamble Length = 8-Bits
--	 * <9..8>	01	Preamble Pattern = flags
--	 * <7..6>	10	Don't use 32-bit Rx status Blocks (RSBs)
--	 * <5>		0	Trigger Rx on SW Command Disabled
--	 * <4..0>	0	reserved
--	 *
--	 *	0000 0001 0000 0000 = 0x0100
--	 */
--
--	usc_OutReg( info, CCR, 0x0100 );
--
--	/* SETUP RECEIVER */
--	usc_RTCmd( info, RTCmd_PurgeRxFifo );
--	usc_EnableReceiver(info,ENABLE_UNCONDITIONAL);
--
--	/* SETUP TRANSMITTER */
--	/* Program the Transmit Character Length Register (TCLR) */
--	/* and clear FIFO (TCC is loaded with TCLR on FIFO clear) */
--	usc_OutReg( info, TCLR, 2 );
--	usc_RTCmd( info, RTCmd_PurgeTxFifo );
--
--	/* unlatch Tx status bits, and start transmit channel. */
--	usc_UnlatchTxstatusBits(info,TXSTATUS_ALL);
--	outw(0,info->io_base + DATAREG);
--
--	/* ENABLE TRANSMITTER */
--	usc_TCmd( info, TCmd_SendFrame );
--	usc_EnableTransmitter(info,ENABLE_UNCONDITIONAL);
--							
--	/* WAIT FOR RECEIVE COMPLETE */
--	for (i=0 ; i<1000 ; i++)
--		if (usc_InReg( info, RCSR ) & (BIT8 | BIT4 | BIT3 | BIT1))
--			break;
--
--	/* clear Internal Data loopback mode */
--	usc_enable_loopback(info, 0);
--
--	usc_EnableMasterIrqBit(info);
--
--	info->params.mode = oldmode;
--
--}	/* end of usc_loopback_frame() */
--
--/* usc_set_sync_mode()	Programs the USC for SDLC communications.
-- *
-- * Arguments:		info	pointer to adapter info structure
-- * Return Value:	None
-- */
--static void usc_set_sync_mode( struct mgsl_struct *info )
--{
--	usc_loopback_frame( info );
--	usc_set_sdlc_mode( info );
--
--	usc_enable_aux_clock(info, info->params.clock_speed);
--
--	if (info->params.loopback)
--		usc_enable_loopback(info,1);
--
--}	/* end of mgsl_set_sync_mode() */
--
--/* usc_set_txidle()	Set the HDLC idle mode for the transmitter.
-- *
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void usc_set_txidle( struct mgsl_struct *info )
--{
--	u16 usc_idle_mode = IDLEMODE_FLAGS;
--
--	/* Map API idle mode to USC register bits */
--
--	switch( info->idle_mode ){
--	case HDLC_TXIDLE_FLAGS:			usc_idle_mode = IDLEMODE_FLAGS; break;
--	case HDLC_TXIDLE_ALT_ZEROS_ONES:	usc_idle_mode = IDLEMODE_ALT_ONE_ZERO; break;
--	case HDLC_TXIDLE_ZEROS:			usc_idle_mode = IDLEMODE_ZERO; break;
--	case HDLC_TXIDLE_ONES:			usc_idle_mode = IDLEMODE_ONE; break;
--	case HDLC_TXIDLE_ALT_MARK_SPACE:	usc_idle_mode = IDLEMODE_ALT_MARK_SPACE; break;
--	case HDLC_TXIDLE_SPACE:			usc_idle_mode = IDLEMODE_SPACE; break;
--	case HDLC_TXIDLE_MARK:			usc_idle_mode = IDLEMODE_MARK; break;
--	}
--
--	info->usc_idle_mode = usc_idle_mode;
--	//usc_OutReg(info, TCSR, usc_idle_mode);
--	info->tcsr_value &= ~IDLEMODE_MASK;	/* clear idle mode bits */
--	info->tcsr_value += usc_idle_mode;
--	usc_OutReg(info, TCSR, info->tcsr_value);
--
--	/*
--	 * if SyncLink WAN adapter is running in external sync mode, the
--	 * transmitter has been set to Monosync in order to try to mimic
--	 * a true raw outbound bit stream. Monosync still sends an open/close
--	 * sync char at the start/end of a frame. Try to match those sync
--	 * patterns to the idle mode set here
--	 */
--	if ( info->params.mode == MGSL_MODE_RAW ) {
--		unsigned char syncpat = 0;
--		switch( info->idle_mode ) {
--		case HDLC_TXIDLE_FLAGS:
--			syncpat = 0x7e;
--			break;
--		case HDLC_TXIDLE_ALT_ZEROS_ONES:
--			syncpat = 0x55;
--			break;
--		case HDLC_TXIDLE_ZEROS:
--		case HDLC_TXIDLE_SPACE:
--			syncpat = 0x00;
--			break;
--		case HDLC_TXIDLE_ONES:
--		case HDLC_TXIDLE_MARK:
--			syncpat = 0xff;
--			break;
--		case HDLC_TXIDLE_ALT_MARK_SPACE:
--			syncpat = 0xaa;
--			break;
--		}
--
--		usc_SetTransmitSyncChars(info,syncpat,syncpat);
--	}
--
--}	/* end of usc_set_txidle() */
--
--/* usc_get_serial_signals()
-- *
-- *	Query the adapter for the state of the V24 status (input) signals.
-- *
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void usc_get_serial_signals( struct mgsl_struct *info )
--{
--	u16 status;
--
--	/* clear all serial signals except RTS and DTR */
--	info->serial_signals &= SerialSignal_RTS | SerialSignal_DTR;
--
--	/* Read the Misc Interrupt status Register (MISR) to get */
--	/* the V24 status signals. */
--
--	status = usc_InReg( info, MISR );
--
--	/* set serial signal bits to reflect MISR */
--
--	if ( status & MISCSTATUS_CTS )
--		info->serial_signals |= SerialSignal_CTS;
--
--	if ( status & MISCSTATUS_DCD )
--		info->serial_signals |= SerialSignal_DCD;
--
--	if ( status & MISCSTATUS_RI )
--		info->serial_signals |= SerialSignal_RI;
--
--	if ( status & MISCSTATUS_DSR )
--		info->serial_signals |= SerialSignal_DSR;
--
--}	/* end of usc_get_serial_signals() */
--
--/* usc_set_serial_signals()
-- *
-- *	Set the state of RTS and DTR based on contents of
-- *	serial_signals member of device extension.
-- *	
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void usc_set_serial_signals( struct mgsl_struct *info )
--{
--	u16 Control;
--	unsigned char V24Out = info->serial_signals;
--
--	/* get the current value of the Port Control Register (PCR) */
--
--	Control = usc_InReg( info, PCR );
--
--	if ( V24Out & SerialSignal_RTS )
--		Control &= ~(BIT6);
--	else
--		Control |= BIT6;
--
--	if ( V24Out & SerialSignal_DTR )
--		Control &= ~(BIT4);
--	else
--		Control |= BIT4;
--
--	usc_OutReg( info, PCR, Control );
--
--}	/* end of usc_set_serial_signals() */
--
--/* usc_enable_async_clock()
-- *
-- *	Enable the async clock at the specified frequency.
-- *
-- * Arguments:		info		pointer to device instance data
-- *			data_rate	data rate of clock in bps
-- *					0 disables the AUX clock.
-- * Return Value:	None
-- */
--static void usc_enable_async_clock( struct mgsl_struct *info, u32 data_rate )
--{
--	if ( data_rate )	{
--		/*
--		 * Clock mode Control Register (CMCR)
--		 * 
--		 * <15..14>     00      counter 1 Disabled
--		 * <13..12>     00      counter 0 Disabled
--		 * <11..10>     11      BRG1 Input is TxC Pin
--		 * <9..8>       11      BRG0 Input is TxC Pin
--		 * <7..6>       01      DPLL Input is BRG1 Output
--		 * <5..3>       100     TxCLK comes from BRG0
--		 * <2..0>       100     RxCLK comes from BRG0
--		 *
--		 * 0000 1111 0110 0100 = 0x0f64
--		 */
--		
--		usc_OutReg( info, CMCR, 0x0f64 );
--
--
--		/*
--		 * Write 16-bit Time Constant for BRG0
--		 * Time Constant = (ClkSpeed / data_rate) - 1
--		 * ClkSpeed = 921600 (ISA), 691200 (PCI)
--		 */
--
--		usc_OutReg( info, TC0R, (u16)((691200/data_rate) - 1) );
--		
--		/*
--		 * Hardware Configuration Register (HCR)
--		 * Clear Bit 1, BRG0 mode = Continuous
--		 * Set Bit 0 to enable BRG0.
--		 */
--
--		usc_OutReg( info, HCR,
--			    (u16)((usc_InReg( info, HCR ) & ~BIT1) | BIT0) );
--
--
--		/* Input/Output Control Reg, <2..0> = 100, Drive RxC pin with BRG0 */
--
--		usc_OutReg( info, IOCR,
--			    (u16)((usc_InReg(info, IOCR) & 0xfff8) | 0x0004) );
--	} else {
--		/* data rate == 0 so turn off BRG0 */
--		usc_OutReg( info, HCR, (u16)(usc_InReg( info, HCR ) & ~BIT0) );
--	}
--
--}	/* end of usc_enable_async_clock() */
--
--/*
-- * Buffer Structures:
-- *
-- * Normal memory access uses virtual addresses that can make discontiguous
-- * physical memory pages appear to be contiguous in the virtual address
-- * space (the processors memory mapping handles the conversions).
-- *
-- * DMA transfers require physically contiguous memory. This is because
-- * the DMA system controller and DMA bus masters deal with memory using
-- * only physical addresses.
-- *
-- * This causes a problem under Windows NT when large DMA buffers are
-- * needed. Fragmentation of the nonpaged pool prevents allocations of
-- * physically contiguous buffers larger than the PAGE_SIZE.
-- *
-- * However the 16C32 supports Bus Master Scatter/Gather DMA which
-- * allows DMA transfers to physically discontiguous buffers. Information
-- * about each data transfer buffer is contained in a memory structure
-- * called a 'buffer entry'. A list of buffer entries is maintained
-- * to track and control the use of the data transfer buffers.
-- *
-- * To support this strategy we will allocate sufficient PAGE_SIZE
-- * contiguous memory buffers to allow for the total required buffer
-- * space.
-- *
-- * The 16C32 accesses the list of buffer entries using Bus Master
-- * DMA. Control information is read from the buffer entries by the
-- * 16C32 to control data transfers. status information is written to
-- * the buffer entries by the 16C32 to indicate the status of completed
-- * transfers.
-- *
-- * The CPU writes control information to the buffer entries to control
-- * the 16C32 and reads status information from the buffer entries to
-- * determine information about received and transmitted frames.
-- *
-- * Because the CPU and 16C32 (adapter) both need simultaneous access
-- * to the buffer entries, the buffer entry memory is allocated with
-- * HalAllocateCommonBuffer(). This restricts the size of the buffer
-- * entry list to PAGE_SIZE.
-- *
-- * The actual data buffers on the other hand will only be accessed
-- * by the CPU or the adapter but not by both simultaneously. This allows
-- * Scatter/Gather packet based DMA procedures for using physically
-- * discontiguous pages.
-- */
--
--/*
-- * mgsl_reset_tx_dma_buffers()
-- *
-- * 	Set the count for all transmit buffers to 0 to indicate the
-- * 	buffer is available for use and set the current buffer to the
-- * 	first buffer. This effectively makes all buffers free and
-- * 	discards any data in buffers.
-- *
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
-- */
--static void mgsl_reset_tx_dma_buffers( struct mgsl_struct *info )
--{
--	unsigned int i;
--
--	for ( i = 0; i < info->tx_buffer_count; i++ ) {
--		*((unsigned long *)&(info->tx_buffer_list[i].count)) = 0;
--	}
--
--	info->current_tx_buffer = 0;
--	info->start_tx_dma_buffer = 0;
--	info->tx_dma_buffers_used = 0;
--
--	info->get_tx_holding_index = 0;
--	info->put_tx_holding_index = 0;
--	info->tx_holding_count = 0;
--
--}	/* end of mgsl_reset_tx_dma_buffers() */
--
--/*
-- * num_free_tx_dma_buffers()
-- *
-- * 	returns the number of free tx dma buffers available
-- *
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	number of free tx dma buffers
-- */
--static int num_free_tx_dma_buffers(struct mgsl_struct *info)
--{
--	return info->tx_buffer_count - info->tx_dma_buffers_used;
 -}
 -
--/*
-- * mgsl_reset_rx_dma_buffers()
-- * 
-- * 	Set the count for all receive buffers to DMABUFFERSIZE
-- * 	and set the current buffer to the first buffer. This effectively
-- * 	makes all buffers free and discards any data in buffers.
-- * 
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	None
+-/* set or clear transmit break condition
+- * break_state	-1=set break condition, 0=clear
 - */
--static void mgsl_reset_rx_dma_buffers( struct mgsl_struct *info )
+-static int set_break(struct tty_struct *tty, int break_state)
 -{
--	unsigned int i;
--
--	for ( i = 0; i < info->rx_buffer_count; i++ ) {
--		*((unsigned long *)&(info->rx_buffer_list[i].count)) = DMABUFFERSIZE;
--//		info->rx_buffer_list[i].count = DMABUFFERSIZE;
--//		info->rx_buffer_list[i].status = 0;
--	}
--
--	info->current_rx_buffer = 0;
--
--}	/* end of mgsl_reset_rx_dma_buffers() */
--
--/*
-- * mgsl_free_rx_frame_buffers()
-- * 
-- * 	Free the receive buffers used by a received SDLC
-- * 	frame such that the buffers can be reused.
-- * 
-- * Arguments:
-- * 
-- * 	info			pointer to device instance data
-- * 	StartIndex		index of 1st receive buffer of frame
-- * 	EndIndex		index of last receive buffer of frame
-- * 
-- * Return Value:	None
-- */
--static void mgsl_free_rx_frame_buffers( struct mgsl_struct *info, unsigned int StartIndex, unsigned int EndIndex )
--{
--	bool Done = false;
--	DMABUFFERENTRY *pBufEntry;
--	unsigned int Index;
--
--	/* Starting with 1st buffer entry of the frame clear the status */
--	/* field and set the count field to DMA Buffer Size. */
--
--	Index = StartIndex;
--
--	while( !Done ) {
--		pBufEntry = &(info->rx_buffer_list[Index]);
--
--		if ( Index == EndIndex ) {
--			/* This is the last buffer of the frame! */
--			Done = true;
--		}
--
--		/* reset current buffer for reuse */
--//		pBufEntry->status = 0;
--//		pBufEntry->count = DMABUFFERSIZE;
--		*((unsigned long *)&(pBufEntry->count)) = DMABUFFERSIZE;
--
--		/* advance to next buffer entry in linked list */
--		Index++;
--		if ( Index == info->rx_buffer_count )
--			Index = 0;
--	}
--
--	/* set current buffer to next buffer after last buffer of frame */
--	info->current_rx_buffer = Index;
--
--}	/* end of free_rx_frame_buffers() */
--
--/* mgsl_get_rx_frame()
-- * 
-- * 	This function attempts to return a received SDLC frame from the
-- * 	receive DMA buffers. Only frames received without errors are returned.
-- *
-- * Arguments:	 	info	pointer to device extension
-- * Return Value:	true if frame returned, otherwise false
-- */
--static bool mgsl_get_rx_frame(struct mgsl_struct *info)
--{
--	unsigned int StartIndex, EndIndex;	/* index of 1st and last buffers of Rx frame */
--	unsigned short status;
--	DMABUFFERENTRY *pBufEntry;
--	unsigned int framesize = 0;
--	bool ReturnCode = false;
--	unsigned long flags;
--	struct tty_struct *tty = info->port.tty;
--	bool return_frame = false;
--	
--	/*
--	 * current_rx_buffer points to the 1st buffer of the next available
--	 * receive frame. To find the last buffer of the frame look for
--	 * a non-zero status field in the buffer entries. (The status
--	 * field is set by the 16C32 after completing a receive frame.
--	 */
--
--	StartIndex = EndIndex = info->current_rx_buffer;
--
--	while( !info->rx_buffer_list[EndIndex].status ) {
--		/*
--		 * If the count field of the buffer entry is non-zero then
--		 * this buffer has not been used. (The 16C32 clears the count
--		 * field when it starts using the buffer.) If an unused buffer
--		 * is encountered then there are no frames available.
--		 */
--
--		if ( info->rx_buffer_list[EndIndex].count )
--			goto Cleanup;
--
--		/* advance to next buffer entry in linked list */
--		EndIndex++;
--		if ( EndIndex == info->rx_buffer_count )
--			EndIndex = 0;
--
--		/* if entire list searched then no frame available */
--		if ( EndIndex == StartIndex ) {
--			/* If this occurs then something bad happened,
--			 * all buffers have been 'used' but none mark
--			 * the end of a frame. Reset buffers and receiver.
--			 */
--
--			if ( info->rx_enabled ){
--				spin_lock_irqsave(&info->irq_spinlock,flags);
--				usc_start_receiver(info);
--				spin_unlock_irqrestore(&info->irq_spinlock,flags);
--			}
--			goto Cleanup;
--		}
--	}
--
--
--	/* check status of receive frame */
--	
--	status = info->rx_buffer_list[EndIndex].status;
--
--	if ( status & (RXSTATUS_SHORT_FRAME | RXSTATUS_OVERRUN |
--			RXSTATUS_CRC_ERROR | RXSTATUS_ABORT) ) {
--		if ( status & RXSTATUS_SHORT_FRAME )
--			info->icount.rxshort++;
--		else if ( status & RXSTATUS_ABORT )
--			info->icount.rxabort++;
--		else if ( status & RXSTATUS_OVERRUN )
--			info->icount.rxover++;
--		else {
--			info->icount.rxcrc++;
--			if ( info->params.crc_type & HDLC_CRC_RETURN_EX )
--				return_frame = true;
--		}
--		framesize = 0;
--#if SYNCLINK_GENERIC_HDLC
--		{
--			info->netdev->stats.rx_errors++;
--			info->netdev->stats.rx_frame_errors++;
--		}
--#endif
--	} else
--		return_frame = true;
--
--	if ( return_frame ) {
--		/* receive frame has no errors, get frame size.
--		 * The frame size is the starting value of the RCC (which was
--		 * set to 0xffff) minus the ending value of the RCC (decremented
--		 * once for each receive character) minus 2 for the 16-bit CRC.
--		 */
--
--		framesize = RCLRVALUE - info->rx_buffer_list[EndIndex].rcc;
--
--		/* adjust frame size for CRC if any */
--		if ( info->params.crc_type == HDLC_CRC_16_CCITT )
--			framesize -= 2;
--		else if ( info->params.crc_type == HDLC_CRC_32_CCITT )
--			framesize -= 4;		
--	}
--
--	if ( debug_level >= DEBUG_LEVEL_BH )
--		printk("%s(%d):mgsl_get_rx_frame(%s) status=%04X size=%d\n",
--			__FILE__,__LINE__,info->device_name,status,framesize);
--			
--	if ( debug_level >= DEBUG_LEVEL_DATA )
--		mgsl_trace_block(info,info->rx_buffer_list[StartIndex].virt_addr,
--			min_t(int, framesize, DMABUFFERSIZE),0);
--		
--	if (framesize) {
--		if ( ( (info->params.crc_type & HDLC_CRC_RETURN_EX) &&
--				((framesize+1) > info->max_frame_size) ) ||
--			(framesize > info->max_frame_size) )
--			info->icount.rxlong++;
--		else {
--			/* copy dma buffer(s) to contiguous intermediate buffer */
--			int copy_count = framesize;
--			int index = StartIndex;
--			unsigned char *ptmp = info->intermediate_rxbuffer;
--
--			if ( !(status & RXSTATUS_CRC_ERROR))
--				info->icount.rxok++;
--			
--			while(copy_count) {
--				int partial_count;
--				if ( copy_count > DMABUFFERSIZE )
--					partial_count = DMABUFFERSIZE;
--				else
--					partial_count = copy_count;
--			
--				pBufEntry = &(info->rx_buffer_list[index]);
--				memcpy( ptmp, pBufEntry->virt_addr, partial_count );
--				ptmp += partial_count;
--				copy_count -= partial_count;
--				
--				if ( ++index == info->rx_buffer_count )
--					index = 0;
--			}
--
--			if ( info->params.crc_type & HDLC_CRC_RETURN_EX ) {
--				++framesize;
--				*ptmp = (status & RXSTATUS_CRC_ERROR ?
--						RX_CRC_ERROR :
--						RX_OK);
--
--				if ( debug_level >= DEBUG_LEVEL_DATA )
--					printk("%s(%d):mgsl_get_rx_frame(%s) rx frame status=%d\n",
--						__FILE__,__LINE__,info->device_name,
--						*ptmp);
--			}
--
--#if SYNCLINK_GENERIC_HDLC
--			if (info->netcount)
--				hdlcdev_rx(info,info->intermediate_rxbuffer,framesize);
--			else
--#endif
--				ldisc_receive_buf(tty, info->intermediate_rxbuffer, info->flag_buf, framesize);
--		}
--	}
--	/* Free the buffers used by this frame. */
--	mgsl_free_rx_frame_buffers( info, StartIndex, EndIndex );
--
--	ReturnCode = true;
--
--Cleanup:
--
--	if ( info->rx_enabled && info->rx_overflow ) {
--		/* The receiver needs to restarted because of 
--		 * a receive overflow (buffer or FIFO). If the 
--		 * receive buffers are now empty, then restart receiver.
--		 */
--
--		if ( !info->rx_buffer_list[EndIndex].status &&
--			info->rx_buffer_list[EndIndex].count ) {
--			spin_lock_irqsave(&info->irq_spinlock,flags);
--			usc_start_receiver(info);
--			spin_unlock_irqrestore(&info->irq_spinlock,flags);
--		}
--	}
--
--	return ReturnCode;
--
--}	/* end of mgsl_get_rx_frame() */
--
--/* mgsl_get_raw_rx_frame()
-- *
-- *     	This function attempts to return a received frame from the
-- *	receive DMA buffers when running in external loop mode. In this mode,
-- *	we will return at most one DMABUFFERSIZE frame to the application.
-- *	The USC receiver is triggering off of DCD going active to start a new
-- *	frame, and DCD going inactive to terminate the frame (similar to
-- *	processing a closing flag character).
-- *
-- *	In this routine, we will return DMABUFFERSIZE "chunks" at a time.
-- *	If DCD goes inactive, the last Rx DMA Buffer will have a non-zero
-- * 	status field and the RCC field will indicate the length of the
-- *	entire received frame. We take this RCC field and get the modulus
-- *	of RCC and DMABUFFERSIZE to determine if number of bytes in the
-- *	last Rx DMA buffer and return that last portion of the frame.
-- *
-- * Arguments:	 	info	pointer to device extension
-- * Return Value:	true if frame returned, otherwise false
-- */
--static bool mgsl_get_raw_rx_frame(struct mgsl_struct *info)
--{
--	unsigned int CurrentIndex, NextIndex;
--	unsigned short status;
--	DMABUFFERENTRY *pBufEntry;
--	unsigned int framesize = 0;
--	bool ReturnCode = false;
--	unsigned long flags;
--	struct tty_struct *tty = info->port.tty;
--
--	/*
-- 	 * current_rx_buffer points to the 1st buffer of the next available
--	 * receive frame. The status field is set by the 16C32 after
--	 * completing a receive frame. If the status field of this buffer
--	 * is zero, either the USC is still filling this buffer or this
--	 * is one of a series of buffers making up a received frame.
--	 *
--	 * If the count field of this buffer is zero, the USC is either
--	 * using this buffer or has used this buffer. Look at the count
--	 * field of the next buffer. If that next buffer's count is
--	 * non-zero, the USC is still actively using the current buffer.
--	 * Otherwise, if the next buffer's count field is zero, the
--	 * current buffer is complete and the USC is using the next
--	 * buffer.
--	 */
--	CurrentIndex = NextIndex = info->current_rx_buffer;
--	++NextIndex;
--	if ( NextIndex == info->rx_buffer_count )
--		NextIndex = 0;
--
--	if ( info->rx_buffer_list[CurrentIndex].status != 0 ||
--		(info->rx_buffer_list[CurrentIndex].count == 0 &&
--			info->rx_buffer_list[NextIndex].count == 0)) {
--		/*
--	 	 * Either the status field of this dma buffer is non-zero
--		 * (indicating the last buffer of a receive frame) or the next
--	 	 * buffer is marked as in use -- implying this buffer is complete
--		 * and an intermediate buffer for this received frame.
--	 	 */
--
--		status = info->rx_buffer_list[CurrentIndex].status;
--
--		if ( status & (RXSTATUS_SHORT_FRAME | RXSTATUS_OVERRUN |
--				RXSTATUS_CRC_ERROR | RXSTATUS_ABORT) ) {
--			if ( status & RXSTATUS_SHORT_FRAME )
--				info->icount.rxshort++;
--			else if ( status & RXSTATUS_ABORT )
--				info->icount.rxabort++;
--			else if ( status & RXSTATUS_OVERRUN )
--				info->icount.rxover++;
--			else
--				info->icount.rxcrc++;
--			framesize = 0;
--		} else {
--			/*
--			 * A receive frame is available, get frame size and status.
--			 *
--			 * The frame size is the starting value of the RCC (which was
--			 * set to 0xffff) minus the ending value of the RCC (decremented
--			 * once for each receive character) minus 2 or 4 for the 16-bit
--			 * or 32-bit CRC.
--			 *
--			 * If the status field is zero, this is an intermediate buffer.
--			 * It's size is 4K.
--			 *
--			 * If the DMA Buffer Entry's Status field is non-zero, the
--			 * receive operation completed normally (ie: DCD dropped). The
--			 * RCC field is valid and holds the received frame size.
--			 * It is possible that the RCC field will be zero on a DMA buffer
--			 * entry with a non-zero status. This can occur if the total
--			 * frame size (number of bytes between the time DCD goes active
--			 * to the time DCD goes inactive) exceeds 65535 bytes. In this
--			 * case the 16C32 has underrun on the RCC count and appears to
--			 * stop updating this counter to let us know the actual received
--			 * frame size. If this happens (non-zero status and zero RCC),
--			 * simply return the entire RxDMA Buffer
--			 */
--			if ( status ) {
--				/*
--				 * In the event that the final RxDMA Buffer is
--				 * terminated with a non-zero status and the RCC
--				 * field is zero, we interpret this as the RCC
--				 * having underflowed (received frame > 65535 bytes).
--				 *
--				 * Signal the event to the user by passing back
--				 * a status of RxStatus_CrcError returning the full
--				 * buffer and let the app figure out what data is
--				 * actually valid
--				 */
--				if ( info->rx_buffer_list[CurrentIndex].rcc )
--					framesize = RCLRVALUE - info->rx_buffer_list[CurrentIndex].rcc;
--				else
--					framesize = DMABUFFERSIZE;
--			}
--			else
--				framesize = DMABUFFERSIZE;
--		}
--
--		if ( framesize > DMABUFFERSIZE ) {
--			/*
--			 * if running in raw sync mode, ISR handler for
--			 * End Of Buffer events terminates all buffers at 4K.
--			 * If this frame size is said to be >4K, get the
--			 * actual number of bytes of the frame in this buffer.
--			 */
--			framesize = framesize % DMABUFFERSIZE;
--		}
--
--
--		if ( debug_level >= DEBUG_LEVEL_BH )
--			printk("%s(%d):mgsl_get_raw_rx_frame(%s) status=%04X size=%d\n",
--				__FILE__,__LINE__,info->device_name,status,framesize);
--
--		if ( debug_level >= DEBUG_LEVEL_DATA )
--			mgsl_trace_block(info,info->rx_buffer_list[CurrentIndex].virt_addr,
--				min_t(int, framesize, DMABUFFERSIZE),0);
--
--		if (framesize) {
--			/* copy dma buffer(s) to contiguous intermediate buffer */
--			/* NOTE: we never copy more than DMABUFFERSIZE bytes	*/
--
--			pBufEntry = &(info->rx_buffer_list[CurrentIndex]);
--			memcpy( info->intermediate_rxbuffer, pBufEntry->virt_addr, framesize);
--			info->icount.rxok++;
--
--			ldisc_receive_buf(tty, info->intermediate_rxbuffer, info->flag_buf, framesize);
--		}
--
--		/* Free the buffers used by this frame. */
--		mgsl_free_rx_frame_buffers( info, CurrentIndex, CurrentIndex );
--
--		ReturnCode = true;
--	}
--
--
--	if ( info->rx_enabled && info->rx_overflow ) {
--		/* The receiver needs to restarted because of
--		 * a receive overflow (buffer or FIFO). If the
--		 * receive buffers are now empty, then restart receiver.
--		 */
--
--		if ( !info->rx_buffer_list[CurrentIndex].status &&
--			info->rx_buffer_list[CurrentIndex].count ) {
--			spin_lock_irqsave(&info->irq_spinlock,flags);
--			usc_start_receiver(info);
--			spin_unlock_irqrestore(&info->irq_spinlock,flags);
--		}
--	}
--
--	return ReturnCode;
--
--}	/* end of mgsl_get_raw_rx_frame() */
--
--/* mgsl_load_tx_dma_buffer()
-- * 
-- * 	Load the transmit DMA buffer with the specified data.
-- * 
-- * Arguments:
-- * 
-- * 	info		pointer to device extension
-- * 	Buffer		pointer to buffer containing frame to load
-- * 	BufferSize	size in bytes of frame in Buffer
-- * 
-- * Return Value: 	None
-- */
--static void mgsl_load_tx_dma_buffer(struct mgsl_struct *info,
--		const char *Buffer, unsigned int BufferSize)
--{
--	unsigned short Copycount;
--	unsigned int i = 0;
--	DMABUFFERENTRY *pBufEntry;
--	
--	if ( debug_level >= DEBUG_LEVEL_DATA )
--		mgsl_trace_block(info,Buffer, min_t(int, BufferSize, DMABUFFERSIZE), 1);
--
--	if (info->params.flags & HDLC_FLAG_HDLC_LOOPMODE) {
--		/* set CMR:13 to start transmit when
--		 * next GoAhead (abort) is received
--		 */
--	 	info->cmr_value |= BIT13;
--	}
--		
--	/* begin loading the frame in the next available tx dma
--	 * buffer, remember it's starting location for setting
--	 * up tx dma operation
--	 */
--	i = info->current_tx_buffer;
--	info->start_tx_dma_buffer = i;
--
--	/* Setup the status and RCC (Frame Size) fields of the 1st */
--	/* buffer entry in the transmit DMA buffer list. */
--
--	info->tx_buffer_list[i].status = info->cmr_value & 0xf000;
--	info->tx_buffer_list[i].rcc    = BufferSize;
--	info->tx_buffer_list[i].count  = BufferSize;
--
--	/* Copy frame data from 1st source buffer to the DMA buffers. */
--	/* The frame data may span multiple DMA buffers. */
--
--	while( BufferSize ){
--		/* Get a pointer to next DMA buffer entry. */
--		pBufEntry = &info->tx_buffer_list[i++];
--			
--		if ( i == info->tx_buffer_count )
--			i=0;
--
--		/* Calculate the number of bytes that can be copied from */
--		/* the source buffer to this DMA buffer. */
--		if ( BufferSize > DMABUFFERSIZE )
--			Copycount = DMABUFFERSIZE;
--		else
--			Copycount = BufferSize;
--
--		/* Actually copy data from source buffer to DMA buffer. */
--		/* Also set the data count for this individual DMA buffer. */
--		mgsl_load_pci_memory(pBufEntry->virt_addr, Buffer,Copycount);
--
--		pBufEntry->count = Copycount;
--
--		/* Advance source pointer and reduce remaining data count. */
--		Buffer += Copycount;
--		BufferSize -= Copycount;
--
--		++info->tx_dma_buffers_used;
--	}
--
--	/* remember next available tx dma buffer */
--	info->current_tx_buffer = i;
--
--}	/* end of mgsl_load_tx_dma_buffer() */
--
--/*
-- * mgsl_register_test()
-- * 
-- * 	Performs a register test of the 16C32.
-- * 	
-- * Arguments:		info	pointer to device instance data
-- * Return Value:		true if test passed, otherwise false
-- */
--static bool mgsl_register_test( struct mgsl_struct *info )
--{
--	static unsigned short BitPatterns[] =
--		{ 0x0000, 0xffff, 0xaaaa, 0x5555, 0x1234, 0x6969, 0x9696, 0x0f0f };
--	static unsigned int Patterncount = ARRAY_SIZE(BitPatterns);
--	unsigned int i;
--	bool rc = true;
+-	unsigned char RegValue;
+-	SLMP_INFO * info = tty->driver_data;
 -	unsigned long flags;
 -
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	usc_reset(info);
--
--	/* Verify the reset state of some registers. */
--
--	if ( (usc_InReg( info, SICR ) != 0) ||
--		  (usc_InReg( info, IVR  ) != 0) ||
--		  (usc_InDmaReg( info, DIVR ) != 0) ){
--		rc = false;
--	}
--
--	if ( rc ){
--		/* Write bit patterns to various registers but do it out of */
--		/* sync, then read back and verify values. */
--
--		for ( i = 0 ; i < Patterncount ; i++ ) {
--			usc_OutReg( info, TC0R, BitPatterns[i] );
--			usc_OutReg( info, TC1R, BitPatterns[(i+1)%Patterncount] );
--			usc_OutReg( info, TCLR, BitPatterns[(i+2)%Patterncount] );
--			usc_OutReg( info, RCLR, BitPatterns[(i+3)%Patterncount] );
--			usc_OutReg( info, RSR,  BitPatterns[(i+4)%Patterncount] );
--			usc_OutDmaReg( info, TBCR, BitPatterns[(i+5)%Patterncount] );
--
--			if ( (usc_InReg( info, TC0R ) != BitPatterns[i]) ||
--				  (usc_InReg( info, TC1R ) != BitPatterns[(i+1)%Patterncount]) ||
--				  (usc_InReg( info, TCLR ) != BitPatterns[(i+2)%Patterncount]) ||
--				  (usc_InReg( info, RCLR ) != BitPatterns[(i+3)%Patterncount]) ||
--				  (usc_InReg( info, RSR )  != BitPatterns[(i+4)%Patterncount]) ||
--				  (usc_InDmaReg( info, TBCR ) != BitPatterns[(i+5)%Patterncount]) ){
--				rc = false;
--				break;
--			}
--		}
--	}
--
--	usc_reset(info);
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--	return rc;
--
--}	/* end of mgsl_register_test() */
--
--/* mgsl_irq_test() 	Perform interrupt test of the 16C32.
-- * 
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	true if test passed, otherwise false
-- */
--static bool mgsl_irq_test( struct mgsl_struct *info )
--{
--	unsigned long EndTime;
--	unsigned long flags;
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	usc_reset(info);
--
--	/*
--	 * Setup 16C32 to interrupt on TxC pin (14MHz clock) transition. 
--	 * The ISR sets irq_occurred to true.
--	 */
--
--	info->irq_occurred = false;
--
--	/* Enable INTEN gate for ISA adapter (Port 6, Bit12) */
--	/* Enable INTEN (Port 6, Bit12) */
--	/* This connects the IRQ request signal to the ISA bus */
--	/* on the ISA adapter. This has no effect for the PCI adapter */
--	usc_OutReg( info, PCR, (unsigned short)((usc_InReg(info, PCR) | BIT13) & ~BIT12) );
--
--	usc_EnableMasterIrqBit(info);
--	usc_EnableInterrupts(info, IO_PIN);
--	usc_ClearIrqPendingBits(info, IO_PIN);
--	
--	usc_UnlatchIostatusBits(info, MISCSTATUS_TXC_LATCHED);
--	usc_EnableStatusIrqs(info, SICR_TXC_ACTIVE + SICR_TXC_INACTIVE);
--
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--	EndTime=100;
--	while( EndTime-- && !info->irq_occurred ) {
--		msleep_interruptible(10);
--	}
--	
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	usc_reset(info);
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	
--	return info->irq_occurred;
--
--}	/* end of mgsl_irq_test() */
--
--/* mgsl_dma_test()
-- * 
-- * 	Perform a DMA test of the 16C32. A small frame is
-- * 	transmitted via DMA from a transmit buffer to a receive buffer
-- * 	using single buffer DMA mode.
-- * 	
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	true if test passed, otherwise false
-- */
--static bool mgsl_dma_test( struct mgsl_struct *info )
--{
--	unsigned short FifoLevel;
--	unsigned long phys_addr;
--	unsigned int FrameSize;
--	unsigned int i;
--	char *TmpPtr;
--	bool rc = true;
--	unsigned short status=0;
--	unsigned long EndTime;
--	unsigned long flags;
--	MGSL_PARAMS tmp_params;
--
--	/* save current port options */
--	memcpy(&tmp_params,&info->params,sizeof(MGSL_PARAMS));
--	/* load default port options */
--	memcpy(&info->params,&default_params,sizeof(MGSL_PARAMS));
--	
--#define TESTFRAMESIZE 40
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	
--	/* setup 16C32 for SDLC DMA transfer mode */
--
--	usc_reset(info);
--	usc_set_sdlc_mode(info);
--	usc_enable_loopback(info,1);
--	
--	/* Reprogram the RDMR so that the 16C32 does NOT clear the count
--	 * field of the buffer entry after fetching buffer address. This
--	 * way we can detect a DMA failure for a DMA read (which should be
--	 * non-destructive to system memory) before we try and write to
--	 * memory (where a failure could corrupt system memory).
--	 */
--
--	/* Receive DMA mode Register (RDMR)
--	 * 
--	 * <15..14>	11	DMA mode = Linked List Buffer mode
--	 * <13>		1	RSBinA/L = store Rx status Block in List entry
--	 * <12>		0	1 = Clear count of List Entry after fetching
--	 * <11..10>	00	Address mode = Increment
--	 * <9>		1	Terminate Buffer on RxBound
--	 * <8>		0	Bus Width = 16bits
--	 * <7..0>		?	status Bits (write as 0s)
--	 * 
--	 * 1110 0010 0000 0000 = 0xe200
--	 */
--
--	usc_OutDmaReg( info, RDMR, 0xe200 );
--	
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--
--	/* SETUP TRANSMIT AND RECEIVE DMA BUFFERS */
--
--	FrameSize = TESTFRAMESIZE;
--
--	/* setup 1st transmit buffer entry: */
--	/* with frame size and transmit control word */
--
--	info->tx_buffer_list[0].count  = FrameSize;
--	info->tx_buffer_list[0].rcc    = FrameSize;
--	info->tx_buffer_list[0].status = 0x4000;
--
--	/* build a transmit frame in 1st transmit DMA buffer */
--
--	TmpPtr = info->tx_buffer_list[0].virt_addr;
--	for (i = 0; i < FrameSize; i++ )
--		*TmpPtr++ = i;
--
--	/* setup 1st receive buffer entry: */
--	/* clear status, set max receive buffer size */
--
--	info->rx_buffer_list[0].status = 0;
--	info->rx_buffer_list[0].count = FrameSize + 4;
--
--	/* zero out the 1st receive buffer */
--
--	memset( info->rx_buffer_list[0].virt_addr, 0, FrameSize + 4 );
--
--	/* Set count field of next buffer entries to prevent */
--	/* 16C32 from using buffers after the 1st one. */
--
--	info->tx_buffer_list[1].count = 0;
--	info->rx_buffer_list[1].count = 0;
--	
--
--	/***************************/
--	/* Program 16C32 receiver. */
--	/***************************/
--	
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--
--	/* setup DMA transfers */
--	usc_RTCmd( info, RTCmd_PurgeRxFifo );
--
--	/* program 16C32 receiver with physical address of 1st DMA buffer entry */
--	phys_addr = info->rx_buffer_list[0].phys_entry;
--	usc_OutDmaReg( info, NRARL, (unsigned short)phys_addr );
--	usc_OutDmaReg( info, NRARU, (unsigned short)(phys_addr >> 16) );
--
--	/* Clear the Rx DMA status bits (read RDMR) and start channel */
--	usc_InDmaReg( info, RDMR );
--	usc_DmaCmd( info, DmaCmd_InitRxChannel );
--
--	/* Enable Receiver (RMR <1..0> = 10) */
--	usc_OutReg( info, RMR, (unsigned short)((usc_InReg(info, RMR) & 0xfffc) | 0x0002) );
--	
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--
--	/*************************************************************/
--	/* WAIT FOR RECEIVER TO DMA ALL PARAMETERS FROM BUFFER ENTRY */
--	/*************************************************************/
--
--	/* Wait 100ms for interrupt. */
--	EndTime = jiffies + msecs_to_jiffies(100);
--
--	for(;;) {
--		if (time_after(jiffies, EndTime)) {
--			rc = false;
--			break;
--		}
--
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--		status = usc_InDmaReg( info, RDMR );
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--		if ( !(status & BIT4) && (status & BIT5) ) {
--			/* INITG (BIT 4) is inactive (no entry read in progress) AND */
--			/* BUSY  (BIT 5) is active (channel still active). */
--			/* This means the buffer entry read has completed. */
--			break;
--		}
--	}
--
--
--	/******************************/
--	/* Program 16C32 transmitter. */
--	/******************************/
--	
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--
--	/* Program the Transmit Character Length Register (TCLR) */
--	/* and clear FIFO (TCC is loaded with TCLR on FIFO clear) */
--
--	usc_OutReg( info, TCLR, (unsigned short)info->tx_buffer_list[0].count );
--	usc_RTCmd( info, RTCmd_PurgeTxFifo );
--
--	/* Program the address of the 1st DMA Buffer Entry in linked list */
--
--	phys_addr = info->tx_buffer_list[0].phys_entry;
--	usc_OutDmaReg( info, NTARL, (unsigned short)phys_addr );
--	usc_OutDmaReg( info, NTARU, (unsigned short)(phys_addr >> 16) );
--
--	/* unlatch Tx status bits, and start transmit channel. */
--
--	usc_OutReg( info, TCSR, (unsigned short)(( usc_InReg(info, TCSR) & 0x0f00) | 0xfa) );
--	usc_DmaCmd( info, DmaCmd_InitTxChannel );
--
--	/* wait for DMA controller to fill transmit FIFO */
--
--	usc_TCmd( info, TCmd_SelectTicrTxFifostatus );
--	
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--
--	/**********************************/
--	/* WAIT FOR TRANSMIT FIFO TO FILL */
--	/**********************************/
--	
--	/* Wait 100ms */
--	EndTime = jiffies + msecs_to_jiffies(100);
--
--	for(;;) {
--		if (time_after(jiffies, EndTime)) {
--			rc = false;
--			break;
--		}
--
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--		FifoLevel = usc_InReg(info, TICR) >> 8;
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--			
--		if ( FifoLevel < 16 )
--			break;
--		else
--			if ( FrameSize < 32 ) {
--				/* This frame is smaller than the entire transmit FIFO */
--				/* so wait for the entire frame to be loaded. */
--				if ( FifoLevel <= (32 - FrameSize) )
--					break;
--			}
--	}
--
--
--	if ( rc )
--	{
--		/* Enable 16C32 transmitter. */
--
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--		
--		/* Transmit mode Register (TMR), <1..0> = 10, Enable Transmitter */
--		usc_TCmd( info, TCmd_SendFrame );
--		usc_OutReg( info, TMR, (unsigned short)((usc_InReg(info, TMR) & 0xfffc) | 0x0002) );
--		
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--
--		/******************************/
--		/* WAIT FOR TRANSMIT COMPLETE */
--		/******************************/
--
--		/* Wait 100ms */
--		EndTime = jiffies + msecs_to_jiffies(100);
--
--		/* While timer not expired wait for transmit complete */
--
--		spin_lock_irqsave(&info->irq_spinlock,flags);
--		status = usc_InReg( info, TCSR );
--		spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--		while ( !(status & (BIT6 | BIT5 | BIT4 | BIT2 | BIT1)) ) {
--			if (time_after(jiffies, EndTime)) {
--				rc = false;
--				break;
--			}
--
--			spin_lock_irqsave(&info->irq_spinlock,flags);
--			status = usc_InReg( info, TCSR );
--			spin_unlock_irqrestore(&info->irq_spinlock,flags);
--		}
--	}
--
--
--	if ( rc ){
--		/* CHECK FOR TRANSMIT ERRORS */
--		if ( status & (BIT5 | BIT1) )
--			rc = false;
--	}
--
--	if ( rc ) {
--		/* WAIT FOR RECEIVE COMPLETE */
--
--		/* Wait 100ms */
--		EndTime = jiffies + msecs_to_jiffies(100);
--
--		/* Wait for 16C32 to write receive status to buffer entry. */
--		status=info->rx_buffer_list[0].status;
--		while ( status == 0 ) {
--			if (time_after(jiffies, EndTime)) {
--				rc = false;
--				break;
--			}
--			status=info->rx_buffer_list[0].status;
--		}
--	}
--
--
--	if ( rc ) {
--		/* CHECK FOR RECEIVE ERRORS */
--		status = info->rx_buffer_list[0].status;
--
--		if ( status & (BIT8 | BIT3 | BIT1) ) {
--			/* receive error has occurred */
--			rc = false;
--		} else {
--			if ( memcmp( info->tx_buffer_list[0].virt_addr ,
--				info->rx_buffer_list[0].virt_addr, FrameSize ) ){
--				rc = false;
--			}
--		}
--	}
--
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	usc_reset( info );
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--	/* restore current port options */
--	memcpy(&info->params,&tmp_params,sizeof(MGSL_PARAMS));
--	
--	return rc;
--
--}	/* end of mgsl_dma_test() */
--
--/* mgsl_adapter_test()
-- * 
-- * 	Perform the register, IRQ, and DMA tests for the 16C32.
-- * 	
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	0 if success, otherwise -ENODEV
-- */
--static int mgsl_adapter_test( struct mgsl_struct *info )
--{
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk( "%s(%d):Testing device %s\n",
--			__FILE__,__LINE__,info->device_name );
--			
--	if ( !mgsl_register_test( info ) ) {
--		info->init_error = DiagStatus_AddressFailure;
--		printk( "%s(%d):Register test failure for device %s Addr=%04X\n",
--			__FILE__,__LINE__,info->device_name, (unsigned short)(info->io_base) );
--		return -ENODEV;
--	}
--
--	if ( !mgsl_irq_test( info ) ) {
--		info->init_error = DiagStatus_IrqFailure;
--		printk( "%s(%d):Interrupt test failure for device %s IRQ=%d\n",
--			__FILE__,__LINE__,info->device_name, (unsigned short)(info->irq_level) );
--		return -ENODEV;
--	}
--
--	if ( !mgsl_dma_test( info ) ) {
--		info->init_error = DiagStatus_DmaFailure;
--		printk( "%s(%d):DMA test failure for device %s DMA=%d\n",
--			__FILE__,__LINE__,info->device_name, (unsigned short)(info->dma_level) );
--		return -ENODEV;
--	}
--
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk( "%s(%d):device %s passed diagnostics\n",
--			__FILE__,__LINE__,info->device_name );
--			
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s set_break(%d)\n",
+-			 __FILE__,__LINE__, info->device_name, break_state);
+-
+-	if (sanity_check(info, tty->name, "set_break"))
+-		return -EINVAL;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	RegValue = read_reg(info, CTL);
+- 	if (break_state == -1)
+-		RegValue |= BIT3;
+-	else
+-		RegValue &= ~BIT3;
+-	write_reg(info, CTL, RegValue);
+-	spin_unlock_irqrestore(&info->lock,flags);
 -	return 0;
--
--}	/* end of mgsl_adapter_test() */
--
--/* mgsl_memory_test()
-- * 
-- * 	Test the shared memory on a PCI adapter.
-- * 
-- * Arguments:		info	pointer to device instance data
-- * Return Value:	true if test passed, otherwise false
-- */
--static bool mgsl_memory_test( struct mgsl_struct *info )
--{
--	static unsigned long BitPatterns[] =
--		{ 0x0, 0x55555555, 0xaaaaaaaa, 0x66666666, 0x99999999, 0xffffffff, 0x12345678 };
--	unsigned long Patterncount = ARRAY_SIZE(BitPatterns);
--	unsigned long i;
--	unsigned long TestLimit = SHARED_MEM_ADDRESS_SIZE/sizeof(unsigned long);
--	unsigned long * TestAddr;
--
--	TestAddr = (unsigned long *)info->memory_base;
--
--	/* Test data lines with test pattern at one location. */
--
--	for ( i = 0 ; i < Patterncount ; i++ ) {
--		*TestAddr = BitPatterns[i];
--		if ( *TestAddr != BitPatterns[i] )
--			return false;
--	}
--
--	/* Test address lines with incrementing pattern over */
--	/* entire address range. */
--
--	for ( i = 0 ; i < TestLimit ; i++ ) {
--		*TestAddr = i * 4;
--		TestAddr++;
--	}
--
--	TestAddr = (unsigned long *)info->memory_base;
--
--	for ( i = 0 ; i < TestLimit ; i++ ) {
--		if ( *TestAddr != i * 4 )
--			return false;
--		TestAddr++;
--	}
--
--	memset( info->memory_base, 0, SHARED_MEM_ADDRESS_SIZE );
--
--	return true;
--
--}	/* End Of mgsl_memory_test() */
--
--
--/* mgsl_load_pci_memory()
-- * 
-- * 	Load a large block of data into the PCI shared memory.
-- * 	Use this instead of memcpy() or memmove() to move data
-- * 	into the PCI shared memory.
-- * 
-- * Notes:
-- * 
-- * 	This function prevents the PCI9050 interface chip from hogging
-- * 	the adapter local bus, which can starve the 16C32 by preventing
-- * 	16C32 bus master cycles.
-- * 
-- * 	The PCI9050 documentation says that the 9050 will always release
-- * 	control of the local bus after completing the current read
-- * 	or write operation.
-- * 
-- * 	It appears that as long as the PCI9050 write FIFO is full, the
-- * 	PCI9050 treats all of the writes as a single burst transaction
-- * 	and will not release the bus. This causes DMA latency problems
-- * 	at high speeds when copying large data blocks to the shared
-- * 	memory.
-- * 
-- * 	This function in effect, breaks the a large shared memory write
-- * 	into multiple transations by interleaving a shared memory read
-- * 	which will flush the write FIFO and 'complete' the write
-- * 	transation. This allows any pending DMA request to gain control
-- * 	of the local bus in a timely fasion.
-- * 
-- * Arguments:
-- * 
-- * 	TargetPtr	pointer to target address in PCI shared memory
-- * 	SourcePtr	pointer to source buffer for data
-- * 	count		count in bytes of data to copy
-- *
-- * Return Value:	None
-- */
--static void mgsl_load_pci_memory( char* TargetPtr, const char* SourcePtr,
--	unsigned short count )
--{
--	/* 16 32-bit writes @ 60ns each = 960ns max latency on local bus */
--#define PCI_LOAD_INTERVAL 64
--
--	unsigned short Intervalcount = count / PCI_LOAD_INTERVAL;
--	unsigned short Index;
--	unsigned long __always_unused Dummy;
--
--	for ( Index = 0 ; Index < Intervalcount ; Index++ )
--	{
--		memcpy(TargetPtr, SourcePtr, PCI_LOAD_INTERVAL);
--		Dummy = *((volatile unsigned long *)TargetPtr);
--		TargetPtr += PCI_LOAD_INTERVAL;
--		SourcePtr += PCI_LOAD_INTERVAL;
--	}
--
--	memcpy( TargetPtr, SourcePtr, count % PCI_LOAD_INTERVAL );
--
--}	/* End Of mgsl_load_pci_memory() */
--
--static void mgsl_trace_block(struct mgsl_struct *info,const char* data, int count, int xmit)
--{
--	int i;
--	int linecount;
--	if (xmit)
--		printk("%s tx data:\n",info->device_name);
--	else
--		printk("%s rx data:\n",info->device_name);
--		
--	while(count) {
--		if (count > 16)
--			linecount = 16;
--		else
--			linecount = count;
--			
--		for(i=0;i<linecount;i++)
--			printk("%02X ",(unsigned char)data[i]);
--		for(;i<17;i++)
--			printk("   ");
--		for(i=0;i<linecount;i++) {
--			if (data[i]>=040 && data[i]<=0176)
--				printk("%c",data[i]);
--			else
--				printk(".");
--		}
--		printk("\n");
--		
--		data  += linecount;
--		count -= linecount;
--	}
--}	/* end of mgsl_trace_block() */
--
--/* mgsl_tx_timeout()
-- * 
-- * 	called when HDLC frame times out
-- * 	update stats and do tx completion processing
-- * 	
-- * Arguments:	context		pointer to device instance data
-- * Return Value:	None
-- */
--static void mgsl_tx_timeout(struct timer_list *t)
--{
--	struct mgsl_struct *info = from_timer(info, t, tx_timer);
--	unsigned long flags;
--	
--	if ( debug_level >= DEBUG_LEVEL_INFO )
--		printk( "%s(%d):mgsl_tx_timeout(%s)\n",
--			__FILE__,__LINE__,info->device_name);
--	if(info->tx_active &&
--	   (info->params.mode == MGSL_MODE_HDLC ||
--	    info->params.mode == MGSL_MODE_RAW) ) {
--		info->icount.txtimeout++;
--	}
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	info->tx_active = false;
--	info->xmit_cnt = info->xmit_head = info->xmit_tail = 0;
--
--	if ( info->params.flags & HDLC_FLAG_HDLC_LOOPMODE )
--		usc_loopmode_cancel_transmit( info );
--
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--	
--#if SYNCLINK_GENERIC_HDLC
--	if (info->netcount)
--		hdlcdev_tx_done(info);
--	else
--#endif
--		mgsl_bh_transmit(info);
--	
--}	/* end of mgsl_tx_timeout() */
--
--/* signal that there are no more frames to send, so that
-- * line is 'released' by echoing RxD to TxD when current
-- * transmission is complete (or immediately if no tx in progress).
-- */
--static int mgsl_loopmode_send_done( struct mgsl_struct * info )
--{
--	unsigned long flags;
--	
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	if (info->params.flags & HDLC_FLAG_HDLC_LOOPMODE) {
--		if (info->tx_active)
--			info->loopmode_send_done_requested = true;
--		else
--			usc_loopmode_send_done(info);
--	}
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
--
--	return 0;
--}
--
--/* release the line by echoing RxD to TxD
-- * upon completion of a transmit frame
-- */
--static void usc_loopmode_send_done( struct mgsl_struct * info )
--{
-- 	info->loopmode_send_done_requested = false;
-- 	/* clear CMR:13 to 0 to start echoing RxData to TxData */
-- 	info->cmr_value &= ~BIT13;
-- 	usc_OutReg(info, CMR, info->cmr_value);
--}
--
--/* abort a transmit in progress while in HDLC LoopMode
-- */
--static void usc_loopmode_cancel_transmit( struct mgsl_struct * info )
--{
-- 	/* reset tx dma channel and purge TxFifo */
-- 	usc_RTCmd( info, RTCmd_PurgeTxFifo );
-- 	usc_DmaCmd( info, DmaCmd_ResetTxChannel );
--  	usc_loopmode_send_done( info );
--}
--
--/* for HDLC/SDLC LoopMode, setting CMR:13 after the transmitter is enabled
-- * is an Insert Into Loop action. Upon receipt of a GoAhead sequence (RxAbort)
-- * we must clear CMR:13 to begin repeating TxData to RxData
-- */
--static void usc_loopmode_insert_request( struct mgsl_struct * info )
--{
-- 	info->loopmode_insert_requested = true;
-- 
-- 	/* enable RxAbort irq. On next RxAbort, clear CMR:13 to
-- 	 * begin repeating TxData on RxData (complete insertion)
--	 */
-- 	usc_OutReg( info, RICR, 
--		(usc_InReg( info, RICR ) | RXSTATUS_ABORT_RECEIVED ) );
--		
--	/* set CMR:13 to insert into loop on next GoAhead (RxAbort) */
--	info->cmr_value |= BIT13;
-- 	usc_OutReg(info, CMR, info->cmr_value);
--}
--
--/* return 1 if station is inserted into the loop, otherwise 0
-- */
--static int usc_loopmode_active( struct mgsl_struct * info)
--{
-- 	return usc_InReg( info, CCSR ) & BIT7 ? 1 : 0 ;
 -}
 -
 -#if SYNCLINK_GENERIC_HDLC
@@ -7598,7 +1700,7 @@ index cbe9ad0683fc9..0000000000000
 -static int hdlcdev_attach(struct net_device *dev, unsigned short encoding,
 -			  unsigned short parity)
 -{
--	struct mgsl_struct *info = dev_to_port(dev);
+-	SLMP_INFO *info = dev_to_port(dev);
 -	unsigned char  new_encoding;
 -	unsigned short new_crctype;
 -
@@ -7629,20 +1731,20 @@ index cbe9ad0683fc9..0000000000000
 -
 -	/* if network interface up, reprogram hardware */
 -	if (info->netcount)
--		mgsl_program_hw(info);
+-		program_hw(info);
 -
 -	return 0;
 -}
 -
 -/**
-- * hdlcdev_xmit - called by generic HDLC layer to send a frame
+- * hdlcdev_xmit - called by generic HDLC layer to send frame
 - * @skb: socket buffer containing HDLC frame
 - * @dev: pointer to network device structure
 - */
 -static netdev_tx_t hdlcdev_xmit(struct sk_buff *skb,
 -				      struct net_device *dev)
 -{
--	struct mgsl_struct *info = dev_to_port(dev);
+-	SLMP_INFO *info = dev_to_port(dev);
 -	unsigned long flags;
 -
 -	if (debug_level >= DEBUG_LEVEL_INFO)
@@ -7652,8 +1754,8 @@ index cbe9ad0683fc9..0000000000000
 -	netif_stop_queue(dev);
 -
 -	/* copy data to device buffers */
--	info->xmit_cnt = skb->len;
--	mgsl_load_tx_dma_buffer(info, skb->data, skb->len);
+-	info->tx_count = skb->len;
+-	tx_load_dma_buffer(info, skb->data, skb->len);
 -
 -	/* update network statistics */
 -	dev->stats.tx_packets++;
@@ -7666,10 +1768,10 @@ index cbe9ad0683fc9..0000000000000
 -	netif_trans_update(dev);
 -
 -	/* start hardware transmitter if necessary */
--	spin_lock_irqsave(&info->irq_spinlock,flags);
+-	spin_lock_irqsave(&info->lock,flags);
 -	if (!info->tx_active)
--	 	usc_start_transmitter(info);
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
+-	 	tx_start(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
 -
 -	return NETDEV_TX_OK;
 -}
@@ -7684,7 +1786,7 @@ index cbe9ad0683fc9..0000000000000
 - */
 -static int hdlcdev_open(struct net_device *dev)
 -{
--	struct mgsl_struct *info = dev_to_port(dev);
+-	SLMP_INFO *info = dev_to_port(dev);
 -	int rc;
 -	unsigned long flags;
 -
@@ -7716,16 +1818,16 @@ index cbe9ad0683fc9..0000000000000
 -
 -	/* assert RTS and DTR, apply hardware settings */
 -	info->serial_signals |= SerialSignal_RTS | SerialSignal_DTR;
--	mgsl_program_hw(info);
+-	program_hw(info);
 -
 -	/* enable network layer transmit */
 -	netif_trans_update(dev);
 -	netif_start_queue(dev);
 -
 -	/* inform generic HDLC layer of current DCD status */
--	spin_lock_irqsave(&info->irq_spinlock, flags);
--	usc_get_serial_signals(info);
--	spin_unlock_irqrestore(&info->irq_spinlock, flags);
+-	spin_lock_irqsave(&info->lock, flags);
+-	get_signals(info);
+-	spin_unlock_irqrestore(&info->lock, flags);
 -	if (info->serial_signals & SerialSignal_DCD)
 -		netif_carrier_on(dev);
 -	else
@@ -7743,7 +1845,7 @@ index cbe9ad0683fc9..0000000000000
 - */
 -static int hdlcdev_close(struct net_device *dev)
 -{
--	struct mgsl_struct *info = dev_to_port(dev);
+-	SLMP_INFO *info = dev_to_port(dev);
 -	unsigned long flags;
 -
 -	if (debug_level >= DEBUG_LEVEL_INFO)
@@ -7776,7 +1878,7 @@ index cbe9ad0683fc9..0000000000000
 -	const size_t size = sizeof(sync_serial_settings);
 -	sync_serial_settings new_line;
 -	sync_serial_settings __user *line = ifr->ifr_settings.ifs_ifsu.sync;
--	struct mgsl_struct *info = dev_to_port(dev);
+-	SLMP_INFO *info = dev_to_port(dev);
 -	unsigned int flags;
 -
 -	if (debug_level >= DEBUG_LEVEL_INFO)
@@ -7858,7 +1960,7 @@ index cbe9ad0683fc9..0000000000000
 -
 -		/* if network interface up, reprogram hardware */
 -		if (info->netcount)
--			mgsl_program_hw(info);
+-			program_hw(info);
 -		return 0;
 -
 -	default:
@@ -7868,13 +1970,12 @@ index cbe9ad0683fc9..0000000000000
 -
 -/**
 - * hdlcdev_tx_timeout - called by network layer when transmit timeout is detected
-- *
 - * @dev: pointer to network device structure
 - * @txqueue: unused
 - */
 -static void hdlcdev_tx_timeout(struct net_device *dev, unsigned int txqueue)
 -{
--	struct mgsl_struct *info = dev_to_port(dev);
+-	SLMP_INFO *info = dev_to_port(dev);
 -	unsigned long flags;
 -
 -	if (debug_level >= DEBUG_LEVEL_INFO)
@@ -7883,9 +1984,9 @@ index cbe9ad0683fc9..0000000000000
 -	dev->stats.tx_errors++;
 -	dev->stats.tx_aborted_errors++;
 -
--	spin_lock_irqsave(&info->irq_spinlock,flags);
--	usc_stop_transmitter(info);
--	spin_unlock_irqrestore(&info->irq_spinlock,flags);
+-	spin_lock_irqsave(&info->lock,flags);
+-	tx_stop(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
 -
 -	netif_wake_queue(dev);
 -}
@@ -7896,7 +1997,7 @@ index cbe9ad0683fc9..0000000000000
 - *
 - * Reenable network layer transmit if stopped.
 - */
--static void hdlcdev_tx_done(struct mgsl_struct *info)
+-static void hdlcdev_tx_done(SLMP_INFO *info)
 -{
 -	if (netif_queue_stopped(info->netdev))
 -		netif_wake_queue(info->netdev);
@@ -7910,13 +2011,13 @@ index cbe9ad0683fc9..0000000000000
 - *
 - * Pass frame to network layer.
 - */
--static void hdlcdev_rx(struct mgsl_struct *info, char *buf, int size)
+-static void hdlcdev_rx(SLMP_INFO *info, char *buf, int size)
 -{
 -	struct sk_buff *skb = dev_alloc_skb(size);
 -	struct net_device *dev = info->netdev;
 -
 -	if (debug_level >= DEBUG_LEVEL_INFO)
--		printk("hdlcdev_rx(%s)\n", dev->name);
+-		printk("hdlcdev_rx(%s)\n",dev->name);
 -
 -	if (skb == NULL) {
 -		printk(KERN_NOTICE "%s: can't alloc skb, dropping packet\n",
@@ -7951,7 +2052,7 @@ index cbe9ad0683fc9..0000000000000
 - *
 - * Return: 0 if success, otherwise error code
 - */
--static int hdlcdev_init(struct mgsl_struct *info)
+-static int hdlcdev_init(SLMP_INFO *info)
 -{
 -	int rc;
 -	struct net_device *dev;
@@ -7966,12 +2067,12 @@ index cbe9ad0683fc9..0000000000000
 -	}
 -
 -	/* for network layer reporting purposes only */
--	dev->base_addr = info->io_base;
+-	dev->mem_start = info->phys_sca_base;
+-	dev->mem_end   = info->phys_sca_base + SCA_BASE_SIZE - 1;
 -	dev->irq       = info->irq_level;
--	dev->dma       = info->dma_level;
 -
 -	/* network layer callbacks and settings */
--	dev->netdev_ops     = &hdlcdev_ops;
+-	dev->netdev_ops	    = &hdlcdev_ops;
 -	dev->watchdog_timeo = 10 * HZ;
 -	dev->tx_queue_len   = 50;
 -
@@ -7998,7 +2099,7 @@ index cbe9ad0683fc9..0000000000000
 - *
 - * Do generic HDLC cleanup.
 - */
--static void hdlcdev_exit(struct mgsl_struct *info)
+-static void hdlcdev_exit(SLMP_INFO *info)
 -{
 -	unregister_hdlc_device(info->netdev);
 -	free_netdev(info->netdev);
@@ -8008,62 +2109,3643 @@ index cbe9ad0683fc9..0000000000000
 -#endif /* CONFIG_HDLC */
 -
 -
--static int synclink_init_one (struct pci_dev *dev,
--					const struct pci_device_id *ent)
+-/* Return next bottom half action to perform.
+- * Return Value:	BH action code or 0 if nothing to do.
+- */
+-static int bh_action(SLMP_INFO *info)
 -{
--	struct mgsl_struct *info;
+-	unsigned long flags;
+-	int rc = 0;
 -
--	if (pci_enable_device(dev)) {
--		printk("error enabling pci device %p\n", dev);
--		return -EIO;
+-	spin_lock_irqsave(&info->lock,flags);
+-
+-	if (info->pending_bh & BH_RECEIVE) {
+-		info->pending_bh &= ~BH_RECEIVE;
+-		rc = BH_RECEIVE;
+-	} else if (info->pending_bh & BH_TRANSMIT) {
+-		info->pending_bh &= ~BH_TRANSMIT;
+-		rc = BH_TRANSMIT;
+-	} else if (info->pending_bh & BH_STATUS) {
+-		info->pending_bh &= ~BH_STATUS;
+-		rc = BH_STATUS;
 -	}
 -
--	info = mgsl_allocate_device();
--	if (!info) {
--		printk("can't allocate device instance data.\n");
--		return -EIO;
+-	if (!rc) {
+-		/* Mark BH routine as complete */
+-		info->bh_running = false;
+-		info->bh_requested = false;
 -	}
 -
--        /* Copy user configuration info to device instance data */
--		
--	info->io_base = pci_resource_start(dev, 2);
--	info->irq_level = dev->irq;
--	info->phys_memory_base = pci_resource_start(dev, 3);
--				
--        /* Because veremap only works on page boundaries we must map
--	 * a larger area than is actually implemented for the LCR
--	 * memory range. We map a full page starting at the page boundary.
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	return rc;
+-}
+-
+-/* Perform bottom half processing of work items queued by ISR.
+- */
+-static void bh_handler(struct work_struct *work)
+-{
+-	SLMP_INFO *info = container_of(work, SLMP_INFO, task);
+-	int action;
+-
+-	if ( debug_level >= DEBUG_LEVEL_BH )
+-		printk( "%s(%d):%s bh_handler() entry\n",
+-			__FILE__,__LINE__,info->device_name);
+-
+-	info->bh_running = true;
+-
+-	while((action = bh_action(info)) != 0) {
+-
+-		/* Process work item */
+-		if ( debug_level >= DEBUG_LEVEL_BH )
+-			printk( "%s(%d):%s bh_handler() work item action=%d\n",
+-				__FILE__,__LINE__,info->device_name, action);
+-
+-		switch (action) {
+-
+-		case BH_RECEIVE:
+-			bh_receive(info);
+-			break;
+-		case BH_TRANSMIT:
+-			bh_transmit(info);
+-			break;
+-		case BH_STATUS:
+-			bh_status(info);
+-			break;
+-		default:
+-			/* unknown work item ID */
+-			printk("%s(%d):%s Unknown work item ID=%08X!\n",
+-				__FILE__,__LINE__,info->device_name,action);
+-			break;
+-		}
+-	}
+-
+-	if ( debug_level >= DEBUG_LEVEL_BH )
+-		printk( "%s(%d):%s bh_handler() exit\n",
+-			__FILE__,__LINE__,info->device_name);
+-}
+-
+-static void bh_receive(SLMP_INFO *info)
+-{
+-	if ( debug_level >= DEBUG_LEVEL_BH )
+-		printk( "%s(%d):%s bh_receive()\n",
+-			__FILE__,__LINE__,info->device_name);
+-
+-	while( rx_get_frame(info) );
+-}
+-
+-static void bh_transmit(SLMP_INFO *info)
+-{
+-	struct tty_struct *tty = info->port.tty;
+-
+-	if ( debug_level >= DEBUG_LEVEL_BH )
+-		printk( "%s(%d):%s bh_transmit() entry\n",
+-			__FILE__,__LINE__,info->device_name);
+-
+-	if (tty)
+-		tty_wakeup(tty);
+-}
+-
+-static void bh_status(SLMP_INFO *info)
+-{
+-	if ( debug_level >= DEBUG_LEVEL_BH )
+-		printk( "%s(%d):%s bh_status() entry\n",
+-			__FILE__,__LINE__,info->device_name);
+-
+-	info->ri_chkcount = 0;
+-	info->dsr_chkcount = 0;
+-	info->dcd_chkcount = 0;
+-	info->cts_chkcount = 0;
+-}
+-
+-static void isr_timer(SLMP_INFO * info)
+-{
+-	unsigned char timer = (info->port_num & 1) ? TIMER2 : TIMER0;
+-
+-	/* IER2<7..4> = timer<3..0> interrupt enables (0=disabled) */
+-	write_reg(info, IER2, 0);
+-
+-	/* TMCS, Timer Control/Status Register
+-	 *
+-	 * 07      CMF, Compare match flag (read only) 1=match
+-	 * 06      ECMI, CMF Interrupt Enable: 0=disabled
+-	 * 05      Reserved, must be 0
+-	 * 04      TME, Timer Enable
+-	 * 03..00  Reserved, must be 0
+-	 *
+-	 * 0000 0000
 -	 */
--	info->phys_lcr_base = pci_resource_start(dev, 0);
--	info->lcr_offset    = info->phys_lcr_base & (PAGE_SIZE-1);
--	info->phys_lcr_base &= ~(PAGE_SIZE-1);
--				
--	info->io_addr_size = 8;
--	info->irq_flags = IRQF_SHARED;
+-	write_reg(info, (unsigned char)(timer + TMCS), 0);
 -
--	if (dev->device == 0x0210) {
--		/* Version 1 PCI9030 based universal PCI adapter */
--		info->misc_ctrl_value = 0x007c4080;
--		info->hw_version = 1;
--	} else {
--		/* Version 0 PCI9050 based 5V PCI adapter
--		 * A PCI9050 bug prevents reading LCR registers if 
--		 * LCR base address bit 7 is set. Maintain shadow
--		 * value so we can write to LCR misc control reg.
--		 */
--		info->misc_ctrl_value = 0x087e4546;
--		info->hw_version = 0;
+-	info->irq_occurred = true;
+-
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk("%s(%d):%s isr_timer()\n",
+-			__FILE__,__LINE__,info->device_name);
+-}
+-
+-static void isr_rxint(SLMP_INFO * info)
+-{
+- 	struct tty_struct *tty = info->port.tty;
+- 	struct	mgsl_icount *icount = &info->icount;
+-	unsigned char status = read_reg(info, SR1) & info->ie1_value & (FLGD + IDLD + CDCD + BRKD);
+-	unsigned char status2 = read_reg(info, SR2) & info->ie2_value & OVRN;
+-
+-	/* clear status bits */
+-	if (status)
+-		write_reg(info, SR1, status);
+-
+-	if (status2)
+-		write_reg(info, SR2, status2);
+-	
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk("%s(%d):%s isr_rxint status=%02X %02x\n",
+-			__FILE__,__LINE__,info->device_name,status,status2);
+-
+-	if (info->params.mode == MGSL_MODE_ASYNC) {
+-		if (status & BRKD) {
+-			icount->brk++;
+-
+-			/* process break detection if tty control
+-			 * is not set to ignore it
+-			 */
+-			if (!(status & info->ignore_status_mask1)) {
+-				if (info->read_status_mask1 & BRKD) {
+-					tty_insert_flip_char(&info->port, 0, TTY_BREAK);
+-					if (tty && (info->port.flags & ASYNC_SAK))
+-						do_SAK(tty);
+-				}
+-			}
+-		}
 -	}
--				
--	mgsl_add_device(info);
+-	else {
+-		if (status & (FLGD|IDLD)) {
+-			if (status & FLGD)
+-				info->icount.exithunt++;
+-			else if (status & IDLD)
+-				info->icount.rxidle++;
+-			wake_up_interruptible(&info->event_wait_q);
+-		}
+-	}
+-
+-	if (status & CDCD) {
+-		/* simulate a common modem status change interrupt
+-		 * for our handler
+-		 */
+-		get_signals( info );
+-		isr_io_pin(info,
+-			MISCSTATUS_DCD_LATCHED|(info->serial_signals&SerialSignal_DCD));
+-	}
+-}
+-
+-/*
+- * handle async rx data interrupts
+- */
+-static void isr_rxrdy(SLMP_INFO * info)
+-{
+-	u16 status;
+-	unsigned char DataByte;
+- 	struct	mgsl_icount *icount = &info->icount;
+-
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk("%s(%d):%s isr_rxrdy\n",
+-			__FILE__,__LINE__,info->device_name);
+-
+-	while((status = read_reg(info,CST0)) & BIT0)
+-	{
+-		int flag = 0;
+-		bool over = false;
+-		DataByte = read_reg(info,TRB);
+-
+-		icount->rx++;
+-
+-		if ( status & (PE + FRME + OVRN) ) {
+-			printk("%s(%d):%s rxerr=%04X\n",
+-				__FILE__,__LINE__,info->device_name,status);
+-
+-			/* update error statistics */
+-			if (status & PE)
+-				icount->parity++;
+-			else if (status & FRME)
+-				icount->frame++;
+-			else if (status & OVRN)
+-				icount->overrun++;
+-
+-			/* discard char if tty control flags say so */
+-			if (status & info->ignore_status_mask2)
+-				continue;
+-
+-			status &= info->read_status_mask2;
+-
+-			if (status & PE)
+-				flag = TTY_PARITY;
+-			else if (status & FRME)
+-				flag = TTY_FRAME;
+-			if (status & OVRN) {
+-				/* Overrun is special, since it's
+-				 * reported immediately, and doesn't
+-				 * affect the current character
+-				 */
+-				over = true;
+-			}
+-		}	/* end of if (error) */
+-
+-		tty_insert_flip_char(&info->port, DataByte, flag);
+-		if (over)
+-			tty_insert_flip_char(&info->port, 0, TTY_OVERRUN);
+-	}
+-
+-	if ( debug_level >= DEBUG_LEVEL_ISR ) {
+-		printk("%s(%d):%s rx=%d brk=%d parity=%d frame=%d overrun=%d\n",
+-			__FILE__,__LINE__,info->device_name,
+-			icount->rx,icount->brk,icount->parity,
+-			icount->frame,icount->overrun);
+-	}
+-
+-	tty_flip_buffer_push(&info->port);
+-}
+-
+-static void isr_txeom(SLMP_INFO * info, unsigned char status)
+-{
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk("%s(%d):%s isr_txeom status=%02x\n",
+-			__FILE__,__LINE__,info->device_name,status);
+-
+-	write_reg(info, TXDMA + DIR, 0x00); /* disable Tx DMA IRQs */
+-	write_reg(info, TXDMA + DSR, 0xc0); /* clear IRQs and disable DMA */
+-	write_reg(info, TXDMA + DCMD, SWABORT);	/* reset/init DMA channel */
+-
+-	if (status & UDRN) {
+-		write_reg(info, CMD, TXRESET);
+-		write_reg(info, CMD, TXENABLE);
+-	} else
+-		write_reg(info, CMD, TXBUFCLR);
+-
+-	/* disable and clear tx interrupts */
+-	info->ie0_value &= ~TXRDYE;
+-	info->ie1_value &= ~(IDLE + UDRN);
+-	write_reg16(info, IE0, (unsigned short)((info->ie1_value << 8) + info->ie0_value));
+-	write_reg(info, SR1, (unsigned char)(UDRN + IDLE));
+-
+-	if ( info->tx_active ) {
+-		if (info->params.mode != MGSL_MODE_ASYNC) {
+-			if (status & UDRN)
+-				info->icount.txunder++;
+-			else if (status & IDLE)
+-				info->icount.txok++;
+-		}
+-
+-		info->tx_active = false;
+-		info->tx_count = info->tx_put = info->tx_get = 0;
+-
+-		del_timer(&info->tx_timer);
+-
+-		if (info->params.mode != MGSL_MODE_ASYNC && info->drop_rts_on_tx_done ) {
+-			info->serial_signals &= ~SerialSignal_RTS;
+-			info->drop_rts_on_tx_done = false;
+-			set_signals(info);
+-		}
+-
+-#if SYNCLINK_GENERIC_HDLC
+-		if (info->netcount)
+-			hdlcdev_tx_done(info);
+-		else
+-#endif
+-		{
+-			if (info->port.tty && (info->port.tty->stopped || info->port.tty->hw_stopped)) {
+-				tx_stop(info);
+-				return;
+-			}
+-			info->pending_bh |= BH_TRANSMIT;
+-		}
+-	}
+-}
+-
+-
+-/*
+- * handle tx status interrupts
+- */
+-static void isr_txint(SLMP_INFO * info)
+-{
+-	unsigned char status = read_reg(info, SR1) & info->ie1_value & (UDRN + IDLE + CCTS);
+-
+-	/* clear status bits */
+-	write_reg(info, SR1, status);
+-
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk("%s(%d):%s isr_txint status=%02x\n",
+-			__FILE__,__LINE__,info->device_name,status);
+-
+-	if (status & (UDRN + IDLE))
+-		isr_txeom(info, status);
+-
+-	if (status & CCTS) {
+-		/* simulate a common modem status change interrupt
+-		 * for our handler
+-		 */
+-		get_signals( info );
+-		isr_io_pin(info,
+-			MISCSTATUS_CTS_LATCHED|(info->serial_signals&SerialSignal_CTS));
+-
+-	}
+-}
+-
+-/*
+- * handle async tx data interrupts
+- */
+-static void isr_txrdy(SLMP_INFO * info)
+-{
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk("%s(%d):%s isr_txrdy() tx_count=%d\n",
+-			__FILE__,__LINE__,info->device_name,info->tx_count);
+-
+-	if (info->params.mode != MGSL_MODE_ASYNC) {
+-		/* disable TXRDY IRQ, enable IDLE IRQ */
+-		info->ie0_value &= ~TXRDYE;
+-		info->ie1_value |= IDLE;
+-		write_reg16(info, IE0, (unsigned short)((info->ie1_value << 8) + info->ie0_value));
+-		return;
+-	}
+-
+-	if (info->port.tty && (info->port.tty->stopped || info->port.tty->hw_stopped)) {
+-		tx_stop(info);
+-		return;
+-	}
+-
+-	if ( info->tx_count )
+-		tx_load_fifo( info );
+-	else {
+-		info->tx_active = false;
+-		info->ie0_value &= ~TXRDYE;
+-		write_reg(info, IE0, info->ie0_value);
+-	}
+-
+-	if (info->tx_count < WAKEUP_CHARS)
+-		info->pending_bh |= BH_TRANSMIT;
+-}
+-
+-static void isr_rxdmaok(SLMP_INFO * info)
+-{
+-	/* BIT7 = EOT (end of transfer)
+-	 * BIT6 = EOM (end of message/frame)
+-	 */
+-	unsigned char status = read_reg(info,RXDMA + DSR) & 0xc0;
+-
+-	/* clear IRQ (BIT0 must be 1 to prevent clearing DE bit) */
+-	write_reg(info, RXDMA + DSR, (unsigned char)(status | 1));
+-
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk("%s(%d):%s isr_rxdmaok(), status=%02x\n",
+-			__FILE__,__LINE__,info->device_name,status);
+-
+-	info->pending_bh |= BH_RECEIVE;
+-}
+-
+-static void isr_rxdmaerror(SLMP_INFO * info)
+-{
+-	/* BIT5 = BOF (buffer overflow)
+-	 * BIT4 = COF (counter overflow)
+-	 */
+-	unsigned char status = read_reg(info,RXDMA + DSR) & 0x30;
+-
+-	/* clear IRQ (BIT0 must be 1 to prevent clearing DE bit) */
+-	write_reg(info, RXDMA + DSR, (unsigned char)(status | 1));
+-
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk("%s(%d):%s isr_rxdmaerror(), status=%02x\n",
+-			__FILE__,__LINE__,info->device_name,status);
+-
+-	info->rx_overflow = true;
+-	info->pending_bh |= BH_RECEIVE;
+-}
+-
+-static void isr_txdmaok(SLMP_INFO * info)
+-{
+-	unsigned char status_reg1 = read_reg(info, SR1);
+-
+-	write_reg(info, TXDMA + DIR, 0x00);	/* disable Tx DMA IRQs */
+-	write_reg(info, TXDMA + DSR, 0xc0); /* clear IRQs and disable DMA */
+-	write_reg(info, TXDMA + DCMD, SWABORT);	/* reset/init DMA channel */
+-
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk("%s(%d):%s isr_txdmaok(), status=%02x\n",
+-			__FILE__,__LINE__,info->device_name,status_reg1);
+-
+-	/* program TXRDY as FIFO empty flag, enable TXRDY IRQ */
+-	write_reg16(info, TRC0, 0);
+-	info->ie0_value |= TXRDYE;
+-	write_reg(info, IE0, info->ie0_value);
+-}
+-
+-static void isr_txdmaerror(SLMP_INFO * info)
+-{
+-	/* BIT5 = BOF (buffer overflow)
+-	 * BIT4 = COF (counter overflow)
+-	 */
+-	unsigned char status = read_reg(info,TXDMA + DSR) & 0x30;
+-
+-	/* clear IRQ (BIT0 must be 1 to prevent clearing DE bit) */
+-	write_reg(info, TXDMA + DSR, (unsigned char)(status | 1));
+-
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk("%s(%d):%s isr_txdmaerror(), status=%02x\n",
+-			__FILE__,__LINE__,info->device_name,status);
+-}
+-
+-/* handle input serial signal changes
+- */
+-static void isr_io_pin( SLMP_INFO *info, u16 status )
+-{
+- 	struct	mgsl_icount *icount;
+-
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk("%s(%d):isr_io_pin status=%04X\n",
+-			__FILE__,__LINE__,status);
+-
+-	if (status & (MISCSTATUS_CTS_LATCHED | MISCSTATUS_DCD_LATCHED |
+-	              MISCSTATUS_DSR_LATCHED | MISCSTATUS_RI_LATCHED) ) {
+-		icount = &info->icount;
+-		/* update input line counters */
+-		if (status & MISCSTATUS_RI_LATCHED) {
+-			icount->rng++;
+-			if ( status & SerialSignal_RI )
+-				info->input_signal_events.ri_up++;
+-			else
+-				info->input_signal_events.ri_down++;
+-		}
+-		if (status & MISCSTATUS_DSR_LATCHED) {
+-			icount->dsr++;
+-			if ( status & SerialSignal_DSR )
+-				info->input_signal_events.dsr_up++;
+-			else
+-				info->input_signal_events.dsr_down++;
+-		}
+-		if (status & MISCSTATUS_DCD_LATCHED) {
+-			if ((info->dcd_chkcount)++ >= IO_PIN_SHUTDOWN_LIMIT) {
+-				info->ie1_value &= ~CDCD;
+-				write_reg(info, IE1, info->ie1_value);
+-			}
+-			icount->dcd++;
+-			if (status & SerialSignal_DCD) {
+-				info->input_signal_events.dcd_up++;
+-			} else
+-				info->input_signal_events.dcd_down++;
+-#if SYNCLINK_GENERIC_HDLC
+-			if (info->netcount) {
+-				if (status & SerialSignal_DCD)
+-					netif_carrier_on(info->netdev);
+-				else
+-					netif_carrier_off(info->netdev);
+-			}
+-#endif
+-		}
+-		if (status & MISCSTATUS_CTS_LATCHED)
+-		{
+-			if ((info->cts_chkcount)++ >= IO_PIN_SHUTDOWN_LIMIT) {
+-				info->ie1_value &= ~CCTS;
+-				write_reg(info, IE1, info->ie1_value);
+-			}
+-			icount->cts++;
+-			if ( status & SerialSignal_CTS )
+-				info->input_signal_events.cts_up++;
+-			else
+-				info->input_signal_events.cts_down++;
+-		}
+-		wake_up_interruptible(&info->status_event_wait_q);
+-		wake_up_interruptible(&info->event_wait_q);
+-
+-		if (tty_port_check_carrier(&info->port) &&
+-		     (status & MISCSTATUS_DCD_LATCHED) ) {
+-			if ( debug_level >= DEBUG_LEVEL_ISR )
+-				printk("%s CD now %s...", info->device_name,
+-				       (status & SerialSignal_DCD) ? "on" : "off");
+-			if (status & SerialSignal_DCD)
+-				wake_up_interruptible(&info->port.open_wait);
+-			else {
+-				if ( debug_level >= DEBUG_LEVEL_ISR )
+-					printk("doing serial hangup...");
+-				if (info->port.tty)
+-					tty_hangup(info->port.tty);
+-			}
+-		}
+-
+-		if (tty_port_cts_enabled(&info->port) &&
+-		     (status & MISCSTATUS_CTS_LATCHED) ) {
+-			if ( info->port.tty ) {
+-				if (info->port.tty->hw_stopped) {
+-					if (status & SerialSignal_CTS) {
+-						if ( debug_level >= DEBUG_LEVEL_ISR )
+-							printk("CTS tx start...");
+-						info->port.tty->hw_stopped = 0;
+-						tx_start(info);
+-						info->pending_bh |= BH_TRANSMIT;
+-						return;
+-					}
+-				} else {
+-					if (!(status & SerialSignal_CTS)) {
+-						if ( debug_level >= DEBUG_LEVEL_ISR )
+-							printk("CTS tx stop...");
+-						info->port.tty->hw_stopped = 1;
+-						tx_stop(info);
+-					}
+-				}
+-			}
+-		}
+-	}
+-
+-	info->pending_bh |= BH_STATUS;
+-}
+-
+-/* Interrupt service routine entry point.
+- *
+- * Arguments:
+- * 	irq		interrupt number that caused interrupt
+- * 	dev_id		device ID supplied during interrupt registration
+- * 	regs		interrupted processor context
+- */
+-static irqreturn_t synclinkmp_interrupt(int dummy, void *dev_id)
+-{
+-	SLMP_INFO *info = dev_id;
+-	unsigned char status, status0, status1=0;
+-	unsigned char dmastatus, dmastatus0, dmastatus1=0;
+-	unsigned char timerstatus0, timerstatus1=0;
+-	unsigned char shift;
+-	unsigned int i;
+-	unsigned short tmp;
+-
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk(KERN_DEBUG "%s(%d): synclinkmp_interrupt(%d)entry.\n",
+-			__FILE__, __LINE__, info->irq_level);
+-
+-	spin_lock(&info->lock);
+-
+-	for(;;) {
+-
+-		/* get status for SCA0 (ports 0-1) */
+-		tmp = read_reg16(info, ISR0);	/* get ISR0 and ISR1 in one read */
+-		status0 = (unsigned char)tmp;
+-		dmastatus0 = (unsigned char)(tmp>>8);
+-		timerstatus0 = read_reg(info, ISR2);
+-
+-		if ( debug_level >= DEBUG_LEVEL_ISR )
+-			printk(KERN_DEBUG "%s(%d):%s status0=%02x, dmastatus0=%02x, timerstatus0=%02x\n",
+-				__FILE__, __LINE__, info->device_name,
+-				status0, dmastatus0, timerstatus0);
+-
+-		if (info->port_count == 4) {
+-			/* get status for SCA1 (ports 2-3) */
+-			tmp = read_reg16(info->port_array[2], ISR0);
+-			status1 = (unsigned char)tmp;
+-			dmastatus1 = (unsigned char)(tmp>>8);
+-			timerstatus1 = read_reg(info->port_array[2], ISR2);
+-
+-			if ( debug_level >= DEBUG_LEVEL_ISR )
+-				printk("%s(%d):%s status1=%02x, dmastatus1=%02x, timerstatus1=%02x\n",
+-					__FILE__,__LINE__,info->device_name,
+-					status1,dmastatus1,timerstatus1);
+-		}
+-
+-		if (!status0 && !dmastatus0 && !timerstatus0 &&
+-			 !status1 && !dmastatus1 && !timerstatus1)
+-			break;
+-
+-		for(i=0; i < info->port_count ; i++) {
+-			if (info->port_array[i] == NULL)
+-				continue;
+-			if (i < 2) {
+-				status = status0;
+-				dmastatus = dmastatus0;
+-			} else {
+-				status = status1;
+-				dmastatus = dmastatus1;
+-			}
+-
+-			shift = i & 1 ? 4 :0;
+-
+-			if (status & BIT0 << shift)
+-				isr_rxrdy(info->port_array[i]);
+-			if (status & BIT1 << shift)
+-				isr_txrdy(info->port_array[i]);
+-			if (status & BIT2 << shift)
+-				isr_rxint(info->port_array[i]);
+-			if (status & BIT3 << shift)
+-				isr_txint(info->port_array[i]);
+-
+-			if (dmastatus & BIT0 << shift)
+-				isr_rxdmaerror(info->port_array[i]);
+-			if (dmastatus & BIT1 << shift)
+-				isr_rxdmaok(info->port_array[i]);
+-			if (dmastatus & BIT2 << shift)
+-				isr_txdmaerror(info->port_array[i]);
+-			if (dmastatus & BIT3 << shift)
+-				isr_txdmaok(info->port_array[i]);
+-		}
+-
+-		if (timerstatus0 & (BIT5 | BIT4))
+-			isr_timer(info->port_array[0]);
+-		if (timerstatus0 & (BIT7 | BIT6))
+-			isr_timer(info->port_array[1]);
+-		if (timerstatus1 & (BIT5 | BIT4))
+-			isr_timer(info->port_array[2]);
+-		if (timerstatus1 & (BIT7 | BIT6))
+-			isr_timer(info->port_array[3]);
+-	}
+-
+-	for(i=0; i < info->port_count ; i++) {
+-		SLMP_INFO * port = info->port_array[i];
+-
+-		/* Request bottom half processing if there's something
+-		 * for it to do and the bh is not already running.
+-		 *
+-		 * Note: startup adapter diags require interrupts.
+-		 * do not request bottom half processing if the
+-		 * device is not open in a normal mode.
+-		 */
+-		if ( port && (port->port.count || port->netcount) &&
+-		     port->pending_bh && !port->bh_running &&
+-		     !port->bh_requested ) {
+-			if ( debug_level >= DEBUG_LEVEL_ISR )
+-				printk("%s(%d):%s queueing bh task.\n",
+-					__FILE__,__LINE__,port->device_name);
+-			schedule_work(&port->task);
+-			port->bh_requested = true;
+-		}
+-	}
+-
+-	spin_unlock(&info->lock);
+-
+-	if ( debug_level >= DEBUG_LEVEL_ISR )
+-		printk(KERN_DEBUG "%s(%d):synclinkmp_interrupt(%d)exit.\n",
+-			__FILE__, __LINE__, info->irq_level);
+-	return IRQ_HANDLED;
+-}
+-
+-/* Initialize and start device.
+- */
+-static int startup(SLMP_INFO * info)
+-{
+-	if ( debug_level >= DEBUG_LEVEL_INFO )
+-		printk("%s(%d):%s tx_releaseup()\n",__FILE__,__LINE__,info->device_name);
+-
+-	if (tty_port_initialized(&info->port))
+-		return 0;
+-
+-	if (!info->tx_buf) {
+-		info->tx_buf = kmalloc(info->max_frame_size, GFP_KERNEL);
+-		if (!info->tx_buf) {
+-			printk(KERN_ERR"%s(%d):%s can't allocate transmit buffer\n",
+-				__FILE__,__LINE__,info->device_name);
+-			return -ENOMEM;
+-		}
+-	}
+-
+-	info->pending_bh = 0;
+-
+-	memset(&info->icount, 0, sizeof(info->icount));
+-
+-	/* program hardware for current parameters */
+-	reset_port(info);
+-
+-	change_params(info);
+-
+-	mod_timer(&info->status_timer, jiffies + msecs_to_jiffies(10));
+-
+-	if (info->port.tty)
+-		clear_bit(TTY_IO_ERROR, &info->port.tty->flags);
+-
+-	tty_port_set_initialized(&info->port, 1);
 -
 -	return 0;
 -}
 -
--static void synclink_remove_one (struct pci_dev *dev)
+-/* Called by close() and hangup() to shutdown hardware
+- */
+-static void shutdown(SLMP_INFO * info)
 -{
+-	unsigned long flags;
+-
+-	if (!tty_port_initialized(&info->port))
+-		return;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s synclinkmp_shutdown()\n",
+-			 __FILE__,__LINE__, info->device_name );
+-
+-	/* clear status wait queue because status changes */
+-	/* can't happen after shutting down the hardware */
+-	wake_up_interruptible(&info->status_event_wait_q);
+-	wake_up_interruptible(&info->event_wait_q);
+-
+-	del_timer(&info->tx_timer);
+-	del_timer(&info->status_timer);
+-
+-	kfree(info->tx_buf);
+-	info->tx_buf = NULL;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-
+-	reset_port(info);
+-
+- 	if (!info->port.tty || info->port.tty->termios.c_cflag & HUPCL) {
+-		info->serial_signals &= ~(SerialSignal_RTS | SerialSignal_DTR);
+-		set_signals(info);
+-	}
+-
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	if (info->port.tty)
+-		set_bit(TTY_IO_ERROR, &info->port.tty->flags);
+-
+-	tty_port_set_initialized(&info->port, 0);
 -}
 -
+-static void program_hw(SLMP_INFO *info)
+-{
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-
+-	rx_stop(info);
+-	tx_stop(info);
+-
+-	info->tx_count = info->tx_put = info->tx_get = 0;
+-
+-	if (info->params.mode == MGSL_MODE_HDLC || info->netcount)
+-		hdlc_mode(info);
+-	else
+-		async_mode(info);
+-
+-	set_signals(info);
+-
+-	info->dcd_chkcount = 0;
+-	info->cts_chkcount = 0;
+-	info->ri_chkcount = 0;
+-	info->dsr_chkcount = 0;
+-
+-	info->ie1_value |= (CDCD|CCTS);
+-	write_reg(info, IE1, info->ie1_value);
+-
+-	get_signals(info);
+-
+-	if (info->netcount || (info->port.tty && info->port.tty->termios.c_cflag & CREAD) )
+-		rx_start(info);
+-
+-	spin_unlock_irqrestore(&info->lock,flags);
+-}
+-
+-/* Reconfigure adapter based on new parameters
+- */
+-static void change_params(SLMP_INFO *info)
+-{
+-	unsigned cflag;
+-	int bits_per_char;
+-
+-	if (!info->port.tty)
+-		return;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s change_params()\n",
+-			 __FILE__,__LINE__, info->device_name );
+-
+-	cflag = info->port.tty->termios.c_cflag;
+-
+-	/* if B0 rate (hangup) specified then negate RTS and DTR */
+-	/* otherwise assert RTS and DTR */
+- 	if (cflag & CBAUD)
+-		info->serial_signals |= SerialSignal_RTS | SerialSignal_DTR;
+-	else
+-		info->serial_signals &= ~(SerialSignal_RTS | SerialSignal_DTR);
+-
+-	/* byte size and parity */
+-
+-	switch (cflag & CSIZE) {
+-	      case CS5: info->params.data_bits = 5; break;
+-	      case CS6: info->params.data_bits = 6; break;
+-	      case CS7: info->params.data_bits = 7; break;
+-	      case CS8: info->params.data_bits = 8; break;
+-	      /* Never happens, but GCC is too dumb to figure it out */
+-	      default:  info->params.data_bits = 7; break;
+-	      }
+-
+-	if (cflag & CSTOPB)
+-		info->params.stop_bits = 2;
+-	else
+-		info->params.stop_bits = 1;
+-
+-	info->params.parity = ASYNC_PARITY_NONE;
+-	if (cflag & PARENB) {
+-		if (cflag & PARODD)
+-			info->params.parity = ASYNC_PARITY_ODD;
+-		else
+-			info->params.parity = ASYNC_PARITY_EVEN;
+-#ifdef CMSPAR
+-		if (cflag & CMSPAR)
+-			info->params.parity = ASYNC_PARITY_SPACE;
+-#endif
+-	}
+-
+-	/* calculate number of jiffies to transmit a full
+-	 * FIFO (32 bytes) at specified data rate
+-	 */
+-	bits_per_char = info->params.data_bits +
+-			info->params.stop_bits + 1;
+-
+-	/* if port data rate is set to 460800 or less then
+-	 * allow tty settings to override, otherwise keep the
+-	 * current data rate.
+-	 */
+-	if (info->params.data_rate <= 460800) {
+-		info->params.data_rate = tty_get_baud_rate(info->port.tty);
+-	}
+-
+-	if ( info->params.data_rate ) {
+-		info->timeout = (32*HZ*bits_per_char) /
+-				info->params.data_rate;
+-	}
+-	info->timeout += HZ/50;		/* Add .02 seconds of slop */
+-
+-	tty_port_set_cts_flow(&info->port, cflag & CRTSCTS);
+-	tty_port_set_check_carrier(&info->port, ~cflag & CLOCAL);
+-
+-	/* process tty input control flags */
+-
+-	info->read_status_mask2 = OVRN;
+-	if (I_INPCK(info->port.tty))
+-		info->read_status_mask2 |= PE | FRME;
+-	if (I_BRKINT(info->port.tty) || I_PARMRK(info->port.tty))
+-		info->read_status_mask1 |= BRKD;
+-	if (I_IGNPAR(info->port.tty))
+-		info->ignore_status_mask2 |= PE | FRME;
+-	if (I_IGNBRK(info->port.tty)) {
+-		info->ignore_status_mask1 |= BRKD;
+-		/* If ignoring parity and break indicators, ignore
+-		 * overruns too.  (For real raw support).
+-		 */
+-		if (I_IGNPAR(info->port.tty))
+-			info->ignore_status_mask2 |= OVRN;
+-	}
+-
+-	program_hw(info);
+-}
+-
+-static int get_stats(SLMP_INFO * info, struct mgsl_icount __user *user_icount)
+-{
+-	int err;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s get_params()\n",
+-			 __FILE__,__LINE__, info->device_name);
+-
+-	if (!user_icount) {
+-		memset(&info->icount, 0, sizeof(info->icount));
+-	} else {
+-		mutex_lock(&info->port.mutex);
+-		COPY_TO_USER(err, user_icount, &info->icount, sizeof(struct mgsl_icount));
+-		mutex_unlock(&info->port.mutex);
+-		if (err)
+-			return -EFAULT;
+-	}
+-
+-	return 0;
+-}
+-
+-static int get_params(SLMP_INFO * info, MGSL_PARAMS __user *user_params)
+-{
+-	int err;
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s get_params()\n",
+-			 __FILE__,__LINE__, info->device_name);
+-
+-	mutex_lock(&info->port.mutex);
+-	COPY_TO_USER(err,user_params, &info->params, sizeof(MGSL_PARAMS));
+-	mutex_unlock(&info->port.mutex);
+-	if (err) {
+-		if ( debug_level >= DEBUG_LEVEL_INFO )
+-			printk( "%s(%d):%s get_params() user buffer copy failed\n",
+-				__FILE__,__LINE__,info->device_name);
+-		return -EFAULT;
+-	}
+-
+-	return 0;
+-}
+-
+-static int set_params(SLMP_INFO * info, MGSL_PARAMS __user *new_params)
+-{
+- 	unsigned long flags;
+-	MGSL_PARAMS tmp_params;
+-	int err;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s set_params\n",
+-			__FILE__,__LINE__,info->device_name );
+-	COPY_FROM_USER(err,&tmp_params, new_params, sizeof(MGSL_PARAMS));
+-	if (err) {
+-		if ( debug_level >= DEBUG_LEVEL_INFO )
+-			printk( "%s(%d):%s set_params() user buffer copy failed\n",
+-				__FILE__,__LINE__,info->device_name);
+-		return -EFAULT;
+-	}
+-
+-	mutex_lock(&info->port.mutex);
+-	spin_lock_irqsave(&info->lock,flags);
+-	memcpy(&info->params,&tmp_params,sizeof(MGSL_PARAMS));
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+- 	change_params(info);
+-	mutex_unlock(&info->port.mutex);
+-
+-	return 0;
+-}
+-
+-static int get_txidle(SLMP_INFO * info, int __user *idle_mode)
+-{
+-	int err;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s get_txidle()=%d\n",
+-			 __FILE__,__LINE__, info->device_name, info->idle_mode);
+-
+-	COPY_TO_USER(err,idle_mode, &info->idle_mode, sizeof(int));
+-	if (err) {
+-		if ( debug_level >= DEBUG_LEVEL_INFO )
+-			printk( "%s(%d):%s get_txidle() user buffer copy failed\n",
+-				__FILE__,__LINE__,info->device_name);
+-		return -EFAULT;
+-	}
+-
+-	return 0;
+-}
+-
+-static int set_txidle(SLMP_INFO * info, int idle_mode)
+-{
+- 	unsigned long flags;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s set_txidle(%d)\n",
+-			__FILE__,__LINE__,info->device_name, idle_mode );
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	info->idle_mode = idle_mode;
+-	tx_set_idle( info );
+-	spin_unlock_irqrestore(&info->lock,flags);
+-	return 0;
+-}
+-
+-static int tx_enable(SLMP_INFO * info, int enable)
+-{
+- 	unsigned long flags;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s tx_enable(%d)\n",
+-			__FILE__,__LINE__,info->device_name, enable);
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	if ( enable ) {
+-		if ( !info->tx_enabled ) {
+-			tx_start(info);
+-		}
+-	} else {
+-		if ( info->tx_enabled )
+-			tx_stop(info);
+-	}
+-	spin_unlock_irqrestore(&info->lock,flags);
+-	return 0;
+-}
+-
+-/* abort send HDLC frame
+- */
+-static int tx_abort(SLMP_INFO * info)
+-{
+- 	unsigned long flags;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s tx_abort()\n",
+-			__FILE__,__LINE__,info->device_name);
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	if ( info->tx_active && info->params.mode == MGSL_MODE_HDLC ) {
+-		info->ie1_value &= ~UDRN;
+-		info->ie1_value |= IDLE;
+-		write_reg(info, IE1, info->ie1_value);	/* disable tx status interrupts */
+-		write_reg(info, SR1, (unsigned char)(IDLE + UDRN));	/* clear pending */
+-
+-		write_reg(info, TXDMA + DSR, 0);		/* disable DMA channel */
+-		write_reg(info, TXDMA + DCMD, SWABORT);	/* reset/init DMA channel */
+-
+-   		write_reg(info, CMD, TXABORT);
+-	}
+-	spin_unlock_irqrestore(&info->lock,flags);
+-	return 0;
+-}
+-
+-static int rx_enable(SLMP_INFO * info, int enable)
+-{
+- 	unsigned long flags;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s rx_enable(%d)\n",
+-			__FILE__,__LINE__,info->device_name,enable);
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	if ( enable ) {
+-		if ( !info->rx_enabled )
+-			rx_start(info);
+-	} else {
+-		if ( info->rx_enabled )
+-			rx_stop(info);
+-	}
+-	spin_unlock_irqrestore(&info->lock,flags);
+-	return 0;
+-}
+-
+-/* wait for specified event to occur
+- */
+-static int wait_mgsl_event(SLMP_INFO * info, int __user *mask_ptr)
+-{
+- 	unsigned long flags;
+-	int s;
+-	int rc=0;
+-	struct mgsl_icount cprev, cnow;
+-	int events;
+-	int mask;
+-	struct	_input_signal_events oldsigs, newsigs;
+-	DECLARE_WAITQUEUE(wait, current);
+-
+-	COPY_FROM_USER(rc,&mask, mask_ptr, sizeof(int));
+-	if (rc) {
+-		return  -EFAULT;
+-	}
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s wait_mgsl_event(%d)\n",
+-			__FILE__,__LINE__,info->device_name,mask);
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-
+-	/* return immediately if state matches requested events */
+-	get_signals(info);
+-	s = info->serial_signals;
+-
+-	events = mask &
+-		( ((s & SerialSignal_DSR) ? MgslEvent_DsrActive:MgslEvent_DsrInactive) +
+- 		  ((s & SerialSignal_DCD) ? MgslEvent_DcdActive:MgslEvent_DcdInactive) +
+-		  ((s & SerialSignal_CTS) ? MgslEvent_CtsActive:MgslEvent_CtsInactive) +
+-		  ((s & SerialSignal_RI)  ? MgslEvent_RiActive :MgslEvent_RiInactive) );
+-	if (events) {
+-		spin_unlock_irqrestore(&info->lock,flags);
+-		goto exit;
+-	}
+-
+-	/* save current irq counts */
+-	cprev = info->icount;
+-	oldsigs = info->input_signal_events;
+-
+-	/* enable hunt and idle irqs if needed */
+-	if (mask & (MgslEvent_ExitHuntMode+MgslEvent_IdleReceived)) {
+-		unsigned char oldval = info->ie1_value;
+-		unsigned char newval = oldval +
+-			 (mask & MgslEvent_ExitHuntMode ? FLGD:0) +
+-			 (mask & MgslEvent_IdleReceived ? IDLD:0);
+-		if ( oldval != newval ) {
+-			info->ie1_value = newval;
+-			write_reg(info, IE1, info->ie1_value);
+-		}
+-	}
+-
+-	set_current_state(TASK_INTERRUPTIBLE);
+-	add_wait_queue(&info->event_wait_q, &wait);
+-
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	for(;;) {
+-		schedule();
+-		if (signal_pending(current)) {
+-			rc = -ERESTARTSYS;
+-			break;
+-		}
+-
+-		/* get current irq counts */
+-		spin_lock_irqsave(&info->lock,flags);
+-		cnow = info->icount;
+-		newsigs = info->input_signal_events;
+-		set_current_state(TASK_INTERRUPTIBLE);
+-		spin_unlock_irqrestore(&info->lock,flags);
+-
+-		/* if no change, wait aborted for some reason */
+-		if (newsigs.dsr_up   == oldsigs.dsr_up   &&
+-		    newsigs.dsr_down == oldsigs.dsr_down &&
+-		    newsigs.dcd_up   == oldsigs.dcd_up   &&
+-		    newsigs.dcd_down == oldsigs.dcd_down &&
+-		    newsigs.cts_up   == oldsigs.cts_up   &&
+-		    newsigs.cts_down == oldsigs.cts_down &&
+-		    newsigs.ri_up    == oldsigs.ri_up    &&
+-		    newsigs.ri_down  == oldsigs.ri_down  &&
+-		    cnow.exithunt    == cprev.exithunt   &&
+-		    cnow.rxidle      == cprev.rxidle) {
+-			rc = -EIO;
+-			break;
+-		}
+-
+-		events = mask &
+-			( (newsigs.dsr_up   != oldsigs.dsr_up   ? MgslEvent_DsrActive:0)   +
+-			  (newsigs.dsr_down != oldsigs.dsr_down ? MgslEvent_DsrInactive:0) +
+-			  (newsigs.dcd_up   != oldsigs.dcd_up   ? MgslEvent_DcdActive:0)   +
+-			  (newsigs.dcd_down != oldsigs.dcd_down ? MgslEvent_DcdInactive:0) +
+-			  (newsigs.cts_up   != oldsigs.cts_up   ? MgslEvent_CtsActive:0)   +
+-			  (newsigs.cts_down != oldsigs.cts_down ? MgslEvent_CtsInactive:0) +
+-			  (newsigs.ri_up    != oldsigs.ri_up    ? MgslEvent_RiActive:0)    +
+-			  (newsigs.ri_down  != oldsigs.ri_down  ? MgslEvent_RiInactive:0)  +
+-			  (cnow.exithunt    != cprev.exithunt   ? MgslEvent_ExitHuntMode:0) +
+-			  (cnow.rxidle      != cprev.rxidle     ? MgslEvent_IdleReceived:0) );
+-		if (events)
+-			break;
+-
+-		cprev = cnow;
+-		oldsigs = newsigs;
+-	}
+-
+-	remove_wait_queue(&info->event_wait_q, &wait);
+-	set_current_state(TASK_RUNNING);
+-
+-
+-	if (mask & (MgslEvent_ExitHuntMode + MgslEvent_IdleReceived)) {
+-		spin_lock_irqsave(&info->lock,flags);
+-		if (!waitqueue_active(&info->event_wait_q)) {
+-			/* disable enable exit hunt mode/idle rcvd IRQs */
+-			info->ie1_value &= ~(FLGD|IDLD);
+-			write_reg(info, IE1, info->ie1_value);
+-		}
+-		spin_unlock_irqrestore(&info->lock,flags);
+-	}
+-exit:
+-	if ( rc == 0 )
+-		PUT_USER(rc, events, mask_ptr);
+-
+-	return rc;
+-}
+-
+-static int modem_input_wait(SLMP_INFO *info,int arg)
+-{
+- 	unsigned long flags;
+-	int rc;
+-	struct mgsl_icount cprev, cnow;
+-	DECLARE_WAITQUEUE(wait, current);
+-
+-	/* save current irq counts */
+-	spin_lock_irqsave(&info->lock,flags);
+-	cprev = info->icount;
+-	add_wait_queue(&info->status_event_wait_q, &wait);
+-	set_current_state(TASK_INTERRUPTIBLE);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	for(;;) {
+-		schedule();
+-		if (signal_pending(current)) {
+-			rc = -ERESTARTSYS;
+-			break;
+-		}
+-
+-		/* get new irq counts */
+-		spin_lock_irqsave(&info->lock,flags);
+-		cnow = info->icount;
+-		set_current_state(TASK_INTERRUPTIBLE);
+-		spin_unlock_irqrestore(&info->lock,flags);
+-
+-		/* if no change, wait aborted for some reason */
+-		if (cnow.rng == cprev.rng && cnow.dsr == cprev.dsr &&
+-		    cnow.dcd == cprev.dcd && cnow.cts == cprev.cts) {
+-			rc = -EIO;
+-			break;
+-		}
+-
+-		/* check for change in caller specified modem input */
+-		if ((arg & TIOCM_RNG && cnow.rng != cprev.rng) ||
+-		    (arg & TIOCM_DSR && cnow.dsr != cprev.dsr) ||
+-		    (arg & TIOCM_CD  && cnow.dcd != cprev.dcd) ||
+-		    (arg & TIOCM_CTS && cnow.cts != cprev.cts)) {
+-			rc = 0;
+-			break;
+-		}
+-
+-		cprev = cnow;
+-	}
+-	remove_wait_queue(&info->status_event_wait_q, &wait);
+-	set_current_state(TASK_RUNNING);
+-	return rc;
+-}
+-
+-/* return the state of the serial control and status signals
+- */
+-static int tiocmget(struct tty_struct *tty)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+-	unsigned int result;
+- 	unsigned long flags;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	get_signals(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	result = ((info->serial_signals & SerialSignal_RTS) ? TIOCM_RTS : 0) |
+-		 ((info->serial_signals & SerialSignal_DTR) ? TIOCM_DTR : 0) |
+-		 ((info->serial_signals & SerialSignal_DCD) ? TIOCM_CAR : 0) |
+-		 ((info->serial_signals & SerialSignal_RI)  ? TIOCM_RNG : 0) |
+-		 ((info->serial_signals & SerialSignal_DSR) ? TIOCM_DSR : 0) |
+-		 ((info->serial_signals & SerialSignal_CTS) ? TIOCM_CTS : 0);
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s tiocmget() value=%08X\n",
+-			 __FILE__,__LINE__, info->device_name, result );
+-	return result;
+-}
+-
+-/* set modem control signals (DTR/RTS)
+- */
+-static int tiocmset(struct tty_struct *tty,
+-					unsigned int set, unsigned int clear)
+-{
+-	SLMP_INFO *info = tty->driver_data;
+- 	unsigned long flags;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s tiocmset(%x,%x)\n",
+-			__FILE__,__LINE__,info->device_name, set, clear);
+-
+-	if (set & TIOCM_RTS)
+-		info->serial_signals |= SerialSignal_RTS;
+-	if (set & TIOCM_DTR)
+-		info->serial_signals |= SerialSignal_DTR;
+-	if (clear & TIOCM_RTS)
+-		info->serial_signals &= ~SerialSignal_RTS;
+-	if (clear & TIOCM_DTR)
+-		info->serial_signals &= ~SerialSignal_DTR;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	set_signals(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	return 0;
+-}
+-
+-static int carrier_raised(struct tty_port *port)
+-{
+-	SLMP_INFO *info = container_of(port, SLMP_INFO, port);
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	get_signals(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	return (info->serial_signals & SerialSignal_DCD) ? 1 : 0;
+-}
+-
+-static void dtr_rts(struct tty_port *port, int on)
+-{
+-	SLMP_INFO *info = container_of(port, SLMP_INFO, port);
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	if (on)
+-		info->serial_signals |= SerialSignal_RTS | SerialSignal_DTR;
+-	else
+-		info->serial_signals &= ~(SerialSignal_RTS | SerialSignal_DTR);
+-	set_signals(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-}
+-
+-/* Block the current process until the specified port is ready to open.
+- */
+-static int block_til_ready(struct tty_struct *tty, struct file *filp,
+-			   SLMP_INFO *info)
+-{
+-	DECLARE_WAITQUEUE(wait, current);
+-	int		retval;
+-	bool		do_clocal = false;
+-	unsigned long	flags;
+-	int		cd;
+-	struct tty_port *port = &info->port;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s block_til_ready()\n",
+-			 __FILE__,__LINE__, tty->driver->name );
+-
+-	if (filp->f_flags & O_NONBLOCK || tty_io_error(tty)) {
+-		/* nonblock mode is set or port is not enabled */
+-		/* just verify that callout device is not active */
+-		tty_port_set_active(port, 1);
+-		return 0;
+-	}
+-
+-	if (C_CLOCAL(tty))
+-		do_clocal = true;
+-
+-	/* Wait for carrier detect and the line to become
+-	 * free (i.e., not in use by the callout).  While we are in
+-	 * this loop, port->count is dropped by one, so that
+-	 * close() knows when to free things.  We restore it upon
+-	 * exit, either normal or abnormal.
+-	 */
+-
+-	retval = 0;
+-	add_wait_queue(&port->open_wait, &wait);
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s block_til_ready() before block, count=%d\n",
+-			 __FILE__,__LINE__, tty->driver->name, port->count );
+-
+-	spin_lock_irqsave(&info->lock, flags);
+-	port->count--;
+-	spin_unlock_irqrestore(&info->lock, flags);
+-	port->blocked_open++;
+-
+-	while (1) {
+-		if (C_BAUD(tty) && tty_port_initialized(port))
+-			tty_port_raise_dtr_rts(port);
+-
+-		set_current_state(TASK_INTERRUPTIBLE);
+-
+-		if (tty_hung_up_p(filp) || !tty_port_initialized(port)) {
+-			retval = (port->flags & ASYNC_HUP_NOTIFY) ?
+-					-EAGAIN : -ERESTARTSYS;
+-			break;
+-		}
+-
+-		cd = tty_port_carrier_raised(port);
+-		if (do_clocal || cd)
+-			break;
+-
+-		if (signal_pending(current)) {
+-			retval = -ERESTARTSYS;
+-			break;
+-		}
+-
+-		if (debug_level >= DEBUG_LEVEL_INFO)
+-			printk("%s(%d):%s block_til_ready() count=%d\n",
+-				 __FILE__,__LINE__, tty->driver->name, port->count );
+-
+-		tty_unlock(tty);
+-		schedule();
+-		tty_lock(tty);
+-	}
+-
+-	set_current_state(TASK_RUNNING);
+-	remove_wait_queue(&port->open_wait, &wait);
+-	if (!tty_hung_up_p(filp))
+-		port->count++;
+-	port->blocked_open--;
+-
+-	if (debug_level >= DEBUG_LEVEL_INFO)
+-		printk("%s(%d):%s block_til_ready() after, count=%d\n",
+-			 __FILE__,__LINE__, tty->driver->name, port->count );
+-
+-	if (!retval)
+-		tty_port_set_active(port, 1);
+-
+-	return retval;
+-}
+-
+-static int alloc_dma_bufs(SLMP_INFO *info)
+-{
+-	unsigned short BuffersPerFrame;
+-	unsigned short BufferCount;
+-
+-	// Force allocation to start at 64K boundary for each port.
+-	// This is necessary because *all* buffer descriptors for a port
+-	// *must* be in the same 64K block. All descriptors on a port
+-	// share a common 'base' address (upper 8 bits of 24 bits) programmed
+-	// into the CBP register.
+-	info->port_array[0]->last_mem_alloc = (SCA_MEM_SIZE/4) * info->port_num;
+-
+-	/* Calculate the number of DMA buffers necessary to hold the */
+-	/* largest allowable frame size. Note: If the max frame size is */
+-	/* not an even multiple of the DMA buffer size then we need to */
+-	/* round the buffer count per frame up one. */
+-
+-	BuffersPerFrame = (unsigned short)(info->max_frame_size/SCABUFSIZE);
+-	if ( info->max_frame_size % SCABUFSIZE )
+-		BuffersPerFrame++;
+-
+-	/* calculate total number of data buffers (SCABUFSIZE) possible
+-	 * in one ports memory (SCA_MEM_SIZE/4) after allocating memory
+-	 * for the descriptor list (BUFFERLISTSIZE).
+-	 */
+-	BufferCount = (SCA_MEM_SIZE/4 - BUFFERLISTSIZE)/SCABUFSIZE;
+-
+-	/* limit number of buffers to maximum amount of descriptors */
+-	if (BufferCount > BUFFERLISTSIZE/sizeof(SCADESC))
+-		BufferCount = BUFFERLISTSIZE/sizeof(SCADESC);
+-
+-	/* use enough buffers to transmit one max size frame */
+-	info->tx_buf_count = BuffersPerFrame + 1;
+-
+-	/* never use more than half the available buffers for transmit */
+-	if (info->tx_buf_count > (BufferCount/2))
+-		info->tx_buf_count = BufferCount/2;
+-
+-	if (info->tx_buf_count > SCAMAXDESC)
+-		info->tx_buf_count = SCAMAXDESC;
+-
+-	/* use remaining buffers for receive */
+-	info->rx_buf_count = BufferCount - info->tx_buf_count;
+-
+-	if (info->rx_buf_count > SCAMAXDESC)
+-		info->rx_buf_count = SCAMAXDESC;
+-
+-	if ( debug_level >= DEBUG_LEVEL_INFO )
+-		printk("%s(%d):%s Allocating %d TX and %d RX DMA buffers.\n",
+-			__FILE__,__LINE__, info->device_name,
+-			info->tx_buf_count,info->rx_buf_count);
+-
+-	if ( alloc_buf_list( info ) < 0 ||
+-		alloc_frame_bufs(info,
+-		  			info->rx_buf_list,
+-		  			info->rx_buf_list_ex,
+-					info->rx_buf_count) < 0 ||
+-		alloc_frame_bufs(info,
+-					info->tx_buf_list,
+-					info->tx_buf_list_ex,
+-					info->tx_buf_count) < 0 ||
+-		alloc_tmp_rx_buf(info) < 0 ) {
+-		printk("%s(%d):%s Can't allocate DMA buffer memory\n",
+-			__FILE__,__LINE__, info->device_name);
+-		return -ENOMEM;
+-	}
+-
+-	rx_reset_buffers( info );
+-
+-	return 0;
+-}
+-
+-/* Allocate DMA buffers for the transmit and receive descriptor lists.
+- */
+-static int alloc_buf_list(SLMP_INFO *info)
+-{
+-	unsigned int i;
+-
+-	/* build list in adapter shared memory */
+-	info->buffer_list = info->memory_base + info->port_array[0]->last_mem_alloc;
+-	info->buffer_list_phys = info->port_array[0]->last_mem_alloc;
+-	info->port_array[0]->last_mem_alloc += BUFFERLISTSIZE;
+-
+-	memset(info->buffer_list, 0, BUFFERLISTSIZE);
+-
+-	/* Save virtual address pointers to the receive and */
+-	/* transmit buffer lists. (Receive 1st). These pointers will */
+-	/* be used by the processor to access the lists. */
+-	info->rx_buf_list = (SCADESC *)info->buffer_list;
+-
+-	info->tx_buf_list = (SCADESC *)info->buffer_list;
+-	info->tx_buf_list += info->rx_buf_count;
+-
+-	/* Build links for circular buffer entry lists (tx and rx)
+-	 *
+-	 * Note: links are physical addresses read by the SCA device
+-	 * to determine the next buffer entry to use.
+-	 */
+-
+-	for ( i = 0; i < info->rx_buf_count; i++ ) {
+-		/* calculate and store physical address of this buffer entry */
+-		info->rx_buf_list_ex[i].phys_entry =
+-			info->buffer_list_phys + (i * SCABUFSIZE);
+-
+-		/* calculate and store physical address of */
+-		/* next entry in cirular list of entries */
+-		info->rx_buf_list[i].next = info->buffer_list_phys;
+-		if ( i < info->rx_buf_count - 1 )
+-			info->rx_buf_list[i].next += (i + 1) * sizeof(SCADESC);
+-
+-		info->rx_buf_list[i].length = SCABUFSIZE;
+-	}
+-
+-	for ( i = 0; i < info->tx_buf_count; i++ ) {
+-		/* calculate and store physical address of this buffer entry */
+-		info->tx_buf_list_ex[i].phys_entry = info->buffer_list_phys +
+-			((info->rx_buf_count + i) * sizeof(SCADESC));
+-
+-		/* calculate and store physical address of */
+-		/* next entry in cirular list of entries */
+-
+-		info->tx_buf_list[i].next = info->buffer_list_phys +
+-			info->rx_buf_count * sizeof(SCADESC);
+-
+-		if ( i < info->tx_buf_count - 1 )
+-			info->tx_buf_list[i].next += (i + 1) * sizeof(SCADESC);
+-	}
+-
+-	return 0;
+-}
+-
+-/* Allocate the frame DMA buffers used by the specified buffer list.
+- */
+-static int alloc_frame_bufs(SLMP_INFO *info, SCADESC *buf_list,SCADESC_EX *buf_list_ex,int count)
+-{
+-	int i;
+-	unsigned long phys_addr;
+-
+-	for ( i = 0; i < count; i++ ) {
+-		buf_list_ex[i].virt_addr = info->memory_base + info->port_array[0]->last_mem_alloc;
+-		phys_addr = info->port_array[0]->last_mem_alloc;
+-		info->port_array[0]->last_mem_alloc += SCABUFSIZE;
+-
+-		buf_list[i].buf_ptr  = (unsigned short)phys_addr;
+-		buf_list[i].buf_base = (unsigned char)(phys_addr >> 16);
+-	}
+-
+-	return 0;
+-}
+-
+-static void free_dma_bufs(SLMP_INFO *info)
+-{
+-	info->buffer_list = NULL;
+-	info->rx_buf_list = NULL;
+-	info->tx_buf_list = NULL;
+-}
+-
+-/* allocate buffer large enough to hold max_frame_size.
+- * This buffer is used to pass an assembled frame to the line discipline.
+- */
+-static int alloc_tmp_rx_buf(SLMP_INFO *info)
+-{
+-	info->tmp_rx_buf = kmalloc(info->max_frame_size, GFP_KERNEL);
+-	if (info->tmp_rx_buf == NULL)
+-		return -ENOMEM;
+-	/* unused flag buffer to satisfy receive_buf calling interface */
+-	info->flag_buf = kzalloc(info->max_frame_size, GFP_KERNEL);
+-	if (!info->flag_buf) {
+-		kfree(info->tmp_rx_buf);
+-		info->tmp_rx_buf = NULL;
+-		return -ENOMEM;
+-	}
+-	return 0;
+-}
+-
+-static void free_tmp_rx_buf(SLMP_INFO *info)
+-{
+-	kfree(info->tmp_rx_buf);
+-	info->tmp_rx_buf = NULL;
+-	kfree(info->flag_buf);
+-	info->flag_buf = NULL;
+-}
+-
+-static int claim_resources(SLMP_INFO *info)
+-{
+-	if (request_mem_region(info->phys_memory_base,SCA_MEM_SIZE,"synclinkmp") == NULL) {
+-		printk( "%s(%d):%s mem addr conflict, Addr=%08X\n",
+-			__FILE__,__LINE__,info->device_name, info->phys_memory_base);
+-		info->init_error = DiagStatus_AddressConflict;
+-		goto errout;
+-	}
+-	else
+-		info->shared_mem_requested = true;
+-
+-	if (request_mem_region(info->phys_lcr_base + info->lcr_offset,128,"synclinkmp") == NULL) {
+-		printk( "%s(%d):%s lcr mem addr conflict, Addr=%08X\n",
+-			__FILE__,__LINE__,info->device_name, info->phys_lcr_base);
+-		info->init_error = DiagStatus_AddressConflict;
+-		goto errout;
+-	}
+-	else
+-		info->lcr_mem_requested = true;
+-
+-	if (request_mem_region(info->phys_sca_base + info->sca_offset,SCA_BASE_SIZE,"synclinkmp") == NULL) {
+-		printk( "%s(%d):%s sca mem addr conflict, Addr=%08X\n",
+-			__FILE__,__LINE__,info->device_name, info->phys_sca_base);
+-		info->init_error = DiagStatus_AddressConflict;
+-		goto errout;
+-	}
+-	else
+-		info->sca_base_requested = true;
+-
+-	if (request_mem_region(info->phys_statctrl_base + info->statctrl_offset,SCA_REG_SIZE,"synclinkmp") == NULL) {
+-		printk( "%s(%d):%s stat/ctrl mem addr conflict, Addr=%08X\n",
+-			__FILE__,__LINE__,info->device_name, info->phys_statctrl_base);
+-		info->init_error = DiagStatus_AddressConflict;
+-		goto errout;
+-	}
+-	else
+-		info->sca_statctrl_requested = true;
+-
+-	info->memory_base = ioremap(info->phys_memory_base,
+-								SCA_MEM_SIZE);
+-	if (!info->memory_base) {
+-		printk( "%s(%d):%s Can't map shared memory, MemAddr=%08X\n",
+-			__FILE__,__LINE__,info->device_name, info->phys_memory_base );
+-		info->init_error = DiagStatus_CantAssignPciResources;
+-		goto errout;
+-	}
+-
+-	info->lcr_base = ioremap(info->phys_lcr_base, PAGE_SIZE);
+-	if (!info->lcr_base) {
+-		printk( "%s(%d):%s Can't map LCR memory, MemAddr=%08X\n",
+-			__FILE__,__LINE__,info->device_name, info->phys_lcr_base );
+-		info->init_error = DiagStatus_CantAssignPciResources;
+-		goto errout;
+-	}
+-	info->lcr_base += info->lcr_offset;
+-
+-	info->sca_base = ioremap(info->phys_sca_base, PAGE_SIZE);
+-	if (!info->sca_base) {
+-		printk( "%s(%d):%s Can't map SCA memory, MemAddr=%08X\n",
+-			__FILE__,__LINE__,info->device_name, info->phys_sca_base );
+-		info->init_error = DiagStatus_CantAssignPciResources;
+-		goto errout;
+-	}
+-	info->sca_base += info->sca_offset;
+-
+-	info->statctrl_base = ioremap(info->phys_statctrl_base,
+-								PAGE_SIZE);
+-	if (!info->statctrl_base) {
+-		printk( "%s(%d):%s Can't map SCA Status/Control memory, MemAddr=%08X\n",
+-			__FILE__,__LINE__,info->device_name, info->phys_statctrl_base );
+-		info->init_error = DiagStatus_CantAssignPciResources;
+-		goto errout;
+-	}
+-	info->statctrl_base += info->statctrl_offset;
+-
+-	if ( !memory_test(info) ) {
+-		printk( "%s(%d):Shared Memory Test failed for device %s MemAddr=%08X\n",
+-			__FILE__,__LINE__,info->device_name, info->phys_memory_base );
+-		info->init_error = DiagStatus_MemoryError;
+-		goto errout;
+-	}
+-
+-	return 0;
+-
+-errout:
+-	release_resources( info );
+-	return -ENODEV;
+-}
+-
+-static void release_resources(SLMP_INFO *info)
+-{
+-	if ( debug_level >= DEBUG_LEVEL_INFO )
+-		printk( "%s(%d):%s release_resources() entry\n",
+-			__FILE__,__LINE__,info->device_name );
+-
+-	if ( info->irq_requested ) {
+-		free_irq(info->irq_level, info);
+-		info->irq_requested = false;
+-	}
+-
+-	if ( info->shared_mem_requested ) {
+-		release_mem_region(info->phys_memory_base,SCA_MEM_SIZE);
+-		info->shared_mem_requested = false;
+-	}
+-	if ( info->lcr_mem_requested ) {
+-		release_mem_region(info->phys_lcr_base + info->lcr_offset,128);
+-		info->lcr_mem_requested = false;
+-	}
+-	if ( info->sca_base_requested ) {
+-		release_mem_region(info->phys_sca_base + info->sca_offset,SCA_BASE_SIZE);
+-		info->sca_base_requested = false;
+-	}
+-	if ( info->sca_statctrl_requested ) {
+-		release_mem_region(info->phys_statctrl_base + info->statctrl_offset,SCA_REG_SIZE);
+-		info->sca_statctrl_requested = false;
+-	}
+-
+-	if (info->memory_base){
+-		iounmap(info->memory_base);
+-		info->memory_base = NULL;
+-	}
+-
+-	if (info->sca_base) {
+-		iounmap(info->sca_base - info->sca_offset);
+-		info->sca_base=NULL;
+-	}
+-
+-	if (info->statctrl_base) {
+-		iounmap(info->statctrl_base - info->statctrl_offset);
+-		info->statctrl_base=NULL;
+-	}
+-
+-	if (info->lcr_base){
+-		iounmap(info->lcr_base - info->lcr_offset);
+-		info->lcr_base = NULL;
+-	}
+-
+-	if ( debug_level >= DEBUG_LEVEL_INFO )
+-		printk( "%s(%d):%s release_resources() exit\n",
+-			__FILE__,__LINE__,info->device_name );
+-}
+-
+-/* Add the specified device instance data structure to the
+- * global linked list of devices and increment the device count.
+- */
+-static int add_device(SLMP_INFO *info)
+-{
+-	info->next_device = NULL;
+-	info->line = synclinkmp_device_count;
+-	sprintf(info->device_name,"ttySLM%dp%d",info->adapter_num,info->port_num);
+-
+-	if (info->line < MAX_DEVICES) {
+-		if (maxframe[info->line])
+-			info->max_frame_size = maxframe[info->line];
+-	}
+-
+-	synclinkmp_device_count++;
+-
+-	if ( !synclinkmp_device_list )
+-		synclinkmp_device_list = info;
+-	else {
+-		SLMP_INFO *current_dev = synclinkmp_device_list;
+-		while( current_dev->next_device )
+-			current_dev = current_dev->next_device;
+-		current_dev->next_device = info;
+-	}
+-
+-	if ( info->max_frame_size < 4096 )
+-		info->max_frame_size = 4096;
+-	else if ( info->max_frame_size > 65535 )
+-		info->max_frame_size = 65535;
+-
+-	printk( "SyncLink MultiPort %s: "
+-		"Mem=(%08x %08X %08x %08X) IRQ=%d MaxFrameSize=%u\n",
+-		info->device_name,
+-		info->phys_sca_base,
+-		info->phys_memory_base,
+-		info->phys_statctrl_base,
+-		info->phys_lcr_base,
+-		info->irq_level,
+-		info->max_frame_size );
+-
+-#if SYNCLINK_GENERIC_HDLC
+-	return hdlcdev_init(info);
+-#else
+-	return 0;
+-#endif
+-}
+-
+-static const struct tty_port_operations port_ops = {
+-	.carrier_raised = carrier_raised,
+-	.dtr_rts = dtr_rts,
+-};
+-
+-/* Allocate and initialize a device instance structure
+- *
+- * Return Value:	pointer to SLMP_INFO if success, otherwise NULL
+- */
+-static SLMP_INFO *alloc_dev(int adapter_num, int port_num, struct pci_dev *pdev)
+-{
+-	SLMP_INFO *info;
+-
+-	info = kzalloc(sizeof(SLMP_INFO),
+-		 GFP_KERNEL);
+-
+-	if (!info) {
+-		printk("%s(%d) Error can't allocate device instance data for adapter %d, port %d\n",
+-			__FILE__,__LINE__, adapter_num, port_num);
+-	} else {
+-		tty_port_init(&info->port);
+-		info->port.ops = &port_ops;
+-		info->magic = MGSL_MAGIC;
+-		INIT_WORK(&info->task, bh_handler);
+-		info->max_frame_size = 4096;
+-		info->port.close_delay = 5*HZ/10;
+-		info->port.closing_wait = 30*HZ;
+-		init_waitqueue_head(&info->status_event_wait_q);
+-		init_waitqueue_head(&info->event_wait_q);
+-		spin_lock_init(&info->netlock);
+-		memcpy(&info->params,&default_params,sizeof(MGSL_PARAMS));
+-		info->idle_mode = HDLC_TXIDLE_FLAGS;
+-		info->adapter_num = adapter_num;
+-		info->port_num = port_num;
+-
+-		/* Copy configuration info to device instance data */
+-		info->irq_level = pdev->irq;
+-		info->phys_lcr_base = pci_resource_start(pdev,0);
+-		info->phys_sca_base = pci_resource_start(pdev,2);
+-		info->phys_memory_base = pci_resource_start(pdev,3);
+-		info->phys_statctrl_base = pci_resource_start(pdev,4);
+-
+-		/* Because veremap only works on page boundaries we must map
+-		 * a larger area than is actually implemented for the LCR
+-		 * memory range. We map a full page starting at the page boundary.
+-		 */
+-		info->lcr_offset    = info->phys_lcr_base & (PAGE_SIZE-1);
+-		info->phys_lcr_base &= ~(PAGE_SIZE-1);
+-
+-		info->sca_offset    = info->phys_sca_base & (PAGE_SIZE-1);
+-		info->phys_sca_base &= ~(PAGE_SIZE-1);
+-
+-		info->statctrl_offset    = info->phys_statctrl_base & (PAGE_SIZE-1);
+-		info->phys_statctrl_base &= ~(PAGE_SIZE-1);
+-
+-		info->bus_type = MGSL_BUS_TYPE_PCI;
+-		info->irq_flags = IRQF_SHARED;
+-
+-		timer_setup(&info->tx_timer, tx_timeout, 0);
+-		timer_setup(&info->status_timer, status_timeout, 0);
+-
+-		/* Store the PCI9050 misc control register value because a flaw
+-		 * in the PCI9050 prevents LCR registers from being read if
+-		 * BIOS assigns an LCR base address with bit 7 set.
+-		 *
+-		 * Only the misc control register is accessed for which only
+-		 * write access is needed, so set an initial value and change
+-		 * bits to the device instance data as we write the value
+-		 * to the actual misc control register.
+-		 */
+-		info->misc_ctrl_value = 0x087e4546;
+-
+-		/* initial port state is unknown - if startup errors
+-		 * occur, init_error will be set to indicate the
+-		 * problem. Once the port is fully initialized,
+-		 * this value will be set to 0 to indicate the
+-		 * port is available.
+-		 */
+-		info->init_error = -1;
+-	}
+-
+-	return info;
+-}
+-
+-static int device_init(int adapter_num, struct pci_dev *pdev)
+-{
+-	SLMP_INFO *port_array[SCA_MAX_PORTS];
+-	int port, rc;
+-
+-	/* allocate device instances for up to SCA_MAX_PORTS devices */
+-	for ( port = 0; port < SCA_MAX_PORTS; ++port ) {
+-		port_array[port] = alloc_dev(adapter_num,port,pdev);
+-		if( port_array[port] == NULL ) {
+-			for (--port; port >= 0; --port) {
+-				tty_port_destroy(&port_array[port]->port);
+-				kfree(port_array[port]);
+-			}
+-			return -ENOMEM;
+-		}
+-	}
+-
+-	/* give copy of port_array to all ports and add to device list  */
+-	for ( port = 0; port < SCA_MAX_PORTS; ++port ) {
+-		memcpy(port_array[port]->port_array,port_array,sizeof(port_array));
+-		rc = add_device( port_array[port] );
+-		if (rc)
+-			goto err_add;
+-		spin_lock_init(&port_array[port]->lock);
+-	}
+-
+-	/* Allocate and claim adapter resources */
+-	if ( !claim_resources(port_array[0]) ) {
+-
+-		alloc_dma_bufs(port_array[0]);
+-
+-		/* copy resource information from first port to others */
+-		for ( port = 1; port < SCA_MAX_PORTS; ++port ) {
+-			port_array[port]->lock  = port_array[0]->lock;
+-			port_array[port]->irq_level     = port_array[0]->irq_level;
+-			port_array[port]->memory_base   = port_array[0]->memory_base;
+-			port_array[port]->sca_base      = port_array[0]->sca_base;
+-			port_array[port]->statctrl_base = port_array[0]->statctrl_base;
+-			port_array[port]->lcr_base      = port_array[0]->lcr_base;
+-			alloc_dma_bufs(port_array[port]);
+-		}
+-
+-		rc = request_irq(port_array[0]->irq_level,
+-					synclinkmp_interrupt,
+-					port_array[0]->irq_flags,
+-					port_array[0]->device_name,
+-					port_array[0]);
+-		if ( rc ) {
+-			printk( "%s(%d):%s Can't request interrupt, IRQ=%d\n",
+-				__FILE__,__LINE__,
+-				port_array[0]->device_name,
+-				port_array[0]->irq_level );
+-			goto err_irq;
+-		}
+-		port_array[0]->irq_requested = true;
+-		adapter_test(port_array[0]);
+-	}
+-	return 0;
+-err_irq:
+-	release_resources( port_array[0] );
+-err_add:
+-	for ( port = 0; port < SCA_MAX_PORTS; ++port ) {
+-		tty_port_destroy(&port_array[port]->port);
+-		kfree(port_array[port]);
+-	}
+-	return rc;
+-}
+-
+-static const struct tty_operations ops = {
+-	.install = install,
+-	.open = open,
+-	.close = close,
+-	.write = write,
+-	.put_char = put_char,
+-	.flush_chars = flush_chars,
+-	.write_room = write_room,
+-	.chars_in_buffer = chars_in_buffer,
+-	.flush_buffer = flush_buffer,
+-	.ioctl = ioctl,
+-	.throttle = throttle,
+-	.unthrottle = unthrottle,
+-	.send_xchar = send_xchar,
+-	.break_ctl = set_break,
+-	.wait_until_sent = wait_until_sent,
+-	.set_termios = set_termios,
+-	.stop = tx_hold,
+-	.start = tx_release,
+-	.hangup = hangup,
+-	.tiocmget = tiocmget,
+-	.tiocmset = tiocmset,
+-	.get_icount = get_icount,
+-	.proc_show = synclinkmp_proc_show,
+-};
+-
+-
+-static void synclinkmp_cleanup(void)
+-{
+-	int rc;
+-	SLMP_INFO *info;
+-	SLMP_INFO *tmp;
+-
+-	printk("Unloading %s %s\n", driver_name, driver_version);
+-
+-	if (serial_driver) {
+-		rc = tty_unregister_driver(serial_driver);
+-		if (rc)
+-			printk("%s(%d) failed to unregister tty driver err=%d\n",
+-			       __FILE__,__LINE__,rc);
+-		put_tty_driver(serial_driver);
+-	}
+-
+-	/* reset devices */
+-	info = synclinkmp_device_list;
+-	while(info) {
+-		reset_port(info);
+-		info = info->next_device;
+-	}
+-
+-	/* release devices */
+-	info = synclinkmp_device_list;
+-	while(info) {
+-#if SYNCLINK_GENERIC_HDLC
+-		hdlcdev_exit(info);
+-#endif
+-		free_dma_bufs(info);
+-		free_tmp_rx_buf(info);
+-		if ( info->port_num == 0 ) {
+-			if (info->sca_base)
+-				write_reg(info, LPR, 1); /* set low power mode */
+-			release_resources(info);
+-		}
+-		tmp = info;
+-		info = info->next_device;
+-		tty_port_destroy(&tmp->port);
+-		kfree(tmp);
+-	}
+-
+-	pci_unregister_driver(&synclinkmp_pci_driver);
+-}
+-
+-/* Driver initialization entry point.
+- */
+-
+-static int __init synclinkmp_init(void)
+-{
+-	int rc;
+-
+-	if (break_on_load) {
+-	 	synclinkmp_get_text_ptr();
+-  		BREAKPOINT();
+-	}
+-
+- 	printk("%s %s\n", driver_name, driver_version);
+-
+-	if ((rc = pci_register_driver(&synclinkmp_pci_driver)) < 0) {
+-		printk("%s:failed to register PCI driver, error=%d\n",__FILE__,rc);
+-		return rc;
+-	}
+-
+-	serial_driver = alloc_tty_driver(128);
+-	if (!serial_driver) {
+-		rc = -ENOMEM;
+-		goto error;
+-	}
+-
+-	/* Initialize the tty_driver structure */
+-
+-	serial_driver->driver_name = "synclinkmp";
+-	serial_driver->name = "ttySLM";
+-	serial_driver->major = ttymajor;
+-	serial_driver->minor_start = 64;
+-	serial_driver->type = TTY_DRIVER_TYPE_SERIAL;
+-	serial_driver->subtype = SERIAL_TYPE_NORMAL;
+-	serial_driver->init_termios = tty_std_termios;
+-	serial_driver->init_termios.c_cflag =
+-		B9600 | CS8 | CREAD | HUPCL | CLOCAL;
+-	serial_driver->init_termios.c_ispeed = 9600;
+-	serial_driver->init_termios.c_ospeed = 9600;
+-	serial_driver->flags = TTY_DRIVER_REAL_RAW;
+-	tty_set_operations(serial_driver, &ops);
+-	if ((rc = tty_register_driver(serial_driver)) < 0) {
+-		printk("%s(%d):Couldn't register serial driver\n",
+-			__FILE__,__LINE__);
+-		put_tty_driver(serial_driver);
+-		serial_driver = NULL;
+-		goto error;
+-	}
+-
+- 	printk("%s %s, tty major#%d\n",
+-		driver_name, driver_version,
+-		serial_driver->major);
+-
+-	return 0;
+-
+-error:
+-	synclinkmp_cleanup();
+-	return rc;
+-}
+-
+-static void __exit synclinkmp_exit(void)
+-{
+-	synclinkmp_cleanup();
+-}
+-
+-module_init(synclinkmp_init);
+-module_exit(synclinkmp_exit);
+-
+-/* Set the port for internal loopback mode.
+- * The TxCLK and RxCLK signals are generated from the BRG and
+- * the TxD is looped back to the RxD internally.
+- */
+-static void enable_loopback(SLMP_INFO *info, int enable)
+-{
+-	if (enable) {
+-		/* MD2 (Mode Register 2)
+-		 * 01..00  CNCT<1..0> Channel Connection 11=Local Loopback
+-		 */
+-		write_reg(info, MD2, (unsigned char)(read_reg(info, MD2) | (BIT1 + BIT0)));
+-
+-		/* degate external TxC clock source */
+-		info->port_array[0]->ctrlreg_value |= (BIT0 << (info->port_num * 2));
+-		write_control_reg(info);
+-
+-		/* RXS/TXS (Rx/Tx clock source)
+-		 * 07      Reserved, must be 0
+-		 * 06..04  Clock Source, 100=BRG
+-		 * 03..00  Clock Divisor, 0000=1
+-		 */
+-		write_reg(info, RXS, 0x40);
+-		write_reg(info, TXS, 0x40);
+-
+-	} else {
+-		/* MD2 (Mode Register 2)
+-	 	 * 01..00  CNCT<1..0> Channel connection, 0=normal
+-		 */
+-		write_reg(info, MD2, (unsigned char)(read_reg(info, MD2) & ~(BIT1 + BIT0)));
+-
+-		/* RXS/TXS (Rx/Tx clock source)
+-		 * 07      Reserved, must be 0
+-		 * 06..04  Clock Source, 000=RxC/TxC Pin
+-		 * 03..00  Clock Divisor, 0000=1
+-		 */
+-		write_reg(info, RXS, 0x00);
+-		write_reg(info, TXS, 0x00);
+-	}
+-
+-	/* set LinkSpeed if available, otherwise default to 2Mbps */
+-	if (info->params.clock_speed)
+-		set_rate(info, info->params.clock_speed);
+-	else
+-		set_rate(info, 3686400);
+-}
+-
+-/* Set the baud rate register to the desired speed
+- *
+- *	data_rate	data rate of clock in bits per second
+- *			A data rate of 0 disables the AUX clock.
+- */
+-static void set_rate( SLMP_INFO *info, u32 data_rate )
+-{
+-       	u32 TMCValue;
+-       	unsigned char BRValue;
+-	u32 Divisor=0;
+-
+-	/* fBRG = fCLK/(TMC * 2^BR)
+-	 */
+-	if (data_rate != 0) {
+-		Divisor = 14745600/data_rate;
+-		if (!Divisor)
+-			Divisor = 1;
+-
+-		TMCValue = Divisor;
+-
+-		BRValue = 0;
+-		if (TMCValue != 1 && TMCValue != 2) {
+-			/* BRValue of 0 provides 50/50 duty cycle *only* when
+-			 * TMCValue is 1 or 2. BRValue of 1 to 9 always provides
+-			 * 50/50 duty cycle.
+-			 */
+-			BRValue = 1;
+-			TMCValue >>= 1;
+-		}
+-
+-		/* while TMCValue is too big for TMC register, divide
+-		 * by 2 and increment BR exponent.
+-		 */
+-		for(; TMCValue > 256 && BRValue < 10; BRValue++)
+-			TMCValue >>= 1;
+-
+-		write_reg(info, TXS,
+-			(unsigned char)((read_reg(info, TXS) & 0xf0) | BRValue));
+-		write_reg(info, RXS,
+-			(unsigned char)((read_reg(info, RXS) & 0xf0) | BRValue));
+-		write_reg(info, TMC, (unsigned char)TMCValue);
+-	}
+-	else {
+-		write_reg(info, TXS,0);
+-		write_reg(info, RXS,0);
+-		write_reg(info, TMC, 0);
+-	}
+-}
+-
+-/* Disable receiver
+- */
+-static void rx_stop(SLMP_INFO *info)
+-{
+-	if (debug_level >= DEBUG_LEVEL_ISR)
+-		printk("%s(%d):%s rx_stop()\n",
+-			 __FILE__,__LINE__, info->device_name );
+-
+-	write_reg(info, CMD, RXRESET);
+-
+-	info->ie0_value &= ~RXRDYE;
+-	write_reg(info, IE0, info->ie0_value);	/* disable Rx data interrupts */
+-
+-	write_reg(info, RXDMA + DSR, 0);	/* disable Rx DMA */
+-	write_reg(info, RXDMA + DCMD, SWABORT);	/* reset/init Rx DMA */
+-	write_reg(info, RXDMA + DIR, 0);	/* disable Rx DMA interrupts */
+-
+-	info->rx_enabled = false;
+-	info->rx_overflow = false;
+-}
+-
+-/* enable the receiver
+- */
+-static void rx_start(SLMP_INFO *info)
+-{
+-	int i;
+-
+-	if (debug_level >= DEBUG_LEVEL_ISR)
+-		printk("%s(%d):%s rx_start()\n",
+-			 __FILE__,__LINE__, info->device_name );
+-
+-	write_reg(info, CMD, RXRESET);
+-
+-	if ( info->params.mode == MGSL_MODE_HDLC ) {
+-		/* HDLC, disabe IRQ on rxdata */
+-		info->ie0_value &= ~RXRDYE;
+-		write_reg(info, IE0, info->ie0_value);
+-
+-		/* Reset all Rx DMA buffers and program rx dma */
+-		write_reg(info, RXDMA + DSR, 0);		/* disable Rx DMA */
+-		write_reg(info, RXDMA + DCMD, SWABORT);	/* reset/init Rx DMA */
+-
+-		for (i = 0; i < info->rx_buf_count; i++) {
+-			info->rx_buf_list[i].status = 0xff;
+-
+-			// throttle to 4 shared memory writes at a time to prevent
+-			// hogging local bus (keep latency time for DMA requests low).
+-			if (!(i % 4))
+-				read_status_reg(info);
+-		}
+-		info->current_rx_buf = 0;
+-
+-		/* set current/1st descriptor address */
+-		write_reg16(info, RXDMA + CDA,
+-			info->rx_buf_list_ex[0].phys_entry);
+-
+-		/* set new last rx descriptor address */
+-		write_reg16(info, RXDMA + EDA,
+-			info->rx_buf_list_ex[info->rx_buf_count - 1].phys_entry);
+-
+-		/* set buffer length (shared by all rx dma data buffers) */
+-		write_reg16(info, RXDMA + BFL, SCABUFSIZE);
+-
+-		write_reg(info, RXDMA + DIR, 0x60);	/* enable Rx DMA interrupts (EOM/BOF) */
+-		write_reg(info, RXDMA + DSR, 0xf2);	/* clear Rx DMA IRQs, enable Rx DMA */
+-	} else {
+-		/* async, enable IRQ on rxdata */
+-		info->ie0_value |= RXRDYE;
+-		write_reg(info, IE0, info->ie0_value);
+-	}
+-
+-	write_reg(info, CMD, RXENABLE);
+-
+-	info->rx_overflow = false;
+-	info->rx_enabled = true;
+-}
+-
+-/* Enable the transmitter and send a transmit frame if
+- * one is loaded in the DMA buffers.
+- */
+-static void tx_start(SLMP_INFO *info)
+-{
+-	if (debug_level >= DEBUG_LEVEL_ISR)
+-		printk("%s(%d):%s tx_start() tx_count=%d\n",
+-			 __FILE__,__LINE__, info->device_name,info->tx_count );
+-
+-	if (!info->tx_enabled ) {
+-		write_reg(info, CMD, TXRESET);
+-		write_reg(info, CMD, TXENABLE);
+-		info->tx_enabled = true;
+-	}
+-
+-	if ( info->tx_count ) {
+-
+-		/* If auto RTS enabled and RTS is inactive, then assert */
+-		/* RTS and set a flag indicating that the driver should */
+-		/* negate RTS when the transmission completes. */
+-
+-		info->drop_rts_on_tx_done = false;
+-
+-		if (info->params.mode != MGSL_MODE_ASYNC) {
+-
+-			if ( info->params.flags & HDLC_FLAG_AUTO_RTS ) {
+-				get_signals( info );
+-				if ( !(info->serial_signals & SerialSignal_RTS) ) {
+-					info->serial_signals |= SerialSignal_RTS;
+-					set_signals( info );
+-					info->drop_rts_on_tx_done = true;
+-				}
+-			}
+-
+-			write_reg16(info, TRC0,
+-				(unsigned short)(((tx_negate_fifo_level-1)<<8) + tx_active_fifo_level));
+-
+-			write_reg(info, TXDMA + DSR, 0); 		/* disable DMA channel */
+-			write_reg(info, TXDMA + DCMD, SWABORT);	/* reset/init DMA channel */
+-	
+-			/* set TX CDA (current descriptor address) */
+-			write_reg16(info, TXDMA + CDA,
+-				info->tx_buf_list_ex[0].phys_entry);
+-	
+-			/* set TX EDA (last descriptor address) */
+-			write_reg16(info, TXDMA + EDA,
+-				info->tx_buf_list_ex[info->last_tx_buf].phys_entry);
+-	
+-			/* enable underrun IRQ */
+-			info->ie1_value &= ~IDLE;
+-			info->ie1_value |= UDRN;
+-			write_reg(info, IE1, info->ie1_value);
+-			write_reg(info, SR1, (unsigned char)(IDLE + UDRN));
+-	
+-			write_reg(info, TXDMA + DIR, 0x40);		/* enable Tx DMA interrupts (EOM) */
+-			write_reg(info, TXDMA + DSR, 0xf2);		/* clear Tx DMA IRQs, enable Tx DMA */
+-	
+-			mod_timer(&info->tx_timer, jiffies +
+-					msecs_to_jiffies(5000));
+-		}
+-		else {
+-			tx_load_fifo(info);
+-			/* async, enable IRQ on txdata */
+-			info->ie0_value |= TXRDYE;
+-			write_reg(info, IE0, info->ie0_value);
+-		}
+-
+-		info->tx_active = true;
+-	}
+-}
+-
+-/* stop the transmitter and DMA
+- */
+-static void tx_stop( SLMP_INFO *info )
+-{
+-	if (debug_level >= DEBUG_LEVEL_ISR)
+-		printk("%s(%d):%s tx_stop()\n",
+-			 __FILE__,__LINE__, info->device_name );
+-
+-	del_timer(&info->tx_timer);
+-
+-	write_reg(info, TXDMA + DSR, 0);		/* disable DMA channel */
+-	write_reg(info, TXDMA + DCMD, SWABORT);	/* reset/init DMA channel */
+-
+-	write_reg(info, CMD, TXRESET);
+-
+-	info->ie1_value &= ~(UDRN + IDLE);
+-	write_reg(info, IE1, info->ie1_value);	/* disable tx status interrupts */
+-	write_reg(info, SR1, (unsigned char)(IDLE + UDRN));	/* clear pending */
+-
+-	info->ie0_value &= ~TXRDYE;
+-	write_reg(info, IE0, info->ie0_value);	/* disable tx data interrupts */
+-
+-	info->tx_enabled = false;
+-	info->tx_active = false;
+-}
+-
+-/* Fill the transmit FIFO until the FIFO is full or
+- * there is no more data to load.
+- */
+-static void tx_load_fifo(SLMP_INFO *info)
+-{
+-	u8 TwoBytes[2];
+-
+-	/* do nothing is now tx data available and no XON/XOFF pending */
+-
+-	if ( !info->tx_count && !info->x_char )
+-		return;
+-
+-	/* load the Transmit FIFO until FIFOs full or all data sent */
+-
+-	while( info->tx_count && (read_reg(info,SR0) & BIT1) ) {
+-
+-		/* there is more space in the transmit FIFO and */
+-		/* there is more data in transmit buffer */
+-
+-		if ( (info->tx_count > 1) && !info->x_char ) {
+- 			/* write 16-bits */
+-			TwoBytes[0] = info->tx_buf[info->tx_get++];
+-			if (info->tx_get >= info->max_frame_size)
+-				info->tx_get -= info->max_frame_size;
+-			TwoBytes[1] = info->tx_buf[info->tx_get++];
+-			if (info->tx_get >= info->max_frame_size)
+-				info->tx_get -= info->max_frame_size;
+-
+-			write_reg16(info, TRB, *((u16 *)TwoBytes));
+-
+-			info->tx_count -= 2;
+-			info->icount.tx += 2;
+-		} else {
+-			/* only 1 byte left to transmit or 1 FIFO slot left */
+-
+-			if (info->x_char) {
+-				/* transmit pending high priority char */
+-				write_reg(info, TRB, info->x_char);
+-				info->x_char = 0;
+-			} else {
+-				write_reg(info, TRB, info->tx_buf[info->tx_get++]);
+-				if (info->tx_get >= info->max_frame_size)
+-					info->tx_get -= info->max_frame_size;
+-				info->tx_count--;
+-			}
+-			info->icount.tx++;
+-		}
+-	}
+-}
+-
+-/* Reset a port to a known state
+- */
+-static void reset_port(SLMP_INFO *info)
+-{
+-	if (info->sca_base) {
+-
+-		tx_stop(info);
+-		rx_stop(info);
+-
+-		info->serial_signals &= ~(SerialSignal_RTS | SerialSignal_DTR);
+-		set_signals(info);
+-
+-		/* disable all port interrupts */
+-		info->ie0_value = 0;
+-		info->ie1_value = 0;
+-		info->ie2_value = 0;
+-		write_reg(info, IE0, info->ie0_value);
+-		write_reg(info, IE1, info->ie1_value);
+-		write_reg(info, IE2, info->ie2_value);
+-
+-		write_reg(info, CMD, CHRESET);
+-	}
+-}
+-
+-/* Reset all the ports to a known state.
+- */
+-static void reset_adapter(SLMP_INFO *info)
+-{
+-	int i;
+-
+-	for ( i=0; i < SCA_MAX_PORTS; ++i) {
+-		if (info->port_array[i])
+-			reset_port(info->port_array[i]);
+-	}
+-}
+-
+-/* Program port for asynchronous communications.
+- */
+-static void async_mode(SLMP_INFO *info)
+-{
+-
+-  	unsigned char RegValue;
+-
+-	tx_stop(info);
+-	rx_stop(info);
+-
+-	/* MD0, Mode Register 0
+-	 *
+-	 * 07..05  PRCTL<2..0>, Protocol Mode, 000=async
+-	 * 04      AUTO, Auto-enable (RTS/CTS/DCD)
+-	 * 03      Reserved, must be 0
+-	 * 02      CRCCC, CRC Calculation, 0=disabled
+-	 * 01..00  STOP<1..0> Stop bits (00=1,10=2)
+-	 *
+-	 * 0000 0000
+-	 */
+-	RegValue = 0x00;
+-	if (info->params.stop_bits != 1)
+-		RegValue |= BIT1;
+-	write_reg(info, MD0, RegValue);
+-
+-	/* MD1, Mode Register 1
+-	 *
+-	 * 07..06  BRATE<1..0>, bit rate, 00=1/1 01=1/16 10=1/32 11=1/64
+-	 * 05..04  TXCHR<1..0>, tx char size, 00=8 bits,01=7,10=6,11=5
+-	 * 03..02  RXCHR<1..0>, rx char size
+-	 * 01..00  PMPM<1..0>, Parity mode, 00=none 10=even 11=odd
+-	 *
+-	 * 0100 0000
+-	 */
+-	RegValue = 0x40;
+-	switch (info->params.data_bits) {
+-	case 7: RegValue |= BIT4 + BIT2; break;
+-	case 6: RegValue |= BIT5 + BIT3; break;
+-	case 5: RegValue |= BIT5 + BIT4 + BIT3 + BIT2; break;
+-	}
+-	if (info->params.parity != ASYNC_PARITY_NONE) {
+-		RegValue |= BIT1;
+-		if (info->params.parity == ASYNC_PARITY_ODD)
+-			RegValue |= BIT0;
+-	}
+-	write_reg(info, MD1, RegValue);
+-
+-	/* MD2, Mode Register 2
+-	 *
+-	 * 07..02  Reserved, must be 0
+-	 * 01..00  CNCT<1..0> Channel connection, 00=normal 11=local loopback
+-	 *
+-	 * 0000 0000
+-	 */
+-	RegValue = 0x00;
+-	if (info->params.loopback)
+-		RegValue |= (BIT1 + BIT0);
+-	write_reg(info, MD2, RegValue);
+-
+-	/* RXS, Receive clock source
+-	 *
+-	 * 07      Reserved, must be 0
+-	 * 06..04  RXCS<2..0>, clock source, 000=RxC Pin, 100=BRG, 110=DPLL
+-	 * 03..00  RXBR<3..0>, rate divisor, 0000=1
+-	 */
+-	RegValue=BIT6;
+-	write_reg(info, RXS, RegValue);
+-
+-	/* TXS, Transmit clock source
+-	 *
+-	 * 07      Reserved, must be 0
+-	 * 06..04  RXCS<2..0>, clock source, 000=TxC Pin, 100=BRG, 110=Receive Clock
+-	 * 03..00  RXBR<3..0>, rate divisor, 0000=1
+-	 */
+-	RegValue=BIT6;
+-	write_reg(info, TXS, RegValue);
+-
+-	/* Control Register
+-	 *
+-	 * 6,4,2,0  CLKSEL<3..0>, 0 = TcCLK in, 1 = Auxclk out
+-	 */
+-	info->port_array[0]->ctrlreg_value |= (BIT0 << (info->port_num * 2));
+-	write_control_reg(info);
+-
+-	tx_set_idle(info);
+-
+-	/* RRC Receive Ready Control 0
+-	 *
+-	 * 07..05  Reserved, must be 0
+-	 * 04..00  RRC<4..0> Rx FIFO trigger active 0x00 = 1 byte
+-	 */
+-	write_reg(info, RRC, 0x00);
+-
+-	/* TRC0 Transmit Ready Control 0
+-	 *
+-	 * 07..05  Reserved, must be 0
+-	 * 04..00  TRC<4..0> Tx FIFO trigger active 0x10 = 16 bytes
+-	 */
+-	write_reg(info, TRC0, 0x10);
+-
+-	/* TRC1 Transmit Ready Control 1
+-	 *
+-	 * 07..05  Reserved, must be 0
+-	 * 04..00  TRC<4..0> Tx FIFO trigger inactive 0x1e = 31 bytes (full-1)
+-	 */
+-	write_reg(info, TRC1, 0x1e);
+-
+-	/* CTL, MSCI control register
+-	 *
+-	 * 07..06  Reserved, set to 0
+-	 * 05      UDRNC, underrun control, 0=abort 1=CRC+flag (HDLC/BSC)
+-	 * 04      IDLC, idle control, 0=mark 1=idle register
+-	 * 03      BRK, break, 0=off 1 =on (async)
+-	 * 02      SYNCLD, sync char load enable (BSC) 1=enabled
+-	 * 01      GOP, go active on poll (LOOP mode) 1=enabled
+-	 * 00      RTS, RTS output control, 0=active 1=inactive
+-	 *
+-	 * 0001 0001
+-	 */
+-	RegValue = 0x10;
+-	if (!(info->serial_signals & SerialSignal_RTS))
+-		RegValue |= 0x01;
+-	write_reg(info, CTL, RegValue);
+-
+-	/* enable status interrupts */
+-	info->ie0_value |= TXINTE + RXINTE;
+-	write_reg(info, IE0, info->ie0_value);
+-
+-	/* enable break detect interrupt */
+-	info->ie1_value = BRKD;
+-	write_reg(info, IE1, info->ie1_value);
+-
+-	/* enable rx overrun interrupt */
+-	info->ie2_value = OVRN;
+-	write_reg(info, IE2, info->ie2_value);
+-
+-	set_rate( info, info->params.data_rate * 16 );
+-}
+-
+-/* Program the SCA for HDLC communications.
+- */
+-static void hdlc_mode(SLMP_INFO *info)
+-{
+-	unsigned char RegValue;
+-	u32 DpllDivisor;
+-
+-	// Can't use DPLL because SCA outputs recovered clock on RxC when
+-	// DPLL mode selected. This causes output contention with RxC receiver.
+-	// Use of DPLL would require external hardware to disable RxC receiver
+-	// when DPLL mode selected.
+-	info->params.flags &= ~(HDLC_FLAG_TXC_DPLL + HDLC_FLAG_RXC_DPLL);
+-
+-	/* disable DMA interrupts */
+-	write_reg(info, TXDMA + DIR, 0);
+-	write_reg(info, RXDMA + DIR, 0);
+-
+-	/* MD0, Mode Register 0
+-	 *
+-	 * 07..05  PRCTL<2..0>, Protocol Mode, 100=HDLC
+-	 * 04      AUTO, Auto-enable (RTS/CTS/DCD)
+-	 * 03      Reserved, must be 0
+-	 * 02      CRCCC, CRC Calculation, 1=enabled
+-	 * 01      CRC1, CRC selection, 0=CRC-16,1=CRC-CCITT-16
+-	 * 00      CRC0, CRC initial value, 1 = all 1s
+-	 *
+-	 * 1000 0001
+-	 */
+-	RegValue = 0x81;
+-	if (info->params.flags & HDLC_FLAG_AUTO_CTS)
+-		RegValue |= BIT4;
+-	if (info->params.flags & HDLC_FLAG_AUTO_DCD)
+-		RegValue |= BIT4;
+-	if (info->params.crc_type == HDLC_CRC_16_CCITT)
+-		RegValue |= BIT2 + BIT1;
+-	write_reg(info, MD0, RegValue);
+-
+-	/* MD1, Mode Register 1
+-	 *
+-	 * 07..06  ADDRS<1..0>, Address detect, 00=no addr check
+-	 * 05..04  TXCHR<1..0>, tx char size, 00=8 bits
+-	 * 03..02  RXCHR<1..0>, rx char size, 00=8 bits
+-	 * 01..00  PMPM<1..0>, Parity mode, 00=no parity
+-	 *
+-	 * 0000 0000
+-	 */
+-	RegValue = 0x00;
+-	write_reg(info, MD1, RegValue);
+-
+-	/* MD2, Mode Register 2
+-	 *
+-	 * 07      NRZFM, 0=NRZ, 1=FM
+-	 * 06..05  CODE<1..0> Encoding, 00=NRZ
+-	 * 04..03  DRATE<1..0> DPLL Divisor, 00=8
+-	 * 02      Reserved, must be 0
+-	 * 01..00  CNCT<1..0> Channel connection, 0=normal
+-	 *
+-	 * 0000 0000
+-	 */
+-	RegValue = 0x00;
+-	switch(info->params.encoding) {
+-	case HDLC_ENCODING_NRZI:	  RegValue |= BIT5; break;
+-	case HDLC_ENCODING_BIPHASE_MARK:  RegValue |= BIT7 + BIT5; break; /* aka FM1 */
+-	case HDLC_ENCODING_BIPHASE_SPACE: RegValue |= BIT7 + BIT6; break; /* aka FM0 */
+-	case HDLC_ENCODING_BIPHASE_LEVEL: RegValue |= BIT7; break; 	/* aka Manchester */
+-#if 0
+-	case HDLC_ENCODING_NRZB:	       				/* not supported */
+-	case HDLC_ENCODING_NRZI_MARK:          				/* not supported */
+-	case HDLC_ENCODING_DIFF_BIPHASE_LEVEL: 				/* not supported */
+-#endif
+-	}
+-	if ( info->params.flags & HDLC_FLAG_DPLL_DIV16 ) {
+-		DpllDivisor = 16;
+-		RegValue |= BIT3;
+-	} else if ( info->params.flags & HDLC_FLAG_DPLL_DIV8 ) {
+-		DpllDivisor = 8;
+-	} else {
+-		DpllDivisor = 32;
+-		RegValue |= BIT4;
+-	}
+-	write_reg(info, MD2, RegValue);
+-
+-
+-	/* RXS, Receive clock source
+-	 *
+-	 * 07      Reserved, must be 0
+-	 * 06..04  RXCS<2..0>, clock source, 000=RxC Pin, 100=BRG, 110=DPLL
+-	 * 03..00  RXBR<3..0>, rate divisor, 0000=1
+-	 */
+-	RegValue=0;
+-	if (info->params.flags & HDLC_FLAG_RXC_BRG)
+-		RegValue |= BIT6;
+-	if (info->params.flags & HDLC_FLAG_RXC_DPLL)
+-		RegValue |= BIT6 + BIT5;
+-	write_reg(info, RXS, RegValue);
+-
+-	/* TXS, Transmit clock source
+-	 *
+-	 * 07      Reserved, must be 0
+-	 * 06..04  RXCS<2..0>, clock source, 000=TxC Pin, 100=BRG, 110=Receive Clock
+-	 * 03..00  RXBR<3..0>, rate divisor, 0000=1
+-	 */
+-	RegValue=0;
+-	if (info->params.flags & HDLC_FLAG_TXC_BRG)
+-		RegValue |= BIT6;
+-	if (info->params.flags & HDLC_FLAG_TXC_DPLL)
+-		RegValue |= BIT6 + BIT5;
+-	write_reg(info, TXS, RegValue);
+-
+-	if (info->params.flags & HDLC_FLAG_RXC_DPLL)
+-		set_rate(info, info->params.clock_speed * DpllDivisor);
+-	else
+-		set_rate(info, info->params.clock_speed);
+-
+-	/* GPDATA (General Purpose I/O Data Register)
+-	 *
+-	 * 6,4,2,0  CLKSEL<3..0>, 0 = TcCLK in, 1 = Auxclk out
+-	 */
+-	if (info->params.flags & HDLC_FLAG_TXC_BRG)
+-		info->port_array[0]->ctrlreg_value |= (BIT0 << (info->port_num * 2));
+-	else
+-		info->port_array[0]->ctrlreg_value &= ~(BIT0 << (info->port_num * 2));
+-	write_control_reg(info);
+-
+-	/* RRC Receive Ready Control 0
+-	 *
+-	 * 07..05  Reserved, must be 0
+-	 * 04..00  RRC<4..0> Rx FIFO trigger active
+-	 */
+-	write_reg(info, RRC, rx_active_fifo_level);
+-
+-	/* TRC0 Transmit Ready Control 0
+-	 *
+-	 * 07..05  Reserved, must be 0
+-	 * 04..00  TRC<4..0> Tx FIFO trigger active
+-	 */
+-	write_reg(info, TRC0, tx_active_fifo_level);
+-
+-	/* TRC1 Transmit Ready Control 1
+-	 *
+-	 * 07..05  Reserved, must be 0
+-	 * 04..00  TRC<4..0> Tx FIFO trigger inactive 0x1f = 32 bytes (full)
+-	 */
+-	write_reg(info, TRC1, (unsigned char)(tx_negate_fifo_level - 1));
+-
+-	/* DMR, DMA Mode Register
+-	 *
+-	 * 07..05  Reserved, must be 0
+-	 * 04      TMOD, Transfer Mode: 1=chained-block
+-	 * 03      Reserved, must be 0
+-	 * 02      NF, Number of Frames: 1=multi-frame
+-	 * 01      CNTE, Frame End IRQ Counter enable: 0=disabled
+-	 * 00      Reserved, must be 0
+-	 *
+-	 * 0001 0100
+-	 */
+-	write_reg(info, TXDMA + DMR, 0x14);
+-	write_reg(info, RXDMA + DMR, 0x14);
+-
+-	/* Set chain pointer base (upper 8 bits of 24 bit addr) */
+-	write_reg(info, RXDMA + CPB,
+-		(unsigned char)(info->buffer_list_phys >> 16));
+-
+-	/* Set chain pointer base (upper 8 bits of 24 bit addr) */
+-	write_reg(info, TXDMA + CPB,
+-		(unsigned char)(info->buffer_list_phys >> 16));
+-
+-	/* enable status interrupts. other code enables/disables
+-	 * the individual sources for these two interrupt classes.
+-	 */
+-	info->ie0_value |= TXINTE + RXINTE;
+-	write_reg(info, IE0, info->ie0_value);
+-
+-	/* CTL, MSCI control register
+-	 *
+-	 * 07..06  Reserved, set to 0
+-	 * 05      UDRNC, underrun control, 0=abort 1=CRC+flag (HDLC/BSC)
+-	 * 04      IDLC, idle control, 0=mark 1=idle register
+-	 * 03      BRK, break, 0=off 1 =on (async)
+-	 * 02      SYNCLD, sync char load enable (BSC) 1=enabled
+-	 * 01      GOP, go active on poll (LOOP mode) 1=enabled
+-	 * 00      RTS, RTS output control, 0=active 1=inactive
+-	 *
+-	 * 0001 0001
+-	 */
+-	RegValue = 0x10;
+-	if (!(info->serial_signals & SerialSignal_RTS))
+-		RegValue |= 0x01;
+-	write_reg(info, CTL, RegValue);
+-
+-	/* preamble not supported ! */
+-
+-	tx_set_idle(info);
+-	tx_stop(info);
+-	rx_stop(info);
+-
+-	set_rate(info, info->params.clock_speed);
+-
+-	if (info->params.loopback)
+-		enable_loopback(info,1);
+-}
+-
+-/* Set the transmit HDLC idle mode
+- */
+-static void tx_set_idle(SLMP_INFO *info)
+-{
+-	unsigned char RegValue = 0xff;
+-
+-	/* Map API idle mode to SCA register bits */
+-	switch(info->idle_mode) {
+-	case HDLC_TXIDLE_FLAGS:			RegValue = 0x7e; break;
+-	case HDLC_TXIDLE_ALT_ZEROS_ONES:	RegValue = 0xaa; break;
+-	case HDLC_TXIDLE_ZEROS:			RegValue = 0x00; break;
+-	case HDLC_TXIDLE_ONES:			RegValue = 0xff; break;
+-	case HDLC_TXIDLE_ALT_MARK_SPACE:	RegValue = 0xaa; break;
+-	case HDLC_TXIDLE_SPACE:			RegValue = 0x00; break;
+-	case HDLC_TXIDLE_MARK:			RegValue = 0xff; break;
+-	}
+-
+-	write_reg(info, IDL, RegValue);
+-}
+-
+-/* Query the adapter for the state of the V24 status (input) signals.
+- */
+-static void get_signals(SLMP_INFO *info)
+-{
+-	u16 status = read_reg(info, SR3);
+-	u16 gpstatus = read_status_reg(info);
+-	u16 testbit;
+-
+-	/* clear all serial signals except RTS and DTR */
+-	info->serial_signals &= SerialSignal_RTS | SerialSignal_DTR;
+-
+-	/* set serial signal bits to reflect MISR */
+-
+-	if (!(status & BIT3))
+-		info->serial_signals |= SerialSignal_CTS;
+-
+-	if ( !(status & BIT2))
+-		info->serial_signals |= SerialSignal_DCD;
+-
+-	testbit = BIT1 << (info->port_num * 2); // Port 0..3 RI is GPDATA<1,3,5,7>
+-	if (!(gpstatus & testbit))
+-		info->serial_signals |= SerialSignal_RI;
+-
+-	testbit = BIT0 << (info->port_num * 2); // Port 0..3 DSR is GPDATA<0,2,4,6>
+-	if (!(gpstatus & testbit))
+-		info->serial_signals |= SerialSignal_DSR;
+-}
+-
+-/* Set the state of RTS and DTR based on contents of
+- * serial_signals member of device context.
+- */
+-static void set_signals(SLMP_INFO *info)
+-{
+-	unsigned char RegValue;
+-	u16 EnableBit;
+-
+-	RegValue = read_reg(info, CTL);
+-	if (info->serial_signals & SerialSignal_RTS)
+-		RegValue &= ~BIT0;
+-	else
+-		RegValue |= BIT0;
+-	write_reg(info, CTL, RegValue);
+-
+-	// Port 0..3 DTR is ctrl reg <1,3,5,7>
+-	EnableBit = BIT1 << (info->port_num*2);
+-	if (info->serial_signals & SerialSignal_DTR)
+-		info->port_array[0]->ctrlreg_value &= ~EnableBit;
+-	else
+-		info->port_array[0]->ctrlreg_value |= EnableBit;
+-	write_control_reg(info);
+-}
+-
+-/*******************/
+-/* DMA Buffer Code */
+-/*******************/
+-
+-/* Set the count for all receive buffers to SCABUFSIZE
+- * and set the current buffer to the first buffer. This effectively
+- * makes all buffers free and discards any data in buffers.
+- */
+-static void rx_reset_buffers(SLMP_INFO *info)
+-{
+-	rx_free_frame_buffers(info, 0, info->rx_buf_count - 1);
+-}
+-
+-/* Free the buffers used by a received frame
+- *
+- * info   pointer to device instance data
+- * first  index of 1st receive buffer of frame
+- * last   index of last receive buffer of frame
+- */
+-static void rx_free_frame_buffers(SLMP_INFO *info, unsigned int first, unsigned int last)
+-{
+-	bool done = false;
+-
+-	while(!done) {
+-	        /* reset current buffer for reuse */
+-		info->rx_buf_list[first].status = 0xff;
+-
+-	        if (first == last) {
+-	                done = true;
+-	                /* set new last rx descriptor address */
+-			write_reg16(info, RXDMA + EDA, info->rx_buf_list_ex[first].phys_entry);
+-	        }
+-
+-	        first++;
+-		if (first == info->rx_buf_count)
+-			first = 0;
+-	}
+-
+-	/* set current buffer to next buffer after last buffer of frame */
+-	info->current_rx_buf = first;
+-}
+-
+-/* Return a received frame from the receive DMA buffers.
+- * Only frames received without errors are returned.
+- *
+- * Return Value:	true if frame returned, otherwise false
+- */
+-static bool rx_get_frame(SLMP_INFO *info)
+-{
+-	unsigned int StartIndex, EndIndex;	/* index of 1st and last buffers of Rx frame */
+-	unsigned short status;
+-	unsigned int framesize = 0;
+-	bool ReturnCode = false;
+-	unsigned long flags;
+-	struct tty_struct *tty = info->port.tty;
+-	unsigned char addr_field = 0xff;
+-   	SCADESC *desc;
+-	SCADESC_EX *desc_ex;
+-
+-CheckAgain:
+-	/* assume no frame returned, set zero length */
+-	framesize = 0;
+-	addr_field = 0xff;
+-
+-	/*
+-	 * current_rx_buf points to the 1st buffer of the next available
+-	 * receive frame. To find the last buffer of the frame look for
+-	 * a non-zero status field in the buffer entries. (The status
+-	 * field is set by the 16C32 after completing a receive frame.
+-	 */
+-	StartIndex = EndIndex = info->current_rx_buf;
+-
+-	for ( ;; ) {
+-		desc = &info->rx_buf_list[EndIndex];
+-		desc_ex = &info->rx_buf_list_ex[EndIndex];
+-
+-		if (desc->status == 0xff)
+-			goto Cleanup;	/* current desc still in use, no frames available */
+-
+-		if (framesize == 0 && info->params.addr_filter != 0xff)
+-			addr_field = desc_ex->virt_addr[0];
+-
+-		framesize += desc->length;
+-
+-		/* Status != 0 means last buffer of frame */
+-		if (desc->status)
+-			break;
+-
+-		EndIndex++;
+-		if (EndIndex == info->rx_buf_count)
+-			EndIndex = 0;
+-
+-		if (EndIndex == info->current_rx_buf) {
+-			/* all buffers have been 'used' but none mark	   */
+-			/* the end of a frame. Reset buffers and receiver. */
+-			if ( info->rx_enabled ){
+-				spin_lock_irqsave(&info->lock,flags);
+-				rx_start(info);
+-				spin_unlock_irqrestore(&info->lock,flags);
+-			}
+-			goto Cleanup;
+-		}
+-
+-	}
+-
+-	/* check status of receive frame */
+-
+-	/* frame status is byte stored after frame data
+-	 *
+-	 * 7 EOM (end of msg), 1 = last buffer of frame
+-	 * 6 Short Frame, 1 = short frame
+-	 * 5 Abort, 1 = frame aborted
+-	 * 4 Residue, 1 = last byte is partial
+-	 * 3 Overrun, 1 = overrun occurred during frame reception
+-	 * 2 CRC,     1 = CRC error detected
+-	 *
+-	 */
+-	status = desc->status;
+-
+-	/* ignore CRC bit if not using CRC (bit is undefined) */
+-	/* Note:CRC is not save to data buffer */
+-	if (info->params.crc_type == HDLC_CRC_NONE)
+-		status &= ~BIT2;
+-
+-	if (framesize == 0 ||
+-		 (addr_field != 0xff && addr_field != info->params.addr_filter)) {
+-		/* discard 0 byte frames, this seems to occur sometime
+-		 * when remote is idling flags.
+-		 */
+-		rx_free_frame_buffers(info, StartIndex, EndIndex);
+-		goto CheckAgain;
+-	}
+-
+-	if (framesize < 2)
+-		status |= BIT6;
+-
+-	if (status & (BIT6+BIT5+BIT3+BIT2)) {
+-		/* received frame has errors,
+-		 * update counts and mark frame size as 0
+-		 */
+-		if (status & BIT6)
+-			info->icount.rxshort++;
+-		else if (status & BIT5)
+-			info->icount.rxabort++;
+-		else if (status & BIT3)
+-			info->icount.rxover++;
+-		else
+-			info->icount.rxcrc++;
+-
+-		framesize = 0;
+-#if SYNCLINK_GENERIC_HDLC
+-		{
+-			info->netdev->stats.rx_errors++;
+-			info->netdev->stats.rx_frame_errors++;
+-		}
+-#endif
+-	}
+-
+-	if ( debug_level >= DEBUG_LEVEL_BH )
+-		printk("%s(%d):%s rx_get_frame() status=%04X size=%d\n",
+-			__FILE__,__LINE__,info->device_name,status,framesize);
+-
+-	if ( debug_level >= DEBUG_LEVEL_DATA )
+-		trace_block(info,info->rx_buf_list_ex[StartIndex].virt_addr,
+-			min_t(unsigned int, framesize, SCABUFSIZE), 0);
+-
+-	if (framesize) {
+-		if (framesize > info->max_frame_size)
+-			info->icount.rxlong++;
+-		else {
+-			/* copy dma buffer(s) to contiguous intermediate buffer */
+-			int copy_count = framesize;
+-			int index = StartIndex;
+-			unsigned char *ptmp = info->tmp_rx_buf;
+-			info->tmp_rx_buf_count = framesize;
+-
+-			info->icount.rxok++;
+-
+-			while(copy_count) {
+-				int partial_count = min(copy_count,SCABUFSIZE);
+-				memcpy( ptmp,
+-					info->rx_buf_list_ex[index].virt_addr,
+-					partial_count );
+-				ptmp += partial_count;
+-				copy_count -= partial_count;
+-
+-				if ( ++index == info->rx_buf_count )
+-					index = 0;
+-			}
+-
+-#if SYNCLINK_GENERIC_HDLC
+-			if (info->netcount)
+-				hdlcdev_rx(info,info->tmp_rx_buf,framesize);
+-			else
+-#endif
+-				ldisc_receive_buf(tty,info->tmp_rx_buf,
+-						  info->flag_buf, framesize);
+-		}
+-	}
+-	/* Free the buffers used by this frame. */
+-	rx_free_frame_buffers( info, StartIndex, EndIndex );
+-
+-	ReturnCode = true;
+-
+-Cleanup:
+-	if ( info->rx_enabled && info->rx_overflow ) {
+-		/* Receiver is enabled, but needs to restarted due to
+-		 * rx buffer overflow. If buffers are empty, restart receiver.
+-		 */
+-		if (info->rx_buf_list[EndIndex].status == 0xff) {
+-			spin_lock_irqsave(&info->lock,flags);
+-			rx_start(info);
+-			spin_unlock_irqrestore(&info->lock,flags);
+-		}
+-	}
+-
+-	return ReturnCode;
+-}
+-
+-/* load the transmit DMA buffer with data
+- */
+-static void tx_load_dma_buffer(SLMP_INFO *info, const char *buf, unsigned int count)
+-{
+-	unsigned short copy_count;
+-	unsigned int i = 0;
+-	SCADESC *desc;
+-	SCADESC_EX *desc_ex;
+-
+-	if ( debug_level >= DEBUG_LEVEL_DATA )
+-		trace_block(info, buf, min_t(unsigned int, count, SCABUFSIZE), 1);
+-
+-	/* Copy source buffer to one or more DMA buffers, starting with
+-	 * the first transmit dma buffer.
+-	 */
+-	for(i=0;;)
+-	{
+-		copy_count = min_t(unsigned int, count, SCABUFSIZE);
+-
+-		desc = &info->tx_buf_list[i];
+-		desc_ex = &info->tx_buf_list_ex[i];
+-
+-		load_pci_memory(info, desc_ex->virt_addr,buf,copy_count);
+-
+-		desc->length = copy_count;
+-		desc->status = 0;
+-
+-		buf += copy_count;
+-		count -= copy_count;
+-
+-		if (!count)
+-			break;
+-
+-		i++;
+-		if (i >= info->tx_buf_count)
+-			i = 0;
+-	}
+-
+-	info->tx_buf_list[i].status = 0x81;	/* set EOM and EOT status */
+-	info->last_tx_buf = ++i;
+-}
+-
+-static bool register_test(SLMP_INFO *info)
+-{
+-	static unsigned char testval[] = {0x00, 0xff, 0xaa, 0x55, 0x69, 0x96};
+-	static unsigned int count = ARRAY_SIZE(testval);
+-	unsigned int i;
+-	bool rc = true;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	reset_port(info);
+-
+-	/* assume failure */
+-	info->init_error = DiagStatus_AddressFailure;
+-
+-	/* Write bit patterns to various registers but do it out of */
+-	/* sync, then read back and verify values. */
+-
+-	for (i = 0 ; i < count ; i++) {
+-		write_reg(info, TMC, testval[i]);
+-		write_reg(info, IDL, testval[(i+1)%count]);
+-		write_reg(info, SA0, testval[(i+2)%count]);
+-		write_reg(info, SA1, testval[(i+3)%count]);
+-
+-		if ( (read_reg(info, TMC) != testval[i]) ||
+-			  (read_reg(info, IDL) != testval[(i+1)%count]) ||
+-			  (read_reg(info, SA0) != testval[(i+2)%count]) ||
+-			  (read_reg(info, SA1) != testval[(i+3)%count]) )
+-		{
+-			rc = false;
+-			break;
+-		}
+-	}
+-
+-	reset_port(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	return rc;
+-}
+-
+-static bool irq_test(SLMP_INFO *info)
+-{
+-	unsigned long timeout;
+-	unsigned long flags;
+-
+-	unsigned char timer = (info->port_num & 1) ? TIMER2 : TIMER0;
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	reset_port(info);
+-
+-	/* assume failure */
+-	info->init_error = DiagStatus_IrqFailure;
+-	info->irq_occurred = false;
+-
+-	/* setup timer0 on SCA0 to interrupt */
+-
+-	/* IER2<7..4> = timer<3..0> interrupt enables (1=enabled) */
+-	write_reg(info, IER2, (unsigned char)((info->port_num & 1) ? BIT6 : BIT4));
+-
+-	write_reg(info, (unsigned char)(timer + TEPR), 0);	/* timer expand prescale */
+-	write_reg16(info, (unsigned char)(timer + TCONR), 1);	/* timer constant */
+-
+-
+-	/* TMCS, Timer Control/Status Register
+-	 *
+-	 * 07      CMF, Compare match flag (read only) 1=match
+-	 * 06      ECMI, CMF Interrupt Enable: 1=enabled
+-	 * 05      Reserved, must be 0
+-	 * 04      TME, Timer Enable
+-	 * 03..00  Reserved, must be 0
+-	 *
+-	 * 0101 0000
+-	 */
+-	write_reg(info, (unsigned char)(timer + TMCS), 0x50);
+-
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	timeout=100;
+-	while( timeout-- && !info->irq_occurred ) {
+-		msleep_interruptible(10);
+-	}
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	reset_port(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	return info->irq_occurred;
+-}
+-
+-/* initialize individual SCA device (2 ports)
+- */
+-static bool sca_init(SLMP_INFO *info)
+-{
+-	/* set wait controller to single mem partition (low), no wait states */
+-	write_reg(info, PABR0, 0);	/* wait controller addr boundary 0 */
+-	write_reg(info, PABR1, 0);	/* wait controller addr boundary 1 */
+-	write_reg(info, WCRL, 0);	/* wait controller low range */
+-	write_reg(info, WCRM, 0);	/* wait controller mid range */
+-	write_reg(info, WCRH, 0);	/* wait controller high range */
+-
+-	/* DPCR, DMA Priority Control
+-	 *
+-	 * 07..05  Not used, must be 0
+-	 * 04      BRC, bus release condition: 0=all transfers complete
+-	 * 03      CCC, channel change condition: 0=every cycle
+-	 * 02..00  PR<2..0>, priority 100=round robin
+-	 *
+-	 * 00000100 = 0x04
+-	 */
+-	write_reg(info, DPCR, dma_priority);
+-
+-	/* DMA Master Enable, BIT7: 1=enable all channels */
+-	write_reg(info, DMER, 0x80);
+-
+-	/* enable all interrupt classes */
+-	write_reg(info, IER0, 0xff);	/* TxRDY,RxRDY,TxINT,RxINT (ports 0-1) */
+-	write_reg(info, IER1, 0xff);	/* DMIB,DMIA (channels 0-3) */
+-	write_reg(info, IER2, 0xf0);	/* TIRQ (timers 0-3) */
+-
+-	/* ITCR, interrupt control register
+-	 * 07      IPC, interrupt priority, 0=MSCI->DMA
+-	 * 06..05  IAK<1..0>, Acknowledge cycle, 00=non-ack cycle
+-	 * 04      VOS, Vector Output, 0=unmodified vector
+-	 * 03..00  Reserved, must be 0
+-	 */
+-	write_reg(info, ITCR, 0);
+-
+-	return true;
+-}
+-
+-/* initialize adapter hardware
+- */
+-static bool init_adapter(SLMP_INFO *info)
+-{
+-	int i;
+-
+-	/* Set BIT30 of Local Control Reg 0x50 to reset SCA */
+-	volatile u32 *MiscCtrl = (u32 *)(info->lcr_base + 0x50);
+-	u32 __always_unused readval;
+-
+-	info->misc_ctrl_value |= BIT30;
+-	*MiscCtrl = info->misc_ctrl_value;
+-
+-	/*
+-	 * Force at least 170ns delay before clearing
+-	 * reset bit. Each read from LCR takes at least
+-	 * 30ns so 10 times for 300ns to be safe.
+-	 */
+-	for(i=0;i<10;i++)
+-		readval = *MiscCtrl;
+-
+-	info->misc_ctrl_value &= ~BIT30;
+-	*MiscCtrl = info->misc_ctrl_value;
+-
+-	/* init control reg (all DTRs off, all clksel=input) */
+-	info->ctrlreg_value = 0xaa;
+-	write_control_reg(info);
+-
+-	{
+-		volatile u32 *LCR1BRDR = (u32 *)(info->lcr_base + 0x2c);
+-		lcr1_brdr_value &= ~(BIT5 + BIT4 + BIT3);
+-
+-		switch(read_ahead_count)
+-		{
+-		case 16:
+-			lcr1_brdr_value |= BIT5 + BIT4 + BIT3;
+-			break;
+-		case 8:
+-			lcr1_brdr_value |= BIT5 + BIT4;
+-			break;
+-		case 4:
+-			lcr1_brdr_value |= BIT5 + BIT3;
+-			break;
+-		case 0:
+-			lcr1_brdr_value |= BIT5;
+-			break;
+-		}
+-
+-		*LCR1BRDR = lcr1_brdr_value;
+-		*MiscCtrl = misc_ctrl_value;
+-	}
+-
+-	sca_init(info->port_array[0]);
+-	sca_init(info->port_array[2]);
+-
+-	return true;
+-}
+-
+-/* Loopback an HDLC frame to test the hardware
+- * interrupt and DMA functions.
+- */
+-static bool loopback_test(SLMP_INFO *info)
+-{
+-#define TESTFRAMESIZE 20
+-
+-	unsigned long timeout;
+-	u16 count = TESTFRAMESIZE;
+-	unsigned char buf[TESTFRAMESIZE];
+-	bool rc = false;
+-	unsigned long flags;
+-
+-	struct tty_struct *oldtty = info->port.tty;
+-	u32 speed = info->params.clock_speed;
+-
+-	info->params.clock_speed = 3686400;
+-	info->port.tty = NULL;
+-
+-	/* assume failure */
+-	info->init_error = DiagStatus_DmaFailure;
+-
+-	/* build and send transmit frame */
+-	for (count = 0; count < TESTFRAMESIZE;++count)
+-		buf[count] = (unsigned char)count;
+-
+-	memset(info->tmp_rx_buf,0,TESTFRAMESIZE);
+-
+-	/* program hardware for HDLC and enabled receiver */
+-	spin_lock_irqsave(&info->lock,flags);
+-	hdlc_mode(info);
+-	enable_loopback(info,1);
+-       	rx_start(info);
+-	info->tx_count = count;
+-	tx_load_dma_buffer(info,buf,count);
+-	tx_start(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	/* wait for receive complete */
+-	/* Set a timeout for waiting for interrupt. */
+-	for ( timeout = 100; timeout; --timeout ) {
+-		msleep_interruptible(10);
+-
+-		if (rx_get_frame(info)) {
+-			rc = true;
+-			break;
+-		}
+-	}
+-
+-	/* verify received frame length and contents */
+-	if (rc &&
+-	    ( info->tmp_rx_buf_count != count ||
+-	      memcmp(buf, info->tmp_rx_buf,count))) {
+-		rc = false;
+-	}
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	reset_adapter(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	info->params.clock_speed = speed;
+-	info->port.tty = oldtty;
+-
+-	return rc;
+-}
+-
+-/* Perform diagnostics on hardware
+- */
+-static int adapter_test( SLMP_INFO *info )
+-{
+-	unsigned long flags;
+-	if ( debug_level >= DEBUG_LEVEL_INFO )
+-		printk( "%s(%d):Testing device %s\n",
+-			__FILE__,__LINE__,info->device_name );
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	init_adapter(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	info->port_array[0]->port_count = 0;
+-
+-	if ( register_test(info->port_array[0]) &&
+-		register_test(info->port_array[1])) {
+-
+-		info->port_array[0]->port_count = 2;
+-
+-		if ( register_test(info->port_array[2]) &&
+-			register_test(info->port_array[3]) )
+-			info->port_array[0]->port_count += 2;
+-	}
+-	else {
+-		printk( "%s(%d):Register test failure for device %s Addr=%08lX\n",
+-			__FILE__,__LINE__,info->device_name, (unsigned long)(info->phys_sca_base));
+-		return -ENODEV;
+-	}
+-
+-	if ( !irq_test(info->port_array[0]) ||
+-		!irq_test(info->port_array[1]) ||
+-		 (info->port_count == 4 && !irq_test(info->port_array[2])) ||
+-		 (info->port_count == 4 && !irq_test(info->port_array[3]))) {
+-		printk( "%s(%d):Interrupt test failure for device %s IRQ=%d\n",
+-			__FILE__,__LINE__,info->device_name, (unsigned short)(info->irq_level) );
+-		return -ENODEV;
+-	}
+-
+-	if (!loopback_test(info->port_array[0]) ||
+-		!loopback_test(info->port_array[1]) ||
+-		 (info->port_count == 4 && !loopback_test(info->port_array[2])) ||
+-		 (info->port_count == 4 && !loopback_test(info->port_array[3]))) {
+-		printk( "%s(%d):DMA test failure for device %s\n",
+-			__FILE__,__LINE__,info->device_name);
+-		return -ENODEV;
+-	}
+-
+-	if ( debug_level >= DEBUG_LEVEL_INFO )
+-		printk( "%s(%d):device %s passed diagnostics\n",
+-			__FILE__,__LINE__,info->device_name );
+-
+-	info->port_array[0]->init_error = 0;
+-	info->port_array[1]->init_error = 0;
+-	if ( info->port_count > 2 ) {
+-		info->port_array[2]->init_error = 0;
+-		info->port_array[3]->init_error = 0;
+-	}
+-
+-	return 0;
+-}
+-
+-/* Test the shared memory on a PCI adapter.
+- */
+-static bool memory_test(SLMP_INFO *info)
+-{
+-	static unsigned long testval[] = { 0x0, 0x55555555, 0xaaaaaaaa,
+-		0x66666666, 0x99999999, 0xffffffff, 0x12345678 };
+-	unsigned long count = ARRAY_SIZE(testval);
+-	unsigned long i;
+-	unsigned long limit = SCA_MEM_SIZE/sizeof(unsigned long);
+-	unsigned long * addr = (unsigned long *)info->memory_base;
+-
+-	/* Test data lines with test pattern at one location. */
+-
+-	for ( i = 0 ; i < count ; i++ ) {
+-		*addr = testval[i];
+-		if ( *addr != testval[i] )
+-			return false;
+-	}
+-
+-	/* Test address lines with incrementing pattern over */
+-	/* entire address range. */
+-
+-	for ( i = 0 ; i < limit ; i++ ) {
+-		*addr = i * 4;
+-		addr++;
+-	}
+-
+-	addr = (unsigned long *)info->memory_base;
+-
+-	for ( i = 0 ; i < limit ; i++ ) {
+-		if ( *addr != i * 4 )
+-			return false;
+-		addr++;
+-	}
+-
+-	memset( info->memory_base, 0, SCA_MEM_SIZE );
+-	return true;
+-}
+-
+-/* Load data into PCI adapter shared memory.
+- *
+- * The PCI9050 releases control of the local bus
+- * after completing the current read or write operation.
+- *
+- * While the PCI9050 write FIFO not empty, the
+- * PCI9050 treats all of the writes as a single transaction
+- * and does not release the bus. This causes DMA latency problems
+- * at high speeds when copying large data blocks to the shared memory.
+- *
+- * This function breaks a write into multiple transations by
+- * interleaving a read which flushes the write FIFO and 'completes'
+- * the write transation. This allows any pending DMA request to gain control
+- * of the local bus in a timely fasion.
+- */
+-static void load_pci_memory(SLMP_INFO *info, char* dest, const char* src, unsigned short count)
+-{
+-	/* A load interval of 16 allows for 4 32-bit writes at */
+-	/* 136ns each for a maximum latency of 542ns on the local bus.*/
+-
+-	unsigned short interval = count / sca_pci_load_interval;
+-	unsigned short i;
+-
+-	for ( i = 0 ; i < interval ; i++ )
+-	{
+-		memcpy(dest, src, sca_pci_load_interval);
+-		read_status_reg(info);
+-		dest += sca_pci_load_interval;
+-		src += sca_pci_load_interval;
+-	}
+-
+-	memcpy(dest, src, count % sca_pci_load_interval);
+-}
+-
+-static void trace_block(SLMP_INFO *info,const char* data, int count, int xmit)
+-{
+-	int i;
+-	int linecount;
+-	if (xmit)
+-		printk("%s tx data:\n",info->device_name);
+-	else
+-		printk("%s rx data:\n",info->device_name);
+-
+-	while(count) {
+-		if (count > 16)
+-			linecount = 16;
+-		else
+-			linecount = count;
+-
+-		for(i=0;i<linecount;i++)
+-			printk("%02X ",(unsigned char)data[i]);
+-		for(;i<17;i++)
+-			printk("   ");
+-		for(i=0;i<linecount;i++) {
+-			if (data[i]>=040 && data[i]<=0176)
+-				printk("%c",data[i]);
+-			else
+-				printk(".");
+-		}
+-		printk("\n");
+-
+-		data  += linecount;
+-		count -= linecount;
+-	}
+-}	/* end of trace_block() */
+-
+-/* called when HDLC frame times out
+- * update stats and do tx completion processing
+- */
+-static void tx_timeout(struct timer_list *t)
+-{
+-	SLMP_INFO *info = from_timer(info, t, tx_timer);
+-	unsigned long flags;
+-
+-	if ( debug_level >= DEBUG_LEVEL_INFO )
+-		printk( "%s(%d):%s tx_timeout()\n",
+-			__FILE__,__LINE__,info->device_name);
+-	if(info->tx_active && info->params.mode == MGSL_MODE_HDLC) {
+-		info->icount.txtimeout++;
+-	}
+-	spin_lock_irqsave(&info->lock,flags);
+-	info->tx_active = false;
+-	info->tx_count = info->tx_put = info->tx_get = 0;
+-
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-#if SYNCLINK_GENERIC_HDLC
+-	if (info->netcount)
+-		hdlcdev_tx_done(info);
+-	else
+-#endif
+-		bh_transmit(info);
+-}
+-
+-/* called to periodically check the DSR/RI modem signal input status
+- */
+-static void status_timeout(struct timer_list *t)
+-{
+-	u16 status = 0;
+-	SLMP_INFO *info = from_timer(info, t, status_timer);
+-	unsigned long flags;
+-	unsigned char delta;
+-
+-
+-	spin_lock_irqsave(&info->lock,flags);
+-	get_signals(info);
+-	spin_unlock_irqrestore(&info->lock,flags);
+-
+-	/* check for DSR/RI state change */
+-
+-	delta = info->old_signals ^ info->serial_signals;
+-	info->old_signals = info->serial_signals;
+-
+-	if (delta & SerialSignal_DSR)
+-		status |= MISCSTATUS_DSR_LATCHED|(info->serial_signals&SerialSignal_DSR);
+-
+-	if (delta & SerialSignal_RI)
+-		status |= MISCSTATUS_RI_LATCHED|(info->serial_signals&SerialSignal_RI);
+-
+-	if (delta & SerialSignal_DCD)
+-		status |= MISCSTATUS_DCD_LATCHED|(info->serial_signals&SerialSignal_DCD);
+-
+-	if (delta & SerialSignal_CTS)
+-		status |= MISCSTATUS_CTS_LATCHED|(info->serial_signals&SerialSignal_CTS);
+-
+-	if (status)
+-		isr_io_pin(info,status);
+-
+-	mod_timer(&info->status_timer, jiffies + msecs_to_jiffies(10));
+-}
+-
+-
+-/* Register Access Routines -
+- * All registers are memory mapped
+- */
+-#define CALC_REGADDR() \
+-	unsigned char * RegAddr = (unsigned char*)(info->sca_base + Addr); \
+-	if (info->port_num > 1) \
+-		RegAddr += 256;	    		/* port 0-1 SCA0, 2-3 SCA1 */ \
+-	if ( info->port_num & 1) { \
+-		if (Addr > 0x7f) \
+-			RegAddr += 0x40;	/* DMA access */ \
+-		else if (Addr > 0x1f && Addr < 0x60) \
+-			RegAddr += 0x20;	/* MSCI access */ \
+-	}
+-
+-
+-static unsigned char read_reg(SLMP_INFO * info, unsigned char Addr)
+-{
+-	CALC_REGADDR();
+-	return *RegAddr;
+-}
+-static void write_reg(SLMP_INFO * info, unsigned char Addr, unsigned char Value)
+-{
+-	CALC_REGADDR();
+-	*RegAddr = Value;
+-}
+-
+-static u16 read_reg16(SLMP_INFO * info, unsigned char Addr)
+-{
+-	CALC_REGADDR();
+-	return *((u16 *)RegAddr);
+-}
+-
+-static void write_reg16(SLMP_INFO * info, unsigned char Addr, u16 Value)
+-{
+-	CALC_REGADDR();
+-	*((u16 *)RegAddr) = Value;
+-}
+-
+-static unsigned char read_status_reg(SLMP_INFO * info)
+-{
+-	unsigned char *RegAddr = (unsigned char *)info->statctrl_base;
+-	return *RegAddr;
+-}
+-
+-static void write_control_reg(SLMP_INFO * info)
+-{
+-	unsigned char *RegAddr = (unsigned char *)info->statctrl_base;
+-	*RegAddr = info->port_array[0]->ctrlreg_value;
+-}
+-
+-
+-static int synclinkmp_init_one (struct pci_dev *dev,
+-					  const struct pci_device_id *ent)
+-{
+-	if (pci_enable_device(dev)) {
+-		printk("error enabling pci device %p\n", dev);
+-		return -EIO;
+-	}
+-	return device_init( ++synclinkmp_adapter_count, dev );
+-}
+-
+-static void synclinkmp_remove_one (struct pci_dev *dev)
+-{
+-}
 -- 
 2.25.1
 
