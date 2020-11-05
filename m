@@ -1,81 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505082A8005
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 14:52:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6DFB2A8086
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 15:14:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CRlM11n6jzDqyP
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 00:52:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CRlrF2pd5zDqxd
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 01:14:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kaod.org (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=clg@kaod.org;
- receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.8.52; helo=eur04-vi1-obe.outbound.protection.outlook.com;
+ envelope-from=laurentiu.tudor@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=nTACnZD8; 
+ dkim-atps=neutral
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com
+ (mail-eopbgr80052.outbound.protection.outlook.com [40.107.8.52])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CRlGC4MmnzDqwy
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 00:48:03 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0A5DljqF176172; Thu, 5 Nov 2020 08:47:53 -0500
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34m5ftekvw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Nov 2020 08:47:52 -0500
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0A5DiBvH006410;
- Thu, 5 Nov 2020 13:47:26 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04fra.de.ibm.com with ESMTP id 34h0f6tt1m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Nov 2020 13:47:26 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0A5DlNMp64487700
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Nov 2020 13:47:23 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CDF76A4054;
- Thu,  5 Nov 2020 13:47:23 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7CFFBA405B;
- Thu,  5 Nov 2020 13:47:23 +0000 (GMT)
-Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Thu,  5 Nov 2020 13:47:23 +0000 (GMT)
-Received: from yukon.ibmuc.com (sig-9-145-56-119.uk.ibm.com [9.145.56.119])
- by smtp.tlslab.ibm.com (Postfix) with ESMTP id 3776422006B;
- Thu,  5 Nov 2020 14:47:22 +0100 (CET)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: Paul Mackerras <paulus@samba.org>
-Subject: [PATCH] KVM: PPC: Book3S HV: XIVE: Fix possible oops when accessing
- ESB page
-Date: Thu,  5 Nov 2020 14:47:13 +0100
-Message-Id: <20201105134713.656160-1-clg@kaod.org>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CRlnS17pPzDqxD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 01:11:37 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dn+y+u+2RYZXovE1VgnXAvq0UYleZAWwBI5A4/rUbbrwtek+NW/JYdQSa/P3Bdx+T4/I6BxYs0yrspefnVoFdCL8XjCG7S8v/8fAwD8KVAoV8qrtmWMIYItiEqlJ2H+OiZ0KnBcYJISbknPwv6P/KG2vf6DwJoqmiy4P3c43pPuGahhOxnn4lSdi9sg8+M/KkgJVevR05CkbKtIj53J3hs+/o9kSLgv/iFE8oA126NkPgyQSrUzppAqdpRLqwI83oPwmcgyLEH5TxDp7K7Yd6H+8svzHe9YRlFYwo4ErVI1CEir8+zqDLOTmQ9+95uY0U3ADfHDZweoGwHQekdwJoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aan4qCPugIs9uyQoe3iXNY5LscdnEQPrUHQUaD//uis=;
+ b=T6i6Um1hXPnN1qi5m0nsFKLYefAiCAoVgFDWKb7m5M6uD7WPzgAWcNK4GuFMcZlrYL9Karav2Aljhq2W6sHNPLAXofUsQ7yv87LkDI+Gk1UEFREbzcJUSVpxdTkJgLT9/An/F9dymvj+NKfDWphPUVxwni60t2jNdBaBYrqqzhenlaKK8ndGG7KcbLyK4C5zhbOV8axNP2ppJfq54qclHiNlTcYS9GgwvR4yb5/526zJFZKEiNwHNuU8IksM/ENxVB5lQw1NX+WylTmqTRm82fwRNnyJ+M+43XPcHtz/Ss50BrcJ6rsNc61EQ+i39Xm2UFBh2ojue3xZH2H/t5vWdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aan4qCPugIs9uyQoe3iXNY5LscdnEQPrUHQUaD//uis=;
+ b=nTACnZD8VaC1uDL3kjFV9deQzD2LuPFKt3MVY+1IQYFFw1yZUJjhFs+ZJEp9x2X5DzegE3o1wCu5eolB9iCxr+R+6ZZECb54mg/YjeZnbJN7QFjI2D4wt+IyU+GXES/53/q/WwhRJqcaB+U5OCZLp18jVfIWlK3clWX7PqRs9sc=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=nxp.com;
+Received: from VI1PR0402MB3405.eurprd04.prod.outlook.com (2603:10a6:803:3::26)
+ by VI1PR0402MB3581.eurprd04.prod.outlook.com (2603:10a6:803:3::32)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.29; Thu, 5 Nov
+ 2020 14:11:31 +0000
+Received: from VI1PR0402MB3405.eurprd04.prod.outlook.com
+ ([fe80::f557:4dcb:4d4d:57f3]) by VI1PR0402MB3405.eurprd04.prod.outlook.com
+ ([fe80::f557:4dcb:4d4d:57f3%2]) with mapi id 15.20.3499.032; Thu, 5 Nov 2020
+ 14:11:30 +0000
+From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+To: robh+dt@kernel.org, leoyang.li@nxp.com, corbet@lwn.net,
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: misc: convert fsl,
+ dpaa2-console from txt to YAML
+Date: Thu,  5 Nov 2020 16:11:13 +0200
+Message-Id: <20201105141114.18161-1-laurentiu.tudor@nxp.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain; charset="us-ascii"
+X-Originating-IP: [83.217.231.2]
+X-ClientProxiedBy: AM0PR01CA0156.eurprd01.prod.exchangelabs.com
+ (2603:10a6:208:aa::25) To VI1PR0402MB3405.eurprd04.prod.outlook.com
+ (2603:10a6:803:3::26)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-05_07:2020-11-05,
- 2020-11-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- mlxscore=0 phishscore=0 suspectscore=0 clxscore=1034 bulkscore=0
- priorityscore=1501 mlxlogscore=648 adultscore=0 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011050088
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from fsr-ub1864-101.ea.freescale.net (83.217.231.2) by
+ AM0PR01CA0156.eurprd01.prod.exchangelabs.com (2603:10a6:208:aa::25) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.21 via Frontend
+ Transport; Thu, 5 Nov 2020 14:11:29 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 0143a702-3134-4aa9-5bea-08d88194b182
+X-MS-TrafficTypeDiagnostic: VI1PR0402MB3581:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <VI1PR0402MB3581FBFB38EFB02279F6F609ECEE0@VI1PR0402MB3581.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: LdHPrrqMpxVSjtn5oiTfEpJuOx4BHpkzDlIlJiE2vZsG6akY/R8HzgQAcWBu3b10yjiV/IfxeCTv6/9HwwTMu33hLTGOuPzHI4J0v6vfCwglxE3Vs3RsUyYn1VnvBwqOTJwTVBf7+SPl412V6SbhG+yl1Awdyv2jnQwfsrEL8zVmdhwPUV4uJCkjKfXt5z2izJlVSX8VwtR42RAYJfyqBruOEJBr/RgWc5HP3Hs7CmZMIvo8f4klQI2zgwj4JeK+D+aObNWZu9ApduF4IfRhreZMxWFRVyQHg+Eki8lMxLXDySgHFaK15k5Mo9UYirL5K7I/50xqR2sYxCV3SbEPteeEpeViLzQrHa6KHYh0G4A7lQyPPVGHXQg+F+d9Y7TWlDTV9RWC+lB5QneiL29liA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI1PR0402MB3405.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(396003)(366004)(136003)(376002)(346002)(39860400002)(52116002)(2616005)(6506007)(16526019)(26005)(8676002)(6486002)(186003)(478600001)(966005)(8936002)(956004)(83380400001)(6512007)(2906002)(4326008)(66556008)(5660300002)(7416002)(44832011)(1076003)(86362001)(54906003)(66476007)(316002)(66946007)(36756003)(6666004);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: N8rQQQe3y/UYhdWN2sdPm4UsFlkVdMKWEw9Pq/nEU2UFqO0yOW1vAOtBKAIF2jYaaMtXkKlcJcK7EvEdmtlSCAEhYxlCIg1ziqIiVqU98MoOpFEwT6ffEgi+LpwDGxDSS1Eh+GVggbzUL1pD38H5N4pmQWGw2JBbeJzScaGiH6EzAg5ZUdrWcHOyLaVaMfvr1kk2wbeUctQmZcfhDn24qkH80J6maPm+7J0pR61u3jq/IOkJeoHb5smsXsU+vOmO8xO0OB8lHvn8m053W68RnePFV+dOMXZK9wsmPFwLCuwJ7dHgV5C/WaGgKIgihHceTW41rIPRDEVNq9y+hXV386wG9+BXtHCKaeT5ar9cDUQWpd9wCzQ1tsaR316I7IAC3q0BFp/x9UoclRmUKi9yTlpTpSj6Sxqmx9xxbpAPB5VInULW23KnPfF9jCe55xZZF7ru+VxPkuodMi0YDE6tb0nZVstByGlb5MKp8tI2hSIboSfiUN1fjA5WS3VKxS+SBB49+TLMyA6CQStw+kxmjPHDD/aNCYmyiisZ9wUNFMKI3FQ48i6+QiSh2LukraoeXeuH3iv2oVkQQkDUemcebt7+m0eS4MLBgdH3PyT86KASzyHf6e4/upuj+qPu5zyW+w7jmJUuh5SXs6Lh/xuFzg==
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0143a702-3134-4aa9-5bea-08d88194b182
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR0402MB3405.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2020 14:11:30.8787 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uc8z5wtAZLZEYeMle7jLPnBgVNaBlKIXkl5dfjSmL6cEwOn02HcfVL0ZjPZ1SuE6bNc1gaZl+UTf/UhTi4tfAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB3581
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,94 +108,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Gustavo Romero <gromero@linux.ibm.com>,
- Greg Kurz <groug@kaod.org>, kvm-ppc@vger.kernel.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
+Cc: ioana.ciornei@nxp.com, Ionut-robert Aron <ionut-robert.aron@nxp.com>,
+ kuba@kernel.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When accessing the ESB page of a source interrupt, the fault handler
-will retrieve the page address from the XIVE interrupt 'xive_irq_data'
-structure. If the associated KVM XIVE interrupt is not valid, that is
-not allocated at the HW level for some reason, the fault handler will
-dereference a NULL pointer leading to the oops below :
+From: Ionut-robert Aron <ionut-robert.aron@nxp.com>
 
-    WARNING: CPU: 40 PID: 59101 at arch/powerpc/kvm/book3s_xive_native.c:=
-259 xive_native_esb_fault+0xe4/0x240 [kvm]
-    CPU: 40 PID: 59101 Comm: qemu-system-ppc Kdump: loaded Tainted: G    =
-    W        --------- -  - 4.18.0-240.el8.ppc64le #1
-    NIP:  c00800000e949fac LR: c00000000044b164 CTR: c00800000e949ec8
-    REGS: c000001f69617840 TRAP: 0700   Tainted: G        W        ------=
---- -  -  (4.18.0-240.el8.ppc64le)
-    MSR:  9000000000029033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 44044282  XER: =
-00000000
-    CFAR: c00000000044b160 IRQMASK: 0
-    GPR00: c00000000044b164 c000001f69617ac0 c00800000e96e000 c000001f696=
-17c10
-    GPR04: 05faa2b21e000080 0000000000000000 0000000000000005 fffffffffff=
-fffff
-    GPR08: 0000000000000000 0000000000000001 0000000000000000 00000000000=
-00001
-    GPR12: c00800000e949ec8 c000001ffffd3400 0000000000000000 00000000000=
-00000
-    GPR16: 0000000000000000 0000000000000000 0000000000000000 00000000000=
-00000
-    GPR20: 0000000000000000 0000000000000000 c000001f5c065160 c000000001c=
-76f90
-    GPR24: c000001f06f20000 c000001f5c065100 0000000000000008 c000001f0eb=
-98c78
-    GPR28: c000001dcab40000 c000001dcab403d8 c000001f69617c10 00000000000=
-00011
-    NIP [c00800000e949fac] xive_native_esb_fault+0xe4/0x240 [kvm]
-    LR [c00000000044b164] __do_fault+0x64/0x220
-    Call Trace:
-    [c000001f69617ac0] [0000000137a5dc20] 0x137a5dc20 (unreliable)
-    [c000001f69617b50] [c00000000044b164] __do_fault+0x64/0x220
-    [c000001f69617b90] [c000000000453838] do_fault+0x218/0x930
-    [c000001f69617bf0] [c000000000456f50] __handle_mm_fault+0x350/0xdf0
-    [c000001f69617cd0] [c000000000457b1c] handle_mm_fault+0x12c/0x310
-    [c000001f69617d10] [c00000000007ef44] __do_page_fault+0x264/0xbb0
-    [c000001f69617df0] [c00000000007f8c8] do_page_fault+0x38/0xd0
-    [c000001f69617e30] [c00000000000a714] handle_page_fault+0x18/0x38
-    Instruction dump:
-    40c2fff0 7c2004ac 2fa90000 409e0118 73e90001 41820080 e8bd0008 7c2004=
-ac
-    7ca90074 39400000 915c0000 7929d182 <0b090000> 2fa50000 419e0080 e89e=
-0018
-    ---[ end trace 66c6ff034c53f64f ]---
-    xive-kvm: xive_native_esb_fault: accessing invalid ESB page for sourc=
-e 8 !
+Convert fsl,dpaa2-console to YAML in order to automate the
+verification process of dts files.
 
-Fix that by checking the validity of the KVM XIVE interrupt structure.
-
-Reported-by: Greg Kurz <groug@kaod.org>
-Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+Signed-off-by: Ionut-robert Aron <ionut-robert.aron@nxp.com>
+Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 ---
- arch/powerpc/kvm/book3s_xive_native.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../bindings/misc/fsl,dpaa2-console.txt       | 11 ---------
+ .../bindings/misc/fsl,dpaa2-console.yaml      | 23 +++++++++++++++++++
+ 2 files changed, 23 insertions(+), 11 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/misc/fsl,dpaa2-console.txt
+ create mode 100644 Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
 
-diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/boo=
-k3s_xive_native.c
-index d0c2db0e07fa..a59a94f02733 100644
---- a/arch/powerpc/kvm/book3s_xive_native.c
-+++ b/arch/powerpc/kvm/book3s_xive_native.c
-@@ -251,6 +251,13 @@ static vm_fault_t xive_native_esb_fault(struct vm_fa=
-ult *vmf)
- 	}
-=20
- 	state =3D &sb->irq_state[src];
+diff --git a/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.txt b/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.txt
+deleted file mode 100644
+index 1442ba5d2d98..000000000000
+--- a/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.txt
++++ /dev/null
+@@ -1,11 +0,0 @@
+-DPAA2 console support
+-
+-Required properties:
+-
+-    - compatible
+-        Value type: <string>
+-        Definition: Must be "fsl,dpaa2-console".
+-    - reg
+-        Value type: <prop-encoded-array>
+-        Definition: A standard property.  Specifies the region where the MCFBA
+-                    (MC firmware base address) register can be found.
+diff --git a/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml b/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
+new file mode 100644
+index 000000000000..9ffb864d8b58
+--- /dev/null
++++ b/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
+@@ -0,0 +1,23 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2020 NXP
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/misc/fsl,dpaa2-console.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	/* Some sanity checking */
-+	if (!state->valid) {
-+		pr_devel("%s: source %lx invalid !\n", __func__, irq);
-+		return VM_FAULT_SIGBUS;
-+	}
++title: DPAA2 console support
 +
- 	kvmppc_xive_select_irq(state, &hw_num, &xd);
-=20
- 	arch_spin_lock(&sb->lock);
---=20
-2.26.2
++maintainers:
++  - Laurentiu Tudor <laurentiu.tudor@nxp.com>
++
++properties:
++  compatible:
++    const: "fsl,dpaa2-console"
++
++  reg:
++    description: A standard property. Specifies the region where the MCFBA
++                (MC firmware base address) register can be found.
++
++required:
++  - compatible
++  - reg
+-- 
+2.17.1
 
