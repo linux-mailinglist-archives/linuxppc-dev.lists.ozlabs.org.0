@@ -2,56 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB0C2A8517
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 18:39:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 217492A86C9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 20:07:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CRrPC1hr5zDqKL
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 04:39:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CRtLr3Zr9zDr7N
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 06:07:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.194;
+ helo=mail-oi1-f194.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com
+ [209.85.167.194])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CRrMR3z6BzDr2g
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 04:37:40 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CRrLy3VmQzB09bR;
- Thu,  5 Nov 2020 18:37:30 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ZyufDVRjDfXh; Thu,  5 Nov 2020 18:37:30 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CRrLy2DytzB09bQ;
- Thu,  5 Nov 2020 18:37:30 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1F7D08B861;
- Thu,  5 Nov 2020 18:37:32 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id QwaUA1tnrZCz; Thu,  5 Nov 2020 18:37:32 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 403928B84C;
- Thu,  5 Nov 2020 18:37:31 +0100 (CET)
-Subject: Re: [PATCH] powerpc: topology.h: fix build when CONFIG_NUMA=n
-To: Scott Cheloha <cheloha@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20201105162018.3559108-1-cheloha@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <ce83ecd5-5c2e-86bd-e6b9-73db0108014d@csgroup.eu>
-Date: Thu, 5 Nov 2020 18:34:39 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CRtKC1XvpzDr5j
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 06:06:04 +1100 (AEDT)
+Received: by mail-oi1-f194.google.com with SMTP id w145so2786623oie.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Nov 2020 11:06:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=5TdTBo8+xhg1iEq7AD8ddCfAOVpH58Ab88MfiBQ3Rdo=;
+ b=twyWFzAcUFvNtYOcep1s+LeCraV8YZFd35i9rCLOLaHLPxm2eu0ybPR4gZ62OuqYLN
+ mDQsCEy/t9O/zW5U/+SivMj6FRwXXKbEXW+7NW/KaycbZahkm12kBGGOSTAmDoKsgZNh
+ 6vxRJzdjK+90rKgvRR7MSDsWc1/UY0U8pjBjuRJZl/xws0wBN9zPC/NCGBstcrosuO+g
+ IDAZ9XF/2/MedZJNEM6sKnxiEF35O7XdjfmvG+w9FtgPOlNLc/I3U/8myUV9wAdC6EgH
+ XqdNU2pZWBQFG8WxfUcx8zun4lxXOTaEWapE4hA4nPYDux6f9mkYB/kVda6aTmmoAfdE
+ cU1A==
+X-Gm-Message-State: AOAM532YuOiKro4kZ+RRAds1xIpkr6ZP7/xok6p0qGPfeqQVoBVc3Qzp
+ TlfU8iaFH5+HArBL3ePCzg==
+X-Google-Smtp-Source: ABdhPJzvEnno8CWZseyI+f28L7rppStqqjiyCy/Xq1WHbvbGfPOCft3nRAzqjzbuvTpHPXVpCAM3gg==
+X-Received: by 2002:aca:4257:: with SMTP id p84mr556542oia.68.1604603161729;
+ Thu, 05 Nov 2020 11:06:01 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+ by smtp.gmail.com with ESMTPSA id h4sm537209oot.45.2020.11.05.11.06.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Nov 2020 11:06:01 -0800 (PST)
+Received: (nullmailer pid 1643637 invoked by uid 1000);
+ Thu, 05 Nov 2020 19:06:00 -0000
+Date: Thu, 5 Nov 2020 13:06:00 -0600
+From: Rob Herring <robh@kernel.org>
+To: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Subject: Re: [PATCH 1/2] dt-bindings: misc: convert fsl, dpaa2-console from
+ txt to YAML
+Message-ID: <20201105190600.GA1643395@bogus>
+References: <20201105141114.18161-1-laurentiu.tudor@nxp.com>
 MIME-Version: 1.0
-In-Reply-To: <20201105162018.3559108-1-cheloha@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201105141114.18161-1-laurentiu.tudor@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,70 +68,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Laurent Dufour <ldufour@linux.ibm.com>, kernel test robot <lkp@intel.com>
+Cc: devicetree@vger.kernel.org, corbet@lwn.net, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, leoyang.li@nxp.com,
+ robh+dt@kernel.org, ioana.ciornei@nxp.com,
+ Ionut-robert Aron <ionut-robert.aron@nxp.com>, kuba@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 05/11/2020 à 17:20, Scott Cheloha a écrit :
-> Add a non-NUMA definition for of_drconf_to_nid_single() to topology.h
-> so we have one even if powerpc/mm/numa.c is not compiled.  On a non-NUMA
-> kernel the appropriate node id is always first_online_node.
+On Thu, 05 Nov 2020 16:11:13 +0200, Laurentiu Tudor wrote:
+> From: Ionut-robert Aron <ionut-robert.aron@nxp.com>
 > 
-> Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Fixes: 72cdd117c449 ("pseries/hotplug-memory: hot-add: skip redundant LMB lookup")
+> Convert fsl,dpaa2-console to YAML in order to automate the
+> verification process of dts files.
+> 
+> Signed-off-by: Ionut-robert Aron <ionut-robert.aron@nxp.com>
+> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 > ---
->   arch/powerpc/include/asm/topology.h | 13 ++++++++++---
->   1 file changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
-> index 8728590f514a..90d2424418b5 100644
-> --- a/arch/powerpc/include/asm/topology.h
-> +++ b/arch/powerpc/include/asm/topology.h
-> @@ -61,6 +61,10 @@ static inline int early_cpu_to_node(int cpu)
->   	 */
->   	return (nid < 0) ? 0 : nid;
->   }
-> +
-> +struct drmem_lmb;
-
-Can you put that before the #ifdef CONFIG_NUMA in order to avoid duplicating it ?
-
-> +extern int of_drconf_to_nid_single(struct drmem_lmb *lmb);
-
-'extern' keywork is useless on a function prototype, don't add one, keep the prototype as before, ie:
-
-int of_drconf_to_nid_single(struct drmem_lmb *lmb);
-
-
-> +
->   #else
->   
->   static inline int early_cpu_to_node(int cpu) { return 0; }
-> @@ -84,10 +88,13 @@ static inline int cpu_distance(__be32 *cpu1_assoc, __be32 *cpu2_assoc)
->   	return 0;
->   }
->   
-> -#endif /* CONFIG_NUMA */
-> -
->   struct drmem_lmb;
-
-Can you put that before the #ifdef CONFIG_NUMA in order to avoid duplicating it ?
-
-> -int of_drconf_to_nid_single(struct drmem_lmb *lmb);
-> +static inline int of_drconf_to_nid_single(struct drmem_lmb *lmb)
-> +{
-> +	return first_online_node;
-> +}
-> +
-> +#endif /* CONFIG_NUMA */
->   
->   #if defined(CONFIG_NUMA) && defined(CONFIG_PPC_SPLPAR)
->   extern int find_and_online_cpu_nid(int cpu);
+>  .../bindings/misc/fsl,dpaa2-console.txt       | 11 ---------
+>  .../bindings/misc/fsl,dpaa2-console.yaml      | 23 +++++++++++++++++++
+>  2 files changed, 23 insertions(+), 11 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/misc/fsl,dpaa2-console.txt
+>  create mode 100644 Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
 > 
 
-Christophe
+
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml: 'additionalProperties' is a required property
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml: ignoring, error in schema: 
+warning: no schema found in file: ./Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
+
+
+See https://patchwork.ozlabs.org/patch/1395015
+
+The base for the patch is generally the last rc1. Any dependencies
+should be noted.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+
