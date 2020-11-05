@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1637E2A819B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 15:54:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26AA62A81A9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 15:56:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CRmkv15cgzDqpJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 01:54:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CRmnf30s8zDr15
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 01:56:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gWvnbful; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=SESi8EHv; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CRmJR3bTkzDr0N
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 01:35:03 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id b12so873850plr.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Nov 2020 06:35:03 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CRmJV5tyMzDr0L
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 01:35:06 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id w11so864046pll.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Nov 2020 06:35:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=YHtxyJNsg7ITVG/lGDqFpzt3fm3yVbuc5/uqaK9uzfQ=;
- b=gWvnbfulQihObVf20JSgplIey+Cj0tj9ThGfhMUctMIm7lCnKQIry9ANXyOajDxzOs
- v8VyINXXkFcF4vXI95h6OTOpvBQdtbayoxchU6ymoyu6tJG1qj5j5+vLczPlb2NpNvE2
- I42sI+M8cCq2iV0b+/xU3NqwQlkQ9nwQ8efpjtZkX6oLJbRHMc1uzQK8M+w/LE4YaZjg
- bpgIvOEsyydbmj6JKqyTTw8L+RIhEJpXhxZKz+aqoQX3g5sNwKGmgireJ1zI7G5y3mXH
- 1f+fz+JWS3SpJfYmOdThlwB/jtrX336qoebNx/Wmzq4Zc4ytPDKUUDp3sQ9dQa111m70
- Papg==
+ bh=dDjffCU4Rwie8WrrDdU1BOf7m9lF8GEu+odHT6mzwU0=;
+ b=SESi8EHvvZabBwIIvbCE19UdiEuqMFwkOXX+rhRQKItsEZ/x14LhdiG5aLExVl4BO0
+ aIgXxapzY2oUjcoBOCEG+P3jfFIVBNq0pdrGlluOvEJ7EdGXyXyxgrsaG8U2xeQjUO6t
+ QKdNAKSl11/hVbA8h/MuRlvYPBQnBXiLHinCv5AsXt2i22FZ42vxqwPsKynmXeKb8XUr
+ ExMMXJLJ95KyivyxK8xIZF5SRCq9ruIL7ZLzq5P/oPsMRnb/pb3PCIIGo3scUBCwhkCB
+ 9jl0Mpt14riF+oo9+qc1XDQvYAESXrnL4A/0kgmdkp3pLV7h4J+1GuCQ3xidW8kW4dMz
+ 9JTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=YHtxyJNsg7ITVG/lGDqFpzt3fm3yVbuc5/uqaK9uzfQ=;
- b=ccCiftWNTB6alBCCNro/6PyqKhihmim+P2AU3mDQkQmhFxnH7PyFS8UxgJcwc1oDC6
- YxjoL8OT6H7Aa2GkOpa3+c++NhJCTW1jyTd1r/pcIHiD58KbM3fw4PDrtib1KZPGcFRH
- RslSNsI07RlJcrMsThJZHOgo7apeBDtRv3loep2dO/pxf7ONOrX7YGOGOWs8VtIBUdPU
- Qa05tjpuYM6E2s49Be5nV0F9FPvg0e6hE8UFh9trV4kYET/srVCTorA61/lFyh58lWcg
- IwjpHpcxO9cJRxjpgqEMt6tnFls0at49b6fdWHIRtHNgRuGYs3cPzy8Ko1OC/0pTFdL7
- pBog==
-X-Gm-Message-State: AOAM530QLXVUYyrkEl2Fox0OJ7kJAs4mC1OpPNXol4Oxy7gWhK0u6Jkk
- 88WwPbBLYAJbEpxbMurtL7bFN+DI0Ah+og==
-X-Google-Smtp-Source: ABdhPJwI6vVmpv1T3IoFim85sNiWUFAtbKILjLofYMtgV5ZJn1YXTKYBDr+KuuuVqJiEMyzk+I8ONQ==
-X-Received: by 2002:a17:90a:8c89:: with SMTP id
- b9mr2877836pjo.34.1604586899881; 
- Thu, 05 Nov 2020 06:34:59 -0800 (PST)
+ bh=dDjffCU4Rwie8WrrDdU1BOf7m9lF8GEu+odHT6mzwU0=;
+ b=LVSSzu1+pkT9+u6PWdq8PTUQE3eAHwGY2eFtqEcL+QhpENRU61CNxgYbofuVBAul2F
+ k1ksw22GtU0uvue8zK6lu5v7tT7Ut/TmOFknL1+ZlESjGXovgPUJQgaejx5YEu/yyMqN
+ omBIJN70lqfizbPM8N1TFPl+EMzFcLeVm5sBXTtfav0/C4rdvlJzG0RV+zrwdw5Lg6cp
+ fi0lMPu+4+wGGEjn3AV83wO0371GJx34Pjg0hA/2BNZDtC5iOKFMHTUkUoJh+sNSOBLx
+ mdva5I6BGEXJfU89gIgzDHDmFvJlLhQUEnovtu9Z/u8DMhpjs1I2s3L4JiwFV9urv55L
+ 55Iw==
+X-Gm-Message-State: AOAM531TMM5QWmAbAGuKW13lVQgJ1cxGtbVadJFOjQU2itnJ0n9O6OfF
+ m53LTi6ElCDCmQkp691pxRuyxPqRlgiFqQ==
+X-Google-Smtp-Source: ABdhPJxsPHBB9VMsrnVXqS9EICMWDmY60EUFyKacu7F1BbqhWXfqF7xhVd9ZT1/S0FPsAVmPKbTlrA==
+X-Received: by 2002:a17:90a:588f:: with SMTP id
+ j15mr2978977pji.64.1604586903072; 
+ Thu, 05 Nov 2020 06:35:03 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (27-32-36-31.tpgi.com.au. [27.32.36.31])
- by smtp.gmail.com with ESMTPSA id n15sm2876771pgt.75.2020.11.05.06.34.57
+ by smtp.gmail.com with ESMTPSA id n15sm2876771pgt.75.2020.11.05.06.35.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Nov 2020 06:34:59 -0800 (PST)
+ Thu, 05 Nov 2020 06:35:01 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 06/18] powerpc: add interrupt_cond_local_irq_enable helper
-Date: Fri,  6 Nov 2020 00:34:19 +1000
-Message-Id: <20201105143431.1874789-7-npiggin@gmail.com>
+Subject: [PATCH 07/18] powerpc/64: context tracking remove _TIF_NOHZ
+Date: Fri,  6 Nov 2020 00:34:20 +1000
+Message-Id: <20201105143431.1874789-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20201105143431.1874789-1-npiggin@gmail.com>
 References: <20201105143431.1874789-1-npiggin@gmail.com>
@@ -84,124 +84,167 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Simple helper for synchronous interrupt handlers to use to enable
-interrupts if they were taken in interrupt-enabled context.
+Add context tracking to the system call handler explicitly, and remove
+_TIF_NOHZ.
+
+This saves 35 cycles on gettid system call cost on POWER9 with a
+CONFIG_NOHZ_FULL kernel.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/interrupt.h |  7 +++++++
- arch/powerpc/kernel/traps.c          | 24 +++++++-----------------
- arch/powerpc/mm/fault.c              |  4 +---
- 3 files changed, 15 insertions(+), 20 deletions(-)
+ arch/Kconfig                           |  6 ------
+ arch/powerpc/Kconfig                   |  1 -
+ arch/powerpc/include/asm/thread_info.h |  4 +---
+ arch/powerpc/kernel/ptrace/ptrace.c    |  4 ----
+ arch/powerpc/kernel/signal.c           |  4 ----
+ arch/powerpc/kernel/syscall_64.c       | 10 ++++++++++
+ 6 files changed, 11 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index c5ffcf144bbd..446e24b0eee1 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -3,6 +3,7 @@
- #define _ASM_POWERPC_INTERRUPT_H
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 56b6ccc0e32d..a0b6213f7820 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -618,12 +618,6 @@ config HAVE_CONTEXT_TRACKING
+ 	  protected inside rcu_irq_enter/rcu_irq_exit() but preemption or signal
+ 	  handling on irq exit still need to be protected.
  
- #include <linux/context_tracking.h>
-+#include <linux/hardirq.h>
- #include <asm/ftrace.h>
+-config HAVE_TIF_NOHZ
+-	bool
+-	help
+-	  Arch relies on TIF_NOHZ and syscall slow path to implement context
+-	  tracking calls to user_enter()/user_exit().
+-
+ config HAVE_VIRT_CPU_ACCOUNTING
+ 	bool
  
- struct interrupt_state {
-@@ -251,4 +252,10 @@ DECLARE_INTERRUPT_HANDLER_ASYNC(unknown_async_exception);
- void replay_system_reset(void);
- void replay_soft_interrupts(void);
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index e9f13fe08492..6eaf12a504f8 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -193,7 +193,6 @@ config PPC
+ 	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
+ 	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
+ 	select HAVE_CONTEXT_TRACKING		if PPC64
+-	select HAVE_TIF_NOHZ			if PPC64
+ 	select HAVE_DEBUG_KMEMLEAK
+ 	select HAVE_DEBUG_STACKOVERFLOW
+ 	select HAVE_DYNAMIC_FTRACE
+diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+index 46a210b03d2b..c9443c16e5fb 100644
+--- a/arch/powerpc/include/asm/thread_info.h
++++ b/arch/powerpc/include/asm/thread_info.h
+@@ -95,7 +95,6 @@ void arch_setup_new_exec(void);
+ #define TIF_PATCH_PENDING	6	/* pending live patching update */
+ #define TIF_SYSCALL_AUDIT	7	/* syscall auditing active */
+ #define TIF_SINGLESTEP		8	/* singlestepping active */
+-#define TIF_NOHZ		9	/* in adaptive nohz mode */
+ #define TIF_SECCOMP		10	/* secure computing */
+ #define TIF_RESTOREALL		11	/* Restore all regs (implies NOERROR) */
+ #define TIF_NOERROR		12	/* Force successful syscall return */
+@@ -128,11 +127,10 @@ void arch_setup_new_exec(void);
+ #define _TIF_UPROBE		(1<<TIF_UPROBE)
+ #define _TIF_SYSCALL_TRACEPOINT	(1<<TIF_SYSCALL_TRACEPOINT)
+ #define _TIF_EMULATE_STACK_STORE	(1<<TIF_EMULATE_STACK_STORE)
+-#define _TIF_NOHZ		(1<<TIF_NOHZ)
+ #define _TIF_SYSCALL_EMU	(1<<TIF_SYSCALL_EMU)
+ #define _TIF_SYSCALL_DOTRACE	(_TIF_SYSCALL_TRACE | _TIF_SYSCALL_AUDIT | \
+ 				 _TIF_SECCOMP | _TIF_SYSCALL_TRACEPOINT | \
+-				 _TIF_NOHZ | _TIF_SYSCALL_EMU)
++				 _TIF_SYSCALL_EMU)
  
-+static inline void interrupt_cond_local_irq_enable(struct pt_regs *regs)
-+{
-+	if (!arch_irq_disabled_regs(regs))
-+		local_irq_enable();
-+}
+ #define _TIF_USER_WORK_MASK	(_TIF_SIGPENDING | _TIF_NEED_RESCHED | \
+ 				 _TIF_NOTIFY_RESUME | _TIF_UPROBE | \
+diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
+index f6e51be47c6e..8970400e521c 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace.c
++++ b/arch/powerpc/kernel/ptrace/ptrace.c
+@@ -290,8 +290,6 @@ long do_syscall_trace_enter(struct pt_regs *regs)
+ {
+ 	u32 flags;
+ 
+-	user_exit();
+-
+ 	flags = READ_ONCE(current_thread_info()->flags) &
+ 		(_TIF_SYSCALL_EMU | _TIF_SYSCALL_TRACE);
+ 
+@@ -368,8 +366,6 @@ void do_syscall_trace_leave(struct pt_regs *regs)
+ 	step = test_thread_flag(TIF_SINGLESTEP);
+ 	if (step || test_thread_flag(TIF_SYSCALL_TRACE))
+ 		tracehook_report_syscall_exit(regs, step);
+-
+-	user_enter();
+ }
+ 
+ void __init pt_regs_check(void);
+diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
+index d2c356f37077..44ec7b34b27e 100644
+--- a/arch/powerpc/kernel/signal.c
++++ b/arch/powerpc/kernel/signal.c
+@@ -310,8 +310,6 @@ static void do_signal(struct task_struct *tsk)
+ 
+ void do_notify_resume(struct pt_regs *regs, unsigned long thread_info_flags)
+ {
+-	user_exit();
+-
+ 	if (thread_info_flags & _TIF_UPROBE)
+ 		uprobe_notify_resume(regs);
+ 
+@@ -327,8 +325,6 @@ void do_notify_resume(struct pt_regs *regs, unsigned long thread_info_flags)
+ 		tracehook_notify_resume(regs);
+ 		rseq_handle_notify_resume(NULL, regs);
+ 	}
+-
+-	user_enter();
+ }
+ 
+ unsigned long get_tm_stackpointer(struct task_struct *tsk)
+diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
+index 15b628ae25fb..d9df6d14533e 100644
+--- a/arch/powerpc/kernel/syscall_64.c
++++ b/arch/powerpc/kernel/syscall_64.c
+@@ -1,9 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
++#include <linux/context_tracking.h>
+ #include <linux/err.h>
+ #include <asm/asm-prototypes.h>
+ #include <asm/book3s/64/kup-radix.h>
+ #include <asm/cputime.h>
++#include <asm/interrupt.h>
+ #include <asm/hw_irq.h>
+ #include <asm/interrupt.h>
+ #include <asm/kprobes.h>
+@@ -28,6 +30,9 @@ notrace long system_call_exception(long r3, long r4, long r5,
+ 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+ 		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
+ 
++	CT_WARN_ON(ct_state() == CONTEXT_KERNEL);
++	user_exit_irqoff();
 +
- #endif /* _ASM_POWERPC_INTERRUPT_H */
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index 823fa827a70e..2d19df1f6c05 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -343,8 +343,8 @@ static bool exception_common(int signr, struct pt_regs *regs, int code,
+ 	trace_hardirqs_off(); /* finish reconciling */
  
- 	show_signal_msg(signr, regs, code, addr);
+ 	if (IS_ENABLED(CONFIG_PPC_BOOK3S))
+@@ -158,6 +163,8 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 	unsigned long ti_flags;
+ 	unsigned long ret = 0;
  
--	if (arch_irqs_disabled() && !arch_irq_disabled_regs(regs))
--		local_irq_enable();
-+	if (arch_irqs_disabled())
-+		interrupt_cond_local_irq_enable(regs);
++	CT_WARN_ON(ct_state() == CONTEXT_USER);
++
+ 	kuap_check_amr();
  
- 	current->thread.trap_nr = code;
- 
-@@ -1575,9 +1575,7 @@ DEFINE_INTERRUPT_HANDLER(program_check_exception)
- 	if (!user_mode(regs))
- 		goto sigill;
- 
--	/* We restore the interrupt state now */
--	if (!arch_irq_disabled_regs(regs))
--		local_irq_enable();
-+	interrupt_cond_local_irq_enable(regs);
- 
- 	/* (reason & REASON_ILLEGAL) would be the obvious thing here,
- 	 * but there seems to be a hardware bug on the 405GP (RevD)
-@@ -1631,9 +1629,7 @@ DEFINE_INTERRUPT_HANDLER(alignment_exception)
- 	int sig, code, fixed = 0;
- 	unsigned long  reason;
- 
--	/* We restore the interrupt state now */
--	if (!arch_irq_disabled_regs(regs))
--		local_irq_enable();
-+	interrupt_cond_local_irq_enable(regs);
- 
- 	reason = get_reason(regs);
- 
-@@ -1794,9 +1790,7 @@ DEFINE_INTERRUPT_HANDLER(facility_unavailable_exception)
- 		die("Unexpected facility unavailable exception", regs, SIGABRT);
+ 	regs->result = r3;
+@@ -234,8 +241,11 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 		}
  	}
  
--	/* We restore the interrupt state now */
--	if (!arch_irq_disabled_regs(regs))
--		local_irq_enable();
-+	interrupt_cond_local_irq_enable(regs);
- 
- 	if (status == FSCR_DSCR_LG) {
- 		/*
-@@ -2141,9 +2135,7 @@ void SPEFloatingPointException(struct pt_regs *regs)
- 	int code = FPE_FLTUNK;
- 	int err;
- 
--	/* We restore the interrupt state now */
--	if (!arch_irq_disabled_regs(regs))
--		local_irq_enable();
-+	interrupt_cond_local_irq_enable(regs);
- 
- 	flush_spe_to_thread(current);
- 
-@@ -2190,9 +2182,7 @@ void SPEFloatingPointRoundException(struct pt_regs *regs)
- 	extern int speround_handler(struct pt_regs *regs);
- 	int err;
- 
--	/* We restore the interrupt state now */
--	if (!arch_irq_disabled_regs(regs))
--		local_irq_enable();
-+	interrupt_cond_local_irq_enable(regs);
- 
- 	preempt_disable();
- 	if (regs->msr & MSR_SPE)
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index d1c5ef853860..fd0c56c80c3c 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -443,9 +443,7 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
- 		return bad_area_nosemaphore(regs, address);
++	user_enter_irqoff();
++
+ 	/* scv need not set RI=0 because SRRs are not used */
+ 	if (unlikely(!prep_irq_for_enabled_exit(!scv))) {
++		user_exit_irqoff();
+ 		local_irq_enable();
+ 		goto again;
  	}
- 
--	/* We restore the interrupt state now */
--	if (!arch_irq_disabled_regs(regs))
--		local_irq_enable();
-+	interrupt_cond_local_irq_enable(regs);
- 
- 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
- 
 -- 
 2.23.0
 
