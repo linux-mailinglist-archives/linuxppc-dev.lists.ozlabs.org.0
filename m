@@ -2,57 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3E42A77CE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 08:12:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2BE22A7822
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 08:41:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CRZTV109ZzDqGb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 18:12:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CRb7V6xsGzDqkP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 18:41:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.218.65; helo=mail-ej1-f65.google.com;
+ envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com
+ [209.85.218.65])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CRZRk5cgczDqDM
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 18:10:37 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CRZRY3PwRz9v117;
- Thu,  5 Nov 2020 08:10:33 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id PuUCBQNMDmSo; Thu,  5 Nov 2020 08:10:33 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CRZRY17TXz9v116;
- Thu,  5 Nov 2020 08:10:33 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 115AD8B819;
- Thu,  5 Nov 2020 08:10:34 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id P1iQ9jSrgLaD; Thu,  5 Nov 2020 08:10:34 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AAD948B764;
- Thu,  5 Nov 2020 08:10:33 +0100 (CET)
-Subject: Re: [PATCH 31/36] powerpc: asm: hvconsole: Move 'hvc_vio_init_early's
- prototype to shared location
-To: Lee Jones <lee.jones@linaro.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CRb5g4NYkzDqjh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Nov 2020 18:40:03 +1100 (AEDT)
+Received: by mail-ej1-f65.google.com with SMTP id 7so1219096ejm.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Nov 2020 23:40:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=/PoaxSQdQ0qc6MtVRWROcDbBKMBfI1ym4uPU4Lv069A=;
+ b=qxaDDmWhhmNmlQNwZObsscmTuSQu1uFOK5l47jW7BQqV1ai3yzjnTpL6r4QlyvTN9a
+ 0Mm6PUYRIQuxb8Ia2VZYMSz26aGtLgzrfurgjZCvEmM2DLZ7tF62hNvmZhGR2scgUoWH
+ DJxuIkk+ZrbBQl3VAZLjpi4oiFOmTPa8CvtPPTNSxJN7QCzRE6T7q0Rftnnk4/0tyiMT
+ xgnTudNLBG2XfgfH9Df/+WLX3jcXnfl/V1vohUvWuJ0BFSV3GHxdHTe4j5s2tKJOuhsK
+ MS52ae6f38ScjfA4mIfaalP6EUYrPkXlTkbXi8dGV+lFSE5Hsw1Vc0jzWEn06RVLo/BO
+ gt8A==
+X-Gm-Message-State: AOAM531AVPUWmXPf10AR9TQERxeyA5LE6wxnDoUgfwjwHWrvXKY4TfHS
+ rJPmSjOj0otY23grQsppS4s=
+X-Google-Smtp-Source: ABdhPJwEt20G0n1D11J5pSfi2tvzsZnG0AfTtqEF0ANZdbe1XXAbrjEon+3CwZuTF7sgXsf/suDDWQ==
+X-Received: by 2002:a17:906:7844:: with SMTP id
+ p4mr1076205ejm.26.1604561998177; 
+ Wed, 04 Nov 2020 23:39:58 -0800 (PST)
+Received: from ?IPv6:2a0b:e7c0:0:107::49? ([2a0b:e7c0:0:107::49])
+ by smtp.gmail.com with ESMTPSA id s3sm422116ejv.97.2020.11.04.23.39.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Nov 2020 23:39:57 -0800 (PST)
+Subject: Re: [PATCH 34/36] tty: serial: pmac_zilog: Make disposable variable
+ __always_unused
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Lee Jones <lee.jones@linaro.org>
 References: <20201104193549.4026187-1-lee.jones@linaro.org>
- <20201104193549.4026187-32-lee.jones@linaro.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <d2a23842-631e-cd5e-84ec-48485328ba52@csgroup.eu>
-Date: Thu, 5 Nov 2020 08:10:22 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+ <20201104193549.4026187-35-lee.jones@linaro.org>
+ <445a6440-b4c8-4536-891b-0cefc78e5f57@csgroup.eu>
+From: Jiri Slaby <jirislaby@kernel.org>
+Message-ID: <e027b620-56f8-7d8b-84ff-54839f94a4c7@kernel.org>
+Date: Thu, 5 Nov 2020 08:39:56 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.3
 MIME-Version: 1.0
-In-Reply-To: <20201104193549.4026187-32-lee.jones@linaro.org>
+In-Reply-To: <445a6440-b4c8-4536-891b-0cefc78e5f57@csgroup.eu>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,75 +73,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linux-serial@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 04/11/2020 à 20:35, Lee Jones a écrit :
-> Fixes the following W=1 kernel build warning(s):
+On 05. 11. 20, 8:04, Christophe Leroy wrote:
 > 
->   drivers/tty/hvc/hvc_vio.c:385:13: warning: no previous prototype for ‘hvc_vio_init_early’ [-Wmissing-prototypes]
->   385 | void __init hvc_vio_init_early(void)
->   | ^~~~~~~~~~~~~~~~~~
 > 
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> ---
->   arch/powerpc/include/asm/hvconsole.h     | 3 +++
->   arch/powerpc/platforms/pseries/pseries.h | 3 ---
->   arch/powerpc/platforms/pseries/setup.c   | 1 +
->   3 files changed, 4 insertions(+), 3 deletions(-)
+> Le 04/11/2020 à 20:35, Lee Jones a écrit :
+>> Fixes the following W=1 kernel build warning(s):
+>>
+>>   drivers/tty/serial/pmac_zilog.h:365:58: warning: variable ‘garbage’ 
+>> set but not used [-Wunused-but-set-variable]
 > 
-> diff --git a/arch/powerpc/include/asm/hvconsole.h b/arch/powerpc/include/asm/hvconsole.h
-> index 999ed5ac90531..936a1ee1ac786 100644
-> --- a/arch/powerpc/include/asm/hvconsole.h
-> +++ b/arch/powerpc/include/asm/hvconsole.h
-> @@ -24,5 +24,8 @@
->   extern int hvc_get_chars(uint32_t vtermno, char *buf, int count);
->   extern int hvc_put_chars(uint32_t vtermno, const char *buf, int count);
->   
-> +/* Provided by HVC VIO */
-> +extern void hvc_vio_init_early(void);
-> +
-
-Declaring a prototype 'extern' is pointless. Don't add new misuse of 'extern' keyword.
-
-
->   #endif /* __KERNEL__ */
->   #endif /* _PPC64_HVCONSOLE_H */
-> diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
-> index 13fa370a87e4e..7be5b054dfc36 100644
-> --- a/arch/powerpc/platforms/pseries/pseries.h
-> +++ b/arch/powerpc/platforms/pseries/pseries.h
-> @@ -43,9 +43,6 @@ extern void pSeries_final_fixup(void);
->   /* Poweron flag used for enabling auto ups restart */
->   extern unsigned long rtas_poweron_auto;
->   
-> -/* Provided by HVC VIO */
-> -extern void hvc_vio_init_early(void);
-> -
->   /* Dynamic logical Partitioning/Mobility */
->   extern void dlpar_free_cc_nodes(struct device_node *);
->   extern void dlpar_free_cc_property(struct property *);
-> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-> index 633c45ec406da..6999b83f06612 100644
-> --- a/arch/powerpc/platforms/pseries/setup.c
-> +++ b/arch/powerpc/platforms/pseries/setup.c
-> @@ -71,6 +71,7 @@
->   #include <asm/swiotlb.h>
->   #include <asm/svm.h>
->   #include <asm/dtl.h>
-> +#include <asm/hvconsole.h>
->   
->   #include "pseries.h"
->   #include "../../../../drivers/pci/pci.h"
+> Explain how you are fixing this warning.
 > 
+> Setting  __always_unused is usually not the good solution for fixing 
+> this warning, but here I guess this is likely the good solution. But it 
+> should be explained why.
 
-Christophe
+Or, why is the "garbage =" needed in the first place? read_zsdata is not 
+defined with __warn_unused_result__. And even if it was, would 
+(void)!read_zsdata(port) fix it?
+
+>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Cc: Jiri Slaby <jirislaby@kernel.org>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: linux-serial@vger.kernel.org
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+>> ---
+>>   drivers/tty/serial/pmac_zilog.h | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/tty/serial/pmac_zilog.h 
+>> b/drivers/tty/serial/pmac_zilog.h
+>> index bb874e76810e0..968aec7c1cf82 100644
+>> --- a/drivers/tty/serial/pmac_zilog.h
+>> +++ b/drivers/tty/serial/pmac_zilog.h
+>> @@ -362,7 +362,7 @@ static inline void zssync(struct uart_pmac_port 
+>> *port)
+>>   /* Misc macros */
+>>   #define ZS_CLEARERR(port)    (write_zsreg(port, 0, ERR_RES))
+>> -#define ZS_CLEARFIFO(port)   do { volatile unsigned char garbage; \
+>> +#define ZS_CLEARFIFO(port)   do { volatile unsigned char 
+>> __always_unused garbage; \
+>>                        garbage = read_zsdata(port); \
+>>                        garbage = read_zsdata(port); \
+>>                        garbage = read_zsdata(port); \
+>>
+
+thanks,
+-- 
+js
