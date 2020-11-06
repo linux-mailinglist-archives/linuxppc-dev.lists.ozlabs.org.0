@@ -2,52 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC012A96F9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 14:25:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9E12A9737
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 14:44:59 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CSLjg6h1xzDrMF
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Nov 2020 00:25:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CSM884XwwzDrMS
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Nov 2020 00:44:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=fwuy=em=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=goodmis.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CSLcc5hzhzDrGq
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Nov 2020 00:21:00 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CSLcQ3lSGz9v15t;
- Fri,  6 Nov 2020 14:20:54 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 5gvZkFtVHQcI; Fri,  6 Nov 2020 14:20:54 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CSLcQ2zYkz9v15c;
- Fri,  6 Nov 2020 14:20:54 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9DCD48B8BF;
- Fri,  6 Nov 2020 14:20:55 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id eTPlQqlIsTlD; Fri,  6 Nov 2020 14:20:55 +0100 (CET)
-Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3FB808B8BD;
- Fri,  6 Nov 2020 14:20:55 +0100 (CET)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id F010F66868; Fri,  6 Nov 2020 13:20:54 +0000 (UTC)
-Message-Id: <16a571bb32eb6e8cd44bda484c8d81cd8a25e6d7.1604668827.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/mm: Refactor the floor/ceiling check in hugetlb range
- freeing functions
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Fri,  6 Nov 2020 13:20:54 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CSM4N1y5VzDrM9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Nov 2020 00:41:40 +1100 (AEDT)
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
+ [66.24.58.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id AA5E12067B;
+ Fri,  6 Nov 2020 13:41:33 +0000 (UTC)
+Date: Fri, 6 Nov 2020 08:41:31 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH 11/11 v3] ftrace: Add recording of functions that caused
+ recursion
+Message-ID: <20201106084131.7dfc3a30@gandalf.local.home>
+In-Reply-To: <20201106131317.GW20201@alley>
+References: <20201106023235.367190737@goodmis.org>
+ <20201106023548.102375687@goodmis.org>
+ <20201106131317.GW20201@alley>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,131 +50,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Anton Vorontsov <anton@enomsg.org>, linux-doc@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ Joe Lawrence <joe.lawrence@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Tony Luck <tony.luck@intel.com>,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Masami Hiramatsu <mhiramat@kernel.org>, Colin Cross <ccross@android.com>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All hugetlb range freeing functions have a verification like the following,
-which only differs by the mask used, depending on the page table level.
+On Fri, 6 Nov 2020 14:13:17 +0100
+Petr Mladek <pmladek@suse.com> wrote:
 
-	start &= MASK;
-	if (start < floor)
-		return;
-	if (ceiling) {
-		ceiling &= MASK;
-		if (! ceiling)
-			return;
-		}
-	if (end - 1 > ceiling - 1)
-		return;
+> JFYI, the code reading and writing the cache looks good to me.
+> 
+> It is still possible that some entries might stay unused (filled
+> with zeroes) but it should be hard to hit in practice. It
+> is good enough from my POV.
 
-Refactor that into a helper function which takes the mask as
-an argument, returning true when [start;end[ is not fully
-contained inside [floor;ceiling[
+You mean the part that was commented?
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/mm/hugetlbpage.c | 56 ++++++++++++-----------------------
- 1 file changed, 19 insertions(+), 37 deletions(-)
+> 
+> I do not give Reviewed-by tag just because I somehow do not have power
+> to review the entire patch carefully enough at the moment.
 
-diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-index 36c3800769fb..f8d8a4988e15 100644
---- a/arch/powerpc/mm/hugetlbpage.c
-+++ b/arch/powerpc/mm/hugetlbpage.c
-@@ -294,6 +294,21 @@ static void hugepd_free(struct mmu_gather *tlb, void *hugepte)
- static inline void hugepd_free(struct mmu_gather *tlb, void *hugepte) {}
- #endif
- 
-+/* Return true when the entry to be freed maps more than the area being freed */
-+static bool range_is_outside_limits(unsigned long start, unsigned long end,
-+				    unsigned long floor, unsigned long ceiling,
-+				    unsigned long mask)
-+{
-+	if ((start & mask) < floor)
-+		return true;
-+	if (ceiling) {
-+		ceiling &= mask;
-+		if (!ceiling)
-+			return true;
-+	}
-+	return end - 1 > ceiling - 1;
-+}
-+
- static void free_hugepd_range(struct mmu_gather *tlb, hugepd_t *hpdp, int pdshift,
- 			      unsigned long start, unsigned long end,
- 			      unsigned long floor, unsigned long ceiling)
-@@ -309,15 +324,7 @@ static void free_hugepd_range(struct mmu_gather *tlb, hugepd_t *hpdp, int pdshif
- 	if (shift > pdshift)
- 		num_hugepd = 1 << (shift - pdshift);
- 
--	start &= pdmask;
--	if (start < floor)
--		return;
--	if (ceiling) {
--		ceiling &= pdmask;
--		if (! ceiling)
--			return;
--	}
--	if (end - 1 > ceiling - 1)
-+	if (range_is_outside_limits(start, end, floor, ceiling, pdmask))
- 		return;
- 
- 	for (i = 0; i < num_hugepd; i++, hpdp++)
-@@ -334,18 +341,9 @@ static void hugetlb_free_pte_range(struct mmu_gather *tlb, pmd_t *pmd,
- 				   unsigned long addr, unsigned long end,
- 				   unsigned long floor, unsigned long ceiling)
- {
--	unsigned long start = addr;
- 	pgtable_t token = pmd_pgtable(*pmd);
- 
--	start &= PMD_MASK;
--	if (start < floor)
--		return;
--	if (ceiling) {
--		ceiling &= PMD_MASK;
--		if (!ceiling)
--			return;
--	}
--	if (end - 1 > ceiling - 1)
-+	if (range_is_outside_limits(addr, end, floor, ceiling, PMD_MASK))
- 		return;
- 
- 	pmd_clear(pmd);
-@@ -395,15 +393,7 @@ static void hugetlb_free_pmd_range(struct mmu_gather *tlb, pud_t *pud,
- 				  addr, next, floor, ceiling);
- 	} while (addr = next, addr != end);
- 
--	start &= PUD_MASK;
--	if (start < floor)
--		return;
--	if (ceiling) {
--		ceiling &= PUD_MASK;
--		if (!ceiling)
--			return;
--	}
--	if (end - 1 > ceiling - 1)
-+	if (range_is_outside_limits(start, end, floor, ceiling, PUD_MASK))
- 		return;
- 
- 	pmd = pmd_offset(pud, start);
-@@ -446,15 +436,7 @@ static void hugetlb_free_pud_range(struct mmu_gather *tlb, p4d_t *p4d,
- 		}
- 	} while (addr = next, addr != end);
- 
--	start &= PGDIR_MASK;
--	if (start < floor)
--		return;
--	if (ceiling) {
--		ceiling &= PGDIR_MASK;
--		if (!ceiling)
--			return;
--	}
--	if (end - 1 > ceiling - 1)
-+	if (range_is_outside_limits(start, end, floor, ceiling, PGDIR_MASK))
- 		return;
- 
- 	pud = pud_offset(p4d, start);
--- 
-2.25.0
+No problem. Thanks for looking at it.
 
+I'm adding a link to this thread, so if someone wants proof you helped out
+on this code, you can have them follow the links ;-)
+
+Anyway, even if I push this to linux-next where I stop rebasing code
+(because of test coverage), I do rebase for adding tags. So if you ever get
+around at looking at this code, I can add that tag later (before the next
+merge window), or if you find something, I could fix it with a new patch and
+give you a Reported-by.
+
+-- Steve
