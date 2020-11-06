@@ -1,57 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F7B2A8FBE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 07:59:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A616C2A8FC6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 08:01:34 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CSB8247GGzDr5R
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 17:59:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CSBBg0mbDzDrGv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 18:01:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CSB781kyhzDrDn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 17:58:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4CSB752rm8z8tSs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 17:58:25 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4CSB751WDQz9sVK; Fri,  6 Nov 2020 17:58:25 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
+Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=csgroup.eu
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CSB650QC2zDrCB
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 17:57:22 +1100 (AEDT)
+ by ozlabs.org (Postfix) with ESMTPS id 4CSB7462cbz9sSn
+ for <linuxppc-dev@ozlabs.org>; Fri,  6 Nov 2020 17:58:24 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CSB5m178Xz9tyl8;
- Fri,  6 Nov 2020 07:57:16 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4CSB7069ZGz9tyl8;
+ Fri,  6 Nov 2020 07:58:20 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 0tvnNDWyEbSe; Fri,  6 Nov 2020 07:57:16 +0100 (CET)
+ with ESMTP id X5yjvX0yGRKZ; Fri,  6 Nov 2020 07:58:20 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CSB5l6dqHz9tyl7;
- Fri,  6 Nov 2020 07:57:15 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CSB705Mzzz9tyl7;
+ Fri,  6 Nov 2020 07:58:20 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B95238B885;
- Fri,  6 Nov 2020 07:57:16 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A1E058B885;
+ Fri,  6 Nov 2020 07:58:21 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id M78HGa_Z50-v; Fri,  6 Nov 2020 07:57:16 +0100 (CET)
+ with ESMTP id QGm7ssV_oEbM; Fri,  6 Nov 2020 07:58:21 +0100 (CET)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5854B8B75F;
- Fri,  6 Nov 2020 07:57:16 +0100 (CET)
-Subject: Re: [PATCH v2] kernel/watchdog: Fix watchdog_allowed_mask not used
- warning
-To: Santosh Sivaraj <santosh@fossix.org>,
- Linux Kernel <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <20201106015025.1281561-1-santosh@fossix.org>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 353168B75F;
+ Fri,  6 Nov 2020 07:58:21 +0100 (CET)
+Subject: Re: [PATCH v2] powerpc: topology.h: fix build when CONFIG_NUMA=n
+To: Scott Cheloha <cheloha@linux.ibm.com>, linuxppc-dev@ozlabs.org
+References: <20201105223040.3612663-1-cheloha@linux.ibm.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <78e3bbe8-4f45-0b68-6e72-85fcc4f75695@csgroup.eu>
-Date: Fri, 6 Nov 2020 07:57:16 +0100
+Message-ID: <c0ca0647-a8c9-03ca-cc35-7e57b6ff4139@csgroup.eu>
+Date: Fri, 6 Nov 2020 07:58:21 +0100
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <20201106015025.1281561-1-santosh@fossix.org>
+In-Reply-To: <20201105223040.3612663-1-cheloha@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -66,54 +77,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, Thomas Gleixner <tglx@linutronix.de>,
- Andrew Morton <akpm@linux-foundation.org>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Laurent Dufour <ldufour@linux.vnet.ibm.com>, kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 06/11/2020 à 02:50, Santosh Sivaraj a écrit :
-> Define watchdog_allowed_mask only when SOFTLOCKUP_DETECTOR is enabled.
+Le 05/11/2020 à 23:30, Scott Cheloha a écrit :
+> Add a non-NUMA definition for of_drconf_to_nid_single() to topology.h
+> so we have one even if powerpc/mm/numa.c is not compiled.  On a non-NUMA
+> kernel the appropriate node id is always first_online_node.
 > 
-> Fixes: 7feeb9cd4f5b ("watchdog/sysctl: Clean up sysctl variable name space")
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Reviewed-by: Petr Mladek <pmladek@suse.com>
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+> Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Fixes: 72cdd117c449 ("pseries/hotplug-memory: hot-add: skip redundant LMB lookup")
 
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
 > ---
-> v2:
-> Added Petr's reviewed-by from [1] and add fixes tag as suggested by Christophe.
+> v1: Initial patch.
 > 
-> [1]: https://lkml.org/lkml/2020/8/20/1030
+> v2: Incorporate suggested cleanups from Christophe Leroy.
 > 
->   kernel/watchdog.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   arch/powerpc/include/asm/topology.h | 12 +++++++++---
+>   1 file changed, 9 insertions(+), 3 deletions(-)
 > 
-> diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-> index 5abb5b22ad13..71109065bd8e 100644
-> --- a/kernel/watchdog.c
-> +++ b/kernel/watchdog.c
-> @@ -44,8 +44,6 @@ int __read_mostly soft_watchdog_user_enabled = 1;
->   int __read_mostly watchdog_thresh = 10;
->   static int __read_mostly nmi_watchdog_available;
+> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
+> index 8728590f514a..3beeb030cd78 100644
+> --- a/arch/powerpc/include/asm/topology.h
+> +++ b/arch/powerpc/include/asm/topology.h
+> @@ -6,6 +6,7 @@
 >   
-> -static struct cpumask watchdog_allowed_mask __read_mostly;
-> -
->   struct cpumask watchdog_cpumask __read_mostly;
->   unsigned long *watchdog_cpumask_bits = cpumask_bits(&watchdog_cpumask);
+>   struct device;
+>   struct device_node;
+> +struct drmem_lmb;
 >   
-> @@ -162,6 +160,8 @@ static void lockup_detector_update_enable(void)
->   int __read_mostly sysctl_softlockup_all_cpu_backtrace;
->   #endif
+>   #ifdef CONFIG_NUMA
 >   
-> +static struct cpumask watchdog_allowed_mask __read_mostly;
+> @@ -61,6 +62,9 @@ static inline int early_cpu_to_node(int cpu)
+>   	 */
+>   	return (nid < 0) ? 0 : nid;
+>   }
 > +
->   /* Global variables, exported for sysctl */
->   unsigned int __read_mostly softlockup_panic =
->   			CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC_VALUE;
+> +int of_drconf_to_nid_single(struct drmem_lmb *lmb);
+> +
+>   #else
+>   
+>   static inline int early_cpu_to_node(int cpu) { return 0; }
+> @@ -84,10 +88,12 @@ static inline int cpu_distance(__be32 *cpu1_assoc, __be32 *cpu2_assoc)
+>   	return 0;
+>   }
+>   
+> -#endif /* CONFIG_NUMA */
+> +static inline int of_drconf_to_nid_single(struct drmem_lmb *lmb)
+> +{
+> +	return first_online_node;
+> +}
+>   
+> -struct drmem_lmb;
+> -int of_drconf_to_nid_single(struct drmem_lmb *lmb);
+> +#endif /* CONFIG_NUMA */
+>   
+>   #if defined(CONFIG_NUMA) && defined(CONFIG_PPC_SPLPAR)
+>   extern int find_and_online_cpu_nid(int cpu);
 > 
