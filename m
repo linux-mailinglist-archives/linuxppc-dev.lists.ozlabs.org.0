@@ -1,40 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810752A9679
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 13:53:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D372A96E0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 14:17:44 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CSL0y15gxzDrLb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 23:53:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CSLXh3QshzDrM2
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Nov 2020 00:17:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
+ dmarc=pass (p=none dis=none) header.from=suse.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=M+tR/rKx; dkim-atps=neutral
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CSKy46ClFzDrJJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 23:51:07 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CSLRl1QX6zDrFK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Nov 2020 00:13:21 +1100 (AEDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1604668398;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/qFlNeW+fj9kPag6iPvAKbxfuQxHVIdXyO+NAnfQv1k=;
+ b=M+tR/rKxslTPuT6FfxTzbpuuxYbiZZG3CnqFYk93k8am/VLmSymRvyUiwOy4Hr5waPoLce
+ uQiZvPathsmCgazo7IfORam7PuE22q5xJHq/iNivwhCmxch4+MaufWlLk/oXEAcDNCMlcc
+ x3wJTN1WOECehMoqwdLrqgU3bZ/wBxo=
 Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 3B593ABDE;
- Fri,  6 Nov 2020 12:51:03 +0000 (UTC)
-Date: Fri, 6 Nov 2020 13:51:01 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Carl Jacobsen <cjacobsen@storix.com>
-Subject: Re: Kernel panic from malloc() on SUSE 15.1?
-Message-ID: <20201106125101.GS29778@kitsune.suse.cz>
-References: <CAKkwB_S6Bs_+5At2aajbQbJg==WE_4NLdhSK=Bj+td67215Htg@mail.gmail.com>
+ by mx2.suse.de (Postfix) with ESMTP id 6BB69AB8F;
+ Fri,  6 Nov 2020 13:13:18 +0000 (UTC)
+Date: Fri, 6 Nov 2020 14:13:17 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH 11/11 v3] ftrace: Add recording of functions that caused
+ recursion
+Message-ID: <20201106131317.GW20201@alley>
+References: <20201106023235.367190737@goodmis.org>
+ <20201106023548.102375687@goodmis.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAKkwB_S6Bs_+5At2aajbQbJg==WE_4NLdhSK=Bj+td67215Htg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20201106023548.102375687@goodmis.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,62 +58,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Anton Vorontsov <anton@enomsg.org>, linux-doc@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ live-patching@vger.kernel.org, Miroslav Benes <mbenes@suse.cz>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ Joe Lawrence <joe.lawrence@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Tony Luck <tony.luck@intel.com>,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Masami Hiramatsu <mhiramat@kernel.org>, Colin Cross <ccross@android.com>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 02, 2020 at 12:14:27PM -0800, Carl Jacobsen wrote:
-> I've got a SUSE 15.1 install (on ppc64le) that kernel panics on a very
-> simple
-> test program, built in a slightly unusual way.
+On Thu 2020-11-05 21:32:46, Steven Rostedt wrote:
+> From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
 > 
-> I'm compiling on SUSE 12, using gcc 4.8.3. I'm linking to a static
-> copy of libcrypto.a (from openssl-1.1.1g), built without threads.
-> I have a 10 line C test program that compiles and runs fine on the
-> SUSE 12 system. If I compile the same program on SUSE 15.1 (with
-> gcc 7.4.1), it runs fine on SUSE 15.1.
+> This adds CONFIG_FTRACE_RECORD_RECURSION that will record to a file
+> "recursed_functions" all the functions that caused recursion while a
+> callback to the function tracer was running.
 > 
-> But, if I run the version that I compiled on SUSE 12, on the SUSE 15.1
-> system, the call to RAND_status() gets to a malloc() and then panics.
-> (And, of course, if I just compile a call to malloc(), that runs fine
-> on both systems.) Here's the test program, it's really just a call to
-> RAND_status():
+> Changes since v2:
 > 
->     #include <stdio.h>
->     #include <openssl/rand.h>
-> 
->     int main(int argc, char **argv)
->     {
->         int has_enough_data = RAND_status();
->         printf("The PRNG %s been seeded with enough data\n",
->                has_enough_data ? "HAS" : "has NOT");
->         return 0;
->     }
-> 
-> openssl is configured/built with:
->     ./config no-shared no-dso no-threads -fPIC -ggdb3 -debug -static
->     make
-> 
-> and the test program is compiled with:
->     gcc -ggdb3 -o rand_test rand_test.c libcrypto.a
-> 
-> The kernel on SUSE 12 is: 3.12.28-4-default
-> And glibc is: 2.19
-> 
-> The kernel on SUSE 15.1 is: 4.12.14-197.18-default
-> And glibc is: 2.26
+>  - Use trace_recursion flags in current for protecting recursion of recursion recording
+>  - Make the recursion logic a little cleaner
+>  - Export GPL the recursion recording
 
-SLE 12 SP5 has pretty much the same kernel as SLE 15 SP1 and pretty much
-the same compiler as SLE 12 so it might be interesting data point to try
-there.
+JFYI, the code reading and writing the cache looks good to me.
 
-Also I saw you are using very old VIOS (which should not make much of a
-difference) but did not see what firmware version the machine has.
+It is still possible that some entries might stay unused (filled
+with zeroes) but it should be hard to hit in practice. It
+is good enough from my POV.
 
-There have been cases of mysterious crashes solved by updating the
-firmware.
+I do not give Reviewed-by tag just because I somehow do not have power
+to review the entire patch carefully enough at the moment.
 
-Thanks
-
-Michal
+Best Regards,
+Petr
