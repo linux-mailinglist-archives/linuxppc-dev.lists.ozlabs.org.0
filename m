@@ -1,103 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CC22A89DA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Nov 2020 23:32:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1516B2A8C50
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 02:52:42 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CRyv55RgwzDr7n
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 09:32:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CS3LG75l0zDrBJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 12:52:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=fossix.org
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=fossix.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=fossix-org.20150623.gappssmtp.com
+ header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=dJSDIAQ4; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CRysS6vLzzDr7W
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 09:30:52 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hRd62O3N; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4CRysS5khrz8tKX
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 09:30:52 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4CRysS4w3Bz9sTL; Fri,  6 Nov 2020 09:30:52 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=cheloha@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hRd62O3N; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4CRysR5h7dz9sTD
- for <linuxppc-dev@ozlabs.org>; Fri,  6 Nov 2020 09:30:50 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0A5LxR0s080593; Thu, 5 Nov 2020 17:30:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=8nFnAVkWVUToEVibzHOY2DIjx+gBUWwpXWRhVwXeeEQ=;
- b=hRd62O3NwqpqUMGxXitFGyZ7duLZ2bf3Qo3tLmINjek+0/HI+HMfd/8ldfI71iPTlU9s
- m+piQ7VQ7U04SuZ4dPWLGkAoKUXsQO4jV0mPK1XabS4WMOP4WuHKJodvB012G/YAnsvG
- i9m5RvGH2pZZnuk4+XzG082H1R+HqrWzaoc5upgjTIzX9HVE8HFUByqjqr2b/vCdxcBG
- axOxjQ5DquMTR2KYHIQEBcpeybbJgKNjYVKyYrhdnWSxomryJCYsxi14LK0RpA1VukFc
- zU3UQKeVbUggebBVumoir3/fX8KyjAaxXiYOlj2dXhUfofjp/jhA4h8TYhlUiPAQDy7L FA== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34mfdgqrmp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Nov 2020 17:30:42 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0A5MLZR3011440;
- Thu, 5 Nov 2020 22:30:41 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma02dal.us.ibm.com with ESMTP id 34h0230equ-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Nov 2020 22:30:41 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0A5MUeVS11207222
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Nov 2020 22:30:40 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CDB52112062;
- Thu,  5 Nov 2020 22:30:40 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B28B112066;
- Thu,  5 Nov 2020 22:30:40 +0000 (GMT)
-Received: from rascal.austin.ibm.com (unknown [9.41.179.32])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu,  5 Nov 2020 22:30:40 +0000 (GMT)
-From: Scott Cheloha <cheloha@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v2] powerpc: topology.h: fix build when CONFIG_NUMA=n
-Date: Thu,  5 Nov 2020 16:30:40 -0600
-Message-Id: <20201105223040.3612663-1-cheloha@linux.ibm.com>
-X-Mailer: git-send-email 2.28.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CS3JS408rzDr9K
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 12:51:00 +1100 (AEDT)
+Received: by mail-pg1-x541.google.com with SMTP id z24so2717997pgk.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Nov 2020 17:51:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fossix-org.20150623.gappssmtp.com; s=20150623;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Bj6mkx33Lq/FHGsQAOAgb5U1Gocj2AWp9p/LUe5BWp8=;
+ b=dJSDIAQ4jjGcjcwaGzD4ZlAgYa8IwO3UwpSqFuY5q1tqQ8YRaMwCROu6Z1Fi/kSKWZ
+ kh5MDjJCfnikopT+pSVxRZ3lKpXCRX2qct8rM7z28kMJQjReAIjgBQTyT3QqiLZhD/XS
+ m3jDBk611UGuEwdMjMTbPRB4DrujBFJp1reelkTeOSqLS0l0aFYuFBAZgRhYWjhVO7/x
+ GPD9q6yOyriLPW70UHANSIxeF2KNx7HFXcRrNfGBKZZCX7GjjElp3zk4ZRGW9zr6hiLw
+ 3EzeuWvXWtCB1szarGWa2rtkTqoXroG2SymZzt4DooAVwIGgH05sm5cR2WLt1WGLmdeI
+ hZPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Bj6mkx33Lq/FHGsQAOAgb5U1Gocj2AWp9p/LUe5BWp8=;
+ b=mm/mqk6XPeBQuiSXthYlH5nYj5VbeJ2MEig+0FYcQmkv0ELGL4OS4+72EM8s9882Vf
+ yZRE80/4b2IV0tRA0JvtohRINDs5HMmK04a8CU2w4Ps8OG6vGGc+SLKWU+9DBqUAtOlP
+ MxhWdLk+vs4X3PYieKsV2aBIavp6jPHpFjrw3LEx2paVmgVIEV7on56+wYpb3HqyitjH
+ QHfd2UlG7EVEOzLAWF4HKTgHxDLni/df4S7XCdTlHtcJVEv4lH5wH2j7i38YFKhJNrvb
+ MQahml20Q1Onof2PtHxqQudoSF/kflgattBMyFbA8efu+9QCFdaXRK4H6Tv4RpSiFfls
+ 96ig==
+X-Gm-Message-State: AOAM532ALOmj1dIMOcLfVQ+Yk26xYhclvSHgOUAdkjnnBM2zixRoFwud
+ iEgwo/Tfgb4EcFBreMnyHiWgbw==
+X-Google-Smtp-Source: ABdhPJxFllSk+4bISm4qJozdEm6dyBslXlrnbGUbz/i9CXI3UfQKVNdIX6iL6/tDtNeNJMYIYT7Epg==
+X-Received: by 2002:a62:5e06:0:b029:164:a9ca:b07e with SMTP id
+ s6-20020a625e060000b0290164a9cab07emr4710392pfb.36.1604627456277; 
+ Thu, 05 Nov 2020 17:50:56 -0800 (PST)
+Received: from santosiv.in.ibm.com.com ([103.21.79.4])
+ by smtp.gmail.com with ESMTPSA id v3sm3357050pju.38.2020.11.05.17.50.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Nov 2020 17:50:55 -0800 (PST)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Linux Kernel <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH v2] kernel/watchdog: Fix watchdog_allowed_mask not used warning
+Date: Fri,  6 Nov 2020 07:20:25 +0530
+Message-Id: <20201106015025.1281561-1-santosh@fossix.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-05_15:2020-11-05,
- 2020-11-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0
- mlxlogscore=999 spamscore=0 mlxscore=0 lowpriorityscore=0
- priorityscore=1501 impostorscore=0 clxscore=1011 phishscore=0 adultscore=0
- suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011050139
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,65 +80,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Laurent Dufour <ldufour@linux.vnet.ibm.com>, kernel test robot <lkp@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Petr Mladek <pmladek@suse.com>,
+ Santosh Sivaraj <santosh@fossix.org>, Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a non-NUMA definition for of_drconf_to_nid_single() to topology.h
-so we have one even if powerpc/mm/numa.c is not compiled.  On a non-NUMA
-kernel the appropriate node id is always first_online_node.
+Define watchdog_allowed_mask only when SOFTLOCKUP_DETECTOR is enabled.
 
-Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Fixes: 72cdd117c449 ("pseries/hotplug-memory: hot-add: skip redundant LMB lookup")
+Fixes: 7feeb9cd4f5b ("watchdog/sysctl: Clean up sysctl variable name space")
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
 ---
-v1: Initial patch.
+v2:
+Added Petr's reviewed-by from [1] and add fixes tag as suggested by Christophe.
 
-v2: Incorporate suggested cleanups from Christophe Leroy.
+[1]: https://lkml.org/lkml/2020/8/20/1030
 
- arch/powerpc/include/asm/topology.h | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ kernel/watchdog.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
-index 8728590f514a..3beeb030cd78 100644
---- a/arch/powerpc/include/asm/topology.h
-+++ b/arch/powerpc/include/asm/topology.h
-@@ -6,6 +6,7 @@
+diff --git a/kernel/watchdog.c b/kernel/watchdog.c
+index 5abb5b22ad13..71109065bd8e 100644
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -44,8 +44,6 @@ int __read_mostly soft_watchdog_user_enabled = 1;
+ int __read_mostly watchdog_thresh = 10;
+ static int __read_mostly nmi_watchdog_available;
  
- struct device;
- struct device_node;
-+struct drmem_lmb;
+-static struct cpumask watchdog_allowed_mask __read_mostly;
+-
+ struct cpumask watchdog_cpumask __read_mostly;
+ unsigned long *watchdog_cpumask_bits = cpumask_bits(&watchdog_cpumask);
  
- #ifdef CONFIG_NUMA
+@@ -162,6 +160,8 @@ static void lockup_detector_update_enable(void)
+ int __read_mostly sysctl_softlockup_all_cpu_backtrace;
+ #endif
  
-@@ -61,6 +62,9 @@ static inline int early_cpu_to_node(int cpu)
- 	 */
- 	return (nid < 0) ? 0 : nid;
- }
++static struct cpumask watchdog_allowed_mask __read_mostly;
 +
-+int of_drconf_to_nid_single(struct drmem_lmb *lmb);
-+
- #else
- 
- static inline int early_cpu_to_node(int cpu) { return 0; }
-@@ -84,10 +88,12 @@ static inline int cpu_distance(__be32 *cpu1_assoc, __be32 *cpu2_assoc)
- 	return 0;
- }
- 
--#endif /* CONFIG_NUMA */
-+static inline int of_drconf_to_nid_single(struct drmem_lmb *lmb)
-+{
-+	return first_online_node;
-+}
- 
--struct drmem_lmb;
--int of_drconf_to_nid_single(struct drmem_lmb *lmb);
-+#endif /* CONFIG_NUMA */
- 
- #if defined(CONFIG_NUMA) && defined(CONFIG_PPC_SPLPAR)
- extern int find_and_online_cpu_nid(int cpu);
+ /* Global variables, exported for sysctl */
+ unsigned int __read_mostly softlockup_panic =
+ 			CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC_VALUE;
 -- 
-2.28.0
+2.26.2
 
