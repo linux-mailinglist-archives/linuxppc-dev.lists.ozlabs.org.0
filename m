@@ -2,70 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EACF2A8E7F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 05:55:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C312A8E87
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 06:00:41 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CS7P05qtmzDrFH
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 15:55:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CS7W953fvzDqCC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Nov 2020 16:00:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tTWsEdEF; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=pGB2ej3X; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CS7MP03NBzDr6P
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 15:53:50 +1100 (AEDT)
-Received: by mail-pl1-x644.google.com with SMTP id t6so96931plq.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Nov 2020 20:53:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=gRftrkL/jJqs1mHTuiclABYaqtYMMZ47EoJz30mOZHI=;
- b=tTWsEdEFIY+PBWODdqr0Yo3x0WKDSM2vPxmKlT/+UtajzucMsdNhQC24T59GtamsVi
- 9nLuGdmD98EktYw7tOhwO2797fZo/Sqf/TqT4VyPrlzcJXduPO77u4Ytr9WW1CfNIO3l
- 1i0zqHgKBPtj6Q4erzMy5PtxRny5pmD6oppmSQ+bYjHCOLL499DZ9x2tJVIscBdMBflX
- zfPUWkhcKAQsYUj8iE5yipPFINPjSgsaHudVF7GGPgBuinkbJjFTQExOVUsBuyr//ZPt
- sfp5ume21wFd1HYb7aasSCjlP3iXyppI0AuIeBYtYjwFrkgoZadsQAO2QKoVkKXfBQOT
- PDeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=gRftrkL/jJqs1mHTuiclABYaqtYMMZ47EoJz30mOZHI=;
- b=COh2/jPSTH4KkX8PO1HejZxkfE6+3ppBdbCqMrANnBuJ1ZxptwgPEyNIC50jueQkVR
- LCd3J3fOjtr8YFtosK6trWRHghlBCEZHeEZGXUCf6YmClSQ2aJ2xF2Gxo+LOw5cJgdC0
- nzTG6Uw2soyLfk04pfeVEywh91qxXvj1J4gBte/kBRlzBdBDLFwexd3PqmdGXNqa/vR4
- eG20heA97f6O/GWE0b3kmGKyjx6lHlSgdPZfyWUunAIE0eVPh/pmJewuQHQvUSARwzjj
- okrlc8bj0xuv1d9Raq09YBXq1+xD09YQrhfKUyGm9mSSV0SI7pvfRuNAxD2Ik09bw1k2
- 7GBQ==
-X-Gm-Message-State: AOAM530BpPN0Y/KXL7JqQPNdWM2DLXoMvA4ALDf6ZuKbu4p1EGw76mcC
- NzRuNAYpsfI51CBin//WwXNf5ZrVcOg=
-X-Google-Smtp-Source: ABdhPJxz7IRFBrlgndg/y8WZEQE+MbOEwzSb0Az+uWdYLlOmIPpJV9y4LteOf06iepJzYz0WkjZPOQ==
-X-Received: by 2002:a17:902:324:b029:d6:ba15:90bc with SMTP id
- 33-20020a1709020324b02900d6ba1590bcmr395627pld.29.1604638426856; 
- Thu, 05 Nov 2020 20:53:46 -0800 (PST)
-Received: from bobo.ibm.com (27-32-36-31.tpgi.com.au. [27.32.36.31])
- by smtp.gmail.com with ESMTPSA id n7sm59773pgk.70.2020.11.05.20.53.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Nov 2020 20:53:46 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s: Remove MSR[ISF] bit
-Date: Fri,  6 Nov 2020 14:53:40 +1000
-Message-Id: <20201106045340.1935841-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CS7Sx2827zDrBs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Nov 2020 15:58:40 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0A64WC9M171511; Thu, 5 Nov 2020 23:58:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=6RahEEUHzIitoZFIS4fDGrc212n/iL/hejxb9iFzZrA=;
+ b=pGB2ej3XF/+wztMQ4VW7RfdhBEGpL2b3cr5VEDDItl1DBSNw9nbs6ikb5CCTBPCh5GXq
+ 6WDCxQkfeFk3jXC02YDf/6lFaL6FaYXk/eu44EZK5m7mP22HKJor3cx16f4ww5LrXUoI
+ nU7VEwS5Khki4PzEcsUiQ+leQFmAwnhbe1ZrBUFrCorxoVqbYXw6KU0yx2xnvNwXumL7
+ wyFsQTt/mYaqYK42ObGYzCP6sxzz2kXOwx8/8Gt3g4ShHcPOZxQbfXXBfuTDr8BnvrcH
+ gmtMcj8TWgU4uouVZqk+plp5WG/EAP3sBskx8JRb+IWA2UP78HZZoLjcP0F3BdiU+PDu Hw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 34mnyhxu28-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 Nov 2020 23:58:30 -0500
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0A64WFPT171772;
+ Thu, 5 Nov 2020 23:58:29 -0500
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 34mnyhxu1t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 Nov 2020 23:58:29 -0500
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0A64wSuQ012781;
+ Fri, 6 Nov 2020 04:58:28 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 34h01udur4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Nov 2020 04:58:27 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0A64wPbw5440054
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 6 Nov 2020 04:58:25 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1B3235204E;
+ Fri,  6 Nov 2020 04:58:25 +0000 (GMT)
+Received: from bangoria.ibmuc.com (unknown [9.199.43.151])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id D98CD52052;
+ Fri,  6 Nov 2020 04:58:22 +0000 (GMT)
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v3] powerpc/watchpoint: Workaround P10 DD1 issue with VSX-32
+ byte instructions
+Date: Fri,  6 Nov 2020 10:26:50 +0530
+Message-Id: <20201106045650.278987-1-ravi.bangoria@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-06_01:2020-11-05,
+ 2020-11-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 phishscore=0 impostorscore=0
+ lowpriorityscore=0 mlxlogscore=999 mlxscore=0 adultscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011060026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,98 +98,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: christophe.leroy@c-s.fr, ravi.bangoria@linux.ibm.com, mikey@linux.ibm.com,
+ jniethe5@gmail.com, npiggin@gmail.com, maddy@linux.ibm.com, paulus@samba.org,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-No supported processor implements this mode. Setting the bit in
-MSR values can be a bit confusing (and would prevent the bit from
-ever being reused). Remove it.
+POWER10 DD1 has an issue where it generates watchpoint exceptions when
+it shouldn't. The conditions where this occur are:
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+ - octword op
+ - ending address of DAWR range is less than starting address of op
+ - those addresses need to be in the same or in two consecutive 512B
+   blocks
+ - 'op address + 64B' generates an address that has a carry into bit
+   52 (crosses 2K boundary)
+
+Handle such spurious exception by considering them as extraneous and
+emulating/single-steeping instruction without generating an event.
+
+Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+[Fixed build warning reported by kernel test robot]
+Reported-by: kernel test robot <lkp@intel.com>
 ---
- arch/powerpc/include/asm/reg.h | 5 +----
- arch/powerpc/kernel/entry_64.S | 2 +-
- arch/powerpc/kernel/head_64.S  | 3 +--
- arch/powerpc/kvm/book3s_pr.c   | 2 +-
- 4 files changed, 4 insertions(+), 8 deletions(-)
+v2->v3:
+ - v2: https://lore.kernel.org/r/20201022034039.330365-1-ravi.bangoria@linux.ibm.com
+ - Drop first patch which introduced CPU_FTRS_POWER10_DD1. Instead use
+   P1 DD1 PVR direclty in if condition. We can't set CPU_FTRS_POWER10_DD1
+   inside guest as guest can be migrated to futur version of cpu.
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index f877a576b338..8885fbf4285b 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -29,7 +29,6 @@
- #include <asm/reg_8xx.h>
+Dependency: VSX-32 byte emulation support patches
+  https://lore.kernel.org/r/20201011050908.72173-1-ravi.bangoria@linux.ibm.com
+
+ arch/powerpc/kernel/hw_breakpoint.c | 68 ++++++++++++++++++++++++++++-
+ 1 file changed, 66 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
+index 1f4a1efa0074..67297aea5d94 100644
+--- a/arch/powerpc/kernel/hw_breakpoint.c
++++ b/arch/powerpc/kernel/hw_breakpoint.c
+@@ -644,6 +644,11 @@ static bool is_larx_stcx_instr(int type)
+ 	return type == LARX || type == STCX;
+ }
  
- #define MSR_SF_LG	63              /* Enable 64 bit mode */
--#define MSR_ISF_LG	61              /* Interrupt 64b mode valid on 630 */
- #define MSR_HV_LG 	60              /* Hypervisor state */
- #define MSR_TS_T_LG	34		/* Trans Mem state: Transactional */
- #define MSR_TS_S_LG	33		/* Trans Mem state: Suspended */
-@@ -69,13 +68,11 @@
++static bool is_octword_vsx_instr(int type, int size)
++{
++	return ((type == LOAD_VSX || type == STORE_VSX) && size == 32);
++}
++
+ /*
+  * We've failed in reliably handling the hw-breakpoint. Unregister
+  * it and throw a warning message to let the user know about it.
+@@ -694,6 +699,58 @@ static bool stepping_handler(struct pt_regs *regs, struct perf_event **bp,
+ 	return true;
+ }
  
- #ifdef CONFIG_PPC64
- #define MSR_SF		__MASK(MSR_SF_LG)	/* Enable 64 bit mode */
--#define MSR_ISF		__MASK(MSR_ISF_LG)	/* Interrupt 64b mode valid on 630 */
- #define MSR_HV 		__MASK(MSR_HV_LG)	/* Hypervisor state */
- #define MSR_S		__MASK(MSR_S_LG)	/* Secure state */
- #else
- /* so tests for these bits fail on 32-bit */
- #define MSR_SF		0
--#define MSR_ISF		0
- #define MSR_HV		0
- #define MSR_S		0
- #endif
-@@ -134,7 +131,7 @@
- #define MSR_64BIT	MSR_SF
++static void handle_p10dd1_spurious_exception(struct arch_hw_breakpoint **info,
++					     int *hit, unsigned long ea)
++{
++	int i;
++	unsigned long hw_end_addr;
++
++	/*
++	 * Handle spurious exception only when any bp_per_reg is set.
++	 * Otherwise this might be created by xmon and not actually a
++	 * spurious exception.
++	 */
++	for (i = 0; i < nr_wp_slots(); i++) {
++		if (!info[i])
++			continue;
++
++		hw_end_addr = ALIGN(info[i]->address + info[i]->len, HW_BREAKPOINT_SIZE);
++
++		/*
++		 * Ending address of DAWR range is less than starting
++		 * address of op.
++		 */
++		if ((hw_end_addr - 1) >= ea)
++			continue;
++
++		/*
++		 * Those addresses need to be in the same or in two
++		 * consecutive 512B blocks;
++		 */
++		if (((hw_end_addr - 1) >> 10) != (ea >> 10))
++			continue;
++
++		/*
++		 * 'op address + 64B' generates an address that has a
++		 * carry into bit 52 (crosses 2K boundary).
++		 */
++		if ((ea & 0x800) == ((ea + 64) & 0x800))
++			continue;
++
++		break;
++	}
++
++	if (i == nr_wp_slots())
++		return;
++
++	for (i = 0; i < nr_wp_slots(); i++) {
++		if (info[i]) {
++			hit[i] = 1;
++			info[i]->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
++		}
++	}
++}
++
+ int hw_breakpoint_handler(struct die_args *args)
+ {
+ 	bool err = false;
+@@ -752,8 +809,15 @@ int hw_breakpoint_handler(struct die_args *args)
+ 		goto reset;
  
- /* Server variant */
--#define __MSR		(MSR_ME | MSR_RI | MSR_IR | MSR_DR | MSR_ISF |MSR_HV)
-+#define __MSR		(MSR_ME | MSR_RI | MSR_IR | MSR_DR | MSR_HV)
- #ifdef __BIG_ENDIAN__
- #define MSR_		__MSR
- #define MSR_IDLE	(MSR_ME | MSR_SF | MSR_HV)
-diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-index 2f3846192ec7..479fb58844fa 100644
---- a/arch/powerpc/kernel/entry_64.S
-+++ b/arch/powerpc/kernel/entry_64.S
-@@ -967,7 +967,7 @@ _GLOBAL(enter_prom)
- 	mtsrr1	r11
- 	rfi
- #else /* CONFIG_PPC_BOOK3E */
--	LOAD_REG_IMMEDIATE(r12, MSR_SF | MSR_ISF | MSR_LE)
-+	LOAD_REG_IMMEDIATE(r12, MSR_SF | MSR_LE)
- 	andc	r11,r11,r12
- 	mtsrr1	r11
- 	RFI_TO_KERNEL
-diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
-index 1510b2a56669..4e2591cb4bd1 100644
---- a/arch/powerpc/kernel/head_64.S
-+++ b/arch/powerpc/kernel/head_64.S
-@@ -865,8 +865,7 @@ enable_64b_mode:
- 	oris	r11,r11,0x8000		/* CM bit set, we'll set ICM later */
- 	mtmsr	r11
- #else /* CONFIG_PPC_BOOK3E */
--	li	r12,(MSR_64BIT | MSR_ISF)@highest
--	sldi	r12,r12,48
-+	LOAD_REG_IMMEDIATE(r12, MSR_64BIT)
- 	or	r11,r11,r12
- 	mtmsrd	r11
- 	isync
-diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
-index b1fefa63e125..913944dc3620 100644
---- a/arch/powerpc/kvm/book3s_pr.c
-+++ b/arch/powerpc/kvm/book3s_pr.c
-@@ -239,7 +239,7 @@ static void kvmppc_recalc_shadow_msr(struct kvm_vcpu *vcpu)
- 	smsr |= (guest_msr & vcpu->arch.guest_owned_ext);
- 	/* 64-bit Process MSR values */
- #ifdef CONFIG_PPC_BOOK3S_64
--	smsr |= MSR_ISF | MSR_HV;
-+	smsr |= MSR_HV;
- #endif
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	if (!nr_hit) {
+-		rc = NOTIFY_DONE;
+-		goto out;
++		/* Workaround for Power10 DD1 */
++		if (mfspr(SPRN_PVR) == 0x800100 &&
++		    !IS_ENABLED(CONFIG_PPC_8xx) &&
++		    is_octword_vsx_instr(type, size)) {
++			handle_p10dd1_spurious_exception(info, hit, ea);
++		} else {
++			rc = NOTIFY_DONE;
++			goto out;
++		}
+ 	}
+ 
  	/*
 -- 
-2.23.0
+2.25.1
 
