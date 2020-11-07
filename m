@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0A32AA235
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Nov 2020 03:34:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 527D12AA24D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Nov 2020 04:25:04 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CShD35v07zDrc1
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Nov 2020 13:34:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CSjLP3FYVzDrS2
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Nov 2020 14:25:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e;
+ helo=mail-pg1-x52e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=byvfaY7w; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ header.s=20161025 header.b=c2wpo2Ep; dkim-atps=neutral
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
+ [IPv6:2607:f8b0:4864:20::52e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CShBk1J1nzDrNd
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Nov 2020 13:33:16 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id z3so3269439pfb.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Nov 2020 18:33:16 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CSjJv4003zDrMJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Nov 2020 14:23:39 +1100 (AEDT)
+Received: by mail-pg1-x52e.google.com with SMTP id g12so2595719pgm.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Nov 2020 19:23:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=M+OZ9dSXkNxu4JlShNclpExiN+NyxXuU3Pm2bEISfUk=;
- b=byvfaY7wEFbR5uZ/Y4NdEWKfwWZa+fLqgyd9C7IiTQ8e5sydI8X+hn2x89Kh8TNQXc
- ky7OFJB173VmzYd4qMfI1fBXh+kusg9DpWl1JUtZ+YxZakHi4pHohZDJohAaQ8s4vrSo
- Ush9YxIa6EV9xwRwd9GwO0d+J4VF+SedVTLLUiutPJNeTyjYg8rCQwIZjGyBUM9WauT5
- 3VcLihlOw9jFF4XLjNUfrhHegA/P+FIfgzCYYXqccAaXvB2lT1hRQXuH2IuxRm9WPwsk
- l2PYO+YpBpbzGgJ1YmCSdW837ROwN1Dios19S1hAdN3+slCG1n8QlssVl4TxY5RBDTZN
- g2fg==
+ bh=KKoAHCKBducc9sWMCwxZPDrUdE5qFeU8cbx3z3OZVGA=;
+ b=c2wpo2EpOSXz3Ri7zi2JcjSzWgcfP8yek2ha/Bx7TUGhsOiYTAZKFMjqiJhtbC37Dn
+ x0zhjKj5HJU/04SyBKcZQhW7LSxhvGtTa6vgt9WeoKCZZjS7ztEKX+GGe+SvZ1peMN9z
+ ZPD6ejNRo0xVWpmCfgoqmk3LtZ7LDxSMBRx4tB7VQkCv6zZYy15Em3TJdfFAp+t7ROMA
+ uv5W7haQVuRaK4ZtIhp8R1grEvZpwgZk1+7SyauarygQ/7UUgLB6JcU2VJYD2g4W5RRp
+ kuGIAnfckP/WvvL4JuWC+sHgTKG+V9ZtJJ5VLeXZUn3aijyxv2cvoqq3F1CeE5nalvkl
+ LmBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=M+OZ9dSXkNxu4JlShNclpExiN+NyxXuU3Pm2bEISfUk=;
- b=NsP6OM3/ZmW3yqf7+o6G0J/el3xK42JGsLbOF+xS+TtYS21PTjh3VBHnn1jug1mZQZ
- ct83o705QhNgs/X3i6I8o43LWmKMldGHa5VhEkZlfVNroZI4GcIUmJ3vJpNyJzx7Hy5q
- Sw6H1mLjGzpBE3s6DHlyuAbZdgOx2SgsPRM5YcJWIchJdDIyGuSPWVHgAcZfcIqMxzSh
- 7uY3s6UlSIOnzZQ50j4UOHk2vPCuucJTBUwfb11Mv1SH1T8RNE/2KpuC2xA/Hfz4s+BP
- 376rDgc/R932nUlNPvfDGQR6c3wEdW9k0mkR/L6eiRFzGcYki89n5lnycYiz7sxGnG8m
- i5/w==
-X-Gm-Message-State: AOAM532zvcbu/nSpw1th9ziyFEb2f3gggvj42cSpEdPGTTCg/cNI9t63
- 3kFpxWa/m7PZKF25dxF2JYH2qAhsaGc=
-X-Google-Smtp-Source: ABdhPJyyERBZQDY16JTMYp63j1HD3lT75wivhQMNjbS0xbYkXaMUYhYB4lcZb1tdqkr0n07zCRjCJg==
-X-Received: by 2002:a65:5289:: with SMTP id y9mr4098984pgp.386.1604716392119; 
- Fri, 06 Nov 2020 18:33:12 -0800 (PST)
+ bh=KKoAHCKBducc9sWMCwxZPDrUdE5qFeU8cbx3z3OZVGA=;
+ b=noBzhbMQKatWZYQAAZ7hKsMEOJ6Mwfp8Ha+KfYTjN7oTMG22QCnck885ziQNqq5lQM
+ 2G8jD0c/qEQziOrbsFVv3Zx+az23xpk8DDWgkHFDtdXdC7TEIONZwAUZ1mhlARgl/poI
+ D54zgrOaxx3hPUwjOroWAyPTKqGzhba4k4Hjx1r/8xy9df6gd1Yv+AE6f3R3wNJG+FuU
+ RWbQnrSXUUkh32OYOYc0GAq5FbcDU10yMIm000zYLj2YDFR8jC5yinaKAKUT5uMCeNIA
+ 9FwAdGkZkRvGcIS/K/IrAOSSgmf77rNvp/wSPxdEw1wtO6cZlj+6Q7f75g/pLv6kXPwr
+ bdvw==
+X-Gm-Message-State: AOAM531i5Jnh9spa1P73P3CVg/CozxRhcRftf07YoP3SkvpOe5r0tYHq
+ D0rnAodSctarC7Yh1RgLcp1otYF7rbA=
+X-Google-Smtp-Source: ABdhPJyGMp82HHr1qe1IQEqJ7IM92F0JU7SQuNfxJsf6va2tYSIGhtqYL+Pvuc0aHPbY2LPdD5+LBg==
+X-Received: by 2002:a63:2b4f:: with SMTP id r76mr4008037pgr.194.1604719415523; 
+ Fri, 06 Nov 2020 19:23:35 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (27-32-36-31.tpgi.com.au. [27.32.36.31])
- by smtp.gmail.com with ESMTPSA id d2sm3801720pjj.37.2020.11.06.18.33.10
+ by smtp.gmail.com with ESMTPSA id w4sm4136436pjh.14.2020.11.06.19.23.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Nov 2020 18:33:11 -0800 (PST)
+ Fri, 06 Nov 2020 19:23:34 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH] powerpc: show registers when unwinding interrupt frames
-Date: Sat,  7 Nov 2020 12:33:05 +1000
-Message-Id: <20201107023305.2384874-1-npiggin@gmail.com>
+Subject: [PATCH] powerpc: add compile-time support for lbarx, lwarx
+Date: Sat,  7 Nov 2020 13:23:28 +1000
+Message-Id: <20201107032328.2454582-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -81,121 +81,340 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It's often useful to know the register state for interrupts in
-the stack frame. In the below example (with this patch applied),
-the important information is the state of the page fault.
-
-A blatant case like this probably rather should have the page
-fault regs passed down to the warning, but quite often there are
-less obvious cases where an interrupt shows up that might give
-some more clues.
-
-The downside is longer and more complex bug output.
-
-  Bug: Write fault blocked by AMR!
-  WARNING: CPU: 0 PID: 72 at arch/powerpc/include/asm/book3s/64/kup-radix.h:164 __do_page_fault+0x880/0xa90
-  Modules linked in:
-  CPU: 0 PID: 72 Comm: systemd-gpt-aut Not tainted
-  NIP:  c00000000006e2f0 LR: c00000000006e2ec CTR: 0000000000000000
-  REGS: c00000000a4f3420 TRAP: 0700
-  MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 28002840  XER: 20040000
-  CFAR: c000000000128be0 IRQMASK: 3
-  GPR00: c00000000006e2ec c00000000a4f36c0 c0000000014f0700 0000000000000020
-  GPR04: 0000000000000001 c000000001290f50 0000000000000001 c000000001290f80
-  GPR08: c000000001612b08 0000000000000000 0000000000000000 00000000ffffe0f7
-  GPR12: 0000000048002840 c0000000016e0000 c00c000000021c80 c000000000fd6f60
-  GPR16: 0000000000000000 c00000000a104698 0000000000000003 c0000000087f0000
-  GPR20: 0000000000000100 c0000000070330b8 0000000000000000 0000000000000004
-  GPR24: 0000000002000000 0000000000000300 0000000002000000 c00000000a5b0c00
-  GPR28: 0000000000000000 000000000a000000 00007fffb2a90038 c00000000a4f3820
-  NIP [c00000000006e2f0] __do_page_fault+0x880/0xa90
-  LR [c00000000006e2ec] __do_page_fault+0x87c/0xa90
-  Call Trace:
-  [c00000000a4f36c0] [c00000000006e2ec] __do_page_fault+0x87c/0xa90 (unreliable)
-  [c00000000a4f3780] [c000000000e1c034] do_page_fault+0x34/0x90
-  [c00000000a4f37b0] [c000000000008908] data_access_common_virt+0x158/0x1b0
-  --- interrupt: 300 at __copy_tofrom_user_base+0x9c/0x5a4
-  NIP:  c00000000009b028 LR: c000000000802978 CTR: 0000000000000800
-  REGS: c00000000a4f3820 TRAP: 0300
-  MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24004840  XER: 00000000
-  CFAR: c00000000009aff4 DAR: 00007fffb2a90038 DSISR: 0a000000 IRQMASK: 0
-  GPR00: 0000000000000000 c00000000a4f3ac0 c0000000014f0700 00007fffb2a90028
-  GPR04: c000000008720010 0000000000010000 0000000000000000 0000000000000000
-  GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000001
-  GPR12: 0000000000004000 c0000000016e0000 c00c000000021c80 c000000000fd6f60
-  GPR16: 0000000000000000 c00000000a104698 0000000000000003 c0000000087f0000
-  GPR20: 0000000000000100 c0000000070330b8 0000000000000000 0000000000000004
-  GPR24: c00000000a4f3c80 c000000008720000 0000000000010000 0000000000000000
-  GPR28: 0000000000010000 0000000008720000 0000000000010000 c000000001515b98
-  NIP [c00000000009b028] __copy_tofrom_user_base+0x9c/0x5a4
-  LR [c000000000802978] copyout+0x68/0xc0
-  --- interrupt: 300
-  [c00000000a4f3af0] [c0000000008074b8] copy_page_to_iter+0x188/0x540
-  [c00000000a4f3b50] [c00000000035c678] generic_file_buffered_read+0x358/0xd80
-  [c00000000a4f3c40] [c0000000004c1e90] blkdev_read_iter+0x50/0x80
-  [c00000000a4f3c60] [c00000000045733c] new_sync_read+0x12c/0x1c0
-  [c00000000a4f3d00] [c00000000045a1f0] vfs_read+0x1d0/0x240
-  [c00000000a4f3d50] [c00000000045a7f4] ksys_read+0x84/0x140
-  [c00000000a4f3da0] [c000000000033a60] system_call_exception+0x100/0x280
-  [c00000000a4f3e10] [c00000000000c508] system_call_common+0xf8/0x2f8
-  Instruction dump:
-  eae10078 3be0000b 4bfff890 60420000 792917e1 4182ff18 3c82ffab 3884a5e0
-  3c62ffab 3863a6e8 480ba891 60000000 <0fe00000> 3be0000b 4bfff860 e93c0938
+ISA v2.06 (POWER7 and up) as well as e6500 support lbarx and lwarx.
+Add a compile option that allows code to use it, and add support in
+cmpxchg and xchg 8 and 16 bit values.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/process.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ arch/powerpc/Kconfig                   |   3 +
+ arch/powerpc/include/asm/cmpxchg.h     | 236 ++++++++++++++++++++++++-
+ arch/powerpc/platforms/Kconfig.cputype |   5 +
+ 3 files changed, 243 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index ea36a29c8b01..799f00b32f74 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1475,12 +1475,10 @@ static void print_msr_bits(unsigned long val)
- #define LAST_VOLATILE	12
- #endif
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index e9f13fe08492..d231af06f75a 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -266,6 +266,9 @@ config PPC_BARRIER_NOSPEC
+ 	default y
+ 	depends on PPC_BOOK3S_64 || PPC_FSL_BOOK3E
  
--void show_regs(struct pt_regs * regs)
-+static void __show_regs(struct pt_regs *regs)
- {
- 	int i, trap;
++config PPC_LBARX_LWARX
++	bool
++
+ config EARLY_PRINTK
+ 	bool
+ 	default y
+diff --git a/arch/powerpc/include/asm/cmpxchg.h b/arch/powerpc/include/asm/cmpxchg.h
+index cf091c4c22e5..17fd996dc0d4 100644
+--- a/arch/powerpc/include/asm/cmpxchg.h
++++ b/arch/powerpc/include/asm/cmpxchg.h
+@@ -77,10 +77,76 @@ u32 __cmpxchg_##type##sfx(volatile void *p, u32 old, u32 new)	\
+  * the previous value stored there.
+  */
  
--	show_regs_print_info(KERN_DEFAULT);
--
- 	printk("NIP:  "REG" LR: "REG" CTR: "REG"\n",
- 	       regs->nip, regs->link, regs->ctr);
- 	printk("REGS: %px TRAP: %04lx   %s  (%s)\n",
-@@ -1522,6 +1520,12 @@ void show_regs(struct pt_regs * regs)
- 		printk("NIP ["REG"] %pS\n", regs->nip, (void *)regs->nip);
- 		printk("LR ["REG"] %pS\n", regs->link, (void *)regs->link);
- 	}
++#ifndef CONFIG_PPC_LBARX_LWARX
+ XCHG_GEN(u8, _local, "memory");
+ XCHG_GEN(u8, _relaxed, "cc");
+ XCHG_GEN(u16, _local, "memory");
+ XCHG_GEN(u16, _relaxed, "cc");
++#else
++static __always_inline unsigned long
++__xchg_u8_local(volatile void *p, unsigned long val)
++{
++	unsigned long prev;
++
++	__asm__ __volatile__(
++"1:	lbarx	%0,0,%2 \n"
++"	stbcx.	%3,0,%2 \n\
++	bne-	1b"
++	: "=&r" (prev), "+m" (*(volatile unsigned char *)p)
++	: "r" (p), "r" (val)
++	: "cc", "memory");
++
++	return prev;
 +}
 +
-+void show_regs(struct pt_regs *regs)
++static __always_inline unsigned long
++__xchg_u8_relaxed(u8 *p, unsigned long val)
 +{
-+	show_regs_print_info(KERN_DEFAULT);
-+	__show_regs(regs);
- 	show_stack(current, (unsigned long *) regs->gpr[1], KERN_DEFAULT);
- 	if (!user_mode(regs))
- 		show_instructions(regs);
-@@ -2192,10 +2196,14 @@ void show_stack(struct task_struct *tsk, unsigned long *stack,
- 		    && stack[STACK_FRAME_MARKER] == STACK_FRAME_REGS_MARKER) {
- 			struct pt_regs *regs = (struct pt_regs *)
- 				(sp + STACK_FRAME_OVERHEAD);
++	unsigned long prev;
 +
- 			lr = regs->link;
--			printk("%s--- interrupt: %lx at %pS\n    LR = %pS\n",
--			       loglvl, regs->trap,
--			       (void *)regs->nip, (void *)lr);
-+			printk("%s--- interrupt: %lx at %pS\n",
-+			       loglvl, regs->trap, (void *)regs->nip);
-+			__show_regs(regs);
-+			printk("%s--- interrupt: %lx\n",
-+			       loglvl, regs->trap);
++	__asm__ __volatile__(
++"1:	lbarx	%0,0,%2\n"
++"	stbcx.	%3,0,%2\n"
++"	bne-	1b"
++	: "=&r" (prev), "+m" (*p)
++	: "r" (p), "r" (val)
++	: "cc");
 +
- 			firstframe = 1;
- 		}
++	return prev;
++}
++
++static __always_inline unsigned long
++__xchg_u16_local(volatile void *p, unsigned long val)
++{
++	unsigned long prev;
++
++	__asm__ __volatile__(
++"1:	lharx	%0,0,%2 \n"
++"	sthcx.	%3,0,%2 \n\
++	bne-	1b"
++	: "=&r" (prev), "+m" (*(volatile unsigned short *)p)
++	: "r" (p), "r" (val)
++	: "cc", "memory");
++
++	return prev;
++}
++
++static __always_inline unsigned long
++__xchg_u16_relaxed(u16 *p, unsigned long val)
++{
++	unsigned long prev;
++
++	__asm__ __volatile__(
++"1:	lharx	%0,0,%2\n"
++"	sthcx.	%3,0,%2\n"
++"	bne-	1b"
++	: "=&r" (prev), "+m" (*p)
++	: "r" (p), "r" (val)
++	: "cc");
++
++	return prev;
++}
++#endif
  
+ static __always_inline unsigned long
+ __xchg_u32_local(volatile void *p, unsigned long val)
+@@ -198,11 +264,12 @@ __xchg_relaxed(void *ptr, unsigned long x, unsigned int size)
+ 	(__typeof__(*(ptr))) __xchg_relaxed((ptr),			\
+ 			(unsigned long)_x_, sizeof(*(ptr)));		\
+ })
++
+ /*
+  * Compare and exchange - if *p == old, set it to new,
+  * and return the old value of *p.
+  */
+-
++#ifndef CONFIG_PPC_LBARX_LWARX
+ CMPXCHG_GEN(u8, , PPC_ATOMIC_ENTRY_BARRIER, PPC_ATOMIC_EXIT_BARRIER, "memory");
+ CMPXCHG_GEN(u8, _local, , , "memory");
+ CMPXCHG_GEN(u8, _acquire, , PPC_ACQUIRE_BARRIER, "memory");
+@@ -211,6 +278,173 @@ CMPXCHG_GEN(u16, , PPC_ATOMIC_ENTRY_BARRIER, PPC_ATOMIC_EXIT_BARRIER, "memory");
+ CMPXCHG_GEN(u16, _local, , , "memory");
+ CMPXCHG_GEN(u16, _acquire, , PPC_ACQUIRE_BARRIER, "memory");
+ CMPXCHG_GEN(u16, _relaxed, , , "cc");
++#else
++static __always_inline unsigned long
++__cmpxchg_u8(volatile unsigned char *p, unsigned long old, unsigned long new)
++{
++	unsigned int prev;
++
++	__asm__ __volatile__ (
++	PPC_ATOMIC_ENTRY_BARRIER
++"1:	lbarx	%0,0,%2		# __cmpxchg_u8\n\
++	cmpw	0,%0,%3\n\
++	bne-	2f\n"
++"	stbcx.	%4,0,%2\n\
++	bne-	1b"
++	PPC_ATOMIC_EXIT_BARRIER
++	"\n\
++2:"
++	: "=&r" (prev), "+m" (*p)
++	: "r" (p), "r" (old), "r" (new)
++	: "cc", "memory");
++
++	return prev;
++}
++
++static __always_inline unsigned long
++__cmpxchg_u8_local(volatile unsigned char *p, unsigned long old,
++			unsigned long new)
++{
++	unsigned int prev;
++
++	__asm__ __volatile__ (
++"1:	lbarx	%0,0,%2		# __cmpxchg_u8\n\
++	cmpw	0,%0,%3\n\
++	bne-	2f\n"
++"	stbcx.	%4,0,%2\n\
++	bne-	1b"
++	"\n\
++2:"
++	: "=&r" (prev), "+m" (*p)
++	: "r" (p), "r" (old), "r" (new)
++	: "cc", "memory");
++
++	return prev;
++}
++
++static __always_inline unsigned long
++__cmpxchg_u8_relaxed(u8 *p, unsigned long old, unsigned long new)
++{
++	unsigned long prev;
++
++	__asm__ __volatile__ (
++"1:	lbarx	%0,0,%2		# __cmpxchg_u8_relaxed\n"
++"	cmpw	0,%0,%3\n"
++"	bne-	2f\n"
++"	stbcx.	%4,0,%2\n"
++"	bne-	1b\n"
++"2:"
++	: "=&r" (prev), "+m" (*p)
++	: "r" (p), "r" (old), "r" (new)
++	: "cc");
++
++	return prev;
++}
++
++static __always_inline unsigned long
++__cmpxchg_u8_acquire(u8 *p, unsigned long old, unsigned long new)
++{
++	unsigned long prev;
++
++	__asm__ __volatile__ (
++"1:	lbarx	%0,0,%2		# __cmpxchg_u8_acquire\n"
++"	cmpw	0,%0,%3\n"
++"	bne-	2f\n"
++"	stbcx.	%4,0,%2\n"
++"	bne-	1b\n"
++	PPC_ACQUIRE_BARRIER
++	"\n"
++"2:"
++	: "=&r" (prev), "+m" (*p)
++	: "r" (p), "r" (old), "r" (new)
++	: "cc", "memory");
++
++	return prev;
++}
++
++static __always_inline unsigned long
++__cmpxchg_u16(volatile unsigned short *p, unsigned long old, unsigned long new)
++{
++	unsigned int prev;
++
++	__asm__ __volatile__ (
++	PPC_ATOMIC_ENTRY_BARRIER
++"1:	lharx	%0,0,%2		# __cmpxchg_u16\n\
++	cmpw	0,%0,%3\n\
++	bne-	2f\n"
++"	sthcx.	%4,0,%2\n\
++	bne-	1b"
++	PPC_ATOMIC_EXIT_BARRIER
++	"\n\
++2:"
++	: "=&r" (prev), "+m" (*p)
++	: "r" (p), "r" (old), "r" (new)
++	: "cc", "memory");
++
++	return prev;
++}
++
++static __always_inline unsigned long
++__cmpxchg_u16_local(volatile unsigned short *p, unsigned long old,
++			unsigned long new)
++{
++	unsigned int prev;
++
++	__asm__ __volatile__ (
++"1:	lharx	%0,0,%2		# __cmpxchg_u16\n\
++	cmpw	0,%0,%3\n\
++	bne-	2f\n"
++"	sthcx.	%4,0,%2\n\
++	bne-	1b"
++	"\n\
++2:"
++	: "=&r" (prev), "+m" (*p)
++	: "r" (p), "r" (old), "r" (new)
++	: "cc", "memory");
++
++	return prev;
++}
++
++static __always_inline unsigned long
++__cmpxchg_u16_relaxed(u16 *p, unsigned long old, unsigned long new)
++{
++	unsigned long prev;
++
++	__asm__ __volatile__ (
++"1:	lharx	%0,0,%2		# __cmpxchg_u16_relaxed\n"
++"	cmpw	0,%0,%3\n"
++"	bne-	2f\n"
++"	sthcx.	%4,0,%2\n"
++"	bne-	1b\n"
++"2:"
++	: "=&r" (prev), "+m" (*p)
++	: "r" (p), "r" (old), "r" (new)
++	: "cc");
++
++	return prev;
++}
++
++static __always_inline unsigned long
++__cmpxchg_u16_acquire(u16 *p, unsigned long old, unsigned long new)
++{
++	unsigned long prev;
++
++	__asm__ __volatile__ (
++"1:	lharx	%0,0,%2		# __cmpxchg_u16_acquire\n"
++"	cmpw	0,%0,%3\n"
++"	bne-	2f\n"
++"	sthcx.	%4,0,%2\n"
++"	bne-	1b\n"
++	PPC_ACQUIRE_BARRIER
++	"\n"
++"2:"
++	: "=&r" (prev), "+m" (*p)
++	: "r" (p), "r" (old), "r" (new)
++	: "cc", "memory");
++
++	return prev;
++}
++#endif
+ 
+ static __always_inline unsigned long
+ __cmpxchg_u32(volatile unsigned int *p, unsigned long old, unsigned long new)
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index c194c4ae8bc7..2f8c8d61dba4 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -118,6 +118,7 @@ config GENERIC_CPU
+ 	bool "Generic (POWER8 and above)"
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN
+ 	select ARCH_HAS_FAST_MULTIPLIER
++	select PPC_LBARX_LWARX
+ 
+ config GENERIC_CPU
+ 	bool "Generic 32 bits powerpc"
+@@ -139,16 +140,19 @@ config POWER7_CPU
+ 	bool "POWER7"
+ 	depends on PPC_BOOK3S_64
+ 	select ARCH_HAS_FAST_MULTIPLIER
++	select PPC_LBARX_LWARX
+ 
+ config POWER8_CPU
+ 	bool "POWER8"
+ 	depends on PPC_BOOK3S_64
+ 	select ARCH_HAS_FAST_MULTIPLIER
++	select PPC_LBARX_LWARX
+ 
+ config POWER9_CPU
+ 	bool "POWER9"
+ 	depends on PPC_BOOK3S_64
+ 	select ARCH_HAS_FAST_MULTIPLIER
++	select PPC_LBARX_LWARX
+ 
+ config E5500_CPU
+ 	bool "Freescale e5500"
+@@ -157,6 +161,7 @@ config E5500_CPU
+ config E6500_CPU
+ 	bool "Freescale e6500"
+ 	depends on E500
++	select PPC_LBARX_LWARX
+ 
+ config 860_CPU
+ 	bool "8xx family"
 -- 
 2.23.0
 
