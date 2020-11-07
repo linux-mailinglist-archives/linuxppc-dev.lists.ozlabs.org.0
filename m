@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012382AA47A
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Nov 2020 11:51:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795602AA4AF
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Nov 2020 12:33:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CSvFL4Kf8zDrMl
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Nov 2020 21:51:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CSw9y54jbzDrQs
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Nov 2020 22:33:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,42 +17,36 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CSvCT19JNzDrFS
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Nov 2020 21:49:36 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CSw2b5347zDrNk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Nov 2020 22:26:55 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CSvCH4mgVz9txn0;
- Sat,  7 Nov 2020 11:49:31 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4CSw2L4kCPz9txhF;
+ Sat,  7 Nov 2020 12:26:50 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 2Grg8kzGSVl2; Sat,  7 Nov 2020 11:49:31 +0100 (CET)
+ with ESMTP id Qmf8VUomACSP; Sat,  7 Nov 2020 12:26:50 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CSvCH3HCnz9txmy;
- Sat,  7 Nov 2020 11:49:31 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CSw2L3pCVz9txQD;
+ Sat,  7 Nov 2020 12:26:50 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B90DC8B776;
- Sat,  7 Nov 2020 11:49:31 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CA2308B776;
+ Sat,  7 Nov 2020 12:26:51 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id YUFhAuKDMxe3; Sat,  7 Nov 2020 11:49:31 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E07C38B75B;
- Sat,  7 Nov 2020 11:49:30 +0100 (CET)
-Subject: Re: [RFC PATCH] powerpc: show registers when unwinding interrupt
- frames
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20201107023305.2384874-1-npiggin@gmail.com>
+ with ESMTP id IUi8-SgwCRJS; Sat,  7 Nov 2020 12:26:51 +0100 (CET)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 92B988B75B;
+ Sat,  7 Nov 2020 12:26:51 +0100 (CET)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 516AA6686C; Sat,  7 Nov 2020 11:26:51 +0000 (UTC)
+Message-Id: <e8c055458b080707f1bc1a98ff8bea79d0cec445.1604748361.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <56626531-8d57-c8d4-336c-12ce4d2c47ea@csgroup.eu>
-Date: Sat, 7 Nov 2020 11:49:27 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
-MIME-Version: 1.0
-In-Reply-To: <20201107023305.2384874-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH] panic: don't dump stack twice on warn
+To: akpm@linux-foundation.org,
+    aik@ozlabs.ru
+Date: Sat,  7 Nov 2020 11:26:51 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,144 +58,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Before commit 3f388f28639f ("panic: dump registers on panic_on_warn"),
+__warn() was calling show_regs() when regs was not NULL, and
+show_stack() otherwise.
 
+After that commit, show_stack() is called regardless of whether
+show_regs() has been called or not, leading to duplicated Call Trace:
 
-Le 07/11/2020 à 03:33, Nicholas Piggin a écrit :
-> It's often useful to know the register state for interrupts in
-> the stack frame. In the below example (with this patch applied),
-> the important information is the state of the page fault.
-> 
-> A blatant case like this probably rather should have the page
-> fault regs passed down to the warning, but quite often there are
-> less obvious cases where an interrupt shows up that might give
-> some more clues.
+[    7.112617] ------------[ cut here ]------------
+[    7.117041] WARNING: CPU: 0 PID: 1 at arch/powerpc/mm/nohash/8xx.c:186 mmu_mark_initmem_nx+0x24/0x94
+[    7.126021] CPU: 0 PID: 1 Comm: swapper Not tainted 5.10.0-rc2-s3k-dev-01375-gf46ec0d3ecbd-dirty #4092
+[    7.135202] NIP:  c00128b4 LR: c0010228 CTR: 00000000
+[    7.140205] REGS: c9023e40 TRAP: 0700   Not tainted  (5.10.0-rc2-s3k-dev-01375-gf46ec0d3ecbd-dirty)
+[    7.149131] MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 24000424  XER: 00000000
+[    7.155760]
+[    7.155760] GPR00: c0010228 c9023ef8 c2100000 0074c000 ffffffff 00000000 c2151000 c07b3880
+[    7.155760] GPR08: ff000900 0074c000 c8000000 c33b53a8 24000822 00000000 c0003a20 00000000
+[    7.155760] GPR16: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[    7.155760] GPR24: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00800000
+[    7.191092] NIP [c00128b4] mmu_mark_initmem_nx+0x24/0x94
+[    7.196333] LR [c0010228] free_initmem+0x20/0x58
+[    7.200855] Call Trace:
+[    7.203319] [c9023f18] [c0010228] free_initmem+0x20/0x58
+[    7.208564] [c9023f28] [c0003a3c] kernel_init+0x1c/0x114
+[    7.213813] [c9023f38] [c000f184] ret_from_kernel_thread+0x14/0x1c
+[    7.219869] Instruction dump:
+[    7.222805] 7d291850 7d234b78 4e800020 9421ffe0 7c0802a6 bfc10018 3fe0c060 3bff0000
+[    7.230462] 3fff4080 3bffffff 90010024 57ff0010 <0fe00000> 392001cd 7c3e0b78 953e0008
+[    7.238327] CPU: 0 PID: 1 Comm: swapper Not tainted 5.10.0-rc2-s3k-dev-01375-gf46ec0d3ecbd-dirty #4092
+[    7.247500] Call Trace:
+[    7.249977] [c9023dc0] [c001e070] __warn+0x8c/0xd8 (unreliable)
+[    7.255815] [c9023de0] [c05e0e5c] report_bug+0x11c/0x154
+[    7.261085] [c9023e10] [c0009ea4] program_check_exception+0x1dc/0x6e0
+[    7.267430] [c9023e30] [c000f43c] ret_from_except_full+0x0/0x4
+[    7.273238] --- interrupt: 700 at mmu_mark_initmem_nx+0x24/0x94
+[    7.273238]     LR = free_initmem+0x20/0x58
+[    7.283155] [c9023ef8] [00000000] 0x0 (unreliable)
+[    7.287913] [c9023f18] [c0010228] free_initmem+0x20/0x58
+[    7.293160] [c9023f28] [c0003a3c] kernel_init+0x1c/0x114
+[    7.298410] [c9023f38] [c000f184] ret_from_kernel_thread+0x14/0x1c
+[    7.304479] ---[ end trace 31702cd2a9570752 ]---
 
-I like it.
+Only call show_stack() when regs is NULL.
 
-I was wondering about interrupts that do not save NV registers, but that seems to be handled:
+Fixes: 3f388f28639f ("panic: dump registers on panic_on_warn")
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ kernel/panic.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-[    0.455489] --- interrupt: 301 at cmpxchg_futex_value_locked+0x2c/0x58
-[    0.461886] NIP:  c0089c08 LR: c0755df0 CTR: c02e59a4
-[    0.466889] REGS: c9023db0 TRAP: 0301   Not tainted  (5.10.0-rc2-s3k-dev-01371-gfb45a2414e96-dirty)
-[    0.475815] MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 28000244  XER: 00000000
-[    0.482450] DAR: 00000000 DSISR: c0000000
-[    0.482450] GPR00: c0755dc8 c9023e68 c2100000 c9023e78 00000000 00000000 00000000 00000000
-[    0.482450] GPR08: 00001032 00000000 80000000 00000003 42000242
-[    0.500988] NIP [c0089c08] cmpxchg_futex_value_locked+0x2c/0x58
-[    0.506842] LR [c0755df0] futex_init+0x74/0xd0
-[    0.511194] --- interrupt: 301
+diff --git a/kernel/panic.c b/kernel/panic.c
+index 396142ee43fd..332736a72a58 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -605,7 +605,8 @@ void __warn(const char *file, int line, void *caller, unsigned taint,
+ 		panic("panic_on_warn set ...\n");
+ 	}
+ 
+-	dump_stack();
++	if (!regs)
++		dump_stack();
+ 
+ 	print_irqtrace_events(current);
+ 
+-- 
+2.25.0
 
-Christophe
-
-> 
-> The downside is longer and more complex bug output.
-> 
->    Bug: Write fault blocked by AMR!
->    WARNING: CPU: 0 PID: 72 at arch/powerpc/include/asm/book3s/64/kup-radix.h:164 __do_page_fault+0x880/0xa90
->    Modules linked in:
->    CPU: 0 PID: 72 Comm: systemd-gpt-aut Not tainted
->    NIP:  c00000000006e2f0 LR: c00000000006e2ec CTR: 0000000000000000
->    REGS: c00000000a4f3420 TRAP: 0700
->    MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 28002840  XER: 20040000
->    CFAR: c000000000128be0 IRQMASK: 3
->    GPR00: c00000000006e2ec c00000000a4f36c0 c0000000014f0700 0000000000000020
->    GPR04: 0000000000000001 c000000001290f50 0000000000000001 c000000001290f80
->    GPR08: c000000001612b08 0000000000000000 0000000000000000 00000000ffffe0f7
->    GPR12: 0000000048002840 c0000000016e0000 c00c000000021c80 c000000000fd6f60
->    GPR16: 0000000000000000 c00000000a104698 0000000000000003 c0000000087f0000
->    GPR20: 0000000000000100 c0000000070330b8 0000000000000000 0000000000000004
->    GPR24: 0000000002000000 0000000000000300 0000000002000000 c00000000a5b0c00
->    GPR28: 0000000000000000 000000000a000000 00007fffb2a90038 c00000000a4f3820
->    NIP [c00000000006e2f0] __do_page_fault+0x880/0xa90
->    LR [c00000000006e2ec] __do_page_fault+0x87c/0xa90
->    Call Trace:
->    [c00000000a4f36c0] [c00000000006e2ec] __do_page_fault+0x87c/0xa90 (unreliable)
->    [c00000000a4f3780] [c000000000e1c034] do_page_fault+0x34/0x90
->    [c00000000a4f37b0] [c000000000008908] data_access_common_virt+0x158/0x1b0
->    --- interrupt: 300 at __copy_tofrom_user_base+0x9c/0x5a4
->    NIP:  c00000000009b028 LR: c000000000802978 CTR: 0000000000000800
->    REGS: c00000000a4f3820 TRAP: 0300
->    MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24004840  XER: 00000000
->    CFAR: c00000000009aff4 DAR: 00007fffb2a90038 DSISR: 0a000000 IRQMASK: 0
->    GPR00: 0000000000000000 c00000000a4f3ac0 c0000000014f0700 00007fffb2a90028
->    GPR04: c000000008720010 0000000000010000 0000000000000000 0000000000000000
->    GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000001
->    GPR12: 0000000000004000 c0000000016e0000 c00c000000021c80 c000000000fd6f60
->    GPR16: 0000000000000000 c00000000a104698 0000000000000003 c0000000087f0000
->    GPR20: 0000000000000100 c0000000070330b8 0000000000000000 0000000000000004
->    GPR24: c00000000a4f3c80 c000000008720000 0000000000010000 0000000000000000
->    GPR28: 0000000000010000 0000000008720000 0000000000010000 c000000001515b98
->    NIP [c00000000009b028] __copy_tofrom_user_base+0x9c/0x5a4
->    LR [c000000000802978] copyout+0x68/0xc0
->    --- interrupt: 300
->    [c00000000a4f3af0] [c0000000008074b8] copy_page_to_iter+0x188/0x540
->    [c00000000a4f3b50] [c00000000035c678] generic_file_buffered_read+0x358/0xd80
->    [c00000000a4f3c40] [c0000000004c1e90] blkdev_read_iter+0x50/0x80
->    [c00000000a4f3c60] [c00000000045733c] new_sync_read+0x12c/0x1c0
->    [c00000000a4f3d00] [c00000000045a1f0] vfs_read+0x1d0/0x240
->    [c00000000a4f3d50] [c00000000045a7f4] ksys_read+0x84/0x140
->    [c00000000a4f3da0] [c000000000033a60] system_call_exception+0x100/0x280
->    [c00000000a4f3e10] [c00000000000c508] system_call_common+0xf8/0x2f8
->    Instruction dump:
->    eae10078 3be0000b 4bfff890 60420000 792917e1 4182ff18 3c82ffab 3884a5e0
->    3c62ffab 3863a6e8 480ba891 60000000 <0fe00000> 3be0000b 4bfff860 e93c0938
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/kernel/process.c | 20 ++++++++++++++------
->   1 file changed, 14 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-> index ea36a29c8b01..799f00b32f74 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -1475,12 +1475,10 @@ static void print_msr_bits(unsigned long val)
->   #define LAST_VOLATILE	12
->   #endif
->   
-> -void show_regs(struct pt_regs * regs)
-> +static void __show_regs(struct pt_regs *regs)
->   {
->   	int i, trap;
->   
-> -	show_regs_print_info(KERN_DEFAULT);
-> -
->   	printk("NIP:  "REG" LR: "REG" CTR: "REG"\n",
->   	       regs->nip, regs->link, regs->ctr);
->   	printk("REGS: %px TRAP: %04lx   %s  (%s)\n",
-> @@ -1522,6 +1520,12 @@ void show_regs(struct pt_regs * regs)
->   		printk("NIP ["REG"] %pS\n", regs->nip, (void *)regs->nip);
->   		printk("LR ["REG"] %pS\n", regs->link, (void *)regs->link);
->   	}
-> +}
-> +
-> +void show_regs(struct pt_regs *regs)
-> +{
-> +	show_regs_print_info(KERN_DEFAULT);
-> +	__show_regs(regs);
->   	show_stack(current, (unsigned long *) regs->gpr[1], KERN_DEFAULT);
->   	if (!user_mode(regs))
->   		show_instructions(regs);
-> @@ -2192,10 +2196,14 @@ void show_stack(struct task_struct *tsk, unsigned long *stack,
->   		    && stack[STACK_FRAME_MARKER] == STACK_FRAME_REGS_MARKER) {
->   			struct pt_regs *regs = (struct pt_regs *)
->   				(sp + STACK_FRAME_OVERHEAD);
-> +
->   			lr = regs->link;
-> -			printk("%s--- interrupt: %lx at %pS\n    LR = %pS\n",
-> -			       loglvl, regs->trap,
-> -			       (void *)regs->nip, (void *)lr);
-> +			printk("%s--- interrupt: %lx at %pS\n",
-> +			       loglvl, regs->trap, (void *)regs->nip);
-> +			__show_regs(regs);
-> +			printk("%s--- interrupt: %lx\n",
-> +			       loglvl, regs->trap);
-> +
->   			firstframe = 1;
->   		}
->   
-> 
