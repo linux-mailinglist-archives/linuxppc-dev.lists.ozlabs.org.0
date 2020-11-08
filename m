@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80D42AA9F0
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 08:09:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D442AAA91
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 11:30:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CTQGQ0cYpzDrFd
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 18:09:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CTVkh33lnzDqSV
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 21:30:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=uZQotty/; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CTQ3159v0zDqQF
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Nov 2020 17:59:09 +1100 (AEDT)
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C2107221FE;
- Sun,  8 Nov 2020 06:58:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1604818747;
- bh=zY00vAD1luWw8Wz9ntfdosu1D6lwJ6iTAdVQg6SgGXI=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=uZQotty/fCgSAotIoYPPjcleeGFQedZ2bXn1MRORp/bIAqmn6GCWAIBmKHllxFrNq
- tYDNPq2tKZV1KfkQLXAqFbMI7lSkhDmdOOnBLTD8vmdi4Kxgu9YUr/5kgD2A6CtDp6
- oVY7PS5zQhpEg7nfD0kucNDwH5IiyQ87oPOjfrKg=
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v5 5/5] arch, mm: make kernel_page_present() always available
-Date: Sun,  8 Nov 2020 08:57:58 +0200
-Message-Id: <20201108065758.1815-6-rppt@kernel.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201108065758.1815-1-rppt@kernel.org>
-References: <20201108065758.1815-1-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CTVhP4XJ7zDr2p
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Nov 2020 21:28:21 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=cesw+TM2; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CTVhP0Gfzz9sSs;
+ Sun,  8 Nov 2020 21:28:20 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1604831301;
+ bh=t3PyH9o+kH1Xy3t/BWQqpDW6qPE1C4JOyrsXYipaCKQ=;
+ h=From:To:Cc:Subject:Date:From;
+ b=cesw+TM2itv2HS0DD3OtNBfd8JRf1aN5tUZ1zz7fxY5E/Jkdymc8PsAC5g2JjAJPc
+ O4s0TptTDfHpPj15uaIF4/++ZO9VbNQyhlmlK3DqIT7evLmJII6ydhKwc0DYYj930h
+ puwxFEct085IOuRosLQ3s+6eSwRDBCT/2XE2vO7z9MZ2iri/r+6dZkywAY/UB7vynB
+ JRwN5daENhD7J4FuWfh2+Dke6R7c3teD1O7utEPDA0s9kKThBfRrJR3ZaYPezsmRtc
+ JZj74fpYpBeo50KGa5gm2cIUelVARF8FGfJ291sI49D3tcFCkQVjXRlXWIH6lrVUze
+ 0zKZwfc+w7hUQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.10-3 tag
+Date: Sun, 08 Nov 2020 21:28:03 +1100
+Message-ID: <87361kta6k.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,209 +55,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Pekka Enberg <penberg@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>, "Edgecombe,
- Rick P" <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
+Cc: paulmck@kernel.org, cai@redhat.com, cheloha@linux.ibm.com,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-For architectures that enable ARCH_HAS_SET_MEMORY having the ability to
-verify that a page is mapped in the kernel direct map can be useful
-regardless of hibernation.
+Hi Linus,
 
-Add RISC-V implementation of kernel_page_present(), update its forward
-declarations and stubs to be a part of set_memory API and remove ugly
-ifdefery in inlcude/linux/mm.h around current declarations of
-kernel_page_present().
+Please pull some more powerpc fixes for 5.10:
 
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/arm64/include/asm/cacheflush.h |  1 +
- arch/arm64/mm/pageattr.c            |  4 +---
- arch/riscv/include/asm/set_memory.h |  1 +
- arch/riscv/mm/pageattr.c            | 29 +++++++++++++++++++++++++++++
- arch/x86/include/asm/set_memory.h   |  1 +
- arch/x86/mm/pat/set_memory.c        |  4 +---
- include/linux/mm.h                  |  7 -------
- include/linux/set_memory.h          |  5 +++++
- 8 files changed, 39 insertions(+), 13 deletions(-)
+The following changes since commit 3cea11cd5e3b00d91caf0b4730194039b45c5891:
 
-diff --git a/arch/arm64/include/asm/cacheflush.h b/arch/arm64/include/asm/cacheflush.h
-index 9384fd8fc13c..45217f21f1fe 100644
---- a/arch/arm64/include/asm/cacheflush.h
-+++ b/arch/arm64/include/asm/cacheflush.h
-@@ -140,6 +140,7 @@ int set_memory_valid(unsigned long addr, int numpages, int enable);
- 
- int set_direct_map_invalid_noflush(struct page *page);
- int set_direct_map_default_noflush(struct page *page);
-+bool kernel_page_present(struct page *page);
- 
- #include <asm-generic/cacheflush.h>
- 
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index 439325532be1..92eccaf595c8 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -186,8 +186,8 @@ void __kernel_map_pages(struct page *page, int numpages, int enable)
- 
- 	set_memory_valid((unsigned long)page_address(page), numpages, enable);
- }
-+#endif /* CONFIG_DEBUG_PAGEALLOC */
- 
--#ifdef CONFIG_HIBERNATION
- /*
-  * This function is used to determine if a linear map page has been marked as
-  * not-valid. Walk the page table and check the PTE_VALID bit. This is based
-@@ -234,5 +234,3 @@ bool kernel_page_present(struct page *page)
- 	ptep = pte_offset_kernel(pmdp, addr);
- 	return pte_valid(READ_ONCE(*ptep));
- }
--#endif /* CONFIG_HIBERNATION */
--#endif /* CONFIG_DEBUG_PAGEALLOC */
-diff --git a/arch/riscv/include/asm/set_memory.h b/arch/riscv/include/asm/set_memory.h
-index 4c5bae7ca01c..d690b08dff2a 100644
---- a/arch/riscv/include/asm/set_memory.h
-+++ b/arch/riscv/include/asm/set_memory.h
-@@ -24,6 +24,7 @@ static inline int set_memory_nx(unsigned long addr, int numpages) { return 0; }
- 
- int set_direct_map_invalid_noflush(struct page *page);
- int set_direct_map_default_noflush(struct page *page);
-+bool kernel_page_present(struct page *page);
- 
- #endif /* __ASSEMBLY__ */
- 
-diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
-index 321b09d2e2ea..87ba5a68bbb8 100644
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -198,3 +198,32 @@ void __kernel_map_pages(struct page *page, int numpages, int enable)
- 			     __pgprot(0), __pgprot(_PAGE_PRESENT));
- }
- #endif
-+
-+bool kernel_page_present(struct page *page)
-+{
-+	unsigned long addr = (unsigned long)page_address(page);
-+	pgd_t *pgd;
-+	pud_t *pud;
-+	p4d_t *p4d;
-+	pmd_t *pmd;
-+	pte_t *pte;
-+
-+	pgd = pgd_offset_k(addr);
-+	if (!pgd_present(*pgd))
-+		return false;
-+
-+	p4d = p4d_offset(pgd, addr);
-+	if (!p4d_present(*p4d))
-+		return false;
-+
-+	pud = pud_offset(p4d, addr);
-+	if (!pud_present(*pud))
-+		return false;
-+
-+	pmd = pmd_offset(pud, addr);
-+	if (!pmd_present(*pmd))
-+		return false;
-+
-+	pte = pte_offset_kernel(pmd, addr);
-+	return pte_present(*pte);
-+}
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-index 5948218f35c5..4352f08bfbb5 100644
---- a/arch/x86/include/asm/set_memory.h
-+++ b/arch/x86/include/asm/set_memory.h
-@@ -82,6 +82,7 @@ int set_pages_rw(struct page *page, int numpages);
- 
- int set_direct_map_invalid_noflush(struct page *page);
- int set_direct_map_default_noflush(struct page *page);
-+bool kernel_page_present(struct page *page);
- 
- extern int kernel_set_to_readonly;
- 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index bc9be96b777f..16f878c26667 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2226,8 +2226,8 @@ void __kernel_map_pages(struct page *page, int numpages, int enable)
- 
- 	arch_flush_lazy_mmu_mode();
- }
-+#endif /* CONFIG_DEBUG_PAGEALLOC */
- 
--#ifdef CONFIG_HIBERNATION
- bool kernel_page_present(struct page *page)
- {
- 	unsigned int level;
-@@ -2239,8 +2239,6 @@ bool kernel_page_present(struct page *page)
- 	pte = lookup_address((unsigned long)page_address(page), &level);
- 	return (pte_val(*pte) & _PAGE_PRESENT);
- }
--#endif /* CONFIG_HIBERNATION */
--#endif /* CONFIG_DEBUG_PAGEALLOC */
- 
- int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn, unsigned long address,
- 				   unsigned numpages, unsigned long page_flags)
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 260113ba660a..fe9a8d35a6eb 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2942,16 +2942,9 @@ static inline void debug_pagealloc_unmap_pages(struct page *page, int numpages)
- 	if (debug_pagealloc_enabled_static())
- 		__kernel_map_pages(page, numpages, 0);
- }
--
--#ifdef CONFIG_HIBERNATION
--extern bool kernel_page_present(struct page *page);
--#endif	/* CONFIG_HIBERNATION */
- #else	/* CONFIG_DEBUG_PAGEALLOC */
- static inline void debug_pagealloc_map_pages(struct page *page, int numpages) {}
- static inline void debug_pagealloc_unmap_pages(struct page *page, int numpages) {}
--#ifdef CONFIG_HIBERNATION
--static inline bool kernel_page_present(struct page *page) { return true; }
--#endif	/* CONFIG_HIBERNATION */
- #endif	/* CONFIG_DEBUG_PAGEALLOC */
- 
- #ifdef __HAVE_ARCH_GATE_AREA
-diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-index 860e0f843c12..fe1aa4e54680 100644
---- a/include/linux/set_memory.h
-+++ b/include/linux/set_memory.h
-@@ -23,6 +23,11 @@ static inline int set_direct_map_default_noflush(struct page *page)
- {
- 	return 0;
- }
-+
-+static inline bool kernel_page_present(struct page *page)
-+{
-+	return true;
-+}
- #endif
- 
- #ifndef set_mce_nospec
--- 
-2.28.0
+  Linux 5.10-rc2 (2020-11-01 14:43:51 -0800)
 
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.10-3
+
+for you to fetch changes up to 3fb4a8fa28b740709bdd3229b80279957f4d37ed:
+
+  powerpc/numa: Fix build when CONFIG_NUMA=n (2020-11-06 14:16:19 +1100)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.10 #3
+
+Fix miscompilation with GCC 4.9 by using asm_goto_volatile for put_user().
+
+A fix for an RCU splat at boot caused by a recent lockdep change.
+
+A fix for a possible deadlock in our EEH debugfs code.
+
+Several fixes for handling of _PAGE_ACCESSED on 32-bit platforms.
+
+A build fix when CONFIG_NUMA=n.
+
+Thanks to:
+  Andreas Schwab,
+  Christophe Leroy,
+  Oliver O'Halloran,
+  Qian Cai,
+  Scott Cheloha.
+
+- ------------------------------------------------------------------
+Christophe Leroy (4):
+      powerpc/603: Always fault when _PAGE_ACCESSED is not set
+      powerpc/40x: Always fault when _PAGE_ACCESSED is not set
+      powerpc/8xx: Always fault when _PAGE_ACCESSED is not set
+      powerpc/8xx: Manage _PAGE_ACCESSED through APG bits in L1 entry
+
+Michael Ellerman (1):
+      powerpc: Use asm_goto_volatile for put_user()
+
+Qian Cai (2):
+      powerpc/eeh_cache: Fix a possible debugfs deadlock
+      powerpc/smp: Call rcu_cpu_starting() earlier
+
+Scott Cheloha (1):
+      powerpc/numa: Fix build when CONFIG_NUMA=n
+
+
+ arch/powerpc/include/asm/nohash/32/kup-8xx.h |  2 +-
+ arch/powerpc/include/asm/nohash/32/mmu-8xx.h | 47 +++++++-------------
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h |  9 ++--
+ arch/powerpc/include/asm/topology.h          | 12 +++--
+ arch/powerpc/include/asm/uaccess.h           |  4 +-
+ arch/powerpc/kernel/eeh_cache.c              |  5 ++-
+ arch/powerpc/kernel/head_40x.S               |  8 ----
+ arch/powerpc/kernel/head_8xx.S               | 46 +++----------------
+ arch/powerpc/kernel/head_book3s_32.S         | 12 -----
+ arch/powerpc/kernel/smp.c                    |  3 +-
+ 10 files changed, 44 insertions(+), 104 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl+nyAsACgkQUevqPMjh
+pYA96BAAkrA88BcH3Bpqkd34iCCIUPzLY/iBedtj6zJCtPOOgxEA82SJFLdauJ4t
+PmbHCofRuuz29Rv+7zBwAZ+VyDhUbOyYXUvsLEAdYqMr8PpFvsfhit7F/c+IG/pF
+rW+V1GoCn/npcyPFgUE13gwAI0y3etbc3znwcEu9ASIa/JWho2EGqfHNoTuYsgfq
+Q9xRmucEAiA4DUN9Fq5o4PrETWIkp/UoDg8VumA0KJKyvZ+YvaFI9eRfEw1Kc6jB
+sN3vKSyRd4PbFBqfzjl+mVX0MUteLY5T9AZ80v4Yd78e+dXxCQPwE3EIa7suEoH5
+vu6Wdu+bShR49kx5BqjbU9yNZ8rRXH2LmUDpn/FosVlAy1xduZTEhy1xp2IYU/I/
+yWGmnZXDlhrdLcIIpFwsJ+kGqMEyfGSn1VBt2zZgbHBVpydHFUoq8NmLEpQ6Lsc8
+vcA/f8kmm9IA6uidYzvxWSFxm9OqW/2aG/kLDkWrjfGmU4plO/0bA972MsxTN+95
+2brPIsbAyDv4dB2oOjkB6vf8CNEUQSLRdUyA5bkPXLggPQCzAGUx1nApWkQQ3iCe
+ge0Gi6RIpL/vfiHrmVNNjdHdgUkLqhmSPd4mUknW9IFoUicuUEdnV8z1PjwWyVyQ
+e/nDpDRNJc552KGDYdhfaa+qBTwL4tagjCnXYluvwysrIH1+pLk=
+=VisH
+-----END PGP SIGNATURE-----
