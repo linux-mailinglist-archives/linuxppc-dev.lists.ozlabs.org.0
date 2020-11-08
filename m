@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591CE2AA9ED
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 08:04:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FAA32AA9EE
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 08:05:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CTQ8j3bdCzDr8H
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 18:04:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CTQBT4sHBzDqSQ
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 18:05:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,30 +16,30 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=pk+UXnWl; dkim-atps=neutral
+ header.s=default header.b=kojy+ghy; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CTQ2P4W4vzDr9w
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Nov 2020 17:58:37 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CTQ2b6dPHzDrB2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Nov 2020 17:58:47 +1100 (AEDT)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3A5C82220B;
- Sun,  8 Nov 2020 06:58:24 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2003622210;
+ Sun,  8 Nov 2020 06:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1604818714;
- bh=bLvjJYeeBrvAhwsB8ydCu/dSvPoYTnDbCXIZfO7bBpA=;
+ s=default; t=1604818725;
+ bh=0+/Ijks+tfwTVzbr4Km98lXXrR2UvY+Np3e94RlQ6xg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=pk+UXnWlD99VvXbDF/TM8NluRf6qHt6njISKMIY/ZhLcoZ71g+EEieqVkb7/Te7tn
- PyQ0+/KksGKCPio0RzFy+fVcBvLhWJNAcfeMQjudGY0NglGGihwGnU9qzcdkVR+ndk
- DGfk2klRTHHITuZudo1qWCv0LcwCklQzJcFInHgs=
+ b=kojy+ghyD1q7+EkttkLyjKdeW/x7n35VGmuZbOsZ8H9qHCfBB04pMlemdjxjAiZxj
+ b4raIaTvdFV1sVmrUS8fiCsOP50b3YEG4eZXd8KF2TDGzzESACuFOBYXb2F6YA69YC
+ OjclfcDeaofFbFA/P9NqmCTxxkKxrFvP9msEiuC8=
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v5 2/5] slab: debug: split slab_kernel_map() to map and unmap
- variants
-Date: Sun,  8 Nov 2020 08:57:55 +0200
-Message-Id: <20201108065758.1815-3-rppt@kernel.org>
+Subject: [PATCH v5 3/5] PM: hibernate: make direct map manipulations more
+ explicit
+Date: Sun,  8 Nov 2020 08:57:56 +0200
+Message-Id: <20201108065758.1815-4-rppt@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201108065758.1815-1-rppt@kernel.org>
 References: <20201108065758.1815-1-rppt@kernel.org>
@@ -56,7 +56,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
  Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
  Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
  "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
@@ -84,84 +85,119 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-Instead of using slab_kernel_map() with 'map' parameter to remap pages when
-DEBUG_PAGEALLOC is enabled, use dedicated helpers slab_kernel_map() and
-slab_kernel_unmap().
+When DEBUG_PAGEALLOC or ARCH_HAS_SET_DIRECT_MAP is enabled a page may be
+not present in the direct map and has to be explicitly mapped before it
+could be copied.
+
+Introduce hibernate_map_page() and hibernation_unmap_page() that will
+explicitly use set_direct_map_{default,invalid}_noflush() for
+ARCH_HAS_SET_DIRECT_MAP case and debug_pagealloc_{map,unmap}_pages() for
+DEBUG_PAGEALLOC case.
+
+The remapping of the pages in safe_copy_page() presumes that it only
+changes protection bits in an existing PTE and so it is safe to ignore
+return value of set_direct_map_{default,invalid}_noflush().
+
+Still, add a pr_warn() so that future changes in set_memory APIs will not
+silently break hibernation.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/slab.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ include/linux/mm.h      | 12 ------------
+ kernel/power/snapshot.c | 38 ++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 36 insertions(+), 14 deletions(-)
 
-diff --git a/mm/slab.c b/mm/slab.c
-index 07317386e150..0719421d69f7 100644
---- a/mm/slab.c
-+++ b/mm/slab.c
-@@ -1428,17 +1428,21 @@ static bool is_debug_pagealloc_cache(struct kmem_cache *cachep)
- 	return false;
- }
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index bb8c70178f4e..e198b938f5c5 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2927,16 +2927,6 @@ static inline bool debug_pagealloc_enabled_static(void)
+ #if defined(CONFIG_DEBUG_PAGEALLOC) || defined(CONFIG_ARCH_HAS_SET_DIRECT_MAP)
+ extern void __kernel_map_pages(struct page *page, int numpages, int enable);
  
--static void slab_kernel_map(struct kmem_cache *cachep, void *objp, int map)
-+static void slab_kernel_map(struct kmem_cache *cachep, void *objp)
+-/*
+- * When called in DEBUG_PAGEALLOC context, the call should most likely be
+- * guarded by debug_pagealloc_enabled() or debug_pagealloc_enabled_static()
+- */
+-static inline void
+-kernel_map_pages(struct page *page, int numpages, int enable)
+-{
+-	__kernel_map_pages(page, numpages, enable);
+-}
+-
+ static inline void debug_pagealloc_map_pages(struct page *page, int numpages)
  {
- 	if (!is_debug_pagealloc_cache(cachep))
- 		return;
+ 	if (debug_pagealloc_enabled_static())
+@@ -2953,8 +2943,6 @@ static inline void debug_pagealloc_unmap_pages(struct page *page, int numpages)
+ extern bool kernel_page_present(struct page *page);
+ #endif	/* CONFIG_HIBERNATION */
+ #else	/* CONFIG_DEBUG_PAGEALLOC || CONFIG_ARCH_HAS_SET_DIRECT_MAP */
+-static inline void
+-kernel_map_pages(struct page *page, int numpages, int enable) {}
+ static inline void debug_pagealloc_map_pages(struct page *page, int numpages) {}
+ static inline void debug_pagealloc_unmap_pages(struct page *page, int numpages) {}
+ #ifdef CONFIG_HIBERNATION
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index 46b1804c1ddf..d848377dd8dc 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -76,6 +76,40 @@ static inline void hibernate_restore_protect_page(void *page_address) {}
+ static inline void hibernate_restore_unprotect_page(void *page_address) {}
+ #endif /* CONFIG_STRICT_KERNEL_RWX  && CONFIG_ARCH_HAS_SET_MEMORY */
  
--	if (map)
--		debug_pagealloc_map_pages(virt_to_page(objp),
--					  cachep->size / PAGE_SIZE);
--	else
--		debug_pagealloc_unmap_pages(virt_to_page(objp),
--					    cachep->size / PAGE_SIZE);
-+	debug_pagealloc_map_pages(virt_to_page(objp), cachep->size / PAGE_SIZE);
++
++/*
++ * The calls to set_direct_map_*() should not fail because remapping a page
++ * here means that we only update protection bits in an existing PTE.
++ * It is still worth to have a warning here if something changes and this
++ * will no longer be the case.
++ */
++static inline void hibernate_map_page(struct page *page)
++{
++	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
++		int ret = set_direct_map_default_noflush(page);
++
++		if (ret)
++			pr_warn_once("Failed to remap page\n");
++	} else {
++		debug_pagealloc_map_pages(page, 1);
++	}
 +}
 +
-+static void slab_kernel_unmap(struct kmem_cache *cachep, void *objp)
++static inline void hibernate_unmap_page(struct page *page)
 +{
-+	if (!is_debug_pagealloc_cache(cachep))
-+		return;
++	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
++		unsigned long addr = (unsigned long)page_address(page);
++		int ret  = set_direct_map_invalid_noflush(page);
 +
-+	debug_pagealloc_unmap_pages(virt_to_page(objp),
-+				    cachep->size / PAGE_SIZE);
++		if (ret)
++			pr_warn_once("Failed to remap page\n");
++
++		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
++	} else {
++		debug_pagealloc_unmap_pages(page, 1);
++	}
++}
++
+ static int swsusp_page_is_free(struct page *);
+ static void swsusp_set_page_forbidden(struct page *);
+ static void swsusp_unset_page_forbidden(struct page *);
+@@ -1355,9 +1389,9 @@ static void safe_copy_page(void *dst, struct page *s_page)
+ 	if (kernel_page_present(s_page)) {
+ 		do_copy_page(dst, page_address(s_page));
+ 	} else {
+-		kernel_map_pages(s_page, 1, 1);
++		hibernate_map_page(s_page);
+ 		do_copy_page(dst, page_address(s_page));
+-		kernel_map_pages(s_page, 1, 0);
++		hibernate_unmap_page(s_page);
+ 	}
  }
  
- static void poison_obj(struct kmem_cache *cachep, void *addr, unsigned char val)
-@@ -1585,7 +1589,7 @@ static void slab_destroy_debugcheck(struct kmem_cache *cachep,
- 
- 		if (cachep->flags & SLAB_POISON) {
- 			check_poison_obj(cachep, objp);
--			slab_kernel_map(cachep, objp, 1);
-+			slab_kernel_map(cachep, objp);
- 		}
- 		if (cachep->flags & SLAB_RED_ZONE) {
- 			if (*dbg_redzone1(cachep, objp) != RED_INACTIVE)
-@@ -2360,7 +2364,7 @@ static void cache_init_objs_debug(struct kmem_cache *cachep, struct page *page)
- 		/* need to poison the objs? */
- 		if (cachep->flags & SLAB_POISON) {
- 			poison_obj(cachep, objp, POISON_FREE);
--			slab_kernel_map(cachep, objp, 0);
-+			slab_kernel_unmap(cachep, objp);
- 		}
- 	}
- #endif
-@@ -2728,7 +2732,7 @@ static void *cache_free_debugcheck(struct kmem_cache *cachep, void *objp,
- 
- 	if (cachep->flags & SLAB_POISON) {
- 		poison_obj(cachep, objp, POISON_FREE);
--		slab_kernel_map(cachep, objp, 0);
-+		slab_kernel_unmap(cachep, objp);
- 	}
- 	return objp;
- }
-@@ -2993,7 +2997,7 @@ static void *cache_alloc_debugcheck_after(struct kmem_cache *cachep,
- 		return objp;
- 	if (cachep->flags & SLAB_POISON) {
- 		check_poison_obj(cachep, objp);
--		slab_kernel_map(cachep, objp, 1);
-+		slab_kernel_map(cachep, objp);
- 		poison_obj(cachep, objp, POISON_INUSE);
- 	}
- 	if (cachep->flags & SLAB_STORE_USER)
 -- 
 2.28.0
 
