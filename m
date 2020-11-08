@@ -1,35 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C90AD2AAA95
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 11:34:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 254422AAA96
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 11:35:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CTVq26VxWzDrBm
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 21:34:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CTVrv2plczDrL4
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 21:35:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CTVjv1lpJzDqdT
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Nov 2020 21:29:39 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CTVjw2SzczDqv9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Nov 2020 21:29:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4CTVjr60s3z9sTL; Sun,  8 Nov 2020 21:29:36 +1100 (AEDT)
+ id 4CTVjs42FZz9sTK; Sun,  8 Nov 2020 21:29:37 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Paul Mackerras <paulus@samba.org>, schwab@linux-m68k.org,
+To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, erhard_f@mailbox.org,
- Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <9e225a856a8b22e0e77587ee22ab7a2f5bca8753.1604740029.git.christophe.leroy@csgroup.eu>
-References: <9e225a856a8b22e0e77587ee22ab7a2f5bca8753.1604740029.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/32s: Use relocation offset when setting early
- hash table
-Message-Id: <160483134461.1400561.5111956119334566016.b4-ty@ellerman.id.au>
-Date: Sun,  8 Nov 2020 21:29:36 +1100 (AEDT)
+ Paul Mackerras <paulus@samba.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <b02ca2ed2d3676a096219b48c0f69ec982a75bcf.1602342801.git.christophe.leroy@csgroup.eu>
+References: <b02ca2ed2d3676a096219b48c0f69ec982a75bcf.1602342801.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/40x: Always fault when _PAGE_ACCESSED is not set
+Message-Id: <160483134342.1400561.2759999901303730148.b4-ty@ellerman.id.au>
+Date: Sun,  8 Nov 2020 21:29:37 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,16 +45,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 7 Nov 2020 09:07:40 +0000 (UTC), Christophe Leroy wrote:
-> When calling early_hash_table(), the kernel hasn't been yet
-> relocated to its linking address, so data must be addressed
-> with relocation offset.
+On Sat, 10 Oct 2020 15:14:29 +0000 (UTC), Christophe Leroy wrote:
+> The kernel expects pte_young() to work regardless of CONFIG_SWAP.
 > 
-> Add relocation offset to write into Hash in early_hash_table().
+> Make sure a minor fault is taken to set _PAGE_ACCESSED when it
+> is not already set, regardless of the selection of CONFIG_SWAP.
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/32s: Use relocation offset when setting early hash table
-      https://git.kernel.org/powerpc/c/01776f070ffcbf336be3bf1672bd3c589548d6c4
+[1/1] powerpc/40x: Always fault when _PAGE_ACCESSED is not set
+      https://git.kernel.org/powerpc/c/0540b0d2ce9073fd2a736d636218faa61c99e572
 
 cheers
