@@ -2,92 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E5CC2AADA5
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 22:19:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C652AADE8
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 23:42:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CTn8B4bxwzDqkC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 08:19:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CTpzy4RXCzDqm9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 09:42:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=jic23@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Bi2wIPkH; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=jTr8zTsz; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CTn4420sSzDqgx
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Nov 2020 08:16:20 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0A8L0rYs193284; Sun, 8 Nov 2020 16:16:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=UlAnYRC0cfkGeC1nfGcvQkPFukBPSB5d89mrhnAjoJs=;
- b=Bi2wIPkHR8cLcGQ0caDyhjec9RkGdvQsvDjHVy6fMbXQtbvPbGxWdHH+CnMr0gCAXu6D
- e3XJXqjKP+rBmDSPyFXMysXypQ0WAnK4KrU11WYh2IBjr35JiJ8X6hYtokBghH5zCf0L
- or1yRSKj9QekdhTYsplQW3u+Os4edDsOGxOQHr1nqvf/sCH4qoL5PctBYcF4aiL47oBk
- DWjLcJnjnC8YIpBdRNsKR+EM2OwP/zl1cKBqvgmHobfxYZAeyqZ0DlJUdCr+WTphCFNg
- h26urroGwCVL3RgM+mZl3n5fE+0RMHBPre5+vgOmorzhdB0bsyFd1F4mCzibAttnmFdV 6Q== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0b-001b2d01.pphosted.com with ESMTP id 34p9jux2jq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 08 Nov 2020 16:16:07 -0500
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0A8LD3CC005584;
- Sun, 8 Nov 2020 21:16:05 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma05fra.de.ibm.com with ESMTP id 34nk788p1d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 08 Nov 2020 21:16:05 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0A8LG27765732966
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 8 Nov 2020 21:16:02 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B3650A405C;
- Sun,  8 Nov 2020 21:16:02 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 11544A4062;
- Sun,  8 Nov 2020 21:15:59 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.199.47.5])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Sun,  8 Nov 2020 21:15:58 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
- Mon, 09 Nov 2020 02:45:57 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
-Subject: [RFC][PATCH 2/2] powerpc/papr_scm: Implement support for reporting
- generic nvdimm stats
-Date: Mon,  9 Nov 2020 02:45:49 +0530
-Message-Id: <20201108211549.122018-2-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201108211549.122018-1-vaibhav@linux.ibm.com>
-References: <20201108211549.122018-1-vaibhav@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CTgJS4wHPzDqZH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Nov 2020 03:56:40 +1100 (AEDT)
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net
+ [82.4.196.95])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 289C720678;
+ Sun,  8 Nov 2020 16:56:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1604854597;
+ bh=HmpnTGD+sCqkzYKB+VNNoQPDyYLZ8DVZYqWfmSgpAfA=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=jTr8zTsz0WaJ6nnvT5Eg1Ll2ihGmqcyn+2SF+Wf/mrD2qllK/kFqFW/v7wcgZNefk
+ zS7dIr/q6PaG6DfI7dBacAjjo5nnHikNbE1GU0b2Tz2VVRAwvJAMwi+yrMpSam0vAS
+ yISkL1OxDj/prQqrSSSyaYuB90OjYqoYVe7sJd6Y=
+Date: Sun, 8 Nov 2020 16:56:21 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: Re: [PATCH v2 20/39] docs: ABI: testing: make the files compatible
+ with ReST output
+Message-ID: <20201108165621.4d0da3f4@archlinux>
+In-Reply-To: <20201102154250.45bee17f@coco.lan>
+References: <cover.1604042072.git.mchehab+huawei@kernel.org>
+ <58cf3c2d611e0197fb215652719ebd82ca2658db.1604042072.git.mchehab+huawei@kernel.org>
+ <5326488b-4185-9d67-fc09-79b911fbb3b8@st.com>
+ <20201030110925.3e09d59e@coco.lan>
+ <cb586ea3-b6e6-4e48-2344-2bd641e5323f@st.com>
+ <20201102124641.GA881895@kroah.com>
+ <20201102154250.45bee17f@coco.lan>
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-08_10:2020-11-05,
- 2020-11-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxlogscore=999
- malwarescore=0 phishscore=0 impostorscore=0 adultscore=0 bulkscore=0
- lowpriorityscore=0 mlxscore=0 priorityscore=1501 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011080148
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Mon, 09 Nov 2020 09:41:37 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,128 +65,201 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>,
- Ira Weiny <ira.weiny@intel.com>
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Peter Meerwald-Stadler <pmeerw@pmeerw.net>, Petr Mladek <pmladek@suse.com>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Nayna Jain <nayna@linux.ibm.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, Sebastian Reichel <sre@kernel.org>,
+ linux-mm@kvack.org, Bruno Meneguele <bmeneg@redhat.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Pavel Machek <pavel@ucw.cz>,
+ Hanjun Guo <guohanjun@huawei.com>, Guenter Roeck <groeck@chromium.org>,
+ netdev@vger.kernel.org, Oleh Kravchenko <oleg@kaa.org.ua>,
+ Dan Williams <dan.j.williams@intel.com>, Andrew Donnellan <ajd@linux.ibm.com>,
+ Javier =?UTF-8?B?R29uesOhbGV6?= <javier@javigon.com>,
+ Fabrice Gasnier <fabrice.gasnier@st.com>, Mark Gross <mgross@linux.intel.com>,
+ linux-acpi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Chunyan Zhang <zhang.lyra@gmail.com>,
+ Mario Limonciello <mario.limonciello@dell.com>,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Ludovic Desroches <ludovic.desroches@microchip.com>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, Tom Rix <trix@redhat.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Niklas Cassel <niklas.cassel@wdc.com>,
+ Len Brown <lenb@kernel.org>, Juergen Gross <jgross@suse.com>,
+ linuxppc-dev@lists.ozlabs.org,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Alexandre Torgue <alexandre.torgue@st.com>, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>,
+ Oded Gabbay <oded.gabbay@gmail.com>, Baolin Wang <baolin.wang7@gmail.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Dan Murphy <dmurphy@ti.com>,
+ Orson Zhai <orsonzhai@gmail.com>, Philippe Bergheaud <felix@linux.ibm.com>,
+ xen-devel@lists.xenproject.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Benson Leung <bleung@chromium.org>, Konstantin Khlebnikov <koct9i@gmail.com>,
+ Jens Axboe <axboe@kernel.dk>, Felipe Balbi <balbi@kernel.org>,
+ Kranthi Kuntala <kranthi.kuntala@intel.com>, "Martin K.
+ Petersen" <martin.petersen@oracle.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, linux-iio@vger.kernel.org,
+ Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Leonid Maksymchuk <leonmaxx@gmail.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+ Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>,
+ Vineela Tummalapalli <vineela.tummalapalli@intel.com>,
+ Peter Rosin <peda@axentia.se>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for reporting papr-scm supported generic nvdimm stats by
-implementing support for handling ND_CMD_GET_STAT in
-'papr_scm_ndctl().
+On Mon, 2 Nov 2020 15:42:50 +0100
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-The mapping between libnvdimm generic nvdimm-stats and papr-scm
-specific performance-stats is embedded inside 'dimm_stats_map[]'. This
-array is queried by newly introduced 'papr_scm_get_stat()' that
-verifies if the requested nvdimm-stat is supported and if yes does an
-hcall via 'drc_pmem_query_stat()' to request the performance-stat and
-return it back to libnvdimm.
+> Em Mon, 2 Nov 2020 13:46:41 +0100
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> escreveu:
+> 
+> > On Mon, Nov 02, 2020 at 12:04:36PM +0100, Fabrice Gasnier wrote:  
+> > > On 10/30/20 11:09 AM, Mauro Carvalho Chehab wrote:    
+> > > > Em Fri, 30 Oct 2020 10:19:12 +0100
+> > > > Fabrice Gasnier <fabrice.gasnier@st.com> escreveu:
+> > > >     
+> > > >> Hi Mauro,
+> > > >>
+> > > >> [...]
+> > > >>    
+> > > >>>  
+> > > >>> +What:		/sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
+> > > >>> +KernelVersion:	4.12
+> > > >>> +Contact:	benjamin.gaignard@st.com
+> > > >>> +Description:
+> > > >>> +		Reading returns the list possible quadrature modes.
+> > > >>> +
+> > > >>> +What:		/sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode
+> > > >>> +KernelVersion:	4.12
+> > > >>> +Contact:	benjamin.gaignard@st.com
+> > > >>> +Description:
+> > > >>> +		Configure the device counter quadrature modes:
+> > > >>> +
+> > > >>> +		channel_A:
+> > > >>> +			Encoder A input servers as the count input and B as
+> > > >>> +			the UP/DOWN direction control input.
+> > > >>> +
+> > > >>> +		channel_B:
+> > > >>> +			Encoder B input serves as the count input and A as
+> > > >>> +			the UP/DOWN direction control input.
+> > > >>> +
+> > > >>> +		quadrature:
+> > > >>> +			Encoder A and B inputs are mixed to get direction
+> > > >>> +			and count with a scale of 0.25.
+> > > >>> +      
+> > > >>    
+> > > > 
+> > > > Hi Fabrice,
+> > > >     
+> > > >> I just noticed that since Jonathan question in v1.
+> > > >>
+> > > >> Above ABI has been moved in the past as discussed in [1]. You can take a
+> > > >> look at:
+> > > >> b299d00 IIO: stm32: Remove quadrature related functions from trigger driver
+> > > >>
+> > > >> Could you please remove the above chunk ?
+> > > >>
+> > > >> With that, for the stm32 part:
+> > > >> Acked-by: Fabrice Gasnier <fabrice.gasnier@st.com>    
+> > > > 
+> > > > 
+> > > > Hmm... probably those were re-introduced due to a rebase. This
+> > > > series were originally written about 1,5 years ago.
+> > > > 
+> > > > I'll drop those hunks.    
+> > > 
+> > > Hi Mauro, Greg,
+> > > 
+> > > I just figured out this patch has been applied with above hunk.
+> > > 
+> > > This should be dropped: is there a fix on its way already ?
+> > > (I may have missed it)    
+> > 
+> > Can you send a fix for just this hunk?  
+> 
+> Hmm...
+> 
+> 	$ git grep /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
+> 	Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8:What:                /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
+> 	Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:What:             /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
+> 	Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:What:               /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available
+> 
+> Even re-doing the changes from 
+> changeset b299d00420e2 ("IIO: stm32: Remove quadrature related functions from trigger driver")
+> at Documentation/ABI/testing/sysfs-bus-iio-timer-stm32, there's still
+> a third duplicate of some of those, as reported by the script:
+> 
+> 	$ ./scripts/get_abi.pl validate 2>&1|grep quadra
+> 	Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:117  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:14
+> 	Warning: /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available is defined 3 times:  Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8:2  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:111  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:8
+> 
+> As in_count_quadrature_mode_available is also defined at:
+> 	Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8:2
+> 
+> The best here seems to have a patch that will also drop the other
+> duplication of this, probably moving in_count_quadrature_mode_available
+> to a generic node probably placing it inside 
+> Documentation/ABI/testing/sysfs-bus-iio.
 
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/papr_scm.c | 66 ++++++++++++++++++++++-
- 1 file changed, 65 insertions(+), 1 deletion(-)
+In this particular case it may be valid to do that, but it's not in
+general without loosing information - see below.
 
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 835163f54244..51eeab3376fd 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -25,7 +25,8 @@
- 	((1ul << ND_CMD_GET_CONFIG_SIZE) | \
- 	 (1ul << ND_CMD_GET_CONFIG_DATA) | \
- 	 (1ul << ND_CMD_SET_CONFIG_DATA) | \
--	 (1ul << ND_CMD_CALL))
-+	 (1ul << ND_CMD_CALL) |		   \
-+	 (1ul << ND_CMD_GET_STAT))
- 
- /* DIMM health bitmap bitmap indicators */
- /* SCM device is unable to persist memory contents */
-@@ -120,6 +121,16 @@ struct papr_scm_priv {
- static LIST_HEAD(papr_nd_regions);
- static DEFINE_MUTEX(papr_ndr_lock);
- 
-+/* Map generic nvdimm stats to papr-scm stats */
-+static const char * const dimm_stat_map[] = {
-+	[ND_DIMM_STAT_INVALID] = NULL,
-+	[ND_DIMM_STAT_MEDIA_READS] = "MedRCnt ",
-+	[ND_DIMM_STAT_MEDIA_WRITES] = "MedWCnt ",
-+	[ND_DIMM_STAT_READ_REQUESTS] = "HostLCnt",
-+	[ND_DIMM_STAT_WRITE_REQUESTS] = "HostSCnt",
-+	[ND_DIMM_STAT_MAX] = NULL,
-+};
-+
- static int drc_pmem_bind(struct papr_scm_priv *p)
- {
- 	unsigned long ret[PLPAR_HCALL_BUFSIZE];
-@@ -728,6 +739,54 @@ static int papr_scm_service_pdsm(struct papr_scm_priv *p,
- 	return pdsm_pkg->cmd_status;
- }
- 
-+/*
-+ * For a given pdsm request call an appropriate service function.
-+ * Returns errors if any while handling the pdsm command package.
-+ */
-+static int papr_scm_get_stat(struct papr_scm_priv *p,
-+			     struct nd_cmd_get_dimm_stat *dimm_stat)
-+
-+{
-+	int rc;
-+	ssize_t size;
-+	struct papr_scm_perf_stat *stat;
-+	struct papr_scm_perf_stats *stats;
-+
-+	/* Check if the requested stat-id is supported */
-+	if (dimm_stat->stat_id >= ARRAY_SIZE(dimm_stat_map) ||
-+	    !dimm_stat_map[dimm_stat->stat_id]) {
-+		dev_dbg(&p->pdev->dev, "Invalid stat-id %lld\n", dimm_stat->stat_id);
-+		return -ENOSPC;
-+	}
-+
-+	/* Allocate request buffer enough to hold single performance stat */
-+	size = sizeof(struct papr_scm_perf_stats) +
-+		sizeof(struct papr_scm_perf_stat);
-+
-+	stats = kzalloc(size, GFP_KERNEL);
-+	if (!stats)
-+		return -ENOMEM;
-+
-+	stat = &stats->scm_statistic[0];
-+	memcpy(&stat->stat_id, dimm_stat_map[dimm_stat->stat_id],
-+	       sizeof(stat->stat_id));
-+	stat->stat_val = 0;
-+
-+	/* Fetch the statistic from PHYP and copy it to provided payload */
-+	rc = drc_pmem_query_stats(p, stats, 1);
-+	if (rc < 0) {
-+		dev_dbg(&p->pdev->dev, "Err(%d) fetching stat '%.8s'\n",
-+			rc, stat->stat_id);
-+		kfree(stats);
-+		return rc;
-+	}
-+
-+	dimm_stat->int_val = be64_to_cpu(stat->stat_val);
-+
-+	kfree(stats);
-+	return 0;
-+}
-+
- static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
- 			  struct nvdimm *nvdimm, unsigned int cmd, void *buf,
- 			  unsigned int buf_len, int *cmd_rc)
-@@ -772,6 +831,11 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
- 		*cmd_rc = papr_scm_service_pdsm(p, call_pkg);
- 		break;
- 
-+	case ND_CMD_GET_STAT:
-+		*cmd_rc = papr_scm_get_stat(p,
-+					    (struct nd_cmd_get_dimm_stat *)buf);
-+		break;
-+
- 	default:
- 		dev_dbg(&p->pdev->dev, "Unknown command = %d\n", cmd);
- 		return -EINVAL;
--- 
-2.28.0
+> 
+> Comments?
+> 
+> Thanks,
+> Mauro
+> 
+> PS.: the IIO subsystem is the one that currently has more duplicated
+> ABI entries:
+
+That was intentional.  Often these provide more information on the
+ABI for a particular device than is present in the base ABI doc.
+
+A bit like when we have additional description for dt binding properties
+for a particular device, even though they are standard properties.
+
+Often a standard property allows for more values than the specific
+one for a particular device.  There can also be obscuring coupling
+between sysfs attributes due to hardware restrictions that we would
+like to provide some explanatory info on.
+
+I suppose we could add all this information to the parent doc but
+that is pretty ugly and will make that doc very nasty to read.
+
+Jonathan
+
+> 
+> $ ./scripts/get_abi.pl validate 2>&1|grep iio
+> Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_x_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:0  Documentation/ABI/testing/sysfs-bus-iio:394
+> Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_y_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:1  Documentation/ABI/testing/sysfs-bus-iio:395
+> Warning: /sys/bus/iio/devices/iio:deviceX/in_accel_z_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:2  Documentation/ABI/testing/sysfs-bus-iio:396
+> Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_x_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:3  Documentation/ABI/testing/sysfs-bus-iio:397
+> Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_y_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:4  Documentation/ABI/testing/sysfs-bus-iio:398
+> Warning: /sys/bus/iio/devices/iio:deviceX/in_anglvel_z_calibbias is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-icm42600:5  Documentation/ABI/testing/sysfs-bus-iio:399
+> Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_preset is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:100  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:0
+> Warning: /sys/bus/iio/devices/iio:deviceX/in_count0_quadrature_mode is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:117  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:14
+> Warning: /sys/bus/iio/devices/iio:deviceX/in_count_quadrature_mode_available is defined 3 times:  Documentation/ABI/testing/sysfs-bus-iio-counter-104-quad-8:2  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:111  Documentation/ABI/testing/sysfs-bus-iio-lptimer-stm32:8
+> Warning: /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371:0  Documentation/ABI/testing/sysfs-bus-iio:599
+> Warning: /sys/bus/iio/devices/iio:deviceX/out_altvoltageY_powerdown is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4371:36  Documentation/ABI/testing/sysfs-bus-iio:588
+> Warning: /sys/bus/iio/devices/iio:deviceX/out_currentY_raw is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-light-lm3533-als:43  Documentation/ABI/testing/sysfs-bus-iio-health-afe440x:38
+> Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:0  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:0
+> Warning: /sys/bus/iio/devices/iio:deviceX/out_current_heater_raw_available is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc2010:1  Documentation/ABI/testing/sysfs-bus-iio-humidity-hdc100x:1
+> Warning: /sys/bus/iio/devices/iio:deviceX/sensor_sensitivity is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-distance-srf08:0  Documentation/ABI/testing/sysfs-bus-iio-proximity-as3935:8
+> Warning: /sys/bus/iio/devices/triggerX/sampling_frequency is defined 2 times:  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32:92  Documentation/ABI/testing/sysfs-bus-iio:45
 
