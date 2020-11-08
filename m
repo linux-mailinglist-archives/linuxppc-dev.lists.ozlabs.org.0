@@ -2,33 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74342AAA98
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 11:38:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C12A52AAC3D
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 17:34:54 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CTVwK3FrxzDr5s
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Nov 2020 21:38:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CTfqF63KVzDqG9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 03:34:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=tjgg=eo=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CTVjy5KHjzDqYk
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Nov 2020 21:29:42 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 4CTVjx2FzZz9sTD; Sun,  8 Nov 2020 21:29:41 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4CTVjw5nCyz9sVD; Sun,  8 Nov 2020 21:29:40 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20201104111742.672142-1-mpe@ellerman.id.au>
-References: <20201104111742.672142-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Use asm_goto_volatile for put_user()
-Message-Id: <160483134266.1400561.1749074181140263524.b4-ty@ellerman.id.au>
-Date: Sun,  8 Nov 2020 21:29:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CTfnR4Qy7zDqsK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Nov 2020 03:33:15 +1100 (AEDT)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 209733] Starting new KVM virtual machines on PPC64 starts to
+ hang after box is up for a while
+Date: Sun, 08 Nov 2020 16:33:12 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Virtualization
+X-Bugzilla-Component: kvm
+X-Bugzilla-Version: unspecified
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: high
+X-Bugzilla-Who: cam@neo-zeon.de
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-209733-206035-3thcIPnO1P@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-209733-206035@https.bugzilla.kernel.org/>
+References: <bug-209733-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,24 +61,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: schwab@linux-m68k.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 4 Nov 2020 22:17:42 +1100, Michael Ellerman wrote:
-> Andreas reported that commit ee0a49a6870e ("powerpc/uaccess: Switch
-> __put_user_size_allowed() to __put_user_asm_goto()") broke
-> CLONE_CHILD_SETTID.
-> 
-> Further inspection showed that the put_user() in schedule_tail() was
-> missing entirely, the store not emitted by the compiler.
-> 
-> [...]
+https://bugzilla.kernel.org/show_bug.cgi?id=3D209733
 
-Applied to powerpc/fixes.
+--- Comment #3 from Cameron (cam@neo-zeon.de) ---
+Same issue now that I'm running with qemu-system-ppc version 1:5.0-14~bpo10=
++1
+from Debian backports.
 
-[1/1] powerpc: Use asm_goto_volatile for put_user()
-      https://git.kernel.org/powerpc/c/1344a232016dbb0492be81f8517c4bf8fc1c6610
-
-cheers
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
