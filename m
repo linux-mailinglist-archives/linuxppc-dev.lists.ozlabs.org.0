@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E071C2AAE96
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 01:48:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700542AAE98
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 01:49:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CTsmC0l44zDqjN
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 11:47:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CTspG26M1zDqnn
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 11:49:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CTsjq6D6ZzDqWY
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Nov 2020 11:45:47 +1100 (AEDT)
-IronPort-SDR: CA0+k2HPy4Xp3yj8nTj6I96A/ajUegr94L5ivJ47uA9PDpScSHuI9SDFCqumZg/b1yOA05cLhq
- RmDMsxPS4ibQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9799"; a="187678588"
-X-IronPort-AV: E=Sophos;i="5.77,462,1596524400"; d="scan'208";a="187678588"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CTsm65dNlzDqkR
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Nov 2020 11:47:49 +1100 (AEDT)
+IronPort-SDR: OS7lhBr03jD81zFXZayLRpUYnT7sonYYjkQx9uwmV95c5aM66+p04z2vCsUN5JMzA2qq21rFmm
+ MRNAKb23WnCA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9799"; a="157516800"
+X-IronPort-AV: E=Sophos;i="5.77,462,1596524400"; d="scan'208";a="157516800"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Nov 2020 16:45:43 -0800
-IronPort-SDR: UZj762EMZBZnNYkOpX0fWMqC/mFUK9anu2A796KmWjRnR+SXpJtTKkQqtNoZcn2nLDYLTmJSox
- 9g37aAHrc7xw==
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Nov 2020 16:47:46 -0800
+IronPort-SDR: rJNAOoQBaQedpCCDlNk/bqPnNq1P5MGQH6Nq/TNlIYnMSESY8VM+ynLfKzOjiSXY/1K3BKGW+w
+ Wo7eXE0dhr0g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,462,1596524400"; d="scan'208";a="327077314"
+X-IronPort-AV: E=Sophos;i="5.77,462,1596524400"; d="scan'208";a="353961637"
 Received: from lkp-server02.sh.intel.com (HELO defa7f6e4f65) ([10.239.97.151])
- by orsmga006.jf.intel.com with ESMTP; 08 Nov 2020 16:45:41 -0800
+ by orsmga008.jf.intel.com with ESMTP; 08 Nov 2020 16:47:45 -0800
 Received: from kbuild by defa7f6e4f65 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1kbvJU-000015-M3; Mon, 09 Nov 2020 00:45:40 +0000
-Date: Mon, 09 Nov 2020 08:45:31 +0800
+ id 1kbvLU-000022-St; Mon, 09 Nov 2020 00:47:44 +0000
+Date: Mon, 09 Nov 2020 08:46:49 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 33fe43cfd9b1c20f6f9899b44bf04e91823ff1c9
-Message-ID: <5fa8912b.7raF7ySGbunbZG+F%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ fea97f268bc201789c3da74db7eb0c6313d17917
+Message-ID: <5fa89179.zWmtETY14BV7yoOl%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -63,13 +63,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
-branch HEAD: 33fe43cfd9b1c20f6f9899b44bf04e91823ff1c9  powerpc/8xx: Manage _PAGE_ACCESSED through APG bits in L1 entry
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
+branch HEAD: fea97f268bc201789c3da74db7eb0c6313d17917  powerpc: Use the common INIT_DATA_SECTION macro in vmlinux.lds.S
 
-elapsed time: 4486m
+elapsed time: 4487m
 
-configs tested: 152
-configs skipped: 87
+configs tested: 163
+configs skipped: 3
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -104,6 +104,11 @@ arm                            zeus_defconfig
 arm                            pleb_defconfig
 arm                     am200epdkit_defconfig
 powerpc                     stx_gp3_defconfig
+sh                           se7724_defconfig
+mips                        nlm_xlr_defconfig
+arm                  colibri_pxa270_defconfig
+mips                       lemote2f_defconfig
+s390                             allyesconfig
 s390                          debug_defconfig
 arm                        mini2440_defconfig
 arm                       versatile_defconfig
@@ -126,27 +131,29 @@ arm                         hackkit_defconfig
 arc                     haps_hs_smp_defconfig
 riscv                            alldefconfig
 arm                         s3c2410_defconfig
-sh                           se7724_defconfig
 ia64                        generic_defconfig
 mips                       capcella_defconfig
 openrisc                 simple_smp_defconfig
+nds32                            alldefconfig
+sh                         ap325rxa_defconfig
+arm                          gemini_defconfig
+arm                            xcep_defconfig
+mips                          ath79_defconfig
 mips                           ip27_defconfig
 powerpc                     sequoia_defconfig
 mips                        bcm47xx_defconfig
 sh                         ecovec24_defconfig
 arm                          moxart_defconfig
 arm                      footbridge_defconfig
-arm                  colibri_pxa270_defconfig
 powerpc                     kmeter1_defconfig
 sh                           se7722_defconfig
 mips                      malta_kvm_defconfig
-mips                       lemote2f_defconfig
 powerpc                      ppc44x_defconfig
 ia64                             allmodconfig
 ia64                                defconfig
 ia64                             allyesconfig
-m68k                                defconfig
 m68k                             allmodconfig
+m68k                                defconfig
 m68k                             allyesconfig
 nios2                               defconfig
 arc                              allyesconfig
@@ -162,7 +169,6 @@ h8300                            allyesconfig
 arc                                 defconfig
 sh                               allmodconfig
 parisc                              defconfig
-s390                             allyesconfig
 parisc                           allyesconfig
 s390                                defconfig
 i386                             allyesconfig
@@ -190,18 +196,23 @@ x86_64               randconfig-a013-20201104
 x86_64               randconfig-a011-20201104
 x86_64               randconfig-a014-20201104
 x86_64               randconfig-a016-20201104
-i386                 randconfig-a015-20201105
-i386                 randconfig-a013-20201105
-i386                 randconfig-a014-20201105
-i386                 randconfig-a016-20201105
-i386                 randconfig-a011-20201105
-i386                 randconfig-a012-20201105
+x86_64               randconfig-a012-20201106
+x86_64               randconfig-a011-20201106
+x86_64               randconfig-a013-20201106
+x86_64               randconfig-a014-20201106
+x86_64               randconfig-a016-20201106
 i386                 randconfig-a015-20201104
 i386                 randconfig-a013-20201104
 i386                 randconfig-a014-20201104
 i386                 randconfig-a016-20201104
 i386                 randconfig-a011-20201104
 i386                 randconfig-a012-20201104
+i386                 randconfig-a015-20201105
+i386                 randconfig-a013-20201105
+i386                 randconfig-a014-20201105
+i386                 randconfig-a016-20201105
+i386                 randconfig-a011-20201105
+i386                 randconfig-a012-20201105
 x86_64               randconfig-a004-20201105
 x86_64               randconfig-a003-20201105
 x86_64               randconfig-a005-20201105
@@ -210,11 +221,11 @@ x86_64               randconfig-a006-20201105
 x86_64               randconfig-a001-20201105
 riscv                    nommu_k210_defconfig
 riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
 riscv                             allnoconfig
 riscv                               defconfig
-riscv                          rv32_defconfig
 riscv                            allmodconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
 x86_64                                   rhel
 x86_64                           allyesconfig
 x86_64                    rhel-7.6-kselftests
