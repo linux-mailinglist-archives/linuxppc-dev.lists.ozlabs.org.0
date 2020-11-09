@@ -2,72 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CAC2AC3CA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 19:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42DE22AC404
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 19:43:38 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CVKGM671hzDqgd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 05:27:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CVKdM1JYszDqc4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 05:43:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::441;
- helo=mail-wr1-x441.google.com; envelope-from=lee.jones@linaro.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=CJgWPOdf; dkim-atps=neutral
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CVK9b1vGJzDqZC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 05:22:59 +1100 (AEDT)
-Received: by mail-wr1-x441.google.com with SMTP id o15so1971686wru.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Nov 2020 10:22:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=ynyF2LluxBEO2JLmlcMvxixiCa/MBQSn7HUEDQ95Ad8=;
- b=CJgWPOdfZfDFX6jowwB55bCXH/oVH+oRW/NOmFaMU7wqCfffw9BI6AX0cZLLRnoQ83
- f1Q3pJnStHDKmia5wsQ1jG/5yLT5iyXJHSbfVxF2652p73ZossGiaeADkwfMVV3VPzKl
- y3WUZ3gkpVEtts++2sjN4KN/Ate1Zx1Llx1URhWTAmp8q9vb5It/GiVpx1x00v8thRr+
- Jg0NrctCAawSlL0MlhXVbqG4J9tngKUVGjMD35l1hjxw7aj066anrVGw76eLOV6PPGpJ
- +3NJvWcQwSa1y2r2ZhJVX092wzbs8xv/E5ZSMs+rZSbQxaMrOoi1cDjRQZHpsP5bhVsw
- Wctw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=ynyF2LluxBEO2JLmlcMvxixiCa/MBQSn7HUEDQ95Ad8=;
- b=gVoyuI3zuMTvSF64KXDqVL4S6hJSuVW7MXC1bmj3sY06FpwOUuzf8WKynKfKKeqBjV
- ZHmyDtTjYmarkp4GPwakzyrdIEuIKeBAuJVsm2Cb+79svhQXiHMpWtPOasDkUXkh5C9s
- bzPSPteOS/sHzt4JX+PIyJwaOaWJ0LE1hU5e8cyKYbS/NSKv+6R45Bx1/UIy7kojZW2A
- TvdQu3vD99csv41z3fuevG4VWNhewq/OeTaEIicx9X+m/RHfZYWSs76LXlqbIyL/MyQ1
- CxULILROZXnJ+GvMUggMzDXtj/4o9z2/4tgzMcQlZJX36/wrcI6RxKHxcbpkeB0acbJy
- 0y4Q==
-X-Gm-Message-State: AOAM530d7xvOLz4J7KbiLUxpNDQssnnq6HgyYCOMtOUeuI0ktIToEb2E
- CplCbtU4NRIMLFhXqaQNO0/ivQ==
-X-Google-Smtp-Source: ABdhPJzYJ6GXTplhTN/922OmWLnE6Yxzwd1FCSkYbQl6bOCvGF6TFsl11Dt619RBL63ntiSfCz1t1g==
-X-Received: by 2002:adf:f2d1:: with SMTP id d17mr2948571wrp.339.1604946175640; 
- Mon, 09 Nov 2020 10:22:55 -0800 (PST)
-Received: from dell.default ([91.110.221.180])
- by smtp.gmail.com with ESMTPSA id g186sm735365wma.1.2020.11.09.10.22.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Nov 2020 10:22:54 -0800 (PST)
-From: Lee Jones <lee.jones@linaro.org>
-To: lee.jones@linaro.org
-Subject: [PATCH v3 23/23] mtd: devices: powernv_flash: Add function names to
- headers and fix 'dev'
-Date: Mon,  9 Nov 2020 18:22:06 +0000
-Message-Id: <20201109182206.3037326-24-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201109182206.3037326-1-lee.jones@linaro.org>
-References: <20201109182206.3037326-1-lee.jones@linaro.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CVKbf2DhGzDqXq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 05:42:03 +1100 (AEDT)
+IronPort-SDR: Al+/RozjX5403wXzMHHz6brn0FEkvFkNbtIVFioBF8HJ2AuHwL1y9nYa0RzwdiwyaKlZjuaXrG
+ bIp1wHHMWpQg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9800"; a="149700896"
+X-IronPort-AV: E=Sophos;i="5.77,464,1596524400"; d="scan'208";a="149700896"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Nov 2020 10:41:57 -0800
+IronPort-SDR: hQZa9NkhIRCGhZMyvosw8KD6//saugBq7Ir5N6pXrNItG6nBqyyrRNpre6h1iT4filrmv/rMZo
+ BAKx7prBZc2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,464,1596524400"; d="scan'208";a="307740706"
+Received: from lkp-server01.sh.intel.com (HELO d0be80f1a028) ([10.239.97.150])
+ by fmsmga008.fm.intel.com with ESMTP; 09 Nov 2020 10:41:55 -0800
+Received: from kbuild by d0be80f1a028 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1kcC71-0000MB-9N; Mon, 09 Nov 2020 18:41:55 +0000
+Date: Tue, 10 Nov 2020 02:40:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 01776f070ffcbf336be3bf1672bd3c589548d6c4
+Message-ID: <5fa98d3b.82azIYuLoykzaOpS%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,71 +58,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>, Richard Weinberger <richard@nod.at>,
- Miquel Raynal <miquel.raynal@bootlin.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linux-mtd@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fixes the following W=1 kernel build warning(s):
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
+branch HEAD: 01776f070ffcbf336be3bf1672bd3c589548d6c4  powerpc/32s: Use relocation offset when setting early hash table
 
- drivers/mtd/devices/powernv_flash.c:129: warning: Cannot understand  * @mtd: the device
- drivers/mtd/devices/powernv_flash.c:145: warning: Cannot understand  * @mtd: the device
- drivers/mtd/devices/powernv_flash.c:161: warning: Cannot understand  * @mtd: the device
- drivers/mtd/devices/powernv_flash.c:184: warning: Function parameter or member 'dev' not described in 'powernv_flash_set_driver_info'
+elapsed time: 1076m
 
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linux-mtd@lists.infradead.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
+configs tested: 142
+configs skipped: 99
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arc                        nsim_700_defconfig
+powerpc                       holly_defconfig
+xtensa                  audio_kc705_defconfig
+sh                           se7343_defconfig
+arm                  colibri_pxa270_defconfig
+nds32                            alldefconfig
+arm                            hisi_defconfig
+arm                         assabet_defconfig
+m68k                        m5272c3_defconfig
+arm                          pxa910_defconfig
+x86_64                           allyesconfig
+openrisc                 simple_smp_defconfig
+xtensa                  cadence_csp_defconfig
+mips                      maltaaprp_defconfig
+arm                        spear6xx_defconfig
+sh                             sh03_defconfig
+mips                           jazz_defconfig
+powerpc                 mpc8560_ads_defconfig
+arm                            mmp2_defconfig
+powerpc                        warp_defconfig
+powerpc                     mpc5200_defconfig
+sh                      rts7751r2d1_defconfig
+mips                      malta_kvm_defconfig
+sh                ecovec24-romimage_defconfig
+parisc                generic-64bit_defconfig
+powerpc                    sam440ep_defconfig
+powerpc                     pseries_defconfig
+m68k                         amcore_defconfig
+arm                         s5pv210_defconfig
+mips                  cavium_octeon_defconfig
+m68k                             alldefconfig
+nios2                         10m50_defconfig
+powerpc                     tqm8548_defconfig
+c6x                        evmc6474_defconfig
+sh                          rsk7201_defconfig
+nios2                         3c120_defconfig
+powerpc                mpc7448_hpc2_defconfig
+arm                          badge4_defconfig
+arm                       multi_v4t_defconfig
+h8300                               defconfig
+arm                          collie_defconfig
+arm                         hackkit_defconfig
+powerpc                 linkstation_defconfig
+arm                           h5000_defconfig
+sh                            hp6xx_defconfig
+arm                          lpd270_defconfig
+um                           x86_64_defconfig
+mips                          rm200_defconfig
+powerpc                      bamboo_defconfig
+arm                            u300_defconfig
+arm                       versatile_defconfig
+arc                              alldefconfig
+arm                        multi_v5_defconfig
+powerpc                 mpc834x_mds_defconfig
+powerpc                 mpc836x_mds_defconfig
+arm                       omap2plus_defconfig
+mips                           ip27_defconfig
+mips                        qi_lb60_defconfig
+m68k                        m5307c3_defconfig
+arm                             rpc_defconfig
+c6x                              alldefconfig
+powerpc                      pmac32_defconfig
+arm                          imote2_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+arc                                 defconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20201109
+x86_64               randconfig-a002-20201109
+x86_64               randconfig-a003-20201109
+x86_64               randconfig-a005-20201109
+x86_64               randconfig-a006-20201109
+x86_64               randconfig-a001-20201109
+i386                 randconfig-a004-20201109
+i386                 randconfig-a006-20201109
+i386                 randconfig-a005-20201109
+i386                 randconfig-a001-20201109
+i386                 randconfig-a003-20201109
+i386                 randconfig-a002-20201109
+i386                 randconfig-a014-20201109
+i386                 randconfig-a015-20201109
+i386                 randconfig-a013-20201109
+i386                 randconfig-a016-20201109
+i386                 randconfig-a011-20201109
+i386                 randconfig-a012-20201109
+x86_64               randconfig-a003-20201110
+x86_64               randconfig-a005-20201110
+x86_64               randconfig-a004-20201110
+x86_64               randconfig-a002-20201110
+x86_64               randconfig-a006-20201110
+x86_64               randconfig-a001-20201110
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a012-20201109
+x86_64               randconfig-a015-20201109
+x86_64               randconfig-a013-20201109
+x86_64               randconfig-a011-20201109
+x86_64               randconfig-a014-20201109
+x86_64               randconfig-a016-20201109
+
 ---
- drivers/mtd/devices/powernv_flash.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/devices/powernv_flash.c b/drivers/mtd/devices/powernv_flash.c
-index 0b757d9ba2f6b..6950a87648151 100644
---- a/drivers/mtd/devices/powernv_flash.c
-+++ b/drivers/mtd/devices/powernv_flash.c
-@@ -126,6 +126,7 @@ static int powernv_flash_async_op(struct mtd_info *mtd, enum flash_op op,
- }
- 
- /**
-+ * powernv_flash_read
-  * @mtd: the device
-  * @from: the offset to read from
-  * @len: the number of bytes to read
-@@ -142,6 +143,7 @@ static int powernv_flash_read(struct mtd_info *mtd, loff_t from, size_t len,
- }
- 
- /**
-+ * powernv_flash_write
-  * @mtd: the device
-  * @to: the offset to write to
-  * @len: the number of bytes to write
-@@ -158,6 +160,7 @@ static int powernv_flash_write(struct mtd_info *mtd, loff_t to, size_t len,
- }
- 
- /**
-+ * powernv_flash_erase
-  * @mtd: the device
-  * @erase: the erase info
-  * Returns 0 if erase successful or -ERRNO if an error occurred
-@@ -176,7 +179,7 @@ static int powernv_flash_erase(struct mtd_info *mtd, struct erase_info *erase)
- 
- /**
-  * powernv_flash_set_driver_info - Fill the mtd_info structure and docg3
-- * structure @pdev: The platform device
-+ * @dev: The device structure
-  * @mtd: The structure to fill
-  */
- static int powernv_flash_set_driver_info(struct device *dev,
--- 
-2.25.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
