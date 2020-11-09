@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE77E2ABF1E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 15:46:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBE22AC0D9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 17:27:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CVDMZ5jpHzDqgF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 01:46:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CVGc16JjDzDqRm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 03:27:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,37 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=AACidaKd; dkim-atps=neutral
+ header.s=default header.b=FlK7ALOw; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CVDGh4kDkzDqcV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 01:42:04 +1100 (AEDT)
-Received: from kernel.org (unknown [77.125.7.142])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CVGXw4JnFzDqMw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 03:24:32 +1100 (AEDT)
+Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 6D215206E3;
- Mon,  9 Nov 2020 14:41:52 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 726A920897;
+ Mon,  9 Nov 2020 16:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1604932922;
- bh=XyH/OGSoZtwKFi7Dr6r4PbxrZ95WCPZt6ITMBGRDbT8=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=AACidaKdvM9fjww+sp/aLxSmuCgmX5y5VInfhx0TIj5OjJteJpSMpOU9k+cy2ANao
- bPCbw8OTl+tQ2hkhXviYnObTrxDMTytkrEn70tTATzIjRMFL7twkjoJg60mbELrRtH
- jrhu4hO9i4CTCZoHNJYPLc9KZT9JgGfbJFGI+3OU=
-Date: Mon, 9 Nov 2020 16:41:48 +0200
+ s=default; t=1604939070;
+ bh=QI/S2bKonE9QPk2rHnaHhCHzH5i3UX6jhCE4bfOQNYQ=;
+ h=From:To:Cc:Subject:Date:From;
+ b=FlK7ALOwN5RaezegimQIhwgT4B7iWXxCejJvk9ueUltK0GfO8CYsgRF6m3jUNGW46
+ rORXhX9eUX2aIhxthymY4Bv+kdsa0ju6iCooGI6kWrsFkSPcDQOiaMHbCTY+D6Ur3s
+ Jufmhn49c0P5H+hfaQbDU9+xK9tgyxK994Lm8tRQ=
 From: Mike Rapoport <rppt@kernel.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH v5 1/5] mm: introduce debug_pagealloc_{map, unmap}_pages()
- helpers
-Message-ID: <20201109144148.GE301837@kernel.org>
-References: <20201108065758.1815-1-rppt@kernel.org>
- <20201108065758.1815-2-rppt@kernel.org>
- <4bd5ae2b-4fc6-73dc-b83b-e71826990946@suse.cz>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v6 0/4] arch, mm: improve robustness of direct map manipulation
+Date: Mon,  9 Nov 2020 18:24:11 +0200
+Message-Id: <20201109162415.13764-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4bd5ae2b-4fc6-73dc-b83b-e71826990946@suse.cz>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,72 +61,106 @@ Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
  Mike Rapoport <rppt@linux.ibm.com>,
  Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel@lists.infradead.org,
  Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
  Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
  linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
  David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
  Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
  "Kirill A. Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- linux-arm-kernel@lists.infradead.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- linux-kernel@vger.kernel.org, Pekka Enberg <penberg@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+ Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Pekka Enberg <penberg@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>, "Edgecombe,
+ Rick P" <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 09, 2020 at 12:33:46PM +0100, Vlastimil Babka wrote:
-> On 11/8/20 7:57 AM, Mike Rapoport wrote:
-> > --- a/mm/slab.c
-> > +++ b/mm/slab.c
-> > @@ -1428,21 +1428,19 @@ static bool is_debug_pagealloc_cache(struct kmem_cache *cachep)
-> >   	return false;
-> >   }
-> > -#ifdef CONFIG_DEBUG_PAGEALLOC
-> >   static void slab_kernel_map(struct kmem_cache *cachep, void *objp, int map)
-> >   {
-> >   	if (!is_debug_pagealloc_cache(cachep))
-> >   		return;
-> 
-> Hmm, I didn't notice earlier, sorry.
-> The is_debug_pagealloc_cache() above includes a
-> debug_pagealloc_enabled_static() check, so it should be fine to use
-> __kernel_map_pages() directly below. Otherwise we generate two static key
-> checks for the same key needlessly.
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-Ok, I'll revert slab changes.
+Hi,
 
-> > -	kernel_map_pages(virt_to_page(objp), cachep->size / PAGE_SIZE, map);
-> > +	if (map)
-> > +		debug_pagealloc_map_pages(virt_to_page(objp),
-> > +					  cachep->size / PAGE_SIZE);
-> > +	else
-> > +		debug_pagealloc_unmap_pages(virt_to_page(objp),
-> > +					    cachep->size / PAGE_SIZE);
-> >   }
-> > -#else
-> > -static inline void slab_kernel_map(struct kmem_cache *cachep, void *objp,
-> > -				int map) {}
-> > -
-> > -#endif
-> > -
-> >   static void poison_obj(struct kmem_cache *cachep, void *addr, unsigned char val)
-> >   {
-> >   	int size = cachep->object_size;
-> > @@ -2062,7 +2060,7 @@ int __kmem_cache_create(struct kmem_cache *cachep, slab_flags_t flags)
-> >   #if DEBUG
-> >   	/*
-> > -	 * If we're going to use the generic kernel_map_pages()
-> > +	 * If we're going to use the generic debug_pagealloc_map_pages()
-> >   	 * poisoning, then it's going to smash the contents of
-> >   	 * the redzone and userword anyhow, so switch them off.
-> >   	 */
-> > 
-> 
+During recent discussion about KVM protected memory, David raised a concern
+about usage of __kernel_map_pages() outside of DEBUG_PAGEALLOC scope [1].
+
+Indeed, for architectures that define CONFIG_ARCH_HAS_SET_DIRECT_MAP it is
+possible that __kernel_map_pages() would fail, but since this function is
+void, the failure will go unnoticed.
+
+Moreover, there's lack of consistency of __kernel_map_pages() semantics
+across architectures as some guard this function with
+#ifdef DEBUG_PAGEALLOC, some refuse to update the direct map if page
+allocation debugging is disabled at run time and some allow modifying the
+direct map regardless of DEBUG_PAGEALLOC settings.
+
+This set straightens this out by restoring dependency of
+__kernel_map_pages() on DEBUG_PAGEALLOC and updating the call sites
+accordingly. 
+
+Since currently the only user of __kernel_map_pages() outside
+DEBUG_PAGEALLOC is hibernation, it is updated to make direct map accesses
+there more explicit.
+
+[1] https://lore.kernel.org/lkml/2759b4bf-e1e3-d006-7d86-78a40348269d@redhat.com
+
+v6 changes:
+* revert slab changes to avoid redundant check of static key
+
+v5 changes:
+* use pairs of _map()/_unmap() functions instead of _map(..., int enable) as
+  Vlastimil suggested
+https://lore.kernel.org/lkml/20201108065758.1815-1-rppt@kernel.org
+
+v4 changes:
+* s/WARN_ON/pr_warn_once/ per David and Kirill
+* rebase on v5.10-rc2
+* add Acked/Reviewed tags
+https://lore.kernel.org/lkml/20201103162057.22916-1-rppt@kernel.org
+
+v3 changes:
+* update arm64 changes to avoid regression, per Rick's comments
+* fix bisectability
+https://lore.kernel.org/lkml/20201101170815.9795-1-rppt@kernel.org
+
+v2 changes:
+* Rephrase patch 2 changelog to better describe the change intentions and
+implications
+* Move removal of kernel_map_pages() from patch 1 to patch 2, per David
+https://lore.kernel.org/lkml/20201029161902.19272-1-rppt@kernel.org
+
+v1:
+https://lore.kernel.org/lkml/20201025101555.3057-1-rppt@kernel.org
+
+Mike Rapoport (4):
+  mm: introduce debug_pagealloc_{map,unmap}_pages() helpers
+  PM: hibernate: make direct map manipulations more explicit
+  arch, mm: restore dependency of __kernel_map_pages() on DEBUG_PAGEALLOC
+  arch, mm: make kernel_page_present() always available
+
+ arch/Kconfig                        |  3 +++
+ arch/arm64/Kconfig                  |  4 +--
+ arch/arm64/include/asm/cacheflush.h |  1 +
+ arch/arm64/mm/pageattr.c            |  6 +++--
+ arch/powerpc/Kconfig                |  5 +---
+ arch/riscv/Kconfig                  |  4 +--
+ arch/riscv/include/asm/pgtable.h    |  2 --
+ arch/riscv/include/asm/set_memory.h |  1 +
+ arch/riscv/mm/pageattr.c            | 31 ++++++++++++++++++++++
+ arch/s390/Kconfig                   |  4 +--
+ arch/sparc/Kconfig                  |  4 +--
+ arch/x86/Kconfig                    |  4 +--
+ arch/x86/include/asm/set_memory.h   |  1 +
+ arch/x86/mm/pat/set_memory.c        |  4 +--
+ include/linux/mm.h                  | 40 ++++++++++++++---------------
+ include/linux/set_memory.h          |  5 ++++
+ kernel/power/snapshot.c             | 38 +++++++++++++++++++++++++--
+ mm/memory_hotplug.c                 |  3 +--
+ mm/page_alloc.c                     |  6 ++---
+ 19 files changed, 113 insertions(+), 53 deletions(-)
 
 -- 
-Sincerely yours,
-Mike.
+2.28.0
+
