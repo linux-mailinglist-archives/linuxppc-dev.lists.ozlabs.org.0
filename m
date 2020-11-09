@@ -1,46 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE9E2AB874
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 13:42:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE77E2ABF1E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 15:46:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CV9cd62nJzDqD7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 23:42:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CVDMZ5jpHzDqgF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 01:46:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CV9Ws3k5NzDqNj
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Nov 2020 23:38:12 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 0A9CY4kY014413;
- Mon, 9 Nov 2020 06:34:05 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 0A9CY3EW014410;
- Mon, 9 Nov 2020 06:34:03 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Mon, 9 Nov 2020 06:34:03 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Gabriel Paubert <paubert@iram.es>
-Subject: Re: [PATCH] powerpc: add compile-time support for lbarx, lwarx
-Message-ID: <20201109123403.GH2672@gate.crashing.org>
-References: <20201107032328.2454582-1-npiggin@gmail.com>
- <20201107071213.GA30735@lt-gp.iram.es>
- <0810564117125.202011.20201107114257.GG2672@gate.crashing.org>
- <20201108200152.GA16446@lt-gp.iram.es>
-Mime-Version: 1.0
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=AACidaKd; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CVDGh4kDkzDqcV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 01:42:04 +1100 (AEDT)
+Received: from kernel.org (unknown [77.125.7.142])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6D215206E3;
+ Mon,  9 Nov 2020 14:41:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1604932922;
+ bh=XyH/OGSoZtwKFi7Dr6r4PbxrZ95WCPZt6ITMBGRDbT8=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=AACidaKdvM9fjww+sp/aLxSmuCgmX5y5VInfhx0TIj5OjJteJpSMpOU9k+cy2ANao
+ bPCbw8OTl+tQ2hkhXviYnObTrxDMTytkrEn70tTATzIjRMFL7twkjoJg60mbELrRtH
+ jrhu4hO9i4CTCZoHNJYPLc9KZT9JgGfbJFGI+3OU=
+Date: Mon, 9 Nov 2020 16:41:48 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH v5 1/5] mm: introduce debug_pagealloc_{map, unmap}_pages()
+ helpers
+Message-ID: <20201109144148.GE301837@kernel.org>
+References: <20201108065758.1815-1-rppt@kernel.org>
+ <20201108065758.1815-2-rppt@kernel.org>
+ <4bd5ae2b-4fc6-73dc-b83b-e71826990946@suse.cz>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201108200152.GA16446@lt-gp.iram.es>
-User-Agent: Mutt/1.4.2.3i
+In-Reply-To: <4bd5ae2b-4fc6-73dc-b83b-e71826990946@suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,28 +58,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+ David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ linux-arm-kernel@lists.infradead.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linux-kernel@vger.kernel.org, Pekka Enberg <penberg@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 08, 2020 at 09:01:52PM +0100, Gabriel Paubert wrote:
-> On Sat, Nov 07, 2020 at 05:42:57AM -0600, Segher Boessenkool wrote:
-> > On Sat, Nov 07, 2020 at 08:12:13AM +0100, Gabriel Paubert wrote:
-> > > On Sat, Nov 07, 2020 at 01:23:28PM +1000, Nicholas Piggin wrote:
-> > > > ISA v2.06 (POWER7 and up) as well as e6500 support lbarx and lwarx.
-> > > 
-> > > Hmm, lwarx exists since original Power AFAIR,
-> > 
-> > Almost: it was new on PowerPC.
+On Mon, Nov 09, 2020 at 12:33:46PM +0100, Vlastimil Babka wrote:
+> On 11/8/20 7:57 AM, Mike Rapoport wrote:
+> > --- a/mm/slab.c
+> > +++ b/mm/slab.c
+> > @@ -1428,21 +1428,19 @@ static bool is_debug_pagealloc_cache(struct kmem_cache *cachep)
+> >   	return false;
+> >   }
+> > -#ifdef CONFIG_DEBUG_PAGEALLOC
+> >   static void slab_kernel_map(struct kmem_cache *cachep, void *objp, int map)
+> >   {
+> >   	if (!is_debug_pagealloc_cache(cachep))
+> >   		return;
 > 
-> I stand corrected. Does this mean that Power1 (and 2 I believe) had 
-> no SMP support?
+> Hmm, I didn't notice earlier, sorry.
+> The is_debug_pagealloc_cache() above includes a
+> debug_pagealloc_enabled_static() check, so it should be fine to use
+> __kernel_map_pages() directly below. Otherwise we generate two static key
+> checks for the same key needlessly.
 
-As I understand it, that's correct.  Of course you always can do SMP "by
-hand" -- you can do all synchronisation via software (perhaps using some
-knowledge of the specific hardware you're running on), it's just slow
-(and usually not portable).  Compare to SMP on 603 for example.
+Ok, I'll revert slab changes.
 
+> > -	kernel_map_pages(virt_to_page(objp), cachep->size / PAGE_SIZE, map);
+> > +	if (map)
+> > +		debug_pagealloc_map_pages(virt_to_page(objp),
+> > +					  cachep->size / PAGE_SIZE);
+> > +	else
+> > +		debug_pagealloc_unmap_pages(virt_to_page(objp),
+> > +					    cachep->size / PAGE_SIZE);
+> >   }
+> > -#else
+> > -static inline void slab_kernel_map(struct kmem_cache *cachep, void *objp,
+> > -				int map) {}
+> > -
+> > -#endif
+> > -
+> >   static void poison_obj(struct kmem_cache *cachep, void *addr, unsigned char val)
+> >   {
+> >   	int size = cachep->object_size;
+> > @@ -2062,7 +2060,7 @@ int __kmem_cache_create(struct kmem_cache *cachep, slab_flags_t flags)
+> >   #if DEBUG
+> >   	/*
+> > -	 * If we're going to use the generic kernel_map_pages()
+> > +	 * If we're going to use the generic debug_pagealloc_map_pages()
+> >   	 * poisoning, then it's going to smash the contents of
+> >   	 * the redzone and userword anyhow, so switch them off.
+> >   	 */
+> > 
+> 
 
-Segher
+-- 
+Sincerely yours,
+Mike.
