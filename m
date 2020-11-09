@@ -2,97 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824962AC6A7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 22:09:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D80EB2AC81F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Nov 2020 23:12:54 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CVNsR2PkKzDqcg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 08:09:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CVQGq37NDzDqcl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 09:12:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.161.65; helo=mail-oo1-f65.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=XBIiWh0W; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-oo1-f65.google.com (mail-oo1-f65.google.com
+ [209.85.161.65])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CVFcF52XWzDqY7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 02:42:20 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0A9EXJ3S007393; Mon, 9 Nov 2020 10:03:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=z5oC/8a+GTxhWeb+ZbLr8Xr4K+9R59YBdDdSSh5RKRM=;
- b=XBIiWh0WE20556srxE4tLXEI6LHTLU0XOZ47YJ+y5FuzrW6vuf5w3TIr9w02PGtl0Vm2
- DuyXTJVwYsCISKNILJK+M1iFuUbShIE99Jq3DvQ0X1oX8LTGL34og77coACb+wK/HnCR
- AVRIlisnmRGpjCYnFi2E9U+kSrjh53XqIuAVfOxVS9IbINjiz9ouXPIQfH7yUyevg9fc
- 0cuNK+RY6Rh+1w1zFDzDYDLhR8XfzoI7LW78lTBKqQts2p3iPmUCCyCpGOO1FeUilMD3
- 8ctNR0S83H168re3lA8+p6vac/432WdtO2v2czqxzZ5czK9JDYTlY7G1LjWXEnXT8HFU zQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 34q5urdbxp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Nov 2020 10:03:25 -0500
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0A9EXd3B009077;
- Mon, 9 Nov 2020 10:03:23 -0500
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 34q5urdbtv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Nov 2020 10:03:23 -0500
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0A9F1mKL012969;
- Mon, 9 Nov 2020 15:03:19 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma04ams.nl.ibm.com with ESMTP id 34p26phjpu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Nov 2020 15:03:18 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0A9F3Gqd55771522
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Nov 2020 15:03:16 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8080BAE055;
- Mon,  9 Nov 2020 15:03:16 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9050FAE051;
- Mon,  9 Nov 2020 15:03:15 +0000 (GMT)
-Received: from osiris (unknown [9.171.58.192])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon,  9 Nov 2020 15:03:15 +0000 (GMT)
-Date: Mon, 9 Nov 2020 16:03:14 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: YiFei Zhu <zhuyifei1999@gmail.com>
-Subject: Re: [PATCH seccomp 5/8] s390: Enable seccomp architecture tracking
-Message-ID: <20201109150314.GA16690@osiris>
-References: <cover.1604410035.git.yifeifz2@illinois.edu>
- <0fbe0c14d598e18effad3b648ab4808f9cd95eba.1604410035.git.yifeifz2@illinois.edu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CVQDt72q5zDqcl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 09:11:09 +1100 (AEDT)
+Received: by mail-oo1-f65.google.com with SMTP id f8so2090003oou.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Nov 2020 14:11:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=tHsQKqje+5SSSlblxDfRlRnDl/CnwOY9m4Ekj3B6MZ4=;
+ b=k4P7eabsMaK4imbQvbIeHkLaPyifDro1rkSnlz0vFTKNt5cYiSkMV4hkbNOOr/f6oM
+ E+C0F+t2zE6d9Pq7nnlzUdpSCwf1vNSNQIYslbUuroHip+PbkFqyX4M7g//qTkkwxqvj
+ /GFp05hdQmP1D17y53w1t0XytY9myym9VtMKmYbh8li/2QpkHVkUW7iwns2euA9tZnvn
+ IuQ5onLHAVeGEQow4EbxYxNPw9od72yECPEVb/QgBsXnKUGzx4j1i+z2QuKhoTp3BdQL
+ 6XBeT+IXS1drRd1gEZ3IDKPGMdZhzdKNI+PTl4t/Cq19+i3eBkLnfbmpe0w8V+U6W9Jt
+ DTYw==
+X-Gm-Message-State: AOAM5324rUbB1I/ROJVJMBOJiRYE1Z/o4uuBz1vFMYCVHYrEFdRBF3oO
+ umEmLGJ+Hwlhm+vyQa6fsg==
+X-Google-Smtp-Source: ABdhPJxZyTP1ZiN3mZ/6w5swgtWDmTaAwMXb7VFdiEbOAmrWb3IDVkYsELX1q0VNiyfw5GQrBarfQA==
+X-Received: by 2002:a4a:9644:: with SMTP id r4mr11611906ooi.12.1604959867554; 
+ Mon, 09 Nov 2020 14:11:07 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+ by smtp.gmail.com with ESMTPSA id y15sm2813684otq.79.2020.11.09.14.11.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Nov 2020 14:11:06 -0800 (PST)
+Received: (nullmailer pid 1846191 invoked by uid 1000);
+ Mon, 09 Nov 2020 22:11:06 -0000
+Date: Mon, 9 Nov 2020 16:11:06 -0600
+From: Rob Herring <robh@kernel.org>
+To: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: misc: convert fsl, dpaa2-console
+ from txt to YAML
+Message-ID: <20201109221106.GA1846114@bogus>
+References: <20201109104635.21116-1-laurentiu.tudor@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0fbe0c14d598e18effad3b648ab4808f9cd95eba.1604410035.git.yifeifz2@illinois.edu>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-09_02:2020-11-05,
- 2020-11-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=859
- bulkscore=0 malwarescore=0 priorityscore=1501 spamscore=0
- lowpriorityscore=0 impostorscore=0 suspectscore=1 adultscore=0 mlxscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011090098
-X-Mailman-Approved-At: Tue, 10 Nov 2020 08:07:42 +1100
+In-Reply-To: <20201109104635.21116-1-laurentiu.tudor@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,53 +67,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-sh@vger.kernel.org, Tobin Feldman-Fitzthum <tobin@ibm.com>,
- Hubertus Franke <frankeh@us.ibm.com>, Jack Chen <jianyan2@illinois.edu>,
- linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>,
- linux-s390@vger.kernel.org, YiFei Zhu <yifeifz2@illinois.edu>,
- linux-csky@vger.kernel.org, Tianyin Xu <tyxu@illinois.edu>,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Jann Horn <jannh@google.com>, Valentin Rothberg <vrothber@redhat.com>,
- Aleksa Sarai <cyphar@cyphar.com>, Josep Torrellas <torrella@illinois.edu>,
- Will Drewry <wad@chromium.org>, linux-parisc@vger.kernel.org,
- containers@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
- Andy Lutomirski <luto@amacapital.net>,
- Dimitrios Skarlatos <dskarlat@cs.cmu.edu>,
- David Laight <David.Laight@aculab.com>,
- Giuseppe Scrivano <gscrivan@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- Tycho Andersen <tycho@tycho.pizza>
+Cc: devicetree@vger.kernel.org, corbet@lwn.net, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, leoyang.li@nxp.com,
+ robh+dt@kernel.org, ioana.ciornei@nxp.com,
+ Ionut-robert Aron <ionut-robert.aron@nxp.com>, kuba@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 03, 2020 at 07:43:01AM -0600, YiFei Zhu wrote:
-> From: YiFei Zhu <yifeifz2@illinois.edu>
+On Mon, 09 Nov 2020 12:46:34 +0200, Laurentiu Tudor wrote:
+> From: Ionut-robert Aron <ionut-robert.aron@nxp.com>
 > 
-> To enable seccomp constant action bitmaps, we need to have a static
-> mapping to the audit architecture and system call table size. Add these
-> for s390.
+> Convert fsl,dpaa2-console to YAML in order to automate the
+> verification process of dts files.
 > 
-> Signed-off-by: YiFei Zhu <yifeifz2@illinois.edu>
+> Signed-off-by: Ionut-robert Aron <ionut-robert.aron@nxp.com>
+> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 > ---
->  arch/s390/include/asm/seccomp.h | 9 +++++++++
->  1 file changed, 9 insertions(+)
+> Changes in v2:
+>  - add missing additionalProperties
 > 
-> diff --git a/arch/s390/include/asm/seccomp.h b/arch/s390/include/asm/seccomp.h
-> index 795bbe0d7ca6..71d46f0ba97b 100644
-> --- a/arch/s390/include/asm/seccomp.h
-> +++ b/arch/s390/include/asm/seccomp.h
-> @@ -16,4 +16,13 @@
->  
->  #include <asm-generic/seccomp.h>
->  
-> +#define SECCOMP_ARCH_NATIVE		AUDIT_ARCH_S390X
-> +#define SECCOMP_ARCH_NATIVE_NR		NR_syscalls
-> +#define SECCOMP_ARCH_NATIVE_NAME	"s390x"
-> +#ifdef CONFIG_COMPAT
-> +# define SECCOMP_ARCH_COMPAT		AUDIT_ARCH_S390
-> +# define SECCOMP_ARCH_COMPAT_NR		NR_syscalls
-> +# define SECCOMP_ARCH_COMPAT_NAME	"s390"
-> +#endif
-> +
+>  .../bindings/misc/fsl,dpaa2-console.txt       | 11 --------
+>  .../bindings/misc/fsl,dpaa2-console.yaml      | 25 +++++++++++++++++++
+>  2 files changed, 25 insertions(+), 11 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/misc/fsl,dpaa2-console.txt
+>  create mode 100644 Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
+> 
 
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Applied, thanks!
