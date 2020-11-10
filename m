@@ -2,58 +2,106 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A9C2AD55A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 12:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 984762AD5DD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 13:07:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CVm5D2klyzDqJR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 22:35:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CVmnQ6C07zDqTw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 23:07:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Z/Stl1XU; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CVm0n1YLlzDqC0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 22:31:43 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CVm0V5TNPz9tyfr;
- Tue, 10 Nov 2020 12:31:38 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id GLDHci3zbK_f; Tue, 10 Nov 2020 12:31:38 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CVm0V4YXHz9tyfl;
- Tue, 10 Nov 2020 12:31:38 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E91A18B7F0;
- Tue, 10 Nov 2020 12:31:39 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ywS02Q8deDx4; Tue, 10 Nov 2020 12:31:39 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 731F18B764;
- Tue, 10 Nov 2020 12:31:39 +0100 (CET)
-Subject: Re: [RFC PATCH 0/9] powerpc/64s: fast interrupt exit
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20201106155929.2246055-1-npiggin@gmail.com>
- <fdde16b8-2bb4-f6a2-3c29-61d0169453cf@csgroup.eu>
- <1604997971.w6spl33ij0.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <8217782e-1668-7af0-be59-4027eb46b49f@csgroup.eu>
-Date: Tue, 10 Nov 2020 12:31:39 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CVmfn0qYXzDqTw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 23:01:20 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AABVufw025787; Tue, 10 Nov 2020 07:01:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=/DPqYVC7ZZ60c5ApNonguqemmgj1RiB38XeTxKptSSI=;
+ b=Z/Stl1XUR7g1H1G7ObQ5ViFR1JYlxfOek8mM91ovGnkVDqtaBRfS/Crh+EnsRiwg4cjR
+ fGe56xuXpc+0cEkiOslqI9JZzZBJhifwCGCvyn8oY9TvnZIyig6oEwgwBOyzt64J5djU
+ 16WGHnsmIjenJKkdINwwz2YGmKq6h4tCNz4GWuRXGhxnVgR1WMH4AMneNiILzdCW7oAk
+ Af6haa5Eqg1lqpSx/hhoB7yw0M4H7wvBSxGYr5hIp8C9rL4K9LX4Le7EZ0ac/1mtP//C
+ 5TAohEukN7pNeyPx6qeViBoCqN742i9UiswR2OZASkT8xnoc0cvRYb5+eIZh3XQYtuvr GA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34qsbcj5g7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Nov 2020 07:01:10 -0500
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0AABcTje054767;
+ Tue, 10 Nov 2020 07:01:10 -0500
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34qsbcj5eu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Nov 2020 07:01:10 -0500
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AABv5Hw008467;
+ Tue, 10 Nov 2020 12:01:07 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03fra.de.ibm.com with ESMTP id 34q0840prd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Nov 2020 12:01:07 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0AAC15WE62718292
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Nov 2020 12:01:05 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 40270A4054;
+ Tue, 10 Nov 2020 12:01:05 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E87D1A4064;
+ Tue, 10 Nov 2020 12:01:04 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 10 Nov 2020 12:01:04 +0000 (GMT)
+Received: from [9.81.202.220] (unknown [9.81.202.220])
+ (using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 95E4BA0218;
+ Tue, 10 Nov 2020 23:01:02 +1100 (AEDT)
+Subject: Re: [PATCH] powerpc/powernv/sriov: fix unsigned int win compared to
+ less than zero
+To: xiakaixu1987@gmail.com, fbarrat@linux.ibm.com, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org
+References: <1605007170-22171-1-git-send-email-kaixuxia@tencent.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Message-ID: <40b8ba6f-4916-55c2-a1f0-b7daa3c2e201@linux.ibm.com>
+Date: Tue, 10 Nov 2020 23:01:01 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <1604997971.w6spl33ij0.astroid@bobo.none>
+In-Reply-To: <1605007170-22171-1-git-send-email-kaixuxia@tencent.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-10_04:2020-11-10,
+ 2020-11-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=671
+ mlxscore=0 priorityscore=1501 bulkscore=0 suspectscore=0 impostorscore=0
+ spamscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011100079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,57 +113,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Kaixu Xia <kaixuxia@tencent.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 10/11/2020 à 09:49, Nicholas Piggin a écrit :
-> Excerpts from Christophe Leroy's message of November 7, 2020 8:35 pm:
->>
->>
->> Le 06/11/2020 à 16:59, Nicholas Piggin a écrit :
->>> This series attempts to improve the speed of interrupts and system calls
->>> in two major ways.
->>>
->>> Firstly, the SRR/HSRR registers do not need to be reloaded if they were
->>> not used or clobbered fur the duration of the interrupt.
->>>
->>> Secondly, an alternate return location facility is added for soft-masked
->>> asynchronous interrupts and then that's used to set everything up for
->>> return without having to disable MSR RI or EE.
->>>
->>> After this series, the entire system call / interrupt handler fast path
->>> executes no mtsprs and one mtmsrd to enable interrupts initially, and
->>> the system call vectored path doesn't even need to do that.
->>
->> Interesting series.
->>
->> Unfortunately, can't be done on PPC32 (at least on non bookE), because it would mean mapping kernel
->> at 0 instead of 0xC0000000. Not sure libc would like it, and anyway it would be an issue for
->> catching NULL pointer dereferencing, unless we use page tables instead of BATs to map kernel mem,
->> which would be serious performance cut.
+On 10/11/20 10:19 pm, xiakaixu1987@gmail.com wrote:
+> From: Kaixu Xia <kaixuxia@tencent.com>
 > 
-> Hmm, why would you have to map at 0?
-
-In real mode, physical mem is at 0. If we want to switch from real to virtual mode by just writing 
-to MSR, then we need virtuel addresses match with real addresses ?
-We could play with chip selects to put RAM at 0xc0000000, but then we'd have a problem with 
-exception as they have to be at 0. Or we could play with MSR[IP] and get the exceptions at 
-0xfff00000, but that would not be so easy I guess.
-
+> Fix coccicheck warning:
 > 
-> PPC32 doesn't have soft mask interrupts, but you could still test all
-> MSR[PR]=0 interrupts to see if they land inside some region to see if
-> they hit in the restart table I think?
-
-Yes and this is already what is done at exit for the ones that handle MSR[RI] I think.
-
+> ./arch/powerpc/platforms/powernv/pci-sriov.c:443:7-10: WARNING: Unsigned expression compared with zero: win < 0
+> ./arch/powerpc/platforms/powernv/pci-sriov.c:462:7-10: WARNING: Unsigned expression compared with zero: win < 0
 > 
-> Could PPC32 skip the SRR reload at least? That's simpler.
+> Reported-by: Tosk Robot <tencent_os_robot@tencent.com>
+> Signed-off-by: Kaixu Xia <kaixuxia@tencent.com>
 
-I think that would only be possible if real addresses where matching virtual addresses, or am I 
-missing something ?
+This seems like the right fix, the value assigned to win can indeed be 
+-1 so it should be signed. Thanks for sending the patch.
 
-Christophe
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+
+> ---
+>   arch/powerpc/platforms/powernv/pci-sriov.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
+> index c4434f20f42f..92fc861c528f 100644
+> --- a/arch/powerpc/platforms/powernv/pci-sriov.c
+> +++ b/arch/powerpc/platforms/powernv/pci-sriov.c
+> @@ -422,7 +422,7 @@ static int pnv_pci_vf_assign_m64(struct pci_dev *pdev, u16 num_vfs)
+>   {
+>   	struct pnv_iov_data   *iov;
+>   	struct pnv_phb        *phb;
+> -	unsigned int           win;
+> +	int		       win;
+>   	struct resource       *res;
+>   	int                    i, j;
+>   	int64_t                rc;
+> 
+
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
