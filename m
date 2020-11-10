@@ -1,82 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2FC2AD318
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 11:04:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9F12AD43F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 11:59:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CVk4J66XYzDqP6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 21:04:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CVlHc4VLRzDqgD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 21:59:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=QFu0L5IQ; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=IPKqs5+h; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CVk1v4flyzDqfv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 21:02:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1605002559;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yDregu+IjBgmVX/QBgcALAud6U3Yyo4UVoHSI5mURRk=;
- b=QFu0L5IQlJC4/TOvLbZwncMWuAYLW6kYXxamNXbKk2bUVkNcyrpTbWDz0xDcMi390NwdIO
- dtt+B9eV9nHZPMsyXhyEc6LpKzMYi59GUB6CozUUQdpCHzXVZCl/s3kduVfLRHzqqtMcQJ
- gE7OW1FlPAwrjjIWZ0tVABvI6HjK1Ss=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1605002560;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yDregu+IjBgmVX/QBgcALAud6U3Yyo4UVoHSI5mURRk=;
- b=IPKqs5+h6w3CxF80yIRO91pJn/5+ZMTQFp7Z9EKfVAM0YLOpiyVmErihCa7teUUQYKdz2i
- 7+NXsH2zMLbskzaQqmLUPiWWQ/kEsu/d2UizPnYw4EIUdh2s1AItwK4QJ+RqfCPwDoiZE5
- 1oIrV+ag7tG185H4K1pTuW4yFjJokOk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-457-hfNa44UoMDa7ZaTnX3vi-g-1; Tue, 10 Nov 2020 05:02:35 -0500
-X-MC-Unique: hfNa44UoMDa7ZaTnX3vi-g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A5BF1186DD47;
- Tue, 10 Nov 2020 10:02:29 +0000 (UTC)
-Received: from [10.36.114.232] (ovpn-114-232.ams2.redhat.com [10.36.114.232])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0A77F5C1C4;
- Tue, 10 Nov 2020 10:02:19 +0000 (UTC)
-Subject: Re: [PATCH v7 4/4] arch, mm: make kernel_page_present() always
- available
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-References: <20201109192128.960-1-rppt@kernel.org>
- <20201109192128.960-5-rppt@kernel.org>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <01b18dfb-2650-f70a-8e0a-a062d96e1849@redhat.com>
-Date: Tue, 10 Nov 2020 11:02:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CVlFg4lMvzDqcy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 21:57:53 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CVlFQ2clRz9tytk;
+ Tue, 10 Nov 2020 11:57:46 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id T1bxLO48_2uC; Tue, 10 Nov 2020 11:57:46 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CVlFQ1LbHz9tyth;
+ Tue, 10 Nov 2020 11:57:46 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8E8278B7EE;
+ Tue, 10 Nov 2020 11:57:46 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id aeTtjldkvaVJ; Tue, 10 Nov 2020 11:57:46 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0AB168B764;
+ Tue, 10 Nov 2020 11:57:42 +0100 (CET)
+Subject: Re: [PATCH V3] sched/rt, powerpc: Prepare for PREEMPT_RT
+To: Wang Qing <wangqing@vivo.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Jordan Niethe <jniethe5@gmail.com>, Alistair Popple <alistair@popple.id.au>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <1604998411-16116-1-git-send-email-wangqing@vivo.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <5e040e63-0a28-03ee-ca41-917598b690b5@csgroup.eu>
+Date: Tue, 10 Nov 2020 11:57:41 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.1
 MIME-Version: 1.0
-In-Reply-To: <20201109192128.960-5-rppt@kernel.org>
+In-Reply-To: <1604998411-16116-1-git-send-email-wangqing@vivo.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,52 +70,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Christoph Lameter <cl@linux.com>, Will Deacon <will@kernel.org>,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>, Len Brown <len.brown@intel.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-pm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Pekka Enberg <penberg@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>, "Edgecombe,
- Rick P" <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09.11.20 20:21, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
+
+
+Le 10/11/2020 à 09:53, Wang Qing a écrit :
+> PREEMPT_RT is a separate preemption model, CONFIG_PREEMPT will
+>   be disabled when CONFIG_PREEMPT_RT is enabled,  so we need
+> to add CONFIG_PREEMPT_RT output to __die().
 > 
-> For architectures that enable ARCH_HAS_SET_MEMORY having the ability to
-> verify that a page is mapped in the kernel direct map can be useful
-> regardless of hibernation.
+> Signed-off-by: Wang Qing <wangqing@vivo.com>
+
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
 > 
-> Add RISC-V implementation of kernel_page_present(), update its forward
-> declarations and stubs to be a part of set_memory API and remove ugly
-> ifdefery in inlcude/linux/mm.h around current declarations of
-> kernel_page_present().
+> Changes in v3:
+>   - Fix typo issue.
 > 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-
-
-Acked-by: David Hildenbrand <david@redhat.com>
-
--- 
-Thanks,
-
-David / dhildenb
-
+> Changes in v2:
+>   - Modify as Christophe suggested.
+> ---
+>   arch/powerpc/kernel/traps.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+> index 5006dcb..dec7b81
+> --- a/arch/powerpc/kernel/traps.c
+> +++ b/arch/powerpc/kernel/traps.c
+> @@ -262,10 +262,11 @@ static int __die(const char *str, struct pt_regs *regs, long err)
+>   {
+>   	printk("Oops: %s, sig: %ld [#%d]\n", str, err, ++die_counter);
+>   
+> -	printk("%s PAGE_SIZE=%luK%s%s%s%s%s%s %s\n",
+> +	printk("%s PAGE_SIZE=%luK%s%s%s%s%s%s%s %s\n",
+>   	       IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) ? "LE" : "BE",
+>   	       PAGE_SIZE / 1024, get_mmu_str(),
+>   	       IS_ENABLED(CONFIG_PREEMPT) ? " PREEMPT" : "",
+> +	       IS_ENABLED(CONFIG_PREEMPT_RT) ? " PREEMPT_RT" : "",
+>   	       IS_ENABLED(CONFIG_SMP) ? " SMP" : "",
+>   	       IS_ENABLED(CONFIG_SMP) ? (" NR_CPUS=" __stringify(NR_CPUS)) : "",
+>   	       debug_pagealloc_enabled() ? " DEBUG_PAGEALLOC" : "",
+> 
