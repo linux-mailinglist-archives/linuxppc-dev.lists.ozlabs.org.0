@@ -1,106 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCFA2ADD13
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 18:37:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20EC22ADD5D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Nov 2020 18:50:05 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CVw6t3WsdzDqXY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 04:37:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CVwP64GVyzDqR7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 04:50:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.14.82; helo=eur01-ve1-obe.outbound.protection.outlook.com;
- envelope-from=laurentiu.tudor@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=ODDwNj4C; 
- dkim-atps=neutral
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com
- (mail-eopbgr140082.outbound.protection.outlook.com [40.107.14.82])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ir75g45d; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CVw561kLBzDqS1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 04:36:08 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NpqHvsBopzVtDOUsn6h6JTGFoFbKlUBdMXVXRI+7HviQqvgNqfvJi4xbE9w/UDN85p+tZa9BYTOvuU2c5q9FQZFcggWfGO/EBF5/+/Me7efsXguaWVBNcYm9JMxUaMDRvdh6YTgRpPHLDuMZd8DOWGQSNw75fU/vYkPxE7ah9vQ1xSh3l+vfHJFNquiDGG484d6oiYs7HLpcQd8ibMCfAGL5wcASO5Yw4NVgAUXUjRi2ZqncBJqfwRRqjQ+i5CV3VZVDB7QTWbp1Ma59RpdgLpd1qXCHHssPr6ikEyGkh60H8z2QlGsre9QF43m5+zTX6EKJ6v1iTGks7gCPVkgnyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g+Sm9CkDhCo+hRn/H0UmlvgzcLb2YxeZM7EY3c21Ms8=;
- b=iFS0h9Gp2g/rfbhM5c3iu3ycgNDg9eE9WY4VcfHzCuaX72tERC4a1PYvOJQqtnl3DeJLti4ow0X+bnGMlXZ2WxHsZhDADtt/AqZCUm4EIYTarq8605gzUWUj8Uw05HoOZgGEWmim9gxynK5zjPOEm3EYmfHyLZceRgWpjxRQMY76nxSWLH1DdJoKVS1fGNXN1Xoo5nxL8Cw/Bp+V3aeJ/5iMJAHX612MrEFg0U6JKjcmCu523ZXMFeAwKk6vwhAk6GMQyZVjBP+XF76FeGjskq+QrLORMddXbH4idTNF0LOtg4VWikYPNZM7nohwqOqcdnnc4f5wTgD/Etko/BNoPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g+Sm9CkDhCo+hRn/H0UmlvgzcLb2YxeZM7EY3c21Ms8=;
- b=ODDwNj4CbV89y/aiIsDgDpI4AOMxrs2Vbbgk7hx0nlL6RP/dc1yZXb0iNiN0pJ1V9QcuNPaOF0AOXD3ATtRLQikrphI3w1NKkgsKRhUfCWhF89Ew6U7ROyCOrej91iRPNGVZeTLmGNpxu2c2mc6Nrp3WrM8NEuHtWhyvyEY/Mls=
-Authentication-Results: nxp.com; dkim=none (message not signed)
- header.d=none;nxp.com; dmarc=none action=none header.from=nxp.com;
-Received: from VI1PR0402MB3405.eurprd04.prod.outlook.com (2603:10a6:803:3::26)
- by VI1PR04MB4237.eurprd04.prod.outlook.com (2603:10a6:803:3e::24)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.28; Tue, 10 Nov
- 2020 17:35:58 +0000
-Received: from VI1PR0402MB3405.eurprd04.prod.outlook.com
- ([fe80::f557:4dcb:4d4d:57f3]) by VI1PR0402MB3405.eurprd04.prod.outlook.com
- ([fe80::f557:4dcb:4d4d:57f3%2]) with mapi id 15.20.3541.021; Tue, 10 Nov 2020
- 17:35:58 +0000
-Subject: Re: [PATCH v2 2/2] dt-bindings: misc: convert fsl, qoriq-mc from txt
- to YAML
-To: Rob Herring <robh+dt@kernel.org>
-References: <20201109104635.21116-1-laurentiu.tudor@nxp.com>
- <20201109104635.21116-2-laurentiu.tudor@nxp.com>
- <20201109221123.GA1846668@bogus>
- <CAL_JsqJ2Ew6GdQmE0gcTgFX9cMZKtkL_rO1F+0EMNy88wF+gXw@mail.gmail.com>
-From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Message-ID: <d089fa69-2a64-d182-16dd-5807f7834164@nxp.com>
-Date: Tue, 10 Nov 2020 19:35:54 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.1
-In-Reply-To: <CAL_JsqJ2Ew6GdQmE0gcTgFX9cMZKtkL_rO1F+0EMNy88wF+gXw@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CVwMC1xKKzDqWr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 04:48:22 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AAHXwUn127278; Tue, 10 Nov 2020 12:47:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=56aqqjn929uuElw5m2Y8wEcM7NHeMtGkTROfJHBw6Ns=;
+ b=ir75g45dOB/8qOrA81kFFR3lUfTCw6Ds2qqTSsWLOJAR4Dppe3G2AipaYBMFGhnZoFh9
+ LhnsQiT6O1jRjv8MrqHW7poTs0uWto4npYyZUUald/EckqxjCp9rX9DyGlmWm4xxn5VO
+ pqwuZMYBO9iysv88vVa2f4y9PCEPp1EMmC8LLzFkuytyradntEyGxYPWFTVfDWOJSYbP
+ 8FOVA3+HFk8tHFORfjTGWNgRTH2eaL2gAUkyIMcNp1DG6xkn48Ej8W/s4/JetmLgfiJX
+ 63TDYfNJBHwYu6hjRSQfQdbBehSpKY548Ywv3xfetoe+LTdByNLczYe3Rb2JR3mC3ywN 1Q== 
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34qsbcwsgf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Nov 2020 12:47:56 -0500
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AAHc4oG028483;
+ Tue, 10 Nov 2020 17:47:55 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma04dal.us.ibm.com with ESMTP id 34nk7a1deh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Nov 2020 17:47:55 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AAHlsNN9306716
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Nov 2020 17:47:54 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 79D992805A;
+ Tue, 10 Nov 2020 17:47:54 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1072228058;
+ Tue, 10 Nov 2020 17:47:51 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.65.230.183])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 10 Nov 2020 17:47:50 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/pseries/hotplug-cpu: Fix memleak when cpus node
+ not exist
+To: Nathan Lynch <nathanl@linux.ibm.com>,
+ Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+References: <20201110123029.3767459-1-zhangxiaoxu5@huawei.com>
+ <87ft5hjocy.fsf@linux.ibm.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <a00f4a44-6f38-306f-a24f-4e3565deefc2@linux.ibm.com>
+Date: Tue, 10 Nov 2020 09:47:48 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
+MIME-Version: 1.0
+In-Reply-To: <87ft5hjocy.fsf@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [86.123.58.209]
-X-ClientProxiedBy: AM9P195CA0002.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:20b:21f::7) To VI1PR0402MB3405.eurprd04.prod.outlook.com
- (2603:10a6:803:3::26)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.1.108] (86.123.58.209) by
- AM9P195CA0002.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:21f::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3541.21 via Frontend Transport; Tue, 10 Nov 2020 17:35:56 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 843a7d26-e6f6-4aab-dc29-08d8859f1575
-X-MS-TrafficTypeDiagnostic: VI1PR04MB4237:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VI1PR04MB4237C89C509A33E22E8F7438ECE90@VI1PR04MB4237.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4125;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 6gKKl4DnFluGH1ZbYLiFAxLtuqHoPFU0UjN9arcG662p6KhDZu+cf3N11J9VI2kSacXWcEuwzIYlCY7IMsbax/W+kk1ESbjTA/F83bio9EhEmVPgS8Z+BWWG9CzYtl0Ru4hONoDymdeyJMuqYmlgVdRm+vt0C+5RzRqo9p4C+aP3uQE1v03rEhS3mZIcUfoag9nszurR8/dRAkephVmKjL36xJIRtO6F6AFiLKjX9vg0FC6cRmzD3d+5wKOrJ1hOC1cp+voMcD3Oq+GOYKlcTlriBC9/229pmBJ8yxwPe7ole8LI9nc6jsk8sXqSI4J6i2Q3Ybxz1P8mVKsA1Gpuij8APmj6CusllEJkTUCa2Mv7TWgA5LAGgg17VpHLfp0T
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR0402MB3405.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(39860400002)(136003)(366004)(396003)(376002)(346002)(66556008)(2616005)(6486002)(66476007)(956004)(8936002)(44832011)(83380400001)(2906002)(52116002)(26005)(86362001)(316002)(54906003)(16576012)(66946007)(8676002)(31686004)(53546011)(4326008)(186003)(5660300002)(31696002)(7416002)(478600001)(16526019)(36756003)(43740500002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData: bkpEUWc57qJ4O2Us+4XygfqOROhmSnq1ZXeJDjygeVPoh5hSHJNq98KHxxiraobT1MDAoXPqx7an0ezFz6SqRx73ys3IfRWeQSuphiN0PtBiBjzC0OFEpHHDfoguCJ6391p+N6+/TDxzUo7MHVqKi4TEGevzIIWTIROj0AE+sP3FLxb3osGk7dQH5P0vbsTELW6WizemWjtZU23udeDg/WaqiMdFEBeYFmKacGR22T8y/MEClHxjGXk8QZoOPqF8HYAfxvtQ1+oT5vT0PXJcfkyJUoG6EUHDDiNq2Av1WMUd9wnRkNIeFo+EwB/dtVYDUGjpR0Jnd6gQ0aTPyMHkrkOy4imd3PKqc5PQd9Hy2Y/ld2Bxwq891FFXGfjrlZJyDuHCaPWtdNioRwbWgTIKtkInSVObQOmDZWwnoL4evYhP7bTRkPvxMH16b/GU/hudSnaqkIt0mPumR0H0EmiCwEDw5Bpyb/mYshbEss+FzLFSt9uixTI8S7k4jWWWM8C379MMXtA7789UFozZX0n16X0b1dZJy6M02m5wr3ORrKwfFn9etFEes/ydWsGB4h+Vj1DCRcwkgsiENLErjR6a+DlwY7UlDfN/R7gRV0380ktpDYEBtjVwV2oGN3jV6XS0+Uk25cGqN2DIgcq6H1x1Tg==
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 843a7d26-e6f6-4aab-dc29-08d8859f1575
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR0402MB3405.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2020 17:35:58.0564 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JgLpO5xxfCojdQrCfMPNBuT8jpxfKd0TqMP8wAkrvuv7jmPQE1vnDk8dpnzyMHBIiqEl5euEnSrschCkBkrKXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4237
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-10_06:2020-11-10,
+ 2020-11-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=999
+ mlxscore=0 priorityscore=1501 bulkscore=0 suspectscore=0 impostorscore=0
+ spamscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011100120
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,66 +101,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- netdev <netdev@vger.kernel.org>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Yang-Leo Li <leoyang.li@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
- Ionut-robert Aron <ionut-robert.aron@nxp.com>,
- Jakub Kicinski <kuba@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- David Miller <davem@davemloft.net>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org, paulus@samba.org, groug@kaod.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 11/10/2020 7:20 PM, Rob Herring wrote:
-> On Mon, Nov 9, 2020 at 4:11 PM Rob Herring <robh@kernel.org> wrote:
+On 11/10/20 6:08 AM, Nathan Lynch wrote:
+> Zhang Xiaoxu <zhangxiaoxu5@huawei.com> writes:
+>> From: zhangxiaoxu <zhangxiaoxu5@huawei.com>
 >>
->> On Mon, 09 Nov 2020 12:46:35 +0200, Laurentiu Tudor wrote:
->>> From: Ionut-robert Aron <ionut-robert.aron@nxp.com>
->>>
->>> Convert fsl,qoriq-mc to YAML in order to automate the verification
->>> process of dts files. In addition, update MAINTAINERS accordingly
->>> and, while at it, add some missing files.
->>>
->>> Signed-off-by: Ionut-robert Aron <ionut-robert.aron@nxp.com>
->>> [laurentiu.tudor@nxp.com: update MINTAINERS, updates & fixes in schema]
->>> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
->>> ---
->>> Changes in v2:
->>>  - fixed errors reported by yamllint
->>>  - dropped multiple unnecessary quotes
->>>  - used schema instead of text in description
->>>  - added constraints on dpmac reg property
->>>
->>>  .../devicetree/bindings/misc/fsl,qoriq-mc.txt | 196 ----------------
->>>  .../bindings/misc/fsl,qoriq-mc.yaml           | 210 ++++++++++++++++++
->>>  .../ethernet/freescale/dpaa2/overview.rst     |   5 +-
->>>  MAINTAINERS                                   |   4 +-
->>>  4 files changed, 217 insertions(+), 198 deletions(-)
->>>  delete mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
->>>  create mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
->>>
+>> If the cpus nodes not exist, we lost to free the 'cpu_drcs', which
+>> will leak memory.
 >>
->> Applied, thanks!
+>> Fixes: a0ff72f9f5a7 ("powerpc/pseries/hotplug-cpu: Remove double free in error path")
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Signed-off-by: zhangxiaoxu <zhangxiaoxu5@huawei.com>
+>> ---
+>>  arch/powerpc/platforms/pseries/hotplug-cpu.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+>> index f2837e33bf5d..4bb1c9f2bb11 100644
+>> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
+>> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+>> @@ -743,6 +743,7 @@ static int dlpar_cpu_add_by_count(u32 cpus_to_add)
+>>  	parent = of_find_node_by_path("/cpus");
+>>  	if (!parent) {
+>>  		pr_warn("Could not find CPU root node in device tree\n");
+>> +		kfree(cpu_drcs);
+>>  		return -1;
+>>  	}
 > 
-> And now dropped. This duplicates what's in commit 0dbcd4991719
-> ("dt-bindings: net: add the DPAA2 MAC DTS definition") and has
-> warnings from it:
+> Thanks for finding this.
 > 
-> /builds/robherring/linux-dt-bindings/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.example.dt.yaml:
-> dpmac@1: $nodename:0: 'dpmac@1' does not match '^ethernet(@.*)?$'
->  From schema: /builds/robherring/linux-dt-bindings/Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml
+> a0ff72f9f5a7 ("powerpc/pseries/hotplug-cpu: Remove double free in error
+> path") was posted in Sept 2019 but was not applied until July 2020:
+> 
+> https://lore.kernel.org/linuxppc-dev/20190919231633.1344-1-nathanl@linux.ibm.com/
+> 
+> Here is that change as posted; note the function context is
+> find_dlpar_cpus_to_add(), not dlpar_cpu_add_by_count():
+> 
+> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> @@ -726,7 +726,6 @@ static int find_dlpar_cpus_to_add(u32 *cpu_drcs, u32 cpus_to_add)
+>  	parent = of_find_node_by_path("/cpus");
+>  	if (!parent) {
+>  		pr_warn("Could not find CPU root node in device tree\n");
+> -		kfree(cpu_drcs);
+>  		return -1;
+>  	}
+> 
+> Meanwhile b015f6bc9547dbc056edde7177c7868ca8629c4c ("powerpc/pseries: Add
+> cpu DLPAR support for drc-info property") was posted in Nov 2019 and
+> committed a few days later:
+> 
+> https://lore.kernel.org/linux-pci/1573449697-5448-4-git-send-email-tyreld@linux.ibm.com/
+> 
+> This change reorganized the same code, removing
+> find_dlpar_cpus_to_add(), and it had the effect of fixing the same
+> issue.
+> 
+> However git apparently allowed the older change to still apply on top of
+> this (changing a function different from the one in the original
+> patch!), leading to a real bug.
+
+Yikes, not sure how that happened without either the committer massaging the
+patch to apply, or the line location and context matching exactly.
+
+> 
+> Your patch is correct but it should be framed as a revert of
+> a0ff72f9f5a7 with this context in the commit message.
 > 
 
-My patch converts the .txt devicetree/bindings/misc/fsl,qoriq-mc.yaml
-while the commit you mention creates
-devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml, but at a first sight
-there seems to be some duplication. Will sync internally with my
-colleagues and return with a resolution. Thanks and sorry for the trouble.
+Agreed, in reality we want to revert a patch that shouldn't have been applied.
 
----
-Best Regards, Laurentiu
+-Tyrel
