@@ -1,76 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2FE12AE79A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 05:47:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B59652AE79B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 05:49:05 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CWBzk4cp2zDqV4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 15:47:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CWC1V4R2PzDqQv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 15:49:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433;
- helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=sFvPZ5K7; dkim-atps=neutral
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
- [IPv6:2607:f8b0:4864:20::433])
+ header.s=20161025 header.b=I/2FsGCB; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CWBy03sXczDqTw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 15:45:59 +1100 (AEDT)
-Received: by mail-pf1-x433.google.com with SMTP id 10so878819pfp.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 20:45:58 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CWBz53DbMzDqWF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 15:46:57 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id z3so854878pfb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 20:46:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:references:in-reply-to:mime-version:message-id
  :content-transfer-encoding;
- bh=C0J+QwPsnlOynYUCwR2+mmJvkS3NHQtxi+FgysKrHK4=;
- b=sFvPZ5K7HFuCHQHkHpPRHDwc7ma2PE2ucEBH4dd8w7uc9r03fuaRzpeKarovbIHTGy
- DseBDvACti3HP3GdW0CkfA9oYaZGC5UfN96L1B1gMGo9qRoALqKy2LIZ2rXwuW7Fhdyj
- GZ70SVgK0A5Tx3XMopwoCURwrg2BjIQFCpM4LgeTrIYlG8iy8VdVnKJduC/q7z8CvSb5
- DSvXOHjQrea5HDQXl4rPtfuVRhoFCz1Fj626TKM4DKJaGqiW4M803ykVshANQOfspTx6
- yV554IrVJc/zrkKyqlTcDleU0+AQpRlqHda9MEN7kcH7lJboJKDbtsmmYNfhzsGl4EC0
- LpKw==
+ bh=xgRh8izBCbWBqLiRiv2RyerVxoEx2DFMdd44J4VomIY=;
+ b=I/2FsGCBrelrcUfvxhyxQFZflfHRG5MFQxtFIjsi9STkKrIUrlndZOWd4FI04zVoKL
+ FJ+nRK4+Slw0uQg927iVVluh7brqDil2Hg4wfQnhoFyzzsMAkEXSJAHpi1nL4pOgAK68
+ rk8UDV2OPmARgzQzuV414xGVfMBN3CKjIADr7fBUttE4VJDR5fs8btUI8QE3gv6nlJrq
+ aZeR+Yjzk04hQZ7OV+Gw/Q6yvXHtmc/9wQHQ5d9maVnSe1g257c/mS7IVQz2EIjZ3nwO
+ qtyHptNkTvRiHlMNyZlRoTENPplBsS7mu3MTjb4XADCuXzjuNQXsaxbOQe7+vkU8iVGl
+ J5Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=C0J+QwPsnlOynYUCwR2+mmJvkS3NHQtxi+FgysKrHK4=;
- b=rive16S3svMVBcXEnnMk3rJG3Cq3Pt4bgD/jWthDSt9tnTmHxO7WzsVLiknl1YrlFv
- nUwivwMUXwAVCqK1eEDB8J/544jmlvAIgh43hh+nq47EUduDqblpkfMyhSJIbQQYFAYY
- hq3deY52e9+4E9ntd20yNABWKT4IJxqkPsp3PE7xGABVStV3XAVm2xkgRNU9fu+MxRc1
- uNCG6Wwr6HEnstFHbVNDxjPTuze6K+3I+W7n1wfOimW56mBYuR6hUXAY9vheutOa6vQD
- jHCpkaBGAeLe9FlxCEZTQkKNimKl73F/qiJwfwEWud8eL3uv+BDjQBmK67RlbPBn1vhn
- G5Gw==
-X-Gm-Message-State: AOAM532PFm6gAh6KrO1TaVMLWWJG0YXA76U5Mgg+nzVu5T3Yr9KUwqV8
- 2TCJPqxUec+CtQvFTUTRNPk=
-X-Google-Smtp-Source: ABdhPJwLmeNPL3DGsuUzwEbReC4WwX1DjKEX6noIG/zIfKSY6DQnRblTSBkr+mtQFzqGM4EXDvjOnw==
-X-Received: by 2002:a63:b55e:: with SMTP id u30mr19340955pgo.381.1605069954897; 
- Tue, 10 Nov 2020 20:45:54 -0800 (PST)
+ bh=xgRh8izBCbWBqLiRiv2RyerVxoEx2DFMdd44J4VomIY=;
+ b=p83Jxhzu0+1P/UDn6UUGRT6SjGmyPk2awLMfooU/Fj2tizAYK7JwC/wc3cHe89QQ8f
+ 2Rv1WLbqZCWMOV+wZd7iccSiwEO+V79W9R6E0CC7KMAde/da1o2zaxovs8ZVXkB4PmBf
+ cpBSm6tk7UVfIwE50hipdPn31Ret2Dfwiqm6kC3TIqovq9U/+TtUZaTitU3PtrPpevNq
+ ESKmT68rZBBswN/iz4BYqwa3tGx7+GnBZsd7P/o+JrdWdJXGF4GnO1wIMrl6an+IkA1G
+ CpImAQZ60hFRy3H4jnhy8lwySir1euSSblACNAZGRxEww1bZ2GCDkSe7nHRz2gxR6BYs
+ jP6A==
+X-Gm-Message-State: AOAM531kE71W0B6i6s5yeULPJcpBdLTlt8ReKSjVP1QZHOKztOrPk1tI
+ ZAwdyIbuQ5jNn2qYlknjFwQ5TgE2PR8=
+X-Google-Smtp-Source: ABdhPJyheeXVE6LJ8GZZIJBtcQAYj1pXN5lCzCl6xYR4PAXFcJC7R+6jtDfRnSrRi+Yh517sig/syw==
+X-Received: by 2002:a62:2a81:0:b029:18c:310f:74fe with SMTP id
+ q123-20020a622a810000b029018c310f74femr8917813pfq.50.1605070015247; 
+ Tue, 10 Nov 2020 20:46:55 -0800 (PST)
 Received: from localhost (27-32-36-31.tpgi.com.au. [27.32.36.31])
- by smtp.gmail.com with ESMTPSA id b16sm688789pju.16.2020.11.10.20.45.53
+ by smtp.gmail.com with ESMTPSA id e10sm735655pfh.38.2020.11.10.20.46.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Nov 2020 20:45:54 -0800 (PST)
-Date: Wed, 11 Nov 2020 14:45:49 +1000
+ Tue, 10 Nov 2020 20:46:54 -0800 (PST)
+Date: Wed, 11 Nov 2020 14:46:49 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 02/18] powerpc: remove arguments from fault handler
- functions
+Subject: Re: [PATCH 03/18] powerpc: bad_page_fault, do_break get registers
+ from regs
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
  linuxppc-dev@lists.ozlabs.org
 References: <20201105143431.1874789-1-npiggin@gmail.com>
- <20201105143431.1874789-3-npiggin@gmail.com>
- <6af9a488-3816-9744-db4b-5a3bceb1f0f0@csgroup.eu>
- <1604996406.ltcjkqarcr.astroid@bobo.none>
- <3872d710-97e2-80c3-991c-7f1ffe790a3d@csgroup.eu>
-In-Reply-To: <3872d710-97e2-80c3-991c-7f1ffe790a3d@csgroup.eu>
+ <20201105143431.1874789-4-npiggin@gmail.com>
+ <8b325832-b843-7d01-8b0f-fc278c444ce5@csgroup.eu>
+ <1604996998.52nfki5192.astroid@bobo.none>
+ <882fa82f-e109-c76d-e0a8-2e4fe920db0b@csgroup.eu>
+In-Reply-To: <882fa82f-e109-c76d-e0a8-2e4fe920db0b@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1605069878.ohfaq5qrth.astroid@bobo.none>
+Message-Id: <1605069958.zq8gnsvl6e.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,67 +89,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of November 10, 2020 9:15 pm:
+Excerpts from Christophe Leroy's message of November 10, 2020 9:19 pm:
 >=20
 >=20
-> Le 10/11/2020 =C3=A0 09:29, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Excerpts from Christophe Leroy's message of November 6, 2020 5:59 pm:
+> Le 10/11/2020 =C3=A0 09:34, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> Excerpts from Christophe Leroy's message of November 6, 2020 6:14 pm:
 >>>
 >>>
 >>> Le 05/11/2020 =C3=A0 15:34, Nicholas Piggin a =C3=A9crit=C2=A0:
->>>> Make mm fault handlers all just take the pt_regs * argument and load
->>>> DAR/DSISR from that. Make those that return a value return long.
->>>>
->>>> This is done to make the function signatures match other handlers, whi=
-ch
->>>> will help with a future patch to add wrappers. Explicit arguments coul=
-d
->>>> be added for performance but that would require more wrapper macro
->>>> variants.
->>>>
->>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>>> ---
->=20
-> [...]
->=20
->>=20
->>>> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
->>>> index e65a49f246ef..390a296b16a3 100644
->>>> --- a/arch/powerpc/mm/fault.c
->>>> +++ b/arch/powerpc/mm/fault.c
->>>> @@ -549,11 +549,12 @@ static int __do_page_fault(struct pt_regs *regs,=
- unsigned long address,
->>>>    }
->>>>    NOKPROBE_SYMBOL(__do_page_fault);
->>>>   =20
->>>> -int do_page_fault(struct pt_regs *regs, unsigned long address,
->>>> -		  unsigned long error_code)
->>>> +long do_page_fault(struct pt_regs *regs)
->>>>    {
->>>>    	enum ctx_state prev_state =3D exception_enter();
->>>> -	int err;
->>>> +	unsigned long address =3D regs->dar;
->>>> +	unsigned long error_code =3D regs->dsisr;
->>>> +	long err;
+>>>> This also moves the 32s DABR match to C.
 >>>
->>> By doing something more or less like this (need to be tuned for bookE a=
-s well):
->>>
->>> +	int is_exec =3D TRAP(regs) =3D=3D 0x400;
->>> +	unsigned long address =3D is_exec ? regs->ssr0 : regs->dar;
->>> +	unsigned long error_code =3D is_exec ? (regs->ssr1 & DSISR_SRR1_MATCH=
-_32S) : regs->dsisr;
+>>> Is there a real benefit doing this ?
 >>=20
->> Ah, I didn't see that you saved these in srr0/1 already. Hmm, not in
->> pt_regs though. thread_struct (VMAP_STACK only)? exception_regs (booke
->> only)? Doesn't seem so easy.
+>> Oh I missed doing it, but yes I think bad_page_fault and do_break should
+>> probably be implemented with the DEFINE_INTERRUT_HANDLER wrappers.
+>>=20
 >=20
-> Oops yes you are right, SRR0/SRR1 are not in pt_regs. And their validity =
-in thread struct is rather=20
-> short ... So forget my comment.
+> Yes, anyway, do we need to do that change ? Can't the dispatch between do=
+_break() and page fault=20
+> handling remain in handle_page_fault() ? What's the benefit of going into=
+ do_page_fault() and coming=20
+> back ?
 
-So, are you happy to go with this for now? I guess things can
-later be cleaned up to avoid double saving on cases like VMAP.
+You might be right, I'll take another look at it.
 
 Thanks,
 Nick
