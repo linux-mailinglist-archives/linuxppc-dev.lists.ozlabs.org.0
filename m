@@ -2,87 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67392AE7A3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 05:52:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FE12AE79A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 05:47:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CWC5K4DK1zDqXg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 15:52:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CWBzk4cp2zDqV4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 15:47:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433;
+ helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=IMTXB0pk; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=sFvPZ5K7; dkim-atps=neutral
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
+ [IPv6:2607:f8b0:4864:20::433])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CWC1N3YB0zDqMC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 15:48:56 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AB4X7O3025851; Tue, 10 Nov 2020 23:33:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references; s=pp1;
- bh=C3uYGbXkXUxOr/2vYWxByJbgHLQJvI1u+7vLt5wSxw8=;
- b=IMTXB0pknqy2k6fwmQIXwX+Bc9ekPbYutiUtldxOvC2mrNf1v7ZAIxSOZzT28MShyD3V
- vyI+YpXJtkfAYDl8jpuTBpd3DxHvM5FMZ6m68j4cjcEnYcGVc9//YRkmXH9NlM7cUxBI
- VnLSP1CRKea6Ts/QHRumfsWrUA5NYn4lKaaDtfziiAnt2EV/Yrx+W10q8o5jjtEiJASg
- SkM8sW82CTYNaX3q2Ypwa5+eOVM6oUM01Km8DY5CUAiO9bVsYGNq6at7ADRLtZPXQSXr
- QOcEePA2B4gDPXIXJ/HWPicnn4ubCsLisDHNC/BrfZIHnOdICPTqidA/sqPqJMnLQ6DG AQ== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34r8a80ya1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 Nov 2020 23:33:23 -0500
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AB4VUs2017472;
- Wed, 11 Nov 2020 04:33:21 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06fra.de.ibm.com with ESMTP id 34njuh1y64-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Nov 2020 04:33:21 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0AB4XJGZ53149972
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 Nov 2020 04:33:19 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5796E4C044;
- Wed, 11 Nov 2020 04:33:19 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EB84E4C04A;
- Wed, 11 Nov 2020 04:33:17 +0000 (GMT)
-Received: from localhost.localdomain.localdomain (unknown [9.79.242.115])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 11 Nov 2020 04:33:17 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH 4/4] powerpc/perf: MMCR0 control for PMU registers under
- PMCC=00
-Date: Tue, 10 Nov 2020 23:33:09 -0500
-Message-Id: <1605069189-2740-5-git-send-email-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1605069189-2740-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-References: <1605069189-2740-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-11_01:2020-11-10,
- 2020-11-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0
- bulkscore=0 mlxlogscore=738 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 suspectscore=1 spamscore=0 mlxscore=0 phishscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011110022
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CWBy03sXczDqTw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 15:45:59 +1100 (AEDT)
+Received: by mail-pf1-x433.google.com with SMTP id 10so878819pfp.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 20:45:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=C0J+QwPsnlOynYUCwR2+mmJvkS3NHQtxi+FgysKrHK4=;
+ b=sFvPZ5K7HFuCHQHkHpPRHDwc7ma2PE2ucEBH4dd8w7uc9r03fuaRzpeKarovbIHTGy
+ DseBDvACti3HP3GdW0CkfA9oYaZGC5UfN96L1B1gMGo9qRoALqKy2LIZ2rXwuW7Fhdyj
+ GZ70SVgK0A5Tx3XMopwoCURwrg2BjIQFCpM4LgeTrIYlG8iy8VdVnKJduC/q7z8CvSb5
+ DSvXOHjQrea5HDQXl4rPtfuVRhoFCz1Fj626TKM4DKJaGqiW4M803ykVshANQOfspTx6
+ yV554IrVJc/zrkKyqlTcDleU0+AQpRlqHda9MEN7kcH7lJboJKDbtsmmYNfhzsGl4EC0
+ LpKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=C0J+QwPsnlOynYUCwR2+mmJvkS3NHQtxi+FgysKrHK4=;
+ b=rive16S3svMVBcXEnnMk3rJG3Cq3Pt4bgD/jWthDSt9tnTmHxO7WzsVLiknl1YrlFv
+ nUwivwMUXwAVCqK1eEDB8J/544jmlvAIgh43hh+nq47EUduDqblpkfMyhSJIbQQYFAYY
+ hq3deY52e9+4E9ntd20yNABWKT4IJxqkPsp3PE7xGABVStV3XAVm2xkgRNU9fu+MxRc1
+ uNCG6Wwr6HEnstFHbVNDxjPTuze6K+3I+W7n1wfOimW56mBYuR6hUXAY9vheutOa6vQD
+ jHCpkaBGAeLe9FlxCEZTQkKNimKl73F/qiJwfwEWud8eL3uv+BDjQBmK67RlbPBn1vhn
+ G5Gw==
+X-Gm-Message-State: AOAM532PFm6gAh6KrO1TaVMLWWJG0YXA76U5Mgg+nzVu5T3Yr9KUwqV8
+ 2TCJPqxUec+CtQvFTUTRNPk=
+X-Google-Smtp-Source: ABdhPJwLmeNPL3DGsuUzwEbReC4WwX1DjKEX6noIG/zIfKSY6DQnRblTSBkr+mtQFzqGM4EXDvjOnw==
+X-Received: by 2002:a63:b55e:: with SMTP id u30mr19340955pgo.381.1605069954897; 
+ Tue, 10 Nov 2020 20:45:54 -0800 (PST)
+Received: from localhost (27-32-36-31.tpgi.com.au. [27.32.36.31])
+ by smtp.gmail.com with ESMTPSA id b16sm688789pju.16.2020.11.10.20.45.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 10 Nov 2020 20:45:54 -0800 (PST)
+Date: Wed, 11 Nov 2020 14:45:49 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 02/18] powerpc: remove arguments from fault handler
+ functions
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20201105143431.1874789-1-npiggin@gmail.com>
+ <20201105143431.1874789-3-npiggin@gmail.com>
+ <6af9a488-3816-9744-db4b-5a3bceb1f0f0@csgroup.eu>
+ <1604996406.ltcjkqarcr.astroid@bobo.none>
+ <3872d710-97e2-80c3-991c-7f1ffe790a3d@csgroup.eu>
+In-Reply-To: <3872d710-97e2-80c3-991c-7f1ffe790a3d@csgroup.eu>
+MIME-Version: 1.0
+Message-Id: <1605069878.ohfaq5qrth.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,101 +84,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PowerISA v3.1 introduces new control bit (PMCCEXT) for enabling
-secure access to group B PMU registers in problem state when
-MMCR0 PMCC=0b00. This patch adds support for MMCR0 PMCCEXT bit
-in power10 by enabling this bit during boot and during the PMU
-event enable/disable operations when MMCR0 PMCC=0b00
+Excerpts from Christophe Leroy's message of November 10, 2020 9:15 pm:
+>=20
+>=20
+> Le 10/11/2020 =C3=A0 09:29, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> Excerpts from Christophe Leroy's message of November 6, 2020 5:59 pm:
+>>>
+>>>
+>>> Le 05/11/2020 =C3=A0 15:34, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>>> Make mm fault handlers all just take the pt_regs * argument and load
+>>>> DAR/DSISR from that. Make those that return a value return long.
+>>>>
+>>>> This is done to make the function signatures match other handlers, whi=
+ch
+>>>> will help with a future patch to add wrappers. Explicit arguments coul=
+d
+>>>> be added for performance but that would require more wrapper macro
+>>>> variants.
+>>>>
+>>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>>> ---
+>=20
+> [...]
+>=20
+>>=20
+>>>> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+>>>> index e65a49f246ef..390a296b16a3 100644
+>>>> --- a/arch/powerpc/mm/fault.c
+>>>> +++ b/arch/powerpc/mm/fault.c
+>>>> @@ -549,11 +549,12 @@ static int __do_page_fault(struct pt_regs *regs,=
+ unsigned long address,
+>>>>    }
+>>>>    NOKPROBE_SYMBOL(__do_page_fault);
+>>>>   =20
+>>>> -int do_page_fault(struct pt_regs *regs, unsigned long address,
+>>>> -		  unsigned long error_code)
+>>>> +long do_page_fault(struct pt_regs *regs)
+>>>>    {
+>>>>    	enum ctx_state prev_state =3D exception_enter();
+>>>> -	int err;
+>>>> +	unsigned long address =3D regs->dar;
+>>>> +	unsigned long error_code =3D regs->dsisr;
+>>>> +	long err;
+>>>
+>>> By doing something more or less like this (need to be tuned for bookE a=
+s well):
+>>>
+>>> +	int is_exec =3D TRAP(regs) =3D=3D 0x400;
+>>> +	unsigned long address =3D is_exec ? regs->ssr0 : regs->dar;
+>>> +	unsigned long error_code =3D is_exec ? (regs->ssr1 & DSISR_SRR1_MATCH=
+_32S) : regs->dsisr;
+>>=20
+>> Ah, I didn't see that you saved these in srr0/1 already. Hmm, not in
+>> pt_regs though. thread_struct (VMAP_STACK only)? exception_regs (booke
+>> only)? Doesn't seem so easy.
+>=20
+> Oops yes you are right, SRR0/SRR1 are not in pt_regs. And their validity =
+in thread struct is rather=20
+> short ... So forget my comment.
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
- arch/powerpc/include/asm/reg.h        |  1 +
- arch/powerpc/kernel/cpu_setup_power.S |  2 ++
- arch/powerpc/kernel/dt_cpu_ftrs.c     |  1 +
- arch/powerpc/perf/core-book3s.c       | 16 ++++++++++++++++
- 4 files changed, 20 insertions(+)
+So, are you happy to go with this for now? I guess things can
+later be cleaned up to avoid double saving on cases like VMAP.
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index f877a57..cba9965 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -864,6 +864,7 @@
- #define   MMCR0_BHRBA	0x00200000UL /* BHRB Access allowed in userspace */
- #define   MMCR0_EBE	0x00100000UL /* Event based branch enable */
- #define   MMCR0_PMCC	0x000c0000UL /* PMC control */
-+#define   MMCR0_PMCCEXT	ASM_CONST(0x00000200) /* PMCCEXT control */
- #define   MMCR0_PMCC_U6	0x00080000UL /* PMC1-6 are R/W by user (PR) */
- #define   MMCR0_PMC1CE	0x00008000UL /* PMC1 count enable*/
- #define   MMCR0_PMCjCE	ASM_CONST(0x00004000) /* PMCj count enable*/
-diff --git a/arch/powerpc/kernel/cpu_setup_power.S b/arch/powerpc/kernel/cpu_setup_power.S
-index 704e8b9..8fc8b72 100644
---- a/arch/powerpc/kernel/cpu_setup_power.S
-+++ b/arch/powerpc/kernel/cpu_setup_power.S
-@@ -249,4 +249,6 @@ __init_PMU_ISA31:
- 	mtspr	SPRN_MMCR3,r5
- 	LOAD_REG_IMMEDIATE(r5, MMCRA_BHRB_DISABLE)
- 	mtspr	SPRN_MMCRA,r5
-+	LOAD_REG_IMMEDIATE(r5, MMCR0_PMCCEXT)
-+	mtspr	SPRN_MMCR0,r5
- 	blr
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index 1098863..9d07965 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -454,6 +454,7 @@ static void init_pmu_power10(void)
- 
- 	mtspr(SPRN_MMCR3, 0);
- 	mtspr(SPRN_MMCRA, MMCRA_BHRB_DISABLE);
-+	mtspr(SPRN_MMCR0, MMCR0_PMCCEXT);
- }
- 
- static int __init feat_enable_pmu_power10(struct dt_cpu_feature *f)
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 08643cb..f328bc0 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -95,6 +95,7 @@ struct cpu_hw_events {
- #define SPRN_SIER3		0
- #define MMCRA_SAMPLE_ENABLE	0
- #define MMCRA_BHRB_DISABLE     0
-+#define MMCR0_PMCCEXT		0
- 
- static inline unsigned long perf_ip_adjust(struct pt_regs *regs)
- {
-@@ -1242,6 +1243,9 @@ static void power_pmu_disable(struct pmu *pmu)
- 		val |= MMCR0_FC;
- 		val &= ~(MMCR0_EBE | MMCR0_BHRBA | MMCR0_PMCC | MMCR0_PMAO |
- 			 MMCR0_FC56);
-+		/* Set mmcr0 PMCCEXT for p10 */
-+		if (ppmu->flags & PPMU_ARCH_31)
-+			val |= MMCR0_PMCCEXT;
- 
- 		/*
- 		 * The barrier is to make sure the mtspr has been
-@@ -1449,6 +1453,18 @@ static void power_pmu_enable(struct pmu *pmu)
- 
- 	mmcr0 = ebb_switch_in(ebb, cpuhw);
- 
-+	/*
-+	 * Set mmcr0 (PMCCEXT) for p10
-+	 * if mmcr0 PMCC=0b00 to allow secure
-+	 * mode of access to group B registers.
-+	 */
-+	if (ppmu->flags & PPMU_ARCH_31) {
-+		if (!(mmcr0 & MMCR0_PMCC)) {
-+			cpuhw->mmcr.mmcr0 |= MMCR0_PMCCEXT;
-+			mmcr0 |= MMCR0_PMCCEXT;
-+		}
-+	}
-+
- 	mb();
- 	if (cpuhw->bhrb_users)
- 		ppmu->config_bhrb(cpuhw->bhrb_filter);
--- 
-1.8.3.1
-
+Thanks,
+Nick
