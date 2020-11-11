@@ -2,73 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3112A2AF2C2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 14:58:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCEB92AF2F1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 15:02:33 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CWRCz0rzYzDqkb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 00:58:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CWRJ6410TzDqTP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 01:02:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::744;
- helo=mail-qk1-x744.google.com; envelope-from=zhuyifei1999@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=SiSS9BGt; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CWQh823n3zDqbc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 00:34:48 +1100 (AEDT)
-Received: by mail-qk1-x744.google.com with SMTP id u4so1575059qkk.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 05:34:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=es+7eu/1JIS0u6NUqnkeBJLaNZv/3XzsgPMcIjCfPvw=;
- b=SiSS9BGtwjPR7pjydIAWebSVTiMEer42LpN7EpvhCX58lUuaU+5VL/V+DDUEclGLtr
- EdcBEjukeRJlEPueY+LcsN/JpriAjIIsc9XUZ8HS2rH0qqJR20vP48D53z0KxGGFw6aI
- tlyC7/8tNSL95t5fvWWV8XPYP6g7ssIFLJknQViYrRiWAd2Q+Ry08GJAb8cTJHI8pCK9
- buTguV8FlprsoG+3jxCMVQxLj4MYGR2vub+bz/qGKFmULijoRwvTIkIDNrV7Wg0W21m6
- +w7ArHtUx7CSn0LOJewHqljJ3+K6Jej2SPqV7G9EAbyec7KPiSCxZa+a5LHijsgcUkh0
- +q8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=es+7eu/1JIS0u6NUqnkeBJLaNZv/3XzsgPMcIjCfPvw=;
- b=UwZ/Dp7VsqpAWge3f4Ct6arkgO3IreFu4+0hP70wBgHM2x8fsiqKLUJ1oS8Lwcbla4
- wyN/gytppe/gxNwhsp5/ZMHoPLDq8sCuSXIMexRxp6Sm1ummwKngXkDBBltAb3RWOYJN
- eIhel32Jikis0p3EMYANarSu6yKy4QbOxtuCRCUfUu1E6W2dnipioqnjW3GNB4YN/VP1
- gdqt04XvPK6uFSpRKfn2z/SkgqYhMq0qYjIJ96Yn9qXFtR8frFT2M7krlnOipzlT6PVH
- Zi6CnxZWf5do/miSwerf4EcdyMKECMK2ZbADtWvRXYholPfb6HI+wwyN6mpIOSy5WAWz
- h5Yw==
-X-Gm-Message-State: AOAM5337gvgyfYf9vVuY1MAp/a1+DYfpKA2ejtp0ADKc6gR0kSWLK10E
- 6zUKj8LtSVdgc/pY5II8nzM=
-X-Google-Smtp-Source: ABdhPJzgBhxY2MTCkcZ674AzY/SoPNRIS1xCW9A1AMfGp6inTU26zD1tI8MwT3wv66UQP/RzA1s2AA==
-X-Received: by 2002:a37:64d4:: with SMTP id
- y203mr23844160qkb.150.1605101685029; 
- Wed, 11 Nov 2020 05:34:45 -0800 (PST)
-Received: from localhost.localdomain
- (host-173-230-99-154.tnkngak.clients.pavlovmedia.com. [173.230.99.154])
- by smtp.gmail.com with ESMTPSA id r190sm1997814qkf.101.2020.11.11.05.34.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Nov 2020 05:34:44 -0800 (PST)
-From: YiFei Zhu <zhuyifei1999@gmail.com>
-To: containers@lists.linux-foundation.org
-Subject: [PATCH seccomp v2 8/8] seccomp/cache: Report cache data through
- /proc/pid/seccomp_cache
-Date: Wed, 11 Nov 2020 07:33:54 -0600
-Message-Id: <94e663fa53136f5a11f432c661794d1ee7060779.1605101222.git.yifeifz2@illinois.edu>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <cover.1605101222.git.yifeifz2@illinois.edu>
-References: <cover.1605101222.git.yifeifz2@illinois.edu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CWQnK4V5YzDqqK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 00:39:17 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CWQmz64Hlz9v0WV;
+ Wed, 11 Nov 2020 14:38:59 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id rgWXIRRS6MyN; Wed, 11 Nov 2020 14:38:59 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CWQmz4Q3wz9v0WT;
+ Wed, 11 Nov 2020 14:38:59 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0DF488B771;
+ Wed, 11 Nov 2020 14:39:01 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id HS34pxkfMAg0; Wed, 11 Nov 2020 14:39:00 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 447658B75F;
+ Wed, 11 Nov 2020 14:39:00 +0100 (CET)
+Subject: Re: [PATCH 1/3] asm-generic/atomic64: Add support for ARCH_ATOMIC
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20201111110723.3148665-1-npiggin@gmail.com>
+ <20201111110723.3148665-2-npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <3086114c-8af6-3863-0cbf-5d3956fcda95@csgroup.eu>
+Date: Wed, 11 Nov 2020 14:39:01 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.1
 MIME-Version: 1.0
+In-Reply-To: <20201111110723.3148665-2-npiggin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -81,211 +64,246 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-sh@vger.kernel.org, Tobin Feldman-Fitzthum <tobin@ibm.com>,
- Hubertus Franke <frankeh@us.ibm.com>, Jack Chen <jianyan2@illinois.edu>,
- linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>,
- linux-s390@vger.kernel.org, YiFei Zhu <yifeifz2@illinois.edu>,
- linux-csky@vger.kernel.org, Tianyin Xu <tyxu@illinois.edu>,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Jann Horn <jannh@google.com>, Valentin Rothberg <vrothber@redhat.com>,
- Aleksa Sarai <cyphar@cyphar.com>, Josep Torrellas <torrella@illinois.edu>,
- Will Drewry <wad@chromium.org>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andy Lutomirski <luto@amacapital.net>,
- Dimitrios Skarlatos <dskarlat@cs.cmu.edu>,
- David Laight <David.Laight@aculab.com>,
- Giuseppe Scrivano <gscrivan@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- Tycho Andersen <tycho@tycho.pizza>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, linux-arch@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
+ Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: YiFei Zhu <yifeifz2@illinois.edu>
+Hello,
 
-Currently the kernel does not provide an infrastructure to translate
-architecture numbers to a human-readable name. Translating syscall
-numbers to syscall names is possible through FTRACE_SYSCALL
-infrastructure but it does not provide support for compat syscalls.
+Le 11/11/2020 à 12:07, Nicholas Piggin a écrit :
+> This passes atomic64 selftest on ppc32 on qemu (uniprocessor only)
+> both before and after powerpc is converted to use ARCH_ATOMIC.
 
-This will create a file for each PID as /proc/pid/seccomp_cache.
-The file will be empty when no seccomp filters are loaded, or be
-in the format of:
-<arch name> <decimal syscall number> <ALLOW | FILTER>
-where ALLOW means the cache is guaranteed to allow the syscall,
-and filter means the cache will pass the syscall to the BPF filter.
+Can you explain what this change does and why it is needed ?
 
-For the docker default profile on x86_64 it looks like:
-x86_64 0 ALLOW
-x86_64 1 ALLOW
-x86_64 2 ALLOW
-x86_64 3 ALLOW
-[...]
-x86_64 132 ALLOW
-x86_64 133 ALLOW
-x86_64 134 FILTER
-x86_64 135 FILTER
-x86_64 136 FILTER
-x86_64 137 ALLOW
-x86_64 138 ALLOW
-x86_64 139 FILTER
-x86_64 140 ALLOW
-x86_64 141 ALLOW
-[...]
+Christophe
 
-This file is guarded by CONFIG_SECCOMP_CACHE_DEBUG with a default
-of N because I think certain users of seccomp might not want the
-application to know which syscalls are definitely usable. For
-the same reason, it is also guarded by CAP_SYS_ADMIN.
-
-Suggested-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/lkml/CAG48ez3Ofqp4crXGksLmZY6=fGrF_tWyUCg7PBkAetvbbOPeOA@mail.gmail.com/
-Signed-off-by: YiFei Zhu <yifeifz2@illinois.edu>
----
- arch/Kconfig            | 15 +++++++++++
- fs/proc/base.c          |  6 +++++
- include/linux/seccomp.h |  7 +++++
- kernel/seccomp.c        | 59 +++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 87 insertions(+)
-
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 56b6ccc0e32d..6e2eb7171da0 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -514,6 +514,21 @@ config SECCOMP_FILTER
- 
- 	  See Documentation/userspace-api/seccomp_filter.rst for details.
- 
-+config SECCOMP_CACHE_DEBUG
-+	bool "Show seccomp filter cache status in /proc/pid/seccomp_cache"
-+	depends on SECCOMP
-+	depends on SECCOMP_FILTER && !HAVE_SPARSE_SYSCALL_NR
-+	depends on PROC_FS
-+	help
-+	  This enables the /proc/pid/seccomp_cache interface to monitor
-+	  seccomp cache data. The file format is subject to change. Reading
-+	  the file requires CAP_SYS_ADMIN.
-+
-+	  This option is for debugging only. Enabling presents the risk that
-+	  an adversary may be able to infer the seccomp filter logic.
-+
-+	  If unsure, say N.
-+
- config HAVE_ARCH_STACKLEAK
- 	bool
- 	help
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 0f707003dda5..d652f9dbaecc 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -3261,6 +3261,9 @@ static const struct pid_entry tgid_base_stuff[] = {
- #ifdef CONFIG_PROC_PID_ARCH_STATUS
- 	ONE("arch_status", S_IRUGO, proc_pid_arch_status),
- #endif
-+#ifdef CONFIG_SECCOMP_CACHE_DEBUG
-+	ONE("seccomp_cache", S_IRUSR, proc_pid_seccomp_cache),
-+#endif
- };
- 
- static int proc_tgid_base_readdir(struct file *file, struct dir_context *ctx)
-@@ -3590,6 +3593,9 @@ static const struct pid_entry tid_base_stuff[] = {
- #ifdef CONFIG_PROC_PID_ARCH_STATUS
- 	ONE("arch_status", S_IRUGO, proc_pid_arch_status),
- #endif
-+#ifdef CONFIG_SECCOMP_CACHE_DEBUG
-+	ONE("seccomp_cache", S_IRUSR, proc_pid_seccomp_cache),
-+#endif
- };
- 
- static int proc_tid_base_readdir(struct file *file, struct dir_context *ctx)
-diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
-index 02aef2844c38..76963ec4641a 100644
---- a/include/linux/seccomp.h
-+++ b/include/linux/seccomp.h
-@@ -121,4 +121,11 @@ static inline long seccomp_get_metadata(struct task_struct *task,
- 	return -EINVAL;
- }
- #endif /* CONFIG_SECCOMP_FILTER && CONFIG_CHECKPOINT_RESTORE */
-+
-+#ifdef CONFIG_SECCOMP_CACHE_DEBUG
-+struct seq_file;
-+
-+int proc_pid_seccomp_cache(struct seq_file *m, struct pid_namespace *ns,
-+			   struct pid *pid, struct task_struct *task);
-+#endif
- #endif /* _LINUX_SECCOMP_H */
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index d8cf468dbe1e..76f524e320b1 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -553,6 +553,9 @@ void seccomp_filter_release(struct task_struct *tsk)
- {
- 	struct seccomp_filter *orig = tsk->seccomp.filter;
- 
-+	/* We are effectively holding the siglock by not having any sighand. */
-+	WARN_ON(tsk->sighand != NULL);
-+
- 	/* Detach task from its filter tree. */
- 	tsk->seccomp.filter = NULL;
- 	__seccomp_filter_release(orig);
-@@ -2335,3 +2338,59 @@ static int __init seccomp_sysctl_init(void)
- device_initcall(seccomp_sysctl_init)
- 
- #endif /* CONFIG_SYSCTL */
-+
-+#ifdef CONFIG_SECCOMP_CACHE_DEBUG
-+/* Currently CONFIG_SECCOMP_CACHE_DEBUG implies SECCOMP_ARCH_NATIVE */
-+static void proc_pid_seccomp_cache_arch(struct seq_file *m, const char *name,
-+					const void *bitmap, size_t bitmap_size)
-+{
-+	int nr;
-+
-+	for (nr = 0; nr < bitmap_size; nr++) {
-+		bool cached = test_bit(nr, bitmap);
-+		char *status = cached ? "ALLOW" : "FILTER";
-+
-+		seq_printf(m, "%s %d %s\n", name, nr, status);
-+	}
-+}
-+
-+int proc_pid_seccomp_cache(struct seq_file *m, struct pid_namespace *ns,
-+			   struct pid *pid, struct task_struct *task)
-+{
-+	struct seccomp_filter *f;
-+	unsigned long flags;
-+
-+	/*
-+	 * We don't want some sandboxed process to know what their seccomp
-+	 * filters consist of.
-+	 */
-+	if (!file_ns_capable(m->file, &init_user_ns, CAP_SYS_ADMIN))
-+		return -EACCES;
-+
-+	if (!lock_task_sighand(task, &flags))
-+		return -ESRCH;
-+
-+	f = READ_ONCE(task->seccomp.filter);
-+	if (!f) {
-+		unlock_task_sighand(task, &flags);
-+		return 0;
-+	}
-+
-+	/* prevent filter from being freed while we are printing it */
-+	__get_seccomp_filter(f);
-+	unlock_task_sighand(task, &flags);
-+
-+	proc_pid_seccomp_cache_arch(m, SECCOMP_ARCH_NATIVE_NAME,
-+				    f->cache.allow_native,
-+				    SECCOMP_ARCH_NATIVE_NR);
-+
-+#ifdef SECCOMP_ARCH_COMPAT
-+	proc_pid_seccomp_cache_arch(m, SECCOMP_ARCH_COMPAT_NAME,
-+				    f->cache.allow_compat,
-+				    SECCOMP_ARCH_COMPAT_NR);
-+#endif /* SECCOMP_ARCH_COMPAT */
-+
-+	__put_seccomp_filter(f);
-+	return 0;
-+}
-+#endif /* CONFIG_SECCOMP_CACHE_DEBUG */
--- 
-2.29.2
-
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   include/asm-generic/atomic64.h | 70 +++++++++++++++++++++++++++-------
+>   lib/atomic64.c                 | 36 ++++++++---------
+>   2 files changed, 75 insertions(+), 31 deletions(-)
+> 
+> diff --git a/include/asm-generic/atomic64.h b/include/asm-generic/atomic64.h
+> index 370f01d4450f..2b1ecb591bb9 100644
+> --- a/include/asm-generic/atomic64.h
+> +++ b/include/asm-generic/atomic64.h
+> @@ -15,19 +15,17 @@ typedef struct {
+>   
+>   #define ATOMIC64_INIT(i)	{ (i) }
+>   
+> -extern s64 atomic64_read(const atomic64_t *v);
+> -extern void atomic64_set(atomic64_t *v, s64 i);
+> -
+> -#define atomic64_set_release(v, i)	atomic64_set((v), (i))
+> +extern s64 __atomic64_read(const atomic64_t *v);
+> +extern void __atomic64_set(atomic64_t *v, s64 i);
+>   
+>   #define ATOMIC64_OP(op)							\
+> -extern void	 atomic64_##op(s64 a, atomic64_t *v);
+> +extern void	 __atomic64_##op(s64 a, atomic64_t *v);
+>   
+>   #define ATOMIC64_OP_RETURN(op)						\
+> -extern s64 atomic64_##op##_return(s64 a, atomic64_t *v);
+> +extern s64 __atomic64_##op##_return(s64 a, atomic64_t *v);
+>   
+>   #define ATOMIC64_FETCH_OP(op)						\
+> -extern s64 atomic64_fetch_##op(s64 a, atomic64_t *v);
+> +extern s64 __atomic64_fetch_##op(s64 a, atomic64_t *v);
+>   
+>   #define ATOMIC64_OPS(op)	ATOMIC64_OP(op) ATOMIC64_OP_RETURN(op) ATOMIC64_FETCH_OP(op)
+>   
+> @@ -46,11 +44,57 @@ ATOMIC64_OPS(xor)
+>   #undef ATOMIC64_OP_RETURN
+>   #undef ATOMIC64_OP
+>   
+> -extern s64 atomic64_dec_if_positive(atomic64_t *v);
+> -#define atomic64_dec_if_positive atomic64_dec_if_positive
+> -extern s64 atomic64_cmpxchg(atomic64_t *v, s64 o, s64 n);
+> -extern s64 atomic64_xchg(atomic64_t *v, s64 new);
+> -extern s64 atomic64_fetch_add_unless(atomic64_t *v, s64 a, s64 u);
+> -#define atomic64_fetch_add_unless atomic64_fetch_add_unless
+> +extern s64 __atomic64_dec_if_positive(atomic64_t *v);
+> +extern s64 __atomic64_cmpxchg(atomic64_t *v, s64 o, s64 n);
+> +extern s64 __atomic64_xchg(atomic64_t *v, s64 new);
+> +extern s64 __atomic64_fetch_add_unless(atomic64_t *v, s64 a, s64 u);
+> +
+> +#ifdef ARCH_ATOMIC
+> +#define arch_atomic64_read __atomic64_read
+> +#define arch_atomic64_set __atomic64_set
+> +#define arch_atomic64_add __atomic64_add
+> +#define arch_atomic64_add_return __atomic64_add_return
+> +#define arch_atomic64_fetch_add __atomic64_fetch_add
+> +#define arch_atomic64_sub __atomic64_sub
+> +#define arch_atomic64_sub_return __atomic64_sub_return
+> +#define arch_atomic64_fetch_sub __atomic64_fetch_sub
+> +#define arch_atomic64_and __atomic64_and
+> +#define arch_atomic64_and_return __atomic64_and_return
+> +#define arch_atomic64_fetch_and __atomic64_fetch_and
+> +#define arch_atomic64_or __atomic64_or
+> +#define arch_atomic64_or_return __atomic64_or_return
+> +#define arch_atomic64_fetch_or __atomic64_fetch_or
+> +#define arch_atomic64_xor __atomic64_xor
+> +#define arch_atomic64_xor_return __atomic64_xor_return
+> +#define arch_atomic64_fetch_xor __atomic64_fetch_xor
+> +#define arch_atomic64_xchg __atomic64_xchg
+> +#define arch_atomic64_cmpxchg __atomic64_cmpxchg
+> +#define arch_atomic64_set_release(v, i)	__atomic64_set((v), (i))
+> +#define arch_atomic64_dec_if_positive __atomic64_dec_if_positive
+> +#define arch_atomic64_fetch_add_unless __atomic64_fetch_add_unless
+> +#else
+> +#define atomic64_read __atomic64_read
+> +#define atomic64_set __atomic64_set
+> +#define atomic64_add __atomic64_add
+> +#define atomic64_add_return __atomic64_add_return
+> +#define atomic64_fetch_add __atomic64_fetch_add
+> +#define atomic64_sub __atomic64_sub
+> +#define atomic64_sub_return __atomic64_sub_return
+> +#define atomic64_fetch_sub __atomic64_fetch_sub
+> +#define atomic64_and __atomic64_and
+> +#define atomic64_and_return __atomic64_and_return
+> +#define atomic64_fetch_and __atomic64_fetch_and
+> +#define atomic64_or __atomic64_or
+> +#define atomic64_or_return __atomic64_or_return
+> +#define atomic64_fetch_or __atomic64_fetch_or
+> +#define atomic64_xor __atomic64_xor
+> +#define atomic64_xor_return __atomic64_xor_return
+> +#define atomic64_fetch_xor __atomic64_fetch_xor
+> +#define atomic64_xchg __atomic64_xchg
+> +#define atomic64_cmpxchg __atomic64_cmpxchg
+> +#define atomic64_set_release(v, i)	__atomic64_set((v), (i))
+> +#define atomic64_dec_if_positive __atomic64_dec_if_positive
+> +#define atomic64_fetch_add_unless __atomic64_fetch_add_unless
+> +#endif
+>   
+>   #endif  /*  _ASM_GENERIC_ATOMIC64_H  */
+> diff --git a/lib/atomic64.c b/lib/atomic64.c
+> index e98c85a99787..05aba5e3268f 100644
+> --- a/lib/atomic64.c
+> +++ b/lib/atomic64.c
+> @@ -42,7 +42,7 @@ static inline raw_spinlock_t *lock_addr(const atomic64_t *v)
+>   	return &atomic64_lock[addr & (NR_LOCKS - 1)].lock;
+>   }
+>   
+> -s64 atomic64_read(const atomic64_t *v)
+> +s64 __atomic64_read(const atomic64_t *v)
+>   {
+>   	unsigned long flags;
+>   	raw_spinlock_t *lock = lock_addr(v);
+> @@ -53,9 +53,9 @@ s64 atomic64_read(const atomic64_t *v)
+>   	raw_spin_unlock_irqrestore(lock, flags);
+>   	return val;
+>   }
+> -EXPORT_SYMBOL(atomic64_read);
+> +EXPORT_SYMBOL(__atomic64_read);
+>   
+> -void atomic64_set(atomic64_t *v, s64 i)
+> +void __atomic64_set(atomic64_t *v, s64 i)
+>   {
+>   	unsigned long flags;
+>   	raw_spinlock_t *lock = lock_addr(v);
+> @@ -64,10 +64,10 @@ void atomic64_set(atomic64_t *v, s64 i)
+>   	v->counter = i;
+>   	raw_spin_unlock_irqrestore(lock, flags);
+>   }
+> -EXPORT_SYMBOL(atomic64_set);
+> +EXPORT_SYMBOL(__atomic64_set);
+>   
+>   #define ATOMIC64_OP(op, c_op)						\
+> -void atomic64_##op(s64 a, atomic64_t *v)				\
+> +void __atomic64_##op(s64 a, atomic64_t *v)				\
+>   {									\
+>   	unsigned long flags;						\
+>   	raw_spinlock_t *lock = lock_addr(v);				\
+> @@ -76,10 +76,10 @@ void atomic64_##op(s64 a, atomic64_t *v)				\
+>   	v->counter c_op a;						\
+>   	raw_spin_unlock_irqrestore(lock, flags);			\
+>   }									\
+> -EXPORT_SYMBOL(atomic64_##op);
+> +EXPORT_SYMBOL(__atomic64_##op);
+>   
+>   #define ATOMIC64_OP_RETURN(op, c_op)					\
+> -s64 atomic64_##op##_return(s64 a, atomic64_t *v)			\
+> +s64 __atomic64_##op##_return(s64 a, atomic64_t *v)			\
+>   {									\
+>   	unsigned long flags;						\
+>   	raw_spinlock_t *lock = lock_addr(v);				\
+> @@ -90,10 +90,10 @@ s64 atomic64_##op##_return(s64 a, atomic64_t *v)			\
+>   	raw_spin_unlock_irqrestore(lock, flags);			\
+>   	return val;							\
+>   }									\
+> -EXPORT_SYMBOL(atomic64_##op##_return);
+> +EXPORT_SYMBOL(__atomic64_##op##_return);
+>   
+>   #define ATOMIC64_FETCH_OP(op, c_op)					\
+> -s64 atomic64_fetch_##op(s64 a, atomic64_t *v)				\
+> +s64 __atomic64_fetch_##op(s64 a, atomic64_t *v)				\
+>   {									\
+>   	unsigned long flags;						\
+>   	raw_spinlock_t *lock = lock_addr(v);				\
+> @@ -105,7 +105,7 @@ s64 atomic64_fetch_##op(s64 a, atomic64_t *v)				\
+>   	raw_spin_unlock_irqrestore(lock, flags);			\
+>   	return val;							\
+>   }									\
+> -EXPORT_SYMBOL(atomic64_fetch_##op);
+> +EXPORT_SYMBOL(__atomic64_fetch_##op);
+>   
+>   #define ATOMIC64_OPS(op, c_op)						\
+>   	ATOMIC64_OP(op, c_op)						\
+> @@ -130,7 +130,7 @@ ATOMIC64_OPS(xor, ^=)
+>   #undef ATOMIC64_OP_RETURN
+>   #undef ATOMIC64_OP
+>   
+> -s64 atomic64_dec_if_positive(atomic64_t *v)
+> +s64 __atomic64_dec_if_positive(atomic64_t *v)
+>   {
+>   	unsigned long flags;
+>   	raw_spinlock_t *lock = lock_addr(v);
+> @@ -143,9 +143,9 @@ s64 atomic64_dec_if_positive(atomic64_t *v)
+>   	raw_spin_unlock_irqrestore(lock, flags);
+>   	return val;
+>   }
+> -EXPORT_SYMBOL(atomic64_dec_if_positive);
+> +EXPORT_SYMBOL(__atomic64_dec_if_positive);
+>   
+> -s64 atomic64_cmpxchg(atomic64_t *v, s64 o, s64 n)
+> +s64 __atomic64_cmpxchg(atomic64_t *v, s64 o, s64 n)
+>   {
+>   	unsigned long flags;
+>   	raw_spinlock_t *lock = lock_addr(v);
+> @@ -158,9 +158,9 @@ s64 atomic64_cmpxchg(atomic64_t *v, s64 o, s64 n)
+>   	raw_spin_unlock_irqrestore(lock, flags);
+>   	return val;
+>   }
+> -EXPORT_SYMBOL(atomic64_cmpxchg);
+> +EXPORT_SYMBOL(__atomic64_cmpxchg);
+>   
+> -s64 atomic64_xchg(atomic64_t *v, s64 new)
+> +s64 __atomic64_xchg(atomic64_t *v, s64 new)
+>   {
+>   	unsigned long flags;
+>   	raw_spinlock_t *lock = lock_addr(v);
+> @@ -172,9 +172,9 @@ s64 atomic64_xchg(atomic64_t *v, s64 new)
+>   	raw_spin_unlock_irqrestore(lock, flags);
+>   	return val;
+>   }
+> -EXPORT_SYMBOL(atomic64_xchg);
+> +EXPORT_SYMBOL(__atomic64_xchg);
+>   
+> -s64 atomic64_fetch_add_unless(atomic64_t *v, s64 a, s64 u)
+> +s64 __atomic64_fetch_add_unless(atomic64_t *v, s64 a, s64 u)
+>   {
+>   	unsigned long flags;
+>   	raw_spinlock_t *lock = lock_addr(v);
+> @@ -188,4 +188,4 @@ s64 atomic64_fetch_add_unless(atomic64_t *v, s64 a, s64 u)
+>   
+>   	return val;
+>   }
+> -EXPORT_SYMBOL(atomic64_fetch_add_unless);
+> +EXPORT_SYMBOL(__atomic64_fetch_add_unless);
+> 
