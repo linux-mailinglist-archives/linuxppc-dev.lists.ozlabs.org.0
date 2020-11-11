@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48722AF458
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 16:04:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C66E2AF468
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 16:07:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CWSgf2CSYzDqpL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 02:04:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CWSkX3RdszDqwD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 02:07:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=63.128.21.124;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
  helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=VQjhgdHs; 
+ header.s=mimecast20190719 header.b=JC5qn6dW; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=fVZ4f0to; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=JC5qn6dW; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [63.128.21.124])
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CWSRL5WpwzDqpB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 01:53:50 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CWSRR28cfzDqnK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 01:53:55 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1605106427;
+ s=mimecast20190719; t=1605106432;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GSQatxuwdd1ehWeHPVVOm8FQ78oIMefwI0KM3vx9OUY=;
- b=VQjhgdHs8AYav6x0BunlQpdNjniSlMa84QKCQbmmskCcw+NzrbDcmdiyRUixiwyhi75nMR
- vl3sr72jrGtSgs+dgodTXcM0GmPpNOfI3TEqU6DhEehdpeaY2QhOKkLMUvcQFBemYY+aMW
- hLfj3Yozo29eK//kkJ1E/xMbRMx+510=
+ bh=HjIV86G4+zXJRkvdg3A94EY+lDllWpujuARJLy+GgHg=;
+ b=JC5qn6dWq9FNy9U2fNX803zak4VwjZ3PPtf1EECkPQqntMq7nu2hXRVKWXt2Mi9HbgphwN
+ qrdF85oN5oAy1gi3m2LyMpjiLR7Dv8r9aXeGi3R/N8MA5/Mymn7C70TkuCYJ+jyjYbOZKl
+ Jx9UJwZMeFluZLoA4Qn1HmiaUwMlqYU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1605106428;
+ s=mimecast20190719; t=1605106432;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GSQatxuwdd1ehWeHPVVOm8FQ78oIMefwI0KM3vx9OUY=;
- b=fVZ4f0tosFtxL3ghmxKXczV1i2cgArybceKFRNtuUs6WD0HZ7u/GJ0kYyvKOZwK9mUO7L6
- 2zy3EILH+N5IAMLMoedw8GQB8sV7UnIttEQQccCJMzYDIgm9XmQcB1N9UUrOlITXgZNWbD
- QnKhWh34IXe6f9bsWit4TVPhdo8T6Vg=
+ bh=HjIV86G4+zXJRkvdg3A94EY+lDllWpujuARJLy+GgHg=;
+ b=JC5qn6dWq9FNy9U2fNX803zak4VwjZ3PPtf1EECkPQqntMq7nu2hXRVKWXt2Mi9HbgphwN
+ qrdF85oN5oAy1gi3m2LyMpjiLR7Dv8r9aXeGi3R/N8MA5/Mymn7C70TkuCYJ+jyjYbOZKl
+ Jx9UJwZMeFluZLoA4Qn1HmiaUwMlqYU=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-310-eMn4ZS-3NWCR9QdUC20pPQ-1; Wed, 11 Nov 2020 09:53:43 -0500
-X-MC-Unique: eMn4ZS-3NWCR9QdUC20pPQ-1
+ us-mta-293-hceWkfh2NFaINwskg_F-hQ-1; Wed, 11 Nov 2020 09:53:46 -0500
+X-MC-Unique: hceWkfh2NFaINwskg_F-hQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
  [10.5.11.23])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D269A8049CC;
- Wed, 11 Nov 2020 14:53:41 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C5E7E1099F63;
+ Wed, 11 Nov 2020 14:53:44 +0000 (UTC)
 Received: from t480s.redhat.com (ovpn-114-151.ams2.redhat.com [10.36.114.151])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3A9F9380;
- Wed, 11 Nov 2020 14:53:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2F3A2380;
+ Wed, 11 Nov 2020 14:53:42 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/8] powerpc/mm: protect linear mapping modifications by a
- mutex
-Date: Wed, 11 Nov 2020 15:53:18 +0100
-Message-Id: <20201111145322.15793-5-david@redhat.com>
+Subject: [PATCH v2 5/8] powerpc/mm: print warning in
+ arch_remove_linear_mapping()
+Date: Wed, 11 Nov 2020 15:53:19 +0100
+Message-Id: <20201111145322.15793-6-david@redhat.com>
 In-Reply-To: <20201111145322.15793-1-david@redhat.com>
 References: <20201111145322.15793-1-david@redhat.com>
 MIME-Version: 1.0
@@ -92,15 +92,10 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This code currently relies on mem_hotplug_begin()/mem_hotplug_done() -
-create_section_mapping()/remove_section_mapping() implementations
-cannot tollerate getting called concurrently.
+Let's print a warning similar to in arch_add_linear_mapping() instead of
+WARN_ON_ONCE() and eventually crashing the kernel.
 
-Let's prepare for callers (memtrace) not holding any such locks (and
-don't force them to mess with memory hotplug locks).
-
-Other parts in these functions don't seem to rely on external locking.
-
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Cc: Paul Mackerras <paulus@samba.org>
@@ -112,42 +107,24 @@ Cc: Oscar Salvador <osalvador@suse.de>
 Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/powerpc/mm/mem.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/mm/mem.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 8a86d81f8df0..ca5c4b54c366 100644
+index ca5c4b54c366..c5755b9efb64 100644
 --- a/arch/powerpc/mm/mem.c
 +++ b/arch/powerpc/mm/mem.c
-@@ -58,6 +58,7 @@
- #define CPU_FTR_NOEXECUTE	0
- #endif
- 
-+static DEFINE_MUTEX(linear_mapping_mutex);
- unsigned long long memory_limit;
- bool init_mem_is_free;
- 
-@@ -126,8 +127,10 @@ int __ref arch_create_linear_mapping(int nid, u64 start, u64 size,
- 	int rc;
- 
- 	start = (unsigned long)__va(start);
-+	mutex_lock(&linear_mapping_mutex);
- 	rc = create_section_mapping(start, start + size, nid,
- 				    params->pgprot);
-+	mutex_unlock(&linear_mapping_mutex);
- 	if (rc) {
- 		pr_warn("Unable to create linear mapping for 0x%llx..0x%llx: %d\n",
- 			start, start + size, rc);
-@@ -144,7 +147,9 @@ void __ref arch_remove_linear_mapping(u64 start, u64 size)
- 	start = (unsigned long)__va(start);
- 	flush_dcache_range_chunked(start, start + size, FLUSH_CHUNK_SIZE);
- 
-+	mutex_lock(&linear_mapping_mutex);
+@@ -150,7 +150,9 @@ void __ref arch_remove_linear_mapping(u64 start, u64 size)
+ 	mutex_lock(&linear_mapping_mutex);
  	ret = remove_section_mapping(start, start + size);
-+	mutex_unlock(&linear_mapping_mutex);
- 	WARN_ON_ONCE(ret);
+ 	mutex_unlock(&linear_mapping_mutex);
+-	WARN_ON_ONCE(ret);
++	if (ret)
++		pr_warn("Unable to remove linear mapping for 0x%llx..0x%llx: %d\n",
++			start, start + size, ret);
  
  	/* Ensure all vmalloc mappings are flushed in case they also
+ 	 * hit that section of memory
 -- 
 2.26.2
 
