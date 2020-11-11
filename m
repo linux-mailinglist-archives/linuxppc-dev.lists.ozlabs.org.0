@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA8F2AEE84
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 11:09:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4864C2AEE87
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 11:11:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CWL7c3bX8zDqNN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 21:09:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CWL9p2BlvzDqKM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 21:11:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
- helo=mail-pl1-x634.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=q7nOXFlj; dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
+ header.s=20161025 header.b=etTt1z+L; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CWKZH6mktzDqlW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 20:44:23 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id g11so680303pll.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 01:44:23 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CWKZK66Q8zDqm6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 20:44:25 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id i13so1098438pgm.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 01:44:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=i50hyQxv8GuLaC8SNb6gUJDiuLQe0oWvF6/hO1yTsIs=;
- b=q7nOXFljMOAR6dmydyLzofkkQNjpv1NKXE1dhq26+MPc/4RP4ClAFeoCnapDds68M2
- Qijadgdx+majkUr5E4vUGFjNbQEAapLnGFUdaQEXPQP+GtJCF8QJNGGDuPL9Hj69OjAu
- R63ogjurTKVlbgm6YCam/oga9GkAvzEJ0oM0wM3TMN115Ksv2Y4yt6KyyQx2tuTaV5E/
- EnWg1OdORL494gdn7qt75X2kaGlxna7MuVWJJFdVmHg9ZPCzDTbmuPASlvKStqNOVexF
- 2QN0dSi1mAKWQ3Ord01rQUPJltUqX6mrc2a3gx4qrwkj7+HKYIhQzHUvrUzN0aMUuLDO
- kDHQ==
+ bh=HMZbiDEoeneJdqUtO/727PYT4ihmPLAF/kMdl+9ZL6I=;
+ b=etTt1z+LkCmtfRE2uv9fJzVzt28Mg/f7yFI2qwycJK/DiTgfDSTS5dj+cFzu2z0hzP
+ jbf7/CBdF/YuC7VmYI8hApCrWCOgyXo7BLWPoaGw8un5rVgWjG1FN40VSk+Sfjwy1y0x
+ anEPN+3AeyWLe6mP+uUPRsMQBWdEsaBOSupAnZexHK+2O1NNo5ZjCOHRyXVs7aYNTlCo
+ eVihrgdbQyLzIIAEdaUJ+lXcuIH/JaQbTmTgHYT8U0NNSiHFXYcONwJ+rSN79yB5XdSl
+ iJDmgtV5DiVmia6Sm/aRxJRp11wV9zWDITDYbRF8G1JuSDZon+s50mrGDdTFuLhJnSlJ
+ 0odg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=i50hyQxv8GuLaC8SNb6gUJDiuLQe0oWvF6/hO1yTsIs=;
- b=ODbi6u7aWpKuC9uqnGdMG/WhK8lvG+wbPGrtmSCCVuea16hvrNlnShXdyr/O0MdCcM
- Cq2ktvh2anQLVZ1TV9VFEtqk2cmB9eYATABro5JHV6jnmA7g7zXeOwIu8dzZba+pLJhT
- z8v5+fapLp82KYQE33cW2DgUvGk61pbo2eDo7ToEFwm/z9g6wryG7xMfUV1p1iraw5gK
- J1G6/FKmzaf/l3MYxufE/kC1vhD7PhSYOLH8PRAtUhBUNO/Gm6H7CmGAxbM2FZa75mFi
- qf/3HuQUtbnduIcKScd5GK4HRR/1BWETihdaOfgHUVd39+p564LdlYuo70wNlWnlKZfp
- E6DQ==
-X-Gm-Message-State: AOAM5320NhwE6oRlf+rsE/NYI5Uy+DLv8YuSBnFL+VH4Najl7mYoqJuC
- 8aiB49rwsflZGWpNE347to+o1jWrKtc=
-X-Google-Smtp-Source: ABdhPJzi51ZcAUGoxhjLOKDIMjatI2SFc8BKogrl/8PBvdLc9iL6bbogXG5qL662rLsoAC++BBmg2g==
-X-Received: by 2002:a17:90a:f318:: with SMTP id
- ca24mr3099729pjb.100.1605087860561; 
- Wed, 11 Nov 2020 01:44:20 -0800 (PST)
+ bh=HMZbiDEoeneJdqUtO/727PYT4ihmPLAF/kMdl+9ZL6I=;
+ b=n60w6P0S24WzH6aKtJjwYBRKOEYNe340ULQWuQObXwdpvHGJkcUZDgjVyaKwwA7WQg
+ /1QtO3pFYGtYrAgmrVZzarx7TFTDauHV3CYwZkC8nefpxVNodXSuDJapxMgH+fgmft8s
+ mcx++TqU0pUGufQAEkx+OwMvt7l1VrDp4ifswa51WTuaSKl1qrmJ5pD7SRlUqu118kjs
+ xowoL7JDH0WPVjVKgXXUudzMXuEXttZG2I9VyrsXG1M2b0XXqowU1Oih0HlHXsSq9rjr
+ yEL/oSbtX8F06VCWArjB2RlQRVq6FgL+4dYSnpAn81RtP0zK7ZU4r5zWzfYFanFOqNm5
+ FFXw==
+X-Gm-Message-State: AOAM530kE+lrh69GC6cZJRu97BGTSOGn+QHYabea7rN5YCvKhtcwM5ED
+ L8sAPaoP99L7vT1bzs5ezIkl9Wh4AjA=
+X-Google-Smtp-Source: ABdhPJzM4qb1jH8KVnLs3o+S7+lKHh97Zgs32cb2U6eKeHLLOQivAjt753ZQJ7gGijodwnj+v0MGzw==
+X-Received: by 2002:a65:6a54:: with SMTP id o20mr19926740pgu.38.1605087862710; 
+ Wed, 11 Nov 2020 01:44:22 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (27-32-36-31.tpgi.com.au. [27.32.36.31])
- by smtp.gmail.com with ESMTPSA id a3sm2046129pfd.58.2020.11.11.01.44.18
+ by smtp.gmail.com with ESMTPSA id a3sm2046129pfd.58.2020.11.11.01.44.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Nov 2020 01:44:20 -0800 (PST)
+ Wed, 11 Nov 2020 01:44:22 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 02/19] powerpc: remove arguments from fault handler
- functions
-Date: Wed, 11 Nov 2020 19:43:53 +1000
-Message-Id: <20201111094410.3038123-3-npiggin@gmail.com>
+Subject: [PATCH v2 03/19] powerpc: bad_page_fault,
+ do_break get registers from regs
+Date: Wed, 11 Nov 2020 19:43:54 +1000
+Message-Id: <20201111094410.3038123-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20201111094410.3038123-1-npiggin@gmail.com>
 References: <20201111094410.3038123-1-npiggin@gmail.com>
@@ -85,343 +84,294 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make mm fault handlers all just take the pt_regs * argument and load
-DAR/DSISR from that. Make those that return a value return long.
+This also moves the 32s DABR match to C.
 
-This is done to make the function signatures match other handlers, which
-will help with a future patch to add wrappers. Explicit arguments could
-be added for performance but that would require more wrapper macro
-variants.
+Similar to the previous patch this makes interrupt handler function
+types more regular so they can be wrapped with the next patch.
+
+bad_page_fault and do_break are not performance critical.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/asm-prototypes.h     |  4 ++--
- arch/powerpc/include/asm/book3s/64/mmu-hash.h |  2 +-
- arch/powerpc/include/asm/bug.h                |  4 ++--
- arch/powerpc/kernel/exceptions-64e.S          |  2 --
- arch/powerpc/kernel/exceptions-64s.S          | 14 ++------------
- arch/powerpc/kernel/head_40x.S                | 10 +++++-----
- arch/powerpc/kernel/head_8xx.S                |  6 +++---
- arch/powerpc/kernel/head_book3s_32.S          |  6 ++----
- arch/powerpc/kernel/head_booke.h              |  4 +---
- arch/powerpc/mm/book3s64/hash_utils.c         |  8 +++++---
- arch/powerpc/mm/book3s64/slb.c                | 11 +++++++----
- arch/powerpc/mm/fault.c                       | 16 +++++++++-------
- 12 files changed, 39 insertions(+), 48 deletions(-)
+ arch/powerpc/include/asm/bug.h             |  2 +-
+ arch/powerpc/include/asm/debug.h           |  3 +--
+ arch/powerpc/kernel/entry_32.S             | 14 ++++----------
+ arch/powerpc/kernel/exceptions-64e.S       |  3 +--
+ arch/powerpc/kernel/exceptions-64s.S       |  3 +--
+ arch/powerpc/kernel/head_8xx.S             |  5 ++---
+ arch/powerpc/kernel/process.c              |  7 +++----
+ arch/powerpc/kernel/traps.c                |  2 +-
+ arch/powerpc/mm/book3s64/hash_utils.c      |  4 ++--
+ arch/powerpc/mm/book3s64/slb.c             |  2 +-
+ arch/powerpc/mm/fault.c                    | 14 +++++++-------
+ arch/powerpc/platforms/8xx/machine_check.c |  2 +-
+ 12 files changed, 25 insertions(+), 36 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
-index d0b832cbbec8..22c9d08fa3a4 100644
---- a/arch/powerpc/include/asm/asm-prototypes.h
-+++ b/arch/powerpc/include/asm/asm-prototypes.h
-@@ -82,8 +82,8 @@ void kernel_bad_stack(struct pt_regs *regs);
- void system_reset_exception(struct pt_regs *regs);
- void machine_check_exception(struct pt_regs *regs);
- void emulation_assist_interrupt(struct pt_regs *regs);
--long do_slb_fault(struct pt_regs *regs, unsigned long ea);
--void do_bad_slb_fault(struct pt_regs *regs, unsigned long ea, long err);
-+long do_slb_fault(struct pt_regs *regs);
-+void do_bad_slb_fault(struct pt_regs *regs);
- 
- /* signals, syscalls and interrupts */
- long sys_swapcontext(struct ucontext __user *old_ctx,
-diff --git a/arch/powerpc/include/asm/book3s/64/mmu-hash.h b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-index bc8c91f2d26f..e843d0b193d3 100644
---- a/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-+++ b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-@@ -453,7 +453,7 @@ static inline unsigned long hpt_hash(unsigned long vpn,
- #define HPTE_LOCAL_UPDATE	0x1
- #define HPTE_NOHPTE_UPDATE	0x2
- 
--int do_hash_fault(struct pt_regs *regs, unsigned long ea, unsigned long dsisr);
-+long do_hash_fault(struct pt_regs *regs);
- extern int __hash_page_4K(unsigned long ea, unsigned long access,
- 			  unsigned long vsid, pte_t *ptep, unsigned long trap,
- 			  unsigned long flags, int ssize, int subpage_prot);
 diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index c0e9b7a967a8..897bad6b6bbb 100644
+index 897bad6b6bbb..49162faba33f 100644
 --- a/arch/powerpc/include/asm/bug.h
 +++ b/arch/powerpc/include/asm/bug.h
-@@ -111,8 +111,8 @@
- #ifndef __ASSEMBLY__
- 
+@@ -113,7 +113,7 @@
  struct pt_regs;
--extern int do_page_fault(struct pt_regs *, unsigned long, unsigned long);
--int hash__do_page_fault(struct pt_regs *, unsigned long, unsigned long);
-+long do_page_fault(struct pt_regs *);
-+long hash__do_page_fault(struct pt_regs *);
- extern void bad_page_fault(struct pt_regs *, unsigned long, int);
+ long do_page_fault(struct pt_regs *);
+ long hash__do_page_fault(struct pt_regs *);
+-extern void bad_page_fault(struct pt_regs *, unsigned long, int);
++void bad_page_fault(struct pt_regs *, int);
  extern void _exception(int, struct pt_regs *, int, unsigned long);
  extern void _exception_pkey(struct pt_regs *, unsigned long, int);
+ extern void die(const char *, struct pt_regs *, long);
+diff --git a/arch/powerpc/include/asm/debug.h b/arch/powerpc/include/asm/debug.h
+index ec57daf87f40..0550eceab3ca 100644
+--- a/arch/powerpc/include/asm/debug.h
++++ b/arch/powerpc/include/asm/debug.h
+@@ -52,8 +52,7 @@ extern void do_send_trap(struct pt_regs *regs, unsigned long address,
+ 			 unsigned long error_code, int brkpt);
+ #else
+ 
+-extern void do_break(struct pt_regs *regs, unsigned long address,
+-		     unsigned long error_code);
++void do_break(struct pt_regs *regs);
+ #endif
+ 
+ #endif /* _ASM_POWERPC_DEBUG_H */
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 8cdc8bcde703..eb97df234a0c 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -657,10 +657,6 @@ ppc_swapcontext:
+ 	.globl	handle_page_fault
+ handle_page_fault:
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-#ifdef CONFIG_PPC_BOOK3S_32
+-	andis.  r0,r5,DSISR_DABRMATCH@h
+-	bne-    handle_dabr_fault
+-#endif
+ 	bl	do_page_fault
+ 	cmpwi	r3,0
+ 	beq+	ret_from_except
+@@ -668,19 +664,17 @@ handle_page_fault:
+ 	lwz	r0,_TRAP(r1)
+ 	clrrwi	r0,r0,1
+ 	stw	r0,_TRAP(r1)
+-	mr	r5,r3
++	mr	r4,r3		/* err arg for bad_page_fault */
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	lwz	r4,_DAR(r1)
++#ifdef CONFIG_PPC_BOOK3S_32
++	blt	handle_dabr_fault
++#endif
+ 	bl	bad_page_fault
+ 	b	ret_from_except_full
+ 
+ #ifdef CONFIG_PPC_BOOK3S_32
+ 	/* We have a data breakpoint exception - handle it */
+ handle_dabr_fault:
+-	SAVE_NVGPRS(r1)
+-	lwz	r0,_TRAP(r1)
+-	clrrwi	r0,r0,1
+-	stw	r0,_TRAP(r1)
+ 	bl      do_break
+ 	b	ret_from_except_full
+ #endif
 diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-index f579ce46eef2..25fa7d5a643c 100644
+index 25fa7d5a643c..dc728bb1c89a 100644
 --- a/arch/powerpc/kernel/exceptions-64e.S
 +++ b/arch/powerpc/kernel/exceptions-64e.S
-@@ -1011,8 +1011,6 @@ storage_fault_common:
- 	std	r14,_DAR(r1)
- 	std	r15,_DSISR(r1)
+@@ -1018,9 +1018,8 @@ storage_fault_common:
+ 	bne-	1f
+ 	b	ret_from_except_lite
+ 1:	bl	save_nvgprs
+-	mr	r5,r3
++	mr	r4,r3
  	addi	r3,r1,STACK_FRAME_OVERHEAD
--	mr	r4,r14
--	mr	r5,r15
- 	ld	r14,PACA_EXGEN+EX_R14(r13)
- 	ld	r15,PACA_EXGEN+EX_R15(r13)
- 	bl	do_page_fault
+-	ld	r4,_DAR(r1)
+ 	bl	bad_page_fault
+ 	b	ret_from_except
+ 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index f830b893fe03..1f34cfd1887c 100644
+index 1f34cfd1887c..e6558c4d3f81 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1437,8 +1437,6 @@ EXC_VIRT_BEGIN(data_access, 0x4300, 0x80)
- EXC_VIRT_END(data_access, 0x4300, 0x80)
- EXC_COMMON_BEGIN(data_access_common)
- 	GEN_COMMON data_access
--	ld	r4,_DAR(r1)
--	ld	r5,_DSISR(r1)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
+@@ -2135,8 +2135,7 @@ EXC_COMMON_BEGIN(h_data_storage_common)
+ 	GEN_COMMON h_data_storage
+ 	addi    r3,r1,STACK_FRAME_OVERHEAD
  BEGIN_MMU_FTR_SECTION
- 	bl	do_hash_fault
-@@ -1491,10 +1489,9 @@ EXC_VIRT_BEGIN(data_access_slb, 0x4380, 0x80)
- EXC_VIRT_END(data_access_slb, 0x4380, 0x80)
- EXC_COMMON_BEGIN(data_access_slb_common)
- 	GEN_COMMON data_access_slb
 -	ld	r4,_DAR(r1)
--	addi	r3,r1,STACK_FRAME_OVERHEAD
- BEGIN_MMU_FTR_SECTION
- 	/* HPT case, do SLB fault */
-+	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_slb_fault
- 	cmpdi	r3,0
- 	bne-	1f
-@@ -1506,8 +1503,6 @@ MMU_FTR_SECTION_ELSE
- ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
- 	std	r3,RESULT(r1)
- 	RECONCILE_IRQ_STATE(r10, r11)
--	ld	r4,_DAR(r1)
--	ld	r5,RESULT(r1)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_bad_slb_fault
- 	b	interrupt_return
-@@ -1542,8 +1537,6 @@ EXC_VIRT_BEGIN(instruction_access, 0x4400, 0x80)
- EXC_VIRT_END(instruction_access, 0x4400, 0x80)
- EXC_COMMON_BEGIN(instruction_access_common)
- 	GEN_COMMON instruction_access
--	ld	r4,_DAR(r1)
--	ld	r5,_DSISR(r1)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- BEGIN_MMU_FTR_SECTION
- 	bl	do_hash_fault
-@@ -1587,10 +1580,9 @@ EXC_VIRT_BEGIN(instruction_access_slb, 0x4480, 0x80)
- EXC_VIRT_END(instruction_access_slb, 0x4480, 0x80)
- EXC_COMMON_BEGIN(instruction_access_slb_common)
- 	GEN_COMMON instruction_access_slb
--	ld	r4,_DAR(r1)
--	addi	r3,r1,STACK_FRAME_OVERHEAD
- BEGIN_MMU_FTR_SECTION
- 	/* HPT case, do SLB fault */
-+	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_slb_fault
- 	cmpdi	r3,0
- 	bne-	1f
-@@ -1602,8 +1594,6 @@ MMU_FTR_SECTION_ELSE
- ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
- 	std	r3,RESULT(r1)
- 	RECONCILE_IRQ_STATE(r10, r11)
--	ld	r4,_DAR(r1)
--	ld	r5,RESULT(r1)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_bad_slb_fault
- 	b	interrupt_return
-diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
-index 44c9018aed1b..ea31f75e9692 100644
---- a/arch/powerpc/kernel/head_40x.S
-+++ b/arch/powerpc/kernel/head_40x.S
-@@ -179,9 +179,9 @@ _ENTRY(saved_ksp_limit)
-  */
- 	START_EXCEPTION(0x0300,	DataStorage)
- 	EXCEPTION_PROLOG
--	mfspr	r5, SPRN_ESR		/* Grab the ESR, save it, pass arg3 */
-+	mfspr	r5, SPRN_ESR		/* Grab the ESR, save it */
- 	stw	r5, _ESR(r11)
--	mfspr	r4, SPRN_DEAR		/* Grab the DEAR, save it, pass arg2 */
-+	mfspr	r4, SPRN_DEAR		/* Grab the DEAR, save it */
- 	stw	r4, _DEAR(r11)
- 	EXC_XFER_LITE(0x300, handle_page_fault)
- 
-@@ -191,9 +191,9 @@ _ENTRY(saved_ksp_limit)
-  */
- 	START_EXCEPTION(0x0400, InstructionAccess)
- 	EXCEPTION_PROLOG
--	mr	r4,r12			/* Pass SRR0 as arg2 */
--	stw	r4, _DEAR(r11)
--	li	r5,0			/* Pass zero as arg3 */
-+	li	r5,0
-+	stw	r5, _ESR(r11)		/* Zero ESR */
-+	stw	r12, _DEAR(r11)		/* SRR0 as DEAR */
- 	EXC_XFER_LITE(0x400, handle_page_fault)
- 
- /* 0x0500 - External Interrupt Exception */
+-	li	r5,SIGSEGV
++	li	r4,SIGSEGV
+ 	bl      bad_page_fault
+ MMU_FTR_SECTION_ELSE
+ 	bl      unknown_exception
 diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 9f359d3fba74..0cd95b633e2b 100644
+index 0cd95b633e2b..13eda7154695 100644
 --- a/arch/powerpc/kernel/head_8xx.S
 +++ b/arch/powerpc/kernel/head_8xx.S
-@@ -356,14 +356,14 @@ DataStoreTLBMiss:
- 	. = 0x1300
- InstructionTLBError:
- 	EXCEPTION_PROLOG
--	mr	r4,r12
- 	andis.	r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 bits */
- 	andis.	r10,r9,SRR1_ISI_NOPT@h
- 	beq+	.Litlbie
--	tlbie	r4
-+	tlbie	r12
- 	/* 0x400 is InstructionAccess exception, needed by bad_page_fault() */
- .Litlbie:
--	stw	r4, _DAR(r11)
-+	stw	r12, _DAR(r11)
-+	stw	r5, _DSISR(r11)
- 	EXC_XFER_LITE(0x400, handle_page_fault)
- 
- /* This is the data TLB error on the MPC8xx.  This could be due to
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index 5eb9eedac920..81c69769cec6 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -369,9 +369,9 @@ BEGIN_MMU_FTR_SECTION
- 	bl	hash_page
- END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
- #endif	/* CONFIG_VMAP_STACK */
--1:	mr	r4,r12
- 	andis.	r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 bits */
--	stw	r4, _DAR(r11)
-+	stw	r5, _DSISR(r11)
-+	stw	r12, _DAR(r11)
- 	EXC_XFER_LITE(0x400, handle_page_fault)
- 
- /* External interrupt */
-@@ -698,8 +698,6 @@ handle_page_fault_tramp_1:
- #ifdef CONFIG_VMAP_STACK
- 	EXCEPTION_PROLOG_2 handle_dar_dsisr=1
+@@ -408,10 +408,9 @@ do_databreakpoint:
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	mfspr	r4,SPRN_BAR
+ 	stw	r4,_DAR(r11)
+-#ifdef CONFIG_VMAP_STACK
+-	lwz	r5,_DSISR(r11)
+-#else
++#ifndef CONFIG_VMAP_STACK
+ 	mfspr	r5,SPRN_DSISR
++	stw	r5,_DSISR(r11)
  #endif
--	lwz	r4, _DAR(r11)
--	lwz	r5, _DSISR(r11)
- 	/* fall through */
- handle_page_fault_tramp_2:
- 	EXC_XFER_LITE(0x300, handle_page_fault)
-diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-index 71c359d438b5..1da0c1d1b0a1 100644
---- a/arch/powerpc/kernel/head_booke.h
-+++ b/arch/powerpc/kernel/head_booke.h
-@@ -477,9 +477,7 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 	NORMAL_EXCEPTION_PROLOG(INST_STORAGE);		      \
- 	mfspr	r5,SPRN_ESR;		/* Grab the ESR and save it */	      \
- 	stw	r5,_ESR(r11);						      \
--	mr      r4,r12;                 /* Pass SRR0 as arg2 */		      \
--	stw	r4, _DEAR(r11);						      \
--	li      r5,0;                   /* Pass zero as arg3 */		      \
-+	stw	r12, _DEAR(r11);	/* Pass SRR0 as arg2 */		      \
- 	EXC_XFER_LITE(0x0400, handle_page_fault)
+ 	EXC_XFER_STD(0x1c00, do_break)
  
- #define ALIGNMENT_EXCEPTION						      \
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index d421a2c7f822..0bdd3ed653df 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -660,11 +660,10 @@ static void do_break_handler(struct pt_regs *regs)
+ 	}
+ }
+ 
+-void do_break (struct pt_regs *regs, unsigned long address,
+-		    unsigned long error_code)
++void do_break(struct pt_regs *regs)
+ {
+ 	current->thread.trap_nr = TRAP_HWBKPT;
+-	if (notify_die(DIE_DABR_MATCH, "dabr_match", regs, error_code,
++	if (notify_die(DIE_DABR_MATCH, "dabr_match", regs, regs->dsisr,
+ 			11, SIGSEGV) == NOTIFY_STOP)
+ 		return;
+ 
+@@ -682,7 +681,7 @@ void do_break (struct pt_regs *regs, unsigned long address,
+ 		do_break_handler(regs);
+ 
+ 	/* Deliver the signal to userspace */
+-	force_sig_fault(SIGTRAP, TRAP_HWBKPT, (void __user *)address);
++	force_sig_fault(SIGTRAP, TRAP_HWBKPT, (void __user *)regs->dar);
+ }
+ #endif	/* CONFIG_PPC_ADV_DEBUG_REGS */
+ 
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 5006dcbe1d9f..902fcbd1a778 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1641,7 +1641,7 @@ void alignment_exception(struct pt_regs *regs)
+ 	if (user_mode(regs))
+ 		_exception(sig, regs, code, regs->dar);
+ 	else
+-		bad_page_fault(regs, regs->dar, sig);
++		bad_page_fault(regs, sig);
+ 
+ bail:
+ 	exception_exit(prev_state);
 diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index bfa1b1966218..0f0bd4af4b2d 100644
+index 0f0bd4af4b2d..731518e7d56f 100644
 --- a/arch/powerpc/mm/book3s64/hash_utils.c
 +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1510,13 +1510,15 @@ int hash_page(unsigned long ea, unsigned long access, unsigned long trap,
- }
- EXPORT_SYMBOL_GPL(hash_page);
- 
--int do_hash_fault(struct pt_regs *regs, unsigned long ea, unsigned long dsisr)
-+long do_hash_fault(struct pt_regs *regs)
- {
-+	unsigned long ea = regs->dar;
-+	unsigned long dsisr = regs->dsisr;
- 	unsigned long access = _PAGE_PRESENT | _PAGE_READ;
- 	unsigned long flags = 0;
- 	struct mm_struct *mm;
- 	unsigned int region_id;
--	int err;
-+	long err;
- 
- 	if (unlikely(dsisr & (DSISR_BAD_FAULT_64S | DSISR_DABRMATCH | DSISR_KEYFAULT)))
- 		goto _do_page_fault;
-@@ -1580,7 +1582,7 @@ int do_hash_fault(struct pt_regs *regs, unsigned long ea, unsigned long dsisr)
- 
- 	} else if (err) {
- _do_page_fault:
--		err = hash__do_page_fault(regs, ea, dsisr);
-+		err = hash__do_page_fault(regs);
+@@ -1537,7 +1537,7 @@ long do_hash_fault(struct pt_regs *regs)
+ 	 * the access, or panic if there isn't a handler.
+ 	 */
+ 	if (unlikely(in_nmi())) {
+-		bad_page_fault(regs, ea, SIGSEGV);
++		bad_page_fault(regs, SIGSEGV);
+ 		return 0;
  	}
  
- 	return err;
+@@ -1576,7 +1576,7 @@ long do_hash_fault(struct pt_regs *regs)
+ 			else
+ 				_exception(SIGBUS, regs, BUS_ADRERR, ea);
+ 		} else {
+-			bad_page_fault(regs, ea, SIGBUS);
++			bad_page_fault(regs, SIGBUS);
+ 		}
+ 		err = 0;
+ 
 diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
-index c30fcbfa0e32..cc34d50874c1 100644
+index cc34d50874c1..ae89ad516247 100644
 --- a/arch/powerpc/mm/book3s64/slb.c
 +++ b/arch/powerpc/mm/book3s64/slb.c
-@@ -837,8 +837,9 @@ static long slb_allocate_user(struct mm_struct *mm, unsigned long ea)
- 	return slb_insert_entry(ea, context, flags, ssize, false);
- }
- 
--long do_slb_fault(struct pt_regs *regs, unsigned long ea)
-+long do_slb_fault(struct pt_regs *regs)
- {
-+	unsigned long ea = regs->dar;
- 	unsigned long id = get_region_id(ea);
- 
- 	/* IRQs are not reconciled here, so can't check irqs_disabled */
-@@ -889,13 +890,15 @@ long do_slb_fault(struct pt_regs *regs, unsigned long ea)
- 	}
- }
- 
--void do_bad_slb_fault(struct pt_regs *regs, unsigned long ea, long err)
-+void do_bad_slb_fault(struct pt_regs *regs)
- {
-+	int err = regs->result;
-+
- 	if (err == -EFAULT) {
+@@ -898,7 +898,7 @@ void do_bad_slb_fault(struct pt_regs *regs)
  		if (user_mode(regs))
--			_exception(SIGSEGV, regs, SEGV_BNDERR, ea);
-+			_exception(SIGSEGV, regs, SEGV_BNDERR, regs->dar);
+ 			_exception(SIGSEGV, regs, SEGV_BNDERR, regs->dar);
  		else
--			bad_page_fault(regs, ea, SIGSEGV);
-+			bad_page_fault(regs, regs->dar, SIGSEGV);
+-			bad_page_fault(regs, regs->dar, SIGSEGV);
++			bad_page_fault(regs, SIGSEGV);
  	} else if (err == -EINVAL) {
  		unrecoverable_exception(regs);
  	} else {
 diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index e65a49f246ef..390a296b16a3 100644
+index 390a296b16a3..db73b373e76c 100644
 --- a/arch/powerpc/mm/fault.c
 +++ b/arch/powerpc/mm/fault.c
-@@ -549,11 +549,12 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
- }
- NOKPROBE_SYMBOL(__do_page_fault);
+@@ -375,7 +375,7 @@ static void sanity_check_fault(bool is_write, bool is_user,
+ #elif defined(CONFIG_PPC_BOOK3E_64)
+ #define page_fault_is_bad(__err)	((__err) & DSISR_BAD_FAULT_64S)
+ #else
+-#define page_fault_is_bad(__err)	((__err) & DSISR_BAD_FAULT_32S)
++#define page_fault_is_bad(__err)	((__err) & (DSISR_BAD_FAULT_32S | DSISR_DABRMATCH))
+ #endif
+ #endif
  
--int do_page_fault(struct pt_regs *regs, unsigned long address,
--		  unsigned long error_code)
-+long do_page_fault(struct pt_regs *regs)
- {
- 	enum ctx_state prev_state = exception_enter();
--	int err;
-+	unsigned long address = regs->dar;
-+	unsigned long error_code = regs->dsisr;
-+	long err;
+@@ -408,7 +408,7 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
+ 		return 0;
  
- 	err = __do_page_fault(regs, address, error_code);
+ 	if (unlikely(page_fault_is_bad(error_code))) {
+-		if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && (error_code & DSISR_DABRMATCH))
++		if (IS_ENABLED(CONFIG_PPC_BOOK3S) && (error_code & DSISR_DABRMATCH))
+ 			return -1;
  
-@@ -580,11 +581,12 @@ int do_page_fault(struct pt_regs *regs, unsigned long address,
- NOKPROBE_SYMBOL(do_page_fault);
- 
- #ifdef CONFIG_PPC_BOOK3S_64
--/* Same as do_page_fault but interrupt entry has already run in do_hash_fault */
--int hash__do_page_fault(struct pt_regs *regs, unsigned long address,
--		  unsigned long error_code)
-+/* Same as do_page_fault but no interrupt entry */
-+long hash__do_page_fault(struct pt_regs *regs)
- {
--	int err;
-+	unsigned long address = regs->dar;
-+	unsigned long error_code = regs->dsisr;
-+	long err;
- 
+ 		if (is_user) {
+@@ -562,14 +562,14 @@ long do_page_fault(struct pt_regs *regs)
+ 	/* 32 and 64e handle errors in their asm code */
+ 	if (unlikely(err)) {
+ 		if (err > 0) {
+-			bad_page_fault(regs, address, err);
++			bad_page_fault(regs, err);
+ 			err = 0;
+ 		} else {
+ 			/*
+ 			 * do_break() may change NV GPRS while handling the
+ 			 * breakpoint. Return -ve to caller to do that.
+ 			 */
+-			do_break(regs, address, error_code);
++			do_break(regs);
+ 		}
+ 	}
+ #endif
+@@ -591,14 +591,14 @@ long hash__do_page_fault(struct pt_regs *regs)
  	err = __do_page_fault(regs, address, error_code);
  	if (unlikely(err)) {
+ 		if (err > 0) {
+-			bad_page_fault(regs, address, err);
++			bad_page_fault(regs, err);
+ 			err = 0;
+ 		} else {
+ 			/*
+ 			 * do_break() may change NV GPRS while handling the
+ 			 * breakpoint. Return -ve to caller to do that.
+ 			 */
+-			do_break(regs, address, error_code);
++			do_break(regs);
+ 		}
+ 	}
+ 
+@@ -612,7 +612,7 @@ NOKPROBE_SYMBOL(hash__do_page_fault);
+  * It is called from the DSI and ISI handlers in head.S and from some
+  * of the procedures in traps.c.
+  */
+-void bad_page_fault(struct pt_regs *regs, unsigned long address, int sig)
++void bad_page_fault(struct pt_regs *regs, int sig)
+ {
+ 	const struct exception_table_entry *entry;
+ 	int is_write = page_fault_is_write(regs->dsisr);
+diff --git a/arch/powerpc/platforms/8xx/machine_check.c b/arch/powerpc/platforms/8xx/machine_check.c
+index 88dedf38eccd..656365975895 100644
+--- a/arch/powerpc/platforms/8xx/machine_check.c
++++ b/arch/powerpc/platforms/8xx/machine_check.c
+@@ -26,7 +26,7 @@ int machine_check_8xx(struct pt_regs *regs)
+ 	 * to deal with that than having a wart in the mcheck handler.
+ 	 * -- BenH
+ 	 */
+-	bad_page_fault(regs, regs->dar, SIGBUS);
++	bad_page_fault(regs, SIGBUS);
+ 	return 1;
+ #else
+ 	return 0;
 -- 
 2.23.0
 
