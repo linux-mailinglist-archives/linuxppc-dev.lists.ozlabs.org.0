@@ -1,73 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B27912AE820
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 06:27:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E1F2AE82F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 06:36:55 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CWCsj0dXvzDqY4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 16:27:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CWD4h3M6JzDqRm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Nov 2020 16:36:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::342;
- helo=mail-ot1-x342.google.com; envelope-from=bjorn.andersson@linaro.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=k0+kPp4Q; dkim-atps=neutral
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=LCDyhymO; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CWCqy6hWpzDqG9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 16:25:47 +1100 (AEDT)
-Received: by mail-ot1-x342.google.com with SMTP id n15so1054401otl.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Nov 2020 21:25:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=y2ndxJgHEnHcPZgvTcxab2Vcfl3sIpgvRbePyhc7fWA=;
- b=k0+kPp4QegQ8x48cvtzhFv/+5D9Dzcc/GkW9H2cVvWdsV62FFEeh5SomjgkF6ArEbs
- SALg/lHidLzXzKJDPe75nRCtJMKl+T1DXOhFkqJgHeGSByWcQswiWqNS9RdS1OPCxVY9
- sheWT6Xmes3YqryK1wzNDycXLFQMTTFdw1Q0QOtfv332yhZEihs5rlicmJNnJ4aqKofH
- 3PQM44SvKJ1pzUNDJ9DmQTiwaoEuFLpE7r53YAHQgZeAjyY0+vMVtM542WaJkvkneani
- PJVq5THlhQ9375G7mmtdr4YMQ4Nn+5e7cVKti3uV2mwvfz15gwZMliWxEHK9fXeLku9O
- ODyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=y2ndxJgHEnHcPZgvTcxab2Vcfl3sIpgvRbePyhc7fWA=;
- b=PJt+BzeeGTzVPIyFHqGqhP9U0i3+0lO0svJJPG5BgefTxMZluEPV1DWTxhfKfxQKqw
- jkfdBj3DWkRenB7F3QV+mPB3SHTK0E4RUkS13cOeKIXOkMROdMhayfvhGSvYF8yRMeQg
- yjMjtUAtCmR6SyoOTHcr0Euti1CsK5F5Fx+D82brZjKZmNuh9jazRBwySvubYrApHOEw
- uGFD2Knne5RVIu54Mv8flTptxtRQflqYfizRct3a+hTesY2wxkpOwBSHl1LmBt18SX8o
- YDjBsH45Ne4W9mivgUlay19VvZ1jxC93MMTnXEXHoN6wLvQg8bAjYcWi/xKPZO8Vu55z
- CabA==
-X-Gm-Message-State: AOAM532NkBuEym3Y1EZ5BbCTRcyq1HHfL4pwiTEU5Cu39OPRzHwLcbN1
- h00pOLPWiYsN8lrj7n8+LhfIQw==
-X-Google-Smtp-Source: ABdhPJxYlw4HOIVtNlSAXCpvPkLgs0k9q7yaxQqFlvLOOSr3etHIDMddV04BFhc/FMfh+dl4z1o0rw==
-X-Received: by 2002:a9d:62c1:: with SMTP id z1mr15982440otk.108.1605072343541; 
- Tue, 10 Nov 2020 21:25:43 -0800 (PST)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net.
- [104.57.184.186])
- by smtp.gmail.com with ESMTPSA id h136sm224748oib.19.2020.11.10.21.25.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 Nov 2020 21:25:42 -0800 (PST)
-Date: Tue, 10 Nov 2020 23:25:40 -0600
-From: Bjorn Andersson <bjorn.andersson@linaro.org>
-To: Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH 00/25] Rid W=1 warnings in SoC
-Message-ID: <20201111052540.GH173948@builder.lan>
-References: <20201103152838.1290217-1-lee.jones@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201103152838.1290217-1-lee.jones@linaro.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CWD2v5XlfzDqFH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 16:35:18 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AB4X7r0136731; Tue, 10 Nov 2020 23:33:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : in-reply-to : references; s=pp1;
+ bh=eBbFy9UQ2V1qXQhIB5KU2YzgbsBtpsXSq/rlISUBSHk=;
+ b=LCDyhymOXC9mZV0szKlmsaVz73x/I/pvpfq2o/NbVKmCnq6cYok5U2180u6YaKewqExh
+ c6ZvG8gLc5SsKbcCpk32FV91EVYejJXDegOShpbqlTQ1q24tez/9FvkJJHHimNInWcnb
+ I/kZn4mokMKFkvzEiX21M38NxcDKPlh99qaNrHaZiSKzLTSwazOumnGpFcuZfmll/5JU
+ fqef6W8E9htV2lP4KQoV3phCqxkvYEh3GhVbEW6Ra8LKb2edpQgb022z1VEhRHkZ7PLm
+ X72Zt6Abkf8TJ5JHZWLKAC8dw3lbMB2iRxuAVzF7NhU3E5i7PbgbZvS86GpxUj7Dkj+N 4Q== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34qpsnycgs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Nov 2020 23:33:19 -0500
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AB4WLQ9023975;
+ Wed, 11 Nov 2020 04:33:18 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma06ams.nl.ibm.com with ESMTP id 34njuh3u31-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Nov 2020 04:33:17 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AB4XFLx59048402
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 11 Nov 2020 04:33:15 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A51974C059;
+ Wed, 11 Nov 2020 04:33:15 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 74C444C044;
+ Wed, 11 Nov 2020 04:33:14 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.79.242.115])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 11 Nov 2020 04:33:14 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH 2/4] powerpc/perf: Update the PMU group constraints for l2l3
+ and threshold events in power10
+Date: Tue, 10 Nov 2020 23:33:07 -0500
+Message-Id: <1605069189-2740-3-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1605069189-2740-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+References: <1605069189-2740-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-11_01:2020-11-10,
+ 2020-11-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0
+ mlxlogscore=999 priorityscore=1501 bulkscore=0 adultscore=0 clxscore=1015
+ lowpriorityscore=0 suspectscore=1 impostorscore=0 mlxscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011110022
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,134 +94,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Doug Anderson <dianders@chromium.org>, Heiko Stuebner <heiko@sntech.de>,
- Roy Pledge <Roy.Pledge@nxp.com>, linux-kernel@vger.kernel.org,
- Scott Wood <scottwood@freescale.com>,
- Thierry Reding <thierry.reding@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>,
- linux-samsung-soc@vger.kernel.org,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- YueHaibing <yuehaibing@huawei.com>, Sandeep Nair <sandeep_n@ti.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>,
- linux-rockchip@lists.infradead.org, act <dmalek@jlc.net>,
- Andy Gross <agross@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
- Cyril Chemparathy <cyril@ti.com>, linux-arm-msm@vger.kernel.org,
- Florian Fainelli <f.fainelli@gmail.com>,
- Santosh Shilimkar <ssantosh@kernel.org>, linux-tegra@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, "Software, Inc" <source@mvista.com>,
- Dave Gerlach <d-gerlach@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Li Yang <leoyang.li@nxp.com>, Ben Dooks <ben@simtec.co.uk>,
- Mark Brown <broonie@kernel.org>, Dan Malek <dan@embeddedalley.com>,
- Vitaly Bordug <vbordug@ru.mvista.com>, linuxppc-dev@lists.ozlabs.org
+Cc: mikey@neuling.org, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 03 Nov 09:28 CST 2020, Lee Jones wrote:
+In Power9, L2/L3 bus events are always available as a
+"bank" of 4 events. To obtain the counts for any of the
+l2/l3 bus events in a given bank, the user will have to
+program PMC4 with corresponding l2/l3 bus event for that
+bank.
 
-> This set is part of a larger effort attempting to clean-up W=1
-> kernel builds, which are currently overwhelmingly riddled with
-> niggly little warnings.
-> 
+Commit 59029136d750 ("powerpc/perf: Add constraints for power9 l2/l3 bus events")
+enforced this rule in Power9. But this is not valid for
+Power10, since in Power10 Monitor Mode Control Register2
+(MMCR2) has bits to configure l2/l3 event bits. Hence remove
+this PMC4 constraint check from power10.
 
-For patches 2, 3, 12, 15, 16, 17, 18, 19, 20, 21, 22 (i.e. the soc/qcom
-patches):
+Since the l2/l3 bits in MMCR2 are not per-pmc, patch handles
+group constrints checks for l2/l3 bits in MMCR2.
+Patch also updates constraints for threshold events in power10.
 
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-and applied towards 5.11
+Fixes: a64e697cef23 ("powerpc/perf: power10 Performance Monitoring support")
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+ arch/powerpc/perf/isa207-common.c | 15 +++++++++++----
+ arch/powerpc/perf/isa207-common.h |  3 +++
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-Regards,
-Bjorn
+diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
+index f57f54f..0f4983e 100644
+--- a/arch/powerpc/perf/isa207-common.c
++++ b/arch/powerpc/perf/isa207-common.c
+@@ -311,9 +311,11 @@ int isa207_get_constraint(u64 event, unsigned long *maskp, unsigned long *valp)
+ 	}
+ 
+ 	if (unit >= 6 && unit <= 9) {
+-		if (cpu_has_feature(CPU_FTR_ARCH_31) && (unit == 6)) {
+-			mask |= CNST_L2L3_GROUP_MASK;
+-			value |= CNST_L2L3_GROUP_VAL(event >> p10_L2L3_EVENT_SHIFT);
++		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
++			if (unit == 6) {
++				mask |= CNST_L2L3_GROUP_MASK;
++				value |= CNST_L2L3_GROUP_VAL(event >> p10_L2L3_EVENT_SHIFT);
++			}
+ 		} else if (cpu_has_feature(CPU_FTR_ARCH_300)) {
+ 			mask  |= CNST_CACHE_GROUP_MASK;
+ 			value |= CNST_CACHE_GROUP_VAL(event & 0xff);
+@@ -349,7 +351,12 @@ int isa207_get_constraint(u64 event, unsigned long *maskp, unsigned long *valp)
+ 		value |= CNST_SAMPLE_VAL(event >> EVENT_SAMPLE_SHIFT);
+ 	}
+ 
+-	if (cpu_has_feature(CPU_FTR_ARCH_300))  {
++	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
++		if (event_is_threshold(event)) {
++			mask  |= CNST_THRESH_CTL_SEL_MASK;
++			value |= CNST_THRESH_CTL_SEL_VAL(event >> EVENT_THRESH_SHIFT);
++		}
++	} else if (cpu_has_feature(CPU_FTR_ARCH_300))  {
+ 		if (event_is_threshold(event) && is_thresh_cmp_valid(event)) {
+ 			mask  |= CNST_THRESH_MASK;
+ 			value |= CNST_THRESH_VAL(event >> EVENT_THRESH_SHIFT);
+diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
+index dc9c3d2..4208764 100644
+--- a/arch/powerpc/perf/isa207-common.h
++++ b/arch/powerpc/perf/isa207-common.h
+@@ -149,6 +149,9 @@
+ #define CNST_THRESH_VAL(v)	(((v) & EVENT_THRESH_MASK) << 32)
+ #define CNST_THRESH_MASK	CNST_THRESH_VAL(EVENT_THRESH_MASK)
+ 
++#define CNST_THRESH_CTL_SEL_VAL(v)	(((v) & 0x7ffull) << 32)
++#define CNST_THRESH_CTL_SEL_MASK	CNST_THRESH_CTL_SEL_VAL(0x7ff)
++
+ #define CNST_EBB_VAL(v)		(((v) & EVENT_EBB_MASK) << 24)
+ #define CNST_EBB_MASK		CNST_EBB_VAL(EVENT_EBB_MASK)
+ 
+-- 
+1.8.3.1
 
-> Lee Jones (25):
->   soc: bcm: brcmstb: pm: pm-arm: Provide prototype for
->     brcmstb_pm_s3_finish()
->   soc: qcom: qcom_aoss: Remove set but unused variable 'tlen'
->   soc: qcom: qcom_aoss: Add missing description for 'cooling_devs'
->   soc: fsl: dpio: qbman-portal: Fix a bunch of kernel-doc misdemeanours
->   soc: rockchip: io-domain: Remove incorrect and incomplete comment
->     header
->   soc: ti: knav_qmss_queue: Remove set but unchecked variable 'ret'
->   soc: ti: knav_qmss_queue: Fix a whole host of function documentation
->     issues
->   soc: ti: knav_dma: Fix a kernel function doc formatting issue
->   soc: ti: pm33xx: Remove set but unused variable 'ret'
->   soc: ti: wkup_m3_ipc: Document 'm3_ipc' parameter throughout
->   soc: fsl: qe: qe_common: Fix misnamed function attribute 'addr'
->   soc: qcom: qcom-geni-se: Fix misnamed function parameter 'rx_rfr'
->   soc: tegra: fuse: speedo-tegra124: Remove some set but unused
->     variables
->   soc: samsung: s3c-pm-check: Fix incorrectly named variable 'val'
->   soc: qcom: rpmh: Fix possible doc-rot in rpmh_write()'s header
->   soc: qcom: smem: Fix formatting and missing documentation issues
->   soc: qcom: smsm: Fix some kernel-doc formatting and naming problems
->   soc: qcom: wcnss_ctrl: Demote non-conformant struct header and fix
->     function headers
->   soc: qcom: smp2p: Remove unused struct attribute provide another
->   soc: qcom: llcc-qcom: Fix expected kernel-doc formatting
->   soc: qcom: rpmhpd: Provide some missing struct member descriptions
->   soc: qcom: kryo-l2-accessors: Fix misnaming of 'val'
->   soc: ti: k3-ringacc: Provide documentation for 'k3_ring's 'state'
->   soc: tegra: fuse: speedo-tegra210: Remove a group of set but unused
->     variables
->   soc: fsl: qbman: qman: Remove unused variable 'dequeue_wq'
-> 
->  drivers/soc/bcm/brcmstb/pm/pm-arm.c      |  2 +
->  drivers/soc/fsl/dpio/qbman-portal.c      | 18 +++++--
->  drivers/soc/fsl/qbman/qman.c             |  8 +--
->  drivers/soc/fsl/qe/qe_common.c           |  2 +-
->  drivers/soc/qcom/kryo-l2-accessors.c     |  2 +-
->  drivers/soc/qcom/llcc-qcom.c             |  2 +-
->  drivers/soc/qcom/qcom-geni-se.c          |  5 +-
->  drivers/soc/qcom/qcom_aoss.c             |  4 +-
->  drivers/soc/qcom/rpmh.c                  |  2 +-
->  drivers/soc/qcom/rpmhpd.c                |  3 ++
->  drivers/soc/qcom/smem.c                  |  3 +-
->  drivers/soc/qcom/smp2p.c                 |  3 +-
->  drivers/soc/qcom/smsm.c                  |  4 +-
->  drivers/soc/qcom/wcnss_ctrl.c            |  8 +--
->  drivers/soc/rockchip/io-domain.c         |  3 --
->  drivers/soc/samsung/s3c-pm-check.c       |  2 +-
->  drivers/soc/tegra/fuse/speedo-tegra124.c |  7 ++-
->  drivers/soc/tegra/fuse/speedo-tegra210.c |  8 +--
->  drivers/soc/ti/k3-ringacc.c              |  1 +
->  drivers/soc/ti/knav_dma.c                |  2 +-
->  drivers/soc/ti/knav_qmss_queue.c         | 62 ++++++++++++------------
->  drivers/soc/ti/pm33xx.c                  |  4 +-
->  drivers/soc/ti/wkup_m3_ipc.c             |  8 ++-
->  23 files changed, 86 insertions(+), 77 deletions(-)
-> 
-> Cc: act <dmalek@jlc.net>
-> Cc: Andy Gross <agross@kernel.org>
-> Cc: bcm-kernel-feedback-list@broadcom.com
-> Cc: Ben Dooks <ben@simtec.co.uk>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Cyril Chemparathy <cyril@ti.com>
-> Cc: Dan Malek <dan@embeddedalley.com>
-> Cc: Dave Gerlach <d-gerlach@ti.com>
-> Cc: Doug Anderson <dianders@chromium.org>
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Heiko Stuebner <heiko@sntech.de>
-> Cc: Jonathan Hunter <jonathanh@nvidia.com>
-> Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: Liam Girdwood <lgirdwood@gmail.com>
-> Cc: linux-arm-msm@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-rockchip@lists.infradead.org
-> Cc: linux-samsung-soc@vger.kernel.org
-> Cc: linux-tegra@vger.kernel.org
-> Cc: Li Yang <leoyang.li@nxp.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Qiang Zhao <qiang.zhao@nxp.com>
-> Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> Cc: Roy Pledge <Roy.Pledge@nxp.com>
-> Cc: Sandeep Nair <sandeep_n@ti.com>
-> Cc: Santosh Shilimkar <ssantosh@kernel.org>
-> Cc: Scott Wood <scottwood@freescale.com>
-> Cc: "Software, Inc" <source@mvista.com>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Vitaly Bordug <vbordug@ru.mvista.com>
-> Cc: YueHaibing <yuehaibing@huawei.com>
-> 
-> -- 
-> 2.25.1
-> 
