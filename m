@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D38B2AFBE5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 02:12:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF432AFBE6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 02:14:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CWk9V21dpzDr39
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 12:12:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CWkCJ4Ry5zDqxH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 12:14:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,58 +17,58 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Udxk8Q0f; dkim-atps=neutral
+ header.s=pp1 header.b=g92Hni8w; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CWk0M2ZpfzDqK3
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CWk0M2YD1zDqJM
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 12:04:50 +1100 (AEDT)
 Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AC13MOW109336; Wed, 11 Nov 2020 20:04:47 -0500
+ 0AC13ML3109236; Wed, 11 Nov 2020 20:04:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=G0iUeWUSv+l3qY+84qZqXm6078tBggePEKffOnOZW0M=;
- b=Udxk8Q0f/xwsmdz35hOWIjiJg8uL88zI437AKddJrPOJe0v5H3gaHHeBDvpJ4lwZmL7L
- P1SAdKwmNvQlYPcOBfa3BnOjKxF5PFGTIBN+SoQSSaEGyQZpU5lQq/ioC66NzuG8xJU6
- oAPM8gIUu7MbL2R9GNvhEwmuhjU0hnT2LFpuZKyNCjEjmHpimfDP9/ygyTWevJ2gvGL7
- Vj9mA12dndroTJgiBXO1j/lffyRi0YTz0BLECFj9Ql+IWeEAgKV35LkgVF2lm8dgiYes
- GfhT9xXMx+LeB0N4WtlQZ1RuajdKLtIlZMS0il/jxrGhbqXfN0YonX11uyVyvgeBZMz9 mA== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34rcxf96cx-1
+ bh=jCfgi/mAEnfnmJKbx/no41CiUC7PjNzKLwM93Vd1kPc=;
+ b=g92Hni8wHmKeXcr8DPbR83f9MgwNeBifn7TZgqTAtd6gm6tie/Dl0d3U2uveY86N2TG1
+ MpFmiMmZ6wFt1CUQCh8VpXJ6GJOUyRazTCKdHcNYIPKkLHDdw1+UNmvCYh393go2hnjD
+ +slnN1tEO/9hyXrtB+KxF6h+5lnOiL6UPQot1QlkmHZe8vFJwfBIXpsy+TezbmC7a3EV
+ fwRKszn7mKl26pYe8Q/EEp5JisqJyVUzFOy3z/eQdWp/NRP54v+3wXl4rbUsRfg6ulOQ
+ NLcsK8SeTHY6nutNEbv0HauPDUgtxWIPZh3XcXYwq4Sc1WVAZkftSXBRWmawzPFvr8Jg 9A== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34rcxf96db-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 11 Nov 2020 20:04:47 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AC0v5Lu014705;
- Thu, 12 Nov 2020 01:04:45 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma05wdc.us.ibm.com with ESMTP id 34nk79dq5x-1
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AC0vTHH020721;
+ Thu, 12 Nov 2020 01:04:46 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma03dal.us.ibm.com with ESMTP id 34nk79y5sv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Nov 2020 01:04:45 +0000
+ Thu, 12 Nov 2020 01:04:46 +0000
 Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
  [9.57.199.106])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AC14jqY9241324
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AC14khM17367654
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Nov 2020 01:04:45 GMT
+ Thu, 12 Nov 2020 01:04:46 GMT
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4BFCE28058;
+ by IMSVA (Postfix) with ESMTP id E3DB12805C;
  Thu, 12 Nov 2020 01:04:45 +0000 (GMT)
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C9AD92805A;
- Thu, 12 Nov 2020 01:04:44 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 6B47F2805A;
+ Thu, 12 Nov 2020 01:04:45 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.40.195.188])
  by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 12 Nov 2020 01:04:44 +0000 (GMT)
+ Thu, 12 Nov 2020 01:04:45 +0000 (GMT)
 From: Tyrel Datwyler <tyreld@linux.ibm.com>
 To: james.bottomley@hansenpartnership.com
-Subject: [PATCH 2/6] ibmvfc: deduplicate common ibmvfc_cmd init code
-Date: Wed, 11 Nov 2020 19:04:38 -0600
-Message-Id: <20201112010442.102589-2-tyreld@linux.ibm.com>
+Subject: [PATCH 3/6] ibmvfc: add new fields for version 2 of several MADs
+Date: Wed, 11 Nov 2020 19:04:39 -0600
+Message-Id: <20201112010442.102589-3-tyreld@linux.ibm.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201112010442.102589-1-tyreld@linux.ibm.com>
 References: <20201112010442.102589-1-tyreld@linux.ibm.com>
@@ -102,123 +102,287 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The virtual FC frame command exchaned with the VIOS is used for device
-reset and command abort TMF as well as normally queued commands. When
-initializing the ibmvfc_cmd there several elements of the command that
-are set the same way regardless of the command type.
-
-Deduplicate code by moving these commonally set fields into a
-initialization helper routine, namely ibmvfc_init_vfc_cmd().
+Introduce a targetWWPN field to several MADs. Its possible that a scsi
+ID of a target can change due to some fabric changes. The WWPN of the
+scsi target provides a better way to identify the target. Also, add
+flags for receiving MAD versioning information and advertising client
+support for targetWWPN with the VIOS. This latter capability flag will
+be required for future clients capable of requesting multiple hardware
+queues from the host adapter.
 
 Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
 ---
- drivers/scsi/ibmvscsi/ibmvfc.c | 55 ++++++++++++++--------------------
- 1 file changed, 23 insertions(+), 32 deletions(-)
+ drivers/scsi/ibmvscsi/ibmvfc.c | 58 ++++++++++++++++++----------------
+ drivers/scsi/ibmvscsi/ibmvfc.h | 28 +++++++++++++---
+ 2 files changed, 55 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index 01fe65de9086..7b25789dba9a 100644
+index 7b25789dba9a..aa3445bec42c 100644
 --- a/drivers/scsi/ibmvscsi/ibmvfc.c
 +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -1646,6 +1646,24 @@ static inline int ibmvfc_host_chkready(struct ibmvfc_host *vhost)
- 	return result;
- }
+@@ -149,6 +149,7 @@ static void ibmvfc_trc_start(struct ibmvfc_event *evt)
+ 	struct ibmvfc_host *vhost = evt->vhost;
+ 	struct ibmvfc_cmd *vfc_cmd = &evt->iu.cmd;
+ 	struct ibmvfc_mad_common *mad = &evt->iu.mad_common;
++	struct ibmvfc_fcp_cmd_iu *iu = &vfc_cmd->v1.iu;
+ 	struct ibmvfc_trace_entry *entry;
  
-+static struct ibmvfc_cmd *ibmvfc_init_vfc_cmd(struct ibmvfc_event *evt, struct scsi_device *sdev)
-+{
-+	struct fc_rport *rport = starget_to_rport(scsi_target(sdev));
-+	struct ibmvfc_cmd *vfc_cmd = &evt->iu.cmd;
-+
-+	memset(vfc_cmd, 0, sizeof(*vfc_cmd));
-+	vfc_cmd->resp.va = cpu_to_be64(be64_to_cpu(evt->crq.ioba) + offsetof(struct ibmvfc_cmd, rsp));
-+	vfc_cmd->resp.len = cpu_to_be32(sizeof(vfc_cmd->rsp));
-+	vfc_cmd->frame_type = cpu_to_be32(IBMVFC_SCSI_FCP_TYPE);
-+	vfc_cmd->payload_len = cpu_to_be32(sizeof(vfc_cmd->iu));
-+	vfc_cmd->resp_len = cpu_to_be32(sizeof(vfc_cmd->rsp));
-+	vfc_cmd->cancel_key = cpu_to_be32((unsigned long)sdev->hostdata);
-+	vfc_cmd->tgt_scsi_id = cpu_to_be64(rport->port_id);
-+	int_to_scsilun(sdev->lun, &vfc_cmd->iu.lun);
-+
-+	return vfc_cmd;
-+}
-+
- /**
-  * ibmvfc_queuecommand - The queuecommand function of the scsi template
-  * @cmnd:	struct scsi_cmnd to be executed
-@@ -1675,17 +1693,10 @@ static int ibmvfc_queuecommand_lck(struct scsi_cmnd *cmnd,
- 	ibmvfc_init_event(evt, ibmvfc_scsi_done, IBMVFC_CMD_FORMAT);
- 	evt->cmnd = cmnd;
- 	cmnd->scsi_done = done;
--	vfc_cmd = &evt->iu.cmd;
--	memset(vfc_cmd, 0, sizeof(*vfc_cmd));
+ 	entry = &vhost->trace[vhost->trace_index++];
+@@ -159,11 +160,11 @@ static void ibmvfc_trc_start(struct ibmvfc_event *evt)
+ 
+ 	switch (entry->fmt) {
+ 	case IBMVFC_CMD_FORMAT:
+-		entry->op_code = vfc_cmd->iu.cdb[0];
++		entry->op_code = iu->cdb[0];
+ 		entry->scsi_id = be64_to_cpu(vfc_cmd->tgt_scsi_id);
+-		entry->lun = scsilun_to_int(&vfc_cmd->iu.lun);
+-		entry->tmf_flags = vfc_cmd->iu.tmf_flags;
+-		entry->u.start.xfer_len = be32_to_cpu(vfc_cmd->iu.xfer_len);
++		entry->lun = scsilun_to_int(&iu->lun);
++		entry->tmf_flags = iu->tmf_flags;
++		entry->u.start.xfer_len = be32_to_cpu(iu->xfer_len);
+ 		break;
+ 	case IBMVFC_MAD_FORMAT:
+ 		entry->op_code = be32_to_cpu(mad->opcode);
+@@ -183,6 +184,8 @@ static void ibmvfc_trc_end(struct ibmvfc_event *evt)
+ 	struct ibmvfc_host *vhost = evt->vhost;
+ 	struct ibmvfc_cmd *vfc_cmd = &evt->xfer_iu->cmd;
+ 	struct ibmvfc_mad_common *mad = &evt->xfer_iu->mad_common;
++	struct ibmvfc_fcp_cmd_iu *iu = &vfc_cmd->v1.iu;
++	struct ibmvfc_fcp_rsp *rsp = &vfc_cmd->v1.rsp;
+ 	struct ibmvfc_trace_entry *entry = &vhost->trace[vhost->trace_index++];
+ 
+ 	entry->evt = evt;
+@@ -192,15 +195,15 @@ static void ibmvfc_trc_end(struct ibmvfc_event *evt)
+ 
+ 	switch (entry->fmt) {
+ 	case IBMVFC_CMD_FORMAT:
+-		entry->op_code = vfc_cmd->iu.cdb[0];
++		entry->op_code = iu->cdb[0];
+ 		entry->scsi_id = be64_to_cpu(vfc_cmd->tgt_scsi_id);
+-		entry->lun = scsilun_to_int(&vfc_cmd->iu.lun);
+-		entry->tmf_flags = vfc_cmd->iu.tmf_flags;
++		entry->lun = scsilun_to_int(&iu->lun);
++		entry->tmf_flags = iu->tmf_flags;
+ 		entry->u.end.status = be16_to_cpu(vfc_cmd->status);
+ 		entry->u.end.error = be16_to_cpu(vfc_cmd->error);
+-		entry->u.end.fcp_rsp_flags = vfc_cmd->rsp.flags;
+-		entry->u.end.rsp_code = vfc_cmd->rsp.data.info.rsp_code;
+-		entry->u.end.scsi_status = vfc_cmd->rsp.scsi_status;
++		entry->u.end.fcp_rsp_flags = rsp->flags;
++		entry->u.end.rsp_code = rsp->data.info.rsp_code;
++		entry->u.end.scsi_status = rsp->scsi_status;
+ 		break;
+ 	case IBMVFC_MAD_FORMAT:
+ 		entry->op_code = be32_to_cpu(mad->opcode);
+@@ -263,7 +266,7 @@ static const char *ibmvfc_get_cmd_error(u16 status, u16 error)
+ static int ibmvfc_get_err_result(struct ibmvfc_cmd *vfc_cmd)
+ {
+ 	int err;
+-	struct ibmvfc_fcp_rsp *rsp = &vfc_cmd->rsp;
++	struct ibmvfc_fcp_rsp *rsp = &vfc_cmd->v1.rsp;
+ 	int fc_rsp_len = be32_to_cpu(rsp->fcp_rsp_len);
+ 
+ 	if ((rsp->flags & FCP_RSP_LEN_VALID) &&
+@@ -1378,6 +1381,7 @@ static int ibmvfc_map_sg_data(struct scsi_cmnd *scmd,
+ 	int sg_mapped;
+ 	struct srp_direct_buf *data = &vfc_cmd->ioba;
+ 	struct ibmvfc_host *vhost = dev_get_drvdata(dev);
++	struct ibmvfc_fcp_cmd_iu *iu = &vfc_cmd->v1.iu;
+ 
+ 	if (cls3_error)
+ 		vfc_cmd->flags |= cpu_to_be16(IBMVFC_CLASS_3_ERR);
+@@ -1394,10 +1398,10 @@ static int ibmvfc_map_sg_data(struct scsi_cmnd *scmd,
+ 
+ 	if (scmd->sc_data_direction == DMA_TO_DEVICE) {
+ 		vfc_cmd->flags |= cpu_to_be16(IBMVFC_WRITE);
+-		vfc_cmd->iu.add_cdb_len |= IBMVFC_WRDATA;
++		iu->add_cdb_len |= IBMVFC_WRDATA;
+ 	} else {
+ 		vfc_cmd->flags |= cpu_to_be16(IBMVFC_READ);
+-		vfc_cmd->iu.add_cdb_len |= IBMVFC_RDDATA;
++		iu->add_cdb_len |= IBMVFC_RDDATA;
+ 	}
+ 
+ 	if (sg_mapped == 1) {
+@@ -1516,7 +1520,7 @@ static void ibmvfc_log_error(struct ibmvfc_event *evt)
+ {
+ 	struct ibmvfc_cmd *vfc_cmd = &evt->xfer_iu->cmd;
+ 	struct ibmvfc_host *vhost = evt->vhost;
+-	struct ibmvfc_fcp_rsp *rsp = &vfc_cmd->rsp;
++	struct ibmvfc_fcp_rsp *rsp = &vfc_cmd->v1.rsp;
+ 	struct scsi_cmnd *cmnd = evt->cmnd;
+ 	const char *err = unknown_error;
+ 	int index = ibmvfc_get_err_index(be16_to_cpu(vfc_cmd->status), be16_to_cpu(vfc_cmd->error));
+@@ -1570,7 +1574,7 @@ static void ibmvfc_relogin(struct scsi_device *sdev)
+ static void ibmvfc_scsi_done(struct ibmvfc_event *evt)
+ {
+ 	struct ibmvfc_cmd *vfc_cmd = &evt->xfer_iu->cmd;
+-	struct ibmvfc_fcp_rsp *rsp = &vfc_cmd->rsp;
++	struct ibmvfc_fcp_rsp *rsp = &vfc_cmd->v1.rsp;
+ 	struct scsi_cmnd *cmnd = evt->cmnd;
+ 	u32 rsp_len = 0;
+ 	u32 sense_len = be32_to_cpu(rsp->fcp_sense_len);
+@@ -1652,14 +1656,14 @@ static struct ibmvfc_cmd *ibmvfc_init_vfc_cmd(struct ibmvfc_event *evt, struct s
+ 	struct ibmvfc_cmd *vfc_cmd = &evt->iu.cmd;
+ 
+ 	memset(vfc_cmd, 0, sizeof(*vfc_cmd));
 -	vfc_cmd->resp.va = cpu_to_be64(be64_to_cpu(evt->crq.ioba) + offsetof(struct ibmvfc_cmd, rsp));
 -	vfc_cmd->resp.len = cpu_to_be32(sizeof(vfc_cmd->rsp));
--	vfc_cmd->frame_type = cpu_to_be32(IBMVFC_SCSI_FCP_TYPE);
++	vfc_cmd->resp.va = cpu_to_be64(be64_to_cpu(evt->crq.ioba) + offsetof(struct ibmvfc_cmd, v1.rsp));
++	vfc_cmd->resp.len = cpu_to_be32(sizeof(vfc_cmd->v1.rsp));
+ 	vfc_cmd->frame_type = cpu_to_be32(IBMVFC_SCSI_FCP_TYPE);
 -	vfc_cmd->payload_len = cpu_to_be32(sizeof(vfc_cmd->iu));
 -	vfc_cmd->resp_len = cpu_to_be32(sizeof(vfc_cmd->rsp));
--	vfc_cmd->cancel_key = cpu_to_be32((unsigned long)cmnd->device->hostdata);
--	vfc_cmd->tgt_scsi_id = cpu_to_be64(rport->port_id);
-+
-+	vfc_cmd = ibmvfc_init_vfc_cmd(evt, cmnd->device);
-+
- 	vfc_cmd->iu.xfer_len = cpu_to_be32(scsi_bufflen(cmnd));
--	int_to_scsilun(cmnd->device->lun, &vfc_cmd->iu.lun);
- 	memcpy(vfc_cmd->iu.cdb, cmnd->cmnd, cmnd->cmd_len);
++	vfc_cmd->payload_len = cpu_to_be32(sizeof(vfc_cmd->v1.iu));
++	vfc_cmd->resp_len = cpu_to_be32(sizeof(vfc_cmd->v1.rsp));
+ 	vfc_cmd->cancel_key = cpu_to_be32((unsigned long)sdev->hostdata);
+ 	vfc_cmd->tgt_scsi_id = cpu_to_be64(rport->port_id);
+-	int_to_scsilun(sdev->lun, &vfc_cmd->iu.lun);
++	int_to_scsilun(sdev->lun, &vfc_cmd->v1.iu.lun);
+ 
+ 	return vfc_cmd;
+ }
+@@ -1696,12 +1700,12 @@ static int ibmvfc_queuecommand_lck(struct scsi_cmnd *cmnd,
+ 
+ 	vfc_cmd = ibmvfc_init_vfc_cmd(evt, cmnd->device);
+ 
+-	vfc_cmd->iu.xfer_len = cpu_to_be32(scsi_bufflen(cmnd));
+-	memcpy(vfc_cmd->iu.cdb, cmnd->cmnd, cmnd->cmd_len);
++	vfc_cmd->v1.iu.xfer_len = cpu_to_be32(scsi_bufflen(cmnd));
++	memcpy(vfc_cmd->v1.iu.cdb, cmnd->cmnd, cmnd->cmd_len);
  
  	if (cmnd->flags & SCMD_TAGGED) {
-@@ -2012,7 +2023,6 @@ static int ibmvfc_bsg_request(struct bsg_job *job)
- static int ibmvfc_reset_device(struct scsi_device *sdev, int type, char *desc)
- {
- 	struct ibmvfc_host *vhost = shost_priv(sdev->host);
--	struct fc_rport *rport = starget_to_rport(scsi_target(sdev));
+ 		vfc_cmd->task_tag = cpu_to_be64(cmnd->tag);
+-		vfc_cmd->iu.pri_task_attr = IBMVFC_SIMPLE_TASK;
++		vfc_cmd->v1.iu.pri_task_attr = IBMVFC_SIMPLE_TASK;
+ 	}
+ 
+ 	if (likely(!(rc = ibmvfc_map_sg_data(cmnd, evt, vfc_cmd, vhost->dev))))
+@@ -2026,7 +2030,7 @@ static int ibmvfc_reset_device(struct scsi_device *sdev, int type, char *desc)
  	struct ibmvfc_cmd *tmf;
  	struct ibmvfc_event *evt = NULL;
  	union ibmvfc_iu rsp_iu;
-@@ -2025,17 +2035,8 @@ static int ibmvfc_reset_device(struct scsi_device *sdev, int type, char *desc)
- 	if (vhost->state == IBMVFC_ACTIVE) {
- 		evt = ibmvfc_get_event(vhost);
- 		ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_CMD_FORMAT);
-+		tmf = ibmvfc_init_vfc_cmd(evt, sdev);
+-	struct ibmvfc_fcp_rsp *fc_rsp = &rsp_iu.cmd.rsp;
++	struct ibmvfc_fcp_rsp *fc_rsp = &rsp_iu.cmd.v1.rsp;
+ 	int rsp_rc = -EBUSY;
+ 	unsigned long flags;
+ 	int rsp_code = 0;
+@@ -2038,7 +2042,7 @@ static int ibmvfc_reset_device(struct scsi_device *sdev, int type, char *desc)
+ 		tmf = ibmvfc_init_vfc_cmd(evt, sdev);
  
--		tmf = &evt->iu.cmd;
--		memset(tmf, 0, sizeof(*tmf));
--		tmf->resp.va = cpu_to_be64(be64_to_cpu(evt->crq.ioba) + offsetof(struct ibmvfc_cmd, rsp));
--		tmf->resp.len = cpu_to_be32(sizeof(tmf->rsp));
--		tmf->frame_type = cpu_to_be32(IBMVFC_SCSI_FCP_TYPE);
--		tmf->payload_len = cpu_to_be32(sizeof(tmf->iu));
--		tmf->resp_len = cpu_to_be32(sizeof(tmf->rsp));
--		tmf->cancel_key = cpu_to_be32((unsigned long)sdev->hostdata);
--		tmf->tgt_scsi_id = cpu_to_be64(rport->port_id);
--		int_to_scsilun(sdev->lun, &tmf->iu.lun);
  		tmf->flags = cpu_to_be16((IBMVFC_NO_MEM_DESC | IBMVFC_TMF));
- 		tmf->iu.tmf_flags = type;
+-		tmf->iu.tmf_flags = type;
++		tmf->v1.iu.tmf_flags = type;
  		evt->sync_iu = &rsp_iu;
-@@ -2327,7 +2328,6 @@ static int ibmvfc_match_evt(struct ibmvfc_event *evt, void *match)
- static int ibmvfc_abort_task_set(struct scsi_device *sdev)
- {
- 	struct ibmvfc_host *vhost = shost_priv(sdev->host);
--	struct fc_rport *rport = starget_to_rport(scsi_target(sdev));
+ 
+ 		init_completion(&evt->comp);
+@@ -2331,7 +2335,7 @@ static int ibmvfc_abort_task_set(struct scsi_device *sdev)
  	struct ibmvfc_cmd *tmf;
  	struct ibmvfc_event *evt, *found_evt;
  	union ibmvfc_iu rsp_iu;
-@@ -2355,17 +2355,8 @@ static int ibmvfc_abort_task_set(struct scsi_device *sdev)
- 	if (vhost->state == IBMVFC_ACTIVE) {
- 		evt = ibmvfc_get_event(vhost);
- 		ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_CMD_FORMAT);
-+		tmf = ibmvfc_init_vfc_cmd(evt, sdev);
+-	struct ibmvfc_fcp_rsp *fc_rsp = &rsp_iu.cmd.rsp;
++	struct ibmvfc_fcp_rsp *fc_rsp = &rsp_iu.cmd.v1.rsp;
+ 	int rc, rsp_rc = -EBUSY;
+ 	unsigned long flags, timeout = IBMVFC_ABORT_TIMEOUT;
+ 	int rsp_code = 0;
+@@ -2358,7 +2362,7 @@ static int ibmvfc_abort_task_set(struct scsi_device *sdev)
+ 		tmf = ibmvfc_init_vfc_cmd(evt, sdev);
  
--		tmf = &evt->iu.cmd;
--		memset(tmf, 0, sizeof(*tmf));
--		tmf->resp.va = cpu_to_be64(be64_to_cpu(evt->crq.ioba) + offsetof(struct ibmvfc_cmd, rsp));
--		tmf->resp.len = cpu_to_be32(sizeof(tmf->rsp));
--		tmf->frame_type = cpu_to_be32(IBMVFC_SCSI_FCP_TYPE);
--		tmf->payload_len = cpu_to_be32(sizeof(tmf->iu));
--		tmf->resp_len = cpu_to_be32(sizeof(tmf->rsp));
--		tmf->cancel_key = cpu_to_be32((unsigned long)sdev->hostdata);
--		tmf->tgt_scsi_id = cpu_to_be64(rport->port_id);
--		int_to_scsilun(sdev->lun, &tmf->iu.lun);
  		tmf->flags = cpu_to_be16((IBMVFC_NO_MEM_DESC | IBMVFC_TMF));
- 		tmf->iu.tmf_flags = IBMVFC_ABORT_TASK_SET;
+-		tmf->iu.tmf_flags = IBMVFC_ABORT_TASK_SET;
++		tmf->v1.iu.tmf_flags = IBMVFC_ABORT_TASK_SET;
  		evt->sync_iu = &rsp_iu;
+ 
+ 		init_completion(&evt->comp);
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.h b/drivers/scsi/ibmvscsi/ibmvfc.h
+index 34debccfb142..65092812bd4a 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.h
++++ b/drivers/scsi/ibmvscsi/ibmvfc.h
+@@ -54,6 +54,7 @@
+ 
+ #define IBMVFC_MAD_SUCCESS		0x00
+ #define IBMVFC_MAD_NOT_SUPPORTED	0xF1
++#define IBMVFC_MAD_VERSION_NOT_SUPP	0xF2
+ #define IBMVFC_MAD_FAILED		0xF7
+ #define IBMVFC_MAD_DRIVER_FAILED	0xEE
+ #define IBMVFC_MAD_CRQ_ERROR		0xEF
+@@ -168,6 +169,8 @@ struct ibmvfc_npiv_login {
+ #define IBMVFC_CAN_MIGRATE		0x01
+ #define IBMVFC_CAN_USE_CHANNELS		0x02
+ #define IBMVFC_CAN_HANDLE_FPIN		0x04
++#define IBMVFC_CAN_USE_MAD_VERSION	0x08
++#define IBMVFC_CAN_SEND_VF_WWPN		0x10
+ 	__be64 node_name;
+ 	struct srp_direct_buf async;
+ 	u8 partition_name[IBMVFC_MAX_NAME];
+@@ -211,7 +214,9 @@ struct ibmvfc_npiv_login_resp {
+ 	__be64 capabilities;
+ #define IBMVFC_CAN_FLUSH_ON_HALT	0x08
+ #define IBMVFC_CAN_SUPPRESS_ABTS	0x10
+-#define IBMVFC_CAN_SUPPORT_CHANNELS	0x20
++#define IBMVFC_MAD_VERSION_CAP		0x20
++#define IBMVFC_HANDLE_VF_WWPN		0x40
++#define IBMVFC_CAN_SUPPORT_CHANNELS	0x80
+ 	__be32 max_cmds;
+ 	__be32 scsi_id_sz;
+ 	__be64 max_dma_len;
+@@ -293,6 +298,7 @@ struct ibmvfc_port_login {
+ 	__be32 reserved2;
+ 	struct ibmvfc_service_parms service_parms;
+ 	struct ibmvfc_service_parms service_parms_change;
++	__be64 targetWWPN;
+ 	__be64 reserved3[2];
+ } __packed __aligned(8);
+ 
+@@ -344,6 +350,7 @@ struct ibmvfc_process_login {
+ 	__be16 status;
+ 	__be16 error;			/* also fc_reason */
+ 	__be32 reserved2;
++	__be64 targetWWPN;
+ 	__be64 reserved3[2];
+ } __packed __aligned(8);
+ 
+@@ -378,6 +385,8 @@ struct ibmvfc_tmf {
+ 	__be32 cancel_key;
+ 	__be32 my_cancel_key;
+ 	__be32 pad;
++	__be64 targetWWPN;
++	__be64 taskTag;
+ 	__be64 reserved[2];
+ } __packed __aligned(8);
+ 
+@@ -474,9 +483,19 @@ struct ibmvfc_cmd {
+ 	__be64 correlation;
+ 	__be64 tgt_scsi_id;
+ 	__be64 tag;
+-	__be64 reserved3[2];
+-	struct ibmvfc_fcp_cmd_iu iu;
+-	struct ibmvfc_fcp_rsp rsp;
++	__be64 targetWWPN;
++	__be64 reserved3;
++	union {
++		struct {
++			struct ibmvfc_fcp_cmd_iu iu;
++			struct ibmvfc_fcp_rsp rsp;
++		} v1;
++		struct {
++			__be64 reserved4;
++			struct ibmvfc_fcp_cmd_iu iu;
++			struct ibmvfc_fcp_rsp rsp;
++		} v2;
++	};
+ } __packed __aligned(8);
+ 
+ struct ibmvfc_passthru_fc_iu {
+@@ -503,6 +522,7 @@ struct ibmvfc_passthru_iu {
+ 	__be64 correlation;
+ 	__be64 scsi_id;
+ 	__be64 tag;
++	__be64 targetWWPN;
+ 	__be64 reserved2[2];
+ } __packed __aligned(8);
+ 
 -- 
 2.27.0
 
