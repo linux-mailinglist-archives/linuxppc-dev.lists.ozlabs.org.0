@@ -1,65 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A982B0393
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 12:11:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 278E82B0462
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 12:53:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CWzSW1rg5zDqpJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 22:11:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CX0Nf5n8mzDqsm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 22:53:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=zZ3ortjp; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=IHlNPa7G; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
+ spf=temperror (SPF Temporary Error: DNS The DNS
+ operation timed out after 21.11820387840271 seconds) smtp.mailfrom=sntech.de
+ (client-ip=185.11.138.130; helo=gloria.sntech.de;
+ envelope-from=heiko@sntech.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=sntech.de
+X-Greylist: delayed 1402 seconds by postgrey-1.36 at bilbo;
+ Thu, 12 Nov 2020 22:40:11 AEDT
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CWzMr0pL2zDqpp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 22:07:35 +1100 (AEDT)
-Date: Thu, 12 Nov 2020 12:07:29 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1605179252;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GScfsa8nOXUlNCCC/0bnPZszGImDlkAqoVu5Twbqets=;
- b=zZ3ortjpGyVdT6l5Epo+oXEihOo3YsbgeWmCO4SNBn297T52hhepV9lm5suD/944+Sz1gu
- BkYylnk8pMKlYkb4csofMkEGSrhcQcyIn5AL1i1pw3/utYozF/zdo6+bRfmnph5PP7xve1
- PpOVvXxebOQE5U3JtIzNhA0Fc1104xhNai+afx4A4y2O3Fs5x58WbqWTdn5gkAWgcM/duh
- sMgxr+wPIZY9f8FrD3RrbmLqGk62lK9VfUOJuVBmyG+rJup0NYxJRRrKBRd/enHEx2zhIx
- UfbLWY8NE5CqXAlPHU3T/T5B/66csi1W6K2Uz4Y5UeWB8lzg0bfoVIlYejlz5w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1605179252;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GScfsa8nOXUlNCCC/0bnPZszGImDlkAqoVu5Twbqets=;
- b=IHlNPa7GPp5Ilh/x3NSZBuxoBCag1CyU3lSY94fXEHyvLJqz7JXMYGP0aqsiN8HGB3WFr5
- ZFMQ/3qvo+nJiyAQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [patch V3 10/37] ARM: highmem: Switch to generic kmap atomic
-Message-ID: <20201112110729.vx4xebavy6gpzuef@linutronix.de>
-References: <20201103092712.714480842@linutronix.de>
- <20201103095857.582196476@linutronix.de>
- <CGME20201112081036eucas1p14e135a370d3bccab311727fd2e89f4df@eucas1p1.samsung.com>
- <c07bae0c-68dd-2693-948f-00e8a50f3053@samsung.com>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CX05R4JghzDqP4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 22:39:49 +1100 (AEDT)
+Received: from ip5f5aa64a.dynamic.kabel-deutschland.de ([95.90.166.74]
+ helo=phil.lan)
+ by gloria.sntech.de with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <heiko@sntech.de>)
+ id 1kdAaB-0000QA-9Q; Thu, 12 Nov 2020 12:16:03 +0100
+From: Heiko Stuebner <heiko@sntech.de>
+To: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH 00/25] Rid W=1 warnings in SoC
+Date: Thu, 12 Nov 2020 12:16:00 +0100
+Message-Id: <160517975455.81506.16289432612279089945.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20201103152838.1290217-1-lee.jones@linaro.org>
+References: <20201103152838.1290217-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <c07bae0c-68dd-2693-948f-00e8a50f3053@samsung.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,32 +50,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio@kvack.org, Peter Zijlstra <peterz@infradead.org>,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
- Huang Rui <ray.huang@amd.com>, sparclinux@vger.kernel.org,
- Ingo Molnar <mingo@kernel.org>, Paul McKenney <paulmck@kernel.org>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- linux-csky@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- Mel Gorman <mgorman@suse.de>, Dave Airlie <airlied@redhat.com>,
- linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Steven Rostedt <rostedt@goodmis.org>, linux-mips@vger.kernel.org,
- Linus Torvalds <torvalds@linuxfoundation.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, spice-devel@lists.freedesktop.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- LKML <linux-kernel@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, Christian Koenig <christian.koenig@amd.com>,
- linux-btrfs@vger.kernel.org
+Cc: Heiko Stuebner <heiko@sntech.de>, Liam Girdwood <lgirdwood@gmail.com>,
+ Roy Pledge <Roy.Pledge@nxp.com>, linux-kernel@vger.kernel.org,
+ Scott Wood <scottwood@freescale.com>,
+ Thierry Reding <thierry.reding@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>,
+ linux-samsung-soc@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ YueHaibing <yuehaibing@huawei.com>, Sandeep Nair <sandeep_n@ti.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>,
+ linux-rockchip@lists.infradead.org, act <dmalek@jlc.net>,
+ Andy Gross <agross@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
+ Cyril Chemparathy <cyril@ti.com>, linux-arm-msm@vger.kernel.org,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Santosh Shilimkar <ssantosh@kernel.org>, linux-tegra@vger.kernel.org,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ linux-arm-kernel@lists.infradead.org, "Software, Inc" <source@mvista.com>,
+ Dave Gerlach <d-gerlach@ti.com>, Doug Anderson <dianders@chromium.org>,
+ Li Yang <leoyang.li@nxp.com>, Ben Dooks <ben@simtec.co.uk>,
+ Mark Brown <broonie@kernel.org>, Dan Malek <dan@embeddedalley.com>,
+ Vitaly Bordug <vbordug@ru.mvista.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-11-12 09:10:34 [+0100], Marek Szyprowski wrote:
-> I can do more tests to help fixing this issue. Just let me know what to do.
+On Tue, 3 Nov 2020 15:28:13 +0000, Lee Jones wrote:
+> This set is part of a larger effort attempting to clean-up W=1
+> kernel builds, which are currently overwhelmingly riddled with
+> niggly little warnings.
+> 
+> Lee Jones (25):
+>   soc: bcm: brcmstb: pm: pm-arm: Provide prototype for
+>     brcmstb_pm_s3_finish()
+>   soc: qcom: qcom_aoss: Remove set but unused variable 'tlen'
+>   soc: qcom: qcom_aoss: Add missing description for 'cooling_devs'
+>   soc: fsl: dpio: qbman-portal: Fix a bunch of kernel-doc misdemeanours
+>   soc: rockchip: io-domain: Remove incorrect and incomplete comment
+>     header
+>   soc: ti: knav_qmss_queue: Remove set but unchecked variable 'ret'
+>   soc: ti: knav_qmss_queue: Fix a whole host of function documentation
+>     issues
+>   soc: ti: knav_dma: Fix a kernel function doc formatting issue
+>   soc: ti: pm33xx: Remove set but unused variable 'ret'
+>   soc: ti: wkup_m3_ipc: Document 'm3_ipc' parameter throughout
+>   soc: fsl: qe: qe_common: Fix misnamed function attribute 'addr'
+>   soc: qcom: qcom-geni-se: Fix misnamed function parameter 'rx_rfr'
+>   soc: tegra: fuse: speedo-tegra124: Remove some set but unused
+>     variables
+>   soc: samsung: s3c-pm-check: Fix incorrectly named variable 'val'
+>   soc: qcom: rpmh: Fix possible doc-rot in rpmh_write()'s header
+>   soc: qcom: smem: Fix formatting and missing documentation issues
+>   soc: qcom: smsm: Fix some kernel-doc formatting and naming problems
+>   soc: qcom: wcnss_ctrl: Demote non-conformant struct header and fix
+>     function headers
+>   soc: qcom: smp2p: Remove unused struct attribute provide another
+>   soc: qcom: llcc-qcom: Fix expected kernel-doc formatting
+>   soc: qcom: rpmhpd: Provide some missing struct member descriptions
+>   soc: qcom: kryo-l2-accessors: Fix misnaming of 'val'
+>   soc: ti: k3-ringacc: Provide documentation for 'k3_ring's 'state'
+>   soc: tegra: fuse: speedo-tegra210: Remove a group of set but unused
+>     variables
+>   soc: fsl: qbman: qman: Remove unused variable 'dequeue_wq'
+> 
+> [...]
 
--> https://lkml.kernel.org/r/87y2j6n8mj.fsf@nanos.tec.linutronix.de
+Applied, thanks!
 
-Sebastian
+[1/1] soc: rockchip: io-domain: Remove incorrect and incomplete comment header
+      commit: a6a3a24c129d229a0eb26b329ab617e2a04245dd
+
+Best regards,
+-- 
+Heiko Stuebner <heiko@sntech.de>
