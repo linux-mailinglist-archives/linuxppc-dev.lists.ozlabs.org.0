@@ -1,90 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545E52AFBE4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 02:11:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D21442AFBE9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 02:26:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CWk7X46sTzDr0d
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 12:11:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CWkTH4b7QzDqYK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 12:26:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=YBYtK0J7; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=VfLxL9U/; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CWk0M6K8vzDqLs
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 12:04:51 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AC13PIg005662; Wed, 11 Nov 2020 20:04:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=TQt7PPk3rKiO4w1VlOWPOjE2FLAmUGETaXx4+io4RsA=;
- b=YBYtK0J7eoBggPzZ4cKeFM+dn3PrpR0SSRzhWLtsRN8b6+dZAPHYNtJPczBQhBsU2A+K
- ePYqCilEx2pMIkQVxet5isG7Dq1T0aaeRJxkL4Bx+q+aodbYAYUfr4EFfb4ZxcADkIj6
- pm54uMIm10PPU6q/mt6e4NWdky6oMhGb2lBUgwSODRqiF3owx3Tg6TfVH/14zZom3FAL
- O1pmJEwULp4pv53lwodD9XD+4r26BHbfD5kz9l33Hdc5sBhuE5SjQlxXH+ReaFHiLigQ
- bT6YS1ro7oTph8PCe1HD6+iyoEr4/Sh/4xf+ApNqwOIuXClRVYFS8E7QLEh3IOjRrYMq Lg== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34rtc40y8v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Nov 2020 20:04:49 -0500
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AC0x7bO026875;
- Thu, 12 Nov 2020 01:04:48 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma01wdc.us.ibm.com with ESMTP id 34nk79dqs0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Nov 2020 01:04:48 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AC14lOB4194976
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Nov 2020 01:04:47 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B514328059;
- Thu, 12 Nov 2020 01:04:47 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 358DB28058;
- Thu, 12 Nov 2020 01:04:47 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.40.195.188])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 12 Nov 2020 01:04:47 +0000 (GMT)
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-To: james.bottomley@hansenpartnership.com
-Subject: [PATCH 6/6] ibmvfc: advertise client support for targetWWPN using v2
- commands
-Date: Wed, 11 Nov 2020 19:04:42 -0600
-Message-Id: <20201112010442.102589-6-tyreld@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201112010442.102589-1-tyreld@linux.ibm.com>
-References: <20201112010442.102589-1-tyreld@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CWkRh4GxvzDqPm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 12:25:02 +1100 (AEDT)
+Received: by mail-pl1-x643.google.com with SMTP id x15so1938334pll.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Nov 2020 17:25:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=t6O0sYxJBUgk9V8FqRpsvwNNwz5ipQ+AansIawZja9I=;
+ b=VfLxL9U/SBb06NU26ZQg3mLeQ4YU1vURENNOX5o9q82sPjjgQlOfM1ZNu2MEX8cf13
+ HiYQalcws2knOoe8K/KgYewmysQ8XDLjytyJ8Lj9gBheD0Bkl2D+PJIGAJlHwq3P0Jul
+ LZrPQncH0vQobnEM1JMY88RpxSVE3r7lG47hHG5WmhT2Yiw+NisM+btts8lhN4bJuRk9
+ pgEAtMLaELZYognagwPWUCKr52rDSoRc9Hk/TipywE70ue8nFy0R0/Z+wRYQwX5H1vI7
+ MU5hAswXktl9GHH4aJsXmWx0TRKsirtCqDa7tWPiyikBYgQZj4a0OIMOCvOQ3zHmNcGY
+ 9Hfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=t6O0sYxJBUgk9V8FqRpsvwNNwz5ipQ+AansIawZja9I=;
+ b=C5shnvZeWZPUr6hcw5o3U8YkDt5UKA79r+QAyqb2lAFYR5UtXQQJAJrpfXRO06Yk0k
+ eMs4cN7xIzcq0O+t5J2qQ239wF9DYz9DFk0xMDk4QXkYqw+2Y2a9RGkZNZDf2jWuZNIJ
+ u1Q3wsjNc+q9Dd+fMDjyLxp4iLFL87yt1wNZrPLikRUBxBUb6fz8LNO/8gaVKDgPmfKi
+ LxgVzF8uhF91t+MdsVdUaw87ZSPqMXAbtVZ6k9vi3snVZPMdfmO+q1x8IQMd/olAaqFZ
+ NwaZ0mWW94goteNxwGoUiFxVNkINBtPOs+UUIgk8vMD/g8jwTv8D/tB4UKuq/nUrw65J
+ LhJg==
+X-Gm-Message-State: AOAM530mmURyhHfacPDUJ3EyfV33qMTmgA9BZQZe57ENrJ0RYYNB6q2E
+ O7A0Dx7eY5AR633TELczveoCzoEKbuQ=
+X-Google-Smtp-Source: ABdhPJyjsvg9C4SUokM73BG6LLbH3Hup8iycj/2InNMean/F6Boq/HwoUQ1KVzkfw4ArHsGv4r+FTA==
+X-Received: by 2002:a0c:a5a2:: with SMTP id z31mr29221656qvz.15.1605143981548; 
+ Wed, 11 Nov 2020 17:19:41 -0800 (PST)
+Received: from LeoBras.ibmuc.com (179-125-145-97.dynamic.desktop.com.br.
+ [179.125.145.97])
+ by smtp.gmail.com with ESMTPSA id e10sm4153867qkn.126.2020.11.11.17.17.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Nov 2020 17:18:17 -0800 (PST)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Paul Mackerras <paulus@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: [PATCH 1/1] powerpc/kvm: Fix mask size for emulated msgsndp
+Date: Wed, 11 Nov 2020 22:16:55 -0300
+Message-Id: <20201112011655.382866-1-leobras.c@gmail.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-11_12:2020-11-10,
- 2020-11-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=1
- priorityscore=1501 clxscore=1015 mlxlogscore=999 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011120002
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,37 +78,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, martin.petersen@oracle.com,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, brking@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Leonardo Bras <leobras.c@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The previous patch added support for the targetWWPN field in version 2
-MADs and vfcFrame structures.
+According to ISAv3.1 and ISAv3.0b, the msgsndp is described to split RB in:
+msgtype <- (RB) 32:36
+payload <- (RB) 37:63
+t       <- (RB) 57:63
 
-Set the IBMVFC_CAN_SEND_VF_WWPN bit in our capabailites flag during NPIV
-Login to inform the VIOS that this client supports this feature.
+The current way of getting 'msgtype', and 't' is missing their LSB:
+msgtype: ((arg >> 27) & 0xf) : Gets (RB) 33:36, missing bit 32
+t:       (arg &= 0x3f)       : Gets (RB) 58:63, missing bit 57
 
-Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Fixes this by applying the correct mask.
+
+Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 ---
- drivers/scsi/ibmvscsi/ibmvfc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kvm/book3s_hv.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index 604bccebf7d2..3c72f5a009b8 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -1246,7 +1246,7 @@ static void ibmvfc_set_login_info(struct ibmvfc_host *vhost)
- 		login_info->flags |= cpu_to_be16(IBMVFC_CLIENT_MIGRATED);
- 
- 	login_info->max_cmds = cpu_to_be32(max_requests + IBMVFC_NUM_INTERNAL_REQ);
--	login_info->capabilities = cpu_to_be64(IBMVFC_CAN_MIGRATE);
-+	login_info->capabilities = cpu_to_be64(IBMVFC_CAN_MIGRATE | IBMVFC_CAN_SEND_VF_WWPN);
- 	login_info->async.va = cpu_to_be64(vhost->async_crq.msg_token);
- 	login_info->async.len = cpu_to_be32(vhost->async_crq.size * sizeof(*vhost->async_crq.msgs));
- 	strncpy(login_info->partition_name, vhost->partition_name, IBMVFC_MAX_NAME);
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index e3b1839fc251..5af0a429cee8 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -1241,9 +1241,9 @@ static int kvmppc_emulate_doorbell_instr(struct kvm_vcpu *vcpu)
+ 	switch (get_xop(inst)) {
+ 	case OP_31_XOP_MSGSNDP:
+ 		arg = kvmppc_get_gpr(vcpu, rb);
+-		if (((arg >> 27) & 0xf) != PPC_DBELL_SERVER)
++		if (((arg >> 27) & 0x1f) != PPC_DBELL_SERVER)
+ 			break;
+-		arg &= 0x3f;
++		arg &= 0x7f;
+ 		if (arg >= kvm->arch.emul_smt_mode)
+ 			break;
+ 		tvcpu = kvmppc_find_vcpu(kvm, vcpu->vcpu_id - thr + arg);
+@@ -1256,7 +1256,7 @@ static int kvmppc_emulate_doorbell_instr(struct kvm_vcpu *vcpu)
+ 		break;
+ 	case OP_31_XOP_MSGCLRP:
+ 		arg = kvmppc_get_gpr(vcpu, rb);
+-		if (((arg >> 27) & 0xf) != PPC_DBELL_SERVER)
++		if (((arg >> 27) & 0x1f) != PPC_DBELL_SERVER)
+ 			break;
+ 		vcpu->arch.vcore->dpdes = 0;
+ 		vcpu->arch.doorbell_request = 0;
 -- 
-2.27.0
+2.25.4
 
