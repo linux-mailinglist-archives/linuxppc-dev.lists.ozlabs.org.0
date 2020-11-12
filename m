@@ -2,73 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4873E2B0365
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 12:04:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2196E2B0381
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 12:08:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CWzJF0CL2zDqwg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 22:04:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CWzNM1YhSzDqB9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Nov 2020 22:08:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::343;
- helo=mail-wm1-x343.google.com; envelope-from=lee.jones@linaro.org;
+ smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
+ helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
+ dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=OIcAU4L2; dkim-atps=neutral
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
- [IPv6:2a00:1450:4864:20::343])
+ secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
+ header.s=2020 header.b=IyNoaFai; 
+ dkim=pass header.d=linutronix.de header.i=@linutronix.de
+ header.a=ed25519-sha256 header.s=2020e header.b=3CYfPdTt; 
+ dkim-atps=neutral
+Received: from galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CWzB56by0zDqll
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 21:59:09 +1100 (AEDT)
-Received: by mail-wm1-x343.google.com with SMTP id c9so4855601wml.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 02:59:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=wgyLyFchGL7Sp7PDuveL5Dq/jWJMAfMom/lcxhPZFGk=;
- b=OIcAU4L2NY90scoNe97J7Lo3gdQ4brKCLe5fP7yOH2yD67Ofz0aO0Wo5MUjF2m7/2C
- iqhZfqgE7sx7uOpFPy6Ej8kW1KzNWFmtq5SPp7JzD7HcWn46JIHoJagCqfDo1sLnBMmW
- 8Ag48q1gpX4QthRyaDE+UI3Mt18iHtxM0E6J81ecjFGOXmqgtNRJkbanRvJMVY+ewKaZ
- yKEIWMnBWpwiUDnYYiK+r6VCsU2UdmV9yTj07zJZJMrzl00HxHjL52MRjrnzsiZLqanr
- olAQRFJvinPjCXmYaWsofa2c+EJTF0jTIVk2+chj6Zx6LKZcVdSbdxxJR5dgoozgc9p4
- XSZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=wgyLyFchGL7Sp7PDuveL5Dq/jWJMAfMom/lcxhPZFGk=;
- b=c7HWvIqzh4m3gAG3tmABdHk/I/XJRdMZ+g0dXFtqsEFUmYBLdlClynrm3xbEO/mS8D
- yT+h3nVVWz+iRw1b7XCG5FeRuZsEUzP2RcoRTtOZee0pE2sFXFwrAQq6pXQVBhHWw75H
- fcHUk0yTCaaDBUb0ui1L1Pe8+s3+brJXz0RKtPzLrJ04d/Gnf/1w4G3RRmpMXHlrLDRC
- 0tYoyB8Y7Cn2l3LHYNbvn1ClxdBdzqxPiYGb2b6Bc173ZQkH/4gTfWidLa4YElPyuPEt
- GS5DPr5X+KhB4/FhFQBCip5Uv19eQ5edJ/Nwbll0mZpNNuxuY937mmilLBi5fd1kZ+7I
- 4QSg==
-X-Gm-Message-State: AOAM532nR1Rl7D1SWYgqEBa3d205uGb1uLOJgZFU6Me4hUBJfw0FfMMr
- qghN/SdjNGT70I3g/HfaMKCMMA==
-X-Google-Smtp-Source: ABdhPJypm3E5Z4Dtn6FAq2BnkUT91LvIbDHRoSB1aVRFTBICzorGYZNNLlfeGh36eCzBVJ5tkNl0tQ==
-X-Received: by 2002:a1c:4c09:: with SMTP id z9mr9042901wmf.55.1605178745182;
- Thu, 12 Nov 2020 02:59:05 -0800 (PST)
-Received: from dell.default ([91.110.221.159])
- by smtp.gmail.com with ESMTPSA id u5sm1167239wro.56.2020.11.12.02.59.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 12 Nov 2020 02:59:04 -0800 (PST)
-From: Lee Jones <lee.jones@linaro.org>
-To: lee.jones@linaro.org
-Subject: [PATCH v2 4/4] tty: serial: pmac_zilog: Remove unused disposable
- variable 'garbage'
-Date: Thu, 12 Nov 2020 10:58:57 +0000
-Message-Id: <20201112105857.2078977-5-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201112105857.2078977-1-lee.jones@linaro.org>
-References: <20201112105857.2078977-1-lee.jones@linaro.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CWzH61GjQzDqnn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Nov 2020 22:03:29 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1605179001;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RyoQNma1D4GVgEfBEnD9HpKfLsmdKQZ2swCCbsJ89u4=;
+ b=IyNoaFaiD+NM5KphnaangmvfL0El+UAOD+w5h3trf2Yyosfdrv/YLVOkMULOW/ZGBhg+Y/
+ CdApJJvXGBIZ5Y44ibFQmafGLFWCU3g2FoxBkEzR7mbT6bdJj8sJZKMh9WrX346Yk/RRPA
+ ObPEWbP1WIFj7Nu0oQW4DAuIZK/gvLY9xJn27pRRcuIRXasgXoUZIFo7CFG246Z8CyXPW3
+ lDFsIyNmic0931dDytsaIyKfHvx6VLixbP2g5wvqVZcSxNyP0kB6LHCFDa/PWmE2zunoqs
+ ONbIDGQXkPDZeN2NEzrt5DA5ZmFd/tf+3b4Z7uRwEDxb+zVSTZJFZcQwZtL5UA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1605179001;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RyoQNma1D4GVgEfBEnD9HpKfLsmdKQZ2swCCbsJ89u4=;
+ b=3CYfPdTtsJ7bzsqrZTQJEvt1hjj5oOsRpY9HRk4W6lYOEOtLJxrx+ZTCMYthtsl9eIeQcX
+ u0l5A2sNhnUsiqCg==
+To: Marek Szyprowski <m.szyprowski@samsung.com>,
+ LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [patch V3 10/37] ARM: highmem: Switch to generic kmap atomic
+In-Reply-To: <c07bae0c-68dd-2693-948f-00e8a50f3053@samsung.com>
+References: <20201103092712.714480842@linutronix.de>
+ <20201103095857.582196476@linutronix.de>
+ <CGME20201112081036eucas1p14e135a370d3bccab311727fd2e89f4df@eucas1p1.samsung.com>
+ <c07bae0c-68dd-2693-948f-00e8a50f3053@samsung.com>
+Date: Thu, 12 Nov 2020 12:03:20 +0100
+Message-ID: <87v9ean8g7.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,49 +71,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linux-serial@vger.kernel.org,
- Jiri Slaby <jirislaby@kernel.org>
+Cc: linux-aio@kvack.org, Peter Zijlstra <peterz@infradead.org>,
+ nouveau@lists.freedesktop.org,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ dri-devel@lists.freedesktop.org, virtualization@lists.linux-foundation.org,
+ linux-mm@kvack.org, Huang Rui <ray.huang@amd.com>, sparclinux@vger.kernel.org,
+ Ingo Molnar <mingo@kernel.org>, Paul McKenney <paulmck@kernel.org>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ linux-csky@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ Mel Gorman <mgorman@suse.de>, Dave Airlie <airlied@redhat.com>,
+ linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+ Arnd Bergmann <arnd@arndb.de>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Linus Torvalds <torvalds@linuxfoundation.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, spice-devel@lists.freedesktop.org,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christian Koenig <christian.koenig@amd.com>, linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fixes the following W=1 kernel build warning(s):
+Marek,
 
- drivers/tty/serial/pmac_zilog.h:365:58: warning: variable ‘garbage’ set but not used [-Wunused-but-set-variable]
+On Thu, Nov 12 2020 at 09:10, Marek Szyprowski wrote:
+> On 03.11.2020 10:27, Thomas Gleixner wrote:
+>
+> I can do more tests to help fixing this issue. Just let me know what to do.
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linux-serial@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- drivers/tty/serial/pmac_zilog.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Just sent out the fix before I saw your report.
 
-diff --git a/drivers/tty/serial/pmac_zilog.h b/drivers/tty/serial/pmac_zilog.h
-index bb874e76810e0..fa85b0de5c2fd 100644
---- a/drivers/tty/serial/pmac_zilog.h
-+++ b/drivers/tty/serial/pmac_zilog.h
-@@ -362,10 +362,10 @@ static inline void zssync(struct uart_pmac_port *port)
- 
- /* Misc macros */
- #define ZS_CLEARERR(port)    (write_zsreg(port, 0, ERR_RES))
--#define ZS_CLEARFIFO(port)   do { volatile unsigned char garbage; \
--				     garbage = read_zsdata(port); \
--				     garbage = read_zsdata(port); \
--				     garbage = read_zsdata(port); \
-+#define ZS_CLEARFIFO(port)   do {                       \
-+				     read_zsdata(port); \
-+				     read_zsdata(port); \
-+				     read_zsdata(port); \
- 				} while(0)
- 
- #define ZS_IS_CONS(UP)			((UP)->flags & PMACZILOG_FLAG_IS_CONS)
--- 
-2.25.1
+     https://lore.kernel.org/r/87y2j6n8mj.fsf@nanos.tec.linutronix.de
 
+Thanks,
+
+        tglx
