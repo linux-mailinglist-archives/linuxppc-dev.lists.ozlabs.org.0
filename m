@@ -2,47 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624432B1DED
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Nov 2020 16:02:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59CCA2B1ED4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Nov 2020 16:32:34 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CXhXB0bHGzDr5y
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Nov 2020 02:02:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CXjC170JhzDr72
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Nov 2020 02:32:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
+ helo=mail-qk1-x742.google.com; envelope-from=boqun.feng@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=uWGvxdNa; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=iXs3myPm; dkim-atps=neutral
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
+ [IPv6:2607:f8b0:4864:20::742])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CXhTk5h5yzDr5h
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Nov 2020 02:00:10 +1100 (AEDT)
-Received: from localhost.localdomain
- (HSI-KBW-46-223-126-90.hsi.kabel-badenwuerttemberg.de [46.223.126.90])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CA61921D79;
- Fri, 13 Nov 2020 15:00:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1605279607;
- bh=55BckvOEujfl1XMFu6uO29jq/GdivVi+CaX6Bmf/8PY=;
- h=From:To:Cc:Subject:Date:From;
- b=uWGvxdNaEYlri5X3tN4k5SoawfpoeuTRAylRrEmRxgIq2WenVhheXivzWwl2Wo+oI
- 2FnuGA1M7v8UrRURfVpj0ifxKiOUv+poNTKZ0KCkJ3Zic3OfIxvolh/9s92t7v61Ur
- eOi4xjrWV2ODcgF7NfMnH6GibnOUFp5OllRV0f14=
-From: Arnd Bergmann <arnd@kernel.org>
-To: linux-mm@kvack.org
-Subject: [PATCH] arch: pgtable: define MAX_POSSIBLE_PHYSMEM_BITS where needed
-Date: Fri, 13 Nov 2020 15:59:32 +0100
-Message-Id: <20201113145932.10994-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.27.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CXj8v4mcnzDr6b
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Nov 2020 02:30:35 +1100 (AEDT)
+Received: by mail-qk1-x742.google.com with SMTP id t191so9117936qka.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Nov 2020 07:30:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=jRN0hd985rUTcBLLds2xuSjiDPNKj9RzyzM/Mhj8NMI=;
+ b=iXs3myPmcsn+JNsD9rW6++x0sJAJkwPzx+KYmmbvVzyTs/hkhEQ1EYs8Xt1lD0pvzB
+ e27hl/5seZ1H94hzEwZUWXBa0oWKxP2sDCMQxqRsMo0PURLHZ71na6860nyYahaTx5Dm
+ OlM1mBCEtlbDt+DXSAzRNsK7RLacWQzIo+S/gKEogR73ySKGoi7G6ugJsYOwKUFEA8z3
+ pUDn9c/jAxk/4UAzj0SC4/H4jVGDIIH12mxfFZJ0izijUXVsJ7Khdhhlo9Zvf9K6Z44d
+ rpCkVkhY2o1Fb36rtnpIl4+MJ3lrgoRfqm8YlCN3gL/13M+B2YqUScVDiDfGb1pQApMe
+ 56oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=jRN0hd985rUTcBLLds2xuSjiDPNKj9RzyzM/Mhj8NMI=;
+ b=hITYtr+Fyn773TaWkPv6tPIUwdBk3iSvsgjTt3eGSXggCYf/7nXP6ebFAjk6I+zwjb
+ regjosq4AL8XikROYvEeHCczmEfSPifF52KlPPE8ner9l8f0ExOLZkNaXeYR8S7JvC89
+ OQgunVATGo2UjtDpooyIgovqKZtyyOnojdxMsqs+yTScDof8w8H867VsEje+Gyvg6fWC
+ BZHrBmXK+F9/7I6G9y2NtmsirXLmq3utCoykpympcwBMhrStPUDiwOtGqAJfK2xGtC/4
+ gHdt4eVj+982HGJcDYKPUy29hg4aeFr5a6IJ9evBvALy7FBPaodCFQqKIZQeNQyWgngP
+ 5wpw==
+X-Gm-Message-State: AOAM5309szisCYSu2jncDvm6hFStfIsKCE81hg0LvtvmcI9TgKVMDUoJ
+ dPN5IDRZ2wm3LS+PV64BOxA=
+X-Google-Smtp-Source: ABdhPJz9IFOBRh+GQN79NayXafDuzKDzSjycL/UYvkBhej4K/KihNofuVRAU1bciSleHPD3TSVWAWA==
+X-Received: by 2002:a37:8703:: with SMTP id j3mr2585373qkd.5.1605281426758;
+ Fri, 13 Nov 2020 07:30:26 -0800 (PST)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com.
+ [66.111.4.227])
+ by smtp.gmail.com with ESMTPSA id f56sm7183778qta.49.2020.11.13.07.30.25
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 13 Nov 2020 07:30:25 -0800 (PST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailauth.nyi.internal (Postfix) with ESMTP id 6E30927C0054;
+ Fri, 13 Nov 2020 10:30:23 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute5.internal (MEProxy); Fri, 13 Nov 2020 10:30:23 -0500
+X-ME-Sender: <xms:iqauXxD7CorhV411lS0DRxUtpE6dxHigoXSXOJFN3X6Q0IETxaGs8g>
+ <xme:iqauX_hh8z5oK2K4ru4sgFyVmrxdb3O4f9Oq-4dgfuVnH8-T7AHkoJLfJWf8JLXrB
+ 1ur8ykZK4pa-kgU-Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedruddvhedgjeeiucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+ ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+ htvghrnhepvdelieegudfggeevjefhjeevueevieetjeeikedvgfejfeduheefhffggedv
+ geejnecukfhppedufedurddutdejrddugeejrdduvdeinecuvehluhhsthgvrhfuihiivg
+ eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
+ phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
+ drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:i6auX8nepc_qc6aTmAu8fkAIGIpWlsIMqp4Gbj785dy_z53wED4SBQ>
+ <xmx:i6auX7zd92O6G5taKXavsAbxTXK6Wfn49QS_aWUBy2iYwuFAiwyVHA>
+ <xmx:i6auX2QVVO-wK7rbNuV4TsYIeZUK_Igua833D-SW3axbtPcjaIaQGA>
+ <xmx:j6auX5ELno9Ne22A8_qAbV0iB2xEN1c1I95ZhrmOYiQ6HGqIZ4RjNJBBVJE>
+Received: from localhost (unknown [131.107.147.126])
+ by mail.messagingengine.com (Postfix) with ESMTPA id B80083064AB5;
+ Fri, 13 Nov 2020 10:30:18 -0500 (EST)
+Date: Fri, 13 Nov 2020 23:30:12 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 3/3] powerpc: rewrite atomics to use ARCH_ATOMIC
+Message-ID: <20201113153012.GD286534@boqun-archlinux>
+References: <20201111110723.3148665-1-npiggin@gmail.com>
+ <20201111110723.3148665-4-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201111110723.3148665-4-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,249 +105,208 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- Arnd Bergmann <arnd@arndb.de>, Vineet Gupta <vgupta@synopsys.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Paul Walmsley <paul.walmsley@sifive.com>,
- Russell King <linux@armlinux.org.uk>, Stefan Agner <stefan@agner.ch>,
- linux-mips@vger.kernel.org, Minchan Kim <minchan@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Paul Mackerras <paulus@samba.org>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org,
- Nitin Gupta <ngupta@vflare.org>, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, linux-arch@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hi Nicholas,
 
-Stefan Agner reported a bug when using zsram on 32-bit Arm machines
-with RAM above the 4GB address boundary:
+On Wed, Nov 11, 2020 at 09:07:23PM +1000, Nicholas Piggin wrote:
+> All the cool kids are doing it.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/include/asm/atomic.h  | 681 ++++++++++-------------------
+>  arch/powerpc/include/asm/cmpxchg.h |  62 +--
+>  2 files changed, 248 insertions(+), 495 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
+> index 8a55eb8cc97b..899aa2403ba7 100644
+> --- a/arch/powerpc/include/asm/atomic.h
+> +++ b/arch/powerpc/include/asm/atomic.h
+> @@ -11,185 +11,285 @@
+>  #include <asm/cmpxchg.h>
+>  #include <asm/barrier.h>
+>  
+> +#define ARCH_ATOMIC
+> +
+> +#ifndef CONFIG_64BIT
+> +#include <asm-generic/atomic64.h>
+> +#endif
+> +
+>  /*
+>   * Since *_return_relaxed and {cmp}xchg_relaxed are implemented with
+>   * a "bne-" instruction at the end, so an isync is enough as a acquire barrier
+>   * on the platform without lwsync.
+>   */
+>  #define __atomic_acquire_fence()					\
+> -	__asm__ __volatile__(PPC_ACQUIRE_BARRIER "" : : : "memory")
+> +	asm volatile(PPC_ACQUIRE_BARRIER "" : : : "memory")
+>  
+>  #define __atomic_release_fence()					\
+> -	__asm__ __volatile__(PPC_RELEASE_BARRIER "" : : : "memory")
+> +	asm volatile(PPC_RELEASE_BARRIER "" : : : "memory")
+>  
+> -static __inline__ int atomic_read(const atomic_t *v)
+> -{
+> -	int t;
+> +#define __atomic_pre_full_fence		smp_mb
+>  
+> -	__asm__ __volatile__("lwz%U1%X1 %0,%1" : "=r"(t) : "m"(v->counter));
+> +#define __atomic_post_full_fence	smp_mb
+>  
 
-  Unable to handle kernel NULL pointer dereference at virtual address 00000000
-  pgd = a27bd01c
-  [00000000] *pgd=236a0003, *pmd=1ffa64003
-  Internal error: Oops: 207 [#1] SMP ARM
-  Modules linked in: mdio_bcm_unimac(+) brcmfmac cfg80211 brcmutil raspberrypi_hwmon hci_uart crc32_arm_ce bcm2711_thermal phy_generic genet
-  CPU: 0 PID: 123 Comm: mkfs.ext4 Not tainted 5.9.6 #1
-  Hardware name: BCM2711
-  PC is at zs_map_object+0x94/0x338
-  LR is at zram_bvec_rw.constprop.0+0x330/0xa64
-  pc : [<c0602b38>]    lr : [<c0bda6a0>]    psr: 60000013
-  sp : e376bbe0  ip : 00000000  fp : c1e2921c
-  r10: 00000002  r9 : c1dda730  r8 : 00000000
-  r7 : e8ff7a00  r6 : 00000000  r5 : 02f9ffa0  r4 : e3710000
-  r3 : 000fdffe  r2 : c1e0ce80  r1 : ebf979a0  r0 : 00000000
-  Flags: nZCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment user
-  Control: 30c5383d  Table: 235c2a80  DAC: fffffffd
-  Process mkfs.ext4 (pid: 123, stack limit = 0x495a22e6)
-  Stack: (0xe376bbe0 to 0xe376c000)
+Do you need to define __atomic_{pre,post}_full_fence for PPC? IIRC, they
+are default smp_mb__{before,atomic}_atomic(), so are smp_mb() defautly
+on PPC.
 
-As it turns out, zsram needs to know the maximum memory size, which
-is defined in MAX_PHYSMEM_BITS when CONFIG_SPARSEMEM is set, or in
-MAX_POSSIBLE_PHYSMEM_BITS on the x86 architecture.
+> -	return t;
+> +#define arch_atomic_read(v)			__READ_ONCE((v)->counter)
+> +#define arch_atomic_set(v, i)			__WRITE_ONCE(((v)->counter), (i))
+> +#ifdef CONFIG_64BIT
+> +#define ATOMIC64_INIT(i)			{ (i) }
+> +#define arch_atomic64_read(v)			__READ_ONCE((v)->counter)
+> +#define arch_atomic64_set(v, i)			__WRITE_ONCE(((v)->counter), (i))
+> +#endif
+> +
+[...]
+>  
+> +#define ATOMIC_FETCH_OP_UNLESS_RELAXED(name, type, dtype, width, asm_op) \
+> +static inline int arch_##name##_relaxed(type *v, dtype a, dtype u)	\
 
-The same problem will be hit on all 32-bit architectures that have a
-physical address space larger than 4GB and happen to not enable sparsemem
-and include asm/sparsemem.h from asm/pgtable.h.
+I don't think we have atomic_fetch_*_unless_relaxed() at atomic APIs,
+ditto for:
 
-After the initial discussion, I suggested just always defining
-MAX_POSSIBLE_PHYSMEM_BITS whenever CONFIG_PHYS_ADDR_T_64BIT is
-set, or provoking a build error otherwise. This addresses all
-configurations that can currently have this runtime bug, but
-leaves all other configurations unchanged.
+	atomic_fetch_add_unless_relaxed()
+	atomic_inc_not_zero_relaxed()
+	atomic_dec_if_positive_relaxed()
 
-I looked up the possible number of bits in source code and
-datasheets, here is what I found:
+, and we don't have the _acquire() and _release() variants for them
+either, and if you don't define their fully-ordered version (e.g.
+atomic_inc_not_zero()), atomic-arch-fallback.h will use read and cmpxchg
+to implement them, and I think not what we want.
 
- - on ARC, CONFIG_ARC_HAS_PAE40 controls whether 32 or 40 bits are used
- - on ARM, CONFIG_LPAE enables 40 bit addressing, without it we never
-   support more than 32 bits, even though supersections in theory allow
-   up to 40 bits as well.
- - on MIPS, some MIPS32r1 or later chips support 36 bits, and MIPS32r5
-   XPA supports up to 60 bits in theory, but 40 bits are more than
-   anyone will ever ship
- - On PowerPC, there are three different implementations of 36 bit
-   addressing, but 32-bit is used without CONFIG_PTE_64BIT
- - On RISC-V, the normal page table format can support 34 bit
-   addressing. There is no highmem support on RISC-V, so anything
-   above 2GB is unused, but it might be useful to eventually support
-   CONFIG_ZRAM for high pages.
+[...]
+>  
+>  #endif /* __KERNEL__ */
+>  #endif /* _ASM_POWERPC_ATOMIC_H_ */
+> diff --git a/arch/powerpc/include/asm/cmpxchg.h b/arch/powerpc/include/asm/cmpxchg.h
+> index cf091c4c22e5..181f7e8b3281 100644
+> --- a/arch/powerpc/include/asm/cmpxchg.h
+> +++ b/arch/powerpc/include/asm/cmpxchg.h
+> @@ -192,7 +192,7 @@ __xchg_relaxed(void *ptr, unsigned long x, unsigned int size)
+>       		(unsigned long)_x_, sizeof(*(ptr))); 			     \
+>    })
+>  
+> -#define xchg_relaxed(ptr, x)						\
+> +#define arch_xchg_relaxed(ptr, x)					\
+>  ({									\
+>  	__typeof__(*(ptr)) _x_ = (x);					\
+>  	(__typeof__(*(ptr))) __xchg_relaxed((ptr),			\
+> @@ -448,35 +448,7 @@ __cmpxchg_relaxed(void *ptr, unsigned long old, unsigned long new,
+>  	return old;
+>  }
+>  
+> -static __always_inline unsigned long
+> -__cmpxchg_acquire(void *ptr, unsigned long old, unsigned long new,
+> -		  unsigned int size)
+> -{
+> -	switch (size) {
+> -	case 1:
+> -		return __cmpxchg_u8_acquire(ptr, old, new);
+> -	case 2:
+> -		return __cmpxchg_u16_acquire(ptr, old, new);
+> -	case 4:
+> -		return __cmpxchg_u32_acquire(ptr, old, new);
+> -#ifdef CONFIG_PPC64
+> -	case 8:
+> -		return __cmpxchg_u64_acquire(ptr, old, new);
+> -#endif
+> -	}
+> -	BUILD_BUG_ON_MSG(1, "Unsupported size for __cmpxchg_acquire");
+> -	return old;
+> -}
+> -#define cmpxchg(ptr, o, n)						 \
+> -  ({									 \
+> -     __typeof__(*(ptr)) _o_ = (o);					 \
+> -     __typeof__(*(ptr)) _n_ = (n);					 \
+> -     (__typeof__(*(ptr))) __cmpxchg((ptr), (unsigned long)_o_,		 \
+> -				    (unsigned long)_n_, sizeof(*(ptr))); \
+> -  })
+> -
+> -
 
-Fixes: 61989a80fb3a ("staging: zsmalloc: zsmalloc memory allocation library")
-Fixes: 02390b87a945 ("mm/zsmalloc: Prepare to variable MAX_PHYSMEM_BITS")
-Cc: Stefan Agner <stefan@agner.ch>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Nitin Gupta <ngupta@vflare.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: linux-snps-arc@lists.infradead.org
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: linux-riscv@lists.infradead.org
-Link: https://lore.kernel.org/linux-mm/bdfa44bf1c570b05d6c70898e2bbb0acf234ecdf.1604762181.git.stefan@agner.ch/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-If everyone is happy with this version, I would suggest merging this as
-a bugfix through my asm-generic tree for linux-5.10. I originally
-said I'd send individual patches for each architecture tree, but
-I now think this is easier and better documents what is going on.
----
- arch/arc/include/asm/pgtable.h               |  2 ++
- arch/arm/include/asm/pgtable-2level.h        |  2 ++
- arch/arm/include/asm/pgtable-3level.h        |  2 ++
- arch/mips/include/asm/pgtable-32.h           |  3 +++
- arch/powerpc/include/asm/book3s/32/pgtable.h |  2 ++
- arch/powerpc/include/asm/nohash/32/pgtable.h |  2 ++
- arch/riscv/include/asm/pgtable-32.h          |  2 ++
- include/linux/pgtable.h                      | 13 +++++++++++++
- 8 files changed, 28 insertions(+)
+If you remove {atomic_}_cmpxchg_{,_acquire}() and use the version
+provided by atomic-arch-fallback.h, then a fail cmpxchg or
+cmpxchg_acquire() will still result into a full barrier or a acquire
+barrier after the RMW operation, the barrier is not necessary and
+probably this is not what we want?
 
-diff --git a/arch/arc/include/asm/pgtable.h b/arch/arc/include/asm/pgtable.h
-index f1ed17edb085..163641726a2b 100644
---- a/arch/arc/include/asm/pgtable.h
-+++ b/arch/arc/include/asm/pgtable.h
-@@ -134,8 +134,10 @@
- 
- #ifdef CONFIG_ARC_HAS_PAE40
- #define PTE_BITS_NON_RWX_IN_PD1	(0xff00000000 | PAGE_MASK | _PAGE_CACHEABLE)
-+#define MAX_POSSIBLE_PHYSMEM_BITS 40
- #else
- #define PTE_BITS_NON_RWX_IN_PD1	(PAGE_MASK | _PAGE_CACHEABLE)
-+#define MAX_POSSIBLE_PHYSMEM_BITS 32
- #endif
- 
- /**************************************************************************
-diff --git a/arch/arm/include/asm/pgtable-2level.h b/arch/arm/include/asm/pgtable-2level.h
-index 3502c2f746ca..baf7d0204eb5 100644
---- a/arch/arm/include/asm/pgtable-2level.h
-+++ b/arch/arm/include/asm/pgtable-2level.h
-@@ -75,6 +75,8 @@
- #define PTE_HWTABLE_OFF		(PTE_HWTABLE_PTRS * sizeof(pte_t))
- #define PTE_HWTABLE_SIZE	(PTRS_PER_PTE * sizeof(u32))
- 
-+#define MAX_POSSIBLE_PHYSMEM_BITS	32
-+
- /*
-  * PMD_SHIFT determines the size of the area a second-level page table can map
-  * PGDIR_SHIFT determines what a third-level page table entry can map
-diff --git a/arch/arm/include/asm/pgtable-3level.h b/arch/arm/include/asm/pgtable-3level.h
-index fbb6693c3352..2b85d175e999 100644
---- a/arch/arm/include/asm/pgtable-3level.h
-+++ b/arch/arm/include/asm/pgtable-3level.h
-@@ -25,6 +25,8 @@
- #define PTE_HWTABLE_OFF		(0)
- #define PTE_HWTABLE_SIZE	(PTRS_PER_PTE * sizeof(u64))
- 
-+#define MAX_POSSIBLE_PHYSMEM_BITS 40
-+
- /*
-  * PGDIR_SHIFT determines the size a top-level page table entry can map.
-  */
-diff --git a/arch/mips/include/asm/pgtable-32.h b/arch/mips/include/asm/pgtable-32.h
-index a950fc1ddb4d..6c0532d7b211 100644
---- a/arch/mips/include/asm/pgtable-32.h
-+++ b/arch/mips/include/asm/pgtable-32.h
-@@ -154,6 +154,7 @@ static inline void pmd_clear(pmd_t *pmdp)
- 
- #if defined(CONFIG_XPA)
- 
-+#define MAX_POSSIBLE_PHYSMEM_BITS 40
- #define pte_pfn(x)		(((unsigned long)((x).pte_high >> _PFN_SHIFT)) | (unsigned long)((x).pte_low << _PAGE_PRESENT_SHIFT))
- static inline pte_t
- pfn_pte(unsigned long pfn, pgprot_t prot)
-@@ -169,6 +170,7 @@ pfn_pte(unsigned long pfn, pgprot_t prot)
- 
- #elif defined(CONFIG_PHYS_ADDR_T_64BIT) && defined(CONFIG_CPU_MIPS32)
- 
-+#define MAX_POSSIBLE_PHYSMEM_BITS 36
- #define pte_pfn(x)		((unsigned long)((x).pte_high >> 6))
- 
- static inline pte_t pfn_pte(unsigned long pfn, pgprot_t prot)
-@@ -183,6 +185,7 @@ static inline pte_t pfn_pte(unsigned long pfn, pgprot_t prot)
- 
- #else
- 
-+#define MAX_POSSIBLE_PHYSMEM_BITS 32
- #ifdef CONFIG_CPU_VR41XX
- #define pte_pfn(x)		((unsigned long)((x).pte >> (PAGE_SHIFT + 2)))
- #define pfn_pte(pfn, prot)	__pte(((pfn) << (PAGE_SHIFT + 2)) | pgprot_val(prot))
-diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
-index 36443cda8dcf..1376be95e975 100644
---- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-@@ -36,8 +36,10 @@ static inline bool pte_user(pte_t pte)
-  */
- #ifdef CONFIG_PTE_64BIT
- #define PTE_RPN_MASK	(~((1ULL << PTE_RPN_SHIFT) - 1))
-+#define MAX_POSSIBLE_PHYSMEM_BITS 36
- #else
- #define PTE_RPN_MASK	(~((1UL << PTE_RPN_SHIFT) - 1))
-+#define MAX_POSSIBLE_PHYSMEM_BITS 32
- #endif
- 
- /*
-diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
-index ee2243ba96cf..96522f7f0618 100644
---- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-@@ -153,8 +153,10 @@ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
-  */
- #if defined(CONFIG_PPC32) && defined(CONFIG_PTE_64BIT)
- #define PTE_RPN_MASK	(~((1ULL << PTE_RPN_SHIFT) - 1))
-+#define MAX_POSSIBLE_PHYSMEM_BITS 36
- #else
- #define PTE_RPN_MASK	(~((1UL << PTE_RPN_SHIFT) - 1))
-+#define MAX_POSSIBLE_PHYSMEM_BITS 32
- #endif
- 
- /*
-diff --git a/arch/riscv/include/asm/pgtable-32.h b/arch/riscv/include/asm/pgtable-32.h
-index b0ab66e5fdb1..5b2e79e5bfa5 100644
---- a/arch/riscv/include/asm/pgtable-32.h
-+++ b/arch/riscv/include/asm/pgtable-32.h
-@@ -14,4 +14,6 @@
- #define PGDIR_SIZE      (_AC(1, UL) << PGDIR_SHIFT)
- #define PGDIR_MASK      (~(PGDIR_SIZE - 1))
- 
-+#define MAX_POSSIBLE_PHYSMEM_BITS 34
-+
- #endif /* _ASM_RISCV_PGTABLE_32_H */
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 71125a4676c4..e237004d498d 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1427,6 +1427,19 @@ typedef unsigned int pgtbl_mod_mask;
- 
- #endif /* !__ASSEMBLY__ */
- 
-+#if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
-+#ifdef CONFIG_PHYS_ADDR_T_64BIT
-+/*
-+ * ZSMALLOC needs to know the highest PFN on 32-bit architectures
-+ * with physical address space extension, but falls back to
-+ * BITS_PER_LONG otherwise.
-+ */
-+#error Missing MAX_POSSIBLE_PHYSMEM_BITS definition
-+#else
-+#define MAX_POSSIBLE_PHYSMEM_BITS 32
-+#endif
-+#endif
-+
- #ifndef has_transparent_hugepage
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- #define has_transparent_hugepage() 1
--- 
-2.27.0
+Regards,
+Boqun
 
+> -#define cmpxchg_local(ptr, o, n)					 \
+> +#define arch_cmpxchg_local(ptr, o, n)					 \
+>    ({									 \
+>       __typeof__(*(ptr)) _o_ = (o);					 \
+>       __typeof__(*(ptr)) _n_ = (n);					 \
+> @@ -484,7 +456,7 @@ __cmpxchg_acquire(void *ptr, unsigned long old, unsigned long new,
+>  				    (unsigned long)_n_, sizeof(*(ptr))); \
+>    })
+>  
+> -#define cmpxchg_relaxed(ptr, o, n)					\
+> +#define arch_cmpxchg_relaxed(ptr, o, n)					\
+>  ({									\
+>  	__typeof__(*(ptr)) _o_ = (o);					\
+>  	__typeof__(*(ptr)) _n_ = (n);					\
+> @@ -493,38 +465,20 @@ __cmpxchg_acquire(void *ptr, unsigned long old, unsigned long new,
+>  			sizeof(*(ptr)));				\
+>  })
+>  
+> -#define cmpxchg_acquire(ptr, o, n)					\
+> -({									\
+> -	__typeof__(*(ptr)) _o_ = (o);					\
+> -	__typeof__(*(ptr)) _n_ = (n);					\
+> -	(__typeof__(*(ptr))) __cmpxchg_acquire((ptr),			\
+> -			(unsigned long)_o_, (unsigned long)_n_,		\
+> -			sizeof(*(ptr)));				\
+> -})
+>  #ifdef CONFIG_PPC64
+> -#define cmpxchg64(ptr, o, n)						\
+> -  ({									\
+> -	BUILD_BUG_ON(sizeof(*(ptr)) != 8);				\
+> -	cmpxchg((ptr), (o), (n));					\
+> -  })
+> -#define cmpxchg64_local(ptr, o, n)					\
+> +#define arch_cmpxchg64_local(ptr, o, n)					\
+>    ({									\
+>  	BUILD_BUG_ON(sizeof(*(ptr)) != 8);				\
+> -	cmpxchg_local((ptr), (o), (n));					\
+> +	arch_cmpxchg_local((ptr), (o), (n));				\
+>    })
+> -#define cmpxchg64_relaxed(ptr, o, n)					\
+> -({									\
+> -	BUILD_BUG_ON(sizeof(*(ptr)) != 8);				\
+> -	cmpxchg_relaxed((ptr), (o), (n));				\
+> -})
+> -#define cmpxchg64_acquire(ptr, o, n)					\
+> +#define arch_cmpxchg64_relaxed(ptr, o, n)				\
+>  ({									\
+>  	BUILD_BUG_ON(sizeof(*(ptr)) != 8);				\
+> -	cmpxchg_acquire((ptr), (o), (n));				\
+> +	arch_cmpxchg_relaxed((ptr), (o), (n));				\
+>  })
+>  #else
+>  #include <asm-generic/cmpxchg-local.h>
+> -#define cmpxchg64_local(ptr, o, n) __cmpxchg64_local_generic((ptr), (o), (n))
+> +#define arch_cmpxchg64_local(ptr, o, n) __cmpxchg64_local_generic((ptr), (o), (n))
+>  #endif
+>  
+>  #endif /* __KERNEL__ */
+> -- 
+> 2.23.0
+> 
