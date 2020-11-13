@@ -1,94 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09592B24BC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Nov 2020 20:41:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A86A2B24D2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Nov 2020 20:44:53 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CXpkl4RGVzDr8p
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Nov 2020 06:41:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CXpp951kGzDr7q
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Nov 2020 06:44:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::435;
+ helo=mail-pf1-x435.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=iCQz/8Sk; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=oFn/RXDy; dkim-atps=neutral
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
+ [IPv6:2607:f8b0:4864:20::435])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CXphQ73j8zDr61
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Nov 2020 06:39:49 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0ADJVUKv069329; Fri, 13 Nov 2020 14:39:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=nPwIVS1T6ImUpr2jIqRuuKKMr+2ETbA+Gq0kZ/tqCVg=;
- b=iCQz/8SkXOg3XXaQfJVahDrDIbsIRLkFMBws6norJAThObkrjTT1s6b/78/nG0xDnq5I
- bPi21MUX+5A+1OTYTW5PeYLH7VGKmy39Y5kkNEyYx+TdCNhsr2E9mVQPLg0+3qpp3HwA
- dnbDtRMUpPDvQXNA0FHqxUIm6nbVd22LyDZ5Rzy3BPitmgx+DhnUOjL/IzGPGt4VfNNC
- 5rCGNaO1t8jRy7RFc39ISjDoqwa+tDTtbdPTl+6B7Fi6jVbgpTVsuGjjZVEnfcCkAWim
- M5EyqJZzWG1U0+Ar5vLSn6aO8Uv8fODwUDnyS9ga7x3PHQFH750bCOo9ySfdimaJQ7wA yQ== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 34sxs2bj10-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Nov 2020 14:39:40 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0ADJbWWE012766;
- Fri, 13 Nov 2020 19:39:39 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 34nk7ajmw6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Nov 2020 19:39:39 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0ADJdcRg20513420
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 13 Nov 2020 19:39:38 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 86D9F28058;
- Fri, 13 Nov 2020 19:39:38 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C573A28059;
- Fri, 13 Nov 2020 19:39:36 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.65.230.183])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 13 Nov 2020 19:39:36 +0000 (GMT)
-Subject: Re: [PATCH 1/6] ibmvfc: byte swap login_buf.resp values in attribute
- show functions
-To: Christoph Hellwig <hch@infradead.org>
-References: <20201112010442.102589-1-tyreld@linux.ibm.com>
- <20201112093752.GA24235@infradead.org>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <7df9d768-e008-a849-5fbd-78d6bd0536fa@linux.ibm.com>
-Date: Fri, 13 Nov 2020 11:39:35 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CXplH2WHKzDr3G
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Nov 2020 06:42:17 +1100 (AEDT)
+Received: by mail-pf1-x435.google.com with SMTP id c20so8487836pfr.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Nov 2020 11:42:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=bpaBEkCKEdHgW1h3duZgowAHWMVwm/wa+XAmGoyCFHI=;
+ b=oFn/RXDyVA1j0y1YQDQOB2ftvc0uvORFJdjpj9LDlBrrNhMvbFReEzpWp24e286756
+ 4uT8WsjYCxktEdM0u6GrTe3zP/6MtEsFGCS4cmMGgtjYGJJ4FivdbALYSUP1DDjb73Wq
+ EICO1cd3IrEkLRz/QdnDx+5qAwOofb0VdoEyfxzyPPvf9aDDudrOp8yJmeKdOO1SPZk+
+ aO0NhK5SD16xRb2puDAUjDqglJe/OAjuPVAqxKxXAF0LEycfYydU/hJ7W5yzCKdEXs4B
+ CCjEOXDtRhs4YQMdFVA1O8gksAFUltf/8U126y8IgS1rdV2diGiuqZ4VIE1lehcRpMj/
+ uLCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=bpaBEkCKEdHgW1h3duZgowAHWMVwm/wa+XAmGoyCFHI=;
+ b=DAkh+yuN6iGeUAwuZjJg+kUxBhcPMN9exFBZUMpwMTHKc6DMBtM5J1Ja8hlQZi2aqw
+ QvFdDR5+c3dmguaoKLQQ7wSHTNC1erG+ZRAyOlHTnqKNnTOgGB6IBAaZQvhiNWwYUtYq
+ nhpCbkJSKMWP0v4ZGSLGVYOIhKVcq5K7Vhla1ifcbeJQMW1jqiR9EBIZaE8G7mRVeGvb
+ vnt1NRoNM3eB3wC7w1c/ifA2XtgpUeI1irI8YYhTeJp6i3n5gu13e8hGpE3xB5J/sa+C
+ iorXg6kgqMgelg48hZCCRYmlenGfBvSqLvmfyRUxX+hGImPAPX3hyMBbhhEWIEAxsXgt
+ pL4g==
+X-Gm-Message-State: AOAM532F6OtxeHi/lqGWE0xRbNIEXFhARUGNEH2aa2K5catJhAKvH7l1
+ 3Ta7V/Gt1dgmgurR/g7J9nOEi0aGepIs66T+M4dpDw==
+X-Google-Smtp-Source: ABdhPJxBGruW0CFPMXPkH6jCYQnUWGpwTUjThVpylwpIL+AcMQOGFSV+GJvuRANsp1Q7nkVoV1fQ8L8DYU8vKQJ5bkc=
+X-Received: by 2002:a65:4b81:: with SMTP id t1mr3343357pgq.263.1605296534160; 
+ Fri, 13 Nov 2020 11:42:14 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20201112093752.GA24235@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-13_17:2020-11-13,
- 2020-11-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0
- spamscore=0 impostorscore=0 clxscore=1011 suspectscore=0 mlxlogscore=999
- adultscore=0 priorityscore=1501 malwarescore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011130123
+References: <202011131146.g8dPLQDD-lkp@intel.com>
+ <CAFP8O3LpSmxVnjHfQAN455k1ZRg3PbgZYhWr030evCq1T10k=Q@mail.gmail.com>
+ <20201113190824.GA1477315@ubuntu-m3-large-x86>
+In-Reply-To: <20201113190824.GA1477315@ubuntu-m3-large-x86>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Fri, 13 Nov 2020 11:42:03 -0800
+Message-ID: <CAKwvOdkEtTQhDRFRV_d66FyhQBe536vRbOW=fQjesiHz3dfeBA@mail.gmail.com>
+Subject: Re: Error: invalid switch -me200
+To: Nathan Chancellor <natechancellor@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,33 +77,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
- linux-kernel@vger.kernel.org, james.bottomley@hansenpartnership.com,
- brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: kbuild-all@lists.01.org, kernel test robot <lkp@intel.com>,
+ =?UTF-8?B?RsSBbmctcnXDrCBTw7JuZw==?= <maskray@google.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/12/20 1:37 AM, Christoph Hellwig wrote:
-> On Wed, Nov 11, 2020 at 07:04:37PM -0600, Tyrel Datwyler wrote:
->> Both ibmvfc_show_host_(capabilities|npiv_version) functions retrieve
->> values from vhost->login_buf.resp buffer. This is the MAD response
->> buffer from the VIOS and as such any multi-byte non-string values are in
->> big endian format.
->>
->> Byte swap these values to host cpu endian format for better human
->> readability.
-> 
-> The whole series creates tons of pointlessly over 80 char lines.
-> Please do a quick fixup.
-> 
++ MPE, PPC
 
-The checkpatch script only warns at 100 char lines these days. To be fair though
-I did have two lines go over that limit by a couple characters, there are a
-couple commit log typos, and I had an if keyword with no space after before the
-opening parenthesis. So, I'll happily re-spin.
+On Fri, Nov 13, 2020 at 11:08 AM Nathan Chancellor
+<natechancellor@gmail.com> wrote:
+>
+> On Fri, Nov 13, 2020 at 09:28:03AM -0800, F=C4=81ng-ru=C3=AC S=C3=B2ng wr=
+ote:
+> > On Thu, Nov 12, 2020 at 7:22 PM kernel test robot <lkp@intel.com> wrote=
+:
+> > >
+> > > Hi Fangrui,
+> > >
+> > > FYI, the error/warning still remains.
+> > >
+> > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linu=
+x.git master
+> > > head:   585e5b17b92dead8a3aca4e3c9876fbca5f7e0ba
+> > > commit: ca9b31f6bb9c6aa9b4e5f0792f39a97bbffb8c51 Makefile: Fix GCC_TO=
+OLCHAIN_DIR prefix for Clang cross compilation
+> > > date:   4 months ago
+> > > config: powerpc-randconfig-r031-20201113 (attached as .config)
 
-However, for my info going forward is the SCSI subsystem sticking to 80 char
-lines as a hard limit?
+^ randconfig
 
--Tyrel
+> > > compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project =
+9e0c35655b6e8186baef8840b26ba4090503b554)
+> > > reproduce (this is a W=3D1 build):
+> > >         wget https://raw.githubusercontent.com/intel/lkp-tests/master=
+/sbin/make.cross -O ~/bin/make.cross
+> > >         chmod +x ~/bin/make.cross
+> > >         # install powerpc cross compiling tool for clang build
+> > >         # apt-get install binutils-powerpc-linux-gnu
+> > >         # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/li=
+nux.git/commit/?id=3Dca9b31f6bb9c6aa9b4e5f0792f39a97bbffb8c51
+> > >         git remote add linus https://git.kernel.org/pub/scm/linux/ker=
+nel/git/torvalds/linux.git
+> > >         git fetch --no-tags linus master
+> > >         git checkout ca9b31f6bb9c6aa9b4e5f0792f39a97bbffb8c51
+> > >         # save the attached .config to linux build tree
+> > >         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dclang make.cros=
+s ARCH=3Dpowerpc
+> > >
+> > > If you fix the issue, kindly add following tag as appropriate
+> > > Reported-by: kernel test robot <lkp@intel.com>
+> > >
+> > > All errors (new ones prefixed by >>):
+> > >
+> > >    Assembler messages:
+> > > >> Error: invalid switch -me200
+> > > >> Error: unrecognized option -me200
+> > >    clang-12: error: assembler command failed with exit code 1 (use -v=
+ to see invocation)
+> > >    make[2]: *** [scripts/Makefile.build:281: scripts/mod/empty.o] Err=
+or 1
+> > >    make[2]: Target '__build' not remade because of errors.
+> > >    make[1]: *** [Makefile:1174: prepare0] Error 2
+> > >    make[1]: Target 'prepare' not remade because of errors.
+> > >    make: *** [Makefile:185: __sub-make] Error 2
+> > >    make: Target 'prepare' not remade because of errors.
+> > >
+> > > ---
+> > > 0-DAY CI Kernel Test Service, Intel Corporation
+> > > https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> >
+> > This can be ignored. The LLVM integrated assembler does not recognize
+> > -me200 (-Wa,-me200 in arch/powerpc/Makefile). I guess the GNU as -m
+> > option is similar to .arch or .machine and controls what instructions
+> > are recognized. The integrated assembler tends to support all
+> > instructions (conditional supporting some instructions has some
+> > challenges; in the end I have patched parsing but ignoring `.arch` for
+> > x86-64 and ignoring `.machine ppc64` for ppc64)
+> >
+> > (In addition, e200 is a 32-bit Power ISA microprocessor. 32-bit
+> > support may get less attention in LLVM.)
+>
+> This is also not a clang specific issue, I see the exact same error
+> with GCC 10.2.0 and binutils 2.35.
+>
+> $ make -skj64 ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64-linux- olddefconfi=
+g vmlinux
+
+Does using a non 64b triple produce the same failure?
+
+> ...
+> Error: invalid switch -me200
+> Error: unrecognized option -me200
+
+There's a block in  arch/powerpc/Makefile:
+248 cpu-as-$(CONFIG_40x)    +=3D -Wa,-m405
+249 cpu-as-$(CONFIG_44x)    +=3D -Wa,-m440
+250 cpu-as-$(CONFIG_ALTIVEC)  +=3D $(call
+as-option,-Wa$(comma)-maltivec)
+251 cpu-as-$(CONFIG_E200)   +=3D -Wa,-me200
+252 cpu-as-$(CONFIG_E500)   +=3D -Wa,-me500
+
+Are those all broken configs, or is Kconfig messed up such that
+randconfig can select these when it should not?
+--=20
+Thanks,
+~Nick Desaulniers
