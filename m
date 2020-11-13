@@ -1,66 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC012B1ADE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Nov 2020 13:13:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3A02B1B55
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Nov 2020 13:51:02 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CXcmn0SLQzDqRc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Nov 2020 23:12:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CXdcf14mPzDqmb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Nov 2020 23:50:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=178.33.254.192; helo=3.mo52.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=r4jA8ox3; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CXc9G5wdlzDr1S
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Nov 2020 22:45:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=jQU4qNuDdZU27a5ijyKvpcUU0ywYdFHyt7SQu4F9MLo=; b=r4jA8ox3PBkqEzLoXdgbxAa/u1
- M9GVXID7RRadO2bbX1dSPGBrKm+ZYbeUir6yHJ5kVUX09G/8sIaoOJOi/t2lYUXkv4Ih45WIpqZkd
- 4HhOAx7bTE8HKhp9dN1n0sVzG20tT4HU/FPiHjFs9Rcx5fBqM1/kYuCxqC8yDkDc9RTcoq4oe8vay
- Tm/UBXI/w2xGCiApjzJzusxm0bDRb+7eMLczjdnxFk3s4WlzppapYQLtSCvwsL0SUeJdnuwAmgi4p
- 3nSrC4fNDVH+z3uR6cwMiOSaPMJHfN9QaxLJ9DDl3kZtXEK8+6XJLYFfkcbCcoETdx9GNhbqwbnER
- wNmCBprA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kdXVv-0003Al-Op; Fri, 13 Nov 2020 11:45:11 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 1200 seconds by postgrey-1.36 at bilbo;
+ Fri, 13 Nov 2020 23:45:03 AEDT
+Received: from 3.mo52.mail-out.ovh.net (3.mo52.mail-out.ovh.net
+ [178.33.254.192])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 5952B306102;
- Fri, 13 Nov 2020 12:45:10 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 44BDC20A2A30E; Fri, 13 Nov 2020 12:45:10 +0100 (CET)
-Date: Fri, 13 Nov 2020 12:45:10 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: kan.liang@linux.intel.com, mingo@kernel.org, acme@kernel.org,
- mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
- jolsa@redhat.com, eranian@google.com
-Subject: Re: [PATCH 2/5] mm: Introduce pXX_leaf_size()
-Message-ID: <20201113114510.GX2611@hirez.programming.kicks-ass.net>
-References: <20201113111901.743573013@infradead.org>
- <20201113113426.465239104@infradead.org>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CXdTq3BcWzDr2h
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Nov 2020 23:44:58 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.48])
+ by mo52.mail-out.ovh.net (Postfix) with ESMTPS id 1D58D204EF1;
+ Fri, 13 Nov 2020 13:06:16 +0100 (CET)
+Received: from kaod.org (37.59.142.97) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Fri, 13 Nov
+ 2020 13:06:15 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-97G002d415765a-705b-4da2-9b01-67ac23f9e562,
+ 6CF58D6617F62A349CE936A1177A29C0D3476033) smtp.auth=clg@kaod.org
+Subject: Re: [RFC PATCH kernel 2/2] powerpc/pci: Remove LSI mappings on device
+ teardown
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, <linuxppc-dev@lists.ozlabs.org>
+References: <20201027090655.14118-1-aik@ozlabs.ru>
+ <20201027090655.14118-3-aik@ozlabs.ru>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <6c6702bd-dff2-1d34-0f93-4f8011417c64@kaod.org>
+Date: Fri, 13 Nov 2020 13:06:14 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201113113426.465239104@infradead.org>
+In-Reply-To: <20201027090655.14118-3-aik@ozlabs.ru>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.97]
+X-ClientProxiedBy: DAG7EX2.mxp5.local (172.16.2.62) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: e67374c8-6bc1-40fc-bd7f-1a030246aa01
+X-Ovh-Tracer-Id: 8554306020416981938
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedruddvhedgfeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdeljeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheprghikhesohiilhgrsghsrdhruh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,56 +66,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, ak@linux.intel.com, catalin.marinas@arm.com,
- linuxppc-dev@lists.ozlabs.org, willy@infradead.org,
- linux-kernel@vger.kernel.org, dave.hansen@intel.com, npiggin@gmail.com,
- aneesh.kumar@linux.ibm.com, sparclinux@vger.kernel.org, will@kernel.org,
- davem@davemloft.net, kirill.shutemov@linux.intel.com
+Cc: Rob Herring <robh@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Qian Cai <cai@lca.pw>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 13, 2020 at 12:19:03PM +0100, Peter Zijlstra wrote:
-> A number of architectures have non-pagetable aligned huge/large pages.
-> For such architectures a leaf can actually be part of a larger TLB
-> entry.
+On 10/27/20 10:06 AM, Alexey Kardashevskiy wrote:
+> From: Oliver O'Halloran <oohall@gmail.com>
 > 
-> Provide generic helpers to determine the TLB size of a page-table
-> leaf.
+> When a passthrough IO adapter is removed from a pseries machine using hash
+> MMU and the XIVE interrupt mode, the POWER hypervisor expects the guest OS
+> to clear all page table entries related to the adapter. If some are still
+> present, the RTAS call which isolates the PCI slot returns error 9001
+> "valid outstanding translations" and the removal of the IO adapter fails.
+> This is because when the PHBs are scanned, Linux maps automatically the
+> INTx interrupts in the Linux interrupt number space but these are never
+> removed.
 > 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> This problem can be fixed by adding the corresponding unmap operation when
+> the device is removed. There's no pcibios_* hook for the remove case, but
+> the same effect can be achieved using a bus notifier.
+> 
+> Cc: Cédric Le Goater <clg@kaod.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks taking care of this.
+
+C. 
+
 > ---
->  include/linux/pgtable.h |   16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+>  arch/powerpc/kernel/pci-common.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
 > 
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1536,4 +1536,20 @@ typedef unsigned int pgtbl_mod_mask;
->  #define pmd_leaf(x)	0
->  #endif
+> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+> index be108616a721..95f4e173368a 100644
+> --- a/arch/powerpc/kernel/pci-common.c
+> +++ b/arch/powerpc/kernel/pci-common.c
+> @@ -404,6 +404,27 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
+>  	return 0;
+>  }
 >  
-> +#ifndef pgd_leaf_size
-> +#define pgd_leaf_size(x) PGD_SIZE
-
-Argh, I lost a refresh, that should've been:
-
-+#define pgd_leaf_size(x) (1ULL << PGDIR_SHIFT)
-
-
-> +#endif
-> +#ifndef p4d_leaf_size
-> +#define p4d_leaf_size(x) P4D_SIZE
-> +#endif
-> +#ifndef pud_leaf_size
-> +#define pud_leaf_size(x) PUD_SIZE
-> +#endif
-> +#ifndef pmd_leaf_size
-> +#define pmd_leaf_size(x) PMD_SIZE
-> +#endif
-> +#ifndef pte_leaf_size
-> +#define pte_leaf_size(x) PAGE_SIZE
-> +#endif
+> +static int ppc_pci_unmap_irq_line(struct notifier_block *nb,
+> +			       unsigned long action, void *data)
+> +{
+> +	struct pci_dev *pdev = to_pci_dev(data);
 > +
->  #endif /* _LINUX_PGTABLE_H */
+> +	if (action == BUS_NOTIFY_DEL_DEVICE)
+> +		irq_dispose_mapping(pdev->irq);
+> +
+> +	return NOTIFY_DONE;
+> +}
+> +
+> +static struct notifier_block ppc_pci_unmap_irq_notifier = {
+> +	.notifier_call = ppc_pci_unmap_irq_line,
+> +};
+> +
+> +static int ppc_pci_register_irq_notifier(void)
+> +{
+> +	return bus_register_notifier(&pci_bus_type, &ppc_pci_unmap_irq_notifier);
+> +}
+> +arch_initcall(ppc_pci_register_irq_notifier);
+> +
+>  /*
+>   * Platform support for /proc/bus/pci/X/Y mmap()s.
+>   *  -- paulus.
 > 
-> 
+
