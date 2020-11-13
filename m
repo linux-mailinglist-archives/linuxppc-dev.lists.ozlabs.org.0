@@ -2,59 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3A02B1B55
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Nov 2020 13:51:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BDE92B1C1F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Nov 2020 14:48:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CXdcf14mPzDqmb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Nov 2020 23:50:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CXfv34wgGzDr7J
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Nov 2020 00:48:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.33.254.192; helo=3.mo52.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 1200 seconds by postgrey-1.36 at bilbo;
- Fri, 13 Nov 2020 23:45:03 AEDT
-Received: from 3.mo52.mail-out.ovh.net (3.mo52.mail-out.ovh.net
- [178.33.254.192])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CXdTq3BcWzDr2h
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Nov 2020 23:44:58 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.156.48])
- by mo52.mail-out.ovh.net (Postfix) with ESMTPS id 1D58D204EF1;
- Fri, 13 Nov 2020 13:06:16 +0100 (CET)
-Received: from kaod.org (37.59.142.97) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Fri, 13 Nov
- 2020 13:06:15 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-97G002d415765a-705b-4da2-9b01-67ac23f9e562,
- 6CF58D6617F62A349CE936A1177A29C0D3476033) smtp.auth=clg@kaod.org
-Subject: Re: [RFC PATCH kernel 2/2] powerpc/pci: Remove LSI mappings on device
- teardown
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, <linuxppc-dev@lists.ozlabs.org>
-References: <20201027090655.14118-1-aik@ozlabs.ru>
- <20201027090655.14118-3-aik@ozlabs.ru>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <6c6702bd-dff2-1d34-0f93-4f8011417c64@kaod.org>
-Date: Fri, 13 Nov 2020 13:06:14 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CXfq33NMSzDr5n
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Nov 2020 00:44:48 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CXfpY4r2szB09Zx;
+ Fri, 13 Nov 2020 14:44:37 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id SG5tmC5mOILx; Fri, 13 Nov 2020 14:44:37 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CXfpY3PwpzB09Zp;
+ Fri, 13 Nov 2020 14:44:37 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C54B68B859;
+ Fri, 13 Nov 2020 14:44:38 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id GK4SN1t9uBy5; Fri, 13 Nov 2020 14:44:38 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5912A8B857;
+ Fri, 13 Nov 2020 14:44:37 +0100 (CET)
+Subject: Re: [PATCH 0/5] perf/mm: Fix PERF_SAMPLE_*_PAGE_SIZE
+To: Peter Zijlstra <peterz@infradead.org>, kan.liang@linux.intel.com,
+ mingo@kernel.org, acme@kernel.org, mark.rutland@arm.com,
+ alexander.shishkin@linux.intel.com, jolsa@redhat.com, eranian@google.com
+References: <20201113111901.743573013@infradead.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <16ad8cab-08e2-27a7-6803-baadc6b8721b@csgroup.eu>
+Date: Fri, 13 Nov 2020 14:44:37 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.3
 MIME-Version: 1.0
-In-Reply-To: <20201027090655.14118-3-aik@ozlabs.ru>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+In-Reply-To: <20201113111901.743573013@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.97]
-X-ClientProxiedBy: DAG7EX2.mxp5.local (172.16.2.62) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: e67374c8-6bc1-40fc-bd7f-1a030246aa01
-X-Ovh-Tracer-Id: 8554306020416981938
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedruddvhedgfeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdeljeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheprghikhesohiilhgrsghsrdhruh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,78 +65,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Marc Zyngier <maz@kernel.org>,
- linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Qian Cai <cai@lca.pw>,
- Thomas Gleixner <tglx@linutronix.de>,
- =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
+Cc: linux-arch@vger.kernel.org, ak@linux.intel.com, catalin.marinas@arm.com,
+ linuxppc-dev@lists.ozlabs.org, willy@infradead.org,
+ linux-kernel@vger.kernel.org, dave.hansen@intel.com, npiggin@gmail.com,
+ aneesh.kumar@linux.ibm.com, sparclinux@vger.kernel.org, will@kernel.org,
+ davem@davemloft.net, kirill.shutemov@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/27/20 10:06 AM, Alexey Kardashevskiy wrote:
-> From: Oliver O'Halloran <oohall@gmail.com>
+Hi
+
+Le 13/11/2020 à 12:19, Peter Zijlstra a écrit :
+> Hi,
 > 
-> When a passthrough IO adapter is removed from a pseries machine using hash
-> MMU and the XIVE interrupt mode, the POWER hypervisor expects the guest OS
-> to clear all page table entries related to the adapter. If some are still
-> present, the RTAS call which isolates the PCI slot returns error 9001
-> "valid outstanding translations" and the removal of the IO adapter fails.
-> This is because when the PHBs are scanned, Linux maps automatically the
-> INTx interrupts in the Linux interrupt number space but these are never
-> removed.
+> These patches provide generic infrastructure to determine TLB page size from
+> page table entries alone. Perf will use this (for either data or code address)
+> to aid in profiling TLB issues.
 > 
-> This problem can be fixed by adding the corresponding unmap operation when
-> the device is removed. There's no pcibios_* hook for the remove case, but
-> the same effect can be achieved using a bus notifier.
+> While most architectures only have page table aligned large pages, some
+> (notably ARM64, Sparc64 and Power) provide non page table aligned large pages
+> and need to provide their own implementation of these functions.
 > 
-> Cc: Cédric Le Goater <clg@kaod.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks taking care of this.
-
-C. 
-
-> ---
->  arch/powerpc/kernel/pci-common.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-> index be108616a721..95f4e173368a 100644
-> --- a/arch/powerpc/kernel/pci-common.c
-> +++ b/arch/powerpc/kernel/pci-common.c
-> @@ -404,6 +404,27 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
->  	return 0;
->  }
->  
-> +static int ppc_pci_unmap_irq_line(struct notifier_block *nb,
-> +			       unsigned long action, void *data)
-> +{
-> +	struct pci_dev *pdev = to_pci_dev(data);
-> +
-> +	if (action == BUS_NOTIFY_DEL_DEVICE)
-> +		irq_dispose_mapping(pdev->irq);
-> +
-> +	return NOTIFY_DONE;
-> +}
-> +
-> +static struct notifier_block ppc_pci_unmap_irq_notifier = {
-> +	.notifier_call = ppc_pci_unmap_irq_line,
-> +};
-> +
-> +static int ppc_pci_register_irq_notifier(void)
-> +{
-> +	return bus_register_notifier(&pci_bus_type, &ppc_pci_unmap_irq_notifier);
-> +}
-> +arch_initcall(ppc_pci_register_irq_notifier);
-> +
->  /*
->   * Platform support for /proc/bus/pci/X/Y mmap()s.
->   *  -- paulus.
+> I've provided (completely untested) implementations for ARM64 and Sparc64, but
+> failed to penetrate the _many_ Power MMUs. I'm hoping Nick or Aneesh can help
+> me out there.
 > 
 
+I can help with powerpc 8xx. It is a 32 bits powerpc. The PGD has 1024 entries, that means each 
+entry maps 4M.
+
+Page sizes are 4k, 16k, 512k and 8M.
+
+For the 8M pages we use hugepd with a single entry. The two related PGD entries point to the same 
+hugepd.
+
+For the other sizes, they are in standard page tables. 16k pages appear 4 times in the page table. 
+512k entries appear 128 times in the page table.
+
+When the PGD entry has _PMD_PAGE_8M bits, the PMD entry points to a hugepd with holds the single 8M 
+entry.
+
+In the PTE, we have two bits: _PAGE_SPS and _PAGE_HUGE
+
+_PAGE_HUGE means it is a 512k page
+_PAGE_SPS means it is not a 4k page
+
+The kernel can by build either with 4k pages as standard page size, or 16k pages. It doesn't change 
+the page table layout though.
+
+Hope this is clear. Now I don't really know to wire that up to your series.
+
+Christophe
