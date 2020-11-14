@@ -1,82 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0A12B2B4D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Nov 2020 05:18:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF722B2C56
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Nov 2020 10:04:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CY2BQ60sTzDqnM
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Nov 2020 15:18:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CY8Xm4yxJzDrBZ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Nov 2020 20:04:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=PF9ft6fM; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CY28m71cgzDr7V
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Nov 2020 15:16:40 +1100 (AEDT)
-Received: by mail-pg1-x542.google.com with SMTP id 62so8661706pgg.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Nov 2020 20:16:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=A9pg18TbAKGWThbDZV/lSnw6ECunYCQj34w2OxbsD28=;
- b=PF9ft6fMnlNP/6Zsbu25kflNnmBKfJOO/H4rjrJ+ql33V44LVFpAQuQmFtilVhoNGy
- Y9ZrE3vibDv+WkakZbF/0ztWkgwwMeb61WAEri4qAVRQx9t+j+QtLF3SwSbU92l005We
- sDSN4NvszMB3KMpUcgrPvhc81wtKtX7FQllX/xYsrejaiM2AiGmJFBU5MuS1Mqpgoy9/
- WuBtiYmAeihC5b5j2t+sfKl50CluaCCsjKzYiOPXOz/p3MjL4IctEhyHyX/DbOlO45wl
- xj0iaBbrOfI0gI4BiCwzg5d3EgRXQ79eVt3vzi2h9kdepcB6fZFSPQ/Y6SyUS+NB3shM
- djsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=A9pg18TbAKGWThbDZV/lSnw6ECunYCQj34w2OxbsD28=;
- b=Au5kACBnkjnZuR+6kEMTgfzzN1xMflGnj7PcXLYsmHe7sQ+FEHJvsCWa9ejRCcw8Lg
- nWf4SzAEzt3m/mp+TsdIDtUpej9YgPV0wSeo8TZIi6lnjusvithUHj1PcODBeaTGVnBF
- AksrEzcYj/FZDDRbp7wCZ1QBdb2vtUWa3gkWdyOiAYpSwb9bmEDth6iN0sgLa+rjYV+J
- LNU2RFcmYBiK7gdWxXsdMSReCIsLJKZNZEas6H8TDxL+jGjShdHMqIYKuLphGgHPmdAs
- 2LEpeDpqqsnpLJRhM2DlSH1PTZxR9+BYKr3n9y68UvvpN5DPvQ9ai7Eh1NIaBN/EXQ2e
- GpiQ==
-X-Gm-Message-State: AOAM531/V2ISXryGC2koa3BKbfl91faTDy8UIF0Njo1s3bjoQTe0jnZk
- +LnHTzy2rHyEtOe7LpfqTJYPrw==
-X-Google-Smtp-Source: ABdhPJxdtnYpfXnid7lmGwIEALBV3sGEAC/R8OHL5K5BnBiuttodEwRQNcVdi17epQTlF0c/PWefpw==
-X-Received: by 2002:a62:768e:0:b029:18a:d54d:3921 with SMTP id
- r136-20020a62768e0000b029018ad54d3921mr4922461pfc.31.1605327396070; 
- Fri, 13 Nov 2020 20:16:36 -0800 (PST)
-Received: from [192.168.10.85] (124-171-134-245.dyn.iinet.net.au.
- [124.171.134.245])
- by smtp.gmail.com with UTF8SMTPSA id 3sm11338509pfv.92.2020.11.13.20.16.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 13 Nov 2020 20:16:35 -0800 (PST)
-Subject: Re: [PATCH kernel] vfio_pci_nvlink2: Do not attempt NPU2 setup on old
- P8's NPU
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20201113050632.74124-1-aik@ozlabs.ru>
- <0b8ceab2-e304-809f-be3c-512b28b25852@linux.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <1f2be6b0-d53a-aa58-9c4f-d55a6a5b1c79@ozlabs.ru>
-Date: Sat, 14 Nov 2020 15:16:30 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:83.0) Gecko/20100101
- Thunderbird/83.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CY8W25WQTzDr68
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Nov 2020 20:02:47 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CY8Vm2wftz9vCxX;
+ Sat, 14 Nov 2020 10:02:40 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id MII8N_gqyiSc; Sat, 14 Nov 2020 10:02:40 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CY8Vm1ls4z9vCjb;
+ Sat, 14 Nov 2020 10:02:40 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4607C8B788;
+ Sat, 14 Nov 2020 10:02:41 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id X5TeAvZWgWaQ; Sat, 14 Nov 2020 10:02:41 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6F28F8B782;
+ Sat, 14 Nov 2020 10:02:40 +0100 (CET)
+Subject: Re: Error: invalid switch -me200
+To: Segher Boessenkool <segher@kernel.crashing.org>,
+ Nick Desaulniers <ndesaulniers@google.com>
+References: <202011131146.g8dPLQDD-lkp@intel.com>
+ <CAFP8O3LpSmxVnjHfQAN455k1ZRg3PbgZYhWr030evCq1T10k=Q@mail.gmail.com>
+ <20201113190824.GA1477315@ubuntu-m3-large-x86>
+ <CAKwvOdkEtTQhDRFRV_d66FyhQBe536vRbOW=fQjesiHz3dfeBA@mail.gmail.com>
+ <20201113200444.GA1496675@ubuntu-m3-large-x86>
+ <CAKwvOdkBSGPaKmQY1nERVe4_n19Q=MUtuwdond=FJAAF9N9Zhg@mail.gmail.com>
+ <20201114002037.GW2672@gate.crashing.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <14e9ce2b-1a83-5353-44c7-b0709796c70e@csgroup.eu>
+Date: Sat, 14 Nov 2020 10:02:35 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.3
 MIME-Version: 1.0
-In-Reply-To: <0b8ceab2-e304-809f-be3c-512b28b25852@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20201114002037.GW2672@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,38 +70,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Leonardo Augusto Guimaraes Garcia <lagarcia@br.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>, kvm@vger.kernel.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Arnd Bergmann <arnd@kernel.org>, kbuild-all@lists.01.org,
+ Brian Cain <bcain@codeaurora.org>,
+ =?UTF-8?B?RsSBbmctcnXDrCBTw7JuZw==?= <maskray@google.com>,
+ Masahiro Yamada <masahiroy@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Nathan Chancellor <natechancellor@gmail.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 13/11/2020 16:30, Andrew Donnellan wrote:
-> On 13/11/20 4:06 pm, Alexey Kardashevskiy wrote:
->> We execute certain NPU2 setup code (such as mapping an LPID to a device
->> in NPU2) unconditionally if an Nvlink bridge is detected. However this
->> cannot succeed on P8+ machines as the init helpers return an error other
->> than ENODEV which means the device is there is and setup failed so
->> vfio_pci_enable() fails and pass through is not possible.
->>
->> This changes the two NPU2 related init helpers to return -ENODEV if
->> there is no "memory-region" device tree property as this is
->> the distinction between NPU and NPU2.
->>
->> Fixes: 7f92891778df ("vfio_pci: Add NVIDIA GV100GL [Tesla V100 SXM2] 
->> subdriver")
->> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Le 14/11/2020 à 01:20, Segher Boessenkool a écrit :
+> On Fri, Nov 13, 2020 at 12:14:18PM -0800, Nick Desaulniers wrote:
+>>>>> Error: invalid switch -me200
+>>>>> Error: unrecognized option -me200
+>>>>
+>>>> 251 cpu-as-$(CONFIG_E200)   += -Wa,-me200
+>>>>
+>>>> Are those all broken configs, or is Kconfig messed up such that
+>>>> randconfig can select these when it should not?
+>>>
+>>> Hmmm, looks like this flag does not exist in mainline binutils? There is
+>>> a thread in 2010 about this that Segher commented on:
+>>>
+>>> https://lore.kernel.org/linuxppc-dev/9859E645-954D-4D07-8003-FFCD2391AB6E@kernel.crashing.org/
+>>>
+>>> Guess this config should be eliminated?
 > 
-> Should this be Cc: stable?
+> The help text for this config options says that e200 is used in 55xx,
+> and there *is* an -me5500 GAS flag (which probably does this same
+> thing, too).  But is any of this tested, or useful, or wanted?
+> 
+> Maybe Christophe knows, cc:ed.
+> 
 
-This depends on whether P8+ + NVLink was ever a  product (hi Leonardo) 
-and had actual customers who still rely on upstream kernels to work as 
-after many years only the last week I heard form some Redhat test 
-engineer that it does not work. May be cc: stable...
+I don't have much clue on this.
 
+But I see on wikipedia that e5500 is a 64 bits powerpc (https://en.wikipedia.org/wiki/PowerPC_e5500)
 
--- 
-Alexey
+What I see is that NXP seems to provide a GCC version that includes aditionnal cpu (e200z0 e200z2 
+e200z3 e200z4 e200z6 e200z7):
+
+valid arguments to '-mcpu=' are: 401 403 405 405fp 440 440fp 464 464fp 476 476fp 505 601 602 603 
+603e 604 604e 620 630 740 7400 7450 750 801 821 823 8540 8548 860 970 G3 G4 G5 a2 cell e200z0 e200z2 
+e200z3 e200z4 e200z6 e200z7 e300c2 e300c3 e500mc e500mc64 e5500 e6500 ec603e native power3 power4 
+power5 power5+ power6 power6x power7 power8 powerpc powerpc64 powerpc64le rs64 titan "
+
+https://community.nxp.com/t5/MPC5xxx/GCC-generating-not-implemented-instructions/m-p/845049
+
+Apparently based on binutils 2.28
+
+https://www.nxp.com/docs/en/release-note/S32DS-POWER-v1-2-RN.pdf
+
+But that's not exactly -me200 though.
+
+Now, I can't see any defconfig that selects CONFIG_E200, so is that worth keeping it in the kernel 
+at all ?
+
+Christophe
