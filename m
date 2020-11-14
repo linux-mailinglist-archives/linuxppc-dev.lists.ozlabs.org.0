@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 646112B316B
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Nov 2020 00:36:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5FE92B316C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Nov 2020 00:38:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CYWvD2qfSzDqSB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Nov 2020 10:36:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CYWwv40HrzDqT8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Nov 2020 10:38:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=a3hkq699; dkim-atps=neutral
+ header.s=default header.b=uEhpiu1I; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CYWsQ3GLCzDqQh
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Nov 2020 10:35:06 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CYWss08PSzDqRX
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Nov 2020 10:35:29 +1100 (AEDT)
 Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com
  (c-67-180-217-166.hsd1.ca.comcast.net [67.180.217.166])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B4DDB24137;
- Sat, 14 Nov 2020 23:35:02 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id A563224137;
+ Sat, 14 Nov 2020 23:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1605396903;
- bh=s9LmfnlBd6X9FQ2JJqe9YkY9PUM+P1pzFglNu4NzenE=;
+ s=default; t=1605396926;
+ bh=UTD2Bh9fb2HrkUiL49sMKAYceM4iQg2Jifv+pJ8UiNc=;
  h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=a3hkq6994bhB9cavqK6NCPIPZfxYZV23S/xMP0C60Y3Ey3mdDbmfxnYcot8Wbri0c
- /FO6Xtmsirm/PbcNorKRsL9JgGgVI6cMD9azcWGFBeSA87qIW6IuFDT40DuYv98xYN
- 7niWW+1Jls6GUJusktlhLQM4tipuS6z4U9czB8ic=
-Date: Sat, 14 Nov 2020 15:35:01 -0800
+ b=uEhpiu1If5hEFVoPGew8BartDhIkNgba+Nkv0Cf4nng/FStVxMoBXzJDXWtgfIXU5
+ coDxNCnBdzFaYX14+2Kq71IMTU4YllY8NKqvqhMYTY5Y3gbCoFwkMqPgMi7hhaVxvf
+ Kd+Z5VKtbQdepuVooE0JuWyDJlCWH5M+mvDYyolg=
+Date: Sat, 14 Nov 2020 15:35:24 -0800
 From: Jakub Kicinski <kuba@kernel.org>
 To: Thomas Falcon <tlfalcon@linux.ibm.com>
-Subject: Re: [PATCH net-next 02/12] ibmvnic: Introduce indirect subordinate
- Command Response Queue buffer
-Message-ID: <20201114153501.66072756@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <1605208207-1896-3-git-send-email-tlfalcon@linux.ibm.com>
+Subject: Re: [PATCH net-next 01/12] ibmvnic: Ensure that subCRQ entry reads
+ are ordered
+Message-ID: <20201114153524.1a32241f@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <1605208207-1896-2-git-send-email-tlfalcon@linux.ibm.com>
 References: <1605208207-1896-1-git-send-email-tlfalcon@linux.ibm.com>
- <1605208207-1896-3-git-send-email-tlfalcon@linux.ibm.com>
+ <1605208207-1896-2-git-send-email-tlfalcon@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -66,42 +66,10 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 12 Nov 2020 13:09:57 -0600 Thomas Falcon wrote:
-> This patch introduces the infrastructure to send batched subordinate
-> Command Response Queue descriptors, which are used by the ibmvnic
-> driver to send TX frame and RX buffer descriptors.
+On Thu, 12 Nov 2020 13:09:56 -0600 Thomas Falcon wrote:
+> Ensure that received Subordinate Command-Response Queue
+> entries are properly read in order by the driver.
 > 
 > Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
 
-> @@ -2957,6 +2963,19 @@ static struct ibmvnic_sub_crq_queue *init_sub_crq_queue(struct ibmvnic_adapter
->  
->  	scrq->adapter = adapter;
->  	scrq->size = 4 * PAGE_SIZE / sizeof(*scrq->msgs);
-> +	scrq->ind_buf.index = 0;
-> +
-> +	scrq->ind_buf.indir_arr =
-> +		dma_alloc_coherent(dev,
-> +				   IBMVNIC_IND_ARR_SZ,
-> +				   &scrq->ind_buf.indir_dma,
-> +				   GFP_KERNEL);
-> +
-> +	if (!scrq->ind_buf.indir_arr) {
-> +		dev_err(dev, "Couldn't allocate indirect scrq buffer\n");
-
-This warning/error is not necessary, memory allocation will trigger an
-OOM message already.
-
-> +		goto reg_failed;
-
-Don't you have to do something like 
-
-                        rc = plpar_hcall_norets(H_FREE_SUB_CRQ,                 
-                                                adapter->vdev->unit_address,    
-                                                scrq->crq_num); 
-
-?
-
-> +	}
-> +
->  	spin_lock_init(&scrq->lock);
->  
+Are you sure this is not a bug fix?
