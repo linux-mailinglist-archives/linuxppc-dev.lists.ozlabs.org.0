@@ -2,55 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8622B2F84
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Nov 2020 19:17:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EADD52B2FF3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Nov 2020 20:06:02 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CYNpq1D1zzDqS4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Nov 2020 05:17:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CYPtv4LZdzDqTm
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Nov 2020 06:05:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=agner.ch (client-ip=2a02:418:6a02::a2; helo=mail.kmu-office.ch;
- envelope-from=stefan@agner.ch; receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=agner.ch
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=agner.ch header.i=@agner.ch header.a=rsa-sha256
- header.s=dkim header.b=n2TeB026; dkim-atps=neutral
-X-Greylist: delayed 489 seconds by postgrey-1.36 at bilbo;
- Sun, 15 Nov 2020 05:15:58 AEDT
-Received: from mail.kmu-office.ch (mail.kmu-office.ch [IPv6:2a02:418:6a02::a2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CYNnB1pchzDqR3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Nov 2020 05:15:58 +1100 (AEDT)
-Received: from webmail.kmu-office.ch (unknown [IPv6:2a02:418:6a02::a3])
- by mail.kmu-office.ch (Postfix) with ESMTPSA id 5551A5C2E37;
- Sat, 14 Nov 2020 19:07:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agner.ch; s=dkim;
- t=1605377261;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Sb3trAdNHnBEBlNbdcbEeB4VP1eESqXIt0QS/y9AvzQ=;
- b=n2TeB026DClBYkuw3PuXKVXncRiz0K2uAG1nK+Y54G/XWQIAWo5aH7mZnLPtcEoUw8hDIM
- YBN393BgnUAvXHBK5+9lgv6nDUftoEyn9/a1OMOZDAIFynhVgzsjcfzCV3oP/KjzAe6dEe
- nQYgjzGd4nLiqvVszABF3z1c3K4Q5Ns=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CYPs93l2BzDqNB
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Nov 2020 06:04:20 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CYPrq4S9FzB09Zk;
+ Sat, 14 Nov 2020 20:04:11 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 5r6oBkXd1Dtr; Sat, 14 Nov 2020 20:04:11 +0100 (CET)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CYPrq0tfVzB09Zg;
+ Sat, 14 Nov 2020 20:04:11 +0100 (CET)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id 1780B17B0; Sat, 14 Nov 2020 20:07:00 +0100 (CET)
+Received: from 192.168.4.90 ([192.168.4.90]) by messagerie.c-s.fr (Horde
+ Framework) with HTTP; Sat, 14 Nov 2020 20:07:00 +0100
+Date: Sat, 14 Nov 2020 20:07:00 +0100
+Message-ID: <20201114200700.Horde.mC7ctDwjEwuYYJJgK2pO9A4@messagerie.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 03/19] powerpc: bad_page_fault, do_break get
+ registers from regs
+References: <20201111094410.3038123-1-npiggin@gmail.com>
+ <20201111094410.3038123-4-npiggin@gmail.com>
+In-Reply-To: <20201111094410.3038123-4-npiggin@gmail.com>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Date: Sat, 14 Nov 2020 19:07:40 +0100
-From: Stefan Agner <stefan@agner.ch>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH] arch: pgtable: define MAX_POSSIBLE_PHYSMEM_BITS where
- needed
-In-Reply-To: <20201113145932.10994-1-arnd@kernel.org>
-References: <20201113145932.10994-1-arnd@kernel.org>
-User-Agent: Roundcube Webmail/1.4.9
-Message-ID: <e28bb3cc9ca6f1a07f382e30d8fca43e@agner.ch>
-X-Sender: stefan@agner.ch
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,271 +57,369 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Arnd Bergmann <arnd@arndb.de>, Minchan Kim <minchan@kernel.org>,
- Vineet Gupta <vgupta@synopsys.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, Albert Ou <aou@eecs.berkeley.edu>,
- Paul Mackerras <paulus@samba.org>, Nitin Gupta <ngupta@vflare.org>,
- Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-11-13 15:59, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Stefan Agner reported a bug when using zsram on 32-bit Arm machines
-> with RAM above the 4GB address boundary:
-> 
->   Unable to handle kernel NULL pointer dereference at virtual address 00000000
->   pgd = a27bd01c
->   [00000000] *pgd=236a0003, *pmd=1ffa64003
->   Internal error: Oops: 207 [#1] SMP ARM
->   Modules linked in: mdio_bcm_unimac(+) brcmfmac cfg80211 brcmutil
-> raspberrypi_hwmon hci_uart crc32_arm_ce bcm2711_thermal phy_generic
-> genet
->   CPU: 0 PID: 123 Comm: mkfs.ext4 Not tainted 5.9.6 #1
->   Hardware name: BCM2711
->   PC is at zs_map_object+0x94/0x338
->   LR is at zram_bvec_rw.constprop.0+0x330/0xa64
->   pc : [<c0602b38>]    lr : [<c0bda6a0>]    psr: 60000013
->   sp : e376bbe0  ip : 00000000  fp : c1e2921c
->   r10: 00000002  r9 : c1dda730  r8 : 00000000
->   r7 : e8ff7a00  r6 : 00000000  r5 : 02f9ffa0  r4 : e3710000
->   r3 : 000fdffe  r2 : c1e0ce80  r1 : ebf979a0  r0 : 00000000
->   Flags: nZCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment user
->   Control: 30c5383d  Table: 235c2a80  DAC: fffffffd
->   Process mkfs.ext4 (pid: 123, stack limit = 0x495a22e6)
->   Stack: (0xe376bbe0 to 0xe376c000)
-> 
-> As it turns out, zsram needs to know the maximum memory size, which
-> is defined in MAX_PHYSMEM_BITS when CONFIG_SPARSEMEM is set, or in
-> MAX_POSSIBLE_PHYSMEM_BITS on the x86 architecture.
-> 
-> The same problem will be hit on all 32-bit architectures that have a
-> physical address space larger than 4GB and happen to not enable sparsemem
-> and include asm/sparsemem.h from asm/pgtable.h.
-> 
-> After the initial discussion, I suggested just always defining
-> MAX_POSSIBLE_PHYSMEM_BITS whenever CONFIG_PHYS_ADDR_T_64BIT is
-> set, or provoking a build error otherwise. This addresses all
-> configurations that can currently have this runtime bug, but
-> leaves all other configurations unchanged.
-> 
-> I looked up the possible number of bits in source code and
-> datasheets, here is what I found:
-> 
->  - on ARC, CONFIG_ARC_HAS_PAE40 controls whether 32 or 40 bits are used
->  - on ARM, CONFIG_LPAE enables 40 bit addressing, without it we never
->    support more than 32 bits, even though supersections in theory allow
->    up to 40 bits as well.
->  - on MIPS, some MIPS32r1 or later chips support 36 bits, and MIPS32r5
->    XPA supports up to 60 bits in theory, but 40 bits are more than
->    anyone will ever ship
->  - On PowerPC, there are three different implementations of 36 bit
->    addressing, but 32-bit is used without CONFIG_PTE_64BIT
->  - On RISC-V, the normal page table format can support 34 bit
->    addressing. There is no highmem support on RISC-V, so anything
->    above 2GB is unused, but it might be useful to eventually support
->    CONFIG_ZRAM for high pages.
-> 
-> Fixes: 61989a80fb3a ("staging: zsmalloc: zsmalloc memory allocation library")
-> Fixes: 02390b87a945 ("mm/zsmalloc: Prepare to variable MAX_PHYSMEM_BITS")
-> Cc: Stefan Agner <stefan@agner.ch>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Cc: Nitin Gupta <ngupta@vflare.org>
-> Cc: Minchan Kim <minchan@kernel.org>
-> Cc: Vineet Gupta <vgupta@synopsys.com>
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: linux-mips@vger.kernel.org
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Albert Ou <aou@eecs.berkeley.edu>
-> Cc: linux-riscv@lists.infradead.org
-> Link:
-> https://lore.kernel.org/linux-mm/bdfa44bf1c570b05d6c70898e2bbb0acf234ecdf.1604762181.git.stefan@agner.ch/
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Hi,
+
+Quoting Nicholas Piggin <npiggin@gmail.com>:
+
+> This also moves the 32s DABR match to C.
+
+I'm still not happy with that. What about the following instead ?
+
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 8cdc8bcde703..6253c4acb46d 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -657,10 +657,6 @@ ppc_swapcontext:
+  	.globl	handle_page_fault
+  handle_page_fault:
+  	addi	r3,r1,STACK_FRAME_OVERHEAD
+-#ifdef CONFIG_PPC_BOOK3S_32
+-	andis.  r0,r5,DSISR_DABRMATCH@h
+-	bne-    handle_dabr_fault
+-#endif
+  	bl	do_page_fault
+  	cmpwi	r3,0
+  	beq+	ret_from_except
+@@ -674,17 +670,6 @@ handle_page_fault:
+  	bl	bad_page_fault
+  	b	ret_from_except_full
+
+-#ifdef CONFIG_PPC_BOOK3S_32
+-	/* We have a data breakpoint exception - handle it */
+-handle_dabr_fault:
+-	SAVE_NVGPRS(r1)
+-	lwz	r0,_TRAP(r1)
+-	clrrwi	r0,r0,1
+-	stw	r0,_TRAP(r1)
+-	bl      do_break
+-	b	ret_from_except_full
+-#endif
+-
+  /*
+   * This routine switches between two different tasks.  The process
+   * state of one is saved on its kernel stack.  Then the state
+diff --git a/arch/powerpc/kernel/head_book3s_32.S  
+b/arch/powerpc/kernel/head_book3s_32.S
+index 9381aa867591..5cc71482b35f 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -684,7 +684,10 @@ handle_page_fault_tramp_1:
+  	lwz	r5, _DSISR(r11)
+  	/* fall through */
+  handle_page_fault_tramp_2:
++	andis.  r0, r5, DSISR_DABRMATCH@h
++	bne-	1f
+  	EXC_XFER_LITE(0x300, handle_page_fault)
++1:	EXC_XFER_STD(0x300, do_break)
+
+  #ifdef CONFIG_VMAP_STACK
+  .macro save_regs_thread		thread
+---
+Christophe
+
+>
+> Similar to the previous patch this makes interrupt handler function
+> types more regular so they can be wrapped with the next patch.
+>
+> bad_page_fault and do_break are not performance critical.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
-> If everyone is happy with this version, I would suggest merging this as
-> a bugfix through my asm-generic tree for linux-5.10. I originally
-> said I'd send individual patches for each architecture tree, but
-> I now think this is easier and better documents what is going on.
-> ---
->  arch/arc/include/asm/pgtable.h               |  2 ++
->  arch/arm/include/asm/pgtable-2level.h        |  2 ++
->  arch/arm/include/asm/pgtable-3level.h        |  2 ++
-
-Tested, it fixed the issue on my test system, thanks!
-
-For ARM:
-
-Reviewed-by: Stefan Agner <stefan@agner.ch>
-Tested-by: Stefan Agner <stefan@agner.ch>
-
---
-Stefan
-
->  arch/mips/include/asm/pgtable-32.h           |  3 +++
->  arch/powerpc/include/asm/book3s/32/pgtable.h |  2 ++
->  arch/powerpc/include/asm/nohash/32/pgtable.h |  2 ++
->  arch/riscv/include/asm/pgtable-32.h          |  2 ++
->  include/linux/pgtable.h                      | 13 +++++++++++++
->  8 files changed, 28 insertions(+)
-> 
-> diff --git a/arch/arc/include/asm/pgtable.h b/arch/arc/include/asm/pgtable.h
-> index f1ed17edb085..163641726a2b 100644
-> --- a/arch/arc/include/asm/pgtable.h
-> +++ b/arch/arc/include/asm/pgtable.h
-> @@ -134,8 +134,10 @@
->  
->  #ifdef CONFIG_ARC_HAS_PAE40
->  #define PTE_BITS_NON_RWX_IN_PD1	(0xff00000000 | PAGE_MASK | _PAGE_CACHEABLE)
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 40
+>  arch/powerpc/include/asm/bug.h             |  2 +-
+>  arch/powerpc/include/asm/debug.h           |  3 +--
+>  arch/powerpc/kernel/entry_32.S             | 14 ++++----------
+>  arch/powerpc/kernel/exceptions-64e.S       |  3 +--
+>  arch/powerpc/kernel/exceptions-64s.S       |  3 +--
+>  arch/powerpc/kernel/head_8xx.S             |  5 ++---
+>  arch/powerpc/kernel/process.c              |  7 +++----
+>  arch/powerpc/kernel/traps.c                |  2 +-
+>  arch/powerpc/mm/book3s64/hash_utils.c      |  4 ++--
+>  arch/powerpc/mm/book3s64/slb.c             |  2 +-
+>  arch/powerpc/mm/fault.c                    | 14 +++++++-------
+>  arch/powerpc/platforms/8xx/machine_check.c |  2 +-
+>  12 files changed, 25 insertions(+), 36 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+> index 897bad6b6bbb..49162faba33f 100644
+> --- a/arch/powerpc/include/asm/bug.h
+> +++ b/arch/powerpc/include/asm/bug.h
+> @@ -113,7 +113,7 @@
+>  struct pt_regs;
+>  long do_page_fault(struct pt_regs *);
+>  long hash__do_page_fault(struct pt_regs *);
+> -extern void bad_page_fault(struct pt_regs *, unsigned long, int);
+> +void bad_page_fault(struct pt_regs *, int);
+>  extern void _exception(int, struct pt_regs *, int, unsigned long);
+>  extern void _exception_pkey(struct pt_regs *, unsigned long, int);
+>  extern void die(const char *, struct pt_regs *, long);
+> diff --git a/arch/powerpc/include/asm/debug.h  
+> b/arch/powerpc/include/asm/debug.h
+> index ec57daf87f40..0550eceab3ca 100644
+> --- a/arch/powerpc/include/asm/debug.h
+> +++ b/arch/powerpc/include/asm/debug.h
+> @@ -52,8 +52,7 @@ extern void do_send_trap(struct pt_regs *regs,  
+> unsigned long address,
+>  			 unsigned long error_code, int brkpt);
 >  #else
->  #define PTE_BITS_NON_RWX_IN_PD1	(PAGE_MASK | _PAGE_CACHEABLE)
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 32
+>
+> -extern void do_break(struct pt_regs *regs, unsigned long address,
+> -		     unsigned long error_code);
+> +void do_break(struct pt_regs *regs);
 >  #endif
->  
->  /**************************************************************************
-> diff --git a/arch/arm/include/asm/pgtable-2level.h
-> b/arch/arm/include/asm/pgtable-2level.h
-> index 3502c2f746ca..baf7d0204eb5 100644
-> --- a/arch/arm/include/asm/pgtable-2level.h
-> +++ b/arch/arm/include/asm/pgtable-2level.h
-> @@ -75,6 +75,8 @@
->  #define PTE_HWTABLE_OFF		(PTE_HWTABLE_PTRS * sizeof(pte_t))
->  #define PTE_HWTABLE_SIZE	(PTRS_PER_PTE * sizeof(u32))
->  
-> +#define MAX_POSSIBLE_PHYSMEM_BITS	32
-> +
->  /*
->   * PMD_SHIFT determines the size of the area a second-level page table can map
->   * PGDIR_SHIFT determines what a third-level page table entry can map
-> diff --git a/arch/arm/include/asm/pgtable-3level.h
-> b/arch/arm/include/asm/pgtable-3level.h
-> index fbb6693c3352..2b85d175e999 100644
-> --- a/arch/arm/include/asm/pgtable-3level.h
-> +++ b/arch/arm/include/asm/pgtable-3level.h
-> @@ -25,6 +25,8 @@
->  #define PTE_HWTABLE_OFF		(0)
->  #define PTE_HWTABLE_SIZE	(PTRS_PER_PTE * sizeof(u64))
->  
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 40
-> +
->  /*
->   * PGDIR_SHIFT determines the size a top-level page table entry can map.
->   */
-> diff --git a/arch/mips/include/asm/pgtable-32.h
-> b/arch/mips/include/asm/pgtable-32.h
-> index a950fc1ddb4d..6c0532d7b211 100644
-> --- a/arch/mips/include/asm/pgtable-32.h
-> +++ b/arch/mips/include/asm/pgtable-32.h
-> @@ -154,6 +154,7 @@ static inline void pmd_clear(pmd_t *pmdp)
->  
->  #if defined(CONFIG_XPA)
->  
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 40
->  #define pte_pfn(x)		(((unsigned long)((x).pte_high >> _PFN_SHIFT)) |
-> (unsigned long)((x).pte_low << _PAGE_PRESENT_SHIFT))
->  static inline pte_t
->  pfn_pte(unsigned long pfn, pgprot_t prot)
-> @@ -169,6 +170,7 @@ pfn_pte(unsigned long pfn, pgprot_t prot)
->  
->  #elif defined(CONFIG_PHYS_ADDR_T_64BIT) && defined(CONFIG_CPU_MIPS32)
->  
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 36
->  #define pte_pfn(x)		((unsigned long)((x).pte_high >> 6))
->  
->  static inline pte_t pfn_pte(unsigned long pfn, pgprot_t prot)
-> @@ -183,6 +185,7 @@ static inline pte_t pfn_pte(unsigned long pfn,
-> pgprot_t prot)
->  
->  #else
->  
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 32
->  #ifdef CONFIG_CPU_VR41XX
->  #define pte_pfn(x)		((unsigned long)((x).pte >> (PAGE_SHIFT + 2)))
->  #define pfn_pte(pfn, prot)	__pte(((pfn) << (PAGE_SHIFT + 2)) |
-> pgprot_val(prot))
-> diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h
-> b/arch/powerpc/include/asm/book3s/32/pgtable.h
-> index 36443cda8dcf..1376be95e975 100644
-> --- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-> +++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-> @@ -36,8 +36,10 @@ static inline bool pte_user(pte_t pte)
->   */
->  #ifdef CONFIG_PTE_64BIT
->  #define PTE_RPN_MASK	(~((1ULL << PTE_RPN_SHIFT) - 1))
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 36
->  #else
->  #define PTE_RPN_MASK	(~((1UL << PTE_RPN_SHIFT) - 1))
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 32
->  #endif
->  
->  /*
-> diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h
-> b/arch/powerpc/include/asm/nohash/32/pgtable.h
-> index ee2243ba96cf..96522f7f0618 100644
-> --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-> +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-> @@ -153,8 +153,10 @@ int map_kernel_page(unsigned long va, phys_addr_t
-> pa, pgprot_t prot);
->   */
->  #if defined(CONFIG_PPC32) && defined(CONFIG_PTE_64BIT)
->  #define PTE_RPN_MASK	(~((1ULL << PTE_RPN_SHIFT) - 1))
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 36
->  #else
->  #define PTE_RPN_MASK	(~((1UL << PTE_RPN_SHIFT) - 1))
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 32
->  #endif
->  
->  /*
-> diff --git a/arch/riscv/include/asm/pgtable-32.h
-> b/arch/riscv/include/asm/pgtable-32.h
-> index b0ab66e5fdb1..5b2e79e5bfa5 100644
-> --- a/arch/riscv/include/asm/pgtable-32.h
-> +++ b/arch/riscv/include/asm/pgtable-32.h
-> @@ -14,4 +14,6 @@
->  #define PGDIR_SIZE      (_AC(1, UL) << PGDIR_SHIFT)
->  #define PGDIR_MASK      (~(PGDIR_SIZE - 1))
->  
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 34
-> +
->  #endif /* _ASM_RISCV_PGTABLE_32_H */
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 71125a4676c4..e237004d498d 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1427,6 +1427,19 @@ typedef unsigned int pgtbl_mod_mask;
->  
->  #endif /* !__ASSEMBLY__ */
->  
-> +#if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
-> +#ifdef CONFIG_PHYS_ADDR_T_64BIT
-> +/*
-> + * ZSMALLOC needs to know the highest PFN on 32-bit architectures
-> + * with physical address space extension, but falls back to
-> + * BITS_PER_LONG otherwise.
-> + */
-> +#error Missing MAX_POSSIBLE_PHYSMEM_BITS definition
-> +#else
-> +#define MAX_POSSIBLE_PHYSMEM_BITS 32
+>
+>  #endif /* _ASM_POWERPC_DEBUG_H */
+> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+> index 8cdc8bcde703..eb97df234a0c 100644
+> --- a/arch/powerpc/kernel/entry_32.S
+> +++ b/arch/powerpc/kernel/entry_32.S
+> @@ -657,10 +657,6 @@ ppc_swapcontext:
+>  	.globl	handle_page_fault
+>  handle_page_fault:
+>  	addi	r3,r1,STACK_FRAME_OVERHEAD
+> -#ifdef CONFIG_PPC_BOOK3S_32
+> -	andis.  r0,r5,DSISR_DABRMATCH@h
+> -	bne-    handle_dabr_fault
+> -#endif
+>  	bl	do_page_fault
+>  	cmpwi	r3,0
+>  	beq+	ret_from_except
+> @@ -668,19 +664,17 @@ handle_page_fault:
+>  	lwz	r0,_TRAP(r1)
+>  	clrrwi	r0,r0,1
+>  	stw	r0,_TRAP(r1)
+> -	mr	r5,r3
+> +	mr	r4,r3		/* err arg for bad_page_fault */
+>  	addi	r3,r1,STACK_FRAME_OVERHEAD
+> -	lwz	r4,_DAR(r1)
+> +#ifdef CONFIG_PPC_BOOK3S_32
+> +	blt	handle_dabr_fault
 > +#endif
-> +#endif
-> +
->  #ifndef has_transparent_hugepage
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  #define has_transparent_hugepage() 1
+>  	bl	bad_page_fault
+>  	b	ret_from_except_full
+>
+>  #ifdef CONFIG_PPC_BOOK3S_32
+>  	/* We have a data breakpoint exception - handle it */
+>  handle_dabr_fault:
+> -	SAVE_NVGPRS(r1)
+> -	lwz	r0,_TRAP(r1)
+> -	clrrwi	r0,r0,1
+> -	stw	r0,_TRAP(r1)
+>  	bl      do_break
+>  	b	ret_from_except_full
+>  #endif
+> diff --git a/arch/powerpc/kernel/exceptions-64e.S  
+> b/arch/powerpc/kernel/exceptions-64e.S
+> index 25fa7d5a643c..dc728bb1c89a 100644
+> --- a/arch/powerpc/kernel/exceptions-64e.S
+> +++ b/arch/powerpc/kernel/exceptions-64e.S
+> @@ -1018,9 +1018,8 @@ storage_fault_common:
+>  	bne-	1f
+>  	b	ret_from_except_lite
+>  1:	bl	save_nvgprs
+> -	mr	r5,r3
+> +	mr	r4,r3
+>  	addi	r3,r1,STACK_FRAME_OVERHEAD
+> -	ld	r4,_DAR(r1)
+>  	bl	bad_page_fault
+>  	b	ret_from_except
+>
+> diff --git a/arch/powerpc/kernel/exceptions-64s.S  
+> b/arch/powerpc/kernel/exceptions-64s.S
+> index 1f34cfd1887c..e6558c4d3f81 100644
+> --- a/arch/powerpc/kernel/exceptions-64s.S
+> +++ b/arch/powerpc/kernel/exceptions-64s.S
+> @@ -2135,8 +2135,7 @@ EXC_COMMON_BEGIN(h_data_storage_common)
+>  	GEN_COMMON h_data_storage
+>  	addi    r3,r1,STACK_FRAME_OVERHEAD
+>  BEGIN_MMU_FTR_SECTION
+> -	ld	r4,_DAR(r1)
+> -	li	r5,SIGSEGV
+> +	li	r4,SIGSEGV
+>  	bl      bad_page_fault
+>  MMU_FTR_SECTION_ELSE
+>  	bl      unknown_exception
+> diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+> index 0cd95b633e2b..13eda7154695 100644
+> --- a/arch/powerpc/kernel/head_8xx.S
+> +++ b/arch/powerpc/kernel/head_8xx.S
+> @@ -408,10 +408,9 @@ do_databreakpoint:
+>  	addi	r3,r1,STACK_FRAME_OVERHEAD
+>  	mfspr	r4,SPRN_BAR
+>  	stw	r4,_DAR(r11)
+> -#ifdef CONFIG_VMAP_STACK
+> -	lwz	r5,_DSISR(r11)
+> -#else
+> +#ifndef CONFIG_VMAP_STACK
+>  	mfspr	r5,SPRN_DSISR
+> +	stw	r5,_DSISR(r11)
+>  #endif
+>  	EXC_XFER_STD(0x1c00, do_break)
+>
+> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+> index d421a2c7f822..0bdd3ed653df 100644
+> --- a/arch/powerpc/kernel/process.c
+> +++ b/arch/powerpc/kernel/process.c
+> @@ -660,11 +660,10 @@ static void do_break_handler(struct pt_regs *regs)
+>  	}
+>  }
+>
+> -void do_break (struct pt_regs *regs, unsigned long address,
+> -		    unsigned long error_code)
+> +void do_break(struct pt_regs *regs)
+>  {
+>  	current->thread.trap_nr = TRAP_HWBKPT;
+> -	if (notify_die(DIE_DABR_MATCH, "dabr_match", regs, error_code,
+> +	if (notify_die(DIE_DABR_MATCH, "dabr_match", regs, regs->dsisr,
+>  			11, SIGSEGV) == NOTIFY_STOP)
+>  		return;
+>
+> @@ -682,7 +681,7 @@ void do_break (struct pt_regs *regs, unsigned  
+> long address,
+>  		do_break_handler(regs);
+>
+>  	/* Deliver the signal to userspace */
+> -	force_sig_fault(SIGTRAP, TRAP_HWBKPT, (void __user *)address);
+> +	force_sig_fault(SIGTRAP, TRAP_HWBKPT, (void __user *)regs->dar);
+>  }
+>  #endif	/* CONFIG_PPC_ADV_DEBUG_REGS */
+>
+> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+> index 5006dcbe1d9f..902fcbd1a778 100644
+> --- a/arch/powerpc/kernel/traps.c
+> +++ b/arch/powerpc/kernel/traps.c
+> @@ -1641,7 +1641,7 @@ void alignment_exception(struct pt_regs *regs)
+>  	if (user_mode(regs))
+>  		_exception(sig, regs, code, regs->dar);
+>  	else
+> -		bad_page_fault(regs, regs->dar, sig);
+> +		bad_page_fault(regs, sig);
+>
+>  bail:
+>  	exception_exit(prev_state);
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c  
+> b/arch/powerpc/mm/book3s64/hash_utils.c
+> index 0f0bd4af4b2d..731518e7d56f 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -1537,7 +1537,7 @@ long do_hash_fault(struct pt_regs *regs)
+>  	 * the access, or panic if there isn't a handler.
+>  	 */
+>  	if (unlikely(in_nmi())) {
+> -		bad_page_fault(regs, ea, SIGSEGV);
+> +		bad_page_fault(regs, SIGSEGV);
+>  		return 0;
+>  	}
+>
+> @@ -1576,7 +1576,7 @@ long do_hash_fault(struct pt_regs *regs)
+>  			else
+>  				_exception(SIGBUS, regs, BUS_ADRERR, ea);
+>  		} else {
+> -			bad_page_fault(regs, ea, SIGBUS);
+> +			bad_page_fault(regs, SIGBUS);
+>  		}
+>  		err = 0;
+>
+> diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
+> index cc34d50874c1..ae89ad516247 100644
+> --- a/arch/powerpc/mm/book3s64/slb.c
+> +++ b/arch/powerpc/mm/book3s64/slb.c
+> @@ -898,7 +898,7 @@ void do_bad_slb_fault(struct pt_regs *regs)
+>  		if (user_mode(regs))
+>  			_exception(SIGSEGV, regs, SEGV_BNDERR, regs->dar);
+>  		else
+> -			bad_page_fault(regs, regs->dar, SIGSEGV);
+> +			bad_page_fault(regs, SIGSEGV);
+>  	} else if (err == -EINVAL) {
+>  		unrecoverable_exception(regs);
+>  	} else {
+> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+> index 390a296b16a3..db73b373e76c 100644
+> --- a/arch/powerpc/mm/fault.c
+> +++ b/arch/powerpc/mm/fault.c
+> @@ -375,7 +375,7 @@ static void sanity_check_fault(bool is_write,  
+> bool is_user,
+>  #elif defined(CONFIG_PPC_BOOK3E_64)
+>  #define page_fault_is_bad(__err)	((__err) & DSISR_BAD_FAULT_64S)
+>  #else
+> -#define page_fault_is_bad(__err)	((__err) & DSISR_BAD_FAULT_32S)
+> +#define page_fault_is_bad(__err)	((__err) & (DSISR_BAD_FAULT_32S |  
+> DSISR_DABRMATCH))
+>  #endif
+>  #endif
+>
+> @@ -408,7 +408,7 @@ static int __do_page_fault(struct pt_regs *regs,  
+> unsigned long address,
+>  		return 0;
+>
+>  	if (unlikely(page_fault_is_bad(error_code))) {
+> -		if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && (error_code & DSISR_DABRMATCH))
+> +		if (IS_ENABLED(CONFIG_PPC_BOOK3S) && (error_code & DSISR_DABRMATCH))
+>  			return -1;
+>
+>  		if (is_user) {
+> @@ -562,14 +562,14 @@ long do_page_fault(struct pt_regs *regs)
+>  	/* 32 and 64e handle errors in their asm code */
+>  	if (unlikely(err)) {
+>  		if (err > 0) {
+> -			bad_page_fault(regs, address, err);
+> +			bad_page_fault(regs, err);
+>  			err = 0;
+>  		} else {
+>  			/*
+>  			 * do_break() may change NV GPRS while handling the
+>  			 * breakpoint. Return -ve to caller to do that.
+>  			 */
+> -			do_break(regs, address, error_code);
+> +			do_break(regs);
+>  		}
+>  	}
+>  #endif
+> @@ -591,14 +591,14 @@ long hash__do_page_fault(struct pt_regs *regs)
+>  	err = __do_page_fault(regs, address, error_code);
+>  	if (unlikely(err)) {
+>  		if (err > 0) {
+> -			bad_page_fault(regs, address, err);
+> +			bad_page_fault(regs, err);
+>  			err = 0;
+>  		} else {
+>  			/*
+>  			 * do_break() may change NV GPRS while handling the
+>  			 * breakpoint. Return -ve to caller to do that.
+>  			 */
+> -			do_break(regs, address, error_code);
+> +			do_break(regs);
+>  		}
+>  	}
+>
+> @@ -612,7 +612,7 @@ NOKPROBE_SYMBOL(hash__do_page_fault);
+>   * It is called from the DSI and ISI handlers in head.S and from some
+>   * of the procedures in traps.c.
+>   */
+> -void bad_page_fault(struct pt_regs *regs, unsigned long address, int sig)
+> +void bad_page_fault(struct pt_regs *regs, int sig)
+>  {
+>  	const struct exception_table_entry *entry;
+>  	int is_write = page_fault_is_write(regs->dsisr);
+> diff --git a/arch/powerpc/platforms/8xx/machine_check.c  
+> b/arch/powerpc/platforms/8xx/machine_check.c
+> index 88dedf38eccd..656365975895 100644
+> --- a/arch/powerpc/platforms/8xx/machine_check.c
+> +++ b/arch/powerpc/platforms/8xx/machine_check.c
+> @@ -26,7 +26,7 @@ int machine_check_8xx(struct pt_regs *regs)
+>  	 * to deal with that than having a wart in the mcheck handler.
+>  	 * -- BenH
+>  	 */
+> -	bad_page_fault(regs, regs->dar, SIGBUS);
+> +	bad_page_fault(regs, SIGBUS);
+>  	return 1;
+>  #else
+>  	return 0;
+> --
+> 2.23.0
+
+
