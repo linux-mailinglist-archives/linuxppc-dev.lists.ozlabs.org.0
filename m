@@ -1,86 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E76552B5521
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 00:37:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA552B5576
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 01:01:39 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CZlpj2LTyzDqM4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 10:37:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CZmM44xF1zDqNb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 11:01:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
+ helo=mail-pg1-x532.google.com; envelope-from=amodra@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=QTvN2Gpg; dkim-atps=neutral
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
+ [IPv6:2607:f8b0:4864:20::532])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CZlmW3Z2YzDqM4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 10:35:07 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=ThL2VPbq; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4CZlmW2PbFz8w0S
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 10:35:07 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4CZlmW1wSFz9sTL; Tue, 17 Nov 2020 10:35:07 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=ndesaulniers@google.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=ThL2VPbq; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4CZlmV3dYlz9sSs
- for <linuxppc-dev@ozlabs.org>; Tue, 17 Nov 2020 10:35:06 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id p68so4173939pga.6
- for <linuxppc-dev@ozlabs.org>; Mon, 16 Nov 2020 15:35:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=pv3SdWEU94yZUVWUhkFKAAtzguyHPsl6uo1DKmUfEmk=;
- b=ThL2VPbq6tQT41obQs2rumy1Zc1xCnOh1BOu6+GeVE3t/4BxvetMa7F4W69LyAAC9j
- LIQpcBxhXa2Ob+07TKaeNMvqmEN80io1xTgb6V3heMoqjO+hqKIvaKxIrlzY7K3tRH9P
- FdGQ5oIvXRtNIb7nqybdwJ4MHbuXna8pFZSdhkXkIqUl7WIAxpOwSQCX4zeQ10AkvJAo
- AFmpoeENxPh3JIwxn+UzvGN4DPJWN0VUe+qMZKhvGTQhPcpaIPsGn88M48PAtiizOBEn
- dWbcWzakiWfvXGZLN+/+SbraF5s+9TAfnG5v2scLlv/aZYD0HXcL5Cyw/O8uARxGwaoy
- 0abg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CZmJv1h34zDqNL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 10:59:37 +1100 (AEDT)
+Received: by mail-pg1-x532.google.com with SMTP id 34so11406317pgp.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Nov 2020 15:59:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to
+ :user-agent; bh=O1xH7v6ktQVn3E0/2gxoBsc75hXO4ialu92ExENyQt8=;
+ b=QTvN2GpguC2hbzUk3PxCdzFk0C629djU1wo3x2Ibd6wdD3lYckzgDEYrHVBmZ6QMZ9
+ p1ta4LmrHOLI/f8Xh0cbAni39HLqnF6n4HQ32i5tHvB27Wt+5U6ZywQ9YAG19OHm8jSj
+ BaCx+PqZQxMVwWq0eNhpgzbNh+DnPskF3ZnN4yacpOJx3K4MymTRijUz4Bz1JLU8mg5q
+ QxeBBhtHY10iMYjtYYTvP9nLkndBrArsf8OFcIXqyigNYJ+IsINks4k3AuOoYcCZwEll
+ K2ZefLTEbe5W5ra3dOklddEszevKbLqQ4okBDaFC10hBHppyWr4ttQ6OSr8CMVnU1pi/
+ NKUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=pv3SdWEU94yZUVWUhkFKAAtzguyHPsl6uo1DKmUfEmk=;
- b=TV9+dDiOaJ4Zjd5KXQZ6tew8Va9/E85yDqVV0ldfD0t1uoOJHsMKNuMnD781VrImKA
- SlwlxFDHymvrJdDoAviOqdfwPPw+Ac/I8yMOlmZr/TSt4Xsmq6C6bLRK5P3jm7sElVpO
- GfPpZo7tTtxdlyrFdVt9TyCMtvn8xuBkzMlecrLDSfR1RmgiZedDugQgie+WW7QgIFvs
- gO45BRjgh+0LykSqfpHOsvljS4YcH7nIjV3n/Rf9D3CZ+rDtPMvz4K1ep7G1CWVpt6Zp
- OMS4y75e+T2NCuWg11hE8YCA+aSHVvr3d5JPYSWyapLjaPTckkHZhJV40qCSvEfzNrpH
- NuSQ==
-X-Gm-Message-State: AOAM533geWowR92i9WlxkzrI3SQq6ueU5C2Qp9SuGenf+ksQdo/cN8ra
- qw5RQcexhknF8fCadh8qycpePFg1fuiNtQei/1lzMA==
-X-Google-Smtp-Source: ABdhPJzcW2PVHopBMd0xgsqMrcmed1NFI91MyTdyQEBc2n2hVm2m7NjtYpoGWbVzQ5DeMt6s9zbBJxpqggI7yAzKo1w=
-X-Received: by 2002:a17:90a:4881:: with SMTP id
- b1mr1447923pjh.32.1605569702981; 
- Mon, 16 Nov 2020 15:35:02 -0800 (PST)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to:user-agent;
+ bh=O1xH7v6ktQVn3E0/2gxoBsc75hXO4ialu92ExENyQt8=;
+ b=h/9eoZzKFDyhj2y2pUu8B6YF5ajqDaDbeDSOTDOgBeqAWouLWCom98RDB7SW4ud/Dr
+ N6mON0h3tdAqLefLD/k3oxqas/op9BNqAHV/bXcBvp1RD3WH/lN/1IA4SRZsyFfGvMiW
+ FzaDpUesyYFf3BABj8sbsD55GWzejG5aiLHweQMnFvcwenxeoeVVFchS0ZnQf5VrRdVX
+ NfUjFHEHhBW56yxv+XNqJKEvg2PnxlYJS9jLITFYkzNKtlBmIDSxSDeVP1xrGJFiQnce
+ wu/fm0AxxW8e7C60yPx8AQkyvWtVaek1dtJKbWIalqFFRWDqSmbczUD8JMtHPtXw93J/
+ 3nRA==
+X-Gm-Message-State: AOAM5325ZErC+7N8uxkWI3NCegzFQD56DoAFpfjyw67bpCz2v/RQgK2t
+ KoA2kjcnzEhiRxj7zztAU1Y=
+X-Google-Smtp-Source: ABdhPJzmOqkplqffAvi8zciJP+9vijXcBirX83BuorVnt/LrPJjmeIByYbr/7xfEAWl5K2if3H7noA==
+X-Received: by 2002:a17:90a:5d93:: with SMTP id
+ t19mr1437516pji.220.1605571174368; 
+ Mon, 16 Nov 2020 15:59:34 -0800 (PST)
+Received: from bubble.grove.modra.org
+ ([2406:3400:51d:8cc0:2b49:d8db:361d:de4a])
+ by smtp.gmail.com with ESMTPSA id m3sm19708513pfd.217.2020.11.16.15.59.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Nov 2020 15:59:33 -0800 (PST)
+Received: by bubble.grove.modra.org (Postfix, from userid 1000)
+ id DFD9B85935; Tue, 17 Nov 2020 10:29:29 +1030 (ACDT)
+Date: Tue, 17 Nov 2020 10:29:29 +1030
+From: Alan Modra <amodra@gmail.com>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: Error: invalid switch -me200
+Message-ID: <20201116235929.GT15956@bubble.grove.modra.org>
+References: <202011131146.g8dPLQDD-lkp@intel.com>
+ <CAFP8O3LpSmxVnjHfQAN455k1ZRg3PbgZYhWr030evCq1T10k=Q@mail.gmail.com>
+ <20201113190824.GA1477315@ubuntu-m3-large-x86>
+ <CAKwvOdkEtTQhDRFRV_d66FyhQBe536vRbOW=fQjesiHz3dfeBA@mail.gmail.com>
+ <20201113200444.GA1496675@ubuntu-m3-large-x86>
+ <CAKwvOdkBSGPaKmQY1nERVe4_n19Q=MUtuwdond=FJAAF9N9Zhg@mail.gmail.com>
+ <20201114002037.GW2672@gate.crashing.org>
+ <CAFP8O3+NowYwhMAywd=R23HgOYnroWV9ZRkdyAejd08qsOF=6w@mail.gmail.com>
+ <20201114005015.GZ2672@gate.crashing.org>
 MIME-Version: 1.0
-References: <20201116120913.165317-1-mpe@ellerman.id.au>
-In-Reply-To: <20201116120913.165317-1-mpe@ellerman.id.au>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Mon, 16 Nov 2020 15:34:52 -0800
-Message-ID: <CAKwvOdnhmcmGgSfKG0KEOEbf=WZnixV6c838ArQ8EOXUXqxfMQ@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: Drop -me200 addition to build flags
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201114005015.GZ2672@gate.crashing.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,65 +93,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, oss@buserror.net,
- linuxppc-dev@ozlabs.org, Nathan Chancellor <natechancellor@gmail.com>
+Cc: Arnd Bergmann <arnd@kernel.org>, kbuild-all@lists.01.org,
+ Brian Cain <bcain@codeaurora.org>,
+ =?utf-8?B?RsSBbmctcnXDrCBTw7JuZw==?= <maskray@google.com>,
+ Masahiro Yamada <masahiroy@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Nathan Chancellor <natechancellor@gmail.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 16, 2020 at 4:09 AM Michael Ellerman <mpe@ellerman.id.au> wrote=
-:
->
-> Currently a build with CONFIG_E200=3Dy will fail with:
->
->   Error: invalid switch -me200
->   Error: unrecognized option -me200
->
-> Upstream binutils has never supported an -me200 option. Presumably it
-> was supported at some point by either a fork or Freescale internal
-> binutils.
->
-> We can't support code that we can't even build test, so drop the
-> addition of -me200 to the build flags, so we can at least build with
-> CONFIG_E200=3Dy.
->
-> Reported-by: N=C3=A9meth M=C3=A1rton <nm127@freemail.hu>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+On Fri, Nov 13, 2020 at 06:50:15PM -0600, Segher Boessenkool wrote:
+> On Fri, Nov 13, 2020 at 04:37:38PM -0800, Fāng-ruì Sòng wrote:
+> > On Fri, Nov 13, 2020 at 4:23 PM Segher Boessenkool
+> > <segher@kernel.crashing.org> wrote:
+> > > On Fri, Nov 13, 2020 at 12:14:18PM -0800, Nick Desaulniers wrote:
+> > > > > > > Error: invalid switch -me200
+> > > > > > > Error: unrecognized option -me200
+> > > > > >
+> > > > > > 251 cpu-as-$(CONFIG_E200)   += -Wa,-me200
+> > > > > >
+> > > > > > Are those all broken configs, or is Kconfig messed up such that
+> > > > > > randconfig can select these when it should not?
+> > > > >
+> > > > > Hmmm, looks like this flag does not exist in mainline binutils? There is
+> > > > > a thread in 2010 about this that Segher commented on:
+> > > > >
+> > > > > https://lore.kernel.org/linuxppc-dev/9859E645-954D-4D07-8003-FFCD2391AB6E@kernel.crashing.org/
+> > > > >
+> > > > > Guess this config should be eliminated?
+> > >
+> > > The help text for this config options says that e200 is used in 55xx,
+> > > and there *is* an -me5500 GAS flag (which probably does this same
+> > > thing, too).  But is any of this tested, or useful, or wanted?
+> > >
+> > > Maybe Christophe knows, cc:ed.
+> > 
+> > CC Alan Modra, a binutils global maintainer.
+> > 
+> > Alan, can the few -Wa,-m* options deleted from arch/powerpc/Makefile ?
+> 
+> All the others work fine (and are needed afaics), it is only -me200 that
+> doesn't exist (in mainline binutils).
 
-Thanks for the patch; this should make randconfig builds not pick this
-non-buildable config.
+Right, and a quick check says it never existed.  There is e200z4,
+added to binutils with dfdaec14b0d, 2016-08-01, but the kernel -me200
+was added in 2005.  I suspect the toolchain support only existed
+inside Freescale and pushing it upstream was too difficult.
 
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-
-> ---
->
-> More discussion: https://lore.kernel.org/lkml/202011131146.g8dPLQDD-lkp@i=
-ntel.com
-> ---
->  arch/powerpc/Makefile | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> index a4d56f0a41d9..16b8336f91dd 100644
-> --- a/arch/powerpc/Makefile
-> +++ b/arch/powerpc/Makefile
-> @@ -248,7 +248,6 @@ KBUILD_CFLAGS               +=3D $(call cc-option,-mn=
-o-string)
->  cpu-as-$(CONFIG_40x)           +=3D -Wa,-m405
->  cpu-as-$(CONFIG_44x)           +=3D -Wa,-m440
->  cpu-as-$(CONFIG_ALTIVEC)       +=3D $(call as-option,-Wa$(comma)-maltive=
-c)
-> -cpu-as-$(CONFIG_E200)          +=3D -Wa,-me200
->  cpu-as-$(CONFIG_E500)          +=3D -Wa,-me500
->
->  # When using '-many -mpower4' gas will first try and find a matching pow=
-er4
-> --
-> 2.25.1
->
-
-
---=20
-Thanks,
-~Nick Desaulniers
+-- 
+Alan Modra
+Australia Development Lab, IBM
