@@ -1,53 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F45D2B4A59
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Nov 2020 17:11:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 750FB2B4B23
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Nov 2020 17:30:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CZYwW21fczDqKP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 03:11:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CZZL556TNzDqLV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 03:30:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CZYtW5gDxzDqJh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 03:09:35 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CZYtG2Bs9z9vDFh;
- Mon, 16 Nov 2020 17:09:26 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id yKPDwfMvW28n; Mon, 16 Nov 2020 17:09:26 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CZYtG0w6Qz9vDFf;
- Mon, 16 Nov 2020 17:09:26 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B852D8B7A5;
- Mon, 16 Nov 2020 17:09:31 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 3MolZdsrsKwf; Mon, 16 Nov 2020 17:09:31 +0100 (CET)
-Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5EDF28B7A3;
- Mon, 16 Nov 2020 17:09:31 +0100 (CET)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 0A40766884; Mon, 16 Nov 2020 16:09:31 +0000 (UTC)
-Message-Id: <8a4ffe4798e9ea32aaaccdf85e411bb1beed3500.1605542955.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/32s: Handle PROTFAULT in hash_page() also for
- CONFIG_PPC_KUAP
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 16 Nov 2020 16:09:31 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CZZJJ40PjzDqF7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 03:28:28 +1100 (AEDT)
+IronPort-SDR: DwOU1YsAF1w725xTCpeUVGCLlWyQyXAkCiND8Ckk3g2JYHAvNpOCshlRClPIiEY+IKkfsylBb6
+ /M6zyUcrYeEA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9807"; a="170875633"
+X-IronPort-AV: E=Sophos;i="5.77,483,1596524400"; d="scan'208";a="170875633"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Nov 2020 08:28:24 -0800
+IronPort-SDR: QRNLbR08A8bApOcpvcq4auJa0CU721DHnLYZ1BCOv6A1tnpcCs1YXXYSKDlOMBdDSRJaWB2Wjm
+ kcoV3/QMsHfg==
+X-IronPort-AV: E=Sophos;i="5.77,483,1596524400"; d="scan'208";a="358517669"
+Received: from pgao1-mobl1.amr.corp.intel.com (HELO [10.212.6.211])
+ ([10.212.6.211])
+ by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Nov 2020 08:28:23 -0800
+Subject: Re: [PATCH 0/5] perf/mm: Fix PERF_SAMPLE_*_PAGE_SIZE
+To: Matthew Wilcox <willy@infradead.org>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>
+References: <20201113111901.743573013@infradead.org>
+ <20201116154357.bw64c5ie2kiu5l4x@box>
+ <20201116155404.GD29991@casper.infradead.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+ z5cecg==
+Message-ID: <eeec67f6-ea05-1115-f249-b6cdcf2c5e2c@intel.com>
+Date: Mon, 16 Nov 2020 08:28:23 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <20201116155404.GD29991@casper.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,95 +105,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: mark.rutland@arm.com, aneesh.kumar@linux.ibm.com,
+ linux-arch@vger.kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ npiggin@gmail.com, linux-kernel@vger.kernel.org, acme@kernel.org,
+ davem@davemloft.net, alexander.shishkin@linux.intel.com, ak@linux.intel.com,
+ eranian@google.com, sparclinux@vger.kernel.org, jolsa@redhat.com,
+ mingo@kernel.org, kirill.shutemov@linux.intel.com, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On hash 32 bits, handling minor protection faults like unsetting
-dirty flag is heavy if done from the normal page_fault processing,
-because it implies hash table software lookup for flushing the entry
-and then a DSI is taken anyway to add the entry back.
+On 11/16/20 7:54 AM, Matthew Wilcox wrote:
+> It gets even more complicated with CPUs with multiple levels of TLB
+> which support different TLB entry sizes.  My CPU reports:
+> 
+> TLB info
+>  Instruction TLB: 2M/4M pages, fully associative, 8 entries
+>  Instruction TLB: 4K pages, 8-way associative, 64 entries
+>  Data TLB: 1GB pages, 4-way set associative, 4 entries
+>  Data TLB: 4KB pages, 4-way associative, 64 entries
+>  Shared L2 TLB: 4KB/2MB pages, 6-way associative, 1536 entries
 
-When KUAP was implemented, as explained in commit a68c31fc01ef
-("powerpc/32s: Implement Kernel Userspace Access Protection"),
-protection faults has been diverted from hash_page() because
-hash_page() was not able to identify a KUAP fault.
+It's even "worse" on recent AMD systems.  Those will coalesce multiple
+adjacent PTEs into a single TLB entry.  I think Alphas did something
+like this back in the day with an opt-in.
 
-Implement KUAP verification in hash_page(), by clearing write
-permission when the access is a kernel access and Ks is 1.
-This works regardless of the address because kernel segments always
-have Ks set to 0 while user segments have Ks set to 0 only
-when kernel write to userspace is granted.
+Anyway, the changelog should probably replace:
 
-Then protection faults can be handled by hash_page() even for KUAP.
+> This enables PERF_SAMPLE_{DATA,CODE}_PAGE_SIZE to report accurate TLB
+> page sizes.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/head_book3s_32.S |  8 --------
- arch/powerpc/mm/book3s32/hash_low.S  | 13 +++++++++++--
- 2 files changed, 11 insertions(+), 10 deletions(-)
+with something more like:
 
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index a0dda2a1f2df..a4b811044f97 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -294,11 +294,7 @@ BEGIN_MMU_FTR_SECTION
- 	stw	r11, THR11(r10)
- 	mfspr	r10, SPRN_DSISR
- 	mfcr	r11
--#ifdef CONFIG_PPC_KUAP
--	andis.	r10, r10, (DSISR_BAD_FAULT_32S | DSISR_DABRMATCH | DSISR_PROTFAULT)@h
--#else
- 	andis.	r10, r10, (DSISR_BAD_FAULT_32S | DSISR_DABRMATCH)@h
--#endif
- 	mfspr	r10, SPRN_SPRG_THREAD
- 	beq	hash_page_dsi
- .Lhash_page_dsi_cont:
-@@ -323,11 +319,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
- 	EXCEPTION_PROLOG handle_dar_dsisr=1
- 	get_and_save_dar_dsisr_on_stack	r4, r5, r11
- BEGIN_MMU_FTR_SECTION
--#ifdef CONFIG_PPC_KUAP
--	andis.	r0, r5, (DSISR_BAD_FAULT_32S | DSISR_DABRMATCH | DSISR_PROTFAULT)@h
--#else
- 	andis.	r0, r5, (DSISR_BAD_FAULT_32S | DSISR_DABRMATCH)@h
--#endif
- 	bne	handle_page_fault_tramp_2	/* if not, try to put a PTE */
- 	rlwinm	r3, r5, 32 - 15, 21, 21		/* DSISR_STORE -> _PAGE_RW */
- 	bl	hash_page
-diff --git a/arch/powerpc/mm/book3s32/hash_low.S b/arch/powerpc/mm/book3s32/hash_low.S
-index b2c912e517b9..9a56ba4f68f2 100644
---- a/arch/powerpc/mm/book3s32/hash_low.S
-+++ b/arch/powerpc/mm/book3s32/hash_low.S
-@@ -95,8 +95,6 @@ _GLOBAL(hash_page)
- #else
- 	rlwimi	r8,r4,23,20,28		/* compute pte address */
- #endif
--	rlwinm	r0,r3,32-3,24,24	/* _PAGE_RW access -> _PAGE_DIRTY */
--	ori	r0,r0,_PAGE_ACCESSED|_PAGE_HASHPTE
- 
- 	/*
- 	 * Update the linux PTE atomically.  We do the lwarx up-front
-@@ -112,7 +110,18 @@ _GLOBAL(hash_page)
- #endif
- .Lretry:
- 	lwarx	r6,0,r8			/* get linux-style pte, flag word */
-+#ifdef CONFIG_PPC_KUAP
-+	mfsrin	r5,r4
-+	rlwinm	r0,r9,28,_PAGE_RW	/* MSR[PR] => _PAGE_RW */
-+	rlwinm	r5,r5,12,_PAGE_RW	/* Ks => _PAGE_RW */
-+	andc	r5,r5,r0		/* Ks & ~MSR[PR] */
-+	andc	r5,r6,r5		/* Clear _PAGE_RW when Ks = 1 && MSR[PR] = 0 */
-+	andc.	r5,r3,r5		/* check access & ~permission */
-+#else
- 	andc.	r5,r3,r6		/* check access & ~permission */
-+#endif
-+	rlwinm	r0,r3,32-3,24,24	/* _PAGE_RW access -> _PAGE_DIRTY */
-+	ori	r0,r0,_PAGE_ACCESSED|_PAGE_HASHPTE
- #ifdef CONFIG_SMP
- 	bne-	.Lhash_page_out		/* return if access not permitted */
- #else
--- 
-2.25.0
+This enables PERF_SAMPLE_{DATA,CODE}_PAGE_SIZE to report accurate page
+table mapping sizes.
 
+That's really the best we can do from software without digging into
+microarchitecture-specific events.
