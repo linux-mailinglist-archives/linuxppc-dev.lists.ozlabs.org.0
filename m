@@ -1,55 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD472B4A38
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Nov 2020 17:03:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811022B4A40
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Nov 2020 17:05:00 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CZYkv0VpTzDqLt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 03:03:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CZYn51fWwzDqGJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 03:04:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CZYWk0CLdzDqJX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 02:53:20 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CZYWW4mDBz9vDFf;
- Mon, 16 Nov 2020 16:53:11 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id lPEeDEEJLeLo; Mon, 16 Nov 2020 16:53:11 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CZYWW3QgNz9vDFc;
- Mon, 16 Nov 2020 16:53:11 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D66388B7A3;
- Mon, 16 Nov 2020 16:53:16 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id svikFLoYArVj; Mon, 16 Nov 2020 16:53:16 +0100 (CET)
-Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 16F788B7A9;
- Mon, 16 Nov 2020 16:53:16 +0100 (CET)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id BCFF966884; Mon, 16 Nov 2020 15:53:15 +0000 (UTC)
-Message-Id: <9d67fe038feb6b3e88cc1013efe7d070bf1e9d9f.1605541983.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <40ae19c2bf013e3815a6ae0d6016963fdb0f51b7.1605541983.git.christophe.leroy@csgroup.eu>
-References: <40ae19c2bf013e3815a6ae0d6016963fdb0f51b7.1605541983.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 3/5] powerpc/fault: Avoid heavy search_exception_tables()
- verification
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 16 Nov 2020 15:53:15 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CZYXq204HzDqLT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 02:54:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=esjCI1Ilt4rqIh2c5OoP0ZOCK5VTOQGHZkmINdOilPQ=; b=Q4mgMpkplmuw95hgWTQ6+BlRj0
+ uOfRZMIJHzav9IdLwC9ckIxRZH15e/Co1SsDhx71QrzehPvueZMdwLuZ1KZdknOau65FGGiiVET/F
+ k674UDf+BX9XAXwfweBX6RrGb0wnMobgxyGVWhWn2Igd8Tfpv+W+jOzeWYomchIgV22oso25aWqqo
+ 8820PqyIy+Vmqd565DZP4wURtlwH9RRPLr4G+rnDcvKr4srwnvbQFIzjlO0edrn/+Eb4WrTGIaBjx
+ 2VoTGfBHrYd9go23OLiaxnKfyx91LfkAAaXVjufE8rjE7o8sfYcW364KBUVgKn9VzLoiOq1tan+Ij
+ 7Hb74+tg==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1kegpQ-0001xk-GD; Mon, 16 Nov 2020 15:54:04 +0000
+Date: Mon, 16 Nov 2020 15:54:04 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Subject: Re: [PATCH 0/5] perf/mm: Fix PERF_SAMPLE_*_PAGE_SIZE
+Message-ID: <20201116155404.GD29991@casper.infradead.org>
+References: <20201113111901.743573013@infradead.org>
+ <20201116154357.bw64c5ie2kiu5l4x@box>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201116154357.bw64c5ie2kiu5l4x@box>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,64 +56,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: mark.rutland@arm.com, Peter Zijlstra <peterz@infradead.org>,
+ catalin.marinas@arm.com, eranian@google.com, dave.hansen@intel.com,
+ sparclinux@vger.kernel.org, will@kernel.org, mingo@kernel.org,
+ kan.liang@linux.intel.com, linux-arch@vger.kernel.org, ak@linux.intel.com,
+ aneesh.kumar@linux.ibm.com, alexander.shishkin@linux.intel.com,
+ jolsa@redhat.com, npiggin@gmail.com, acme@kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ davem@davemloft.net, kirill.shutemov@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-search_exception_tables() is an heavy operation, we have to avoid it.
-When KUAP is selected, we'll know the fault has been blocked by KUAP.
-Otherwise, it behaves just as if the address was already in the TLBs
-and no fault was generated.
+On Mon, Nov 16, 2020 at 06:43:57PM +0300, Kirill A. Shutemov wrote:
+> On Fri, Nov 13, 2020 at 12:19:01PM +0100, Peter Zijlstra wrote:
+> > Hi,
+> > 
+> > These patches provide generic infrastructure to determine TLB page size from
+> > page table entries alone. Perf will use this (for either data or code address)
+> > to aid in profiling TLB issues.
+> 
+> I'm not sure it's an issue, but strictly speaking, size of page according
+> to page table tree doesn't mean pagewalk would fill TLB entry of the size.
+> CPU may support 1G pages in page table tree without 1G TLB at all.
+> 
+> IIRC, current Intel CPU still don't have any 1G iTLB entries and fill 2M
+> iTLB instead.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
----
-v2: Squashed with the preceeding patch which was re-ordering tests that get removed in this patch.
----
- arch/powerpc/mm/fault.c | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
+It gets even more complicated with CPUs with multiple levels of TLB
+which support different TLB entry sizes.  My CPU reports:
 
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 17665ff97469..1770b41e4730 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -210,28 +210,19 @@ static bool bad_kernel_fault(struct pt_regs *regs, unsigned long error_code,
- 		return true;
- 	}
- 
--	if (!is_exec && address < TASK_SIZE && (error_code & DSISR_PROTFAULT) &&
--	    !search_exception_tables(regs->nip)) {
--		pr_crit_ratelimited("Kernel attempted to access user page (%lx) - exploit attempt? (uid: %d)\n",
--				    address,
--				    from_kuid(&init_user_ns, current_uid()));
--	}
--
- 	// Kernel fault on kernel address is bad
- 	if (address >= TASK_SIZE)
- 		return true;
- 
--	// Fault on user outside of certain regions (eg. copy_tofrom_user()) is bad
--	if (!search_exception_tables(regs->nip))
--		return true;
--
--	// Read/write fault in a valid region (the exception table search passed
--	// above), but blocked by KUAP is bad, it can never succeed.
--	if (bad_kuap_fault(regs, address, is_write))
-+	// Read/write fault blocked by KUAP is bad, it can never succeed.
-+	if (bad_kuap_fault(regs, address, is_write)) {
-+		pr_crit_ratelimited("Kernel attempted to %s user page (%lx) - exploit attempt? (uid: %d)\n",
-+				    is_write ? "write" : "read", address,
-+				    from_kuid(&init_user_ns, current_uid()));
- 		return true;
-+	}
- 
--	// What's left? Kernel fault on user in well defined regions (extable
--	// matched), and allowed by KUAP in the faulting context.
-+	// What's left? Kernel fault on user and allowed by KUAP in the faulting context.
- 	return false;
- }
- 
--- 
-2.25.0
+TLB info
+ Instruction TLB: 2M/4M pages, fully associative, 8 entries
+ Instruction TLB: 4K pages, 8-way associative, 64 entries
+ Data TLB: 1GB pages, 4-way set associative, 4 entries
+ Data TLB: 4KB pages, 4-way associative, 64 entries
+ Shared L2 TLB: 4KB/2MB pages, 6-way associative, 1536 entries
 
+I'm not quite sure what the rules are for evicting a 1GB entry in the
+dTLB into the s2TLB.  I've read them for so many different processors,
+I get quite confused.  Some CPUs fracture them; others ditch them entirely
+and will look them up again if needed.
+
+I think the architecture here is fine, but it'll need a little bit of
+finagling to maybe pass i-vs-d to the pXd_leaf_size() routines, and x86
+will need an implementation of pud_leaf_size() which interrogates the
+TLB info to find out what size TLB entry will actually be used.
