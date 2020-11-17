@@ -2,51 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D454C2B59A6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 07:18:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7730D2B5CBB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 11:18:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CZwjP2ZbqzDqRj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 17:18:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cb22k3PHhzDqTj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 21:18:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ spf=none (no SPF record) smtp.mailfrom=canonical.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=po-hsu.lin@canonical.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=canonical.com
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CZwgR2cblzDqRM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 17:16:18 +1100 (AEDT)
-IronPort-SDR: sM3tiSHyoRuNywezVErxdvVLqtS2uu7Xfa86kEJf/e7gH8N38/o0+AHZUrhEso5w8Q3CfbOuhW
- 759gaoKeqNOQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9807"; a="170972644"
-X-IronPort-AV: E=Sophos;i="5.77,484,1596524400"; d="scan'208";a="170972644"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Nov 2020 22:16:11 -0800
-IronPort-SDR: j+J4hQoJJu0jrhimJzKEBRJAhiUpvhxyJhA89G4F/doxEWhDvtobLVcKE7Qs1v83WVhwrt3Ykn
- aNBhKokovNfw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,484,1596524400"; d="scan'208";a="362361784"
-Received: from lkp-server01.sh.intel.com (HELO 345567a03a52) ([10.239.97.150])
- by fmsmga002.fm.intel.com with ESMTP; 16 Nov 2020 22:16:09 -0800
-Received: from kbuild by 345567a03a52 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1keuHg-00002L-Vr; Tue, 17 Nov 2020 06:16:09 +0000
-Date: Tue, 17 Nov 2020 14:15:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 95c63df939789153540060ead8eb5d9fd4606274
-Message-ID: <5fb36a8c.UG1Z+E3iJ/NXrfBW%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cb20n4V4fzDqS0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 21:16:40 +1100 (AEDT)
+Received: from mail-lj1-f198.google.com ([209.85.208.198])
+ by youngberry.canonical.com with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <po-hsu.lin@canonical.com>) id 1key2N-0003x8-HF
+ for linuxppc-dev@lists.ozlabs.org; Tue, 17 Nov 2020 10:16:35 +0000
+Received: by mail-lj1-f198.google.com with SMTP id 3so4313188ljq.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 02:16:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=XEdsHRGTcFavudpXhNXpa2iKk6bFAMTvjLBIV8dbsko=;
+ b=AOOv5mREqdTfjWEJDZd3p8P1PuTvqADVUKSjpzbVyuo8g3jQKyYclt6RqUZD6t5Aq2
+ na44PKy4rJBcTA3QxeLfn2XPsQZqrY0xaTZqAl0lBiHnYlL+pzRY9tPhI5zXzhQX1Bxe
+ gzMkarxPSWcruIuhij6aa/fEd5hk6O1WMfd7pQTGwYZWnvkcIIjsTvO1g0Desvlb8Oab
+ oVX5p7UgP7aR7dUupLPLDvgKLfdxyoEhZ0p+ZvLLZgMsCfgXPhjkSORuCloYxrIYRWjk
+ LQW2m0goqDCPe1M+GXcPKohyrU5qBe1jyvN5cwOLr2X+bdcg8MT4l0otN0i+pdIn6mi5
+ es7A==
+X-Gm-Message-State: AOAM530PGaTQXsHnoQGnALy3QPDDdknSAforqhEetn5m+BFywTnVZpvG
+ 2aGECT/CfOeXRbu7gmIsTkiRgeUlyINK3xjaoL+jK3FKm/RQeDewWsE25cBfiNFsUS5Oq9GgYjx
+ I5PcAFsvrf4KiOl6tQTsnLEAABMz9Vx9P4b0ScMgM0jnb+5+8MWubQUnHFg==
+X-Received: by 2002:a19:3ce:: with SMTP id 197mr1726610lfd.364.1605608194888; 
+ Tue, 17 Nov 2020 02:16:34 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyGKNQl8F+w9d73yJM5THTTlbfEgwgYYrzLhz1BoumzV9CXFZOZwDEB9lFaKd0BVNBiA2vGw9Gr5K3Xs8pfgq4=
+X-Received: by 2002:a19:3ce:: with SMTP id 197mr1726593lfd.364.1605608194484; 
+ Tue, 17 Nov 2020 02:16:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20201023024539.9512-1-po-hsu.lin@canonical.com>
+In-Reply-To: <20201023024539.9512-1-po-hsu.lin@canonical.com>
+From: Po-Hsu Lin <po-hsu.lin@canonical.com>
+Date: Tue, 17 Nov 2020 18:16:23 +0800
+Message-ID: <CAMy_GT-FNXa+fUjD4wM_8WAgLN7V8O=-E6n5jFULon74ejm=aQ@mail.gmail.com>
+Subject: Re: [PATCHv2] selftests/powerpc/eeh: disable kselftest timeout
+ setting for eeh-basic
+To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-kselftest@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,203 +69,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: mathieu.desnoyers@efficios.com, mbenes@suse.cz, shuah <shuah@kernel.org>,
+ joe.lawrence@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: 95c63df939789153540060ead8eb5d9fd4606274  powerpc/mm: Fix comparing pointer to 0 warning
+Hello,
+any update on this patch?
+Or do we want to increase the timeout here?
+Thanks!
 
-elapsed time: 727m
-
-configs tested: 177
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                     tqm8541_defconfig
-arm                            qcom_defconfig
-ia64                        generic_defconfig
-m68k                         amcore_defconfig
-arm                      footbridge_defconfig
-sh                          rsk7203_defconfig
-arm                       netwinder_defconfig
-arm                     am200epdkit_defconfig
-mips                           gcw0_defconfig
-powerpc                 mpc834x_itx_defconfig
-powerpc                     mpc512x_defconfig
-sh                        sh7785lcr_defconfig
-arm                        oxnas_v6_defconfig
-m68k                            q40_defconfig
-m68k                       m5475evb_defconfig
-arm                       cns3420vb_defconfig
-arm                        mini2440_defconfig
-arm                        vexpress_defconfig
-mips                  decstation_64_defconfig
-powerpc               mpc834x_itxgp_defconfig
-mips                         bigsur_defconfig
-sh                           sh2007_defconfig
-mips                        bcm63xx_defconfig
-arc                                 defconfig
-arm                         shannon_defconfig
-sh                 kfr2r09-romimage_defconfig
-arm                          iop32x_defconfig
-powerpc                 linkstation_defconfig
-mips                          rb532_defconfig
-m68k                        mvme147_defconfig
-openrisc                    or1ksim_defconfig
-sh                          rsk7201_defconfig
-mips                          rm200_defconfig
-mips                       lemote2f_defconfig
-mips                 decstation_r4k_defconfig
-powerpc                     ppa8548_defconfig
-sh                     magicpanelr2_defconfig
-mips                         tb0219_defconfig
-arc                      axs103_smp_defconfig
-mips                        qi_lb60_defconfig
-m68k                            mac_defconfig
-mips                          ath79_defconfig
-sh                         ecovec24_defconfig
-m68k                          hp300_defconfig
-arm                          gemini_defconfig
-arm                      tct_hammer_defconfig
-mips                        bcm47xx_defconfig
-sh                      rts7751r2d1_defconfig
-mips                     cu1830-neo_defconfig
-mips                            gpr_defconfig
-powerpc                        icon_defconfig
-sh                           se7721_defconfig
-mips                      loongson3_defconfig
-powerpc                     stx_gp3_defconfig
-arc                     nsimosci_hs_defconfig
-mips                        jmr3927_defconfig
-powerpc                       holly_defconfig
-xtensa                          iss_defconfig
-powerpc                     mpc83xx_defconfig
-mips                      bmips_stb_defconfig
-powerpc                   lite5200b_defconfig
-sh                        apsh4ad0a_defconfig
-s390                             alldefconfig
-arm                           sunxi_defconfig
-powerpc                  mpc885_ads_defconfig
-powerpc                     powernv_defconfig
-arm                            mmp2_defconfig
-arm                         lpc32xx_defconfig
-ia64                      gensparse_defconfig
-powerpc                    amigaone_defconfig
-sh                           se7724_defconfig
-arc                    vdk_hs38_smp_defconfig
-arm                     eseries_pxa_defconfig
-arm                           h5000_defconfig
-arm                          simpad_defconfig
-sh                          rsk7264_defconfig
-powerpc                     tqm5200_defconfig
-mips                            e55_defconfig
-powerpc                     tqm8560_defconfig
-sh                     sh7710voipgw_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a003-20201116
-x86_64               randconfig-a004-20201116
-x86_64               randconfig-a002-20201116
-x86_64               randconfig-a001-20201116
-x86_64               randconfig-a005-20201116
-x86_64               randconfig-a006-20201116
-i386                 randconfig-a006-20201116
-i386                 randconfig-a005-20201116
-i386                 randconfig-a001-20201116
-i386                 randconfig-a002-20201116
-i386                 randconfig-a004-20201116
-i386                 randconfig-a003-20201116
-i386                 randconfig-a006-20201115
-i386                 randconfig-a005-20201115
-i386                 randconfig-a001-20201115
-i386                 randconfig-a002-20201115
-i386                 randconfig-a004-20201115
-i386                 randconfig-a003-20201115
-x86_64               randconfig-a015-20201115
-x86_64               randconfig-a011-20201115
-x86_64               randconfig-a016-20201115
-x86_64               randconfig-a012-20201115
-x86_64               randconfig-a014-20201115
-x86_64               randconfig-a013-20201115
-i386                 randconfig-a012-20201116
-i386                 randconfig-a014-20201116
-i386                 randconfig-a016-20201116
-i386                 randconfig-a011-20201116
-i386                 randconfig-a015-20201116
-i386                 randconfig-a013-20201116
-i386                 randconfig-a012-20201115
-i386                 randconfig-a014-20201115
-i386                 randconfig-a016-20201115
-i386                 randconfig-a011-20201115
-i386                 randconfig-a015-20201115
-i386                 randconfig-a013-20201115
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a003-20201115
-x86_64               randconfig-a005-20201115
-x86_64               randconfig-a004-20201115
-x86_64               randconfig-a002-20201115
-x86_64               randconfig-a001-20201115
-x86_64               randconfig-a006-20201115
-x86_64               randconfig-a015-20201116
-x86_64               randconfig-a011-20201116
-x86_64               randconfig-a014-20201116
-x86_64               randconfig-a013-20201116
-x86_64               randconfig-a016-20201116
-x86_64               randconfig-a012-20201116
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+On Fri, Oct 23, 2020 at 10:45 AM Po-Hsu Lin <po-hsu.lin@canonical.com> wrote:
+>
+> The eeh-basic test got its own 60 seconds timeout (defined in commit
+> 414f50434aa2 "selftests/eeh: Bump EEH wait time to 60s") per breakable
+> device.
+>
+> And we have discovered that the number of breakable devices varies
+> on different hardware. The device recovery time ranges from 0 to 35
+> seconds. In our test pool it will take about 30 seconds to run on a
+> Power8 system that with 5 breakable devices, 60 seconds to run on a
+> Power9 system that with 4 breakable devices.
+>
+> Extend the timeout setting in the kselftest framework to 5 minutes
+> to give it a chance to finish.
+>
+> Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+> ---
+>  tools/testing/selftests/powerpc/eeh/Makefile | 2 +-
+>  tools/testing/selftests/powerpc/eeh/settings | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+>  create mode 100644 tools/testing/selftests/powerpc/eeh/settings
+>
+> diff --git a/tools/testing/selftests/powerpc/eeh/Makefile b/tools/testing/selftests/powerpc/eeh/Makefile
+> index b397bab..ae963eb 100644
+> --- a/tools/testing/selftests/powerpc/eeh/Makefile
+> +++ b/tools/testing/selftests/powerpc/eeh/Makefile
+> @@ -3,7 +3,7 @@ noarg:
+>         $(MAKE) -C ../
+>
+>  TEST_PROGS := eeh-basic.sh
+> -TEST_FILES := eeh-functions.sh
+> +TEST_FILES := eeh-functions.sh settings
+>
+>  top_srcdir = ../../../../..
+>  include ../../lib.mk
+> diff --git a/tools/testing/selftests/powerpc/eeh/settings b/tools/testing/selftests/powerpc/eeh/settings
+> new file mode 100644
+> index 0000000..694d707
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/eeh/settings
+> @@ -0,0 +1 @@
+> +timeout=300
+> --
+> 2.7.4
+>
