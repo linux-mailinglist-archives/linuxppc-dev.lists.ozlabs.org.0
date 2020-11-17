@@ -2,68 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 753552B7122
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 22:55:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A9D2B7148
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 23:09:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CbKWB3kn6zDqVZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 08:55:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CbKpj6R7KzDqQJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 09:09:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=keescook@chromium.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=FumCDSza; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=GAMAWdfV; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CbKRc0fvBzDqWy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 08:52:28 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id q5so41321pfk.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 13:52:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=4XjG60ocQx4PkwGgrAEoZIyPUhnxDgPZrMBdqiIZG+4=;
- b=FumCDSzaVj4k7q4V2p0oNKAIKu0GYbAFc2SyCI1aqTxJUFpFoUH6T8PWWxOryTG19/
- Q1zlGV6Di3ZGEwaZIfQcQ4NcdAXg07SmAHCYzmm4aemVr6P+UEqs5yTGo761PszGobNa
- LiUwMgr6+SbWyc3qbTPN/Ai3ee1ReodEOFMas=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=4XjG60ocQx4PkwGgrAEoZIyPUhnxDgPZrMBdqiIZG+4=;
- b=ovtoeEzknstmIS6JGg489wK3llr/qtowjpJ6OZnYSdV3cBGKpfPi9rKkMu/BdlcfNZ
- g7t9ifNE9mmrylKbxDJJgMh1wY68GnPZDLSle4OW0snYlrEoJ95Z4DK0OaGkVDdu+7VO
- k0P5/bsv4318U36quqCcNc5niTRoUU4rV/1iEQgCw2Eqt/JnO204y4Hg9FIP0okz+ACs
- +0PxirmjBqcKrCLbhFqxqldpT2APFNC5Hdrq9xT+t2XJhBSjDxLqHE0yEmqFSCRg8gEt
- M3mYsT19udhwCOqGxBu0UwYaV8VW2/LGNDBcEYxW8xO+a3M9vtvIfwbx/1rwE1GUzwce
- j6UQ==
-X-Gm-Message-State: AOAM530mleT8RHUCo7D077ugaP8SncsqiL3KhrYPJnW6qNM2Jq0KVQgB
- 5bSFLrCzB0nY/uoa2qUAZ1b8lg==
-X-Google-Smtp-Source: ABdhPJwx/GwY1vsKuE+ZykhwdU5XFj+Q/8T4Jjrzzd8kbh1afM17NqsLxZ988EMini1U8GWrTVGnNg==
-X-Received: by 2002:a63:1445:: with SMTP id 5mr5119858pgu.357.1605649945756;
- Tue, 17 Nov 2020 13:52:25 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id b29sm1039089pgn.87.2020.11.17.13.52.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Nov 2020 13:52:24 -0800 (PST)
-Date: Tue, 17 Nov 2020 13:52:23 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Nathan Chancellor <natechancellor@gmail.com>
-Subject: Re: [PATCH 1/2] kbuild: Hoist '--orphan-handling' into Kconfig
-Message-ID: <202011171351.728E1194EF@keescook>
-References: <20201113195553.1487659-1-natechancellor@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CbKmM2w4CzDqPj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 09:06:58 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AHM4H5d083997; Tue, 17 Nov 2020 17:06:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ai6BAreswhyDf4MnMxZzL8UpCtwkvNq9pLaziKNJwZA=;
+ b=GAMAWdfVh3mlc+7/SZ06WB8euH4+ynkd0/e0UPnnjcm1aUyl35L4v7E9a7WaegG8v7bS
+ 6E5ZBOwMErfHu6kKDIaJNgsXzn8B4046Ah/iP5FTVsniXIYSQJdktd58B5XBSNxtFHjT
+ RFZEDyfeSrAGtjx4t6sBiFyLGiWcEnODMyDzPdkM93Nw/0HAtyfNXpHOWVLpVqXdPhbY
+ IGGyrDAhwV7xfdYWFy+UQ2nmtZHmt5i1nKaZBedsIj9426+Fvt5PRE4E3rDQlnIKpTLn
+ hEJm0OAVxVy4SlCyYd/M9NhNGaXoLr9b5xcUe9EzynZk75wdmROPZd2Lcy7k1KVFD9SA Ww== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34vfd8f0x0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Nov 2020 17:06:54 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AHM1wxj029891;
+ Tue, 17 Nov 2020 22:06:52 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma02wdc.us.ibm.com with ESMTP id 34vfj9tud1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Nov 2020 22:06:52 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AHM6pKX3277442
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Nov 2020 22:06:51 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7DC091363AD;
+ Tue, 17 Nov 2020 22:06:51 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0E0491363AF;
+ Tue, 17 Nov 2020 22:06:50 +0000 (GMT)
+Received: from oc6034535106.ibm.com (unknown [9.163.40.231])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Nov 2020 22:06:50 +0000 (GMT)
+Subject: Re: [PATCH 3/6] ibmvfc: add new fields for version 2 of several MADs
+To: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ james.bottomley@hansenpartnership.com
+References: <20201112010442.102589-1-tyreld@linux.ibm.com>
+ <20201112010442.102589-3-tyreld@linux.ibm.com>
+From: Brian King <brking@linux.vnet.ibm.com>
+Message-ID: <5b772ce2-3119-f05b-15d3-357729e46e70@linux.vnet.ibm.com>
+Date: Tue, 17 Nov 2020 16:06:50 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201113195553.1487659-1-natechancellor@gmail.com>
+In-Reply-To: <20201112010442.102589-3-tyreld@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-17_12:2020-11-17,
+ 2020-11-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=0
+ clxscore=1011 priorityscore=1501 phishscore=0 malwarescore=0 spamscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 mlxlogscore=999
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011170162
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,46 +101,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Marek <michal.lkml@markovi.net>, linux-kbuild@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>,
- Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org,
- Nick Desaulniers <ndesaulniers@google.com>,
- Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Arvind Sankar <nivedita@alum.mit.edu>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- clang-built-linux@googlegroups.com, Thomas Gleixner <tglx@linutronix.de>,
- Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 13, 2020 at 12:55:52PM -0700, Nathan Chancellor wrote:
-> Currently, '--orphan-handling=warn' is spread out across four different
-> architectures in their respective Makefiles, which makes it a little
-> unruly to deal with in case it needs to be disabled for a specific
-> linker version (in this case, ld.lld 10.0.1).
-> 
-> To make it easier to control this, hoist this warning into Kconfig and
-> the main Makefile so that disabling it is simpler, as the warning will
-> only be enabled in a couple places (main Makefile and a couple of
-> compressed boot folders that blow away LDFLAGS_vmlinx) and making it
-> conditional is easier due to Kconfig syntax. One small additional
-> benefit of this is saving a call to ld-option on incremental builds
-> because we will have already evaluated it for CONFIG_LD_ORPHAN_WARN.
-> 
-> To keep the list of supported architectures the same, introduce
-> CONFIG_ARCH_WANT_LD_ORPHAN_WARN, which an architecture can select to
-> gain this automatically after all of the sections are specified and size
-> asserted. A special thanks to Kees Cook for the help text on this
-> config.
-> 
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1187
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+On 11/11/20 7:04 PM, Tyrel Datwyler wrote:
+> @@ -211,7 +214,9 @@ struct ibmvfc_npiv_login_resp {
+>  	__be64 capabilities;
+>  #define IBMVFC_CAN_FLUSH_ON_HALT	0x08
+>  #define IBMVFC_CAN_SUPPRESS_ABTS	0x10
+> -#define IBMVFC_CAN_SUPPORT_CHANNELS	0x20
+> +#define IBMVFC_MAD_VERSION_CAP		0x20
+> +#define IBMVFC_HANDLE_VF_WWPN		0x40
+> +#define IBMVFC_CAN_SUPPORT_CHANNELS	0x80
+>  	__be32 max_cmds;
+>  	__be32 scsi_id_sz;
+>  	__be64 max_dma_len;
+> @@ -293,6 +298,7 @@ struct ibmvfc_port_login {
+>  	__be32 reserved2;
+>  	struct ibmvfc_service_parms service_parms;
+>  	struct ibmvfc_service_parms service_parms_change;
+> +	__be64 targetWWPN;
 
-Looks good to me. With the other suggestions from the thread added,
-please consider it:
+For consistency, can you make this target_wwpn?
 
-Acked-by: Kees Cook <keescook@chromium.org>
+>  	__be64 reserved3[2];
+>  } __packed __aligned(8);
+>  
+> @@ -344,6 +350,7 @@ struct ibmvfc_process_login {
+>  	__be16 status;
+>  	__be16 error;			/* also fc_reason */
+>  	__be32 reserved2;
+> +	__be64 targetWWPN;
+
+For consistency, can you make this target_wwpn?
+
+>  	__be64 reserved3[2];
+>  } __packed __aligned(8);
+>  
+> @@ -378,6 +385,8 @@ struct ibmvfc_tmf {
+>  	__be32 cancel_key;
+>  	__be32 my_cancel_key;
+>  	__be32 pad;
+> +	__be64 targetWWPN;
+
+For consistency, can you make this target_wwpn?
+
+> +	__be64 taskTag;
+
+and make this task_tag. 
+
+>  	__be64 reserved[2];
+>  } __packed __aligned(8);
+>  
+> @@ -474,9 +483,19 @@ struct ibmvfc_cmd {
+>  	__be64 correlation;
+>  	__be64 tgt_scsi_id;
+>  	__be64 tag;
+> -	__be64 reserved3[2];
+> -	struct ibmvfc_fcp_cmd_iu iu;
+> -	struct ibmvfc_fcp_rsp rsp;
+> +	__be64 targetWWPN;
+
+For consistency, can you make this target_wwpn?
+
+> +	__be64 reserved3;
+> +	union {
+> +		struct {
+> +			struct ibmvfc_fcp_cmd_iu iu;
+> +			struct ibmvfc_fcp_rsp rsp;
+> +		} v1;
+> +		struct {
+> +			__be64 reserved4;
+> +			struct ibmvfc_fcp_cmd_iu iu;
+> +			struct ibmvfc_fcp_rsp rsp;
+> +		} v2;
+> +	};
+>  } __packed __aligned(8);
+>  
+>  struct ibmvfc_passthru_fc_iu {
+> @@ -503,6 +522,7 @@ struct ibmvfc_passthru_iu {
+>  	__be64 correlation;
+>  	__be64 scsi_id;
+>  	__be64 tag;
+> +	__be64 targetWWPN;
+
+For consistency, can you make this target_wwpn?
+
+>  	__be64 reserved2[2];
+>  } __packed __aligned(8);
+>  
+> 
+
 
 -- 
-Kees Cook
+Brian King
+Power Linux I/O
+IBM Linux Technology Center
+
