@@ -1,54 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CD12B57B5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 04:11:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0A22B57D2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 04:24:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CZrZN0tbszDqSN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 14:11:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CZrsL0mbzzDqSg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 14:24:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CZrTf47dwzDqHm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 14:07:34 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
+ envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=P4oIDwMK; 
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=GBM1eXiW; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CZrTd0nsVz9sSs;
- Tue, 17 Nov 2020 14:07:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1605582453;
- bh=R5WCF4I49UY8wfGLb6M2fPkbB9GljRtb7YtY1xSQRFE=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=P4oIDwMK/anM/QTrDNLaU3orPQ2ggHQolEh9D6w7S2BXMz4iv2lthO1lKtuFl1DwC
- DBV7nRa8PofxPQ3ciO6PIuf4T8hXA1oASrQU6AswYNGHNK1+IO9p04qeNenyHnlXOe
- +oTKZD3qfMUF9gxO7PIxN9Zn22L33TYKWYH4dCwvowtJBP2h/anWjkdSwgasbXX9rG
- gIPUbfUVOKjosnlNYUf9cUBk74+2k8pBahYde3EZhTGcQt/0VgpJMcPQVWnnw44nCL
- Jbp+nrT0BK3Sjd7V/188EFcjLklRBMaJO3gZEqn5TxBWe8kKCzx4p8Krv2NCuvY6Fk
- mhVJg6EIS978Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Andrew Donnellan <ajd@linux.ibm.com>, xiakaixu1987@gmail.com,
- fbarrat@linux.ibm.com, benh@kernel.crashing.org, paulus@samba.org
-Subject: Re: [PATCH] powerpc/powernv/sriov: fix unsigned int win compared to
- less than zero
-In-Reply-To: <40b8ba6f-4916-55c2-a1f0-b7daa3c2e201@linux.ibm.com>
-References: <1605007170-22171-1-git-send-email-kaixuxia@tencent.com>
- <40b8ba6f-4916-55c2-a1f0-b7daa3c2e201@linux.ibm.com>
-Date: Tue, 17 Nov 2020 14:07:29 +1100
-Message-ID: <87zh3g3clq.fsf@mpe.ellerman.id.au>
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CZrqk0LptzDq9T
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 14:23:13 +1100 (AEDT)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+ by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AH3AQMh121488;
+ Tue, 17 Nov 2020 03:22:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=SbsbLn2KScETq2z0f+Y5TDcNNoh/QOWarOD1dmNqu0g=;
+ b=GBM1eXiW4OAo+b793cjKHJHOH3l/fbMMbIhGv070SBlfl9xNkmqA6r1nLFAmyY9sqPRm
+ ZIrjCxRP9EcWIph9KNsU5OTn9a3C20EPAFn9WBIKyq/LoYCS1o7vr553iMZK7nOWsVCG
+ nn98kQJZVbfVblzMKnOOHMJdbN5+7Zxxq2fomGZZ8dlblLhwunejP7IqL+jB2WXw8u2I
+ OGILlEDkE3Bk8RFGCvqKfzb/qFSBHs+dKGVbTWWAAXmtfs95faUai8rAL7g0kj79Eim3
+ AFV2cc1P+5hHJXiGRJz1bkWbvmfKi7ZFhsrQzYP/gZyBPeCJ7/Ndg0wexiWclVjhWthD 8g== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by userp2120.oracle.com with ESMTP id 34t7vn0abr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Tue, 17 Nov 2020 03:22:57 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0AH39XZY048279;
+ Tue, 17 Nov 2020 03:22:56 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+ by aserp3030.oracle.com with ESMTP id 34uspstcds-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Nov 2020 03:22:56 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+ by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0AH3MeWC023330;
+ Tue, 17 Nov 2020 03:22:45 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Mon, 16 Nov 2020 19:22:40 -0800
+To: Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: Re: [PATCH 1/6] ibmvfc: byte swap login_buf.resp values in
+ attribute show functions
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq18sb07l17.fsf@ca-mkp.ca.oracle.com>
+References: <20201112010442.102589-1-tyreld@linux.ibm.com>
+ <20201112093752.GA24235@infradead.org>
+ <7df9d768-e008-a849-5fbd-78d6bd0536fa@linux.ibm.com>
+Date: Mon, 16 Nov 2020 22:22:37 -0500
+In-Reply-To: <7df9d768-e008-a849-5fbd-78d6bd0536fa@linux.ibm.com> (Tyrel
+ Datwyler's message of "Fri, 13 Nov 2020 11:39:35 -0800")
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9807
+ signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ malwarescore=0
+ mlxscore=0 bulkscore=0 suspectscore=1 adultscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011170025
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9807
+ signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ suspectscore=1
+ malwarescore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0
+ adultscore=0 mlxscore=0 priorityscore=1501 phishscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011170025
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,41 +93,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kaixu Xia <kaixuxia@tencent.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: james.bottomley@hansenpartnership.com, martin.petersen@oracle.com,
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, brking@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrew Donnellan <ajd@linux.ibm.com> writes:
 
-> On 10/11/20 10:19 pm, xiakaixu1987@gmail.com wrote:
->> From: Kaixu Xia <kaixuxia@tencent.com>
->> 
->> Fix coccicheck warning:
->> 
->> ./arch/powerpc/platforms/powernv/pci-sriov.c:443:7-10: WARNING: Unsigned expression compared with zero: win < 0
->> ./arch/powerpc/platforms/powernv/pci-sriov.c:462:7-10: WARNING: Unsigned expression compared with zero: win < 0
->> 
->> Reported-by: Tosk Robot <tencent_os_robot@tencent.com>
->> Signed-off-by: Kaixu Xia <kaixuxia@tencent.com>
->
-> This seems like the right fix, the value assigned to win can indeed be 
-> -1 so it should be signed. Thanks for sending the patch.
->
-> Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+Tyrel,
 
-I'll add:
+> The checkpatch script only warns at 100 char lines these days. To be
+> fair though I did have two lines go over that limit by a couple
+> characters, there are a couple commit log typos, and I had an if
+> keyword with no space after before the opening parenthesis. So, I'll
+> happily re-spin.
 
-  Fixes: 39efc03e3ee8 ("powerpc/powernv/sriov: Move M64 BAR allocation into a helper")
+Please tweak the little things that need fixing and resubmit.
 
-Which I think is the culprit as it changed:
+> However, for my info going forward is the SCSI subsystem sticking to
+> 80 char lines as a hard limit?
 
-  if (win >= phb->ioda.m64_bar_idx + 1)
+As far as I'm concerned the 80 char limit is mainly about ensuring that
+the code is structured in a sensible way. Typesetting best practices
+also suggest that longer lines are harder to read. So while I generally
+don't strictly enforce the 80 char limit for drivers, I do push back if
+I feel that readability could be improved by breaking the line or
+restructuring the code.
 
-to:
+Use your best judgment to optimize for readability.
 
-  if (win < 0)
+Thanks!
 
-
-cheers
+-- 
+Martin K. Petersen	Oracle Linux Engineering
