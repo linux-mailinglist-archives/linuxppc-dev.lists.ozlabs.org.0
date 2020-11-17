@@ -1,54 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BADA2B715E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 23:18:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8860F2B7174
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 23:22:49 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CbL1W33xQzDqPv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 09:18:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CbL6Z1c8xzDqLX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 09:22:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gustavoars@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=VHQkI2Dr; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=BdCS0Fbn; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CbKzR5YbQzDqLX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 09:16:35 +1100 (AEDT)
-Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5F50A2151B;
- Tue, 17 Nov 2020 22:16:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1605651392;
- bh=5Y/LmqnyNxY21CT3vAT+AlmdsPrhOUNeVh+1x+q3Z8A=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=VHQkI2Dr5d+qfRWnkD5hbJwCqfDPKe9M8NJcCWAUhondk8kDuCgklvdb5tCIIPfXt
- 9xvknpF2J+8SOg9zsctEqAkEvEXi4j9OjzygIgxeF8eHAS55sgLh4svY+boHF06WBT
- 5G2PvGQuntFXo2I2jagu4U83mbYGcGsWdh4MrygE=
-Date: Tue, 17 Nov 2020 16:16:29 -0600
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH 2/3] Revert "lib: Revert use of fallthrough
- pseudo-keyword in lib/"
-Message-ID: <20201117221629.GA4679@embeddedor>
-References: <20201116043532.4032932-1-ndesaulniers@google.com>
- <20201116043532.4032932-3-ndesaulniers@google.com>
- <20201117030214.GB1340689@ubuntu-m3-large-x86>
- <CAKwvOdk_sphJGQarEWJLzGZWkdzO9dqmcRmys3Retw3vn2Fwag@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CbL4m4XZZzDqCX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 09:21:12 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AHM4IkE084056; Tue, 17 Nov 2020 17:21:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : from : to : cc
+ : references : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=x2iXCZSnXRwGxwYhCZK53+Enw+9vEfbC5I+7svBrQUg=;
+ b=BdCS0FbnpBYm4zcsLwBpiOzUTXThRIBv9JMGNHCAkUcfFKTWX+RvjyTEgjANPotatxOU
+ rzGuk/q7MRnYCypEOOTnS8YGf0mqNTtK2B0MA3W3HpbcSmaynT9p+GPLP0O4SJKeE498
+ xeiyKrFIMvkLQQodzNpqB67+gymP9pvfRvyKBC74Ej1IU/etBWwQKmk+qpNMtBJk/SFw
+ d8ftNG6GgVq9tegbUSCGZrL6DlVByouMQnCntCr+1xMomk1MjyrN3BkdHaH/lnpILcsN
+ 4cUZ+lcnCy3FcHCkpIObCxkAbpcufa3hul8ChvOPGL7lDEvHzc7fKcwUPCYB0ez3Txh8 pw== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34vfd8fb49-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Nov 2020 17:21:09 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AHMIO3m030818;
+ Tue, 17 Nov 2020 22:21:08 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma04wdc.us.ibm.com with ESMTP id 34t6v91njk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Nov 2020 22:21:08 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AHML1h614025422
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Nov 2020 22:21:01 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2442FBE053;
+ Tue, 17 Nov 2020 22:21:07 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A676BBE059;
+ Tue, 17 Nov 2020 22:21:06 +0000 (GMT)
+Received: from oc6034535106.ibm.com (unknown [9.163.40.231])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Nov 2020 22:21:06 +0000 (GMT)
+Subject: Re: [PATCH 4/6] ibmvfc: add FC payload retrieval routines for
+ versioned vfcFrames
+From: Brian King <brking@linux.vnet.ibm.com>
+To: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ james.bottomley@hansenpartnership.com
+References: <20201112010442.102589-1-tyreld@linux.ibm.com>
+ <20201112010442.102589-4-tyreld@linux.ibm.com>
+ <9e38f449-d2e6-6408-4fef-cfb5351393cc@linux.vnet.ibm.com>
+Message-ID: <a829840c-6f39-2901-4cdc-9df1d83f3196@linux.vnet.ibm.com>
+Date: Tue, 17 Nov 2020 16:21:06 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKwvOdk_sphJGQarEWJLzGZWkdzO9dqmcRmys3Retw3vn2Fwag@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <9e38f449-d2e6-6408-4fef-cfb5351393cc@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-17_12:2020-11-17,
+ 2020-11-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=0
+ clxscore=1015 priorityscore=1501 phishscore=0 malwarescore=0 spamscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 mlxlogscore=999
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011170162
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,587 +103,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- LKML <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Paul Mackerras <paulus@samba.org>,
- Nathan Chancellor <natechancellor@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 17, 2020 at 11:10:26AM -0800, Nick Desaulniers wrote:
-> On Mon, Nov 16, 2020 at 7:02 PM Nathan Chancellor
-> <natechancellor@gmail.com> wrote:
-> >
-> > On Sun, Nov 15, 2020 at 08:35:31PM -0800, Nick Desaulniers wrote:
-> > > This reverts commit 6a9dc5fd6170 ("lib: Revert use of fallthrough
-> > > pseudo-keyword in lib/")
+On 11/17/20 4:14 PM, Brian King wrote:
+> On 11/11/20 7:04 PM, Tyrel Datwyler wrote:
+>> The FC iu and response payloads are located at different offsets
+>> depending on the ibmvfc_cmd version. This is a result of the version 2
+>> vfcFrame definition adding an extra 64bytes of reserved space to the
+>> structure prior to the payloads.
+>>
+>> Add helper routines to determine the current vfcFrame version and
+>> returning pointers to the proper iu or response structures within that
+>> ibmvfc_cmd.
+>>
+>> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+>> ---
+>>  drivers/scsi/ibmvscsi/ibmvfc.c | 76 ++++++++++++++++++++++++----------
+>>  1 file changed, 53 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> index aa3445bec42c..5e666f7c9266 100644
+>> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
+>> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> @@ -138,6 +138,22 @@ static void ibmvfc_tgt_move_login(struct ibmvfc_target *);
+>>  
+>>  static const char *unknown_error = "unknown error";
+>>  
+>> +static struct ibmvfc_fcp_cmd_iu *ibmvfc_get_fcp_iu(struct ibmvfc_host *vhost, struct ibmvfc_cmd *vfc_cmd)
+>> +{
+>> +	if (be64_to_cpu(vhost->login_buf->resp.capabilities) & IBMVFC_HANDLE_VF_WWPN)
 > 
-> Gustavo, whose tree did 6a9dc5fd6170 and df561f6688fe go up to
-
-Mine.
-
-> mainline in?  I'm not sure whether you or MPE (ppc) or someone else
-> should pick it this series?
-
-I'm happy to take this series in my tree.  I'm planing to send a
-pull-request for -rc5 with more related changes. So, I can include
-this in the same PR.
-
-In the meantime I'll add this to my testing tree, so it can be
-build-tested by the 0-day folks. :)
-
-Thanks
---
-Gustavo
-
+> Suggest adding a flag to the vhost structure that you setup after login in order to
+> simplify this check and avoid chasing multiple pointers along with a byte swap.
 > 
-> > >
-> > > Now that we can build arch/powerpc/boot/ free of -Wimplicit-fallthrough,
-> > > re-enable these fixes for lib/.
-> > >
-> > > Link: https://github.com/ClangBuiltLinux/linux/issues/236
-> > > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-> >
-> > Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-> > Tested-by: Nathan Chancellor <natechancellor@gmail.com>
-> >
-> > > ---
-> > >  lib/asn1_decoder.c      |  4 ++--
-> > >  lib/assoc_array.c       |  2 +-
-> > >  lib/bootconfig.c        |  4 ++--
-> > >  lib/cmdline.c           | 10 +++++-----
-> > >  lib/dim/net_dim.c       |  2 +-
-> > >  lib/dim/rdma_dim.c      |  4 ++--
-> > >  lib/glob.c              |  2 +-
-> > >  lib/siphash.c           | 36 ++++++++++++++++++------------------
-> > >  lib/ts_fsm.c            |  2 +-
-> > >  lib/vsprintf.c          | 14 +++++++-------
-> > >  lib/xz/xz_dec_lzma2.c   |  4 ++--
-> > >  lib/xz/xz_dec_stream.c  | 16 ++++++++--------
-> > >  lib/zstd/bitstream.h    | 10 +++++-----
-> > >  lib/zstd/compress.c     |  2 +-
-> > >  lib/zstd/decompress.c   | 12 ++++++------
-> > >  lib/zstd/huf_compress.c |  4 ++--
-> > >  16 files changed, 64 insertions(+), 64 deletions(-)
-> > >
-> > > diff --git a/lib/asn1_decoder.c b/lib/asn1_decoder.c
-> > > index 58f72b25f8e9..13da529e2e72 100644
-> > > --- a/lib/asn1_decoder.c
-> > > +++ b/lib/asn1_decoder.c
-> > > @@ -381,7 +381,7 @@ int asn1_ber_decoder(const struct asn1_decoder *decoder,
-> > >       case ASN1_OP_END_SET_ACT:
-> > >               if (unlikely(!(flags & FLAG_MATCHED)))
-> > >                       goto tag_mismatch;
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >
-> > >       case ASN1_OP_END_SEQ:
-> > >       case ASN1_OP_END_SET_OF:
-> > > @@ -448,7 +448,7 @@ int asn1_ber_decoder(const struct asn1_decoder *decoder,
-> > >                       pc += asn1_op_lengths[op];
-> > >                       goto next_op;
-> > >               }
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >
-> > >       case ASN1_OP_ACT:
-> > >               ret = actions[machine[pc + 1]](context, hdr, tag, data + tdp, len);
-> > > diff --git a/lib/assoc_array.c b/lib/assoc_array.c
-> > > index 6f4bcf524554..04c98799c3ba 100644
-> > > --- a/lib/assoc_array.c
-> > > +++ b/lib/assoc_array.c
-> > > @@ -1113,7 +1113,7 @@ struct assoc_array_edit *assoc_array_delete(struct assoc_array *array,
-> > >                                               index_key))
-> > >                               goto found_leaf;
-> > >               }
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case assoc_array_walk_tree_empty:
-> > >       case assoc_array_walk_found_wrong_shortcut:
-> > >       default:
-> > > diff --git a/lib/bootconfig.c b/lib/bootconfig.c
-> > > index 649ed44f199c..9f8c70a98fcf 100644
-> > > --- a/lib/bootconfig.c
-> > > +++ b/lib/bootconfig.c
-> > > @@ -827,7 +827,7 @@ int __init xbc_init(char *buf, const char **emsg, int *epos)
-> > >                                                       q - 2);
-> > >                               break;
-> > >                       }
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               case '=':
-> > >                       ret = xbc_parse_kv(&p, q, c);
-> > >                       break;
-> > > @@ -836,7 +836,7 @@ int __init xbc_init(char *buf, const char **emsg, int *epos)
-> > >                       break;
-> > >               case '#':
-> > >                       q = skip_comment(q);
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               case ';':
-> > >               case '\n':
-> > >                       ret = xbc_parse_key(&p, q);
-> > > diff --git a/lib/cmdline.c b/lib/cmdline.c
-> > > index 9e186234edc0..46f2cb4ce6d1 100644
-> > > --- a/lib/cmdline.c
-> > > +++ b/lib/cmdline.c
-> > > @@ -144,23 +144,23 @@ unsigned long long memparse(const char *ptr, char **retptr)
-> > >       case 'E':
-> > >       case 'e':
-> > >               ret <<= 10;
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case 'P':
-> > >       case 'p':
-> > >               ret <<= 10;
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case 'T':
-> > >       case 't':
-> > >               ret <<= 10;
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case 'G':
-> > >       case 'g':
-> > >               ret <<= 10;
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case 'M':
-> > >       case 'm':
-> > >               ret <<= 10;
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case 'K':
-> > >       case 'k':
-> > >               ret <<= 10;
-> > > diff --git a/lib/dim/net_dim.c b/lib/dim/net_dim.c
-> > > index a4db51c21266..06811d866775 100644
-> > > --- a/lib/dim/net_dim.c
-> > > +++ b/lib/dim/net_dim.c
-> > > @@ -233,7 +233,7 @@ void net_dim(struct dim *dim, struct dim_sample end_sample)
-> > >                       schedule_work(&dim->work);
-> > >                       break;
-> > >               }
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case DIM_START_MEASURE:
-> > >               dim_update_sample(end_sample.event_ctr, end_sample.pkt_ctr,
-> > >                                 end_sample.byte_ctr, &dim->start_sample);
-> > > diff --git a/lib/dim/rdma_dim.c b/lib/dim/rdma_dim.c
-> > > index f7e26c7b4749..15462d54758d 100644
-> > > --- a/lib/dim/rdma_dim.c
-> > > +++ b/lib/dim/rdma_dim.c
-> > > @@ -59,7 +59,7 @@ static bool rdma_dim_decision(struct dim_stats *curr_stats, struct dim *dim)
-> > >                       break;
-> > >               case DIM_STATS_WORSE:
-> > >                       dim_turn(dim);
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               case DIM_STATS_BETTER:
-> > >                       step_res = rdma_dim_step(dim);
-> > >                       if (step_res == DIM_ON_EDGE)
-> > > @@ -94,7 +94,7 @@ void rdma_dim(struct dim *dim, u64 completions)
-> > >                       schedule_work(&dim->work);
-> > >                       break;
-> > >               }
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case DIM_START_MEASURE:
-> > >               dim->state = DIM_MEASURE_IN_PROGRESS;
-> > >               dim_update_sample_with_comps(curr_sample->event_ctr, 0, 0,
-> > > diff --git a/lib/glob.c b/lib/glob.c
-> > > index 52e3ed7e4a9b..85ecbda45cd8 100644
-> > > --- a/lib/glob.c
-> > > +++ b/lib/glob.c
-> > > @@ -102,7 +102,7 @@ bool __pure glob_match(char const *pat, char const *str)
-> > >                       break;
-> > >               case '\\':
-> > >                       d = *pat++;
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               default:        /* Literal character */
-> > >  literal:
-> > >                       if (c == d) {
-> > > diff --git a/lib/siphash.c b/lib/siphash.c
-> > > index c47bb6ff2149..a90112ee72a1 100644
-> > > --- a/lib/siphash.c
-> > > +++ b/lib/siphash.c
-> > > @@ -68,11 +68,11 @@ u64 __siphash_aligned(const void *data, size_t len, const siphash_key_t *key)
-> > >                                                 bytemask_from_count(left)));
-> > >  #else
-> > >       switch (left) {
-> > > -     case 7: b |= ((u64)end[6]) << 48; /* fall through */
-> > > -     case 6: b |= ((u64)end[5]) << 40; /* fall through */
-> > > -     case 5: b |= ((u64)end[4]) << 32; /* fall through */
-> > > +     case 7: b |= ((u64)end[6]) << 48; fallthrough;
-> > > +     case 6: b |= ((u64)end[5]) << 40; fallthrough;
-> > > +     case 5: b |= ((u64)end[4]) << 32; fallthrough;
-> > >       case 4: b |= le32_to_cpup(data); break;
-> > > -     case 3: b |= ((u64)end[2]) << 16; /* fall through */
-> > > +     case 3: b |= ((u64)end[2]) << 16; fallthrough;
-> > >       case 2: b |= le16_to_cpup(data); break;
-> > >       case 1: b |= end[0];
-> > >       }
-> > > @@ -101,11 +101,11 @@ u64 __siphash_unaligned(const void *data, size_t len, const siphash_key_t *key)
-> > >                                                 bytemask_from_count(left)));
-> > >  #else
-> > >       switch (left) {
-> > > -     case 7: b |= ((u64)end[6]) << 48; /* fall through */
-> > > -     case 6: b |= ((u64)end[5]) << 40; /* fall through */
-> > > -     case 5: b |= ((u64)end[4]) << 32; /* fall through */
-> > > +     case 7: b |= ((u64)end[6]) << 48; fallthrough;
-> > > +     case 6: b |= ((u64)end[5]) << 40; fallthrough;
-> > > +     case 5: b |= ((u64)end[4]) << 32; fallthrough;
-> > >       case 4: b |= get_unaligned_le32(end); break;
-> > > -     case 3: b |= ((u64)end[2]) << 16; /* fall through */
-> > > +     case 3: b |= ((u64)end[2]) << 16; fallthrough;
-> > >       case 2: b |= get_unaligned_le16(end); break;
-> > >       case 1: b |= end[0];
-> > >       }
-> > > @@ -268,11 +268,11 @@ u32 __hsiphash_aligned(const void *data, size_t len, const hsiphash_key_t *key)
-> > >                                                 bytemask_from_count(left)));
-> > >  #else
-> > >       switch (left) {
-> > > -     case 7: b |= ((u64)end[6]) << 48; /* fall through */
-> > > -     case 6: b |= ((u64)end[5]) << 40; /* fall through */
-> > > -     case 5: b |= ((u64)end[4]) << 32; /* fall through */
-> > > +     case 7: b |= ((u64)end[6]) << 48; fallthrough;
-> > > +     case 6: b |= ((u64)end[5]) << 40; fallthrough;
-> > > +     case 5: b |= ((u64)end[4]) << 32; fallthrough;
-> > >       case 4: b |= le32_to_cpup(data); break;
-> > > -     case 3: b |= ((u64)end[2]) << 16; /* fall through */
-> > > +     case 3: b |= ((u64)end[2]) << 16; fallthrough;
-> > >       case 2: b |= le16_to_cpup(data); break;
-> > >       case 1: b |= end[0];
-> > >       }
-> > > @@ -301,11 +301,11 @@ u32 __hsiphash_unaligned(const void *data, size_t len,
-> > >                                                 bytemask_from_count(left)));
-> > >  #else
-> > >       switch (left) {
-> > > -     case 7: b |= ((u64)end[6]) << 48; /* fall through */
-> > > -     case 6: b |= ((u64)end[5]) << 40; /* fall through */
-> > > -     case 5: b |= ((u64)end[4]) << 32; /* fall through */
-> > > +     case 7: b |= ((u64)end[6]) << 48; fallthrough;
-> > > +     case 6: b |= ((u64)end[5]) << 40; fallthrough;
-> > > +     case 5: b |= ((u64)end[4]) << 32; fallthrough;
-> > >       case 4: b |= get_unaligned_le32(end); break;
-> > > -     case 3: b |= ((u64)end[2]) << 16; /* fall through */
-> > > +     case 3: b |= ((u64)end[2]) << 16; fallthrough;
-> > >       case 2: b |= get_unaligned_le16(end); break;
-> > >       case 1: b |= end[0];
-> > >       }
-> > > @@ -431,7 +431,7 @@ u32 __hsiphash_aligned(const void *data, size_t len, const hsiphash_key_t *key)
-> > >               v0 ^= m;
-> > >       }
-> > >       switch (left) {
-> > > -     case 3: b |= ((u32)end[2]) << 16; /* fall through */
-> > > +     case 3: b |= ((u32)end[2]) << 16; fallthrough;
-> > >       case 2: b |= le16_to_cpup(data); break;
-> > >       case 1: b |= end[0];
-> > >       }
-> > > @@ -454,7 +454,7 @@ u32 __hsiphash_unaligned(const void *data, size_t len,
-> > >               v0 ^= m;
-> > >       }
-> > >       switch (left) {
-> > > -     case 3: b |= ((u32)end[2]) << 16; /* fall through */
-> > > +     case 3: b |= ((u32)end[2]) << 16; fallthrough;
-> > >       case 2: b |= get_unaligned_le16(end); break;
-> > >       case 1: b |= end[0];
-> > >       }
-> > > diff --git a/lib/ts_fsm.c b/lib/ts_fsm.c
-> > > index ab749ec10ab5..64fd9015ad80 100644
-> > > --- a/lib/ts_fsm.c
-> > > +++ b/lib/ts_fsm.c
-> > > @@ -193,7 +193,7 @@ static unsigned int fsm_find(struct ts_config *conf, struct ts_state *state)
-> > >                               TOKEN_MISMATCH();
-> > >
-> > >                       block_idx++;
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case TS_FSM_ANY:
-> > >                       if (next == NULL)
-> > > diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> > > index 14c9a6af1b23..d3c5c16f391c 100644
-> > > --- a/lib/vsprintf.c
-> > > +++ b/lib/vsprintf.c
-> > > @@ -1265,7 +1265,7 @@ char *mac_address_string(char *buf, char *end, u8 *addr,
-> > >
-> > >       case 'R':
-> > >               reversed = true;
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >
-> > >       default:
-> > >               separator = ':';
-> > > @@ -1682,7 +1682,7 @@ char *uuid_string(char *buf, char *end, const u8 *addr,
-> > >       switch (*(++fmt)) {
-> > >       case 'L':
-> > >               uc = true;
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case 'l':
-> > >               index = guid_index;
-> > >               break;
-> > > @@ -2219,7 +2219,7 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
-> > >       case 'S':
-> > >       case 's':
-> > >               ptr = dereference_symbol_descriptor(ptr);
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case 'B':
-> > >               return symbol_string(buf, end, ptr, spec, fmt);
-> > >       case 'R':
-> > > @@ -2450,7 +2450,7 @@ int format_decode(const char *fmt, struct printf_spec *spec)
-> > >
-> > >       case 'x':
-> > >               spec->flags |= SMALL;
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >
-> > >       case 'X':
-> > >               spec->base = 16;
-> > > @@ -2468,7 +2468,7 @@ int format_decode(const char *fmt, struct printf_spec *spec)
-> > >                * utility, treat it as any other invalid or
-> > >                * unsupported format specifier.
-> > >                */
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >
-> > >       default:
-> > >               WARN_ONCE(1, "Please remove unsupported %%%c in format string\n", *fmt);
-> > > @@ -3411,10 +3411,10 @@ int vsscanf(const char *buf, const char *fmt, va_list args)
-> > >                       break;
-> > >               case 'i':
-> > >                       base = 0;
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               case 'd':
-> > >                       is_sign = true;
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               case 'u':
-> > >                       break;
-> > >               case '%':
-> > > diff --git a/lib/xz/xz_dec_lzma2.c b/lib/xz/xz_dec_lzma2.c
-> > > index 65a1aad8c223..ca2603abee08 100644
-> > > --- a/lib/xz/xz_dec_lzma2.c
-> > > +++ b/lib/xz/xz_dec_lzma2.c
-> > > @@ -1043,7 +1043,7 @@ XZ_EXTERN enum xz_ret xz_dec_lzma2_run(struct xz_dec_lzma2 *s,
-> > >
-> > >                       s->lzma2.sequence = SEQ_LZMA_PREPARE;
-> > >
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case SEQ_LZMA_PREPARE:
-> > >                       if (s->lzma2.compressed < RC_INIT_BYTES)
-> > > @@ -1055,7 +1055,7 @@ XZ_EXTERN enum xz_ret xz_dec_lzma2_run(struct xz_dec_lzma2 *s,
-> > >                       s->lzma2.compressed -= RC_INIT_BYTES;
-> > >                       s->lzma2.sequence = SEQ_LZMA_RUN;
-> > >
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case SEQ_LZMA_RUN:
-> > >                       /*
-> > > diff --git a/lib/xz/xz_dec_stream.c b/lib/xz/xz_dec_stream.c
-> > > index 32ab2a08b7cb..fea86deaaa01 100644
-> > > --- a/lib/xz/xz_dec_stream.c
-> > > +++ b/lib/xz/xz_dec_stream.c
-> > > @@ -583,7 +583,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
-> > >                       if (ret != XZ_OK)
-> > >                               return ret;
-> > >
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case SEQ_BLOCK_START:
-> > >                       /* We need one byte of input to continue. */
-> > > @@ -608,7 +608,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
-> > >                       s->temp.pos = 0;
-> > >                       s->sequence = SEQ_BLOCK_HEADER;
-> > >
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case SEQ_BLOCK_HEADER:
-> > >                       if (!fill_temp(s, b))
-> > > @@ -620,7 +620,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
-> > >
-> > >                       s->sequence = SEQ_BLOCK_UNCOMPRESS;
-> > >
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case SEQ_BLOCK_UNCOMPRESS:
-> > >                       ret = dec_block(s, b);
-> > > @@ -629,7 +629,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
-> > >
-> > >                       s->sequence = SEQ_BLOCK_PADDING;
-> > >
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case SEQ_BLOCK_PADDING:
-> > >                       /*
-> > > @@ -651,7 +651,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
-> > >
-> > >                       s->sequence = SEQ_BLOCK_CHECK;
-> > >
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case SEQ_BLOCK_CHECK:
-> > >                       if (s->check_type == XZ_CHECK_CRC32) {
-> > > @@ -675,7 +675,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
-> > >
-> > >                       s->sequence = SEQ_INDEX_PADDING;
-> > >
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case SEQ_INDEX_PADDING:
-> > >                       while ((s->index.size + (b->in_pos - s->in_start))
-> > > @@ -699,7 +699,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
-> > >
-> > >                       s->sequence = SEQ_INDEX_CRC32;
-> > >
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case SEQ_INDEX_CRC32:
-> > >                       ret = crc32_validate(s, b);
-> > > @@ -709,7 +709,7 @@ static enum xz_ret dec_main(struct xz_dec *s, struct xz_buf *b)
-> > >                       s->temp.size = STREAM_HEADER_SIZE;
-> > >                       s->sequence = SEQ_STREAM_FOOTER;
-> > >
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case SEQ_STREAM_FOOTER:
-> > >                       if (!fill_temp(s, b))
-> > > diff --git a/lib/zstd/bitstream.h b/lib/zstd/bitstream.h
-> > > index 3a49784d5c61..7c65c66e41fd 100644
-> > > --- a/lib/zstd/bitstream.h
-> > > +++ b/lib/zstd/bitstream.h
-> > > @@ -259,15 +259,15 @@ ZSTD_STATIC size_t BIT_initDStream(BIT_DStream_t *bitD, const void *srcBuffer, s
-> > >               bitD->bitContainer = *(const BYTE *)(bitD->start);
-> > >               switch (srcSize) {
-> > >               case 7: bitD->bitContainer += (size_t)(((const BYTE *)(srcBuffer))[6]) << (sizeof(bitD->bitContainer) * 8 - 16);
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               case 6: bitD->bitContainer += (size_t)(((const BYTE *)(srcBuffer))[5]) << (sizeof(bitD->bitContainer) * 8 - 24);
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               case 5: bitD->bitContainer += (size_t)(((const BYTE *)(srcBuffer))[4]) << (sizeof(bitD->bitContainer) * 8 - 32);
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               case 4: bitD->bitContainer += (size_t)(((const BYTE *)(srcBuffer))[3]) << 24;
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               case 3: bitD->bitContainer += (size_t)(((const BYTE *)(srcBuffer))[2]) << 16;
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               case 2: bitD->bitContainer += (size_t)(((const BYTE *)(srcBuffer))[1]) << 8;
-> > >               default:;
-> > >               }
-> > > diff --git a/lib/zstd/compress.c b/lib/zstd/compress.c
-> > > index 5e0b67003e55..b080264ed3ad 100644
-> > > --- a/lib/zstd/compress.c
-> > > +++ b/lib/zstd/compress.c
-> > > @@ -3182,7 +3182,7 @@ static size_t ZSTD_compressStream_generic(ZSTD_CStream *zcs, void *dst, size_t *
-> > >                               zcs->outBuffFlushedSize = 0;
-> > >                               zcs->stage = zcss_flush; /* pass-through to flush stage */
-> > >                       }
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case zcss_flush: {
-> > >                       size_t const toFlush = zcs->outBuffContentSize - zcs->outBuffFlushedSize;
-> > > diff --git a/lib/zstd/decompress.c b/lib/zstd/decompress.c
-> > > index db6761ea4deb..66cd487a326a 100644
-> > > --- a/lib/zstd/decompress.c
-> > > +++ b/lib/zstd/decompress.c
-> > > @@ -442,7 +442,7 @@ size_t ZSTD_decodeLiteralsBlock(ZSTD_DCtx *dctx, const void *src, size_t srcSize
-> > >               case set_repeat:
-> > >                       if (dctx->litEntropy == 0)
-> > >                               return ERROR(dictionary_corrupted);
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >               case set_compressed:
-> > >                       if (srcSize < 5)
-> > >                               return ERROR(corruption_detected); /* srcSize >= MIN_CBLOCK_SIZE == 3; here we need up to 5 for case 3 */
-> > > @@ -1768,7 +1768,7 @@ size_t ZSTD_decompressContinue(ZSTD_DCtx *dctx, void *dst, size_t dstCapacity, c
-> > >                       return 0;
-> > >               }
-> > >               dctx->expected = 0; /* not necessary to copy more */
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >
-> > >       case ZSTDds_decodeFrameHeader:
-> > >               memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_prefix, src, dctx->expected);
-> > > @@ -2309,7 +2309,7 @@ size_t ZSTD_decompressStream(ZSTD_DStream *zds, ZSTD_outBuffer *output, ZSTD_inB
-> > >               switch (zds->stage) {
-> > >               case zdss_init:
-> > >                       ZSTD_resetDStream(zds); /* transparent reset on starting decoding a new frame */
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case zdss_loadHeader: {
-> > >                       size_t const hSize = ZSTD_getFrameParams(&zds->fParams, zds->headerBuffer, zds->lhSize);
-> > > @@ -2376,7 +2376,7 @@ size_t ZSTD_decompressStream(ZSTD_DStream *zds, ZSTD_outBuffer *output, ZSTD_inB
-> > >                       }
-> > >                       zds->stage = zdss_read;
-> > >               }
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case zdss_read: {
-> > >                       size_t const neededInSize = ZSTD_nextSrcSizeToDecompress(zds->dctx);
-> > > @@ -2405,7 +2405,7 @@ size_t ZSTD_decompressStream(ZSTD_DStream *zds, ZSTD_outBuffer *output, ZSTD_inB
-> > >                       zds->stage = zdss_load;
-> > >                       /* pass-through */
-> > >               }
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case zdss_load: {
-> > >                       size_t const neededInSize = ZSTD_nextSrcSizeToDecompress(zds->dctx);
-> > > @@ -2438,7 +2438,7 @@ size_t ZSTD_decompressStream(ZSTD_DStream *zds, ZSTD_outBuffer *output, ZSTD_inB
-> > >                               /* pass-through */
-> > >                       }
-> > >               }
-> > > -                     /* fall through */
-> > > +                     fallthrough;
-> > >
-> > >               case zdss_flush: {
-> > >                       size_t const toFlushSize = zds->outEnd - zds->outStart;
-> > > diff --git a/lib/zstd/huf_compress.c b/lib/zstd/huf_compress.c
-> > > index e727812d12aa..08b4ae80aed4 100644
-> > > --- a/lib/zstd/huf_compress.c
-> > > +++ b/lib/zstd/huf_compress.c
-> > > @@ -556,9 +556,9 @@ size_t HUF_compress1X_usingCTable(void *dst, size_t dstSize, const void *src, si
-> > >       n = srcSize & ~3; /* join to mod 4 */
-> > >       switch (srcSize & 3) {
-> > >       case 3: HUF_encodeSymbol(&bitC, ip[n + 2], CTable); HUF_FLUSHBITS_2(&bitC);
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case 2: HUF_encodeSymbol(&bitC, ip[n + 1], CTable); HUF_FLUSHBITS_1(&bitC);
-> > > -             /* fall through */
-> > > +             fallthrough;
-> > >       case 1: HUF_encodeSymbol(&bitC, ip[n + 0], CTable); HUF_FLUSHBITS(&bitC);
-> > >       case 0:
-> > >       default:;
-> > > --
-> > > 2.29.2.299.gdc1121823c-goog
-> > >
+> Maybe something like:
 > 
-> 
-> 
-> -- 
-> Thanks,
-> ~Nick Desaulniers
+> vhost->is_v2
+
+Even better might be vhost->version which you'd set to 1 or 2 and then you could directly
+use that to set the field in the command structures later.
+
+
+-- 
+Brian King
+Power Linux I/O
+IBM Linux Technology Center
+
