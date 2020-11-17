@@ -1,69 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000202B6F37
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 20:47:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38FA82B70C3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Nov 2020 22:15:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CbGgb6rX8zDqKX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 06:47:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CbJcZ5Y2kzDqWt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 08:15:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=ndesaulniers@google.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=dRx9LRqt; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=MWHmfYIY; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CbGXV3hNdzDqDq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 06:41:30 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id l11so1041679plt.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 11:41:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=3Ha3Pf7m43xGsOqdVk/c2fh9M5AzkQhemcyhlHdZ12E=;
- b=dRx9LRqtNTIEGpbdDyf15y725bNfdo/TKBV27AztcI9HXmR3EvdD0CAGZSMmvl6Dfy
- 70FVnIF1ExZyAqsmYE5/5N3a3+ExBgngbr7ZbSeVOEYOHg5W3/mxPh7gjYu7zV7gnFLw
- HbbVR856G85VrUeI22aF75L9XnbkWBI7l+RpMGNgJuGvegZulJGCQe9+XRorN47pNKBr
- 9UvQwR0KP9gRyKk3i8s5FonExGNLRDhAbnDFv9EhWFqphul4JiipLpwjnR0BrJcMfMnv
- ZXthiqEgvHVcoqJnoS/DVun0sodQvm6v0yBPkWaf2q431cbMTJQYIx+7+EfTFvOl9IG0
- VhGw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CbJZm1MPTzDqSk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 08:13:33 +1100 (AEDT)
+Received: by mail-pl1-x641.google.com with SMTP id x15so10971821pll.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 13:13:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=cUL+9SvzrRzllFEAM5OhpKctCqgJfj/sR/XV7GWar0I=;
+ b=MWHmfYIY9ch9OvmV2riVcHnEmRpuPVUXqLW0gkD2sszZU8xssgw1NP5X1ShxEm8HJa
+ 0hsVkK3fKE20KdO6VmXkfWW+cgXtGbCsjVnNFMstYf+pK2L5LTkbrAxCuUfBB/WpAjAt
+ 75tDLdzwv7U0UzXqesHtuAuhick5Z8a/RrA2E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=3Ha3Pf7m43xGsOqdVk/c2fh9M5AzkQhemcyhlHdZ12E=;
- b=rflm2WHdiPi4Wda4TB+LUxSfS/cUa0JG4Z1d4CpY1/0SeSnGUvIk1h3P7pS7HQeLfe
- j2RNCpRXCg16F7AIENRnf6wGUtW9PUm8ZwF3qrB7YXY7s8Ze9EPy9eDNJMw2S97gn48m
- 2t0va3kS+guDlPZwkgzseb1GvC+maTuo3L8iPG7Ar+/tknfbO4RlK1equSTxTlgYndGE
- kui/+S6Ho4y0QLKj8YMa1YyCBT/AOBQ3NBtcyWZKwecOz33gjZz2btn9ZFr3u2mSGjf6
- mPpUiXU2rzeM0ogK3/Z3oxpmnoZLLUwxFDaxx5ak2dC+YcOje3i7+4FLOSb32ccj+V+/
- FkAg==
-X-Gm-Message-State: AOAM531ygUlis+UFEcG5VXjGhvvJgpWDw+zZ2KuXq7PRSp/3TZNp0Kr0
- 6mH2jvYA7m1wIhmFgaFAdnG48ILTKIPxIgm1fE61Rg==
-X-Google-Smtp-Source: ABdhPJwDity6T8yzzbWGKSDq/bdE3JNe9KWacLBcdOoRoKbH+pmtyjSTnlkogXOyLkkn+mwymDhBgdSpMrc0Vv23Rik=
-X-Received: by 2002:a17:902:221:b029:d8:f938:b112 with SMTP id
- 30-20020a1709020221b02900d8f938b112mr1006063plc.10.1605642086810; Tue, 17 Nov
- 2020 11:41:26 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=cUL+9SvzrRzllFEAM5OhpKctCqgJfj/sR/XV7GWar0I=;
+ b=IugGraEbIFv+8BSKJvATzHpRtPHDwhXRpcb7DkUaDqXG3Hh0fhqXZZ5MKbY5Q9gAAY
+ 63G7/v4dLe7Q4IxLg4ntsh7Oi4iwfNlMrBobnBALBy6dru62qJYl4WUmGIUTZD5RwQe5
+ kFIP5mJqfROlLUZqCis8RRm8CIKxgpX1QehMRQHnL6UAMNv6DIY8Jeae6LxxT4x2ytl8
+ nlodQheNFZQKqotLTI7U39OHwDubED42mxmf11Y8c6Owtko84nIP7eQmw9aIczDVFZOY
+ ljrD3GPITVxXkbnjhyx3sU9UM3NXTvk+f/CG6N2hhEJa+U+KfhR3HGRO6wYtZ3YyWOfZ
+ HiZg==
+X-Gm-Message-State: AOAM5324kHy9QWLzTyYo7SLf+kJMlUGjPHpaPgGnLXBtYbdHvz3Hp4mB
+ NL5Y1oBBWiMAmjaRYHKgcEvwCA==
+X-Google-Smtp-Source: ABdhPJylohww9dg1GYyIbVMq/Nw8ytFEu6RVmpEehQbjLtvam+DWoalMEAMP5jppFr2nQ0E9S6IUIA==
+X-Received: by 2002:a17:90b:80f:: with SMTP id
+ bk15mr934491pjb.119.1605647606216; 
+ Tue, 17 Nov 2020 13:13:26 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id d18sm19469582pgm.68.2020.11.17.13.13.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 17 Nov 2020 13:13:25 -0800 (PST)
+From: Kees Cook <keescook@chromium.org>
+To: containers@lists.linux-foundation.org, YiFei Zhu <zhuyifei1999@gmail.com>
+Subject: Re: [PATCH seccomp v2 0/8] seccomp: add bitmap cache support on
+ remaining arches and report cache in procfs
+Date: Tue, 17 Nov 2020 13:11:13 -0800
+Message-Id: <160564746555.1001899.9792418917631139658.b4-ty@chromium.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1605101222.git.yifeifz2@illinois.edu>
+References: <cover.1605101222.git.yifeifz2@illinois.edu>
 MIME-Version: 1.0
-References: <20201113195553.1487659-1-natechancellor@gmail.com>
- <20201113195553.1487659-2-natechancellor@gmail.com>
-In-Reply-To: <20201113195553.1487659-2-natechancellor@gmail.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Tue, 17 Nov 2020 11:41:15 -0800
-Message-ID: <CAKwvOdni24b_70xm+xK_7r2N77WrsOk4_OgoLiwSzZ5f+6vqfA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] kbuild: Disable CONFIG_LD_ORPHAN_WARN for ld.lld
- 10.0.1
-To: Nathan Chancellor <natechancellor@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,133 +78,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Marek <michal.lkml@markovi.net>, Kees Cook <keescook@chromium.org>,
- "kernelci . org bot" <bot@kernelci.org>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Masahiro Yamada <masahiroy@kernel.org>,
- "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, LKML <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Arvind Sankar <nivedita@alum.mit.edu>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: linux-sh@vger.kernel.org, Tobin Feldman-Fitzthum <tobin@ibm.com>,
+ Hubertus Franke <frankeh@us.ibm.com>, Jack Chen <jianyan2@illinois.edu>,
+ linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-s390@vger.kernel.org, YiFei Zhu <yifeifz2@illinois.edu>,
+ linux-csky@vger.kernel.org, Tianyin Xu <tyxu@illinois.edu>,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Jann Horn <jannh@google.com>, Valentin Rothberg <vrothber@redhat.com>,
+ Aleksa Sarai <cyphar@cyphar.com>, Josep Torrellas <torrella@illinois.edu>,
+ Will Drewry <wad@chromium.org>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Andy Lutomirski <luto@amacapital.net>,
+ Dimitrios Skarlatos <dskarlat@cs.cmu.edu>,
+ David Laight <David.Laight@aculab.com>,
+ Giuseppe Scrivano <gscrivan@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 13, 2020 at 11:56 AM Nathan Chancellor
-<natechancellor@gmail.com> wrote:
->
-> ld.lld 10.0.1 spews a bunch of various warnings about .rela sections,
-> along with a few others. Newer versions of ld.lld do not have these
-> warnings. As a result, do not add '--orphan-handling=warn' to
-> LDFLAGS_vmlinux if ld.lld's version is not new enough.
->
-> Reported-by: Arvind Sankar <nivedita@alum.mit.edu>
-> Reported-by: kernelci.org bot <bot@kernelci.org>
-> Reported-by: Mark Brown <broonie@kernel.org>
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1187
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1193
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> ---
->  MAINTAINERS            |  1 +
->  init/Kconfig           |  6 +++++-
->  scripts/lld-version.sh | 20 ++++++++++++++++++++
->  3 files changed, 26 insertions(+), 1 deletion(-)
->  create mode 100755 scripts/lld-version.sh
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3da6d8c154e4..4b83d3591ec7 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4284,6 +4284,7 @@ B:        https://github.com/ClangBuiltLinux/linux/issues
->  C:     irc://chat.freenode.net/clangbuiltlinux
->  F:     Documentation/kbuild/llvm.rst
->  F:     scripts/clang-tools/
-> +F:     scripts/lld-version.sh
->  K:     \b(?i:clang|llvm)\b
->
->  CLEANCACHE API
-> diff --git a/init/Kconfig b/init/Kconfig
-> index a270716562de..40c9ca60ac1d 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -47,6 +47,10 @@ config CLANG_VERSION
->         int
->         default $(shell,$(srctree)/scripts/clang-version.sh $(CC))
->
-> +config LLD_VERSION
-> +       int
-> +       default $(shell,$(srctree)/scripts/lld-version.sh $(LD))
-> +
->  config CC_CAN_LINK
->         bool
->         default $(success,$(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG_FLAGS) $(m64-flag)) if 64BIT
-> @@ -1349,7 +1353,7 @@ config LD_DEAD_CODE_DATA_ELIMINATION
->           own risk.
->
->  config LD_ORPHAN_WARN
-> -       def_bool ARCH_WANT_LD_ORPHAN_WARN && $(ld-option,--orphan-handling=warn)
-> +       def_bool ARCH_WANT_LD_ORPHAN_WARN && $(ld-option,--orphan-handling=warn) && (!LD_IS_LLD || LLD_VERSION >= 110000)
->
->  config SYSCTL
->         bool
-> diff --git a/scripts/lld-version.sh b/scripts/lld-version.sh
-> new file mode 100755
-> index 000000000000..cc779f412e39
-> --- /dev/null
-> +++ b/scripts/lld-version.sh
-> @@ -0,0 +1,20 @@
-> +#!/bin/sh
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# ld.lld-version ld.lld-command
+On Wed, 11 Nov 2020 07:33:46 -0600, YiFei Zhu wrote:
+> This patch series enables bitmap cache for the remaining arches with
+> SECCOMP_FILTER, other than MIPS.
+> 
+> I was unable to find any of the arches having subarch-specific NR_syscalls
+> macros, so generic NR_syscalls is used. SH's syscall_get_arch seems to
+> only have the 32-bit subarch implementation. I'm not sure if this is
+> expected.
+> 
+> [...]
 
-^ it looks like this format was copied from scripts/gcc-version, but
-it's kind of curious/cryptic to me for a comment about usage.  Is it
-necessary?  A comment in the form:
+Applied to for-next/seccomp, thanks!
 
-# Usage: ./scripts/lld-version.sh ld.lld
+I made a small tweak to the last patch to add more details to the per-ARCH
+help text, and to drop the needless "depends on SECCOMP" (which "depends
+on SECCOMP_FILTER" was already present).
 
-Would be clearer to me.
+I successfully build-tested on parisc, powerpc, riscv, s390, and
+sh. xtensa doesn't build using the existing Debian cross-compiler, and
+I can't make csky with clang work, but they look correct. *cross fingers*
 
-> +#
-> +# Print the linker version of `ld.lld-command' in a 5 or 6-digit form
-> +# such as `100001' for ld.lld 10.0.1 etc.
-> +
-> +linker="$*"
-> +
-> +if ! ( $linker --version | grep -q LLD ); then
-> +       echo 0
-> +       exit 1
-> +fi
-> +
-> +VERSION=$($linker --version | cut -d ' ' -f 2)
-
-This is going to invoke the linker potentially twice if it's LLD.
-Would it be nicer to capture the output of `$linker --version`, check
-which linker it is, then slice that up via `cut` to get the version?
-
-This version is fine to me, but if you're going to send a v2, that
-might be a nice slight cleanup.  Otherwise,
-
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Tested-by: Nick Desaulniers <ndesaulniers@google.com>
-
-(Please drop those tags if you modify this for v2 and I'll rereview/retest).
-
-> +MAJOR=$(echo $VERSION | cut -d . -f 1)
-> +MINOR=$(echo $VERSION | cut -d . -f 2)
-> +PATCHLEVEL=$(echo $VERSION | cut -d . -f 3)
-> +printf "%d%02d%02d\\n" $MAJOR $MINOR $PATCHLEVEL
-> --
-> 2.29.2
->
-
+[1/8] csky: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/ee7ce951028f
+[2/8] parisc: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/7f049cc068a3
+[3/8] powerpc: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/95f8ae2624a0
+[4/8] riscv: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/8f9f0f44a37b
+[5/8] s390: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/5897106c6902
+[6/8] sh: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/75186111c257
+[7/8] xtensa: Enable seccomp architecture tracking
+      https://git.kernel.org/kees/c/4f408bc643aa
+[8/8] seccomp/cache: Report cache data through /proc/pid/seccomp_cache
+      https://git.kernel.org/kees/c/49a6968cc78f
 
 -- 
-Thanks,
-~Nick Desaulniers
+Kees Cook
+
