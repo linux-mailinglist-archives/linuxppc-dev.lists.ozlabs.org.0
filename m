@@ -2,74 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A81C52B749C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 04:16:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2552B7566
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 05:34:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CbSdX5zc0zDqFL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 14:16:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CbVLw17nrzDqZX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 15:34:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::844;
- helo=mail-qt1-x844.google.com; envelope-from=natechancellor@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=CWX89Bo+; dkim-atps=neutral
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
- [IPv6:2607:f8b0:4864:20::844])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CbSYW1xGTzDqdj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 14:13:02 +1100 (AEDT)
-Received: by mail-qt1-x844.google.com with SMTP id p12so638813qtp.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 19:13:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=HgvttKSz6Ny3sSVlQN/E9G/7G2kWLjw/Bo0sdK0fdRk=;
- b=CWX89Bo+RFqfV61MMdOpdtn/KsRiAv0G0nWF2X55CWUA3vxzkGmwgNiYrMRFCHUiB/
- o0l8A6oe7FDsV+fo36st+m1IqF34qmR/K5FK0pDOVozjatjBMqp+aiaYhnVO0JMvUfmW
- 97CpMbMaCSWeQsTkCc7Y5BqlIGPIRHqIJ8MMyLx0f2BZz29e282yoOJyhPQM7GjwI+0B
- XFIC5yRLu6obhArZoDhs4yD0XZ1ZfH5DHBWQytkK5H1wp0zeG5ZF5Fud9EKQk8dX9LqT
- PSdC1hq90vaC4bpCLuG0I8nY+S/q1MaNGb/xdIbbSpX8361oQ6V/d1/NUfKzZ9vwAtDU
- 82Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=HgvttKSz6Ny3sSVlQN/E9G/7G2kWLjw/Bo0sdK0fdRk=;
- b=rNwgSUUsjySSUgsBuTm49asIq5KaTahE/5rlRptvXBMZqtrYzUPVlRDMDGkIJnJzMg
- jmewSYb8HqaZQ45FdclZxsmHV3BGNyvym+Q6n27PnBEa2Bu4U0a4X5Um0OTbXrndkKNV
- qnleZXdhMev2mvdhw23Y6ddNJYDfvyl/qWpQL6aHnBjK8QFcuTNWtwL2WZ9sH9HBLLd0
- BBhBEsPrGpNWXSF15NJ9ZYkPah5NaZipIRTEF3agJLrha0Ylv3wb1Nc5MmYjetrpvwn8
- MjR04tEeFW5jm/Dgx2RoP9QxjyMhbtUMpejTTV6ILW7H1NI3xmFY70r1y+R0RVcfaogH
- qT2g==
-X-Gm-Message-State: AOAM531YgnhHXKbEUsdpMespR1W4qyWOC3mit0Vx/DUS19X2kkYnkvA0
- oAXuX79uU5wLMlGzH5Km8jQ=
-X-Google-Smtp-Source: ABdhPJzuIDnMCVG5Tuz116cq6Z1nlyfDBVH+eUiGr+rwEJQdkH3cFq7bPI+slF+97TRva76BZFWfMA==
-X-Received: by 2002:aed:2051:: with SMTP id 75mr2388981qta.332.1605669179405; 
- Tue, 17 Nov 2020 19:12:59 -0800 (PST)
-Received: from ubuntu-m3-large-x86 ([2604:1380:45f1:1d00::1])
- by smtp.gmail.com with ESMTPSA id h11sm15438617qtr.13.2020.11.17.19.12.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Nov 2020 19:12:58 -0800 (PST)
-Date: Tue, 17 Nov 2020 20:12:57 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH 2/2] kbuild: Disable CONFIG_LD_ORPHAN_WARN for ld.lld
- 10.0.1
-Message-ID: <20201118031257.GB1001457@ubuntu-m3-large-x86>
-References: <20201113195553.1487659-1-natechancellor@gmail.com>
- <20201113195553.1487659-2-natechancellor@gmail.com>
- <202011171350.F95127F@keescook>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CbVJk0J1hzDqdr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 15:32:05 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=H4Ag7cfv; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CbVJj3rdMz9sSn;
+ Wed, 18 Nov 2020 15:32:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1605673925;
+ bh=PYR7b1kkiqpNipD37uav8ZocbQLlVtUNySl0le8zHGI=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=H4Ag7cfvaD4eSyBsoQaS44SI3sbTZjeiyv3fdlPEFVR55NgxG62vtW1gE5PViqG8X
+ 1ywpvEU1ekdXwZUYpQ5h9Iguhz7Z4gfTqPE1GYMdU18IVoN8JJYIHIt8IHJOGDjI1z
+ bIIdwZ8pGTCmKZXWq/vLm50E9CfwU3oVy0+yKzSNViDYzUkIdlReGVAbK+Gv5L29hG
+ RcN5jc9V5jbSH2tgSJrthgeZfS3uF9E61K8gjELgL1Xz7+Veqt6MlNvxSSdYXHbB1u
+ s+k5ij7hKCxPOooIM/2pOVf3PzzRXAvNSN2A4FnusTOoduDg2/9Mxo6pXq1JL6XrQE
+ PV/iRez0endyA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH 2/4] powerpc/perf: Update the PMU group constraints for
+ l2l3 and threshold events in power10
+In-Reply-To: <1605069189-2740-3-git-send-email-atrajeev@linux.vnet.ibm.com>
+References: <1605069189-2740-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <1605069189-2740-3-git-send-email-atrajeev@linux.vnet.ibm.com>
+Date: Wed, 18 Nov 2020 15:32:04 +1100
+Message-ID: <878saz2sl7.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202011171350.F95127F@keescook>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,41 +59,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Marek <michal.lkml@markovi.net>,
- "kernelci . org bot" <bot@kernelci.org>, linux-kbuild@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org,
- Nick Desaulniers <ndesaulniers@google.com>,
- Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Arvind Sankar <nivedita@alum.mit.edu>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- clang-built-linux@googlegroups.com, Thomas Gleixner <tglx@linutronix.de>,
- Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: mikey@neuling.org, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 17, 2020 at 01:51:43PM -0800, Kees Cook wrote:
-> On Fri, Nov 13, 2020 at 12:55:53PM -0700, Nathan Chancellor wrote:
-> >  config LD_ORPHAN_WARN
-> > -	def_bool ARCH_WANT_LD_ORPHAN_WARN && $(ld-option,--orphan-handling=warn)
-> > +	def_bool ARCH_WANT_LD_ORPHAN_WARN && $(ld-option,--orphan-handling=warn) && (!LD_IS_LLD || LLD_VERSION >= 110000)
-> 
-> Readability nit-pick... I prefer separate "depends" lines to make things
-> a little easier to parse, change, etc:
-> 
-> config LD_ORPHAN_WARN
-> 	def_bool y
-> 	depends on ARCH_WANT_LD_ORPHAN_WARN
-> 	depends on !LD_IS_LLD || LLD_VERSION >= 110000
-> 	depends on $(ld-option,--orphan-handling=warn)
-> 
-> Otherwise, yeah, looks good to me. With this and the other suggestions,
-> please consider it:
-> 
-> Reviewed-by: Kees Cook <keescook@chromium.org>
+Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
+> In Power9, L2/L3 bus events are always available as a
+> "bank" of 4 events. To obtain the counts for any of the
+> l2/l3 bus events in a given bank, the user will have to
+> program PMC4 with corresponding l2/l3 bus event for that
+> bank.
+>
+> Commit 59029136d750 ("powerpc/perf: Add constraints for power9 l2/l3 bus events")
+> enforced this rule in Power9. But this is not valid for
+> Power10, since in Power10 Monitor Mode Control Register2
+> (MMCR2) has bits to configure l2/l3 event bits. Hence remove
+> this PMC4 constraint check from power10.
+>
+> Since the l2/l3 bits in MMCR2 are not per-pmc, patch handles
+> group constrints checks for l2/l3 bits in MMCR2.
 
-Thank you, I have updated it locally for v2!
+> Patch also updates constraints for threshold events in power10.
 
-Cheers,
-Nathan
+That should be done in a separate patch please.
+
+cheers
