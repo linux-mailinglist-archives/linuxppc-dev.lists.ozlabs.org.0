@@ -1,69 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB12F2B72E8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 01:16:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E7E2B7304
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 01:26:55 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CbNfK0NVjzDqS4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 11:16:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CbNsm5VHBzDqbg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 11:26:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=flex--ndesaulniers.bounces.google.com
- (client-ip=2607:f8b0:4864:20::749; helo=mail-qk1-x749.google.com;
- envelope-from=35mw0xwwkdicyop3l5wytp23rzzrwp.nzxwty5800n-op6wt343.zawlm3.z2r@flex--ndesaulniers.bounces.google.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b42;
+ helo=mail-yb1-xb42.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=i2Z+6bK8; dkim-atps=neutral
-Received: from mail-qk1-x749.google.com (mail-qk1-x749.google.com
- [IPv6:2607:f8b0:4864:20::749])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=VUG0beWy; dkim-atps=neutral
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com
+ [IPv6:2607:f8b0:4864:20::b42])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CbNSH1BpXzDqV7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 11:08:08 +1100 (AEDT)
-Received: by mail-qk1-x749.google.com with SMTP id q25so184697qkm.17
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 16:08:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=sender:date:in-reply-to:message-id:mime-version:references:subject
- :from:to:cc; bh=C4I5cnBVqMLHEBaHI22ejtAYmddqM1FCT8jQvlcDxTA=;
- b=i2Z+6bK8sQT/LD35GZCjASBYHSNR71pjgf/dFX2mj+wejv4WQZSV8dXYopDAEnbyLV
- tP9lwzf/d8Axb7WQqrDftInZoBU3+Z1VHg1kYdeoeC4d7Y4cgYLI/V/d4PsC7t/wWP93
- mn/nAxWmcy85p/gzi5kOs0+z0+oMnDDtWRudfayWjXVBh2lRECTqzf0Fy91ISZPopgDm
- MQYtDYRYUIxg3md+IXfbs9vMgD6GJ35lk5ZGEZylLtiRXdlqBfnpfN8C65INtDLOwKHI
- bHiCcKhjbOKexN/kP0/8Y2lKFwcbf2KgFSCXBCxLG6oox2QQSHTaacfa4RYo2T8yL5Z7
- qwOQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CbNqc2FW2zDqYS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 11:24:59 +1100 (AEDT)
+Received: by mail-yb1-xb42.google.com with SMTP id 10so20693040ybx.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Nov 2020 16:24:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=0huT1R6YxHvGQqjy0+YuKw2JldEAQJIjUv13qFD6dSE=;
+ b=VUG0beWyUt8t9AI5oq/YFRQwecBElOINxFbPhyy/8GofdinFclo6zu1uIepaA67qsR
+ Xdu5eTDwkSe5uUpSlKtgjK0VyUtV39YYZYRjJPR/Ziqj4fulhWJpDjOZbeX6TQzmeskI
+ ZftGi1itFwsOncl+z7StJOtEbHfLX8dmPt8eYyM7NemrIloKmnKydQskGZPWKLInSCRR
+ vCUSnjBQOKXtUZtdVrHnYHv2ViwsBR8FWZPBeYlvygsge5OiIzAPlV9r9qhHWGPDqO7e
+ oOh8ad6TuwqklUzBXAwSkO15r5Mj6PecgJc0P2X+ckwTZOKQve3wW/tM/dbsi/VpsRhh
+ zZuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
- :references:subject:from:to:cc;
- bh=C4I5cnBVqMLHEBaHI22ejtAYmddqM1FCT8jQvlcDxTA=;
- b=D32OS5CXqd+BsOcwK1E608vW2rSAWmYoezvddwxcdUKs16hJrXvt0Pnbcoc2eMMaRi
- eqNe/hNujdGeKwkQkyEo2l7c3vUFWj4ZZ3B86Y8uHN4mwyUhv9l19NQDJ9AuA2LZ+FaS
- mgD/NhvZI1EON1EoOxvzf81Qm0md0nWUnX/h0C0LJdRbZOULTSTDp51QNtuDYqOP4V2N
- sl7Se2xxVZjBL/okyhbHGX4KEjE1K7wuNeucyJi0XYrAbV5MyntQKZPCtKOFnUJ+m/ca
- YYTe3zkiI8P5ncQDEs7mTcbkzRW3QyyehcQhytBGWxwZoUq1d7iIIcmOVfi3iHEL0V01
- 0iXg==
-X-Gm-Message-State: AOAM532xk78tf66yIQjJqZwQLqhaOeza/9aR5YAmuLTNVjyeznJ7m9Rq
- UnXLCoGb/sSOAHAfgBaEnFbbUt5qj4rfmxTKXQg=
-X-Google-Smtp-Source: ABdhPJws0sTD/WzUblHs71JHfu9LRYWbxQILKXAAf4F1fOuoGSfcfleh5j1il/JmAjvv7ZyhxRfoYbuU1EOTAOVUu7c=
-X-Received: from ndesaulniers1.mtv.corp.google.com
- ([2620:15c:211:202:f693:9fff:fef4:4d25])
- (user=ndesaulniers job=sendgmr) by 2002:ad4:44b3:: with SMTP id
- n19mr1968835qvt.56.1605658086294; Tue, 17 Nov 2020 16:08:06 -0800 (PST)
-Date: Tue, 17 Nov 2020 16:07:51 -0800
-In-Reply-To: <20201118000751.845172-1-ndesaulniers@google.com>
-Message-Id: <20201118000751.845172-4-ndesaulniers@google.com>
-Mime-Version: 1.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=0huT1R6YxHvGQqjy0+YuKw2JldEAQJIjUv13qFD6dSE=;
+ b=ebJzwAccRZwzE5O8qKWfzEIewFeCnfIVxe5PJKuSfh0zjxqy9e91hs+pPjrbHahFcb
+ x1imzTIXTvVBiGLAb8/UJG0dIcBS738+sBSXkZhcnay8a6R7YAcLx+3QSzTqeSupRkcq
+ O/DFHTuoESCWuBVsEGXk5/ulL4VfrOMGtJSxqn7/QqFmMomvONCiYZTOOe2pqq2Z2O0L
+ 5qKB3DB80EhUG9+97CnhUEqkgDvf1LyFel+VNWIqU50XtzZF6/77rcAbFqZ8zcU4+X/k
+ 08SwZIyL+EKN5qd/ISRz5nu2f4gahiJP4v+mqA0R5MvEssVMIJFM+/FBsDzEzCpjPmGh
+ E6RA==
+X-Gm-Message-State: AOAM533CwHlQd8ZRdXBL1imcGjQdZSdrkE/sz7ifM9oeBtrAisxot+/G
+ LfjRzKVmNn120eX9CL5KEZ4tK4cIgbSZT/UTt3g=
+X-Google-Smtp-Source: ABdhPJyrWC2hnz0a+YpjEc/pPbGRaoxoIvPVC89x34vc5rx9dRHAKUY+BD84V8Qa6YI/dCAH4D7960lOGz/NIsdgZDw=
+X-Received: by 2002:a25:61c5:: with SMTP id v188mr3618112ybb.422.1605659094582; 
+ Tue, 17 Nov 2020 16:24:54 -0800 (PST)
+MIME-Version: 1.0
 References: <20201118000751.845172-1-ndesaulniers@google.com>
-X-Mailer: git-send-email 2.29.2.299.gdc1121823c-goog
-Subject: [PATCH v2 3/3] powerpc: fix -Wimplicit-fallthrough
-From: Nick Desaulniers <ndesaulniers@google.com>
-To: "Gustavo A . R . Silva" <gustavoars@kernel.org>
+ <20201118000751.845172-2-ndesaulniers@google.com>
+In-Reply-To: <20201118000751.845172-2-ndesaulniers@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 18 Nov 2020 01:24:43 +0100
+Message-ID: <CANiq72=jEx5o_m72WoeRq9r74YGtedK4AE=4b=j2zS6M60ESaA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] powerpc: boot: include compiler_attributes.h
+To: Nick Desaulniers <ndesaulniers@google.com>, 
+ "Gustavo A . R . Silva" <gustavoars@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,9 +74,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clang-built-linux@googlegroups.com,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+Cc: linux-kernel <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
  Arvind Sankar <nivedita@alum.mit.edu>, Paul Mackerras <paulus@samba.org>,
  Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <natechancellor@gmail.com>,
  linuxppc-dev@lists.ozlabs.org
@@ -86,59 +83,16 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The "fallthrough" pseudo-keyword was added as a portable way to denote
-intentional fallthrough. Clang will still warn on cases where there is a
-fallthrough to an immediate break. Add explicit breaks for those cases.
+On Wed, Nov 18, 2020 at 1:08 AM Nick Desaulniers
+<ndesaulniers@google.com> wrote:
+>
+> It was also noted in 6a9dc5fd6170 that we could -D__KERNEL__ and
+> -include compiler_types.h like the main kernel does, though testing that
+> produces a whole sea of warnings to cleanup.
 
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Tested-by: Nathan Chancellor <natechancellor@gmail.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://github.com/ClangBuiltLinux/linux/issues/236
----
- arch/powerpc/kernel/prom_init.c | 1 +
- arch/powerpc/kernel/uprobes.c   | 1 +
- arch/powerpc/perf/imc-pmu.c     | 1 +
- 3 files changed, 3 insertions(+)
+(Re; for Gustavo to consider since he took it now): I would add a
+comment noting this as a reminder -- it also helps to entice a
+cleanup.
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index 38ae5933d917..e9d4eb6144e1 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -355,6 +355,7 @@ static int __init prom_strtobool(const char *s, bool *res)
- 		default:
- 			break;
- 		}
-+		break;
- 	default:
- 		break;
- 	}
-diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
-index d200e7df7167..e8a63713e655 100644
---- a/arch/powerpc/kernel/uprobes.c
-+++ b/arch/powerpc/kernel/uprobes.c
-@@ -141,6 +141,7 @@ int arch_uprobe_exception_notify(struct notifier_block *self,
- 	case DIE_SSTEP:
- 		if (uprobe_post_sstep_notifier(regs))
- 			return NOTIFY_STOP;
-+		break;
- 	default:
- 		break;
- 	}
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index 7b25548ec42b..e106909ff9c3 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -1500,6 +1500,7 @@ static int update_pmu_ops(struct imc_pmu *pmu)
- 		pmu->pmu.stop = trace_imc_event_stop;
- 		pmu->pmu.read = trace_imc_event_read;
- 		pmu->attr_groups[IMC_FORMAT_ATTR] = &trace_imc_format_group;
-+		break;
- 	default:
- 		break;
- 	}
--- 
-2.29.2.299.gdc1121823c-goog
-
+Cheers,
+Miguel
