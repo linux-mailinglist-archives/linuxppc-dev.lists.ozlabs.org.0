@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AD82B7316
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 01:30:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8750B2B732C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 01:35:56 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CbNy95nxCzDqcw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 11:30:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CbP4968NLzDqYY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 11:35:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,66 +17,67 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=JU/zeZ7J; dkim-atps=neutral
+ header.s=pp1 header.b=d2Q5qnD0; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CbNw259hKzDqYS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 11:28:50 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CbP2M6dThzDqRN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 11:34:19 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AI026MJ068243; Tue, 17 Nov 2020 19:28:47 -0500
+ 0AI0Va7T019736; Tue, 17 Nov 2020 19:34:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=subject : to : cc :
  references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=58/LN3H52j8DIj3WGK9AmtaISPCsMaXIIvoFgaSZigI=;
- b=JU/zeZ7JbWbTCw6JrrpHjNlYvBaNtRQfBBAyt14agwQgqfqYqSAGAWhjI8oE49rLJ+li
- AyxMgPCjYNhIQub/G3uPQqtwc8s24NL2FmHy4EacCWSK75vrig/pI5+5b/fQMcRXAoM5
- VeJIVLvk5gYlsPL7+H3C1TGoXbWOgWtSwLNUnBwTf2tylSN44N7gem500FcuNnWg7Fkp
- iSs0ln+RxIGIuTCzQMoAJoxW9jqmfYx3xYnnr9WEnL+LQ+128Z0Ms7bOXLDvkMWu4MdT
- sbzy01DmLXgs1NjaxOMljiyt7UM8M65T4VUw+iiYdizvP9bpd8nAo+h4aNVK4OYrrnC/ 1A== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34vext0u6n-1
+ bh=WloHQdcmYyUMLpwOdVXWfLky5lvL+h4HkGaCVtd4WBM=;
+ b=d2Q5qnD0uoL+t2eYmDclogxYCYvCj092VzPDXKH1KjmQ1vAQprEQbLAAqkWmi2SrlkOe
+ XMem/r0bxcFblIhXSQfTUBJXiRFePDm7X8VGTFnjzNoBKwYtW8nLD9fOT7a5q85IJ3TE
+ Hc7yL8ZGpWYC9GrvevNUh6HVrokbbo0xlMQLSSFMwQGTJe5j/jSkd/UKflGTY1GNbL7q
+ dS1Rt5Ifr6GNXzRIhIKv9wLXJjom6XtfU+bYUfww6MsQK+9BeZBLbo1KiHoqQm1dn1za
+ odjE0NSIfOt9ff7b1Q9c/KaCDxDBtewvHoTSstXVjfc4SG/IfVh50GTDGTvwhJhp9pDX Uw== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34v9626dpp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 17 Nov 2020 19:28:47 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AI0SL7X003143;
- Wed, 18 Nov 2020 00:28:46 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma04wdc.us.ibm.com with ESMTP id 34t6v929sv-1
+ Tue, 17 Nov 2020 19:34:17 -0500
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AI0RhHw029550;
+ Wed, 18 Nov 2020 00:34:16 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma03dal.us.ibm.com with ESMTP id 34t6v9gvmm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Nov 2020 00:28:46 +0000
+ Wed, 18 Nov 2020 00:34:16 +0000
 Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
  [9.57.199.106])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AI0Sjit8913498
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AI0YFHx000678
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 18 Nov 2020 00:28:45 GMT
+ Wed, 18 Nov 2020 00:34:15 GMT
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5952B2805C;
- Wed, 18 Nov 2020 00:28:45 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 88B8F2805A;
+ Wed, 18 Nov 2020 00:34:15 +0000 (GMT)
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 14B0528059;
- Wed, 18 Nov 2020 00:28:43 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1F6412805C;
+ Wed, 18 Nov 2020 00:34:12 +0000 (GMT)
 Received: from oc6857751186.ibm.com (unknown [9.65.230.183])
  by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 18 Nov 2020 00:28:42 +0000 (GMT)
-Subject: Re: [PATCH 3/6] ibmvfc: add new fields for version 2 of several MADs
+ Wed, 18 Nov 2020 00:34:11 +0000 (GMT)
+Subject: Re: [PATCH 4/6] ibmvfc: add FC payload retrieval routines for
+ versioned vfcFrames
 To: Brian King <brking@linux.vnet.ibm.com>,
  james.bottomley@hansenpartnership.com
 References: <20201112010442.102589-1-tyreld@linux.ibm.com>
- <20201112010442.102589-3-tyreld@linux.ibm.com>
- <5b772ce2-3119-f05b-15d3-357729e46e70@linux.vnet.ibm.com>
+ <20201112010442.102589-4-tyreld@linux.ibm.com>
+ <9e38f449-d2e6-6408-4fef-cfb5351393cc@linux.vnet.ibm.com>
 From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <d8fac4ba-e618-e941-c84a-67e1dc328325@linux.ibm.com>
-Date: Tue, 17 Nov 2020 16:28:41 -0800
+Message-ID: <a590f3c6-43a0-854b-13f8-dad13b249795@linux.ibm.com>
+Date: Tue, 17 Nov 2020 16:34:09 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <5b772ce2-3119-f05b-15d3-357729e46e70@linux.vnet.ibm.com>
+In-Reply-To: <9e38f449-d2e6-6408-4fef-cfb5351393cc@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -85,11 +86,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
  definitions=2020-11-17_15:2020-11-17,
  2020-11-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- phishscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011170176
+ priorityscore=1501
+ adultscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
+ impostorscore=0 mlxscore=0 mlxlogscore=999 clxscore=1015 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011170179
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,102 +109,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/17/20 2:06 PM, Brian King wrote:
+On 11/17/20 2:14 PM, Brian King wrote:
 > On 11/11/20 7:04 PM, Tyrel Datwyler wrote:
->> @@ -211,7 +214,9 @@ struct ibmvfc_npiv_login_resp {
->>  	__be64 capabilities;
->>  #define IBMVFC_CAN_FLUSH_ON_HALT	0x08
->>  #define IBMVFC_CAN_SUPPRESS_ABTS	0x10
->> -#define IBMVFC_CAN_SUPPORT_CHANNELS	0x20
->> +#define IBMVFC_MAD_VERSION_CAP		0x20
->> +#define IBMVFC_HANDLE_VF_WWPN		0x40
->> +#define IBMVFC_CAN_SUPPORT_CHANNELS	0x80
->>  	__be32 max_cmds;
->>  	__be32 scsi_id_sz;
->>  	__be64 max_dma_len;
->> @@ -293,6 +298,7 @@ struct ibmvfc_port_login {
->>  	__be32 reserved2;
->>  	struct ibmvfc_service_parms service_parms;
->>  	struct ibmvfc_service_parms service_parms_change;
->> +	__be64 targetWWPN;
-> 
-> For consistency, can you make this target_wwpn?
-
-Sure thing.
-
-> 
->>  	__be64 reserved3[2];
->>  } __packed __aligned(8);
+>> The FC iu and response payloads are located at different offsets
+>> depending on the ibmvfc_cmd version. This is a result of the version 2
+>> vfcFrame definition adding an extra 64bytes of reserved space to the
+>> structure prior to the payloads.
+>>
+>> Add helper routines to determine the current vfcFrame version and
+>> returning pointers to the proper iu or response structures within that
+>> ibmvfc_cmd.
+>>
+>> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+>> ---
+>>  drivers/scsi/ibmvscsi/ibmvfc.c | 76 ++++++++++++++++++++++++----------
+>>  1 file changed, 53 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> index aa3445bec42c..5e666f7c9266 100644
+>> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
+>> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> @@ -138,6 +138,22 @@ static void ibmvfc_tgt_move_login(struct ibmvfc_target *);
 >>  
->> @@ -344,6 +350,7 @@ struct ibmvfc_process_login {
->>  	__be16 status;
->>  	__be16 error;			/* also fc_reason */
->>  	__be32 reserved2;
->> +	__be64 targetWWPN;
-> 
-> For consistency, can you make this target_wwpn?
-> 
->>  	__be64 reserved3[2];
->>  } __packed __aligned(8);
+>>  static const char *unknown_error = "unknown error";
 >>  
->> @@ -378,6 +385,8 @@ struct ibmvfc_tmf {
->>  	__be32 cancel_key;
->>  	__be32 my_cancel_key;
->>  	__be32 pad;
->> +	__be64 targetWWPN;
+>> +static struct ibmvfc_fcp_cmd_iu *ibmvfc_get_fcp_iu(struct ibmvfc_host *vhost, struct ibmvfc_cmd *vfc_cmd)
+>> +{
+>> +	if (be64_to_cpu(vhost->login_buf->resp.capabilities) & IBMVFC_HANDLE_VF_WWPN)
 > 
-> For consistency, can you make this target_wwpn?
+> Suggest adding a flag to the vhost structure that you setup after login in order to
+> simplify this check and avoid chasing multiple pointers along with a byte swap.
 > 
->> +	__be64 taskTag;
+> Maybe something like:
 > 
-> and make this task_tag. 
+> vhost->is_v2
 
-Will do.
+I considered that, but opted instead in my v2 respin to add a helper routine to
+test login response capabilities since we will also need to check for VIOS
+channel support.
 
 -Tyrel
 
 > 
->>  	__be64 reserved[2];
->>  } __packed __aligned(8);
->>  
->> @@ -474,9 +483,19 @@ struct ibmvfc_cmd {
->>  	__be64 correlation;
->>  	__be64 tgt_scsi_id;
->>  	__be64 tag;
->> -	__be64 reserved3[2];
->> -	struct ibmvfc_fcp_cmd_iu iu;
->> -	struct ibmvfc_fcp_rsp rsp;
->> +	__be64 targetWWPN;
+>> +		return &vfc_cmd->v2.iu;
+>> +	else
+>> +		return &vfc_cmd->v1.iu;
+>> +}
+>> +
+>> +static struct ibmvfc_fcp_rsp *ibmvfc_get_fcp_rsp(struct ibmvfc_host *vhost, struct ibmvfc_cmd *vfc_cmd)
+>> +{
+>> +	if (be64_to_cpu(vhost->login_buf->resp.capabilities) & IBMVFC_HANDLE_VF_WWPN)
 > 
-> For consistency, can you make this target_wwpn?
+> Same here
 > 
->> +	__be64 reserved3;
->> +	union {
->> +		struct {
->> +			struct ibmvfc_fcp_cmd_iu iu;
->> +			struct ibmvfc_fcp_rsp rsp;
->> +		} v1;
->> +		struct {
->> +			__be64 reserved4;
->> +			struct ibmvfc_fcp_cmd_iu iu;
->> +			struct ibmvfc_fcp_rsp rsp;
->> +		} v2;
->> +	};
->>  } __packed __aligned(8);
->>  
->>  struct ibmvfc_passthru_fc_iu {
->> @@ -503,6 +522,7 @@ struct ibmvfc_passthru_iu {
->>  	__be64 correlation;
->>  	__be64 scsi_id;
->>  	__be64 tag;
->> +	__be64 targetWWPN;
+>> +		return &vfc_cmd->v2.rsp;
+>> +	else
+>> +		return &vfc_cmd->v1.rsp;
+>> +}
+>> +
+>>  #ifdef CONFIG_SCSI_IBMVFC_TRACE
+>>  /**
+>>   * ibmvfc_trc_start - Log a start trace entry
 > 
-> For consistency, can you make this target_wwpn?
-> 
->>  	__be64 reserved2[2];
->>  } __packed __aligned(8);
->>  
->>
 > 
 > 
 
