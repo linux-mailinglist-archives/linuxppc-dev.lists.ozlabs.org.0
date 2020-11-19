@@ -1,75 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B1192B9C6C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 22:02:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD3F2B9C6F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 22:05:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CcXFS1hPQzDqDc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 08:02:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CcXJX01NYzDqVk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 08:05:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::741;
- helo=mail-qk1-x741.google.com; envelope-from=natechancellor@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uDFEv2oS; dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=oBLrg6zL; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CcX6m6ncczDqpK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 07:57:04 +1100 (AEDT)
-Received: by mail-qk1-x741.google.com with SMTP id 11so6872095qkd.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 12:57:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=moOxL8imdBPuCB1TVd3+9oe+UH2t4tfUVnJemRAZuA4=;
- b=uDFEv2oScZscfpUCpr67JL0lOgnOI2BRUTpuJW+ttBg6ndIPmOtvf/Eo2k8Zmv2ugf
- oDnMkWwJWkaUbEV6jTqWFv7pohpcppcktwsiY/wY4BTaJyx4RxBlz3EH+T3Lq6L1Sgr3
- tzMaPbwyM/aKUan7BooGbju0FVUuFOUqqiUToeSJx5O8HCA7LhirNm30a3XnmDRg/22W
- 5Y3s6e5hgbOwZVEs2apioEy3pFEo8SahFW9IRvT4xr9kAxqBj1RU1MJHL1FcRM8e474A
- eGxEK0OzM5WkEL/VHKL9sFQVM8vVJnhmFOmj3kETGLstLEhDF6RipfyWwJOgPBFe+pHD
- WxGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=moOxL8imdBPuCB1TVd3+9oe+UH2t4tfUVnJemRAZuA4=;
- b=jJN27WmKKS/WpycGfgP63Z3erDQ6L7P+iQtUpydE4e5ruQni1IiDVzlegXVRRkavPP
- tpIK758YG1puZ3pVgqzgyfITduoPXBYq4JtdQSNy9uNIuY960/6vOzaheSLGXnbo12By
- pMJRKX9g0fSyg5uJhW+df/A06g6i2Nwzgtp/eAP8Ak3iplNkxhXMT55YGwQTDUoxPyoS
- 42PZQP9MmpyJsh5bCkpeLBE2ynxmzu9zPwrlLEDyTWzNVY3S8xoHDI636p8Pl8mTlwMT
- bAX4Qrqlf2lxd/TibtoTIUaCNL96LrX6+ddyddEP6f7aC4iBDVJ11gNSuqYJ1tQRFTiP
- dArg==
-X-Gm-Message-State: AOAM531RoKMOyYRGFqyY0DS8NblwP3IIoJPpf+QcJvhDBiCWGkq7gnT9
- HCPKInslqH1ZxNl7FLuyMcA=
-X-Google-Smtp-Source: ABdhPJykpdxUp+qOeObH8VdNp8zHwtu+fKXhT5aKLKVjsWBWyNKin9ChMzRWd+T5YA1Zo00LWaPkwg==
-X-Received: by 2002:a37:6688:: with SMTP id
- a130mr12248572qkc.163.1605819421641; 
- Thu, 19 Nov 2020 12:57:01 -0800 (PST)
-Received: from localhost.localdomain ([2604:1380:45f1:1d00::1])
- by smtp.gmail.com with ESMTPSA id 82sm714348qke.76.2020.11.19.12.57.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Nov 2020 12:57:00 -0800 (PST)
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Masahiro Yamada <masahiroy@kernel.org>,
- Michal Marek <michal.lkml@markovi.net>, Kees Cook <keescook@chromium.org>
-Subject: [PATCH v2 2/2] kbuild: Disable CONFIG_LD_ORPHAN_WARN for ld.lld 10.0.1
-Date: Thu, 19 Nov 2020 13:46:58 -0700
-Message-Id: <20201119204656.3261686-2-natechancellor@gmail.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201113195553.1487659-1-natechancellor@gmail.com>
-References: <20201113195553.1487659-1-natechancellor@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CcX8t5bgHzDqtt;
+ Fri, 20 Nov 2020 07:58:54 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AJKZLwi038704; Thu, 19 Nov 2020 15:58:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=qJDY2PTYw/PLiBcP6m0c8IB+46oc0gqj3Qvg/Ep0U9U=;
+ b=oBLrg6zLsdsTWW3386/ZXjP3urYCMSN/F/Zt+CN/L+sVtbrkuTiUtY77oKAE1iJQQqWk
+ gPJDr1JicbA14oh6xdVpYx10esGd/iEvB8cajLjz3pbP2pLVvQfvX9XngXcICqHPYXOk
+ xKWMtkk9jQb/u/z/+JTzvcEwrq/UxjFXutA377mBmcCSGxB6zfj/XIyFEuVsEyWDrW35
+ RXe8GJbQ8cX6aRheLqb8Cd1SraWs7pY5jAI7By5A/AF/q40NfJ7jDU/sJ8tkNMRzff4R
+ 56hwQQ35pouqNZDMF1oBw88kH94X/cprF2ypmO/NoFOj7nAwbEtrRaApxsG2xUfEu9mN xA== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34wy6fskxh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Nov 2020 15:58:49 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AJKpFiH013630;
+ Thu, 19 Nov 2020 20:58:48 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma01wdc.us.ibm.com with ESMTP id 34uyn1qusn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Nov 2020 20:58:48 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AJKwm8G54591882
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 Nov 2020 20:58:48 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 17573124055;
+ Thu, 19 Nov 2020 20:58:48 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 486B3124052;
+ Thu, 19 Nov 2020 20:58:47 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.65.227.245])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 19 Nov 2020 20:58:47 +0000 (GMT)
+Subject: Re: [PATCH net-next v2 9/9] ibmvnic: Do not replenish RX buffers
+ after every polling loop
+To: ljp <ljp@linux.vnet.ibm.com>
+References: <1605748345-32062-1-git-send-email-tlfalcon@linux.ibm.com>
+ <1605748345-32062-10-git-send-email-tlfalcon@linux.ibm.com>
+ <1a4e7b1ef1fb101cbb26fb9d5867ee46@linux.vnet.ibm.com>
+ <83ca37f3-07be-4179-8414-88c8c83bfe56@linux.ibm.com>
+ <7853649c6c1f2f4ce6d8bf9643cd1a43@linux.vnet.ibm.com>
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+Message-ID: <d0792730-f72c-8213-15c3-e0c518d1c23f@linux.ibm.com>
+Date: Thu, 19 Nov 2020 14:58:46 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
+In-Reply-To: <7853649c6c1f2f4ce6d8bf9643cd1a43@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-19_10:2020-11-19,
+ 2020-11-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ mlxlogscore=550 adultscore=0 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 mlxscore=0 clxscore=1015
+ spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011190138
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,112 +103,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, "kernelci . org bot" <bot@kernelci.org>,
- linux-kbuild@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Mark Brown <broonie@kernel.org>, x86@kernel.org,
- Nick Desaulniers <ndesaulniers@google.com>,
- Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
- clang-built-linux@googlegroups.com, Arvind Sankar <nivedita@alum.mit.edu>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
- Nathan Chancellor <natechancellor@gmail.com>,
- linux-arm-kernel@lists.infradead.org
+Cc: cforno12@linux.ibm.com, netdev@vger.kernel.org, ricklind@linux.ibm.com,
+ dnbanerg@us.ibm.com,
+ Linuxppc-dev <linuxppc-dev-bounces+ljp=linux.ibm.com@lists.ozlabs.org>,
+ drt@linux.vnet.ibm.com, brking@linux.vnet.ibm.com, kuba@kernel.org,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ld.lld 10.0.1 spews a bunch of various warnings about .rela sections,
-along with a few others. Newer versions of ld.lld do not have these
-warnings. As a result, do not add '--orphan-handling=warn' to
-LDFLAGS_vmlinux if ld.lld's version is not new enough.
+On 11/19/20 2:38 PM, ljp wrote:
+> On 2020-11-19 14:26, Thomas Falcon wrote:
+>> On 11/19/20 3:43 AM, ljp wrote:
+>>
+>>> On 2020-11-18 19:12, Thomas Falcon wrote:
+>>>
+>>>> From: "Dwip N. Banerjee" <dnbanerg@us.ibm.com>
+>>>>
+>>>> Reduce the amount of time spent replenishing RX buffers by
+>>>> only doing so once available buffers has fallen under a certain
+>>>> threshold, in this case half of the total number of buffers, or
+>>>> if the polling loop exits before the packets processed is less
+>>>> than its budget.
+>>>>
+>>>> Signed-off-by: Dwip N. Banerjee <dnbanerg@us.ibm.com>
+>>>> ---
+>>>> drivers/net/ethernet/ibm/ibmvnic.c | 5 ++++-
+>>>> 1 file changed, 4 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c
+>>>> b/drivers/net/ethernet/ibm/ibmvnic.c
+>>>> index 96df6d8fa277..9fe43ab0496d 100644
+>>>> --- a/drivers/net/ethernet/ibm/ibmvnic.c
+>>>> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
+>>>> @@ -2537,7 +2537,10 @@ static int ibmvnic_poll(struct napi_struct
+>>>>
+>>>> *napi, int budget)
+>>>> frames_processed++;
+>>>> }
+>>>>
+>>>> - if (adapter->state != VNIC_CLOSING)
+>>>> + if (adapter->state != VNIC_CLOSING &&
+>>>> + ((atomic_read(&adapter->rx_pool[scrq_num].available) <
+>>>> + adapter->req_rx_add_entries_per_subcrq / 2) ||
+>>>> + frames_processed < budget))
+>>>
+>>> 1/2 seems a simple and good algorithm.
+>>> Explaining why "frames_process < budget" is necessary in the commit
+>>> message
+>>> or source code also helps.
+>>
+>> Hello, Lijun. The patch author, Dwip Banerjee, suggested the modified
+>> commit message below:
+>>
+>> Reduce the amount of time spent replenishing RX buffers by
+>>  only doing so once available buffers has fallen under a certain
+>>  threshold, in this case half of the total number of buffers, or
+>>  if the polling loop exits before the packets processed is less
+>>  than its budget. Non-exhaustion of NAPI budget implies lower
+>>  incoming packet pressure, allowing the leeway to refill the buffers
+>>  in preparation for any impending burst.
+>
+> It looks good to me.
+>
+>>
+>> Would such an update require a v3?
+>
+> I assume you ask Jakub, right?
+>
+>
+Yes. There was an issue with my mail client in my earlier response, so I 
+am posting Dwip's modified commit message again below.
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/1187
-Link: https://github.com/ClangBuiltLinux/linux/issues/1193
-Reported-by: Arvind Sankar <nivedita@alum.mit.edu>
-Reported-by: kernelci.org bot <bot@kernelci.org>
-Reported-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
----
+Reduce the amount of time spent replenishing RX buffers by only doing so 
+once available buffers has fallen under a certain threshold, in this 
+case half of the total number of buffers, or if the polling loop exits 
+before the packets processed is less than its budget. Non-exhaustion of 
+NAPI budget implies lower incoming packet pressure, allowing the leeway 
+to refill the buffers in preparation for any impending burst.
 
-v1 -> v2:
-
-* Add condition as a depends on line (Kees Cook)
-
-* Capture output of "$* --version" to avoid invoking linker twice (Nick
-  Desaulniers)
-
-* Improve documentation of script in comments (Nick Desaulniers)
-
-* Pick up review tag from Kees
-
- MAINTAINERS            |  1 +
- init/Kconfig           |  5 +++++
- scripts/lld-version.sh | 20 ++++++++++++++++++++
- 3 files changed, 26 insertions(+)
- create mode 100755 scripts/lld-version.sh
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e451dcce054f..e6f74f130ae1 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4284,6 +4284,7 @@ B:	https://github.com/ClangBuiltLinux/linux/issues
- C:	irc://chat.freenode.net/clangbuiltlinux
- F:	Documentation/kbuild/llvm.rst
- F:	scripts/clang-tools/
-+F:	scripts/lld-version.sh
- K:	\b(?i:clang|llvm)\b
- 
- CLEANCACHE API
-diff --git a/init/Kconfig b/init/Kconfig
-index 92c58b45abb8..b9037d6c5ab3 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -47,6 +47,10 @@ config CLANG_VERSION
- 	int
- 	default $(shell,$(srctree)/scripts/clang-version.sh $(CC))
- 
-+config LLD_VERSION
-+	int
-+	default $(shell,$(srctree)/scripts/lld-version.sh $(LD))
-+
- config CC_CAN_LINK
- 	bool
- 	default $(success,$(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG_FLAGS) $(m64-flag)) if 64BIT
-@@ -1351,6 +1355,7 @@ config LD_DEAD_CODE_DATA_ELIMINATION
- config LD_ORPHAN_WARN
- 	def_bool y
- 	depends on ARCH_WANT_LD_ORPHAN_WARN
-+	depends on !LD_IS_LLD || LLD_VERSION >= 110000
- 	depends on $(ld-option,--orphan-handling=warn)
- 
- config SYSCTL
-diff --git a/scripts/lld-version.sh b/scripts/lld-version.sh
-new file mode 100755
-index 000000000000..d70edb4d8a4f
---- /dev/null
-+++ b/scripts/lld-version.sh
-@@ -0,0 +1,20 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Usage: $ ./scripts/lld-version.sh ld.lld
-+#
-+# Print the linker version of `ld.lld' in a 5 or 6-digit form
-+# such as `100001' for ld.lld 10.0.1 etc.
-+
-+linker_string="$($* --version)"
-+
-+if ! ( echo $linker_string | grep -q LLD ); then
-+	echo 0
-+	exit 1
-+fi
-+
-+VERSION=$(echo $linker_string | cut -d ' ' -f 2)
-+MAJOR=$(echo $VERSION | cut -d . -f 1)
-+MINOR=$(echo $VERSION | cut -d . -f 2)
-+PATCHLEVEL=$(echo $VERSION | cut -d . -f 3)
-+printf "%d%02d%02d\\n" $MAJOR $MINOR $PATCHLEVEL
--- 
-2.29.2
-
+>>>> replenish_rx_pool(adapter, &adapter->rx_pool[scrq_num]);
+>>>> if (frames_processed < budget) {
+>>>> if (napi_complete_done(napi, frames_processed)) {
