@@ -1,88 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5012B899F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 02:34:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA322B8A24
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 03:37:42 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cc2Jq1YszzDqpy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 12:34:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cc3kB6hmqzDqjQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 13:37:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=pPP9Mf/K; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cc1rZ5QBRzDqRL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 12:13:02 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AJ13HSL116837; Wed, 18 Nov 2020 20:12:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references; s=pp1;
- bh=o3SnSx/FUmZ1rbizUSnKEHWZZm9v9ynH8glDMOox6ZA=;
- b=pPP9Mf/KtSueAd/mSM1v+W/G0yjgtr7dDthShSrNyEZ7GrBEHKNGf8S5y1FDjBKw3QVk
- gaFWey5aDIzE1x7mgRrbnFedbFvjIGfQYjW8KDjecv2HQ0DgbVb8y+d3Z0gUkmSz63ga
- mNE/YHOM87wCUvnB23KuzhSPbtuAVssHJDn+i6OGLvqzvD1eAL2ks+n+/pnHfbB0E16X
- 75tHw8GQJTvsw+DX43d4z15OuUJP5/00Atq029f7eWMYROkQ4S1aRU9HBNndXxIV7dr8
- 9U1j9uFDHMQ1XbWv634JzG05E90Os/frapAOaLFrD8RfDZnDZtpSCzhrHbPKtT16m6SQ NQ== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34w4rha2h3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Nov 2020 20:12:59 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AJ17FqU026465;
- Thu, 19 Nov 2020 01:12:58 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma05wdc.us.ibm.com with ESMTP id 34t6v9agv5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Nov 2020 01:12:58 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AJ1Cm9d59900340
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Nov 2020 01:12:48 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 296326A05A;
- Thu, 19 Nov 2020 01:12:57 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 689526A04D;
- Thu, 19 Nov 2020 01:12:55 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.65.199.179])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 19 Nov 2020 01:12:55 +0000 (GMT)
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-To: kuba@kernel.org
-Subject: [PATCH net-next v2 9/9] ibmvnic: Do not replenish RX buffers after
- every polling loop
-Date: Wed, 18 Nov 2020 19:12:25 -0600
-Message-Id: <1605748345-32062-10-git-send-email-tlfalcon@linux.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1605748345-32062-1-git-send-email-tlfalcon@linux.ibm.com>
-References: <1605748345-32062-1-git-send-email-tlfalcon@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-18_10:2020-11-17,
- 2020-11-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=1 clxscore=1015
- mlxscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=560 impostorscore=0
- phishscore=0 spamscore=0 malwarescore=0 adultscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011190003
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cc3hT5GpRzDqdf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 13:36:08 +1100 (AEDT)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B5FD21A04EF;
+ Thu, 19 Nov 2020 03:36:03 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A58311A0526;
+ Thu, 19 Nov 2020 03:35:59 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 5694C4031E;
+ Thu, 19 Nov 2020 03:35:54 +0100 (CET)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org
+Subject: [PATCH] ASoC: fsl_sai: Correct the clock source for mclk0
+Date: Thu, 19 Nov 2020 10:29:16 +0800
+Message-Id: <1605752956-17397-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,43 +51,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cforno12@linux.ibm.com, netdev@vger.kernel.org, ljp@linux.vnet.ibm.com,
- ricklind@linux.ibm.com, dnbanerg@us.ibm.com, tlfalcon@linux.ibm.com,
- drt@linux.vnet.ibm.com, brking@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Dwip N. Banerjee" <dnbanerg@us.ibm.com>
+On VF610, mclk0 = bus_clk;
+On i.MX6SX/6UL/6ULL/7D, mclk0 = mclk1;
+On i.MX7ULP, mclk0 = bus_clk;
+On i.MX8QM/8QXP, mclk0 = bus_clk;
+On i.MX8MQ/8MN/8MM/8MP, mclk0 = bus_clk;
 
-Reduce the amount of time spent replenishing RX buffers by
-only doing so once available buffers has fallen under a certain
-threshold, in this case half of the total number of buffers, or
-if the polling loop exits before the packets processed is less
-than its budget.
+So add variable mclk0_mclk1_match in fsl_sai_soc_data to
+distinguish these platforms.
 
-Signed-off-by: Dwip N. Banerjee <dnbanerg@us.ibm.com>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/fsl/fsl_sai.c | 11 ++++++++++-
+ sound/soc/fsl/fsl_sai.h |  1 +
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 96df6d8fa277..9fe43ab0496d 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2537,7 +2537,10 @@ static int ibmvnic_poll(struct napi_struct *napi, int budget)
- 		frames_processed++;
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 3e5c1eaccd5e..479fd27ace35 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -1040,7 +1040,6 @@ static int fsl_sai_probe(struct platform_device *pdev)
+ 		sai->bus_clk = NULL;
  	}
  
--	if (adapter->state != VNIC_CLOSING)
-+	if (adapter->state != VNIC_CLOSING &&
-+	    ((atomic_read(&adapter->rx_pool[scrq_num].available) <
-+	      adapter->req_rx_add_entries_per_subcrq / 2) ||
-+	      frames_processed < budget))
- 		replenish_rx_pool(adapter, &adapter->rx_pool[scrq_num]);
- 	if (frames_processed < budget) {
- 		if (napi_complete_done(napi, frames_processed)) {
+-	sai->mclk_clk[0] = sai->bus_clk;
+ 	for (i = 1; i < FSL_SAI_MCLK_MAX; i++) {
+ 		sprintf(tmp, "mclk%d", i);
+ 		sai->mclk_clk[i] = devm_clk_get(&pdev->dev, tmp);
+@@ -1051,6 +1050,11 @@ static int fsl_sai_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	if (sai->soc_data->mclk0_mclk1_match)
++		sai->mclk_clk[0] = sai->mclk_clk[1];
++	else
++		sai->mclk_clk[0] = sai->bus_clk;
++
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+ 		return irq;
+@@ -1165,6 +1169,7 @@ static const struct fsl_sai_soc_data fsl_sai_vf610_data = {
+ 	.use_edma = false,
+ 	.fifo_depth = 32,
+ 	.reg_offset = 0,
++	.mclk0_mclk1_match = false,
+ };
+ 
+ static const struct fsl_sai_soc_data fsl_sai_imx6sx_data = {
+@@ -1172,6 +1177,7 @@ static const struct fsl_sai_soc_data fsl_sai_imx6sx_data = {
+ 	.use_edma = false,
+ 	.fifo_depth = 32,
+ 	.reg_offset = 0,
++	.mclk0_mclk1_match = true,
+ };
+ 
+ static const struct fsl_sai_soc_data fsl_sai_imx7ulp_data = {
+@@ -1179,6 +1185,7 @@ static const struct fsl_sai_soc_data fsl_sai_imx7ulp_data = {
+ 	.use_edma = false,
+ 	.fifo_depth = 16,
+ 	.reg_offset = 8,
++	.mclk0_mclk1_match = false,
+ };
+ 
+ static const struct fsl_sai_soc_data fsl_sai_imx8mq_data = {
+@@ -1186,6 +1193,7 @@ static const struct fsl_sai_soc_data fsl_sai_imx8mq_data = {
+ 	.use_edma = false,
+ 	.fifo_depth = 128,
+ 	.reg_offset = 8,
++	.mclk0_mclk1_match = false,
+ };
+ 
+ static const struct fsl_sai_soc_data fsl_sai_imx8qm_data = {
+@@ -1193,6 +1201,7 @@ static const struct fsl_sai_soc_data fsl_sai_imx8qm_data = {
+ 	.use_edma = true,
+ 	.fifo_depth = 64,
+ 	.reg_offset = 0,
++	.mclk0_mclk1_match = false,
+ };
+ 
+ static const struct of_device_id fsl_sai_ids[] = {
+diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
+index 4bbcd0dbe8f1..390a9ca3b531 100644
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -219,6 +219,7 @@
+ struct fsl_sai_soc_data {
+ 	bool use_imx_pcm;
+ 	bool use_edma;
++	bool mclk0_mclk1_match;
+ 	unsigned int fifo_depth;
+ 	unsigned int reg_offset;
+ };
 -- 
-2.26.2
+2.27.0
 
