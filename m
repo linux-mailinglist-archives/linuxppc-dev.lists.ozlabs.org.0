@@ -2,49 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18BF72B98FC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 18:11:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4752B9921
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 18:19:04 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CcR6N2n3czDqld
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 04:11:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CcRH90jB8zDqsH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 04:19:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=q51cnzkA; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CcR4H464pzDqkP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 04:09:35 +1100 (AEDT)
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 72CF924695;
- Thu, 19 Nov 2020 17:09:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1605805772;
- bh=Pl+VaTCd0Kg4ijGjNnnoD3cnGXyL0yjZsgVFyZZv8B4=;
- h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
- b=q51cnzkA1wsaOBro1dZqgzSwM2FA2z5bpkQXLC2kDxqYB/xyLcwXj1/qhwclrEC0v
- Hf9Kk055Rr6PbrmS42lyq0x9H7V4i41L/N4Akoz/Pib7UKyQSnV65at2V+XKUC3kwh
- pFzBTtTfQhm03dNNG4J4BMAHawPWC7LsBwR1eu08=
-Date: Thu, 19 Nov 2020 17:09:11 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Xiubo.Lee@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>,
- nicoleotsuka@gmail.com, timur@kernel.org, perex@perex.cz, festevam@gmail.com,
- alsa-devel@alsa-project.org, tiwai@suse.com
-In-Reply-To: <1605768038-4582-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1605768038-4582-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v2] ASoC: fsl_sai: Correct the clock source for mclk0
-Message-Id: <160580573380.54454.17925861225420646982.b4-ty@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CcRDc0RlzzDqnT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 04:16:43 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CcRDN3LDJzB09Zj;
+ Thu, 19 Nov 2020 18:16:36 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id ESYK-3qNMaWe; Thu, 19 Nov 2020 18:16:36 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CcRDN25C7zB09Zh;
+ Thu, 19 Nov 2020 18:16:36 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2339A8B809;
+ Thu, 19 Nov 2020 18:16:36 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 39ZHbWsp1Kn1; Thu, 19 Nov 2020 18:16:36 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AC7288B78A;
+ Thu, 19 Nov 2020 18:16:27 +0100 (CET)
+Subject: Re: [PATCH v3 1/2] powerpc/ptrace: simplify gpr_get/tm_cgpr_get
+To: Oleg Nesterov <oleg@redhat.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+References: <20201119160154.GA5183@redhat.com>
+ <20201119160221.GA5188@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <94c56c46-e336-f61c-3623-1b2014fcbb2e@csgroup.eu>
+Date: Thu, 19 Nov 2020 18:16:16 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20201119160221.GA5188@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -57,45 +67,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Jan Kratochvil <jan.kratochvil@redhat.com>, Al Viro <viro@zeniv.linux.org.uk>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 19 Nov 2020 14:40:38 +0800, Shengjiu Wang wrote:
-> On VF610, mclk0 = bus_clk;
-> On i.MX6SX/6UL/6ULL/7D, mclk0 = mclk1;
-> On i.MX7ULP, mclk0 = bus_clk;
-> On i.MX8QM/8QXP, mclk0 = bus_clk;
-> On i.MX8MQ/8MN/8MM/8MP, mclk0 = bus_clk;
+
+
+Le 19/11/2020 à 17:02, Oleg Nesterov a écrit :
+> gpr_get() does membuf_write() twice to override pt_regs->msr in between.
+
+Is there anything wrong with that ?
+
+> We can call membuf_write() once and change ->msr in the kernel buffer,
+> this simplifies the code and the next fix.
 > 
-> So add variable mclk0_is_mclk1 in fsl_sai_soc_data to
-> distinguish these platforms.
+> The patch adds a new simple helper, membuf_at(offs), it returns the new
+> membuf which can be safely used after membuf_write().
+> 
+> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+> ---
+>   arch/powerpc/kernel/ptrace/ptrace-tm.c   | 13 +++++--------
+>   arch/powerpc/kernel/ptrace/ptrace-view.c | 13 +++++--------
+>   include/linux/regset.h                   | 12 ++++++++++++
+>   3 files changed, 22 insertions(+), 16 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/ptrace/ptrace-tm.c b/arch/powerpc/kernel/ptrace/ptrace-tm.c
+> index 54f2d076206f..f8fcbd85d4cb 100644
+> --- a/arch/powerpc/kernel/ptrace/ptrace-tm.c
+> +++ b/arch/powerpc/kernel/ptrace/ptrace-tm.c
+> @@ -86,6 +86,8 @@ int tm_cgpr_active(struct task_struct *target, const struct user_regset *regset)
+>   int tm_cgpr_get(struct task_struct *target, const struct user_regset *regset,
+>   		struct membuf to)
+>   {
+> +	struct membuf to_msr = membuf_at(&to, offsetof(struct pt_regs, msr));
+> +
+>   	if (!cpu_has_feature(CPU_FTR_TM))
+>   		return -ENODEV;
+>   
+> @@ -97,17 +99,12 @@ int tm_cgpr_get(struct task_struct *target, const struct user_regset *regset,
+>   	flush_altivec_to_thread(target);
+>   
+>   	membuf_write(&to, &target->thread.ckpt_regs,
+> -			offsetof(struct pt_regs, msr));
+> -	membuf_store(&to, get_user_ckpt_msr(target));
+> +				sizeof(struct user_pt_regs));
 
-Applied to
+This looks mis-aligned. But it should fit on a single line, now we allow up to 100 chars on a line.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+>   
+> -	BUILD_BUG_ON(offsetof(struct pt_regs, orig_gpr3) !=
+> -		     offsetof(struct pt_regs, msr) + sizeof(long));
+> +	membuf_store(&to_msr, get_user_ckpt_msr(target));
+>   
+> -	membuf_write(&to, &target->thread.ckpt_regs.orig_gpr3,
+> -			sizeof(struct user_pt_regs) -
+> -			offsetof(struct pt_regs, orig_gpr3));
+>   	return membuf_zero(&to, ELF_NGREG * sizeof(unsigned long) -
+> -			sizeof(struct user_pt_regs));
+> +				sizeof(struct user_pt_regs));
 
-Thanks!
+I can't see any change here except the alignment. Can you leave it as is ?
 
-[1/1] ASoC: fsl_sai: Correct the clock source for mclk0
-      commit: 53233e40c142b1e0e1df9d9ac0ffc0945cfffbc9
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+>   }
+>   
+>   /*
+> diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c b/arch/powerpc/kernel/ptrace/ptrace-view.c
+> index 7e6478e7ed07..39686ede40b3 100644
+> --- a/arch/powerpc/kernel/ptrace/ptrace-view.c
+> +++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
+> @@ -217,6 +217,7 @@ int ptrace_put_reg(struct task_struct *task, int regno, unsigned long data)
+>   static int gpr_get(struct task_struct *target, const struct user_regset *regset,
+>   		   struct membuf to)
+>   {
+> +	struct membuf to_msr = membuf_at(&to, offsetof(struct pt_regs, msr));
+>   	int i;
+>   
+>   	if (target->thread.regs == NULL)
+> @@ -228,17 +229,13 @@ static int gpr_get(struct task_struct *target, const struct user_regset *regset,
+>   			target->thread.regs->gpr[i] = NV_REG_POISON;
+>   	}
+>   
+> -	membuf_write(&to, target->thread.regs, offsetof(struct pt_regs, msr));
+> -	membuf_store(&to, get_user_msr(target));
+> +	membuf_write(&to, target->thread.regs,
+> +				sizeof(struct user_pt_regs));
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+This should fit on a single line.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+>   
+> -	BUILD_BUG_ON(offsetof(struct pt_regs, orig_gpr3) !=
+> -		     offsetof(struct pt_regs, msr) + sizeof(long));
+> +	membuf_store(&to_msr, get_user_msr(target));
+>   
+> -	membuf_write(&to, &target->thread.regs->orig_gpr3,
+> -			sizeof(struct user_pt_regs) -
+> -			offsetof(struct pt_regs, orig_gpr3));
+>   	return membuf_zero(&to, ELF_NGREG * sizeof(unsigned long) -
+> -				 sizeof(struct user_pt_regs));
+> +				sizeof(struct user_pt_regs));
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+This should not change, it's not part of the changes for this patch.
 
-Thanks,
-Mark
+>   }
+>   
+>   static int gpr_set(struct task_struct *target, const struct user_regset *regset,
+> diff --git a/include/linux/regset.h b/include/linux/regset.h
+> index c3403f328257..a00765f0e8cf 100644
+> --- a/include/linux/regset.h
+> +++ b/include/linux/regset.h
+> @@ -46,6 +46,18 @@ static inline int membuf_write(struct membuf *s, const void *v, size_t size)
+>   	return s->left;
+>   }
+>   
+> +static inline struct membuf membuf_at(const struct membuf *s, size_t offs)
+> +{
+> +	struct membuf n = *s;
+
+Is there any point in using a struct membuf * instaed of a struct membuf as parameter ?
+
+> +
+> +	if (offs > n.left)
+> +		offs = n.left;
+> +	n.p += offs;
+> +	n.left -= offs;
+> +
+> +	return n;
+> +}
+> +
+>   /* current s->p must be aligned for v; v must be a scalar */
+>   #define membuf_store(s, v)				\
+>   ({							\
+> 
+
+Christophe
