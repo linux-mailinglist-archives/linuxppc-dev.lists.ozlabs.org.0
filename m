@@ -2,94 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E6E2B8F56
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 10:49:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8072B90A5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 12:09:07 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CcFJ84gxfzDqhb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 20:49:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CcH4F4gXLzDqnR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 22:09:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ljp@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=protonmail.com (client-ip=185.70.41.103;
+ helo=mail-41103.protonmail.ch; envelope-from=skirmisher@protonmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=svva2tcW; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=protonmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256
+ header.s=protonmail header.b=d3w1xxqd; 
+ dkim-atps=neutral
+X-Greylist: delayed 444 seconds by postgrey-1.36 at bilbo;
+ Thu, 19 Nov 2020 22:06:35 AEDT
+Received: from mail-41103.protonmail.ch (mail-41103.protonmail.ch
+ [185.70.41.103])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CcFGS6kdMzDqd9;
- Thu, 19 Nov 2020 20:47:44 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AJ9Xcsw008682; Thu, 19 Nov 2020 04:47:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=mime-version : date :
- from : to : cc : subject : in-reply-to : references : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=JWi0o7wjR7IXvPcRiwdaPZWvWLPYhFBuTh81cC753cA=;
- b=svva2tcWTw7f/wjNshMBPSINJ8gUyWdsOsc4oPugfTUFQnbZjyJigiTEG78GQKix8Gh+
- 0itTTGEcyCdYpDx4gzsh3lRKYEXo+PwI4ZU2o/5XDdNjrTWt4QlaTREI7TOwHlTjUdbk
- 4h5LWNOGFi3Bhcv5C8I1a99AIlGm7cL1Xuzz58kxdj0VUqrvOrfVlhGfEAGfc8HIwabc
- 6xQ6o1Gyb4J6V2Xht2AEgL3p3iSIyX+jW0163lI4afdN1ytEQWPenHKQEP1bwDg5LzC9
- 4FiF7Xvz2tlmG0rmaPXpX1N7ugzRK3nZBNLYAikh6BJXIbf0oq5pn5D3Qtx1wzpB/9LB Vg== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34wg12sk55-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Nov 2020 04:47:41 -0500
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AJ9SAej002793;
- Thu, 19 Nov 2020 09:47:40 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma01wdc.us.ibm.com with ESMTP id 34uyn1m0qq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Nov 2020 09:47:40 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AJ9lX2L40370602
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Nov 2020 09:47:33 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 23727BE056;
- Thu, 19 Nov 2020 09:47:39 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B8BF8BE04F;
- Thu, 19 Nov 2020 09:47:38 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.16.170.189])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 19 Nov 2020 09:47:38 +0000 (GMT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CcH1R0GlGzDqQ1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 22:06:34 +1100 (AEDT)
+Received: from mail-03.mail-europe.com (mail-03.mail-europe.com
+ [91.134.188.129])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail-41103.protonmail.ch (Postfix) with ESMTPS id C334E2000A74
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 10:59:06 +0000 (UTC)
+Authentication-Results: mail-41103.protonmail.ch;
+ dkim=pass (1024-bit key) header.d=protonmail.com header.i=@protonmail.com
+ header.b="d3w1xxqd"
+Date: Thu, 19 Nov 2020 10:58:39 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+ s=protonmail; t=1605783522;
+ bh=tZgDWUN7aiKKgRhksUGJwTfCEdJMb54p3No3DxKsC1o=;
+ h=Date:To:From:Cc:Reply-To:Subject:From;
+ b=d3w1xxqdhc1YDepMa7JckCGgXePC0o2jXKqLH9kNcecaABcVZW81YUJLzFxfvphvr
+ 8MHkurY6MF8JeIsjPEZ1WdkQmAtV2kfNPxf21nZz9XqYlbLCtfdCN3DOparpUF/qtN
+ xqeFNHb94rUbER9o2Tt0d7bbE3Mx/RWHZDYlyPaQ=
+To: linuxppc-dev@lists.ozlabs.org
+From: Will Springer <skirmisher@protonmail.com>
+Subject: CONFIG_PPC_VAS depends on 64k pages...?
+Message-ID: <7171078.EvYhyI6sBW@sheen>
 MIME-Version: 1.0
-Date: Thu, 19 Nov 2020 03:47:38 -0600
-From: ljp <ljp@linux.vnet.ibm.com>
-To: Thomas Falcon <tlfalcon@linux.ibm.com>
-Subject: Re: [PATCH net-next v2 8/9] ibmvnic: Use netdev_alloc_skb instead of
- alloc_skb to replenish RX buffers
-In-Reply-To: <1605748345-32062-9-git-send-email-tlfalcon@linux.ibm.com>
-References: <1605748345-32062-1-git-send-email-tlfalcon@linux.ibm.com>
- <1605748345-32062-9-git-send-email-tlfalcon@linux.ibm.com>
-Message-ID: <b62e21fcbc4ca1bf08ddf37573940139@linux.vnet.ibm.com>
-X-Sender: ljp@linux.vnet.ibm.com
-User-Agent: Roundcube Webmail/1.0.1
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-19_05:2020-11-17,
- 2020-11-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=830
- impostorscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0
- bulkscore=0 phishscore=0 adultscore=0 suspectscore=0 clxscore=1015
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011190069
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+ DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
+ autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+ mailout.protonmail.ch
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,21 +69,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cforno12@linux.ibm.com, netdev@vger.kernel.org, ricklind@linux.ibm.com,
- dnbanerg@us.ibm.com,
- Linuxppc-dev <linuxppc-dev-bounces+ljp=linux.ibm.com@lists.ozlabs.org>,
- drt@linux.vnet.ibm.com, brking@linux.vnet.ibm.com, kuba@kernel.org,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Reply-To: Will Springer <skirmisher@protonmail.com>
+Cc: daniel@octaforge.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-11-18 19:12, Thomas Falcon wrote:
-> From: "Dwip N. Banerjee" <dnbanerg@us.ibm.com>
-> 
-> Take advantage of the additional optimizations in netdev_alloc_skb when
-> allocating socket buffers to be used for packet reception.
-> 
-> Signed-off-by: Dwip N. Banerjee <dnbanerg@us.ibm.com>
+I learned about the POWER9 gzip accelerator a few months ago when the=20
+support hit upstream Linux 5.8. However, for some reason the Kconfig=20
+dictates that VAS depends on a 64k page size, which is problematic as I=20
+run Void Linux, which uses a 4k-page kernel.
 
-Acked-by: Lijun Pan <ljp@linux.ibm.com>
+Some early poking by others indicated there wasn't an obvious page size=20
+dependency in the code, and suggested I try modifying the config to switch=
+=20
+it on. I did so, but was stopped by a minor complaint of an "unexpected DT=
+=20
+configuration" by the VAS code. I wasn't equipped to figure out exactly wha=
+t=20
+this meant, even after finding the offending condition, so after writing a=
+=20
+very drawn-out forum post asking for help, I dropped the subject.
+
+Fast forward to today, when I was reminded of the whole thing again, and=20
+decided to debug a bit further. Apparently the VAS platform device=20
+(derived from the DT node) has 5 resources on my 4k kernel, instead of 4=20
+(which evidently works for others who have had success on 64k kernels). I=
+=20
+have no idea what this means in practice (I don't know how to introspect=20
+it), but after making a tiny patch[1], everything came up smoothly and I=20
+was doing blazing-fast gzip (de)compression in no time.
+
+Everything seems to work fine on 4k pages. So, what's up? Are there=20
+pitfalls lurking around that I've yet to stumble over? More reasonably,=20
+I'm curious as to why the feature supposedly depends on 64k pages, or if=20
+there's anything else I should be concerned about.
+
+I do have to say I'm quite satisfied with the results of the NX=20
+accelerator, though. Being able to shuffle data to a RaptorCS box over gigE=
+=20
+and get compressed data back faster than most software gzip could ever
+hope to achieve is no small feat, let alone the instantaneous results local=
+ly.
+:)
+
+Cheers,
+Will Springer [she/her]
+
+[1]: https://github.com/Skirmisher/void-packages/blob/vas-4k-pages/srcpkgs/=
+linux5.9/patches/ppc-vas-on-4k.patch
+
+
+
