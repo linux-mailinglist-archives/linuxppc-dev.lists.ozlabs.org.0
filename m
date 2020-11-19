@@ -1,55 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC6E2B8CD5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 09:10:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC4C2B8DF3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 09:54:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CcC6d6qgjzDqlp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 19:10:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CcD4c4LDZzDqY5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 19:54:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux-m68k.org
- (client-ip=195.130.137.77; helo=leibniz.telenet-ops.be;
- envelope-from=geert@linux-m68k.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-X-Greylist: delayed 424 seconds by postgrey-1.36 at bilbo;
- Thu, 19 Nov 2020 19:09:10 AEDT
-Received: from leibniz.telenet-ops.be (leibniz.telenet-ops.be [195.130.137.77])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CcC4k3ykMzDqjg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 19:09:08 +1100 (AEDT)
-Received: from andre.telenet-ops.be (andre.telenet-ops.be
- [IPv6:2a02:1800:120:4::f00:15])
- by leibniz.telenet-ops.be (Postfix) with ESMTPS id 4CcBwM5rd8zMqgMW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 09:01:55 +0100 (CET)
-Received: from ramsan.of.borg ([84.195.186.194])
- by andre.telenet-ops.be with bizsmtp
- id u81r2300N4C55Sk0181rmj; Thu, 19 Nov 2020 09:01:55 +0100
-Received: from rox.of.borg ([192.168.97.57])
- by ramsan.of.borg with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <geert@linux-m68k.org>)
- id 1kfet5-003lB0-JL; Thu, 19 Nov 2020 09:01:51 +0100
-Received: from geert by rox.of.borg with local (Exim 4.93)
- (envelope-from <geert@linux-m68k.org>)
- id 1kfet4-00Gz1m-Gy; Thu, 19 Nov 2020 09:01:50 +0100
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH] media: fsl-viu: Use proper check for presence of {out,
- in}_be32()
-Date: Thu, 19 Nov 2020 09:01:49 +0100
-Message-Id: <20201119080149.4047795-1-geert@linux-m68k.org>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CcCxY6tZ7zDqfB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 19:47:59 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CcCxN0Lggz9txtX;
+ Thu, 19 Nov 2020 09:47:52 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id FW6WPLt43JhR; Thu, 19 Nov 2020 09:47:51 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CcCxM3C16z9txtW;
+ Thu, 19 Nov 2020 09:47:51 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 01EBE8B801;
+ Thu, 19 Nov 2020 09:47:52 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id g8zi2Y26mbwT; Thu, 19 Nov 2020 09:47:51 +0100 (CET)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6CF4C8B804;
+ Thu, 19 Nov 2020 09:47:51 +0100 (CET)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id D178F6688B; Thu, 19 Nov 2020 08:47:50 +0000 (UTC)
+Message-Id: <b4d72d39b34d9ba5d4716e053382406ef3a2f00a.1605774852.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH for 4.14] powerpc/8xx: Always fault when _PAGE_ACCESSED is not
+ set
+To: gregkh@linuxfoundation.org, stable@vger.kernel.org
+Date: Thu, 19 Nov 2020 08:47:50 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,93 +58,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-kernel@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>,
- Hans Verkuil <hans.verkuil@cisco.com>, linuxppc-dev@lists.ozlabs.org,
- linux-media@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When compile-testing on m68k/randconfig:
+[This is backport for 4.14 of 29daf869cbab69088fe1755d9dd224e99ba78b56]
 
-    drivers/media/platform/fsl-viu.c: In function 'viu_start_dma':
-    drivers/media/platform/fsl-viu.c:253:2: error: implicit declaration of function 'out_be32' [-Werror=implicit-function-declaration]
-    drivers/media/platform/fsl-viu.c: In function 'viu_stop_dma':
-    drivers/media/platform/fsl-viu.c:266:15: error: implicit declaration of function 'in_be32' [-Werror=implicit-function-declaration]
+The kernel expects pte_young() to work regardless of CONFIG_SWAP.
 
-Fix this by replacing the checks for PowerPC, Microblaze, and m68k by
-checks for the presence of {out,in}_be32().
+Make sure a minor fault is taken to set _PAGE_ACCESSED when it
+is not already set, regardless of the selection of CONFIG_SWAP.
 
-As PowerPC implements the be32 accessors using inline functions instead
-of macros, identity definitions are added for all accessors to make the
-above checks work.
+This adds at least 3 instructions to the TLB miss exception
+handlers fast path. Following patch will reduce this overhead.
 
-Fixes: 29d750686331a1a9 ("media: fsl-viu: allow building it with COMPILE_TEST")
-Fixes: 17621758e53f0e6b ("media: fsl-viu: Do not redefine out_be32()/in_be32() for CONFIG_M68K")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Hans Verkuil <hans.verkuil@cisco.com>
+Also update the rotation instruction to the correct number of bits
+to reflect all changes done to _PAGE_ACCESSED over time.
+
+Fixes: d069cb4373fe ("powerpc/8xx: Don't touch ACCESSED when no SWAP.")
+Fixes: 5f356497c384 ("powerpc/8xx: remove unused _PAGE_WRITETHRU")
+Fixes: e0a8e0d90a9f ("powerpc/8xx: Handle PAGE_USER via APG bits")
+Fixes: 5b2753fc3e8a ("powerpc/8xx: Implementation of PAGE_EXEC")
+Fixes: a891c43b97d3 ("powerpc/8xx: Prepare handlers for _PAGE_HUGE for 512k pages.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/af834e8a0f1fa97bfae65664950f0984a70c4750.1602492856.git.christophe.leroy@csgroup.eu
 ---
-Compile-tested on m68k, microblaze, and powerpc.
-Assembler output before/after compared for powerpc.
+ arch/powerpc/kernel/head_8xx.S | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-v2:
-  - Add Reviewed-by,
-  - s/definions/definitions/,
-  - Update for commits 6898dd580a045341 ("media: media/platform:
-    fsl-viu.c: fix build for MICROBLAZE") and 17621758e53f0e6b ("media:
-    fsl-viu: Do not redefine out_be32()/in_be32() for CONFIG_M68K"),
-    which added checks for Microblaze and m68k (the latter is not
-    sufficient, cfr. the report from the kernel test robot).
-
-v1: https://lore.kernel.org/lkml/1528451328-21316-1-git-send-email-geert@linux-m68k.org/
----
- arch/powerpc/include/asm/io.h    | 14 ++++++++++++++
- drivers/media/platform/fsl-viu.c |  4 +++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index 58635960403c058b..fcb250db110d8e2b 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -194,6 +194,20 @@ static inline void out_be64(volatile u64 __iomem *addr, u64 val)
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 2d0d89e2cb9a..43884af0e35c 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -398,11 +398,9 @@ _ENTRY(ITLBMiss_cmp)
+ #if defined (CONFIG_HUGETLB_PAGE) && defined (CONFIG_PPC_4K_PAGES)
+ 	rlwimi	r10, r11, 1, MI_SPS16K
  #endif
- #endif /* __powerpc64__ */
- 
-+#define in_be16 in_be16
-+#define in_be32 in_be32
-+#define in_be64 in_be64
-+#define in_le16 in_le16
-+#define in_le32 in_le32
-+#define in_le64 in_le64
-+
-+#define out_be16 out_be16
-+#define out_be32 out_be32
-+#define out_be64 out_be64
-+#define out_le16 out_le16
-+#define out_le32 out_le32
-+#define out_le64 out_le64
-+
- /*
-  * Low level IO stream instructions are defined out of line for now
-  */
-diff --git a/drivers/media/platform/fsl-viu.c b/drivers/media/platform/fsl-viu.c
-index 4f2a0f992905b4b3..d8a6dd4ffbad56d6 100644
---- a/drivers/media/platform/fsl-viu.c
-+++ b/drivers/media/platform/fsl-viu.c
-@@ -32,8 +32,10 @@
- #define VIU_VERSION		"0.5.1"
- 
- /* Allow building this driver with COMPILE_TEST */
--#if !defined(CONFIG_PPC) && !defined(CONFIG_MICROBLAZE) && !defined(CONFIG_M68K)
-+#ifndef out_be32
- #define out_be32(v, a)	iowrite32be(a, (void __iomem *)v)
-+#endif
-+#ifndef in_be32
- #define in_be32(a)	ioread32be((void __iomem *)a)
- #endif
- 
+-#ifdef CONFIG_SWAP
+-	rlwinm	r11, r10, 32-5, _PAGE_PRESENT
++	rlwinm	r11, r10, 32-11, _PAGE_PRESENT
+ 	and	r11, r11, r10
+ 	rlwimi	r10, r11, 0, _PAGE_PRESENT
+-#endif
+ 	li	r11, RPN_PATTERN
+ 	/* The Linux PTE won't go exactly into the MMU TLB.
+ 	 * Software indicator bits 20-23 and 28 must be clear.
+@@ -528,11 +526,9 @@ _ENTRY(DTLBMiss_jmp)
+ 	 * r11 = ((r10 & PRESENT) & ((r10 & ACCESSED) >> 5));
+ 	 * r10 = (r10 & ~PRESENT) | r11;
+ 	 */
+-#ifdef CONFIG_SWAP
+-	rlwinm	r11, r10, 32-5, _PAGE_PRESENT
++	rlwinm	r11, r10, 32-11, _PAGE_PRESENT
+ 	and	r11, r11, r10
+ 	rlwimi	r10, r11, 0, _PAGE_PRESENT
+-#endif
+ 	/* The Linux PTE won't go exactly into the MMU TLB.
+ 	 * Software indicator bits 22 and 28 must be clear.
+ 	 * Software indicator bits 24, 25, 26, and 27 must be
 -- 
-2.25.1
+2.25.0
 
