@@ -1,74 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB342B87F6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Nov 2020 23:57:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3683C2B8963
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 02:15:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cbyqt39WHzDqc9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 09:57:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cc1vM0MD2zDqgs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 12:15:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=maskray@google.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=M9S8YxVn; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cbyny735pzDqWb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 09:55:32 +1100 (AEDT)
-Received: by mail-pl1-x641.google.com with SMTP id y22so1844147plr.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 14:55:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=XUhiSEOyfPErO2z1AoYVgWv/RFM18Wm47SCXm7VABWk=;
- b=M9S8YxVnDv7lv+TGjTNQ7d6WtuAatM2QSAPfcDMnzfWtUQb4jOexDMLwq4zFvv9qoK
- 7ISCNPFXf6NQbDMNIaRgid7/cm0xHjmSmnI7Jr8OqszKdVghzqNwtT3z+vwAElom+i5Z
- Q9E5xqgs3I2XP4lPVQVTQeih9LTJktmhhP/7Z2ZbqGKGsBUccEphtXDuBwQvYcD0dGVS
- wxF+es0klpYUBN6bt/mc+t/iRWsrTlcgmNlGzPU/Dpvc/8lBCJNrgE3XptRzFfj+xi3m
- qbFzAA3IKTBokUF8IRi1NuOQf8LLwt/s4LH59akqdB9bOxEVnZXl37sk9ZO4H5IFgpDG
- NNyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=XUhiSEOyfPErO2z1AoYVgWv/RFM18Wm47SCXm7VABWk=;
- b=rR+PdLQDHC/FSeGPKEZls8N7Rx2JsvTu8JVX7YD/g0aVUYLPxV9CYNILaQvfNgjhQM
- OFknkcE71BByidi8h1peLZdnqkqves42ow4UsBL6cmFq63HRef+DkPv4u7ELA0lsVAh1
- jUy4tVMo+NG3chwDfgB3h7TgJ/tTrSSWCmrMQvlpcRhUfIToAXgQgoPKVXHqRoR4nVma
- mSqbdsEegHxWJDCFcpQNCGjUwYhLYW/bPy2r9pYSPkZc9c4TCKBlmWKo8+bcw+pZI4gB
- cjw4guGaa5WkWQSqpGHAwv+fzdFNKGgLQ73/mBltwnvzDR9pQt9g7TxwaPbcNVMDRzJ0
- GWXg==
-X-Gm-Message-State: AOAM533WegtPBlh3+MMnthngXu5hibDaa5Y5ZhbWgDukdS83C+989cZL
- L+Xea12jjmuaAsikewTJ1FVwI2qTs5Qovw==
-X-Google-Smtp-Source: ABdhPJwwAOOZfECwME3HTToueuKqihtDLBxFcUCj+/LawPnOVpgQEm35zvTlndncG9QSjfINv949ow==
-X-Received: by 2002:a17:902:eaca:b029:d6:807e:95b8 with SMTP id
- p10-20020a170902eacab02900d6807e95b8mr6237699pld.33.1605740129433; 
- Wed, 18 Nov 2020 14:55:29 -0800 (PST)
-Received: from google.com ([100.117.212.88])
- by smtp.gmail.com with ESMTPSA id y24sm26348462pfn.176.2020.11.18.14.55.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 Nov 2020 14:55:28 -0800 (PST)
-Date: Wed, 18 Nov 2020 14:55:26 -0800
-From: Fangrui Song <maskray@google.com>
-To: Bill Wendling <morbo@google.com>
-Subject: Re: [PATCH] powerpc/wrapper: add "-z rodynamic" when using LLD
-Message-ID: <20201118225526.ps7iw46sxjo5rmbr@google.com>
-References: <20201017000151.150788-1-morbo@google.com>
- <20201118223910.2711337-1-morbo@google.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cc1qF1WbLzDqdL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 12:11:51 +1100 (AEDT)
+IronPort-SDR: wDmDpFx4YF+UJfGuRZpgctVGm1/s+F/QrfY5Q9xaDvNzVByvF05HKUvYhBds9OIRM86HgH2shX
+ ZgabY+mu2Ksw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9809"; a="235358763"
+X-IronPort-AV: E=Sophos;i="5.77,488,1596524400"; d="scan'208";a="235358763"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2020 17:11:48 -0800
+IronPort-SDR: tnuSB4xUMYXAhhFrj0lXwPg2HSgqRkdp/h9dSAE1F2zJP2PyybWq6YLtdgzae1xg7JKeA3zGqT
+ k6WiJ0Mo62rw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,488,1596524400"; d="scan'208";a="532965517"
+Received: from lkp-server01.sh.intel.com (HELO cf7a658f8e69) ([10.239.97.150])
+ by fmsmga006.fm.intel.com with ESMTP; 18 Nov 2020 17:11:47 -0800
+Received: from kbuild by cf7a658f8e69 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1kfYUE-00001i-AW; Thu, 19 Nov 2020 01:11:46 +0000
+Date: Thu, 19 Nov 2020 09:11:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes] BUILD SUCCESS cd81acc600a9684ea4b4d25a47900d38a3890eab
+Message-ID: <5fb5c643.CTOLwDMtdLnI43B+%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20201118223910.2711337-1-morbo@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,65 +57,187 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alan Modra <amodra@gmail.com>, Nick Desaulniers <ndesaulniers@google.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We could wait for https://lkml.org/lkml/2020/11/13/19
-"[PATCH] kbuild: Always link with '-z norelro'"
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes
+branch HEAD: cd81acc600a9684ea4b4d25a47900d38a3890eab  powerpc/64s/exception: KVM Fix for host DSI being taken in HPT guest MMU context
 
-Then we would not need -z rodynamic to work around a -z relro issue.
+elapsed time: 726m
 
-(The issue is that some sections don't strictly follow the normal
-R/RX/RW(RELRO)/RW(non-RELRO) section flag partition. As a linker person
-I would suggest that we don't create multiple clusters with the same
-section flags (e.g. RW in two separate places), but this is my very
-minor complaint.)
+configs tested: 161
+configs skipped: 92
 
-On 2020-11-18, Bill Wendling wrote:
->Normally all read-only sections precede SHF_WRITE sections. .dynamic and
->.got have the SHF_WRITE flag; .dynamic probably because of DT_DEBUG. LLD
->emits an error when this happens, so use "-z rodynamic" to mark .dynamic
->as read-only.
->
->Cc: Fangrui Song <maskray@google.com>
->Cc: Alan Modra <amodra@gmail.com>
->Signed-off-by: Bill Wendling <morbo@google.com>
->---
-> arch/powerpc/boot/wrapper | 4 +++-
-> 1 file changed, 3 insertions(+), 1 deletion(-)
->
->diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
->index cd58a62e810d..e1194955adbb 100755
->--- a/arch/powerpc/boot/wrapper
->+++ b/arch/powerpc/boot/wrapper
->@@ -46,6 +46,7 @@ compression=.gz
-> uboot_comp=gzip
-> pie=
-> format=
->+rodynamic=
->
-> # cross-compilation prefix
-> CROSS=
->@@ -353,6 +354,7 @@ epapr)
->     platformo="$object/pseries-head.o $object/epapr.o $object/epapr-wrapper.o"
->     link_address='0x20000000'
->     pie=-pie
->+    rodynamic=$(if ${CROSS}ld -V 2>&1 | grep -q LLD ; then echo "-z rodynamic"; fi)
->     ;;
-> mvme5100)
->     platformo="$object/fixed-head.o $object/mvme5100.o"
->@@ -493,7 +495,7 @@ if [ "$platform" != "miboot" ]; then
->         text_start="-Ttext $link_address"
->     fi
-> #link everything
->-    ${CROSS}ld -m $format -T $lds $text_start $pie $nodl -o "$ofile" $map \
->+    ${CROSS}ld -m $format -T $lds $text_start $pie $nodl $rodynamic -o "$ofile" $map \
-> 	$platformo $tmp $object/wrapper.a
->     rm $tmp
-> fi
->-- 
->2.29.2.454.gaff20da3a2-goog
->
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+sh                         ap325rxa_defconfig
+mips                  maltasmvp_eva_defconfig
+mips                      pic32mzda_defconfig
+powerpc                      bamboo_defconfig
+powerpc                     tqm8560_defconfig
+m68k                          sun3x_defconfig
+arc                        nsim_700_defconfig
+mips                      loongson3_defconfig
+arm                           sunxi_defconfig
+nios2                            alldefconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                      ppc6xx_defconfig
+powerpc                     taishan_defconfig
+powerpc                     skiroot_defconfig
+powerpc                    adder875_defconfig
+sh                ecovec24-romimage_defconfig
+m68k                            mac_defconfig
+sh                           sh2007_defconfig
+arm                    vt8500_v6_v7_defconfig
+sh                   secureedge5410_defconfig
+sh                   sh7724_generic_defconfig
+arm                         s3c6400_defconfig
+m68k                        mvme16x_defconfig
+mips                        omega2p_defconfig
+mips                    maltaup_xpa_defconfig
+mips                       bmips_be_defconfig
+s390                          debug_defconfig
+mips                            e55_defconfig
+sh                     sh7710voipgw_defconfig
+mips                 decstation_r4k_defconfig
+powerpc                      arches_defconfig
+arm                          pcm027_defconfig
+mips                           ip32_defconfig
+mips                  cavium_octeon_defconfig
+ia64                        generic_defconfig
+mips                        nlm_xlr_defconfig
+powerpc                     tqm8540_defconfig
+mips                        bcm63xx_defconfig
+sh                          urquell_defconfig
+powerpc                      obs600_defconfig
+arm                             mxs_defconfig
+sh                   sh7770_generic_defconfig
+sh                           se7206_defconfig
+powerpc                     pq2fads_defconfig
+parisc                generic-64bit_defconfig
+arm                             rpc_defconfig
+powerpc                      katmai_defconfig
+s390                       zfcpdump_defconfig
+powerpc                      pmac32_defconfig
+powerpc                 mpc8315_rdb_defconfig
+powerpc                  mpc885_ads_defconfig
+sh                           se7722_defconfig
+powerpc                 mpc8313_rdb_defconfig
+powerpc                     stx_gp3_defconfig
+powerpc                 mpc85xx_cds_defconfig
+powerpc                      pcm030_defconfig
+powerpc                      ppc64e_defconfig
+sh                         ecovec24_defconfig
+arm                           efm32_defconfig
+arm                            zeus_defconfig
+arm                           corgi_defconfig
+arm                   milbeaut_m10v_defconfig
+powerpc                 mpc837x_rdb_defconfig
+arm                         socfpga_defconfig
+sh                        edosk7760_defconfig
+sh                               j2_defconfig
+arm                          exynos_defconfig
+xtensa                  cadence_csp_defconfig
+mips                         rt305x_defconfig
+sh                               alldefconfig
+arm                      tct_hammer_defconfig
+sh                             sh03_defconfig
+nios2                         10m50_defconfig
+um                           x86_64_defconfig
+arm                       netwinder_defconfig
+arm                         s3c2410_defconfig
+arc                                 defconfig
+riscv                    nommu_virt_defconfig
+powerpc                mpc7448_hpc2_defconfig
+arm                       spear13xx_defconfig
+sh                          rsk7264_defconfig
+mips                      maltasmvp_defconfig
+sh                           se7705_defconfig
+arm                         cm_x300_defconfig
+sh                          r7780mp_defconfig
+arc                              alldefconfig
+powerpc                     mpc83xx_defconfig
+mips                         tb0219_defconfig
+microblaze                          defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a005-20201118
+x86_64               randconfig-a003-20201118
+x86_64               randconfig-a004-20201118
+x86_64               randconfig-a002-20201118
+x86_64               randconfig-a006-20201118
+x86_64               randconfig-a001-20201118
+i386                 randconfig-a006-20201118
+i386                 randconfig-a005-20201118
+i386                 randconfig-a002-20201118
+i386                 randconfig-a001-20201118
+i386                 randconfig-a003-20201118
+i386                 randconfig-a004-20201118
+i386                 randconfig-a012-20201118
+i386                 randconfig-a014-20201118
+i386                 randconfig-a016-20201118
+i386                 randconfig-a011-20201118
+i386                 randconfig-a013-20201118
+i386                 randconfig-a015-20201118
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a015-20201118
+x86_64               randconfig-a014-20201118
+x86_64               randconfig-a011-20201118
+x86_64               randconfig-a013-20201118
+x86_64               randconfig-a016-20201118
+x86_64               randconfig-a012-20201118
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
