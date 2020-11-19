@@ -2,51 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0652B895F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 02:13:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35AC62B8966
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 02:17:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cc1sS4HB6zDqJf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 12:13:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cc1xn0Jk6zDqfD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 12:17:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=QMEE6fdo; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cc1qF15CyzDqc8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 12:11:50 +1100 (AEDT)
-IronPort-SDR: yWUpkoZXhTw2LbK5Tp3m97xRWZcIgqEKW3xrZJxmlCSmSpeaVkTielIdqwZgQeOX12dsrCwP3F
- W25Vl3jmgqEg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9809"; a="232825337"
-X-IronPort-AV: E=Sophos;i="5.77,488,1596524400"; d="scan'208";a="232825337"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2020 17:11:48 -0800
-IronPort-SDR: U1XmwYKhSz1uVnQmleL5bsPE21zCc98k8qC76Tovs9pSinmQvEH2o4VSIW1x5AhFYmmyqViEG4
- 3bSTqIo47kFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,488,1596524400"; d="scan'208";a="363189014"
-Received: from lkp-server01.sh.intel.com (HELO cf7a658f8e69) ([10.239.97.150])
- by fmsmga002.fm.intel.com with ESMTP; 18 Nov 2020 17:11:47 -0800
-Received: from kbuild by cf7a658f8e69 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kfYUE-00001k-Dp; Thu, 19 Nov 2020 01:11:46 +0000
-Date: Thu, 19 Nov 2020 09:11:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- a1062188413df416db21b02ffe4bd60228ad6240
-Message-ID: <5fb5c64c.Kh8XJu7gkZ7dj32i%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cc1rF3XB5zDqfB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 12:12:45 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AJ12cOc002860; Wed, 18 Nov 2020 20:12:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=63zCUGTQUiWuEkB2z2PB5wi1DRmFoQ3R7hVO7Y4u5T8=;
+ b=QMEE6fdo6KtbwEeQuPzT8q/65Zv7/M3B3/BCtM/P19HSw10fdix1kAMdAi1/O18K3XgP
+ B+kybb3ftw+LRvqGU8G4dKnCDImdBbn/r8HrwPkOfazsl7Wfy14wZQxV+RWB4G6ottwM
+ /AkOoYNCmctouedclXhoebvauA9KgApNVEEz49y1fcWd4A5f4AZELCeZjL+UMGRZal4b
+ qz3m00Pvi36R1ZNWibPxnoWkImQ13o9b35kd+mCoU5S9R4bQFZhdNCs9uF2YeYSCFZn1
+ iXEPHPeGkZOc0U8ISOZarTLrH6hsxTntiVFRxYspa5/q2gSRiuRmoiawa54/DGZqvzdn nA== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 34w8p8taqq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 Nov 2020 20:12:40 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AJ0ufTt029126;
+ Thu, 19 Nov 2020 01:12:39 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma02wdc.us.ibm.com with ESMTP id 34w5w8be43-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Nov 2020 01:12:39 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AJ1CVUv9306804
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 Nov 2020 01:12:31 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 18FD86A05D;
+ Thu, 19 Nov 2020 01:12:37 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD6136A04F;
+ Thu, 19 Nov 2020 01:12:34 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.65.199.179])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 19 Nov 2020 01:12:34 +0000 (GMT)
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+To: kuba@kernel.org
+Subject: [PATCH net-next v2 0/9] ibmvnic: Performance improvements and other
+ updates
+Date: Wed, 18 Nov 2020 19:12:16 -0600
+Message-Id: <1605748345-32062-1-git-send-email-tlfalcon@linux.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-18_10:2020-11-17,
+ 2020-11-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 suspectscore=1
+ phishscore=0 mlxscore=0 adultscore=0 impostorscore=0 mlxlogscore=938
+ malwarescore=0 spamscore=0 lowpriorityscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011190000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,181 +91,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: cforno12@linux.ibm.com, netdev@vger.kernel.org, ljp@linux.vnet.ibm.com,
+ ricklind@linux.ibm.com, dnbanerg@us.ibm.com, tlfalcon@linux.ibm.com,
+ drt@linux.vnet.ibm.com, brking@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: a1062188413df416db21b02ffe4bd60228ad6240  powerpc: fix -Wimplicit-fallthrough
+The first three patches utilize a hypervisor call allowing multiple 
+TX and RX buffer replenishment descriptors to be sent in one operation,
+which significantly reduces hypervisor call overhead. The xmit_more
+and Byte Queue Limit API's are leveraged to provide this support
+for TX descriptors.
 
-elapsed time: 726m
+The subsequent two patches remove superfluous code and members in
+TX completion handling function and TX buffer structure, respectively,
+and remove unused routines.
 
-configs tested: 155
-configs skipped: 3
+Finally, four patches which ensure that device queue memory is
+cache-line aligned, resolving slowdowns observed in PCI traces,
+as well as optimize the driver's NAPI polling function and 
+to RX buffer replenishment are provided by Dwip Banerjee.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This series provides significant performance improvements, allowing
+the driver to fully utilize 100Gb NIC's.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sh                         ap325rxa_defconfig
-mips                  maltasmvp_eva_defconfig
-mips                      pic32mzda_defconfig
-powerpc                      bamboo_defconfig
-powerpc                     tqm8560_defconfig
-m68k                          sun3x_defconfig
-arc                        nsim_700_defconfig
-mips                      loongson3_defconfig
-arm                           sunxi_defconfig
-nios2                            alldefconfig
-powerpc                 xes_mpc85xx_defconfig
-powerpc                      ppc6xx_defconfig
-powerpc                     taishan_defconfig
-powerpc                     skiroot_defconfig
-powerpc                    adder875_defconfig
-sh                ecovec24-romimage_defconfig
-m68k                            mac_defconfig
-sh                           sh2007_defconfig
-sh                          polaris_defconfig
-arm                       aspeed_g5_defconfig
-arm                           stm32_defconfig
-powerpc                     sbc8548_defconfig
-arm                   milbeaut_m10v_defconfig
-sh                   sh7724_generic_defconfig
-arm                         s3c6400_defconfig
-m68k                        mvme16x_defconfig
-mips                        omega2p_defconfig
-mips                    maltaup_xpa_defconfig
-mips                       bmips_be_defconfig
-s390                          debug_defconfig
-mips                            e55_defconfig
-sh                     sh7710voipgw_defconfig
-mips                 decstation_r4k_defconfig
-powerpc                      arches_defconfig
-arm                          pcm027_defconfig
-mips                           ip32_defconfig
-mips                  cavium_octeon_defconfig
-ia64                        generic_defconfig
-mips                        nlm_xlr_defconfig
-powerpc                     tqm8540_defconfig
-mips                        bcm63xx_defconfig
-powerpc                  mpc885_ads_defconfig
-sh                           se7722_defconfig
-powerpc                 mpc8313_rdb_defconfig
-powerpc                     stx_gp3_defconfig
-powerpc                 mpc85xx_cds_defconfig
-powerpc                      pcm030_defconfig
-powerpc                      ppc64e_defconfig
-sh                         ecovec24_defconfig
-arm                         socfpga_defconfig
-sh                        edosk7760_defconfig
-sh                               j2_defconfig
-arm                          exynos_defconfig
-xtensa                  cadence_csp_defconfig
-mips                         rt305x_defconfig
-sh                               alldefconfig
-arm                      tct_hammer_defconfig
-sh                             sh03_defconfig
-nios2                         10m50_defconfig
-um                           x86_64_defconfig
-arm                       netwinder_defconfig
-arm                         s3c2410_defconfig
-mips                      bmips_stb_defconfig
-i386                                defconfig
-s390                             alldefconfig
-arm                           h5000_defconfig
-arm                        neponset_defconfig
-arc                                 defconfig
-riscv                    nommu_virt_defconfig
-powerpc                mpc7448_hpc2_defconfig
-arm                       spear13xx_defconfig
-sh                           se7705_defconfig
-arm                         cm_x300_defconfig
-sh                          r7780mp_defconfig
-arc                              alldefconfig
-powerpc                     mpc83xx_defconfig
-mips                         tb0219_defconfig
-microblaze                          defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a005-20201118
-x86_64               randconfig-a003-20201118
-x86_64               randconfig-a004-20201118
-x86_64               randconfig-a002-20201118
-x86_64               randconfig-a006-20201118
-x86_64               randconfig-a001-20201118
-i386                 randconfig-a006-20201118
-i386                 randconfig-a005-20201118
-i386                 randconfig-a002-20201118
-i386                 randconfig-a001-20201118
-i386                 randconfig-a003-20201118
-i386                 randconfig-a004-20201118
-i386                 randconfig-a006-20201119
-i386                 randconfig-a005-20201119
-i386                 randconfig-a002-20201119
-i386                 randconfig-a001-20201119
-i386                 randconfig-a003-20201119
-i386                 randconfig-a004-20201119
-i386                 randconfig-a012-20201118
-i386                 randconfig-a014-20201118
-i386                 randconfig-a016-20201118
-i386                 randconfig-a011-20201118
-i386                 randconfig-a013-20201118
-i386                 randconfig-a015-20201118
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+v2 updates:
 
-clang tested configs:
-x86_64               randconfig-a015-20201118
-x86_64               randconfig-a014-20201118
-x86_64               randconfig-a011-20201118
-x86_64               randconfig-a013-20201118
-x86_64               randconfig-a016-20201118
-x86_64               randconfig-a012-20201118
+1) Removed three patches from the original series which
+   were bug fixes and thus better suited for the net tree,
+   suggested by Jakub Kicinski.
+2) Fixed error handling when initializing device queues,
+   suggested by Jakub Kicinski.
+3) Fixed bug where queued entries were not flushed after a
+   dropped frame, also suggested by Jakub. Two functions,
+   ibmvnic_tx_scrq_flush and its helper ibmvnic_tx_scrq_clean_buffer,
+   were introduced to ensure that queued frames are either submitted
+   to firmware or, if that is not successful, freed as dropped and
+   associated data structures are updated with the new device queue state.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Dwip N. Banerjee (4):
+  ibmvnic: Ensure that device queue memory is cache-line aligned
+  ibmvnic: Correctly re-enable interrupts in NAPI polling routine
+  ibmvnic: Use netdev_alloc_skb instead of alloc_skb to replenish RX
+    buffers
+  ibmvnic: Do not replenish RX buffers after every polling loop
+
+Thomas Falcon (5):
+  ibmvnic: Introduce indirect subordinate Command Response Queue buffer
+  ibmvnic: Introduce batched RX buffer descriptor transmission
+  ibmvnic: Introduce xmit_more support using batched subCRQ hcalls
+  ibmvnic: Clean up TX code and TX buffer data structure
+  ibmvnic: Remove send_subcrq function
+
+ drivers/net/ethernet/ibm/ibmvnic.c | 398 ++++++++++++++++++-----------
+ drivers/net/ethernet/ibm/ibmvnic.h |  27 +-
+ 2 files changed, 256 insertions(+), 169 deletions(-)
+
+-- 
+2.26.2
+
