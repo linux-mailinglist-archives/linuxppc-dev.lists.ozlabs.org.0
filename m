@@ -2,50 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFEFF2B9CC3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 22:12:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9982B9CC7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 22:15:29 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CcXST1ds4zDqpK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 08:12:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CcXWy3yqpzDqv2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 08:15:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=ndesaulniers@google.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=VX9vMNKu; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CcXMB0M8dzDqYY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 08:07:47 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CcXM14zGlz9v4nj;
- Thu, 19 Nov 2020 22:07:41 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id F-4BTdxGLIpJ; Thu, 19 Nov 2020 22:07:41 +0100 (CET)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CcXM13sgdz9v4nh;
- Thu, 19 Nov 2020 22:07:41 +0100 (CET)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id 5D1733AF; Thu, 19 Nov 2020 22:10:33 +0100 (CET)
-Received: from 192.168.4.90 ([192.168.4.90]) by messagerie.c-s.fr (Horde
- Framework) with HTTP; Thu, 19 Nov 2020 22:10:33 +0100
-Date: Thu, 19 Nov 2020 22:10:33 +0100
-Message-ID: <20201119221033.Horde.be-msjDTeIW4XeXARjUu7g1@messagerie.c-s.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Oleg Nesterov <oleg@redhat.com>
-Subject: Re: [PATCH v3 2/2] powerpc/ptrace: Hard wire PT_SOFTE value to 1 in
- gpr_get() too
-References: <20201119160154.GA5183@redhat.com>
- <20201119160247.GB5188@redhat.com>
-In-Reply-To: <20201119160247.GB5188@redhat.com>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CcXTy6pDCzDqdt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 08:13:42 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id 10so5713374pfp.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 13:13:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=v4GZ/jYkXszE1mls+kEMDdrPEPVfJzO/2ICpEIaBNDQ=;
+ b=VX9vMNKumxYjb1MaiOgA8BYXWmZVJDiTW6P01b9rG1rPFKPOjSfowk4zaRH1rXRNir
+ BtNu2L/lhkEgxsDBVm5+hwahoKlcdKx8DSfHEvvF9koYNFXSPx+TqpjXadTh2ckpyrEn
+ LPRrqR2nTFG9fkBNgO6K7sSMsjq9j5w7XVC/YqMh/5mCy4tlsbZt8u5jaaCN7inZBCZ3
+ KqCnmRWetMpK1EIMWJnCEmxwayXO5SCYdsiunWSlbvt5gCFY4m7Mqnk47VBIHFU1IKw2
+ se5KST+MC+lt9D5LyUhQiwfEntRz78UomESsMPm9dc/J0TdU7KKuOC0d0zDuJvAGm00a
+ Yt3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=v4GZ/jYkXszE1mls+kEMDdrPEPVfJzO/2ICpEIaBNDQ=;
+ b=tDEIcMUEwmV1FDocqxBNMeyDK/VM56hm1Aw04XVEngt0DpONeySi06sNvsq4TxCvha
+ o+yBr39Qrq+5HnvAkrXj1UxvmNVjXM1EbsMKQrRrP1kEV+Wo1Vn3VAV0nKSotd6Ojfbq
+ l9PfUquUXTp+FjOFnF6z5Crn4cB6G1fNvtOk5pqSmSU085wZS/xf8NFE7Pb4yT0c8PUy
+ m0NPjp5fHD3ZlL3sW2AcWsD56f4jcJ1s7Ps9uuuoecJjHcbJXL3fLuTLyhjgC/lViS5S
+ nIao0a6bSGGB32jA022jHLAUJCiJNSvXJgRoVhcGTectMYlm6qXCMXB61ek9O05wgGVe
+ TqRg==
+X-Gm-Message-State: AOAM530JW2jMSqgPULRfK86DUFuyDEcYCoH4u2rI48QIv63uQ/s2Bt5F
+ QTfCFglhhnEIsP6S1sGV1xenyeTsdhJZ3o4ItZkF6A==
+X-Google-Smtp-Source: ABdhPJxZrPh18rHCKywSfaLz+afmz6qeTTM23n3N+yG4DUvwsOZWdSWRDWD6fR2nhxs02pK/JPvBxMBwXKRZ5ZsZb4M=
+X-Received: by 2002:a65:4485:: with SMTP id l5mr14014104pgq.10.1605820419400; 
+ Thu, 19 Nov 2020 13:13:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
+References: <20201113195553.1487659-1-natechancellor@gmail.com>
+ <20201119204656.3261686-2-natechancellor@gmail.com>
+In-Reply-To: <20201119204656.3261686-2-natechancellor@gmail.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Thu, 19 Nov 2020 13:13:27 -0800
+Message-ID: <CAKwvOdkPgwL8H4EGF6=-VuxTdmxA8JHhGbLHVYcLJj9MmAvW=g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] kbuild: Disable CONFIG_LD_ORPHAN_WARN for ld.lld
+ 10.0.1
+To: Nathan Chancellor <natechancellor@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,89 +74,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Al Viro <viro@zeniv.linux.org.uk>, "Aneesh
- Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Jan Kratochvil <jan.kratochvil@redhat.com>
+Cc: Michal Marek <michal.lkml@markovi.net>, Kees Cook <keescook@chromium.org>,
+ "kernelci . org bot" <bot@kernelci.org>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Masahiro Yamada <masahiroy@kernel.org>,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, LKML <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Arvind Sankar <nivedita@alum.mit.edu>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-Quoting Oleg Nesterov <oleg@redhat.com>:
-
-> The commit a8a4b03ab95f ("powerpc: Hard wire PT_SOFTE value to 1 in
-> ptrace & signals") changed ptrace_get_reg(PT_SOFTE) to report 0x1,
-> but PTRACE_GETREGS still copies pt_regs->softe as is.
+On Thu, Nov 19, 2020 at 12:57 PM Nathan Chancellor
+<natechancellor@gmail.com> wrote:
 >
-> This is not consistent and this breaks the user-regs-peekpoke test
-> from https://sourceware.org/systemtap/wiki/utrace/tests/
+> ld.lld 10.0.1 spews a bunch of various warnings about .rela sections,
+> along with a few others. Newer versions of ld.lld do not have these
+> warnings. As a result, do not add '--orphan-handling=warn' to
+> LDFLAGS_vmlinux if ld.lld's version is not new enough.
 >
-> Reported-by: Jan Kratochvil <jan.kratochvil@redhat.com>
-> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+> Link: https://github.com/ClangBuiltLinux/linux/issues/1187
+> Link: https://github.com/ClangBuiltLinux/linux/issues/1193
+> Reported-by: Arvind Sankar <nivedita@alum.mit.edu>
+> Reported-by: kernelci.org bot <bot@kernelci.org>
+> Reported-by: Mark Brown <broonie@kernel.org>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+
+Thanks for the additions in v2.
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+
 > ---
->  arch/powerpc/kernel/ptrace/ptrace-tm.c   | 8 +++++++-
->  arch/powerpc/kernel/ptrace/ptrace-view.c | 8 +++++++-
->  2 files changed, 14 insertions(+), 2 deletions(-)
+>
+> v1 -> v2:
+>
+> * Add condition as a depends on line (Kees Cook)
+>
+> * Capture output of "$* --version" to avoid invoking linker twice (Nick
+>   Desaulniers)
+>
+> * Improve documentation of script in comments (Nick Desaulniers)
+>
+> * Pick up review tag from Kees
+>
+>  MAINTAINERS            |  1 +
+>  init/Kconfig           |  5 +++++
+>  scripts/lld-version.sh | 20 ++++++++++++++++++++
+>  3 files changed, 26 insertions(+)
+>  create mode 100755 scripts/lld-version.sh
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e451dcce054f..e6f74f130ae1 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4284,6 +4284,7 @@ B:        https://github.com/ClangBuiltLinux/linux/issues
+>  C:     irc://chat.freenode.net/clangbuiltlinux
+>  F:     Documentation/kbuild/llvm.rst
+>  F:     scripts/clang-tools/
+> +F:     scripts/lld-version.sh
+>  K:     \b(?i:clang|llvm)\b
+>
+>  CLEANCACHE API
+> diff --git a/init/Kconfig b/init/Kconfig
+> index 92c58b45abb8..b9037d6c5ab3 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -47,6 +47,10 @@ config CLANG_VERSION
+>         int
+>         default $(shell,$(srctree)/scripts/clang-version.sh $(CC))
+>
+> +config LLD_VERSION
+> +       int
+> +       default $(shell,$(srctree)/scripts/lld-version.sh $(LD))
+> +
+>  config CC_CAN_LINK
+>         bool
+>         default $(success,$(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG_FLAGS) $(m64-flag)) if 64BIT
+> @@ -1351,6 +1355,7 @@ config LD_DEAD_CODE_DATA_ELIMINATION
+>  config LD_ORPHAN_WARN
+>         def_bool y
+>         depends on ARCH_WANT_LD_ORPHAN_WARN
+> +       depends on !LD_IS_LLD || LLD_VERSION >= 110000
+>         depends on $(ld-option,--orphan-handling=warn)
+>
+>  config SYSCTL
+> diff --git a/scripts/lld-version.sh b/scripts/lld-version.sh
+> new file mode 100755
+> index 000000000000..d70edb4d8a4f
+> --- /dev/null
+> +++ b/scripts/lld-version.sh
+> @@ -0,0 +1,20 @@
+> +#!/bin/sh
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Usage: $ ./scripts/lld-version.sh ld.lld
+> +#
+> +# Print the linker version of `ld.lld' in a 5 or 6-digit form
+> +# such as `100001' for ld.lld 10.0.1 etc.
+> +
+> +linker_string="$($* --version)"
+> +
+> +if ! ( echo $linker_string | grep -q LLD ); then
+> +       echo 0
+> +       exit 1
+> +fi
+> +
+> +VERSION=$(echo $linker_string | cut -d ' ' -f 2)
+> +MAJOR=$(echo $VERSION | cut -d . -f 1)
+> +MINOR=$(echo $VERSION | cut -d . -f 2)
+> +PATCHLEVEL=$(echo $VERSION | cut -d . -f 3)
+> +printf "%d%02d%02d\\n" $MAJOR $MINOR $PATCHLEVEL
+> --
+> 2.29.2
 >
 
-I think the following should work, and not require the first patch  
-(compile tested only).
 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-tm.c  
-b/arch/powerpc/kernel/ptrace/ptrace-tm.c
-index 54f2d076206f..f779b3bc0279 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-tm.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-tm.c
-@@ -104,8 +104,14 @@ int tm_cgpr_get(struct task_struct *target, const  
-struct user_regset *regset,
-  		     offsetof(struct pt_regs, msr) + sizeof(long));
-
-  	membuf_write(&to, &target->thread.ckpt_regs.orig_gpr3,
--			sizeof(struct user_pt_regs) -
--			offsetof(struct pt_regs, orig_gpr3));
-+		     offsetof(struct pt_regs, softe) - offsetof(struct pt_regs,  
-orig_gpr3));
-+	membuf_store(&to, 1UL);
-+
-+	BUILD_BUG_ON(offsetof(struct pt_regs, trap) !=
-+		     offsetof(struct pt_regs, softe) + sizeof(long));
-+
-+	membuf_write(&to, &target->thread.ckpt_regs.trap,
-+		     sizeof(struct user_pt_regs) - offsetof(struct pt_regs, trap));
-  	return membuf_zero(&to, ELF_NGREG * sizeof(unsigned long) -
-  			sizeof(struct user_pt_regs));
-  }
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c  
-b/arch/powerpc/kernel/ptrace/ptrace-view.c
-index 7e6478e7ed07..736bfbf33890 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-view.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
-@@ -234,9 +234,21 @@ static int gpr_get(struct task_struct *target,  
-const struct user_regset *regset,
-  	BUILD_BUG_ON(offsetof(struct pt_regs, orig_gpr3) !=
-  		     offsetof(struct pt_regs, msr) + sizeof(long));
-
-+#ifdef CONFIG_PPC64
-+	membuf_write(&to, &target->thread.regs->orig_gpr3,
-+		     offsetof(struct pt_regs, softe) - offsetof(struct pt_regs,  
-orig_gpr3));
-+	membuf_store(&to, 1UL);
-+
-+	BUILD_BUG_ON(offsetof(struct pt_regs, trap) !=
-+		     offsetof(struct pt_regs, softe) + sizeof(long));
-+
-+	membuf_write(&to, &target->thread.regs->trap,
-+		     sizeof(struct user_pt_regs) - offsetof(struct pt_regs, trap));
-+#else
-  	membuf_write(&to, &target->thread.regs->orig_gpr3,
-  			sizeof(struct user_pt_regs) -
-  			offsetof(struct pt_regs, orig_gpr3));
-+#endif
-  	return membuf_zero(&to, ELF_NGREG * sizeof(unsigned long) -
-  				 sizeof(struct user_pt_regs));
-  }
----
-Christophe
+-- 
+Thanks,
+~Nick Desaulniers
