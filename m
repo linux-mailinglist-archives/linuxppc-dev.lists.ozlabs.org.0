@@ -1,44 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034692B9C87
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 22:09:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFEFF2B9CC3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 22:12:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CcXPY64XpzDqsR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 08:09:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CcXST1ds4zDqpK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 08:12:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bootlin.com (client-ip=217.70.183.198;
- helo=relay6-d.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=bootlin.com
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
- [217.70.183.198])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CcXLx1wGVzDqCb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 08:07:28 +1100 (AEDT)
-X-Originating-IP: 91.224.148.103
-Received: from localhost.localdomain (unknown [91.224.148.103])
- (Authenticated sender: miquel.raynal@bootlin.com)
- by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 38C10C0006;
- Thu, 19 Nov 2020 21:07:17 +0000 (UTC)
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH v3 23/23] mtd: devices: powernv_flash: Add function names
- to headers and fix 'dev'
-Date: Thu, 19 Nov 2020 22:07:16 +0100
-Message-Id: <20201119210716.25046-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20201109182206.3037326-24-lee.jones@linaro.org>
-References: 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CcXMB0M8dzDqYY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 08:07:47 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CcXM14zGlz9v4nj;
+ Thu, 19 Nov 2020 22:07:41 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id F-4BTdxGLIpJ; Thu, 19 Nov 2020 22:07:41 +0100 (CET)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CcXM13sgdz9v4nh;
+ Thu, 19 Nov 2020 22:07:41 +0100 (CET)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id 5D1733AF; Thu, 19 Nov 2020 22:10:33 +0100 (CET)
+Received: from 192.168.4.90 ([192.168.4.90]) by messagerie.c-s.fr (Horde
+ Framework) with HTTP; Thu, 19 Nov 2020 22:10:33 +0100
+Date: Thu, 19 Nov 2020 22:10:33 +0100
+Message-ID: <20201119221033.Horde.be-msjDTeIW4XeXARjUu7g1@messagerie.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Oleg Nesterov <oleg@redhat.com>
+Subject: Re: [PATCH v3 2/2] powerpc/ptrace: Hard wire PT_SOFTE value to 1 in
+ gpr_get() too
+References: <20201119160154.GA5183@redhat.com>
+ <20201119160247.GB5188@redhat.com>
+In-Reply-To: <20201119160247.GB5188@redhat.com>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: 30e98cd953d769136c6d859e0b7c4fc780296503
-Content-Transfer-Encoding: 8bit
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,32 +57,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>, Richard Weinberger <richard@nod.at>,
- Miquel Raynal <miquel.raynal@bootlin.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linux-mtd@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Al Viro <viro@zeniv.linux.org.uk>, "Aneesh
+ Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Jan Kratochvil <jan.kratochvil@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2020-11-09 at 18:22:06 UTC, Lee Jones wrote:
-> Fixes the following W=1 kernel build warning(s):
-> 
->  drivers/mtd/devices/powernv_flash.c:129: warning: Cannot understand  * @mtd: the device
->  drivers/mtd/devices/powernv_flash.c:145: warning: Cannot understand  * @mtd: the device
->  drivers/mtd/devices/powernv_flash.c:161: warning: Cannot understand  * @mtd: the device
->  drivers/mtd/devices/powernv_flash.c:184: warning: Function parameter or member 'dev' not described in 'powernv_flash_set_driver_info'
-> 
-> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-> Cc: Richard Weinberger <richard@nod.at>
-> Cc: Vignesh Raghavendra <vigneshr@ti.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: linux-mtd@lists.infradead.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next, thanks.
+Quoting Oleg Nesterov <oleg@redhat.com>:
 
-Miquel
+> The commit a8a4b03ab95f ("powerpc: Hard wire PT_SOFTE value to 1 in
+> ptrace & signals") changed ptrace_get_reg(PT_SOFTE) to report 0x1,
+> but PTRACE_GETREGS still copies pt_regs->softe as is.
+>
+> This is not consistent and this breaks the user-regs-peekpoke test
+> from https://sourceware.org/systemtap/wiki/utrace/tests/
+>
+> Reported-by: Jan Kratochvil <jan.kratochvil@redhat.com>
+> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+> ---
+>  arch/powerpc/kernel/ptrace/ptrace-tm.c   | 8 +++++++-
+>  arch/powerpc/kernel/ptrace/ptrace-view.c | 8 +++++++-
+>  2 files changed, 14 insertions(+), 2 deletions(-)
+>
+
+I think the following should work, and not require the first patch  
+(compile tested only).
+
+diff --git a/arch/powerpc/kernel/ptrace/ptrace-tm.c  
+b/arch/powerpc/kernel/ptrace/ptrace-tm.c
+index 54f2d076206f..f779b3bc0279 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace-tm.c
++++ b/arch/powerpc/kernel/ptrace/ptrace-tm.c
+@@ -104,8 +104,14 @@ int tm_cgpr_get(struct task_struct *target, const  
+struct user_regset *regset,
+  		     offsetof(struct pt_regs, msr) + sizeof(long));
+
+  	membuf_write(&to, &target->thread.ckpt_regs.orig_gpr3,
+-			sizeof(struct user_pt_regs) -
+-			offsetof(struct pt_regs, orig_gpr3));
++		     offsetof(struct pt_regs, softe) - offsetof(struct pt_regs,  
+orig_gpr3));
++	membuf_store(&to, 1UL);
++
++	BUILD_BUG_ON(offsetof(struct pt_regs, trap) !=
++		     offsetof(struct pt_regs, softe) + sizeof(long));
++
++	membuf_write(&to, &target->thread.ckpt_regs.trap,
++		     sizeof(struct user_pt_regs) - offsetof(struct pt_regs, trap));
+  	return membuf_zero(&to, ELF_NGREG * sizeof(unsigned long) -
+  			sizeof(struct user_pt_regs));
+  }
+diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c  
+b/arch/powerpc/kernel/ptrace/ptrace-view.c
+index 7e6478e7ed07..736bfbf33890 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace-view.c
++++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
+@@ -234,9 +234,21 @@ static int gpr_get(struct task_struct *target,  
+const struct user_regset *regset,
+  	BUILD_BUG_ON(offsetof(struct pt_regs, orig_gpr3) !=
+  		     offsetof(struct pt_regs, msr) + sizeof(long));
+
++#ifdef CONFIG_PPC64
++	membuf_write(&to, &target->thread.regs->orig_gpr3,
++		     offsetof(struct pt_regs, softe) - offsetof(struct pt_regs,  
+orig_gpr3));
++	membuf_store(&to, 1UL);
++
++	BUILD_BUG_ON(offsetof(struct pt_regs, trap) !=
++		     offsetof(struct pt_regs, softe) + sizeof(long));
++
++	membuf_write(&to, &target->thread.regs->trap,
++		     sizeof(struct user_pt_regs) - offsetof(struct pt_regs, trap));
++#else
+  	membuf_write(&to, &target->thread.regs->orig_gpr3,
+  			sizeof(struct user_pt_regs) -
+  			offsetof(struct pt_regs, orig_gpr3));
++#endif
+  	return membuf_zero(&to, ELF_NGREG * sizeof(unsigned long) -
+  				 sizeof(struct user_pt_regs));
+  }
+---
+Christophe
