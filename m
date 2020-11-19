@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6272B898F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 02:26:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6912B899C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 02:30:29 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cc28Z2W4MzDqfC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 12:26:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cc2Df5wnNzDqnG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 12:30:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,59 +17,59 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=UMkNaldv; dkim-atps=neutral
+ header.s=pp1 header.b=K6QWCNSY; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cc1rT2lzjzDqTl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 12:12:56 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cc1rW6bfHzDqc7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 12:12:59 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AJ13H76116913; Wed, 18 Nov 2020 20:12:54 -0500
+ 0AJ11eaX055163; Wed, 18 Nov 2020 20:12:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references; s=pp1;
- bh=rdP0WlYRU05xnFX/GLwQ4bsCBVUl72sVKd2KQRLz3qc=;
- b=UMkNaldvJKrVkb9WHa9hgwyb6juM6p1/9+L2UbyS8PszplgG1exZ162PICB81xW1QZi/
- crj55vSB9o/6Oxo2At/pS5M8u2SH0R77JnGwSFFcTXxnVBWGpPERq031SqVt0QCvhL0z
- WR8eebgfE8wOduo47oNj7/A+W+2JLXKAOo0FhEt4XAj6tzbcJo1vpLVKD7j8SWIq7F7/
- aWLC3uBf/fsDs6qI4erGV4pRq3LKWNoxEB/V+rJnurm/tq3c/MhHxfSNOZll2EAbrau7
- AmGdo8P8NzuGJU4goopsjFNJk1z6A/cwr9ubKZfJxfjYk9RiyQ9z4eFliGlJ0IZ3CoMr IQ== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34w4rha2fv-1
+ bh=RW8PkHI+RwRdpzY+4wfvgan4oS1YZyc8w8Zc30iQF2s=;
+ b=K6QWCNSYsRWvyKxEDngkXuAVXsOpUFvP1RV24caJ5BFCc8uGWzUwywwuuTfm/hWWYpx8
+ ThH1C4kAfy2CUuT+RnMxdc2Ha8yPm6BqVksgdhLcOVbH28cfk/GmBiDjZnBCgyKPqi4z
+ UZ93dWJuHbrqNBxHaUEty080Gml0lLURJkVUk9/MoKeF1hOFdpsF6GL+oS4P6KPYRyVw
+ gAL4Yg965g/KkygwBZUP4AwkAy1kC9DNyjgomgf2x3c2MQ7OVaaIZzUekjiDQS2YMqIv
+ JE2QxgKcuXWTf3zMspE7cbJusUcm7QLLAWrwHwLGeBVFFoAlerbD1RVgy0ZpDVDkK3+Y sA== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 34w8pc2717-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 18 Nov 2020 20:12:54 -0500
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AJ1CmJT025938;
- Thu, 19 Nov 2020 01:12:53 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma01dal.us.ibm.com with ESMTP id 34uttrqyuy-1
+ Wed, 18 Nov 2020 20:12:57 -0500
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AJ17SoF004834;
+ Thu, 19 Nov 2020 01:12:56 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma03dal.us.ibm.com with ESMTP id 34w262x80v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 Nov 2020 01:12:53 +0000
+ Thu, 19 Nov 2020 01:12:56 +0000
 Received: from b03ledav003.gho.boulder.ibm.com
  (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AJ1CgaR41681158
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AJ1CngB7864978
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 Nov 2020 01:12:42 GMT
+ Thu, 19 Nov 2020 01:12:49 GMT
 Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0F0886A04D;
- Thu, 19 Nov 2020 01:12:51 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 201C06A057;
+ Thu, 19 Nov 2020 01:12:55 +0000 (GMT)
 Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4BA976A04F;
- Thu, 19 Nov 2020 01:12:49 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5CFA36A04F;
+ Thu, 19 Nov 2020 01:12:53 +0000 (GMT)
 Received: from oc7186267434.ibm.com (unknown [9.65.199.179])
  by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 19 Nov 2020 01:12:49 +0000 (GMT)
+ Thu, 19 Nov 2020 01:12:53 +0000 (GMT)
 From: Thomas Falcon <tlfalcon@linux.ibm.com>
 To: kuba@kernel.org
-Subject: [PATCH net-next v2 6/9] ibmvnic: Ensure that device queue memory is
- cache-line aligned
-Date: Wed, 18 Nov 2020 19:12:22 -0600
-Message-Id: <1605748345-32062-7-git-send-email-tlfalcon@linux.ibm.com>
+Subject: [PATCH net-next v2 8/9] ibmvnic: Use netdev_alloc_skb instead of
+ alloc_skb to replenish RX buffers
+Date: Wed, 18 Nov 2020 19:12:24 -0600
+Message-Id: <1605748345-32062-9-git-send-email-tlfalcon@linux.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1605748345-32062-1-git-send-email-tlfalcon@linux.ibm.com>
 References: <1605748345-32062-1-git-send-email-tlfalcon@linux.ibm.com>
@@ -78,11 +78,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
  definitions=2020-11-18_10:2020-11-17,
  2020-11-18 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=3 clxscore=1015
- mlxscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=999 impostorscore=0
- phishscore=0 spamscore=0 malwarescore=0 adultscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011190003
+ mlxscore=0 adultscore=0
+ priorityscore=1501 phishscore=0 clxscore=1015 lowpriorityscore=0
+ spamscore=0 suspectscore=1 bulkscore=0 impostorscore=0 mlxlogscore=961
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011190000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,102 +104,27 @@ Sender: "Linuxppc-dev"
 
 From: "Dwip N. Banerjee" <dnbanerg@us.ibm.com>
 
-PCI bus slowdowns were observed on IBM VNIC devices as a result
-of partial cache line writes and non-cache aligned full cache line writes.
-Ensure that packet data buffers are cache-line aligned to avoid these
-slowdowns.
+Take advantage of the additional optimizations in netdev_alloc_skb when
+allocating socket buffers to be used for packet reception.
 
 Signed-off-by: Dwip N. Banerjee <dnbanerg@us.ibm.com>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c |  9 ++++++---
- drivers/net/ethernet/ibm/ibmvnic.h | 10 +++++-----
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index e9b0cb6dfd9d..85df91c9861b 100644
+index 596546f0614d..96df6d8fa277 100644
 --- a/drivers/net/ethernet/ibm/ibmvnic.c
 +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -498,7 +498,7 @@ static int reset_rx_pools(struct ibmvnic_adapter *adapter)
- 
- 		if (rx_pool->buff_size != buff_size) {
- 			free_long_term_buff(adapter, &rx_pool->long_term_buff);
--			rx_pool->buff_size = buff_size;
-+			rx_pool->buff_size = ALIGN(buff_size, L1_CACHE_BYTES);
- 			rc = alloc_long_term_buff(adapter,
- 						  &rx_pool->long_term_buff,
- 						  rx_pool->size *
-@@ -592,7 +592,7 @@ static int init_rx_pools(struct net_device *netdev)
- 
- 		rx_pool->size = adapter->req_rx_add_entries_per_subcrq;
- 		rx_pool->index = i;
--		rx_pool->buff_size = buff_size;
-+		rx_pool->buff_size = ALIGN(buff_size, L1_CACHE_BYTES);
- 		rx_pool->active = 1;
- 
- 		rx_pool->free_map = kcalloc(rx_pool->size, sizeof(int),
-@@ -745,6 +745,7 @@ static int init_tx_pools(struct net_device *netdev)
- {
- 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
- 	int tx_subcrqs;
-+	u64 buff_size;
- 	int i, rc;
- 
- 	tx_subcrqs = adapter->num_active_tx_scrqs;
-@@ -761,9 +762,11 @@ static int init_tx_pools(struct net_device *netdev)
- 	adapter->num_active_tx_pools = tx_subcrqs;
- 
- 	for (i = 0; i < tx_subcrqs; i++) {
-+		buff_size = adapter->req_mtu + VLAN_HLEN;
-+		buff_size = ALIGN(buff_size, L1_CACHE_BYTES);
- 		rc = init_one_tx_pool(netdev, &adapter->tx_pool[i],
- 				      adapter->req_tx_entries_per_subcrq,
--				      adapter->req_mtu + VLAN_HLEN);
-+				      buff_size);
- 		if (rc) {
- 			release_tx_pools(adapter);
- 			return rc;
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
-index 16d892c3db0f..9911d926dd7f 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.h
-+++ b/drivers/net/ethernet/ibm/ibmvnic.h
-@@ -883,7 +883,7 @@ struct ibmvnic_sub_crq_queue {
- 	atomic_t used;
- 	char name[32];
- 	u64 handle;
--};
-+} ____cacheline_aligned;
- 
- struct ibmvnic_long_term_buff {
- 	unsigned char *buff;
-@@ -907,7 +907,7 @@ struct ibmvnic_tx_pool {
- 	struct ibmvnic_long_term_buff long_term_buff;
- 	int num_buffers;
- 	int buf_size;
--};
-+} ____cacheline_aligned;
- 
- struct ibmvnic_rx_buff {
- 	struct sk_buff *skb;
-@@ -928,7 +928,7 @@ struct ibmvnic_rx_pool {
- 	int next_alloc;
- 	int active;
- 	struct ibmvnic_long_term_buff long_term_buff;
--};
-+} ____cacheline_aligned;
- 
- struct ibmvnic_vpd {
- 	unsigned char *buff;
-@@ -1015,8 +1015,8 @@ struct ibmvnic_adapter {
- 	atomic_t running_cap_crqs;
- 	bool wait_capability;
- 
--	struct ibmvnic_sub_crq_queue **tx_scrq;
--	struct ibmvnic_sub_crq_queue **rx_scrq;
-+	struct ibmvnic_sub_crq_queue **tx_scrq ____cacheline_aligned;
-+	struct ibmvnic_sub_crq_queue **rx_scrq ____cacheline_aligned;
- 
- 	/* rx structs */
- 	struct napi_struct *napi;
+@@ -323,7 +323,7 @@ static void replenish_rx_pool(struct ibmvnic_adapter *adapter,
+ 	rx_scrq = adapter->rx_scrq[pool->index];
+ 	ind_bufp = &rx_scrq->ind_buf;
+ 	for (i = 0; i < count; ++i) {
+-		skb = alloc_skb(pool->buff_size, GFP_ATOMIC);
++		skb = netdev_alloc_skb(adapter->netdev, pool->buff_size);
+ 		if (!skb) {
+ 			dev_err(dev, "Couldn't replenish rx buff\n");
+ 			adapter->replenish_no_mem++;
 -- 
 2.26.2
 
