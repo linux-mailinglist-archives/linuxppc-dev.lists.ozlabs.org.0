@@ -2,68 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3446A2B8B3E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 07:06:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F7D2B8BD0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 07:49:20 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cc8MV74pMzDqd9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 17:06:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cc9JY0nRmzDqkR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Nov 2020 17:49:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::744;
- helo=mail-qk1-x744.google.com; envelope-from=shengjiu.wang@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=GeHvjHAa; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cc8Kk4YhwzDqcH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 17:05:14 +1100 (AEDT)
-Received: by mail-qk1-x744.google.com with SMTP id a13so4399549qkl.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Nov 2020 22:05:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=afgDn2umda6QgnA0T4nNfO0qOaQP4kyxzthFa3SdSFE=;
- b=GeHvjHAaXVWHe47UtcIRS4vrSBEdINyrcJ8wDFKIB70hQKrcBT4vdCSHWLHGPdHnDK
- /OLAYZm7nD/ldSC0YfZGtTGbgrMUxOHGNh5nCPHxT7A205g/KwJuag6SPrs5thp5Dbga
- zYoZMz2LzUBnDq2HeyPzro/Q6J2HyeKjhej5QlHs9OJITgS1BEDefIpjE9ST9P9k8/oJ
- idI1krkePOsHfIKHMsSxkTnp/I9NDY53hW1RTe5/Ejd7wsKyM/kppCa86DIs1kgYL9j3
- GHohFLV4MITqLk56Iw8ogdu+emoHOO01cce4PfJw9UObyGt7q+WHlj9A65gXYxm7lSSx
- SRyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=afgDn2umda6QgnA0T4nNfO0qOaQP4kyxzthFa3SdSFE=;
- b=lHBvZHhZI9QUia52la6LONVUo4Wfb1BwFlhy10K9NLQqyObC/Gek/v3Cb4mRPXYK57
- BtNJO1TOosRukcPg4tJjmDoLdj0/iokpGm87iJsCRdqvCbLbuMSzUqW8aN2jwxRkawIl
- 37SXuXtB1fj8YcmGcIuhsGRr6c8WYbu0U6QfD+UsIIULj17PyQG8oj4+zFlFeRUgw63a
- MR6PxGmc8R4LQXlEuiBvwjS/GMTbelrS9N23vf2sD8PhDNfjCqT1e2GZerk8zHCsxiLP
- QwNU/bZCBidN8WXK0nUHGJC2nqYb4WtEd2PNnx3fx4+DcNVTMRsejTcMxD/gSg9pDWFG
- 5hnQ==
-X-Gm-Message-State: AOAM5327/qu/500U5ktQ4s3IKswW8anGeoCjWSQXDjnv66eXxh3+GiDR
- xaKVk/r3ox7QChHNMt5IOihUVRg15J82rHiz7RU=
-X-Google-Smtp-Source: ABdhPJw4ldiy0UOoaJKLIc/wQOv2QQLlKmJpH68m7Y/6USvRX1laUXgpAW85JgEWR6O1s71WFQ37KQdGxadYdcOaBdI=
-X-Received: by 2002:ae9:e317:: with SMTP id v23mr9438913qkf.152.1605765908487; 
- Wed, 18 Nov 2020 22:05:08 -0800 (PST)
-MIME-Version: 1.0
-References: <1605752956-17397-1-git-send-email-shengjiu.wang@nxp.com>
- <20201119050120.GA7124@Asurada-Nvidia>
- <CAA+D8AOuaeZCnvY0h2stzkiMnNCe7zvK_D4M2irT7y7NC+iZFg@mail.gmail.com>
- <20201119055340.GA1666@Asurada-Nvidia>
-In-Reply-To: <20201119055340.GA1666@Asurada-Nvidia>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 19 Nov 2020 14:04:57 +0800
-Message-ID: <CAA+D8AOkios28X0n0cC4RbVnkkQ5U3fWaBNrp1AvN0rr_wbb-g@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Correct the clock source for mclk0
-To: Nicolin Chen <nicoleotsuka@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cc9Gd1sQQzDqgL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Nov 2020 17:47:35 +1100 (AEDT)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 4D3481A197F;
+ Thu, 19 Nov 2020 07:47:30 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 1531E1A1962;
+ Thu, 19 Nov 2020 07:47:26 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id BBEB34024F;
+ Thu, 19 Nov 2020 07:47:20 +0100 (CET)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org
+Subject: [PATCH v2] ASoC: fsl_sai: Correct the clock source for mclk0
+Date: Thu, 19 Nov 2020 14:40:38 +0800
+Message-Id: <1605768038-4582-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,65 +51,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- linux-kernel <linux-kernel@vger.kernel.org>, Mark Brown <broonie@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 19, 2020 at 1:54 PM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
->
-> On Thu, Nov 19, 2020 at 01:28:32PM +0800, Shengjiu Wang wrote:
-> > On Thu, Nov 19, 2020 at 1:02 PM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
-> > >
-> > > On Thu, Nov 19, 2020 at 10:29:16AM +0800, Shengjiu Wang wrote:
-> > > > On VF610, mclk0 = bus_clk;
-> > > > On i.MX6SX/6UL/6ULL/7D, mclk0 = mclk1;
-> > > > On i.MX7ULP, mclk0 = bus_clk;
-> > > > On i.MX8QM/8QXP, mclk0 = bus_clk;
-> > > > On i.MX8MQ/8MN/8MM/8MP, mclk0 = bus_clk;
-> > > >
-> > > > So add variable mclk0_mclk1_match in fsl_sai_soc_data To
-> > >
-> > > Not in favor of "mclk0_mclk1_match" as it doesn't sound explicit
-> > > to me. Instead, "mclk0_is_bus_clk" or "mclk0_is_mclk1" might be
-> > > better. Or in case that you foresee some other implementation:
-> > >
-> > > enum {
-> > >         MCLK0_IS_BUS_CLK,
-> > >         MCLK0_IS_MCLK1,
-> > > };
-> > >
-> > > static const struct fsl_sai_soc_data fsl_sai_vf610_data = {
-> > > +       .mclk0_alias = MCLK0_IS_BUS_CLK,
-> > > };
-> >
-> > No problem.
-> >
-> > But I just find this patch doesn't consider the mqs case.
-> > MCLK0 can't be used for mqs, it needs MCLK1, even
-> > the MCLK0 is same as MCLK1,  MCLK1 need to be
-> > selected for mqs case.
-> >
-> > Is there a decent way for this case?
->
-> Is there any use case that we have to use MCLK0 instead of MCLK1
-> on SoCs where MCLK0=MCLK1? If no, how about skip MCLK0 at all in
-> the for-loop at fsl_sai_set_bclk?
->
->         /*
->          * There is no point in polling MCLK0 if it is identical to MCLK1.
->          * And given that MQS use case has to use MCLK1 though two clocks
->          * are the same, we simply skip MCLK0 and start to find from MCLK1.
->          */
->         id = mclk0_is_mclk1 ? 1 : 0;
->
->         for (; id < FSL_SAI_MCLK_MAX; id++) {
+On VF610, mclk0 = bus_clk;
+On i.MX6SX/6UL/6ULL/7D, mclk0 = mclk1;
+On i.MX7ULP, mclk0 = bus_clk;
+On i.MX8QM/8QXP, mclk0 = bus_clk;
+On i.MX8MQ/8MN/8MM/8MP, mclk0 = bus_clk;
 
-Ok, thanks, will update the patch.
+So add variable mclk0_is_mclk1 in fsl_sai_soc_data to
+distinguish these platforms.
 
-best regards
-wang shengjiu
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+changes in v2:
+- rename mclk0_mclk1_match to mclk0_is_mclk1
+- skip MCLK0 when it is same as MCLK1 on master clock scanning
+
+ sound/soc/fsl/fsl_sai.c | 20 ++++++++++++++++++--
+ sound/soc/fsl/fsl_sai.h |  1 +
+ 2 files changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 3e5c1eaccd5e..f3d3d20d35d7 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -359,7 +359,14 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
+ 	if (sai->is_slave_mode)
+ 		return 0;
+ 
+-	for (id = 0; id < FSL_SAI_MCLK_MAX; id++) {
++	/*
++	 * There is no point in polling MCLK0 if it is identical to MCLK1.
++	 * And given that MQS use case has to use MCLK1 though two clocks
++	 * are the same, we simply skip MCLK0 and start to find from MCLK1.
++	 */
++	id = sai->soc_data->mclk0_is_mclk1 ? 1 : 0;
++
++	for (; id < FSL_SAI_MCLK_MAX; id++) {
+ 		clk_rate = clk_get_rate(sai->mclk_clk[id]);
+ 		if (!clk_rate)
+ 			continue;
+@@ -1040,7 +1047,6 @@ static int fsl_sai_probe(struct platform_device *pdev)
+ 		sai->bus_clk = NULL;
+ 	}
+ 
+-	sai->mclk_clk[0] = sai->bus_clk;
+ 	for (i = 1; i < FSL_SAI_MCLK_MAX; i++) {
+ 		sprintf(tmp, "mclk%d", i);
+ 		sai->mclk_clk[i] = devm_clk_get(&pdev->dev, tmp);
+@@ -1051,6 +1057,11 @@ static int fsl_sai_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	if (sai->soc_data->mclk0_is_mclk1)
++		sai->mclk_clk[0] = sai->mclk_clk[1];
++	else
++		sai->mclk_clk[0] = sai->bus_clk;
++
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+ 		return irq;
+@@ -1165,6 +1176,7 @@ static const struct fsl_sai_soc_data fsl_sai_vf610_data = {
+ 	.use_edma = false,
+ 	.fifo_depth = 32,
+ 	.reg_offset = 0,
++	.mclk0_is_mclk1 = false,
+ };
+ 
+ static const struct fsl_sai_soc_data fsl_sai_imx6sx_data = {
+@@ -1172,6 +1184,7 @@ static const struct fsl_sai_soc_data fsl_sai_imx6sx_data = {
+ 	.use_edma = false,
+ 	.fifo_depth = 32,
+ 	.reg_offset = 0,
++	.mclk0_is_mclk1 = true,
+ };
+ 
+ static const struct fsl_sai_soc_data fsl_sai_imx7ulp_data = {
+@@ -1179,6 +1192,7 @@ static const struct fsl_sai_soc_data fsl_sai_imx7ulp_data = {
+ 	.use_edma = false,
+ 	.fifo_depth = 16,
+ 	.reg_offset = 8,
++	.mclk0_is_mclk1 = false,
+ };
+ 
+ static const struct fsl_sai_soc_data fsl_sai_imx8mq_data = {
+@@ -1186,6 +1200,7 @@ static const struct fsl_sai_soc_data fsl_sai_imx8mq_data = {
+ 	.use_edma = false,
+ 	.fifo_depth = 128,
+ 	.reg_offset = 8,
++	.mclk0_is_mclk1 = false,
+ };
+ 
+ static const struct fsl_sai_soc_data fsl_sai_imx8qm_data = {
+@@ -1193,6 +1208,7 @@ static const struct fsl_sai_soc_data fsl_sai_imx8qm_data = {
+ 	.use_edma = true,
+ 	.fifo_depth = 64,
+ 	.reg_offset = 0,
++	.mclk0_is_mclk1 = false,
+ };
+ 
+ static const struct of_device_id fsl_sai_ids[] = {
+diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
+index 4bbcd0dbe8f1..ff2619f1b214 100644
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -219,6 +219,7 @@
+ struct fsl_sai_soc_data {
+ 	bool use_imx_pcm;
+ 	bool use_edma;
++	bool mclk0_is_mclk1;
+ 	unsigned int fifo_depth;
+ 	unsigned int reg_offset;
+ };
+-- 
+2.27.0
+
