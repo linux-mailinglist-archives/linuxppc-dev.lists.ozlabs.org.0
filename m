@@ -1,60 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533DE2BA8E9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 12:23:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57ED32BA948
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 12:36:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CcvL95hDrzDqlJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 22:23:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ccvdd18VPzDqtv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 22:36:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.66; helo=mail-lf1-f66.google.com;
+ envelope-from=namhyung@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-lf1-f66.google.com (mail-lf1-f66.google.com
+ [209.85.167.66])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CcvDx37FdzDqwt
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 22:18:34 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CcvDd5WN8z9txwf;
- Fri, 20 Nov 2020 12:18:25 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id e_u3vwZY56mA; Fri, 20 Nov 2020 12:18:25 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CcvDd4N8cz9txwc;
- Fri, 20 Nov 2020 12:18:25 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B624E8B764;
- Fri, 20 Nov 2020 12:18:26 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Sbkl6wo4JttE; Fri, 20 Nov 2020 12:18:26 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A9C88B820;
- Fri, 20 Nov 2020 12:18:25 +0100 (CET)
-Subject: Re: [PATCH 0/5] perf/mm: Fix PERF_SAMPLE_*_PAGE_SIZE
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Peter Zijlstra <peterz@infradead.org>, kan.liang@linux.intel.com,
- mingo@kernel.org, acme@kernel.org, mark.rutland@arm.com,
- alexander.shishkin@linux.intel.com, jolsa@redhat.com, eranian@google.com
-References: <20201113111901.743573013@infradead.org>
- <16ad8cab-08e2-27a7-6803-baadc6b8721b@csgroup.eu>
-Message-ID: <2a32b00b-2214-3283-58e0-9cb0ff4bd728@csgroup.eu>
-Date: Fri, 20 Nov 2020 12:18:22 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.3
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CcvXy4BXLzDqhN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 22:32:31 +1100 (AEDT)
+Received: by mail-lf1-f66.google.com with SMTP id r9so12972220lfn.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 03:32:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=/6hJpjNZpPh/Wclumi9gysfMabj8yLmD4uYAC2Efgs0=;
+ b=q8LnSDnwlEavtzNlsbVvQxTmajKgWvfllw6u/2Z1b0niDNvfd5DxktbDmj0nGqiE4K
+ wCwMAd/7azjeb5tWSdOXFMFl+un18VV0Qi3HvnChzHSRZrcARHTSfIzEf1oLGk+R2n93
+ yaKfhMgghOMrwbspgxNujy0t4twSgp/uBxoQXAxMlMkfdZr5w0BkQQzBAibKwpR7v0YK
+ 3ZeIiSuigp999s/IrQYT9bEpoS1jzmaft7YIBnTlk+WHuwWho1eWB8alz1kEkwEs6FPl
+ 5UISLF740Wx1jtcNN6XRD32Oj5cxd3JYRKqVL31WzU9XDrHhNUnRipWoC3pKX5LNua/9
+ ZOvA==
+X-Gm-Message-State: AOAM531QI72Hzcq7qdVSCcGnauhcVRnYrw4/GkRwqtNd9V9m365tgFOD
+ GCasSM+qr+4va4azFWH5qGrgMsrZPpYK2jThi+vvVRgz
+X-Google-Smtp-Source: ABdhPJxyq0tm5kIxw6XDxpUG8lE8cBfUdPQSbVOR/q0ApXZeGHTt8KFBDqjPwUIz9Dxvssjb+384HWiffH/QurZNhys=
+X-Received: by 2002:a05:6512:3587:: with SMTP id
+ m7mr8604886lfr.149.1605871457832; 
+ Fri, 20 Nov 2020 03:24:17 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <16ad8cab-08e2-27a7-6803-baadc6b8721b@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20201106212935.28943-1-kan.liang@linux.intel.com>
+ <20201109095235.GC2594@hirez.programming.kicks-ass.net>
+ <20201109110405.GN2651@hirez.programming.kicks-ass.net>
+ <0a1db246-c34a-22a3-160c-3e0c0a38119d@linux.intel.com>
+ <20201111162509.GW2611@hirez.programming.kicks-ass.net>
+ <2dc483f6-7b29-c42b-13a4-4c549d720aa2@linux.intel.com>
+ <CAM9d7cjwFp9JBqs1Ga9n1ojbez9chZLvmOgFv1EE4KDhAa9ryA@mail.gmail.com>
+In-Reply-To: <CAM9d7cjwFp9JBqs1Ga9n1ojbez9chZLvmOgFv1EE4KDhAa9ryA@mail.gmail.com>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Fri, 20 Nov 2020 20:24:06 +0900
+Message-ID: <CAM9d7chbQE=zkqYsNFMv+uWEYWdXcGD=fNYT_R2ondwR5zVvaQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3] perf/core: Flush PMU internal buffers for per-CPU
+ events
+To: "Liang, Kan" <kan.liang@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,60 +67,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, ak@linux.intel.com, catalin.marinas@arm.com,
- linuxppc-dev@lists.ozlabs.org, willy@infradead.org,
- linux-kernel@vger.kernel.org, dave.hansen@intel.com, npiggin@gmail.com,
- aneesh.kumar@linux.ibm.com, sparclinux@vger.kernel.org, will@kernel.org,
- davem@davemloft.net, kirill.shutemov@linux.intel.com
+Cc: Ian Rogers <irogers@google.com>, Andi Kleen <ak@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Stephane Eranian <eranian@google.com>, Paul Mackerras <paulus@samba.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@redhat.com>,
+ Ingo Molnar <mingo@kernel.org>, Gabriel Marin <gmx@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Peter,
+Hi Peter and Kan,
 
-Le 13/11/2020 à 14:44, Christophe Leroy a écrit :
-> Hi
-> 
-> Le 13/11/2020 à 12:19, Peter Zijlstra a écrit :
->> Hi,
->>
->> These patches provide generic infrastructure to determine TLB page size from
->> page table entries alone. Perf will use this (for either data or code address)
->> to aid in profiling TLB issues.
->>
->> While most architectures only have page table aligned large pages, some
->> (notably ARM64, Sparc64 and Power) provide non page table aligned large pages
->> and need to provide their own implementation of these functions.
->>
->> I've provided (completely untested) implementations for ARM64 and Sparc64, but
->> failed to penetrate the _many_ Power MMUs. I'm hoping Nick or Aneesh can help
->> me out there.
->>
-> 
-> I can help with powerpc 8xx. It is a 32 bits powerpc. The PGD has 1024 entries, that means each 
-> entry maps 4M.
-> 
-> Page sizes are 4k, 16k, 512k and 8M.
-> 
-> For the 8M pages we use hugepd with a single entry. The two related PGD entries point to the same 
-> hugepd.
-> 
-> For the other sizes, they are in standard page tables. 16k pages appear 4 times in the page table. 
-> 512k entries appear 128 times in the page table.
-> 
-> When the PGD entry has _PMD_PAGE_8M bits, the PMD entry points to a hugepd with holds the single 8M 
-> entry.
-> 
-> In the PTE, we have two bits: _PAGE_SPS and _PAGE_HUGE
-> 
-> _PAGE_HUGE means it is a 512k page
-> _PAGE_SPS means it is not a 4k page
-> 
-> The kernel can by build either with 4k pages as standard page size, or 16k pages. It doesn't change 
-> the page table layout though.
-> 
-> Hope this is clear. Now I don't really know to wire that up to your series.
+(Adding PPC folks)
 
-Does my description make sense ? Is there anything I can help with ?
+On Tue, Nov 17, 2020 at 2:01 PM Namhyung Kim <namhyung@kernel.org> wrote:
+>
+> Hello,
+>
+> On Thu, Nov 12, 2020 at 4:54 AM Liang, Kan <kan.liang@linux.intel.com> wrote:
+> >
+> >
+> >
+> > On 11/11/2020 11:25 AM, Peter Zijlstra wrote:
+> > > On Mon, Nov 09, 2020 at 09:49:31AM -0500, Liang, Kan wrote:
+> > >
+> > >> - When the large PEBS was introduced (9c964efa4330), the sched_task() should
+> > >> be invoked to flush the PEBS buffer in each context switch. However, The
+> > >> perf_sched_events in account_event() is not updated accordingly. The
+> > >> perf_event_task_sched_* never be invoked for a pure per-CPU context. Only
+> > >> per-task event works.
+> > >>     At that time, the perf_pmu_sched_task() is outside of
+> > >> perf_event_context_sched_in/out. It means that perf has to double
+> > >> perf_pmu_disable() for per-task event.
+> > >
+> > >> - The patch 1 tries to fix broken per-CPU events. The CPU context cannot be
+> > >> retrieved from the task->perf_event_ctxp. So it has to be tracked in the
+> > >> sched_cb_list. Yes, the code is very similar to the original codes, but it
+> > >> is actually the new code for per-CPU events. The optimization for per-task
+> > >> events is still kept.
+> > >>    For the case, which has both a CPU context and a task context, yes, the
+> > >> __perf_pmu_sched_task() in this patch is not invoked. Because the
+> > >> sched_task() only need to be invoked once in a context switch. The
+> > >> sched_task() will be eventually invoked in the task context.
+> > >
+> > > The thing is; your first two patches rely on PERF_ATTACH_SCHED_CB and
+> > > only set that for large pebs. Are you sure the other users (Intel LBR
+> > > and PowerPC BHRB) don't need it?
+> >
+> > I didn't set it for LBR, because the perf_sched_events is always enabled
+> > for LBR. But, yes, we should explicitly set the PERF_ATTACH_SCHED_CB
+> > for LBR.
+> >
+> >         if (has_branch_stack(event))
+> >                 inc = true;
+> >
+> > >
+> > > If they indeed do not require the pmu::sched_task() callback for CPU
+> > > events, then I still think the whole perf_sched_cb_{inc,dec}() interface
+> >
+> > No, LBR requires the pmu::sched_task() callback for CPU events.
+> >
+> > Now, The LBR registers have to be reset in sched in even for CPU events.
+> >
+> > To fix the shorter LBR callstack issue for CPU events, we also need to
+> > save/restore LBRs in pmu::sched_task().
+> > https://lore.kernel.org/lkml/1578495789-95006-4-git-send-email-kan.liang@linux.intel.com/
+> >
+> > > is confusing at best.
+> > >
+> > > Can't we do something like this instead?
+> > >
+> > I think the below patch may have two issues.
+> > - PERF_ATTACH_SCHED_CB is required for LBR (maybe PowerPC BHRB as well) now.
+> > - We may disable the large PEBS later if not all PEBS events support
+> > large PEBS. The PMU need a way to notify the generic code to decrease
+> > the nr_sched_task.
+>
+> Any updates on this?  I've reviewed and tested Kan's patches
+> and they all look good.
+>
+> Maybe we can talk to PPC folks to confirm the BHRB case?
 
-Christophe
+Can we move this forward?  I saw patch 3/3 also adds PERF_ATTACH_SCHED_CB
+for PowerPC too.  But it'd be nice if ppc folks can confirm the change.
+
+Thanks,
+Namhyung
