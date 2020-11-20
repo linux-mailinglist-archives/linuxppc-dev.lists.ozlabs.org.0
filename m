@@ -1,65 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DDA2BA70F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 11:08:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 533DE2BA8E9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 12:23:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CcshG6Sb1zDqyG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 21:08:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CcvL95hDrzDqlJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Nov 2020 22:23:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=N4pumsTr; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ccsdy4lzXzDqww
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 21:06:41 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=kpcLQ0wmEah9mjg/fNkxJpWXmr9w5FwmiLVGgKluZmo=; b=N4pumsTrG/j67qvEkLdcj5JQc/
- OU87HFBrpe61aUZGHs76hJhEYEANnsiTfmQUABwk4sa08VSW/ttt+XCXfoEOONFb23feKls49hX1V
- +gLmbnZKug33SFQQHhA0zWLYNNgm5Mi5evGUink12uw5dLSU0oWzOsjGO/hC5LdWmPVSpSgyvUww2
- QMeQQn+ROAPKimxaXDgI3BBuQeXPt1St9/+O01Ob8YwzdOwQ9e3TPG/eNuxjR349fhhRQyflrpCwP
- AhV3yR325zzGW0LQDoF6n2ohhEI0Edx+66oCd8+BFMIJng3toOXtnBEjxJKjr4JTQOQ3hZ/wV582+
- BtH+YrhQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kg3JE-0003MC-J8; Fri, 20 Nov 2020 10:06:28 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E0227305C16;
- Fri, 20 Nov 2020 11:06:25 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id D03C9200E6202; Fri, 20 Nov 2020 11:06:25 +0100 (CET)
-Date: Fri, 20 Nov 2020 11:06:25 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 1/2] kernel/cpu: add arch override for
- clear_tasks_mm_cpumask() mm handling
-Message-ID: <20201120100625.GB3021@hirez.programming.kicks-ass.net>
-References: <20201120025757.325930-1-npiggin@gmail.com>
- <20201120025757.325930-2-npiggin@gmail.com>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CcvDx37FdzDqwt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Nov 2020 22:18:34 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CcvDd5WN8z9txwf;
+ Fri, 20 Nov 2020 12:18:25 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id e_u3vwZY56mA; Fri, 20 Nov 2020 12:18:25 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CcvDd4N8cz9txwc;
+ Fri, 20 Nov 2020 12:18:25 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B624E8B764;
+ Fri, 20 Nov 2020 12:18:26 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Sbkl6wo4JttE; Fri, 20 Nov 2020 12:18:26 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A9C88B820;
+ Fri, 20 Nov 2020 12:18:25 +0100 (CET)
+Subject: Re: [PATCH 0/5] perf/mm: Fix PERF_SAMPLE_*_PAGE_SIZE
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Peter Zijlstra <peterz@infradead.org>, kan.liang@linux.intel.com,
+ mingo@kernel.org, acme@kernel.org, mark.rutland@arm.com,
+ alexander.shishkin@linux.intel.com, jolsa@redhat.com, eranian@google.com
+References: <20201113111901.743573013@infradead.org>
+ <16ad8cab-08e2-27a7-6803-baadc6b8721b@csgroup.eu>
+Message-ID: <2a32b00b-2214-3283-58e0-9cb0ff4bd728@csgroup.eu>
+Date: Fri, 20 Nov 2020 12:18:22 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201120025757.325930-2-npiggin@gmail.com>
+In-Reply-To: <16ad8cab-08e2-27a7-6803-baadc6b8721b@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,54 +66,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Anton Vorontsov <anton.vorontsov@linaro.org>
+Cc: linux-arch@vger.kernel.org, ak@linux.intel.com, catalin.marinas@arm.com,
+ linuxppc-dev@lists.ozlabs.org, willy@infradead.org,
+ linux-kernel@vger.kernel.org, dave.hansen@intel.com, npiggin@gmail.com,
+ aneesh.kumar@linux.ibm.com, sparclinux@vger.kernel.org, will@kernel.org,
+ davem@davemloft.net, kirill.shutemov@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 20, 2020 at 12:57:56PM +1000, Nicholas Piggin wrote:
-> powerpc keeps a counter in the mm which counts bits set in mm_cpumask as
-> well as other things. This means it can't use generic code to clear bits
-> out of the mask and doesn't adjust the arch specific counter.
-> 
-> Add an arch override allowing powerpc to use clear_tasks_mm_cpumask().
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Hi Peter,
 
-Seems reasonable enough..
-
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-
-> ---
->  kernel/cpu.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+Le 13/11/2020 à 14:44, Christophe Leroy a écrit :
+> Hi
 > 
-> diff --git a/kernel/cpu.c b/kernel/cpu.c
-> index 6ff2578ecf17..2b8d7a5db383 100644
-> --- a/kernel/cpu.c
-> +++ b/kernel/cpu.c
-> @@ -815,6 +815,10 @@ void __init cpuhp_threads_init(void)
->  }
->  
->  #ifdef CONFIG_HOTPLUG_CPU
-> +#ifndef arch_clear_mm_cpumask_cpu
-> +#define arch_clear_mm_cpumask_cpu(cpu, mm) cpumask_clear_cpu(cpu, mm_cpumask(mm))
-> +#endif
-> +
->  /**
->   * clear_tasks_mm_cpumask - Safely clear tasks' mm_cpumask for a CPU
->   * @cpu: a CPU id
-> @@ -850,7 +854,7 @@ void clear_tasks_mm_cpumask(int cpu)
->  		t = find_lock_task_mm(p);
->  		if (!t)
->  			continue;
-> -		cpumask_clear_cpu(cpu, mm_cpumask(t->mm));
-> +		arch_clear_mm_cpumask_cpu(cpu, t->mm);
->  		task_unlock(t);
->  	}
->  	rcu_read_unlock();
-> -- 
-> 2.23.0
+> Le 13/11/2020 à 12:19, Peter Zijlstra a écrit :
+>> Hi,
+>>
+>> These patches provide generic infrastructure to determine TLB page size from
+>> page table entries alone. Perf will use this (for either data or code address)
+>> to aid in profiling TLB issues.
+>>
+>> While most architectures only have page table aligned large pages, some
+>> (notably ARM64, Sparc64 and Power) provide non page table aligned large pages
+>> and need to provide their own implementation of these functions.
+>>
+>> I've provided (completely untested) implementations for ARM64 and Sparc64, but
+>> failed to penetrate the _many_ Power MMUs. I'm hoping Nick or Aneesh can help
+>> me out there.
+>>
 > 
+> I can help with powerpc 8xx. It is a 32 bits powerpc. The PGD has 1024 entries, that means each 
+> entry maps 4M.
+> 
+> Page sizes are 4k, 16k, 512k and 8M.
+> 
+> For the 8M pages we use hugepd with a single entry. The two related PGD entries point to the same 
+> hugepd.
+> 
+> For the other sizes, they are in standard page tables. 16k pages appear 4 times in the page table. 
+> 512k entries appear 128 times in the page table.
+> 
+> When the PGD entry has _PMD_PAGE_8M bits, the PMD entry points to a hugepd with holds the single 8M 
+> entry.
+> 
+> In the PTE, we have two bits: _PAGE_SPS and _PAGE_HUGE
+> 
+> _PAGE_HUGE means it is a 512k page
+> _PAGE_SPS means it is not a 4k page
+> 
+> The kernel can by build either with 4k pages as standard page size, or 16k pages. It doesn't change 
+> the page table layout though.
+> 
+> Hope this is clear. Now I don't really know to wire that up to your series.
+
+Does my description make sense ? Is there anything I can help with ?
+
+Christophe
