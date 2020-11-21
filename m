@@ -2,62 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F4B2BBF08
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Nov 2020 13:48:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE782BBF25
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Nov 2020 14:06:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CdYBY0GwszDqjd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Nov 2020 23:48:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CdYb755ThzDqx9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Nov 2020 00:06:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.67; helo=mail-ot1-f67.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.195;
+ helo=mail-oi1-f195.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com
- [209.85.210.67])
+Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com
+ [209.85.167.195])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CdY5B56FfzDqdZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Nov 2020 23:44:14 +1100 (AEDT)
-Received: by mail-ot1-f67.google.com with SMTP id n11so11464094ota.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Nov 2020 04:44:14 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CdYWg6pXRzDqk7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Nov 2020 00:03:43 +1100 (AEDT)
+Received: by mail-oi1-f195.google.com with SMTP id c80so13990595oib.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Nov 2020 05:03:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=O6Nr/Rieym0i/OHuod4YgdUg5NHz7ccPxXo1aK1Oha0=;
- b=CB6WbBTZNo7AgHuV05/3LU8McOj9o0+mt9+JndYCm4goVUCBXO9fR1y9XbmZgBVOJ0
- Gc7vw3nDRgKEtLDOhR8BBdFy69aUVyrZ+BHBqKaLae+d8LdX/D08KH+f6p8DkXYVBfRq
- u2sRAA6jreZJcnWFu61qum7L+tODCfQ9jDnI8jaNGVrr5+7NmmAXZSHPQuY1I57T3M1/
- r/qhl1TIuGlQ4wUkkZyzWv9rKJSavFbf2VUpnYy1ECY1QMULEZNr9tLIII+s5hHz0sRs
- kq7f9QtfyLnA47m3YdbJylLF6wvfpVlB3G91vT3uU0vBi5PBqp0HLmksaAvWjL/9G4+G
- lEyw==
-X-Gm-Message-State: AOAM533gjSEgMpSJ6gaB3QiBZaG9UlOqQHkDn+ZvMQXxD+zZYKkkzvcm
- xOZa42kaFEXAkO9M1mvd7A==
-X-Google-Smtp-Source: ABdhPJw3HoleXj4Ds9tiz5eVa//gqnZHEYkUUG/e1jSOlz7u3ljD+0RipYCaATEwmrx6h4HXBMJXYg==
-X-Received: by 2002:a05:6830:1283:: with SMTP id
- z3mr18198570otp.323.1605962650796; 
- Sat, 21 Nov 2020 04:44:10 -0800 (PST)
+ bh=3fSrNN5cdMc3n/QeXiEijlArkZhDgKdlCFlvtJINQ3E=;
+ b=pYlbc2oeQ2ChQtlIshG8Hh6eEvjtz2dwYOX5XuNECYDn6c5/4Re/GFoWvbdxj1F7/z
+ z+aFilpvv6/0r2jHunNmLeKdBff6qyw+tnNiYyyJHxmpAfhYA7nzEm2xIi5R+rLm4Cnu
+ BhiU7CaFjH2rFg1LTSx2eR20v75ox+iTRIKyLL8WT7MRJM9U7g7A81VrqYYZ1GD+xOKS
+ 1mDhDXLr1IhJQ02T5oHAerpw659sQOSG1TkNwgeqYQLIz/elSkhErGP4J4Vhd0Dfgz8L
+ nUsr0Ln+uSBZytr1Ecb0pFbLQ2MfHJ4njJxbod5fxZYpAtlni7MCHQudVfQLfyFf45V2
+ a3Ag==
+X-Gm-Message-State: AOAM530teMrRDXC56ytEcw5VRBnOkGUZDiIarcOPTn5LxgezhpqLS11z
+ a9nFjFwDSiJOKSDS2saPtw==
+X-Google-Smtp-Source: ABdhPJwrgTUmv+wZP0NYn3HS02TUgoEFFBPuTQ9ADhX3rCAytd46HakLApZiuMex/f6mOhMPsbm1zA==
+X-Received: by 2002:aca:ab93:: with SMTP id u141mr8753181oie.19.1605963820361; 
+ Sat, 21 Nov 2020 05:03:40 -0800 (PST)
 Received: from xps15 ([2607:fb90:5feb:6270:cdf7:680e:59f2:6ccd])
- by smtp.gmail.com with ESMTPSA id t5sm3116800oth.16.2020.11.21.04.44.05
+ by smtp.gmail.com with ESMTPSA id l1sm2995678otj.17.2020.11.21.05.03.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 21 Nov 2020 04:44:10 -0800 (PST)
-Received: (nullmailer pid 2067061 invoked by uid 1000);
- Sat, 21 Nov 2020 12:44:03 -0000
-Date: Sat, 21 Nov 2020 06:44:03 -0600
+ Sat, 21 Nov 2020 05:03:39 -0800 (PST)
+Received: (nullmailer pid 2093033 invoked by uid 1000);
+ Sat, 21 Nov 2020 13:03:36 -0000
+Date: Sat, 21 Nov 2020 07:03:36 -0600
 From: Rob Herring <robh@kernel.org>
-To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Subject: Re: [PATCH v4 02/18] dt-bindings: usb: Convert generic USB
- properties to DT schemas
-Message-ID: <20201121124403.GA2066237@robh.at.kernel.org>
-References: <20201111090853.14112-1-Sergey.Semin@baikalelectronics.ru>
- <20201111090853.14112-3-Sergey.Semin@baikalelectronics.ru>
+To: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Subject: Re: [PATCH v3] dt-bindings: misc: convert fsl,qoriq-mc from txt to
+ YAML
+Message-ID: <20201121130336.GA2086043@robh.at.kernel.org>
+References: <20201112133254.7291-1-laurentiu.tudor@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201111090853.14112-3-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20201112133254.7291-1-laurentiu.tudor@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,61 +68,281 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Neil Armstrong <narmstrong@baylibre.com>, linux-mips@vger.kernel.org,
- Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
- Kevin Hilman <khilman@baylibre.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- Andy Gross <agross@kernel.org>, Chunfeng Yun <chunfeng.yun@mediatek.com>,
- linux-snps-arc@lists.infradead.org, devicetree@vger.kernel.org,
- Mathias Nyman <mathias.nyman@intel.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
- Rob Herring <robh+dt@kernel.org>, Bjorn Andersson <bjorn.andersson@linaro.org>,
- linux-arm-kernel@lists.infradead.org, Roger Quadros <rogerq@ti.com>,
- Felipe Balbi <balbi@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- Serge Semin <fancer.lancer@gmail.com>, Manu Gautam <mgautam@codeaurora.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, corbet@lwn.net, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, leoyang.li@nxp.com,
+ ioana.ciornei@nxp.com, Ionut-robert Aron <ionut-robert.aron@nxp.com>,
+ kuba@kernel.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 11 Nov 2020 12:08:37 +0300, Serge Semin wrote:
-> The generic USB properties have been described in the legacy bindings
-> text file: Documentation/devicetree/bindings/usb/generic.txt . Let's
-> convert its content into the generic USB, USB HCD and USB DRD DT
-> schemas. So the Generic USB schema will be applicable to all USB
-> controllers, USB HCD - for the generic USB Host controllers and the USB
-> DRD - for the USB Dual-role controllers.
+On Thu, Nov 12, 2020 at 03:32:54PM +0200, Laurentiu Tudor wrote:
+> From: Ionut-robert Aron <ionut-robert.aron@nxp.com>
 > 
-> Note the USB DRD schema is supposed to work in conjunction with
-> the USB peripheral/gadget and USB host controllers DT schemas.
+> Convert fsl,qoriq-mc to YAML in order to automate the verification
+> process of dts files. In addition, update MAINTAINERS accordingly
+> and, while at it, add some missing files.
 > 
-> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-> 
+> Signed-off-by: Ionut-robert Aron <ionut-robert.aron@nxp.com>
+> [laurentiu.tudor@nxp.com: update MINTAINERS, updates & fixes in schema]
+> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 > ---
+> Changes in v3:
+>  - dropped duplicated "fsl,qoriq-mc-dpmac" schema and replaced with
+>    reference to it
+>  - fixed a dt_binding_check warning
+> Changes in v2:
+>  - fixed errors reported by yamllint
+>  - dropped multiple unnecessary quotes
+>  - used schema instead of text in description
+>  - added constraints on dpmac reg property
 > 
-> Changelog v2:
-> - Discard '|' in all the new properties, since we don't need to preserve
->   the text formatting.
-> - Convert abbreviated form of the "maximum-speed" enum restriction into
->   the multi-lined version of the list.
-> - Drop quotes from around the string constants.
-> 
-> Changelog v4:
-> - Redistribute the properties between generic ones, USB HCD-specific and
->   USB DRD-specific.
-> - Discard the Rob'es Reviewed-by tag. Please review the patch one more time.
-> ---
->  .../devicetree/bindings/usb/generic.txt       | 57 --------------
->  .../devicetree/bindings/usb/usb-drd.yaml      | 77 +++++++++++++++++++
->  .../devicetree/bindings/usb/usb-hcd.yaml      |  5 ++
->  .../devicetree/bindings/usb/usb.yaml          | 22 ++++++
->  4 files changed, 104 insertions(+), 57 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/usb/generic.txt
->  create mode 100644 Documentation/devicetree/bindings/usb/usb-drd.yaml
-> 
+>  .../devicetree/bindings/misc/fsl,qoriq-mc.txt | 196 ------------------
+>  .../bindings/misc/fsl,qoriq-mc.yaml           | 187 +++++++++++++++++
+>  .../ethernet/freescale/dpaa2/overview.rst     |   5 +-
+>  MAINTAINERS                                   |   4 +-
+>  4 files changed, 194 insertions(+), 198 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+>  create mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+
+> diff --git a/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
+> new file mode 100644
+> index 000000000000..1dda2ad29717
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
+> @@ -0,0 +1,187 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2020 NXP
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/misc/fsl,qoriq-mc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +maintainers:
+> +  - Laurentiu Tudor <laurentiu.tudor@nxp.com>
+> +
+> +title: Freescale Management Complex
+> +
+> +description: |
+> +  The Freescale Management Complex (fsl-mc) is a hardware resource
+> +  manager that manages specialized hardware objects used in
+> +  network-oriented packet processing applications. After the fsl-mc
+> +  block is enabled, pools of hardware resources are available, such as
+> +  queues, buffer pools, I/O interfaces. These resources are building
+> +  blocks that can be used to create functional hardware objects/devices
+> +  such as network interfaces, crypto accelerator instances, L2 switches,
+> +  etc.
+> +
+> +  For an overview of the DPAA2 architecture and fsl-mc bus see:
+> +  Documentation/networking/device_drivers/freescale/dpaa2/overview.rst
+> +
+> +  As described in the above overview, all DPAA2 objects in a DPRC share the
+> +  same hardware "isolation context" and a 10-bit value called an ICID
+> +  (isolation context id) is expressed by the hardware to identify
+> +  the requester.
+> +
+> +  The generic 'iommus' property is insufficient to describe the relationship
+> +  between ICIDs and IOMMUs, so an iommu-map property is used to define
+> +  the set of possible ICIDs under a root DPRC and how they map to
+> +  an IOMMU.
+> +
+> +  For generic IOMMU bindings, see:
+> +  Documentation/devicetree/bindings/iommu/iommu.txt.
+> +
+> +  For arm-smmu binding, see:
+> +  Documentation/devicetree/bindings/iommu/arm,smmu.yaml.
+> +
+> +  MC firmware binary images can be found here:
+> +  https://github.com/NXP/qoriq-mc-binary
+> +
+> +properties:
+> +  compatible:
+> +    const: fsl,qoriq-mc
+> +    description:
+> +      A Freescale Management Complex compatible with this binding must have
+> +      Block Revision Registers BRR1 and BRR2 at offset 0x0BF8 and 0x0BFC in
+> +      the MC control register region.
+> +
+> +  reg:
+> +    minItems: 1
+> +    items:
+> +      - description: the command portal for this machine
+> +      - description:
+> +          MC control registers. This region may not be present in some
+> +          scenarios, such as in the device tree presented to a virtual
+> +          machine.
+> +
+> +  ranges:
+> +    description: |
+> +      A standard property. Defines the mapping between the child MC address
+> +      space and the parent system address space.
+> +
+> +      The MC address space is defined by 3 components:
+> +                <region type> <offset hi> <offset lo>
+> +
+> +      Valid values for region type are:
+> +                  0x0 - MC portals
+> +                  0x1 - QBMAN portals
+> +
+> +  '#address-cells':
+> +    const: 3
+> +
+> +  '#size-cells':
+> +    const: 1
+> +
+> +  dpmacs:
+> +    type: object
+> +    description:
+> +      The fsl-mc node may optionally have dpmac sub-nodes that describe the
+> +      relationship between the Ethernet MACs which belong to the MC and the
+> +      Ethernet PHYs on the system board.
+> +
+> +    properties:
+> +      '#address-cells':
+> +        const: 1
+> +
+> +      '#size-cells':
+> +        const: 0
+> +
+> +    patternProperties:
+> +      "^(dpmac@[0-9a-f]+)|(ethernet@[0-9a-f]+)$":
+> +        type: object
+> +
+> +        description:
+> +          see Documentation/devicetree/bindings/net/fsl,qoriq-mc-dpmac.yaml
+
+Use $ref here.
+
+> +
+> +  iommu-map:
+> +    description: |
+> +      Maps an ICID to an IOMMU and associated iommu-specifier data.
+> +
+> +      The property is an arbitrary number of tuples of
+> +      (icid-base, iommu, iommu-base, length).
+> +
+> +      Any ICID i in the interval [icid-base, icid-base + length) is
+> +      associated with the listed IOMMU, with the iommu-specifier
+> +      (i - icid-base + iommu-base).
+> +
+> +  msi-map:
+> +    description: |
+> +      Maps an ICID to a GIC ITS and associated msi-specifier data.
+> +
+> +      The property is an arbitrary number of tuples of
+> +      (icid-base, gic-its, msi-base, length).
+> +
+> +      Any ICID in the interval [icid-base, icid-base + length) is
+> +      associated with the listed GIC ITS, with the msi-specifier
+> +      (i - icid-base + msi-base).
+> +
+> +  msi-parent:
+> +    deprecated: true
+> +    description:
+> +      Points to the MSI controller node handling message interrupts for the MC.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - iommu-map
+> +  - msi-map
+> +  - ranges
+> +  - '#address-cells'
+> +  - '#size-cells'
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    soc {
+> +      #address-cells = <2>;
+> +      #size-cells = <2>;
+> +
+> +      smmu: iommu@5000000 {
+> +        compatible = "arm,mmu-500";
+> +        #global-interrupts = <1>;
+> +        #iommu-cells = <1>;
+> +        reg = <0 0x5000000 0 0x800000>;
+> +        stream-match-mask = <0x7c00>;
+> +        interrupts = <0 13 4>,
+> +                     <0 146 4>, <0 147 4>,
+> +                     <0 148 4>, <0 149 4>,
+> +                     <0 150 4>, <0 151 4>,
+> +                     <0 152 4>, <0 153 4>;
+> +      };
+> +
+> +      fsl_mc: fsl-mc@80c000000 {
+> +        compatible = "fsl,qoriq-mc";
+> +        reg = <0x00000008 0x0c000000 0 0x40>,    /* MC portal base */
+> +        <0x00000000 0x08340000 0 0x40000>; /* MC control reg */
+> +        /* define map for ICIDs 23-64 */
+> +        iommu-map = <23 &smmu 23 41>;
+> +        /* define msi map for ICIDs 23-64 */
+> +        msi-map = <23 &its 23 41>;
+> +        #address-cells = <3>;
+> +        #size-cells = <1>;
+> +
+> +        /*
+> +        * Region type 0x0 - MC portals
+> +        * Region type 0x1 - QBMAN portals
+> +        */
+> +        ranges = <0x0 0x0 0x0 0x8 0x0c000000 0x4000000
+> +                  0x1 0x0 0x0 0x8 0x18000000 0x8000000>;
+> +
+> +        dpmacs {
+> +          #address-cells = <1>;
+> +          #size-cells = <0>;
+> +
+> +          ethernet@1 {
+> +            compatible = "fsl,qoriq-mc-dpmac";
+> +            reg = <1>;
+> +            phy-handle = <&mdio0_phy0>;
+> +          };
+> +        };
+> +      };
+> +    };
+> diff --git a/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst b/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
+> index d638b5a8aadd..b3261c5871cc 100644
+> --- a/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
+> +++ b/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
+> @@ -28,6 +28,9 @@ interfaces, an L2 switch, or accelerator instances.
+>  The MC provides memory-mapped I/O command interfaces (MC portals)
+>  which DPAA2 software drivers use to operate on DPAA2 objects.
+>  
+> +MC firmware binary images can be found here:
+> +https://github.com/NXP/qoriq-mc-binary
+> +
+>  The diagram below shows an overview of the DPAA2 resource management
+>  architecture::
+>  
+> @@ -338,7 +341,7 @@ Key functions include:
+>    a bind of the root DPRC to the DPRC driver
+>  
+>  The binding for the MC-bus device-tree node can be consulted at
+> -*Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt*.
+> +*Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml*.
+>  The sysfs bind/unbind interfaces for the MC-bus can be consulted at
+>  *Documentation/ABI/testing/sysfs-bus-fsl-mc*.
+>  
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b516bb34a8d5..e0ce6e2b663c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -14409,9 +14409,11 @@ M:	Stuart Yoder <stuyoder@gmail.com>
+>  M:	Laurentiu Tudor <laurentiu.tudor@nxp.com>
+>  L:	linux-kernel@vger.kernel.org
+>  S:	Maintained
+> -F:	Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+> +F:	Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
+> +F:	Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
+>  F:	Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
+>  F:	drivers/bus/fsl-mc/
+> +F:	include/linux/fsl/mc.h
+>  
+>  QT1010 MEDIA DRIVER
+>  M:	Antti Palosaari <crope@iki.fi>
+> -- 
+> 2.17.1
+> 
