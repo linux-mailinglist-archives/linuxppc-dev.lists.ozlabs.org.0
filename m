@@ -1,55 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604122BBE32
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Nov 2020 10:20:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31702BBEFB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Nov 2020 13:45:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CdSYw0TdtzDr0X
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Nov 2020 20:20:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CdY6h5fK3zDqwC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Nov 2020 23:45:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.161.68; helo=mail-oo1-f68.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-oo1-f68.google.com (mail-oo1-f68.google.com
- [209.85.161.68])
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.193;
+ helo=mail-oi1-f193.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com
+ [209.85.167.193])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CdSX150QXzDqxh
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Nov 2020 20:18:41 +1100 (AEDT)
-Received: by mail-oo1-f68.google.com with SMTP id z13so2798230ooa.5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Nov 2020 01:18:41 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CdY3N4xjmzDqdc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Nov 2020 23:42:39 +1100 (AEDT)
+Received: by mail-oi1-f193.google.com with SMTP id s18so12776988oih.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Nov 2020 04:42:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=WaMha0En6LkvNa0zqCPwgKvusypP+GNCRLE4znVs274=;
- b=ESW1PiFXFy3a1OcarvghvMNZzTg6Nzso6CVKEAOHXY+JhXU6XuwG921D0TvUCClJom
- EkQgQQhUexyodFkljamRWD9mIOPGQlCv7WhDE4XK41mQ/X4/XRmTpGoavTD/MLJtmJLr
- 5mgqH7tFX5BJa+UKYzv/PUdF2K+FGUXgNagwWZfvrjqM8yPiP/UnH2tA/fBrVfDNBLo2
- H/KPyG1cNkvKjPmPLMV2knWLKPSnR+f7fvbwxlnbk5QyvRnRGGq476KouWclDLFD8S7a
- k9apE9GTBrsZweAv13EK+2IPOo8LDcFyOzd7QOIqTtX1+EgSdwUHdD0JnCxpkr6sabH7
- Zz4Q==
-X-Gm-Message-State: AOAM531hPUAM7fxCEgdnLb8OwtBdHemNZpPJ85m1wVWkIbEzrc85Rtng
- sJAXciciZ3gjLXkCunJGwnT/GMfSdA3HnZFzZ8c=
-X-Google-Smtp-Source: ABdhPJyowNnoUrA3Mz/7yfMy3Z3o1JIdvy8nv3Lo7KpazvsKj/zkLv5vUmVX8M/ykA2X5Tbn+KzYCs8VU79DooXNsrw=
-X-Received: by 2002:a4a:d694:: with SMTP id i20mr16921417oot.40.1605950318178; 
- Sat, 21 Nov 2020 01:18:38 -0800 (PST)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=LXozwdRHE+FZ/b1kx40K82ndXVnop5+OHYheS/QS4jo=;
+ b=gvpdl+ZE4C2mtrca8heHtTBDUyDT0Pd1KlcTUDnmWEgPu8+6YXFi7dmvODLPO7yNUx
+ wUw/5XJmiJavlnWz2WJeYzzhEW2xPxXO8R0LHo6YbfHhn5X0Ly5THmglcE3B24tHoQBo
+ xvWRShwa09sdCe/Kqy+MB3dhpw7QW+EBsvvFY2rw2kKLgjZoy6vGZEibo3uFpArlW5YI
+ axqiQceQYWMVcZV52/EWjDCeo1NiNFdZTfQU2Ux92y47ljLVPTYBrdK2r1sitUC3JBOE
+ SMAGo1w+x6ewka8HDATaZSXiy3SD1qZzycCAgkX7+N2acF4I1TZVRx8EKh5P59MdiBue
+ XoUg==
+X-Gm-Message-State: AOAM530sogrMOeRlN7ivoq77Kj+oLZghyvrb9MeH1FZv+BI4NZQTdOL8
+ CLUECWByvpvCAR2kUDPY4Q==
+X-Google-Smtp-Source: ABdhPJyZmtH8yI4iwnUoY7nWj64qFOXfpNj0wrhnUYk0B6zYwkPCqh8WJqMVW1w4lXiO0MnHEnfvKg==
+X-Received: by 2002:a54:4394:: with SMTP id u20mr3639506oiv.70.1605962557518; 
+ Sat, 21 Nov 2020 04:42:37 -0800 (PST)
+Received: from xps15 ([2607:fb90:5feb:6270:cdf7:680e:59f2:6ccd])
+ by smtp.gmail.com with ESMTPSA id u4sm1581412ote.71.2020.11.21.04.42.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 21 Nov 2020 04:42:36 -0800 (PST)
+Received: (nullmailer pid 2064982 invoked by uid 1000);
+ Sat, 21 Nov 2020 12:42:28 -0000
+Date: Sat, 21 Nov 2020 06:42:28 -0600
+From: Rob Herring <robh@kernel.org>
+To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Subject: Re: [PATCH v4 10/18] dt-bindings: usb: Convert DWC USB3 bindings to
+ DT schema
+Message-ID: <20201121124228.GA2039998@robh.at.kernel.org>
+References: <20201111090853.14112-1-Sergey.Semin@baikalelectronics.ru>
+ <20201111090853.14112-11-Sergey.Semin@baikalelectronics.ru>
+ <20201111201423.GA1938179@bogus>
+ <20201112102946.ipcsiidty4ut4kap@mobilestation>
 MIME-Version: 1.0
-References: <b39102a332ae92c274fc8651acb4c52cfb9824a1.1605847196.git.fthain@telegraphics.com.au>
- <CAMuHMdUS4wmUUtAqgjGc=WVcRC4RJ9nJhVnne89YzOUvd=CCvw@mail.gmail.com>
- <alpine.LNX.2.23.453.2011210955390.6@nippy.intranet>
-In-Reply-To: <alpine.LNX.2.23.453.2011210955390.6@nippy.intranet>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Sat, 21 Nov 2020 10:18:26 +0100
-Message-ID: <CAMuHMdVRXxEU_R_Sdi7tSR7y7FoU+fFScsfUCVS+JbXU9BWt8A@mail.gmail.com>
-Subject: Re: [PATCH] m68k: Fix WARNING splat in pmac_zilog driver
-To: Finn Thain <fthain@telegraphics.com.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201112102946.ipcsiidty4ut4kap@mobilestation>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,160 +71,225 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable <stable@vger.kernel.org>, linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Paul Mackerras <paulus@samba.org>,
- "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+Cc: Neil Armstrong <narmstrong@baylibre.com>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+ Kevin Hilman <khilman@baylibre.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Andy Gross <agross@kernel.org>, Chunfeng Yun <chunfeng.yun@mediatek.com>,
+ linux-snps-arc@lists.infradead.org, devicetree@vger.kernel.org,
+ Mathias Nyman <mathias.nyman@intel.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+ linux-arm-kernel@lists.infradead.org, Roger Quadros <rogerq@ti.com>,
+ Felipe Balbi <balbi@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Joshua Thompson <funaho@jurai.org>
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
+ Serge Semin <fancer.lancer@gmail.com>, linux-kernel@vger.kernel.org,
+ Manu Gautam <mgautam@codeaurora.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Finn,
-
-On Sat, Nov 21, 2020 at 12:47 AM Finn Thain <fthain@telegraphics.com.au> wrote:
-> On Fri, 20 Nov 2020, Geert Uytterhoeven wrote:
-> > On Fri, Nov 20, 2020 at 5:51 AM Finn Thain <fthain@telegraphics.com.au> wrote:
-> > > Don't add platform resources that won't be used. This avoids a
-> > > recently-added warning from the driver core, that can show up on a
-> > > multi-platform kernel when !MACH_IS_MAC.
-> > >
-> > > ------------[ cut here ]------------
-> > > WARNING: CPU: 0 PID: 0 at drivers/base/platform.c:224 platform_get_irq_optional+0x8e/0xce
-> > > 0 is an invalid IRQ number
-> > > Modules linked in:
-> > > CPU: 0 PID: 0 Comm: swapper Not tainted 5.9.0-multi #1
-> > > Stack from 004b3f04:
-> > >         004b3f04 00462c2f 00462c2f 004b3f20 0002e128 004754db 004b6ad4 004b3f4c
-> > >         0002e19c 004754f7 000000e0 00285ba0 00000009 00000000 004b3f44 ffffffff
-> > >         004754db 004b3f64 004b3f74 00285ba0 004754f7 000000e0 00000009 004754db
-> > >         004fdf0c 005269e2 004fdf0c 00000000 004b3f88 00285cae 004b6964 00000000
-> > >         004fdf0c 004b3fac 0051cc68 004b6964 00000000 004b6964 00000200 00000000
-> > >         0051cc3e 0023c18a 004b3fc0 0051cd8a 004fdf0c 00000002 0052b43c 004b3fc8
-> > > Call Trace: [<0002e128>] __warn+0xa6/0xd6
-> > >  [<0002e19c>] warn_slowpath_fmt+0x44/0x76
-> > >  [<00285ba0>] platform_get_irq_optional+0x8e/0xce
-> > >  [<00285ba0>] platform_get_irq_optional+0x8e/0xce
-> > >  [<00285cae>] platform_get_irq+0x12/0x4c
-> > >  [<0051cc68>] pmz_init_port+0x2a/0xa6
-> > >  [<0051cc3e>] pmz_init_port+0x0/0xa6
-> > >  [<0023c18a>] strlen+0x0/0x22
-> > >  [<0051cd8a>] pmz_probe+0x34/0x88
-> > >  [<0051cde6>] pmz_console_init+0x8/0x28
-> > >  [<00511776>] console_init+0x1e/0x28
-> > >  [<0005a3bc>] printk+0x0/0x16
-> > >  [<0050a8a6>] start_kernel+0x368/0x4ce
-> > >  [<005094f8>] _sinittext+0x4f8/0xc48
-> > > random: get_random_bytes called from print_oops_end_marker+0x56/0x80 with crng_init=0
-> > > ---[ end trace 392d8e82eed68d6c ]---
-> > >
-> > > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> > > Cc: Paul Mackerras <paulus@samba.org>
-> > > Cc: Joshua Thompson <funaho@jurai.org>
-> > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > Cc: Jiri Slaby <jirislaby@kernel.org>
-> > > Cc: stable@vger.kernel.org # v5.8+
-> > > References: commit a85a6c86c25b ("driver core: platform: Clarify that IRQ 0 is invalid")
-> > > Reported-by: Laurent Vivier <laurent@vivier.eu>
-> > > Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
+On Thu, Nov 12, 2020 at 01:29:46PM +0300, Serge Semin wrote:
+> On Wed, Nov 11, 2020 at 02:14:23PM -0600, Rob Herring wrote:
+> > On Wed, Nov 11, 2020 at 12:08:45PM +0300, Serge Semin wrote:
+> > > DWC USB3 DT node is supposed to be compliant with the Generic xHCI
+> > > Controller schema, but with additional vendor-specific properties, the
+> > > controller-specific reference clocks and PHYs. So let's convert the
+> > > currently available legacy text-based DWC USB3 bindings to the DT schema
+> > > and make sure the DWC USB3 nodes are also validated against the
+> > > usb-xhci.yaml schema.
+> > > 
+> > > Note we have to discard the nodename restriction of being prefixed with
+> > > "dwc3@" string, since in accordance with the usb-hcd.yaml schema USB nodes
+> > > are supposed to be named as "^usb(@.*)".
+> > > 
+> > > Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+> > > 
 > > > ---
-> > > The global platform_device structs provide the equivalent of a direct
-> > > search of the OpenFirmware tree, for platforms that don't have OF.
-> > > The purpose of that search is discussed in the comments in pmac_zilog.c:
-> > >
-> > >          * First, we need to do a direct OF-based probe pass. We
-> > >          * do that because we want serial console up before the
-> > >          * macio stuffs calls us back
-> > >
-> > > The actual platform bus matching takes place later, with a module_initcall,
-> > > following the usual pattern.
-> >
-> > I think it would be good for this explanation to be part of the
-> > actual patch description above.
-> >
->
-> Thanks for your review.
->
-> I take that explanation as read because it was fundamental to the changes
-> I made to pmac_zilog.c back in 2009 with commit ec9cbe09899e ("pmac-zilog:
-> add platform driver").
+> > > 
+> > > Changelog v2:
+> > > - Discard '|' from the descriptions, since we don't need to preserve
+> > >   the text formatting in any of them.
+> > > - Drop quotes from around the string constants.
+> > > - Fix the "clock-names" prop description to be referring the enumerated
+> > >   clock-names instead of the ones from the Databook.
+> > > 
+> > > Changelog v3:
+> > > - Apply usb-xhci.yaml# schema only if the controller is supposed to work
+> > >   as either host or otg.
+> > > 
+> > > Changelog v4:
+> > > - Apply usb-drd.yaml schema first. If the controller is configured
+> > >   to work in a gadget mode only, then apply the usb.yaml schema too,
+> > >   otherwise apply the usb-xhci.yaml schema.
+> > > - Discard the Rob'es Reviewed-by tag. Please review the patch one more
+> > >   time.
+> > > ---
+> > >  .../devicetree/bindings/usb/dwc3.txt          | 125 --------
+> > >  .../devicetree/bindings/usb/snps,dwc3.yaml    | 303 ++++++++++++++++++
+> > >  2 files changed, 303 insertions(+), 125 deletions(-)
+> > >  delete mode 100644 Documentation/devicetree/bindings/usb/dwc3.txt
+> > >  create mode 100644 Documentation/devicetree/bindings/usb/snps,dwc3.yaml
 
-That's a long time ago ;-)
-I asked because to the casual reader, it's far from obvious why the platform
-device use-time is different from the platform device's resources use-time.
 
-> IMO, being that it isn't news, it doesn't belong in the changelog.
-> However, I agree that it needs to be documented. How about I add a comment
-> to pmac_zilog.c?
+> > > diff --git a/Documentation/devicetree/bindings/usb/snps,dwc3.yaml b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
+> > > new file mode 100644
+> > > index 000000000000..079617891da6
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
+> > > @@ -0,0 +1,303 @@
+> > > +# SPDX-License-Identifier: GPL-2.0
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Synopsys DesignWare USB3 Controller
+> > > +
+> > > +maintainers:
+> > > +  - Felipe Balbi <balbi@kernel.org>
+> > > +
+> > > +description:
+> > > +  This is usually a subnode to DWC3 glue to which it is connected, but can also
+> > > +  be presented as a standalone DT node with an optional vendor-specific
+> > > +  compatible string.
+> > > +
+> 
+> > > +allOf:
+> > > +  - $ref: usb-drd.yaml#
+> > > +  - if:
+> > > +      properties:
+> > > +        dr_mode:
+> > > +          const: peripheral
 
-Fine for me.
+Another thing, this evaluates to true if dr_mode is not present. You 
+need to add 'required'? If dr_mode is otg, then don't you need to apply 
+both usb.yaml and usb-xhci.yaml?
 
-> > > --- a/drivers/tty/serial/pmac_zilog.c
-> > > +++ b/drivers/tty/serial/pmac_zilog.c
-> > > @@ -1697,18 +1697,17 @@ extern struct platform_device scc_a_pdev, scc_b_pdev;
-> > >
-> > >  static int __init pmz_init_port(struct uart_pmac_port *uap)
-> > >  {
-> > > -       struct resource *r_ports;
-> > > -       int irq;
-> > > +       struct resource *r_ports, *r_irq;
-> > >
-> > >         r_ports = platform_get_resource(uap->pdev, IORESOURCE_MEM, 0);
-> > > -       irq = platform_get_irq(uap->pdev, 0);
-> > > -       if (!r_ports || irq <= 0)
-> > > +       r_irq = platform_get_resource(uap->pdev, IORESOURCE_IRQ, 0);
-> > > +       if (!r_ports || !r_irq)
-> > >                 return -ENODEV;
-> > >
-> > >         uap->port.mapbase  = r_ports->start;
-> > >         uap->port.membase  = (unsigned char __iomem *) r_ports->start;
-> > >         uap->port.iotype   = UPIO_MEM;
-> > > -       uap->port.irq      = irq;
-> > > +       uap->port.irq      = r_irq->start;
-> > >         uap->port.uartclk  = ZS_CLOCK;
-> > >         uap->port.fifosize = 1;
-> > >         uap->port.ops      = &pmz_pops;
-> >
-> > Given the resources are no longer present on !MAC, just doing
-> >
-> >             r_ports = platform_get_resource(uap->pdev, IORESOURCE_MEM, 0);
-> >     +       if (!r_ports)
-> >     +               return -ENODEV;
-> >             irq = platform_get_irq(uap->pdev, 0);
-> >
-> > should be sufficient?
->
-> I think your suggestion is shorter but not better. Commit a85a6c86c25b
-> (which introduced the WARNING) suggests that testing for irq == 0 is
-> undesirable. My patch resolves that.
->
-> As a bonus, by simply testing for the existence of both resources, I've
-> addressed the mistake I made when I originally added the slick
-> platform_get_irq() call instead of consistently using
-> platform_get_resource().
->
-> platform_get_irq() hides a bunch of architecture-specific logic that is
-> not appropriate here. The WARNING itself is a good example of that kind of
-> logic.
->
-> Do you agree? If so, I will add this explanation to the commit log.
+> > > +    then:
+> > > +      $ref: usb.yaml#
+> > 
+> > This part could be done in usb-drd.yaml?
+> 
+> Originally I was thinking about that, but then in order to minimize
+> the properties validation I've decided to split the properties in
+> accordance with the USB controllers functionality:
+> 
+>             +----- USB Gadget/Peripheral Controller. There is no
+>             |      specific schema for the gadgets since there is no
+>             |      common gadget properties (at least I failed to find
+>             |      ones). So the pure gadget controllers need to be
+>             |      validated just against usb.yaml schema.
+>             |
+> usb.yaml <--+-- usb-hcd.yaml - Generic USB Host Controller. The schema
+>                 ^              turns out to include the OHCI/UHCI/EHCI
+>                 |              properties, which AFAICS are also
+>                 |              applicable for the other host controllers.
+>                 |              So any USB host controller node needs to
+>                 |              be validated against this schema.
+>                 |
+>                 +- usb-xhci.yaml - Generic xHCI Host controller.
+> 
+> usb-drd.yaml -- USB Dual-Role/OTG Controllers. It describes the
+>                 DRD/OTG-specific properties and nothing else. So normally
+>                 it should be applied together with one of the
+>                 schemas described above.
+> 
+> So the use-cases of the suggested schemas is following:
+> 
+> 1) USB Controller is pure gadget? Then:
+>    + allOf:
+>    +  - $ref: usb.yaml#
+> 2) USB Controller is pure USB host (including OHCI/UHCI/EHCI)?
+>    + allOf:
+>    +   - $ref: usb-hcd.yaml#
+>    Note this prevents us from fixing all the currently available USB DT
+>    schemas, which already apply the usb-hcd.yaml schema.
+> 3) USB Controller is pure xHCI host controller? Then:
+>    + allOf:
+>    +   - $ref: usb-xhci.yaml#
+> 4) USB Controller is Dual-Role/OTG controller with USB 2.0 host? Then:
+>    + allOf:
+>    +   - $ref: usb-drd.yaml#
+>    +   - $ref: usb-hcd.yaml#
+> 5) USB Controller is Dual-Role/OTG controller with xHCI host? Then:
+>    + allOf:
+>    +   - $ref: usb-drd.yaml#
+>    +   - $ref: usb-xhci.yaml#
+> 6) USB Controller is Dual-Role/OTG controller which can only be a
+>    gadget? Then:
+>    + allOf:
+>    +   - $ref: usb-drd.yaml#
+>    +   - $ref: usb.yaml#
+> 
+> * Don't know really if controllers like in 6)-th really exist. Most
+> * likely they are still internally capable of dual-roling, but due to
+> * some conditions can be used as gadgets only.
+> 
+> It looks a bit complicated, but at least by having such design we'd minimize
+> the number of properties validation.
+> 
+> Alternatively we could implement a hierarchy like this (as you, Rob,
+> suggested in the comment above): 
+> 
+>             +-- USB Gadget/Peripheral Controller
+>             |
+>             +-- usb-drd.yaml - USB Dual-Role/OTG Controllers
+>             |   
+> usb.yaml <--+-- usb-dcd.yaml - Generic USB Host Controller
+>                 ^
+>                 |
+>                 +- usb-xhci.yaml - Generic xHCI Host controller
+> 
+> But, for instance, if we got to have an OTG controller with USB 2.0
+> host capability, the schema would have needed to be validated as
+> described in 4) in the list above. That would have caused the usb.yaml
+> schema validation twice.
+> 
+> Of course I could have missed or misunderstood something. So any
+> suggestion, any help with making things easier would be very
+> appreciated. I asked Greg what he was thinking in this matter in
+> the previous patchset thread, but he didn't respond.
+> 
+> > 
+> > > +    else:
+> > > +      $ref: usb-xhci.yaml#
+> > 
+> > I'd really prefer if all the schema can just be applied unconditionally. 
+> > Shouldn't someone (like a bootloader) be able to change dr_mode without 
+> > changing anything else to set the mode? That would imply all the 
+> > schemas can be applied.
+> 
+> Theoretically it's possible, but I don't really know whether it can be
+> practically met. Of course I fully agree with you and it's preferable to
+> simplify the schema by getting rid of the condition if it's possible.
+> 
+> My point of using the conditional schema here has been based
+> on the driver implementation. According to the driver code if OTG mode is
+> enabled by means of the dr_mode property, then the controller can work as
+> either host or gadget. If either host or gadget mode is enabled in
+> the dr_mode property, the mode updating won't be supported. So any
+> properties specific to the unsupported mode will be just ignored.
+> 
+> In addition to that DWC USB3 IP-core can be synthesized with different
+> DWC_USB3_MODE parameter value. The controller can be either device
+> (gadget), or host, or DRD, or HUB. In that case the dr_mode should be
+> set in accordance with that parameter value. It means that the
+> DWC USB3 controller will support the features in accordance with the
+> selected parameter.
+> 
+> Should we really bother with all of that? Could we just apply the
+> schema like: allOf: [$ref: usb-drd.yaml#, $ref: usb-hcd.yaml#] and
+> have the things much easier seeing the host-specific properties aren't
+> required anyway? That's the main question. I've decided to bother,
+> since it give us a better hardware description. If you think it's better
+> to keep things easier, I'll be ok with this. It won't be that
+> contradicting to the hardware capabilities after all.
 
-OK, your main motivation is to get rid of the zero-check.
-Leaving it could indeed trigger some janitorial changes by people who
-don't understand the code at all, so it's good to avoid that ;-)
+Okay, it's probably better to keep things like you have them given 
+there's so many combinations of USB controllers.
 
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Rob
