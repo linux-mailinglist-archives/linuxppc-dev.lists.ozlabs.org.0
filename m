@@ -1,93 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA242C03BB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Nov 2020 11:57:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B697A2C03C5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Nov 2020 12:02:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cfkcy2pRbzDqPy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Nov 2020 21:57:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CfkkG5n6MzDqQm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Nov 2020 22:01:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gPfFMTyW; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CfkbD6lqBzDqLP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Nov 2020 21:55:48 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0ANAWDBe072774; Mon, 23 Nov 2020 05:55:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=VsSdaqwqk86Q4mKhLRZTU0X0aJbk+rvyePfEdyVWfBY=;
- b=gPfFMTyWVfiyLeEJegWKG0pBxl0Ty4Tr+adg1HTQII+eebaTUSBf82vWm3Ago5g1LpVZ
- C0ukMiCzoSq+NoQ7Aq2ubL+JZjjxSjmIzUw0HQJot32BSI1YIfLTYo5H8wxTa6GiXF9z
- cW7DyNXESNoZgw0WFuMu4f1ehaPvkQYhniLY97wbrkZrOG2VXvQ0YFVf2AhiryamFIrK
- 1gB60bXWyG6KsSmRSPluA10r4fBDG47hDHqUvomamQXtmCFKRvhhELj23UzX7ctqTt4p
- VZRwCxCMAXkzRlqfXoE3q3NZ7VguJ1JBFAcyfcf/wmqRaKn8bJ/i7DDsoIRpkHkf5cHc ug== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34xyrvebxx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Nov 2020 05:55:42 -0500
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0ANArZZ6013262;
- Mon, 23 Nov 2020 10:55:40 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma02fra.de.ibm.com with ESMTP id 34xth82cek-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Nov 2020 10:55:40 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0ANAtcof6226464
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Nov 2020 10:55:38 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3560F4C046;
- Mon, 23 Nov 2020 10:55:38 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 64BFA4C040;
- Mon, 23 Nov 2020 10:55:37 +0000 (GMT)
-Received: from [9.85.106.218] (unknown [9.85.106.218])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 23 Nov 2020 10:55:37 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.17\))
-Subject: Re: [PATCH] powerpc/perf: Fix crash with 'is_sier_available' when pmu
- is not set
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-In-Reply-To: <1606124997-3358-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-Date: Mon, 23 Nov 2020 16:25:36 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0D88C7CE-370B-4570-BEDA-D20642847857@linux.vnet.ibm.com>
-References: <1606124997-3358-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-X-Mailer: Apple Mail (2.3445.104.17)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-23_02:2020-11-23,
- 2020-11-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0
- phishscore=0 adultscore=0 mlxlogscore=912 clxscore=1011 bulkscore=0
- lowpriorityscore=0 mlxscore=0 suspectscore=0 priorityscore=1501
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011230068
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CfkhQ28bbzDqLP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Nov 2020 22:00:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=dMgscjRQ; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CfkhP4B1Dz9sRR;
+ Mon, 23 Nov 2020 22:00:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1606129222;
+ bh=WHbv/n/zvKljNMxbSr7BFAIxV2SZS7coVExrPbNTHTA=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=dMgscjRQOsWUveZOjqAndgnfi/FBu263K0v2S0JAt2yM+3OsewrQSvKTxPm6WDSlT
+ VpgAaiBwjKdQ5S7ywhelFs0PPx8F9l+DyWPXyPqgrJa6+cMl717s1FxVsecdpNKH1U
+ N6J06GiUqNBJHNJnlsX+kdFkv/fCyszAisj0X/5qUmVzlIXXeU+IF7ezUkt9lLJC7b
+ hkYnnzhnkMc6kAbYon7FLfTa6OHa9W9z7zS8QrM20oFdiXHqZka4h6Fxwf3ifcMNZU
+ UBaBahCof7WZIEKVcTdGVT3KezC7NiuaoMOIzWSqpBQg7WIsN2d1K4kaZRG58lHArI
+ KGAPbPb3vL78w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Namhyung Kim <namhyung@kernel.org>, "Liang\,
+ Kan" <kan.liang@linux.intel.com>
+Subject: Re: [PATCH 1/3] perf/core: Flush PMU internal buffers for per-CPU
+ events
+In-Reply-To: <CAM9d7chbQE=zkqYsNFMv+uWEYWdXcGD=fNYT_R2ondwR5zVvaQ@mail.gmail.com>
+References: <20201106212935.28943-1-kan.liang@linux.intel.com>
+ <20201109095235.GC2594@hirez.programming.kicks-ass.net>
+ <20201109110405.GN2651@hirez.programming.kicks-ass.net>
+ <0a1db246-c34a-22a3-160c-3e0c0a38119d@linux.intel.com>
+ <20201111162509.GW2611@hirez.programming.kicks-ass.net>
+ <2dc483f6-7b29-c42b-13a4-4c549d720aa2@linux.intel.com>
+ <CAM9d7cjwFp9JBqs1Ga9n1ojbez9chZLvmOgFv1EE4KDhAa9ryA@mail.gmail.com>
+ <CAM9d7chbQE=zkqYsNFMv+uWEYWdXcGD=fNYT_R2ondwR5zVvaQ@mail.gmail.com>
+Date: Mon, 23 Nov 2020 22:00:17 +1100
+Message-ID: <87a6v81gou.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,28 +66,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Ian Rogers <irogers@google.com>, Andi Kleen <ak@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Stephane Eranian <eranian@google.com>, Paul Mackerras <paulus@samba.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@redhat.com>,
+ Ingo Molnar <mingo@kernel.org>, Gabriel Marin <gmx@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> When perf record session started with "-I" option, capture registers
-> via intr-regs, on each sample =E2=80=98is_sier_available()'i is called =
-to check
-> for the SIER ( Sample Instruction Event Register) availability in the
-> platform. This function in core-book3s access 'ppmu->flags'. If =
-platform
-> specific pmu driver is not registered, ppmu is set to null and =
-accessing
-> its members results in crash. Patch fixes this by returning false in
-> 'is_sier_available()' if 'ppmu' is not set.
->=20
-> Fixes: 333804dc3b7a ("powerpc/perf: Update perf_regs structure to =
-include SIER")
-> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Namhyung Kim <namhyung@kernel.org> writes:
+> Hi Peter and Kan,
+>
+> (Adding PPC folks)
+>
+> On Tue, Nov 17, 2020 at 2:01 PM Namhyung Kim <namhyung@kernel.org> wrote:
+>>
+>> Hello,
+>>
+>> On Thu, Nov 12, 2020 at 4:54 AM Liang, Kan <kan.liang@linux.intel.com> wrote:
+>> >
+>> >
+>> >
+>> > On 11/11/2020 11:25 AM, Peter Zijlstra wrote:
+>> > > On Mon, Nov 09, 2020 at 09:49:31AM -0500, Liang, Kan wrote:
+>> > >
+>> > >> - When the large PEBS was introduced (9c964efa4330), the sched_task() should
+>> > >> be invoked to flush the PEBS buffer in each context switch. However, The
+>> > >> perf_sched_events in account_event() is not updated accordingly. The
+>> > >> perf_event_task_sched_* never be invoked for a pure per-CPU context. Only
+>> > >> per-task event works.
+>> > >>     At that time, the perf_pmu_sched_task() is outside of
+>> > >> perf_event_context_sched_in/out. It means that perf has to double
+>> > >> perf_pmu_disable() for per-task event.
+>> > >
+>> > >> - The patch 1 tries to fix broken per-CPU events. The CPU context cannot be
+>> > >> retrieved from the task->perf_event_ctxp. So it has to be tracked in the
+>> > >> sched_cb_list. Yes, the code is very similar to the original codes, but it
+>> > >> is actually the new code for per-CPU events. The optimization for per-task
+>> > >> events is still kept.
+>> > >>    For the case, which has both a CPU context and a task context, yes, the
+>> > >> __perf_pmu_sched_task() in this patch is not invoked. Because the
+>> > >> sched_task() only need to be invoked once in a context switch. The
+>> > >> sched_task() will be eventually invoked in the task context.
+>> > >
+>> > > The thing is; your first two patches rely on PERF_ATTACH_SCHED_CB and
+>> > > only set that for large pebs. Are you sure the other users (Intel LBR
+>> > > and PowerPC BHRB) don't need it?
+>> >
+>> > I didn't set it for LBR, because the perf_sched_events is always enabled
+>> > for LBR. But, yes, we should explicitly set the PERF_ATTACH_SCHED_CB
+>> > for LBR.
+>> >
+>> >         if (has_branch_stack(event))
+>> >                 inc = true;
+>> >
+>> > >
+>> > > If they indeed do not require the pmu::sched_task() callback for CPU
+>> > > events, then I still think the whole perf_sched_cb_{inc,dec}() interface
+>> >
+>> > No, LBR requires the pmu::sched_task() callback for CPU events.
+>> >
+>> > Now, The LBR registers have to be reset in sched in even for CPU events.
+>> >
+>> > To fix the shorter LBR callstack issue for CPU events, we also need to
+>> > save/restore LBRs in pmu::sched_task().
+>> > https://lore.kernel.org/lkml/1578495789-95006-4-git-send-email-kan.liang@linux.intel.com/
+>> >
+>> > > is confusing at best.
+>> > >
+>> > > Can't we do something like this instead?
+>> > >
+>> > I think the below patch may have two issues.
+>> > - PERF_ATTACH_SCHED_CB is required for LBR (maybe PowerPC BHRB as well) now.
+>> > - We may disable the large PEBS later if not all PEBS events support
+>> > large PEBS. The PMU need a way to notify the generic code to decrease
+>> > the nr_sched_task.
+>>
+>> Any updates on this?  I've reviewed and tested Kan's patches
+>> and they all look good.
+>>
+>> Maybe we can talk to PPC folks to confirm the BHRB case?
+>
+> Can we move this forward?  I saw patch 3/3 also adds PERF_ATTACH_SCHED_CB
+> for PowerPC too.  But it'd be nice if ppc folks can confirm the change.
 
-Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Sorry I've read the whole thread, but I'm still not entirely sure I
+understand the question.
 
-Thanks
--Sachin=
+cheers
