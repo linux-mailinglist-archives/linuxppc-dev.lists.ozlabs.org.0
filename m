@@ -2,80 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8052C12DA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Nov 2020 19:04:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 801422C14A3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Nov 2020 20:45:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cfw5935zDzDqSs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 05:03:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CfyKv5VGWzDqQq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 06:45:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=63.128.21.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=oleg@redhat.com;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::641;
+ helo=mail-ej1-x641.google.com; envelope-from=morbo@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=elqeA/z9; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ixoq0vrT; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [63.128.21.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=tHBe5JSJ; dkim-atps=neutral
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com
+ [IPv6:2a00:1450:4864:20::641])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cfw2x5VL6zDqQb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 05:02:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1606154518;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dY1mghQ8s5wvu5GP9IjiMDQt/Oip4lglbTbH7hUAgQc=;
- b=elqeA/z9yy9ZagDlpGJM+kZp8TH6P2/Fm6UhiHCDtDdf0qcC2YYxFsYI6Zv+g2uMYEjStc
- 9hX75x9gcu+t3bAf2DHcu/gXW50x+iEPk8PnlZ+2sidwUaz0BhhYKFHZ51bOrlYivW67Be
- iSg3o+l4SOP+zpg17/7TbuNTr7e13Eg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1606154519;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dY1mghQ8s5wvu5GP9IjiMDQt/Oip4lglbTbH7hUAgQc=;
- b=Ixoq0vrTf+Dbp151od5ApU9dy6WhCOld4GpeiETLuSWscjd3Lt5GmoBiuPPoUsqA37WuMX
- PnZNL7UdlQ2n4W+b6NGCYtqCPX++4/v1ApiydBkyzuF6F6E/KHRm+jWiYkWRTIyBqt9O/k
- Ic4N/FWBBBsbbcIubqX0LglSLj7Beb0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-426-H8lW_4lcOYO-tNc5FXKnQA-1; Mon, 23 Nov 2020 13:01:54 -0500
-X-MC-Unique: H8lW_4lcOYO-tNc5FXKnQA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1B35B87952B;
- Mon, 23 Nov 2020 18:01:52 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.192.134])
- by smtp.corp.redhat.com (Postfix) with SMTP id 2FD3760864;
- Mon, 23 Nov 2020 18:01:44 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
- oleg@redhat.com; Mon, 23 Nov 2020 19:01:51 +0100 (CET)
-Date: Mon, 23 Nov 2020 19:01:43 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v3 2/2] powerpc/ptrace: Hard wire PT_SOFTE value to 1 in
- gpr_get() too
-Message-ID: <20201123180142.GB20279@redhat.com>
-References: <20201119160154.GA5183@redhat.com>
- <20201119160247.GB5188@redhat.com>
- <20201119221033.Horde.be-msjDTeIW4XeXARjUu7g1@messagerie.c-s.fr>
- <20201119224347.GC5138@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CfyJ91NwlzDqPn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 06:43:28 +1100 (AEDT)
+Received: by mail-ej1-x641.google.com with SMTP id bo9so19248491ejb.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Nov 2020 11:43:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=ZHBLhDzp7+DVEyAbuaHAJOVsPtTRr9vyE8lLg45JPOY=;
+ b=tHBe5JSJZhVXtPML0zFQ6IoXIA0EDrPJKOBljZH/eQH8BY71Tt/9qt3YFMZBXJSrta
+ HqFxZ3gJRXRZGMkiN9XYkfrvZxw8aiMWb/J02wpvzY/MYT3rQk6z9VHoMcZa49ROXkjT
+ 7fCcs/wStgb29lLXLBlZZmIV40mA6NpJmQrA4BrIzV0bg42gkIqJXUrgSjHtKGqpPrbK
+ ZmS27pv/GGkcVax6jMR2GDku9ctLTymLHLJsQdWJd9UmSpIi+WafXGZF1zrdSpL9z91x
+ lYIZG4VMvfPy/AS5kaHaFz+Yw45WlzLseb3Z8EwQhlBcHPTVDu2nHRwaCIWLhe047e1p
+ 27GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ZHBLhDzp7+DVEyAbuaHAJOVsPtTRr9vyE8lLg45JPOY=;
+ b=K9s8eakYjMBGx7orAjFBklHwpJCArMT/XPbdrFS5FgIEZf5KIsgXMVocxHSkKA1cKg
+ 8K4qy+yuETI/ro1sfd6AMMUH1pjihqb8OIa0RK/EOZxQYpjrqgezaW07q2ONpVoKb2Ru
+ SDLUn46V8nj525P3bzHfTz+dKOw2vJ+ZfBi9N/30x59SsVjiMhF4if4C7bwvkI5HcFaY
+ nNU5YaY+HNZULlbVTkI2+M3VC5vuLdJHEprM9gGLRtbOKVhS2vUT4DB70xjctbuEa47c
+ KWt0cEiMK36L7SE/f7PQTzd1vSiYXjyBkEIuPWZU7K81dXD+PCKYlpRzNKf1f3WBvxLN
+ Vt0A==
+X-Gm-Message-State: AOAM532hUXwrTRWQGv1S64PBmRdzfLN0HNG9jZdRYaD29k6luHuZqDGq
+ Yl067v4NIXowpfsdj8dY2WG6ZXx2BjF7Imw/s8V0REdFRcSG
+X-Google-Smtp-Source: ABdhPJy5Zh1KM1ok3fNAXP3NahKc8/UW1qNsCRxFjcX1q9GyonG8RMxr47leMgrUAWMD4mxzTpLn/O7yM3RdKbd8Ljo=
+X-Received: by 2002:a17:906:1752:: with SMTP id
+ d18mr1004287eje.529.1606160604241; 
+ Mon, 23 Nov 2020 11:43:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201119224347.GC5138@redhat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+References: <20201118223513.2704722-1-morbo@google.com>
+ <20201120224034.191382-1-morbo@google.com>
+ <20201120224034.191382-4-morbo@google.com> <87d0041vaf.fsf@mpe.ellerman.id.au>
+ <20201123063432.GG2672@gate.crashing.org>
+In-Reply-To: <20201123063432.GG2672@gate.crashing.org>
+From: Bill Wendling <morbo@google.com>
+Date: Mon, 23 Nov 2020 11:43:11 -0800
+Message-ID: <CAGG=3QVjSAwU+ebvH=Lk5YVMxW7=ThvkJXGPw+95nYxxuurMig@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] powerpc/64s: feature: Work around inline asm issues
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,64 +76,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Al Viro <viro@zeniv.linux.org.uk>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Jan Kratochvil <jan.kratochvil@redhat.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe, et al,
+What Segher said. :-) Also, if you reverse the comparison, you'll get
+a build error.
 
-So what?
-
-Are you going to push your change or should I re-send 1-2 without
-whitespace cleanups?
-
-On 11/19, Oleg Nesterov wrote:
+On Sun, Nov 22, 2020 at 10:36 PM Segher Boessenkool
+<segher@kernel.crashing.org> wrote:
 >
-> On 11/19, Christophe Leroy wrote:
+> On Mon, Nov 23, 2020 at 04:44:56PM +1100, Michael Ellerman wrote:
+> > If I hard code:
 > >
-> > I think the following should work, and not require the first patch (compile
-> > tested only).
+> >       .org . - (1);
 > >
-> > --- a/arch/powerpc/kernel/ptrace/ptrace-view.c
-> > +++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
-> > @@ -234,9 +234,21 @@ static int gpr_get(struct task_struct *target, const
-> > struct user_regset *regset,
-> >  	BUILD_BUG_ON(offsetof(struct pt_regs, orig_gpr3) !=
-> >  		     offsetof(struct pt_regs, msr) + sizeof(long));
-> > 
-> > +#ifdef CONFIG_PPC64
-> > +	membuf_write(&to, &target->thread.regs->orig_gpr3,
-> > +		     offsetof(struct pt_regs, softe) - offsetof(struct pt_regs,
-> > orig_gpr3));
-> > +	membuf_store(&to, 1UL);
-> > +
-> > +	BUILD_BUG_ON(offsetof(struct pt_regs, trap) !=
-> > +		     offsetof(struct pt_regs, softe) + sizeof(long));
-> > +
-> > +	membuf_write(&to, &target->thread.regs->trap,
-> > +		     sizeof(struct user_pt_regs) - offsetof(struct pt_regs, trap));
-> > +#else
-> >  	membuf_write(&to, &target->thread.regs->orig_gpr3,
-> >  			sizeof(struct user_pt_regs) -
-> >  			offsetof(struct pt_regs, orig_gpr3));
-> > +#endif
-> >  	return membuf_zero(&to, ELF_NGREG * sizeof(unsigned long) -
-> >  				 sizeof(struct user_pt_regs));
-> >  }
-> 
-> Probably yes.
-> 
-> This mirrors the previous patch I sent (https://lore.kernel.org/lkml/20190917143753.GA12300@redhat.com/)
-> and this is exactly what I tried to avoid, we can make a simpler fix now.
-> 
-> But let me repeat, I agree with any fix even if imp my version simplifies the code, just
-> commit this change and lets forget this problem.
-> 
-> Oleg.
-
+> > It fails as expected.
+> >
+> > But if I hard code:
+> >
+> >       .org . - (1 > 0);
+> >
+> > It builds?
+>
+> "true" (as a result of a comparison) in as is -1, not 1.
+>
+>
+> Segher
