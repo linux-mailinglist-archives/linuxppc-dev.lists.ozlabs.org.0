@@ -2,59 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B697A2C03C5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Nov 2020 12:02:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B24F2C043C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Nov 2020 12:22:55 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CfkkG5n6MzDqQm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Nov 2020 22:01:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CflBN1RCPzDqQB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Nov 2020 22:22:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CfkhQ28bbzDqLP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Nov 2020 22:00:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cfl616mPSzDqMr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Nov 2020 22:19:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=dMgscjRQ; 
+ header.a=rsa-sha256 header.s=201909 header.b=R1K0WuGi; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CfkhP4B1Dz9sRR;
- Mon, 23 Nov 2020 22:00:21 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Cfl604FFtz9sTc;
+ Mon, 23 Nov 2020 22:19:04 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1606129222;
- bh=WHbv/n/zvKljNMxbSr7BFAIxV2SZS7coVExrPbNTHTA=;
+ s=201909; t=1606130344;
+ bh=tJTGG2h6mgp16HvKmEMixgRvlSuhviv6rCu/mwCFS8Y=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=dMgscjRQOsWUveZOjqAndgnfi/FBu263K0v2S0JAt2yM+3OsewrQSvKTxPm6WDSlT
- VpgAaiBwjKdQ5S7ywhelFs0PPx8F9l+DyWPXyPqgrJa6+cMl717s1FxVsecdpNKH1U
- N6J06GiUqNBJHNJnlsX+kdFkv/fCyszAisj0X/5qUmVzlIXXeU+IF7ezUkt9lLJC7b
- hkYnnzhnkMc6kAbYon7FLfTa6OHa9W9z7zS8QrM20oFdiXHqZka4h6Fxwf3ifcMNZU
- UBaBahCof7WZIEKVcTdGVT3KezC7NiuaoMOIzWSqpBQg7WIsN2d1K4kaZRG58lHArI
- KGAPbPb3vL78w==
+ b=R1K0WuGiR9fY5YncKj5ZYDAfGqSnV53+RVMsAXRA63dFrjD/au1kxjuXKyN0NCMMu
+ nAg5QzabjlEQ6/SXio5dTKXxNGTUH4O0qhbJTr3b1frVJIv/uaAeMZF3MvnlRn3BGM
+ XYwver57kJVO6pe+cjngiAYVd3prXL/QjnVDnm7Gf8fk2grICOI7GaTbcpLCV0qybp
+ +MWnpWsMIYFEuijuvfSmpFuH4do9uBoeR3ExS0UlCIWKyxDUQhh7cWZ+b4fMTOqunm
+ k+lycVwAKrHkyX21ecemm6rm3YAYMJ5oX5/WvmK+CESBltG/uEf0zDuqUiprRMLdyk
+ wJO+ejjdK11Bg==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Namhyung Kim <namhyung@kernel.org>, "Liang\,
- Kan" <kan.liang@linux.intel.com>
-Subject: Re: [PATCH 1/3] perf/core: Flush PMU internal buffers for per-CPU
- events
-In-Reply-To: <CAM9d7chbQE=zkqYsNFMv+uWEYWdXcGD=fNYT_R2ondwR5zVvaQ@mail.gmail.com>
-References: <20201106212935.28943-1-kan.liang@linux.intel.com>
- <20201109095235.GC2594@hirez.programming.kicks-ass.net>
- <20201109110405.GN2651@hirez.programming.kicks-ass.net>
- <0a1db246-c34a-22a3-160c-3e0c0a38119d@linux.intel.com>
- <20201111162509.GW2611@hirez.programming.kicks-ass.net>
- <2dc483f6-7b29-c42b-13a4-4c549d720aa2@linux.intel.com>
- <CAM9d7cjwFp9JBqs1Ga9n1ojbez9chZLvmOgFv1EE4KDhAa9ryA@mail.gmail.com>
- <CAM9d7chbQE=zkqYsNFMv+uWEYWdXcGD=fNYT_R2ondwR5zVvaQ@mail.gmail.com>
-Date: Mon, 23 Nov 2020 22:00:17 +1100
-Message-ID: <87a6v81gou.fsf@mpe.ellerman.id.au>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/perf: Fix crash with 'is_sier_available' when pmu
+ is not set
+In-Reply-To: <1606124997-3358-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+References: <1606124997-3358-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+Date: Mon, 23 Nov 2020 22:19:04 +1100
+Message-ID: <877dqc1ftj.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,93 +59,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Andi Kleen <ak@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Stephane Eranian <eranian@google.com>, Paul Mackerras <paulus@samba.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@redhat.com>,
- Ingo Molnar <mingo@kernel.org>, Gabriel Marin <gmx@google.com>
+Cc: sachinp@linux.vnet.ibm.com, maddy@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Namhyung Kim <namhyung@kernel.org> writes:
-> Hi Peter and Kan,
->
-> (Adding PPC folks)
->
-> On Tue, Nov 17, 2020 at 2:01 PM Namhyung Kim <namhyung@kernel.org> wrote:
->>
->> Hello,
->>
->> On Thu, Nov 12, 2020 at 4:54 AM Liang, Kan <kan.liang@linux.intel.com> wrote:
->> >
->> >
->> >
->> > On 11/11/2020 11:25 AM, Peter Zijlstra wrote:
->> > > On Mon, Nov 09, 2020 at 09:49:31AM -0500, Liang, Kan wrote:
->> > >
->> > >> - When the large PEBS was introduced (9c964efa4330), the sched_task() should
->> > >> be invoked to flush the PEBS buffer in each context switch. However, The
->> > >> perf_sched_events in account_event() is not updated accordingly. The
->> > >> perf_event_task_sched_* never be invoked for a pure per-CPU context. Only
->> > >> per-task event works.
->> > >>     At that time, the perf_pmu_sched_task() is outside of
->> > >> perf_event_context_sched_in/out. It means that perf has to double
->> > >> perf_pmu_disable() for per-task event.
->> > >
->> > >> - The patch 1 tries to fix broken per-CPU events. The CPU context cannot be
->> > >> retrieved from the task->perf_event_ctxp. So it has to be tracked in the
->> > >> sched_cb_list. Yes, the code is very similar to the original codes, but it
->> > >> is actually the new code for per-CPU events. The optimization for per-task
->> > >> events is still kept.
->> > >>    For the case, which has both a CPU context and a task context, yes, the
->> > >> __perf_pmu_sched_task() in this patch is not invoked. Because the
->> > >> sched_task() only need to be invoked once in a context switch. The
->> > >> sched_task() will be eventually invoked in the task context.
->> > >
->> > > The thing is; your first two patches rely on PERF_ATTACH_SCHED_CB and
->> > > only set that for large pebs. Are you sure the other users (Intel LBR
->> > > and PowerPC BHRB) don't need it?
->> >
->> > I didn't set it for LBR, because the perf_sched_events is always enabled
->> > for LBR. But, yes, we should explicitly set the PERF_ATTACH_SCHED_CB
->> > for LBR.
->> >
->> >         if (has_branch_stack(event))
->> >                 inc = true;
->> >
->> > >
->> > > If they indeed do not require the pmu::sched_task() callback for CPU
->> > > events, then I still think the whole perf_sched_cb_{inc,dec}() interface
->> >
->> > No, LBR requires the pmu::sched_task() callback for CPU events.
->> >
->> > Now, The LBR registers have to be reset in sched in even for CPU events.
->> >
->> > To fix the shorter LBR callstack issue for CPU events, we also need to
->> > save/restore LBRs in pmu::sched_task().
->> > https://lore.kernel.org/lkml/1578495789-95006-4-git-send-email-kan.liang@linux.intel.com/
->> >
->> > > is confusing at best.
->> > >
->> > > Can't we do something like this instead?
->> > >
->> > I think the below patch may have two issues.
->> > - PERF_ATTACH_SCHED_CB is required for LBR (maybe PowerPC BHRB as well) now.
->> > - We may disable the large PEBS later if not all PEBS events support
->> > large PEBS. The PMU need a way to notify the generic code to decrease
->> > the nr_sched_task.
->>
->> Any updates on this?  I've reviewed and tested Kan's patches
->> and they all look good.
->>
->> Maybe we can talk to PPC folks to confirm the BHRB case?
->
-> Can we move this forward?  I saw patch 3/3 also adds PERF_ATTACH_SCHED_CB
-> for PowerPC too.  But it'd be nice if ppc folks can confirm the change.
+Hi Athira,
 
-Sorry I've read the whole thread, but I'm still not entirely sure I
-understand the question.
+Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
+> On systems without any platform specific PMU driver support registered or
+> Generic Compat PMU support registered,
+
+The compat PMU is registered just like other PMUs, so I don't see how we
+can crash like this if the compat PMU is active?
+
+ie. if we're using the compat PMU then ppmu will be non-NULL and point
+to generic_compat_pmu.
+
+> running 'perf record' with
+> =E2=80=94intr-regs  will crash ( perf record -I <workload> ).
+>
+> The relevant portion from crash logs and Call Trace:
+>
+> Unable to handle kernel paging request for data at address 0x00000068
+> Faulting instruction address: 0xc00000000013eb18
+> Oops: Kernel access of bad area, sig: 11 [#1]
+> CPU: 2 PID: 13435 Comm: kill Kdump: loaded Not tainted 4.18.0-193.el8.ppc=
+64le #1
+> NIP:  c00000000013eb18 LR: c000000000139f2c CTR: c000000000393d80
+> REGS: c0000004a07ab4f0 TRAP: 0300   Not tainted  (4.18.0-193.el8.ppc64le)
+> NIP [c00000000013eb18] is_sier_available+0x18/0x30
+> LR [c000000000139f2c] perf_reg_value+0x6c/0xb0
+> Call Trace:
+> [c0000004a07ab770] [c0000004a07ab7c8] 0xc0000004a07ab7c8 (unreliable)
+> [c0000004a07ab7a0] [c0000000003aa77c] perf_output_sample+0x60c/0xac0
+> [c0000004a07ab840] [c0000000003ab3f0] perf_event_output_forward+0x70/0xb0
+> [c0000004a07ab8c0] [c00000000039e208] __perf_event_overflow+0x88/0x1a0
+> [c0000004a07ab910] [c00000000039e42c] perf_swevent_hrtimer+0x10c/0x1d0
+> [c0000004a07abc50] [c000000000228b9c] __hrtimer_run_queues+0x17c/0x480
+> [c0000004a07abcf0] [c00000000022aaf4] hrtimer_interrupt+0x144/0x520
+> [c0000004a07abdd0] [c00000000002a864] timer_interrupt+0x104/0x2f0
+> [c0000004a07abe30] [c0000000000091c4] decrementer_common+0x114/0x120
+>
+> When perf record session started with "-I" option, capture registers
+                          ^
+                          is
+
+> via intr-regs,
+
+"intr-regs" is just the full name for the -I option, so that kind of
+repeats itself.
+
+> on each sample =E2=80=98is_sier_available()'i is called to check
+                                      ^
+                                      extra i
+
+The single quotes around is_sier_available() aren't necessary IMO.
+
+> for the SIER ( Sample Instruction Event Register) availability in the
+                ^
+                stray space
+> platform. This function in core-book3s access 'ppmu->flags'. If platform
+                                               ^                 ^
+                                               es                a
+> specific pmu driver is not registered, ppmu is set to null and accessing
+           ^                                            ^
+           PMU                                          NULL
+> its members results in crash. Patch fixes this by returning false in
+                        ^
+                        a
+> 'is_sier_available()' if 'ppmu' is not set.
+
+Use the imperative mood for the last sentence which says what the patch
+does:
+
+  Fix the crash by returning false in is_sier_available() if ppmu is not se=
+t.
+
+
+> Fixes: 333804dc3b7a ("powerpc/perf: Update perf_regs structure to include=
+ SIER")
+> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>  arch/powerpc/perf/core-book3s.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-boo=
+k3s.c
+> index 08643cb..1de4770 100644
+> --- a/arch/powerpc/perf/core-book3s.c
+> +++ b/arch/powerpc/perf/core-book3s.c
+> @@ -137,6 +137,9 @@ static void pmao_restore_workaround(bool ebb) { }
+>=20=20
+>  bool is_sier_available(void)
+>  {
+> +	if (!ppmu)
+> +		return false;
+> +
+>  	if (ppmu->flags & PPMU_HAS_SIER)
+>  		return true;
+>=20=20
+> --=20
+> 1.8.3.1
+
 
 cheers
