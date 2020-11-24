@@ -2,51 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F29B2C1B66
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 03:24:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D25162C1B81
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 03:43:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cg7C300PVzDqTj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 13:24:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cg7ct4b2rzDqTR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 13:43:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=jKHc2cC0; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cg77c6Y3nzDqL9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 13:21:45 +1100 (AEDT)
-IronPort-SDR: d/BO/pteOoVvGoi7LfgawOPuEBQDKtQyjaxgV+Tk0k4YB7t9rAgH0KmN7FvV5qIZm3AGNfCYgR
- uM0ZgNNg0X7Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9814"; a="158920865"
-X-IronPort-AV: E=Sophos;i="5.78,364,1599548400"; d="scan'208";a="158920865"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2020 18:21:42 -0800
-IronPort-SDR: BLBPcT6IqXlsKo1n3lZfsGpT+Cfjj1v+7e171959053NQ2wikmsyoWyvgv6WU2vDWFEGfL+A7C
- ZOPwfedLAqqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,364,1599548400"; d="scan'208";a="546649476"
-Received: from lkp-server01.sh.intel.com (HELO 1138cb5768e3) ([10.239.97.150])
- by orsmga005.jf.intel.com with ESMTP; 23 Nov 2020 18:21:41 -0800
-Received: from kbuild by 1138cb5768e3 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1khNxb-0000In-UK; Tue, 24 Nov 2020 02:21:39 +0000
-Date: Tue, 24 Nov 2020 10:21:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- c250581fcf84c34cbaf5b535512b60a5e96970f6
-Message-ID: <5fbc6e2c.sSRdyb752bP83nwD%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cg7b84PVSzDqQf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 13:42:12 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AO2VpQE096069; Mon, 23 Nov 2020 21:42:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=sSonC1TmmuvD5DeA0D8Q9GVvau9SO6oUpLsCaG4BMkc=;
+ b=jKHc2cC04eqwv99JwxBZ7MuBpVchHT7LtKcP3j7mllGd3ufHccjmHWtRbatQhA/PCvlu
+ r4jO3j4qF8abxagSaOYKFP6CEmU0mc+198HIDkqiWwSPjGgzqi/+8iP6PCaCyJzECSwX
+ r29EHYta56wggcTeNxiE95FU7SaOAXHhLHVYcnLQsU5F6D2weFrm/MPj/pG0wKecZM85
+ VjzMCucUzJ2+mVzFBucpQWCkPocZ/I9tmaHzKPpgQ0toAUGie/ly0fJTxbYKmEPGbEbL
+ /fUjiPm9mz95PuIWIRh1rW+hzA7SBuLE7YFLvfXPDrLiLbGuyJmXGHBJyWpxupyebg6T Vg== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 350rn8sd9n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 Nov 2020 21:42:03 -0500
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AO2d2xA029618;
+ Tue, 24 Nov 2020 02:42:02 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma02fra.de.ibm.com with ESMTP id 350cvrrmdb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Nov 2020 02:42:02 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AO2ejVL2425374
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 24 Nov 2020 02:40:45 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F218C4C04A;
+ Tue, 24 Nov 2020 02:40:44 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C94D64C040;
+ Tue, 24 Nov 2020 02:40:43 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.79.250.5])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 24 Nov 2020 02:40:43 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH V2] powerpc/perf: Fix crash with is_sier_available when pmu is
+ not set
+Date: Mon, 23 Nov 2020 21:40:40 -0500
+Message-Id: <1606185640-1720-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-23_19:2020-11-23,
+ 2020-11-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ phishscore=0 mlxlogscore=999 mlxscore=0 adultscore=0 suspectscore=1
+ impostorscore=0 priorityscore=1501 clxscore=1015 malwarescore=0
+ spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011240011
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,238 +96,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sachinp@linux.vnet.ibm.com, maddy@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: c250581fcf84c34cbaf5b535512b60a5e96970f6  powerpc/vdso: Provide __kernel_clock_gettime64() on vdso32
+On systems without any specific PMU driver support registered, running
+'perf record' with —intr-regs  will crash ( perf record -I <workload> ).
 
-elapsed time: 5500m
+The relevant portion from crash logs and Call Trace:
 
-configs tested: 212
-configs skipped: 2
+Unable to handle kernel paging request for data at address 0x00000068
+Faulting instruction address: 0xc00000000013eb18
+Oops: Kernel access of bad area, sig: 11 [#1]
+CPU: 2 PID: 13435 Comm: kill Kdump: loaded Not tainted 4.18.0-193.el8.ppc64le #1
+NIP:  c00000000013eb18 LR: c000000000139f2c CTR: c000000000393d80
+REGS: c0000004a07ab4f0 TRAP: 0300   Not tainted  (4.18.0-193.el8.ppc64le)
+NIP [c00000000013eb18] is_sier_available+0x18/0x30
+LR [c000000000139f2c] perf_reg_value+0x6c/0xb0
+Call Trace:
+[c0000004a07ab770] [c0000004a07ab7c8] 0xc0000004a07ab7c8 (unreliable)
+[c0000004a07ab7a0] [c0000000003aa77c] perf_output_sample+0x60c/0xac0
+[c0000004a07ab840] [c0000000003ab3f0] perf_event_output_forward+0x70/0xb0
+[c0000004a07ab8c0] [c00000000039e208] __perf_event_overflow+0x88/0x1a0
+[c0000004a07ab910] [c00000000039e42c] perf_swevent_hrtimer+0x10c/0x1d0
+[c0000004a07abc50] [c000000000228b9c] __hrtimer_run_queues+0x17c/0x480
+[c0000004a07abcf0] [c00000000022aaf4] hrtimer_interrupt+0x144/0x520
+[c0000004a07abdd0] [c00000000002a864] timer_interrupt+0x104/0x2f0
+[c0000004a07abe30] [c0000000000091c4] decrementer_common+0x114/0x120
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+When perf record session is started with "-I" option, capturing registers
+on each sample calls is_sier_available() to check for the
+SIER (Sample Instruction Event Register) availability in the platform.
+This function in core-book3s accesses 'ppmu->flags'. If a platform specific
+PMU driver is not registered, ppmu is set to NULL and accessing its
+members results in a crash. Fix the crash by returning false in
+is_sier_available() if ppmu is not set.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arc                     haps_hs_smp_defconfig
-mips                         db1xxx_defconfig
-mips                      malta_kvm_defconfig
-m68k                          sun3x_defconfig
-s390                                defconfig
-mips                  cavium_octeon_defconfig
-powerpc                    ge_imp3a_defconfig
-powerpc                 xes_mpc85xx_defconfig
-sh                          sdk7786_defconfig
-arm                          pxa168_defconfig
-arm                            zeus_defconfig
-powerpc                   bluestone_defconfig
-sh                         apsh4a3a_defconfig
-arm                        mvebu_v7_defconfig
-sh                     magicpanelr2_defconfig
-arm                         nhk8815_defconfig
-xtensa                generic_kc705_defconfig
-arm                      tct_hammer_defconfig
-arm                        vexpress_defconfig
-powerpc                 canyonlands_defconfig
-powerpc                     kilauea_defconfig
-mips                   sb1250_swarm_defconfig
-arc                 nsimosci_hs_smp_defconfig
-arm                           u8500_defconfig
-powerpc                     tqm8555_defconfig
-c6x                        evmc6472_defconfig
-arm                         hackkit_defconfig
-sh                   sh7724_generic_defconfig
-powerpc                      obs600_defconfig
-powerpc                     mpc512x_defconfig
-arm                           h3600_defconfig
-arm                        cerfcube_defconfig
-sh                        sh7757lcr_defconfig
-sh                          rsk7201_defconfig
-arm                              alldefconfig
-mips                             allyesconfig
-arm                        keystone_defconfig
-mips                           ip32_defconfig
-arm                            u300_defconfig
-arm                         palmz72_defconfig
-mips                          ath25_defconfig
-powerpc                      tqm8xx_defconfig
-m68k                        mvme16x_defconfig
-powerpc                  storcenter_defconfig
-powerpc                      acadia_defconfig
-mips                        vocore2_defconfig
-sh                          rsk7269_defconfig
-parisc                           alldefconfig
-mips                      pic32mzda_defconfig
-arm                            xcep_defconfig
-sh                           se7343_defconfig
-sh                        dreamcast_defconfig
-sh                           se7724_defconfig
-csky                             alldefconfig
-arm                            dove_defconfig
-m68k                           sun3_defconfig
-sh                   rts7751r2dplus_defconfig
-sh                          rsk7203_defconfig
-arm                          gemini_defconfig
-arm                         s5pv210_defconfig
-sparc64                          alldefconfig
-arm                       aspeed_g4_defconfig
-arm                        shmobile_defconfig
-c6x                                 defconfig
-arc                              alldefconfig
-arm                          ep93xx_defconfig
-alpha                               defconfig
-ia64                            zx1_defconfig
-ia64                      gensparse_defconfig
-sh                            hp6xx_defconfig
-mips                           ip27_defconfig
-powerpc                    mvme5100_defconfig
-arm                  colibri_pxa270_defconfig
-nds32                             allnoconfig
-powerpc                           allnoconfig
-mips                        jmr3927_defconfig
-xtensa                          iss_defconfig
-nds32                            alldefconfig
-arm                         cm_x300_defconfig
-arm                     davinci_all_defconfig
-powerpc                 mpc8540_ads_defconfig
-powerpc                      arches_defconfig
-mips                        maltaup_defconfig
-powerpc                     tqm8540_defconfig
-powerpc                     akebono_defconfig
-arm                        realview_defconfig
-arm                      footbridge_defconfig
-sh                           se7721_defconfig
-powerpc                     powernv_defconfig
-sh                           se7751_defconfig
-mips                     loongson1b_defconfig
-arm                          tango4_defconfig
-xtensa                  nommu_kc705_defconfig
-arm                          moxart_defconfig
-sh                          sdk7780_defconfig
-riscv                          rv32_defconfig
-mips                     decstation_defconfig
-arm                        mvebu_v5_defconfig
-powerpc                      pcm030_defconfig
-arm                        magician_defconfig
-um                            kunit_defconfig
-powerpc                     ppa8548_defconfig
-mips                       lemote2f_defconfig
-mips                            ar7_defconfig
-sparc                       sparc64_defconfig
-arc                                 defconfig
-sh                          urquell_defconfig
-sh                         ecovec24_defconfig
-powerpc                     pq2fads_defconfig
-powerpc                    socrates_defconfig
-arm                           corgi_defconfig
-powerpc                       ppc64_defconfig
-powerpc                     taishan_defconfig
-mips                           ci20_defconfig
-arc                     nsimosci_hs_defconfig
-xtensa                  audio_kc705_defconfig
-mips                       rbtx49xx_defconfig
-arm                            mps2_defconfig
-c6x                        evmc6474_defconfig
-arm                        spear3xx_defconfig
-mips                          rb532_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-x86_64               randconfig-a006-20201120
-x86_64               randconfig-a003-20201120
-x86_64               randconfig-a004-20201120
-x86_64               randconfig-a005-20201120
-x86_64               randconfig-a001-20201120
-x86_64               randconfig-a002-20201120
-i386                 randconfig-a004-20201123
-i386                 randconfig-a003-20201123
-i386                 randconfig-a002-20201123
-i386                 randconfig-a005-20201123
-i386                 randconfig-a001-20201123
-i386                 randconfig-a006-20201123
-i386                 randconfig-a004-20201120
-i386                 randconfig-a003-20201120
-i386                 randconfig-a002-20201120
-i386                 randconfig-a005-20201120
-i386                 randconfig-a001-20201120
-i386                 randconfig-a006-20201120
-x86_64               randconfig-a015-20201123
-x86_64               randconfig-a011-20201123
-x86_64               randconfig-a014-20201123
-x86_64               randconfig-a016-20201123
-x86_64               randconfig-a012-20201123
-x86_64               randconfig-a013-20201123
-i386                 randconfig-a012-20201120
-i386                 randconfig-a013-20201120
-i386                 randconfig-a011-20201120
-i386                 randconfig-a016-20201120
-i386                 randconfig-a014-20201120
-i386                 randconfig-a015-20201120
-i386                 randconfig-a012-20201123
-i386                 randconfig-a013-20201123
-i386                 randconfig-a011-20201123
-i386                 randconfig-a016-20201123
-i386                 randconfig-a014-20201123
-i386                 randconfig-a015-20201123
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a006-20201123
-x86_64               randconfig-a003-20201123
-x86_64               randconfig-a004-20201123
-x86_64               randconfig-a005-20201123
-x86_64               randconfig-a002-20201123
-x86_64               randconfig-a001-20201123
-x86_64               randconfig-a015-20201120
-x86_64               randconfig-a011-20201120
-x86_64               randconfig-a014-20201120
-x86_64               randconfig-a016-20201120
-x86_64               randconfig-a012-20201120
-x86_64               randconfig-a013-20201120
-
+Fixes: 333804dc3b7a ("powerpc/perf: Update perf_regs structure to include SIER")
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Changes in v2:
+- Corrected the commit message as suggested by
+  Michael Ellerman.
+
+ arch/powerpc/perf/core-book3s.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 08643cb..1de4770 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -137,6 +137,9 @@ static void pmao_restore_workaround(bool ebb) { }
+ 
+ bool is_sier_available(void)
+ {
++	if (!ppmu)
++		return false;
++
+ 	if (ppmu->flags & PPMU_HAS_SIER)
+ 		return true;
+ 
+-- 
+1.8.3.1
+
