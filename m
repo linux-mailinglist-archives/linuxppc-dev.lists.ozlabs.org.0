@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDDB82C1E43
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 07:33:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E86282C1E52
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 07:35:41 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgDk71dsVzDqMp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 17:33:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgDmW0032zDqNB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 17:35:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,20 +15,23 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CgDP16nH5zDqMp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 17:18:44 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CgDPD4XgbzDqMl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 17:18:56 +1100 (AEDT)
 Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id D511EAE80253;
- Tue, 24 Nov 2020 01:18:08 -0500 (EST)
+ by ozlabs.ru (Postfix) with ESMTP id 75863AE80257;
+ Tue, 24 Nov 2020 01:18:20 -0500 (EST)
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH kernel v4 6/8] genirq/irqdomain: Move hierarchical IRQ cleanup
- to kobject_release
-Date: Tue, 24 Nov 2020 17:17:18 +1100
-Message-Id: <20201124061720.86766-7-aik@ozlabs.ru>
+Subject: [PATCH kernel v4 8/8] powerpc/pci: Remove LSI mappings on device
+ teardown
+Date: Tue, 24 Nov 2020 17:17:20 +1100
+Message-Id: <20201124061720.86766-9-aik@ozlabs.ru>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20201124061720.86766-1-aik@ozlabs.ru>
 References: <20201124061720.86766-1-aik@ozlabs.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,92 +54,60 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This moves hierarchical domain's irqs cleanup into the kobject release
-hook to make irq_domain_free_irqs() as simple as kobject_put.
+From: Oliver O'Halloran <oohall@gmail.com>
 
+When a passthrough IO adapter is removed from a pseries machine using hash
+MMU and the XIVE interrupt mode, the POWER hypervisor expects the guest OS
+to clear all page table entries related to the adapter. If some are still
+present, the RTAS call which isolates the PCI slot returns error 9001
+"valid outstanding translations" and the removal of the IO adapter fails.
+This is because when the PHBs are scanned, Linux maps automatically the
+INTx interrupts in the Linux interrupt number space but these are never
+removed.
+
+This problem can be fixed by adding the corresponding unmap operation when
+the device is removed. There's no pcibios_* hook for the remove case, but
+the same effect can be achieved using a bus notifier.
+
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- kernel/irq/irqdomain.c | 43 +++++++++++++++++++++---------------------
- 1 file changed, 22 insertions(+), 21 deletions(-)
+ arch/powerpc/kernel/pci-common.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 4779d912bb86..a0a81cc6c524 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -863,21 +863,9 @@ EXPORT_SYMBOL_GPL(irq_create_of_mapping);
-  */
- void irq_dispose_mapping(unsigned int virq)
- {
--	struct irq_data *irq_data = irq_get_irq_data(virq);
--	struct irq_domain *domain;
-+	struct irq_desc *desc = irq_to_desc(virq);
- 
--	if (!virq || !irq_data)
--		return;
--
--	domain = irq_data->domain;
--	if (WARN_ON(domain == NULL))
--		return;
--
--	if (irq_domain_is_hierarchy(domain)) {
--		irq_domain_free_irqs(virq, 1);
--	} else {
--		irq_free_desc(virq);
--	}
-+	kobject_put(&desc->kobj);
- }
- EXPORT_SYMBOL_GPL(irq_dispose_mapping);
- 
-@@ -1396,6 +1384,19 @@ int irq_domain_alloc_irqs_hierarchy(struct irq_domain *domain,
- 	return domain->ops->alloc(domain, irq_base, nr_irqs, arg);
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index be108616a721..95f4e173368a 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -404,6 +404,27 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
+ 	return 0;
  }
  
-+static void irq_domain_hierarchy_free_desc(struct irq_desc *desc)
++static int ppc_pci_unmap_irq_line(struct notifier_block *nb,
++			       unsigned long action, void *data)
 +{
-+	unsigned int virq = desc->irq_data.irq;
-+	struct irq_data *data = irq_get_irq_data(virq);
++	struct pci_dev *pdev = to_pci_dev(data);
 +
-+	mutex_lock(&irq_domain_mutex);
-+	irq_domain_remove_irq(virq);
-+	irq_domain_free_irqs_hierarchy(data->domain, virq, 1);
-+	mutex_unlock(&irq_domain_mutex);
++	if (action == BUS_NOTIFY_DEL_DEVICE)
++		irq_dispose_mapping(pdev->irq);
 +
-+	irq_domain_free_irq_data(virq, 1);
++	return NOTIFY_DONE;
 +}
 +
- int __irq_domain_alloc_irqs_data(struct irq_domain *domain, int virq,
- 				 unsigned int nr_irqs, int node, void *arg,
- 				 const struct irq_affinity_desc *affinity)
-@@ -1430,7 +1431,10 @@ int __irq_domain_alloc_irqs_data(struct irq_domain *domain, int virq,
- 	}
- 
- 	for (i = 0; i < nr_irqs; i++) {
-+		struct irq_desc *desc = irq_to_desc(virq + i);
++static struct notifier_block ppc_pci_unmap_irq_notifier = {
++	.notifier_call = ppc_pci_unmap_irq_line,
++};
 +
- 		irq_domain_insert_irq(virq + i);
-+		desc->free_irq = irq_domain_hierarchy_free_desc;
- 	}
- 	mutex_unlock(&irq_domain_mutex);
- 
-@@ -1675,14 +1679,11 @@ void irq_domain_free_irqs(unsigned int virq, unsigned int nr_irqs)
- 		 "NULL pointer, cannot free irq\n"))
- 		return;
- 
--	mutex_lock(&irq_domain_mutex);
--	for (i = 0; i < nr_irqs; i++)
--		irq_domain_remove_irq(virq + i);
--	irq_domain_free_irqs_hierarchy(data->domain, virq, nr_irqs);
--	mutex_unlock(&irq_domain_mutex);
-+	for (i = 0; i < nr_irqs; i++) {
-+		struct irq_desc *desc = irq_to_desc(virq + i);
- 
--	irq_domain_free_irq_data(virq, nr_irqs);
--	irq_free_descs(virq, nr_irqs);
-+		kobject_put(&desc->kobj);
-+	}
- }
- 
- /**
++static int ppc_pci_register_irq_notifier(void)
++{
++	return bus_register_notifier(&pci_bus_type, &ppc_pci_unmap_irq_notifier);
++}
++arch_initcall(ppc_pci_register_irq_notifier);
++
+ /*
+  * Platform support for /proc/bus/pci/X/Y mmap()s.
+  *  -- paulus.
 -- 
 2.17.1
 
