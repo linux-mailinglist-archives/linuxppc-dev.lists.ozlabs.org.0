@@ -1,90 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63BDD2C2284
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 11:09:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 240392C226D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 11:02:43 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgKVh4771zDqFs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 21:09:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgKMP1xgMzDqVV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 21:02:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=clombard@linux.vnet.ibm.com;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=clombard@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
  header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=IbUKqMWZ; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=kAM7AeY+; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgKGv5CHbzDqMn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 20:58:47 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgKGv28G6zDqKP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 20:58:46 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AO9Vsbe030059
+ 0AO9WfiI035163
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 04:58:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : subject :
- date : message-id : in-reply-to : references : mime-version : content-type
- : content-transfer-encoding; s=pp1;
- bh=8g8t0Jp9X/Nhrqcc+3ZVQm6e6VItMOtazvFf6GucFxc=;
- b=IbUKqMWZoZASRQY7L/qzI/giBGOR2PifCLhPE7ZV1kA43X451nLGg8kJbxpWkclk5mM/
- khHVwSM8yfwZRTwtQes31NESl/5agZ89X4NiEeMc/mc4c2hKqhX1TbB4ZaVsLXOqnpGM
- lFDpenJ4lP9aQkE5/1K/uBxqKJ49g2ffc+kLhWuutNFHLne9XGwreGhYFDXivtB0Vfbx
- IRO+IPGlEKB6REZU0RoDywls6we/MIvybR+PUKWkkPd75EWNZQ6HK6vmOHqlHp2BkRXj
- ZQSQk75OpCvqTuO+d/l/pCnxHwGOvvSD7iFjeHAWgiNX6LSf+7OVPiFkjQ/OfBwpzPIJ qg== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 350ga2v7x6-1
+ date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=dALcnJkvAr+Dj8f0/890ZkMXmCG+0HaTsTFNxYg5NBo=;
+ b=kAM7AeY+7fl7OtFc0jutVsMYcnS2wdjtoapMu5+kDbudibjDPRnIhT/oiEuk3er5I+rk
+ 6DA1NUmn6bdzZR/KqGdvzs/+l6/UTo/2+/09Lt7yQkwVeF0W5FjJY4q6ISCka2UiOuwt
+ OjzPwCtiNm1f12FrgWykKx1VV/R0Uowxe7K/a2QTszFMFMuCglFKRBZCPP0Sa3+XORjv
+ FwJBwDOxw7GWQCrwVPDZ+o3z3sOanj7aTxl3B2Qb7M7ZGQVhqroqMOJ1M+GEkA0MWtGU
+ tafKOaH2bMbnww0wbVvdBWvbhi8Y+HUweH77RjsiSlv0rA5R2RIP+PL4GY+SKQmzv77+ aA== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 350nsdj08a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 04:58:44 -0500
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AO9wXLk001408
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AO9vqgp003365
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 09:58:42 GMT
 Received: from b06avi18878370.portsmouth.uk.ibm.com
  (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma02fra.de.ibm.com with ESMTP id 350cvrrxsq-1
+ by ppma06fra.de.ibm.com with ESMTP id 34xt5h9s43-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 09:58:42 +0000
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
  [9.149.105.232])
  by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0AO9wdjd58524142
+ id 0AO9wdap63635770
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Tue, 24 Nov 2020 09:58:39 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3877B5204F;
+ by IMSVA (Postfix) with ESMTP id 78E5152057;
  Tue, 24 Nov 2020 09:58:39 +0000 (GMT)
 Received: from lombard-p52.ibmuc.com (unknown [9.171.68.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id EFE9352050;
- Tue, 24 Nov 2020 09:58:38 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 40A475204E;
+ Tue, 24 Nov 2020 09:58:39 +0000 (GMT)
 From: Christophe Lombard <clombard@linux.vnet.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com,
  ajd@linux.ibm.com
-Subject: [PATCH V3 2/5] ocxl: Initiate a TLB invalidate command
-Date: Tue, 24 Nov 2020 10:58:35 +0100
-Message-Id: <20201124095838.18665-3-clombard@linux.vnet.ibm.com>
+Subject: [PATCH V3 3/5] ocxl: Update the Process Element Entry
+Date: Tue, 24 Nov 2020 10:58:36 +0100
+Message-Id: <20201124095838.18665-4-clombard@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201124095838.18665-1-clombard@linux.vnet.ibm.com>
 References: <20201124095838.18665-1-clombard@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
  definitions=2020-11-24_03:2020-11-24,
  2020-11-23 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- malwarescore=0 impostorscore=0 suspectscore=0 mlxscore=0 phishscore=0
- priorityscore=1501 clxscore=1015 adultscore=0 spamscore=0 bulkscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011240056
+ suspectscore=0 spamscore=0
+ mlxlogscore=999 malwarescore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 phishscore=0 mlxscore=0 priorityscore=1501 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011240056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,172 +99,136 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When a TLB Invalidate is required for the Logical Partition, the following
-sequence has to be performed:
+To complete the MMIO based mechanism, the fields: PASID, bus, device and
+function of the Process Element Entry have to be filled. (See
+OpenCAPI Power Platform Architecture document)
 
-1. Load MMIO ATSD AVA register with the necessary value, if required.
-2. Write the MMIO ATSD launch register to initiate the TLB Invalidate
-command.
-3. Poll the MMIO ATSD status register to determine when the TLB Invalidate
-   has been completed.
+                   Hypervisor Process Element Entry
+Word
+    0 1 .... 7  8  ...... 12  13 ..15  16.... 19  20 ........... 31
+0                  OSL Configuration State (0:31)
+1                  OSL Configuration State (32:63)
+2               PASID                      |    Reserved
+3       Bus   |   Device    |Function |        Reserved
+4                             Reserved
+5                             Reserved
+6                               ....
 
 Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
 ---
- arch/powerpc/include/asm/pnv-ocxl.h   | 51 +++++++++++++++++++
- arch/powerpc/platforms/powernv/ocxl.c | 70 +++++++++++++++++++++++++++
- 2 files changed, 121 insertions(+)
+ drivers/misc/ocxl/context.c       | 4 +++-
+ drivers/misc/ocxl/link.c          | 4 +++-
+ drivers/misc/ocxl/ocxl_internal.h | 9 ++++++---
+ drivers/scsi/cxlflash/ocxl_hw.c   | 6 ++++--
+ include/misc/ocxl.h               | 2 +-
+ 5 files changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/pnv-ocxl.h b/arch/powerpc/include/asm/pnv-ocxl.h
-index 60c3c74427d9..9acd1fbf1197 100644
---- a/arch/powerpc/include/asm/pnv-ocxl.h
-+++ b/arch/powerpc/include/asm/pnv-ocxl.h
-@@ -3,12 +3,59 @@
- #ifndef _ASM_PNV_OCXL_H
- #define _ASM_PNV_OCXL_H
+diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
+index c21f65a5c762..9eb0d93b01c6 100644
+--- a/drivers/misc/ocxl/context.c
++++ b/drivers/misc/ocxl/context.c
+@@ -70,6 +70,7 @@ int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
+ {
+ 	int rc;
+ 	unsigned long pidr = 0;
++	struct pci_dev *dev;
  
-+#include <linux/bitfield.h>
- #include <linux/pci.h>
+ 	// Locks both status & tidr
+ 	mutex_lock(&ctx->status_mutex);
+@@ -81,8 +82,9 @@ int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
+ 	if (mm)
+ 		pidr = mm->context.id;
  
- #define PNV_OCXL_TL_MAX_TEMPLATE        63
- #define PNV_OCXL_TL_BITS_PER_RATE       4
- #define PNV_OCXL_TL_RATE_BUF_SIZE       ((PNV_OCXL_TL_MAX_TEMPLATE+1) * PNV_OCXL_TL_BITS_PER_RATE / 8)
++	dev = to_pci_dev(ctx->afu->fn->dev.parent);
+ 	rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid, pidr, ctx->tidr,
+-			      amr, mm, xsl_fault_error, ctx);
++			      amr, pci_dev_id(dev), mm, xsl_fault_error, ctx);
+ 	if (rc)
+ 		goto out;
  
-+#define PNV_OCXL_ATSD_TIMEOUT		1
-+
-+/* TLB Management Instructions */
-+#define PNV_OCXL_ATSD_LNCH		0x00
-+/* Radix Invalidate */
-+#define   PNV_OCXL_ATSD_LNCH_R		PPC_BIT(0)
-+/* Radix Invalidation Control
-+ * 0b00 Just invalidate TLB.
-+ * 0b01 Invalidate just Page Walk Cache.
-+ * 0b10 Invalidate TLB, Page Walk Cache, and any
-+ * caching of Partition and Process Table Entries.
-+ */
-+#define   PNV_OCXL_ATSD_LNCH_RIC	PPC_BITMASK(1, 2)
-+/* Number and Page Size of translations to be invalidated */
-+#define   PNV_OCXL_ATSD_LNCH_LP		PPC_BITMASK(3, 10)
-+/* Invalidation Criteria
-+ * 0b00 Invalidate just the target VA.
-+ * 0b01 Invalidate matching PID.
-+ */
-+#define   PNV_OCXL_ATSD_LNCH_IS		PPC_BITMASK(11, 12)
-+/* 0b1: Process Scope, 0b0: Partition Scope */
-+#define   PNV_OCXL_ATSD_LNCH_PRS	PPC_BIT(13)
-+/* Invalidation Flag */
-+#define   PNV_OCXL_ATSD_LNCH_B		PPC_BIT(14)
-+/* Actual Page Size to be invalidated
-+ * 000 4KB
-+ * 101 64KB
-+ * 001 2MB
-+ * 010 1GB
-+ */
-+#define   PNV_OCXL_ATSD_LNCH_AP		PPC_BITMASK(15, 17)
-+/* Defines the large page select
-+ * L=0b0 for 4KB pages
-+ * L=0b1 for large pages)
-+ */
-+#define   PNV_OCXL_ATSD_LNCH_L		PPC_BIT(18)
-+/* Process ID */
-+#define   PNV_OCXL_ATSD_LNCH_PID	PPC_BITMASK(19, 38)
-+/* NoFlush – Assumed to be 0b0 */
-+#define   PNV_OCXL_ATSD_LNCH_F		PPC_BIT(39)
-+#define   PNV_OCXL_ATSD_LNCH_OCAPI_SLBI	PPC_BIT(40)
-+#define   PNV_OCXL_ATSD_LNCH_OCAPI_SINGLETON	PPC_BIT(41)
-+#define PNV_OCXL_ATSD_AVA		0x08
-+#define   PNV_OCXL_ATSD_AVA_AVA		PPC_BITMASK(0, 51)
-+#define PNV_OCXL_ATSD_STAT		0x10
-+
- int pnv_ocxl_get_actag(struct pci_dev *dev, u16 *base, u16 *enabled, u16 *supported);
- int pnv_ocxl_get_pasid_count(struct pci_dev *dev, int *count);
- 
-@@ -31,4 +78,8 @@ int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle);
- int pnv_ocxl_map_lpar(struct pci_dev *dev, uint64_t lparid,
- 		      uint64_t lpcr, void __iomem **arva);
- void pnv_ocxl_unmap_lpar(void __iomem *arva);
-+void pnv_ocxl_tlb_invalidate(void __iomem *arva,
-+			     unsigned long pid,
-+			     unsigned long addr,
-+			     unsigned long page_size);
- #endif /* _ASM_PNV_OCXL_H */
-diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
-index 57fc1062677b..f665846d2b28 100644
---- a/arch/powerpc/platforms/powernv/ocxl.c
-+++ b/arch/powerpc/platforms/powernv/ocxl.c
-@@ -528,3 +528,73 @@ void pnv_ocxl_unmap_lpar(void __iomem *arva)
- 	iounmap(arva);
+diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
+index fd73d3bc0eb6..77381dda2c45 100644
+--- a/drivers/misc/ocxl/link.c
++++ b/drivers/misc/ocxl/link.c
+@@ -494,7 +494,7 @@ static u64 calculate_cfg_state(bool kernel)
  }
- EXPORT_SYMBOL_GPL(pnv_ocxl_unmap_lpar);
-+
-+void pnv_ocxl_tlb_invalidate(void __iomem *arva,
-+			     unsigned long pid,
-+			     unsigned long addr,
-+			     unsigned long page_size)
-+{
-+	unsigned long timeout = jiffies + (HZ * PNV_OCXL_ATSD_TIMEOUT);
-+	u64 val = 0ull;
-+	int pend;
-+	u8 size;
-+
-+	if (!(arva))
-+		return;
-+
-+	if (addr) {
-+		/* load Abbreviated Virtual Address register with
-+		 * the necessary value
-+		 */
-+		val |= FIELD_PREP(PNV_OCXL_ATSD_AVA_AVA, addr >> (63-51));
-+		out_be64(arva + PNV_OCXL_ATSD_AVA, val);
-+	}
-+
-+	/* Write access initiates a shoot down to initiate the
-+	 * TLB Invalidate command
-+	 */
-+	val = PNV_OCXL_ATSD_LNCH_R;
-+	if (addr) {
-+		val |= FIELD_PREP(PNV_OCXL_ATSD_LNCH_RIC, 0b00);
-+		val |= FIELD_PREP(PNV_OCXL_ATSD_LNCH_IS, 0b00);
-+	} else {
-+		val |= FIELD_PREP(PNV_OCXL_ATSD_LNCH_RIC, 0b10);
-+		val |= FIELD_PREP(PNV_OCXL_ATSD_LNCH_IS, 0b01);
-+		val |= PNV_OCXL_ATSD_LNCH_OCAPI_SINGLETON;
-+	}
-+	val |= PNV_OCXL_ATSD_LNCH_PRS;
-+	/* Actual Page Size to be invalidated
-+	 * 000 4KB
-+	 * 101 64KB
-+	 * 001 2MB
-+	 * 010 1GB
-+	 */
-+	size = 0b101;
-+	if (page_size == 0x10000)
-+		size = 0b000;
-+	if (page_size == 0x200000)
-+		size = 0b001;
-+	if (page_size == 0x40000000)
-+		size = 0b010;
-+	val |= FIELD_PREP(PNV_OCXL_ATSD_LNCH_AP, size);
-+	val |= FIELD_PREP(PNV_OCXL_ATSD_LNCH_PID, pid);
-+	out_be64(arva + PNV_OCXL_ATSD_LNCH, val);
-+
-+	/* Poll the ATSD status register to determine when the
-+	 * TLB Invalidate has been completed.
-+	 */
-+	val = in_be64(arva + PNV_OCXL_ATSD_STAT);
-+	pend = val >> 63;
-+
-+	while (pend) {
-+		if (time_after_eq(jiffies, timeout)) {
-+			pr_err("%s - Timeout while reading XTS MMIO ATSD status register (val=%#llx, pidr=0x%lx)\n",
-+			       __func__, val, pid);
-+			return;
-+		}
-+		cpu_relax();
-+		val = in_be64(arva + PNV_OCXL_ATSD_STAT);
-+		pend = val >> 63;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(pnv_ocxl_tlb_invalidate);
+ 
+ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
+-		u64 amr, struct mm_struct *mm,
++		u64 amr, u16 bdf, struct mm_struct *mm,
+ 		void (*xsl_err_cb)(void *data, u64 addr, u64 dsisr),
+ 		void *xsl_err_data)
+ {
+@@ -529,6 +529,8 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
+ 
+ 	memset(pe, 0, sizeof(struct ocxl_process_element));
+ 	pe->config_state = cpu_to_be64(calculate_cfg_state(pidr == 0));
++	pe->pasid = cpu_to_be32(pasid << (31 - 19));
++	pe->bdf = cpu_to_be16(bdf);
+ 	pe->lpid = cpu_to_be32(mfspr(SPRN_LPID));
+ 	pe->pid = cpu_to_be32(pidr);
+ 	pe->tid = cpu_to_be32(tidr);
+diff --git a/drivers/misc/ocxl/ocxl_internal.h b/drivers/misc/ocxl/ocxl_internal.h
+index 0bad0a123af6..10125a22d5a5 100644
+--- a/drivers/misc/ocxl/ocxl_internal.h
++++ b/drivers/misc/ocxl/ocxl_internal.h
+@@ -84,13 +84,16 @@ struct ocxl_context {
+ 
+ struct ocxl_process_element {
+ 	__be64 config_state;
+-	__be32 reserved1[11];
++	__be32 pasid;
++	__be16 bdf;
++	__be16 reserved1;
++	__be32 reserved2[9];
+ 	__be32 lpid;
+ 	__be32 tid;
+ 	__be32 pid;
+-	__be32 reserved2[10];
++	__be32 reserved3[10];
+ 	__be64 amr;
+-	__be32 reserved3[3];
++	__be32 reserved4[3];
+ 	__be32 software_state;
+ };
+ 
+diff --git a/drivers/scsi/cxlflash/ocxl_hw.c b/drivers/scsi/cxlflash/ocxl_hw.c
+index e4e0d767b98e..244fc27215dc 100644
+--- a/drivers/scsi/cxlflash/ocxl_hw.c
++++ b/drivers/scsi/cxlflash/ocxl_hw.c
+@@ -329,6 +329,7 @@ static int start_context(struct ocxlflash_context *ctx)
+ 	struct ocxl_hw_afu *afu = ctx->hw_afu;
+ 	struct ocxl_afu_config *acfg = &afu->acfg;
+ 	void *link_token = afu->link_token;
++	struct pci_dev *pdev = afu->pdev;
+ 	struct device *dev = afu->dev;
+ 	bool master = ctx->master;
+ 	struct mm_struct *mm;
+@@ -360,8 +361,9 @@ static int start_context(struct ocxlflash_context *ctx)
+ 		mm = current->mm;
+ 	}
+ 
+-	rc = ocxl_link_add_pe(link_token, ctx->pe, pid, 0, 0, mm,
+-			      ocxlflash_xsl_fault, ctx);
++	rc = ocxl_link_add_pe(link_token, ctx->pe, pid, 0, 0,
++			      pci_dev_id(pdev), mm, ocxlflash_xsl_fault,
++			      ctx);
+ 	if (unlikely(rc)) {
+ 		dev_err(dev, "%s: ocxl_link_add_pe failed rc=%d\n",
+ 			__func__, rc);
+diff --git a/include/misc/ocxl.h b/include/misc/ocxl.h
+index e013736e275d..3ed736da02c8 100644
+--- a/include/misc/ocxl.h
++++ b/include/misc/ocxl.h
+@@ -447,7 +447,7 @@ void ocxl_link_release(struct pci_dev *dev, void *link_handle);
+  * defined
+  */
+ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
+-		u64 amr, struct mm_struct *mm,
++		u64 amr, u16 bdf, struct mm_struct *mm,
+ 		void (*xsl_err_cb)(void *data, u64 addr, u64 dsisr),
+ 		void *xsl_err_data);
+ 
 -- 
 2.28.0
 
