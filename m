@@ -2,75 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8E42C316B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 20:54:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BF02C317C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 20:56:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgZTh0qF5zDqPS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 06:54:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgZX94pLRzDqXY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 06:56:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgZL473pszDqVB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 06:47:24 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=toS9Mx3K; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4CgZL439C0z8w8R
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 06:47:24 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4CgZL40mPcz9sVM; Wed, 25 Nov 2020 06:47:24 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=toS9Mx3K; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=gAGDYzFs; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4CgZL35S1fz9sVD;
- Wed, 25 Nov 2020 06:47:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
- :Reply-To:Content-ID:Content-Description;
- bh=xLC8NkYKlHLtPiUjqPu35yweVAcFogAHIrJi9DNTj9I=; b=toS9Mx3KdaeoQu4JAZUfUOs8F0
- HATWb8wlEkXblsSAE7HWSKi903pFa/KGjFmLG8+kYrI2lezwyQB47kwVhyGlJn6At2j6OdbcL+YCH
- rnZAbmVaJMlb7IxRtKuPL9zvyIHfTy2dHRNSRPIh3wdPU/NAqEC/4lPogAZeJja2ZiA+hf1aHO/hN
- C/1hc4xTEAuhuuUG2iMh699FVWUEwKBzzYWXYDyaPDEhIRWzR2IaDRtD6iG77DWZt8Zf/4nV4hNzH
- vckRJhpOD9nbw7JxPCPFI1Oyi458BIgPREYzU9W+YINlWH+JHBylJFnr1qYZPbgvbnKWQWzIie+Ah
- pcCOFgHQ==;
-Received: from [2601:1c0:6280:3f0::cc1f]
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kheHX-0000hg-WA; Tue, 24 Nov 2020 19:47:20 +0000
-Subject: Re: [PATCH 3/3] powerpc: Update NUMA Kconfig description & help text
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-References: <20201124120547.1940635-1-mpe@ellerman.id.au>
- <20201124120547.1940635-3-mpe@ellerman.id.au>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <4765821c-2886-6420-f03c-94ace136ee8e@infradead.org>
-Date: Tue, 24 Nov 2020 11:47:15 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgZQv1MFFzDqLT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 06:51:34 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AOJX2fH101598; Tue, 24 Nov 2020 14:51:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : references : in-reply-to : mime-version : message-id : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=Ifth+TJCelaA3ZjPgo8Idwa32A+j7cupSzNNiUmUIls=;
+ b=gAGDYzFsBG0q+mKwNgV5C76F7vYrgeECj4V+TdLTQyuBBC66miD++6OeeP44Oy9WHaSg
+ 8LqGJ+JRSluia4qxe5wiIcYAx3ALYeKId6+wiyAqKzhYiswatwtvsk1BATFdqSlilMF3
+ LMC3W9NVSLjsyaGYnZJDfvBT4UHsDtcf/fFERUTHVqUYlxNVEiqDH9koGTUxErVOfoJf
+ WdEcY/oOaxD/X5YRlFZ9Luv0xHNURVNDJVBupFnWWASE5q0dpG55W/kueuEuMzBCfAEa
+ /Zy9rPQKsYtUGurxjOv4H7epojXw2jSttmTRFfUvq9MGYVtvLt1MuhO860qgOZMiZFrg HQ== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 350rnb86u3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Nov 2020 14:51:24 -0500
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AOJgTBd018392;
+ Tue, 24 Nov 2020 19:51:23 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03fra.de.ibm.com with ESMTP id 34yy8r1588-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Nov 2020 19:51:23 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0AOJpKRB11272682
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 24 Nov 2020 19:51:20 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C821F42041;
+ Tue, 24 Nov 2020 19:51:20 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BEC1542045;
+ Tue, 24 Nov 2020 19:51:19 +0000 (GMT)
+Received: from localhost (unknown [9.85.88.148])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 24 Nov 2020 19:51:19 +0000 (GMT)
+Date: Wed, 25 Nov 2020 01:21:14 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: eBPF on powerpc
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <d69650b0-4024-5759-3ccb-ede5c0394500@csgroup.eu>
+ <1606234192.xvkulhfr3y.naveen@linux.ibm.com>
+ <4d588481-0c8d-6adf-53f5-e7332ddca7c4@csgroup.eu>
+In-Reply-To: <4d588481-0c8d-6adf-53f5-e7332ddca7c4@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <20201124120547.1940635-3-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Message-Id: <1606247281.yz5qee0fl7.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-24_06:2020-11-24,
+ 2020-11-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxlogscore=999
+ malwarescore=0 phishscore=0 bulkscore=0 priorityscore=1501 clxscore=1015
+ suspectscore=0 impostorscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011240112
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,49 +100,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: srikar@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/24/20 4:05 AM, Michael Ellerman wrote:
-> Update the NUMA Kconfig description to match other architectures, and
-> add some help text. Shamelessly borrowed from x86/arm64.
-> 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Christophe Leroy wrote:
+>=20
+>=20
+> Le 24/11/2020 =C3=A0 17:35, Naveen N. Rao a =C3=A9crit=C2=A0:
+>> Hi Christophe,
+>>=20
+>> Christophe Leroy wrote:
+>>> Hi Naveen,
+>>>
+>>> Few years ago, you implemented eBPF on PPC64.
+>>>
+>>> Is there any reason for implementing it for PPC64 only ?
+>>=20
+>> I focused on ppc64 since eBPF is a 64-bit VM and it was more straight-fo=
+rward to target.
+>>=20
+>>> Is there something that makes it impossible to have eBPF for PPC32 as w=
+ell ?
+>>=20
+>> No, I just wasn't sure if it would be performant enough to warrant it. S=
+ince then however, there=20
+>> have been arm32 and riscv 32-bit JIT implementations and atleast the arm=
+32 JIT seems to be showing=20
+>> ~50% better performance compared to the interpreter (*). So, it would be=
+ worthwhile to add support=20
+>> for ppc32.
+>=20
+> That's great.
+>=20
+> I know close to nothing about eBPF. Is there any interesting documentatio=
+n on it somewhere that=20
+> would allow me to easily understand how it works and allow me to extend t=
+he 64 bit powerpc to 32 bits ?
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-
-Thanks.
-
-> ---
->  arch/powerpc/Kconfig | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 4d688b426353..7f4995b245a3 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -659,9 +659,15 @@ config IRQ_ALL_CPUS
->  	  reported with SMP Power Macintoshes with this option enabled.
->  
->  config NUMA
-> -	bool "NUMA support"
-> +	bool "NUMA Memory Allocation and Scheduler Support"
->  	depends on PPC64 && SMP
->  	default y if PPC_PSERIES || PPC_POWERNV
-> +	help
-> +	  Enable NUMA (Non-Uniform Memory Access) support.
-> +
-> +	  The kernel will try to allocate memory used by a CPU on the
-> +	  local memory controller of the CPU and add some more
-> +	  NUMA awareness to the kernel.
->  
->  config NODES_SHIFT
->  	int
-> 
+I don't think there was ever a formal spec written for the eBPF VM. Here=20
+are a few resources which should help, alongside the existing JIT=20
+implementations:
+- BPF Kernel Internals: =20
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
+ocumentation/networking/filter.rst#n604
+- https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
+ocumentation/bpf
+- BPF and XDP Reference Guide: https://docs.cilium.io/en/stable/bpf/
 
 
--- 
-~Randy
+- Naveen
 
