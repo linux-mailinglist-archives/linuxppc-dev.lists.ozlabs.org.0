@@ -2,75 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C285B2C22CA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 11:21:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C13DA2C22D2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 11:24:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgKmy64zwzDqNW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 21:21:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgKrr45cgzDqXr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 21:24:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgKZ81wbSzDqXB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 21:12:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4CgKZ66nC7z8tYP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 21:11:58 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4CgKZ65Rfzz9s1l; Tue, 24 Nov 2020 21:11:58 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=nVMS2Gyj; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4CgKZ339phz9sSf
- for <linuxppc-dev@ozlabs.org>; Tue, 24 Nov 2020 21:11:50 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CgKYr1p1pz9tyj1;
- Tue, 24 Nov 2020 11:11:44 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id nDy193HthGhk; Tue, 24 Nov 2020 11:11:44 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CgKYr0Lx6z9tyj0;
- Tue, 24 Nov 2020 11:11:44 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3A23D8B7AC;
- Tue, 24 Nov 2020 11:11:38 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 05978rp1OlgK; Tue, 24 Nov 2020 11:11:38 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DAAB08B7A7;
- Tue, 24 Nov 2020 11:11:37 +0100 (CET)
-Subject: Re: C vdso
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <20200916165516.Horde.uocmo3irPb7BMg__NUSqRA9@messagerie.si.c-s.fr>
- <87r1r0oa4o.fsf@mpe.ellerman.id.au>
- <cc532aa8-a9e0-a105-b7b1-ee8d723b7ed6@csgroup.eu>
- <be21c7c8-6828-b757-064d-20f74e5c1a31@csgroup.eu>
- <877drhxeg8.fsf@mpe.ellerman.id.au>
- <50214d90-be25-f673-494c-840fdfb96206@csgroup.eu>
-Message-ID: <49ac0354-d6a5-be2c-c717-965e6a102320@csgroup.eu>
-Date: Tue, 24 Nov 2020 11:11:23 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgKdc5SJRzDqMp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 21:15:00 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AOA1naq042031
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 05:14:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=8Z5YXE1Y4fpFttCXmWd17Pnc7l1ghsXXa7n606pxUDA=;
+ b=nVMS2GyjFUgA0xYBq7YO/jzf+fr5TVRb3z2qdC0mzgXQz4bivPxtpOewd1mrYv0oyevW
+ F1zu7wJLv/O3ct2Euk3b9RP7GlSDOg2be5FHeTpiXGf5eTCjGawv99bQX9y7Aq28NYIo
+ D/3BEpYRFVmcCyd2d9SwVhHa1AIV3VCnXp3QJP8M5RMoQam/QDxkuwhhifbBYrsg+iSm
+ OFlygro3nmExvnG9WtcFUh0IDicBRSaqxxycBlqOp1mm1inV/tGwlFVV9Lk7jn1tc5dA
+ kBJ1rq0Xa27i3jdbmE10M3eBFv4EUrJ3oa7gQ/Qlo3YUXlsqvKkqUKaOL3FdQ8y92QWY tw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 350pdq1cwb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 05:14:57 -0500
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0AOA2CqN044195
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 05:14:57 -0500
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 350pdq1cv8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Nov 2020 05:14:56 -0500
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AOADD8h016125;
+ Tue, 24 Nov 2020 10:14:54 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06fra.de.ibm.com with ESMTP id 34xt5h9sdd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Nov 2020 10:14:54 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0AOAEqqN55705990
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 24 Nov 2020 10:14:52 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 072865205F;
+ Tue, 24 Nov 2020 10:14:52 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.145.160.120])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id DEC4D52059;
+ Tue, 24 Nov 2020 10:14:51 +0000 (GMT)
+Subject: Re: [PATCH 3/3] selftests/powerpc: Add VF recovery tests
+To: "Oliver O'Halloran" <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20201103044503.917128-1-oohall@gmail.com>
+ <20201103044503.917128-3-oohall@gmail.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Message-ID: <d192485d-c8e0-7798-4a7f-85efe68a41fa@linux.ibm.com>
+Date: Tue, 24 Nov 2020 11:14:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <50214d90-be25-f673-494c-840fdfb96206@csgroup.eu>
+In-Reply-To: <20201103044503.917128-3-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-24_04:2020-11-24,
+ 2020-11-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ mlxlogscore=999 spamscore=0 priorityscore=1501 mlxscore=0 phishscore=0
+ clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011240058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,67 +105,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
 
-Le 03/11/2020 à 19:13, Christophe Leroy a écrit :
-> 
-> 
-> Le 23/10/2020 à 15:24, Michael Ellerman a écrit :
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>> Le 24/09/2020 à 15:17, Christophe Leroy a écrit :
->>>> Le 17/09/2020 à 14:33, Michael Ellerman a écrit :
->>>>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>>>>>
->>>>>> What is the status with the generic C vdso merge ?
->>>>>> In some mail, you mentionned having difficulties getting it working on
->>>>>> ppc64, any progress ? What's the problem ? Can I help ?
->>>>>
->>>>> Yeah sorry I was hoping to get time to work on it but haven't been able
->>>>> to.
->>>>>
->>>>> It's causing crashes on ppc64 ie. big endian.
->> ...
->>>>
->>>> Can you tell what defconfig you are using ? I have been able to setup a full glibc PPC64 cross
->>>> compilation chain and been able to test it under QEMU with success, using Nathan's vdsotest tool.
->>>
->>> What config are you using ?
->>
->> ppc64_defconfig + guest.config
->>
->> Or pseries_defconfig.
->>
->> I'm using Ubuntu GCC 9.3.0 mostly, but it happens with other toolchains too.
->>
->> At a minimum we're seeing relocations in the output, which is a problem:
->>
->>    $ readelf -r build\~/arch/powerpc/kernel/vdso64/vdso64.so
->>    Relocation section '.rela.dyn' at offset 0x12a8 contains 8 entries:
->>      Offset          Info           Type           Sym. Value    Sym. Name + Addend
->>    000000001368  000000000016 R_PPC64_RELATIVE                     7c0
->>    000000001370  000000000016 R_PPC64_RELATIVE                     9300
->>    000000001380  000000000016 R_PPC64_RELATIVE                     970
->>    000000001388  000000000016 R_PPC64_RELATIVE                     9300
->>    000000001398  000000000016 R_PPC64_RELATIVE                     a90
->>    0000000013a0  000000000016 R_PPC64_RELATIVE                     9300
->>    0000000013b0  000000000016 R_PPC64_RELATIVE                     b20
->>    0000000013b8  000000000016 R_PPC64_RELATIVE                     9300
-> 
-> Looks like it's due to the OPD and relation between the function() and .function()
-> 
-> By using DOTSYM() in the 'bl' call, that's directly the dot function which is called and the OPD is 
-> not used anymore, it can get dropped.
-> 
-> Now I get .rela.dyn full of 0, don't know if we should drop it explicitely.
-> 
 
-What is the status now with latest version of CVDSO ? I saw you had it in next-test for some time, 
-it is not there anymore today.
+On 03/11/2020 05:45, Oliver O'Halloran wrote:
 
-Thanks,
-Christophe
+> --- a/tools/testing/selftests/powerpc/eeh/eeh-functions.sh
+> +++ b/tools/testing/selftests/powerpc/eeh/eeh-functions.sh
+> @@ -135,3 +135,111 @@ eeh_one_dev() {
+>   	return 0;
+>   }
+>   
+> +eeh_has_driver() {
+> +	test -e /sys/bus/pci/devices/$1/driver;
+> +	return $?
+> +}
+> +
+> +eeh_can_recover() {
+> +	# we'll get an IO error if the device's current driver doesn't support
+> +	# error recovery
+> +	echo $1 > '/sys/kernel/debug/powerpc/eeh_dev_can_recover' 2>/dev/null
+> +
+> +	return $?
+> +}
+> +
+> +eeh_find_all_pfs() {
+> +	devices=""
+> +
+> +	# SR-IOV on pseries requires hypervisor support, so check for that
+> +	is_pseries=""
+> +	if grep -q pSeries /proc/cpuinfo ; then
+> +		if [ ! -f /proc/device-tree/rtas/ibm,open-sriov-allow-unfreeze ] ||
+> +		   [ ! -f /proc/device-tree/rtas/ibm,open-sriov-map-pe-number ] ; then
+> +			return 1;
+> +		fi
+
+
+Is it possible to run those tests on pseries? I haven't managed to set 
+up a LPAR with a physical function which would let me enable a virtual 
+function. All I could do is assign a virtual function to a LPAR. When 
+assigning a physical function to the LPAR, enabling a virtual function 
+fails because of missing properties in the device tree, so it looks like 
+the hypervisor doesn't support it (?).
+
+Same story on qemu.
+
+   Fred
+
+
