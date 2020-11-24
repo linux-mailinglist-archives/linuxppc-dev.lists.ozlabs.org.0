@@ -2,65 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079BE2C1A31
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 01:46:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AE932C1A33
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 01:52:02 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cg51z5lNwzDqSc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 11:46:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cg57z05xvzDqRm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 11:51:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.194;
- helo=mail-oi1-f194.google.com; envelope-from=pku.leo@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.67; helo=mail-ot1-f67.google.com;
+ envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=nxp.com
-Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com
- [209.85.167.194])
+Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com
+ [209.85.210.67])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cg5024gdyzDqRG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 11:44:59 +1100 (AEDT)
-Received: by mail-oi1-f194.google.com with SMTP id k26so21894686oiw.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Nov 2020 16:44:59 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cg55x5bM6zDqRb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 11:50:08 +1100 (AEDT)
+Received: by mail-ot1-f67.google.com with SMTP id 92so14724752otd.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Nov 2020 16:50:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=gI7zhBhIP0+6Xsp8/COOViVeUh5gtUo2CsgJ6HRlj/M=;
- b=TpZdq/mURW3tML2hjHMfO/NClixmr0/w/5E+ZxjvTCZcnPqSPoXV5gDOkuLwHtPD+O
- J3tyslNWMuZ81AcSMTA6LIa1tQkLAsS8K1RRPvfrq2xYLft/MeyV0bhZMTVHtL/ShjHD
- 65Cwt+Q8EllzNUeKZ9YhpdYly+WV+Sz2sfvqD1VPgCBsZtRvC+OG+Vj4G2XtxgCn+c4/
- 0eesibzb3WDZNx/dmvjxQQybO5v8v9cmInigz3T+96lhCOue9uQlj1GChcGeMB64mBRW
- 2kUJdoVOWpCux9WzTwUMXkjUYn3LgwsBYL6AmbNtl77BL16xU/zzXntB5HOp8X56fhb2
- O+kw==
-X-Gm-Message-State: AOAM5325efffjzm3l6acmLRHNY5dgeHGjmH9WGV3p/KOjDPoK4z81t2m
- zRjNJYqQstp7k28o0WTYMZ12jG5jvcQ=
-X-Google-Smtp-Source: ABdhPJyRF459LqG+YTih8BnHX5ANjcS4OtKSiOuIyc3i96MWYNYwHChfWaELGjI6yNmZkMovBCKkyQ==
-X-Received: by 2002:a05:6808:3d6:: with SMTP id
- o22mr1115249oie.145.1606178696510; 
- Mon, 23 Nov 2020 16:44:56 -0800 (PST)
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com.
- [209.85.167.171])
- by smtp.gmail.com with ESMTPSA id u66sm7602822otb.48.2020.11.23.16.44.55
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=iOdTCmgyt3Rw2NWUSk3IqpjqjDIXkanlk8cXx/I9Kbo=;
+ b=Iz1xiqQB81lDF1iTFb/qMynrYFYCgQZO7zyTbkvjEJ+cKyOepUVn35GWJs8P7MMn1O
+ GlVjWygAZwOEBxrq/EsCVOozgKthvkW2nVpAUJeaQr+7QnkaeOLpo7d8AAmUictCHyHJ
+ Y86T9zXLKMMRgMNVyGv51UMDO3CRYIZ/arbi3qgnJxZAU1xskisGY7ZlPK8ktrk0cPQN
+ 7pqlY5T92adMi0IB/6JFBoC1H4nzhV77MDZaniQoD1O9f7NmgM5wq41gqZ9y6YwoJvLB
+ hqnHGHD7UbP8rjJdUI8HcJWc1ri8TVmV75irhBE7ITX57eAgZn0KLAQQS9moSNf220HX
+ EpCw==
+X-Gm-Message-State: AOAM531yXgw72x2og0YV/6Tu5s+qyL1O7wwoTe5EuJlUSSERQCuHi8fW
+ /Qzg9ZLVKU09+756kekDiVF2PaNHlm/28g==
+X-Google-Smtp-Source: ABdhPJwPmliEJQAJa+SAlP/UAkknYTqygTdQqd4VZmcWggoIWdjhTNTWnYifdTku+KwFy0acVQJieA==
+X-Received: by 2002:a05:6830:2301:: with SMTP id
+ u1mr1544613ote.36.1606179005784; 
+ Mon, 23 Nov 2020 16:50:05 -0800 (PST)
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com.
+ [209.85.210.48])
+ by smtp.gmail.com with ESMTPSA id 189sm3019801oob.26.2020.11.23.16.50.05
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Nov 2020 16:44:56 -0800 (PST)
-Received: by mail-oi1-f171.google.com with SMTP id c80so21868098oib.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Nov 2020 16:44:55 -0800 (PST)
-X-Received: by 2002:aca:4cf:: with SMTP id 198mr1036440oie.175.1606178695336; 
- Mon, 23 Nov 2020 16:44:55 -0800 (PST)
+ Mon, 23 Nov 2020 16:50:05 -0800 (PST)
+Received: by mail-ot1-f48.google.com with SMTP id g19so17762596otp.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Nov 2020 16:50:05 -0800 (PST)
+X-Received: by 2002:a05:6830:160d:: with SMTP id
+ g13mr1625578otr.74.1606179005016; 
+ Mon, 23 Nov 2020 16:50:05 -0800 (PST)
 MIME-Version: 1.0
 References: <20201103152838.1290217-1-lee.jones@linaro.org>
-In-Reply-To: <20201103152838.1290217-1-lee.jones@linaro.org>
+ <20201103152838.1290217-26-lee.jones@linaro.org>
+In-Reply-To: <20201103152838.1290217-26-lee.jones@linaro.org>
 From: Li Yang <leoyang.li@nxp.com>
-Date: Mon, 23 Nov 2020 18:44:43 -0600
-X-Gmail-Original-Message-ID: <CADRPPNQx2=f46EQOvYLZUMbL+4qyDXUyvzjsKqFLC-iuQFRAQQ@mail.gmail.com>
-Message-ID: <CADRPPNQx2=f46EQOvYLZUMbL+4qyDXUyvzjsKqFLC-iuQFRAQQ@mail.gmail.com>
-Subject: Re: [PATCH 00/25] Rid W=1 warnings in SoC
-To: Lee Jones <lee.jones@linaro.org>
+Date: Mon, 23 Nov 2020 18:49:53 -0600
+X-Gmail-Original-Message-ID: <CADRPPNTguTHuRVhB_4QmN4N3Jorqi8y0gzm4Ew9D=qOuXqu=4g@mail.gmail.com>
+Message-ID: <CADRPPNTguTHuRVhB_4QmN4N3Jorqi8y0gzm4Ew9D=qOuXqu=4g@mail.gmail.com>
+Subject: Re: [PATCH 25/25] soc: fsl: qbman: qman: Remove unused variable
+ 'dequeue_wq'
+To: Roy Pledge <Roy.Pledge@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,105 +75,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Stuebner <heiko@sntech.de>, Roy Pledge <Roy.Pledge@nxp.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Scott Wood <scottwood@freescale.com>,
- Thierry Reding <thierry.reding@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>,
- linux-samsung-soc@vger.kernel.org,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- YueHaibing <yuehaibing@huawei.com>, Sandeep Nair <sandeep_n@ti.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>,
- linux-rockchip@lists.infradead.org, act <dmalek@jlc.net>,
- Andy Gross <agross@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
- Cyril Chemparathy <cyril@ti.com>,
- linux-arm-msm <linux-arm-msm@vger.kernel.org>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Santosh Shilimkar <ssantosh@kernel.org>, linux-tegra@vger.kernel.org,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Lee Jones <lee.jones@linaro.org>, YueHaibing <yuehaibing@huawei.com>,
+ lkml <linux-kernel@vger.kernel.org>,
  "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>, "Software, Inc" <source@mvista.com>,
- Dave Gerlach <d-gerlach@ti.com>, Doug Anderson <dianders@chromium.org>,
- lkml <linux-kernel@vger.kernel.org>, Ben Dooks <ben@simtec.co.uk>,
- Mark Brown <broonie@kernel.org>, Dan Malek <dan@embeddedalley.com>,
- Vitaly Bordug <vbordug@ru.mvista.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 3, 2020 at 9:29 AM Lee Jones <lee.jones@linaro.org> wrote:
->
-> This set is part of a larger effort attempting to clean-up W=1
-> kernel builds, which are currently overwhelmingly riddled with
-> niggly little warnings.
->
-> Lee Jones (25):
+Hi Roy,
 
->   soc: fsl: dpio: qbman-portal: Fix a bunch of kernel-doc misdemeanours
->   soc: fsl: qe: qe_common: Fix misnamed function attribute 'addr'
->   soc: fsl: qbman: qman: Remove unused variable 'dequeue_wq'
-
-The above are applied for next.  Thanks.
-
-Regards,
-Leo
+On Tue, Nov 3, 2020 at 9:31 AM Lee Jones <lee.jones@linaro.org> wrote:
 >
->  drivers/soc/bcm/brcmstb/pm/pm-arm.c      |  2 +
->  drivers/soc/fsl/dpio/qbman-portal.c      | 18 +++++--
->  drivers/soc/fsl/qbman/qman.c             |  8 +--
->  drivers/soc/fsl/qe/qe_common.c           |  2 +-
->  drivers/soc/qcom/kryo-l2-accessors.c     |  2 +-
->  drivers/soc/qcom/llcc-qcom.c             |  2 +-
->  drivers/soc/qcom/qcom-geni-se.c          |  5 +-
->  drivers/soc/qcom/qcom_aoss.c             |  4 +-
->  drivers/soc/qcom/rpmh.c                  |  2 +-
->  drivers/soc/qcom/rpmhpd.c                |  3 ++
->  drivers/soc/qcom/smem.c                  |  3 +-
->  drivers/soc/qcom/smp2p.c                 |  3 +-
->  drivers/soc/qcom/smsm.c                  |  4 +-
->  drivers/soc/qcom/wcnss_ctrl.c            |  8 +--
->  drivers/soc/rockchip/io-domain.c         |  3 --
->  drivers/soc/samsung/s3c-pm-check.c       |  2 +-
->  drivers/soc/tegra/fuse/speedo-tegra124.c |  7 ++-
->  drivers/soc/tegra/fuse/speedo-tegra210.c |  8 +--
->  drivers/soc/ti/k3-ringacc.c              |  1 +
->  drivers/soc/ti/knav_dma.c                |  2 +-
->  drivers/soc/ti/knav_qmss_queue.c         | 62 ++++++++++++------------
->  drivers/soc/ti/pm33xx.c                  |  4 +-
->  drivers/soc/ti/wkup_m3_ipc.c             |  8 ++-
->  23 files changed, 86 insertions(+), 77 deletions(-)
+> Fixes the following W=3D1 kernel build warning(s):
 >
-> Cc: act <dmalek@jlc.net>
-> Cc: Andy Gross <agross@kernel.org>
-> Cc: bcm-kernel-feedback-list@broadcom.com
-> Cc: Ben Dooks <ben@simtec.co.uk>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Cyril Chemparathy <cyril@ti.com>
-> Cc: Dan Malek <dan@embeddedalley.com>
-> Cc: Dave Gerlach <d-gerlach@ti.com>
-> Cc: Doug Anderson <dianders@chromium.org>
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Heiko Stuebner <heiko@sntech.de>
-> Cc: Jonathan Hunter <jonathanh@nvidia.com>
-> Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: Liam Girdwood <lgirdwood@gmail.com>
-> Cc: linux-arm-msm@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-rockchip@lists.infradead.org
-> Cc: linux-samsung-soc@vger.kernel.org
-> Cc: linux-tegra@vger.kernel.org
+>  drivers/soc/fsl/qbman/qman.c: In function =E2=80=98qman_shutdown_fq=E2=
+=80=99:
+>  drivers/soc/fsl/qbman/qman.c:2700:8: warning: variable =E2=80=98dequeue_=
+wq=E2=80=99 set but not used [-Wunused-but-set-variable]
+>
 > Cc: Li Yang <leoyang.li@nxp.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Qiang Zhao <qiang.zhao@nxp.com>
-> Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> Cc: Roy Pledge <Roy.Pledge@nxp.com>
-> Cc: Sandeep Nair <sandeep_n@ti.com>
-> Cc: Santosh Shilimkar <ssantosh@kernel.org>
-> Cc: Scott Wood <scottwood@freescale.com>
-> Cc: "Software, Inc" <source@mvista.com>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Vitaly Bordug <vbordug@ru.mvista.com>
 > Cc: YueHaibing <yuehaibing@huawei.com>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> ---
+>  drivers/soc/fsl/qbman/qman.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
 >
+> diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+> index 9888a70618730..62b182c3a8b04 100644
+> --- a/drivers/soc/fsl/qbman/qman.c
+> +++ b/drivers/soc/fsl/qbman/qman.c
+> @@ -2622,7 +2622,7 @@ int qman_shutdown_fq(u32 fqid)
+>         union qm_mc_command *mcc;
+>         union qm_mc_result *mcr;
+>         int orl_empty, drain =3D 0, ret =3D 0;
+> -       u32 channel, wq, res;
+> +       u32 channel, res;
+>         u8 state;
+>
+>         p =3D get_affine_portal();
+> @@ -2655,7 +2655,7 @@ int qman_shutdown_fq(u32 fqid)
+>         DPAA_ASSERT((mcr->verb & QM_MCR_VERB_MASK) =3D=3D QM_MCR_VERB_QUE=
+RYFQ);
+>         /* Need to store these since the MCR gets reused */
+>         channel =3D qm_fqd_get_chan(&mcr->queryfq.fqd);
+> -       wq =3D qm_fqd_get_wq(&mcr->queryfq.fqd);
+> +       qm_fqd_get_wq(&mcr->queryfq.fqd);
+
+This probably is not needed also.
+
+>
+>         if (channel < qm_channel_pool1) {
+>                 channel_portal =3D get_portal_for_channel(channel);
+> @@ -2697,7 +2697,6 @@ int qman_shutdown_fq(u32 fqid)
+>                          * to dequeue from the channel the FQ is schedule=
+d on
+>                          */
+>                         int found_fqrn =3D 0;
+> -                       u16 dequeue_wq =3D 0;
+>
+>                         /* Flag that we need to drain FQ */
+>                         drain =3D 1;
+> @@ -2705,11 +2704,8 @@ int qman_shutdown_fq(u32 fqid)
+>                         if (channel >=3D qm_channel_pool1 &&
+>                             channel < qm_channel_pool1 + 15) {
+>                                 /* Pool channel, enable the bit in the po=
+rtal */
+> -                               dequeue_wq =3D (channel -
+> -                                             qm_channel_pool1 + 1)<<4 | =
+wq;
+>                         } else if (channel < qm_channel_pool1) {
+>                                 /* Dedicated channel */
+> -                               dequeue_wq =3D wq;
+
+With these gone, these if statements seem to be redundant.  Can you
+propose an additional patch to further cleanup the code here?  Thanks.
+
+>                         } else {
+>                                 dev_err(dev, "Can't recover FQ 0x%x, ch: =
+0x%x",
+>                                         fqid, channel);
 > --
 > 2.25.1
 >
