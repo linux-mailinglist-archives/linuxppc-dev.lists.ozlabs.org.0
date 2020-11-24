@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F28A2C318E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 21:00:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F89B2C317F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 20:58:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgZd43qDgzDqLy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 07:00:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgZZw3MNxzDqJV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 06:58:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,37 +17,38 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgZRR0cHgzDqKj
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgZRR0cR4zDqW8
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 06:52:00 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CgZRJ2lK7z9v0DN;
+ by localhost (Postfix) with ESMTP id 4CgZRJ6hJWz9v0DP;
  Tue, 24 Nov 2020 20:51:56 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 0zthhqvlE51a; Tue, 24 Nov 2020 20:51:55 +0100 (CET)
+ with ESMTP id NXRSA4NxUpNN; Tue, 24 Nov 2020 20:51:56 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CgZRH63W5z9v0DM;
- Tue, 24 Nov 2020 20:51:55 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CgZRJ5QHsz9v0DM;
+ Tue, 24 Nov 2020 20:51:56 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B32088B7B7;
- Tue, 24 Nov 2020 20:51:55 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B9BEC8B7B7;
+ Tue, 24 Nov 2020 20:51:56 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id QBHhHxe0qopc; Tue, 24 Nov 2020 20:51:55 +0100 (CET)
+ with ESMTP id 3xv1ibxVlHXJ; Tue, 24 Nov 2020 20:51:56 +0100 (CET)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7395C8B7AF;
- Tue, 24 Nov 2020 20:51:55 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7312C8B7AF;
+ Tue, 24 Nov 2020 20:51:56 +0100 (CET)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 4AFB66688D; Tue, 24 Nov 2020 19:51:55 +0000 (UTC)
-Message-Id: <6470ab99e58c84a5445af43ce4d1d772b0dc3e93.1606247495.git.christophe.leroy@csgroup.eu>
+ id 504726688D; Tue, 24 Nov 2020 19:51:56 +0000 (UTC)
+Message-Id: <3907199974c89b85a3441cf3f528751173b7649c.1606247495.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <6470ab99e58c84a5445af43ce4d1d772b0dc3e93.1606247495.git.christophe.leroy@csgroup.eu>
+References: <6470ab99e58c84a5445af43ce4d1d772b0dc3e93.1606247495.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v1 1/3] powerpc/32s: Remove unused counters incremented by
- create_hpte()
+Subject: [PATCH v1 2/3] powerpc/32s: In add_hash_page(), calculate VSID later
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 24 Nov 2020 19:51:55 +0000 (UTC)
+Date: Tue, 24 Nov 2020 19:51:56 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,55 +65,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-primary_pteg_full and htab_hash_searches are not used.
-
-Remove them.
+VSID is only for create_hpte(). When _PAGE_HASHPTE is
+already set, add_hash_page() bails out without calling
+create_hpte() and doesn't need the value of VSID.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/mm/book3s32/hash_low.S | 15 ---------------
- 1 file changed, 15 deletions(-)
+ arch/powerpc/mm/book3s32/hash_low.S | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/arch/powerpc/mm/book3s32/hash_low.S b/arch/powerpc/mm/book3s32/hash_low.S
-index 9a56ba4f68f2..f964fd34dad9 100644
+index f964fd34dad9..1366e8e4fc05 100644
 --- a/arch/powerpc/mm/book3s32/hash_low.S
 +++ b/arch/powerpc/mm/book3s32/hash_low.S
-@@ -359,11 +359,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_NEED_COHERENT)
- 	beq+	10f			/* no PTE: go look for an empty slot */
- 	tlbie	r4
+@@ -188,12 +188,6 @@ _GLOBAL(add_hash_page)
+ 	mflr	r0
+ 	stw	r0,4(r1)
  
--	lis	r4, (htab_hash_searches - PAGE_OFFSET)@ha
--	lwz	r6, (htab_hash_searches - PAGE_OFFSET)@l(r4)
--	addi	r6,r6,1			/* count how many searches we do */
--	stw	r6, (htab_hash_searches - PAGE_OFFSET)@l(r4)
+-	/* Convert context and va to VSID */
+-	mulli	r3,r3,897*16		/* multiply context by context skew */
+-	rlwinm	r0,r4,4,28,31		/* get ESID (top 4 bits of va) */
+-	mulli	r0,r0,0x111		/* multiply by ESID skew */
+-	add	r3,r3,r0		/* note create_hpte trims to 24 bits */
 -
- 	/* Search the primary PTEG for a PTE whose 1st (d)word matches r5 */
- 	mtctr	r0
- 	addi	r4,r3,-HPTE_SIZE
-@@ -393,12 +388,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_NEED_COHERENT)
- 	bdnzf	2,1b			/* loop while ctr != 0 && !cr0.eq */
- 	beq+	.Lfound_empty
+ #ifdef CONFIG_SMP
+ 	lwz	r8,TASK_CPU(r2)		/* to go in mmu_hash_lock */
+ 	oris	r8,r8,12
+@@ -257,6 +251,12 @@ _GLOBAL(add_hash_page)
+ 	stwcx.	r5,0,r8
+ 	bne-	1b
  
--	/* update counter of times that the primary PTEG is full */
--	lis	r4, (primary_pteg_full - PAGE_OFFSET)@ha
--	lwz	r6, (primary_pteg_full - PAGE_OFFSET)@l(r4)
--	addi	r6,r6,1
--	stw	r6, (primary_pteg_full - PAGE_OFFSET)@l(r4)
--
- 	patch_site	0f, patch__hash_page_C
- 	/* Search the secondary PTEG for an empty slot */
- 	ori	r5,r5,PTE_H		/* set H (secondary hash) bit */
-@@ -491,10 +480,6 @@ _ASM_NOKPROBE_SYMBOL(create_hpte)
- 	.align	2
- next_slot:
- 	.space	4
--primary_pteg_full:
--	.space	4
--htab_hash_searches:
--	.space	4
- 	.previous
++	/* Convert context and va to VSID */
++	mulli	r3,r3,897*16		/* multiply context by context skew */
++	rlwinm	r0,r4,4,28,31		/* get ESID (top 4 bits of va) */
++	mulli	r0,r0,0x111		/* multiply by ESID skew */
++	add	r3,r3,r0		/* note create_hpte trims to 24 bits */
++
+ 	bl	create_hpte
  
- /*
+ 9:
 -- 
 2.25.0
 
