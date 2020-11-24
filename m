@@ -1,53 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B77102C20FE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 10:19:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266D92C2119
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 10:25:32 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgJPy4gPjzDqWf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 20:19:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgJXR0rJwzDqNn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 20:25:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
- helo=casper.infradead.org;
- envelope-from=batv+cbe268a5dfa7b983a02e+6302+infradead.org+hch@casper.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::241;
+ helo=mail-oi1-x241.google.com; envelope-from=andy.shevchenko@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=i4p6UDUs; dkim-atps=neutral
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgJMh2tFyzDqNn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 20:17:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=TLAvajNWCtLYQc6h362LPCaUkCwaOPXBmH7kXtBxK1A=; b=JGVMTeen3uaW8IT02uuOx9oKIL
- GLXvsHiTJc2zmxAvVvzk5qxlHjVsXOOGV3gtWwVnAvM53uFTiG+3DU1ir/d7ajBG3RoSMXweMOUAn
- 9W78x4tiaOc1HabFl+90U7zdVh1oi/W1Fc3EZZiOQWXgKs0HQK5j7kaDh4DbCmJNcSHh3QxT9CrIm
- R2OGQfijeOw+QV8hPZfa+9ZUpChHCCt53q237m1UwRmG7IOcI9zvOB/HurEBPPDch5dHtY6uyF6Bl
- gM4XiW18LRVbjdIb1ldoixi2REh2qSJqdasSHA0Ld9dpvDHJVPEcCPIENhByEvZlRoty36MDrZUol
- vLtAqwqg==;
-Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1khUSA-0006rp-IB; Tue, 24 Nov 2020 09:17:38 +0000
-Date: Tue, 24 Nov 2020 09:17:38 +0000
-From: Christoph Hellwig <hch@infradead.org>
-To: Christophe Lombard <clombard@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2 4/5] ocxl: Add mmu notifier
-Message-ID: <20201124091738.GA26078@infradead.org>
-References: <20201120173241.59229-1-clombard@linux.vnet.ibm.com>
- <20201120173241.59229-5-clombard@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgJVT0cDPzDqLg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 20:23:42 +1100 (AEDT)
+Received: by mail-oi1-x241.google.com with SMTP id j15so17736768oih.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 01:23:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=TX0s0mIR0wt/HcYW5SNqzmfoKqx6TwmdMniIzsTXvlM=;
+ b=i4p6UDUsRImUT3ewIRw7Z/DjFfF7FfVS5iLPZTjK78SzqdWSYMl4rsf3hEglOjh7Hz
+ LWU9XegimSQVcxPK1IRcdDM68+VgKn3nuJbf1vRoS3winwElp/CqCjr4Bhn9QKCv0t5z
+ 2gX+mUfERAuzIUaGA4HbvivhfSZGg3/a7PZPcqkL4QudhDVLFhwkeftkPJXvPQGZ9mK1
+ rzGekuLYI/tj2VIZWFqrOsF2/Ipc7AwLoJPedOB/pxKkuI9PfW3knSthvb/Ne6sEbMRn
+ c1YKIueYsacinbH716qHdAoLHMuAzZJl+t9btA4ckBft/agLCJlZ2p1OPtSkammjWtGp
+ StrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=TX0s0mIR0wt/HcYW5SNqzmfoKqx6TwmdMniIzsTXvlM=;
+ b=r5JS1U4xprhgYQpBSN53CIVMIsxjCvPPy4Hc4v5GDJGndVeXVJR/QtNJ54euHzy1P+
+ mFRuSqfyQeCgJub3jbZIf3fgQz9ywtJtHlQNJHqe+hE4UJ9p0vwtb1GZ6dI+25W2xySi
+ UqnoG9+nduU40iOwIrpJgVmoElxlc6eWMB2Kygn0wAMBZ5bKPXXyn2pGT765+Ukcf+DB
+ wTkFAowu1tyc7+TzX1uK2oXYvcNmWOB9r3SUNNiLY+LgggdOhaFThuLjSUWY33hxfbh4
+ KFoi3Pegddt1XG6dZosWpk+PPHTg+jN9en6JLm7yVm5t0Nfjsbp3nSkRz2oG4hl5EHcy
+ hqPg==
+X-Gm-Message-State: AOAM532T6n3K4kE1DRqkk1eWJaKVg4jtoTLYA9WjcfBhJ1GKl0eWuvhg
+ Z6hxpbtOhTFHJTepZczB4EfKSFHYa9Eq7+7cLlGLfkD3Et4=
+X-Google-Smtp-Source: ABdhPJyOhS0omFAjIgJdkshqp0eVPfkhnPJIGLR2zFPBNOyY8wO2ECdElnB5crvqZ5axanNabYwDxjgyaZeqZvkhj4c=
+X-Received: by 2002:a17:90a:4816:: with SMTP id
+ a22mr3941316pjh.228.1606209496608; 
+ Tue, 24 Nov 2020 01:18:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201120173241.59229-5-clombard@linux.vnet.ibm.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
+References: <20201124061720.86766-1-aik@ozlabs.ru>
+ <20201124061720.86766-3-aik@ozlabs.ru>
+In-Reply-To: <20201124061720.86766-3-aik@ozlabs.ru>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 24 Nov 2020 11:19:05 +0200
+Message-ID: <CAHp75VfV4mG23C9Ep1vNLk2oBjB=LTQGyU=fhWPhw4PX-Ci-7A@mail.gmail.com>
+Subject: Re: [PATCH kernel v4 2/8] genirq/irqdomain: Clean legacy IRQ
+ allocation
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,164 +75,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, ajd@linux.ibm.com,
- fbarrat@linux.vnet.ibm.com, Jason Gunthorpe <jgg@nvidia.com>
+Cc: Marc Zyngier <maz@kernel.org>,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>,
+ "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
+ <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-You probably want to add Jason for an audit of new notifier uses.
+On Tue, Nov 24, 2020 at 8:20 AM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+>
+> There are 10 users of __irq_domain_alloc_irqs() and only one - IOAPIC -
+> passes realloc==true. There is no obvious reason for handling this
+> specific case in the generic code.
+>
+> This splits out __irq_domain_alloc_irqs_data() to make it clear what
+> IOAPIC does and makes __irq_domain_alloc_irqs() cleaner.
+>
+> This should cause no behavioral change.
 
-On Fri, Nov 20, 2020 at 06:32:40PM +0100, Christophe Lombard wrote:
-> Add invalidate_range mmu notifier, when required (ATSD access of MMIO
-> registers is available), to initiate TLB invalidation commands.
-> For the time being, the ATSD0 set of registers is used by default.
-> 
-> The pasid and bdf values have to be configured in the Process Element
-> Entry.
-> The PEE must be set up to match the BDF/PASID of the AFU.
-> 
-> Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
-> ---
->  drivers/misc/ocxl/link.c | 58 +++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 57 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
-> index 20444db8a2bb..100bdfe9ec37 100644
-> --- a/drivers/misc/ocxl/link.c
-> +++ b/drivers/misc/ocxl/link.c
-> @@ -2,8 +2,10 @@
->  // Copyright 2017 IBM Corp.
->  #include <linux/sched/mm.h>
->  #include <linux/mutex.h>
-> +#include <linux/mm.h>
->  #include <linux/mm_types.h>
->  #include <linux/mmu_context.h>
-> +#include <linux/mmu_notifier.h>
->  #include <asm/copro.h>
->  #include <asm/pnv-ocxl.h>
->  #include <asm/xive.h>
-> @@ -33,6 +35,7 @@
->  
->  #define SPA_PE_VALID		0x80000000
->  
-> +struct ocxl_link;
->  
->  struct pe_data {
->  	struct mm_struct *mm;
-> @@ -41,6 +44,8 @@ struct pe_data {
->  	/* opaque pointer to be passed to the above callback */
->  	void *xsl_err_data;
->  	struct rcu_head rcu;
-> +	struct ocxl_link *link;
-> +	struct mmu_notifier mmu_notifier;
->  };
->  
->  struct spa {
-> @@ -83,6 +88,8 @@ struct ocxl_link {
->  	int domain;
->  	int bus;
->  	int dev;
-> +	void __iomem *arva;     /* ATSD register virtual address */
-> +	spinlock_t atsd_lock;   /* to serialize shootdowns */
->  	atomic_t irq_available;
->  	struct spa *spa;
->  	void *platform_data;
-> @@ -403,6 +410,11 @@ static int alloc_link(struct pci_dev *dev, int PE_mask, struct ocxl_link **out_l
->  	if (rc)
->  		goto err_xsl_irq;
->  
-> +	rc = pnv_ocxl_map_lpar(dev, mfspr(SPRN_LPID), 0,
-> +					  &link->arva);
-> +	if (!rc)
-> +		spin_lock_init(&link->atsd_lock);
-> +
->  	*out_link = link;
->  	return 0;
->  
-> @@ -454,6 +466,11 @@ static void release_xsl(struct kref *ref)
->  {
->  	struct ocxl_link *link = container_of(ref, struct ocxl_link, ref);
->  
-> +	if (link->arva) {
-> +		pnv_ocxl_unmap_lpar(&link->arva);
-> +		link->arva = NULL;
-> +	}
-> +
->  	list_del(&link->list);
->  	/* call platform code before releasing data */
->  	pnv_ocxl_spa_release(link->platform_data);
-> @@ -470,6 +487,26 @@ void ocxl_link_release(struct pci_dev *dev, void *link_handle)
->  }
->  EXPORT_SYMBOL_GPL(ocxl_link_release);
->  
-> +static void invalidate_range(struct mmu_notifier *mn,
-> +			     struct mm_struct *mm,
-> +			     unsigned long start, unsigned long end)
-> +{
-> +	struct pe_data *pe_data = container_of(mn, struct pe_data, mmu_notifier);
-> +	struct ocxl_link *link = pe_data->link;
-> +	unsigned long addr, pid, page_size = PAGE_SIZE;
-> +
-> +	pid = mm->context.id;
-> +
-> +	spin_lock(&link->atsd_lock);
-> +	for (addr = start; addr < end; addr += page_size)
-> +		pnv_ocxl_tlb_invalidate(&link->arva, pid, addr);
-> +	spin_unlock(&link->atsd_lock);
-> +}
-> +
-> +static const struct mmu_notifier_ops ocxl_mmu_notifier_ops = {
-> +	.invalidate_range = invalidate_range,
-> +};
-> +
->  static u64 calculate_cfg_state(bool kernel)
->  {
->  	u64 state;
-> @@ -526,6 +563,8 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
->  	pe_data->mm = mm;
->  	pe_data->xsl_err_cb = xsl_err_cb;
->  	pe_data->xsl_err_data = xsl_err_data;
-> +	pe_data->link = link;
-> +	pe_data->mmu_notifier.ops = &ocxl_mmu_notifier_ops;
->  
->  	memset(pe, 0, sizeof(struct ocxl_process_element));
->  	pe->config_state = cpu_to_be64(calculate_cfg_state(pidr == 0));
-> @@ -542,8 +581,16 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
->  	 * by the nest MMU. If we have a kernel context, TLBIs are
->  	 * already global.
->  	 */
-> -	if (mm)
-> +	if (mm) {
->  		mm_context_add_copro(mm);
-> +		if (link->arva) {
-> +			/* Use MMIO registers for the TLB Invalidate
-> +			 * operations.
-> +			 */
-> +			mmu_notifier_register(&pe_data->mmu_notifier, mm);
-> +		}
-> +	}
-> +
->  	/*
->  	 * Barrier is to make sure PE is visible in the SPA before it
->  	 * is used by the device. It also helps with the global TLBI
-> @@ -674,6 +721,15 @@ int ocxl_link_remove_pe(void *link_handle, int pasid)
->  		WARN(1, "Couldn't find pe data when removing PE\n");
->  	} else {
->  		if (pe_data->mm) {
-> +			if (link->arva) {
-> +				mmu_notifier_unregister(&pe_data->mmu_notifier,
-> +							pe_data->mm);
-> +				spin_lock(&link->atsd_lock);
-> +				pnv_ocxl_tlb_invalidate(&link->arva,
-> +							pe_data->mm->context.id,
-> +							0ull);
-> +				spin_unlock(&link->atsd_lock);
-> +			}
->  			mm_context_remove_copro(pe_data->mm);
->  			mmdrop(pe_data->mm);
->  		}
-> -- 
-> 2.28.0
-> 
----end quoted text---
+> +       ret = __irq_domain_alloc_irqs_data(domain, virq, nr_irqs, node, arg, affinity);
+> +       if (ret <= 0)
+>                 goto out_free_desc;
+
+Was or wasn't 0 considered as error code previously?
+
+>         return virq;
+
+>  out_free_desc:
+>         irq_free_descs(virq, nr_irqs);
+>         return ret;
+
+-- 
+With Best Regards,
+Andy Shevchenko
