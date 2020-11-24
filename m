@@ -1,46 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3D92C2596
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 13:23:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB862C257E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 13:17:20 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgNV84HYwzDqZn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 23:23:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgNLj2sn6zDqYt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 23:17:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgN5g2rwfzDqWp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 23:05:59 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgN5h12dlzDqXC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 23:06:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Ad99/KcO; 
+ header.a=rsa-sha256 header.s=201909 header.b=qJF165E3; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 4CgN5d6MQnz9sSs; Tue, 24 Nov 2020 23:05:57 +1100 (AEDT)
+ id 4CgN5f5Wy9z9sTR; Tue, 24 Nov 2020 23:05:58 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4CgN5d577jz9sT6; Tue, 24 Nov 2020 23:05:57 +1100 (AEDT)
+ id 4CgN5f3Gssz9sVH; Tue, 24 Nov 2020 23:05:58 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1606219557;
- bh=OeXCM+BgRBE+9EkqR7SmDDccO0biv15P7s7oRm9Wjhg=;
+ s=201909; t=1606219558;
+ bh=UFB5goYMCSNWLA3ekhjEPCzg/ejfWWNKc/J0LqLxKfE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Ad99/KcOj0K7Ay/CN1Dnw52Ly2m/BVU48cHzlnt05u6Ub6SHBoBtLyV2RbrgD0Npa
- Xba+gi2NKntiUWjojoHQGL3OpIcnY9/1MdKReHJ41DB6hVMiL7Nzs4uLgRiWsczZ6x
- D0rN+OgBePNra34xRdd2uQWyl3gULRKKkKyJNp+3hD/Vo/EUEDrivtIUob8boSsv91
- TRWWX9SuTo0cVuEPv+RSbnFMux2YsJTfKy+Ji3oxdueuqSk6xMlNbjWe/JCOXhnbdP
- 2xBlgJOWkD78LfhniJqxRPBSseXXk1Jh5jeydWupg17VWqiUhjtftBfqAzZ1e4my4k
- o2JmkzbByzCRA==
+ b=qJF165E3VOErhVY56Dlx2r1cpuVGF0e6BhJJOzp3AyNJfEABQNiEetG51MF8a8Rin
+ Nkv7iJrNGrGLQ4ZhJlOs6kRAIwKWDmYrUZGv1is4qVoMTeKpvYcAXtFVGPoKKGokkr
+ JcL6FNz1ojMe41dRYwHjBE3K3pqbdXFN3T2G8rh5sd/IGsCcxat6Hs7dKGi24NHEcU
+ ZY2wfKbFnynHoSkTwMfbqjBodYLlCmsDJv20dfliWNwOP/V1oUIU5q7/Hlq42KLzt5
+ JFEJ+srd0rWITHw9Oo4qOEeHJf/cWWT2tCugjFeg7qA1wzxjDXTsEid34AEexGiPRW
+ sB44ocbq34gNg==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH 2/3] powerpc: Make NUMA default y for powernv
-Date: Tue, 24 Nov 2020 23:05:46 +1100
-Message-Id: <20201124120547.1940635-2-mpe@ellerman.id.au>
+Subject: [PATCH 3/3] powerpc: Update NUMA Kconfig description & help text
+Date: Tue, 24 Nov 2020 23:05:47 +1100
+Message-Id: <20201124120547.1940635-3-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201124120547.1940635-1-mpe@ellerman.id.au>
 References: <20201124120547.1940635-1-mpe@ellerman.id.au>
@@ -62,24 +62,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Our NUMA option is default y for pseries, but not powernv. The bulk of
-powernv systems are NUMA, so make NUMA default y for powernv also.
+Update the NUMA Kconfig description to match other architectures, and
+add some help text. Shamelessly borrowed from x86/arm64.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/Kconfig | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index a22db3db6b96..4d688b426353 100644
+index 4d688b426353..7f4995b245a3 100644
 --- a/arch/powerpc/Kconfig
 +++ b/arch/powerpc/Kconfig
-@@ -661,7 +661,7 @@ config IRQ_ALL_CPUS
+@@ -659,9 +659,15 @@ config IRQ_ALL_CPUS
+ 	  reported with SMP Power Macintoshes with this option enabled.
+ 
  config NUMA
- 	bool "NUMA support"
+-	bool "NUMA support"
++	bool "NUMA Memory Allocation and Scheduler Support"
  	depends on PPC64 && SMP
--	default y if SMP && PPC_PSERIES
-+	default y if PPC_PSERIES || PPC_POWERNV
+ 	default y if PPC_PSERIES || PPC_POWERNV
++	help
++	  Enable NUMA (Non-Uniform Memory Access) support.
++
++	  The kernel will try to allocate memory used by a CPU on the
++	  local memory controller of the CPU and add some more
++	  NUMA awareness to the kernel.
  
  config NODES_SHIFT
  	int
