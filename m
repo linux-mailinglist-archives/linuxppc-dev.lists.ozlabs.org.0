@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8AC2C1E1D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 07:24:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F252C1E32
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 07:27:54 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgDWG0RNRzDqSN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 17:24:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgDbX3tLLzDqSt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 17:27:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,16 +15,17 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CgDNC5RhvzDqDD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 17:18:03 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CgDNX3ML6zDqJc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 17:18:20 +1100 (AEDT)
 Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 894A2AE8024F;
- Tue, 24 Nov 2020 01:17:57 -0500 (EST)
+ by ozlabs.ru (Postfix) with ESMTP id A6A2EAE80255;
+ Tue, 24 Nov 2020 01:18:14 -0500 (EST)
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH kernel v4 4/8] genirq: Free IRQ descriptor via embedded kobject
-Date: Tue, 24 Nov 2020 17:17:16 +1100
-Message-Id: <20201124061720.86766-5-aik@ozlabs.ru>
+Subject: [PATCH kernel v4 7/8] genirq/irqdomain: Reference irq_desc for
+ already mapped irqs
+Date: Tue, 24 Nov 2020 17:17:19 +1100
+Message-Id: <20201124061720.86766-8-aik@ozlabs.ru>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20201124061720.86766-1-aik@ozlabs.ru>
 References: <20201124061720.86766-1-aik@ozlabs.ru>
@@ -50,106 +51,63 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-At the moment the IRQ descriptor is freed via the free_desc() helper.
-We want to add reference counting to IRQ descriptors and there is already
-kobj embedded into irq_desc which we want to reuse.
+This references an irq_desc if already mapped interrupt requested to map
+again. This happends for PCI legacy interrupts where 4 interrupts are
+shared among all devices on the same PCI host bus adapter.
 
-This shuffles free_desc()/etc to make it simply call kobject_put() and
-moves all the cleanup into the kobject_release hook.
-
-As a bonus, we do not need irq_sysfs_del() as kobj removes itself from
-sysfs if it knows that it was added.
-
-This should cause no behavioral change.
+From now on, the users shall call irq_dispose_mapping() for every
+irq_create_fwspec_mapping(). Most (all?) users do not bother with
+disposing though so it is not very likely to break many things.
 
 Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- kernel/irq/irqdesc.c | 42 ++++++++++++------------------------------
- 1 file changed, 12 insertions(+), 30 deletions(-)
+ kernel/irq/irqdomain.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 1a7723604399..75374b7944b5 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -295,18 +295,6 @@ static void irq_sysfs_add(int irq, struct irq_desc *desc)
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index a0a81cc6c524..07f4bde87de5 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -663,7 +663,9 @@ unsigned int irq_create_mapping(struct irq_domain *domain,
+ 	/* Check if mapping already exists */
+ 	virq = irq_find_mapping(domain, hwirq);
+ 	if (virq) {
++		desc = irq_to_desc(virq);
+ 		pr_debug("-> existing mapping on virq %d\n", virq);
++		kobject_get(&desc->kobj);
+ 		return virq;
  	}
- }
  
--static void irq_sysfs_del(struct irq_desc *desc)
--{
--	/*
--	 * If irq_sysfs_init() has not yet been invoked (early boot), then
--	 * irq_kobj_base is NULL and the descriptor was never added.
--	 * kobject_del() complains about a object with no parent, so make
--	 * it conditional.
--	 */
--	if (irq_kobj_base)
--		kobject_del(&desc->kobj);
--}
--
- static int __init irq_sysfs_init(void)
- {
- 	struct irq_desc *desc;
-@@ -337,7 +325,6 @@ static struct kobj_type irq_kobj_type = {
- };
+@@ -762,6 +764,7 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
+ 	irq_hw_number_t hwirq;
+ 	unsigned int type = IRQ_TYPE_NONE;
+ 	int virq;
++	struct irq_desc *desc;
  
- static void irq_sysfs_add(int irq, struct irq_desc *desc) {}
--static void irq_sysfs_del(struct irq_desc *desc) {}
+ 	if (fwspec->fwnode) {
+ 		domain = irq_find_matching_fwspec(fwspec, DOMAIN_BUS_WIRED);
+@@ -798,8 +801,11 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
+ 		 * current trigger type then we are done so return the
+ 		 * interrupt number.
+ 		 */
+-		if (type == IRQ_TYPE_NONE || type == irq_get_trigger_type(virq))
++		if (type == IRQ_TYPE_NONE || type == irq_get_trigger_type(virq)) {
++			desc = irq_to_desc(virq);
++			kobject_get(&desc->kobj);
+ 			return virq;
++		}
  
- #endif /* CONFIG_SYSFS */
+ 		/*
+ 		 * If the trigger type has not been set yet, then set
+@@ -811,6 +817,8 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
+ 				return 0;
  
-@@ -419,39 +406,34 @@ static struct irq_desc *alloc_desc(int irq, int node, unsigned int flags,
- 	return NULL;
- }
+ 			irqd_set_trigger_type(irq_data, type);
++			desc = irq_to_desc(virq);
++			kobject_get(&desc->kobj);
+ 			return virq;
+ 		}
  
--static void irq_kobj_release(struct kobject *kobj)
--{
--	struct irq_desc *desc = container_of(kobj, struct irq_desc, kobj);
--
--	free_masks(desc);
--	free_percpu(desc->kstat_irqs);
--	kfree(desc);
--}
--
- static void delayed_free_desc(struct rcu_head *rhp)
- {
- 	struct irq_desc *desc = container_of(rhp, struct irq_desc, rcu);
- 
-+	free_masks(desc);
-+	free_percpu(desc->kstat_irqs);
-+	kfree(desc);
-+}
-+
-+static void free_desc(unsigned int irq)
-+{
-+	struct irq_desc *desc = irq_to_desc(irq);
-+
- 	kobject_put(&desc->kobj);
- }
- 
--static void free_desc(unsigned int irq)
-+static void irq_kobj_release(struct kobject *kobj)
- {
--	struct irq_desc *desc = irq_to_desc(irq);
-+	struct irq_desc *desc = container_of(kobj, struct irq_desc, kobj);
-+	unsigned int irq = desc->irq_data.irq;
- 
- 	irq_remove_debugfs_entry(desc);
- 	unregister_irq_proc(irq, desc);
- 
- 	/*
--	 * sparse_irq_lock protects also show_interrupts() and
--	 * kstat_irq_usr(). Once we deleted the descriptor from the
--	 * sparse tree we can free it. Access in proc will fail to
--	 * lookup the descriptor.
--	 *
- 	 * The sysfs entry must be serialized against a concurrent
- 	 * irq_sysfs_init() as well.
- 	 */
--	irq_sysfs_del(desc);
- 	delete_irq_desc(irq);
- 
- 	/*
 -- 
 2.17.1
 
