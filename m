@@ -1,89 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E6D2C2292
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 11:16:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C285B2C22CA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 11:21:25 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgKgK0Dh1zDqMm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 21:16:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgKmy64zwzDqNW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 21:21:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=clombard@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=bNg8siKX; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgKZ81wbSzDqXB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 21:12:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4CgKZ66nC7z8tYP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 21:11:58 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4CgKZ65Rfzz9s1l; Tue, 24 Nov 2020 21:11:58 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgKGw4bpjzDqKP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 20:58:48 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AO9nCDX178858
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 04:58:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=GNVQBnPpDEMduzhsk+x/gzADtKB9Pz+OEG2lNKSfrqs=;
- b=bNg8siKXyvVOXB+STTMvlJRj197BZEa/NUINsyfsGUEx/6Hzr1KZcP/UeVgV3bvobXfX
- DwpMJt9d1ZmzefaM/iYRjlvUOj2B+Kr7ymSICHLCT/UQ6zTAxi37qnAFc7JnxrOXLRG7
- XVOlrX5l1C6qFCVTZEdW95/yoQvIu6ynMKbO0nl4cFgfGJ7NIz8htOJuu78rwYhmzW4C
- GYSHSzOAutJJclYzGMxDh9Xkw0jMMevdZ8OvZ9z+gTecjpjYESiqwSRZ9Ax1uqs+RQCY
- 4tPVZfm3qqCNVQsBmJ+yanZ+pvfDSCbTRu56M9SqdVs3MgtGKCOIBMK/xoJdx64jo68f Hg== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 34yudnwwbh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 04:58:44 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AO9whuR014338
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 09:58:43 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06ams.nl.ibm.com with ESMTP id 34xt5hbfd6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 09:58:42 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0AO9we5Z47841626
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Nov 2020 09:58:40 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 087BB5204F;
- Tue, 24 Nov 2020 09:58:40 +0000 (GMT)
-Received: from lombard-p52.ibmuc.com (unknown [9.171.68.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id C3DFE52054;
- Tue, 24 Nov 2020 09:58:39 +0000 (GMT)
-From: Christophe Lombard <clombard@linux.vnet.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com,
- ajd@linux.ibm.com
-Subject: [PATCH V3 5/5] ocxl: Add new kernel traces
-Date: Tue, 24 Nov 2020 10:58:38 +0100
-Message-Id: <20201124095838.18665-6-clombard@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201124095838.18665-1-clombard@linux.vnet.ibm.com>
-References: <20201124095838.18665-1-clombard@linux.vnet.ibm.com>
+ by ozlabs.org (Postfix) with ESMTPS id 4CgKZ339phz9sSf
+ for <linuxppc-dev@ozlabs.org>; Tue, 24 Nov 2020 21:11:50 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CgKYr1p1pz9tyj1;
+ Tue, 24 Nov 2020 11:11:44 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id nDy193HthGhk; Tue, 24 Nov 2020 11:11:44 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CgKYr0Lx6z9tyj0;
+ Tue, 24 Nov 2020 11:11:44 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3A23D8B7AC;
+ Tue, 24 Nov 2020 11:11:38 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 05978rp1OlgK; Tue, 24 Nov 2020 11:11:38 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DAAB08B7A7;
+ Tue, 24 Nov 2020 11:11:37 +0100 (CET)
+Subject: Re: C vdso
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20200916165516.Horde.uocmo3irPb7BMg__NUSqRA9@messagerie.si.c-s.fr>
+ <87r1r0oa4o.fsf@mpe.ellerman.id.au>
+ <cc532aa8-a9e0-a105-b7b1-ee8d723b7ed6@csgroup.eu>
+ <be21c7c8-6828-b757-064d-20f74e5c1a31@csgroup.eu>
+ <877drhxeg8.fsf@mpe.ellerman.id.au>
+ <50214d90-be25-f673-494c-840fdfb96206@csgroup.eu>
+Message-ID: <49ac0354-d6a5-be2c-c717-965e6a102320@csgroup.eu>
+Date: Tue, 24 Nov 2020 11:11:23 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
+In-Reply-To: <50214d90-be25-f673-494c-840fdfb96206@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-24_03:2020-11-24,
- 2020-11-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- priorityscore=1501 impostorscore=0 lowpriorityscore=0 malwarescore=0
- suspectscore=0 spamscore=0 phishscore=0 adultscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011240056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,123 +82,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add specific kernel traces which provide information on mmu notifier and on
-pages range.
+Hi Michael,
 
-Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
----
- drivers/misc/ocxl/link.c  |  4 +++
- drivers/misc/ocxl/trace.h | 64 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 68 insertions(+)
+Le 03/11/2020 à 19:13, Christophe Leroy a écrit :
+> 
+> 
+> Le 23/10/2020 à 15:24, Michael Ellerman a écrit :
+>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>> Le 24/09/2020 à 15:17, Christophe Leroy a écrit :
+>>>> Le 17/09/2020 à 14:33, Michael Ellerman a écrit :
+>>>>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>>>>>
+>>>>>> What is the status with the generic C vdso merge ?
+>>>>>> In some mail, you mentionned having difficulties getting it working on
+>>>>>> ppc64, any progress ? What's the problem ? Can I help ?
+>>>>>
+>>>>> Yeah sorry I was hoping to get time to work on it but haven't been able
+>>>>> to.
+>>>>>
+>>>>> It's causing crashes on ppc64 ie. big endian.
+>> ...
+>>>>
+>>>> Can you tell what defconfig you are using ? I have been able to setup a full glibc PPC64 cross
+>>>> compilation chain and been able to test it under QEMU with success, using Nathan's vdsotest tool.
+>>>
+>>> What config are you using ?
+>>
+>> ppc64_defconfig + guest.config
+>>
+>> Or pseries_defconfig.
+>>
+>> I'm using Ubuntu GCC 9.3.0 mostly, but it happens with other toolchains too.
+>>
+>> At a minimum we're seeing relocations in the output, which is a problem:
+>>
+>>    $ readelf -r build\~/arch/powerpc/kernel/vdso64/vdso64.so
+>>    Relocation section '.rela.dyn' at offset 0x12a8 contains 8 entries:
+>>      Offset          Info           Type           Sym. Value    Sym. Name + Addend
+>>    000000001368  000000000016 R_PPC64_RELATIVE                     7c0
+>>    000000001370  000000000016 R_PPC64_RELATIVE                     9300
+>>    000000001380  000000000016 R_PPC64_RELATIVE                     970
+>>    000000001388  000000000016 R_PPC64_RELATIVE                     9300
+>>    000000001398  000000000016 R_PPC64_RELATIVE                     a90
+>>    0000000013a0  000000000016 R_PPC64_RELATIVE                     9300
+>>    0000000013b0  000000000016 R_PPC64_RELATIVE                     b20
+>>    0000000013b8  000000000016 R_PPC64_RELATIVE                     9300
+> 
+> Looks like it's due to the OPD and relation between the function() and .function()
+> 
+> By using DOTSYM() in the 'bl' call, that's directly the dot function which is called and the OPD is 
+> not used anymore, it can get dropped.
+> 
+> Now I get .rela.dyn full of 0, don't know if we should drop it explicitely.
+> 
 
-diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
-index 129d4eddc4d2..ab039c115381 100644
---- a/drivers/misc/ocxl/link.c
-+++ b/drivers/misc/ocxl/link.c
-@@ -499,6 +499,7 @@ static void invalidate_range(struct mmu_notifier *mn,
- 	unsigned long addr, pid, page_size = PAGE_SIZE;
- 
- 	pid = mm->context.id;
-+	trace_ocxl_mmu_notifier_range(start, end, pid);
- 
- 	spin_lock(&link->atsd_lock);
- 	for (addr = start; addr < end; addr += page_size)
-@@ -590,6 +591,7 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
- 			/* Use MMIO registers for the TLB Invalidate
- 			 * operations.
- 			 */
-+			trace_ocxl_init_mmu_notifier(pasid, mm->context.id);
- 			mmu_notifier_register(&pe_data->mmu_notifier, mm);
- 		}
- 	}
-@@ -725,6 +727,8 @@ int ocxl_link_remove_pe(void *link_handle, int pasid)
- 	} else {
- 		if (pe_data->mm) {
- 			if (link->arva) {
-+				trace_ocxl_release_mmu_notifier(pasid,
-+								pe_data->mm->context.id);
- 				mmu_notifier_unregister(&pe_data->mmu_notifier,
- 							pe_data->mm);
- 				spin_lock(&link->atsd_lock);
-diff --git a/drivers/misc/ocxl/trace.h b/drivers/misc/ocxl/trace.h
-index 17e21cb2addd..a33a5094ff6c 100644
---- a/drivers/misc/ocxl/trace.h
-+++ b/drivers/misc/ocxl/trace.h
-@@ -8,6 +8,70 @@
- 
- #include <linux/tracepoint.h>
- 
-+
-+TRACE_EVENT(ocxl_mmu_notifier_range,
-+	TP_PROTO(unsigned long start, unsigned long end, unsigned long pidr),
-+	TP_ARGS(start, end, pidr),
-+
-+	TP_STRUCT__entry(
-+		__field(unsigned long, start)
-+		__field(unsigned long, end)
-+		__field(unsigned long, pidr)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->start = start;
-+		__entry->end = end;
-+		__entry->pidr = pidr;
-+	),
-+
-+	TP_printk("start=0x%lx end=0x%lx pidr=0x%lx",
-+		__entry->start,
-+		__entry->end,
-+		__entry->pidr
-+	)
-+);
-+
-+TRACE_EVENT(ocxl_init_mmu_notifier,
-+	TP_PROTO(int pasid, unsigned long pidr),
-+	TP_ARGS(pasid, pidr),
-+
-+	TP_STRUCT__entry(
-+		__field(int, pasid)
-+		__field(unsigned long, pidr)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->pasid = pasid;
-+		__entry->pidr = pidr;
-+	),
-+
-+	TP_printk("pasid=%d, pidr=0x%lx",
-+		__entry->pasid,
-+		__entry->pidr
-+	)
-+);
-+
-+TRACE_EVENT(ocxl_release_mmu_notifier,
-+	TP_PROTO(int pasid, unsigned long pidr),
-+	TP_ARGS(pasid, pidr),
-+
-+	TP_STRUCT__entry(
-+		__field(int, pasid)
-+		__field(unsigned long, pidr)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->pasid = pasid;
-+		__entry->pidr = pidr;
-+	),
-+
-+	TP_printk("pasid=%d, pidr=0x%lx",
-+		__entry->pasid,
-+		__entry->pidr
-+	)
-+);
-+
- DECLARE_EVENT_CLASS(ocxl_context,
- 	TP_PROTO(pid_t pid, void *spa, int pasid, u32 pidr, u32 tidr),
- 	TP_ARGS(pid, spa, pasid, pidr, tidr),
--- 
-2.28.0
+What is the status now with latest version of CVDSO ? I saw you had it in next-test for some time, 
+it is not there anymore today.
 
+Thanks,
+Christophe
