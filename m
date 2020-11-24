@@ -1,57 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30FD02C1E89
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 07:55:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C68EF2C1ED6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 08:26:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgFCp25JfzDqSs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 17:55:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgFvX2SjTzDqSt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 18:26:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=szxga06-in.huawei.com;
+ envelope-from=liwei391@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgF9t4NK4zDqPM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 17:54:05 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CgF9f503cz9tyhw;
- Tue, 24 Nov 2020 07:53:58 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id hmjPhs3s2u0p; Tue, 24 Nov 2020 07:53:58 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CgF9f44vJz9tyhv;
- Tue, 24 Nov 2020 07:53:58 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5E5C08B7A3;
- Tue, 24 Nov 2020 07:53:59 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 1BWyoMS_Jinp; Tue, 24 Nov 2020 07:53:59 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4C8818B79F;
- Tue, 24 Nov 2020 07:53:58 +0100 (CET)
-Subject: Re: [PATCH v2 00/19] Add generic vdso_base tracking
-To: Dmitry Safonov <dima@arista.com>, linux-kernel@vger.kernel.org
-References: <20201124002932.1220517-1-dima@arista.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <5e315bf6-b03d-e66e-9557-22ece397080e@csgroup.eu>
-Date: Tue, 24 Nov 2020 07:53:58 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgDw35TF0zDqJm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 17:42:11 +1100 (AEDT)
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
+ by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4CgDTw29jxzhbkW;
+ Tue, 24 Nov 2020 14:23:00 +0800 (CST)
+Received: from euler.huawei.com (10.175.124.27) by
+ DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 24 Nov 2020 14:23:05 +0800
+From: Wei Li <liwei391@huawei.com>
+To: Li Yang <leoyang.li@nxp.com>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paul Gortmaker
+ <paul.gortmaker@windriver.com>, Kumar Gala <galak@kernel.crashing.org>,
+ "Timur Tabi" <timur@freescale.com>
+Subject: [PATCH] net/ethernet/freescale: Fix incorrect IS_ERR_VALUE macro
+ usages
+Date: Tue, 24 Nov 2020 14:22:34 +0800
+Message-ID: <20201124062234.678-1-liwei391@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <20201124002932.1220517-1-dima@arista.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.124.27]
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Tue, 24 Nov 2020 18:23:02 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,73 +51,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>,
- x86@kernel.org, Dmitry Safonov <0x7f454c46@gmail.com>,
- Oleg Nesterov <oleg@redhat.com>, Russell King <linux@armlinux.org.uk>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Guo Ren <guoren@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, guohanjun@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+IS_ERR_VALUE macro should be used only with unsigned long type.
+Especially it works incorrectly with unsigned shorter types on
+64bit machines.
 
+Fixes: 4c35630ccda5 ("[POWERPC] Change rheap functions to use ulongs instead of pointers")
+Signed-off-by: Wei Li <liwei391@huawei.com>
+---
+ drivers/net/ethernet/freescale/ucc_geth.c | 30 +++++++++++------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-Le 24/11/2020 à 01:29, Dmitry Safonov a écrit :
-> v2 Changes:
-> - Rename user_landing to vdso_base as it tracks vDSO VMA start address,
->    rather than the explicit address to land (Andy)
-> - Reword and don't use "new-execed" and "new-born" task (Andy)
-> - Fix failures reported by build robot
-> 
-> Started from discussion [1], where was noted that currently a couple of
-> architectures support mremap() for vdso/sigpage, but not munmap().
-> If an application maps something on the ex-place of vdso/sigpage,
-> later after processing signal it will land there (good luck!)
-> 
-> Patches set is based on linux-next (next-20201123) and it depends on
-> changes in x86/cleanups (those reclaim TIF_IA32/TIF_X32) and also
-> on my changes in akpm (fixing several mremap() issues).
+diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
+index 714b501be7d0..8656d9be256a 100644
+--- a/drivers/net/ethernet/freescale/ucc_geth.c
++++ b/drivers/net/ethernet/freescale/ucc_geth.c
+@@ -286,7 +286,7 @@ static int fill_init_enet_entries(struct ucc_geth_private *ugeth,
+ 		else {
+ 			init_enet_offset =
+ 			    qe_muram_alloc(thread_size, thread_alignment);
+-			if (IS_ERR_VALUE(init_enet_offset)) {
++			if (IS_ERR_VALUE((unsigned long)(int)init_enet_offset)) {
+ 				if (netif_msg_ifup(ugeth))
+ 					pr_err("Can not allocate DPRAM memory\n");
+ 				qe_put_snum((u8) snum);
+@@ -2223,7 +2223,7 @@ static int ucc_geth_alloc_tx(struct ucc_geth_private *ugeth)
+ 			ugeth->tx_bd_ring_offset[j] =
+ 			    qe_muram_alloc(length,
+ 					   UCC_GETH_TX_BD_RING_ALIGNMENT);
+-			if (!IS_ERR_VALUE(ugeth->tx_bd_ring_offset[j]))
++			if (!IS_ERR_VALUE((unsigned long)(int)ugeth->tx_bd_ring_offset[j]))
+ 				ugeth->p_tx_bd_ring[j] =
+ 				    (u8 __iomem *) qe_muram_addr(ugeth->
+ 							 tx_bd_ring_offset[j]);
+@@ -2300,7 +2300,7 @@ static int ucc_geth_alloc_rx(struct ucc_geth_private *ugeth)
+ 			ugeth->rx_bd_ring_offset[j] =
+ 			    qe_muram_alloc(length,
+ 					   UCC_GETH_RX_BD_RING_ALIGNMENT);
+-			if (!IS_ERR_VALUE(ugeth->rx_bd_ring_offset[j]))
++			if (!IS_ERR_VALUE((unsigned long)(int)ugeth->rx_bd_ring_offset[j]))
+ 				ugeth->p_rx_bd_ring[j] =
+ 				    (u8 __iomem *) qe_muram_addr(ugeth->
+ 							 rx_bd_ring_offset[j]);
+@@ -2510,7 +2510,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 	ugeth->tx_glbl_pram_offset =
+ 	    qe_muram_alloc(sizeof(struct ucc_geth_tx_global_pram),
+ 			   UCC_GETH_TX_GLOBAL_PRAM_ALIGNMENT);
+-	if (IS_ERR_VALUE(ugeth->tx_glbl_pram_offset)) {
++	if (IS_ERR_VALUE((unsigned long)(int)ugeth->tx_glbl_pram_offset)) {
+ 		if (netif_msg_ifup(ugeth))
+ 			pr_err("Can not allocate DPRAM memory for p_tx_glbl_pram\n");
+ 		return -ENOMEM;
+@@ -2530,7 +2530,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 			   sizeof(struct ucc_geth_thread_data_tx) +
+ 			   32 * (numThreadsTxNumerical == 1),
+ 			   UCC_GETH_THREAD_DATA_ALIGNMENT);
+-	if (IS_ERR_VALUE(ugeth->thread_dat_tx_offset)) {
++	if (IS_ERR_VALUE((unsigned long)(int)ugeth->thread_dat_tx_offset)) {
+ 		if (netif_msg_ifup(ugeth))
+ 			pr_err("Can not allocate DPRAM memory for p_thread_data_tx\n");
+ 		return -ENOMEM;
+@@ -2557,7 +2557,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 	    qe_muram_alloc(ug_info->numQueuesTx *
+ 			   sizeof(struct ucc_geth_send_queue_qd),
+ 			   UCC_GETH_SEND_QUEUE_QUEUE_DESCRIPTOR_ALIGNMENT);
+-	if (IS_ERR_VALUE(ugeth->send_q_mem_reg_offset)) {
++	if (IS_ERR_VALUE((unsigned long)(int)ugeth->send_q_mem_reg_offset)) {
+ 		if (netif_msg_ifup(ugeth))
+ 			pr_err("Can not allocate DPRAM memory for p_send_q_mem_reg\n");
+ 		return -ENOMEM;
+@@ -2597,7 +2597,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 		ugeth->scheduler_offset =
+ 		    qe_muram_alloc(sizeof(struct ucc_geth_scheduler),
+ 				   UCC_GETH_SCHEDULER_ALIGNMENT);
+-		if (IS_ERR_VALUE(ugeth->scheduler_offset)) {
++		if (IS_ERR_VALUE((unsigned long)(int)ugeth->scheduler_offset)) {
+ 			if (netif_msg_ifup(ugeth))
+ 				pr_err("Can not allocate DPRAM memory for p_scheduler\n");
+ 			return -ENOMEM;
+@@ -2644,7 +2644,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 		    qe_muram_alloc(sizeof
+ 				   (struct ucc_geth_tx_firmware_statistics_pram),
+ 				   UCC_GETH_TX_STATISTICS_ALIGNMENT);
+-		if (IS_ERR_VALUE(ugeth->tx_fw_statistics_pram_offset)) {
++		if (IS_ERR_VALUE((unsigned long)(int)ugeth->tx_fw_statistics_pram_offset)) {
+ 			if (netif_msg_ifup(ugeth))
+ 				pr_err("Can not allocate DPRAM memory for p_tx_fw_statistics_pram\n");
+ 			return -ENOMEM;
+@@ -2681,7 +2681,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 	ugeth->rx_glbl_pram_offset =
+ 	    qe_muram_alloc(sizeof(struct ucc_geth_rx_global_pram),
+ 			   UCC_GETH_RX_GLOBAL_PRAM_ALIGNMENT);
+-	if (IS_ERR_VALUE(ugeth->rx_glbl_pram_offset)) {
++	if (IS_ERR_VALUE((unsigned long)(int)ugeth->rx_glbl_pram_offset)) {
+ 		if (netif_msg_ifup(ugeth))
+ 			pr_err("Can not allocate DPRAM memory for p_rx_glbl_pram\n");
+ 		return -ENOMEM;
+@@ -2700,7 +2700,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 	    qe_muram_alloc(numThreadsRxNumerical *
+ 			   sizeof(struct ucc_geth_thread_data_rx),
+ 			   UCC_GETH_THREAD_DATA_ALIGNMENT);
+-	if (IS_ERR_VALUE(ugeth->thread_dat_rx_offset)) {
++	if (IS_ERR_VALUE((unsigned long)(int)ugeth->thread_dat_rx_offset)) {
+ 		if (netif_msg_ifup(ugeth))
+ 			pr_err("Can not allocate DPRAM memory for p_thread_data_rx\n");
+ 		return -ENOMEM;
+@@ -2721,7 +2721,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 		    qe_muram_alloc(sizeof
+ 				   (struct ucc_geth_rx_firmware_statistics_pram),
+ 				   UCC_GETH_RX_STATISTICS_ALIGNMENT);
+-		if (IS_ERR_VALUE(ugeth->rx_fw_statistics_pram_offset)) {
++		if (IS_ERR_VALUE((unsigned long)(int)ugeth->rx_fw_statistics_pram_offset)) {
+ 			if (netif_msg_ifup(ugeth))
+ 				pr_err("Can not allocate DPRAM memory for p_rx_fw_statistics_pram\n");
+ 			return -ENOMEM;
+@@ -2741,7 +2741,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 	    qe_muram_alloc(ug_info->numQueuesRx *
+ 			   sizeof(struct ucc_geth_rx_interrupt_coalescing_entry)
+ 			   + 4, UCC_GETH_RX_INTERRUPT_COALESCING_ALIGNMENT);
+-	if (IS_ERR_VALUE(ugeth->rx_irq_coalescing_tbl_offset)) {
++	if (IS_ERR_VALUE((unsigned long)(int)ugeth->rx_irq_coalescing_tbl_offset)) {
+ 		if (netif_msg_ifup(ugeth))
+ 			pr_err("Can not allocate DPRAM memory for p_rx_irq_coalescing_tbl\n");
+ 		return -ENOMEM;
+@@ -2807,7 +2807,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 			   (sizeof(struct ucc_geth_rx_bd_queues_entry) +
+ 			    sizeof(struct ucc_geth_rx_prefetched_bds)),
+ 			   UCC_GETH_RX_BD_QUEUES_ALIGNMENT);
+-	if (IS_ERR_VALUE(ugeth->rx_bd_qs_tbl_offset)) {
++	if (IS_ERR_VALUE((unsigned long)(int)ugeth->rx_bd_qs_tbl_offset)) {
+ 		if (netif_msg_ifup(ugeth))
+ 			pr_err("Can not allocate DPRAM memory for p_rx_bd_qs_tbl\n");
+ 		return -ENOMEM;
+@@ -2892,7 +2892,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 		ugeth->exf_glbl_param_offset =
+ 		    qe_muram_alloc(sizeof(struct ucc_geth_exf_global_pram),
+ 		UCC_GETH_RX_EXTENDED_FILTERING_GLOBAL_PARAMETERS_ALIGNMENT);
+-		if (IS_ERR_VALUE(ugeth->exf_glbl_param_offset)) {
++		if (IS_ERR_VALUE((unsigned long)(int)ugeth->exf_glbl_param_offset)) {
+ 			if (netif_msg_ifup(ugeth))
+ 				pr_err("Can not allocate DPRAM memory for p_exf_glbl_param\n");
+ 			return -ENOMEM;
+@@ -3026,7 +3026,7 @@ static int ucc_geth_startup(struct ucc_geth_private *ugeth)
+ 
+ 	/* Allocate InitEnet command parameter structure */
+ 	init_enet_pram_offset = qe_muram_alloc(sizeof(struct ucc_geth_init_pram), 4);
+-	if (IS_ERR_VALUE(init_enet_pram_offset)) {
++	if (IS_ERR_VALUE((unsigned long)(int)init_enet_pram_offset)) {
+ 		if (netif_msg_ifup(ugeth))
+ 			pr_err("Can not allocate DPRAM memory for p_init_enet_pram\n");
+ 		return -ENOMEM;
+-- 
+2.17.1
 
-I have a series that cleans up VDSO init on powerpc and migrates powerpc to 
-_install_special_mapping() (patch 10 of the series).
-
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=204396&state=%2A&archive=both
-
-I'm wondering how we should coordinate with your series for merging.
-
-I guess your series will also imply removal of arch_unmap() ? see 
-https://elixir.bootlin.com/linux/v5.10-rc4/source/arch/powerpc/include/asm/mmu_context.h#L262
-
-> 
-> Logically, the patches set divides on:
-> - patch       1: a cleanup for patches in x86/cleanups
-> - patches  2-11: cleanups for arch_setup_additional_pages()
-> - patches 12-13: x86 signal changes for unmapped vdso
-> - patches 14-19: provide generic vdso_base in mm_struct
-> 
-> In the end, besides cleanups, it's now more predictable what happens for
-> applications with unmapped vdso on architectures those support .mremap()
-> for vdso/sigpage.
-> 
-> I'm aware of only one user that unmaps vdso - Valgrind [2].
-> (there possibly are more, but this one is "special", it unmaps vdso, but
->   not vvar, which confuses CRIU [Checkpoint Restore In Userspace], that's
->   why I'm aware of it)
-> 
-> Patches as a .git branch:
-> https://github.com/0x7f454c46/linux/tree/setup_additional_pages-v2
-> 
-> v1 Link:
-> https://lore.kernel.org/lkml/20201108051730.2042693-1-dima@arista.com/
-> 
-> [1]: https://lore.kernel.org/linux-arch/CAJwJo6ZANqYkSHbQ+3b+Fi_VT80MtrzEV5yreQAWx-L8j8x2zA@mail.gmail.com/
-> [2]: https://github.com/checkpoint-restore/criu/issues/488
-> 
-
-Christophe
