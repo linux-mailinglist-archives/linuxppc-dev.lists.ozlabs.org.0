@@ -1,106 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C1C2C295C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 15:23:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E312C29AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Nov 2020 15:33:04 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgR7w1xb2zDqcl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 01:23:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgRMJ0QXMzDqXC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 01:33:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oss.nxp.com (client-ip=40.107.20.73;
- helo=eur05-db8-obe.outbound.protection.outlook.com;
- envelope-from=viorel.suman@oss.nxp.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-NXP1-onmicrosoft-com header.b=NuCjJqot;
- dkim-atps=neutral
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com
- (mail-db8eur05on2073.outbound.protection.outlook.com [40.107.20.73])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Xb+B0nz+; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgR4f1PgvzDqLc
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 01:20:15 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YE/eJThmzdwyCkFPD2mRkoTKakRU+Yo7Loj1jKFXOBvnSkJxDdO0MBfJlaZA1vHSHf5OHm+YQ2o6Kr1YK8tsanPop6mk5bhl/8+yLwK/GTKduhHzz3yalexgUVJkbQ7tF62UXDeTttEHTxjD8ThDpW2OzWGbiXLz7xuWA0ZjpzqI2JJOAwde2qR7Af+LamDnXRCwjfiLgZGAZQghsCd9uAuidGomycHQPsZRXcdUUjj+s6RJJT6tFzH/nJRGl5xAySdxvO+y55kVtHPvdK6DhalOnPGgDvEe1p495bD8d4fVt/OA+NKJOpeIoiLSRrLLNVRIyyM6Cwa19ENUsjiotw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zj+w74wtYN25gAEpHmTY5oeimflDDhYidr5h3+1uHCE=;
- b=YA3ybpuqOTrdk/w/w4Q2DcWKixIV4rSfV4M8dbdA4D4nLTqecCUbJ0FvrhXjWTVLPww+juzuJtQh6ZjJsEmY3J0xpO2uJRaQy1DeO2UV+nwpnXIOZIKE9RbFeQ64BltoiRBwptqsvj6JZ+d/739542DWccsH61pElcxoYb5WR4z8dT5XFCYBO8fEutmjJOun4rvjW82yYCAaYVx+R4pGjj7T6uWoByEjf0WJgAofnRud1Z4JOi0SeXdLqn2uuxEI2HRwQSerPPFEtwwQsDuqxA2ONUX7LRFglhlFUCTjfinHIrImRF7d2xCtPg5jgTfdqzeoKL+23rOdITkggEIW1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com; 
- s=selector2-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zj+w74wtYN25gAEpHmTY5oeimflDDhYidr5h3+1uHCE=;
- b=NuCjJqotKjc58EsKuaq7D/as3wgYY5VnlKWDcGlXLB4ZwNdvxcjMBteaxoGg1WWeYdtjqyO6pcsCmGpnCvFKk+mnl6fUg0tVkZsRqRJIJ10E9DdK8PP/wEcR0t6l5R1vAL9wpqT6FxSmpnTt9/NpGUlVaFfBihuKPK7NJD7Ncbw=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=oss.nxp.com;
-Received: from VI1PR0401MB2272.eurprd04.prod.outlook.com
- (2603:10a6:800:31::12) by VI1PR04MB5984.eurprd04.prod.outlook.com
- (2603:10a6:803:d6::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3611.20; Tue, 24 Nov
- 2020 14:20:09 +0000
-Received: from VI1PR0401MB2272.eurprd04.prod.outlook.com
- ([fe80::91f8:d96b:f238:7962]) by VI1PR0401MB2272.eurprd04.prod.outlook.com
- ([fe80::91f8:d96b:f238:7962%8]) with mapi id 15.20.3589.025; Tue, 24 Nov 2020
- 14:20:08 +0000
-From: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
-To: Timur Tabi <timur@kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@gmail.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: fsl_xcvr: fix potential resource leak
-Date: Tue, 24 Nov 2020 16:19:57 +0200
-Message-Id: <20201124141957.20481-1-viorel.suman@oss.nxp.com>
-X-Mailer: git-send-email 2.26.2
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [188.26.42.16]
-X-ClientProxiedBy: VI1PR08CA0095.eurprd08.prod.outlook.com
- (2603:10a6:800:d3::21) To VI1PR0401MB2272.eurprd04.prod.outlook.com
- (2603:10a6:800:31::12)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgRGl2x12zDqQf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 01:28:59 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AOE2I7T090896; Tue, 24 Nov 2020 09:28:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=+Rzo+UcZrxQVSygpiFP4yvX8SyHUZGUYjgrdUKtnEoQ=;
+ b=Xb+B0nz+nK2qI9P+th/CHifVb13Jgkut/Fm5nIoBEngod98bS2jmEOBVcZW8G0NZ/AUm
+ 0PpN7MvroyKseMV53/d1o6CE+PI5InRFSHhkil2dI5ZTnaRREq0FL9m9rDd6yaoBhoRU
+ unRl0Nalb8pVfev6TImEnXjP1zWwWX56IF8dvNfWc6tVLLykYcmQeMtHYSvAFTQvSUKI
+ TI70ccxBLoeGbNhNXtc7N9ZD6MSz+U8QLzhhfF1AuSdFMaS/ja3CuLmqy2ZHnxzohjjI
+ uAkGn7QKDwfoD//zwRY6hbVJeVsJA4xlrukK1pAleRNgn++Hsna1Q2skZuRkl2+Q8ysU gg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 350meqmpht-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Nov 2020 09:28:32 -0500
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0AOE2O0M091371;
+ Tue, 24 Nov 2020 09:28:31 -0500
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 350meqmpha-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Nov 2020 09:28:31 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AOER5Ju020080;
+ Tue, 24 Nov 2020 14:28:30 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma02dal.us.ibm.com with ESMTP id 34xth9wvm8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 Nov 2020 14:28:30 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AOEST2K36110604
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 24 Nov 2020 14:28:29 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9B5802805E;
+ Tue, 24 Nov 2020 14:28:29 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 651BC28059;
+ Tue, 24 Nov 2020 14:28:29 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 24 Nov 2020 14:28:29 +0000 (GMT)
+Subject: Re: [PATCH] tpm: ibmvtpm: fix error return code in tpm_ibmvtpm_probe()
+To: Wang Hai <wanghai38@huawei.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, peterhuewe@gmx.de,
+ jarkko@kernel.org, jgg@ziepe.ca, nayna@linux.ibm.com
+References: <20201124135244.31932-1-wanghai38@huawei.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
+Message-ID: <7faf1b71-2bcb-8133-5fc8-2be96085dfc1@linux.ibm.com>
+Date: Tue, 24 Nov 2020 09:28:29 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (188.26.42.16) by
- VI1PR08CA0095.eurprd08.prod.outlook.com (2603:10a6:800:d3::21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3611.20 via Frontend Transport; Tue, 24 Nov 2020 14:20:08 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 867a952b-a8e1-4791-1ee2-08d890840c1e
-X-MS-TrafficTypeDiagnostic: VI1PR04MB5984:
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VI1PR04MB5984ADDAA20FBC28CDB3E087D3FB0@VI1PR04MB5984.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:415;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zMHMS4xUiMpFLVfYJmM+mF8N2oXN4MuKNtNbPV4h28/pWL1F9JyuFxv1NPyD7eI5MhWfE743PbPMsitH9zw5Q0JL1VxVmgFRe1YeCeSBiPZk7tYrOxfZRleMbVnE0o5Zd1jR8J8bSjJfrpGptNsbq1V4rN6CEe9g3ocy7TO5xkRkQn7yaNKucPzntaMGk7OjIjuXL2KNr1Tayr4DUAL9ms/GqtN7mxv6pFead9eTSHES0DwdO/in3ZazuZNBZQAy+S631p7QCmE9H8cidlMR2rypyXaObQcjKD/7LAjRls+klel0dSw2aayZIjWhoxpqInFSTwBGgNUmX243XWLu7270GSVVh/fZd5K8jNORSfsovaWDL+Ow5jHWEMdbWH5Ojq6ybw/2ag6/mEf9hXR5Ug==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR0401MB2272.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(8676002)(6506007)(6512007)(2616005)(956004)(66946007)(26005)(52116002)(66476007)(66556008)(7416002)(6666004)(4744005)(6486002)(5660300002)(498600001)(186003)(16526019)(86362001)(110136005)(921005)(69590400008)(8936002)(4326008)(2906002)(1076003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData: agQvQeo+FmwFwkOgdHcSkHjSfV8aHfuWp1JarBRphbcY02LiwikyKiSzBQWVN87/cjMZGg37GKwSYdug7daUJEAdkAwW3pLnv/vyXxOi5F7sFPhFzSQh0MgotxwgJ+GFraGCBR4jHJi1axdwgZV25g5ySARQ/XhfJWj8yx6mTdq9GHCUtYg2MgSL21zYorOiC20nm/PZG07ytWKqjtmRH1LejyDnK+i37EBUYnyEI4Rf0/kpbQ/QO4ft42RfH2YHLlEOz7IChBRgEQKra9MyrPcbt/kRAyJhr96RTIh2iBEf5D0RjChztNFte1a66PcNtXAbcOJK/ST1oPnfGs7/cmt2YABj23xXtmvrh5YaA5RzG12x66LNSXIpngfA+MgIhQvw3IE++kxg+L615se8TKkI8m/0MoB1wlPSU/iwkC382hb9GDweLlViOVJG+3VPr3acsd8XhVOrFMQCaWtVJ6s6lGLKfaFz6T5LiltMW6iBtsD/EDKwyEuQC1o6ruhIQ9EblMtaR7WIPvjCycKiJ35dTqqyzRZ/tD9DA0m8nLnZh896xv3XKxz1f/sxwkJ68wtap8EAb2KZyiw276S+paTkNd3GXuCJ3UMNzaa2OiOb6QsHQkG3HHMmmf8pU5ElAlTb95W3EKyT1wC3xwx1utb0TRLKqLsluZS82KOjvYFbLn3/lp3LJATl7o0A24ZDR5J0mf9zViUjeMhsHv/7Acn9Ep9xNb4Sh7VVLrkY0w1xQFdOmdBFXT6QQlHCa/UBWtJDPACkjdw+xRsNJS5+TS+r7H5bXvR4F4ayBcqxphV9TJY3Rp4I7oNt6bIJPlBw06ksQ3HPjxr6ba7kSPVTlPIsenjiXM/qRNiy30jNOJZYsD2I61VazWlSLIuW1h1D3FS4e58/amhl3eHE/C1HYQ==
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 867a952b-a8e1-4791-1ee2-08d890840c1e
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR0401MB2272.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2020 14:20:08.8487 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Aq9NwSI1vM1VBkRytpCZulntE2ZNdsW7aNZYTlY7J8GF9rQN79TD3rsvh5JvqBDll8ofbneeUB8dkIPqE23nig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5984
+In-Reply-To: <20201124135244.31932-1-wanghai38@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-24_04:2020-11-24,
+ 2020-11-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0
+ adultscore=0 bulkscore=0 mlxlogscore=999 lowpriorityscore=0 spamscore=0
+ malwarescore=0 mlxscore=0 priorityscore=1501 clxscore=1011 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011240084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,32 +107,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Viorel Suman <viorel.suman@nxp.com>
+Cc: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Viorel Suman <viorel.suman@nxp.com>
+On 11/24/20 8:52 AM, Wang Hai wrote:
+> Fix to return a negative error code from the error handling
+> case instead of 0, as done elsewhere in this function.
+>
+> Fixes: d8d74ea3c002 ("tpm: ibmvtpm: Wait for buffer to be set before proceeding")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wang Hai <wanghai38@huawei.com>
+> ---
+>   drivers/char/tpm/tpm_ibmvtpm.c | 1 +
+>   1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
+> index 994385bf37c0..813eb2cac0ce 100644
+> --- a/drivers/char/tpm/tpm_ibmvtpm.c
+> +++ b/drivers/char/tpm/tpm_ibmvtpm.c
+> @@ -687,6 +687,7 @@ static int tpm_ibmvtpm_probe(struct vio_dev *vio_dev,
+>   				ibmvtpm->rtce_buf != NULL,
+>   				HZ)) {
+>   		dev_err(dev, "CRQ response timed out\n");
+> +		rc = -ETIMEDOUT;
+>   		goto init_irq_cleanup;
+>   	}
+>   
 
-"fw" variable must be relased before return.
-
-Signed-off-by: Viorel Suman <viorel.suman@nxp.com>
----
- sound/soc/fsl/fsl_xcvr.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index 2a28810d0e29..3d58c88ea603 100644
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -706,6 +706,7 @@ static int fsl_xcvr_load_firmware(struct fsl_xcvr *xcvr)
- 	/* RAM is 20KiB = 16KiB code + 4KiB data => max 10 pages 2KiB each */
- 	if (rem > 16384) {
- 		dev_err(dev, "FW size %d is bigger than 16KiB.\n", rem);
-+		release_firmware(fw);
- 		return -ENOMEM;
- 	}
- 
--- 
-2.26.2
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
