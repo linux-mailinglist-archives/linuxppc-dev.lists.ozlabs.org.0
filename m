@@ -2,31 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9AC52C40BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 14:00:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA4232C40FA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 14:17:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ch1FX62WHzDqJ8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 00:00:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ch1f11zYDzDqDs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 00:17:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgztL6FjvzDqPf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 22:58:18 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgztW5cMKzDqWr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 22:58:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4Cgzsy71f5z9sW0; Wed, 25 Nov 2020 22:57:58 +1100 (AEDT)
+ id 4Cgzsx31zPz9sVs; Wed, 25 Nov 2020 22:57:57 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: paulus@samba.org, "xiakaixu1987@gmail.com" <xiakaixu1987@gmail.com>,
- mpe@ellerman.id.au, benh@kernel.crashing.org
-In-Reply-To: <1604976961-20441-1-git-send-email-kaixuxia@tencent.com>
-References: <1604976961-20441-1-git-send-email-kaixuxia@tencent.com>
-Subject: Re: [PATCH] powerpc/mm: Fix comparing pointer to 0 warning
-Message-Id: <160630540419.2174375.11309649223886745354.b4-ty@ellerman.id.au>
-Date: Wed, 25 Nov 2020 22:57:58 +1100 (AEDT)
+To: Youling Tang <tangyouling@loongson.cn>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+In-Reply-To: <1604487550-20040-1-git-send-email-tangyouling@loongson.cn>
+References: <1604487550-20040-1-git-send-email-tangyouling@loongson.cn>
+Subject: Re: [PATCH] powerpc: Use the common INIT_DATA_SECTION macro in
+ vmlinux.lds.S
+Message-Id: <160630540225.2174375.6381548076973269685.b4-ty@ellerman.id.au>
+Date: Wed, 25 Nov 2020 22:57:57 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,22 +41,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Kaixu Xia <kaixuxia@tencent.com>,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 10 Nov 2020 10:56:01 +0800, xiakaixu1987@gmail.com wrote:
-> Fixes coccicheck warning:
-> 
-> ./arch/powerpc/mm/pgtable_32.c:87:11-12: WARNING comparing pointer to 0
-> 
-> Avoid pointer type value compared to 0.
+On Wed, 4 Nov 2020 18:59:10 +0800, Youling Tang wrote:
+> Use the common INIT_DATA_SECTION rule for the linker script in an effort
+> to regularize the linker script.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/mm: Fix comparing pointer to 0 warning
-      https://git.kernel.org/powerpc/c/b84bf098fcc49ed6bf4b0a8bed52e9df0e8f1de7
+[1/1] powerpc: Use the common INIT_DATA_SECTION macro in vmlinux.lds.S
+      https://git.kernel.org/powerpc/c/fdcfeaba38e5b183045f5b079af94f97658eabe6
 
 cheers
