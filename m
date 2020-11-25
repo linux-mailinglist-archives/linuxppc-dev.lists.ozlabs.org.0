@@ -2,41 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 162E62C3B39
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 09:40:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 830F02C3BD9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 10:20:32 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgvTv3XtYzDqmX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 19:40:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgwNF0MFwzDqjx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 20:20:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=baikalelectronics.ru (client-ip=87.245.175.226;
- helo=mail.baikalelectronics.ru;
- envelope-from=sergey.semin@baikalelectronics.ru; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=baikalelectronics.ru
-X-Greylist: delayed 393 seconds by postgrey-1.36 at bilbo;
- Wed, 25 Nov 2020 19:38:46 AEDT
-Received: from mail.baikalelectronics.ru (mail.baikalelectronics.com
- [87.245.175.226])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CgvS664wqzDqjY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 19:38:46 +1100 (AEDT)
-Date: Wed, 25 Nov 2020 11:32:02 +0300
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v4 10/18] dt-bindings: usb: Convert DWC USB3 bindings to
- DT schema
-Message-ID: <20201125083202.ytoyd62bg3s7kvvg@mobilestation>
-References: <20201111090853.14112-1-Sergey.Semin@baikalelectronics.ru>
- <20201111090853.14112-11-Sergey.Semin@baikalelectronics.ru>
- <20201111201423.GA1938179@bogus>
- <20201112102946.ipcsiidty4ut4kap@mobilestation>
- <20201121124228.GA2039998@robh.at.kernel.org>
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgwLP6MV3zDqXs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 20:18:53 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4CgwLP2VRSz8tY4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 20:18:53 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4CgwLP1qr0z9sSs; Wed, 25 Nov 2020 20:18:53 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4CgwLM0vqpz9s0b
+ for <linuxppc-dev@ozlabs.org>; Wed, 25 Nov 2020 20:18:43 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CgwL50b4fz9ty4Q;
+ Wed, 25 Nov 2020 10:18:37 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 3vqczoful9tO; Wed, 25 Nov 2020 10:18:37 +0100 (CET)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CgwL46k0lz9ty4P;
+ Wed, 25 Nov 2020 10:18:36 +0100 (CET)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id 9BE1C868; Wed, 25 Nov 2020 10:21:34 +0100 (CET)
+Received: from 192.168.4.90 ([192.168.4.90]) by messagerie.c-s.fr (Horde
+ Framework) with HTTP; Wed, 25 Nov 2020 10:21:34 +0100
+Date: Wed, 25 Nov 2020 10:21:34 +0100
+Message-ID: <20201125102134.Horde.0HRWPh9SlZQBfjT7da-o2A1@messagerie.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: C vdso
+References: <20200916165516.Horde.uocmo3irPb7BMg__NUSqRA9@messagerie.si.c-s.fr>
+ <87r1r0oa4o.fsf@mpe.ellerman.id.au>
+ <cc532aa8-a9e0-a105-b7b1-ee8d723b7ed6@csgroup.eu>
+ <be21c7c8-6828-b757-064d-20f74e5c1a31@csgroup.eu>
+ <877drhxeg8.fsf@mpe.ellerman.id.au>
+ <50214d90-be25-f673-494c-840fdfb96206@csgroup.eu>
+ <49ac0354-d6a5-be2c-c717-965e6a102320@csgroup.eu>
+ <87tuteyyxi.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87tuteyyxi.fsf@mpe.ellerman.id.au>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20201121124228.GA2039998@robh.at.kernel.org>
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,196 +77,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Neil Armstrong <narmstrong@baylibre.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
- Kevin Hilman <khilman@baylibre.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- Andy Gross <agross@kernel.org>, Chunfeng Yun <chunfeng.yun@mediatek.com>,
- linux-snps-arc@lists.infradead.org, devicetree@vger.kernel.org,
- Mathias Nyman <mathias.nyman@intel.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
- linux-arm-kernel@lists.infradead.org, Roger Quadros <rogerq@ti.com>,
- Felipe Balbi <balbi@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
- Serge Semin <fancer.lancer@gmail.com>, linux-kernel@vger.kernel.org,
- Manu Gautam <mgautam@codeaurora.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Nov 21, 2020 at 06:42:28AM -0600, Rob Herring wrote:
-> On Thu, Nov 12, 2020 at 01:29:46PM +0300, Serge Semin wrote:
-> > On Wed, Nov 11, 2020 at 02:14:23PM -0600, Rob Herring wrote:
-> > > On Wed, Nov 11, 2020 at 12:08:45PM +0300, Serge Semin wrote:
-> > > > DWC USB3 DT node is supposed to be compliant with the Generic xHCI
-> > > > Controller schema, but with additional vendor-specific properties, the
-> > > > controller-specific reference clocks and PHYs. So let's convert the
-> > > > currently available legacy text-based DWC USB3 bindings to the DT schema
-> > > > and make sure the DWC USB3 nodes are also validated against the
-> > > > usb-xhci.yaml schema.
-> > > > 
-> > > > Note we have to discard the nodename restriction of being prefixed with
-> > > > "dwc3@" string, since in accordance with the usb-hcd.yaml schema USB nodes
-> > > > are supposed to be named as "^usb(@.*)".
-> > > > 
-> > > > Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-> > > > 
-> > > > ---
-> > > > 
-> > > > Changelog v2:
-> > > > - Discard '|' from the descriptions, since we don't need to preserve
-> > > >   the text formatting in any of them.
-> > > > - Drop quotes from around the string constants.
-> > > > - Fix the "clock-names" prop description to be referring the enumerated
-> > > >   clock-names instead of the ones from the Databook.
-> > > > 
-> > > > Changelog v3:
-> > > > - Apply usb-xhci.yaml# schema only if the controller is supposed to work
-> > > >   as either host or otg.
-> > > > 
-> > > > Changelog v4:
-> > > > - Apply usb-drd.yaml schema first. If the controller is configured
-> > > >   to work in a gadget mode only, then apply the usb.yaml schema too,
-> > > >   otherwise apply the usb-xhci.yaml schema.
-> > > > - Discard the Rob'es Reviewed-by tag. Please review the patch one more
-> > > >   time.
-> > > > ---
-> > > >  .../devicetree/bindings/usb/dwc3.txt          | 125 --------
-> > > >  .../devicetree/bindings/usb/snps,dwc3.yaml    | 303 ++++++++++++++++++
-> > > >  2 files changed, 303 insertions(+), 125 deletions(-)
-> > > >  delete mode 100644 Documentation/devicetree/bindings/usb/dwc3.txt
-> > > >  create mode 100644 Documentation/devicetree/bindings/usb/snps,dwc3.yaml
-> 
-> 
-> > > > diff --git a/Documentation/devicetree/bindings/usb/snps,dwc3.yaml b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
-> > > > new file mode 100644
-> > > > index 000000000000..079617891da6
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
-> > > > @@ -0,0 +1,303 @@
-> > > > +# SPDX-License-Identifier: GPL-2.0
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > +
-> > > > +title: Synopsys DesignWare USB3 Controller
-> > > > +
-> > > > +maintainers:
-> > > > +  - Felipe Balbi <balbi@kernel.org>
-> > > > +
-> > > > +description:
-> > > > +  This is usually a subnode to DWC3 glue to which it is connected, but can also
-> > > > +  be presented as a standalone DT node with an optional vendor-specific
-> > > > +  compatible string.
-> > > > +
-> > 
-> > > > +allOf:
-> > > > +  - $ref: usb-drd.yaml#
-> > > > +  - if:
-> > > > +      properties:
-> > > > +        dr_mode:
-> > > > +          const: peripheral
-> 
 
-> Another thing, this evaluates to true if dr_mode is not present. You 
-> need to add 'required'?
+Quoting Michael Ellerman <mpe@ellerman.id.au>:
 
-Right. Will something like this do that?
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>> Le 03/11/2020 =C3=A0 19:13, Christophe Leroy a =C3=A9crit=C2=A0:
+>>> Le 23/10/2020 =C3=A0 15:24, Michael Ellerman a =C3=A9crit=C2=A0:
+>>>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>>>> Le 24/09/2020 =C3=A0 15:17, Christophe Leroy a =C3=A9crit=C2=A0:
+>>>>>> Le 17/09/2020 =C3=A0 14:33, Michael Ellerman a =C3=A9crit=C2=A0:
+>>>>>>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>>>>>>>
+>>>>>>>> What is the status with the generic C vdso merge ?
+>>>>>>>> In some mail, you mentionned having difficulties getting it workin=
+g on
+>>>>>>>> ppc64, any progress ? What's the problem ? Can I help ?
+>>>>>>>
+>>>>>>> Yeah sorry I was hoping to get time to work on it but haven't been =
+able
+>>>>>>> to.
+>>>>>>>
+>>>>>>> It's causing crashes on ppc64 ie. big endian.
+>>>> ...
+>>>>>>
+>>>>>> Can you tell what defconfig you are using ? I have been able to=20=
+=20
+>>>>>>=20setup a full glibc PPC64 cross
+>>>>>> compilation chain and been able to test it under QEMU with=20=20
+>>>>>>=20success, using Nathan's vdsotest tool.
+>>>>>
+>>>>> What config are you using ?
+>>>>
+>>>> ppc64_defconfig + guest.config
+>>>>
+>>>> Or pseries_defconfig.
+>>>>
+>>>> I'm using Ubuntu GCC 9.3.0 mostly, but it happens with other=20=20
+>>>>=20toolchains too.
+>>>>
+>>>> At a minimum we're seeing relocations in the output, which is a proble=
+m:
+>>>>
+>>>> =C2=A0=C2=A0 $ readelf -r build\~/arch/powerpc/kernel/vdso64/vdso64.so
+>>>> =C2=A0=C2=A0 Relocation section '.rela.dyn' at offset 0x12a8 contains =
+8 entries:
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 Offset=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 Info=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 Type=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Sym=
+. Value=C2=A0=C2=A0=C2=A0=20=20
+>>>>=20Sym. Name + Addend
+>>>> =C2=A0=C2=A0 000000001368=C2=A0 000000000016 R_PPC64_RELATIVE=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 7c0
+>>>> =C2=A0=C2=A0 000000001370=C2=A0 000000000016 R_PPC64_RELATIVE=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 9300
+>>>> =C2=A0=C2=A0 000000001380=C2=A0 000000000016 R_PPC64_RELATIVE=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 970
+>>>> =C2=A0=C2=A0 000000001388=C2=A0 000000000016 R_PPC64_RELATIVE=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 9300
+>>>> =C2=A0=C2=A0 000000001398=C2=A0 000000000016 R_PPC64_RELATIVE=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 a90
+>>>> =C2=A0=C2=A0 0000000013a0=C2=A0 000000000016 R_PPC64_RELATIVE=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 9300
+>>>> =C2=A0=C2=A0 0000000013b0=C2=A0 000000000016 R_PPC64_RELATIVE=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 b20
+>>>> =C2=A0=C2=A0 0000000013b8=C2=A0 000000000016 R_PPC64_RELATIVE=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 9300
+>>>
+>>> Looks like it's due to the OPD and relation between the function()=20=
+=20
+>>>=20and .function()
+>>>
+>>> By using DOTSYM() in the 'bl' call, that's directly the dot=20=20
+>>>=20function which is called and the OPD is
+>>> not used anymore, it can get dropped.
+>>>
+>>> Now I get .rela.dyn full of 0, don't know if we should drop it explicit=
+ely.
+>>
+>> What is the status now with latest version of CVDSO ? I saw you had=20=
+=20
+>>=20it in next-test for some time,
+>> it is not there anymore today.
+>
+> Still having some trouble with the compat VDSO.
+>
+> eg:
+>
+> $ ./vdsotest clock-gettime-monotonic verify
+> timestamp obtained from kernel predates timestamp
+> previously obtained from libc/vDSO:
+> 	[1346, 821441653] (vDSO)
+> 	[570, 769440040] (kernel)
+>
+>
+> And similar for all clocks except the coarse ones.
+>
 
-+ allOf:
-+  - $ref: usb-drd.yaml#
-+  - if:
-+      properties:
-+        dr_mode:
-+          const: peripheral
-+ 
-+      required:
-+        - dr_mode
-+    then:
-+      $ref: usb.yaml#
-+    else
-+      $ref: usb-xhci.yaml#
+Ok, I managed to get the same with QEMU. Looking at the binary, I only=20=
+=20
+see=20an mftb instead of the mftbu/mftb/mftbu triplet.
 
-> If dr_mode is otg, then don't you need to apply 
-> both usb.yaml and usb-xhci.yaml?
+Fix below. Can you carry it, or do you prefer a full patch from me ?=20=20
+The=20easiest would be either to squash it into [v13,4/8]=20=20
+("powerpc/time:=20Move timebase functions into new asm/timebase.h"), or=20=
+=20
+to=20add it between patch 4 and 5 ?
 
-No I don't. Since there is no peripheral-specific DT schema, then the
-only schema any USB-gadget node needs to pass is usb.yaml, which
-is already included into the usb-xhci.yaml schema. So for pure OTG devices
-with xHCI host and gadget capabilities it's enough to evaluate: allOf:
-[$ref: usb-drd.yaml#, $ref: usb-xhci.yaml#].  Please see the
-sketch/ASCII-figure below and the following text for details.
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.=
+h
+index f877a576b338..c3473eb031a3 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -1419,7 +1419,7 @@ static inline void msr_check_and_clear(unsigned=20=20
+long=20bits)
+  		__msr_check_and_clear(bits);
+  }
 
--Sergey
+-#if defined(CONFIG_PPC_CELL) || defined(CONFIG_E500)
++#if defined(__powerpc64__) && (defined(CONFIG_PPC_CELL) ||=20=20
+defined(CONFIG_E500))
+=20 #define mftb()		({unsigned long rval;				\
+  			asm volatile(					\
+  				"90:	mfspr %0, %2;\n"		\
+diff --git a/arch/powerpc/include/asm/timebase.h=20=20
+b/arch/powerpc/include/asm/timebase.h
+index=20a8eae3adaa91..7b372976f5a5 100644
+--- a/arch/powerpc/include/asm/timebase.h
++++ b/arch/powerpc/include/asm/timebase.h
+@@ -21,7 +21,7 @@ static inline u64 get_tb(void)
+  {
+  	unsigned int tbhi, tblo, tbhi2;
 
-> 
-> > > > +    then:
-> > > > +      $ref: usb.yaml#
-> > > 
-> > > This part could be done in usb-drd.yaml?
-> > 
-> > Originally I was thinking about that, but then in order to minimize
-> > the properties validation I've decided to split the properties in
-> > accordance with the USB controllers functionality:
-> > 
-> >             +----- USB Gadget/Peripheral Controller. There is no
-> >             |      specific schema for the gadgets since there is no
-> >             |      common gadget properties (at least I failed to find
-> >             |      ones). So the pure gadget controllers need to be
-> >             |      validated just against usb.yaml schema.
-> >             |
-> > usb.yaml <--+-- usb-hcd.yaml - Generic USB Host Controller. The schema
-> >                 ^              turns out to include the OHCI/UHCI/EHCI
-> >                 |              properties, which AFAICS are also
-> >                 |              applicable for the other host controllers.
-> >                 |              So any USB host controller node needs to
-> >                 |              be validated against this schema.
-> >                 |
-> >                 +- usb-xhci.yaml - Generic xHCI Host controller.
-> > 
-> > usb-drd.yaml -- USB Dual-Role/OTG Controllers. It describes the
-> >                 DRD/OTG-specific properties and nothing else. So normally
-> >                 it should be applied together with one of the
-> >                 schemas described above.
-> > 
-> > So the use-cases of the suggested schemas is following:
-> > 
-> > 1) USB Controller is pure gadget? Then:
-> >    + allOf:
-> >    +  - $ref: usb.yaml#
-> > 2) USB Controller is pure USB host (including OHCI/UHCI/EHCI)?
-> >    + allOf:
-> >    +   - $ref: usb-hcd.yaml#
-> >    Note this prevents us from fixing all the currently available USB DT
-> >    schemas, which already apply the usb-hcd.yaml schema.
-> > 3) USB Controller is pure xHCI host controller? Then:
-> >    + allOf:
-> >    +   - $ref: usb-xhci.yaml#
-> > 4) USB Controller is Dual-Role/OTG controller with USB 2.0 host? Then:
-> >    + allOf:
-> >    +   - $ref: usb-drd.yaml#
-> >    +   - $ref: usb-hcd.yaml#
-> > 5) USB Controller is Dual-Role/OTG controller with xHCI host? Then:
-> >    + allOf:
-> >    +   - $ref: usb-drd.yaml#
-> >    +   - $ref: usb-xhci.yaml#
-> > 6) USB Controller is Dual-Role/OTG controller which can only be a
-> >    gadget? Then:
-> >    + allOf:
-> >    +   - $ref: usb-drd.yaml#
-> >    +   - $ref: usb.yaml#
-> > 
-> > * Don't know really if controllers like in 6)-th really exist. Most
-> > * likely they are still internally capable of dual-roling, but due to
-> > * some conditions can be used as gadgets only.
-> > 
-> > It looks a bit complicated, but at least by having such design we'd minimize
-> > the number of properties validation.
-> > 
+-	if (IS_ENABLED(CONFIG_PPC64))
++	if (IS_BUILTIN(__powerpc64__))
+  		return mftb();
 
-[...]
+  	do {
+
