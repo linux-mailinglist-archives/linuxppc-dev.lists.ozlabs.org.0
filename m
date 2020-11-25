@@ -2,69 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55952C3F14
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 12:28:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBF22C3F20
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 12:33:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgzCy3pzQzDqTn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 22:28:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgzKf6qy0zDqVk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 22:33:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=63.128.21.124;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
  helo=us-smtp-delivery-124.mimecast.com; envelope-from=lvivier@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=fE2eNL2w; 
+ header.s=mimecast20190719 header.b=c+Ah0PLj; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=fE2eNL2w; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=c+Ah0PLj; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [63.128.21.124])
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cgyz11RpDzDqjd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 22:17:16 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cgyz21vYVzDqjg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 22:17:17 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1606303034;
+ s=mimecast20190719; t=1606303035;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JS6xr5LtUlr5j8jszduDjhIpqmpjZKnCMk7lXNfXS5E=;
- b=fE2eNL2w3JMv/HLkiSdqr8qHheVpTUjxkwGBJR+2Y5clTtX5ambvX49stpHLwEBVINN0Eb
- SCqU15OwlJWxMhMO9GLVAvHWL8srXXPS2AXgBv01ZsyOllU1P63EKvJyUkYlzk0I5gSO4d
- gkIy9kdVMhwcxeNnH6YA5KU6lr55d60=
+ bh=zu/0xmXlaDABvq6r7zqamQ2WuJBTK7BYJVbbGKeJBKY=;
+ b=c+Ah0PLjETesd4ALK5nnxlVUhPixwYINyIYsJlCWfCcXX02UErMIdLdQoDdQgaVhCKVgGp
+ MK5xGXmaNdYAsfBgj5jEonosuHD8o9h88/G23pDDMN7WW4vKnki5ac7xmc8AliVpFbbFKC
+ c93TMU0dehSZnS3jeCXp6UHKWDExWog=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1606303034;
+ s=mimecast20190719; t=1606303035;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JS6xr5LtUlr5j8jszduDjhIpqmpjZKnCMk7lXNfXS5E=;
- b=fE2eNL2w3JMv/HLkiSdqr8qHheVpTUjxkwGBJR+2Y5clTtX5ambvX49stpHLwEBVINN0Eb
- SCqU15OwlJWxMhMO9GLVAvHWL8srXXPS2AXgBv01ZsyOllU1P63EKvJyUkYlzk0I5gSO4d
- gkIy9kdVMhwcxeNnH6YA5KU6lr55d60=
+ bh=zu/0xmXlaDABvq6r7zqamQ2WuJBTK7BYJVbbGKeJBKY=;
+ b=c+Ah0PLjETesd4ALK5nnxlVUhPixwYINyIYsJlCWfCcXX02UErMIdLdQoDdQgaVhCKVgGp
+ MK5xGXmaNdYAsfBgj5jEonosuHD8o9h88/G23pDDMN7WW4vKnki5ac7xmc8AliVpFbbFKC
+ c93TMU0dehSZnS3jeCXp6UHKWDExWog=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-242-AvhW3TIpOWq-3zY-Q-MqcQ-1; Wed, 25 Nov 2020 06:17:09 -0500
-X-MC-Unique: AvhW3TIpOWq-3zY-Q-MqcQ-1
+ us-mta-437-UBfojiHJNpiYo2Nr2nIqkQ-1; Wed, 25 Nov 2020 06:17:13 -0500
+X-MC-Unique: UBfojiHJNpiYo2Nr2nIqkQ-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
  [10.5.11.22])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E4C9A1E7C1;
- Wed, 25 Nov 2020 11:17:07 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 47B4C1005D44;
+ Wed, 25 Nov 2020 11:17:11 +0000 (UTC)
 Received: from thinkpad.redhat.com (ovpn-113-83.ams2.redhat.com [10.36.113.83])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1A63D10023BF;
- Wed, 25 Nov 2020 11:17:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 452F3100AE32;
+ Wed, 25 Nov 2020 11:17:08 +0000 (UTC)
 From: Laurent Vivier <lvivier@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] genirq: add an irq_create_mapping_affinity() function
-Date: Wed, 25 Nov 2020 12:16:56 +0100
-Message-Id: <20201125111657.1141295-2-lvivier@redhat.com>
+Subject: [PATCH v2 2/2] powerpc/pseries: pass MSI affinity to
+ irq_create_mapping()
+Date: Wed, 25 Nov 2020 12:16:57 +0100
+Message-Id: <20201125111657.1141295-3-lvivier@redhat.com>
 In-Reply-To: <20201125111657.1141295-1-lvivier@redhat.com>
 References: <20201125111657.1141295-1-lvivier@redhat.com>
 MIME-Version: 1.0
@@ -90,92 +91,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This function adds an affinity parameter to irq_create_mapping().
-This parameter is needed to pass it to irq_domain_alloc_descs().
+With virtio multiqueue, normally each queue IRQ is mapped to a CPU.
 
-irq_create_mapping() is a wrapper around irq_create_mapping_affinity()
-to pass NULL for the affinity parameter.
+But since commit 0d9f0a52c8b9f ("virtio_scsi: use virtio IRQ affinity")
+this is broken on pseries.
 
-No functional change.
+The affinity is correctly computed in msi_desc but this is not applied
+to the system IRQs.
+
+It appears the affinity is correctly passed to rtas_setup_msi_irqs() but
+lost at this point and never passed to irq_domain_alloc_descs()
+(see commit 06ee6d571f0e ("genirq: Add affinity hint to irq allocation"))
+because irq_create_mapping() doesn't take an affinity parameter.
+
+As the previous patch has added the affinity parameter to
+irq_create_mapping() we can forward the affinity from rtas_setup_msi_irqs()
+to irq_domain_alloc_descs().
+
+With this change, the virtqueues are correctly dispatched between the CPUs
+on pseries.
 
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 ---
- include/linux/irqdomain.h | 12 ++++++++++--
- kernel/irq/irqdomain.c    | 13 ++++++++-----
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ arch/powerpc/platforms/pseries/msi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index 71535e87109f..ea5a337e0f8b 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -384,11 +384,19 @@ extern void irq_domain_associate_many(struct irq_domain *domain,
- extern void irq_domain_disassociate(struct irq_domain *domain,
- 				    unsigned int irq);
+diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
+index 133f6adcb39c..b3ac2455faad 100644
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -458,7 +458,8 @@ static int rtas_setup_msi_irqs(struct pci_dev *pdev, int nvec_in, int type)
+ 			return hwirq;
+ 		}
  
--extern unsigned int irq_create_mapping(struct irq_domain *host,
--				       irq_hw_number_t hwirq);
-+extern unsigned int irq_create_mapping_affinity(struct irq_domain *host,
-+				      irq_hw_number_t hwirq,
-+				      const struct irq_affinity_desc *affinity);
- extern unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec);
- extern void irq_dispose_mapping(unsigned int virq);
+-		virq = irq_create_mapping(NULL, hwirq);
++		virq = irq_create_mapping_affinity(NULL, hwirq,
++						   entry->affinity);
  
-+static inline unsigned int irq_create_mapping(struct irq_domain *host,
-+					      irq_hw_number_t hwirq)
-+{
-+	return irq_create_mapping_affinity(host, hwirq, NULL);
-+}
-+
-+
- /**
-  * irq_linear_revmap() - Find a linux irq from a hw irq number.
-  * @domain: domain owning this hardware interrupt
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index cf8b374b892d..e4ca69608f3b 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -624,17 +624,19 @@ unsigned int irq_create_direct_mapping(struct irq_domain *domain)
- EXPORT_SYMBOL_GPL(irq_create_direct_mapping);
- 
- /**
-- * irq_create_mapping() - Map a hardware interrupt into linux irq space
-+ * irq_create_mapping_affinity() - Map a hardware interrupt into linux irq space
-  * @domain: domain owning this hardware interrupt or NULL for default domain
-  * @hwirq: hardware irq number in that domain space
-+ * @affinity: irq affinity
-  *
-  * Only one mapping per hardware interrupt is permitted. Returns a linux
-  * irq number.
-  * If the sense/trigger is to be specified, set_irq_type() should be called
-  * on the number returned from that call.
-  */
--unsigned int irq_create_mapping(struct irq_domain *domain,
--				irq_hw_number_t hwirq)
-+unsigned int irq_create_mapping_affinity(struct irq_domain *domain,
-+				       irq_hw_number_t hwirq,
-+				       const struct irq_affinity_desc *affinity)
- {
- 	struct device_node *of_node;
- 	int virq;
-@@ -660,7 +662,8 @@ unsigned int irq_create_mapping(struct irq_domain *domain,
- 	}
- 
- 	/* Allocate a virtual interrupt number */
--	virq = irq_domain_alloc_descs(-1, 1, hwirq, of_node_to_nid(of_node), NULL);
-+	virq = irq_domain_alloc_descs(-1, 1, hwirq, of_node_to_nid(of_node),
-+				      affinity);
- 	if (virq <= 0) {
- 		pr_debug("-> virq allocation failed\n");
- 		return 0;
-@@ -676,7 +679,7 @@ unsigned int irq_create_mapping(struct irq_domain *domain,
- 
- 	return virq;
- }
--EXPORT_SYMBOL_GPL(irq_create_mapping);
-+EXPORT_SYMBOL_GPL(irq_create_mapping_affinity);
- 
- /**
-  * irq_create_strict_mappings() - Map a range of hw irqs to fixed linux irqs
+ 		if (!virq) {
+ 			pr_debug("rtas_msi: Failed mapping hwirq %d\n", hwirq);
 -- 
 2.28.0
 
