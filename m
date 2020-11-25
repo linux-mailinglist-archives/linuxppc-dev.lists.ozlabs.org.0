@@ -1,90 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596AD2C38E1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 06:58:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 022C22C38E5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 07:00:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgqvF3xKzzDqLh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 16:58:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgqxK2FfNzDr4r
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 17:00:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jTE74DFf; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cgq0L5zNTzDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 16:17:54 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AP52AaW108120; Wed, 25 Nov 2020 00:17:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=2ekZVX0kBzOT6b78sWmVZmQJGNHE/zVNCvN428LHGSE=;
- b=jTE74DFfam6K66TvgGnNM/fAPJaTgQ8kF7Sssf6Pct66lDpjOoJ26dfaGT/W9ucmsI+s
- Fa+AloJYcWsK/y0rt1Jhc7oL5bx+T57Q73FWfdYdLm1v8XhkLFgndSojWN0MQO3dryU1
- Msa4GdVCiQZSps0kESyPOerM8KNPaij+VznRXeLRwl5Q4Pvqf19XlTTd4w9+Gp0emgGI
- LZkbPkVOn2xcClaHqn1/N9ERvtOTFKrCWQwq6pVtamDbDuqidbwhaZcWFcS7SiVEmv+h
- 65DI51GrfppqEb+cQmpsqbl+Y1moy44Sv1xMVRpvyo0E41z37ZL7Ue6pCLmCHnyfGMxJ cA== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 351dd3mxwy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Nov 2020 00:17:50 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AP5DUVq011559;
- Wed, 25 Nov 2020 05:17:49 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma04dal.us.ibm.com with ESMTP id 35192ubcng-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Nov 2020 05:17:49 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AP5HnMb7013116
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Nov 2020 05:17:49 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0A0C9124053;
- Wed, 25 Nov 2020 05:17:49 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E0553124052;
- Wed, 25 Nov 2020 05:17:46 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.77.195.3])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 25 Nov 2020 05:17:46 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v6 22/22] powerpc/book3s64/pkeys: Optimize FTR_KUAP and
- FTR_KUEP disabled case
-Date: Wed, 25 Nov 2020 10:46:34 +0530
-Message-Id: <20201125051634.509286-23-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201125051634.509286-1-aneesh.kumar@linux.ibm.com>
-References: <20201125051634.509286-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgqYv4fRTzDqdd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 16:43:31 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=VJAZ/jJz; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CgqYt3zhmz9sSs;
+ Wed, 25 Nov 2020 16:43:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1606283010;
+ bh=3LAUEpq1wObIwU9ezJFWWUNQZ1td88N2WZdNNoXSTE4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=VJAZ/jJz+1cMe0Ve8wVLRfoe94evycN1QlnghDS02IuY5/+OxwHCUdqvIAmunCJDj
+ +/RyZ8Ajl2XiwL+Rmy0LN6K8byUciQvaRCoObJpZ11WzLHsT0Nt0T8D8RJj7JeWdiD
+ 6xK9OOwxI4evYZzZA2fjowt5/BqF+PdtTYd4/Ngl5sI6a5N2fb8UBZup8dcJw0/tQK
+ qUIIMstgMi4sgjADChc7mlGm2Vi3oFTBDPTFVak/OVa8ZQHQfUWX1AH0CUHNRD2r9v
+ nZNqQpQ+i9d+C6e4huAwUSz+M0gsWBKsj3uYore6AztKpzI2zCBwQge1mkdUTcf4My
+ pvEBSuuk7EDVw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Thomas Falcon <tlfalcon@linux.ibm.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH net 1/2] ibmvnic: Ensure that SCRQ entry reads are
+ correctly ordered
+In-Reply-To: <1606238776-30259-2-git-send-email-tlfalcon@linux.ibm.com>
+References: <1606238776-30259-1-git-send-email-tlfalcon@linux.ibm.com>
+ <1606238776-30259-2-git-send-email-tlfalcon@linux.ibm.com>
+Date: Wed, 25 Nov 2020 16:43:26 +1100
+Message-ID: <87o8jmyosh.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-24_07:2020-11-24,
- 2020-11-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0
- impostorscore=0 bulkscore=0 mlxlogscore=999 priorityscore=1501
- malwarescore=0 clxscore=1015 suspectscore=0 phishscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011240121
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,195 +59,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: cforno12@linux.ibm.com, ljp@linux.vnet.ibm.com, ricklind@linux.ibm.com,
+ dnbanerg@us.ibm.com, tlfalcon@linux.ibm.com, drt@linux.vnet.ibm.com,
+ brking@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If FTR_KUAP is disabled kernel will continue to run with the same AMR
-value with which it was entered. Hence there is a high chance that
-we can return without restoring the AMR value. This also helps the case
-when applications are not using the pkey feature. In this case, different
-applications will have the same AMR values and hence we can avoid restoring
-AMR in this case too.
+Thomas Falcon <tlfalcon@linux.ibm.com> writes:
+> Ensure that received Subordinate Command-Response Queue (SCRQ)
+> entries are properly read in order by the driver. These queues
+> are used in the ibmvnic device to process RX buffer and TX completion
+> descriptors. dma_rmb barriers have been added after checking for a
+> pending descriptor to ensure the correct descriptor entry is checked
+> and after reading the SCRQ descriptor to ensure the entire
+> descriptor is read before processing.
+>
+> Fixes: 032c5e828 ("Driver for IBM System i/p VNIC protocol")
+> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
+> ---
+>  drivers/net/ethernet/ibm/ibmvnic.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+> index 2aa40b2..489ed5e 100644
+> --- a/drivers/net/ethernet/ibm/ibmvnic.c
+> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
+> @@ -2403,6 +2403,8 @@ static int ibmvnic_poll(struct napi_struct *napi, int budget)
+>  
+>  		if (!pending_scrq(adapter, adapter->rx_scrq[scrq_num]))
+>  			break;
+> +		/* ensure that we do not prematurely exit the polling loop */
+> +		dma_rmb();
 
-Also avoid isync() if not really needed.
+I'd be happier if these comments were more specific about which read(s)
+they are ordering vs which other read(s).
 
-Do the same for IAMR.
+I'm sure it's obvious to you, but it may not be to a future author,
+and/or after the code has been refactored over time.
 
-null-syscall benchmark results:
+>  		next = ibmvnic_next_scrq(adapter, adapter->rx_scrq[scrq_num]);
+>  		rx_buff =
+>  		    (struct ibmvnic_rx_buff *)be64_to_cpu(next->
+> @@ -3098,6 +3100,9 @@ static int ibmvnic_complete_tx(struct ibmvnic_adapter *adapter,
+>  		unsigned int pool = scrq->pool_index;
+>  		int num_entries = 0;
+>  
+> +		/* ensure that the correct descriptor entry is read */
+> +		dma_rmb();
+> +
+>  		next = ibmvnic_next_scrq(adapter, scrq);
+>  		for (i = 0; i < next->tx_comp.num_comps; i++) {
+>  			if (next->tx_comp.rcs[i]) {
+> @@ -3498,6 +3503,9 @@ static union sub_crq *ibmvnic_next_scrq(struct ibmvnic_adapter *adapter,
+>  	}
+>  	spin_unlock_irqrestore(&scrq->lock, flags);
+>  
+> +	/* ensure that the entire SCRQ descriptor is read */
+> +	dma_rmb();
+> +
+>  	return entry;
+>  }
 
-With smap/smep disabled:
-Without patch:
-	957.95 ns    2778.17 cycles
-With patch:
-	858.38 ns    2489.30 cycles
-
-With smap/smep enabled:
-Without patch:
-	1017.26 ns    2950.36 cycles
-With patch:
-	1021.51 ns    2962.44 cycles
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/include/asm/book3s/64/kup.h | 61 +++++++++++++++++++++---
- arch/powerpc/kernel/entry_64.S           |  2 +-
- arch/powerpc/kernel/syscall_64.c         | 12 +++--
- 3 files changed, 65 insertions(+), 10 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-index 7026d1b5d0c6..e063e439b0a8 100644
---- a/arch/powerpc/include/asm/book3s/64/kup.h
-+++ b/arch/powerpc/include/asm/book3s/64/kup.h
-@@ -12,28 +12,54 @@
- 
- #ifdef __ASSEMBLY__
- 
--.macro kuap_restore_user_amr gpr1
-+.macro kuap_restore_user_amr gpr1, gpr2
- #if defined(CONFIG_PPC_PKEY)
- 	BEGIN_MMU_FTR_SECTION_NESTED(67)
-+	b	100f  // skip_restore_amr
-+	END_MMU_FTR_SECTION_NESTED_IFCLR(MMU_FTR_PKEY, 67)
- 	/*
- 	 * AMR and IAMR are going to be different when
- 	 * returning to userspace.
- 	 */
- 	ld	\gpr1, STACK_REGS_AMR(r1)
-+
-+	/*
-+	 * If kuap feature is not enabled, do the mtspr
-+	 * only if AMR value is different.
-+	 */
-+	BEGIN_MMU_FTR_SECTION_NESTED(68)
-+	mfspr	\gpr2, SPRN_AMR
-+	cmpd	\gpr1, \gpr2
-+	beq	99f
-+	END_MMU_FTR_SECTION_NESTED_IFCLR(MMU_FTR_KUAP, 68)
-+
- 	isync
- 	mtspr	SPRN_AMR, \gpr1
-+99:
- 	/*
- 	 * Restore IAMR only when returning to userspace
- 	 */
- 	ld	\gpr1, STACK_REGS_IAMR(r1)
-+
-+	/*
-+	 * If kuep feature is not enabled, do the mtspr
-+	 * only if IAMR value is different.
-+	 */
-+	BEGIN_MMU_FTR_SECTION_NESTED(69)
-+	mfspr	\gpr2, SPRN_IAMR
-+	cmpd	\gpr1, \gpr2
-+	beq	100f
-+	END_MMU_FTR_SECTION_NESTED_IFCLR(MMU_FTR_KUEP, 69)
-+
-+	isync
- 	mtspr	SPRN_IAMR, \gpr1
- 
-+100: //skip_restore_amr
- 	/* No isync required, see kuap_restore_user_amr() */
--	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_PKEY, 67)
- #endif
- .endm
- 
--.macro kuap_restore_kernel_amr	gpr1, gpr2
-+.macro kuap_restore_kernel_amr gpr1, gpr2
- #if defined(CONFIG_PPC_PKEY)
- 
- 	BEGIN_MMU_FTR_SECTION_NESTED(67)
-@@ -197,18 +223,41 @@ static inline u64 current_thread_iamr(void)
- 
- static inline void kuap_restore_user_amr(struct pt_regs *regs)
- {
-+	bool restore_amr = false, restore_iamr = false;
-+	unsigned long amr, iamr;
-+
- 	if (!mmu_has_feature(MMU_FTR_PKEY))
- 		return;
- 
--	isync();
--	mtspr(SPRN_AMR, regs->amr);
--	mtspr(SPRN_IAMR, regs->iamr);
-+	if (!mmu_has_feature(MMU_FTR_KUAP)) {
-+		amr = mfspr(SPRN_AMR);
-+		if (amr != regs->amr)
-+			restore_amr = true;
-+	} else
-+		restore_amr = true;
-+
-+	if (!mmu_has_feature(MMU_FTR_KUEP)) {
-+		iamr = mfspr(SPRN_IAMR);
-+		if (iamr != regs->iamr)
-+			restore_iamr = true;
-+	} else
-+		restore_iamr = true;
-+
-+
-+	if (restore_amr || restore_iamr) {
-+		isync();
-+		if (restore_amr)
-+			mtspr(SPRN_AMR, regs->amr);
-+		if (restore_iamr)
-+			mtspr(SPRN_IAMR, regs->iamr);
-+	}
- 	/*
- 	 * No isync required here because we are about to rfi
- 	 * back to previous context before any user accesses
- 	 * would be made, which is a CSI.
- 	 */
- }
-+
- static inline void kuap_restore_kernel_amr(struct pt_regs *regs,
- 					   unsigned long amr)
- {
-diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-index e49291594c68..a68517e99fd2 100644
---- a/arch/powerpc/kernel/entry_64.S
-+++ b/arch/powerpc/kernel/entry_64.S
-@@ -675,7 +675,7 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return)
- 	bne-	.Lrestore_nvgprs
- 
- .Lfast_user_interrupt_return_amr:
--	kuap_restore_user_amr r3
-+	kuap_restore_user_amr r3, r4
- .Lfast_user_interrupt_return:
- 	ld	r11,_NIP(r1)
- 	ld	r12,_MSR(r1)
-diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
-index 60c57609d316..681f9afafc6f 100644
---- a/arch/powerpc/kernel/syscall_64.c
-+++ b/arch/powerpc/kernel/syscall_64.c
-@@ -38,6 +38,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
- #ifdef CONFIG_PPC_PKEY
- 	if (mmu_has_feature(MMU_FTR_PKEY)) {
- 		unsigned long amr, iamr;
-+		bool flush_needed = false;
- 		/*
- 		 * When entering from userspace we mostly have the AMR/IAMR
- 		 * different from kernel default values. Hence don't compare.
-@@ -46,11 +47,16 @@ notrace long system_call_exception(long r3, long r4, long r5,
- 		iamr = mfspr(SPRN_IAMR);
- 		regs->amr  = amr;
- 		regs->iamr = iamr;
--		if (mmu_has_feature(MMU_FTR_KUAP))
-+		if (mmu_has_feature(MMU_FTR_KUAP)) {
- 			mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
--		if (mmu_has_feature(MMU_FTR_KUEP))
-+			flush_needed = true;
-+		}
-+		if (mmu_has_feature(MMU_FTR_KUEP)) {
- 			mtspr(SPRN_IAMR, AMR_KUEP_BLOCKED);
--		isync();
-+			flush_needed = true;
-+		}
-+		if (flush_needed)
-+			isync();
- 	} else
- #endif
- 		kuap_check_amr();
--- 
-2.28.0
-
+cheers
