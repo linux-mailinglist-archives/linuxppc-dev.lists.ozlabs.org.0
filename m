@@ -1,53 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022C22C38E5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 07:00:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0162C3924
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 07:38:44 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgqxK2FfNzDr4r
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 17:00:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgrnY0k0rzDqXs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 17:38:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgqYv4fRTzDqdd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 16:43:31 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=VJAZ/jJz; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CgqYt3zhmz9sSs;
- Wed, 25 Nov 2020 16:43:30 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1606283010;
- bh=3LAUEpq1wObIwU9ezJFWWUNQZ1td88N2WZdNNoXSTE4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=VJAZ/jJz+1cMe0Ve8wVLRfoe94evycN1QlnghDS02IuY5/+OxwHCUdqvIAmunCJDj
- +/RyZ8Ajl2XiwL+Rmy0LN6K8byUciQvaRCoObJpZ11WzLHsT0Nt0T8D8RJj7JeWdiD
- 6xK9OOwxI4evYZzZA2fjowt5/BqF+PdtTYd4/Ngl5sI6a5N2fb8UBZup8dcJw0/tQK
- qUIIMstgMi4sgjADChc7mlGm2Vi3oFTBDPTFVak/OVa8ZQHQfUWX1AH0CUHNRD2r9v
- nZNqQpQ+i9d+C6e4huAwUSz+M0gsWBKsj3uYore6AztKpzI2zCBwQge1mkdUTcf4My
- pvEBSuuk7EDVw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Thomas Falcon <tlfalcon@linux.ibm.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH net 1/2] ibmvnic: Ensure that SCRQ entry reads are
- correctly ordered
-In-Reply-To: <1606238776-30259-2-git-send-email-tlfalcon@linux.ibm.com>
-References: <1606238776-30259-1-git-send-email-tlfalcon@linux.ibm.com>
- <1606238776-30259-2-git-send-email-tlfalcon@linux.ibm.com>
-Date: Wed, 25 Nov 2020 16:43:26 +1100
-Message-ID: <87o8jmyosh.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cgrld1fjDzDqS1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 17:36:56 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CgrlQ4mv8z9v4Wm;
+ Wed, 25 Nov 2020 07:36:50 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 9WOu8jrGC870; Wed, 25 Nov 2020 07:36:50 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CgrlQ2P6pz9v1VN;
+ Wed, 25 Nov 2020 07:36:50 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0A3DF8B7C1;
+ Wed, 25 Nov 2020 07:36:51 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id NyjcLbCJ2q3z; Wed, 25 Nov 2020 07:36:50 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 710BA8B7B7;
+ Wed, 25 Nov 2020 07:36:48 +0100 (CET)
+Subject: Re: [PATCH 0/2] powerpc: Remove support for ppc405/440 Xilinx
+ platforms
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Arnd Bergmann <arnd@arndb.de>
+References: <cover.1585311091.git.michal.simek@xilinx.com>
+ <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
+ <20200327131026.GT1922688@smile.fi.intel.com>
+ <20200327131531.GU1922688@smile.fi.intel.com>
+ <CAK8P3a1Z+ZPTDzgAjdz0a7d85R62BhUqkdEWgrwXh-OnYe6rog@mail.gmail.com>
+ <20200327141434.GA1922688@smile.fi.intel.com>
+ <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
+ <87mu7xum41.fsf@mpe.ellerman.id.au>
+ <bac9af641140cf6df04e3532589a11c2f3bccd2f.camel@kernel.crashing.org>
+ <87pncprwp9.fsf@mpe.ellerman.id.au>
+ <5782f9a42ad8acd8b234fa9c15a09db93552dc6b.camel@kernel.crashing.org>
+ <871roykwu6.fsf@mpe.ellerman.id.au>
+ <CAK8P3a1XmeeP7FKfNwXZO8cXyJ_U_Jr0kjOaGZ6F=7OcoZ+0nw@mail.gmail.com>
+ <87zha17otl.fsf@mpe.ellerman.id.au>
+ <33b873a8-ded2-4866-fb70-c336fb325923@csgroup.eu>
+Message-ID: <02a27887-55ce-2101-efce-b1236e164f15@csgroup.eu>
+Date: Wed, 25 Nov 2020 07:36:49 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <33b873a8-ded2-4866-fb70-c336fb325923@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,67 +78,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cforno12@linux.ibm.com, ljp@linux.vnet.ibm.com, ricklind@linux.ibm.com,
- dnbanerg@us.ibm.com, tlfalcon@linux.ibm.com, drt@linux.vnet.ibm.com,
- brking@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Kate Stewart <kstewart@linuxfoundation.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+ dri-devel <dri-devel@lists.freedesktop.org>, Jaroslav Kysela <perex@perex.cz>,
+ Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, Jonathan Corbet <corbet@lwn.net>,
+ Masahiro Yamada <masahiroy@kernel.org>, YueHaibing <yuehaibing@huawei.com>,
+ Michal Simek <michal.simek@xilinx.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Allison Randal <allison@lohutok.net>, Leonardo Bras <leonardo@linux.ibm.com>,
+ DTML <devicetree@vger.kernel.org>, Andrew Donnellan <ajd@linux.ibm.com>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Marc Zyngier <marc.zyngier@arm.com>, Alistair Popple <alistair@popple.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
+ Mark Brown <broonie@kernel.org>, git@xilinx.com,
+ Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, Enrico Weigelt <info@metux.net>,
+ Michal Simek <monstr@monstr.eu>, Wei Hu <weh@microsoft.com>,
+ Christian Lamparter <chunkeey@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Takashi Iwai <tiwai@suse.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Armijn Hemel <armijn@tjaldur.nl>, Rob Herring <robh+dt@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thomas Falcon <tlfalcon@linux.ibm.com> writes:
-> Ensure that received Subordinate Command-Response Queue (SCRQ)
-> entries are properly read in order by the driver. These queues
-> are used in the ibmvnic device to process RX buffer and TX completion
-> descriptors. dma_rmb barriers have been added after checking for a
-> pending descriptor to ensure the correct descriptor entry is checked
-> and after reading the SCRQ descriptor to ensure the entire
-> descriptor is read before processing.
->
-> Fixes: 032c5e828 ("Driver for IBM System i/p VNIC protocol")
-> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
-> ---
->  drivers/net/ethernet/ibm/ibmvnic.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-> index 2aa40b2..489ed5e 100644
-> --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> @@ -2403,6 +2403,8 @@ static int ibmvnic_poll(struct napi_struct *napi, int budget)
->  
->  		if (!pending_scrq(adapter, adapter->rx_scrq[scrq_num]))
->  			break;
-> +		/* ensure that we do not prematurely exit the polling loop */
-> +		dma_rmb();
 
-I'd be happier if these comments were more specific about which read(s)
-they are ordering vs which other read(s).
 
-I'm sure it's obvious to you, but it may not be to a future author,
-and/or after the code has been refactored over time.
+Le 21/05/2020 à 12:38, Christophe Leroy a écrit :
+> 
+> 
+> Le 21/05/2020 à 09:02, Michael Ellerman a écrit :
+>> Arnd Bergmann <arnd@arndb.de> writes:
+>>> +On Wed, Apr 8, 2020 at 2:04 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>>> Benjamin Herrenschmidt <benh@kernel.crashing.org> writes:
+>>>>> On Fri, 2020-04-03 at 15:59 +1100, Michael Ellerman wrote:
+>>>>>> Benjamin Herrenschmidt <benh@kernel.crashing.org> writes:
+>>>>> IBM still put 40x cores inside POWER chips no ?
+>>>>
+>>>> Oh yeah that's true. I guess most folks don't know that, or that they
+>>>> run RHEL on them.
+>>>
+>>> Is there a reason for not having those dts files in mainline then?
+>>> If nothing else, it would document what machines are still being
+>>> used with future kernels.
+>>
+>> Sorry that part was a joke :D  Those chips don't run Linux.
+>>
+> 
+> Nice to know :)
+> 
+> What's the plan then, do we still want to keep 40x in the kernel ?
+> 
+> If yes, is it ok to drop the oldies anyway as done in my series 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=172630 ?
+> 
+> (Note that this series will conflict with my series on hugepages on 8xx due to the 
+> PTE_ATOMIC_UPDATES stuff. I can rebase the 40x modernisation series on top of the 8xx hugepages 
+> series if it is worth it)
+> 
 
->  		next = ibmvnic_next_scrq(adapter, adapter->rx_scrq[scrq_num]);
->  		rx_buff =
->  		    (struct ibmvnic_rx_buff *)be64_to_cpu(next->
-> @@ -3098,6 +3100,9 @@ static int ibmvnic_complete_tx(struct ibmvnic_adapter *adapter,
->  		unsigned int pool = scrq->pool_index;
->  		int num_entries = 0;
->  
-> +		/* ensure that the correct descriptor entry is read */
-> +		dma_rmb();
-> +
->  		next = ibmvnic_next_scrq(adapter, scrq);
->  		for (i = 0; i < next->tx_comp.num_comps; i++) {
->  			if (next->tx_comp.rcs[i]) {
-> @@ -3498,6 +3503,9 @@ static union sub_crq *ibmvnic_next_scrq(struct ibmvnic_adapter *adapter,
->  	}
->  	spin_unlock_irqrestore(&scrq->lock, flags);
->  
-> +	/* ensure that the entire SCRQ descriptor is read */
-> +	dma_rmb();
-> +
->  	return entry;
->  }
+Do we still want to keep 40x in the kernel ? We don't even have a running 40x QEMU machine as far as 
+I know.
 
-cheers
+I'm asking because I'd like to drop the non CONFIG_VMAP_STACK code to simplify and ease stuff (code 
+that works with vmalloc'ed stacks also works with stacks in linear memory), but I can't do it 
+because 40x doesn't have VMAP_STACK and should I implement it for 40x, I have to means to test it.
+
+So it would ease things if we could drop 40x completely, unless someone there has a 40x platform to 
+test stuff.
+
+Thanks
+Christophe
