@@ -1,76 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A402C3865
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 06:16:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 618FC2C3873
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 06:22:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cgpy70nhLzDqWr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 16:15:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cgq612pJ4zDqYB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 16:22:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::644;
- helo=mail-ej1-x644.google.com; envelope-from=morbo@google.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=rZg90c7i; dkim-atps=neutral
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com
- [IPv6:2a00:1450:4864:20::644])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IkzyhuK4; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgpwF4DSGzDqNN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 16:14:18 +1100 (AEDT)
-Received: by mail-ej1-x644.google.com with SMTP id gj5so1194292ejb.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 21:14:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=4tlokv7oJNF7EFCi1VI0Def0yc29uKnnsPIgZygOd+w=;
- b=rZg90c7ipE09vr6/rliJ5Bx5Ag3rpwss5yvkjl/UBUYwyhnPDvxgtTiE3V2h/rH6f/
- /xtHc7UtQxXud0w7dUihSUzkeJ5JX7fPIMABdvOfCJ+rJggcMMSfoJGMmGuBpKN/zevR
- wtrQNjOusHZoogP7CX2QHGUAzkWjrWEfW+QrFhdkAiGmBFnZ4pWcpW+YqSVzF7o38y6W
- 7PjemCRPVcn2YjJweuoAFD75DmlBb0Aa5vHYoKB/7egoFGyLIZfRdvkLw4walPczT7Gf
- 0lPQki94MMl5pB3zyitSIMb6EH3k3osoh7hx17KM60LvJyx22IHYDi6sToiB7sC5JQrd
- ulJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=4tlokv7oJNF7EFCi1VI0Def0yc29uKnnsPIgZygOd+w=;
- b=RWbv7yy9Z0TucATwsURPEGiZAoAPml4TmJz8PVpDObZnLVTzRF93Vn51Uqkxpz8imQ
- XkkjNntjv/zo0bh9dUQiNwHfQ4M/Oqrv4AxS80QG3qg+tucNCYWsm/0Pr1rxxF8nJuaR
- 65Mnx7EMlXvNj+6bqGaJyFoPTc1cw4zaNM70KXmaXWETVt0h4S7f1ZDLnTMqORyHz3TV
- mtxH2ukxsKtMkG/ygVt3j3SbUSSsanBv/5yskcRzV2bVgXk2nks+g6R2QEjBEFJKrKvQ
- joqQrSzUJcxqJXQ24GNC0V5e/JdLW5eQy+8NMRtjA7tD0D0med2fV4gSaPR7U4tA0u2V
- p0Iw==
-X-Gm-Message-State: AOAM531uD4MvUz+0xIccjFXu+2bf6TkGccw3kYryBplcj/pJJiDVLskV
- T63VMD3DSqOP6iB1j2k24V9SPHUqwZMVQ2OVz0+Z
-X-Google-Smtp-Source: ABdhPJy1FYren3Dvcc2xEwRcZtg0UFhfh8mOln0jaIumB3scwVGN/JkowNGh/fCN154uYWRSIy2q+W3RYoQGheACXUc=
-X-Received: by 2002:a17:906:5a8f:: with SMTP id
- l15mr1615414ejq.419.1606281251218; 
- Tue, 24 Nov 2020 21:14:11 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgpzL3tq3zDqNN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 16:16:56 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AP52UIN069106; Wed, 25 Nov 2020 00:16:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=uiwHqls2aJtiF0KKstjwvxMh1KUjfqdLcncIxjNWuyI=;
+ b=IkzyhuK4Qzbdepx8RuQcTFfmQ7BmXiuQrB/tpQRW6LghtpKhfxGFwmsnbXTCeWZgDYsQ
+ oegr6OwXnAhvMRYe4osGVPNectedzD7ICDSuGZ045Uu+a4cvjrTDNfqlDdOsWIB8r0aE
+ 0YKlzU/Yrzpz/576HxcrckIi77ebaVltmCQNsaWDIHReK12aSwYN+1xcUx/FuNpqx/Rk
+ nDZTYIUXZPzktvcgpJnLFtEIE4IfwWEP//P5va2Cy1l8JFIHYE75G/ajMTmNpI/4Hn6D
+ +FSoMINrjtrIBdBoXw47leAE7258b+2lLOeEFlzP9nbUYZa6pQmzcATPmWI2lKMmWvxm 5A== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 351dgsvtaj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 25 Nov 2020 00:16:51 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AP5DVHI012449;
+ Wed, 25 Nov 2020 05:16:50 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma05wdc.us.ibm.com with ESMTP id 34xth94uj3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 25 Nov 2020 05:16:50 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AP5GoYT58720644
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 25 Nov 2020 05:16:50 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E9543124052;
+ Wed, 25 Nov 2020 05:16:49 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F2945124054;
+ Wed, 25 Nov 2020 05:16:47 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.77.195.3])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 25 Nov 2020 05:16:47 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v6 00/22] Kernel userspace access/execution prevention with
+ hash translation
+Date: Wed, 25 Nov 2020 10:46:12 +0530
+Message-Id: <20201125051634.509286-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-References: <20201118223513.2704722-1-morbo@google.com>
- <20201120224034.191382-1-morbo@google.com>
- <20201120224034.191382-4-morbo@google.com> <87d0041vaf.fsf@mpe.ellerman.id.au>
- <20201123063432.GG2672@gate.crashing.org>
- <CAGG=3QVjSAwU+ebvH=Lk5YVMxW7=ThvkJXGPw+95nYxxuurMig@mail.gmail.com>
- <20201123195622.GI2672@gate.crashing.org>
- <CAGG=3QXR=Yfh8PNa4m-kQLTBP4YKD8OGm_6fSUgeasQ1ar9b2g@mail.gmail.com>
- <20201123200846.GJ2672@gate.crashing.org>
- <CAGG=3QUeXTU+8jqw40W_rhatsHCRiuTboL3enz9bpt_jaJC3TA@mail.gmail.com>
- <87zh37zaf4.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87zh37zaf4.fsf@mpe.ellerman.id.au>
-From: Bill Wendling <morbo@google.com>
-Date: Tue, 24 Nov 2020 21:13:59 -0800
-Message-ID: <CAGG=3QUSF4UwcZQHhFE-PW6As7GVJknsyGkgVMENDXghABzy5A@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] powerpc/64s: feature: Work around inline asm issues
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-24_07:2020-11-24,
+ 2020-11-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0
+ clxscore=1011 suspectscore=0 mlxscore=0 spamscore=0 impostorscore=0
+ bulkscore=0 priorityscore=1501 mlxlogscore=999 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011240121
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,107 +93,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Desaulniers <ndesaulniers@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 23, 2020 at 7:44 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
-> Bill Wendling <morbo@google.com> writes:
-> > On Mon, Nov 23, 2020 at 12:10 PM Segher Boessenkool
-> > <segher@kernel.crashing.org> wrote:
-> >> On Mon, Nov 23, 2020 at 12:01:01PM -0800, Bill Wendling wrote:
-> >> > On Mon, Nov 23, 2020 at 11:58 AM Segher Boessenkool
-> >> > <segher@kernel.crashing.org> wrote:
-> >> > > > On Sun, Nov 22, 2020 at 10:36 PM Segher Boessenkool
-> >> > > > <segher@kernel.crashing.org> wrote:
-> >> > > > > "true" (as a result of a comparison) in as is -1, not 1.
-> >> > >
-> >> > > On Mon, Nov 23, 2020 at 11:43:11AM -0800, Bill Wendling wrote:
-> >> > > > What Segher said. :-) Also, if you reverse the comparison, you'll get
-> >> > > > a build error.
-> >> > >
-> >> > > But that means your patch is the wrong way around?
-> >> > >
-> >> > > -       .ifgt (label##4b- label##3b)-(label##2b- label##1b);    \
-> >> > > -       .error "Feature section else case larger than body";    \
-> >> > > -       .endif;                                                 \
-> >> > > +       .org . - ((label##4b-label##3b) > (label##2b-label##1b)); \
-> >> > >
-> >> > > It should be a + in that last line, not a -.
-> >> >
-> >> > I said so in a follow up email.
-> >>
-> >> Yeah, and that arrived a second after I pressed "send" :-)
-> >>
-> > Michael, I apologize for the churn with these patches. I believe the
-> > policy is to resend the match as "v4", correct?
-> >
-> > I ran tests with the change above. It compiled with no error. If I
-> > switch the labels around to ".org . + ((label##2b-label##1b) >
-> > (label##4b-label##3b))", then it fails as expected.
->
-> I wanted to retain the nicer error reporting for gcc builds, so I did it
-> like this:
->
-> diff --git a/arch/powerpc/include/asm/feature-fixups.h b/arch/powerpc/include/asm/feature-fixups.h
-> index b0af97add751..c4ad33074df5 100644
-> --- a/arch/powerpc/include/asm/feature-fixups.h
-> +++ b/arch/powerpc/include/asm/feature-fixups.h
-> @@ -36,6 +36,24 @@ label##2:                                            \
->         .align 2;                                       \
->  label##3:
->
-> +
-> +#ifndef CONFIG_CC_IS_CLANG
-> +#define CHECK_ALT_SIZE(else_size, body_size)                   \
-> +       .ifgt (else_size) - (body_size);                        \
-> +       .error "Feature section else case larger than body";    \
-> +       .endif;
-> +#else
-> +/*
-> + * If we use the ifgt syntax above, clang's assembler complains about the
-> + * expression being non-absolute when the code appears in an inline assembly
-> + * statement.
-> + * As a workaround use an .org directive that has no effect if the else case
-> + * instructions are smaller than the body, but fails otherwise.
-> + */
-> +#define CHECK_ALT_SIZE(else_size, body_size)                   \
-> +       .org . + ((else_size) > (body_size));
-> +#endif
-> +
->  #define MAKE_FTR_SECTION_ENTRY(msk, val, label, sect)          \
->  label##4:                                                      \
->         .popsection;                                            \
-> @@ -48,9 +66,7 @@ label##5:                                                     \
->         FTR_ENTRY_OFFSET label##2b-label##5b;                   \
->         FTR_ENTRY_OFFSET label##3b-label##5b;                   \
->         FTR_ENTRY_OFFSET label##4b-label##5b;                   \
-> -       .ifgt (label##4b- label##3b)-(label##2b- label##1b);    \
-> -       .error "Feature section else case larger than body";    \
-> -       .endif;                                                 \
-> +       CHECK_ALT_SIZE((label##4b-label##3b), (label##2b-label##1b)); \
->         .popsection;
->
->
->
-> I've pushed a branch with all your patches applied to:
->
->   https://github.com/linuxppc/linux/commits/next-test
->
-This works for me. Thanks!
+This patch series implements KUAP and KUEP with hash translation mode using
+memory keys. The kernel now uses memory protection key 3 to control access
+to the kernel. Kernel page table entries are now configured with key 3.
+Access to locations configured with any other key value is denied when in
+kernel mode (MSR_PR=0). This includes userspace which is by default configured
+with key 0.
 
-> Are you able to give that a quick test? It builds clean with clang for
-> me, but we must be using different versions of clang because my branch
-> already builds clean for me even without your patches.
->
-You may need to set LLVM_IAS=1 to get the behavior I'm seeing. That
-turns on clang's integrated assembler, which I think is disabled by
-default.
+null-syscall benchmark results:
 
-Note that with clang's integrated assembler, arch/powerpc/boot/util.S
-fails to compile. Alan Modra mentioned that he sent you a patch to
-"modernize" the file so that clang can compile it.
+With smap/smep disabled:
+Without patch:
+	845.29 ns    2451.44 cycles
+With patch series:
+	858.38 ns    2489.30 cycles
 
+With smap/smep enabled:
+Without patch:
+	NA
+With patch series:
+	1021.51 ns    2962.44 cycles
 
--bw
+Changes from v5:
+* Rework the patch based on suggestion from Michael to avoid the
+  usage of CONFIG_PPC_PKEY on BOOKE platforms. 
+
+Changes from v4:
+* Repost with other pkey related changes split out as a separate series.
+* Improve null-syscall benchmark by optimizing SPRN save and restore.
+
+Changes from v3:
+* Fix build error reported by kernel test robot <lkp@intel.com>
+
+Changes from v2:
+* Rebase to the latest kernel.
+* Fixed a bug with disabling KUEP/KUAP on kernel command line
+* Added a patch to make kup key dynamic.
+
+Changes from V1:
+* Rebased on latest kernel
+
+Aneesh Kumar K.V (22):
+  powerpc: Add new macro to handle NESTED_IFCLR
+  KVM: PPC: BOOK3S: PR: Ignore UAMOR SPR
+  powerpc/book3s64/kuap/kuep: Make KUAP and KUEP a subfeature of
+    PPC_MEM_KEYS
+  powerpc/book3s64/kuap/kuep: Move uamor setup to pkey init
+  powerpc/book3s64/kuap: Move KUAP related function outside radix
+  powerpc/book3s64/kuep: Move KUEP related function outside radix
+  powerpc/book3s64/kuap: Rename MMU_FTR_RADIX_KUAP to MMU_FTR_KUAP
+  powerpc/book3s64/kuap: Use Key 3 for kernel mapping with hash
+    translation
+  powerpc/exec: Set thread.regs early during exec
+  powerpc/book3s64/pkeys: Store/restore userspace AMR/IAMR correctly on
+    entry and exit from kernel
+  powerpc/book3s64/pkeys: Inherit correctly on fork.
+  powerpc/book3s64/pkeys: Reset userspace AMR correctly on exec
+  powerpc/ptrace-view: Use pt_regs values instead of thread_struct based
+    one.
+  powerpc/book3s64/pkeys: Don't update SPRN_AMR when in kernel mode.
+  powerpc/book3s64/kuap: Restrict access to userspace based on userspace
+    AMR
+  powerpc/book3s64/kuap: Improve error reporting with KUAP
+  powerpc/book3s64/kuap: Use Key 3 to implement KUAP with hash
+    translation.
+  powerpc/book3s64/kuep: Use Key 3 to implement KUEP with hash
+    translation.
+  powerpc/book3s64/hash/kuap: Enable kuap on hash
+  powerpc/book3s64/hash/kuep: Enable KUEP on hash
+  powerpc/book3s64/hash/kup: Don't hardcode kup key
+  powerpc/book3s64/pkeys: Optimize FTR_KUAP and FTR_KUEP disabled case
+
+ arch/powerpc/include/asm/book3s/32/kup.h      |   4 +-
+ .../powerpc/include/asm/book3s/64/hash-pkey.h |  10 +-
+ arch/powerpc/include/asm/book3s/64/hash.h     |   2 +-
+ .../powerpc/include/asm/book3s/64/kup-radix.h | 203 --------
+ arch/powerpc/include/asm/book3s/64/kup.h      | 440 ++++++++++++++++++
+ arch/powerpc/include/asm/book3s/64/mmu-hash.h |   1 +
+ arch/powerpc/include/asm/book3s/64/mmu.h      |   2 +-
+ arch/powerpc/include/asm/book3s/64/pkeys.h    |   3 +
+ arch/powerpc/include/asm/feature-fixups.h     |   3 +
+ arch/powerpc/include/asm/kup.h                |   8 +-
+ arch/powerpc/include/asm/mmu.h                |  14 +-
+ arch/powerpc/include/asm/mmu_context.h        |   2 +-
+ arch/powerpc/include/asm/nohash/32/kup-8xx.h  |   4 +-
+ arch/powerpc/include/asm/processor.h          |   4 -
+ arch/powerpc/include/asm/ptrace.h             |  12 +-
+ arch/powerpc/include/asm/thread_info.h        |   2 -
+ arch/powerpc/kernel/asm-offsets.c             |   5 +
+ arch/powerpc/kernel/entry_64.S                |   6 +-
+ arch/powerpc/kernel/exceptions-64s.S          |   4 +-
+ arch/powerpc/kernel/process.c                 |  58 ++-
+ arch/powerpc/kernel/ptrace/ptrace-view.c      |   7 +-
+ arch/powerpc/kernel/syscall_64.c              |  38 +-
+ arch/powerpc/kernel/traps.c                   |   6 -
+ arch/powerpc/kvm/book3s_emulate.c             |   6 +
+ arch/powerpc/mm/book3s64/Makefile             |   2 +-
+ arch/powerpc/mm/book3s64/hash_4k.c            |   2 +-
+ arch/powerpc/mm/book3s64/hash_64k.c           |   4 +-
+ arch/powerpc/mm/book3s64/hash_hugepage.c      |   2 +-
+ arch/powerpc/mm/book3s64/hash_hugetlbpage.c   |   2 +-
+ arch/powerpc/mm/book3s64/hash_pgtable.c       |   2 +-
+ arch/powerpc/mm/book3s64/hash_utils.c         |  10 +-
+ arch/powerpc/mm/book3s64/pkeys.c              | 177 ++++---
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |  47 +-
+ arch/powerpc/mm/fault.c                       |   2 +-
+ arch/powerpc/platforms/Kconfig.cputype        |   5 +
+ 35 files changed, 715 insertions(+), 384 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/book3s/64/kup-radix.h
+ create mode 100644 arch/powerpc/include/asm/book3s/64/kup.h
+
+-- 
+2.28.0
+
