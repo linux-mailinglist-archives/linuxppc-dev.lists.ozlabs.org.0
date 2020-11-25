@@ -1,32 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFEF32C403D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 13:33:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C5C2C4066
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 13:42:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ch0fn6xMWzDqRW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 23:33:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ch0sN0cdqzDqnK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 23:42:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cgzsr3FNHzDqdW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 22:57:52 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cgzt55jsQzDqdk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 22:58:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4Cgzsm1K6Jz9sVX; Wed, 25 Nov 2020 22:57:48 +1100 (AEDT)
+ id 4Cgzsp6Xgnz9sVf; Wed, 25 Nov 2020 22:57:50 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20201014072837.24539-1-jniethe5@gmail.com>
-References: <20201014072837.24539-1-jniethe5@gmail.com>
-Subject: Re: [PATCH v4 1/2] powerpc/64: Set up a kernel stack for secondaries
- before cpu_restore()
-Message-Id: <160630539903.2174375.14042902720117238305.b4-ty@ellerman.id.au>
-Date: Wed, 25 Nov 2020 22:57:48 +1100 (AEDT)
+To: Qinglang Miao <miaoqinglang@huawei.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+In-Reply-To: <20201028091551.136400-1-miaoqinglang@huawei.com>
+References: <20201028091551.136400-1-miaoqinglang@huawei.com>
+Subject: Re: [PATCH] powerpc: sysdev: add missing iounmap() on error in
+ mpic_msgr_probe()
+Message-Id: <160630540026.2174375.17196584614414099920.b4-ty@ellerman.id.au>
+Date: Wed, 25 Nov 2020 22:57:50 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,28 +41,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: oohall@gmail.com, npiggin@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 14 Oct 2020 18:28:36 +1100, Jordan Niethe wrote:
-> Currently in generic_secondary_smp_init(), cur_cpu_spec->cpu_restore()
-> is called before a stack has been set up in r1. This was previously fine
-> as the cpu_restore() functions were implemented in assembly and did not
-> use a stack. However commit 5a61ef74f269 ("powerpc/64s: Support new
-> device tree binding for discovering CPU features") used
-> __restore_cpu_cpufeatures() as the cpu_restore() function for a
-> device-tree features based cputable entry. This is a C function and
-> hence uses a stack in r1.
-> 
-> [...]
+On Wed, 28 Oct 2020 17:15:51 +0800, Qinglang Miao wrote:
+> I noticed that iounmap() of msgr_block_addr before return from
+> mpic_msgr_probe() in the error handling case is missing. So use
+> devm_ioremap() instead of just ioremap() when remapping the message
+> register block, so the mapping will be automatically released on
+> probe failure.
 
 Applied to powerpc/next.
 
-[1/2] powerpc/64: Set up a kernel stack for secondaries before cpu_restore()
-      https://git.kernel.org/powerpc/c/3c0b976bf20d236c57adcefa80f86a0a1d737727
-[2/2] powerpc/64s: Convert some cpu_setup() and cpu_restore() functions to C
-      https://git.kernel.org/powerpc/c/344fbab991a568dc33ad90711b489d870e18d26d
+[1/1] powerpc: sysdev: add missing iounmap() on error in mpic_msgr_probe()
+      https://git.kernel.org/powerpc/c/ffa1797040c5da391859a9556be7b735acbe1242
 
 cheers
