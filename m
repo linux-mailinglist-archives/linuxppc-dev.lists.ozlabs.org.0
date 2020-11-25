@@ -2,55 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402B92C36D3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 03:49:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 480C92C377C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 04:17:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cglhn6wC5zDqZm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 13:49:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CgmK82XXdzDqdV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 14:17:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cglfw1gSQzDqWl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 13:47:36 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgmHd3bgpzDqTy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 14:15:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=L8Tfofay; 
+ header.a=rsa-sha256 header.s=201909 header.b=nP6zaA2q; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Cglfv1DY7z9sSs;
- Wed, 25 Nov 2020 13:47:34 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4CgmHc0TM8z9sSs; Wed, 25 Nov 2020 14:15:56 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4CgmHb6p6qz9sT6; Wed, 25 Nov 2020 14:15:55 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1606272455;
- bh=BiqObHiACRupyi7IpqkvSTHcKnK1tO8o+JWyAxdrA/Y=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=L8Tfofay4SCOhM5MvmVz43GD93Wfj85EL2PHJkr+oApfr6ns+iYBG4lyW3tqbRVOt
- cp70ORWxuDaEfuH1jnTCk3nAyMc+jJCle9j3H2xWmqH50jW5E+EoB5btJZug2Qx5JZ
- NrrJq6N/9TpMZMTkEIm5xPGKv7f7TD88MjRXoYpDmmjHaV0r2XXa2tFakP02whYwGC
- 3BGYUK/hZgvfppdTXGXXEFGJTG7fmV0ZILqkefMmfCOBI41lQ9yEqortBRwzGzpDbz
- VAYlQZm4zKzytWP4FwYu9wusVbmKsAgbgPssh4CPe92DyV5As9/YosBP318MYULNvT
- Sx44pADewOefQ==
+ s=201909; t=1606274155;
+ bh=E7ysyP8mmt0pPr7FVpyC0nhoEuH0cp9FZmKohlYcncU=;
+ h=From:To:Cc:Subject:Date:From;
+ b=nP6zaA2qyTe28V4zSoGR0TeYTHlzDdHy5kr0hfjJFWDe32GC0DJ+KjThtaTXkGgVc
+ vkmfPIQT8OtzeoIFH3KkNgMfF7ODYS1gU3ZhpDIQmgVFY4iO6DKpb+tJ6bjQ3UeVcS
+ IO2RyDEeHEDX8scM35Ear2N4q9dRnsoTcIcprqF7mE3JG3ysrYORfxznVOQuHRJl9E
+ UNCOev1LaBwUeZ/8nt6M3hRe3nQL0NhAQ9EvdQsjytS07H5KZ7NhJ8uN0dB7Sazap4
+ CzJaRWTIOw5F1+OzuW3al8c+hRJexAx6qQM/ksaTrpSQgyY432a5UnKKZjx5pyvuGD
+ l2sgbLnD1g/jg==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Daniel Axtens <dja@axtens.net>,
- Michael Ellerman <patch-notifications@ellerman.id.au>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: linux-next: build failure in Linus' tree
-In-Reply-To: <87h7pfhac3.fsf@dja-thinkpad.axtens.net>
-References: <20201123184016.693fe464@canb.auug.org.au>
- <160617472873.1817800.16473753588453276266.b4-ty@ellerman.id.au>
- <87h7pfhac3.fsf@dja-thinkpad.axtens.net>
-Date: Wed, 25 Nov 2020 13:47:31 +1100
-Message-ID: <87r1oiywxo.fsf@mpe.ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc/configs: Add ppc64le_allnoconfig target
+Date: Wed, 25 Nov 2020 14:15:51 +1100
+Message-Id: <20201125031551.2112715-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,30 +55,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Axtens <dja@axtens.net> writes:
-> Thanks sfr and mpe.
->
->> Applied to powerpc/fixes.
->>
->> [1/1] powerpc/64s: Fix allnoconfig build since uaccess flush
->>       https://git.kernel.org/powerpc/c/b6b79dd53082db11070b4368d85dd6699ff0b063
->
-> We also needed a similar fix for stable, which has also been applied.
->
-> I guess I should build some sort of build process that tests a whole
-> range of configs. I did test a few but clearly not enough. Is there a
-> known list that I should be using? Something from kisskb?
+Add a phony target for ppc64le_allnoconfig, which tests some
+combinations of CONFIG symbols that aren't covered by any of our
+defconfigs.
 
-It's basically unsolvable in general. I guess allnoconfig is a good one
-to build, although by default that gets you a 32-bit config.
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/Makefile               | 5 +++++
+ arch/powerpc/configs/ppc64le.config | 2 ++
+ 2 files changed, 7 insertions(+)
+ create mode 100644 arch/powerpc/configs/ppc64le.config
 
-I'll send a patch to add ppc64le_allnoconfig.
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index a4d56f0a41d9..26a17798c815 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -376,6 +376,11 @@ PHONY += ppc64le_allmodconfig
+ 	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/le.config \
+ 		-f $(srctree)/Makefile allmodconfig
+ 
++PHONY += ppc64le_allnoconfig
++ppc64le_allnoconfig:
++	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/ppc64le.config \
++		-f $(srctree)/Makefile allnoconfig
++
+ PHONY += ppc64_book3e_allmodconfig
+ ppc64_book3e_allmodconfig:
+ 	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/85xx-64bit.config \
+diff --git a/arch/powerpc/configs/ppc64le.config b/arch/powerpc/configs/ppc64le.config
+new file mode 100644
+index 000000000000..14dca1062c1b
+--- /dev/null
++++ b/arch/powerpc/configs/ppc64le.config
+@@ -0,0 +1,2 @@
++CONFIG_PPC64=y
++CONFIG_CPU_LITTLE_ENDIAN=y
+-- 
+2.25.1
 
-cheers
