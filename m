@@ -2,60 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A3C2C46DE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 18:36:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B51B2C493D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 21:48:00 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ch7N65ccJzDr4r
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 04:36:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ChCdR0TwlzDr3S
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 07:47:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.37.156; helo=8.mo52.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 12743 seconds by postgrey-1.36 at bilbo;
- Thu, 26 Nov 2020 04:34:29 AEDT
-Received: from 8.mo52.mail-out.ovh.net (8.mo52.mail-out.ovh.net
- [46.105.37.156])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ch7LF1jblzDr2w
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 04:34:26 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.156.21])
- by mo52.mail-out.ovh.net (Postfix) with ESMTPS id 3A81A217625;
- Wed, 25 Nov 2020 18:34:19 +0100 (CET)
-Received: from kaod.org (37.59.142.105) by DAG8EX1.mxp5.local (172.16.2.71)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Wed, 25 Nov
- 2020 18:34:18 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-105G006b56b7170-7741-40ac-97e5-c5413baab032,
- 13817E1CA0648EB9EE095497159C33290D197662) smtp.auth=groug@kaod.org
-Date: Wed, 25 Nov 2020 18:34:12 +0100
-From: Greg Kurz <groug@kaod.org>
-To: Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH v3 2/2] powerpc/pseries: pass MSI affinity to
- irq_create_mapping()
-Message-ID: <20201125183412.351c96ee@bahia.lan>
-In-Reply-To: <5419d1790c9ea0d9d7791ae887794285@kernel.org>
-References: <20201125150932.1150619-1-lvivier@redhat.com>
- <20201125150932.1150619-3-lvivier@redhat.com>
- <CAOJe8K1Q7sGf67bdj-2Mthkj4XNR4fOSskV1dyh62AdzefhpAQ@mail.gmail.com>
- <7184880b-0351-ae18-d2e1-fab7b79fc864@redhat.com>
- <5419d1790c9ea0d9d7791ae887794285@kernel.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ChCZv3ZdjzDr1N
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 07:45:38 +1100 (AEDT)
+IronPort-SDR: eWKcZckGU/rSbeReXCgzl3IvtH+xshjJJGNgo9vRJsyMSa1TvG1T461Eo5zsRYJh+BsVmShZeD
+ kKckadUOW6hQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9816"; a="172355284"
+X-IronPort-AV: E=Sophos;i="5.78,370,1599548400"; d="scan'208";a="172355284"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Nov 2020 12:45:34 -0800
+IronPort-SDR: laVzEyH6mDNRsRG2o0itqQMlYjJoIdAoC8GU/hNoC7aRyoPnaVTavOj3WZsLDp2atE7SD89udz
+ YYEeYpOcQSeQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,370,1599548400"; d="scan'208";a="333137030"
+Received: from lkp-server01.sh.intel.com (HELO f59a693d3a73) ([10.239.97.150])
+ by orsmga006.jf.intel.com with ESMTP; 25 Nov 2020 12:45:33 -0800
+Received: from kbuild by f59a693d3a73 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1ki1fQ-0000Fz-N8; Wed, 25 Nov 2020 20:45:32 +0000
+Date: Thu, 26 Nov 2020 04:45:26 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 4c202167192a77481310a3cacae9f12618b92216
+Message-ID: <5fbec266.dGfCubBa1C614dyP%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.105]
-X-ClientProxiedBy: DAG6EX2.mxp5.local (172.16.2.52) To DAG8EX1.mxp5.local
- (172.16.2.71)
-X-Ovh-Tracer-GUID: d6bac3c7-d957-44cb-8e9b-55ca8dec327a
-X-Ovh-Tracer-Id: 10779928659030088123
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudehtddguddtfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvuffkjghfofggtgfgihesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepfedutdeijeejveehkeeileetgfelteekteehtedtieefffevhffflefftdefleejnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopehmshhtsehrvgguhhgrthdrtghomh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,56 +57,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- linux-pci@vger.kernel.org, Denis Kirjanov <kda@linux-powerpc.org>,
- linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 25 Nov 2020 16:42:30 +0000
-Marc Zyngier <maz@kernel.org> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: 4c202167192a77481310a3cacae9f12618b92216  Automatic merge of 'next' into merge (2020-11-25 15:11)
 
-> On 2020-11-25 16:24, Laurent Vivier wrote:
-> > On 25/11/2020 17:05, Denis Kirjanov wrote:
-> >> On 11/25/20, Laurent Vivier <lvivier@redhat.com> wrote:
-> >>> With virtio multiqueue, normally each queue IRQ is mapped to a CPU.
-> >>> 
-> >>> But since commit 0d9f0a52c8b9f ("virtio_scsi: use virtio IRQ 
-> >>> affinity")
-> >>> this is broken on pseries.
-> >> 
-> >> Please add "Fixes" tag.
-> > 
-> > In fact, the code in commit 0d9f0a52c8b9f is correct.
-> > 
-> > The problem is with MSI/X irq affinity and pseries. So this patch
-> > fixes more than virtio_scsi. I put this information because this
-> > commit allows to clearly show the problem. Perhaps I should remove
-> > this line in fact?
-> 
-> This patch does not fix virtio_scsi at all, which as you noticed, is
-> correct. It really fixes the PPC MSI setup, which is starting to show
-> its age. So getting rid of the reference seems like the right thing to 
-> do.
-> 
-> I'm also not keen on the BugId thing. It should really be a lore link.
-> I also cannot find any such tag in the kernel, nor is it a documented
-> practice. The last reference to a Bugzilla entry seems to have happened
-> with 786b5219081ff16 (five years ago).
-> 
+elapsed time: 960m
 
-My bad, I suggested BugId to Laurent but the intent was actually BugLink,
-which seems to be commonly used in the kernel.
+configs tested: 130
+configs skipped: 2
 
-Cheers,
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
---
-Greg
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                     ep8248e_defconfig
+powerpc                     sequoia_defconfig
+arm                        oxnas_v6_defconfig
+arm                           corgi_defconfig
+powerpc               mpc834x_itxgp_defconfig
+sh                               allmodconfig
+powerpc                   lite5200b_defconfig
+ia64                          tiger_defconfig
+sh                           se7722_defconfig
+arm                      tct_hammer_defconfig
+sh                           se7721_defconfig
+arm                         nhk8815_defconfig
+mips                      maltaaprp_defconfig
+mips                            ar7_defconfig
+sh                            titan_defconfig
+powerpc                     mpc83xx_defconfig
+powerpc                          allmodconfig
+m68k                        stmark2_defconfig
+powerpc                  mpc866_ads_defconfig
+m68k                         apollo_defconfig
+powerpc64                           defconfig
+sh                         apsh4a3a_defconfig
+powerpc                     mpc512x_defconfig
+s390                                defconfig
+sh                          rsk7264_defconfig
+arm                        vexpress_defconfig
+mips                          ath25_defconfig
+powerpc                 canyonlands_defconfig
+arm                            pleb_defconfig
+x86_64                           alldefconfig
+arm                        neponset_defconfig
+sh                            migor_defconfig
+sh                          rsk7203_defconfig
+arm                        mvebu_v7_defconfig
+mips                 decstation_r4k_defconfig
+parisc                           alldefconfig
+mips                          rm200_defconfig
+sh                   sh7770_generic_defconfig
+powerpc                    gamecube_defconfig
+arm                        trizeps4_defconfig
+powerpc                 mpc836x_mds_defconfig
+mips                  cavium_octeon_defconfig
+sh                 kfr2r09-romimage_defconfig
+arm                         mv78xx0_defconfig
+mips                      maltasmvp_defconfig
+m68k                                defconfig
+sh                        sh7763rdp_defconfig
+sparc                            alldefconfig
+arm                        magician_defconfig
+powerpc                     tqm8548_defconfig
+sh                        sh7785lcr_defconfig
+powerpc                 mpc8313_rdb_defconfig
+xtensa                           alldefconfig
+arm                          lpd270_defconfig
+powerpc                     ppa8548_defconfig
+arm                             pxa_defconfig
+mips                      malta_kvm_defconfig
+riscv                            alldefconfig
+c6x                        evmc6474_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20201125
+i386                 randconfig-a003-20201125
+i386                 randconfig-a002-20201125
+i386                 randconfig-a005-20201125
+i386                 randconfig-a001-20201125
+i386                 randconfig-a006-20201125
+x86_64               randconfig-a015-20201125
+x86_64               randconfig-a011-20201125
+x86_64               randconfig-a014-20201125
+x86_64               randconfig-a016-20201125
+x86_64               randconfig-a012-20201125
+x86_64               randconfig-a013-20201125
+i386                 randconfig-a012-20201125
+i386                 randconfig-a013-20201125
+i386                 randconfig-a011-20201125
+i386                 randconfig-a016-20201125
+i386                 randconfig-a014-20201125
+i386                 randconfig-a015-20201125
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-> Thanks,
-> 
->          M.
+clang tested configs:
+x86_64               randconfig-a006-20201125
+x86_64               randconfig-a003-20201125
+x86_64               randconfig-a004-20201125
+x86_64               randconfig-a005-20201125
+x86_64               randconfig-a002-20201125
+x86_64               randconfig-a001-20201125
 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
