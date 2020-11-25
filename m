@@ -2,91 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA71B2C4493
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 16:59:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAF32C44D4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 17:23:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ch5F15bD0zDqW2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 02:59:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ch5mZ2TPHzDr4t
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 03:23:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=clombard@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=JxWAQatY; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=188.165.45.220; helo=5.mo52.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 4204 seconds by postgrey-1.36 at bilbo;
+ Thu, 26 Nov 2020 03:22:09 AEDT
+Received: from 5.mo52.mail-out.ovh.net (5.mo52.mail-out.ovh.net
+ [188.165.45.220])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ch52F0NkbzDqxF
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 02:50:28 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0APFY40D067302
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 10:50:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=IXyk38sedyH69jxxFuK2yvCTw2jjReVgCc5ILb4wwX0=;
- b=JxWAQatY3Yr4+H00+K+LxdszG/JtmSlAFI2GS9JitHGShQEHbkYkns1RurUhrxxmFD3u
- XpkAZgY91OcMgK/kC9smff/Wu/w7WZ7erzjevsHuOI+HMvAuC6wo31yu+NimtbcsjdL6
- vaSdLUdxT2F2T4Eg+YyhWg4mvk8tI95bTd4gpN/Pb/30msMMPoBXIFAnuUQdMYPC1qb5
- UEv4ttJD6K1i122PcgnQAGv28atnxamFPM9GwywKbkXNQSQPnx1A8zDWJRJXB3OtfZjr
- ODNc7n6Oa8An2oosXGl9iaJMvQ7FQ8jINBW2OTYNST7o1vMdo6lr27nGAzth//TeIJUY Ww== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 351swrrjmh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 10:50:25 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0APFWF2j014145
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 15:50:18 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 34xt5hcu75-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 15:50:18 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0APFoFfD6816266
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Nov 2020 15:50:15 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 00A894205C;
- Wed, 25 Nov 2020 15:50:15 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C55C54204B;
- Wed, 25 Nov 2020 15:50:14 +0000 (GMT)
-Received: from lombard-p52.ibmuc.com (unknown [9.171.47.8])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 25 Nov 2020 15:50:14 +0000 (GMT)
-From: Christophe Lombard <clombard@linux.vnet.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com,
- ajd@linux.ibm.com
-Subject: [PATCH V4 5/5] ocxl: Add new kernel traces
-Date: Wed, 25 Nov 2020 16:50:13 +0100
-Message-Id: <20201125155013.39955-6-clombard@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201125155013.39955-1-clombard@linux.vnet.ibm.com>
-References: <20201125155013.39955-1-clombard@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ch5kn5KPrzDqyX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 03:22:02 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.16.164])
+ by mo52.mail-out.ovh.net (Postfix) with ESMTPS id 35B1B21BD52;
+ Wed, 25 Nov 2020 13:45:40 +0100 (CET)
+Received: from kaod.org (37.59.142.100) by DAG8EX1.mxp5.local (172.16.2.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Wed, 25 Nov
+ 2020 13:45:39 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-100R003764d7788-e883-4b91-8c12-09b64416a181,
+ 13817E1CA0648EB9EE095497159C33290D197662) smtp.auth=groug@kaod.org
+Date: Wed, 25 Nov 2020 13:45:38 +0100
+From: Greg Kurz <groug@kaod.org>
+To: Laurent Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v2 1/2] genirq: add an irq_create_mapping_affinity()
+ function
+Message-ID: <20201125134538.71895275@bahia.lan>
+In-Reply-To: <20201125111657.1141295-2-lvivier@redhat.com>
+References: <20201125111657.1141295-1-lvivier@redhat.com>
+ <20201125111657.1141295-2-lvivier@redhat.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-25_09:2020-11-25,
- 2020-11-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 impostorscore=0
- suspectscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
- malwarescore=0 bulkscore=0 priorityscore=1501 mlxlogscore=969 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011250098
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.100]
+X-ClientProxiedBy: DAG5EX2.mxp5.local (172.16.2.42) To DAG8EX1.mxp5.local
+ (172.16.2.71)
+X-Ovh-Tracer-GUID: d00713c1-4f18-4b54-a786-baae8bb63fee
+X-Ovh-Tracer-Id: 5905345013404899832
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudehtddggeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfgjfhfogggtgfhisehtjeeftdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeetgffffffggfekgeffteekhffhueelffdvhedvgfdthfeiudetvddulefgveevteenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddttdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghu
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,124 +64,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, Paul
+ Mackerras <paulus@samba.org>, Marc Zyngier <maz@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add specific kernel traces which provide information on mmu notifier and on
-pages range.
+On Wed, 25 Nov 2020 12:16:56 +0100
+Laurent Vivier <lvivier@redhat.com> wrote:
 
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
----
- drivers/misc/ocxl/link.c  |  4 +++
- drivers/misc/ocxl/trace.h | 64 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 68 insertions(+)
+> This function adds an affinity parameter to irq_create_mapping().
+> This parameter is needed to pass it to irq_domain_alloc_descs().
+> 
+> irq_create_mapping() is a wrapper around irq_create_mapping_affinity()
+> to pass NULL for the affinity parameter.
+> 
+> No functional change.
+> 
+> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+> ---
 
-diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
-index 129d4eddc4d2..ab039c115381 100644
---- a/drivers/misc/ocxl/link.c
-+++ b/drivers/misc/ocxl/link.c
-@@ -499,6 +499,7 @@ static void invalidate_range(struct mmu_notifier *mn,
- 	unsigned long addr, pid, page_size = PAGE_SIZE;
- 
- 	pid = mm->context.id;
-+	trace_ocxl_mmu_notifier_range(start, end, pid);
- 
- 	spin_lock(&link->atsd_lock);
- 	for (addr = start; addr < end; addr += page_size)
-@@ -590,6 +591,7 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
- 			/* Use MMIO registers for the TLB Invalidate
- 			 * operations.
- 			 */
-+			trace_ocxl_init_mmu_notifier(pasid, mm->context.id);
- 			mmu_notifier_register(&pe_data->mmu_notifier, mm);
- 		}
- 	}
-@@ -725,6 +727,8 @@ int ocxl_link_remove_pe(void *link_handle, int pasid)
- 	} else {
- 		if (pe_data->mm) {
- 			if (link->arva) {
-+				trace_ocxl_release_mmu_notifier(pasid,
-+								pe_data->mm->context.id);
- 				mmu_notifier_unregister(&pe_data->mmu_notifier,
- 							pe_data->mm);
- 				spin_lock(&link->atsd_lock);
-diff --git a/drivers/misc/ocxl/trace.h b/drivers/misc/ocxl/trace.h
-index 17e21cb2addd..a33a5094ff6c 100644
---- a/drivers/misc/ocxl/trace.h
-+++ b/drivers/misc/ocxl/trace.h
-@@ -8,6 +8,70 @@
- 
- #include <linux/tracepoint.h>
- 
-+
-+TRACE_EVENT(ocxl_mmu_notifier_range,
-+	TP_PROTO(unsigned long start, unsigned long end, unsigned long pidr),
-+	TP_ARGS(start, end, pidr),
-+
-+	TP_STRUCT__entry(
-+		__field(unsigned long, start)
-+		__field(unsigned long, end)
-+		__field(unsigned long, pidr)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->start = start;
-+		__entry->end = end;
-+		__entry->pidr = pidr;
-+	),
-+
-+	TP_printk("start=0x%lx end=0x%lx pidr=0x%lx",
-+		__entry->start,
-+		__entry->end,
-+		__entry->pidr
-+	)
-+);
-+
-+TRACE_EVENT(ocxl_init_mmu_notifier,
-+	TP_PROTO(int pasid, unsigned long pidr),
-+	TP_ARGS(pasid, pidr),
-+
-+	TP_STRUCT__entry(
-+		__field(int, pasid)
-+		__field(unsigned long, pidr)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->pasid = pasid;
-+		__entry->pidr = pidr;
-+	),
-+
-+	TP_printk("pasid=%d, pidr=0x%lx",
-+		__entry->pasid,
-+		__entry->pidr
-+	)
-+);
-+
-+TRACE_EVENT(ocxl_release_mmu_notifier,
-+	TP_PROTO(int pasid, unsigned long pidr),
-+	TP_ARGS(pasid, pidr),
-+
-+	TP_STRUCT__entry(
-+		__field(int, pasid)
-+		__field(unsigned long, pidr)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->pasid = pasid;
-+		__entry->pidr = pidr;
-+	),
-+
-+	TP_printk("pasid=%d, pidr=0x%lx",
-+		__entry->pasid,
-+		__entry->pidr
-+	)
-+);
-+
- DECLARE_EVENT_CLASS(ocxl_context,
- 	TP_PROTO(pid_t pid, void *spa, int pasid, u32 pidr, u32 tidr),
- 	TP_ARGS(pid, spa, pasid, pidr, tidr),
--- 
-2.28.0
+Reviewed-by: Greg Kurz <groug@kaod.org>
+
+>  include/linux/irqdomain.h | 12 ++++++++++--
+>  kernel/irq/irqdomain.c    | 13 ++++++++-----
+>  2 files changed, 18 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+> index 71535e87109f..ea5a337e0f8b 100644
+> --- a/include/linux/irqdomain.h
+> +++ b/include/linux/irqdomain.h
+> @@ -384,11 +384,19 @@ extern void irq_domain_associate_many(struct irq_domain *domain,
+>  extern void irq_domain_disassociate(struct irq_domain *domain,
+>  				    unsigned int irq);
+>  
+> -extern unsigned int irq_create_mapping(struct irq_domain *host,
+> -				       irq_hw_number_t hwirq);
+> +extern unsigned int irq_create_mapping_affinity(struct irq_domain *host,
+> +				      irq_hw_number_t hwirq,
+> +				      const struct irq_affinity_desc *affinity);
+>  extern unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec);
+>  extern void irq_dispose_mapping(unsigned int virq);
+>  
+> +static inline unsigned int irq_create_mapping(struct irq_domain *host,
+> +					      irq_hw_number_t hwirq)
+> +{
+> +	return irq_create_mapping_affinity(host, hwirq, NULL);
+> +}
+> +
+> +
+>  /**
+>   * irq_linear_revmap() - Find a linux irq from a hw irq number.
+>   * @domain: domain owning this hardware interrupt
+> diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+> index cf8b374b892d..e4ca69608f3b 100644
+> --- a/kernel/irq/irqdomain.c
+> +++ b/kernel/irq/irqdomain.c
+> @@ -624,17 +624,19 @@ unsigned int irq_create_direct_mapping(struct irq_domain *domain)
+>  EXPORT_SYMBOL_GPL(irq_create_direct_mapping);
+>  
+>  /**
+> - * irq_create_mapping() - Map a hardware interrupt into linux irq space
+> + * irq_create_mapping_affinity() - Map a hardware interrupt into linux irq space
+>   * @domain: domain owning this hardware interrupt or NULL for default domain
+>   * @hwirq: hardware irq number in that domain space
+> + * @affinity: irq affinity
+>   *
+>   * Only one mapping per hardware interrupt is permitted. Returns a linux
+>   * irq number.
+>   * If the sense/trigger is to be specified, set_irq_type() should be called
+>   * on the number returned from that call.
+>   */
+> -unsigned int irq_create_mapping(struct irq_domain *domain,
+> -				irq_hw_number_t hwirq)
+> +unsigned int irq_create_mapping_affinity(struct irq_domain *domain,
+> +				       irq_hw_number_t hwirq,
+> +				       const struct irq_affinity_desc *affinity)
+>  {
+>  	struct device_node *of_node;
+>  	int virq;
+> @@ -660,7 +662,8 @@ unsigned int irq_create_mapping(struct irq_domain *domain,
+>  	}
+>  
+>  	/* Allocate a virtual interrupt number */
+> -	virq = irq_domain_alloc_descs(-1, 1, hwirq, of_node_to_nid(of_node), NULL);
+> +	virq = irq_domain_alloc_descs(-1, 1, hwirq, of_node_to_nid(of_node),
+> +				      affinity);
+>  	if (virq <= 0) {
+>  		pr_debug("-> virq allocation failed\n");
+>  		return 0;
+> @@ -676,7 +679,7 @@ unsigned int irq_create_mapping(struct irq_domain *domain,
+>  
+>  	return virq;
+>  }
+> -EXPORT_SYMBOL_GPL(irq_create_mapping);
+> +EXPORT_SYMBOL_GPL(irq_create_mapping_affinity);
+>  
+>  /**
+>   * irq_create_strict_mappings() - Map a range of hw irqs to fixed linux irqs
 
