@@ -2,99 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A2F2C3D55
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 11:11:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DF02C3EF2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 12:22:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CgxWX59WyzDqkX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 21:11:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cgz5K2b6WzDqLY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 22:22:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=lvivier@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hs1qPfAe; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=FnWUVu3y; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=bq4KajMA; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CgxTH0ZvGzDqQG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 21:09:54 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0APA2eK9047356; Wed, 25 Nov 2020 05:09:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=izIxdfYMBig8wZeWFr6sWO8q4sVy35etsgzGm+aYOIQ=;
- b=hs1qPfAe4kfdQoeYwsRfqPGIrzDsUMagiqqER9+tqCC3uadUatRH3jdVBGP10tru/ZoL
- 0rGzebGzvrT8FmB+u5KKAOw42vOYhXbKZXydWzRyAZddywUAsD7/ar7tj7tW9XB37L0F
- igL8Cf7lFwdOLkReCsGZIGHfK0wXZAloykOGKO1uFq9BHyxk88dg0ofJAeNDTvmjM6zA
- OOvgwSxM/Q0qRPLXo4NSimMfwoPoOAzDmqzAcVUDEMy7GF8C+mhrFFKH9SG7giXa79XM
- mYgj46ewqUJuc23x3dzGMBVQUyRAz8EhuhXkciV6clfWMPbhSKAjpZGocKTPk5P65eTH QA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 351jj7wfxq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Nov 2020 05:09:43 -0500
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0APA2tN5048877;
- Wed, 25 Nov 2020 05:09:43 -0500
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 351jj7wfw3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Nov 2020 05:09:43 -0500
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0APA2SaB009416;
- Wed, 25 Nov 2020 10:09:40 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma02fra.de.ibm.com with ESMTP id 350cvrt0au-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Nov 2020 10:09:40 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0APA9b8H47710650
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Nov 2020 10:09:37 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AD67D4C044;
- Wed, 25 Nov 2020 10:09:36 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C78C54C058;
- Wed, 25 Nov 2020 10:09:34 +0000 (GMT)
-Received: from [9.199.45.188] (unknown [9.199.45.188])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 25 Nov 2020 10:09:34 +0000 (GMT)
-Subject: Re: [PATCH 1/2] powerpc: sstep: Fix load and update instructions
-To: Sandipan Das <sandipan@linux.ibm.com>
-References: <20201119054139.244083-1-sandipan@linux.ibm.com>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Message-ID: <daf02936-8a92-e909-7495-7a48f01cfe31@linux.ibm.com>
-Date: Wed, 25 Nov 2020 15:39:33 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cgyyz5VrSzDqjc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 22:17:13 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1606303030;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=d6tPyIFWwC9FLM9lbcLTabTSHj2Cdv4CTmQuu8Xctvw=;
+ b=FnWUVu3yi8CZ9wZDLnkj0qN4WnBMElWrZl4LPttS5e/sGV3Zl/4k6CEp2ALjcnblxkY+Zn
+ iaOXzpS7/Ak+lDJf4zaipdMN/aIXibnh5yTfzcEbCH+FPNBYKhqKS7PuIxBjRRCKFToM4j
+ VGkJFZ1eXafc58wODfbJAk8bHRY9Pro=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1606303031;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=d6tPyIFWwC9FLM9lbcLTabTSHj2Cdv4CTmQuu8Xctvw=;
+ b=bq4KajMABR4b3om4sgLuUT4PtPDAZaZL6Hajr+IeSd1DrbRP36Or/v12xSvPI+glGaGq6s
+ 58JT1RhnKWwtvt6Z+VC2NTU9jIlP/iDdYW7tslaniX0s8emzn0/MgyPjLenWAwY5d++CRz
+ XCC5oJ1FA+Es6IFfotpAZ0CcL92DRiA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-183-QfIHT8QaNkSP_gbhcImWEw-1; Wed, 25 Nov 2020 06:17:06 -0500
+X-MC-Unique: QfIHT8QaNkSP_gbhcImWEw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B793F1005D53;
+ Wed, 25 Nov 2020 11:17:04 +0000 (UTC)
+Received: from thinkpad.redhat.com (ovpn-113-83.ams2.redhat.com [10.36.113.83])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7B2131002C11;
+ Wed, 25 Nov 2020 11:16:58 +0000 (UTC)
+From: Laurent Vivier <lvivier@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] powerpc/pseries: fix MSI/X IRQ affinity on pseries
+Date: Wed, 25 Nov 2020 12:16:55 +0100
+Message-Id: <20201125111657.1141295-1-lvivier@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <20201119054139.244083-1-sandipan@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-25_05:2020-11-25,
- 2020-11-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- adultscore=0 malwarescore=0 priorityscore=1501 spamscore=0 mlxlogscore=999
- lowpriorityscore=0 clxscore=1015 impostorscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011250057
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,25 +78,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, jniethe5@gmail.com,
- paulus@samba.org, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: Laurent Vivier <lvivier@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ linux-pci@vger.kernel.org, Greg Kurz <groug@kaod.org>,
+ linux-block@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+With virtio, in multiqueue case, each queue IRQ is normally=0D
+bound to a different CPU using the affinity mask.=0D
+=0D
+This works fine on x86_64 but totally ignored on pseries.=0D
+=0D
+This is not obvious at first look because irqbalance is doing=0D
+some balancing to improve that.=0D
+=0D
+It appears that the "managed" flag set in the MSI entry=0D
+is never copied to the system IRQ entry.=0D
+=0D
+This series passes the affinity mask from rtas_setup_msi_irqs()=0D
+to irq_domain_alloc_descs() by adding an affinity parameter to=0D
+irq_create_mapping().=0D
+=0D
+The first patch adds the parameter (no functional change), the=0D
+second patch passes the actual affinity mask to irq_create_mapping()=0D
+in rtas_setup_msi_irqs().=0D
+=0D
+For instance, with 32 CPUs VM and 32 queues virtio-scsi interface:=0D
+=0D
+... -smp 32 -device virtio-scsi-pci,id=3Dvirtio_scsi_pci0,num_queues=3D32=0D
+=0D
+for IRQ in $(grep virtio2-request /proc/interrupts |cut -d: -f1); do=0D
+    for file in /proc/irq/$IRQ/ ; do=0D
+        echo -n "IRQ: $(basename $file) CPU: " ; cat $file/smp_affinity_lis=
+t=0D
+    done=0D
+done=0D
+=0D
+Without the patch (and without irqbalanced)=0D
+=0D
+IRQ: 268 CPU: 0-31=0D
+IRQ: 269 CPU: 0-31=0D
+IRQ: 270 CPU: 0-31=0D
+IRQ: 271 CPU: 0-31=0D
+IRQ: 272 CPU: 0-31=0D
+IRQ: 273 CPU: 0-31=0D
+IRQ: 274 CPU: 0-31=0D
+IRQ: 275 CPU: 0-31=0D
+IRQ: 276 CPU: 0-31=0D
+IRQ: 277 CPU: 0-31=0D
+IRQ: 278 CPU: 0-31=0D
+IRQ: 279 CPU: 0-31=0D
+IRQ: 280 CPU: 0-31=0D
+IRQ: 281 CPU: 0-31=0D
+IRQ: 282 CPU: 0-31=0D
+IRQ: 283 CPU: 0-31=0D
+IRQ: 284 CPU: 0-31=0D
+IRQ: 285 CPU: 0-31=0D
+IRQ: 286 CPU: 0-31=0D
+IRQ: 287 CPU: 0-31=0D
+IRQ: 288 CPU: 0-31=0D
+IRQ: 289 CPU: 0-31=0D
+IRQ: 290 CPU: 0-31=0D
+IRQ: 291 CPU: 0-31=0D
+IRQ: 292 CPU: 0-31=0D
+IRQ: 293 CPU: 0-31=0D
+IRQ: 294 CPU: 0-31=0D
+IRQ: 295 CPU: 0-31=0D
+IRQ: 296 CPU: 0-31=0D
+IRQ: 297 CPU: 0-31=0D
+IRQ: 298 CPU: 0-31=0D
+IRQ: 299 CPU: 0-31=0D
+=0D
+With the patch:=0D
+=0D
+IRQ: 265 CPU: 0=0D
+IRQ: 266 CPU: 1=0D
+IRQ: 267 CPU: 2=0D
+IRQ: 268 CPU: 3=0D
+IRQ: 269 CPU: 4=0D
+IRQ: 270 CPU: 5=0D
+IRQ: 271 CPU: 6=0D
+IRQ: 272 CPU: 7=0D
+IRQ: 273 CPU: 8=0D
+IRQ: 274 CPU: 9=0D
+IRQ: 275 CPU: 10=0D
+IRQ: 276 CPU: 11=0D
+IRQ: 277 CPU: 12=0D
+IRQ: 278 CPU: 13=0D
+IRQ: 279 CPU: 14=0D
+IRQ: 280 CPU: 15=0D
+IRQ: 281 CPU: 16=0D
+IRQ: 282 CPU: 17=0D
+IRQ: 283 CPU: 18=0D
+IRQ: 284 CPU: 19=0D
+IRQ: 285 CPU: 20=0D
+IRQ: 286 CPU: 21=0D
+IRQ: 287 CPU: 22=0D
+IRQ: 288 CPU: 23=0D
+IRQ: 289 CPU: 24=0D
+IRQ: 290 CPU: 25=0D
+IRQ: 291 CPU: 26=0D
+IRQ: 292 CPU: 27=0D
+IRQ: 293 CPU: 28=0D
+IRQ: 294 CPU: 29=0D
+IRQ: 295 CPU: 30=0D
+IRQ: 299 CPU: 31=0D
+=0D
+This matches what we have on an x86_64 system.=0D
+=0D
+v2: add a wrapper around original irq_create_mapping() with the=0D
+    affinity parameter. Update comments=0D
+=0D
+Laurent Vivier (2):=0D
+  genirq: add an irq_create_mapping_affinity() function=0D
+  powerpc/pseries: pass MSI affinity to irq_create_mapping()=0D
+=0D
+ arch/powerpc/platforms/pseries/msi.c |  3 ++-=0D
+ include/linux/irqdomain.h            | 12 ++++++++++--=0D
+ kernel/irq/irqdomain.c               | 13 ++++++++-----=0D
+ 3 files changed, 20 insertions(+), 8 deletions(-)=0D
+=0D
+-- =0D
+2.28.0=0D
+=0D
 
-> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-> index 855457ed09b5..25a5436be6c6 100644
-> --- a/arch/powerpc/lib/sstep.c
-> +++ b/arch/powerpc/lib/sstep.c
-> @@ -2157,11 +2157,15 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
->   
->   		case 23:	/* lwzx */
->   		case 55:	/* lwzux */
-> +			if (u && (ra == 0 || ra == rd))
-> +				return -1;
-
-I guess you also need to split case 23 and 55?
-
-- Ravi
