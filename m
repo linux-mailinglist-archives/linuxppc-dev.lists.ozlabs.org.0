@@ -1,34 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5F82C3FBF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 13:18:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB562C3FD8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 13:22:20 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ch0KV2WxgzDqWs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 23:18:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ch0Q070f0zDqmY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 23:22:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cgzsj5YYYzDqdT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cgzsj6RRJzDqdW
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 22:57:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4Cgzsf37flz9sVD; Wed, 25 Nov 2020 22:57:41 +1100 (AEDT)
+ id 4Cgzsg3RSRz9sRK; Wed, 25 Nov 2020 22:57:42 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
- jakub@redhat.com, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, segher@kernel.crashing.org
-In-Reply-To: <348c2d3f19ffcff8abe50d52513f989c4581d000.1603375524.git.christophe.leroy@csgroup.eu>
-References: <348c2d3f19ffcff8abe50d52513f989c4581d000.1603375524.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/bitops: Fix possible undefined behaviour with
- fls() and fls64()
-Message-Id: <160630540248.2174375.3049361746995827520.b4-ty@ellerman.id.au>
-Date: Wed, 25 Nov 2020 22:57:41 +1100 (AEDT)
+ anton@ozlabs.org, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, nathanl@linux.ibm.com
+In-Reply-To: <cover.1604426550.git.christophe.leroy@csgroup.eu>
+References: <cover.1604426550.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v13 0/8] powerpc: switch VDSO to C implementation
+Message-Id: <160630540103.2174375.15062873523136699514.b4-ty@ellerman.id.au>
+Date: Wed, 25 Nov 2020 22:57:42 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,25 +39,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, arnd@arndb.de, linux-kernel@vger.kernel.org,
+ luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 22 Oct 2020 14:05:46 +0000 (UTC), Christophe Leroy wrote:
-> fls() and fls64() are using __builtin_ctz() and _builtin_ctzll().
-> On powerpc, those builtins trivially use ctlzw and ctlzd power
-> instructions.
+On Tue, 3 Nov 2020 18:07:11 +0000 (UTC), Christophe Leroy wrote:
+> This is a series to switch powerpc VDSO to generic C implementation.
 > 
-> Allthough those instructions provide the expected result with
-> input argument 0, __builtin_ctz() and __builtin_ctzll() are
-> documented as undefined for value 0.
+> Changes in v13:
+> - Reorganised headers to avoid the need for a fake 32 bits config for building VDSO32 on PPC64
+> - Rebased after the removal of powerpc 601
+> - Using DOTSYM() macro to call functions directly without using OPD
+> - Explicitely dropped .opd and .got1 sections which are now unused
 > 
 > [...]
 
-Applied to powerpc/next.
+Patch 1 applied to powerpc/next.
 
-[1/1] powerpc/bitops: Fix possible undefined behaviour with fls() and fls64()
-      https://git.kernel.org/powerpc/c/1891ef21d92c4801ea082ee8ed478e304ddc6749
+[1/8] powerpc/feature: Fix CPU_FTRS_ALWAYS by removing CPU_FTRS_GENERIC_32
+      https://git.kernel.org/powerpc/c/78665179e569c7e1fe102fb6c21d0f5b6951f084
 
 cheers
