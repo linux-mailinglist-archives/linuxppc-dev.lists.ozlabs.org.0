@@ -2,96 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7DA2C425F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 15:47:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 072762C4286
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 15:57:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ch3dw0JkLzDqsp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 01:47:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ch3rw0NNqzDqyH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 01:57:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Sdj5P6cr; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=hwGOzEWe; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ch3F65ZcfzDqgq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 01:29:46 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0APE1ZNv148176
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 09:29:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=fAM/MWy6ElPrLuNX/TlehmDA2bhACof8tXX5cav90IM=;
- b=Sdj5P6cr+/GYohfG0/HVhOSSQeZfVy/mXkGF1fILpMEBAO5ZW4VwQkD3bMpmMOcfnB8z
- fabpgIgcTLNwfo70z3nIc/98LSUvK7W7AfgeIJqiaQ2tqbHCf6qt2N2XCF2mh2g52xH7
- UTq2P3wJEmvPmcqT2q2omTY714nV/AktrO8v6df8dHW19m8TB41od7jDRmRQN/UxAV8N
- 91sOv3qi427oVrd/q5qGX6Uui0GwLj/8gsJe7cxm3LxCcQN8hdR3BYO4w2uxM0k4H9Ny
- wTEZtKt07gNgkPmWYmpCV61B5hpLgDqj1eof/OeXYOVQQ+Cf1EJc+CEUD0Z/U5TVslyT dA== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0b-001b2d01.pphosted.com with ESMTP id 351nr6qp3y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 09:29:43 -0500
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0APESCOQ013341
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 14:29:42 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma04fra.de.ibm.com with ESMTP id 34xth8aefu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 14:29:42 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0APETdce24707360
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Nov 2020 14:29:40 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B8B4FA4057;
- Wed, 25 Nov 2020 14:29:39 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E1A5A404D;
- Wed, 25 Nov 2020 14:29:39 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.145.70.43])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 25 Nov 2020 14:29:39 +0000 (GMT)
-Subject: Re: [PATCH V3 5/5] ocxl: Add new kernel traces
-To: Christophe Lombard <clombard@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com,
- ajd@linux.ibm.com
-References: <20201124095838.18665-1-clombard@linux.vnet.ibm.com>
- <20201124095838.18665-6-clombard@linux.vnet.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Message-ID: <c63e1ed4-169c-b53d-f28d-8f3b1b396719@linux.ibm.com>
-Date: Wed, 25 Nov 2020 15:29:39 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ch3nZ34v8zDqMv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 01:54:26 +1100 (AEDT)
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
+ [51.254.78.96])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8B2F6206B5;
+ Wed, 25 Nov 2020 14:54:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1606316063;
+ bh=tHkXsp0lYry+LrxVumeVX78AT7FJzfcqs1X3jktXgN0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=hwGOzEWeVZia6AU1cymJ7WZ6js+joX28GR1U4JTqy6BD2mMckiMcBOF+CYurZK7L6
+ bDuWwL4nLFxty8Yusdfg28cQQnzAO94P28hR0leptdyJinLMFTS5DOpfa4YEdDhCmn
+ wR5nipU8wsdwL033EwxZO7YN0B+/2gJtXHeI6BHQ=
+Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94)
+ (envelope-from <maz@kernel.org>)
+ id 1khwBZ-00DY7S-Fm; Wed, 25 Nov 2020 14:54:21 +0000
 MIME-Version: 1.0
-In-Reply-To: <20201124095838.18665-6-clombard@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-25_08:2020-11-25,
- 2020-11-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- suspectscore=0 phishscore=0 priorityscore=1501 adultscore=0 spamscore=0
- impostorscore=0 bulkscore=0 mlxscore=0 mlxlogscore=999 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011250084
+Date: Wed, 25 Nov 2020 14:54:21 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: Laurent Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v2 1/2] genirq: add an irq_create_mapping_affinity()
+ function
+In-Reply-To: <e32641f7-0993-8923-7d74-5ac57a60f10d@redhat.com>
+References: <20201125111657.1141295-1-lvivier@redhat.com>
+ <20201125111657.1141295-2-lvivier@redhat.com>
+ <87sg8xk1yi.fsf@nanos.tec.linutronix.de>
+ <e32641f7-0993-8923-7d74-5ac57a60f10d@redhat.com>
+User-Agent: Roundcube Webmail/1.4.9
+Message-ID: <5100171ff6d4c3efffe008e1e0bf3707@kernel.org>
+X-Sender: maz@kernel.org
+X-SA-Exim-Connect-IP: 51.254.78.96
+X-SA-Exim-Rcpt-To: lvivier@redhat.com, tglx@linutronix.de,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, paulus@samba.org,
+ linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ benh@kernel.crashing.org, mst@redhat.com, groug@kaod.org, hch@lst.de,
+ mpe@ellerman.id.au
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,129 +77,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Greg Kurz <groug@kaod.org>,
+ linux-block@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 2020-11-25 14:09, Laurent Vivier wrote:
+> On 25/11/2020 14:20, Thomas Gleixner wrote:
+>> Laurent,
+>> 
+>> On Wed, Nov 25 2020 at 12:16, Laurent Vivier wrote:
+>> 
+>> The proper subsystem prefix is: 'genirq/irqdomain:' and the first 
+>> letter
+>> after the colon wants to be uppercase.
+> 
+> Ok.
+> 
+>>> This function adds an affinity parameter to irq_create_mapping().
+>>> This parameter is needed to pass it to irq_domain_alloc_descs().
+>> 
+>> A changelog has to explain the WHY. 'The parameter is needed' is not
+>> really useful information.
+>> 
+> 
+> The reason of this change is explained in PATCH 2.
+> 
+> I have two patches, one to change the interface with no functional
+> change (PATCH 1) and
+> one to fix the problem (PATCH 2). Moreover they don't cover the same 
+> subsystems.
+> 
+> I can either:
+> - merge the two patches
+> - or make a reference in the changelog of PATCH 1 to PATCH 2
+>   (something like "(see folowing patch "powerpc/pseries: pass MSI 
+> affinity to
+>    irq_create_mapping()")")
+> - or copy some information from PATCH 2
+>   (something like "this parameter is needed by rtas_setup_msi_irqs()
+> to pass the affinity
+>    to irq_domain_alloc_descs() to fix multiqueue affinity")
+> 
+> What do you prefer?
 
+How about something like this for the first patch:
 
-On 24/11/2020 10:58, Christophe Lombard wrote:
-> Add specific kernel traces which provide information on mmu notifier and on
-> pages range.
-> 
-> Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
-> ---
+"There is currently no way to convey the affinity of an interrupt
+  via irq_create_mapping(), which creates issues for devices that
+  expect that affinity to be managed by the kernel.
 
+  In order to sort this out, rename irq_create_mapping() to
+  irq_create_mapping_affinity() with an additional affinity parameter
+  that can conveniently passed down to irq_domain_alloc_descs().
 
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
+  irq_create_mapping() is then re-implemented as a wrapper around
+  irq_create_mapping_affinity()."
 
+Thanks,
 
->   drivers/misc/ocxl/link.c  |  4 +++
->   drivers/misc/ocxl/trace.h | 64 +++++++++++++++++++++++++++++++++++++++
->   2 files changed, 68 insertions(+)
-> 
-> diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
-> index 129d4eddc4d2..ab039c115381 100644
-> --- a/drivers/misc/ocxl/link.c
-> +++ b/drivers/misc/ocxl/link.c
-> @@ -499,6 +499,7 @@ static void invalidate_range(struct mmu_notifier *mn,
->   	unsigned long addr, pid, page_size = PAGE_SIZE;
-> 
->   	pid = mm->context.id;
-> +	trace_ocxl_mmu_notifier_range(start, end, pid);
-> 
->   	spin_lock(&link->atsd_lock);
->   	for (addr = start; addr < end; addr += page_size)
-> @@ -590,6 +591,7 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
->   			/* Use MMIO registers for the TLB Invalidate
->   			 * operations.
->   			 */
-> +			trace_ocxl_init_mmu_notifier(pasid, mm->context.id);
->   			mmu_notifier_register(&pe_data->mmu_notifier, mm);
->   		}
->   	}
-> @@ -725,6 +727,8 @@ int ocxl_link_remove_pe(void *link_handle, int pasid)
->   	} else {
->   		if (pe_data->mm) {
->   			if (link->arva) {
-> +				trace_ocxl_release_mmu_notifier(pasid,
-> +								pe_data->mm->context.id);
->   				mmu_notifier_unregister(&pe_data->mmu_notifier,
->   							pe_data->mm);
->   				spin_lock(&link->atsd_lock);
-> diff --git a/drivers/misc/ocxl/trace.h b/drivers/misc/ocxl/trace.h
-> index 17e21cb2addd..a33a5094ff6c 100644
-> --- a/drivers/misc/ocxl/trace.h
-> +++ b/drivers/misc/ocxl/trace.h
-> @@ -8,6 +8,70 @@
-> 
->   #include <linux/tracepoint.h>
-> 
-> +
-> +TRACE_EVENT(ocxl_mmu_notifier_range,
-> +	TP_PROTO(unsigned long start, unsigned long end, unsigned long pidr),
-> +	TP_ARGS(start, end, pidr),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(unsigned long, start)
-> +		__field(unsigned long, end)
-> +		__field(unsigned long, pidr)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->start = start;
-> +		__entry->end = end;
-> +		__entry->pidr = pidr;
-> +	),
-> +
-> +	TP_printk("start=0x%lx end=0x%lx pidr=0x%lx",
-> +		__entry->start,
-> +		__entry->end,
-> +		__entry->pidr
-> +	)
-> +);
-> +
-> +TRACE_EVENT(ocxl_init_mmu_notifier,
-> +	TP_PROTO(int pasid, unsigned long pidr),
-> +	TP_ARGS(pasid, pidr),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(int, pasid)
-> +		__field(unsigned long, pidr)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->pasid = pasid;
-> +		__entry->pidr = pidr;
-> +	),
-> +
-> +	TP_printk("pasid=%d, pidr=0x%lx",
-> +		__entry->pasid,
-> +		__entry->pidr
-> +	)
-> +);
-> +
-> +TRACE_EVENT(ocxl_release_mmu_notifier,
-> +	TP_PROTO(int pasid, unsigned long pidr),
-> +	TP_ARGS(pasid, pidr),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(int, pasid)
-> +		__field(unsigned long, pidr)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->pasid = pasid;
-> +		__entry->pidr = pidr;
-> +	),
-> +
-> +	TP_printk("pasid=%d, pidr=0x%lx",
-> +		__entry->pasid,
-> +		__entry->pidr
-> +	)
-> +);
-> +
->   DECLARE_EVENT_CLASS(ocxl_context,
->   	TP_PROTO(pid_t pid, void *spa, int pasid, u32 pidr, u32 tidr),
->   	TP_ARGS(pid, spa, pasid, pidr, tidr),
-> 
+         M.
+-- 
+Jazz is not dead. It just smells funny...
