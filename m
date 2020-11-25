@@ -1,106 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 363882C3822
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 05:33:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A402C3865
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 06:16:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cgp1L6VgSzDqQ8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 15:33:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cgpy70nhLzDqWr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Nov 2020 16:15:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cgnxr0cGKzDqZW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 15:30:40 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jA60mgD+; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4Cgnxq64CTz8v8T
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 15:30:39 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4Cgnxq4zn0z9sTL; Wed, 25 Nov 2020 15:30:39 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::644;
+ helo=mail-ej1-x644.google.com; envelope-from=morbo@google.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jA60mgD+; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=rZg90c7i; dkim-atps=neutral
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com
+ [IPv6:2a00:1450:4864:20::644])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4Cgnxq0rF6z9sT6
- for <linuxppc-dev@ozlabs.org>; Wed, 25 Nov 2020 15:30:38 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AP42YK7186703; Tue, 24 Nov 2020 23:30:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=omi2U1D0oG2Gbt0dGU0hW0vMsJ8cxFaWGv/x1YGNXJo=;
- b=jA60mgD+0PjZHKsRCFu5gUfI/mv8Q8nbwr05F3Abb12QXTF3ZoSgASE0zIJeL4OCHD96
- ahWekQjlsnN1aM1bTliWvHo9nZBtbFtNap4wAkl+k43wjEns4E0HrQRxxc70wLgMu8OR
- dxel7AzqmGXOrUSIu7qwFnb7Kb20JzzPpP8t4T/ZpklTUe6cfA6kQPLsDVcCo0z08gMy
- JwoUudeS38t9Tn2dGqtC99WGP/ojaassK/yEstgl2zkJKg5Z/Ln5U6/GhmjThhLWjTIJ
- RiS+znFzjidkKVQy2suUEZbEHlyibUUv6MnGyL+Sj5b2QYjtAWM1z7Y3W6CIBXG72NOC rg== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 34yghsu3er-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Nov 2020 23:30:30 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AP4SjNr020940;
- Wed, 25 Nov 2020 04:30:28 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 34xt5hcab9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 Nov 2020 04:30:28 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AP4UQqW6488662
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 Nov 2020 04:30:26 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 91CB442061;
- Wed, 25 Nov 2020 04:30:26 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AA7FC42077;
- Wed, 25 Nov 2020 04:30:25 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Wed, 25 Nov 2020 04:30:25 +0000 (GMT)
-Date: Wed, 25 Nov 2020 10:00:25 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 2/3] powerpc: Make NUMA default y for powernv
-Message-ID: <20201125043025.GE528281@linux.vnet.ibm.com>
-References: <20201124120547.1940635-1-mpe@ellerman.id.au>
- <20201124120547.1940635-2-mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CgpwF4DSGzDqNN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Nov 2020 16:14:18 +1100 (AEDT)
+Received: by mail-ej1-x644.google.com with SMTP id gj5so1194292ejb.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Nov 2020 21:14:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=4tlokv7oJNF7EFCi1VI0Def0yc29uKnnsPIgZygOd+w=;
+ b=rZg90c7ipE09vr6/rliJ5Bx5Ag3rpwss5yvkjl/UBUYwyhnPDvxgtTiE3V2h/rH6f/
+ /xtHc7UtQxXud0w7dUihSUzkeJ5JX7fPIMABdvOfCJ+rJggcMMSfoJGMmGuBpKN/zevR
+ wtrQNjOusHZoogP7CX2QHGUAzkWjrWEfW+QrFhdkAiGmBFnZ4pWcpW+YqSVzF7o38y6W
+ 7PjemCRPVcn2YjJweuoAFD75DmlBb0Aa5vHYoKB/7egoFGyLIZfRdvkLw4walPczT7Gf
+ 0lPQki94MMl5pB3zyitSIMb6EH3k3osoh7hx17KM60LvJyx22IHYDi6sToiB7sC5JQrd
+ ulJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=4tlokv7oJNF7EFCi1VI0Def0yc29uKnnsPIgZygOd+w=;
+ b=RWbv7yy9Z0TucATwsURPEGiZAoAPml4TmJz8PVpDObZnLVTzRF93Vn51Uqkxpz8imQ
+ XkkjNntjv/zo0bh9dUQiNwHfQ4M/Oqrv4AxS80QG3qg+tucNCYWsm/0Pr1rxxF8nJuaR
+ 65Mnx7EMlXvNj+6bqGaJyFoPTc1cw4zaNM70KXmaXWETVt0h4S7f1ZDLnTMqORyHz3TV
+ mtxH2ukxsKtMkG/ygVt3j3SbUSSsanBv/5yskcRzV2bVgXk2nks+g6R2QEjBEFJKrKvQ
+ joqQrSzUJcxqJXQ24GNC0V5e/JdLW5eQy+8NMRtjA7tD0D0med2fV4gSaPR7U4tA0u2V
+ p0Iw==
+X-Gm-Message-State: AOAM531uD4MvUz+0xIccjFXu+2bf6TkGccw3kYryBplcj/pJJiDVLskV
+ T63VMD3DSqOP6iB1j2k24V9SPHUqwZMVQ2OVz0+Z
+X-Google-Smtp-Source: ABdhPJy1FYren3Dvcc2xEwRcZtg0UFhfh8mOln0jaIumB3scwVGN/JkowNGh/fCN154uYWRSIy2q+W3RYoQGheACXUc=
+X-Received: by 2002:a17:906:5a8f:: with SMTP id
+ l15mr1615414ejq.419.1606281251218; 
+ Tue, 24 Nov 2020 21:14:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20201124120547.1940635-2-mpe@ellerman.id.au>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-25_01:2020-11-24,
- 2020-11-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=1
- bulkscore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
- impostorscore=0 malwarescore=0 clxscore=1015 phishscore=0 adultscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011250021
+References: <20201118223513.2704722-1-morbo@google.com>
+ <20201120224034.191382-1-morbo@google.com>
+ <20201120224034.191382-4-morbo@google.com> <87d0041vaf.fsf@mpe.ellerman.id.au>
+ <20201123063432.GG2672@gate.crashing.org>
+ <CAGG=3QVjSAwU+ebvH=Lk5YVMxW7=ThvkJXGPw+95nYxxuurMig@mail.gmail.com>
+ <20201123195622.GI2672@gate.crashing.org>
+ <CAGG=3QXR=Yfh8PNa4m-kQLTBP4YKD8OGm_6fSUgeasQ1ar9b2g@mail.gmail.com>
+ <20201123200846.GJ2672@gate.crashing.org>
+ <CAGG=3QUeXTU+8jqw40W_rhatsHCRiuTboL3enz9bpt_jaJC3TA@mail.gmail.com>
+ <87zh37zaf4.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87zh37zaf4.fsf@mpe.ellerman.id.au>
+From: Bill Wendling <morbo@google.com>
+Date: Tue, 24 Nov 2020 21:13:59 -0800
+Message-ID: <CAGG=3QUSF4UwcZQHhFE-PW6As7GVJknsyGkgVMENDXghABzy5A@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] powerpc/64s: feature: Work around inline asm issues
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,43 +82,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: linuxppc-dev@ozlabs.org, rdunlap@infradead.org
+Cc: Nick Desaulniers <ndesaulniers@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Michael Ellerman <mpe@ellerman.id.au> [2020-11-24 23:05:46]:
+On Mon, Nov 23, 2020 at 7:44 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+> Bill Wendling <morbo@google.com> writes:
+> > On Mon, Nov 23, 2020 at 12:10 PM Segher Boessenkool
+> > <segher@kernel.crashing.org> wrote:
+> >> On Mon, Nov 23, 2020 at 12:01:01PM -0800, Bill Wendling wrote:
+> >> > On Mon, Nov 23, 2020 at 11:58 AM Segher Boessenkool
+> >> > <segher@kernel.crashing.org> wrote:
+> >> > > > On Sun, Nov 22, 2020 at 10:36 PM Segher Boessenkool
+> >> > > > <segher@kernel.crashing.org> wrote:
+> >> > > > > "true" (as a result of a comparison) in as is -1, not 1.
+> >> > >
+> >> > > On Mon, Nov 23, 2020 at 11:43:11AM -0800, Bill Wendling wrote:
+> >> > > > What Segher said. :-) Also, if you reverse the comparison, you'll get
+> >> > > > a build error.
+> >> > >
+> >> > > But that means your patch is the wrong way around?
+> >> > >
+> >> > > -       .ifgt (label##4b- label##3b)-(label##2b- label##1b);    \
+> >> > > -       .error "Feature section else case larger than body";    \
+> >> > > -       .endif;                                                 \
+> >> > > +       .org . - ((label##4b-label##3b) > (label##2b-label##1b)); \
+> >> > >
+> >> > > It should be a + in that last line, not a -.
+> >> >
+> >> > I said so in a follow up email.
+> >>
+> >> Yeah, and that arrived a second after I pressed "send" :-)
+> >>
+> > Michael, I apologize for the churn with these patches. I believe the
+> > policy is to resend the match as "v4", correct?
+> >
+> > I ran tests with the change above. It compiled with no error. If I
+> > switch the labels around to ".org . + ((label##2b-label##1b) >
+> > (label##4b-label##3b))", then it fails as expected.
+>
+> I wanted to retain the nicer error reporting for gcc builds, so I did it
+> like this:
+>
+> diff --git a/arch/powerpc/include/asm/feature-fixups.h b/arch/powerpc/include/asm/feature-fixups.h
+> index b0af97add751..c4ad33074df5 100644
+> --- a/arch/powerpc/include/asm/feature-fixups.h
+> +++ b/arch/powerpc/include/asm/feature-fixups.h
+> @@ -36,6 +36,24 @@ label##2:                                            \
+>         .align 2;                                       \
+>  label##3:
+>
+> +
+> +#ifndef CONFIG_CC_IS_CLANG
+> +#define CHECK_ALT_SIZE(else_size, body_size)                   \
+> +       .ifgt (else_size) - (body_size);                        \
+> +       .error "Feature section else case larger than body";    \
+> +       .endif;
+> +#else
+> +/*
+> + * If we use the ifgt syntax above, clang's assembler complains about the
+> + * expression being non-absolute when the code appears in an inline assembly
+> + * statement.
+> + * As a workaround use an .org directive that has no effect if the else case
+> + * instructions are smaller than the body, but fails otherwise.
+> + */
+> +#define CHECK_ALT_SIZE(else_size, body_size)                   \
+> +       .org . + ((else_size) > (body_size));
+> +#endif
+> +
+>  #define MAKE_FTR_SECTION_ENTRY(msk, val, label, sect)          \
+>  label##4:                                                      \
+>         .popsection;                                            \
+> @@ -48,9 +66,7 @@ label##5:                                                     \
+>         FTR_ENTRY_OFFSET label##2b-label##5b;                   \
+>         FTR_ENTRY_OFFSET label##3b-label##5b;                   \
+>         FTR_ENTRY_OFFSET label##4b-label##5b;                   \
+> -       .ifgt (label##4b- label##3b)-(label##2b- label##1b);    \
+> -       .error "Feature section else case larger than body";    \
+> -       .endif;                                                 \
+> +       CHECK_ALT_SIZE((label##4b-label##3b), (label##2b-label##1b)); \
+>         .popsection;
+>
+>
+>
+> I've pushed a branch with all your patches applied to:
+>
+>   https://github.com/linuxppc/linux/commits/next-test
+>
+This works for me. Thanks!
 
-> Our NUMA option is default y for pseries, but not powernv. The bulk of
-> powernv systems are NUMA, so make NUMA default y for powernv also.
-> 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Are you able to give that a quick test? It builds clean with clang for
+> me, but we must be using different versions of clang because my branch
+> already builds clean for me even without your patches.
+>
+You may need to set LLVM_IAS=1 to get the behavior I'm seeing. That
+turns on clang's integrated assembler, which I think is disabled by
+default.
 
-Looks good to me.
+Note that with clang's integrated assembler, arch/powerpc/boot/util.S
+fails to compile. Alan Modra mentioned that he sent you a patch to
+"modernize" the file so that clang can compile it.
 
-Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> ---
->  arch/powerpc/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index a22db3db6b96..4d688b426353 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -661,7 +661,7 @@ config IRQ_ALL_CPUS
->  config NUMA
->  	bool "NUMA support"
->  	depends on PPC64 && SMP
-> -	default y if SMP && PPC_PSERIES
-> +	default y if PPC_PSERIES || PPC_POWERNV
-> 
->  config NODES_SHIFT
->  	int
-> -- 
-> 2.25.1
-> 
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+-bw
