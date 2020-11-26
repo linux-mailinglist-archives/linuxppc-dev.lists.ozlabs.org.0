@@ -2,66 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70042C551F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 14:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 464702C5529
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 14:22:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ChdbP5VnWzDqtl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 00:17:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ChdjH1PfWzDqwH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 00:22:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=Lw6hAfjP; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ChdLl2B8NzDqBS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 00:06:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=vWy2uVCVHBnrbbz4T9jkHvT2JpJLs0e2xYDM8OJOhBs=; b=Lw6hAfjPDtWO3vimDZtY1m8XyC
- 00uoIq50O8sIFFWmkHIPvCzOm9l5Ak0REO4uPn/bffe1rzsVCMbeM3jyrYQNZf6K8oB5NNEtBUtZn
- PQExLFvY1UXCnvO6QhiAyTWvyn3HrOQQz14rnj+qNfezyNty8Yv5NX0piJYgDhWwWzGvxFRyge2UC
- Pmp40Y9h/xGuT8HHJTP4lPeN/8I773CmHi0WWFmfSwm0HbofpDYElV4OtNHOroG1p5qVFDBfnEwBP
- MxuKUj259aaEOTEAIR+i7RQApABVchScWdQWGMqxU0jp/tySoP79afuH5g/GVy+NAkj3TeQlJXYYD
- 5kZhH14Q==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kiGyb-0007yR-O0; Thu, 26 Nov 2020 13:06:21 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 2C1D33059DE;
- Thu, 26 Nov 2020 14:06:20 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id E5BAD201E691E; Thu, 26 Nov 2020 14:06:19 +0100 (CET)
-Date: Thu, 26 Nov 2020 14:06:19 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v2 3/6] perf/core: Fix arch_perf_get_page_size()
-Message-ID: <20201126130619.GI2414@hirez.programming.kicks-ass.net>
-References: <20201126120114.071913521@infradead.org>
- <20201126121121.164675154@infradead.org>
- <20201126123458.GO4327@casper.infradead.org>
- <20201126124207.GM3040@hirez.programming.kicks-ass.net>
- <20201126125606.GR4327@casper.infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ChdQx5SflzDqdq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 00:10:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=pz3+/NEp; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4ChdQt6sHhz9sWH; Fri, 27 Nov 2020 00:10:14 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4ChdQt3t82z9sW0; Fri, 27 Nov 2020 00:10:13 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1606396214;
+ bh=qq7hhLkC8qUdifQdMcKmS47IL7EP4lwe09j/aldKieg=;
+ h=From:To:Cc:Subject:Date:From;
+ b=pz3+/NEpX+PddoqsuZ8vYQ/9MSHz/mr2gKgKycsLCdFob5T2ux/GMaeCXo2ova0sl
+ chETkwOh/8nYhJ9z2FYBNaNbqBST+gUPRkdhzUG6EJGjiqTQWRWnbLzLBzizvnP4Gz
+ OAavn03DykaYv8G5/GJkfMz6NENqLmVU7tE0BtrDZTfjSU3ySORSZA6lOoWJlt2we5
+ LUqoYHbtXxlEIhYt34iqVWhFxaJNiSizvVN1ytG5LE278/D4aQOEDHatBEQDvE8D0Y
+ fUtmrD5gyGBFcx7X+/DgPemOzVDhkehpBH+jY4bxdx7EBUSOubccHOfr7bXNdFd9FW
+ cHykfNyNH9jOg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v14 1/9] powerpc/feature: Use CONFIG_PPC64 instead of
+ __powerpc64__ to define possible features
+Date: Fri, 27 Nov 2020 00:09:58 +1100
+Message-Id: <20201126131006.2431205-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201126125606.GR4327@casper.infradead.org>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,31 +56,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, aneesh.kumar@linux.ibm.com,
- linux-arch@vger.kernel.org, catalin.marinas@arm.com, will@kernel.org,
- alexander.shishkin@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
- npiggin@gmail.com, linux-kernel@vger.kernel.org, acme@kernel.org,
- davem@davemloft.net, dave.hansen@intel.com, ak@linux.intel.com,
- eranian@google.com, sparclinux@vger.kernel.org, jolsa@redhat.com,
- mingo@kernel.org, kirill.shutemov@linux.intel.com, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 26, 2020 at 12:56:06PM +0000, Matthew Wilcox wrote:
-> On Thu, Nov 26, 2020 at 01:42:07PM +0100, Peter Zijlstra wrote:
-> > +	pgdp = pgd_offset(mm, addr);
-> > +	pgd = READ_ONCE(*pgdp);
-> 
-> I forget how x86-32-PAE maps to Linux's PGD/P4D/PUD/PMD scheme, but
-> according to volume 3, section 4.4.2, PAE paging uses a 64-bit PDE, so
-> whether a PDE is a PGD or a PMD, we're only reading it with READ_ONCE
-> rather than the lockless-retry method used by ptep_get_lockless().
-> So it's potentially racy?  Do we need a pmdp_get_lockless() or
-> pgdp_get_lockless()?
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Oh gawd... this isn't new here though, right? Current gup_fast also gets
-that wrong, if it is in deed wrong.
+In order to build VDSO32 for PPC64, we need to have CPU_FTRS_POSSIBLE
+and CPU_FTRS_ALWAYS independant of whether we are building the
+32 bits VDSO or the 64 bits VDSO.
 
-I suppose it's a race far more likely today, with THP and all, than it
-ever was back then.
+Use #ifdef CONFIG_PPC64 instead of #ifdef __powerpc64__
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/08ffecd31403b3c692f25f97b07a378ba784873e.1604426550.git.christophe.leroy@csgroup.eu
+---
+ arch/powerpc/include/asm/cputable.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+v14: unchanged
+
+diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+index 5e31960a56a9..e069a2d9f7c1 100644
+--- a/arch/powerpc/include/asm/cputable.h
++++ b/arch/powerpc/include/asm/cputable.h
+@@ -488,7 +488,7 @@ static inline void cpu_feature_keys_init(void) { }
+ 	    CPU_FTR_PURR | CPU_FTR_REAL_LE | CPU_FTR_DABRX)
+ #define CPU_FTRS_COMPATIBLE	(CPU_FTR_PPCAS_ARCH_V2)
+ 
+-#ifdef __powerpc64__
++#ifdef CONFIG_PPC64
+ #ifdef CONFIG_PPC_BOOK3E
+ #define CPU_FTRS_POSSIBLE	(CPU_FTRS_E6500 | CPU_FTRS_E5500)
+ #else
+@@ -545,7 +545,7 @@ enum {
+ };
+ #endif /* __powerpc64__ */
+ 
+-#ifdef __powerpc64__
++#ifdef CONFIG_PPC64
+ #ifdef CONFIG_PPC_BOOK3E
+ #define CPU_FTRS_ALWAYS		(CPU_FTRS_E6500 & CPU_FTRS_E5500)
+ #else
+-- 
+2.25.1
+
