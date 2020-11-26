@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32422C5C12
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 19:34:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08662C5C0B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 19:31:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ChmdQ6G29zDrgL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 05:34:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ChmYK0RlkzDrZZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 05:31:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
  header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=d8I380Cr; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=r1mxnto1; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Chm6K4nhCzDrMy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 05:11:21 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AQI2Pbb124491; Thu, 26 Nov 2020 13:11:00 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Chm5B1SfHzDrN1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 05:10:21 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AQI3Frt126777; Thu, 26 Nov 2020 13:09:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=0gRkVfqo+rmwKeSJSwiJRabHCEnM9EP+Drx9sTwZLl0=;
- b=d8I380CrCkTyO6eyAwUEe4cYy0Of0i3UoCPBuMM2coLVZoRBpks6x9SLhC/ALjsmY2SG
- Rw+ZPVLVXa5jyvS60+RIoUbUsgtvhFgV30UCE+iwhciXZRgQoEFksZVqoWhfXFBgRonC
- 8GRhJM3M4ViGeiRL6GVdBJFs+JdxacYJs9ykyyNObxwwj9XGbRpZjuWhyqrjyMJHOaCO
- GdogVLQ3F0nkJsvfpoP6S7pktjDwKVONXKwPwLAF6sdaHybU2NQr/LLAW7Qgo78mhUNq
- N9+2yAnBkNQFWtvNSOORQXbqkgVAnck1OuXj7eZ4V8FGYTaqN4Fi5cgp1rbC5YZEguSf Jg== 
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 352gps0xtb-1
+ bh=5C45SA8tSbg7iyu0298Eb4LClwalZRJYloG1JYXsk2g=;
+ b=r1mxnto1kTQkjl7wivJ0IOBO7iITF4QMHFSS+pwO8LHRGXnko7J50J+3xVgtb9FEC79Y
+ eXZTdQEJI4+mOkZSdIUtj1uL4JUP+cF+xr2ik0O+33dTHM/rW9YbdS+wW6PcpqDdQ/hD
+ 1eiV4zs8cT0iJLJHj3jhn80Yg9U7wcOYOZdGeWFyF1giT/QL7hN+zZ4sVMyLIdRfcxPF
+ GEVSurljFHkIHDk9BAwxYOSLU4ldCEqmVezNrP2Bj1Bjc9tW95TYl+2vuXhHPGpr1P0X
+ aytH+t4+3glqaMsWGaIqSuIpSO7/wgN7zSzHy3U1WXhLGgq4Qp/h/d0Li9Cj5aA7+Ucj XQ== 
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 352gu48s01-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Nov 2020 13:11:00 -0500
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AQI92cn016526;
- Thu, 26 Nov 2020 18:10:57 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03fra.de.ibm.com with ESMTP id 34yy8r3b6d-1
+ Thu, 26 Nov 2020 13:09:46 -0500
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AQI6hoG031786;
+ Thu, 26 Nov 2020 18:09:45 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma05fra.de.ibm.com with ESMTP id 352ata06n4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Nov 2020 18:10:57 +0000
+ Thu, 26 Nov 2020 18:09:45 +0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AQI9eY555247212
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AQI9g1v4325982
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Nov 2020 18:09:40 GMT
+ Thu, 26 Nov 2020 18:09:43 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9B027A405B;
- Thu, 26 Nov 2020 18:09:40 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id D4614A4054;
+ Thu, 26 Nov 2020 18:09:42 +0000 (GMT)
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E8D51A4054;
- Thu, 26 Nov 2020 18:09:37 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 095D1A405B;
+ Thu, 26 Nov 2020 18:09:41 +0000 (GMT)
 Received: from naverao1-tp.ibmuc.com (unknown [9.85.81.45])
  by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 26 Nov 2020 18:09:37 +0000 (GMT)
+ Thu, 26 Nov 2020 18:09:40 +0000 (GMT)
 From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 To: Steven Rostedt <rostedt@goodmis.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [RFC PATCH 09/14] powerpc/ftrace: Use a hash table for tracking
- ftrace stubs
-Date: Thu, 26 Nov 2020 23:38:46 +0530
-Message-Id: <1c89e59d3186172d6e72f8f339e8118cfdda9e6d.1606412433.git.naveen.n.rao@linux.vnet.ibm.com>
+Subject: [RFC PATCH 10/14] powerpc/ftrace: Drop assumptions about ftrace
+ trampoline target
+Date: Thu, 26 Nov 2020 23:38:47 +0530
+Message-Id: <0ed4e63f6b3be1abdd59aa7b28a5dbdb99baeba1.1606412433.git.naveen.n.rao@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.25.4
 In-Reply-To: <cover.1606412433.git.naveen.n.rao@linux.vnet.ibm.com>
 References: <cover.1606412433.git.naveen.n.rao@linux.vnet.ibm.com>
@@ -81,11 +81,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
  definitions=2020-11-26_08:2020-11-26,
  2020-11-26 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- lowpriorityscore=0 spamscore=0 mlxlogscore=999 phishscore=0
- priorityscore=1501 adultscore=0 impostorscore=0 clxscore=1015
- malwarescore=0 mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2011260108
+ malwarescore=0
+ mlxlogscore=999 clxscore=1015 spamscore=0 bulkscore=0 lowpriorityscore=0
+ suspectscore=0 mlxscore=0 adultscore=0 impostorscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011260112
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,174 +102,171 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation for having to deal with large number of ftrace stubs in
-support of ftrace direct calls, convert existing stubs to use a hash
-table. The hash table is key'ed off the target address for the stubs
-since there could be multiple stubs for the same target to cover the
-full kernel text.
+We currently assume that ftrace locations are patched to go to either
+ftrace_caller or ftrace_regs_caller. Drop this assumption in preparation
+for supporting ftrace direct calls.
 
 Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 ---
- arch/powerpc/kernel/trace/ftrace.c | 75 +++++++++++++-----------------
- 1 file changed, 33 insertions(+), 42 deletions(-)
+ arch/powerpc/kernel/trace/ftrace.c | 107 +++++++++++++++++++++++------
+ 1 file changed, 86 insertions(+), 21 deletions(-)
 
 diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 14b39f7797d455..7ddb6e4b527c39 100644
+index 7ddb6e4b527c39..fcb21a9756e456 100644
 --- a/arch/powerpc/kernel/trace/ftrace.c
 +++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -13,6 +13,7 @@
- 
- #define pr_fmt(fmt) "ftrace-powerpc: " fmt
- 
-+#include <linux/hashtable.h>
- #include <linux/spinlock.h>
- #include <linux/hardirq.h>
- #include <linux/uaccess.h>
-@@ -32,14 +33,12 @@
- 
- #ifdef CONFIG_DYNAMIC_FTRACE
- 
--/*
-- * We generally only have a single long_branch tramp and at most 2 or 3 plt
-- * tramps generated. But, we don't use the plt tramps currently. We also allot
-- * 2 tramps after .text and .init.text. So, we only end up with around 3 usable
-- * tramps in total. Set aside 8 just to be sure.
-- */
--#define	NUM_FTRACE_TRAMPS	8
--static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
-+static DEFINE_HASHTABLE(ppc_ftrace_stubs, 8);
-+struct ppc_ftrace_stub_data {
-+	unsigned long addr;
-+	unsigned long target;
-+	struct hlist_node hentry;
-+};
- 
- static struct ppc_inst
- ftrace_call_replace(unsigned long ip, unsigned long addr, int link)
-@@ -288,36 +287,31 @@ __ftrace_make_nop(struct module *mod,
- #endif /* PPC64 */
- #endif /* CONFIG_MODULES */
- 
--static unsigned long find_ftrace_tramp(unsigned long ip)
-+static unsigned long find_ftrace_tramp(unsigned long ip, unsigned long target)
- {
--	int i;
-+	struct ppc_ftrace_stub_data *stub;
- 	struct ppc_inst instr;
- 
--	/*
--	 * We have the compiler generated long_branch tramps at the end
--	 * and we prefer those
--	 */
--	for (i = NUM_FTRACE_TRAMPS - 1; i >= 0; i--)
--		if (!ftrace_tramps[i])
--			continue;
--		else if (create_branch(&instr, (void *)ip,
--				       ftrace_tramps[i], 0) == 0)
--			return ftrace_tramps[i];
-+	hash_for_each_possible(ppc_ftrace_stubs, stub, hentry, target)
-+		if (stub->target == target && !create_branch(&instr, (void *)ip, stub->addr, 0))
-+			return stub->addr;
- 
- 	return 0;
- }
- 
--static int add_ftrace_tramp(unsigned long tramp)
-+static int add_ftrace_tramp(unsigned long tramp, unsigned long target)
- {
--	int i;
-+	struct ppc_ftrace_stub_data *stub;
- 
--	for (i = 0; i < NUM_FTRACE_TRAMPS; i++)
--		if (!ftrace_tramps[i]) {
--			ftrace_tramps[i] = tramp;
--			return 0;
--		}
-+	stub = kmalloc(sizeof(*stub), GFP_KERNEL);
-+	if (!stub)
-+		return -1;
- 
--	return -1;
-+	stub->addr = tramp;
-+	stub->target = target;
-+	hash_add(ppc_ftrace_stubs, &stub->hentry, target);
-+
-+	return 0;
- }
- 
- /*
-@@ -328,16 +322,14 @@ static int add_ftrace_tramp(unsigned long tramp)
+@@ -322,14 +322,15 @@ static int add_ftrace_tramp(unsigned long tramp, unsigned long target)
   */
  static int setup_mcount_compiler_tramp(unsigned long tramp)
  {
--	int i;
++	int i;
  	struct ppc_inst op;
--	unsigned long ptr;
  	struct ppc_inst instr;
-+	struct ppc_ftrace_stub_data *stub;
-+	unsigned long ptr, ftrace_target = ppc_global_function_entry((void *)FTRACE_REGS_ADDR);
+ 	struct ppc_ftrace_stub_data *stub;
+ 	unsigned long ptr, ftrace_target = ppc_global_function_entry((void *)FTRACE_REGS_ADDR);
  
- 	/* Is this a known long jump tramp? */
--	for (i = 0; i < NUM_FTRACE_TRAMPS; i++)
--		if (!ftrace_tramps[i])
--			break;
--		else if (ftrace_tramps[i] == tramp)
-+	hash_for_each_possible(ppc_ftrace_stubs, stub, hentry, ftrace_target)
-+		if (stub->target == ftrace_target && stub->addr == tramp)
+-	/* Is this a known long jump tramp? */
+-	hash_for_each_possible(ppc_ftrace_stubs, stub, hentry, ftrace_target)
+-		if (stub->target == ftrace_target && stub->addr == tramp)
++	/* Is this a known tramp? */
++	hash_for_each(ppc_ftrace_stubs, i, stub, hentry)
++		if (stub->addr == tramp)
  			return 0;
  
  	/* New trampoline -- read where this goes */
-@@ -361,19 +353,18 @@ static int setup_mcount_compiler_tramp(unsigned long tramp)
- 	}
+@@ -608,23 +609,16 @@ static int __ftrace_make_call_kernel(struct dyn_ftrace *rec, unsigned long addr)
+ {
+ 	struct ppc_inst op;
+ 	void *ip = (void *)rec->ip;
+-	unsigned long tramp, entry, ptr;
++	unsigned long tramp, ptr;
  
- 	/* Let's re-write the tramp to go to ftrace_[regs_]caller */
--	ptr = ppc_global_function_entry((void *)FTRACE_REGS_ADDR);
--	if (create_branch(&instr, (void *)tramp, ptr, 0)) {
-+	if (create_branch(&instr, (void *)tramp, ftrace_target, 0)) {
- 		pr_debug("%ps is not reachable from existing mcount tramp\n",
--				(void *)ptr);
-+				(void *)ftrace_target);
- 		return -1;
- 	}
+-	/* Make sure we're being asked to patch branch to a known ftrace addr */
+-	entry = ppc_global_function_entry((void *)ftrace_caller);
+ 	ptr = ppc_global_function_entry((void *)addr);
  
--	if (patch_branch((struct ppc_inst *)tramp, ptr, 0)) {
-+	if (patch_branch((struct ppc_inst *)tramp, ftrace_target, 0)) {
- 		pr_debug("REL24 out of range!\n");
- 		return -1;
- 	}
+-	if (ptr != entry) {
+ #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
+-		entry = ppc_global_function_entry((void *)ftrace_regs_caller);
+-		if (ptr != entry) {
++	/* Make sure we branch to ftrace_regs_caller since we only setup stubs for that */
++	tramp = ppc_global_function_entry((void *)ftrace_caller);
++	if (ptr == tramp)
++		ptr = ppc_global_function_entry((void *)FTRACE_REGS_ADDR);
+ #endif
+-			pr_err("Unknown ftrace addr to patch: %ps\n", (void *)ptr);
+-			return -EINVAL;
+-#ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
+-		}
+-#endif
+-	}
  
--	if (add_ftrace_tramp(tramp)) {
-+	if (add_ftrace_tramp(tramp, ftrace_target)) {
- 		pr_debug("No tramp locations left\n");
- 		return -1;
- 	}
-@@ -405,7 +396,7 @@ static int __ftrace_make_nop_kernel(struct dyn_ftrace *rec, unsigned long addr)
- 
- 	if (setup_mcount_compiler_tramp(tramp)) {
- 		/* Are other trampolines reachable? */
--		if (!find_ftrace_tramp(ip)) {
-+		if (!find_ftrace_tramp(ip, FTRACE_REGS_ADDR)) {
- 			pr_err("No ftrace trampolines reachable from %ps\n",
- 					(void *)ip);
- 			return -EINVAL;
-@@ -646,7 +637,7 @@ static int __ftrace_make_call_kernel(struct dyn_ftrace *rec, unsigned long addr)
+ 	/* Make sure we have a nop */
+ 	if (probe_kernel_read_inst(&op, ip)) {
+@@ -637,7 +631,7 @@ static int __ftrace_make_call_kernel(struct dyn_ftrace *rec, unsigned long addr)
  		return -EINVAL;
  	}
  
--	tramp = find_ftrace_tramp((unsigned long)ip);
-+	tramp = find_ftrace_tramp((unsigned long)ip, FTRACE_REGS_ADDR);
+-	tramp = find_ftrace_tramp((unsigned long)ip, FTRACE_REGS_ADDR);
++	tramp = find_ftrace_tramp((unsigned long)ip, ptr);
  	if (!tramp) {
  		pr_err("No ftrace trampolines reachable from %ps\n", ip);
  		return -EINVAL;
-@@ -894,7 +885,7 @@ int __init ftrace_dyn_arch_init(void)
- 		memcpy(tramp[i], stub_insns, sizeof(stub_insns));
- 		tramp[i][1] |= PPC_HA(reladdr);
- 		tramp[i][2] |= PPC_LO(reladdr);
--		add_ftrace_tramp((unsigned long)tramp[i]);
-+		add_ftrace_tramp((unsigned long)tramp[i], addr);
+@@ -783,6 +777,81 @@ __ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
+ }
+ #endif
+ 
++static int
++__ftrace_modify_call_kernel(struct dyn_ftrace *rec, unsigned long old_addr, unsigned long addr)
++{
++	struct ppc_inst op;
++	unsigned long ip = rec->ip;
++	unsigned long entry, ptr, tramp;
++
++	/* read where this goes */
++	if (probe_kernel_read_inst(&op, (void *)ip)) {
++		pr_err("Fetching opcode failed.\n");
++		return -EFAULT;
++	}
++
++	/* Make sure that this is still a 24bit jump */
++	if (!is_bl_op(op)) {
++		pr_err("Not expected bl: opcode is %s\n", ppc_inst_as_str(op));
++		return -EINVAL;
++	}
++
++	/* lets find where the pointer goes */
++	tramp = find_bl_target(ip, op);
++	entry = ppc_global_function_entry((void *)old_addr);
++
++	pr_devel("ip:%lx jumps to %lx", ip, tramp);
++
++	if (tramp != entry) {
++		/* old_addr is not within range, so we must have used a trampoline */
++		struct ppc_ftrace_stub_data *stub;
++
++		hash_for_each_possible(ppc_ftrace_stubs, stub, hentry, entry)
++			if (stub->target == entry && stub->addr == tramp)
++				break;
++
++		if (stub->target != entry || stub->addr != tramp) {
++			pr_err("we don't know about the tramp at %lx!\n", tramp);
++			return -EFAULT;
++		}
++	}
++
++	/* The new target may be within range */
++	if (test_24bit_addr(ip, addr)) {
++		/* within range */
++		if (patch_branch((struct ppc_inst *)ip, addr, BRANCH_SET_LINK)) {
++			pr_err("REL24 out of range!\n");
++			return -EINVAL;
++		}
++
++		return 0;
++	}
++
++	ptr = ppc_global_function_entry((void *)addr);
++
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
++	/* Make sure we branch to ftrace_regs_caller since we only setup stubs for that */
++	entry = ppc_global_function_entry((void *)ftrace_caller);
++	if (ptr == entry)
++		ptr = ppc_global_function_entry((void *)FTRACE_REGS_ADDR);
++#endif
++
++	tramp = find_ftrace_tramp(ip, ptr);
++
++	if (!tramp) {
++		pr_err("Couldn't find a trampoline\n");
++		return -EFAULT;
++	}
++
++	pr_devel("trampoline %lx target %lx", tramp, ptr);
++
++	if (patch_branch((struct ppc_inst *)ip, tramp, BRANCH_SET_LINK)) {
++		pr_err("REL24 out of range!\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
+ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
+ 			unsigned long addr)
+ {
+@@ -800,11 +869,7 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
+ 		new = ftrace_call_replace(ip, addr, 1);
+ 		return ftrace_modify_code(ip, old, new);
+ 	} else if (core_kernel_text(ip)) {
+-		/*
+-		 * We always patch out of range locations to go to the regs
+-		 * variant, so there is nothing to do here
+-		 */
+-		return 0;
++		return __ftrace_modify_call_kernel(rec, old_addr, addr);
  	}
  
- 	return 0;
+ #ifdef CONFIG_MODULES
 -- 
 2.25.4
 
