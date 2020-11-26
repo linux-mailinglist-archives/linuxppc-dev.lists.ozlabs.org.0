@@ -1,52 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F03202C5764
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 15:51:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC462C59B0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 18:00:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Chgh52LZHzDq72
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 01:51:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ChkX868NVzDrPV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 04:00:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=NBpBmf5V; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=PYtMvcej; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ChgGN6KgMzDqst
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 01:33:00 +1100 (AEDT)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 2EEC42065E;
- Thu, 26 Nov 2020 14:32:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1606401178;
- bh=5dY8cbJVS6zfD7uZoLaby4Q2OOwNKKL2V1i9udJweeM=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=NBpBmf5VIbEXO88WpbzA6/iIU7KMKeADvAYkqkUzwv1+1V2haTEx2Ph0bDJb0KmlY
- s1ebOaFIn/gppwqJN43nLeT+6RcP0IDfD2unluy9hcIsWJUDt1xc18gs4uuGOWCHNg
- 0HUeP5Xqav3l1507RgGTmw4lRaV28Zv5UHxU3gi8=
-Date: Thu, 26 Nov 2020 14:32:50 +0000
-From: Will Deacon <will@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 4/6] arm64/mm: Implement pXX_leaf_size() support
-Message-ID: <20201126143249.GA18344@willie-the-truck>
-References: <20201126120114.071913521@infradead.org>
- <20201126121121.226210959@infradead.org>
- <20201126125747.GG2414@hirez.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201126125747.GG2414@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ChkQL60cmzDrNX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 03:55:06 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AQGauK9140702; Thu, 26 Nov 2020 11:54:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=BNbnPNSgkc/AV0WmozNHuAEjyIKseDFpCfFajwpOnEc=;
+ b=PYtMvcejeca0q7Iu7FF/J4XdML7q1TUPy46PKPruJAPXx5IFFmtEpludMr+v1zUiOBB8
+ KHmzEegJLFhygLlNWFAafKZHii/YGFht2HBmuhBooA984ct37f/Z87x2oXilDRH76yKR
+ SZeqflucA1ZjZqNTKYpH84UgBqveKgJCSDR4V2RDBdrTR+vXO5hmuG9AEqKYB0hwWklL
+ rDjuJ0Em74NZ8Y88yb+MwaAIBKzlDENf7sWx3NGfdR2C1cpdFeM/P5hm3nokRpeGoSoN
+ JuXA3QXcMFawrNW0YPBYu7px7Ty5ws87Uv1FAiHSjtqXlgB2ZdMJYX5vF5OnzooqdP/e Sw== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 352d5un4pv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Nov 2020 11:54:59 -0500
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AQGquV6014472;
+ Thu, 26 Nov 2020 16:54:56 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04fra.de.ibm.com with ESMTP id 352drkg2y5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Nov 2020 16:54:56 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AQGsr7q5112328
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 26 Nov 2020 16:54:53 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D0684C046;
+ Thu, 26 Nov 2020 16:54:53 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EDF114C044;
+ Thu, 26 Nov 2020 16:54:50 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.79.231.24])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 26 Nov 2020 16:54:50 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH V2 0/7] powerpc/perf: Fixes for power10 PMU
+Date: Thu, 26 Nov 2020 11:54:37 -0500
+Message-Id: <1606409684-1589-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-26_06:2020-11-26,
+ 2020-11-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015
+ adultscore=0 impostorscore=0 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 suspectscore=1 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011260097
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,63 +90,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, aneesh.kumar@linux.ibm.com, willy@infradead.org,
- catalin.marinas@arm.com, alexander.shishkin@linux.intel.com,
- linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- acme@kernel.org, davem@davemloft.net, dave.hansen@intel.com,
- ak@linux.intel.com, eranian@google.com, linux-arch@vger.kernel.org,
- sparclinux@vger.kernel.org, jolsa@redhat.com, mingo@kernel.org,
- kirill.shutemov@linux.intel.com, kan.liang@linux.intel.com
+Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 26, 2020 at 01:57:47PM +0100, Peter Zijlstra wrote:
-> 
-> Now with pmd_cont() defined...
-> 
-> ---
-> Subject: arm64/mm: Implement pXX_leaf_size() support
-> From: Peter Zijlstra <peterz@infradead.org>
-> Date: Fri Nov 13 11:46:06 CET 2020
-> 
-> ARM64 has non-pagetable aligned large page support with PTE_CONT, when
-> this bit is set the page is part of a super-page. Match the hugetlb
-> code and support these super pages for PTE and PMD levels.
-> 
-> This enables PERF_SAMPLE_{DATA,CODE}_PAGE_SIZE to report accurate
-> pagetable leaf sizes.
-> 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->  arch/arm64/include/asm/pgtable.h |    4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -407,6 +407,7 @@ static inline int pmd_trans_huge(pmd_t p
->  #define pmd_dirty(pmd)		pte_dirty(pmd_pte(pmd))
->  #define pmd_young(pmd)		pte_young(pmd_pte(pmd))
->  #define pmd_valid(pmd)		pte_valid(pmd_pte(pmd))
-> +#define pmd_cont(pmd)		pte_cont(pmd_pte(pmd))
->  #define pmd_wrprotect(pmd)	pte_pmd(pte_wrprotect(pmd_pte(pmd)))
->  #define pmd_mkold(pmd)		pte_pmd(pte_mkold(pmd_pte(pmd)))
->  #define pmd_mkwrite(pmd)	pte_pmd(pte_mkwrite(pmd_pte(pmd)))
-> @@ -503,6 +504,9 @@ extern pgprot_t phys_mem_access_prot(str
->  				 PMD_TYPE_SECT)
->  #define pmd_leaf(pmd)		pmd_sect(pmd)
->  
-> +#define pmd_leaf_size(pmd)	(pmd_cont(pmd) ? CONT_PMD_SIZE : PMD_SIZE)
-> +#define pte_leaf_size(pte)	(pte_cont(pte) ? CONT_PTE_SIZE : PAGE_SIZE)
-> +
->  #if defined(CONFIG_ARM64_64K_PAGES) || CONFIG_PGTABLE_LEVELS < 3
->  static inline bool pud_sect(pud_t pud) { return false; }
->  static inline bool pud_table(pud_t pud) { return true; }
+Patchset contains PMU fixes for power10.
 
-Acked-by: Will Deacon <will@kernel.org>
+This patchset contains 7 patches.
+Patch1 includes fix to update event code with radix_scope_qual
+bit in power10.
+Patch2 and Patch3 updates the event group constraints for L2/L3
+and threshold events in power10.
+Patch4, patch5 and patch6 includes the event code changes for
+l2/l3 events and some of the generic events.
+Patch7 adds fixes for PMCCEXT bit in power10.
 
-I'm still highly dubious about the utility of this feature in perf, since
-the TLB entry size is pretty much independent of the page-table
-configuration, but that's a problem for all architectures I suspect.
+Changelog:
+Changes from v1 -> v2
+- Addressed Michael Ellerman's comments in the patchset.
+  Split patch 2 to address l2l3 and threshold events
+  group constraints fixes separately.
+  Split Patch 3 also to address event code updates
+  separately for generic and cache events.
+  Fixed commit messages and also PMCCEXT bit setting
+  during event enable.
 
-Will
+Athira Rajeev (7):
+  powerpc/perf: Fix to update radix_scope_qual in power10
+  powerpc/perf: Update the PMU group constraints for l2l3 events in
+    power10
+  powerpc/perf: Fix the PMU group constraints for threshold events in
+    power10
+  powerpc/perf: Add generic and cache event list for power10 DD1
+  powerpc/perf: Fix to update generic event codes for power10
+  powerpc/perf: Fix to update cache events with l2l3 events in power10
+  powerpc/perf: MMCR0 control for PMU registers under PMCC=00
+
+ arch/powerpc/include/asm/reg.h          |   1 +
+ arch/powerpc/kernel/cpu_setup_power.c   |   1 +
+ arch/powerpc/kernel/dt_cpu_ftrs.c       |   1 +
+ arch/powerpc/perf/core-book3s.c         |   4 +
+ arch/powerpc/perf/isa207-common.c       |  35 ++++++-
+ arch/powerpc/perf/isa207-common.h       |  16 ++-
+ arch/powerpc/perf/power10-events-list.h |   9 ++
+ arch/powerpc/perf/power10-pmu.c         | 178 ++++++++++++++++++++++++++++++--
+ 8 files changed, 231 insertions(+), 14 deletions(-)
+
+-- 
+1.8.3.1
+
