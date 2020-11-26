@@ -1,94 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CAA72C4FAB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 08:46:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1AB2C506D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 09:31:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ChVFH3bHmzDr9H
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 18:46:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ChWDg3zl3zDr7g
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 19:30:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=63.128.21.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=lvivier@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=RwIS0pGo; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=JS48FU4r; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=JS48FU4r; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [63.128.21.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ChVCY5xpLzDr0L
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 18:44:57 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AQ71MD8081509; Thu, 26 Nov 2020 02:44:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- in-reply-to : references : date : message-id : mime-version : content-type
- : content-transfer-encoding; s=pp1;
- bh=wm27rQX9a+X/VijUyQgvSo7VWBTbg2gFt+a/BhQeLjQ=;
- b=RwIS0pGoUXEOVrQmPKHw12j3AEzznjEuKJ/3SoDWwno6osDVWAmGH4ngbmCs2SCFUNq5
- +AUlr7eYmiwOpjIqqeQ/GTWhsUiBslioR5i4+Zxt7Qcxo0Gtznmj5o3xJvBWUPAoyKqu
- NNzadXvIhuUmSqSUCRptoUv1sW0nrEWV5aJW4eZg6S4d/DDunkZAcxuRHQW/pTTgQUcX
- /rG/2NckcybL6ZjgU9xOEGLp/m/4MkBZhtCZMaWkRF7TDrWryzwzfn2H4rw4KEEoapU7
- m8+aCNTBCEWfpNQP0fHz5jw5RjBxH9VOR0u9bbrbPnO47rQMfrxlEkcmhbzFIRR3aEzI Ng== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3526npacjp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Nov 2020 02:44:44 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AQ7hYPA002583;
- Thu, 26 Nov 2020 07:44:44 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma05wdc.us.ibm.com with ESMTP id 34xth9ddry-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Nov 2020 07:44:44 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AQ7ihDb21627272
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Nov 2020 07:44:43 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BBCBFAE05C;
- Thu, 26 Nov 2020 07:44:43 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9DB58AE05F;
- Thu, 26 Nov 2020 07:44:41 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.75.69])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 26 Nov 2020 07:44:41 +0000 (GMT)
-X-Mailer: emacs 27.1 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: Re: [PATCH v6 16/22] powerpc/book3s64/kuap: Improve error reporting
- with KUAP
-In-Reply-To: <bd854266-6cb5-3a04-ae80-a53e03f1e1d3@csgroup.eu>
-References: <20201125051634.509286-1-aneesh.kumar@linux.ibm.com>
- <20201125051634.509286-17-aneesh.kumar@linux.ibm.com>
- <bd854266-6cb5-3a04-ae80-a53e03f1e1d3@csgroup.eu>
-Date: Thu, 26 Nov 2020 13:14:38 +0530
-Message-ID: <87h7pctvdl.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ChWBc4LXLzDqvy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 19:29:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1606379348;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3rXQzmEocIXb9J6qVfLPhdebmYZHUsNEtxEoa/mad+8=;
+ b=JS48FU4r25PUzsR61DQbEXzDssFAqcRRY9Vx/Vqtkd+dmROW11g4b3iMFsbSWuV/Vl5UQw
+ ZW5g2jrqd2KUURl8D+cHkxmlra121iVoycP6MKEJtxtxw8rFruHzaMcW3FnYJRgkY1IAVo
+ E2dTTLdHC1ru9+WQ8B9VVlxSXajLyYQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1606379348;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3rXQzmEocIXb9J6qVfLPhdebmYZHUsNEtxEoa/mad+8=;
+ b=JS48FU4r25PUzsR61DQbEXzDssFAqcRRY9Vx/Vqtkd+dmROW11g4b3iMFsbSWuV/Vl5UQw
+ ZW5g2jrqd2KUURl8D+cHkxmlra121iVoycP6MKEJtxtxw8rFruHzaMcW3FnYJRgkY1IAVo
+ E2dTTLdHC1ru9+WQ8B9VVlxSXajLyYQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-320-gV7_s-NHP3urQRXK5900yQ-1; Thu, 26 Nov 2020 03:29:03 -0500
+X-MC-Unique: gV7_s-NHP3urQRXK5900yQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 56C2181CBE1;
+ Thu, 26 Nov 2020 08:29:01 +0000 (UTC)
+Received: from thinkpad.redhat.com (ovpn-113-83.ams2.redhat.com [10.36.113.83])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 106CF5C1B4;
+ Thu, 26 Nov 2020 08:28:53 +0000 (UTC)
+From: Laurent Vivier <lvivier@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/2] powerpc/pseries: fix MSI/X IRQ affinity on pseries
+Date: Thu, 26 Nov 2020 09:28:50 +0100
+Message-Id: <20201126082852.1178497-1-lvivier@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-26_01:2020-11-26,
- 2020-11-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- malwarescore=0 suspectscore=0 lowpriorityscore=0 adultscore=0 spamscore=0
- phishscore=0 priorityscore=1501 mlxscore=0 bulkscore=0 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011260037
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,86 +78,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Laurent Vivier <lvivier@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ linux-pci@vger.kernel.org, Greg Kurz <groug@kaod.org>,
+ linux-block@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+With virtio, in multiqueue case, each queue IRQ is normally=0D
+bound to a different CPU using the affinity mask.=0D
+=0D
+This works fine on x86_64 but totally ignored on pseries.=0D
+=0D
+This is not obvious at first look because irqbalance is doing=0D
+some balancing to improve that.=0D
+=0D
+It appears that the "managed" flag set in the MSI entry=0D
+is never copied to the system IRQ entry.=0D
+=0D
+This series passes the affinity mask from rtas_setup_msi_irqs()=0D
+to irq_domain_alloc_descs() by adding an affinity parameter to=0D
+irq_create_mapping().=0D
+=0D
+The first patch adds the parameter (no functional change), the=0D
+second patch passes the actual affinity mask to irq_create_mapping()=0D
+in rtas_setup_msi_irqs().=0D
+=0D
+For instance, with 32 CPUs VM and 32 queues virtio-scsi interface:=0D
+=0D
+... -smp 32 -device virtio-scsi-pci,id=3Dvirtio_scsi_pci0,num_queues=3D32=0D
+=0D
+for IRQ in $(grep virtio2-request /proc/interrupts |cut -d: -f1); do=0D
+    for file in /proc/irq/$IRQ/ ; do=0D
+        echo -n "IRQ: $(basename $file) CPU: " ; cat $file/smp_affinity_lis=
+t=0D
+    done=0D
+done=0D
+=0D
+Without the patch (and without irqbalanced)=0D
+=0D
+IRQ: 268 CPU: 0-31=0D
+IRQ: 269 CPU: 0-31=0D
+IRQ: 270 CPU: 0-31=0D
+IRQ: 271 CPU: 0-31=0D
+IRQ: 272 CPU: 0-31=0D
+IRQ: 273 CPU: 0-31=0D
+IRQ: 274 CPU: 0-31=0D
+IRQ: 275 CPU: 0-31=0D
+IRQ: 276 CPU: 0-31=0D
+IRQ: 277 CPU: 0-31=0D
+IRQ: 278 CPU: 0-31=0D
+IRQ: 279 CPU: 0-31=0D
+IRQ: 280 CPU: 0-31=0D
+IRQ: 281 CPU: 0-31=0D
+IRQ: 282 CPU: 0-31=0D
+IRQ: 283 CPU: 0-31=0D
+IRQ: 284 CPU: 0-31=0D
+IRQ: 285 CPU: 0-31=0D
+IRQ: 286 CPU: 0-31=0D
+IRQ: 287 CPU: 0-31=0D
+IRQ: 288 CPU: 0-31=0D
+IRQ: 289 CPU: 0-31=0D
+IRQ: 290 CPU: 0-31=0D
+IRQ: 291 CPU: 0-31=0D
+IRQ: 292 CPU: 0-31=0D
+IRQ: 293 CPU: 0-31=0D
+IRQ: 294 CPU: 0-31=0D
+IRQ: 295 CPU: 0-31=0D
+IRQ: 296 CPU: 0-31=0D
+IRQ: 297 CPU: 0-31=0D
+IRQ: 298 CPU: 0-31=0D
+IRQ: 299 CPU: 0-31=0D
+=0D
+With the patch:=0D
+=0D
+IRQ: 265 CPU: 0=0D
+IRQ: 266 CPU: 1=0D
+IRQ: 267 CPU: 2=0D
+IRQ: 268 CPU: 3=0D
+IRQ: 269 CPU: 4=0D
+IRQ: 270 CPU: 5=0D
+IRQ: 271 CPU: 6=0D
+IRQ: 272 CPU: 7=0D
+IRQ: 273 CPU: 8=0D
+IRQ: 274 CPU: 9=0D
+IRQ: 275 CPU: 10=0D
+IRQ: 276 CPU: 11=0D
+IRQ: 277 CPU: 12=0D
+IRQ: 278 CPU: 13=0D
+IRQ: 279 CPU: 14=0D
+IRQ: 280 CPU: 15=0D
+IRQ: 281 CPU: 16=0D
+IRQ: 282 CPU: 17=0D
+IRQ: 283 CPU: 18=0D
+IRQ: 284 CPU: 19=0D
+IRQ: 285 CPU: 20=0D
+IRQ: 286 CPU: 21=0D
+IRQ: 287 CPU: 22=0D
+IRQ: 288 CPU: 23=0D
+IRQ: 289 CPU: 24=0D
+IRQ: 290 CPU: 25=0D
+IRQ: 291 CPU: 26=0D
+IRQ: 292 CPU: 27=0D
+IRQ: 293 CPU: 28=0D
+IRQ: 294 CPU: 29=0D
+IRQ: 295 CPU: 30=0D
+IRQ: 299 CPU: 31=0D
+=0D
+This matches what we have on an x86_64 system.=0D
+=0D
+v4: udate changelog of PATCH 2, add Michael's Acked-by=0D
+v3: update changelog of PATCH 1 with comments from Thomas Gleixner and=0D
+    Marc Zyngier.=0D
+v2: add a wrapper around original irq_create_mapping() with the=0D
+    affinity parameter. Update comments=0D
+=0D
+Laurent Vivier (2):=0D
+  genirq/irqdomain: Add an irq_create_mapping_affinity() function=0D
+  powerpc/pseries: Pass MSI affinity to irq_create_mapping()=0D
+=0D
+ arch/powerpc/platforms/pseries/msi.c |  3 ++-=0D
+ include/linux/irqdomain.h            | 12 ++++++++++--=0D
+ kernel/irq/irqdomain.c               | 13 ++++++++-----=0D
+ 3 files changed, 20 insertions(+), 8 deletions(-)=0D
+=0D
+-- =0D
+2.28.0=0D
+=0D
 
-> Le 25/11/2020 =C3=A0 06:16, Aneesh Kumar K.V a =C3=A9crit=C2=A0:
->> With hash translation use DSISR_KEYFAULT to identify a wrong access.
->> With Radix we look at the AMR value and type of fault.
->>=20
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>   arch/powerpc/include/asm/book3s/32/kup.h     |  4 +--
->>   arch/powerpc/include/asm/book3s/64/kup.h     | 27 ++++++++++++++++----
->>   arch/powerpc/include/asm/kup.h               |  4 +--
->>   arch/powerpc/include/asm/nohash/32/kup-8xx.h |  4 +--
->>   arch/powerpc/mm/fault.c                      |  2 +-
->>   5 files changed, 29 insertions(+), 12 deletions(-)
->>=20
->> diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/inc=
-lude/asm/book3s/32/kup.h
->> index 32fd4452e960..b18cd931e325 100644
->> --- a/arch/powerpc/include/asm/book3s/32/kup.h
->> +++ b/arch/powerpc/include/asm/book3s/32/kup.h
->> @@ -177,8 +177,8 @@ static inline void restore_user_access(unsigned long=
- flags)
->>   		allow_user_access(to, to, end - addr, KUAP_READ_WRITE);
->>   }
->>=20=20=20
->> -static inline bool
->> -bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_wri=
-te)
->> +static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long a=
-ddress,
->> +				  bool is_write, unsigned long error_code)
->>   {
->>   	unsigned long begin =3D regs->kuap & 0xf0000000;
->>   	unsigned long end =3D regs->kuap << 28;
->> diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/inc=
-lude/asm/book3s/64/kup.h
->> index 4a3d0d601745..2922c442a218 100644
->> --- a/arch/powerpc/include/asm/book3s/64/kup.h
->> +++ b/arch/powerpc/include/asm/book3s/64/kup.h
->> @@ -301,12 +301,29 @@ static inline void set_kuap(unsigned long value)
->>   	isync();
->>   }
->>=20=20=20
->> -static inline bool
->> -bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_wri=
-te)
->> +#define RADIX_KUAP_BLOCK_READ	UL(0x4000000000000000)
->> +#define RADIX_KUAP_BLOCK_WRITE	UL(0x8000000000000000)
->> +
->> +static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long a=
-ddress,
->> +				  bool is_write, unsigned long error_code)
->>   {
->> -	return WARN(mmu_has_feature(MMU_FTR_KUAP) &&
->> -		    (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE : AMR_KUAP_BLOCK_R=
-EAD)),
->> -		    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
->> +	if (!mmu_has_feature(MMU_FTR_KUAP))
->> +		return false;
->> +
->> +	if (radix_enabled()) {
->> +		/*
->> +		 * Will be a storage protection fault.
->> +		 * Only check the details of AMR[0]
->> +		 */
->> +		return WARN((regs->kuap & (is_write ? RADIX_KUAP_BLOCK_WRITE : RADIX_=
-KUAP_BLOCK_READ)),
->> +			    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
->
-> I think it is pointless to keep the WARN() here.
->
-> I have a series aiming at removing them. See=20
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/cc9129bdda1dbc2f0=
-a09cf45fece7d0b0e690784.1605541983.git.christophe.leroy@csgroup.eu/
-
-Can we do this as a spearate patch as you posted above? We can drop the
-WARN in that while keeping the hash branch to look at DSISR value.
-
--aneesh
