@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F20D2C4CEC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 02:56:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C76972C4CF9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 02:57:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ChLSy3g6xzDr34
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 12:56:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ChLVj6ffLzDr73
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 12:57:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,59 +17,62 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=CpLURApQ; dkim-atps=neutral
+ header.s=pp1 header.b=LuUqXowe; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ChLJP1tYCzDqjj
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ChLJP1NYwzDqf2
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 12:48:36 +1100 (AEDT)
 Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AQ1YG4S028842; Wed, 25 Nov 2020 20:48:32 -0500
+ 0AQ1YHDa028902; Wed, 25 Nov 2020 20:48:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=IsJV+W6rqmKP+P0reyb6aEngp4KnqNn7zeN+9xIpHcE=;
- b=CpLURApQAjBocfDvbQD0/6d/gybTOBRQo23R8grjuzzj2uC6usaD2DBmJdZRazXw0hK9
- UCtpH2dUjhbfvDYzQAiSwArIj1c6hny1ndetl8BpbLep8tw0EE1K0sKnXBt2i+Xw+Y0u
- 0lZ3EC2bNntz+sd2+yDhqYl9e/VvMp3Jf3uDfTri6Ly81H91IPQog9OwBaaf6e6gHLtp
- 5Jx+mykG7x9qUUPFjqGLsPLnlAX+Dm7eymn4WKfIuh7cnsl/pEzVPB8qbZ2S3YCKTdCY
- dZE4SFy5kxQKgjT0/ZebtUs4mgaND9ifH3RKCEZOs2KipFpfKw9XU0zGDnZlMKhkwWry AQ== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3521cht090-1
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=OpeVRSrSLG04WjsFBLPINSPEJ7aKXXW9EmRI/8I00RU=;
+ b=LuUqXoweykEoSHxKiqoVQC5+0d9/mOWRF8woaOZqqoBFXBeNWYSYlRIfOsnir+yxuw3f
+ BzM7/BPa83nZgcZSzV11IUl08H84akLaQtvTjdazQJFb7wV0qNHIgylvBXstcTzmIq7L
+ d/CeiIID/PH9CiGnxxRmqvrQoLbbA+e7NgJS8Tycc9RFlmZf8nmyKbIvbczXznN5rsQY
+ vjqth51hgUvS4IDuywZdO8MGQ9KGC87OVFpCtIQi/UyJ3V8dCs5JnNPsf4mcFQHmok34
+ yRGpFsYCvhxv4G7lDt9McQ3oQgJuvbl4An7kx33YwTuIbNMhIyN88aW+zvnyzxdz1nJC uQ== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3521cht092-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 25 Nov 2020 20:48:32 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AQ1m9ct028856;
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AQ1lF5n010445;
  Thu, 26 Nov 2020 01:48:31 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma03dal.us.ibm.com with ESMTP id 34xth9vrqf-1
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma03wdc.us.ibm.com with ESMTP id 35133p4386-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 26 Nov 2020 01:48:31 +0000
 Received: from b03ledav001.gho.boulder.ibm.com
  (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AQ1mNEh131596
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AQ1mU7X19136900
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Nov 2020 01:48:23 GMT
+ Thu, 26 Nov 2020 01:48:30 GMT
 Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9C3B26E052;
- Thu, 26 Nov 2020 01:48:29 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 73E816E04E;
+ Thu, 26 Nov 2020 01:48:30 +0000 (GMT)
 Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 53C066E050;
- Thu, 26 Nov 2020 01:48:29 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 232996E050;
+ Thu, 26 Nov 2020 01:48:30 +0000 (GMT)
 Received: from vios4361.aus.stglabs.ibm.com (unknown [9.3.43.61])
  by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 26 Nov 2020 01:48:29 +0000 (GMT)
+ Thu, 26 Nov 2020 01:48:30 +0000 (GMT)
 From: Tyrel Datwyler <tyreld@linux.ibm.com>
 To: james.bottomley@hansenpartnership.com
-Subject: [PATCH 00/13] ibmvfc: initial MQ development
-Date: Wed, 25 Nov 2020 19:48:11 -0600
-Message-Id: <20201126014824.123831-1-tyreld@linux.ibm.com>
+Subject: [PATCH 02/13] ibmvfc: define hcall wrapper for registering a Sub-CRQ
+Date: Wed, 25 Nov 2020 19:48:13 -0600
+Message-Id: <20201126014824.123831-3-tyreld@linux.ibm.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20201126014824.123831-1-tyreld@linux.ibm.com>
+References: <20201126014824.123831-1-tyreld@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
@@ -100,38 +103,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Recent updates in pHyp Firmware and VIOS releases provide new infrastructure
-towards enabling Subordinate Command Response Queues (Sub-CRQs) such that each
-Sub-CRQ is a channel backed by an actual hardware queue in the FC stack on the
-partner VIOS. Sub-CRQs are registered with the firmware via hypercalls and then
-negotiated with the VIOS via new Management Datagrams (MADs) for channel setup.
+Sub-CRQs are registred with firmware via a hypercall. Abstract that
+interface into a simpler helper function.
 
-This initial implementation adds the necessary Sub-CRQ framework and implements
-the new MADs for negotiating and assigning a set of Sub-CRQs to associated VIOS
-HW backed channels. The event pool and locking still leverages the legacy single
-queue implementation, and as such lock contention is problematic when increasing
-the number of queues. However, this initial work demonstrates a 1.2x factor
-increase in IOPs when configured with two HW queues despite lock contention.
+Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+---
+ drivers/scsi/ibmvscsi/ibmvfc.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Tyrel Datwyler (13):
-  ibmvfc: add vhost fields and defaults for MQ enablement
-  ibmvfc: define hcall wrapper for registering a Sub-CRQ
-  ibmvfc: add Subordinate CRQ definitions
-  ibmvfc: add alloc/dealloc routines for SCSI Sub-CRQ Channels
-  ibmvfc: add Sub-CRQ IRQ enable/disable routine
-  ibmvfc: add handlers to drain and complete Sub-CRQ responses
-  ibmvfc: define Sub-CRQ interrupt handler routine
-  ibmvfc: map/request irq and register Sub-CRQ interrupt handler
-  ibmvfc: implement channel enquiry and setup commands
-  ibmvfc: advertise client support for using hardware channels
-  ibmvfc: set and track hw queue in ibmvfc_event struct
-  ibmvfc: send commands down HW Sub-CRQ when channelized
-  ibmvfc: register Sub-CRQ handles with VIOS during channel setup
-
- drivers/scsi/ibmvscsi/ibmvfc.c | 460 ++++++++++++++++++++++++++++++++-
- drivers/scsi/ibmvscsi/ibmvfc.h |  37 +++
- 2 files changed, 493 insertions(+), 4 deletions(-)
-
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index cd609d19e6a1..260b82e3cc01 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -138,6 +138,20 @@ static void ibmvfc_tgt_move_login(struct ibmvfc_target *);
+ 
+ static const char *unknown_error = "unknown error";
+ 
++static long h_reg_sub_crq(unsigned long unit_address, unsigned long ioba,
++			  unsigned long length, unsigned long *cookie,
++			  unsigned long *irq)
++{
++	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
++	long rc;
++
++	rc = plpar_hcall(H_REG_SUB_CRQ, retbuf, unit_address, ioba, length);
++	*cookie = retbuf[0];
++	*irq = retbuf[1];
++
++	return rc;
++}
++
+ static int ibmvfc_check_caps(struct ibmvfc_host *vhost, unsigned long cap_flags)
+ {
+ 	u64 host_caps = be64_to_cpu(vhost->login_buf->resp.capabilities);
 -- 
 2.27.0
 
