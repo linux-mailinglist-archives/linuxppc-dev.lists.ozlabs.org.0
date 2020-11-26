@@ -2,51 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EB22C4DB9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 04:18:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3092C4DC1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 04:23:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ChNHx1ZthzDr7Q
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 14:18:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ChNQ84wfVzDr7q
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 14:23:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ChNGJ5BBGzDr4r
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 14:16:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ChNNd3xR0zDr5s
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 14:22:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=LRJN31j8; 
+ header.a=rsa-sha256 header.s=201909 header.b=caJVE16k; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ChNGJ2vkRz9sSs;
- Thu, 26 Nov 2020 14:16:56 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ChNNd275Sz9sRK;
+ Thu, 26 Nov 2020 14:22:25 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1606360616;
- bh=OvywidC2JU4DFXtMYgNBVBYBIK5Phig7Ow+Iydm5SlM=;
+ s=201909; t=1606360945;
+ bh=yX9WEAmDETJStycvdfhm5xjpOuROvlTMfef+2IZNRzo=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=LRJN31j8UShdJvJMxUlMrJLBmzsJmoir+IT/fjbgenAyDc8LnvPQadaE/AHhVG/xx
- E9TCIKziSk+/UazzWCPjAfBLPjConSOVGBTWCQSE7qVV/QJJKhlr3db/de8cHDHrEa
- gFV8W6x6nRt68GUvR3xH82chYHJr0eUjz3xBJjfOafUqDLJx5BiJ09Jr9KnG+Fi2Zx
- z5JccytfK2tSxwADzTSCvcZdc9AJLmTg2ATpYVndMsJvWLM0BzvvQ4m32f8oM0GT9V
- crCcPJ7KOiLD082qsDi5pNUEwJcsexG45Yn70j+UJ7zli7Oe3TwkO8EQy/ryes3fye
- vJSoy98LeOWyg==
+ b=caJVE16kPD5T5w1YfQUtCJ82yfv3OPIrIBflantGq+tUNWi4NV9lzL0hp86igcHKG
+ mXPBYm3z7KHBmNWucFw+VsUhHCkMEqGu2N1EdLYgGS6NR3XCkYW4MgLPnau1sEugOe
+ h2fgo+qYSD4ewJKcXYHIicyXCuFVCHwKdVbSXcclkwcOtrVtozBz0lSB8trFWngWrA
+ G3t/eSVPnoZLQNKdAuVGXVvGIVEEEMau9zw0h8aghk5BF1O7ODUOW4kPAMBREPWVaC
+ V9GH2Ksr94sZw80vcKoxstOyv43ZsrkdJw+jcPbV3Dk0PJMo/V28gCgnHKak8k8pgB
+ OEFipznFGoqQg==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v6 07/22] powerpc/book3s64/kuap: Rename MMU_FTR_RADIX_KUAP
- to MMU_FTR_KUAP
-In-Reply-To: <20201125051634.509286-8-aneesh.kumar@linux.ibm.com>
-References: <20201125051634.509286-1-aneesh.kumar@linux.ibm.com>
- <20201125051634.509286-8-aneesh.kumar@linux.ibm.com>
-Date: Thu, 26 Nov 2020 14:16:55 +1100
-Message-ID: <875z5szu1k.fsf@mpe.ellerman.id.au>
+To: Marc Zyngier <maz@kernel.org>, Laurent Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v3 2/2] powerpc/pseries: pass MSI affinity to
+ irq_create_mapping()
+In-Reply-To: <5419d1790c9ea0d9d7791ae887794285@kernel.org>
+References: <20201125150932.1150619-1-lvivier@redhat.com>
+ <20201125150932.1150619-3-lvivier@redhat.com>
+ <CAOJe8K1Q7sGf67bdj-2Mthkj4XNR4fOSskV1dyh62AdzefhpAQ@mail.gmail.com>
+ <7184880b-0351-ae18-d2e1-fab7b79fc864@redhat.com>
+ <5419d1790c9ea0d9d7791ae887794285@kernel.org>
+Date: Thu, 26 Nov 2020 14:22:24 +1100
+Message-ID: <87360wztsf.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,41 +62,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, linux-pci@vger.kernel.org,
+ Denis Kirjanov <kda@linux-powerpc.org>, Greg Kurz <groug@kaod.org>,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-> index 255a1837e9f7..f5c7a17c198a 100644
-> --- a/arch/powerpc/include/asm/mmu.h
-> +++ b/arch/powerpc/include/asm/mmu.h
-> @@ -28,6 +28,11 @@
->   * Individual features below.
->   */
->  
-> +/*
-> + * Supports KUAP (key 0 controlling userspace addresses) on radix
-> + */
+Marc Zyngier <maz@kernel.org> writes:
+> On 2020-11-25 16:24, Laurent Vivier wrote:
+>> On 25/11/2020 17:05, Denis Kirjanov wrote:
+>>> On 11/25/20, Laurent Vivier <lvivier@redhat.com> wrote:
+>>>> With virtio multiqueue, normally each queue IRQ is mapped to a CPU.
+>>>> 
+>>>> But since commit 0d9f0a52c8b9f ("virtio_scsi: use virtio IRQ 
+>>>> affinity")
+>>>> this is broken on pseries.
+>>> 
+>>> Please add "Fixes" tag.
+>> 
+>> In fact, the code in commit 0d9f0a52c8b9f is correct.
+>> 
+>> The problem is with MSI/X irq affinity and pseries. So this patch
+>> fixes more than virtio_scsi. I put this information because this
+>> commit allows to clearly show the problem. Perhaps I should remove
+>> this line in fact?
+>
+> This patch does not fix virtio_scsi at all, which as you noticed, is
+> correct. It really fixes the PPC MSI setup, which is starting to show
+> its age. So getting rid of the reference seems like the right thing to 
+> do.
 
-That comment needs updating.
-
-I think this feature now means we have either key 0 controlling uaccess
-on radix OR we're using the AMR to manually implement KUAP.
-
-> +#define MMU_FTR_KUAP			ASM_CONST(0x00000200)
-
-I agree with Christophe that this name is now too generic.
-
-With that name one would expect it to be enabled on the 32-bit CPUs that
-implement KUAP.
-
-Maybe MMU_FTR_BOOK3S_KUAP ?
-
-
-If in future the other MMUs want an MMU feature for KUAP then we could
-rename it to MMU_FTR_KUAP, but we'd need to be careful with ifdefs to
-make sure it guards the right things.
+It's still useful to refer to that commit if the code worked prior to
+that commit. But you should make it clearer that 0d9f0a52c8b9f wasn't in
+error, it just exposed an existing shortcoming of the arch code.
 
 cheers
