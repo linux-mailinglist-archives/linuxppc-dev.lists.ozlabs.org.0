@@ -1,101 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472592C50E3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 10:07:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F512C513F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 10:30:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ChX35381VzDr7G
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 20:07:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ChXYR3hMszDrBH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 20:30:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=BMf9+sZ6; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ChX1V75d8zDr37
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 20:06:22 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AQ9172J004659; Thu, 26 Nov 2020 04:06:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=TqsO8eqMQ/6K2OfWbGDrug/rv6DyFLgH1yrMwXF14Fg=;
- b=BMf9+sZ6chmb9Qhp+iTknSnxQpQCCEqYRMD2fUC4mXCsHPBTbR99t57MtLQl6SY3G/TN
- rMgFucMq4yXJupeSmqWzZ0scRM01n+la5LhholNZBz/i4tQ2+Qc0bYc5rijN/UtokVlH
- SyCNMM9gr9ZUHWCsomju5zV0u02iVHjaa5S/8YBrATCMLy6ffSKCTJwSv6+99ZVSuBiP
- maaOmgdwhvOJGk8TS87UGYfFl3K0R5QnDdlhd4YAc4Wb2GtSfK6gitxU2KmttZlrVMWb
- 4pXBH8Cd2AUfose9xsp/m4J1hqBFWykRJibYiZG4mYzJiDLzm/8oB9pY12UpKlE0xQEB WA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3523k1g9rf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Nov 2020 04:06:16 -0500
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0AQ93HHt012528;
- Thu, 26 Nov 2020 04:06:15 -0500
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3523k1g9pu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Nov 2020 04:06:15 -0500
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AQ92Gqw000923;
- Thu, 26 Nov 2020 09:06:13 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 34xth8dfap-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Nov 2020 09:06:13 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AQ96AA09961734
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Nov 2020 09:06:11 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E074411C05B;
- Thu, 26 Nov 2020 09:06:10 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A8F2811C054;
- Thu, 26 Nov 2020 09:06:08 +0000 (GMT)
-Received: from [9.199.34.187] (unknown [9.199.34.187])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 26 Nov 2020 09:06:08 +0000 (GMT)
-Subject: Re: [PATCH 1/2] powerpc: sstep: Fix load and update instructions
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-References: <20201119054139.244083-1-sandipan@linux.ibm.com>
- <daf02936-8a92-e909-7495-7a48f01cfe31@linux.ibm.com>
-From: Sandipan Das <sandipan@linux.ibm.com>
-Message-ID: <7b3fca78-9db3-8c92-3dd4-ef3062155142@linux.ibm.com>
-Date: Thu, 26 Nov 2020 14:36:07 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ChXWx5dWMzDqqW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 20:29:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=paB0u4QE; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ChXWx3KGmz9s0b;
+ Thu, 26 Nov 2020 20:29:17 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1606382957;
+ bh=wz9IJD3wVTiQJ1uDGDdFQ4Un8AMsji96OHrKZwic9wc=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=paB0u4QEQVSfkjI0/Qkm3Bez5gplzTkMz+yMuBNgKYxLilowb5NfYZminHppW6jbL
+ cSU9UqmG9s40J728b/ZGd2GK1s6IUIuSf1+m+6GGtbdOyFpY8dg0WVxWyuu4Iww+4d
+ pETeBmTXrAVuB0MiAhagy0h63mAMMW0TVCM0Ah551Eq2Uvu0KN/wzrU7WzSsV5+35I
+ K/fH0j+pNRBkT4nYiHCgmuSIKOjw7W6H5zzQ8DGNZPtE1l8TZiqlGqo69VT4q65pJE
+ oZG7r3dErkuJugYsE6CApcCz7om+RP4taHop4sgEPIia4LQUONfNDhIpR/91cASYAw
+ f8BBruc8oTfuQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v6 16/22] powerpc/book3s64/kuap: Improve error reporting
+ with KUAP
+In-Reply-To: <87h7pctvdl.fsf@linux.ibm.com>
+References: <20201125051634.509286-1-aneesh.kumar@linux.ibm.com>
+ <20201125051634.509286-17-aneesh.kumar@linux.ibm.com>
+ <bd854266-6cb5-3a04-ae80-a53e03f1e1d3@csgroup.eu>
+ <87h7pctvdl.fsf@linux.ibm.com>
+Date: Thu, 26 Nov 2020 20:29:16 +1100
+Message-ID: <87r1ogxy8j.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <daf02936-8a92-e909-7495-7a48f01cfe31@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-26_02:2020-11-26,
- 2020-11-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 phishscore=0
- impostorscore=0 mlxlogscore=999 bulkscore=0 spamscore=0 suspectscore=0
- malwarescore=0 mlxscore=0 priorityscore=1501 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011260051
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,29 +63,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jniethe5@gmail.com, paulus@samba.org, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>
+>> Le 25/11/2020 =C3=A0 06:16, Aneesh Kumar K.V a =C3=A9crit=C2=A0:
+>>> With hash translation use DSISR_KEYFAULT to identify a wrong access.
+>>> With Radix we look at the AMR value and type of fault.
+>>>=20
+>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>> ---
+>>>   arch/powerpc/include/asm/book3s/32/kup.h     |  4 +--
+>>>   arch/powerpc/include/asm/book3s/64/kup.h     | 27 ++++++++++++++++----
+>>>   arch/powerpc/include/asm/kup.h               |  4 +--
+>>>   arch/powerpc/include/asm/nohash/32/kup-8xx.h |  4 +--
+>>>   arch/powerpc/mm/fault.c                      |  2 +-
+>>>   5 files changed, 29 insertions(+), 12 deletions(-)
+>>>=20
+>>> diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/in=
+clude/asm/book3s/32/kup.h
+>>> index 32fd4452e960..b18cd931e325 100644
+>>> --- a/arch/powerpc/include/asm/book3s/32/kup.h
+>>> +++ b/arch/powerpc/include/asm/book3s/32/kup.h
+>>> @@ -177,8 +177,8 @@ static inline void restore_user_access(unsigned lon=
+g flags)
+>>>   		allow_user_access(to, to, end - addr, KUAP_READ_WRITE);
+>>>   }
+>>>=20=20=20
+>>> -static inline bool
+>>> -bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_wr=
+ite)
+>>> +static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long =
+address,
+>>> +				  bool is_write, unsigned long error_code)
+>>>   {
+>>>   	unsigned long begin =3D regs->kuap & 0xf0000000;
+>>>   	unsigned long end =3D regs->kuap << 28;
+>>> diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/in=
+clude/asm/book3s/64/kup.h
+>>> index 4a3d0d601745..2922c442a218 100644
+>>> --- a/arch/powerpc/include/asm/book3s/64/kup.h
+>>> +++ b/arch/powerpc/include/asm/book3s/64/kup.h
+>>> @@ -301,12 +301,29 @@ static inline void set_kuap(unsigned long value)
+>>>   	isync();
+>>>   }
+>>>=20=20=20
+>>> -static inline bool
+>>> -bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_wr=
+ite)
+>>> +#define RADIX_KUAP_BLOCK_READ	UL(0x4000000000000000)
+>>> +#define RADIX_KUAP_BLOCK_WRITE	UL(0x8000000000000000)
+>>> +
+>>> +static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long =
+address,
+>>> +				  bool is_write, unsigned long error_code)
+>>>   {
+>>> -	return WARN(mmu_has_feature(MMU_FTR_KUAP) &&
+>>> -		    (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE : AMR_KUAP_BLOCK_=
+READ)),
+>>> -		    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
+>>> +	if (!mmu_has_feature(MMU_FTR_KUAP))
+>>> +		return false;
+>>> +
+>>> +	if (radix_enabled()) {
+>>> +		/*
+>>> +		 * Will be a storage protection fault.
+>>> +		 * Only check the details of AMR[0]
+>>> +		 */
+>>> +		return WARN((regs->kuap & (is_write ? RADIX_KUAP_BLOCK_WRITE : RADIX=
+_KUAP_BLOCK_READ)),
+>>> +			    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
+>>
+>> I think it is pointless to keep the WARN() here.
+>>
+>> I have a series aiming at removing them. See=20
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/cc9129bdda1dbc2f=
+0a09cf45fece7d0b0e690784.1605541983.git.christophe.leroy@csgroup.eu/
+>
+> Can we do this as a spearate patch as you posted above? We can drop the
+> WARN in that while keeping the hash branch to look at DSISR value.
 
-On 25/11/20 3:39 pm, Ravi Bangoria wrote:
-> 
->> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
->> index 855457ed09b5..25a5436be6c6 100644
->> --- a/arch/powerpc/lib/sstep.c
->> +++ b/arch/powerpc/lib/sstep.c
->> @@ -2157,11 +2157,15 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
->>             case 23:    /* lwzx */
->>           case 55:    /* lwzux */
->> +            if (u && (ra == 0 || ra == rd))
->> +                return -1;
-> 
-> I guess you also need to split case 23 and 55?
-> 
+Yeah we can reconcile Christophe's series with yours later.
 
-'u' takes care of that. It will be set for lwzux but not lwzx.
+I'm still not 100% convinced I want to drop that WARN.
 
-- Sandipan
+cheers
