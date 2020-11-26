@@ -2,61 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD66D2C5AFC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 18:48:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCF42C5BB4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 19:13:05 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ChlbP0Lc2zDrFl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 04:48:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Chm8G1ZqLzDrPq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 05:13:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=pengutronix.de
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ChlXg21ZczDrFd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 04:45:38 +1100 (AEDT)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1kiLJw-00062v-QB; Thu, 26 Nov 2020 18:44:40 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <ukl@pengutronix.de>)
- id 1kiLJt-0004bc-N3; Thu, 26 Nov 2020 18:44:37 +0100
-Date: Thu, 26 Nov 2020 18:44:35 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Geoff Levand <geoff@infradead.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Jens Axboe <axboe@kernel.dk>,
- Jim Paris <jim@jtan.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Alan Stern <stern@rowland.harvard.edu>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH 2/2] powerpc/ps3: make system bus's remove and shutdown
- callbacks return void
-Message-ID: <20201126174435.6ffei52xx7nedkhg@pengutronix.de>
-References: <20201126165950.2554997-1-u.kleine-koenig@pengutronix.de>
- <20201126165950.2554997-2-u.kleine-koenig@pengutronix.de>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=CLAD617F; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Chm4V2MGVzDrMy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 05:09:45 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AQI2R5D010721; Thu, 26 Nov 2020 13:09:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=GkXeqL17xR8dq2eMis8ZuSHWSqLLqoclDTnnUCoHGhk=;
+ b=CLAD617FpL3Z2qZXFij8btKgri5W7sHj6YpjdedQsmj2b3IF7DV7z0IZFTk06W/sKSoy
+ VR+30JmHZ2YuZGIcto5pvusAbAnGorwHLs/2Df12HmOKhKAWW2jhpg2JqIrOsCDd5Z28
+ NsCGNCX4JamsWaVa7jIkIrjk0HmILwflQwRxGODJCaofLjehXJ6k5Xg1gl9gx+C4Uts5
+ A/Dago0tFHYl60YY3bKegBV2DOEWpz0haNPeQOJcKT4qj2zmbfITlZt2V8xMy4C3eeQJ
+ hJhHMlWyINSp9IOKeBU5pICQTT2jyoFoCoE2WoPs2ZAPSHcp5AknqB1RF/AHmbxRhcsn qg== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 352ccerhxm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Nov 2020 13:09:13 -0500
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AQI7D9K002582;
+ Thu, 26 Nov 2020 18:09:11 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06fra.de.ibm.com with ESMTP id 351pca0p12-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Nov 2020 18:09:11 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0AQI98iG56033598
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 26 Nov 2020 18:09:08 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A13C1A405C;
+ Thu, 26 Nov 2020 18:09:08 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3082EA405B;
+ Thu, 26 Nov 2020 18:09:06 +0000 (GMT)
+Received: from naverao1-tp.ibmuc.com (unknown [9.85.81.45])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 26 Nov 2020 18:09:05 +0000 (GMT)
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Steven Rostedt <rostedt@goodmis.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [RFC PATCH 00/14] powerpc64: Add support for ftrace direct calls
+Date: Thu, 26 Nov 2020 23:38:37 +0530
+Message-Id: <cover.1606412433.git.naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="w2mbrz5zdzqi2nqy"
-Content-Disposition: inline
-In-Reply-To: <20201126165950.2554997-2-u.kleine-koenig@pengutronix.de>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-26_08:2020-11-26,
+ 2020-11-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
+ clxscore=1011 spamscore=0 phishscore=0 priorityscore=1501 adultscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011260108
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,53 +93,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This series adds support for DYNAMIC_FTRACE_WITH_DIRECT_CALLS for 
+powerpc64le.
 
---w2mbrz5zdzqi2nqy
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is mostly working fine for me, except for a soft lockup I see with 
+the ftrace direct selftest. It happens when irqsoff tracer is being 
+tested with the ftrace direct modules. This appears to be an existing 
+upstream issue since I am able to reproduce the lockup without these 
+patches. I will be looking into that to see if I can figure out the 
+cause of those lockups.
 
-[dropped a few lists from Cc: that are off-topic for this mail]
+In the meantime, I would appreciate a review of these patches.
 
-Hello,
 
-while creating this patch series I looked at ps3_system_bus_shutdown().
-I think the BUG_ON(!drv) in (now) line 422 can be easily triggered when
-there is a device without driver. (Try unbinding via sysfs before
-shutdown.)
+- Naveen
 
-Also the BUG in (now) line 437 seems possible to trigger. Consider a
-driver that doesn't have the two callbacks, e.g. because there is
-nothing special to do on shutdown and probe only used devm_* resources.
 
-While at it, I find it surprising that the remove callback is called if
-there is no shutdown callback.
+Naveen N. Rao (14):
+  ftrace: Fix updating FTRACE_FL_TRAMP
+  ftrace: Fix DYNAMIC_FTRACE_WITH_DIRECT_CALLS dependency
+  ftrace: Fix cleanup in error path of register_ftrace_direct()
+  ftrace: Remove ftrace_find_direct_func()
+  ftrace: Add architectural helpers for [un]register_ftrace_direct()
+  powerpc: Add support for CONFIG_HAVE_FUNCTION_ARG_ACCESS_API
+  powerpc/ftrace: Remove dead code
+  powerpc/ftrace: Use FTRACE_REGS_ADDR to identify the correct ftrace
+    trampoline
+  powerpc/ftrace: Use a hash table for tracking ftrace stubs
+  powerpc/ftrace: Drop assumptions about ftrace trampoline target
+  powerpc/ftrace: Use GPR save/restore macros in ftrace_graph_caller()
+  powerpc/ftrace: Drop saving LR to stack save area for -mprofile-kernel
+  powerpc/ftrace: Add support for register_ftrace_direct() for
+    MPROFILE_KERNEL
+  samples/ftrace: Add powerpc support for ftrace direct samples
 
-Best regards
-Uwe
+ arch/powerpc/Kconfig                          |   2 +
+ arch/powerpc/include/asm/ftrace.h             |  14 +
+ arch/powerpc/include/asm/ptrace.h             |  31 ++
+ arch/powerpc/kernel/trace/ftrace.c            | 314 +++++++++++++-----
+ .../powerpc/kernel/trace/ftrace_64_mprofile.S |  70 ++--
+ include/linux/ftrace.h                        |   7 +-
+ kernel/trace/Kconfig                          |   2 +-
+ kernel/trace/ftrace.c                         | 130 +++-----
+ samples/Kconfig                               |   2 +-
+ samples/ftrace/ftrace-direct-modify.c         |  58 ++++
+ samples/ftrace/ftrace-direct-too.c            |  48 ++-
+ samples/ftrace/ftrace-direct.c                |  45 ++-
+ 12 files changed, 519 insertions(+), 204 deletions(-)
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---w2mbrz5zdzqi2nqy
-Content-Type: application/pgp-signature; name="signature.asc"
+base-commit: 4c202167192a77481310a3cacae9f12618b92216
+-- 
+2.25.4
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl+/6X8ACgkQwfwUeK3K
-7AmYzAf+PpCOuMqD4UBfefCRIUwudxf9ISVnQCjwQzxrdPToB01XUocHoAB1FpN0
-WrzyRn+73hK/O1VkUG60nAiNMPTb27hTXOOkPeGdwj7E2XAHuxWGqIWCNghWrRQ/
-xwvyPWr0lvk9DcIsYCFbHdmEvvv0VY9ZvwoTPnGsvfIZvXbDwYBAJQpuHmRTBMlh
-U2o+R7XONPUh4Qwc0rQwm6ZG88Hv7Ys7P830lq1JKduRYyJp4IUaT20Hi3+PmEZx
-BwI5eeFwVbmtDYKZcVgUDt8Wj6usP5/YhZ/k6jv4pbV8657vkQoDtfMVPMCCoMfg
-OTMkNSfEyHsYKaxaPrvG0/MQiUA85Q==
-=uKOR
------END PGP SIGNATURE-----
-
---w2mbrz5zdzqi2nqy--
