@@ -1,51 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38AD32C5CCE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 21:08:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1812C5D2E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 21:43:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Chpj836L0zDrSF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 07:08:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ChqTb58sHzDrP0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 07:43:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=arista.com (client-ip=2a00:1450:4864:20::342;
+ helo=mail-wm1-x342.google.com; envelope-from=dima@arista.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=JIYP54KJ; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=reject dis=none) header.from=arista.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=arista.com header.i=@arista.com header.a=rsa-sha256
+ header.s=googlenew header.b=AIgsjqpK; 
+ dkim-atps=neutral
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
+ [IPv6:2a00:1450:4864:20::342])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Chpfn1NvFzDrRQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 07:06:08 +1100 (AEDT)
-Received: from localhost (cpc102334-sgyl38-2-0-cust884.18-2.cable.virginm.net
- [92.233.91.117])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 27F3A221E9;
- Thu, 26 Nov 2020 20:06:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1606421165;
- bh=Wqwm9STBFzNnMy/CB+5wRkk6aIx+t9Lpuhu2scKh5Xc=;
- h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
- b=JIYP54KJCgcohFyO3pbrXUtpoy7JWFsw5+woTe/i7R8N0T79xefqqEe2hKC2O5syu
- ZpigwylXfdT3FyYhD471R1anAqwKpRj73RRM4urQDjmfR99pHwnMHeDd2FgB2Gs8+g
- ETQxD9YPjOCeu3FM48yBD2bzL0ZgZEkbSrzxDgb0=
-Date: Thu, 26 Nov 2020 20:05:40 +0000
-From: Mark Brown <broonie@kernel.org>
-To: tiwai@suse.com, timur@kernel.org, perex@perex.cz, festevam@gmail.com,
- Xiubo.Lee@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>,
- alsa-devel@alsa-project.org, nicoleotsuka@gmail.com
-In-Reply-To: <1606371293-29099-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1606371293-29099-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl: Fix config name of CONFIG_ARCH_MXC
-Message-Id: <160642112480.9090.10420790643480941582.b4-ty@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ChqRG5N0yzDrNx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 07:41:09 +1100 (AEDT)
+Received: by mail-wm1-x342.google.com with SMTP id s13so3603376wmh.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 12:41:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=arista.com; s=googlenew;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=w6VmA0MSpBNFKGjboKbfCa/RS1kMg4YU1xfmJHUOcVc=;
+ b=AIgsjqpKSHy6iapc6qUWhJHXk9u+Nwc98tW17cVqTWiuBOCpFKJaZpwQEDWCESW6xr
+ 0iiljROZxJuRGRmUFHAaH1o0I/sNmhVoyShowYoaw3F00CV3PJOoFDg34m9tUf2yvVd0
+ i/UujVUT8Dz7IVws0tkhRV7l1emZKlAbZccIF7WKte3dZPzzULNEWKbPgnU2OrQ3Z2Cr
+ 9oIChr6BRPlN8NiA3agWLyOcEXPNg8Fz8eGV5DUDIU0FzgTfahZ91p6KuY/FXlA/mALC
+ NaBnnGa09WWPjnkMD32vhePbew0RW6iw+ZNiZ6LEjqsqyWCGzHd5emjEMu5TK5ap3Dwq
+ /0Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=w6VmA0MSpBNFKGjboKbfCa/RS1kMg4YU1xfmJHUOcVc=;
+ b=Apl8ii8mhzqz3nRizV8fOQeO+aiPHNzze8vQhttuHthtNcnbIOg05UCmLxXOa5MtZX
+ iq4m3hJJewoovIeNg82b/KjHpBB6J3l9dxEB+LHKQpxo4pMAAAJmgcls+bGjKVodHXla
+ CI4MKuELk8TisAVcK6Np5gHD5AYgLbTNKQL3WM7F/KDAXDs6cpuwymSu/ME4CaZuUv8N
+ dpN8pLrRzpt7VOxLktm618XUYhR2CQSrUf7SeXMkjKUEOp99PN3szuqw4qVQOXVHtBrH
+ GlqYL4f0SaXmdQr3pEgPOvrnyvrYGDQHWwieV9uAWP4EQnV1g1K72PZRWsyA79zLHpet
+ cw1Q==
+X-Gm-Message-State: AOAM531VVINnMceR0hRPjE1zkBWzKQ/JpUG9eoR84MuwmHANRGTZXK2h
+ F+FzeihK6rouwDaxdsVAhzvw7Q==
+X-Google-Smtp-Source: ABdhPJz+5z7zQSHoNsFLo205RiTl/z0EFCCeqEXT+h/QL8PVpHo2PmiOksSPtmeBdcBQiOBpZlDSNQ==
+X-Received: by 2002:a05:600c:ce:: with SMTP id
+ u14mr5352854wmm.150.1606423265079; 
+ Thu, 26 Nov 2020 12:41:05 -0800 (PST)
+Received: from ?IPv6:2a02:8084:e84:2480:228:f8ff:fe6f:83a8?
+ ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
+ by smtp.gmail.com with ESMTPSA id x4sm10879944wrv.81.2020.11.26.12.41.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 26 Nov 2020 12:41:04 -0800 (PST)
+Subject: Re: [PATCH v2 00/19] Add generic vdso_base tracking
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linux-kernel@vger.kernel.org
+References: <20201124002932.1220517-1-dima@arista.com>
+ <5e315bf6-b03d-e66e-9557-22ece397080e@csgroup.eu>
+From: Dmitry Safonov <dima@arista.com>
+Message-ID: <dc2b40ca-003f-2621-48d4-ae4a48e94126@arista.com>
+Date: Thu, 26 Nov 2020 20:41:02 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <5e315bf6-b03d-e66e-9557-22ece397080e@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -58,38 +88,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ x86@kernel.org, Dmitry Safonov <0x7f454c46@gmail.com>,
+ Oleg Nesterov <oleg@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Guo Ren <guoren@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 26 Nov 2020 14:14:53 +0800, Shengjiu Wang wrote:
-> CONFIG_ARCH_MXC should be ARCH_MXC
+Hi Christophe,
 
-Applied to
+On 11/24/20 6:53 AM, Christophe Leroy wrote:
+> 
+> 
+> Le 24/11/2020 à 01:29, Dmitry Safonov a écrit :
+>> v2 Changes:
+>> - Rename user_landing to vdso_base as it tracks vDSO VMA start address,
+>>    rather than the explicit address to land (Andy)
+>> - Reword and don't use "new-execed" and "new-born" task (Andy)
+>> - Fix failures reported by build robot
+>>
+>> Started from discussion [1], where was noted that currently a couple of
+>> architectures support mremap() for vdso/sigpage, but not munmap().
+>> If an application maps something on the ex-place of vdso/sigpage,
+>> later after processing signal it will land there (good luck!)
+>>
+>> Patches set is based on linux-next (next-20201123) and it depends on
+>> changes in x86/cleanups (those reclaim TIF_IA32/TIF_X32) and also
+>> on my changes in akpm (fixing several mremap() issues).
+> 
+> I have a series that cleans up VDSO init on powerpc and migrates powerpc
+> to _install_special_mapping() (patch 10 of the series).
+> 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=204396&state=%2A&archive=both
+> 
+> 
+> I'm wondering how we should coordinate with your series for merging.
+> 
+> I guess your series will also imply removal of arch_unmap() ? see
+> https://elixir.bootlin.com/linux/v5.10-rc4/source/arch/powerpc/include/asm/mmu_context.h#L262
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: fsl: Fix config name of CONFIG_ARCH_MXC
-      commit: c61d1142cfd45f58b63bf9d2d59523f91096e873
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+I think our series intersect only in that moment where I re-introduce
+arch_setup_additional_pages() parameters. So, in theory we could
+minimize the conflicts by merging both series in parallel and cleanup
+the result by moving to generic vdso_base on the top, what do you think?
 
 Thanks,
-Mark
+          Dmitry
