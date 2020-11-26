@@ -1,57 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F512C513F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 10:30:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C4A2C5152
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 10:38:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ChXYR3hMszDrBH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 20:30:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ChXl31gWQzDqZm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Nov 2020 20:38:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::442;
+ helo=mail-wr1-x442.google.com; envelope-from=lee.jones@linaro.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=pZuWw9w7; dkim-atps=neutral
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
+ [IPv6:2a00:1450:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ChXWx5dWMzDqqW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 20:29:17 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=paB0u4QE; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ChXWx3KGmz9s0b;
- Thu, 26 Nov 2020 20:29:17 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1606382957;
- bh=wz9IJD3wVTiQJ1uDGDdFQ4Un8AMsji96OHrKZwic9wc=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=paB0u4QEQVSfkjI0/Qkm3Bez5gplzTkMz+yMuBNgKYxLilowb5NfYZminHppW6jbL
- cSU9UqmG9s40J728b/ZGd2GK1s6IUIuSf1+m+6GGtbdOyFpY8dg0WVxWyuu4Iww+4d
- pETeBmTXrAVuB0MiAhagy0h63mAMMW0TVCM0Ah551Eq2Uvu0KN/wzrU7WzSsV5+35I
- K/fH0j+pNRBkT4nYiHCgmuSIKOjw7W6H5zzQ8DGNZPtE1l8TZiqlGqo69VT4q65pJE
- oZG7r3dErkuJugYsE6CApcCz7om+RP4taHop4sgEPIia4LQUONfNDhIpR/91cASYAw
- f8BBruc8oTfuQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v6 16/22] powerpc/book3s64/kuap: Improve error reporting
- with KUAP
-In-Reply-To: <87h7pctvdl.fsf@linux.ibm.com>
-References: <20201125051634.509286-1-aneesh.kumar@linux.ibm.com>
- <20201125051634.509286-17-aneesh.kumar@linux.ibm.com>
- <bd854266-6cb5-3a04-ae80-a53e03f1e1d3@csgroup.eu>
- <87h7pctvdl.fsf@linux.ibm.com>
-Date: Thu, 26 Nov 2020 20:29:16 +1100
-Message-ID: <87r1ogxy8j.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ChXhN1l8vzDqt3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 20:36:33 +1100 (AEDT)
+Received: by mail-wr1-x442.google.com with SMTP id s8so1367217wrw.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 01:36:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to;
+ bh=VNTdg6uSFyVYv0FKJ+yGxhaNjehS8G/rV5edZ4pYTiI=;
+ b=pZuWw9w7rVcJMYBmZ/6gy0ZUhOd7j0c3RHq1Vd9a/HHbmMPrN4jIXdpxJmJwobp7GC
+ mxURWBCirtUl0coDUoUCJiV7iHFodMnYSUcolj+eGBvv8j/EUKM/bY/rIaBSrlIiAJz2
+ oRWGH/Jf3MlaHfvJTtWEKaLIBKuz6tBhffVMYVcuh/rCdame0rDgv0389MA0gZqKzfiS
+ S+SW72FQs+e8NDdfEGGPlFrSCc/OI5R01K2KDIqgCU5s5Ha5N2OgGw4r/EUll57tnJnr
+ vFeTY2axQtcOgpmQLaTFZuUxyI+mzZjmln+OhrdmUSRyRji3Mnk3rRBukxnFuiM2xKu7
+ s7Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=VNTdg6uSFyVYv0FKJ+yGxhaNjehS8G/rV5edZ4pYTiI=;
+ b=dZaNXDFYZPbmqYhLT6mRpgLLWG6qeg0+W+HLog7NO8sjDmDLwjBw2wZObj7V+zM4gM
+ JpewsF8bxVMbVcdXahRpxacNogY2i0g7m4+brYlJ13jPaDUaOpcupCzU+AaG7aLHCOH5
+ GHA3MR4IeosOsfHf0U1HwQdQVw3EFVlPJp/KkVMn3O8pzDfb2uo+IOburB+K9kI1gQQ/
+ sOSbvbpEJzxyRNDYpyI0hIFslssYfc+ISn6tp8F/XT19WH58ebsPh8+nDirWdl8fhLhU
+ 0BfH8S5WxaVixwLXkW3TJAiGfluez3fRXwnfxgE0HTv5WvxfSpSCMCqL0B7aehpmQliG
+ Yv/w==
+X-Gm-Message-State: AOAM533R1J/TFzOHq+846664muOJfj5At9SF++uuFlciRqO02ntQA2Pk
+ 72FtKYK3eu0lk5wRDSPRD4bA6g==
+X-Google-Smtp-Source: ABdhPJziLLHTjlCheIGft72jKItK/SD8v+6hBiWGcPZzZbG7sP4TLb47T4jUL8kvroQiNBktUNxGXQ==
+X-Received: by 2002:a5d:4d92:: with SMTP id b18mr2773267wru.260.1606383389033; 
+ Thu, 26 Nov 2020 01:36:29 -0800 (PST)
+Received: from dell ([91.110.221.235])
+ by smtp.gmail.com with ESMTPSA id o2sm8102710wrv.4.2020.11.26.01.36.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 26 Nov 2020 01:36:28 -0800 (PST)
+Date: Thu, 26 Nov 2020 09:36:26 +0000
+From: Lee Jones <lee.jones@linaro.org>
+To: linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 31/36] powerpc: asm: hvconsole: Move 'hvc_vio_init_early's
+ prototype to shared location
+Message-ID: <20201126093626.GC2455276@dell>
+References: <20201104193549.4026187-1-lee.jones@linaro.org>
+ <20201104193549.4026187-32-lee.jones@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201104193549.4026187-32-lee.jones@linaro.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,87 +88,66 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->
->> Le 25/11/2020 =C3=A0 06:16, Aneesh Kumar K.V a =C3=A9crit=C2=A0:
->>> With hash translation use DSISR_KEYFAULT to identify a wrong access.
->>> With Radix we look at the AMR value and type of fault.
->>>=20
->>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>> ---
->>>   arch/powerpc/include/asm/book3s/32/kup.h     |  4 +--
->>>   arch/powerpc/include/asm/book3s/64/kup.h     | 27 ++++++++++++++++----
->>>   arch/powerpc/include/asm/kup.h               |  4 +--
->>>   arch/powerpc/include/asm/nohash/32/kup-8xx.h |  4 +--
->>>   arch/powerpc/mm/fault.c                      |  2 +-
->>>   5 files changed, 29 insertions(+), 12 deletions(-)
->>>=20
->>> diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/in=
-clude/asm/book3s/32/kup.h
->>> index 32fd4452e960..b18cd931e325 100644
->>> --- a/arch/powerpc/include/asm/book3s/32/kup.h
->>> +++ b/arch/powerpc/include/asm/book3s/32/kup.h
->>> @@ -177,8 +177,8 @@ static inline void restore_user_access(unsigned lon=
-g flags)
->>>   		allow_user_access(to, to, end - addr, KUAP_READ_WRITE);
->>>   }
->>>=20=20=20
->>> -static inline bool
->>> -bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_wr=
-ite)
->>> +static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long =
-address,
->>> +				  bool is_write, unsigned long error_code)
->>>   {
->>>   	unsigned long begin =3D regs->kuap & 0xf0000000;
->>>   	unsigned long end =3D regs->kuap << 28;
->>> diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/in=
-clude/asm/book3s/64/kup.h
->>> index 4a3d0d601745..2922c442a218 100644
->>> --- a/arch/powerpc/include/asm/book3s/64/kup.h
->>> +++ b/arch/powerpc/include/asm/book3s/64/kup.h
->>> @@ -301,12 +301,29 @@ static inline void set_kuap(unsigned long value)
->>>   	isync();
->>>   }
->>>=20=20=20
->>> -static inline bool
->>> -bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_wr=
-ite)
->>> +#define RADIX_KUAP_BLOCK_READ	UL(0x4000000000000000)
->>> +#define RADIX_KUAP_BLOCK_WRITE	UL(0x8000000000000000)
->>> +
->>> +static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long =
-address,
->>> +				  bool is_write, unsigned long error_code)
->>>   {
->>> -	return WARN(mmu_has_feature(MMU_FTR_KUAP) &&
->>> -		    (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE : AMR_KUAP_BLOCK_=
-READ)),
->>> -		    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
->>> +	if (!mmu_has_feature(MMU_FTR_KUAP))
->>> +		return false;
->>> +
->>> +	if (radix_enabled()) {
->>> +		/*
->>> +		 * Will be a storage protection fault.
->>> +		 * Only check the details of AMR[0]
->>> +		 */
->>> +		return WARN((regs->kuap & (is_write ? RADIX_KUAP_BLOCK_WRITE : RADIX=
-_KUAP_BLOCK_READ)),
->>> +			    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
->>
->> I think it is pointless to keep the WARN() here.
->>
->> I have a series aiming at removing them. See=20
->> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/cc9129bdda1dbc2f=
-0a09cf45fece7d0b0e690784.1605541983.git.christophe.leroy@csgroup.eu/
->
-> Can we do this as a spearate patch as you posted above? We can drop the
-> WARN in that while keeping the hash branch to look at DSISR value.
+Fixes the following W=1 kernel build warning(s):
 
-Yeah we can reconcile Christophe's series with yours later.
+ drivers/tty/hvc/hvc_vio.c:385:13: warning: no previous prototype for ‘hvc_vio_init_early’ [-Wmissing-prototypes]
+ 385 | void __init hvc_vio_init_early(void)
+ | ^~~~~~~~~~~~~~~~~~
 
-I'm still not 100% convinced I want to drop that WARN.
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+---
 
-cheers
+v2:
+- Removed 'extern' keyword
+
+ arch/powerpc/include/asm/hvconsole.h     | 3 +++
+ arch/powerpc/platforms/pseries/pseries.h | 3 ---
+ arch/powerpc/platforms/pseries/setup.c   | 1 +
+ 3 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/hvconsole.h b/arch/powerpc/include/asm/hvconsole.h
+index 999ed5ac90531..ccb2034506f0f 100644
+--- a/arch/powerpc/include/asm/hvconsole.h
++++ b/arch/powerpc/include/asm/hvconsole.h
+@@ -24,5 +24,8 @@
+ extern int hvc_get_chars(uint32_t vtermno, char *buf, int count);
+ extern int hvc_put_chars(uint32_t vtermno, const char *buf, int count);
+ 
++/* Provided by HVC VIO */
++void hvc_vio_init_early(void);
++
+ #endif /* __KERNEL__ */
+ #endif /* _PPC64_HVCONSOLE_H */
+diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
+index 593840847cd3d..693f58d784b5b 100644
+--- a/arch/powerpc/platforms/pseries/pseries.h
++++ b/arch/powerpc/platforms/pseries/pseries.h
+@@ -43,9 +43,6 @@ extern void pSeries_final_fixup(void);
+ /* Poweron flag used for enabling auto ups restart */
+ extern unsigned long rtas_poweron_auto;
+ 
+-/* Provided by HVC VIO */
+-extern void hvc_vio_init_early(void);
+-
+ /* Dynamic logical Partitioning/Mobility */
+ extern void dlpar_free_cc_nodes(struct device_node *);
+ extern void dlpar_free_cc_property(struct property *);
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 090c13f6c8815..b5513eefd12c9 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -71,6 +71,7 @@
+ #include <asm/swiotlb.h>
+ #include <asm/svm.h>
+ #include <asm/dtl.h>
++#include <asm/hvconsole.h>
+ 
+ #include "pseries.h"
+ #include "../../../../drivers/pci/pci.h"
+-- 
+2.25.1
