@@ -2,74 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE602C699F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 17:45:01 +0100 (CET)
-Received: from bilbo.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CjL891MWmzDrhj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 03:44:57 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3C92C6AB1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 18:36:50 +0100 (CET)
+Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CjMHz65GFzDrhj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 04:36:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::144;
- helo=mail-lf1-x144.google.com; envelope-from=urezki@gmail.com;
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=udwA9p34; dkim-atps=neutral
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com
- [IPv6:2a00:1450:4864:20::144])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=pengutronix.de
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CjL4R5f0RzDrfl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 03:41:38 +1100 (AEDT)
-Received: by mail-lf1-x144.google.com with SMTP id a9so7873582lfh.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 08:41:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:date:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=rgkrb035jm9NJnipoFNp6J644nVoW0SJU1WZzjzA+oA=;
- b=udwA9p34XKAzVdUynfyA3sUQIHdQlG/KghvzCRzcKIP+V6Ez0oaYWmUIVE5rTY6I/e
- CW4TCmiSwaTCiKDJXkn7LgN9+fjAGq6lrtbJ42gd4XLIk+N7/71H4pKuqh3TBy79TYvM
- 1kOi7hd6b/9KCo6JhpWznw7poOjXY8a3z00zANtR8Fr+yhOvY1eHPYt8clzfeCOb4inW
- 7HkL1Lx0rdIJN4uiRZH4AjcAap7qCC/+qWIn7hgSHtQ4+Vw8yB773T7eD9kntRacbjET
- xTJA12M/jwG7M8J0tS6CXBOGuRaO7dRGqyaBJ9KUdV7oMYH39dT18YhqJomNnBOHMnUk
- BAjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:date:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=rgkrb035jm9NJnipoFNp6J644nVoW0SJU1WZzjzA+oA=;
- b=jfyQTCXGSDqepeiO6Z/OZWSHEdWULYIhyMu1S72+kDKV8Cm4F0opJqETbIni8z4LSx
- z9EpQ5dxKmQo0blWkLAAWbTz+gZ5G/kHRZYcMlQwxPtRcj/DwvwjFQffcJjIytsSG4nW
- xdzLR4sRIH6McywfQkFy8UHIS+97IapHervSgcf/9i5QiNVDUB4AxPFXAAMZjVqsKJ7D
- /j/UMWKwaF/1m5dvJbBpjp1JAbxGQlsviy+zskNN2c0nbswLq0Hb0gLXMrYkLo2vQaRw
- 1l8mRqAqy/PPY9E7m65Nk0b/zKDl1CBEgiYanJ715WlWLQzxZbm+lhBCyucJb/OvHlTV
- qSPA==
-X-Gm-Message-State: AOAM5327TaFcOp/3cLm2M6QgdeIyMqCyLTXSQGCh7BYo9n0SuSrOViNf
- 25XqrmFmMJ+G/E1iaJHZVnw=
-X-Google-Smtp-Source: ABdhPJzRxFJh5kMK+j5klpIKR50QifbYdGTWz6/104SUlMn5MLebth9HJ3j5Q4yoeCN71TH/Be22kw==
-X-Received: by 2002:a19:e46:: with SMTP id 67mr3959180lfo.108.1606495291010;
- Fri, 27 Nov 2020 08:41:31 -0800 (PST)
-Received: from pc638.lan (h5ef52e3d.seluork.dyn.perspektivbredband.net.
- [94.245.46.61])
- by smtp.gmail.com with ESMTPSA id 4sm1012291ljf.96.2020.11.27.08.41.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Nov 2020 08:41:30 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc638.lan>
-Date: Fri, 27 Nov 2020 17:41:28 +0100
-To: Daniel Axtens <dja@axtens.net>
-Subject: Re: powerpc 5.10-rcN boot failures with RCU_SCALE_TEST=m
-Message-ID: <20201127164128.GA47008@pc638.lan>
-References: <87eekfh80a.fsf@dja-thinkpad.axtens.net>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CjMG66pb9zDrgv
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 04:35:10 +1100 (AEDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1kihdj-0007Oz-Uy; Fri, 27 Nov 2020 18:34:35 +0100
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1kihdg-00033s-JD; Fri, 27 Nov 2020 18:34:32 +0100
+Date: Fri, 27 Nov 2020 18:34:30 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Leonard Goehrs <l.goehrs@pengutronix.de>
+Subject: Re: [PATCH] ALSA: ppc: remove redundant checks in PS3 driver probe
+Message-ID: <20201127173430.cdfufayj3cbytdx7@pengutronix.de>
+References: <20201127094547.4zcyeycfrriitkqx@pengutronix.de>
+ <20201127152259.1470079-1-l.goehrs@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="x2xoi2yg7vw2oj4d"
 Content-Disposition: inline
-In-Reply-To: <87eekfh80a.fsf@dja-thinkpad.axtens.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20201127152259.1470079-1-l.goehrs@pengutronix.de>
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,70 +58,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rcu@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, geoff@infradead.org, tiwai@suse.com,
+ perex@perex.cz, paulus@samba.org, kernel@pengutronix.de,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> Hi all,
-> 
-> I'm having some difficulty tracking down a bug.
-> 
-> Some configurations of the powerpc kernel since somewhere in the 5.10
-> merge window fail to boot on some ppc64 systems. They hang while trying
-> to bring up SMP. It seems to depend on the RCU_SCALE/PERF_TEST option.
-> (It was renamed in the 5.10 merge window.)
-> 
-> I can reproduce it as follows with qemu tcg:
-> 
-> make -j64 pseries_le_defconfig
-> scripts/config -m RCU_SCALE_TEST
-> scripts/config -m RCU_PERF_TEST
-> make -j 64 vmlinux CC="ccache gcc"
-> 
-> qemu-system-ppc64 -cpu power9 -M pseries -m 1G -nographic -vga none -smp 4 -kernel vmlinux
-> 
-> ...
-> [    0.036284][    T0] Mount-cache hash table entries: 8192 (order: 0, 65536 bytes, linear)
-> [    0.036481][    T0] Mountpoint-cache hash table entries: 8192 (order: 0, 65536 bytes, linear)
-> [    0.148168][    T1] POWER9 performance monitor hardware support registered
-> [    0.151118][    T1] rcu: Hierarchical SRCU implementation.
-> [    0.186660][    T1] smp: Bringing up secondary CPUs ...
-> <hangs>
->
-I am not sure if that is helpful but i checked it on my x86_64 system
-using the cross compiled for powerpc Linux kernel:
 
-<snip>
-urezki@pc638:~/data/coding/linux-rcu.git$ powerpc64-linux-gnu-gcc
---version
-powerpc64-linux-gnu-gcc (Debian 8.3.0-2) 8.3.0
-Copyright (C) 2018 Free Software Foundation, Inc.
-This is free software; see the source for copying conditions.  There is
-NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
-PURPOSE.
+--x2xoi2yg7vw2oj4d
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-urezki@pc638:~/data/coding/linux-rcu.git$
-<snip>
+Hallo Leonard,
 
-with ARCH=powerpc make -j64 pseries_defconfig configuration. I used the 5.10.0-rc1 kernel.
+On Fri, Nov 27, 2020 at 04:22:59PM +0100, Leonard Goehrs wrote:
+> The check for the FW_FEATURE_PS3_LV1 firmware feature is already performed
+> in ps3_system_bus_init() before registering the driver. So if the probe
+> function is actually used, this feature is already known to be available.
+>=20
+> The check for the match id is also superfluous; the condition is always
+> true because the bus' match function (ps3_system_bus_match()) only
+> considers this driver for devices having:
+> dev->match_id =3D=3D snd_ps3_bus_driver_info.match_id.
+>=20
+> Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Signed-off-by: Leonard Goehrs <l.goehrs@pengutronix.de>
 
-<snip>
-urezki@pc638:~/data/coding/linux-rcu.git$ qemu-system-ppc64 --version
-QEMU emulator version 3.1.0 (Debian 1:3.1+dfsg-8+deb10u8)
-Copyright (c) 2003-2018 Fabrice Bellard and the QEMU Project developers
-urezki@pc638:~/data/coding/linux-rcu.git$
-<snip>
+Reviewed-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 
-On my setup i can run the kernel with and without the modules which are
-in question. So
+Thanks for picking this up.
 
-qemu-system-ppc64 -cpu power9 -M pseries -m 1G -nographic -vga none -smp 4 -kernel ./vmlinux
+Best regards and have a nice week-end,
+Uwe Kleine-K=F6nig
 
-works for both cases, with RCU_SCALE and without.
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-Just in case, maybe this information can be useful also.
+--x2xoi2yg7vw2oj4d
+Content-Type: application/pgp-signature; name="signature.asc"
 
---
-Vlad Rezki
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl/BOKMACgkQwfwUeK3K
+7AmJhwf+OJGfgynfv6pDuxi0y6ZDfmonepwmPvArhPNxed/UewGad/XtUkRxuh+S
+axBDPcdEC8mxvW+ZyO+DMQY0zzQql63e+Ao1/g5SnP1MxuxWIndeMC/94SQy0IaJ
+URI1y9N7cabNRalVvc6WMf7mNl8yfWU5SJBQt8DRh7VB+YlbywCWMfSc/bXC1nV6
+GkgVRpAEeMs6tX8/9U1zvwzjMzXdm78Hy3Ptcz6E+PtcAXjs1QIXgsjWrKlBXr7b
+kjc8Z6uIRjvIKOrDAQuiP4Zplq359Zy0FDPUoM0U6e2llQ5GT1EEW7nKwvcd9/Ri
+1bhMMe4KNa+o8mDqBWVq0V9OQvDAlA==
+=/9Ch
+-----END PGP SIGNATURE-----
+
+--x2xoi2yg7vw2oj4d--
