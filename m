@@ -1,52 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3C92C6AB1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 18:36:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 727DB2C6AC0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 18:41:07 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CjMHz65GFzDrhj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 04:36:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CjMNv3hFQzDrhm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 04:41:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=pengutronix.de
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CjMG66pb9zDrgv
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 04:35:10 +1100 (AEDT)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1kihdj-0007Oz-Uy; Fri, 27 Nov 2020 18:34:35 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
- (envelope-from <ukl@pengutronix.de>)
- id 1kihdg-00033s-JD; Fri, 27 Nov 2020 18:34:32 +0100
-Date: Fri, 27 Nov 2020 18:34:30 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Leonard Goehrs <l.goehrs@pengutronix.de>
-Subject: Re: [PATCH] ALSA: ppc: remove redundant checks in PS3 driver probe
-Message-ID: <20201127173430.cdfufayj3cbytdx7@pengutronix.de>
-References: <20201127094547.4zcyeycfrriitkqx@pengutronix.de>
- <20201127152259.1470079-1-l.goehrs@pengutronix.de>
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=0j8EzUjA; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CjMLq379gzDrPJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 04:39:15 +1100 (AEDT)
+Received: from kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com (unknown
+ [163.114.132.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 04B9621534;
+ Fri, 27 Nov 2020 17:39:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1606498753;
+ bh=j1DgY7r0rMQwVPcBNG2W4pflvrkcsR7Nn0kZYvEb2Ss=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=0j8EzUjAKu+0z+mAQUkB3CXGNcEbFYIqENj9gKgasYED6nKNkPWzRrF0o9Zh8bFYY
+ ufUD4pf3x2fVB0Sf272JPD3mGvgRrWph+5enO8G3pD1njUJDyq7PPaKQC7JJXYshQ8
+ NXklXCJw7Tl57KnQy271JTtuX5+F9SUf5tUoe6PU=
+Date: Fri, 27 Nov 2020 09:39:11 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH 0/8] Rid W=1 warnings in Net
+Message-ID: <20201127093911.05d9122a@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+In-Reply-To: <20201126133853.3213268-1-lee.jones@linaro.org>
+References: <20201126133853.3213268-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="x2xoi2yg7vw2oj4d"
-Content-Disposition: inline
-In-Reply-To: <20201127152259.1470079-1-l.goehrs@pengutronix.de>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,58 +56,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, geoff@infradead.org, tiwai@suse.com,
- perex@perex.cz, paulus@samba.org, kernel@pengutronix.de,
- Geert Uytterhoeven <geert@linux-m68k.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Paul Durrant <paul@xen.org>, Kurt Kanzenbach <kurt@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, Peter Cammaert <pc@denkart.be>,
+ Paul Mackerras <paulus@samba.org>, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+ Wei Liu <wei.liu@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Santiago Leon <santi_leon@yahoo.com>, xen-devel@lists.xenproject.org,
+ Grygorii Strashko <grygorii.strashko@ti.com>,
+ Thomas Falcon <tlfalcon@linux.vnet.ibm.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Jens Osterkamp <Jens.Osterkamp@de.ibm.com>,
+ Rusty Russell <rusty@rustcorp.com.au>, Daris A Nevil <dnevil@snmc.com>,
+ Lijun Pan <ljp@linux.ibm.com>, Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+ Nicolas Pitre <nico@fluxnic.net>, Geoff Levand <geoff@infradead.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Erik Stahlman <erik@vt.edu>, John Allen <jallen@linux.vnet.ibm.com>,
+ Utz Bacher <utz.bacher@de.ibm.com>, Dany Madden <drt@linux.ibm.com>,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>, Russell King <rmk@arm.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, 26 Nov 2020 13:38:45 +0000 Lee Jones wrote:
+> Resending the stragglers.
+> 
+> This set is part of a larger effort attempting to clean-up W=1
+> kernel builds, which are currently overwhelmingly riddled with
+> niggly little warnings.
 
---x2xoi2yg7vw2oj4d
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hallo Leonard,
-
-On Fri, Nov 27, 2020 at 04:22:59PM +0100, Leonard Goehrs wrote:
-> The check for the FW_FEATURE_PS3_LV1 firmware feature is already performed
-> in ps3_system_bus_init() before registering the driver. So if the probe
-> function is actually used, this feature is already known to be available.
->=20
-> The check for the match id is also superfluous; the condition is always
-> true because the bus' match function (ps3_system_bus_match()) only
-> considers this driver for devices having:
-> dev->match_id =3D=3D snd_ps3_bus_driver_info.match_id.
->=20
-> Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Signed-off-by: Leonard Goehrs <l.goehrs@pengutronix.de>
-
-Reviewed-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-
-Thanks for picking this up.
-
-Best regards and have a nice week-end,
-Uwe Kleine-K=F6nig
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---x2xoi2yg7vw2oj4d
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl/BOKMACgkQwfwUeK3K
-7AmJhwf+OJGfgynfv6pDuxi0y6ZDfmonepwmPvArhPNxed/UewGad/XtUkRxuh+S
-axBDPcdEC8mxvW+ZyO+DMQY0zzQql63e+Ao1/g5SnP1MxuxWIndeMC/94SQy0IaJ
-URI1y9N7cabNRalVvc6WMf7mNl8yfWU5SJBQt8DRh7VB+YlbywCWMfSc/bXC1nV6
-GkgVRpAEeMs6tX8/9U1zvwzjMzXdm78Hy3Ptcz6E+PtcAXjs1QIXgsjWrKlBXr7b
-kjc8Z6uIRjvIKOrDAQuiP4Zplq359Zy0FDPUoM0U6e2llQ5GT1EEW7nKwvcd9/Ri
-1bhMMe4KNa+o8mDqBWVq0V9OQvDAlA==
-=/9Ch
------END PGP SIGNATURE-----
-
---x2xoi2yg7vw2oj4d--
+This set doesn't apply to net-next, please rebase.
