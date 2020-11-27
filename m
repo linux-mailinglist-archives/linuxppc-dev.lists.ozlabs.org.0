@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF6E2C5F6B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 06:08:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A53322C5F7B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 06:12:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cj2hz74xqzDsPL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 16:08:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cj2mw4fyGzDrgx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 16:12:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,60 +17,60 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Zj89f1AS; dkim-atps=neutral
+ header.s=pp1 header.b=eBNKhFND; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cj29q6qtczDrVM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 15:45:19 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cj29y258fzDrTL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 15:45:26 +1100 (AEDT)
 Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AR4VUDL008909; Thu, 26 Nov 2020 23:45:08 -0500
+ 0AR4VS4O008846; Thu, 26 Nov 2020 23:45:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=IN4r9IziRoExNSIESIVUEoKmH1GyPpM8+QtD02+xbzw=;
- b=Zj89f1ASIMAM9lYWmI7SJ/HRZq/vKhp49xbGLSPV5x3yQb8pcc6FRHX2RJdsvtvOPzl9
- m8i5DxrasET+Jny691moOa6aA919K64y1i478dsGxOJ41iJArf+Dmerko6igGVWDQ47L
- DxYTkm1Xp3sCgmE+QcABUyGCQw7bGEiLzcfdqro5OJE2cW2byYhvBO/NwsyRaC6pHuri
- /V/CTz5n7dVA4vszcF1dzBxhMy6wv3C83gTGg9TUMumcidwDUfJwvKJBEDGmaj8ZJy+k
- H7bC0go5YaA4K6sNqBg9laU2cKZ+cAIkDKAdAzo4dtAnsVWfFtx5JnwtyLCm31leCLv7 Dg== 
+ bh=3EUtAkoiYeRKfK/T1IVMaY7TGUyQ9f2dbfS1pCJ8SUY=;
+ b=eBNKhFND/5Hqa+GtPJjNlpHOTsiC4JLM5bvy4S1RtlYJWaglVvHXw1toJPgUVuk1TCS+
+ kt1lJA4uj8FFTIlhYhzVpQG8LwlBmUOvPditi1JYlU/FqMdvZfv/cYWX5p4X3dHR2Nlb
+ hrMnj8HeRoO2lS9kzaQykkQHb9H2cbIFD2ZDXU5LL/EKBfoC3GZLk4gI+sgZR1pbQ2Hi
+ +sqRyrQKRuAhP6w3vebBg9PS68/aibwsQnGTHm9oY65AXVv70hIqiWqN3U32GE50vOF2
+ gNzTz21uu2myCKHKlCpzPBbFlHKTw2h3Bg+pPLbYzkF1Nji9K7xWnlV+lQDfpcnOq/qq cg== 
 Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
  [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 352pu8cmka-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 352pu8cmm8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Nov 2020 23:45:08 -0500
+ Thu, 26 Nov 2020 23:45:10 -0500
 Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AR4gAVY002867;
- Fri, 27 Nov 2020 04:45:07 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma03dal.us.ibm.com with ESMTP id 34xtha6wqw-1
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AR4gM4m002975;
+ Fri, 27 Nov 2020 04:45:10 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma03dal.us.ibm.com with ESMTP id 34xtha6wr8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Nov 2020 04:45:07 +0000
+ Fri, 27 Nov 2020 04:45:10 +0000
 Received: from b03ledav001.gho.boulder.ibm.com
  (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AR4j6bP23200014
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AR4j2Cv39846150
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Nov 2020 04:45:06 GMT
+ Fri, 27 Nov 2020 04:45:02 GMT
 Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 32F036E053;
+ by IMSVA (Postfix) with ESMTP id D01F56E04C;
+ Fri, 27 Nov 2020 04:45:08 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CCB476E050;
  Fri, 27 Nov 2020 04:45:06 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B68006E04E;
- Fri, 27 Nov 2020 04:45:03 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.45.115])
  by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 27 Nov 2020 04:45:03 +0000 (GMT)
+ Fri, 27 Nov 2020 04:45:06 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v7 12/22] powerpc/book3s64/pkeys: Reset userspace AMR
- correctly on exec
-Date: Fri, 27 Nov 2020 10:14:14 +0530
-Message-Id: <20201127044424.40686-13-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v7 13/22] powerpc/ptrace-view: Use pt_regs values instead of
+ thread_struct based one.
+Date: Fri, 27 Nov 2020 10:14:15 +0530
+Message-Id: <20201127044424.40686-14-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201127044424.40686-1-aneesh.kumar@linux.ibm.com>
 References: <20201127044424.40686-1-aneesh.kumar@linux.ibm.com>
@@ -97,96 +97,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Sandipan Das <sandipan@linux.ibm.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On fork, we inherit from the parent and on exec, we should switch to default_amr values.
+We will remove thread.amr/iamr/uamor in a later patch
 
-Also, avoid changing the AMR register value within the kernel. The kernel now runs with
-different AMR values.
-
-Reviewed-by: Sandipan Das <sandipan@linux.ibm.com>
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/include/asm/book3s/64/pkeys.h |  2 ++
- arch/powerpc/kernel/process.c              |  6 +++++-
- arch/powerpc/mm/book3s64/pkeys.c           | 16 ++--------------
- 3 files changed, 9 insertions(+), 15 deletions(-)
+ arch/powerpc/kernel/ptrace/ptrace-view.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pkeys.h b/arch/powerpc/include/asm/book3s/64/pkeys.h
-index b7d9f4267bcd..3b8640498f5b 100644
---- a/arch/powerpc/include/asm/book3s/64/pkeys.h
-+++ b/arch/powerpc/include/asm/book3s/64/pkeys.h
-@@ -6,6 +6,8 @@
- #include <asm/book3s/64/hash-pkey.h>
- 
- extern u64 __ro_after_init default_uamor;
-+extern u64 __ro_after_init default_amr;
-+extern u64 __ro_after_init default_iamr;
- 
- static inline u64 vmflag_to_pte_pkey_bits(u64 vm_flags)
+diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c b/arch/powerpc/kernel/ptrace/ptrace-view.c
+index 7e6478e7ed07..bdbe8cfdafc7 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace-view.c
++++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
+@@ -470,12 +470,12 @@ static int pkey_active(struct task_struct *target, const struct user_regset *reg
+ static int pkey_get(struct task_struct *target, const struct user_regset *regset,
+ 		    struct membuf to)
  {
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 9acb6166012d..7ea53aac0478 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1542,6 +1542,11 @@ void arch_setup_new_exec(void)
- 		struct pt_regs *regs = task_stack_page(current) + THREAD_SIZE;
- 		current->thread.regs = regs - 1;
- 	}
-+
-+#ifdef CONFIG_PPC_MEM_KEYS
-+	current->thread.regs->amr  = default_amr;
-+	current->thread.regs->iamr  = default_iamr;
-+#endif
+-	BUILD_BUG_ON(TSO(amr) + sizeof(unsigned long) != TSO(iamr));
+ 
+ 	if (!arch_pkeys_enabled())
+ 		return -ENODEV;
+ 
+-	membuf_write(&to, &target->thread.amr, 2 * sizeof(unsigned long));
++	membuf_store(&to, target->thread.regs->amr);
++	membuf_store(&to, target->thread.regs->iamr);
+ 	return membuf_store(&to, default_uamor);
  }
  
- #ifdef CONFIG_PPC64
-@@ -1887,7 +1892,6 @@ void start_thread(struct pt_regs *regs, unsigned long start, unsigned long sp)
- 	current->thread.load_tm = 0;
- #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
+@@ -508,7 +508,8 @@ static int pkey_set(struct task_struct *target, const struct user_regset *regset
+ 	 * Pick the AMR values for the keys that kernel is using. This
+ 	 * will be indicated by the ~default_uamor bits.
+ 	 */
+-	target->thread.amr = (new_amr & default_uamor) | (target->thread.amr & ~default_uamor);
++	target->thread.regs->amr = (new_amr & default_uamor) |
++		(target->thread.regs->amr & ~default_uamor);
  
--	thread_pkey_regs_init(&current->thread);
+ 	return 0;
  }
- EXPORT_SYMBOL(start_thread);
- 
-diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
-index e434c0a2ee5d..355d001fa155 100644
---- a/arch/powerpc/mm/book3s64/pkeys.c
-+++ b/arch/powerpc/mm/book3s64/pkeys.c
-@@ -28,8 +28,8 @@ static u32 initial_allocation_mask __ro_after_init;
-  * Even if we allocate keys with sys_pkey_alloc(), we need to make sure
-  * other thread still find the access denied using the same keys.
-  */
--static u64 default_amr = ~0x0UL;
--static u64 default_iamr = 0x5555555555555555UL;
-+u64 default_amr __ro_after_init  = ~0x0UL;
-+u64 default_iamr __ro_after_init = 0x5555555555555555UL;
- u64 default_uamor __ro_after_init;
- /*
-  * Key used to implement PROT_EXEC mmap. Denies READ/WRITE
-@@ -396,18 +396,6 @@ void thread_pkey_regs_restore(struct thread_struct *new_thread,
- 		write_iamr(new_thread->iamr);
- }
- 
--void thread_pkey_regs_init(struct thread_struct *thread)
--{
--	if (!mmu_has_feature(MMU_FTR_PKEY))
--		return;
--
--	thread->amr   = default_amr;
--	thread->iamr  = default_iamr;
--
--	write_amr(default_amr);
--	write_iamr(default_iamr);
--}
--
- int execute_only_pkey(struct mm_struct *mm)
- {
- 	return mm->context.execute_only_pkey;
 -- 
 2.28.0
 
