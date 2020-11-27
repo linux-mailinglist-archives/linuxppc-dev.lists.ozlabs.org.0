@@ -1,68 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6C02C5ED9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 04:04:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A688B2C5F51
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 05:49:07 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ChzxH3LvvzDrQV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 14:04:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cj2G81d7czDrMX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 15:49:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DH89CHaJ; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=WzMqQYwN; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Chzvg0fl0zDrPh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 14:02:54 +1100 (AEDT)
-Received: by mail-pl1-x644.google.com with SMTP id r2so2020519pls.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Nov 2020 19:02:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=y38YfYHzNFWW0uhDjfdEY4kwJxb1uk0ec4aPIfuK6ps=;
- b=DH89CHaJvmprl1aDYerkSTOwsMY47u7V+WpQoIWewQiEmsNxPkd6YtCYd+DdK93tgW
- IZ4xGxyPIw26O6s/gYO8W0+uzARKJ8YV0yt4BDJrKwuBptR1hYEymt8Ge2/KzJBjin/2
- 8XHK4GeC8dYVMr5zUpcTtU4xV98yU4dV22GatM31FIkpmcfCdpUJjCcs4sxOQ2sSxYYs
- YI0L6SC37U2bTx20UdiIZSlQ5hcw1XAuR+Ae6UpqiDYjo9VjhwuiU+MdRQ3gl6uWWuME
- fd97riPzGaROdTC/ih8IJvGHg20qExYsEXBsQuIAMqT8fFRHVdTPUO43g99ryBXgs9P2
- UDLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=y38YfYHzNFWW0uhDjfdEY4kwJxb1uk0ec4aPIfuK6ps=;
- b=RiExmkecl80RMisnrSjSWJp7gQ+OqUhCXGDGN6D0w9Xrpy6rmIPZFwlhB9kUbfuy0c
- a0ChsyZe3SJp+lPkyqWyayEsesyFNofCd07FKVdhZljL2NJn9xigR6xU8RWLsLkRfiRN
- Fnw2+Ua4WH9MpR/o9x/6KQ4pcqtmfVu8bvFC0WAPH9q4Eok4L3EAdQn78Exb3zYnSjlp
- HPQ/vMW0JSlv9sMb7nMNkzZZd29FVo8R68xnOngPr2L5gLQthkFolPCN1bCZpDirQc0T
- d5PHwo42+1NZ8SUUpT1LQC/yD0L8ThV5DXw7lNgI7iBDnKQJ9Suhv1mV9dGDwUebk1IK
- +m3w==
-X-Gm-Message-State: AOAM530ZR97KfAM0K6/TGONBhO2eyytoiCR6HIKvVWyrCwgpRH18lqvX
- O1OGhbFP46dG2mZJjKl+cu7jxP29r8CIVg==
-X-Google-Smtp-Source: ABdhPJwLgqJamIkiMOZQeZsEkHZhI6aJ+dj5uVxaVhsLr78aV+J4bGV2C7NeTbKgWfqtBTy+ksQmnQ==
-X-Received: by 2002:a17:902:848e:b029:d6:d2c9:1d4c with SMTP id
- c14-20020a170902848eb02900d6d2c91d4cmr4896726plo.40.1606446171170; 
- Thu, 26 Nov 2020 19:02:51 -0800 (PST)
-Received: from tee480.ibm.com (180-150-65-4.b49641.syd.nbn.aussiebb.net.
- [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id w22sm5760609pge.25.2020.11.26.19.02.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Nov 2020 19:02:50 -0800 (PST)
-From: Jordan Niethe <jniethe5@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: Allow relative pointers in bug table entries
-Date: Fri, 27 Nov 2020 14:02:38 +1100
-Message-Id: <20201127030238.763-1-jniethe5@gmail.com>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cj29C2d5YzDrQB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 15:44:46 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AR4WP7Z140643; Thu, 26 Nov 2020 23:44:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=4Gb7b/+pRGN2OHNhoTjCJCrL7KvG9FhbSO/2EssG7zA=;
+ b=WzMqQYwN0E8BXuq5zDhRVIXZWnVJAMYBdFNcf+lBctKLPfNngPRPsjXP7L/oW3MhYnYq
+ FwhpHHDmTXVyJP9bKP/dKppNo2/S0762lW8NDDXHjKXrr/ZnGLdwbqKWZqH7om+DpAGL
+ +Qj+X0AlYpwpIij0TvdDPRbKzQ+Cv4gdGdaV3toBaz+Hi8bihQTRP/bNvqszlYQZ4GLu
+ g4KfEvubHkTLUps1gVOMxHmb8YlnUiwpc9FOwLmnr+QqmoXd24Po8QpLpvohvUVFoq43
+ JwkwXx7nbUbXHAqQK+b1dtGidBHdTR+2Fp+dZj6laqTQv6tLvsPBRh+KMdei3mJzjmwF Zg== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 352swmgwtj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 26 Nov 2020 23:44:33 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AR4gi5V013958;
+ Fri, 27 Nov 2020 04:44:32 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma04wdc.us.ibm.com with ESMTP id 34xth9kw9t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 27 Nov 2020 04:44:32 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AR4iMwV50594082
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 27 Nov 2020 04:44:22 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 57E616E052;
+ Fri, 27 Nov 2020 04:44:31 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6083F6E04E;
+ Fri, 27 Nov 2020 04:44:29 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.199.45.115])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 27 Nov 2020 04:44:28 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v7 00/22] Kernel userspace access/execution prevention with
+ hash translation
+Date: Fri, 27 Nov 2020 10:14:02 +0530
+Message-Id: <20201127044424.40686-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-11-27_01:2020-11-26,
+ 2020-11-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 adultscore=0
+ lowpriorityscore=0 suspectscore=0 priorityscore=1501 mlxscore=0
+ phishscore=0 bulkscore=0 impostorscore=0 spamscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2011270021
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,149 +94,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This enables GENERIC_BUG_RELATIVE_POINTERS on Power so that 32-bit
-offsets are stored in the bug entries rather than 64-bit pointers.
+This patch series implements KUAP and KUEP with hash translation mode using
+memory keys. The kernel now uses memory protection key 3 to control access
+to the kernel. Kernel page table entries are now configured with key 3.
+Access to locations configured with any other key value is denied when in
+kernel mode (MSR_PR=0). This includes userspace which is by default configured
+with key 0.
 
-Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
----
- arch/powerpc/Kconfig           |  4 ++++
- arch/powerpc/include/asm/bug.h | 37 ++++++++++++++++++++++++++++++++--
- arch/powerpc/xmon/xmon.c       | 17 ++++++++++++++--
- 3 files changed, 54 insertions(+), 4 deletions(-)
+null-syscall benchmark results:
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index e9f13fe08492..294108e0e5c6 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -311,6 +311,10 @@ config GENERIC_BUG
- 	default y
- 	depends on BUG
- 
-+config GENERIC_BUG_RELATIVE_POINTERS
-+	def_bool y
-+	depends on GENERIC_BUG
-+
- config SYS_SUPPORTS_APM_EMULATION
- 	default y if PMAC_APM_EMU
- 	bool
-diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index 338f36cd9934..d03d834042a1 100644
---- a/arch/powerpc/include/asm/bug.h
-+++ b/arch/powerpc/include/asm/bug.h
-@@ -12,7 +12,11 @@
- #ifdef CONFIG_DEBUG_BUGVERBOSE
- .macro EMIT_BUG_ENTRY addr,file,line,flags
- 	 .section __bug_table,"aw"
-+#ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
- 5001:	 PPC_LONG \addr, 5002f
-+#else
-+5001:	 .4byte \addr - 5001b, 5002f - 5001b
-+#endif /* CONFIG_GENERIC_BUG_RELATIVE_POINTERS */
- 	 .short \line, \flags
- 	 .org 5001b+BUG_ENTRY_SIZE
- 	 .previous
-@@ -23,7 +27,11 @@
- #else
- .macro EMIT_BUG_ENTRY addr,file,line,flags
- 	 .section __bug_table,"aw"
-+#ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
- 5001:	 PPC_LONG \addr
-+#else
-+5001:	 .4byte \addr - 5001b
-+#endif /* CONFIG_GENERIC_BUG_RELATIVE_POINTERS */
- 	 .short \flags
- 	 .org 5001b+BUG_ENTRY_SIZE
- 	 .previous
-@@ -34,20 +42,45 @@
- /* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
-    sizeof(struct bug_entry), respectively */
- #ifdef CONFIG_DEBUG_BUGVERBOSE
-+#ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
- #define _EMIT_BUG_ENTRY				\
- 	".section __bug_table,\"aw\"\n"		\
- 	"2:\t" PPC_LONG "1b, %0\n"		\
- 	"\t.short %1, %2\n"			\
- 	".org 2b+%3\n"				\
- 	".previous\n"
--#else
-+
-+#else /* relative pointers */
-+
-+#define _EMIT_BUG_ENTRY				\
-+	".section __bug_table,\"aw\"\n"		\
-+	"2:\t.4byte 1b - 2b, %0 - 2b\n"		\
-+	"\t.short %1, %2\n"			\
-+	".org 2b+%3\n"				\
-+	".previous\n"
-+#endif /* relative pointers */
-+
-+#else /* verbose */
-+
-+#ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
- #define _EMIT_BUG_ENTRY				\
- 	".section __bug_table,\"aw\"\n"		\
- 	"2:\t" PPC_LONG "1b\n"			\
- 	"\t.short %2\n"				\
- 	".org 2b+%3\n"				\
- 	".previous\n"
--#endif
-+
-+#else /* relative pointers */
-+
-+#define _EMIT_BUG_ENTRY				\
-+	".section __bug_table,\"aw\"\n"		\
-+	"2:\t.4byte 1b - 2b\n"		\
-+	"\t.short %2\n"				\
-+	".org 2b+%3\n"				\
-+	".previous\n"
-+
-+#endif /* relative pointers */
-+#endif /* verbose */
- 
- #define BUG_ENTRY(insn, flags, ...)			\
- 	__asm__ __volatile__(				\
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 55c43a6c9111..5f7cf7e95767 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -1731,6 +1731,9 @@ static void print_bug_trap(struct pt_regs *regs)
- #ifdef CONFIG_BUG
- 	const struct bug_entry *bug;
- 	unsigned long addr;
-+#ifdef CONFIG_DEBUG_BUGVERBOSE
-+	char *file;
-+#endif
- 
- 	if (regs->msr & MSR_PR)
- 		return;		/* not in kernel */
-@@ -1744,10 +1747,20 @@ static void print_bug_trap(struct pt_regs *regs)
- 		return;
- 
- #ifdef CONFIG_DEBUG_BUGVERBOSE
-+#ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
-+	file = bug->file;
-+#else /* relative pointers */
-+	file = (char *)bug + bug->file_disp;
-+#endif /* relative pointers */
- 	printf("kernel BUG at %s:%u!\n",
--	       bug->file, bug->line);
-+	       file, bug->line);
- #else
--	printf("kernel BUG at %px!\n", (void *)bug->bug_addr);
-+#ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
-+	addr = bug->addr;
-+#else /* relative pointers */
-+	addr = (unsigned long)bug + bug->bug_addr_disp;
-+#endif /* relative pointers */
-+	printf("kernel BUG at %px!\n", (void *)addr);
- #endif
- #endif /* CONFIG_BUG */
- }
+With smap/smep disabled:
+Without patch:
+	845.29 ns    2451.44 cycles
+With patch series:
+	858.38 ns    2489.30 cycles
+
+With smap/smep enabled:
+Without patch:
+	NA
+With patch series:
+	1021.51 ns    2962.44 cycles
+
+Changes from v6:
+* Address review comments
+* Rename MMU FTR defines
+
+Changes from v5:
+* Rework the patch based on suggestion from Michael to avoid the
+  usage of CONFIG_PPC_PKEY on BOOKE platforms. 
+
+Changes from v4:
+* Repost with other pkey related changes split out as a separate series.
+* Improve null-syscall benchmark by optimizing SPRN save and restore.
+
+Changes from v3:
+* Fix build error reported by kernel test robot <lkp@intel.com>
+
+Changes from v2:
+* Rebase to the latest kernel.
+* Fixed a bug with disabling KUEP/KUAP on kernel command line
+* Added a patch to make kup key dynamic.
+
+Changes from V1:
+* Rebased on latest kernel
+
+Aneesh Kumar K.V (22):
+  powerpc: Add new macro to handle NESTED_IFCLR
+  KVM: PPC: BOOK3S: PR: Ignore UAMOR SPR
+  powerpc/book3s64/kuap/kuep: Add PPC_PKEY config on book3s64
+  powerpc/book3s64/kuap/kuep: Move uamor setup to pkey init
+  powerpc/book3s64/kuap: Move KUAP related function outside radix
+  powerpc/book3s64/kuep: Move KUEP related function outside radix
+  powerpc/book3s64/kuap: Rename MMU_FTR_RADIX_KUAP and MMU_FTR_KUEP
+  powerpc/book3s64/kuap: Use Key 3 for kernel mapping with hash
+    translation
+  powerpc/exec: Set thread.regs early during exec
+  powerpc/book3s64/pkeys: Store/restore userspace AMR/IAMR correctly on
+    entry and exit from kernel
+  powerpc/book3s64/pkeys: Inherit correctly on fork.
+  powerpc/book3s64/pkeys: Reset userspace AMR correctly on exec
+  powerpc/ptrace-view: Use pt_regs values instead of thread_struct based
+    one.
+  powerpc/book3s64/pkeys: Don't update SPRN_AMR when in kernel mode.
+  powerpc/book3s64/kuap: Restrict access to userspace based on userspace
+    AMR
+  powerpc/book3s64/kuap: Improve error reporting with KUAP
+  powerpc/book3s64/kuap: Use Key 3 to implement KUAP with hash
+    translation.
+  powerpc/book3s64/kuep: Use Key 3 to implement KUEP with hash
+    translation.
+  powerpc/book3s64/hash/kuap: Enable kuap on hash
+  powerpc/book3s64/hash/kuep: Enable KUEP on hash
+  powerpc/book3s64/hash/kup: Don't hardcode kup key
+  powerpc/book3s64/pkeys: Optimize KUAP and KUEP feature disabled case
+
+ arch/powerpc/include/asm/book3s/32/kup.h      |   4 +-
+ .../powerpc/include/asm/book3s/64/hash-pkey.h |  10 +-
+ arch/powerpc/include/asm/book3s/64/hash.h     |   2 +-
+ .../powerpc/include/asm/book3s/64/kup-radix.h | 203 --------
+ arch/powerpc/include/asm/book3s/64/kup.h      | 442 ++++++++++++++++++
+ arch/powerpc/include/asm/book3s/64/mmu-hash.h |   1 +
+ arch/powerpc/include/asm/book3s/64/mmu.h      |   2 +-
+ arch/powerpc/include/asm/book3s/64/pkeys.h    |   3 +
+ arch/powerpc/include/asm/feature-fixups.h     |   3 +
+ arch/powerpc/include/asm/kup.h                |   8 +-
+ arch/powerpc/include/asm/mmu.h                |  24 +-
+ arch/powerpc/include/asm/mmu_context.h        |   2 +-
+ arch/powerpc/include/asm/nohash/32/kup-8xx.h  |   4 +-
+ arch/powerpc/include/asm/processor.h          |   4 -
+ arch/powerpc/include/asm/ptrace.h             |  12 +-
+ arch/powerpc/include/asm/thread_info.h        |   2 -
+ arch/powerpc/kernel/asm-offsets.c             |   5 +
+ arch/powerpc/kernel/entry_64.S                |   6 +-
+ arch/powerpc/kernel/exceptions-64s.S          |   4 +-
+ arch/powerpc/kernel/process.c                 |  47 +-
+ arch/powerpc/kernel/ptrace/ptrace-view.c      |   7 +-
+ arch/powerpc/kernel/syscall_64.c              |  38 +-
+ arch/powerpc/kernel/traps.c                   |   6 -
+ arch/powerpc/kvm/book3s_emulate.c             |   6 +
+ arch/powerpc/mm/book3s64/Makefile             |   2 +-
+ arch/powerpc/mm/book3s64/hash_4k.c            |   2 +-
+ arch/powerpc/mm/book3s64/hash_64k.c           |   4 +-
+ arch/powerpc/mm/book3s64/hash_hugepage.c      |   2 +-
+ arch/powerpc/mm/book3s64/hash_hugetlbpage.c   |   2 +-
+ arch/powerpc/mm/book3s64/hash_pgtable.c       |   2 +-
+ arch/powerpc/mm/book3s64/hash_utils.c         |  10 +-
+ arch/powerpc/mm/book3s64/pkeys.c              | 177 ++++---
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |  45 +-
+ arch/powerpc/mm/fault.c                       |   2 +-
+ arch/powerpc/platforms/Kconfig.cputype        |   5 +
+ 35 files changed, 709 insertions(+), 389 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/book3s/64/kup-radix.h
+ create mode 100644 arch/powerpc/include/asm/book3s/64/kup.h
+
 -- 
-2.17.1
+2.28.0
 
