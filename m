@@ -1,56 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747EC2C610C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 09:41:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8F02C6232
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 10:48:59 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cj7Qr3Q0YzDrh0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 19:41:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cj8w56pFgzDrfW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 20:48:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.67; helo=mail-ot1-f67.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com
- [209.85.210.67])
+ header.from=pengutronix.de
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cj7Ny0YbRzDrTM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 19:40:17 +1100 (AEDT)
-Received: by mail-ot1-f67.google.com with SMTP id f12so4024241oto.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 00:40:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=/D+lVsFpiig9p8Mfv+F/WnI4wKF69UpUHln9lDG06g4=;
- b=ACo988DjGxPfrrpqZ/JOA5es7MXvgV+nUDA0zqSJo5eaUnG7hLAvz5Ry9z87m0BVpI
- 6Qqtmgmydw4nRO0Mfj8T+zzVR5xCOdh3f+LzXrLrYEvdXQah8T/LrnuzfaTtn8pHAr7H
- 4dc1TgE9HJXm4Z5nwdYiDV8x7+JPRhiL7Z7MHzIsPElV5cH3Pw+SzqhZ2ZW1WPxI0ZEu
- T9oxhbdK4YgSlni4gm9c0t3O0m47xcfHByb87UUnqvj11ewOzIWprJrbsDzc37Owq+pa
- cPya8ldt0QidIhG7I3Nju2xP7aggkIeDit50DKlPuFD1/J8XhAHbXhDdk0mJPD22ADrW
- zytw==
-X-Gm-Message-State: AOAM532GAbgkLzrWRPgxEDB4OrBqikl8N8rQoI8wxho5jA3/WbzKkOtJ
- KJF+eJ1Fi7p5pDzu+aUwjfqVtip0vXv1dzG6q8fvQnzzh1oQJA==
-X-Google-Smtp-Source: ABdhPJy2I/IdfAm6V2ydZbwLB9NPNLYo9PucEpxX/NL/qzuCx8bfpYwJU7BhpITpgvBGwlFRBVNr8EmnqamS0CIYUsg=
-X-Received: by 2002:a9d:686:: with SMTP id 6mr4709371otx.107.1606466415531;
- Fri, 27 Nov 2020 00:40:15 -0800 (PST)
-MIME-Version: 1.0
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cj8t137qPzDrfN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 20:47:04 +1100 (AEDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1kiaKC-0005UC-C7; Fri, 27 Nov 2020 10:45:56 +0100
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1kiaK4-0002Ad-OH; Fri, 27 Nov 2020 10:45:48 +0100
+Date: Fri, 27 Nov 2020 10:45:47 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 1/2] ALSA: ppc: drop if block with always false condition
+Message-ID: <20201127094547.4zcyeycfrriitkqx@pengutronix.de>
 References: <20201126165950.2554997-1-u.kleine-koenig@pengutronix.de>
- <20201126165950.2554997-2-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20201126165950.2554997-2-u.kleine-koenig@pengutronix.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 27 Nov 2020 09:40:04 +0100
-Message-ID: <CAMuHMdW4J0xA6T4AWqZdo1go1kxWqVSSo5JXQpUAM4yWEpDdOw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] powerpc/ps3: make system bus's remove and shutdown
- callbacks return void
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <CAMuHMdUbfT7ax4BhjMT_DBweab8TDm5e=xMv5f61t9QpQJt1mw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="taccm5e5wyznne4d"
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdUbfT7ax4BhjMT_DBweab8TDm5e=xMv5f61t9QpQJt1mw@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,38 +77,66 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Uwe,
 
-On Thu, Nov 26, 2020 at 6:03 PM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
-> The driver core ignores the return value of struct device_driver::remove
-> because there is only little that can be done. For the shutdown callback
-> it's ps3_system_bus_shutdown() which ignores the return value.
->
-> To simplify the quest to make struct device_driver::remove return void,
-> let struct ps3_system_bus_driver::remove return void, too. All users
-> already unconditionally return 0, this commit makes it obvious that
-> returning an error code is a bad idea and ensures future users behave
-> accordingly.
->
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+--taccm5e5wyznne4d
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for your patch!
+On Fri, Nov 27, 2020 at 09:35:39AM +0100, Geert Uytterhoeven wrote:
+> Hi Uwe,
+>=20
+> On Thu, Nov 26, 2020 at 6:03 PM Uwe Kleine-K=F6nig
+> <u.kleine-koenig@pengutronix.de> wrote:
+> > The remove callback is only called for devices that were probed
+> > successfully before. As the matching probe function cannot complete
+> > without error if dev->match_id !=3D PS3_MATCH_ID_SOUND, we don't have to
+> > check this here.
+> >
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+>=20
+> Thanks for your patch!
+>=20
+> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>=20
+> Note that there are similar checks in snd_ps3_driver_probe(), which
+> can be removed, too:
+>=20
+>         if (WARN_ON(!firmware_has_feature(FW_FEATURE_PS3_LV1)))
+>                 return -ENODEV;
+>         if (WARN_ON(dev->match_id !=3D PS3_MATCH_ID_SOUND))
+>                 return -ENODEV;
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+I had to invest some brain cycles here. For the first:
 
-Note that the same can be done for ps3_vuart_port_driver.remove().
+Assuming firmware_has_feature(FW_FEATURE_PS3_LV1) always returns the
+same value, snd_ps3_driver_probe is only used after this check succeeds
+because the driver is registered only after this check in
+snd_ps3_init().
 
-Gr{oetje,eeting}s,
+The second is superflous because ps3_system_bus_match() yields false if
+this doesn't match the driver's match_id.
 
-                        Geert
+Best regards
+Uwe
 
 --=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+--taccm5e5wyznne4d
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAl/AyscACgkQwfwUeK3K
+7AmVbAf/fRHKZiIEMqPckqCjNor4UCILZvO1NJYHzctpPGBT8dETRjBW1ZmWu6MS
+qxv4y7aGSfc8pP5G0LU1rJJYOf7x8PpHEbm5uNM1UOIxzSIniALG7VIeoFIBrGoQ
+QuMcTv73n6ypzsNu87ynqrILEVYNrubD+Sb6B2xZEfPbIcvvwKfUvr8+lBEkabHX
+LbBbYbLL/ivRvUFm/YKvY3vcnTTAj88lURLp6V8EPT+8/TDr7Bfuy5LyjFsKAYsq
+QXNTBRLT8unlG99XvN4urWFVs9NMPKKWgV/e14LGumeL+mM8EQi+UPCnMTPOErWb
+F4a+SZgp6g00Syvd8mJVlWUKEkQUOg==
+=P7Le
+-----END PGP SIGNATURE-----
+
+--taccm5e5wyznne4d--
