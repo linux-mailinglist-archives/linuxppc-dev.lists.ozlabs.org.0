@@ -1,53 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F972C5E5E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 00:59:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 316CE2C5E83
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 02:05:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Chvqq0J4mzDrWQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 10:59:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ChxHn61nyzDrTD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 12:05:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Chvnz66YjzDrHP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 10:57:43 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ChxG305d1zDrGs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 12:03:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=iaVDaTTE; 
+ header.a=rsa-sha256 header.s=201909 header.b=JOk1lADl; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Chvny6rTWz9s0b;
- Fri, 27 Nov 2020 10:57:42 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ChxG24Zt4z9s1l;
+ Fri, 27 Nov 2020 12:03:38 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1606435063;
- bh=gJxZj9SbCLJ/E0fyYnnEPeo7x14uVr1mz+5f/wlZY1I=;
+ s=201909; t=1606439018;
+ bh=hoqIDMkuU2PeBm8mWNl2nlqMx6LB3Iu4CGrcmAqyL/o=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=iaVDaTTEOLWD5vohJt5b2zT/Ca5t7BrIsBzKUdElkeLFjvCbFHEq1EsOWb2ej9DZZ
- Pmt3qT1pRQXCLX9lrxL8lkSTh+97P3EswBq6RM3WICeXNDST6lPRfUZBniu5SNTXT7
- PS1h8j+L6WbLnVTaoTPNnxZHuV/E7mBKosIF+5mA5stA9HkJQRviwdlFK15x5gnhgc
- XO4npI2tvNk+kyqzci5zv7QkkLm+v97Q9Ux5i7ytMFbLWotH93MXzvGolzIYuQs7OM
- mQ3lvtQXAEEbHuFhMuC8BHuQT0XXVKpZd6vop3iAhU6KEUC9JWsignakscrAaH5XIL
- Ti1hWreJ2CawQ==
+ b=JOk1lADlMP7NcVMzJrCOGK9PfXDtlkTrThV5s+cuHsTYDNeo/9vIn+RQtozMBH4kT
+ fTfuC15n5O5W+gCgYy+skK6uXL0ZCHW+NRCAVML+lMHH+QOnywL+iBuP295Ct5g5eq
+ uV/ZN+NnZDNmXFAYka93Dav4JFSRMy+gCgm8U2PTDoX9EIKRBcVL0ITE680QxK1qhV
+ rOxXEk3FgGDI4rysy26v/UlkmQ4UGWrc3buYPpTsHz3XyK214mKHqitJ1UuLmZYD2a
+ 0y/HEYlouAlDQNQeQJAxr6g4Juhu41O8qxHl4f3oQeeQ9BTanLOR9kiwmCPcuzfl9o
+ +XRC4YXfeor0w==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Thomas Falcon <tlfalcon@linux.ibm.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH net 1/2] ibmvnic: Ensure that SCRQ entry reads are
- correctly ordered
-In-Reply-To: <2da3e517-f1dd-95c9-11db-a6c62bf61978@linux.ibm.com>
-References: <1606238776-30259-1-git-send-email-tlfalcon@linux.ibm.com>
- <1606238776-30259-2-git-send-email-tlfalcon@linux.ibm.com>
- <87o8jmyosh.fsf@mpe.ellerman.id.au>
- <2da3e517-f1dd-95c9-11db-a6c62bf61978@linux.ibm.com>
-Date: Fri, 27 Nov 2020 10:57:39 +1100
-Message-ID: <87lfeny8lo.fsf@mpe.ellerman.id.au>
+To: Bill Wendling <morbo@google.com>
+Subject: Re: [PATCH v3 3/3] powerpc/64s: feature: Work around inline asm issues
+In-Reply-To: <CAGG=3QUSF4UwcZQHhFE-PW6As7GVJknsyGkgVMENDXghABzy5A@mail.gmail.com>
+References: <20201118223513.2704722-1-morbo@google.com>
+ <20201120224034.191382-1-morbo@google.com>
+ <20201120224034.191382-4-morbo@google.com>
+ <87d0041vaf.fsf@mpe.ellerman.id.au> <20201123063432.GG2672@gate.crashing.org>
+ <CAGG=3QVjSAwU+ebvH=Lk5YVMxW7=ThvkJXGPw+95nYxxuurMig@mail.gmail.com>
+ <20201123195622.GI2672@gate.crashing.org>
+ <CAGG=3QXR=Yfh8PNa4m-kQLTBP4YKD8OGm_6fSUgeasQ1ar9b2g@mail.gmail.com>
+ <20201123200846.GJ2672@gate.crashing.org>
+ <CAGG=3QUeXTU+8jqw40W_rhatsHCRiuTboL3enz9bpt_jaJC3TA@mail.gmail.com>
+ <87zh37zaf4.fsf@mpe.ellerman.id.au>
+ <CAGG=3QUSF4UwcZQHhFE-PW6As7GVJknsyGkgVMENDXghABzy5A@mail.gmail.com>
+Date: Fri, 27 Nov 2020 12:03:38 +1100
+Message-ID: <87ft4vy5jp.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -61,49 +67,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cforno12@linux.ibm.com, ljp@linux.vnet.ibm.com, ricklind@linux.ibm.com,
- dnbanerg@us.ibm.com, drt@linux.vnet.ibm.com, brking@linux.vnet.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Nick Desaulniers <ndesaulniers@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thomas Falcon <tlfalcon@linux.ibm.com> writes:
-> On 11/24/20 11:43 PM, Michael Ellerman wrote:
->> Thomas Falcon <tlfalcon@linux.ibm.com> writes:
->>> Ensure that received Subordinate Command-Response Queue (SCRQ)
->>> entries are properly read in order by the driver. These queues
->>> are used in the ibmvnic device to process RX buffer and TX completion
->>> descriptors. dma_rmb barriers have been added after checking for a
->>> pending descriptor to ensure the correct descriptor entry is checked
->>> and after reading the SCRQ descriptor to ensure the entire
->>> descriptor is read before processing.
->>>
->>> Fixes: 032c5e828 ("Driver for IBM System i/p VNIC protocol")
->>> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
->>> ---
->>>   drivers/net/ethernet/ibm/ibmvnic.c | 8 ++++++++
->>>   1 file changed, 8 insertions(+)
->>>
->>> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
->>> index 2aa40b2..489ed5e 100644
->>> --- a/drivers/net/ethernet/ibm/ibmvnic.c
->>> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
->>> @@ -2403,6 +2403,8 @@ static int ibmvnic_poll(struct napi_struct *napi, int budget)
->>>   
->>>   		if (!pending_scrq(adapter, adapter->rx_scrq[scrq_num]))
->>>   			break;
->>> +		/* ensure that we do not prematurely exit the polling loop */
->>> +		dma_rmb();
->> I'd be happier if these comments were more specific about which read(s)
->> they are ordering vs which other read(s).
+Bill Wendling <morbo@google.com> writes:
+> On Mon, Nov 23, 2020 at 7:44 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> Bill Wendling <morbo@google.com> writes:
+>> > On Mon, Nov 23, 2020 at 12:10 PM Segher Boessenkool
+>> > <segher@kernel.crashing.org> wrote:
+>> >> On Mon, Nov 23, 2020 at 12:01:01PM -0800, Bill Wendling wrote:
+>> >> > On Mon, Nov 23, 2020 at 11:58 AM Segher Boessenkool
+>> >> > <segher@kernel.crashing.org> wrote:
+>> >> > > > On Sun, Nov 22, 2020 at 10:36 PM Segher Boessenkool
+>> >> > > > <segher@kernel.crashing.org> wrote:
+>> >> > > > > "true" (as a result of a comparison) in as is -1, not 1.
+>> >> > >
+>> >> > > On Mon, Nov 23, 2020 at 11:43:11AM -0800, Bill Wendling wrote:
+>> >> > > > What Segher said. :-) Also, if you reverse the comparison, you'll get
+>> >> > > > a build error.
+>> >> > >
+>> >> > > But that means your patch is the wrong way around?
+>> >> > >
+>> >> > > -       .ifgt (label##4b- label##3b)-(label##2b- label##1b);    \
+>> >> > > -       .error "Feature section else case larger than body";    \
+>> >> > > -       .endif;                                                 \
+>> >> > > +       .org . - ((label##4b-label##3b) > (label##2b-label##1b)); \
+>> >> > >
+>> >> > > It should be a + in that last line, not a -.
+>> >> >
+>> >> > I said so in a follow up email.
+>> >>
+>> >> Yeah, and that arrived a second after I pressed "send" :-)
+>> >>
+>> > Michael, I apologize for the churn with these patches. I believe the
+>> > policy is to resend the match as "v4", correct?
+>> >
+>> > I ran tests with the change above. It compiled with no error. If I
+>> > switch the labels around to ".org . + ((label##2b-label##1b) >
+>> > (label##4b-label##3b))", then it fails as expected.
 >>
->> I'm sure it's obvious to you, but it may not be to a future author,
->> and/or after the code has been refactored over time.
->
-> Thank you for reviewing! I will submit a v2 soon with clearer comments 
-> on the reads being ordered here.
+>> I wanted to retain the nicer error reporting for gcc builds, so I did it
+>> like this:
+>>
+>> diff --git a/arch/powerpc/include/asm/feature-fixups.h b/arch/powerpc/include/asm/feature-fixups.h
+>> index b0af97add751..c4ad33074df5 100644
+>> --- a/arch/powerpc/include/asm/feature-fixups.h
+>> +++ b/arch/powerpc/include/asm/feature-fixups.h
+>> @@ -36,6 +36,24 @@ label##2:                                            \
+>>         .align 2;                                       \
+>>  label##3:
+>>
+>> +
+>> +#ifndef CONFIG_CC_IS_CLANG
+>> +#define CHECK_ALT_SIZE(else_size, body_size)                   \
+>> +       .ifgt (else_size) - (body_size);                        \
+>> +       .error "Feature section else case larger than body";    \
+>> +       .endif;
+>> +#else
+>> +/*
+>> + * If we use the ifgt syntax above, clang's assembler complains about the
+>> + * expression being non-absolute when the code appears in an inline assembly
+>> + * statement.
+>> + * As a workaround use an .org directive that has no effect if the else case
+>> + * instructions are smaller than the body, but fails otherwise.
+>> + */
+>> +#define CHECK_ALT_SIZE(else_size, body_size)                   \
+>> +       .org . + ((else_size) > (body_size));
+>> +#endif
+>> +
+>>  #define MAKE_FTR_SECTION_ENTRY(msk, val, label, sect)          \
+>>  label##4:                                                      \
+>>         .popsection;                                            \
+>> @@ -48,9 +66,7 @@ label##5:                                                     \
+>>         FTR_ENTRY_OFFSET label##2b-label##5b;                   \
+>>         FTR_ENTRY_OFFSET label##3b-label##5b;                   \
+>>         FTR_ENTRY_OFFSET label##4b-label##5b;                   \
+>> -       .ifgt (label##4b- label##3b)-(label##2b- label##1b);    \
+>> -       .error "Feature section else case larger than body";    \
+>> -       .endif;                                                 \
+>> +       CHECK_ALT_SIZE((label##4b-label##3b), (label##2b-label##1b)); \
+>>         .popsection;
+>>
+>>
+>>
+>> I've pushed a branch with all your patches applied to:
+>>
+>>   https://github.com/linuxppc/linux/commits/next-test
+>>
+> This works for me. Thanks!
 
-Thanks.
+Great.
+
+>> Are you able to give that a quick test? It builds clean with clang for
+>> me, but we must be using different versions of clang because my branch
+>> already builds clean for me even without your patches.
+>>
+> You may need to set LLVM_IAS=1 to get the behavior I'm seeing. That
+> turns on clang's integrated assembler, which I think is disabled by
+> default.
+
+Yep that does it.
+
+But then I get:
+  clang: error: unsupported argument '-mpower4' to option 'Wa,'
+  clang: error: unsupported argument '-many' to option 'Wa,'
+
+So I guess I'm still missing something?
+
+> Note that with clang's integrated assembler, arch/powerpc/boot/util.S
+> fails to compile. Alan Modra mentioned that he sent you a patch to
+> "modernize" the file so that clang can compile it.
+
+Ah you're right he did, it didn't go to patchwork so I missed it. Have
+grabbed it now.
 
 cheers
