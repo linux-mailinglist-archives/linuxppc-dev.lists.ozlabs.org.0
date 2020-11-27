@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 211202C6B35
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 19:01:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284992C6B3A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 19:02:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CjMqw02bwzDrdL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 05:01:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CjMt54Hq2zDrR5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 05:02:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -17,66 +17,67 @@ Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
  header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=FopD/fU+; dkim-atps=neutral
+ header.s=pp1 header.b=cYd+Pxeu; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CjMYN0KqLzDrSd
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 04:48:23 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CjMYt5c2nzDsMK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 04:48:50 +1100 (AEDT)
 Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0ARHWHrI111515; Fri, 27 Nov 2020 12:48:21 -0500
+ 0ARHWHrQ111515; Fri, 27 Nov 2020 12:48:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=subject : to : cc :
  references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
  bh=ix5xI4eV4ktS+Si1szwX06PnD5N08iIL8loUbC9USd4=;
- b=FopD/fU+rI+/ECURf0I9/6yYqaBaI9mwvad5CGujFDdB6VNDmNL7jTVevj2E5+WbTZ14
- OLeIKSwZznyC1ZMx3DZ9rKSVgLAIDqT15WehN6ZgmdNkDMguxOT4A8nuP3IxTaGaaxv1
- 6osfu7NPgalBoKSZqbORh+ArHf/JPKbDv+29tUxnUNfejZiSdKOzGPxSYHaHCzmHbSuG
- O5xQit+sQ5ceeqA38AMcefqLt3v5aQDI56zVoIWCEZeO62Z1kGpozs8V7rg1+Coac9w1
- kOieugrBD7ZhO9F/7jp2oOR21+jeK1ddsI5nzaIaW8XohW+P0F+/piFa83AUrro0rEO+ qQ== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3533kcbspq-1
+ b=cYd+Pxeuqu9PQv/XvYW88D4O0Z2iMN7+EgZABuGtkZy0UIXFKy/7fLoRfid2HRiPShAD
+ IiAJ6j2+tvY3MYTclg9ZSysteXIAu0jWLveTi5zugSWCQ1iAvI1kryr4FEbSO6STPlaN
+ EE7auaH67r/FeAV1DxQ3EfgKoSMpHk5cA/YlrRuuykffhEo5BdsD/q+slBwrKj5RL82e
+ 5oA7IBN9gWYmWQ9+M1irl6SZS0omjrmjBTAHvGjT0CQAa5toKnjJcdtBv/nSRUywx01Y
+ qIOwmnNSUOVbi3yWIs5mlAVEOBQyD6cLRc7DLjiBrHGlSwdIsf2mDAqG1BCglkEa91lK 1w== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3533kcbt3b-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Nov 2020 12:48:21 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0ARHgo61017346;
- Fri, 27 Nov 2020 17:48:20 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma04wdc.us.ibm.com with ESMTP id 34xth9qypw-1
+ Fri, 27 Nov 2020 12:48:47 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0ARHhDZ6027666;
+ Fri, 27 Nov 2020 17:48:46 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma02dal.us.ibm.com with ESMTP id 34xthav0t1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Nov 2020 17:48:20 +0000
+ Fri, 27 Nov 2020 17:48:46 +0000
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0ARHmJN05308974
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0ARHmc9T18088262
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Nov 2020 17:48:19 GMT
+ Fri, 27 Nov 2020 17:48:38 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 22BDBC6057;
- Fri, 27 Nov 2020 17:48:19 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id C893DC605A;
+ Fri, 27 Nov 2020 17:48:44 +0000 (GMT)
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A0C21C605A;
- Fri, 27 Nov 2020 17:48:18 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 532E0C6055;
+ Fri, 27 Nov 2020 17:48:44 +0000 (GMT)
 Received: from oc6034535106.ibm.com (unknown [9.163.79.105])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 27 Nov 2020 17:48:18 +0000 (GMT)
-Subject: Re: [PATCH 07/13] ibmvfc: define Sub-CRQ interrupt handler routine
+ Fri, 27 Nov 2020 17:48:44 +0000 (GMT)
+Subject: Re: [PATCH 08/13] ibmvfc: map/request irq and register Sub-CRQ
+ interrupt handler
 To: Tyrel Datwyler <tyreld@linux.ibm.com>,
  james.bottomley@hansenpartnership.com
 References: <20201126014824.123831-1-tyreld@linux.ibm.com>
- <20201126014824.123831-8-tyreld@linux.ibm.com>
+ <20201126014824.123831-9-tyreld@linux.ibm.com>
 From: Brian King <brking@linux.vnet.ibm.com>
-Message-ID: <6ea19553-5aae-7ee0-ca94-0168d703e349@linux.vnet.ibm.com>
-Date: Fri, 27 Nov 2020 11:48:18 -0600
+Message-ID: <e50cce7b-40fb-fa7f-f459-2c32286d8290@linux.vnet.ibm.com>
+Date: Fri, 27 Nov 2020 11:48:44 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.3.1
 MIME-Version: 1.0
-In-Reply-To: <20201126014824.123831-8-tyreld@linux.ibm.com>
+In-Reply-To: <20201126014824.123831-9-tyreld@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
