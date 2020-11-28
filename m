@@ -1,67 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20E22C6FDC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 17:16:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6802C6FDF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 17:18:50 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CjxSq5B3LzF0Rr
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Nov 2020 03:16:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CjxWW1cjdzDrgk
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Nov 2020 03:18:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b;
+ helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ssXbLd8Y; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ header.s=20161025 header.b=O2SH7PLZ; dkim-atps=neutral
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
+ [IPv6:2607:f8b0:4864:20::62b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cjx8d5h39zDrQh
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Nov 2020 03:02:25 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id x24so7086208pfn.6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 08:02:25 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cjx8n0G36zDrR8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Nov 2020 03:02:32 +1100 (AEDT)
+Received: by mail-pl1-x62b.google.com with SMTP id k5so4119523plt.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 08:02:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=qp8PGJSLWU/dwswnH2/0kSDHsb+wln5XeqPaVW1B5Z8=;
- b=ssXbLd8YUR2ZIFy9Jd8hXHpF+Y+ZgoHlIRFX9zhsrsp+ZLU7bKlg7EuG2lSdedrjvR
- wE/qE7l+MWwYSzP1wi8Op9LZacYNj0TFM33blDINJeQw3k661TnuMoVq1P9kWsUpYm2L
- GU+Rh70ojG5i/bX6AWDs/ACxCKMtupmq6KLpdZta42wvOGpj65dxqcLBcKS1XebjeT2g
- HWp9e3wV/L0EXL2Ys40bmy1FkuapWC6KRItPGmNgSBbEo8WylcMXRQEawZThlVjdjrJU
- +e772jc+1LXeLO7pSn+jmxQ4ISH3MsydjpyvNtpmhbzBrVbHsQbAlOUzcGpBsv2LoBoI
- u0RQ==
+ bh=8ryYzZTfuMdMQoDGnZ6qQm92nrELT0Bznsq8pS5zNkE=;
+ b=O2SH7PLZYn9x9yrSkPvaAZdWZ4Hk1Nz9o1vpICXBIyIIgIdy8d9QFKV+1r92+5zuOs
+ gYKTram4WPDCSdl+hhVkmF9+vrkTQECccC9p+zkSVnyHnydt6RZsEWjgzXbamDwz8Ryf
+ WwRcOCDkLf2yHoNmiO4MHVOErhGamyhGZEu/rYwWW8NOV9V/N1bEFCnSnAJQkVeT5lqs
+ dhR5ybbQNLsLTLCFZze+EY6rm27mttggd2bAwJ7eXS3YKnz/bnqJ0GT0EmjvtORGnwS+
+ 17SXi5CsTI/P47c8OyIr30m3TcLjy6wRktbukjqqdEaVGzvGIE/erk1qflt4sxiTfF0m
+ Fmsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=qp8PGJSLWU/dwswnH2/0kSDHsb+wln5XeqPaVW1B5Z8=;
- b=OZAwcLp27PeALU3M+0jDXRgCnfhK4eEiY3Bpx5ydy9T7SC/CmHxQVIPJr3uYp7+KoT
- 8tQyM0JSlGSJwOoDQQYYu/6lgJGtQ+eV5wqXP2Xx/3uTTcxXZCihAPzGUQZqGQG6lHiu
- hZCb8yYs0sT0h3eCKpkz/7hEuyvrZTRV+Mk2qBKOWlYYBUvQ+N1HyZ6+VG7G401ueZh4
- MUyUMd0twj9AByyAVWY/liuPcCLAj/6/zl0r3KDVBp4F8qysRjNReaptIV362nL4rZ3K
- P9elkSoj5ankr7lPUPPNkKxHnOI2PTrSPX2B1f8zHjMEiO0uSCTKbkS7BkCdgrbZCQ7y
- Y3Hg==
-X-Gm-Message-State: AOAM532j+7I3ElkJq05sq7C5OOnAoRGEOOo8PEZEcJMXDucTbiq3sROU
- uhbagqykhhtpujPOuyxSPd3S+0pe48M=
-X-Google-Smtp-Source: ABdhPJw9UtKcgVJk5VujOdxJVrz6MfFXjvC+/8I9Mi89OeiWtMkzRMjtujCg4EGW63Zc1A5/CzokHQ==
-X-Received: by 2002:a63:4956:: with SMTP id y22mr11011753pgk.266.1606579343363; 
- Sat, 28 Nov 2020 08:02:23 -0800 (PST)
+ bh=8ryYzZTfuMdMQoDGnZ6qQm92nrELT0Bznsq8pS5zNkE=;
+ b=bOhWiHPLYay2YDGRJjc6BrkSZYMmAtXfUMHzggeBHNiq/9tF2nbr8G2cuZEML7NkT/
+ 4j3skHko5sy/9rXpI+TIGJLbfmqGcudDHOgGZVvrOyUn19RSpZWqMbMfC+7dayOa9KrD
+ YB+KQICJ4Y2dfW2+TpdxA5JID5t0g0w11nkRsVl1lKyfaw9UNJ5Vl88WnsKpSoN2HOLa
+ P8XcH2AjAbO4YhyJVQBRc0zgPL5wbYOg38lylFa8ETJP1VhNRIc9veZDSQfMFahm7Klo
+ +Jh+psnR+ZuiMIBHW16G7k3pYypGPhDYdf1qhwVJitBpdkYP72fSV7UdsdR0f8wo81vR
+ T6AA==
+X-Gm-Message-State: AOAM532vRrSJGr2yaP4XmdE9hnUWNALF03fzIB2f0qCF1MQpJprXV7Z1
+ teXyEmvfd1q25Mls9FqID1k=
+X-Google-Smtp-Source: ABdhPJxOmOSo7yBdZGFr5Ee5U/YJuP5XMrKl+Nl3YUOkuajp7hYak8NpHsUyWSygIXkb6jTi/aUZeA==
+X-Received: by 2002:a17:902:ee53:b029:da:4c68:2795 with SMTP id
+ 19-20020a170902ee53b02900da4c682795mr8244122plo.7.1606579347904; 
+ Sat, 28 Nov 2020 08:02:27 -0800 (PST)
 Received: from bobo.ibm.com (193-116-103-132.tpgi.com.au. [193.116.103.132])
- by smtp.gmail.com with ESMTPSA id d4sm9762607pjz.28.2020.11.28.08.02.19
+ by smtp.gmail.com with ESMTPSA id d4sm9762607pjz.28.2020.11.28.08.02.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Nov 2020 08:02:23 -0800 (PST)
+ Sat, 28 Nov 2020 08:02:27 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 7/8] powerpc: use lazy mm refcount helper functions
-Date: Sun, 29 Nov 2020 02:01:40 +1000
-Message-Id: <20201128160141.1003903-8-npiggin@gmail.com>
+Subject: [PATCH 8/8] powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
+Date: Sun, 29 Nov 2020 02:01:41 +1000
+Message-Id: <20201128160141.1003903-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20201128160141.1003903-1-npiggin@gmail.com>
 References: <20201128160141.1003903-1-npiggin@gmail.com>
@@ -87,27 +88,28 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use _lazy_tlb functions for lazy mm refcounting in powerpc, to prepare
-to move to MMU_LAZY_TLB_SHOOTDOWN.
+On a 16-socket 192-core POWER8 system, a context switching benchmark
+with as many software threads as CPUs (so each switch will go in and
+out of idle), upstream can achieve a rate of about 1 million context
+switches per second. After this patch it goes up to 118 million.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 8c2857cbd960..93c0eaa6f4bf 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1395,7 +1395,7 @@ void start_secondary(void *unused)
- {
- 	unsigned int cpu = raw_smp_processor_id();
- 
--	mmgrab(&init_mm);
-+	mmgrab_lazy_tlb(&init_mm);
- 	current->active_mm = &init_mm;
- 
- 	smp_store_cpu_info(cpu);
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index e9f13fe08492..d4793c0229d2 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -231,6 +231,7 @@ config PPC
+ 	select HAVE_PERF_USER_STACK_DUMP
+ 	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MMU_GATHER_PAGE_SIZE
++	select MMU_LAZY_TLB_SHOOTDOWN		if PPC_BOOK3S_64
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_RELIABLE_STACKTRACE		if PPC_BOOK3S_64 && CPU_LITTLE_ENDIAN
+ 	select HAVE_SYSCALL_TRACEPOINTS
 -- 
 2.23.0
 
