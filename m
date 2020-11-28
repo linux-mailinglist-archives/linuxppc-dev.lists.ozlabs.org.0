@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6B82C6F42
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 08:18:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 908242C6F43
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 08:20:33 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CjjXY4dmKzF0n4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 18:18:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CjjZQ2HnTzDrnl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 18:20:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Fpn8G7kd; dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+ header.s=20161025 header.b=kEPVVXvM; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CjjHy2ZfhzDsxN
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 18:07:58 +1100 (AEDT)
-Received: by mail-pl1-x642.google.com with SMTP id bj5so3710322plb.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 23:07:58 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CjjJ02Zt5zDsXK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 18:08:00 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id l17so6028025pgk.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 23:08:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=wFKWODpGu/PubPvfRrSmS5+gQNDkwPMyPfZCkrp8It0=;
- b=Fpn8G7kdWEIhdOiroQ//FL7vCrlUPWHCFn7U/aQveam1mvDa931KJrceH+zmbT162l
- 7cWVgUtaLyhr/Bv/iJ21MWBLwllY0eIcWM+64Eeng/LoORDEx2dkEK9GzwK4aSc68fZV
- YIDL5sEn/nYaTwymCIxiJzia42gVr2s4MrcuI7ezX57k7Y6pjpeCimXu/bx69hVnghI0
- am3pOB3hyaviYAWmXhDV9nlevGoXlEbHnXyf8kUS2m8tRJaggumx+6ZyVtrQFVYk3QCg
- y5QL/D3RhP0EqKQaTA8Um3iGzZYx7fBf3UTNwCpheXvfe2vhGU96PRoUTo+DXcOZCLCr
- nsKw==
+ bh=RE0535OC1P2LDrGbQpaiLP7+snTRDOWBeWRNCwF421I=;
+ b=kEPVVXvMUZrllW5PL0LlJocK8K5CopAhZfRJ6p2/m2QB6OvRj8LpBWdJbWR/doJ1PE
+ AiG6z1pXlsOilXe1QIujaPWqKyg4a0WFD4TMqGmAjraTti5iJk8pPPIO7wxtzE2OAn3T
+ S2RXVYzTeV+S3FuO3hXqRcgaxgTcAXFLo8BCfq8MfVYZfoWnxk8qlFDhi97rw9I94F6/
+ fwed2CAY4WmHM8L0+NQJO4TeAz8rn30DRsWEC7JCjeGbu0qJY+Ij2LVYekiIo5BAj+/3
+ aa5yVKxdd2zYzvanYOD39bvSBgVu/KwbPOpHYLsFCcfZ3uh/WcT6IzW7gkfqCnm0HNQA
+ 6I7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=wFKWODpGu/PubPvfRrSmS5+gQNDkwPMyPfZCkrp8It0=;
- b=FSFwtsKDcoa2UBMH8EY1fgu8o+UnjaDFMQmTyqbsUGBTvS4Mu64fxM1XqFV6dnIvPj
- nikKHDTKYlGDmIvdmEdgXJ/vegw/R36+c6d8MKeaUf2DZfo/3IF3jAckwXzV8tWGHC3n
- 0A4620cCiDazir+lPiYcyNP34YMGn9p0nvncLSzWJ8EH9tOqTNgFjPUMxlcLcp9rIyN2
- 3+N6EY3vpluzxpeQpmsnn5Z84uy/HtHUpvj5LnT6vnjyi+be3MwKRdhCL2MaCmO30E4M
- L5voUyf8H0HjSZvcZN8Fmvevc9bIlvJ83+LeolqBPyNpJ3SiGOdiBp4+Hv/P0ZqWR6aG
- IR9Q==
-X-Gm-Message-State: AOAM532DNkX8MUJANp0y4Lji+Cvns9F3oMdcHwg3marH/eJZunDsGBqk
- mo9+k0Gia6SxdOiraTv3XCRxzsLVDj8=
-X-Google-Smtp-Source: ABdhPJyWNXOhiyXRWScL1SC7/bU+CgYAQJVy2HytEDXfzkvUbvMXuNycwtUOD6sQzoClX0UwwJpUgg==
-X-Received: by 2002:a17:902:8691:b029:d7:e0f9:b1b with SMTP id
- g17-20020a1709028691b02900d7e0f90b1bmr10451568plo.37.1606547275503; 
- Fri, 27 Nov 2020 23:07:55 -0800 (PST)
+ bh=RE0535OC1P2LDrGbQpaiLP7+snTRDOWBeWRNCwF421I=;
+ b=oHsNkLR0xO2Q/uu7Ig8SqeSEryxOVrL9srgkJ0qMUiqEGTLFQLcMc2OeyAhbC/dW7n
+ BvemXgJ384VkQAmEpKLY97tpHKdfGdkIyIoCgh+/cUoQqBUq/cvwbvwHLt9pJ4zsUDli
+ EPn6sbOxOaSSZCWbW369PeUooQ96ZgFj2Dqra6YWqMEcQKyI101TUnqkNraoeNzCAeMJ
+ raaug63xZDyNkiJIMa6vNkhigAs8BC77teRSMlclmIiscaWNviZQ217Bq54yD2LHvlGI
+ P3JR+UDXZxWIHSi0/jow8OyArSPyR47zdFOjg02otG3iCbxUFyLFTHyjW8rJDpuTrVge
+ hYyA==
+X-Gm-Message-State: AOAM532qFSDf6WU772gXlDPesRzp5H4+Ff5M+SPuXL0kb7TbhUbd/jg6
+ WOQMBF7AIlo54K2x9jhEnj2TSHG+yFU=
+X-Google-Smtp-Source: ABdhPJz6JT2bUHFa0tJ4DVKSilozsNR3sInaVbpeaGJV/XSotUNLKJTDD2QeZs+MbOXEf88qsOjUPg==
+X-Received: by 2002:a17:90a:f485:: with SMTP id
+ bx5mr15072182pjb.190.1606547278505; 
+ Fri, 27 Nov 2020 23:07:58 -0800 (PST)
 Received: from bobo.ibm.com (193-116-103-132.tpgi.com.au. [193.116.103.132])
- by smtp.gmail.com with ESMTPSA id e31sm9087329pgb.16.2020.11.27.23.07.52
+ by smtp.gmail.com with ESMTPSA id e31sm9087329pgb.16.2020.11.27.23.07.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Nov 2020 23:07:54 -0800 (PST)
+ Fri, 27 Nov 2020 23:07:58 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 6/8] powerpc/64s/pseries: Add ERAT specific machine check
- handler
-Date: Sat, 28 Nov 2020 17:07:26 +1000
-Message-Id: <20201128070728.825934-7-npiggin@gmail.com>
+Subject: [PATCH 7/8] powerpc/64s: Remove "Host" from MCE logging
+Date: Sat, 28 Nov 2020 17:07:27 +1000
+Message-Id: <20201128070728.825934-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20201128070728.825934-1-npiggin@gmail.com>
 References: <20201128070728.825934-1-npiggin@gmail.com>
@@ -86,58 +85,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Don't treat ERAT MCEs as SLB, don't save the SLB and use a specific
-ERAT flush to recover it.
+"Host" caused machine check is printed when the kernel sees a MCE
+hit in this kernel or userspace, and "Guest" if it hit one of its
+guests. This is confusing when a guest kernel handles a hypervisor-
+delivered MCE, it also prints "Host".
+
+Just remove "Host". "Guest" is adequate to make the distinction.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/mce.h       | 1 +
- arch/powerpc/kernel/mce_power.c      | 2 +-
- arch/powerpc/platforms/pseries/ras.c | 5 ++++-
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/mce.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
-index 89aa8248a57d..e6c27ae843dc 100644
---- a/arch/powerpc/include/asm/mce.h
-+++ b/arch/powerpc/include/asm/mce.h
-@@ -228,6 +228,7 @@ int mce_register_notifier(struct notifier_block *nb);
- int mce_unregister_notifier(struct notifier_block *nb);
- #ifdef CONFIG_PPC_BOOK3S_64
- void flush_and_reload_slb(void);
-+void flush_erat(void);
- long __machine_check_early_realmode_p7(struct pt_regs *regs);
- long __machine_check_early_realmode_p8(struct pt_regs *regs);
- long __machine_check_early_realmode_p9(struct pt_regs *regs);
-diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
-index 1372ce3f7bdd..667104d4c455 100644
---- a/arch/powerpc/kernel/mce_power.c
-+++ b/arch/powerpc/kernel/mce_power.c
-@@ -97,7 +97,7 @@ void flush_and_reload_slb(void)
- }
- #endif
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index 8afe8d37b983..9f3e133b57b7 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -555,7 +555,7 @@ void machine_check_print_event_info(struct machine_check_event *evt,
+ 	}
  
--static void flush_erat(void)
-+void flush_erat(void)
- {
- #ifdef CONFIG_PPC_BOOK3S_64
- 	if (!early_cpu_has_feature(CPU_FTR_ARCH_300)) {
-diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index b2b245b25edb..149cec2212e6 100644
---- a/arch/powerpc/platforms/pseries/ras.c
-+++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -526,8 +526,11 @@ static int mce_handle_err_realmode(int disposition, u8 error_type)
- #ifdef CONFIG_PPC_BOOK3S_64
- 	if (disposition == RTAS_DISP_NOT_RECOVERED) {
- 		switch (error_type) {
--		case	MC_ERROR_TYPE_SLB:
- 		case	MC_ERROR_TYPE_ERAT:
-+			flush_erat();
-+			disposition = RTAS_DISP_FULLY_RECOVERED;
-+			break;
-+		case	MC_ERROR_TYPE_SLB:
- 			/*
- 			 * Store the old slb content in paca before flushing.
- 			 * Print this when we go to virtual mode.
+ 	printk("%sMCE: CPU%d: machine check (%s) %s %s %s %s[%s]\n",
+-		level, evt->cpu, sevstr, in_guest ? "Guest" : "Host",
++		level, evt->cpu, sevstr, in_guest ? "Guest" : "",
+ 		err_type, subtype, dar_str,
+ 		evt->disposition == MCE_DISPOSITION_RECOVERED ?
+ 		"Recovered" : "Not recovered");
 -- 
 2.23.0
 
