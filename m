@@ -1,59 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9883E2C703E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 18:57:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E56E02C7097
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 19:36:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CjzjF4NCYzDrq9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Nov 2020 04:57:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ck0Zl1dzHzF0tX
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Nov 2020 05:36:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=epX46Lo5; dkim-atps=neutral
+ header.s=default header.b=1jrPlXwe; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CjzgY5Y4MzDrdM
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Nov 2020 04:55:53 +1100 (AEDT)
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com
- [209.85.128.51])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ck0Y45c2gzF0X5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Nov 2020 05:35:20 +1100 (AEDT)
+Received: from localhost (129.sub-72-107-112.myvzw.com [72.107.112.129])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C7C98246E8
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 17:55:50 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6F6C7246B3;
+ Sat, 28 Nov 2020 18:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1606586151;
- bh=ZZhMRxdkDiUtjJhs9EzGkFNzkESkUN3IT5oRokS68Qo=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=epX46Lo5gyxVc+A48tcBI9o2KY5N0B8LeGVmlne+5FIJLCKzXxKJbO8s5nD3xgFEq
- X4i5sPbFp4pWFdxVxrkkA2Zo+E6LU8KzScdnd4wUs/DuAJxVyePHnhRMsXt1NPg65k
- bczZ20BbxsSWXKhjoKXb+3UfQFkWGyoh+eDumXHw=
-Received: by mail-wm1-f51.google.com with SMTP id x22so7886583wmc.5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 09:55:50 -0800 (PST)
-X-Gm-Message-State: AOAM533bNhhQiLKJ/CoGIwKZ2pWHXBhHvcOltlKr015tLPdbM/aKvw6r
- sEKaMW/o5IKtS2GcCN0tI1L7RpgoKpu7Gq+MfXo8pQ==
-X-Google-Smtp-Source: ABdhPJzaqB8K8IiW/9cIJ/CJ9BqnrVUcLDZBaHBUttYrz8GGSHowF+hWwUHxhG80vPrg9fActeSCQFpfFgxQjqhRUUg=
-X-Received: by 2002:a1c:7e90:: with SMTP id z138mr436606wmc.49.1606586149355; 
- Sat, 28 Nov 2020 09:55:49 -0800 (PST)
+ s=default; t=1606588517;
+ bh=krTdbHrGkcM5b4jd6jHl8Tj811g2BH+q5E0PPQ5iuP0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=1jrPlXwe9ILXjItuxz9/t8GxK/MQWxNWJOUaEYGpQxD/dpPAvMyX7cm238YUlf00x
+ fHRZCbCx0lc5oMXtSJwlHxgRyLQ/pw3uzuTM/N5JKgpY4OaW4UK2qgOYpegf41sOes
+ cUU2tZ7iHNR/qc/5tVYNCHGtRQlEtP0Dti16ubIY=
+Date: Sat, 28 Nov 2020 12:35:16 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+Subject: Re: [PATCH v5] PCI: Unify ECAM constants in native PCI Express drivers
+Message-ID: <20201128183516.GA897329@bjorn-Precision-5520>
 MIME-Version: 1.0
-References: <20201128160141.1003903-1-npiggin@gmail.com>
- <20201128160141.1003903-3-npiggin@gmail.com>
-In-Reply-To: <20201128160141.1003903-3-npiggin@gmail.com>
-From: Andy Lutomirski <luto@kernel.org>
-Date: Sat, 28 Nov 2020 09:55:37 -0800
-X-Gmail-Original-Message-ID: <CALCETrXYkbuJJnDv9ijfT+5tLQ2FOvvN1Ugoh5NwOy+zHp9HXA@mail.gmail.com>
-Message-ID: <CALCETrXYkbuJJnDv9ijfT+5tLQ2FOvvN1Ugoh5NwOy+zHp9HXA@mail.gmail.com>
-Subject: Re: [PATCH 2/8] x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
-To: Nicholas Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201127104626.3979165-1-kw@linux.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,37 +55,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Heiko Stuebner <heiko@sntech.de>, Shawn Lin <shawn.lin@rock-chips.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Jonathan Chocron <jonnyc@amazon.com>, Toan Le <toan@os.amperecomputing.com>,
+ Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Michal Simek <michal.simek@xilinx.com>, linux-rockchip@lists.infradead.org,
+ bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
+ linux-pci@vger.kernel.org, Ray Jui <rjui@broadcom.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, linux-rpi-kernel@lists.infradead.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Jonathan Derrick <jonathan.derrick@intel.com>,
+ Scott Branden <sbranden@broadcom.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ Robert Richter <rrichter@marvell.com>, linuxppc-dev@lists.ozlabs.org,
+ Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Nov 28, 2020 at 8:02 AM Nicholas Piggin <npiggin@gmail.com> wrote:
->
-> And get rid of the generic sync_core_before_usermode facility. This is
-> functionally a no-op in the core scheduler code, but it also catches
->
-> This helper is the wrong way around I think. The idea that membarrier
-> state requires a core sync before returning to user is the easy one
-> that does not need hiding behind membarrier calls. The gap in core
-> synchronization due to x86's sysret/sysexit and lazy tlb mode, is the
-> tricky detail that is better put in x86 lazy tlb code.
->
-> Consider if an arch did not synchronize core in switch_mm either, then
-> membarrier_mm_sync_core_before_usermode would be in the wrong place
-> but arch specific mmu context functions would still be the right place.
-> There is also a exit_lazy_tlb case that is not covered by this call, which
-> could be a bugs (kthread use mm the membarrier process's mm then context
-> switch back to the process without switching mm or lazy mm switch).
->
-> This makes lazy tlb code a bit more modular.
+On Fri, Nov 27, 2020 at 10:46:26AM +0000, Krzysztof Wilczyński wrote:
+> Unify ECAM-related constants into a single set of standard constants
+> defining memory address shift values for the byte-level address that can
+> be used when accessing the PCI Express Configuration Space, and then
+> move native PCI Express controller drivers to use newly introduced
+> definitions retiring any driver-specific ones.
+> 
+> The ECAM ("Enhanced Configuration Access Mechanism") is defined by the
+> PCI Express specification (see PCI Express Base Specification, Revision
+> 5.0, Version 1.0, Section 7.2.2, p. 676), thus most hardware should
+> implement it the same way.  Most of the native PCI Express controller
+> drivers define their ECAM-related constants, many of these could be
+> shared, or use open-coded values when setting the .bus_shift field of
+> the struct pci_ecam_ops.
+> 
+> All of the newly added constants should remove ambiguity and reduce the
+> number of open-coded values, and also correlate more strongly with the
+> descriptions in the aforementioned specification (see Table 7-1
+> "Enhanced Configuration Address Mapping", p. 677).
+> 
+> There is no change to functionality.
+> 
+> Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+> Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 
-I have a couple of membarrier fixes that I want to send out today or
-tomorrow, and they might eliminate the need for this patch.  Let me
-think about this a little bit.  I'll cc you.  The existing code is way
-to subtle and the comments are far too confusing for me to be quickly
-confident about any of my conclusions :)
+Beautiful.  This should probably go via Lorenzo's tree, so he may have
+comments, too.  Could apply this as-is; I had a few trivial notes
+below.
+
+It's ironic that we don't use PCIE_ECAM_OFFSET in drivers/pci/ecam.c.
+We could do something like this, which would also let us drop
+.bus_shift completely in all the conforming implementations.  It also
+closes the hole that we didn't limit "where" to 4K for
+pci_ecam_map_bus() users.
+
+  if (per_bus_mapping) {
+    base = cfg->winp[busn];
+    busn = 0;
+  } else {
+    base = cfg->win;
+  }
+
+  if (cfg->ops->bus_shift) {
+    u32 bus_offset = (busn & 0xff) << cfg->ops->bus_shift;
+    u32 devfn_offset = (devfn & 0xff) << (cfg->ops->bus_shift - 8);
+
+    where &= 0xfff;
+
+    return base + (bus_offset | devfn_offset | where);
+  }
+
+  return base + PCIE_ECAM_OFFSET(busn, devfn, where);
+
+Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+
+>  static void __iomem *ppc4xx_pciex_get_config_base(struct ppc4xx_pciex_port *port,
+>  						  struct pci_bus *bus,
+> -						  unsigned int devfn)
+> +						  unsigned int devfn,
+> +						  int offset)
+
+The interface change (to add "offset") could be a preparatory patch by
+itself.
+
+But I'm actually not sure it's worth even touching this file.  This is
+the only place outside drivers/pci that includes linux/pci-ecam.h.  I
+think I might rather put PCIE_ECAM_OFFSET() and related things in
+drivers/pci/pci.h and keep it all inside drivers/pci.
+
+>  static const struct pci_ecam_ops pci_thunder_pem_ops = {
+> -	.bus_shift	= 24,
+> +	.bus_shift	= THUNDER_PCIE_ECAM_BUS_SHIFT,
+>  	.init		= thunder_pem_platform_init,
+>  	.pci_ops	= {
+>  		.map_bus	= pci_ecam_map_bus,
+
+This could be split to its own patch, no big deal either way.
+
+>  const struct pci_ecam_ops xgene_v2_pcie_ecam_ops = {
+> -	.bus_shift	= 16,
+>  	.init		= xgene_v2_pcie_ecam_init,
+>  	.pci_ops	= {
+>  		.map_bus	= xgene_pcie_map_bus,
+
+Thanks for mentioning this change in the cover letter.  It could also
+be split off to a preparatory patch, since it's not related to
+PCIE_ECAM_OFFSET(), which is the main point of this patch.
+
+>  static void __iomem *iproc_pcie_map_ep_cfg_reg(struct iproc_pcie *pcie,
+>  					       unsigned int busno,
+> -					       unsigned int slot,
+> -					       unsigned int fn,
+> +					       unsigned int devfn,
+
+This interface change *could* be a separate preparatory patch, too,
+but I'm starting to feel even more OCD than usual :)
+
+> @@ -94,7 +95,7 @@ struct vmd_dev {
+>  	struct pci_dev		*dev;
+>  
+>  	spinlock_t		cfg_lock;
+> -	char __iomem		*cfgbar;
+> +	void __iomem		*cfgbar;
+
+This type change might be worth pushing to a separate patch since the
+casting issues are not completely trivial.
