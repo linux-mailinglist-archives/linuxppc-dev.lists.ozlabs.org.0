@@ -2,67 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B86A42C6F3B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 08:10:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE9A2C6F3C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 08:12:34 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CjjM40VQrzF09n
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 18:10:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CjjPC5lSmzF0jF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 18:12:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Xor/UKmv; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+ header.s=20161025 header.b=mTwFjmAF; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CjjHf3q4pzDsPb
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 18:07:42 +1100 (AEDT)
-Received: by mail-pg1-x543.google.com with SMTP id 34so5992020pgp.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 23:07:42 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CjjHj4rcczDsPb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 18:07:45 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id e23so1148996pgk.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Nov 2020 23:07:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=w3oWRMvHAa0retNOL9Z6Iu6Rm3CZHGga7R1WoN7izS8=;
- b=Xor/UKmvhmlqZm3VyydOKtoxX3Rck9mkU1XrQp8Ns6xarLl3R0uZQFQzwygwshq10T
- ieqKlYutE5COhEkTnCMXNriF5tRwoO+Dl6D20mhAeff4H6fyHL89ylAi16PS9jhj0w6w
- rn8q4pItuxPP8ZyaqgL6VW1i8Aq7jgRqNYfDnhd/wYwss37qGQm9VYjqI6rkx8BG01Bj
- FFRBRMOEvSEslexeMmXIkrxJOjaofRuulJhED4xACfONkMAmtfH8H82+76SxFYWF9V8c
- OOCj0SwOv8HXIL86CFzdXwxAHOkK7sDK8CO3uRviSRaSQC7Y8vVxf3P0NBisXTPptzIM
- Sqyw==
+ bh=N80fuMiX7GnX39J9dqIjia2qgdYXbL88FKJN1E8uzH8=;
+ b=mTwFjmAFugrRYVxcBlxl1OjIndZly89Ec35Hea6qqRiCQI+pDVbK67kxd5TqwNA3Z4
+ egTkS84pdfDtWaYW7KLmCG255Yk+nHIdsf7IkA9FQJutI8D/w+FQe9F7JDAY5lokzNUJ
+ ZcsoB4mF38WfLauEnFDh7cW1mPxrqrmmVYotFBUW6FtRnMgFjeegQxkjGXwY/ma544Ez
+ 0sugmF4ctpi5DlUbQQDorligceSniIbDySvbt5UxHKglUFDt37z+wSWkJIY+EnDzdoWd
+ 8ngqf9qJcYIRup2VzYINyXyyMJgakStmPruPiQLyLBRCQo1dX/eVGPkHrg9E2cwMFyMa
+ 628Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=w3oWRMvHAa0retNOL9Z6Iu6Rm3CZHGga7R1WoN7izS8=;
- b=pTD0sLGuCwwuqKL0MRXKn8kWgsHutWT/Bf4zrJWvrclsNRimw7jeEftGdO6bK1qQN3
- ayeMCFcwASzQaiHfPBuCrqdJnvB3ME8Tll15o6cmXSJzrtXWpmvS8FMD8u8Um9gma1AN
- HaHerv5z2OAbh1XD3ADOF+NIyer7lMvysP677UYDRMSMrQHL5Rx6k3meV3eZlqGqm/uj
- R0I5YOlpi0Ff/WT5mycRxk35scO0+z5E/MChNNNVol1erQpBVuSngfdJh3aLk6Hh+3qP
- HH/QdHYJj8ZqQQe3mVVs7EPBM+C6hj3gT7pN9iYJgeU5FimAVzadUGcLuwb0WLCZXxte
- +a4g==
-X-Gm-Message-State: AOAM532mUo3G7DxlmND2oeDGqhjtlLxsoQxE5G11JowbI5ZAgIHHWTf8
- 3q7vgO58aAePNEz5xb0sF9vLlE2uM8g=
-X-Google-Smtp-Source: ABdhPJyG12KQon1LvVGV1FFKUrt1+uZon+BwxhIiJRZnCvXz4gTtLyYqrEGsI7Cp2uZ21EMwjNP7AA==
-X-Received: by 2002:a63:4950:: with SMTP id y16mr8693669pgk.415.1606547259859; 
- Fri, 27 Nov 2020 23:07:39 -0800 (PST)
+ bh=N80fuMiX7GnX39J9dqIjia2qgdYXbL88FKJN1E8uzH8=;
+ b=BXR/qVncYkG0rDYl39U1EA9jwx/pK6Mep3wO3tjesiA27udPwnAAkBFMRoNi9Rb6aq
+ rddsvyct2Vx55YNHEckoJoXsiAY+tLm3swnq189xfzVbMhAqvChfr7y/ng5oHZKtgvq/
+ MGxuBADVBjNu6dvmA/5P/PfWOKmTQHQOCQFgZwgVnjr2JMgaXQlUImhN3USpr5MjQ9T1
+ j37xN41vJb3cNeBwKGNsn2REhKESbEs2CwiUkO1kebuJpm/FuaGjXxDbDsW+qIl801Gd
+ yUXZ3mJyGK8PIwXLMsC1qL1mA/hxoIGGA9OUiKIM31FdJC86dwMb3HDiOQ1Q2hdjxeo1
+ 8KYQ==
+X-Gm-Message-State: AOAM532JGaEM4UuzM0Y14MmJ9YZrlExpEurO4WqtYXyrJ/iCOnuS4c1B
+ RtSlKFqgYHpWJgurAVs90OvgSdav0ig=
+X-Google-Smtp-Source: ABdhPJw4tj75B+xa9a6wn+TUlX51xdcUPbY3nt4XL+aeRC38ohFU2qOg6vqNj7fwjhBw8adhlgjFNg==
+X-Received: by 2002:a17:90a:9d8a:: with SMTP id
+ k10mr14046861pjp.60.1606547262731; 
+ Fri, 27 Nov 2020 23:07:42 -0800 (PST)
 Received: from bobo.ibm.com (193-116-103-132.tpgi.com.au. [193.116.103.132])
- by smtp.gmail.com with ESMTPSA id e31sm9087329pgb.16.2020.11.27.23.07.37
+ by smtp.gmail.com with ESMTPSA id e31sm9087329pgb.16.2020.11.27.23.07.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Nov 2020 23:07:39 -0800 (PST)
+ Fri, 27 Nov 2020 23:07:42 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/8] powerpc/64s/powernv: Fix memory corruption when saving
- SLB entries on MCE
-Date: Sat, 28 Nov 2020 17:07:21 +1000
-Message-Id: <20201128070728.825934-2-npiggin@gmail.com>
+Subject: [PATCH 2/8] powerpc/64s/powernv: Allow KVM to handle guest machine
+ check details
+Date: Sat, 28 Nov 2020 17:07:22 +1000
+Message-Id: <20201128070728.825934-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20201128070728.825934-1-npiggin@gmail.com>
 References: <20201128070728.825934-1-npiggin@gmail.com>
@@ -85,38 +86,195 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This can be hit by an HPT guest running on an HPT host and bring down
-the host, so it's quite important to fix.
+KVM has strategies to perform machine check recovery. If a MCE hits
+in a guest, have the low level handler just decode and save the MCE
+but not try to recover anything, so KVM can deal with it.
 
-Fixes: 7290f3b3d3e66 ("powerpc/64s/powernv: machine check dump SLB contents")
+The host does not own SLBs and does not need to report the SLB state
+in case of a multi-hit for example, or know about the virtual memory
+map of the guest.
+
+UE and memory poisoning of guest pages in the host is one thing that
+is possibly not completely robust at the moment, but this too needs
+to go via KVM (possibly via the guest and back out to host via hcall)
+rather than being handled at a low level in the host handler.
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/platforms/powernv/setup.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/mce.c       |  2 +-
+ arch/powerpc/kernel/mce_power.c | 96 ++++++++++++++++++---------------
+ 2 files changed, 55 insertions(+), 43 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
-index 46115231a3b2..4426a109ec2f 100644
---- a/arch/powerpc/platforms/powernv/setup.c
-+++ b/arch/powerpc/platforms/powernv/setup.c
-@@ -211,11 +211,16 @@ static void __init pnv_init(void)
- 		add_preferred_console("hvc", 0, NULL);
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index 63702c0badb9..8afe8d37b983 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -577,7 +577,7 @@ void machine_check_print_event_info(struct machine_check_event *evt,
  
- 	if (!radix_enabled()) {
-+		size_t size = sizeof(struct slb_entry) * mmu_slb_size;
- 		int i;
- 
- 		/* Allocate per cpu area to save old slb contents during MCE */
--		for_each_possible_cpu(i)
--			paca_ptrs[i]->mce_faulty_slbs = memblock_alloc_node(mmu_slb_size, __alignof__(*paca_ptrs[i]->mce_faulty_slbs), cpu_to_node(i));
-+		for_each_possible_cpu(i) {
-+			paca_ptrs[i]->mce_faulty_slbs =
-+					memblock_alloc_node(size,
-+						__alignof__(struct slb_entry),
-+						cpu_to_node(i));
-+		}
- 	}
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	/* Display faulty slb contents for SLB errors. */
+-	if (evt->error_type == MCE_ERROR_TYPE_SLB)
++	if (evt->error_type == MCE_ERROR_TYPE_SLB && !in_guest)
+ 		slb_dump_contents(local_paca->mce_faulty_slbs);
+ #endif
+ }
+diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
+index b7e173754a2e..1372ce3f7bdd 100644
+--- a/arch/powerpc/kernel/mce_power.c
++++ b/arch/powerpc/kernel/mce_power.c
+@@ -62,6 +62,20 @@ unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr)
+ 	return pfn;
  }
  
++static bool mce_in_guest(void)
++{
++#ifdef CONFIG_KVM_BOOK3S_HANDLER
++	/*
++	 * If machine check is hit when in guest context or low level KVM
++	 * code, avoid looking up any translations or making any attempts
++	 * to recover, just record the event and pass to KVM.
++	 */
++	if (get_paca()->kvm_hstate.in_guest)
++		return true;
++#endif
++	return false;
++}
++
+ /* flush SLBs and reload */
+ #ifdef CONFIG_PPC_BOOK3S_64
+ void flush_and_reload_slb(void)
+@@ -69,14 +83,6 @@ void flush_and_reload_slb(void)
+ 	/* Invalidate all SLBs */
+ 	slb_flush_all_realmode();
+ 
+-#ifdef CONFIG_KVM_BOOK3S_HANDLER
+-	/*
+-	 * If machine check is hit when in guest or in transition, we will
+-	 * only flush the SLBs and continue.
+-	 */
+-	if (get_paca()->kvm_hstate.in_guest)
+-		return;
+-#endif
+ 	if (early_radix_enabled())
+ 		return;
+ 
+@@ -490,19 +496,21 @@ static int mce_handle_ierror(struct pt_regs *regs,
+ 		if ((srr1 & table[i].srr1_mask) != table[i].srr1_value)
+ 			continue;
+ 
+-		/* attempt to correct the error */
+-		switch (table[i].error_type) {
+-		case MCE_ERROR_TYPE_SLB:
+-			if (local_paca->in_mce == 1)
+-				slb_save_contents(local_paca->mce_faulty_slbs);
+-			handled = mce_flush(MCE_FLUSH_SLB);
+-			break;
+-		case MCE_ERROR_TYPE_ERAT:
+-			handled = mce_flush(MCE_FLUSH_ERAT);
+-			break;
+-		case MCE_ERROR_TYPE_TLB:
+-			handled = mce_flush(MCE_FLUSH_TLB);
+-			break;
++		if (!mce_in_guest()) {
++			/* attempt to correct the error */
++			switch (table[i].error_type) {
++			case MCE_ERROR_TYPE_SLB:
++				if (local_paca->in_mce == 1)
++					slb_save_contents(local_paca->mce_faulty_slbs);
++				handled = mce_flush(MCE_FLUSH_SLB);
++				break;
++			case MCE_ERROR_TYPE_ERAT:
++				handled = mce_flush(MCE_FLUSH_ERAT);
++				break;
++			case MCE_ERROR_TYPE_TLB:
++				handled = mce_flush(MCE_FLUSH_TLB);
++				break;
++			}
+ 		}
+ 
+ 		/* now fill in mce_error_info */
+@@ -534,7 +542,7 @@ static int mce_handle_ierror(struct pt_regs *regs,
+ 		mce_err->sync_error = table[i].sync_error;
+ 		mce_err->severity = table[i].severity;
+ 		mce_err->initiator = table[i].initiator;
+-		if (table[i].nip_valid) {
++		if (table[i].nip_valid && !mce_in_guest()) {
+ 			*addr = regs->nip;
+ 			if (mce_err->sync_error &&
+ 				table[i].error_type == MCE_ERROR_TYPE_UE) {
+@@ -577,22 +585,24 @@ static int mce_handle_derror(struct pt_regs *regs,
+ 		if (!(dsisr & table[i].dsisr_value))
+ 			continue;
+ 
+-		/* attempt to correct the error */
+-		switch (table[i].error_type) {
+-		case MCE_ERROR_TYPE_SLB:
+-			if (local_paca->in_mce == 1)
+-				slb_save_contents(local_paca->mce_faulty_slbs);
+-			if (mce_flush(MCE_FLUSH_SLB))
+-				handled = 1;
+-			break;
+-		case MCE_ERROR_TYPE_ERAT:
+-			if (mce_flush(MCE_FLUSH_ERAT))
+-				handled = 1;
+-			break;
+-		case MCE_ERROR_TYPE_TLB:
+-			if (mce_flush(MCE_FLUSH_TLB))
+-				handled = 1;
+-			break;
++		if (!mce_in_guest()) {
++			/* attempt to correct the error */
++			switch (table[i].error_type) {
++			case MCE_ERROR_TYPE_SLB:
++				if (local_paca->in_mce == 1)
++					slb_save_contents(local_paca->mce_faulty_slbs);
++				if (mce_flush(MCE_FLUSH_SLB))
++					handled = 1;
++				break;
++			case MCE_ERROR_TYPE_ERAT:
++				if (mce_flush(MCE_FLUSH_ERAT))
++					handled = 1;
++				break;
++			case MCE_ERROR_TYPE_TLB:
++				if (mce_flush(MCE_FLUSH_TLB))
++					handled = 1;
++				break;
++			}
+ 		}
+ 
+ 		/*
+@@ -634,7 +644,7 @@ static int mce_handle_derror(struct pt_regs *regs,
+ 		mce_err->initiator = table[i].initiator;
+ 		if (table[i].dar_valid)
+ 			*addr = regs->dar;
+-		else if (mce_err->sync_error &&
++		else if (mce_err->sync_error && !mce_in_guest() &&
+ 				table[i].error_type == MCE_ERROR_TYPE_UE) {
+ 			/*
+ 			 * We do a maximum of 4 nested MCE calls, see
+@@ -662,7 +672,8 @@ static int mce_handle_derror(struct pt_regs *regs,
+ static long mce_handle_ue_error(struct pt_regs *regs,
+ 				struct mce_error_info *mce_err)
+ {
+-	long handled = 0;
++	if (mce_in_guest())
++		return 0;
+ 
+ 	mce_common_process_ue(regs, mce_err);
+ 	if (mce_err->ignore_event)
+@@ -677,9 +688,10 @@ static long mce_handle_ue_error(struct pt_regs *regs,
+ 
+ 	if (ppc_md.mce_check_early_recovery) {
+ 		if (ppc_md.mce_check_early_recovery(regs))
+-			handled = 1;
++			return 1;
+ 	}
+-	return handled;
++
++	return 0;
+ }
+ 
+ static long mce_handle_error(struct pt_regs *regs,
 -- 
 2.23.0
 
