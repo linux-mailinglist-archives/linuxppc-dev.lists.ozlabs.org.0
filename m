@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0652C6FD5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 17:05:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 068982C6FD7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 17:07:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CjxDB6BfyzDrqg
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Nov 2020 03:05:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CjxG46tPgzDsNq
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Nov 2020 03:07:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=fddofWue; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ header.s=20161025 header.b=tOVJyMY5; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cjx854SF1zDrQX
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Nov 2020 03:01:57 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id q10so7114026pfn.0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 08:01:57 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cjx896RSwzDrQX
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Nov 2020 03:02:01 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id e23so1868430pgk.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 08:02:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=gttnBtFOibE2tP2Qz24NLSDRYoTGub5YJjfSoizC0iA=;
- b=fddofWue+O7PL7JyLzbrmfEZ1AmPAs4YpBi425i4fGaiDzUtTP1Cjb/kUW5gGhUTUG
- zroDx2CGFhUo8MVoFIUF+MP8b1p2psaIqXLAsQr05kPX/p4d/S7xxuUvrdD122e3zNTk
- +yWVb5RpbczP24WMcIBwgAESCFaKaOazX1xmiySUU7Q4UENN4oLJouX6ftvashMBqtNo
- k9k7ojLvXh7wWrdH5HhDZtS64VIpEQm0fl12lwLV2acHXX+2Z4z3IDRijQ1jKh4kn6f8
- te2+ctqgL6SkhFEZCO0U/smJPgELN01XFV1O3fSOhYhR0PJS+cMx8avXrp2TZTREkvoq
- hJRQ==
+ bh=6Twyf0/RNSa3vRRlfp1Oet03l6vxb8aXJKdhGNWclcs=;
+ b=tOVJyMY59cAHL0Zzh3IdRygvgG/jwamJDHuys8IGkS0xRl9q8lB2RMbbQR9JlnInyL
+ Eiuv17njNNKkWNknihj7Gt/Y7sYfrxSdsi8OC7T/3P/067pVTZC+d6GwyK3b+oxynnHv
+ ualnu2jlm8a7xOIh0iPc0la4kJAcrDbOYjgazdmLJTBG3CCm2GZT9ruRdlt+io/y2DTA
+ aei7B3l2rG8ORKFGCWYu5he3af+ipX4rgqppNP+1mnOSxSOHvlzwY6p9/sqY9ECmBnHP
+ u2Uj3PTMr7YGFUnRDq3YRKNrLuM3DfdvKxH7KW1/3XGwL0QQe7tOEpxh9XVVA/35Gknb
+ kQdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=gttnBtFOibE2tP2Qz24NLSDRYoTGub5YJjfSoizC0iA=;
- b=NBL9la92XVfjy9BXH+VO/3rq1ck+9S1736fIUHqHlROplSjwMSE9R3WqHGsJvjCR6v
- 1BkjhqHcJI22QSI84OSpIVAC7vK8xuUkqBHec1Q6iMYw32DhwrW3ZLUbY3eJuacn8h+w
- dEHkaHExw6iFtK7aqS8Fjcv206ST6XgwonCf+IsFpVPx/8kpCjdjMLYZgipgkFqpsUcK
- ApvFLLSmBERfsjrEJrQW66/FTvepdh3LE5afXDloluV6m4fY10mz9pkkL5UzbANSmvne
- lhC5D87IvBGAJPBUjknqhwht/rGilLYMYLajXcTNYgdaiPosF6XQooJ8VoPIIyz9OSkY
- uBEQ==
-X-Gm-Message-State: AOAM533IzxqEvZTV+ycJGr0i7wjINcoGHowuOENkO2MltRLRcmn7g2BX
- S5fbcEQUZqn10BBfY0YRywM=
-X-Google-Smtp-Source: ABdhPJzSlEN2fFhGsSm+AZ067hVpNTL/kp5XtHU/fInnX4+IsK4D3+Ht2oCRMtspesP14x3iR4yVHg==
-X-Received: by 2002:a17:90b:30cb:: with SMTP id
- hi11mr16522183pjb.94.1606579315315; 
- Sat, 28 Nov 2020 08:01:55 -0800 (PST)
+ bh=6Twyf0/RNSa3vRRlfp1Oet03l6vxb8aXJKdhGNWclcs=;
+ b=XUyZ0nFzK+fx/A7+pUNrKS2fRVpOBx2Vld+kzpdjRdpNwmJl0itGhxTimioPca8BXQ
+ VXjStshqyrTwJjYNGwsL7HDcWM2vkxaVfVSpOae9aQiIRGjefwpt/NjfrtrxYG4Fw3bo
+ bhULmebqNxCxoeLmPcIv42djBtl2PFfgjQBLygoLj1rULF6yU2aS3eWaLMFRlp0gEuii
+ 9nIa5IifoEO5W53S/HFmLnafOSkvtAHRp6l+wxI3xAFRl18PIcQUZ0xcjibhQRozgXvS
+ VY3r9OXZSb7k53c0RNBzDhaD2E1rJo958X5aZKSZIfaXsN2ufHFQD7W9mU8SbePDteeD
+ REpg==
+X-Gm-Message-State: AOAM532Wlj68DtVTGOkdDUVoxkbbi2D0l6BYGE6hVzOJlY6DinQjqRXQ
+ Bt7xFRRiExqE4qDnHo7JJxU=
+X-Google-Smtp-Source: ABdhPJwmFPhtuAX9fmgjTV1NdLL+hs+IbGGuWhOPDdSX9td7UVffTtdAIrAze3tOKAkjX2mNhJn8wA==
+X-Received: by 2002:a17:90a:460b:: with SMTP id
+ w11mr16545731pjg.12.1606579319860; 
+ Sat, 28 Nov 2020 08:01:59 -0800 (PST)
 Received: from bobo.ibm.com (193-116-103-132.tpgi.com.au. [193.116.103.132])
- by smtp.gmail.com with ESMTPSA id d4sm9762607pjz.28.2020.11.28.08.01.51
+ by smtp.gmail.com with ESMTPSA id d4sm9762607pjz.28.2020.11.28.08.01.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Nov 2020 08:01:54 -0800 (PST)
+ Sat, 28 Nov 2020 08:01:59 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 1/8] lazy tlb: introduce exit_lazy_tlb
-Date: Sun, 29 Nov 2020 02:01:34 +1000
-Message-Id: <20201128160141.1003903-2-npiggin@gmail.com>
+Subject: [PATCH 2/8] x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
+Date: Sun, 29 Nov 2020 02:01:35 +1000
+Message-Id: <20201128160141.1003903-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20201128160141.1003903-1-npiggin@gmail.com>
 References: <20201128160141.1003903-1-npiggin@gmail.com>
@@ -88,125 +89,203 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is called at points where a lazy mm is switched away or made not
-lazy (by its owner switching back).
+And get rid of the generic sync_core_before_usermode facility. This is
+functionally a no-op in the core scheduler code, but it also catches
+
+This helper is the wrong way around I think. The idea that membarrier
+state requires a core sync before returning to user is the easy one
+that does not need hiding behind membarrier calls. The gap in core
+synchronization due to x86's sysret/sysexit and lazy tlb mode, is the
+tricky detail that is better put in x86 lazy tlb code.
+
+Consider if an arch did not synchronize core in switch_mm either, then
+membarrier_mm_sync_core_before_usermode would be in the wrong place
+but arch specific mmu context functions would still be the right place.
+There is also a exit_lazy_tlb case that is not covered by this call, which
+could be a bugs (kthread use mm the membarrier process's mm then context
+switch back to the process without switching mm or lazy mm switch).
+
+This makes lazy tlb code a bit more modular.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/arm/mach-rpc/ecard.c            |  1 +
- arch/powerpc/mm/book3s64/radix_tlb.c |  1 +
- fs/exec.c                            |  6 ++++--
- include/asm-generic/mmu_context.h    | 21 +++++++++++++++++++++
- kernel/kthread.c                     |  1 +
- kernel/sched/core.c                  |  2 ++
- 6 files changed, 30 insertions(+), 2 deletions(-)
+ .../membarrier-sync-core/arch-support.txt     |  6 ++++-
+ arch/x86/include/asm/mmu_context.h            | 27 +++++++++++++++++++
+ include/linux/sched/mm.h                      | 14 ----------
+ kernel/cpu.c                                  |  4 ++-
+ kernel/sched/core.c                           | 16 +++++------
+ 5 files changed, 42 insertions(+), 25 deletions(-)
 
-diff --git a/arch/arm/mach-rpc/ecard.c b/arch/arm/mach-rpc/ecard.c
-index 827b50f1c73e..43eb1bfba466 100644
---- a/arch/arm/mach-rpc/ecard.c
-+++ b/arch/arm/mach-rpc/ecard.c
-@@ -253,6 +253,7 @@ static int ecard_init_mm(void)
- 	current->mm = mm;
- 	current->active_mm = mm;
- 	activate_mm(active_mm, mm);
-+	exit_lazy_tlb(active_mm, current);
- 	mmdrop(active_mm);
- 	ecard_init_pgtables(mm);
- 	return 0;
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index b487b489d4b6..ac3fec03926a 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -661,6 +661,7 @@ static void do_exit_flush_lazy_tlb(void *arg)
- 		mmgrab(&init_mm);
- 		current->active_mm = &init_mm;
- 		switch_mm_irqs_off(mm, &init_mm, current);
-+		exit_lazy_tlb(mm, current);
- 		mmdrop(mm);
- 	}
+diff --git a/Documentation/features/sched/membarrier-sync-core/arch-support.txt b/Documentation/features/sched/membarrier-sync-core/arch-support.txt
+index 47e6903f47a5..0763a63a7097 100644
+--- a/Documentation/features/sched/membarrier-sync-core/arch-support.txt
++++ b/Documentation/features/sched/membarrier-sync-core/arch-support.txt
+@@ -5,6 +5,10 @@
+ #
+ # Architecture requirements
+ #
++# If your architecture returns to user-space through non-core-serializing
++# instructions, you need to ensure these are done in switch_mm and exit_lazy_tlb
++# (if lazy tlb switching is implemented).
++#
+ # * arm/arm64/powerpc
+ #
+ # Rely on implicit context synchronization as a result of exception return
+@@ -24,7 +28,7 @@
+ # instead on write_cr3() performed by switch_mm() to provide core serialization
+ # after changing the current mm, and deal with the special case of kthread ->
+ # uthread (temporarily keeping current mm into active_mm) by issuing a
+-# sync_core_before_usermode() in that specific case.
++# serializing instruction in exit_lazy_mm() in that specific case.
+ #
+     -----------------------
+     |         arch |status|
+diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
+index 36afcbea6a9f..8094893254f1 100644
+--- a/arch/x86/include/asm/mmu_context.h
++++ b/arch/x86/include/asm/mmu_context.h
+@@ -6,12 +6,14 @@
+ #include <linux/atomic.h>
+ #include <linux/mm_types.h>
+ #include <linux/pkeys.h>
++#include <linux/sched/mm.h>
  
-diff --git a/fs/exec.c b/fs/exec.c
-index 547a2390baf5..4b4dea1bb7ba 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1017,6 +1017,8 @@ static int exec_mmap(struct mm_struct *mm)
- 	if (!IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
- 		local_irq_enable();
- 	activate_mm(active_mm, mm);
-+	if (!old_mm)
-+		exit_lazy_tlb(active_mm, tsk);
- 	if (IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
- 		local_irq_enable();
- 	tsk->mm->vmacache_seqnum = 0;
-@@ -1028,9 +1030,9 @@ static int exec_mmap(struct mm_struct *mm)
- 		setmax_mm_hiwater_rss(&tsk->signal->maxrss, old_mm);
- 		mm_update_next_owner(old_mm);
- 		mmput(old_mm);
--		return 0;
-+	} else {
-+		mmdrop(active_mm);
- 	}
--	mmdrop(active_mm);
- 	return 0;
- }
+ #include <trace/events/tlb.h>
  
-diff --git a/include/asm-generic/mmu_context.h b/include/asm-generic/mmu_context.h
-index 91727065bacb..4626d0020e65 100644
---- a/include/asm-generic/mmu_context.h
-+++ b/include/asm-generic/mmu_context.h
-@@ -24,6 +24,27 @@ static inline void enter_lazy_tlb(struct mm_struct *mm,
- }
- #endif
+ #include <asm/tlbflush.h>
+ #include <asm/paravirt.h>
+ #include <asm/debugreg.h>
++#include <asm/sync_core.h>
  
+ extern atomic64_t last_mm_ctx_id;
+ 
+@@ -94,6 +96,31 @@ static inline void switch_ldt(struct mm_struct *prev, struct mm_struct *next)
+ #define enter_lazy_tlb enter_lazy_tlb
+ extern void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk);
+ 
++#ifdef CONFIG_MEMBARRIER
 +/*
-+ * exit_lazy_tlb - Called after switching away from a lazy TLB mode mm.
++ * Ensure that a core serializing instruction is issued before returning
++ * to user-mode, if a SYNC_CORE was requested. x86 implements return to
++ * user-space through sysexit, sysrel, and sysretq, which are not core
++ * serializing.
 + *
-+ * mm:  the lazy mm context that was switched
-+ * tsk: the task that was switched to (with a non-lazy mm)
-+ *
-+ * mm may equal tsk->mm.
-+ * mm and tsk->mm will not be NULL.
-+ *
-+ * Note this is not symmetrical to enter_lazy_tlb, this is not
-+ * called when tasks switch into the lazy mm, it's called after the
-+ * lazy mm becomes non-lazy (either switched to a different mm or the
-+ * owner of the mm returns).
++ * See the membarrier comment in finish_task_switch as to why this is done
++ * in exit_lazy_tlb.
 + */
-+#ifndef exit_lazy_tlb
-+static inline void exit_lazy_tlb(struct mm_struct *mm,
-+			struct task_struct *tsk)
++#define exit_lazy_tlb exit_lazy_tlb
++static inline void exit_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
 +{
++	/* Switching mm is serializing with write_cr3 */
++        if (tsk->mm != mm)
++                return;
++
++        if (likely(!(atomic_read(&mm->membarrier_state) &
++                     MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE)))
++                return;
++
++	sync_core_before_usermode();
 +}
 +#endif
 +
- /**
-  * init_new_context - Initialize context of a new mm_struct.
-  * @tsk: task struct for the mm
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 933a625621b8..e380302aac13 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -1250,6 +1250,7 @@ void kthread_use_mm(struct mm_struct *mm)
- 	}
- 	tsk->mm = mm;
- 	switch_mm_irqs_off(active_mm, mm, tsk);
-+	exit_lazy_tlb(active_mm, tsk);
- 	local_irq_enable();
- 	task_unlock(tsk);
- #ifdef finish_arch_post_lock_switch
+ /*
+  * Init a new mm.  Used on mm copies, like at fork()
+  * and on mm's that are brand-new, like at execve().
+diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+index d5ece7a9a403..2c6bcdf76d99 100644
+--- a/include/linux/sched/mm.h
++++ b/include/linux/sched/mm.h
+@@ -7,7 +7,6 @@
+ #include <linux/sched.h>
+ #include <linux/mm_types.h>
+ #include <linux/gfp.h>
+-#include <linux/sync_core.h>
+ 
+ /*
+  * Routines for handling mm_structs
+@@ -335,16 +334,6 @@ enum {
+ #include <asm/membarrier.h>
+ #endif
+ 
+-static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm)
+-{
+-	if (current->mm != mm)
+-		return;
+-	if (likely(!(atomic_read(&mm->membarrier_state) &
+-		     MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE)))
+-		return;
+-	sync_core_before_usermode();
+-}
+-
+ extern void membarrier_exec_mmap(struct mm_struct *mm);
+ 
+ #else
+@@ -358,9 +347,6 @@ static inline void membarrier_arch_switch_mm(struct mm_struct *prev,
+ static inline void membarrier_exec_mmap(struct mm_struct *mm)
+ {
+ }
+-static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm)
+-{
+-}
+ #endif
+ 
+ #endif /* _LINUX_SCHED_MM_H */
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 6ff2578ecf17..134688d79589 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -572,7 +572,9 @@ static int finish_cpu(unsigned int cpu)
+ 
+ 	/*
+ 	 * idle_task_exit() will have switched to &init_mm, now
+-	 * clean up any remaining active_mm state.
++	 * clean up any remaining active_mm state. exit_lazy_tlb
++	 * is not done, if an arch did any accounting in these
++	 * functions it would have to be added.
+ 	 */
+ 	if (mm != &init_mm)
+ 		idle->active_mm = &init_mm;
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index e7e453492cff..dcc46039ade5 100644
+index dcc46039ade5..e4e8cebd82e2 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -3765,6 +3765,8 @@ context_switch(struct rq *rq, struct task_struct *prev,
- 		switch_mm_irqs_off(prev->active_mm, next->mm, next);
+@@ -3620,22 +3620,19 @@ static struct rq *finish_task_switch(struct task_struct *prev)
+ 	kcov_finish_switch(current);
  
- 		if (!prev->mm) {                        // from kernel
-+			exit_lazy_tlb(prev->active_mm, next);
+ 	fire_sched_in_preempt_notifiers(current);
 +
- 			/* will mmdrop() in finish_task_switch(). */
- 			rq->prev_mm = prev->active_mm;
- 			prev->active_mm = NULL;
+ 	/*
+ 	 * When switching through a kernel thread, the loop in
+ 	 * membarrier_{private,global}_expedited() may have observed that
+ 	 * kernel thread and not issued an IPI. It is therefore possible to
+ 	 * schedule between user->kernel->user threads without passing though
+-	 * switch_mm(). Membarrier requires a barrier after storing to
+-	 * rq->curr, before returning to userspace, so provide them here:
+-	 *
+-	 * - a full memory barrier for {PRIVATE,GLOBAL}_EXPEDITED, implicitly
+-	 *   provided by mmdrop(),
+-	 * - a sync_core for SYNC_CORE.
++	 * switch_mm(). Membarrier requires a full barrier after storing to
++	 * rq->curr, before returning to userspace, for
++	 * {PRIVATE,GLOBAL}_EXPEDITED. This is implicitly provided by mmdrop().
+ 	 */
+-	if (mm) {
+-		membarrier_mm_sync_core_before_usermode(mm);
++	if (mm)
+ 		mmdrop(mm);
+-	}
++
+ 	if (unlikely(prev_state == TASK_DEAD)) {
+ 		if (prev->sched_class->task_dead)
+ 			prev->sched_class->task_dead(prev);
+@@ -6689,6 +6686,7 @@ void idle_task_exit(void)
+ 	BUG_ON(current != this_rq()->idle);
+ 
+ 	if (mm != &init_mm) {
++		/* enter_lazy_tlb is not done because we're about to go down */
+ 		switch_mm(mm, &init_mm, current);
+ 		finish_arch_post_lock_switch();
+ 	}
 -- 
 2.23.0
 
