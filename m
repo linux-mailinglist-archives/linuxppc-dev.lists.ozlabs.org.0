@@ -1,60 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F8D2C6CE5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Nov 2020 22:31:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70972C6E18
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 02:12:43 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CjSVL53FNzDsNW
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 08:31:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CjYPz4KZczDwND
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 12:12:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=lgo@pengutronix.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=pengutronix.de
-X-Greylist: delayed 1178 seconds by postgrey-1.36 at bilbo;
- Sat, 28 Nov 2020 02:44:03 AEDT
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CjJnv2TGWzDrfM
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 02:44:03 +1100 (AEDT)
-Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <lgo@pengutronix.de>)
- id 1kifb3-0002Iv-2c; Fri, 27 Nov 2020 16:23:41 +0100
-Received: from lgo by dude03.red.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <lgo@dude03.red.stw.pengutronix.de>)
- id 1kifax-006ATZ-FC; Fri, 27 Nov 2020 16:23:35 +0100
-From: Leonard Goehrs <l.goehrs@pengutronix.de>
-To: u.kleine-koenig@pengutronix.de, geoff@infradead.org, perex@perex.cz,
- tiwai@suse.com, mpe@ellerman.id.au
-Date: Fri, 27 Nov 2020 16:22:59 +0100
-Message-Id: <20201127152259.1470079-1-l.goehrs@pengutronix.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20201127094547.4zcyeycfrriitkqx@pengutronix.de>
-References: <20201127094547.4zcyeycfrriitkqx@pengutronix.de>
+ smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CjYNS5841zDrng
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 12:11:16 +1100 (AEDT)
+IronPort-SDR: Z43vemlLMgj8Q7AtvpstLDqLXSHcYOUTxa92Psret0MIFAocaKxlmGQVRBgVWvcS9apusO49QY
+ 4WWkwEzXEtiA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9818"; a="257153358"
+X-IronPort-AV: E=Sophos;i="5.78,376,1599548400"; d="scan'208";a="257153358"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2020 17:11:11 -0800
+IronPort-SDR: g5SviASRPEsKokOZbzq4tmvjFMEAT3su/26W1qFKrKl/dxnGPw+f/s2nukq5bzqjmU1vxFv0XS
+ eyQAUmdzW/SA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,376,1599548400"; d="scan'208";a="479820178"
+Received: from lkp-server01.sh.intel.com (HELO b5888d13d5a5) ([10.239.97.150])
+ by orsmga004.jf.intel.com with ESMTP; 27 Nov 2020 17:11:09 -0800
+Received: from kbuild by b5888d13d5a5 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1kiolZ-0000EC-7W; Sat, 28 Nov 2020 01:11:09 +0000
+Date: Sat, 28 Nov 2020 09:10:30 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 10f78fd0dabbc3856ddd67b09a46abdedb045913
+Message-ID: <5fc1a386.tBAoJTUiEShE4OJu%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::39
-X-SA-Exim-Mail-From: lgo@pengutronix.de
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
- metis.ext.pengutronix.de
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.4 required=4.0 tests=AWL,BAYES_00,RDNS_NONE,
- SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
- version=3.4.2
-Subject: [PATCH] ALSA: ppc: remove redundant checks in PS3 driver probe
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
-X-Mailman-Approved-At: Sat, 28 Nov 2020 08:29:37 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,44 +58,175 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, paulus@samba.org, kernel@pengutronix.de,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Leonard Goehrs <l.goehrs@pengutronix.de>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The check for the FW_FEATURE_PS3_LV1 firmware feature is already performed
-in ps3_system_bus_init() before registering the driver. So if the probe
-function is actually used, this feature is already known to be available.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
+branch HEAD: 10f78fd0dabbc3856ddd67b09a46abdedb045913  powerpc/numa: Fix a regression on memoryless node 0
 
-The check for the match id is also superfluous; the condition is always
-true because the bus' match function (ps3_system_bus_match()) only
-considers this driver for devices having:
-dev->match_id == snd_ps3_bus_driver_info.match_id.
+elapsed time: 772m
 
-Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Leonard Goehrs <l.goehrs@pengutronix.de>
+configs tested: 149
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                           efm32_defconfig
+powerpc                    sam440ep_defconfig
+m68k                       m5475evb_defconfig
+xtensa                    smp_lx200_defconfig
+arm                         mv78xx0_defconfig
+powerpc                 mpc836x_rdk_defconfig
+mips                         db1xxx_defconfig
+arc                         haps_hs_defconfig
+powerpc                      ppc6xx_defconfig
+powerpc                       eiger_defconfig
+parisc                           allyesconfig
+mips                        workpad_defconfig
+nds32                             allnoconfig
+powerpc                      arches_defconfig
+mips                            gpr_defconfig
+m68k                           sun3_defconfig
+sh                           se7206_defconfig
+arm                         lpc18xx_defconfig
+arm                        keystone_defconfig
+sh                  sh7785lcr_32bit_defconfig
+arm                          imote2_defconfig
+arm                            qcom_defconfig
+m68k                          atari_defconfig
+arm                           omap1_defconfig
+mips                      pistachio_defconfig
+powerpc                 mpc85xx_cds_defconfig
+mips                     loongson1c_defconfig
+alpha                               defconfig
+arm                         s3c2410_defconfig
+powerpc                        cell_defconfig
+sh                   rts7751r2dplus_defconfig
+xtensa                  cadence_csp_defconfig
+arm                       aspeed_g5_defconfig
+arc                        nsim_700_defconfig
+arm                            xcep_defconfig
+powerpc                     skiroot_defconfig
+m68k                        m5407c3_defconfig
+mips                     cu1000-neo_defconfig
+x86_64                           alldefconfig
+nds32                               defconfig
+powerpc                      ppc40x_defconfig
+arm                            dove_defconfig
+arm                      jornada720_defconfig
+powerpc                 mpc837x_rdb_defconfig
+arm                         cm_x300_defconfig
+mips                          malta_defconfig
+arm                          pxa168_defconfig
+openrisc                 simple_smp_defconfig
+powerpc                 mpc834x_itx_defconfig
+sh                          polaris_defconfig
+arm                            pleb_defconfig
+powerpc                 mpc834x_mds_defconfig
+arm                          simpad_defconfig
+powerpc                      tqm8xx_defconfig
+mips                           ip27_defconfig
+powerpc64                           defconfig
+arm                          ep93xx_defconfig
+mips                          ath25_defconfig
+microblaze                      mmu_defconfig
+mips                         rt305x_defconfig
+sh                             sh03_defconfig
+sparc64                             defconfig
+m68k                       m5208evb_defconfig
+arm                           h3600_defconfig
+sh                        edosk7760_defconfig
+powerpc                    klondike_defconfig
+arm                  colibri_pxa300_defconfig
+arm                           corgi_defconfig
+sh                          kfr2r09_defconfig
+sh                          sdk7786_defconfig
+mips                           ip22_defconfig
+sh                           se7722_defconfig
+powerpc                 linkstation_defconfig
+arm                        oxnas_v6_defconfig
+riscv                          rv32_defconfig
+sh                          rsk7201_defconfig
+h8300                       h8s-sim_defconfig
+arm                          pxa3xx_defconfig
+ia64                             alldefconfig
+sh                           se7721_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+c6x                              allyesconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20201127
+i386                 randconfig-a003-20201127
+i386                 randconfig-a002-20201127
+i386                 randconfig-a005-20201127
+i386                 randconfig-a001-20201127
+i386                 randconfig-a006-20201127
+x86_64               randconfig-a015-20201127
+x86_64               randconfig-a011-20201127
+x86_64               randconfig-a014-20201127
+x86_64               randconfig-a016-20201127
+x86_64               randconfig-a012-20201127
+x86_64               randconfig-a013-20201127
+i386                 randconfig-a012-20201127
+i386                 randconfig-a013-20201127
+i386                 randconfig-a011-20201127
+i386                 randconfig-a016-20201127
+i386                 randconfig-a014-20201127
+i386                 randconfig-a015-20201127
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a006-20201127
+x86_64               randconfig-a003-20201127
+x86_64               randconfig-a004-20201127
+x86_64               randconfig-a005-20201127
+x86_64               randconfig-a002-20201127
+x86_64               randconfig-a001-20201127
+
 ---
- sound/ppc/snd_ps3.c | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/sound/ppc/snd_ps3.c b/sound/ppc/snd_ps3.c
-index 58bb49fff184..b6e4aa3df870 100644
---- a/sound/ppc/snd_ps3.c
-+++ b/sound/ppc/snd_ps3.c
-@@ -896,11 +896,6 @@ static int snd_ps3_driver_probe(struct ps3_system_bus_device *dev)
- 	u64 lpar_addr, lpar_size;
- 	static u64 dummy_mask;
- 
--	if (WARN_ON(!firmware_has_feature(FW_FEATURE_PS3_LV1)))
--		return -ENODEV;
--	if (WARN_ON(dev->match_id != PS3_MATCH_ID_SOUND))
--		return -ENODEV;
--
- 	the_card.ps3_dev = dev;
- 
- 	ret = ps3_open_hv_device(dev);
--- 
-2.20.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
