@@ -2,71 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBEE2C6FD2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 16:47:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D312C6FD4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Nov 2020 17:04:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cjwqj5RRlzF1gM
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Nov 2020 02:47:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CjxBS6wwzzDrSp
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Nov 2020 03:04:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZhyQyF3x; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ header.s=20161025 header.b=CgE6KOyT; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CjwN70kznzDrQQ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Nov 2020 02:27:12 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id w202so7026557pff.10
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 07:27:12 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cjx826J7nzDrQX
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Nov 2020 03:01:52 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id t3so6708256pgi.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Nov 2020 08:01:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=DNjSlcfmF+OHlo4gVLmadoYUI7t/ZPA6392s3YiGIWc=;
- b=ZhyQyF3xqUCTfNzTWjnt5F47H7u0baAN9fFtRmD3iym4ZXUMOqum0cQhh3hWOctZwj
- gPht2kBh0BvlDlTsq8TVE/kd5SPzqm9X89p6ZfrT7H3C/ioyQY5tgO574Ym+INLe4FYc
- s21mRxDd6DGVyMY1fWbws1Pq/YhrjXB32LaWupdtbDbaxsW0QfJbAiHeuVFfQKfuXwL4
- 4JshxsnUfWHqQSkk+FnO+m1Flu7Wg1g/bOkeKaOJwHSdKSQC2TLM6Ybi/1wfBU+oOXqX
- Ncoe8p+vMg2cCr2cs0+3oYuDvraNpEh/P6BLPY5BbX1hBeAPkFfbcGcv4oiBi8Qqp35b
- wWXg==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=2O6qcQHJ1HIADKlavbzosnF3a3wMtszkYQ/PuPl66qI=;
+ b=CgE6KOyTfg3utDcRpZdx3wNg5OyhBXbYyc7PH8oa6j60BTtpQLlHDpvZodUSgtskAv
+ kqzv+kzRC8gJVu60u38BrPXBYCz+1pEo0KvxCwXjcwsZBMYy4UyOWOY3pEIZ4CakN9AD
+ IlOOeUveQZn2f5Ib6HdtyeE6Xd8O/3Ajz61BxBQaI2kgQLf9g57ysabjeDv/7CTlsJSV
+ 6GIrzobXL4pzBVG6qscprgZn16B+G8oGEPy3hSkuzq1R6I3T2JlwKWSi3WfN7MY57x/P
+ zPH8/jK+/t1BSRextQVoRrJHkVB9PMJuGQ9K8ajrDnT+LwE9dGk9paNd5x5WY4BqSCif
+ XnDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=DNjSlcfmF+OHlo4gVLmadoYUI7t/ZPA6392s3YiGIWc=;
- b=o2eQVGhMXtpeNTI2mg2SFEXf2eqzqQqgC/prFICRDt/bTgxE9ekavuWP8cFNfxnalA
- 6lbeZcSlQKK7aDHHrCmlLkVXfahTs24CfL92f2+vAJhjVFCvfSaIbsP6UXV+DIHtHfiw
- Q/viICuY5TsGwxesJ8RmoV4B9kseQFO8Y/NfRu48VSo/s2+qs3jdJoRR8YYGVgUsq5ue
- qSkl/NG1oO8qGAFzbX/GsYPlfO3RselS9rpahTiN3IiVfmfs7IDUU8d3OtHPDg8amVxa
- Gp9HGvqeRw7VW14adK7yYkoy0wvJZUO4V1ETTp9Ud8W4tgNiicp1pwE/5budwZ9qFt0O
- EiNg==
-X-Gm-Message-State: AOAM5337Yvx4Dd/zJDWsQZn9/DUDfLjOpBuw8xtruiSDlU+3N4cXSexg
- 4tdDJWP+pl1hAqtQT6Ga9kw=
-X-Google-Smtp-Source: ABdhPJyr33fJ1cRT/CXJUB52w14TzTSG2z78e+wqJpSmyHM7mMK5eJZP/z+qSOVYdPM5WOeIlQODnQ==
-X-Received: by 2002:a17:90a:1b6f:: with SMTP id
- q102mr16974828pjq.9.1606577229927; 
- Sat, 28 Nov 2020 07:27:09 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=2O6qcQHJ1HIADKlavbzosnF3a3wMtszkYQ/PuPl66qI=;
+ b=hIiNW0QITd5fLLIhY4FR2wS/ZJFkNLejC11LkxVNyVfY8J6lwg3e92xFEIqV25ztlp
+ BIt47ZziguDQSGih/WzjSXTBk2mxAiCr+eAQ2/9M+aQRl4VUjK7U5sHF7GQBdDKjrJtu
+ 3zjkuSfbyzvUhmEHiW8KR1km3LveOT63zHAIIZGwzcdW7zK2ORErm4bChIogmsrv52GK
+ /nribaMkk1HlTTuSyNkFAuk6M1/z4N4GbWcAawwHNdbNw0cs2SOCx/T/rP6l3kS4EfXI
+ vioSRc2VbzppjUDmedEbZh49APt5Vh8MVQs5tP9sRbFSQ5D5z2Fqoeh7Tu0Joy02BY5Y
+ KOqw==
+X-Gm-Message-State: AOAM530TunbDB0UdAmLM1JEsLoZZGNj1+5JeZabGKkXUKLKR5vhwS7vJ
+ 928bV88BeUClu8Kt7S62ktg=
+X-Google-Smtp-Source: ABdhPJwuiEos39Kd+yWnNTMmDC8yimmI7zJPon0FpMljcy6a+V40CGpf8EDqJAwgKioFXcJ84fR1pw==
+X-Received: by 2002:a17:90a:f695:: with SMTP id
+ cl21mr16872124pjb.137.1606579310741; 
+ Sat, 28 Nov 2020 08:01:50 -0800 (PST)
 Received: from bobo.ibm.com (193-116-103-132.tpgi.com.au. [193.116.103.132])
- by smtp.gmail.com with ESMTPSA id d22sm15500173pjw.11.2020.11.28.07.27.05
+ by smtp.gmail.com with ESMTPSA id d4sm9762607pjz.28.2020.11.28.08.01.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Nov 2020 07:27:09 -0800 (PST)
+ Sat, 28 Nov 2020 08:01:50 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
-To: linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v8 12/12] powerpc/64s/radix: Enable huge vmalloc mappings
-Date: Sun, 29 Nov 2020 01:25:59 +1000
-Message-Id: <20201128152559.999540-13-npiggin@gmail.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 0/8] shoot lazy tlbs
+Date: Sun, 29 Nov 2020 02:01:33 +1000
+Message-Id: <20201128160141.1003903-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20201128152559.999540-1-npiggin@gmail.com>
-References: <20201128152559.999540-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -80,46 +77,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- Zefan Li <lizefan@huawei.com>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- Documentation/admin-guide/kernel-parameters.txt | 2 ++
- arch/powerpc/Kconfig                            | 1 +
- 2 files changed, 3 insertions(+)
+This is a rebase now on top of Arnd's asm-generic tree, which has
+reduced most of the fluff from this patch series.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 44fde25bb221..3538c750c583 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3220,6 +3220,8 @@
- 
- 	nohugeiomap	[KNL,X86,PPC,ARM64] Disable kernel huge I/O mappings.
- 
-+	nohugevmalloc	[PPC] Disable kernel huge vmalloc mappings.
-+
- 	nosmt		[KNL,S390] Disable symmetric multithreading (SMT).
- 			Equivalent to smt=1.
- 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index e9f13fe08492..ae10381dd324 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -178,6 +178,7 @@ config PPC
- 	select GENERIC_TIME_VSYSCALL
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
-+	select HAVE_ARCH_HUGE_VMALLOC		if HAVE_ARCH_HUGE_VMAP
- 	select HAVE_ARCH_JUMP_LABEL
- 	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
- 	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
+The x86 refactoring is still in the way a bit, I hope to get some
+movement on that rather than rebase the main patches off it, because
+I think it's a good cleanup. I think it could go in a generic
+mm/scheduler series if we get arch acks because it's really just
+refactoring wrappers.
+
+The main result is reduced contention on lazy tlb mm refcount that
+helps very big systems.
+
+Thanks,
+Nick
+
+Nicholas Piggin (8):
+  lazy tlb: introduce exit_lazy_tlb
+  x86: use exit_lazy_tlb rather than
+    membarrier_mm_sync_core_before_usermode
+  x86: remove ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+  lazy tlb: introduce lazy mm refcount helper functions
+  lazy tlb: allow lazy tlb mm switching to be configurable
+  lazy tlb: shoot lazies, a non-refcounting lazy tlb option
+  powerpc: use lazy mm refcount helper functions
+  powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
+
+ .../membarrier-sync-core/arch-support.txt     |  6 +-
+ arch/Kconfig                                  | 24 +++++
+ arch/arm/mach-rpc/ecard.c                     |  3 +-
+ arch/powerpc/Kconfig                          |  1 +
+ arch/powerpc/kernel/smp.c                     |  2 +-
+ arch/powerpc/mm/book3s64/radix_tlb.c          |  5 +-
+ arch/x86/Kconfig                              |  1 -
+ arch/x86/include/asm/mmu_context.h            | 27 ++++++
+ arch/x86/kernel/alternative.c                 |  2 +-
+ arch/x86/kernel/cpu/mce/core.c                |  2 +-
+ drivers/misc/sgi-gru/grufault.c               |  2 +-
+ drivers/misc/sgi-gru/gruhandles.c             |  2 +-
+ drivers/misc/sgi-gru/grukservices.c           |  2 +-
+ fs/exec.c                                     |  6 +-
+ include/asm-generic/mmu_context.h             | 21 ++++
+ include/linux/sched/mm.h                      | 34 ++++---
+ include/linux/sync_core.h                     | 21 ----
+ init/Kconfig                                  |  3 -
+ kernel/cpu.c                                  |  6 +-
+ kernel/exit.c                                 |  2 +-
+ kernel/fork.c                                 | 53 ++++++++++
+ kernel/kthread.c                              | 12 ++-
+ kernel/sched/core.c                           | 97 +++++++++++++------
+ kernel/sched/sched.h                          |  4 +-
+ 24 files changed, 247 insertions(+), 91 deletions(-)
+ delete mode 100644 include/linux/sync_core.h
+
 -- 
 2.23.0
 
