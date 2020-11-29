@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0392C7BF4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 00:16:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 329C72C7BF7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 00:17:55 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ckkkm3PnCzDqch
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 10:16:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ckkmc2DW4zDrf6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 10:17:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,35 +19,36 @@ Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CkkY71W2YzDrCX
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 10:07:55 +1100 (AEDT)
-Received: by mail-wr1-f67.google.com with SMTP id m6so13058130wrg.7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Nov 2020 15:07:55 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CkkY85ZFQzDrN1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 10:07:56 +1100 (AEDT)
+Received: by mail-wr1-f67.google.com with SMTP id m6so13058212wrg.7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Nov 2020 15:07:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=Ff6pKCmLg5oT72OgCOHiIPYU12IbKoKvOXqEEVgg4cU=;
- b=j5UBR3WaswxgSYSdMClOPZ75eLQZ1xjMPzMq2ZdwJaStD7PBLHXqJoZEnBqsE2F3Yi
- 7FR5ISEWaAtf7bHTJji+WCBUuCwold2/FrzSqVBwykV2EtB77Tj+QuILvYzBTPmaweV3
- 8p1pJg8f5jb2pbMmI2mlv4FDnPp2VF8WEWWX5k7BlxE8F51sPYOthacOeN7f62U8wzZ2
- 2zKN19r6lolN/h/rZVPJHHkvsF2Ee2hYN3yz/jFhInDUkZZj/7oxfhZb3pKC8PPDr8it
- L0ijfDG/+fiPGIBgqmEoaYEYcQgaGCbODw69BC6Fv76srMZjqjkAtCUd3aa2WDq8OBft
- wZbg==
-X-Gm-Message-State: AOAM530lxeCi1BaXT67MnfBhwxU43WcGdk9MT9ZRNk2Nc6E/CwYb7+3H
- ZoijTfSGnPaUlRIv6vg71L4=
-X-Google-Smtp-Source: ABdhPJzHI72BcK2gh0kFjWjYjgwPhW5lYayUpFmk6eoZtDqknP6gOkv3hmwsP0YHAvHXiiV7ZOzodw==
-X-Received: by 2002:adf:f9c5:: with SMTP id w5mr24603230wrr.69.1606691272550; 
- Sun, 29 Nov 2020 15:07:52 -0800 (PST)
+ bh=uPxJqe/4fqAvPeHEi4PXiRImG9ouLArz1SvUbqNRaMU=;
+ b=ryVqPfZJHcZ3wOyfF/6QTRGaDtVF+7dTi44unPNXARdoOMNgdvY5bqZyVjUfEdgAGl
+ MzT1/1j/LHkd4Zjg6Ktzlc37UmJuMBnV8PvjjRDFxMN4p4Dysp73wpA5Pz6JoLj4L1Ay
+ TxiZ7pp+PG19WOkzYiYDi7xjyuSqtKV3JAv+qVTYjLhewbT6f+J++UlF7lBb7Kbp4nu+
+ g4NbjoHc1qKZ5RdJ6L68GnM1whN5NH4wNR0S4xsoPq2yl8dnwNWj7HJNDuDKJJw8UdaR
+ DsB7/wcwfDdQ0FZPvL4YGn8zd0ljjQ3zkww6L2Lxuq3E6fhJlQ/Ab9oiI6y9oQgxgFAp
+ vCRg==
+X-Gm-Message-State: AOAM530Ir9yPgZ8szOnpYccTtxVdDS730LB6TWFYc4Kp69WXuRIPstTd
+ GfhFX/KsD5G46fpnnJ6C+4o=
+X-Google-Smtp-Source: ABdhPJxBybijJQjc+K6GS3b05hGcfYGidU+rzn/2+1RrcEs/rkLFlqp5WDEDRPkMUSgp4rfySiTCfA==
+X-Received: by 2002:adf:e912:: with SMTP id f18mr24033599wrm.79.1606691274071; 
+ Sun, 29 Nov 2020 15:07:54 -0800 (PST)
 Received: from workstation.lan ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id d2sm24831005wrn.43.2020.11.29.15.07.50
+ by smtp.gmail.com with ESMTPSA id d2sm24831005wrn.43.2020.11.29.15.07.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 29 Nov 2020 15:07:52 -0800 (PST)
+ Sun, 29 Nov 2020 15:07:53 -0800 (PST)
 From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
 To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v6 4/5] PCI: vmd: Update type of the __iomem pointers
-Date: Sun, 29 Nov 2020 23:07:42 +0000
-Message-Id: <20201129230743.3006978-5-kw@linux.com>
+Subject: [PATCH v6 5/5] PCI: xgene: Removed unused ".bus_shift" initialisers
+ from pci-xgene.c
+Date: Sun, 29 Nov 2020 23:07:43 +0000
+Message-Id: <20201129230743.3006978-6-kw@linux.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201129230743.3006978-1-kw@linux.com>
 References: <20201129230743.3006978-1-kw@linux.com>
@@ -84,61 +85,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use "void __iomem" instead "char __iomem" pointer type when working with
-the accessor functions (with names like readb() or writel(), etc.) to
-better match a given accessor function signature where commonly the
-address pointing to an I/O memory region would be a "void __iomem"
-pointer.
-
-Related:
-  https://lwn.net/Articles/102232/
+Removed unused ".bus_shift" initialisers from pci-xgene.c as
+xgene_pcie_map_bus() did not use these.
 
 Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 ---
- drivers/pci/controller/vmd.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/controller/pci-xgene.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index 1361a79bd1e7..59fa9a94860f 100644
---- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -95,7 +95,7 @@ struct vmd_dev {
- 	struct pci_dev		*dev;
- 
- 	spinlock_t		cfg_lock;
--	char __iomem		*cfgbar;
-+	void __iomem		*cfgbar;
- 
- 	int msix_count;
- 	struct vmd_irq_list	*irqs;
-@@ -326,7 +326,7 @@ static void vmd_remove_irq_domain(struct vmd_dev *vmd)
- 	}
+diff --git a/drivers/pci/controller/pci-xgene.c b/drivers/pci/controller/pci-xgene.c
+index 8e0db84f089d..85e7c98265e8 100644
+--- a/drivers/pci/controller/pci-xgene.c
++++ b/drivers/pci/controller/pci-xgene.c
+@@ -257,7 +257,6 @@ static int xgene_v1_pcie_ecam_init(struct pci_config_window *cfg)
  }
  
--static char __iomem *vmd_cfg_addr(struct vmd_dev *vmd, struct pci_bus *bus,
-+static void __iomem *vmd_cfg_addr(struct vmd_dev *vmd, struct pci_bus *bus,
- 				  unsigned int devfn, int reg, int len)
- {
- 	unsigned int busnr_ecam = bus->number - vmd->busn_start;
-@@ -346,7 +346,7 @@ static int vmd_pci_read(struct pci_bus *bus, unsigned int devfn, int reg,
- 			int len, u32 *value)
- {
- 	struct vmd_dev *vmd = vmd_from_bus(bus);
--	char __iomem *addr = vmd_cfg_addr(vmd, bus, devfn, reg, len);
-+	void __iomem *addr = vmd_cfg_addr(vmd, bus, devfn, reg, len);
- 	unsigned long flags;
- 	int ret = 0;
+ const struct pci_ecam_ops xgene_v1_pcie_ecam_ops = {
+-	.bus_shift	= 16,
+ 	.init		= xgene_v1_pcie_ecam_init,
+ 	.pci_ops	= {
+ 		.map_bus	= xgene_pcie_map_bus,
+@@ -272,7 +271,6 @@ static int xgene_v2_pcie_ecam_init(struct pci_config_window *cfg)
+ }
  
-@@ -381,7 +381,7 @@ static int vmd_pci_write(struct pci_bus *bus, unsigned int devfn, int reg,
- 			 int len, u32 value)
- {
- 	struct vmd_dev *vmd = vmd_from_bus(bus);
--	char __iomem *addr = vmd_cfg_addr(vmd, bus, devfn, reg, len);
-+	void __iomem *addr = vmd_cfg_addr(vmd, bus, devfn, reg, len);
- 	unsigned long flags;
- 	int ret = 0;
- 
+ const struct pci_ecam_ops xgene_v2_pcie_ecam_ops = {
+-	.bus_shift	= 16,
+ 	.init		= xgene_v2_pcie_ecam_init,
+ 	.pci_ops	= {
+ 		.map_bus	= xgene_pcie_map_bus,
 -- 
 2.29.2
 
