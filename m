@@ -2,58 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51A92C8D7E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 19:56:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 740662C8D81
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 19:58:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClDwg3ZgfzDqQh
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 05:56:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClDyg1T5CzDqSH
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 05:58:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.66; helo=mail-wm1-f66.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.221.68; helo=mail-wr1-f68.google.com;
  envelope-from=k.kozlowski.k@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com
- [209.85.128.66])
+Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com
+ [209.85.221.68])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ClDrm3krGzDqP0
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 05:53:12 +1100 (AEDT)
-Received: by mail-wm1-f66.google.com with SMTP id a3so428744wmb.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 10:53:11 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClDs95xbbzDqRC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 05:53:33 +1100 (AEDT)
+Received: by mail-wr1-f68.google.com with SMTP id i2so17611161wrs.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 10:53:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=wNVU7Wnc+eaUIFVNFzSXWeay3XxE3SLhhM3FYJKrr3g=;
- b=YPwjHh6rbBhDfFtmqPfIhn8dajpSM70JnB5WKYAKaGkmCx994FhLV8h2fBbFmaHd4S
- 65o6c1PGoPWZ20kzhe3DpMI0BUOA8kQiOqLEIeMALvGHiWR1n0FkdJw8V59kpIEtWAow
- YciRJG4WBYFTAjb8E9mbvuo3mh+0E1zYX0ZVDKSBlbukCIISOkXLgJapz9vmm4OrQ8hz
- PGLoL66hCbxOPl4lfvaXzi/wqUrsqVrHKD4YFq0oAMHTV9eThhP2P+sAQ/J4bHrbu1gB
- jj/saOcyTKfsHDpmAi/z4685Ak37YIvAML+fuZjWbCnIEvWvcYytN8rpUjx1E4FbS4cz
- hmAg==
-X-Gm-Message-State: AOAM531TkUuPiJ8D8Arp9ramkD+jxullt+jFwlK6BAfHtB16xJFU7Z5H
- /LY6v+wOFwA2+xh6oO4BUUo=
-X-Google-Smtp-Source: ABdhPJw2FpgOR9PNeU1ye9qy5ni/TqLv9KVWJBGLmFHBKrWivAMsq4H9XX+Pn9Oe2EPE53IGBG4kBQ==
-X-Received: by 2002:a7b:c00b:: with SMTP id c11mr195572wmb.175.1606762388808; 
- Mon, 30 Nov 2020 10:53:08 -0800 (PST)
+ bh=mtWjhyJKSY07pJm4d9iFY7jeF0Tu5I4taqa0sRTC28A=;
+ b=guzcAt7Gly2HsGrcOAYLRaKzBQN0W/XFPluf7B+BWUtwRsvpunWx1wQ40rK+s1lpd4
+ 30PCsH0F+Zkg+tdJxbSE8Qivvp3AtT3UvlcRgLAhAM0yi+BcmI3JQmVRFwVb2ywyGfg0
+ Wec43newCmqzxg9gOWmMckq1RRwe9BRHvCVTAE3Kbq0Y0PYWQsE3xYmRFhh/lgdMyoH5
+ ZEuihrDFO8MKfxKwbgDEDF8wBbmVc5/aLu+fb2esvy9sFY62QJZkdzA86ZLeumN5Suq7
+ BTScE/JGZvHSs8Py5R7XPHjyAoQTjnIpOQP4YsA6Ne+2ltu/NC2thyoKoDaDZuyNNVgy
+ gDaw==
+X-Gm-Message-State: AOAM532oaiZ86xy0QxvRHpstdak3AuL6pn1zt00JX8BBPhXS1yYSEa9v
+ otyBKS+2DOznoxJ64yZN6sg=
+X-Google-Smtp-Source: ABdhPJwXa0AqF81gvDse9p0Yw/CaQ7O2QUQTvVTmgvjzB90sBz+llfV2kANrqxAIRMnHg7L2O6jxCw==
+X-Received: by 2002:adf:f441:: with SMTP id f1mr30343737wrp.225.1606762409693; 
+ Mon, 30 Nov 2020 10:53:29 -0800 (PST)
 Received: from kozik-lap (adsl-84-226-167-205.adslplus.ch. [84.226.167.205])
- by smtp.googlemail.com with ESMTPSA id b73sm903707wmb.0.2020.11.30.10.53.06
+ by smtp.googlemail.com with ESMTPSA id u23sm245138wmc.32.2020.11.30.10.53.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Nov 2020 10:53:07 -0800 (PST)
-Date: Mon, 30 Nov 2020 20:53:04 +0200
+ Mon, 30 Nov 2020 10:53:28 -0800 (PST)
+Date: Mon, 30 Nov 2020 20:53:26 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-Subject: Re: [PATCH 2/5] arm64: defconfig: drop unused BACKLIGHT_GENERIC option
-Message-ID: <20201130185304.GB29434@kozik-lap>
+Subject: Re: [PATCH 3/5] MIPS: configs: drop unused BACKLIGHT_GENERIC option
+Message-ID: <20201130185326.GC29434@kozik-lap>
 References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
- <20201130152137.24909-3-andrey.zhizhikin@leica-geosystems.com>
+ <20201130152137.24909-4-andrey.zhizhikin@leica-geosystems.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201130152137.24909-3-andrey.zhizhikin@leica-geosystems.com>
+In-Reply-To: <20201130152137.24909-4-andrey.zhizhikin@leica-geosystems.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,25 +80,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 30, 2020 at 03:21:34PM +0000, Andrey Zhizhikin wrote:
+On Mon, Nov 30, 2020 at 03:21:35PM +0000, Andrey Zhizhikin wrote:
 > Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
 > unused") removed geenric_bl driver from the tree, together with
 > corresponding config option.
 > 
-> Remove BACKLIGHT_GENERIC config item from arm64 configuration.
+> Remove BACKLIGHT_GENERIC config item from all MIPS configurations.
 > 
 > Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is unused")
 > Cc: Sam Ravnborg <sam@ravnborg.org>
 > Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
 > ---
->  arch/arm64/configs/defconfig | 1 -
->  1 file changed, 1 deletion(-)
+>  arch/mips/configs/gcw0_defconfig      | 1 -
+>  arch/mips/configs/gpr_defconfig       | 1 -
+>  arch/mips/configs/lemote2f_defconfig  | 1 -
+>  arch/mips/configs/loongson3_defconfig | 1 -
+>  arch/mips/configs/mtx1_defconfig      | 1 -
+>  arch/mips/configs/rs90_defconfig      | 1 -
+>  6 files changed, 6 deletions(-)
 > 
 
 Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-
-The same trouble as with ARM patch - this should go directly via
-arm-soc.
 
 Best regards,
 Krzysztof
