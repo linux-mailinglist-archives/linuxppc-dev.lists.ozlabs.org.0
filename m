@@ -2,82 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451232C8AE0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 18:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C9C2C8AF1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 18:28:07 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClBvR5LqQzDqb0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 04:25:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClByX4cL7zDqvN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 04:28:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Pw8DfjCV; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=JxsVuMeN; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ClBr924gxzDq97
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 04:22:31 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AUHJY7Y039595; Mon, 30 Nov 2020 12:22:26 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClBwQ2ptfzDq5k
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 04:26:13 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0AUHDWxM091139; Mon, 30 Nov 2020 12:26:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=subject : to : cc :
  references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=LCS14rAVrx6siTkz3By+UZK64chWUDEhtThWX6d7LTM=;
- b=Pw8DfjCVCBCQdo5nAZtVDdlQo7f3H2SoHelKmFx4Mqp5LIzNQTE0SvqKbsuchawCtczv
- kfd1jVVVbmjFmSbl+ALej83Src4ZyS8wcHg7zHKTIVX1vbYVXi6LAJcwmq229nz7YjQ+
- fLb5XzvATFTNNThWoKN3oNqL9qgWQDwd9XuwEZT3YfFtjd1XoMmSIGC5M3sUGJg9ifAd
- L+Ml97zDA4PtiXzoU1UoO60yvBx5JA9oQR6nlpnWc4+dBvoAZNYkqAfTwU3qj5XOjVtz
- k6C+PAyHVXmHSsetPQLqiduEz3uIhpo+wJLoC9QZaNe9VwV7YhIg93yoVZNswRQIsGnQ tg== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35551s83c0-1
+ bh=g6iMkPFw8NFXQFPi6jTuMBsBCW+yakWb4p7XimClNwc=;
+ b=JxsVuMeN6lfQOk2wcnW/ZaDk9fPYuViNRQHoTCrSfZUNUlw4Y0VaLzxNZE6eH8yvCc8V
+ clqPivzaIA2AUErUlEYysw5+ZVDae1jACKJaO5HxsEf+N6a/QzsFwt9muUt8+HKrDgRe
+ ZERDrVjJfNb6oPvdAnXIAzqVLF6/X9p81z/ZC/GzkvzuiBQIPo4HwUwvFESHcctlUTmx
+ Em/s1p41yrHiFLO/1b9thP3RfYQHOKD0pnTCJGyFAFjm+FNu6RKYSBbS9YCtmyUnLZlM
+ zzUcxRQV0LDCIaFXKgbKHAHSRxgj/6UV1DqhmgWAJ49kbKec9P/s0LKWxODQUqc7maeY Ow== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3554xq0e0r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Nov 2020 12:22:26 -0500
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AUHM54O013021;
- Mon, 30 Nov 2020 17:22:25 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma01dal.us.ibm.com with ESMTP id 353e68wm2c-1
+ Mon, 30 Nov 2020 12:26:10 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AUHNLat005907;
+ Mon, 30 Nov 2020 17:26:09 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma02dal.us.ibm.com with ESMTP id 353e69dmgh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Nov 2020 17:22:25 +0000
+ Mon, 30 Nov 2020 17:26:09 +0000
 Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
  [9.57.199.109])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AUHMOKM56099190
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0AUHQ9P05964452
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Nov 2020 17:22:24 GMT
+ Mon, 30 Nov 2020 17:26:09 GMT
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AC59811207C;
- Mon, 30 Nov 2020 17:22:24 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id EEE89112066;
+ Mon, 30 Nov 2020 17:26:08 +0000 (GMT)
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A1450112075;
- Mon, 30 Nov 2020 17:22:22 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7700111207C;
+ Mon, 30 Nov 2020 17:26:06 +0000 (GMT)
 Received: from oc6857751186.ibm.com (unknown [9.65.215.138])
  by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 30 Nov 2020 17:22:22 +0000 (GMT)
-Subject: Re: [PATCH 01/13] ibmvfc: add vhost fields and defaults for MQ
- enablement
+ Mon, 30 Nov 2020 17:26:06 +0000 (GMT)
+Subject: Re: [PATCH 04/13] ibmvfc: add alloc/dealloc routines for SCSI Sub-CRQ
+ Channels
 To: Brian King <brking@linux.vnet.ibm.com>,
  james.bottomley@hansenpartnership.com
 References: <20201126014824.123831-1-tyreld@linux.ibm.com>
- <20201126014824.123831-2-tyreld@linux.ibm.com>
- <97e577a0-50f5-3ade-a377-7479f0f1c890@linux.vnet.ibm.com>
+ <20201126014824.123831-5-tyreld@linux.ibm.com>
+ <0c308b76-c744-0257-d5ba-3ffd0e6073a3@linux.vnet.ibm.com>
 From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <8f637bcf-c9b4-9bf3-08a9-b3fdf3b7cf40@linux.ibm.com>
-Date: Mon, 30 Nov 2020 09:22:21 -0800
+Message-ID: <0eeac30f-07bd-d4c5-fe21-d5092ca3fd62@linux.ibm.com>
+Date: Mon, 30 Nov 2020 09:26:05 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <97e577a0-50f5-3ade-a377-7479f0f1c890@linux.vnet.ibm.com>
+In-Reply-To: <0c308b76-c744-0257-d5ba-3ffd0e6073a3@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -86,11 +86,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
  definitions=2020-11-30_06:2020-11-30,
  2020-11-30 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- phishscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
- adultscore=0 priorityscore=1501 clxscore=1015 mlxscore=0 impostorscore=0
+ spamscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ suspectscore=2 priorityscore=1501 clxscore=1015 bulkscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2011300110
+ definitions=main-2011300106
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,59 +109,152 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/27/20 9:45 AM, Brian King wrote:
+On 11/27/20 9:46 AM, Brian King wrote:
 > On 11/25/20 7:48 PM, Tyrel Datwyler wrote:
->> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.h b/drivers/scsi/ibmvscsi/ibmvfc.h
->> index 9d58cfd774d3..8225bdbb127e 100644
->> --- a/drivers/scsi/ibmvscsi/ibmvfc.h
->> +++ b/drivers/scsi/ibmvscsi/ibmvfc.h
->> @@ -41,6 +41,11 @@
->>  #define IBMVFC_DEFAULT_LOG_LEVEL	2
->>  #define IBMVFC_MAX_CDB_LEN		16
->>  #define IBMVFC_CLS3_ERROR		0
->> +#define IBMVFC_MQ			0
+>> Allocate a set of Sub-CRQs in advance. During channel setup the client
+>> and VIOS negotiate the number of queues the VIOS supports and the number
+>> that the client desires to request. Its possible that the final channel
+>> resources allocated is less than requested, but the client is still
+>> responsible for sending handles for every queue it is hoping for.
+>>
+>> Also, provide deallocation cleanup routines.
+>>
+>> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+>> ---
+>>  drivers/scsi/ibmvscsi/ibmvfc.c | 115 +++++++++++++++++++++++++++++++++
+>>  drivers/scsi/ibmvscsi/ibmvfc.h |   1 +
+>>  2 files changed, 116 insertions(+)
+>>
+>> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> index 260b82e3cc01..571abdb48384 100644
+>> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
+>> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> @@ -4983,6 +4983,114 @@ static int ibmvfc_init_crq(struct ibmvfc_host *vhost)
+>>  	return retrc;
+>>  }
+>>  
+>> +static int ibmvfc_register_scsi_channel(struct ibmvfc_host *vhost,
+>> +				  int index)
+>> +{
+>> +	struct device *dev = vhost->dev;
+>> +	struct vio_dev *vdev = to_vio_dev(dev);
+>> +	struct ibmvfc_sub_queue *scrq = &vhost->scsi_scrqs.scrqs[index];
+>> +	int rc = -ENOMEM;
+>> +
+>> +	ENTER;
+>> +
+>> +	scrq->msgs = (struct ibmvfc_sub_crq *)get_zeroed_page(GFP_KERNEL);
+>> +	if (!scrq->msgs)
+>> +		return rc;
+>> +
+>> +	scrq->size = PAGE_SIZE / sizeof(*scrq->msgs);
+>> +	scrq->msg_token = dma_map_single(dev, scrq->msgs, PAGE_SIZE,
+>> +					 DMA_BIDIRECTIONAL);
+>> +
+>> +	if (dma_mapping_error(dev, scrq->msg_token))
+>> +		goto dma_map_failed;
+>> +
+>> +	rc = h_reg_sub_crq(vdev->unit_address, scrq->msg_token, PAGE_SIZE,
+>> +			   &scrq->cookie, &scrq->hw_irq);
+>> +
+>> +	if (rc) {
+>> +		dev_warn(dev, "Error registering sub-crq: %d\n", rc);
+>> +		dev_warn(dev, "Firmware may not support MQ\n");
+>> +		goto reg_failed;
+>> +	}
+>> +
+>> +	scrq->hwq_id = index;
+>> +	scrq->vhost = vhost;
+>> +
+>> +	LEAVE;
+>> +	return 0;
+>> +
+>> +reg_failed:
+>> +	dma_unmap_single(dev, scrq->msg_token, PAGE_SIZE, DMA_BIDIRECTIONAL);
+>> +dma_map_failed:
+>> +	free_page((unsigned long)scrq->msgs);
+>> +	LEAVE;
+>> +	return rc;
+>> +}
+>> +
+>> +static void ibmvfc_deregister_scsi_channel(struct ibmvfc_host *vhost, int index)
+>> +{
+>> +	struct device *dev = vhost->dev;
+>> +	struct vio_dev *vdev = to_vio_dev(dev);
+>> +	struct ibmvfc_sub_queue *scrq = &vhost->scsi_scrqs.scrqs[index];
+>> +	long rc;
+>> +
+>> +	ENTER;
+>> +
+>> +	do {
+>> +		rc = plpar_hcall_norets(H_FREE_SUB_CRQ, vdev->unit_address,
+>> +					scrq->cookie);
+>> +	} while (rc == H_BUSY || H_IS_LONG_BUSY(rc));
+>> +
+>> +	if (rc)
+>> +		dev_err(dev, "Failed to free sub-crq[%d]: rc=%ld\n", index, rc);
+>> +
+>> +	dma_unmap_single(dev, scrq->msg_token, PAGE_SIZE, DMA_BIDIRECTIONAL);
+>> +	free_page((unsigned long)scrq->msgs);
+>> +	LEAVE;
+>> +}
+>> +
+>> +static int ibmvfc_init_sub_crqs(struct ibmvfc_host *vhost)
+>> +{
+>> +	int i, j;
+>> +
+>> +	ENTER;
+>> +
+>> +	vhost->scsi_scrqs.scrqs = kcalloc(vhost->client_scsi_channels,
+>> +					  sizeof(*vhost->scsi_scrqs.scrqs),
+>> +					  GFP_KERNEL);
+>> +	if (!vhost->scsi_scrqs.scrqs)
+>> +		return -1;
+>> +
+>> +	for (i = 0; i < vhost->client_scsi_channels; i++) {
+>> +		if (ibmvfc_register_scsi_channel(vhost, i)) {
+>> +			for (j = i; j > 0; j--)
+>> +				ibmvfc_deregister_scsi_channel(vhost, j - 1);
+>> +			kfree(vhost->scsi_scrqs.scrqs);
+>> +			LEAVE;
+>> +			return -1;
+>> +		}
+>> +	}
+>> +
+>> +	LEAVE;
+>> +	return 0;
+>> +}
+>> +
+>> +static void ibmvfc_release_sub_crqs(struct ibmvfc_host *vhost)
+>> +{
+>> +	int i;
+>> +
+>> +	ENTER;
+>> +	if (!vhost->scsi_scrqs.scrqs)
+>> +		return;
+>> +
+>> +	for (i = 0; i < vhost->client_scsi_channels; i++)
+>> +		ibmvfc_deregister_scsi_channel(vhost, i);
+>> +
+>> +	vhost->scsi_scrqs.active_queues = 0;
+>> +	kfree(vhost->scsi_scrqs.scrqs);
 > 
-> Given that IBMVFC_MQ is getting set to 0 here, that means mq_enabled is also
-> always zero, so am I correct that a lot of this code being added is not
-> yet capable of being executed?
+> Do you want to NULL this out after you free it do you don't keep
+> a reference to a freed page around?
 
-Not with out a direct intervention from a hard coding a different value when
-building the code. See comment below.
-
-> 
->> +#define IBMVFC_SCSI_CHANNELS		0
-> 
-> Similar comment here...
-> 
->> +#define IBMVFC_SCSI_HW_QUEUES		1
-> 
-> I don't see any subsequent patches in this series that would ever result
-> in nr_hw_queues getting set to anything other than 1. Is that future work
-> planned or am I missing something?
-
-Yes, there is still some changes to EH that need to be included before those
-values are safe to be set to anything else by the average user.
+This isn't actually a page, but a dynamically allocated array of
+ibmvfc_sub_queues, but it should be NULL'ed regardless.
 
 -Tyrel
 
 > 
->> +#define IBMVFC_MIG_NO_SUB_TO_CRQ	0
->> +#define IBMVFC_MIG_NO_N_TO_M		0
->>  
->>  /*
->>   * Ensure we have resources for ERP and initialization:
->> @@ -826,6 +831,10 @@ struct ibmvfc_host {
->>  	int delay_init;
->>  	int scan_complete;
->>  	int logged_in;
->> +	int mq_enabled;
->> +	int using_channels;
->> +	int do_enquiry;
->> +	int client_scsi_channels;
->>  	int aborting_passthru;
->>  	int events_to_log;
->>  #define IBMVFC_AE_LINKUP	0x0001
->>
+>> +	LEAVE;
+>> +}
+>> +
+>>  /**
+>>   * ibmvfc_free_mem - Free memory for vhost
+>>   * @vhost:	ibmvfc host struct
+> 
 > 
 > 
 
