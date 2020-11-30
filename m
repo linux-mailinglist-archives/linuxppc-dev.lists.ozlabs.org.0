@@ -1,60 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE212C8094
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 10:08:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBD32C80F8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 10:27:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CkztS43ZLzDrDm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 20:08:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cl0JH1xBWzDrJv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 20:27:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CkzrT6tjPzDqVD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 20:07:03 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-80-IWcXTuCBM3uUJIkbSzc7wQ-1; Mon, 30 Nov 2020 09:06:57 +0000
-X-MC-Unique: IWcXTuCBM3uUJIkbSzc7wQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Mon, 30 Nov 2020 09:06:56 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Mon, 30 Nov 2020 09:06:56 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: =?utf-8?B?J0tyenlzenRvZiBXaWxjennFhHNraSc=?= <kw@linux.com>, Bjorn Helgaas
- <bhelgaas@google.com>
-Subject: RE: [PATCH v6 4/5] PCI: vmd: Update type of the __iomem pointers
-Thread-Topic: [PATCH v6 4/5] PCI: vmd: Update type of the __iomem pointers
-Thread-Index: AQHWxqWOFrNLxNoH9E63s2U4AbPR/6ngYYng
-Date: Mon, 30 Nov 2020 09:06:56 +0000
-Message-ID: <81f4ddc2f0524b4b80c8a0bfa2df57fe@AcuMS.aculab.com>
-References: <20201129230743.3006978-1-kw@linux.com>
- <20201129230743.3006978-5-kw@linux.com>
-In-Reply-To: <20201129230743.3006978-5-kw@linux.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl0G374d2zDqVv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 20:25:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=4dY4EOkG53RHP6M1jV6qxthiECmU22437CkB/VPnVPw=; b=kbQGkp1u8lv60ej2mi34V4mTz0
+ N8a3Ez89RDu9lKYw76gAQyyX4evCA66FdyQJveREpKWf3AV58pF4mJjBEPUd7MQos+KYNuk8RDGEN
+ sh+Zc+1F45nsR3AapUUzVrd1wQkIKgS99MhYVVkhjfPOHphpcbIBCgYFiPh557zukzfsSuu5fuBGP
+ tVD5hdB91z5EfXbvmHYzNrB/zkTO/Rj+qGDA7wEC3F3Mynk1troqL16mzp01WYZxOPKo/f2GikU41
+ jAHYbokoPtpCzotPYSODIsX08cc+6ZQQ/LUA7JxAacs4u8VFci8A+OqeitAohkQmbvqFrxeY466Bn
+ tiJGqL4Q==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kjfQy-0007TZ-F6; Mon, 30 Nov 2020 09:25:24 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 3C56F301179;
+ Mon, 30 Nov 2020 10:25:23 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 1B33020107BE2; Mon, 30 Nov 2020 10:25:23 +0100 (CET)
+Date: Mon, 30 Nov 2020 10:25:23 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH 6/8] lazy tlb: shoot lazies, a non-refcounting lazy tlb
+ option
+Message-ID: <20201130092523.GK2414@hirez.programming.kicks-ass.net>
+References: <20201128160141.1003903-1-npiggin@gmail.com>
+ <20201128160141.1003903-7-npiggin@gmail.com>
+ <CALCETrVXUbe8LfNn-Qs+DzrOQaiw+sFUg1J047yByV31SaTOZw@mail.gmail.com>
+ <CALCETrWBtCfD+jZ3S+O8FK-HFPODuhbDEbbfWvS=-iPATNFAOA@mail.gmail.com>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALCETrWBtCfD+jZ3S+O8FK-HFPODuhbDEbbfWvS=-iPATNFAOA@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,47 +69,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Stuebner <heiko@sntech.de>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- Shawn Lin <shawn.lin@rock-chips.com>, Paul Mackerras <paulus@samba.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Jonathan Chocron <jonnyc@amazon.com>, Toan Le <toan@os.amperecomputing.com>,
- Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Michal
- Simek <michal.simek@xilinx.com>,
- "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
- "bcm-kernel-feedback-list@broadcom.com"
- <bcm-kernel-feedback-list@broadcom.com>,
- Jonathan Derrick <jonathan.derrick@intel.com>, Ray Jui <rjui@broadcom.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- "linux-rpi-kernel@lists.infradead.org" <linux-rpi-kernel@lists.infradead.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Scott Branden <sbranden@broadcom.com>, Zhou Wang <wangzhou1@hisilicon.com>,
- Robert Richter <rrichter@marvell.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogS3J6eXN6dG9mIFdpbGN6eW5za2kNCj4gU2VudDogMjkgTm92ZW1iZXIgMjAyMCAyMzow
-OA0KPiANCj4gVXNlICJ2b2lkIF9faW9tZW0iIGluc3RlYWQgImNoYXIgX19pb21lbSIgcG9pbnRl
-ciB0eXBlIHdoZW4gd29ya2luZyB3aXRoDQo+IHRoZSBhY2Nlc3NvciBmdW5jdGlvbnMgKHdpdGgg
-bmFtZXMgbGlrZSByZWFkYigpIG9yIHdyaXRlbCgpLCBldGMuKSB0bw0KPiBiZXR0ZXIgbWF0Y2gg
-YSBnaXZlbiBhY2Nlc3NvciBmdW5jdGlvbiBzaWduYXR1cmUgd2hlcmUgY29tbW9ubHkgdGhlDQo+
-IGFkZHJlc3MgcG9pbnRpbmcgdG8gYW4gSS9PIG1lbW9yeSByZWdpb24gd291bGQgYmUgYSAidm9p
-ZCBfX2lvbWVtIg0KPiBwb2ludGVyLg0KDQpJU1RNIHRoYXQgaXMgaGVhZGluZyBpbiB0aGUgd3Jv
-bmcgZGlyZWN0aW9uLg0KDQpJIHRoaW5rIChmb3JtIHRoZSB2YXJpYWJsZSBuYW1lcyBldGMpIHRo
-YXQgdGhlc2UgYXJlIHBvaW50ZXJzDQp0byBzcGVjaWZpYyByZWdpc3RlcnMuDQoNClNvIHdoYXQg
-eW91IG91Z2h0IHRvIGhhdmUgaXMgYSB0eXBlIGZvciB0aGF0IHJlZ2lzdGVyIGJsb2NrLg0KVHlw
-aWNhbGx5IHRoaXMgaXMgYWN0dWFsbHkgYSBzdHJ1Y3R1cmUgLSB0byBnaXZlIHNvbWUgdHlwZQ0K
-Y2hlY2tpbmcgdGhhdCB0aGUgb2Zmc2V0cyBhcmUgYmVpbmcgdXNlZCB3aXRoIHRoZSBjb3JyZWN0
-DQpiYXNlIGFkZHJlc3MuDQoNCklmIHRoZSBjb2RlIGlzIHVzaW5nIG51bWVyaWMgb2Zmc2V0cyAo
-aGFyZHdhcmUgZW5naW5lZXJzIGxpa2UNCm51bWVyaWMgb2Zmc2V0cykgdGhlbiB5b3UgY2FuIGdl
-dCBzb21lIHR5cGUgcHJvdGVjdGlvbiBieSB1c2luZw0KYSBzdHJ1Y3R1cmUgdGhhdCBvbmx5IGNv
-bnRhaW5zIGEgc2luZ2xlIGZpZWxkIChjaGFyIGluIHRoaXMgY2FzZSkuDQoNCglEYXZpZA0KDQot
-DQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwg
-TWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2Fs
-ZXMpDQo=
+On Sun, Nov 29, 2020 at 12:16:26PM -0800, Andy Lutomirski wrote:
+> On Sat, Nov 28, 2020 at 7:54 PM Andy Lutomirski <luto@kernel.org> wrote:
+> >
+> > On Sat, Nov 28, 2020 at 8:02 AM Nicholas Piggin <npiggin@gmail.com> wrote:
+> > >
+> > > On big systems, the mm refcount can become highly contented when doing
+> > > a lot of context switching with threaded applications (particularly
+> > > switching between the idle thread and an application thread).
+> > >
+> > > Abandoning lazy tlb slows switching down quite a bit in the important
+> > > user->idle->user cases, so so instead implement a non-refcounted scheme
+> > > that causes __mmdrop() to IPI all CPUs in the mm_cpumask and shoot down
+> > > any remaining lazy ones.
+> > >
+> > > Shootdown IPIs are some concern, but they have not been observed to be
+> > > a big problem with this scheme (the powerpc implementation generated
+> > > 314 additional interrupts on a 144 CPU system during a kernel compile).
+> > > There are a number of strategies that could be employed to reduce IPIs
+> > > if they turn out to be a problem for some workload.
+> >
+> > I'm still wondering whether we can do even better.
+> >
+> 
+> Hold on a sec.. __mmput() unmaps VMAs, frees pagetables, and flushes
+> the TLB.  On x86, this will shoot down all lazies as long as even a
+> single pagetable was freed.  (Or at least it will if we don't have a
+> serious bug, but the code seems okay.  We'll hit pmd_free_tlb, which
+> sets tlb->freed_tables, which will trigger the IPI.)  So, on
+> architectures like x86, the shootdown approach should be free.  The
+> only way it ought to have any excess IPIs is if we have CPUs in
+> mm_cpumask() that don't need IPI to free pagetables, which could
+> happen on paravirt.
+> 
+> Can you try to figure out why you saw any increase in IPIs?  It would
+> be nice if we can make the new code unconditional.
 
+Power doesn't do IPI based TLBI.
