@@ -1,59 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6066B2C8887
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 16:46:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829672C89B7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 17:40:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cl8j21KFSzDqFM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 02:46:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cl9vc6sJtzDqk7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 03:40:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.67; helo=mail-wm1-f67.google.com;
- envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.166.67; helo=mail-io1-f67.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.com
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com
- [209.85.128.67])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-io1-f67.google.com (mail-io1-f67.google.com
+ [209.85.166.67])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl8fC1PNzzDqty
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 02:43:46 +1100 (AEDT)
-Received: by mail-wm1-f67.google.com with SMTP id c198so18886970wmd.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 07:43:46 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl9sV2jCvzDqWP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 03:38:38 +1100 (AEDT)
+Received: by mail-io1-f67.google.com with SMTP id o8so12442559ioh.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 08:38:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=wrXxUQ92cZjqbtsEEoadFbidu9p7SlbrPzlM2q7qXbQ=;
- b=L3UIAn3knrTby5OeNbOWeQa3xtOfz1A7iw+VcNR2z6hkrFo//2Mezthnmg104fxeB4
- UdB3ui4BQEmmEBKmetsJqd9CJC9CucpsrFvenXgLqqDk34h/6UmVNiAZJvLvLiBju5kH
- GR/fCqY3TAp94qFAWVf8aT6mSQ1rziM2LX5jgrlYMh9pGHgLvssT7adWIqwye+2cmNU6
- p0AmDsFiKQIAWxK3gzgfMbJClDGHjpKlyLMQ+Gq7osoT2HmtSwRYweLwyRglFeBas3sa
- +mjkLE37bkvkj8amOBZMIzGeuo1yPKXzRwsGEdNfzeUQUjLNSnc9+dhQEkHGF6Kb49Iq
- vs+Q==
-X-Gm-Message-State: AOAM530Mht/vKI2XcIM/MD0FniQ2/PVxuZ5+DTU4Y1Ko5sV0XXlEbSo+
- CO/Ui8snKERYRCm3O8iybt8=
-X-Google-Smtp-Source: ABdhPJwrrDJzMhj73fjDkT0ADgqZ22ISWQCdbgUESE4glj3y9mWsdL0QCouWmsg3hBrKTtQdmgQ/Kw==
-X-Received: by 2002:a1c:1d85:: with SMTP id d127mr7724937wmd.39.1606751023484; 
- Mon, 30 Nov 2020 07:43:43 -0800 (PST)
-Received: from rocinante ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id x5sm29038317wrm.96.2020.11.30.07.43.41
+ bh=tFYu+zcPVaijJyMJm5EUKsYsvWv061fpjh0clpgn5vA=;
+ b=OXtmhuTUtA9BfOWZ3uU+VTEQNnCLEE4CHDFzvD6lFgzN3jGP7rmV49rllVpyWKiP6Z
+ R5jB74b0C02FRtLrbvx4P21cmO+G7VHPpoMja2+WtEKGrJUdWqOcy45C+9KzdTIXs5gH
+ nXVzz11EuERqQ1pMmo429tXt7xJwV9Ot9Ia0ZUnKY5Ff9Blblnu3BUAXeqm1DDV95cF8
+ mWDTN2IB/votqUkYpXUGLqEb9MniK/d/7GYRLl49SksjYh5s0rE1hI7Gfri1CCkvZrFt
+ ViC+XNJh8k6Z4yAHD10v7xwqpEo8C1/wLy9mtkMxgvFOMDIBjv6cuGrZ6fRU7Tc7J0VX
+ mIKw==
+X-Gm-Message-State: AOAM530QRJB+LMhO9aNaq9cJPe4irZSaukymUmkNpqtXQ8WKXESwkPEs
+ O7ILoAhGDr7lk+P3jnZcrA==
+X-Google-Smtp-Source: ABdhPJwO8/AKHHQtotzeksDXX1wp3u3t+G5jA46XRQZErHhLBCCcrUV6i188c/xtoojwacdGbzMMXA==
+X-Received: by 2002:a6b:b514:: with SMTP id e20mr17078716iof.105.1606754313679; 
+ Mon, 30 Nov 2020 08:38:33 -0800 (PST)
+Received: from xps15 ([64.188.179.253])
+ by smtp.gmail.com with ESMTPSA id u11sm8273653iol.51.2020.11.30.08.38.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Nov 2020 07:43:42 -0800 (PST)
-Date: Mon, 30 Nov 2020 16:43:41 +0100
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH v5] PCI: Unify ECAM constants in native PCI Express drivers
-Message-ID: <X8UTLQTXVX2iPCOn@rocinante>
-References: <20201127104626.3979165-1-kw@linux.com>
- <20201128183516.GA897329@bjorn-Precision-5520>
+ Mon, 30 Nov 2020 08:38:32 -0800 (PST)
+Received: (nullmailer pid 2592217 invoked by uid 1000);
+ Mon, 30 Nov 2020 16:38:29 -0000
+Date: Mon, 30 Nov 2020 09:38:29 -0700
+From: Rob Herring <robh@kernel.org>
+To: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Subject: Re: [PATCH v4] dt-bindings: misc: convert fsl,qoriq-mc from txt to
+ YAML
+Message-ID: <20201130163829.GA2590579@robh.at.kernel.org>
+References: <20201123090035.15734-1-laurentiu.tudor@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201128183516.GA897329@bjorn-Precision-5520>
+In-Reply-To: <20201123090035.15734-1-laurentiu.tudor@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,132 +67,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Stuebner <heiko@sntech.de>, Shawn Lin <shawn.lin@rock-chips.com>,
- Paul Mackerras <paulus@samba.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Jonathan Chocron <jonnyc@amazon.com>, Toan Le <toan@os.amperecomputing.com>,
- Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Michal Simek <michal.simek@xilinx.com>, linux-rockchip@lists.infradead.org,
- David Laight <david.laight@aculab.com>, bcm-kernel-feedback-list@broadcom.com,
- linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
- Ray Jui <rjui@broadcom.com>, Florian Fainelli <f.fainelli@gmail.com>,
- linux-rpi-kernel@lists.infradead.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Jonathan Derrick <jonathan.derrick@intel.com>,
- Scott Branden <sbranden@broadcom.com>, Zhou Wang <wangzhou1@hisilicon.com>,
- Robert Richter <rrichter@marvell.com>, linuxppc-dev@lists.ozlabs.org,
- Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc: devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+ netdev@vger.kernel.org, corbet@lwn.net, linux-kernel@vger.kernel.org,
+ leoyang.li@nxp.com, robh+dt@kernel.org, ioana.ciornei@nxp.com,
+ Ionut-robert Aron <ionut-robert.aron@nxp.com>, kuba@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[+CC David for visibility]
-
-Hi Bjorn,
-
-Thank you for the review!
-
-On 20-11-28 12:35:16, Bjorn Helgaas wrote:
-[...]
-> It's ironic that we don't use PCIE_ECAM_OFFSET in drivers/pci/ecam.c.
-> We could do something like this, which would also let us drop
-> .bus_shift completely in all the conforming implementations.  It also
-> closes the hole that we didn't limit "where" to 4K for
-> pci_ecam_map_bus() users.
+On Mon, 23 Nov 2020 11:00:35 +0200, Laurentiu Tudor wrote:
+> From: Ionut-robert Aron <ionut-robert.aron@nxp.com>
 > 
->   if (per_bus_mapping) {
->     base = cfg->winp[busn];
->     busn = 0;
->   } else {
->     base = cfg->win;
->   }
+> Convert fsl,qoriq-mc to YAML in order to automate the verification
+> process of dts files. In addition, update MAINTAINERS accordingly
+> and, while at it, add some missing files.
 > 
->   if (cfg->ops->bus_shift) {
->     u32 bus_offset = (busn & 0xff) << cfg->ops->bus_shift;
->     u32 devfn_offset = (devfn & 0xff) << (cfg->ops->bus_shift - 8);
+> Signed-off-by: Ionut-robert Aron <ionut-robert.aron@nxp.com>
+> [laurentiu.tudor@nxp.com: update MINTAINERS, updates & fixes in schema]
+> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+> ---
+> Changes in v4:
+>  - use $ref to point to fsl,qoriq-mc-dpmac binding
 > 
->     where &= 0xfff;
+> Changes in v3:
+>  - dropped duplicated "fsl,qoriq-mc-dpmac" schema and replaced with
+>    reference to it
+>  - fixed a dt_binding_check warning
 > 
->     return base + (bus_offset | devfn_offset | where);
->   }
+> Changes in v2:
+>  - fixed errors reported by yamllint
+>  - dropped multiple unnecessary quotes
+>  - used schema instead of text in description
+>  - added constraints on dpmac reg property
 > 
->   return base + PCIE_ECAM_OFFSET(busn, devfn, where);
-[...]
-
-Thank you for suggesting this!  I sent v6 recently that includes this.
-
-> >  static void __iomem *ppc4xx_pciex_get_config_base(struct ppc4xx_pciex_port *port,
-> >  						  struct pci_bus *bus,
-> > -						  unsigned int devfn)
-> > +						  unsigned int devfn,
-> > +						  int offset)
+>  .../devicetree/bindings/misc/fsl,qoriq-mc.txt | 196 ------------------
+>  .../bindings/misc/fsl,qoriq-mc.yaml           | 186 +++++++++++++++++
+>  .../ethernet/freescale/dpaa2/overview.rst     |   5 +-
+>  MAINTAINERS                                   |   4 +-
+>  4 files changed, 193 insertions(+), 198 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.txt
+>  create mode 100644 Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
 > 
-> The interface change (to add "offset") could be a preparatory patch by
-> itself.
-> 
-> But I'm actually not sure it's worth even touching this file.  This is
-> the only place outside drivers/pci that includes linux/pci-ecam.h.  I
-> think I might rather put PCIE_ECAM_OFFSET() and related things in
-> drivers/pci/pci.h and keep it all inside drivers/pci.
 
-Makes sense to drop it.  We can always introduce chances on PPC 4xx
-platform in the future if we ever want it to leverage all the new macros
-and constants.
+As there's a dependency on fsl,qoriq-mc-dpmac, this needs to go via 
+netdev tree.
 
-These changes are not included in v6.
-
-> >  static const struct pci_ecam_ops pci_thunder_pem_ops = {
-> > -	.bus_shift	= 24,
-> > +	.bus_shift	= THUNDER_PCIE_ECAM_BUS_SHIFT,
-> >  	.init		= thunder_pem_platform_init,
-> >  	.pci_ops	= {
-> >  		.map_bus	= pci_ecam_map_bus,
-> 
-> This could be split to its own patch, no big deal either way.
-
-Done.  v6 is now a series that includes this as a separate patch.
-
-> >  const struct pci_ecam_ops xgene_v2_pcie_ecam_ops = {
-> > -	.bus_shift	= 16,
-> >  	.init		= xgene_v2_pcie_ecam_init,
-> >  	.pci_ops	= {
-> >  		.map_bus	= xgene_pcie_map_bus,
-> 
-> Thanks for mentioning this change in the cover letter.  It could also
-> be split off to a preparatory patch, since it's not related to
-> PCIE_ECAM_OFFSET(), which is the main point of this patch.
-
-Done.
- 
-> >  static void __iomem *iproc_pcie_map_ep_cfg_reg(struct iproc_pcie *pcie,
-> >  					       unsigned int busno,
-> > -					       unsigned int slot,
-> > -					       unsigned int fn,
-> > +					       unsigned int devfn,
-> 
-> This interface change *could* be a separate preparatory patch, too,
-> but I'm starting to feel even more OCD than usual :)
-
-Done.  It's a separate patch in v6, although I kept it together with the
-change to introduce the PCIE_ECAM_OFFSET() macro since I was retiring the
-use of PCI_SLOT() and PCI_FUNC() macros.
-
-> > @@ -94,7 +95,7 @@ struct vmd_dev {
-> >  	struct pci_dev		*dev;
-> >  
-> >  	spinlock_t		cfg_lock;
-> > -	char __iomem		*cfgbar;
-> > +	void __iomem		*cfgbar;
-> 
-> This type change might be worth pushing to a separate patch since the
-> casting issues are not completely trivial.
-
-Done.
-
-The patch included in the series as part of v6 already got a review from
-David Laight (thank you!) who suggests that this might not be a good
-idea to do, and keeping existing type would be better.
-
-Krzysztof
+Reviewed-by: Rob Herring <robh@kernel.org>
