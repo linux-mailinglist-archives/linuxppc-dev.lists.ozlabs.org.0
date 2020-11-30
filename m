@@ -2,59 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329C72C7BF7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 00:17:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C162B2C7C12
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 01:22:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ckkmc2DW4zDrf6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 10:17:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CkmBp5qQdzDrDY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 11:22:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.221.67; helo=mail-wr1-f67.google.com;
- envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.com
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com
- [209.85.221.67])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
+ helo=gate2.alliedtelesis.co.nz; envelope-from=chrisp@alliedtelesis.co.nz;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=alliedtelesis.co.nz
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
+ header.a=rsa-sha256 header.s=mail181024 header.b=BVXwGbSx; 
+ dkim-atps=neutral
+X-Greylist: delayed 584 seconds by postgrey-1.36 at bilbo;
+ Mon, 30 Nov 2020 11:20:24 AEDT
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
+ [202.36.163.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CkkY85ZFQzDrN1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 10:07:56 +1100 (AEDT)
-Received: by mail-wr1-f67.google.com with SMTP id m6so13058212wrg.7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Nov 2020 15:07:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=uPxJqe/4fqAvPeHEi4PXiRImG9ouLArz1SvUbqNRaMU=;
- b=ryVqPfZJHcZ3wOyfF/6QTRGaDtVF+7dTi44unPNXARdoOMNgdvY5bqZyVjUfEdgAGl
- MzT1/1j/LHkd4Zjg6Ktzlc37UmJuMBnV8PvjjRDFxMN4p4Dysp73wpA5Pz6JoLj4L1Ay
- TxiZ7pp+PG19WOkzYiYDi7xjyuSqtKV3JAv+qVTYjLhewbT6f+J++UlF7lBb7Kbp4nu+
- g4NbjoHc1qKZ5RdJ6L68GnM1whN5NH4wNR0S4xsoPq2yl8dnwNWj7HJNDuDKJJw8UdaR
- DsB7/wcwfDdQ0FZPvL4YGn8zd0ljjQ3zkww6L2Lxuq3E6fhJlQ/Ab9oiI6y9oQgxgFAp
- vCRg==
-X-Gm-Message-State: AOAM530Ir9yPgZ8szOnpYccTtxVdDS730LB6TWFYc4Kp69WXuRIPstTd
- GfhFX/KsD5G46fpnnJ6C+4o=
-X-Google-Smtp-Source: ABdhPJxBybijJQjc+K6GS3b05hGcfYGidU+rzn/2+1RrcEs/rkLFlqp5WDEDRPkMUSgp4rfySiTCfA==
-X-Received: by 2002:adf:e912:: with SMTP id f18mr24033599wrm.79.1606691274071; 
- Sun, 29 Nov 2020 15:07:54 -0800 (PST)
-Received: from workstation.lan ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id d2sm24831005wrn.43.2020.11.29.15.07.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 29 Nov 2020 15:07:53 -0800 (PST)
-From: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v6 5/5] PCI: xgene: Removed unused ".bus_shift" initialisers
- from pci-xgene.c
-Date: Sun, 29 Nov 2020 23:07:43 +0000
-Message-Id: <20201129230743.3006978-6-kw@linux.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ckm8m6Y8qzDrBc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 11:20:24 +1100 (AEDT)
+Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id CD7B7891AD;
+ Mon, 30 Nov 2020 13:10:21 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+ s=mail181024; t=1606695021;
+ bh=UIqWYi9dJ/tmnYKWJprnq3EqMYZT/sDGMsS3orkktdo=;
+ h=From:To:Cc:Subject:Date;
+ b=BVXwGbSxxSE6NNiSC4BF9So9Y8VsGlyKL1PbiicB6DSYHHRWqUgWEPI6wpO4sOMnx
+ zYZPoohLTv9sCOn5t7SJKxkdTA3nidQSu0PtYEIUfCeE+OkpHcwrpMuL2+661YoLMM
+ P2K9Jd7fmDE6lkwUiJRO802vaOVXZ3MO+ZZtL+lK7YC0zCyfgsHxWIjVqPYZrf1uff
+ Zk2NhVRmMHi89+Rkz97PtyBBtkcLEsb7l/g4KE39dondLRwhxVoneRtb2rO4S2scgS
+ 1oekPW8ZF6e1QPl6B2duOtsXeKMwYva1KsgyF9nH2jxZeubre1DGFKaC5miXlADICy
+ dHLKzPcJaL1Fg==
+Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with
+ Trustwave SEG (v7, 5, 8, 10121)
+ id <B5fc438660000>; Mon, 30 Nov 2020 13:10:19 +1300
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.20])
+ by smtp (Postfix) with ESMTP id DD87913EF0D;
+ Mon, 30 Nov 2020 13:10:15 +1300 (NZDT)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+ id 966612800AA; Mon, 30 Nov 2020 13:10:16 +1300 (NZDT)
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+To: leoyang.li@nxp.com,
+	davem@davemloft.net,
+	kuba@kernel.org
+Subject: [net-next PATCH] net: freescale: ucc_geth: remove unused
+ SKB_ALLOC_TIMEOUT
+Date: Mon, 30 Nov 2020 13:10:10 +1300
+Message-Id: <20201130001010.28998-1-chris.packham@alliedtelesis.co.nz>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201129230743.3006978-1-kw@linux.com>
-References: <20201129230743.3006978-1-kw@linux.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+x-atlnz-ls: pat
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,54 +73,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Stuebner <heiko@sntech.de>, Shawn Lin <shawn.lin@rock-chips.com>,
- Paul Mackerras <paulus@samba.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Jonathan Chocron <jonnyc@amazon.com>, Toan Le <toan@os.amperecomputing.com>,
- Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Michal Simek <michal.simek@xilinx.com>, linux-rockchip@lists.infradead.org,
- bcm-kernel-feedback-list@broadcom.com,
- Jonathan Derrick <jonathan.derrick@intel.com>, linux-pci@vger.kernel.org,
- Ray Jui <rjui@broadcom.com>, Florian Fainelli <f.fainelli@gmail.com>,
- linux-rpi-kernel@lists.infradead.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-arm-kernel@lists.infradead.org, Scott Branden <sbranden@broadcom.com>,
- Zhou Wang <wangzhou1@hisilicon.com>, Robert Richter <rrichter@marvell.com>,
- linuxppc-dev@lists.ozlabs.org, Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc: trivial@kernel.org, netdev@vger.kernel.org,
+ Chris Packham <chris.packham@alliedtelesis.co.nz>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Removed unused ".bus_shift" initialisers from pci-xgene.c as
-xgene_pcie_map_bus() did not use these.
+This was added in commit ce973b141dfa ("[PATCH] Freescale QE UCC gigabit
+ethernet driver") but doesn't appear to have been used. Remove it now.
 
-Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 ---
- drivers/pci/controller/pci-xgene.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/freescale/ucc_geth.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pci-xgene.c b/drivers/pci/controller/pci-xgene.c
-index 8e0db84f089d..85e7c98265e8 100644
---- a/drivers/pci/controller/pci-xgene.c
-+++ b/drivers/pci/controller/pci-xgene.c
-@@ -257,7 +257,6 @@ static int xgene_v1_pcie_ecam_init(struct pci_config_window *cfg)
- }
- 
- const struct pci_ecam_ops xgene_v1_pcie_ecam_ops = {
--	.bus_shift	= 16,
- 	.init		= xgene_v1_pcie_ecam_init,
- 	.pci_ops	= {
- 		.map_bus	= xgene_pcie_map_bus,
-@@ -272,7 +271,6 @@ static int xgene_v2_pcie_ecam_init(struct pci_config_window *cfg)
- }
- 
- const struct pci_ecam_ops xgene_v2_pcie_ecam_ops = {
--	.bus_shift	= 16,
- 	.init		= xgene_v2_pcie_ecam_init,
- 	.pci_ops	= {
- 		.map_bus	= xgene_pcie_map_bus,
--- 
+diff --git a/drivers/net/ethernet/freescale/ucc_geth.h b/drivers/net/ethe=
+rnet/freescale/ucc_geth.h
+index 3fe903972195..1a9bdf66a7d8 100644
+--- a/drivers/net/ethernet/freescale/ucc_geth.h
++++ b/drivers/net/ethernet/freescale/ucc_geth.h
+@@ -882,7 +882,6 @@ struct ucc_geth_hardware_statistics {
+ 							   addresses */
+=20
+ #define TX_TIMEOUT                              (1*HZ)
+-#define SKB_ALLOC_TIMEOUT                       100000
+ #define PHY_INIT_TIMEOUT                        100000
+ #define PHY_CHANGE_TIME                         2
+=20
+--=20
 2.29.2
 
