@@ -2,51 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1822C906A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 22:59:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B771E2C90D5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 23:20:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClJzj5ZYBzDqwy
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 08:59:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClKRW3MPkzDr2g
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 09:20:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
+ helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
+ header.s=2020 header.b=LKYde6px; 
+ dkim=pass header.d=linutronix.de header.i=@linutronix.de
+ header.a=ed25519-sha256 header.s=2020e header.b=yAgP2wjT; 
+ dkim-atps=neutral
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ClJxj3BQHzDqv8
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 08:57:45 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=eMjMdoHg; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ClJxg2YMkz9sRK;
- Tue,  1 Dec 2020 08:57:42 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1606773465;
- bh=nqVDwgyOEZiLm2s85MNpU0RJnN+/CWkXa1ePB8H74O0=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=eMjMdoHg1nj3aaR/ihevGuljfQKC+8k6BgWcY1goCbVsxBU0fJLF6W28Yyw2Miqnx
- rE1s2cl00rCqtgbN0YwiOyZspQBteiX7ySTPs1JXQBndGt6HzXMEoTdgyQtSmOyqFJ
- 56Y/AshGjcuPsexS1vUPumZj6YvOjdB6mOqqXF9/0WDPfWDU3peL+IJ8P3gN5dro/9
- x4luHkQy3MSzkcfysb/+XYsKgSuz8wEUhwpNmuCesaRULVrwxkEmQsiIP5v6AxlD4E
- 2RP4pweF2PjCnzlK/c4P0EbyhCzGxlb/6eCi4YpSHqdmviDAJPj0OUPXHHnFMGUYj5
- XgG2n1VE9BzaA==
-Date: Tue, 1 Dec 2020 08:57:41 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: Re: [PATCH v2] clk: renesas: r9a06g032: Drop __packed for portability
-Message-ID: <20201201085741.670f30d4@canb.auug.org.au>
-In-Reply-To: <20201130085743.1656317-1-geert+renesas@glider.be>
-References: <20201130085743.1656317-1-geert+renesas@glider.be>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClKPp2L99zDr0Q
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 09:18:38 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1606774714;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CFudy8L+FlHMOa4nsHLt70wET9/WFjTaQkZS7DntErI=;
+ b=LKYde6pxVDO8fB/PwX7qEMxyT+OyS7kjQ5jVxQTYW/rZtRAgLQyOHvkX6cefQFr8+wHPn4
+ VoNpwxoEITvI2gzTqprsF/EVBGhC5WkqzTBYtr/hXg1Q6q4lZibJ5CFM8wqLVp3Bsi9/Y9
+ JFy2SN14bhwT7xHJfYXYD95qz0I42FTBs65tkI1/U8NfamnLVO63F85kwLwSWnCaLS499l
+ EkOvGygL7SnHVYhO2uJieDBngIQmIZdrpk/vDaQtQLMTVnwMdK0/uHUbPzVqNrQtDzKrk8
+ uEkgzdGcVWJZG+qQDbKHNSUsuAncrKqfot3G8V0rRk1T5QndhKrmU+PQCzQAiQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1606774714;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CFudy8L+FlHMOa4nsHLt70wET9/WFjTaQkZS7DntErI=;
+ b=yAgP2wjTpmMizPaYS2eE7kNJTr0f4jj44LvgPz+5/V8EMY/UF87pHX4+fK6GW4Bb5mx1dZ
+ M4vb99HR77HvR2AA==
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH kernel v4 5/8] genirq: Add free_irq hook for IRQ
+ descriptor and use for mapping disposal
+In-Reply-To: <20201124061720.86766-6-aik@ozlabs.ru>
+References: <20201124061720.86766-1-aik@ozlabs.ru>
+ <20201124061720.86766-6-aik@ozlabs.ru>
+Date: Mon, 30 Nov 2020 23:18:34 +0100
+Message-ID: <877dq2ij45.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/8CcZFUCd6vvSy81ZVtgxF0K";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,74 +68,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Boyd <sboyd@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, linux-kernel@vger.kernel.org,
- Gareth Williams <gareth.williams.jx@renesas.com>,
- linux-renesas-soc@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Marc Zyngier <maz@kernel.org>,
+ x86@kernel.org, linux-gpio@vger.kernel.org,
+ Oliver O'Halloran <oohall@gmail.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/8CcZFUCd6vvSy81ZVtgxF0K
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Alexey,
 
-Hi Geert,
+On Tue, Nov 24 2020 at 17:17, Alexey Kardashevskiy wrote:
+> We want to make the irq_desc.kobj's release hook free associated resources
+> but we do not want to pollute the irqdesc code with domains.
 
-On Mon, 30 Nov 2020 09:57:43 +0100 Geert Uytterhoeven <geert+renesas@glider=
-.be> wrote:
+Can you please describe your changelog in factual ways without 'we and I
+and want'? See Documentation/process/
+
+> This adds a free_irq hook which is called when the last reference to
+> the descriptor is dropped.
 >
-> The R9A06G032 clock driver uses an array of packed structures to reduce
-> kernel size.  However, this array contains pointers, which are no longer
-> aligned naturally, and cannot be relocated on PPC64.  Hence when
-> compile-testing this driver on PPC64 with CONFIG_RELOCATABLE=3Dy (e.g.
-> PowerPC allyesconfig), the following warnings are produced:
->=20
->     WARNING: 136 bad relocations
->     c000000000616be3 R_PPC64_UADDR64   .rodata+0x00000000000cf338
->     c000000000616bfe R_PPC64_UADDR64   .rodata+0x00000000000cf370
->     ...
->=20
-> Fix this by dropping the __packed attribute from the r9a06g032_clkdesc
-> definition, trading a small size increase for portability.
->=20
-> This increases the 156-entry clock table by 1 byte per entry, but due to
-> the compiler generating more efficient code for unpacked accesses, the
-> net size increase is only 76 bytes (gcc 9.3.0 on arm32).
->=20
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Fixes: 4c3d88526eba2143 ("clk: renesas: Renesas R9A06G032 clock driver")
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
-> v2:
->   - Fix authorship.
-> ---
->  drivers/clk/renesas/r9a06g032-clocks.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> The first user is mapped irqs. This potentially can break the existing
+> users; however they seem to do the right thing and call dispose once
+> per mapping.
 
-Thanks.
+Q: How is this supposed to work with CONFIG_SPARSE_IRQ=n?
+A: Not at all.
 
-I have added that to my fixes tree until it gets picked up elsewhere.
+Also 'seem to do the right thing' is from the same quality as 'should
+not break stuff'. Either you have done a proper analysis or you did
+not. Aside of that how is anyone supposed to decode the subtle wreckage
+which is this going to cause if 'seem to do the right thing' turns out
+to be wrong?
 
---=20
-Cheers,
-Stephen Rothwell
+> -void irq_domain_disassociate(struct irq_domain *domain, unsigned int irq)
+> +static void irq_domain_disassociate(struct irq_domain *domain, unsigned int irq)
+>  {
+>  	struct irq_data *irq_data = irq_get_irq_data(irq);
+>  	irq_hw_number_t hwirq;
+> @@ -582,6 +582,13 @@ void irq_domain_associate_many(struct irq_domain *domain, unsigned int irq_base,
+>  }
+>  EXPORT_SYMBOL_GPL(irq_domain_associate_many);
+>  
+> +static void irq_mapped_free_desc(struct irq_desc *desc)
 
---Sig_/8CcZFUCd6vvSy81ZVtgxF0K
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+That function name is really misleading and badly chosen. The function
+is not about freeing the irq descriptor as the name suggests. It's
+called from that code in order to clean up the mapping.
 
------BEGIN PGP SIGNATURE-----
+> +{
+> +	unsigned int virq = desc->irq_data.irq;
+> +
+> +	irq_domain_disassociate(desc->irq_data.domain, virq);
+> +}
+> +
+>  /**
+>   * irq_create_direct_mapping() - Allocate an irq for direct mapping
+>   * @domain: domain to allocate the irq for or NULL for default domain
+> @@ -638,6 +645,7 @@ unsigned int irq_create_mapping(struct irq_domain *domain,
+>  {
+>  	struct device_node *of_node;
+>  	int virq;
+> +	struct irq_desc *desc;
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl/FatUACgkQAVBC80lX
-0Gwj4Qf7Bge2IGl5zmxh8L/d6Cxz8V2fApcuHXyQ2TF3PeQMWrF/07x4CKb6Ulka
-/l8LefVGxKMNJePlyDad7ZI2j893BnUiNbZIf78vbYdCvYMze/dZy7DJHPEjnYQI
-x90IS+NUTSWXI6HHZ2qDCZoCh+wrAXnKV29Gbi2tywb+F4eV9M7eu1s/XJHm80P1
-zHjiAClpipnbzl4O7LhOeKEkLfDFkv+6JX788FM5oYOoXXl7JKa2Cxw0DoUVSskN
-aXldweVNdjdlJWfQoDZ59So/HhcfS++W+6rrunrS+8nSCLQuK6rpop+hZzOvaaEB
-rxTngm9SqYXsCwnO0hq4Slv7Y4IkbQ==
-=/Pyh
------END PGP SIGNATURE-----
+This code uses reverse fir tree ordering of variables
 
---Sig_/8CcZFUCd6vvSy81ZVtgxF0K--
+  	struct device_node *of_node;
+	struct irq_desc *desc;
+  	int virq;
+
+Why? Because it's simpler to read than the vertical camel case above.
+
+Thanks,
+
+        tglx
