@@ -1,59 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA662C8D8A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 20:00:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 437B52C8D99
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 20:02:00 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClF0j6gDRzDqTj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 06:00:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClF2q3FBbzDqHJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 06:01:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.68; helo=mail-wm1-f68.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.221.66; helo=mail-wr1-f66.google.com;
  envelope-from=k.kozlowski.k@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com
- [209.85.128.68])
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
+ [209.85.221.66])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ClDsR5H71zDqS8
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 05:53:47 +1100 (AEDT)
-Received: by mail-wm1-f68.google.com with SMTP id x22so306578wmc.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 10:53:47 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClDsn31GBzDqty
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 05:54:05 +1100 (AEDT)
+Received: by mail-wr1-f66.google.com with SMTP id 64so17600395wra.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 10:54:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=wEkOn9qoquG6oipNfPDzFFz3fOS5TO34T/W7axYneSU=;
- b=Cv7FagejkxBElG8aaWLrJmyolRQUXekzPvbYvWyl8npgzJ3U3Kz/c4a1tXgzpYYVR4
- w0B2LF7yhIq9w2dGqlKFd/GPEukvVfX0NjmvhZCXJrZ0Hu6C3cXDb5PdeH9GQDadzn2w
- xj5hPPwr+uVrPRPT8FiNc1vnBx47KpmVlOBel9vf5uck2j9gYOprMKmcJizZ3l1CVfBn
- ICwBlUo0kEcfNqF+mvfo5ZpaL+3hl47uwj+tYLFOFhNv74xD/3YciNEYj+aizRIoJj/0
- IfPnw+2CG9T0tv4EfMK+jT8Kr6ISbXyk3W1gYPkthdZGKBScy89dVvV9136/JmuO5jpU
- vbkA==
-X-Gm-Message-State: AOAM532I5o0t7WtwdhDAsl3WqhIHwZ8UMeocSfwjGtpkTKjVE3xaFXIb
- o7tYdndnqOV8itHbjnRbouk=
-X-Google-Smtp-Source: ABdhPJwJyfKuo4W0SYlWBb6ad73QnSfb9L/S1W/eDIgjHJlVVga+I2lNoxlbYCTXknSlY8aka5Q2Ng==
-X-Received: by 2002:a1c:56c4:: with SMTP id k187mr251200wmb.92.1606762423516; 
- Mon, 30 Nov 2020 10:53:43 -0800 (PST)
+ bh=J0Y4dG+GSInC75horYKTdpMJ72uEPkG0rsUqEhklRfs=;
+ b=RAjhU/mpJgTP1cKv/xReptXvhEe8Sf8jvz1nAqbJlJYHHANDD7t3augINEg1uKyXPV
+ 6bcSZqz+eZ6TPbJ9vXp9pDqPeCwRz4HBGeSkSozunIyS+Nc2fKMNRmCJiONsYWCs8aPP
+ cvW1M6q7+DQcb7Q83pl0xumP74aV9Pn0aKvid3HUhSCWNE4sMgNqPLRJPD5Ydo8XQapN
+ ehDWQQI6u9repejG/4VHEXTlLRWM+B/lP7or/rsLAO5Gsc5Y/1Wp8Oj3ByN9G1hUFNVx
+ o59EUYNujACYSz3p3rztcGmPXMad+EvcyfJFvKavdgQhtlk+O8E/MBcl7MhrI7JB56Fb
+ ssIw==
+X-Gm-Message-State: AOAM530wUjNP2g9IPwPf4mq7+reMb1lExXmS64x5s+5Aec4Dy3hfywIa
+ KDrl8/ObAoxANRTsUC+KKEQ=
+X-Google-Smtp-Source: ABdhPJzaY6oSMK9XtE7h+p3mGfqluRRVSwB1Bil1Ye28LiLYVgIzYdnlv4x47IHxrw1EjuGuSJVlFg==
+X-Received: by 2002:a5d:688b:: with SMTP id h11mr29587757wru.417.1606762442112; 
+ Mon, 30 Nov 2020 10:54:02 -0800 (PST)
 Received: from kozik-lap (adsl-84-226-167-205.adslplus.ch. [84.226.167.205])
- by smtp.googlemail.com with ESMTPSA id u203sm246654wme.32.2020.11.30.10.53.41
+ by smtp.googlemail.com with ESMTPSA id w5sm24515754wrm.29.2020.11.30.10.54.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Nov 2020 10:53:42 -0800 (PST)
-Date: Mon, 30 Nov 2020 20:53:40 +0200
+ Mon, 30 Nov 2020 10:54:00 -0800 (PST)
+Date: Mon, 30 Nov 2020 20:53:59 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-Subject: Re: [PATCH 4/5] parisc: configs: drop unused BACKLIGHT_GENERIC option
-Message-ID: <20201130185340.GD29434@kozik-lap>
+Subject: Re: [PATCH 5/5] powerpc/configs: drop unused BACKLIGHT_GENERIC option
+Message-ID: <20201130185359.GE29434@kozik-lap>
 References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
- <20201130152137.24909-5-andrey.zhizhikin@leica-geosystems.com>
+ <20201130152137.24909-6-andrey.zhizhikin@leica-geosystems.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201130152137.24909-5-andrey.zhizhikin@leica-geosystems.com>
+In-Reply-To: <20201130152137.24909-6-andrey.zhizhikin@leica-geosystems.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,7 +80,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 30, 2020 at 03:21:36PM +0000, Andrey Zhizhikin wrote:
+On Mon, Nov 30, 2020 at 03:21:37PM +0000, Andrey Zhizhikin wrote:
 > Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
 > unused") removed geenric_bl driver from the tree, together with
 > corresponding config option.
@@ -91,7 +91,7 @@ On Mon, Nov 30, 2020 at 03:21:36PM +0000, Andrey Zhizhikin wrote:
 > Cc: Sam Ravnborg <sam@ravnborg.org>
 > Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
 > ---
->  arch/parisc/configs/generic-64bit_defconfig | 1 -
+>  arch/powerpc/configs/powernv_defconfig | 1 -
 >  1 file changed, 1 deletion(-)
 > 
 
