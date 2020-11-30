@@ -1,95 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E6F2C8B0E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 18:32:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8E22C8C97
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 19:21:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClC3l6SbhzDqjc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 04:32:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClD8Y3tgNzDqkP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 05:21:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=jonathan.derrick@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=D/1a9I+2; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ClC036ggPzDqsR
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 04:29:23 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AUHLiCx018858; Mon, 30 Nov 2020 12:29:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=54V+HF/VMBzJIB+aEFJ266gZXLCgafDnOFTkIjwYmO0=;
- b=D/1a9I+2tao+4p50xFFlu2dYyPDSC20WWh9cHZkaCcDAYNf4LYAbFcB0c9mcTWcnApYq
- LF/h0u2EL/NdSKFBMzRPYKh7ts5QrORur3m490I0vKe8Zyrqan0FWrI8DzH2EsOaCPDt
- 5oKkBhT4C6d7DzwiV7ea/+4zDMIyZi+l+XTLbcmq8ntGsgsXOa0+OVgiK/wzM2U0Lj1Y
- CreIUobyWRfiQqFIfZ6Z48wNKMy7/7CaW93WKAO4znG4e/4bi2wyPHqfWJj7oBqaXLPm
- ec6wzHkntQGvz3g/ryO3u9fn7wr0x1UdEYksqFQRxvUF5bwG4FjtDpG7R47wkaQjYNsI 9g== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35552s854b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Nov 2020 12:29:20 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AUHMZ0f030756;
- Mon, 30 Nov 2020 17:29:19 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma04dal.us.ibm.com with ESMTP id 353e68wpp8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Nov 2020 17:29:19 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AUHTI3G46072282
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Nov 2020 17:29:18 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3BCF411207E;
- Mon, 30 Nov 2020 17:29:18 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E8E0112066;
- Mon, 30 Nov 2020 17:29:16 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.65.215.138])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 30 Nov 2020 17:29:16 +0000 (GMT)
-Subject: Re: [PATCH 09/13] ibmvfc: implement channel enquiry and setup commands
-To: Brian King <brking@linux.vnet.ibm.com>,
- james.bottomley@hansenpartnership.com
-References: <20201126014824.123831-1-tyreld@linux.ibm.com>
- <20201126014824.123831-10-tyreld@linux.ibm.com>
- <5f873855-fdc2-4da4-a516-4db7b5236a48@linux.vnet.ibm.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <c2f01390-8977-dee7-8f33-fe1ebb2b73b7@linux.ibm.com>
-Date: Mon, 30 Nov 2020 09:29:15 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
-MIME-Version: 1.0
-In-Reply-To: <5f873855-fdc2-4da4-a516-4db7b5236a48@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClD685jyczDqkP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 05:19:35 +1100 (AEDT)
+IronPort-SDR: UnQvwOUE3GNdPLwxqqn/3fffwZBLor9hzxlIPPyefBIPDyRwNyECogU550rIwy9FFvVDO5Dz13
+ VKIHBr5vUSQw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9821"; a="169187609"
+X-IronPort-AV: E=Sophos;i="5.78,382,1599548400"; d="scan'208";a="169187609"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Nov 2020 10:19:33 -0800
+IronPort-SDR: XS1ISZYLRuHr2DP6wa+hnr2WbMlBroaPLFVMDoyVIDoBZGj3fB2+pzVl69W66H0oG/Gb4RGpz7
+ zALQS1ilcxMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,382,1599548400"; d="scan'208";a="314662861"
+Received: from fmsmsx605.amr.corp.intel.com ([10.18.126.85])
+ by fmsmga008.fm.intel.com with ESMTP; 30 Nov 2020 10:19:33 -0800
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx605.amr.corp.intel.com (10.18.126.85) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 30 Nov 2020 10:19:33 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 30 Nov 2020 10:19:32 -0800
+Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
+ fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.1713.004;
+ Mon, 30 Nov 2020 10:19:32 -0800
+From: "Derrick, Jonathan" <jonathan.derrick@intel.com>
+To: "helgaas@kernel.org" <helgaas@kernel.org>, "David.Laight@ACULAB.COM"
+ <David.Laight@ACULAB.COM>
+Subject: Re: [PATCH v6 4/5] PCI: vmd: Update type of the __iomem pointers
+Thread-Topic: [PATCH v6 4/5] PCI: vmd: Update type of the __iomem pointers
+Thread-Index: AQHWxqR5T+KTElL2ckS1iiGCxL3tTang6SEAgACKCACAABBbgA==
+Date: Mon, 30 Nov 2020 18:19:32 +0000
+Message-ID: <f562dfc0043763ad6df3574dc9b7f0440687e66e.camel@intel.com>
+References: <20201130172058.GA1088391@bjorn-Precision-5520>
+In-Reply-To: <20201130172058.GA1088391@bjorn-Precision-5520>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-30_06:2020-11-30,
- 2020-11-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015
- mlxscore=0 phishscore=0 malwarescore=0 suspectscore=2 spamscore=0
- mlxlogscore=999 impostorscore=0 bulkscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011300110
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.22.254.132]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D6FB06213AE4BE4191D81BA8794047FC@intel.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,122 +75,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
- linux-kernel@vger.kernel.org
+Cc: "kw@linux.com" <kw@linux.com>, "heiko@sntech.de" <heiko@sntech.de>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "shawn.lin@rock-chips.com" <shawn.lin@rock-chips.com>,
+ "paulus@samba.org" <paulus@samba.org>,
+ "thomas.petazzoni@bootlin.com" <thomas.petazzoni@bootlin.com>,
+ "jonnyc@amazon.com" <jonnyc@amazon.com>,
+ "toan@os.amperecomputing.com" <toan@os.amperecomputing.com>,
+ "will@kernel.org" <will@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+ "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+ "michal.simek@xilinx.com" <michal.simek@xilinx.com>,
+ "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
+ "bcm-kernel-feedback-list@broadcom.com"
+ <bcm-kernel-feedback-list@broadcom.com>,
+ "rjui@broadcom.com" <rjui@broadcom.com>,
+ "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+ "linux-rpi-kernel@lists.infradead.org" <linux-rpi-kernel@lists.infradead.org>,
+ "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "sbranden@broadcom.com" <sbranden@broadcom.com>,
+ "wangzhou1@hisilicon.com" <wangzhou1@hisilicon.com>,
+ "rrichter@marvell.com" <rrichter@marvell.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "nsaenzjulienne@suse.de" <nsaenzjulienne@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/27/20 9:49 AM, Brian King wrote:
-> On 11/25/20 7:48 PM, Tyrel Datwyler wrote:
->> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
->> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-> 
->> @@ -4462,6 +4464,118 @@ static void ibmvfc_discover_targets(struct ibmvfc_host *vhost)
->>  		ibmvfc_link_down(vhost, IBMVFC_LINK_DEAD);
->>  }
->>  
->> +static void ibmvfc_channel_setup_done(struct ibmvfc_event *evt)
->> +{
->> +	struct ibmvfc_host *vhost = evt->vhost;
->> +	u32 mad_status = be16_to_cpu(evt->xfer_iu->channel_setup.common.status);
->> +	int level = IBMVFC_DEFAULT_LOG_LEVEL;
->> +
->> +	ibmvfc_free_event(evt);
->> +
->> +	switch (mad_status) {
->> +	case IBMVFC_MAD_SUCCESS:
->> +		ibmvfc_dbg(vhost, "Channel Setup succeded\n");
->> +		vhost->do_enquiry = 0;
->> +		break;
->> +	case IBMVFC_MAD_FAILED:
->> +		level += ibmvfc_retry_host_init(vhost);
->> +		ibmvfc_log(vhost, level, "Channel Setup failed\n");
->> +		fallthrough;
->> +	case IBMVFC_MAD_DRIVER_FAILED:
->> +		return;
->> +	default:
->> +		dev_err(vhost->dev, "Invalid Channel Setup response: 0x%x\n",
->> +			mad_status);
->> +		ibmvfc_link_down(vhost, IBMVFC_LINK_DEAD);
->> +		return;
->> +	}
->> +
->> +	ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_QUERY);
->> +	wake_up(&vhost->work_wait_q);
->> +}
->> +
->> +static void ibmvfc_channel_setup(struct ibmvfc_host *vhost)
->> +{
->> +	struct ibmvfc_channel_setup_mad *mad;
->> +	struct ibmvfc_channel_setup *setup_buf = vhost->channel_setup_buf;
->> +	struct ibmvfc_event *evt = ibmvfc_get_event(vhost);
->> +
->> +	memset(setup_buf, 0, sizeof(*setup_buf));
->> +	setup_buf->flags = cpu_to_be32(IBMVFC_CANCEL_CHANNELS);
->> +
->> +	ibmvfc_init_event(evt, ibmvfc_channel_setup_done, IBMVFC_MAD_FORMAT);
->> +	mad = &evt->iu.channel_setup;
->> +	memset(mad, 0, sizeof(*mad));
->> +	mad->common.version = cpu_to_be32(1);
->> +	mad->common.opcode = cpu_to_be32(IBMVFC_CHANNEL_SETUP);
->> +	mad->common.length = cpu_to_be16(sizeof(*mad));
->> +	mad->buffer.va = cpu_to_be64(vhost->channel_setup_dma);
->> +	mad->buffer.len = cpu_to_be32(sizeof(*vhost->channel_setup_buf));
->> +
->> +	ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_INIT_WAIT);
->> +
->> +	if (!ibmvfc_send_event(evt, vhost, default_timeout))
->> +		ibmvfc_dbg(vhost, "Sent channel setup\n");
->> +	else
->> +		ibmvfc_link_down(vhost, IBMVFC_LINK_DOWN);
->> +}
->> +
->> +static void ibmvfc_channel_enquiry_done(struct ibmvfc_event *evt)
->> +{
->> +	struct ibmvfc_host *vhost = evt->vhost;
->> +	struct ibmvfc_channel_enquiry *rsp = &evt->xfer_iu->channel_enquiry;
->> +	u32 mad_status = be16_to_cpu(rsp->common.status);
->> +	int level = IBMVFC_DEFAULT_LOG_LEVEL;
->> +
->> +	switch (mad_status) {
->> +	case IBMVFC_MAD_SUCCESS:
->> +		ibmvfc_dbg(vhost, "Channel Enquiry succeeded\n");
->> +		vhost->max_vios_scsi_channels = be32_to_cpu(rsp->num_scsi_subq_channels);
-> 
-> You need a ibmvfc_free_event(evt) here so you don't leak events.
-> 
-
-Indeed
-
->> +		break;
->> +	case IBMVFC_MAD_FAILED:
->> +		level += ibmvfc_retry_host_init(vhost);
->> +		ibmvfc_log(vhost, level, "Channel Enquiry failed\n");
->> +		ibmvfc_free_event(evt);
-> 
-> Looks like you are freeing this event twice due to the fallthrough...
-
-Good catch
-
-> 
->> +		fallthrough;
->> +	case IBMVFC_MAD_DRIVER_FAILED:
->> +		ibmvfc_free_event(evt);
->> +		return;
->> +	default:
->> +		dev_err(vhost->dev, "Invalid Channel Enquiry response: 0x%x\n",
->> +			mad_status);
->> +		ibmvfc_link_down(vhost, IBMVFC_LINK_DEAD);
->> +		ibmvfc_free_event(evt);
->> +		return;
->> +	}
->> +
->> +	ibmvfc_channel_setup(vhost);
->> +}
->> +
-> 
-> 
-> 
-
+T24gTW9uLCAyMDIwLTExLTMwIGF0IDExOjIwIC0wNjAwLCBCam9ybiBIZWxnYWFzIHdyb3RlOg0K
+PiBPbiBNb24sIE5vdiAzMCwgMjAyMCBhdCAwOTowNjo1NkFNICswMDAwLCBEYXZpZCBMYWlnaHQg
+d3JvdGU6DQo+ID4gRnJvbTogS3J6eXN6dG9mIFdpbGN6eW5za2kNCj4gPiA+IFNlbnQ6IDI5IE5v
+dmVtYmVyIDIwMjAgMjM6MDgNCj4gPiA+IA0KPiA+ID4gVXNlICJ2b2lkIF9faW9tZW0iIGluc3Rl
+YWQgImNoYXIgX19pb21lbSIgcG9pbnRlciB0eXBlIHdoZW4gd29ya2luZyB3aXRoDQo+ID4gPiB0
+aGUgYWNjZXNzb3IgZnVuY3Rpb25zICh3aXRoIG5hbWVzIGxpa2UgcmVhZGIoKSBvciB3cml0ZWwo
+KSwgZXRjLikgdG8NCj4gPiA+IGJldHRlciBtYXRjaCBhIGdpdmVuIGFjY2Vzc29yIGZ1bmN0aW9u
+IHNpZ25hdHVyZSB3aGVyZSBjb21tb25seSB0aGUNCj4gPiA+IGFkZHJlc3MgcG9pbnRpbmcgdG8g
+YW4gSS9PIG1lbW9yeSByZWdpb24gd291bGQgYmUgYSAidm9pZCBfX2lvbWVtIg0KPiA+ID4gcG9p
+bnRlci4NCj4gPiANCj4gPiBJU1RNIHRoYXQgaXMgaGVhZGluZyBpbiB0aGUgd3JvbmcgZGlyZWN0
+aW9uLg0KPiA+IA0KPiA+IEkgdGhpbmsgKGZvcm0gdGhlIHZhcmlhYmxlIG5hbWVzIGV0YykgdGhh
+dCB0aGVzZSBhcmUgcG9pbnRlcnMNCj4gPiB0byBzcGVjaWZpYyByZWdpc3RlcnMuDQo+ID4gDQo+
+ID4gU28gd2hhdCB5b3Ugb3VnaHQgdG8gaGF2ZSBpcyBhIHR5cGUgZm9yIHRoYXQgcmVnaXN0ZXIg
+YmxvY2suDQo+ID4gVHlwaWNhbGx5IHRoaXMgaXMgYWN0dWFsbHkgYSBzdHJ1Y3R1cmUgLSB0byBn
+aXZlIHNvbWUgdHlwZQ0KPiA+IGNoZWNraW5nIHRoYXQgdGhlIG9mZnNldHMgYXJlIGJlaW5nIHVz
+ZWQgd2l0aCB0aGUgY29ycmVjdA0KPiA+IGJhc2UgYWRkcmVzcy4NCj4gDQo+IEluIHRoaXMgY2Fz
+ZSwgImNmZ2JhciIgaXMgbm90IHJlYWxseSBhIHBvaW50ZXIgdG8gYSByZWdpc3RlcjsgaXQncyB0
+aGUNCj4gYWRkcmVzcyBvZiBtZW1vcnktbWFwcGVkIGNvbmZpZyBzcGFjZS4gIFRoZSBWTUQgaGFy
+ZHdhcmUgdHVybnMNCj4gYWNjZXNzZXMgdG8gdGhhdCBzcGFjZSBpbnRvIFBDSSBjb25maWcgdHJh
+bnNhY3Rpb25zIG9uIGl0cyBzZWNvbmRhcnkNCj4gc2lkZS4gIHhnZW5lX3BjaWVfZ2V0X2NmZ19i
+YXNlKCkgYW5kIGJyY21fcGNpZV9tYXBfY29uZigpIGFyZSBzaW1pbGFyDQo+IHNpdHVhdGlvbnMg
+YW5kIHVzZSAidm9pZCAqIi4NCj4gDQo+IEJqb3JuDQoNClllcyBpdCdzIGp1c3QgdGhlIHBhc3N0
+aHJvdWdoIHdpbmRvdyBmb3IgUENJIGNvbmZpZyBidXMgb3BzLg0KDQpSZXZpZXdlZC1ieTogSm9u
+IERlcnJpY2sgPGpvbmF0aGFuLmRlcnJpY2tAaW50ZWwuY29tPg0K
