@@ -2,63 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AFD2C886F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 16:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6066B2C8887
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 16:46:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cl8dc0SL5zDq9k
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 02:43:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cl8j21KFSzDqFM
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 02:46:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.128.67; helo=mail-wm1-f67.google.com;
+ envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=TGtTQIAP; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=linux.com
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com
+ [209.85.128.67])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl8X74n0BzDqlF
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 02:38:31 +1100 (AEDT)
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com
- [209.85.218.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B876121D7F
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 15:38:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1606750709;
- bh=/mwcAGKismYKxXjOUto0bcfFSTR7WENjNq8FNtV/FvQ=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=TGtTQIAPJ9GJO83pkypK6YRWOwz5+SHe0ZTJRql4oB+vhBWwbPXl/3SeqookpuJeF
- FcWzRE4DfKNaT7RsTLr/GIxS3efT+YrckzTnJIxA2dqFVYQLuB5aiNChcHwl9NcLLG
- BeQLy9vQX71V4qBvt462uq3i0tce7SBxNiT+R/D0=
-Received: by mail-ej1-f43.google.com with SMTP id f9so20417819ejw.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 07:38:28 -0800 (PST)
-X-Gm-Message-State: AOAM533GxxwU6fr0+boDXm9LzfJltnBEXk4DwmJojEZyJSN7zKgLnSym
- qIumHEwpeuTV02rmk/atI2kXcJ/5W1+JSkNP3A==
-X-Google-Smtp-Source: ABdhPJwfi/bEMZouaafRm5GbGn1YKFdYDmO1WDNjm1A+nVHVN3DMiM3lra3WgVaV1huC2tZ8DwNzz0146k2O8pmy8Hk=
-X-Received: by 2002:a17:907:2718:: with SMTP id
- w24mr15750107ejk.525.1606750707036; 
- Mon, 30 Nov 2020 07:38:27 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl8fC1PNzzDqty
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 02:43:46 +1100 (AEDT)
+Received: by mail-wm1-f67.google.com with SMTP id c198so18886970wmd.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 07:43:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=wrXxUQ92cZjqbtsEEoadFbidu9p7SlbrPzlM2q7qXbQ=;
+ b=L3UIAn3knrTby5OeNbOWeQa3xtOfz1A7iw+VcNR2z6hkrFo//2Mezthnmg104fxeB4
+ UdB3ui4BQEmmEBKmetsJqd9CJC9CucpsrFvenXgLqqDk34h/6UmVNiAZJvLvLiBju5kH
+ GR/fCqY3TAp94qFAWVf8aT6mSQ1rziM2LX5jgrlYMh9pGHgLvssT7adWIqwye+2cmNU6
+ p0AmDsFiKQIAWxK3gzgfMbJClDGHjpKlyLMQ+Gq7osoT2HmtSwRYweLwyRglFeBas3sa
+ +mjkLE37bkvkj8amOBZMIzGeuo1yPKXzRwsGEdNfzeUQUjLNSnc9+dhQEkHGF6Kb49Iq
+ vs+Q==
+X-Gm-Message-State: AOAM530Mht/vKI2XcIM/MD0FniQ2/PVxuZ5+DTU4Y1Ko5sV0XXlEbSo+
+ CO/Ui8snKERYRCm3O8iybt8=
+X-Google-Smtp-Source: ABdhPJwrrDJzMhj73fjDkT0ADgqZ22ISWQCdbgUESE4glj3y9mWsdL0QCouWmsg3hBrKTtQdmgQ/Kw==
+X-Received: by 2002:a1c:1d85:: with SMTP id d127mr7724937wmd.39.1606751023484; 
+ Mon, 30 Nov 2020 07:43:43 -0800 (PST)
+Received: from rocinante ([95.155.85.46])
+ by smtp.gmail.com with ESMTPSA id x5sm29038317wrm.96.2020.11.30.07.43.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 30 Nov 2020 07:43:42 -0800 (PST)
+Date: Mon, 30 Nov 2020 16:43:41 +0100
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH v5] PCI: Unify ECAM constants in native PCI Express drivers
+Message-ID: <X8UTLQTXVX2iPCOn@rocinante>
+References: <20201127104626.3979165-1-kw@linux.com>
+ <20201128183516.GA897329@bjorn-Precision-5520>
 MIME-Version: 1.0
-References: <20201111090853.14112-1-Sergey.Semin@baikalelectronics.ru>
- <20201111090853.14112-11-Sergey.Semin@baikalelectronics.ru>
- <20201111201423.GA1938179@bogus>
- <20201112102946.ipcsiidty4ut4kap@mobilestation>
- <20201121124228.GA2039998@robh.at.kernel.org>
- <20201125083202.ytoyd62bg3s7kvvg@mobilestation>
-In-Reply-To: <20201125083202.ytoyd62bg3s7kvvg@mobilestation>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 30 Nov 2020 08:38:13 -0700
-X-Gmail-Original-Message-ID: <CAL_JsqKscjEgArQDbdEgbdNfC7PGVku7Wmk1myjADpsBWqJt+g@mail.gmail.com>
-Message-ID: <CAL_JsqKscjEgArQDbdEgbdNfC7PGVku7Wmk1myjADpsBWqJt+g@mail.gmail.com>
-Subject: Re: [PATCH v4 10/18] dt-bindings: usb: Convert DWC USB3 bindings to
- DT schema
-To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201128183516.GA897329@bjorn-Precision-5520>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,140 +65,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Neil Armstrong <narmstrong@baylibre.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
- Kevin Hilman <khilman@baylibre.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- Andy Gross <agross@kernel.org>, Chunfeng Yun <chunfeng.yun@mediatek.com>,
- arcml <linux-snps-arc@lists.infradead.org>, devicetree@vger.kernel.org,
- Mathias Nyman <mathias.nyman@intel.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Roger Quadros <rogerq@ti.com>, Felipe Balbi <balbi@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- Linux USB List <linux-usb@vger.kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Serge Semin <fancer.lancer@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Manu Gautam <mgautam@codeaurora.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Heiko Stuebner <heiko@sntech.de>, Shawn Lin <shawn.lin@rock-chips.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Jonathan Chocron <jonnyc@amazon.com>, Toan Le <toan@os.amperecomputing.com>,
+ Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Michal Simek <michal.simek@xilinx.com>, linux-rockchip@lists.infradead.org,
+ David Laight <david.laight@aculab.com>, bcm-kernel-feedback-list@broadcom.com,
+ linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+ Ray Jui <rjui@broadcom.com>, Florian Fainelli <f.fainelli@gmail.com>,
+ linux-rpi-kernel@lists.infradead.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Jonathan Derrick <jonathan.derrick@intel.com>,
+ Scott Branden <sbranden@broadcom.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ Robert Richter <rrichter@marvell.com>, linuxppc-dev@lists.ozlabs.org,
+ Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 25, 2020 at 1:32 AM Serge Semin
-<Sergey.Semin@baikalelectronics.ru> wrote:
->
-> On Sat, Nov 21, 2020 at 06:42:28AM -0600, Rob Herring wrote:
-> > On Thu, Nov 12, 2020 at 01:29:46PM +0300, Serge Semin wrote:
-> > > On Wed, Nov 11, 2020 at 02:14:23PM -0600, Rob Herring wrote:
-> > > > On Wed, Nov 11, 2020 at 12:08:45PM +0300, Serge Semin wrote:
-> > > > > DWC USB3 DT node is supposed to be compliant with the Generic xHCI
-> > > > > Controller schema, but with additional vendor-specific properties, the
-> > > > > controller-specific reference clocks and PHYs. So let's convert the
-> > > > > currently available legacy text-based DWC USB3 bindings to the DT schema
-> > > > > and make sure the DWC USB3 nodes are also validated against the
-> > > > > usb-xhci.yaml schema.
-> > > > >
-> > > > > Note we have to discard the nodename restriction of being prefixed with
-> > > > > "dwc3@" string, since in accordance with the usb-hcd.yaml schema USB nodes
-> > > > > are supposed to be named as "^usb(@.*)".
-> > > > >
-> > > > > Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-> > > > >
-> > > > > ---
-> > > > >
-> > > > > Changelog v2:
-> > > > > - Discard '|' from the descriptions, since we don't need to preserve
-> > > > >   the text formatting in any of them.
-> > > > > - Drop quotes from around the string constants.
-> > > > > - Fix the "clock-names" prop description to be referring the enumerated
-> > > > >   clock-names instead of the ones from the Databook.
-> > > > >
-> > > > > Changelog v3:
-> > > > > - Apply usb-xhci.yaml# schema only if the controller is supposed to work
-> > > > >   as either host or otg.
-> > > > >
-> > > > > Changelog v4:
-> > > > > - Apply usb-drd.yaml schema first. If the controller is configured
-> > > > >   to work in a gadget mode only, then apply the usb.yaml schema too,
-> > > > >   otherwise apply the usb-xhci.yaml schema.
-> > > > > - Discard the Rob'es Reviewed-by tag. Please review the patch one more
-> > > > >   time.
-> > > > > ---
-> > > > >  .../devicetree/bindings/usb/dwc3.txt          | 125 --------
-> > > > >  .../devicetree/bindings/usb/snps,dwc3.yaml    | 303 ++++++++++++++++++
-> > > > >  2 files changed, 303 insertions(+), 125 deletions(-)
-> > > > >  delete mode 100644 Documentation/devicetree/bindings/usb/dwc3.txt
-> > > > >  create mode 100644 Documentation/devicetree/bindings/usb/snps,dwc3.yaml
-> >
-> >
-> > > > > diff --git a/Documentation/devicetree/bindings/usb/snps,dwc3.yaml b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
-> > > > > new file mode 100644
-> > > > > index 000000000000..079617891da6
-> > > > > --- /dev/null
-> > > > > +++ b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
-> > > > > @@ -0,0 +1,303 @@
-> > > > > +# SPDX-License-Identifier: GPL-2.0
-> > > > > +%YAML 1.2
-> > > > > +---
-> > > > > +$id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
-> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > > +
-> > > > > +title: Synopsys DesignWare USB3 Controller
-> > > > > +
-> > > > > +maintainers:
-> > > > > +  - Felipe Balbi <balbi@kernel.org>
-> > > > > +
-> > > > > +description:
-> > > > > +  This is usually a subnode to DWC3 glue to which it is connected, but can also
-> > > > > +  be presented as a standalone DT node with an optional vendor-specific
-> > > > > +  compatible string.
-> > > > > +
-> > >
-> > > > > +allOf:
-> > > > > +  - $ref: usb-drd.yaml#
-> > > > > +  - if:
-> > > > > +      properties:
-> > > > > +        dr_mode:
-> > > > > +          const: peripheral
-> >
->
-> > Another thing, this evaluates to true if dr_mode is not present. You
-> > need to add 'required'?
->
-> Right. Will something like this do that?
+[+CC David for visibility]
 
-Yes.
+Hi Bjorn,
 
->
-> + allOf:
-> +  - $ref: usb-drd.yaml#
-> +  - if:
-> +      properties:
-> +        dr_mode:
-> +          const: peripheral
-> +
-> +      required:
-> +        - dr_mode
-> +    then:
-> +      $ref: usb.yaml#
-> +    else
-> +      $ref: usb-xhci.yaml#
->
-> > If dr_mode is otg, then don't you need to apply
-> > both usb.yaml and usb-xhci.yaml?
->
-> No I don't. Since there is no peripheral-specific DT schema, then the
-> only schema any USB-gadget node needs to pass is usb.yaml, which
-> is already included into the usb-xhci.yaml schema. So for pure OTG devices
-> with xHCI host and gadget capabilities it's enough to evaluate: allOf:
-> [$ref: usb-drd.yaml#, $ref: usb-xhci.yaml#].  Please see the
-> sketch/ASCII-figure below and the following text for details.
+Thank you for the review!
 
-Okay.
+On 20-11-28 12:35:16, Bjorn Helgaas wrote:
+[...]
+> It's ironic that we don't use PCIE_ECAM_OFFSET in drivers/pci/ecam.c.
+> We could do something like this, which would also let us drop
+> .bus_shift completely in all the conforming implementations.  It also
+> closes the hole that we didn't limit "where" to 4K for
+> pci_ecam_map_bus() users.
+> 
+>   if (per_bus_mapping) {
+>     base = cfg->winp[busn];
+>     busn = 0;
+>   } else {
+>     base = cfg->win;
+>   }
+> 
+>   if (cfg->ops->bus_shift) {
+>     u32 bus_offset = (busn & 0xff) << cfg->ops->bus_shift;
+>     u32 devfn_offset = (devfn & 0xff) << (cfg->ops->bus_shift - 8);
+> 
+>     where &= 0xfff;
+> 
+>     return base + (bus_offset | devfn_offset | where);
+>   }
+> 
+>   return base + PCIE_ECAM_OFFSET(busn, devfn, where);
+[...]
 
-Rob
+Thank you for suggesting this!  I sent v6 recently that includes this.
+
+> >  static void __iomem *ppc4xx_pciex_get_config_base(struct ppc4xx_pciex_port *port,
+> >  						  struct pci_bus *bus,
+> > -						  unsigned int devfn)
+> > +						  unsigned int devfn,
+> > +						  int offset)
+> 
+> The interface change (to add "offset") could be a preparatory patch by
+> itself.
+> 
+> But I'm actually not sure it's worth even touching this file.  This is
+> the only place outside drivers/pci that includes linux/pci-ecam.h.  I
+> think I might rather put PCIE_ECAM_OFFSET() and related things in
+> drivers/pci/pci.h and keep it all inside drivers/pci.
+
+Makes sense to drop it.  We can always introduce chances on PPC 4xx
+platform in the future if we ever want it to leverage all the new macros
+and constants.
+
+These changes are not included in v6.
+
+> >  static const struct pci_ecam_ops pci_thunder_pem_ops = {
+> > -	.bus_shift	= 24,
+> > +	.bus_shift	= THUNDER_PCIE_ECAM_BUS_SHIFT,
+> >  	.init		= thunder_pem_platform_init,
+> >  	.pci_ops	= {
+> >  		.map_bus	= pci_ecam_map_bus,
+> 
+> This could be split to its own patch, no big deal either way.
+
+Done.  v6 is now a series that includes this as a separate patch.
+
+> >  const struct pci_ecam_ops xgene_v2_pcie_ecam_ops = {
+> > -	.bus_shift	= 16,
+> >  	.init		= xgene_v2_pcie_ecam_init,
+> >  	.pci_ops	= {
+> >  		.map_bus	= xgene_pcie_map_bus,
+> 
+> Thanks for mentioning this change in the cover letter.  It could also
+> be split off to a preparatory patch, since it's not related to
+> PCIE_ECAM_OFFSET(), which is the main point of this patch.
+
+Done.
+ 
+> >  static void __iomem *iproc_pcie_map_ep_cfg_reg(struct iproc_pcie *pcie,
+> >  					       unsigned int busno,
+> > -					       unsigned int slot,
+> > -					       unsigned int fn,
+> > +					       unsigned int devfn,
+> 
+> This interface change *could* be a separate preparatory patch, too,
+> but I'm starting to feel even more OCD than usual :)
+
+Done.  It's a separate patch in v6, although I kept it together with the
+change to introduce the PCIE_ECAM_OFFSET() macro since I was retiring the
+use of PCI_SLOT() and PCI_FUNC() macros.
+
+> > @@ -94,7 +95,7 @@ struct vmd_dev {
+> >  	struct pci_dev		*dev;
+> >  
+> >  	spinlock_t		cfg_lock;
+> > -	char __iomem		*cfgbar;
+> > +	void __iomem		*cfgbar;
+> 
+> This type change might be worth pushing to a separate patch since the
+> casting issues are not completely trivial.
+
+Done.
+
+The patch included in the series as part of v6 already got a review from
+David Laight (thank you!) who suggests that this might not be a good
+idea to do, and keeping existing type would be better.
+
+Krzysztof
