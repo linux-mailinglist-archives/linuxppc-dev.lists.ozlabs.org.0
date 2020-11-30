@@ -2,62 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBAB2C880E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 16:34:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A54AB2C8841
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 16:39:08 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cl8R52CsHzDqD8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 02:34:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cl8Xm6HygzDqc4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 02:39:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.221.67; helo=mail-wr1-f67.google.com;
- envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mchehab@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.com
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com
- [209.85.221.67])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=uAX1dK/K; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl8M02nW7zDqXd
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 02:30:36 +1100 (AEDT)
-Received: by mail-wr1-f67.google.com with SMTP id 23so16756479wrc.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 07:30:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=aYHHxJmw979e+wSJRiDQN73bZ6bHCfBL6+c7qQzjNRM=;
- b=bY938Ga6/Mgn4AaAd30NVlpPwi9AOG6sYArDVGcq+LNtq/JWCor54AUDyHvRUg72HL
- ofQISnJunUykrk3yKYsh7qP4PHYVNWYID4tQCo5zhs0ZPF4jWgg5eTOEytz2GBfCZauA
- S4yianTiXzKiHuG9nWXx8BND+EVpc+cWxMm/i8VKlshdN8Aetg8vILDzNw+UGVeiVe0O
- SFuk/BwwQQVKSbza5PikMfeVmb9gKg7mGnK4Yxvq5XFCOD6dt9fz9aThw0EQIUP0G07d
- wgubJjP7EDcNXqntpZb26wdqUJnvZ5VKbz6gwcZuYD6u1M+m+2R2LvjE3h/1nRrl3Gl6
- cn+w==
-X-Gm-Message-State: AOAM5314hAMkn1ijc+vECgSPrMaJGxITRjOxT1J6WdOrrlOSelm0KK9c
- QKaqxIkC57VUp+Ob5Dcsik0=
-X-Google-Smtp-Source: ABdhPJxDgu0JUhfBnd1JT0sM9EnLMunvMJmxP1ptyZLeuiHRBoyRMeT9fOud0TpT6HDh8Aw84e0fEg==
-X-Received: by 2002:adf:9d49:: with SMTP id o9mr29398963wre.413.1606750230899; 
- Mon, 30 Nov 2020 07:30:30 -0800 (PST)
-Received: from rocinante ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id k11sm27836582wrv.88.2020.11.30.07.30.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Nov 2020 07:30:30 -0800 (PST)
-Date: Mon, 30 Nov 2020 16:30:28 +0100
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Subject: Re: [PATCH v6 1/5] PCI: Unify ECAM constants in native PCI Express
- drivers
-Message-ID: <X8UQFER3uccborBf@rocinante>
-References: <20201129230743.3006978-1-kw@linux.com>
- <20201129230743.3006978-2-kw@linux.com>
- <20201130110858.GB16758@e121166-lin.cambridge.arm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl8V75wQ5zDq9n
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 02:36:47 +1100 (AEDT)
+Received: from mail.kernel.org (ip5f5ad5b3.dynamic.kabel-deutschland.de
+ [95.90.213.179])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 15E11208DB;
+ Mon, 30 Nov 2020 15:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1606750605;
+ bh=Nq7nieU9NxFApiiKqP1AICqSGy1X7FthNYZ1ce3w7kc=;
+ h=From:To:Cc:Subject:Date:From;
+ b=uAX1dK/KSSKf4Arojv/EDH+dOAzk9oYTaBF/88x9pGVVKS4rmWxOABF74+EklXubT
+ 3+gsW9AXa1g6BYYtD5C2JQEufVOJpgzUdCkv/M3UdVc749uXzTGDSzsP8ZCOpFGEQ1
+ WwhTpLqH+/ozooez/Vwhu2kwSmK5XfW3EFpaJgKI=
+Received: from mchehab by mail.kernel.org with local (Exim 4.94)
+ (envelope-from <mchehab@kernel.org>)
+ id 1kjlEI-00CjvH-B9; Mon, 30 Nov 2020 16:36:42 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Subject: [PATCH 0/6] Add documentation for Documentation/features at the built
+ docs
+Date: Mon, 30 Nov 2020 16:36:29 +0100
+Message-Id: <cover.1606748711.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201130110858.GB16758@e121166-lin.cambridge.arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,53 +58,194 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Stuebner <heiko@sntech.de>, Shawn Lin <shawn.lin@rock-chips.com>,
- Paul Mackerras <paulus@samba.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Jonathan Chocron <jonnyc@amazon.com>, Toan Le <toan@os.amperecomputing.com>,
- Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Michal Simek <michal.simek@xilinx.com>, linux-rockchip@lists.infradead.org,
- bcm-kernel-feedback-list@broadcom.com,
- Jonathan Derrick <jonathan.derrick@intel.com>, linux-pci@vger.kernel.org,
- Ray Jui <rjui@broadcom.com>, linux-rpi-kernel@lists.infradead.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Bjorn Helgaas <bhelgaas@google.com>, linux-arm-kernel@lists.infradead.org,
- Scott Branden <sbranden@broadcom.com>, Zhou Wang <wangzhou1@hisilicon.com>,
- Robert Richter <rrichter@marvell.com>, linuxppc-dev@lists.ozlabs.org,
- Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Jonas Bonn <jonas@southpole.se>,
+ linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Fenghua Yu <fenghua.yu@intel.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
+ Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>,
+ "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Andrew Cooper <andrew.cooper3@citrix.com>, linux-kernel@vger.kernel.org,
+ openrisc@lists.librecores.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Lorenzo!
+Hi Jon,
 
-On 20-11-30 11:08:58, Lorenzo Pieralisi wrote:
-[...]
-> > Refactor pci_ecam_map_bus() function to use newly added constants so
-> > that limits to the bus, device function and offset (now limited to 4K as
-> > per the specification) are in place to prevent the defective or
-> > malicious caller from supplying incorrect configuration offset and thus
-> > targeting the wrong device when accessing extended configuration space.
-> > This refactor also allows for the ".bus_shit" initialisers to be dropped
->                                           ^^^^
-> 
-> Nice typo, I'd fix it while applying it though if you don't mind ;-),
-> no need to resend it.
+This series got already submitted last year:
 
-Oh doh!  Apologies. :)
+   https://lore.kernel.org/lkml/cover.1561222784.git.mchehab+samsung@kernel.org/
 
-> Jokes aside, nice piece of work, thanks for that.
-> 
-> > when the user is not using a custom value as a default value will be
-> > used as per the PCI Express Specification.
-> > 
-> > Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-> > Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
-> 
-> I think Bjorn's reviewed-by still stands so I will apply it.
-[...]
+Yet, on that time, there were too many other patches related to ReST
+conversion floating around. So, at the end, I guess this one got missed.
 
-Thank you!
+So, I did a rebase on the top of upstream, and added a few new changes.
 
-Krzysztof
+Patch 1 contains the original implementation back then. It adds a
+get_feat.pl script that parses the contents of Documentation/features.
+
+Patch 2 is new: it re-implements the output of the full contents of the
+features table as a set of per-subsystem tables. 
+
+Patch 3 replaces the existing Documentation/features/list-arch.sh
+by a call to the new script, in order to avoid having two scripts
+doing the same thing.
+
+Patch 4 is a sphinx extension to allow generating features output
+via a meta-tag.
+
+Patch 5 adds a complete feature list covering all archs at the
+admin guide.
+
+Patch 6 adds a per-arch feature list on each architecture book.
+
+-
+
+The scripts/get_feat.pl supports several types of output:
+
+- $ scripts/get_feat.pl current
+
+  Outputs the supported feadures by the architecture of the
+  running Kernel, as an ASCII table;
+
+- $  scripts/get_feat.pl list
+
+  Outputs the supported features on an easy to be parsed
+  format. By default, it uses the current architecture as well;
+
+- $  scripts/get_feat.pl rest --feature jump-labels
+
+  Output what architecture supports a given feature
+  (on the above example, "jump-labels" feature)
+
+- $ scripts/get_feat.pl rest --arch um
+
+  Outputs the features support for an specific architecture
+  (on the above example, for "um" architecture.
+
+- $ scripts/get_feat.pl rest
+
+  Outputs a text file with ASCII tables (ReST compatible)
+  with all features, grouped per subsystem.
+
+  E. g. something like:
+	
+        ===================================
+        Feature status on all architectures
+        ===================================
+        
+        Subsystem: core
+        ===============
+        
+        +---------------------+---------------------------------+-------------------------------------------------------------------------+------------+------+
+        |Feature              |Kconfig                          |Description                                                              |Architecture|Status|
+        +=====================+=================================+=========================================================================+============+======+
+        |cBPF-JIT             |HAVE_CBPF_JIT                    |arch supports cBPF JIT optimizations                                     |alpha       |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |arc         |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |arm         |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |arm64       |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |c6x         |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |csky        |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |h8300       |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |hexagon     |TODO  |
+...
+
+Adding those patchsets will basically place the contents of all
+files under Documentation/features (currently, 45 files) at the
+Kernel documentation, which is, IMO, a good thing to do.
+
+Regards,
+Mauro
+
+Mauro Carvalho Chehab (6):
+  scripts: get_feat.pl: add a script to handle Documentation/features
+  scripts: get_feat.pl: improve matrix output
+  scripts: get_feat.pl: use its implementation for list-arch.sh
+  sphinx: kernel_feat.py: add a script to parse feature files
+  docs: admin-guide: add a features list
+  docs: archis: add a per-architecture features list
+
+ Documentation/admin-guide/features.rst |   3 +
+ Documentation/admin-guide/index.rst    |   1 +
+ Documentation/arm/features.rst         |   3 +
+ Documentation/arm/index.rst            |   2 +
+ Documentation/arm64/features.rst       |   3 +
+ Documentation/arm64/index.rst          |   2 +
+ Documentation/conf.py                  |   2 +-
+ Documentation/features/list-arch.sh    |  17 +-
+ Documentation/ia64/features.rst        |   3 +
+ Documentation/ia64/index.rst           |   2 +
+ Documentation/index.rst                |   2 +-
+ Documentation/m68k/features.rst        |   3 +
+ Documentation/m68k/index.rst           |   2 +
+ Documentation/mips/features.rst        |   3 +
+ Documentation/mips/index.rst           |   2 +
+ Documentation/nios2/index.rst          |  12 +
+ Documentation/openrisc/features.rst    |   3 +
+ Documentation/openrisc/index.rst       |   2 +
+ Documentation/parisc/features.rst      |   3 +
+ Documentation/parisc/index.rst         |   2 +
+ Documentation/powerpc/features.rst     |   3 +
+ Documentation/powerpc/index.rst        |   2 +
+ Documentation/riscv/features.rst       |   3 +
+ Documentation/riscv/index.rst          |   2 +
+ Documentation/s390/features.rst        |   3 +
+ Documentation/s390/index.rst           |   2 +
+ Documentation/sh/features.rst          |   3 +
+ Documentation/sh/index.rst             |   2 +
+ Documentation/sparc/features.rst       |   3 +
+ Documentation/sparc/index.rst          |   2 +
+ Documentation/sphinx/kernel_feat.py    | 169 ++++++++
+ Documentation/x86/features.rst         |   3 +
+ Documentation/x86/index.rst            |   1 +
+ Documentation/xtensa/features.rst      |   3 +
+ Documentation/xtensa/index.rst         |   2 +
+ scripts/get_feat.pl                    | 552 +++++++++++++++++++++++++
+ 36 files changed, 810 insertions(+), 17 deletions(-)
+ create mode 100644 Documentation/admin-guide/features.rst
+ create mode 100644 Documentation/arm/features.rst
+ create mode 100644 Documentation/arm64/features.rst
+ create mode 100644 Documentation/ia64/features.rst
+ create mode 100644 Documentation/m68k/features.rst
+ create mode 100644 Documentation/mips/features.rst
+ create mode 100644 Documentation/nios2/index.rst
+ create mode 100644 Documentation/openrisc/features.rst
+ create mode 100644 Documentation/parisc/features.rst
+ create mode 100644 Documentation/powerpc/features.rst
+ create mode 100644 Documentation/riscv/features.rst
+ create mode 100644 Documentation/s390/features.rst
+ create mode 100644 Documentation/sh/features.rst
+ create mode 100644 Documentation/sparc/features.rst
+ create mode 100644 Documentation/sphinx/kernel_feat.py
+ create mode 100644 Documentation/x86/features.rst
+ create mode 100644 Documentation/xtensa/features.rst
+ create mode 100755 scripts/get_feat.pl
+
+-- 
+2.28.0
+
+
