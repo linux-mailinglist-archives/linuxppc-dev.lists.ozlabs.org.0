@@ -2,76 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28722C808A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 10:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE212C8094
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 10:08:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CkzqX4gNmzDqKN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 20:06:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CkztS43ZLzDrDm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 20:08:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::434;
- helo=mail-wr1-x434.google.com; envelope-from=lee.jones@linaro.org;
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=nEjd4oBp; dkim-atps=neutral
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com
- [IPv6:2a00:1450:4864:20::434])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ckznf2MCszDqBP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 20:04:37 +1100 (AEDT)
-Received: by mail-wr1-x434.google.com with SMTP id i2so15003100wrs.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 01:04:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to;
- bh=l+bcBJwqAfWV/8VZ0H6sJqPXokbgLaSpuC3C5NWipKo=;
- b=nEjd4oBpWdWxFJ8NDaehVg6qFVZA+o6g9xHYlwiea+VpvwXnNUYAOb8q4cMjPzswbi
- 2ltvcewj6zjeg4Yx88T6N+RqKuy+SefVLESvpcxML3HD3TGkNDc7jKU7Wd85rOaViVmG
- vTQm91OSrmTyBwIPv1A+NfW3EHY8ZQJfKiTldrjfxnSGm4iFi6P/scfQDDFRqauvcY8Y
- hbGb5B8yLalINEbZiQ3FdsI/gcztTKO+JjxuVmX5sTrEZfhHBZbMx8qNcGkYMwogIF9a
- 6eMKy3RjG5XbQu9zsEo4reY0fLYZFf77Jk/iqCq8A0Hh4QYeLlbEekzSrr6Hh8QE0/Cd
- Nkkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=l+bcBJwqAfWV/8VZ0H6sJqPXokbgLaSpuC3C5NWipKo=;
- b=b4LNf8ttQdUNTjKzVSIDDNj5w5WSXuedkCuU0bMNM6wALo48pPdy78JP+TJILHEcQ5
- NvOcGRcSIOvpa+ZC84slO4oaVY9nia6tlajfVyIHYgA7zJ7yJ3NJyJDuGvIMMSU/ZtR4
- 6HiV41StkWGy+sKDygGxcfkJNYqmLT2xyPFDw2lUxpzelyogf80ro6k0EDjGVa8A6aKs
- +237srzq254xgkwiIaL+uGueK/mqX/ouio9Y0VlfjlqMCnHThSg0Y2K6CHOG3oEU5B6W
- AgvncpSCJgU6nvFJQVD2J/yVo2HSc9VyENwYM7NydJdvqUgp+yZc+fNi+oJlvXPFUa0Y
- Cv7w==
-X-Gm-Message-State: AOAM530GPod2LorVFxHYRLom800keC+Fuge42RC502PJ6ZqK+njrSODY
- O77j5xzR8Ob86sl9zOL7JEgVug==
-X-Google-Smtp-Source: ABdhPJyNLbSZ/YPgf6JxTiBlfUJEqoJbkFK9dDmE50aedq7C+CHGYGIGWy7ii1w8s0OZnG5vokR3HQ==
-X-Received: by 2002:a5d:538a:: with SMTP id d10mr27606899wrv.368.1606727072707; 
- Mon, 30 Nov 2020 01:04:32 -0800 (PST)
-Received: from dell ([91.110.221.235])
- by smtp.gmail.com with ESMTPSA id h83sm24486637wmf.9.2020.11.30.01.04.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Nov 2020 01:04:32 -0800 (PST)
-Date: Mon, 30 Nov 2020 09:04:30 +0000
-From: Lee Jones <lee.jones@linaro.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH 5/8] net: ethernet: ibm: ibmvnic: Fix some kernel-doc
- misdemeanours
-Message-ID: <20201130090430.GD4801@dell>
-References: <20201126133853.3213268-1-lee.jones@linaro.org>
- <20201126133853.3213268-6-lee.jones@linaro.org>
- <20201129184354.GL2234159@lunn.ch>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CkzrT6tjPzDqVD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 20:07:03 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-80-IWcXTuCBM3uUJIkbSzc7wQ-1; Mon, 30 Nov 2020 09:06:57 +0000
+X-MC-Unique: IWcXTuCBM3uUJIkbSzc7wQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Mon, 30 Nov 2020 09:06:56 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Mon, 30 Nov 2020 09:06:56 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: =?utf-8?B?J0tyenlzenRvZiBXaWxjennFhHNraSc=?= <kw@linux.com>, Bjorn Helgaas
+ <bhelgaas@google.com>
+Subject: RE: [PATCH v6 4/5] PCI: vmd: Update type of the __iomem pointers
+Thread-Topic: [PATCH v6 4/5] PCI: vmd: Update type of the __iomem pointers
+Thread-Index: AQHWxqWOFrNLxNoH9E63s2U4AbPR/6ngYYng
+Date: Mon, 30 Nov 2020 09:06:56 +0000
+Message-ID: <81f4ddc2f0524b4b80c8a0bfa2df57fe@AcuMS.aculab.com>
+References: <20201129230743.3006978-1-kw@linux.com>
+ <20201129230743.3006978-5-kw@linux.com>
+In-Reply-To: <20201129230743.3006978-5-kw@linux.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201129184354.GL2234159@lunn.ch>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,78 +66,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Falcon <tlfalcon@linux.vnet.ibm.com>,
- John Allen <jallen@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org,
- Santiago Leon <santi_leon@yahoo.com>, Jakub Kicinski <kuba@kernel.org>,
- netdev@vger.kernel.org, Lijun Pan <ljp@linux.ibm.com>,
- Dany Madden <drt@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Sukadev Bhattiprolu <sukadev@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Heiko Stuebner <heiko@sntech.de>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ Shawn Lin <shawn.lin@rock-chips.com>, Paul Mackerras <paulus@samba.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Jonathan Chocron <jonnyc@amazon.com>, Toan Le <toan@os.amperecomputing.com>,
+ Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Michal
+ Simek <michal.simek@xilinx.com>,
+ "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
+ "bcm-kernel-feedback-list@broadcom.com"
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Jonathan Derrick <jonathan.derrick@intel.com>, Ray Jui <rjui@broadcom.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ "linux-rpi-kernel@lists.infradead.org" <linux-rpi-kernel@lists.infradead.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Scott Branden <sbranden@broadcom.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ Robert Richter <rrichter@marvell.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 29 Nov 2020, Andrew Lunn wrote:
+RnJvbTogS3J6eXN6dG9mIFdpbGN6eW5za2kNCj4gU2VudDogMjkgTm92ZW1iZXIgMjAyMCAyMzow
+OA0KPiANCj4gVXNlICJ2b2lkIF9faW9tZW0iIGluc3RlYWQgImNoYXIgX19pb21lbSIgcG9pbnRl
+ciB0eXBlIHdoZW4gd29ya2luZyB3aXRoDQo+IHRoZSBhY2Nlc3NvciBmdW5jdGlvbnMgKHdpdGgg
+bmFtZXMgbGlrZSByZWFkYigpIG9yIHdyaXRlbCgpLCBldGMuKSB0bw0KPiBiZXR0ZXIgbWF0Y2gg
+YSBnaXZlbiBhY2Nlc3NvciBmdW5jdGlvbiBzaWduYXR1cmUgd2hlcmUgY29tbW9ubHkgdGhlDQo+
+IGFkZHJlc3MgcG9pbnRpbmcgdG8gYW4gSS9PIG1lbW9yeSByZWdpb24gd291bGQgYmUgYSAidm9p
+ZCBfX2lvbWVtIg0KPiBwb2ludGVyLg0KDQpJU1RNIHRoYXQgaXMgaGVhZGluZyBpbiB0aGUgd3Jv
+bmcgZGlyZWN0aW9uLg0KDQpJIHRoaW5rIChmb3JtIHRoZSB2YXJpYWJsZSBuYW1lcyBldGMpIHRo
+YXQgdGhlc2UgYXJlIHBvaW50ZXJzDQp0byBzcGVjaWZpYyByZWdpc3RlcnMuDQoNClNvIHdoYXQg
+eW91IG91Z2h0IHRvIGhhdmUgaXMgYSB0eXBlIGZvciB0aGF0IHJlZ2lzdGVyIGJsb2NrLg0KVHlw
+aWNhbGx5IHRoaXMgaXMgYWN0dWFsbHkgYSBzdHJ1Y3R1cmUgLSB0byBnaXZlIHNvbWUgdHlwZQ0K
+Y2hlY2tpbmcgdGhhdCB0aGUgb2Zmc2V0cyBhcmUgYmVpbmcgdXNlZCB3aXRoIHRoZSBjb3JyZWN0
+DQpiYXNlIGFkZHJlc3MuDQoNCklmIHRoZSBjb2RlIGlzIHVzaW5nIG51bWVyaWMgb2Zmc2V0cyAo
+aGFyZHdhcmUgZW5naW5lZXJzIGxpa2UNCm51bWVyaWMgb2Zmc2V0cykgdGhlbiB5b3UgY2FuIGdl
+dCBzb21lIHR5cGUgcHJvdGVjdGlvbiBieSB1c2luZw0KYSBzdHJ1Y3R1cmUgdGhhdCBvbmx5IGNv
+bnRhaW5zIGEgc2luZ2xlIGZpZWxkIChjaGFyIGluIHRoaXMgY2FzZSkuDQoNCglEYXZpZA0KDQot
+DQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwg
+TWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2Fs
+ZXMpDQo=
 
-> Hi Lee
-> 
-> >  /**
-> >   * build_hdr_data - creates L2/L3/L4 header data buffer
-> > - * @hdr_field - bitfield determining needed headers
-> > - * @skb - socket buffer
-> > - * @hdr_len - array of header lengths
-> > - * @tot_len - total length of data
-> > + * @hdr_field: bitfield determining needed headers
-> > + * @skb: socket buffer
-> > + * @hdr_len: array of header lengths
-> > + * @tot_len: total length of data
-> >   *
-> >   * Reads hdr_field to determine which headers are needed by firmware.
-> >   * Builds a buffer containing these headers.  Saves individual header
-> 
-> The code is:
-> 
-> static int build_hdr_data(u8 hdr_field, struct sk_buff *skb,
->                           int *hdr_len, u8 *hdr_data)
-> {
-> 
-> What about hdr_data? 
-> 
-> >  /**
-> >   * create_hdr_descs - create header and header extension descriptors
-> > - * @hdr_field - bitfield determining needed headers
-> > - * @data - buffer containing header data
-> > - * @len - length of data buffer
-> > - * @hdr_len - array of individual header lengths
-> > - * @scrq_arr - descriptor array
-> > + * @hdr_field: bitfield determining needed headers
-> > + * @data: buffer containing header data
-> > + * @len: length of data buffer
-> > + * @hdr_len: array of individual header lengths
-> > + * @scrq_arr: descriptor array
-> 
-> static int create_hdr_descs(u8 hdr_field, u8 *hdr_data, int len, int *hdr_len,
->                             union sub_crq *scrq_arr)
-> 
-> There is no data parameter.
-> 
-> It looks like you just changes - to :, but did not validate the
-> parameters are actually correct.
-
-Right.  This is a 'quirk' of my current process.
-
-I build once, then use a script to parse the output, fixing each
-issue in the order the compiler presents them.  Then, either after
-fixing a reasonable collection, or all issues, I re-run the compile
-and fix the next batch (if any).
-
-This patch is only fixing the formatting issue(s).  As you've seen,
-there is a subsequent patch in the series which fixes the disparity.
-
-I can squash them though.  No problem.
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
