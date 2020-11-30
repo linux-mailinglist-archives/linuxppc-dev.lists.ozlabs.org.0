@@ -2,87 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBBFD2C87FD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 16:31:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBAB2C880E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 16:34:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cl8N05gzJzDqlg
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 02:31:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cl8R52CsHzDqD8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 02:34:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.221.67; helo=mail-wr1-f67.google.com;
+ envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=eYXUHnA8; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=linux.com
+Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com
+ [209.85.221.67])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl8LF38YgzDqWs
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 02:29:56 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AUF5F9b125273
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 10:29:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=L7dsS0pQqTFuMC/e4WftXw/kCRYq98UYhZQ2eOrpZZQ=;
- b=eYXUHnA82LpHGsMICyJnV2v3CbU9LUe8YcrTGnh179UROS6lVz9xCkRlnq/jT8RnNj0r
- Z6OYBY/EI+dkGq/uMKkw84YjPLgQT0C+0pplvAg5iHcHz4DvHmHHy8h/fbqHJvbRvUqd
- ZyPHctLB0AH6ZRN3plxf987NgygjQlgc4fwdw2xntwc4/vXzBkpy0HqSP3pAupnGs334
- fXZPmumk8y0MeUELeJPp1a528wYlF+WUCMLhtY6BKIjCJWKNmg1leN7d+qrm0sP9+wsV
- 0jDfXe+ECfwhJYaIsOsY7RY4pV+j90k7RSud1LrSeMAb60vdsaE1oBhdn9zUNKMSORVP DA== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 355263jx4y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 10:29:53 -0500
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AUFRhCk006695
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 15:29:52 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma04ams.nl.ibm.com with ESMTP id 353e6825qc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 15:29:51 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0AUFTnaO39584060
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 15:29:49 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BFAD9A405B
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 15:29:49 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ABDE6A4059
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 15:29:49 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.145.147.204])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 15:29:49 +0000 (GMT)
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/pseries: Define PCI bus speed for Gen4 and Gen5
-Date: Mon, 30 Nov 2020 16:29:49 +0100
-Message-Id: <20201130152949.26467-1-fbarrat@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl8M02nW7zDqXd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 02:30:36 +1100 (AEDT)
+Received: by mail-wr1-f67.google.com with SMTP id 23so16756479wrc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 07:30:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=aYHHxJmw979e+wSJRiDQN73bZ6bHCfBL6+c7qQzjNRM=;
+ b=bY938Ga6/Mgn4AaAd30NVlpPwi9AOG6sYArDVGcq+LNtq/JWCor54AUDyHvRUg72HL
+ ofQISnJunUykrk3yKYsh7qP4PHYVNWYID4tQCo5zhs0ZPF4jWgg5eTOEytz2GBfCZauA
+ S4yianTiXzKiHuG9nWXx8BND+EVpc+cWxMm/i8VKlshdN8Aetg8vILDzNw+UGVeiVe0O
+ SFuk/BwwQQVKSbza5PikMfeVmb9gKg7mGnK4Yxvq5XFCOD6dt9fz9aThw0EQIUP0G07d
+ wgubJjP7EDcNXqntpZb26wdqUJnvZ5VKbz6gwcZuYD6u1M+m+2R2LvjE3h/1nRrl3Gl6
+ cn+w==
+X-Gm-Message-State: AOAM5314hAMkn1ijc+vECgSPrMaJGxITRjOxT1J6WdOrrlOSelm0KK9c
+ QKaqxIkC57VUp+Ob5Dcsik0=
+X-Google-Smtp-Source: ABdhPJxDgu0JUhfBnd1JT0sM9EnLMunvMJmxP1ptyZLeuiHRBoyRMeT9fOud0TpT6HDh8Aw84e0fEg==
+X-Received: by 2002:adf:9d49:: with SMTP id o9mr29398963wre.413.1606750230899; 
+ Mon, 30 Nov 2020 07:30:30 -0800 (PST)
+Received: from rocinante ([95.155.85.46])
+ by smtp.gmail.com with ESMTPSA id k11sm27836582wrv.88.2020.11.30.07.30.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 30 Nov 2020 07:30:30 -0800 (PST)
+Date: Mon, 30 Nov 2020 16:30:28 +0100
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Subject: Re: [PATCH v6 1/5] PCI: Unify ECAM constants in native PCI Express
+ drivers
+Message-ID: <X8UQFER3uccborBf@rocinante>
+References: <20201129230743.3006978-1-kw@linux.com>
+ <20201129230743.3006978-2-kw@linux.com>
+ <20201130110858.GB16758@e121166-lin.cambridge.arm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-30_05:2020-11-30,
- 2020-11-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 mlxlogscore=999 clxscore=1015 bulkscore=0
- suspectscore=1 phishscore=0 adultscore=0 mlxscore=0 spamscore=0
- malwarescore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2011300098
+In-Reply-To: <20201130110858.GB16758@e121166-lin.cambridge.arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,85 +69,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Heiko Stuebner <heiko@sntech.de>, Shawn Lin <shawn.lin@rock-chips.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Jonathan Chocron <jonnyc@amazon.com>, Toan Le <toan@os.amperecomputing.com>,
+ Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Michal Simek <michal.simek@xilinx.com>, linux-rockchip@lists.infradead.org,
+ bcm-kernel-feedback-list@broadcom.com,
+ Jonathan Derrick <jonathan.derrick@intel.com>, linux-pci@vger.kernel.org,
+ Ray Jui <rjui@broadcom.com>, linux-rpi-kernel@lists.infradead.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, linux-arm-kernel@lists.infradead.org,
+ Scott Branden <sbranden@broadcom.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ Robert Richter <rrichter@marvell.com>, linuxppc-dev@lists.ozlabs.org,
+ Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Update bus speed definition for PCI Gen4 and 5.
+Hi Lorenzo!
 
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/pci.c | 51 ++++++++++++----------------
- 1 file changed, 21 insertions(+), 30 deletions(-)
+On 20-11-30 11:08:58, Lorenzo Pieralisi wrote:
+[...]
+> > Refactor pci_ecam_map_bus() function to use newly added constants so
+> > that limits to the bus, device function and offset (now limited to 4K as
+> > per the specification) are in place to prevent the defective or
+> > malicious caller from supplying incorrect configuration offset and thus
+> > targeting the wrong device when accessing extended configuration space.
+> > This refactor also allows for the ".bus_shit" initialisers to be dropped
+>                                           ^^^^
+> 
+> Nice typo, I'd fix it while applying it though if you don't mind ;-),
+> no need to resend it.
 
-diff --git a/arch/powerpc/platforms/pseries/pci.c b/arch/powerpc/platforms/pseries/pci.c
-index 911534b89c85..72a4d4167849 100644
---- a/arch/powerpc/platforms/pseries/pci.c
-+++ b/arch/powerpc/platforms/pseries/pci.c
-@@ -290,6 +290,25 @@ static void fixup_winbond_82c105(struct pci_dev* dev)
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_WINBOND, PCI_DEVICE_ID_WINBOND_82C105,
- 			 fixup_winbond_82c105);
- 
-+static enum pci_bus_speed prop_to_pci_speed(u32 prop)
-+{
-+	switch (prop) {
-+	case 0x01:
-+		return PCIE_SPEED_2_5GT;
-+	case 0x02:
-+		return PCIE_SPEED_5_0GT;
-+	case 0x04:
-+		return PCIE_SPEED_8_0GT;
-+	case 0x08:
-+		return PCIE_SPEED_16_0GT;
-+	case 0x10:
-+		return PCIE_SPEED_32_0GT;
-+	default:
-+		pr_debug("Unexpected PCI link speed property value\n");
-+		return PCI_SPEED_UNKNOWN;
-+	}
-+}
-+
- int pseries_root_bridge_prepare(struct pci_host_bridge *bridge)
- {
- 	struct device_node *dn, *pdn;
-@@ -322,35 +341,7 @@ int pseries_root_bridge_prepare(struct pci_host_bridge *bridge)
- 		return 0;
- 	}
- 
--	switch (pcie_link_speed_stats[0]) {
--	case 0x01:
--		bus->max_bus_speed = PCIE_SPEED_2_5GT;
--		break;
--	case 0x02:
--		bus->max_bus_speed = PCIE_SPEED_5_0GT;
--		break;
--	case 0x04:
--		bus->max_bus_speed = PCIE_SPEED_8_0GT;
--		break;
--	default:
--		bus->max_bus_speed = PCI_SPEED_UNKNOWN;
--		break;
--	}
--
--	switch (pcie_link_speed_stats[1]) {
--	case 0x01:
--		bus->cur_bus_speed = PCIE_SPEED_2_5GT;
--		break;
--	case 0x02:
--		bus->cur_bus_speed = PCIE_SPEED_5_0GT;
--		break;
--	case 0x04:
--		bus->cur_bus_speed = PCIE_SPEED_8_0GT;
--		break;
--	default:
--		bus->cur_bus_speed = PCI_SPEED_UNKNOWN;
--		break;
--	}
--
-+	bus->max_bus_speed = prop_to_pci_speed(pcie_link_speed_stats[0]);
-+	bus->cur_bus_speed = prop_to_pci_speed(pcie_link_speed_stats[1]);
- 	return 0;
- }
--- 
-2.26.2
+Oh doh!  Apologies. :)
 
+> Jokes aside, nice piece of work, thanks for that.
+> 
+> > when the user is not using a custom value as a default value will be
+> > used as per the PCI Express Specification.
+> > 
+> > Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+> > Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
+> 
+> I think Bjorn's reviewed-by still stands so I will apply it.
+[...]
+
+Thank you!
+
+Krzysztof
