@@ -1,67 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69AD12C8122
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 10:36:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B53602C821F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 11:28:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cl0VN0bpSzDrGt
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 20:36:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cl1dv3qytzDrHP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 21:28:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=DZmGHuBX; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl0S61bWMzDqWZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 20:34:24 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=0rWZ/IKLgX5YBtYlsGOEnzcxhpN2D379f2O4Lio8snw=; b=DZmGHuBX23XyOb0cYXxLwKvpB+
- 1QFJSgOTkI0TdQcuEDlwzcyxfvK3NW4jFlga+VMD1+hut7ZfTUVDPiUZg3xzF3qLlP+Ac1USFi6qp
- 4YPToAcqP+rNdlu7fqFgH0OGt0wmYCFT/6L1/DE07qbTOPFDXO4mKDdJhGVoRLRDUPLytj7/QB3QO
- 7btaCKCgshCA358zEjjiqbMdS8WOI/Oz2FA5XL/ZvrcoogYQU/ql+fcUXzEV2kuq7/40oBjjGMzwG
- PUnV/3WJfZ+yQycDAIuAN1vCwkquC+gl0cJ06EY6rBnJh+aLw1wUU17oDBEXk4K5uqm6mAfKXQMv4
- eCafddhg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kjfZa-0001G5-CH; Mon, 30 Nov 2020 09:34:18 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 278DA3003E1;
- Mon, 30 Nov 2020 10:34:17 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 12B1720107BE2; Mon, 30 Nov 2020 10:34:17 +0100 (CET)
-Date: Mon, 30 Nov 2020 10:34:17 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH 6/8] lazy tlb: shoot lazies, a non-refcounting lazy tlb
- option
-Message-ID: <20201130093417.GI3092@hirez.programming.kicks-ass.net>
-References: <20201128160141.1003903-1-npiggin@gmail.com>
- <20201128160141.1003903-7-npiggin@gmail.com>
- <CALCETrVXUbe8LfNn-Qs+DzrOQaiw+sFUg1J047yByV31SaTOZw@mail.gmail.com>
- <20201130093000.GM2414@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl1c84m9bzDrB0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 21:26:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=XrQXDVO9; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Cl1c4600Mz9sT6;
+ Mon, 30 Nov 2020 21:26:28 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1606731992;
+ bh=4DHMoxKJd9BFptsqCNzPXSnHv0vKTr1Q24eGJ7q15mQ=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=XrQXDVO9OZaGgrCEqU64avYKUIZ7ENtiTQeFZ7NvIqFB0gfxc9WjmSXK3aOTIvWsN
+ PzhkaoM+4RgH17ugcofpZEVjw8t94UhEE2uSrown8NtUyTKr2dXHvV8L4Qs2g1nhcf
+ 85B5UgShnT64fPtkpgpwSh6PuaFx+SQK9HwGRK2VbRd/h4RPq12O1foMqkc+m9pxeN
+ stVCLxCS3z793ox/Ycupmm72WDNbkh0yiTwk0kewvLOHGEv/ZguM1T2hwOzARLcg7x
+ 1dKCFIfcXlLBnIXiVSOu5FBgUmgQgpXoKuszbFyUX6z8SJZbSxm6mGmuGE/RFlLnSc
+ TdHdiasU3FzBg==
+Date: Mon, 30 Nov 2020 21:26:27 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH] powerpc: fix the allyesconfig build
+Message-ID: <20201130212627.3a20b558@canb.auug.org.au>
+In-Reply-To: <CAMuHMdVJKarCRRRJq_hmvvv0NcSpREdqDbH8L5NitZmFUEbqmw@mail.gmail.com>
+References: <20201128122819.32187696@canb.auug.org.au>
+ <CAMuHMdVJKarCRRRJq_hmvvv0NcSpREdqDbH8L5NitZmFUEbqmw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201130093000.GM2414@hirez.programming.kicks-ass.net>
+Content-Type: multipart/signed; boundary="Sig_/e3GNl5Sde7_nRpv_2Sg=je7";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,24 +59,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Salil Mehta <salil.mehta@huawei.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Stephen Boyd <sboyd@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, linux-clk <linux-clk@vger.kernel.org>,
+ Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+ Yisen Zhuang <yisen.zhuang@huawei.com>, Joel Stanley <joel@jms.id.au>,
+ netdev <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>, "David S.
+ Miller" <davem@davemloft.net>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 30, 2020 at 10:30:00AM +0100, Peter Zijlstra wrote:
-> On Sat, Nov 28, 2020 at 07:54:57PM -0800, Andy Lutomirski wrote:
-> > This means that mm_cpumask operations won't need to be full barriers
-> > forever, and we might not want to take the implied full barriers in
-> > set_bit() and clear_bit() for granted.
-> 
-> There is no implied full barrier for those ops.
+--Sig_/e3GNl5Sde7_nRpv_2Sg=je7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Neither ARM nor Power implies any ordering on those ops. But Power has
-some of the worst atomic performance in the world despite of that.
+Hi Geert,
 
-IIRC they don't do their LL/SC in L1.
+On Mon, 30 Nov 2020 09:58:23 +0100 Geert Uytterhoeven <geert@linux-m68k.org=
+> wrote:
+>
+> Thanks for your patch!
+
+No worries, it has been a small irritant to me for quite a while.
+
+> I prefer to fix this in the driver instead.  The space saving by packing =
+the
+> structure is minimal.
+> I've sent a patch
+> https://lore.kernel.org/r/20201130085743.1656317-1-geert+renesas@glider.be
+> (when lore is back)
+
+Absolutely, thanks.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/e3GNl5Sde7_nRpv_2Sg=je7
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl/EyNQACgkQAVBC80lX
+0GylCwf+JP01sreFsxom9d0ts5QMDlH3pU35scrqkVS2jWpB25zrGhgdrrneKakT
+aF+kF4Mcu2ducPJwpWECkJAVvz6frXPTQ5wXZFyeWXeT37UF69LBtEQVDIATpBEe
+AC2F4VA9xxAQZOWo8uRJxgVgkTLuoyvFCrEfrtM4d9o8HIDmPLc2cc5QVqSXONYn
+T8fBtDqyh6+oe0DyLJuZfvmzxDX1+7jW/6XWPYyjs8fV6w/3787DvCzRhvTdOCrP
+BWsdr7zt822PvhMxh5OWN7EYgo/GZTM5Tw4E2EVbnyj4l2cFo4gI1vn9AuKMjtw5
+dYHmGSgw/TGtOHUd4EpGv72jecslhg==
+=7W56
+-----END PGP SIGNATURE-----
+
+--Sig_/e3GNl5Sde7_nRpv_2Sg=je7--
