@@ -1,96 +1,127 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76EAF2C8F54
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 21:41:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A492C8F5A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Nov 2020 21:42:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClHF75dpHzDr6Q
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 07:40:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClHHM0QWhzDr7M
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 07:42:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=sa9B+85k; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ smtp.mailfrom=leica-geosystems.com (client-ip=40.107.7.129;
+ helo=eur04-he1-obe.outbound.protection.outlook.com;
+ envelope-from=andrey.zhizhikin@leica-geosystems.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=leica-geosystems.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=leica-geosystems.com header.i=@leica-geosystems.com
+ header.a=rsa-sha256 header.s=selector1 header.b=smh/9VAd; 
+ dkim-atps=neutral
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr70129.outbound.protection.outlook.com [40.107.7.129])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl84163hNzDqN5
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 02:17:37 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0AUF4XnE150160; Mon, 30 Nov 2020 10:17:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : from : to : cc
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=q4qOxUv82Vlz1okT0uQaPo+5wm5xH7ihGdQ6JZq/NVw=;
- b=sa9B+85k6OQFdif2AXmPQXwYJKy5+Ga/GTAOIcy+eFImMsHzG3l3nY2p8SXe1VBossCi
- 5/uwqEshKZ6DuS6XJ5av1Qco0O3y10AWOcfLZKs505nysh22BsxgZnjS54J9n7NwmHHq
- rH73XtLEaNmkTkqnhdVwSMvpf7uG6L3lcnRi7NPhjMkZVmupe1I5IXyXBz2vSYqnAoVF
- YHUpBzSt8ssqX4S7phPS2lMPbGOiSbsUpbFQrKGmiW666k5ehm46W8fBtYmCp8d83636
- bkejM1S4DbpuQwQVL1F5NJJm5FNQaS9ihZE+r0oS6Tahx+TFhFUTO9lyheBP+6UthzbB 7Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3551674ekk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Nov 2020 10:17:32 -0500
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0AUF4mRx151516;
- Mon, 30 Nov 2020 10:17:32 -0500
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3551674ejk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Nov 2020 10:17:32 -0500
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AUF89Cp023688;
- Mon, 30 Nov 2020 15:17:29 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04ams.nl.ibm.com with ESMTP id 353e6825cx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Nov 2020 15:17:29 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0AUFHRZR6161056
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Nov 2020 15:17:27 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3F5A75204F;
- Mon, 30 Nov 2020 15:17:27 +0000 (GMT)
-Received: from lep8c.aus.stglabs.ibm.com (unknown [9.40.192.207])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 9B45452051;
- Mon, 30 Nov 2020 15:17:25 +0000 (GMT)
-Subject: [RFC Qemu PATCH v2 2/2] spapr: nvdimm: Implement async flush hcalls
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-To: xiaoguangrong.eric@gmail.com, mst@redhat.com, imammedo@redhat.com,
- david@gibson.dropbear.id.au, qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-Date: Mon, 30 Nov 2020 09:17:24 -0600
-Message-ID: <160674940727.2492771.7855399693883710135.stgit@lep8c.aus.stglabs.ibm.com>
-In-Reply-To: <160674929554.2492771.17651548703390170573.stgit@lep8c.aus.stglabs.ibm.com>
-References: <160674929554.2492771.17651548703390170573.stgit@lep8c.aus.stglabs.ibm.com>
-User-Agent: StGit/0.19
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cl88w0QcDzDqN5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 02:21:49 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YH2MNBgbN1y//UqnRkt+4+Q8QOHB5J+SrJDlmpbFbRfzh6Rmk9Q1dAmURn492rWqzVLEXnFAWQyNJOihsa4sakbPAib2oryTczf0SZt+BmT8gEkFwHsKWHXNbl3hhzVi9HFTDbgiB3hkx/ljXeI24oc51aSHm38ssWUO0n0sa8FGpues5eQXiFq7KlbfpPvhpVTAqHfKUPaAELvulj/78gYcCZwg87NZb1VZhMhfSOy0E0qBYr+ilPi47w2KmBpI4mnIcKmQgGgTBUKAwNT0URX1OvHZAE+YHVCOXpcAMKHXR+KApKz4cTcrIWeGK4gyYY38/fG7rnBcyt8/dya1qQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JYFF0S35be+pE4+Hs+KM/e13O4Xj03iMy1mvVlKlyMg=;
+ b=fhKz5MblxEMvIAlFMXZzPX1JLYKr0j5QDo3jH/gvVLF0vL1eClrb+5BYzCcKl/NcQS7U5BUA8kui+Q7XqhEt+iBYwOBps0fPuK7tEd8uDgfkRRR4c+GhN3AptHT6V707H+ZKqdFOgdy2PpUfm/05B02U6YDYVPvy0jUvK8pqj1EoDH//c3WNcO15OuVruc1seoSCm+N4MPiTzAEt+eJnCUm+SFNsp4iEoseULQjOZknkgnWh8Ov/a7Qu1OdHtbeg32A8rosSbfoMswKwHjlvPblgFtI1g63S/BdAGwVKCD7s227FZrUouC6AdGBBbVZ6I3Dhv3rB3nqtaDK26E3/Ow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
+ header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com; 
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JYFF0S35be+pE4+Hs+KM/e13O4Xj03iMy1mvVlKlyMg=;
+ b=smh/9VAdWgcG1D9dJ0gWO6DXa1E4U+VmEpj5NTC/P6Abw2NbB+efRz7VI5jIk/E93kuxq10FaOwVCiEDl6Z59sBmnGRPCaYT3YihPiny8JZGIHJA6S64b7pTlz9Ud2T22NXBFhsRTSnv4EPOOaji627cuY//AditXkHX2Ml3jGM=
+Authentication-Results: armlinux.org.uk; dkim=none (message not signed)
+ header.d=none;armlinux.org.uk; dmarc=none action=none
+ header.from=leica-geosystems.com;
+Received: from DB6PR0602MB2886.eurprd06.prod.outlook.com (2603:10a6:4:9b::11)
+ by DB6PR0602MB2887.eurprd06.prod.outlook.com (2603:10a6:4:9a::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3611.25; Mon, 30 Nov
+ 2020 15:21:44 +0000
+Received: from DB6PR0602MB2886.eurprd06.prod.outlook.com
+ ([fe80::49c3:4b5b:289c:d62c]) by DB6PR0602MB2886.eurprd06.prod.outlook.com
+ ([fe80::49c3:4b5b:289c:d62c%12]) with mapi id 15.20.3611.025; Mon, 30 Nov
+ 2020 15:21:44 +0000
+From: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
+To: linux@armlinux.org.uk, nicolas.ferre@microchip.com,
+ alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
+ tony@atomide.com, mripard@kernel.org, wens@csie.org,
+ jernej.skrabec@siol.net, thierry.reding@gmail.com, jonathanh@nvidia.com,
+ catalin.marinas@arm.com, will@kernel.org, tsbogend@alpha.franken.de,
+ James.Bottomley@HansenPartnership.com, deller@gmx.de, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, lee.jones@linaro.org,
+ sam@ravnborg.org, emil.l.velikov@gmail.com, daniel.thompson@linaro.org,
+ krzk@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-tegra@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/5] drop unused BACKLIGHT_GENERIC option
+Date: Mon, 30 Nov 2020 15:21:32 +0000
+Message-Id: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-Originating-IP: [193.8.40.112]
+X-ClientProxiedBy: ZRAP278CA0002.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:10::12) To DB6PR0602MB2886.eurprd06.prod.outlook.com
+ (2603:10a6:4:9b::11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-11-30_05:2020-11-30,
- 2020-11-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- impostorscore=0 suspectscore=2 malwarescore=0 clxscore=1015
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011300094
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from aherlnxbspsrv01.lgs-net.com (193.8.40.112) by
+ ZRAP278CA0002.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:10::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3611.20 via Frontend Transport; Mon, 30 Nov 2020 15:21:43 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 95d7b698-5292-4930-f51d-08d89543a538
+X-MS-TrafficTypeDiagnostic: DB6PR0602MB2887:
+X-Microsoft-Antispam-PRVS: <DB6PR0602MB2887AD8134FEDEE884AD46CEA6F50@DB6PR0602MB2887.eurprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1169;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Nd3loQ15nj+k6hYQLhmPL9e6smY/UmSaTcWyqEPpv13qIpQHfXiHzpKmYs6yRY88IoM7OA8EI+HInQSY0+DDtLAvWit+QiYWdpsGKxJTeX5U2pkZjvq03zh3TDujFKSB5IMcr3NH8p8c6Pp9HkrgJuvY+qAR3DAWW7u5Ft/oxRZAQMHMNbSxpCfBpbKDHoNdni18QjUyxFT5diCDmw/8NFm/fQm4VBwJeoyPGTbRerF/DcsG8p4qkR3T0tolmusJrEw1Y+JWCi8iT2A891VKG0HsArjY+t3AFkSnoVnD6br7Knj3HjMBXvVvMx5zWqne0cRIBj92zEorv3wzAVExcT6BRWXtEz/xR5uGystDlu7jLgCN/v9mRu1s6xKj0/GE4WbBjPdN667LxTpLcIcrgw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DB6PR0602MB2886.eurprd06.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(346002)(376002)(366004)(136003)(396003)(39860400002)(5660300002)(2616005)(1076003)(52116002)(6506007)(16526019)(956004)(26005)(186003)(7406005)(7416002)(36756003)(2906002)(316002)(6666004)(44832011)(86362001)(83380400001)(6486002)(6512007)(921005)(66946007)(478600001)(8676002)(8936002)(66556008)(66476007)(41533002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?kitQGbAHk3EE3Ey9YOYZ7O8FLyJVuIMD1TiiWcmL9t1mNsQjrB4jtGmbTHNl?=
+ =?us-ascii?Q?BMursxnuITuEajAo6wSx6Z9SsYtX4l2T+R+7R2lNDa/81FA+Bo3GMT+NqSWf?=
+ =?us-ascii?Q?dxiKc7Fg7DO3u5sAv37BjM/JiqRiwBy/lfxzQ6wAyiF8uqsZwa8Ji/Kmb6p9?=
+ =?us-ascii?Q?xDbRMAgpNHBHQIHQXqU+4/19o8V3G/T7nK4J9RoRaSGMRgoSON98yvuX2qmR?=
+ =?us-ascii?Q?hyOgfIfExql8V+hBO5mLO5bzK26KWqhXLljT5/+tml4gFV+uIPkDvMWxKDrT?=
+ =?us-ascii?Q?iV4nXHvZTBIeU4u+p9m9k686qgHh20bQnrvHaoULkKpPbye811iNYqvARczh?=
+ =?us-ascii?Q?B9RyPYsB3mP82COFVkIsI7hjdFYNQaXum8+T8LqqUCoiQ1Njlw+kihsqHEmh?=
+ =?us-ascii?Q?g1bIHw0R7zxGmUG5H+03cFMO20XpvbrM/avQ3orGP36/4T1uRT6MQLFb/OK8?=
+ =?us-ascii?Q?LxiEn5z5KvoENpEG5SSjehnRxmUMcSPZuw17yjVAPmArN/shoCI2cvNUPCU5?=
+ =?us-ascii?Q?0IjipO4xhampV+3d3Nw+GiTRpKPmyzeaKSlxgLc0jKtuq6178DTXzM+0WQ//?=
+ =?us-ascii?Q?jdcLDl4KEPjmsshx/4CgCtkMQ6Y4bG8JQh+6ScX+G13uc6flF1KbZDNPnygO?=
+ =?us-ascii?Q?lyC+trjlg298EN6jEliGM3n4mhstypRQoLQJCvq36/4bGcZYDe3W5qTbR+rT?=
+ =?us-ascii?Q?MA5BsGvM6TKrzeGJ+lmboFadqXB/JC6b4g3XAfBZmbA1bPYDxLnjeZ/Uu/Ak?=
+ =?us-ascii?Q?209edxpv6/zl8+Bi2H92im7c7B5dVlAjB9Njif94cFamVeXDRuqg8R2v/EzA?=
+ =?us-ascii?Q?KOLaXTfMvh1Flzjg0nuQFalsliJP1hud6MdceJVmU8L9x0B1JFD3vixKeJKX?=
+ =?us-ascii?Q?fm8GjVbaEQs6oZZuc200FYIzeOPphD9uNY7jJXFMBQSKG8UlIWqzqjNlamdp?=
+ =?us-ascii?Q?20XrACDjUK4kLAkEs5EDustyLpTxtxycPGD0ze1wLgF3KF5AjmX7wPuPuWv1?=
+ =?us-ascii?Q?6MVd?=
+X-OriginatorOrg: leica-geosystems.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95d7b698-5292-4930-f51d-08d89543a538
+X-MS-Exchange-CrossTenant-AuthSource: DB6PR0602MB2886.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2020 15:21:44.1425 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z2W1ShaxXCjALLxQbLA6jmqUp8Gi08QpaeQ8KWrj3vdSv3nL/R6SJp8BNxNRSjHk1dDcifGMCRU3GPdULbk7pR062FCDnmHrSD8upGxQrEw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0602MB2887
 X-Mailman-Approved-At: Tue, 01 Dec 2020 07:36:04 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -103,195 +134,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org, aneesh.kumar@linux.ibm.com,
- kvm-ppc@vger.kernel.org, shivaprasadbhat@gmail.com, bharata@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When the persistent memory beacked by a file, a cpu cache flush instruction
-is not sufficient to ensure the stores are correctly flushed to the media.
+Since the removal of generic_bl driver from the source tree in commit
+7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
+unused") BACKLIGHT_GENERIC config option became obsolete as well and
+therefore subject to clean-up from all configuration files.
 
-The patch implements the async hcalls for flush operation on demand from the
-guest kernel.
+This series introduces patches to address this removal, separated by
+architectures in the kernel tree.
 
-The device option sync-dax is by default off and enables explicit asynchronous
-flush requests from guest. It can be disabled by setting syn-dax=on.
+Andrey Zhizhikin (5):
+  ARM: configs: drop unused BACKLIGHT_GENERIC option
+  arm64: defconfig: drop unused BACKLIGHT_GENERIC option
+  MIPS: configs: drop unused BACKLIGHT_GENERIC option
+  parisc: configs: drop unused BACKLIGHT_GENERIC option
+  powerpc/configs: drop unused BACKLIGHT_GENERIC option
 
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
----
- hw/mem/nvdimm.c         |    1 +
- hw/ppc/spapr_nvdimm.c   |   79 +++++++++++++++++++++++++++++++++++++++++++++++
- include/hw/mem/nvdimm.h |   10 ++++++
- include/hw/ppc/spapr.h  |    3 +-
- 4 files changed, 92 insertions(+), 1 deletion(-)
+ arch/arm/configs/at91_dt_defconfig          | 1 -
+ arch/arm/configs/cm_x300_defconfig          | 1 -
+ arch/arm/configs/colibri_pxa300_defconfig   | 1 -
+ arch/arm/configs/jornada720_defconfig       | 1 -
+ arch/arm/configs/magician_defconfig         | 1 -
+ arch/arm/configs/mini2440_defconfig         | 1 -
+ arch/arm/configs/omap2plus_defconfig        | 1 -
+ arch/arm/configs/pxa3xx_defconfig           | 1 -
+ arch/arm/configs/qcom_defconfig             | 1 -
+ arch/arm/configs/sama5_defconfig            | 1 -
+ arch/arm/configs/sunxi_defconfig            | 1 -
+ arch/arm/configs/tegra_defconfig            | 1 -
+ arch/arm/configs/u8500_defconfig            | 1 -
+ arch/arm64/configs/defconfig                | 1 -
+ arch/mips/configs/gcw0_defconfig            | 1 -
+ arch/mips/configs/gpr_defconfig             | 1 -
+ arch/mips/configs/lemote2f_defconfig        | 1 -
+ arch/mips/configs/loongson3_defconfig       | 1 -
+ arch/mips/configs/mtx1_defconfig            | 1 -
+ arch/mips/configs/rs90_defconfig            | 1 -
+ arch/parisc/configs/generic-64bit_defconfig | 1 -
+ arch/powerpc/configs/powernv_defconfig      | 1 -
+ 22 files changed, 22 deletions(-)
 
-diff --git a/hw/mem/nvdimm.c b/hw/mem/nvdimm.c
-index 03c2201b56..37a4db0135 100644
---- a/hw/mem/nvdimm.c
-+++ b/hw/mem/nvdimm.c
-@@ -220,6 +220,7 @@ static void nvdimm_write_label_data(NVDIMMDevice *nvdimm, const void *buf,
- 
- static Property nvdimm_properties[] = {
-     DEFINE_PROP_BOOL(NVDIMM_UNARMED_PROP, NVDIMMDevice, unarmed, false),
-+    DEFINE_PROP_BOOL(NVDIMM_SYNC_DAX_PROP, NVDIMMDevice, sync_dax, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
-index a833a63b5e..557e36aa98 100644
---- a/hw/ppc/spapr_nvdimm.c
-+++ b/hw/ppc/spapr_nvdimm.c
-@@ -22,6 +22,7 @@
-  * THE SOFTWARE.
-  */
- #include "qemu/osdep.h"
-+#include "qemu/cutils.h"
- #include "qapi/error.h"
- #include "hw/ppc/spapr_drc.h"
- #include "hw/ppc/spapr_nvdimm.h"
-@@ -155,6 +156,11 @@ static int spapr_dt_nvdimm(SpaprMachineState *spapr, void *fdt,
-                              "operating-system")));
-     _FDT(fdt_setprop(fdt, child_offset, "ibm,cache-flush-required", NULL, 0));
- 
-+    if (!nvdimm->sync_dax) {
-+        _FDT(fdt_setprop(fdt, child_offset, "ibm,async-flush-required",
-+                         NULL, 0));
-+    }
-+
-     return child_offset;
- }
- 
-@@ -370,6 +376,78 @@ static target_ulong h_scm_bind_mem(PowerPCCPU *cpu, SpaprMachineState *spapr,
-     return H_SUCCESS;
- }
- 
-+typedef struct SCMAsyncFlushData {
-+    int fd;
-+    uint64_t token;
-+} SCMAsyncFlushData;
-+
-+static int flush_worker_cb(void *opaque)
-+{
-+    int ret = H_SUCCESS;
-+    SCMAsyncFlushData *req_data = opaque;
-+
-+    /* flush raw backing image */
-+    if (qemu_fdatasync(req_data->fd) < 0) {
-+        error_report("papr_scm: Could not sync nvdimm to backend file: %s",
-+                     strerror(errno));
-+        ret = H_HARDWARE;
-+    }
-+
-+    g_free(req_data);
-+
-+    return ret;
-+}
-+
-+static target_ulong h_scm_async_flush(PowerPCCPU *cpu, SpaprMachineState *spapr,
-+                                      target_ulong opcode, target_ulong *args)
-+{
-+    int ret;
-+    uint32_t drc_index = args[0];
-+    uint64_t continue_token = args[1];
-+    SpaprDrc *drc = spapr_drc_by_index(drc_index);
-+    PCDIMMDevice *dimm;
-+    HostMemoryBackend *backend = NULL;
-+    SCMAsyncFlushData *req_data = NULL;
-+
-+    if (!drc || !drc->dev ||
-+        spapr_drc_type(drc) != SPAPR_DR_CONNECTOR_TYPE_PMEM) {
-+        return H_PARAMETER;
-+    }
-+
-+    if (continue_token != 0) {
-+        ret = spapr_drc_get_async_hcall_status(drc, continue_token);
-+        if (ret == H_BUSY) {
-+            args[0] = continue_token;
-+            return H_LONG_BUSY_ORDER_1_SEC;
-+        }
-+
-+        return ret;
-+    }
-+
-+    dimm = PC_DIMM(drc->dev);
-+    backend = MEMORY_BACKEND(dimm->hostmem);
-+
-+    req_data = g_malloc0(sizeof(SCMAsyncFlushData));
-+    req_data->fd = memory_region_get_fd(&backend->mr);
-+
-+    continue_token = spapr_drc_get_new_async_hcall_token(drc);
-+    if (!continue_token) {
-+        g_free(req_data);
-+        return H_P2;
-+    }
-+    req_data->token = continue_token;
-+
-+    spapr_drc_run_async_hcall(drc, continue_token, &flush_worker_cb, req_data);
-+
-+    ret = spapr_drc_get_async_hcall_status(drc, continue_token);
-+    if (ret == H_BUSY) {
-+        args[0] = req_data->token;
-+        return ret;
-+    }
-+
-+    return ret;
-+}
-+
- static target_ulong h_scm_unbind_mem(PowerPCCPU *cpu, SpaprMachineState *spapr,
-                                      target_ulong opcode, target_ulong *args)
- {
-@@ -486,6 +564,7 @@ static void spapr_scm_register_types(void)
-     spapr_register_hypercall(H_SCM_BIND_MEM, h_scm_bind_mem);
-     spapr_register_hypercall(H_SCM_UNBIND_MEM, h_scm_unbind_mem);
-     spapr_register_hypercall(H_SCM_UNBIND_ALL, h_scm_unbind_all);
-+    spapr_register_hypercall(H_SCM_ASYNC_FLUSH, h_scm_async_flush);
- }
- 
- type_init(spapr_scm_register_types)
-diff --git a/include/hw/mem/nvdimm.h b/include/hw/mem/nvdimm.h
-index c699842dd0..9e8795766e 100644
---- a/include/hw/mem/nvdimm.h
-+++ b/include/hw/mem/nvdimm.h
-@@ -51,6 +51,7 @@ OBJECT_DECLARE_TYPE(NVDIMMDevice, NVDIMMClass, NVDIMM)
- #define NVDIMM_LABEL_SIZE_PROP "label-size"
- #define NVDIMM_UUID_PROP       "uuid"
- #define NVDIMM_UNARMED_PROP    "unarmed"
-+#define NVDIMM_SYNC_DAX_PROP    "sync-dax"
- 
- struct NVDIMMDevice {
-     /* private */
-@@ -85,6 +86,15 @@ struct NVDIMMDevice {
-      */
-     bool unarmed;
- 
-+    /*
-+     * On PPC64,
-+     * The 'off' value results in the async-flush-required property set
-+     * in the device tree for pseries machines. When 'off', the guest
-+     * initiates explicity flush requests to the backend device ensuring
-+     * write persistence.
-+     */
-+    bool sync_dax;
-+
-     /*
-      * The PPC64 - spapr requires each nvdimm device have a uuid.
-      */
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 2e89e36cfb..6d7110b7dc 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -535,8 +535,9 @@ struct SpaprMachineState {
- #define H_SCM_BIND_MEM          0x3EC
- #define H_SCM_UNBIND_MEM        0x3F0
- #define H_SCM_UNBIND_ALL        0x3FC
-+#define H_SCM_ASYNC_FLUSH       0x4A0
- 
--#define MAX_HCALL_OPCODE        H_SCM_UNBIND_ALL
-+#define MAX_HCALL_OPCODE        H_SCM_ASYNC_FLUSH
- 
- /* The hcalls above are standardized in PAPR and implemented by pHyp
-  * as well.
 
+base-commit: b65054597872ce3aefbc6a666385eabdf9e288da
+prerequisite-patch-id: bfd382cf1dc021d20204f10ea9403319c1c32b12
+prerequisite-patch-id: 5397c0c8648bb3e0b830207ea867138c11c6e644
+prerequisite-patch-id: a3c284dff5fe6d02828918a886db6a8ed3197e20
+-- 
+2.17.1
 
