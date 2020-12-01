@@ -1,43 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CD92CA5FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 15:44:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6752CA636
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 15:50:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CllH86JRrzDqdq
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 01:44:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CllPv3ScdzDqm9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 01:50:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=arm.com
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=c0gnLvuB; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CllCM6CtszDqXW
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 01:41:03 +1100 (AEDT)
-Received: from gaia (unknown [95.146.230.165])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9A2B720757;
- Tue,  1 Dec 2020 14:40:55 +0000 (UTC)
-Date: Tue, 1 Dec 2020 14:40:53 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: ZHIZHIKIN Andrey <andrey.zhizhikin@leica-geosystems.com>
-Subject: Re: [PATCH 1/5] ARM: configs: drop unused BACKLIGHT_GENERIC option
-Message-ID: <20201201144052.GE31404@gaia>
-References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
- <20201130152137.24909-2-andrey.zhizhikin@leica-geosystems.com>
- <20201130185227.GA29434@kozik-lap>
- <AM6PR06MB4691EC52BA41B86AB16EE14FA6F50@AM6PR06MB4691.eurprd06.prod.outlook.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CllGh6xYRzDqm6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 01:43:54 +1100 (AEDT)
+Received: by mail-pl1-x642.google.com with SMTP id s2so1233512plr.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 06:43:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=E0aYG3UpBYgEAoRcoDJDBDWKuJDs4AUd0cit5mP8DrA=;
+ b=c0gnLvuBtNf1H3u0fKZLuWoJlJ0DbmB89OC+p2t+Q0i9u9j8xm2GLLjQjnd5BStUWL
+ X8QLU/Dr/jIuajDn9qujz0JyeZKNluoDHhTXjvllK7x7SR4zWJbEyZutBAzJ1W//uZMc
+ DaRImT6VqaVyPIF1cNS52e40X7RTheaMBta4M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=E0aYG3UpBYgEAoRcoDJDBDWKuJDs4AUd0cit5mP8DrA=;
+ b=U1bfDKLStsRcqJbQOKAqaMPDMfdu2nUollTsMAqFQJKIc5t1o0sbi0+uhm95ose/qZ
+ h9OROUfvd9ehjtJecVAElbABGNX16OS8fRM6duhrX8GQxz5sexeXKlQnMBfblAMbDFbO
+ HXS6PZY7iGW0V6RJ0iyXLEqXutMEICh2QeqdQczJIls8ZlCfj7iCZAFIklZPDDe3Rq8g
+ KaB+Yqt/CvNsLmFai4yU/bBZ1PiFmpvi4F9aL5xcBIADiOdLAGmTDjvPzKzpvhtEGFGS
+ A2MN3I4i1kgs0nwEE556lDi2jspdQynV4GWUm/CWAhwX4GyfcYXLJ7tD8zw3v4ALoy+9
+ cXEg==
+X-Gm-Message-State: AOAM530kz6o7g6frisFv7PNrVBnDC+E1gmw/sb579H387/JQaFj1PoqJ
+ PaB0rVfJMbnfUMps1kgq0R2rDyqfXGDT3g==
+X-Google-Smtp-Source: ABdhPJxTngJ+73CMNbyZnAzTLF/r9oLANxzfNdbF8qWKpf3OV+uRVvtxrxaFMxS9eoSj70eCkHhA2w==
+X-Received: by 2002:a17:90a:8d17:: with SMTP id
+ c23mr3084047pjo.192.1606833830127; 
+ Tue, 01 Dec 2020 06:43:50 -0800 (PST)
+Received: from localhost
+ (2001-44b8-111e-5c00-f932-2db6-916f-25e2.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:f932:2db6:916f:25e2])
+ by smtp.gmail.com with ESMTPSA id g26sm3051785pfo.57.2020.12.01.06.43.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Dec 2020 06:43:49 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/feature-fixups: use a semicolon rather than a comma
+Date: Wed,  2 Dec 2020 01:43:44 +1100
+Message-Id: <20201201144344.1228421-1-dja@axtens.net>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AM6PR06MB4691EC52BA41B86AB16EE14FA6F50@AM6PR06MB4691.eurprd06.prod.outlook.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,98 +76,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
- "tony@atomide.com" <tony@atomide.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "James.Bottomley@HansenPartnership.com"
- <James.Bottomley@HansenPartnership.com>,
- "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
- "paulus@samba.org" <paulus@samba.org>, "sam@ravnborg.org" <sam@ravnborg.org>,
- "daniel.thompson@linaro.org" <daniel.thompson@linaro.org>,
- "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, "deller@gmx.de" <deller@gmx.de>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
- "ludovic.desroches@microchip.com" <ludovic.desroches@microchip.com>,
- arm@kernel.org, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "will@kernel.org" <will@kernel.org>, "mripard@kernel.org" <mripard@kernel.org>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "lee.jones@linaro.org" <lee.jones@linaro.org>, "wens@csie.org" <wens@csie.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "jernej.skrabec@siol.net" <jernej.skrabec@siol.net>,
- "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "emil.l.velikov@gmail.com" <emil.l.velikov@gmail.com>,
- "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
- Olof Johansson <olof@lixom.net>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Nick Piggin <npiggin@gmail.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 30, 2020 at 07:50:25PM +0000, ZHIZHIKIN Andrey wrote:
-> From Krzysztof Kozlowski <krzk@kernel.org>:
-> > On Mon, Nov 30, 2020 at 03:21:33PM +0000, Andrey Zhizhikin wrote:
-> > > Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-> > > unused") removed geenric_bl driver from the tree, together with
-> > > corresponding config option.
-> > >
-> > > Remove BACKLIGHT_GENERIC config item from all ARM configurations.
-> > >
-> > > Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it
-> > > is unused")
-> > > Cc: Sam Ravnborg <sam@ravnborg.org>
-> > > Signed-off-by: Andrey Zhizhikin
-> > > <andrey.zhizhikin@leica-geosystems.com>
-> > > ---
-> > >  arch/arm/configs/at91_dt_defconfig        | 1 -
-> > >  arch/arm/configs/cm_x300_defconfig        | 1 -
-> > >  arch/arm/configs/colibri_pxa300_defconfig | 1 -
-> > >  arch/arm/configs/jornada720_defconfig     | 1 -
-> > >  arch/arm/configs/magician_defconfig       | 1 -
-> > >  arch/arm/configs/mini2440_defconfig       | 1 -
-> > >  arch/arm/configs/omap2plus_defconfig      | 1 -
-> > >  arch/arm/configs/pxa3xx_defconfig         | 1 -
-> > >  arch/arm/configs/qcom_defconfig           | 1 -
-> > >  arch/arm/configs/sama5_defconfig          | 1 -
-> > >  arch/arm/configs/sunxi_defconfig          | 1 -
-> > >  arch/arm/configs/tegra_defconfig          | 1 -
-> > >  arch/arm/configs/u8500_defconfig          | 1 -
-> > >  13 files changed, 13 deletions(-)
-> > 
-> > You need to send it to arm-soc maintainers, otherwise no one might feel
-> > responsible enough to pick it up.
-> 
-> Good point, thanks a lot!
-> 
-> I was not aware of the fact that there is a separate ML that should
-> receive patches targeted ARM SOCs. Can you (or anyone else) please
-> share it, so I can re-send it there as well?
+In a bunch of our security flushes, we use a comma rather than
+a semicolon to 'terminate' an assignment. Nothing breaks, but
+checkpatch picks it up if you copy it into another flush.
 
-It's not a mailing list as such (with archives etc.), just an alias to
-the arm-soc maintainers: arm@kernel.org.
+Switch to semicolons for ending statements.
 
-> > Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-> > 
-> > +CC Arnd and Olof,
-> > 
-> > Dear Arnd and Olof,
-> > 
-> > Maybe it is worth to add arm-soc entry to the MAINTAINERS file?
-> > Otherwise how one could get your email address? Not mentioning the
-> > secret-soc address. :)
+Cc: Nick Piggin <npiggin@gmail.com>
+Cc: Russell Currey <ruscur@russell.cc>
+Signed-off-by: Daniel Axtens <dja@axtens.net>
+---
+ arch/powerpc/lib/feature-fixups.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-I tried to convince them before, it didn't work. I guess they don't like
-to be spammed ;). Or rather, SoC-specific patches, even to defconfig,
-should go through the specific SoC maintainers. However, there are
-occasional defconfig patches which are more generic or affecting
-multiple SoCs. I just ignore them as the arm64 defconfig is usually
-handled by the arm-soc folk (when I need a defconfig change, I go for
-arch/arm64/Kconfig directly ;)).
-
-Anyway, I still think that we should add a MAINTAINERS entry for
-arch/arm64/configs/defconfig and arch/arm64/Kconfig.platforms.
-
+diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
+index 321c12a9ef6b..47821055b94c 100644
+--- a/arch/powerpc/lib/feature-fixups.c
++++ b/arch/powerpc/lib/feature-fixups.c
+@@ -124,7 +124,7 @@ static void do_stf_entry_barrier_fixups(enum stf_barrier_type types)
+ 	long *start, *end;
+ 	int i;
+ 
+-	start = PTRRELOC(&__start___stf_entry_barrier_fixup),
++	start = PTRRELOC(&__start___stf_entry_barrier_fixup);
+ 	end = PTRRELOC(&__stop___stf_entry_barrier_fixup);
+ 
+ 	instrs[0] = 0x60000000; /* nop */
+@@ -176,7 +176,7 @@ static void do_stf_exit_barrier_fixups(enum stf_barrier_type types)
+ 	long *start, *end;
+ 	int i;
+ 
+-	start = PTRRELOC(&__start___stf_exit_barrier_fixup),
++	start = PTRRELOC(&__start___stf_exit_barrier_fixup);
+ 	end = PTRRELOC(&__stop___stf_exit_barrier_fixup);
+ 
+ 	instrs[0] = 0x60000000; /* nop */
+@@ -344,7 +344,7 @@ void do_rfi_flush_fixups(enum l1d_flush_type types)
+ 	long *start, *end;
+ 	int i;
+ 
+-	start = PTRRELOC(&__start___rfi_flush_fixup),
++	start = PTRRELOC(&__start___rfi_flush_fixup);
+ 	end = PTRRELOC(&__stop___rfi_flush_fixup);
+ 
+ 	instrs[0] = 0x60000000; /* nop */
+@@ -417,7 +417,7 @@ void do_barrier_nospec_fixups(bool enable)
+ {
+ 	void *start, *end;
+ 
+-	start = PTRRELOC(&__start___barrier_nospec_fixup),
++	start = PTRRELOC(&__start___barrier_nospec_fixup);
+ 	end = PTRRELOC(&__stop___barrier_nospec_fixup);
+ 
+ 	do_barrier_nospec_fixups_range(enable, start, end);
 -- 
-Catalin
+2.25.1
+
