@@ -2,63 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAF32C9430
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 01:49:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76B9F2C9453
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 01:53:50 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClNlH0JNVzDqnr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 11:48:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClNrq35kfzDqmJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 11:53:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=qkVUB6Xe; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ClNjC0BKpzDqkB
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 11:47:11 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=B7L/JpGs; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ClNj03z8kz9sT6;
- Tue,  1 Dec 2020 11:47:00 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1606783630;
- bh=e10QAc16NaqVN44J1Hr1vgfh7E2SKLFwF1tipzVH8TM=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=B7L/JpGsTjzwc1HcKznrIXmRcrxBRIrym7aN8qydKWJFeslXKQQ3S+88dDsBJ3atA
- ICgQ4xVzl8mS04fa+JitQnIARV+Ch/K5dsJLTcG7CVgL3Fkr+k207+1HkMCbQhJINU
- VBD4lUo+c3jz+s1yTU151EDkTrnyvsE1RFNs0t5ZmMG99AaYXTeI5CICrmcZ2H6dUl
- Vvg1ej1Q60nEv0wb6xXsNKSIOd5YbXq/ODo1l/1d14DNsnPPuO2V7pIAsWo4KrPhf6
- BFI8ddBD7AtJX9OL7JU1IR3erwJiDVWixj6BQJu5e1Q6dF+8vTlAYnp92VgcVQd9LV
- hM8pxbdtxcAfw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>,
- linux@armlinux.org.uk, nicolas.ferre@microchip.com,
- alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
- tony@atomide.com, mripard@kernel.org, wens@csie.org, jernej.skrabec@siol.net,
- thierry.reding@gmail.com, jonathanh@nvidia.com, catalin.marinas@arm.com,
- will@kernel.org, tsbogend@alpha.franken.de,
- James.Bottomley@HansenPartnership.com, deller@gmx.de, benh@kernel.crashing.org,
- paulus@samba.org, lee.jones@linaro.org, sam@ravnborg.org,
- emil.l.velikov@gmail.com, daniel.thompson@linaro.org, krzk@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 5/5] powerpc/configs: drop unused BACKLIGHT_GENERIC option
-In-Reply-To: <20201130152137.24909-6-andrey.zhizhikin@leica-geosystems.com>
-References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
- <20201130152137.24909-6-andrey.zhizhikin@leica-geosystems.com>
-Date: Tue, 01 Dec 2020 11:46:55 +1100
-Message-ID: <87tut6wdxc.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClNq72LlCzDqP3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 11:52:18 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id x24so11550736pfn.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Nov 2020 16:52:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=hpOUiMsgMrLYarjDlVezk+0DYPCIz2dM0giFyPfH8bY=;
+ b=qkVUB6XedjdzeIPssj88ZbgU4Ew7UFHuMPO64RgXlT6HWPq0afE77wb+6mUejAnSPJ
+ 0puqGTEbETjTNPMMiOuZryLN1MqSOLYLHPwTXNymZnAyje0+53zLYnA47PasrmddYWS7
+ KqO/+uM8TUwuHFPm3n3xNG7JwAiy9ZMtpQajBsmR1tsEbQ/sPxbKwJhApkqlmfCjpj2v
+ FQELs4fDKG3cJPsv09HmmphEv6fwL12IqzJac68Qk5Jp0QM05FnjBfNb0q9BfnUt5GrG
+ sCMVNswpsB8PA2JmGuUFBnt0UL8DcYyVbPW/yJt+8GWNQ/TIVnmjRq3egIVrNm3r7nsS
+ ncjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=hpOUiMsgMrLYarjDlVezk+0DYPCIz2dM0giFyPfH8bY=;
+ b=IxIxFcVdYnT2HxA4DmLxUKjDGelNMvjbluesSaPITJaAtW4NjL0APc8E6ORhpr3wO2
+ 8CO+lKVOYVqqrEG1/9/YLkHmF78Px6GzROCg4l/N/qPDgYbYUfSZul+F8gj9lXls4eOK
+ EYEQV5o0Ci2tfyS5a6VhfeOwUknfSnTPuO9o6t/3Q2ZgVC/d8VfvncgNuT1WAeN991Zi
+ +05JRRuoTDJG7IOAmIErLQ7y377SjLibdFiHfw5fSy+dvXUJ82YiCGrZOxfYZFTlnk7o
+ quMUBE3v/8VPdy+y2xQRQenJ5CK4CoEk0g9A657gjZL6K6C7fHjQ1ZmCy1AYyE4gOAzN
+ dOnw==
+X-Gm-Message-State: AOAM533sBt3mkbXgTnoptcoSC+SN8qTxXtDP9zmPQ7IjabppYJMEA2zN
+ rb3YlvK4wmREAdBPLan97Q2ydcdSZu8=
+X-Google-Smtp-Source: ABdhPJxLBJmrdoD/6K/HIHMmYbZGEiL05ipwvsIAm6Be3nZ+AjcF7CbnnqwiGFVLcxDPb1fK0YLdvQ==
+X-Received: by 2002:a65:6095:: with SMTP id t21mr61367pgu.20.1606783933999;
+ Mon, 30 Nov 2020 16:52:13 -0800 (PST)
+Received: from localhost.localdomain
+ (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
+ by smtp.gmail.com with ESMTPSA id 10sm227974pgq.93.2020.11.30.16.52.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 30 Nov 2020 16:52:13 -0800 (PST)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc: Allow relative pointers in bug table entries
+Date: Tue,  1 Dec 2020 11:52:03 +1100
+Message-Id: <20201201005203.15210-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,41 +73,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com> writes:
-> Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-> unused") removed geenric_bl driver from the tree, together with
-> corresponding config option.
->
-> Remove BACKLIGHT_GENERIC config item from generic-64bit_defconfig.
-                                            ^
-                                            powernv_defconfig
+This enables GENERIC_BUG_RELATIVE_POINTERS on Power so that 32-bit
+offsets are stored in the bug entries rather than 64-bit pointers.
+While this doesn't save space for 32-bit machines, use it anyway so
+there is only one code path.
 
-> Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is unused")
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-> ---
->  arch/powerpc/configs/powernv_defconfig | 1 -
->  1 file changed, 1 deletion(-)
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+---
+v2: Remove non-relative pointers code
+---
+ arch/powerpc/Kconfig           | 4 ++++
+ arch/powerpc/include/asm/bug.h | 8 ++++----
+ arch/powerpc/xmon/xmon.c       | 4 ++--
+ 3 files changed, 10 insertions(+), 6 deletions(-)
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index e9f13fe08492..294108e0e5c6 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -311,6 +311,10 @@ config GENERIC_BUG
+ 	default y
+ 	depends on BUG
+ 
++config GENERIC_BUG_RELATIVE_POINTERS
++	def_bool y
++	depends on GENERIC_BUG
++
+ config SYS_SUPPORTS_APM_EMULATION
+ 	default y if PMAC_APM_EMU
+ 	bool
+diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+index 338f36cd9934..ba0500872cce 100644
+--- a/arch/powerpc/include/asm/bug.h
++++ b/arch/powerpc/include/asm/bug.h
+@@ -12,7 +12,7 @@
+ #ifdef CONFIG_DEBUG_BUGVERBOSE
+ .macro EMIT_BUG_ENTRY addr,file,line,flags
+ 	 .section __bug_table,"aw"
+-5001:	 PPC_LONG \addr, 5002f
++5001:	 .4byte \addr - 5001b, 5002f - 5001b
+ 	 .short \line, \flags
+ 	 .org 5001b+BUG_ENTRY_SIZE
+ 	 .previous
+@@ -23,7 +23,7 @@
+ #else
+ .macro EMIT_BUG_ENTRY addr,file,line,flags
+ 	 .section __bug_table,"aw"
+-5001:	 PPC_LONG \addr
++5001:	 .4byte \addr - 5001b
+ 	 .short \flags
+ 	 .org 5001b+BUG_ENTRY_SIZE
+ 	 .previous
+@@ -36,14 +36,14 @@
+ #ifdef CONFIG_DEBUG_BUGVERBOSE
+ #define _EMIT_BUG_ENTRY				\
+ 	".section __bug_table,\"aw\"\n"		\
+-	"2:\t" PPC_LONG "1b, %0\n"		\
++	"2:\t.4byte 1b - 2b, %0 - 2b\n"		\
+ 	"\t.short %1, %2\n"			\
+ 	".org 2b+%3\n"				\
+ 	".previous\n"
+ #else
+ #define _EMIT_BUG_ENTRY				\
+ 	".section __bug_table,\"aw\"\n"		\
+-	"2:\t" PPC_LONG "1b\n"			\
++	"2:\t.4byte 1b - 2b\n"			\
+ 	"\t.short %2\n"				\
+ 	".org 2b+%3\n"				\
+ 	".previous\n"
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index 55c43a6c9111..9704c81aff7d 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -1745,9 +1745,9 @@ static void print_bug_trap(struct pt_regs *regs)
+ 
+ #ifdef CONFIG_DEBUG_BUGVERBOSE
+ 	printf("kernel BUG at %s:%u!\n",
+-	       bug->file, bug->line);
++	       (char *)bug + bug->file_disp, bug->line);
+ #else
+-	printf("kernel BUG at %px!\n", (void *)bug->bug_addr);
++	printf("kernel BUG at %px!\n", (void *)bug + bug->bug_addr_disp);
+ #endif
+ #endif /* CONFIG_BUG */
+ }
+-- 
+2.17.1
 
-cheers
-
-> diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
-> index cf30fc24413b..60a30fffeda0 100644
-> --- a/arch/powerpc/configs/powernv_defconfig
-> +++ b/arch/powerpc/configs/powernv_defconfig
-> @@ -208,7 +208,6 @@ CONFIG_FB_MATROX_G=y
->  CONFIG_FB_RADEON=m
->  CONFIG_FB_IBM_GXT4500=m
->  CONFIG_LCD_PLATFORM=m
-> -CONFIG_BACKLIGHT_GENERIC=m
->  # CONFIG_VGA_CONSOLE is not set
->  CONFIG_LOGO=y
->  CONFIG_HID_A4TECH=m
-> -- 
-> 2.17.1
