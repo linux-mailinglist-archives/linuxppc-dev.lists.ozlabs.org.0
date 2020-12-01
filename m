@@ -2,60 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5CC2CA768
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 16:53:01 +0100 (CET)
-Received: from bilbo.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClmpL5pzxzDqG8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 02:52:58 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DBD2CA783
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 16:56:42 +0100 (CET)
+Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Clmtc1H45zDqjZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 02:56:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=d0BXfp9B; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=h2fUV4e0; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Clmlm2vbrzDqDW
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 02:50:44 +1100 (AEDT)
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com
- [209.85.210.44])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E8B7922256
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 15:50:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1606837841;
- bh=ocP+REHyvc3INvCyRToWa0BDelMYpVNAD4Ht4bVMxw4=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=d0BXfp9B678drYtWqDBUlknaZrgIENz3/9P8PkQTHdjgiToHebGZd6AT15QYDi9o3
- of85a0gKvoI/ETgfnp9XrwnI4Xto0nyM976m+c8Ye8M6eJpwXu4nGmsJDnNTU34Hh9
- 6/i/TQQ1NbuyKJYpe4hPrtWe70ECqRFJoCOWZgsU=
-Received: by mail-ot1-f44.google.com with SMTP id f12so2053559oto.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 07:50:40 -0800 (PST)
-X-Gm-Message-State: AOAM530c14SfurbtyR9rOFy/GSB6acWYfNr1ZSZePSCqFdeM44AuWKsW
- nreCk/kNcEjpJCf6XueIg7Ktq2GtqGw0e9wenNw=
-X-Google-Smtp-Source: ABdhPJwlRbiyuko5jdeqhi5YEFdXPQ6zEuSN349AgsmyyWjcElmhcbPPjEuYreBsAU023iCYpnCQs8p8Rs/BnCHJ/AM=
-X-Received: by 2002:a4a:eac1:: with SMTP id s1mr2310247ooh.15.1606837839133;
- Tue, 01 Dec 2020 07:50:39 -0800 (PST)
-MIME-Version: 1.0
-References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
- <20201130152137.24909-2-andrey.zhizhikin@leica-geosystems.com>
- <20201130185227.GA29434@kozik-lap>
- <AM6PR06MB4691EC52BA41B86AB16EE14FA6F50@AM6PR06MB4691.eurprd06.prod.outlook.com>
- <20201201144052.GE31404@gaia> <20201201154139.GF2401593@piout.net>
-In-Reply-To: <20201201154139.GF2401593@piout.net>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Tue, 1 Dec 2020 16:50:22 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a0N24zuQ+CM-_t66CS8AprzdtdfirfLWwGpjgcXjWjn=Q@mail.gmail.com>
-Message-ID: <CAK8P3a0N24zuQ+CM-_t66CS8AprzdtdfirfLWwGpjgcXjWjn=Q@mail.gmail.com>
-Subject: Re: [PATCH 1/5] ARM: configs: drop unused BACKLIGHT_GENERIC option
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Clmnr5MjjzDqZL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 02:52:32 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B1FWtCk132208; Tue, 1 Dec 2020 10:52:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=8h/lucV7+TEL8emLTDp9gRaHsESEemRQGOVpkhnIYs0=;
+ b=h2fUV4e0RAw73ZW9DpxmrnRxWGwV3lrM5jXZn7gYeo9ISxElQbe9w8BKLhBY/DyKOlxV
+ 0Xa2qR94O+k/j2ApVQapR6o6DB11ihMDeCsx4spDXLxNTH0IoBybYTir+Xby2Zn6W9fI
+ ct4LNqKCmq92pWGkzDd3Eg4D4lQVxJ2Z7lNL22oEm20+Ts+9c/HDyCzQHmf5c32H0xXf
+ WarI0XJXrSMx2MyGeBL3yijCV/+iYoen+r7BCX7SsqMGvXA0WCBLgKntLg+6OPjvdv8R
+ 4l8HTjIbsuhlx/DUGPORKQWKFql0alcLB+9eXMdRyv3faQQwF06hQTRhhQCMaFk/aTZh Mg== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 355jpwmxb8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Dec 2020 10:52:22 -0500
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B1FXOsp017070;
+ Tue, 1 Dec 2020 15:52:21 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma01dal.us.ibm.com with ESMTP id 355rf785q4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Dec 2020 15:52:21 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B1FqKEE46858668
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Dec 2020 15:52:20 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 96267AE060;
+ Tue,  1 Dec 2020 15:52:20 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 32525AE067;
+ Tue,  1 Dec 2020 15:52:19 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.160.5.242])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Dec 2020 15:52:19 +0000 (GMT)
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+To: kuba@kernel.org
+Subject: [PATCH net v3 0/2] ibmvnic: Bug fixes for queue descriptor processing
+Date: Tue,  1 Dec 2020 09:52:09 -0600
+Message-Id: <1606837931-22676-1-git-send-email-tlfalcon@linux.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-12-01_07:2020-11-30,
+ 2020-12-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ malwarescore=0 clxscore=1015 suspectscore=1 bulkscore=0 spamscore=0
+ adultscore=0 impostorscore=0 mlxlogscore=999 priorityscore=1501
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012010097
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,72 +89,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "tony@atomide.com" <tony@atomide.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "James.Bottomley@HansenPartnership.com"
- <James.Bottomley@hansenpartnership.com>,
- "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
- "paulus@samba.org" <paulus@samba.org>, "sam@ravnborg.org" <sam@ravnborg.org>,
- "daniel.thompson@linaro.org" <daniel.thompson@linaro.org>,
- "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, "deller@gmx.de" <deller@gmx.de>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
- "ludovic.desroches@microchip.com" <ludovic.desroches@microchip.com>,
- arm-soc <arm@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "will@kernel.org" <will@kernel.org>, "mripard@kernel.org" <mripard@kernel.org>,
- ZHIZHIKIN Andrey <andrey.zhizhikin@leica-geosystems.com>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "lee.jones@linaro.org" <lee.jones@linaro.org>, "wens@csie.org" <wens@csie.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "jernej.skrabec@siol.net" <jernej.skrabec@siol.net>,
- "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "emil.l.velikov@gmail.com" <emil.l.velikov@gmail.com>,
- "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
- Olof Johansson <olof@lixom.net>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: cforno12@linux.ibm.com, ljp@linux.vnet.ibm.com, ricklind@linux.ibm.com,
+ dnbanerg@us.ibm.com, tlfalcon@linux.ibm.com, drt@linux.vnet.ibm.com,
+ netdev@vger.kernel.org, brking@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 1, 2020 at 4:41 PM Alexandre Belloni
-<alexandre.belloni@bootlin.com> wrote:
-> On 01/12/2020 14:40:53+0000, Catalin Marinas wrote:
-> > On Mon, Nov 30, 2020 at 07:50:25PM +0000, ZHIZHIKIN Andrey wrote:
-> > > From Krzysztof Kozlowski <krzk@kernel.org>:
+This series resolves a few issues in the ibmvnic driver's
+RX buffer and TX completion processing. The first patch
+includes memory barriers to synchronize queue descriptor
+reads. The second patch fixes a memory leak that could
+occur if the device returns a TX completion with an error
+code in the descriptor, in which case the respective socket
+buffer and other relevant data structures may not be freed
+or updated properly.
 
-> > I tried to convince them before, it didn't work. I guess they don't like
-> > to be spammed ;).
->
-> The first rule of arm-soc is: you do not talk about arm@ and soc@
+v3: Correct length of Fixes tags, requested by Jakub Kicinski
 
-I don't mind having the addresses documented better, but it needs to
-be done in a way that avoids having any patch for arch/arm*/boot/dts
-and arch/arm/*/configs Cc:d to soc@kernel.org.
+v2: Provide more detailed comments explaining specifically what
+    reads are being ordered, suggested by Michael Ellerman
 
-If anyone has suggestions for how to do that, let me know.
+Thomas Falcon (2):
+  ibmvnic: Ensure that SCRQ entry reads are correctly ordered
+  ibmvnic: Fix TX completion error handling
 
-> > Or rather, SoC-specific patches, even to defconfig,
-> > should go through the specific SoC maintainers. However, there are
-> > occasional defconfig patches which are more generic or affecting
-> > multiple SoCs. I just ignore them as the arm64 defconfig is usually
-> > handled by the arm-soc folk (when I need a defconfig change, I go for
-> > arch/arm64/Kconfig directly ;)).
->
-> IIRC, the plan was indeed to get defconfig changes through the platform
-> sub-trees. It is also supposed to be how multi_v5 and multi_v7 are
-> handled and they will take care of the merge.
+ drivers/net/ethernet/ibm/ibmvnic.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-For cross-platform changes like this one, I'm definitely happy to
-pick up the patch directly from soc@kernel.org, or from mailing
-list if I know about it.
+-- 
+1.8.3.1
 
-We usually do the merges for the soc tree in batches and rely
-on patchwork to keep track of what I'm missing, so if Olof and
-I are just on Cc to a mail, we might have forgotten about it
-by the time we do the next merges.
-
-      Arnd
