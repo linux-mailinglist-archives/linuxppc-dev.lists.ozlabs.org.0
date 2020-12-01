@@ -2,81 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEE42CB070
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 23:47:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A28D2CB0A1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 00:06:39 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cly0N0MQbzDqfk
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 09:47:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClyQj07hYzDqgs
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 10:06:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=ColslUh2; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=rAt6FAvK; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ClxyW61SRzDq63
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 09:45:36 +1100 (AEDT)
-Received: by mail-pg1-x544.google.com with SMTP id o4so2160461pgj.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 14:45:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=Ot2q/P1+rf39GkYCF83FTotBDDxAojkAY4NU2q4IyVA=;
- b=ColslUh2ui7Kx+vl5PL2UUTmCr7EHZOkK1QaiHhVHVDj0VKoOJYhR2giJmIyye1qZ6
- 64DjBpo92Mk6JBd8isbmahhrSZGXDtbzDCPbIepRcJaQCDHs3W04HDJlv8b0jc1+l33C
- oMzE62wfGVOSoYz1XfIdl9/QMGf4x1WLeVlqLcIwUNa8PHLsYdmSzNFsWdupfY2YLyBY
- kvXjEHDBU7k0u270t+Nkoj86QT9TfMwa75WYZzjstULUVyukclElgXRVWpakiL2EM2kb
- TNJJizu/ivdOhNW112x1zIvyR+NLTKl0uLgImoARel+YABPEZTZDn7VRYDlFBXehGQBu
- AVZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=Ot2q/P1+rf39GkYCF83FTotBDDxAojkAY4NU2q4IyVA=;
- b=sYsXexat73RMn+qptAWl6MwgFq/YEqofNwRWZVR8+v2p3mBLlRaM9CfFFJ/4t4ZbYs
- ruPueOvqy48L9Znvf7AZepXuXl0uPz1EuAJP+Yj/E+MnVvy71QBwoWDXyURhGOyqxIbu
- rshdRHn8neGt36VmsPbkCVLvA2kWCj9w2NZXDK25W/nWW+SQVHP/8YJBH3ittncLOYmI
- dMZ9Fb/NNDMQ+556XLephsfU/H/AvxbfPBCAFNgEW7T0NK32RrDYzdddS/tr1XrqBw2b
- L3h28zkZQMfP0oUocAOUo483El6bsXEMlGt3SynSBAu3Zq4Rl8zPvj5QfV1z4trRcvmW
- +Eww==
-X-Gm-Message-State: AOAM5321Jc4JukHhDJrNn/1sMx/eCy6TvnT4iouWc4ZfwpWUZKuLiVih
- 68PoBH2huKO8Lz1j18lPyyKAdQ==
-X-Google-Smtp-Source: ABdhPJx/bML42uRQVrldrDUyMeGG0Roxqh1+EZ6X115dSU4IFmlImJc+Lk5YRfkgjQTERGg/cMdJig==
-X-Received: by 2002:a63:1c25:: with SMTP id c37mr4296280pgc.164.1606862733172; 
- Tue, 01 Dec 2020 14:45:33 -0800 (PST)
-Received: from [0.0.0.0] (124-171-134-245.dyn.iinet.net.au. [124.171.134.245])
- by smtp.gmail.com with UTF8SMTPSA id
- y19sm573114pge.15.2020.12.01.14.45.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Dec 2020 14:45:32 -0800 (PST)
-Subject: Re: [PATCH kernel v2] powerpc/pci: Remove LSI mappings on device
- teardown
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- linuxppc-dev@lists.ozlabs.org
-References: <20201201073919.5600-1-aik@ozlabs.ru>
- <350f6a85-77d8-c0bc-3ba5-f3fd3c50ffe1@kaod.org>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <a36847f8-e8d5-5fe5-4dbe-8d0b5782e94c@ozlabs.ru>
-Date: Wed, 2 Dec 2020 09:45:28 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101
- Thunderbird/84.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClyNV3jCmzDqgC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 10:04:42 +1100 (AEDT)
+Date: Tue, 1 Dec 2020 23:04:33 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1606863879;
+ bh=+P5vOdE+JdhBYVVmnBPwF/BQp7C9Ej9MDqmd8+IjdKI=;
+ h=From:To:Cc:Subject:References:In-Reply-To:From;
+ b=rAt6FAvKgNYwFAgXKvslaKL2L6D4TLQGFxZmDaTouwi97GTnBFyrm06gN7lGsh3ep
+ JNTvMNBGYwgPEMCS26CZ+p8j7CC0jYFldWx8GhpDNTh5+gMpmQzAV9Pn/tYxecOCxN
+ bwTthtT3eT5majrxU3YmECb7LZk3Mpa8R6JOHjpc=
+From: Will Deacon <will@kernel.org>
+To: Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH 6/8] lazy tlb: shoot lazies, a non-refcounting lazy tlb
+ option
+Message-ID: <20201201230432.GC28496@willie-the-truck>
+References: <20201128160141.1003903-1-npiggin@gmail.com>
+ <20201128160141.1003903-7-npiggin@gmail.com>
+ <CALCETrVXUbe8LfNn-Qs+DzrOQaiw+sFUg1J047yByV31SaTOZw@mail.gmail.com>
+ <CALCETrWBtCfD+jZ3S+O8FK-HFPODuhbDEbbfWvS=-iPATNFAOA@mail.gmail.com>
+ <CALCETrXAR_9EGaOF8ymVkZycxgZkYk0dR+NjEpTfVzdcS3sOVw@mail.gmail.com>
+ <20201201212758.GA28300@willie-the-truck>
+ <CALCETrVP3qAQ50yHU-AzZQsiRB9JGO5FQf91kuk7DCvNY51EXQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <350f6a85-77d8-c0bc-3ba5-f3fd3c50ffe1@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALCETrVP3qAQ50yHU-AzZQsiRB9JGO5FQf91kuk7DCvNY51EXQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,166 +58,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
+ Dave Hansen <dave.hansen@intel.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Dec 01, 2020 at 01:50:38PM -0800, Andy Lutomirski wrote:
+> On Tue, Dec 1, 2020 at 1:28 PM Will Deacon <will@kernel.org> wrote:
+> >
+> > On Mon, Nov 30, 2020 at 10:31:51AM -0800, Andy Lutomirski wrote:
+> > > other arch folk: there's some background here:
+> > >
+> > > https://lkml.kernel.org/r/CALCETrVXUbe8LfNn-Qs+DzrOQaiw+sFUg1J047yByV31SaTOZw@mail.gmail.com
+> > >
+> > > On Sun, Nov 29, 2020 at 12:16 PM Andy Lutomirski <luto@kernel.org> wrote:
+> > > >
+> > > > On Sat, Nov 28, 2020 at 7:54 PM Andy Lutomirski <luto@kernel.org> wrote:
+> > > > >
+> > > > > On Sat, Nov 28, 2020 at 8:02 AM Nicholas Piggin <npiggin@gmail.com> wrote:
+> > > > > >
+> > > > > > On big systems, the mm refcount can become highly contented when doing
+> > > > > > a lot of context switching with threaded applications (particularly
+> > > > > > switching between the idle thread and an application thread).
+> > > > > >
+> > > > > > Abandoning lazy tlb slows switching down quite a bit in the important
+> > > > > > user->idle->user cases, so so instead implement a non-refcounted scheme
+> > > > > > that causes __mmdrop() to IPI all CPUs in the mm_cpumask and shoot down
+> > > > > > any remaining lazy ones.
+> > > > > >
+> > > > > > Shootdown IPIs are some concern, but they have not been observed to be
+> > > > > > a big problem with this scheme (the powerpc implementation generated
+> > > > > > 314 additional interrupts on a 144 CPU system during a kernel compile).
+> > > > > > There are a number of strategies that could be employed to reduce IPIs
+> > > > > > if they turn out to be a problem for some workload.
+> > > > >
+> > > > > I'm still wondering whether we can do even better.
+> > > > >
+> > > >
+> > > > Hold on a sec.. __mmput() unmaps VMAs, frees pagetables, and flushes
+> > > > the TLB.  On x86, this will shoot down all lazies as long as even a
+> > > > single pagetable was freed.  (Or at least it will if we don't have a
+> > > > serious bug, but the code seems okay.  We'll hit pmd_free_tlb, which
+> > > > sets tlb->freed_tables, which will trigger the IPI.)  So, on
+> > > > architectures like x86, the shootdown approach should be free.  The
+> > > > only way it ought to have any excess IPIs is if we have CPUs in
+> > > > mm_cpumask() that don't need IPI to free pagetables, which could
+> > > > happen on paravirt.
+> > >
+> > > Indeed, on x86, we do this:
+> > >
+> > > [   11.558844]  flush_tlb_mm_range.cold+0x18/0x1d
+> > > [   11.559905]  tlb_finish_mmu+0x10e/0x1a0
+> > > [   11.561068]  exit_mmap+0xc8/0x1a0
+> > > [   11.561932]  mmput+0x29/0xd0
+> > > [   11.562688]  do_exit+0x316/0xa90
+> > > [   11.563588]  do_group_exit+0x34/0xb0
+> > > [   11.564476]  __x64_sys_exit_group+0xf/0x10
+> > > [   11.565512]  do_syscall_64+0x34/0x50
+> > >
+> > > and we have info->freed_tables set.
+> > >
+> > > What are the architectures that have large systems like?
+> > >
+> > > x86: we already zap lazies, so it should cost basically nothing to do
+> > > a little loop at the end of __mmput() to make sure that no lazies are
+> > > left.  If we care about paravirt performance, we could implement one
+> > > of the optimizations I mentioned above to fix up the refcounts instead
+> > > of sending an IPI to any remaining lazies.
+> > >
+> > > arm64: AFAICT arm64's flush uses magic arm64 hardware support for
+> > > remote flushes, so any lazy mm references will still exist after
+> > > exit_mmap().  (arm64 uses lazy TLB, right?)  So this is kind of like
+> > > the x86 paravirt case.  Are there large enough arm64 systems that any
+> > > of this matters?
+> >
+> > Yes, there are large arm64 systems where performance of TLB invalidation
+> > matters, but they're either niche (supercomputers) or not readily available
+> > (NUMA boxes).
+> >
+> > But anyway, we blow away the TLB for everybody in tlb_finish_mmu() after
+> > freeing the page-tables. We have an optimisation to avoid flushing if
+> > we're just unmapping leaf entries when the mm is going away, but we don't
+> > have a choice once we get to actually reclaiming the page-tables.
+> >
+> > One thing I probably should mention, though, is that we don't maintain
+> > mm_cpumask() because we're not able to benefit from it and the atomic
+> > update is a waste of time.
+> 
+> Do you do anything special for lazy TLB or do you just use the generic
+> code?  (i.e. where do your user pagetables point when you go from a
+> user task to idle or to a kernel thread?)
 
+We don't do anything special (there's something funny with the PAN emulation
+but you can ignore that); the page-table just points wherever it did before
+for userspace. Switching explicitly to the init_mm, however, causes us to
+unmap userspace entirely.
 
-On 01/12/2020 20:31, Cédric Le Goater wrote:
-> On 12/1/20 8:39 AM, Alexey Kardashevskiy wrote:
->> From: Oliver O'Halloran <oohall@gmail.com>
->>
->> When a passthrough IO adapter is removed from a pseries machine using hash
->> MMU and the XIVE interrupt mode, the POWER hypervisor expects the guest OS
->> to clear all page table entries related to the adapter. If some are still
->> present, the RTAS call which isolates the PCI slot returns error 9001
->> "valid outstanding translations" and the removal of the IO adapter fails.
->> This is because when the PHBs are scanned, Linux maps automatically the
->> INTx interrupts in the Linux interrupt number space but these are never
->> removed.
->>
->> This problem can be fixed by adding the corresponding unmap operation when
->> the device is removed. There's no pcibios_* hook for the remove case, but
->> the same effect can be achieved using a bus notifier.
->>
->> Because INTx are shared among PHBs (and potentially across the system),
->> this adds tracking of virq to unmap them only when the last user is gone.
->>
->> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
->> [aik: added refcounter]
->> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> 
-> Looks good to me and the system survives all the PCI hotplug tests I used
-> to do on my first attempts to fix this issue.
-> 
-> One comment below,
-> 
->> ---
->>
->>
->> Doing this in the generic irq code is just too much for my small brain :-/
-> 
-> may be more cleanups are required in the PCI/MSI/IRQ PPC layers before
-> considering your first approach. You think too much in advance  !
-> 
->>
->> ---
->>   arch/powerpc/kernel/pci-common.c | 71 ++++++++++++++++++++++++++++++++
->>   1 file changed, 71 insertions(+)
->>
->> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
->> index be108616a721..0acf17f17253 100644
->> --- a/arch/powerpc/kernel/pci-common.c
->> +++ b/arch/powerpc/kernel/pci-common.c
->> @@ -353,6 +353,55 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
->>   	return NULL;
->>   }
->>   
->> +struct pci_intx_virq {
->> +	int virq;
->> +	struct kref kref;
->> +	struct list_head list_node;
->> +};
->> +
->> +static LIST_HEAD(intx_list);
->> +static DEFINE_MUTEX(intx_mutex);
->> +
->> +static void ppc_pci_intx_release(struct kref *kref)
->> +{
->> +	struct pci_intx_virq *vi = container_of(kref, struct pci_intx_virq, kref);
->> +
->> +	list_del(&vi->list_node);
->> +	irq_dispose_mapping(vi->virq);
->> +	kfree(vi);
->> +}
->> +
->> +static int ppc_pci_unmap_irq_line(struct notifier_block *nb,
->> +			       unsigned long action, void *data)
->> +{
->> +	struct pci_dev *pdev = to_pci_dev(data);
->> +
->> +	if (action == BUS_NOTIFY_DEL_DEVICE) {
->> +		struct pci_intx_virq *vi;
->> +
->> +		mutex_lock(&intx_mutex);
->> +		list_for_each_entry(vi, &intx_list, list_node) {
->> +			if (vi->virq == pdev->irq) {
->> +				kref_put(&vi->kref, ppc_pci_intx_release);
->> +				break;
->> +			}
->> +		}
->> +		mutex_unlock(&intx_mutex);
->> +	}
->> +
->> +	return NOTIFY_DONE;
->> +}
->> +
->> +static struct notifier_block ppc_pci_unmap_irq_notifier = {
->> +	.notifier_call = ppc_pci_unmap_irq_line,
->> +};
->> +
->> +static int ppc_pci_register_irq_notifier(void)
->> +{
->> +	return bus_register_notifier(&pci_bus_type, &ppc_pci_unmap_irq_notifier);
->> +}
->> +arch_initcall(ppc_pci_register_irq_notifier);
->> +
->>   /*
->>    * Reads the interrupt pin to determine if interrupt is use by card.
->>    * If the interrupt is used, then gets the interrupt line from the
->> @@ -361,6 +410,12 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
->>   static int pci_read_irq_line(struct pci_dev *pci_dev)
->>   {
->>   	int virq;
->> +	struct pci_intx_virq *vi, *vitmp;
->> +
->> +	/* Preallocate vi as rewind is complex if this fails after mapping */
-> 
-> AFAICT, we only need to call irq_dispose_mapping() if allocation fails.
+Since we have ASIDs, switch_mm() generally doesn't have to care about the
+TLBs at all.
 
-Today - yes but in the future (hierarchical domains or whatever other 
-awesome thing we'll use from there) - not necessarily. Too much is 
-hidden under irq_create_fwspec_mapping(). Thanks,
+> Do you end up with all cpus set in mm_cpumask or can you have the mm
+> loaded on a CPU that isn't in mm_cpumask?
 
+I think the mask is always zero (we never set anything in there).
 
-
-> If so, it would be simpler to isolate the code in a pci_intx_register(virq)
-> helper and call it from pci_read_irq_line().
-> 
->> +	vi = kzalloc(sizeof(struct pci_intx_virq), GFP_KERNEL);
->> +	if (!vi)
->> +		return -1;
->>   
->>   	pr_debug("PCI: Try to map irq for %s...\n", pci_name(pci_dev));
->>   
->> @@ -401,6 +456,22 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
->>   
->>   	pci_dev->irq = virq;
->>   
->> +	mutex_lock(&intx_mutex);
->> +	list_for_each_entry(vitmp, &intx_list, list_node) {
->> +		if (vitmp->virq == virq) {
->> +			kref_get(&vitmp->kref);
->> +			kfree(vi);
->> +			vi = NULL;
->> +			break;
->> +		}
->> +	}
->> +	if (vi) {
->> +		vi->virq = virq;
->> +		kref_init(&vi->kref);
->> +		list_add_tail(&vi->list_node, &intx_list);
->> +	}
->> +	mutex_unlock(&intx_mutex);
->> +
->>   	return 0;
->>   }
->>   
->>
-> 
-
--- 
-Alexey
+Will
