@@ -1,58 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25ED2C9C93
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 10:34:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7752C9E5C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 10:51:25 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClcQ61z87zDqwP
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 20:34:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Clcn64q0YzDqwy
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 20:51:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
- helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from smtpout1.mo804.mail-out.ovh.net
- (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=RItunUaQ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ClcLj5jSrzDqMt
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 20:31:53 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.16.68])
- by mo804.mail-out.ovh.net (Postfix) with ESMTPS id 34E0076E3310;
- Tue,  1 Dec 2020 10:31:46 +0100 (CET)
-Received: from kaod.org (37.59.142.100) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Tue, 1 Dec 2020
- 10:31:45 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-100R00355c78e65-afd1-4c50-b17e-38dcfc7cea0d,
- 66EB1A3D5BF4D64889CDC343FC639189F0F7CCAF) smtp.auth=clg@kaod.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClclC54cYzDqkj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 20:49:43 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B19WQCc094948; Tue, 1 Dec 2020 04:49:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=tkI5kPWtpwnQjXJpjarPDXvCXTlUEpf8aYZ386KM2uk=;
+ b=RItunUaQPxGNH52pI+LjY2zlIBV0dNfE3Lm/zLBWmc2TO8QcCXUF1YN7wv2Csex4QjQe
+ 9cReDMF/IyNjFgfcaxeb1dY7T3ee1819ehcpPieKbJyZ/9u/byn8NA3JRqsNPAdXcAV5
+ 7/ejaeRRL214hqEucKpXMCe0FghCUwsW5K98NXpYyfRRzCcGxpUHU/VLr1CmnMVvE4ED
+ S+iRx+ewdUqioe2kLWgBdP5F/YXCbrOx0giC7bzhW/ArcbrWqwiToQhgizM5WhieA1Sg
+ TgmQBlz7P3ySsPbSxBJk7x31KfYO4I/vVSNx3KoIagkpOafVpg2oNmWSFZL1GUnrI5dv 1g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 355a79phwa-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Dec 2020 04:49:38 -0500
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B19aeV9114638;
+ Tue, 1 Dec 2020 04:49:38 -0500
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 355a79phve-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Dec 2020 04:49:37 -0500
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B19nVHD028391;
+ Tue, 1 Dec 2020 09:49:35 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06fra.de.ibm.com with ESMTP id 353dth9htg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Dec 2020 09:49:35 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0B19nXpI53084504
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Dec 2020 09:49:33 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6BC474C046;
+ Tue,  1 Dec 2020 09:49:33 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4210C4C040;
+ Tue,  1 Dec 2020 09:49:33 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.145.180.21])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Dec 2020 09:49:33 +0000 (GMT)
 Subject: Re: [PATCH kernel v2] powerpc/pci: Remove LSI mappings on device
  teardown
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, <linuxppc-dev@lists.ozlabs.org>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
 References: <20201201073919.5600-1-aik@ozlabs.ru>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <350f6a85-77d8-c0bc-3ba5-f3fd3c50ffe1@kaod.org>
-Date: Tue, 1 Dec 2020 10:31:45 +0100
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Message-ID: <8bdea1c0-4b2f-e716-4df3-5eb95667144b@linux.ibm.com>
+Date: Tue, 1 Dec 2020 10:49:33 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.4.0
 MIME-Version: 1.0
 In-Reply-To: <20201201073919.5600-1-aik@ozlabs.ru>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.100]
-X-ClientProxiedBy: DAG7EX2.mxp5.local (172.16.2.62) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 53956333-8ef0-490d-8127-0847f8d5e309
-X-Ovh-Tracer-Id: 973340472586832864
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudeivddgtdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtjeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepgedvieejfedvhfduhfffueevheeludffhfdvkeehleegtddttdfhieegveeghfffnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopegrihhksehoiihlrggsshdrrhhu
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-12-01_01:2020-11-30,
+ 2020-12-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0
+ adultscore=0 clxscore=1015 priorityscore=1501 spamscore=0 suspectscore=25
+ impostorscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012010061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,13 +107,15 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>
+Cc: Oliver O'Halloran <oohall@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/1/20 8:39 AM, Alexey Kardashevskiy wrote:
+
+
+On 01/12/2020 08:39, Alexey Kardashevskiy wrote:
 > From: Oliver O'Halloran <oohall@gmail.com>
 > 
 > When a passthrough IO adapter is removed from a pseries machine using hash
@@ -92,33 +137,24 @@ On 12/1/20 8:39 AM, Alexey Kardashevskiy wrote:
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 > [aik: added refcounter]
 > Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-Looks good to me and the system survives all the PCI hotplug tests I used 
-to do on my first attempts to fix this issue. 
-
-One comment below,
-
 > ---
 > 
 > 
 > Doing this in the generic irq code is just too much for my small brain :-/
-
-may be more cleanups are required in the PCI/MSI/IRQ PPC layers before 
-considering your first approach. You think too much in advance  !
-
+> 
 > 
 > ---
->  arch/powerpc/kernel/pci-common.c | 71 ++++++++++++++++++++++++++++++++
->  1 file changed, 71 insertions(+)
+>   arch/powerpc/kernel/pci-common.c | 71 ++++++++++++++++++++++++++++++++
+>   1 file changed, 71 insertions(+)
 > 
 > diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
 > index be108616a721..0acf17f17253 100644
 > --- a/arch/powerpc/kernel/pci-common.c
 > +++ b/arch/powerpc/kernel/pci-common.c
 > @@ -353,6 +353,55 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
->  	return NULL;
->  }
->  
+>   	return NULL;
+>   }
+>   
 > +struct pci_intx_virq {
 > +	int virq;
 > +	struct kref kref;
@@ -168,31 +204,36 @@ considering your first approach. You think too much in advance  !
 > +}
 > +arch_initcall(ppc_pci_register_irq_notifier);
 > +
->  /*
->   * Reads the interrupt pin to determine if interrupt is use by card.
->   * If the interrupt is used, then gets the interrupt line from the
+>   /*
+>    * Reads the interrupt pin to determine if interrupt is use by card.
+>    * If the interrupt is used, then gets the interrupt line from the
 > @@ -361,6 +410,12 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
->  static int pci_read_irq_line(struct pci_dev *pci_dev)
->  {
->  	int virq;
+>   static int pci_read_irq_line(struct pci_dev *pci_dev)
+>   {
+>   	int virq;
 > +	struct pci_intx_virq *vi, *vitmp;
 > +
 > +	/* Preallocate vi as rewind is complex if this fails after mapping */
 
-AFAICT, we only need to call irq_dispose_mapping() if allocation fails.
-If so, it would be simpler to isolate the code in a pci_intx_register(virq) 
-helper and call it from pci_read_irq_line().
+
+Seems ok to me as the failure is unexpected.
+But then we need to free that memory on all the error paths below.
+
+   Fred
+
+
+
 
 > +	vi = kzalloc(sizeof(struct pci_intx_virq), GFP_KERNEL);
 > +	if (!vi)
 > +		return -1;
->  
->  	pr_debug("PCI: Try to map irq for %s...\n", pci_name(pci_dev));
->  
+>   
+>   	pr_debug("PCI: Try to map irq for %s...\n", pci_name(pci_dev));
+>   
 > @@ -401,6 +456,22 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
->  
->  	pci_dev->irq = virq;
->  
+>   
+>   	pci_dev->irq = virq;
+>   
 > +	mutex_lock(&intx_mutex);
 > +	list_for_each_entry(vitmp, &intx_list, list_node) {
 > +		if (vitmp->virq == virq) {
@@ -209,8 +250,7 @@ helper and call it from pci_read_irq_line().
 > +	}
 > +	mutex_unlock(&intx_mutex);
 > +
->  	return 0;
->  }
->  
+>   	return 0;
+>   }
+>   
 > 
-
