@@ -2,63 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D192CAE4C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 22:20:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 290CA2CAE5D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 22:29:43 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Clw4K4nxmzDqlp
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 08:20:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClwGr2RQxzDqtd
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 08:29:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.218.65; helo=mail-ej1-f65.google.com;
- envelope-from=k.kozlowski.k@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com
- [209.85.218.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=nWeVMLcS; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Clw2S5yCfzDqTw
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 08:18:56 +1100 (AEDT)
-Received: by mail-ej1-f65.google.com with SMTP id jx16so7298562ejb.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 13:18:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=jryqI5sQqWi4PXznClcMpjDSZfGYWOSS95XBGrU9xYM=;
- b=sfmttgXBVfsEOn8+uEcT+suMpexym8VOMqcAaUNYvcsRkBg+JlucKECvbPtoy18ik4
- AMHmn2pwhTIQ28dy/qHB1Az/5I8QolhHbsHHE4603O4f71Shj1MNSIKtsaZYf5ZcmbAF
- eKJX5/KN7RAExPeeWMCE70/6Y8QyKY3+hpwNsFmIp5+Gja1wiioPefNVJb6x/MzOpO/I
- jx1+D7rX2O55YfNTEvsQbIgTZ8mWIL8V4jYHO/EUXeJzKgwnmzxKB3jRqymqp1Lqdm7j
- iU/3RFeDoP7NjuUpnhjrqlUEn89HbTxU9H6YXYdeZpDWIwyY5Ryp8TjOkLCgWcOIMxBm
- Xprw==
-X-Gm-Message-State: AOAM531okF49qLyCs56C5l9OCrrb85fDnQRs3CjVf4OhVjUuKa3oiwok
- 8NODSJ5NAcbO5Zto5cTrrK0=
-X-Google-Smtp-Source: ABdhPJwVCwY+a1v0Hv+LTfv/oplZ+OnT3nmymHRP5j+/8a+SofJfABEbDHeJGwHTKrcOyfGOWnoRIA==
-X-Received: by 2002:a17:906:2e16:: with SMTP id
- n22mr5070528eji.477.1606857532633; 
- Tue, 01 Dec 2020 13:18:52 -0800 (PST)
-Received: from kozik-lap (adsl-84-226-167-205.adslplus.ch. [84.226.167.205])
- by smtp.googlemail.com with ESMTPSA id d14sm484594edu.63.2020.12.01.13.18.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Dec 2020 13:18:51 -0800 (PST)
-Date: Tue, 1 Dec 2020 23:18:49 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH 1/5] ARM: configs: drop unused BACKLIGHT_GENERIC option
-Message-ID: <20201201211849.GA23379@kozik-lap>
-References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
- <20201130152137.24909-2-andrey.zhizhikin@leica-geosystems.com>
- <20201130185227.GA29434@kozik-lap>
- <AM6PR06MB4691EC52BA41B86AB16EE14FA6F50@AM6PR06MB4691.eurprd06.prod.outlook.com>
- <20201201144052.GE31404@gaia> <20201201154139.GF2401593@piout.net>
- <CAK8P3a0N24zuQ+CM-_t66CS8AprzdtdfirfLWwGpjgcXjWjn=Q@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClwF41VcPzDqWG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 08:28:07 +1100 (AEDT)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 903E420870;
+ Tue,  1 Dec 2020 21:28:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1606858085;
+ bh=jydMEXFzO2t7+Ckqr+Txcfmmvphc90YJ7puBAL7qT2g=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=nWeVMLcStfE7SiK55mRRUlPOIopGrLWwUwpF6yOo/TkHyPd6hOZ0mDwpHL1HFm459
+ vrhD8GWAQ4U2gaXC1J3++fW3Bmas8OIxiXPakhwyW4QZZjHWE7gZQQxzVaGrl3oAxm
+ zS0sn0zf66wWg3S6hprcUqxHbdRRYpRJAPfSw2fc=
+Date: Tue, 1 Dec 2020 21:27:58 +0000
+From: Will Deacon <will@kernel.org>
+To: Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH 6/8] lazy tlb: shoot lazies, a non-refcounting lazy tlb
+ option
+Message-ID: <20201201212758.GA28300@willie-the-truck>
+References: <20201128160141.1003903-1-npiggin@gmail.com>
+ <20201128160141.1003903-7-npiggin@gmail.com>
+ <CALCETrVXUbe8LfNn-Qs+DzrOQaiw+sFUg1J047yByV31SaTOZw@mail.gmail.com>
+ <CALCETrWBtCfD+jZ3S+O8FK-HFPODuhbDEbbfWvS=-iPATNFAOA@mail.gmail.com>
+ <CALCETrXAR_9EGaOF8ymVkZycxgZkYk0dR+NjEpTfVzdcS3sOVw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK8P3a0N24zuQ+CM-_t66CS8AprzdtdfirfLWwGpjgcXjWjn=Q@mail.gmail.com>
+In-Reply-To: <CALCETrXAR_9EGaOF8ymVkZycxgZkYk0dR+NjEpTfVzdcS3sOVw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,61 +61,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- "tony@atomide.com" <tony@atomide.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "James.Bottomley@HansenPartnership.com"
- <James.Bottomley@hansenpartnership.com>,
- "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
- "paulus@samba.org" <paulus@samba.org>, "sam@ravnborg.org" <sam@ravnborg.org>,
- "daniel.thompson@linaro.org" <daniel.thompson@linaro.org>,
- "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, "deller@gmx.de" <deller@gmx.de>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
- "ludovic.desroches@microchip.com" <ludovic.desroches@microchip.com>,
- arm-soc <arm@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "will@kernel.org" <will@kernel.org>, "mripard@kernel.org" <mripard@kernel.org>,
- ZHIZHIKIN Andrey <andrey.zhizhikin@leica-geosystems.com>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "lee.jones@linaro.org" <lee.jones@linaro.org>, "wens@csie.org" <wens@csie.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "jernej.skrabec@siol.net" <jernej.skrabec@siol.net>,
- "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "emil.l.velikov@gmail.com" <emil.l.velikov@gmail.com>,
- "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
- Olof Johansson <olof@lixom.net>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
+ Dave Hansen <dave.hansen@intel.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 01, 2020 at 04:50:22PM +0100, Arnd Bergmann wrote:
-> On Tue, Dec 1, 2020 at 4:41 PM Alexandre Belloni
-> <alexandre.belloni@bootlin.com> wrote:
-> > On 01/12/2020 14:40:53+0000, Catalin Marinas wrote:
-> > > On Mon, Nov 30, 2020 at 07:50:25PM +0000, ZHIZHIKIN Andrey wrote:
-> > > > From Krzysztof Kozlowski <krzk@kernel.org>:
+On Mon, Nov 30, 2020 at 10:31:51AM -0800, Andy Lutomirski wrote:
+> other arch folk: there's some background here:
 > 
-> > > I tried to convince them before, it didn't work. I guess they don't like
-> > > to be spammed ;).
+> https://lkml.kernel.org/r/CALCETrVXUbe8LfNn-Qs+DzrOQaiw+sFUg1J047yByV31SaTOZw@mail.gmail.com
+> 
+> On Sun, Nov 29, 2020 at 12:16 PM Andy Lutomirski <luto@kernel.org> wrote:
 > >
-> > The first rule of arm-soc is: you do not talk about arm@ and soc@
+> > On Sat, Nov 28, 2020 at 7:54 PM Andy Lutomirski <luto@kernel.org> wrote:
+> > >
+> > > On Sat, Nov 28, 2020 at 8:02 AM Nicholas Piggin <npiggin@gmail.com> wrote:
+> > > >
+> > > > On big systems, the mm refcount can become highly contented when doing
+> > > > a lot of context switching with threaded applications (particularly
+> > > > switching between the idle thread and an application thread).
+> > > >
+> > > > Abandoning lazy tlb slows switching down quite a bit in the important
+> > > > user->idle->user cases, so so instead implement a non-refcounted scheme
+> > > > that causes __mmdrop() to IPI all CPUs in the mm_cpumask and shoot down
+> > > > any remaining lazy ones.
+> > > >
+> > > > Shootdown IPIs are some concern, but they have not been observed to be
+> > > > a big problem with this scheme (the powerpc implementation generated
+> > > > 314 additional interrupts on a 144 CPU system during a kernel compile).
+> > > > There are a number of strategies that could be employed to reduce IPIs
+> > > > if they turn out to be a problem for some workload.
+> > >
+> > > I'm still wondering whether we can do even better.
+> > >
+> >
+> > Hold on a sec.. __mmput() unmaps VMAs, frees pagetables, and flushes
+> > the TLB.  On x86, this will shoot down all lazies as long as even a
+> > single pagetable was freed.  (Or at least it will if we don't have a
+> > serious bug, but the code seems okay.  We'll hit pmd_free_tlb, which
+> > sets tlb->freed_tables, which will trigger the IPI.)  So, on
+> > architectures like x86, the shootdown approach should be free.  The
+> > only way it ought to have any excess IPIs is if we have CPUs in
+> > mm_cpumask() that don't need IPI to free pagetables, which could
+> > happen on paravirt.
 > 
-> I don't mind having the addresses documented better, but it needs to
-> be done in a way that avoids having any patch for arch/arm*/boot/dts
-> and arch/arm/*/configs Cc:d to soc@kernel.org.
+> Indeed, on x86, we do this:
 > 
-> If anyone has suggestions for how to do that, let me know.
+> [   11.558844]  flush_tlb_mm_range.cold+0x18/0x1d
+> [   11.559905]  tlb_finish_mmu+0x10e/0x1a0
+> [   11.561068]  exit_mmap+0xc8/0x1a0
+> [   11.561932]  mmput+0x29/0xd0
+> [   11.562688]  do_exit+0x316/0xa90
+> [   11.563588]  do_group_exit+0x34/0xb0
+> [   11.564476]  __x64_sys_exit_group+0xf/0x10
+> [   11.565512]  do_syscall_64+0x34/0x50
+> 
+> and we have info->freed_tables set.
+> 
+> What are the architectures that have large systems like?
+> 
+> x86: we already zap lazies, so it should cost basically nothing to do
+> a little loop at the end of __mmput() to make sure that no lazies are
+> left.  If we care about paravirt performance, we could implement one
+> of the optimizations I mentioned above to fix up the refcounts instead
+> of sending an IPI to any remaining lazies.
+> 
+> arm64: AFAICT arm64's flush uses magic arm64 hardware support for
+> remote flushes, so any lazy mm references will still exist after
+> exit_mmap().  (arm64 uses lazy TLB, right?)  So this is kind of like
+> the x86 paravirt case.  Are there large enough arm64 systems that any
+> of this matters?
 
-Not a perfect solution but something. How about:
-https://lore.kernel.org/linux-arm-kernel/20201201211516.24921-2-krzk@kernel.org/T/#u
+Yes, there are large arm64 systems where performance of TLB invalidation
+matters, but they're either niche (supercomputers) or not readily available
+(NUMA boxes).
 
-Would not work on defconfigs but there is a chance someone will find
-your addresses this way. Should not cause to much additional traffic.
+But anyway, we blow away the TLB for everybody in tlb_finish_mmu() after
+freeing the page-tables. We have an optimisation to avoid flushing if
+we're just unmapping leaf entries when the mm is going away, but we don't
+have a choice once we get to actually reclaiming the page-tables.
 
-Best regards,
-Krzysztof
+One thing I probably should mention, though, is that we don't maintain
+mm_cpumask() because we're not able to benefit from it and the atomic
+update is a waste of time.
 
+Will
