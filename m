@@ -2,128 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03CB2CB057
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 23:43:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCEE42CB070
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 23:47:18 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClxwK74wFzDr3X
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 09:43:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cly0N0MQbzDqfk
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 09:47:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=leica-geosystems.com (client-ip=40.107.6.105;
- helo=eur04-db3-obe.outbound.protection.outlook.com;
- envelope-from=andrey.zhizhikin@leica-geosystems.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
- header.from=leica-geosystems.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=leica-geosystems.com header.i=@leica-geosystems.com
- header.a=rsa-sha256 header.s=selector1 header.b=RKedLQs9; 
- dkim-atps=neutral
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com
- (mail-eopbgr60105.outbound.protection.outlook.com [40.107.6.105])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=ColslUh2; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Clxdq0GF6zDqrC
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 09:31:11 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SBUrrbk7VnWffW4/z8HHc56QJ6hcKEoQGFzbLXNZdsSPeteC6ZgdTk6WXIY1WrgPi/aKmvh0Zqu/lTKrQCl6EL6g1pWc9xsYkCi4xZr5qhetnaL0bEFykSWbtTVDpShlTcZKxuXHo51eD8Gr6OrghWOCWvdZjH7nSspt7D9pe8H2fGj23NO/bgnXWCSuVr/3kGP3nokXjoVi7b6NAPDLEtd4tQdaakdYY92q94NMxtwQJg2QAf5dRCXjddhJxlUJQPFDfegflW2fvbRHX3LZFKq2jirWstzlG38fiIstWEAiaCrc5W9zmjMqeqP3oM85MHS3EEfl4ot19SUmlFnhBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D6jNaCDbQ2iCNvKDA8zVKbBQLowkiZO4HZctSGu660w=;
- b=MFGSY4vP9qFqLazE0L5yy1QsQTTkC9xDUCcaoZsm9ycGHudFKH5NiS7DqHUVyI6TCTFYZQtszcVyVLQegPPgKGNNgxKm3lofeDzIwHsRqBTk7aBWDKz5VIOu9mHn1cUV3D1t8+oHeu/42jXSe4DhXlzSzDYlJzaJ6QMVGlTR0hEXOoZJNUODmpy+w48j58CRYdfU5zO7KsRbmUMbQMU595CEbJQojRPY0fSMeoUOs9bjfDXH1mL4k8JXM2gz+f7KnxFTIVf/MwGB3nebSgQdOizeTG8afRCsxPaLoQDtKCconDwkjMBrOiZKMGNLzgAX0t3BAk2AhpeaeHY7/tyJFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
- header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
- arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com; 
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D6jNaCDbQ2iCNvKDA8zVKbBQLowkiZO4HZctSGu660w=;
- b=RKedLQs9SmXyQHw6gsHTTgAaGEPxPWci4fdo0zdwBL/B3B+PSJldLas5IH6eJ/F8fpHeMm8VumAp536dKB4Zm+0h8hkp2hBkbBj6LCYYfttbLsYdIkZ15jbjlsIHQ9/jLmt79FQhPFicOgkCbS5uHjJMFjhPJWhTc91rokqfPkg=
-Authentication-Results: armlinux.org.uk; dkim=none (message not signed)
- header.d=none;armlinux.org.uk; dmarc=none action=none
- header.from=leica-geosystems.com;
-Received: from DB6PR0602MB2886.eurprd06.prod.outlook.com (2603:10a6:4:9b::11)
- by DB8PR06MB6236.eurprd06.prod.outlook.com (2603:10a6:10:10a::26)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3611.25; Tue, 1 Dec
- 2020 22:31:06 +0000
-Received: from DB6PR0602MB2886.eurprd06.prod.outlook.com
- ([fe80::49c3:4b5b:289c:d62c]) by DB6PR0602MB2886.eurprd06.prod.outlook.com
- ([fe80::49c3:4b5b:289c:d62c%12]) with mapi id 15.20.3611.025; Tue, 1 Dec 2020
- 22:31:06 +0000
-From: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-To: linux@armlinux.org.uk, nicolas.ferre@microchip.com,
- alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
- tony@atomide.com, mripard@kernel.org, wens@csie.org,
- jernej.skrabec@siol.net, thierry.reding@gmail.com, jonathanh@nvidia.com,
- catalin.marinas@arm.com, will@kernel.org, tsbogend@alpha.franken.de,
- James.Bottomley@HansenPartnership.com, deller@gmx.de, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, lee.jones@linaro.org,
- sam@ravnborg.org, emil.l.velikov@gmail.com, daniel.thompson@linaro.org,
- krzk@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-tegra@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, soc@kernel.org
-Subject: [PATCH v2 5/5] powerpc/configs: drop unused BACKLIGHT_GENERIC option
-Date: Tue,  1 Dec 2020 22:29:22 +0000
-Message-Id: <20201201222922.3183-6-andrey.zhizhikin@leica-geosystems.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201201222922.3183-1-andrey.zhizhikin@leica-geosystems.com>
-References: <20201201222922.3183-1-andrey.zhizhikin@leica-geosystems.com>
-Content-Type: text/plain
-X-Originating-IP: [193.8.40.112]
-X-ClientProxiedBy: ZR0P278CA0080.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:22::13) To DB6PR0602MB2886.eurprd06.prod.outlook.com
- (2603:10a6:4:9b::11)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClxyW61SRzDq63
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 09:45:36 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id o4so2160461pgj.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 14:45:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=Ot2q/P1+rf39GkYCF83FTotBDDxAojkAY4NU2q4IyVA=;
+ b=ColslUh2ui7Kx+vl5PL2UUTmCr7EHZOkK1QaiHhVHVDj0VKoOJYhR2giJmIyye1qZ6
+ 64DjBpo92Mk6JBd8isbmahhrSZGXDtbzDCPbIepRcJaQCDHs3W04HDJlv8b0jc1+l33C
+ oMzE62wfGVOSoYz1XfIdl9/QMGf4x1WLeVlqLcIwUNa8PHLsYdmSzNFsWdupfY2YLyBY
+ kvXjEHDBU7k0u270t+Nkoj86QT9TfMwa75WYZzjstULUVyukclElgXRVWpakiL2EM2kb
+ TNJJizu/ivdOhNW112x1zIvyR+NLTKl0uLgImoARel+YABPEZTZDn7VRYDlFBXehGQBu
+ AVZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=Ot2q/P1+rf39GkYCF83FTotBDDxAojkAY4NU2q4IyVA=;
+ b=sYsXexat73RMn+qptAWl6MwgFq/YEqofNwRWZVR8+v2p3mBLlRaM9CfFFJ/4t4ZbYs
+ ruPueOvqy48L9Znvf7AZepXuXl0uPz1EuAJP+Yj/E+MnVvy71QBwoWDXyURhGOyqxIbu
+ rshdRHn8neGt36VmsPbkCVLvA2kWCj9w2NZXDK25W/nWW+SQVHP/8YJBH3ittncLOYmI
+ dMZ9Fb/NNDMQ+556XLephsfU/H/AvxbfPBCAFNgEW7T0NK32RrDYzdddS/tr1XrqBw2b
+ L3h28zkZQMfP0oUocAOUo483El6bsXEMlGt3SynSBAu3Zq4Rl8zPvj5QfV1z4trRcvmW
+ +Eww==
+X-Gm-Message-State: AOAM5321Jc4JukHhDJrNn/1sMx/eCy6TvnT4iouWc4ZfwpWUZKuLiVih
+ 68PoBH2huKO8Lz1j18lPyyKAdQ==
+X-Google-Smtp-Source: ABdhPJx/bML42uRQVrldrDUyMeGG0Roxqh1+EZ6X115dSU4IFmlImJc+Lk5YRfkgjQTERGg/cMdJig==
+X-Received: by 2002:a63:1c25:: with SMTP id c37mr4296280pgc.164.1606862733172; 
+ Tue, 01 Dec 2020 14:45:33 -0800 (PST)
+Received: from [0.0.0.0] (124-171-134-245.dyn.iinet.net.au. [124.171.134.245])
+ by smtp.gmail.com with UTF8SMTPSA id
+ y19sm573114pge.15.2020.12.01.14.45.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Dec 2020 14:45:32 -0800 (PST)
+Subject: Re: [PATCH kernel v2] powerpc/pci: Remove LSI mappings on device
+ teardown
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20201201073919.5600-1-aik@ozlabs.ru>
+ <350f6a85-77d8-c0bc-3ba5-f3fd3c50ffe1@kaod.org>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Message-ID: <a36847f8-e8d5-5fe5-4dbe-8d0b5782e94c@ozlabs.ru>
+Date: Wed, 2 Dec 2020 09:45:28 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101
+ Thunderbird/84.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from aherlnxbspsrv01.lgs-net.com (193.8.40.112) by
- ZR0P278CA0080.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:22::13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3632.17 via Frontend Transport; Tue, 1 Dec 2020 22:31:04 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 26943727-d419-41aa-f39d-08d89648caf9
-X-MS-TrafficTypeDiagnostic: DB8PR06MB6236:
-X-Microsoft-Antispam-PRVS: <DB8PR06MB6236DFBDD0F0762D6DC719B1A6F40@DB8PR06MB6236.eurprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1284;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gxLw28SdW9jTITcpro/GTMTeG/u40sqv+iGbwQX2ZS/Yy8qlRjRYC/G95hc/FgSboQzFmdgneKNFoz0Y3sMRhuAIcjxkLvSH2bsdBppvAw1P+KoXbXuFrVWVg9y0ZuXXBOCnDAnJxakyb0TCSnI9EkO+Np4P0nZ/rMdcIHff5x/8U+U0Rg0kCOOIkbFOxzlFQH0YvddY7VxT/txnIZgr/hy/k39wOgqe49nY8CyVF9KJxnnDJ0n58jEqAyGp3rezSptdnMAmPmL6oCW0datJryRG1ZAD2nfw700eN1FFqyqRCGQBvoExSGJwFjgAUvjdo3cCaiTJKmprqtVxBv2g4HHnITZFPxl9wN3sciIhi/Cnp9aftF48xhtlu5epc8B/YDCxxaPAQ14MdCS2MWw/YQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DB6PR0602MB2886.eurprd06.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(346002)(136003)(366004)(39860400002)(396003)(376002)(66476007)(6666004)(66556008)(86362001)(66946007)(26005)(1076003)(186003)(36756003)(8676002)(16526019)(83380400001)(2906002)(6512007)(478600001)(8936002)(7406005)(316002)(7416002)(2616005)(52116002)(921005)(956004)(44832011)(5660300002)(6486002)(6506007)(41533002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?gIgy2COpXhjB0e80DwgmeEnGFiwx8Lied7vzGV/UaDaZHgTQf+7VDA02Kj6Z?=
- =?us-ascii?Q?pZAgxtXqQhHqfKW5C84H2bHNtVH4ErBeYjatLuVUKPeGyL7wSQM3tMuz//9B?=
- =?us-ascii?Q?IQpdysOla7ipcwDESRi7rI5FnNth3RtjCnEekFO8H2aCAwEhnQJ16O01Bn8X?=
- =?us-ascii?Q?MjUKtbZqLRKP7LQCDpAapGeP+cIVkXKB/l3kup3tf4UFDNn3rTVNsfOBXYQy?=
- =?us-ascii?Q?FM79rhLMJwgT0bWy2IR3UUgH327XtZA5X/LV9gjGAn9OtT63qd5dwd0Kn1u8?=
- =?us-ascii?Q?OUN/6wuJ0uWJQqopxNpo6mg93RebFGpVzQGcERZikplvDzLd42UCBOUDz/qT?=
- =?us-ascii?Q?T6QJLSnoAWwbbC40Hd+8H1rQAyiLX4nY9HUeIAjEo+5aRzVgy4+BEs7DMkMM?=
- =?us-ascii?Q?zIrK8QvWtTd4f1fCKeTzal66K4LoOfcvy2knuaEj43AF5mQ+rb2UHuI5bthN?=
- =?us-ascii?Q?7P7n708r/eV0dG+FehAtmWjClXKLqQwCS0sTQPdYkyqONsqKfdvdE/dWPlzU?=
- =?us-ascii?Q?d4YO9aXnS7PrpGZL7FWlfrj5MLkflGytY3V/FOGC8X8mKy7g2WmEfpjMieXj?=
- =?us-ascii?Q?PCoC+t+VQ5kDAczd+J1wXRCO8mxu92rR3km+UYYgjflkXqRsr+MkjqdcqFcs?=
- =?us-ascii?Q?KocmjJfoLtxrZDnQ6feihtPzRfp2JV6v+1uAV5ZDspS2js8z/dd5NBDJvhMH?=
- =?us-ascii?Q?jCFDD+xXmtvhlxImEtk41ec375PGIIF/5yvJVQtV91GM1vjHOlq+cjrfnri+?=
- =?us-ascii?Q?glUSbUATUvtJxnokbMGwg+2QuAPGdLOpCI4c0JAxeKVPdvMZWGZsxBX+ghrc?=
- =?us-ascii?Q?Z+olWtLmQMJccaKjMQ9WBs+VmrdnXlfrPHkN+CYfCEOHiubkVOzMlD48wFCW?=
- =?us-ascii?Q?beuAc019eaC5QQDTvy+M/y8HqL1Lyva1XHmNam3yITzJ+aa4y+xVpTEKjHDS?=
- =?us-ascii?Q?Qbpoj8P9rZ6sqc/lrz7FzlLmyPskc6n+TAH2uoo/GVRSe+hHZ0fLxLlXo9Es?=
- =?us-ascii?Q?tzc/?=
-X-OriginatorOrg: leica-geosystems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26943727-d419-41aa-f39d-08d89648caf9
-X-MS-Exchange-CrossTenant-AuthSource: DB6PR0602MB2886.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2020 22:31:06.2214 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8hvTi5gQyn5MnIOmFFcnxQipq1vPxjZbziVQb9o+Mc4BHmpB/WyX04O1nzkMNT5MaDnHMQ4tbi+Fgba5LJ42Vgpmc4gjsNBC1pHSELMuwzY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR06MB6236
+In-Reply-To: <350f6a85-77d8-c0bc-3ba5-f3fd3c50ffe1@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,39 +88,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-unused") removed geenric_bl driver from the tree, together with
-corresponding config option.
 
-Remove BACKLIGHT_GENERIC config item from generic-64bit_defconfig.
 
-Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is unused")
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/configs/powernv_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+On 01/12/2020 20:31, Cédric Le Goater wrote:
+> On 12/1/20 8:39 AM, Alexey Kardashevskiy wrote:
+>> From: Oliver O'Halloran <oohall@gmail.com>
+>>
+>> When a passthrough IO adapter is removed from a pseries machine using hash
+>> MMU and the XIVE interrupt mode, the POWER hypervisor expects the guest OS
+>> to clear all page table entries related to the adapter. If some are still
+>> present, the RTAS call which isolates the PCI slot returns error 9001
+>> "valid outstanding translations" and the removal of the IO adapter fails.
+>> This is because when the PHBs are scanned, Linux maps automatically the
+>> INTx interrupts in the Linux interrupt number space but these are never
+>> removed.
+>>
+>> This problem can be fixed by adding the corresponding unmap operation when
+>> the device is removed. There's no pcibios_* hook for the remove case, but
+>> the same effect can be achieved using a bus notifier.
+>>
+>> Because INTx are shared among PHBs (and potentially across the system),
+>> this adds tracking of virq to unmap them only when the last user is gone.
+>>
+>> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+>> [aik: added refcounter]
+>> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> 
+> Looks good to me and the system survives all the PCI hotplug tests I used
+> to do on my first attempts to fix this issue.
+> 
+> One comment below,
+> 
+>> ---
+>>
+>>
+>> Doing this in the generic irq code is just too much for my small brain :-/
+> 
+> may be more cleanups are required in the PCI/MSI/IRQ PPC layers before
+> considering your first approach. You think too much in advance  !
+> 
+>>
+>> ---
+>>   arch/powerpc/kernel/pci-common.c | 71 ++++++++++++++++++++++++++++++++
+>>   1 file changed, 71 insertions(+)
+>>
+>> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+>> index be108616a721..0acf17f17253 100644
+>> --- a/arch/powerpc/kernel/pci-common.c
+>> +++ b/arch/powerpc/kernel/pci-common.c
+>> @@ -353,6 +353,55 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
+>>   	return NULL;
+>>   }
+>>   
+>> +struct pci_intx_virq {
+>> +	int virq;
+>> +	struct kref kref;
+>> +	struct list_head list_node;
+>> +};
+>> +
+>> +static LIST_HEAD(intx_list);
+>> +static DEFINE_MUTEX(intx_mutex);
+>> +
+>> +static void ppc_pci_intx_release(struct kref *kref)
+>> +{
+>> +	struct pci_intx_virq *vi = container_of(kref, struct pci_intx_virq, kref);
+>> +
+>> +	list_del(&vi->list_node);
+>> +	irq_dispose_mapping(vi->virq);
+>> +	kfree(vi);
+>> +}
+>> +
+>> +static int ppc_pci_unmap_irq_line(struct notifier_block *nb,
+>> +			       unsigned long action, void *data)
+>> +{
+>> +	struct pci_dev *pdev = to_pci_dev(data);
+>> +
+>> +	if (action == BUS_NOTIFY_DEL_DEVICE) {
+>> +		struct pci_intx_virq *vi;
+>> +
+>> +		mutex_lock(&intx_mutex);
+>> +		list_for_each_entry(vi, &intx_list, list_node) {
+>> +			if (vi->virq == pdev->irq) {
+>> +				kref_put(&vi->kref, ppc_pci_intx_release);
+>> +				break;
+>> +			}
+>> +		}
+>> +		mutex_unlock(&intx_mutex);
+>> +	}
+>> +
+>> +	return NOTIFY_DONE;
+>> +}
+>> +
+>> +static struct notifier_block ppc_pci_unmap_irq_notifier = {
+>> +	.notifier_call = ppc_pci_unmap_irq_line,
+>> +};
+>> +
+>> +static int ppc_pci_register_irq_notifier(void)
+>> +{
+>> +	return bus_register_notifier(&pci_bus_type, &ppc_pci_unmap_irq_notifier);
+>> +}
+>> +arch_initcall(ppc_pci_register_irq_notifier);
+>> +
+>>   /*
+>>    * Reads the interrupt pin to determine if interrupt is use by card.
+>>    * If the interrupt is used, then gets the interrupt line from the
+>> @@ -361,6 +410,12 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
+>>   static int pci_read_irq_line(struct pci_dev *pci_dev)
+>>   {
+>>   	int virq;
+>> +	struct pci_intx_virq *vi, *vitmp;
+>> +
+>> +	/* Preallocate vi as rewind is complex if this fails after mapping */
+> 
+> AFAICT, we only need to call irq_dispose_mapping() if allocation fails.
 
-diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
-index cf30fc24413b..60a30fffeda0 100644
---- a/arch/powerpc/configs/powernv_defconfig
-+++ b/arch/powerpc/configs/powernv_defconfig
-@@ -208,7 +208,6 @@ CONFIG_FB_MATROX_G=y
- CONFIG_FB_RADEON=m
- CONFIG_FB_IBM_GXT4500=m
- CONFIG_LCD_PLATFORM=m
--CONFIG_BACKLIGHT_GENERIC=m
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_LOGO=y
- CONFIG_HID_A4TECH=m
+Today - yes but in the future (hierarchical domains or whatever other 
+awesome thing we'll use from there) - not necessarily. Too much is 
+hidden under irq_create_fwspec_mapping(). Thanks,
+
+
+
+> If so, it would be simpler to isolate the code in a pci_intx_register(virq)
+> helper and call it from pci_read_irq_line().
+> 
+>> +	vi = kzalloc(sizeof(struct pci_intx_virq), GFP_KERNEL);
+>> +	if (!vi)
+>> +		return -1;
+>>   
+>>   	pr_debug("PCI: Try to map irq for %s...\n", pci_name(pci_dev));
+>>   
+>> @@ -401,6 +456,22 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
+>>   
+>>   	pci_dev->irq = virq;
+>>   
+>> +	mutex_lock(&intx_mutex);
+>> +	list_for_each_entry(vitmp, &intx_list, list_node) {
+>> +		if (vitmp->virq == virq) {
+>> +			kref_get(&vitmp->kref);
+>> +			kfree(vi);
+>> +			vi = NULL;
+>> +			break;
+>> +		}
+>> +	}
+>> +	if (vi) {
+>> +		vi->virq = virq;
+>> +		kref_init(&vi->kref);
+>> +		list_add_tail(&vi->list_node, &intx_list);
+>> +	}
+>> +	mutex_unlock(&intx_mutex);
+>> +
+>>   	return 0;
+>>   }
+>>   
+>>
+> 
+
 -- 
-2.17.1
-
+Alexey
