@@ -2,85 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8782CA76B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 16:54:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E34B42CA80C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 17:19:00 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClmrY22wczDqcY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 02:54:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClnNL0N56zDqtR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 03:18:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=nv/Y4LLq; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=pOQ4NjzP; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Clmnq4GbxzDqSk
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 02:52:31 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B1FXCLJ001684; Tue, 1 Dec 2020 10:52:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references; s=pp1;
- bh=cEa9wJ96I/Gq+VnJlinTU4XhWP8zhBZZp6rL9Pt1tPM=;
- b=nv/Y4LLqwksiOcdiD7Wkg83o2etMl2UD9DwgWxinoMvnfmtlTN7h9ysKAQlqeb18iH8R
- Rycyh9eEFqTr0sYTNxeSh3d53vj7zxO86CjdI2I0DYXfQd+G7QkASsqhFPOOG+90RZ48
- ut3vxWKnxyoexHDH+F200TyhdkyKlUqqoJkpUg2B12R8+0SJitPIfRu15DjLR0FLZ7I7
- /9h4H5YB8swpLhkHwqulhRDlTRHm42Iyx2T8J0RtMrB5/rtHIrurwPCBodf/n80uaCCV
- nCQzvoQCMjOqDRmPuR8/3shmHX40P5hBbYYVYpMUlaTmtVUScQIYIS9EE/4e05zDXs8f Zw== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 355he3yrvj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Dec 2020 10:52:24 -0500
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B1FXLwq011626;
- Tue, 1 Dec 2020 15:52:23 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma03wdc.us.ibm.com with ESMTP id 353e6919fw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Dec 2020 15:52:23 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B1FqNZf20644740
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 1 Dec 2020 15:52:23 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2843FAE063;
- Tue,  1 Dec 2020 15:52:23 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 148DDAE062;
- Tue,  1 Dec 2020 15:52:22 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.160.5.242])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  1 Dec 2020 15:52:21 +0000 (GMT)
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-To: kuba@kernel.org
-Subject: [PATCH net v3 2/2] ibmvnic: Fix TX completion error handling
-Date: Tue,  1 Dec 2020 09:52:11 -0600
-Message-Id: <1606837931-22676-3-git-send-email-tlfalcon@linux.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1606837931-22676-1-git-send-email-tlfalcon@linux.ibm.com>
-References: <1606837931-22676-1-git-send-email-tlfalcon@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-12-01_07:2020-11-30,
- 2020-12-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0
- lowpriorityscore=0 spamscore=0 priorityscore=1501 clxscore=1015
- malwarescore=0 suspectscore=1 bulkscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012010097
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClnKk6LJdzDqml
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 03:16:41 +1100 (AEDT)
+Received: by mail-pj1-x1031.google.com with SMTP id h7so915611pjk.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 08:16:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=keKgMbCkoGOXeTFvWr8odCNv42gYD1NHpH65Gpi3cCA=;
+ b=pOQ4NjzPVp6iisrE9P9gGQG6wNSldY4e18fm6iUbeVrUS7EJ37dp6TsrrKURZ/aNde
+ ry5rJrSim0HZoWiOXMWIRmBirNoa7cEORhW5l6j4dxpbpUJT/lQTnPtzP68AnJGbBJU9
+ kFxi3hT3dbZM32tJteH0PEpmZ3owWh7NtAIf8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=keKgMbCkoGOXeTFvWr8odCNv42gYD1NHpH65Gpi3cCA=;
+ b=E6zIMpfavO+6YsRdVTIF+J0bacGxxYvXnj4kOA8TVNJkdAEdnAvgzyRpSZdThDUp6T
+ +lBoswXUK2ikIRjBCf234/rSPu9DdlnTxqUUoDqV0YGNDT+E6BcLvOdDPdCIoxoSn57V
+ rKaxkclvp9zuVWbOUp92rrNZQQoY/E28TSy/dCoKlwt1NsaGZSmYif2MP1hPXBG1zOil
+ Rewbg7FWR3jpDygvDg21bZLApOubDyrCzE6jPmw6F304+JzWTxLLNshp6YT+s78/lBpx
+ 0R8sSLcaSyM/roHVItwcLwGKOUnLs8haL2faFKcR/EfGufc6OuXiiYu+QUcDlZreYyae
+ NIwg==
+X-Gm-Message-State: AOAM531jLGKOLcomSDgoE3hhUD6OCWVaBP0q1oM+/Kw1SyYgNHr5oAPT
+ Mjdrgp3xubcBiXGmIgMicFSpow==
+X-Google-Smtp-Source: ABdhPJw8p/fYmmJr1JIB/2o9aL9RGNVV5xtAOwCWgAXwUflXsCj28scQTc16C3z6SmRwv4gaC0Apuw==
+X-Received: by 2002:a17:90b:a14:: with SMTP id
+ gg20mr3560478pjb.46.1606839397634; 
+ Tue, 01 Dec 2020 08:16:37 -0800 (PST)
+Received: from localhost
+ (2001-44b8-111e-5c00-f932-2db6-916f-25e2.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:f932:2db6:916f:25e2])
+ by smtp.gmail.com with ESMTPSA id r11sm82914pgn.26.2020.12.01.08.16.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Dec 2020 08:16:37 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
+ christophe.leroy@c-s.fr, aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
+Subject: [PATCH v9 0/6] KASAN for powerpc64 radix
+Date: Wed,  2 Dec 2020 03:16:26 +1100
+Message-Id: <20201201161632.1234753-1-dja@axtens.net>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,42 +78,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cforno12@linux.ibm.com, ljp@linux.vnet.ibm.com, ricklind@linux.ibm.com,
- dnbanerg@us.ibm.com, tlfalcon@linux.ibm.com, drt@linux.vnet.ibm.com,
- netdev@vger.kernel.org, brking@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-TX completions received with an error return code are not
-being processed properly. When an error code is seen, do not
-proceed to the next completion before cleaning up the existing
-entry's data structures.
+Building on the work of Christophe, Aneesh and Balbir, I've ported
+KASAN to 64-bit Book3S kernels running on the Radix MMU.
 
-Fixes: 032c5e82847a ("Driver for IBM System i/p VNIC protocol")
-Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+This is a significant reworking of the previous versions. Instead of
+the previous approach which supported inline instrumentation, this
+series provides only outline instrumentation.
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 5ea9f5c..10878f8 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -3113,11 +3113,9 @@ static int ibmvnic_complete_tx(struct ibmvnic_adapter *adapter,
- 
- 		next = ibmvnic_next_scrq(adapter, scrq);
- 		for (i = 0; i < next->tx_comp.num_comps; i++) {
--			if (next->tx_comp.rcs[i]) {
-+			if (next->tx_comp.rcs[i])
- 				dev_err(dev, "tx error %x\n",
- 					next->tx_comp.rcs[i]);
--				continue;
--			}
- 			index = be32_to_cpu(next->tx_comp.correlators[i]);
- 			if (index & IBMVNIC_TSO_POOL_MASK) {
- 				tx_pool = &adapter->tso_pool[pool];
--- 
-1.8.3.1
+To get around the problem of accessing the shadow region inside code we run
+with translations off (in 'real mode'), we we restrict checking to when
+translations are enabled. This is done via a new hook in the kasan core and
+by excluding larger quantites of arch code from instrumentation. The upside
+is that we no longer require that you be able to specify the amount of
+physically contiguous memory on the system at compile time. Hopefully this
+is a better trade-off. More details in patch 6.
+
+kexec works. Both 64k and 4k pages work. Running as a KVM host works, but
+nothing in arch/powerpc/kvm is instrumented. It's also potentially a bit
+fragile - if any real mode code paths call out to instrumented code, things
+will go boom.
+
+There are 4 failing KUnit tests:
+
+kasan_stack_oob, kasan_alloca_oob_left & kasan_alloca_oob_right - these are
+due to not supporting inline instrumentation.
+
+kasan_global_oob - gcc puts the ASAN init code in a section called
+'.init_array'. Powerpc64 module loading code goes through and _renames_ any
+section beginning with '.init' to begin with '_init' in order to avoid some
+complexities around our 24-bit indirect jumps. This means it renames
+'.init_array' to '_init_array', and the generic module loading code then
+fails to recognise the section as a constructor and thus doesn't run
+it. This hack dates back to 2003 and so I'm not going to try to unpick it
+in this series. (I suspect this may have previously worked if the code
+ended up in .ctors rather than .init_array but I don't keep my old binaries
+around so I have no real way of checking.)
+
+
+Daniel Axtens (6):
+  kasan: allow an architecture to disable inline instrumentation
+  kasan: allow architectures to provide an outline readiness check
+  kasan: define and use MAX_PTRS_PER_* for early shadow tables
+  kasan: Document support on 32-bit powerpc
+  powerpc/mm/kasan: rename kasan_init_32.c to init_32.c
+  powerpc: Book3S 64-bit outline-only KASAN support
+
 
