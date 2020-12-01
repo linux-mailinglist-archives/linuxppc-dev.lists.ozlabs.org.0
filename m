@@ -2,62 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F862CAD9A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 21:46:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE45A2CADDF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 21:57:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClvKL4vHMzDqsq
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 07:46:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClvZ15f5mzDqts
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 07:57:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=keescook@chromium.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=lwlru6BY; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=TFwSRXZw; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ClvH66WV4zDqpg
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 07:44:50 +1100 (AEDT)
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com
- [209.85.167.175])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5406F22253
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 20:44:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1606855488;
- bh=UFEBHXg8TVXYu2V42/6zenhsEaO7jAcjOCzMkhg+LBE=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=lwlru6BYBaQkldbv5U24rjcM8VjychQZXi28eVSbUL5E58zO63hAOFrsZ5UmxL/b/
- 6qjv7C7dxujv3yUoZVgH3BWI7DuQik/X+pk21WSsPL+iXb/qGJIT0jhf4F/pRRcuBy
- NO5ghpzT4kdg2RcruQ/Sg3hqAyPMNEr1E/aa4JBw=
-Received: by mail-oi1-f175.google.com with SMTP id v202so3244875oia.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 12:44:48 -0800 (PST)
-X-Gm-Message-State: AOAM530T4s9xUtbbY3BoYfK9pRgDr1ra3yIjh8hBvrsJZPejt6ppJXQV
- mBMTuQPQBCV2J4kEKmicKgsUdTwPfqOgdBHi8Rw=
-X-Google-Smtp-Source: ABdhPJx3HpJhpKp7V1wx4hETSd/vq2BWsy3Lzp9NXDHTg0LYmh47Db0gDHt2H1j7zyKtvEwaw8HufP+JviyrmLq6s74=
-X-Received: by 2002:a05:6808:9a9:: with SMTP id e9mr3002783oig.4.1606855486726; 
- Tue, 01 Dec 2020 12:44:46 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClvX94KK1zDqTq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 07:56:06 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id b10so1946426pfo.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 12:56:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=jvZxaR1uxdRFvn7XeforUrhpQcomda06FE9z8v9SF+I=;
+ b=TFwSRXZw8tzrXF6TjZXpiOFHg1eTcIgsU/gnBsZvwrvBMi/VZtwhWsjJP6MDcyV7Xq
+ EY1E3QlJDD2LP1zBZrGfMVxa/86yeHYBcTCHMhgcRUuE1NU55SXri1WRb5qI4RcXvbGK
+ JWM4/WDllREpTawjswqFJddFIBj+qQ75I3XUk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=jvZxaR1uxdRFvn7XeforUrhpQcomda06FE9z8v9SF+I=;
+ b=g9P/nLhIOAq/P3HbxTHf7FJLSF/JaYBegxQbb2PxXDdg00zpIgtUW0Ehv9dNMrY2JN
+ GpY1B5YSxbUD9my6IJTgQnVQmT9pOMHXWFmv9Q3GIm2VUTq4y8kvEaoncKeMbAE8rMSV
+ aIAwP7DNBt7ZCsBGnl+Wz4tC22AY+t2Kfpahzwe1+5ZTE2ZiH96eKhkunatx0Sn/+IgG
+ B/HUgemUF/+m2lXefMuCe5Jb2RVgHFzSq4iKiP6CgvDWvgWuKBdqmXMPTxn4uCkK6dXH
+ 1pkWrqpU5K1QeR/T+spYSG7FB0bx2rlscWbdiB6QA16Yko6gxb/RZlr1Xzazp0lfP490
+ 38Kw==
+X-Gm-Message-State: AOAM531Z+Y3KskYsuDBX9VMtwTyh6M1tQcB5vYkXRgxqVP96qp6c9O2q
+ +6e4/3IEOUwEEVONWMYmC7NDVA==
+X-Google-Smtp-Source: ABdhPJzCxMuBuZrRcsbYPBK43PxlNzAPIn7sX9mea5Y6YmB2SSRco81+JiT9a3Pib4DSr+575XOIFA==
+X-Received: by 2002:a62:293:0:b029:197:96c2:bef6 with SMTP id
+ 141-20020a6202930000b029019796c2bef6mr4299536pfc.62.1606856164000; 
+ Tue, 01 Dec 2020 12:56:04 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id i26sm597443pfq.148.2020.12.01.12.56.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Dec 2020 12:56:02 -0800 (PST)
+Date: Tue, 1 Dec 2020 12:56:01 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH v2 2/2] kbuild: Disable CONFIG_LD_ORPHAN_WARN for ld.lld
+ 10.0.1
+Message-ID: <202012011255.9D677ED3@keescook>
+References: <20201113195553.1487659-1-natechancellor@gmail.com>
+ <20201119204656.3261686-2-natechancellor@gmail.com>
+ <CAKwvOdkPgwL8H4EGF6=-VuxTdmxA8JHhGbLHVYcLJj9MmAvW=g@mail.gmail.com>
+ <202011241421.A2F3062A70@keescook>
+ <CAK7LNAR=_+1K7EtpvGzgyM+ans-iNOT0PBXdLRApnsyAzakQ3w@mail.gmail.com>
 MIME-Version: 1.0
-References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
- <20201130152137.24909-2-andrey.zhizhikin@leica-geosystems.com>
- <20201130185227.GA29434@kozik-lap>
- <AM6PR06MB4691EC52BA41B86AB16EE14FA6F50@AM6PR06MB4691.eurprd06.prod.outlook.com>
- <20201201144052.GE31404@gaia> <20201201154139.GF2401593@piout.net>
- <CAK8P3a0N24zuQ+CM-_t66CS8AprzdtdfirfLWwGpjgcXjWjn=Q@mail.gmail.com>
- <AM6PR06MB4691A5E1603BBE57F35F3B17A6F40@AM6PR06MB4691.eurprd06.prod.outlook.com>
-In-Reply-To: <AM6PR06MB4691A5E1603BBE57F35F3B17A6F40@AM6PR06MB4691.eurprd06.prod.outlook.com>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Tue, 1 Dec 2020 21:44:30 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1QC+582vyxiGOtE3-17m8rbadtrN4yyaGozOP+fEf-3A@mail.gmail.com>
-Message-ID: <CAK8P3a1QC+582vyxiGOtE3-17m8rbadtrN4yyaGozOP+fEf-3A@mail.gmail.com>
-Subject: Re: [PATCH 1/5] ARM: configs: drop unused BACKLIGHT_GENERIC option
-To: ZHIZHIKIN Andrey <andrey.zhizhikin@leica-geosystems.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7LNAR=_+1K7EtpvGzgyM+ans-iNOT0PBXdLRApnsyAzakQ3w@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,62 +81,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- "tony@atomide.com" <tony@atomide.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "James.Bottomley@HansenPartnership.com"
- <James.Bottomley@hansenpartnership.com>,
- "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
- "paulus@samba.org" <paulus@samba.org>, "sam@ravnborg.org" <sam@ravnborg.org>,
- "daniel.thompson@linaro.org" <daniel.thompson@linaro.org>,
- "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, "deller@gmx.de" <deller@gmx.de>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
- "ludovic.desroches@microchip.com" <ludovic.desroches@microchip.com>,
- arm-soc <arm@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "will@kernel.org" <will@kernel.org>, "mripard@kernel.org" <mripard@kernel.org>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "lee.jones@linaro.org" <lee.jones@linaro.org>, "wens@csie.org" <wens@csie.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "jernej.skrabec@siol.net" <jernej.skrabec@siol.net>,
- "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "emil.l.velikov@gmail.com" <emil.l.velikov@gmail.com>,
- "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
- Olof Johansson <olof@lixom.net>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Michal Marek <michal.lkml@markovi.net>,
+ "kernelci . org bot" <bot@kernelci.org>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ Russell King <linux@armlinux.org.uk>, LKML <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Arvind Sankar <nivedita@alum.mit.edu>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Nathan Chancellor <natechancellor@gmail.com>, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 1, 2020 at 8:48 PM ZHIZHIKIN Andrey
-<andrey.zhizhikin@leica-geosystems.com> wrote:
-> Hello Arnd,
-> > > > Or rather, SoC-specific patches, even to defconfig, should go
-> > > > through the specific SoC maintainers. However, there are occasional
-> > > > defconfig patches which are more generic or affecting multiple SoCs.
-> > > > I just ignore them as the arm64 defconfig is usually handled by the
-> > > > arm-soc folk (when I need a defconfig change, I go for
-> > > > arch/arm64/Kconfig directly ;)).
-> > >
-> > > IIRC, the plan was indeed to get defconfig changes through the
-> > > platform sub-trees. It is also supposed to be how multi_v5 and
-> > > multi_v7 are handled and they will take care of the merge.
+On Tue, Dec 01, 2020 at 10:31:37PM +0900, Masahiro Yamada wrote:
+> On Wed, Nov 25, 2020 at 7:22 AM Kees Cook <keescook@chromium.org> wrote:
 > >
-> > For cross-platform changes like this one, I'm definitely happy to pick up the
-> > patch directly from soc@kernel.org, or from mailing list if I know about it.
->
-> Should I collect all Ack's and re-send this series including the list "nobody
-> talks about" :), or the series can be picked up as-is?
->
-> Your advice would be really welcomed here!
+> > On Thu, Nov 19, 2020 at 01:13:27PM -0800, Nick Desaulniers wrote:
+> > > On Thu, Nov 19, 2020 at 12:57 PM Nathan Chancellor
+> > > <natechancellor@gmail.com> wrote:
+> > > >
+> > > > ld.lld 10.0.1 spews a bunch of various warnings about .rela sections,
+> > > > along with a few others. Newer versions of ld.lld do not have these
+> > > > warnings. As a result, do not add '--orphan-handling=warn' to
+> > > > LDFLAGS_vmlinux if ld.lld's version is not new enough.
+> > > >
+> > > > Link: https://github.com/ClangBuiltLinux/linux/issues/1187
+> > > > Link: https://github.com/ClangBuiltLinux/linux/issues/1193
+> > > > Reported-by: Arvind Sankar <nivedita@alum.mit.edu>
+> > > > Reported-by: kernelci.org bot <bot@kernelci.org>
+> > > > Reported-by: Mark Brown <broonie@kernel.org>
+> > > > Reviewed-by: Kees Cook <keescook@chromium.org>
+> > > > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> > >
+> > > Thanks for the additions in v2.
+> > > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+> >
+> > I'm going to carry this for a few days in -next, and if no one screams,
+> > ask Linus to pull it for v5.10-rc6.
+> >
+> > Thanks!
+> >
+> > --
+> > Kees Cook
+> 
+> 
+> Sorry for the delay.
+> Applied to linux-kbuild.
 
-Yes, please do, that makes my life easier. I would apply the patches
-for arch/arm and arch/arm64 when you send them to soc@kernel.org,
-the others go to the respective architecture maintainers, unless they
-want me to pick up the whole series.
+Great, thanks!
 
-      Arnd
+> But, I already see this in linux-next.
+> Please let me know if I should drop it from my tree.
+
+My intention was to get this to Linus this week. Do you want to do that
+yourself, or Ack the patches in my tree and I'll send it?
+
+-Kees
+
+-- 
+Kees Cook
