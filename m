@@ -1,63 +1,127 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C28A2CAF29
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 22:52:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B622CB01F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 23:32:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ClwnB2fPXzDqNf
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 08:52:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Clxgc4hrkzDqwg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 09:32:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ smtp.mailfrom=leica-geosystems.com (client-ip=40.107.6.95;
+ helo=eur04-db3-obe.outbound.protection.outlook.com;
+ envelope-from=andrey.zhizhikin@leica-geosystems.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=leica-geosystems.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=cYaRYuHV; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=leica-geosystems.com header.i=@leica-geosystems.com
+ header.a=rsa-sha256 header.s=selector1 header.b=eQ09sOk7; 
+ dkim-atps=neutral
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com
+ (mail-eopbgr60095.outbound.protection.outlook.com [40.107.6.95])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4ClwlQ6tFSzDqjg
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 08:50:58 +1100 (AEDT)
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
- [209.85.221.45])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E796E20C56
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 21:50:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1606859454;
- bh=R0u/t9dXTAtlGviFs2oYeCEEHjWlPsXgdRNYm6TSXfc=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=cYaRYuHVHFbMApZUMrH9vnKsdRglxiaUhXeHk2PFyc9icoIoHfWGY00FhNGuyu56E
- zh5mtAt+rmfJPCsCD3pvXYVLTLoYITBv6zabhI/ulLzoU09TWkFU9392r9O6XOFxPQ
- vmV3ti3MsO4EsPXsAzOp6NyNDn5IzSDbOYI4iEsc=
-Received: by mail-wr1-f45.google.com with SMTP id p8so5189774wrx.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 13:50:53 -0800 (PST)
-X-Gm-Message-State: AOAM530N1CLNHdzxOx6QWbgut7CkVw39K7rINLWGvMeuVCZrO5SibzKk
- gPKAWl/GsA+U4NyLI2MNVxJq8J/PJxeq95VSbAiy3g==
-X-Google-Smtp-Source: ABdhPJxU0mZkcyHFXZdJ4FhJRmKxyc24rWEoozINfeAF09HSf49gsQ5zWpDYiKpwtAGuhEHFY/rC7uAY3CBEYtIBXQg=
-X-Received: by 2002:adf:e449:: with SMTP id t9mr6472923wrm.257.1606859452360; 
- Tue, 01 Dec 2020 13:50:52 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4ClxdC2X5wzDqqK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 09:30:37 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I2c0WH89Y8pIqElsF5MM4xB6UZlgcXBeGESFjLP3qkNOy1onL/xjQYEtJhw48yt+huRo9yNmF5LsV3N8pE4B6odYDFJWwz5IVEdZ5mvVzWstleqMurgyYH1O6uiDqtk+CU1LGkaI/q8QiNF7KoVLmP+sTTE+9LP1dljcYyUNDYhsNQeKPYbdWubMcwdnzlg5s12X5AeSGKU7ic6Eoh9ucvQuP7S+YnM6q6TvYJatLANr/ovddNJX6KC2/TBkNK3/gIg2eSW0vLfX669FrXTpvDbnpCQZHQEp5htF3e9Xl+sRYiAdz3Z1yEVtjZjnfD+jGdtAdrJFLLl4076PfnVjKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wQNbewLV3VO5tnqMlf4O+K3vo3WTGO6NgmUHjhgup+Y=;
+ b=NQ3384f/XGAJY9LXV/n5Qkt/sMBr0GC1SoDn0xuA28BTc/3Jsk6OvhndakT/LijqLQrhyWtW/e4Jjy4XJRP/uyxYQ+c9S7hkIiXIVZ4klsSgiX3EMwJDBtE/TGXZYiRZ85fhKBjR5b5U44yjhk/h96V4VMQd/va1T/uKpbGnH2q/0Vr6/5mGg8vY5wy/eLFCw/4GKhRjRjmpJFM2k/0tLszPffRs0AVOn71aNHP2xuyg9j5qC/gZwlyol1h47R3tAYg4GfzN2VUK/8zqxuB9awM/qUjVKNye0cXXcr/yZjp0wXrTOFig0qrXOid8/q8zZZ4wobiYD+J2nHMWHZcUqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
+ header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com; 
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wQNbewLV3VO5tnqMlf4O+K3vo3WTGO6NgmUHjhgup+Y=;
+ b=eQ09sOk70ynAV45V+xnhcLw4G0yUnkXSVjHAQhy31jobfhGPfl2SRLEmc5TcbM2KjUjMwBbwiw7tcnM7wESzcHocHTcMSUK4UJMa2SLcwWfSUNu0sBqXk8qldzIZOcqj8aRcvKXFM7/SvMSBhALhgykR2gVaf4VCD84THifQfrw=
+Authentication-Results: armlinux.org.uk; dkim=none (message not signed)
+ header.d=none;armlinux.org.uk; dmarc=none action=none
+ header.from=leica-geosystems.com;
+Received: from DB6PR0602MB2886.eurprd06.prod.outlook.com (2603:10a6:4:9b::11)
+ by DB8PR06MB6236.eurprd06.prod.outlook.com (2603:10a6:10:10a::26)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3611.25; Tue, 1 Dec
+ 2020 22:30:31 +0000
+Received: from DB6PR0602MB2886.eurprd06.prod.outlook.com
+ ([fe80::49c3:4b5b:289c:d62c]) by DB6PR0602MB2886.eurprd06.prod.outlook.com
+ ([fe80::49c3:4b5b:289c:d62c%12]) with mapi id 15.20.3611.025; Tue, 1 Dec 2020
+ 22:30:31 +0000
+From: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
+To: linux@armlinux.org.uk, nicolas.ferre@microchip.com,
+ alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
+ tony@atomide.com, mripard@kernel.org, wens@csie.org,
+ jernej.skrabec@siol.net, thierry.reding@gmail.com, jonathanh@nvidia.com,
+ catalin.marinas@arm.com, will@kernel.org, tsbogend@alpha.franken.de,
+ James.Bottomley@HansenPartnership.com, deller@gmx.de, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, lee.jones@linaro.org,
+ sam@ravnborg.org, emil.l.velikov@gmail.com, daniel.thompson@linaro.org,
+ krzk@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-tegra@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, soc@kernel.org
+Subject: [PATCH v2 0/5] drop unused BACKLIGHT_GENERIC option
+Date: Tue,  1 Dec 2020 22:29:17 +0000
+Message-Id: <20201201222922.3183-1-andrey.zhizhikin@leica-geosystems.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-Originating-IP: [193.8.40.112]
+X-ClientProxiedBy: ZR0P278CA0080.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:22::13) To DB6PR0602MB2886.eurprd06.prod.outlook.com
+ (2603:10a6:4:9b::11)
 MIME-Version: 1.0
-References: <20201128160141.1003903-1-npiggin@gmail.com>
- <20201128160141.1003903-7-npiggin@gmail.com>
- <CALCETrVXUbe8LfNn-Qs+DzrOQaiw+sFUg1J047yByV31SaTOZw@mail.gmail.com>
- <CALCETrWBtCfD+jZ3S+O8FK-HFPODuhbDEbbfWvS=-iPATNFAOA@mail.gmail.com>
- <CALCETrXAR_9EGaOF8ymVkZycxgZkYk0dR+NjEpTfVzdcS3sOVw@mail.gmail.com>
- <20201201212758.GA28300@willie-the-truck>
-In-Reply-To: <20201201212758.GA28300@willie-the-truck>
-From: Andy Lutomirski <luto@kernel.org>
-Date: Tue, 1 Dec 2020 13:50:38 -0800
-X-Gmail-Original-Message-ID: <CALCETrVP3qAQ50yHU-AzZQsiRB9JGO5FQf91kuk7DCvNY51EXQ@mail.gmail.com>
-Message-ID: <CALCETrVP3qAQ50yHU-AzZQsiRB9JGO5FQf91kuk7DCvNY51EXQ@mail.gmail.com>
-Subject: Re: [PATCH 6/8] lazy tlb: shoot lazies,
- a non-refcounting lazy tlb option
-To: Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from aherlnxbspsrv01.lgs-net.com (193.8.40.112) by
+ ZR0P278CA0080.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:22::13) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3632.17 via Frontend Transport; Tue, 1 Dec 2020 22:30:30 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 6d365363-08b1-4c89-53ed-08d89648b657
+X-MS-TrafficTypeDiagnostic: DB8PR06MB6236:
+X-Microsoft-Antispam-PRVS: <DB8PR06MB623630EB4354F1D60BA7FD44A6F40@DB8PR06MB6236.eurprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1169;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: LMo6z8928fES3UzxAxn2rkjR/2DcWyNdmFlZuZsjMi56KGuIM3Nx2fWh6p7xbSDjIdki39DSUBYYVpJl4Q2+1Xzv5aAA7xsLMGPNxG+AJ6PMMgoTQ4nt1fWUtlDfjsNvhG9dvTplrQ/2/JWfSPG2jLDfh5WOwP4/nFQ3jGQMbcN2Gq3vz9f04qqZZlJU9swyjcQJ9vqEMF5BD+7Y5GPWFZzvcNrmYLqstUrulPaIqxbofPKfeOc1SJviIa/z+yDzDnZZXYY9hY0GfN4aSYwFTDJOlcdKrdxlKCq2tmEtjtXRMQxyLV0e4uUVfr69Ioh0UUF+n8eW5NAbyyRMhhuk/0jGKg4L6rlXDglnr27pFfT2GPq4G6e5nvpszs2f2fKWymPOShj5hpQy6Wh4mmf7Kw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DB6PR0602MB2886.eurprd06.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(346002)(136003)(366004)(39860400002)(396003)(376002)(66476007)(6666004)(66556008)(86362001)(66946007)(26005)(1076003)(186003)(36756003)(8676002)(16526019)(83380400001)(2906002)(6512007)(478600001)(8936002)(7406005)(316002)(7416002)(2616005)(52116002)(921005)(956004)(44832011)(5660300002)(6486002)(6506007)(41533002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?ORbQbhIKfN1uqEBuSZvSCSxgb7ianXlDOp0P935hlkpkr7kTX1hsYWb0pvsk?=
+ =?us-ascii?Q?JuWjrSrpzpyVQ9EG7jGC8GOncR3Bj83cFQAQJYBkcDUVoleD01yRzMJ6ItN1?=
+ =?us-ascii?Q?bIQMi1HV469ZA4r33emxW0fbMlIJwoKmlGuiOJFE59n1ja4nXfVM0+FU220Y?=
+ =?us-ascii?Q?2cwKNn0zLdgRZ0nKO7xEmFzGML3mtfpmXkwvn5y4jeXvFSvqVahFWdSGmVsI?=
+ =?us-ascii?Q?VvciL6JAGFmhS3xL0dyIQ3iuqhkd3nvu2QgQQjVF3ZpOneFDLdEW1NjJ79qf?=
+ =?us-ascii?Q?H01pVTrjbpdjzCJLDR4hWbf+pKrxqxKhhel5VXUXdMvhHUpmnjQGSudEsS7y?=
+ =?us-ascii?Q?Hp24mTsX8eSZT16Ac2pNF2Lkl3RL65Uas4sjE96G9+irKOOTxyzTo8o5OxWz?=
+ =?us-ascii?Q?uyYh9Gz0FQ/gfstpXNVaU4vHcJL3FM+PWxVDUWjjUzMZVN2rpKth8FSSYQkS?=
+ =?us-ascii?Q?4yj+ciu9rwzposHj41msORGbW1LPpB8/Sas+uWt2spdue96FuuoVfW6A0Uzq?=
+ =?us-ascii?Q?8ZWLeZi1KQJSzxQIeNrlJPRhQLHF/VNDXEIWd/7gNcFqGtxvJxf4YRxbPYiY?=
+ =?us-ascii?Q?9u6WA/cLn8t/4sxV8H3VT10OCeKimY6e3xBLj44rTKdPsqTiISIN2Yuiaejd?=
+ =?us-ascii?Q?Gcyw8CCboP0MWxAJzPkNF9ujISn0qENneo//DVhBqf+hR0gSnCOlCzZOr4H5?=
+ =?us-ascii?Q?5WcpPjjzLJTdhc0UijW4VoNAd6YNhnWFd8zC1A21N/t5qDMSEKrQxJONK+lF?=
+ =?us-ascii?Q?BTunrekVkhREA5wb1CVnkFa3v4+NS+Jj9F7jCFpE2epNdFUgc7Jv8zpn++eD?=
+ =?us-ascii?Q?hx8xskKW4jtzwfVcg1PG7nDuqBRvJcyrfo6BIuGvejSPfPgKDSgdYZ33gFq9?=
+ =?us-ascii?Q?ospqmsyZxxqIcHAA8ljPJrOCdF+U0Bx9e5nBa+CcdkC9NMpKJPviqy4Jhypk?=
+ =?us-ascii?Q?mAaEXKrRaJ8J/xWuHnh3WIb4hiQeJYfG70gpgXhqdPJxqA8DdQw0RWiDecF8?=
+ =?us-ascii?Q?6n5u?=
+X-OriginatorOrg: leica-geosystems.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d365363-08b1-4c89-53ed-08d89648b657
+X-MS-Exchange-CrossTenant-AuthSource: DB6PR0602MB2886.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2020 22:30:31.7441 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: g4iryKvc/eLM0i/wx6VOtknRmR0+bG26X4MggU95m8d0ngemwHphKtAlGhrxFPDWnhGYIjwuVneZ4bPk9qlbNl7SwzdJO7P9F/kZklGPS7s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR06MB6236
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,110 +133,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
- X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
- Dave Hansen <dave.hansen@intel.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andy Lutomirski <luto@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 1, 2020 at 1:28 PM Will Deacon <will@kernel.org> wrote:
->
-> On Mon, Nov 30, 2020 at 10:31:51AM -0800, Andy Lutomirski wrote:
-> > other arch folk: there's some background here:
-> >
-> > https://lkml.kernel.org/r/CALCETrVXUbe8LfNn-Qs+DzrOQaiw+sFUg1J047yByV31SaTOZw@mail.gmail.com
-> >
-> > On Sun, Nov 29, 2020 at 12:16 PM Andy Lutomirski <luto@kernel.org> wrote:
-> > >
-> > > On Sat, Nov 28, 2020 at 7:54 PM Andy Lutomirski <luto@kernel.org> wrote:
-> > > >
-> > > > On Sat, Nov 28, 2020 at 8:02 AM Nicholas Piggin <npiggin@gmail.com> wrote:
-> > > > >
-> > > > > On big systems, the mm refcount can become highly contented when doing
-> > > > > a lot of context switching with threaded applications (particularly
-> > > > > switching between the idle thread and an application thread).
-> > > > >
-> > > > > Abandoning lazy tlb slows switching down quite a bit in the important
-> > > > > user->idle->user cases, so so instead implement a non-refcounted scheme
-> > > > > that causes __mmdrop() to IPI all CPUs in the mm_cpumask and shoot down
-> > > > > any remaining lazy ones.
-> > > > >
-> > > > > Shootdown IPIs are some concern, but they have not been observed to be
-> > > > > a big problem with this scheme (the powerpc implementation generated
-> > > > > 314 additional interrupts on a 144 CPU system during a kernel compile).
-> > > > > There are a number of strategies that could be employed to reduce IPIs
-> > > > > if they turn out to be a problem for some workload.
-> > > >
-> > > > I'm still wondering whether we can do even better.
-> > > >
-> > >
-> > > Hold on a sec.. __mmput() unmaps VMAs, frees pagetables, and flushes
-> > > the TLB.  On x86, this will shoot down all lazies as long as even a
-> > > single pagetable was freed.  (Or at least it will if we don't have a
-> > > serious bug, but the code seems okay.  We'll hit pmd_free_tlb, which
-> > > sets tlb->freed_tables, which will trigger the IPI.)  So, on
-> > > architectures like x86, the shootdown approach should be free.  The
-> > > only way it ought to have any excess IPIs is if we have CPUs in
-> > > mm_cpumask() that don't need IPI to free pagetables, which could
-> > > happen on paravirt.
-> >
-> > Indeed, on x86, we do this:
-> >
-> > [   11.558844]  flush_tlb_mm_range.cold+0x18/0x1d
-> > [   11.559905]  tlb_finish_mmu+0x10e/0x1a0
-> > [   11.561068]  exit_mmap+0xc8/0x1a0
-> > [   11.561932]  mmput+0x29/0xd0
-> > [   11.562688]  do_exit+0x316/0xa90
-> > [   11.563588]  do_group_exit+0x34/0xb0
-> > [   11.564476]  __x64_sys_exit_group+0xf/0x10
-> > [   11.565512]  do_syscall_64+0x34/0x50
-> >
-> > and we have info->freed_tables set.
-> >
-> > What are the architectures that have large systems like?
-> >
-> > x86: we already zap lazies, so it should cost basically nothing to do
-> > a little loop at the end of __mmput() to make sure that no lazies are
-> > left.  If we care about paravirt performance, we could implement one
-> > of the optimizations I mentioned above to fix up the refcounts instead
-> > of sending an IPI to any remaining lazies.
-> >
-> > arm64: AFAICT arm64's flush uses magic arm64 hardware support for
-> > remote flushes, so any lazy mm references will still exist after
-> > exit_mmap().  (arm64 uses lazy TLB, right?)  So this is kind of like
-> > the x86 paravirt case.  Are there large enough arm64 systems that any
-> > of this matters?
->
-> Yes, there are large arm64 systems where performance of TLB invalidation
-> matters, but they're either niche (supercomputers) or not readily available
-> (NUMA boxes).
->
-> But anyway, we blow away the TLB for everybody in tlb_finish_mmu() after
-> freeing the page-tables. We have an optimisation to avoid flushing if
-> we're just unmapping leaf entries when the mm is going away, but we don't
-> have a choice once we get to actually reclaiming the page-tables.
->
-> One thing I probably should mention, though, is that we don't maintain
-> mm_cpumask() because we're not able to benefit from it and the atomic
-> update is a waste of time.
+Since the removal of generic_bl driver from the source tree in commit
+7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
+unused") BACKLIGHT_GENERIC config option became obsolete as well and
+therefore subject to clean-up from all configuration files.
 
-Do you do anything special for lazy TLB or do you just use the generic
-code?  (i.e. where do your user pagetables point when you go from a
-user task to idle or to a kernel thread?)
+This series introduces patches to address this removal, separated by
+architectures in the kernel tree.
 
-Do you end up with all cpus set in mm_cpumask or can you have the mm
-loaded on a CPU that isn't in mm_cpumask?
+Changes in v2:
+- Collect all Acked-by: and Reviewed-by: tags
+- Include ARM SOC maintainer list to recipients
 
---Andy
+Andrey Zhizhikin (5):
+  ARM: configs: drop unused BACKLIGHT_GENERIC option
+  arm64: defconfig: drop unused BACKLIGHT_GENERIC option
+  MIPS: configs: drop unused BACKLIGHT_GENERIC option
+  parisc: configs: drop unused BACKLIGHT_GENERIC option
+  powerpc/configs: drop unused BACKLIGHT_GENERIC option
 
->
-> Will
+ arch/arm/configs/at91_dt_defconfig          | 1 -
+ arch/arm/configs/cm_x300_defconfig          | 1 -
+ arch/arm/configs/colibri_pxa300_defconfig   | 1 -
+ arch/arm/configs/jornada720_defconfig       | 1 -
+ arch/arm/configs/magician_defconfig         | 1 -
+ arch/arm/configs/mini2440_defconfig         | 1 -
+ arch/arm/configs/omap2plus_defconfig        | 1 -
+ arch/arm/configs/pxa3xx_defconfig           | 1 -
+ arch/arm/configs/qcom_defconfig             | 1 -
+ arch/arm/configs/sama5_defconfig            | 1 -
+ arch/arm/configs/sunxi_defconfig            | 1 -
+ arch/arm/configs/tegra_defconfig            | 1 -
+ arch/arm/configs/u8500_defconfig            | 1 -
+ arch/arm64/configs/defconfig                | 1 -
+ arch/mips/configs/gcw0_defconfig            | 1 -
+ arch/mips/configs/gpr_defconfig             | 1 -
+ arch/mips/configs/lemote2f_defconfig        | 1 -
+ arch/mips/configs/loongson3_defconfig       | 1 -
+ arch/mips/configs/mtx1_defconfig            | 1 -
+ arch/mips/configs/rs90_defconfig            | 1 -
+ arch/parisc/configs/generic-64bit_defconfig | 1 -
+ arch/powerpc/configs/powernv_defconfig      | 1 -
+ 22 files changed, 22 deletions(-)
+
+
+base-commit: b65054597872ce3aefbc6a666385eabdf9e288da
+-- 
+2.17.1
+
