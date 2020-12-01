@@ -2,57 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68272C9F34
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 11:32:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 466962CA2A3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 13:26:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cldhk0J01zDqmJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 21:32:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ClhCz0zdTzDqpv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Dec 2020 23:26:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=X2Vi2Fy4; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Clddk5gFCzDqmJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 21:29:54 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4ClddT6v3Pz9tyZd;
- Tue,  1 Dec 2020 11:29:49 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id yg3Nta9VYRjx; Tue,  1 Dec 2020 11:29:49 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4ClddT5Mmnz9tyZc;
- Tue,  1 Dec 2020 11:29:49 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BC2088B7B0;
- Tue,  1 Dec 2020 11:29:50 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id CIrpWAbPjRYD; Tue,  1 Dec 2020 11:29:50 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 426A38B7A5;
- Tue,  1 Dec 2020 11:29:50 +0100 (CET)
-Subject: Re: [RFC PATCH] powerpc: show registers when unwinding interrupt
- frames
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20201107023305.2384874-1-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <3d0fbd5d-6332-fe01-a9e3-e8f204705979@csgroup.eu>
-Date: Tue, 1 Dec 2020 11:29:47 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Clh3P0D0ZzDqpK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Dec 2020 23:18:55 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B1C42NB187405; Tue, 1 Dec 2020 07:18:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : from : to : cc
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=WldaJ6r7cz1uGhPcT+6RdE+DzhSCbQJDfLs4Sx4eDQw=;
+ b=X2Vi2Fy4aM1eIz4SPNPUF1jhpxOtmInIuYFAQrjAzrHlzZBPvThAzlkZvfaSMNz3I+3f
+ ve/Fbyq8irliUG0Ohv0jxszWbQKxp8IajK1TMmKexwByGqTR7BP+d1ZU3+c/LjN0fkV+
+ f5AWpSZ9YpmYw2thuwsQlMLeLPDYLb173HHD9HyWFBvznHuJfF9ff3k1b9sN7LTITuId
+ cdX2ZXeg3ubRZdYfv4VRs5MZ0TakRlCx8HWPDN9zSWCL5Qw32XKtV5ugJ7pWJIAqNbAh
+ VXj8BZ1951gOiclM9MClEks0YG2Nk7BYOoG5HQA0V8Lk1+lfADLz5CYs0u+4Zdrje6OA kA== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 355jaaxeje-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Dec 2020 07:18:51 -0500
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B1CDg82004709;
+ Tue, 1 Dec 2020 12:18:49 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma04ams.nl.ibm.com with ESMTP id 353e6833yc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Dec 2020 12:18:49 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B1CIi6B4981502
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Dec 2020 12:18:44 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A71B511C04C;
+ Tue,  1 Dec 2020 12:18:44 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DF41811C052;
+ Tue,  1 Dec 2020 12:18:43 +0000 (GMT)
+Received: from lep8c.aus.stglabs.ibm.com (unknown [9.40.192.207])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Dec 2020 12:18:43 +0000 (GMT)
+Subject: [RFC PATCH] powerpc/papr_scm: Implement scm async flush
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+To: ellerman@au1.ibm.com
+Date: Tue, 01 Dec 2020 06:18:43 -0600
+Message-ID: <160682501436.2579014.14501834468510806255.stgit@lep8c.aus.stglabs.ibm.com>
+User-Agent: StGit/0.19
 MIME-Version: 1.0
-In-Reply-To: <20201107023305.2384874-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-12-01_04:2020-11-30,
+ 2020-12-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ mlxlogscore=999 clxscore=1015 adultscore=0 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 mlxscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012010079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,197 +95,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ kvm-ppc@vger.kernel.org, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Tha patch implements SCM async-flush hcall and sets the
+ND_REGION_ASYNC capability when the platform device tree
+has "ibm,async-flush-required" set.
+
+The below demonstration shows the map_sync behavior when
+ibm,async-flush-required is present in device tree.
+(https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py.data/map_sync.c)
+
+The pmem0 is from nvdimm without async-flush-required,
+and pmem1 is from nvdimm with async-flush-required, mounted as
+/dev/pmem0 on /mnt1 type xfs (rw,relatime,attr2,dax=always,inode64,logbufs=8,logbsize=32k,noquota)
+/dev/pmem1 on /mnt2 type xfs (rw,relatime,attr2,dax=always,inode64,logbufs=8,logbsize=32k,noquota)
+
+#./mapsync /mnt1/newfile    ----> Without async-flush-required
+#./mapsync /mnt2/newfile    ----> With async-flush-required
+Failed to mmap  with Operation not supported
+
+Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+---
+The HCALL semantics are in review, not final.
+
+ Documentation/powerpc/papr_hcalls.rst     |   14 ++++++++++
+ arch/powerpc/include/asm/hvcall.h         |    3 +-
+ arch/powerpc/platforms/pseries/papr_scm.c |   39 +++++++++++++++++++++++++++++
+ 3 files changed, 55 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
+index 48fcf1255a33..cc310814f24c 100644
+--- a/Documentation/powerpc/papr_hcalls.rst
++++ b/Documentation/powerpc/papr_hcalls.rst
+@@ -275,6 +275,20 @@ Health Bitmap Flags:
+ Given a DRC Index collect the performance statistics for NVDIMM and copy them
+ to the resultBuffer.
+ 
++**H_SCM_ASYNC_FLUSH**
++
++| Input: *drcIndex*
++| Out: *continue-token*
++| Return Value: *H_SUCCESS, H_Parameter, H_P2, H_BUSY*
++
++Given a DRC Index Flush the data to backend NVDIMM device.
++
++The hcall returns H_BUSY when the flush takes longer time and the hcall needs
++to be issued multiple times in order to be completely serviced. The
++*continue-token* from the output to be passed in the argument list in
++subsequent hcalls to the hypervisor until the hcall is completely serviced
++at which point H_SUCCESS is returned by the hypervisor.
++
+ References
+ ==========
+ .. [1] "Power Architecture Platform Reference"
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index c1fbccb04390..4a13074bc782 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -306,7 +306,8 @@
+ #define H_SCM_HEALTH            0x400
+ #define H_SCM_PERFORMANCE_STATS 0x418
+ #define H_RPT_INVALIDATE	0x448
+-#define MAX_HCALL_OPCODE	H_RPT_INVALIDATE
++#define H_SCM_ASYNC_FLUSH	0x4A0
++#define MAX_HCALL_OPCODE	H_SCM_ASYNC_FLUSH
+ 
+ /* Scope args for H_SCM_UNBIND_ALL */
+ #define H_UNBIND_SCOPE_ALL (0x1)
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 835163f54244..1f8c5153cb3d 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -93,6 +93,7 @@ struct papr_scm_priv {
+ 	uint64_t block_size;
+ 	int metadata_size;
+ 	bool is_volatile;
++	bool async_flush_required;
+ 
+ 	uint64_t bound_addr;
+ 
+@@ -117,6 +118,38 @@ struct papr_scm_priv {
+ 	size_t stat_buffer_len;
+ };
+ 
++static int papr_scm_pmem_flush(struct nd_region *nd_region, struct bio *bio)
++{
++	unsigned long ret[PLPAR_HCALL_BUFSIZE];
++	struct papr_scm_priv *p = nd_region_provider_data(nd_region);
++	int64_t rc;
++	uint64_t token = 0;
++
++	do {
++		rc = plpar_hcall(H_SCM_ASYNC_FLUSH, ret, p->drc_index, token);
++
++		/* Check if we are stalled for some time */
++		token = ret[0];
++		if (H_IS_LONG_BUSY(rc)) {
++			msleep(get_longbusy_msecs(rc));
++			rc = H_BUSY;
++		} else if (rc == H_BUSY) {
++			cond_resched();
++		}
++
++	} while (rc == H_BUSY);
++
++	if (rc)
++		dev_err(&p->pdev->dev, "flush error: %lld\n", rc);
++	else
++		dev_dbg(&p->pdev->dev, "flush drc 0x%x complete\n",
++			p->drc_index);
++
++	dev_dbg(&p->pdev->dev, "Flush call complete\n");
++
++	return rc;
++}
++
+ static LIST_HEAD(papr_nd_regions);
+ static DEFINE_MUTEX(papr_ndr_lock);
+ 
+@@ -943,6 +976,11 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 	ndr_desc.num_mappings = 1;
+ 	ndr_desc.nd_set = &p->nd_set;
+ 
++	if (p->async_flush_required) {
++		set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
++		ndr_desc.flush = papr_scm_pmem_flush;
++	}
++
+ 	if (p->is_volatile)
+ 		p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
+ 	else {
+@@ -1088,6 +1126,7 @@ static int papr_scm_probe(struct platform_device *pdev)
+ 	p->block_size = block_size;
+ 	p->blocks = blocks;
+ 	p->is_volatile = !of_property_read_bool(dn, "ibm,cache-flush-required");
++	p->async_flush_required = of_property_read_bool(dn, "ibm,async-flush-required");
+ 
+ 	/* We just need to ensure that set cookies are unique across */
+ 	uuid_parse(uuid_str, (uuid_t *) uuid);
 
 
-Le 07/11/2020 à 03:33, Nicholas Piggin a écrit :
-> It's often useful to know the register state for interrupts in
-> the stack frame. In the below example (with this patch applied),
-> the important information is the state of the page fault.
-> 
-> A blatant case like this probably rather should have the page
-> fault regs passed down to the warning, but quite often there are
-> less obvious cases where an interrupt shows up that might give
-> some more clues.
-> 
-> The downside is longer and more complex bug output.
-
-Do we want all interrupts, including system call ?
-
-I don't find the dump of the syscall interrupt so usefull, do you ?
-
-See below an (unexpected?) KUAP warning due to an expected NULL pointer dereference in 
-copy_from_kernel_nofault() called from kthread_probe_data()
-
-
-[ 1117.202054] ------------[ cut here ]------------
-[ 1117.202102] Bug: fault blocked by AP register !
-[ 1117.202261] WARNING: CPU: 0 PID: 377 at arch/powerpc/include/asm/nohash/32/kup-8xx.h:66 
-do_page_fault+0x4a8/0x5ec
-[ 1117.202310] Modules linked in:
-[ 1117.202428] CPU: 0 PID: 377 Comm: sh Tainted: G        W 
-5.10.0-rc5-s3k-dev-01340-g83f53be2de31-dirty #4175
-[ 1117.202499] NIP:  c0012048 LR: c0012048 CTR: 00000000
-[ 1117.202573] REGS: cacdbb88 TRAP: 0700   Tainted: G        W 
-(5.10.0-rc5-s3k-dev-01340-g83f53be2de31-dirty)
-[ 1117.202625] MSR:  00021032 <ME,IR,DR,RI>  CR: 24082222  XER: 20000000
-[ 1117.202899]
-[ 1117.202899] GPR00: c0012048 cacdbc40 c2929290 00000023 c092e554 00000001 c09865e8 c092e640
-[ 1117.202899] GPR08: 00001032 00000000 00000000 00014efc 28082224 100d166a 100a0920 00000000
-[ 1117.202899] GPR16: 100cac0c 100b0000 1080c3fc 1080d685 100d0000 100d0000 00000000 100a0900
-[ 1117.202899] GPR24: 100d0000 c07892ec 00000000 c0921510 c21f4440 0000005c c0000000 cacdbc80
-[ 1117.204362] NIP [c0012048] do_page_fault+0x4a8/0x5ec
-[ 1117.204461] LR [c0012048] do_page_fault+0x4a8/0x5ec
-[ 1117.204509] Call Trace:
-[ 1117.204609] [cacdbc40] [c0012048] do_page_fault+0x4a8/0x5ec (unreliable)
-[ 1117.204771] [cacdbc70] [c00112f0] handle_page_fault+0x8/0x34
-[ 1117.204911] --- interrupt: 301 at copy_from_kernel_nofault+0x70/0x1c0
-[ 1117.204979] NIP:  c010dbec LR: c010dbac CTR: 00000001
-[ 1117.205053] REGS: cacdbc80 TRAP: 0301   Tainted: G        W 
-(5.10.0-rc5-s3k-dev-01340-g83f53be2de31-dirty)
-[ 1117.205104] MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 28082224  XER: 00000000
-[ 1117.205416] DAR: 0000005c DSISR: c0000000
-[ 1117.205416] GPR00: c0045948 cacdbd38 c2929290 00000001 00000017 00000017 00000027 0000000f
-[ 1117.205416] GPR08: c09926ec 00000000 00000000 3ffff000 24082224
-[ 1117.206106] NIP [c010dbec] copy_from_kernel_nofault+0x70/0x1c0
-[ 1117.206202] LR [c010dbac] copy_from_kernel_nofault+0x30/0x1c0
-[ 1117.206258] --- interrupt: 301
-[ 1117.206372] [cacdbd38] [c004bbb0] kthread_probe_data+0x44/0x70 (unreliable)
-[ 1117.206561] [cacdbd58] [c0045948] print_worker_info+0xe0/0x194
-[ 1117.206717] [cacdbdb8] [c00548ac] sched_show_task+0x134/0x168
-[ 1117.206851] [cacdbdd8] [c005a268] show_state_filter+0x70/0x100
-[ 1117.206989] [cacdbe08] [c039baa0] sysrq_handle_showstate+0x14/0x24
-[ 1117.207122] [cacdbe18] [c039bf18] __handle_sysrq+0xac/0x1d0
-[ 1117.207257] [cacdbe48] [c039c0c0] write_sysrq_trigger+0x4c/0x74
-[ 1117.207407] [cacdbe68] [c01fba48] proc_reg_write+0xb4/0x114
-[ 1117.207550] [cacdbe88] [c0179968] vfs_write+0x12c/0x478
-[ 1117.207686] [cacdbf08] [c0179e60] ksys_write+0x78/0x128
-[ 1117.207826] [cacdbf38] [c00110d0] ret_from_syscall+0x0/0x34
-[ 1117.207938] --- interrupt: c01 at 0xfd4e784
-[ 1117.208008] NIP:  0fd4e784 LR: 0fe0f244 CTR: 10048d38
-[ 1117.208083] REGS: cacdbf48 TRAP: 0c01   Tainted: G        W 
-(5.10.0-rc5-s3k-dev-01340-g83f53be2de31-dirty)
-[ 1117.208134] MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 44002222  XER: 00000000
-[ 1117.208470]
-[ 1117.208470] GPR00: 00000004 7fc34090 77bfb4e0 00000001 1080fa40 00000002 7400000f fefefeff
-[ 1117.208470] GPR08: 7f7f7f7f 10048d38 1080c414 7fc343c0 00000000
-[ 1117.209104] NIP [0fd4e784] 0xfd4e784
-[ 1117.209180] LR [0fe0f244] 0xfe0f244
-[ 1117.209236] --- interrupt: c01
-[ 1117.209274] Instruction dump:
-[ 1117.209353] 714a4000 418200f0 73ca0001 40820084 73ca0032 408200f8 73c90040 4082ff60
-[ 1117.209727] 0fe00000 3c60c082 386399f4 48013b65 <0fe00000> 80010034 3860000b 7c0803a6
-[ 1117.210102] ---[ end trace 1927c0323393af3e ]---
-
-Christophe
-
-
-> 
->    Bug: Write fault blocked by AMR!
->    WARNING: CPU: 0 PID: 72 at arch/powerpc/include/asm/book3s/64/kup-radix.h:164 __do_page_fault+0x880/0xa90
->    Modules linked in:
->    CPU: 0 PID: 72 Comm: systemd-gpt-aut Not tainted
->    NIP:  c00000000006e2f0 LR: c00000000006e2ec CTR: 0000000000000000
->    REGS: c00000000a4f3420 TRAP: 0700
->    MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 28002840  XER: 20040000
->    CFAR: c000000000128be0 IRQMASK: 3
->    GPR00: c00000000006e2ec c00000000a4f36c0 c0000000014f0700 0000000000000020
->    GPR04: 0000000000000001 c000000001290f50 0000000000000001 c000000001290f80
->    GPR08: c000000001612b08 0000000000000000 0000000000000000 00000000ffffe0f7
->    GPR12: 0000000048002840 c0000000016e0000 c00c000000021c80 c000000000fd6f60
->    GPR16: 0000000000000000 c00000000a104698 0000000000000003 c0000000087f0000
->    GPR20: 0000000000000100 c0000000070330b8 0000000000000000 0000000000000004
->    GPR24: 0000000002000000 0000000000000300 0000000002000000 c00000000a5b0c00
->    GPR28: 0000000000000000 000000000a000000 00007fffb2a90038 c00000000a4f3820
->    NIP [c00000000006e2f0] __do_page_fault+0x880/0xa90
->    LR [c00000000006e2ec] __do_page_fault+0x87c/0xa90
->    Call Trace:
->    [c00000000a4f36c0] [c00000000006e2ec] __do_page_fault+0x87c/0xa90 (unreliable)
->    [c00000000a4f3780] [c000000000e1c034] do_page_fault+0x34/0x90
->    [c00000000a4f37b0] [c000000000008908] data_access_common_virt+0x158/0x1b0
->    --- interrupt: 300 at __copy_tofrom_user_base+0x9c/0x5a4
->    NIP:  c00000000009b028 LR: c000000000802978 CTR: 0000000000000800
->    REGS: c00000000a4f3820 TRAP: 0300
->    MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24004840  XER: 00000000
->    CFAR: c00000000009aff4 DAR: 00007fffb2a90038 DSISR: 0a000000 IRQMASK: 0
->    GPR00: 0000000000000000 c00000000a4f3ac0 c0000000014f0700 00007fffb2a90028
->    GPR04: c000000008720010 0000000000010000 0000000000000000 0000000000000000
->    GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000001
->    GPR12: 0000000000004000 c0000000016e0000 c00c000000021c80 c000000000fd6f60
->    GPR16: 0000000000000000 c00000000a104698 0000000000000003 c0000000087f0000
->    GPR20: 0000000000000100 c0000000070330b8 0000000000000000 0000000000000004
->    GPR24: c00000000a4f3c80 c000000008720000 0000000000010000 0000000000000000
->    GPR28: 0000000000010000 0000000008720000 0000000000010000 c000000001515b98
->    NIP [c00000000009b028] __copy_tofrom_user_base+0x9c/0x5a4
->    LR [c000000000802978] copyout+0x68/0xc0
->    --- interrupt: 300
->    [c00000000a4f3af0] [c0000000008074b8] copy_page_to_iter+0x188/0x540
->    [c00000000a4f3b50] [c00000000035c678] generic_file_buffered_read+0x358/0xd80
->    [c00000000a4f3c40] [c0000000004c1e90] blkdev_read_iter+0x50/0x80
->    [c00000000a4f3c60] [c00000000045733c] new_sync_read+0x12c/0x1c0
->    [c00000000a4f3d00] [c00000000045a1f0] vfs_read+0x1d0/0x240
->    [c00000000a4f3d50] [c00000000045a7f4] ksys_read+0x84/0x140
->    [c00000000a4f3da0] [c000000000033a60] system_call_exception+0x100/0x280
->    [c00000000a4f3e10] [c00000000000c508] system_call_common+0xf8/0x2f8
->    Instruction dump:
->    eae10078 3be0000b 4bfff890 60420000 792917e1 4182ff18 3c82ffab 3884a5e0
->    3c62ffab 3863a6e8 480ba891 60000000 <0fe00000> 3be0000b 4bfff860 e93c0938
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/kernel/process.c | 20 ++++++++++++++------
->   1 file changed, 14 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-> index ea36a29c8b01..799f00b32f74 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -1475,12 +1475,10 @@ static void print_msr_bits(unsigned long val)
->   #define LAST_VOLATILE	12
->   #endif
->   
-> -void show_regs(struct pt_regs * regs)
-> +static void __show_regs(struct pt_regs *regs)
->   {
->   	int i, trap;
->   
-> -	show_regs_print_info(KERN_DEFAULT);
-> -
->   	printk("NIP:  "REG" LR: "REG" CTR: "REG"\n",
->   	       regs->nip, regs->link, regs->ctr);
->   	printk("REGS: %px TRAP: %04lx   %s  (%s)\n",
-> @@ -1522,6 +1520,12 @@ void show_regs(struct pt_regs * regs)
->   		printk("NIP ["REG"] %pS\n", regs->nip, (void *)regs->nip);
->   		printk("LR ["REG"] %pS\n", regs->link, (void *)regs->link);
->   	}
-> +}
-> +
-> +void show_regs(struct pt_regs *regs)
-> +{
-> +	show_regs_print_info(KERN_DEFAULT);
-> +	__show_regs(regs);
->   	show_stack(current, (unsigned long *) regs->gpr[1], KERN_DEFAULT);
->   	if (!user_mode(regs))
->   		show_instructions(regs);
-> @@ -2192,10 +2196,14 @@ void show_stack(struct task_struct *tsk, unsigned long *stack,
->   		    && stack[STACK_FRAME_MARKER] == STACK_FRAME_REGS_MARKER) {
->   			struct pt_regs *regs = (struct pt_regs *)
->   				(sp + STACK_FRAME_OVERHEAD);
-> +
->   			lr = regs->link;
-> -			printk("%s--- interrupt: %lx at %pS\n    LR = %pS\n",
-> -			       loglvl, regs->trap,
-> -			       (void *)regs->nip, (void *)lr);
-> +			printk("%s--- interrupt: %lx at %pS\n",
-> +			       loglvl, regs->trap, (void *)regs->nip);
-> +			__show_regs(regs);
-> +			printk("%s--- interrupt: %lx\n",
-> +			       loglvl, regs->trap);
-> +
->   			firstframe = 1;
->   		}
->   
-> 
