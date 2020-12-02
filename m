@@ -1,101 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402B32CBF73
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 15:20:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75C92CBF77
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 15:23:05 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmLjW1M4XzDr75
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 01:20:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmLm630vlzDr6v
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 01:23:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=DI7R9HAa; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=Rsz1p5mk; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmLf96f4MzDr5n
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 01:17:53 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B2E3MuR037913; Wed, 2 Dec 2020 09:17:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=VDnWuaYpm67Mz/peHaO8NVoktWlzPFJVb5hIFR1u2pE=;
- b=DI7R9HAaSG/eu8+kPcy2ixP6Tyh0uiwriQZPNDGR9fViORgqYuARIGKdF2TX6/BWif0X
- yqGjvQiR5BGUIHEwT6qsTdINopx2idpjnbuxQfPWZ+gazbQpSDJni7/Mr2NrhJv+9Lt5
- b/V9SpMLLIREllse5Qo4sdFgtGi/C13Q4guehHt252GCrFqz6jteSU/bQY8pynuMZMk3
- Bw07ve2jIQGtcpqL6u/ZmTpLaNTpsaK8V85QDia5WUnE+Rku7+jI/QMxk0AXLJ+YtjnX
- aY7q89PGjMILzq0Cre7CZdkRKTNOj/Pt0GUuvYueYhAXtTVL93dydBT1sdkC5G8JAQdh lg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 355y6d5a8y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Dec 2020 09:17:41 -0500
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B2E3Qqb038249;
- Wed, 2 Dec 2020 09:17:41 -0500
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 355y6d5a83-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Dec 2020 09:17:41 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B2E8fHn029717;
- Wed, 2 Dec 2020 14:17:39 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 354fpdb1wr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Dec 2020 14:17:39 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B2EHbGc7275238
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Dec 2020 14:17:37 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 46A754203F;
- Wed,  2 Dec 2020 14:17:37 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1C68942047;
- Wed,  2 Dec 2020 14:17:37 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.145.84.146])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  2 Dec 2020 14:17:37 +0000 (GMT)
-Subject: Re: [PATCH kernel v3] powerpc/pci: Remove LSI mappings on device
- teardown
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-References: <20201202005222.5477-1-aik@ozlabs.ru>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Message-ID: <917ccb07-8cc2-e0af-cd29-6f1d10fb2358@linux.ibm.com>
-Date: Wed, 2 Dec 2020 15:17:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmLhr54DTzDr6S
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 01:20:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=zrRkDip9syURLU9E0Xb2jeKaoBtCaWsSoFLaKvOtats=; b=Rsz1p5mkhJCX7CZVz3x+qAHtrt
+ +IcT5x25jXpFmuWiw1PKnwQg2YBu/MuxQY8FpoPQ0RNIDZw1b2ewQQYueRC/wdqveh5rwAKK3WVJO
+ s5vwq/RGYckBzfx7tiWTLX6l7qnh/l0w5qOlhW0WVz5q/EYUCIVDjzkE36UJ1A5wjT/PmIEvyitLR
+ sP44sspX+zHD22KRxoHLpq4r8N74MZ8ZKqMVqmkSL4Fskoi2s3eyftVzrJjxmDUGAvKcCzJ1io6cG
+ nlb/Mie3gyBSOCv7tR9HG/ubvCe5pQ7CAayYYCTZC8Kc5g8uMQqn3y0CoWn5u+Ash/btKS01xcNHz
+ esFETNAg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kkSz9-0003nY-UA; Wed, 02 Dec 2020 14:20:00 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id CC1E7305C10;
+ Wed,  2 Dec 2020 15:19:57 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id AFCB52143477A; Wed,  2 Dec 2020 15:19:57 +0100 (CET)
+Date: Wed, 2 Dec 2020 15:19:57 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 6/8] lazy tlb: shoot lazies, a non-refcounting lazy tlb
+ option
+Message-ID: <20201202141957.GJ3021@hirez.programming.kicks-ass.net>
+References: <20201128160141.1003903-1-npiggin@gmail.com>
+ <20201128160141.1003903-7-npiggin@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20201202005222.5477-1-aik@ozlabs.ru>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-12-02_06:2020-11-30,
- 2020-12-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=999
- mlxscore=0 suspectscore=25 priorityscore=1501 clxscore=1015 adultscore=0
- lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012020085
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201128160141.1003903-7-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,175 +71,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sun, Nov 29, 2020 at 02:01:39AM +1000, Nicholas Piggin wrote:
+> +		 * - A delayed freeing and RCU-like quiescing sequence based on
+> +		 *   mm switching to avoid IPIs completely.
+
+That one's interesting too. so basically you want to count switch_mm()
+invocations on each CPU. Then, periodically snapshot the counter on each
+CPU, and when they've all changed, increment a global counter.
+
+Then, you snapshot the global counter and wait for it to increment
+(twice I think, the first increment might already be in progress).
+
+The only question here is what should drive this machinery.. the tick
+probably.
+
+This shouldn't be too hard to do I think.
+
+Something a little like so perhaps?
 
 
-On 02/12/2020 01:52, Alexey Kardashevskiy wrote:
-> From: Oliver O'Halloran <oohall@gmail.com>
-> 
-> When a passthrough IO adapter is removed from a pseries machine using hash
-> MMU and the XIVE interrupt mode, the POWER hypervisor expects the guest OS
-> to clear all page table entries related to the adapter. If some are still
-> present, the RTAS call which isolates the PCI slot returns error 9001
-> "valid outstanding translations" and the removal of the IO adapter fails.
-> This is because when the PHBs are scanned, Linux maps automatically the
-> INTx interrupts in the Linux interrupt number space but these are never
-> removed.
-> 
-> This problem can be fixed by adding the corresponding unmap operation when
-> the device is removed. There's no pcibios_* hook for the remove case, but
-> the same effect can be achieved using a bus notifier.
-> 
-> Because INTx are shared among PHBs (and potentially across the system),
-> this adds tracking of virq to unmap them only when the last user is gone.
-> 
-> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> [aik: added refcounter]
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> ---
-
-
-Looks ok to me.
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
-
-
-> Changes:
-> v3:
-> * free @vi on error path
-> 
-> v2:
-> * added refcounter
-> ---
->   arch/powerpc/kernel/pci-common.c | 82 ++++++++++++++++++++++++++++++--
->   1 file changed, 78 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-> index be108616a721..2b555997b295 100644
-> --- a/arch/powerpc/kernel/pci-common.c
-> +++ b/arch/powerpc/kernel/pci-common.c
-> @@ -353,6 +353,55 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
->   	return NULL;
->   }
->   
-> +struct pci_intx_virq {
-> +	int virq;
-> +	struct kref kref;
-> +	struct list_head list_node;
-> +};
-> +
-> +static LIST_HEAD(intx_list);
-> +static DEFINE_MUTEX(intx_mutex);
-> +
-> +static void ppc_pci_intx_release(struct kref *kref)
-> +{
-> +	struct pci_intx_virq *vi = container_of(kref, struct pci_intx_virq, kref);
-> +
-> +	list_del(&vi->list_node);
-> +	irq_dispose_mapping(vi->virq);
-> +	kfree(vi);
-> +}
-> +
-> +static int ppc_pci_unmap_irq_line(struct notifier_block *nb,
-> +			       unsigned long action, void *data)
-> +{
-> +	struct pci_dev *pdev = to_pci_dev(data);
-> +
-> +	if (action == BUS_NOTIFY_DEL_DEVICE) {
-> +		struct pci_intx_virq *vi;
-> +
-> +		mutex_lock(&intx_mutex);
-> +		list_for_each_entry(vi, &intx_list, list_node) {
-> +			if (vi->virq == pdev->irq) {
-> +				kref_put(&vi->kref, ppc_pci_intx_release);
-> +				break;
-> +			}
-> +		}
-> +		mutex_unlock(&intx_mutex);
-> +	}
-> +
-> +	return NOTIFY_DONE;
-> +}
-> +
-> +static struct notifier_block ppc_pci_unmap_irq_notifier = {
-> +	.notifier_call = ppc_pci_unmap_irq_line,
-> +};
-> +
-> +static int ppc_pci_register_irq_notifier(void)
-> +{
-> +	return bus_register_notifier(&pci_bus_type, &ppc_pci_unmap_irq_notifier);
-> +}
-> +arch_initcall(ppc_pci_register_irq_notifier);
-> +
->   /*
->    * Reads the interrupt pin to determine if interrupt is use by card.
->    * If the interrupt is used, then gets the interrupt line from the
-> @@ -361,6 +410,12 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
->   static int pci_read_irq_line(struct pci_dev *pci_dev)
->   {
->   	int virq;
-> +	struct pci_intx_virq *vi, *vitmp;
-> +
-> +	/* Preallocate vi as rewind is complex if this fails after mapping */
-> +	vi = kzalloc(sizeof(struct pci_intx_virq), GFP_KERNEL);
-> +	if (!vi)
-> +		return -1;
->   
->   	pr_debug("PCI: Try to map irq for %s...\n", pci_name(pci_dev));
->   
-> @@ -377,12 +432,12 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
->   		 * function.
->   		 */
->   		if (pci_read_config_byte(pci_dev, PCI_INTERRUPT_PIN, &pin))
-> -			return -1;
-> +			goto error_exit;
->   		if (pin == 0)
-> -			return -1;
-> +			goto error_exit;
->   		if (pci_read_config_byte(pci_dev, PCI_INTERRUPT_LINE, &line) ||
->   		    line == 0xff || line == 0) {
-> -			return -1;
-> +			goto error_exit;
->   		}
->   		pr_debug(" No map ! Using line %d (pin %d) from PCI config\n",
->   			 line, pin);
-> @@ -394,14 +449,33 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
->   
->   	if (!virq) {
->   		pr_debug(" Failed to map !\n");
-> -		return -1;
-> +		goto error_exit;
->   	}
->   
->   	pr_debug(" Mapped to linux irq %d\n", virq);
->   
->   	pci_dev->irq = virq;
->   
-> +	mutex_lock(&intx_mutex);
-> +	list_for_each_entry(vitmp, &intx_list, list_node) {
-> +		if (vitmp->virq == virq) {
-> +			kref_get(&vitmp->kref);
-> +			kfree(vi);
-> +			vi = NULL;
-> +			break;
-> +		}
-> +	}
-> +	if (vi) {
-> +		vi->virq = virq;
-> +		kref_init(&vi->kref);
-> +		list_add_tail(&vi->list_node, &intx_list);
-> +	}
-> +	mutex_unlock(&intx_mutex);
-> +
->   	return 0;
-> +error_exit:
-> +	kfree(vi);
-> +	return -1;
->   }
->   
->   /*
-> 
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 41404afb7f4c..27b64a60a468 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4525,6 +4525,7 @@ context_switch(struct rq *rq, struct task_struct *prev,
+ 		 * finish_task_switch()'s mmdrop().
+ 		 */
+ 		switch_mm_irqs_off(prev->active_mm, next->mm, next);
++		rq->nr_mm_switches++;
+ 
+ 		if (!prev->mm) {                        // from kernel
+ 			/* will mmdrop() in finish_task_switch(). */
+@@ -4739,6 +4740,80 @@ unsigned long long task_sched_runtime(struct task_struct *p)
+ 	return ns;
+ }
+ 
++static DEFINE_PER_CPU(unsigned long[2], mm_switches);
++
++static struct {
++	unsigned long __percpu *switches[2];
++	unsigned long generation;
++	atomic_t complete;
++	struct wait_queue_dead wait;
++} mm_foo = {
++	.switches = &mm_switches,
++	.generation = 0,
++	.complete = -1, // XXX bootstrap, hotplug
++	.wait = __WAIT_QUEUE_HEAD_INITIALIZER(mm_foo.wait),
++};
++
++static void mm_gen_tick(int cpu, struct rq *rq)
++{
++	unsigned long prev, curr, switches = rq->nr_mm_switches;
++	int idx = READ_ONCE(mm_foo.generation) & 1;
++
++	/* DATA-DEP on mm_foo.generation */
++
++	prev = __this_cpu_read(mm_foo.switches[idx^1]);
++	curr = __this_cpu_read(mm_foo.switches[idx]);
++
++	/* we haven't switched since the last generation */
++	if (prev == switches)
++		return false;
++
++	__this_cpu_write(mm_foo.switches[idx], switches);
++
++	/*
++	 * If @curr is less than @prev, this is the first update of
++	 * this generation, per the above, switches has also increased since,
++	 * so mark out CPU complete.
++	 */
++	if ((long)(curr - prev) < 0 && atomic_dec_and_test(&mm_foo.complete)) {
++		/*
++		 * All CPUs are complete, IOW they all switched at least once
++		 * since the last generation. Reset the completion counter and
++		 * increment the generation.
++		 */
++		atomic_set(&mm_foo.complete, nr_online_cpus());
++		/*
++		 * Matches the address dependency above:
++		 *
++		 *   idx = gen & 1	complete = nr_cpus
++		 *   <DATA-DEP>		<WMB>
++		 *   curr = sw[idx]	generation++;
++		 *   prev = sw[idx^1]
++		 *   if (curr < prev)
++		 *     complete--
++		 *
++		 * If we don't observe the new generation; we'll not decrement. If we
++		 * do see the new generation, we must also see the new completion count.
++		 */
++		smp_wmb();
++		mm_foo.generation++;
++		return true;
++	}
++
++	return false;
++}
++
++static void mm_gen_wake(void)
++{
++	wake_up_all(&mm_foo.wait);
++}
++
++static void mm_gen_wait(void)
++{
++	unsigned int gen = READ_ONCE(mm_foo.generation);
++	wait_event(&mm_foo.wait, READ_ONCE(mm_foo.generation) - gen > 1);
++}
++
+ /*
+  * This function gets called by the timer code, with HZ frequency.
+  * We call it with interrupts disabled.
+@@ -4750,6 +4825,7 @@ void scheduler_tick(void)
+ 	struct task_struct *curr = rq->curr;
+ 	struct rq_flags rf;
+ 	unsigned long thermal_pressure;
++	bool wake_mm_gen;
+ 
+ 	arch_scale_freq_tick();
+ 	sched_clock_tick();
+@@ -4763,8 +4839,13 @@ void scheduler_tick(void)
+ 	calc_global_load_tick(rq);
+ 	psi_task_tick(rq);
+ 
++	wake_mm_gen = mm_gen_tick(cpu, rq);
++
+ 	rq_unlock(rq, &rf);
+ 
++	if (wake_mm_gen)
++		mm_gen_wake();
++
+ 	perf_event_task_tick();
+ 
+ #ifdef CONFIG_SMP
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index bf9d8da7d35e..62fb685db8d0 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -927,6 +927,7 @@ struct rq {
+ 	unsigned int		ttwu_pending;
+ #endif
+ 	u64			nr_switches;
++	u64			nr_mm_switches;
+ 
+ #ifdef CONFIG_UCLAMP_TASK
+ 	/* Utilization clamp values based on CPU's RUNNABLE tasks */
