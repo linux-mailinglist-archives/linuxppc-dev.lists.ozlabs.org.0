@@ -1,61 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5972CBB81
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 12:23:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2856C2CBB8E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 12:30:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmGmf3vDPzDqXW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 22:23:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmGwR4b06zDqTy
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 22:29:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457;
+ helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmGfR44rkzDr2J
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 22:17:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=JnxZYlUDd45saPWzuKsj9paXqL0ypfXcFakdRrNHTMA=; b=L1ZsnJpGUyFzioBDrnvjxyY0rD
- US3LMqZFSiz3H6vx3oCTX9A7E2+KD/o2ke2pZPKDiKxRj66cg49/pGK6eY8dky91+RaCKUyLcnNB5
- VVZafMjXaCVt7Hwd3xjEOWtaviyB5S/AB/T35HMESzbLuJWCxhPK985tTL4jsFjl/H9Ebz59SGZ7Q
- jDSOUF2Uonh87nqUP0JEmo7lu46eSh09J1dO+btFIKBJVREPbpRdZ3vHz9aI/poUh4BjWTSNQxwT5
- DqdWaHMFHhMisR+HyBchLJwWqvUQJtyoeUBoWPtYft8ahV0+EY0Sk0p/TgDpmd26SzZiWK1uCkp48
- FpMzXTww==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kkQ8c-0000Qs-Fs; Wed, 02 Dec 2020 11:17:34 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
+ header.s=dkim header.b=HrvlMCQD; dkim-atps=neutral
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 4F2FB3035D4;
- Wed,  2 Dec 2020 12:17:31 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 2DD122227D8EC; Wed,  2 Dec 2020 12:17:31 +0100 (CET)
-Date: Wed, 2 Dec 2020 12:17:31 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 6/8] lazy tlb: shoot lazies, a non-refcounting lazy tlb
- option
-Message-ID: <20201202111731.GA2414@hirez.programming.kicks-ass.net>
-References: <20201128160141.1003903-1-npiggin@gmail.com>
- <20201128160141.1003903-7-npiggin@gmail.com>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmGqV5wqTzDqDQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 22:25:39 +1100 (AEDT)
+Received: from zn.tnic (p200300ec2f161b00e186258fb055049e.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f16:1b00:e186:258f:b055:49e])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5938E1EC04D6;
+ Wed,  2 Dec 2020 12:25:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1606908319;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+ bh=auyM2v2JUyjcuzu7CPUf133Nl+wA9VC3RsABVwER50A=;
+ b=HrvlMCQDSwyBJUvAUrSYUGvqLJKpRoJhr2fJO/O7GryF/KJ/kaNcQ+FZC0owkEvxlRx3ke
+ PWcsKYyHABE1dZfvDA6gAKmgs66Y4gaTbr2LP93YxZSHb97QCsPFDwuwuu/4EBGmtIXH7d
+ QS5VnEr+bP4cyAALPbsFlCfAJYQllXI=
+Date: Wed, 2 Dec 2020 12:25:15 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH] EDAC, mv64x60: Fix error return code in
+ mv64x60_pci_err_probe()
+Message-ID: <20201202112515.GC2951@zn.tnic>
+References: <20201124063009.1529-1-bobo.shaobowang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201128160141.1003903-7-npiggin@gmail.com>
+In-Reply-To: <20201124063009.1529-1-bobo.shaobowang@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,93 +61,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: cj.chengjian@huawei.com, linux-kernel@vger.kernel.org,
+ Wang ShaoBo <bobo.shaobowang@huawei.com>, james.morse@arm.com,
+ huawei.libin@huawei.com, mchehab@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-edac@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 29, 2020 at 02:01:39AM +1000, Nicholas Piggin wrote:
-> +static void shoot_lazy_tlbs(struct mm_struct *mm)
-> +{
-> +	if (IS_ENABLED(CONFIG_MMU_LAZY_TLB_SHOOTDOWN)) {
-> +		/*
-> +		 * IPI overheads have not found to be expensive, but they could
-> +		 * be reduced in a number of possible ways, for example (in
-> +		 * roughly increasing order of complexity):
-> +		 * - A batch of mms requiring IPIs could be gathered and freed
-> +		 *   at once.
-> +		 * - CPUs could store their active mm somewhere that can be
-> +		 *   remotely checked without a lock, to filter out
-> +		 *   false-positives in the cpumask.
-> +		 * - After mm_users or mm_count reaches zero, switching away
-> +		 *   from the mm could clear mm_cpumask to reduce some IPIs
-> +		 *   (some batching or delaying would help).
-> +		 * - A delayed freeing and RCU-like quiescing sequence based on
-> +		 *   mm switching to avoid IPIs completely.
-> +		 */
-> +		on_each_cpu_mask(mm_cpumask(mm), do_shoot_lazy_tlb, (void *)mm, 1);
-> +		if (IS_ENABLED(CONFIG_DEBUG_VM))
-> +			on_each_cpu(do_check_lazy_tlb, (void *)mm, 1);
+On Tue, Nov 24, 2020 at 02:30:09PM +0800, Wang ShaoBo wrote:
+> Fix to return -ENODEV error code when edac_pci_add_device() failed instaed
+> of 0 in mv64x60_pci_err_probe(), as done elsewhere in this function.
+> 
+> Fixes: 4f4aeeabc061 ("drivers-edac: add marvell mv64x60 driver")
+> Signed-off-by: Wang ShaoBo <bobo.shaobowang@huawei.com>
+> ---
+>  drivers/edac/mv64x60_edac.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/edac/mv64x60_edac.c b/drivers/edac/mv64x60_edac.c
+> index 3c68bb525d5d..456b9ca1fe8d 100644
+> --- a/drivers/edac/mv64x60_edac.c
+> +++ b/drivers/edac/mv64x60_edac.c
+> @@ -168,6 +168,7 @@ static int mv64x60_pci_err_probe(struct platform_device *pdev)
+>  
+>  	if (edac_pci_add_device(pci, pdata->edac_idx) > 0) {
+>  		edac_dbg(3, "failed edac_pci_add_device()\n");
+> +		res = -ENODEV;
+>  		goto err;
+>  	}
 
-So the obvious 'improvement' here would be something like:
+That driver depends on MV64X60 and I don't see anything in the tree
+enabling it and I can't select it AFAICT:
 
-	for_each_online_cpu(cpu) {
-		p = rcu_dereference(cpu_rq(cpu)->curr;
-		if (p->active_mm != mm)
-			continue;
-		__cpumask_set_cpu(cpu, tmpmask);
-	}
-	on_each_cpu_mask(tmpmask, ...);
+config MV64X60
+        bool
+        select PPC_INDIRECT_PCI
+        select CHECK_CACHE_COHERENCY
 
-The remote CPU will never switch _to_ @mm, on account of it being quite
-dead, but it is quite prone to false negatives.
+PPC folks, what do we do here?
 
-Consider that __schedule() sets rq->curr *before* context_switch(), this
-means we'll see next->active_mm, even though prev->active_mm might still
-be our @mm.
+If not used anymore, I'd love to have one less EDAC driver.
 
-Now, because we'll be removing the atomic ops from context_switch()'s
-active_mm swizzling, I think we can change this to something like the
-below. The hope being that the cost of the new barrier can be offset by
-the loss of the atomics.
+Thx.
 
-Hmm ?
+-- 
+Regards/Gruss,
+    Boris.
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 41404afb7f4c..2597c5c0ccb0 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -4509,7 +4509,6 @@ context_switch(struct rq *rq, struct task_struct *prev,
- 	if (!next->mm) {                                // to kernel
- 		enter_lazy_tlb(prev->active_mm, next);
- 
--		next->active_mm = prev->active_mm;
- 		if (prev->mm)                           // from user
- 			mmgrab(prev->active_mm);
- 		else
-@@ -4524,6 +4523,7 @@ context_switch(struct rq *rq, struct task_struct *prev,
- 		 * case 'prev->active_mm == next->mm' through
- 		 * finish_task_switch()'s mmdrop().
- 		 */
-+		next->active_mm = next->mm;
- 		switch_mm_irqs_off(prev->active_mm, next->mm, next);
- 
- 		if (!prev->mm) {                        // from kernel
-@@ -5713,11 +5713,9 @@ static void __sched notrace __schedule(bool preempt)
- 
- 	if (likely(prev != next)) {
- 		rq->nr_switches++;
--		/*
--		 * RCU users of rcu_dereference(rq->curr) may not see
--		 * changes to task_struct made by pick_next_task().
--		 */
--		RCU_INIT_POINTER(rq->curr, next);
-+
-+		next->active_mm = prev->active_mm;
-+		rcu_assign_pointer(rq->curr, next);
- 		/*
- 		 * The membarrier system call requires each architecture
- 		 * to have a full memory barrier after updating
+https://people.kernel.org/tglx/notes-about-netiquette
