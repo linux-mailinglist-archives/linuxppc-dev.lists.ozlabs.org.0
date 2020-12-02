@@ -1,44 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCDA2CC30C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 18:08:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324C02CC35A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 18:21:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmQR22sZ1zDr9C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 04:08:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmQjZ2RTyzDrBr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 04:21:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=jarkko@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Z9E8/rPz; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=jWOUQK99; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmQPL0NTwzDqPl
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 04:07:01 +1100 (AEDT)
-Date: Wed, 2 Dec 2020 19:06:53 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1606928818;
- bh=erzBmx7mDxpVxZlbI/ey56oFt86ALNg3K4J7JVsrYe4=;
- h=From:To:Cc:Subject:References:In-Reply-To:From;
- b=Z9E8/rPz9CHXmX5f9N9BnYhpungErfM7FuTCpxq0/ldpVvn8xjMIifUuJzUNklqGP
- jvnChIGCrThPQyWmtil4E+SwMdCr1Upj5jBVzYtgqHSCeBuXV2QXQaZXTHvgqnGWxO
- PmEFcSIvBBG1vt1oHORqOuiyAfmJURnq+yeOWQXo=
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: "Enrico Weigelt, metux IT consult" <info@metux.net>
-Subject: Re: [PATCH] drivers: char: tpm: remove unneeded MODULE_VERSION() usage
-Message-ID: <20201202170653.GA91741@kernel.org>
-References: <20201202121553.9383-1-info@metux.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmQgX0PwmzDqy6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 04:19:19 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B2H2iIW036126; Wed, 2 Dec 2020 12:19:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=KhLSfmcgHoi0rdSEHXVNcHYYMh8sQRfiuBk9PBbd8I8=;
+ b=jWOUQK99UUuc11hMfr8I8Lw10RAlXzyN3vK5d1F6GrOcTW7PlEAf/WGYoKGTUWE+zVut
+ AcJiyss3oABPcZegYrutDu5SV8IXb0S0lWnBUvSgY4jZx1lwJ1LG1ICjE5uIQldVu53u
+ UMm1yANwKlyLt0LTTq5Fnbwfz/9kj9/7Z2vVFhDG1DFNxDdl+vqHlnp8WVqhMiTCyaEH
+ th0wJNJy5KjpuyX/tA/GaPLd3nsSZ8rvV3LBMlQhUk0aZMTn/ZNat0+9CLNq2RQrMdf/
+ Ibpd4uY/i1gdcAp5PmBbWFvSrnXzyxsh7FDxjbRcG0vbtZh2TW52wBMhn/dsm6R3rjMn yg== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3566pj2b7y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Dec 2020 12:19:15 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B2HETev023714;
+ Wed, 2 Dec 2020 17:19:14 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma02wdc.us.ibm.com with ESMTP id 356cbeh79b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Dec 2020 17:19:14 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B2HJEhb3998260
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 2 Dec 2020 17:19:14 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 43906112061;
+ Wed,  2 Dec 2020 17:19:14 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 40F07112062;
+ Wed,  2 Dec 2020 17:19:13 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.65.215.138])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  2 Dec 2020 17:19:13 +0000 (GMT)
+Subject: Re: [PATCH 00/13] ibmvfc: initial MQ development
+To: Hannes Reinecke <hare@suse.de>, james.bottomley@hansenpartnership.com
+References: <20201126014824.123831-1-tyreld@linux.ibm.com>
+ <90e9a8ac-d2b9-bb64-7c7d-607adaea0f26@suse.de>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <1d5ec685-7160-52da-417b-23a53bcfc47e@linux.ibm.com>
+Date: Wed, 2 Dec 2020 09:19:12 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201202121553.9383-1-info@metux.net>
+In-Reply-To: <90e9a8ac-d2b9-bb64-7c7d-607adaea0f26@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-12-02_08:2020-11-30,
+ 2020-12-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ phishscore=0 impostorscore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ mlxscore=0 suspectscore=2 clxscore=1011 mlxlogscore=999 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012020100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,178 +99,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, jgg@ziepe.ca, paulus@samba.org,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- peterhuewe@gmx.de
+Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 02, 2020 at 01:15:53PM +0100, Enrico Weigelt, metux IT consult wrote:
-> Remove MODULE_VERSION(), as it isn't needed at all: the only version
-> making sense is the kernel version.
+On 12/2/20 4:03 AM, Hannes Reinecke wrote:
+> On 11/26/20 2:48 AM, Tyrel Datwyler wrote:
+>> Recent updates in pHyp Firmware and VIOS releases provide new infrastructure
+>> towards enabling Subordinate Command Response Queues (Sub-CRQs) such that each
+>> Sub-CRQ is a channel backed by an actual hardware queue in the FC stack on the
+>> partner VIOS. Sub-CRQs are registered with the firmware via hypercalls and then
+>> negotiated with the VIOS via new Management Datagrams (MADs) for channel setup.
+>>
+>> This initial implementation adds the necessary Sub-CRQ framework and implements
+>> the new MADs for negotiating and assigning a set of Sub-CRQs to associated VIOS
+>> HW backed channels. The event pool and locking still leverages the legacy single
+>> queue implementation, and as such lock contention is problematic when increasing
+>> the number of queues. However, this initial work demonstrates a 1.2x factor
+>> increase in IOPs when configured with two HW queues despite lock contention.
+>>
+> Why do you still hold the hold lock during submission?
 
-Kernel version neither does make sense here. Why are mentioning it
-in the commit message? Please just derive the commit message from
-the one that Greg wrote.
+Proof of concept.
 
-> Link: https://lkml.org/lkml/2017/11/22/480
->
+> An initial check on the submission code path didn't reveal anything obvious, so
+> it _should_ be possible to drop the host lock there.
 
-Remove the spurious empty line.
+Its used to protect the event pool and the event free/sent lists. This could
+probably have its own lock instead of the host lock.
 
-> Signed-off-by: Enrico Weigelt <info@metux.net>
-> ---
->  drivers/char/tpm/st33zp24/i2c.c      | 1 -
->  drivers/char/tpm/st33zp24/spi.c      | 1 -
->  drivers/char/tpm/st33zp24/st33zp24.c | 1 -
->  drivers/char/tpm/tpm-interface.c     | 1 -
->  drivers/char/tpm/tpm_atmel.c         | 1 -
->  drivers/char/tpm/tpm_crb.c           | 1 -
->  drivers/char/tpm/tpm_i2c_infineon.c  | 1 -
->  drivers/char/tpm/tpm_ibmvtpm.c       | 1 -
->  drivers/char/tpm/tpm_infineon.c      | 1 -
->  drivers/char/tpm/tpm_nsc.c           | 1 -
->  drivers/char/tpm/tpm_tis.c           | 1 -
->  drivers/char/tpm/tpm_tis_core.c      | 1 -
->  drivers/char/tpm/tpm_vtpm_proxy.c    | 1 -
->  13 files changed, 13 deletions(-)
+> Or at least move it into the submission function itself to avoid lock
+> contention. Hmm?
+
+I have a followup patch to do that, but I didn't see any change in performance.
+I've got another patch I'm finishing that provides dedicated event pools for
+each subqueue such that they will no longer have any dependency on the host lock.
+
+-Tyrel
+
 > 
-> diff --git a/drivers/char/tpm/st33zp24/i2c.c b/drivers/char/tpm/st33zp24/i2c.c
-> index 7c617edff4ca..7ed9829cacc4 100644
-> --- a/drivers/char/tpm/st33zp24/i2c.c
-> +++ b/drivers/char/tpm/st33zp24/i2c.c
-> @@ -313,5 +313,4 @@ module_i2c_driver(st33zp24_i2c_driver);
->  
->  MODULE_AUTHOR("TPM support (TPMsupport@list.st.com)");
->  MODULE_DESCRIPTION("STM TPM 1.2 I2C ST33 Driver");
-> -MODULE_VERSION("1.3.0");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/st33zp24/spi.c b/drivers/char/tpm/st33zp24/spi.c
-> index a75dafd39445..147efea4eb05 100644
-> --- a/drivers/char/tpm/st33zp24/spi.c
-> +++ b/drivers/char/tpm/st33zp24/spi.c
-> @@ -430,5 +430,4 @@ module_spi_driver(st33zp24_spi_driver);
->  
->  MODULE_AUTHOR("TPM support (TPMsupport@list.st.com)");
->  MODULE_DESCRIPTION("STM TPM 1.2 SPI ST33 Driver");
-> -MODULE_VERSION("1.3.0");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/st33zp24/st33zp24.c b/drivers/char/tpm/st33zp24/st33zp24.c
-> index 4ec10ab5e576..e0f1a5828993 100644
-> --- a/drivers/char/tpm/st33zp24/st33zp24.c
-> +++ b/drivers/char/tpm/st33zp24/st33zp24.c
-> @@ -646,5 +646,4 @@ EXPORT_SYMBOL(st33zp24_pm_resume);
->  
->  MODULE_AUTHOR("TPM support (TPMsupport@list.st.com)");
->  MODULE_DESCRIPTION("ST33ZP24 TPM 1.2 driver");
-> -MODULE_VERSION("1.3.0");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-> index 1621ce818705..dfdc68b8bf88 100644
-> --- a/drivers/char/tpm/tpm-interface.c
-> +++ b/drivers/char/tpm/tpm-interface.c
-> @@ -514,5 +514,4 @@ module_exit(tpm_exit);
->  
->  MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
->  MODULE_DESCRIPTION("TPM Driver");
-> -MODULE_VERSION("2.0");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/tpm_atmel.c b/drivers/char/tpm/tpm_atmel.c
-> index 54a6750a6757..35bf249cc95a 100644
-> --- a/drivers/char/tpm/tpm_atmel.c
-> +++ b/drivers/char/tpm/tpm_atmel.c
-> @@ -231,5 +231,4 @@ module_exit(cleanup_atmel);
->  
->  MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
->  MODULE_DESCRIPTION("TPM Driver");
-> -MODULE_VERSION("2.0");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
-> index a9dcf31eadd2..3e72b7b99cce 100644
-> --- a/drivers/char/tpm/tpm_crb.c
-> +++ b/drivers/char/tpm/tpm_crb.c
-> @@ -748,5 +748,4 @@ static struct acpi_driver crb_acpi_driver = {
->  module_acpi_driver(crb_acpi_driver);
->  MODULE_AUTHOR("Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>");
->  MODULE_DESCRIPTION("TPM2 Driver");
-> -MODULE_VERSION("0.1");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/tpm_i2c_infineon.c b/drivers/char/tpm/tpm_i2c_infineon.c
-> index a19d32cb4e94..8920b7c19fcb 100644
-> --- a/drivers/char/tpm/tpm_i2c_infineon.c
-> +++ b/drivers/char/tpm/tpm_i2c_infineon.c
-> @@ -731,5 +731,4 @@ static struct i2c_driver tpm_tis_i2c_driver = {
->  module_i2c_driver(tpm_tis_i2c_driver);
->  MODULE_AUTHOR("Peter Huewe <peter.huewe@infineon.com>");
->  MODULE_DESCRIPTION("TPM TIS I2C Infineon Driver");
-> -MODULE_VERSION("2.2.0");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
-> index 994385bf37c0..5b04d113f634 100644
-> --- a/drivers/char/tpm/tpm_ibmvtpm.c
-> +++ b/drivers/char/tpm/tpm_ibmvtpm.c
-> @@ -750,5 +750,4 @@ module_exit(ibmvtpm_module_exit);
->  
->  MODULE_AUTHOR("adlai@us.ibm.com");
->  MODULE_DESCRIPTION("IBM vTPM Driver");
-> -MODULE_VERSION("1.0");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/tpm_infineon.c b/drivers/char/tpm/tpm_infineon.c
-> index 9c924a1440a9..8a58966c5c9b 100644
-> --- a/drivers/char/tpm/tpm_infineon.c
-> +++ b/drivers/char/tpm/tpm_infineon.c
-> @@ -621,5 +621,4 @@ module_pnp_driver(tpm_inf_pnp_driver);
->  
->  MODULE_AUTHOR("Marcel Selhorst <tpmdd@sirrix.com>");
->  MODULE_DESCRIPTION("Driver for Infineon TPM SLD 9630 TT 1.1 / SLB 9635 TT 1.2");
-> -MODULE_VERSION("1.9.2");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/tpm_nsc.c b/drivers/char/tpm/tpm_nsc.c
-> index 038701d48351..6ab2fe7e8782 100644
-> --- a/drivers/char/tpm/tpm_nsc.c
-> +++ b/drivers/char/tpm/tpm_nsc.c
-> @@ -412,5 +412,4 @@ module_exit(cleanup_nsc);
->  
->  MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
->  MODULE_DESCRIPTION("TPM Driver");
-> -MODULE_VERSION("2.0");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/tpm_tis.c b/drivers/char/tpm/tpm_tis.c
-> index 4ed6e660273a..3074235b405d 100644
-> --- a/drivers/char/tpm/tpm_tis.c
-> +++ b/drivers/char/tpm/tpm_tis.c
-> @@ -429,5 +429,4 @@ module_init(init_tis);
->  module_exit(cleanup_tis);
->  MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
->  MODULE_DESCRIPTION("TPM Driver");
-> -MODULE_VERSION("2.0");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-> index 92c51c6cfd1b..20f4b2c7ea52 100644
-> --- a/drivers/char/tpm/tpm_tis_core.c
-> +++ b/drivers/char/tpm/tpm_tis_core.c
-> @@ -1164,5 +1164,4 @@ EXPORT_SYMBOL_GPL(tpm_tis_resume);
->  
->  MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
->  MODULE_DESCRIPTION("TPM Driver");
-> -MODULE_VERSION("2.0");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/char/tpm/tpm_vtpm_proxy.c b/drivers/char/tpm/tpm_vtpm_proxy.c
-> index 91c772e38bb5..18f14162d1c1 100644
-> --- a/drivers/char/tpm/tpm_vtpm_proxy.c
-> +++ b/drivers/char/tpm/tpm_vtpm_proxy.c
-> @@ -729,5 +729,4 @@ module_exit(vtpm_module_exit);
->  
->  MODULE_AUTHOR("Stefan Berger (stefanb@us.ibm.com)");
->  MODULE_DESCRIPTION("vTPM Driver");
-> -MODULE_VERSION("0.1");
->  MODULE_LICENSE("GPL");
-> -- 
-> 2.11.0
+> Cheers,
 > 
-> 
+> Hannes
 
-Thanks.
-
-/Jarkko
