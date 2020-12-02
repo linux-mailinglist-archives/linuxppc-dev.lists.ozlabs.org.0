@@ -2,96 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB72F2CB430
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 06:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C162A2CB48A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 06:42:00 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cm6Sm6hWbzDrBx
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 16:08:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cm7Bs6P11zDqcg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 16:41:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=s178eYMs; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cm6Np424yzDr1b
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 16:05:30 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B252u3Z057456; Wed, 2 Dec 2020 00:05:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=fcoKQZzrrtzCXl52v7m0fmytR/wyFqh0R98h2qaqPC8=;
- b=s178eYMsQu/k5ctIHk3WcQn67l+aWDSqFGO1MMq5tOoMYSwup7dhJBfMN4WesJI1A01q
- FarCR3KfNmRazdrREojQN66TQz9cFTH8efaQfQaU1TAVNdCn2ryenB7I0tvZolJUoDHw
- jMwkMgXLXnDqjO6PvTk/FMd3FPkvOTQ5ye2/vNDG7ZQLnN+jyh6sNYKAwdU7bec9BMjR
- ftKOVlZqY+5vzHD8Im7eOgaKxsK6SATSGmLL3AL3Cl2Rz43Sk0UIDaqM9nOiKfdBPMdX
- QoIegJREO5b+QfCH54hEswIA1l5G85hWrLyOQZahgWmFmQueQyUREaIJvbuQUPOnoXCa +A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 355jabmhnu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Dec 2020 00:05:18 -0500
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B254t77072836;
- Wed, 2 Dec 2020 00:05:18 -0500
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 355jabmhnb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Dec 2020 00:05:18 -0500
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B2528I1006484;
- Wed, 2 Dec 2020 05:05:15 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma04ams.nl.ibm.com with ESMTP id 353e683u78-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Dec 2020 05:05:15 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B255DYC4588050
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Dec 2020 05:05:13 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6ECA74C04E;
- Wed,  2 Dec 2020 05:05:13 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 13AA04C046;
- Wed,  2 Dec 2020 05:05:11 +0000 (GMT)
-Received: from saptagiri.in.ibm.com (unknown [9.85.125.1])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  2 Dec 2020 05:05:10 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cm7952LQwzDqbp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 16:40:19 +1100 (AEDT)
+IronPort-SDR: fHSQrHubBuIVkYht71QKhkwVeFviMO76Fijf0uQtlNBwtzZkMSuvFy45rybP/rVJLhls47J2vs
+ kT5/SzwuDdVg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9822"; a="172172937"
+X-IronPort-AV: E=Sophos;i="5.78,385,1599548400"; d="scan'208";a="172172937"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Dec 2020 21:40:12 -0800
+IronPort-SDR: V2+0OmVd89EFHAvCVzj2VGg9LbG2aF57fh+/h01fKPzrD0g8eK/VWWr+0/Y4NrCJYbHhhV6Mcb
+ 7IF3A4yFHRhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,385,1599548400"; d="scan'208";a="365136467"
+Received: from lkp-server01.sh.intel.com (HELO 4302fe08fc2a) ([10.239.97.150])
+ by fmsmga004.fm.intel.com with ESMTP; 01 Dec 2020 21:40:10 -0800
+Received: from kbuild by 4302fe08fc2a with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1kkKs5-00006w-Mg; Wed, 02 Dec 2020 05:40:09 +0000
+Date: Wed, 02 Dec 2020 13:40:02 +0800
+From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 4/4] powerpc/paravirt: Use is_kvm_guest in vcpu_is_preempted
-Date: Wed,  2 Dec 2020 10:34:56 +0530
-Message-Id: <20201202050456.164005-5-srikar@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201202050456.164005-1-srikar@linux.vnet.ibm.com>
-References: <20201202050456.164005-1-srikar@linux.vnet.ibm.com>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ f54db39fbe40731c40aefdd3bc26e7d56d668c64
+Message-ID: <5fc728b2.R4nsd6BNAs37A0tT%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-12-01_12:2020-11-30,
- 2020-12-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- mlxlogscore=999 clxscore=1015 adultscore=0 priorityscore=1501 spamscore=0
- lowpriorityscore=0 mlxscore=0 malwarescore=0 bulkscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012020031
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,75 +58,183 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>, Phil Auld <pauld@redhat.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Juri Lelli <juri.lelli@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Waiman Long <longman@redhat.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Valentin Schneider <valentin.schneider@arm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If its a shared lpar but not a KVM guest, then see if the vCPU is
-related to the calling vCPU. On PowerVM, only cores can be preempted.
-So if one vCPU is a non-preempted state, we can decipher that all other
-vCPUs sharing the same core are in non-preempted state.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
+branch HEAD: f54db39fbe40731c40aefdd3bc26e7d56d668c64  KVM: PPC: Book3S HV: XIVE: Fix vCPU id sanity check
 
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: LKML <linux-kernel@vger.kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Valentin Schneider <valentin.schneider@arm.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Phil Auld <pauld@redhat.com>
-Acked-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+elapsed time: 724m
+
+configs tested: 157
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                        clps711x_defconfig
+sh                        edosk7760_defconfig
+powerpc                        cell_defconfig
+mips                          ath79_defconfig
+openrisc                         alldefconfig
+sh                               j2_defconfig
+mips                       capcella_defconfig
+arm                           viper_defconfig
+c6x                        evmc6474_defconfig
+arm                          pxa3xx_defconfig
+c6x                        evmc6457_defconfig
+m68k                            q40_defconfig
+arc                        nsim_700_defconfig
+riscv                    nommu_k210_defconfig
+arc                         haps_hs_defconfig
+riscv                    nommu_virt_defconfig
+mips                         tb0226_defconfig
+arm                            dove_defconfig
+m68k                        m5272c3_defconfig
+sh                           se7705_defconfig
+m68k                         apollo_defconfig
+powerpc               mpc834x_itxgp_defconfig
+arm                        realview_defconfig
+microblaze                          defconfig
+mips                malta_kvm_guest_defconfig
+sh                ecovec24-romimage_defconfig
+powerpc                         wii_defconfig
+arm                      integrator_defconfig
+s390                       zfcpdump_defconfig
+xtensa                generic_kc705_defconfig
+powerpc                    klondike_defconfig
+mips                     loongson1c_defconfig
+arc                        nsimosci_defconfig
+ia64                                defconfig
+mips                           gcw0_defconfig
+xtensa                         virt_defconfig
+c6x                        evmc6678_defconfig
+sh                             shx3_defconfig
+mips                  maltasmvp_eva_defconfig
+powerpc                     tqm5200_defconfig
+arc                 nsimosci_hs_smp_defconfig
+s390                                defconfig
+sh                         ap325rxa_defconfig
+m68k                       m5475evb_defconfig
+c6x                                 defconfig
+powerpc                     ep8248e_defconfig
+arm                          pcm027_defconfig
+mips                           ip22_defconfig
+sh                        dreamcast_defconfig
+arm                            mps2_defconfig
+sparc                               defconfig
+ia64                        generic_defconfig
+arm                         s3c6400_defconfig
+powerpc                     rainier_defconfig
+powerpc                     taishan_defconfig
+powerpc                       eiger_defconfig
+powerpc                        fsp2_defconfig
+powerpc                      ppc40x_defconfig
+h8300                               defconfig
+powerpc                      ppc44x_defconfig
+arm                              alldefconfig
+arm                          moxart_defconfig
+powerpc                    amigaone_defconfig
+mips                        maltaup_defconfig
+arc                              alldefconfig
+microblaze                      mmu_defconfig
+parisc                           alldefconfig
+arm                           h3600_defconfig
+mips                           jazz_defconfig
+arm                     davinci_all_defconfig
+powerpc                 mpc834x_itx_defconfig
+powerpc                    mvme5100_defconfig
+sh                        apsh4ad0a_defconfig
+sh                  sh7785lcr_32bit_defconfig
+arm                          imote2_defconfig
+mips                      fuloong2e_defconfig
+sparc                       sparc64_defconfig
+arm                        vexpress_defconfig
+powerpc                      pasemi_defconfig
+powerpc                  storcenter_defconfig
+parisc                generic-32bit_defconfig
+mips                    maltaup_xpa_defconfig
+mips                            e55_defconfig
+mips                           xway_defconfig
+xtensa                  audio_kc705_defconfig
+powerpc                 canyonlands_defconfig
+sh                            hp6xx_defconfig
+powerpc                     skiroot_defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20201201
+i386                 randconfig-a005-20201201
+i386                 randconfig-a001-20201201
+i386                 randconfig-a002-20201201
+i386                 randconfig-a006-20201201
+i386                 randconfig-a003-20201201
+x86_64               randconfig-a016-20201201
+x86_64               randconfig-a012-20201201
+x86_64               randconfig-a014-20201201
+x86_64               randconfig-a013-20201201
+x86_64               randconfig-a015-20201201
+x86_64               randconfig-a011-20201201
+i386                 randconfig-a014-20201201
+i386                 randconfig-a013-20201201
+i386                 randconfig-a011-20201201
+i386                 randconfig-a015-20201201
+i386                 randconfig-a012-20201201
+i386                 randconfig-a016-20201201
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a004-20201201
+x86_64               randconfig-a006-20201201
+x86_64               randconfig-a001-20201201
+x86_64               randconfig-a002-20201201
+x86_64               randconfig-a005-20201201
+x86_64               randconfig-a003-20201201
+
 ---
- arch/powerpc/include/asm/paravirt.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
-index 9362c94fe3aa..edc08f04aef7 100644
---- a/arch/powerpc/include/asm/paravirt.h
-+++ b/arch/powerpc/include/asm/paravirt.h
-@@ -10,6 +10,9 @@
- #endif
- 
- #ifdef CONFIG_PPC_SPLPAR
-+#include <asm/kvm_guest.h>
-+#include <asm/cputhreads.h>
-+
- DECLARE_STATIC_KEY_FALSE(shared_processor);
- 
- static inline bool is_shared_processor(void)
-@@ -74,6 +77,21 @@ static inline bool vcpu_is_preempted(int cpu)
- {
- 	if (!is_shared_processor())
- 		return false;
-+
-+#ifdef CONFIG_PPC_SPLPAR
-+	if (!is_kvm_guest()) {
-+		int first_cpu = cpu_first_thread_sibling(smp_processor_id());
-+
-+		/*
-+		 * Preemption can only happen at core granularity. This CPU
-+		 * is not preempted if one of the CPU of this core is not
-+		 * preempted.
-+		 */
-+		if (cpu_first_thread_sibling(cpu) == first_cpu)
-+			return false;
-+	}
-+#endif
-+
- 	if (yield_count_of(cpu) & 1)
- 		return true;
- 	return false;
--- 
-2.18.4
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
