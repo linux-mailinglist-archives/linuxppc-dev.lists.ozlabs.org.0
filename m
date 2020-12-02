@@ -1,66 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA972CBD45
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 13:49:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DDC2CBDA5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 14:03:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmJgb6DThzDqSY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 23:48:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmJzg5x49zDqSY
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 00:02:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=holGE3HH; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmJbf1C1TzDqgj
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 23:45:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=h8OFn1f4rN5V534vygyf7uXjyFm0rtIR0TiLL9ElMpE=; b=holGE3HHKSUGIf0MMwr+/aM+qs
- FTNKPPXCxqVAY1s9pQKziuNBFrbP70W8+ZvdIMJroEiNwmrXozoIpAUZR/GV1yh3VESZ2MpDeAJRI
- RLkV3mo+oOqWE6hc7LgRr1jwJdcjnLfXpa9cty+bXSyzGJ3d9ruZPbDKSSPB2dFPb4sKj/dSDdB3d
- mvQJh7CkL1vepEOPZt2GA0Ly300hbL9J8oFFMGEk5GGrV202e3qSNXweEzPECETXURfWxBcGNFMi9
- UNg2132ny9LyyXy8sG4nBgpRx6mYDp4i31b+pPxpPKfj+Ux54teqDFT81lWSGBsDsM/IQpdYzVv52
- o8k/PYAQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kkRVa-000141-5Z; Wed, 02 Dec 2020 12:45:22 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A93A23035D4;
- Wed,  2 Dec 2020 13:45:19 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 82E5B2143477D; Wed,  2 Dec 2020 13:45:19 +0100 (CET)
-Date: Wed, 2 Dec 2020 13:45:19 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 6/8] lazy tlb: shoot lazies, a non-refcounting lazy tlb
- option
-Message-ID: <20201202124519.GP3092@hirez.programming.kicks-ass.net>
-References: <20201128160141.1003903-1-npiggin@gmail.com>
- <20201128160141.1003903-7-npiggin@gmail.com>
- <20201202111731.GA2414@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmJv92JthzDqhY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 23:59:01 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=KK1gADI1; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CmJv85V5lz9s1l;
+ Wed,  2 Dec 2020 23:59:00 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1606913940;
+ bh=NPopVYHSr/Yb3G9AtHOIa0oreXZoz6IHvAXlRk2Vbus=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=KK1gADI1qlmBscjh8CgK+2na7zrF7Y0P9mjpQU+IFyWi11rzH7Bi9erK4tAwlchLU
+ k7X04pPI0yIpquinU0G9FkI00XCFe0T6rCQUtNnAoqVCxntyyb0w4xxlJvUok30JO9
+ Bb7IQ3CUyLVdEgLmiD4dwwOjjqKt+RmPsiqErOYpRC13+3XTmEiV9wSM5HEJjTLayr
+ yM7gwcG6HhyS3kCMVuTcEf1e6xyocXGYFEyI3ZvxTa/p0ej3boygXR0SuP4WWjY68B
+ kDW/BlTtDzhupAy4xUe9xzGKM8TH11Pc6foeQdcqlAcWwac5NRTjsqSUoEmjdxkFDb
+ 15uXeE8d4liXA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 4/8] KVM: PPC: Book3S HV: Ratelimit machine check messages
+ coming from guests
+In-Reply-To: <20201128070728.825934-5-npiggin@gmail.com>
+References: <20201128070728.825934-1-npiggin@gmail.com>
+ <20201128070728.825934-5-npiggin@gmail.com>
+Date: Wed, 02 Dec 2020 23:58:57 +1100
+Message-ID: <87360owei6.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201202111731.GA2414@hirez.programming.kicks-ass.net>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,76 +59,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 02, 2020 at 12:17:31PM +0100, Peter Zijlstra wrote:
+Nicholas Piggin <npiggin@gmail.com> writes:
+> A number of machine check exceptions are triggerable by the guest.
+> Ratelimit these to avoid a guest flooding the host console and logs.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index e3b1839fc251..c94f9595133d 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -1328,8 +1328,12 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
+>  		r = RESUME_GUEST;
+>  		break;
+>  	case BOOK3S_INTERRUPT_MACHINE_CHECK:
+> -		/* Print the MCE event to host console. */
+> -		machine_check_print_event_info(&vcpu->arch.mce_evt, false, true);
+> +		/*
+> +		 * Print the MCE event to host console. Ratelimit so the guest
+> +		 * can't flood the host log.
+> +		 */
+> +		if (printk_ratelimit())
+> +			machine_check_print_event_info(&vcpu->arch.mce_evt,false, true);
 
-> So the obvious 'improvement' here would be something like:
-> 
-> 	for_each_online_cpu(cpu) {
-> 		p = rcu_dereference(cpu_rq(cpu)->curr;
-> 		if (p->active_mm != mm)
-> 			continue;
-> 		__cpumask_set_cpu(cpu, tmpmask);
-> 	}
-> 	on_each_cpu_mask(tmpmask, ...);
-> 
-> The remote CPU will never switch _to_ @mm, on account of it being quite
-> dead, but it is quite prone to false negatives.
-> 
-> Consider that __schedule() sets rq->curr *before* context_switch(), this
-> means we'll see next->active_mm, even though prev->active_mm might still
-> be our @mm.
-> 
-> Now, because we'll be removing the atomic ops from context_switch()'s
-> active_mm swizzling, I think we can change this to something like the
-> below. The hope being that the cost of the new barrier can be offset by
-> the loss of the atomics.
-> 
-> Hmm ?
-> 
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index 41404afb7f4c..2597c5c0ccb0 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -4509,7 +4509,6 @@ context_switch(struct rq *rq, struct task_struct *prev,
->  	if (!next->mm) {                                // to kernel
->  		enter_lazy_tlb(prev->active_mm, next);
->  
-> -		next->active_mm = prev->active_mm;
->  		if (prev->mm)                           // from user
->  			mmgrab(prev->active_mm);
->  		else
-> @@ -4524,6 +4523,7 @@ context_switch(struct rq *rq, struct task_struct *prev,
->  		 * case 'prev->active_mm == next->mm' through
->  		 * finish_task_switch()'s mmdrop().
->  		 */
-> +		next->active_mm = next->mm;
->  		switch_mm_irqs_off(prev->active_mm, next->mm, next);
+You're not supposed to use printk_ratelimit(), because there's a single
+rate limit state for all printks. ie. some other noisty printk() can
+cause this one to never be printed.
 
-I think that next->active_mm store should be after switch_mm(),
-otherwise we still race.
+I folded this in:
 
->  
->  		if (!prev->mm) {                        // from kernel
-> @@ -5713,11 +5713,9 @@ static void __sched notrace __schedule(bool preempt)
->  
->  	if (likely(prev != next)) {
->  		rq->nr_switches++;
-> -		/*
-> -		 * RCU users of rcu_dereference(rq->curr) may not see
-> -		 * changes to task_struct made by pick_next_task().
-> -		 */
-> -		RCU_INIT_POINTER(rq->curr, next);
-> +
-> +		next->active_mm = prev->active_mm;
-> +		rcu_assign_pointer(rq->curr, next);
->  		/*
->  		 * The membarrier system call requires each architecture
->  		 * to have a full memory barrier after updating
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index cbbc4f0a26fe..cfaa91b27112 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -1327,12 +1327,14 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
+ 	case BOOK3S_INTERRUPT_SYSTEM_RESET:
+ 		r = RESUME_GUEST;
+ 		break;
+-	case BOOK3S_INTERRUPT_MACHINE_CHECK:
++	case BOOK3S_INTERRUPT_MACHINE_CHECK: {
++		static DEFINE_RATELIMIT_STATE(rs, DEFAULT_RATELIMIT_INTERVAL,
++					      DEFAULT_RATELIMIT_BURST);
+ 		/*
+ 		 * Print the MCE event to host console. Ratelimit so the guest
+ 		 * can't flood the host log.
+ 		 */
+-		if (printk_ratelimit())
++		if (__ratelimit(&rs))
+ 			machine_check_print_event_info(&vcpu->arch.mce_evt,false, true);
+ 
+ 		/*
+@@ -1361,6 +1363,7 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
+ 
+ 		r = RESUME_HOST;
+ 		break;
++	}
+ 	case BOOK3S_INTERRUPT_PROGRAM:
+ 	{
+ 		ulong flags;
+@@ -1520,12 +1523,16 @@ static int kvmppc_handle_nested_exit(struct kvm_vcpu *vcpu)
+ 		r = RESUME_GUEST;
+ 		break;
+ 	case BOOK3S_INTERRUPT_MACHINE_CHECK:
++	{
++		static DEFINE_RATELIMIT_STATE(rs, DEFAULT_RATELIMIT_INTERVAL,
++					      DEFAULT_RATELIMIT_BURST);
+ 		/* Pass the machine check to the L1 guest */
+ 		r = RESUME_HOST;
+ 		/* Print the MCE event to host console. */
+-		if (printk_ratelimit())
++		if (__ratelimit(&rs))
+ 			machine_check_print_event_info(&vcpu->arch.mce_evt, false, true);
+ 		break;
++	}
+ 	/*
+ 	 * We get these next two if the guest accesses a page which it thinks
+ 	 * it has mapped but which is not actually present, either because
+
+
+cheers
