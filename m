@@ -2,74 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A952CB2F5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 03:55:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B35E2CB31A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 04:05:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cm3W36cvDzDrBq
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 13:55:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cm3jq2KqLzDqVm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 14:05:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=U3Sz0eux; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=x/xWjdSV; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cm3Nf31T6zDr5X
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 13:50:09 +1100 (AEDT)
-Received: by mail-pg1-x544.google.com with SMTP id i38so116755pgb.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 18:50:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=rrxTVjl50w/hvvFu6753KKn1qpO44MFkmA/m2ENQPW0=;
- b=U3Sz0euxPXDrCmFLKwiYimm6yyBF1CGZXzT+k7baShme0K69SttxGDVElTYP7xD81J
- 2NwdKEYT3Zs9274B6kIHynUHQPZ00KgUdGXc5ha6W25qHfVhMjyjdck0nx62b5X0C5To
- 1P9o/31CYlfFtSMNCjiOGhQYR+PUawAmO+HbR9rqzp7uxjtqn81AbD7uKh21gQTcRclr
- sKwpc0TgjomEW3W/Rh8pgDEiycq5f03ojFi19mo+lIT5VM/sT2AJ3raUjTw0OeqLxxxI
- DeTkpxfBTV9HwMT81IfJ5wjehPhqTvkZsBC5tEDMDQr4JcEUe4akPkazAtZiJqIKHcrf
- R1uQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cm3fS6MX6zDqCg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 14:02:08 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id c79so23871pfc.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 19:02:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=8AFHSRdY4+ohCijei8wJTWKibWBcSU1aLPlX/HlgYs0=;
+ b=x/xWjdSVbZScak4rhXQERubEQrlzaZYoOZrYcdXGzYKy7bjnom2Fk5fZLW2aAMbmrZ
+ 4yCpgsaZd9nEI/5G7ickdJ+pKPK/O8ItB9TNZF/PEbYQaEnMGtUSOrPhZHp3nC4Aw3cN
+ mjBMDN3owwy9epaMPNGuhvoNjfOlj7ZGncQfgL0l9RTt2fiAvz9nukU+oYWwigXJBiHb
+ I226d68KoqR1j6cdYb6u7q/IV4szN9droYWTs4YEiaix2RxWihkBw5Rj6g9EY/B514A0
+ pdo8jmnHnCQR6dFYTdnHerKisgDLPBnxrysPOyvVgNUmfBi+A0NqA+QviR4G+aTReXfL
+ 6EqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=rrxTVjl50w/hvvFu6753KKn1qpO44MFkmA/m2ENQPW0=;
- b=tQykjtRjhowbzm59xqfrbkGJ6KQ8UDb/u28J+jqBKVZFN2qrxPCpUpKKTTpptPw7zt
- FwPsNXLj3SlOtZDn2m2PQK4x70TtdYXn4jScT6kEqwYhPsp/zW6858TkCuSqozUNrHmI
- R7h0//P7QIWuS7UcBnLUHVj+FX6R/lRDv4nE616ketGppJ01Qqjfn5X1HFeytFXI0kzS
- TYbYjJieJV3wn9j5niHyPiUgUAnhVzzZH1LMarj83CDNm8CVG5UW5xO6uLVGXWzAhH3w
- JDSfEcy3JRYRrKYjlfcwDNZU+wiLAfMunrwbq9zWC4nT7Hid8jkhknXqWVaEyaXcYDqz
- lcoA==
-X-Gm-Message-State: AOAM530Krb7rNsnex6HNvCNaQCfWnTs7+o54sDfJP1SVmlfcyA5RJ66w
- RPnKeChXeiN0p9WeMx3wjGg=
-X-Google-Smtp-Source: ABdhPJx49rJhgYL4DLrmhR3Y7knh5z14lnmGYVTfXlFaVAba7Ker02/OzbTVZiRE1EQln20cmYd6WQ==
-X-Received: by 2002:a62:188a:0:b029:19a:cdab:9841 with SMTP id
- 132-20020a62188a0000b029019acdab9841mr496648pfy.12.1606877406324; 
- Tue, 01 Dec 2020 18:50:06 -0800 (PST)
-Received: from localhost ([1.132.177.56])
- by smtp.gmail.com with ESMTPSA id z17sm100444pjn.46.2020.12.01.18.50.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Dec 2020 18:50:05 -0800 (PST)
-Date: Wed, 02 Dec 2020 12:49:58 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 1/8] lazy tlb: introduce exit_lazy_tlb
-To: Andy Lutomirski <luto@kernel.org>
-References: <20201128160141.1003903-1-npiggin@gmail.com>
- <20201128160141.1003903-2-npiggin@gmail.com>
- <CALCETrVbFm7gZ7G_5DWa6UGYtCzZTQvC_CPRVDZ0Lb-tiMnjSg@mail.gmail.com>
-In-Reply-To: <CALCETrVbFm7gZ7G_5DWa6UGYtCzZTQvC_CPRVDZ0Lb-tiMnjSg@mail.gmail.com>
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=8AFHSRdY4+ohCijei8wJTWKibWBcSU1aLPlX/HlgYs0=;
+ b=k9d4I7ROarpWn6s51uxwYOa3j4bojNFD1zpXjlcwHFcF5BixJL2VGD89/KKUY5eezA
+ 0kTajQu+6Xh4PqL0KHatV1ko5JMHanHwcm5BS+Dk/wc53J8wC98OafJy4gCKP89YrSeH
+ TmZAMVqmVwuKSjBvd8nARbj20BlsHFGV+Ntyh4hncYL7zneKqut0oHspwm4hQ+30L7ym
+ VqyREARysFKjEcA+3E3cyJ+g6qx3J0o3DAFGcWABUClfvYlwytIUBzMJ+A5fxcA6Jxuk
+ 37y9MSMeS60RXtuwbcJcxF7bbuwUk93yumpS3V6iIHodktEN/Qs5IcbumGtKHAyOGf6G
+ je6A==
+X-Gm-Message-State: AOAM533wCYSb2WLJxfHuvy07OyIs1iWfkdl1PwietK7/ot40MFTh2eYW
+ QHYyT3i9NbAlQYgX5m/qWMpX/Umm4gM/tg==
+X-Google-Smtp-Source: ABdhPJyZNRjmkYscdwJ+hc/J98SijibBWCjgT+08zUQW/jQvFYuuVtOgwYWvpsCnNRwxRLoapt0VhQ==
+X-Received: by 2002:aa7:9414:0:b029:18c:23f6:bc6d with SMTP id
+ x20-20020aa794140000b029018c23f6bc6dmr492401pfo.21.1606878120208; 
+ Tue, 01 Dec 2020 19:02:00 -0800 (PST)
+Received: from [0.0.0.0] (124-171-134-245.dyn.iinet.net.au. [124.171.134.245])
+ by smtp.gmail.com with UTF8SMTPSA id
+ y22sm277028pfm.169.2020.12.01.19.01.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Dec 2020 19:01:59 -0800 (PST)
+Subject: Re: [PATCH kernel] powerpc/perf: Stop crashing with generic_compat_pmu
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200602025612.62707-1-aik@ozlabs.ru>
+ <c3852667-210c-48de-7f89-a06250b4df05@linux.ibm.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Message-ID: <848255d6-5c8f-d4c2-a865-e3a7ffce7fdb@ozlabs.ru>
+Date: Wed, 2 Dec 2020 14:01:55 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101
+ Thunderbird/84.0
 MIME-Version: 1.0
-Message-Id: <1606876111.f9oqzur49r.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <c3852667-210c-48de-7f89-a06250b4df05@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,124 +87,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Andy Lutomirski's message of November 29, 2020 10:38 am:
-> On Sat, Nov 28, 2020 at 8:01 AM Nicholas Piggin <npiggin@gmail.com> wrote=
-:
+Hi Maddy,
+
+I just noticed that I still have "powerpc/perf: Add checks for reserved 
+values" in my pile (pushed here 
+https://github.com/aik/linux/commit/61e1bc3f2e19d450e2e2d39174d422160b21957b 
+), do we still need it? The lockups I saw were fixed by 
+https://github.com/aik/linux/commit/17899eaf88d689 but it is hardly a 
+replacement. Thanks,
+
+
+On 04/06/2020 02:34, Madhavan Srinivasan wrote:
+> 
+> 
+> On 6/2/20 8:26 AM, Alexey Kardashevskiy wrote:
+>> The bhrb_filter_map ("The  Branch  History  Rolling  Buffer") callback is
+>> only defined in raw CPUs' power_pmu structs. The "architected" CPUs use
+>> generic_compat_pmu which does not have this callback and crashed occur.
 >>
->> This is called at points where a lazy mm is switched away or made not
->> lazy (by its owner switching back).
+>> This add a NULL pointer check for bhrb_filter_map() which behaves as if
+>> the callback returned an error.
 >>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> This does not add the same check for config_bhrb() as the only caller
+>> checks for cpuhw->bhrb_users which remains zero if bhrb_filter_map==0.
+> 
+> Changes looks fine.
+> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> 
+> The commit be80e758d0c2e ('powerpc/perf: Add generic compat mode pmu 
+> driver')
+> which introduced generic_compat_pmu was merged in v5.2.  So we need to
+> CC stable starting from 5.2 :( .  My bad,  sorry.
+> 
+> Maddy
+> 
+>> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 >> ---
->>  arch/arm/mach-rpc/ecard.c            |  1 +
->>  arch/powerpc/mm/book3s64/radix_tlb.c |  1 +
->>  fs/exec.c                            |  6 ++++--
->>  include/asm-generic/mmu_context.h    | 21 +++++++++++++++++++++
->>  kernel/kthread.c                     |  1 +
->>  kernel/sched/core.c                  |  2 ++
->>  6 files changed, 30 insertions(+), 2 deletions(-)
+>>   arch/powerpc/perf/core-book3s.c | 19 ++++++++++++++-----
+>>   1 file changed, 14 insertions(+), 5 deletions(-)
 >>
->> diff --git a/arch/arm/mach-rpc/ecard.c b/arch/arm/mach-rpc/ecard.c
->> index 827b50f1c73e..43eb1bfba466 100644
->> --- a/arch/arm/mach-rpc/ecard.c
->> +++ b/arch/arm/mach-rpc/ecard.c
->> @@ -253,6 +253,7 @@ static int ecard_init_mm(void)
->>         current->mm =3D mm;
->>         current->active_mm =3D mm;
->>         activate_mm(active_mm, mm);
->> +       exit_lazy_tlb(active_mm, current);
->>         mmdrop(active_mm);
->>         ecard_init_pgtables(mm);
->>         return 0;
->> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book=
-3s64/radix_tlb.c
->> index b487b489d4b6..ac3fec03926a 100644
->> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
->> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
->> @@ -661,6 +661,7 @@ static void do_exit_flush_lazy_tlb(void *arg)
->>                 mmgrab(&init_mm);
->>                 current->active_mm =3D &init_mm;
->>                 switch_mm_irqs_off(mm, &init_mm, current);
->> +               exit_lazy_tlb(mm, current);
->>                 mmdrop(mm);
->>         }
+>> diff --git a/arch/powerpc/perf/core-book3s.c 
+>> b/arch/powerpc/perf/core-book3s.c
+>> index 3dcfecf858f3..36870569bf9c 100644
+>> --- a/arch/powerpc/perf/core-book3s.c
+>> +++ b/arch/powerpc/perf/core-book3s.c
+>> @@ -1515,9 +1515,16 @@ static int power_pmu_add(struct perf_event 
+>> *event, int ef_flags)
+>>       ret = 0;
+>>    out:
+>>       if (has_branch_stack(event)) {
+>> -        power_pmu_bhrb_enable(event);
+>> -        cpuhw->bhrb_filter = ppmu->bhrb_filter_map(
+>> -                    event->attr.branch_sample_type);
+>> +        u64 bhrb_filter = -1;
+>> +
+>> +        if (ppmu->bhrb_filter_map)
+>> +            bhrb_filter = ppmu->bhrb_filter_map(
+>> +                event->attr.branch_sample_type);
+>> +
+>> +        if (bhrb_filter != -1) {
+>> +            cpuhw->bhrb_filter = bhrb_filter;
+>> +            power_pmu_bhrb_enable(event); /* Does bhrb_users++ */
+>> +        }
+>>       }
 >>
->> diff --git a/fs/exec.c b/fs/exec.c
->> index 547a2390baf5..4b4dea1bb7ba 100644
->> --- a/fs/exec.c
->> +++ b/fs/exec.c
->> @@ -1017,6 +1017,8 @@ static int exec_mmap(struct mm_struct *mm)
->>         if (!IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
->>                 local_irq_enable();
->>         activate_mm(active_mm, mm);
->> +       if (!old_mm)
->> +               exit_lazy_tlb(active_mm, tsk);
->>         if (IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
->>                 local_irq_enable();
->>         tsk->mm->vmacache_seqnum =3D 0;
->> @@ -1028,9 +1030,9 @@ static int exec_mmap(struct mm_struct *mm)
->>                 setmax_mm_hiwater_rss(&tsk->signal->maxrss, old_mm);
->>                 mm_update_next_owner(old_mm);
->>                 mmput(old_mm);
->> -               return 0;
->> +       } else {
->> +               mmdrop(active_mm);
->>         }
->> -       mmdrop(active_mm);
->=20
-> This looks like an unrelated change.
-
-I thought the old style was pointless and made me look twice to make=20
-sure we weren't mmdrop()ing the lazy.
-
->=20
->>         return 0;
->>  }
+>>       perf_pmu_enable(event->pmu);
+>> @@ -1839,7 +1846,6 @@ static int power_pmu_event_init(struct 
+>> perf_event *event)
+>>       int n;
+>>       int err;
+>>       struct cpu_hw_events *cpuhw;
+>> -    u64 bhrb_filter;
 >>
->> diff --git a/include/asm-generic/mmu_context.h b/include/asm-generic/mmu=
-_context.h
->> index 91727065bacb..4626d0020e65 100644
->> --- a/include/asm-generic/mmu_context.h
->> +++ b/include/asm-generic/mmu_context.h
->> @@ -24,6 +24,27 @@ static inline void enter_lazy_tlb(struct mm_struct *m=
-m,
->>  }
->>  #endif
+>>       if (!ppmu)
+>>           return -ENOENT;
+>> @@ -1945,7 +1951,10 @@ static int power_pmu_event_init(struct 
+>> perf_event *event)
+>>       err = power_check_constraints(cpuhw, events, cflags, n + 1);
 >>
->> +/*
->> + * exit_lazy_tlb - Called after switching away from a lazy TLB mode mm.
->> + *
->> + * mm:  the lazy mm context that was switched
->> + * tsk: the task that was switched to (with a non-lazy mm)
->> + *
->> + * mm may equal tsk->mm.
->> + * mm and tsk->mm will not be NULL.
->> + *
->> + * Note this is not symmetrical to enter_lazy_tlb, this is not
->> + * called when tasks switch into the lazy mm, it's called after the
->> + * lazy mm becomes non-lazy (either switched to a different mm or the
->> + * owner of the mm returns).
->> + */
->> +#ifndef exit_lazy_tlb
->> +static inline void exit_lazy_tlb(struct mm_struct *mm,
->=20
-> Maybe name this parameter prev_lazy_mm?
->=20
+>>       if (has_branch_stack(event)) {
+>> -        bhrb_filter = ppmu->bhrb_filter_map(
+>> +        u64 bhrb_filter = -1;
+>> +
+>> +        if (ppmu->bhrb_filter_map)
+>> +            bhrb_filter = ppmu->bhrb_filter_map(
+>>                       event->attr.branch_sample_type);
+>>
+>>           if (bhrb_filter == -1) {
+> 
 
-mm is better because it's the mm that we're "exiting lazy" from, the=20
-function name gives the context.
-
-prev might suggest it was the previous but it's the current one, or
-that we're switching to another mm but we may not be at all.
-
-Thanks,
-Nick
+-- 
+Alexey
