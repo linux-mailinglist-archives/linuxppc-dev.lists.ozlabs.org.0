@@ -1,75 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8EFA2CC7A8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 21:24:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E992CC962
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 23:11:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmVnR3fWpzDqvR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 07:24:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmY8v3ZG3zDrBG
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 09:11:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=c17HjQZo; dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=S5rUwgl5; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmVlL36rYzDqpd
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 07:22:51 +1100 (AEDT)
-Received: by mail-pl1-x642.google.com with SMTP id u2so1748030pls.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Dec 2020 12:22:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=jPXLgrfmPsVossgPwOVXqHGCtH2YsRf8UcPWK89e/XE=;
- b=c17HjQZoRSkabFcQ4upzoWsYEn2nhGmFpVMHiOWRalYsFPACNwPPlFHfRqr55n1ifW
- UIbf93b6R4dwdO/1sf1rOV1GFKBOduB4JyTWTYqkpkMr2k22teMqdR4+8cI+A1Xf+D2d
- yejUZ1H8KRnenqf603ZtkoJrhm+SiFOvH80nPnS+ngZUT0kThG9j9+fH1Qnsr6MlptDf
- 0dZch+3qT+ebRiq3Qkg6r2MonVxgBYEXmxkarId8LsLmhv/3nzTeapzeuZs8ChORAnMZ
- WwgpkmAUzoNwyLhfvQ/lGRDDKg2sQNFFVAc7apcQrLmjRb2wyHRF7uhh1+K6blqtJYAL
- 8Vuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=jPXLgrfmPsVossgPwOVXqHGCtH2YsRf8UcPWK89e/XE=;
- b=TgPOYaNHNZ29+7ZtbhpdjvU6Y/dLf9tEl8H7ItfRwpBr3poXPZP6CtbCH79t0zNn4z
- wtqmeq3aPEnfC4MXMHZdICj3Tac71wOaU2L4HWSL29maqSTNnt6uPGhpF6dbMSa0UblP
- cLzEPS/62afHWb6xHyj+KJlAUVrY3xBDJwaqLt+3qZ6pRajl+G7ks+S4jk9X2sdldxuW
- k/VSWj4O8Dvet4nQY4A8HuP8WAIu3yVpNSA9Gp0nl1t1H+8H88l8LYHj+WNPGtREek8U
- 09X+PVkieCZgmZp5dLXamVbC3SFuljJTdWGiV220yMvCgj08Z5o+TTKeHEZWdjCFBqCu
- gwug==
-X-Gm-Message-State: AOAM533DHIG5oxt+TEO8uNPP6EYlFxHPpxkHDxA0Pttg/kIcVTufWFUQ
- Fx8Sb6MceK+NuEZba6qqdPlF29dbL5fJQg==
-X-Google-Smtp-Source: ABdhPJxyoo5uUzNVQaIgO+msO41uuAmT3ThpDEhUjZBbVx2SqAjC19UkpnvYRwGuaCRaSQqQYxOxaQ==
-X-Received: by 2002:a17:902:7c8d:b029:da:625c:8218 with SMTP id
- y13-20020a1709027c8db02900da625c8218mr4161472pll.26.1606940568169; 
- Wed, 02 Dec 2020 12:22:48 -0800 (PST)
-Received: from Asurada-Nvidia (thunderhill.nvidia.com. [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id 143sm593457pfc.119.2020.12.02.12.22.46
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 02 Dec 2020 12:22:47 -0800 (PST)
-Date: Wed, 2 Dec 2020 12:19:56 -0800
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 2/2] ASoC: fsl: Add imx-hdmi machine driver
-Message-ID: <20201202201955.GB1498@Asurada-Nvidia>
-References: <1606455021-18882-1-git-send-email-shengjiu.wang@nxp.com>
- <1606455021-18882-2-git-send-email-shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmY6l2l79zDr4t
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 09:09:50 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B2M2nsS158328; Wed, 2 Dec 2020 17:09:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=xOYcIgHRxpLn8jOA98hLWOaGUzeQ/EDE9H3coqngL2E=;
+ b=S5rUwgl5WvVo0v6flhO4nvx5J6HMurIfIkARfcNCGcYkY9q3z1Q9CNq5MzBrb4iMrcpB
+ CwY4FtIFGZ78HKwNrrHQKlpdvEJKTph3aoceWkLJYsuG+m0B+r3FlHoFWjkngwJ0ttV6
+ HdDrAtV5L2fDJjLgJtm+VBq8x1VJYfPHP+nl5UnDAt9+16Dx6TapND06jkbn555mXGou
+ cUoz4twhEpo0dxsg7Ss4gSzf/jdQnC6f2zDdPPZAvLqKHZuR0z3o6qIMHbR67Y5IILue
+ elGurBCukrpfEf/Yongtn0M7NL4ESLkJBssmz0C8VgXeW7wQ9+TM/Qg3U8Uz2/BcQtch jg== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 356a0vjxqc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Dec 2020 17:09:46 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B2M7Ul4029871;
+ Wed, 2 Dec 2020 22:09:45 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma04wdc.us.ibm.com with ESMTP id 354ysumrku-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Dec 2020 22:09:45 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B2M9i5j9306800
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 2 Dec 2020 22:09:44 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8A6FB1120B8;
+ Wed,  2 Dec 2020 22:09:44 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 320581120B5;
+ Wed,  2 Dec 2020 22:09:43 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.65.215.138])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  2 Dec 2020 22:09:43 +0000 (GMT)
+Subject: Re: [PATCH v2 15/17] ibmvfc: send Cancel MAD down each hw scsi channel
+To: Brian King <brking@linux.vnet.ibm.com>,
+ james.bottomley@hansenpartnership.com
+References: <20201202005329.4538-1-tyreld@linux.ibm.com>
+ <20201202005329.4538-16-tyreld@linux.ibm.com>
+ <21a7c970-2184-0524-5b42-1920eaa422a2@linux.vnet.ibm.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <0e1760c8-ced0-cd50-391f-29a5a9ea340a@linux.ibm.com>
+Date: Wed, 2 Dec 2020 14:09:42 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1606455021-18882-2-git-send-email-shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <21a7c970-2184-0524-5b42-1920eaa422a2@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-12-02_13:2020-11-30,
+ 2020-12-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ bulkscore=0 adultscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0
+ phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=999 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012020134
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,121 +101,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, timur@kernel.org,
- Xiubo.Lee@gmail.com, lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org,
- tiwai@suse.com, robh+dt@kernel.org, perex@perex.cz, broonie@kernel.org,
- festevam@gmail.com, linux-kernel@vger.kernel.org
+Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 27, 2020 at 01:30:21PM +0800, Shengjiu Wang wrote:
-> The driver is initially designed for sound card using HDMI
-> interface on i.MX platform. There is internal HDMI IP or
-> external HDMI modules connect with SAI or AUD2HTX interface.
-> It supports both transmitter and receiver devices.
+On 12/2/20 10:27 AM, Brian King wrote:
+> On 12/1/20 6:53 PM, Tyrel Datwyler wrote:
+>> In general the client needs to send Cancel MADs and task management
+>> commands down the same channel as the command(s) intended to cancel or
+>> abort. The client assigns cancel keys per LUN and thus must send a
+>> Cancel down each channel commands were submitted for that LUN. Further,
+>> the client then must wait for those cancel completions prior to
+>> submitting a LUN RESET or ABORT TASK SET.
+>>
+>> Allocate event pointers for each possible scsi channel and assign an
+>> event for each channel that requires a cancel. Wait for completion each
+>> submitted cancel.
+>>
+>> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+>> ---
+>>  drivers/scsi/ibmvscsi/ibmvfc.c | 106 +++++++++++++++++++++------------
+>>  1 file changed, 68 insertions(+), 38 deletions(-)
+>>
+>> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> index 0b6284020f06..97e8eed04b01 100644
+>> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
+>> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> @@ -2339,32 +2339,52 @@ static int ibmvfc_cancel_all(struct scsi_device *sdev, int type)
+>>  {
+>>  	struct ibmvfc_host *vhost = shost_priv(sdev->host);
+>>  	struct ibmvfc_event *evt, *found_evt;
+>> -	union ibmvfc_iu rsp;
+>> -	int rsp_rc = -EBUSY;
+>> +	struct ibmvfc_event **evt_list;
+>> +	union ibmvfc_iu *rsp;
+>> +	int rsp_rc = 0;
+>>  	unsigned long flags;
+>>  	u16 status;
+>> +	int num_hwq = 1;
+>> +	int i;
+>> +	int ret = 0;
+>>  
+>>  	ENTER;
+>>  	spin_lock_irqsave(vhost->host->host_lock, flags);
+>> -	found_evt = NULL;
+>> -	list_for_each_entry(evt, &vhost->sent, queue) {
+>> -		if (evt->cmnd && evt->cmnd->device == sdev) {
+>> -			found_evt = evt;
+>> -			break;
+>> +	if (vhost->using_channels && vhost->scsi_scrqs.active_queues)
+>> +		num_hwq = vhost->scsi_scrqs.active_queues;
+>> +
+>> +	evt_list = kcalloc(num_hwq, sizeof(*evt_list), GFP_KERNE> +	rsp = kcalloc(num_hwq, sizeof(*rsp), GFP_KERNEL);
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  sound/soc/fsl/Kconfig    |  12 ++
->  sound/soc/fsl/Makefile   |   2 +
->  sound/soc/fsl/imx-hdmi.c | 235 +++++++++++++++++++++++++++++++++++++++
->  3 files changed, 249 insertions(+)
->  create mode 100644 sound/soc/fsl/imx-hdmi.c
+> Can't this just go on the stack? We don't want to be allocating memory
+> during error recovery. Or, alternatively, you could put this in the
+> vhost structure and protect it with a mutex. We only have enough events
+> to single thread these anyway.
+Yes, this could just go on the stack.
 
-> diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
-> new file mode 100644
-> index 000000000000..ac164514b1b2
-> --- /dev/null
-> +++ b/sound/soc/fsl/imx-hdmi.c
+> 
+>> +
+>> +	for (i = 0; i < num_hwq; i++) {
+>> +		sdev_printk(KERN_INFO, sdev, "Cancelling outstanding commands on queue %d.\n", i);
+> 
+> Prior to this patch, if there was nothing outstanding to the device and cancel_all was called,
+> no messages would get printed. This is changing that behavior. Is that intentional? Additionally,
+> it looks like this will get a lot more vebose, logging a message for each hw queue, regardless
+> of whether there was anything outstanding. Perhaps you want to move this down to after the check
+> for !found_evt?
 
-> +static int imx_hdmi_hw_params(struct snd_pcm_substream *substream,
-> +			      struct snd_pcm_hw_params *params)
-> +{
-> +	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-> +	struct imx_hdmi_data *data = snd_soc_card_get_drvdata(rtd->card);
-> +	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
-> +	struct snd_soc_dai *cpu_dai = asoc_rtd_to_cpu(rtd, 0);
-> +	struct snd_soc_card *card = rtd->card;
-> +	struct device *dev = card->dev;
-> +	int ret;
-> +
-> +	/* set cpu DAI configuration */
-> +	ret = snd_soc_dai_set_sysclk(cpu_dai, data->cpu_priv.sysclk_id[tx],
-> +				     8 * data->cpu_priv.slot_width * params_rate(params),
+It would actually print "no commands found to cancel". I think its fair to make
+it less verbose or at least make them dbg output for each queue.
 
-Looks like fixed 2 slots being used, judging by the set_tdm_slot
-call below. Then...why "8 *"? Probably need a line of comments?
+-Tyrel
 
-> +				     tx ? SND_SOC_CLOCK_OUT : SND_SOC_CLOCK_IN);
-> +	if (ret && ret != -ENOTSUPP) {
-> +		dev_err(dev, "failed to set cpu sysclk: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = snd_soc_dai_set_tdm_slot(cpu_dai, 0, 0, 2, data->cpu_priv.slot_width);
+> 
+>> +
+>> +		found_evt = NULL;
+>> +		list_for_each_entry(evt, &vhost->sent, queue) {
+>> +			if (evt->cmnd && evt->cmnd->device == sdev && evt->hwq == i) {
+>> +				found_evt = evt;
+>> +				break;
+>> +			}
+>>  		}
+>> -	}
+>>  
+> 
+> 
+> 
 
-May have a local variable to cache slot_width.
-
-> +static int imx_hdmi_probe(struct platform_device *pdev)
-
-> +	data->dai.name = "i.MX HDMI";
-> +	data->dai.stream_name = "i.MX HDMI";
-> +	data->dai.cpus->dai_name = dev_name(&cpu_pdev->dev);
-> +	data->dai.platforms->of_node = cpu_np;
-> +	data->dai.ops = &imx_hdmi_ops;
-> +	data->dai.playback_only = true;
-> +	data->dai.capture_only = false;
-> +	data->dai.init = imx_hdmi_init;
-> +
-> +
-> +	if (of_property_read_bool(np, "hdmi-out")) {
-> +		data->dai.playback_only = true;
-> +		data->dai.capture_only = false;
-> +		data->dai.codecs->dai_name = "i2s-hifi";
-> +		data->dai.codecs->name = "hdmi-audio-codec.1";
-> +		data->dai.dai_fmt = data->dai_fmt |
-> +				    SND_SOC_DAIFMT_NB_NF |
-> +				    SND_SOC_DAIFMT_CBS_CFS;
-> +	}
-> +
-> +	if (of_property_read_bool(np, "hdmi-in")) {
-> +		data->dai.playback_only = false;
-> +		data->dai.capture_only = true;
-> +		data->dai.codecs->dai_name = "i2s-hifi";
-> +		data->dai.codecs->name = "hdmi-audio-codec.2";
-> +		data->dai.dai_fmt = data->dai_fmt |
-> +				    SND_SOC_DAIFMT_NB_NF |
-> +				    SND_SOC_DAIFMT_CBM_CFM;
-> +	}
-> +
-> +	if ((data->dai.playback_only && data->dai.capture_only) ||
-> +	    (!data->dai.playback_only && !data->dai.capture_only)) {
-> +		dev_err(&pdev->dev, "Wrongly enable HDMI DAI link\n");
-> +		goto fail;
-> +	}
-
-Seems that this condition check can never be true, given that:
-1. By default: playback_only=true && capture_only=false
-2. Conditionally overwritten: playback_only=true && capture_only=false
-3. Conditionally overwritten: playback_only=false && capture_only=true
-
-If I understand it correctly, probably should be something like:
-	bool hdmi_out = of_property_read_bool(np, "hdmi-out");
-	bool hdmi_in = of_property_read_bool(np, "hdmi-in");
-
-	if ((hdmi_out && hdmi_in) || (!hdmi_out || !hdmi_in))
-		// "Invalid HDMI DAI link"; goto fail;
-
-	if (hdmi_out) {
-		// ...
-	} else if (hdmi_in) {
-		// ...
-	} else // No need of this line if two properties are exclusive
-
-> +	data->card.num_links = 1;
-> +	data->card.dai_link = &data->dai;
-> +
-> +	platform_set_drvdata(pdev, &data->card);
-
-Why pass card pointer?
