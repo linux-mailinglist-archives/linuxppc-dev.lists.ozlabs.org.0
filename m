@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324C02CC35A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 18:21:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79ECC2CC3B4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 18:29:33 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmQjZ2RTyzDrBr
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 04:21:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmQvG4DCnzDrB8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 04:29:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,76 +17,79 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jWOUQK99; dkim-atps=neutral
+ header.s=pp1 header.b=R26AJgX1; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmQgX0PwmzDqy6
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 04:19:19 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmQrk222RzDr5s
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 04:27:18 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B2H2iIW036126; Wed, 2 Dec 2020 12:19:16 -0500
+ 0B2HA6YO038590; Wed, 2 Dec 2020 12:27:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=subject : to : cc :
  references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=KhLSfmcgHoi0rdSEHXVNcHYYMh8sQRfiuBk9PBbd8I8=;
- b=jWOUQK99UUuc11hMfr8I8Lw10RAlXzyN3vK5d1F6GrOcTW7PlEAf/WGYoKGTUWE+zVut
- AcJiyss3oABPcZegYrutDu5SV8IXb0S0lWnBUvSgY4jZx1lwJ1LG1ICjE5uIQldVu53u
- UMm1yANwKlyLt0LTTq5Fnbwfz/9kj9/7Z2vVFhDG1DFNxDdl+vqHlnp8WVqhMiTCyaEH
- th0wJNJy5KjpuyX/tA/GaPLd3nsSZ8rvV3LBMlQhUk0aZMTn/ZNat0+9CLNq2RQrMdf/
- Ibpd4uY/i1gdcAp5PmBbWFvSrnXzyxsh7FDxjbRcG0vbtZh2TW52wBMhn/dsm6R3rjMn yg== 
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3566pj2b7y-1
+ bh=99mJ7FcmF7cE5LN73+rIbRWuUGG4atdwg82i/zSrrhk=;
+ b=R26AJgX1VolGu5VKHvdcu2p7FVj2wqD58WPqw2tGZ7iil5bVfVa2+37H0u02R5TI/TMy
+ oSeX0Va77RmYq7S4jzTdCWxIrUt6IlH29UMsTbuDonfZO92oVUD+1BSQOIdwnR3L2pzi
+ cZiyK9Gnh800zqrOZdifY63jDM1YnNRPRo8Xpy62oyXvOSKAx+f10d54HCC6Sm7aS4Xs
+ EGv+NLouk9gSrisSs72swsDltVLLBgHR1DLjuHe8RGZ7VV7gkBwyOfF2lAPlTeH7DKuO
+ vOFyhuXXob1OOH1Q1seCJIuCtVlbVKZBHSbUIus5sr/i9VPl8muQ5lIZDLhHM3++Fsnw sg== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 356ceu6649-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Dec 2020 12:19:15 -0500
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B2HETev023714;
- Wed, 2 Dec 2020 17:19:14 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma02wdc.us.ibm.com with ESMTP id 356cbeh79b-1
+ Wed, 02 Dec 2020 12:27:15 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B2HLVC8005047;
+ Wed, 2 Dec 2020 17:27:14 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma02dal.us.ibm.com with ESMTP id 3569xuawra-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Dec 2020 17:19:14 +0000
+ Wed, 02 Dec 2020 17:27:14 +0000
 Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
  [9.57.199.109])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B2HJEhb3998260
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B2HRDNe11469410
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Dec 2020 17:19:14 GMT
+ Wed, 2 Dec 2020 17:27:14 GMT
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 43906112061;
- Wed,  2 Dec 2020 17:19:14 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id DE4A6112064;
+ Wed,  2 Dec 2020 17:27:13 +0000 (GMT)
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 40F07112062;
- Wed,  2 Dec 2020 17:19:13 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 21F78112061;
+ Wed,  2 Dec 2020 17:27:12 +0000 (GMT)
 Received: from oc6857751186.ibm.com (unknown [9.65.215.138])
  by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed,  2 Dec 2020 17:19:13 +0000 (GMT)
-Subject: Re: [PATCH 00/13] ibmvfc: initial MQ development
-To: Hannes Reinecke <hare@suse.de>, james.bottomley@hansenpartnership.com
-References: <20201126014824.123831-1-tyreld@linux.ibm.com>
- <90e9a8ac-d2b9-bb64-7c7d-607adaea0f26@suse.de>
+ Wed,  2 Dec 2020 17:27:11 +0000 (GMT)
+Subject: Re: [PATCH v2 01/17] ibmvfc: add vhost fields and defaults for MQ
+ enablement
+To: Brian King <brking@linux.vnet.ibm.com>,
+ james.bottomley@hansenpartnership.com
+References: <20201202005329.4538-1-tyreld@linux.ibm.com>
+ <20201202005329.4538-2-tyreld@linux.ibm.com>
+ <a11c0e6a-cfa6-0dc4-5d34-6fd35ae1f29b@linux.vnet.ibm.com>
 From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <1d5ec685-7160-52da-417b-23a53bcfc47e@linux.ibm.com>
-Date: Wed, 2 Dec 2020 09:19:12 -0800
+Message-ID: <38903a4f-9253-0b4b-6f67-af78ec86175f@linux.ibm.com>
+Date: Wed, 2 Dec 2020 09:27:11 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <90e9a8ac-d2b9-bb64-7c7d-607adaea0f26@suse.de>
+In-Reply-To: <a11c0e6a-cfa6-0dc4-5d34-6fd35ae1f29b@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-12-02_08:2020-11-30,
+ definitions=2020-12-02_10:2020-11-30,
  2020-12-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- phishscore=0 impostorscore=0 adultscore=0 priorityscore=1501 bulkscore=0
- mlxscore=0 suspectscore=2 clxscore=1011 mlxlogscore=999 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501 mlxscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 adultscore=0 malwarescore=0
+ spamscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2012020100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -106,42 +109,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/2/20 4:03 AM, Hannes Reinecke wrote:
-> On 11/26/20 2:48 AM, Tyrel Datwyler wrote:
->> Recent updates in pHyp Firmware and VIOS releases provide new infrastructure
->> towards enabling Subordinate Command Response Queues (Sub-CRQs) such that each
->> Sub-CRQ is a channel backed by an actual hardware queue in the FC stack on the
->> partner VIOS. Sub-CRQs are registered with the firmware via hypercalls and then
->> negotiated with the VIOS via new Management Datagrams (MADs) for channel setup.
+On 12/2/20 7:14 AM, Brian King wrote:
+> On 12/1/20 6:53 PM, Tyrel Datwyler wrote:
+>> Introduce several new vhost fields for managing MQ state of the adapter
+>> as well as initial defaults for MQ enablement.
 >>
->> This initial implementation adds the necessary Sub-CRQ framework and implements
->> the new MADs for negotiating and assigning a set of Sub-CRQs to associated VIOS
->> HW backed channels. The event pool and locking still leverages the legacy single
->> queue implementation, and as such lock contention is problematic when increasing
->> the number of queues. However, this initial work demonstrates a 1.2x factor
->> increase in IOPs when configured with two HW queues despite lock contention.
+>> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+>> ---
+>>  drivers/scsi/ibmvscsi/ibmvfc.c |  9 ++++++++-
+>>  drivers/scsi/ibmvscsi/ibmvfc.h | 13 +++++++++++--
+>>  2 files changed, 19 insertions(+), 3 deletions(-)
 >>
-> Why do you still hold the hold lock during submission?
+>> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> index 42e4d35e0d35..f1d677a7423d 100644
+>> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
+>> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> @@ -5161,12 +5161,13 @@ static int ibmvfc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+>>  	}
+>>  
+>>  	shost->transportt = ibmvfc_transport_template;
+>> -	shost->can_queue = max_requests;
+>> +	shost->can_queue = (max_requests / IBMVFC_SCSI_HW_QUEUES);
+> 
+> This doesn't look right. can_queue is the SCSI host queue depth, not the MQ queue depth.
 
-Proof of concept.
+Our max_requests is the total number commands allowed across all queues. From
+what I understand is can_queue is the total number of commands in flight allowed
+for each hw queue.
 
-> An initial check on the submission code path didn't reveal anything obvious, so
-> it _should_ be possible to drop the host lock there.
+        /*
+         * In scsi-mq mode, the number of hardware queues supported by the LLD.
+         *
+         * Note: it is assumed that each hardware queue has a queue depth of
+         * can_queue. In other words, the total queue depth per host
+         * is nr_hw_queues * can_queue. However, for when host_tagset is set,
+         * the total queue depth is can_queue.
+         */
 
-Its used to protect the event pool and the event free/sent lists. This could
-probably have its own lock instead of the host lock.
-
-> Or at least move it into the submission function itself to avoid lock
-> contention. Hmm?
-
-I have a followup patch to do that, but I didn't see any change in performance.
-I've got another patch I'm finishing that provides dedicated event pools for
-each subqueue such that they will no longer have any dependency on the host lock.
+We currently don't use the host wide shared tagset.
 
 -Tyrel
 
 > 
-> Cheers,
+>>  	shost->max_lun = max_lun;
+>>  	shost->max_id = max_targets;
+>>  	shost->max_sectors = IBMVFC_MAX_SECTORS;
+>>  	shost->max_cmd_len = IBMVFC_MAX_CDB_LEN;
+>>  	shost->unique_id = shost->host_no;
+>> +	shost->nr_hw_queues = IBMVFC_SCSI_HW_QUEUES;
+>>  
+>>  	vhost = shost_priv(shost);
+>>  	INIT_LIST_HEAD(&vhost->sent);
 > 
-> Hannes
+> 
+> 
 
