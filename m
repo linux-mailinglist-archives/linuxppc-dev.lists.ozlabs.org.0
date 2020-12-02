@@ -1,16 +1,16 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17452CB26A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 02:40:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1AA2CB264
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 02:38:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cm1r226bHzDqf6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 12:40:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cm1nV2dT9zDqy6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 12:38:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
@@ -18,15 +18,15 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
  header.s=pp1 header.b=WS5/H5YX; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cm14q3YXyzDr4M
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 12:06:19 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B216EGg193128; Tue, 1 Dec 2020 20:06:15 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cm12d4FnXzDqxb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 12:04:25 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B212i04074437; Tue, 1 Dec 2020 20:04:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
@@ -39,9 +39,9 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  YjgD88y+ZN3gAcH3D9ql3jpp+U579tyNUxIeF8xfMCBit+pqm5zZU0RFxSin7k1ZENnB EA== 
 Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
  [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 355jt7d5cg-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 355jjh8wq9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Dec 2020 20:05:10 -0500
+ Tue, 01 Dec 2020 20:04:21 -0500
 Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
  by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B20f5DJ016199;
  Wed, 2 Dec 2020 00:53:34 GMT
@@ -80,11 +80,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
  definitions=2020-12-01_12:2020-11-30,
  2020-12-01 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- adultscore=0 spamscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 mlxlogscore=999 suspectscore=1 phishscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012020000
+ suspectscore=1
+ lowpriorityscore=0 bulkscore=0 adultscore=0 mlxlogscore=999
+ priorityscore=1501 spamscore=0 phishscore=0 clxscore=1015 impostorscore=0
+ mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012020002
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
