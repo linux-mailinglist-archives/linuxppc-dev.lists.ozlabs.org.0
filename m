@@ -1,73 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA7E2CB328
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 04:11:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C61002CB39F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 04:49:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cm3s10MZkzDqXX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 14:11:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cm4hy5Gc9zDr22
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 14:49:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FGyql/mA; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+ header.s=20161025 header.b=lNI3XBCF; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cm3q93jvhzDqWg
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 14:09:40 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id n10so36728pgv.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 19:09:40 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cm4gD08N0zDr0K
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 14:47:50 +1100 (AEDT)
+Received: by mail-pl1-x642.google.com with SMTP id bj5so368117plb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Dec 2020 19:47:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=mTu9T1PiFi4oAwV6r4bAppvxwrYc5gq1agidYIWJs7k=;
- b=FGyql/mAwbC1lUm8OPPQwoMJm0RNgttEWeqjEk80gdvhrTf/haYKk+IQqtLUfSkh7C
- 18g6gG85BpyZUGNf1QEwbfi7jBex7GvtzzE0FZH0m4fgyJaYCYaOY6xKD78d7sa1+K4q
- LvAGIpkix2QOJKzt5ynJuu/N4kRYthA2BQAfCKUNUqQarTh86Pe1k+WzKPKsQXNQkInm
- uZgMhlZFWV231VFKUe/WXy8uvsxTzTosj/NTnCd7qkX8U5mI1QDntoq5K4whE+TGvbPi
- qQjkj5Q8gj/uxsqwMAIFrq4gb6d0ULz15QLMDsbE6eiTAhnp/ueeteVY1W23J52Yz3Jl
- BP4A==
+ bh=vso9fbKrp7rJuhxeZyuQMFTDzR5eCp91S2Q2UmwQNu8=;
+ b=lNI3XBCFKt2LLxNR4G2aKs8QzeSwN8YoU49RmlOYwZwhWjw4zA9T4uk4bJt4038fio
+ HF1AAiSIf+2LaxjPI/5ZoPjer3NeUrGzko76uTXIV1FVMhnXXBucKWcxcmpMUHkcI3eu
+ C/bdlRXKe9gTSjQqv6gYD8Qv2XuBGcdRsZLea4+0Nexg8KNpYCVIplCa5rByseSCLDsg
+ 8eAVsgDkJTG1nOljMO4ke/UQBBaBZT6ll4meohVY15rxBq4EOB/u5IwYekrurQNFMYKz
+ FafYNj64nqYmZCsKlMjf2RnxlBW3z3m8fhVU1BPA39SZhrnG5PWaghQkMOMETRpBoz7j
+ pqtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=mTu9T1PiFi4oAwV6r4bAppvxwrYc5gq1agidYIWJs7k=;
- b=sBceFXtyQGVY16Wq4L1xZsdNthzi+ktK43g9K9szLLMxgjTDqLJTlUppyS4ECMoHi/
- 3EpdVO7WLEHFo5fuX54cmbAKgeMPcPOzGzxyCJBrTOzjU3l34Y29J0cxDki6K0oeBa50
- UbVjC+431kzJ2DNAMssk0/vqqLq2IyST9edm68DsHDhb8g3Avqo0oZtVYJ0rk6Qe8eY3
- RxEEtSZAd3ZJBTYOcnAo54o4hkysHpXU1BSD9Vba7SuC8QcPWZEKLH1pWcgXvL40C3WY
- /SYk2XH6XTqNJ7c0NRumZnfgDIxPPlzz+SWXVL/m+tKf5Ss9AMH/kzwTjXp5D1mm9yIq
- 1DCw==
-X-Gm-Message-State: AOAM531emhq+6cY8iO+4Uk9bBkzttLupEMVmaN2040I2a7knrtfUnqa6
- UVtYUHha6EpZLBqrckpaT5Y+Ng8AdII=
-X-Google-Smtp-Source: ABdhPJyMqgqZnm3RX5OBhSrD+f5WEYMBcOc1X5In125AXSEq+tZ/SLJm9LVYEWZ7r6/Oj+0f1pVMQQ==
-X-Received: by 2002:a63:a0b:: with SMTP id 11mr717907pgk.21.1606878577415;
- Tue, 01 Dec 2020 19:09:37 -0800 (PST)
-Received: from localhost ([1.132.180.166])
- by smtp.gmail.com with ESMTPSA id o133sm309710pfg.97.2020.12.01.19.09.36
+ bh=vso9fbKrp7rJuhxeZyuQMFTDzR5eCp91S2Q2UmwQNu8=;
+ b=R7xCUcCGYHBjgVytulk20pJ9j/zs1YKsoIULQrvgjBt2lP6vjLVplIJiw9bf4EAoBE
+ vKuQyWR0u1fCjmk7v65qPsFV9JyxZvFQA6qrpNGiqtoBocuTp9dh6s5tjxWJ0ANF6nKt
+ i8RriByOpxTSk4v3rrvoVq8kpL73BfJSIeciUqmVkq4Qhjpe+t3wI32rubORntJ37f25
+ UEiEYRJjhMYhuHMLQlXweNpk6YLhlbwJ6sZGtpROGLke/UfTexuaaATuE6QHfMo5LIrE
+ hdWJN96fpqG1LF1lRaaBl55/+Utbfms+PWrcP3ejBXM6W/uDxRfcFRnPM5WZ//ap69m9
+ Ziag==
+X-Gm-Message-State: AOAM533sUDt7ZQncLStbs3vob03xdx2bkE56xb1GQrFIFIqzDhdrAy3o
+ IPbpygf1G9PHCqXcKzpJyNk=
+X-Google-Smtp-Source: ABdhPJxXlpx2on+HCIB29S2yb5xH/4Wll0pcilrWx+Z8+P3dZi38+5/M+J7hVGfmNgjxUiHj+7OKCA==
+X-Received: by 2002:a17:90a:d249:: with SMTP id
+ o9mr489390pjw.158.1606880867992; 
+ Tue, 01 Dec 2020 19:47:47 -0800 (PST)
+Received: from localhost ([1.132.176.4])
+ by smtp.gmail.com with ESMTPSA id q200sm384496pfq.95.2020.12.01.19.47.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Dec 2020 19:09:37 -0800 (PST)
-Date: Wed, 02 Dec 2020 13:09:29 +1000
+ Tue, 01 Dec 2020 19:47:47 -0800 (PST)
+Date: Wed, 02 Dec 2020 13:47:40 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
 Subject: Re: [PATCH 6/8] lazy tlb: shoot lazies, a non-refcounting lazy tlb
  option
-To: Andy Lutomirski <luto@kernel.org>
+To: Christian Borntraeger <borntraeger@de.ibm.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@intel.com>, Vasily Gorbik
+ <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Andy Lutomirski
+ <luto@kernel.org>, Will Deacon <will@kernel.org>
 References: <20201128160141.1003903-1-npiggin@gmail.com>
  <20201128160141.1003903-7-npiggin@gmail.com>
  <CALCETrVXUbe8LfNn-Qs+DzrOQaiw+sFUg1J047yByV31SaTOZw@mail.gmail.com>
-In-Reply-To: <CALCETrVXUbe8LfNn-Qs+DzrOQaiw+sFUg1J047yByV31SaTOZw@mail.gmail.com>
+ <CALCETrWBtCfD+jZ3S+O8FK-HFPODuhbDEbbfWvS=-iPATNFAOA@mail.gmail.com>
+ <CALCETrXAR_9EGaOF8ymVkZycxgZkYk0dR+NjEpTfVzdcS3sOVw@mail.gmail.com>
+In-Reply-To: <CALCETrXAR_9EGaOF8ymVkZycxgZkYk0dR+NjEpTfVzdcS3sOVw@mail.gmail.com>
 MIME-Version: 1.0
-Message-Id: <1606877416.ym0jhixy72.astroid@bobo.none>
+Message-Id: <1606879302.tdngvs3yq4.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -90,149 +96,148 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Andy Lutomirski's message of November 29, 2020 1:54 pm:
-> On Sat, Nov 28, 2020 at 8:02 AM Nicholas Piggin <npiggin@gmail.com> wrote=
-:
+Excerpts from Andy Lutomirski's message of December 1, 2020 4:31 am:
+> other arch folk: there's some background here:
+>=20
+> https://lkml.kernel.org/r/CALCETrVXUbe8LfNn-Qs+DzrOQaiw+sFUg1J047yByV31Sa=
+TOZw@mail.gmail.com
+>=20
+> On Sun, Nov 29, 2020 at 12:16 PM Andy Lutomirski <luto@kernel.org> wrote:
 >>
->> On big systems, the mm refcount can become highly contented when doing
->> a lot of context switching with threaded applications (particularly
->> switching between the idle thread and an application thread).
+>> On Sat, Nov 28, 2020 at 7:54 PM Andy Lutomirski <luto@kernel.org> wrote:
+>> >
+>> > On Sat, Nov 28, 2020 at 8:02 AM Nicholas Piggin <npiggin@gmail.com> wr=
+ote:
+>> > >
+>> > > On big systems, the mm refcount can become highly contented when doi=
+ng
+>> > > a lot of context switching with threaded applications (particularly
+>> > > switching between the idle thread and an application thread).
+>> > >
+>> > > Abandoning lazy tlb slows switching down quite a bit in the importan=
+t
+>> > > user->idle->user cases, so so instead implement a non-refcounted sch=
+eme
+>> > > that causes __mmdrop() to IPI all CPUs in the mm_cpumask and shoot d=
+own
+>> > > any remaining lazy ones.
+>> > >
+>> > > Shootdown IPIs are some concern, but they have not been observed to =
+be
+>> > > a big problem with this scheme (the powerpc implementation generated
+>> > > 314 additional interrupts on a 144 CPU system during a kernel compil=
+e).
+>> > > There are a number of strategies that could be employed to reduce IP=
+Is
+>> > > if they turn out to be a problem for some workload.
+>> >
+>> > I'm still wondering whether we can do even better.
+>> >
 >>
->> Abandoning lazy tlb slows switching down quite a bit in the important
->> user->idle->user cases, so so instead implement a non-refcounted scheme
->> that causes __mmdrop() to IPI all CPUs in the mm_cpumask and shoot down
->> any remaining lazy ones.
->>
->> Shootdown IPIs are some concern, but they have not been observed to be
->> a big problem with this scheme (the powerpc implementation generated
->> 314 additional interrupts on a 144 CPU system during a kernel compile).
->> There are a number of strategies that could be employed to reduce IPIs
->> if they turn out to be a problem for some workload.
+>> Hold on a sec.. __mmput() unmaps VMAs, frees pagetables, and flushes
+>> the TLB.  On x86, this will shoot down all lazies as long as even a
+>> single pagetable was freed.  (Or at least it will if we don't have a
+>> serious bug, but the code seems okay.  We'll hit pmd_free_tlb, which
+>> sets tlb->freed_tables, which will trigger the IPI.)  So, on
+>> architectures like x86, the shootdown approach should be free.  The
+>> only way it ought to have any excess IPIs is if we have CPUs in
+>> mm_cpumask() that don't need IPI to free pagetables, which could
+>> happen on paravirt.
 >=20
-> I'm still wondering whether we can do even better.
+> Indeed, on x86, we do this:
+>=20
+> [   11.558844]  flush_tlb_mm_range.cold+0x18/0x1d
+> [   11.559905]  tlb_finish_mmu+0x10e/0x1a0
+> [   11.561068]  exit_mmap+0xc8/0x1a0
+> [   11.561932]  mmput+0x29/0xd0
+> [   11.562688]  do_exit+0x316/0xa90
+> [   11.563588]  do_group_exit+0x34/0xb0
+> [   11.564476]  __x64_sys_exit_group+0xf/0x10
+> [   11.565512]  do_syscall_64+0x34/0x50
+>=20
+> and we have info->freed_tables set.
+>=20
+> What are the architectures that have large systems like?
+>=20
+> x86: we already zap lazies, so it should cost basically nothing to do
 
-We probably can, for some values of better / more complex. This came up=20
-last time I posted, there was a big concern about IPIs etc, but it just=20
-wasn't an issue at all even when I tried to coax them to happen a bit.
+This is not zapping lazies, this is freeing the user page tables.
 
-The thing is they are faily self-limiting, it's not actually all that=20
-frequent that you have an mm get taken for a lazy *and* move between=20
-CPUs. Perhaps more often with threaded apps, but in that case you're=20
-eating various IPI costs anyway (e.g., when moving the task to another
-CPU, on TLB shootdowns, etc).
+"lazy mm" is where a switch to a kernel thread takes on the
+previous mm for its kernel mapping rather than switch to init_mm.
 
-So from last time I did measure and I did document some possible=20
-improvements that could be made in comments, but I decided to keep it=20
-simple before adding complexity to it.
+> a little loop at the end of __mmput() to make sure that no lazies are
+> left.  If we care about paravirt performance, we could implement one
+> of the optimizations I mentioned above to fix up the refcounts instead
+> of sending an IPI to any remaining lazies.
+
+It might be possible x86's scheme you could scan mm_cpumask
+carefully synchronized or something when the last user reference
+gets dropped that frees the lazy at that point, but I don't know
+what that would buy you because you're still having to maintain
+the mm_cpumask on switches. powerpc's characteristics are just
+different here so it makes sense whereas I don't know if it
+would on x86.
 
 >=20
-> The IPIs you're doing aren't really necessary -- we don't
-> fundamentally need to free the pagetables immediately when all
-> non-lazy users are done with them (and current kernels don't) -- what
-> we need to do is to synchronize all the bookkeeping.  So, with
-> adequate locking (famous last words), a couple of alternative schemes
-> ought to be possible.
-
-It's not freeing the page tables, those are freed by this point already=20
-I think (at least on powerpc they are). It's releasing the lazy mm.
-
+> arm64: AFAICT arm64's flush uses magic arm64 hardware support for
+> remote flushes, so any lazy mm references will still exist after
+> exit_mmap().  (arm64 uses lazy TLB, right?)  So this is kind of like
+> the x86 paravirt case.  Are there large enough arm64 systems that any
+> of this matters?
 >=20
-> a) Instead of sending an IPI, increment mm_count on behalf of the
-> remote CPU and do something to make sure that the remote CPU knows we
-> did this on its behalf.  Then free the mm when mm_count hits zero.
+> s390x: The code has too many acronyms for me to understand it fully,
+> but I think it's more or less the same situation as arm64.  How big do
+> s390x systems come?
 >=20
-> b) Treat mm_cpumask as part of the refcount.  Add one to mm_count when
-> an mm is created.  Once mm_users hits zero, whoever clears the last
-> bit in mm_cpumask is responsible for decrementing a single reference
-> from mm_count, and whoever sets it to zero frees the mm.
-
-Right, these were some possible avenues to explore, thing is it's=20
-complexity and more synchronisation costs, and in the fast (context=20
-switch) path too. The IPI actually avoids all fast path work, atomic
-or not.
-
-> Version (b) seems fairly straightforward to implement -- add RCU
-> protection and a atomic_t special_ref_cleared (initially 0) to struct
-> mm_struct itself.  After anyone clears a bit to mm_cpumask (which is
-> already a barrier), they read mm_users.  If it's zero, then they scan
-> mm_cpumask and see if it's empty.  If it is, they atomically swap
-> special_ref_cleared to 1.  If it was zero before the swap, they do
-> mmdrop().  I can imagine some tweaks that could make this a big
-> faster, at least in the limit of a huge number of CPUs.
+> power: Ridiculously complicated, seems to vary by system and kernel confi=
+g.
 >=20
-> Version (a) seems a bit harder to reason about.  Maybe it could be
-> done like this.  Add a percpu variable mm_with_extra_count.  This
-> variable can be NULL, but it can also be an mm that has an extra
-> reference on behalf of the cpu in question.
+> So, Nick, your unconditional IPI scheme is apparently a big
+> improvement for power, and it should be an improvement and have low
+> cost for x86.
+
+As said, the tradeoffs are different, I'm not so sure. It was a big=20
+improvement on a very big system with the powerpc mm_cpumask switching
+model on a microbenchmark designed to stress this, which is about all
+I can say for it.
+
+> On arm64 and s390x it will add more IPIs on process
+> exit but reduce contention on context switching depending on how lazy
+> TLB works.  I suppose we could try it for all architectures without
+> any further optimizations.
+
+It will remain opt-in but certainly try it out and see. There are some
+requirements as documented in the config option text.
+
+> Or we could try one of the perhaps
+> excessively clever improvements I linked above.  arm64, s390x people,
+> what do you think?
 >=20
-> __mmput scans mm_cpumask and, for each cpu in the mask, mmgrabs the mm
-> and cmpxchgs that cpu's mm_with_extra_count from NULL to mm.  If it
-> succeeds, then we win.  If it fails, further thought is required, and
-> maybe we have to send an IPI, although maybe some other cleverness is
-> possible.  Any time a CPU switches mms, it does atomic swaps
-> mm_with_extra_count to NULL and mmdrops whatever the mm was.  (Maybe
-> it needs to check the mm isn't equal to the new mm, although it would
-> be quite bizarre for this to happen.)  Other than these mmgrab and
-> mmdrop calls, the mm switching code doesn't mmgrab or mmdrop at all.
->=20
->=20
-> Version (a) seems like it could have excellent performance.
 
-That said, if x86 wanted to explore something like this, the code to do=20
-it is a bit modular (I don't think a proliferation of lazy refcounting=20
-config options is a good idea of course, but 2 versions one for powrepc
-style set-and-forget mm_cpumask and one for x86 set-and-clear would
-be okay.
+I'm not against improvements to the scheme. e.g., from the patch
 
-> *However*, I think we should consider whether we want to do something
-> even bigger first.  Even with any of these changes, we still need to
-> maintain mm_cpumask(), and that itself can be a scalability problem.
-> I wonder if we can solve this problem too.  Perhaps the switch_mm()
-> paths could only ever set mm_cpumask bits,
++               /*
++                * IPI overheads have not found to be expensive, but they c=
+ould
++                * be reduced in a number of possible ways, for example (in
++                * roughly increasing order of complexity):
++                * - A batch of mms requiring IPIs could be gathered and fr=
+eed
++                *   at once.
++                * - CPUs could store their active mm somewhere that can be
++                *   remotely checked without a lock, to filter out
++                *   false-positives in the cpumask.
++                * - After mm_users or mm_count reaches zero, switching awa=
+y
++                *   from the mm could clear mm_cpumask to reduce some IPIs
++                *   (some batching or delaying would help).
++                * - A delayed freeing and RCU-like quiescing sequence base=
+d on
++                *   mm switching to avoid IPIs completely.
++                */
 
-Powerpc does this.
-
-> and anyone who would send
-> an IPI because a bit is set in mm_cpumask would first check some
-> percpu variable (cpu_rq(cpu)->something?=20
-
-This is a suggested possible optimization to the IPI scheme (you would
-check if it's active).
-
-There's pros and cons to it. You get more IPIs and cross TLB shootdowns
-and jitter cleaning up behind you rather than cleaning up as you go.
-
-> an entirely new variable) to
-> see if the bit in mm_cpumask is spurious.  Or perhaps mm_cpumask could
-> be split up across multiple cachelines, one per node.
-
-IIRC Peter or someone mentioned this was something that was looked at=20
-for x86.
-
-> We should keep the recent lessons from Apple in mind, though: x86 is a
-> dinosaur.
-
-Wow. What is the recent lesson from Apple?? I'm completely out of the=20
-loop here.
-
-> The future of atomics is going to look a lot more like
-> ARM's LSE than x86's rather anemic set.  This means that mm_cpumask
-> operations won't need to be full barriers forever, and we might not
-> want to take the implied full barriers in set_bit() and clear_bit()
-> for granted.
-
-Sure, set_bit / clear_bit aren't full barriers in terms of Linux=20
-semantics, so generic code doesn't assume that. What x86 does is
-add the smp_mb__after_blah or before_blah to avoid an added barrier
-because of it's heavier-than-required set_bit.
-
-I'm not quite sure what you were getting at though. The atomic itself is=20
-really quite a small cost of the exit() operation (or even a context=20
-switch operation) _most_ of the time (x86 CPUs seem to have very fast
-atomics so might be even smaller cost for you). It's just when you=20
-happen to bounce a cache line, which hurts no matter what you do.
+But would like to have numbers before being too clever.
 
 Thanks,
 Nick
-
-
