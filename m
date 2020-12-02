@@ -1,95 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7767F2CC571
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 19:42:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC292CC60E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 19:58:44 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmSWD4ylQzDr8R
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 05:42:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmStB1Kp1zDr7P
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 05:58:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=n9c4Mh9I; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=Cu7Xt7Qn; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmSTZ5qXPzDqZL
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 05:40:50 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B2IXv0o135382; Wed, 2 Dec 2020 13:40:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=L69NYuLhU3uOuWNgUvbNXLJASVglg/Pd6mCXYVJf3RI=;
- b=n9c4Mh9IuKKx/pYdlxPCERQ3SGQmBr8rnSq8jDCHYfKyLrjCixS9aUUJ2Hx+Osg3C5gs
- sdEjhEFvkfFHJP8Ev93YBWczcV0PRfixy09Lkrl1ueRImhX8rkbbmHlotQBXDuivAdMJ
- eSZh70vAELXN9wS+/6aqboUX9ZwLZD8dt4FnACjhkL2NR9i7817Uu9AmaBcghqd99sgQ
- K4cQSYRt1HVf2AckGg3TH/4rkYtQYrjTsjD5dr/W3PpvPHRc6Jtd/8PhjiTjhBXrBz7H
- 7+NzI+KYf5tdvaWphc+3mFiaizLCpm8CR4ZP3j7fTwpOVSmU3EnU/Bc5farB09jBzUoP pQ== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 355sr60ydw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Dec 2020 13:40:47 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B2IRU7W031477;
- Wed, 2 Dec 2020 18:40:46 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma04wdc.us.ibm.com with ESMTP id 354ysukkp8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Dec 2020 18:40:46 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B2IekZ231916538
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Dec 2020 18:40:46 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 54ED6124054;
- Wed,  2 Dec 2020 18:40:46 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 81E39124052;
- Wed,  2 Dec 2020 18:40:45 +0000 (GMT)
-Received: from oc6034535106.ibm.com (unknown [9.211.78.151])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed,  2 Dec 2020 18:40:45 +0000 (GMT)
-Subject: Re: [PATCH v2 17/17] ibmvfc: provide modules parameters for MQ
- settings
-To: Tyrel Datwyler <tyreld@linux.ibm.com>,
- james.bottomley@hansenpartnership.com
-References: <20201202005329.4538-1-tyreld@linux.ibm.com>
- <20201202005329.4538-18-tyreld@linux.ibm.com>
-From: Brian King <brking@linux.vnet.ibm.com>
-Message-ID: <e2343b78-5be3-da2d-b2bc-ccb0a75c61ae@linux.vnet.ibm.com>
-Date: Wed, 2 Dec 2020 12:40:44 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmSr52MVfzDqD3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 05:56:50 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id w6so1839058pfu.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Dec 2020 10:56:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=2df0cgPfG2SAK1g7NT0O8N+0jOgAdMPH5rFcEcsmtzM=;
+ b=Cu7Xt7Qn/3aPgdAkS2syTqxV41qdValgrBZYQqryrysoVtGdgBLW1Umm+ymeWh5B7+
+ kZqrtKf1iwCkHCjz0PqySSBrzAlqEGJUcEnELClsLXBywkDw+tIHAGkRJUpSf4r5si2X
+ U71QWOp65achEjowERhc1Pgww2DGhtmolmAck=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=2df0cgPfG2SAK1g7NT0O8N+0jOgAdMPH5rFcEcsmtzM=;
+ b=qBNGwxECoS+th1Ehxn1N81hlmC9HI/Z436NdZQGqpfLeNY+paejiOnRmgzVjGVH0Zr
+ hfeXkEkOpjdCNaMHeuf+xFPfRLqTU+otp3QnOEcIGnpQmcCtD2B56yiYot9jMd0fc8x7
+ 5ngRveH6rMEKQrs4RqhFkV77fb2O255Jlj4VnCVgps/0kdMEfr8iPKrZZEhnAJ7egS0R
+ E8NSI44DTigMcKFdIOlC5xAAjhnvOXnhg/9Ano8zey0y4++aCZdTu132W/DjD9riq0w3
+ 8Iae4QcZhqAeYQ8OIeu/jnIovPCexwTzYBjgmi/otXkTkWX0VgynZYy1d5gqq5ufgCOm
+ sB/Q==
+X-Gm-Message-State: AOAM533zyJOP6mTAxh/jv1iofigtRFptCwmPzmGB/yanvoELmsy8wc2b
+ BiiWKhR8ql5MRVxBC6YOuynKyA==
+X-Google-Smtp-Source: ABdhPJwDihIdf9Kj1zww9pUzlRPKReVIPkPu886DIRfJAubQGRXMJaWo5MU1jtqDrgcMhi9+DatHIQ==
+X-Received: by 2002:a63:f308:: with SMTP id l8mr1179038pgh.68.1606935406993;
+ Wed, 02 Dec 2020 10:56:46 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id u3sm512394pfu.47.2020.12.02.10.56.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 02 Dec 2020 10:56:45 -0800 (PST)
+Date: Wed, 2 Dec 2020 10:56:44 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH v2 2/2] kbuild: Disable CONFIG_LD_ORPHAN_WARN for ld.lld
+ 10.0.1
+Message-ID: <202012021056.3EA0BBFDD@keescook>
+References: <20201113195553.1487659-1-natechancellor@gmail.com>
+ <20201119204656.3261686-2-natechancellor@gmail.com>
+ <CAKwvOdkPgwL8H4EGF6=-VuxTdmxA8JHhGbLHVYcLJj9MmAvW=g@mail.gmail.com>
+ <202011241421.A2F3062A70@keescook>
+ <CAK7LNAR=_+1K7EtpvGzgyM+ans-iNOT0PBXdLRApnsyAzakQ3w@mail.gmail.com>
+ <202012011255.9D677ED3@keescook>
+ <CAK7LNAQGqcCBBFbKwe_eTuBqtNwDn_q8c0nPBJVsEoHP6F+aKA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20201202005329.4538-18-tyreld@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-12-02_10:2020-11-30,
- 2020-12-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- suspectscore=0 spamscore=0 adultscore=0 malwarescore=0 mlxscore=0
- mlxlogscore=999 phishscore=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012020109
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7LNAQGqcCBBFbKwe_eTuBqtNwDn_q8c0nPBJVsEoHP6F+aKA@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,75 +82,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
- linux-kernel@vger.kernel.org
+Cc: Michal Marek <michal.lkml@markovi.net>,
+ "kernelci . org bot" <bot@kernelci.org>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ Russell King <linux@armlinux.org.uk>, LKML <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Arvind Sankar <nivedita@alum.mit.edu>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Nathan Chancellor <natechancellor@gmail.com>, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/1/20 6:53 PM, Tyrel Datwyler wrote:
-> +module_param_named(mig_channels_only, mig_channels_only, uint, S_IRUGO | S_IWUSR);
-> +MODULE_PARM_DESC(mig_channels_only, "Prevent migration to non-channelized system. "
-> +		 "[Default=" __stringify(IBMVFC_MIG_NO_SUB_TO_CRQ) "]");
-> +module_param_named(mig_no_less_channels, mig_no_less_channels, uint, S_IRUGO | S_IWUSR);
-> +MODULE_PARM_DESC(mig_no_less_channels, "Prevent migration to system with less channels. "
-> +		 "[Default=" __stringify(IBMVFC_MIG_NO_N_TO_M) "]");
+On Wed, Dec 02, 2020 at 11:37:38AM +0900, Masahiro Yamada wrote:
+> On Wed, Dec 2, 2020 at 5:56 AM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > On Tue, Dec 01, 2020 at 10:31:37PM +0900, Masahiro Yamada wrote:
+> > > On Wed, Nov 25, 2020 at 7:22 AM Kees Cook <keescook@chromium.org> wrote:
+> > > >
+> > > > On Thu, Nov 19, 2020 at 01:13:27PM -0800, Nick Desaulniers wrote:
+> > > > > On Thu, Nov 19, 2020 at 12:57 PM Nathan Chancellor
+> > > > > <natechancellor@gmail.com> wrote:
+> > > > > >
+> > > > > > ld.lld 10.0.1 spews a bunch of various warnings about .rela sections,
+> > > > > > along with a few others. Newer versions of ld.lld do not have these
+> > > > > > warnings. As a result, do not add '--orphan-handling=warn' to
+> > > > > > LDFLAGS_vmlinux if ld.lld's version is not new enough.
+> > > > > >
+> > > > > > Link: https://github.com/ClangBuiltLinux/linux/issues/1187
+> > > > > > Link: https://github.com/ClangBuiltLinux/linux/issues/1193
+> > > > > > Reported-by: Arvind Sankar <nivedita@alum.mit.edu>
+> > > > > > Reported-by: kernelci.org bot <bot@kernelci.org>
+> > > > > > Reported-by: Mark Brown <broonie@kernel.org>
+> > > > > > Reviewed-by: Kees Cook <keescook@chromium.org>
+> > > > > > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> > > > >
+> > > > > Thanks for the additions in v2.
+> > > > > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+> > > >
+> > > > I'm going to carry this for a few days in -next, and if no one screams,
+> > > > ask Linus to pull it for v5.10-rc6.
+> > > >
+> > > > Thanks!
+> > > >
+> > > > --
+> > > > Kees Cook
+> > >
+> > >
+> > > Sorry for the delay.
+> > > Applied to linux-kbuild.
+> >
+> > Great, thanks!
+> >
+> > > But, I already see this in linux-next.
+> > > Please let me know if I should drop it from my tree.
+> >
+> > My intention was to get this to Linus this week. Do you want to do that
+> > yourself, or Ack the patches in my tree and I'll send it?
+> 
+> I will send a kbuild pull request myself this week.
 
-Both of these are writeable, but it doesn't look like you do any re-negotiation
-with the VIOS for these changed settings to take effect if someone changes
-them at runtime.
-
-> +
->  module_param_named(init_timeout, init_timeout, uint, S_IRUGO | S_IWUSR);
->  MODULE_PARM_DESC(init_timeout, "Initialization timeout in seconds. "
->  		 "[Default=" __stringify(IBMVFC_INIT_TIMEOUT) "]");
-
-> @@ -3228,6 +3250,36 @@ static ssize_t ibmvfc_store_log_level(struct device *dev,
->  	return strlen(buf);
->  }
->  
-> +static ssize_t ibmvfc_show_scsi_channels(struct device *dev,
-> +					 struct device_attribute *attr, char *buf)
-> +{
-> +	struct Scsi_Host *shost = class_to_shost(dev);
-> +	struct ibmvfc_host *vhost = shost_priv(shost);
-> +	unsigned long flags = 0;
-> +	int len;
-> +
-> +	spin_lock_irqsave(shost->host_lock, flags);
-> +	len = snprintf(buf, PAGE_SIZE, "%d\n", vhost->client_scsi_channels);
-> +	spin_unlock_irqrestore(shost->host_lock, flags);
-> +	return len;
-> +}
-> +
-> +static ssize_t ibmvfc_store_scsi_channels(struct device *dev,
-> +					 struct device_attribute *attr,
-> +					 const char *buf, size_t count)
-> +{
-> +	struct Scsi_Host *shost = class_to_shost(dev);
-> +	struct ibmvfc_host *vhost = shost_priv(shost);
-> +	unsigned long flags = 0;
-> +	unsigned int channels;
-> +
-> +	spin_lock_irqsave(shost->host_lock, flags);
-> +	channels = simple_strtoul(buf, NULL, 10);
-> +	vhost->client_scsi_channels = min(channels, nr_scsi_hw_queues);
-
-Don't we need to do a LIP here for this new setting to go into effect?
-
-> +	spin_unlock_irqrestore(shost->host_lock, flags);
-> +	return strlen(buf);
-> +}
-> +
->  static DEVICE_ATTR(partition_name, S_IRUGO, ibmvfc_show_host_partition_name, NULL);
->  static DEVICE_ATTR(device_name, S_IRUGO, ibmvfc_show_host_device_name, NULL);
->  static DEVICE_ATTR(port_loc_code, S_IRUGO, ibmvfc_show_host_loc_code, NULL);
-
-
+Okay, thanks! I've removed it from my -next tree now.
 
 -- 
-Brian King
-Power Linux I/O
-IBM Linux Technology Center
-
+Kees Cook
