@@ -2,56 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863B02CBCC9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 13:19:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8563F2CBD05
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 13:30:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmJ1j74FPzDqBy
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 23:19:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmJG25fYMzDqTR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 23:30:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=metux.net
+ (client-ip=212.227.126.134; helo=mout.kundenserver.de;
+ envelope-from=info@metux.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=metux.net
+X-Greylist: delayed 429 seconds by postgrey-1.36 at bilbo;
+ Wed, 02 Dec 2020 23:26:03 AEDT
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmHvZ5hhbzDr0w
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 23:14:18 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=qtDh7Ivv; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CmHvM13p4z9sW0;
- Wed,  2 Dec 2020 23:14:07 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1606911257;
- bh=dHdu5NS4Xw4IX9X/GFAxYuxXCqWGRcHQlDUnVy182gE=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=qtDh7IvvHnc1+eKidZ76vTxF/6g74s2Qv4NdJCP3ZbL1MvM7SMn0lhAVe5tKSzbZQ
- HAZWdo85rrG0VGkeOEqwRUPOnvHmcNv66RNAVaUJFUprFf5SkMq27aOekm8dbPRCY5
- gkzvsxHN3LwDnlCxInjPmxzTiDx21ibFqTqqu3eDy34Z8nkx1csBez+MJFFdL11gkd
- f/LwaVwDLEtHeYQ1e4yz1BkCIl0n6WAAZmXjde8XppUxjXPuEllv155QVe9hK1naST
- fh3/pL4XJyDtWcjIvBpmTiEV3p97PKO/mL+YIWoTYOapjBgcldMx3HEGaWB6OkoQ9g
- G0I0mDDBKdB0w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Takashi Iwai <tiwai@suse.de>
-Subject: Re: [PATCH 2/2] powerpc/ps3: make system bus's remove and shutdown
- callbacks return void
-In-Reply-To: <20201129173153.jbt3epcxnasbemir@pengutronix.de>
-References: <20201126165950.2554997-1-u.kleine-koenig@pengutronix.de>
- <20201126165950.2554997-2-u.kleine-koenig@pengutronix.de>
- <s5hv9dphnoh.wl-tiwai@suse.de>
- <20201129173153.jbt3epcxnasbemir@pengutronix.de>
-Date: Wed, 02 Dec 2020 23:14:06 +1100
-Message-ID: <875z5kwgkx.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmJ972lKgzDr0w
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 23:25:59 +1100 (AEDT)
+Received: from orion.localdomain ([77.7.48.174]) by mrelayeu.kundenserver.de
+ (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MJV9M-1kV75Q0XNo-00JsFP; Wed, 02 Dec 2020 13:15:56 +0100
+From: "Enrico Weigelt, metux IT consult" <info@metux.net>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH] drivers: char: tpm: remove unneeded MODULE_VERSION() usage
+Date: Wed,  2 Dec 2020 13:15:53 +0100
+Message-Id: <20201202121553.9383-1-info@metux.net>
+X-Mailer: git-send-email 2.11.0
+X-Provags-ID: V03:K1:S6jGKntch7TnNIvjw5HeYSwa3cdu9ChH6KIdjiN8Aw6I10nMGVT
+ TfxVfBy1k7mv46B8Dyrm80CAJCZqiQzdUJlFmeCNabr0Yole0YWL1/NssfqGPj25DwI+gDj
+ axY/uaskxTMUnwAA/4I8jGIBD5qbYDx2YnkpBrrX7YVWCj1EqbEgOxsztP6dEwhqkIaNs9W
+ dv4rRCeBj25UrBA2tthTA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jHGHfK87aFI=:X/MYA4YK7cdsoZr0R47vJr
+ qcline2vdYAAPNDo/SL1/omfPiYBh8D+jeDKKe48mzjyaNxLDUC+kWKSBw82e3ZyXBb4jU5en
+ p21SgqBYyuM5xVw1+30mtb4UNrK3keVF7qPuBI/MeWEzk7NEgj3kkD4bYgs1QHr6CXAZZL+ky
+ L91pLWthv3DqhXRr4L9OruFGVEvy0h8hKIHbZTkBbcA6k2JP/IWa0wEecwGoF5tSHU8Vkn7nQ
+ UgAZIkjrk3ziV6w5o+bxibe5BIawRlw4NqSwBttKnXGOECadRNSmaKILFgG1YlW9mkwkup5Fw
+ JD/WDEwXCKdKjrJD/aFEBrFUrVjzx0TwdRt9SrZk/ZT+LRd+t100ZYb4XHnDtihnGgSXWFsDQ
+ eSbprJ7rtnfBV1PdtETxO4QbcTXTSwLx5X/K7apCjqKXAEUE3CNkYFmyCALwT
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,57 +55,165 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Jaroslav Kysela <perex@perex.cz>,
- Paul Mackerras <paulus@samba.org>, linux-scsi@vger.kernel.org,
- Alan Stern <stern@rowland.harvard.edu>, Jakub Kicinski <kuba@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-block@vger.kernel.org,
- Jens Axboe <axboe@kernel.dk>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Geoff Levand <geoff@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- Takashi Iwai <tiwai@suse.com>, Jim Paris <jim@jtan.com>,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: jgg@ziepe.ca, jarkko@kernel.org, paulus@samba.org,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ peterhuewe@gmx.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> writes:
-> Hello Michael,
->
-> On Sat, Nov 28, 2020 at 09:48:30AM +0100, Takashi Iwai wrote:
->> On Thu, 26 Nov 2020 17:59:50 +0100,
->> Uwe Kleine-K=C3=B6nig wrote:
->> >=20
->> > The driver core ignores the return value of struct device_driver::remo=
-ve
->> > because there is only little that can be done. For the shutdown callba=
-ck
->> > it's ps3_system_bus_shutdown() which ignores the return value.
->> >=20
->> > To simplify the quest to make struct device_driver::remove return void,
->> > let struct ps3_system_bus_driver::remove return void, too. All users
->> > already unconditionally return 0, this commit makes it obvious that
->> > returning an error code is a bad idea and ensures future users behave
->> > accordingly.
->> >=20
->> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
->>=20
->> For the sound bit:
->> Acked-by: Takashi Iwai <tiwai@suse.de>
->
-> assuming that you are the one who will apply this patch: Note that it
-> depends on patch 1 that Takashi already applied to his tree. So you
-> either have to wait untils patch 1 appears in some tree that you merge
-> before applying, or you have to take patch 1, too. (With Takashi
-> optinally dropping it then.)
+Remove MODULE_VERSION(), as it isn't needed at all: the only version
+making sense is the kernel version.
 
-Thanks. I've picked up both patches.
+Link: https://lkml.org/lkml/2017/11/22/480
 
-If Takashi doesn't want to rebase his tree to drop patch 1 that's OK, it
-will just arrive in mainline via two paths, but git should handle it.
+Signed-off-by: Enrico Weigelt <info@metux.net>
+---
+ drivers/char/tpm/st33zp24/i2c.c      | 1 -
+ drivers/char/tpm/st33zp24/spi.c      | 1 -
+ drivers/char/tpm/st33zp24/st33zp24.c | 1 -
+ drivers/char/tpm/tpm-interface.c     | 1 -
+ drivers/char/tpm/tpm_atmel.c         | 1 -
+ drivers/char/tpm/tpm_crb.c           | 1 -
+ drivers/char/tpm/tpm_i2c_infineon.c  | 1 -
+ drivers/char/tpm/tpm_ibmvtpm.c       | 1 -
+ drivers/char/tpm/tpm_infineon.c      | 1 -
+ drivers/char/tpm/tpm_nsc.c           | 1 -
+ drivers/char/tpm/tpm_tis.c           | 1 -
+ drivers/char/tpm/tpm_tis_core.c      | 1 -
+ drivers/char/tpm/tpm_vtpm_proxy.c    | 1 -
+ 13 files changed, 13 deletions(-)
 
-cheers
+diff --git a/drivers/char/tpm/st33zp24/i2c.c b/drivers/char/tpm/st33zp24/i2c.c
+index 7c617edff4ca..7ed9829cacc4 100644
+--- a/drivers/char/tpm/st33zp24/i2c.c
++++ b/drivers/char/tpm/st33zp24/i2c.c
+@@ -313,5 +313,4 @@ module_i2c_driver(st33zp24_i2c_driver);
+ 
+ MODULE_AUTHOR("TPM support (TPMsupport@list.st.com)");
+ MODULE_DESCRIPTION("STM TPM 1.2 I2C ST33 Driver");
+-MODULE_VERSION("1.3.0");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/st33zp24/spi.c b/drivers/char/tpm/st33zp24/spi.c
+index a75dafd39445..147efea4eb05 100644
+--- a/drivers/char/tpm/st33zp24/spi.c
++++ b/drivers/char/tpm/st33zp24/spi.c
+@@ -430,5 +430,4 @@ module_spi_driver(st33zp24_spi_driver);
+ 
+ MODULE_AUTHOR("TPM support (TPMsupport@list.st.com)");
+ MODULE_DESCRIPTION("STM TPM 1.2 SPI ST33 Driver");
+-MODULE_VERSION("1.3.0");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/st33zp24/st33zp24.c b/drivers/char/tpm/st33zp24/st33zp24.c
+index 4ec10ab5e576..e0f1a5828993 100644
+--- a/drivers/char/tpm/st33zp24/st33zp24.c
++++ b/drivers/char/tpm/st33zp24/st33zp24.c
+@@ -646,5 +646,4 @@ EXPORT_SYMBOL(st33zp24_pm_resume);
+ 
+ MODULE_AUTHOR("TPM support (TPMsupport@list.st.com)");
+ MODULE_DESCRIPTION("ST33ZP24 TPM 1.2 driver");
+-MODULE_VERSION("1.3.0");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
+index 1621ce818705..dfdc68b8bf88 100644
+--- a/drivers/char/tpm/tpm-interface.c
++++ b/drivers/char/tpm/tpm-interface.c
+@@ -514,5 +514,4 @@ module_exit(tpm_exit);
+ 
+ MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
+ MODULE_DESCRIPTION("TPM Driver");
+-MODULE_VERSION("2.0");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/tpm_atmel.c b/drivers/char/tpm/tpm_atmel.c
+index 54a6750a6757..35bf249cc95a 100644
+--- a/drivers/char/tpm/tpm_atmel.c
++++ b/drivers/char/tpm/tpm_atmel.c
+@@ -231,5 +231,4 @@ module_exit(cleanup_atmel);
+ 
+ MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
+ MODULE_DESCRIPTION("TPM Driver");
+-MODULE_VERSION("2.0");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
+index a9dcf31eadd2..3e72b7b99cce 100644
+--- a/drivers/char/tpm/tpm_crb.c
++++ b/drivers/char/tpm/tpm_crb.c
+@@ -748,5 +748,4 @@ static struct acpi_driver crb_acpi_driver = {
+ module_acpi_driver(crb_acpi_driver);
+ MODULE_AUTHOR("Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>");
+ MODULE_DESCRIPTION("TPM2 Driver");
+-MODULE_VERSION("0.1");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/tpm_i2c_infineon.c b/drivers/char/tpm/tpm_i2c_infineon.c
+index a19d32cb4e94..8920b7c19fcb 100644
+--- a/drivers/char/tpm/tpm_i2c_infineon.c
++++ b/drivers/char/tpm/tpm_i2c_infineon.c
+@@ -731,5 +731,4 @@ static struct i2c_driver tpm_tis_i2c_driver = {
+ module_i2c_driver(tpm_tis_i2c_driver);
+ MODULE_AUTHOR("Peter Huewe <peter.huewe@infineon.com>");
+ MODULE_DESCRIPTION("TPM TIS I2C Infineon Driver");
+-MODULE_VERSION("2.2.0");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
+index 994385bf37c0..5b04d113f634 100644
+--- a/drivers/char/tpm/tpm_ibmvtpm.c
++++ b/drivers/char/tpm/tpm_ibmvtpm.c
+@@ -750,5 +750,4 @@ module_exit(ibmvtpm_module_exit);
+ 
+ MODULE_AUTHOR("adlai@us.ibm.com");
+ MODULE_DESCRIPTION("IBM vTPM Driver");
+-MODULE_VERSION("1.0");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/tpm_infineon.c b/drivers/char/tpm/tpm_infineon.c
+index 9c924a1440a9..8a58966c5c9b 100644
+--- a/drivers/char/tpm/tpm_infineon.c
++++ b/drivers/char/tpm/tpm_infineon.c
+@@ -621,5 +621,4 @@ module_pnp_driver(tpm_inf_pnp_driver);
+ 
+ MODULE_AUTHOR("Marcel Selhorst <tpmdd@sirrix.com>");
+ MODULE_DESCRIPTION("Driver for Infineon TPM SLD 9630 TT 1.1 / SLB 9635 TT 1.2");
+-MODULE_VERSION("1.9.2");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/tpm_nsc.c b/drivers/char/tpm/tpm_nsc.c
+index 038701d48351..6ab2fe7e8782 100644
+--- a/drivers/char/tpm/tpm_nsc.c
++++ b/drivers/char/tpm/tpm_nsc.c
+@@ -412,5 +412,4 @@ module_exit(cleanup_nsc);
+ 
+ MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
+ MODULE_DESCRIPTION("TPM Driver");
+-MODULE_VERSION("2.0");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/tpm_tis.c b/drivers/char/tpm/tpm_tis.c
+index 4ed6e660273a..3074235b405d 100644
+--- a/drivers/char/tpm/tpm_tis.c
++++ b/drivers/char/tpm/tpm_tis.c
+@@ -429,5 +429,4 @@ module_init(init_tis);
+ module_exit(cleanup_tis);
+ MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
+ MODULE_DESCRIPTION("TPM Driver");
+-MODULE_VERSION("2.0");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index 92c51c6cfd1b..20f4b2c7ea52 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -1164,5 +1164,4 @@ EXPORT_SYMBOL_GPL(tpm_tis_resume);
+ 
+ MODULE_AUTHOR("Leendert van Doorn (leendert@watson.ibm.com)");
+ MODULE_DESCRIPTION("TPM Driver");
+-MODULE_VERSION("2.0");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/tpm/tpm_vtpm_proxy.c b/drivers/char/tpm/tpm_vtpm_proxy.c
+index 91c772e38bb5..18f14162d1c1 100644
+--- a/drivers/char/tpm/tpm_vtpm_proxy.c
++++ b/drivers/char/tpm/tpm_vtpm_proxy.c
+@@ -729,5 +729,4 @@ module_exit(vtpm_module_exit);
+ 
+ MODULE_AUTHOR("Stefan Berger (stefanb@us.ibm.com)");
+ MODULE_DESCRIPTION("vTPM Driver");
+-MODULE_VERSION("0.1");
+ MODULE_LICENSE("GPL");
+-- 
+2.11.0
+
