@@ -1,51 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DDC2CBDA5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 14:03:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9642CBDB8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Dec 2020 14:07:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmJzg5x49zDqSY
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 00:02:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmK4W6nWVzDqfj
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 00:07:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmJv92JthzDqhY
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Dec 2020 23:59:01 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmJwK3DfDzDr3m
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 00:00:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=KK1gADI1; 
+ header.a=rsa-sha256 header.s=201909 header.b=ozECxdJL; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CmJv85V5lz9s1l;
- Wed,  2 Dec 2020 23:59:00 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CmJwJ6mw3z9sTL;
+ Thu,  3 Dec 2020 00:00:00 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1606913940;
- bh=NPopVYHSr/Yb3G9AtHOIa0oreXZoz6IHvAXlRk2Vbus=;
+ s=201909; t=1606914001;
+ bh=il+wpPBmVvm9r7smyT4j5MqUTkLNm2LQ7yE8BD7sboE=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=KK1gADI1qlmBscjh8CgK+2na7zrF7Y0P9mjpQU+IFyWi11rzH7Bi9erK4tAwlchLU
- k7X04pPI0yIpquinU0G9FkI00XCFe0T6rCQUtNnAoqVCxntyyb0w4xxlJvUok30JO9
- Bb7IQ3CUyLVdEgLmiD4dwwOjjqKt+RmPsiqErOYpRC13+3XTmEiV9wSM5HEJjTLayr
- yM7gwcG6HhyS3kCMVuTcEf1e6xyocXGYFEyI3ZvxTa/p0ej3boygXR0SuP4WWjY68B
- kDW/BlTtDzhupAy4xUe9xzGKM8TH11Pc6foeQdcqlAcWwac5NRTjsqSUoEmjdxkFDb
- 15uXeE8d4liXA==
+ b=ozECxdJLj/5kK42PP1HJK/3kvDl4Oqt12XnZmdjhEIi54iSTRlZfABpdZTTY8JIcs
+ fMgFhaQwqzrVQl3LDwMAUk6B6RovGugeKA/kaHwJQmMwkpJSr16SZk43qlDrmzpEP8
+ VU9/Xf9spcp6hXX3kkDFjFrHED3RIFg4iei6W7KLxvHQRhXjjD0vxLv/k9icFvGkPo
+ NEN9zyNI1v0X/toH/il+39rT3CbfRfxKMghKpgdbTTNqvG05oRIRaOoaH3hCECSzF7
+ Sj67G8l+1ddeoORzK+HgbW20JlRvzf/Fsem4mwPe89THj4kpMzx4Tc2TfqJn8+l9ke
+ of2IC1O+z0FjA==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 4/8] KVM: PPC: Book3S HV: Ratelimit machine check messages
- coming from guests
-In-Reply-To: <20201128070728.825934-5-npiggin@gmail.com>
+Subject: Re: [PATCH 5/8] powerpc/64s/powernv: ratelimit harmless HMI error
+ printing
+In-Reply-To: <20201128070728.825934-6-npiggin@gmail.com>
 References: <20201128070728.825934-1-npiggin@gmail.com>
- <20201128070728.825934-5-npiggin@gmail.com>
-Date: Wed, 02 Dec 2020 23:58:57 +1100
-Message-ID: <87360owei6.fsf@mpe.ellerman.id.au>
+ <20201128070728.825934-6-npiggin@gmail.com>
+Date: Thu, 03 Dec 2020 00:00:00 +1100
+Message-ID: <87zh2wuzvz.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -66,84 +66,75 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Nicholas Piggin <npiggin@gmail.com> writes:
-> A number of machine check exceptions are triggerable by the guest.
-> Ratelimit these to avoid a guest flooding the host console and logs.
+> Harmless HMI errors can be triggered by guests in some cases, and don't
+> contain much useful information anyway. Ratelimit these to avoid
+> flooding the console/logs.
 >
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  arch/powerpc/kvm/book3s_hv.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
+>  arch/powerpc/platforms/powernv/opal-hmi.c | 27 +++++++++++++----------
+>  1 file changed, 15 insertions(+), 12 deletions(-)
 >
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index e3b1839fc251..c94f9595133d 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -1328,8 +1328,12 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
->  		r = RESUME_GUEST;
+> diff --git a/arch/powerpc/platforms/powernv/opal-hmi.c b/arch/powerpc/platforms/powernv/opal-hmi.c
+> index 3e1f064a18db..959da6df0227 100644
+> --- a/arch/powerpc/platforms/powernv/opal-hmi.c
+> +++ b/arch/powerpc/platforms/powernv/opal-hmi.c
+> @@ -240,19 +240,22 @@ static void print_hmi_event_info(struct OpalHMIEvent *hmi_evt)
 >  		break;
->  	case BOOK3S_INTERRUPT_MACHINE_CHECK:
-> -		/* Print the MCE event to host console. */
-> -		machine_check_print_event_info(&vcpu->arch.mce_evt, false, true);
-> +		/*
-> +		 * Print the MCE event to host console. Ratelimit so the guest
-> +		 * can't flood the host log.
-> +		 */
-> +		if (printk_ratelimit())
-> +			machine_check_print_event_info(&vcpu->arch.mce_evt,false, true);
+>  	}
+>  
+> -	printk("%s%s Hypervisor Maintenance interrupt [%s]\n",
+> -		level, sevstr,
+> -		hmi_evt->disposition == OpalHMI_DISPOSITION_RECOVERED ?
+> -		"Recovered" : "Not recovered");
+> -	error_info = hmi_evt->type < ARRAY_SIZE(hmi_error_types) ?
+> -			hmi_error_types[hmi_evt->type]
+> -			: "Unknown";
+> -	printk("%s Error detail: %s\n", level, error_info);
+> -	printk("%s	HMER: %016llx\n", level, be64_to_cpu(hmi_evt->hmer));
+> -	if ((hmi_evt->type == OpalHMI_ERROR_TFAC) ||
+> -		(hmi_evt->type == OpalHMI_ERROR_TFMR_PARITY))
+> -		printk("%s	TFMR: %016llx\n", level,
+> +	if (hmi_evt->severity != OpalHMI_SEV_NO_ERROR || printk_ratelimit()) {
+> +		printk("%s%s Hypervisor Maintenance interrupt [%s]\n",
+> +			level, sevstr,
+> +			hmi_evt->disposition == OpalHMI_DISPOSITION_RECOVERED ?
+> +			"Recovered" : "Not recovered");
+> +		error_info = hmi_evt->type < ARRAY_SIZE(hmi_error_types) ?
+> +				hmi_error_types[hmi_evt->type]
+> +				: "Unknown";
+> +		printk("%s Error detail: %s\n", level, error_info);
+> +		printk("%s	HMER: %016llx\n", level,
+> +					be64_to_cpu(hmi_evt->hmer));
+> +		if ((hmi_evt->type == OpalHMI_ERROR_TFAC) ||
+> +			(hmi_evt->type == OpalHMI_ERROR_TFMR_PARITY))
+> +			printk("%s	TFMR: %016llx\n", level,
+>  						be64_to_cpu(hmi_evt->tfmr));
+> +	}
 
-You're not supposed to use printk_ratelimit(), because there's a single
-rate limit state for all printks. ie. some other noisty printk() can
-cause this one to never be printed.
+Same comment RE printk_ratelimit(), I folded this in:
 
-I folded this in:
-
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index cbbc4f0a26fe..cfaa91b27112 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -1327,12 +1327,14 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
- 	case BOOK3S_INTERRUPT_SYSTEM_RESET:
- 		r = RESUME_GUEST;
- 		break;
--	case BOOK3S_INTERRUPT_MACHINE_CHECK:
-+	case BOOK3S_INTERRUPT_MACHINE_CHECK: {
-+		static DEFINE_RATELIMIT_STATE(rs, DEFAULT_RATELIMIT_INTERVAL,
-+					      DEFAULT_RATELIMIT_BURST);
- 		/*
- 		 * Print the MCE event to host console. Ratelimit so the guest
- 		 * can't flood the host log.
- 		 */
--		if (printk_ratelimit())
-+		if (__ratelimit(&rs))
- 			machine_check_print_event_info(&vcpu->arch.mce_evt,false, true);
+diff --git a/arch/powerpc/platforms/powernv/opal-hmi.c b/arch/powerpc/platforms/powernv/opal-hmi.c
+index 959da6df0227..f0c1830deb51 100644
+--- a/arch/powerpc/platforms/powernv/opal-hmi.c
++++ b/arch/powerpc/platforms/powernv/opal-hmi.c
+@@ -213,6 +213,8 @@ static void print_hmi_event_info(struct OpalHMIEvent *hmi_evt)
+ 		"A hypervisor resource error occurred",
+ 		"CAPP recovery process is in progress",
+ 	};
++	static DEFINE_RATELIMIT_STATE(rs, DEFAULT_RATELIMIT_INTERVAL,
++				      DEFAULT_RATELIMIT_BURST);
  
- 		/*
-@@ -1361,6 +1363,7 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
+ 	/* Print things out */
+ 	if (hmi_evt->version < OpalHMIEvt_V1) {
+@@ -240,7 +242,7 @@ static void print_hmi_event_info(struct OpalHMIEvent *hmi_evt)
+ 		break;
+ 	}
  
- 		r = RESUME_HOST;
- 		break;
-+	}
- 	case BOOK3S_INTERRUPT_PROGRAM:
- 	{
- 		ulong flags;
-@@ -1520,12 +1523,16 @@ static int kvmppc_handle_nested_exit(struct kvm_vcpu *vcpu)
- 		r = RESUME_GUEST;
- 		break;
- 	case BOOK3S_INTERRUPT_MACHINE_CHECK:
-+	{
-+		static DEFINE_RATELIMIT_STATE(rs, DEFAULT_RATELIMIT_INTERVAL,
-+					      DEFAULT_RATELIMIT_BURST);
- 		/* Pass the machine check to the L1 guest */
- 		r = RESUME_HOST;
- 		/* Print the MCE event to host console. */
--		if (printk_ratelimit())
-+		if (__ratelimit(&rs))
- 			machine_check_print_event_info(&vcpu->arch.mce_evt, false, true);
- 		break;
-+	}
- 	/*
- 	 * We get these next two if the guest accesses a page which it thinks
- 	 * it has mapped but which is not actually present, either because
-
+-	if (hmi_evt->severity != OpalHMI_SEV_NO_ERROR || printk_ratelimit()) {
++	if (hmi_evt->severity != OpalHMI_SEV_NO_ERROR || __ratelimit(&rs)) {
+ 		printk("%s%s Hypervisor Maintenance interrupt [%s]\n",
+ 			level, sevstr,
+ 			hmi_evt->disposition == OpalHMI_DISPOSITION_RECOVERED ?
 
 cheers
