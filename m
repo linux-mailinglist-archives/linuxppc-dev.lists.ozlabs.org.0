@@ -2,46 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F872CCCC2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 03:46:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B582CCCC1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 03:44:18 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmgFR4QQ4zDrRP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 13:46:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmgCM1DNwzDrQf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 13:44:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmftT56kCzDsNh
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 13:29:37 +1100 (AEDT)
-IronPort-SDR: /5DsY3r72hGA5oX652BKjdkm5Z7IgS3YbKzQMSbSlagokXOpdZIiSmUB0/caAAhry9OSgoEdvq
- NMO9QnBVjGlQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9823"; a="152949278"
-X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; d="scan'208";a="152949278"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmftT1v2HzDsNZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 13:29:36 +1100 (AEDT)
+IronPort-SDR: XQ58y9wl+oYaC/JcBCvp+mwGqLK3aMVW+t/MRFkej/UW9Dy2WgFFhy1/N1O8HoDk7/QhwRzADN
+ qO3FGIW/O0kg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9823"; a="257835722"
+X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; d="scan'208";a="257835722"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  02 Dec 2020 18:29:33 -0800
-IronPort-SDR: QjgKzw6GyfSokO1qh+0SmxH47NpksOZsbiTegtT5ZGEGS9zCn5e7LKqbQewJamtYV8oC7DNaps
- uUwj6hY3P4Qw==
+IronPort-SDR: NHO5Uk7teJMY8BxUZkOJ7nFFu7L3wRBHc/XUkUjHMP7Qlw3qnYIgMQTVaVwbN11yJ2n6Sp7qu/
+ 8nju2yR9FGBA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; d="scan'208";a="365562152"
+X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; d="scan'208";a="405722913"
 Received: from lkp-server01.sh.intel.com (HELO 54133fc185c3) ([10.239.97.150])
- by fmsmga004.fm.intel.com with ESMTP; 02 Dec 2020 18:29:32 -0800
+ by orsmga001.jf.intel.com with ESMTP; 02 Dec 2020 18:29:32 -0800
 Received: from kbuild by 54133fc185c3 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1kkeN9-0000TB-Ei; Thu, 03 Dec 2020 02:29:31 +0000
-Date: Thu, 03 Dec 2020 10:28:34 +0800
+ id 1kkeN9-0000T9-E3; Thu, 03 Dec 2020 02:29:31 +0000
+Date: Thu, 03 Dec 2020 10:28:37 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS a1aeabd25a36d9e019381278e543e2d538dd44a7
-Message-ID: <5fc84d52.9Wf0MxKXTgMN/QRY%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD REGRESSION
+ fb003959777a635dea8910cf71109b612c7f940c
+Message-ID: <5fc84d55.MXn17c30YYhBZs2F%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -62,16 +63,44 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: a1aeabd25a36d9e019381278e543e2d538dd44a7  Automatic merge of 'fixes' into merge (2020-12-02 22:37)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
+branch HEAD: fb003959777a635dea8910cf71109b612c7f940c  powerpc/44x: Don't support 47x code and non 47x code at the same time
 
-elapsed time: 734m
+Error/Warning reports:
 
-configs tested: 151
+https://lore.kernel.org/linuxppc-dev/202012030320.soNPcJR8-lkp@intel.com
+https://lore.kernel.org/linuxppc-dev/202012030759.zuEULDQ3-lkp@intel.com
+
+Error/Warning in current branch:
+
+drivers/misc/lkdtm/powerpc.c:13:10: error: use of undeclared identifier 'SLB_VSID_KERNEL'
+drivers/misc/lkdtm/powerpc.c:13:54: error: no member named 'sllp' in 'struct mmu_psize_def'
+drivers/misc/lkdtm/powerpc.c:17:15: error: implicit declaration of function 'mk_vsid_data' [-Werror,-Wimplicit-function-declaration]
+drivers/misc/lkdtm/powerpc.c:18:15: error: implicit declaration of function 'mk_esid_data' [-Werror,-Wimplicit-function-declaration]
+drivers/misc/lkdtm/powerpc.c:18:38: error: use of undeclared identifier 'SLB_NUM_BOLTED'
+drivers/misc/lkdtm/powerpc.c:37:37: error: use of undeclared identifier 'MMU_SEGSIZE_1T'
+drivers/misc/lkdtm/powerpc.c:37:53: error: use of undeclared identifier 'mmu_vmalloc_psize'
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+`-- powerpc-randconfig-c003-20201202
+    `-- arch-powerpc-kernel-firmware.c:WARNING:return-of-in-function-check_kvm_guest-with-return-type-bool
+
+clang_recent_errors
+`-- powerpc64-randconfig-r013-20201202
+    |-- drivers-misc-lkdtm-powerpc.c:error:implicit-declaration-of-function-mk_esid_data-Werror-Wimplicit-function-declaration
+    |-- drivers-misc-lkdtm-powerpc.c:error:implicit-declaration-of-function-mk_vsid_data-Werror-Wimplicit-function-declaration
+    |-- drivers-misc-lkdtm-powerpc.c:error:no-member-named-sllp-in-struct-mmu_psize_def
+    |-- drivers-misc-lkdtm-powerpc.c:error:use-of-undeclared-identifier-MMU_SEGSIZE_1T
+    |-- drivers-misc-lkdtm-powerpc.c:error:use-of-undeclared-identifier-SLB_NUM_BOLTED
+    |-- drivers-misc-lkdtm-powerpc.c:error:use-of-undeclared-identifier-SLB_VSID_KERNEL
+    `-- drivers-misc-lkdtm-powerpc.c:error:use-of-undeclared-identifier-mmu_vmalloc_psize
+
+elapsed time: 733m
+
+configs tested: 141
 configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
 gcc tested configs:
 arm                                 defconfig
@@ -97,12 +126,6 @@ sh                          rsk7264_defconfig
 powerpc                        fsp2_defconfig
 sh                             shx3_defconfig
 sh                        sh7785lcr_defconfig
-powerpc                      ep88xc_defconfig
-powerpc                     sbc8548_defconfig
-arm                        mini2440_defconfig
-sh                        apsh4ad0a_defconfig
-h8300                               defconfig
-powerpc                 mpc836x_mds_defconfig
 sh                            titan_defconfig
 csky                             alldefconfig
 m68k                          sun3x_defconfig
@@ -146,10 +169,6 @@ arm                         nhk8815_defconfig
 mips                        maltaup_defconfig
 mips                           ip32_defconfig
 h8300                    h8300h-sim_defconfig
-arm                  colibri_pxa300_defconfig
-mips                      pistachio_defconfig
-arm                       spear13xx_defconfig
-mips                          ath79_defconfig
 arm                           corgi_defconfig
 powerpc                     ep8248e_defconfig
 sh                   sh7770_generic_defconfig
