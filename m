@@ -2,52 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590D72CD58D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 13:35:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3912CD6D0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 14:34:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmwK41S4szDrNR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 23:35:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cmxd70WJxzDrNg
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 00:34:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=kN0UfyVg; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmwFL0Gg2zDrFL
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 23:31:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=2bjAG/22Xb88hJcxvz1EpCKJuf3oMonmSEWRI/Pfre8=; b=kN0UfyVg5AFOJTIput+Nt86Ekc
- Q3LG5weU1QXDniBRaUvnMsL7gDgKEdCY5djySEvEofodaN1oOJzQyhc1Kf2/yO4W0VNfTEksLApbT
- A7Zi3WkZDAXP4ejREwrP3JYM18d0SnEFU/HmbURuGmvuY6Oezfkiz1aIsxY0nHJGzo5KPTCSHarUI
- u3Yj4gaRjHW1Br4I8C/SIXsIstOJ5pyAIpUodg1RBA7oTCEEJdBXkfai7rjojy37PucTs0pEh6BEr
- Z4KFyjpIxNUiC+YtkWgZ9KwSFPTGRMAm4wn2reffMSzX/xrfLSVu656ADBhfEBiUC3U7LtZHRMja2
- 3DiMaunw==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1kknlh-0007Ex-HX; Thu, 03 Dec 2020 12:31:29 +0000
-Date: Thu, 3 Dec 2020 12:31:29 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Andy Lutomirski <luto@kernel.org>
-Subject: Re: [MOCKUP] x86/mm: Lightweight lazy mm refcounting
-Message-ID: <20201203123129.GH11935@casper.infradead.org>
-References: <7c4bcc0a464ca60be1e0aeba805a192be0ee81e5.1606972194.git.luto@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmxW85Kd6zDrMT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 00:28:52 +1100 (AEDT)
+From: Sasha Levin <sashal@kernel.org>
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.9 09/39] powerpc: Drop -me200 addition to build flags
+Date: Thu,  3 Dec 2020 08:28:03 -0500
+Message-Id: <20201203132834.930999-9-sashal@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20201203132834.930999-1-sashal@kernel.org>
+References: <20201203132834.930999-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7c4bcc0a464ca60be1e0aeba805a192be0ee81e5.1606972194.git.luto@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,40 +46,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Rik van Riel <riel@surriel.com>, Will Deacon <will@kernel.org>,
- X86 ML <x86@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
- LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Linux-MM <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Sasha Levin <sashal@kernel.org>, kernel test robot <lkp@intel.com>,
+ =?UTF-8?q?N=C3=A9meth=20M=C3=A1rton?= <nm127@freemail.hu>,
+ Nick Desaulniers <ndesaulniers@google.com>, Scott Wood <oss@buserror.net>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 02, 2020 at 09:25:51PM -0800, Andy Lutomirski wrote:
-> This code compiles, but I haven't even tried to boot it.  The earlier
-> part of the series isn't terribly interesting -- it's a handful of
-> cleanups that remove all reads of ->active_mm from arch/x86.  I've
-> been meaning to do that for a while, and now I did it.  But, with
-> that done, I think we can move to a totally different lazy mm refcounting
-> model.
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-I went back and read Documentation/vm/active_mm.rst recently.
+[ Upstream commit e02152ba2810f7c88cb54e71cda096268dfa9241 ]
 
-I think it's useful to think about how this would have been handled if
-we'd had RCU at the time.  Particularly:
+Currently a build with CONFIG_E200=y will fail with:
 
-Linus wrote:
-> To support all that, the "struct mm_struct" now has two counters: a
-> "mm_users" counter that is how many "real address space users" there are,
-> and a "mm_count" counter that is the number of "lazy" users (ie anonymous
-> users) plus one if there are any real users.
+  Error: invalid switch -me200
+  Error: unrecognized option -me200
 
-And this just makes me think RCU freeing of mm_struct.  I'm sure it's
-more complicated than that (then, or now), but if an anonymous process
-is borrowing a freed mm, and the mm is freed by RCU then it will not go
-away until the task context switches.  When we context switch back to
-the anon task, it'll borrow some other task's MM and won't even notice
-that the MM it was using has gone away.
+Upstream binutils has never supported an -me200 option. Presumably it
+was supported at some point by either a fork or Freescale internal
+binutils.
+
+We can't support code that we can't even build test, so drop the
+addition of -me200 to the build flags, so we can at least build with
+CONFIG_E200=y.
+
+Reported-by: Németh Márton <nm127@freemail.hu>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Acked-by: Scott Wood <oss@buserror.net>
+Link: https://lore.kernel.org/r/20201116120913.165317-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index 3e8da9cf2eb9d..e6643d5699fef 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -249,7 +249,6 @@ KBUILD_CFLAGS		+= $(call cc-option,-mno-string)
+ cpu-as-$(CONFIG_40x)		+= -Wa,-m405
+ cpu-as-$(CONFIG_44x)		+= -Wa,-m440
+ cpu-as-$(CONFIG_ALTIVEC)	+= $(call as-option,-Wa$(comma)-maltivec)
+-cpu-as-$(CONFIG_E200)		+= -Wa,-me200
+ cpu-as-$(CONFIG_E500)		+= -Wa,-me500
+ 
+ # When using '-many -mpower4' gas will first try and find a matching power4
+-- 
+2.27.0
+
