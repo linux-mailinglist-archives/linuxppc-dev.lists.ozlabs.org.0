@@ -2,82 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968EF2CE045
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 22:01:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F52F2CE176
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 23:15:59 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cn7Y6304JzDrGn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 08:01:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cn9CG1szmzDrGv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 09:15:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=qcai@redhat.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
+ helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=b6XdSoXp; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=SWleDJ1y; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=UPHGqln5; dkim-atps=neutral
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cn4fY2GhfzDr3p
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 05:50:44 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1607021441;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6p8rVdh9ezFweEqxvisvZj8ACIgw1zD41n+1vya4EZg=;
- b=b6XdSoXplpflT3nBaIPkAzP+t+hZ8Vm5MkvUMCX6XEQdO2XTZX9DL7hYknwBjDb9c5V2xn
- vBZNOxUwBb9O01KqPDKfmdbbSWUE0LkRqdGrSl6qFLUxiAY8Tr0zPOW+zoM2ZunQPL6Rbx
- hTWyq4zk5JTfkZZ7oaLUjf4MsmXGk5c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1607021442;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6p8rVdh9ezFweEqxvisvZj8ACIgw1zD41n+1vya4EZg=;
- b=SWleDJ1yRSmjUNzglE1NmFe1cArCbXWwi2JQ4XIIA79HmhefYKg9+ks3zsyBX7D/o9k+tf
- wRnEylIip4vPz3LdTajD+hbYqnquxrG7cbUOAtSXEt4mf4eQHK2t6MQOgZrgGWxBSrDBR9
- oo6EBua+Hm4q6jOs3Jw4R8hkQYBcm5Q=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-299--Lo5vf_dPXWu2SCV7cZDcg-1; Thu, 03 Dec 2020 13:50:39 -0500
-X-MC-Unique: -Lo5vf_dPXWu2SCV7cZDcg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 90F69612A4;
- Thu,  3 Dec 2020 18:50:37 +0000 (UTC)
-Received: from ovpn-66-132.rdu2.redhat.com (unknown [10.10.67.132])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 491B01A8A3;
- Thu,  3 Dec 2020 18:50:36 +0000 (UTC)
-Message-ID: <da02e10d6b5a63dc10159d4420def15aa0bc4c19.camel@redhat.com>
-Subject: Re: [PATCH 3/7] powerpc/64s: flush L1D after user accesses
-From: Qian Cai <qcai@redhat.com>
-To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
-Date: Thu, 03 Dec 2020 13:50:35 -0500
-In-Reply-To: <e82f315e08fe9f13ce4e94259968e0782ebb57a3.camel@redhat.com>
-References: <20201119231333.361771-1-dja@axtens.net>
- <20201119231333.361771-4-dja@axtens.net>
- <e82f315e08fe9f13ce4e94259968e0782ebb57a3.camel@redhat.com>
-Mime-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=qcai@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Fri, 04 Dec 2020 07:56:02 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cn98x4bdwzDqmY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 09:13:53 +1100 (AEDT)
+Received: by mail-pl1-x62e.google.com with SMTP id p6so1952201plr.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Dec 2020 14:13:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=eEmxf4uLm5+F9e4VAD5l7evhNTpueoEKmJf7NHBSgF8=;
+ b=UPHGqln5b2MVwkQJ9DPW4W+c/WOYPO4pDdYgSkuUBuPAEool6k1o9tCh15tbT9uHrK
+ Att6CPPLElr2Kizx6k8SBYlHiYybik+D2pHNYrEi6lvIa/OVMCqcofSbjZiFQCWNagWm
+ gpfCcQKaP4yJ2ZfKAd6w0i3b/1ey0c1DO4esRuIh3lZT4EjH/cz8VKCKfqyuShuaeYhd
+ x0YLD40CLwN02ITpU2TIn1dchmgPuXgxg9Hw3uQ8i6iktCUFcnDMyR1iVOdnAXdjnV9J
+ dlREfCYAI47ZTNuw4m686ZqB4sYG5SbZx+ElCOdLB971GcExKVCtR58og1IlVpDkeiRG
+ GVzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=eEmxf4uLm5+F9e4VAD5l7evhNTpueoEKmJf7NHBSgF8=;
+ b=s87RO74ifr+e8vQyX17tv4n596vVYVq2pGSuNNzNww6nJdPj0rmiAJAmXy2GKwpGKZ
+ IX3olixcxAN6O4qkRb0VNDlVe/mkNom3/CI1sZ+F6K8Tt63ULo35yrFna3RwkncxL1tP
+ Uq7jjhyarpIi5olk6pox/i1p/bFEIH3yZBS887VXljZvnPRXVq6LyAhpx+7rqbvwHf7Z
+ UIyCs6nzO+rkkEtx+lhccENWuPEl6EfYnWNN1W+4LE2W7/QGkbdZItX72XbDp2NQKFWY
+ 2RQxfUgaXWdpJlip8vEEgZTcpPPMRLlFGjTL5+8Lb3ZNSEOdBZLbLomWDNXEKYvRD7cQ
+ YNUQ==
+X-Gm-Message-State: AOAM533NgT/H8qRAFfpo4IXwJReQzL0Yp50Eeo46G8Hn65a0n5D+GJpd
+ YHgC7EKSDfhP69Rep45e3yY=
+X-Google-Smtp-Source: ABdhPJz9kr0b40p8QhJurdR1DemR7fcJ+w7w3vdRbJJ4sHZwhGLmJpARUd3RcgIEF27oxEAuC/OzQg==
+X-Received: by 2002:a17:90a:d308:: with SMTP id
+ p8mr1145716pju.110.1607033630047; 
+ Thu, 03 Dec 2020 14:13:50 -0800 (PST)
+Received: from localhost ([2001:8004:1480:55d9:df22:9c5d:bdf7:7c2b])
+ by smtp.gmail.com with ESMTPSA id kb12sm318120pjb.2.2020.12.03.14.13.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Dec 2020 14:13:49 -0800 (PST)
+Date: Fri, 04 Dec 2020 08:13:40 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [MOCKUP] x86/mm: Lightweight lazy mm refcounting
+To: Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+References: <7c4bcc0a464ca60be1e0aeba805a192be0ee81e5.1606972194.git.luto@kernel.org>
+ <20201203084448.GF2414@hirez.programming.kicks-ass.net>
+In-Reply-To: <20201203084448.GF2414@hirez.programming.kicks-ass.net>
+MIME-Version: 1.0
+Message-Id: <1607033145.hcppy9ndl4.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,39 +80,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cmr@informatik.wtf, spoorts2@in.ibm.com, npiggin@gmail.com
+Cc: linux-arch <linux-arch@vger.kernel.org>, X86 ML <x86@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Linux-MM <linux-mm@kvack.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Rik van Riel <riel@surriel.com>,
+ LKML <linux-kernel@vger.kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+ Will Deacon <will@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-12-03 at 12:17 -0500, Qian Cai wrote:
-> []
-> > +static inline bool
-> > +bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
-> > +{
-> > +	return WARN(mmu_has_feature(MMU_FTR_RADIX_KUAP) &&
-> > +		    (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE : AMR_KUAP_BLOCK_READ)),
-> > +		    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
-> > +}
-> 
-> A simple "echo t > /proc/sysrq-trigger" will trigger this warning almost
-> endlessly on POWER9 NV.
+Excerpts from Peter Zijlstra's message of December 3, 2020 6:44 pm:
+> On Wed, Dec 02, 2020 at 09:25:51PM -0800, Andy Lutomirski wrote:
+>=20
+>> power: same as ARM, except that the loop may be rather larger since
+>> the systems are bigger.  But I imagine it's still faster than Nick's
+>> approach -- a cmpxchg to a remote cacheline should still be faster than
+>> an IPI shootdown.=20
+>=20
+> While a single atomic might be cheaper than an IPI, the comparison
+> doesn't work out nicely. You do the xchg() on every unlazy, while the
+> IPI would be once per process exit.
+>=20
+> So over the life of the process, it might do very many unlazies, adding
+> up to a total cost far in excess of what the single IPI would've been.
 
-I have just realized the patch just moved this warning around, so the issue was
-pre-existent. Since I have not tested sysrq-t regularly, I am not sure when it
-started to break. So far, I have reverted some of those for testing which did
-not help, i.e., the sysrq-t issue remains.
+Yeah this is the concern, I looked at things that add cost to the
+idle switch code and it gets hard to justify the scalability improvement
+when you slow these fundmaental things down even a bit.
 
-16852975f0f  Revert "powerpc/64s: Use early_mmu_has_feature() in set_kuap()"
-129e240ead32 Revert "powerpc: Implement user_access_save() and user_access_restore()"
-edb0046c842c Revert "powerpc/64s/kuap: Add missing isync to KUAP restore paths"
-2d46ee87ce44 Revert "powerpc/64/kuap: Conditionally restore AMR in interrupt exit"
-c1e0e805fc57 Revert "powerpc/64s/kuap: Conditionally restore AMR in kuap_restore_amr asm"
-7f30b7aaf23a Revert "selftests/powerpc: rfi_flush: disable entry flush if present"
-bc9b9967a100 Revert "powerpc/64s: flush L1D on kernel entry"
-b77e7b54f5eb Revert "powerpc/64s: flush L1D after user accesses"
-22dddf532c64 Revert "powerpc: Only include kup-radix.h for 64-bit Book3S"
-2679d155c46a Revert "selftests/powerpc: entry flush test"
-87954b9b4243 Revert "selftests/powerpc: refactor entry and rfi_flush tests"
-342d82bd4c5d Revert "powerpc/64s: rename pnv|pseries_setup_rfi_flush to _setup_security_mitigations"
+I still think working on the assumption that IPIs =3D scary expensive=20
+might not be correct. An IPI itself is, but you only issue them when=20
+you've left a lazy mm on another CPU which just isn't that often.
 
+Thanks,
+Nick
