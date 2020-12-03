@@ -2,94 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCFD42CCEA6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 06:29:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A99E2CCED1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 06:49:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmktB1SlyzDqL8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 16:29:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmlKZ6p6dzDqx6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 16:49:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gmBGhOgc; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cmkr664C1zDrPQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 16:27:50 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B3531ql112743; Thu, 3 Dec 2020 00:27:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=OhfKcwxM5ue5lV34QJQhw3t/ick4L4CDayj/uOkinec=;
- b=gmBGhOgc27X9CBKkwqbZ4oipMjGxXHBEnK3FRnNT4uR2rfSjiKluND04rmiicG6FZvaY
- rnbbrCLprhbRih8o4PjtboASJwVbm6Szrui6q/48qkL3++0rj/OYRiSrZCk4FEYFuAje
- 4YJhf+r6htc50o2xL3YTL/nhwk15jsCeCqB0zLz5u77htqEoP42Idld3TL9ObjBFC0wk
- F5M+v5G3Bx/ycsU+MhWuWJ1AvGcGptI30d5T4/tUdmdTLLFnDURP0IAr5af8Vbz3LZr8
- jADHuOVMjPE813RvzoQIqF/s86zsmWS4+sXvLYckTPRibeklxWEmxMw5Sgfd7TyglaLQ Ug== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 356p2kmr7v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 03 Dec 2020 00:27:43 -0500
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B35LBPn029318;
- Thu, 3 Dec 2020 05:27:41 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04fra.de.ibm.com with ESMTP id 353e68ahqs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 03 Dec 2020 05:27:41 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B35RdIE9437800
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 3 Dec 2020 05:27:39 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3039CA405F;
- Thu,  3 Dec 2020 05:27:39 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 913D7A405B;
- Thu,  3 Dec 2020 05:27:37 +0000 (GMT)
-Received: from Madhavan.PrimaryTP (unknown [9.85.68.189])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  3 Dec 2020 05:27:37 +0000 (GMT)
-Subject: Re: [PATCH kernel] powerpc/perf: Stop crashing with generic_compat_pmu
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-References: <20200602025612.62707-1-aik@ozlabs.ru>
- <c3852667-210c-48de-7f89-a06250b4df05@linux.ibm.com>
- <848255d6-5c8f-d4c2-a865-e3a7ffce7fdb@ozlabs.ru>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Message-ID: <b7b928ed-f338-cc5d-9045-d783bc85cfec@linux.ibm.com>
-Date: Thu, 3 Dec 2020 10:57:35 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
-MIME-Version: 1.0
-In-Reply-To: <848255d6-5c8f-d4c2-a865-e3a7ffce7fdb@ozlabs.ru>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-12-03_01:2020-11-30,
- 2020-12-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=1
- lowpriorityscore=0 mlxlogscore=999 malwarescore=0 clxscore=1011
- impostorscore=0 mlxscore=0 priorityscore=1501 phishscore=0 spamscore=0
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012030030
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CmlHZ5TTKzDqv2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 16:48:05 +1100 (AEDT)
+Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id 4D356AE80053;
+ Thu,  3 Dec 2020 00:47:29 -0500 (EST)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel v2] powerpc/kuap: Restore AMR after replaying soft
+ interrupts
+Date: Thu,  3 Dec 2020 16:47:24 +1100
+Message-Id: <20201203054724.44838-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,106 +38,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+When interrupted in raw_copy_from_user()/... after user memory access
+is enabled, a nested handler may also access user memory (perf is
+one example) and when it does so, it calls prevent_read_from_user()
+which prevents the upper handler from accessing user memory.
 
-On 12/2/20 8:31 AM, Alexey Kardashevskiy wrote:
-> Hi Maddy,
->
-> I just noticed that I still have "powerpc/perf: Add checks for 
-> reserved values" in my pile (pushed here 
-> https://github.com/aik/linux/commit/61e1bc3f2e19d450e2e2d39174d422160b21957b 
-> ), do we still need it? The lockups I saw were fixed by 
-> https://github.com/aik/linux/commit/17899eaf88d689 but it is hardly a 
-> replacement. Thanks,
+This saves/restores AMR when replaying interrupts.
 
-sorry missed this. Will look at this again. Since we will need 
-generation specific checks for the reserve field.
+get_kuap/set_kuap have stubs for disabled KUAP on RADIX but there are
+none for hash-only configs (BOOK3E) so this adds stubs and moves
+AMR_KUAP_BLOCK_xxx.
 
-Maddy
+Found by syzkaller. More likely to break with enabled
+CONFIG_DEBUG_ATOMIC_SLEEP, the call chain is
+timer_interrupt -> ktime_get -> read_seqcount_begin -> local_irq_restore.
 
->
->
-> On 04/06/2020 02:34, Madhavan Srinivasan wrote:
->>
->>
->> On 6/2/20 8:26 AM, Alexey Kardashevskiy wrote:
->>> The bhrb_filter_map ("The  Branch History  Rolling  Buffer") 
->>> callback is
->>> only defined in raw CPUs' power_pmu structs. The "architected" CPUs use
->>> generic_compat_pmu which does not have this callback and crashed occur.
->>>
->>> This add a NULL pointer check for bhrb_filter_map() which behaves as if
->>> the callback returned an error.
->>>
->>> This does not add the same check for config_bhrb() as the only caller
->>> checks for cpuhw->bhrb_users which remains zero if bhrb_filter_map==0.
->>
->> Changes looks fine.
->> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->>
->> The commit be80e758d0c2e ('powerpc/perf: Add generic compat mode pmu 
->> driver')
->> which introduced generic_compat_pmu was merged in v5.2.  So we need to
->> CC stable starting from 5.2 :( .  My bad,  sorry.
->>
->> Maddy
->>
->>> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
->>> ---
->>>   arch/powerpc/perf/core-book3s.c | 19 ++++++++++++++-----
->>>   1 file changed, 14 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/arch/powerpc/perf/core-book3s.c 
->>> b/arch/powerpc/perf/core-book3s.c
->>> index 3dcfecf858f3..36870569bf9c 100644
->>> --- a/arch/powerpc/perf/core-book3s.c
->>> +++ b/arch/powerpc/perf/core-book3s.c
->>> @@ -1515,9 +1515,16 @@ static int power_pmu_add(struct perf_event 
->>> *event, int ef_flags)
->>>       ret = 0;
->>>    out:
->>>       if (has_branch_stack(event)) {
->>> -        power_pmu_bhrb_enable(event);
->>> -        cpuhw->bhrb_filter = ppmu->bhrb_filter_map(
->>> -                    event->attr.branch_sample_type);
->>> +        u64 bhrb_filter = -1;
->>> +
->>> +        if (ppmu->bhrb_filter_map)
->>> +            bhrb_filter = ppmu->bhrb_filter_map(
->>> +                event->attr.branch_sample_type);
->>> +
->>> +        if (bhrb_filter != -1) {
->>> +            cpuhw->bhrb_filter = bhrb_filter;
->>> +            power_pmu_bhrb_enable(event); /* Does bhrb_users++ */
->>> +        }
->>>       }
->>>
->>>       perf_pmu_enable(event->pmu);
->>> @@ -1839,7 +1846,6 @@ static int power_pmu_event_init(struct 
->>> perf_event *event)
->>>       int n;
->>>       int err;
->>>       struct cpu_hw_events *cpuhw;
->>> -    u64 bhrb_filter;
->>>
->>>       if (!ppmu)
->>>           return -ENOENT;
->>> @@ -1945,7 +1951,10 @@ static int power_pmu_event_init(struct 
->>> perf_event *event)
->>>       err = power_check_constraints(cpuhw, events, cflags, n + 1);
->>>
->>>       if (has_branch_stack(event)) {
->>> -        bhrb_filter = ppmu->bhrb_filter_map(
->>> +        u64 bhrb_filter = -1;
->>> +
->>> +        if (ppmu->bhrb_filter_map)
->>> +            bhrb_filter = ppmu->bhrb_filter_map(
->>>                       event->attr.branch_sample_type);
->>>
->>>           if (bhrb_filter == -1) {
->>
->
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+Changes:
+v2:
+* fixed compile on hash
+* moved get/set to arch_local_irq_restore
+* block KUAP before replaying
+
+
+---
+
+This is an example:
+
+------------[ cut here ]------------
+Bug: Read fault blocked by AMR!
+WARNING: CPU: 0 PID: 1603 at /home/aik/p/kernel/arch/powerpc/include/asm/book3s/64/kup-radix.h:145 __do_page_fau
+
+Modules linked in:
+CPU: 0 PID: 1603 Comm: amr Not tainted 5.10.0-rc6_v5.10-rc6_a+fstn1 #24
+NIP:  c00000000009ece8 LR: c00000000009ece4 CTR: 0000000000000000
+REGS: c00000000dc63560 TRAP: 0700   Not tainted  (5.10.0-rc6_v5.10-rc6_a+fstn1)
+MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 28002888  XER: 20040000
+CFAR: c0000000001fa928 IRQMASK: 1
+GPR00: c00000000009ece4 c00000000dc637f0 c000000002397600 000000000000001f
+GPR04: c0000000020eb318 0000000000000000 c00000000dc63494 0000000000000027
+GPR08: c00000007fe4de68 c00000000dfe9180 0000000000000000 0000000000000001
+GPR12: 0000000000002000 c0000000030a0000 0000000000000000 0000000000000000
+GPR16: 0000000000000000 0000000000000000 0000000000000000 bfffffffffffffff
+GPR20: 0000000000000000 c0000000134a4020 c0000000019c2218 0000000000000fe0
+GPR24: 0000000000000000 0000000000000000 c00000000d106200 0000000040000000
+GPR28: 0000000000000000 0000000000000300 c00000000dc63910 c000000001946730
+NIP [c00000000009ece8] __do_page_fault+0xb38/0xde0
+LR [c00000000009ece4] __do_page_fault+0xb34/0xde0
+Call Trace:
+[c00000000dc637f0] [c00000000009ece4] __do_page_fault+0xb34/0xde0 (unreliable)
+[c00000000dc638a0] [c00000000000c968] handle_page_fault+0x10/0x2c
+--- interrupt: 300 at strncpy_from_user+0x290/0x440
+    LR = strncpy_from_user+0x284/0x440
+[c00000000dc63ba0] [c000000000c3dcb0] strncpy_from_user+0x2f0/0x440 (unreliable)
+[c00000000dc63c30] [c00000000068b888] getname_flags+0x88/0x2c0
+[c00000000dc63c90] [c000000000662a44] do_sys_openat2+0x2d4/0x5f0
+[c00000000dc63d30] [c00000000066560c] do_sys_open+0xcc/0x140
+[c00000000dc63dc0] [c000000000045e10] system_call_exception+0x160/0x240
+[c00000000dc63e20] [c00000000000da60] system_call_common+0xf0/0x27c
+Instruction dump:
+409c0048 3fe2ff5b 3bfff128 fac10060 fae10068 482f7a85 60000000 3c62ff5b
+7fe4fb78 3863f250 4815bbd9 60000000 <0fe00000> 3c62ff5b 3863f2b8 4815c8b5
+irq event stamp: 254
+hardirqs last  enabled at (253): [<c000000000019550>] arch_local_irq_restore+0xa0/0x150
+hardirqs last disabled at (254): [<c000000000008a10>] data_access_common_virt+0x1b0/0x1d0
+softirqs last  enabled at (0): [<c0000000001f6d5c>] copy_process+0x78c/0x2120
+softirqs last disabled at (0): [<0000000000000000>] 0x0
+---[ end trace ba98aec5151f3aeb ]---
+---
+ arch/powerpc/include/asm/book3s/64/kup-radix.h |  3 ---
+ arch/powerpc/include/asm/kup.h                 | 10 ++++++++++
+ arch/powerpc/kernel/irq.c                      |  6 ++++++
+ 3 files changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/kup-radix.h b/arch/powerpc/include/asm/book3s/64/kup-radix.h
+index a39e2d193fdc..4ad607461b75 100644
+--- a/arch/powerpc/include/asm/book3s/64/kup-radix.h
++++ b/arch/powerpc/include/asm/book3s/64/kup-radix.h
+@@ -5,9 +5,6 @@
+ #include <linux/const.h>
+ #include <asm/reg.h>
+ 
+-#define AMR_KUAP_BLOCK_READ	UL(0x4000000000000000)
+-#define AMR_KUAP_BLOCK_WRITE	UL(0x8000000000000000)
+-#define AMR_KUAP_BLOCKED	(AMR_KUAP_BLOCK_READ | AMR_KUAP_BLOCK_WRITE)
+ #define AMR_KUAP_SHIFT		62
+ 
+ #ifdef __ASSEMBLY__
+diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+index 0d93331d0fab..e63930767a96 100644
+--- a/arch/powerpc/include/asm/kup.h
++++ b/arch/powerpc/include/asm/kup.h
+@@ -14,6 +14,10 @@
+ #define KUAP_CURRENT_WRITE	8
+ #define KUAP_CURRENT		(KUAP_CURRENT_READ | KUAP_CURRENT_WRITE)
+ 
++#define AMR_KUAP_BLOCK_READ	UL(0x4000000000000000)
++#define AMR_KUAP_BLOCK_WRITE	UL(0x8000000000000000)
++#define AMR_KUAP_BLOCKED	(AMR_KUAP_BLOCK_READ | AMR_KUAP_BLOCK_WRITE)
++
+ #ifdef CONFIG_PPC_BOOK3S_64
+ #include <asm/book3s/64/kup-radix.h>
+ #endif
+@@ -64,6 +68,12 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+ }
+ 
+ static inline void kuap_check_amr(void) { }
++static inline unsigned long get_kuap(void)
++{
++	return AMR_KUAP_BLOCKED;
++}
++
++static inline void set_kuap(unsigned long value) { }
+ 
+ /*
+  * book3s/64/kup-radix.h defines these functions for the !KUAP case to flush
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 7d0f7682d01d..d9fd46da04d6 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -314,6 +314,7 @@ void replay_soft_interrupts(void)
+ notrace void arch_local_irq_restore(unsigned long mask)
+ {
+ 	unsigned char irq_happened;
++	unsigned long kuap_state;
+ 
+ 	/* Write the new soft-enabled value */
+ 	irq_soft_mask_set(mask);
+@@ -373,9 +374,14 @@ notrace void arch_local_irq_restore(unsigned long mask)
+ 	irq_soft_mask_set(IRQS_ALL_DISABLED);
+ 	trace_hardirqs_off();
+ 
++	kuap_state = get_kuap();
++	set_kuap(AMR_KUAP_BLOCKED);
++
+ 	replay_soft_interrupts();
+ 	local_paca->irq_happened = 0;
+ 
++	set_kuap(kuap_state);
++
+ 	trace_hardirqs_on();
+ 	irq_soft_mask_set(IRQS_ENABLED);
+ 	__hard_irq_enable();
+-- 
+2.17.1
+
