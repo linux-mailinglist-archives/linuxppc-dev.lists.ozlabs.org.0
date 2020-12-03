@@ -2,65 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9E22CDC0F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 18:13:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 434712CDC30
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 18:16:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cn2Vp3QrJzDqTw
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 04:13:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cn2Yk6X3czDrBs
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 04:16:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=amacapital.net (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=luto@amacapital.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=amacapital.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=jeeAqf55; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+ unprotected) header.d=amacapital-net.20150623.gappssmtp.com
+ header.i=@amacapital-net.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=aRJu1HO4; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cn2R66d97zDrJB
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 04:10:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=0lhCxHLgf8TSOAvypxgyZdt6AOtyZg3i7+GSOy69WwU=; b=jeeAqf558AfAqY1ZPTR4HfNgwX
- YopjYarSwRSdQuGeGyjCSNFpvTWHEYq7+8CHvDrMVdGazF9BvP9no40RR9phvvpP85cND+YTv5ln8
- KPsTGbcRveY23zSbT4NayaXcOaWGv8eD84pD4++pebfb9TdeUpWsXFyBzsbMD+4DIqsHk8ZIrsRiW
- I7PtW3gWf5TUhQ5JidDUj/TGspfxPwztfLhtU0q/hd+wkoe4vNNFcR8XRjZIn82vi+bkd0ZTVcg/Z
- fo0RR2g2KJYGfC5KQ9XiTR/EvLYuZJdjOjJWpHZAgMtF0E4z09yRlsVs8vjqzUSCTdzo9+Ps9L8Qg
- SgThpYbg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kks7U-0000Aw-Oc; Thu, 03 Dec 2020 17:10:17 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 71A073059DD;
- Thu,  3 Dec 2020 18:10:15 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 5647C2029C718; Thu,  3 Dec 2020 18:10:15 +0100 (CET)
-Date: Thu, 3 Dec 2020 18:10:15 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Heiko Carstens <hca@linux.ibm.com>
-Subject: Re: [PATCH AUTOSEL 5.9 27/39] sched/idle: Fix arch_cpu_idle() vs
- tracing
-Message-ID: <20201203171015.GN2414@hirez.programming.kicks-ass.net>
-References: <20201203132834.930999-1-sashal@kernel.org>
- <20201203132834.930999-27-sashal@kernel.org>
- <20201203145442.GC9994@osiris>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201203145442.GC9994@osiris>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cn2WT0RxrzDqB3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 04:14:27 +1100 (AEDT)
+Received: by mail-pj1-x1043.google.com with SMTP id b12so1495999pjl.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Dec 2020 09:14:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amacapital-net.20150623.gappssmtp.com; s=20150623;
+ h=content-transfer-encoding:from:mime-version:subject:date:message-id
+ :references:cc:in-reply-to:to;
+ bh=jpxIDRJby02bDSmzqib9oh8ZXDBqI+2pH5k0P2lzdWM=;
+ b=aRJu1HO4xnNzb8jocw95sh/+CjsELYLpn2jhaJctdiBvV0Fo/IKe2d9DUjnFTVLurX
+ Zz5jY6puhccVi4/XYJcF7M1WWjBZ/WYrYvOH0BlxpJnlRQ5Gv20I5Qa54qDavxIpMqu7
+ 46YMj6QXtaEh429/CwE53Heyk8rCED0kC2GVSiksY3g51x/NcNUwhV8nC9XoV+cO/mxt
+ 4h3T5yaHfoFjomEoJs048LrdfUJhUseSC4iy7RdIuoRUVb60jBp4vPTph+8LXJR4h17K
+ q4oZzEwHYNz5a1MVWTTRm26Dfo5pZpVJIp2icQJRZ7CVgm0Yy3vM/31Kuj9RXfgsUNyL
+ FvEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:content-transfer-encoding:from:mime-version
+ :subject:date:message-id:references:cc:in-reply-to:to;
+ bh=jpxIDRJby02bDSmzqib9oh8ZXDBqI+2pH5k0P2lzdWM=;
+ b=BWf0TzLhGgXXB7sCdmeLN3NKhEELFj4yGn7jxioa1yOQaScruJE/fcLwwE7wJVGLbQ
+ xODBBoBQ/1GWXOL6E98dQAke+2azaIF4Xqdc960zTsXmm2FaAEp3/OMA6Jhtx6iGLoa7
+ 8XA38yYVWa5AmDFEEHc90YIZFL77c5M8/QDB+z00dCyxfSlVXjo9nuVF2sGWXEXxDMar
+ ZbXTog6tRVmwuaGRmW6oalPMWk4H24wiQ8Amn0sudFOsLlTnQizX5bqvJLEVxpbVLe8D
+ uZVEZ0V40JHwpJFrSVH9dCnO5k01+fhYsKLrmtq3cftAzfiUzP1lYMwGxGvzZgnK7x4e
+ dzlA==
+X-Gm-Message-State: AOAM53246E+deQSV8Rq7mjasySz+0zaEhujbBs/jIGvcNVQZ3xD/bh3v
+ UGntPH2K/siViYIcvyH1MDMdpg==
+X-Google-Smtp-Source: ABdhPJwE4etOoyGMx9UOKs7yAhw7hgOhsifHtas0tGfE12clfk9l2UH+s+JZSLZnFMT+6hGUVEc2Aw==
+X-Received: by 2002:a17:90a:5988:: with SMTP id l8mr120805pji.82.1607015664612; 
+ Thu, 03 Dec 2020 09:14:24 -0800 (PST)
+Received: from ?IPv6:2600:1010:b02c:6432:59d6:b4ed:32aa:4315?
+ ([2600:1010:b02c:6432:59d6:b4ed:32aa:4315])
+ by smtp.gmail.com with ESMTPSA id t9sm30146pjq.46.2020.12.03.09.14.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 03 Dec 2020 09:14:23 -0800 (PST)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Andy Lutomirski <luto@amacapital.net>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH 6/8] lazy tlb: shoot lazies,
+ a non-refcounting lazy tlb option
+Date: Thu, 3 Dec 2020 09:14:22 -0800
+Message-Id: <E6BC2596-6087-49F2-8758-CA5598998BBE@amacapital.net>
+References: <20201203170332.GA27195@oc3871087118.ibm.com>
+In-Reply-To: <20201203170332.GA27195@oc3871087118.ibm.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+X-Mailer: iPhone Mail (18B121)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,45 +83,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-um@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
- sparclinux@vger.kernel.org, linux-csky@vger.kernel.org,
- Sven Schnelle <svens@linux.ibm.com>, linux-alpha@vger.kernel.org,
- uclinux-h8-devel@lists.sourceforge.jp, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Arnd Bergmann <arnd@arndb.de>,
+ Vasily Gorbik <gor@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andy Lutomirski <luto@kernel.org>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 03, 2020 at 03:54:42PM +0100, Heiko Carstens wrote:
-> On Thu, Dec 03, 2020 at 08:28:21AM -0500, Sasha Levin wrote:
-> > From: Peter Zijlstra <peterz@infradead.org>
-> > 
-> > [ Upstream commit 58c644ba512cfbc2e39b758dd979edd1d6d00e27 ]
-> > 
-> > We call arch_cpu_idle() with RCU disabled, but then use
-> > local_irq_{en,dis}able(), which invokes tracing, which relies on RCU.
-> > 
-> > Switch all arch_cpu_idle() implementations to use
-> > raw_local_irq_{en,dis}able() and carefully manage the
-> > lockdep,rcu,tracing state like we do in entry.
-> > 
-> > (XXX: we really should change arch_cpu_idle() to not return with
-> > interrupts enabled)
-> > 
-> > Reported-by: Sven Schnelle <svens@linux.ibm.com>
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-> > Tested-by: Mark Rutland <mark.rutland@arm.com>
-> > Link: https://lkml.kernel.org/r/20201120114925.594122626@infradead.org
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> This patch broke s390 irq state tracing. A patch to fix this is
-> scheduled to be merged upstream today (hopefully).
-> Therefore I think this patch should not yet go into 5.9 stable.
 
-Agreed.
+
+> On Dec 3, 2020, at 9:09 AM, Alexander Gordeev <agordeev@linux.ibm.com> wro=
+te:
+>=20
+> =EF=BB=BFOn Mon, Nov 30, 2020 at 10:31:51AM -0800, Andy Lutomirski wrote:
+>> other arch folk: there's some background here:
+
+>=20
+>>=20
+>> power: Ridiculously complicated, seems to vary by system and kernel confi=
+g.
+>>=20
+>> So, Nick, your unconditional IPI scheme is apparently a big
+>> improvement for power, and it should be an improvement and have low
+>> cost for x86.  On arm64 and s390x it will add more IPIs on process
+>> exit but reduce contention on context switching depending on how lazy
+>=20
+> s390 does not invalidate TLBs per-CPU explicitly - we have special
+> instructions for that. Those in turn initiate signalling to other
+> CPUs, completely transparent to OS.
+
+Just to make sure I understand: this means that you broadcast flushes to all=
+ CPUs, not just a subset?
+
+>=20
+> Apart from mm_count, I am struggling to realize how the suggested
+> scheme could change the the contention on s390 in connection with
+> TLB. Could you clarify a bit here, please?
+
+I=E2=80=99m just talking about mm_count. Maintaining mm_count is quite expen=
+sive on some workloads.
+
+>=20
+>> TLB works.  I suppose we could try it for all architectures without
+>> any further optimizations.  Or we could try one of the perhaps
+>> excessively clever improvements I linked above.  arm64, s390x people,
+>> what do you think?
+>=20
+> I do not immediately see anything in the series that would harm
+> performance on s390.
+>=20
+> We however use mm_cpumask to distinguish between local and global TLB
+> flushes. With this series it looks like mm_cpumask is *required* to
+> be consistent with lazy users. And that is something quite diffucult
+> for us to adhere (at least in the foreseeable future).
+
+You don=E2=80=99t actually need to maintain mm_cpumask =E2=80=94 we could sc=
+an all CPUs instead.
+
+>=20
+> But actually keeping track of lazy users in a cpumask is something
+> the generic code would rather do AFAICT.
+
+The problem is that arches don=E2=80=99t agree on what the contents of mm_cp=
+umask should be.  Tracking a mask of exactly what the arch wants in generic c=
+ode is a nontrivial operation.
