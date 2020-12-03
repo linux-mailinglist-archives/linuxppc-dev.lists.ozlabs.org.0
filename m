@@ -2,47 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36952CCCBE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 03:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F872CCCC2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 03:46:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cmg9g6b3PzF1nS
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 13:42:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmgFR4QQ4zDrRP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 13:46:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmflY3LnJzDqvZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 13:23:36 +1100 (AEDT)
-IronPort-SDR: dteF0YOOZpKfHaluowkEEoZ03Yke5UBbOyTv1ai8IF87pawPNb+N4UWyGx9fAsCfQc7+Vr2szx
- avHIDqARK0OA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9823"; a="257834955"
-X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; d="scan'208";a="257834955"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmftT56kCzDsNh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 13:29:37 +1100 (AEDT)
+IronPort-SDR: /5DsY3r72hGA5oX652BKjdkm5Z7IgS3YbKzQMSbSlagokXOpdZIiSmUB0/caAAhry9OSgoEdvq
+ NMO9QnBVjGlQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9823"; a="152949278"
+X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; d="scan'208";a="152949278"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2020 18:23:33 -0800
-IronPort-SDR: 6HHEmnwjvGlDR3stNvRoXKjOBfxD0RchCtPNeCfjbwEX6n9aB38sZSFMnQ1ViORJ4tw1HGvDoC
- 9fB+0nqdZlYw==
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2020 18:29:33 -0800
+IronPort-SDR: QjgKzw6GyfSokO1qh+0SmxH47NpksOZsbiTegtT5ZGEGS9zCn5e7LKqbQewJamtYV8oC7DNaps
+ uUwj6hY3P4Qw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; d="scan'208";a="346074951"
+X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; d="scan'208";a="365562152"
 Received: from lkp-server01.sh.intel.com (HELO 54133fc185c3) ([10.239.97.150])
- by orsmga002.jf.intel.com with ESMTP; 02 Dec 2020 18:23:32 -0800
+ by fmsmga004.fm.intel.com with ESMTP; 02 Dec 2020 18:29:32 -0800
 Received: from kbuild by 54133fc185c3 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1kkeHL-0000T6-DR; Thu, 03 Dec 2020 02:23:31 +0000
-Date: Thu, 03 Dec 2020 10:22:32 +0800
+ id 1kkeN9-0000TB-Ei; Thu, 03 Dec 2020 02:29:31 +0000
+Date: Thu, 03 Dec 2020 10:28:34 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- a1ee28117077c3bf24e5ab6324c835eaab629c45
-Message-ID: <5fc84be8.Cj4vVBxUcP1kMQV9%lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS a1aeabd25a36d9e019381278e543e2d538dd44a7
+Message-ID: <5fc84d52.9Wf0MxKXTgMN/QRY%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -63,12 +62,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
-branch HEAD: a1ee28117077c3bf24e5ab6324c835eaab629c45  powerpc/64s/powernv: Fix memory corruption when saving SLB entries on MCE
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: a1aeabd25a36d9e019381278e543e2d538dd44a7  Automatic merge of 'fixes' into merge (2020-12-02 22:37)
 
-elapsed time: 730m
+elapsed time: 734m
 
-configs tested: 148
+configs tested: 151
 configs skipped: 2
 
 The following configs have been built successfully.
@@ -80,12 +79,6 @@ arm64                            allyesconfig
 arm64                               defconfig
 arm                              allyesconfig
 arm                              allmodconfig
-sh                           se7206_defconfig
-sh                          sdk7786_defconfig
-sparc64                          alldefconfig
-arm                          exynos_defconfig
-mips                           ip32_defconfig
-mips                      loongson3_defconfig
 arm                        clps711x_defconfig
 arm                        shmobile_defconfig
 powerpc64                        alldefconfig
@@ -104,9 +97,12 @@ sh                          rsk7264_defconfig
 powerpc                        fsp2_defconfig
 sh                             shx3_defconfig
 sh                        sh7785lcr_defconfig
-sh                          urquell_defconfig
-arm                        realview_defconfig
-arm                           sunxi_defconfig
+powerpc                      ep88xc_defconfig
+powerpc                     sbc8548_defconfig
+arm                        mini2440_defconfig
+sh                        apsh4ad0a_defconfig
+h8300                               defconfig
+powerpc                 mpc836x_mds_defconfig
 sh                            titan_defconfig
 csky                             alldefconfig
 m68k                          sun3x_defconfig
@@ -130,6 +126,7 @@ xtensa                  nommu_kc705_defconfig
 nds32                             allnoconfig
 arm                       versatile_defconfig
 sh                            hp6xx_defconfig
+arm                           sunxi_defconfig
 powerpc                     mpc5200_defconfig
 powerpc                 mpc8272_ads_defconfig
 openrisc                            defconfig
@@ -147,7 +144,12 @@ mips                       rbtx49xx_defconfig
 arm                         s3c2410_defconfig
 arm                         nhk8815_defconfig
 mips                        maltaup_defconfig
+mips                           ip32_defconfig
 h8300                    h8300h-sim_defconfig
+arm                  colibri_pxa300_defconfig
+mips                      pistachio_defconfig
+arm                       spear13xx_defconfig
+mips                          ath79_defconfig
 arm                           corgi_defconfig
 powerpc                     ep8248e_defconfig
 sh                   sh7770_generic_defconfig
