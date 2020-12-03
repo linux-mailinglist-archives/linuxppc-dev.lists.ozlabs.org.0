@@ -2,51 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B582CCCC1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 03:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EF3F2CCD83
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 04:53:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmgCM1DNwzDrQf
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 13:44:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CmhlJ0W4yzDrNr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 14:53:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
+ helo=mail-qk1-x742.google.com; envelope-from=shengjiu.wang@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Mhea7zKS; dkim-atps=neutral
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
+ [IPv6:2607:f8b0:4864:20::742])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CmftT1v2HzDsNZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 13:29:36 +1100 (AEDT)
-IronPort-SDR: XQ58y9wl+oYaC/JcBCvp+mwGqLK3aMVW+t/MRFkej/UW9Dy2WgFFhy1/N1O8HoDk7/QhwRzADN
- qO3FGIW/O0kg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9823"; a="257835722"
-X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; d="scan'208";a="257835722"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2020 18:29:33 -0800
-IronPort-SDR: NHO5Uk7teJMY8BxUZkOJ7nFFu7L3wRBHc/XUkUjHMP7Qlw3qnYIgMQTVaVwbN11yJ2n6Sp7qu/
- 8nju2yR9FGBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,388,1599548400"; d="scan'208";a="405722913"
-Received: from lkp-server01.sh.intel.com (HELO 54133fc185c3) ([10.239.97.150])
- by orsmga001.jf.intel.com with ESMTP; 02 Dec 2020 18:29:32 -0800
-Received: from kbuild by 54133fc185c3 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kkeN9-0000T9-E3; Thu, 03 Dec 2020 02:29:31 +0000
-Date: Thu, 03 Dec 2020 10:28:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD REGRESSION
- fb003959777a635dea8910cf71109b612c7f940c
-Message-ID: <5fc84d55.MXn17c30YYhBZs2F%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmhjK6VGNzDrDX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 14:51:47 +1100 (AEDT)
+Received: by mail-qk1-x742.google.com with SMTP id q5so946028qkc.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Dec 2020 19:51:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=SUzQs/+SoVYKqbh24yWO/KQhjnAXrlDusJdUSTJS5A8=;
+ b=Mhea7zKSrwE8kuWuWy+h9M4qWmkuaGN4aIb747Gar6/nB54tO2IxYzyAY5JGJIBgFD
+ 4lNXCYHb96+jK8BAabG5UbTB6v+QvEBfjJ4Bu3NKUQepLKB3saaoGPMzgBSAvvAF2dGK
+ DOTSmr7c4mjAX+j/vsXoRVSKJCKOW3ZsKIdPhkqZ9xqynSGNxavwDYgdOKFnNcxCDIUB
+ Fhr24MF6tv758ybaKhhDZ17K3qDhsPb/0glb7vdNKf0Ihw9JAepVuoGN9K7CJGcgoj/h
+ z1oJa4ibzH3I4wFno7uS5j/qBUnMpq7ogbpp+jR2XJewTmeN2Y9rGeebn7KHR7/ov8Yi
+ hSWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=SUzQs/+SoVYKqbh24yWO/KQhjnAXrlDusJdUSTJS5A8=;
+ b=arFCsEnJo9w4W741z8PhRv5s2rlgaxDY09heEe0hK3HJDAQxcphwbrPDB0YRyRiBVF
+ to0OIIQelsGZDUc6awlCRiSrQQzNTEezubZAo+7gSZzo+oWTfEn50C3IUtVa1YOpS8TM
+ Sa97GGeyoApPnWaeJzdkKWtGtxk+HemRfLq/0LyIasV/5F0Oks64E71nFC3yT6Dehtaj
+ XZ/Tw6+gjlhDoc6VslgFeKkQXrOgNDs9PbTEuknTQdPEGyAmQx5LmyNsVoiefstbuhpn
+ Dje5mEuqhKAc3HGt3iar/GFVp4xv7Mis0/JlqMp7RibbBBDYh/JcNgm1y/I0gokJZIEb
+ kdVQ==
+X-Gm-Message-State: AOAM531garESzun4EKUv1k4/tuwmWmy1VNvi3E5ZrqDZXkEi7oqr6NoN
+ wIhh3doe1JrDgrdXZdB7JAm9ZhFyUrgf+OMbMuo=
+X-Google-Smtp-Source: ABdhPJy7VJpgVDqrl8VrmWdiRB1M2O74ruT8AdiwDLEn+Mf13W/ZStOpINVSqcBacLORp6qnYaI9VhZZGC1MC4qMtf8=
+X-Received: by 2002:a37:ad17:: with SMTP id f23mr1146570qkm.121.1606967502905; 
+ Wed, 02 Dec 2020 19:51:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <1606455021-18882-1-git-send-email-shengjiu.wang@nxp.com>
+ <1606455021-18882-2-git-send-email-shengjiu.wang@nxp.com>
+ <20201202201955.GB1498@Asurada-Nvidia>
+In-Reply-To: <20201202201955.GB1498@Asurada-Nvidia>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 3 Dec 2020 11:51:32 +0800
+Message-ID: <CAA+D8AOAMV4jyD0uBwER+0KkrBjJcrNPcT4zeYU8Y1WRDRXziQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ASoC: fsl: Add imx-hdmi machine driver
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,195 +74,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, alsa-devel@alsa-project.org,
+ Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Takashi Iwai <tiwai@suse.com>,
+ Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: fb003959777a635dea8910cf71109b612c7f940c  powerpc/44x: Don't support 47x code and non 47x code at the same time
+On Thu, Dec 3, 2020 at 4:23 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
+>
+> On Fri, Nov 27, 2020 at 01:30:21PM +0800, Shengjiu Wang wrote:
+> > The driver is initially designed for sound card using HDMI
+> > interface on i.MX platform. There is internal HDMI IP or
+> > external HDMI modules connect with SAI or AUD2HTX interface.
+> > It supports both transmitter and receiver devices.
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  sound/soc/fsl/Kconfig    |  12 ++
+> >  sound/soc/fsl/Makefile   |   2 +
+> >  sound/soc/fsl/imx-hdmi.c | 235 +++++++++++++++++++++++++++++++++++++++
+> >  3 files changed, 249 insertions(+)
+> >  create mode 100644 sound/soc/fsl/imx-hdmi.c
+>
+> > diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
+> > new file mode 100644
+> > index 000000000000..ac164514b1b2
+> > --- /dev/null
+> > +++ b/sound/soc/fsl/imx-hdmi.c
+>
+> > +static int imx_hdmi_hw_params(struct snd_pcm_substream *substream,
+> > +                           struct snd_pcm_hw_params *params)
+> > +{
+> > +     struct snd_soc_pcm_runtime *rtd = substream->private_data;
+> > +     struct imx_hdmi_data *data = snd_soc_card_get_drvdata(rtd->card);
+> > +     bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
+> > +     struct snd_soc_dai *cpu_dai = asoc_rtd_to_cpu(rtd, 0);
+> > +     struct snd_soc_card *card = rtd->card;
+> > +     struct device *dev = card->dev;
+> > +     int ret;
+> > +
+> > +     /* set cpu DAI configuration */
+> > +     ret = snd_soc_dai_set_sysclk(cpu_dai, data->cpu_priv.sysclk_id[tx],
+> > +                                  8 * data->cpu_priv.slot_width * params_rate(params),
+>
+> Looks like fixed 2 slots being used, judging by the set_tdm_slot
+> call below. Then...why "8 *"? Probably need a line of comments?
 
-Error/Warning reports:
+The master clock always 256 * rate, when slot_width=32.  so use
+the 8 * slot_width.  will add comments.
 
-https://lore.kernel.org/linuxppc-dev/202012030320.soNPcJR8-lkp@intel.com
-https://lore.kernel.org/linuxppc-dev/202012030759.zuEULDQ3-lkp@intel.com
+>
+> > +                                  tx ? SND_SOC_CLOCK_OUT : SND_SOC_CLOCK_IN);
+> > +     if (ret && ret != -ENOTSUPP) {
+> > +             dev_err(dev, "failed to set cpu sysclk: %d\n", ret);
+> > +             return ret;
+> > +     }
+> > +
+> > +     ret = snd_soc_dai_set_tdm_slot(cpu_dai, 0, 0, 2, data->cpu_priv.slot_width);
+>
+> May have a local variable to cache slot_width.
 
-Error/Warning in current branch:
+ok.
 
-drivers/misc/lkdtm/powerpc.c:13:10: error: use of undeclared identifier 'SLB_VSID_KERNEL'
-drivers/misc/lkdtm/powerpc.c:13:54: error: no member named 'sllp' in 'struct mmu_psize_def'
-drivers/misc/lkdtm/powerpc.c:17:15: error: implicit declaration of function 'mk_vsid_data' [-Werror,-Wimplicit-function-declaration]
-drivers/misc/lkdtm/powerpc.c:18:15: error: implicit declaration of function 'mk_esid_data' [-Werror,-Wimplicit-function-declaration]
-drivers/misc/lkdtm/powerpc.c:18:38: error: use of undeclared identifier 'SLB_NUM_BOLTED'
-drivers/misc/lkdtm/powerpc.c:37:37: error: use of undeclared identifier 'MMU_SEGSIZE_1T'
-drivers/misc/lkdtm/powerpc.c:37:53: error: use of undeclared identifier 'mmu_vmalloc_psize'
+>
+> > +static int imx_hdmi_probe(struct platform_device *pdev)
+>
+> > +     data->dai.name = "i.MX HDMI";
+> > +     data->dai.stream_name = "i.MX HDMI";
+> > +     data->dai.cpus->dai_name = dev_name(&cpu_pdev->dev);
+> > +     data->dai.platforms->of_node = cpu_np;
+> > +     data->dai.ops = &imx_hdmi_ops;
+> > +     data->dai.playback_only = true;
+> > +     data->dai.capture_only = false;
+> > +     data->dai.init = imx_hdmi_init;
+> > +
+> > +
+> > +     if (of_property_read_bool(np, "hdmi-out")) {
+> > +             data->dai.playback_only = true;
+> > +             data->dai.capture_only = false;
+> > +             data->dai.codecs->dai_name = "i2s-hifi";
+> > +             data->dai.codecs->name = "hdmi-audio-codec.1";
+> > +             data->dai.dai_fmt = data->dai_fmt |
+> > +                                 SND_SOC_DAIFMT_NB_NF |
+> > +                                 SND_SOC_DAIFMT_CBS_CFS;
+> > +     }
+> > +
+> > +     if (of_property_read_bool(np, "hdmi-in")) {
+> > +             data->dai.playback_only = false;
+> > +             data->dai.capture_only = true;
+> > +             data->dai.codecs->dai_name = "i2s-hifi";
+> > +             data->dai.codecs->name = "hdmi-audio-codec.2";
+> > +             data->dai.dai_fmt = data->dai_fmt |
+> > +                                 SND_SOC_DAIFMT_NB_NF |
+> > +                                 SND_SOC_DAIFMT_CBM_CFM;
+> > +     }
+> > +
+> > +     if ((data->dai.playback_only && data->dai.capture_only) ||
+> > +         (!data->dai.playback_only && !data->dai.capture_only)) {
+> > +             dev_err(&pdev->dev, "Wrongly enable HDMI DAI link\n");
+> > +             goto fail;
+> > +     }
+>
+> Seems that this condition check can never be true, given that:
+> 1. By default: playback_only=true && capture_only=false
+> 2. Conditionally overwritten: playback_only=true && capture_only=false
+> 3. Conditionally overwritten: playback_only=false && capture_only=true
+>
+> If I understand it correctly, probably should be something like:
+>         bool hdmi_out = of_property_read_bool(np, "hdmi-out");
+>         bool hdmi_in = of_property_read_bool(np, "hdmi-in");
+>
+>         if ((hdmi_out && hdmi_in) || (!hdmi_out || !hdmi_in))
+>                 // "Invalid HDMI DAI link"; goto fail;
+>
+>         if (hdmi_out) {
+>                 // ...
+>         } else if (hdmi_in) {
+>                 // ...
+>         } else // No need of this line if two properties are exclusive
+>
 
-Error/Warning ids grouped by kconfigs:
+Good catch, will update it.
 
-gcc_recent_errors
-`-- powerpc-randconfig-c003-20201202
-    `-- arch-powerpc-kernel-firmware.c:WARNING:return-of-in-function-check_kvm_guest-with-return-type-bool
+> > +     data->card.num_links = 1;
+> > +     data->card.dai_link = &data->dai;
+> > +
+> > +     platform_set_drvdata(pdev, &data->card);
+>
+> Why pass card pointer?
 
-clang_recent_errors
-`-- powerpc64-randconfig-r013-20201202
-    |-- drivers-misc-lkdtm-powerpc.c:error:implicit-declaration-of-function-mk_esid_data-Werror-Wimplicit-function-declaration
-    |-- drivers-misc-lkdtm-powerpc.c:error:implicit-declaration-of-function-mk_vsid_data-Werror-Wimplicit-function-declaration
-    |-- drivers-misc-lkdtm-powerpc.c:error:no-member-named-sllp-in-struct-mmu_psize_def
-    |-- drivers-misc-lkdtm-powerpc.c:error:use-of-undeclared-identifier-MMU_SEGSIZE_1T
-    |-- drivers-misc-lkdtm-powerpc.c:error:use-of-undeclared-identifier-SLB_NUM_BOLTED
-    |-- drivers-misc-lkdtm-powerpc.c:error:use-of-undeclared-identifier-SLB_VSID_KERNEL
-    `-- drivers-misc-lkdtm-powerpc.c:error:use-of-undeclared-identifier-mmu_vmalloc_psize
+Seems it duplicates with dev_set_drvdata(card->dev, card);
+in snd_soc_register_card.  will remove it.
 
-elapsed time: 733m
-
-configs tested: 141
-configs skipped: 2
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                        clps711x_defconfig
-arm                        shmobile_defconfig
-powerpc64                        alldefconfig
-mips                 decstation_r4k_defconfig
-nios2                         3c120_defconfig
-mips                         bigsur_defconfig
-mips                malta_qemu_32r6_defconfig
-mips                         mpc30x_defconfig
-microblaze                      mmu_defconfig
-sh                     sh7710voipgw_defconfig
-powerpc                     redwood_defconfig
-parisc                           alldefconfig
-mips                      pic32mzda_defconfig
-powerpc                     skiroot_defconfig
-sh                          rsk7264_defconfig
-powerpc                        fsp2_defconfig
-sh                             shx3_defconfig
-sh                        sh7785lcr_defconfig
-sh                            titan_defconfig
-csky                             alldefconfig
-m68k                          sun3x_defconfig
-arm                          ep93xx_defconfig
-sh                           se7724_defconfig
-powerpc                     powernv_defconfig
-powerpc                      walnut_defconfig
-arm                         s3c6400_defconfig
-arm                       aspeed_g5_defconfig
-sparc                       sparc32_defconfig
-mips                         tb0287_defconfig
-m68k                          hp300_defconfig
-mips                     cu1830-neo_defconfig
-sh                           se7343_defconfig
-arm                            u300_defconfig
-m68k                             alldefconfig
-arm                        spear6xx_defconfig
-arm                         assabet_defconfig
-sh                              ul2_defconfig
-xtensa                  nommu_kc705_defconfig
-nds32                             allnoconfig
-arm                       versatile_defconfig
-sh                            hp6xx_defconfig
-arm                           sunxi_defconfig
-powerpc                     mpc5200_defconfig
-powerpc                 mpc8272_ads_defconfig
-openrisc                            defconfig
-powerpc                       holly_defconfig
-arm                          prima2_defconfig
-arc                           tb10x_defconfig
-m68k                                defconfig
-arm                        keystone_defconfig
-mips                        nlm_xlr_defconfig
-xtensa                              defconfig
-powerpc                     stx_gp3_defconfig
-arm                       cns3420vb_defconfig
-arm                           omap1_defconfig
-mips                       rbtx49xx_defconfig
-arm                         s3c2410_defconfig
-arm                         nhk8815_defconfig
-mips                        maltaup_defconfig
-mips                           ip32_defconfig
-h8300                    h8300h-sim_defconfig
-arm                           corgi_defconfig
-powerpc                     ep8248e_defconfig
-sh                   sh7770_generic_defconfig
-powerpc                 mpc85xx_cds_defconfig
-sh                          landisk_defconfig
-mips                     cu1000-neo_defconfig
-arm                        mvebu_v5_defconfig
-m68k                       m5275evb_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a004-20201202
-x86_64               randconfig-a006-20201202
-x86_64               randconfig-a001-20201202
-x86_64               randconfig-a002-20201202
-x86_64               randconfig-a005-20201202
-x86_64               randconfig-a003-20201202
-i386                 randconfig-a004-20201202
-i386                 randconfig-a005-20201202
-i386                 randconfig-a001-20201202
-i386                 randconfig-a002-20201202
-i386                 randconfig-a006-20201202
-i386                 randconfig-a003-20201202
-i386                 randconfig-a014-20201202
-i386                 randconfig-a013-20201202
-i386                 randconfig-a011-20201202
-i386                 randconfig-a015-20201202
-i386                 randconfig-a012-20201202
-i386                 randconfig-a016-20201202
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a016-20201202
-x86_64               randconfig-a012-20201202
-x86_64               randconfig-a014-20201202
-x86_64               randconfig-a013-20201202
-x86_64               randconfig-a015-20201202
-x86_64               randconfig-a011-20201202
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+best regards
+wang shengjiu
