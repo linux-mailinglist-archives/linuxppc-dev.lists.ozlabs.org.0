@@ -1,40 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038D42CD90E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 15:27:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7714C2CD96F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 15:42:08 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cmypv27nBzDqxl
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 01:27:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cmz7c4K0nzDqkq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 01:42:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=shelob.surriel.com (client-ip=96.67.55.147;
+ helo=shelob.surriel.com; envelope-from=riel@shelob.surriel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=surriel.com
+X-Greylist: delayed 778 seconds by postgrey-1.36 at bilbo;
+ Fri, 04 Dec 2020 01:39:38 AEDT
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cmyct0n8FzDr1V
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 01:18:54 +1100 (AEDT)
-From: Mark Brown <broonie@kernel.org>
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, perex@perex.cz,
- Shengjiu Wang <shengjiu.wang@nxp.com>, linuxppc-dev@lists.ozlabs.org,
- timur@kernel.org, Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com,
- alsa-devel@alsa-project.org, lgirdwood@gmail.com, robh+dt@kernel.org,
- tiwai@suse.com, festevam@gmail.com
-In-Reply-To: <1606708668-28786-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1606708668-28786-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 1/2] ASoC: fsl-asoc-card: Add support for si476x codec
-Message-Id: <160700512198.44361.18384133171951697931.b4-ty@kernel.org>
-Date: Thu, 03 Dec 2020 14:18:41 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cmz4p58wYzDqK3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 01:39:38 +1100 (AEDT)
+Received: from imladris.surriel.com ([96.67.55.152])
+ by shelob.surriel.com with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94)
+ (envelope-from <riel@shelob.surriel.com>)
+ id 1kkpZ2-00023G-Re; Thu, 03 Dec 2020 09:26:32 -0500
+Message-ID: <0239dde7da2d6b6499970f343c7498c711ce14c2.camel@surriel.com>
+Subject: Re: [MOCKUP] x86/mm: Lightweight lazy mm refcounting
+From: Rik van Riel <riel@surriel.com>
+To: Matthew Wilcox <willy@infradead.org>, Andy Lutomirski <luto@kernel.org>
+Date: Thu, 03 Dec 2020 09:26:32 -0500
+In-Reply-To: <20201203123129.GH11935@casper.infradead.org>
+References: <7c4bcc0a464ca60be1e0aeba805a192be0ee81e5.1606972194.git.luto@kernel.org>
+ <20201203123129.GH11935@casper.infradead.org>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-s09L+bRyOvtccCU/oR2v"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,40 +50,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Dave Hansen <dave.hansen@intel.com>, Will Deacon <will@kernel.org>,
+ X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 30 Nov 2020 11:57:47 +0800, Shengjiu Wang wrote:
-> The si476x codec is used for FM radio function on i.MX6
-> auto board, it only supports recording function.
 
-Applied to
+--=-s09L+bRyOvtccCU/oR2v
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+On Thu, 2020-12-03 at 12:31 +0000, Matthew Wilcox wrote:
 
-Thanks!
+> And this just makes me think RCU freeing of mm_struct.  I'm sure it's
+> more complicated than that (then, or now), but if an anonymous
+> process
+> is borrowing a freed mm, and the mm is freed by RCU then it will not
+> go
+> away until the task context switches.  When we context switch back to
+> the anon task, it'll borrow some other task's MM and won't even
+> notice
+> that the MM it was using has gone away.
 
-[1/2] ASoC: fsl-asoc-card: Add support for si476x codec
-      commit: 77f1ff751037fcd39c8fc37b3c3796fb139fb388
-[2/2] ASoC: bindings: fsl-asoc-card: add compatible string for si476x codec
-      commit: 0b3355b070434f9901f641aac9000df93e2c96ad
+One major complication here is that most of the
+active_mm borrowing is done by the idle task,
+but RCU does not wait for idle tasks to context
+switch.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+That means RCU, as it is today, is not a
+mechanism that mm_struct freeing could just
+piggyback off.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+--=20
+All Rights Reversed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--=-s09L+bRyOvtccCU/oR2v
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks,
-Mark
+iQEzBAABCAAdFiEEKR73pCCtJ5Xj3yADznnekoTE3oMFAl/I9ZgACgkQznnekoTE
+3oM1Xwf7BP5sCqPmSgYX7xGoYDG/xK8xty72ALiZ2ixV5SAzOInMZX7m2nmOLZ9k
+0Nu3ycKqeKKdjvuqou4W+DEuiBR0Sy8hkkrlCcrzpmTQ0fv/igXyrRChA4V5u5Ki
+SbE5tojr7tuCNj7O7iQF92x36A63PAVpI7k3hKxEvJtemPOYdxdxldF66nXm9/u9
+1UJRMYEZHqvLJxWrSHe+NwZxcaYwGTWlnn6G69RJ5uC3leyuyFyKUdKcCLJR8c0/
+nD001j/kwgtM+bkieMMCrWOEsKKCkLZGjSrZN0z/mDykDD26ITyCXrLgixXn+reJ
+zFtzuMl49QDCB66Xb1d9oMbFcUzlJA==
+=yjqa
+-----END PGP SIGNATURE-----
+
+--=-s09L+bRyOvtccCU/oR2v--
+
