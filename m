@@ -2,41 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327302CE1ED
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 23:39:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E56502CE1F7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 23:41:38 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cn9jy0989zDrJv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 09:39:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cn9mw2R88zDrMT
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 09:41:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lwn.net
- (client-ip=45.79.88.28; helo=ms.lwn.net; envelope-from=corbet@lwn.net;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lwn.net
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=p1gwki3o; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cn9gX3Gr8zDqwp
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 09:36:56 +1100 (AEDT)
-Received: from lwn.net (localhost [127.0.0.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ms.lwn.net (Postfix) with ESMTPSA id A638F2204;
- Thu,  3 Dec 2020 22:36:43 +0000 (UTC)
-Date: Thu, 3 Dec 2020 15:36:42 -0700
-From: Jonathan Corbet <corbet@lwn.net>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: Re: [PATCH 0/6] Add documentation for Documentation/features at the
- built docs
-Message-ID: <20201203153642.594afd85@lwn.net>
-In-Reply-To: <cover.1606748711.git.mchehab+huawei@kernel.org>
-References: <cover.1606748711.git.mchehab+huawei@kernel.org>
-Organization: LWN.net
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cn9ky04WYzDr32
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 09:39:52 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id f9so1713472pfc.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Dec 2020 14:39:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=Qtj77dS9cHDPtLOQV8kRZMJrnqowkKFbs0Ao69ze8yo=;
+ b=p1gwki3oOUo+P7PEOXQvu0gEWvu282wplUNpim3bRudNhLVadPVjh3Nx0CBqu2B2si
+ 2tH9peMetiV8ZLFoBtSCyttjOzm46Xp/iC8USe1djX4MQr7Dnb5fAKiuRvzC829CKSYf
+ vZvcGqDgtR4MeHvDKqhfVjCsRNSHd33LVwpqdNceX/miA/4I/MPUDdCxbDWoRMBSfCiv
+ ZLxzMWwOunAjPVyEudrVou3xwAcj4ypDZFOVMqQ/pSaLUmyYH3L5ej5MKHVreGIMiRNy
+ LE6PYmlZKKud/KnvpcHekr/20xf9NQshmEvEL8ZJuip+Xhm6YHgc1hnkv1AjVnHBpOoq
+ 8qAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=Qtj77dS9cHDPtLOQV8kRZMJrnqowkKFbs0Ao69ze8yo=;
+ b=F8SCSbouaWAm8Kp3ychtyfHwiBSbdXtzWJ/SdB0rcHCQS2ZD5Ju7SnoqRuR6I7oXTz
+ cPbSFGpDhOcQj3N1U6s6ckUuj2c53RU2OShhz7XH5toLw2ZPY+i6LT73wQ315I5JndGV
+ S0xKJbuSOghGR+3idcmWocYb5bxZXPBbgnFm5kYv1FDW5x3uUVvVfdhU2yHA34YFcAZH
+ 2WWoqQt65EHaxQx8EG4rn5UlPhZ8HvGftJGgGMDual83j4KyZiP0ld7ZeqErWyjVVIeH
+ Wg1UybvsUXlipqRhoDs58CvtlvrB88pej6Ii/lvKXTg4k3+kr+JQ+jJahStlMGHSIVvd
+ ESvA==
+X-Gm-Message-State: AOAM532heYYuSMlHmr0DHIc8+sxqaByuQxGQwTlL6KDQEoGJPH9DvYXz
+ HlIV+st680XILN4t26ygoJc=
+X-Google-Smtp-Source: ABdhPJyRSHJAid1qLYHP9zDmtf4HjETwpYJVHYSQGmjoPkUfJgaFvmQ4jNjlnjBiGOtzRniTkZ8HUA==
+X-Received: by 2002:a63:4623:: with SMTP id t35mr4888350pga.270.1607035188896; 
+ Thu, 03 Dec 2020 14:39:48 -0800 (PST)
+Received: from Asurada-Nvidia (thunderhill.nvidia.com. [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id u3sm2817244pfu.47.2020.12.03.14.39.47
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 03 Dec 2020 14:39:48 -0800 (PST)
+Date: Thu, 3 Dec 2020 14:36:55 -0800
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH] ASoC: fsl_aud2htx: mark PM functions as __maybe_unused
+Message-ID: <20201203223654.GA10130@Asurada-Nvidia>
+References: <20201203222900.1042578-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201203222900.1042578-1-arnd@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,64 +79,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>, x86@kernel.org,
- linux-mips@vger.kernel.org, "James E.J.
- Bottomley" <James.Bottomley@HansenPartnership.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Jonas Bonn <jonas@southpole.se>,
- linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Helge Deller <deller@gmx.de>, linux-sh@vger.kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Fenghua Yu <fenghua.yu@intel.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
- Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>,
- "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>,
- linux-arm-kernel@lists.infradead.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Andrew Cooper <andrew.cooper3@citrix.com>, linux-kernel@vger.kernel.org,
- openrisc@lists.librecores.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ Arnd Bergmann <arnd@arndb.de>, Timur Tabi <timur@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>,
+ Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 30 Nov 2020 16:36:29 +0100
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
-
-> This series got already submitted last year:
+On Thu, Dec 03, 2020 at 11:28:47PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
->    https://lore.kernel.org/lkml/cover.1561222784.git.mchehab+samsung@kernel.org/
+> When CONFIG_PM is disabled, we get a warning for unused functions:
 > 
-> Yet, on that time, there were too many other patches related to ReST
-> conversion floating around. So, at the end, I guess this one got missed.
+> sound/soc/fsl/fsl_aud2htx.c:261:12: error: unused function 'fsl_aud2htx_runtime_suspend' [-Werror,-Wunused-function]
+> static int fsl_aud2htx_runtime_suspend(struct device *dev)
+> sound/soc/fsl/fsl_aud2htx.c:271:12: error: unused function 'fsl_aud2htx_runtime_resume' [-Werror,-Wunused-function]
+> static int fsl_aud2htx_runtime_resume(struct device *dev)
 > 
-> So, I did a rebase on the top of upstream, and added a few new changes.
+> Mark these as __maybe_unused to avoid the warning without adding
+> an #ifdef.
+> 
+> Fixes: 8a24c834c053 ("ASoC: fsl_aud2htx: Add aud2htx module driver")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-OK, I've gone ahead and applied these; it gains me a new trivial conflict
-with x86, but so be it...
-
-That said, I think that the RST table formatting could be *way* improved.
-The current tables are all white space and hard to make sense of.  What if
-we condensed the information?  Just looking at the first entry in
-Documentation/admin-guide/features.html, perhaps it could look like:
-
-    FEATURE	KCONFIG/DESCRIPTION		STATUS
-
-    cBPF-JIT	HAVE_CBPF_JIT			TODO: alpha, arc, arm...
-    						ok: mips, powerpc, ...
-		arch supports cBPF JIT
-		optimizations
-
-The result would be far more compact and easy to read, IMO.  I may get
-around to giving this a try if (hint :) nobody else gets there first.
-
-Thanks,
-
-jon
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
