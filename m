@@ -2,31 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A99E2CCED1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 06:49:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8EF02CCF02
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 07:14:42 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CmlKZ6p6dzDqx6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 16:49:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cmlt76kkHzDrFr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Dec 2020 17:14:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CmlHZ5TTKzDqv2
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 16:48:05 +1100 (AEDT)
-Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 4D356AE80053;
- Thu,  3 Dec 2020 00:47:29 -0500 (EST)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel v2] powerpc/kuap: Restore AMR after replaying soft
- interrupts
-Date: Thu,  3 Dec 2020 16:47:24 +1100
-Message-Id: <20201203054724.44838-1-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.17.1
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IghWjx3Y; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CmlrG6wk2zDrDJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Dec 2020 17:13:02 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B36ArJS166328; Thu, 3 Dec 2020 01:12:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=mUfRHHsWm53eUi66ZnM3LZBim3ldkMCEKX+rBwNvfsU=;
+ b=IghWjx3Yc/FYcw1YWxaA4cn+fyA5Yrpjp1JZ/KHjYfPtK/9ae1cHvZnBTa1PCbPHR08D
+ My2fen0FOhM8fD1KhJqxN5C1hIJ4iY0q0V4gtXF2X4TdKT3pVv5oJKt2S0g/TVNqYcfN
+ IFF72WrH37BjvzPS0PnNADzlOeFBoVwcruR+g9Jvx7jZs6Cxqm4UsAAecCRrqfdLOOSD
+ 5mz5y4fiI3M7Jo0YOjmCPoTS49gmou/OV5XT9PPk4KCdw27PymfYT3/DvftRfBYp8j4Q
+ 7NM2jTExvACqOsKzJGD2tQr5GiWczeUUAS4iemis1TCfWzGPsfk2t7TVS5rhrP78l8OI kA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 356jdqkawc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 03 Dec 2020 01:12:53 -0500
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B36AuHm166431;
+ Thu, 3 Dec 2020 01:12:52 -0500
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 356jdqkavs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 03 Dec 2020 01:12:52 -0500
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B36CGDQ032171;
+ Thu, 3 Dec 2020 06:12:51 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06ams.nl.ibm.com with ESMTP id 354fpdbp0w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 03 Dec 2020 06:12:50 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B36Cm9J7930546
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 3 Dec 2020 06:12:48 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B576142049;
+ Thu,  3 Dec 2020 06:12:48 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 89C1F4203F;
+ Thu,  3 Dec 2020 06:12:47 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Thu,  3 Dec 2020 06:12:47 +0000 (GMT)
+Date: Thu, 3 Dec 2020 11:42:46 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: kernel test robot <lkp@intel.com>
+Subject: Re: [powerpc:next-test 121/184]
+ arch/powerpc/kernel/firmware.c:31:9-10: WARNING: return of 0/1 in function
+ 'check_kvm_guest' with return type bool
+Message-ID: <20201203061246.GG528281@linux.vnet.ibm.com>
+References: <202012030759.zuEULDQ3-lkp@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <202012030759.zuEULDQ3-lkp@intel.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-12-03_01:2020-11-30,
+ 2020-12-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0
+ mlxlogscore=999 spamscore=0 priorityscore=1501 lowpriorityscore=0
+ clxscore=1015 malwarescore=0 mlxscore=0 impostorscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012030038
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,154 +104,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Nicholas Piggin <npiggin@gmail.com>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, kbuild-all@lists.01.org,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When interrupted in raw_copy_from_user()/... after user memory access
-is enabled, a nested handler may also access user memory (perf is
-one example) and when it does so, it calls prevent_read_from_user()
-which prevents the upper handler from accessing user memory.
+Hi, 
 
-This saves/restores AMR when replaying interrupts.
+Thanks for the report.
 
-get_kuap/set_kuap have stubs for disabled KUAP on RADIX but there are
-none for hash-only configs (BOOK3E) so this adds stubs and moves
-AMR_KUAP_BLOCK_xxx.
+* kernel test robot <lkp@intel.com> [2020-12-03 07:25:06]:
 
-Found by syzkaller. More likely to break with enabled
-CONFIG_DEBUG_ATOMIC_SLEEP, the call chain is
-timer_interrupt -> ktime_get -> read_seqcount_begin -> local_irq_restore.
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+> head:   fb003959777a635dea8910cf71109b612c7f940c
+> commit: 77354ecf8473208a5cc5f20a501760f7d6d631cd [121/184] powerpc: Rename is_kvm_guest() to check_kvm_guest()
 
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
----
-Changes:
-v2:
-* fixed compile on hash
-* moved get/set to arch_local_irq_restore
-* block KUAP before replaying
+Sorry for the nit pick, but the commit should have been
+Commit 107c55005fbd ("powerpc/pseries: Add KVM guest doorbell restrictions")
+
+because thats the patch that introduced is_kvm_guest.
+my patch was just renaming is_kvm_guest to check_kvm_guest.
+
+> config: powerpc-randconfig-c003-20201202 (attached as .config)
+> compiler: powerpc64le-linux-gcc (GCC) 9.3.0
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> 
+> "coccinelle warnings: (new ones prefixed by >>)"
+> >> arch/powerpc/kernel/firmware.c:31:9-10: WARNING: return of 0/1 in function 'check_kvm_guest' with return type bool
+> 
+> Please review and possibly fold the followup patch.
+> 
+
+But I agree we can still fold this the followup patch into the
+Rename is_kvm_guest() to check_kvm_guest().
+
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
 
----
 
-This is an example:
-
-------------[ cut here ]------------
-Bug: Read fault blocked by AMR!
-WARNING: CPU: 0 PID: 1603 at /home/aik/p/kernel/arch/powerpc/include/asm/book3s/64/kup-radix.h:145 __do_page_fau
-
-Modules linked in:
-CPU: 0 PID: 1603 Comm: amr Not tainted 5.10.0-rc6_v5.10-rc6_a+fstn1 #24
-NIP:  c00000000009ece8 LR: c00000000009ece4 CTR: 0000000000000000
-REGS: c00000000dc63560 TRAP: 0700   Not tainted  (5.10.0-rc6_v5.10-rc6_a+fstn1)
-MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 28002888  XER: 20040000
-CFAR: c0000000001fa928 IRQMASK: 1
-GPR00: c00000000009ece4 c00000000dc637f0 c000000002397600 000000000000001f
-GPR04: c0000000020eb318 0000000000000000 c00000000dc63494 0000000000000027
-GPR08: c00000007fe4de68 c00000000dfe9180 0000000000000000 0000000000000001
-GPR12: 0000000000002000 c0000000030a0000 0000000000000000 0000000000000000
-GPR16: 0000000000000000 0000000000000000 0000000000000000 bfffffffffffffff
-GPR20: 0000000000000000 c0000000134a4020 c0000000019c2218 0000000000000fe0
-GPR24: 0000000000000000 0000000000000000 c00000000d106200 0000000040000000
-GPR28: 0000000000000000 0000000000000300 c00000000dc63910 c000000001946730
-NIP [c00000000009ece8] __do_page_fault+0xb38/0xde0
-LR [c00000000009ece4] __do_page_fault+0xb34/0xde0
-Call Trace:
-[c00000000dc637f0] [c00000000009ece4] __do_page_fault+0xb34/0xde0 (unreliable)
-[c00000000dc638a0] [c00000000000c968] handle_page_fault+0x10/0x2c
---- interrupt: 300 at strncpy_from_user+0x290/0x440
-    LR = strncpy_from_user+0x284/0x440
-[c00000000dc63ba0] [c000000000c3dcb0] strncpy_from_user+0x2f0/0x440 (unreliable)
-[c00000000dc63c30] [c00000000068b888] getname_flags+0x88/0x2c0
-[c00000000dc63c90] [c000000000662a44] do_sys_openat2+0x2d4/0x5f0
-[c00000000dc63d30] [c00000000066560c] do_sys_open+0xcc/0x140
-[c00000000dc63dc0] [c000000000045e10] system_call_exception+0x160/0x240
-[c00000000dc63e20] [c00000000000da60] system_call_common+0xf0/0x27c
-Instruction dump:
-409c0048 3fe2ff5b 3bfff128 fac10060 fae10068 482f7a85 60000000 3c62ff5b
-7fe4fb78 3863f250 4815bbd9 60000000 <0fe00000> 3c62ff5b 3863f2b8 4815c8b5
-irq event stamp: 254
-hardirqs last  enabled at (253): [<c000000000019550>] arch_local_irq_restore+0xa0/0x150
-hardirqs last disabled at (254): [<c000000000008a10>] data_access_common_virt+0x1b0/0x1d0
-softirqs last  enabled at (0): [<c0000000001f6d5c>] copy_process+0x78c/0x2120
-softirqs last disabled at (0): [<0000000000000000>] 0x0
----[ end trace ba98aec5151f3aeb ]---
----
- arch/powerpc/include/asm/book3s/64/kup-radix.h |  3 ---
- arch/powerpc/include/asm/kup.h                 | 10 ++++++++++
- arch/powerpc/kernel/irq.c                      |  6 ++++++
- 3 files changed, 16 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/64/kup-radix.h b/arch/powerpc/include/asm/book3s/64/kup-radix.h
-index a39e2d193fdc..4ad607461b75 100644
---- a/arch/powerpc/include/asm/book3s/64/kup-radix.h
-+++ b/arch/powerpc/include/asm/book3s/64/kup-radix.h
-@@ -5,9 +5,6 @@
- #include <linux/const.h>
- #include <asm/reg.h>
- 
--#define AMR_KUAP_BLOCK_READ	UL(0x4000000000000000)
--#define AMR_KUAP_BLOCK_WRITE	UL(0x8000000000000000)
--#define AMR_KUAP_BLOCKED	(AMR_KUAP_BLOCK_READ | AMR_KUAP_BLOCK_WRITE)
- #define AMR_KUAP_SHIFT		62
- 
- #ifdef __ASSEMBLY__
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index 0d93331d0fab..e63930767a96 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -14,6 +14,10 @@
- #define KUAP_CURRENT_WRITE	8
- #define KUAP_CURRENT		(KUAP_CURRENT_READ | KUAP_CURRENT_WRITE)
- 
-+#define AMR_KUAP_BLOCK_READ	UL(0x4000000000000000)
-+#define AMR_KUAP_BLOCK_WRITE	UL(0x8000000000000000)
-+#define AMR_KUAP_BLOCKED	(AMR_KUAP_BLOCK_READ | AMR_KUAP_BLOCK_WRITE)
-+
- #ifdef CONFIG_PPC_BOOK3S_64
- #include <asm/book3s/64/kup-radix.h>
- #endif
-@@ -64,6 +68,12 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- }
- 
- static inline void kuap_check_amr(void) { }
-+static inline unsigned long get_kuap(void)
-+{
-+	return AMR_KUAP_BLOCKED;
-+}
-+
-+static inline void set_kuap(unsigned long value) { }
- 
- /*
-  * book3s/64/kup-radix.h defines these functions for the !KUAP case to flush
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 7d0f7682d01d..d9fd46da04d6 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -314,6 +314,7 @@ void replay_soft_interrupts(void)
- notrace void arch_local_irq_restore(unsigned long mask)
- {
- 	unsigned char irq_happened;
-+	unsigned long kuap_state;
- 
- 	/* Write the new soft-enabled value */
- 	irq_soft_mask_set(mask);
-@@ -373,9 +374,14 @@ notrace void arch_local_irq_restore(unsigned long mask)
- 	irq_soft_mask_set(IRQS_ALL_DISABLED);
- 	trace_hardirqs_off();
- 
-+	kuap_state = get_kuap();
-+	set_kuap(AMR_KUAP_BLOCKED);
-+
- 	replay_soft_interrupts();
- 	local_paca->irq_happened = 0;
- 
-+	set_kuap(kuap_state);
-+
- 	trace_hardirqs_on();
- 	irq_soft_mask_set(IRQS_ENABLED);
- 	__hard_irq_enable();
 -- 
-2.17.1
-
+Thanks and Regards
+Srikar Dronamraju
