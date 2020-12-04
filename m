@@ -1,74 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9516F2CE8EF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 08:56:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B7F2CE94F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 09:15:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CnQ5K6cKKzDrPl
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 18:56:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CnQVW6dQ4zDrPK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 19:14:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=D7BZBLvP; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=TYSRebq6; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CnQ3H67QdzDrMG
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 18:54:51 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id s2so2656052plr.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Dec 2020 23:54:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=Zd7vmIfn6mzRaP11y/d7gH60I8gBLNa0mgMkL/toHvQ=;
- b=D7BZBLvP7Hf1hmbzDKHSvvrVMOcvwF3AuA29oTyK7LjSZGu/VvtRnPQYcM5WAhLexX
- 7bxa66KLQ1nPLAHY7ASZKpcwj5k4Gj/sH6hD+9zfRuCPL4Lu5Awdy7z/+hdMDs8coD6V
- l8QYpI7vYdOmv55h5fB66u95Ohlgdwe0LaK+5MOxosaBfJT8hPUQpfvR3VXriGDatcPY
- gC/wXJZUtokL+ZYqMSshMZD74n/sJqggisoqq4cqL2SS5depbndddaDAtLka4PdXM3mG
- ge7JlJgFKZL1EYg7DD8hAPDTSPAXEGItK4mF9rjhF/tHePvbjm4v2usCJOMPjNtlHjbc
- kstQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=Zd7vmIfn6mzRaP11y/d7gH60I8gBLNa0mgMkL/toHvQ=;
- b=Rzl0Q3VKnI+9dm8EOWIwq4nxjEZxqfMrI72R0NQIFpkpOmY1LMRKThLmRCjvYFdNAg
- /FX1/oxB8iTr5xjrx0hMvODtgs/AyZcIAvcItNO8/6aGMRhs4nSj3NofIx4ar0PGx6Il
- L6c7qYPqAE2Y8fI4NHcG/NfvrUSf4CUH3r3ha4616L6SWayWde+8nU6v8wloOSJa6S6e
- UdMG0UoR6a+DMslZZ74Msjpr+2/aqhNCpKRBnlnBLJsXLXPblEhyWiz2qwa50i6qPrIx
- NYyuew6MuJeg0YxFAzjTpBH6w8OiF+oIlgKb25QvZ7FwH2W+VJo1FPgwdQtP1NnK4NVW
- 8Lcw==
-X-Gm-Message-State: AOAM532iradI56xhjQFGSxcR7PxYYHRRkYOTibCVRpIDuFHAcjBQG1F+
- NXGbAyujmRRJEy/Sd4CAZv8=
-X-Google-Smtp-Source: ABdhPJxeaLakUaj4UZ6Mhmu/RUCo9vMWAs3X7UoKC0s3gdL5d5oy/Bq+kELLNyqZeAnUbZAiHbipyw==
-X-Received: by 2002:a17:902:a388:b029:da:bad:ed3 with SMTP id
- x8-20020a170902a388b02900da0bad0ed3mr2711686pla.76.1607068487823; 
- Thu, 03 Dec 2020 23:54:47 -0800 (PST)
-Received: from localhost ([1.129.136.201])
- by smtp.gmail.com with ESMTPSA id f15sm1346786pju.49.2020.12.03.23.54.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Dec 2020 23:54:47 -0800 (PST)
-Date: Fri, 04 Dec 2020 17:54:40 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC v2 2/2] [MOCKUP] sched/mm: Lightweight lazy mm refcounting
-To: Andy Lutomirski <luto@kernel.org>
-References: <cover.1607059162.git.luto@kernel.org>
- <e69827244c2f1e534aa83a40334ffa00bafe54c2.1607059162.git.luto@kernel.org>
-In-Reply-To: <e69827244c2f1e534aa83a40334ffa00bafe54c2.1607059162.git.luto@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CnQS74gbhzDr6L
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 19:12:55 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B482uvd189493; Fri, 4 Dec 2020 03:12:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ihxf7PJh5l3HHItoamPpTYGJI1jYXP30TqwIpz+HddI=;
+ b=TYSRebq62M6AXo8D2v54bUslXHUqXnA5gP9UepZ5rvnQyGbTejZOJojdL4wgxyhju6tu
+ WhO0GC5mokvq1G/PYqvYryEZHIUw76EcScnWPlogPdlgjXtdusb9gzkeF/8Jg5xPXOGp
+ AiAdp4aQFjWpRz56924WESQSnTV9zzXeIdO6BpgXYEpTqTDXpY8ImA1GMTnzxW+ZWG/j
+ d5LEauvPD1GLQ/BeDGuq9XDgWQ3o8wAhEWYPR3M1j1iw5KhiL/RZxNdhP5knsTjnU72S
+ yS/3DIaRuESdxCtb9CTNNjpLi27GbvsaX5gS3tWffzp8HjdhAaTuZBbFg0UNCIkJYVgZ Tg== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 357742xc2w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 04 Dec 2020 03:12:46 -0500
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B48CC0p025047;
+ Fri, 4 Dec 2020 08:12:42 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06ams.nl.ibm.com with ESMTP id 354fpdcta0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 04 Dec 2020 08:12:42 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B48Cdba6029836
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 4 Dec 2020 08:12:39 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 489AD4C046;
+ Fri,  4 Dec 2020 08:12:39 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 021BE4C040;
+ Fri,  4 Dec 2020 08:12:39 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.0.41])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  4 Dec 2020 08:12:38 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/hotplug: assign hot added LMB to the right node
+To: Greg KH <gregkh@linuxfoundation.org>
+References: <20201203101514.33591-1-ldufour@linux.ibm.com>
+ <X8ktsoAv4/h+p1/8@kroah.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <0fbf1f3c-908e-34ee-637c-b29f15e9dea8@linux.ibm.com>
+Date: Fri, 4 Dec 2020 09:12:38 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.5.0
 MIME-Version: 1.0
-Message-Id: <1607065599.ecww2w3xq3.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <X8ktsoAv4/h+p1/8@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
+ definitions=2020-12-04_02:2020-12-04,
+ 2020-12-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 spamscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 clxscore=1011 malwarescore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012040043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,48 +100,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Nadav Amit <nadav.amit@gmail.com>,
- X86 ML <x86@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Jann Horn <jannh@google.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Rik van Riel <riel@surriel.com>, LKML <linux-kernel@vger.kernel.org>,
- Linux-MM <linux-mm@kvack.org>, Dave Hansen <dave.hansen@intel.com>,
- Will Deacon <will@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Andy Lutomirski's message of December 4, 2020 3:26 pm:
-> This is a mockup.  It's designed to illustrate the algorithm and how the
-> code might be structured.  There are several things blatantly wrong with
-> it:
->=20
-> The coding stype is not up to kernel standards.  I have prototypes in the
-> wrong places and other hacks.
->=20
-> There's a problem with mm_cpumask() not being reliable.
+Le 03/12/2020 à 19:25, Greg KH a écrit :
+> On Thu, Dec 03, 2020 at 11:15:14AM +0100, Laurent Dufour wrote:
+>> This patch applies to 5.9 and earlier kernels only.
+>>
+>> Since 5.10, this has been fortunately fixed by the commit
+>> e5e179aa3a39 ("pseries/drmem: don't cache node id in drmem_lmb struct").
+> 
+> Why can't we just backport that patch instead?  It's almost always
+> better to do that than to have a one-off patch, as almost always those
+> have bugs in them.
 
-Interesting, this might be a way to reduce those IPIs with fairly=20
-minimal fast path cost. Would be interesting to see how much performance=20
-advantage it has over my dumb simple shoot-lazies.
+That's a good option too.
+I was thinking that this 5.10 patch was not matching the stable release's 
+guidelines since it was targeting performance issue, but since it is also fixing 
+this issue, I'm certainly wrong.
 
-For powerpc I don't think we'd be inclined to go that way, so don't feel=20
-the need to add this complexity for us alone -- we'd be more inclined to=20
-move the exit lazy to the final TLB shootdown path, which we're slowly=20
-getting more infrastructure in place to do.
-
-(The powerpc hash MMU code which we're slowly moving away from might=20
-never get that capability because it's complex there and hard to do with
-that virtualisation model so current big systems (and radix MMU until we
-finish the TLB flushing stuff) want something here, but for those the
-shoot-lazies could quite likely be sufficient)
-
-But if core code was moved over to something like this for the benefit of
-others archs we'd probably just as happily do that.
-
-There's a few nits but I don't think I can see a fundamental problem=20
-yet.
+So, forget that patch.
 
 Thanks,
-Nick
+Laurent.
