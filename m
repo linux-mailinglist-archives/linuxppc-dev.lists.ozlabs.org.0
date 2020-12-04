@@ -2,89 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6982CF5CC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 21:45:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A782CF5C3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 21:42:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cnl7w5m2GzDrNb
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 07:45:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cnl4S5VjnzDrND
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 07:42:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
+ envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=none dis=none) header.from=efficios.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=oByTVwGn; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
+ header.s=default header.b=pOntHhXa; dkim-atps=neutral
+Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cnl654nkRzDqDb
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 07:43:25 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B4KWsWl012901
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 4 Dec 2020 15:43:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=KUzJ7fcDPoRZp68V1ZpB/n38fHUIdzCbp+9Is6M2luc=;
- b=oByTVwGnJ8R9So32PmvoCv0IQbeKClibhx+zt4q1D1dqHxEfRS7ul0XFx46rogoYor1P
- 65BMElHbks/1BlqgD53mhWuUmpVuo+zFD7YnGxj82a1Q0ptd9NAPbfPjNhWF73wezOCK
- 1xaHp4paPgCIQa31A3ZMfbX5VNeeW2ne7bu/pBMnMpFby+HbMshBlM27kvpjnMhKg6P0
- ja8PqYY6dFKHynvMsoFAnS5vhz/uVMukMtVBUhnNT/WEri5dLJ6BuKCFFoIxAgsXWbtB
- akMs+kxxN8Cbh17MNGNN0NK/WLZf+qvgrlh9xT0lPUbEuOxfOl2JyWhws4/alM+lTf9O mw== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 357t8u3a2s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Dec 2020 15:43:22 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B4KQnOx015646
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 4 Dec 2020 20:37:34 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma04dal.us.ibm.com with ESMTP id 353e6a8s2r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Dec 2020 20:37:34 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B4KbXVi11338356
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 4 Dec 2020 20:37:33 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9F97EAE05C;
- Fri,  4 Dec 2020 20:37:33 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 71C33AE060;
- Fri,  4 Dec 2020 20:37:33 +0000 (GMT)
-Received: from localhost (unknown [9.65.255.125])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri,  4 Dec 2020 20:37:33 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 01/29] powerpc/rtas: move rtas_call_reentrant() out of
- pseries guards
-In-Reply-To: <20201030011805.1224603-2-nathanl@linux.ibm.com>
-References: <20201030011805.1224603-1-nathanl@linux.ibm.com>
- <20201030011805.1224603-2-nathanl@linux.ibm.com>
-Date: Fri, 04 Dec 2020 14:37:33 -0600
-Message-ID: <87r1o51f5e.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cnl2C1d7bzDrMT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 07:40:02 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 6DF372CE77F;
+ Fri,  4 Dec 2020 15:39:59 -0500 (EST)
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id laVxlc6mfNuf; Fri,  4 Dec 2020 15:39:59 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 0A37F2CE55C;
+ Fri,  4 Dec 2020 15:39:59 -0500 (EST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 0A37F2CE55C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=default; t=1607114399;
+ bh=dJI+/PpwD5jMrAfaBYwMPtjncMGVD0cTPqSq0jiEMqA=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=pOntHhXazoFXLq6hBllqIik4PkxFnty+9LIxg1VBWg4D7Ws3FLE0Mjm1rsUxsslhN
+ 96xSWYMV/RH//jyC1tHD7ZtkDY8WGMsa3hLeEKkhuMdRRFE/aGP+RnBPwCDj9Dx9ZF
+ Ts4Maj7e2zg1jzqzpnLkj14ITc2W+f9NWSChLPKp33te6K+Bwi1j4nMvoP7zND/y4x
+ VQK9uS1d6sar1+0Euk8kQMFJqjN40B3srLNnrN+EYvOIQbtm5cpo6ozi+Y+o7vX1UV
+ yvnctVkuIK4FUKINdk18u+H/nUAixpE0LWs5zukQN3P8e6aZVr8VZXBxsgae1xn7fF
+ 6t0qpDtjmppRg==
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id rT4kBItm-hx9; Fri,  4 Dec 2020 15:39:58 -0500 (EST)
+Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
+ by mail.efficios.com (Postfix) with ESMTP id EB57C2CE8D0;
+ Fri,  4 Dec 2020 15:39:58 -0500 (EST)
+Date: Fri, 4 Dec 2020 15:39:58 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Nadav Amit <nadav.amit@gmail.com>, Peter Zijlstra <peterz@infradead.org>
+Message-ID: <77346515.6733.1607114398867.JavaMail.zimbra@efficios.com>
+In-Reply-To: <A61977A7-F0B2-4492-AB6D-06E24417FA59@gmail.com>
+References: <cover.1607059162.git.luto@kernel.org>
+ <203d39d11562575fd8bd6a094d97a3a332d8b265.1607059162.git.luto@kernel.org>
+ <A61977A7-F0B2-4492-AB6D-06E24417FA59@gmail.com>
+Subject: Re: [RFC v2 1/2] [NEEDS HELP] x86/mm: Handle unlazying membarrier
+ core sync in the arch code
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-12-04_09:2020-12-04,
- 2020-12-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 impostorscore=0
- malwarescore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=721 bulkscore=0
- priorityscore=1501 suspectscore=0 adultscore=0 clxscore=1015 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012040114
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [167.114.26.124]
+X-Mailer: Zimbra 8.8.15_GA_3980 (ZimbraWebClient - FF83 (Linux)/8.8.15_GA_3980)
+Thread-Topic: x86/mm: Handle unlazying membarrier core sync in the arch code
+Thread-Index: xWV4rdMooMFTW/S/cTMIU6yzFuQjnA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,25 +77,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, ajd@linux.ibm.com, mmc@linux.vnet.ibm.com,
- cforno12@linux.vnet.ibm.com, drt@linux.vnet.ibm.com, brking@linux.ibm.com
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ riel <riel@surriel.com>, Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, linux-mm <linux-mm@kvack.org>,
+ Andy Lutomirski <luto@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Jann Horn <jannh@google.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Lynch <nathanl@linux.ibm.com> writes:
+----- On Dec 4, 2020, at 3:17 AM, Nadav Amit nadav.amit@gmail.com wrote:
 
-> rtas_call_reentrant() isn't platform-dependent; move it out of
-> CONFIG_PPC_PSERIES-guarded code.
+> I am not very familiar with membarrier, but here are my 2 cents while try=
+ing
+> to answer your questions.
+>=20
+>> On Dec 3, 2020, at 9:26 PM, Andy Lutomirski <luto@kernel.org> wrote:
+>> @@ -496,6 +497,8 @@ void switch_mm_irqs_off(struct mm_struct *prev, stru=
+ct
+>> mm_struct *next,
+>> =09=09 * from one thread in a process to another thread in the same
+>> =09=09 * process. No TLB flush required.
+>> =09=09 */
+>> +
+>> +=09=09// XXX: why is this okay wrt membarrier?
+>> =09=09if (!was_lazy)
+>> =09=09=09return;
+>=20
+> I am confused.
+>=20
+> On one hand, it seems that membarrier_private_expedited() would issue an =
+IPI
+> to that core, as it would find that this core=E2=80=99s cpu_rq(cpu)->curr=
+->mm is the
+> same as the one that the membarrier applies to.
 
-As reported by the 0-day CI, this is mistaken, and it breaks non-pseries
-builds:
+If the scheduler switches from one thread to another which both have the sa=
+me mm,
+it means cpu_rq(cpu)->curr->mm is invariant, even though ->curr changes. So=
+ there
+is no need to issue a memory barrier or sync core for membarrier in this ca=
+se,
+because there is no way the IPI can be missed.
 
->> arch/powerpc/kernel/rtas.c:938:21: error: no member named 'rtas_args_reentrant' in 'struct paca_struct'
-           args = local_paca->rtas_args_reentrant;
-                  ~~~~~~~~~~  ^
-   1 error generated.
+> But=E2=80=A6 (see below)
+>=20
+>=20
+>> @@ -508,12 +511,24 @@ void switch_mm_irqs_off(struct mm_struct *prev, st=
+ruct
+>> mm_struct *next,
+>> =09=09smp_mb();
+>> =09=09next_tlb_gen =3D atomic64_read(&next->context.tlb_gen);
+>> =09=09if (this_cpu_read(cpu_tlbstate.ctxs[prev_asid].tlb_gen) =3D=3D
+>> -=09=09=09=09next_tlb_gen)
+>> +=09=09    next_tlb_gen) {
+>> +=09=09=09/*
+>> +=09=09=09 * We're reactivating an mm, and membarrier might
+>> +=09=09=09 * need to serialize.  Tell membarrier.
+>> +=09=09=09 */
+>> +
+>> +=09=09=09// XXX: I can't understand the logic in
+>> +=09=09=09// membarrier_mm_sync_core_before_usermode().  What's
+>> +=09=09=09// the mm check for?
+>> +=09=09=09membarrier_mm_sync_core_before_usermode(next);
+>=20
+> On the other hand the reason for this mm check that you mention contradic=
+ts
+> my previous understanding as the git log says:
+>=20
+> commit 2840cf02fae627860156737e83326df354ee4ec6
+> Author: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Date:   Thu Sep 19 13:37:01 2019 -0400
+>=20
+>    sched/membarrier: Call sync_core only before usermode for same mm
+>   =20
+>    When the prev and next task's mm change, switch_mm() provides the core
+>    serializing guarantees before returning to usermode. The only case
+>    where an explicit core serialization is needed is when the scheduler
+>    keeps the same mm for prev and next.
 
-https://lore.kernel.org/linuxppc-dev/202012050432.SFbbjWMw-lkp@intel.com/
+Hrm, so your point here is that if the scheduler keeps the same mm for
+prev and next, it means membarrier will have observed the same rq->curr->mm=
+,
+and therefore the IPI won't be missed. I wonder if that
+membarrier_mm_sync_core_before_usermode is needed at all then or if we
+have just been too careful and did not consider that all the scenarios whic=
+h
+need to be core-sync'd are indeed taken care of ?
 
-I'll drop this and reroll the series.
+I see here that my prior commit message indeed discusses prev and next task=
+'s
+mm, but in reality, we are comparing current->mm with rq->prev_mm. So from
+a lazy TLB perspective, this probably matters, and we may still need a core=
+ sync
+in some lazy TLB scenarios.
+
+>=20
+>> =09/*
+>> =09 * When switching through a kernel thread, the loop in
+>> =09 * membarrier_{private,global}_expedited() may have observed that
+>> =09 * kernel thread and not issued an IPI. It is therefore possible to
+>> =09 * schedule between user->kernel->user threads without passing though
+>> =09 * switch_mm(). Membarrier requires a barrier after storing to
+>> -=09 * rq->curr, before returning to userspace, so provide them here:
+>> +=09 * rq->curr, before returning to userspace, and mmdrop() provides
+>> +=09 * this barrier.
+>> =09 *
+>> -=09 * - a full memory barrier for {PRIVATE,GLOBAL}_EXPEDITED, implicitl=
+y
+>> -=09 *   provided by mmdrop(),
+>> -=09 * - a sync_core for SYNC_CORE.
+>> +=09 * XXX: I don't think mmdrop() actually does this.  There's no
+>> +=09 * smp_mb__before/after_atomic() in there.
+>=20
+> I presume that since x86 is the only one that needs
+> membarrier_mm_sync_core_before_usermode(), nobody noticed the missing
+> smp_mb__before/after_atomic(). These are anyhow a compiler barrier in x86=
+,
+> and such a barrier would take place before the return to userspace.
+
+mmdrop already provides the memory barriers for membarrer, as I documented =
+within the
+function.
+
+Thanks,
+
+Mathieu
+
+--=20
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com
