@@ -1,36 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D30E2CE791
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 06:31:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A452CE7F8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 07:20:07 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CnLsN4Wj5zDrBs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 16:31:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CnMxw3gVyzDrQ9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 17:20:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CnLm266trzDrBZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 16:26:26 +1100 (AEDT)
-From: Andy Lutomirski <luto@kernel.org>
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: [RFC v2 2/2] [MOCKUP] sched/mm: Lightweight lazy mm refcounting
-Date: Thu,  3 Dec 2020 21:26:17 -0800
-Message-Id: <e69827244c2f1e534aa83a40334ffa00bafe54c2.1607059162.git.luto@kernel.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <cover.1607059162.git.luto@kernel.org>
-References: <cover.1607059162.git.luto@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CnMw61lWgzDrN1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 17:18:23 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CnMvs0Slnz9tyVK;
+ Fri,  4 Dec 2020 07:18:17 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id jxaRUfRitmZY; Fri,  4 Dec 2020 07:18:16 +0100 (CET)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CnMvr5xslz9tyVJ;
+ Fri,  4 Dec 2020 07:18:16 +0100 (CET)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id 398125E8; Fri,  4 Dec 2020 07:21:22 +0100 (CET)
+Received: from 192.168.4.90 ([192.168.4.90]) by messagerie.c-s.fr (Horde
+ Framework) with HTTP; Fri, 04 Dec 2020 07:21:22 +0100
+Date: Fri, 04 Dec 2020 07:21:22 +0100
+Message-ID: <20201204072122.Horde.MByOum87nJJoC9V6Lu3gzA1@messagerie.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Qian Cai <qcai@redhat.com>
+Subject: Re: [PATCH 3/7] powerpc/64s: flush L1D after user accesses
+References: <20201119231333.361771-1-dja@axtens.net>
+ <20201119231333.361771-4-dja@axtens.net>
+ <e82f315e08fe9f13ce4e94259968e0782ebb57a3.camel@redhat.com>
+ <da02e10d6b5a63dc10159d4420def15aa0bc4c19.camel@redhat.com>
+In-Reply-To: <da02e10d6b5a63dc10159d4420def15aa0bc4c19.camel@redhat.com>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,264 +58,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Nadav Amit <nadav.amit@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>, Rik van Riel <riel@surriel.com>,
- Will Deacon <will@kernel.org>, X86 ML <x86@kernel.org>,
- Dave Hansen <dave.hansen@intel.com>, LKML <linux-kernel@vger.kernel.org>,
- Linux-MM <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Jann Horn <jannh@google.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: cmr@informatik.wtf, spoorts2@in.ibm.com, npiggin@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a mockup.  It's designed to illustrate the algorithm and how the
-code might be structured.  There are several things blatantly wrong with
-it:
 
-The coding stype is not up to kernel standards.  I have prototypes in the
-wrong places and other hacks.
+Quoting Qian Cai <qcai@redhat.com>:
 
-There's a problem with mm_cpumask() not being reliable.
+> On Thu, 2020-12-03 at 12:17 -0500, Qian Cai wrote:
+>> []
+>> > +static inline bool
+>> > +bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool  
+>> is_write)
+>> > +{
+>> > +	return WARN(mmu_has_feature(MMU_FTR_RADIX_KUAP) &&
+>> > +		    (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE :  
+>> AMR_KUAP_BLOCK_READ)),
+>> > +		    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
+>> > +}
+>>
+>> A simple "echo t > /proc/sysrq-trigger" will trigger this warning almost
+>> endlessly on POWER9 NV.
+>
+> I have just realized the patch just moved this warning around, so  
+> the issue was
+> pre-existent. Since I have not tested sysrq-t regularly, I am not  
+> sure when it
+> started to break. So far, I have reverted some of those for testing which did
+> not help, i.e., the sysrq-t issue remains.
+>
+> 16852975f0f  Revert "powerpc/64s: Use early_mmu_has_feature() in set_kuap()"
+> 129e240ead32 Revert "powerpc: Implement user_access_save() and  
+> user_access_restore()"
+> edb0046c842c Revert "powerpc/64s/kuap: Add missing isync to KUAP  
+> restore paths"
+> 2d46ee87ce44 Revert "powerpc/64/kuap: Conditionally restore AMR in  
+> interrupt exit"
+> c1e0e805fc57 Revert "powerpc/64s/kuap: Conditionally restore AMR in  
+> kuap_restore_amr asm"
+> 7f30b7aaf23a Revert "selftests/powerpc: rfi_flush: disable entry  
+> flush if present"
+> bc9b9967a100 Revert "powerpc/64s: flush L1D on kernel entry"
+> b77e7b54f5eb Revert "powerpc/64s: flush L1D after user accesses"
+> 22dddf532c64 Revert "powerpc: Only include kup-radix.h for 64-bit Book3S"
+> 2679d155c46a Revert "selftests/powerpc: entry flush test"
+> 87954b9b4243 Revert "selftests/powerpc: refactor entry and rfi_flush tests"
+> 342d82bd4c5d Revert "powerpc/64s: rename pnv|pseries_setup_rfi_flush  
+> to _setup_security_mitigations"
 
-Signed-off-by: Andy Lutomirski <luto@kernel.org>
----
- kernel/fork.c        |   4 ++
- kernel/sched/core.c  | 128 +++++++++++++++++++++++++++++++++++++------
- kernel/sched/sched.h |  11 +++-
- 3 files changed, 126 insertions(+), 17 deletions(-)
+I also hit that WARNING in the same way earlier this week.
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index da8d360fb032..0887a33cf84f 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1066,6 +1066,8 @@ struct mm_struct *mm_alloc(void)
- 	return mm_init(mm, current, current_user_ns());
- }
- 
-+extern void mm_fixup_lazy_refs(struct mm_struct *mm);
-+
- static inline void __mmput(struct mm_struct *mm)
- {
- 	VM_BUG_ON(atomic_read(&mm->mm_users));
-@@ -1084,6 +1086,8 @@ static inline void __mmput(struct mm_struct *mm)
- 	}
- 	if (mm->binfmt)
- 		module_put(mm->binfmt->module);
-+
-+	mm_fixup_lazy_refs(mm);
- 	mmdrop(mm);
- }
- 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 6c4b76147166..69dfdfe0e5b4 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3555,6 +3555,75 @@ prepare_task_switch(struct rq *rq, struct task_struct *prev,
- 	prepare_arch_switch(next);
- }
- 
-+static void drop_extra_mm_refs(struct rq *rq)
-+{
-+	unsigned long old_mm;
-+
-+	if (likely(!atomic_long_read(&rq->mm_to_mmdrop)))
-+		return;
-+
-+	/*
-+	 * Slow path.  This only happens when we recently stopped using
-+	 * an mm that is exiting.
-+	 */
-+	old_mm = atomic_long_xchg_relaxed(&rq->mm_to_mmdrop, 0);
-+	if (old_mm)
-+		mmdrop((struct mm_struct *)old_mm);
-+}
-+
-+/*
-+ * This ensures that all lazy_mm refs to mm are converted to mm_count
-+ * refcounts.  Our caller holds an mm_count reference, so we don't need
-+ * to worry about mm being freed out from under us.
-+ */
-+void mm_fixup_lazy_refs(struct mm_struct *mm)
-+{
-+	int cpu;
-+
-+	/*
-+	 * mm_users is zero, so no new lazy refs will be taken.
-+	 */
-+	WARN_ON_ONCE(atomic_read(&mm->mm_users) != 0);
-+
-+	/*
-+	 * XXX: this is wrong on arm64 and possibly on other architectures.
-+	 * Maybe we need a config option for this?  Or a
-+	 * for_each_possible_lazy_cpu(cpu, mm) helper?
-+	 */
-+	for_each_cpu(cpu, mm_cpumask(mm)) {
-+		struct rq *rq = cpu_rq(cpu);
-+		unsigned long old;
-+
-+		if (READ_ONCE(rq->lazy_mm) != mm)
-+			continue;
-+
-+		// XXX: we could optimize this by doing a big addition to
-+		// mm_count up front instead of incrementing it separately
-+		// for each CPU.
-+		mmgrab(mm);
-+
-+		// XXX: could this be relaxed instead?
-+		old = atomic_long_xchg(&rq->mm_to_mmdrop, (unsigned long)mm);
-+
-+		// At this point, mm can be mmdrop()ed at any time, probably
-+		// by the target cpu.
-+
-+		if (!old)
-+			continue;  // All done!
-+
-+		WARN_ON_ONCE(old == (unsigned long)mm);
-+
-+		// Uh oh!  We just stole an mm reference from the target CPU.
-+		// Fortunately, we just observed the target's lazy_mm pointing
-+		// to something other than old, and we observed this after
-+		// bringing mm_users down to 0.  This means that the remote
-+		// cpu is definitely done with old.  So we can drop it on the
-+		// remote CPU's behalf.
-+
-+		mmdrop((struct mm_struct *)old);
-+	}
-+}
-+
- /**
-  * finish_task_switch - clean up after a task-switch
-  * @prev: the thread we just switched away from.
-@@ -3578,7 +3647,6 @@ static struct rq *finish_task_switch(struct task_struct *prev)
- 	__releases(rq->lock)
- {
- 	struct rq *rq = this_rq();
--	struct mm_struct *mm = rq->prev_mm;
- 	long prev_state;
- 
- 	/*
-@@ -3597,8 +3665,6 @@ static struct rq *finish_task_switch(struct task_struct *prev)
- 		      current->comm, current->pid, preempt_count()))
- 		preempt_count_set(FORK_PREEMPT_COUNT);
- 
--	rq->prev_mm = NULL;
--
- 	/*
- 	 * A task struct has one reference for the use as "current".
- 	 * If a task dies, then it sets TASK_DEAD in tsk->state and calls
-@@ -3629,11 +3695,28 @@ static struct rq *finish_task_switch(struct task_struct *prev)
- 	 * rq->curr, before returning to userspace, and mmdrop() provides
- 	 * this barrier.
- 	 *
--	 * XXX: I don't think mmdrop() actually does this.  There's no
--	 * smp_mb__before/after_atomic() in there.
-+	 * XXX: I don't think mmdrop() actually did this.  There's no
-+	 * smp_mb__before/after_atomic() in there.  But mmdrop()
-+	 * certainly doesn't do this now, since we don't call mmdrop().
- 	 */
--	if (mm)
--		mmdrop(mm);
-+	if (current->mm && rq->lazy_mm) {
-+		/*
-+		 * We are unlazying.  Any remote CPU that observes our
-+		 * store to lazy_mm is permitted to free the mm if mm_users
-+		 * and mm_count are both zero.
-+		 */
-+		WRITE_ONCE(rq->lazy_mm, NULL);
-+	}
-+
-+	// Do this unconditionally.  There's a race in which a remote CPU
-+	// sees rq->lazy_mm != NULL and gives us an extra mm ref while we
-+	// are executing this code and we don't notice.  Instead of letting
-+	// that ref sit around until the next time we unlazy, do it on every
-+	// context switch.
-+	//
-+	// XXX: maybe we should do this at the beginning of a context switch
-+	// instead?
-+	drop_extra_mm_refs(rq);
- 
- 	if (unlikely(prev_state == TASK_DEAD)) {
- 		if (prev->sched_class->task_dead)
-@@ -3737,20 +3820,31 @@ context_switch(struct rq *rq, struct task_struct *prev,
- 	arch_start_context_switch(prev);
- 
- 	/*
--	 * kernel -> kernel   lazy + transfer active
--	 *   user -> kernel   lazy + mmgrab() active
-+	 * TODO: write a new comment!
- 	 *
--	 * kernel ->   user   switch + mmdrop() active
--	 *   user ->   user   switch
-+	 * NB: none of this is kept in sync with the arch code.
-+	 * In particular, active_mm can point to an mm that is no longer
-+	 * in use by the arch mm code, and this condition can persist
-+	 * across multiple context switches.  This isn't a problem
-+	 * per se, but it does mean that using active_mm for anything
-+	 * other than keeping an mm from being freed is a bit dubious.
- 	 */
- 	if (!next->mm) {                                // to kernel
- 		enter_lazy_tlb(prev->active_mm, next);
- 
- 		next->active_mm = prev->active_mm;
--		if (prev->mm)                           // from user
--			mmgrab(prev->active_mm);
--		else
-+		if (prev->mm) {                         // from user
-+			WARN_ON_ONCE(rq->lazy_mm);
-+			WRITE_ONCE(rq->lazy_mm, next->active_mm);
-+			/*
-+			 * barrier here?  this needs to be visible to any
-+			 * remote CPU that starts executing __mmput().  That
-+			 * can't happen until either we call mmput() or until
-+			 * prev migrates elsewhere.
-+			 */
-+		} else {
- 			prev->active_mm = NULL;
-+		}
- 	} else {                                        // to user
- 		membarrier_switch_mm(rq, prev->active_mm, next->mm);
- 		/*
-@@ -3760,12 +3854,14 @@ context_switch(struct rq *rq, struct task_struct *prev,
- 		 * The below provides this either through switch_mm(), or in
- 		 * case 'prev->active_mm == next->mm' through
- 		 * finish_task_switch()'s mmdrop().
-+		 *
-+		 * XXX: mmdrop() didn't do this before, and the new
-+		 * code doesn't even call mmdrop().
- 		 */
- 		switch_mm_irqs_off(prev->active_mm, next->mm, next);
- 
- 		if (!prev->mm) {                        // from kernel
--			/* will mmdrop() in finish_task_switch(). */
--			rq->prev_mm = prev->active_mm;
-+			/* will release lazy_mm in finish_task_switch(). */
- 			prev->active_mm = NULL;
- 		}
- 	}
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 28709f6b0975..e0caee5f158e 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -950,7 +950,16 @@ struct rq {
- 	struct task_struct	*idle;
- 	struct task_struct	*stop;
- 	unsigned long		next_balance;
--	struct mm_struct	*prev_mm;
-+
-+	/*
-+	 * Hazard pointer for an mm that we might be using lazily.
-+	 */
-+	struct mm_struct	*lazy_mm;
-+
-+	/*
-+	 * An mm that needs mmdrop()ing.
-+	 */
-+	atomic_long_t		mm_to_mmdrop;
- 
- 	unsigned int		clock_update_flags;
- 	u64			clock;
--- 
-2.28.0
+I think it has been broken by commit c33165253492 ("powerpc: use  
+non-set_fs based maccess routines")
 
+IIUC we should provide copy_from_kernel_nofault_allowed() to avoid that.
+
+Christophe
