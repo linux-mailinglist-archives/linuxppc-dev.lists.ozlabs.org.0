@@ -2,50 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527852CEBA0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 11:05:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EAEF2CEBDC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 11:09:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CnSxy110PzDrRH
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 21:05:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CnT3034rTzDrQv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 21:09:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.195;
+ helo=mail-oi1-f195.google.com; envelope-from=geert.uytterhoeven@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux-m68k.org
-Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
- [209.85.210.68])
+Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com
+ [209.85.167.195])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CnSw06J7QzDqcX
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 21:03:43 +1100 (AEDT)
-Received: by mail-ot1-f68.google.com with SMTP id j12so4639001ota.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Dec 2020 02:03:43 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CnT1Q190pzDqv5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 21:08:25 +1100 (AEDT)
+Received: by mail-oi1-f195.google.com with SMTP id y74so5541377oia.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Dec 2020 02:08:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=GLHkAaCfT5pWLivXy5Xgz7u2ThT5u7Up7pqYnjb3zk4=;
- b=ctkmL2sBdgEAnWSVCnqpDUBDI1j4vDsdSbh9v8mKJb3z7L7lHDbyr5u/v8q37LGQEa
- vHOyh91im0m01uXbiet0fP14t4QPx63p2BxauD5EWvh2UCPY9IwzAXyITYy8S7JsZ2Qm
- OLT4otflN+PT4Dp5LQaY+iBoBWPaoebZ36hh84Mot6rMPTMqN8tdDv+QlGUuNpI/GGnp
- nlo8KQGNJ0JjcvLagVsrOPy9GUN3b8WmrEAmBEbqLoBMBd1mFSAHi7PjO4SmqzKAevbZ
- +ddqHbVB3y+Fpfbre/wBgvaljyLvlQ69HQB7zGGEToGbAbWNO2qKDt9DDLjf1HFBIRb9
- Yxew==
-X-Gm-Message-State: AOAM530TiIQTGlciLeT468iTdGQcZIq/oZka7ipswuWVXYWcWMii54js
- PKDAHDaA4kIsRGIV/afVetO3YLcWSPUNoRw3Qfg=
-X-Google-Smtp-Source: ABdhPJwneqGTjDCkbUTC2ItnGioumAlpRvEPmt3RmzMhCsLQ/Q/or7PoHA7wd7YwsmnMcli7X16du4mh6qdRhD9gAXg=
-X-Received: by 2002:a9d:2203:: with SMTP id o3mr3024405ota.107.1607076220971; 
- Fri, 04 Dec 2020 02:03:40 -0800 (PST)
+ bh=1vJmJ6rt51XGfyHKdiHaiaw3R9dpFJvdi4CGbEaDzt0=;
+ b=qEED/KwlEcDK4qeYiceyMqfwNJ9qVcaBPb3tgVAdx8pqcv6WLnshZFVUuVyDOZPykk
+ Meb5QMFwNo5MDz7p5PzRXygbCA/fFcikX1I+B0BTXFlK8UoNdsbGKKGDfHNWQB2C8NHN
+ uRDzJ7GtvWlShN/VwUM1Vzi2bSQWQOg5ZIg6dv6Nb1tXGQAj80HuUFOupWJ2sI603rc2
+ 1P1Kx5iUgB9F/krlrEpRs75tIxDIXq2/krFJznaIq8WWplKcHhUhUm6Og2C86OGZT+oo
+ DpVX2SQqYMoeHBOV28e26Hloopk2oFE7IvV4ToIhCOjc0few7EAqVcROMkw5pfUxviv3
+ IMJg==
+X-Gm-Message-State: AOAM533dup+cTE97MRFKQ1HTC4ENsmt7wj2qlp4o4gGpZbwl04VLnHzm
+ F084pH3UuJyQjyY/gUexTw2hNqVPScahVNZG6Yc=
+X-Google-Smtp-Source: ABdhPJzA2Jell/icS2mx5nSxlBHT0Lu0M6uda7dE4x2w3itTDp6TarggWiWyTkMGUD/a98PKof7GXM0aCuiIqCCT8Yc=
+X-Received: by 2002:aca:4cd8:: with SMTP id z207mr2633455oia.148.1607076502495; 
+ Fri, 04 Dec 2020 02:08:22 -0800 (PST)
 MIME-Version: 1.0
-References: <58bba4310da4c29b068345a4b36af8a531397ff7.1605847196.git.fthain@telegraphics.com.au>
-In-Reply-To: <58bba4310da4c29b068345a4b36af8a531397ff7.1605847196.git.fthain@telegraphics.com.au>
+References: <0f0a25855391e7eaa53a50f651aea0124e8525dd.1605847196.git.fthain@telegraphics.com.au>
+In-Reply-To: <0f0a25855391e7eaa53a50f651aea0124e8525dd.1605847196.git.fthain@telegraphics.com.au>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 4 Dec 2020 11:03:30 +0100
-Message-ID: <CAMuHMdVYf83+y1aUR6HqCgr-CLfWYvbuynpfogLrt3cXA-9_aA@mail.gmail.com>
-Subject: Re: [PATCH] macintosh/adb-iop: Send correct poll command
+Date: Fri, 4 Dec 2020 11:08:11 +0100
+Message-ID: <CAMuHMdX5yUaCWYsM7WgatYSDLZMcSckugOQxBBnBZOB_eJm=1g@mail.gmail.com>
+Subject: Re: [PATCH] macintosh/adb-iop: Always wait for reply message from IOP
 To: Finn Thain <fthain@telegraphics.com.au>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -69,24 +70,67 @@ Sender: "Linuxppc-dev"
 Hi Finn,
 
 On Fri, Nov 20, 2020 at 5:54 AM Finn Thain <fthain@telegraphics.com.au> wrote:
-> The behaviour of the IOP firmware is not well documented but we do know
-> that IOP message reply data can be used to issue new ADB commands.
-> Use the message reply to better control autopoll behaviour by sending
-> a Talk Register 0 command after every ADB response, not unlike the
-> algorithm in the via-macii driver. This poll command is addressed to
-> that device which last received a Talk command (explicit or otherwise).
+> A recent patch incorrectly altered the adb-iop state machine behaviour
+> and introduced a regression that can appear intermittently as a
+> malfunctioning ADB input device. This seems to be caused when reply
+> packets from different ADB commands become mixed up, especially during
+> the adb bus scan. Fix this by unconditionally entering the awaiting_reply
+> state after sending an explicit command, even when the ADB command won't
+> generate a reply from the ADB device.
 >
 > Cc: Joshua Thompson <funaho@jurai.org>
-> Fixes: fa3b5a9929fc ("macintosh/adb-iop: Implement idle -> sending state transition")
-
-WARNING: Unknown commit id 'fa3b5a9929fc', maybe rebased or not pulled?
-
-32226e817043?
-
+> Fixes: e2954e5f727f ("macintosh/adb-iop: Implement sending -> idle state transition")
 > Tested-by: Stan Johnson <userm57@yahoo.com>
 > Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
 
-Thanks, will queue in the m68k for-v5.11 branch.
+Thanks for your patch!
+
+> --- a/drivers/macintosh/adb-iop.c
+> +++ b/drivers/macintosh/adb-iop.c
+> @@ -84,10 +84,7 @@ static void adb_iop_complete(struct iop_msg *msg)
+>
+>         local_irq_save(flags);
+>
+> -       if (current_req->reply_expected)
+> -               adb_iop_state = awaiting_reply;
+> -       else
+> -               adb_iop_done();
+> +       adb_iop_state = awaiting_reply;
+>
+>         local_irq_restore(flags);
+>  }
+> @@ -95,8 +92,9 @@ static void adb_iop_complete(struct iop_msg *msg)
+>  /*
+>   * Listen for ADB messages from the IOP.
+>   *
+> - * This will be called when unsolicited messages (usually replies to TALK
+> - * commands or autopoll packets) are received.
+> + * This will be called when unsolicited IOP messages are received.
+> + * These IOP messages can carry ADB autopoll responses and also occur
+> + * after explicit ADB commands.
+>   */
+>
+>  static void adb_iop_listen(struct iop_msg *msg)
+> @@ -123,8 +121,10 @@ static void adb_iop_listen(struct iop_msg *msg)
+>                 if (adb_iop_state == awaiting_reply) {
+>                         struct adb_request *req = current_req;
+>
+> -                       req->reply_len = amsg->count + 1;
+> -                       memcpy(req->reply, &amsg->cmd, req->reply_len);
+> +                       if (req->reply_expected) {
+> +                               req->reply_len = amsg->count + 1;
+> +                               memcpy(req->reply, &amsg->cmd, req->reply_len);
+> +                       }
+
+So if we're not expecting a reply. It's ignored.
+Just wondering: what kind of messages are being dropped?
+If reply packets from different ADB commands become mixed up,
+they are still (expected?) replies to messages we sent before. Why
+shouldn't we depend on receiving the replies?
+
+>
+>                         req_done = true;
+>                 }
 
 Gr{oetje,eeting}s,
 
