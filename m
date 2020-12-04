@@ -1,95 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507F52CF64D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 22:38:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122772CF6B8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 23:29:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CnmKS6yvdzDrgG
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 08:38:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CnnRt2WSqzDrgm
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 09:28:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=KF42hkEb; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CnmHg3WRCzDrWV
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 08:36:46 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B4L3rPS195890; Fri, 4 Dec 2020 16:36:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=mq0Py58u7yVQMGnTGvPD5H4RBHRUXUVsbgY2eBrKMWw=;
- b=KF42hkEb7PMPmHjmnQZslNNKg3QrgJLyoTg0LkIwllFzt0pVJ3zQvE/UYp6LxHR9tFNQ
- fHKt/9VvnrW0kMuxXY+XF/Gn9wDCb/XXrlTafb0y/X+sT+Mtt0xiAsT9gXonsih0FUmT
- BIYfJUznqDvDilzaSgkTU3EPz03c0/Eg6gFkN1fdNzA7VOUupinx2Jy7JyUIo7j4Z4hd
- LtUoIcEWrziWHwqeKOhlmdCPBW59b/7oPYS/AhRM9GDAQQ/ZlD3lfQFmrJ6qU/FBlKaD
- krpkDWqq6Qb/9v6W/Z3dr8YdS27Y02tZdKaJ2gLqH9GAa8725esUAU7wbwfRpRFk6YR8 oQ== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 357m8gyuca-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Dec 2020 16:36:43 -0500
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B4LLwtB003116;
- Fri, 4 Dec 2020 21:36:43 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma01wdc.us.ibm.com with ESMTP id 355vrgdxsb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Dec 2020 21:36:43 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B4LZQSs3474112
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 4 Dec 2020 21:35:26 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D12E712405A;
- Fri,  4 Dec 2020 21:35:26 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F4229124058;
- Fri,  4 Dec 2020 21:35:25 +0000 (GMT)
-Received: from oc6034535106.ibm.com (unknown [9.163.73.174])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri,  4 Dec 2020 21:35:25 +0000 (GMT)
-Subject: Re: [PATCH v3 18/18] ibmvfc: drop host lock when completing commands
- in CRQ
-To: Tyrel Datwyler <tyreld@linux.ibm.com>,
- james.bottomley@hansenpartnership.com
-References: <20201203020806.14747-1-tyreld@linux.ibm.com>
- <20201203020806.14747-19-tyreld@linux.ibm.com>
-From: Brian King <brking@linux.vnet.ibm.com>
-Message-ID: <b048ede5-e673-4ba9-3c28-df077aa4467a@linux.vnet.ibm.com>
-Date: Fri, 4 Dec 2020 15:35:25 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CnnQG2qMFzDrZp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 09:27:29 +1100 (AEDT)
+IronPort-SDR: mPz4OP1h9H/enpi60DCPfRxYgYV9wI5Qtv+sgb8WVhDHO61MzogbyQHkjNElNIxnBZLFScAlbt
+ HDWw2PTkGrLA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9825"; a="170889841"
+X-IronPort-AV: E=Sophos;i="5.78,393,1599548400"; d="scan'208";a="170889841"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2020 14:27:26 -0800
+IronPort-SDR: xykVZSWgXiMzNiGI8xD2ETl83JtiRG85yFuGUfE/QoPOSablNJhN/3yPqB9v3ygJ/pXvXKBBx3
+ jqgkyXTO4C9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,393,1599548400"; d="scan'208";a="435937436"
+Received: from lkp-server02.sh.intel.com (HELO f74a175f0d75) ([10.239.97.151])
+ by fmsmga001.fm.intel.com with ESMTP; 04 Dec 2020 14:27:25 -0800
+Received: from kbuild by f74a175f0d75 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1klJXx-0000Xk-8C; Fri, 04 Dec 2020 22:27:25 +0000
+Date: Sat, 05 Dec 2020 06:26:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS c9344769e2b46ba28b947bec7a8a8f0a091ecd57
+Message-ID: <5fcab79c.NLK4qH4g9qhcLB64%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <20201203020806.14747-19-tyreld@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-12-04_11:2020-12-04,
- 2020-12-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 malwarescore=0 bulkscore=0 adultscore=0 spamscore=0
- impostorscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 clxscore=1015
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012040119
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,64 +57,187 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/2/20 8:08 PM, Tyrel Datwyler wrote:
-> The legacy CRQ holds the host lock the even while completing commands.
-> This presents a problem when in legacy single queue mode and
-> nr_hw_queues is greater than one since calling scsi_done() introduces
-> the potential for deadlock.
-> 
-> If nr_hw_queues is greater than one drop the hostlock in the legacy CRQ
-> path when completing a command.
-> 
-> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-> ---
->  drivers/scsi/ibmvscsi/ibmvfc.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-> index e499599662ec..e2200bdff2be 100644
-> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
-> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-> @@ -2969,6 +2969,7 @@ static void ibmvfc_handle_crq(struct ibmvfc_crq *crq, struct ibmvfc_host *vhost)
->  {
->  	long rc;
->  	struct ibmvfc_event *evt = (struct ibmvfc_event *)be64_to_cpu(crq->ioba);
-> +	unsigned long flags;
->  
->  	switch (crq->valid) {
->  	case IBMVFC_CRQ_INIT_RSP:
-> @@ -3039,7 +3040,12 @@ static void ibmvfc_handle_crq(struct ibmvfc_crq *crq, struct ibmvfc_host *vhost)
->  	del_timer(&evt->timer);
->  	list_del(&evt->queue);
->  	ibmvfc_trc_end(evt);
-> -	evt->done(evt);
-> +	if (nr_scsi_hw_queues > 1) {
-> +		spin_unlock_irqrestore(vhost->host->host_lock, flags);
-> +		evt->done(evt);
-> +		spin_lock_irqsave(vhost->host->host_lock, flags);
-> +	} else
-> +		evt->done(evt);
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next
+branch HEAD: c9344769e2b46ba28b947bec7a8a8f0a091ecd57  selftests/powerpc: Fix uninitialized variable warning
 
-Similar comment here as previously. The flags parameter is an output for
-spin_lock_irqsave but an input for spin_unlock_irqrestore. You'll need
-to rethink the locking here. You could just do a spin_unlock_irq / spin_lock_irq
-here and that would probably be OK, but probably isn't the best. 
+elapsed time: 1926m
 
->  }
->  
->  /**
-> 
+configs tested: 161
+configs skipped: 4
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
--- 
-Brian King
-Power Linux I/O
-IBM Linux Technology Center
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                         shannon_defconfig
+mips                     decstation_defconfig
+mips                         mpc30x_defconfig
+mips                           ci20_defconfig
+nios2                            alldefconfig
+arc                        vdk_hs38_defconfig
+powerpc                      cm5200_defconfig
+arm                          tango4_defconfig
+mips                 decstation_r4k_defconfig
+mips                           mtx1_defconfig
+mips                        qi_lb60_defconfig
+arm                           omap1_defconfig
+arm                           h5000_defconfig
+m68k                          amiga_defconfig
+sh                          r7785rp_defconfig
+sh                         microdev_defconfig
+m68k                       m5275evb_defconfig
+nds32                            alldefconfig
+mips                      fuloong2e_defconfig
+sh                           se7724_defconfig
+powerpc                      obs600_defconfig
+arm                          pcm027_defconfig
+arm                            dove_defconfig
+mips                         tb0219_defconfig
+m68k                       m5475evb_defconfig
+powerpc                     ep8248e_defconfig
+powerpc                     mpc512x_defconfig
+arm                         orion5x_defconfig
+arm                        shmobile_defconfig
+arm                           u8500_defconfig
+powerpc                      ppc6xx_defconfig
+arm                         vf610m4_defconfig
+sh                           se7750_defconfig
+powerpc                      mgcoge_defconfig
+ia64                          tiger_defconfig
+mips                        jmr3927_defconfig
+xtensa                          iss_defconfig
+arm                          ixp4xx_defconfig
+powerpc                   motionpro_defconfig
+nds32                               defconfig
+mips                           jazz_defconfig
+powerpc                        cell_defconfig
+ia64                             alldefconfig
+powerpc                     tqm5200_defconfig
+arc                         haps_hs_defconfig
+arm                           spitz_defconfig
+arm                          exynos_defconfig
+powerpc                     asp8347_defconfig
+arm                         nhk8815_defconfig
+arm                  colibri_pxa300_defconfig
+powerpc                      chrp32_defconfig
+sh                          urquell_defconfig
+arm                       netwinder_defconfig
+mips                            gpr_defconfig
+powerpc                     skiroot_defconfig
+arm                       aspeed_g4_defconfig
+arm                         hackkit_defconfig
+sparc                       sparc64_defconfig
+powerpc                         wii_defconfig
+arm                       versatile_defconfig
+arc                     nsimosci_hs_defconfig
+mips                  maltasmvp_eva_defconfig
+arm                        trizeps4_defconfig
+arm                        spear3xx_defconfig
+powerpc                     redwood_defconfig
+m68k                       m5208evb_defconfig
+arm                           stm32_defconfig
+powerpc                     pseries_defconfig
+arm                          prima2_defconfig
+sh                            titan_defconfig
+powerpc                       eiger_defconfig
+sh                          lboxre2_defconfig
+mips                           ip32_defconfig
+arm                         s3c2410_defconfig
+xtensa                              defconfig
+c6x                        evmc6474_defconfig
+powerpc                    amigaone_defconfig
+powerpc               mpc834x_itxgp_defconfig
+arm                    vt8500_v6_v7_defconfig
+parisc                              defconfig
+arm                        keystone_defconfig
+sh                           se7343_defconfig
+powerpc                     tqm8540_defconfig
+arm                             pxa_defconfig
+arm                       omap2plus_defconfig
+powerpc                    socrates_defconfig
+xtensa                    smp_lx200_defconfig
+c6x                        evmc6472_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20201204
+x86_64               randconfig-a006-20201204
+x86_64               randconfig-a002-20201204
+x86_64               randconfig-a001-20201204
+x86_64               randconfig-a005-20201204
+x86_64               randconfig-a003-20201204
+i386                 randconfig-a005-20201204
+i386                 randconfig-a004-20201204
+i386                 randconfig-a001-20201204
+i386                 randconfig-a002-20201204
+i386                 randconfig-a006-20201204
+i386                 randconfig-a003-20201204
+i386                 randconfig-a014-20201204
+i386                 randconfig-a013-20201204
+i386                 randconfig-a011-20201204
+i386                 randconfig-a015-20201204
+i386                 randconfig-a012-20201204
+i386                 randconfig-a016-20201204
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64                               rhel-8.3
 
+clang tested configs:
+x86_64               randconfig-a016-20201204
+x86_64               randconfig-a012-20201204
+x86_64               randconfig-a014-20201204
+x86_64               randconfig-a013-20201204
+x86_64               randconfig-a015-20201204
+x86_64               randconfig-a011-20201204
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
