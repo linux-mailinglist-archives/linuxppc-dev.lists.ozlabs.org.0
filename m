@@ -1,39 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262BD2CEE03
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 13:25:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D172CEE78
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 13:56:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CnX375mkFzDqgl
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 23:25:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CnXlY01tLzDqTb
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 23:56:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
- envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CnXdQ52qszDr24
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 23:51:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=alpha.franken.de
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CnWkM2nnbzDrJq
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 23:10:34 +1100 (AEDT)
-Received: from uucp (helo=alpha)
- by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
- id 1kl9ud-0005Nb-00; Fri, 04 Dec 2020 13:10:11 +0100
-Received: by alpha.franken.de (Postfix, from userid 1000)
- id 596D6C02CF; Fri,  4 Dec 2020 13:06:32 +0100 (CET)
-Date: Fri, 4 Dec 2020 13:06:32 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-Subject: Re: [PATCH v2 3/5] MIPS: configs: drop unused BACKLIGHT_GENERIC option
-Message-ID: <20201204120632.GA10011@alpha.franken.de>
-References: <20201201222922.3183-1-andrey.zhizhikin@leica-geosystems.com>
- <20201201222922.3183-4-andrey.zhizhikin@leica-geosystems.com>
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=eQ7PsrIa; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CnXdC5F7Mz9sWl;
+ Fri,  4 Dec 2020 23:51:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1607086272;
+ bh=rIn5aS6FXW/yfvCbJiZ+iQfNIifLeAJ91p+yFTfKKjU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=eQ7PsrIae9ILdXx2+j49t8KuDjjNwYqaB3VQ72iTRYo9ywWOpStWpnv51IZKyKxpb
+ T79TXKPpfKMTjnIugTp2HV/ORpU5H2LZZRbK+idI95zl29QNL+6u9lyy4iJhUTbOmc
+ IGS5Bc4m8LzzBiUjwilBygjDwM9UD3E/HkcO6tu5y0J+AMkukvZbVbEo3zkh9I41cV
+ ZmYD/1m+JQCTw2IRnu+Nz0E2HDUEdyUYABM5zAX8V3Bzgx3NHAUtRWWqvbqlIsnfes
+ 4nAK/9i0J70XlJfbLyquK2nbCbfwnFBfQGUWb6LjXxJopfhSq8Ka46kZ/qyCv7I3E8
+ A2gltqyCvWDBg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 12/29] powerpc/pseries/mobility: extract VASI session
+ polling logic
+In-Reply-To: <20201030011805.1224603-13-nathanl@linux.ibm.com>
+References: <20201030011805.1224603-1-nathanl@linux.ibm.com>
+ <20201030011805.1224603-13-nathanl@linux.ibm.com>
+Date: Fri, 04 Dec 2020 23:51:07 +1100
+Message-ID: <878sadvio4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201201222922.3183-4-andrey.zhizhikin@leica-geosystems.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,47 +59,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alexandre.belloni@bootlin.com, tony@atomide.com,
- linux-kernel@vger.kernel.org, James.Bottomley@HansenPartnership.com,
- thierry.reding@gmail.com, paulus@samba.org, sam@ravnborg.org,
- daniel.thompson@linaro.org, linux-omap@vger.kernel.org, deller@gmx.de,
- linux@armlinux.org.uk, krzk@kernel.org, jonathanh@nvidia.com,
- ludovic.desroches@microchip.com, catalin.marinas@arm.com,
- linux-mips@vger.kernel.org, will@kernel.org, mripard@kernel.org,
- soc@kernel.org, linux-tegra@vger.kernel.org, lee.jones@linaro.org,
- wens@csie.org, linux-arm-kernel@lists.infradead.org, jernej.skrabec@siol.net,
- linux-parisc@vger.kernel.org, emil.l.velikov@gmail.com,
- nicolas.ferre@microchip.com, linuxppc-dev@lists.ozlabs.org
+Cc: tyreld@linux.ibm.com, ajd@linux.ibm.com, mmc@linux.vnet.ibm.com,
+ cforno12@linux.vnet.ibm.com, drt@linux.vnet.ibm.com, brking@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 01, 2020 at 10:29:20PM +0000, Andrey Zhizhikin wrote:
-> Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-> unused") removed geenric_bl driver from the tree, together with
-> corresponding config option.
-> 
-> Remove BACKLIGHT_GENERIC config item from all MIPS configurations.
-> 
-> Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is unused")
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-> Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Nathan Lynch <nathanl@linux.ibm.com> writes:
+> The behavior of rtas_ibm_suspend_me_unsafe() is to return -EAGAIN to
+> the caller until the specified VASI suspend session state makes the
+> transition from H_VASI_ENABLED to H_VASI_SUSPENDING. In the interest
+> of separating concerns to prepare for a new implementation of the
+> join/suspend sequence, extract VASI session polling logic into a
+> couple of local functions. Waiting for the session state to reach
+> H_VASI_SUSPENDING before calling rtas_ibm_suspend_me_unsafe() ensures
+> that we will never get an EAGAIN result necessitating a retry. No
+> user-visible change in behavior is intended.
+>
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 > ---
->  arch/mips/configs/gcw0_defconfig      | 1 -
->  arch/mips/configs/gpr_defconfig       | 1 -
->  arch/mips/configs/lemote2f_defconfig  | 1 -
->  arch/mips/configs/loongson3_defconfig | 1 -
->  arch/mips/configs/mtx1_defconfig      | 1 -
->  arch/mips/configs/rs90_defconfig      | 1 -
->  6 files changed, 6 deletions(-)
+>  arch/powerpc/platforms/pseries/mobility.c | 76 +++++++++++++++++++++--
+>  1 file changed, 71 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
+> index dc6abf164db7..1b8ae221b98a 100644
+> --- a/arch/powerpc/platforms/pseries/mobility.c
+> +++ b/arch/powerpc/platforms/pseries/mobility.c
+> @@ -345,6 +345,73 @@ void post_mobility_fixup(void)
+...
 
-applied to mips-next.
+> +
+> +static int wait_for_vasi_session_suspending(u64 handle)
+> +{
+> +	unsigned long state;
+> +	bool keep_polling;
+> +	int ret;
+> +
+> +	/*
+> +	 * Wait for transition from H_VASI_ENABLED to
+> +	 * H_VASI_SUSPENDING. Treat anything else as an error.
+> +	 */
+> +	do {
+> +		keep_polling = false;
+> +		ret = poll_vasi_state(handle, &state);
+> +		if (ret != 0)
+> +			break;
+> +
+> +		switch (state) {
+> +		case H_VASI_SUSPENDING:
+> +			break;
+> +		case H_VASI_ENABLED:
+> +			keep_polling = true;
+> +			ssleep(1);
+> +			break;
+> +		default:
+> +			pr_err("unexpected H_VASI_STATE result %lu\n", state);
+> +			ret = -EIO;
+> +			break;
+> +		}
+> +	} while (keep_polling);
 
-Thomas.
+This seems like it could be simpler?
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+eg:
+
+	while (true) {
+		ret = poll_vasi_state(handle, &state);
+
+		if (ret != 0 || state == H_VASI_SUSPENDING)
+			break;
+		else if (state == H_VASI_ENABLED)
+			ssleep(1);
+		else {
+			pr_err("unexpected H_VASI_STATE result %lu\n", state);
+			ret = -EIO;
+			break;
+		}
+	}
+
+
+Or did I miss something?
+
+cheers
