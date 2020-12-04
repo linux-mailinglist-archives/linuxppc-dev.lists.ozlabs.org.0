@@ -2,50 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D172CEE78
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 13:56:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA5A2CEE8D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 14:01:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CnXlY01tLzDqTb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 23:56:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CnXrt0MTszDr5s
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 00:01:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CnXdQ52qszDr24
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 23:51:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CnXfG1YJ1zDqHj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 23:52:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=eQ7PsrIa; 
+ header.a=rsa-sha256 header.s=201909 header.b=Y0kVGz7Q; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CnXdC5F7Mz9sWl;
- Fri,  4 Dec 2020 23:51:11 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CnXfC1Jxzz9sWK;
+ Fri,  4 Dec 2020 23:52:03 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1607086272;
- bh=rIn5aS6FXW/yfvCbJiZ+iQfNIifLeAJ91p+yFTfKKjU=;
+ s=201909; t=1607086323;
+ bh=RU5vhtHTTgLXf+zJ6S91uu9NhL0KtnIIl9QlXXDIOVk=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=eQ7PsrIae9ILdXx2+j49t8KuDjjNwYqaB3VQ72iTRYo9ywWOpStWpnv51IZKyKxpb
- T79TXKPpfKMTjnIugTp2HV/ORpU5H2LZZRbK+idI95zl29QNL+6u9lyy4iJhUTbOmc
- IGS5Bc4m8LzzBiUjwilBygjDwM9UD3E/HkcO6tu5y0J+AMkukvZbVbEo3zkh9I41cV
- ZmYD/1m+JQCTw2IRnu+Nz0E2HDUEdyUYABM5zAX8V3Bzgx3NHAUtRWWqvbqlIsnfes
- 4nAK/9i0J70XlJfbLyquK2nbCbfwnFBfQGUWb6LjXxJopfhSq8Ka46kZ/qyCv7I3E8
- A2gltqyCvWDBg==
+ b=Y0kVGz7Q0+7DUeaHicRsX+V4p+BEsVp/s/zwxKJBntSqunXKCL1BtG8tO7qA0csTB
+ WMA3FsBmkJKYGggFpT/+SQ4SYOsa11SxIahIOhjODKJhQjGbvqLCfnKNCqUYJY85LU
+ DEqA32Vi7BDqcSensHfrMtWhY0AQGtbBkU6OXOIKqxOK7EjjNIfe17BLN1B9IeDTiy
+ xmptWsI7tuEeM0b734JuRIpZTcDRUfwLLKYO/h2QUz2hKixFNYb2tWHcbVTBCu2Qf4
+ LqTZ90wOIqnEbeUZaHOQ5ij2FhZtVkGr4/1NvhBggaqznXTwkN6nlOK78I80HX72yW
+ stliWikLi5npQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 12/29] powerpc/pseries/mobility: extract VASI session
- polling logic
-In-Reply-To: <20201030011805.1224603-13-nathanl@linux.ibm.com>
+Subject: Re: [PATCH 03/29] powerpc/rtas: complete ibm,suspend-me status codes
+In-Reply-To: <20201030011805.1224603-4-nathanl@linux.ibm.com>
 References: <20201030011805.1224603-1-nathanl@linux.ibm.com>
- <20201030011805.1224603-13-nathanl@linux.ibm.com>
-Date: Fri, 04 Dec 2020 23:51:07 +1100
-Message-ID: <878sadvio4.fsf@mpe.ellerman.id.au>
+ <20201030011805.1224603-4-nathanl@linux.ibm.com>
+Date: Fri, 04 Dec 2020 23:52:01 +1100
+Message-ID: <877dpxvimm.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -66,78 +65,43 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Nathan Lynch <nathanl@linux.ibm.com> writes:
-> The behavior of rtas_ibm_suspend_me_unsafe() is to return -EAGAIN to
-> the caller until the specified VASI suspend session state makes the
-> transition from H_VASI_ENABLED to H_VASI_SUSPENDING. In the interest
-> of separating concerns to prepare for a new implementation of the
-> join/suspend sequence, extract VASI session polling logic into a
-> couple of local functions. Waiting for the session state to reach
-> H_VASI_SUSPENDING before calling rtas_ibm_suspend_me_unsafe() ensures
-> that we will never get an EAGAIN result necessitating a retry. No
-> user-visible change in behavior is intended.
+> We don't completely account for the possible return codes for
+> ibm,suspend-me. Add definitions for these.
 >
 > Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 > ---
->  arch/powerpc/platforms/pseries/mobility.c | 76 +++++++++++++++++++++--
->  1 file changed, 71 insertions(+), 5 deletions(-)
+>  arch/powerpc/include/asm/rtas.h | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 >
-> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-> index dc6abf164db7..1b8ae221b98a 100644
-> --- a/arch/powerpc/platforms/pseries/mobility.c
-> +++ b/arch/powerpc/platforms/pseries/mobility.c
-> @@ -345,6 +345,73 @@ void post_mobility_fixup(void)
-...
+> diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
+> index 55f9a154c95d..f060181a0d32 100644
+> --- a/arch/powerpc/include/asm/rtas.h
+> +++ b/arch/powerpc/include/asm/rtas.h
+> @@ -23,11 +23,16 @@
+>  #define RTAS_RMOBUF_MAX (64 * 1024)
+>  
+>  /* RTAS return status codes */
+> -#define RTAS_NOT_SUSPENDABLE	-9004
+>  #define RTAS_BUSY		-2    /* RTAS Busy */
+>  #define RTAS_EXTENDED_DELAY_MIN	9900
+>  #define RTAS_EXTENDED_DELAY_MAX	9905
+>  
+> +/* statuses specific to ibm,suspend-me */
+> +#define RTAS_SUSPEND_ABORTED     9000 /* Suspension aborted */
 
-> +
-> +static int wait_for_vasi_session_suspending(u64 handle)
-> +{
-> +	unsigned long state;
-> +	bool keep_polling;
-> +	int ret;
-> +
-> +	/*
-> +	 * Wait for transition from H_VASI_ENABLED to
-> +	 * H_VASI_SUSPENDING. Treat anything else as an error.
-> +	 */
-> +	do {
-> +		keep_polling = false;
-> +		ret = poll_vasi_state(handle, &state);
-> +		if (ret != 0)
-> +			break;
-> +
-> +		switch (state) {
-> +		case H_VASI_SUSPENDING:
-> +			break;
-> +		case H_VASI_ENABLED:
-> +			keep_polling = true;
-> +			ssleep(1);
-> +			break;
-> +		default:
-> +			pr_err("unexpected H_VASI_STATE result %lu\n", state);
-> +			ret = -EIO;
-> +			break;
-> +		}
-> +	} while (keep_polling);
+This made me ... pause.
 
-This seems like it could be simpler?
-
-eg:
-
-	while (true) {
-		ret = poll_vasi_state(handle, &state);
-
-		if (ret != 0 || state == H_VASI_SUSPENDING)
-			break;
-		else if (state == H_VASI_ENABLED)
-			ssleep(1);
-		else {
-			pr_err("unexpected H_VASI_STATE result %lu\n", state);
-			ret = -EIO;
-			break;
-		}
-	}
-
-
-Or did I miss something?
+But it really is positive 9000, I checked PAPR.
 
 cheers
+
+
+> +#define RTAS_NOT_SUSPENDABLE    -9004 /* Partition not suspendable */
+> +#define RTAS_THREADS_ACTIVE     -9005 /* Multiple processor threads active */
+> +#define RTAS_OUTSTANDING_COPROC -9006 /* Outstanding coprocessor operations */
+> +
+>  /*
+>   * In general to call RTAS use rtas_token("string") to lookup
+>   * an RTAS token for the given string (e.g. "event-scan").
+> -- 
+> 2.25.4
