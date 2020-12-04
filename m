@@ -2,90 +2,149 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108322CF268
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 17:54:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F065D2CF429
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 19:36:38 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cnf2P3HV7zDrMT
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 03:54:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CnhHk5YybzDrZD
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 05:36:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=rick.p.edgecombe@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=us.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=FWWHT4f8; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=intel.onmicrosoft.com header.i=@intel.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-intel-onmicrosoft-com
+ header.b=SotSdOYD; dkim-atps=neutral
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cnf0H6JJnzDrKq
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 03:53:00 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B4FL8No032566; Fri, 4 Dec 2020 11:52:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=ql4mDmfKOvXy3satDXHjYSHs7JK3+enwlw6GFQ7C//c=;
- b=FWWHT4f8mgVP2alh6I3HNzwri+wE1lc2cnDnJhKaDr2ocH5ZaJlHBE+/o2tZ6mHjj2Qm
- jRVSzYM3l3nVBokiVYTlslrr2urTot2y6/ElSzjDaHj/VKOf/dRbww9MEXZkSm5lYmFw
- TOClkuXR3DghfHDoh+yOLHBYFMrcIPaoRPHIsT6JzQFaveOX+W7q3XpR0fXWwIYECA7g
- FS+TdXzZGoLP4A5NVgwxCO7r4+WgmJ6ML4HbvJkwm/iwnAYwiE8IV9zaKyFlGcm8d0MA
- ofEeTDxdUrjzpfYaNg5xQwTrMj4Oh2W7BDOHeTP+pLc+rw+p1YLnV10lIllkBanxA5YG Qw== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 357m8gshvu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Dec 2020 11:52:52 -0500
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B4GS6E5009780;
- Fri, 4 Dec 2020 16:52:51 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03ams.nl.ibm.com with ESMTP id 3573v9ryyb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Dec 2020 16:52:51 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B4GqnGC2884290
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 4 Dec 2020 16:52:49 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA3DBAE04D;
- Fri,  4 Dec 2020 16:52:48 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 499B0AE051;
- Fri,  4 Dec 2020 16:52:47 +0000 (GMT)
-Received: from ram-ibm-com.ibm.com (unknown [9.80.218.6])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri,  4 Dec 2020 16:52:47 +0000 (GMT)
-Date: Fri, 4 Dec 2020 08:52:44 -0800
-From: Ram Pai <linuxram@us.ibm.com>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/book3s_hv_uvmem: Check for failed page migration
-Message-ID: <20201204165244.GA3390@ram-ibm-com.ibm.com>
-References: <20201203050812.5234-1-alistair@popple.id.au>
- <20201204101841.GA621541@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CnhFW3f3lzDrSt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 05:34:33 +1100 (AEDT)
+IronPort-SDR: +VW88KZxrbj5V/CboLZsDLmSJAtaRWHaRSzNNlRsGsfFMzNNILYTEeFlZLKOyPVrmrJoxxvXcL
+ 9PkVyNiVLseA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9825"; a="169914518"
+X-IronPort-AV: E=Sophos;i="5.78,393,1599548400"; d="scan'208";a="169914518"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2020 10:34:23 -0800
+IronPort-SDR: tPKCsCIsjaF9dOnF3PXL9UEw8PpV8g81HLxuIn8i5KKmdZrZrfnV6/5kM3N4riwAFwF1i23UOI
+ gr5ZhFgD7yuQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,393,1599548400"; d="scan'208";a="346683882"
+Received: from orsmsx604.amr.corp.intel.com ([10.22.229.17])
+ by orsmga002.jf.intel.com with ESMTP; 04 Dec 2020 10:34:22 -0800
+Received: from orsmsx604.amr.corp.intel.com (10.22.229.17) by
+ ORSMSX604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Fri, 4 Dec 2020 10:34:21 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
+ via Frontend Transport; Fri, 4 Dec 2020 10:34:21 -0800
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.171)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.1713.5; Fri, 4 Dec 2020 10:33:55 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lXQvFWFtb3h1D6lnPNnk7rOcOBbK4R7SpzkBNa2UgHvTejo6b0vwQZhD0082v2OapkK/h2Kq3MZusA7RP4zlgvOvxxjpnYggzmaC37TPSMHuDe1BIa+hp+/YEBctTDt2tbN7U4ZLu173zLUB1LZjL3YRvSV6BuTToexCTvNnDjA5Bq0HDJdRyyWhUjd1DtWY7kz4pkBMHV3gsYOjaOXBV2n5e9JtfN8q8nE0CbRUYZ8HhfACFrW9vsirouqAh95TD2JF1dXmDi8LTHVIHoVP5PLuFxceP1Is2S2N7Jj3a+ScxWNa5RA8NatQQObW/rrCEpqsRPNLRmwBj1uZc8Bccg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1pGihKPDGqIg+SlU+jk6TfFt/GR8szYzraWqbP0Xxfo=;
+ b=mkKMPtANqwEsJVwgLn7lLHs54Riu+aPlDqKgXvzGo2cx052bnPLCwNGtI4K7+alRMwO52HNVgFp0IkxBTi3/WZ6Ghatevk3NVEYmWdvKSHwaodVw4QockfSGBqoXpfAtoO6NKhRrStUheSKMyPKcLE8sy84NQIrEaVhNwtB8kvCnL1fSerZSEnmwP6KcSQkP7qCQ/mNE93cZpQBn4lrvDHlo9DNgeLrk1ct+RYm6TiZ3AHFR/+tUPKr2hqU+hafd1ZQ+AbM0PsUzvT1ypAwWdURLrjMhv3X8LVTEEMVoBkStqBt4Mq+bhzBabMrAIM2wJeDO0+JbEDjplZajBZ35hQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com; 
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1pGihKPDGqIg+SlU+jk6TfFt/GR8szYzraWqbP0Xxfo=;
+ b=SotSdOYDGdjPwr6AEuK3TMgQiN1NiCC1CyseEfY1E77hdSRgqOgZZUM9DY8rDr3uX6hCLKAPr+Fxor4DIoYpLwAxNx//S8/5hU7ls6JaYYNw+mSRppGZQn/1daYh1CInaeksp04K8Ox/0LzrbdXIBBssKerRO8LMR3wqdVNQYC0=
+Received: from SN6PR11MB3184.namprd11.prod.outlook.com (2603:10b6:805:bd::17)
+ by SN6PR11MB2671.namprd11.prod.outlook.com (2603:10b6:805:60::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Fri, 4 Dec
+ 2020 18:33:54 +0000
+Received: from SN6PR11MB3184.namprd11.prod.outlook.com
+ ([fe80::bcad:a1da:3b9b:1412]) by SN6PR11MB3184.namprd11.prod.outlook.com
+ ([fe80::bcad:a1da:3b9b:1412%6]) with mapi id 15.20.3611.025; Fri, 4 Dec 2020
+ 18:33:54 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "npiggin@gmail.com" <npiggin@gmail.com>, "linux-mm@kvack.org"
+ <linux-mm@kvack.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>
+Subject: Re: [PATCH v8 11/12] mm/vmalloc: Hugepage vmalloc mappings
+Thread-Topic: [PATCH v8 11/12] mm/vmalloc: Hugepage vmalloc mappings
+Thread-Index: AQHWx0IouDnRaQC0zE26j1j/vLv2yqnhHkOAgAV9xQCAAK16AA==
+Date: Fri, 4 Dec 2020 18:33:54 +0000
+Message-ID: <2e8e1f3e47736e8f5e749cee85b7036cbf9cb1b5.camel@intel.com>
+References: <20201128152559.999540-1-npiggin@gmail.com>
+ <20201128152559.999540-12-npiggin@gmail.com>
+ <e9d3a50e1b18f9ea1cdfdc221bef75db19273417.camel@intel.com>
+ <1607068679.lfd133za4h.astroid@bobo.none>
+In-Reply-To: <1607068679.lfd133za4h.astroid@bobo.none>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.1 (3.30.1-1.fc29) 
+authentication-results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [134.134.137.75]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 0e2f56a9-81a6-4c21-6768-08d898832777
+x-ms-traffictypediagnostic: SN6PR11MB2671:
+x-microsoft-antispam-prvs: <SN6PR11MB2671D440327043090A7CD029C9F10@SN6PR11MB2671.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: TWmu2O6yU0Gt4BzEwOVEokPs9O7IRCLaPhI5Qe1zyiqY7IU6vfh9zQZ8NodzUTnqHFEgJWCtxXRcMJPUrK4oEMaEky5vcKBei6tQNpuoAjhZGd6DW7TIouZShOQwQXUJF0UtGiUZ8rTss0BKocdC+uFGsYGqQubMpGYf7TZoslBHzp2Yv6r7GCX0VV8tbVchTpzL+ligcQIveu+ODjUqFGmON9tugdh2JyLwQUNZLRL6B5ndA609KGghScFsE84FVi6p7+LlFmo+q1Tv31A1cx230oBeD3o1sblEt+hKQH8KGP+Tjaaops/XjjujiJDc4bO6AhFt+0UvQld+B9+qOASRkm04WPtgFA/FQjdmzGFS4ZUH6TpvdBOexnE59qqUmqjyNZtYqcT+Pd4t6Dtbyg==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SN6PR11MB3184.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(39860400002)(366004)(396003)(136003)(346002)(376002)(66946007)(2906002)(6486002)(316002)(71200400001)(478600001)(7416002)(4326008)(8936002)(110136005)(5660300002)(54906003)(83380400001)(6506007)(86362001)(2616005)(8676002)(6512007)(66446008)(4001150100001)(66556008)(66476007)(36756003)(91956017)(186003)(26005)(64756008)(966005)(76116006);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata: =?utf-8?B?c3dVRGdaNFZyM0NQbzdSalhELzI2TzBkREhjNWl3dDNUNHJ0cmh3bWdIS0pq?=
+ =?utf-8?B?TWw5MDUrbGM1L0h4T1hvLzcyQ2RMVEdtK0dtRHlwdkRBdmoxUVd6TkJVcjl1?=
+ =?utf-8?B?aUdBTisxS2dQTlMwZ25LUWZWZnlrYytmN0lHWDdYUGJOOWVtUDRrM1FVV1Av?=
+ =?utf-8?B?ZjZtbVRuRS9QQmNxbjNHNjZXK1JnUkVPUjNTS0tSZ3hFd3NhNnpsRlpERzlu?=
+ =?utf-8?B?QjhLTTNCdzZ0YTUxMUhVYnBKVi9maSs5UHF5RlVwbFJINXFxZGJPOXkvYjVj?=
+ =?utf-8?B?aDM2ck05ZkkyZU1XYm9ET2ZGSGFrL1pZdFhITmxwZ1RBaEVBZTc0aWsyMSsr?=
+ =?utf-8?B?TDRITFZ0ZTRrREFjVFZNM3lRQVovZkpNWlYrTFJCcUhQVEFhbDc1TkQyeTl5?=
+ =?utf-8?B?c1FlZ3gvU3oySkU2RGNqWFA1dGg0YzhZSVd1QlMwZHpVKzlZWHM2Nzl5Z0hB?=
+ =?utf-8?B?dzV6anNxQjJ1R0YrYWkvVGs5WHREdSswbjRGUzNQallCR3liNXRzVW9FWWVY?=
+ =?utf-8?B?NThGbEZVQVU4dkZQWnlrYWxtOXdNblF5dzEwUlhyN20zcnIxMEVWcXArQlRp?=
+ =?utf-8?B?NFhVQnJRbnM3azZjaERCTWlxMWZmZHRWVzdTTzVXUHpHWXhBMmdyWHVZdEpx?=
+ =?utf-8?B?L2VEcmlEL1RWeUczRGNnc2U3WmNUUlQ4WjNTcWFpRFZnbWxEWUdSNFlzWEhB?=
+ =?utf-8?B?M081b0JtT1VVZWQ1ZTFOY2dEYWEyMzB1cGgrMHNxRDEzQ0JTRWRRZkhDTEt2?=
+ =?utf-8?B?QUlWWXdNWFl4TXV6NWI4V1hRRzhhSFI3YUVBR3lXVVVMQm9lUzJSa0hEWFJK?=
+ =?utf-8?B?SmhRQ2RObWJCbCtmRFc3dTFhcmo2S0lJSGZVWEYzYVNGUUxmOEZNbjhua2RO?=
+ =?utf-8?B?aGdmVENXbm1iazB3M0pPbmNKZEd5Qk93RXl6Z0g0bjBkYTVEanZSNXhWZVE4?=
+ =?utf-8?B?WHk4MmlobzBZM1hGL0ZqeHlpNlpyMkRqTUo1Z1hwNHdhS01JdVgxQm52SEpo?=
+ =?utf-8?B?enpsL1RMa3BGbUNpM2FsTlBBdXh2cHhDWHdJTDJLMXVqKzRudzE2OWJCV2E0?=
+ =?utf-8?B?S3R1QzdGZ0ZkZVh6U3ltZFBRd0Y5aDZHUEpUdDB5bjFRK3hOUG1aYjdCdnlS?=
+ =?utf-8?B?a0M4dTRpa3Byc1p0VFliWmRQN2EreStyWlpKWTc3aTFRMmZoU1BoRm5iV3RH?=
+ =?utf-8?B?dTV3U3dSR3hJWlhCZnQxOHV3dmh1eDJuY3FPaEM1TmNPSHdrdFM4QWpaNHJS?=
+ =?utf-8?B?cXRQUTNicHprK2JJTFFxZDg2R1J2Uksvd3BVZlI2NkFQWkpSQlR0ajlNR2Fw?=
+ =?utf-8?Q?fu8LMUzxAUmZoSTPSSo9JJR0kIP+8WAKAN?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <4389A573289C0445932317275B5476BA@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201204101841.GA621541@in.ibm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312, 18.0.737
- definitions=2020-12-04_05:2020-12-04,
- 2020-12-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 malwarescore=0 bulkscore=0 adultscore=0 spamscore=0
- impostorscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 clxscore=1011
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012040088
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB3184.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e2f56a9-81a6-4c21-6768-08d898832777
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Dec 2020 18:33:54.2330 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8NQ7GZEi6tehexOw+UmCtv8DVoX7TXdqoAe//7e+Gsjo2eYkd+7Yl035It+yL0I9Wf253XdjjGwA7mXeu0bKjihsICvbiXsUfFRApHBM6tE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB2671
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,59 +156,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "hch@infradead.org" <hch@infradead.org>,
+ "lizefan@huawei.com" <lizefan@huawei.com>,
+ "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 04, 2020 at 03:48:41PM +0530, Bharata B Rao wrote:
-> On Thu, Dec 03, 2020 at 04:08:12PM +1100, Alistair Popple wrote:
-> > migrate_vma_pages() may still clear MIGRATE_PFN_MIGRATE on pages which
-> > are not able to be migrated. Drivers may safely copy data prior to
-> > calling migrate_vma_pages() however a remote mapping must not be
-> > established until after migrate_vma_pages() has returned as the
-> > migration could still fail.
-> > 
-> > UV_PAGE_IN_in both copies and maps the data page, therefore it should
-> > only be called after checking the results of migrate_vma_pages().
-> > 
-> > Signed-off-by: Alistair Popple <alistair@popple.id.au>
-> > ---
-> >  arch/powerpc/kvm/book3s_hv_uvmem.c | 7 ++++---
-> >  1 file changed, 4 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> > index 84e5a2dc8be5..08aa6a90c525 100644
-> > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> > @@ -762,7 +762,10 @@ static int kvmppc_svm_page_in(struct vm_area_struct *vma,
-> >  		goto out_finalize;
-> >  	}
-> >  
-> > -	if (pagein) {
-> > +	*mig.dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
-> > +	migrate_vma_pages(&mig);
-> > +
-> > +	if ((*mig.src & MIGRATE_PFN_MIGRATE) && pagein) {
-> >  		pfn = *mig.src >> MIGRATE_PFN_SHIFT;
-> >  		spage = migrate_pfn_to_page(*mig.src);
-> >  		if (spage) {
-> > @@ -773,8 +776,6 @@ static int kvmppc_svm_page_in(struct vm_area_struct *vma,
-> >  		}
-> >  	}
-> >  
-> > -	*mig.dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
-> > -	migrate_vma_pages(&mig);
-> >  out_finalize:
-> >  	migrate_vma_finalize(&mig);
-> >  	return ret;
-
-This patch certainly looks like the problem, that has been hurting
-us for a while.  Let me run this patch through my SVM tests.  Looks very
-promising.
-
-BTW: The code does a similar thing while paging out.  It pages out from the
-UV, and then does the migration. Is there a bug there aswell?
-
-RP
+T24gRnJpLCAyMDIwLTEyLTA0IGF0IDE4OjEyICsxMDAwLCBOaWNob2xhcyBQaWdnaW4gd3JvdGU6
+DQo+IEV4Y2VycHRzIGZyb20gRWRnZWNvbWJlLCBSaWNrIFAncyBtZXNzYWdlIG9mIERlY2VtYmVy
+IDEsIDIwMjAgNjoyMQ0KPiBhbToNCj4gPiBPbiBTdW4sIDIwMjAtMTEtMjkgYXQgMDE6MjUgKzEw
+MDAsIE5pY2hvbGFzIFBpZ2dpbiB3cm90ZToNCj4gPiA+IFN1cHBvcnQgaHVnZSBwYWdlIHZtYWxs
+b2MgbWFwcGluZ3MuIENvbmZpZyBvcHRpb24NCj4gPiA+IEhBVkVfQVJDSF9IVUdFX1ZNQUxMT0MN
+Cj4gPiA+IGVuYWJsZXMgc3VwcG9ydCBvbiBhcmNoaXRlY3R1cmVzIHRoYXQgZGVmaW5lIEhBVkVf
+QVJDSF9IVUdFX1ZNQVANCj4gPiA+IGFuZA0KPiA+ID4gc3VwcG9ydHMgUE1EIHNpemVkIHZtYXAg
+bWFwcGluZ3MuDQo+ID4gPiANCj4gPiA+IHZtYWxsb2Mgd2lsbCBhdHRlbXB0IHRvIGFsbG9jYXRl
+IFBNRC1zaXplZCBwYWdlcyBpZiBhbGxvY2F0aW5nDQo+ID4gPiBQTUQNCj4gPiA+IHNpemUNCj4g
+PiA+IG9yIGxhcmdlciwgYW5kIGZhbGwgYmFjayB0byBzbWFsbCBwYWdlcyBpZiB0aGF0IHdhcyB1
+bnN1Y2Nlc3NmdWwuDQo+ID4gPiANCj4gPiA+IEFsbG9jYXRpb25zIHRoYXQgZG8gbm90IHVzZSBQ
+QUdFX0tFUk5FTCBwcm90IGFyZSBub3QgcGVybWl0dGVkIHRvDQo+ID4gPiB1c2UNCj4gPiA+IGh1
+Z2UgcGFnZXMsIGJlY2F1c2Ugbm90IGFsbCBjYWxsZXJzIGV4cGVjdCB0aGlzIChlLmcuLCBtb2R1
+bGUNCj4gPiA+IGFsbG9jYXRpb25zIHZzIHN0cmljdCBtb2R1bGUgcnd4KS4NCj4gPiANCj4gPiBT
+ZXZlcmFsIGFyY2hpdGVjdHVyZXMgKHg4NiwgYXJtNjQsIG90aGVycz8pIGFsbG9jYXRlIG1vZHVs
+ZXMNCj4gPiBpbml0aWFsbHkNCj4gPiB3aXRoIFBBR0VfS0VSTkVMIGFuZCBzbyBJIHRoaW5rIHRo
+aXMgdGVzdCB3aWxsIG5vdCBleGNsdWRlIG1vZHVsZQ0KPiA+IGFsbG9jYXRpb25zIGluIHRob3Nl
+IGNhc2VzLg0KPiANCj4gQWgsIHRoYW5rcy4gSSBndWVzcyBhcmNocyBtdXN0IGFkZGl0aW9uYWxs
+eSBlbnN1cmUgdGhhdCB0aGVpcg0KPiBQQUdFX0tFUk5FTCBhbGxvY2F0aW9ucyBhcmUgc3VpdGFi
+bGUgZm9yIGh1Z2UgcGFnZSBtYXBwaW5ncyBiZWZvcmUNCj4gZW5hYmxpbmcgdGhlIG9wdGlvbi4N
+Cj4gDQo+IElmIHRoZXJlIGlzIGludGVyZXN0IGZyb20gdGhvc2UgYXJjaHMgdG8gc3VwcG9ydCB0
+aGlzLCBJIGhhdmUgYW4NCj4gZWFybHkgKHVuLXBvc3RlZCkgcGF0Y2ggdGhhdCBhZGRzIGFuIGV4
+cGxpY2l0IFZNX0hVR0UgZmxhZyB0aGF0IGNvdWxkDQo+IG92ZXJyaWRlIHRoZSBwZXNzZW1pc3Rp
+YyBhcmNoIGRlZmF1bHQuIEl0J3Mgbm90IG11Y2ggdHJvdWJsZSB0byBhZGQNCj4gdGhpcyANCj4g
+dG8gdGhlIGxhcmdlIHN5c3RlbSBoYXNoIGFsbG9jYXRpb25zLiBJdCdzIHZlcnkgb3V0IG9mIGRh
+dGUgbm93IGJ1dA0KPiBJIA0KPiBjYW4gYXQgbGVhc3QgZ2l2ZSB3aGF0IEkgaGF2ZSB0byBhbnlv
+bmUgZG9pbmcgYW4gYXJjaCBzdXBwb3J0IHRoYXQNCj4gd2FudHMgaXQuDQoNCkFoaCwgc29ycnks
+IEkgdG90YWxseSBtaXNzZWQgdGhhdCB0aGlzIHdhcyBvbmx5IGVuYWJsZWQgZm9yIHBvd2VycGMu
+DQoNClRoYXQgcGF0Y2ggbWlnaHQgYmUgdXNlZnVsIGZvciBtZSBhY3R1YWxseS4gT3IgbWF5YmUg
+YSBWTV9OT0hVR0UsIHNpbmNlDQp0aGVyZSBhcmUgb25seSBhIGZldyBwbGFjZXMgd2hlcmUgZXhl
+Y3V0YWJsZSB2bWFsbG9jcyBhcmUgY3JlYXRlZD8gSSdtDQpub3Qgc3VyZSB3aGF0IHRoZSBvdGhl
+ciBpc3N1ZXMgYXJlLg0KDQpJIGFtIGVuZGVhdm9yaW5nIHRvIGhhdmUgc21hbGwgbW9kdWxlIGFs
+bG9jYXRpb25zIHNoYXJlIGxhcmdlIHBhZ2VzLCBzbw0KdGhpcyBpbmZyYXN0cnVjdHVyZSBpcyBh
+IGJpZyBoZWxwIGFscmVhZHkuDQpodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sLzIwMjAxMTIw
+MjAyNDI2LjE4MDA5LTEtcmljay5wLmVkZ2Vjb21iZUBpbnRlbC5jb20vDQoNClRoYW5rcyENCg==
