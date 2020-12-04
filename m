@@ -1,54 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAEF2CEBDC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 11:09:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC692CEBED
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 11:13:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CnT3034rTzDrQv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 21:09:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CnT720pTjzDrVx
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 21:13:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.195;
- helo=mail-oi1-f195.google.com; envelope-from=geert.uytterhoeven@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com
- [209.85.167.195])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CnT1Q190pzDqv5
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 21:08:25 +1100 (AEDT)
-Received: by mail-oi1-f195.google.com with SMTP id y74so5541377oia.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Dec 2020 02:08:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=1vJmJ6rt51XGfyHKdiHaiaw3R9dpFJvdi4CGbEaDzt0=;
- b=qEED/KwlEcDK4qeYiceyMqfwNJ9qVcaBPb3tgVAdx8pqcv6WLnshZFVUuVyDOZPykk
- Meb5QMFwNo5MDz7p5PzRXygbCA/fFcikX1I+B0BTXFlK8UoNdsbGKKGDfHNWQB2C8NHN
- uRDzJ7GtvWlShN/VwUM1Vzi2bSQWQOg5ZIg6dv6Nb1tXGQAj80HuUFOupWJ2sI603rc2
- 1P1Kx5iUgB9F/krlrEpRs75tIxDIXq2/krFJznaIq8WWplKcHhUhUm6Og2C86OGZT+oo
- DpVX2SQqYMoeHBOV28e26Hloopk2oFE7IvV4ToIhCOjc0few7EAqVcROMkw5pfUxviv3
- IMJg==
-X-Gm-Message-State: AOAM533dup+cTE97MRFKQ1HTC4ENsmt7wj2qlp4o4gGpZbwl04VLnHzm
- F084pH3UuJyQjyY/gUexTw2hNqVPScahVNZG6Yc=
-X-Google-Smtp-Source: ABdhPJzA2Jell/icS2mx5nSxlBHT0Lu0M6uda7dE4x2w3itTDp6TarggWiWyTkMGUD/a98PKof7GXM0aCuiIqCCT8Yc=
-X-Received: by 2002:aca:4cd8:: with SMTP id z207mr2633455oia.148.1607076502495; 
- Fri, 04 Dec 2020 02:08:22 -0800 (PST)
-MIME-Version: 1.0
-References: <0f0a25855391e7eaa53a50f651aea0124e8525dd.1605847196.git.fthain@telegraphics.com.au>
-In-Reply-To: <0f0a25855391e7eaa53a50f651aea0124e8525dd.1605847196.git.fthain@telegraphics.com.au>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 4 Dec 2020 11:08:11 +0100
-Message-ID: <CAMuHMdX5yUaCWYsM7WgatYSDLZMcSckugOQxBBnBZOB_eJm=1g@mail.gmail.com>
-Subject: Re: [PATCH] macintosh/adb-iop: Always wait for reply message from IOP
-To: Finn Thain <fthain@telegraphics.com.au>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CnT5D2Fh9zDqwF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 21:11:41 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CnT524VMDz9v9xH;
+ Fri,  4 Dec 2020 11:11:34 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Q1aCUZxw5Ing; Fri,  4 Dec 2020 11:11:34 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CnT523dhPz9v9xF;
+ Fri,  4 Dec 2020 11:11:34 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B11C18B7FF;
+ Fri,  4 Dec 2020 11:11:35 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id DMQ1PCotY_Z6; Fri,  4 Dec 2020 11:11:35 +0100 (CET)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B4188B75E;
+ Fri,  4 Dec 2020 11:11:35 +0100 (CET)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id DB8A866914; Fri,  4 Dec 2020 10:11:34 +0000 (UTC)
+Message-Id: <b2f71f39eca543f1e4ec06596f09a8b12235c701.1607076683.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/8xx: Fix early debug when SMC1 is relocated
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri,  4 Dec 2020 10:11:34 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,85 +58,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Joshua Thompson <funaho@jurai.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Finn,
+When SMC1 is relocated and early debug is selected, the
+board hangs is ppc_md.setup_arch(). This is because ones
+the microcode has been loaded and SMC1 relocated, early
+debug writes in the weed.
 
-On Fri, Nov 20, 2020 at 5:54 AM Finn Thain <fthain@telegraphics.com.au> wrote:
-> A recent patch incorrectly altered the adb-iop state machine behaviour
-> and introduced a regression that can appear intermittently as a
-> malfunctioning ADB input device. This seems to be caused when reply
-> packets from different ADB commands become mixed up, especially during
-> the adb bus scan. Fix this by unconditionally entering the awaiting_reply
-> state after sending an explicit command, even when the ADB command won't
-> generate a reply from the ADB device.
->
-> Cc: Joshua Thompson <funaho@jurai.org>
-> Fixes: e2954e5f727f ("macintosh/adb-iop: Implement sending -> idle state transition")
-> Tested-by: Stan Johnson <userm57@yahoo.com>
-> Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
+To allow smooth continuation, the SMC1 parameter RAM set up
+by the bootloader have to be copied into the new location.
 
-Thanks for your patch!
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 43db76f41824 ("powerpc/8xx: Add microcode patch to move SMC parameter RAM.")
+Cc: stable@vger.kernel.org
+---
+ arch/powerpc/include/asm/cpm1.h         |  1 +
+ arch/powerpc/platforms/8xx/micropatch.c | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
 
-> --- a/drivers/macintosh/adb-iop.c
-> +++ b/drivers/macintosh/adb-iop.c
-> @@ -84,10 +84,7 @@ static void adb_iop_complete(struct iop_msg *msg)
->
->         local_irq_save(flags);
->
-> -       if (current_req->reply_expected)
-> -               adb_iop_state = awaiting_reply;
-> -       else
-> -               adb_iop_done();
-> +       adb_iop_state = awaiting_reply;
->
->         local_irq_restore(flags);
->  }
-> @@ -95,8 +92,9 @@ static void adb_iop_complete(struct iop_msg *msg)
->  /*
->   * Listen for ADB messages from the IOP.
->   *
-> - * This will be called when unsolicited messages (usually replies to TALK
-> - * commands or autopoll packets) are received.
-> + * This will be called when unsolicited IOP messages are received.
-> + * These IOP messages can carry ADB autopoll responses and also occur
-> + * after explicit ADB commands.
->   */
->
->  static void adb_iop_listen(struct iop_msg *msg)
-> @@ -123,8 +121,10 @@ static void adb_iop_listen(struct iop_msg *msg)
->                 if (adb_iop_state == awaiting_reply) {
->                         struct adb_request *req = current_req;
->
-> -                       req->reply_len = amsg->count + 1;
-> -                       memcpy(req->reply, &amsg->cmd, req->reply_len);
-> +                       if (req->reply_expected) {
-> +                               req->reply_len = amsg->count + 1;
-> +                               memcpy(req->reply, &amsg->cmd, req->reply_len);
-> +                       }
-
-So if we're not expecting a reply. It's ignored.
-Just wondering: what kind of messages are being dropped?
-If reply packets from different ADB commands become mixed up,
-they are still (expected?) replies to messages we sent before. Why
-shouldn't we depend on receiving the replies?
-
->
->                         req_done = true;
->                 }
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/arch/powerpc/include/asm/cpm1.h b/arch/powerpc/include/asm/cpm1.h
+index a116fe931789..3bdd74739cb8 100644
+--- a/arch/powerpc/include/asm/cpm1.h
++++ b/arch/powerpc/include/asm/cpm1.h
+@@ -68,6 +68,7 @@ extern void cpm_reset(void);
+ #define PROFF_SPI	((uint)0x0180)
+ #define PROFF_SCC3	((uint)0x0200)
+ #define PROFF_SMC1	((uint)0x0280)
++#define PROFF_DSP1	((uint)0x02c0)
+ #define PROFF_SCC4	((uint)0x0300)
+ #define PROFF_SMC2	((uint)0x0380)
+ 
+diff --git a/arch/powerpc/platforms/8xx/micropatch.c b/arch/powerpc/platforms/8xx/micropatch.c
+index aed4bc75f352..aef179fcbd4f 100644
+--- a/arch/powerpc/platforms/8xx/micropatch.c
++++ b/arch/powerpc/platforms/8xx/micropatch.c
+@@ -360,6 +360,17 @@ void __init cpm_load_patch(cpm8xx_t *cp)
+ 	if (IS_ENABLED(CONFIG_SMC_UCODE_PATCH)) {
+ 		smc_uart_t *smp;
+ 
++		if (IS_ENABLED(CONFIG_PPC_EARLY_DEBUG_CPM)) {
++			int i;
++
++			for (i = 0; i < sizeof(*smp); i += 4) {
++				u32 __iomem *src = (u32 __iomem *)&cp->cp_dparam[PROFF_SMC1 + i];
++				u32 __iomem *dst = (u32 __iomem *)&cp->cp_dparam[PROFF_DSP1 + i];
++
++				out_be32(dst, in_be32(src));
++			}
++		}
++
+ 		smp = (smc_uart_t *)&cp->cp_dparam[PROFF_SMC1];
+ 		out_be16(&smp->smc_rpbase, 0x1ec0);
+ 		smp = (smc_uart_t *)&cp->cp_dparam[PROFF_SMC2];
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.25.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
