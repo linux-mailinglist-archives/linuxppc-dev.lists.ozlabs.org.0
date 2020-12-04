@@ -1,150 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F065D2CF429
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 19:36:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA162CF46F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 19:57:41 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CnhHk5YybzDrZD
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 05:36:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cnhm14FYSzDrdk
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 05:57:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
- envelope-from=rick.p.edgecombe@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=intel.onmicrosoft.com header.i=@intel.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-intel-onmicrosoft-com
- header.b=SotSdOYD; dkim-atps=neutral
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CnhFW3f3lzDrSt
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 05:34:33 +1100 (AEDT)
-IronPort-SDR: +VW88KZxrbj5V/CboLZsDLmSJAtaRWHaRSzNNlRsGsfFMzNNILYTEeFlZLKOyPVrmrJoxxvXcL
- 9PkVyNiVLseA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9825"; a="169914518"
-X-IronPort-AV: E=Sophos;i="5.78,393,1599548400"; d="scan'208";a="169914518"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2020 10:34:23 -0800
-IronPort-SDR: tPKCsCIsjaF9dOnF3PXL9UEw8PpV8g81HLxuIn8i5KKmdZrZrfnV6/5kM3N4riwAFwF1i23UOI
- gr5ZhFgD7yuQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,393,1599548400"; d="scan'208";a="346683882"
-Received: from orsmsx604.amr.corp.intel.com ([10.22.229.17])
- by orsmga002.jf.intel.com with ESMTP; 04 Dec 2020 10:34:22 -0800
-Received: from orsmsx604.amr.corp.intel.com (10.22.229.17) by
- ORSMSX604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Fri, 4 Dec 2020 10:34:21 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
- via Frontend Transport; Fri, 4 Dec 2020 10:34:21 -0800
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.171)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.1713.5; Fri, 4 Dec 2020 10:33:55 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lXQvFWFtb3h1D6lnPNnk7rOcOBbK4R7SpzkBNa2UgHvTejo6b0vwQZhD0082v2OapkK/h2Kq3MZusA7RP4zlgvOvxxjpnYggzmaC37TPSMHuDe1BIa+hp+/YEBctTDt2tbN7U4ZLu173zLUB1LZjL3YRvSV6BuTToexCTvNnDjA5Bq0HDJdRyyWhUjd1DtWY7kz4pkBMHV3gsYOjaOXBV2n5e9JtfN8q8nE0CbRUYZ8HhfACFrW9vsirouqAh95TD2JF1dXmDi8LTHVIHoVP5PLuFxceP1Is2S2N7Jj3a+ScxWNa5RA8NatQQObW/rrCEpqsRPNLRmwBj1uZc8Bccg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1pGihKPDGqIg+SlU+jk6TfFt/GR8szYzraWqbP0Xxfo=;
- b=mkKMPtANqwEsJVwgLn7lLHs54Riu+aPlDqKgXvzGo2cx052bnPLCwNGtI4K7+alRMwO52HNVgFp0IkxBTi3/WZ6Ghatevk3NVEYmWdvKSHwaodVw4QockfSGBqoXpfAtoO6NKhRrStUheSKMyPKcLE8sy84NQIrEaVhNwtB8kvCnL1fSerZSEnmwP6KcSQkP7qCQ/mNE93cZpQBn4lrvDHlo9DNgeLrk1ct+RYm6TiZ3AHFR/+tUPKr2hqU+hafd1ZQ+AbM0PsUzvT1ypAwWdURLrjMhv3X8LVTEEMVoBkStqBt4Mq+bhzBabMrAIM2wJeDO0+JbEDjplZajBZ35hQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com; 
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1pGihKPDGqIg+SlU+jk6TfFt/GR8szYzraWqbP0Xxfo=;
- b=SotSdOYDGdjPwr6AEuK3TMgQiN1NiCC1CyseEfY1E77hdSRgqOgZZUM9DY8rDr3uX6hCLKAPr+Fxor4DIoYpLwAxNx//S8/5hU7ls6JaYYNw+mSRppGZQn/1daYh1CInaeksp04K8Ox/0LzrbdXIBBssKerRO8LMR3wqdVNQYC0=
-Received: from SN6PR11MB3184.namprd11.prod.outlook.com (2603:10b6:805:bd::17)
- by SN6PR11MB2671.namprd11.prod.outlook.com (2603:10b6:805:60::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Fri, 4 Dec
- 2020 18:33:54 +0000
-Received: from SN6PR11MB3184.namprd11.prod.outlook.com
- ([fe80::bcad:a1da:3b9b:1412]) by SN6PR11MB3184.namprd11.prod.outlook.com
- ([fe80::bcad:a1da:3b9b:1412%6]) with mapi id 15.20.3611.025; Fri, 4 Dec 2020
- 18:33:54 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "npiggin@gmail.com" <npiggin@gmail.com>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>
-Subject: Re: [PATCH v8 11/12] mm/vmalloc: Hugepage vmalloc mappings
-Thread-Topic: [PATCH v8 11/12] mm/vmalloc: Hugepage vmalloc mappings
-Thread-Index: AQHWx0IouDnRaQC0zE26j1j/vLv2yqnhHkOAgAV9xQCAAK16AA==
-Date: Fri, 4 Dec 2020 18:33:54 +0000
-Message-ID: <2e8e1f3e47736e8f5e749cee85b7036cbf9cb1b5.camel@intel.com>
-References: <20201128152559.999540-1-npiggin@gmail.com>
- <20201128152559.999540-12-npiggin@gmail.com>
- <e9d3a50e1b18f9ea1cdfdc221bef75db19273417.camel@intel.com>
- <1607068679.lfd133za4h.astroid@bobo.none>
-In-Reply-To: <1607068679.lfd133za4h.astroid@bobo.none>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.1 (3.30.1-1.fc29) 
-authentication-results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=intel.com;
-x-originating-ip: [134.134.137.75]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0e2f56a9-81a6-4c21-6768-08d898832777
-x-ms-traffictypediagnostic: SN6PR11MB2671:
-x-microsoft-antispam-prvs: <SN6PR11MB2671D440327043090A7CD029C9F10@SN6PR11MB2671.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: TWmu2O6yU0Gt4BzEwOVEokPs9O7IRCLaPhI5Qe1zyiqY7IU6vfh9zQZ8NodzUTnqHFEgJWCtxXRcMJPUrK4oEMaEky5vcKBei6tQNpuoAjhZGd6DW7TIouZShOQwQXUJF0UtGiUZ8rTss0BKocdC+uFGsYGqQubMpGYf7TZoslBHzp2Yv6r7GCX0VV8tbVchTpzL+ligcQIveu+ODjUqFGmON9tugdh2JyLwQUNZLRL6B5ndA609KGghScFsE84FVi6p7+LlFmo+q1Tv31A1cx230oBeD3o1sblEt+hKQH8KGP+Tjaaops/XjjujiJDc4bO6AhFt+0UvQld+B9+qOASRkm04WPtgFA/FQjdmzGFS4ZUH6TpvdBOexnE59qqUmqjyNZtYqcT+Pd4t6Dtbyg==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SN6PR11MB3184.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(39860400002)(366004)(396003)(136003)(346002)(376002)(66946007)(2906002)(6486002)(316002)(71200400001)(478600001)(7416002)(4326008)(8936002)(110136005)(5660300002)(54906003)(83380400001)(6506007)(86362001)(2616005)(8676002)(6512007)(66446008)(4001150100001)(66556008)(66476007)(36756003)(91956017)(186003)(26005)(64756008)(966005)(76116006);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata: =?utf-8?B?c3dVRGdaNFZyM0NQbzdSalhELzI2TzBkREhjNWl3dDNUNHJ0cmh3bWdIS0pq?=
- =?utf-8?B?TWw5MDUrbGM1L0h4T1hvLzcyQ2RMVEdtK0dtRHlwdkRBdmoxUVd6TkJVcjl1?=
- =?utf-8?B?aUdBTisxS2dQTlMwZ25LUWZWZnlrYytmN0lHWDdYUGJOOWVtUDRrM1FVV1Av?=
- =?utf-8?B?ZjZtbVRuRS9QQmNxbjNHNjZXK1JnUkVPUjNTS0tSZ3hFd3NhNnpsRlpERzlu?=
- =?utf-8?B?QjhLTTNCdzZ0YTUxMUhVYnBKVi9maSs5UHF5RlVwbFJINXFxZGJPOXkvYjVj?=
- =?utf-8?B?aDM2ck05ZkkyZU1XYm9ET2ZGSGFrL1pZdFhITmxwZ1RBaEVBZTc0aWsyMSsr?=
- =?utf-8?B?TDRITFZ0ZTRrREFjVFZNM3lRQVovZkpNWlYrTFJCcUhQVEFhbDc1TkQyeTl5?=
- =?utf-8?B?c1FlZ3gvU3oySkU2RGNqWFA1dGg0YzhZSVd1QlMwZHpVKzlZWHM2Nzl5Z0hB?=
- =?utf-8?B?dzV6anNxQjJ1R0YrYWkvVGs5WHREdSswbjRGUzNQallCR3liNXRzVW9FWWVY?=
- =?utf-8?B?NThGbEZVQVU4dkZQWnlrYWxtOXdNblF5dzEwUlhyN20zcnIxMEVWcXArQlRp?=
- =?utf-8?B?NFhVQnJRbnM3azZjaERCTWlxMWZmZHRWVzdTTzVXUHpHWXhBMmdyWHVZdEpx?=
- =?utf-8?B?L2VEcmlEL1RWeUczRGNnc2U3WmNUUlQ4WjNTcWFpRFZnbWxEWUdSNFlzWEhB?=
- =?utf-8?B?M081b0JtT1VVZWQ1ZTFOY2dEYWEyMzB1cGgrMHNxRDEzQ0JTRWRRZkhDTEt2?=
- =?utf-8?B?QUlWWXdNWFl4TXV6NWI4V1hRRzhhSFI3YUVBR3lXVVVMQm9lUzJSa0hEWFJK?=
- =?utf-8?B?SmhRQ2RObWJCbCtmRFc3dTFhcmo2S0lJSGZVWEYzYVNGUUxmOEZNbjhua2RO?=
- =?utf-8?B?aGdmVENXbm1iazB3M0pPbmNKZEd5Qk93RXl6Z0g0bjBkYTVEanZSNXhWZVE4?=
- =?utf-8?B?WHk4MmlobzBZM1hGL0ZqeHlpNlpyMkRqTUo1Z1hwNHdhS01JdVgxQm52SEpo?=
- =?utf-8?B?enpsL1RMa3BGbUNpM2FsTlBBdXh2cHhDWHdJTDJLMXVqKzRudzE2OWJCV2E0?=
- =?utf-8?B?S3R1QzdGZ0ZkZVh6U3ltZFBRd0Y5aDZHUEpUdDB5bjFRK3hOUG1aYjdCdnlS?=
- =?utf-8?B?a0M4dTRpa3Byc1p0VFliWmRQN2EreStyWlpKWTc3aTFRMmZoU1BoRm5iV3RH?=
- =?utf-8?B?dTV3U3dSR3hJWlhCZnQxOHV3dmh1eDJuY3FPaEM1TmNPSHdrdFM4QWpaNHJS?=
- =?utf-8?B?cXRQUTNicHprK2JJTFFxZDg2R1J2Uksvd3BVZlI2NkFQWkpSQlR0ajlNR2Fw?=
- =?utf-8?Q?fu8LMUzxAUmZoSTPSSo9JJR0kIP+8WAKAN?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <4389A573289C0445932317275B5476BA@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB3184.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e2f56a9-81a6-4c21-6768-08d898832777
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Dec 2020 18:33:54.2330 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8NQ7GZEi6tehexOw+UmCtv8DVoX7TXdqoAe//7e+Gsjo2eYkd+7Yl035It+yL0I9Wf253XdjjGwA7mXeu0bKjihsICvbiXsUfFRApHBM6tE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB2671
-X-OriginatorOrg: intel.com
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cnhjc0hZqzDrYj
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 05:55:24 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CnhjJ3znWz9tyjR;
+ Fri,  4 Dec 2020 19:55:16 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 8sGgF9z2MTOk; Fri,  4 Dec 2020 19:55:16 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CnhjJ2flYz9tyjQ;
+ Fri,  4 Dec 2020 19:55:16 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 38A548B812;
+ Fri,  4 Dec 2020 19:55:18 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 50zL9u75NiCT; Fri,  4 Dec 2020 19:55:18 +0100 (CET)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BF5718B75E;
+ Fri,  4 Dec 2020 19:55:17 +0100 (CET)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 8798F66890; Fri,  4 Dec 2020 18:55:17 +0000 (UTC)
+Message-Id: <2c4d67fdef72ce27e0374e11b98c574ac33c6610.1607108093.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/powermac: Fix low_sleep_handler with CONFIG_VMAP_STACK
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ giuseppe@sguazz.it
+Date: Fri,  4 Dec 2020 18:55:17 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -156,48 +59,293 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "hch@infradead.org" <hch@infradead.org>,
- "lizefan@huawei.com" <lizefan@huawei.com>,
- "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gRnJpLCAyMDIwLTEyLTA0IGF0IDE4OjEyICsxMDAwLCBOaWNob2xhcyBQaWdnaW4gd3JvdGU6
-DQo+IEV4Y2VycHRzIGZyb20gRWRnZWNvbWJlLCBSaWNrIFAncyBtZXNzYWdlIG9mIERlY2VtYmVy
-IDEsIDIwMjAgNjoyMQ0KPiBhbToNCj4gPiBPbiBTdW4sIDIwMjAtMTEtMjkgYXQgMDE6MjUgKzEw
-MDAsIE5pY2hvbGFzIFBpZ2dpbiB3cm90ZToNCj4gPiA+IFN1cHBvcnQgaHVnZSBwYWdlIHZtYWxs
-b2MgbWFwcGluZ3MuIENvbmZpZyBvcHRpb24NCj4gPiA+IEhBVkVfQVJDSF9IVUdFX1ZNQUxMT0MN
-Cj4gPiA+IGVuYWJsZXMgc3VwcG9ydCBvbiBhcmNoaXRlY3R1cmVzIHRoYXQgZGVmaW5lIEhBVkVf
-QVJDSF9IVUdFX1ZNQVANCj4gPiA+IGFuZA0KPiA+ID4gc3VwcG9ydHMgUE1EIHNpemVkIHZtYXAg
-bWFwcGluZ3MuDQo+ID4gPiANCj4gPiA+IHZtYWxsb2Mgd2lsbCBhdHRlbXB0IHRvIGFsbG9jYXRl
-IFBNRC1zaXplZCBwYWdlcyBpZiBhbGxvY2F0aW5nDQo+ID4gPiBQTUQNCj4gPiA+IHNpemUNCj4g
-PiA+IG9yIGxhcmdlciwgYW5kIGZhbGwgYmFjayB0byBzbWFsbCBwYWdlcyBpZiB0aGF0IHdhcyB1
-bnN1Y2Nlc3NmdWwuDQo+ID4gPiANCj4gPiA+IEFsbG9jYXRpb25zIHRoYXQgZG8gbm90IHVzZSBQ
-QUdFX0tFUk5FTCBwcm90IGFyZSBub3QgcGVybWl0dGVkIHRvDQo+ID4gPiB1c2UNCj4gPiA+IGh1
-Z2UgcGFnZXMsIGJlY2F1c2Ugbm90IGFsbCBjYWxsZXJzIGV4cGVjdCB0aGlzIChlLmcuLCBtb2R1
-bGUNCj4gPiA+IGFsbG9jYXRpb25zIHZzIHN0cmljdCBtb2R1bGUgcnd4KS4NCj4gPiANCj4gPiBT
-ZXZlcmFsIGFyY2hpdGVjdHVyZXMgKHg4NiwgYXJtNjQsIG90aGVycz8pIGFsbG9jYXRlIG1vZHVs
-ZXMNCj4gPiBpbml0aWFsbHkNCj4gPiB3aXRoIFBBR0VfS0VSTkVMIGFuZCBzbyBJIHRoaW5rIHRo
-aXMgdGVzdCB3aWxsIG5vdCBleGNsdWRlIG1vZHVsZQ0KPiA+IGFsbG9jYXRpb25zIGluIHRob3Nl
-IGNhc2VzLg0KPiANCj4gQWgsIHRoYW5rcy4gSSBndWVzcyBhcmNocyBtdXN0IGFkZGl0aW9uYWxs
-eSBlbnN1cmUgdGhhdCB0aGVpcg0KPiBQQUdFX0tFUk5FTCBhbGxvY2F0aW9ucyBhcmUgc3VpdGFi
-bGUgZm9yIGh1Z2UgcGFnZSBtYXBwaW5ncyBiZWZvcmUNCj4gZW5hYmxpbmcgdGhlIG9wdGlvbi4N
-Cj4gDQo+IElmIHRoZXJlIGlzIGludGVyZXN0IGZyb20gdGhvc2UgYXJjaHMgdG8gc3VwcG9ydCB0
-aGlzLCBJIGhhdmUgYW4NCj4gZWFybHkgKHVuLXBvc3RlZCkgcGF0Y2ggdGhhdCBhZGRzIGFuIGV4
-cGxpY2l0IFZNX0hVR0UgZmxhZyB0aGF0IGNvdWxkDQo+IG92ZXJyaWRlIHRoZSBwZXNzZW1pc3Rp
-YyBhcmNoIGRlZmF1bHQuIEl0J3Mgbm90IG11Y2ggdHJvdWJsZSB0byBhZGQNCj4gdGhpcyANCj4g
-dG8gdGhlIGxhcmdlIHN5c3RlbSBoYXNoIGFsbG9jYXRpb25zLiBJdCdzIHZlcnkgb3V0IG9mIGRh
-dGUgbm93IGJ1dA0KPiBJIA0KPiBjYW4gYXQgbGVhc3QgZ2l2ZSB3aGF0IEkgaGF2ZSB0byBhbnlv
-bmUgZG9pbmcgYW4gYXJjaCBzdXBwb3J0IHRoYXQNCj4gd2FudHMgaXQuDQoNCkFoaCwgc29ycnks
-IEkgdG90YWxseSBtaXNzZWQgdGhhdCB0aGlzIHdhcyBvbmx5IGVuYWJsZWQgZm9yIHBvd2VycGMu
-DQoNClRoYXQgcGF0Y2ggbWlnaHQgYmUgdXNlZnVsIGZvciBtZSBhY3R1YWxseS4gT3IgbWF5YmUg
-YSBWTV9OT0hVR0UsIHNpbmNlDQp0aGVyZSBhcmUgb25seSBhIGZldyBwbGFjZXMgd2hlcmUgZXhl
-Y3V0YWJsZSB2bWFsbG9jcyBhcmUgY3JlYXRlZD8gSSdtDQpub3Qgc3VyZSB3aGF0IHRoZSBvdGhl
-ciBpc3N1ZXMgYXJlLg0KDQpJIGFtIGVuZGVhdm9yaW5nIHRvIGhhdmUgc21hbGwgbW9kdWxlIGFs
-bG9jYXRpb25zIHNoYXJlIGxhcmdlIHBhZ2VzLCBzbw0KdGhpcyBpbmZyYXN0cnVjdHVyZSBpcyBh
-IGJpZyBoZWxwIGFscmVhZHkuDQpodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sLzIwMjAxMTIw
-MjAyNDI2LjE4MDA5LTEtcmljay5wLmVkZ2Vjb21iZUBpbnRlbC5jb20vDQoNClRoYW5rcyENCg==
+low_sleep_handler() can't restore the context from standard
+stack because the stack can hardly be accessed with MMU OFF.
+
+Store everything in a global storage area instead of storing
+a pointer to the stack in that global storage area.
+
+To avoid a complete churn of the function, still use r1 as
+the pointer to the storage area during restore.
+
+Reported-by: Giuseppe Sacco <giuseppe@sguazz.it>
+Fixes: cd08f109e262 ("powerpc/32s: Enable CONFIG_VMAP_STACK")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+This is only build tested. Giuseppe can you test it ? Thanks.
+---
+ arch/powerpc/platforms/Kconfig.cputype  |   2 +-
+ arch/powerpc/platforms/powermac/sleep.S | 130 +++++++++++-------------
+ 2 files changed, 59 insertions(+), 73 deletions(-)
+
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index c194c4ae8bc7..32a9c4c09b98 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -36,7 +36,7 @@ config PPC_BOOK3S_6xx
+ 	select PPC_HAVE_PMU_SUPPORT
+ 	select PPC_HAVE_KUEP
+ 	select PPC_HAVE_KUAP
+-	select HAVE_ARCH_VMAP_STACK if !ADB_PMU
++	select HAVE_ARCH_VMAP_STACK
+ 
+ config PPC_85xx
+ 	bool "Freescale 85xx"
+diff --git a/arch/powerpc/platforms/powermac/sleep.S b/arch/powerpc/platforms/powermac/sleep.S
+index 7e0f8ba6e54a..ce56082a392a 100644
+--- a/arch/powerpc/platforms/powermac/sleep.S
++++ b/arch/powerpc/platforms/powermac/sleep.S
+@@ -44,7 +44,8 @@
+ #define SL_TB		0xa0
+ #define SL_R2		0xa8
+ #define SL_CR		0xac
+-#define SL_R12		0xb0	/* r12 to r31 */
++#define SL_LR		0xb0
++#define SL_R12		0xb4	/* r12 to r31 */
+ #define SL_SIZE		(SL_R12 + 80)
+ 
+ 	.section .text
+@@ -63,105 +64,107 @@ _GLOBAL(low_sleep_handler)
+ 	blr
+ #else
+ 	mflr	r0
+-	stw	r0,4(r1)
+-	stwu	r1,-SL_SIZE(r1)
++	lis	r11,sleep_storage@ha
++	addis	r11,r11,sleep_storage@l
++	stw	r0,SL_LR(r11)
+ 	mfcr	r0
+-	stw	r0,SL_CR(r1)
+-	stw	r2,SL_R2(r1)
+-	stmw	r12,SL_R12(r1)
++	stw	r0,SL_CR(r11)
++	stw	r1,SL_SP(r11)
++	stw	r2,SL_R2(r11)
++	stmw	r12,SL_R12(r11)
+ 
+ 	/* Save MSR & SDR1 */
+ 	mfmsr	r4
+-	stw	r4,SL_MSR(r1)
++	stw	r4,SL_MSR(r11)
+ 	mfsdr1	r4
+-	stw	r4,SL_SDR1(r1)
++	stw	r4,SL_SDR1(r11)
+ 
+ 	/* Get a stable timebase and save it */
+ 1:	mftbu	r4
+-	stw	r4,SL_TB(r1)
++	stw	r4,SL_TB(r11)
+ 	mftb	r5
+-	stw	r5,SL_TB+4(r1)
++	stw	r5,SL_TB+4(r11)
+ 	mftbu	r3
+ 	cmpw	r3,r4
+ 	bne	1b
+ 
+ 	/* Save SPRGs */
+ 	mfsprg	r4,0
+-	stw	r4,SL_SPRG0(r1)
++	stw	r4,SL_SPRG0(r11)
+ 	mfsprg	r4,1
+-	stw	r4,SL_SPRG0+4(r1)
++	stw	r4,SL_SPRG0+4(r11)
+ 	mfsprg	r4,2
+-	stw	r4,SL_SPRG0+8(r1)
++	stw	r4,SL_SPRG0+8(r11)
+ 	mfsprg	r4,3
+-	stw	r4,SL_SPRG0+12(r1)
++	stw	r4,SL_SPRG0+12(r11)
+ 
+ 	/* Save BATs */
+ 	mfdbatu	r4,0
+-	stw	r4,SL_DBAT0(r1)
++	stw	r4,SL_DBAT0(r11)
+ 	mfdbatl	r4,0
+-	stw	r4,SL_DBAT0+4(r1)
++	stw	r4,SL_DBAT0+4(r11)
+ 	mfdbatu	r4,1
+-	stw	r4,SL_DBAT1(r1)
++	stw	r4,SL_DBAT1(r11)
+ 	mfdbatl	r4,1
+-	stw	r4,SL_DBAT1+4(r1)
++	stw	r4,SL_DBAT1+4(r11)
+ 	mfdbatu	r4,2
+-	stw	r4,SL_DBAT2(r1)
++	stw	r4,SL_DBAT2(r11)
+ 	mfdbatl	r4,2
+-	stw	r4,SL_DBAT2+4(r1)
++	stw	r4,SL_DBAT2+4(r11)
+ 	mfdbatu	r4,3
+-	stw	r4,SL_DBAT3(r1)
++	stw	r4,SL_DBAT3(r11)
+ 	mfdbatl	r4,3
+-	stw	r4,SL_DBAT3+4(r1)
++	stw	r4,SL_DBAT3+4(r11)
+ 	mfibatu	r4,0
+-	stw	r4,SL_IBAT0(r1)
++	stw	r4,SL_IBAT0(r11)
+ 	mfibatl	r4,0
+-	stw	r4,SL_IBAT0+4(r1)
++	stw	r4,SL_IBAT0+4(r11)
+ 	mfibatu	r4,1
+-	stw	r4,SL_IBAT1(r1)
++	stw	r4,SL_IBAT1(r11)
+ 	mfibatl	r4,1
+-	stw	r4,SL_IBAT1+4(r1)
++	stw	r4,SL_IBAT1+4(r11)
+ 	mfibatu	r4,2
+-	stw	r4,SL_IBAT2(r1)
++	stw	r4,SL_IBAT2(r11)
+ 	mfibatl	r4,2
+-	stw	r4,SL_IBAT2+4(r1)
++	stw	r4,SL_IBAT2+4(r11)
+ 	mfibatu	r4,3
+-	stw	r4,SL_IBAT3(r1)
++	stw	r4,SL_IBAT3(r11)
+ 	mfibatl	r4,3
+-	stw	r4,SL_IBAT3+4(r1)
++	stw	r4,SL_IBAT3+4(r11)
+ 
+ BEGIN_MMU_FTR_SECTION
+ 	mfspr	r4,SPRN_DBAT4U
+-	stw	r4,SL_DBAT4(r1)
++	stw	r4,SL_DBAT4(r11)
+ 	mfspr	r4,SPRN_DBAT4L
+-	stw	r4,SL_DBAT4+4(r1)
++	stw	r4,SL_DBAT4+4(r11)
+ 	mfspr	r4,SPRN_DBAT5U
+-	stw	r4,SL_DBAT5(r1)
++	stw	r4,SL_DBAT5(r11)
+ 	mfspr	r4,SPRN_DBAT5L
+-	stw	r4,SL_DBAT5+4(r1)
++	stw	r4,SL_DBAT5+4(r11)
+ 	mfspr	r4,SPRN_DBAT6U
+-	stw	r4,SL_DBAT6(r1)
++	stw	r4,SL_DBAT6(r11)
+ 	mfspr	r4,SPRN_DBAT6L
+-	stw	r4,SL_DBAT6+4(r1)
++	stw	r4,SL_DBAT6+4(r11)
+ 	mfspr	r4,SPRN_DBAT7U
+-	stw	r4,SL_DBAT7(r1)
++	stw	r4,SL_DBAT7(r11)
+ 	mfspr	r4,SPRN_DBAT7L
+-	stw	r4,SL_DBAT7+4(r1)
++	stw	r4,SL_DBAT7+4(r11)
+ 	mfspr	r4,SPRN_IBAT4U
+-	stw	r4,SL_IBAT4(r1)
++	stw	r4,SL_IBAT4(r11)
+ 	mfspr	r4,SPRN_IBAT4L
+-	stw	r4,SL_IBAT4+4(r1)
++	stw	r4,SL_IBAT4+4(r11)
+ 	mfspr	r4,SPRN_IBAT5U
+-	stw	r4,SL_IBAT5(r1)
++	stw	r4,SL_IBAT5(r11)
+ 	mfspr	r4,SPRN_IBAT5L
+-	stw	r4,SL_IBAT5+4(r1)
++	stw	r4,SL_IBAT5+4(r11)
+ 	mfspr	r4,SPRN_IBAT6U
+-	stw	r4,SL_IBAT6(r1)
++	stw	r4,SL_IBAT6(r11)
+ 	mfspr	r4,SPRN_IBAT6L
+-	stw	r4,SL_IBAT6+4(r1)
++	stw	r4,SL_IBAT6+4(r11)
+ 	mfspr	r4,SPRN_IBAT7U
+-	stw	r4,SL_IBAT7(r1)
++	stw	r4,SL_IBAT7(r11)
+ 	mfspr	r4,SPRN_IBAT7L
+-	stw	r4,SL_IBAT7+4(r1)
++	stw	r4,SL_IBAT7+4(r11)
+ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
+ 
+ 	/* Backup various CPU config stuffs */
+@@ -180,9 +183,9 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
+ 	lis	r5,grackle_wake_up@ha
+ 	addi	r5,r5,grackle_wake_up@l
+ 	tophys(r5,r5)
+-	stw	r5,SL_PC(r1)
++	stw	r5,SL_PC(r11)
+ 	lis	r4,KERNELBASE@h
+-	tophys(r5,r1)
++	tophys(r5,r11)
+ 	addi	r5,r5,SL_PC
+ 	lis	r6,MAGIC@ha
+ 	addi	r6,r6,MAGIC@l
+@@ -194,12 +197,6 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
+ 	tophys(r3,r3)
+ 	stw	r3,0x80(r4)
+ 	stw	r5,0x84(r4)
+-	/* Store a pointer to our backup storage into
+-	 * a kernel global
+-	 */
+-	lis r3,sleep_storage@ha
+-	addi r3,r3,sleep_storage@l
+-	stw r5,0(r3)
+ 
+ 	.globl	low_cpu_offline_self
+ low_cpu_offline_self:
+@@ -279,7 +276,7 @@ _GLOBAL(core99_wake_up)
+ 	lis	r3,sleep_storage@ha
+ 	addi	r3,r3,sleep_storage@l
+ 	tophys(r3,r3)
+-	lwz	r1,0(r3)
++	addi	r1,r3,SL_PC
+ 
+ 	/* Pass thru to older resume code ... */
+ _ASM_NOKPROBE_SYMBOL(core99_wake_up)
+@@ -399,13 +396,6 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
+ 	blt	1b
+ 	sync
+ 
+-	/* restore the MSR and turn on the MMU */
+-	lwz	r3,SL_MSR(r1)
+-	bl	turn_on_mmu
+-
+-	/* get back the stack pointer */
+-	tovirt(r1,r1)
+-
+ 	/* Restore TB */
+ 	li	r3,0
+ 	mttbl	r3
+@@ -419,28 +409,24 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
+ 	mtcr	r0
+ 	lwz	r2,SL_R2(r1)
+ 	lmw	r12,SL_R12(r1)
+-	addi	r1,r1,SL_SIZE
+-	lwz	r0,4(r1)
+-	mtlr	r0
+-	blr
+-_ASM_NOKPROBE_SYMBOL(grackle_wake_up)
+ 
+-turn_on_mmu:
+-	mflr	r4
+-	tovirt(r4,r4)
++	/* restore the MSR and SP and turn on the MMU and return */
++	lwz	r3,SL_MSR(r1)
++	lwz	r4,SL_LR(r1)
++	lwz	r1,SL_SP(r1)
+ 	mtsrr0	r4
+ 	mtsrr1	r3
+ 	sync
+ 	isync
+ 	rfi
+-_ASM_NOKPROBE_SYMBOL(turn_on_mmu)
++_ASM_NOKPROBE_SYMBOL(grackle_wake_up)
+ 
+ #endif /* defined(CONFIG_PM) || defined(CONFIG_CPU_FREQ) */
+ 
+ 	.section .data
+ 	.balign	L1_CACHE_BYTES
+ sleep_storage:
+-	.long 0
++	.space SL_SIZE
+ 	.balign	L1_CACHE_BYTES, 0
+ 
+ #endif /* CONFIG_PPC_BOOK3S_32 */
+-- 
+2.25.0
+
