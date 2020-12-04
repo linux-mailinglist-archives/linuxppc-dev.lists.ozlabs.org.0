@@ -2,77 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DAD2CE985
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 09:26:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7009D2CE9A4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 09:32:54 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CnQlt137yzDrRX
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 19:26:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CnQv66wVWzDrQY
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Dec 2020 19:32:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=nadav.amit@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d;
+ helo=mail-pg1-x52d.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tDMVJKyf; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
+ header.s=20161025 header.b=sKIYa91o; dkim-atps=neutral
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com
+ [IPv6:2607:f8b0:4864:20::52d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CnQkG2QMLzDrF2
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 19:25:09 +1100 (AEDT)
-Received: by mail-pj1-x1041.google.com with SMTP id hk16so2725432pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Dec 2020 00:25:09 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CnQsZ42kvzDrHb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Dec 2020 19:31:28 +1100 (AEDT)
+Received: by mail-pg1-x52d.google.com with SMTP id w16so3074677pga.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Dec 2020 00:31:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=Ln++9Eg71n524JlS9NV8GRrodOh9pkKHZvYyLb9NMN8=;
- b=tDMVJKyflN4AytQ5BZaaYAnTvD40r+ph9Q8CJrtzq7qK9cpK3KDT6NOzafwsRREUcD
- cFOOnkH3VCh4P6E9SdpOxq99EPa00kcFmWHnSoHwuuBUU9wzc2BnYLtTa8cnb+wgzfWA
- cYOKmCVOuNPAnNExrsPEQ05s7tlIMsCdXuWeTR/ULMR768eflA18ANFzJp+tE6n7ZDbI
- Yi0bGLF9muM5t6o5/PHdMx2RcQylbUroFG3yhwwc92dxPrF0kAFGFslctsribroovhp6
- dvfEzYiMCqlGfhspEHuBVSRWoyJ6QkaJU9DwZ3WgttxlG5yI+Ee7qGY1fTD1cuKjoG8m
- KyxA==
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=mgoPQC9tRjwydiY2nmOPwA0NQaeD1EaGmju9YTJww44=;
+ b=sKIYa91ojaHBS76jxYPaQRrCgdT5aj2S83VVb2udf6VlkD6NmyyDEOMvSzvAJHwDbQ
+ DV08xeH7f/+UF/VzJvHTNKqZPFHAZHwZmklq1bPa0H0nN1qwD/dGBnGIkGt3nKmGjUEu
+ qXCq+pZTOWRUMAnKahD1GAPaA0kwCKMU/BlDwRPbt3TMoLO3We9qQxLdydQZhUVJsptF
+ N3YORd4Vc9FLp8HN/JqDKUsriwoX+UcYr3ZcXKFhNMICRrItggGWUc2wlf4K/3bzObA2
+ 91HT4SSFBFvW+/Ko1KbSWNcuoOynsaj4uBW6ZPMXqRqkvIANO1YNnQS7m7dSnzZ9Em7/
+ OfYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=Ln++9Eg71n524JlS9NV8GRrodOh9pkKHZvYyLb9NMN8=;
- b=MWQHSxi21euM0war6h5sXuPLX54PqtDUWIKsLRtDh5PgMlJHV24D0BDga7RccGQG9a
- 97DjCYq+1RbMye9lFDy4X0qMxjMLpHSTRrMdfJUjyzwvyA6iCiKeLKArzyK7REK2ZYMl
- fFQ9OnNMwStQ4a4uDp68jOsdvO6i9OYuhp7C+rx7xb/IoVvB/bp5xrZ+n8cpj5/pLak5
- orkFJOmz3jPDyj0YOQNqs/DvPrl0E6Toj/CrwCxjx934dDVBr8m/9fKEps2xSUzyi6Uz
- cJf2JSmgE35ZDBXUkqH21a3cFoFPVBVzcRkP0owh0C8kPtFmkBAJARCb+k4VR9SZ8yw9
- rc/g==
-X-Gm-Message-State: AOAM530f7JqLRgFIVZZcVnT9dw4ogozW6J3YvPxcI5vYrYKW8HHDBlIu
- nRFUKqx4g+jYF8UFBfTfsgQN7yoXJD84+h7B
-X-Google-Smtp-Source: ABdhPJx1Ho3dBYScBiLMsFzyMeRifNVoKPOlG/ESpTJs/U21Gcdn1OiMMq9h+u0zR4BCVQgth9i5dQ==
-X-Received: by 2002:a17:902:b498:b029:da:84a7:be94 with SMTP id
- y24-20020a170902b498b02900da84a7be94mr2861306plr.52.1607069852915; 
- Fri, 04 Dec 2020 00:17:32 -0800 (PST)
-Received: from ?IPv6:2601:647:4700:9b2:e462:2bde:2e8b:f9df?
- ([2601:647:4700:9b2:e462:2bde:2e8b:f9df])
- by smtp.gmail.com with ESMTPSA id g16sm3842217pfb.201.2020.12.04.00.17.30
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 04 Dec 2020 00:17:31 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.4\))
-Subject: Re: [RFC v2 1/2] [NEEDS HELP] x86/mm: Handle unlazying membarrier
- core sync in the arch code
-From: Nadav Amit <nadav.amit@gmail.com>
-In-Reply-To: <203d39d11562575fd8bd6a094d97a3a332d8b265.1607059162.git.luto@kernel.org>
-Date: Fri, 4 Dec 2020 00:17:29 -0800
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=mgoPQC9tRjwydiY2nmOPwA0NQaeD1EaGmju9YTJww44=;
+ b=OrEmbD6LQ14g8EWo/BitBt2BQ2N4kIpH9/krzh39EjTEbd4jFNJb0Pr1xqMh7lDd2M
+ mvkQwzNYpatawLDNRjERDHLaHZlDi2aOPD2Gi5sS8dctC4q/gGEDCyVQkwMAWaxlfRfw
+ F1ag8G2JMf4Nb9VViCfvd5Hi1oKpAkEfeeZ5LnCa0Hd4eF4OID4hyD9aywWSB2Skh8aR
+ ZUKYmQpXuRq5NAcx6xlgZ+Oky/C7nVnYtGi/OevuDQ1yGF8l1D7bYeMQnQhKBFCQ/nS+
+ jKam32hwVHaC2I5TrV+LzpMSjESXonmEvkkTI9R4g2kdoHfRIbd1cor5DyBJooOTdiEs
+ In0w==
+X-Gm-Message-State: AOAM533Al2RyOoHZWs61ejKRGXpqr6Z6PvJmgONiio7wXi8R8IbYVClr
+ EcyhIw2n3caHjU3zL4UOqYA=
+X-Google-Smtp-Source: ABdhPJzSNNA9/VSbuHp+QCli5omb9tviN0qgr9kmCKlLGCEsb9kOpXGP5yps6SRS8M+vwpHMO4jEqQ==
+X-Received: by 2002:a62:7550:0:b029:19d:9945:984d with SMTP id
+ q77-20020a6275500000b029019d9945984dmr2801352pfc.81.1607070684920; 
+ Fri, 04 Dec 2020 00:31:24 -0800 (PST)
+Received: from localhost ([1.129.133.131])
+ by smtp.gmail.com with ESMTPSA id b20sm3688629pfi.218.2020.12.04.00.31.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 04 Dec 2020 00:31:24 -0800 (PST)
+Date: Fri, 04 Dec 2020 18:31:16 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 05/19] powerpc: interrupt handler wrapper functions
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20201128144114.944000-1-npiggin@gmail.com>
+ <20201128144114.944000-6-npiggin@gmail.com> <87o8jfpa5k.fsf@linux.ibm.com>
+In-Reply-To: <87o8jfpa5k.fsf@linux.ibm.com>
+MIME-Version: 1.0
+Message-Id: <1607069681.jta0szxqr9.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <A61977A7-F0B2-4492-AB6D-06E24417FA59@gmail.com>
-References: <cover.1607059162.git.luto@kernel.org>
- <203d39d11562575fd8bd6a094d97a3a332d8b265.1607059162.git.luto@kernel.org>
-To: Andy Lutomirski <luto@kernel.org>
-X-Mailer: Apple Mail (2.3608.120.23.2.4)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,104 +81,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Rik van Riel <riel@surriel.com>, Will Deacon <will@kernel.org>,
- X86 ML <x86@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
- LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Linux-MM <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Jann Horn <jannh@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I am not very familiar with membarrier, but here are my 2 cents while =
-trying
-to answer your questions.
+Excerpts from Aneesh Kumar K.V's message of November 30, 2020 5:37 pm:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>=20
+> .....
+>  +#endif
+>> +DECLARE_INTERRUPT_HANDLER(emulation_assist_interrupt);
+>> +DECLARE_INTERRUPT_HANDLER_RAW(do_slb_fault);
+>=20
+> Can we add comments here explaining why some of these handlers need to re=
+main RAW()?
 
-> On Dec 3, 2020, at 9:26 PM, Andy Lutomirski <luto@kernel.org> wrote:
-> @@ -496,6 +497,8 @@ void switch_mm_irqs_off(struct mm_struct *prev, =
-struct mm_struct *next,
-> 		 * from one thread in a process to another thread in the =
-same
-> 		 * process. No TLB flush required.
-> 		 */
-> +
-> +		// XXX: why is this okay wrt membarrier?
-> 		if (!was_lazy)
-> 			return;
+I possibly could. My patch doesn't change the reason, of course, they=20
+already have these issues.
 
-I am confused.
+It wants to avoid reconciling interrupts and probably context tracking=20
+because you can take SLB faults within those subsystems, which are not=20
+expecting re-entrant calls into them. It's okay to avoid these things=20
+because the interrupts don't enable interrupts, go to process context,=20
+add any timers, etc.
 
-On one hand, it seems that membarrier_private_expedited() would issue an =
-IPI
-to that core, as it would find that this core=E2=80=99s =
-cpu_rq(cpu)->curr->mm is the
-same as the one that the membarrier applies to. But=E2=80=A6 (see below)
+Now that I look at it, possibly the primary do_hash_fault handler needs=20
+to be RAW as well for the same reason.
 
+=20
+>> +DECLARE_INTERRUPT_HANDLER(do_bad_slb_fault);
+>> +DECLARE_INTERRUPT_HANDLER_RET(do_hash_fault);
+>> +DECLARE_INTERRUPT_HANDLER_RET(do_page_fault);
+>> +DECLARE_INTERRUPT_HANDLER(do_bad_page_fault);
+>> +
+>> +DECLARE_INTERRUPT_HANDLER_ASYNC(timer_interrupt);
+>> +DECLARE_INTERRUPT_HANDLER_NMI(performance_monitor_exception_nmi);
+>> +DECLARE_INTERRUPT_HANDLER_ASYNC(performance_monitor_exception_async);
+>> +DECLARE_INTERRUPT_HANDLER_RAW(performance_monitor_exception);
+>=20
+> Same for this.
 
-> @@ -508,12 +511,24 @@ void switch_mm_irqs_off(struct mm_struct *prev, =
-struct mm_struct *next,
-> 		smp_mb();
-> 		next_tlb_gen =3D atomic64_read(&next->context.tlb_gen);
-> 		if (this_cpu_read(cpu_tlbstate.ctxs[prev_asid].tlb_gen) =
-=3D=3D
-> -				next_tlb_gen)
-> +		    next_tlb_gen) {
-> +			/*
-> +			 * We're reactivating an mm, and membarrier =
-might
-> +			 * need to serialize.  Tell membarrier.
-> +			 */
-> +
-> +			// XXX: I can't understand the logic in
-> +			// membarrier_mm_sync_core_before_usermode().  =
-What's
-> +			// the mm check for?
-> +			membarrier_mm_sync_core_before_usermode(next);
+That's just because nmi vs async is decided at runtime for PMIs. I can=20
+add a comment, although it's more obvious when looking at the body.
 
-On the other hand the reason for this mm check that you mention =
-contradicts
-my previous understanding as the git log says:
-
-commit 2840cf02fae627860156737e83326df354ee4ec6
-Author: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Date:   Thu Sep 19 13:37:01 2019 -0400
-
-    sched/membarrier: Call sync_core only before usermode for same mm
-   =20
-    When the prev and next task's mm change, switch_mm() provides the =
-core
-    serializing guarantees before returning to usermode. The only case
-    where an explicit core serialization is needed is when the scheduler
-    keeps the same mm for prev and next.
-
-> 	/*
-> 	 * When switching through a kernel thread, the loop in
-> 	 * membarrier_{private,global}_expedited() may have observed =
-that
-> 	 * kernel thread and not issued an IPI. It is therefore possible =
-to
-> 	 * schedule between user->kernel->user threads without passing =
-though
-> 	 * switch_mm(). Membarrier requires a barrier after storing to
-> -	 * rq->curr, before returning to userspace, so provide them =
-here:
-> +	 * rq->curr, before returning to userspace, and mmdrop() =
-provides
-> +	 * this barrier.
-> 	 *
-> -	 * - a full memory barrier for {PRIVATE,GLOBAL}_EXPEDITED, =
-implicitly
-> -	 *   provided by mmdrop(),
-> -	 * - a sync_core for SYNC_CORE.
-> +	 * XXX: I don't think mmdrop() actually does this.  There's no
-> +	 * smp_mb__before/after_atomic() in there.
-
-I presume that since x86 is the only one that needs
-membarrier_mm_sync_core_before_usermode(), nobody noticed the missing
-smp_mb__before/after_atomic(). These are anyhow a compiler barrier in =
-x86,
-and such a barrier would take place before the return to userspace.
-
+Thanks,
+Nick
