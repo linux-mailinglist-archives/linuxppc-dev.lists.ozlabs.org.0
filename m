@@ -1,53 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0E62CFA02
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 07:25:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 355022CFA15
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 08:00:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cp0243DHSzDqjg
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 17:25:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cp0nb6Z5PzDqjN
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 18:00:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sboyd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
+ helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=T4bFnift; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=J39tLhFd; dkim-atps=neutral
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
+ [IPv6:2607:f8b0:4864:20::1035])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cp00B5yYzzDqgN
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 17:24:10 +1100 (AEDT)
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1607149448;
- bh=r8vnqMmsHnbgwMXfSQZu84loY6DvrmHia8Sx1hc/RJQ=;
- h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
- b=T4bFniftvCd2jeC6yESokQyOHoTMxC9vK6miqN2mi2XZsBNpieVpWrZWJ4/ROoVau
- zIweZB3ouv+2OYfFYhW50zG34k1z/GoAAlXVdYhFfPpHAER9uNSy+ACWR4QnDhGuRN
- uF3ewwCPsC0jNHoOsylZXbRo6pbi2K8WY92Dbcw+L49AQqk8J0jnR3fXB3D8pc9QKD
- HkId29E+OBrSUtnds5+Pr4+rygtaP4uF6TpHP1UUg/g/s/MIu62pjr25Y6h887D3mo
- 0ABFaab5sm2/qsL/H6aOQgE5NCXBPsqOngGLlOeALbEVA6UTuZ/AUtHNc8K05eNVem
- BV/WPUFP1yU7w==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cp0kw1DqtzDqf4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 17:57:40 +1100 (AEDT)
+Received: by mail-pj1-x1035.google.com with SMTP id hk16so4475208pjb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Dec 2020 22:57:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=074wL6ZBgABmXkOs/NT61EJN0HBh0dhkxvXZ++X/yaI=;
+ b=J39tLhFdiM/eYZNAhg85XVZeU7vlVYLTE2YpuzmX6S36rV2NljZYLQse33dtlTfU+D
+ P0A9XxiD/TRZFku3U3uZmRO+9sMfVlrPdOrUY0ub9mOfSoaFbGi7KBycRjIRZ1I1f7G3
+ AOg0CwR2kDU4wX7GGBTPPl2qINMfeDZC+MT4uWns92NjqsKo/IZwtBmm7faHE4YvF91k
+ XkzZVlYRiLabOUV2ZGcN1Y2QhSwfLCZwb3ldvzRkdexCD//G76XOV0MFbsjUrZ5g0ov+
+ SorgGaftGRsp0BWTZImGOqW1L2K+kHrJOBP8qwt2V6kfphRegH2pVENoKPosU6WKDL5u
+ S8eA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=074wL6ZBgABmXkOs/NT61EJN0HBh0dhkxvXZ++X/yaI=;
+ b=nz+6j/GejjGSxSdQz9JgIJvLndv6IFnRAbfgzxsE7c9x+e7Fnur9Ws5Jlrc2e4hlUT
+ A83bd7G/b2yUpLGE2o3s1lh/dCf6uVX1UsXLf2WPQnPeHPMKskPEpisI2AVeSG596REV
+ IGrF5c0cKN80YgurSmvRe1cHIUwmz351huxWVS6ZikERU6bPw4Y0IaLr1qrSf7EBR+Gc
+ cg9JHIaSt3e9jpihpJ0nL9fQoVFEzKbjGdVImnu7juntNN7KxsqBVJGoCZ9/YOExGjg/
+ 4bVN7ETu6/+6yQlD6x2LNRUXFXrc9wIOrffNFNBIKarzFTZ/yrZbOnwemK35r/6y3zsE
+ qrXQ==
+X-Gm-Message-State: AOAM532IVnjiIFVbrtW2w6/Mylra4ESOJKmH5sAAnJDPXQdfyFse6cgw
+ y0Ie9BDQfx16NiKgOZXAqBQ=
+X-Google-Smtp-Source: ABdhPJwD8LBysVSEMi9XYXVOROVfRZw/7sF9SVYYn1E01iFvQoYVyH6bH0o2iaHCD6/K8Gh1B/sbWQ==
+X-Received: by 2002:a17:902:9b85:b029:da:1684:cc82 with SMTP id
+ y5-20020a1709029b85b02900da1684cc82mr7368955plp.41.1607151456568; 
+ Fri, 04 Dec 2020 22:57:36 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com ([1.129.145.238])
+ by smtp.gmail.com with ESMTPSA id a14sm1110848pfl.141.2020.12.04.22.57.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 04 Dec 2020 22:57:35 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v9 00/12] huge vmalloc mappings
+Date: Sat,  5 Dec 2020 16:57:13 +1000
+Message-Id: <20201205065725.1286370-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20201130085743.1656317-1-geert+renesas@glider.be>
-References: <20201130085743.1656317-1-geert+renesas@glider.be>
-Subject: Re: [PATCH v2] clk: renesas: r9a06g032: Drop __packed for portability
-From: Stephen Boyd <sboyd@kernel.org>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Michael Turquette <mturquette@baylibre.com>, Paul Mackerras <paulus@samba.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>
-Date: Fri, 04 Dec 2020 22:24:06 -0800
-Message-ID: <160714944657.1580929.4595234852977229885@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,38 +78,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
- Gareth Williams <gareth.williams.jx@renesas.com>,
- linux-renesas-soc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-clk@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ Zefan Li <lizefan@huawei.com>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Quoting Geert Uytterhoeven (2020-11-30 00:57:43)
-> The R9A06G032 clock driver uses an array of packed structures to reduce
-> kernel size.  However, this array contains pointers, which are no longer
-> aligned naturally, and cannot be relocated on PPC64.  Hence when
-> compile-testing this driver on PPC64 with CONFIG_RELOCATABLE=3Dy (e.g.
-> PowerPC allyesconfig), the following warnings are produced:
->=20
->     WARNING: 136 bad relocations
->     c000000000616be3 R_PPC64_UADDR64   .rodata+0x00000000000cf338
->     c000000000616bfe R_PPC64_UADDR64   .rodata+0x00000000000cf370
->     ...
->=20
-> Fix this by dropping the __packed attribute from the r9a06g032_clkdesc
-> definition, trading a small size increase for portability.
->=20
-> This increases the 156-entry clock table by 1 byte per entry, but due to
-> the compiler generating more efficient code for unpacked accesses, the
-> net size increase is only 76 bytes (gcc 9.3.0 on arm32).
->=20
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Fixes: 4c3d88526eba2143 ("clk: renesas: Renesas R9A06G032 clock driver")
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
+Hi Andrew,
 
-Acked-by: Stephen Boyd <sboyd@kernel.org>
+A couple of things Rick noticed, he's working on huge module mappings
+to help iTLB pressure and seems to think this series will be useful
+infrastructure for his work.
 
-Unless you want me to pick this up for clk-fixes?
+I think it finally should be just about ready.
+
+Thanks,
+Nick
+
+Since v8:
+- Fixed nommu compile.
+- Added Kconfig option help text
+- Added VM_NOHUGE which should help archs implement it [suggested by Rick]
+
+Since v7:
+- Rebase, added some acks, compile fix
+- Removed "order=" from vmallocinfo, it's a bit confusing (nr_pages
+  is in small page size for compatibility).
+- Added arch_vmap_pmd_supported() test before starting to allocate
+  the large page, rather than only testing it when doing the map, to
+  avoid unsupported configs trying to allocate huge pages for no
+  reason.
+
+Since v6:
+- Fixed a false positive warning introduced in patch 2, found by
+  kbuild test robot.
+
+Since v5:
+- Split arch changes out better and make the constant folding work
+- Avoid most of the 80 column wrap, fix a reference to lib/ioremap.c
+- Fix compile error on some archs
+
+Since v4:
+- Fixed an off-by-page-order bug in v4
+- Several minor cleanups.
+- Added page order to /proc/vmallocinfo
+- Added hugepage to alloc_large_system_hage output.
+- Made an architecture config option, powerpc only for now.
+
+Since v3:
+- Fixed an off-by-one bug in a loop
+- Fix !CONFIG_HAVE_ARCH_HUGE_VMAP build fail
+- Hopefully this time fix the arm64 vmap stack bug, thanks Jonathan
+  Cameron for debugging the cause of this (hopefully).
+
+Since v2:
+- Rebased on vmalloc cleanups, split series into simpler pieces.
+- Fixed several compile errors and warnings
+- Keep the page array and accounting in small page units because
+  struct vm_struct is an interface (this should fix x86 vmap stack debug
+  assert). [Thanks Zefan]
+
+Nicholas Piggin (12):
+  mm/vmalloc: fix vmalloc_to_page for huge vmap mappings
+  mm: apply_to_pte_range warn and fail if a large pte is encountered
+  mm/vmalloc: rename vmap_*_range vmap_pages_*_range
+  mm/ioremap: rename ioremap_*_range to vmap_*_range
+  mm: HUGE_VMAP arch support cleanup
+  powerpc: inline huge vmap supported functions
+  arm64: inline huge vmap supported functions
+  x86: inline huge vmap supported functions
+  mm: Move vmap_range from mm/ioremap.c to mm/vmalloc.c
+  mm/vmalloc: add vmap_range_noflush variant
+  mm/vmalloc: Hugepage vmalloc mappings
+  powerpc/64s/radix: Enable huge vmalloc mappings
+
+ .../admin-guide/kernel-parameters.txt         |   2 +
+ arch/Kconfig                                  |  10 +
+ arch/arm64/include/asm/vmalloc.h              |  25 +
+ arch/arm64/mm/mmu.c                           |  26 -
+ arch/powerpc/Kconfig                          |   1 +
+ arch/powerpc/include/asm/vmalloc.h            |  21 +
+ arch/powerpc/kernel/module.c                  |  13 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |  21 -
+ arch/x86/include/asm/vmalloc.h                |  23 +
+ arch/x86/mm/ioremap.c                         |  19 -
+ arch/x86/mm/pgtable.c                         |  13 -
+ include/linux/io.h                            |   9 -
+ include/linux/vmalloc.h                       |  27 ++
+ init/main.c                                   |   1 -
+ mm/ioremap.c                                  | 225 +--------
+ mm/memory.c                                   |  66 ++-
+ mm/page_alloc.c                               |   5 +-
+ mm/vmalloc.c                                  | 454 +++++++++++++++---
+ 18 files changed, 564 insertions(+), 397 deletions(-)
+
+-- 
+2.23.0
+
