@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943E42CFA35
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 08:14:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB8B2CFA36
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 08:15:38 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cp15k6CrMzDqDb
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 18:14:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cp17W6HJHzDqn4
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 18:15:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ixoQmnhN; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+ header.s=20161025 header.b=ZbyWqGrL; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cp0lp1ZdZzDqhS
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 17:58:29 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id o5so4937294pgm.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Dec 2020 22:58:29 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cp0lv57PzzDqgf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 17:58:35 +1100 (AEDT)
+Received: by mail-pj1-x1041.google.com with SMTP id o7so4479379pjj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Dec 2020 22:58:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=UA8jXCMrqvJQGY0iCvWQeL9p8YQUamzHjwR9BZrUGA0=;
- b=ixoQmnhNu+iHTE6dMu5n0TMwbk9gQXZJrp5BPd4nj7PWlUO8ufqJebhBmqsXFyW8Dj
- kMwORXdB3zpgGNBg3iaUDUhTXfjJqGp4WdlLfnTB3MCL9hQWdqhU3+sTpxRlHA0LsBjS
- ssB8DMSbO0zVaArWu+WG3Ir4VhRQdKbAArRIJsHiHv5pEKLTEASbsZ7gZo2ReCaO2H4F
- p0ePGs/hOfpLP0j3N2l0CiWPKVAUUgmop2u4sqdmSWtFcnjVDFLMRLcZ2Iqtf7V9sFh1
- WxZPFTaSbfa1ijLV6ABCVc2rNw39S75ALk7KsYYXFb+7SH2Qn81c7qqSA2TpnACan6lP
- voKw==
+ bh=8TFdbq4jY02lpUIao4VCOhZe+uvscA77JDL+t080vhQ=;
+ b=ZbyWqGrLt4RYllZ309zfMEoZFiP7EH0eV2vmvTvKXQfC5wvo6zBMSFVsL5sTAVkQev
+ SlU0B4eXbzyASvOK3Ym/A3SDKAtjvbmv2ZGTE8x3EsrK41z3z2dzNTP558qeWU4WzYTV
+ F+iPsbKPZl4atluZgGTq/juUrNXl4QabaPCa666/99twFVjsJnd4OH92Vdb+qNN6bxoY
+ FrqkCYielmV6/sPWxpd0m3l+W/36r2txAZV89TkBslXXyRI8/z3NR5l7aGnIp1V7F0EJ
+ l8TAFqMPnBRETeYLEsbkacQNfThi99wthXBAhXBiwRNdIQRbPZNi7QRtTzR/4m3BpzwS
+ caAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=UA8jXCMrqvJQGY0iCvWQeL9p8YQUamzHjwR9BZrUGA0=;
- b=HkzUByhVSqdKw1N6tV4ejJrNMmDibXS1Z6H8Oc1G4H99gjOORncB9ClWMnt4Eb0UAx
- ycHfvRDolyhP45gZcWqdhQUHi7qdeUDrrVhZRC4qi3IlJj8Nq7jDHAzA25A6GXUwfKpk
- v5csgpbv+OGrNOG21Cap4x8VO3nfOlfU+LzK3fhzRlPg1jQdK1qpWvYBCorAhpK4pGOK
- hK52DSyOqVV4tH9Z0mDSJYUmAd4oCK5auSq3DQfOgfK6HB4z3ExFc02ICLMV/Z+xzAmx
- lfnQmS/Bp5l8b0FBlg/OK50ojs+mH8hMu64iNlIu094N1Tmg2eKNobupN1DSbekA0N6N
- PV4Q==
-X-Gm-Message-State: AOAM530AsmfswEjVTKvi/1h7Eeof+h5L5xhiX67TRC72S+JaM4X9EYg2
- 84HvubxPFuIwOn9R0AntIOMNba+xmYCT0g==
-X-Google-Smtp-Source: ABdhPJwsGY5bbPgjp6Z2beq7Wy5FYiyWFqxlFd9Z8sOD8KS2/ylcOxRC30ISSWWh5AGOTBlvg8B/eg==
-X-Received: by 2002:a05:6a00:1596:b029:19d:96b8:6eab with SMTP id
- u22-20020a056a001596b029019d96b86eabmr7188996pfk.38.1607151506911; 
- Fri, 04 Dec 2020 22:58:26 -0800 (PST)
+ bh=8TFdbq4jY02lpUIao4VCOhZe+uvscA77JDL+t080vhQ=;
+ b=twUt0r2y2Bj70uGF0LMCSzlZU/lYqTDBzJfojft3+GFNC5XH4Jm7oROU9EjBW0MMHD
+ Qcjc37f9oPIUTT5Pmh197bWXslnTfB7d9gdGS7bZ25K9hCCbIHk7im+qWXBH2hKsKmka
+ ECartHV6oriVfgBkcs8Q6o1cFGRK6pycbMkTzvckS7KhryEa4Zo19AQwkabJNW/HkdIi
+ FhUGzp1iWxe1Sgymgueb0JjdG6Or2UWCaIPsU6hyx63cK7ySDI50kEZLY1dsnepHUMcf
+ XODMfmchYQsyzSJpDx/Aq3NZ6ArQ7Einc+HicnBJ6MSWGX0gqq6zE1f+e2Ubv+S4zrsT
+ BKTQ==
+X-Gm-Message-State: AOAM530teopxrXL1WY+LPS3joRrpIWJpGdkXN8WnaM/aBmrD7qF4Rxw2
+ s8cLE5axXmCErJl7ESBjJDKV0KHSvo5tYA==
+X-Google-Smtp-Source: ABdhPJxLZ83Si1qZ/15c5hGG5I88tnMd0c//yocED6nFfmWgGDliA9hxqi1QtHFVbxyNnrOcaZc4eA==
+X-Received: by 2002:a17:902:900c:b029:da:b7a3:d83a with SMTP id
+ a12-20020a170902900cb02900dab7a3d83amr7077148plp.57.1607151513399; 
+ Fri, 04 Dec 2020 22:58:33 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com ([1.129.145.238])
- by smtp.gmail.com with ESMTPSA id a14sm1110848pfl.141.2020.12.04.22.58.20
+ by smtp.gmail.com with ESMTPSA id a14sm1110848pfl.141.2020.12.04.22.58.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Dec 2020 22:58:26 -0800 (PST)
+ Fri, 04 Dec 2020 22:58:33 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linux-mm@kvack.org,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v9 08/12] x86: inline huge vmap supported functions
-Date: Sat,  5 Dec 2020 16:57:21 +1000
-Message-Id: <20201205065725.1286370-9-npiggin@gmail.com>
+Subject: [PATCH v9 09/12] mm: Move vmap_range from mm/ioremap.c to mm/vmalloc.c
+Date: Sat,  5 Dec 2020 16:57:22 +1000
+Message-Id: <20201205065725.1286370-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20201205065725.1286370-1-npiggin@gmail.com>
 References: <20201205065725.1286370-1-npiggin@gmail.com>
@@ -80,131 +80,452 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org,
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
  Nicholas Piggin <npiggin@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- Zefan Li <lizefan@huawei.com>, Borislav Petkov <bp@alien8.de>,
- Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@redhat.com>
+ Zefan Li <lizefan@huawei.com>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This allows unsupported levels to be constant folded away, and so
-p4d_free_pud_page can be removed because it's no longer linked to.
+This is a generic kernel virtual memory mapper, not specific to ioremap.
 
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/x86/include/asm/vmalloc.h | 22 +++++++++++++++++++---
- arch/x86/mm/ioremap.c          | 19 -------------------
- arch/x86/mm/pgtable.c          | 13 -------------
- 3 files changed, 19 insertions(+), 35 deletions(-)
+ include/linux/vmalloc.h |   3 +
+ mm/ioremap.c            | 197 ----------------------------------------
+ mm/vmalloc.c            | 196 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 199 insertions(+), 197 deletions(-)
 
-diff --git a/arch/x86/include/asm/vmalloc.h b/arch/x86/include/asm/vmalloc.h
-index 094ea2b565f3..e714b00fc0ca 100644
---- a/arch/x86/include/asm/vmalloc.h
-+++ b/arch/x86/include/asm/vmalloc.h
-@@ -1,13 +1,29 @@
- #ifndef _ASM_X86_VMALLOC_H
- #define _ASM_X86_VMALLOC_H
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index b3218ba0904d..a5ae791dc1e0 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -180,6 +180,9 @@ extern struct vm_struct *remove_vm_area(const void *addr);
+ extern struct vm_struct *find_vm_area(const void *addr);
  
-+#include <asm/cpufeature.h>
- #include <asm/page.h>
- #include <asm/pgtable_areas.h>
+ #ifdef CONFIG_MMU
++int vmap_range(unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot,
++			unsigned int max_page_shift);
+ extern int map_kernel_range_noflush(unsigned long start, unsigned long size,
+ 				    pgprot_t prot, struct page **pages);
+ int map_kernel_range(unsigned long start, unsigned long size, pgprot_t prot,
+diff --git a/mm/ioremap.c b/mm/ioremap.c
+index c67f91164401..d1dcc7e744ac 100644
+--- a/mm/ioremap.c
++++ b/mm/ioremap.c
+@@ -28,203 +28,6 @@ early_param("nohugeiomap", set_nohugeiomap);
+ static const bool iomap_max_page_shift = PAGE_SHIFT;
+ #endif	/* CONFIG_HAVE_ARCH_HUGE_VMAP */
  
- #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
--bool arch_vmap_p4d_supported(pgprot_t prot);
--bool arch_vmap_pud_supported(pgprot_t prot);
--bool arch_vmap_pmd_supported(pgprot_t prot);
-+static inline bool arch_vmap_p4d_supported(pgprot_t prot)
-+{
-+	return false;
-+}
-+
-+static inline bool arch_vmap_pud_supported(pgprot_t prot)
-+{
-+#ifdef CONFIG_X86_64
-+	return boot_cpu_has(X86_FEATURE_GBPAGES);
-+#else
-+	return false;
-+#endif
-+}
-+
-+static inline bool arch_vmap_pmd_supported(pgprot_t prot)
-+{
-+	return boot_cpu_has(X86_FEATURE_PSE);
-+}
- #endif
- 
- #endif /* _ASM_X86_VMALLOC_H */
-diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
-index 762b5ff4edad..12c686c65ea9 100644
---- a/arch/x86/mm/ioremap.c
-+++ b/arch/x86/mm/ioremap.c
-@@ -481,25 +481,6 @@ void iounmap(volatile void __iomem *addr)
- }
- EXPORT_SYMBOL(iounmap);
- 
--bool arch_vmap_p4d_supported(pgprot_t prot)
+-static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+-			phys_addr_t phys_addr, pgprot_t prot,
+-			pgtbl_mod_mask *mask)
 -{
--	return false;
--}
+-	pte_t *pte;
+-	u64 pfn;
 -
--bool arch_vmap_pud_supported(pgprot_t prot)
--{
--#ifdef CONFIG_X86_64
--	return boot_cpu_has(X86_FEATURE_GBPAGES);
--#else
--	return false;
--#endif
--}
--
--bool arch_vmap_pmd_supported(pgprot_t prot)
--{
--	return boot_cpu_has(X86_FEATURE_PSE);
--}
--
- /*
-  * Convert a physical pointer to a virtual kernel pointer for /dev/mem
-  * access
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index dfd82f51ba66..801c418ee97d 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -780,14 +780,6 @@ int pmd_clear_huge(pmd_t *pmd)
- 	return 0;
- }
- 
--/*
-- * Until we support 512GB pages, skip them in the vmap area.
-- */
--int p4d_free_pud_page(p4d_t *p4d, unsigned long addr)
--{
+-	pfn = phys_addr >> PAGE_SHIFT;
+-	pte = pte_alloc_kernel_track(pmd, addr, mask);
+-	if (!pte)
+-		return -ENOMEM;
+-	do {
+-		BUG_ON(!pte_none(*pte));
+-		set_pte_at(&init_mm, addr, pte, pfn_pte(pfn, prot));
+-		pfn++;
+-	} while (pte++, addr += PAGE_SIZE, addr != end);
+-	*mask |= PGTBL_PTE_MODIFIED;
 -	return 0;
 -}
 -
- #ifdef CONFIG_X86_64
- /**
-  * pud_free_pmd_page - Clear pud entry and free pmd page.
-@@ -859,11 +851,6 @@ int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
- 
- #else /* !CONFIG_X86_64 */
- 
--int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+-static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
+-			phys_addr_t phys_addr, pgprot_t prot,
+-			unsigned int max_page_shift)
 -{
--	return pud_none(*pud);
+-	if (max_page_shift < PMD_SHIFT)
+-		return 0;
+-
+-	if (!arch_vmap_pmd_supported(prot))
+-		return 0;
+-
+-	if ((end - addr) != PMD_SIZE)
+-		return 0;
+-
+-	if (!IS_ALIGNED(addr, PMD_SIZE))
+-		return 0;
+-
+-	if (!IS_ALIGNED(phys_addr, PMD_SIZE))
+-		return 0;
+-
+-	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
+-		return 0;
+-
+-	return pmd_set_huge(pmd, phys_addr, prot);
 -}
 -
- /*
-  * Disable free page handling on x86-PAE. This assures that ioremap()
-  * does not update sync'd pmd entries. See vmalloc_sync_one().
+-static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+-			phys_addr_t phys_addr, pgprot_t prot,
+-			unsigned int max_page_shift, pgtbl_mod_mask *mask)
+-{
+-	pmd_t *pmd;
+-	unsigned long next;
+-
+-	pmd = pmd_alloc_track(&init_mm, pud, addr, mask);
+-	if (!pmd)
+-		return -ENOMEM;
+-	do {
+-		next = pmd_addr_end(addr, end);
+-
+-		if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot, max_page_shift)) {
+-			*mask |= PGTBL_PMD_MODIFIED;
+-			continue;
+-		}
+-
+-		if (vmap_pte_range(pmd, addr, next, phys_addr, prot, mask))
+-			return -ENOMEM;
+-	} while (pmd++, phys_addr += (next - addr), addr = next, addr != end);
+-	return 0;
+-}
+-
+-static int vmap_try_huge_pud(pud_t *pud, unsigned long addr, unsigned long end,
+-			phys_addr_t phys_addr, pgprot_t prot,
+-			unsigned int max_page_shift)
+-{
+-	if (max_page_shift < PUD_SHIFT)
+-		return 0;
+-
+-	if (!arch_vmap_pud_supported(prot))
+-		return 0;
+-
+-	if ((end - addr) != PUD_SIZE)
+-		return 0;
+-
+-	if (!IS_ALIGNED(addr, PUD_SIZE))
+-		return 0;
+-
+-	if (!IS_ALIGNED(phys_addr, PUD_SIZE))
+-		return 0;
+-
+-	if (pud_present(*pud) && !pud_free_pmd_page(pud, addr))
+-		return 0;
+-
+-	return pud_set_huge(pud, phys_addr, prot);
+-}
+-
+-static int vmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+-			phys_addr_t phys_addr, pgprot_t prot,
+-			unsigned int max_page_shift, pgtbl_mod_mask *mask)
+-{
+-	pud_t *pud;
+-	unsigned long next;
+-
+-	pud = pud_alloc_track(&init_mm, p4d, addr, mask);
+-	if (!pud)
+-		return -ENOMEM;
+-	do {
+-		next = pud_addr_end(addr, end);
+-
+-		if (vmap_try_huge_pud(pud, addr, next, phys_addr, prot, max_page_shift)) {
+-			*mask |= PGTBL_PUD_MODIFIED;
+-			continue;
+-		}
+-
+-		if (vmap_pmd_range(pud, addr, next, phys_addr, prot, max_page_shift, mask))
+-			return -ENOMEM;
+-	} while (pud++, phys_addr += (next - addr), addr = next, addr != end);
+-	return 0;
+-}
+-
+-static int vmap_try_huge_p4d(p4d_t *p4d, unsigned long addr, unsigned long end,
+-			phys_addr_t phys_addr, pgprot_t prot,
+-			unsigned int max_page_shift)
+-{
+-	if (max_page_shift < P4D_SHIFT)
+-		return 0;
+-
+-	if (!arch_vmap_p4d_supported(prot))
+-		return 0;
+-
+-	if ((end - addr) != P4D_SIZE)
+-		return 0;
+-
+-	if (!IS_ALIGNED(addr, P4D_SIZE))
+-		return 0;
+-
+-	if (!IS_ALIGNED(phys_addr, P4D_SIZE))
+-		return 0;
+-
+-	if (p4d_present(*p4d) && !p4d_free_pud_page(p4d, addr))
+-		return 0;
+-
+-	return p4d_set_huge(p4d, phys_addr, prot);
+-}
+-
+-static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
+-			phys_addr_t phys_addr, pgprot_t prot,
+-			unsigned int max_page_shift, pgtbl_mod_mask *mask)
+-{
+-	p4d_t *p4d;
+-	unsigned long next;
+-
+-	p4d = p4d_alloc_track(&init_mm, pgd, addr, mask);
+-	if (!p4d)
+-		return -ENOMEM;
+-	do {
+-		next = p4d_addr_end(addr, end);
+-
+-		if (vmap_try_huge_p4d(p4d, addr, next, phys_addr, prot, max_page_shift)) {
+-			*mask |= PGTBL_P4D_MODIFIED;
+-			continue;
+-		}
+-
+-		if (vmap_pud_range(p4d, addr, next, phys_addr, prot, max_page_shift, mask))
+-			return -ENOMEM;
+-	} while (p4d++, phys_addr += (next - addr), addr = next, addr != end);
+-	return 0;
+-}
+-
+-static int vmap_range(unsigned long addr, unsigned long end,
+-			phys_addr_t phys_addr, pgprot_t prot,
+-			unsigned int max_page_shift)
+-{
+-	pgd_t *pgd;
+-	unsigned long start;
+-	unsigned long next;
+-	int err;
+-	pgtbl_mod_mask mask = 0;
+-
+-	might_sleep();
+-	BUG_ON(addr >= end);
+-
+-	start = addr;
+-	pgd = pgd_offset_k(addr);
+-	do {
+-		next = pgd_addr_end(addr, end);
+-		err = vmap_p4d_range(pgd, addr, next, phys_addr, prot, max_page_shift, &mask);
+-		if (err)
+-			break;
+-	} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
+-
+-	flush_cache_vmap(start, end);
+-
+-	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+-		arch_sync_kernel_mappings(start, end);
+-
+-	return err;
+-}
+-
+ int ioremap_page_range(unsigned long addr,
+ 		       unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
+ {
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 42326dbffaf0..2f236aeeac24 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -68,6 +68,202 @@ static void free_work(struct work_struct *w)
+ }
+ 
+ /*** Page table manipulation functions ***/
++static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot,
++			pgtbl_mod_mask *mask)
++{
++	pte_t *pte;
++	u64 pfn;
++
++	pfn = phys_addr >> PAGE_SHIFT;
++	pte = pte_alloc_kernel_track(pmd, addr, mask);
++	if (!pte)
++		return -ENOMEM;
++	do {
++		BUG_ON(!pte_none(*pte));
++		set_pte_at(&init_mm, addr, pte, pfn_pte(pfn, prot));
++		pfn++;
++	} while (pte++, addr += PAGE_SIZE, addr != end);
++	*mask |= PGTBL_PTE_MODIFIED;
++	return 0;
++}
++
++static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot,
++			unsigned int max_page_shift)
++{
++	if (max_page_shift < PMD_SHIFT)
++		return 0;
++
++	if (!arch_vmap_pmd_supported(prot))
++		return 0;
++
++	if ((end - addr) != PMD_SIZE)
++		return 0;
++
++	if (!IS_ALIGNED(addr, PMD_SIZE))
++		return 0;
++
++	if (!IS_ALIGNED(phys_addr, PMD_SIZE))
++		return 0;
++
++	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
++		return 0;
++
++	return pmd_set_huge(pmd, phys_addr, prot);
++}
++
++static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot,
++			unsigned int max_page_shift, pgtbl_mod_mask *mask)
++{
++	pmd_t *pmd;
++	unsigned long next;
++
++	pmd = pmd_alloc_track(&init_mm, pud, addr, mask);
++	if (!pmd)
++		return -ENOMEM;
++	do {
++		next = pmd_addr_end(addr, end);
++
++		if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot, max_page_shift)) {
++			*mask |= PGTBL_PMD_MODIFIED;
++			continue;
++		}
++
++		if (vmap_pte_range(pmd, addr, next, phys_addr, prot, mask))
++			return -ENOMEM;
++	} while (pmd++, phys_addr += (next - addr), addr = next, addr != end);
++	return 0;
++}
++
++static int vmap_try_huge_pud(pud_t *pud, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot,
++			unsigned int max_page_shift)
++{
++	if (max_page_shift < PUD_SHIFT)
++		return 0;
++
++	if (!arch_vmap_pud_supported(prot))
++		return 0;
++
++	if ((end - addr) != PUD_SIZE)
++		return 0;
++
++	if (!IS_ALIGNED(addr, PUD_SIZE))
++		return 0;
++
++	if (!IS_ALIGNED(phys_addr, PUD_SIZE))
++		return 0;
++
++	if (pud_present(*pud) && !pud_free_pmd_page(pud, addr))
++		return 0;
++
++	return pud_set_huge(pud, phys_addr, prot);
++}
++
++static int vmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot,
++			unsigned int max_page_shift, pgtbl_mod_mask *mask)
++{
++	pud_t *pud;
++	unsigned long next;
++
++	pud = pud_alloc_track(&init_mm, p4d, addr, mask);
++	if (!pud)
++		return -ENOMEM;
++	do {
++		next = pud_addr_end(addr, end);
++
++		if (vmap_try_huge_pud(pud, addr, next, phys_addr, prot, max_page_shift)) {
++			*mask |= PGTBL_PUD_MODIFIED;
++			continue;
++		}
++
++		if (vmap_pmd_range(pud, addr, next, phys_addr, prot, max_page_shift, mask))
++			return -ENOMEM;
++	} while (pud++, phys_addr += (next - addr), addr = next, addr != end);
++	return 0;
++}
++
++static int vmap_try_huge_p4d(p4d_t *p4d, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot,
++			unsigned int max_page_shift)
++{
++	if (max_page_shift < P4D_SHIFT)
++		return 0;
++
++	if (!arch_vmap_p4d_supported(prot))
++		return 0;
++
++	if ((end - addr) != P4D_SIZE)
++		return 0;
++
++	if (!IS_ALIGNED(addr, P4D_SIZE))
++		return 0;
++
++	if (!IS_ALIGNED(phys_addr, P4D_SIZE))
++		return 0;
++
++	if (p4d_present(*p4d) && !p4d_free_pud_page(p4d, addr))
++		return 0;
++
++	return p4d_set_huge(p4d, phys_addr, prot);
++}
++
++static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot,
++			unsigned int max_page_shift, pgtbl_mod_mask *mask)
++{
++	p4d_t *p4d;
++	unsigned long next;
++
++	p4d = p4d_alloc_track(&init_mm, pgd, addr, mask);
++	if (!p4d)
++		return -ENOMEM;
++	do {
++		next = p4d_addr_end(addr, end);
++
++		if (vmap_try_huge_p4d(p4d, addr, next, phys_addr, prot, max_page_shift)) {
++			*mask |= PGTBL_P4D_MODIFIED;
++			continue;
++		}
++
++		if (vmap_pud_range(p4d, addr, next, phys_addr, prot, max_page_shift, mask))
++			return -ENOMEM;
++	} while (p4d++, phys_addr += (next - addr), addr = next, addr != end);
++	return 0;
++}
++
++int vmap_range(unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot,
++			unsigned int max_page_shift)
++{
++	pgd_t *pgd;
++	unsigned long start;
++	unsigned long next;
++	int err;
++	pgtbl_mod_mask mask = 0;
++
++	might_sleep();
++	BUG_ON(addr >= end);
++
++	start = addr;
++	pgd = pgd_offset_k(addr);
++	do {
++		next = pgd_addr_end(addr, end);
++		err = vmap_p4d_range(pgd, addr, next, phys_addr, prot, max_page_shift, &mask);
++		if (err)
++			break;
++	} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
++
++	flush_cache_vmap(start, end);
++
++	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
++		arch_sync_kernel_mappings(start, end);
++
++	return err;
++}
+ 
+ static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+ 			     pgtbl_mod_mask *mask)
 -- 
 2.23.0
 
