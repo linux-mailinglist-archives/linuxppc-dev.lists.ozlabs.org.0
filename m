@@ -2,121 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7BB2CFF64
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 22:53:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1B32CFFB2
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 00:19:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CpNcq67jgzDqGk
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 08:53:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CpQW65PdVzDqpK
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 10:18:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=prevas.dk (client-ip=40.107.2.136;
- helo=eur02-ve1-obe.outbound.protection.outlook.com;
- envelope-from=rasmus.villemoes@prevas.dk; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=prevas.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=prevas.dk header.i=@prevas.dk header.a=rsa-sha256
- header.s=selector1 header.b=MLhCki0t; 
- dkim-atps=neutral
-Received: from EUR02-VE1-obe.outbound.protection.outlook.com
- (mail-eopbgr20136.outbound.protection.outlook.com [40.107.2.136])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=QqSC0/j6; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CpNY81PYfzDqgF
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 08:50:34 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Uts6Uk+wg6xeAH1bW7Syw4rDQ2QznfLKzObJJ3lD7No11opFDtmhp/zkIIK6aPKNHqGaKJ3MOzJRLbGMIXacxVuZNuhWw9LQlEjgDEohLRbnRTSvXI/by2k/E8/2AiKdXwnUkiOofEF2sqQ240RLomvGQnbF1lRYYpk6hCJ9hLjTA3vPj1au6djpczZM3n18E/UXt72LFUbJiai2JsQMHMH3MZOS3Xhf1TdPujUU4mF8K7FxNVe/G/wFUJR21Wm1QD7rV6h6soqdVV1x6onW3fRsQ1cXUDEAckJtTeLg92/rYH6Lz8ykuBx0Ah3Nqd8xTyJzRQ5zoS/BUOFoYdItdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GOLRSOPunIQjNNx6SAyKyFs7XZvCDo450U7vn/K0GHY=;
- b=bq3bJaBHLaHMoYOMxuj/nsRvOrqmR3QGO2kjqh1IEpEHnjGCYyHae57Wu7KG8PjVSI22m7bAmZKvjuP45b1llWHfc9RgPd7TnRP5FGn7Me3f5TtK5P5lqkZzuBBOfquQVTvfAiYA5M8rrO94iOAZ4/MYv8ypda/mnShI3TyXqqZ/A314ZB9O2mlXWnzt3aXGluVSnhY++p6Ok8ZIuUBWbNhAnttyFNNHTyl0F/HuVh3TSNMPiYYpjvOhbcsuVXduMlgi8i3/57sGfxytDP3uUtupQp2fGVNJdYOP/vexanFGJW4mvcIwj9/u03pD4krJlDZCJEX9j08aC2y5qvBMZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
- dkim=pass header.d=prevas.dk; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GOLRSOPunIQjNNx6SAyKyFs7XZvCDo450U7vn/K0GHY=;
- b=MLhCki0tqCS4KWt8cttN7nMK79RHPZS6ztFOr0cDgu4YFmJt81RihjxOo4ndGT/mtRJm4yaFMObK7Pdkdq/pn9qgc4IIp5+P1vhJN5IVN7og1WEdXkXaaW3EJy9SdayUq0sBrN9+xx4v2HBzQ8PuBmJyCmSSJ4d17GpsFh+MVC8=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=prevas.dk;
-Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:3f::10)
- by AM0PR10MB2866.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:158::23)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Sat, 5 Dec
- 2020 21:50:28 +0000
-Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::9068:c899:48f:a8e3]) by AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::9068:c899:48f:a8e3%6]) with mapi id 15.20.3632.021; Sat, 5 Dec 2020
- 21:50:28 +0000
-Subject: Re: [PATCH 11/20] ethernet: ucc_geth: fix use-after-free in
- ucc_geth_remove()
-From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-To: Jakub Kicinski <kuba@kernel.org>
-References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
- <20201205191744.7847-12-rasmus.villemoes@prevas.dk>
- <20201205124859.60d045e6@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
- <4d35ef11-b1eb-c450-2937-94e20fa9a213@prevas.dk>
-Message-ID: <e5c1443b-1582-51b8-f863-4eab6e9d1475@prevas.dk>
-Date: Sat, 5 Dec 2020 22:50:26 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-In-Reply-To: <4d35ef11-b1eb-c450-2937-94e20fa9a213@prevas.dk>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [5.186.115.188]
-X-ClientProxiedBy: AS8PR04CA0093.eurprd04.prod.outlook.com
- (2603:10a6:20b:31e::8) To AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:3f::10)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CpQQk21HZzDqmq
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 10:15:09 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id q22so6393664pfk.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 05 Dec 2020 15:15:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=L+vg4JbP0FJBCP1pF1I695Sm385f278Rs5jRmS9rNXg=;
+ b=QqSC0/j6vjRBOiUDUATi/LPsIVAKUy7bK3rktA0IiR7ML8OM2DpeGXtMsUyK3nMwvk
+ pSIpV88iDIfxTLuHlmK8QbBnKk9K3t3fr+y6EQaJIyRri4NV/kXIDMmBsMZJZSctTZtK
+ HhdYeIA6jeB/vHZdcEGMnXvdBMLb3PuBdsn0rJvHnz/Lly9SVkMu+NWh4/mOtxfPk22B
+ G98NTD3lNPX4TNB+6ZX95CA788LnFcXhbCyOA600VVkyE4El+oW55ey3b5hgAYD+ZvMV
+ XEhp7uyplSDklj4P9m6cf1EiAoFeRjIeP8qF9dgrcpjqlXWreqnm2tGOqgBF6WlFcWiJ
+ 4FLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=L+vg4JbP0FJBCP1pF1I695Sm385f278Rs5jRmS9rNXg=;
+ b=H1EVTvoASQKSuYNrIv/cV/5L5Zs/BB+B8sVwP3Nt3EQN02PGWBrpq5hq5z4xdK1M3N
+ yrwzYr4JBkg1nF+ltzKWxdPvIYSiU2AlDLtRAuCg9crhL8lpPSeg6JT2C1Uy4u1JJvw1
+ S1vybYkmGDNvi+paFkhZBo5IZMfjUE3YoQc+EKKro0emqDyESWzP9mm/tNOKr06xyuva
+ NaYzswSNnoGkiKBXpGaAhc4MsVRCAHlWQxHL7mMHG03ZbWgeodkIbmrmjn3AzUbIYwdY
+ ackKZwYbXd+m1DB6Ib+EapUFOq8ZTMN6RtBuS2ShZ6arxVCjJAxFg9vwIb/mVA0MX+va
+ 3O0w==
+X-Gm-Message-State: AOAM533sMDrweSmQu3v0RFKc05TplqQNhCRNHfACXCU6r8x00VWVB8LA
+ PGXHhhxHUSez6/t89TVp40Y=
+X-Google-Smtp-Source: ABdhPJzfxzuJbfqX3AxcZgkq+sDJtUgImoz4dGsHTfVrStKXtO6JvVyi6Isgck4AhVl4gjBk5OYlzg==
+X-Received: by 2002:a63:1107:: with SMTP id g7mr12703758pgl.432.1607210105367; 
+ Sat, 05 Dec 2020 15:15:05 -0800 (PST)
+Received: from localhost ([1.129.241.238])
+ by smtp.gmail.com with ESMTPSA id k26sm9514644pfg.8.2020.12.05.15.15.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 05 Dec 2020 15:15:04 -0800 (PST)
+Date: Sun, 06 Dec 2020 09:14:57 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 2/8] x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
+To: Andy Lutomirski <luto@amacapital.net>
+References: <1607152918.fkgmomgfw9.astroid@bobo.none>
+ <116A6B40-C77B-4B6A-897B-18342CD62CEC@amacapital.net>
+In-Reply-To: <116A6B40-C77B-4B6A-897B-18342CD62CEC@amacapital.net>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.1.149] (5.186.115.188) by
- AS8PR04CA0093.eurprd04.prod.outlook.com (2603:10a6:20b:31e::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3632.21 via Frontend Transport; Sat, 5 Dec 2020 21:50:27 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 6bc32f06-3934-4807-0b94-08d89967c777
-X-MS-TrafficTypeDiagnostic: AM0PR10MB2866:
-X-Microsoft-Antispam-PRVS: <AM0PR10MB2866FE8F0D9D2E97CDA37D0E93F00@AM0PR10MB2866.EURPRD10.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3968;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: QHfaZ+HfNBg21ZHJu/yPUvJXONMOQhOrV+JKX8Sc3c9TbktjeSA/KkgdkafZ28iGeAdLNydPfIROshuOZDcZ4+tyJa6u30rIdS2yERMSAGsU8moYLijYiZ0jjCXmilJtfVG88Hm/iOuPKXHPynBnQy2ET7T1svylVakrsfWodX2J5un2SL3cx66tM7Wp4ul3oAUDl0amEyklURRLuhkikRLK/WqrBV2OFcEGd7fIc2sAupqaWh6mrZqj9QNiRDYHSxA74Vx36vpmsi1S3QBtdIF+nQ1g63rsxliwt4M78gHC4PyTzugfIBljyJXF86aUFgOvsFQYFqaKHmCdI5GgSTZgauexkYM0wJ5miau5FIsdOqDQZ3LeWHhIC7aEIe+lKNDmvd/SziY8v4bQR2x4M5QezzjTKfPJ1G7zDtfG3s8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(39840400004)(136003)(396003)(376002)(346002)(366004)(31696002)(6916009)(8936002)(4326008)(36756003)(558084003)(6486002)(8676002)(83380400001)(8976002)(2906002)(478600001)(956004)(86362001)(16526019)(186003)(66476007)(66946007)(31686004)(66556008)(5660300002)(44832011)(54906003)(316002)(52116002)(2616005)(16576012)(26005)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData: =?Windows-1252?Q?mrsy9dQ+9qRjEtr6SzOCwkRFIL+dMshjBY8+ERJeVypc8G5a0pkUaeJL?=
- =?Windows-1252?Q?150cNmfyTCPNoYS0MxMt7IIPoc8wMn4R+jErqe3Cr8msdm/EM9gnnDwr?=
- =?Windows-1252?Q?d+Xuakkw+JfgBoZZtehD0vIcptM2TqVYpJGdoine34xxl7levE2D1sgz?=
- =?Windows-1252?Q?n8LBiakEsemDtMx1m929jffMQmTJM14zhJ5AF0Lyk0DxSGb5qC3TWUPY?=
- =?Windows-1252?Q?y7t+mADSX2iGxHxgiO5xYtRcjgI8q2KnIvW+NBPMToQy0GnSX2iudF3q?=
- =?Windows-1252?Q?q0NIGwDP+f368Op9Z+TGZ93wWQLqs2TBd1sTtVfUg/FCh+W4UL0zZXhD?=
- =?Windows-1252?Q?xTAajVnB6QqTk7BMm7d9cYtPV4kosh2gNPcMz+qGkyeTRkPpA13KkBu9?=
- =?Windows-1252?Q?55ZoprBHVe3Sj/M2bUvZwOg/3TYo2Z7hP53ZT8YbvmYMw6Ud5a4Z6Yup?=
- =?Windows-1252?Q?gorXodF2C3tkWWJhsvumNAfaq6AX3dKu1kFIu4PDxI0R14Td45qhrGRR?=
- =?Windows-1252?Q?McjCqEbYthNKFITZjfTvVy2OlBFpwYA2jvggwDg6VBe9C5sHx8S53sXm?=
- =?Windows-1252?Q?/SZHfRxxS83FM9Ke6xQGWB78NsAgX5y41hJXVGUayiB4MIr9qkgOIIOX?=
- =?Windows-1252?Q?JkFf1N+cvCkTPHjNiD/ujuJws/QUCMZvTJHtAiSr8xhzLtIaH0xsLxKj?=
- =?Windows-1252?Q?9R8Uaz34Yem7WlB5AqocjmpDI6wKg+VcjYkADxkwPeRgKZXbr5HKz2hF?=
- =?Windows-1252?Q?fo6vJxP1oWAB69jQXkBKtK1A4rP3IjB4qskMcndyF/qVYAOFyqPsNK0j?=
- =?Windows-1252?Q?53ILvLe1xxLpFKdKfNKvhBaiwUhzloM4TVFLQAwQIZc2w9D6nZe0aT1r?=
- =?Windows-1252?Q?JnnP1D6LGQCQdWDut0iW5bJa6oJY9Kbh4LwtN1Gxy0uj96ip4vn03zPc?=
- =?Windows-1252?Q?BuxziIzyFGihQNAzMGM+ATi+wsL2Tr99KezjlYWSqgNymGvYP9CF8FKw?=
- =?Windows-1252?Q?Jn5vZM98akBZdADsgi1YIP0uh4I9894Hfh636bsZPJZTjb+6I3YMFSJM?=
- =?Windows-1252?Q?oDJ+B1rkVDvQm2si?=
-X-OriginatorOrg: prevas.dk
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6bc32f06-3934-4807-0b94-08d89967c777
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2020 21:50:28.2043 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BRQ+ADIM3hmiECPJfrPJjnaAdsn3heew/c7OmG15udyJNo8cDbKY4W4oJxJSpwl7piK88KTlNXnVfukFNV00PPQUTlGuXxo0ShdMuDl9KTI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB2866
+Message-Id: <1607209402.fogfsh8ov4.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,20 +80,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, linux-kernel@vger.kernel.org,
- Li Yang <leoyang.li@nxp.com>, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Zhao Qiang <qiang.zhao@nxp.com>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Andy Lutomirski's message of December 6, 2020 2:11 am:
+>=20
+>> On Dec 5, 2020, at 12:00 AM, Nicholas Piggin <npiggin@gmail.com> wrote:
+>>=20
+>>=20
+>> I disagree. Until now nobody following it noticed that the mm gets
+>> un-lazied in other cases, because that was not too clear from the
+>> code (only indirectly using non-standard terminology in the arch
+>> support document).
+>=20
+>> In other words, membarrier needs a special sync to deal with the case=20
+>> when a kthread takes the mm.
+>=20
+> I don=E2=80=99t think this is actually true. Somehow the x86 oddities abo=
+ut=20
+> CR3 writes leaked too much into the membarrier core code and comments.=20
+> (I doubt this is x86 specific.  The actual x86 specific part seems to=20
+> be that we can return to user mode without syncing the instruction=20
+> stream.)
+>=20
+> As far as I can tell, membarrier doesn=E2=80=99t care at all about lazine=
+ss.=20
+> Membarrier cares about rq->curr->mm.  The fact that a cpu can switch=20
+> its actual loaded mm without scheduling at all (on x86 at least) is=20
+> entirely beside the point except insofar as it has an effect on=20
+> whether a subsequent switch_mm() call serializes.
 
-> I only noticed because I needed to add a free of the ug_info in a later
-> patch.
+Core membarrier itself doesn't care about laziness, which is why the
+membarrier flush should go in exit_lazy_tlb() or other x86 specific
+code (at least until more architectures did the same thing and we moved
+it into generic code). I just meant this non-serialising return as=20
+documented in the membarrier arch enablement doc specifies the lazy tlb
+requirement.
 
-Where, ironically, I add a use-after-free bug by freeing ug_info before
-the ucc_geth_memclean() call.
+If an mm was lazy tlb for a kernel thread and then it becomes unlazy,
+and if switch_mm is serialising but return to user is not, then you
+need a serialising instruction somewhere before return to user. unlazy
+is the logical place to add that, because the lazy tlb mm (i.e.,=20
+switching to a kernel thread and back without switching mm) is what=20
+opens the hole.
 
-:facepalm:
+> If we notify=20
+> membarrier about x86=E2=80=99s asynchronous CR3 writes, then membarrier n=
+eeds=20
+> to understand what to do with them, which results in an unmaintainable=20
+> mess in membarrier *and* in the x86 code.
 
+How do you mean? exit_lazy_tlb is the opposite, core scheduler notifying
+arch code about when an mm becomes not-lazy, and nothing to do with
+membarrier at all even. It's a convenient hook to do your un-lazying.
+I guess you can do it also checking things in switch_mm and keeping state
+in arch code, I don't think that's necessarily the best place to put it.
+
+So membarrier code is unchanged (it cares that the serialise is done at
+un-lazy time), core code is simpler (no knowledge of this membarrier=20
+quirk and it already knows about lazy-tlb so the calls actually improve=20
+the documentation), and x86 code I would argue becomes nicer (or no real
+difference at worst) because you can move some exit lazy tlb handling to
+that specific call rather than decipher it from switch_mm.
+
+>=20
+> I=E2=80=99m currently trying to document how membarrier actually works, a=
+nd=20
+> hopefully this will result in untangling membarrier from mmdrop() and=20
+> such.
+
+That would be nice.
+
+>=20
+> A silly part of this is that x86 already has a high quality=20
+> implementation of most of membarrier(): flush_tlb_mm().  If you flush=20
+> an mm=E2=80=99s TLB, we carefully propagate the flush to all threads, wit=
+h=20
+> attention to memory ordering.  We can=E2=80=99t use this directly as an=20
+> arch-specific implementation of membarrier because it has the annoying=20
+> side affect of flushing the TLB and because upcoming hardware might be=20
+> able to flush without guaranteeing a core sync.  (Upcoming means Zen=20
+> 3, but the Zen 3 implementation is sadly not usable by Linux.)
+>=20
+
+A hardware broadcast TLB flush, you mean? What makes it unusable by=20
+Linux out of curiosity?
