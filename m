@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46C52CFBBD
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 16:36:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE202CFBBB
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 16:31:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CpDFZ5HddzDqj1
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 02:36:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CpD7P3SLfzDqjh
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 02:31:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,17 +17,19 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=baikalelectronics.ru
 Received: from mail.baikalelectronics.ru (mail.baikalelectronics.com
  [87.245.175.226])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CpD0m53qrzDqgx
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CpD0m52GjzDqgr
  for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 02:25:27 +1100 (AEDT)
 From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To: Mathias Nyman <mathias.nyman@intel.com>, Felipe Balbi <balbi@kernel.org>, 
  Krzysztof Kozlowski <krzk@kernel.org>, Greg Kroah-Hartman
  <gregkh@linuxfoundation.org>, Rob Herring <robh+dt@kernel.org>, Chunfeng Yun
  <chunfeng.yun@mediatek.com>
-Subject: [PATCH v5 00/19] dt-bindings: usb: Add generic USB HCD, xHCI,
- DWC USB3 DT schema
-Date: Sat, 5 Dec 2020 18:24:07 +0300
-Message-ID: <20201205152427.29537-1-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v5 02/19] dt-bindings: usb: Convert generic USB properties to
+ DT schemas
+Date: Sat, 5 Dec 2020 18:24:09 +0300
+Message-ID: <20201205152427.29537-3-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20201205152427.29537-1-Sergey.Semin@baikalelectronics.ru>
+References: <20201205152427.29537-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -43,191 +45,256 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org,
- Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>,
- linux-mips@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- Neil Armstrong <narmstrong@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Kevin Hilman <khilman@baylibre.com>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Serge Semin <fancer.lancer@gmail.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Serge Semin <Sergey.Semin@baikalelectronics.ru>,
- Manu Gautam <mgautam@codeaurora.org>, Andy Gross <agross@kernel.org>,
+Cc: Neil Armstrong <narmstrong@baylibre.com>, linux-kernel@vger.kernel.org,
  Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+ Rob Herring <robh@kernel.org>, Kevin Hilman <khilman@baylibre.com>,
+ Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>,
+ Andy Gross <agross@kernel.org>, linux-snps-arc@lists.infradead.org,
+ devicetree@vger.kernel.org,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
  Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- Roger Quadros <rogerq@ti.com>
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ linux-arm-kernel@lists.infradead.org, Roger Quadros <rogerq@ti.com>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
+ Serge Semin <fancer.lancer@gmail.com>,
+ Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+ Manu Gautam <mgautam@codeaurora.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We've performed some work on the Generic USB HCD, xHCI and DWC USB3 DT
-bindings in the framework of the Baikal-T1 SoC support integration into
-the kernel. This patchset is a result of that work.
+The generic USB properties have been described in the legacy bindings
+text file: Documentation/devicetree/bindings/usb/generic.txt . Let's
+convert its content into the generic USB, USB HCD and USB DRD DT
+schemas. So the Generic USB schema will be applicable to all USB
+controllers, USB HCD - for the generic USB Host controllers and the USB
+DRD - for the USB Dual-role controllers.
 
-First of all we moved the generic USB properties from the legacy text
-bindings to the USB DT schema. The properties have been distributed
-between three DT schemas dedicated for particular types of USB
-controllers: Generic USB controller properties (like node-naming, phys,
-maximum-speed, etc), Generic USB Host Controller bindings (companion and
-TPL support), Dual-Role USB Controller (OTG revision, DR mode,
-HNP/SRP/ADP protocols, etc). So the USB controllers DT bindings from now
-can validate the nodes against a generic USB-controller schema suitable
-for the controller functionality.
-
-Secondly we converted generic USB xHCI text bindings file into the DT
-schema. It had to be split up into two bindings: DT schema with generic
-xHCI properties and a generic xHCI device DT schema. The later will be
-used to validate the pure xHCI-based nodes, while the former can be
-utilized by some vendor-specific versions of xHCI.
-
-Thirdly, what was primarily intended to be done for Baikal-T1 SoC USB we
-converted the legacy text-based DWC USB3 bindings to DT schema and altered
-the result a bit so it would be more coherent with what actually
-controller and its driver support. Since we've now got the DWC USB3 DT
-schema, we made it used to validate the sub-nodes of the Qualcom, TI and
-Amlogic DWC3 DT nodes.
-
-Link: https://lore.kernel.org/linux-usb/20201010224121.12672-1-Sergey.Semin@baikalelectronics.ru/
-Changelog v2:
-- Thanks to Sergei Shtylyov for suggesting the commit logs grammar fixes:
-  [PATCH 04/18] dt-bindings: usb: usb-hcd: Add "ulpi/serial/hsic" PHY types
-  [PATCH 05/18] dt-bindings: usb: usb-hcd: Add "tpl-support" property
-  [PATCH 11/18] dt-bindings: usb: dwc3: Add interrupt-names property support
-  [PATCH 13/18] dt-bindings: usb: dwc3: Add Tx De-emphasis restrictions
-  [PATCH 17/18] dt-bindings: usb: keystone-dwc3: Validate DWC3 sub-node
-- Set FL-adj of the amlogiv,meson-g12a-usb controller with value 0x20 instead
-  of completely removing the property.
-- Drop the patch:
-  [PATCH 02/18] dt-bindings: usb: usb-hcd: Add "wireless" maximum-speed
-                property value
-  since "wireless" speed type is depracated due to lack of the device
-  supporting it.
-- Drop quotes from around the compat string constant.
-- Discard '|' from the property descriptions, since we don't need to preserve
-  the text formatting.
-- Convert abbreviated form of the "maximum-speed" enum constraint into
-  the multi-lined version of the list.
-- Fix the DW USB3 "clock-names" prop description to be refererring to the
-  enumerated clock-names instead of the ones from the Databook.
-- Add explicit "additionalProperties: true" to the usb-xhci.yaml schema,
-  since additionalProperties/unevaluatedProperties are going to be mandary
-  for each binding.
-- Use "oneOf: [dwc2.yaml#, snps,dwc3.yaml#]" instead of the bulky "if:
-  properties: compatibe: ..." statement.
-- Discard the "^dwc3@[0-9a-f]+$" nodes from being acceptable as sub-nodes
-  of the Qualcomm DWC3 DT nodes.
-- Add new patches:
-  [PATCH 18/20] arch: dts: Fix EHCI/OHCI DT nodes name
-  [PATCH 19/20] arch: dts: Fix xHCI DT nodes name
-  [PATCH 20/20] arch: dts: Fix DWC USB3 DT nodes name
-
-Link: https://lore.kernel.org/linux-usb/20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru
-Changelog v3:
-- Drop the patches:
-  [PATCH 18/20] arch: dts: Fix EHCI/OHCI DT nodes name
-  [PATCH 19/20] arch: dts: Fix xHCI DT nodes name
-  [PATCH 20/20] arch: dts: Fix DWC USB3 DT nodes name
-  as they are going to be submitted in the framework of a dedicated patchset.
-- Drop the patch:
-  [PATCH 11/20] dt-bindings: usb: dwc3: Add synopsys,dwc3 compatible string
-  since it's going to be replaced with the driver/dts fixup and moved to a
-  dedicated patchset.
-- Apply usb-xhci.yaml# schema for the DWC USB3 node only if the controller is
-  supposed to work as either host or otg.
-
-Link: https://lore.kernel.org/linux-usb/20201020112101.19077-1-Sergey.Semin@baikalelectronics.ru
-Changelog v4:
-- Get the patch
-  [PATCH 11/17] dt-bindings: usb: dwc3: Add synopsys,dwc3 compatible string
-  back, since we can't discard the deprecated prefix from the driver.
-- Discard the block scalar style modifier "|" from the interrupts property
-  description.
-- Split the generic USB controller properties into three schemas: Generic USB
-  controllers, USB Host controllers and USB OTG controllers.
-
-Link: https://lore.kernel.org/linux-usb/20201111090853.14112-1-Sergey.Semin@baikalelectronics.ru
-Changelog v5:
-- Add "snps,dis-split-quirk" property to the DWC USB3 DT schema.
-- Add a text to the
-  [PATCH v4 10/18] dt-bindings: usb: Convert DWC USB3 bindings to DT schema
-  patch log about the small change in the clock-related properties bindings
-  with respect to the original binding file.
-- Discard duplicated "additionalProperties" from the usb-hcd.yaml schema.
-- Make sure dr_mode exist in DW USB3 node to apply the USB-gadget-only schema.
-- Add a new patch:
-  [PATCH v5 19/19] dt-bindings: usb: intel,keembay-dwc3: Validate DWC3 sub-node
-  since the Intel Keem Bay DWC3 bindings has been just added.
+Note the USB DRD schema is supposed to work in conjunction with
+the USB peripheral/gadget and USB host controllers DT schemas.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
-Cc: Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>
-Cc: Andy Gross <agross@kernel.org>
-Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc: Manu Gautam <mgautam@codeaurora.org>
-Cc: Roger Quadros <rogerq@ti.com>
-Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc: Neil Armstrong <narmstrong@baylibre.com>
-Cc: Kevin Hilman <khilman@baylibre.com>
-Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-mips@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-usb@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
+Reviewed-by: Rob Herring <robh@kernel.org>
 
-Serge Semin (19):
-  dt-bindings: usb: usb-hcd: Detach generic USB controller properties
-  dt-bindings: usb: Convert generic USB properties to DT schemas
-  dt-bindings: usb: usb-drd: Add "otg-rev" property constraints
-  dt-bindings: usb: Add "ulpi/serial/hsic" PHY types
-  dt-bindings: usb: usb-hcd: Add "tpl-support" property
-  dt-bindings: usb: Add generic "usb-phy" property
-  dt-bindings: usb: Convert xHCI bindings to DT schema
-  dt-bindings: usb: xhci: Add Broadcom STB v2 compatible device
-  dt-bindings: usb: renesas-xhci: Refer to the usb-xhci.yaml file
-  dt-bindings: usb: Convert DWC USB3 bindings to DT schema
-  dt-bindings: usb: dwc3: Add interrupt-names property support
-  dt-bindings: usb: dwc3: Add synopsys,dwc3 compatible string
-  dt-bindings: usb: dwc3: Add Tx De-emphasis constraints
-  dt-bindings: usb: dwc3: Add Frame Length Adj constraints
-  dt-bindings: usb: meson-g12a-usb: Fix FL-adj property value
-  dt-bindings: usb: meson-g12a-usb: Validate DWC2/DWC3 sub-nodes
-  dt-bindings: usb: keystone-dwc3: Validate DWC3 sub-node
-  dt-bindings: usb: qcom,dwc3: Validate DWC3 sub-node
-  dt-bindings: usb: intel,keembay-dwc3: Validate DWC3 sub-node
+---
 
- .../usb/amlogic,meson-g12a-usb-ctrl.yaml      |   6 +-
- .../devicetree/bindings/usb/dwc3.txt          | 128 -------
- .../devicetree/bindings/usb/generic-xhci.yaml |  65 ++++
- .../devicetree/bindings/usb/generic.txt       |  57 ---
- .../bindings/usb/intel,keembay-dwc3.yaml      |   9 +-
- .../devicetree/bindings/usb/qcom,dwc3.yaml    |   9 +-
- .../bindings/usb/renesas,usb-xhci.yaml        |   4 +-
- .../devicetree/bindings/usb/snps,dwc3.yaml    | 332 ++++++++++++++++++
- .../bindings/usb/ti,keystone-dwc3.yaml        |   4 +-
- .../devicetree/bindings/usb/usb-drd.yaml      |  78 ++++
- .../devicetree/bindings/usb/usb-hcd.yaml      |  19 +-
- .../devicetree/bindings/usb/usb-xhci.txt      |  41 ---
- .../devicetree/bindings/usb/usb-xhci.yaml     |  42 +++
- .../devicetree/bindings/usb/usb.yaml          |  60 ++++
- 14 files changed, 600 insertions(+), 254 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/usb/dwc3.txt
- create mode 100644 Documentation/devicetree/bindings/usb/generic-xhci.yaml
+Changelog v2:
+- Discard '|' in all the new properties, since we don't need to preserve
+  the text formatting.
+- Convert abbreviated form of the "maximum-speed" enum restriction into
+  the multi-lined version of the list.
+- Drop quotes from around the string constants.
+
+Changelog v4:
+- Redistribute the properties between generic ones, USB HCD-specific and
+  USB DRD-specific.
+- Discard the Rob'es Reviewed-by tag. Please review the patch one more time.
+---
+ .../devicetree/bindings/usb/generic.txt       | 57 --------------
+ .../devicetree/bindings/usb/usb-drd.yaml      | 77 +++++++++++++++++++
+ .../devicetree/bindings/usb/usb-hcd.yaml      |  5 ++
+ .../devicetree/bindings/usb/usb.yaml          | 22 ++++++
+ 4 files changed, 104 insertions(+), 57 deletions(-)
  delete mode 100644 Documentation/devicetree/bindings/usb/generic.txt
- create mode 100644 Documentation/devicetree/bindings/usb/snps,dwc3.yaml
  create mode 100644 Documentation/devicetree/bindings/usb/usb-drd.yaml
- delete mode 100644 Documentation/devicetree/bindings/usb/usb-xhci.txt
- create mode 100644 Documentation/devicetree/bindings/usb/usb-xhci.yaml
- create mode 100644 Documentation/devicetree/bindings/usb/usb.yaml
 
+diff --git a/Documentation/devicetree/bindings/usb/generic.txt b/Documentation/devicetree/bindings/usb/generic.txt
+deleted file mode 100644
+index ba472e7aefc9..000000000000
+--- a/Documentation/devicetree/bindings/usb/generic.txt
++++ /dev/null
+@@ -1,57 +0,0 @@
+-Generic USB Properties
+-
+-Optional properties:
+- - maximum-speed: tells USB controllers we want to work up to a certain
+-			speed. Valid arguments are "super-speed-plus",
+-			"super-speed", "high-speed", "full-speed" and
+-			"low-speed". In case this isn't passed via DT, USB
+-			controllers should default to their maximum HW
+-			capability.
+- - dr_mode: tells Dual-Role USB controllers that we want to work on a
+-			particular mode. Valid arguments are "host",
+-			"peripheral" and "otg". In case this attribute isn't
+-			passed via DT, USB DRD controllers should default to
+-			OTG.
+- - phy_type: tells USB controllers that we want to configure the core to support
+-			a UTMI+ PHY with an 8- or 16-bit interface if UTMI+ is
+-			selected. Valid arguments are "utmi" and "utmi_wide".
+-			In case this isn't passed via DT, USB controllers should
+-			default to HW capability.
+- - otg-rev: tells usb driver the release number of the OTG and EH supplement
+-			with which the device and its descriptors are compliant,
+-			in binary-coded decimal (i.e. 2.0 is 0200H). This
+-			property is used if any real OTG features(HNP/SRP/ADP)
+-			is enabled, if ADP is required, otg-rev should be
+-			0x0200 or above.
+- - companion: phandle of a companion
+- - hnp-disable: tells OTG controllers we want to disable OTG HNP, normally HNP
+-			is the basic function of real OTG except you want it
+-			to be a srp-capable only B device.
+- - srp-disable: tells OTG controllers we want to disable OTG SRP, SRP is
+-			optional for OTG device.
+- - adp-disable: tells OTG controllers we want to disable OTG ADP, ADP is
+-			optional for OTG device.
+- - usb-role-switch: boolean, indicates that the device is capable of assigning
+-			the USB data role (USB host or USB device) for a given
+-			USB connector, such as Type-C, Type-B(micro).
+-			see connector/usb-connector.yaml.
+- - role-switch-default-mode: indicating if usb-role-switch is enabled, the
+-			device default operation mode of controller while usb
+-			role is USB_ROLE_NONE. Valid arguments are "host" and
+-			"peripheral". Defaults to "peripheral" if not
+-			specified.
+-
+-
+-This is an attribute to a USB controller such as:
+-
+-dwc3@4a030000 {
+-	compatible = "synopsys,dwc3";
+-	reg = <0x4a030000 0xcfff>;
+-	interrupts = <0 92 4>
+-	usb-phy = <&usb2_phy>, <&usb3,phy>;
+-	maximum-speed = "super-speed";
+-	dr_mode = "otg";
+-	phy_type = "utmi_wide";
+-	otg-rev = <0x0200>;
+-	adp-disable;
+-};
+diff --git a/Documentation/devicetree/bindings/usb/usb-drd.yaml b/Documentation/devicetree/bindings/usb/usb-drd.yaml
+new file mode 100644
+index 000000000000..f3a64c46dcd0
+--- /dev/null
++++ b/Documentation/devicetree/bindings/usb/usb-drd.yaml
+@@ -0,0 +1,77 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/usb/usb-drd.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Generic USB OTG Controller Device Tree Bindings
++
++maintainers:
++  - Greg Kroah-Hartman <gregkh@linuxfoundation.org>
++
++properties:
++  otg-rev:
++    description:
++      Tells usb driver the release number of the OTG and EH supplement with
++      which the device and its descriptors are compliant, in binary-coded
++      decimal (i.e. 2.0 is 0200H). This property is used if any real OTG
++      features (HNP/SRP/ADP) is enabled. If ADP is required, otg-rev should be
++      0x0200 or above.
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++  dr_mode:
++    description:
++      Tells Dual-Role USB controllers that we want to work on a particular
++      mode. In case this attribute isn't passed via DT, USB DRD controllers
++      should default to OTG.
++    $ref: /schemas/types.yaml#/definitions/string
++    enum: [host, peripheral, otg]
++
++  hnp-disable:
++    description:
++      Tells OTG controllers we want to disable OTG HNP. Normally HNP is the
++      basic function of real OTG except you want it to be a srp-capable only B
++      device.
++    type: boolean
++
++  srp-disable:
++    description:
++      Tells OTG controllers we want to disable OTG SRP. SRP is optional for OTG
++      device.
++    type: boolean
++
++  adp-disable:
++    description:
++      Tells OTG controllers we want to disable OTG ADP. ADP is optional for OTG
++      device.
++    type: boolean
++
++  usb-role-switch:
++    description:
++      Indicates that the device is capable of assigning the USB data role
++      (USB host or USB device) for a given USB connector, such as Type-C,
++      Type-B(micro). See connector/usb-connector.yaml.
++
++  role-switch-default-mode:
++    description:
++      Indicates if usb-role-switch is enabled, the device default operation
++      mode of controller while usb role is USB_ROLE_NONE.
++    $ref: /schemas/types.yaml#/definitions/string
++    enum: [host, peripheral]
++    default: peripheral
++
++additionalProperties: true
++
++examples:
++  - |
++    usb@4a030000 {
++        compatible = "snps,dwc3";
++        reg = <0x4a030000 0xcfff>;
++        interrupts = <0 92 4>;
++        usb-phy = <&usb2_phy>, <&usb3_phy>;
++        maximum-speed = "super-speed";
++        dr_mode = "otg";
++        phy_type = "utmi_wide";
++        otg-rev = <0x0200>;
++        adp-disable;
++    };
+diff --git a/Documentation/devicetree/bindings/usb/usb-hcd.yaml b/Documentation/devicetree/bindings/usb/usb-hcd.yaml
+index 81f3ad1419d8..52cc84c400c0 100644
+--- a/Documentation/devicetree/bindings/usb/usb-hcd.yaml
++++ b/Documentation/devicetree/bindings/usb/usb-hcd.yaml
+@@ -12,6 +12,11 @@ maintainers:
+ allOf:
+   - $ref: usb.yaml#
+ 
++properties:
++  companion:
++    description: Phandle of a companion device
++    $ref: /schemas/types.yaml#/definitions/phandle
++
+ additionalProperties: true
+ 
+ examples:
+diff --git a/Documentation/devicetree/bindings/usb/usb.yaml b/Documentation/devicetree/bindings/usb/usb.yaml
+index 941ad59fbac5..991c02725e2b 100644
+--- a/Documentation/devicetree/bindings/usb/usb.yaml
++++ b/Documentation/devicetree/bindings/usb/usb.yaml
+@@ -24,6 +24,28 @@ properties:
+     description:
+       Name specifier for the USB PHY
+ 
++  phy_type:
++    description:
++      Tells USB controllers that we want to configure the core to support a
++      UTMI+ PHY with an 8- or 16-bit interface if UTMI+ is selected. In case
++      this isn't passed via DT, USB controllers should default to HW
++      capability.
++    $ref: /schemas/types.yaml#/definitions/string
++    enum: [utmi, utmi_wide]
++
++  maximum-speed:
++   description:
++     Tells USB controllers we want to work up to a certain speed. In case this
++     isn't passed via DT, USB controllers should default to their maximum HW
++     capability.
++   $ref: /schemas/types.yaml#/definitions/string
++   enum:
++     - low-speed
++     - full-speed
++     - high-speed
++     - super-speed
++     - super-speed-plus
++
+ additionalProperties: true
+ 
+ ...
 -- 
 2.29.2
 
