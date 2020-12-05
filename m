@@ -1,121 +1,121 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3DD2CFF13
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 22:08:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5187D2CFF1A
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 22:14:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CpMcK6nQFzDqPN
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 08:08:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CpMll08zCzDqCH
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 08:14:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=prevas.dk (client-ip=40.107.7.127;
- helo=eur04-he1-obe.outbound.protection.outlook.com;
+ smtp.mailfrom=prevas.dk (client-ip=40.107.20.136;
+ helo=eur05-db8-obe.outbound.protection.outlook.com;
  envelope-from=rasmus.villemoes@prevas.dk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=prevas.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=prevas.dk header.i=@prevas.dk header.a=rsa-sha256
- header.s=selector1 header.b=cX28HdP4; 
+ header.s=selector1 header.b=JS+l9E48; 
  dkim-atps=neutral
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
- (mail-eopbgr70127.outbound.protection.outlook.com [40.107.7.127])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com
+ (mail-db8eur05on2136.outbound.protection.outlook.com [40.107.20.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CpMX82ZnDzDqQx
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 08:04:36 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CpMhN5m7KzDqCM
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 08:11:47 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T4VKsxTez0ahwiJWT8n1EJ7QbDLny7Wtrn8FNMKXfRauJHTS8OY8eC+j8sAcGRqu15g0rgNc0icfomdqNL1zPMtoRFDU8vuCpgejIoFyOGV0LSAH4wWfm/VMgoTZKfA3U6C27di4jDOoTBaMr4i9jIvwD+VaooUilansKOkHOVwRkrbNyREDOFeep/9u84sOFBq7lXTmYNvUt56l4/jXZqwoOvY6rt/aVDeddb+BSv0RaAQwa+8FznxeakR1GVPWgVmZ76/Eayjv2k2ZcNV+iEVj5WFycdazCW0Og5cIcY51kROwRWWnjW950OiFtQIO/zHIUe2SWiBnoWlRVh+7xQ==
+ b=FNOXpM38zN2PyEbYq6C4Z4hXOeYJFVrhy7dOvsXedkQbdrTmMk+1sAGDvF35UvCUzVitw70DYTGxvayGUyV2UBIF0edA2NGkAsTu+b9H/LlmAXkZ0POJ7MeZq4XGj7GedQ06RgTqbrg+MQGoLLdYqyQtVD4qhZrk5jVg5khF0T3o/7fSEM1mMAdYw9Fgz8clD0usHxpVNhX4nCwo/2k72+lf3P6XfayUPovaX0NJzyvt+FtS5ThIqQSVmrxYQBsJiGWP4kJM2WeJpTdhJ2vSdyOipZwFRzDy1wJmjJ+HOJrE71yvMJSr3SjB9RDbyv4XTZeHNAfSaJhiIXaBsWYq+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+zSmnppYM72OQiJR8CHbFiXXNBwHH9lQdWrvMuGHSpk=;
- b=ZRmX9Q5Bvy+129oY4EO60QnaTTCegs+RllUTKkRmrqMhoaDksBWvrUBeljli+OngXFOVnqb1HpwoAfUNcNLprZb4LoVzFkaF0/Rd6zSDJxswVRqX/HypCn4SN4w3qS/f0MkCupcvBVPAxRCvKs7nLSR6KX/Py9i04KQMDiRo/2hvOYV+HMLodxaafU61wnB2eAT6D40YgxUXWFFptkKby9nWgptRQEc0woJji+6eE8eMS7MErV1VqnYrbbYFKvCyyeLRKImUZK1lJkbrg2b2P6XWRdhqAnT65yJnffINunhdyOF3FcSCyNL2EokH9oOmOUZQFSew03B5PILydIfvIA==
+ bh=jibEGfWesRCILJF8ttZUL+1XOIaY/CCWTdwGTQiCJKc=;
+ b=ir3eGMaxIPjHXTZUvTNK0cx2yYcxB0Us1Jz5phFvL0Dc3jpTG2ZBJ33BGNPI5IqL0aUd4sQ+jgjShF9vuknMvwspfiVI0aX4H6sv6Ctv0AjoYzynpVwncflefODD3PdxTP716vsO9iCdV54jG2fwXkzECir5DTnNo1BnT/prG39iccOstWTqpNWM3Yosr5k384Sjav0112t7FmdGyJ4rqcvLG96hlUccAEUHxbYkSNjje91l9Wq5kGD929vM6R+5RcTzooQomBo34aFKUQp3tG6i3xSF+VjEmMla0ox+qnYiNZrpjDnVOHGV8fGUOKZtE3oA+ZqHal9xa80IHVLTzw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
  dkim=pass header.d=prevas.dk; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+zSmnppYM72OQiJR8CHbFiXXNBwHH9lQdWrvMuGHSpk=;
- b=cX28HdP4wo9Y3g04sLx3/56yCfP7p0MOiANSsLVGBc/05jTHgYIXQoVHpNLqvrcYd13cbXy26yqxhV87hRHF080uICo5CTPFPTmwGex5FfsFtGbeJuvVAeQ41igxAeulxYImpXmEXKd7xOkM+QwGtSrjKNIBWsCapeIGfq3ipNk=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=prevas.dk;
+ bh=jibEGfWesRCILJF8ttZUL+1XOIaY/CCWTdwGTQiCJKc=;
+ b=JS+l9E48inDpcJXqBZJV25bcqqzFNtwB5PG6ybfHbi9bvkXFCzwqfTR25pDhX8IHiCik35MXEsVXdzIMBjITYAXWIwGQwwrkWTddA8LEBkD9Ig7H9zr+/1U27msuPxd9PQXDVgRg1687ehCqHlj2oqpZwAWSA7URtBJHXIP2Lbg=
+Authentication-Results: nxp.com; dkim=none (message not signed)
+ header.d=none;nxp.com; dmarc=none action=none header.from=prevas.dk;
 Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:3f::10)
- by AM0PR10MB3252.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:17f::11)
+ by AM8PR10MB4132.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1ef::16)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Sat, 5 Dec
- 2020 21:04:29 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.19; Sat, 5 Dec
+ 2020 21:11:41 +0000
 Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::9068:c899:48f:a8e3]) by AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::9068:c899:48f:a8e3%6]) with mapi id 15.20.3632.021; Sat, 5 Dec 2020
- 21:04:29 +0000
-Subject: Re: [PATCH 11/20] ethernet: ucc_geth: fix use-after-free in
- ucc_geth_remove()
+ 21:11:41 +0000
+Subject: Re: [PATCH 00/20] ethernet: ucc_geth: assorted fixes and
+ simplifications
 To: Jakub Kicinski <kuba@kernel.org>
 References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
- <20201205191744.7847-12-rasmus.villemoes@prevas.dk>
- <20201205124859.60d045e6@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+ <20201205125351.41e89579@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
 From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-Message-ID: <4d35ef11-b1eb-c450-2937-94e20fa9a213@prevas.dk>
-Date: Sat, 5 Dec 2020 22:04:28 +0100
+Message-ID: <7e78df84-0035-6935-acb0-adbd0c648128@prevas.dk>
+Date: Sat, 5 Dec 2020 22:11:39 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
-In-Reply-To: <20201205124859.60d045e6@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+In-Reply-To: <20201205125351.41e89579@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
 Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [5.186.115.188]
-X-ClientProxiedBy: AM6PR08CA0040.eurprd08.prod.outlook.com
- (2603:10a6:20b:c0::28) To AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
+X-ClientProxiedBy: AM6PR0202CA0043.eurprd02.prod.outlook.com
+ (2603:10a6:20b:3a::20) To AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:208:3f::10)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 Received: from [192.168.1.149] (5.186.115.188) by
- AM6PR08CA0040.eurprd08.prod.outlook.com (2603:10a6:20b:c0::28) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3632.17 via Frontend Transport; Sat, 5 Dec 2020 21:04:29 +0000
+ AM6PR0202CA0043.eurprd02.prod.outlook.com (2603:10a6:20b:3a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17 via Frontend
+ Transport; Sat, 5 Dec 2020 21:11:40 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f20a8062-042b-41cf-3633-08d899615b2c
-X-MS-TrafficTypeDiagnostic: AM0PR10MB3252:
-X-Microsoft-Antispam-PRVS: <AM0PR10MB32525A074C9EB579EAD89E7393F00@AM0PR10MB3252.EURPRD10.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-MS-Office365-Filtering-Correlation-Id: 19aa5535-7dea-4354-10e1-08d899625c53
+X-MS-TrafficTypeDiagnostic: AM8PR10MB4132:
+X-Microsoft-Antispam-PRVS: <AM8PR10MB41329758AEB66534584EA44E93F00@AM8PR10MB4132.EURPRD10.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ThGVKxw7q0fHdfvIoOEy1N8A2xsVc+bGjIBW6hnkv8uPk7qYpHqaWwLaXcw2D3XltqfTNKdAQCa2XxTyZMC57KCgoFmgo+vxFXYDb/g1+n6qDfOI/TC8B0OdEkJnLhXW+gOrYyZfF9fnr2398nfsjZLtKyvycLxxvW+emQPDY7qzuTb9gK8tNxhKpDI2bl9m89m8PRUjIm7P1hvKb5VFAyQ7owlKybLl6sVeekdGi65tuCJcIjddBDTrlz7zkzG5FaIwVvnvmO8g3Xkf+rI3d5FgKX00hUYHPI5Nnk1BuNGEXEI6xrCJhd6wAtkQ8NoUCnNW+vJCsalJqPDK2Sko3xOTN4+NmqxHIMK7aPvQSdKfDGqW73wkUg96GMpHXNzgxULQng5DOBwr5GX1raJ0VuPNVyDcl4attZ1cWIVA17Q=
+X-Microsoft-Antispam-Message-Info: Go5JcHXrUkTaIJdRKvu+m7asRYAhuDFXgw/oQbJA8gBCn7+3nChOr5Pe3Pz8/+8bZcu/fYYfeOKFxn/41OnuGEhG1Ismozh2jiiyB0wpFLCSnRVmyGtcDiMuZ88rHSY5vIYqoqkjngZcJjz/XDfPiWaomJxsEyhATKPV16ZskEGCj6bLtxqNBJcnumD9KcG0Kx8/W1ssCXuMlNOdAX+Y/Qwngdvlfu/LHzxdIcUUEAUJ7rQwsJODDuYN1qXcd5Ahz1D9yglPmzr30dp75FZ2fTvEVsO2MdC5Y3gZ1mzrm3ck4aP+3T786WhW0lsfftJNYz8Z0oPcgJy5davav3SWQ92GYnExfXoWFeG8DVpeA0mwcGHIU1ZylMH6+UiKSaa80rVngEMFF2w5GlSx0xSkwQv2y/zIFM91k/zPCPy7zYaqSejocoB4EqyPTHzbgIqr1dG2cxAAKIjiIr6nlO0wL8cRtpMYiPGXFretT1BE8ryEpuEGaDoZuN8ndLtG9NnZ
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(39840400004)(346002)(376002)(366004)(136003)(396003)(31696002)(86362001)(956004)(4326008)(66946007)(66476007)(66556008)(8976002)(8936002)(478600001)(26005)(2906002)(16526019)(83380400001)(186003)(8676002)(36756003)(2616005)(44832011)(5660300002)(52116002)(6486002)(316002)(6916009)(31686004)(4744005)(16576012)(54906003)(43740500002)(45980500001);
+ SFS:(396003)(366004)(376002)(39840400004)(136003)(346002)(8976002)(8676002)(16526019)(2906002)(186003)(31686004)(31696002)(8936002)(6486002)(66946007)(44832011)(66556008)(956004)(36756003)(66476007)(478600001)(16576012)(86362001)(966005)(316002)(2616005)(26005)(83380400001)(4326008)(6916009)(54906003)(52116002)(5660300002)(43740500002)(45980500001);
  DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData: =?Windows-1252?Q?m3xvaT5DLp0q5NIjuF2jkgfFnsTGktuarDorCjYeakITWmBe+rzPzH8b?=
- =?Windows-1252?Q?7wOOQ9n1xqCsprb7rrhhMd9aquOCLiZPko2MOhv3GsBqJLF+FWoXzUiX?=
- =?Windows-1252?Q?UsythqI8lXA+DWknbudTu7Omthu8KUYXRhPM/fdAeyrBnwH4Vp72Uv43?=
- =?Windows-1252?Q?T2yZlKbKR8UL4Gx/6ElrbDNZrLlYaAYEepdkeFH5mvQBJLxGFO+zMGv/?=
- =?Windows-1252?Q?MzoYjOpf2Vyxtqbf53O5mljyCjSj3Tnn+zHbz376q10obXDRhZn9KcP9?=
- =?Windows-1252?Q?4GbfSu1GwWxC/bcBOgo6I2o3pS5CoYd3biI08CiWsBuk5w5uHqqeS6GF?=
- =?Windows-1252?Q?VWvGos3kM6nJsSeSNkDVpjJlhZxBWUB0aqXpVK8kA04hNjNy3xMPTSoE?=
- =?Windows-1252?Q?OH0d3XDuirktkzg/c5niiMieEXkuuvVAhSKBRXL9vL6xDy5AliYNwoJ3?=
- =?Windows-1252?Q?HaLxKvjkzQMIcubMZwcSd2gpXroh221aRJFjyvORr+Di8VMNba3uIBjS?=
- =?Windows-1252?Q?R8WFGpWynmdwQcPDa7VZVl4Ks1P6zi5R44pYmOTExnXjrc/+yZOKzMKZ?=
- =?Windows-1252?Q?+dDv6WtI1lTo/tBp0yXO2S7lAYJMl1xUoynE8bZztnwXjNuOPLXfXxHQ?=
- =?Windows-1252?Q?DsJZ5hWMDue9GhTU5FZQrqUkWJp1rM67NzOA1XVz8WPHj6QZGFSx0n6W?=
- =?Windows-1252?Q?/ycKqhQyUiP2l2Fc76E7ZY9l7gyuCLUwQ0c92d/JQqc1AWDW8kcXWkAO?=
- =?Windows-1252?Q?K4sT7CbqXjexdOYevltpDWWWUSfDI/cPUU1VI1n44Lp7jhUy5qcZhPh4?=
- =?Windows-1252?Q?8nGgcybGi0uG8uTIeL8Mo3Yqizj3LazskgMZ0AzGyobQk3TelscT66ZU?=
- =?Windows-1252?Q?PyH3/CH+rPzNfv8Q8b7Lj52Mu3QyHU3/611uztNrYQBSQKhQf+0a8OLA?=
- =?Windows-1252?Q?b9gd6YKXr8qszBl5KXDNIEyfZCbFXroqjwE9lQiDb6iuN6O6/9q/pi8J?=
- =?Windows-1252?Q?1qf5aWUmRR9D3I3w2e3NN8deyRkrpUStRIoE7/X2kirQtdmbx/pqoV/b?=
- =?Windows-1252?Q?JoM6JbShJ/wNM+m9?=
+X-MS-Exchange-AntiSpam-MessageData: =?Windows-1252?Q?2G1pA49A+9DnNo2lz8D1VYPf5TnFOgK7LlfpvYrtHF8/rF5cAc7Btf2q?=
+ =?Windows-1252?Q?45w4MwAAzRhArqcBJEq1L5XXQtsItw0n03rIWciIyzn1Q3WvmrG3OZ1H?=
+ =?Windows-1252?Q?sz6OobK+L9r6An+blUhGEbcnVyNDpEGAvdJihHQggbZxrh0deZ+0yHXd?=
+ =?Windows-1252?Q?troa7y+K/kp75JItgeUlH++IwEH1giZ1P6E8Lyv2Pwu5oHx9HAVF9Zne?=
+ =?Windows-1252?Q?ft5arb0+AvUxuR8WmtBX0UnBbTZ3iYqW5fGPkI1t27Jk8U4gTrIgl+pb?=
+ =?Windows-1252?Q?6qHbC/n+0vGCK1PxAf1NmM1UNZeV5X2BDhMoqiRwvB1Vyt4zq6vBAN25?=
+ =?Windows-1252?Q?ehMt6RwbrhWVcCqIkaKp4SZQ/QU4v+8ZAEHgsxkUxM0Xtepbe8QILtcl?=
+ =?Windows-1252?Q?xkIkowAAXK7Jj0ZotWtX5sEFEUPIAqBcyBsQzV4JgD4DfGsAW5cXg8JS?=
+ =?Windows-1252?Q?bQ4Q/+OoJ3LGFvFS8+qRJcUd4h2YsgkMBeZqG9G8gNf/3C1KJoG+Ip/w?=
+ =?Windows-1252?Q?lXDQ+4ncHHiwHv5F9AwMmsjIr9w8Z0Sdp5Aw/MMJlHebChz4I6MQSPAY?=
+ =?Windows-1252?Q?JjW1zyIpKURE00txQpJ1bqJlUXor2MzLVmzshWq6Q08yrI4Nc/CDZsLX?=
+ =?Windows-1252?Q?0Yr7FxQ1I21MzlUFNa6vxd/zGC5ddnRlVR1gLxfkN+3Yiz4AETi9InaF?=
+ =?Windows-1252?Q?Tg6s7c2CVTC012VBd+ZZ6VoxutDOKw1iN78fCZL4k/JGDRvCIeOD8zWu?=
+ =?Windows-1252?Q?9FbztmB9bCOzgVjUdQZJoY4ZH14zoKL+gT0MF6bSklx7mrBL8mBLWjm0?=
+ =?Windows-1252?Q?K7AqL45+i94pcl2SdQ96uxkMsVrDgCW6vphKIjuSzH4CskY+NWt/COnk?=
+ =?Windows-1252?Q?hwweUBylULVlY4DSafzDFQc9AaDVZ/PisGdhv8wLfRoFpJ5BRHd9TvWa?=
+ =?Windows-1252?Q?yws42zyQGY5LUU1BLiwDrlsoAH/duwx+LbZMr++mmxPk81WZa/HsOgOV?=
+ =?Windows-1252?Q?sKQy79D/9hw//MHMaJTlcEzh0cPD2CTQNLuWyqkG/XXQO5z9Np//KXP4?=
+ =?Windows-1252?Q?FM8wQkQcnIgfLu8/?=
 X-OriginatorOrg: prevas.dk
-X-MS-Exchange-CrossTenant-Network-Message-Id: f20a8062-042b-41cf-3633-08d899615b2c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19aa5535-7dea-4354-10e1-08d899625c53
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2020 21:04:29.5865 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2020 21:11:41.0456 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1ctVCqGfUEPFM8kHoZ3pbLSYdY238uoiahMhPR4Fokvm1wpp01pnX0ckV6MEzfzRVbu4KpYfX7HqQPoSSW1od1BVpFjwI/ILVrLsHGkuZhY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB3252
+X-MS-Exchange-CrossTenant-UserPrincipalName: vEdadBX9Ofmzj27UYaVES2z3XejIvCyu+GlebpN+VlIDWmHjAyYCh6wQTYexqPx16L3IB0I+760+HsAkr6yJ+0sYbZTfRC9LlziyO6M1nSU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR10MB4132
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -127,35 +127,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, linux-kernel@vger.kernel.org,
- Li Yang <leoyang.li@nxp.com>, netdev@vger.kernel.org,
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Li Yang <leoyang.li@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
  linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Zhao Qiang <qiang.zhao@nxp.com>
+ linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/12/2020 21.48, Jakub Kicinski wrote:
-> On Sat,  5 Dec 2020 20:17:34 +0100 Rasmus Villemoes wrote:
->> -	unregister_netdev(dev);
->> -	free_netdev(dev);
->>  	ucc_geth_memclean(ugeth);
->>  	if (of_phy_is_fixed_link(np))
->>  		of_phy_deregister_fixed_link(np);
->>  	of_node_put(ugeth->ug_info->tbi_node);
->>  	of_node_put(ugeth->ug_info->phy_node);
->> +	unregister_netdev(dev);
->> +	free_netdev(dev);
+On 05/12/2020 21.53, Jakub Kicinski wrote:
+> On Sat,  5 Dec 2020 20:17:23 +0100 Rasmus Villemoes wrote:
+>> While trying to figure out how to allow bumping the MTU with the
+>> ucc_geth driver, I fell into a rabbit hole and stumbled on a whole
+>> bunch of issues of varying importance - some are outright bug fixes,
+>> while most are a matter of simplifying the code to make it more
+>> accessible.
+>>
+>> At the end of digging around the code and data sheet to figure out how
+>> it all works, I think the MTU issue might be fixed by a one-liner, but
+>> I'm not sure it can be that simple. It does seem to work (ping -s X
+>> works for larger values of X, and wireshark confirms that the packets
+>> are not fragmented).
+>>
+>> Re patch 2, someone in NXP should check how the hardware actually
+>> works and make an updated reference manual available.
 > 
-> Are you sure you want to move the unregister_netdev() as well as the
-> free?
+> Looks like a nice clean up on a quick look.
 > 
+> Please separate patches 1 and 11 (which are the two bug fixes I see)
 
-Hm, dunno, I don't think it's needed per se, but it also shouldn't hurt
-from what I can tell. It seems more natural that they go together, but
-if you prefer a minimal patch that's of course also possible.
+I think patch 2 is a bug fix as well, but I'd like someone from NXP to
+comment.
 
-I only noticed because I needed to add a free of the ug_info in a later
-patch.
+> rebase (retest) and post them against the net tree:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/
 
+So I thought this would go through Li Yang's tree. That's where my
+previous QE related patches have gone through, and at least some need
+some input from NXP folks - and what MAINTAINERS suggests. So not
+marking the patches with net or net-next was deliberate. But I'm happy
+to rearrange and send to net/net-next as appropriate if that's what you
+and Li Yang can agree to.
+
+Thanks,
 Rasmus
