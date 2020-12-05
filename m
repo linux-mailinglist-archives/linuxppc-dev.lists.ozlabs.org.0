@@ -1,50 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CDD2CFB0D
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 11:54:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A79CD2CFB10
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 11:59:41 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cp6035fSPzDqkG
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 21:54:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cp6624XfkzDqcl
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 21:59:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cp5yT2dxyzDqNC
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 21:53:05 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cp64c3KZRzDqVs
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 21:58:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=MfCwRUAD; 
+ header.a=rsa-sha256 header.s=201909 header.b=LnGNulhB; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Cp5yS3QDtz9sWP;
- Sat,  5 Dec 2020 21:53:04 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Cp64b6Yv9z9sWP;
+ Sat,  5 Dec 2020 21:58:23 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1607165585;
- bh=ex3cBBYGGN8ZWn9vGp/TzfU5wQ1yOIKrp67fUHz4AE4=;
+ s=201909; t=1607165904;
+ bh=1QqseYf6ezigIKf15eGL11f+r3rrJBEyN89MtXaqjS8=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=MfCwRUADxMG/+vtCEkz7YojkhXgIWk8lfh8CPgQGdhPqABpzV+bALLpbltLVK9zVn
- PAcfQXIRg2BRFE2XSGuodSDZt/FH5P9ub/IwRC4EYKEr31GPME67ziBri3NKo30/Ig
- 0TAdbS1seFMo0HK2sdMRpMniXhCUzMwflYR0m9DwtGZmIULqGo2mnry0eHs7TWMWI4
- or7Z/vIneEsndJtKiBbtEqU9/4pkNSkBZvKzg7suW/GJG8NDSaqlZQVMyVGuc+Q8hU
- 1b6DJNd1P+cpKAxdtW+epAzc8nVPdFUfqvYpJw7Z8r25lWjWQACM4i/CBenxI/CDOV
- 1mfYiUF0UGpXg==
+ b=LnGNulhB656ZWd0TNJEg7ooIjHAbyLPdktP4NERmOnAFNSCpXcDBAemRp7hyF0owD
+ iXPFDbrdv3WtmvwVlmR/AAG0P0LQ5Ox5QBWvVJpV1FFXjUzVfdWgJ0VOhwIcNWE8mI
+ r8ga4HPqqqOp0HMFrUZoK/eAghYftVeItJhKS/2QsR3bur21P/dHlB5Y7w22Tvy+1h
+ fDlBgVpdCtHyqjqwW//yHYiU6pRV7jyk3rASLJBt2gwXhICj3725a1y+722G3Nbhum
+ TU71ut0kqQMO7uAiNE0DdLQyax7g3QhcmVDmVgMBt7i+MHWg+cgnNbOeFyvshLMv/Q
+ yTEH82TLxik4g==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Finn Thain <fthain@telegraphics.com.au>,
- Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] MAINTAINERS: Update 68k Mac entry
-In-Reply-To: <fbac2cd8632bb719f48cd1368910abd310548a0e.1607139987.git.fthain@telegraphics.com.au>
-References: <fbac2cd8632bb719f48cd1368910abd310548a0e.1607139987.git.fthain@telegraphics.com.au>
-Date: Sat, 05 Dec 2020 21:53:03 +1100
-Message-ID: <871rg4v81c.fsf@mpe.ellerman.id.au>
+To: Michal Suchanek <msuchanek@suse.de>, stable@vger.kernel.org
+Subject: Re: [PATCH] powerpc: Stop exporting __clear_user which is now inlined.
+In-Reply-To: <20201204232807.31887-1-msuchanek@suse.de>
+References: <20201204232807.31887-1-msuchanek@suse.de>
+Date: Sat, 05 Dec 2020 21:58:23 +1100
+Message-ID: <87y2ictt80.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -58,45 +57,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Joshua Thompson <funaho@jurai.org>
+Cc: Michal Suchanek <msuchanek@suse.de>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Finn Thain <fthain@telegraphics.com.au> writes:
-> Two files under drivers/macintosh are actually m68k-only. I think that
-> patches for these files should be reviewed in the appropriate forum and
-> merged via the appropriate tree, rather than falling to the powerpc
-> maintainers to deal with. Update the "M68K ON APPLE MACINTOSH" section
-> accordingly.
+Michal Suchanek <msuchanek@suse.de> writes:
+> Stable commit 452e2a83ea23 ("powerpc: Fix __clear_user() with KUAP
+> enabled") redefines __clear_user as inline function but does not remove
+> the export.
 >
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Joshua Thompson <funaho@jurai.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-m68k@lists.linux-m68k.org
-> Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
+> Fixes: 452e2a83ea23 ("powerpc: Fix __clear_user() with KUAP enabled")
+>
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 > ---
->  MAINTAINERS | 2 ++
->  1 file changed, 2 insertions(+)
+>  arch/powerpc/lib/ppc_ksyms.c | 1 -
+>  1 file changed, 1 deletion(-)
 
 Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
 cheers
 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 867157311dc8..e8fa0c9645d6 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -10322,6 +10322,8 @@ L:	linux-m68k@lists.linux-m68k.org
->  S:	Maintained
->  W:	http://www.mac.linux-m68k.org/
->  F:	arch/m68k/mac/
-> +F:	drivers/macintosh/adb-iop.c
-> +F:	drivers/macintosh/via-macii.c
+> diff --git a/arch/powerpc/lib/ppc_ksyms.c b/arch/powerpc/lib/ppc_ksyms.c
+> index c7f8e9586316..4b81fd96aa3e 100644
+> --- a/arch/powerpc/lib/ppc_ksyms.c
+> +++ b/arch/powerpc/lib/ppc_ksyms.c
+> @@ -24,7 +24,6 @@ EXPORT_SYMBOL(csum_tcpudp_magic);
+>  #endif
 >  
->  M68K ON HP9000/300
->  M:	Philip Blundell <philb@gnu.org>
+>  EXPORT_SYMBOL(__copy_tofrom_user);
+> -EXPORT_SYMBOL(__clear_user);
+>  EXPORT_SYMBOL(copy_page);
+>  
+>  #ifdef CONFIG_PPC64
 > -- 
 > 2.26.2
