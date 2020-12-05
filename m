@@ -2,50 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD652CFEB0
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 21:13:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3CAF2CFEB5
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 21:16:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CpLNT0ZKQzDqBr
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 07:12:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CpLSx59cYzDqfG
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 07:16:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=prevas.dk (client-ip=40.107.22.125;
+ smtp.mailfrom=prevas.dk (client-ip=40.107.22.139;
  helo=eur05-am6-obe.outbound.protection.outlook.com;
  envelope-from=rasmus.villemoes@prevas.dk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=prevas.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=prevas.dk header.i=@prevas.dk header.a=rsa-sha256
- header.s=selector1 header.b=OaFZcpP8; 
+ header.s=selector1 header.b=PEGubjRw; 
  dkim-atps=neutral
 Received: from EUR05-AM6-obe.outbound.protection.outlook.com
- (mail-am6eur05on2125.outbound.protection.outlook.com [40.107.22.125])
+ (mail-am6eur05on2139.outbound.protection.outlook.com [40.107.22.139])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CpK9m51kKzDqBZ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CpK9m5TWfzDqGG
  for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 06:18:36 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HsnDaHGkk/uyCsHZkLCLqCXbPhTmBHVjyI//amBS+8UJAZnyjVW88Jdjcxfm0wf7bWRPTWwvDpXYkMuCkhPuXyHkmWYNspvBN/gZM7S1enYzOn9NQAj3CE1zyv8kRJEEfHY0EFNE8uzcA3OHsaPrLzvNIiYX7rC4GWrpWYsvhaUb68JQ1PrCJkEyvb2hjLrAoRlgMpCRnpJoXkQzuq0P/pfqs2RcO3iljtVWuAcIMstaSNzYo6bEf4VQ5x/GfuFv0bs096zmqxKdyedlmdsnQk6UTfYEDSDrLmaXqHPogA0TuBAmcF7HlcETWUYceJABlnxR6CUvy/FuuqA9RqWA4Q==
+ b=hB0jYpZThjDi2jonEa8g/kCVLkMCDwwcQVCx+5twz4us78WsuiihX1K94ZX2vFx8WdklrkK6PLvTEJ2nrpWBxtzgXGSvOKO6Z4b1TKkLBR/l6xcyeG71CQ4dgIfazjpmlvKDdsCJKrfBpUcJ7n8nqeealovJHJX/tZoHzMCAw52EHalT2fOPPCrnZbTrkP0/mb/UbawUkL+d9XIAN/UeMdqrK6sACTLkZSzjr178XJApHcAYntDRKNsmq3Z3fzqg3BYe7GVkrSRrPyn6RLWxJBFuMdwsaieDuRpetp09e6LrHkB0Oc25xRhPxPOd6EQCK9MiuvAFDxBfgBjMtbXoCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LXkO9S05fdZQNu+ImhLzBsKq4426rJzgFtggpGQd9b0=;
- b=DC/tD+2UVFkELgstrjB23yfpGlhomMpgq+k//SsAaPTD1HuGaZnvhVFUdqVwW/ctAJcxiv6a2BmBxAbJpFkRSnGDaBQqstogmRuYEuh7Ygo3Uylmkfp3DluSw8zyOjYdQTCnvKboMv1GH2PtyVvZ+oEX7s3inRqMdDhvwJ8hzT1RdToM06TxF5Lvn90yho/wvzRL4YlGuNGgV2yhMycX44uWCLzOfsilvY0/y939glv3iTVjR9+3GELGGaYvxcqW6ugd3wCpuPGQvoYPM5z6EqahqcVJcRLWJNtbQSSJjC2iwabsBldeZRx5voDe6mOchzN+8ubQ8JTeSlaBuFGWJg==
+ bh=jkDQ5X09s+B2qH7fCsAIyqj+eG/eg9qMrfZw00etq8Q=;
+ b=M8TQYo07y6T7LR7ngg36oGDUUa5jGxweOHPIbgwGgJ97raO+pA75IFV7up0Kq+w8MiIIdaU9B/fBCrY26WGdg8282/uHhfe5PqXYIIv4R+4Yga2bIKdcgoI21pRZMnLWUKxRnr5XyUaJlwPwHcNWlcT9aPbPpt+HsNyumeM0fV1Ti3b2aFWfIT2nVLYbm4uZMlhvBLvaS8ARcs7ixEcqSQe5fak8TMbsgqsNhxH9QopuKj7RXGWFRJMMSAnhoyP/08Tou2LL7WiNXJ3rs47giIV8Pr4kfnexBUnrgPQ2df2QEleMWN3mPOHO9WDk5RMg9wQOvJBsySOxIkrbnGbIZg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
  dkim=pass header.d=prevas.dk; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LXkO9S05fdZQNu+ImhLzBsKq4426rJzgFtggpGQd9b0=;
- b=OaFZcpP8mbW1MvUQ5HqhFmEwxqPYPMgb8u4qhHqRzJFzu/Zr64web5KR6ZRFeD+A8kqVyiGsusVrv7tsbjxiaWT+rWcFMTvc4pThB2CzDK54G1Z99AVYy26UYYohLQLFJ0dNhBWBmMPusRyPjRTeHxklAeesTgunFXdPY87XwMk=
+ bh=jkDQ5X09s+B2qH7fCsAIyqj+eG/eg9qMrfZw00etq8Q=;
+ b=PEGubjRwGw13j7ZqtjBU0R7WuhLd+98kwNJ0ss6OFG1kAJ0kJgODBv4WbfN3cNP5dyoUzKp57lLJwQdfUefRMkRKDqgyznw+prqRDThg94p/9ndzPCCCT5OHdDkS09KWHh2EtAsOSTs10rvDXohh9MbPzYd2/w4Dhktr28ShGQw=
 Authentication-Results: nxp.com; dkim=none (message not signed)
  header.d=none;nxp.com; dmarc=none action=none header.from=prevas.dk;
 Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:3f::10)
  by AM4PR1001MB1363.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:200:99::12)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.19; Sat, 5 Dec
- 2020 19:18:29 +0000
+ 2020 19:18:30 +0000
 Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::9068:c899:48f:a8e3]) by AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::9068:c899:48f:a8e3%6]) with mapi id 15.20.3632.021; Sat, 5 Dec 2020
@@ -53,10 +53,10 @@ Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
 From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
 To: Li Yang <leoyang.li@nxp.com>, "David S. Miller" <davem@davemloft.net>,
  Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 14/20] ethernet: ucc_geth: don't statically allocate eight
- ucc_geth_info
-Date: Sat,  5 Dec 2020 20:17:37 +0100
-Message-Id: <20201205191744.7847-15-rasmus.villemoes@prevas.dk>
+Subject: [PATCH 15/20] ethernet: ucc_geth: use UCC_GETH_{RX,
+ TX}_BD_RING_ALIGNMENT macros directly
+Date: Sat,  5 Dec 2020 20:17:38 +0100
+Message-Id: <20201205191744.7847-16-rasmus.villemoes@prevas.dk>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
 References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
@@ -72,47 +72,47 @@ Received: from prevas-ravi.prevas.se (5.186.115.188) by
  AM5PR0701CA0063.eurprd07.prod.outlook.com (2603:10a6:203:2::25) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3654.5 via Frontend
- Transport; Sat, 5 Dec 2020 19:18:28 +0000
+ Transport; Sat, 5 Dec 2020 19:18:29 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ee0a046b-c2ae-45fb-faf0-08d899528c02
+X-MS-Office365-Filtering-Correlation-Id: fba62702-cacc-4c8a-32d2-08d899528c87
 X-MS-TrafficTypeDiagnostic: AM4PR1001MB1363:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM4PR1001MB1363552B820DDB60E2F6EC5E93F00@AM4PR1001MB1363.EURPRD10.PROD.OUTLOOK.COM>
+X-Microsoft-Antispam-PRVS: <AM4PR1001MB1363ABE880878B868649D01293F00@AM4PR1001MB1363.EURPRD10.PROD.OUTLOOK.COM>
 X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: hBMw0SbJYBOesXgOtW/bLmW6wYsXQZAo9nCcpKHIwpj0c4g3FNPhUFTJY21n+FWPSSVSbOlweRIgObFX8DDo8vSmrhizm3n87QNE/YlR7m8gH1kHXtjT7AguHCQu3x2DwqiK3oPej8lXD9NLcQr3DDa1+EX7sbjSzLAhqFX+ERRv//8FbozCJrXEUAtdWZu6CseynbzNflHh8nCCiCZn9pYlXGR8ypIUBwcG/gzBZlwUQ1V5jiyIYhmKKulCOHfYnZ+sQhybcWmtm3Wcyd09ymheaN//jE/ClRxk6r50wHP0xH49N0FPd7SWZeluL+lu/OWm+XybMA45gRp4uHlQ3Q==
+X-Microsoft-Antispam-Message-Info: lYyAmP7CMOEEtYTEOFllZWHYGNplZintAMms4rTP1r5HFAx7lIjpbxa77T+M3B+mtgmLNgHyR+cimfvkRDB9YNVZ8LmbWT7neX/hnxCRa9ERXv2ezANomrGDEETd8chMO8Q+H/3NGEPEmHKKZu5nlBUNVj8I8BmMfNIAJu3dK1tfl2ue47hOhxTM9jfShT/BqjwpwWglwOwNAf6Vd0am/egdrfHWhIEbDQit7QhPSUNwQnJvJ7gQtWbPSw+DKvGy86ZnOd4Ni6VRcpSJzHwC2n2OwPQf4lzpJTCA9X4p5Mt4iSZ/ALXfZbj8DPeSyjTo7WDx1l9Sqtsg+47m7Y6WGA==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
  SFS:(396003)(39840400004)(346002)(136003)(366004)(376002)(2616005)(2906002)(8676002)(8936002)(83380400001)(52116002)(36756003)(66476007)(66946007)(66556008)(4326008)(8976002)(5660300002)(1076003)(6486002)(44832011)(6512007)(186003)(26005)(6666004)(110136005)(316002)(86362001)(478600001)(16526019)(54906003)(956004)(6506007);
  DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?32UppUUv6iz/0ReSezwEkLNuWXsmyqmAUUneYmNKZDbSa47d8CGwBeMrzQRJ?=
- =?us-ascii?Q?nMgDNazAp/0tHQFBmU5Tcm82kctbXsB69VEzSko9Y4pew8W9+EcJLOeJLKK2?=
- =?us-ascii?Q?wi7uXpZka3I2svOh4MbJIGZmzyjdE6/YsYFq5EgFtMktsIvMLRnm6eL9d1V2?=
- =?us-ascii?Q?1ctc9fRjTWn9h4SRsSnKLe+pu7IWeksx6862EipblC91oyTatgIu6ozaXsy5?=
- =?us-ascii?Q?q6yDXxzftdDcpzLHTnzFF3FWT1wUKXuqB5G5f9Jsbq/bKPmvX0QlUs3C3GGA?=
- =?us-ascii?Q?V+WYVWphvzZH2fHdrOFrNUZlTVj1wwriBxYGwBn3+DkevK1WlgCVSnHJfRty?=
- =?us-ascii?Q?7QvkPTABZQCcV+hz1lRDHKrouQoBt+HMutD7jgwrnjKQJcLRJCds9R3cFGsV?=
- =?us-ascii?Q?T06kdMSJwg6CiWNe6Oc+bHgvTDKH9vitmwt0JKqX01qtY1Q/uzD4+kX6hLAx?=
- =?us-ascii?Q?VWZl3fcGF0BivJ29Ugoq9YPplWu3ykGKgAth8jb6ub1oP7cX/YMASp5gquRu?=
- =?us-ascii?Q?XjgsFHNfBS8TujvWcGcSslfiP9woSGKB3Ho3E0sow2bVZUoHcBdCkEpF1tOf?=
- =?us-ascii?Q?wP1ndD5DN8dZDRv7pJ6mlupnGpt6vNIExotMhgF2mYRJKuO7rb185PQuZK2y?=
- =?us-ascii?Q?wCR2Yom5VtsqFnDy9N8vh+3rfOcaRV6gyOi0zB5dWYh5WMo9ttjMyD7Z134V?=
- =?us-ascii?Q?40qAMKruD97JXV4hDRxTxB3XNrmZ9t/Pz9ybnSthXr0UCGkORsAZexwmL6Om?=
- =?us-ascii?Q?ICWqucwaSc1+zWN4UpzOHZ5J01WIGRr/lVHP31tuQjNsoPLk/MkvsLvNxnxo?=
- =?us-ascii?Q?1AxpPA60rfxn3hUQuhMIEkO86rb8JkEAvt7Cg7+PuiqDEmK5XdVZ6JfKIeFn?=
- =?us-ascii?Q?Pqx3uQY+wnRQuBd1K61E4VpQUZjy6SDVDdS5iuWW3LwzFLrmMEnOZvRSQQpV?=
- =?us-ascii?Q?d8jGTc+H8jVFnHe5LTkf5KjzOEuCq+UJhmmjOOD+ZxwBJCEPCl2dhlhDf7ol?=
- =?us-ascii?Q?Tn7I?=
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?QPbwrFyDUnf3nAYVrkOMpubxw97rJfn491BNO/sqfWWCQFXrOkx+RwDHNDsC?=
+ =?us-ascii?Q?MXeW9BSXHSzBu6HsLMpy+GUSHEEkvTrPunpaPY956Lk3Jn4tcgnVOKxLW6FG?=
+ =?us-ascii?Q?RtWUaUkWY/fIzJAsf0AIfzBXFztVKq6w8aMIx9QzSluuFwC9ZiTA+zTh+xBV?=
+ =?us-ascii?Q?dB9wzI+5U1qqvHJ//opep5hvM38r8nxG16jFw2drYO8MRSrPLFiVCCgU29Mt?=
+ =?us-ascii?Q?cch9QKkC1PKn+GpOBiw0a/Hc2/9SiCzlQ6+afgPWJDhJG31XI+8j2bZvgUAW?=
+ =?us-ascii?Q?iQPej/BNZxIWlhLzH7wkiKJqQfokxwy5qGqFOhPYRQywchNFQXM/EQzHvU9l?=
+ =?us-ascii?Q?gFbhBhSE/E9hnhRdMyl6+4ThOWpReEvTOyJTHdjhXhScVFxxg4uK22Jr5vy1?=
+ =?us-ascii?Q?Yb7Gxtl9bTG33tPPdSoqUoobC3QChwHVt477aBktwo/6rHpTerU45BPOaUja?=
+ =?us-ascii?Q?EX1wmnqDBfK3cY/4xq5KDfqT5GJOfxO9EwGFkW+q8B71o66bzfAJxyEoYC7w?=
+ =?us-ascii?Q?ipRfN+ezizYE3ClzlcLjoM0t/gxqytA1SQiWABG+Y0aSRRSMIKC+gb+VXvbH?=
+ =?us-ascii?Q?jp9RTjyzeF8Lnr5gGpHTY1agD2KQSclIHCfQE8iyO8K6dmp0+B+/w1IBjHvi?=
+ =?us-ascii?Q?+Et2Mx7ZRY95mvvtCjAgOTwE+PRVn1rQ757Fvzg1R+ywCjEErW3R7Dv8V1eN?=
+ =?us-ascii?Q?jmFXeNQRlqfd0OR4APrcarWkbg/8UBgwbOevNxesvS3zSgQrH7ezrGnzjlXy?=
+ =?us-ascii?Q?Mjue/0SpMUeLxAIFGRXqt5g+iztVJE4MeRxw4Ooz48i2NvANbhIuTYGHK4Hj?=
+ =?us-ascii?Q?MlwbURr4cpu3A+41Verwgc7mBmhB5qK9wYSpMaokRfV+H/MpYgI6UcuRnPjY?=
+ =?us-ascii?Q?HMVT4FtSozv7+6objwwMXoc8G4uu6mms5KTr2k8TGLShZA4UEzUlS/9T8Jpz?=
+ =?us-ascii?Q?lNHlynZcHNw/BaCbyIL/x3zID/ndniUVTZgcJsYx/voDhiwd1NJbVpaf7xzx?=
+ =?us-ascii?Q?IqGT?=
 X-OriginatorOrg: prevas.dk
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee0a046b-c2ae-45fb-faf0-08d899528c02
+X-MS-Exchange-CrossTenant-Network-Message-Id: fba62702-cacc-4c8a-32d2-08d899528c87
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2020 19:18:28.9488 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2020 19:18:29.8323 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HkyEaClC2PalthrLqJGbGU79xJKOylbVHpUsGTNciY+fx6IEi/fLGSenbmO32M1XctFpnikkIPNl3LV9SRqCmzOiJKPNsx/gINfiOniLZD8=
+X-MS-Exchange-CrossTenant-UserPrincipalName: GdHj0hxns1V/fLkc4cG/FjV/csj8iZZZfB1OngCp7Jz/7yEc91vJIudbc0rJFsEZR87KutUEv4S14TYOS1gFRk3GwRgFHI7RaQ1Xon33/iQ=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM4PR1001MB1363
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -133,110 +133,44 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-struct ucc_geth_info is somewhat large, and on systems with only one
-or two UCC instances, that just wastes a few KB of memory. So
-allocate and populate a chunk of memory at probe time instead of
-initializing them all during driver init.
+These macros both have the value 32, there's no point first
+initializing align to a lower value.
 
-Note that the existing "ug_info == NULL" check was dead code, as the
-address of some static array element can obviously never be NULL.
+If anything, one could throw in a
+BUILD_BUG_ON(UCC_GETH_TX_BD_RING_ALIGNMENT < 4), but it's not worth it
+- lots of code depends on named constants having sensible values.
 
 Signed-off-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
 ---
- drivers/net/ethernet/freescale/ucc_geth.c | 32 +++++++++--------------
- 1 file changed, 12 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/freescale/ucc_geth.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index a06744d8b4af..273342233bba 100644
+index 273342233bba..ccde42f547b8 100644
 --- a/drivers/net/ethernet/freescale/ucc_geth.c
 +++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -157,8 +157,6 @@ static const struct ucc_geth_info ugeth_primary_info = {
- 	.riscRx = QE_RISC_ALLOCATION_RISC1_AND_RISC2,
- };
+@@ -2196,9 +2196,7 @@ static int ucc_geth_alloc_tx(struct ucc_geth_private *ugeth)
+ 		    UCC_GETH_TX_BD_RING_SIZE_MEMORY_ALIGNMENT)
+ 			length += UCC_GETH_TX_BD_RING_SIZE_MEMORY_ALIGNMENT;
+ 		if (uf_info->bd_mem_part == MEM_PART_SYSTEM) {
+-			u32 align = 4;
+-			if (UCC_GETH_TX_BD_RING_ALIGNMENT > 4)
+-				align = UCC_GETH_TX_BD_RING_ALIGNMENT;
++			u32 align = UCC_GETH_TX_BD_RING_ALIGNMENT;
+ 			ugeth->tx_bd_ring_offset[j] =
+ 				(u32) kmalloc((u32) (length + align), GFP_KERNEL);
  
--static struct ucc_geth_info ugeth_info[8];
--
- #ifdef DEBUG
- static void mem_disp(u8 *addr, int size)
- {
-@@ -3714,25 +3712,23 @@ static int ucc_geth_probe(struct platform_device* ofdev)
- 	if ((ucc_num < 0) || (ucc_num > 7))
- 		return -ENODEV;
- 
--	ug_info = &ugeth_info[ucc_num];
--	if (ug_info == NULL) {
--		if (netif_msg_probe(&debug))
--			pr_err("[%d] Missing additional data!\n", ucc_num);
--		return -ENODEV;
--	}
-+	ug_info = kmalloc(sizeof(*ug_info), GFP_KERNEL);
-+	if (ug_info == NULL)
-+		return -ENOMEM;
-+	memcpy(ug_info, &ugeth_primary_info, sizeof(*ug_info));
- 
- 	ug_info->uf_info.ucc_num = ucc_num;
- 
- 	err = ucc_geth_parse_clock(np, "rx", &ug_info->uf_info.rx_clock);
- 	if (err)
--		return err;
-+		goto err_free_info;
- 	err = ucc_geth_parse_clock(np, "tx", &ug_info->uf_info.tx_clock);
- 	if (err)
--		return err;
-+		goto err_free_info;
- 
- 	err = of_address_to_resource(np, 0, &res);
- 	if (err)
--		return -EINVAL;
-+		goto err_free_info;
- 
- 	ug_info->uf_info.regs = res.start;
- 	ug_info->uf_info.irq = irq_of_parse_and_map(np, 0);
-@@ -3745,7 +3741,7 @@ static int ucc_geth_probe(struct platform_device* ofdev)
- 		 */
- 		err = of_phy_register_fixed_link(np);
- 		if (err)
--			return err;
-+			goto err_free_info;
- 		ug_info->phy_node = of_node_get(np);
- 	}
- 
-@@ -3876,6 +3872,8 @@ static int ucc_geth_probe(struct platform_device* ofdev)
- 		of_phy_deregister_fixed_link(np);
- 	of_node_put(ug_info->tbi_node);
- 	of_node_put(ug_info->phy_node);
-+err_free_info:
-+	kfree(ug_info);
- 
- 	return err;
- }
-@@ -3886,6 +3884,7 @@ static int ucc_geth_remove(struct platform_device* ofdev)
- 	struct ucc_geth_private *ugeth = netdev_priv(dev);
- 	struct device_node *np = ofdev->dev.of_node;
- 
-+	kfree(ugeth->ug_info);
- 	ucc_geth_memclean(ugeth);
- 	if (of_phy_is_fixed_link(np))
- 		of_phy_deregister_fixed_link(np);
-@@ -3920,17 +3919,10 @@ static struct platform_driver ucc_geth_driver = {
- 
- static int __init ucc_geth_init(void)
- {
--	int i, ret;
--
- 	if (netif_msg_drv(&debug))
- 		pr_info(DRV_DESC "\n");
--	for (i = 0; i < 8; i++)
--		memcpy(&(ugeth_info[i]), &ugeth_primary_info,
--		       sizeof(ugeth_primary_info));
--
--	ret = platform_driver_register(&ucc_geth_driver);
- 
--	return ret;
-+	return platform_driver_register(&ucc_geth_driver);
- }
- 
- static void __exit ucc_geth_exit(void)
+@@ -2274,9 +2272,7 @@ static int ucc_geth_alloc_rx(struct ucc_geth_private *ugeth)
+ 	for (j = 0; j < ug_info->numQueuesRx; j++) {
+ 		length = ug_info->bdRingLenRx[j] * sizeof(struct qe_bd);
+ 		if (uf_info->bd_mem_part == MEM_PART_SYSTEM) {
+-			u32 align = 4;
+-			if (UCC_GETH_RX_BD_RING_ALIGNMENT > 4)
+-				align = UCC_GETH_RX_BD_RING_ALIGNMENT;
++			u32 align = UCC_GETH_RX_BD_RING_ALIGNMENT;
+ 			ugeth->rx_bd_ring_offset[j] =
+ 				(u32) kmalloc((u32) (length + align), GFP_KERNEL);
+ 			if (ugeth->rx_bd_ring_offset[j] != 0)
 -- 
 2.23.0
 
