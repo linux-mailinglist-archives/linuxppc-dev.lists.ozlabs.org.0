@@ -2,57 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E70982CF982
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 06:19:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0E62CFA02
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 07:25:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CnyYw1yBrzDqg5
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 16:19:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cp0243DHSzDqjg
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 17:25:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sboyd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=buserror.net
- (client-ip=165.227.176.147; helo=baldur.buserror.net;
- envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=buserror.net
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CnyXL4xNFzDqdx
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 16:18:26 +1100 (AEDT)
-Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
- by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <oss@buserror.net>)
- id 1klPwU-0005xK-RW; Fri, 04 Dec 2020 23:17:11 -0600
-Message-ID: <d99b6d7dee253d7e2d85d863d96b8702bb1aa389.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
- Ellerman <mpe@ellerman.id.au>
-Date: Fri, 04 Dec 2020 23:17:09 -0600
-In-Reply-To: <34ebc3ba2c768d97f363bd5f2deea2356e9ae127.1605589460.git.christophe.leroy@csgroup.eu>
-References: <34ebc3ba2c768d97f363bd5f2deea2356e9ae127.1605589460.git.christophe.leroy@csgroup.eu>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: christophe.leroy@csgroup.eu, benh@kernel.crashing.org,
- paulus@samba.org, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
- autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
- *      [score: 0.0000]
-Subject: Re: [PATCH 1/2] powerpc: Retire e200 core (mpc555x processor)
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=T4bFnift; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cp00B5yYzzDqgN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 17:24:10 +1100 (AEDT)
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1607149448;
+ bh=r8vnqMmsHnbgwMXfSQZu84loY6DvrmHia8Sx1hc/RJQ=;
+ h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+ b=T4bFniftvCd2jeC6yESokQyOHoTMxC9vK6miqN2mi2XZsBNpieVpWrZWJ4/ROoVau
+ zIweZB3ouv+2OYfFYhW50zG34k1z/GoAAlXVdYhFfPpHAER9uNSy+ACWR4QnDhGuRN
+ uF3ewwCPsC0jNHoOsylZXbRo6pbi2K8WY92Dbcw+L49AQqk8J0jnR3fXB3D8pc9QKD
+ HkId29E+OBrSUtnds5+Pr4+rygtaP4uF6TpHP1UUg/g/s/MIu62pjr25Y6h887D3mo
+ 0ABFaab5sm2/qsL/H6aOQgE5NCXBPsqOngGLlOeALbEVA6UTuZ/AUtHNc8K05eNVem
+ BV/WPUFP1yU7w==
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20201130085743.1656317-1-geert+renesas@glider.be>
+References: <20201130085743.1656317-1-geert+renesas@glider.be>
+Subject: Re: [PATCH v2] clk: renesas: r9a06g032: Drop __packed for portability
+From: Stephen Boyd <sboyd@kernel.org>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Michael Turquette <mturquette@baylibre.com>, Paul Mackerras <paulus@samba.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>
+Date: Fri, 04 Dec 2020 22:24:06 -0800
+Message-ID: <160714944657.1580929.4595234852977229885@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,39 +59,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
+ Gareth Williams <gareth.williams.jx@renesas.com>,
+ linux-renesas-soc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-clk@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-11-17 at 05:07 +0000, Christophe Leroy wrote:
-> There is no defconfig selecting CONFIG_E200, and no platform.
-> 
-> e200 is an earlier version of booke, a predecessor of e500,
-> with some particularities like an unified cache instead of both an
-> instruction cache and a data cache.
-> 
-> Remove it.	
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Quoting Geert Uytterhoeven (2020-11-30 00:57:43)
+> The R9A06G032 clock driver uses an array of packed structures to reduce
+> kernel size.  However, this array contains pointers, which are no longer
+> aligned naturally, and cannot be relocated on PPC64.  Hence when
+> compile-testing this driver on PPC64 with CONFIG_RELOCATABLE=3Dy (e.g.
+> PowerPC allyesconfig), the following warnings are produced:
+>=20
+>     WARNING: 136 bad relocations
+>     c000000000616be3 R_PPC64_UADDR64   .rodata+0x00000000000cf338
+>     c000000000616bfe R_PPC64_UADDR64   .rodata+0x00000000000cf370
+>     ...
+>=20
+> Fix this by dropping the __packed attribute from the r9a06g032_clkdesc
+> definition, trading a small size increase for portability.
+>=20
+> This increases the 156-entry clock table by 1 byte per entry, but due to
+> the compiler generating more efficient code for unpacked accesses, the
+> net size increase is only 76 bytes (gcc 9.3.0 on arm32).
+>=20
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Fixes: 4c3d88526eba2143 ("clk: renesas: Renesas R9A06G032 clock driver")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 > ---
->  arch/powerpc/Makefile                     |  1 -
->  arch/powerpc/include/asm/cputable.h       | 11 -----
->  arch/powerpc/include/asm/mmu.h            |  2 +-
->  arch/powerpc/include/asm/reg.h            |  5 --
->  arch/powerpc/include/asm/reg_booke.h      | 12 -----
->  arch/powerpc/kernel/cpu_setup_fsl_booke.S |  9 ----
->  arch/powerpc/kernel/cputable.c            | 46 ------------------
->  arch/powerpc/kernel/head_booke.h          |  3 +-
->  arch/powerpc/kernel/head_fsl_booke.S      | 57 +----------------------
->  arch/powerpc/kernel/setup_32.c            |  2 -
->  arch/powerpc/kernel/traps.c               | 25 ----------
->  arch/powerpc/mm/nohash/fsl_booke.c        | 12 ++---
->  arch/powerpc/platforms/Kconfig.cputype    | 13 ++----
->  13 files changed, 11 insertions(+), 187 deletions(-)
 
-Acked-by: Scott Wood <oss@buserror.net>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
 
--Scott
-
-
+Unless you want me to pick this up for clk-fixes?
