@@ -1,39 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D2F2CFAAE
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 09:49:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694A72CFABD
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 10:07:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cp3Cz1wMkzDqjl
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 19:49:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cp3cL25B9zDqkG
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 20:07:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.196;
+ helo=mail-oi1-f196.google.com; envelope-from=geert.uytterhoeven@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com
+ [209.85.167.196])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cp3BM5lmCzDqZT
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 19:48:10 +1100 (AEDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id D673B6736F; Sat,  5 Dec 2020 09:48:04 +0100 (CET)
-Date: Sat, 5 Dec 2020 09:48:04 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/mm: Fix KUAP warning by providing
- copy_from_kernel_nofault_allowed()
-Message-ID: <20201205084804.GA25452@lst.de>
-References: <e559e60c43f679195bfe4c7b0a301431c6f02c7a.1607157766.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cp3Zc72hCzDqfP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 20:05:44 +1100 (AEDT)
+Received: by mail-oi1-f196.google.com with SMTP id t205so9152590oib.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 05 Dec 2020 01:05:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=CGdaUmtB30TVsj7alwm/cJhVAoMWhBl+L16TLVJy0GU=;
+ b=ePbXHDrN2gMsekl81fAwIVe5AND9ELUD/eTxcJJ/qLRAEINIIIuZZjwr1BukCSJfnd
+ VrSsKaaED8P1/j/LDG07PigFk+1Girfnfed69BZqgZ3bkw/yT0elvPyJVH823CyrFiFW
+ KTvz0J+gTZDZFWf3vhnIpfrUhVqG6XzKqQPUjsy/bdyLb94dxCm2JgHZe50sPDRq9SVB
+ i8QA71SGsrxV9bFT+TUn0VFZ8h/kYoq11X9N8kyMDW4gi6NsAimkQhHq3/5Lfv2mK1Zm
+ Z5I3m27ZAPDiONpL6BOwiVZFS0bnkeUVfwuGWfNjPl4KFbt9TJ20FELiO7iS06I5SsyY
+ TLzQ==
+X-Gm-Message-State: AOAM531tbbwc8WyGmb9CvIAkAo1QaVPLOjjEg7OnoyTuiVlKjnjlaMWV
+ 25mAhZWvtYstNpt5pyfZGml4SHayZ8jUTAx5Z/g=
+X-Google-Smtp-Source: ABdhPJwLYvltQQGfaxz5Cw2w/zv1Y+C9MgjWhLpZYxRx4VvMLhZqNWb3xLk+V7UCvmYR02UJOryygCbm26eslneYzJA=
+X-Received: by 2002:aca:ec09:: with SMTP id k9mr5872940oih.153.1607159141323; 
+ Sat, 05 Dec 2020 01:05:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e559e60c43f679195bfe4c7b0a301431c6f02c7a.1607157766.git.christophe.leroy@csgroup.eu>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+References: <20201130085743.1656317-1-geert+renesas@glider.be>
+ <160714944657.1580929.4595234852977229885@swboyd.mtv.corp.google.com>
+In-Reply-To: <160714944657.1580929.4595234852977229885@swboyd.mtv.corp.google.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Sat, 5 Dec 2020 10:05:29 +0100
+Message-ID: <CAMuHMdWJhiO5A7b3B8CH2YpURe_G0dEPEmES6R8n_8D-Z+Q65A@mail.gmail.com>
+Subject: Re: [PATCH v2] clk: renesas: r9a06g032: Drop __packed for portability
+To: Stephen Boyd <sboyd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,81 +61,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, viro@zeniv.linux.org.uk,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Gareth Williams <gareth.williams.jx@renesas.com>,
+ Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-clk <linux-clk@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Dec 05, 2020 at 08:43:06AM +0000, Christophe Leroy wrote:
-> Since commit c33165253492 ("powerpc: use non-set_fs based maccess
-> routines"), userspace access is not granted anymore when using
-> copy_from_kernel_nofault()
-> 
-> However, kthread_probe_data() uses copy_from_kernel_nofault()
-> to check validity of pointers. When the pointer is NULL,
-> it points to userspace, leading to a KUAP fault and triggering
-> the following big hammer warning many times when you request
-> a sysrq "show task":
+Hi Stephen,
 
+On Sat, Dec 5, 2020 at 7:24 AM Stephen Boyd <sboyd@kernel.org> wrote:
+> Quoting Geert Uytterhoeven (2020-11-30 00:57:43)
+> > The R9A06G032 clock driver uses an array of packed structures to reduce
+> > kernel size.  However, this array contains pointers, which are no longer
+> > aligned naturally, and cannot be relocated on PPC64.  Hence when
+> > compile-testing this driver on PPC64 with CONFIG_RELOCATABLE=y (e.g.
+> > PowerPC allyesconfig), the following warnings are produced:
+> >
+> >     WARNING: 136 bad relocations
+> >     c000000000616be3 R_PPC64_UADDR64   .rodata+0x00000000000cf338
+> >     c000000000616bfe R_PPC64_UADDR64   .rodata+0x00000000000cf370
+> >     ...
+> >
+> > Fix this by dropping the __packed attribute from the r9a06g032_clkdesc
+> > definition, trading a small size increase for portability.
+> >
+> > This increases the 156-entry clock table by 1 byte per entry, but due to
+> > the compiler generating more efficient code for unpacked accesses, the
+> > net size increase is only 76 bytes (gcc 9.3.0 on arm32).
+> >
+> > Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> > Fixes: 4c3d88526eba2143 ("clk: renesas: Renesas R9A06G032 clock driver")
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > ---
+>
+> Acked-by: Stephen Boyd <sboyd@kernel.org>
+>
+> Unless you want me to pick this up for clk-fixes?
 
+Yes please. Forgot to retain this comment for v2:
 
-> To avoid that, copy_from_kernel_nofault_allowed() is used to check
-> whether the address is a valid kernel address. But the default
-> version of it returns true for any address.
-> 
-> Provide a powerpc version of copy_from_kernel_nofault_allowed()
-> that returns false when the address is below TASK_USER_MAX,
-> so that copy_from_kernel_nofault() will return -ERANGE.
+   "Please take directly (ppc or clk), as this is a build fix.
+    https://lore.kernel.org/linux-clk/20201128122819.32187696@canb.auug.org.au/"
 
-Looks good.  I wonder if we should just default to the TASK_SIZE_MAX
-check in  copy_from_kernel_nofault_allowed for architectures that select
-CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE?
+Thanks!
 
-> 
-> Reported-by: Qian Cai <qcai@redhat.com>
-> Fixes: c33165253492 ("powerpc: use non-set_fs based maccess routines")
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Al Viro <viro@zeniv.linux.org.uk>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
-> This issue was introduced in 5.10. I didn't mark it for stable, hopping it will go into 5.10-rc7
-> ---
->  arch/powerpc/mm/Makefile  | 2 +-
->  arch/powerpc/mm/maccess.c | 9 +++++++++
->  2 files changed, 10 insertions(+), 1 deletion(-)
->  create mode 100644 arch/powerpc/mm/maccess.c
-> 
-> diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
-> index 5e147986400d..55b4a8bd408a 100644
-> --- a/arch/powerpc/mm/Makefile
-> +++ b/arch/powerpc/mm/Makefile
-> @@ -5,7 +5,7 @@
->  
->  ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
->  
-> -obj-y				:= fault.o mem.o pgtable.o mmap.o \
-> +obj-y				:= fault.o mem.o pgtable.o mmap.o maccess.o \
->  				   init_$(BITS).o pgtable_$(BITS).o \
->  				   pgtable-frag.o ioremap.o ioremap_$(BITS).o \
->  				   init-common.o mmu_context.o drmem.o
-> diff --git a/arch/powerpc/mm/maccess.c b/arch/powerpc/mm/maccess.c
-> new file mode 100644
-> index 000000000000..56e97c0fb233
-> --- /dev/null
-> +++ b/arch/powerpc/mm/maccess.c
-> @@ -0,0 +1,9 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#include <linux/uaccess.h>
-> +#include <linux/kernel.h>
-> +
-> +bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
-> +{
-> +	return (unsigned long)unsafe_src >= TASK_SIZE_MAX;
-> +}
-> -- 
-> 2.25.0
----end quoted text---
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
