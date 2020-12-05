@@ -1,77 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491A42CFA66
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 09:01:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B7852CFAAA
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 09:44:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cp28v2dK0zDqcw
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 19:01:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cp36N6HXyzDqkK
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 19:44:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Gc/gJZMQ; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cp2711xdgzDqDr
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 19:00:10 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id m9so5015368pgb.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 05 Dec 2020 00:00:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=0masjBUaEdT8yhWPTiGZKXmGUQ0WDl0QMJjmOmFRbgI=;
- b=Gc/gJZMQJsaxJezPjoIJ+l5Klj3CzVb5UfjGmnUDQ+DMJR1ckzh7xASLtrBAkakChE
- Grl/mbVH7ZhodnKKNM2V9SyaZmqJG37yL3RpwHLG4q20CIoG0WuD8qDvAO8cK0/5pOI0
- XLsxT4WCK17cUlrgT8NKnQ5XHp4ZttYAJyAOErwofFJmxZrdS7k60N/YEMuAPFjj724x
- 6Y3lOmK1Fa/4/jUmD8oygPoU6iU8yiVqkQIaS7YpdjpykZeVq+kx+BCFkvagYRVtu/LW
- nNkXd6MTx3rnKjDArqwSiQDF0G/uOxtru2icj5A/knbFbSw4HW25IWRF8hP5S0xki7Ot
- QuLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=0masjBUaEdT8yhWPTiGZKXmGUQ0WDl0QMJjmOmFRbgI=;
- b=d/Ea8inEa0yGLo9ly0Rcbp9JsOOSi4aGaC3uCTwcM0QNmBZPknkLpKpk2ZFDM3sG0f
- 95IgywjN+nkG2OteNl/Z9u/1fsjHodFMgOKtLdQXUgUB6eRrPb1yee4WLvALI0bIgNM5
- iaR9X8atGx4EVzRCFEJh8VDghgsIinMh7Lg6OD5MmdEEQS1jYYVVjvAJ3ryYVVO6Dgnc
- xJQM49i5RtrWYvXhjkMnv98QKvG5SO/XDFa7hIddQu4GY6o+kDOnyUT22BF4JNdNew0S
- OYBgB5w/e440cq+dBzyKF1DEzp2fEn3L/AtZcdI8GVp0PdNFYvVOeCunuWPRWG+rO+WW
- Qa/g==
-X-Gm-Message-State: AOAM533swKXAYh4gMvh6l9U29PRUJf7RzmZz62g+pxCBp/mwUgx/daUt
- xkVjjUYgDEAOOnjus40HiZ0=
-X-Google-Smtp-Source: ABdhPJxxq5hhiaL6DPOoOhrdsC1HhF8QISir8hTk4ZBkYS67jaUKjbr7sa21l559bUoRv8iVAoVSKg==
-X-Received: by 2002:a63:a55d:: with SMTP id r29mr10713433pgu.289.1607155208529; 
- Sat, 05 Dec 2020 00:00:08 -0800 (PST)
-Received: from localhost ([1.129.168.124])
- by smtp.gmail.com with ESMTPSA id n5sm6278072pgm.29.2020.12.05.00.00.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Dec 2020 00:00:07 -0800 (PST)
-Date: Sat, 05 Dec 2020 18:00:00 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/8] x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
-To: Andy Lutomirski <luto@kernel.org>
-References: <20201128160141.1003903-1-npiggin@gmail.com>
- <20201128160141.1003903-3-npiggin@gmail.com>
- <CALCETrXYkbuJJnDv9ijfT+5tLQ2FOvvN1Ugoh5NwOy+zHp9HXA@mail.gmail.com>
- <1606876327.dyrhkih2kh.astroid@bobo.none>
- <CALCETrV8Z5JdsP-Qa8B6y01LmXnSruOEWVt9_Un1RX1+nZuhxw@mail.gmail.com>
-In-Reply-To: <CALCETrV8Z5JdsP-Qa8B6y01LmXnSruOEWVt9_Un1RX1+nZuhxw@mail.gmail.com>
-MIME-Version: 1.0
-Message-Id: <1607152918.fkgmomgfw9.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cp34l2NzgzDqWH
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 19:43:13 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4Cp34V53wyz9txvM;
+ Sat,  5 Dec 2020 09:43:06 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id ROna5UFL4uGm; Sat,  5 Dec 2020 09:43:06 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Cp34V47Xbz9txvL;
+ Sat,  5 Dec 2020 09:43:06 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8C90E8B77E;
+ Sat,  5 Dec 2020 09:43:07 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id QmAJ_F-zS920; Sat,  5 Dec 2020 09:43:07 +0100 (CET)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 018648B75B;
+ Sat,  5 Dec 2020 09:43:06 +0100 (CET)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id B9C5E668C2; Sat,  5 Dec 2020 08:43:06 +0000 (UTC)
+Message-Id: <e559e60c43f679195bfe4c7b0a301431c6f02c7a.1607157766.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/mm: Fix KUAP warning by providing
+ copy_from_kernel_nofault_allowed()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ hch@lst.de, viro@zeniv.linux.org.uk, akpm@linux-foundation.org
+Date: Sat,  5 Dec 2020 08:43:06 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,165 +60,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Andy Lutomirski's message of December 3, 2020 3:09 pm:
-> On Tue, Dec 1, 2020 at 6:50 PM Nicholas Piggin <npiggin@gmail.com> wrote:
->>
->> Excerpts from Andy Lutomirski's message of November 29, 2020 3:55 am:
->> > On Sat, Nov 28, 2020 at 8:02 AM Nicholas Piggin <npiggin@gmail.com> wr=
-ote:
->> >>
->> >> And get rid of the generic sync_core_before_usermode facility. This i=
-s
->> >> functionally a no-op in the core scheduler code, but it also catches
->> >>
->> >> This helper is the wrong way around I think. The idea that membarrier
->> >> state requires a core sync before returning to user is the easy one
->> >> that does not need hiding behind membarrier calls. The gap in core
->> >> synchronization due to x86's sysret/sysexit and lazy tlb mode, is the
->> >> tricky detail that is better put in x86 lazy tlb code.
->> >>
->> >> Consider if an arch did not synchronize core in switch_mm either, the=
-n
->> >> membarrier_mm_sync_core_before_usermode would be in the wrong place
->> >> but arch specific mmu context functions would still be the right plac=
-e.
->> >> There is also a exit_lazy_tlb case that is not covered by this call, =
-which
->> >> could be a bugs (kthread use mm the membarrier process's mm then cont=
-ext
->> >> switch back to the process without switching mm or lazy mm switch).
->> >>
->> >> This makes lazy tlb code a bit more modular.
->> >
->> > I have a couple of membarrier fixes that I want to send out today or
->> > tomorrow, and they might eliminate the need for this patch.  Let me
->> > think about this a little bit.  I'll cc you.  The existing code is way
->> > to subtle and the comments are far too confusing for me to be quickly
->> > confident about any of my conclusions :)
->> >
->>
->> Thanks for the head's up. I'll have to have a better look through them
->> but I don't know that it eliminates the need for this entirely although
->> it might close some gaps and make this not a bug fix. The problem here
->> is x86 code wanted something to be called when a lazy mm is unlazied,
->> but it missed some spots and also the core scheduler doesn't need to
->> know about those x86 details if it has this generic call that annotates
->> the lazy handling better.
->=20
-> I'll send v3 tomorrow.  They add more sync_core_before_usermode() callers=
-.
->=20
-> Having looked at your patches a bunch and the membarrier code a bunch,
-> I don't think I like the approach of pushing this logic out into new
-> core functions called by arch code.  Right now, even with my
-> membarrier patches applied, understanding how (for example) the x86
-> switch_mm_irqs_off() plus the scheduler code provides the barriers
-> that membarrier needs is quite complicated, and it's not clear to me
-> that the code is even correct.  At the very least I'm pretty sure that
-> the x86 comments are misleading.
->
-> With your patches, someone trying to
-> audit the code would have to follow core code calling into arch code
-> and back out into core code to figure out what's going on.  I think
-> the result is worse.
+Since commit c33165253492 ("powerpc: use non-set_fs based maccess
+routines"), userspace access is not granted anymore when using
+copy_from_kernel_nofault()
 
-Sorry I missed this and rather than reply to the later version you
-have a bigger comment here.
+However, kthread_probe_data() uses copy_from_kernel_nofault()
+to check validity of pointers. When the pointer is NULL,
+it points to userspace, leading to a KUAP fault and triggering
+the following big hammer warning many times when you request
+a sysrq "show task":
 
-I disagree. Until now nobody following it noticed that the mm gets
-un-lazied in other cases, because that was not too clear from the
-code (only indirectly using non-standard terminology in the arch
-support document).
+[ 1117.202054] ------------[ cut here ]------------
+[ 1117.202102] Bug: fault blocked by AP register !
+[ 1117.202261] WARNING: CPU: 0 PID: 377 at arch/powerpc/include/asm/nohash/32/kup-8xx.h:66 do_page_fault+0x4a8/0x5ec
+[ 1117.202310] Modules linked in:
+[ 1117.202428] CPU: 0 PID: 377 Comm: sh Tainted: G        W         5.10.0-rc5-01340-g83f53be2de31-dirty #4175
+[ 1117.202499] NIP:  c0012048 LR: c0012048 CTR: 00000000
+[ 1117.202573] REGS: cacdbb88 TRAP: 0700   Tainted: G        W          (5.10.0-rc5-01340-g83f53be2de31-dirty)
+[ 1117.202625] MSR:  00021032 <ME,IR,DR,RI>  CR: 24082222  XER: 20000000
+[ 1117.202899]
+[ 1117.202899] GPR00: c0012048 cacdbc40 c2929290 00000023 c092e554 00000001 c09865e8 c092e640
+[ 1117.202899] GPR08: 00001032 00000000 00000000 00014efc 28082224 100d166a 100a0920 00000000
+[ 1117.202899] GPR16: 100cac0c 100b0000 1080c3fc 1080d685 100d0000 100d0000 00000000 100a0900
+[ 1117.202899] GPR24: 100d0000 c07892ec 00000000 c0921510 c21f4440 0000005c c0000000 cacdbc80
+[ 1117.204362] NIP [c0012048] do_page_fault+0x4a8/0x5ec
+[ 1117.204461] LR [c0012048] do_page_fault+0x4a8/0x5ec
+[ 1117.204509] Call Trace:
+[ 1117.204609] [cacdbc40] [c0012048] do_page_fault+0x4a8/0x5ec (unreliable)
+[ 1117.204771] [cacdbc70] [c00112f0] handle_page_fault+0x8/0x34
+[ 1117.204911] --- interrupt: 301 at copy_from_kernel_nofault+0x70/0x1c0
+[ 1117.204979] NIP:  c010dbec LR: c010dbac CTR: 00000001
+[ 1117.205053] REGS: cacdbc80 TRAP: 0301   Tainted: G        W          (5.10.0-rc5-01340-g83f53be2de31-dirty)
+[ 1117.205104] MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 28082224  XER: 00000000
+[ 1117.205416] DAR: 0000005c DSISR: c0000000
+[ 1117.205416] GPR00: c0045948 cacdbd38 c2929290 00000001 00000017 00000017 00000027 0000000f
+[ 1117.205416] GPR08: c09926ec 00000000 00000000 3ffff000 24082224
+[ 1117.206106] NIP [c010dbec] copy_from_kernel_nofault+0x70/0x1c0
+[ 1117.206202] LR [c010dbac] copy_from_kernel_nofault+0x30/0x1c0
+[ 1117.206258] --- interrupt: 301
+[ 1117.206372] [cacdbd38] [c004bbb0] kthread_probe_data+0x44/0x70 (unreliable)
+[ 1117.206561] [cacdbd58] [c0045948] print_worker_info+0xe0/0x194
+[ 1117.206717] [cacdbdb8] [c00548ac] sched_show_task+0x134/0x168
+[ 1117.206851] [cacdbdd8] [c005a268] show_state_filter+0x70/0x100
+[ 1117.206989] [cacdbe08] [c039baa0] sysrq_handle_showstate+0x14/0x24
+[ 1117.207122] [cacdbe18] [c039bf18] __handle_sysrq+0xac/0x1d0
+[ 1117.207257] [cacdbe48] [c039c0c0] write_sysrq_trigger+0x4c/0x74
+[ 1117.207407] [cacdbe68] [c01fba48] proc_reg_write+0xb4/0x114
+[ 1117.207550] [cacdbe88] [c0179968] vfs_write+0x12c/0x478
+[ 1117.207686] [cacdbf08] [c0179e60] ksys_write+0x78/0x128
+[ 1117.207826] [cacdbf38] [c00110d0] ret_from_syscall+0x0/0x34
+[ 1117.207938] --- interrupt: c01 at 0xfd4e784
+[ 1117.208008] NIP:  0fd4e784 LR: 0fe0f244 CTR: 10048d38
+[ 1117.208083] REGS: cacdbf48 TRAP: 0c01   Tainted: G        W          (5.10.0-rc5-01340-g83f53be2de31-dirty)
+[ 1117.208134] MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 44002222  XER: 00000000
+[ 1117.208470]
+[ 1117.208470] GPR00: 00000004 7fc34090 77bfb4e0 00000001 1080fa40 00000002 7400000f fefefeff
+[ 1117.208470] GPR08: 7f7f7f7f 10048d38 1080c414 7fc343c0 00000000
+[ 1117.209104] NIP [0fd4e784] 0xfd4e784
+[ 1117.209180] LR [0fe0f244] 0xfe0f244
+[ 1117.209236] --- interrupt: c01
+[ 1117.209274] Instruction dump:
+[ 1117.209353] 714a4000 418200f0 73ca0001 40820084 73ca0032 408200f8 73c90040 4082ff60
+[ 1117.209727] 0fe00000 3c60c082 386399f4 48013b65 <0fe00000> 80010034 3860000b 7c0803a6
+[ 1117.210102] ---[ end trace 1927c0323393af3e ]---
 
-In other words, membarrier needs a special sync to deal with the case=20
-when a kthread takes the mm. exit_lazy_tlb gives membarrier code that=20
-exact hook that it wants from the core scheduler code.
+To avoid that, copy_from_kernel_nofault_allowed() is used to check
+whether the address is a valid kernel address. But the default
+version of it returns true for any address.
 
->=20
-> I wrote this incomplete patch which takes the opposite approach (sorry
-> for whitespace damage):
+Provide a powerpc version of copy_from_kernel_nofault_allowed()
+that returns false when the address is below TASK_USER_MAX,
+so that copy_from_kernel_nofault() will return -ERANGE.
 
-That said, if you want to move the code entirely in the x86 arch from
-exit_lazy_tlb to switch_mm_irqs_off, it's trivial and touches no core
-code after my series :) and I would have no problem with doing that.
+Reported-by: Qian Cai <qcai@redhat.com>
+Fixes: c33165253492 ("powerpc: use non-set_fs based maccess routines")
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+This issue was introduced in 5.10. I didn't mark it for stable, hopping it will go into 5.10-rc7
+---
+ arch/powerpc/mm/Makefile  | 2 +-
+ arch/powerpc/mm/maccess.c | 9 +++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/mm/maccess.c
 
-I suspect it might actually be more readable to go the other way and
-pull most of the real_prev =3D=3D next membarrier code into exit_lazy_tlb
-instead, but I could be wrong I don't know exactly how the x86 lazy
-state correlates with core lazy tlb state.
+diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
+index 5e147986400d..55b4a8bd408a 100644
+--- a/arch/powerpc/mm/Makefile
++++ b/arch/powerpc/mm/Makefile
+@@ -5,7 +5,7 @@
+ 
+ ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
+ 
+-obj-y				:= fault.o mem.o pgtable.o mmap.o \
++obj-y				:= fault.o mem.o pgtable.o mmap.o maccess.o \
+ 				   init_$(BITS).o pgtable_$(BITS).o \
+ 				   pgtable-frag.o ioremap.o ioremap_$(BITS).o \
+ 				   init-common.o mmu_context.o drmem.o
+diff --git a/arch/powerpc/mm/maccess.c b/arch/powerpc/mm/maccess.c
+new file mode 100644
+index 000000000000..56e97c0fb233
+--- /dev/null
++++ b/arch/powerpc/mm/maccess.c
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <linux/uaccess.h>
++#include <linux/kernel.h>
++
++bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
++{
++	return (unsigned long)unsafe_src >= TASK_SIZE_MAX;
++}
+-- 
+2.25.0
 
-Thanks,
-Nick
-
->=20
-> commit 928b5c60e93f475934892d6e0b357ebf0a2bf87d
-> Author: Andy Lutomirski <luto@kernel.org>
-> Date:   Wed Dec 2 17:24:02 2020 -0800
->=20
->     [WIP] x86/mm: Handle unlazying membarrier core sync in the arch code
->=20
->     The core scheduler isn't a great place for
->     membarrier_mm_sync_core_before_usermode() -- the core scheduler
->     doesn't actually know whether we are lazy.  With the old code, if a
->     CPU is running a membarrier-registered task, goes idle, gets unlazied
->     via a TLB shootdown IPI, and switches back to the
->     membarrier-registered task, it will do an unnecessary core sync.
->=20
->     Conveniently, x86 is the only architecture that does anything in this
->     hook, so we can just move the code.
->=20
->     XXX: actually delete the old code.
->=20
->     Signed-off-by: Andy Lutomirski <luto@kernel.org>
->=20
-> diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-> index 3338a1feccf9..e27300fc865b 100644
-> --- a/arch/x86/mm/tlb.c
-> +++ b/arch/x86/mm/tlb.c
-> @@ -496,6 +496,8 @@ void switch_mm_irqs_off(struct mm_struct *prev,
-> struct mm_struct *next,
->           * from one thread in a process to another thread in the same
->           * process. No TLB flush required.
->           */
-> +
-> +        // XXX: why is this okay wrt membarrier?
->          if (!was_lazy)
->              return;
->=20
-> @@ -508,12 +510,24 @@ void switch_mm_irqs_off(struct mm_struct *prev,
-> struct mm_struct *next,
->          smp_mb();
->          next_tlb_gen =3D atomic64_read(&next->context.tlb_gen);
->          if (this_cpu_read(cpu_tlbstate.ctxs[prev_asid].tlb_gen) =3D=3D
-> -                next_tlb_gen)
-> +            next_tlb_gen) {
-> +            /*
-> +             * We're reactivating an mm, and membarrier might
-> +             * need to serialize.  Tell membarrier.
-> +             */
-> +
-> +            // XXX: I can't understand the logic in
-> +            // membarrier_mm_sync_core_before_usermode().  What's
-> +            // the mm check for?
-> +            membarrier_mm_sync_core_before_usermode(next);
->              return;
-> +        }
->=20
->          /*
->           * TLB contents went out of date while we were in lazy
->           * mode. Fall through to the TLB switching code below.
-> +         * No need for an explicit membarrier invocation -- the CR3
-> +         * write will serialize.
->           */
->          new_asid =3D prev_asid;
->          need_flush =3D true;
->=20
