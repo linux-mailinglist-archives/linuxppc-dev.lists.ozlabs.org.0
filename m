@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569862CF91F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 04:11:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DAE2CF926
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 04:13:18 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cnvjm2W25zDqsx
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 14:11:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cnvlt192kzDqCl
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 14:13:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -17,19 +17,19 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=telegraphics.com.au
 Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
  [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Cnvgn2SzYzDqND
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 14:09:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CnvhV4wjwzDqwy
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Dec 2020 14:10:18 +1100 (AEDT)
 Received: from localhost (localhost.localdomain [127.0.0.1])
- by kvm5.telegraphics.com.au (Postfix) with ESMTP id E040F2B616;
- Fri,  4 Dec 2020 22:09:35 -0500 (EST)
-Date: Sat, 5 Dec 2020 14:09:40 +1100 (AEDT)
+ by kvm5.telegraphics.com.au (Postfix) with ESMTP id 7137B2B617;
+ Fri,  4 Dec 2020 22:10:15 -0500 (EST)
+Date: Sat, 5 Dec 2020 14:10:21 +1100 (AEDT)
 From: Finn Thain <fthain@telegraphics.com.au>
 To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] macintosh/adb-iop: Always wait for reply message from IOP
-In-Reply-To: <CAMuHMdX5yUaCWYsM7WgatYSDLZMcSckugOQxBBnBZOB_eJm=1g@mail.gmail.com>
-Message-ID: <alpine.LNX.2.23.453.2012051342400.6@nippy.intranet>
-References: <0f0a25855391e7eaa53a50f651aea0124e8525dd.1605847196.git.fthain@telegraphics.com.au>
- <CAMuHMdX5yUaCWYsM7WgatYSDLZMcSckugOQxBBnBZOB_eJm=1g@mail.gmail.com>
+Subject: Re: [PATCH] macintosh/adb-iop: Send correct poll command
+In-Reply-To: <CAMuHMdVYf83+y1aUR6HqCgr-CLfWYvbuynpfogLrt3cXA-9_aA@mail.gmail.com>
+Message-ID: <alpine.LNX.2.23.453.2012051340490.6@nippy.intranet>
+References: <58bba4310da4c29b068345a4b36af8a531397ff7.1605847196.git.fthain@telegraphics.com.au>
+ <CAMuHMdVYf83+y1aUR6HqCgr-CLfWYvbuynpfogLrt3cXA-9_aA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -55,99 +55,32 @@ On Fri, 4 Dec 2020, Geert Uytterhoeven wrote:
 > Hi Finn,
 > 
 > On Fri, Nov 20, 2020 at 5:54 AM Finn Thain <fthain@telegraphics.com.au> wrote:
-> > A recent patch incorrectly altered the adb-iop state machine behaviour
-> > and introduced a regression that can appear intermittently as a
-> > malfunctioning ADB input device. This seems to be caused when reply
-> > packets from different ADB commands become mixed up, especially during
-> > the adb bus scan. Fix this by unconditionally entering the awaiting_reply
-> > state after sending an explicit command, even when the ADB command won't
-> > generate a reply from the ADB device.
+> > The behaviour of the IOP firmware is not well documented but we do know
+> > that IOP message reply data can be used to issue new ADB commands.
+> > Use the message reply to better control autopoll behaviour by sending
+> > a Talk Register 0 command after every ADB response, not unlike the
+> > algorithm in the via-macii driver. This poll command is addressed to
+> > that device which last received a Talk command (explicit or otherwise).
 > >
 > > Cc: Joshua Thompson <funaho@jurai.org>
-> > Fixes: e2954e5f727f ("macintosh/adb-iop: Implement sending -> idle state transition")
+> > Fixes: fa3b5a9929fc ("macintosh/adb-iop: Implement idle -> sending state transition")
+> 
+> WARNING: Unknown commit id 'fa3b5a9929fc', maybe rebased or not pulled?
+> 
+> 32226e817043?
+> 
+
+Yes, that's the one. I accidentally gave a commit id from one of my 
+backport branches.
+
 > > Tested-by: Stan Johnson <userm57@yahoo.com>
 > > Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
 > 
-> Thanks for your patch!
-> 
-> > --- a/drivers/macintosh/adb-iop.c
-> > +++ b/drivers/macintosh/adb-iop.c
-> > @@ -84,10 +84,7 @@ static void adb_iop_complete(struct iop_msg *msg)
-> >
-> >         local_irq_save(flags);
-> >
-> > -       if (current_req->reply_expected)
-> > -               adb_iop_state = awaiting_reply;
-> > -       else
-> > -               adb_iop_done();
-> > +       adb_iop_state = awaiting_reply;
-> >
-> >         local_irq_restore(flags);
-> >  }
-> > @@ -95,8 +92,9 @@ static void adb_iop_complete(struct iop_msg *msg)
-> >  /*
-> >   * Listen for ADB messages from the IOP.
-> >   *
-> > - * This will be called when unsolicited messages (usually replies to TALK
-> > - * commands or autopoll packets) are received.
-> > + * This will be called when unsolicited IOP messages are received.
-> > + * These IOP messages can carry ADB autopoll responses and also occur
-> > + * after explicit ADB commands.
-> >   */
-> >
-> >  static void adb_iop_listen(struct iop_msg *msg)
-> > @@ -123,8 +121,10 @@ static void adb_iop_listen(struct iop_msg *msg)
-> >                 if (adb_iop_state == awaiting_reply) {
-> >                         struct adb_request *req = current_req;
-> >
-> > -                       req->reply_len = amsg->count + 1;
-> > -                       memcpy(req->reply, &amsg->cmd, req->reply_len);
-> > +                       if (req->reply_expected) {
-> > +                               req->reply_len = amsg->count + 1;
-> > +                               memcpy(req->reply, &amsg->cmd, req->reply_len);
-> > +                       }
-> 
-> So if we're not expecting a reply. It's ignored.
-> Just wondering: what kind of messages are being dropped?
-
-I believe they were empty, with flags == ADB_IOP_EXPLICIT|ADB_IOP_TIMEOUT.
-
-> If reply packets from different ADB commands become mixed up, they are 
-> still (expected?) replies to messages we sent before. Why shouldn't we 
-> depend on receiving the replies?
+> Thanks, will queue in the m68k for-v5.11 branch.
 > 
 
-It turns out that the IOP always generates reply messages, even when the 
-ADB command does not produce a reply packet (e.g. ADB Listen command). 
+Thanks.
 
-The commit being fixed got that wrong.
-
-So it's not really the ADB reply packets that are being mixed up, it's the 
-IOP messages that enclose them. The bug goes like this:
-
-1. CPU sends a message to the IOP, expecting no response because this 
-message contains an ADB Listen command. The ADB command is now considered 
-complete.
-
-2. CPU sends a second message to the IOP, this time expecting a response 
-because this message contains an ADB Talk command. This ADB command needs 
-a reply before it can be completed.
-
-3. adb-iop driver receives an IOP message and assumes that it relates to 
-the Talk command. It's actually for the previous command. The Talk command 
-is now considered complete but it gets the wrong reply data.
-
-4. adb-iop driver gets another IOP response message, which contains the 
-actual reply data for the Talk command, but this is dropped (the driver is 
-no longer in awaiting_reply state).
-
-Please go ahead and add this analysis to the commit log if you think it 
-would help.
-
-> >
-> >                         req_done = true;
-> >                 }
-> 
 > Gr{oetje,eeting}s,
 > 
 >                         Geert
