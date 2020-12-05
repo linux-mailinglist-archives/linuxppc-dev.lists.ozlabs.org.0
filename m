@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374652CFF2F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 22:23:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3908E2CFF39
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Dec 2020 22:30:43 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CpMxT553jzDqDc
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 08:23:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CpN672f1QzDqmC
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 08:30:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=IomTqf+w; 
+ header.s=k20201202 header.b=TTX4lDSW; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CpMsJ5GzLzDqf5
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 08:19:32 +1100 (AEDT)
-Date: Sat, 5 Dec 2020 13:19:28 -0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CpN2K1hcCzDqNv
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 08:27:20 +1100 (AEDT)
+Date: Sat, 5 Dec 2020 13:27:16 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1607203170;
- bh=PyjM1pGVTFHxUehGtpwFnMJ3A9jzuRhj8X6L8VDNDQo=;
+ s=k20201202; t=1607203637;
+ bh=FD4PyLI/19p+zpfFll8rCI/9aR2mAR3+g29XkXnp8fg=;
  h=From:To:Cc:Subject:In-Reply-To:References:From;
- b=IomTqf+w6S260Krot3AzLA96YRLEmUE+dTNDRNGda8WX41gmHH8hyEIa3DF96Wc03
- QpS/knU4Z8zTv6zTDgxt97BNT/vJ+EesFz5kZqDIvT/w6pAF5UoDUKhtWrLce1CRsA
- DFaMJnbtcUIao87SqdFnFi5RCdwFij6fIHQ19rG0D1Sb219fjP1hxOhzFqNCGRJWao
- Ju4epsvDrCq+1fjJBVTjEa+ORIpDHP81zXEVzoEfuvnHY49ZHXJXnYyi5lPqI3Ea6m
- aTce8LCME5vTq5eG7uxqQLJlE4JNKnnk+j56wQhzFp6GAMVxnM71gsC3kR8fOTi7hI
- Sn7EiyZoxM6lQ==
+ b=TTX4lDSWJHCfeyKYmYD9VrgrqASPFYttBYRKKTns5roGvSnFK3Kq5CoKFGaPAR1hL
+ G2QRaExRTzQMCPRCXh3Di3nJWQiZsvKKesb5zgry6C+j3XHay2YgZaSbJA/Rz6/GdL
+ wqGIf4q7Rj7I816+wSsVd4rdJPLFOBlA8zmtp0heGz5DcD8FYqWuff6RFCb/meZCEB
+ NQgnzrJvmNXJ4C93auUBsON/ISUhtdyHQrBPReZw/UYgC21OYyn8oIlihZ8FUscYsT
+ Ey6OMIKZj3Q856OKy99W7lWinZA0ryZzXwxbGp7QesIxYBJv6CZ8XXkDEryf4Z+ozv
+ scwKn5k/YSwHQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-Subject: Re: [PATCH 11/20] ethernet: ucc_geth: fix use-after-free in
- ucc_geth_remove()
-Message-ID: <20201205131928.7d5c8e59@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-In-Reply-To: <4d35ef11-b1eb-c450-2937-94e20fa9a213@prevas.dk>
+Subject: Re: [PATCH 00/20] ethernet: ucc_geth: assorted fixes and
+ simplifications
+Message-ID: <20201205132716.4c68e35d@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+In-Reply-To: <7e78df84-0035-6935-acb0-adbd0c648128@prevas.dk>
 References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
- <20201205191744.7847-12-rasmus.villemoes@prevas.dk>
- <20201205124859.60d045e6@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
- <4d35ef11-b1eb-c450-2937-94e20fa9a213@prevas.dk>
+ <20201205125351.41e89579@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+ <7e78df84-0035-6935-acb0-adbd0c648128@prevas.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -58,37 +57,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, linux-kernel@vger.kernel.org,
- Li Yang <leoyang.li@nxp.com>, netdev@vger.kernel.org,
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Li Yang <leoyang.li@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
  linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Zhao Qiang <qiang.zhao@nxp.com>
+ linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 5 Dec 2020 22:04:28 +0100 Rasmus Villemoes wrote:
-> On 05/12/2020 21.48, Jakub Kicinski wrote:
-> > On Sat,  5 Dec 2020 20:17:34 +0100 Rasmus Villemoes wrote:  
-> >> -	unregister_netdev(dev);
-> >> -	free_netdev(dev);
-> >>  	ucc_geth_memclean(ugeth);
-> >>  	if (of_phy_is_fixed_link(np))
-> >>  		of_phy_deregister_fixed_link(np);
-> >>  	of_node_put(ugeth->ug_info->tbi_node);
-> >>  	of_node_put(ugeth->ug_info->phy_node);
-> >> +	unregister_netdev(dev);
-> >> +	free_netdev(dev);  
+On Sat, 5 Dec 2020 22:11:39 +0100 Rasmus Villemoes wrote:
+> > Looks like a nice clean up on a quick look.
 > > 
-> > Are you sure you want to move the unregister_netdev() as well as the
-> > free?
+> > Please separate patches 1 and 11 (which are the two bug fixes I see)  
 > 
-> Hm, dunno, I don't think it's needed per se, but it also shouldn't hurt
-> from what I can tell. It seems more natural that they go together, but
-> if you prefer a minimal patch that's of course also possible.
+> I think patch 2 is a bug fix as well, but I'd like someone from NXP to
+> comment.
 
-I was concerned about the fact that we free things and release
-references while the device may still be up (given that it's
-unregister_netdev() that will take it down).
+Sure, makes sense.
 
-> I only noticed because I needed to add a free of the ug_info in a later
-> patch.
+> > rebase (retest) and post them against the net tree:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/  
+> 
+> So I thought this would go through Li Yang's tree. That's where my
+> previous QE related patches have gone through, and at least some need
+> some input from NXP folks - and what MAINTAINERS suggests. So not
+> marking the patches with net or net-next was deliberate. But I'm happy
+> to rearrange and send to net/net-next as appropriate if that's what you
+> and Li Yang can agree to.
+
+Ah, now I noticed you didn't CC all of the patches to netdev.
+Please don't do that, build bots won't be able to validate partially
+posted patches.
