@@ -1,50 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD91B2D0045
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 03:21:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC312D0059
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 05:00:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CpVYB61WdzDqpv
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 13:21:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CpXmM6qKjzDqrq
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 15:00:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Q6EsRabr; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CpVTH6LBTzDqkx
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 13:17:35 +1100 (AEDT)
-IronPort-SDR: Kbxk+ib1lakL3VtdwzTG506OQxJ1NgS1ri0P6I4XSWsOUeSASSi0tgmkKafKMd6rm4Z27fnJqQ
- l+io4ldtCr0w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9826"; a="153368550"
-X-IronPort-AV: E=Sophos;i="5.78,396,1599548400"; d="scan'208";a="153368550"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2020 18:17:32 -0800
-IronPort-SDR: LxcfbrjApLB/EcYvAdgxLaziHWeGoRZ6qc1zqZVJkQsN60PDEaAFXDb1N6SaC7uUt5UmlQPoeG
- rNfzVHI+qxaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,396,1599548400"; d="scan'208";a="366764394"
-Received: from lkp-server01.sh.intel.com (HELO 47754f1311fc) ([10.239.97.150])
- by fmsmga004.fm.intel.com with ESMTP; 05 Dec 2020 18:17:31 -0800
-Received: from kbuild by 47754f1311fc with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kljcB-0000X0-00; Sun, 06 Dec 2020 02:17:31 +0000
-Date: Sun, 06 Dec 2020 10:16:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 8817aabb1bdd5811130f94ff6442bb19c9158a3a
-Message-ID: <5fcc3f0c.h6GLKKKbYJQYcKjh%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CpXkW2RyrzDqll
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 14:59:14 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id g18so6159827pgk.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 05 Dec 2020 19:59:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=FptgIr82FqTx3PHqnbjpte09oCnyjLLgrpPMpwFz88M=;
+ b=Q6EsRabrUE2RTMBsAqNxGvg6ogWN1/xjOSQDh/Zno6SCU1/zkEOeCBt2J1JIiu8Csl
+ JFIHJYoUEseptJ+tkOyw3DeWvATYFrTGkMfaptz1QM5DIs6LPM02O8Cq/i6MLK0u1HuL
+ OF4oHjgSqgYKQ+WP7tckuYLM8pu5RbookG6eXTJCC/wlQKJAERsunG8bUXLeZEi6LvA4
+ MCChAW5kqSadLPQZKrIVG/tnW2jbOlk/sLLXRPly4jeZGgSNEMrsrGw+J2AYZJKVSZ8Y
+ acisYoev2jsJDa4pfUpqI0mqMxCoWEjFPh98GdiICLQ//BK83VcahSq9GeJekNc58o78
+ ipBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=FptgIr82FqTx3PHqnbjpte09oCnyjLLgrpPMpwFz88M=;
+ b=pzPbr5ktqvXmPtray68P580TbpSFkU3Q9kL52HP02wjw5jm0VeGcDlm2vO38EO/44V
+ 9DNFG2DV+gzaCaAlwklXhlcqLh2HKTjBUjQWMnoKdMUUkr2Rorgkzj+jyjIOlX0YbiKU
+ vCpOg71Zl0cXFMxYkgILPlH6IaWpAovCJPU7BiYgX8asovf4VXdNxlkqZjj1BDXgsMp/
+ LGStb4pQoFgqv6wsh7eOwpST5RPQ0ppkuVYeKjPRnDtvW618xGtM6jpvgRpwofAE4ymh
+ pSZZezdbgKNzEVXuG2dibQAdcVQpwxnKy+dnyGkCQIQE9kyRqMsUO2TrDBH0cC3W8mqS
+ e9Vg==
+X-Gm-Message-State: AOAM532FJQY4whUb3bHWnie7FMztltEarb42J2EFxRAlRxdcBqRVCqVb
+ ljVQMY6WcrIVxTMFXEXpSsk=
+X-Google-Smtp-Source: ABdhPJzvDyvnLw4jfZJLoSS9UTDSAnw3moePqpodQUp3PeTMl/gPGntdvFiBGx1lbBhbyo+yiEOzZw==
+X-Received: by 2002:a05:6a00:148d:b029:19d:9622:bf7 with SMTP id
+ v13-20020a056a00148db029019d96220bf7mr10801096pfu.11.1607227150468; 
+ Sat, 05 Dec 2020 19:59:10 -0800 (PST)
+Received: from localhost ([1.129.153.198])
+ by smtp.gmail.com with ESMTPSA id 21sm1593688pfx.84.2020.12.05.19.59.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 05 Dec 2020 19:59:09 -0800 (PST)
+Date: Sun, 06 Dec 2020 13:59:02 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 2/8] x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
+To: Andy Lutomirski <luto@kernel.org>
+References: <1607152918.fkgmomgfw9.astroid@bobo.none>
+ <116A6B40-C77B-4B6A-897B-18342CD62CEC@amacapital.net>
+ <1607209402.fogfsh8ov4.astroid@bobo.none>
+ <CALCETrWFjOXAd5=ctX3tzgUbyfwM+bT-f8WY_QWOeuDdFxhWbg@mail.gmail.com>
+In-Reply-To: <CALCETrWFjOXAd5=ctX3tzgUbyfwM+bT-f8WY_QWOeuDdFxhWbg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Message-Id: <1607224014.8xeujbleij.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,163 +83,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: 8817aabb1bdd5811130f94ff6442bb19c9158a3a  powerpc: Remove ucache_bsize
+Excerpts from Andy Lutomirski's message of December 6, 2020 10:36 am:
+> On Sat, Dec 5, 2020 at 3:15 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+>>
+>> Excerpts from Andy Lutomirski's message of December 6, 2020 2:11 am:
+>> >
+>=20
+>> If an mm was lazy tlb for a kernel thread and then it becomes unlazy,
+>> and if switch_mm is serialising but return to user is not, then you
+>> need a serialising instruction somewhere before return to user. unlazy
+>> is the logical place to add that, because the lazy tlb mm (i.e.,
+>> switching to a kernel thread and back without switching mm) is what
+>> opens the hole.
+>=20
+> The issue here is that unlazying on x86 sometimes serializes and
+> sometimes doesn't.
 
-elapsed time: 864m
+That's additional state that x86 keeps around though, which is
+fine. It can optimise that case if it knows it's already
+serialised.
 
-configs tested: 137
-configs skipped: 10
+> It's straightforward to add logic to the x86 code
+> to serialize specifically in the case where membarrier core sync is
+> registered and unlazying would otherwise not serialize, but trying to
+> define sensible semantics for this in a call to core code seems
+> complicated.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+It's not though, it's a call from core code (to arch code).
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                             alldefconfig
-powerpc                 mpc8272_ads_defconfig
-powerpc                          g5_defconfig
-powerpc                     sequoia_defconfig
-powerpc                    gamecube_defconfig
-nios2                            alldefconfig
-arc                        vdk_hs38_defconfig
-powerpc                      cm5200_defconfig
-arm                          tango4_defconfig
-mips                 decstation_r4k_defconfig
-powerpc                     tqm8555_defconfig
-sh                           se7721_defconfig
-c6x                        evmc6457_defconfig
-mips                     loongson1c_defconfig
-powerpc                         wii_defconfig
-mips                  decstation_64_defconfig
-xtensa                  cadence_csp_defconfig
-arm                        shmobile_defconfig
-um                           x86_64_defconfig
-ia64                          tiger_defconfig
-arm                         mv78xx0_defconfig
-ia64                            zx1_defconfig
-sh                 kfr2r09-romimage_defconfig
-mips                       capcella_defconfig
-x86_64                              defconfig
-mips                       rbtx49xx_defconfig
-arm                          ixp4xx_defconfig
-mips                        bcm63xx_defconfig
-powerpc                   motionpro_defconfig
-mips                           jazz_defconfig
-powerpc                        cell_defconfig
-ia64                             alldefconfig
-powerpc                     tqm5200_defconfig
-arc                         haps_hs_defconfig
-arm                           spitz_defconfig
-arm                          exynos_defconfig
-mips                         tb0219_defconfig
-arm                          prima2_defconfig
-sh                            titan_defconfig
-powerpc                       eiger_defconfig
-arm                        trizeps4_defconfig
-sh                          lboxre2_defconfig
-powerpc                    amigaone_defconfig
-powerpc               mpc834x_itxgp_defconfig
-sparc                               defconfig
-arm                        spear3xx_defconfig
-arm                         at91_dt_defconfig
-powerpc                       ebony_defconfig
-mips                         tb0226_defconfig
-sh                             espt_defconfig
-arm                         vf610m4_defconfig
-arm                        multi_v5_defconfig
-arm                         nhk8815_defconfig
-arm                           sama5_defconfig
-powerpc                 mpc8560_ads_defconfig
-ia64                        generic_defconfig
-arm                           omap1_defconfig
-arm                        mini2440_defconfig
-s390                                defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a005-20201205
-i386                 randconfig-a004-20201205
-i386                 randconfig-a001-20201205
-i386                 randconfig-a002-20201205
-i386                 randconfig-a006-20201205
-i386                 randconfig-a003-20201205
-i386                 randconfig-a005-20201204
-i386                 randconfig-a004-20201204
-i386                 randconfig-a001-20201204
-i386                 randconfig-a002-20201204
-i386                 randconfig-a006-20201204
-i386                 randconfig-a003-20201204
-x86_64               randconfig-a016-20201205
-x86_64               randconfig-a012-20201205
-x86_64               randconfig-a014-20201205
-x86_64               randconfig-a013-20201205
-x86_64               randconfig-a015-20201205
-x86_64               randconfig-a011-20201205
-i386                 randconfig-a014-20201205
-i386                 randconfig-a013-20201205
-i386                 randconfig-a011-20201205
-i386                 randconfig-a015-20201205
-i386                 randconfig-a012-20201205
-i386                 randconfig-a016-20201205
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
+> (Specifically, the x86 code only sometimes sends IPIs to
+> lazy CPUs for TLB flushes.  If an IPI is skipped, then unlazying will
+> flush the TLB, and that operation is serializing.
+>=20
+> The whole lazy thing is IMO a red herring for membarrier().  The
+> membarrier() logic requires that switching *logical* mms
+> (rq->curr->mm) serializes before user mode if the new mm is registered
+> for core sync.
 
-clang tested configs:
-x86_64               randconfig-a004-20201205
-x86_64               randconfig-a006-20201205
-x86_64               randconfig-a002-20201205
-x86_64               randconfig-a001-20201205
-x86_64               randconfig-a005-20201205
-x86_64               randconfig-a003-20201205
+It's not a red herring, the reason the IPI gets skipped is because
+we go to a kernel thread -- that's all core code and core lazy tlb
+handling.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+That x86 might do some additional ops serialise during un-lazy in
+some cases doesn't make that a red herring, it just means that you
+can take advantage of it and avoid doing an extra serialising op.
+
+> AFAICT the only architecture on which this isn't
+> automatic is x86, and somehow the logic turned into "actually changing
+> rq->curr->mm serializes, but unlazying only sometimes serializes, so
+> we need to do an extra serialization step on unlazying operations"
+> instead of "tell x86 to make sure it always serializes when it
+> switches logical mms".  The latter is easy to specify and easy to
+> implement.
+>=20
+>>
+>> How do you mean? exit_lazy_tlb is the opposite, core scheduler notifying
+>> arch code about when an mm becomes not-lazy, and nothing to do with
+>> membarrier at all even. It's a convenient hook to do your un-lazying.
+>> I guess you can do it also checking things in switch_mm and keeping stat=
+e
+>> in arch code, I don't think that's necessarily the best place to put it.
+>=20
+> I'm confused.  I just re-read your patches, and it looks like you have
+> arch code calling exit_lazy_tlb().
+
+More for code-comment / consistency than anything else. They are
+entirely arch hooks.
+
+> On x86, if we do a TLB shootdown
+> IPI to a lazy CPU, the IPI handler will unlazy that CPU (by switching
+> to init_mm for real), and we have no way to notify the core scheduler
+> about this, so we don't.  The result is that the core scheduler state
+> and the x86 state gets out of sync.  If the core scheduler
+> subsequently switches us back to the mm that it thinks we were still
+> using lazily them, from the x86 code's perspective, we're not
+> unlazying -- we're just doing a regular switch from init_mm to some
+> other mm.  This is why x86's switch_mm_irqs_off() totally ignores its
+> 'prev' argument.
+
+You actually do now have such a way to do that now that we've
+(hopefully) closed races, and I think should use it, which might make=20
+things simpler for you. See patch 6 do_shoot_lazy_tlb().
+
+> I'm honestly a bit surprised that other architectures don't do the
+> same thing.  I suppose that some architectures don't use shootdown
+> IPIs at all, in which case there doesn't seem to be any good reason to
+> aggressively unlazy.
+
+powerpc/radix does (in some cases) since a few years ago. It just=20
+doesn't fully exploit that for the final TLB shootdown to always clean=20
+them all up and avoid the subsequent shoot-lazies IPI, but it could be=20
+more aggressive there.
+
+The powerpc virtualised hash architecture is the traditional one and=20
+isn't conducive to this (translation management is done via hcalls, and
+the hypervisor maintains the TLB) so I suspect that's why it wasn't
+done earlier there. That will continue to rely on shoot-lazies.
+
+> (Oddly, despite the fact that, since Ivy Bridge, x86 has a "just flush
+> the TLB" instruction, that instruction is considerably slower than the
+> old "switch mm and flush" operation.  So the operation "switch to
+> init_mm" is only ever any slower than "flush and stay lazy" if we get
+> lucky and unlazy to the same mm before we get a second TLB shootdown
+> *and* if unlazying to the same mm would not have needed to flush.  I
+> spend quite a bit of time tuning this stuff and being quite surprised
+> at the bizarre performance properties of Intel's TLB management
+> instructions.)
+
+Well, you also casue an extra mm switch in case you returned to the
+same mm. Which probably isn't uncommon (app<->idle).
+
+>>
+>> So membarrier code is unchanged (it cares that the serialise is done at
+>> un-lazy time), core code is simpler (no knowledge of this membarrier
+>> quirk and it already knows about lazy-tlb so the calls actually improve
+>> the documentation), and x86 code I would argue becomes nicer (or no real
+>> difference at worst) because you can move some exit lazy tlb handling to
+>> that specific call rather than decipher it from switch_mm.
+>=20
+> As above, I can't move the exit-lazy handling because the scheduler
+> doesn't know when I'm unlazying.
+
+As above, you can actually tell it. But even if you don't do that, in
+the current scheme it's still telling you a superset of what you need,=20
+so you'd just put move your extra checks there.
+
+>=20
+>>
+>> >
+>> > I=E2=80=99m currently trying to document how membarrier actually works=
+, and
+>> > hopefully this will result in untangling membarrier from mmdrop() and
+>> > such.
+>>
+>> That would be nice.
+>=20
+> It's still a work in progress.  I haven't actually convinced myself
+> that the non-IPI case in membarrier() is correct, nor have I convinced
+> myself that it's incorrect.
+>=20
+> Anyway, I think that my patch is a bit incorrect and I either need a
+> barrier somewhere (which may already exist) or a store-release to
+> lazy_mm to make sure that all accesses to the lazy mm are done before
+> lazy_mm is freed.  On x86, even aside from the fact that all stores
+> are releases, this isn't needed -- stopping using an mm is itself a
+> full barrier.  Will this be a performance issue on power?
+
+store-release is lwsync on power. Not so bad as a full barrier, but
+probably not wonderful. The fast path would be worse than shoot-lazies
+of course, but may not be prohibitive.
+
+I'm still going to persue shoot-lazies for the merge window. As you
+see it's about a dozen lines and a if (IS_ENABLED(... in core code.
+Your change is common code, but a significant complexity (which
+affects all archs) so needs a lot more review and testing at this
+point.
+
+If x86 is already shooting lazies in its final TLB flush, I don't
+know why you're putting so much effort in though, surely it's more
+complexity and (even slightly) more cost there too.
+
+>=20
+>>
+>> >
+>> > A silly part of this is that x86 already has a high quality
+>> > implementation of most of membarrier(): flush_tlb_mm().  If you flush
+>> > an mm=E2=80=99s TLB, we carefully propagate the flush to all threads, =
+with
+>> > attention to memory ordering.  We can=E2=80=99t use this directly as a=
+n
+>> > arch-specific implementation of membarrier because it has the annoying
+>> > side affect of flushing the TLB and because upcoming hardware might be
+>> > able to flush without guaranteeing a core sync.  (Upcoming means Zen
+>> > 3, but the Zen 3 implementation is sadly not usable by Linux.)
+>> >
+>>
+>> A hardware broadcast TLB flush, you mean? What makes it unusable by
+>> Linux out of curiosity?
+>=20
+> The new instruction is INVLPGB.  Unfortunately, x86's ASID field is
+> very narrow, and there's no way we can give each mm the same ASID
+> across all CPUs, which means we can't accurately target the flush at
+> the correct set of TLB entries.  I've asked engineers at both Intel
+> and AMD to widen the ASID field, but that will end up being
+> complicated -- x86 has run out of bits in its absurdly overloaded CR3
+> encoding, and widening the ASID to any reasonable size would require
+> adding a new way to switch mms.  There are lots of reasons that x86
+> should do that anyway [0], but it would be a big project and I'm not
+> sure that either company is interested in big projects like that.
+
+Interesting, thanks. powerpc has a PID register for guest ASIDs that
+implements about 20 bits.
+
+The IPI is very flexible though, it allows more complex/fine grained
+flushes and also software state to be updated, so we've started using
+it a bit. I haven't seen much software where performance of IPIs is
+prohibitive these days. Maybe improvements to threaded malloc, JVMs
+databases etc reduce the amount of flushes.
+
+
+> [0] On x86, you can't switch between (64-bit execution, 48-bit virtual
+> address space) and (64-bit execution, 57-bit address space) without
+> exiting 64-bit mode in the middle.  This is because the way that the
+> addressing mode is split among multiple registers prevents a single
+> instruction from switching between the two states.  This is absolutely
+> delightful for anyone trying to boot an OS on a system with a very,
+> very large amount of memory.
+>=20
+
+powerpc has some issues like that with context switching guest / host
+state there are several MMU registers involved that can't be switched=20
+with a single instruction. It doesn't require such a big hammer, but
+a careful sequence to switch things.
+
+Thanks,
+Nick
