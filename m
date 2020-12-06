@@ -2,48 +2,148 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3472D0309
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 11:53:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B54672D04A8
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 12:59:37 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CpjwW0xS9zDqkp
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 21:53:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CplNg6shDzDqkJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Dec 2020 22:59:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=wan.ahmad.zainie.wan.mohamad@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=intel.onmicrosoft.com header.i=@intel.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-intel-onmicrosoft-com
+ header.b=jJODwUib; dkim-atps=neutral
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CpjrM11kyzDqhS
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 21:49:53 +1100 (AEDT)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 1A40C1A0AAF;
- Sun,  6 Dec 2020 11:49:50 +0100 (CET)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C6CFF1A0AC3;
- Sun,  6 Dec 2020 11:49:44 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 4B3FA402E1;
- Sun,  6 Dec 2020 11:49:38 +0100 (CET)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
- perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- robh+dt@kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH v2 2/2] ASoC: fsl: Add imx-hdmi machine driver
-Date: Sun,  6 Dec 2020 18:41:59 +0800
-Message-Id: <1607251319-5821-2-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1607251319-5821-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1607251319-5821-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CphgR3gwFzDqSx
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Dec 2020 20:56:59 +1100 (AEDT)
+IronPort-SDR: XDLHDE+CJPbUrXZ2FYuKZsGmsQXLgoA7/ImDIdOa+L3TqSnUQ7z8FJ6GbdWI4h/IMWMgGHb80E
+ Zu7vHtPk+fYQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9826"; a="173725693"
+X-IronPort-AV: E=Sophos;i="5.78,397,1599548400"; d="scan'208";a="173725693"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Dec 2020 01:56:55 -0800
+IronPort-SDR: KhxUeEQd/syJmbZykVKhh1zEdmFK6e12NRRPY0/au+ifpaPxN3itLaKi9tmNrBMHnX9e2vgQ2R
+ cLe1JYVa3TDw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,397,1599548400"; d="scan'208";a="362713421"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+ by orsmga008.jf.intel.com with ESMTP; 06 Dec 2020 01:56:55 -0800
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Sun, 6 Dec 2020 01:56:54 -0800
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
+ via Frontend Transport; Sun, 6 Dec 2020 01:56:54 -0800
+Received: from NAM02-CY1-obe.outbound.protection.outlook.com (104.47.37.54) by
+ edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.1713.5; Sun, 6 Dec 2020 01:56:54 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iOGXWzvL7rYXMOGyLG/SrXxu/LDXRKZYTrc57Sj1/bsBdrc/HXNEP9JMBgVl00yWqTf4/ckGK3W3IhDCohe3tVmAntOPUT+seEDgLtXmxJF7IsGkuwGhJM8RXpY0pNuZXL6XSMPniGif0DYDWRgZfoiixvzxy60i2r1IwR6S5d3ogZpwyW6LBZ5m8P8o0YAJLkNT6DcPT9ybEc0H/zsti+lnDvJFhGb/nPA0Qe7GDxzYQTR2BHMUczkwMXcDJCNeRU34Ft+dY0yPoJbjqVYByxYUUfz8hy3GX2swvkwlbFTvr37sAK8jUAin+GemOJTwU2SjLIuIPpB5TBHsV1kPhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dwN13DuImlzbBBF6LPQebFBrO5c0//za4wRcIfu4XTw=;
+ b=aTvDgy8cDH92dKqOoiz318bm86217m0pXdJS1QXE2tniSyyYZvohuyxU1LC4D9Wj60AzOM03lHcf2yFhucls+aNW+VRm6US3h6Kfwf6u2N6pZHIIJt3N5KLw2jsgQY/aWzf1Mq+uh7tWlVCNlBKkUKyJepTfsHYJGcfcQXtpxywEfCduYdD9H7MkgDcxp9juEzCO4hUBibnMrpBocvywFr5pSIzQmop8HLNf3kLoTlBf9PC2HZCBNrK6Yw/+2arg9PCRmpbBfNE83WKMNBhk9CMiY0KCb8CJGvBAK6BThaBt7Ob0Z6yzNIG8BkUs6pOUFwVHJX+p+fuSDXIOZzQReQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com; 
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dwN13DuImlzbBBF6LPQebFBrO5c0//za4wRcIfu4XTw=;
+ b=jJODwUibBUUjyyO5aCfYP3GolXtTIL96wWY4yC6IoI7E07VvWoYBrtg8hQHxfmRGXl6NK19gCtpr+iXFxOCe89GZIphZ6slnv7gRbsrN5kkoZi10cLVfxFLbpU7089Q2ksSHazhdEfIVku7x1MXbq03QPXHcotZ+qE1kOVUb6S0=
+Received: from DM6PR11MB3721.namprd11.prod.outlook.com (2603:10b6:5:142::10)
+ by DM6PR11MB4705.namprd11.prod.outlook.com (2603:10b6:5:2a9::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Sun, 6 Dec
+ 2020 09:56:48 +0000
+Received: from DM6PR11MB3721.namprd11.prod.outlook.com
+ ([fe80::51e0:f848:dadc:bc01]) by DM6PR11MB3721.namprd11.prod.outlook.com
+ ([fe80::51e0:f848:dadc:bc01%4]) with mapi id 15.20.3632.021; Sun, 6 Dec 2020
+ 09:56:47 +0000
+From: "Wan Mohamad, Wan Ahmad Zainie" <wan.ahmad.zainie.wan.mohamad@intel.com>
+To: Serge Semin <Sergey.Semin@baikalelectronics.ru>, "Nyman, Mathias"
+ <mathias.nyman@intel.com>, Felipe Balbi <balbi@kernel.org>, "Krzysztof
+ Kozlowski" <krzk@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Rob Herring <robh+dt@kernel.org>, Chunfeng Yun
+ <chunfeng.yun@mediatek.com>
+Subject: RE: [PATCH v5 19/19] dt-bindings: usb: intel,keembay-dwc3: Validate
+ DWC3 sub-node
+Thread-Topic: [PATCH v5 19/19] dt-bindings: usb: intel, keembay-dwc3: Validate
+ DWC3 sub-node
+Thread-Index: AQHWyxrmBiVjzOaGF0u497ZUMOTKoKnp1GiA
+Date: Sun, 6 Dec 2020 09:56:47 +0000
+Message-ID: <DM6PR11MB3721E8FEB4E755328D7A517EDDCF0@DM6PR11MB3721.namprd11.prod.outlook.com>
+References: <20201205152427.29537-1-Sergey.Semin@baikalelectronics.ru>
+ <20201205152427.29537-20-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20201205152427.29537-20-Sergey.Semin@baikalelectronics.ru>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.5.1.3
+authentication-results: baikalelectronics.ru; dkim=none (message not signed)
+ header.d=none;baikalelectronics.ru; dmarc=none action=none
+ header.from=intel.com;
+x-originating-ip: [14.1.225.240]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 66df4d4e-9db2-45cc-4b13-08d899cd3f19
+x-ms-traffictypediagnostic: DM6PR11MB4705:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <DM6PR11MB4705A42CFA47FB2CD1683701DDCF0@DM6PR11MB4705.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3968;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: l8bN9Sr+unexKeVMOvp5qxu0thj52TP4qQDrg/SrjpPMgGdcLxaqo4a6I+Hn1C53+CH9Wz07YvizXNBemMLk0gZfNKvyfw6YpmEPDtxHOtvyLPf7hQ7cGmojM96En6ZDGkotDEzVsh+egTQ7UPGDRNCJyL+Rdc69TgXQLBJFghooKacIMoYvUrjktpxwo0R/HJ5zwV1Ak7DpAuQTjLYpFLG0M1/Vp4yya4+IWTPp31eeIuafJe5YWT4uFwmUm8Qcc+XLZQXyZbiHfqUKQZj7afeZS4qoCxW4XRWF6XjYgdTgE11/2zTz3p8WN8d5gJXLFy3SocQrSP3+zZ0DN2f6OQ==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR11MB3721.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(346002)(39860400002)(136003)(366004)(396003)(376002)(52536014)(6506007)(478600001)(54906003)(33656002)(15650500001)(2906002)(4326008)(7696005)(8676002)(55016002)(9686003)(26005)(7416002)(8936002)(53546011)(110136005)(316002)(86362001)(71200400001)(186003)(64756008)(66476007)(76116006)(5660300002)(66946007)(66556008)(66446008)(83380400001);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata: =?us-ascii?Q?k6pbexTVprzmcOUoyXXwJlSDP6D84muysO6D//mYTIKF2cngU3wl7K86KSBj?=
+ =?us-ascii?Q?ffUoYep5iDCHgXkfP7O8cna0sTZuram9Z73qxG/Lxpn+si/aDycBNVKurGCo?=
+ =?us-ascii?Q?ZMqZma5gaMWMEVunbNhcT928dw7oJXezgzxsdPyQ3AQ9kOxexepZCue5nafA?=
+ =?us-ascii?Q?At0WQkpSVzicietwsMqNalUy2F1opdCHBSU1bzkMaDJ/vM5mRx+RTEehXpXu?=
+ =?us-ascii?Q?X9qM7n//pXUt/QZUgo1IqX/iDyvN3+d3kiG/wDHN+AFNn6apE3f7Mzf1zqRM?=
+ =?us-ascii?Q?+qQsiMNzsStANbnMpnI2uG1FgljZA/ld5OItYyZ6gz+Bf3jsHzgUKKGYb/ut?=
+ =?us-ascii?Q?X43o4SXq9kfrjCQtE5MiubASLL4wzieTlZgDzjmLXk7xCVsgyHN8Rl6eX8q3?=
+ =?us-ascii?Q?3mfrzwUhlka1Nk5mLkE+rP9yn0vOXKCXQbPSpAGuosFtXbsgs0Isn7in5nA2?=
+ =?us-ascii?Q?faV0EqCyAObb6TY9gZbZc0TYC3o2WrtDXSDFc70xssnd3n9k7aRCTV+OU/IH?=
+ =?us-ascii?Q?d+tNqUBscQ/cZTXNAr9BZftPne8Nrzfo7jcGYb2k6ik4yRMxR036N/MPZgfI?=
+ =?us-ascii?Q?dVLRMBmQ2U0W5iYvnxzoJFMsDYL/RdtsgJ2WIu5VhwE1hG6I1QXMpNzXMhEV?=
+ =?us-ascii?Q?bi+4G64Omyzuccin3fJavJlcZnkx8vm/3IAa8K8MzCUwwtAgWV8X44p5h9e8?=
+ =?us-ascii?Q?osxMuifRpBSvcb2IXW6OSGlQu0y4lJ7iBM8cAbK7o6A6L6KkVgyiYDy+J+bi?=
+ =?us-ascii?Q?F5zBVH4paXLrcDy0+tEC2QBeA7eUYhCpTb4C4GGe6whwJilX1hStTEf9LDaX?=
+ =?us-ascii?Q?1eg11IjP/1R8S0sPgg/7utd+MG166kx3zzw4PqlnK91N9pV4tdDp4YltY3d2?=
+ =?us-ascii?Q?t/6ncLVzpANYc6aqimRpQ09073Mgv8H6opsKIg5EjkiaEtnF/xxtBjj5zgQ3?=
+ =?us-ascii?Q?J6nuT6KdyXA4LtnwpmXgEtHBDW/YAHtpjbzqu0RIHJA=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3721.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66df4d4e-9db2-45cc-4b13-08d899cd3f19
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Dec 2020 09:56:47.8203 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: C2+f1NJwq3hUNjTioQIqBZJYhTdP6tFGNWlokZdSNFQoj/FWFP71WTHL/gO2IoKWCrgHQioPRuxqja9M3nbY1qQl7Ivw7Cwh7KgDjyLqC8k4uYELfS5ZSTg3qfYPzpot
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4705
+X-OriginatorOrg: intel.com
+X-Mailman-Approved-At: Sun, 06 Dec 2020 22:47:10 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,307 +155,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ narmstrong <narmstrong@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Kevin Hilman <khilman@baylibre.com>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Serge Semin <fancer.lancer@gmail.com>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Manu Gautam <mgautam@codeaurora.org>, Andy Gross <agross@kernel.org>,
+ Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+ Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Roger Quadros <rogerq@ti.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The driver is initially designed for sound card using HDMI
-interface on i.MX platform. There is internal HDMI IP or
-external HDMI modules connect with SAI or AUD2HTX interface.
-It supports both transmitter and receiver devices.
+Hi Serge.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
-changes in v2
-- update according to Nicolin's comments.
+> -----Original Message-----
+> From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+> Sent: Saturday, December 5, 2020 11:24 PM
+> To: Nyman, Mathias <mathias.nyman@intel.com>; Felipe Balbi
+> <balbi@kernel.org>; Krzysztof Kozlowski <krzk@kernel.org>; Greg Kroah-
+> Hartman <gregkh@linuxfoundation.org>; Rob Herring
+> <robh+dt@kernel.org>; Chunfeng Yun <chunfeng.yun@mediatek.com>;
+> Wan Mohamad, Wan Ahmad Zainie
+> <wan.ahmad.zainie.wan.mohamad@intel.com>
+> Cc: Serge Semin <Sergey.Semin@baikalelectronics.ru>; Serge Semin
+> <fancer.lancer@gmail.com>; Alexey Malahov
+> <Alexey.Malahov@baikalelectronics.ru>; Pavel Parkhomenko
+> <Pavel.Parkhomenko@baikalelectronics.ru>; Andy Gross
+> <agross@kernel.org>; Bjorn Andersson <bjorn.andersson@linaro.org>;
+> Manu Gautam <mgautam@codeaurora.org>; Roger Quadros
+> <rogerq@ti.com>; Lad Prabhakar <prabhakar.mahadev-
+> lad.rj@bp.renesas.com>; Yoshihiro Shimoda
+> <yoshihiro.shimoda.uh@renesas.com>; narmstrong
+> <narmstrong@baylibre.com>; Kevin Hilman <khilman@baylibre.com>;
+> Martin Blumenstingl <martin.blumenstingl@googlemail.com>; linux-arm-
+> kernel@lists.infradead.org; linux-snps-arc@lists.infradead.org; linux-
+> mips@vger.kernel.org; linuxppc-dev@lists.ozlabs.org; linux-
+> usb@vger.kernel.org; devicetree@vger.kernel.org; linux-
+> kernel@vger.kernel.org
+> Subject: [PATCH v5 19/19] dt-bindings: usb: intel,keembay-dwc3: Validate
+> DWC3 sub-node
+>=20
+> Intel Keem Bay DWC3 compatible DT nodes are supposed to have a DWC
+> USB3 compatible sub-node to describe a fully functioning USB interface. L=
+et's
+> use the available DWC USB3 DT schema to validate the Qualcomm DWC3 sub-
+> nodes.
+>=20
+> Note since the generic DWC USB3 DT node is supposed to be named as
+> generic USB HCD ("^usb(@.*)?") one we have to accordingly fix the sub-
+> nodes name regexp and fix the DT node example.
+>=20
+> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 
- sound/soc/fsl/Kconfig    |  12 ++
- sound/soc/fsl/Makefile   |   2 +
- sound/soc/fsl/imx-hdmi.c | 236 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 250 insertions(+)
- create mode 100644 sound/soc/fsl/imx-hdmi.c
+LGTM. With minor change to fix the typo above, Qualcomm to Intel
+Keem Bay,
+Acked-by: Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>
 
-diff --git a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
-index 24710decd38a..84db0b7b9d59 100644
---- a/sound/soc/fsl/Kconfig
-+++ b/sound/soc/fsl/Kconfig
-@@ -305,6 +305,18 @@ config SND_SOC_IMX_AUDMIX
- 	  Say Y if you want to add support for SoC audio on an i.MX board with
- 	  an Audio Mixer.
- 
-+config SND_SOC_IMX_HDMI
-+	tristate "SoC Audio support for i.MX boards with HDMI port"
-+	select SND_SOC_FSL_SAI
-+	select SND_SOC_FSL_AUD2HTX
-+	select SND_SOC_HDMI_CODEC
-+	help
-+	  ALSA SoC Audio support with HDMI feature for Freescale SoCs that have
-+	  SAI/AUD2HTX and connect with internal HDMI IP or external module
-+	  SII902X.
-+	  Say Y if you want to add support for SoC audio on an i.MX board with
-+	  IMX HDMI.
-+
- endif # SND_IMX_SOC
- 
- endmenu
-diff --git a/sound/soc/fsl/Makefile b/sound/soc/fsl/Makefile
-index 0b20e038b65b..8c5fa8a859c0 100644
---- a/sound/soc/fsl/Makefile
-+++ b/sound/soc/fsl/Makefile
-@@ -65,9 +65,11 @@ snd-soc-imx-es8328-objs := imx-es8328.o
- snd-soc-imx-sgtl5000-objs := imx-sgtl5000.o
- snd-soc-imx-spdif-objs := imx-spdif.o
- snd-soc-imx-audmix-objs := imx-audmix.o
-+snd-soc-imx-hdmi-objs := imx-hdmi.o
- 
- obj-$(CONFIG_SND_SOC_EUKREA_TLV320) += snd-soc-eukrea-tlv320.o
- obj-$(CONFIG_SND_SOC_IMX_ES8328) += snd-soc-imx-es8328.o
- obj-$(CONFIG_SND_SOC_IMX_SGTL5000) += snd-soc-imx-sgtl5000.o
- obj-$(CONFIG_SND_SOC_IMX_SPDIF) += snd-soc-imx-spdif.o
- obj-$(CONFIG_SND_SOC_IMX_AUDMIX) += snd-soc-imx-audmix.o
-+obj-$(CONFIG_SND_SOC_IMX_HDMI) += snd-soc-imx-hdmi.o
-diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
-new file mode 100644
-index 000000000000..2c2a76a71940
---- /dev/null
-+++ b/sound/soc/fsl/imx-hdmi.c
-@@ -0,0 +1,236 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Copyright 2017-2020 NXP
-+
-+#include <linux/module.h>
-+#include <linux/of_platform.h>
-+#include <sound/jack.h>
-+#include <sound/pcm_params.h>
-+#include <sound/hdmi-codec.h>
-+#include "fsl_sai.h"
-+
-+/**
-+ * struct cpu_priv - CPU private data
-+ * @sysclk_freq: SYSCLK rates for set_sysclk()
-+ * @sysclk_dir: SYSCLK directions for set_sysclk()
-+ * @sysclk_id: SYSCLK ids for set_sysclk()
-+ * @slot_width: Slot width of each frame
-+ *
-+ * Note: [1] for tx and [0] for rx
-+ */
-+struct cpu_priv {
-+	unsigned long sysclk_freq[2];
-+	u32 sysclk_dir[2];
-+	u32 sysclk_id[2];
-+	u32 slot_width;
-+};
-+
-+struct imx_hdmi_data {
-+	struct snd_soc_dai_link dai;
-+	struct snd_soc_card card;
-+	struct snd_soc_jack hdmi_jack;
-+	struct snd_soc_jack_pin hdmi_jack_pin;
-+	struct cpu_priv cpu_priv;
-+	u32 dai_fmt;
-+};
-+
-+static int imx_hdmi_hw_params(struct snd_pcm_substream *substream,
-+			      struct snd_pcm_hw_params *params)
-+{
-+	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-+	struct imx_hdmi_data *data = snd_soc_card_get_drvdata(rtd->card);
-+	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
-+	struct snd_soc_dai *cpu_dai = asoc_rtd_to_cpu(rtd, 0);
-+	struct snd_soc_card *card = rtd->card;
-+	struct device *dev = card->dev;
-+	u32 slot_width = data->cpu_priv.slot_width;
-+	int ret;
-+
-+	/* MCLK always is (256 or 192) * rate. */
-+	ret = snd_soc_dai_set_sysclk(cpu_dai, data->cpu_priv.sysclk_id[tx],
-+				     8 * slot_width * params_rate(params),
-+				     tx ? SND_SOC_CLOCK_OUT : SND_SOC_CLOCK_IN);
-+	if (ret && ret != -ENOTSUPP) {
-+		dev_err(dev, "failed to set cpu sysclk: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = snd_soc_dai_set_tdm_slot(cpu_dai, 0, 0, 2, slot_width);
-+	if (ret && ret != -ENOTSUPP) {
-+		dev_err(dev, "failed to set cpu dai tdm slot: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static struct snd_soc_ops imx_hdmi_ops = {
-+	.hw_params = imx_hdmi_hw_params,
-+};
-+
-+static const struct snd_soc_dapm_widget imx_hdmi_widgets[] = {
-+	SND_SOC_DAPM_LINE("HDMI Jack", NULL),
-+};
-+
-+static int imx_hdmi_init(struct snd_soc_pcm_runtime *rtd)
-+{
-+	struct snd_soc_card *card = rtd->card;
-+	struct snd_soc_dai *codec_dai = asoc_rtd_to_codec(rtd, 0);
-+	struct snd_soc_component *component = codec_dai->component;
-+	struct imx_hdmi_data *data = snd_soc_card_get_drvdata(card);
-+	int ret;
-+
-+	data->hdmi_jack_pin.pin = "HDMI Jack";
-+	data->hdmi_jack_pin.mask = SND_JACK_LINEOUT;
-+	/* enable jack detection */
-+	ret = snd_soc_card_jack_new(card, "HDMI Jack", SND_JACK_LINEOUT,
-+				    &data->hdmi_jack, &data->hdmi_jack_pin, 1);
-+	if (ret) {
-+		dev_err(card->dev, "Can't new HDMI Jack %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = snd_soc_component_set_jack(component, &data->hdmi_jack, NULL);
-+	if (ret && ret != -EOPNOTSUPP) {
-+		dev_err(card->dev, "Can't set HDMI Jack %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+};
-+
-+static int imx_hdmi_probe(struct platform_device *pdev)
-+{
-+	struct device_node *np = pdev->dev.of_node;
-+	bool hdmi_out = of_property_read_bool(np, "hdmi-out");
-+	bool hdmi_in = of_property_read_bool(np, "hdmi-in");
-+	struct snd_soc_dai_link_component *dlc;
-+	struct platform_device *cpu_pdev;
-+	struct device_node *cpu_np;
-+	struct imx_hdmi_data *data;
-+	int ret;
-+
-+	dlc = devm_kzalloc(&pdev->dev, 3 * sizeof(*dlc), GFP_KERNEL);
-+	if (!dlc)
-+		return -ENOMEM;
-+
-+	cpu_np = of_parse_phandle(np, "audio-cpu", 0);
-+	if (!cpu_np) {
-+		dev_err(&pdev->dev, "cpu dai phandle missing or invalid\n");
-+		ret = -EINVAL;
-+		goto fail;
-+	}
-+
-+	cpu_pdev = of_find_device_by_node(cpu_np);
-+	if (!cpu_pdev) {
-+		dev_err(&pdev->dev, "failed to find SAI platform device\n");
-+		ret = -EINVAL;
-+		goto fail;
-+	}
-+
-+	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-+	if (!data) {
-+		ret = -ENOMEM;
-+		goto fail;
-+	}
-+
-+	data->dai.cpus = &dlc[0];
-+	data->dai.num_cpus = 1;
-+	data->dai.platforms = &dlc[1];
-+	data->dai.num_platforms = 1;
-+	data->dai.codecs = &dlc[2];
-+	data->dai.num_codecs = 1;
-+
-+	data->dai.name = "i.MX HDMI";
-+	data->dai.stream_name = "i.MX HDMI";
-+	data->dai.cpus->dai_name = dev_name(&cpu_pdev->dev);
-+	data->dai.platforms->of_node = cpu_np;
-+	data->dai.ops = &imx_hdmi_ops;
-+	data->dai.playback_only = true;
-+	data->dai.capture_only = false;
-+	data->dai.init = imx_hdmi_init;
-+
-+	if (of_node_name_eq(cpu_np, "sai")) {
-+		data->cpu_priv.sysclk_id[1] = FSL_SAI_CLK_MAST1;
-+		data->cpu_priv.sysclk_id[0] = FSL_SAI_CLK_MAST1;
-+	}
-+
-+	if (of_device_is_compatible(np, "fsl,imx-audio-sii902x")) {
-+		data->dai_fmt = SND_SOC_DAIFMT_LEFT_J;
-+		data->cpu_priv.slot_width = 24;
-+	} else {
-+		data->dai_fmt = SND_SOC_DAIFMT_I2S;
-+		data->cpu_priv.slot_width = 32;
-+	}
-+
-+	if ((hdmi_out && hdmi_in) || (!hdmi_out && !hdmi_in)) {
-+		dev_err(&pdev->dev, "Invalid HDMI DAI link\n");
-+		goto fail;
-+	}
-+
-+	if (hdmi_out) {
-+		data->dai.playback_only = true;
-+		data->dai.capture_only = false;
-+		data->dai.codecs->dai_name = "i2s-hifi";
-+		data->dai.codecs->name = "hdmi-audio-codec.1";
-+		data->dai.dai_fmt = data->dai_fmt |
-+				    SND_SOC_DAIFMT_NB_NF |
-+				    SND_SOC_DAIFMT_CBS_CFS;
-+	}
-+
-+	if (hdmi_in) {
-+		data->dai.playback_only = false;
-+		data->dai.capture_only = true;
-+		data->dai.codecs->dai_name = "i2s-hifi";
-+		data->dai.codecs->name = "hdmi-audio-codec.2";
-+		data->dai.dai_fmt = data->dai_fmt |
-+				    SND_SOC_DAIFMT_NB_NF |
-+				    SND_SOC_DAIFMT_CBM_CFM;
-+	}
-+
-+	data->card.dapm_widgets = imx_hdmi_widgets;
-+	data->card.num_dapm_widgets = ARRAY_SIZE(imx_hdmi_widgets);
-+	data->card.dev = &pdev->dev;
-+	data->card.owner = THIS_MODULE;
-+	ret = snd_soc_of_parse_card_name(&data->card, "model");
-+	if (ret)
-+		goto fail;
-+
-+	data->card.num_links = 1;
-+	data->card.dai_link = &data->dai;
-+
-+	snd_soc_card_set_drvdata(&data->card, data);
-+	ret = devm_snd_soc_register_card(&pdev->dev, &data->card);
-+	if (ret) {
-+		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
-+		goto fail;
-+	}
-+
-+fail:
-+	if (cpu_np)
-+		of_node_put(cpu_np);
-+
-+	return ret;
-+}
-+
-+static const struct of_device_id imx_hdmi_dt_ids[] = {
-+	{ .compatible = "fsl,imx-audio-hdmi", },
-+	{ .compatible = "fsl,imx-audio-sii902x", },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, imx_hdmi_dt_ids);
-+
-+static struct platform_driver imx_hdmi_driver = {
-+	.driver = {
-+		.name = "imx-hdmi",
-+		.owner = THIS_MODULE,
-+		.pm = &snd_soc_pm_ops,
-+		.of_match_table = imx_hdmi_dt_ids,
-+	},
-+	.probe = imx_hdmi_probe,
-+};
-+module_platform_driver(imx_hdmi_driver);
-+
-+MODULE_AUTHOR("Freescale Semiconductor, Inc.");
-+MODULE_DESCRIPTION("Freescale i.MX hdmi audio ASoC machine driver");
-+MODULE_LICENSE("GPL v2");
-+MODULE_ALIAS("platform:imx-hdmi");
--- 
-2.27.0
+>=20
+> ---
+>=20
+> Changelog v5:
+> - This is a new patch created for the new Intel Keem Bay bindings file,
+>   which has been added just recently.
+> ---
+>  .../devicetree/bindings/usb/intel,keembay-dwc3.yaml      | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/usb/intel,keembay-
+> dwc3.yaml b/Documentation/devicetree/bindings/usb/intel,keembay-
+> dwc3.yaml
+> index dd32c10ce6c7..43b91ab62004 100644
+> --- a/Documentation/devicetree/bindings/usb/intel,keembay-dwc3.yaml
+> +++ b/Documentation/devicetree/bindings/usb/intel,keembay-dwc3.yaml
+> @@ -34,11 +34,8 @@ properties:
+>  # Required child node:
+>=20
+>  patternProperties:
+> -  "^dwc3@[0-9a-f]+$":
+> -    type: object
+> -    description:
+> -      A child node must exist to represent the core DWC3 IP block.
+> -      The content of the node is defined in dwc3.txt.
+> +  "^usb@[0-9a-f]+$":
+> +    $ref: snps,dwc3.yaml#
+>=20
+>  required:
+>    - compatible
+> @@ -68,7 +65,7 @@ examples:
+>            #address-cells =3D <1>;
+>            #size-cells =3D <1>;
+>=20
+> -          dwc3@34000000 {
+> +          usb@34000000 {
+>                  compatible =3D "snps,dwc3";
+>                  reg =3D <0x34000000 0x10000>;
+>                  interrupts =3D <GIC_SPI 91 IRQ_TYPE_LEVEL_HIGH>;
+> --
+> 2.29.2
 
+Best regards,
+Zainie
