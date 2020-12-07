@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5293C2D1D46
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 23:25:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE6C2D1D49
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 23:27:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CqdDk6156zDqWc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 09:25:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CqdGj5JxNzDqZ1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 09:27:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=N2SLgH14; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=CvSMUpcJ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CqcV82VdLzDqVT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CqcV84SBJzDqVb
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 08:52:16 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B7LS5pG007348
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 7 Dec 2020 16:52:13 -0500
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B7LXKWG101274
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 7 Dec 2020 16:52:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=lmkh+8bi3AFeAtYm8i7H5m7dRg6TNWZ5zXr3J51kdxg=;
- b=N2SLgH14xKUOJZ3lODGPNC7hxmEVO2F7z1I4yWGhCM0LKBsmfuPMKO4P+wRKhb6I26j5
- e0yZ79WjCLmrfFrnorJMf/XYWyCEyKjxvHTWm0UK3Cg0DhhMkDTXRF72wla7L1DbRrCX
- +9pwgmxtf1StPhQ0C5AcaCRqdJAqf2EUdNfF5wxFONx++AD0a4u68ovZBb3ARofyuLNa
- KDjVHH2bNNnpiUgaDU+lS0D1f4pIPZx4oaLkc3ZFYeH4S1l4CzyDULKWiLXVITyQUUuF
- q4EawIz8JZgSeh8+OSTAHJ6qZK5bwzZ1S6r6Hqo49VcHH0UKrEIOr67yychUaLbGLnYs QA== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 359qrp198t-1
+ bh=VfSVtQnpkMbiV1SQzLlXT44z0QdzUH2cNNh71QYtdTQ=;
+ b=CvSMUpcJEbbISs485+MZM4C9rSS36EVDvhASMTv5adBNKjDs6pPqU+I0bL/cTyjr4VyI
+ n7ufeLKAfy59KD2CHVWefTc/s+kgeuq7+4H0zS9xlMUK9507Jto/AgN83IVEOTGdaBwL
+ +/j3RDkdiIhKHnEo1pehn23d8rpE2KvGs4aKKhkWlJk2PU39Z1jlKeLFbj0rIiYcLE1o
+ hK8xxq8p8aYYUZqoXl4JhGBd7STY/IYrS4NCVvscARIO8NGmCF+Ji9SC4cmDMgF7u1ah
+ pCD4kY5lPujOy0qS1EvWK8CgaQ2hfzHqJGh68QAgxC03uKq+DLCYFP1xoxccRgdS06EU pA== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 359s0me1py-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Dec 2020 16:52:13 -0500
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B7LlqUw002543
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 7 Dec 2020 21:52:12 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma01dal.us.ibm.com with ESMTP id 3581u8yqaq-1
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B7LmI53024612
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 7 Dec 2020 21:52:13 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma03dal.us.ibm.com with ESMTP id 3581u8ymvu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Dec 2020 21:52:12 +0000
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Dec 2020 21:52:13 +0000
 Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
  [9.57.199.111])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B7LqBt55898824
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B7LqC9962718388
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 7 Dec 2020 21:52:11 GMT
+ Mon, 7 Dec 2020 21:52:12 GMT
 Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 65FC6AC059;
- Mon,  7 Dec 2020 21:52:11 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2C6C1AC059;
+ Mon,  7 Dec 2020 21:52:12 +0000 (GMT)
 Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 33E76AC05B;
+ by IMSVA (Postfix) with ESMTP id DBA2AAC05B;
  Mon,  7 Dec 2020 21:52:11 +0000 (GMT)
 Received: from localhost (unknown [9.160.57.67])
  by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
  Mon,  7 Dec 2020 21:52:11 +0000 (GMT)
 From: Nathan Lynch <nathanl@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 14/28] powerpc/pseries/mobility: retry partition suspend
- after error
-Date: Mon,  7 Dec 2020 15:51:46 -0600
-Message-Id: <20201207215200.1785968-15-nathanl@linux.ibm.com>
+Subject: [PATCH v2 15/28] powerpc/rtas: dispatch partition migration requests
+ to pseries
+Date: Mon,  7 Dec 2020 15:51:47 -0600
+Message-Id: <20201207215200.1785968-16-nathanl@linux.ibm.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201207215200.1785968-1-nathanl@linux.ibm.com>
 References: <20201207215200.1785968-1-nathanl@linux.ibm.com>
@@ -81,11 +81,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
  definitions=2020-12-07_16:2020-12-04,
  2020-12-07 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0
- suspectscore=1 clxscore=1015 priorityscore=1501 phishscore=0 adultscore=0
- mlxlogscore=714 impostorscore=0 spamscore=0 malwarescore=0
+ spamscore=0 mlxscore=0
+ bulkscore=0 adultscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999
+ clxscore=1015 malwarescore=0 impostorscore=0 suspectscore=1
  lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012070132
+ engine=8.12.0-2009150000 definitions=main-2012070140
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,104 +103,77 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a mitigation for the relatively rare occurrence where a
-virtual IOA can be in a transient state that prevents the
-suspend/migration from succeeding, resulting in an error from
-ibm,suspend-me.
+sys_rtas() cannot call ibm,suspend-me directly in the same way it
+handles other inputs. Instead it must dispatch the request to code
+that can first perform the H_JOIN sequence before any call to
+ibm,suspend-me can succeed. Over time kernel/rtas.c has accreted a fair
+amount of platform-specific code to implement this.
 
-If the join/suspend sequence returns an error, it is acceptable to
-retry as long as the VASI suspend session state is still
-"Suspending" (i.e. the platform is still waiting for the OS to
-suspend).
+Since a different, more robust implementation of the suspend sequence
+is now in the pseries platform code, we want to dispatch the request
+there.
 
-Retry a few times on suspend failure while this condition holds,
-progressively increasing the delay between attempts. We don't want to
-retry indefinitey because firmware emits an error log event on each
-unsuccessful attempt.
+Note that invoking ibm,suspend-me via the RTAS syscall is all but
+deprecated; this change preserves ABI compatibility for old programs
+while providing to them the benefit of the new partition suspend
+implementation. This is a behavior change in that the kernel performs
+the device tree update and firmware activation before returning, but
+experimentation indicates this is tolerated fine by legacy user space.
 
 Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
- arch/powerpc/platforms/pseries/mobility.c | 59 ++++++++++++++++++++++-
- 1 file changed, 57 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/rtas.h           | 5 +++++
+ arch/powerpc/kernel/rtas.c                | 2 +-
+ arch/powerpc/platforms/pseries/mobility.c | 5 +++++
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
+diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
+index fdefe6a974eb..3b52d8574fcc 100644
+--- a/arch/powerpc/include/asm/rtas.h
++++ b/arch/powerpc/include/asm/rtas.h
+@@ -279,8 +279,13 @@ extern time64_t last_rtas_event;
+ extern int clobbering_unread_rtas_event(void);
+ extern int pseries_devicetree_update(s32 scope);
+ extern void post_mobility_fixup(void);
++int rtas_syscall_dispatch_ibm_suspend_me(u64 handle);
+ #else
+ static inline int clobbering_unread_rtas_event(void) { return 0; }
++static inline int rtas_syscall_dispatch_ibm_suspend_me(u64 handle)
++{
++	return -EINVAL;
++}
+ #endif
+ 
+ #ifdef CONFIG_PPC_RTAS_DAEMON
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 3a740ae933f8..d4b048571728 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -1272,7 +1272,7 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
+ 		int rc = 0;
+ 		u64 handle = ((u64)be32_to_cpu(args.args[0]) << 32)
+ 		              | be32_to_cpu(args.args[1]);
+-		rc = rtas_ibm_suspend_me_unsafe(handle);
++		rc = rtas_syscall_dispatch_ibm_suspend_me(handle);
+ 		if (rc == -EAGAIN)
+ 			args.rets[0] = cpu_to_be32(RTAS_NOT_SUSPENDABLE);
+ 		else if (rc == -EIO)
 diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-index f234a7ed87aa..fe7e35cdc9d5 100644
+index fe7e35cdc9d5..e670180f311d 100644
 --- a/arch/powerpc/platforms/pseries/mobility.c
 +++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -542,16 +542,71 @@ static void pseries_cancel_migration(u64 handle, int err)
- 		pr_err("H_VASI_SIGNAL error: %ld\n", hvrc);
+@@ -615,6 +615,11 @@ static int pseries_migrate_partition(u64 handle)
+ 	return ret;
  }
  
-+static int pseries_suspend(u64 handle)
++int rtas_syscall_dispatch_ibm_suspend_me(u64 handle)
 +{
-+	const unsigned int max_attempts = 5;
-+	unsigned int retry_interval_ms = 1;
-+	unsigned int attempt = 1;
-+	int ret;
-+
-+	while (true) {
-+		atomic_t counter = ATOMIC_INIT(0);
-+		unsigned long vasi_state;
-+		int vasi_err;
-+
-+		ret = stop_machine(do_join, &counter, cpu_online_mask);
-+		if (ret == 0)
-+			break;
-+		/*
-+		 * Encountered an error. If the VASI stream is still
-+		 * in Suspending state, it's likely a transient
-+		 * condition related to some device in the partition
-+		 * and we can retry in the hope that the cause has
-+		 * cleared after some delay.
-+		 *
-+		 * A better design would allow drivers etc to prepare
-+		 * for the suspend and avoid conditions which prevent
-+		 * the suspend from succeeding. For now, we have this
-+		 * mitigation.
-+		 */
-+		pr_notice("Partition suspend attempt %u of %u error: %d\n",
-+			  attempt, max_attempts, ret);
-+
-+		if (attempt == max_attempts)
-+			break;
-+
-+		vasi_err = poll_vasi_state(handle, &vasi_state);
-+		if (vasi_err == 0) {
-+			if (vasi_state != H_VASI_SUSPENDING) {
-+				pr_notice("VASI state %lu after failed suspend\n",
-+					  vasi_state);
-+				break;
-+			}
-+		} else if (vasi_err != -EOPNOTSUPP) {
-+			pr_err("VASI state poll error: %d", vasi_err);
-+			break;
-+		}
-+
-+		pr_notice("Will retry partition suspend after %u ms\n",
-+			  retry_interval_ms);
-+
-+		msleep(retry_interval_ms);
-+		retry_interval_ms *= 10;
-+		attempt++;
-+	}
-+
-+	return ret;
++	return pseries_migrate_partition(handle);
 +}
 +
- static int pseries_migrate_partition(u64 handle)
- {
--	atomic_t counter = ATOMIC_INIT(0);
- 	int ret;
- 
- 	ret = wait_for_vasi_session_suspending(handle);
- 	if (ret)
- 		return ret;
- 
--	ret = stop_machine(do_join, &counter, cpu_online_mask);
-+	ret = pseries_suspend(handle);
- 	if (ret == 0)
- 		post_mobility_fixup();
- 	else
+ static ssize_t migration_store(struct class *class,
+ 			       struct class_attribute *attr, const char *buf,
+ 			       size_t count)
 -- 
 2.28.0
 
