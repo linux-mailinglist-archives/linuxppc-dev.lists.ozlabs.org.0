@@ -1,49 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260662D0859
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 00:58:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A8D2D087C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 01:15:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cq3L23mPNzDqZP
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 10:58:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cq3jj1lW0zDqbw
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 11:15:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cq3HP3BZrzDqWy
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Dec 2020 10:56:01 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cq3h75Q85zDqPw
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Dec 2020 11:13:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=popple.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=popple.id.au header.i=@popple.id.au header.a=rsa-sha256
- header.s=202006 header.b=OqofDlcK; dkim-atps=neutral
+ header.s=202006 header.b=hH5+S65x; dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Cq3HN0ZWfz9sW0;
- Mon,  7 Dec 2020 10:56:00 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Cq3h66qmfz9sW0;
+ Mon,  7 Dec 2020 11:13:58 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=popple.id.au;
- s=202006; t=1607298960;
- bh=uJnLjHG8XDQtNpSijOLX+nT8QW710mtLpPMcymdw4cA=;
+ s=202006; t=1607300039;
+ bh=kLW1k+REnX3bP/wtpFOvQ2GR20yyvPOKPYd5/ZM/eW0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=OqofDlcKqQ8/oAweiV+TNp+OBs0evCq0vtXx239/UpcuY0qv2hKDa7AwTRg2jXqss
- kofK+Qqk2T0NiuPf7H0yx2Uk3vJ3JiR8YLvBZtxl+ts6QrVOwVz1gUV8mb7Jz/JgJM
- rFr25vYotbHdDFLAIy4mNmn/ufZj8qNXBQFZNWE12DmwUJAfIcTY3EZZfmsio6sm8P
- 1jZhDoaTUAavMWb0AlINyvLNDLikny7CH1IG1ODMz/2mA+/8oo1z4k4tQHESzIfNf5
- 8OOFp0IAOzmbZ8auHWCsIRgqRnEEEx7b9yuJQEX705mcN5KE6YGzXc6cP2/8+k/amR
- P0z4qzAYjAleA==
+ b=hH5+S65xSVWTwnhJhgwICAA7vKIpro1ZPn8i75op+bUF1wNVK5vUrYwS7qyk6D4z+
+ Mh8TKdy63exXo0dv7YcZ9HFOttCSuAi4kYMmaCbU8jx58IC+nWCABQGEXrO6tSILQj
+ iisjd2wmLNkgRtN3IPQzE7p1KHbahj0jK6H1QuNw1oRIWa6VebpcPIJhE+omWEHiWI
+ tqsrzxhii53vP4p70uYx8WtryBKAZLqYpanREnTtySJ2M7ezopW3VzWjFmQfkEndS0
+ 9ofoSeyU9k6GBHOgo4gvm+3Izu4dheRaC3LF5wzt4OOomcRhtY/Hbk/xbCBwLYjnTs
+ bxJn2rkfLJzow==
 From: Alistair Popple <alistair@popple.id.au>
-To: bharata@linux.ibm.com
+To: Ram Pai <linuxram@us.ibm.com>
 Subject: Re: [PATCH] powerpc/book3s_hv_uvmem: Check for failed page migration
-Date: Mon, 07 Dec 2020 10:55:49 +1100
-Message-ID: <7619698.bcDb2GHn21@cleo>
-In-Reply-To: <20201204101841.GA621541@in.ibm.com>
+Date: Mon, 07 Dec 2020 11:13:58 +1100
+Message-ID: <3357700.zKBEflIBxY@cleo>
+In-Reply-To: <20201204165244.GA3390@ram-ibm-com.ibm.com>
 References: <20201203050812.5234-1-alistair@popple.id.au>
  <20201204101841.GA621541@in.ibm.com>
+ <20201204165244.GA3390@ram-ibm-com.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -58,32 +59,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Ram Pai <linuxram@us.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Friday, 4 December 2020 9:18:41 PM AEDT Bharata B Rao wrote:
-> 
-> Reviewed-by: Bharata B Rao <bharata@linux.ibm.com>
-> 
-> Did you actually hit this scenario with secure VMs where a UV-paged-in
-> page was later found to be not migratable?
+On Saturday, 5 December 2020 3:52:44 AM AEDT Ram Pai wrote:
+> On Fri, Dec 04, 2020 at 03:48:41PM +0530, Bharata B Rao wrote:
+> > On Thu, Dec 03, 2020 at 04:08:12PM +1100, Alistair Popple wrote:
 
-No, this was found by inspection. I have no way of testing this but we had a 
-similar issue in Nouveau and I think you would have a similar issue here 
-although it might be hard to hit.
+> This patch certainly looks like the problem, that has been hurting
+> us for a while.  Let me run this patch through my SVM tests.  Looks very
+> promising.
+> 
+> BTW: The code does a similar thing while paging out.  It pages out from the
+> UV, and then does the migration. Is there a bug there aswell?
 
-migrate_vma_pages() will fail a page migration if a CPU thread has raced and 
-established a non-zero page PTE for the address. See migrate_vma_insert_page() 
-for the implementation. It will also fail if something else has taken a 
-reference on the page after calling migrate_vma_setup(), but that is less 
-likely as any existing pages will have been isolated.
+As specified the migrate_pages_vma() API can fail to migrate device private 
+pages. However the fix was less obvious to me, and in practice I don't think it 
+will ever fail for device private pages as you don't have the same races to 
+establish the page and device private pages can't be pinned.
+
+It might be worth adding some kind of warning though in case this ever 
+changes.
 
  - Alistair
-
-> Regards,
-> Bharata.
+ 
+> RP
 > 
 
 
