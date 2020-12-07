@@ -1,98 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3CB2D1076
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 13:20:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC372D108D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 13:26:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CqMpp16gKzDqVx
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 23:20:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CqMxr14r9zDqWv
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 23:26:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=RIF6jAXZ; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CqMfW2zsczDqNf
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Dec 2020 23:13:38 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B7C2HPJ173170; Mon, 7 Dec 2020 07:13:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=p2hrgGkKKslMC+KJ70GZbtkYBRpjtOL62PnROiS3A9k=;
- b=RIF6jAXZoX1h2jo7ep39VWsB1IiBKrY8bI7is+K5KbMRFxdKxeoa7FiW8rHWeVMjHx/n
- /lxz/jmBV1OeRY3LKrk7ysIH7+r1nEVhlFyYI1xJgvi+9LNkMC6soJplPZQznqzxW7Rk
- hSeWyrlvCSMPdhHqvbjy4kFqNBbQGgkHg7SXsXHSbYppcqL8hX0irqOSSiAOMPZe6XIe
- 4xllLvlYZbZxdRXB1wrmy/bUyjka8HkaDiaS9bFZOaWrLAKUQTC9DtKKCILVTeX4oa44
- iZJV5vnqQLFGBbNwtBm/UFjIs/clv2e76XH+7efnqLR3KIJXAdPH9dn/pDAQrMUnr3Lm 7g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 359m0jrffv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Dec 2020 07:13:19 -0500
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B7C2f1G175650;
- Mon, 7 Dec 2020 07:13:18 -0500
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 359m0jrff6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Dec 2020 07:13:18 -0500
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B7C7Wox031428;
- Mon, 7 Dec 2020 12:13:17 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03fra.de.ibm.com with ESMTP id 3581u8kmp1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Dec 2020 12:13:16 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0B7CAi9156885606
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 7 Dec 2020 12:10:45 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D5F68A405C;
- Mon,  7 Dec 2020 12:10:44 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CE0CAA4064;
- Mon,  7 Dec 2020 12:10:42 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Mon,  7 Dec 2020 12:10:42 +0000 (GMT)
-Date: Mon, 7 Dec 2020 17:40:42 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/3] powerpc/smp: Parse ibm,thread-groups with multiple
- properties
-Message-ID: <20201207121042.GH528281@linux.vnet.ibm.com>
-References: <1607057327-29822-1-git-send-email-ego@linux.vnet.ibm.com>
- <1607057327-29822-2-git-send-email-ego@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CqMtC4ZH2zDqRY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Dec 2020 23:23:47 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Jaz1NyI5; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CqMtB4Fy2z9sR4;
+ Mon,  7 Dec 2020 23:23:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1607343827;
+ bh=fmsZAzPw8MotFZ9q0AOjH6980DIEzAETM+LqGX6ha0c=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Jaz1NyI5rqYhmXdZkYhj3gQfgZkl8ajuREQt8e7qLD/4+JNm9AF8JmtohV2KEVDmF
+ u8XNn+TPAgu5Kux3KOKH3EggqcjFqNyTlqHsLRAnKLir3K1GxZQApFNT68AUBOHR9O
+ LRlvAsP3wLBMC4ik6lv21ltlwh20UrPCzNKfutqftqGRGE90SbqyeancWq2muv+fbM
+ hugW+2nzOJgCXjbCz2/pFEgqgbD/h/yatmIzFewhI8Lx72lYH3iuy724jap7b+4ub8
+ qyaaxlbWdOIX1PzrnI1HLU8iaWQmk0qyU3I+wH1vaUBbli/8HyhSa8hISsyPm5DLeG
+ ttW0XW/1Lxbaw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: kernel test robot <lkp@intel.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [powerpc:next-test 54/220]
+ arch/powerpc/kernel/vdso32/vgettimeofday.c:13:5: warning: no previous
+ prototype for function '__c_kernel_clock_gettime64'
+In-Reply-To: <202012042220.zO7hSFT2-lkp@intel.com>
+References: <202012042220.zO7hSFT2-lkp@intel.com>
+Date: Mon, 07 Dec 2020 23:23:43 +1100
+Message-ID: <87czzlu7n4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <1607057327-29822-2-git-send-email-ego@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-07_10:2020-12-04,
- 2020-12-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0
- impostorscore=0 bulkscore=0 priorityscore=1501 adultscore=0
- mlxlogscore=999 lowpriorityscore=0 suspectscore=5 malwarescore=0
- mlxscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012070075
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,196 +61,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Michael Neuling <mikey@neuling.org>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Valentin Schneider <valentin.schneider@arm.com>
+Cc: clang-built-linux@googlegroups.com, kbuild-all@lists.01.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Gautham R. Shenoy <ego@linux.vnet.ibm.com> [2020-12-04 10:18:45]:
+kernel test robot <lkp@intel.com> writes:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git=
+ next-test
+> head:   4e4ed87981c764498942c52004c620bb8f104eac
+> commit: d0e3fc69d00d1f50d22d6b6acfc555ccda80ad1e [54/220] powerpc/vdso: P=
+rovide __kernel_clock_gettime64() on vdso32
+> config: powerpc64-randconfig-r011-20201204 (attached as .config)
+> compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project 32c5=
+01dd88b62787d3a5ffda7aabcf4650dbe3cd)
+> reproduce (this is a W=3D1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbi=
+n/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # install powerpc64 cross compiling tool for clang build
+>         # apt-get install binutils-powerpc64-linux-gnu
+>         # https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.g=
+it/commit/?id=3Dd0e3fc69d00d1f50d22d6b6acfc555ccda80ad1e
+>         git remote add powerpc https://git.kernel.org/pub/scm/linux/kerne=
+l/git/powerpc/linux.git
+>         git fetch --no-tags powerpc next-test
+>         git checkout d0e3fc69d00d1f50d22d6b6acfc555ccda80ad1e
+>         # save the attached .config to linux build tree
+>         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dclang make.cross AR=
+CH=3Dpowerpc64=20
+>
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+>
+> All warnings (new ones prefixed by >>):
+>
+>    arch/powerpc/kernel/vdso32/vgettimeofday.c:7:5: error: conflicting typ=
+es for '__c_kernel_clock_gettime'
+>    int __c_kernel_clock_gettime(clockid_t clock, struct old_timespec32 *t=
+s,
+>        ^
 
-> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+We're building vdso32, which is 32-bit code, we pass -m32:
 
-<snipped>
+  clang -Wp,-MMD,arch/powerpc/kernel/vdso32/.vgettimeofday.o.d -nostdinc -i=
+system /usr/lib/llvm-11/lib/clang/11.0.0/include -I/linux/arch/powerpc/incl=
+ude -I./arch/powerpc/include/generated -I/linux/include -I./include -I/linu=
+x/arch/powerpc/include/uapi -I./arch/powerpc/include/generated/uapi -I/linu=
+x/include/uapi -I./include/generated/uapi -include /linux/include/linux/kco=
+nfig.h -include /linux/include/linux/compiler_types.h -D__KERNEL__ -I /linu=
+x/arch/powerpc -DHAVE_AS_ATHIGH=3D1 -Qunused-arguments -Wall -Wundef -Werro=
+r=3Dstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fsho=
+rt-wchar -fno-PIE -Werror=3Dimplicit-function-declaration -Werror=3Dimplici=
+t-int -Werror=3Dreturn-type -Wno-format-security -std=3Dgnu89 --target=3Dpo=
+werpc64le-linux-gnu --prefix=3D/usr/bin/powerpc64le-linux-gnu- --gcc-toolch=
+ain=3D/usr -no-integrated-as -Werror=3Dunknown-warning-option -mlittle-endi=
+an -m64 -msoft-float -pipe -mcpu=3Dpower8 -mtune=3Dpower9 -mno-altivec -mno=
+-vsx -mno-spe -fno-asynchronous-unwind-tables -Wa,-mpower4 -Wa,-many -mlitt=
+le-endian -fno-delete-null-pointer-checks -Wno-frame-address -Wno-address-o=
+f-packed-member -Os -Wframe-larger-than=3D2048 -fno-stack-protector -Wno-fo=
+rmat-invalid-specifier -Wno-gnu -mno-global-merge -Wno-unused-const-variabl=
+e -fomit-frame-pointer -Wdeclaration-after-statement -Wvla -Wno-pointer-sig=
+n -Wno-array-bounds -fno-strict-overflow -fno-stack-check -Werror=3Ddate-ti=
+me -Werror=3Dincompatible-pointer-types -fmacro-prefix-map=3D/linux/=3D -Wn=
+o-initializer-overrides -Wno-format -Wno-sign-compare -Wno-format-zero-leng=
+th -Wno-pointer-to-enum-cast -Wno-tautological-constant-out-of-range-compar=
+e -D_TASK_CPU=3D304 -shared -fno-common -fno-builtin -nostdlib -Wl,-soname=
+=3Dlinux-vdso32.so.1 -Wl,--hash-style=3Dboth -include /linux/lib/vdso/getti=
+meofday.c -fno-stack-protector -DDISABLE_BRANCH_PROFILING -ffreestanding -f=
+asynchronous-unwind-tables   -I /linux/arch/powerpc/kernel/vdso32 -I ./arch=
+/powerpc/kernel/vdso32    -DKBUILD_MODFILE=3D'"arch/powerpc/kernel/vdso32/v=
+gettimeofday"' -DKBUILD_BASENAME=3D'"vgettimeofday"' -DKBUILD_MODNAME=3D'"v=
+gettimeofday"' -m32 -c -o arch/powerpc/kernel/vdso32/vgettimeofday.o /linux=
+/arch/powerpc/kernel/vdso32/vgettimeofday.c
 
-> 
->  static int parse_thread_groups(struct device_node *dn,
-> -			       struct thread_groups *tg,
-> -			       unsigned int property)
-> +			       struct thread_groups_list *tglp)
->  {
-> -	int i;
-> -	u32 thread_group_array[3 + MAX_THREAD_LIST_SIZE];
-> +	int i = 0;
-> +	u32 *thread_group_array;
->  	u32 *thread_list;
->  	size_t total_threads;
-> -	int ret;
-> +	int ret = 0, count;
-> +	unsigned int property_idx = 0;
 
-NIT:
-tglx mentions in one of his recent comments to try keep a reverse fir tree
-ordering of variables where possible.
+>    arch/powerpc/include/asm/vdso/gettimeofday.h:183:5: note: previous dec=
+laration is here
+>    int __c_kernel_clock_gettime(clockid_t clock, struct __kernel_timespec=
+ *ts,
+>        ^
 
-> 
-> +	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
-> +	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
->  	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
-> -					 thread_group_array, 3);
-> +					 thread_group_array, count);
->  	if (ret)
-> -		return ret;
-> -
-> -	tg->property = thread_group_array[0];
-> -	tg->nr_groups = thread_group_array[1];
-> -	tg->threads_per_group = thread_group_array[2];
-> -	if (tg->property != property ||
-> -	    tg->nr_groups < 1 ||
-> -	    tg->threads_per_group < 1)
-> -		return -ENODATA;
-> +		goto out_free;
-> 
-> -	total_threads = tg->nr_groups * tg->threads_per_group;
-> +	while (i < count && property_idx < MAX_THREAD_GROUP_PROPERTIES) {
-> +		int j;
-> +		struct thread_groups *tg = &tglp->property_tgs[property_idx++];
+But this is inside an #ifdef __powerpc64__ block:
 
-NIT: same as above.
+182 #ifdef __powerpc64__
+183 int __c_kernel_clock_gettime(clockid_t clock, struct __kernel_timespec =
+*ts,
+184                              const struct vdso_data *vd);
 
-> 
-> -	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
-> -					 thread_group_array,
-> -					 3 + total_threads);
-> -	if (ret)
-> -		return ret;
-> +		tg->property = thread_group_array[i];
-> +		tg->nr_groups = thread_group_array[i + 1];
-> +		tg->threads_per_group = thread_group_array[i + 2];
-> +		total_threads = tg->nr_groups * tg->threads_per_group;
-> +
-> +		thread_list = &thread_group_array[i + 3];
-> 
-> -	thread_list = &thread_group_array[3];
-> +		for (j = 0; j < total_threads; j++)
-> +			tg->thread_list[j] = thread_list[j];
-> +		i = i + 3 + total_threads;
 
-	Can't we simply use memcpy instead?
+So is clang defining __powerpc64__ even for 32-bit code?
 
-> +	}
-> 
-> -	for (i = 0 ; i < total_threads; i++)
-> -		tg->thread_list[i] = thread_list[i];
-> +	tglp->nr_properties = property_idx;
-> 
-> -	return 0;
-> +out_free:
-> +	kfree(thread_group_array);
-> +	return ret;
->  }
-> 
->  /*
-> @@ -805,24 +827,39 @@ static int get_cpu_thread_group_start(int cpu, struct thread_groups *tg)
->  	return -1;
->  }
-> 
-> -static int init_cpu_l1_cache_map(int cpu)
-> +static int init_cpu_cache_map(int cpu, unsigned int cache_property)
-> 
->  {
->  	struct device_node *dn = of_get_cpu_node(cpu, NULL);
-> -	struct thread_groups tg = {.property = 0,
-> -				   .nr_groups = 0,
-> -				   .threads_per_group = 0};
-> +	struct thread_groups *tg = NULL;
->  	int first_thread = cpu_first_thread_sibling(cpu);
->  	int i, cpu_group_start = -1, err = 0;
-> +	cpumask_var_t *mask;
-> +	struct thread_groups_list *cpu_tgl = &tgl[cpu];
+And the answer appears to be yes:
 
-NIT: same as 1st comment.
+  $ clang --version
+  Ubuntu clang version 11.0.0-2
+  Target: powerpc64le-unknown-linux-gnu
 
-> 
->  	if (!dn)
->  		return -ENODATA;
-> 
-> -	err = parse_thread_groups(dn, &tg, THREAD_GROUP_SHARE_L1);
-> -	if (err)
-> -		goto out;
-> +	if (!(cache_property == THREAD_GROUP_SHARE_L1))
-> +		return -EINVAL;
-> 
-> -	cpu_group_start = get_cpu_thread_group_start(cpu, &tg);
-> +	if (!cpu_tgl->nr_properties) {
-> +		err = parse_thread_groups(dn, cpu_tgl);
-> +		if (err)
-> +			goto out;
-> +	}
-> +
-> +	for (i = 0; i < cpu_tgl->nr_properties; i++) {
-> +		if (cpu_tgl->property_tgs[i].property == cache_property) {
-> +			tg = &cpu_tgl->property_tgs[i];
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (!tg)
-> +		return -EINVAL;
-> +
-> +	cpu_group_start = get_cpu_thread_group_start(cpu, tg);
+  $ clang -m32 -dM -E - < /dev/null | grep powerpc
+  #define __powerpc64__ 1
+  #define __powerpc__ 1
 
-This whole hunk should be moved to a new function and called before
-init_cpu_cache_map. It will simplify the logic to great extent.
+Compare to gcc:
 
-> 
->  	if (unlikely(cpu_group_start == -1)) {
->  		WARN_ON_ONCE(1);
-> @@ -830,11 +867,12 @@ static int init_cpu_l1_cache_map(int cpu)
->  		goto out;
->  	}
-> 
-> -	zalloc_cpumask_var_node(&per_cpu(cpu_l1_cache_map, cpu),
-> -				GFP_KERNEL, cpu_to_node(cpu));
-> +	mask = &per_cpu(cpu_l1_cache_map, cpu);
-> +
-> +	zalloc_cpumask_var_node(mask, GFP_KERNEL, cpu_to_node(cpu));
-> 
+  $ gcc --version
+  gcc (Ubuntu 10.2.0-13ubuntu1) 10.2.0
+=20=20
+  $ gcc -m32 -dM -E - < /dev/null | grep powerpc
+  #define __powerpc__ 1
+  #define powerpc 1
+  #define __powerpc 1
 
-This hunk (and the next hunk) should be moved to next patch.
 
->  	for (i = first_thread; i < first_thread + threads_per_core; i++) {
-> -		int i_group_start = get_cpu_thread_group_start(i, &tg);
-> +		int i_group_start = get_cpu_thread_group_start(i, tg);
-> 
->  		if (unlikely(i_group_start == -1)) {
->  			WARN_ON_ONCE(1);
-> @@ -843,7 +881,7 @@ static int init_cpu_l1_cache_map(int cpu)
->  		}
-> 
->  		if (i_group_start == cpu_group_start)
-> -			cpumask_set_cpu(i, per_cpu(cpu_l1_cache_map, cpu));
-> +			cpumask_set_cpu(i, *mask);
->  	}
-> 
->  out:
-> @@ -924,7 +962,7 @@ static int init_big_cores(void)
->  	int cpu;
-> 
->  	for_each_possible_cpu(cpu) {
-> -		int err = init_cpu_l1_cache_map(cpu);
-> +		int err = init_cpu_cache_map(cpu, THREAD_GROUP_SHARE_L1);
-> 
->  		if (err)
->  			return err;
-> -- 
-> 1.9.4
-> 
+Which is fairly problematic, because we use the presence/absence of
+__powerpc64__ to determine if we're building 64-bit/32-bit code in
+several places.
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+Not sure what the best approach for fixing that is.
+
+cheers
