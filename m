@@ -2,61 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD0B2D16C9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 17:51:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A9A72D16CD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 17:53:56 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CqTqS6dw6zDqWl
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 03:51:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CqTsr538gzDqb5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 03:53:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.67; helo=mail-ot1-f67.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.195;
+ helo=mail-oi1-f195.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com
- [209.85.210.67])
+Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com
+ [209.85.167.195])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CqTnL2wGHzDqNS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 03:49:55 +1100 (AEDT)
-Received: by mail-ot1-f67.google.com with SMTP id h18so9078378otq.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Dec 2020 08:49:55 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CqTnh3yFHzDqVV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 03:50:16 +1100 (AEDT)
+Received: by mail-oi1-f195.google.com with SMTP id v85so5511286oia.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Dec 2020 08:50:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=UuU157skWGSfcX1NxkRT5BCxvQhS6DEbdRKPwY10+n0=;
- b=mfB/zgwm52k/mM7TNF2my5V5G3RlhUxfL0VYykI7FhA8buNad1OiL5HFKunqHNfdsW
- BQ/MKp61pfnYYCk0ck3oZLdWVN6u7F6dmh/Ptn2iv/nl9Z8Ha/eubI9uOOzJcGsx3R/s
- MNmSdG0J1mLHAx7bmJ4jvuXlSW6I0hiDd47Ry2swSV4jtYmkQq+Kj2zQHamBimY5qI9A
- hUt1KI4kL2MSSnP864UZa6bEIQzTkwTwavxV2YS4VlQ317A/r13Caj7UYMmgVQttqfrk
- pDNFXPSMJkEY6F+X4RCWSPpAAMUdmpV3ay8ckF50KjDMWWDfUO4WeB0kZroJ+QhkHS/t
- +0/g==
-X-Gm-Message-State: AOAM531z2/+PP0pW+fN63LFYg15gb4437GPQoAiMBqpwynMwxrQRd1E9
- TiYykLrzQejBuhmqcBQ5rw==
-X-Google-Smtp-Source: ABdhPJxmcf4zm/wuxPhsKUoUScvOLy83vfBUwi8g1uPSshO3b0CcihsttcupDMYjJmpikbuM3HuZZw==
-X-Received: by 2002:a9d:7304:: with SMTP id e4mr4414560otk.228.1607359790146; 
- Mon, 07 Dec 2020 08:49:50 -0800 (PST)
+ bh=sVqHnk5+Qd48rsQgEdxe7AzLNS+jRVeavbI0MHrpgH8=;
+ b=Mkv4zgGQZEXQgdAOkMiAMBPz5GKBKRJ+Cic0t8Yt6BhvZxYoc5OfLoBnw2A2sMV/an
+ YGQ0B8oHgGqcrevgA91dR0ObR3xFmW1kinR5pjbELLvPZ0Ta1hRmBcPluXDaPsrUFQSI
+ KyO5twkqBARMxxszA5VfckIJV6SqTKJEXDuBHqGDIhH/EAdkVpYmDDfRvLidNCwcxvsD
+ hL9yuQ+hsYGUfMRENZBYK7NKYkHAVXF+czMDaAQCuorS065+4YUnYWH576Rc7anzT6/g
+ +XfgPGbhD5NnOTOWe16lUHUSGJ7409olTr67v55LI8rJAW7NAseHzGLaCoTfvV+WIVEZ
+ ryAw==
+X-Gm-Message-State: AOAM533ZuoqAgKbIR7u1GsXOYlPK00J/Y/hjqopOYlXU4ySUctF/CMMV
+ +OjJ2xMaVAUWYuRcD+77tw==
+X-Google-Smtp-Source: ABdhPJyi1wFJCXTTwPWZTDNSZYVtXEjaTrMTXAL1g/vcuUtmd8ZXTbe7OhMA8bMQ/ovZiNG8xiPfvg==
+X-Received: by 2002:aca:ccc1:: with SMTP id
+ c184mr10424948oig.121.1607359813295; 
+ Mon, 07 Dec 2020 08:50:13 -0800 (PST)
 Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id x72sm3040778oia.16.2020.12.07.08.49.48
+ by smtp.gmail.com with ESMTPSA id j62sm2730022otc.49.2020.12.07.08.50.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Dec 2020 08:49:48 -0800 (PST)
-Received: (nullmailer pid 420892 invoked by uid 1000);
- Mon, 07 Dec 2020 16:49:47 -0000
-Date: Mon, 7 Dec 2020 10:49:47 -0600
+ Mon, 07 Dec 2020 08:50:12 -0800 (PST)
+Received: (nullmailer pid 421441 invoked by uid 1000);
+ Mon, 07 Dec 2020 16:50:10 -0000
+Date: Mon, 7 Dec 2020 10:50:10 -0600
 From: Rob Herring <robh@kernel.org>
 To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Subject: Re: [PATCH v5 10/19] dt-bindings: usb: Convert DWC USB3 bindings to
- DT schema
-Message-ID: <20201207164947.GA420349@robh.at.kernel.org>
+Subject: Re: [PATCH v5 01/19] dt-bindings: usb: usb-hcd: Detach generic USB
+ controller properties
+Message-ID: <20201207165010.GB420349@robh.at.kernel.org>
 References: <20201205152427.29537-1-Sergey.Semin@baikalelectronics.ru>
- <20201205152427.29537-11-Sergey.Semin@baikalelectronics.ru>
+ <20201205152427.29537-2-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201205152427.29537-11-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20201205152427.29537-2-Sergey.Semin@baikalelectronics.ru>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,71 +92,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 05 Dec 2020 18:24:17 +0300, Serge Semin wrote:
-> DWC USB3 DT node is supposed to be compliant with the Generic xHCI
-> Controller schema, but with additional vendor-specific properties, the
-> controller-specific reference clocks and PHYs. So let's convert the
-> currently available legacy text-based DWC USB3 bindings to the DT schema
-> and make sure the DWC USB3 nodes are also validated against the
-> usb-xhci.yaml schema.
+On Sat, 05 Dec 2020 18:24:08 +0300, Serge Semin wrote:
+> There can be three distinctive types of the USB controllers: USB hosts,
+> USB peripherals/gadgets and USB OTG, which can switch from one role to
+> another. In order to have that hierarchy handled in the DT binding files,
+> we need to collect common properties in a common DT schema and specific
+> properties in dedicated schemas. Seeing the usb-hcd.yaml DT schema is
+> dedicated for the USB host controllers only, let's move some common
+> properties from there into the usb.yaml schema. So the later would be
+> available to evaluate all currently supported types of the USB
+> controllers.
 > 
-> Note 1. we have to discard the nodename restriction of being prefixed with
-> "dwc3@" string, since in accordance with the usb-hcd.yaml schema USB nodes
-> are supposed to be named as "^usb(@.*)".
-> 
-> Note 2. The clock-related properties are marked as optional to match the
-> DWC USB3 driver expectation and to improve the bindings mainainability
-> so in case if there is a glue-node it would the responsible for the
-> clocks initialization.
+> While at it add an explicit "additionalProperties: true" into the
+> usb-hcd.yaml as setting the additionalProperties/unevaluateProperties
+> properties is going to be get mandatory soon.
 > 
 > Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 > 
 > ---
 > 
-> Changelog v2:
-> - Discard '|' from the descriptions, since we don't need to preserve
->   the text formatting in any of them.
-> - Drop quotes from around the string constants.
-> - Fix the "clock-names" prop description to be referring the enumerated
->   clock-names instead of the ones from the Databook.
-> 
-> Changelog v3:
-> - Apply usb-xhci.yaml# schema only if the controller is supposed to work
->   as either host or otg.
-> 
 > Changelog v4:
-> - Apply usb-drd.yaml schema first. If the controller is configured
->   to work in a gadget mode only, then apply the usb.yaml schema too,
->   otherwise apply the usb-xhci.yaml schema.
-> - Discard the Rob'es Reviewed-by tag. Please review the patch one more
->   time.
+> - This is a new patch created as a result of the comment left
+>   by Chunfeng Yun in v3
 > 
 > Changelog v5:
-> - Add "snps,dis-split-quirk" property to the DWC USB3 DT schema.
-> - Add a commit log text about the clock-related property changes.
-> - Make sure dr_mode exist to apply the USB-gadget-only schema.
+> - Discard duplicated additionalProperties property definition.
 > ---
->  .../devicetree/bindings/usb/dwc3.txt          | 128 -------
->  .../devicetree/bindings/usb/snps,dwc3.yaml    | 312 ++++++++++++++++++
->  2 files changed, 312 insertions(+), 128 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/usb/dwc3.txt
->  create mode 100644 Documentation/devicetree/bindings/usb/snps,dwc3.yaml
+>  .../devicetree/bindings/usb/usb-hcd.yaml      | 14 ++-------
+>  .../devicetree/bindings/usb/usb.yaml          | 29 +++++++++++++++++++
+>  2 files changed, 31 insertions(+), 12 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/usb/usb.yaml
 > 
 
 
 My bot found errors running 'make dt_binding_check' on your patch:
 
 yamllint warnings/errors:
-./Documentation/devicetree/bindings/usb/snps,dwc3.yaml:55:4: [warning] wrong indentation: expected 4 but found 3 (indentation)
 
 dtschema/dtc warnings/errors:
-Unknown file referenced: [Errno 2] No such file or directory: '/usr/local/lib/python3.8/dist-packages/dtschema/schemas/usb/usb-drd.yaml'
-xargs: dt-doc-validate: exited with status 255; aborting
-make[1]: *** [Documentation/devicetree/bindings/Makefile:59: Documentation/devicetree/bindings/processed-schema-examples.json] Error 124
-make: *** [Makefile:1364: dt_binding_check] Error 2
+schemas/usb/usb-hcd.yaml: ignoring, error in schema: 
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/usb/usb-hcd.yaml: 'anyOf' conditional failed, one must be fixed:
+	'properties' is a required property
+	'patternProperties' is a required property
+schemas/usb/usb-hcd.yaml: ignoring, error in schema: 
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/usb/usb-hcd.yaml: ignoring, error in schema: 
+warning: no schema found in file: ./Documentation/devicetree/bindings/usb/usb-hcd.yaml
+schemas/usb/usb-hcd.yaml: ignoring, error in schema: 
+dt-validate: recursion error: Check for prior errors in a referenced schema
+schemas/usb/usb-hcd.yaml: ignoring, error in schema: 
+dt-validate: recursion error: Check for prior errors in a referenced schema
+schemas/usb/usb-hcd.yaml: ignoring, error in schema: 
+dt-validate: recursion error: Check for prior errors in a referenced schema
+schemas/usb/usb-hcd.yaml: ignoring, error in schema: 
+dt-validate: recursion error: Check for prior errors in a referenced schema
+schemas/usb/usb-hcd.yaml: ignoring, error in schema: 
+dt-validate: recursion error: Check for prior errors in a referenced schema
+dt-validate: recursion error: Check for prior errors in a referenced schema
 
 
-See https://patchwork.ozlabs.org/patch/1411582
+See https://patchwork.ozlabs.org/patch/1411574
 
 The base for the patch is generally the last rc1. Any dependencies
 should be noted.
