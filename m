@@ -2,47 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31152D0FE5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 13:00:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56DF42D1031
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 13:14:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CqMMP3LRkzDqQv
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 23:00:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CqMgM1xsJzDqWj
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 23:14:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=hare@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.172;
+ helo=mail-oi1-f172.google.com; envelope-from=geert.uytterhoeven@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com
+ [209.85.167.172])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CqMGs6grxzDqN9
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Dec 2020 22:56:37 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id DB8CFAC9A;
- Mon,  7 Dec 2020 11:56:32 +0000 (UTC)
-Subject: Re: [PATCH v2 01/17] ibmvfc: add vhost fields and defaults for MQ
- enablement
-To: Brian King <brking@linux.vnet.ibm.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>, james.bottomley@hansenpartnership.com
-References: <20201202005329.4538-1-tyreld@linux.ibm.com>
- <20201202005329.4538-2-tyreld@linux.ibm.com>
- <a11c0e6a-cfa6-0dc4-5d34-6fd35ae1f29b@linux.vnet.ibm.com>
- <38903a4f-9253-0b4b-6f67-af78ec86175f@linux.ibm.com>
- <efbfe9e9-c692-80a1-f5b4-55473d8193e4@linux.vnet.ibm.com>
-From: Hannes Reinecke <hare@suse.de>
-Message-ID: <6ce79011-d288-7a49-3d51-262da58d8486@suse.de>
-Date: Mon, 7 Dec 2020 12:56:31 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CqMZ22THGzDqRv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Dec 2020 23:09:45 +1100 (AEDT)
+Received: by mail-oi1-f172.google.com with SMTP id s75so12061622oih.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Dec 2020 04:09:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Gf4f4C3kkK3xkC5PEHsF24NiLGtD172vjUD1vi5tQTc=;
+ b=OPJisr/TP4dl0wORe6JMaCnlndx28p+8VjWZ6qUUCtLUTA6/pv9FPNMdz4J3Rj6WDP
+ F9LrnmsgkxQewPgrK1FsSvzMbinSu4YpDaaAf0zNFVbLw4H74FLds2ekd6WBHSCo9Jcx
+ 0YIYXGuirg+/ddxGodaxKxkoxvCX9KrNUFtkMbvikhLPCUYL8M7Y/b3YMq/lH2lTTHyW
+ yPu4wG8348n8DsJz/QmiobyWFanNuvgEPdh4Siq7OmGaLU9j8q7tN42Jtfkde/oP1rAA
+ IPv8OVU50oN+V8EUEwyWOjEEgW122uRJ/zZpyquCG57Gukl3N+U8IlTFPAUmA0tlZY6o
+ lcVw==
+X-Gm-Message-State: AOAM530V3n3yHiakCbgiAXPRyzJQvHyOX+0Q8o+VsOlFxOc7gUlSvJTQ
+ lDHfGU3zoeMgM1jpS0MK4xfuiONTKlWCvecZDBg=
+X-Google-Smtp-Source: ABdhPJzYI6ZoWUYeRuiEWXBzV3L2dm+taMvez/yyxn0R4kK5f/y0seWKWMF7FQ1S68gN4HNmvqlbVLDaRfoSXkn00BI=
+X-Received: by 2002:aca:4cd8:: with SMTP id
+ z207mr12066693oia.148.1607342979004; 
+ Mon, 07 Dec 2020 04:09:39 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <efbfe9e9-c692-80a1-f5b4-55473d8193e4@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20201207120611.1315807-1-geert@linux-m68k.org>
+In-Reply-To: <20201207120611.1315807-1-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 7 Dec 2020 13:09:28 +0100
+Message-ID: <CAMuHMdWJVgWmAOVDVcLfA7Hsv5h1tzqOt6EfgyB_eO_Jn+ESZg@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.10-rc7
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,69 +61,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/4/20 3:26 PM, Brian King wrote:
-> On 12/2/20 11:27 AM, Tyrel Datwyler wrote:
->> On 12/2/20 7:14 AM, Brian King wrote:
->>> On 12/1/20 6:53 PM, Tyrel Datwyler wrote:
->>>> Introduce several new vhost fields for managing MQ state of the adapter
->>>> as well as initial defaults for MQ enablement.
->>>>
->>>> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
->>>> ---
->>>>   drivers/scsi/ibmvscsi/ibmvfc.c |  9 ++++++++-
->>>>   drivers/scsi/ibmvscsi/ibmvfc.h | 13 +++++++++++--
->>>>   2 files changed, 19 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
->>>> index 42e4d35e0d35..f1d677a7423d 100644
->>>> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
->>>> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
->>>> @@ -5161,12 +5161,13 @@ static int ibmvfc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
->>>>   	}
->>>>   
->>>>   	shost->transportt = ibmvfc_transport_template;
->>>> -	shost->can_queue = max_requests;
->>>> +	shost->can_queue = (max_requests / IBMVFC_SCSI_HW_QUEUES);
->>>
->>> This doesn't look right. can_queue is the SCSI host queue depth, not the MQ queue depth.
->>
->> Our max_requests is the total number commands allowed across all queues. From
->> what I understand is can_queue is the total number of commands in flight allowed
->> for each hw queue.
->>
->>          /*
->>           * In scsi-mq mode, the number of hardware queues supported by the LLD.
->>           *
->>           * Note: it is assumed that each hardware queue has a queue depth of
->>           * can_queue. In other words, the total queue depth per host
->>           * is nr_hw_queues * can_queue. However, for when host_tagset is set,
->>           * the total queue depth is can_queue.
->>           */
->>
->> We currently don't use the host wide shared tagset.
-> 
-> Ok. I missed that bit... In that case, since we allocate by default only 100
-> event structs. If we slice that across IBMVFC_SCSI_HW_QUEUES (16) queues, then
-> we end up with only about 6 commands that can be outstanding per queue,
-> which is going to really hurt performance... I'd suggest bumping up
-> IBMVFC_MAX_REQUESTS_DEFAULT from 100 to 1000 as a starting point.
-> 
-Before doing that I'd rather use the host-wide shared tagset.
-Increasing the number of requests will increase the memory footprint of 
-the driver (as each request will be statically allocated).
+On Mon, Dec 7, 2020 at 1:08 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> JFYI, when comparing v5.10-rc7[1] to v5.10-rc6[3], the summaries are:
+>   - build errors: +1/-0
 
-Cheers,
+  + /kisskb/src/arch/powerpc/platforms/powermac/smp.c: error: implicit
+declaration of function 'cleanup_cpu_mmu_context'
+[-Werror=implicit-function-declaration]:  => 914:2
 
-Hannes
+v5.10-rc7/powerpc-gcc4.9/pmac32_defconfig+SMP
+
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/0477e92881850d44910a7e94fc2c46f96faa131f/ (all 192 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/b65054597872ce3aefbc6a666385eabdf9e288da/ (all 192 configs)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
