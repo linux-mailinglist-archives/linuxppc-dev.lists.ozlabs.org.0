@@ -1,69 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6916E2D1BF0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 22:24:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A7422D1C85
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Dec 2020 22:58:15 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cqbsf0xg7zDqPR
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 08:24:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cqcd00cnMzDqVV
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 08:58:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=broadcom.com (client-ip=2a00:1450:4864:20::342;
- helo=mail-wm1-x342.google.com; envelope-from=james.quinlan@broadcom.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
- header.from=broadcom.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256
- header.s=google header.b=EkCNM591; dkim-atps=neutral
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
- [IPv6:2a00:1450:4864:20::342])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=jkGBUI0J; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CqZfz3j4fzDqVS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 07:29:40 +1100 (AEDT)
-Received: by mail-wm1-x342.google.com with SMTP id g185so455459wmf.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Dec 2020 12:29:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=broadcom.com; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=CnMqMtqNBGCXiv+ixFN0xw7Qcq0PS+gFtQGcnjF9AU0=;
- b=EkCNM591kUgiI4NdqrgFPvxmAbEKaP0fzhsDgvktcrleInQiRXHE7EjI6zUv5dlV0u
- 4ZN3jbFep3T/2All7/7bs/+Ju0dA14OqxfY6sqNlmVZ4vk4TR3j8UQYkND7DSEfV65zy
- KnbxARn6hflv1MiIdrXFPcunojEJ/vQipRrNs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=CnMqMtqNBGCXiv+ixFN0xw7Qcq0PS+gFtQGcnjF9AU0=;
- b=WKXTw/pSVfRpO3/bNt42c4fmjzSFji65yk5SXi2yeHLFcqvlEhfgVo/i/48mP9TNXi
- EzZGyAC0mNRotu1jtyoJCCV4rNC2olwyLmG4R/5RCwwgYJEq/x1WY7ixd3mvFKxZhtU1
- +eVqcY7pw8deKA0+dEPSRj1PCB7uRWI6bL6D8AsCZsgrmr/KcGBCDb2SB2+N9rV4Ya97
- cTNpcUnG3kkAuUB5ikEZWJuAdAqNPaP6NJU4eqhH5AEkwQi1V9SqAQv3mOnytpJ2nY2w
- CyOjfEmj4sQom/Hhsy4vn8lIMvCklWEPvJaIsvGMVJ2BeTyE1eo2JACGBS+mr1x/7Fvx
- lFMg==
-X-Gm-Message-State: AOAM531kvIzgE7jCBnfNLF+nOq90CxlgYpZvCXrkBFXwwc5CEYbNuzJv
- W5cA/FdNkzAQnAhOseUPjksziKVOZx607Gv9WV9uefHF3cEv2SUddxYUrsu9jgKVCe0KF2shX7y
- ACcSw1utFGWcr7vAafxcQTYEIVO5t6alJ
-X-Google-Smtp-Source: ABdhPJz2rzqH3CYlLvsRHPPLOcG0oVD3DD5pvDv4x4Kx5bxHIAD5bFpSEXL5B8bNThfG3tcQztwQ7cGlzDSSiV3A9OM=
-X-Received: by 2002:a7b:c157:: with SMTP id z23mr588266wmi.35.1607372976076;
- Mon, 07 Dec 2020 12:29:36 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CqcTz3pqfzDqVK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 08:52:06 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B7LTKfC106485
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 7 Dec 2020 16:52:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=8SpgHLcVlEoptyi4OjxzgIgZ+/4j18QPzlXSHwxSfAM=;
+ b=jkGBUI0JasBZ1D6AEkzYfvunlMUZ+/UC2zkyEVW0Q+dlZKPcTBl0oAV4psX+fpHssR1n
+ YfNpTiIxShqdcBtDybPmy32YgN2lqhvrvzW58LXzYypdg8co5revPM1RpDb3If8d80fl
+ mXexv+kvm+arNdgiCYRrw88J3ymDsYdxferFo6/e48H4YmNG4krOTO3ETgLEFoVIcdgO
+ V6Lanh9oxPl8ObLRa1ystSpi3pgatcEyBrMOhkjTc5G4VDad2dA2AWOJ9TWx9ummVyOX
+ 9akzFoVGp3dpbBIJQSGSih5PdwR0pa9Tozu3ChDpt95HPuyXCReFVy62Wdzvrn16BDeS kg== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 359s0r6bx4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Dec 2020 16:52:03 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B7LlkKe000963
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 7 Dec 2020 21:52:02 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma04wdc.us.ibm.com with ESMTP id 3581u92xyk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Dec 2020 21:52:02 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B7Lq1lN11796802
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 7 Dec 2020 21:52:01 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5ABCE6E052;
+ Mon,  7 Dec 2020 21:52:01 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1843C6E04C;
+ Mon,  7 Dec 2020 21:52:00 +0000 (GMT)
+Received: from localhost (unknown [9.160.57.67])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon,  7 Dec 2020 21:52:00 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 00/28] partition suspend updates
+Date: Mon,  7 Dec 2020 15:51:32 -0600
+Message-Id: <20201207215200.1785968-1-nathanl@linux.ibm.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-References: <20201129230743.3006978-1-kw@linux.com>
- <20201129230743.3006978-2-kw@linux.com>
- <X808JJGeIREwqIjb@rocinante> <094b314f-7f61-d0fd-fd63-c9c4da9e84a8@gmail.com>
-In-Reply-To: <094b314f-7f61-d0fd-fd63-c9c4da9e84a8@gmail.com>
-From: Jim Quinlan <james.quinlan@broadcom.com>
-Date: Mon, 7 Dec 2020 15:29:24 -0500
-Message-ID: <CA+-6iNzmx6nCZh_y9du1Dz=dFUBGABAJPEEviF9OSGORUnx-GQ@mail.gmail.com>
-Subject: Re: [PATCH v6 1/5] PCI: Unify ECAM constants in native PCI Express
- drivers
-To: Florian Fainelli <f.fainelli@gmail.com>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature";
- micalg=sha-256; boundary="00000000000048af5805b5e5af85"
-X-Mailman-Approved-At: Tue, 08 Dec 2020 08:22:39 +1100
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2020-12-07_16:2020-12-04,
+ 2020-12-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ adultscore=0 clxscore=1015 mlxlogscore=347 lowpriorityscore=0
+ suspectscore=1 spamscore=0 malwarescore=0 bulkscore=0 mlxscore=0
+ phishscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2009150000 definitions=main-2012070132
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,219 +94,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Heiko Stuebner <heiko@sntech.de>, Shawn Lin <shawn.lin@rock-chips.com>,
- Paul Mackerras <paulus@samba.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Jonathan Chocron <jonnyc@amazon.com>, Toan Le <toan@os.amperecomputing.com>,
- Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Michal Simek <michal.simek@xilinx.com>, linux-rockchip@lists.infradead.org,
- "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE"
- <bcm-kernel-feedback-list@broadcom.com>,
- "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- "open list:PCI NATIVE HOST BRIDGE AND ENDPOINT DRIVERS"
- <linux-pci@vger.kernel.org>, Ray Jui <rjui@broadcom.com>,
- "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE"
- <linux-rpi-kernel@lists.infradead.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Jonathan Derrick <jonathan.derrick@intel.com>,
- Scott Branden <sbranden@broadcom.com>, Zhou Wang <wangzhou1@hisilicon.com>,
- Robert Richter <rrichter@marvell.com>, linuxppc-dev@lists.ozlabs.org,
- Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc: tyreld@linux.ibm.com, ajd@linux.ibm.com, mmc@linux.vnet.ibm.com,
+ cforno12@linux.vnet.ibm.com, drt@linux.vnet.ibm.com, brking@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---00000000000048af5805b5e5af85
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This series aims to improve the pseries-specific partition migration
+and hibernation implementation, part of which has been living in
+kernel/rtas.c. Most of that code is eliminated or moved to
+platforms/pseries, and the following major functional changes are
+made:
 
-On Sun, Dec 6, 2020 at 10:25 PM Florian Fainelli <f.fainelli@gmail.com> wro=
-te:
->
-> +JimQ,
->
-> On 12/6/2020 12:16 PM, Krzysztof Wilczy=C5=84ski wrote:
-> > Hello Nicolas, Florian and Florian,
-> >
-> > [...]
-> >> -/* Configuration space read/write support */
-> >> -static inline int brcm_pcie_cfg_index(int busnr, int devfn, int reg)
-> >> -{
-> >> -    return ((PCI_SLOT(devfn) & 0x1f) << PCIE_EXT_SLOT_SHIFT)
-> >> -            | ((PCI_FUNC(devfn) & 0x07) << PCIE_EXT_FUNC_SHIFT)
-> >> -            | (busnr << PCIE_EXT_BUSNUM_SHIFT)
-> >> -            | (reg & ~3);
-> >> -}
-> >> -
-> >>  static void __iomem *brcm_pcie_map_conf(struct pci_bus *bus, unsigned=
- int devfn,
-> >>                                      int where)
-> >>  {
-> >> @@ -716,7 +704,7 @@ static void __iomem *brcm_pcie_map_conf(struct pci=
-_bus *bus, unsigned int devfn,
-> >>              return PCI_SLOT(devfn) ? NULL : base + where;
-> >>
-> >>      /* For devices, write to the config space index register */
-> >> -    idx =3D brcm_pcie_cfg_index(bus->number, devfn, 0);
-> >> +    idx =3D PCIE_ECAM_OFFSET(bus->number, devfn, 0);
-> >>      writel(idx, pcie->base + PCIE_EXT_CFG_INDEX);
-> >>      return base + PCIE_EXT_CFG_DATA + where;
-> >>  }
-> > [...]
-> >
-> > Passing the hard-coded 0 as the "reg" argument here never actually did
-> > anything, thus the 32 bit alignment was never correctly enforced.
-> >
-> > My question would be: should this be 32 bit aligned?  It seems like the
-> > intention was to perhaps make the alignment?  I am sadly not intimately
-> > familiar with his hardware, so I am not sure if there is something to
-> > fix here or not.
-Hello Krzystzof,
+- Use stop_machine() instead of on_each_cpu() to avoid deadlock in the
+  join/suspend sequence.
 
-The value gets assigned to our config-space index register, which has
-the lower two bits marked "unused".    We're making sure that we are
-putting zeroes there but it is most likely not necessary.
+- Retry the join/suspend sequence on errors that are likely to be
+  transient. This is a mitigation for the fact that drivers currently
+  have no way to prepare for an impending partition suspension,
+  sometimes resulting in a virtual adapter being in a state which
+  causes the platform to fail the suspend call.
 
-> >
-> > Also, I wonder whether it would be safe to pass the offset (the "where"
-> > variable) rather than hard-coded 0?
-The answer is "no" for this code but "maybe" in the future -- allow me
-to explain.  We have two methods to access the config space:
+- Request cancellation of the migration via H_VASI_SIGNAL if Linux is
+  going to error out of the suspend attempt. This allows the
+  management console and other entities to promptly clean up their
+  operations instead of relying on long timeouts to fail the
+  migration.
 
-(1) Set a designated index register to map to the base of a device's
-config-space.  From then we can access a 4k register set.  This is the
-method you see in the code and is why we set reg=3D0 for the index value
-and then add "where" to the return address.
+- Little-endian users of ibm,suspend-me, ibm,update-nodes and
+  ibm,update-properties via sys_rtas are blocked when
+  CONFIG_PPC_RTAS_FILTERS is enabled.
 
-(2) Set our index register to the bus/slot/func/reg value, and then we
-access a single data register.  In this case we do set the "reg" to
-the register value to set the index and then only add "where & 0x3" to
-the return address.
+- Legacy user space code (drmgr) historically has driven the migration
+  process by using sys_rtas to separately call ibm,suspend-me,
+  ibm,activate-firmware, and ibm,update-nodes/properties, in that
+  order. With these changes, when sys_rtas() dispatches
+  ibm,suspend-me, the kernel performs the device tree update and
+  firmware activation before returning. This is more reliable, and
+  drmgr does not seem bothered by it.
 
-As it turns out, (1) is not compatible with some MIPs SOCs that we
-still support as they do not have the 4k data register set.  So I may
-be changing to (1) in a future pullreq, and if so, I will invoke
-PCIE_ECAM_OFFSET(bus->number, devfn, where & ~3);
+- If the H_VASI_STATE hcall is absent, the implementation proceeds
+  with the suspend instead of erroring out. This allows us to exercise
+  these code paths in QEMU.
 
-Regards,
-Jim Quinlan
-Broadcom STB
+Changes since v1:
+- Drop "powerpc/rtas: move rtas_call_reentrant() out of pseries
+  guards". rtas_call_reentrant() actually is pseries-specific and this
+  broke builds without CONFIG_PPC_PSERIES set.
+- Simplify polling logic in wait_for_vasi_session_suspending().
+  ("powerpc/pseries/mobility: extract VASI session polling logic")
+- Use direct return instead of goto in pseries_migrate_partition().
+  ("powerpc/pseries/mobility: use stop_machine for join/suspend")
+- Change dispatch of ibm,suspend-me in rtas syscall path to use
+  conventional config symbol guards instead of a weak function.
+  ("powerpc/rtas: dispatch partition migration requests to pseries")
+- Fix refcount imbalance in add_dt_node() error path.
+  ("powerpc/pseries/mobility: refactor node lookup during DT update")
 
+Nathan Lynch (28):
+  powerpc/rtas: prevent suspend-related sys_rtas use on LE
+  powerpc/rtas: complete ibm,suspend-me status codes
+  powerpc/rtas: rtas_ibm_suspend_me -> rtas_ibm_suspend_me_unsafe
+  powerpc/rtas: add rtas_ibm_suspend_me()
+  powerpc/rtas: add rtas_activate_firmware()
+  powerpc/hvcall: add token and codes for H_VASI_SIGNAL
+  powerpc/pseries/mobility: don't error on absence of ibm,update-nodes
+  powerpc/pseries/mobility: add missing break to default case
+  powerpc/pseries/mobility: error message improvements
+  powerpc/pseries/mobility: use rtas_activate_firmware() on resume
+  powerpc/pseries/mobility: extract VASI session polling logic
+  powerpc/pseries/mobility: use stop_machine for join/suspend
+  powerpc/pseries/mobility: signal suspend cancellation to platform
+  powerpc/pseries/mobility: retry partition suspend after error
+  powerpc/rtas: dispatch partition migration requests to pseries
+  powerpc/rtas: remove rtas_ibm_suspend_me_unsafe()
+  powerpc/pseries/hibernation: drop pseries_suspend_begin() from suspend
+    ops
+  powerpc/pseries/hibernation: pass stream id via function arguments
+  powerpc/pseries/hibernation: remove pseries_suspend_cpu()
+  powerpc/machdep: remove suspend_disable_cpu()
+  powerpc/rtas: remove rtas_suspend_cpu()
+  powerpc/pseries/hibernation: switch to rtas_ibm_suspend_me()
+  powerpc/rtas: remove unused rtas_suspend_last_cpu()
+  powerpc/pseries/hibernation: remove redundant cacheinfo update
+  powerpc/pseries/hibernation: perform post-suspend fixups later
+  powerpc/pseries/hibernation: remove prepare_late() callback
+  powerpc/rtas: remove unused rtas_suspend_me_data
+  powerpc/pseries/mobility: refactor node lookup during DT update
 
-> >
-> > Thank you for help in advance!
-> >
-> > Bjorn also asked the same question:
-> >   https://lore.kernel.org/linux-pci/20201120203428.GA272511@bjorn-Preci=
-sion-5520/
-> >
-> > Krzysztof
-> >
->
-> --
-> Florian
+ arch/powerpc/include/asm/hvcall.h         |   9 +
+ arch/powerpc/include/asm/machdep.h        |   1 -
+ arch/powerpc/include/asm/rtas-types.h     |   8 -
+ arch/powerpc/include/asm/rtas.h           |  17 +-
+ arch/powerpc/kernel/rtas.c                | 243 ++++++---------
+ arch/powerpc/platforms/pseries/mobility.c | 358 ++++++++++++++++++----
+ arch/powerpc/platforms/pseries/suspend.c  |  79 +----
+ 7 files changed, 415 insertions(+), 300 deletions(-)
 
---=20
-This electronic communication and the information and any files transmitted=
-=20
-with it, or attached to it, are confidential and are intended solely for=20
-the use of the individual or entity to whom it is addressed and may contain=
-=20
-information that is confidential, legally privileged, protected by privacy=
-=20
-laws, or otherwise restricted from disclosure to anyone else. If you are=20
-not the intended recipient or the person responsible for delivering the=20
-e-mail to the intended recipient, you are hereby notified that any use,=20
-copying, distributing, dissemination, forwarding, printing, or copying of=
-=20
-this e-mail is strictly prohibited. If you received this e-mail in error,=
-=20
-please return the e-mail to the sender, delete it from your computer, and=
-=20
-destroy any printed copy of it.
+-- 
+2.28.0
 
---00000000000048af5805b5e5af85
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-mOxPm7sNHsn0TVdPryi9+T2d8fVC/kUmuEdTYP/Hdu4W4b4T9BcW57fInYrmaJ+uotS6X59rAgMB
-AAGjggHRMIIBzTAOBgNVHQ8BAf8EBAMCBaAwgZ4GCCsGAQUFBwEBBIGRMIGOME0GCCsGAQUFBzAC
-hkFodHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc3BlcnNvbmFsc2lnbjJzaGEy
-ZzNvY3NwLmNydDA9BggrBgEFBQcwAYYxaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL2dzcGVy
-c29uYWxzaWduMnNoYTJnMzBNBgNVHSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcCARYm
-aHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBEBgNVHR8E
-PTA7MDmgN6A1hjNodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzcGVyc29uYWxzaWduMnNoYTJn
-My5jcmwwJQYDVR0RBB4wHIEaamFtZXMucXVpbmxhbkBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYI
-KwYBBQUHAwQwHwYDVR0jBBgwFoAUaXKCYjFnlUSFd5GAxAQ2SZ17C2EwHQYDVR0OBBYEFNYm4GDl
-4WOt3laB3gNKFfYyaM8bMA0GCSqGSIb3DQEBCwUAA4IBAQBD+XYEgpG/OqeRgXAgDF8sa+lQ/00T
-wCP/3nBzwZPblTyThtDE/iaL/YZ5rdwqXwdCnSFh9cMhd/bnA+Eqw89clgTixvz9MdL9Vuo8LACI
-VpHO+sxZ2Cu3bO5lpK+UVCyr21y1zumOICsOuu4MJA5mtkpzBXQiA7b/ogjGxG+5iNjt9FAMX4JP
-V6GuAMmRknrzeTlxPy40UhUcRKk6Nm8mxl3Jh4KB68z7NFVpIx8G5w5I7S5ar1mLGNRjtFZ0RE4O
-lcCwKVGUXRaZMgQGrIhxGVelVgrcBh2vjpndlv733VI2VKE/TvV5MxMGU18RnogYSm66AEFA/Zb+
-5ztz1AtIMYICbzCCAmsCAQEwbTBdMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBu
-di1zYTEzMDEGA1UEAxMqR2xvYmFsU2lnbiBQZXJzb25hbFNpZ24gMiBDQSAtIFNIQTI1NiAtIEcz
-AgwTv2xmtR4KOmK4QvMwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIKMmyfFHCBT5
-8tdnIJE5gvx5OfBLGRC61eEa/vZCH4uHMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZI
-hvcNAQkFMQ8XDTIwMTIwNzIwMjkzNlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJ
-YIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcN
-AQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQDSboJG00LmxV6jHd21AJouftSGlC8f
-fLd6z85tqJYm/qvcSfAJ4pQZNvEbetZvzAdZjJZ0HKNAQeF7vZcyF+KYJxs2hj/YROl4hiFouPBF
-O0IlepqF6ilkJKSGF472+mh3lhhX9M1KQfGlXs7iM+2UDfRbGFKXx98foJqmS1Euk1U20d89kng0
-j+mrzYkct9q05owFezEjssvqv+GI+LROFOqjSpIpZAHp7y25N27qJnxg8xDjy2dCmfjbeNMXsZjK
-ZyoxA3DUt+nWWKqg2uY4SkD33njTZa6pmLbjwZa7kJb2BW01/E+K2KLj1F2aDKH+liguoqREVZ0N
-k/WHpj20
---00000000000048af5805b5e5af85--
