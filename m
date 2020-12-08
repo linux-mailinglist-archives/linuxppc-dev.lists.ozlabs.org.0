@@ -2,127 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDF62D350C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 22:19:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC5C02D35AA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 23:00:33 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrCjN2TPvzDqlL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 08:19:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CrDdB1VPszDqkJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 09:00:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=prevas.dk (client-ip=40.107.0.117;
- helo=eur02-am5-obe.outbound.protection.outlook.com;
- envelope-from=rasmus.villemoes@prevas.dk; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::744;
+ helo=mail-qk1-x744.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=prevas.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=prevas.dk header.i=@prevas.dk header.a=rsa-sha256
- header.s=selector1 header.b=D/HzcHnB; 
- dkim-atps=neutral
-Received: from EUR02-AM5-obe.outbound.protection.outlook.com
- (mail-eopbgr00117.outbound.protection.outlook.com [40.107.0.117])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=A+ZPhYYi; dkim-atps=neutral
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
+ [IPv6:2607:f8b0:4864:20::744])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrCgM6hPlzDqHK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 08:17:14 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FUSfiFygusRz5DQnV8vv0v3DruZfNes5ck74jjTRDDMpYvytCV7yw/awGS3mkF12gdre6jf8ouPL7i8G8ICr553Q8uwTH21Ni3nhIHmCJCOoQzVBxJpRprjUlkGcf2uXKUrMTvk8kMnq6aNpvhenBiq1JdgfLTOxzMshqsU4QEGBNBg4oLnad6DJPHAnnpgGVY/JmKQKanavlURxDvHUDc3hcdDEOYBh8X7O+R1HBc/Vf8V3cyLR6tF072Lazm0uRuesNXfTN4BWnnEGF+kY3HLESdWot9GaorOrqiRwskSGVtATooqegkYgF07fihWTvZFoPP3gj20eLbQ+WvDCOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9YhteRWbhQf+Ck11mdFFCeWKIYhrmzYxCnjM0NG1MSg=;
- b=Q7mvlbj2mu/+mMiD57nnPtkGskJH4sl9QhMWRy3lQ+gTAAqxZsQUOLAkk22mJiv6wVpK/Vf/Zh41e1hUz91Qb2BoQmDyywbzC+NUzrknNAzjfgfFMqsICbMt3strfVQkT5gM6A/Ozqt1ggaU/05qYAvroduSNo1EtIeOTtsh4J8eglR/dONWHS+hPD6cGIOU/NDzuoS539y8IL6+pGigP5lUC82C+C25QQqoYOlanedqxKyglyGpnrlp7FCKITSNGDZ10fzlakGG7h8fMJwx2i8Ul+InTmcdXlvkc7JHd/wM8b04Outwh02PJBxYkneFbHn3IG8tyAWi+AQsfGmp4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
- dkim=pass header.d=prevas.dk; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9YhteRWbhQf+Ck11mdFFCeWKIYhrmzYxCnjM0NG1MSg=;
- b=D/HzcHnB39isrRw9CewcOUbemLZ5YBZNMlVlfEgqy3XBMumy6DfMXLhwN8v7JQ8yAwFCVlBUFj+70CY3RmVJrerSA9+Z3C1Icq61NZV5yGwwIirG+i5i/wgWXFHMNiE9pnjcCS9oEZkqn9GvtKppaHWlwo9zG99YLeE2WRlipkQ=
-Authentication-Results: nxp.com; dkim=none (message not signed)
- header.d=none;nxp.com; dmarc=none action=none header.from=prevas.dk;
-Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:3f::10)
- by AM0PR10MB2961.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:15f::22)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Tue, 8 Dec
- 2020 21:17:08 +0000
-Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::9068:c899:48f:a8e3]) by AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::9068:c899:48f:a8e3%6]) with mapi id 15.20.3632.021; Tue, 8 Dec 2020
- 21:17:08 +0000
-Subject: Re: [PATCH 14/20] ethernet: ucc_geth: don't statically allocate eight
- ucc_geth_info
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Li Yang <leoyang.li@nxp.com>, "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>
-References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
- <20201205191744.7847-15-rasmus.villemoes@prevas.dk>
- <8259bec3-9343-82e3-a420-a8170cf922a4@csgroup.eu>
-From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-Message-ID: <38c7f603-9170-f5a3-6a47-d6959f3c3137@prevas.dk>
-Date: Tue, 8 Dec 2020 22:17:06 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-In-Reply-To: <8259bec3-9343-82e3-a420-a8170cf922a4@csgroup.eu>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [5.186.115.188]
-X-ClientProxiedBy: AM5PR0701CA0063.eurprd07.prod.outlook.com
- (2603:10a6:203:2::25) To AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:3f::10)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CrDbK4pxczDqgB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 08:58:51 +1100 (AEDT)
+Received: by mail-qk1-x744.google.com with SMTP id b144so115328qkc.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Dec 2020 13:58:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=G/NMXMjSBkeIHnho7dTPVvi7pj5oBgIZnaCU/I3zMQ0=;
+ b=A+ZPhYYidA+pxagEZ71U9PLXKR2ENZsU2cAPqf/cWywzna9sleFqTCgNsklgCl2m2K
+ v3ywjeGYg8PvoHfYdt9NBbcoD9MsPMTfetUuqRIz7A4tYrMV+U5kez6ouFsyf70yIdcU
+ EYptzInGQ2B9gw3CSzTCgAqHsYMdBXLFeZi/YhENnT73SvXs8JJmVmF0FTtM4Qt8Eb45
+ NLs3u4j3l0E4+cf/t6DRoBLRWXUzjUpYSTsXHW7nJsLiwg96mqnLY2fAmV/voeHte4vH
+ y7NYTqblDdJYPoA0iKzESYeBuBi5BQSxL2+Xm6TIk4AYf1Ibh2anA9qzix4Od2KvsKX+
+ XD5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=G/NMXMjSBkeIHnho7dTPVvi7pj5oBgIZnaCU/I3zMQ0=;
+ b=ZpFdmYJQenmBGl8G0MRwoNtHxjyHMKn62AIpF2fi+BmfmmCvWBoOxE7r329RGLFkdL
+ Ccn1T+HZy8UZc9Le5ExUB6HB8tClu9xYLZo7hI8wY8Ht57/3PtlddIgGntHYKfRYHs3E
+ wPyPUCSozMrZa6Rnzg2dF6nuqNhKrL1ctQvEAMUkLa+3m9mwTV6whJpBdUZbiMsnc+0n
+ AayXtlmlh6m578RrgyP/hIZDF8ArVXCvy7is253Unu+58SLYe2m1L1TdQ0EQk4HJQs4/
+ 1kJa6nklIpzVo2KUZSf+wfggpPmw5fSA/9jttYRrjko2iKLEn/8jHEwk2pYPmxlTAb25
+ NKhA==
+X-Gm-Message-State: AOAM530nRZn/NbRM6yBKZtEEgllktClK3SSomwTwH/j0oKKs7h6LubbQ
+ ugBp/KnZq6jmagnsB0l6GTU=
+X-Google-Smtp-Source: ABdhPJwO4H460UEGuYPNbcYEti5OdjUPd0UKdYp6/7QoqZbPWMUfoX+ZeAyy5sfrywJGz3eB0Pep1A==
+X-Received: by 2002:a05:620a:622:: with SMTP id
+ 2mr32323807qkv.436.1607464727640; 
+ Tue, 08 Dec 2020 13:58:47 -0800 (PST)
+Received: from LeoBras.ibmuc.com ([2804:14d:8084:8e41:9b0d:571e:a65:b5d8])
+ by smtp.gmail.com with ESMTPSA id w22sm35819qtt.76.2020.12.08.13.58.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Dec 2020 13:58:46 -0800 (PST)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Paul Mackerras <paulus@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: [PATCH v2 1/1] powerpc/kvm: Fix mask size for emulated msgsndp
+Date: Tue,  8 Dec 2020 18:57:08 -0300
+Message-Id: <20201208215707.31149-1-leobras.c@gmail.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.1.149] (5.186.115.188) by
- AM5PR0701CA0063.eurprd07.prod.outlook.com (2603:10a6:203:2::25) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3654.5 via Frontend
- Transport; Tue, 8 Dec 2020 21:17:07 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a8442e91-bc3d-409e-d5e5-08d89bbe9ee2
-X-MS-TrafficTypeDiagnostic: AM0PR10MB2961:
-X-Microsoft-Antispam-PRVS: <AM0PR10MB2961193238A6D256121FFB2393CD0@AM0PR10MB2961.EURPRD10.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WkrHXohqjkgR/hEyLRnUMrdMTviQqFW+H64i89BMRKaHR/DcTMIBPMKw2x8Pk3lKhiqDdxvHcilKLbb4rcVOMMgLS57+aje08a0MwbKO3UmEKwjhKV0P2ZlaN8MeOXCEkOnSiiqNLD6szF7rZOsqI9KEelye2iLpZA4a57wV01oJXT/YT3MIUIzB8kyGwoQfuaW7XwvlpOtoWFJFWUZ9PQkKRrZqztIeqjPnSz2RslHK+3S0ilpE+p2Vcjn5UqCktzeSJpFJoyKZjJWQYTjFOysQGTYevGjlplS8yQrbeDyM7tk2JqoG+V6RskBUdg208D1yReYSOI3Y5mSjx8PQuJDzwVb06qf7m4EWfFLEGXEjgsZj0A+KvPfYQHcy1c65r0L0VX/y6ExJjGlsOIVd0xavyRnF4QXOvclXJVWQxK8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(136003)(376002)(346002)(366004)(16576012)(31686004)(54906003)(110136005)(16526019)(186003)(956004)(2616005)(8976002)(6486002)(5660300002)(4744005)(86362001)(8936002)(31696002)(66556008)(66476007)(4326008)(36756003)(26005)(44832011)(2906002)(66946007)(52116002)(8676002)(508600001)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?NGdjVXhzSUh5YVdjNndzRFNrUllSQUZFS0xBVk01SGxINHRFUERqeDd0dFdu?=
- =?utf-8?B?QU9RNWJCQjVrbm9ycmN3bDgrUlIzWHFldU9tbXlWRk9RNUVIVFZzaWJmVVdT?=
- =?utf-8?B?TmIrbUkwTnU4eEFUa2RGem5TNlc0OXVnbmNBcmhINW9TenFnZEhrS3Q0UWZK?=
- =?utf-8?B?VzU2TnR5bkgva1VBMVpXbXJndXlUV1c1aVFMMG00Y3A2RUVTMnhtamtwZkNZ?=
- =?utf-8?B?bGNNRHpWcHZKdjNWNFBhaklEdThYNlJ2MFd6RVEwSzdBZ2tvWWFyZ2Vka2Z1?=
- =?utf-8?B?T2hRUmk4ZzBpbmtLeDZaYlVGVW43WEYvekFqeUVCZzhoYzFuakhQcml5SGtP?=
- =?utf-8?B?ZEpNaVZ6YUVyWlh1WXlWY29UQUFidU9rR2h2dk1aS2h5YlA4c1JHYklLOXJh?=
- =?utf-8?B?T2xHUHBheGIxQmVzTWF4cldhSEVtd1hWZ1U0T3lCR3JzYlVHNjVRejN3Q09O?=
- =?utf-8?B?REhMR3lnaXFQMkMySStjS25RREdNSU94bWFzRnhNcm9QbWxpRnhLd29oVFlt?=
- =?utf-8?B?bzV6OWdSdlliaWFwMy9HNUZJb3A0UWVCbXRKazIxTEI3eVp3dTA1QTlqNk9F?=
- =?utf-8?B?NDBnQ0FqWUdtMEsyQTlGNXlUa1pzNnNWYURiVE5tZkNGeFE4WlVhV3MrblEz?=
- =?utf-8?B?eDRRRnNGTU1pcFZRRWtMbEdtSHFFOWltbk9YNWhSWFUyMkNVTllvWUl6cENI?=
- =?utf-8?B?aERKQUJVUi9BWGt3U3ZHZUluNWdlZlNvTHNGeG90RWRpOXRqZnhyM2lmY3NU?=
- =?utf-8?B?K015Z3VMdklqYTdBR2ZQWTZpMk5DWUFaNVFIY1A0cHdTVTJad3pldWtOK2h3?=
- =?utf-8?B?K3E0L3dWbHFPYW42ckUxUUMrUUxGSnJWenUxcjdGY2wyK1d1c3N0NXJMYlp3?=
- =?utf-8?B?VEJ5bzV4Q01tRUxNMk1kY1JXMVMvY1JwUG0xVm41Zyt4TTlvNTlPNm1PM29x?=
- =?utf-8?B?N3pWK0k2SUU5NHlRQU1ON1Zpd09md2l2TXZqekJsUThNRmUzRXdNZlVDT1hW?=
- =?utf-8?B?emJqT1BoOG9BbWxTY1U1Qm1YN1ZwTXg5OGhwa2RFRzRvRUI2eiszbTM2d2pI?=
- =?utf-8?B?NnhyblpIVzMvK2xya1g1TXlGcXpsaTFXYUVuTVlqb0FMbkFiODRoL2JEK3Ax?=
- =?utf-8?B?RzNOMnM0MkRWaDNsV0xnR015QUFqTWo3UkY0UnFXclMzdUdHS1RlclBqRWFv?=
- =?utf-8?B?aWlHUzljcWcrRGZGYWF3ZWNFSVB5MmVyTmRTaXY5anQ0TzhrQlcxS2RwcGpv?=
- =?utf-8?B?R0JtREUzTlNPSFA2YzNzOXJPVkJIN3B2VDlybmkyZm5EemdPcWhiWlQzSXp4?=
- =?utf-8?Q?nR5H3a2n1n16vQWathhw/26mQChPY/x5sW?=
-X-OriginatorOrg: prevas.dk
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2020 21:17:08.4372 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8442e91-bc3d-409e-d5e5-08d89bbe9ee2
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l5XOwbh7pgD8o1TzPRoR341GP+Nf1gap2lXjtz1UTI8BjqKiu2Or27lFbjfo9dzQFG04TE1re0cXykRssFRhKPOQUrh1Krw9wuFdvxd06mE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB2961
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,35 +78,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, Zhao Qiang <qiang.zhao@nxp.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org
+Cc: Leonardo Bras <leobras.c@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08/12/2020 16.13, Christophe Leroy wrote:
-> 
-> 
-> Le 05/12/2020 à 20:17, Rasmus Villemoes a écrit :
+According to ISAv3.1 and ISAv3.0b, the msgsndp is described to split RB in:
+msgtype <- (RB) 32:36
+payload <- (RB) 37:63
+t       <- (RB) 57:63
 
->> @@ -3714,25 +3712,23 @@ static int ucc_geth_probe(struct
->> platform_device* ofdev)
->>       if ((ucc_num < 0) || (ucc_num > 7))
->>           return -ENODEV;
->>   -    ug_info = &ugeth_info[ucc_num];
->> -    if (ug_info == NULL) {
->> -        if (netif_msg_probe(&debug))
->> -            pr_err("[%d] Missing additional data!\n", ucc_num);
->> -        return -ENODEV;
->> -    }
->> +    ug_info = kmalloc(sizeof(*ug_info), GFP_KERNEL);
-> 
-> Could we use dev_kmalloc() instead, to avoid the freeing on the wait out
-> and the err_free_info: path ?
+The current way of getting 'msgtype', and 't' is missing their MSB:
+msgtype: ((arg >> 27) & 0xf) : Gets (RB) 33:36, missing bit 32
+t:       (arg &= 0x3f)       : Gets (RB) 58:63, missing bit 57
 
-Perhaps, but I don't think mixing ordinary kmalloc() with devm_ versions
-in the same driver is a good idea - IIRC there are at least some rules
-to obey if one does that, but I don't remember and can't find what they are.
+Fixes this by applying the correct mask.
 
-Rasmus
+Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+---
+Changes since v1:
+- Commit message 's/LSB/MSB/', because ISA ordering is big-endian.
+
+ arch/powerpc/kvm/book3s_hv.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index e3b1839fc251..5af0a429cee8 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -1241,9 +1241,9 @@ static int kvmppc_emulate_doorbell_instr(struct kvm_vcpu *vcpu)
+ 	switch (get_xop(inst)) {
+ 	case OP_31_XOP_MSGSNDP:
+ 		arg = kvmppc_get_gpr(vcpu, rb);
+-		if (((arg >> 27) & 0xf) != PPC_DBELL_SERVER)
++		if (((arg >> 27) & 0x1f) != PPC_DBELL_SERVER)
+ 			break;
+-		arg &= 0x3f;
++		arg &= 0x7f;
+ 		if (arg >= kvm->arch.emul_smt_mode)
+ 			break;
+ 		tvcpu = kvmppc_find_vcpu(kvm, vcpu->vcpu_id - thr + arg);
+@@ -1256,7 +1256,7 @@ static int kvmppc_emulate_doorbell_instr(struct kvm_vcpu *vcpu)
+ 		break;
+ 	case OP_31_XOP_MSGCLRP:
+ 		arg = kvmppc_get_gpr(vcpu, rb);
+-		if (((arg >> 27) & 0xf) != PPC_DBELL_SERVER)
++		if (((arg >> 27) & 0x1f) != PPC_DBELL_SERVER)
+ 			break;
+ 		vcpu->arch.vcore->dpdes = 0;
+ 		vcpu->arch.doorbell_request = 0;
+-- 
+2.25.4
+
