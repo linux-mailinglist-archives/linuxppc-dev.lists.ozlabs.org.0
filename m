@@ -1,54 +1,126 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546262D2328
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 06:26:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467AF2D257F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 09:15:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CqpYj39wMzDqZb
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 16:26:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CqtKD3BdrzDqWw
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 19:15:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=prevas.dk (client-ip=40.107.20.125;
+ helo=eur05-db8-obe.outbound.protection.outlook.com;
+ envelope-from=rasmus.villemoes@prevas.dk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=reject dis=none) header.from=prevas.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=prevas.dk header.i=@prevas.dk header.a=rsa-sha256
+ header.s=selector1 header.b=m2Yh6lLo; 
+ dkim-atps=neutral
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com
+ (mail-db8eur05on2125.outbound.protection.outlook.com [40.107.20.125])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CqpX022GMzDqWS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 16:24:26 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CqpWm09mMz9txxN;
- Tue,  8 Dec 2020 06:24:20 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id K75cl8fjJSud; Tue,  8 Dec 2020 06:24:19 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CqpWl6Dqkz9txxL;
- Tue,  8 Dec 2020 06:24:19 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 97A188B775;
- Tue,  8 Dec 2020 06:24:20 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id uKGzaSS8OsI3; Tue,  8 Dec 2020 06:24:20 +0100 (CET)
-Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4A79F8B773;
- Tue,  8 Dec 2020 06:24:20 +0100 (CET)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 0AA1066846; Tue,  8 Dec 2020 05:24:19 +0000 (UTC)
-Message-Id: <e3e0d8042a3ba75cb4a9546c19c408b5b5b28994.1607404931.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2] powerpc/powermac: Fix low_sleep_handler with
- CONFIG_VMAP_STACK
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- giuseppe@sguazz.it
-Date: Tue,  8 Dec 2020 05:24:19 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CqtGp4vRLzDqSw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 19:13:15 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=llOcEb8FhbkQqmfQpZjShENvI0QFJrlapjKILZgrNPl8mV6kfWVmrVabcHK5wH8lQ88PAbZzTfyi3A/eaqiYru5rMYYGrBKKEeRsapi9ZmhokW6pHo4vttavPOPV7RTUsFdEWXrgAO/d5gI3P94zKhSKZfWjsns1JdPfb8BYGKni0AmUfGU6ayEkygZa3kSHeI1Vu/Id4/sQgpPOwBVCb254eQ6eBiF7y2kaXyWyjexVMVKnY8VXCqNwwYafiOkEzTIWLs6hz2BR9fKeQ6/JyF+PqnNEiDlDolaGMbE7RkwNKKmWHq7+UT1GO5jUAbbGlExwccGopemBNgy+Gdok/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BgqCQyHB2xX7B6fiN2jHEfPUyR9Uso5RR2Vf54Uuk6o=;
+ b=SZzeXn8VBF2bkVtCu3+U72ZwssKd38rkNYpQxfKukDAQ8pe3aXb2PCmuFH9+FcYb06KpTW1fpPF20sqU64thZeoyVSBK/0b3otwyiTSW9RQX3hYarpKtR0Q/F3EyfdVp+qirU1pKK2aEIKB1S8alKp+APy/qsS6hYfLjnWasPm9sqGQbeq0UBuQ3kIsocsVHCzr4m2X9jsXMQva+3ubkZrkTFNRBa5wHO6NyKPPolnXxwgqZTmQodNdTPfM4HB4aY3UJrMnimvsRiWzaCyoInEYH9X+Q+2FmF5PzbOm2oNSptfb2qsn7zBa6tebBIK0Lo/K6pAaFDUjUQ92QKjBGWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
+ dkim=pass header.d=prevas.dk; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BgqCQyHB2xX7B6fiN2jHEfPUyR9Uso5RR2Vf54Uuk6o=;
+ b=m2Yh6lLoKdmebgWsTEs0pIyhr1AEdyp+Niyeprrhq0n9fyMlQV87vMnLkiRbGx7b8wViG03ZbCkqQ0MbHdvMp0kUEY7xGAh6KvqYoN6CL/Drzt97HWYP4qOUcyScBWW/NfejxSvKpUOnNM7TCiD2KJYOL2F231xNjSJAbWvgulg=
+Authentication-Results: nxp.com; dkim=none (message not signed)
+ header.d=none;nxp.com; dmarc=none action=none header.from=prevas.dk;
+Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:3f::10)
+ by AM0PR10MB3250.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:189::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Tue, 8 Dec
+ 2020 08:13:07 +0000
+Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::9068:c899:48f:a8e3]) by AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::9068:c899:48f:a8e3%6]) with mapi id 15.20.3632.021; Tue, 8 Dec 2020
+ 08:13:07 +0000
+Subject: Re: [PATCH 00/20] ethernet: ucc_geth: assorted fixes and
+ simplifications
+To: Qiang Zhao <qiang.zhao@nxp.com>, Jakub Kicinski <kuba@kernel.org>
+References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
+ <20201205125351.41e89579@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+ <7e78df84-0035-6935-acb0-adbd0c648128@prevas.dk>
+ <VE1PR04MB676805F3EEDF86A8BE370F8691CD0@VE1PR04MB6768.eurprd04.prod.outlook.com>
+From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Message-ID: <0ebe1b4d-c22a-c361-89f0-8e6e48efde1b@prevas.dk>
+Date: Tue, 8 Dec 2020 09:13:05 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+In-Reply-To: <VE1PR04MB676805F3EEDF86A8BE370F8691CD0@VE1PR04MB6768.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [5.186.115.188]
+X-ClientProxiedBy: AM6P192CA0071.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:209:82::48) To AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:208:3f::10)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.1.149] (5.186.115.188) by
+ AM6P192CA0071.EURP192.PROD.OUTLOOK.COM (2603:10a6:209:82::48) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3632.17 via Frontend Transport; Tue, 8 Dec 2020 08:13:06 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8618fc77-0c8c-4027-6fcf-08d89b5117db
+X-MS-TrafficTypeDiagnostic: AM0PR10MB3250:
+X-Microsoft-Antispam-PRVS: <AM0PR10MB32501B019709F402F05A7F1A93CD0@AM0PR10MB3250.EURPRD10.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: XqpY6fSnzPVfFMoR8i8PzifqxXb9kXQdImvM/+mB4rI90frTKGPA7QPEmDBqCNQHJq/0DIzU5Jkob5zaTH7nAovVP5Jx3mg4LAfroVKmSpf23sJsSwTHZxcasaR0drCmMdxiPwupDh8fgRwFXTkZ7Rm9qAO+/tLyFMa4CzOlIVOazWymiWSrFFQhcjPhVcfn/+8icY4ecFTPkpnWxptnirtD2eWFm8Bju9+q7gGAGzH/ULxalQuBTQqRIbVKtKSfMUk+ZN9lX2ljrbgk+3MjT6/02/9Dpc/fYnEP9aehDLiHgu/o596w4xsKq/sS1F3zQA1fdINBVHZPkBiiA10su3oUynNxi8w9rYFi38yiFFca40i1J0PG7fLdbkGN67IFIIwOsDpeowWwfN29iC5d63cMtE8GpdCY71Ew5upJf8U=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(346002)(136003)(366004)(376002)(53546011)(6486002)(16576012)(2616005)(956004)(16526019)(186003)(26005)(44832011)(52116002)(110136005)(86362001)(54906003)(31686004)(508600001)(36756003)(31696002)(5660300002)(8936002)(8676002)(2906002)(4744005)(66556008)(66476007)(66946007)(4326008)(8976002)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?R2I3WFkxaEZBQ0ZSUHhrdjhydE5QNUhobHdCMzc2SkdsUUtyTElXR09aSm9h?=
+ =?utf-8?B?b3A1aFFvNk5SRjlzYWg0RnNOOVRDdTJkU3I4RWlOanlnd1RuVDdjdi9iWEUr?=
+ =?utf-8?B?cVRWbVBkU3dIaHhwTUQ1amRHaytyQ3FyWVAvLzI3M3VUa2VJZEZSRTlPdDVp?=
+ =?utf-8?B?SjdjbUM0QlV6NUo5bmRNVG5JdkRzN1l0LzBlZEpXaUtFc1dPTG5LdmpBemZa?=
+ =?utf-8?B?Z1VDUitZUTYxQnpMeFMxa1BXTUZxZjltNitEeDY3Sk1sVmc0MnFoK0pCZzcv?=
+ =?utf-8?B?MUpPZDI2RzUvb3lDK2YwUWhIMWV6TUNXU0JoQ3o0QjRmMHFyY05SMVhhdnkv?=
+ =?utf-8?B?LzVobk4wZ0h1UERhcWl3TmxBZ3hUM3d6KzBmRDA0OWtjMFAzU1JpeWZTL0Ns?=
+ =?utf-8?B?NE01eGxOWFpCejlKaUU5TXB1VyszeGVXcW5qTGdKTGc4MXBCZ2VuMU1HY01M?=
+ =?utf-8?B?eFBGVlg2cVNsSlhFa3JKdG5USHRqVW52d1ZpMnl5ZDF5UzV4STNOVU93Z0Zk?=
+ =?utf-8?B?SldjaUZNdDg0QlE1dW5HOUF3YkkrMW10MXZaTE5PSENFSXJmeUhhNmZMMTN5?=
+ =?utf-8?B?QjY1ZXovMUxuNEF1UFN4dWo3SU9zMktwanNHRUcrMk9pd0xUNzVqYlRJZ1A1?=
+ =?utf-8?B?czM0eHFtRU4vMkJCOEVQc3pXbzlLQ3ZQeGhzempHTC9CQ25FMG85M3R6VjVm?=
+ =?utf-8?B?OSs5QWEraFo5MEk1d0lyS3ViWHo3KzM3S3k2VUY1dXREbVE1TjRMZ0RTVE9z?=
+ =?utf-8?B?T3RYaEdUYWhoYjRJcWhuM05tWExHTTIxUm53ZTZUZ2VPeWNpd1J2WVJZcUVD?=
+ =?utf-8?B?Q3FBRDJqVXRjaW04dXNCM3VTVW1lQm9Yb2dzWER4VTVWRkEzclRablhYRUpx?=
+ =?utf-8?B?bXMxMzhWOGorNEp5UGpHb09Ha09hMG13cmNkRTdEVUxtN1BadElHeU5mOHlI?=
+ =?utf-8?B?YW5Fc0NpWUtIOGx2QnArZCtZaUJ6aXptSnJWeWJXRW5pZVQvdnB4bFVnMUlj?=
+ =?utf-8?B?NDJrdVMzMlFMdm1YdEZ1MUdDWnJ5NVRUUTc5eVZ5QjRtazFIVWJTTTNYM014?=
+ =?utf-8?B?UWFYb2R0eUZYYmJEU1dwcFVjZCtUVmZlN3NTUkJhSVd6ZVZYd1pidWkya2hv?=
+ =?utf-8?B?Uy84clJlSXZyaEczUmFsUkFtNWlVd0tvbVg5SGN0QTdLK0IxMVhaS2o3N2NL?=
+ =?utf-8?B?NlptRDFPUExQM1ZMWkRlNlFLMmZIajhObnNVTFNHZEQrQmZ5cmd5eCtEWWo5?=
+ =?utf-8?B?d21oblIxVjZnckhwWkNXM2o4S3FNYWV2ZWxlZkg4RjFOcWljOFBXRFlnL3Rl?=
+ =?utf-8?Q?2KTFUdgv9CCAMqCOJg1bEec1tw51GmsTR4?=
+X-OriginatorOrg: prevas.dk
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8618fc77-0c8c-4027-6fcf-08d89b5117db
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2020 08:13:07.0297 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x0FwXUU4cBwCAXu6WhlPvHOtVYI3ZIgDToBW+p0mhTdzIPfPdS+86aNhDbr+j68xltDMR+/erWL0AY079WEXV71+ikt3abvvQLPzHsvJC9g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB3250
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,297 +132,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Leo Li <leoyang.li@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-low_sleep_handler() can't restore the context from standard
-stack because the stack can hardly be accessed with MMU OFF.
+On 08/12/2020 04.07, Qiang Zhao wrote:
+> On 06/12/2020 05:12, Rasmus Villemoes <rasmus.villemoes@prevas.dk> wrote:
+> 
 
-Store everything in a global storage area instead of storing
-a pointer to the stack in that global storage area.
+>> I think patch 2 is a bug fix as well, but I'd like someone from NXP to comment.
+> 
+> It 's ok for me.
 
-To avoid a complete churn of the function, still use r1 as
-the pointer to the storage area during restore.
+I was hoping for something a bit more than that. Can you please go check
+with the people who made the hardware and those who wrote the manual
+(probably not the same ones) what is actually up and down, and then
+report on what they said.
 
-Reported-by: Giuseppe Sacco <giuseppe@sguazz.it>
-Fixes: cd08f109e262 ("powerpc/32s: Enable CONFIG_VMAP_STACK")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-This is only build tested. Giuseppe can you test it ? Thanks.
+It's fairly obvious that allocating 192 bytes instead of 128 should
+never hurt (unless we run out of muram), but it would be nice with an
+official "Yes, table 8-111 is wrong, it should say 192", or
+alternatively, "No, table 8-53 is wrong, those MTU etc. fields don't
+really exist". Extra points for providing details such as "first
+revision of the IP had $foo, but that was never shipped in real
+products, then $bar was changed", etc.
 
-v2: Changed an erroneous 'addis' to 'addi' ; Using bss instead of data section
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/platforms/Kconfig.cputype  |   2 +-
- arch/powerpc/platforms/powermac/sleep.S | 132 +++++++++++-------------
- 2 files changed, 60 insertions(+), 74 deletions(-)
-
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index c194c4ae8bc7..32a9c4c09b98 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -36,7 +36,7 @@ config PPC_BOOK3S_6xx
- 	select PPC_HAVE_PMU_SUPPORT
- 	select PPC_HAVE_KUEP
- 	select PPC_HAVE_KUAP
--	select HAVE_ARCH_VMAP_STACK if !ADB_PMU
-+	select HAVE_ARCH_VMAP_STACK
- 
- config PPC_85xx
- 	bool "Freescale 85xx"
-diff --git a/arch/powerpc/platforms/powermac/sleep.S b/arch/powerpc/platforms/powermac/sleep.S
-index 7e0f8ba6e54a..d497a60003d2 100644
---- a/arch/powerpc/platforms/powermac/sleep.S
-+++ b/arch/powerpc/platforms/powermac/sleep.S
-@@ -44,7 +44,8 @@
- #define SL_TB		0xa0
- #define SL_R2		0xa8
- #define SL_CR		0xac
--#define SL_R12		0xb0	/* r12 to r31 */
-+#define SL_LR		0xb0
-+#define SL_R12		0xb4	/* r12 to r31 */
- #define SL_SIZE		(SL_R12 + 80)
- 
- 	.section .text
-@@ -63,105 +64,107 @@ _GLOBAL(low_sleep_handler)
- 	blr
- #else
- 	mflr	r0
--	stw	r0,4(r1)
--	stwu	r1,-SL_SIZE(r1)
-+	lis	r11,sleep_storage@ha
-+	addi	r11,r11,sleep_storage@l
-+	stw	r0,SL_LR(r11)
- 	mfcr	r0
--	stw	r0,SL_CR(r1)
--	stw	r2,SL_R2(r1)
--	stmw	r12,SL_R12(r1)
-+	stw	r0,SL_CR(r11)
-+	stw	r1,SL_SP(r11)
-+	stw	r2,SL_R2(r11)
-+	stmw	r12,SL_R12(r11)
- 
- 	/* Save MSR & SDR1 */
- 	mfmsr	r4
--	stw	r4,SL_MSR(r1)
-+	stw	r4,SL_MSR(r11)
- 	mfsdr1	r4
--	stw	r4,SL_SDR1(r1)
-+	stw	r4,SL_SDR1(r11)
- 
- 	/* Get a stable timebase and save it */
- 1:	mftbu	r4
--	stw	r4,SL_TB(r1)
-+	stw	r4,SL_TB(r11)
- 	mftb	r5
--	stw	r5,SL_TB+4(r1)
-+	stw	r5,SL_TB+4(r11)
- 	mftbu	r3
- 	cmpw	r3,r4
- 	bne	1b
- 
- 	/* Save SPRGs */
- 	mfsprg	r4,0
--	stw	r4,SL_SPRG0(r1)
-+	stw	r4,SL_SPRG0(r11)
- 	mfsprg	r4,1
--	stw	r4,SL_SPRG0+4(r1)
-+	stw	r4,SL_SPRG0+4(r11)
- 	mfsprg	r4,2
--	stw	r4,SL_SPRG0+8(r1)
-+	stw	r4,SL_SPRG0+8(r11)
- 	mfsprg	r4,3
--	stw	r4,SL_SPRG0+12(r1)
-+	stw	r4,SL_SPRG0+12(r11)
- 
- 	/* Save BATs */
- 	mfdbatu	r4,0
--	stw	r4,SL_DBAT0(r1)
-+	stw	r4,SL_DBAT0(r11)
- 	mfdbatl	r4,0
--	stw	r4,SL_DBAT0+4(r1)
-+	stw	r4,SL_DBAT0+4(r11)
- 	mfdbatu	r4,1
--	stw	r4,SL_DBAT1(r1)
-+	stw	r4,SL_DBAT1(r11)
- 	mfdbatl	r4,1
--	stw	r4,SL_DBAT1+4(r1)
-+	stw	r4,SL_DBAT1+4(r11)
- 	mfdbatu	r4,2
--	stw	r4,SL_DBAT2(r1)
-+	stw	r4,SL_DBAT2(r11)
- 	mfdbatl	r4,2
--	stw	r4,SL_DBAT2+4(r1)
-+	stw	r4,SL_DBAT2+4(r11)
- 	mfdbatu	r4,3
--	stw	r4,SL_DBAT3(r1)
-+	stw	r4,SL_DBAT3(r11)
- 	mfdbatl	r4,3
--	stw	r4,SL_DBAT3+4(r1)
-+	stw	r4,SL_DBAT3+4(r11)
- 	mfibatu	r4,0
--	stw	r4,SL_IBAT0(r1)
-+	stw	r4,SL_IBAT0(r11)
- 	mfibatl	r4,0
--	stw	r4,SL_IBAT0+4(r1)
-+	stw	r4,SL_IBAT0+4(r11)
- 	mfibatu	r4,1
--	stw	r4,SL_IBAT1(r1)
-+	stw	r4,SL_IBAT1(r11)
- 	mfibatl	r4,1
--	stw	r4,SL_IBAT1+4(r1)
-+	stw	r4,SL_IBAT1+4(r11)
- 	mfibatu	r4,2
--	stw	r4,SL_IBAT2(r1)
-+	stw	r4,SL_IBAT2(r11)
- 	mfibatl	r4,2
--	stw	r4,SL_IBAT2+4(r1)
-+	stw	r4,SL_IBAT2+4(r11)
- 	mfibatu	r4,3
--	stw	r4,SL_IBAT3(r1)
-+	stw	r4,SL_IBAT3(r11)
- 	mfibatl	r4,3
--	stw	r4,SL_IBAT3+4(r1)
-+	stw	r4,SL_IBAT3+4(r11)
- 
- BEGIN_MMU_FTR_SECTION
- 	mfspr	r4,SPRN_DBAT4U
--	stw	r4,SL_DBAT4(r1)
-+	stw	r4,SL_DBAT4(r11)
- 	mfspr	r4,SPRN_DBAT4L
--	stw	r4,SL_DBAT4+4(r1)
-+	stw	r4,SL_DBAT4+4(r11)
- 	mfspr	r4,SPRN_DBAT5U
--	stw	r4,SL_DBAT5(r1)
-+	stw	r4,SL_DBAT5(r11)
- 	mfspr	r4,SPRN_DBAT5L
--	stw	r4,SL_DBAT5+4(r1)
-+	stw	r4,SL_DBAT5+4(r11)
- 	mfspr	r4,SPRN_DBAT6U
--	stw	r4,SL_DBAT6(r1)
-+	stw	r4,SL_DBAT6(r11)
- 	mfspr	r4,SPRN_DBAT6L
--	stw	r4,SL_DBAT6+4(r1)
-+	stw	r4,SL_DBAT6+4(r11)
- 	mfspr	r4,SPRN_DBAT7U
--	stw	r4,SL_DBAT7(r1)
-+	stw	r4,SL_DBAT7(r11)
- 	mfspr	r4,SPRN_DBAT7L
--	stw	r4,SL_DBAT7+4(r1)
-+	stw	r4,SL_DBAT7+4(r11)
- 	mfspr	r4,SPRN_IBAT4U
--	stw	r4,SL_IBAT4(r1)
-+	stw	r4,SL_IBAT4(r11)
- 	mfspr	r4,SPRN_IBAT4L
--	stw	r4,SL_IBAT4+4(r1)
-+	stw	r4,SL_IBAT4+4(r11)
- 	mfspr	r4,SPRN_IBAT5U
--	stw	r4,SL_IBAT5(r1)
-+	stw	r4,SL_IBAT5(r11)
- 	mfspr	r4,SPRN_IBAT5L
--	stw	r4,SL_IBAT5+4(r1)
-+	stw	r4,SL_IBAT5+4(r11)
- 	mfspr	r4,SPRN_IBAT6U
--	stw	r4,SL_IBAT6(r1)
-+	stw	r4,SL_IBAT6(r11)
- 	mfspr	r4,SPRN_IBAT6L
--	stw	r4,SL_IBAT6+4(r1)
-+	stw	r4,SL_IBAT6+4(r11)
- 	mfspr	r4,SPRN_IBAT7U
--	stw	r4,SL_IBAT7(r1)
-+	stw	r4,SL_IBAT7(r11)
- 	mfspr	r4,SPRN_IBAT7L
--	stw	r4,SL_IBAT7+4(r1)
-+	stw	r4,SL_IBAT7+4(r11)
- END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
- 
- 	/* Backup various CPU config stuffs */
-@@ -180,9 +183,9 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
- 	lis	r5,grackle_wake_up@ha
- 	addi	r5,r5,grackle_wake_up@l
- 	tophys(r5,r5)
--	stw	r5,SL_PC(r1)
-+	stw	r5,SL_PC(r11)
- 	lis	r4,KERNELBASE@h
--	tophys(r5,r1)
-+	tophys(r5,r11)
- 	addi	r5,r5,SL_PC
- 	lis	r6,MAGIC@ha
- 	addi	r6,r6,MAGIC@l
-@@ -194,12 +197,6 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
- 	tophys(r3,r3)
- 	stw	r3,0x80(r4)
- 	stw	r5,0x84(r4)
--	/* Store a pointer to our backup storage into
--	 * a kernel global
--	 */
--	lis r3,sleep_storage@ha
--	addi r3,r3,sleep_storage@l
--	stw r5,0(r3)
- 
- 	.globl	low_cpu_offline_self
- low_cpu_offline_self:
-@@ -279,7 +276,7 @@ _GLOBAL(core99_wake_up)
- 	lis	r3,sleep_storage@ha
- 	addi	r3,r3,sleep_storage@l
- 	tophys(r3,r3)
--	lwz	r1,0(r3)
-+	addi	r1,r3,SL_PC
- 
- 	/* Pass thru to older resume code ... */
- _ASM_NOKPROBE_SYMBOL(core99_wake_up)
-@@ -399,13 +396,6 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
- 	blt	1b
- 	sync
- 
--	/* restore the MSR and turn on the MMU */
--	lwz	r3,SL_MSR(r1)
--	bl	turn_on_mmu
--
--	/* get back the stack pointer */
--	tovirt(r1,r1)
--
- 	/* Restore TB */
- 	li	r3,0
- 	mttbl	r3
-@@ -419,28 +409,24 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
- 	mtcr	r0
- 	lwz	r2,SL_R2(r1)
- 	lmw	r12,SL_R12(r1)
--	addi	r1,r1,SL_SIZE
--	lwz	r0,4(r1)
--	mtlr	r0
--	blr
--_ASM_NOKPROBE_SYMBOL(grackle_wake_up)
- 
--turn_on_mmu:
--	mflr	r4
--	tovirt(r4,r4)
-+	/* restore the MSR and SP and turn on the MMU and return */
-+	lwz	r3,SL_MSR(r1)
-+	lwz	r4,SL_LR(r1)
-+	lwz	r1,SL_SP(r1)
- 	mtsrr0	r4
- 	mtsrr1	r3
- 	sync
- 	isync
- 	rfi
--_ASM_NOKPROBE_SYMBOL(turn_on_mmu)
-+_ASM_NOKPROBE_SYMBOL(grackle_wake_up)
- 
- #endif /* defined(CONFIG_PM) || defined(CONFIG_CPU_FREQ) */
- 
--	.section .data
-+	.section .bss
- 	.balign	L1_CACHE_BYTES
- sleep_storage:
--	.long 0
-+	.space SL_SIZE
- 	.balign	L1_CACHE_BYTES, 0
- 
- #endif /* CONFIG_PPC_BOOK3S_32 */
--- 
-2.25.0
-
+Thanks,
+Rasmus
