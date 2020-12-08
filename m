@@ -2,100 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3CC52D3101
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 18:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEEE62D3149
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 18:41:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cr6Zq6n3KzDqX8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 04:28:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cr6t319Q2zDqjp
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 04:41:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
+ helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=groug@kaod.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ltMVt7Ag; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from smtpout1.mo804.mail-out.ovh.net
+ (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cr6XT5jGlzDqRv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 04:26:01 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B8HNr1v051098; Tue, 8 Dec 2020 12:25:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=IaZ84GfW6YCR3f5g6WY5rPkcyNxY+cDXFyijgJulcfY=;
- b=ltMVt7AgZh8pMGH4crwqLBNJbJ3OdNGMEMTQQhanefEpsm++r9E91uuh5PZc5wjKzFTT
- MGPYbYUpp93fn5mv109UMmHvXJaDX0XKCG55yN7JRVIn36cdpt77pThRAPdoodNaH0oJ
- QkaAok5wJ6+bv5ifiOPH1g4sSzStkmLlAD5ybNKewlAPmlXMj44oJubGMHQ30KLme8l2
- r7r3yDpiRCF+QG2kbFdhCsurymoo3dXvGBkHhIiynWKZqM1OM0oO6tt/nYlSLqBqdXDU
- SHLrNiwEhZ/Lzb4wcrssDVzBrHE6QaO+1eUg6jBJSPOIRpiHpDnT71FxGHCCKeX495cg FQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35aab8r2su-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Dec 2020 12:25:46 -0500
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B8HNqpU050964;
- Tue, 8 Dec 2020 12:25:46 -0500
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35aab8r2sb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Dec 2020 12:25:46 -0500
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B8HLtwU013816;
- Tue, 8 Dec 2020 17:25:44 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma02wdc.us.ibm.com with ESMTP id 3581u99ay1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Dec 2020 17:25:44 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B8HPihN15335772
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 8 Dec 2020 17:25:44 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7172428064;
- Tue,  8 Dec 2020 17:25:44 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C81D62805A;
- Tue,  8 Dec 2020 17:25:43 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.199.54.209])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  8 Dec 2020 17:25:43 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 237B52E35A1; Tue,  8 Dec 2020 22:55:40 +0530 (IST)
-Date: Tue, 8 Dec 2020 22:55:40 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/3] powerpc/smp: Parse ibm,thread-groups with multiple
- properties
-Message-ID: <20201208172540.GA14206@in.ibm.com>
-References: <1607057327-29822-1-git-send-email-ego@linux.vnet.ibm.com>
- <1607057327-29822-2-git-send-email-ego@linux.vnet.ibm.com>
- <20201207121042.GH528281@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cr6qq2ymhzDqX8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 04:39:15 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.3])
+ by mo804.mail-out.ovh.net (Postfix) with ESMTPS id 5B5AC78E041B;
+ Tue,  8 Dec 2020 18:39:08 +0100 (CET)
+Received: from kaod.org (37.59.142.103) by DAG8EX1.mxp5.local (172.16.2.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Tue, 8 Dec 2020
+ 18:39:07 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-103G0053a04e22a-e535-4500-9687-7b2267ad64f2,
+ 17D40A658B0D6C300559F39EE9B5E954A2DF46D1) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 82.253.208.248
+Date: Tue, 8 Dec 2020 18:39:06 +0100
+From: Greg Kurz <groug@kaod.org>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH 09/13] powerpc/xive: Remove P9 DD1 flag
+ XIVE_IRQ_FLAG_SHIFT_BUG
+Message-ID: <20201208183906.1740c594@bahia.lan>
+In-Reply-To: <20201208151124.1329942-10-clg@kaod.org>
+References: <20201208151124.1329942-1-clg@kaod.org>
+ <20201208151124.1329942-10-clg@kaod.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201207121042.GH528281@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-08_14:2020-12-08,
- 2020-12-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- bulkscore=0 phishscore=0 spamscore=0 adultscore=0 suspectscore=2
- malwarescore=0 mlxlogscore=999 priorityscore=1501 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012080104
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [37.59.142.103]
+X-ClientProxiedBy: DAG4EX2.mxp5.local (172.16.2.32) To DAG8EX1.mxp5.local
+ (172.16.2.71)
+X-Ovh-Tracer-GUID: 4eb79bd5-9c85-4184-b465-0bc559edc108
+X-Ovh-Tracer-Id: 13419600990355954074
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudejiedguddthecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepfffhvffukfgjfhfogggtgfhisehtqhertdertdejnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeefffetvdegudeugfehledttdeigeehjefhkeeluddutdffjeffueelfffgvedtkeenucffohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopegtlhhgsehkrghougdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,228 +64,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Michael Neuling <mikey@neuling.org>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Valentin Schneider <valentin.schneider@arm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Srikar,
+On Tue, 8 Dec 2020 16:11:20 +0100
+C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 
-Thanks for taking a look at the patch.
+> This flag was used to support the PHB4 LSIs on P9 DD1 and we have
+> stopped supporting this CPU when DD2 came out. See skiboot commit:
+>=20
+>   https://github.com/open-power/skiboot/commit/0b0d15e3c170
+>=20
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
 
-On Mon, Dec 07, 2020 at 05:40:42PM +0530, Srikar Dronamraju wrote:
-> * Gautham R. Shenoy <ego@linux.vnet.ibm.com> [2020-12-04 10:18:45]:
-> 
-> > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-> 
-> <snipped>
-> 
-> > 
-> >  static int parse_thread_groups(struct device_node *dn,
-> > -			       struct thread_groups *tg,
-> > -			       unsigned int property)
-> > +			       struct thread_groups_list *tglp)
-> >  {
-> > -	int i;
-> > -	u32 thread_group_array[3 + MAX_THREAD_LIST_SIZE];
-> > +	int i = 0;
-> > +	u32 *thread_group_array;
-> >  	u32 *thread_list;
-> >  	size_t total_threads;
-> > -	int ret;
-> > +	int ret = 0, count;
-> > +	unsigned int property_idx = 0;
-> 
-> NIT:
-> tglx mentions in one of his recent comments to try keep a reverse fir tree
-> ordering of variables where possible.
+Reviewed-by: Greg Kurz <groug@kaod.org>
 
-I suppose you mean moving the longer local variable declarations to to
-the top and shorter ones to the bottom. Thanks. Will fix this.
+Just a minor suggestion in case you need to post a v2. See below.
 
+>  arch/powerpc/include/asm/opal-api.h     | 2 +-
+>  arch/powerpc/include/asm/xive.h         | 2 +-
+>  arch/powerpc/kvm/book3s_xive_native.c   | 3 ---
+>  arch/powerpc/kvm/book3s_xive_template.c | 3 ---
+>  arch/powerpc/sysdev/xive/common.c       | 8 --------
+>  arch/powerpc/sysdev/xive/native.c       | 2 --
+>  6 files changed, 2 insertions(+), 18 deletions(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/a=
+sm/opal-api.h
+> index 1dffa3cb16ba..48ee604ca39a 100644
+> --- a/arch/powerpc/include/asm/opal-api.h
+> +++ b/arch/powerpc/include/asm/opal-api.h
+> @@ -1091,7 +1091,7 @@ enum {
+>  	OPAL_XIVE_IRQ_TRIGGER_PAGE	=3D 0x00000001,
+>  	OPAL_XIVE_IRQ_STORE_EOI		=3D 0x00000002,
+>  	OPAL_XIVE_IRQ_LSI		=3D 0x00000004,
+> -	OPAL_XIVE_IRQ_SHIFT_BUG		=3D 0x00000008,
+> +	OPAL_XIVE_IRQ_SHIFT_BUG		=3D 0x00000008, /* P9 DD1.0 workaround */
 
-> 
-> > 
-> > +	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
-> > +	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
-> >  	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
-> > -					 thread_group_array, 3);
-> > +					 thread_group_array, count);
-> >  	if (ret)
-> > -		return ret;
-> > -
-> > -	tg->property = thread_group_array[0];
-> > -	tg->nr_groups = thread_group_array[1];
-> > -	tg->threads_per_group = thread_group_array[2];
-> > -	if (tg->property != property ||
-> > -	    tg->nr_groups < 1 ||
-> > -	    tg->threads_per_group < 1)
-> > -		return -ENODATA;
-> > +		goto out_free;
-> > 
-> > -	total_threads = tg->nr_groups * tg->threads_per_group;
-> > +	while (i < count && property_idx < MAX_THREAD_GROUP_PROPERTIES) {
-> > +		int j;
-> > +		struct thread_groups *tg = &tglp->property_tgs[property_idx++];
-> 
-> NIT: same as above.
+Maybe you can even comment the entire line so that any future
+tentative to use that flag breaks build ?
 
-Ok.
-> 
-> > 
-> > -	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
-> > -					 thread_group_array,
-> > -					 3 + total_threads);
-> > -	if (ret)
-> > -		return ret;
-> > +		tg->property = thread_group_array[i];
-> > +		tg->nr_groups = thread_group_array[i + 1];
-> > +		tg->threads_per_group = thread_group_array[i + 2];
-> > +		total_threads = tg->nr_groups * tg->threads_per_group;
-> > +
-> > +		thread_list = &thread_group_array[i + 3];
-> > 
-> > -	thread_list = &thread_group_array[3];
-> > +		for (j = 0; j < total_threads; j++)
-> > +			tg->thread_list[j] = thread_list[j];
-> > +		i = i + 3 + total_threads;
-> 
-> 	Can't we simply use memcpy instead?
+>  	OPAL_XIVE_IRQ_MASK_VIA_FW	=3D 0x00000010,
+>  	OPAL_XIVE_IRQ_EOI_VIA_FW	=3D 0x00000020,
+>  };
+> diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/x=
+ive.h
+> index d332dd9a18de..ff805885a028 100644
+> --- a/arch/powerpc/include/asm/xive.h
+> +++ b/arch/powerpc/include/asm/xive.h
+> @@ -60,7 +60,7 @@ struct xive_irq_data {
+>  };
+>  #define XIVE_IRQ_FLAG_STORE_EOI	0x01
+>  #define XIVE_IRQ_FLAG_LSI	0x02
+> -#define XIVE_IRQ_FLAG_SHIFT_BUG	0x04
+> +#define XIVE_IRQ_FLAG_SHIFT_BUG	0x04 /* P9 DD1.0 workaround */
 
-We could. But this one makes it more explicit.
+Same here, with an extra cleanup to stop using it when initializing=20
+xive_irq_flags[] in common.c.
 
+>  #define XIVE_IRQ_FLAG_MASK_FW	0x08
+>  #define XIVE_IRQ_FLAG_EOI_FW	0x10
+>  #define XIVE_IRQ_FLAG_H_INT_ESB	0x20
+> diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/boo=
+k3s_xive_native.c
+> index 9b395381179d..170d1d04e1d1 100644
+> --- a/arch/powerpc/kvm/book3s_xive_native.c
+> +++ b/arch/powerpc/kvm/book3s_xive_native.c
+> @@ -37,9 +37,6 @@ static u8 xive_vm_esb_load(struct xive_irq_data *xd, u3=
+2 offset)
+>  	 * ordering.
+>  	 */
+> =20
+> -	if (xd->flags & XIVE_IRQ_FLAG_SHIFT_BUG)
+> -		offset |=3D offset << 4;
+> -
+>  	val =3D in_be64(xd->eoi_mmio + offset);
+>  	return (u8)val;
+>  }
+> diff --git a/arch/powerpc/kvm/book3s_xive_template.c b/arch/powerpc/kvm/b=
+ook3s_xive_template.c
+> index 4ad3c0279458..ece36e024a8f 100644
+> --- a/arch/powerpc/kvm/book3s_xive_template.c
+> +++ b/arch/powerpc/kvm/book3s_xive_template.c
+> @@ -61,9 +61,6 @@ static u8 GLUE(X_PFX,esb_load)(struct xive_irq_data *xd=
+, u32 offset)
+>  	if (offset =3D=3D XIVE_ESB_SET_PQ_10 && xd->flags & XIVE_IRQ_FLAG_STORE=
+_EOI)
+>  		offset |=3D XIVE_ESB_LD_ST_MO;
+> =20
+> -	if (xd->flags & XIVE_IRQ_FLAG_SHIFT_BUG)
+> -		offset |=3D offset << 4;
+> -
+>  	val =3D__x_readq(__x_eoi_page(xd) + offset);
+>  #ifdef __LITTLE_ENDIAN__
+>  	val >>=3D 64-8;
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
+/common.c
+> index 411cba12d73b..a9259470bf9f 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -200,10 +200,6 @@ static notrace u8 xive_esb_read(struct xive_irq_data=
+ *xd, u32 offset)
+>  	if (offset =3D=3D XIVE_ESB_SET_PQ_10 && xd->flags & XIVE_IRQ_FLAG_STORE=
+_EOI)
+>  		offset |=3D XIVE_ESB_LD_ST_MO;
+> =20
+> -	/* Handle HW errata */
+> -	if (xd->flags & XIVE_IRQ_FLAG_SHIFT_BUG)
+> -		offset |=3D offset << 4;
+> -
+>  	if ((xd->flags & XIVE_IRQ_FLAG_H_INT_ESB) && xive_ops->esb_rw)
+>  		val =3D xive_ops->esb_rw(xd->hw_irq, offset, 0, 0);
+>  	else
+> @@ -214,10 +210,6 @@ static notrace u8 xive_esb_read(struct xive_irq_data=
+ *xd, u32 offset)
+> =20
+>  static void xive_esb_write(struct xive_irq_data *xd, u32 offset, u64 dat=
+a)
+>  {
+> -	/* Handle HW errata */
+> -	if (xd->flags & XIVE_IRQ_FLAG_SHIFT_BUG)
+> -		offset |=3D offset << 4;
+> -
+>  	if ((xd->flags & XIVE_IRQ_FLAG_H_INT_ESB) && xive_ops->esb_rw)
+>  		xive_ops->esb_rw(xd->hw_irq, offset, data, 1);
+>  	else
+> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive=
+/native.c
+> index 5f1e5aed8ab4..0310783241b5 100644
+> --- a/arch/powerpc/sysdev/xive/native.c
+> +++ b/arch/powerpc/sysdev/xive/native.c
+> @@ -64,8 +64,6 @@ int xive_native_populate_irq_data(u32 hw_irq, struct xi=
+ve_irq_data *data)
+>  		data->flags |=3D XIVE_IRQ_FLAG_STORE_EOI;
+>  	if (opal_flags & OPAL_XIVE_IRQ_LSI)
+>  		data->flags |=3D XIVE_IRQ_FLAG_LSI;
+> -	if (opal_flags & OPAL_XIVE_IRQ_SHIFT_BUG)
+> -		data->flags |=3D XIVE_IRQ_FLAG_SHIFT_BUG;
+>  	if (opal_flags & OPAL_XIVE_IRQ_MASK_VIA_FW)
+>  		data->flags |=3D XIVE_IRQ_FLAG_MASK_FW;
+>  	if (opal_flags & OPAL_XIVE_IRQ_EOI_VIA_FW)
 
-> 
-> > +	}
-> > 
-> > -	for (i = 0 ; i < total_threads; i++)
-> > -		tg->thread_list[i] = thread_list[i];
-> > +	tglp->nr_properties = property_idx;
-> > 
-> > -	return 0;
-> > +out_free:
-> > +	kfree(thread_group_array);
-> > +	return ret;
-> >  }
-> > 
-> >  /*
-> > @@ -805,24 +827,39 @@ static int get_cpu_thread_group_start(int cpu, struct thread_groups *tg)
-> >  	return -1;
-> >  }
-> > 
-> > -static int init_cpu_l1_cache_map(int cpu)
-> > +static int init_cpu_cache_map(int cpu, unsigned int cache_property)
-> > 
-> >  {
-> >  	struct device_node *dn = of_get_cpu_node(cpu, NULL);
-> > -	struct thread_groups tg = {.property = 0,
-> > -				   .nr_groups = 0,
-> > -				   .threads_per_group = 0};
-> > +	struct thread_groups *tg = NULL;
-> >  	int first_thread = cpu_first_thread_sibling(cpu);
-> >  	int i, cpu_group_start = -1, err = 0;
-> > +	cpumask_var_t *mask;
-> > +	struct thread_groups_list *cpu_tgl = &tgl[cpu];
-> 
-> NIT: same as 1st comment.
-
-Sure, will fix this.
-
-> 
-> > 
-> >  	if (!dn)
-> >  		return -ENODATA;
-> > 
-> > -	err = parse_thread_groups(dn, &tg, THREAD_GROUP_SHARE_L1);
-> > -	if (err)
-> > -		goto out;
-> > +	if (!(cache_property == THREAD_GROUP_SHARE_L1))
-> > +		return -EINVAL;
-> > 
-> > -	cpu_group_start = get_cpu_thread_group_start(cpu, &tg);
-> > +	if (!cpu_tgl->nr_properties) {
-> > +		err = parse_thread_groups(dn, cpu_tgl);
-> > +		if (err)
-> > +			goto out;
-> > +	}
-> > +
-> > +	for (i = 0; i < cpu_tgl->nr_properties; i++) {
-> > +		if (cpu_tgl->property_tgs[i].property == cache_property) {
-> > +			tg = &cpu_tgl->property_tgs[i];
-> > +			break;
-> > +		}
-> > +	}
-> > +
-> > +	if (!tg)
-> > +		return -EINVAL;
-> > +
-> > +	cpu_group_start = get_cpu_thread_group_start(cpu, tg);
-> 
-> This whole hunk should be moved to a new function and called before
-> init_cpu_cache_map. It will simplify the logic to great extent.
-
-I suppose you are referring to the part where we select the correct
-tg. Yeah, that can move to a different helper.
-
-> 
-> > 
-> >  	if (unlikely(cpu_group_start == -1)) {
-> >  		WARN_ON_ONCE(1);
-> > @@ -830,11 +867,12 @@ static int init_cpu_l1_cache_map(int cpu)
-> >  		goto out;
-> >  	}
-> > 
-> > -	zalloc_cpumask_var_node(&per_cpu(cpu_l1_cache_map, cpu),
-> > -				GFP_KERNEL, cpu_to_node(cpu));
-> > +	mask = &per_cpu(cpu_l1_cache_map, cpu);
-> > +
-> > +	zalloc_cpumask_var_node(mask, GFP_KERNEL, cpu_to_node(cpu));
-> > 
-> 
-> This hunk (and the next hunk) should be moved to next patch.
->
-
-The next patch is only about introducing  THREAD_GROUP_SHARE_L2. Hence
-I put in any other code in this patch, since it seems to be a logical
-place to collate whatever we have in a generic form.
-
-
-
-> >  	for (i = first_thread; i < first_thread + threads_per_core; i++) {
-> > -		int i_group_start = get_cpu_thread_group_start(i, &tg);
-> > +		int i_group_start = get_cpu_thread_group_start(i, tg);
-> > 
-> >  		if (unlikely(i_group_start == -1)) {
-> >  			WARN_ON_ONCE(1);
-> > @@ -843,7 +881,7 @@ static int init_cpu_l1_cache_map(int cpu)
-> >  		}
-> > 
-> >  		if (i_group_start == cpu_group_start)
-> > -			cpumask_set_cpu(i, per_cpu(cpu_l1_cache_map, cpu));
-> > +			cpumask_set_cpu(i, *mask);
-> >  	}
-> > 
-> >  out:
-> > @@ -924,7 +962,7 @@ static int init_big_cores(void)
-> >  	int cpu;
-> > 
-> >  	for_each_possible_cpu(cpu) {
-> > -		int err = init_cpu_l1_cache_map(cpu);
-> > +		int err = init_cpu_cache_map(cpu, THREAD_GROUP_SHARE_L1);
-> > 
-> >  		if (err)
-> >  			return err;
-> > -- 
-> > 1.9.4
-> > 
-> 
-> -- 
-> Thanks and Regards
-> Srikar Dronamraju
