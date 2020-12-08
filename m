@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0232D2684
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 09:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD05C2D2668
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 09:40:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cqv0Q6xdXzDqDC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 19:45:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CqttQ1bzSzDqbB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 19:40:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,40 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CqtpC6g09zDqTk
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CqtpD0L90zDqWN
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 19:37:05 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Cqtp22jKHz9txrh;
- Tue,  8 Dec 2020 09:36:58 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4Cqtp31sVLz9txrk;
+ Tue,  8 Dec 2020 09:36:59 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 55DLeHf5i1Ko; Tue,  8 Dec 2020 09:36:58 +0100 (CET)
+ with ESMTP id 9MkI1QZlqotF; Tue,  8 Dec 2020 09:36:59 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Cqtp21kLPz9txrg;
- Tue,  8 Dec 2020 09:36:58 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Cqtp30Qhwz9txrj;
+ Tue,  8 Dec 2020 09:36:59 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E3CE28B7B2;
- Tue,  8 Dec 2020 09:36:58 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CA5BE8B7B3;
+ Tue,  8 Dec 2020 09:36:59 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 8WqJmFXaXREg; Tue,  8 Dec 2020 09:36:58 +0100 (CET)
+ with ESMTP id tiQCFr6meB7E; Tue,  8 Dec 2020 09:36:59 +0100 (CET)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A7638B7B1;
- Tue,  8 Dec 2020 09:36:58 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 78EB88B7B1;
+ Tue,  8 Dec 2020 09:36:59 +0100 (CET)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 42C7066928; Tue,  8 Dec 2020 08:36:58 +0000 (UTC)
-Message-Id: <0d37490a067840f53fc5b118869917c0aec9ab87.1607416578.git.christophe.leroy@csgroup.eu>
+ id 4784D66928; Tue,  8 Dec 2020 08:36:59 +0000 (UTC)
+Message-Id: <fe199d5af3578d3bf80035d203a94d742a7a28af.1607416578.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <0d37490a067840f53fc5b118869917c0aec9ab87.1607416578.git.christophe.leroy@csgroup.eu>
+References: <0d37490a067840f53fc5b118869917c0aec9ab87.1607416578.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 1/5] powerpc/book3s64/kuap: Improve error reporting with
- KUAP
+Subject: [PATCH v3 2/5] powerpc/mm: sanity_check_fault() should work for all, 
+ not only BOOK3S
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com, aneesh.kumar@linux.ibm.com
-Date: Tue,  8 Dec 2020 08:36:58 +0000 (UTC)
+Date: Tue,  8 Dec 2020 08:36:59 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,152 +67,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+The verification and message introduced by commit 374f3f5979f9
+("powerpc/mm/hash: Handle user access of kernel address gracefully")
+applies to all platforms, it should not be limited to BOOK3S.
 
-This partially reverts commit eb232b162446 ("powerpc/book3s64/kuap: Improve
-error reporting with KUAP") and update the fault handler to print
+Make the BOOK3S version of sanity_check_fault() the one for all,
+and bail out earlier if not BOOK3S.
 
-[   55.022514] Kernel attempted to access user page (7e6725b70000) - exploit attempt? (uid: 0)
-[   55.022528] BUG: Unable to handle kernel data access on read at 0x7e6725b70000
-[   55.022533] Faulting instruction address: 0xc000000000e8b9bc
-[   55.022540] Oops: Kernel access of bad area, sig: 11 [#1]
-....
-
-when the kernel access userspace address without unlocking AMR.
-
-bad_kuap_fault() is added as part of commit 5e5be3aed230 ("powerpc/mm: Detect
-bad KUAP faults") to catch userspace access incorrectly blocked by AMR. Hence
-retain the full stack dump there even with hash translation. Also, add a comment
-explaining the difference between hash and radix.
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Fixes: 374f3f5979f9 ("powerpc/mm/hash: Handle user access of kernel address gracefully")
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/book3s/32/kup.h     |  4 +--
- arch/powerpc/include/asm/book3s/64/kup.h     | 34 ++++++++++----------
- arch/powerpc/include/asm/kup.h               |  4 +--
- arch/powerpc/include/asm/nohash/32/kup-8xx.h |  4 +--
- arch/powerpc/mm/fault.c                      |  4 +--
- 5 files changed, 25 insertions(+), 25 deletions(-)
+ arch/powerpc/mm/fault.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-index b18cd931e325..32fd4452e960 100644
---- a/arch/powerpc/include/asm/book3s/32/kup.h
-+++ b/arch/powerpc/include/asm/book3s/32/kup.h
-@@ -177,8 +177,8 @@ static inline void restore_user_access(unsigned long flags)
- 		allow_user_access(to, to, end - addr, KUAP_READ_WRITE);
- }
- 
--static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
--				  bool is_write, unsigned long error_code)
-+static inline bool
-+bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- {
- 	unsigned long begin = regs->kuap & 0xf0000000;
- 	unsigned long end = regs->kuap << 28;
-diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-index f2e6dd78d5e2..7075c92c320c 100644
---- a/arch/powerpc/include/asm/book3s/64/kup.h
-+++ b/arch/powerpc/include/asm/book3s/64/kup.h
-@@ -353,29 +353,29 @@ static inline void set_kuap(unsigned long value)
- 	isync();
- }
- 
--#define RADIX_KUAP_BLOCK_READ	UL(0x4000000000000000)
--#define RADIX_KUAP_BLOCK_WRITE	UL(0x8000000000000000)
--
- static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
--				  bool is_write, unsigned long error_code)
-+				  bool is_write)
- {
- 	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
- 		return false;
--
--	if (radix_enabled()) {
--		/*
--		 * Will be a storage protection fault.
--		 * Only check the details of AMR[0]
--		 */
--		return WARN((regs->kuap & (is_write ? RADIX_KUAP_BLOCK_WRITE : RADIX_KUAP_BLOCK_READ)),
--			    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
--	}
- 	/*
--	 * We don't want to WARN here because userspace can setup
--	 * keys such that a kernel access to user address can cause
--	 * fault
-+	 * For radix this will be a storage protection fault (DSISR_PROTFAULT).
-+	 * For hash this will be a key fault (DSISR_KEYFAULT)
- 	 */
--	return !!(error_code & DSISR_KEYFAULT);
-+	/*
-+	 * We do have exception table entry, but accessing the
-+	 * userspace results in fault.  This could be because we
-+	 * didn't unlock the AMR or access is denied by userspace
-+	 * using a key value that blocks access. We are only interested
-+	 * in catching the use case of accessing without unlocking
-+	 * the AMR. Hence check for BLOCK_WRITE/READ against AMR.
-+	 */
-+	if (is_write) {
-+		return WARN(((regs->amr & AMR_KUAP_BLOCK_WRITE) == AMR_KUAP_BLOCK_WRITE),
-+			    "Bug: Write fault blocked by AMR!");
-+	}
-+	return WARN(((regs->amr & AMR_KUAP_BLOCK_READ) == AMR_KUAP_BLOCK_READ),
-+		    "Bug: Read fault blocked by AMR!");
- }
- 
- static __always_inline void allow_user_access(void __user *to, const void __user *from,
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index f8ec679bd2de..5a9820c54da9 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -62,8 +62,8 @@ void setup_kuap(bool disabled);
- #else
- static inline void setup_kuap(bool disabled) { }
- 
--static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
--				  bool is_write, unsigned long error_code)
-+static inline bool
-+bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- {
- 	return false;
- }
-diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-index 7bdd9e5b63ed..567cdc557402 100644
---- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-@@ -60,8 +60,8 @@ static inline void restore_user_access(unsigned long flags)
- 	mtspr(SPRN_MD_AP, flags);
- }
- 
--static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
--				  bool is_write, unsigned long error_code)
-+static inline bool
-+bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- {
- 	return WARN(!((regs->kuap ^ MD_APG_KUAP) & 0xff000000),
- 		    "Bug: fault blocked by AP register !");
 diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index c91621df0c61..b12595102525 100644
+index b12595102525..f6ae56a0d7a3 100644
 --- a/arch/powerpc/mm/fault.c
 +++ b/arch/powerpc/mm/fault.c
-@@ -210,7 +210,7 @@ static bool bad_kernel_fault(struct pt_regs *regs, unsigned long error_code,
- 		return true;
+@@ -303,7 +303,6 @@ static inline void cmo_account_page_fault(void)
+ static inline void cmo_account_page_fault(void) { }
+ #endif /* CONFIG_PPC_SMLPAR */
+ 
+-#ifdef CONFIG_PPC_BOOK3S
+ static void sanity_check_fault(bool is_write, bool is_user,
+ 			       unsigned long error_code, unsigned long address)
+ {
+@@ -320,6 +319,9 @@ static void sanity_check_fault(bool is_write, bool is_user,
+ 		return;
  	}
  
--	if (!is_exec && address < TASK_SIZE && (error_code & DSISR_PROTFAULT) &&
-+	if (!is_exec && address < TASK_SIZE && (error_code & (DSISR_PROTFAULT | DSISR_KEYFAULT)) &&
- 	    !search_exception_tables(regs->nip)) {
- 		pr_crit_ratelimited("Kernel attempted to access user page (%lx) - exploit attempt? (uid: %d)\n",
- 				    address,
-@@ -227,7 +227,7 @@ static bool bad_kernel_fault(struct pt_regs *regs, unsigned long error_code,
++	if (!IS_ENABLED(CONFIG_PPC_BOOK3S))
++		return;
++
+ 	/*
+ 	 * For hash translation mode, we should never get a
+ 	 * PROTFAULT. Any update to pte to reduce access will result in us
+@@ -354,10 +356,6 @@ static void sanity_check_fault(bool is_write, bool is_user,
  
- 	// Read/write fault in a valid region (the exception table search passed
- 	// above), but blocked by KUAP is bad, it can never succeed.
--	if (bad_kuap_fault(regs, address, is_write, error_code))
-+	if (bad_kuap_fault(regs, address, is_write))
- 		return true;
+ 	WARN_ON_ONCE(error_code & DSISR_PROTFAULT);
+ }
+-#else
+-static void sanity_check_fault(bool is_write, bool is_user,
+-			       unsigned long error_code, unsigned long address) { }
+-#endif /* CONFIG_PPC_BOOK3S */
  
- 	// What's left? Kernel fault on user in well defined regions (extable
+ /*
+  * Define the correct "is_write" bit in error_code based
 -- 
 2.25.0
 
