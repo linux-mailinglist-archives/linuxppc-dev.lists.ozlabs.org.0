@@ -1,91 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998202D2D01
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 15:22:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 416782D2D32
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 15:28:15 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cr2Sy6GP2zDqbs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 01:22:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cr2bJ1K2vzDqXg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 01:28:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=us.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=VWMaZ+r+; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cr2QX0kHbzDqTL
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 01:20:34 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B8E1asS096125; Tue, 8 Dec 2020 09:20:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- message-id : reply-to : references : mime-version : content-type :
- in-reply-to : subject; s=pp1;
- bh=z9GXfn9p6zVKDQVtxkSd2t1OXUvQ5i5LLE0iBIzfUSM=;
- b=VWMaZ+r+jRME14Suwgye7dHY4AZ4TshT4PRvjNfaxx6qeAQ0zieAOZYcM+dLg9kwk9bO
- rucGF/nUGzEHu7+sV/68IWia//NuvNqGRFNxrJv31QLxs/W1lIEJGX79VxOU63zTozd2
- nNiVS2Zd/QrGPE5btGZRgR+u1/Pa3+SbKe9e21RnRj4JUQxFl389Z1UbMf/jgjo2hsDm
- tV1UMTizRP7Qc1EOLylDbHRsEnyOCS1PIDLPLfa2UUNTWbO90XcX/BaEzBXA+Tn0RsJ8
- 2UVDAwWNsFWSiFOZjAjRVNR70cOUuLeE1m0tJBE3b7tA58ottuOsyXM1xtj0nARJlU9E pQ== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 35a5td23gw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Dec 2020 09:20:30 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B8EIWBd009806;
- Tue, 8 Dec 2020 14:20:29 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06ams.nl.ibm.com with ESMTP id 3581fhkn1q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Dec 2020 14:20:29 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B8EKQcI27460056
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 8 Dec 2020 14:20:26 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 50798A4054;
- Tue,  8 Dec 2020 14:20:26 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4FD5BA405F;
- Tue,  8 Dec 2020 14:20:25 +0000 (GMT)
-Received: from ram-ibm-com.ibm.com (unknown [9.80.235.251])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Tue,  8 Dec 2020 14:20:25 +0000 (GMT)
-Date: Tue, 8 Dec 2020 06:20:22 -0800
-From: Ram Pai <linuxram@us.ibm.com>
-To: Alistair Popple <alistair@popple.id.au>
-Message-ID: <20201208142022.GA4299@ram-ibm-com.ibm.com>
-References: <20201203050812.5234-1-alistair@popple.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cr2YB26BrzDqPm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 01:26:20 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4Cr2Y13zvXz9txfH;
+ Tue,  8 Dec 2020 15:26:13 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id cbGzgpzZcNAh; Tue,  8 Dec 2020 15:26:13 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Cr2Y11d0nz9txfF;
+ Tue,  8 Dec 2020 15:26:13 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9FDED8B7C7;
+ Tue,  8 Dec 2020 15:26:14 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id IzORe5C_uyYh; Tue,  8 Dec 2020 15:26:14 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6C3638B7BE;
+ Tue,  8 Dec 2020 15:26:13 +0100 (CET)
+Subject: Re: [PATCH v3 4/5] powerpc/fault: Avoid heavy
+ search_exception_tables() verification
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ npiggin@gmail.com
+References: <0d37490a067840f53fc5b118869917c0aec9ab87.1607416578.git.christophe.leroy@csgroup.eu>
+ <731bdee26a5a5c81cd815ed624a6fb3bdef8b4db.1607416578.git.christophe.leroy@csgroup.eu>
+ <0e25f03d-9f59-b963-312c-c3ae1d7953a2@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <d66f9706-9e36-5b92-5a87-90ebd05587e9@csgroup.eu>
+Date: Tue, 8 Dec 2020 15:26:14 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201203050812.5234-1-alistair@popple.id.au>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-Subject: Re: [PATCH] powerpc/book3s_hv_uvmem: Check for failed page migration
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-08_09:2020-12-08,
- 2020-12-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0
- impostorscore=0 mlxlogscore=999 mlxscore=0 adultscore=0 clxscore=1015
- lowpriorityscore=0 spamscore=0 priorityscore=1501 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012080084
+In-Reply-To: <0e25f03d-9f59-b963-312c-c3ae1d7953a2@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,57 +69,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, bharata@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 03, 2020 at 04:08:12PM +1100, Alistair Popple wrote:
-> migrate_vma_pages() may still clear MIGRATE_PFN_MIGRATE on pages which
-> are not able to be migrated. Drivers may safely copy data prior to
-> calling migrate_vma_pages() however a remote mapping must not be
-> established until after migrate_vma_pages() has returned as the
-> migration could still fail.
-> 
-> UV_PAGE_IN_in both copies and maps the data page, therefore it should
-> only be called after checking the results of migrate_vma_pages().
-> 
-> Signed-off-by: Alistair Popple <alistair@popple.id.au>
-> ---
->  arch/powerpc/kvm/book3s_hv_uvmem.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> index 84e5a2dc8be5..08aa6a90c525 100644
-> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> @@ -762,7 +762,10 @@ static int kvmppc_svm_page_in(struct vm_area_struct *vma,
->  		goto out_finalize;
->  	}
-> 
-> -	if (pagein) {
-> +	*mig.dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
-> +	migrate_vma_pages(&mig);
-> +
-> +	if ((*mig.src & MIGRATE_PFN_MIGRATE) && pagein) {
->  		pfn = *mig.src >> MIGRATE_PFN_SHIFT;
->  		spage = migrate_pfn_to_page(*mig.src);
->  		if (spage) {
-> @@ -773,8 +776,6 @@ static int kvmppc_svm_page_in(struct vm_area_struct *vma,
->  		}
->  	}
-> 
-> -	*mig.dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
-> -	migrate_vma_pages(&mig);
->  out_finalize:
->  	migrate_vma_finalize(&mig);
->  	return ret;
-
-Though this patch did not solve the specific problem, I am running into,
-my tests did not expose any regression.
-
-Tested-by: Ram Pai <linuxram@us.ibm.com>
 
 
-Reviewed-by: Ram Pai <linuxram@us.ibm.com>
+Le 08/12/2020 à 14:00, Aneesh Kumar K.V a écrit :
+> On 12/8/20 2:07 PM, Christophe Leroy wrote:
+>> search_exception_tables() is an heavy operation, we have to avoid it.
+>> When KUAP is selected, we'll know the fault has been blocked by KUAP.
+>> Otherwise, it behaves just as if the address was already in the TLBs
+>> and no fault was generated.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>> v3: rebased
+>> v2: Squashed with the preceeding patch which was re-ordering tests that get removed in this patch.
+>> ---
+>>   arch/powerpc/mm/fault.c | 23 +++++++----------------
+>>   1 file changed, 7 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+>> index 3fcd34c28e10..1770b41e4730 100644
+>> --- a/arch/powerpc/mm/fault.c
+>> +++ b/arch/powerpc/mm/fault.c
+>> @@ -210,28 +210,19 @@ static bool bad_kernel_fault(struct pt_regs *regs, unsigned long error_code,
+>>           return true;
+>>       }
+>> -    if (!is_exec && address < TASK_SIZE && (error_code & (DSISR_PROTFAULT | DSISR_KEYFAULT)) &&
+>> -        !search_exception_tables(regs->nip)) {
+>> -        pr_crit_ratelimited("Kernel attempted to access user page (%lx) - exploit attempt? (uid: 
+>> %d)\n",
+>> -                    address,
+>> -                    from_kuid(&init_user_ns, current_uid()));
+>> -    }
+>> -
+>>       // Kernel fault on kernel address is bad
+>>       if (address >= TASK_SIZE)
+>>           return true;
+>> -    // Fault on user outside of certain regions (eg. copy_tofrom_user()) is bad
+>> -    if (!search_exception_tables(regs->nip))
+>> -        return true;
+>> -
+>> -    // Read/write fault in a valid region (the exception table search passed
+>> -    // above), but blocked by KUAP is bad, it can never succeed.
+>> -    if (bad_kuap_fault(regs, address, is_write))
+>> +    // Read/write fault blocked by KUAP is bad, it can never succeed.
+>> +    if (bad_kuap_fault(regs, address, is_write)) {
+>> +        pr_crit_ratelimited("Kernel attempted to %s user page (%lx) - exploit attempt? (uid: %d)\n",
+>> +                    is_write ? "write" : "read", address,
+>> +                    from_kuid(&init_user_ns, current_uid()));
+>>           return true;
+>> +    }
+> 
+> 
+> Should we update bad_kuap_fault to check for !is_kernel_addr() and error_code & (DSISIR_PROT_FAULT | 
+> DSISIR_KEYFAULT). I am wondering whether we can take another fault w.r.t kernel address/user address 
+> and end up reporting that as KUAP fault?
+
+Just before this we do:
+
+	if (address >= TASK_SIZE)
+		return true;
+
+About the error code, I don't know. Can we take a fault that is not a DSISR_PROT_FAULT |
+  DSISR_KEYFAULT and that is not a KUAP fault ?
+
+Previously (before this patch), the error code was taken into account for the call to 
+search_exception_tables(), but has never been for the bad_kuap_fault().
+
+> 
+>> -    // What's left? Kernel fault on user in well defined regions (extable
+>> -    // matched), and allowed by KUAP in the faulting context.
+>> +    // What's left? Kernel fault on user and allowed by KUAP in the faulting context.
+>>       return false;
+>>   }
+>>
+> 
+> 
+> -aneesh
+
+Christophe
