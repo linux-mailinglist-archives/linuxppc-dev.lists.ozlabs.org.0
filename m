@@ -2,61 +2,105 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFD62D36A7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 00:03:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4DE2D36DF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 00:25:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrG2J6mDpzDqjk
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 10:03:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CrGVq30RmzDqfX
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 10:25:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linutronix.de
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=caKXgnd/; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=5J7Hq6Oe; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=WfRXxdri; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrFzF50MnzDqNC
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 10:01:13 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1607468467;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=aG1iFfSdBNfp1+ipOz8CIIBIA9ljbLDO35QyjUEKrTE=;
- b=caKXgnd/6F5+flu3BbUK6Urny2VYChTcHAdM+E61wnEpdFwoiiwFLZTuOuPOEFUE4VFgZJ
- b+NID39FwSsidMYttdhBz9Ogi7JcWmGpuu2dNeUMMscvAwuPYo14sIVNSUvOCEEEIZ2lFk
- ZPEG7P5kTbJyxqYu+n3urcd/BUA6fsxaek6BkVVvhX4kFQpO8/16f973TSQ6NvIO3QoJpZ
- 4yle9IIkIfGPO14+x2qxuUCS8RGtHwIiozuZ6YbDvOHVvfO9Angxjtnpze8SQt9MsYF7O2
- qbWrapPKKJQEje/bg1+jSWZRtsmx4HFigDgRV0JMA+G4u4u31AVASP25js+e8w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1607468467;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=aG1iFfSdBNfp1+ipOz8CIIBIA9ljbLDO35QyjUEKrTE=;
- b=5J7Hq6OeCCL/rGYGl/L1A2mCM4OFzpbzrJf5/KHAOBf52T4tPNcIvPHYPODs0Uy+MxHbwP
- t5c3+1xPYLlDycCg==
-To: Michael Ellerman <mpe@ellerman.id.au>, "Enrico Weigelt\,
- metux IT consult" <info@metux.net>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arch: fix 'unexpected IRQ trap at vector' warnings
-In-Reply-To: <877dptt5av.fsf@mpe.ellerman.id.au>
-References: <20201207143146.30021-1-info@metux.net>
- <877dptt5av.fsf@mpe.ellerman.id.au>
-Date: Wed, 09 Dec 2020 00:01:07 +0100
-Message-ID: <87y2i7298s.fsf@nanos.tec.linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CrGSp2xknzDqTQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 10:23:21 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B8N3Own193780; Tue, 8 Dec 2020 18:23:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ArI9mn5c+DgcORrXnxRTVG0KuLT4LUHxpjN2rZtQdJU=;
+ b=WfRXxdrizvvAZTNds3WUHHo626Mj3F14pIR5gq614lT1XggqPWWY7zeugCFF0VylUlEB
+ 9g0Xe8eSVrknX1rsE4zHMF/ucoP2FicUrAt9GqV6vcoWd3LKG36L6tDQcEepn+TQq3Ec
+ OBXODHsR7ddGsYR5eY/+kijf8uArkfDkV6aIRQVEUiIBeuPBlIStSbFBaIfiGH4uW3hq
+ FGp/IQOx1S/JuT42hJZ11rKbtbyO+tN84LwW9GrUxHD1vcMGlKTOc0XdiXq5BvwZ9yzc
+ e8X0qA2iyqcdemGocPBvd35jY7XraEpTWJZ3EZwzYOSELc6+8eBVdI5yU9kx1Dudd8Vo eA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35ahdbtjm0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Dec 2020 18:23:16 -0500
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B8N3Zgp194937;
+ Tue, 8 Dec 2020 18:23:15 -0500
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35ahdbtjkk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Dec 2020 18:23:15 -0500
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B8NMmuK009905;
+ Tue, 8 Dec 2020 23:23:14 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06ams.nl.ibm.com with ESMTP id 3581fhm0y5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Dec 2020 23:23:14 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B8NNBkt27001226
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 8 Dec 2020 23:23:12 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C7A59AE055;
+ Tue,  8 Dec 2020 23:23:11 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 75282AE051;
+ Tue,  8 Dec 2020 23:23:11 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  8 Dec 2020 23:23:11 +0000 (GMT)
+Received: from [9.81.212.44] (unknown [9.81.212.44])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id DBE9160167;
+ Wed,  9 Dec 2020 10:23:09 +1100 (AEDT)
+Subject: Re: [PATCH v2 1/2] powerpc/rtas: Restrict RTAS requests from userspace
+To: Tyrel Datwyler <tyreld@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200820044512.7543-1-ajd@linux.ibm.com>
+ <e58e8c42-d422-1bd7-ab38-9a1fb118fca4@linux.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Message-ID: <19104e21-da4a-7c5c-1291-87686d4822d1@linux.ibm.com>
+Date: Wed, 9 Dec 2020 10:23:02 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <e58e8c42-d422-1bd7-ab38-9a1fb118fca4@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2020-12-08_17:2020-12-08,
+ 2020-12-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0
+ lowpriorityscore=0 priorityscore=1501 malwarescore=0 spamscore=0
+ mlxscore=0 bulkscore=0 suspectscore=0 phishscore=0 clxscore=1011
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012080141
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,102 +112,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, hpa@zytor.com, linux-parisc@vger.kernel.org,
- deller@gmx.de, x86@kernel.org, linux-um@lists.infradead.org,
- James.Bottomley@HansenPartnership.com, mingo@redhat.com, paulus@samba.org,
- richard@nod.at, bp@alien8.de, linuxppc-dev@lists.ozlabs.org, jdike@addtoit.com,
- anton.ivanov@cambridgegreys.com
+Cc: nathanl@linux.ibm.com, leobras.c@gmail.com, stable@vger.kernel.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 08 2020 at 13:11, Michael Ellerman wrote:
-> "Enrico Weigelt, metux IT consult" <info@metux.net> writes:
->> All archs, except Alpha, print out the irq number in hex, but the message
->> looks like it was a decimal number, which is quite confusing. Fixing this
->> by adding "0x" prefix.
->
-> Arguably decimal would be better, /proc/interrupts and /proc/irq/ both
-> use decimal.
->
-> The whole message is very dated IMO, these days the number it prints is
-> (possibly) virtualised via IRQ domains, ie. it's not necessarily a
-> "vector" if that even makes sense on all arches). Arguably "trap" is the
-> wrong term on some arches too.
->
-> So it would be better reworded entirely IMO, and also switched to
-> decimal to match other sources of information on interrupts.
+On 9/12/20 5:59 am, Tyrel Datwyler wrote:
+>> +	{ "ibm,open-errinct", -1, -1, -1, -1, -1 },
+> 
+> There is a typo here. Should be ibm,open-errinjct.
+> 
+> kernel: [ 1100.408626] sys_rtas: RTAS call blocked - exploit attempt?
+> kernel: [ 1100.408631] sys_rtas: token=0x26, nargs=0 (called by errinjct)
+> 
+> Which is producing this when trying to invoke the errinjct tool.
+> 
+> I'll send a fixes patch out shortly.
 
-So much for the theory.
+*sigh*
 
-The printk originates from the very early days of i386 Linux where it
-was called from the low level entry code when there was no interrupt
-assigned to a vector, which is an x86'ism.
-
-That was copied to other architectures without actually thinking about
-whether the vector concept made sense on that architecture and at some
-point it got completely bonkers because it moved to core code without
-thought.
-
-There are a few situations why it is invoked or not:
-
-  1) The original x86 usage is not longer using it because it complains
-     rightfully about a vector being raised which has no interrupt
-     descriptor associated to it. So the original reason for naming it
-     vector is gone long ago. It emits:
-
-     pr_emerg_ratelimited("%s: %d.%u No irq handler for vector\n",
-                          __func__, smp_processor_id(), vector);
-
-     Directly from the x86 C entry point without ever invoking that
-     function.  Pretty popular error message due to some AMD BIOS
-     wreckage. :)
-
-  2) It's invoked when there is an interrupt descriptor installed but
-     not configured/requested. In that case some architectures need to
-     ack it in order not to block further interrupt delivery. In that
-     case 'vector is bogus' and really want's to be 'irqnr' or such
-     because there is a Linux virq number associated to it.
-
-  3) It's invoked from __handle_domain_irq() when the 'hwirq' which is
-     handed in by the caller does not resolve to a mapped Linux
-     interrupt which is pretty much the same as the x86 situation above
-     in #1, but it prints useless data.
-
-     It prints 'irq' which is invalid but it does not print the really
-     interesting 'hwirq' which was handed in by the caller and did
-     not resolve.
-
-     In this case the Linux irq number is uninteresting as it is known
-     to be invalid and simply is not mapped and therefore does not
-     exist.
-
-     This has to print out 'hwirq' which is kinda the equivalent to the
-     original 'vector' message.
-
-  4) It's invoked from the dummy irq chip which is installed for a
-     couple of truly virtual interrupts where the invocation of
-     dummy_irq_chip::irq_ack() is indicating wreckage.
-
-     In that case the Linux irq number is the thing which is printed.
-
-So no. It's not just inconsistent it's in some places outright
-wrong. What we really want is:
-
-ack_bad_irq(int hwirq, int virq)
-{
-        if (hwirq >= 0)
-           print_useful_info(hwirq);
-        if (virq > 0)
-           print_useful_info(virq);
-        arch_try_to_ack(hwirq, virq);
-}
-    
-for this to make sense. Just fixing the existing printk() to be less
-wrong is not really an improvement.
-
-Thanks,
-
-        tglx
+Thanks for picking this up!
 
 
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
