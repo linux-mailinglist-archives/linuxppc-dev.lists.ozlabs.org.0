@@ -1,57 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AA62D3065
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 18:01:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9570F2D3079
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 18:04:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cr60P0YqwzDqj1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 04:01:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cr63L40FNzDqCb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 04:04:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.121.110; helo=1.mo51.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 1.mo51.mail-out.ovh.net (1.mo51.mail-out.ovh.net
- [178.32.121.110])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cr5yJ01W5zDqdw
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 03:59:50 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.146.44])
- by mo51.mail-out.ovh.net (Postfix) with ESMTPS id 9C34B23F7E4;
- Tue,  8 Dec 2020 17:59:44 +0100 (CET)
-Received: from kaod.org (37.59.142.106) by DAG8EX1.mxp5.local (172.16.2.71)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Tue, 8 Dec 2020
- 17:59:43 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-106R006406c0db3-8917-4d23-9417-90f49d001e3a,
- 17D40A658B0D6C300559F39EE9B5E954A2DF46D1) smtp.auth=groug@kaod.org
-X-OVh-ClientIp: 82.253.208.248
-Date: Tue, 8 Dec 2020 17:59:42 +0100
-From: Greg Kurz <groug@kaod.org>
-To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
-Subject: Re: [PATCH 02/13] powerpc/xive: Rename XIVE_IRQ_NO_EOI to show its
- a flag
-Message-ID: <20201208175942.344b3c2c@bahia.lan>
-In-Reply-To: <20201208151124.1329942-3-clg@kaod.org>
-References: <20201208151124.1329942-1-clg@kaod.org>
- <20201208151124.1329942-3-clg@kaod.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
+ envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=alpha.franken.de
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Cr5zX0bTMzDqfC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 04:00:46 +1100 (AEDT)
+Received: from uucp (helo=alpha)
+ by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+ id 1kmgLm-0006Gx-00; Tue, 08 Dec 2020 18:00:30 +0100
+Received: by alpha.franken.de (Postfix, from userid 1000)
+ id 909BFC0331; Tue,  8 Dec 2020 18:00:21 +0100 (CET)
+Date: Tue, 8 Dec 2020 18:00:21 +0100
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH v2 0/5] drop unused BACKLIGHT_GENERIC option
+Message-ID: <20201208170021.GA6168@alpha.franken.de>
+References: <20201201222922.3183-1-andrey.zhizhikin@leica-geosystems.com>
+ <160744514229.359082.11487352663734358657.b4-ty@arndb.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [37.59.142.106]
-X-ClientProxiedBy: DAG5EX2.mxp5.local (172.16.2.42) To DAG8EX1.mxp5.local
- (172.16.2.71)
-X-Ovh-Tracer-GUID: c593a987-ec61-4a9a-a0f8-78b987d7150b
-X-Ovh-Tracer-Id: 12754194148118534554
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudejiedgleejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepveelhfdtudffhfeiveehhfelgeellefgteffteekudegheejfffghefhfeeuudffnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopegtlhhgsehkrghougdrohhrgh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <160744514229.359082.11487352663734358657.b4-ty@arndb.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,80 +45,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: alexandre.belloni@bootlin.com, sam@ravnborg.org, tony@atomide.com,
+ linux-kernel@vger.kernel.org, James.Bottomley@HansenPartnership.com,
+ wens@csie.org, thierry.reding@gmail.com, paulus@samba.org, will@kernel.org,
+ daniel.thompson@linaro.org, deller@gmx.de, linux@armlinux.org.uk,
+ krzk@kernel.org, jonathanh@nvidia.com, ludovic.desroches@microchip.com,
+ catalin.marinas@arm.com, linux-mips@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, mripard@kernel.org,
+ Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>, soc@kernel.org,
+ linux-tegra@vger.kernel.org, lee.jones@linaro.org, linux-omap@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, jernej.skrabec@siol.net,
+ linux-parisc@vger.kernel.org, emil.l.velikov@gmail.com,
+ nicolas.ferre@microchip.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 8 Dec 2020 16:11:13 +0100
-C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+On Tue, Dec 08, 2020 at 05:34:46PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> On Tue, 1 Dec 2020 22:29:17 +0000, Andrey Zhizhikin wrote:
+> > Since the removal of generic_bl driver from the source tree in commit
+> > 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
+> > unused") BACKLIGHT_GENERIC config option became obsolete as well and
+> > therefore subject to clean-up from all configuration files.
+> > 
+> > This series introduces patches to address this removal, separated by
+> > architectures in the kernel tree.
+> > 
+> > [...]
+> 
+> While my plan was to only take the arm specific patches, it seems
+> nobody else has applied the other architecture specific ones,
+> but there have been a lot of Acks. Also, b4 makes it easy to
+> merge the entire branch, so I'll just take all of these.
+> 
+> Applied to arm/defconfig, thanks!
+> 
+> [1/5] ARM: configs: drop unused BACKLIGHT_GENERIC option
+>       commit: 0437141b4e2233ae0109a9584e7a003cd05b0a20
+> [2/5] arm64: defconfig: drop unused BACKLIGHT_GENERIC option
+>       commit: 717c4c8336486781630893508b3347ae18953fae
+> [3/5] MIPS: configs: drop unused BACKLIGHT_GENERIC option
+>       commit: 2257682282531de45929c6006152f6e2ee881b42
 
-> This is a simple cleanup to identify easily all flags of the XIVE
-> interrupt structure. The interrupts flagged with XIVE_IRQ_FLAG_NO_EOI
-> are the escalations used to wake up vCPUs in KVM. They are handled
-> very differently from the rest.
->=20
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> ---
+this one is already in mips-next.
 
-Reviewed-by: Greg Kurz <groug@kaod.org>
+Thomas.
 
->  arch/powerpc/include/asm/xive.h   | 2 +-
->  arch/powerpc/kvm/book3s_xive.c    | 4 ++--
->  arch/powerpc/sysdev/xive/common.c | 2 +-
->  3 files changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/x=
-ive.h
-> index 309b4d65b74f..d332dd9a18de 100644
-> --- a/arch/powerpc/include/asm/xive.h
-> +++ b/arch/powerpc/include/asm/xive.h
-> @@ -66,7 +66,7 @@ struct xive_irq_data {
->  #define XIVE_IRQ_FLAG_H_INT_ESB	0x20
-> =20
->  /* Special flag set by KVM for excalation interrupts */
-> -#define XIVE_IRQ_NO_EOI		0x80
-> +#define XIVE_IRQ_FLAG_NO_EOI	0x80
-> =20
->  #define XIVE_INVALID_CHIP_ID	-1
-> =20
-> diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xiv=
-e.c
-> index 18a6b75a3bfd..fae1c2e8da29 100644
-> --- a/arch/powerpc/kvm/book3s_xive.c
-> +++ b/arch/powerpc/kvm/book3s_xive.c
-> @@ -219,7 +219,7 @@ int kvmppc_xive_attach_escalation(struct kvm_vcpu *vc=
-pu, u8 prio,
->  	/* In single escalation mode, we grab the ESB MMIO of the
->  	 * interrupt and mask it. Also populate the VCPU v/raddr
->  	 * of the ESB page for use by asm entry/exit code. Finally
-> -	 * set the XIVE_IRQ_NO_EOI flag which will prevent the
-> +	 * set the XIVE_IRQ_FLAG_NO_EOI flag which will prevent the
->  	 * core code from performing an EOI on the escalation
->  	 * interrupt, thus leaving it effectively masked after
->  	 * it fires once.
-> @@ -231,7 +231,7 @@ int kvmppc_xive_attach_escalation(struct kvm_vcpu *vc=
-pu, u8 prio,
->  		xive_vm_esb_load(xd, XIVE_ESB_SET_PQ_01);
->  		vcpu->arch.xive_esc_raddr =3D xd->eoi_page;
->  		vcpu->arch.xive_esc_vaddr =3D (__force u64)xd->eoi_mmio;
-> -		xd->flags |=3D XIVE_IRQ_NO_EOI;
-> +		xd->flags |=3D XIVE_IRQ_FLAG_NO_EOI;
->  	}
-> =20
->  	return 0;
-> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
-/common.c
-> index a80440af491a..65af34ac1fa2 100644
-> --- a/arch/powerpc/sysdev/xive/common.c
-> +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -416,7 +416,7 @@ static void xive_irq_eoi(struct irq_data *d)
->  	 * been passed-through to a KVM guest
->  	 */
->  	if (!irqd_irq_disabled(d) && !irqd_is_forwarded_to_vcpu(d) &&
-> -	    !(xd->flags & XIVE_IRQ_NO_EOI))
-> +	    !(xd->flags & XIVE_IRQ_FLAG_NO_EOI))
->  		xive_do_source_eoi(irqd_to_hwirq(d), xd);
->  	else
->  		xd->stale_p =3D true;
-
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
