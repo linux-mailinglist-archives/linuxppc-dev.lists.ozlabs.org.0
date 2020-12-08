@@ -2,54 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB172D26D5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 10:04:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A2E2D27EE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 10:42:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CqvPK4CmMzDqXt
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 20:04:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CqwFK18BGzDqPm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 20:42:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CqvMZ6Bt3zDqCM
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 20:02:34 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CqwC91LlhzDqVx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 20:40:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+ header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=pXld9tk0; 
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=LOz5JpQj; 
  dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4CqvMZ4xrLz9sWR; Tue,  8 Dec 2020 20:02:34 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CqvMZ0yzzz9sWQ;
- Tue,  8 Dec 2020 20:02:32 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1607418154;
- bh=1JsjWFPNaV7qbLNXrHlyg89qbEGvqxuYkxQMK5KbnFQ=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=pXld9tk0Xub1pSabCDtKvca714+NbQwOXMwQwQEQjZvKG501Wx/3eEWcqIXCwXKa5
- 3JfDe14HYXGruM22k+uuC7cVDxAhQEptFDtatXqCm2eTB0YhvkvLPQ9lQ951Rz+2GU
- 9QXjyAenMl7KYCJJXU2PjLfoknRM0BSOSK5EMCe5uwjUZ33dmaFmAVB9EtJBXrFh1U
- rvwCRBWhcqALRvef4SyjYiPajb2V/Br2pxdLyb1XW+02DA45AngtfucrsCoSRyAw/X
- 8lxQaj2Zvagm5DMUd088l1jfGIkuM7+6T0PIeifxbco4CyT7LOGcZZilBk9TRlmfnY
- OOgbegDG0C0LQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH] EDAC/mv64x60: Remove orphan mv64x60 driver
-In-Reply-To: <20201207111727.GC20489@zn.tnic>
-References: <20201207040253.628528-1-mpe@ellerman.id.au>
- <20201207111727.GC20489@zn.tnic>
-Date: Tue, 08 Dec 2020 20:02:31 +1100
-Message-ID: <874kkwu0uw.fsf@mpe.ellerman.id.au>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CqwC52zT5z9sWC;
+ Tue,  8 Dec 2020 20:40:17 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1607420420;
+ bh=SgR9rRLLr1wpSVNkvx0TwzJ8HMz7bq3+cs6tsbyEc2I=;
+ h=Date:From:To:Cc:Subject:From;
+ b=LOz5JpQjYf5HjjNeBUWfIuVZ9Lb7SNwdTt1qvJYyPtbLFfBZkcPivMFh1ibHAZ+Rt
+ Rv6pNwkispda+2UI76IJ3A657fFA4Xnf5zoW3P8EwjTM4XCtdLdYqCtujQXiPuK9UL
+ K9JBckgl8HB2DzV7MKLs8LfrMxIaQhHrbnw8GXoIFPzalD6VC+x5Y2voQssPl8BBfs
+ RgvquyeAv51BA64SsxBzb1bbwRYb173dqRCJS9ZLMHLfomVvgGqLOZq3mPRaUtCmWc
+ NHmWTdL/kn4JFsRsPeKjt1kcCaX8UzC4as9w7teAYwajS0c70HCk40HOUwYVkATern
+ CYBlEqmdxhOng==
+Date: Tue, 8 Dec 2020 20:40:16 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman
+ <mpe@ellerman.id.au>, PowerPC <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: manual merge of the akpm-current tree with the powerpc
+ tree
+Message-ID: <20201208204016.4eb18ca4@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/WhuzseIJmOBCjIOtWW=K0=l";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,36 +58,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tony.luck@intel.com, rric@kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@ozlabs.org, james.morse@arm.com, mchehab@kernel.org,
- linux-edac@vger.kernel.org
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Francis Laniel <laniel_francis@privacyrequired.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Borislav Petkov <bp@alien8.de> writes:
-> On Mon, Dec 07, 2020 at 03:02:53PM +1100, Michael Ellerman wrote:
->> The mv64x60 EDAC driver depends on CONFIG_MV64X60. But that symbol is
->> not user-selectable, and the last code that selected it was removed
->> with the C2K board support in 2018, see:
->> 
->>   92c8c16f3457 ("powerpc/embedded6xx: Remove C2K board support")
->> 
->> That means the driver is now dead code, so remove it.
->> 
->> Suggested-by: Borislav Petkov <bp@alien8.de>
->> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->> ---
->>  drivers/edac/Kconfig        |   7 -
->>  drivers/edac/Makefile       |   1 -
->>  drivers/edac/mv64x60_edac.c | 883 ------------------------------------
->>  drivers/edac/mv64x60_edac.h | 114 -----
->>  4 files changed, 1005 deletions(-)
->>  delete mode 100644 drivers/edac/mv64x60_edac.c
->>  delete mode 100644 drivers/edac/mv64x60_edac.h
->
-> Gladly taken and applied, thanks!
+--Sig_/WhuzseIJmOBCjIOtWW=K0=l
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Thanks.
+Hi all,
 
-cheers
+Today's linux-next merge of the akpm-current tree got conflicts in:
+
+  drivers/misc/lkdtm/Makefile
+  drivers/misc/lkdtm/lkdtm.h
+  tools/testing/selftests/lkdtm/tests.txt
+
+between commit:
+
+  3ba150fb2120 ("lkdtm/powerpc: Add SLB multihit test")
+
+from the powerpc tree and commit:
+
+  014a486edd8a ("drivers/misc/lkdtm: add new file in LKDTM to test fortifie=
+d strscpy")
+
+from the akpm-current tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc drivers/misc/lkdtm/Makefile
+index 5a92c74eca92,d898f7b22045..000000000000
+--- a/drivers/misc/lkdtm/Makefile
++++ b/drivers/misc/lkdtm/Makefile
+@@@ -10,7 -10,7 +10,8 @@@ lkdtm-$(CONFIG_LKDTM)		+=3D rodata_objcop
+  lkdtm-$(CONFIG_LKDTM)		+=3D usercopy.o
+  lkdtm-$(CONFIG_LKDTM)		+=3D stackleak.o
+  lkdtm-$(CONFIG_LKDTM)		+=3D cfi.o
++ lkdtm-$(CONFIG_LKDTM)		+=3D fortify.o
+ +lkdtm-$(CONFIG_PPC_BOOK3S_64)	+=3D powerpc.o
+ =20
+  KASAN_SANITIZE_stackleak.o	:=3D n
+  KCOV_INSTRUMENT_rodata.o	:=3D n
+diff --cc drivers/misc/lkdtm/lkdtm.h
+index 79ec05c18dd1,6aa6d6a1a839..000000000000
+--- a/drivers/misc/lkdtm/lkdtm.h
++++ b/drivers/misc/lkdtm/lkdtm.h
+@@@ -102,7 -104,7 +104,10 @@@ void lkdtm_STACKLEAK_ERASING(void)
+  /* cfi.c */
+  void lkdtm_CFI_FORWARD_PROTO(void);
+ =20
++ /* fortify.c */
++ void lkdtm_FORTIFIED_STRSCPY(void);
++=20
+ +/* powerpc.c */
+ +void lkdtm_PPC_SLB_MULTIHIT(void);
+ +
+  #endif
+diff --cc tools/testing/selftests/lkdtm/tests.txt
+index 18e4599863c0,92ba4cc41314..000000000000
+--- a/tools/testing/selftests/lkdtm/tests.txt
++++ b/tools/testing/selftests/lkdtm/tests.txt
+@@@ -68,4 -68,4 +68,5 @@@ USERCOPY_STACK_BEYON
+  USERCOPY_KERNEL
+  STACKLEAK_ERASING OK: the rest of the thread stack is properly erased
+  CFI_FORWARD_PROTO
++ FORTIFIED_STRSCPY
+ +PPC_SLB_MULTIHIT Recovered
+
+--Sig_/WhuzseIJmOBCjIOtWW=K0=l
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl/PSgAACgkQAVBC80lX
+0GwEsAgAk4+6coRYdOFpzQs6pyo/XwOgK5qgBdXPsG7VYHQSQbt54tZylrmTvyrs
+Q7sjjQnIvo0VxUlllPKV7i/A0v9G4cVcrWB6/fMfz2sjO5Hq45YnsJagT7xD04VX
+cm1Fq3UCxrdACXhaVlR1JydEYEzAyplTjyGgpdgwB1Gv7nucW2uWtahusIIaB7s3
+vv3DB+YSt8tjuVtzjNhI+OhiW8R0ExUnaa95F0Rsy8OrgFjdnH9f59GBlL+a3HKc
+rvMfBS4M5kcf64Uik5SEHTs1ejWkzmL77S2EDZNWpBkYu4FHJXG1AMg3YIn/T7JW
+AufpfmXzECUqaK8Ev3wfdi6QhOGx3Q==
+=n6NW
+-----END PGP SIGNATURE-----
+
+--Sig_/WhuzseIJmOBCjIOtWW=K0=l--
