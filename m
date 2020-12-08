@@ -2,85 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4EB2D215C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 04:17:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 546262D2328
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 06:26:04 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CqljY4NZBzDqZB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 14:17:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CqpYj39wMzDqZb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 16:26:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=BdkEHtUJ; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cqlgb4j9DzDqVx
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 14:15:55 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B833Ess068331; Mon, 7 Dec 2020 22:15:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=hCfRyZl6uW4NYQCJ6meiECS52LrZ74DguokQW7fqlgo=;
- b=BdkEHtUJ4fyZQUZ3o71tu1M5ybWV8rqbB3jPDL4FHOUd1+iEvzWHDvPFVpzxqpm/M53f
- 72ZQWRh6vQ46ORREO2w00zLPn9LbPLGi6HO98Dr9hQ+sahxALQSCXezmDxmZqGvF7IjZ
- m5wmoRmdKDcegjtbDijm4ZpXU0YilepetVshBHUNt/RyxVR8juX9dKOSP9WW/+7EHBUm
- qMk1apUeLrXJ+fNXV3FUSxDRQC4nc8YIFJE9fcu3I0bhX0ic5upcrZXWbIO2NYwz6hlI
- 2gOk5USIxSAZ3pDavuTT+O8ILU7x/Y5F2+hvckaqilwcf+7BvHMGHHfHVlJ+we34GLH9 PA== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 359p7xm8y8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Dec 2020 22:15:50 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B83CMA1004407;
- Tue, 8 Dec 2020 03:15:48 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma03dal.us.ibm.com with ESMTP id 3581u91s12-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Dec 2020 03:15:48 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B83Fl5A29819138
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 8 Dec 2020 03:15:47 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0DDB7112063;
- Tue,  8 Dec 2020 03:15:47 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6CAF4112061;
- Tue,  8 Dec 2020 03:15:45 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.85.74.77])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  8 Dec 2020 03:15:45 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc/book3s64/kuap: Improve error reporting with KUAP
-Date: Tue,  8 Dec 2020 08:45:39 +0530
-Message-Id: <20201208031539.84878-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.28.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-07_19:2020-12-04,
- 2020-12-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- adultscore=0 clxscore=1015 phishscore=0 impostorscore=0 mlxscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=999 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012080018
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CqpX022GMzDqWS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 16:24:26 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CqpWm09mMz9txxN;
+ Tue,  8 Dec 2020 06:24:20 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id K75cl8fjJSud; Tue,  8 Dec 2020 06:24:19 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CqpWl6Dqkz9txxL;
+ Tue,  8 Dec 2020 06:24:19 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 97A188B775;
+ Tue,  8 Dec 2020 06:24:20 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id uKGzaSS8OsI3; Tue,  8 Dec 2020 06:24:20 +0100 (CET)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4A79F8B773;
+ Tue,  8 Dec 2020 06:24:20 +0100 (CET)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 0AA1066846; Tue,  8 Dec 2020 05:24:19 +0000 (UTC)
+Message-Id: <e3e0d8042a3ba75cb4a9546c19c408b5b5b28994.1607404931.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2] powerpc/powermac: Fix low_sleep_handler with
+ CONFIG_VMAP_STACK
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ giuseppe@sguazz.it
+Date: Tue,  8 Dec 2020 05:24:19 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,154 +60,297 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This partially reverts commit eb232b162446 ("powerpc/book3s64/kuap: Improve
-error reporting with KUAP") and update the fault handler to print
+low_sleep_handler() can't restore the context from standard
+stack because the stack can hardly be accessed with MMU OFF.
 
-[   55.022514] Kernel attempted to access user page (7e6725b70000) - exploit attempt? (uid: 0)
-[   55.022528] BUG: Unable to handle kernel data access on read at 0x7e6725b70000
-[   55.022533] Faulting instruction address: 0xc000000000e8b9bc
-[   55.022540] Oops: Kernel access of bad area, sig: 11 [#1]
-....
+Store everything in a global storage area instead of storing
+a pointer to the stack in that global storage area.
 
-when the kernel access userspace address without unlocking AMR.
+To avoid a complete churn of the function, still use r1 as
+the pointer to the storage area during restore.
 
-bad_kuap_fault() is added as part of commit 5e5be3aed230 ("powerpc/mm: Detect
-bad KUAP faults") to catch userspace access incorrectly blocked by AMR. Hence
-retain the full stack dump there even with hash translation. Also, add a comment
-explaining the difference between hash and radix.
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Reported-by: Giuseppe Sacco <giuseppe@sguazz.it>
+Fixes: cd08f109e262 ("powerpc/32s: Enable CONFIG_VMAP_STACK")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/book3s/32/kup.h     |  4 +--
- arch/powerpc/include/asm/book3s/64/kup.h     | 34 ++++++++++----------
- arch/powerpc/include/asm/kup.h               |  4 +--
- arch/powerpc/include/asm/nohash/32/kup-8xx.h |  4 +--
- arch/powerpc/mm/fault.c                      |  4 +--
- 5 files changed, 25 insertions(+), 25 deletions(-)
+This is only build tested. Giuseppe can you test it ? Thanks.
 
-diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-index b18cd931e325..32fd4452e960 100644
---- a/arch/powerpc/include/asm/book3s/32/kup.h
-+++ b/arch/powerpc/include/asm/book3s/32/kup.h
-@@ -177,8 +177,8 @@ static inline void restore_user_access(unsigned long flags)
- 		allow_user_access(to, to, end - addr, KUAP_READ_WRITE);
- }
+v2: Changed an erroneous 'addis' to 'addi' ; Using bss instead of data section
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/platforms/Kconfig.cputype  |   2 +-
+ arch/powerpc/platforms/powermac/sleep.S | 132 +++++++++++-------------
+ 2 files changed, 60 insertions(+), 74 deletions(-)
+
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index c194c4ae8bc7..32a9c4c09b98 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -36,7 +36,7 @@ config PPC_BOOK3S_6xx
+ 	select PPC_HAVE_PMU_SUPPORT
+ 	select PPC_HAVE_KUEP
+ 	select PPC_HAVE_KUAP
+-	select HAVE_ARCH_VMAP_STACK if !ADB_PMU
++	select HAVE_ARCH_VMAP_STACK
  
--static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
--				  bool is_write, unsigned long error_code)
-+static inline bool
-+bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- {
- 	unsigned long begin = regs->kuap & 0xf0000000;
- 	unsigned long end = regs->kuap << 28;
-diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-index f2e6dd78d5e2..7075c92c320c 100644
---- a/arch/powerpc/include/asm/book3s/64/kup.h
-+++ b/arch/powerpc/include/asm/book3s/64/kup.h
-@@ -353,29 +353,29 @@ static inline void set_kuap(unsigned long value)
- 	isync();
- }
+ config PPC_85xx
+ 	bool "Freescale 85xx"
+diff --git a/arch/powerpc/platforms/powermac/sleep.S b/arch/powerpc/platforms/powermac/sleep.S
+index 7e0f8ba6e54a..d497a60003d2 100644
+--- a/arch/powerpc/platforms/powermac/sleep.S
++++ b/arch/powerpc/platforms/powermac/sleep.S
+@@ -44,7 +44,8 @@
+ #define SL_TB		0xa0
+ #define SL_R2		0xa8
+ #define SL_CR		0xac
+-#define SL_R12		0xb0	/* r12 to r31 */
++#define SL_LR		0xb0
++#define SL_R12		0xb4	/* r12 to r31 */
+ #define SL_SIZE		(SL_R12 + 80)
  
--#define RADIX_KUAP_BLOCK_READ	UL(0x4000000000000000)
--#define RADIX_KUAP_BLOCK_WRITE	UL(0x8000000000000000)
--
- static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
--				  bool is_write, unsigned long error_code)
-+				  bool is_write)
- {
- 	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
- 		return false;
--
--	if (radix_enabled()) {
--		/*
--		 * Will be a storage protection fault.
--		 * Only check the details of AMR[0]
--		 */
--		return WARN((regs->kuap & (is_write ? RADIX_KUAP_BLOCK_WRITE : RADIX_KUAP_BLOCK_READ)),
--			    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
--	}
- 	/*
--	 * We don't want to WARN here because userspace can setup
--	 * keys such that a kernel access to user address can cause
--	 * fault
-+	 * For radix this will be a storage protection fault (DSISR_PROTFAULT).
-+	 * For hash this will be a key fault (DSISR_KEYFAULT)
- 	 */
--	return !!(error_code & DSISR_KEYFAULT);
-+	/*
-+	 * We do have exception table entry, but accessing the
-+	 * userspace results in fault.  This could be because we
-+	 * didn't unlock the AMR or access is denied by userspace
-+	 * using a key value that blocks access. We are only interested
-+	 * in catching the use case of accessing without unlocking
-+	 * the AMR. Hence check for BLOCK_WRITE/READ against AMR.
-+	 */
-+	if (is_write) {
-+		return WARN(((regs->amr & AMR_KUAP_BLOCK_WRITE) == AMR_KUAP_BLOCK_WRITE),
-+			    "Bug: Write fault blocked by AMR!");
-+	}
-+	return WARN(((regs->amr & AMR_KUAP_BLOCK_READ) == AMR_KUAP_BLOCK_READ),
-+		    "Bug: Read fault blocked by AMR!");
- }
- 
- static __always_inline void allow_user_access(void __user *to, const void __user *from,
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index f8ec679bd2de..5a9820c54da9 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -62,8 +62,8 @@ void setup_kuap(bool disabled);
+ 	.section .text
+@@ -63,105 +64,107 @@ _GLOBAL(low_sleep_handler)
+ 	blr
  #else
- static inline void setup_kuap(bool disabled) { }
+ 	mflr	r0
+-	stw	r0,4(r1)
+-	stwu	r1,-SL_SIZE(r1)
++	lis	r11,sleep_storage@ha
++	addi	r11,r11,sleep_storage@l
++	stw	r0,SL_LR(r11)
+ 	mfcr	r0
+-	stw	r0,SL_CR(r1)
+-	stw	r2,SL_R2(r1)
+-	stmw	r12,SL_R12(r1)
++	stw	r0,SL_CR(r11)
++	stw	r1,SL_SP(r11)
++	stw	r2,SL_R2(r11)
++	stmw	r12,SL_R12(r11)
  
--static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
--				  bool is_write, unsigned long error_code)
-+static inline bool
-+bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- {
- 	return false;
- }
-diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-index 7bdd9e5b63ed..567cdc557402 100644
---- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-@@ -60,8 +60,8 @@ static inline void restore_user_access(unsigned long flags)
- 	mtspr(SPRN_MD_AP, flags);
- }
+ 	/* Save MSR & SDR1 */
+ 	mfmsr	r4
+-	stw	r4,SL_MSR(r1)
++	stw	r4,SL_MSR(r11)
+ 	mfsdr1	r4
+-	stw	r4,SL_SDR1(r1)
++	stw	r4,SL_SDR1(r11)
  
--static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
--				  bool is_write, unsigned long error_code)
-+static inline bool
-+bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- {
- 	return WARN(!((regs->kuap ^ MD_APG_KUAP) & 0xff000000),
- 		    "Bug: fault blocked by AP register !");
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index c91621df0c61..b12595102525 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -210,7 +210,7 @@ static bool bad_kernel_fault(struct pt_regs *regs, unsigned long error_code,
- 		return true;
- 	}
+ 	/* Get a stable timebase and save it */
+ 1:	mftbu	r4
+-	stw	r4,SL_TB(r1)
++	stw	r4,SL_TB(r11)
+ 	mftb	r5
+-	stw	r5,SL_TB+4(r1)
++	stw	r5,SL_TB+4(r11)
+ 	mftbu	r3
+ 	cmpw	r3,r4
+ 	bne	1b
  
--	if (!is_exec && address < TASK_SIZE && (error_code & DSISR_PROTFAULT) &&
-+	if (!is_exec && address < TASK_SIZE && (error_code & (DSISR_PROTFAULT | DSISR_KEYFAULT)) &&
- 	    !search_exception_tables(regs->nip)) {
- 		pr_crit_ratelimited("Kernel attempted to access user page (%lx) - exploit attempt? (uid: %d)\n",
- 				    address,
-@@ -227,7 +227,7 @@ static bool bad_kernel_fault(struct pt_regs *regs, unsigned long error_code,
+ 	/* Save SPRGs */
+ 	mfsprg	r4,0
+-	stw	r4,SL_SPRG0(r1)
++	stw	r4,SL_SPRG0(r11)
+ 	mfsprg	r4,1
+-	stw	r4,SL_SPRG0+4(r1)
++	stw	r4,SL_SPRG0+4(r11)
+ 	mfsprg	r4,2
+-	stw	r4,SL_SPRG0+8(r1)
++	stw	r4,SL_SPRG0+8(r11)
+ 	mfsprg	r4,3
+-	stw	r4,SL_SPRG0+12(r1)
++	stw	r4,SL_SPRG0+12(r11)
  
- 	// Read/write fault in a valid region (the exception table search passed
- 	// above), but blocked by KUAP is bad, it can never succeed.
--	if (bad_kuap_fault(regs, address, is_write, error_code))
-+	if (bad_kuap_fault(regs, address, is_write))
- 		return true;
+ 	/* Save BATs */
+ 	mfdbatu	r4,0
+-	stw	r4,SL_DBAT0(r1)
++	stw	r4,SL_DBAT0(r11)
+ 	mfdbatl	r4,0
+-	stw	r4,SL_DBAT0+4(r1)
++	stw	r4,SL_DBAT0+4(r11)
+ 	mfdbatu	r4,1
+-	stw	r4,SL_DBAT1(r1)
++	stw	r4,SL_DBAT1(r11)
+ 	mfdbatl	r4,1
+-	stw	r4,SL_DBAT1+4(r1)
++	stw	r4,SL_DBAT1+4(r11)
+ 	mfdbatu	r4,2
+-	stw	r4,SL_DBAT2(r1)
++	stw	r4,SL_DBAT2(r11)
+ 	mfdbatl	r4,2
+-	stw	r4,SL_DBAT2+4(r1)
++	stw	r4,SL_DBAT2+4(r11)
+ 	mfdbatu	r4,3
+-	stw	r4,SL_DBAT3(r1)
++	stw	r4,SL_DBAT3(r11)
+ 	mfdbatl	r4,3
+-	stw	r4,SL_DBAT3+4(r1)
++	stw	r4,SL_DBAT3+4(r11)
+ 	mfibatu	r4,0
+-	stw	r4,SL_IBAT0(r1)
++	stw	r4,SL_IBAT0(r11)
+ 	mfibatl	r4,0
+-	stw	r4,SL_IBAT0+4(r1)
++	stw	r4,SL_IBAT0+4(r11)
+ 	mfibatu	r4,1
+-	stw	r4,SL_IBAT1(r1)
++	stw	r4,SL_IBAT1(r11)
+ 	mfibatl	r4,1
+-	stw	r4,SL_IBAT1+4(r1)
++	stw	r4,SL_IBAT1+4(r11)
+ 	mfibatu	r4,2
+-	stw	r4,SL_IBAT2(r1)
++	stw	r4,SL_IBAT2(r11)
+ 	mfibatl	r4,2
+-	stw	r4,SL_IBAT2+4(r1)
++	stw	r4,SL_IBAT2+4(r11)
+ 	mfibatu	r4,3
+-	stw	r4,SL_IBAT3(r1)
++	stw	r4,SL_IBAT3(r11)
+ 	mfibatl	r4,3
+-	stw	r4,SL_IBAT3+4(r1)
++	stw	r4,SL_IBAT3+4(r11)
  
- 	// What's left? Kernel fault on user in well defined regions (extable
+ BEGIN_MMU_FTR_SECTION
+ 	mfspr	r4,SPRN_DBAT4U
+-	stw	r4,SL_DBAT4(r1)
++	stw	r4,SL_DBAT4(r11)
+ 	mfspr	r4,SPRN_DBAT4L
+-	stw	r4,SL_DBAT4+4(r1)
++	stw	r4,SL_DBAT4+4(r11)
+ 	mfspr	r4,SPRN_DBAT5U
+-	stw	r4,SL_DBAT5(r1)
++	stw	r4,SL_DBAT5(r11)
+ 	mfspr	r4,SPRN_DBAT5L
+-	stw	r4,SL_DBAT5+4(r1)
++	stw	r4,SL_DBAT5+4(r11)
+ 	mfspr	r4,SPRN_DBAT6U
+-	stw	r4,SL_DBAT6(r1)
++	stw	r4,SL_DBAT6(r11)
+ 	mfspr	r4,SPRN_DBAT6L
+-	stw	r4,SL_DBAT6+4(r1)
++	stw	r4,SL_DBAT6+4(r11)
+ 	mfspr	r4,SPRN_DBAT7U
+-	stw	r4,SL_DBAT7(r1)
++	stw	r4,SL_DBAT7(r11)
+ 	mfspr	r4,SPRN_DBAT7L
+-	stw	r4,SL_DBAT7+4(r1)
++	stw	r4,SL_DBAT7+4(r11)
+ 	mfspr	r4,SPRN_IBAT4U
+-	stw	r4,SL_IBAT4(r1)
++	stw	r4,SL_IBAT4(r11)
+ 	mfspr	r4,SPRN_IBAT4L
+-	stw	r4,SL_IBAT4+4(r1)
++	stw	r4,SL_IBAT4+4(r11)
+ 	mfspr	r4,SPRN_IBAT5U
+-	stw	r4,SL_IBAT5(r1)
++	stw	r4,SL_IBAT5(r11)
+ 	mfspr	r4,SPRN_IBAT5L
+-	stw	r4,SL_IBAT5+4(r1)
++	stw	r4,SL_IBAT5+4(r11)
+ 	mfspr	r4,SPRN_IBAT6U
+-	stw	r4,SL_IBAT6(r1)
++	stw	r4,SL_IBAT6(r11)
+ 	mfspr	r4,SPRN_IBAT6L
+-	stw	r4,SL_IBAT6+4(r1)
++	stw	r4,SL_IBAT6+4(r11)
+ 	mfspr	r4,SPRN_IBAT7U
+-	stw	r4,SL_IBAT7(r1)
++	stw	r4,SL_IBAT7(r11)
+ 	mfspr	r4,SPRN_IBAT7L
+-	stw	r4,SL_IBAT7+4(r1)
++	stw	r4,SL_IBAT7+4(r11)
+ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
+ 
+ 	/* Backup various CPU config stuffs */
+@@ -180,9 +183,9 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
+ 	lis	r5,grackle_wake_up@ha
+ 	addi	r5,r5,grackle_wake_up@l
+ 	tophys(r5,r5)
+-	stw	r5,SL_PC(r1)
++	stw	r5,SL_PC(r11)
+ 	lis	r4,KERNELBASE@h
+-	tophys(r5,r1)
++	tophys(r5,r11)
+ 	addi	r5,r5,SL_PC
+ 	lis	r6,MAGIC@ha
+ 	addi	r6,r6,MAGIC@l
+@@ -194,12 +197,6 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
+ 	tophys(r3,r3)
+ 	stw	r3,0x80(r4)
+ 	stw	r5,0x84(r4)
+-	/* Store a pointer to our backup storage into
+-	 * a kernel global
+-	 */
+-	lis r3,sleep_storage@ha
+-	addi r3,r3,sleep_storage@l
+-	stw r5,0(r3)
+ 
+ 	.globl	low_cpu_offline_self
+ low_cpu_offline_self:
+@@ -279,7 +276,7 @@ _GLOBAL(core99_wake_up)
+ 	lis	r3,sleep_storage@ha
+ 	addi	r3,r3,sleep_storage@l
+ 	tophys(r3,r3)
+-	lwz	r1,0(r3)
++	addi	r1,r3,SL_PC
+ 
+ 	/* Pass thru to older resume code ... */
+ _ASM_NOKPROBE_SYMBOL(core99_wake_up)
+@@ -399,13 +396,6 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
+ 	blt	1b
+ 	sync
+ 
+-	/* restore the MSR and turn on the MMU */
+-	lwz	r3,SL_MSR(r1)
+-	bl	turn_on_mmu
+-
+-	/* get back the stack pointer */
+-	tovirt(r1,r1)
+-
+ 	/* Restore TB */
+ 	li	r3,0
+ 	mttbl	r3
+@@ -419,28 +409,24 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
+ 	mtcr	r0
+ 	lwz	r2,SL_R2(r1)
+ 	lmw	r12,SL_R12(r1)
+-	addi	r1,r1,SL_SIZE
+-	lwz	r0,4(r1)
+-	mtlr	r0
+-	blr
+-_ASM_NOKPROBE_SYMBOL(grackle_wake_up)
+ 
+-turn_on_mmu:
+-	mflr	r4
+-	tovirt(r4,r4)
++	/* restore the MSR and SP and turn on the MMU and return */
++	lwz	r3,SL_MSR(r1)
++	lwz	r4,SL_LR(r1)
++	lwz	r1,SL_SP(r1)
+ 	mtsrr0	r4
+ 	mtsrr1	r3
+ 	sync
+ 	isync
+ 	rfi
+-_ASM_NOKPROBE_SYMBOL(turn_on_mmu)
++_ASM_NOKPROBE_SYMBOL(grackle_wake_up)
+ 
+ #endif /* defined(CONFIG_PM) || defined(CONFIG_CPU_FREQ) */
+ 
+-	.section .data
++	.section .bss
+ 	.balign	L1_CACHE_BYTES
+ sleep_storage:
+-	.long 0
++	.space SL_SIZE
+ 	.balign	L1_CACHE_BYTES, 0
+ 
+ #endif /* CONFIG_PPC_BOOK3S_32 */
 -- 
-2.28.0
+2.25.0
 
