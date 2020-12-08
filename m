@@ -1,103 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257252D2A6A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 13:13:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 291202D2B9F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 14:07:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CqzbT6hSJzDqW9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 23:13:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cr0p708FtzDqSQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 00:07:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Gk4rH6WC; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CqzQd3NjDzDqcP
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 23:05:28 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B8C4icI194791; Tue, 8 Dec 2020 07:05:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=tvqJThqpNtsO7FWP24mxfRRvagslwMFYIoOLLvWKHmU=;
- b=Gk4rH6WCcaxsdzdo39ItgQVktG10JU+nDQpGL92hu5drm2OFH03f4qifojzMVByX8shb
- Q4DFzq8+5HD3Q/dd88/z5MtMfGgXC5HIWpgy43nTwECLEEYy6DjHooOodhKBZmc+ZaxW
- 9JqV9umfy9XaNNPQqOaynT2Ihpiz8JQeCCI066CRI612YRrvVOcN/e1JaWlwc/UrUJ1y
- 6t3sDCZfEotr/nB0RINveIp0Vk8iypnnl6lXVbOjVqEbGSvkjGb7L5yWpic1u/jP4wK9
- NWJ8KGklYfd8ZIvSuNYrYu6IgmsYJkGhDKGATsSzghlGHXA99hw9UVPiyRwyoWmTxuii Zg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35a5ufny00-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Dec 2020 07:05:06 -0500
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B8C56rU001288;
- Tue, 8 Dec 2020 07:05:06 -0500
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35a5ufnxsp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Dec 2020 07:05:05 -0500
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B8C4ENt022690;
- Tue, 8 Dec 2020 12:04:47 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 3581u83h8r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Dec 2020 12:04:47 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B8C4jkv2228960
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 8 Dec 2020 12:04:45 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0EF5DA4040;
- Tue,  8 Dec 2020 12:04:45 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D194EA404D;
- Tue,  8 Dec 2020 12:04:43 +0000 (GMT)
-Received: from [9.199.61.42] (unknown [9.199.61.42])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  8 Dec 2020 12:04:43 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/mce: Remove per cpu variables from MCE handlers
-To: Ganesh <ganeshgr@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev@lists.ozlabs.org
-References: <20201204102310.76213-1-ganeshgr@linux.ibm.com>
- <871rg0twpw.fsf@mpe.ellerman.id.au>
- <a514db98-6090-467a-74ae-9c7b4337d0c1@linux.ibm.com>
-From: Mahesh Jagannath Salgaonkar <mahesh@linux.ibm.com>
-Message-ID: <83ca2e1c-88f5-fc57-11e2-056f3ce835d7@linux.ibm.com>
-Date: Tue, 8 Dec 2020 17:34:41 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cr0ff2glZzDqXD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 00:00:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=tcqzNwG/JqN84m8ZHCLfOHnqSs0WzIMVJzRH59zvaU8=; b=FS+tu15skUVXKE2wB9GoISqub2
+ Y+HEvZy8ejZbKnc+5SN6BrB0pQIU6uF3BnmyvwcxpsoJIoeTYBxoGfv2XqxtxAe3WxLH/Gjivqu5/
+ 5TB8Tw2z0eOTR5SD3Zk+JdrkIsKsYjmnK2Ls+hMO5qg5rfxIjFbRalR1tD0/fEPhavF5vEWoXM17j
+ 3UYM5DTLIQAU0/dLtUpBzFiPGnl4U7/bimTQ19TEjRfLmD+TwhzfPwEouwj1tyDWAl5SD63LSSofg
+ oet8X6PLhLa/FcBiSTxBBvYWCuJRtA7i+90obmsZTGTqvpgRRUX1azskvAKJVi7rOM34BLGtHqW2N
+ 8zyqWV5w==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kmcbj-00019L-31; Tue, 08 Dec 2020 13:00:43 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id AA7753011F0;
+ Tue,  8 Dec 2020 14:00:40 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 20A87200AABBA; Tue,  8 Dec 2020 14:00:40 +0100 (CET)
+Date: Tue, 8 Dec 2020 14:00:40 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [RFC][PATCH 1/2] libnvdimm: Introduce ND_CMD_GET_STAT to
+ retrieve nvdimm statistics
+Message-ID: <20201208130040.GZ2414@hirez.programming.kicks-ass.net>
+References: <20201108211549.122018-1-vaibhav@linux.ibm.com>
+ <CAPcyv4h0PAPyYoea2oxqw_mOZ-Ec-o1MwcdSN0gf5UXqZqjafQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <a514db98-6090-467a-74ae-9c7b4337d0c1@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-08_09:2020-12-08,
- 2020-12-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- phishscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
- suspectscore=0 adultscore=0 mlxlogscore=999 clxscore=1015 mlxscore=0
- spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012080077
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4h0PAPyYoea2oxqw_mOZ-Ec-o1MwcdSN0gf5UXqZqjafQ@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,44 +67,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com
+Cc: Santosh Sivaraj <santosh@fossix.org>, Ira Weiny <ira.weiny@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/8/20 4:16 PM, Ganesh wrote:
+On Mon, Dec 07, 2020 at 04:54:21PM -0800, Dan Williams wrote:
+> [ add perf maintainers ]
 > 
-> On 12/8/20 4:01 PM, Michael Ellerman wrote:
->> Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
->>> diff --git a/arch/powerpc/include/asm/paca.h
->>> b/arch/powerpc/include/asm/paca.h
->>> index 9454d29ff4b4..4769954efa7d 100644
->>> --- a/arch/powerpc/include/asm/paca.h
->>> +++ b/arch/powerpc/include/asm/paca.h
->>> @@ -273,6 +274,17 @@ struct paca_struct {
->>>   #ifdef CONFIG_MMIOWB
->>>       struct mmiowb_state mmiowb_state;
->>>   #endif
->>> +#ifdef CONFIG_PPC_BOOK3S_64
->>> +    int mce_nest_count;
->>> +    struct machine_check_event mce_event[MAX_MC_EVT];
->>> +    /* Queue for delayed MCE events. */
->>> +    int mce_queue_count;
->>> +    struct machine_check_event mce_event_queue[MAX_MC_EVT];
->>> +
->>> +    /* Queue for delayed MCE UE events. */
->>> +    int mce_ue_count;
->>> +    struct machine_check_event  mce_ue_event_queue[MAX_MC_EVT];
->>> +#endif /* CONFIG_PPC_BOOK3S_64 */
->>>   } ____cacheline_aligned;
->> How much does this expand the paca by?
+> On Sun, Nov 8, 2020 at 1:16 PM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
+> >
+> > Implement support for exposing generic nvdimm statistics via newly
+> > introduced dimm-command ND_CMD_GET_STAT that can be handled by nvdimm
+> > command handler function and provide values for these statistics back
+> > to libnvdimm. Following generic nvdimm statistics are defined as an
+> > enumeration in 'uapi/ndctl.h':
+> >
+> > * "media_reads" : Number of media reads that have occurred since reboot.
+> > * "media_writes" : Number of media writes that have occurred since reboot.
+> > * "read_requests" : Number of read requests that have occurred since reboot.
+> > * "write_requests" : Number of write requests that have occurred since reboot.
 > 
-> Size of paca is 4480 bytes, these add up another 2160 bytes, so expands
-> it by 48%.
+> Perhaps document these as "since device reset"? As I can imagine some
+> devices might have a mechanism to reset the count outside of "reboot"
+> which is a bit ambiguous.
 > 
+> > * "total_media_reads" : Total number of media reads that have occurred.
+> > * "total_media_writes" : Total number of media writes that have occurred.
+> > * "total_read_requests" : Total number of read requests that have occurred.
+> > * "total_write_requests" : Total number of write requests that have occurred.
+> >
+> > Apart from ND_CMD_GET_STAT ioctl these nvdimm statistics are also
+> > exposed via sysfs '<nvdimm-device>/stats' directory for easy user-space
+> > access like below:
+> >
+> > /sys/class/nd/ndctl0/device/nmem0/stats # tail -n +1 *
+> > ==> media_reads <==
+> > 252197707602
+> > ==> media_writes <==
+> > 20684685172
+> > ==> read_requests <==
+> > 658810924962
+> > ==> write_requests <==
+> > 404464081574
+> 
+> Hmm, I haven't looked but how hard would it be to plumb these to be
+> perf counter-events. So someone could combine these with other perf
+> counters?
+> 
+> > In case a specific nvdimm-statistic is not supported than nvdimm
+> > command handler function can simply return an error (e.g -ENOENT) for
+> > request to read that nvdimm-statistic.
+> 
+> Makes sense, but I expect the perf route also has a way to enumerate
+> which statistics / counters are supported. I'm not opposed to also
+> having them in sysfs, but I think perf support should be a first class
+> citizen.
 
-Should we dynamically allocate the array sizes early as similar to that
-of paca->mce_faulty_slbs so that we don't bump up paca size ?
-
-Thanks,
--Mahesh.
+arch/x86/events/msr.c might be a good starting point for a software pmu
+delivering pure counters.
