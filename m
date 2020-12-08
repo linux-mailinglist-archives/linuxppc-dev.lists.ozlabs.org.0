@@ -1,125 +1,127 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF792D3305
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 21:14:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9542D348F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 21:57:42 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrBH56sv5zDqdp
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 07:14:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CrCDg37qRzDqh2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 07:57:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=prevas.dk (client-ip=40.107.8.99;
- helo=eur04-vi1-obe.outbound.protection.outlook.com;
+ smtp.mailfrom=prevas.dk (client-ip=40.107.5.104;
+ helo=eur03-ve1-obe.outbound.protection.outlook.com;
  envelope-from=rasmus.villemoes@prevas.dk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=prevas.dk
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=prevas.dk header.i=@prevas.dk header.a=rsa-sha256
- header.s=selector1 header.b=a1AWdvR1; 
+ header.s=selector1 header.b=b1P+KcXT; 
  dkim-atps=neutral
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com
- (mail-eopbgr80099.outbound.protection.outlook.com [40.107.8.99])
+Received: from EUR03-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr50104.outbound.protection.outlook.com [40.107.5.104])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrBFP0h0nzDqYY
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 07:13:06 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CrCBh6RlVzDqgC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 07:55:54 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=G5SvpvZTVbM93v87HEFh7GpR+AG2KdwE9Fshtd3DgRCR82ExSPENjsTHxtrmDHtUJkwBH0bFokJ4KnBlM1jE/LS3ezeQRg1DU4i/AEiywbwts8fgAa0jem6zz5zhw1UHAPHq35/Cle31EL/A5s6QqvD2jy0YLUkFVjojJrSBDS3oz+PPWcYM+va8YnxfdYuuVPY3FhBEc7l2FTD0a2VIOFpeHQGd5qq++ZRi4fHaBPxOjhyJYpJhmnPVkNaROFVFy8cb+3snsrATHNTnYiqMShkZW6kf1dOYQjcKEjf2s0JSiPWP2RhLBWOs1+hl+ZAHD93kp+l9gpvucpYNSD9vQA==
+ b=ZeKMnT4OwA18mHIaQ7GahKrShiLP9v3dK7EHEIA3Yv8y8DAeEY/2nkArT5mPlf9h6dcf3TIcytXQh0DGFjgHzwoOULqb5gwUIEUfmEDIMn7HPKLO8AmCxovMBRB4+gB7uOcYyhqHNsPKcfK8tVHx8hpPwoj82O+FIzecqbQolmujv/rnH59X3xiShnsCbZWG+nEe0Z94B6rVZFSSdxP7sBoG25xkzCpzYFiawfMHfcNVNpPszbuAczgEbpNjGa7/l/iriDDNNn4BNLcy2QhDTKyxRr2uZWHf9kxSZxtf/6DbIcaHQ6gs8r6kKd+FTpDO8Y+WSVugJO7WWs8oIKx2/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TJHmbv58TPvR+vptGIBaRrbMiZHMzZt5e0r20CgooM4=;
- b=gSAuMmUSPi42VW9reoVIoZtfInuT2Mbg2azsxvAOgBLzYIVsNldDwfLUMo/LIsBoWr5cLTmgORbxgAq0sujV7JpYJvJgTQ6nd6MjVsJqVkyh6/KmigO1FxAXGQXqzlqjblm7zxnA6UjxMdo14kd04Gxx+dVnQ7+rhtyMj0fYmUxL1sAnPzn+DH9W4tqezu3b6PO3uOlaDSi+bxE9PBLXzuSHzSc6+UDjm2UECept5HzDff94z9/IIYDmPuCAlasDxIDWKNgYKOT++B9Z+kmBVuFbzDLdDPAxy1bFjapuDU7fvrBhjQkOMk/sRIaZ8y1H1jjhcwQdW79grMoifxFhxw==
+ bh=Ph84XXH/+3bCdg+dgdqnCxRuVolrwQrJj+Rh59HJ0DY=;
+ b=Z5CEDkfJxEKUmsyK/GbDfTO88qPI7bxhNFzjgdQxgVT5zPkFa9QjJOvlVY1zez3wk7tICmV8qlawJTUyvGtH5SiKzy2KiIea7g3sfcWQCHxyRr0OmOufP9+agfRheeGaAm29p+jOp4MTVUsu5rBkuoh/AkaLRWDU+idhO9gXsyvvEu/j58TyEUq1LgDkJD1qeMIOIJ7iznoD5PC/fC5G7wMhk9uVxCMeoDUZ3dKLF6QtZoj95JZdP17LjLubDcygPE6yXYxfNYX3xeI5dPZXzbIGC3osemsLqiFjtX/Hi31FOCznRGxf7raviW5KXjENdn8KM7gcIHR9B7wEQ3ADUQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
  dkim=pass header.d=prevas.dk; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TJHmbv58TPvR+vptGIBaRrbMiZHMzZt5e0r20CgooM4=;
- b=a1AWdvR1ahX0GbLB0Muwc7+c+SipoI8CBA18mz0cWa6w8xvno4w77XhOiLDPNVmgHlm+qzn1KfH/5jrGVdfjwaQiRR/oCW+NnBQTrzyUt6A5O1rFvbVzy4kiLOHMaqEnpmN5ss6PmjnoYqHDgktwdLAzNIs0XnIoQGxtnU3vil4=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=prevas.dk;
+ bh=Ph84XXH/+3bCdg+dgdqnCxRuVolrwQrJj+Rh59HJ0DY=;
+ b=b1P+KcXTXcDZ3kZtdyacdPm5TsiTPB/+iLUgO2ru2YzzQU1VpwPExBj/KUoavkfSc9iNRbsSEMvHPP1p+29Kk63TyNDhqgB+D56SBG9XOdn6c8i855B3ymksQz3+YYYFDeiFo8anbOaUt6gC1pODqyJYIEwG4+MrKiGo4b+zzN8=
+Authentication-Results: nxp.com; dkim=none (message not signed)
+ header.d=none;nxp.com; dmarc=none action=none header.from=prevas.dk;
 Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:3f::10)
- by AM8PR10MB3988.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1e0::6)
+ by AM0PR10MB3617.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:15f::12)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.21; Tue, 8 Dec
- 2020 20:12:58 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Tue, 8 Dec
+ 2020 20:55:47 +0000
 Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::9068:c899:48f:a8e3]) by AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::9068:c899:48f:a8e3%6]) with mapi id 15.20.3632.021; Tue, 8 Dec 2020
- 20:12:58 +0000
-Subject: Re: [PATCH 02/20] ethernet: ucc_geth: fix definition and size of
- ucc_geth_tx_global_pram
-To: Li Yang <leoyang.li@nxp.com>
+ 20:55:47 +0000
+Subject: Re: [PATCH 18/20] ethernet: ucc_geth: add helper to replace repeated
+ switch statements
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Li Yang <leoyang.li@nxp.com>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>
 References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
- <20201205191744.7847-3-rasmus.villemoes@prevas.dk>
- <CADRPPNTgqwd37VSqiUcv2otGVr4mnQbuv6r887w_yCp=ha1dvA@mail.gmail.com>
+ <20201205191744.7847-19-rasmus.villemoes@prevas.dk>
+ <ed16ea1d-5017-96bd-c1a9-5201f51231fd@csgroup.eu>
 From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-Message-ID: <22fb47eb-9f51-90ca-907d-bf8252424fce@prevas.dk>
-Date: Tue, 8 Dec 2020 21:12:55 +0100
+Message-ID: <17e064c3-41a7-fbc2-d9ee-35dd33345e16@prevas.dk>
+Date: Tue, 8 Dec 2020 21:55:46 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
-In-Reply-To: <CADRPPNTgqwd37VSqiUcv2otGVr4mnQbuv6r887w_yCp=ha1dvA@mail.gmail.com>
+In-Reply-To: <ed16ea1d-5017-96bd-c1a9-5201f51231fd@csgroup.eu>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [5.186.115.188]
-X-ClientProxiedBy: BE0P281CA0035.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:14::22) To AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
+X-ClientProxiedBy: AM6PR02CA0012.eurprd02.prod.outlook.com
+ (2603:10a6:20b:6e::25) To AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:208:3f::10)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 Received: from [192.168.1.149] (5.186.115.188) by
- BE0P281CA0035.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:14::22) with Microsoft
+ AM6PR02CA0012.eurprd02.prod.outlook.com (2603:10a6:20b:6e::25) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3654.7 via Frontend Transport; Tue, 8 Dec 2020 20:12:57 +0000
+ 15.20.3654.12 via Frontend Transport; Tue, 8 Dec 2020 20:55:47 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 33def56d-0ed2-4114-ba8f-08d89bb5a805
-X-MS-TrafficTypeDiagnostic: AM8PR10MB3988:
-X-Microsoft-Antispam-PRVS: <AM8PR10MB3988CD25F2D859C616CD7BF093CD0@AM8PR10MB3988.EURPRD10.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Office365-Filtering-Correlation-Id: 48e48dae-2951-4d45-d1d9-08d89bbba38d
+X-MS-TrafficTypeDiagnostic: AM0PR10MB3617:
+X-Microsoft-Antispam-PRVS: <AM0PR10MB36174B78602E593D0439D43493CD0@AM0PR10MB3617.EURPRD10.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 70JXnLYoVpBkfC9ODUmVpHZ9QIF9v5ckhQODwBQ9l6fu0OTb/zhnB30myUYKyrH2iYZS5wgsHMArGrkpey9YZx8ZDXB9qbMxOaOX/qk7CkGKaLs0xtGCchMy3HWX6Ggl+58sOK4TlZ+NJ7EgvYQfWOlIA3BCmdEaWLYYaGIXHI0L1KQs0TnZo2BxkzTw0MPLskYmkbTA7xxBuiR+rIHoEH5l5Dsk8NINVpcDoXEauYZQtY5XM2v+k3SdyBsn8FNb2td7dkle03Q7hK/lyPlbPlyYM37spoi9llbdeZ3WRmd9SNOVu1VXNwnW8S93euRYSd6SE84m7bLX41YFtYVTRCRNlVecOyn3klRo/EUHry/sycAObKqvUcTHb/2WT2Q0UKoyyDR39DVjhzBR6hVtinFGozKCyp0zPY0v0T2fNWo=
+X-Microsoft-Antispam-Message-Info: HifXd7O/2n50ncOSl76UbH9G0r2KaWVqKae86eC56Di8hsaRKaNcJrydhN24ZXU+cchceZ0ENfT0SamIX92ffR91HjHLstEmcXADU1YZxfl1krdeRp1+KaZd4Q5VMlmfECtU/FUeP85h9lkCssMn4s9XopwiX1pyWzcECnVbaGqyXYirT+4jZp3xT4PnKyIp1aW4HtI9HblvXcAv1nGduLLCPJLrZckychbefHwu9JKCuiW+VpEE3OgkNpdRuUslygbqQBkR5jdqw+75bL4Gz1kRDBnImbQEfQG21w7gNIIHV6eBV38N1R1qGIhGl+nfRdhvxacxdJMeMQZYThMOPdaQjIuyt11xnG1XgVepw0c7uxlcybf5eBNGlbTqdN7iXvWB5yX1m893BYhYx3paE5gx1i5k21+qbfQP6a4lBEA=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(346002)(376002)(136003)(366004)(31696002)(36756003)(8676002)(66946007)(956004)(2616005)(508600001)(26005)(4326008)(8936002)(8976002)(83380400001)(5660300002)(66476007)(6916009)(54906003)(86362001)(16576012)(52116002)(53546011)(66556008)(16526019)(6486002)(44832011)(186003)(2906002)(31686004)(43740500002)(45980500001);
+ SFS:(366004)(346002)(376002)(136003)(8676002)(508600001)(8976002)(52116002)(4744005)(66556008)(5660300002)(31696002)(2906002)(8936002)(6486002)(2616005)(956004)(36756003)(86362001)(54906003)(31686004)(66946007)(186003)(26005)(66476007)(44832011)(110136005)(16526019)(4326008)(16576012)(45980500001)(43740500002);
  DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?aFFPZzY4cmZSb0tRY1JvN2E2dGJ2bFptZU9ZZ2o0d2cvS2V2OEZyMkRFbmNB?=
- =?utf-8?B?UXVVZGpZOTE5M2FOQ1YvYUlZdnNHWS9JWWVzTTZpSlhVUFg1cEl0OXAwelVs?=
- =?utf-8?B?Yks3UWlMSm5raUErbTk3SXczcTVJQUl1YWYwbFMvWkJ2MHc4Y2JpMkh4c1Nx?=
- =?utf-8?B?OTRGRkZUOUhZUzkxK05XK2c3b3JqY25iWjdKK1RuY2RwYjJsWkd3Snc5T0VI?=
- =?utf-8?B?bGVDQjQwU29CRzhMNEJyMzhXVzZ6OVhpTUUyMmZFK25uTG5qOGVlSHFjZ0NC?=
- =?utf-8?B?WWYvSWJkc3ViSWx4Sk8rbVdJTWZFR1ZneDRDQlZJUU5KNERWRGxxSVd4NnJ0?=
- =?utf-8?B?NHozdlF3c0w0dDFWcmdqTGZROVZXUU9IVHZqTHlqeWxoWGNPb3ZJVGsvY0pR?=
- =?utf-8?B?ak9KU0cyMC84UzFxUWVQalFxZzFsYjBiamNQamJGdHBwOWhVWHo4akJtZFd4?=
- =?utf-8?B?SExzbGg2a3cvenI0SStybVp4UEh5UzkxK1BKRW1lY3doSm05UCtyVXlTVEZn?=
- =?utf-8?B?ZkxLcVVBOE5keWttRW0zSU9kRGxoOWNDTTN3Qkc1VHVpblgvSldaVDhiR2hr?=
- =?utf-8?B?MEhPdU9sVTh3NDBTOGlicWVSZ013dWZ6blFJOU1HaHZDYmc3djZuc2RvRnRv?=
- =?utf-8?B?VDNiV243b3dVckQzVFJLZ09zYTRaM0c4YjZXMlhwSEVWY1ZPblBpZlgyVXlD?=
- =?utf-8?B?YXowSG9RWWFDaUlucytueno0VW5LNUFPNFZBejU2d1d2R0FXYmUxWmdNRUI1?=
- =?utf-8?B?VjkzblpnelVyWThQTkpMeFJuNTg5MFloUjlIelBNcDR6RlRHYnZEWkdjTk4z?=
- =?utf-8?B?bklMZGdlWHF0MTJOOU5ld1NJdk1NR2poSklQVU1aenhVVXhkZkU4Y3Zrc25l?=
- =?utf-8?B?NVMwKzVnc3VsanhEQlFJSG1zdHpCUUlXS2lxZWlST0Z5b3VidVlXU1VzS1ZI?=
- =?utf-8?B?NU10b2FxbFc1NnFKUE4yZ2d6MDdCcmY2Z1lrQlpaNXppSnNHSHBQNy9LMEpx?=
- =?utf-8?B?WVVSbEtvandCWGR5blVvUGEvVnE2UWw1VE4vZ09qNzZ6QnJ3d2laMStENVZ5?=
- =?utf-8?B?dU9pbmdpV09JWE03WllpMUNvUUlLcXJnTWJRdHRZb0NvOWFpNHJjaU9kK0xw?=
- =?utf-8?B?cHlKV1hCTGxiYitXbFV1bVIwMFFMZWVZdmNUWmRkWXo5S2trOUE5RXJEUWNp?=
- =?utf-8?B?azU3TDM4a1E5NXZkaGVMTjQ2U1o3U1RkRHJ3ZnpjZityWktPMjJyQkpKZlVo?=
- =?utf-8?B?c3hNWTQxb1JEanA4MnhsTlNnYUFPVGlsV2ozVG8rQXpiQW0ybEU3dG81aVpN?=
- =?utf-8?Q?mAZHCNGxMlIz9R5V6SKwltMSJyVm6ROUAy?=
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?NUtJYSthWFBtS1ZwQkt4R2xJbmhZQWN2ZnJ2cFMreFg0Ym1Ub1Mrb0VONHVn?=
+ =?utf-8?B?YnZBbWVrd1FadmRFbThDQVZDTWJYSkJ2aDBuN0dhUDdNYTBZSXR3SEVBTzBi?=
+ =?utf-8?B?SGRpUCs2djBRNHdCVkZaWnhaRU1USVFPdFJaRi9Sb2szZVNUbFk2Nk1DRnpn?=
+ =?utf-8?B?dlVoUmlTS0ZlMUt2Y2NZNGYvd1VCdW5Bakd1ZmdhRUF4RlYvcHlFRmpYd1dt?=
+ =?utf-8?B?bzFtRVJaMjMrSkNORWwvTTBzZ1lCQ2xEKzBZQjlaM0t0N0xTRUNmZ2FDRkpa?=
+ =?utf-8?B?TUljYXA0SkRWMmcxem12QisrOWtwNkw0azZxeU5YeW44NDFqV0ltcCsyaTQz?=
+ =?utf-8?B?dTdFbmRta2xQS25zd3AwMXJhaS9hY0l6ZHZReWhRQ012S1lPcCtTQ0JWRjFS?=
+ =?utf-8?B?ZHJqNTJrTVk3bGl0OEFHUUZOZVphSWJtVWRDNlFSWlhhbXZCRGRod2tFWm5a?=
+ =?utf-8?B?OXRDWUVpS2pOUVZyUkVKeTQwaGluYVgxcmhvRi9vWXpxd3hzcm9pcG9hVkJl?=
+ =?utf-8?B?ZDVUeUZSVEFFMmVUQXZ4T2wzTCttY1FVYk1TVjlWWEFMYlJXeVFSN1ZDMjAz?=
+ =?utf-8?B?ZW9QdVJCRTZFUEUrWFNGQWxFS2lGN1VTcW84WVhQdnZwUC9yUm1qTUJtM09W?=
+ =?utf-8?B?ZWx3VDV2S3ZvRmpMbXVPQ1E3Q3I2cHJIVENTL2M4UmtLVzNJdFROM29TRk95?=
+ =?utf-8?B?ODljQU5VYUt3YUloMlNFVmpNOE1FN0Z3bVo0QmpzMlR1a0RQRUowNUFLRGVx?=
+ =?utf-8?B?TmlvM2l0aHB3REVTTTg4MzNmcmkzREFwbFN6azZRdHhZUjN4a0VBeDlQczNL?=
+ =?utf-8?B?QUh0aHNSWGxYQUpRR0lLb0VZVnVBeHlrcU5ZQzROUUJ3elgyYnZwOEY1ZlNv?=
+ =?utf-8?B?bTdBKzFCYm5YVkdmUXFEQzZ6Qk8zeEhHdFhocHN5eW9ydXJVSUtMVmpMOXZs?=
+ =?utf-8?B?RFRCczMxbVB4UnVwcjJaWXA1a1o3enByditYRHZ2QXNVUnJ1cnRzSXVNTVZD?=
+ =?utf-8?B?MG5FcEhVU0U1WURLMUYwQWJvMGU4VmVESXFZakpJbTJ5aERIM1JhYTRTZ3ZV?=
+ =?utf-8?B?MUxuRHU0dEl3dzVGTEJmV29QZ0pKcEpFZzBTaXRSazR0UGpPVjJ3ZStXWjlv?=
+ =?utf-8?B?Y3Q2WDFOanRHZHZvcFFoTSt2a3gwRWpJYU5QQ2VDdkhtNmZEcjJYRXd5MjhN?=
+ =?utf-8?B?VGZDOWVCbW53bHoyY3ZuTSsyVHZLZGhoWElydVpVQWl0TDV1UndYMWVMVExv?=
+ =?utf-8?B?ZXlEc3lKVDY3TlVsckx6UjlMeGhTQXZiQSt6cGpST0N2VjhrTXltZnkrNU0x?=
+ =?utf-8?Q?xgNeKpKGN8g6E3w92t98G9lmF0slB/wnDb?=
 X-OriginatorOrg: prevas.dk
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2020 20:12:58.1879 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2020 20:55:47.7755 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33def56d-0ed2-4114-ba8f-08d89bb5a805
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48e48dae-2951-4d45-d1d9-08d89bbba38d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GmaBXO9Kgf+ce7pPNdl8PGrZpAdN3yPLMelJBkVHepcKGKgwJGDSj4dS4QP7qA3tmyuoJ+xG9tefKOrFCayIHVwZIroYhsG9fBaHutaPw4c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR10MB3988
+X-MS-Exchange-CrossTenant-UserPrincipalName: xJTweDJ3692MKPpLjjW2FpV2dQtznEC2yfVvSHeY4QlbNREbUjkg46wz5u9bq5VhVbrq++N8Dl2nQazNSlKWcSzBg2od+7lh03t8/BbMdcY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB3617
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -131,69 +133,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
- lkml <linux-kernel@vger.kernel.org>, Netdev <netdev@vger.kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>, Zhao Qiang <qiang.zhao@nxp.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, Zhao Qiang <qiang.zhao@nxp.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08/12/2020 20.14, Li Yang wrote:
-> On Sat, Dec 5, 2020 at 1:21 PM Rasmus Villemoes
-> <rasmus.villemoes@prevas.dk> wrote:
+On 08/12/2020 16.21, Christophe Leroy wrote:
+> 
+> 
+> Le 05/12/2020 à 20:17, Rasmus Villemoes a écrit :
+>> The translation from the ucc_geth_num_of_threads enum value to the
+>> actual count can be written somewhat more compactly with a small
+>> lookup table, allowing us to replace the four switch statements.
 >>
->> Table 8-53 in the QUICC Engine Reference manual shows definitions of
->> fields up to a size of 192 bytes, not just 128. But in table 8-111,
->> one does find the text
->>
->>   Base Address of the Global Transmitter Parameter RAM Page. [...]
->>   The user needs to allocate 128 bytes for this page. The address must
->>   be aligned to the page size.
->>
->> I've checked both rev. 7 (11/2015) and rev. 9 (05/2018) of the manual;
->> they both have this inconsistency (and the table numbers are the
->> same).
+> I think you would allow GCC to provide a much better optimisation with
+> something like:
 > 
-> This does seem to be an inconsistency.  I will try to see if I can
-> find someone who is familiar with this as this is really an old IP.
-> 
-> Figure 8-61 does mention that size = 128 byte + 64 byte if ....    But
-> this part is not clear also.
 
-Hm, indeed, that sentence is simply cut short, it literally says
-"Additional 64 bytes are needed if". The next line contains
-"Hierarchical Scheduler, or IP" in a smaller font, but that seems to be
-a label for the arrow.
-
-> 
-> The overlapping does seem to be a problem.  Maybe these global
-> parameters are not sampled at runtime or the parameter RAM is really
-> only using 128byte depending on the operation mode.
-
-Yes, I'm thinking something like that is likely to be the case, since
-this hasn't seemed to ever cause any problems. But who knows, maybe a
-few frames just get fragmented very occasionally becauces the MTU0 field
-spuriously has some random small value.
-
-> 
-> Are you getting useful information by reading from the additional 64
-> bytes, 
-
-AFAICT, after the additional allocation, the extra 64 bytes stay at 0,
-but that's to be expected; they are supposed to be written by the CPU
-and read by the engine AFAIU.
-
-or getting changed behavior for setting these bytes after your
-> changes?
-
-No, as I said:
-
->> I haven't observed any failure that could be attributed to this,
-
-I haven't played around with explicitly writing to those 64 bytes after
-initialization. This whole series started because I searched for the
-string "MTU" in the manual, but at the end, it didn't seem that I
-actually needed to modify those MTU fields.
+Your version compiles to 120 bytes of object code, mine around 49
+(including the 5 byte lookup table). They're about the same in line count.
 
 Rasmus
