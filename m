@@ -1,52 +1,124 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A412B2D2084
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 03:13:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920AA2D2147
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 04:08:49 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CqkHm4NvDzDqf9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 13:13:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CqlWL29kMzDqc5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 14:08:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CqkFv0pdDzDqYW
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 13:12:03 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=A+bTf/m4; 
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.2.79; helo=eur02-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=qiang.zhao@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=ct68XrkU; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CqkFk1lbhz9sVl;
- Tue,  8 Dec 2020 13:11:53 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1607393522;
- bh=8iatVVr0doYmwZkFttS9+pNaCgbzkGB02uHrnQhLiF8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=A+bTf/m4exrBzJQZZvJo1q/5I9F0e/kw2E+pim46e67Fp3WWpClGMiQNgwlZTzfU5
- I91uiE2tnR89cD+WGpK6EIXolGlF2xpp74/37NX1a4hXEYFP7nir39xaYb5e/F3vCb
- A+SkpejOFGPjty5Wk0ZUtqnVutg9ep0o6GlRwQv0/PtQ9j8c5Nr0LI3vZ1NqBGdb0h
- J534woc8YaDSyTziDQyKc3WR7uExS/b30LlE1Lw5O+U2aAfz6JdpZ+f5IJ7hgsNKbn
- QhmyAHIUVIBK5JkTWtwrtTIzrOTiojdPvRTPLcDwX5fD+26iC1ivFoDwf0/4YZWmF+
- hnKEnJn1lo/hg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Enrico Weigelt\, metux IT consult" <info@metux.net>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arch: fix 'unexpected IRQ trap at vector' warnings
-In-Reply-To: <20201207143146.30021-1-info@metux.net>
-References: <20201207143146.30021-1-info@metux.net>
-Date: Tue, 08 Dec 2020 13:11:52 +1100
-Message-ID: <877dptt5av.fsf@mpe.ellerman.id.au>
+Received: from EUR02-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr20079.outbound.protection.outlook.com [40.107.2.79])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CqlTY2gTczDqKh
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 14:07:11 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RsSHWG050zUnFWXcgMvNzv9AomO4LE0vq21OvIrw3bovlJ7/ubJQhEL2iuQfKIZHBHBP+r4Q6Iga/0XzqEknIAVjTxepiPhkFadoP2DO+IJEm+F90roUtM4JxMQ3KqMvqe8Cfj3BBO+mRgb+YErZ9FLx/X/p642c1susq+M+fE7CFFx4T0gC/d4j+Sf+3VHmyxFokO/kOaydQA9E30rzT8M0/QUBZKlmszLgfdN8NjR0DVHkAduQj9E3Gr8cUS7Y+3NG158IDpXFExhzlou8NU2aNT2hR1blzzBlgiaBvcH+hCNRTUICYI7W8T9DmzWxjgKVxEAQFEDtf7198UGBIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6to9MY6xqw3zsCTmVuKb4F0vmF4jqxRe1DpgXcbjjw0=;
+ b=IhxHx4HlWOJ0gDYkVZpoxQnp7jTOV2EAbImlBVRZ41Zu+98a0pNADZcM72tXvmYakjF1Ls9Ex3Cg1vMpOXNhzg4qbRWEroJsyt2GMEr1U7BUy4qKLay+414pxONaZSTHOs/tbrUYxyGrxX3qO46EIcYt6xMnZ+DhlrTRFQqikW70/N5rpdUVV5gzdb9C7Y9PBrTxxqmSp3e7CgXEu9j1RgHHP/CXvmbUv/hz+8wTMVkJg75Rn04XQgEUjlszoOKlhe9wFmEfanH4h5kFp2ATYXcuqtc9MaRivm2dBQ9KGoiRT0zzR/mKmtvYzHVskPRmFd+TR8PFzDbslvhLkfRZCA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6to9MY6xqw3zsCTmVuKb4F0vmF4jqxRe1DpgXcbjjw0=;
+ b=ct68XrkUjMfjPXeo8NZM09awnn5pyNHAuDTlarceQCzeDj2QaPbBW9dbWEYTk1H5iCOi5gGGR4f4Rhj/4hXK26awFuNv5mjvZ0jgjeLawfy+CfZGm1fGqvq30paQbAj9hoa0ICzSE5UyB/QDfjHv3Q7ggSdSm6p/AB3foyj+ENc=
+Received: from VE1PR04MB6768.eurprd04.prod.outlook.com (2603:10a6:803:129::26)
+ by VI1PR04MB4541.eurprd04.prod.outlook.com (2603:10a6:803:76::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Tue, 8 Dec
+ 2020 03:07:02 +0000
+Received: from VE1PR04MB6768.eurprd04.prod.outlook.com
+ ([fe80::581:1102:2aee:85a3]) by VE1PR04MB6768.eurprd04.prod.outlook.com
+ ([fe80::581:1102:2aee:85a3%5]) with mapi id 15.20.3632.024; Tue, 8 Dec 2020
+ 03:07:02 +0000
+From: Qiang Zhao <qiang.zhao@nxp.com>
+To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>, Jakub Kicinski
+ <kuba@kernel.org>
+Subject: RE: [PATCH 00/20] ethernet: ucc_geth: assorted fixes and
+ simplifications
+Thread-Topic: [PATCH 00/20] ethernet: ucc_geth: assorted fixes and
+ simplifications
+Thread-Index: AQHWyztk1aPl4Ezq8EmmnoJXVMcDbano+wGAgAAE+YCAA4cq0A==
+Date: Tue, 8 Dec 2020 03:07:02 +0000
+Message-ID: <VE1PR04MB676805F3EEDF86A8BE370F8691CD0@VE1PR04MB6768.eurprd04.prod.outlook.com>
+References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
+ <20201205125351.41e89579@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+ <7e78df84-0035-6935-acb0-adbd0c648128@prevas.dk>
+In-Reply-To: <7e78df84-0035-6935-acb0-adbd0c648128@prevas.dk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: prevas.dk; dkim=none (message not signed)
+ header.d=none;prevas.dk; dmarc=none action=none header.from=nxp.com;
+x-originating-ip: [119.31.174.73]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: d6d587e3-cd09-4cb1-8fe7-08d89b2655dd
+x-ms-traffictypediagnostic: VI1PR04MB4541:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VI1PR04MB454113E098A5CD21C3DD34F791CD0@VI1PR04MB4541.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:5236;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Yd/v14aGrzEh7ZsW3cMw9ETjpf2OS/ob0go/dPFLViMCk3AAbJSIIL+S4m8TEGFTLqBJosC842+gVabmT65dNa7VtC5Di18aBQuwKGG649zDqtSxQAIZCwlxhqdtx324pToDvlpwOSnV1T8kNekhGZrHUwSd3X8+xgMc3WHEYV750+A0rnGEzVCY3DtaXB8J1OhMDxHh0KYS1yv47S/vMplfXp8oV9OL1YLl/UtxvQ85vSXO8UEyf/gHb/P6v1eYdfRV/zBHzf0hw98VwNPwLzUpeDJwpkc13xH3eM1Clysx8lQRL6jYmAgGSre4qbLPKDh3Eysbrpop4cfu2j52Wg==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VE1PR04MB6768.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(136003)(376002)(346002)(366004)(4326008)(186003)(6506007)(86362001)(508600001)(55016002)(71200400001)(33656002)(110136005)(66446008)(7696005)(64756008)(9686003)(53546011)(54906003)(8936002)(5660300002)(76116006)(52536014)(26005)(66946007)(83380400001)(2906002)(44832011)(66556008)(8676002)(66476007);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata: =?gb2312?B?NkN4dVdlYWVOWUV0QUtPUzRNMG9hWnAxSmFUK084aEFKb2dJZmxmc0JiYWJy?=
+ =?gb2312?B?MkRERnhhYXhCemJXc0ZKWkRKbXlTZ2pYNmhJbUVJWnR4RXpURlIwQWpLN3Nn?=
+ =?gb2312?B?NXM1d1U0TFNSeVVhb3l0RkRNZVlRVzVRRTFkRHhIUXNKNXdEK2UzZDA5SzVI?=
+ =?gb2312?B?TUFsTzd2Ui9jV0ltc1NtQWJJOTNlTVRqVWE3ckJNOU1WVGx0bmNjVHVHZnpp?=
+ =?gb2312?B?M3lRUGJ5cHFqeGhzcTJhUXNmalZia3RUZXNleHovNkI0cUFWQTJQbHpORm82?=
+ =?gb2312?B?TDBpdGw5djdlRkU0UElBS21WNmVrZXpiVEdLck11UG1tdzBpNnRsblVGSDR1?=
+ =?gb2312?B?TEJjdnd3cFBDWkhZMnZ3eGxRMy8vekdmdEdhMlJBUzdhN25EZU1rMVdKRytu?=
+ =?gb2312?B?cFZiaVB4SjdzVCtyWXBoK1RTQU1CR3FEZzhOb0g5Tmt0d2cwS1BBNVZOb0Fp?=
+ =?gb2312?B?VC9ZVDcreDg1Q3QzeENEdjdQL0Q5VUtiVWM2Y3RYdWFyVjZCTE9qV0hIR3ZC?=
+ =?gb2312?B?d2MrM0N1ZWl3S2pZTVRWNkpubnB6eVJKTkQ4SWZ6NEtaRGFyRDRvc3IwbTFG?=
+ =?gb2312?B?SlZPSWJHMmJqR0kzVFNXanhVTGxpWFMrcGFXdWVmQVZiTFhnSjUwY2xUZ0lY?=
+ =?gb2312?B?eElycllZQjNlNDlCTUc1S3ROdU4vM1ZEbEhjYWZpYXNIeVJRRDNjNFo3TW9O?=
+ =?gb2312?B?V25GWWpCenhEQm84cDhORXBleGRCVFVxUWFOdXYvaTI3amNOSTQyQ3k0MkxW?=
+ =?gb2312?B?ODJqQld5R2dSUU8rQUcvZWJWNnlJVTNQMDRiNkZxdVhkYkEyK05SWW5YZXZR?=
+ =?gb2312?B?eUdrVlNZQm43RUhBYkJCLzZEY0RwM1ZwS2dPSnR4QytpbDBiS0JKU0xBMFg5?=
+ =?gb2312?B?SmMvZ3JHL0VDYU55U3psNFdjUDI0bVlHY2czekxFV3YwbTQ1Q0JROVpOQktJ?=
+ =?gb2312?B?NDFPR05WTU0xemxCVDBWYm9xSXdaTThVZ05XQTBpTWlJbVBnMFNYVUlNZ01i?=
+ =?gb2312?B?MEw2bUkraGxOM2ZuVFphRnVMTDdQcVJFN3JWbUNKSGJEUFUvNXBkYk1NOEU4?=
+ =?gb2312?B?eFdQeXBQTnRXcUc1SWtCUlppK2svOFFERnJBSHhxakpacTFiL0czWWxsMTRS?=
+ =?gb2312?B?cDFORmZqZSttcG9kRmRvS3JvM2RjMWZUd2FicEJoeUN5dkVxeXRqZmxyQ291?=
+ =?gb2312?B?SG83MGtsYWtlTy9ab3B6Y3pHNWgwR3J3RmV6S09wWjJ3TmRSOEhZcVZoYXly?=
+ =?gb2312?B?UEpINFRheHBzYi9WTkp5eWJzcVJCWTcvclZSNmo4YWFGcUxLYytrNWg0bitq?=
+ =?gb2312?Q?cT73xw4zAhw3c=3D?=
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB6768.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6d587e3-cd09-4cb1-8fe7-08d89b2655dd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Dec 2020 03:07:02.4061 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZKfFh6QtVTqoPl/gPFUYuqTz7+pyHyQx2NrwGEfXY/4XLtZVSGxmNGPMRzcXaudnNSqwByQEqP3HK56JNawTBw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4541
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,119 +130,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, hpa@zytor.com, linux-parisc@vger.kernel.org,
- deller@gmx.de, x86@kernel.org, linux-um@lists.infradead.org,
- James.Bottomley@HansenPartnership.com, mingo@redhat.com, paulus@samba.org,
- richard@nod.at, bp@alien8.de, tglx@linutronix.de,
- linuxppc-dev@lists.ozlabs.org, jdike@addtoit.com,
- anton.ivanov@cambridgegreys.com
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Leo Li <leoyang.li@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Enrico Weigelt, metux IT consult" <info@metux.net> writes:
-> All archs, except Alpha, print out the irq number in hex, but the message
-> looks like it was a decimal number, which is quite confusing. Fixing this
-> by adding "0x" prefix.
-
-Arguably decimal would be better, /proc/interrupts and /proc/irq/ both
-use decimal.
-
-The whole message is very dated IMO, these days the number it prints is
-(possibly) virtualised via IRQ domains, ie. it's not necessarily a
-"vector" if that even makes sense on all arches). Arguably "trap" is the
-wrong term on some arches too.
-
-So it would be better reworded entirely IMO, and also switched to
-decimal to match other sources of information on interrupts.
-
-Perhaps:
-	"Unexpected Linux IRQ %d."
-
-
-If anyone else is having deja vu like me, yes this has come up before:
-  https://lore.kernel.org/lkml/20150712220211.7166.42035.stgit@bhelgaas-glaptop2.roam.corp.google.com/
-
-cheers
-
-
-
-> diff --git a/arch/arm/include/asm/hw_irq.h b/arch/arm/include/asm/hw_irq.h
-> index cecc13214ef1..2749f19271d9 100644
-> --- a/arch/arm/include/asm/hw_irq.h
-> +++ b/arch/arm/include/asm/hw_irq.h
-> @@ -9,7 +9,7 @@ static inline void ack_bad_irq(int irq)
->  {
->  	extern unsigned long irq_err_count;
->  	irq_err_count++;
-> -	pr_crit("unexpected IRQ trap at vector %02x\n", irq);
-> +	pr_crit("unexpected IRQ trap at vector 0x%02x\n", irq);
->  }
->  
->  #define ARCH_IRQ_INIT_FLAGS	(IRQ_NOREQUEST | IRQ_NOPROBE)
-> diff --git a/arch/parisc/include/asm/hardirq.h b/arch/parisc/include/asm/hardirq.h
-> index 7f7039516e53..c3348af88d3f 100644
-> --- a/arch/parisc/include/asm/hardirq.h
-> +++ b/arch/parisc/include/asm/hardirq.h
-> @@ -35,6 +35,6 @@ DECLARE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
->  #define __IRQ_STAT(cpu, member) (irq_stat[cpu].member)
->  #define inc_irq_stat(member)	this_cpu_inc(irq_stat.member)
->  #define __inc_irq_stat(member)	__this_cpu_inc(irq_stat.member)
-> -#define ack_bad_irq(irq) WARN(1, "unexpected IRQ trap at vector %02x\n", irq)
-> +#define ack_bad_irq(irq) WARN(1, "unexpected IRQ trap at vector 0x%02x\n", irq)
->  
->  #endif /* _PARISC_HARDIRQ_H */
-> diff --git a/arch/powerpc/include/asm/hardirq.h b/arch/powerpc/include/asm/hardirq.h
-> index f133b5930ae1..ec8cf3cf6e49 100644
-> --- a/arch/powerpc/include/asm/hardirq.h
-> +++ b/arch/powerpc/include/asm/hardirq.h
-> @@ -29,7 +29,7 @@ DECLARE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
->  
->  static inline void ack_bad_irq(unsigned int irq)
->  {
-> -	printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
-> +	printk(KERN_CRIT "unexpected IRQ trap at vector 0x%02x\n", irq);
->  }
->  
->  extern u64 arch_irq_stat_cpu(unsigned int cpu);
-> diff --git a/arch/s390/include/asm/hardirq.h b/arch/s390/include/asm/hardirq.h
-> index dfbc3c6c0674..aaaec5cdd4fe 100644
-> --- a/arch/s390/include/asm/hardirq.h
-> +++ b/arch/s390/include/asm/hardirq.h
-> @@ -23,7 +23,7 @@
->  
->  static inline void ack_bad_irq(unsigned int irq)
->  {
-> -	printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
-> +	printk(KERN_CRIT "unexpected IRQ trap at vector 0x%02x\n", irq);
->  }
->  
->  #endif /* __ASM_HARDIRQ_H */
-> diff --git a/arch/um/include/asm/hardirq.h b/arch/um/include/asm/hardirq.h
-> index b426796d26fd..2a2e6eae034b 100644
-> --- a/arch/um/include/asm/hardirq.h
-> +++ b/arch/um/include/asm/hardirq.h
-> @@ -15,7 +15,7 @@ typedef struct {
->  #ifndef ack_bad_irq
->  static inline void ack_bad_irq(unsigned int irq)
->  {
-> -	printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
-> +	printk(KERN_CRIT "unexpected IRQ trap at vector 0x%02x\n", irq);
->  }
->  #endif
->  
-> diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
-> index c5dd50369e2f..957c716f2df7 100644
-> --- a/arch/x86/kernel/irq.c
-> +++ b/arch/x86/kernel/irq.c
-> @@ -37,7 +37,7 @@ atomic_t irq_err_count;
->  void ack_bad_irq(unsigned int irq)
->  {
->  	if (printk_ratelimit())
-> -		pr_err("unexpected IRQ trap at vector %02x\n", irq);
-> +		pr_err("unexpected IRQ trap at vector 0x%02x\n", irq);
->  
->  	/*
->  	 * Currently unexpected vectors happen only on SMP and APIC.
-> -- 
-> 2.11.0
+T24gMDYvMTIvMjAyMCAwNToxMiwgUmFzbXVzIFZpbGxlbW9lcyA8cmFzbXVzLnZpbGxlbW9lc0Bw
+cmV2YXMuZGs+IHdyb3RlOg0KDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJv
+bTogUmFzbXVzIFZpbGxlbW9lcyA8cmFzbXVzLnZpbGxlbW9lc0BwcmV2YXMuZGs+DQo+IFNlbnQ6
+IDIwMjDE6jEy1MI2yNUgNToxMg0KPiBUbzogSmFrdWIgS2ljaW5za2kgPGt1YmFAa2VybmVsLm9y
+Zz4NCj4gQ2M6IExlbyBMaSA8bGVveWFuZy5saUBueHAuY29tPjsgRGF2aWQgUy4gTWlsbGVyIDxk
+YXZlbUBkYXZlbWxvZnQubmV0PjsNCj4gUWlhbmcgWmhhbyA8cWlhbmcuemhhb0BueHAuY29tPjsg
+bmV0ZGV2QHZnZXIua2VybmVsLm9yZzsNCj4gbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmc7
+IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMu
+aW5mcmFkZWFkLm9yZzsgVmxhZGltaXIgT2x0ZWFuDQo+IDx2bGFkaW1pci5vbHRlYW5AbnhwLmNv
+bT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCAwMC8yMF0gZXRoZXJuZXQ6IHVjY19nZXRoOiBhc3Nv
+cnRlZCBmaXhlcyBhbmQNCj4gc2ltcGxpZmljYXRpb25zDQo+IA0KPiBPbiAwNS8xMi8yMDIwIDIx
+LjUzLCBKYWt1YiBLaWNpbnNraSB3cm90ZToNCj4gPiBPbiBTYXQsICA1IERlYyAyMDIwIDIwOjE3
+OjIzICswMTAwIFJhc211cyBWaWxsZW1vZXMgd3JvdGU6DQo+ID4+IFdoaWxlIHRyeWluZyB0byBm
+aWd1cmUgb3V0IGhvdyB0byBhbGxvdyBidW1waW5nIHRoZSBNVFUgd2l0aCB0aGUNCj4gPj4gdWNj
+X2dldGggZHJpdmVyLCBJIGZlbGwgaW50byBhIHJhYmJpdCBob2xlIGFuZCBzdHVtYmxlZCBvbiBh
+IHdob2xlDQo+ID4+IGJ1bmNoIG9mIGlzc3VlcyBvZiB2YXJ5aW5nIGltcG9ydGFuY2UgLSBzb21l
+IGFyZSBvdXRyaWdodCBidWcgZml4ZXMsDQo+ID4+IHdoaWxlIG1vc3QgYXJlIGEgbWF0dGVyIG9m
+IHNpbXBsaWZ5aW5nIHRoZSBjb2RlIHRvIG1ha2UgaXQgbW9yZQ0KPiA+PiBhY2Nlc3NpYmxlLg0K
+PiA+Pg0KPiA+PiBBdCB0aGUgZW5kIG9mIGRpZ2dpbmcgYXJvdW5kIHRoZSBjb2RlIGFuZCBkYXRh
+IHNoZWV0IHRvIGZpZ3VyZSBvdXQNCj4gPj4gaG93IGl0IGFsbCB3b3JrcywgSSB0aGluayB0aGUg
+TVRVIGlzc3VlIG1pZ2h0IGJlIGZpeGVkIGJ5IGENCj4gPj4gb25lLWxpbmVyLCBidXQgSSdtIG5v
+dCBzdXJlIGl0IGNhbiBiZSB0aGF0IHNpbXBsZS4gSXQgZG9lcyBzZWVtIHRvDQo+ID4+IHdvcmsg
+KHBpbmcgLXMgWCB3b3JrcyBmb3IgbGFyZ2VyIHZhbHVlcyBvZiBYLCBhbmQgd2lyZXNoYXJrIGNv
+bmZpcm1zDQo+ID4+IHRoYXQgdGhlIHBhY2tldHMgYXJlIG5vdCBmcmFnbWVudGVkKS4NCj4gPj4N
+Cj4gPj4gUmUgcGF0Y2ggMiwgc29tZW9uZSBpbiBOWFAgc2hvdWxkIGNoZWNrIGhvdyB0aGUgaGFy
+ZHdhcmUgYWN0dWFsbHkNCj4gPj4gd29ya3MgYW5kIG1ha2UgYW4gdXBkYXRlZCByZWZlcmVuY2Ug
+bWFudWFsIGF2YWlsYWJsZS4NCj4gPg0KPiA+IExvb2tzIGxpa2UgYSBuaWNlIGNsZWFuIHVwIG9u
+IGEgcXVpY2sgbG9vay4NCj4gPg0KPiA+IFBsZWFzZSBzZXBhcmF0ZSBwYXRjaGVzIDEgYW5kIDEx
+ICh3aGljaCBhcmUgdGhlIHR3byBidWcgZml4ZXMgSSBzZWUpDQo+IA0KPiBJIHRoaW5rIHBhdGNo
+IDIgaXMgYSBidWcgZml4IGFzIHdlbGwsIGJ1dCBJJ2QgbGlrZSBzb21lb25lIGZyb20gTlhQIHRv
+IGNvbW1lbnQuDQoNCkl0ICdzIG9rIGZvciBtZS4NCg0KDQpCZXN0IFJlZ2FyZHMsDQpRaWFuZyBa
+aGFvDQo=
