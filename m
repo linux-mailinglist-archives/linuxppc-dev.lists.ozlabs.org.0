@@ -2,123 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920AA2D2147
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 04:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A4EB2D215C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 04:17:41 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CqlWL29kMzDqc5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 14:08:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CqljY4NZBzDqZB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Dec 2020 14:17:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.2.79; helo=eur02-ve1-obe.outbound.protection.outlook.com;
- envelope-from=qiang.zhao@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=ct68XrkU; 
- dkim-atps=neutral
-Received: from EUR02-VE1-obe.outbound.protection.outlook.com
- (mail-eopbgr20079.outbound.protection.outlook.com [40.107.2.79])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=BdkEHtUJ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CqlTY2gTczDqKh
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 14:07:11 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RsSHWG050zUnFWXcgMvNzv9AomO4LE0vq21OvIrw3bovlJ7/ubJQhEL2iuQfKIZHBHBP+r4Q6Iga/0XzqEknIAVjTxepiPhkFadoP2DO+IJEm+F90roUtM4JxMQ3KqMvqe8Cfj3BBO+mRgb+YErZ9FLx/X/p642c1susq+M+fE7CFFx4T0gC/d4j+Sf+3VHmyxFokO/kOaydQA9E30rzT8M0/QUBZKlmszLgfdN8NjR0DVHkAduQj9E3Gr8cUS7Y+3NG158IDpXFExhzlou8NU2aNT2hR1blzzBlgiaBvcH+hCNRTUICYI7W8T9DmzWxjgKVxEAQFEDtf7198UGBIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6to9MY6xqw3zsCTmVuKb4F0vmF4jqxRe1DpgXcbjjw0=;
- b=IhxHx4HlWOJ0gDYkVZpoxQnp7jTOV2EAbImlBVRZ41Zu+98a0pNADZcM72tXvmYakjF1Ls9Ex3Cg1vMpOXNhzg4qbRWEroJsyt2GMEr1U7BUy4qKLay+414pxONaZSTHOs/tbrUYxyGrxX3qO46EIcYt6xMnZ+DhlrTRFQqikW70/N5rpdUVV5gzdb9C7Y9PBrTxxqmSp3e7CgXEu9j1RgHHP/CXvmbUv/hz+8wTMVkJg75Rn04XQgEUjlszoOKlhe9wFmEfanH4h5kFp2ATYXcuqtc9MaRivm2dBQ9KGoiRT0zzR/mKmtvYzHVskPRmFd+TR8PFzDbslvhLkfRZCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6to9MY6xqw3zsCTmVuKb4F0vmF4jqxRe1DpgXcbjjw0=;
- b=ct68XrkUjMfjPXeo8NZM09awnn5pyNHAuDTlarceQCzeDj2QaPbBW9dbWEYTk1H5iCOi5gGGR4f4Rhj/4hXK26awFuNv5mjvZ0jgjeLawfy+CfZGm1fGqvq30paQbAj9hoa0ICzSE5UyB/QDfjHv3Q7ggSdSm6p/AB3foyj+ENc=
-Received: from VE1PR04MB6768.eurprd04.prod.outlook.com (2603:10a6:803:129::26)
- by VI1PR04MB4541.eurprd04.prod.outlook.com (2603:10a6:803:76::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Tue, 8 Dec
- 2020 03:07:02 +0000
-Received: from VE1PR04MB6768.eurprd04.prod.outlook.com
- ([fe80::581:1102:2aee:85a3]) by VE1PR04MB6768.eurprd04.prod.outlook.com
- ([fe80::581:1102:2aee:85a3%5]) with mapi id 15.20.3632.024; Tue, 8 Dec 2020
- 03:07:02 +0000
-From: Qiang Zhao <qiang.zhao@nxp.com>
-To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>, Jakub Kicinski
- <kuba@kernel.org>
-Subject: RE: [PATCH 00/20] ethernet: ucc_geth: assorted fixes and
- simplifications
-Thread-Topic: [PATCH 00/20] ethernet: ucc_geth: assorted fixes and
- simplifications
-Thread-Index: AQHWyztk1aPl4Ezq8EmmnoJXVMcDbano+wGAgAAE+YCAA4cq0A==
-Date: Tue, 8 Dec 2020 03:07:02 +0000
-Message-ID: <VE1PR04MB676805F3EEDF86A8BE370F8691CD0@VE1PR04MB6768.eurprd04.prod.outlook.com>
-References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
- <20201205125351.41e89579@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
- <7e78df84-0035-6935-acb0-adbd0c648128@prevas.dk>
-In-Reply-To: <7e78df84-0035-6935-acb0-adbd0c648128@prevas.dk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: prevas.dk; dkim=none (message not signed)
- header.d=none;prevas.dk; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [119.31.174.73]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: d6d587e3-cd09-4cb1-8fe7-08d89b2655dd
-x-ms-traffictypediagnostic: VI1PR04MB4541:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR04MB454113E098A5CD21C3DD34F791CD0@VI1PR04MB4541.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:5236;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Yd/v14aGrzEh7ZsW3cMw9ETjpf2OS/ob0go/dPFLViMCk3AAbJSIIL+S4m8TEGFTLqBJosC842+gVabmT65dNa7VtC5Di18aBQuwKGG649zDqtSxQAIZCwlxhqdtx324pToDvlpwOSnV1T8kNekhGZrHUwSd3X8+xgMc3WHEYV750+A0rnGEzVCY3DtaXB8J1OhMDxHh0KYS1yv47S/vMplfXp8oV9OL1YLl/UtxvQ85vSXO8UEyf/gHb/P6v1eYdfRV/zBHzf0hw98VwNPwLzUpeDJwpkc13xH3eM1Clysx8lQRL6jYmAgGSre4qbLPKDh3Eysbrpop4cfu2j52Wg==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VE1PR04MB6768.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(136003)(376002)(346002)(366004)(4326008)(186003)(6506007)(86362001)(508600001)(55016002)(71200400001)(33656002)(110136005)(66446008)(7696005)(64756008)(9686003)(53546011)(54906003)(8936002)(5660300002)(76116006)(52536014)(26005)(66946007)(83380400001)(2906002)(44832011)(66556008)(8676002)(66476007);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: =?gb2312?B?NkN4dVdlYWVOWUV0QUtPUzRNMG9hWnAxSmFUK084aEFKb2dJZmxmc0JiYWJy?=
- =?gb2312?B?MkRERnhhYXhCemJXc0ZKWkRKbXlTZ2pYNmhJbUVJWnR4RXpURlIwQWpLN3Nn?=
- =?gb2312?B?NXM1d1U0TFNSeVVhb3l0RkRNZVlRVzVRRTFkRHhIUXNKNXdEK2UzZDA5SzVI?=
- =?gb2312?B?TUFsTzd2Ui9jV0ltc1NtQWJJOTNlTVRqVWE3ckJNOU1WVGx0bmNjVHVHZnpp?=
- =?gb2312?B?M3lRUGJ5cHFqeGhzcTJhUXNmalZia3RUZXNleHovNkI0cUFWQTJQbHpORm82?=
- =?gb2312?B?TDBpdGw5djdlRkU0UElBS21WNmVrZXpiVEdLck11UG1tdzBpNnRsblVGSDR1?=
- =?gb2312?B?TEJjdnd3cFBDWkhZMnZ3eGxRMy8vekdmdEdhMlJBUzdhN25EZU1rMVdKRytu?=
- =?gb2312?B?cFZiaVB4SjdzVCtyWXBoK1RTQU1CR3FEZzhOb0g5Tmt0d2cwS1BBNVZOb0Fp?=
- =?gb2312?B?VC9ZVDcreDg1Q3QzeENEdjdQL0Q5VUtiVWM2Y3RYdWFyVjZCTE9qV0hIR3ZC?=
- =?gb2312?B?d2MrM0N1ZWl3S2pZTVRWNkpubnB6eVJKTkQ4SWZ6NEtaRGFyRDRvc3IwbTFG?=
- =?gb2312?B?SlZPSWJHMmJqR0kzVFNXanhVTGxpWFMrcGFXdWVmQVZiTFhnSjUwY2xUZ0lY?=
- =?gb2312?B?eElycllZQjNlNDlCTUc1S3ROdU4vM1ZEbEhjYWZpYXNIeVJRRDNjNFo3TW9O?=
- =?gb2312?B?V25GWWpCenhEQm84cDhORXBleGRCVFVxUWFOdXYvaTI3amNOSTQyQ3k0MkxW?=
- =?gb2312?B?ODJqQld5R2dSUU8rQUcvZWJWNnlJVTNQMDRiNkZxdVhkYkEyK05SWW5YZXZR?=
- =?gb2312?B?eUdrVlNZQm43RUhBYkJCLzZEY0RwM1ZwS2dPSnR4QytpbDBiS0JKU0xBMFg5?=
- =?gb2312?B?SmMvZ3JHL0VDYU55U3psNFdjUDI0bVlHY2czekxFV3YwbTQ1Q0JROVpOQktJ?=
- =?gb2312?B?NDFPR05WTU0xemxCVDBWYm9xSXdaTThVZ05XQTBpTWlJbVBnMFNYVUlNZ01i?=
- =?gb2312?B?MEw2bUkraGxOM2ZuVFphRnVMTDdQcVJFN3JWbUNKSGJEUFUvNXBkYk1NOEU4?=
- =?gb2312?B?eFdQeXBQTnRXcUc1SWtCUlppK2svOFFERnJBSHhxakpacTFiL0czWWxsMTRS?=
- =?gb2312?B?cDFORmZqZSttcG9kRmRvS3JvM2RjMWZUd2FicEJoeUN5dkVxeXRqZmxyQ291?=
- =?gb2312?B?SG83MGtsYWtlTy9ab3B6Y3pHNWgwR3J3RmV6S09wWjJ3TmRSOEhZcVZoYXly?=
- =?gb2312?B?UEpINFRheHBzYi9WTkp5eWJzcVJCWTcvclZSNmo4YWFGcUxLYytrNWg0bitq?=
- =?gb2312?Q?cT73xw4zAhw3c=3D?=
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cqlgb4j9DzDqVx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Dec 2020 14:15:55 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B833Ess068331; Mon, 7 Dec 2020 22:15:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=hCfRyZl6uW4NYQCJ6meiECS52LrZ74DguokQW7fqlgo=;
+ b=BdkEHtUJ4fyZQUZ3o71tu1M5ybWV8rqbB3jPDL4FHOUd1+iEvzWHDvPFVpzxqpm/M53f
+ 72ZQWRh6vQ46ORREO2w00zLPn9LbPLGi6HO98Dr9hQ+sahxALQSCXezmDxmZqGvF7IjZ
+ m5wmoRmdKDcegjtbDijm4ZpXU0YilepetVshBHUNt/RyxVR8juX9dKOSP9WW/+7EHBUm
+ qMk1apUeLrXJ+fNXV3FUSxDRQC4nc8YIFJE9fcu3I0bhX0ic5upcrZXWbIO2NYwz6hlI
+ 2gOk5USIxSAZ3pDavuTT+O8ILU7x/Y5F2+hvckaqilwcf+7BvHMGHHfHVlJ+we34GLH9 PA== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 359p7xm8y8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Dec 2020 22:15:50 -0500
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B83CMA1004407;
+ Tue, 8 Dec 2020 03:15:48 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma03dal.us.ibm.com with ESMTP id 3581u91s12-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Dec 2020 03:15:48 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B83Fl5A29819138
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 8 Dec 2020 03:15:47 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0DDB7112063;
+ Tue,  8 Dec 2020 03:15:47 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6CAF4112061;
+ Tue,  8 Dec 2020 03:15:45 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.85.74.77])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue,  8 Dec 2020 03:15:45 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH] powerpc/book3s64/kuap: Improve error reporting with KUAP
+Date: Tue,  8 Dec 2020 08:45:39 +0530
+Message-Id: <20201208031539.84878-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB6768.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d6d587e3-cd09-4cb1-8fe7-08d89b2655dd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Dec 2020 03:07:02.4061 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ZKfFh6QtVTqoPl/gPFUYuqTz7+pyHyQx2NrwGEfXY/4XLtZVSGxmNGPMRzcXaudnNSqwByQEqP3HK56JNawTBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4541
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2020-12-07_19:2020-12-04,
+ 2020-12-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ adultscore=0 clxscore=1015 phishscore=0 impostorscore=0 mlxscore=0
+ priorityscore=1501 bulkscore=0 mlxlogscore=999 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012080018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,45 +92,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gMDYvMTIvMjAyMCAwNToxMiwgUmFzbXVzIFZpbGxlbW9lcyA8cmFzbXVzLnZpbGxlbW9lc0Bw
-cmV2YXMuZGs+IHdyb3RlOg0KDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJv
-bTogUmFzbXVzIFZpbGxlbW9lcyA8cmFzbXVzLnZpbGxlbW9lc0BwcmV2YXMuZGs+DQo+IFNlbnQ6
-IDIwMjDE6jEy1MI2yNUgNToxMg0KPiBUbzogSmFrdWIgS2ljaW5za2kgPGt1YmFAa2VybmVsLm9y
-Zz4NCj4gQ2M6IExlbyBMaSA8bGVveWFuZy5saUBueHAuY29tPjsgRGF2aWQgUy4gTWlsbGVyIDxk
-YXZlbUBkYXZlbWxvZnQubmV0PjsNCj4gUWlhbmcgWmhhbyA8cWlhbmcuemhhb0BueHAuY29tPjsg
-bmV0ZGV2QHZnZXIua2VybmVsLm9yZzsNCj4gbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmc7
-IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMu
-aW5mcmFkZWFkLm9yZzsgVmxhZGltaXIgT2x0ZWFuDQo+IDx2bGFkaW1pci5vbHRlYW5AbnhwLmNv
-bT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCAwMC8yMF0gZXRoZXJuZXQ6IHVjY19nZXRoOiBhc3Nv
-cnRlZCBmaXhlcyBhbmQNCj4gc2ltcGxpZmljYXRpb25zDQo+IA0KPiBPbiAwNS8xMi8yMDIwIDIx
-LjUzLCBKYWt1YiBLaWNpbnNraSB3cm90ZToNCj4gPiBPbiBTYXQsICA1IERlYyAyMDIwIDIwOjE3
-OjIzICswMTAwIFJhc211cyBWaWxsZW1vZXMgd3JvdGU6DQo+ID4+IFdoaWxlIHRyeWluZyB0byBm
-aWd1cmUgb3V0IGhvdyB0byBhbGxvdyBidW1waW5nIHRoZSBNVFUgd2l0aCB0aGUNCj4gPj4gdWNj
-X2dldGggZHJpdmVyLCBJIGZlbGwgaW50byBhIHJhYmJpdCBob2xlIGFuZCBzdHVtYmxlZCBvbiBh
-IHdob2xlDQo+ID4+IGJ1bmNoIG9mIGlzc3VlcyBvZiB2YXJ5aW5nIGltcG9ydGFuY2UgLSBzb21l
-IGFyZSBvdXRyaWdodCBidWcgZml4ZXMsDQo+ID4+IHdoaWxlIG1vc3QgYXJlIGEgbWF0dGVyIG9m
-IHNpbXBsaWZ5aW5nIHRoZSBjb2RlIHRvIG1ha2UgaXQgbW9yZQ0KPiA+PiBhY2Nlc3NpYmxlLg0K
-PiA+Pg0KPiA+PiBBdCB0aGUgZW5kIG9mIGRpZ2dpbmcgYXJvdW5kIHRoZSBjb2RlIGFuZCBkYXRh
-IHNoZWV0IHRvIGZpZ3VyZSBvdXQNCj4gPj4gaG93IGl0IGFsbCB3b3JrcywgSSB0aGluayB0aGUg
-TVRVIGlzc3VlIG1pZ2h0IGJlIGZpeGVkIGJ5IGENCj4gPj4gb25lLWxpbmVyLCBidXQgSSdtIG5v
-dCBzdXJlIGl0IGNhbiBiZSB0aGF0IHNpbXBsZS4gSXQgZG9lcyBzZWVtIHRvDQo+ID4+IHdvcmsg
-KHBpbmcgLXMgWCB3b3JrcyBmb3IgbGFyZ2VyIHZhbHVlcyBvZiBYLCBhbmQgd2lyZXNoYXJrIGNv
-bmZpcm1zDQo+ID4+IHRoYXQgdGhlIHBhY2tldHMgYXJlIG5vdCBmcmFnbWVudGVkKS4NCj4gPj4N
-Cj4gPj4gUmUgcGF0Y2ggMiwgc29tZW9uZSBpbiBOWFAgc2hvdWxkIGNoZWNrIGhvdyB0aGUgaGFy
-ZHdhcmUgYWN0dWFsbHkNCj4gPj4gd29ya3MgYW5kIG1ha2UgYW4gdXBkYXRlZCByZWZlcmVuY2Ug
-bWFudWFsIGF2YWlsYWJsZS4NCj4gPg0KPiA+IExvb2tzIGxpa2UgYSBuaWNlIGNsZWFuIHVwIG9u
-IGEgcXVpY2sgbG9vay4NCj4gPg0KPiA+IFBsZWFzZSBzZXBhcmF0ZSBwYXRjaGVzIDEgYW5kIDEx
-ICh3aGljaCBhcmUgdGhlIHR3byBidWcgZml4ZXMgSSBzZWUpDQo+IA0KPiBJIHRoaW5rIHBhdGNo
-IDIgaXMgYSBidWcgZml4IGFzIHdlbGwsIGJ1dCBJJ2QgbGlrZSBzb21lb25lIGZyb20gTlhQIHRv
-IGNvbW1lbnQuDQoNCkl0ICdzIG9rIGZvciBtZS4NCg0KDQpCZXN0IFJlZ2FyZHMsDQpRaWFuZyBa
-aGFvDQo=
+This partially reverts commit eb232b162446 ("powerpc/book3s64/kuap: Improve
+error reporting with KUAP") and update the fault handler to print
+
+[   55.022514] Kernel attempted to access user page (7e6725b70000) - exploit attempt? (uid: 0)
+[   55.022528] BUG: Unable to handle kernel data access on read at 0x7e6725b70000
+[   55.022533] Faulting instruction address: 0xc000000000e8b9bc
+[   55.022540] Oops: Kernel access of bad area, sig: 11 [#1]
+....
+
+when the kernel access userspace address without unlocking AMR.
+
+bad_kuap_fault() is added as part of commit 5e5be3aed230 ("powerpc/mm: Detect
+bad KUAP faults") to catch userspace access incorrectly blocked by AMR. Hence
+retain the full stack dump there even with hash translation. Also, add a comment
+explaining the difference between hash and radix.
+
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/include/asm/book3s/32/kup.h     |  4 +--
+ arch/powerpc/include/asm/book3s/64/kup.h     | 34 ++++++++++----------
+ arch/powerpc/include/asm/kup.h               |  4 +--
+ arch/powerpc/include/asm/nohash/32/kup-8xx.h |  4 +--
+ arch/powerpc/mm/fault.c                      |  4 +--
+ 5 files changed, 25 insertions(+), 25 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
+index b18cd931e325..32fd4452e960 100644
+--- a/arch/powerpc/include/asm/book3s/32/kup.h
++++ b/arch/powerpc/include/asm/book3s/32/kup.h
+@@ -177,8 +177,8 @@ static inline void restore_user_access(unsigned long flags)
+ 		allow_user_access(to, to, end - addr, KUAP_READ_WRITE);
+ }
+ 
+-static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
+-				  bool is_write, unsigned long error_code)
++static inline bool
++bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+ {
+ 	unsigned long begin = regs->kuap & 0xf0000000;
+ 	unsigned long end = regs->kuap << 28;
+diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
+index f2e6dd78d5e2..7075c92c320c 100644
+--- a/arch/powerpc/include/asm/book3s/64/kup.h
++++ b/arch/powerpc/include/asm/book3s/64/kup.h
+@@ -353,29 +353,29 @@ static inline void set_kuap(unsigned long value)
+ 	isync();
+ }
+ 
+-#define RADIX_KUAP_BLOCK_READ	UL(0x4000000000000000)
+-#define RADIX_KUAP_BLOCK_WRITE	UL(0x8000000000000000)
+-
+ static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
+-				  bool is_write, unsigned long error_code)
++				  bool is_write)
+ {
+ 	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
+ 		return false;
+-
+-	if (radix_enabled()) {
+-		/*
+-		 * Will be a storage protection fault.
+-		 * Only check the details of AMR[0]
+-		 */
+-		return WARN((regs->kuap & (is_write ? RADIX_KUAP_BLOCK_WRITE : RADIX_KUAP_BLOCK_READ)),
+-			    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
+-	}
+ 	/*
+-	 * We don't want to WARN here because userspace can setup
+-	 * keys such that a kernel access to user address can cause
+-	 * fault
++	 * For radix this will be a storage protection fault (DSISR_PROTFAULT).
++	 * For hash this will be a key fault (DSISR_KEYFAULT)
+ 	 */
+-	return !!(error_code & DSISR_KEYFAULT);
++	/*
++	 * We do have exception table entry, but accessing the
++	 * userspace results in fault.  This could be because we
++	 * didn't unlock the AMR or access is denied by userspace
++	 * using a key value that blocks access. We are only interested
++	 * in catching the use case of accessing without unlocking
++	 * the AMR. Hence check for BLOCK_WRITE/READ against AMR.
++	 */
++	if (is_write) {
++		return WARN(((regs->amr & AMR_KUAP_BLOCK_WRITE) == AMR_KUAP_BLOCK_WRITE),
++			    "Bug: Write fault blocked by AMR!");
++	}
++	return WARN(((regs->amr & AMR_KUAP_BLOCK_READ) == AMR_KUAP_BLOCK_READ),
++		    "Bug: Read fault blocked by AMR!");
+ }
+ 
+ static __always_inline void allow_user_access(void __user *to, const void __user *from,
+diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+index f8ec679bd2de..5a9820c54da9 100644
+--- a/arch/powerpc/include/asm/kup.h
++++ b/arch/powerpc/include/asm/kup.h
+@@ -62,8 +62,8 @@ void setup_kuap(bool disabled);
+ #else
+ static inline void setup_kuap(bool disabled) { }
+ 
+-static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
+-				  bool is_write, unsigned long error_code)
++static inline bool
++bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+ {
+ 	return false;
+ }
+diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
+index 7bdd9e5b63ed..567cdc557402 100644
+--- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
+@@ -60,8 +60,8 @@ static inline void restore_user_access(unsigned long flags)
+ 	mtspr(SPRN_MD_AP, flags);
+ }
+ 
+-static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
+-				  bool is_write, unsigned long error_code)
++static inline bool
++bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+ {
+ 	return WARN(!((regs->kuap ^ MD_APG_KUAP) & 0xff000000),
+ 		    "Bug: fault blocked by AP register !");
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index c91621df0c61..b12595102525 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -210,7 +210,7 @@ static bool bad_kernel_fault(struct pt_regs *regs, unsigned long error_code,
+ 		return true;
+ 	}
+ 
+-	if (!is_exec && address < TASK_SIZE && (error_code & DSISR_PROTFAULT) &&
++	if (!is_exec && address < TASK_SIZE && (error_code & (DSISR_PROTFAULT | DSISR_KEYFAULT)) &&
+ 	    !search_exception_tables(regs->nip)) {
+ 		pr_crit_ratelimited("Kernel attempted to access user page (%lx) - exploit attempt? (uid: %d)\n",
+ 				    address,
+@@ -227,7 +227,7 @@ static bool bad_kernel_fault(struct pt_regs *regs, unsigned long error_code,
+ 
+ 	// Read/write fault in a valid region (the exception table search passed
+ 	// above), but blocked by KUAP is bad, it can never succeed.
+-	if (bad_kuap_fault(regs, address, is_write, error_code))
++	if (bad_kuap_fault(regs, address, is_write))
+ 		return true;
+ 
+ 	// What's left? Kernel fault on user in well defined regions (extable
+-- 
+2.28.0
+
