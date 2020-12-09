@@ -1,49 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF272D44ED
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 15:59:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759692D453E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 16:23:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrgDZ0XbLzDqqK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 01:59:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Crgmg4rlFzDqcm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 02:23:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
+ helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=groug@kaod.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=PgResuRH; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from smtpout1.mo804.mail-out.ovh.net
+ (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrgBH2MsXzDqDK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 01:57:11 +1100 (AEDT)
-Date: Wed, 9 Dec 2020 08:57:07 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1607525828;
- bh=iTwvXXnNY8aakokY+O/GwFNWyTbTvNVpehJRfYDnYu4=;
- h=From:To:Cc:Subject:In-Reply-To:From;
- b=PgResuRHgX8BL6OvxTlRKixNbfNmOOYAaTcMCAPpD9hD27OwxS7EslC/oc4dmMzTG
- gNE2p3xDEu+n8J97Wt8jAmzVulOVYFkh8+0F2Ut1oGplaU4UaLH3eKduV+PkklUCGY
- anDk/8qDx93bCRI1MjMT+Vu/YD/jxhGCCgpYkxmU8f64r5+pPDa2zUCPRV/3MMTpbZ
- tmDQh7fvNMDLvXluAb697neJzRoW3BAsL1n7+PqjwQUtKvU6itjziytBDRTFsVdpAi
- LaGz42BaL1xELQ4w5m+65L0L7anLj/yeCVR+nNy8i9liOjHkqst9m7RdvbP56FQvzJ
- i9Z4RIUeg40aA==
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Michael Walle <michael@walle.cc>
-Subject: Re: [PATCH v6 0/5] PCI: Unify ECAM constants in native PCI Express
- drivers
-Message-ID: <20201209145707.GA2521966@bjorn-Precision-5520>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CrgkZ4NRyzDqgj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 02:21:38 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.1.111])
+ by mo804.mail-out.ovh.net (Postfix) with ESMTPS id BEA6E7925ABF;
+ Wed,  9 Dec 2020 16:21:35 +0100 (CET)
+Received: from kaod.org (37.59.142.100) by DAG8EX1.mxp5.local (172.16.2.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Wed, 9 Dec 2020
+ 16:21:31 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-100R003bd2de322-af54-4a72-b8bf-3a52e3f63f99,
+ 661A724A132DD26A84B163D3BB90DC3732340046) smtp.auth=groug@kaod.org
+Date: Wed, 9 Dec 2020 16:21:27 +0100
+From: Greg Kurz <groug@kaod.org>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH 10/13] powerpc/xive: Remove P9 DD1 flag
+ XIVE_IRQ_FLAG_MASK_FW
+Message-ID: <20201209162127.603f5b8c@bahia.lan>
+In-Reply-To: <20201208151124.1329942-11-clg@kaod.org>
+References: <20201208151124.1329942-1-clg@kaod.org>
+ <20201208151124.1329942-11-clg@kaod.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <595028ce6b04ea589f802ff61d8710f0@walle.cc>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [37.59.142.100]
+X-ClientProxiedBy: DAG4EX1.mxp5.local (172.16.2.31) To DAG8EX1.mxp5.local
+ (172.16.2.71)
+X-Ovh-Tracer-GUID: e8d63fb0-84b0-45e2-9441-a2479f9fc49a
+X-Ovh-Tracer-Id: 16969281924201355674
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudejkedgjeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepfefftedvgeduuefgheeltddtieegheejhfekleduuddtffejffeuleffgfevtdeknecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddttdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,151 +63,228 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kw@linux.com, heiko@sntech.de, shawn.lin@rock-chips.com,
- Alexandru Marginean <alexm.osslist@gmail.com>, paulus@samba.org,
- thomas.petazzoni@bootlin.com, jonnyc@amazon.com, toan@os.amperecomputing.com,
- will@kernel.org, robh@kernel.org, lorenzo.pieralisi@arm.com,
- michal.simek@xilinx.com, linux-rockchip@lists.infradead.org,
- bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
- linux-pci@vger.kernel.org, rjui@broadcom.com, f.fainelli@gmail.com,
- linux-rpi-kernel@lists.infradead.org, Jonathan.Cameron@huawei.com,
- bhelgaas@google.com, jonathan.derrick@intel.com, sbranden@broadcom.com,
- wangzhou1@hisilicon.com, rrichter@marvell.com,
- Vladimir Oltean <olteanv@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- nsaenzjulienne@suse.de
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 09, 2020 at 02:08:00PM +0100, Michael Walle wrote:
-> [+ Vladimir and Alex]
-> 
-> Am 2020-12-09 13:36, schrieb Bjorn Helgaas:
-> > On Tue, Dec 08, 2020 at 04:41:50PM +0100, Michael Walle wrote:
-> > > >On Sun, 29 Nov 2020 23:07:38 +0000, Krzysztof Wilczyński wrote:
-> > > >> Unify ECAM-related constants into a single set of standard constants
-> > > >> defining memory address shift values for the byte-level address that can
-> > > >> be used when accessing the PCI Express Configuration Space, and then
-> > > >> move native PCI Express controller drivers to use newly introduced
-> > > >> definitions retiring any driver-specific ones.
-> > > >>
-> > > >> The ECAM ("Enhanced Configuration Access Mechanism") is defined by the
-> > > >> PCI Express specification (see PCI Express Base Specification, Revision
-> > > >> 5.0, Version 1.0, Section 7.2.2, p. 676), thus most hardware should
-> > > >> implement it the same way.
-> > > >>
-> > > >> [...]
-> > > >
-> > > >Applied to pci/ecam, thanks!
-> > > >
-> > > >[1/5] PCI: Unify ECAM constants in native PCI Express drivers
-> > > >      https://git.kernel.org/lpieralisi/pci/c/f3c07cf692
-> > 
-> > > Patch 1/5 breaks LS1028A boards:
-> > > 
-> > > [..]
-> > > [    1.144426] pci-host-generic 1f0000000.pcie: host bridge
-> > > /soc/pcie@1f0000000 ranges:
-> > > [    1.152276] pci-host-generic 1f0000000.pcie:      MEM
-> > > 0x01f8000000..0x01f815ffff -> 0x0000000000
-> > > [    1.161161] pci-host-generic 1f0000000.pcie:      MEM
-> > > 0x01f8160000..0x01f81cffff -> 0x0000000000
-> > > [    1.170043] pci-host-generic 1f0000000.pcie:      MEM
-> > > 0x01f81d0000..0x01f81effff -> 0x0000000000
-> > > [    1.178924] pci-host-generic 1f0000000.pcie:      MEM
-> > > 0x01f81f0000..0x01f820ffff -> 0x0000000000
-> > > [    1.187805] pci-host-generic 1f0000000.pcie:      MEM
-> > > 0x01f8210000..0x01f822ffff -> 0x0000000000
-> > > [    1.196686] pci-host-generic 1f0000000.pcie:      MEM
-> > > 0x01f8230000..0x01f824ffff -> 0x0000000000
-> > > [    1.205562] pci-host-generic 1f0000000.pcie:      MEM
-> > > 0x01fc000000..0x01fc3fffff -> 0x0000000000
-> > 
-> > Can you attach your DT?
-> That would be the following:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/freescale/fsl-ls1028a-kontron-sl28-var3-ads2.dts
-> 
-> You'll find the PCI devices/bridge in:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-> 
-> > The fact that all these windows map to PCI
-> > bus address 0 looks broken.  Prior to patch 1/5, do the devices below
-> > this bridge actually work?
-> 
-> Yes, these should be the onboard network controller and ethernet
-> switch.
+On Tue, 8 Dec 2020 16:11:21 +0100
+C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 
-Interesting.  I can't see how they could work with those address
-mappings, but that's another question we can look at later.
+> This flag was used to support the PHB4 LSIs on P9 DD1 and we have
+> stopped supporting this CPU when DD2 came out. See skiboot commit:
+>=20
+>   https://github.com/open-power/skiboot/commit/0b0d15e3c170
+>=20
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
 
-> > Looks like you're using the pci-host-generic driver; which of the
-> > .compatible strings (pci-host-cam-generic, pci-host-ecam-generic,
-> > marvell,armada8k-pcie-ecam, etc) are you using?  (I think that's in
-> > the DT as well.)
-> 
-> compatible = "pci-host-ecam-generic";
-> -michael
+Reviewed-by: Greg Kurz <groug@kaod.org>
 
-Can you try the following just to get started?
+In case a v2 is required, same suggestion to comment out the removed
+items entirely, plus fix an indent nit....
 
-diff --git a/drivers/pci/access.c b/drivers/pci/access.c
-index 46935695cfb9..569a45727bc7 100644
---- a/drivers/pci/access.c
-+++ b/drivers/pci/access.c
-@@ -79,6 +79,7 @@ int pci_generic_config_read(struct pci_bus *bus, unsigned int devfn,
- {
- 	void __iomem *addr;
- 
-+	pci_info(bus, "%s(%#x %#05x %d)\n", __func__, devfn, where, size);
- 	addr = bus->ops->map_bus(bus, devfn, where);
- 	if (!addr) {
- 		*val = ~0;
-@@ -101,6 +102,7 @@ int pci_generic_config_write(struct pci_bus *bus, unsigned int devfn,
- {
- 	void __iomem *addr;
- 
-+	pci_info(bus, "%s(%#x %#05x %d)\n", __func__, devfn, where, size);
- 	addr = bus->ops->map_bus(bus, devfn, where);
- 	if (!addr)
- 		return PCIBIOS_DEVICE_NOT_FOUND;
-diff --git a/drivers/pci/ecam.c b/drivers/pci/ecam.c
-index 59f91d434859..78f776e590be 100644
---- a/drivers/pci/ecam.c
-+++ b/drivers/pci/ecam.c
-@@ -33,6 +33,8 @@ struct pci_config_window *pci_ecam_create(struct device *dev,
- 	struct resource *conflict;
- 	int i, err;
- 
-+	dev_info(dev, "%s cfg %pR bus %pR\n", __func__, cfgres, busr);
-+
- 	if (busr->start > busr->end)
- 		return ERR_PTR(-EINVAL);
- 
-@@ -85,6 +87,9 @@ struct pci_config_window *pci_ecam_create(struct device *dev,
- 			goto err_exit_iomap;
- 	}
- 
-+	dev_info(dev, "%s per_bus_mapping %d win %px\n", __func__,
-+		 per_bus_mapping, cfg->win);
-+
- 	if (ops->init) {
- 		err = ops->init(cfg);
- 		if (err)
-@@ -140,6 +145,8 @@ void __iomem *pci_ecam_map_bus(struct pci_bus *bus, unsigned int devfn,
- 	if (busn < cfg->busr.start || busn > cfg->busr.end)
- 		return NULL;
- 
-+	pci_info(bus, "%s(%#x %#05x): %pR\n", __func__, devfn, where,
-+		 &cfg->busr);
- 	busn -= cfg->busr.start;
- 	if (per_bus_mapping) {
- 		base = cfg->winp[busn];
-@@ -147,6 +154,8 @@ void __iomem *pci_ecam_map_bus(struct pci_bus *bus, unsigned int devfn,
- 	} else
- 		base = cfg->win;
- 
-+	pci_info(bus, "%s base %px bus_shift %d\n", __func__, base,
-+		 cfg->ops->bus_shift);
- 	if (cfg->ops->bus_shift) {
- 		bus_offset = (busn & PCIE_ECAM_BUS_MASK) << bus_shift;
- 		devfn_offset = (devfn & PCIE_ECAM_DEVFN_MASK) << devfn_shift;
+>  arch/powerpc/include/asm/opal-api.h |  2 +-
+>  arch/powerpc/include/asm/xive.h     |  2 +-
+>  arch/powerpc/kvm/book3s_xive.c      | 54 +++++------------------------
+>  arch/powerpc/sysdev/xive/common.c   | 39 +--------------------
+>  arch/powerpc/sysdev/xive/native.c   |  2 --
+>  5 files changed, 11 insertions(+), 88 deletions(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/a=
+sm/opal-api.h
+> index 48ee604ca39a..0455b679c050 100644
+> --- a/arch/powerpc/include/asm/opal-api.h
+> +++ b/arch/powerpc/include/asm/opal-api.h
+> @@ -1092,7 +1092,7 @@ enum {
+>  	OPAL_XIVE_IRQ_STORE_EOI		=3D 0x00000002,
+>  	OPAL_XIVE_IRQ_LSI		=3D 0x00000004,
+>  	OPAL_XIVE_IRQ_SHIFT_BUG		=3D 0x00000008, /* P9 DD1.0 workaround */
+> -	OPAL_XIVE_IRQ_MASK_VIA_FW	=3D 0x00000010,
+> +	OPAL_XIVE_IRQ_MASK_VIA_FW	=3D 0x00000010, /* P9 DD1.0 workaround */
+>  	OPAL_XIVE_IRQ_EOI_VIA_FW	=3D 0x00000020,
+>  };
+> =20
+> diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/x=
+ive.h
+> index ff805885a028..d62368d0ba91 100644
+> --- a/arch/powerpc/include/asm/xive.h
+> +++ b/arch/powerpc/include/asm/xive.h
+> @@ -61,7 +61,7 @@ struct xive_irq_data {
+>  #define XIVE_IRQ_FLAG_STORE_EOI	0x01
+>  #define XIVE_IRQ_FLAG_LSI	0x02
+>  #define XIVE_IRQ_FLAG_SHIFT_BUG	0x04 /* P9 DD1.0 workaround */
+> -#define XIVE_IRQ_FLAG_MASK_FW	0x08
+> +#define XIVE_IRQ_FLAG_MASK_FW	0x08 /* P9 DD1.0 workaround */
+>  #define XIVE_IRQ_FLAG_EOI_FW	0x10
+>  #define XIVE_IRQ_FLAG_H_INT_ESB	0x20
+> =20
+> diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xiv=
+e.c
+> index fae1c2e8da29..59a986ae640b 100644
+> --- a/arch/powerpc/kvm/book3s_xive.c
+> +++ b/arch/powerpc/kvm/book3s_xive.c
+> @@ -419,37 +419,16 @@ static u8 xive_lock_and_mask(struct kvmppc_xive *xi=
+ve,
+>  	/* Get the right irq */
+>  	kvmppc_xive_select_irq(state, &hw_num, &xd);
+> =20
+> -	/*
+> -	 * If the interrupt is marked as needing masking via
+> -	 * firmware, we do it here. Firmware masking however
+> -	 * is "lossy", it won't return the old p and q bits
+> -	 * and won't set the interrupt to a state where it will
+> -	 * record queued ones. If this is an issue we should do
+> -	 * lazy masking instead.
+> -	 *
+> -	 * For now, we work around this in unmask by forcing
+> -	 * an interrupt whenever we unmask a non-LSI via FW
+> -	 * (if ever).
+> -	 */
+> -	if (xd->flags & OPAL_XIVE_IRQ_MASK_VIA_FW) {
+> -		xive_native_configure_irq(hw_num,
+> -				kvmppc_xive_vp(xive, state->act_server),
+> -				MASKED, state->number);
+> -		/* set old_p so we can track if an H_EOI was done */
+> -		state->old_p =3D true;
+> -		state->old_q =3D false;
+> -	} else {
+> -		/* Set PQ to 10, return old P and old Q and remember them */
+> -		val =3D xive_vm_esb_load(xd, XIVE_ESB_SET_PQ_10);
+> -		state->old_p =3D !!(val & 2);
+> -		state->old_q =3D !!(val & 1);
+> +	/* Set PQ to 10, return old P and old Q and remember them */
+> +	val =3D xive_vm_esb_load(xd, XIVE_ESB_SET_PQ_10);
+> +	state->old_p =3D !!(val & 2);
+> +	state->old_q =3D !!(val & 1);
+> =20
+> -		/*
+> -		 * Synchronize hardware to sensure the queues are updated
+> -		 * when masking
+> +	/*
+> +	 * Synchronize hardware to sensure the queues are updated
+> +	 * when masking
+>  		 */
+
+... here ^^
+
+> -		xive_native_sync_source(hw_num);
+> -	}
+> +	xive_native_sync_source(hw_num);
+> =20
+>  	return old_prio;
+>  }
+> @@ -483,23 +462,6 @@ static void xive_finish_unmask(struct kvmppc_xive *x=
+ive,
+>  	/* Get the right irq */
+>  	kvmppc_xive_select_irq(state, &hw_num, &xd);
+> =20
+> -	/*
+> -	 * See comment in xive_lock_and_mask() concerning masking
+> -	 * via firmware.
+> -	 */
+> -	if (xd->flags & OPAL_XIVE_IRQ_MASK_VIA_FW) {
+> -		xive_native_configure_irq(hw_num,
+> -				kvmppc_xive_vp(xive, state->act_server),
+> -				state->act_priority, state->number);
+> -		/* If an EOI is needed, do it here */
+> -		if (!state->old_p)
+> -			xive_vm_source_eoi(hw_num, xd);
+> -		/* If this is not an LSI, force a trigger */
+> -		if (!(xd->flags & OPAL_XIVE_IRQ_LSI))
+> -			xive_irq_trigger(xd);
+> -		goto bail;
+> -	}
+> -
+>  	/* Old Q set, set PQ to 11 */
+>  	if (state->old_q)
+>  		xive_vm_esb_load(xd, XIVE_ESB_SET_PQ_11);
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
+/common.c
+> index a9259470bf9f..a71412fefb65 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -424,9 +424,7 @@ static void xive_irq_eoi(struct irq_data *d)
+>  }
+> =20
+>  /*
+> - * Helper used to mask and unmask an interrupt source. This
+> - * is only called for normal interrupts that do not require
+> - * masking/unmasking via firmware.
+> + * Helper used to mask and unmask an interrupt source.
+>   */
+>  static void xive_do_source_set_mask(struct xive_irq_data *xd,
+>  				    bool mask)
+> @@ -673,20 +671,6 @@ static void xive_irq_unmask(struct irq_data *d)
+> =20
+>  	pr_devel("xive_irq_unmask: irq %d data @%p\n", d->irq, xd);
+> =20
+> -	/*
+> -	 * This is a workaround for PCI LSI problems on P9, for
+> -	 * these, we call FW to set the mask. The problems might
+> -	 * be fixed by P9 DD2.0, if that is the case, firmware
+> -	 * will no longer set that flag.
+> -	 */
+> -	if (xd->flags & XIVE_IRQ_FLAG_MASK_FW) {
+> -		unsigned int hw_irq =3D (unsigned int)irqd_to_hwirq(d);
+> -		xive_ops->configure_irq(hw_irq,
+> -					get_hard_smp_processor_id(xd->target),
+> -					xive_irq_priority, d->irq);
+> -		return;
+> -	}
+> -
+>  	xive_do_source_set_mask(xd, false);
+>  }
+> =20
+> @@ -696,20 +680,6 @@ static void xive_irq_mask(struct irq_data *d)
+> =20
+>  	pr_devel("xive_irq_mask: irq %d data @%p\n", d->irq, xd);
+> =20
+> -	/*
+> -	 * This is a workaround for PCI LSI problems on P9, for
+> -	 * these, we call OPAL to set the mask. The problems might
+> -	 * be fixed by P9 DD2.0, if that is the case, firmware
+> -	 * will no longer set that flag.
+> -	 */
+> -	if (xd->flags & XIVE_IRQ_FLAG_MASK_FW) {
+> -		unsigned int hw_irq =3D (unsigned int)irqd_to_hwirq(d);
+> -		xive_ops->configure_irq(hw_irq,
+> -					get_hard_smp_processor_id(xd->target),
+> -					0xff, d->irq);
+> -		return;
+> -	}
+> -
+>  	xive_do_source_set_mask(xd, true);
+>  }
+> =20
+> @@ -852,13 +822,6 @@ static int xive_irq_set_vcpu_affinity(struct irq_dat=
+a *d, void *state)
+>  	int rc;
+>  	u8 pq;
+> =20
+> -	/*
+> -	 * We only support this on interrupts that do not require
+> -	 * firmware calls for masking and unmasking
+> -	 */
+> -	if (xd->flags & XIVE_IRQ_FLAG_MASK_FW)
+> -		return -EIO;
+> -
+>  	/*
+>  	 * This is called by KVM with state non-NULL for enabling
+>  	 * pass-through or NULL for disabling it
+> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive=
+/native.c
+> index 0310783241b5..deb97ad25d62 100644
+> --- a/arch/powerpc/sysdev/xive/native.c
+> +++ b/arch/powerpc/sysdev/xive/native.c
+> @@ -64,8 +64,6 @@ int xive_native_populate_irq_data(u32 hw_irq, struct xi=
+ve_irq_data *data)
+>  		data->flags |=3D XIVE_IRQ_FLAG_STORE_EOI;
+>  	if (opal_flags & OPAL_XIVE_IRQ_LSI)
+>  		data->flags |=3D XIVE_IRQ_FLAG_LSI;
+> -	if (opal_flags & OPAL_XIVE_IRQ_MASK_VIA_FW)
+> -		data->flags |=3D XIVE_IRQ_FLAG_MASK_FW;
+>  	if (opal_flags & OPAL_XIVE_IRQ_EOI_VIA_FW)
+>  		data->flags |=3D XIVE_IRQ_FLAG_EOI_FW;
+>  	data->eoi_page =3D be64_to_cpu(eoi_page);
+
