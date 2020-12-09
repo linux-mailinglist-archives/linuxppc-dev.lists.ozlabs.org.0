@@ -1,56 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0CD62D3962
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 05:01:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A94F2D3985
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 05:17:25 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrNdS2GfBzDqjn
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 15:01:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CrP024ff7zDqjk
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 15:17:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrNbM0SS6zDqcv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 14:59:27 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CrNyW1BY4zDqYM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 15:16:03 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Yt24v0LC; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CrNbK1Gwvz9sWC;
- Wed,  9 Dec 2020 14:59:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1607486366;
- bh=83V+Va2FNLgnoBV3YAia+6UJv+qGMO3fTqLdZkCP+C4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Yt24v0LCtsKwWGXCurr8VaFtMo5RmrQKPnR9mW5NtbRlzdHpZ46yELwnVAisTASgG
- fITRNt534cteOwIkr8yluYbJwiwnNFssp0dnxIwDFak9yz/aOZeuoBSBqCAiESKgAL
- yfbZ5FkAPg1QOaUMqBeAUBjcyFFlcIEXVdnR7jG5H96Xpt6TO+9AyXhT5Nl+7GR5vZ
- cTH3ovccMRffeawB3BFNwkIoE2KngtZBDjsrWioLXuhqlNLlIByayl6ltlnb4bkTe3
- e3r+1xg3XAKXlLy6GgnE4o7XbMPdRPDQS9JnPjoITklFF9OSifjZQ1xWXlYmuE6BDx
- jmWLAUp7V8rTg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/3] powerpc/smp: Parse ibm,
- thread-groups with multiple properties
-In-Reply-To: <20201208172540.GA14206@in.ibm.com>
-References: <1607057327-29822-1-git-send-email-ego@linux.vnet.ibm.com>
- <1607057327-29822-2-git-send-email-ego@linux.vnet.ibm.com>
- <20201207121042.GH528281@linux.vnet.ibm.com>
- <20201208172540.GA14206@in.ibm.com>
-Date: Wed, 09 Dec 2020 14:59:22 +1100
-Message-ID: <87v9dbsk85.fsf@mpe.ellerman.id.au>
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=Gz4ZDncc; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4CrNyV6X4sz9sWC; Wed,  9 Dec 2020 15:16:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1607487362; bh=jqtZFI7KL7v46Pp3s+SsaUNEfvanCrhY8vPaiiWNGA8=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Gz4ZDnccQU+sPGtfKTwUSUDh7N8XvvpczzIgXv7JISlKiCzQVqCAsPdlSuW+A7Gfq
+ z3R4wyUqc6eGJLQBgNIDCiX2+BI9szVsYjR6Os8lqeX9UJKJznIYJWYBf0JPIZnJLC
+ KssI9r/eaho7i1UpIa7ghOfnnVWGZyfNgPvwuJXjkKIpM7LFDKwGQMFtcuRD68a/rJ
+ Xce8SAKlRLtnF1dthsJO5EC29H3Y95tsH9VFY1OE7fCMLRyJenZI3K7KVUMwQS4FBI
+ GG3HUXbionHOVT/NF7hwYoVg8bafbns0Ie8Wmbd+1GYDQx968Qysh4+liKDdnguWJd
+ GKRGvDE+l9Yww==
+Date: Wed, 9 Dec 2020 15:15:42 +1100
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v1 1/2] KVM: PPC: Book3S HV: Add support for
+ H_RPT_INVALIDATE (nested case only)
+Message-ID: <20201209041542.GA29825@thinks.paulus.ozlabs.org>
+References: <20201019112642.53016-1-bharata@linux.ibm.com>
+ <20201019112642.53016-2-bharata@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201019112642.53016-2-bharata@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,55 +54,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Michael Neuling <mikey@neuling.org>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Valentin Schneider <valentin.schneider@arm.com>
+Cc: aneesh.kumar@linux.ibm.com, npiggin@gmail.com, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Gautham R Shenoy <ego@linux.vnet.ibm.com> writes:
-> Hello Srikar,
->
-> Thanks for taking a look at the patch.
->
-> On Mon, Dec 07, 2020 at 05:40:42PM +0530, Srikar Dronamraju wrote:
->> * Gautham R. Shenoy <ego@linux.vnet.ibm.com> [2020-12-04 10:18:45]:
->> 
->> > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
->> 
->> <snipped>
->> 
->> > 
->> >  static int parse_thread_groups(struct device_node *dn,
->> > -			       struct thread_groups *tg,
->> > -			       unsigned int property)
->> > +			       struct thread_groups_list *tglp)
->> >  {
->> > -	int i;
->> > -	u32 thread_group_array[3 + MAX_THREAD_LIST_SIZE];
->> > +	int i = 0;
->> > +	u32 *thread_group_array;
->> >  	u32 *thread_list;
->> >  	size_t total_threads;
->> > -	int ret;
->> > +	int ret = 0, count;
->> > +	unsigned int property_idx = 0;
->> 
->> NIT:
->> tglx mentions in one of his recent comments to try keep a reverse fir tree
->> ordering of variables where possible.
->
-> I suppose you mean moving the longer local variable declarations to to
-> the top and shorter ones to the bottom. Thanks. Will fix this.
+On Mon, Oct 19, 2020 at 04:56:41PM +0530, Bharata B Rao wrote:
+> Implements H_RPT_INVALIDATE hcall and supports only nested case
+> currently.
+> 
+> A KVM capability KVM_CAP_RPT_INVALIDATE is added to indicate the
+> support for this hcall.
 
-Yeah. It's called "reverse christmas tree", that's googleable.
+I have a couple of questions about this patch:
 
-I also prefer that style, it makes the locals visually sit with the
-beginning of the function body.
+1. Is this something that is useful today, or is it something that may
+become useful in the future depending on future product plans?  In
+other words, what advantage is there to forcing L2 guests to use this
+hcall instead of doing tlbie themselves?
 
-cheers
+2. Why does it need to be added to the default-enabled hcall list?
+
+There is a concern that if this is enabled by default we could get the
+situation where a guest using it gets migrated to a host that doesn't
+support it, which would be bad.  That is the reason that all new
+things like this are disabled by default and only enabled by userspace
+(i.e. QEMU) in situations where we can enforce that it is available on
+all hosts to which the VM might be migrated.
+
+Thanks,
+Paul.
