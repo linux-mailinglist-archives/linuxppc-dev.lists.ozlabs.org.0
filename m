@@ -1,56 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A382D45CF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 16:53:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAE92D4656
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 17:08:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrhRJ1HbRzDqHL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 02:53:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Crhmw4plDzDqvD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 03:08:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=188.165.45.220; helo=5.mo52.mail-out.ovh.net;
+ smtp.mailfrom=kaod.org (client-ip=178.33.105.233; helo=2.mo52.mail-out.ovh.net;
  envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 5.mo52.mail-out.ovh.net (5.mo52.mail-out.ovh.net
- [188.165.45.220])
+X-Greylist: delayed 1196 seconds by postgrey-1.36 at bilbo;
+ Thu, 10 Dec 2020 03:07:13 AEDT
+Received: from 2.mo52.mail-out.ovh.net (2.mo52.mail-out.ovh.net
+ [178.33.105.233])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrhN261MmzDqkb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 02:50:42 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.138.129])
- by mo52.mail-out.ovh.net (Postfix) with ESMTPS id 0C69A221AC7;
- Wed,  9 Dec 2020 16:50:38 +0100 (CET)
-Received: from kaod.org (37.59.142.106) by DAG8EX1.mxp5.local (172.16.2.71)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Crhl53YP9zDqgB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 03:07:12 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.4.83])
+ by mo52.mail-out.ovh.net (Postfix) with ESMTPS id 5083D221088;
+ Wed,  9 Dec 2020 16:28:14 +0100 (CET)
+Received: from kaod.org (37.59.142.98) by DAG8EX1.mxp5.local (172.16.2.71)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Wed, 9 Dec 2020
- 16:50:36 +0100
+ 16:28:11 +0100
 Authentication-Results: garm.ovh; auth=pass
- (GARM-106R0060419b24f-f79b-4594-b157-12c20c6a2375,
+ (GARM-98R0020d1df89b-fc08-428a-9fa1-3d0a449a8bba,
  661A724A132DD26A84B163D3BB90DC3732340046) smtp.auth=groug@kaod.org
-Date: Wed, 9 Dec 2020 16:50:35 +0100
+Date: Wed, 9 Dec 2020 16:28:08 +0100
 From: Greg Kurz <groug@kaod.org>
 To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
-Subject: Re: [PATCH 07/13] powerpc/xive: Add a debug_show handler to the
- XIVE irq_domain
-Message-ID: <20201209165035.65c8a731@bahia.lan>
-In-Reply-To: <20201208151124.1329942-8-clg@kaod.org>
+Subject: Re: [PATCH 12/13] powerpc/xive: Simplify xive_do_source_eoi()
+Message-ID: <20201209162808.0a4bfaf0@bahia.lan>
+In-Reply-To: <20201208151124.1329942-13-clg@kaod.org>
 References: <20201208151124.1329942-1-clg@kaod.org>
- <20201208151124.1329942-8-clg@kaod.org>
+ <20201208151124.1329942-13-clg@kaod.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [37.59.142.106]
-X-ClientProxiedBy: DAG5EX1.mxp5.local (172.16.2.41) To DAG8EX1.mxp5.local
+X-Originating-IP: [37.59.142.98]
+X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG8EX1.mxp5.local
  (172.16.2.71)
-X-Ovh-Tracer-GUID: 01299ab5-fe9e-40e0-9265-678c55997004
-X-Ovh-Tracer-Id: 17459611332084210074
+X-Ovh-Tracer-GUID: 0317fbae-4973-4951-9409-37c1daa4785a
+X-Ovh-Tracer-Id: 17081590439105042842
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudejkedgkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepveelhfdtudffhfeiveehhfelgeellefgteffteekudegheejfffghefhfeeuudffnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopegtlhhgsehkrghougdrohhrgh
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudejkedgjeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepveelhfdtudffhfeiveehhfelgeellefgteffteekudegheejfffghefhfeeuudffnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,105 +68,148 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 8 Dec 2020 16:11:18 +0100
+On Tue, 8 Dec 2020 16:11:23 +0100
 C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 
-> Full state of the Linux interrupt descriptors can be dumped under
-> debugfs when compiled with CONFIG_GENERIC_IRQ_DEBUGFS. Add support for
-> the XIVE interrupt controller.
+> Previous patches removed the need of the first argument which was a
+> hack for Firwmware EOI. Remove it and flatten the routine which has
+> became simpler.
 >=20
 > Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 > ---
->  arch/powerpc/sysdev/xive/common.c | 58 +++++++++++++++++++++++++++++++
->  1 file changed, 58 insertions(+)
+
+Much nicer indeed.
+
+Reviewed-by: Greg Kurz <groug@kaod.org>
+
+>  arch/powerpc/sysdev/xive/common.c | 72 ++++++++++++++-----------------
+>  1 file changed, 33 insertions(+), 39 deletions(-)
 >=20
 > diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
 /common.c
-> index 721617f0f854..411cba12d73b 100644
+> index fe6229dd3241..fb438203d5ee 100644
 > --- a/arch/powerpc/sysdev/xive/common.c
 > +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -1303,11 +1303,69 @@ static int xive_irq_domain_match(struct irq_domai=
-n *h, struct device_node *node,
->  	return xive_ops->match(node);
+> @@ -348,39 +348,40 @@ static void xive_do_queue_eoi(struct xive_cpu *xc)
+>   * EOI an interrupt at the source. There are several methods
+>   * to do this depending on the HW version and source type
+>   */
+> -static void xive_do_source_eoi(u32 hw_irq, struct xive_irq_data *xd)
+> +static void xive_do_source_eoi(struct xive_irq_data *xd)
+>  {
+> +	u8 eoi_val;
+> +
+>  	xd->stale_p =3D false;
+> +
+>  	/* If the XIVE supports the new "store EOI facility, use it */
+> -	if (xd->flags & XIVE_IRQ_FLAG_STORE_EOI)
+> +	if (xd->flags & XIVE_IRQ_FLAG_STORE_EOI) {
+>  		xive_esb_write(xd, XIVE_ESB_STORE_EOI, 0);
+> -	else {
+> -		u8 eoi_val;
+> +		return;
+> +	}
+> =20
+> -		/*
+> -		 * Otherwise for EOI, we use the special MMIO that does
+> -		 * a clear of both P and Q and returns the old Q,
+> -		 * except for LSIs where we use the "EOI cycle" special
+> -		 * load.
+> -		 *
+> -		 * This allows us to then do a re-trigger if Q was set
+> -		 * rather than synthesizing an interrupt in software
+> -		 *
+> -		 * For LSIs the HW EOI cycle is used rather than PQ bits,
+> -		 * as they are automatically re-triggred in HW when still
+> -		 * pending.
+> -		 */
+> -		if (xd->flags & XIVE_IRQ_FLAG_LSI)
+> -			xive_esb_read(xd, XIVE_ESB_LOAD_EOI);
+> -		else {
+> -			eoi_val =3D xive_esb_read(xd, XIVE_ESB_SET_PQ_00);
+> -			DBG_VERBOSE("eoi_val=3D%x\n", eoi_val);
+> -
+> -			/* Re-trigger if needed */
+> -			if ((eoi_val & XIVE_ESB_VAL_Q) && xd->trig_mmio)
+> -				out_be64(xd->trig_mmio, 0);
+> -		}
+> +	/*
+> +	 * For LSIs, we use the "EOI cycle" special load rather than
+> +	 * PQ bits, as they are automatically re-triggered in HW when
+> +	 * still pending.
+> +	 */
+> +	if (xd->flags & XIVE_IRQ_FLAG_LSI) {
+> +		xive_esb_read(xd, XIVE_ESB_LOAD_EOI);
+> +		return;
+>  	}
+> +
+> +	/*
+> +	 * Otherwise, we use the special MMIO that does a clear of
+> +	 * both P and Q and returns the old Q. This allows us to then
+> +	 * do a re-trigger if Q was set rather than synthesizing an
+> +	 * interrupt in software
+> +	 */
+> +	eoi_val =3D xive_esb_read(xd, XIVE_ESB_SET_PQ_00);
+> +	DBG_VERBOSE("eoi_val=3D%x\n", eoi_val);
+> +
+> +	/* Re-trigger if needed */
+> +	if ((eoi_val & XIVE_ESB_VAL_Q) && xd->trig_mmio)
+> +		out_be64(xd->trig_mmio, 0);
 >  }
 > =20
-> +#ifdef CONFIG_GENERIC_IRQ_DEBUGFS
-> +static const char * const esb_names[] =3D { "RESET", "OFF", "PENDING", "=
-QUEUED" };
-> +
-> +static const struct {
-> +	u64  mask;
-> +	char *name;
-> +} xive_irq_flags[] =3D {
-> +	{ XIVE_IRQ_FLAG_STORE_EOI, "STORE_EOI" },
-> +	{ XIVE_IRQ_FLAG_LSI,       "LSI"       },
-
-> +	{ XIVE_IRQ_FLAG_SHIFT_BUG, "SHIFT_BUG" },
-> +	{ XIVE_IRQ_FLAG_MASK_FW,   "MASK_FW"   },
-> +	{ XIVE_IRQ_FLAG_EOI_FW,    "EOI_FW"    },
-
-If seems that you don't even need these ^^ if you move this patch after
-patch 11 actually.
-
-> +	{ XIVE_IRQ_FLAG_H_INT_ESB, "H_INT_ESB" },
-> +	{ XIVE_IRQ_FLAG_NO_EOI,    "NO_EOI"    },
-> +};
-> +
-> +static void xive_irq_domain_debug_show(struct seq_file *m, struct irq_do=
-main *d,
-> +				       struct irq_data *irqd, int ind)
-> +{
-> +	struct xive_irq_data *xd;
-> +	u64 val;
-> +	int i;
-> +
-> +	/* No IRQ domain level information. To be done */
-> +	if (!irqd)
-> +		return;
-> +
-> +	if (!is_xive_irq(irq_data_get_irq_chip(irqd)))
-
-Wouldn't it be a bug to get anything else but the XIVE irqchip here ?
-
-WARN_ON_ONCE() ?
-
-> +		return;
-> +
-> +	seq_printf(m, "%*sXIVE:\n", ind, "");
-> +	ind++;
-> +
-> +	xd =3D irq_data_get_irq_handler_data(irqd);
-> +	if (!xd) {
-> +		seq_printf(m, "%*snot assigned\n", ind, "");
-> +		return;
-> +	}
-> +
-> +	val =3D xive_esb_read(xd, XIVE_ESB_GET);
-> +	seq_printf(m, "%*sESB:      %s\n", ind, "", esb_names[val & 0x3]);
-> +	seq_printf(m, "%*sPstate:   %s %s\n", ind, "", xd->stale_p ? "stale" : =
-"",
-> +		   xd->saved_p ? "saved" : "");
-> +	seq_printf(m, "%*sTarget:   %d\n", ind, "", xd->target);
-> +	seq_printf(m, "%*sChip:     %d\n", ind, "", xd->src_chip);
-> +	seq_printf(m, "%*sTrigger:  0x%016llx\n", ind, "", xd->trig_page);
-> +	seq_printf(m, "%*sEOI:      0x%016llx\n", ind, "", xd->eoi_page);
-> +	seq_printf(m, "%*sFlags:    0x%llx\n", ind, "", xd->flags);
-> +	for (i =3D 0; i < ARRAY_SIZE(xive_irq_flags); i++) {
-> +		if (xd->flags & xive_irq_flags[i].mask)
-> +			seq_printf(m, "%*s%s\n", ind + 12, "", xive_irq_flags[i].name);
-> +	}
-> +}
-> +#endif
-> +
->  static const struct irq_domain_ops xive_irq_domain_ops =3D {
->  	.match =3D xive_irq_domain_match,
->  	.map =3D xive_irq_domain_map,
->  	.unmap =3D xive_irq_domain_unmap,
->  	.xlate =3D xive_irq_domain_xlate,
-> +#ifdef CONFIG_GENERIC_IRQ_DEBUGFS
-> +	.debug_show =3D xive_irq_domain_debug_show,
-> +#endif
->  };
+>  /* irq_chip eoi callback, called with irq descriptor lock held */
+> @@ -398,7 +399,7 @@ static void xive_irq_eoi(struct irq_data *d)
+>  	 */
+>  	if (!irqd_irq_disabled(d) && !irqd_is_forwarded_to_vcpu(d) &&
+>  	    !(xd->flags & XIVE_IRQ_FLAG_NO_EOI))
+> -		xive_do_source_eoi(irqd_to_hwirq(d), xd);
+> +		xive_do_source_eoi(xd);
+>  	else
+>  		xd->stale_p =3D true;
 > =20
->  static void __init xive_init_host(struct device_node *np)
+> @@ -788,14 +789,7 @@ static int xive_irq_retrigger(struct irq_data *d)
+>  	 * 11, then perform an EOI.
+>  	 */
+>  	xive_esb_read(xd, XIVE_ESB_SET_PQ_11);
+> -
+> -	/*
+> -	 * Note: We pass "0" to the hw_irq argument in order to
+> -	 * avoid calling into the backend EOI code which we don't
+> -	 * want to do in the case of a re-trigger. Backends typically
+> -	 * only do EOI for LSIs anyway.
+> -	 */
+> -	xive_do_source_eoi(0, xd);
+> +	xive_do_source_eoi(xd);
+> =20
+>  	return 1;
+>  }
+> @@ -910,7 +904,7 @@ static int xive_irq_set_vcpu_affinity(struct irq_data=
+ *d, void *state)
+>  		 * while masked, the generic code will re-mask it anyway.
+>  		 */
+>  		if (!xd->saved_p)
+> -			xive_do_source_eoi(hw_irq, xd);
+> +			xive_do_source_eoi(xd);
+> =20
+>  	}
+>  	return 0;
+> @@ -1054,7 +1048,7 @@ static void xive_ipi_eoi(struct irq_data *d)
+>  	DBG_VERBOSE("IPI eoi: irq=3D%d [0x%lx] (HW IRQ 0x%x) pending=3D%02x\n",
+>  		    d->irq, irqd_to_hwirq(d), xc->hw_ipi, xc->pending_prio);
+> =20
+> -	xive_do_source_eoi(xc->hw_ipi, &xc->ipi_data);
+> +	xive_do_source_eoi(&xc->ipi_data);
+>  	xive_do_queue_eoi(xc);
+>  }
+> =20
+> @@ -1443,7 +1437,7 @@ static void xive_flush_cpu_queue(unsigned int cpu, =
+struct xive_cpu *xc)
+>  		 * still asserted. Otherwise do an MSI retrigger.
+>  		 */
+>  		if (xd->flags & XIVE_IRQ_FLAG_LSI)
+> -			xive_do_source_eoi(irqd_to_hwirq(d), xd);
+> +			xive_do_source_eoi(xd);
+>  		else
+>  			xive_irq_retrigger(d);
+> =20
 
