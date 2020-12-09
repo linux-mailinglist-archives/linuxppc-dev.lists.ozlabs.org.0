@@ -1,57 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759692D453E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 16:23:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2618F2D4558
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 16:27:07 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Crgmg4rlFzDqcm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 02:23:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Crgrl5Jl0zDqgL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 02:27:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
- helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=groug@kaod.org;
+ smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
+ helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=groug@kaod.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from smtpout1.mo804.mail-out.ovh.net
- (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
+Received: from smtpout1.mo529.mail-out.ovh.net
+ (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrgkZ4NRyzDqgj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 02:21:38 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.1.111])
- by mo804.mail-out.ovh.net (Postfix) with ESMTPS id BEA6E7925ABF;
- Wed,  9 Dec 2020 16:21:35 +0100 (CET)
-Received: from kaod.org (37.59.142.100) by DAG8EX1.mxp5.local (172.16.2.71)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CrgpC6G3tzDqfN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 02:24:51 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.4.141])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id B188F72B524D;
+ Wed,  9 Dec 2020 16:24:37 +0100 (CET)
+Received: from kaod.org (37.59.142.103) by DAG8EX1.mxp5.local (172.16.2.71)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Wed, 9 Dec 2020
- 16:21:31 +0100
+ 16:24:36 +0100
 Authentication-Results: garm.ovh; auth=pass
- (GARM-100R003bd2de322-af54-4a72-b8bf-3a52e3f63f99,
+ (GARM-103G0058db35bb0-d8b2-4273-90c2-ff3b6c1b7f36,
  661A724A132DD26A84B163D3BB90DC3732340046) smtp.auth=groug@kaod.org
-Date: Wed, 9 Dec 2020 16:21:27 +0100
+X-OVh-ClientIp: 82.253.208.248
+Date: Wed, 9 Dec 2020 16:24:35 +0100
 From: Greg Kurz <groug@kaod.org>
 To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
-Subject: Re: [PATCH 10/13] powerpc/xive: Remove P9 DD1 flag
- XIVE_IRQ_FLAG_MASK_FW
-Message-ID: <20201209162127.603f5b8c@bahia.lan>
-In-Reply-To: <20201208151124.1329942-11-clg@kaod.org>
+Subject: Re: [PATCH 11/13] powerpc/xive: Remove P9 DD1 flag
+ XIVE_IRQ_FLAG_EOI_FW
+Message-ID: <20201209162435.679564d7@bahia.lan>
+In-Reply-To: <20201208151124.1329942-12-clg@kaod.org>
 References: <20201208151124.1329942-1-clg@kaod.org>
- <20201208151124.1329942-11-clg@kaod.org>
+ <20201208151124.1329942-12-clg@kaod.org>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [37.59.142.100]
-X-ClientProxiedBy: DAG4EX1.mxp5.local (172.16.2.31) To DAG8EX1.mxp5.local
+X-Originating-IP: [37.59.142.103]
+X-ClientProxiedBy: DAG6EX2.mxp5.local (172.16.2.52) To DAG8EX1.mxp5.local
  (172.16.2.71)
-X-Ovh-Tracer-GUID: e8d63fb0-84b0-45e2-9441-a2479f9fc49a
-X-Ovh-Tracer-Id: 16969281924201355674
+X-Ovh-Tracer-GUID: 3e937519-782f-4090-9ecb-0dcd8c16aca4
+X-Ovh-Tracer-Id: 17020510369855216026
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudejkedgjeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepfefftedvgeduuefgheeltddtieegheejhfekleduuddtffejffeuleffgfevtdeknecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddttdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudejkedgjeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepfefftedvgeduuefgheeltddtieegheejhfekleduuddtffejffeuleffgfevtdeknecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,213 +69,117 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 8 Dec 2020 16:11:21 +0100
+On Tue, 8 Dec 2020 16:11:22 +0100
 C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 
-> This flag was used to support the PHB4 LSIs on P9 DD1 and we have
-> stopped supporting this CPU when DD2 came out. See skiboot commit:
+> This flag was used to support the P9 DD1 and we have stopped
+> supporting this CPU when DD2 came out. See skiboot commit:
 >=20
 >   https://github.com/open-power/skiboot/commit/0b0d15e3c170
+>=20
+> Also, remove eoi handler which is now unused.
 >=20
 > Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 > ---
 
 Reviewed-by: Greg Kurz <groug@kaod.org>
 
-In case a v2 is required, same suggestion to comment out the removed
-items entirely, plus fix an indent nit....
+Same suggestion as with previous patch.
 
->  arch/powerpc/include/asm/opal-api.h |  2 +-
->  arch/powerpc/include/asm/xive.h     |  2 +-
->  arch/powerpc/kvm/book3s_xive.c      | 54 +++++------------------------
->  arch/powerpc/sysdev/xive/common.c   | 39 +--------------------
->  arch/powerpc/sysdev/xive/native.c   |  2 --
->  5 files changed, 11 insertions(+), 88 deletions(-)
+>  arch/powerpc/include/asm/opal-api.h      |  2 +-
+>  arch/powerpc/include/asm/xive.h          |  2 +-
+>  arch/powerpc/sysdev/xive/xive-internal.h |  1 -
+>  arch/powerpc/kvm/book3s_xive_template.c  |  2 --
+>  arch/powerpc/sysdev/xive/common.c        | 13 +------------
+>  arch/powerpc/sysdev/xive/native.c        | 12 ------------
+>  arch/powerpc/sysdev/xive/spapr.c         |  6 ------
+>  7 files changed, 3 insertions(+), 35 deletions(-)
 >=20
 > diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/a=
 sm/opal-api.h
-> index 48ee604ca39a..0455b679c050 100644
+> index 0455b679c050..0b63ba7d5917 100644
 > --- a/arch/powerpc/include/asm/opal-api.h
 > +++ b/arch/powerpc/include/asm/opal-api.h
-> @@ -1092,7 +1092,7 @@ enum {
->  	OPAL_XIVE_IRQ_STORE_EOI		=3D 0x00000002,
+> @@ -1093,7 +1093,7 @@ enum {
 >  	OPAL_XIVE_IRQ_LSI		=3D 0x00000004,
 >  	OPAL_XIVE_IRQ_SHIFT_BUG		=3D 0x00000008, /* P9 DD1.0 workaround */
-> -	OPAL_XIVE_IRQ_MASK_VIA_FW	=3D 0x00000010,
-> +	OPAL_XIVE_IRQ_MASK_VIA_FW	=3D 0x00000010, /* P9 DD1.0 workaround */
->  	OPAL_XIVE_IRQ_EOI_VIA_FW	=3D 0x00000020,
+>  	OPAL_XIVE_IRQ_MASK_VIA_FW	=3D 0x00000010, /* P9 DD1.0 workaround */
+> -	OPAL_XIVE_IRQ_EOI_VIA_FW	=3D 0x00000020,
+> +	OPAL_XIVE_IRQ_EOI_VIA_FW	=3D 0x00000020, /* P9 DD1.0 workaround */
 >  };
 > =20
+>  /* Flags for OPAL_XIVE_GET/SET_QUEUE_INFO */
 > diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/x=
 ive.h
-> index ff805885a028..d62368d0ba91 100644
+> index d62368d0ba91..f6150d7a757a 100644
 > --- a/arch/powerpc/include/asm/xive.h
 > +++ b/arch/powerpc/include/asm/xive.h
-> @@ -61,7 +61,7 @@ struct xive_irq_data {
->  #define XIVE_IRQ_FLAG_STORE_EOI	0x01
+> @@ -62,7 +62,7 @@ struct xive_irq_data {
 >  #define XIVE_IRQ_FLAG_LSI	0x02
 >  #define XIVE_IRQ_FLAG_SHIFT_BUG	0x04 /* P9 DD1.0 workaround */
-> -#define XIVE_IRQ_FLAG_MASK_FW	0x08
-> +#define XIVE_IRQ_FLAG_MASK_FW	0x08 /* P9 DD1.0 workaround */
->  #define XIVE_IRQ_FLAG_EOI_FW	0x10
+>  #define XIVE_IRQ_FLAG_MASK_FW	0x08 /* P9 DD1.0 workaround */
+> -#define XIVE_IRQ_FLAG_EOI_FW	0x10
+> +#define XIVE_IRQ_FLAG_EOI_FW	0x10 /* P9 DD1.0 workaround */
 >  #define XIVE_IRQ_FLAG_H_INT_ESB	0x20
 > =20
-> diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xiv=
-e.c
-> index fae1c2e8da29..59a986ae640b 100644
-> --- a/arch/powerpc/kvm/book3s_xive.c
-> +++ b/arch/powerpc/kvm/book3s_xive.c
-> @@ -419,37 +419,16 @@ static u8 xive_lock_and_mask(struct kvmppc_xive *xi=
-ve,
->  	/* Get the right irq */
->  	kvmppc_xive_select_irq(state, &hw_num, &xd);
+>  /* Special flag set by KVM for excalation interrupts */
+> diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysd=
+ev/xive/xive-internal.h
+> index 066d6fe3dc1d..3b7dd2cba9db 100644
+> --- a/arch/powerpc/sysdev/xive/xive-internal.h
+> +++ b/arch/powerpc/sysdev/xive/xive-internal.h
+> @@ -52,7 +52,6 @@ struct xive_ops {
+>  	void	(*shutdown)(void);
 > =20
-> -	/*
-> -	 * If the interrupt is marked as needing masking via
-> -	 * firmware, we do it here. Firmware masking however
-> -	 * is "lossy", it won't return the old p and q bits
-> -	 * and won't set the interrupt to a state where it will
-> -	 * record queued ones. If this is an issue we should do
-> -	 * lazy masking instead.
-> -	 *
-> -	 * For now, we work around this in unmask by forcing
-> -	 * an interrupt whenever we unmask a non-LSI via FW
-> -	 * (if ever).
-> -	 */
-> -	if (xd->flags & OPAL_XIVE_IRQ_MASK_VIA_FW) {
-> -		xive_native_configure_irq(hw_num,
-> -				kvmppc_xive_vp(xive, state->act_server),
-> -				MASKED, state->number);
-> -		/* set old_p so we can track if an H_EOI was done */
-> -		state->old_p =3D true;
-> -		state->old_q =3D false;
-> -	} else {
-> -		/* Set PQ to 10, return old P and old Q and remember them */
-> -		val =3D xive_vm_esb_load(xd, XIVE_ESB_SET_PQ_10);
-> -		state->old_p =3D !!(val & 2);
-> -		state->old_q =3D !!(val & 1);
-> +	/* Set PQ to 10, return old P and old Q and remember them */
-> +	val =3D xive_vm_esb_load(xd, XIVE_ESB_SET_PQ_10);
-> +	state->old_p =3D !!(val & 2);
-> +	state->old_q =3D !!(val & 1);
-> =20
-> -		/*
-> -		 * Synchronize hardware to sensure the queues are updated
-> -		 * when masking
-> +	/*
-> +	 * Synchronize hardware to sensure the queues are updated
-> +	 * when masking
->  		 */
-
-... here ^^
-
-> -		xive_native_sync_source(hw_num);
-> -	}
-> +	xive_native_sync_source(hw_num);
-> =20
->  	return old_prio;
->  }
-> @@ -483,23 +462,6 @@ static void xive_finish_unmask(struct kvmppc_xive *x=
-ive,
->  	/* Get the right irq */
->  	kvmppc_xive_select_irq(state, &hw_num, &xd);
-> =20
-> -	/*
-> -	 * See comment in xive_lock_and_mask() concerning masking
-> -	 * via firmware.
-> -	 */
-> -	if (xd->flags & OPAL_XIVE_IRQ_MASK_VIA_FW) {
-> -		xive_native_configure_irq(hw_num,
-> -				kvmppc_xive_vp(xive, state->act_server),
-> -				state->act_priority, state->number);
-> -		/* If an EOI is needed, do it here */
-> -		if (!state->old_p)
-> -			xive_vm_source_eoi(hw_num, xd);
-> -		/* If this is not an LSI, force a trigger */
-> -		if (!(xd->flags & OPAL_XIVE_IRQ_LSI))
-> -			xive_irq_trigger(xd);
-> -		goto bail;
-> -	}
-> -
->  	/* Old Q set, set PQ to 11 */
->  	if (state->old_q)
->  		xive_vm_esb_load(xd, XIVE_ESB_SET_PQ_11);
+>  	void	(*update_pending)(struct xive_cpu *xc);
+> -	void	(*eoi)(u32 hw_irq);
+>  	void	(*sync_source)(u32 hw_irq);
+>  	u64	(*esb_rw)(u32 hw_irq, u32 offset, u64 data, bool write);
+>  #ifdef CONFIG_SMP
+> diff --git a/arch/powerpc/kvm/book3s_xive_template.c b/arch/powerpc/kvm/b=
+ook3s_xive_template.c
+> index ece36e024a8f..b0015e05d99a 100644
+> --- a/arch/powerpc/kvm/book3s_xive_template.c
+> +++ b/arch/powerpc/kvm/book3s_xive_template.c
+> @@ -74,8 +74,6 @@ static void GLUE(X_PFX,source_eoi)(u32 hw_irq, struct x=
+ive_irq_data *xd)
+>  	/* If the XIVE supports the new "store EOI facility, use it */
+>  	if (xd->flags & XIVE_IRQ_FLAG_STORE_EOI)
+>  		__x_writeq(0, __x_eoi_page(xd) + XIVE_ESB_STORE_EOI);
+> -	else if (hw_irq && xd->flags & XIVE_IRQ_FLAG_EOI_FW)
+> -		opal_int_eoi(hw_irq);
+>  	else if (xd->flags & XIVE_IRQ_FLAG_LSI) {
+>  		/*
+>  		 * For LSIs the HW EOI cycle is used rather than PQ bits,
 > diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
 /common.c
-> index a9259470bf9f..a71412fefb65 100644
+> index a71412fefb65..fe6229dd3241 100644
 > --- a/arch/powerpc/sysdev/xive/common.c
 > +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -424,9 +424,7 @@ static void xive_irq_eoi(struct irq_data *d)
->  }
+> @@ -354,18 +354,7 @@ static void xive_do_source_eoi(u32 hw_irq, struct xi=
+ve_irq_data *xd)
+>  	/* If the XIVE supports the new "store EOI facility, use it */
+>  	if (xd->flags & XIVE_IRQ_FLAG_STORE_EOI)
+>  		xive_esb_write(xd, XIVE_ESB_STORE_EOI, 0);
+> -	else if (hw_irq && xd->flags & XIVE_IRQ_FLAG_EOI_FW) {
+> -		/*
+> -		 * The FW told us to call it. This happens for some
+> -		 * interrupt sources that need additional HW whacking
+> -		 * beyond the ESB manipulation. For example LPC interrupts
+> -		 * on P9 DD1.0 needed a latch to be clared in the LPC bridge
+> -		 * itself. The Firmware will take care of it.
+> -		 */
+> -		if (WARN_ON_ONCE(!xive_ops->eoi))
+> -			return;
+> -		xive_ops->eoi(hw_irq);
+> -	} else {
+> +	else {
+>  		u8 eoi_val;
 > =20
->  /*
-> - * Helper used to mask and unmask an interrupt source. This
-> - * is only called for normal interrupts that do not require
-> - * masking/unmasking via firmware.
-> + * Helper used to mask and unmask an interrupt source.
->   */
->  static void xive_do_source_set_mask(struct xive_irq_data *xd,
->  				    bool mask)
-> @@ -673,20 +671,6 @@ static void xive_irq_unmask(struct irq_data *d)
-> =20
->  	pr_devel("xive_irq_unmask: irq %d data @%p\n", d->irq, xd);
-> =20
-> -	/*
-> -	 * This is a workaround for PCI LSI problems on P9, for
-> -	 * these, we call FW to set the mask. The problems might
-> -	 * be fixed by P9 DD2.0, if that is the case, firmware
-> -	 * will no longer set that flag.
-> -	 */
-> -	if (xd->flags & XIVE_IRQ_FLAG_MASK_FW) {
-> -		unsigned int hw_irq =3D (unsigned int)irqd_to_hwirq(d);
-> -		xive_ops->configure_irq(hw_irq,
-> -					get_hard_smp_processor_id(xd->target),
-> -					xive_irq_priority, d->irq);
-> -		return;
-> -	}
-> -
->  	xive_do_source_set_mask(xd, false);
->  }
-> =20
-> @@ -696,20 +680,6 @@ static void xive_irq_mask(struct irq_data *d)
-> =20
->  	pr_devel("xive_irq_mask: irq %d data @%p\n", d->irq, xd);
-> =20
-> -	/*
-> -	 * This is a workaround for PCI LSI problems on P9, for
-> -	 * these, we call OPAL to set the mask. The problems might
-> -	 * be fixed by P9 DD2.0, if that is the case, firmware
-> -	 * will no longer set that flag.
-> -	 */
-> -	if (xd->flags & XIVE_IRQ_FLAG_MASK_FW) {
-> -		unsigned int hw_irq =3D (unsigned int)irqd_to_hwirq(d);
-> -		xive_ops->configure_irq(hw_irq,
-> -					get_hard_smp_processor_id(xd->target),
-> -					0xff, d->irq);
-> -		return;
-> -	}
-> -
->  	xive_do_source_set_mask(xd, true);
->  }
-> =20
-> @@ -852,13 +822,6 @@ static int xive_irq_set_vcpu_affinity(struct irq_dat=
-a *d, void *state)
->  	int rc;
->  	u8 pq;
-> =20
-> -	/*
-> -	 * We only support this on interrupts that do not require
-> -	 * firmware calls for masking and unmasking
-> -	 */
-> -	if (xd->flags & XIVE_IRQ_FLAG_MASK_FW)
-> -		return -EIO;
-> -
->  	/*
->  	 * This is called by KVM with state non-NULL for enabling
->  	 * pass-through or NULL for disabling it
+>  		/*
 > diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive=
 /native.c
-> index 0310783241b5..deb97ad25d62 100644
+> index deb97ad25d62..4902d05ebbd1 100644
 > --- a/arch/powerpc/sysdev/xive/native.c
 > +++ b/arch/powerpc/sysdev/xive/native.c
 > @@ -64,8 +64,6 @@ int xive_native_populate_irq_data(u32 hw_irq, struct xi=
@@ -282,9 +187,60 @@ ve_irq_data *data)
 >  		data->flags |=3D XIVE_IRQ_FLAG_STORE_EOI;
 >  	if (opal_flags & OPAL_XIVE_IRQ_LSI)
 >  		data->flags |=3D XIVE_IRQ_FLAG_LSI;
-> -	if (opal_flags & OPAL_XIVE_IRQ_MASK_VIA_FW)
-> -		data->flags |=3D XIVE_IRQ_FLAG_MASK_FW;
->  	if (opal_flags & OPAL_XIVE_IRQ_EOI_VIA_FW)
->  		data->flags |=3D XIVE_IRQ_FLAG_EOI_FW;
+> -	if (opal_flags & OPAL_XIVE_IRQ_EOI_VIA_FW)
+> -		data->flags |=3D XIVE_IRQ_FLAG_EOI_FW;
 >  	data->eoi_page =3D be64_to_cpu(eoi_page);
+>  	data->trig_page =3D be64_to_cpu(trig_page);
+>  	data->esb_shift =3D be32_to_cpu(esb_shift);
+> @@ -380,15 +378,6 @@ static void xive_native_update_pending(struct xive_c=
+pu *xc)
+>  	}
+>  }
+> =20
+> -static void xive_native_eoi(u32 hw_irq)
+> -{
+> -	/*
+> -	 * Not normally used except if specific interrupts need
+> -	 * a workaround on EOI.
+> -	 */
+> -	opal_int_eoi(hw_irq);
+> -}
+> -
+>  static void xive_native_setup_cpu(unsigned int cpu, struct xive_cpu *xc)
+>  {
+>  	s64 rc;
+> @@ -471,7 +460,6 @@ static const struct xive_ops xive_native_ops =3D {
+>  	.match			=3D xive_native_match,
+>  	.shutdown		=3D xive_native_shutdown,
+>  	.update_pending		=3D xive_native_update_pending,
+> -	.eoi			=3D xive_native_eoi,
+>  	.setup_cpu		=3D xive_native_setup_cpu,
+>  	.teardown_cpu		=3D xive_native_teardown_cpu,
+>  	.sync_source		=3D xive_native_sync_source,
+> diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/=
+spapr.c
+> index 6610e5149d5a..01ccc0786ada 100644
+> --- a/arch/powerpc/sysdev/xive/spapr.c
+> +++ b/arch/powerpc/sysdev/xive/spapr.c
+> @@ -628,11 +628,6 @@ static void xive_spapr_update_pending(struct xive_cp=
+u *xc)
+>  	}
+>  }
+> =20
+> -static void xive_spapr_eoi(u32 hw_irq)
+> -{
+> -	/* Not used */;
+> -}
+> -
+>  static void xive_spapr_setup_cpu(unsigned int cpu, struct xive_cpu *xc)
+>  {
+>  	/* Only some debug on the TIMA settings */
+> @@ -677,7 +672,6 @@ static const struct xive_ops xive_spapr_ops =3D {
+>  	.match			=3D xive_spapr_match,
+>  	.shutdown		=3D xive_spapr_shutdown,
+>  	.update_pending		=3D xive_spapr_update_pending,
+> -	.eoi			=3D xive_spapr_eoi,
+>  	.setup_cpu		=3D xive_spapr_setup_cpu,
+>  	.teardown_cpu		=3D xive_spapr_teardown_cpu,
+>  	.sync_source		=3D xive_spapr_sync_source,
 
