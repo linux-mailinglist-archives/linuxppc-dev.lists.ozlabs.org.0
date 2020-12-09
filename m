@@ -1,47 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EC62D39AB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 05:38:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171002D39AF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 05:41:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrPSC41yKzDqlL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 15:38:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CrPWc16v5zDqmh
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 15:41:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrPQZ0MNLzDqcj
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 15:36:54 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=saNnipqa; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4CrPQY6Dvbz9sWL; Wed,  9 Dec 2020 15:36:53 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1607488613; bh=4qK0Qeph9aujlXGIFVNGaEAyJsEJ75znCDH6aXQBnaQ=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=saNnipqailTWZYEW7o1ETFKqbdiCFVgtlrhAlbhLtiElZxzzwFEmnfrXPdhBgys+a
- d0gWxSbTajAn5DXmA7bQthrlka5qpKKBNb0qzC5wHWZfEKW9R5UbkP/aeUOBiWnzOp
- mvs92dvWGLufV0p3b/bsxctGKwxuID2zW33fh1P0aOnWWlSCPtJfzelfqljdkxhv5u
- scToA9zMk+qWYvWTpaZH0dZi6DIN4IX7CmFf+0qa945U/7r7vAlCj75hxjI8ngjxPb
- 4UU3yHvWOQitK25dHPKpKMuTBleyugeZWWYLEbhnxOX1u40KESNUmiwjJsCS6u+f7/
- 6cz08KAshW+3Q==
-Date: Wed, 9 Dec 2020 15:36:48 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Subject: Re: [PATCH v2 4/4] KVM: PPC: Introduce new capability for 2nd DAWR
-Message-ID: <20201209043648.GB29825@thinks.paulus.ozlabs.org>
-References: <20201124105953.39325-1-ravi.bangoria@linux.ibm.com>
- <20201124105953.39325-5-ravi.bangoria@linux.ibm.com>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=rG9n9auN; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CrPTf3kYNzDqFG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 15:39:34 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B94XL93142934; Tue, 8 Dec 2020 23:39:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=/0AV9Qngqn3c9QYbpN8Uha2cR24sAYVMds9C7FY8VCQ=;
+ b=rG9n9auNU/1IlbfjChNUE5StDJ8mYcFp6lD+jE4yPmoo1PQbbtpvzqQv/LExU5tjrTp+
+ HnRwiF6ap56ukVVu/JgD+PZlMiXiRKzgasHxF3aUTvMUStfsQIiZFik+dTOiOuC0/FJI
+ E2jvC1kG+JrwN4sX8GQGNkgs718NIs52ky4CLSls5BLfBIBwim6zfAczxPmLMdPPmTEe
+ 18eVIshHLcV4v9Am1FieV7/CBcCRd2H+xNfErIZQzTd+3Z6RBjS9x/YY34yQ/LE808AC
+ kk/owkhEKSjDzWHrZgZS14OOwPRpUj312KfrLGo+eLMzz0TNChagXdZLXxDXNqEAK8CD jA== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35aab97xad-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Dec 2020 23:39:24 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B94W7nJ022777;
+ Wed, 9 Dec 2020 04:39:23 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma02dal.us.ibm.com with ESMTP id 3581u9v1h6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Dec 2020 04:39:23 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B94dMtm1311332
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 9 Dec 2020 04:39:22 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CFF6BAC05B;
+ Wed,  9 Dec 2020 04:39:22 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9F08BAC059;
+ Wed,  9 Dec 2020 04:39:21 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.199.38.90])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  9 Dec 2020 04:39:21 +0000 (GMT)
+X-Mailer: emacs 27.1 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 04/13] powerpc/xive: Use cpu_to_node() instead of ibm,
+ chip-id property
+In-Reply-To: <20201208151124.1329942-5-clg@kaod.org>
+References: <20201208151124.1329942-1-clg@kaod.org>
+ <20201208151124.1329942-5-clg@kaod.org>
+Date: Wed, 09 Dec 2020 10:09:18 +0530
+Message-ID: <877dpregp5.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201124105953.39325-5-ravi.bangoria@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2020-12-09_03:2020-12-08,
+ 2020-12-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 mlxscore=0
+ bulkscore=0 phishscore=0 spamscore=0 adultscore=0 suspectscore=0
+ malwarescore=0 mlxlogscore=999 priorityscore=1501 lowpriorityscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012090031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,29 +99,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: christophe.leroy@c-s.fr, leobras.c@gmail.com, mikey@neuling.org,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, npiggin@gmail.com,
- kvm-ppc@vger.kernel.org, jniethe5@gmail.com, pbonzini@redhat.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 24, 2020 at 04:29:53PM +0530, Ravi Bangoria wrote:
-> Introduce KVM_CAP_PPC_DAWR1 which can be used by Qemu to query whether
-> kvm supports 2nd DAWR or not.
+C=C3=A9dric Le Goater <clg@kaod.org> writes:
 
-This should be described in Documentation/virt/kvm/api.rst.
+> The 'chip_id' field of the XIVE CPU structure is used to choose a
+> target for a source located on the same chip when possible. This field
+> is assigned on the PowerNV platform using the "ibm,chip-id" property
+> on pSeries under KVM when NUMA nodes are defined but it is undefined
+> under PowerVM. The XIVE source structure has a similar field
+> 'src_chip' which is only assigned on the PowerNV platform.
+>
+> cpu_to_node() returns a compatible value on all platforms, 0 being the
+> default node. It will also give us the opportunity to set the affinity
+> of a source on pSeries when we can localize them.
 
-Strictly speaking, it should be a capability which is disabled by
-default, so the guest can only do the H_SET_MODE to set DAWR[X]1 if it
-has been explicitly permitted to do so by userspace (QEMU).  This is
-because we want as little as possible of the VM configuration to come
-from the host capabilities rather than from what userspace configures.
+But we should avoid assuming that linux numa node number is equivalent
+to chip id [1]. What do we expect this value represents on virtualized
+platforms like PowerVM and KVM? Is this used for a hcall?
 
-So what we really need here is for this to be a capability which can
-be queried by userspace to find out if it is possible, and then
-enabled by userspace if it wants.  See how KVM_CAP_PPC_NESTED_HV is
-handled for example.
 
-Paul.
+[1] https://lore.kernel.org/linuxppc-dev/20200817103238.158133-1-aneesh.kum=
+ar@linux.ibm.com
+
+>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
+>  arch/powerpc/sysdev/xive/common.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
+>
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
+/common.c
+> index ee375daf8114..605238ca65e4 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -1342,16 +1342,11 @@ static int xive_prepare_cpu(unsigned int cpu)
+>=20=20
+>  	xc =3D per_cpu(xive_cpu, cpu);
+>  	if (!xc) {
+> -		struct device_node *np;
+> -
+>  		xc =3D kzalloc_node(sizeof(struct xive_cpu),
+>  				  GFP_KERNEL, cpu_to_node(cpu));
+>  		if (!xc)
+>  			return -ENOMEM;
+> -		np =3D of_get_cpu_node(cpu, NULL);
+> -		if (np)
+> -			xc->chip_id =3D of_get_ibm_chip_id(np);
+> -		of_node_put(np);
+> +		xc->chip_id =3D cpu_to_node(cpu);
+>  		xc->hw_ipi =3D XIVE_BAD_IRQ;
+>=20=20
+>  		per_cpu(xive_cpu, cpu) =3D xc;
+> --=20
+> 2.26.2
