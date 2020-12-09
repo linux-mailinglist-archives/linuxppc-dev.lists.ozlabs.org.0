@@ -1,50 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4FF2D39CE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 05:45:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 446C92D39E0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 05:47:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrPcq3WXfzDqll
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 15:45:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CrPg33jFHzDqnV
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 15:47:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrPYG6GG0zDqdX
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 15:42:41 +1100 (AEDT)
-IronPort-SDR: hKu1HIDGHubfk4SNw1K26jnyJAnV8q98SODu101h+gmcr1eIffniF20pEeQPk/Hs2GK3NF8jyS
- NlH614u3eItQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9829"; a="173258005"
-X-IronPort-AV: E=Sophos;i="5.78,404,1599548400"; d="scan'208";a="173258005"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Dec 2020 20:42:39 -0800
-IronPort-SDR: Hv0ZlhOtBtJ1QY9Ky4Vc2YVWdN/zTUad806GQWz1DzS7bYS+ibvUvaIHINZlnRdF8LX+m2aCZV
- nheQ+zZZpptA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,404,1599548400"; d="scan'208";a="437641303"
-Received: from lkp-server02.sh.intel.com (HELO 68de7028daff) ([10.239.97.151])
- by fmsmga001.fm.intel.com with ESMTP; 08 Dec 2020 20:42:38 -0800
-Received: from kbuild by 68de7028daff with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kmrJF-00000J-MF; Wed, 09 Dec 2020 04:42:37 +0000
-Date: Wed, 09 Dec 2020 12:42:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- db972a3787d12b1ce9ba7a31ec376d8a79e04c47
-Message-ID: <5fd055a3.ozxm6g1MG4wuKuV+%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CrPbY3hgtzDqjY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 15:44:41 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=PlVCAeMh; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CrPbV2x6Zz9sWL;
+ Wed,  9 Dec 2020 15:44:38 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1607489078;
+ bh=KZ5wgpAwKiYgJzOPspqhqBP0PP7NjKGB38+vQR6Jig0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=PlVCAeMh/RycrGV8mp4Iyl0iSEjrcAbVXERIan3iGmed1cXLHg63sSOUhoT4rsYFt
+ O7bFKxlRsLDQFLNGTxk/sQllwvTvCUhTIrjwPgFaiA3x/3bHKMNZxRHnfg1yh81kP0
+ GOmJdJ4ypiy4toslx5oJBqNnNa/rcm4EW+1q1OK9XJG2p7dBr+0NXuxe+rZMcsofyp
+ bzC1lOSWALJzrCu5k5BsbJBm3qXvoQca3byDNHO5HqHc0Q/+j10NDktlmjWyHGHXbv
+ g8QYV0ptd6or9kPK+7lPPqddeP+qx+ddjPxQYglcMmwDUttorPjt7VNhgeyJY8PEEs
+ qzYcHg8pZv3Ug==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: linux-next: build warning after merge of the akpm tree
+In-Reply-To: <20201208230157.42c42789@canb.auug.org.au>
+References: <20201204210000.660293c6@canb.auug.org.au>
+ <20201208230157.42c42789@canb.auug.org.au>
+Date: Wed, 09 Dec 2020 15:44:35 +1100
+Message-ID: <87r1nzsi4s.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,129 +59,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Kees Cook <keescook@chromium.org>, Mathieu Malaterre <malat@debian.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: db972a3787d12b1ce9ba7a31ec376d8a79e04c47  powerpc/powermac: Fix low_sleep_handler with CONFIG_VMAP_STACK
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> Hi Stephen,
+>
+> On Fri, 4 Dec 2020 21:00:00 +1100 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+>>
+>> Hi all,
+>> 
+>> After merging the akpm tree, today's linux-next build (powerpc
+>> allyesconfig) produced warnings like this:
+>> 
+>> ld: warning: orphan section `.data..Lubsan_data177' from `arch/powerpc/oprofile/op_model_pa6t.o' being placed in section `.data..Lubsan_data177'
+>> 
+>> (lots of these latter ones)
+>
+> 781584 of them today!
+>
+>> I don't know what produced these, but it is in the akpm-current or
+>> akpm trees.
+>
+> Presumably the result of commit
+>
+>   186c3e18dba3 ("ubsan: enable for all*config builds")
+>
+> from the akpm-current tree.
+>
+> arch/powerpc/kernel/vmlinux.lds.S has:
+>
+> #ifdef CONFIG_PPC32
+>         .data : AT(ADDR(.data) - LOAD_OFFSET) {
+>                 DATA_DATA
+> #ifdef CONFIG_UBSAN
+>                 *(.data..Lubsan_data*)
+>                 *(.data..Lubsan_type*)
+> #endif
+>                 *(.data.rel*)
+>                 *(SDATA_MAIN)
+>
+> added by commit
+>
+>   beba24ac5913 ("powerpc/32: Add .data..Lubsan_data*/.data..Lubsan_type* sections explicitly")
+>
+> in 2018, but no equivalent for 64 bit.
 
-elapsed time: 884m
+They should really be in DATA_DATA or similar shouldn't they?
 
-configs tested: 103
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allmodconfig
-arm                              allyesconfig
-arm                         lubbock_defconfig
-sh                        apsh4ad0a_defconfig
-m68k                           sun3_defconfig
-sh                            migor_defconfig
-powerpc                          g5_defconfig
-powerpc                     skiroot_defconfig
-sh                   rts7751r2dplus_defconfig
-sh                     magicpanelr2_defconfig
-sh                          rsk7264_defconfig
-arc                     haps_hs_smp_defconfig
-sh                           se7724_defconfig
-powerpc                     ep8248e_defconfig
-arm                         assabet_defconfig
-mips                        omega2p_defconfig
-arm                            dove_defconfig
-mips                          ath79_defconfig
-powerpc                     kmeter1_defconfig
-mips                      maltaaprp_defconfig
-powerpc                      mgcoge_defconfig
-arc                            hsdk_defconfig
-xtensa                              defconfig
-powerpc                      pmac32_defconfig
-sh                           se7721_defconfig
-c6x                        evmc6457_defconfig
-powerpc                      acadia_defconfig
-mips                        bcm47xx_defconfig
-arm                          tango4_defconfig
-powerpc                mpc7448_hpc2_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a004-20201208
-x86_64               randconfig-a006-20201208
-x86_64               randconfig-a005-20201208
-x86_64               randconfig-a001-20201208
-x86_64               randconfig-a002-20201208
-x86_64               randconfig-a003-20201208
-i386                 randconfig-a004-20201208
-i386                 randconfig-a005-20201208
-i386                 randconfig-a001-20201208
-i386                 randconfig-a002-20201208
-i386                 randconfig-a006-20201208
-i386                 randconfig-a003-20201208
-i386                 randconfig-a013-20201208
-i386                 randconfig-a014-20201208
-i386                 randconfig-a011-20201208
-i386                 randconfig-a015-20201208
-i386                 randconfig-a012-20201208
-i386                 randconfig-a016-20201208
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a016-20201208
-x86_64               randconfig-a012-20201208
-x86_64               randconfig-a013-20201208
-x86_64               randconfig-a014-20201208
-x86_64               randconfig-a015-20201208
-x86_64               randconfig-a011-20201208
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+cheers
