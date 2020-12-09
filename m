@@ -2,54 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC3B2D4125
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 12:31:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA3E2D417C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 12:58:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrZdC6GZwzDqdc
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 22:31:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CrbCq68stzDqKr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 22:58:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ideasonboard.com (client-ip=213.167.242.64;
- helo=perceval.ideasonboard.com;
- envelope-from=laurent.pinchart@ideasonboard.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ideasonboard.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com
- header.a=rsa-sha256 header.s=mail header.b=rcqx1vmQ; 
- dkim-atps=neutral
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com
- [213.167.242.64])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrZY80Kf0zDqdc
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 22:28:07 +1100 (AEDT)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi
- [62.78.145.57])
- by perceval.ideasonboard.com (Postfix) with ESMTPSA id D186CDD;
- Wed,  9 Dec 2020 12:28:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
- s=mail; t=1607513281;
- bh=iMZ/MdwMrQyEtzHeeza99WrLdvvODJuHJmMrkn9wFBY=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=rcqx1vmQkSxAxr1meC2h6m69JtY+gzxFVKAwzEcriT5hcq5ap+jOr0+6K48Qq3QKK
- CoTDTWaUQAlgrEAgVKkdTPakKidrBD6WUzE6DJjzU+Aj9PY4AsLgC/lV3tegsHQowb
- E4vFthJgZdBIHcivhQg/w3raZpO4NwN+tVbbooHI=
-Date: Wed, 9 Dec 2020 13:27:56 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: "Enrico Weigelt, metux IT consult" <info@metux.net>
-Subject: Re: [PATCH] drivers: usb: gadget: prefer pr_*() functions over raw
- printk()
-Message-ID: <X9C0vOLZOnLZoPR8@pendragon.ideasonboard.com>
-References: <20201208144403.22097-1-info@metux.net>
- <X8+howyVRiTR9gv/@pendragon.ideasonboard.com>
- <9aaa06ad-0bd8-486d-b16b-66927d57cf96@metux.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Crb3m3zR6zDqmf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 22:51:09 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4Crb3W3LDYz9vBMV;
+ Wed,  9 Dec 2020 12:51:03 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id PpTAKL4yDMRD; Wed,  9 Dec 2020 12:51:03 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Crb3W2CJGz9vBMT;
+ Wed,  9 Dec 2020 12:51:03 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1CC498B7E6;
+ Wed,  9 Dec 2020 12:51:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id NZt4qmfxD-eb; Wed,  9 Dec 2020 12:51:04 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6657E8B7DB;
+ Wed,  9 Dec 2020 12:51:03 +0100 (CET)
+Subject: Re: [PATCH v1 2/6] powerpc/8xx: Always pin kernel text TLB
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+References: <e796c5fcb5898de827c803cf1ab8ba1d7a5d4b76.1606231483.git.christophe.leroy@csgroup.eu>
+ <203b89de491e1379f1677a2685211b7c32adfff0.1606231483.git.christophe.leroy@csgroup.eu>
+ <87lfe7s1j3.fsf@mpe.ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <a726961f-f440-b553-6c46-341a860dc90a@csgroup.eu>
+Date: Wed, 9 Dec 2020 12:50:09 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9aaa06ad-0bd8-486d-b16b-66927d57cf96@metux.net>
+In-Reply-To: <87lfe7s1j3.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,53 +67,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: balbi@kernel.org, linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, leoyang.li@nxp.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Enrico,
 
-On Wed, Dec 09, 2020 at 12:11:36PM +0100, Enrico Weigelt, metux IT consult wrote:
-> On 08.12.20 16:54, Laurent Pinchart wrote:
-> >> diff --git a/drivers/usb/gadget/udc/atmel_usba_udc.c b/drivers/usb/gadget/udc/atmel_usba_udc.c
-> >> index 2b893bceea45..4834fafb3f70 100644
-> >> --- a/drivers/usb/gadget/udc/atmel_usba_udc.c
-> >> +++ b/drivers/usb/gadget/udc/atmel_usba_udc.c
-> >> @@ -1573,7 +1573,7 @@ static void usba_control_irq(struct usba_udc *udc, struct usba_ep *ep)
-> >>  		 * generate or receive a reply right away. */
-> >>  		usba_ep_writel(ep, CLR_STA, USBA_RX_SETUP);
-> >>  
-> >> -		/* printk(KERN_DEBUG "setup: %d: %02x.%02x\n",
-> >> +		/* pr_debug("setup: %d: %02x.%02x\n",
-> >>  			ep->state, crq.crq.bRequestType,
-> >>  			crq.crq.bRequest); */
-> > 
-> > I wonder if this shouldn't be dropped instead, commented-out code isn't
-> > very useful.
+
+Le 09/12/2020 à 11:43, Michael Ellerman a écrit :
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>> There is no big poing in not pinning kernel text anymore, as now
+>> we can keep pinned TLB even with things like DEBUG_PAGEALLOC.
+>>
+>> Remove CONFIG_PIN_TLB_TEXT, making it always right.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>>   arch/powerpc/Kconfig               |  3 +--
+>>   arch/powerpc/kernel/head_8xx.S     | 20 +++-----------------
+>>   arch/powerpc/mm/nohash/8xx.c       |  3 +--
+>>   arch/powerpc/platforms/8xx/Kconfig |  7 -------
+>>   4 files changed, 5 insertions(+), 28 deletions(-)
+>>
+> ...
+>> diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+>> index 231ca95f9ffb..19a3eec1d8c5 100644
+>> --- a/arch/powerpc/mm/nohash/8xx.c
+>> +++ b/arch/powerpc/mm/nohash/8xx.c
+>> @@ -186,8 +186,7 @@ void mmu_mark_initmem_nx(void)
+>>   	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_TEXT, false);
+>>   	mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL, false);
+>>   
+>> -	if (IS_ENABLED(CONFIG_PIN_TLB_TEXT))
+>> -		mmu_pin_tlb(block_mapped_ram, false);
+>> +	mmu_pin_tlb(block_mapped_ram, false);
+>>   }
 > 
-> Indeed. Shall I send a separate patch for that ?
+> This broke mpc885_ads_defconfig with:
 
-Yes, that would make sense.
+:surprise:
 
-> > When a pointer to a struct device is available, dev_err() would be much
-> > better. That's however out of scope for this patch, but it would be nice
-> > to address it. This would become
-> > 
-> > 		dev_err(&pdev->dev, "Check IRQ setup!\n");
-> > 
+How did I get it working ? Anyway, thanks for fixing it.
+
+Christophe
+
+
 > 
-> You're right. I didn't check for that yet. I'll do it in a separate
-> patch.
-
-As most of the files touched by this patch are device drivers, dev_*()
-functions should be used instead of pr_*() where possible. I'd recommend
-a first patch that converts to dev_*(), and then a second patch that
-converts the remaining printk()s, if any, to pr_*() in the contexts
-where no struct device is available or can easily be made available.
-
--- 
-Regards,
-
-Laurent Pinchart
+>    ld: arch/powerpc/mm/nohash/8xx.o: in function `mmu_mark_initmem_nx':
+>    /home/michael/linux/arch/powerpc/mm/nohash/8xx.c:189: undefined reference to `mmu_pin_tlb'
+>    make[1]: *** [/home/michael/linux/Makefile:1164: vmlinux] Error 1
+>    make: *** [Makefile:185: __sub-make] Error 2
+> 
+> Fixed by:
+> 
+> diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+> index 35707e86c5f3..52702f3db6df 100644
+> --- a/arch/powerpc/kernel/head_8xx.S
+> +++ b/arch/powerpc/kernel/head_8xx.S
+> @@ -702,7 +702,6 @@ FixupDAR:/* Entry point for dcbx workaround. */
+>   	mtspr	SPRN_DER, r8
+>   	blr
+>   
+> -#ifdef CONFIG_PIN_TLB
+>   _GLOBAL(mmu_pin_tlb)
+>   	lis	r9, (1f - PAGE_OFFSET)@h
+>   	ori	r9, r9, (1f - PAGE_OFFSET)@l
+> @@ -802,7 +801,6 @@ _GLOBAL(mmu_pin_tlb)
+>   	mtspr	SPRN_SRR1, r10
+>   	mtspr	SPRN_SRR0, r11
+>   	rfi
+> -#endif /* CONFIG_PIN_TLB */
+>   
+>   /*
+>    * We put a few things here that have to be page-aligned.
+> 
+> 
+> cheers
+> 
