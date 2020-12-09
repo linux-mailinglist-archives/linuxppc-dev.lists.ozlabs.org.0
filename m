@@ -2,70 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C2C02D49A3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 19:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF932D4BDD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 21:31:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrmXq6gttzDqKP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 05:58:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Crpc04clVzDqtS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 07:31:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62b;
- helo=mail-pl1-x62b.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::544;
+ helo=mail-ed1-x544.google.com; envelope-from=olteanv@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=nVp8+U0Q; dkim-atps=neutral
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
- [IPv6:2607:f8b0:4864:20::62b])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=p/Mr4hZK; dkim-atps=neutral
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
+ [IPv6:2a00:1450:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrmVD1fkPzDqYd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 05:56:19 +1100 (AEDT)
-Received: by mail-pl1-x62b.google.com with SMTP id p6so1432788plr.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Dec 2020 10:56:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CrpYR0sVHzDqQZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 07:29:11 +1100 (AEDT)
+Received: by mail-ed1-x544.google.com with SMTP id dk8so3053511edb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Dec 2020 12:29:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to;
- bh=pDJdJ9jg4hC1Qi0/LCWeL6vCBADxdHWZeYcpiMBLSJc=;
- b=nVp8+U0Qroi2FT7wnDNiFbiJGQRepo6/TYrAIEWpub49d3b1Rf71FHqsD/IV1eDXAA
- vDl526q7G5TlunnyghLgc/5lsVrl47BiOypoqpedCRuFKslDZK9BLsAk2ITcKrcxhfUE
- 2N6mg+W4189MzMrHgSOsirbNic+iWTEixACsU=
+ bh=XvOrQQikyFZP1dk0scKROHnor8nIKA0FBCn4xEGM88M=;
+ b=p/Mr4hZKnBQ6uMkLv/CYnrS0YCPHBmDNnePF3xjqOqeLMDfoFmFMHs18zRt3Myy2q/
+ dD+l28ROgymioziTk+pCGPXIXK/rxMxy/9S8AMSWXtVoi5dLif9DChBMyVTYo+I+EPGp
+ OWtAISkZKGHIOicwWQlnAj584YDSFfW7tDs61pLWm5h1fEwEWN1uvlDIaIsP6Ey8rykh
+ EnIVim4eaRKtXZMXL09J8gizza2qhc0k5DovtvsPD2xRy1rTmmOoi6VWuw3oricdB2wd
+ 3zopf0xJsgRi5vlfM+J8R6Q0EgtRnJB1c9eeBLyhijE3a4v7seo2D2fFtJdplN2/AofW
+ iH1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=pDJdJ9jg4hC1Qi0/LCWeL6vCBADxdHWZeYcpiMBLSJc=;
- b=q2IOjYbVla/xuQRILkgMV5473+t2+S5PaaFxotfvCaooYdoc0yQWLbM7qV/uxVul98
- l8sjXG5GWrIgPvaheiB7KyCRVbvgiRdzXIcztjd7ojOKSdhjebMxqkxOwIrUGzRHMroC
- pzIIdk00LS1oA0IlYw8/bPc4AXSjQIRZoC7ZBDjk5DyLlL7gQ3iOc3VggzncHSY0mARx
- 0MTKsET0V19e3XP1gIFdevZrkFId3eMpdEdKrl8c6ZOFrhS+qGB9ckNQXg5n4lq90ezj
- ozplTMiHN49bPsCZ/pcmGvo/bu6XDqGPge9m2A3Z3MiumFceoiNInnNTWeELYJz3dEoj
- awDQ==
-X-Gm-Message-State: AOAM531kxjhW8WsOFOk2nfI2gw5zz7WcKkejQDf7/Apmo+hoNe+Yp0eq
- M75LH5Zh74P5O980iNvmPBV/8Q==
-X-Google-Smtp-Source: ABdhPJwo9EOLqYY/MKKwWwHzNMGDiczNMJB9r3poznesxukytTaNX7puzjij+8ktvXmFygnKe8zSjg==
-X-Received: by 2002:a17:90b:1294:: with SMTP id
- fw20mr3388768pjb.187.1607540176026; 
- Wed, 09 Dec 2020 10:56:16 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id g85sm3347584pfb.4.2020.12.09.10.56.14
+ bh=XvOrQQikyFZP1dk0scKROHnor8nIKA0FBCn4xEGM88M=;
+ b=I2/CLAqeSnGkwYzLduV1h9sfoqFgkgeDgbgXxggYjUxJ2ncqE7tKI7lBjwyypYwXzC
+ aFiZd6ngQQQ3RDk2EdSOLwkEjPSJkAOfc92Es1McgiK5NcXs8VZMbx43uexVTuwyIUfh
+ HIh2cSfu0WrYRmHvVWjsoDGl8l8m7jbEkdJ3xdrEqaU969E8lrSeAWHR3j0no6bMv/hL
+ 1RcgyHrbaBNNYchP8p1FaToVa/haHiv6iF9b+Luut+KkXZGBpuXOnTpVq1aZ2yMQFC1N
+ WjqinixLsuD0PFb1Sfi4NZYEVZmMPqO50sgcipT0qL42VfCGx8ULyMI5vJH1UEKs3guS
+ eq4g==
+X-Gm-Message-State: AOAM533EQDdeijaZRmlFIjSzCmUOAjl9ACdioexxG0AHiqQ1qJP48a3l
+ zLz8t+XFbyWGrnt1oUqTT1I=
+X-Google-Smtp-Source: ABdhPJxJHVQbiVMn08uFjPNqG+711U3u24nhX3cqdu63kSPfA1/wHWjtXpncjioK1RckcCEw9PQcFw==
+X-Received: by 2002:a50:d2d2:: with SMTP id q18mr3643551edg.346.1607545746987; 
+ Wed, 09 Dec 2020 12:29:06 -0800 (PST)
+Received: from skbuf ([188.25.2.120])
+ by smtp.gmail.com with ESMTPSA id z12sm2551375ejr.17.2020.12.09.12.29.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Dec 2020 10:56:15 -0800 (PST)
-Date: Wed, 9 Dec 2020 10:56:14 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: linux-next: build warning after merge of the akpm tree
-Message-ID: <202012091055.09D611EF31@keescook>
-References: <20201204210000.660293c6@canb.auug.org.au>
- <20201208230157.42c42789@canb.auug.org.au>
+ Wed, 09 Dec 2020 12:29:06 -0800 (PST)
+Date: Wed, 9 Dec 2020 22:29:04 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Michael Walle <michael@walle.cc>
+Subject: Re: [PATCH v6 0/5] PCI: Unify ECAM constants in native PCI Express
+ drivers
+Message-ID: <20201209202904.2juzokqhleusgsts@skbuf>
+References: <20201209145707.GA2521966@bjorn-Precision-5520>
+ <c6d067abcdd5278f259bd7300730dc76@walle.cc>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201208230157.42c42789@canb.auug.org.au>
+In-Reply-To: <c6d067abcdd5278f259bd7300730dc76@walle.cc>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,103 +80,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mathieu Malaterre <malat@debian.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: kw@linux.com, heiko@sntech.de, shawn.lin@rock-chips.com,
+ Alexandru Marginean <alexm.osslist@gmail.com>, paulus@samba.org,
+ thomas.petazzoni@bootlin.com, jonnyc@amazon.com, toan@os.amperecomputing.com,
+ will@kernel.org, robh@kernel.org, lorenzo.pieralisi@arm.com,
+ michal.simek@xilinx.com, linux-rockchip@lists.infradead.org,
+ bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
+ linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>,
+ rjui@broadcom.com, f.fainelli@gmail.com, linux-rpi-kernel@lists.infradead.org,
+ Jonathan.Cameron@huawei.com, bhelgaas@google.com, jonathan.derrick@intel.com,
+ sbranden@broadcom.com, wangzhou1@hisilicon.com, rrichter@marvell.com,
+ linuxppc-dev@lists.ozlabs.org, nsaenzjulienne@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 08, 2020 at 11:01:57PM +1100, Stephen Rothwell wrote:
-> Hi Stephen,
-> 
-> On Fri, 4 Dec 2020 21:00:00 +1100 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
-> >
-> > Hi all,
-> > 
-> > After merging the akpm tree, today's linux-next build (powerpc
-> > allyesconfig) produced warnings like this:
-> > 
-> > ld: warning: orphan section `.data..Lubsan_data177' from `arch/powerpc/oprofile/op_model_pa6t.o' being placed in section `.data..Lubsan_data177'
-> > 
-> > (lots of these latter ones)
-> 
-> 781584 of them today!
-> 
-> > I don't know what produced these, but it is in the akpm-current or
-> > akpm trees.
-> 
-> Presumably the result of commit
-> 
->   186c3e18dba3 ("ubsan: enable for all*config builds")
-> 
-> from the akpm-current tree.
-> 
-> arch/powerpc/kernel/vmlinux.lds.S has:
-> 
-> #ifdef CONFIG_PPC32
->         .data : AT(ADDR(.data) - LOAD_OFFSET) {
->                 DATA_DATA
-> #ifdef CONFIG_UBSAN
->                 *(.data..Lubsan_data*)
->                 *(.data..Lubsan_type*)
-> #endif
->                 *(.data.rel*)
->                 *(SDATA_MAIN)
-> 
-> added by commit
-> 
->   beba24ac5913 ("powerpc/32: Add .data..Lubsan_data*/.data..Lubsan_type* sections explicitly")
-> 
-> in 2018, but no equivalent for 64 bit.
-> 
-> I will try the following patch tomorrow:
-> 
-> From: Stephen Rothwell <sfr@canb.auug.org.au>
-> Date: Tue, 8 Dec 2020 22:58:24 +1100
-> Subject: [PATCH] powerpc: Add .data..Lubsan_data*/.data..Lubsan_type* sections explicitly
-> 
-> Similarly to commit
-> 
->   beba24ac5913 ("powerpc/32: Add .data..Lubsan_data*/.data..Lubsan_type* sections explicitly")
-> 
-> since CONFIG_UBSAN bits can now be enabled for all*config.
-> 
-> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> ---
->  arch/powerpc/kernel/vmlinux.lds.S | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-> index 3b4c26e94328..0318ba436f34 100644
-> --- a/arch/powerpc/kernel/vmlinux.lds.S
-> +++ b/arch/powerpc/kernel/vmlinux.lds.S
-> @@ -296,6 +296,10 @@ SECTIONS
->  #else
->  	.data : AT(ADDR(.data) - LOAD_OFFSET) {
->  		DATA_DATA
-> +#ifdef CONFIG_UBSAN
-> +		*(.data..Lubsan_data*)
-> +		*(.data..Lubsan_type*)
-> +#endif
->  		*(.data.rel*)
->  		*(.toc1)
->  		*(.branch_lt)
-> -- 
-> 2.29.2
-> 
-> -- 
-> Cheers,
-> Stephen Rothwell
+On Wed, Dec 09, 2020 at 04:40:52PM +0100, Michael Walle wrote:
+> Hopefully my mail client won't mess up the output that much.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+I can reproduce on my LS1028A as well. The following fixes the bug for
+me. I did not follow the discussion and see if it is helpful for others.
+I don't understand how the bug came to be. There might be more to it
+than what I'm seeing. If it's just what I'm seeing, then the patch was
+pretty broken to begin with.
 
-Thanks for figuring this one out. :) Andrew, can you add this to your
-ubsan patch stack, or do you want me to resend it to you directly?
+-----------------------------[cut here]-----------------------------
+From b184da4088c9d39d25fee2486941cdf77688a409 Mon Sep 17 00:00:00 2001
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+Date: Wed, 9 Dec 2020 22:17:32 +0200
+Subject: [PATCH] PCI: fix invalid window size for the ECAM config space
 
+The blamed commit forgot that pci_ecam_create() calculates the size of
+the window for the ECAM's config space based on the spacing between two
+buses. The drivers whose .bus_shift from struct pci_ecam_ops was changed
+to zero in this commit are now using this invalid value for bus_shift
+in calculating the window size.
 
--- 
-Kees Cook
+Before (broken):
+pci_ecam_create: remapping config space from addr 0x1f0000000, bus_range 0x1, bsz 0x1
+After (fixed/restored):
+pci_ecam_create: remapping config space from addr 0x1f0000000, bus_range 0x1, bsz 0x100000
+
+Fixes: f3c07cf6924e ("PCI: Unify ECAM constants in native PCI Express drivers")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+---
+ drivers/pci/ecam.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/ecam.c b/drivers/pci/ecam.c
+index 59f91d434859..9fda0d49bc93 100644
+--- a/drivers/pci/ecam.c
++++ b/drivers/pci/ecam.c
+@@ -28,11 +28,19 @@ struct pci_config_window *pci_ecam_create(struct device *dev,
+ 		struct resource *cfgres, struct resource *busr,
+ 		const struct pci_ecam_ops *ops)
+ {
++	unsigned int bus_shift = ops->bus_shift;
+ 	struct pci_config_window *cfg;
+ 	unsigned int bus_range, bus_range_max, bsz;
+ 	struct resource *conflict;
+ 	int i, err;
+ 
++	/*
++	 * struct pci_ecam_ops may omit specifying bus_shift
++	 * if it is as per spec
++	 */
++	if (!bus_shift)
++		bus_shift = PCIE_ECAM_BUS_SHIFT;
++
+ 	if (busr->start > busr->end)
+ 		return ERR_PTR(-EINVAL);
+ 
+@@ -46,14 +54,14 @@ struct pci_config_window *pci_ecam_create(struct device *dev,
+ 	cfg->busr.end = busr->end;
+ 	cfg->busr.flags = IORESOURCE_BUS;
+ 	bus_range = resource_size(&cfg->busr);
+-	bus_range_max = resource_size(cfgres) >> ops->bus_shift;
++	bus_range_max = resource_size(cfgres) >> bus_shift;
+ 	if (bus_range > bus_range_max) {
+ 		bus_range = bus_range_max;
+ 		cfg->busr.end = busr->start + bus_range - 1;
+ 		dev_warn(dev, "ECAM area %pR can only accommodate %pR (reduced from %pR desired)\n",
+ 			 cfgres, &cfg->busr, busr);
+ 	}
+-	bsz = 1 << ops->bus_shift;
++	bsz = 1 << bus_shift;
+ 
+ 	cfg->res.start = cfgres->start;
+ 	cfg->res.end = cfgres->end;
+-----------------------------[cut here]-----------------------------
