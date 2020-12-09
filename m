@@ -2,53 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7202D3BF7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 08:08:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C758D2D3D92
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 09:37:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrSnj02k8zDqsK
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 18:08:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CrVmK2qklzDqrm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 19:37:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrSlt5Pn7zDqmF
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 18:07:06 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=AbGdFvek; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CrSls3kbVz9sW9;
- Wed,  9 Dec 2020 18:07:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1607497626;
- bh=y/7AxITvnZjCAk7hXsrFICRcD4MaIkQMcAoXL89bsy4=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=AbGdFvekqDdywfKyedVnYsS6DszF3DGKyEhnfrUaNxF7I85AhybRUQ7+GrmZ+Cu/u
- 9dThE8/5mnORzUFIt2UKr1R99E4kBxVEPRgZr9gH5iqWG0SzxyY1Ofqk78gl4YVdUC
- MSki2Vzj6EVkCn+YM/WwUsIkxKnCzOgv8mk1lh8K1GfQstBWcY3//CvbghZZpztLvR
- 97eTA6AuoyKFBbvJnIs+3HegHhhYcNZsywihOC27x8txYBcy7tpAWVq1oHLO+/ROzp
- c0AL0ObpZpgCd9OMnkCJrfzexfAvxPXkaboyKsm+YjfSo9pnCNh5rPkoUkwqfzXXlG
- 7jDBrnELWuChg==
-Date: Wed, 9 Dec 2020 18:07:03 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: linux-next: build warning after merge of the akpm tree
-Message-ID: <20201209180703.404eb4cb@canb.auug.org.au>
-In-Reply-To: <87r1nzsi4s.fsf@mpe.ellerman.id.au>
-References: <20201204210000.660293c6@canb.auug.org.au>
- <20201208230157.42c42789@canb.auug.org.au>
- <87r1nzsi4s.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ipGoZ5lN; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CrVkc5Hg6zDqP6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 19:36:08 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0B98X9Ql042967; Wed, 9 Dec 2020 03:35:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=b2CYOgliUsTrUudXjwmcbLAvbceX0i5fNWL84kZqJWA=;
+ b=ipGoZ5lNkO6gsv/YDpHe+0z7kiFplPwJJjvl8/pQ4yn/6zu7IetFd/2xVa0g6brR5+2y
+ mTIY22XBJKJtNqiOQ5UkUtZ5Cy6DbKN5rCWpdCrxYRgAOmfVAGcfPr+ipp64M+UnhExV
+ jO9o2DXXK2OpeDKzfSjVvaKh6o4CEWpYyrsQ4p3oJv4tGaQrwJeJlmL1TJCXt0u7qREe
+ xoV+vZB8KDwf6YAcQxVJyaJUOAxtfDc7UZwOgDl2J0+h7qRJ3UByh3WClXV5Vg2Yx+yV
+ XZ4HB1HO0yHIsp3daE1OyGZcZQLAIl083lQUKlTZn9vPXvm4H5ohV1KA5l2cqCb/7j1w mw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35ateq99dt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Dec 2020 03:35:49 -0500
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B98X9jA042950;
+ Wed, 9 Dec 2020 03:35:49 -0500
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35ateq99cs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Dec 2020 03:35:48 -0500
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B98W4s3010015;
+ Wed, 9 Dec 2020 08:35:46 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 3583svm9f8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Dec 2020 08:35:46 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0B98Zinr56033754
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 9 Dec 2020 08:35:44 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 762F14C059;
+ Wed,  9 Dec 2020 08:35:44 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7518F4C05A;
+ Wed,  9 Dec 2020 08:35:42 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed,  9 Dec 2020 08:35:42 +0000 (GMT)
+Date: Wed, 9 Dec 2020 14:05:41 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/3] powerpc/smp: Parse ibm,thread-groups with multiple
+ properties
+Message-ID: <20201209083541.GK528281@linux.vnet.ibm.com>
+References: <1607057327-29822-1-git-send-email-ego@linux.vnet.ibm.com>
+ <1607057327-29822-2-git-send-email-ego@linux.vnet.ibm.com>
+ <20201207121042.GH528281@linux.vnet.ibm.com>
+ <20201208172540.GA14206@in.ibm.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/HLUhotdS6r8oYyBamqDPwLP";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20201208172540.GA14206@in.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2020-12-09_07:2020-12-08,
+ 2020-12-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ suspectscore=1 lowpriorityscore=0 mlxscore=0 bulkscore=0 malwarescore=0
+ adultscore=0 impostorscore=0 priorityscore=1501 phishscore=0 spamscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012090060
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,47 +106,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, Mathieu Malaterre <malat@debian.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Michael Neuling <mikey@neuling.org>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Valentin Schneider <valentin.schneider@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/HLUhotdS6r8oYyBamqDPwLP
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+* Gautham R Shenoy <ego@linux.vnet.ibm.com> [2020-12-08 22:55:40]:
 
-Hi Michael,
+> > 
+> > NIT:
+> > tglx mentions in one of his recent comments to try keep a reverse fir tree
+> > ordering of variables where possible.
+> 
+> I suppose you mean moving the longer local variable declarations to to
+> the top and shorter ones to the bottom. Thanks. Will fix this.
+> 
 
-On Wed, 09 Dec 2020 15:44:35 +1100 Michael Ellerman <mpe@ellerman.id.au> wr=
-ote:
->
-> They should really be in DATA_DATA or similar shouldn't they?
+Yes.
 
-No other architecture appears t need them ...
+> > > +	}
+> > > +
+> > > +	if (!tg)
+> > > +		return -EINVAL;
+> > > +
+> > > +	cpu_group_start = get_cpu_thread_group_start(cpu, tg);
+> > 
+> > This whole hunk should be moved to a new function and called before
+> > init_cpu_cache_map. It will simplify the logic to great extent.
+> 
+> I suppose you are referring to the part where we select the correct
+> tg. Yeah, that can move to a different helper.
+> 
 
---=20
-Cheers,
-Stephen Rothwell
+Yes, I would prefer if we could call this new helper outside
+init_cpu_cache_map.
 
---Sig_/HLUhotdS6r8oYyBamqDPwLP
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+> > > 
+> > > -	zalloc_cpumask_var_node(&per_cpu(cpu_l1_cache_map, cpu),
+> > > -				GFP_KERNEL, cpu_to_node(cpu));
+> > > +	mask = &per_cpu(cpu_l1_cache_map, cpu);
+> > > +
+> > > +	zalloc_cpumask_var_node(mask, GFP_KERNEL, cpu_to_node(cpu));
+> > > 
+> > 
+> > This hunk (and the next hunk) should be moved to next patch.
+> >
+> 
+> The next patch is only about introducing  THREAD_GROUP_SHARE_L2. Hence
+> I put in any other code in this patch, since it seems to be a logical
+> place to collate whatever we have in a generic form.
+> 
 
------BEGIN PGP SIGNATURE-----
+While I am fine with it, having a pointer that always points to the same
+mask looks wierd.
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl/Qd5cACgkQAVBC80lX
-0GyQKQf+IQ7APd2lQVndfNhpMSaNqgjyM50ktUG4sbEP9NurjHT7RytwNfLgSPds
-Tw+WEUKkkQ3tavRvf1jai+OKM/hpY/B8hKH7Kbzsl7WcPuGptAe/mKmTa0NO7Esr
-gwDQoZbyrZ5vRYik99t7ozP8w67KrARiYLqKNqZYLTMRUPndMQ+OLcj8Pqb2Tqyb
-IbFJaVpHo7b6bjUl/ZB0dmoUvx/7ApKijNTlWnRfg22hmN5km6lig5QTX1Qy1NXZ
-UvWPtoWMdnMziy8Bw7pu2vq2Kk3XhJa2rykkB395QKOcnDTHtS2sBu2G8PQ0xG1k
-k7cJRMZxz2nBd6FCJ7uSmlMxYy/gWg==
-=fQhx
------END PGP SIGNATURE-----
-
---Sig_/HLUhotdS6r8oYyBamqDPwLP--
+-- 
+Thanks and Regards
+Srikar Dronamraju
