@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9522D3E28
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 10:07:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A18702D3E2B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 10:09:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CrWQm2F66zDqrm
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 20:07:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CrWSg40GwzDqsM
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Dec 2020 20:09:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -17,87 +17,87 @@ Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
  header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=NNWmv2Pr; dkim-atps=neutral
+ header.s=pp1 header.b=DVkZknj/; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CrWP46KM2zDqgD
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 20:06:00 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CrWQn69RwzDqty
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Dec 2020 20:07:29 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0B991r9G034086; Wed, 9 Dec 2020 04:05:51 -0500
+ 0B9934lq036376; Wed, 9 Dec 2020 04:07:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=date : from : to : cc :
  subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=I3DP+EooTBbUgiEInnr4ZpkHrpM8cLPtd5Lu6BGAUxA=;
- b=NNWmv2Prr/VCROsncPoPs+g/3sxMIk3wvtFIb8PR7XIB21m3QmcbgRtbpLQDac70XLMm
- 4cS4gmPdwxDYD3I5y+kTQbyfjnJdlyD13vzJ3MEbmTYUFxenZG+PORbtnsRC8Ys46jKx
- EpPuZhTXrK9zk4SucszRbBTJbYE3DGysgg841/m+S1ENv2rnSBqqWbj5Ta6+aNN2WhJ0
- hAKnPUHvsgvdKQ7oiS0O2cUk2QMiwQU/1ijlWeHZGPk71S0Ki9peacEgrbI39wNVi6kq
- PJmMoO+KA5WNssPbcRAhvT63gE1i2CYYIBg2m4wX/FRW4Qa3gXwsG0ELMQXcfDRx/OVV Bw== 
+ : in-reply-to; s=pp1; bh=uPZLZFucs64QrPM+4R1abkgq6sji18ilojIc6tWxqoE=;
+ b=DVkZknj/c0Hg6F1+Hx7X2BE1YnFeGUKXAGLiIjaejGwitzlMz8PNJGtHwKjmWMomd/hd
+ +fN11w9hdXzgjhqBetEjM914LUBPkDnE6q2y+9TzriBTeLkpL5yJDjf9XwyKA/UuwciA
+ KMr+RbXmYjmdkuGqAGGp/REsHtH5LPFlZqHZe8hEP0XRDIXRpq54YPCkaKKsoCLBCif2
+ mA/2dqZB0AtDhXPtQnjbhWgvQPIm55ZdjPhiVgKJ7w3jH+vKSt+ClKguV1kqi8hquC1h
+ 802z7DGc6ZDcuYZejOialXhNJeTsIFJSCePFXEWLZJM4sjMxaN7qg7NH+5/CcMXyVIqT Eg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35afekanay-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35apm07tna-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Dec 2020 04:05:51 -0500
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B992jrr037913;
- Wed, 9 Dec 2020 04:05:50 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35afekan9j-1
+ Wed, 09 Dec 2020 04:07:20 -0500
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B993ODE038125;
+ Wed, 9 Dec 2020 04:07:19 -0500
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35apm07tmp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Dec 2020 04:05:50 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B98qU56000780;
- Wed, 9 Dec 2020 09:05:48 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma03dal.us.ibm.com with ESMTP id 3581u9dq7v-1
+ Wed, 09 Dec 2020 04:07:19 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B98xPj9028195;
+ Wed, 9 Dec 2020 09:07:18 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma01wdc.us.ibm.com with ESMTP id 3581u9bmf5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Dec 2020 09:05:48 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0B995lMx25625020
+ Wed, 09 Dec 2020 09:07:18 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0B997H1p19792284
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 9 Dec 2020 09:05:47 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DF96B6A057;
- Wed,  9 Dec 2020 09:05:46 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4E4A36A054;
- Wed,  9 Dec 2020 09:05:46 +0000 (GMT)
+ Wed, 9 Dec 2020 09:07:17 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7044D136051;
+ Wed,  9 Dec 2020 09:07:17 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EB88513605D;
+ Wed,  9 Dec 2020 09:07:16 +0000 (GMT)
 Received: from sofia.ibm.com (unknown [9.199.49.37])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  9 Dec 2020 09:05:46 +0000 (GMT)
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed,  9 Dec 2020 09:07:16 +0000 (GMT)
 Received: by sofia.ibm.com (Postfix, from userid 1000)
- id ADB912E35A0; Wed,  9 Dec 2020 14:35:41 +0530 (IST)
-Date: Wed, 9 Dec 2020 14:35:41 +0530
+ id C63D82E35A0; Wed,  9 Dec 2020 14:37:09 +0530 (IST)
+Date: Wed, 9 Dec 2020 14:37:09 +0530
 From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
 To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/3] powerpc/smp: Parse ibm,thread-groups with multiple
- properties
-Message-ID: <20201209090541.GA13125@in.ibm.com>
+Subject: Re: [PATCH 3/3] powerpc/cacheinfo: Print correct cache-sibling
+ map/list for L2 cache
+Message-ID: <20201209090709.GB13125@in.ibm.com>
 References: <1607057327-29822-1-git-send-email-ego@linux.vnet.ibm.com>
- <1607057327-29822-2-git-send-email-ego@linux.vnet.ibm.com>
- <20201207121042.GH528281@linux.vnet.ibm.com>
- <20201208172540.GA14206@in.ibm.com>
- <20201209083541.GK528281@linux.vnet.ibm.com>
+ <1607057327-29822-4-git-send-email-ego@linux.vnet.ibm.com>
+ <20201207131138.GJ528281@linux.vnet.ibm.com>
+ <20201208175647.GC14206@in.ibm.com>
+ <20201209083921.GL528281@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201209083541.GK528281@linux.vnet.ibm.com>
+In-Reply-To: <20201209083921.GL528281@linux.vnet.ibm.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
  definitions=2020-12-09_07:2020-12-08,
  2020-12-09 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- priorityscore=1501 adultscore=0 mlxscore=0 bulkscore=0 spamscore=0
- mlxlogscore=999 suspectscore=0 impostorscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxscore=0 clxscore=1015
+ malwarescore=0 priorityscore=1501 mlxlogscore=999 adultscore=0
+ phishscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2012090060
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -121,57 +121,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 09, 2020 at 02:05:41PM +0530, Srikar Dronamraju wrote:
-> * Gautham R Shenoy <ego@linux.vnet.ibm.com> [2020-12-08 22:55:40]:
+On Wed, Dec 09, 2020 at 02:09:21PM +0530, Srikar Dronamraju wrote:
+> * Gautham R Shenoy <ego@linux.vnet.ibm.com> [2020-12-08 23:26:47]:
 > 
-> > > 
-> > > NIT:
-> > > tglx mentions in one of his recent comments to try keep a reverse fir tree
-> > > ordering of variables where possible.
+> > > The drawback of this is even if cpus 0,2,4,6 are released L1 cache will not
+> > > be released. Is this as expected?
 > > 
-> > I suppose you mean moving the longer local variable declarations to to
-> > the top and shorter ones to the bottom. Thanks. Will fix this.
+> > cacheinfo populates the cache->shared_cpu_map on the basis of which
+> > CPUs share the common device-tree node for a particular cache.  There
+> > is one l1-cache object in the device-tree for a CPU node corresponding
+> > to a big-core. That the L1 is further split between the threads of the
+> > core is shown using ibm,thread-groups.
 > > 
 > 
 > Yes.
 > 
-> > > > +	}
-> > > > +
-> > > > +	if (!tg)
-> > > > +		return -EINVAL;
-> > > > +
-> > > > +	cpu_group_start = get_cpu_thread_group_start(cpu, tg);
-> > > 
-> > > This whole hunk should be moved to a new function and called before
-> > > init_cpu_cache_map. It will simplify the logic to great extent.
-> > 
-> > I suppose you are referring to the part where we select the correct
-> > tg. Yeah, that can move to a different helper.
+> > The ideal thing would be to add a "group_leader" field to "struct
+> > cache" so that we can create separate cache objects , one per thread
+> > group. I will take a stab at this in the v2.
 > > 
 > 
-> Yes, I would prefer if we could call this new helper outside
-> init_cpu_cache_map.
-> 
-> > > > 
-> > > > -	zalloc_cpumask_var_node(&per_cpu(cpu_l1_cache_map, cpu),
-> > > > -				GFP_KERNEL, cpu_to_node(cpu));
-> > > > +	mask = &per_cpu(cpu_l1_cache_map, cpu);
-> > > > +
-> > > > +	zalloc_cpumask_var_node(mask, GFP_KERNEL, cpu_to_node(cpu));
-> > > > 
-> > > 
-> > > This hunk (and the next hunk) should be moved to next patch.
-> > >
-> > 
-> > The next patch is only about introducing  THREAD_GROUP_SHARE_L2. Hence
-> > I put in any other code in this patch, since it seems to be a logical
-> > place to collate whatever we have in a generic form.
-> > 
-> 
-> While I am fine with it, having a pointer that always points to the same
-> mask looks wierd.
+> I am not saying this needs to be done immediately. We could add a TODO and
+> get it done later. Your patch is not making it worse. Its just that there is
+> still something more left to be done.
 
-Sure. Moving some of this to a separate preparatory patch.
+Yeah, it needs to be fixed but it may not be a 5.11 target. For now I
+will fix this patch to take care of the build errors on !PPC64 !SMT
+configs. I will post a separate series for making cacheinfo.c aware of
+thread-groups at the time of construction of the cache-chain.
 
 > 
 > -- 
