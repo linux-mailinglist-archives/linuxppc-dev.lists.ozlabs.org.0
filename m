@@ -1,63 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43742D5810
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 11:18:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C2CA2D57D1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 11:01:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cs8ym5bQ8zDqW2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 21:18:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cs8ZS4Lb7zDqKw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 21:01:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
+ helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=metux.net
- (client-ip=212.227.17.10; helo=mout.kundenserver.de;
- envelope-from=lkml@metux.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=metux.net
-X-Greylist: delayed 593 seconds by postgrey-1.36 at bilbo;
- Thu, 10 Dec 2020 21:16:21 AEDT
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cs8vn28nYzDqRr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 21:16:20 +1100 (AEDT)
-Received: from [192.168.1.155] ([95.117.52.229]) by mrelayeu.kundenserver.de
- (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MWiYo-1kcBmu2YCO-00X5bV; Thu, 10 Dec 2020 10:57:00 +0100
-Subject: Re: [PATCH] drivers: usb: gadget: prefer pr_*() functions over raw
- printk()
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- "Enrico Weigelt, metux IT consult" <info@metux.net>
-References: <20201208144403.22097-1-info@metux.net>
- <X8+howyVRiTR9gv/@pendragon.ideasonboard.com>
- <9aaa06ad-0bd8-486d-b16b-66927d57cf96@metux.net>
- <X9C0vOLZOnLZoPR8@pendragon.ideasonboard.com>
-From: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Message-ID: <a454b90c-2888-7779-222b-ba642526495a@metux.net>
-Date: Thu, 10 Dec 2020 10:56:57 +0100
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from smtpout1.mo804.mail-out.ovh.net
+ (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cs8XS33ZnzDq8g
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 20:59:31 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.20.120])
+ by mo804.mail-out.ovh.net (Postfix) with ESMTPS id 57CE37959209;
+ Thu, 10 Dec 2020 10:59:24 +0100 (CET)
+Received: from kaod.org (37.59.142.101) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Thu, 10 Dec
+ 2020 10:59:24 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-101G004a3b40024-63d0-471d-9062-dcb90c37a8f3,
+ 35DF0118C1BD2D4E469FA4C27706E890450E7B32) smtp.auth=clg@kaod.org
+Subject: Re: [PATCH 00/13] powerpc/xive: misc cleanups
+To: <linuxppc-dev@lists.ozlabs.org>
+References: <20201208151124.1329942-1-clg@kaod.org>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <ce29e68a-98da-f41b-088e-196a63b2fab5@kaod.org>
+Date: Thu, 10 Dec 2020 10:59:23 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <X9C0vOLZOnLZoPR8@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: tl
+In-Reply-To: <20201208151124.1329942-1-clg@kaod.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:1tUVJHur9zX95g721i8+x6mG6wmouby4GJKEfF1tz4XFWPNrZ/7
- F/0YH1fgIF4zjb7qtk769Vi6cM6ZT1UpgNGxpgfJFc3Y8jNwzPj2TmcoXUq0af5R6PG7Cze
- 3ww1YZu6Pn1HrVV0QNEF+0u5U+s59/S9tsVcs7TOCV4xAotexcMORVBjoQdls4A6O5RRf72
- sHzHjeee9qCCdyHhmKrzA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+/dzs/5/GJ8=:skUnKwEcJl+PbraOWO9w9H
- 2vjCepwTIasWyxzk35NlqFAu3kvC+fHnZeKqF6HIYRSOaEIsaPZ1AUf6kRbmWDYG+/BBzzwUl
- qzTcmVLWl9oBv5ZhmDBxkBw4sh8C7ovVKl7eDDOJ73BPX82HDFstq8Sq+x1lqGVX+2t1tB9Zk
- J96LqFPLl2wxBkLYDHjQMMFtoWp0D5CieaWpARbNQZ0E9iSRXKfBl7GGjIO5DO2nY7rALbqXc
- 42A67Kz5ihKdiPRm/RDFAmWFjp0YNimcTrbqEbFIMy6zcv8lzZnhn+nPZaUc1pArJlv/aXWV3
- 9eLyT0IKmMm/krVh6CjgIRb5H1SAM4hu3/l2eEelisk9tvotsrlCQh6qIjOnL832sFYGIDMCn
- Immf3mB00ek7hczjI4XEI9CaTA3XRYSJGojXmKXSeUVUT+zcHS2jLI5XFKFtQXcB+5kpKk9bx
- cxEflSGjxmK21auvPHWaz+USwS6Z/nNcujN3T7LWrTZrXiLmuAwV0IQRA1eYhawi81f7Y+AMm
- rExkYPp6hMXSqc8woziX8o=
+X-Originating-IP: [37.59.142.101]
+X-ClientProxiedBy: DAG4EX2.mxp5.local (172.16.2.32) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 449534cc-9068-4870-85b1-2a59e8cd3a4e
+X-Ovh-Tracer-Id: 17400783061063928730
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudektddguddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefuvfhfhffkffgfgggjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeejkeduueduveelgeduueegkeelffevledujeetffeivdelvdfgkeeufeduheehfeenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,50 +63,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: balbi@kernel.org, linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, leoyang.li@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09.12.20 12:27, Laurent Pinchart wrote:
-
-Hi,
-
->>> I wonder if this shouldn't be dropped instead, commented-out code isn't
->>> very useful.
->>
->> Indeed. Shall I send a separate patch for that ?
+On 12/8/20 4:11 PM, Cédric Le Goater wrote:
+> Hello,
 > 
-> Yes, that would make sense.
+> The most important change is the removal of support of OPAL flags
+> required for P9 DD1. It provides a good cleanup of some complex
+> routines.
+> 
+> The series also includes a change on how the pages donated to the XIVE
+> IC are allocated in Linux. The flags are changed to make sure that
+> these pages can not be reclaimed.
 
-Okay, I'm currently doing a more in-depth rework. I'll send another
-patch queue later.
+This issue (checkstop) only occurred a once or twice on a P9 Mihawk
+with 1TB of RAM and 1TB of swap. It's hard to reproduce. It seems
+we have a fix but I misunderstood some parts of the kernel page
+allocation scheme and, so, I am not entirely the root issue is
+well analyzed. This patch can wait until I grab a larger system
+with 2TB.
 
-Since I don't own the corresponding devices, I can't do much testing
-(just build tests and careful review), so I need some help w/ that.
+I will send a v2. Greg had some valuable comments on extra 
+cleanups.
 
-> As most of the files touched by this patch are device drivers, dev_*()
-> functions should be used instead of pr_*() where possible. I'd recommend
-> a first patch that converts to dev_*(), and then a second patch that
-> converts the remaining printk()s, if any, to pr_*() in the contexts
-> where no struct device is available or can easily be made available.
+Thanks,
 
-I'm now splitting it into per-driver patches. They're getting a bit
-bigger, since I'm also replacing some debug macros, etc. In some cases
-I'm introducing new helpers for not having to write long expressions
-to get the actual dev ptr, adding some prefixes (eg. per usb endpoint
-logging, ...).
-
-
---mtx
-
--- 
----
-Hinweis: unverschlüsselte E-Mails können leicht abgehört und manipuliert
-werden ! Für eine vertrauliche Kommunikation senden Sie bitte ihren
-GPG/PGP-Schlüssel zu.
----
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+C.
