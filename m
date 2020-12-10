@@ -2,66 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EDF2D63E9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 18:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 970D72D639D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 18:34:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CsLtq4X6wzDqGG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 04:46:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CsLd50jP8zDqTj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 04:34:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kaod.org (client-ip=148.163.156.1;
+ host) smtp.mailfrom=kaod.org (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=clg@kaod.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CsLFz48R0zDr0t
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 04:17:43 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0BAH2LXJ164130; Thu, 10 Dec 2020 12:17:31 -0500
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35bqqp0jse-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CsLCB6s85zDqx6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 04:15:18 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0BAH20Wb142210; Thu, 10 Dec 2020 12:15:02 -0500
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 35bq5csr20-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Dec 2020 12:17:31 -0500
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BAHCdTk005875;
- Thu, 10 Dec 2020 17:17:28 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03fra.de.ibm.com with ESMTP id 3581u8rvjt-1
+ Thu, 10 Dec 2020 12:15:01 -0500
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BAHDFDK001891;
+ Thu, 10 Dec 2020 17:15:00 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06ams.nl.ibm.com with ESMTP id 3581fhp19v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Dec 2020 17:17:28 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0BAHEtA549218026
+ Thu, 10 Dec 2020 17:14:59 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0BAHEv2I32768384
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 10 Dec 2020 17:14:55 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 98ADE11C05B;
- Thu, 10 Dec 2020 17:14:55 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6EE4111C052;
- Thu, 10 Dec 2020 17:14:55 +0000 (GMT)
+ Thu, 10 Dec 2020 17:14:57 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9739E52071;
+ Thu, 10 Dec 2020 17:14:57 +0000 (GMT)
 Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Thu, 10 Dec 2020 17:14:55 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id 6DC4E52069;
+ Thu, 10 Dec 2020 17:14:57 +0000 (GMT)
 Received: from yukon.ibmuc.com (sig-9-145-158-23.de.ibm.com [9.145.158.23])
- by smtp.tlslab.ibm.com (Postfix) with ESMTP id DD2C922012A;
- Thu, 10 Dec 2020 18:14:54 +0100 (CET)
+ by smtp.tlslab.ibm.com (Postfix) with ESMTP id E82C322012A;
+ Thu, 10 Dec 2020 18:14:56 +0100 (CET)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 02/13] powerpc/xive: Rename XIVE_IRQ_NO_EOI to show its a
- flag
-Date: Thu, 10 Dec 2020 18:14:39 +0100
-Message-Id: <20201210171450.1933725-3-clg@kaod.org>
+Subject: [PATCH v2 06/13] powerpc/xive: Add a debug_show handler to the XIVE
+ irq_domain
+Date: Thu, 10 Dec 2020 18:14:43 +0100
+Message-Id: <20201210171450.1933725-7-clg@kaod.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20201210171450.1933725-1-clg@kaod.org>
 References: <20201210171450.1933725-1-clg@kaod.org>
@@ -73,11 +70,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
  definitions=2020-12-10_06:2020-12-09,
  2020-12-10 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0
- priorityscore=1501 adultscore=0 suspectscore=1 clxscore=1034
- malwarescore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=625 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012100105
+ bulkscore=0 impostorscore=0
+ mlxscore=0 malwarescore=0 adultscore=0 clxscore=1034 priorityscore=1501
+ spamscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=860 suspectscore=1
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012100105
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,72 +92,94 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a simple cleanup to identify easily all flags of the XIVE
-interrupt structure. The interrupts flagged with XIVE_IRQ_FLAG_NO_EOI
-are the escalations used to wake up vCPUs in KVM. They are handled
-very differently from the rest.
+Full state of the Linux interrupt descriptors can be dumped under
+debugfs when compiled with CONFIG_GENERIC_IRQ_DEBUGFS. Add support for
+the XIVE interrupt controller.
 
-Reviewed-by: Greg Kurz <groug@kaod.org>
 Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 ---
- arch/powerpc/include/asm/xive.h   | 2 +-
- arch/powerpc/kvm/book3s_xive.c    | 4 ++--
- arch/powerpc/sysdev/xive/common.c | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/sysdev/xive/common.c | 58 +++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/x=
-ive.h
-index 309b4d65b74f..d332dd9a18de 100644
---- a/arch/powerpc/include/asm/xive.h
-+++ b/arch/powerpc/include/asm/xive.h
-@@ -66,7 +66,7 @@ struct xive_irq_data {
- #define XIVE_IRQ_FLAG_H_INT_ESB	0x20
-=20
- /* Special flag set by KVM for excalation interrupts */
--#define XIVE_IRQ_NO_EOI		0x80
-+#define XIVE_IRQ_FLAG_NO_EOI	0x80
-=20
- #define XIVE_INVALID_CHIP_ID	-1
-=20
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xiv=
-e.c
-index 18a6b75a3bfd..fae1c2e8da29 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -219,7 +219,7 @@ int kvmppc_xive_attach_escalation(struct kvm_vcpu *vc=
-pu, u8 prio,
- 	/* In single escalation mode, we grab the ESB MMIO of the
- 	 * interrupt and mask it. Also populate the VCPU v/raddr
- 	 * of the ESB page for use by asm entry/exit code. Finally
--	 * set the XIVE_IRQ_NO_EOI flag which will prevent the
-+	 * set the XIVE_IRQ_FLAG_NO_EOI flag which will prevent the
- 	 * core code from performing an EOI on the escalation
- 	 * interrupt, thus leaving it effectively masked after
- 	 * it fires once.
-@@ -231,7 +231,7 @@ int kvmppc_xive_attach_escalation(struct kvm_vcpu *vc=
-pu, u8 prio,
- 		xive_vm_esb_load(xd, XIVE_ESB_SET_PQ_01);
- 		vcpu->arch.xive_esc_raddr =3D xd->eoi_page;
- 		vcpu->arch.xive_esc_vaddr =3D (__force u64)xd->eoi_mmio;
--		xd->flags |=3D XIVE_IRQ_NO_EOI;
-+		xd->flags |=3D XIVE_IRQ_FLAG_NO_EOI;
- 	}
-=20
- 	return 0;
 diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
 /common.c
-index a80440af491a..65af34ac1fa2 100644
+index 7314b87d0b45..348445ffa0af 100644
 --- a/arch/powerpc/sysdev/xive/common.c
 +++ b/arch/powerpc/sysdev/xive/common.c
-@@ -416,7 +416,7 @@ static void xive_irq_eoi(struct irq_data *d)
- 	 * been passed-through to a KVM guest
- 	 */
- 	if (!irqd_irq_disabled(d) && !irqd_is_forwarded_to_vcpu(d) &&
--	    !(xd->flags & XIVE_IRQ_NO_EOI))
-+	    !(xd->flags & XIVE_IRQ_FLAG_NO_EOI))
- 		xive_do_source_eoi(irqd_to_hwirq(d), xd);
- 	else
- 		xd->stale_p =3D true;
+@@ -1303,11 +1303,69 @@ static int xive_irq_domain_match(struct irq_domai=
+n *h, struct device_node *node,
+ 	return xive_ops->match(node);
+ }
+=20
++#ifdef CONFIG_GENERIC_IRQ_DEBUGFS
++static const char * const esb_names[] =3D { "RESET", "OFF", "PENDING", "=
+QUEUED" };
++
++static const struct {
++	u64  mask;
++	char *name;
++} xive_irq_flags[] =3D {
++	{ XIVE_IRQ_FLAG_STORE_EOI, "STORE_EOI" },
++	{ XIVE_IRQ_FLAG_LSI,       "LSI"       },
++	{ XIVE_IRQ_FLAG_SHIFT_BUG, "SHIFT_BUG" },
++	{ XIVE_IRQ_FLAG_MASK_FW,   "MASK_FW"   },
++	{ XIVE_IRQ_FLAG_EOI_FW,    "EOI_FW"    },
++	{ XIVE_IRQ_FLAG_H_INT_ESB, "H_INT_ESB" },
++	{ XIVE_IRQ_FLAG_NO_EOI,    "NO_EOI"    },
++};
++
++static void xive_irq_domain_debug_show(struct seq_file *m, struct irq_do=
+main *d,
++				       struct irq_data *irqd, int ind)
++{
++	struct xive_irq_data *xd;
++	u64 val;
++	int i;
++
++	/* No IRQ domain level information. To be done */
++	if (!irqd)
++		return;
++
++	if (!is_xive_irq(irq_data_get_irq_chip(irqd)))
++		return;
++
++	seq_printf(m, "%*sXIVE:\n", ind, "");
++	ind++;
++
++	xd =3D irq_data_get_irq_handler_data(irqd);
++	if (!xd) {
++		seq_printf(m, "%*snot assigned\n", ind, "");
++		return;
++	}
++
++	val =3D xive_esb_read(xd, XIVE_ESB_GET);
++	seq_printf(m, "%*sESB:      %s\n", ind, "", esb_names[val & 0x3]);
++	seq_printf(m, "%*sPstate:   %s %s\n", ind, "", xd->stale_p ? "stale" : =
+"",
++		   xd->saved_p ? "saved" : "");
++	seq_printf(m, "%*sTarget:   %d\n", ind, "", xd->target);
++	seq_printf(m, "%*sChip:     %d\n", ind, "", xd->src_chip);
++	seq_printf(m, "%*sTrigger:  0x%016llx\n", ind, "", xd->trig_page);
++	seq_printf(m, "%*sEOI:      0x%016llx\n", ind, "", xd->eoi_page);
++	seq_printf(m, "%*sFlags:    0x%llx\n", ind, "", xd->flags);
++	for (i =3D 0; i < ARRAY_SIZE(xive_irq_flags); i++) {
++		if (xd->flags & xive_irq_flags[i].mask)
++			seq_printf(m, "%*s%s\n", ind + 12, "", xive_irq_flags[i].name);
++	}
++}
++#endif
++
+ static const struct irq_domain_ops xive_irq_domain_ops =3D {
+ 	.match =3D xive_irq_domain_match,
+ 	.map =3D xive_irq_domain_map,
+ 	.unmap =3D xive_irq_domain_unmap,
+ 	.xlate =3D xive_irq_domain_xlate,
++#ifdef CONFIG_GENERIC_IRQ_DEBUGFS
++	.debug_show =3D xive_irq_domain_debug_show,
++#endif
+ };
+=20
+ static void __init xive_init_host(struct device_node *np)
 --=20
 2.26.2
 
