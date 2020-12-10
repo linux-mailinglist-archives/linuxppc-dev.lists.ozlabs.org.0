@@ -1,59 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC0B2D5FD4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 16:36:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA7A2D6042
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 16:46:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CsJ1N6TLbzDr3L
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 02:36:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CsJDz1p0ZzDqyj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 02:46:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
- helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from smtpout1.mo529.mail-out.ovh.net
- (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CsDyJ3Mp8zDqwM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 00:18:46 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.4.240])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 0FC0572F9FAB;
- Thu, 10 Dec 2020 14:18:39 +0100 (CET)
-Received: from kaod.org (37.59.142.101) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Thu, 10 Dec
- 2020 14:18:39 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-101G004e78d135d-1f16-425f-ace0-9971b92d29de,
- 35DF0118C1BD2D4E469FA4C27706E890450E7B32) smtp.auth=clg@kaod.org
-Subject: Re: [PATCH 09/13] powerpc/xive: Remove P9 DD1 flag
- XIVE_IRQ_FLAG_SHIFT_BUG
-To: Greg Kurz <groug@kaod.org>
-References: <20201208151124.1329942-1-clg@kaod.org>
- <20201208151124.1329942-10-clg@kaod.org> <20201208183906.1740c594@bahia.lan>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <c2251500-b03f-ac1c-8298-3a2d2c50953e@kaod.org>
-Date: Thu, 10 Dec 2020 14:18:38 +0100
+ spf=pass (sender SPF authorized) smtp.mailfrom=web.de
+ (client-ip=217.72.192.78; helo=mout.web.de;
+ envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=web.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=web.de header.i=@web.de header.a=rsa-sha256
+ header.s=dbaedf251592 header.b=Zq9dwLUg; 
+ dkim-atps=neutral
+X-Greylist: delayed 939 seconds by postgrey-1.36 at bilbo;
+ Fri, 11 Dec 2020 01:53:24 AEDT
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CsH3S25qwzDqQH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 01:53:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=dbaedf251592; t=1607611993;
+ bh=IipN9KELoH1llXbnl7PYP+Xgs4zMteApDSsWAHUq6nk=;
+ h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+ b=Zq9dwLUgU8iVqqlbn4GMSNj+x1l1qNJVefLvzJ44J8EjWaKmi3WL41Xwn2io89sZl
+ 3k4ZdU+Sux6QMVjcayKl14w1CFl+KaDgVnmwMOfxoXPG2ZHUg5C/RDalJHp9f+53ql
+ nKb0ZP09rp1lFZt+DXq479K34H+A2cPDQDccBnkM=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.143.229]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M6DyQ-1ju1JA33es-00yB8K; Thu, 10
+ Dec 2020 15:35:46 +0100
+To: linuxppc-dev@lists.ozlabs.org, Andrew Donnellan <ajd@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>, Frederic Barrat <fbarrat@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: =?UTF-8?Q?=5bPATCH=5d_cxl=3a_Reduce_scope_for_the_variable_?=
+ =?UTF-8?B?4oCcbW3igJ0gaW4gY3hsbGliX2dldF9QRV9hdHRyaWJ1dGVzKCk=?=
+Message-ID: <5cee2b25-71e0-15aa-fba6-12211b8308aa@web.de>
+Date: Thu, 10 Dec 2020 15:35:38 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-In-Reply-To: <20201208183906.1740c594@bahia.lan>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.101]
-X-ClientProxiedBy: DAG7EX2.mxp5.local (172.16.2.62) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 15312e56-b65a-4e56-9985-6a562132133c
-X-Ovh-Tracer-Id: 2319072336630156186
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudektddgheduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefuvfhfhffkffgfgggjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeehuedtheeghfdvhedtueelteegvdefueektdefiefhffffieduuddtudfhgfevtdenucffohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehgrhhouhhgsehkrghougdrohhrgh
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:I9GvSD7sY0LrvYXLrpAJyCDjsLLhfJaZH4xqXgtQEePlJLN9Qp0
+ o30C3CVvdTgov79WZKNXk77+SfXqPuyFPVuvxdweTwv/cQbJMt4NCIJnmHZ7Yt6XfGQ9vkG
+ NfpF983CJx2/3dBRm6jdYWur0aTOtOPTKpLXYjg6/Scf7Ir5pJERS4cJDLG8jtZslr+ONa3
+ tKzSMOjD3isutCqkFV6SA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:70kl2OJuxB4=:RjjB3ZFpvgCtQOndk1f2aH
+ QqUOO9vX/8Vzu+IKLhRAT9S+ezsektKwv4s90geuiceNHpD2HUrAxGTfsUEIN/Ptt/tncRY4q
+ IYyrzFDILSKrVWv0qpErk3MoQWNmqMCIATeAUs2tborg1FOPAnrpBHSE4jnqCzXkQSfVP5K0Q
+ 1TnC9TpZXc1A5HOl8VsD1bn3jGaAIvZs9sBiLFCs1L0GdA2tCPMnA1AQTIYzk+jH4akQBjSYA
+ ljvz+uFtEzjYr9ufzCqzOiiOyzYQXTj1Fs/4k2iFFMY9O7kMBvcVAklJpnB97mSl221EJfqPT
+ V9Brx5InOVZFqyvtBgo6MycUzlh3ED1ykRbfUDWEM2i/5aOY49TGd01SNvp6rq2QcbA3Yeux1
+ bMfmvDvVhjRFwJ4oer1Yw+HOO/WRz4eoBKfiZfW9/bgDffKiPvfBjIG9jEM/IhT7GOzgIs8+h
+ lubp6ynEm3Ew1k6evbICqfUct/QixcAuBECcOxtKnL9KSOvBFusTP+D6w3R5GS6B0wRPSHbbD
+ TIkSZlM7wa2nsOMvVFWMy1fp4nTng2jsm+7Ar4jwLmGHlhk+Nb//ZhWef7J2kbAYm5lBVGZy1
+ UsMf6o0F+iL04iOytvoL9i9CtXrqOuOAm94BXkETUpouWpEpnIdBjTZA9W2Nc2LweZTBlV5EV
+ 5KAdg8s73CPStvvIao2EVMVvyL5NMrbl6ri2Tdkq4ZgVFbCfm8GIPVRPHOTQ/BEIU/ZCj3ZY9
+ 05K/58jvmWoqrjNh2z7UAILv2DBi76UTnvO/ezi2TVxn/G/wjaopIgYXE1qRIuvDRUuomQ2hN
+ UIhUt7jesk0w33v0J9kViXhWVxf/eUgGjKBvE4lYniEPWzzsXqG9LjXqDYrOEiXwF3yq9Tl1q
+ B1XZBpw/w4hdETO/YIsw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,146 +82,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: kernel-janitors@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/8/20 6:39 PM, Greg Kurz wrote:
-> On Tue, 8 Dec 2020 16:11:20 +0100
-> Cédric Le Goater <clg@kaod.org> wrote:
-> 
->> This flag was used to support the PHB4 LSIs on P9 DD1 and we have
->> stopped supporting this CPU when DD2 came out. See skiboot commit:
->>
->>   https://github.com/open-power/skiboot/commit/0b0d15e3c170
->>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
-> 
-> Reviewed-by: Greg Kurz <groug@kaod.org>
-> 
-> Just a minor suggestion in case you need to post a v2. See below.
-> 
->>  arch/powerpc/include/asm/opal-api.h     | 2 +-
->>  arch/powerpc/include/asm/xive.h         | 2 +-
->>  arch/powerpc/kvm/book3s_xive_native.c   | 3 ---
->>  arch/powerpc/kvm/book3s_xive_template.c | 3 ---
->>  arch/powerpc/sysdev/xive/common.c       | 8 --------
->>  arch/powerpc/sysdev/xive/native.c       | 2 --
->>  6 files changed, 2 insertions(+), 18 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
->> index 1dffa3cb16ba..48ee604ca39a 100644
->> --- a/arch/powerpc/include/asm/opal-api.h
->> +++ b/arch/powerpc/include/asm/opal-api.h
->> @@ -1091,7 +1091,7 @@ enum {
->>  	OPAL_XIVE_IRQ_TRIGGER_PAGE	= 0x00000001,
->>  	OPAL_XIVE_IRQ_STORE_EOI		= 0x00000002,
->>  	OPAL_XIVE_IRQ_LSI		= 0x00000004,
->> -	OPAL_XIVE_IRQ_SHIFT_BUG		= 0x00000008,
->> +	OPAL_XIVE_IRQ_SHIFT_BUG		= 0x00000008, /* P9 DD1.0 workaround */
-> 
-> Maybe you can even comment the entire line so that any future
-> tentative to use that flag breaks build ?
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Thu, 10 Dec 2020 14:14:07 +0100
 
-This file is "copied" from OPAL. I think it is best to keep them
-in sync.
+A local variable was used only within an if branch.
+Thus move the definition for the variable =E2=80=9Cmm=E2=80=9D into the co=
+rresponding
+code block.
 
-> 
->>  	OPAL_XIVE_IRQ_MASK_VIA_FW	= 0x00000010,
->>  	OPAL_XIVE_IRQ_EOI_VIA_FW	= 0x00000020,
->>  };
->> diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/xive.h
->> index d332dd9a18de..ff805885a028 100644
->> --- a/arch/powerpc/include/asm/xive.h
->> +++ b/arch/powerpc/include/asm/xive.h
->> @@ -60,7 +60,7 @@ struct xive_irq_data {
->>  };
->>  #define XIVE_IRQ_FLAG_STORE_EOI	0x01
->>  #define XIVE_IRQ_FLAG_LSI	0x02
->> -#define XIVE_IRQ_FLAG_SHIFT_BUG	0x04
->> +#define XIVE_IRQ_FLAG_SHIFT_BUG	0x04 /* P9 DD1.0 workaround */
-> 
-> Same here, with an extra cleanup to stop using it when initializing 
-> xive_irq_flags[] in common.c.
+This issue was detected by using the Coccinelle software.
 
-Yes. Since this is an internal flag, we can simply remove it.
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/misc/cxl/cxllib.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Thanks,
-
-C. 
-
-> 
->>  #define XIVE_IRQ_FLAG_MASK_FW	0x08
->>  #define XIVE_IRQ_FLAG_EOI_FW	0x10
->>  #define XIVE_IRQ_FLAG_H_INT_ESB	0x20
->> diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
->> index 9b395381179d..170d1d04e1d1 100644
->> --- a/arch/powerpc/kvm/book3s_xive_native.c
->> +++ b/arch/powerpc/kvm/book3s_xive_native.c
->> @@ -37,9 +37,6 @@ static u8 xive_vm_esb_load(struct xive_irq_data *xd, u32 offset)
->>  	 * ordering.
->>  	 */
->>  
->> -	if (xd->flags & XIVE_IRQ_FLAG_SHIFT_BUG)
->> -		offset |= offset << 4;
->> -
->>  	val = in_be64(xd->eoi_mmio + offset);
->>  	return (u8)val;
->>  }
->> diff --git a/arch/powerpc/kvm/book3s_xive_template.c b/arch/powerpc/kvm/book3s_xive_template.c
->> index 4ad3c0279458..ece36e024a8f 100644
->> --- a/arch/powerpc/kvm/book3s_xive_template.c
->> +++ b/arch/powerpc/kvm/book3s_xive_template.c
->> @@ -61,9 +61,6 @@ static u8 GLUE(X_PFX,esb_load)(struct xive_irq_data *xd, u32 offset)
->>  	if (offset == XIVE_ESB_SET_PQ_10 && xd->flags & XIVE_IRQ_FLAG_STORE_EOI)
->>  		offset |= XIVE_ESB_LD_ST_MO;
->>  
->> -	if (xd->flags & XIVE_IRQ_FLAG_SHIFT_BUG)
->> -		offset |= offset << 4;
->> -
->>  	val =__x_readq(__x_eoi_page(xd) + offset);
->>  #ifdef __LITTLE_ENDIAN__
->>  	val >>= 64-8;
->> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
->> index 411cba12d73b..a9259470bf9f 100644
->> --- a/arch/powerpc/sysdev/xive/common.c
->> +++ b/arch/powerpc/sysdev/xive/common.c
->> @@ -200,10 +200,6 @@ static notrace u8 xive_esb_read(struct xive_irq_data *xd, u32 offset)
->>  	if (offset == XIVE_ESB_SET_PQ_10 && xd->flags & XIVE_IRQ_FLAG_STORE_EOI)
->>  		offset |= XIVE_ESB_LD_ST_MO;
->>  
->> -	/* Handle HW errata */
->> -	if (xd->flags & XIVE_IRQ_FLAG_SHIFT_BUG)
->> -		offset |= offset << 4;
->> -
->>  	if ((xd->flags & XIVE_IRQ_FLAG_H_INT_ESB) && xive_ops->esb_rw)
->>  		val = xive_ops->esb_rw(xd->hw_irq, offset, 0, 0);
->>  	else
->> @@ -214,10 +210,6 @@ static notrace u8 xive_esb_read(struct xive_irq_data *xd, u32 offset)
->>  
->>  static void xive_esb_write(struct xive_irq_data *xd, u32 offset, u64 data)
->>  {
->> -	/* Handle HW errata */
->> -	if (xd->flags & XIVE_IRQ_FLAG_SHIFT_BUG)
->> -		offset |= offset << 4;
->> -
->>  	if ((xd->flags & XIVE_IRQ_FLAG_H_INT_ESB) && xive_ops->esb_rw)
->>  		xive_ops->esb_rw(xd->hw_irq, offset, data, 1);
->>  	else
->> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
->> index 5f1e5aed8ab4..0310783241b5 100644
->> --- a/arch/powerpc/sysdev/xive/native.c
->> +++ b/arch/powerpc/sysdev/xive/native.c
->> @@ -64,8 +64,6 @@ int xive_native_populate_irq_data(u32 hw_irq, struct xive_irq_data *data)
->>  		data->flags |= XIVE_IRQ_FLAG_STORE_EOI;
->>  	if (opal_flags & OPAL_XIVE_IRQ_LSI)
->>  		data->flags |= XIVE_IRQ_FLAG_LSI;
->> -	if (opal_flags & OPAL_XIVE_IRQ_SHIFT_BUG)
->> -		data->flags |= XIVE_IRQ_FLAG_SHIFT_BUG;
->>  	if (opal_flags & OPAL_XIVE_IRQ_MASK_VIA_FW)
->>  		data->flags |= XIVE_IRQ_FLAG_MASK_FW;
->>  	if (opal_flags & OPAL_XIVE_IRQ_EOI_VIA_FW)
-> 
+diff --git a/drivers/misc/cxl/cxllib.c b/drivers/misc/cxl/cxllib.c
+index 2a1783f32254..53b919856426 100644
+=2D-- a/drivers/misc/cxl/cxllib.c
++++ b/drivers/misc/cxl/cxllib.c
+@@ -170,8 +170,6 @@ int cxllib_get_PE_attributes(struct task_struct *task,
+ 			     unsigned long translation_mode,
+ 			     struct cxllib_pe_attributes *attr)
+ {
+-	struct mm_struct *mm =3D NULL;
+-
+ 	if (translation_mode !=3D CXL_TRANSLATED_MODE &&
+ 		translation_mode !=3D CXL_REAL_MODE)
+ 		return -EINVAL;
+@@ -182,7 +180,7 @@ int cxllib_get_PE_attributes(struct task_struct *task,
+ 				true);
+ 	attr->lpid =3D mfspr(SPRN_LPID);
+ 	if (task) {
+-		mm =3D get_task_mm(task);
++		struct mm_struct *mm =3D get_task_mm(task);
+ 		if (mm =3D=3D NULL)
+ 			return -EINVAL;
+ 		/*
+=2D-
+2.29.2
 
