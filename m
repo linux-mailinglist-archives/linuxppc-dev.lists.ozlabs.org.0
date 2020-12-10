@@ -1,123 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A262D54E6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 08:54:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0F12D5619
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 10:08:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cs5lk6J9GzDqmY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 18:54:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cs7Pl1HplzDqrT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 20:08:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=prevas.dk (client-ip=40.107.1.137;
- helo=eur02-he1-obe.outbound.protection.outlook.com;
- envelope-from=rasmus.villemoes@prevas.dk; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=prevas.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=prevas.dk header.i=@prevas.dk header.a=rsa-sha256
- header.s=selector1 header.b=VHRa1WyR; 
- dkim-atps=neutral
-Received: from EUR02-HE1-obe.outbound.protection.outlook.com
- (mail-eopbgr10137.outbound.protection.outlook.com [40.107.1.137])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.194;
+ helo=mail-oi1-f194.google.com; envelope-from=geert.uytterhoeven@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com
+ [209.85.167.194])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cs5jw3Cr6zDqCc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 18:52:30 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YDlbuMIKY7V1/tvpgDBzov0KqiqY9+we7qbrKGXVT6UfOzH6ho+bVoIqnB0XVAhgRI9rLkWBqFTDV4+XsmFz8oRxsqGbcUNao77UJ4AdfcnSLHS8blMjots+zzjU4F0/S4PmF8R8PA1Yxw6Ax06HnBBXDcMmY8YPS4qVSr9ciTdiHEDZbVhNLOmgA3Eim+cipzNWoLf3iEd2H9dSWUEROkpv3yq5cHEhuBHb/1uxMvuvXppnBNbA4V9uWhEhRjXmvdViUe+nJ+QIR/a0kOelGO6JaPY7qa+yTp+teUg13IbPMjdKH4MPLOYf7JIrgqXQPKIMoPbi78CGHxuxA4kLFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HRvR2u6LzjRu37SUjpWrSK039HPQ11IbCLrjpxZ7p4o=;
- b=EJwJCHEU1zwh1Fh7SeMkTM95ZUnVrUSjYTC9WYNon9HOKCK9zA2EXQz7LvaRh7pxAASPIwYku3yhgj4K8jeEbuPdog3+5Dlsor/GdUiYmzQ3Our4hh/ClzescuDKJdzNrg5NFPmdCuWiAPp6MNFGADET+ZQr9u6NYcl+rhoBN/m6R+0X5qdEKdf8n2wu//HR9iE7C0qjA2S2uidzCrWCO1v8/IzW1f7a8iOzsE/NcjkOreg1+VbGGLDtJq5Llx0WvuxNUo8X6nbaObbHE1KCqH5DR+dSGpQPrymsf97Qi86LOyAe/+KIR3JJHDCo9MonJEemtCUMtRY0AuCcX9T8Lg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
- dkim=pass header.d=prevas.dk; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HRvR2u6LzjRu37SUjpWrSK039HPQ11IbCLrjpxZ7p4o=;
- b=VHRa1WyRNZiMQ2E6etlHT1F/L5OSj1lv7ZEqDourQcbDogm/HPVRudjejyKuyQNlcc+Pb8c6ASJIvfWzh/NAHkQ4iFkVpC3MdIRt6Q4NI8bvwIoRRAxB6sWNnww46t6dSCGvs310l9ejr8y+9lTYfU/DnKGxxqV2rlE64zW4cI8=
-Authentication-Results: nxp.com; dkim=none (message not signed)
- header.d=none;nxp.com; dmarc=none action=none header.from=prevas.dk;
-Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:3f::10)
- by AM4PR1001MB1252.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:200:90::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.23; Thu, 10 Dec
- 2020 07:52:24 +0000
-Received: from AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::9068:c899:48f:a8e3]) by AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::9068:c899:48f:a8e3%6]) with mapi id 15.20.3632.026; Thu, 10 Dec 2020
- 07:52:24 +0000
-Subject: Re: [PATCH 00/20] ethernet: ucc_geth: assorted fixes and
- simplifications
-To: Jakub Kicinski <kuba@kernel.org>
-References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
- <20201205125351.41e89579@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
- <7e78df84-0035-6935-acb0-adbd0c648128@prevas.dk>
- <20201205132716.4c68e35d@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-Message-ID: <0b4fa89e-8dbd-faed-ec26-8ee2e6e1268a@prevas.dk>
-Date: Thu, 10 Dec 2020 08:52:22 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-In-Reply-To: <20201205132716.4c68e35d@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [5.186.115.188]
-X-ClientProxiedBy: AM6PR01CA0070.eurprd01.prod.exchangelabs.com
- (2603:10a6:20b:e0::47) To AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:3f::10)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cs7Mv54ykzDqhH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 20:07:04 +1100 (AEDT)
+Received: by mail-oi1-f194.google.com with SMTP id p126so4978179oif.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 01:07:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=aoVanH6PpJItaGusWTgG8SDNfnDJUsCWIBki9TqzoFs=;
+ b=lO2P/znD/ftQBZvY/1wB72evJDcvuCLeUB50QM7VABMJ+Y8VEj4S5d8rOsCEMZGcgE
+ ZmaC3gZnNHt0jdNgxOdd5euUhrygEnzRGrSinOaP3/mrXLk4KbALipy8m6ZFgFmgZEXL
+ /i+SUxU6sTUto5fvb6muIPeCwmFDuEYxKr8ja/AuKpRAc/x8iDI0rpiaGJhQZ6YYLt+F
+ kuVwlk5+rGZn8h05CK77Y0CMWfkPEna05FNaoh68bWby5vriBPVyshI98kLKXuI2mG3n
+ KwL0DjA3FJCyY4YJakQ5q5VP4y/1ZbtmRfjt4jNk7UmDSMGzDPKpkGAhejH3peG7ZlxS
+ kyMw==
+X-Gm-Message-State: AOAM530mMcC19JLRPnvvPUf9YTXrFsls/ya27fQiUm/T4/lAPwWYIfGc
+ LS1+ZByPNNppr9w7WFxxaL5YaUkoEZNEgT+KZbA=
+X-Google-Smtp-Source: ABdhPJzf0knRERLR8YZ9NOPlwbDHfzdOFzLG3U//gA4Oz4mzugiWqtafnbqK+P57McZqu6A2QdWTyRu7WWlaN6pAFJI=
+X-Received: by 2002:aca:5c08:: with SMTP id q8mr4829513oib.54.1607591221309;
+ Thu, 10 Dec 2020 01:07:01 -0800 (PST)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.1.149] (5.186.115.188) by
- AM6PR01CA0070.eurprd01.prod.exchangelabs.com (2603:10a6:20b:e0::47) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3654.12 via Frontend
- Transport; Thu, 10 Dec 2020 07:52:23 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 623d60c6-ed23-4d7d-d453-08d89ce08838
-X-MS-TrafficTypeDiagnostic: AM4PR1001MB1252:
-X-Microsoft-Antispam-PRVS: <AM4PR1001MB1252019A19347DB48F60865F93CB0@AM4PR1001MB1252.EURPRD10.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 6JMPbtNi+k4ndik4jAHCTxaythIU81YKsPpcgZlKqGNsHjUvN82Le30qFap7OdDqdty8zlUpb7lJM/TH22nHonh+e991aCRHj5OuhyXNTBkWIfgi7TWvAhIeT4waFvF1z3dNgUvTTqpmPhZRwWGzccGb3fKp7x+nnuedZJiqe1KdSzAdYiGiZQRnDp3JyxuUjvH8lWtBI/m2GSysSKvTRscIM9tKs50CXhKm7Cq3GSsUTzr/H9K42rQSsl1QCbGSDde2fJugXixY3AyryqTDK2F5TVKKfH2hmjnGWbIG+/wY1I5Vi/qrozHcM5SXjFCk/+xabn1goqC6lI285PQrg0Y9/s/QpKGxM64WG0Tz/DIdg8PzfuTZh9A+y/UhunRe/PB6d9q8lXlGi/YVFCTuTSEl9RyzQgtZXee6ducxe7vXbUeA+yc7YtGj3onHRDpE8+Q10W+z/NG0voueprx3uA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(396003)(39850400004)(136003)(346002)(366004)(376002)(52116002)(66946007)(8976002)(8936002)(16576012)(36756003)(478600001)(66476007)(186003)(966005)(316002)(44832011)(16526019)(66556008)(6916009)(8676002)(54906003)(4326008)(31696002)(31686004)(5660300002)(86362001)(4744005)(2906002)(956004)(2616005)(26005)(6486002)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData: =?Windows-1252?Q?AjI+iP+d5haED/CLEvu8ayxn+N9NRgkvAf9EtKOWsfN5P/OcFzZuxGR5?=
- =?Windows-1252?Q?Z8A/L7RL3oXAFYlyIp8wX+Ykkxs85Rum+89B1f9i6A7AHDz0+IzvcIWk?=
- =?Windows-1252?Q?geK4LM9gdsywaC/6gHltMFcIX/htauE1tyOT3SCb2RXIdqjfH/tCB3PH?=
- =?Windows-1252?Q?0sJ+yQZCQvie15LmDDr8KJfchAN6q1NN/Qu3/7UhX0kiHlhtycJFuhem?=
- =?Windows-1252?Q?CMdoXxvueMwbQ+QfGxS8ns0Uy711JQe7HI/4CU2qjYVf82hnoDOGIyKp?=
- =?Windows-1252?Q?mNaDwHVLUyzA4LbymYWOz30tJ8XhY8he7ITYB/73lAikWbEdHIZW7MFU?=
- =?Windows-1252?Q?l6XZ9vbThCmhnCBfVq+Lhkgr3ewRkR1DdeUAFpTyT0ZXGVW7sAhc8sak?=
- =?Windows-1252?Q?NamQ2DwtMlRru8/0hicfdiZBh+VIaG+ThqkJM04QkJFUTgknF7inzt0n?=
- =?Windows-1252?Q?x8m7qZCBYjdZxBAfYzP8yIX3y4uBv2TjqthJDzQhYAWYGxqLKwLzb/0c?=
- =?Windows-1252?Q?fuCjV91IDH1k8FwprdgRTqI20YLq4eEzfQbyI5NhC0KICoAdBCMtUQ9N?=
- =?Windows-1252?Q?tE9gLkS/8bT0nu8xieJ2xL13YbOK74BnhUQtlx1Qp3QXJ/t4cw/wZUGB?=
- =?Windows-1252?Q?zsbKmgZQnMY5fJ7oiglet7nxJINwmxNua4SzIEqDdREd6s4a8vPQ07xS?=
- =?Windows-1252?Q?WlNjv1qBur0NF0A/2vUww0evZ6CG/qAL7fJ71HQhwEqZ6PudZCR9rqsI?=
- =?Windows-1252?Q?Uk4+n2/VvOSgQ7JwXuPC21yPFLtp0LWlWqlSwIS0rGfPp+vol9RtmjNW?=
- =?Windows-1252?Q?JKrhodrODlxxKLbTa12xudSHmOXQK/Z5O6GXNo8A13jFPKzFpv5wc9Yp?=
- =?Windows-1252?Q?DgssxpEGxzlohC5pVrtbxGvxcJlNgDlnq2Qz8/sczeWdVdph8Qc8uWXz?=
- =?Windows-1252?Q?Gzpsp1rV4YC/AVjunlfEAYCF3C823CENT/3ERHgp1JXRzjkT2Zqa8Qhf?=
- =?Windows-1252?Q?VVX7/TYMQzAvwmPX245UlS7mPc7f1/pzsgxq+oEwoQIy5UBUE692kNAV?=
- =?Windows-1252?Q?GHnp2hw+H0Q1zBO1?=
-X-OriginatorOrg: prevas.dk
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR10MB1874.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2020 07:52:24.3918 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
-X-MS-Exchange-CrossTenant-Network-Message-Id: 623d60c6-ed23-4d7d-d453-08d89ce08838
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +il4/XE3zMe3YUYrA/rXP6SWe9pjRxuz2oY3wou9fxO54RBV7t5HO6gR0LGeDtbdhCFtDXa4aHs5TuYQKlHm5iyKs57YbKkxC2UFP0Wr/pU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM4PR1001MB1252
+References: <20201120025757.325930-1-npiggin@gmail.com>
+ <20201120025757.325930-3-npiggin@gmail.com>
+In-Reply-To: <20201120025757.325930-3-npiggin@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 10 Dec 2020 10:06:50 +0100
+Message-ID: <CAMuHMdUdorW03=mipgm92SXNPBZO5owW1Wp6_SacRDZ7fOe9gw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] powerpc/64s: Trim offlined CPUs from mm_cpumasks
+To: Nicholas Piggin <npiggin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -129,32 +61,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Li Yang <leoyang.li@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Anton Vorontsov <anton.vorontsov@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/12/2020 22.27, Jakub Kicinski wrote:
-> On Sat, 5 Dec 2020 22:11:39 +0100 Rasmus Villemoes wrote:
->>> Looks like a nice clean up on a quick look.
->>>
->>> Please separate patches 1 and 11 (which are the two bug fixes I see)  
->>
->> I think patch 2 is a bug fix as well, but I'd like someone from NXP to
->> comment.
-> 
-> Sure, makes sense.
-> 
->>> rebase (retest) and post them against the net tree:
->>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/  
->>
->> So I thought this would go through Li Yang's tree.
+Hi Nicholas,
 
-Li, any preference? Will you take this series, or are you ok with the
-three soc/fsl/qe patches going through the net tree along with the rest?
+On Fri, Nov 20, 2020 at 4:01 AM Nicholas Piggin <npiggin@gmail.com> wrote:
+>
+> When offlining a CPU, powerpc/64s does not flush TLBs, rather it just
+> leaves the CPU set in mm_cpumasks, so it continues to receive TLBIEs
+> to manage its TLBs.
+>
+> However the exit_flush_lazy_tlbs() function expects that after
+> returning, all CPUs (except self) have flushed TLBs for that mm, in
+> which case TLBIEL can be used for this flush. This breaks for offline
+> CPUs because they don't get the IPI to flush their TLB. This can lead
+> to stale translations.
+>
+> Fix this by clearing the CPU from mm_cpumasks, then flushing all TLBs
+> before going offline.
+>
+> These offlined CPU bits stuck in the cpumask also prevents the cpumask
+> from being trimmed back to local mode, which means continual broadcast
+> IPIs or TLBIEs are needed for TLB flushing. This patch prevents that
+> situation too.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Rasmus
+Thanks for your patch!
+
+> --- a/arch/powerpc/platforms/powermac/smp.c
+> +++ b/arch/powerpc/platforms/powermac/smp.c
+> @@ -911,6 +911,8 @@ static int smp_core99_cpu_disable(void)
+>
+>         mpic_cpu_set_priority(0xf);
+>
+> +       cleanup_cpu_mmu_context();
+> +
+
+I guess this change broke pmac32_defconfig+SMP in v5.10-rc7?
+
+arch/powerpc/platforms/powermac/smp.c: error: implicit
+declaration of function 'cleanup_cpu_mmu_context'
+[-Werror=implicit-function-declaration]:  => 914:2
+
+http://kisskb.ellerman.id.au/kisskb/buildresult/14423174/
+
+
+>         return 0;
+>  }
+>
+> diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platforms/powernv/smp.c
+> index 54c4ba45c7ce..cbb67813cd5d 100644
+> --- a/arch/powerpc/platforms/powernv/smp.c
+> +++ b/arch/powerpc/platforms/powernv/smp.c
+> @@ -143,6 +143,9 @@ static int pnv_smp_cpu_disable(void)
+>                 xive_smp_disable_cpu();
+>         else
+>                 xics_migrate_irqs_away();
+> +
+> +       cleanup_cpu_mmu_context();
+> +
+>         return 0;
+>  }
+>
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> index f2837e33bf5d..a02012f1b04a 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> @@ -90,6 +90,9 @@ static int pseries_cpu_disable(void)
+>                 xive_smp_disable_cpu();
+>         else
+>                 xics_migrate_irqs_away();
+> +
+> +       cleanup_cpu_mmu_context();
+> +
+>         return 0;
+>  }
+>
+> --
+> 2.23.0
+>
+
+
+--
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
