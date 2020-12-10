@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328282D5732
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 10:32:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94EFA2D5753
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 10:37:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cs7xG6XfSzDqHq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 20:32:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cs83J5KWJzDqMr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Dec 2020 20:37:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,17 +17,17 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=baikalelectronics.ru
 Received: from mail.baikalelectronics.ru (mail.baikalelectronics.com
  [87.245.175.226])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Cs7S10j6MzDqhH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 20:10:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Cs7S21sRLzDqjR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 20:10:41 +1100 (AEDT)
 From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To: Mathias Nyman <mathias.nyman@intel.com>, Felipe Balbi <balbi@kernel.org>, 
  Krzysztof Kozlowski <krzk@kernel.org>, Greg Kroah-Hartman
  <gregkh@linuxfoundation.org>, Rob Herring <robh+dt@kernel.org>, Chunfeng Yun
  <chunfeng.yun@mediatek.com>
-Subject: [PATCH v6 12/19] dt-bindings: usb: dwc3: Add synopsys,
- dwc3 compatible string
-Date: Thu, 10 Dec 2020 12:09:36 +0300
-Message-ID: <20201210090944.16283-13-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v6 13/19] dt-bindings: usb: dwc3: Add Tx De-emphasis
+ constraints
+Date: Thu, 10 Dec 2020 12:09:37 +0300
+Message-ID: <20201210090944.16283-14-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201210090944.16283-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201210090944.16283-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -65,11 +65,10 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The DWC USB3 driver and some DTS files like Exynos 5250, Keystone k2e, etc
-expects the DWC USB3 DT node to have the compatible string with the
-"synopsys" vendor prefix. Let's add the corresponding compatible string to
-the controller DT schema, but mark it as deprecated seeing the Synopsys,
-Inc. is presented with just "snps" vendor prefix.
+In accordance with the driver comments the PIPE3 de-emphasis can be tuned
+to be either -6dB, -2.5dB or disabled. Let's add the de-emphasis
+property constraints so the DT schema would make sure the controller DT
+node is equipped with correct value.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 Reviewed-by: Rob Herring <robh@kernel.org>
@@ -77,31 +76,27 @@ Reviewed-by: Rob Herring <robh@kernel.org>
 ---
 
 Changelog v2:
-- Drop quotes from around the compat string constant.
-
-Changelog v4:
-- Get the patch back, since we can't discard the deprecated prefix from the
-  driver.
+- Grammar fix: "s/tunned/tuned"
+- Grammar fix: remove redundant "or" conjunction.
 ---
- Documentation/devicetree/bindings/usb/snps,dwc3.yaml | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/usb/snps,dwc3.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/usb/snps,dwc3.yaml b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
-index 87a92e313d24..6253bc5fb18e 100644
+index 6253bc5fb18e..e01a9a93d74a 100644
 --- a/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
 +++ b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
-@@ -31,7 +31,10 @@ allOf:
- properties:
-   compatible:
-     contains:
--      const: snps,dwc3
-+      oneOf:
-+        - const: snps,dwc3
-+        - const: synopsys,dwc3
-+          deprecated: true
+@@ -156,6 +156,10 @@ properties:
+       The value driven to the PHY is controlled by the LTSSM during USB3
+       Compliance mode.
+     $ref: /schemas/types.yaml#/definitions/uint8
++    enum:
++      - 0 # -6dB de-emphasis
++      - 1 # -3.5dB de-emphasis
++      - 2 # No de-emphasis
  
-   interrupts:
-     description:
+   snps,dis_u3_susphy_quirk:
+     description: When set core will disable USB3 suspend phy
 -- 
 2.29.2
 
