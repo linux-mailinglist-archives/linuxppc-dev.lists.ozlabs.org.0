@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74752D7231
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 09:50:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E33FC2D7245
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 09:53:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Csky74frNzDqxG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 19:50:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Csl206HvhzDqQh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 19:53:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,36 +16,36 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
- by lists.ozlabs.org (Postfix) with ESMTP id 4CskwJ5fBdzDqsd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 19:48:44 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Csl0K4THdzDqtd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 19:52:17 +1100 (AEDT)
 Received: from localhost.localdomain (unknown [124.16.141.241])
- by APP-05 (Coremail) with SMTP id zQCowAAHRHhoMtNfnSkDAA--.10027S2;
- Fri, 11 Dec 2020 16:48:40 +0800 (CST)
+ by APP-05 (Coremail) with SMTP id zQCowAD39Hg+M9NfCkMDAA--.10772S2;
+ Fri, 11 Dec 2020 16:52:15 +0800 (CST)
 From: Xu Wang <vulab@iscas.ac.cn>
 To: pantelis.antoniou@gmail.com, davem@davemloft.net, kuba@kernel.org,
  linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] net: fs_enet: remove casting dma_alloc_coherent
-Date: Fri, 11 Dec 2020 08:48:37 +0000
-Message-Id: <20201211084837.85307-1-vulab@iscas.ac.cn>
+Subject: [PATCH] net: ethernet: fs-enet: remove casting dma_alloc_coherent
+Date: Fri, 11 Dec 2020 08:52:12 +0000
+Message-Id: <20201211085212.85457-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: zQCowAAHRHhoMtNfnSkDAA--.10027S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Xw15CFWrWFyUJryUtr15CFg_yoWfZwcE9r
- srXrn3Ww47tryFya18KrW3Zr929FWDZa1rXF4jgayaqry7Zrn8X34UXr1fGF13ur48uFZ8
- Zw13tFy3A34jgjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+X-CM-TRANSID: zQCowAD39Hg+M9NfCkMDAA--.10772S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Xw15CFWrWFyUJry5KrWfZrb_yoWfZwc_ur
+ srZFn7Ww4UJryFyw48KrW3Zr929FZ0va1rZF1vgayaqr9Fvrn5W34UZr1fXF13ur48uFZ8
+ Zwnxtry3A345KjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
  9fnUUIcSsGvfJTRUUUb2xYjsxI4VWkCwAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I
  6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
- 8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0
- cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4
- A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
- w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4UJVWxJr
- 1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkIecxEwVAFwVW8ZwCF04k2
- 0xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI
- 8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41l
- IxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIx
- AIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2
+ 8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0
+ cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
+ 8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+ 64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVW8Jr0_Cr
+ 1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY02Avz4vE14v_GFyl42xK
+ 82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGw
+ C20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48J
+ MIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMI
+ IF0xvE42xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2
  z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUxb4SUUUUU
 X-Originating-IP: [124.16.141.241]
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCwcHA1z4jporbQAAs+
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgkHA10Te1Xx+wAAsh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,18 +66,18 @@ Remove casting the values returned by dma_alloc_coherent.
 
 Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
 ---
- drivers/net/ethernet/freescale/fs_enet/mac-fcc.c | 2 +-
+ drivers/net/ethernet/freescale/fs_enet/mac-fec.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c b/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c
-index b47490be872c..17f757c0bb85 100644
---- a/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c
-@@ -147,7 +147,7 @@ static int allocate_bd(struct net_device *dev)
+diff --git a/drivers/net/ethernet/freescale/fs_enet/mac-fec.c b/drivers/net/ethernet/freescale/fs_enet/mac-fec.c
+index 99fe2c210d0f..3ae345676e50 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/mac-fec.c
++++ b/drivers/net/ethernet/freescale/fs_enet/mac-fec.c
+@@ -131,7 +131,7 @@ static int allocate_bd(struct net_device *dev)
  	struct fs_enet_private *fep = netdev_priv(dev);
  	const struct fs_platform_info *fpi = fep->fpi;
  
--	fep->ring_base = (void __iomem __force *)dma_alloc_coherent(fep->dev,
+-	fep->ring_base = (void __force __iomem *)dma_alloc_coherent(fep->dev,
 +	fep->ring_base = dma_alloc_coherent(fep->dev,
  					    (fpi->tx_ring + fpi->rx_ring) *
  					    sizeof(cbd_t), &fep->ring_mem_addr,
