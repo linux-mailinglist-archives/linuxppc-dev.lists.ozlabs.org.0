@@ -1,98 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFAF32D73F6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 11:35:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC902D74A7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 12:31:02 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CsnHJ751QzDqw6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 21:35:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CspWR4rs2zDqtK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 22:30:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.86; helo=userp2130.oracle.com;
+ envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=none dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=d9NHIH1q; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=ZAr/jOhe; 
+ dkim-atps=neutral
+X-Greylist: delayed 4348 seconds by postgrey-1.36 at bilbo;
+ Fri, 11 Dec 2020 22:26:23 AEDT
+Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CsnFZ3xQ0zDqSx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 21:33:54 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0BBA5ceg036311; Fri, 11 Dec 2020 05:33:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=KgLxMkEJ8BV3d0OFbuBTbEdL+9Q4/ypB1NhM9lOYIYI=;
- b=d9NHIH1qYqoNfB1Ywo7QR5QEI4iOJ1gssX6NDVyrG9i9WgizOQLfPXcg6nQ+sIl5xnL6
- Ucj8z/LzdvW+LFDoF+q7st9H+/anSUqTA9lafXyXzW7NQMez2EmShbC0H8CtuN4xzIyq
- /SCVBVw01y2aCeW33QxPy/Kmvd2uRpEx+0urhboOtFzf+WD0F8CfI+YW62XKYxkQgSxU
- VG1p7yk9fxMcn4e9kB/X0CNdMuWZuEbhPY77Cc+ENyL51lfPTPXFYFCu+8+R6EJy0qRe
- j9RmzaqYDvuZYAX+QmsVUrIYS2e7Z5e0QhP8/LPB0INVSGBlKmQ0HnrPOmT0YzxUk1t0 bw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35c6cwh3cx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Dec 2020 05:33:48 -0500
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0BBA5m8q036580;
- Fri, 11 Dec 2020 05:33:47 -0500
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35c6cwh3ak-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Dec 2020 05:33:47 -0500
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BBATj5T028822;
- Fri, 11 Dec 2020 10:33:42 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma05fra.de.ibm.com with ESMTP id 35958q2nj2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Dec 2020 10:33:42 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0BBAXeS960162482
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 11 Dec 2020 10:33:40 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EEA65AE055;
- Fri, 11 Dec 2020 10:33:39 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A57A1AE045;
- Fri, 11 Dec 2020 10:33:38 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.199.57.136])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 11 Dec 2020 10:33:38 +0000 (GMT)
-Date: Fri, 11 Dec 2020 16:03:36 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v1 1/2] KVM: PPC: Book3S HV: Add support for
- H_RPT_INVALIDATE (nested case only)
-Message-ID: <20201211103336.GB775394@in.ibm.com>
-References: <20201019112642.53016-1-bharata@linux.ibm.com>
- <20201019112642.53016-2-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CspQ73LsNzDqrN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 22:26:22 +1100 (AEDT)
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+ by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BBABR04178363;
+ Fri, 11 Dec 2020 10:13:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=cq57BA88UTUnfKMDclHPzLIllRZe4Oc+6i7wo7N7/GI=;
+ b=ZAr/jOhevQQsu1OnodG8VZYQlWpqSZ+ptlZLg4VExc5+MtfEazr/ysJyeX7nzXuto5Kf
+ q3g1PNOQ3R2AvRsDHe3exettRPu4EVr8yoayj6D1uEdDBMG9lf3f7CAYVJuxu/4XTL2+
+ WSydvqdQvnwd4pTJ+UoAdQwdWhWsN5Gh7G3QMzYyjyHGrinimuzzWaFzvSLmc1TtOXZO
+ 7psZ+3fWrRI2LnC98jlnfV+JIz0eZHf2H1Esj71QdMRG4OcqzZLiZRMh/yCANjYuvrUV
+ SfKH2IG+Z6GqX20YgBq1NBMRl55ajv8EFGXFBRqHJeH1TiT3d8mpjDeUGMqxe4tLWJdO OQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by userp2130.oracle.com with ESMTP id 3581mr9w06-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Fri, 11 Dec 2020 10:13:42 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BBAAwFO184507;
+ Fri, 11 Dec 2020 10:13:41 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+ by aserp3030.oracle.com with ESMTP id 358kst3ff7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 11 Dec 2020 10:13:41 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+ by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BBADbKs027014;
+ Fri, 11 Dec 2020 10:13:37 GMT
+Received: from mwanda (/102.36.221.92) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Fri, 11 Dec 2020 02:13:31 -0800
+Date: Fri, 11 Dec 2020 13:13:21 +0300
+From: Dan Carpenter <dan.carpenter@oracle.com>
+To: Timur Tabi <timur@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: [PATCH] ASoC: fsl: imx-hdmi: Fix an uninitialized return in probe
+Message-ID: <X9NGQaF4pmK8oUAF@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201019112642.53016-2-bharata@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-11_01:2020-12-09,
- 2020-12-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- malwarescore=0 phishscore=0 lowpriorityscore=0 suspectscore=1 adultscore=0
- bulkscore=0 spamscore=0 mlxlogscore=999 priorityscore=1501 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012110061
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9831
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ suspectscore=0
+ bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012110062
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9831
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ mlxlogscore=999
+ clxscore=1011 malwarescore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 impostorscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012110062
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,35 +88,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: aneesh.kumar@linux.ibm.com, david@gibson.dropbear.id.au, npiggin@gmail.com
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Takashi Iwai <tiwai@suse.com>,
+ kernel-janitors@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Mark Brown <broonie@kernel.org>, NXP Linux Team <linux-imx@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 19, 2020 at 04:56:41PM +0530, Bharata B Rao wrote:
-> Implements H_RPT_INVALIDATE hcall and supports only nested case
-> currently.
-> 
-> A KVM capability KVM_CAP_RPT_INVALIDATE is added to indicate the
-> support for this hcall.
+The "ret" variable should be set to a negative error code but
+currently it returns uninitialized stack data.
 
-As Paul mentioned in the thread, this hcall does both process scoped
-invalidations and partition scoped invalidations for L2 guest.
-I am adding KVM_CAP_RPT_INVALIDATE capability with only partition
-scoped invalidations (nested case) implemented in the hcall as we
-don't see the need for KVM to implement process scoped invalidation
-function as KVM may never run with LPCR[GTSE]=0.
+Fixes: 6a5f850aa83a ("ASoC: fsl: Add imx-hdmi machine driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ sound/soc/fsl/imx-hdmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I am wondering if enabling the capability with only partial
-implementation of the hcall is the correct thing to do. In future
-if we ever want process scoped invalidations support in this hcall,
-we may not be able to differentiate the availability of two functions
-cleanly from QEMU.
+diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
+index 2c2a76a71940..ede4a9ad1054 100644
+--- a/sound/soc/fsl/imx-hdmi.c
++++ b/sound/soc/fsl/imx-hdmi.c
+@@ -164,6 +164,7 @@ static int imx_hdmi_probe(struct platform_device *pdev)
+ 
+ 	if ((hdmi_out && hdmi_in) || (!hdmi_out && !hdmi_in)) {
+ 		dev_err(&pdev->dev, "Invalid HDMI DAI link\n");
++		ret = -EINVAL;
+ 		goto fail;
+ 	}
+ 
+-- 
+2.29.2
 
-So does it make sense to implement the process scoped invalidation
-function also now itself even if it is not going to be used in
-KVM?
-
-Regards,
-Bharata.
