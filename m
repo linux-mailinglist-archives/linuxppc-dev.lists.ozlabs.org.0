@@ -1,51 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F682D6FC1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 06:29:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E1E2D7144
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 09:16:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CsfTw4rzhzDqsy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 16:29:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CskBd448QzDqxM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 19:16:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CsfSQ3qflzDqrm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 16:27:50 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
+ helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=Xkrq96BD; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4CsfSQ1c52z9sWS; Fri, 11 Dec 2020 16:27:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1607664470; bh=KCtiru4Zi8d+YqJORQKk8XMRhcLRedA9e5sZ52eDqd4=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Xkrq96BDhTklQ0K8ESjMBS/H2JDLfSb6lCg9u5s6yVFA7aWoUsHktu+P2KmAFEIwL
- 4ttkjA+dqz8LuIDBIDLK2pIzqL8MYluoU+romI05TdvWFUuZ/PnnRv3wyc0aAUgzRu
- 1r9m0lEvvQsI/iX7OHps3Cj7zrGJVltUQOXeUhM2oYQX7MKXxD/paAJkFga/fyvDQU
- hAGWr7xpEPcWhmmUUy+T2F25KCVA4ok0sgd/Ob8irX8W8cEtDCAQ4u1kyoNyy4kGkE
- Nt3PghgUf2qkq0ctk/aPt8EswcTe8OL+YCA4WsdAuSxSZ3SbMDMdwU9XIEJtEIOQCB
- 9YdUqOMfUP/Ww==
-Date: Fri, 11 Dec 2020 16:27:44 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v1 1/2] KVM: PPC: Book3S HV: Add support for
- H_RPT_INVALIDATE (nested case only)
-Message-ID: <20201211052744.GB69862@thinks.paulus.ozlabs.org>
-References: <20201019112642.53016-1-bharata@linux.ibm.com>
- <20201019112642.53016-2-bharata@linux.ibm.com>
- <20201209041542.GA29825@thinks.paulus.ozlabs.org>
- <20201210042418.GA775394@in.ibm.com>
- <20201211011639.GD4874@yekko.fritz.box>
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from smtpout1.mo529.mail-out.ovh.net
+ (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Csk8v2Q6dzDqsd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 19:14:34 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.216])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 6A3A1732F683;
+ Fri, 11 Dec 2020 09:14:27 +0100 (CET)
+Received: from kaod.org (37.59.142.106) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Fri, 11 Dec
+ 2020 09:14:26 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-106R00609572359-680a-468d-bd0f-f6aa1bdf9c7e,
+ 9EEBF3925B94F143FF93F47EDF07ACA53746D722) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Subject: Re: [PATCH v2 07/13] powerpc: Increase NR_IRQS range to support more
+ KVM guests
+To: Michael Ellerman <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>
+References: <20201210171450.1933725-1-clg@kaod.org>
+ <20201210171450.1933725-8-clg@kaod.org> <87czzhrzhk.fsf@mpe.ellerman.id.au>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <9fca102b-b1b2-84b0-085f-96965f126e58@kaod.org>
+Date: Fri, 11 Dec 2020 09:14:26 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201211011639.GD4874@yekko.fritz.box>
+In-Reply-To: <87czzhrzhk.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.106]
+X-ClientProxiedBy: DAG7EX1.mxp5.local (172.16.2.61) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 60d78a51-4d26-4ac1-aca8-d1019acfdd69
+X-Ovh-Tracer-Id: 3054284972808768477
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudekuddguddujecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehgrhhouhhgsehkrghougdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,80 +66,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, Bharata B Rao <bharata@linux.ibm.com>,
- kvm-ppc@vger.kernel.org, aneesh.kumar@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Greg Kurz <groug@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 11, 2020 at 12:16:39PM +1100, David Gibson wrote:
-> On Thu, Dec 10, 2020 at 09:54:18AM +0530, Bharata B Rao wrote:
-> > On Wed, Dec 09, 2020 at 03:15:42PM +1100, Paul Mackerras wrote:
-> > > On Mon, Oct 19, 2020 at 04:56:41PM +0530, Bharata B Rao wrote:
-> > > > Implements H_RPT_INVALIDATE hcall and supports only nested case
-> > > > currently.
-> > > > 
-> > > > A KVM capability KVM_CAP_RPT_INVALIDATE is added to indicate the
-> > > > support for this hcall.
-> > > 
-> > > I have a couple of questions about this patch:
-> > > 
-> > > 1. Is this something that is useful today, or is it something that may
-> > > become useful in the future depending on future product plans? In
-> > > other words, what advantage is there to forcing L2 guests to use this
-> > > hcall instead of doing tlbie themselves?
-> > 
-> > H_RPT_INVALIDATE will replace the use of the existing H_TLB_INVALIDATE
-> > for nested partition scoped invalidations. Implementations that want to
-> > off-load invalidations to the host (when GTSE=0) would have to bother
-> > about only one hcall (H_RPT_INVALIDATE)
-> > 
-> > > 
-> > > 2. Why does it need to be added to the default-enabled hcall list?
-> > > 
-> > > There is a concern that if this is enabled by default we could get the
-> > > situation where a guest using it gets migrated to a host that doesn't
-> > > support it, which would be bad.  That is the reason that all new
-> > > things like this are disabled by default and only enabled by userspace
-> > > (i.e. QEMU) in situations where we can enforce that it is available on
-> > > all hosts to which the VM might be migrated.
-> > 
-> > As you suggested privately, I am thinking of falling back to
-> > H_TLB_INVALIDATE in case where this new hcall fails due to not being
-> > present. That should address the migration case that you mention
-> > above. With that and leaving the new hcall enabled by default
-> > is good okay?
+On 12/11/20 12:51 AM, Michael Ellerman wrote:
+> Cédric Le Goater <clg@kaod.org> writes:
+>> PowerNV systems can handle up to 4K guests and 1M interrupt numbers
+>> per chip. Increase the range of allowed interrupts to support a larger
+>> number of guests.
+>>
+>> Reviewed-by: Greg Kurz <groug@kaod.org>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>  arch/powerpc/Kconfig | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>> index 5181872f9452..c250fbd430d1 100644
+>> --- a/arch/powerpc/Kconfig
+>> +++ b/arch/powerpc/Kconfig
+>> @@ -66,7 +66,7 @@ config NEED_PER_CPU_PAGE_FIRST_CHUNK
+>>  
+>>  config NR_IRQS
+>>  	int "Number of virtual interrupt numbers"
+>> -	range 32 32768
+>> +	range 32 1048576
+>>  	default "512"
+>>  	help
+>>  	  This defines the number of virtual interrupt numbers the kernel
 > 
-> No.  Assuming that guests will have some fallback is not how the qemu
-> migration compatibility model works.  If we specify an old machine
-> type, we need to provide the same environment that the older host
-> would have.
+> We should really do what other arches do, and size this appropriately
+> based on the config, rather than asking users to guess what size they
+> need.
+> 
+> But I guess I'll take this for now, and we can do something fancier
+> later.
 
-I misunderstood what this patchset is about when I first looked at
-it.  H_RPT_INVALIDATE has two separate functions; one is to do
-process-scoped invalidations for a guest when LPCR[GTSE] = 0 (i.e.,
-when the guest is not permitted to do tlbie itself), and the other is
-to do partition-scoped invalidations that an L1 hypervisor needs to do
-on behalf of an L2 guest.  The second function is a replacement and
-standardization of the existing H_TLB_INVALIDATE which was introduced
-with the nested virtualization code (using a hypercall number from the
-platform-specific range).
+I was thinking on adding a property to OPAL to size the HW interrupt 
+number space. Is that it ?  That would be good because it's increasing
+from 20bits on P9 to 24bits on P10.
 
-This patchset only implements the second function, not the first.  The
-first function remains unimplemented in KVM at present.
+I am checking other arches.
 
-Given that QEMU will need changes for a guest to be able to exploit
-H_RPT_INVALIDATE (at a minimum, adding a device tree property), it
-doesn't seem onerous for QEMU to have to enable the hcall with
-KVM_CAP_PPC_ENABLE_HCALL.  I think that the control on whether the
-hcall is handled in KVM along with the control on nested hypervisor
-function provides adequate control for QEMU without needing a writable
-capability.  The read-only capability to say whether the hcall exists
-does seem useful.
+Thanks,
 
-Given all that, I'm veering towards taking Bharata's patchset pretty
-much as-is, minus the addition of H_RPT_INVALIDATE to the
-default-enabled set.
-
-Paul.
+C.  
