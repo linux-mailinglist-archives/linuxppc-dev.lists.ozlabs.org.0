@@ -1,75 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F852D7C51
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 18:08:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AD82D7FB9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 20:58:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Csy0f5rgszDqsX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Dec 2020 04:08:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ct1mx4TvkzDr2d
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Dec 2020 06:58:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::442;
- helo=mail-wr1-x442.google.com; envelope-from=daniel.thompson@linaro.org;
+ smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=KKDKtv9T; dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CsxyF0QcrzDqrN
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Dec 2020 04:06:09 +1100 (AEDT)
-Received: by mail-wr1-x442.google.com with SMTP id r14so9763412wrn.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 09:06:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=Q0kRT9Y/VRKtCl21czUvzutK8NrVOINaPhwQCeEQl8Q=;
- b=KKDKtv9T4wVQJLmhyVWyJ9efMZ7CJ1aUECqZHyeIsCfK++CuhnFvKh59a0VV8AdpfA
- jUzQubJKR2J5tq3+aXGmaCDu0JCSny3fe0QLJlDBIvoiT8+9pgqDd6w6DwZsqgTbFfRn
- xbkrBUzK5VPTDjoVqIHZwnk+0lm9VVcoHd/3WUlslMnskVpNq0W2ElmSA7FlvEJ2Mant
- wCkcF0gULaJhbYEsn7wy8gLof4hYYlL8G4VUlFpvySXG9n+fNK+Bx0vGqcU45jTkqcMj
- N/SlzN/mrD5K8hWr5O6AT5VenBGyHGOd1+F8KTOLI83WuaBGuMUX7bYChXS5Yj+9AcYn
- G+fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=Q0kRT9Y/VRKtCl21czUvzutK8NrVOINaPhwQCeEQl8Q=;
- b=r33FDTTdUpOX/YUsuEo5PA6rUuUx0nj9cTuLEKv1ond+aKCXwdpa/B3z1tMW66S9lU
- MqIjK/HfVu+83xN7kGaPURCoj1ufTYLEQanbAQSTneKhosnEhltvylZWS3yc2biYb7UJ
- gVMIgJQcJU/CoByzv5EgaPoHCq73/6Ve1/mzNS5Kegv5A4iVZZbCYh3F+EVJ8mT4k+MK
- RgOL3/5Mh0HuIhtJHtc4NVXLTCJ6I8mh6XWWI695wnhJi5NxZ1HZcEzwz04yWfAjPPxA
- gPj9ro2FVAzQNAVpMU6SOQCXCtnMP8POSXjBdFHCkMRaDKTazqfcY8mJOL28YU1Ox8Zv
- 4Jag==
-X-Gm-Message-State: AOAM53262/OjfwkXKrSDS9CtuNuU+YfCUl0q7Nfk3UuW4WEfxD2imz+5
- tbo9wJoqFWM9MS0l6/FoUwPLlA==
-X-Google-Smtp-Source: ABdhPJzQNI4hmPzAuQB/ioaujFWQ5mJDHpVNwXekyexc/tGTv6g4qUK/XB00sT2peYlJ4nli9zYsug==
-X-Received: by 2002:adf:f344:: with SMTP id e4mr13878740wrp.25.1607706361860; 
- Fri, 11 Dec 2020 09:06:01 -0800 (PST)
-Received: from holly.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net.
- [80.7.220.175])
- by smtp.gmail.com with ESMTPSA id n3sm16433080wrw.61.2020.12.11.09.05.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Dec 2020 09:06:00 -0800 (PST)
-Date: Fri, 11 Dec 2020 17:05:58 +0000
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [RFC HACK PATCH] PCI: dwc: layerscape: Hack around enumeration
- problems with Honeycomb LX2K
-Message-ID: <20201211170558.clfazgoetmery6u3@holly.lan>
-References: <20201211121507.28166-1-daniel.thompson@linaro.org>
- <CAL_JsqKQxFvkFtph1BZD2LKdZjboxhMTWkZe_AWS-vMD9y0pMw@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ct1lQ48MlzDqw6
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Dec 2020 06:57:04 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-43-udaKKb9nOGy_5JUKHtdpwQ-1; Fri, 11 Dec 2020 16:55:31 +0000
+X-MC-Unique: udaKKb9nOGy_5JUKHtdpwQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Fri, 11 Dec 2020 16:55:30 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Fri, 11 Dec 2020 16:55:30 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Christophe Leroy' <christophe.leroy@csgroup.eu>, Xu Wang
+ <vulab@iscas.ac.cn>, "pantelis.antoniou@gmail.com"
+ <pantelis.antoniou@gmail.com>, "davem@davemloft.net" <davem@davemloft.net>,
+ "kuba@kernel.org" <kuba@kernel.org>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: RE: [PATCH] net: ethernet: fs-enet: remove casting dma_alloc_coherent
+Thread-Topic: [PATCH] net: ethernet: fs-enet: remove casting dma_alloc_coherent
+Thread-Index: AQHWz9GpgD7sF0Ef20abEun/SaRAM6nyD2uwgAAKTACAAABqUA==
+Date: Fri, 11 Dec 2020 16:55:30 +0000
+Message-ID: <3f31140339c94652b1e7116e91cfd9c8@AcuMS.aculab.com>
+References: <20201211085212.85457-1-vulab@iscas.ac.cn>
+ <34548188-67f4-d3ef-c2e3-871fc520e838@csgroup.eu>
+ <6fc4b62ee7754d78b8f7b9c2275bc47e@AcuMS.aculab.com>
+ <4a1c2852-781f-e125-afcb-69387660b6af@csgroup.eu>
+In-Reply-To: <4a1c2852-781f-e125-afcb-69387660b6af@csgroup.eu>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqKQxFvkFtph1BZD2LKdZjboxhMTWkZe_AWS-vMD9y0pMw@mail.gmail.com>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,124 +71,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roy Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Linaro Patches <patches@linaro.org>, PCI <linux-pci@vger.kernel.org>,
- Jon Nettleton <jon@solid-run.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Minghuan Lian <minghuan.Lian@nxp.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 11, 2020 at 08:37:40AM -0600, Rob Herring wrote:
-> On Fri, Dec 11, 2020 at 6:15 AM Daniel Thompson
-> <daniel.thompson@linaro.org> wrote:
-> >
-> > I have been chasing down a problem enumerating an NVMe drive on a
-> > Honeycomb LX2K (NXP LX2160A). Specifically the drive can only enumerate
-> > successfully if the we are emitting lots of console messages via a UART.
-> > If the system is booted with `quiet` set then enumeration fails.
-> 
-> We really need to get away from work-arounds for device X on host Y. I
-> suspect they are not limited to that combination only...
+RnJvbTogQ2hyaXN0b3BoZSBMZXJveQ0KPiBTZW50OiAxMSBEZWNlbWJlciAyMDIwIDE2OjQzDQo+
+IA0KPiBMZSAxMS8xMi8yMDIwIMOgIDE3OjA3LCBEYXZpZCBMYWlnaHQgYSDDqWNyaXTCoDoNCj4g
+PiBGcm9tOiBDaHJpc3RvcGhlIExlcm95DQo+ID4+IFNlbnQ6IDExIERlY2VtYmVyIDIwMjAgMTU6
+MjINCj4gPj4NCj4gPj4gTGUgMTEvMTIvMjAyMCDDoCAwOTo1MiwgWHUgV2FuZyBhIMOpY3JpdMKg
+Og0KPiA+Pj4gUmVtb3ZlIGNhc3RpbmcgdGhlIHZhbHVlcyByZXR1cm5lZCBieSBkbWFfYWxsb2Nf
+Y29oZXJlbnQuDQo+ID4+DQo+ID4+IENhbiB5b3UgZXhwbGFpbiBtb3JlIGluIHRoZSBjb21taXQg
+bG9nID8NCj4gPj4NCj4gPj4gQXMgZmFyIGFzIEkgY2FuIHNlZSwgZG1hX2FsbG9jX2NvaGVyZW50
+KCkgZG9lc24ndCByZXR1cm4gX19pb21lbSwgYW5kIHJpbmdfYmFzZSBtZW1iZXIgaXMgX19pb21l
+bQ0KPiA+DQo+ID4gV2hpY2ggaXMgcHJvYmFibHkgd3JvbmcgLSB0aGF0IGlzIHRoZSBrZXJuZWwg
+YWRkcmVzcyBvZiBrZXJuZWwgbWVtb3J5Lg0KPiA+IFNvIGl0IHNob3VsZG4ndCBoYXZlIHRoZSBf
+X2lvbWVtIG1hcmtlci4NCj4gDQo+IFRoYXQncyB3aGVyZSB0aGUgYnVmZmVyIGRlc2NyaXB0b3Jz
+IGFyZSwgdGhlIGRyaXZlciBhY2Nlc3NlcyB0byB0aGUgY29udGVudCBvZiB0aGUgYnVmZmVyDQo+
+IGRlc2NyaXB0b3JzIHVzaW5nIHRoZSBJTyBhY2Nlc3NvcnMgaW5fYmUxNigpL291dF9iZTE2KCku
+IElzIGl0IG5vdCBjb3JyZWN0ID8NCg0KSSd2ZSBqdXN0IGJlZW4gbG9va2luZyBhdCB0aGUgY3Jh
+cCBpbiB0aGVyZS4NCk15IHVuZGVyc3RhbmRpbmcgaXMgdGhhdCBJTyBhY2Nlc3NvcnMgYXJlIGZv
+ciBJTyBkZXZpY2VzIChlZyBhZGRyZXNzZXMNCmZyb20gaW9fcmVtYXAoKSBldGMpLg0KDQpCdWZm
+ZXJzIGFsbG9jYXRlZCBieSBkbWFfYWxsb2NfY29oZXJlbnQoKSBhcmUgbm9ybWFsIGtlcm5lbCBt
+ZW1vcnkNCmFuZCBkb24ndCBuZWVkIGFueSBhY2Nlc3NvcnMuDQpOb3cgeW91IG1pZ2h0IG5lZWQg
+c29tZSBiYXJyaWVycyAtIG1vc3RseSBiZWNhdXNlIGFuIGV0aGVybmV0IGNoaXANCmNhbiB0eXBp
+Y2FsbHkgcmVhZCBhIHJpbmcgZW50cnkgd2l0aG91dCBiZWluZyBwcm9kZGVkLg0KSUlSQyB0aGVy
+ZSBpcyBhIGJhcnJpZXIgaW4gd3JpdGVsKCkgdG8gZW5zdXJlIHRoZSBkbWEgbWFzdGVyIHdpbGwN
+CidzZWUnIGFsbCBtZW1vcnkgd3JpdGVzIGRvbmUgYmVmb3JlIHRoZSBJTyB3cml0ZSB0aGF0IGtp
+Y2tzIGl0IGludG8NCmRvaW5nIHNvbWUgcHJvY2Vzc2luZy4NCg0KVGhlIGZhY3QgdGhhdCB0aGUg
+ZHJpdmVyIGNvbnRhaW5zIHNvIG1hbnkgX19pb21lbSBjYXN0cyAoZWcgaW4NCnR4X3Jlc3RhcnQp
+IGlzIGFuIGluZGljYXRpb24gdGhhdCBzb21ldGhpbmcgaXMgYmFkbHkgYXdyeS4NCl9faW9tZW0g
+ZXhpc3RzIHRvIGNoZWNrIHlvdSBhcmUgdXNpbmcgdGhlIGNvcnJlY3QgdHlwZSBvZiBwb2ludGVy
+Lg0KQW55IF9faW9tZW0gY2FzdHMgYXJlIGR1YmlvdXMuDQoNCglEYXZpZA0KDQo+IA0KPiBDaHJp
+c3RvcGhlDQo+IA0KPiA+DQo+ID4gSSB3b25kZXIgd2hhdCBlbHNlIGlzIHdyb25nLi4uLg0KPiA+
+DQo+ID4gCURhdmlkDQo+ID4NCj4gPj4NCj4gPj4gQ2hyaXN0b3BoZQ0KPiA+Pg0KPiA+Pj4NCj4g
+Pj4+IFNpZ25lZC1vZmYtYnk6IFh1IFdhbmcgPHZ1bGFiQGlzY2FzLmFjLmNuPg0KPiA+Pj4gLS0t
+DQo+ID4+PiAgICBkcml2ZXJzL25ldC9ldGhlcm5ldC9mcmVlc2NhbGUvZnNfZW5ldC9tYWMtZmVj
+LmMgfCAyICstDQo+ID4+PiAgICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVs
+ZXRpb24oLSkNCj4gPj4+DQo+ID4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQv
+ZnJlZXNjYWxlL2ZzX2VuZXQvbWFjLWZlYy5jDQo+ID4+IGIvZHJpdmVycy9uZXQvZXRoZXJuZXQv
+ZnJlZXNjYWxlL2ZzX2VuZXQvbWFjLWZlYy5jDQo+ID4+PiBpbmRleCA5OWZlMmMyMTBkMGYuLjNh
+ZTM0NTY3NmU1MCAxMDA2NDQNCj4gPj4+IC0tLSBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ZyZWVz
+Y2FsZS9mc19lbmV0L21hYy1mZWMuYw0KPiA+Pj4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQv
+ZnJlZXNjYWxlL2ZzX2VuZXQvbWFjLWZlYy5jDQo+ID4+PiBAQCAtMTMxLDcgKzEzMSw3IEBAIHN0
+YXRpYyBpbnQgYWxsb2NhdGVfYmQoc3RydWN0IG5ldF9kZXZpY2UgKmRldikNCj4gPj4+ICAgIAlz
+dHJ1Y3QgZnNfZW5ldF9wcml2YXRlICpmZXAgPSBuZXRkZXZfcHJpdihkZXYpOw0KPiA+Pj4gICAg
+CWNvbnN0IHN0cnVjdCBmc19wbGF0Zm9ybV9pbmZvICpmcGkgPSBmZXAtPmZwaTsNCj4gPj4+DQo+
+ID4+PiAtCWZlcC0+cmluZ19iYXNlID0gKHZvaWQgX19mb3JjZSBfX2lvbWVtICopZG1hX2FsbG9j
+X2NvaGVyZW50KGZlcC0+ZGV2LA0KPiA+Pj4gKwlmZXAtPnJpbmdfYmFzZSA9IGRtYV9hbGxvY19j
+b2hlcmVudChmZXAtPmRldiwNCj4gPj4+ICAgIAkJCQkJICAgIChmcGktPnR4X3JpbmcgKyBmcGkt
+PnJ4X3JpbmcpICoNCj4gPj4+ICAgIAkJCQkJICAgIHNpemVvZihjYmRfdCksICZmZXAtPnJpbmdf
+bWVtX2FkZHIsDQo+ID4+PiAgICAJCQkJCSAgICBHRlBfS0VSTkVMKTsNCj4gPj4+DQo+ID4NCj4g
+PiAtDQo+ID4gUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50
+IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQo+ID4gUmVnaXN0cmF0aW9uIE5vOiAx
+Mzk3Mzg2IChXYWxlcykNCj4gPg0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJy
+YW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lz
+dHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
 
-No objection on that. This patch was essentially sharing the result of
-an investigation where I got stuck at the "now fix it properly" stage!
-
-
-> How exactly does it fail to enumerate? There's a (racy) linkup check
-> on config accesses, is it reporting link down and skipping config
-> accesses?
-
-In dmesg terms it looked like this:
-
---- nvme_borked_gpu_working.linted.dmesg	2020-11-18 15:28:35.544118213 +0000
-+++ nvme_working_gpu_working.linted.dmesg	2020-11-18 15:28:56.180076946 +0000
-@@ -241,11 +241,19 @@
- pci 0000:00:00.0: reg 0x38: [mem 0x9048000000-0x9048ffffff pref]
- pci 0000:00:00.0: supports D1 D2
- pci 0000:00:00.0: PME# supported from D0 D1 D2 D3hot
-+pci 0000:01:00.0: [15b7:5009] type 00 class 0x010802
-+pci 0000:01:00.0: reg 0x10: [mem 0x9049000000-0x9049003fff 64bit]
-+pci 0000:01:00.0: reg 0x20: [mem 0x9049004000-0x90490040ff 64bit]
- pci 0000:00:00.0: BAR 1: assigned [mem 0x9040000000-0x9043ffffff]
- pci 0000:00:00.0: BAR 0: assigned [mem 0x9044000000-0x9044ffffff]
- pci 0000:00:00.0: BAR 6: assigned [mem 0x9045000000-0x9045ffffff pref]
-+pci 0000:00:00.0: BAR 14: assigned [mem 0x9046000000-0x90460fffff]
-+pci 0000:01:00.0: BAR 0: assigned [mem 0x9046000000-0x9046003fff 64bit]
-+pci 0000:01:00.0: BAR 4: assigned [mem 0x9046004000-0x90460040ff 64bit]
- pci 0000:00:00.0: PCI bridge to [bus 01-ff]
-+pci 0000:00:00.0:   bridge window [mem 0x9046000000-0x90460fffff]
- pci 0000:00:00.0: Max Payload Size set to  256/ 256 (was  128), Max Read Rq  256
-+pci 0000:01:00.0: Max Payload Size set to  256/ 512 (was  128), Max Read Rq  256
- layerscape-pcie 3800000.pcie: host bridge /soc/pcie@3800000 ranges:
- layerscape-pcie 3800000.pcie:      MEM 0xa040000000..0xa07fffffff -> 0x0040000000
- layerscape-pcie 3800000.pcie: PCI host bridge to bus 0001:00
-
-... and be aware that the last three lines here are another PCIe
-controller coming up just fine and it is about to detect the GPU
-(which like the NVMe is also gen3) just fine whether or not we
-add a short delay.
-
-
-> > I guessed this would be due to the timing impact of printk-to-UART and
-> > tried to find out where a delay could be added to provoke a successful
-> > enumeration.
-> >
-> > This patch contains the results. The delay length (1ms) was selected by
-> > binary searching downwards until the delay was not effective for these
-> > devices (Honeycomb LX2K and a Western Digital WD Blue SN550).
-> >
-> > I have also included the workaround twice (conditionally compiled). The
-> > first change is the *latest* possible code path that we can deploy a
-> > delay whilst the second is the earliest place I could find.
-> >
-> > The summary is that the critical window were we are currently relying on
-> > a call to the console UART code can "mend" the driver runs from calling
-> > dw_pcie_setup_rc() in host init to just before we read the state in the
-> > link up callback.
-> >
-> > Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
-> > ---
-> >
-> > Notes:
-> >     This patch is RFC (and HACK) because I don't have much clue *why* this
-> >     patch works... merely that this is the smallest possible change I need
-> >     to replicate the current accidental printk() workaround.  Perhaps one
-> >     could argue that RFC here stands for request-for-clue.  All my
-> >     observations and changes here are empirical and I don't know how best to
-> >     turn them into something that is not a hack!
-> >
-> >     BTW I noticed many other pcie-designware drivers take advantage
-> >     of a function called dw_pcie_wait_for_link() in their init paths...
-> >     but my naive attempts to add it to the layerscape driver results
-> >     in non-booting systems so I haven't embarrassed myself by including
-> >     that in the patch!
-> 
-> You need to look at what's pending for v5.11, because I reworked this
-> to be more unified. The ordering of init is also possibly changed. The
-> sequence is now like this:
-> 
->         dw_pcie_setup_rc(pp);
->         dw_pcie_msi_init(pp);
-> 
->         if (!dw_pcie_link_up(pci) && pci->ops->start_link) {
->                 ret = pci->ops->start_link(pci);
->                 if (ret)
->                         goto err_free_msi;
->         }
-> 
->         /* Ignore errors, the link may come up later */
->         dw_pcie_wait_for_link(pci);
-
-Thanks. That looks likely to fix it since IIUC dw_pcie_wait_for_link()
-will end up waiting somewhat like the double check I added to
-ls_pcie_link_up().
-
-I'll take a look at let you know.
-
-
-Daniel.
