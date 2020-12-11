@@ -1,90 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34F82D6E0B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 03:13:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F682D6FC1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 06:29:15 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CsZ8X0hK0zDqnW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 13:13:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CsfTw4rzhzDqsy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Dec 2020 16:29:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CsfSQ3qflzDqrm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 16:27:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=nDR0OY+p; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CsZ6v6JNSzDqlV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 13:12:22 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0BB29FVb020962
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 21:12:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=C2OhiRaTVNLukiJrct4E6RVIabQXU3H0rvwE+V/eIOM=;
- b=nDR0OY+pW+PPSTBBw2nJZmophCmlF/QX5nCeJF5RmfpbrZWz3CkHWErzqnjTR78NXeJv
- vZkHY6hpq2w1H+YGohsHeu3ASPDyHepemM9ZNl3FEoy0YUxmKpR6cM2genj4L6gM6gK9
- CzLjA7rcQ4INmslDx+/VwM2AJ8OH49f9FMtTYXiioocjHK/W61dUArRG8qyyGPyQRkHI
- WVieV/NjktBZtpr24zHCtlb886xoqGhGXab9iFWR3Y/NoJsH/ZhRrMyrHcKGPGBXJFA9
- z8uqyoJqlari5lhmbBn/NEmqP/UsIofkqTYWZbJQiHOkT3+klDvp0qvH7MF22fGTneNb 5A== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35bxycgy3h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Dec 2020 21:12:19 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BB2BVP9004398
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 02:12:17 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 3581fhpfqj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 02:12:16 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0BB2CETG34079010
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 02:12:14 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A2DBA5204F
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 02:12:14 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 5314052050
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Dec 2020 02:12:14 +0000 (GMT)
-Received: from intelligence.ibm.com (unknown [9.102.43.201])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2B15F609FF;
- Fri, 11 Dec 2020 13:12:13 +1100 (AEDT)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/powernv: Rate limit opal-elog read failure message
-Date: Fri, 11 Dec 2020 13:11:41 +1100
-Message-Id: <20201211021140.28402-1-ajd@linux.ibm.com>
-X-Mailer: git-send-email 2.20.1
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=Xkrq96BD; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4CsfSQ1c52z9sWS; Fri, 11 Dec 2020 16:27:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1607664470; bh=KCtiru4Zi8d+YqJORQKk8XMRhcLRedA9e5sZ52eDqd4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Xkrq96BDhTklQ0K8ESjMBS/H2JDLfSb6lCg9u5s6yVFA7aWoUsHktu+P2KmAFEIwL
+ 4ttkjA+dqz8LuIDBIDLK2pIzqL8MYluoU+romI05TdvWFUuZ/PnnRv3wyc0aAUgzRu
+ 1r9m0lEvvQsI/iX7OHps3Cj7zrGJVltUQOXeUhM2oYQX7MKXxD/paAJkFga/fyvDQU
+ hAGWr7xpEPcWhmmUUy+T2F25KCVA4ok0sgd/Ob8irX8W8cEtDCAQ4u1kyoNyy4kGkE
+ Nt3PghgUf2qkq0ctk/aPt8EswcTe8OL+YCA4WsdAuSxSZ3SbMDMdwU9XIEJtEIOQCB
+ 9YdUqOMfUP/Ww==
+Date: Fri, 11 Dec 2020 16:27:44 +1100
+From: Paul Mackerras <paulus@ozlabs.org>
+To: David Gibson <david@gibson.dropbear.id.au>
+Subject: Re: [PATCH v1 1/2] KVM: PPC: Book3S HV: Add support for
+ H_RPT_INVALIDATE (nested case only)
+Message-ID: <20201211052744.GB69862@thinks.paulus.ozlabs.org>
+References: <20201019112642.53016-1-bharata@linux.ibm.com>
+ <20201019112642.53016-2-bharata@linux.ibm.com>
+ <20201209041542.GA29825@thinks.paulus.ozlabs.org>
+ <20201210042418.GA775394@in.ibm.com>
+ <20201211011639.GD4874@yekko.fritz.box>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-10_11:2020-12-09,
- 2020-12-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0
- lowpriorityscore=0 mlxlogscore=759 malwarescore=0 mlxscore=0
- impostorscore=0 bulkscore=0 adultscore=0 priorityscore=1501 suspectscore=1
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012110010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201211011639.GD4874@yekko.fritz.box>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,37 +57,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, mahesh@linux.ibm.com, hegdevasant@linux.ibm.com
+Cc: npiggin@gmail.com, Bharata B Rao <bharata@linux.ibm.com>,
+ kvm-ppc@vger.kernel.org, aneesh.kumar@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sometimes we can't read an error log from OPAL, and we print an error
-message accordingly. But the OPAL userspace tools seem to like retrying a
-lot, in which case we flood the kernel log with a lot of messages.
+On Fri, Dec 11, 2020 at 12:16:39PM +1100, David Gibson wrote:
+> On Thu, Dec 10, 2020 at 09:54:18AM +0530, Bharata B Rao wrote:
+> > On Wed, Dec 09, 2020 at 03:15:42PM +1100, Paul Mackerras wrote:
+> > > On Mon, Oct 19, 2020 at 04:56:41PM +0530, Bharata B Rao wrote:
+> > > > Implements H_RPT_INVALIDATE hcall and supports only nested case
+> > > > currently.
+> > > > 
+> > > > A KVM capability KVM_CAP_RPT_INVALIDATE is added to indicate the
+> > > > support for this hcall.
+> > > 
+> > > I have a couple of questions about this patch:
+> > > 
+> > > 1. Is this something that is useful today, or is it something that may
+> > > become useful in the future depending on future product plans? In
+> > > other words, what advantage is there to forcing L2 guests to use this
+> > > hcall instead of doing tlbie themselves?
+> > 
+> > H_RPT_INVALIDATE will replace the use of the existing H_TLB_INVALIDATE
+> > for nested partition scoped invalidations. Implementations that want to
+> > off-load invalidations to the host (when GTSE=0) would have to bother
+> > about only one hcall (H_RPT_INVALIDATE)
+> > 
+> > > 
+> > > 2. Why does it need to be added to the default-enabled hcall list?
+> > > 
+> > > There is a concern that if this is enabled by default we could get the
+> > > situation where a guest using it gets migrated to a host that doesn't
+> > > support it, which would be bad.  That is the reason that all new
+> > > things like this are disabled by default and only enabled by userspace
+> > > (i.e. QEMU) in situations where we can enforce that it is available on
+> > > all hosts to which the VM might be migrated.
+> > 
+> > As you suggested privately, I am thinking of falling back to
+> > H_TLB_INVALIDATE in case where this new hcall fails due to not being
+> > present. That should address the migration case that you mention
+> > above. With that and leaving the new hcall enabled by default
+> > is good okay?
+> 
+> No.  Assuming that guests will have some fallback is not how the qemu
+> migration compatibility model works.  If we specify an old machine
+> type, we need to provide the same environment that the older host
+> would have.
 
-Change pr_err() to pr_err_ratelimited() to help with this.
+I misunderstood what this patchset is about when I first looked at
+it.  H_RPT_INVALIDATE has two separate functions; one is to do
+process-scoped invalidations for a guest when LPCR[GTSE] = 0 (i.e.,
+when the guest is not permitted to do tlbie itself), and the other is
+to do partition-scoped invalidations that an L1 hypervisor needs to do
+on behalf of an L2 guest.  The second function is a replacement and
+standardization of the existing H_TLB_INVALIDATE which was introduced
+with the nested virtualization code (using a hypercall number from the
+platform-specific range).
 
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
----
- arch/powerpc/platforms/powernv/opal-elog.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This patchset only implements the second function, not the first.  The
+first function remains unimplemented in KVM at present.
 
-diff --git a/arch/powerpc/platforms/powernv/opal-elog.c b/arch/powerpc/platforms/powernv/opal-elog.c
-index 37b380eef41a..5821b0fa8614 100644
---- a/arch/powerpc/platforms/powernv/opal-elog.c
-+++ b/arch/powerpc/platforms/powernv/opal-elog.c
-@@ -171,8 +171,8 @@ static ssize_t raw_attr_read(struct file *filep, struct kobject *kobj,
- 		opal_rc = opal_read_elog(__pa(elog->buffer),
- 					 elog->size, elog->id);
- 		if (opal_rc != OPAL_SUCCESS) {
--			pr_err("ELOG: log read failed for log-id=%llx\n",
--			       elog->id);
-+			pr_err_ratelimited("ELOG: log read failed for log-id=%llx\n",
-+					   elog->id);
- 			kfree(elog->buffer);
- 			elog->buffer = NULL;
- 			return -EIO;
--- 
-2.20.1
+Given that QEMU will need changes for a guest to be able to exploit
+H_RPT_INVALIDATE (at a minimum, adding a device tree property), it
+doesn't seem onerous for QEMU to have to enable the hcall with
+KVM_CAP_PPC_ENABLE_HCALL.  I think that the control on whether the
+hcall is handled in KVM along with the control on nested hypervisor
+function provides adequate control for QEMU without needing a writable
+capability.  The read-only capability to say whether the hcall exists
+does seem useful.
 
+Given all that, I'm veering towards taking Bharata's patchset pretty
+much as-is, minus the addition of H_RPT_INVALIDATE to the
+default-enabled set.
+
+Paul.
