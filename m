@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D0A2D90A7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Dec 2020 21:47:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFEB82D90A2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Dec 2020 21:45:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CvGmF085MzDqPk
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 07:47:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CvGjt0vgQzDqRg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 07:45:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=laposte.net (client-ip=160.92.124.102;
- helo=smtp-outgoing.laposte.net; envelope-from=vincent.stehle@laposte.net;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::441;
+ helo=mail-wr1-x441.google.com; envelope-from=arielmarcovitch@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=laposte.net
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=laposte.net header.i=@laposte.net header.a=rsa-sha256
- header.s=lpn-wlmd header.b=eqPlee6n; dkim-atps=neutral
-X-Greylist: delayed 7239 seconds by postgrey-1.36 at bilbo;
- Mon, 14 Dec 2020 07:28:31 AEDT
-Received: from smtp-outgoing.laposte.net (smtp-outgoing.laposte.net
- [160.92.124.102])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=qaaBc6mL; dkim-atps=neutral
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CvGLl5Kf0zDqQK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 07:28:21 +1100 (AEDT)
-X-mail-filterd: {"version":"1.2.0", "queueID":"4CvCg925zrz10MQY",
- "contextId":"65b9d905-9a9e-4f5c-9967-0d45e91ce3a2"}
-Received: from outgoing-mail.laposte.net (localhost.localdomain [127.0.0.1])
- by mlpnf0103.laposte.net (SMTP Server) with ESMTP id 4CvCg925zrz10MQY;
- Sun, 13 Dec 2020 19:27:33 +0100 (CET)
-X-mail-filterd: {"version":"1.2.0", "queueID":"4CvCf7035Dz10MQV",
- "contextId":"b7eefe2d-5cd9-468a-9753-f7e7ca878663"}
-X-lpn-mailing: LEGIT
-X-lpn-spamrating: 36
-X-lpn-spamlevel: not-spam
-X-lpn-spamcause: OK,
- (-100)(0000)gggruggvucftvghtrhhoucdtuddrgedujedrudekiedguddufecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfntefrqffuvffgpdfqfgfvpdggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkofggtgfgsehtkeertdertdejnecuhfhrohhmpeggihhntggvnhhtucfuthgvhhhlrocuoehvihhntggvnhhtrdhsthgvhhhlvgeslhgrphhoshhtvgdrnhgvtheqnecuggftrfgrthhtvghrnhepteeivdehieejtdfgledvgffhvedtveejhefftdeukeeuieduudetjeektdeuffetnecukfhppeekkedruddvuddrudegledrgeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheprhhomhhurghlugdrsggvrhhgvghrihgvpdhinhgvthepkeekrdduvddurddugeelrdegledpmhgrihhlfhhrohhmpehvihhntggvnhhtrdhsthgvhhhlvgeslhgrphhoshhtvgdrnhgvthdprhgtphhtthhopehgvghofhhfsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepvhhinhgtvghnthdrshhtvghhlhgvsehlrghpohhsthgvrdhnvghtpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-Received: from romuald.bergerie (unknown [88.121.149.49])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mlpnf0103.laposte.net (SMTP Server) with ESMTPSA id 4CvCf7035Dz10MQV;
- Sun, 13 Dec 2020 19:26:36 +0100 (CET)
-Received: from radicelle.bergerie (radicelle.bergerie [192.168.124.12])
- by romuald.bergerie (Postfix) with ESMTPS id 1BD413DF32AF;
- Sun, 13 Dec 2020 19:26:36 +0100 (CET)
-Received: from vincent by radicelle.bergerie with local (Exim 4.94)
- (envelope-from <vincent@radicelle.bergerie>)
- id 1koW4p-00060T-P4; Sun, 13 Dec 2020 19:26:35 +0100
-From: =?UTF-8?q?Vincent=20Stehl=C3=A9?= <vincent.stehle@laposte.net>
-To: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/ps3: use dma_mapping_error()
-Date: Sun, 13 Dec 2020 19:26:22 +0100
-Message-Id: <20201213182622.23047-1-vincent.stehle@laposte.net>
-X-Mailer: git-send-email 2.29.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=laposte.net; s=lpn-wlmd;
- t=1607891296; bh=YIAg0xdLhTfsQSKbEzRITi543Hxi26DWrI5pNv7EPQE=;
- h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding;
- b=eqPlee6n1jjiOK8BI6U4pdPfCdtwMul3SDeBCp2YLo4qOdB4uw4nvN2jOwAHcB3EoOFbB1+/XGq01mEvTjH4WmECLwLJeMzwiarvY9Zwb4pYCRzvTiZdagJgkDSSZ79SLNqj+eiyhq03n+Nm3eFow3DShNmF2WFYXSbFiizoPv4QyqaSHu4Syn2T3kdL6gOKx6cgp1/OAHNx5aYLfo8ZjMXc5XVANh0Bg8Vu86pNmIrKWVe1inlpWdV+jDP8TUuJJWh4W3wO4CA2+bL68roW7iE1GGlzL25tNz6Yab8sv+nRLJYr3p3RdeFK5k/H1pXOSuyREGTJBTZr1xpbYogwGA==;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CvCsG4CF3zDqGl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 05:36:14 +1100 (AEDT)
+Received: by mail-wr1-x441.google.com with SMTP id a11so6479786wrr.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Dec 2020 10:36:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=tRMxD6v/l4OYj8cB5TYdPB+UxT0+Cs8k23OwIsOoa6w=;
+ b=qaaBc6mL2Q1PG70ICvG9frD4YhqrsocLR/cM/kFR3jGKnrG+fif/zDFAmQi9hFcQlC
+ Fytf+ZR/DEiH3A1Fj9bz1jElvbtYdQXhnDssenZ+ra82JclYBGMEUdD/zCCDG55uTmvo
+ BgWtGXBs26X+tVaBS9MMwa9km2VNmHBhsIIU8azZPxIvArNNJptjjHghci2r91QhDERY
+ efM59ssYeoxIVCTZ9GTgwjpqUkclGCFifQsmI6tK7gLZttB8eU8UwK/qomJLDt3jUpiv
+ dIQJKrjfE/t9UnLwT8lAKn0vm08nuQve5+tmICg5MZv7uFKwqgEL4NW5/KAJWVNyLBdh
+ 99qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=tRMxD6v/l4OYj8cB5TYdPB+UxT0+Cs8k23OwIsOoa6w=;
+ b=M93FORsLCH5Vq3POpwpcnU6xgK/i686Gv9cE/THOzXgPdqQxucU6bszMQHbu1PJMbE
+ JLbEJWAMxvQBkiewm72s9pvN+uSSKwe9q8d6M/JFu0XMWemWBVa1r/lsE/dlEhPmKN+R
+ 4TvmDMgBK0+HdoXukWqjyaztVLZ8ILqiBfQZfdMBObXHo7txqV7k0pfF8IdvNlM2wsgM
+ 9uVYq9vcXBbC1i/DU8lwSkuB6UCDQH82Hw20vflzYVWNK8EwAJCZVzP8xdpiC7IoCImN
+ uSovK3kxEG5kkf9Me2N1o8U2SCkPoz45Dx6FVslLZpASPOhFIqWMROxtYh5yJBE4zqb6
+ Zk3w==
+X-Gm-Message-State: AOAM532Y7Ay3xVcFarGGG0uptd8IzeTBNuWbpbRsGEpsOpi6TgYva+NI
+ xXfhED3k4o/Vcp2Wzx4yDbQ=
+X-Google-Smtp-Source: ABdhPJyCOGMk3hxPAqiAu4T7D/5s0amN+QVqbFuXJL6qvZltKjCzWpjAxNbfC0BKZvhdXjlJ78TPDg==
+X-Received: by 2002:adf:b74d:: with SMTP id n13mr25371535wre.101.1607884569599; 
+ Sun, 13 Dec 2020 10:36:09 -0800 (PST)
+Received: from localhost.localdomain (bzq-109-64-2-78.red.bezeqint.net.
+ [109.64.2.78])
+ by smtp.gmail.com with ESMTPSA id x7sm19125928wmi.11.2020.12.13.10.36.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 13 Dec 2020 10:36:09 -0800 (PST)
+From: Ariel Marcovitch <arielmarcovitch@gmail.com>
+X-Google-Original-From: Ariel Marcovitch <ariel.marcovitch@gmail.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc: fix alignment bug whithin the init sections
+Date: Sun, 13 Dec 2020 20:35:56 +0200
+Message-Id: <20201213183556.16976-1-ariel.marcovitch@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-Mailman-Approved-At: Mon, 14 Dec 2020 07:43:52 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,38 +75,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Geoff Levand <geoff@infradead.org>,
- Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>,
- =?UTF-8?q?Vincent=20Stehl=C3=A9?= <vincent.stehle@laposte.net>
+Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
+ Ariel Marcovitch <ariel.marcovitch@gmail.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The DMA address returned by dma_map_single() should be checked with
-dma_mapping_error(). Fix the ps3stor_setup() function accordingly.
+This is a bug that can cause early crashes in configurations with a
+.exit.text section smaller than a page and a .init.text section that
+ends in the beginning of a physical page (this is kinda random, which
+might explain why this wasn't really encountered before).
 
-Fixes: 80071802cb9c ("[POWERPC] PS3: Storage Driver Core")
-Signed-off-by: Vincent Stehl=C3=A9 <vincent.stehle@laposte.net>
-Cc: Geoff Levand <geoff@infradead.org>
-Cc: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+The init sections are ordered like this:
+	.init.text
+	.exit.text
+	.init.data
+
+Currently, these sections aren't page aligned.
+
+Because the init code is mapped read-only at runtime and because the
+.init.text section can potentially reside on the same physical page as
+.init.data, the beginning of .init.data might be mapped read-only along
+with .init.text.
+
+Then when the kernel tries to modify a variable in .init.data (like
+kthreadd_done, used in kernel_init()) the kernel panics.
+
+To avoid this, I made these sections page aligned.
+
+Fixes: 060ef9d89d18 ("powerpc32: PAGE_EXEC required for inittext")
+Signed-off-by: Ariel Marcovitch <ariel.marcovitch@gmail.com>
 ---
- drivers/ps3/ps3stor_lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/vmlinux.lds.S | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/ps3/ps3stor_lib.c b/drivers/ps3/ps3stor_lib.c
-index 333ba83006e48..a12a1ad9b5fe3 100644
---- a/drivers/ps3/ps3stor_lib.c
-+++ b/drivers/ps3/ps3stor_lib.c
-@@ -189,7 +189,7 @@ int ps3stor_setup(struct ps3_storage_device *dev, irq=
-_handler_t handler)
- 	dev->bounce_lpar =3D ps3_mm_phys_to_lpar(__pa(dev->bounce_buf));
- 	dev->bounce_dma =3D dma_map_single(&dev->sbd.core, dev->bounce_buf,
- 					 dev->bounce_size, DMA_BIDIRECTIONAL);
--	if (!dev->bounce_dma) {
-+	if (dma_mapping_error(&dev->sbd.core, dev->bounce_dma)) {
- 		dev_err(&dev->sbd.core, "%s:%u: map DMA region failed\n",
- 			__func__, __LINE__);
- 		error =3D -ENODEV;
---=20
-2.29.2
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 326e113d2e45..e3a7c90c03f4 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -179,6 +179,11 @@ SECTIONS
+ #endif
+ 	} :text
+ 
++	/* .init.text is made RO and .exit.text is not, so we must
++	 * ensure these sections reside in separate physical pages.
++	 */
++	. = ALIGN(PAGE_SIZE);
++
+ 	/* .exit.text is discarded at runtime, not link time,
+ 	 * to deal with references from __bug_table
+ 	 */
+@@ -186,6 +191,8 @@ SECTIONS
+ 		EXIT_TEXT
+ 	}
+ 
++	. = ALIGN(PAGE_SIZE);
++
+ 	.init.data : AT(ADDR(.init.data) - LOAD_OFFSET) {
+ 		INIT_DATA
+ 	}
+
+base-commit: 1398820fee515873379809a6415930ad0764b2f6
+-- 
+2.17.1
 
