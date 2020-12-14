@@ -1,59 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5752A2D938A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 08:12:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6132D9392
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 08:16:26 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CvXdW45n3zDqSw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 18:12:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CvXkH60W3zDqH1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 18:16:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=WLHgQn2c; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=h7LvDr8+; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CvXTR6lYZzDqBL
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 18:05:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
- :Reply-To:Content-ID:Content-Description;
- bh=11D97b/WzRvk1qsJoszULXXa+WJR+vJxLMi5GNzHEEQ=; b=WLHgQn2cE+BA9xy+NIPDUPOgv+
- 432s5Ln61W039LzswQHoMLWquHa6/jqpfuQRqVxcEmqKfCnT+hkyE2CVHUXEEwGFKO1rVcBaYcp2v
- VgFeeiJSLzFVu1Y1h5t/GYvGmjCuiU42tK3GgcekfVC3HgHgzpGhSjcFV539rGgs7W20DF1ny1CRM
- P0vKv8xRNXt7bKxZlPip3dAfRRPuGInt42pYGnkuNSaxpSLJjiVndJ7776L02vNwfaBO0N8ceXAIL
- BSAzbFybWkME+Cwljjsm5Gr3vyhTGhN0DfKLztgnP5ozDHK8k3ktyjeW5elwtQW+wuZdrQ1TYP64o
- Rn9HK7OQ==;
-Received: from [2601:1c0:6280:3f0::1494]
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kohun-0005qn-Bh; Mon, 14 Dec 2020 07:05:01 +0000
-Subject: Re: [PATCH v2 3/5] lazy tlb: shoot lazies, a non-refcounting lazy tlb
- option
-To: Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org
-References: <20201214065312.270062-1-npiggin@gmail.com>
- <20201214065312.270062-4-npiggin@gmail.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <de068125-7d95-b3f0-2de9-71923e3c3651@infradead.org>
-Date: Sun, 13 Dec 2020 23:04:55 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CvXhM2JlSzDq9J
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 18:14:42 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0BE72VwR175963; Mon, 14 Dec 2020 02:14:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=q/DlQVhLTnmUwKU5xRW8Jb4eOPXPaAgGa7u3Dz55txM=;
+ b=h7LvDr8+PsYOCzb3pQpTG8a3efNspgdfjQ/fno5XXMVGa8r9GKZ5TwuXASOtYg6hTxtc
+ Qn0BzEz8TWQEPzAwMJkezBQPYAJOSqPQn7xrF+wQnInQ6h4rDcKui77ByBQDVY8bcHAS
+ LJmKS+oSzr+3esz9fP0xJ4S5fsnsQujPZMKvtr9o48F2ZYTdROI6za9HJ9F0PzgjLNil
+ uW54iBHGs+QBQR6A+fJ0bIts4f/IKJN0KVly7J4xeNDaNLMzoJwexjTmE5MX8wfit9nu
+ HDc8t0nmwu3hpk5Sq0oFK5ZPWmsy6RAzmwqWpNUhQ/bRcFjJUnn1OOGs7cPJK9Q6nmfM qA== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 35e250a437-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Dec 2020 02:14:28 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BE754po011279;
+ Mon, 14 Dec 2020 07:14:27 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma01wdc.us.ibm.com with ESMTP id 35cng887dn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Dec 2020 07:14:27 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0BE7DBLY21234162
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 14 Dec 2020 07:13:11 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9A18AC605A;
+ Mon, 14 Dec 2020 07:13:11 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CC5BFC605F;
+ Mon, 14 Dec 2020 07:13:09 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.77.194.110])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 14 Dec 2020 07:13:09 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH] powerpc/kup: Mark the kuap/keup function non __init
+Date: Mon, 14 Dec 2020 12:43:06 +0530
+Message-Id: <20201214071306.346399-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <20201214065312.270062-4-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2020-12-14_03:2020-12-11,
+ 2020-12-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 mlxscore=0
+ impostorscore=0 priorityscore=1501 adultscore=0 spamscore=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012140049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,46 +93,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, Andy Lutomirski <luto@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/13/20 10:53 PM, Nicholas Piggin wrote:
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index 84faaba66364..e69c974369cc 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -443,9 +443,22 @@ config MMU_LAZY_TLB
->  config MMU_LAZY_TLB_REFCOUNT
->  	def_bool y
->  	depends on MMU_LAZY_TLB
-> +	depends on !MMU_LAZY_TLB_SHOOTDOWN
->  	help
-> -	  This must be enabled if MMU_LAZY_TLB is enabled until the next
-> -	  patch.
-> +	  This refcounts the mm that is used as the lazy TLB mm when switching
-> +	  switching to a kernel thread.
+Kernel call these functions on cpu online and hence they should
+not be marked __init.
 
-duplicate "switching".
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/mm/book3s32/mmu.c   | 4 ++--
+ arch/powerpc/mm/book3s64/pkeys.c | 4 ++--
+ arch/powerpc/mm/init-common.c    | 2 +-
+ arch/powerpc/mm/nohash/8xx.c     | 4 ++--
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-> +
-> +config MMU_LAZY_TLB_SHOOTDOWN
-> +	bool
-> +	depends on MMU_LAZY_TLB
-> +	help
-> +	  Instead of refcounting the "lazy tlb" mm struct, which can cause
-> +	  contention with multi-threaded apps on large multiprocessor systems,
-> +	  this option causes __mmdrop to IPI all CPUs in the mm_cpumask and
-> +	  switch to init_mm if they were using the to-be-freed mm as the lazy
-> +	  tlb. To implement this, architectures must use _lazy_tlb variants of
-> +	  mm refcounting, and mm_cpumask must include at least all possible
-> +	  CPUs in which mm might be lazy.
->  
->  config ARCH_HAVE_NMI_SAFE_CMPXCHG
->  	bool
-
-
+diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+index 23f60e97196e..8d9e90a99b51 100644
+--- a/arch/powerpc/mm/book3s32/mmu.c
++++ b/arch/powerpc/mm/book3s32/mmu.c
+@@ -449,7 +449,7 @@ void __init print_system_hash_info(void)
+ }
+ 
+ #ifdef CONFIG_PPC_KUEP
+-void __init setup_kuep(bool disabled)
++void setup_kuep(bool disabled)
+ {
+ 	pr_info("Activating Kernel Userspace Execution Prevention\n");
+ 
+@@ -459,7 +459,7 @@ void __init setup_kuep(bool disabled)
+ #endif
+ 
+ #ifdef CONFIG_PPC_KUAP
+-void __init setup_kuap(bool disabled)
++void setup_kuap(bool disabled)
+ {
+ 	pr_info("Activating Kernel Userspace Access Protection\n");
+ 
+diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+index 2b7ded396db4..f1c6f264ed91 100644
+--- a/arch/powerpc/mm/book3s64/pkeys.c
++++ b/arch/powerpc/mm/book3s64/pkeys.c
+@@ -251,7 +251,7 @@ void __init pkey_early_init_devtree(void)
+ }
+ 
+ #ifdef CONFIG_PPC_KUEP
+-void __init setup_kuep(bool disabled)
++void setup_kuep(bool disabled)
+ {
+ 	if (disabled)
+ 		return;
+@@ -277,7 +277,7 @@ void __init setup_kuep(bool disabled)
+ #endif
+ 
+ #ifdef CONFIG_PPC_KUAP
+-void __init setup_kuap(bool disabled)
++void setup_kuap(bool disabled)
+ {
+ 	if (disabled)
+ 		return;
+diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
+index afdebb95bcae..c71af3978496 100644
+--- a/arch/powerpc/mm/init-common.c
++++ b/arch/powerpc/mm/init-common.c
+@@ -47,7 +47,7 @@ static int __init parse_nosmap(char *p)
+ }
+ early_param("nosmap", parse_nosmap);
+ 
+-void __ref setup_kup(void)
++void setup_kup(void)
+ {
+ 	setup_kuep(disable_kuep);
+ 	setup_kuap(disable_kuap);
+diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+index 231ca95f9ffb..9fba29b95b5a 100644
+--- a/arch/powerpc/mm/nohash/8xx.c
++++ b/arch/powerpc/mm/nohash/8xx.c
+@@ -245,7 +245,7 @@ void set_context(unsigned long id, pgd_t *pgd)
+ }
+ 
+ #ifdef CONFIG_PPC_KUEP
+-void __init setup_kuep(bool disabled)
++void setup_kuep(bool disabled)
+ {
+ 	if (disabled)
+ 		return;
+@@ -257,7 +257,7 @@ void __init setup_kuep(bool disabled)
+ #endif
+ 
+ #ifdef CONFIG_PPC_KUAP
+-void __init setup_kuap(bool disabled)
++void setup_kuap(bool disabled)
+ {
+ 	pr_info("Activating Kernel Userspace Access Protection\n");
+ 
 -- 
+2.28.0
 
