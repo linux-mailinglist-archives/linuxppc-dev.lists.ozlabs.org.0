@@ -2,75 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0502D968F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 11:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF0D2D96A6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 11:54:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CvdQR1TC5zDqRy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 21:47:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CvdZD6rYKzDqTq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 21:54:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::342;
- helo=mail-wm1-x342.google.com; envelope-from=daniel.thompson@linaro.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=brfsj5+b; dkim-atps=neutral
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
- [IPv6:2a00:1450:4864:20::342])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=NkQPI8Wp; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CvdKY07R4zDqRy
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 21:43:44 +1100 (AEDT)
-Received: by mail-wm1-x342.google.com with SMTP id 3so14821982wmg.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 02:43:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=gPCYc+i9Iy87r57uStW+ARtubvlgXBH6jVAjmF4IhnU=;
- b=brfsj5+b+IqlJui0vPdCHYpYP2bFYzO+1JlWfKz1weffGaprU8OkE8dqZ9gA8Ypm/0
- v6+grN5KbiSQRACrcBWw1asFdDFVqF9nBu3Oa0GUPYv5yBkX67nd1ntfLcAJg0zP6PdE
- xlq10No04/AwJLV6O3ydkHlsjEAP4HvjVzoA+aYzj43B5E2rQHWk/Z7UGIyKRfSzOZGq
- LSBaHiBg/MvYDr977DGjKw/verW1+v2Q4CYL/idPu8LHXXM/r9HzNyp7TPbAOeKFlyOV
- 7pCIn4oa/HWqnDFni36IPva5UF+BAQ+YUV6hhDKYRIcADocHuV2u230LRwac34Cs6XGF
- Q/Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=gPCYc+i9Iy87r57uStW+ARtubvlgXBH6jVAjmF4IhnU=;
- b=nOei6QveukRHqprXiJ3Rxn1PS4m1gBN9YFqa//+LcNbiIYAAEImhubEYlbgqvbSMp2
- e+egJMv42OX46j/6qnuuTGuHAqP5pDdTgNSn+nrzidUkCy1D4uMaAVaacZD7Uc80EbCF
- Sb4Q8JmMhdJj9kqbi7dZJBXpi9XO6IaQ4zmxKIxVTOQxLbmPMhIO22xw1Fpf8gKOzyTn
- kK9aM4SwsDMYcvqNPJRj8repAKi1/ACenGC67e7IfGKff9K4Z4xf4YtXapP5tgmagU+8
- QVKV+cXx4OyGKeoaYqG8hkEDG6fFc9jC8WwncnVsFaPkSOrrKt5zop4VjPtgHXGXZ4K0
- fqUA==
-X-Gm-Message-State: AOAM532WZ+PK3QC7l+eqLpbMj0x3/L8T8LhngtXJtH1zkw3yIpt1P1zZ
- BrUNy3Cf6RqOHG/zKqqU3Nh2XQ==
-X-Google-Smtp-Source: ABdhPJyQXVJMnqfLrDR2gjT3sPvs5VM6+4B7QNqCQiLsarQ76jozBbecP92kWQZKTuGAqkMV/ku7Vw==
-X-Received: by 2002:a1c:bc57:: with SMTP id m84mr26948837wmf.163.1607942619946; 
- Mon, 14 Dec 2020 02:43:39 -0800 (PST)
-Received: from holly.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net.
- [80.7.220.175])
- by smtp.gmail.com with ESMTPSA id w189sm18608037wmg.31.2020.12.14.02.43.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Dec 2020 02:43:39 -0800 (PST)
-Date: Mon, 14 Dec 2020 10:43:37 +0000
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [RFC HACK PATCH] PCI: dwc: layerscape: Hack around enumeration
- problems with Honeycomb LX2K
-Message-ID: <20201214104337.wbvq2gvj3wi6bvzc@holly.lan>
-References: <20201211121507.28166-1-daniel.thompson@linaro.org>
- <CAL_JsqKQxFvkFtph1BZD2LKdZjboxhMTWkZe_AWS-vMD9y0pMw@mail.gmail.com>
- <20201211170558.clfazgoetmery6u3@holly.lan>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201211170558.clfazgoetmery6u3@holly.lan>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CvdXq29VRzDqSS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 21:53:31 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0BEAgRim013643; Mon, 14 Dec 2020 05:53:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=PE0rZt60ZTfWmk21Zw03rCMUftC0XN/Aq8mECYOMU34=;
+ b=NkQPI8WpwRUEWezdrKFwczr1eLUyP9iqRY1DYUwzp/8uereokjTZSNARSJuoUiXCtKIB
+ MCqeg/WQ4BI1AH/bliZYM16a286oiHMNXJ7HA/o8EsW6BDzbOFyE1G60o8PhVhyWv4VT
+ Tyz83B+1UfVIybOKTzrHPf+2nPO7zOoUpVgSESXkHmp7pTTm6QKYTA2GOiCyODOXmtN1
+ N1v41r2IcfH+xK8pkcBNKg4FQ5bEbD0iywPsY5lM2pPAVX8/EfD6oKtV/Sch72rE21Q1
+ PUl1YSTYoWuZfAWvU2RwKfnMaGTG4Ytg3E0KwfGnPFr0G0zHHN0KojmTMq4ADDiAVyWK Vg== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35e6hfr8mr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Dec 2020 05:53:25 -0500
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BEAhwi4022206;
+ Mon, 14 Dec 2020 10:53:23 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06ams.nl.ibm.com with ESMTP id 35cn4ha2j1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Dec 2020 10:53:23 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0BEArKVK30409132
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 14 Dec 2020 10:53:20 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1607142042;
+ Mon, 14 Dec 2020 10:53:20 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6C03542047;
+ Mon, 14 Dec 2020 10:53:19 +0000 (GMT)
+Received: from [9.102.1.15] (unknown [9.102.1.15])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 14 Dec 2020 10:53:19 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.17\))
+Subject: Re: [PATCH v2] powerpc/book3s/kup: Mark the kuap/keup function non
+ __init
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+In-Reply-To: <20201214080121.358567-1-aneesh.kumar@linux.ibm.com>
+Date: Mon, 14 Dec 2020 16:23:18 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <86CB1DAC-A345-4D35-A8FA-7884DF99E415@linux.vnet.ibm.com>
+References: <20201214080121.358567-1-aneesh.kumar@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+X-Mailer: Apple Mail (2.3445.104.17)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2020-12-14_04:2020-12-11,
+ 2020-12-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 mlxlogscore=935
+ bulkscore=0 clxscore=1015 priorityscore=1501 spamscore=0 adultscore=0
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012140072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,57 +99,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roy Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Linaro Patches <patches@linaro.org>, PCI <linux-pci@vger.kernel.org>,
- Jon Nettleton <jon@solid-run.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Minghuan Lian <minghuan.Lian@nxp.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 11, 2020 at 05:05:58PM +0000, Daniel Thompson wrote:
-> On Fri, Dec 11, 2020 at 08:37:40AM -0600, Rob Herring wrote:
-> > On Fri, Dec 11, 2020 at 6:15 AM Daniel Thompson
-> > >     BTW I noticed many other pcie-designware drivers take advantage
-> > >     of a function called dw_pcie_wait_for_link() in their init paths...
-> > >     but my naive attempts to add it to the layerscape driver results
-> > >     in non-booting systems so I haven't embarrassed myself by including
-> > >     that in the patch!
-> > 
-> > You need to look at what's pending for v5.11, because I reworked this
-> > to be more unified. The ordering of init is also possibly changed. The
-> > sequence is now like this:
-> > 
-> >         dw_pcie_setup_rc(pp);
-> >         dw_pcie_msi_init(pp);
-> > 
-> >         if (!dw_pcie_link_up(pci) && pci->ops->start_link) {
-> >                 ret = pci->ops->start_link(pci);
-> >                 if (ret)
-> >                         goto err_free_msi;
-> >         }
-> > 
-> >         /* Ignore errors, the link may come up later */
-> >         dw_pcie_wait_for_link(pci);
-> 
-> Thanks. That looks likely to fix it since IIUC dw_pcie_wait_for_link()
-> will end up waiting somewhat like the double check I added to
-> ls_pcie_link_up().
-> 
-> I'll take a look at let you know.
-
-Yes. These changes have fixed the enumeration problems for me.
-
-I tested pci/next and I cherry picked your patch series onto v5.10 and
-both are working well.
-
-Given this fixes a bug for me, do you think there is any scope for me
-to whittle down your series into patches for the stable kernels or am
-I likely to find too many extra bits being pulled in?
 
 
-Daniel.
+> On 14-Dec-2020, at 1:31 PM, Aneesh Kumar K.V =
+<aneesh.kumar@linux.ibm.com> wrote:
+>=20
+> The kernel call these functions on cpu online and hence they should
+> not be marked __init.
+>=20
+> Fixes: 3b47b7549ead ("powerpc/book3s64/kuap: Move KUAP related =
+function outside radix")
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> =E2=80=94
+
+This fixes the reported crash I ran into during a cpu online operation.
+
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+
+-Sachin
+
