@@ -2,76 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D17D2D9234
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 05:09:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B262D9239
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 05:16:56 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CvSZS2t87zDqSQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 15:09:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CvSl872m7zDqSf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 15:16:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=jBTloPwF; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+ header.s=20161025 header.b=sKJgfr14; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CvSXd6c7bzDqRv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 15:07:44 +1100 (AEDT)
-Received: by mail-pf1-x444.google.com with SMTP id x126so2419755pfc.7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Dec 2020 20:07:44 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CvSjK26pTzDqB5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 15:15:13 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id t22so1854321pfl.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Dec 2020 20:15:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=PWh+Vdx5/CQGyHUaGmwrxc21bpz+T3vvjsxDr9do1W0=;
- b=jBTloPwFVdlwdlyZC+hyxpB8boEXRewMRO9QCB0wjdmJOmvQb80Ek4uI5dvhIFgIUN
- wSKp+HV+IHGiktwJA1TU+TMZf+X7ZRlOLvK0X4IEYwtvStmIsH2unXn4Ek85lTmYj0eP
- Wnr1x3fWaGpVL1qqbaasFyRoQxNoWidjeeDS7jMm6BIAgHEljWpEp0mJGpKO26gbxkPN
- jD3d4spmbJmrIjKKZ+IzejsU0bowKWdXcuMRD/DC2XuOsVdrFbv4SMYpMXeiX8rw5r5N
- KY3WPknXhjPc5qPpz7J7VoDsQVWeQTs7DhT73S/0wyCEWsVGzZ1wMh0Esl6ayKxhsjZe
- pGWQ==
+ bh=IzItAb+/ARuy43MHZHytVoSiTjlxsOWc+L7HYoQ10Rk=;
+ b=sKJgfr148BjRYzX/HwC2xkFZ/0a4TrXgBfen9ZN7lMaB7SW+itnsNCLU5d5WxIzZKl
+ kwewH+B/EglrOnw8364mXmCmlESywVsBZn47nEoggNeEIwqyeoIQRpvlItqsgt5BDygy
+ /dXfwAKnD3GaI+f9n+q+YAwYnJJDiXtatldgOufQJnvB8u1gDNb3Gtnav0ozT96zps19
+ Q4mpXyjS94Mkjp7DcfEUhjkvGqmfg5SdCEpblMmXy+XbEYFPUSbJGuYPI5htzzEK3tS5
+ 1KCdV3Vt7wXNb2B5be0n6lSrozvn+VwrxAqGKSt9wLA+Gfm+fH9Dmb2cDf+Mxzy9CTv4
+ vbkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=PWh+Vdx5/CQGyHUaGmwrxc21bpz+T3vvjsxDr9do1W0=;
- b=Iboeu4XLmwTqjg+EewfWRN/aH7sRS/afX7oPuEELm5lCra7/5EeLqKib2wtUM/rRPz
- 9AcZ97oC2wK7Eiekqr2Lpz32TlkIzceh5aSwjZVTD/TkQ+NZc2/lM0vyldRzLC/LuFSB
- 15DizPg3k7Vl4GXUgEql8uon3+r1M5RBTKBpNqiAmIXwZKC58QnKGF2c8McOz+Oe4GAI
- tr3K3KKYyzjeTJHnqas3w/Yh0n1pLzYAwo1uOED4IUlAJyCzUlmctevTbCjOcU0aG3SX
- pzZztZsRkCjJpDef2RB1N9bwejS6W0KG0RAFx55C+SSMjDsrp0s/cVg1xr75MJ1t2fsE
- iRRA==
-X-Gm-Message-State: AOAM533tDDTM2Np3O5qYzMyWHbQFZW+U1Rnf8Pq/wYKx5aHkhVBPFGP1
- ih2z+S1iuYniXHUhJubwZdo=
-X-Google-Smtp-Source: ABdhPJyIyQ6qEDAOiugwK5Wi7/4KOuz1OqcXosU9vwHYM/fnFbs9BdwPCBgfN29SdfYCrzjFH+R7Vw==
-X-Received: by 2002:a62:6c2:0:b029:19e:b63a:91e9 with SMTP id
- 185-20020a6206c20000b029019eb63a91e9mr18792139pfg.79.1607918861170; 
- Sun, 13 Dec 2020 20:07:41 -0800 (PST)
+ bh=IzItAb+/ARuy43MHZHytVoSiTjlxsOWc+L7HYoQ10Rk=;
+ b=E6VxBQPxp0CSPW1us6qntW9+iYJxax0m0xDNYsavM42ZAVSh3UvIsKo4isUdL3CMwW
+ ba9VM9rPB+FBWM7rKzlPtCGZ8u20wJO4HoiRhtSxQZsnMQNx11MKE3NfL+xtSm2UP91k
+ D5VvS+w6QkopRhxPKw8QkoPq7oqMvQyx9MVd6f1YO/YevH2NEZMDQdOh/HcldZeTj3O1
+ IqSLPEV/KsbREXfwefKc93YiiYsHoX3XpS1gKJZ2CByV30DV4RmAVTkZKEz3RGViHdIV
+ GTNqyHSNGmZzp6QNxJanW9SFjhiguHDEBKgi5tb/1k86GKpmqC/LbdMOBXMntxrwGV9c
+ s5WQ==
+X-Gm-Message-State: AOAM5326h+QjhE0y9WtPBhuqtlvBlUKY+suVAmrQEm4iCz/De+Q1zyB0
+ EKBMw1zDPVj2duuwKiAsNck=
+X-Google-Smtp-Source: ABdhPJwLQFbwEuJx28XaT9yTVmY+be361/iJueWiQXXjL88/5Em8DZdjWZlNmRscq1PPBt2c5dGrKg==
+X-Received: by 2002:a63:5d5f:: with SMTP id o31mr19870693pgm.295.1607919310176; 
+ Sun, 13 Dec 2020 20:15:10 -0800 (PST)
 Received: from localhost ([220.240.228.148])
- by smtp.gmail.com with ESMTPSA id 37sm14724169pjz.41.2020.12.13.20.07.39
+ by smtp.gmail.com with ESMTPSA id ft19sm7668399pjb.44.2020.12.13.20.15.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Dec 2020 20:07:40 -0800 (PST)
-Date: Mon, 14 Dec 2020 14:07:27 +1000
+ Sun, 13 Dec 2020 20:15:09 -0800 (PST)
+Date: Mon, 14 Dec 2020 14:15:04 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/8] x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
-To: Andy Lutomirski <luto@kernel.org>
-References: <1607152918.fkgmomgfw9.astroid@bobo.none>
- <116A6B40-C77B-4B6A-897B-18342CD62CEC@amacapital.net>
- <1607209402.fogfsh8ov4.astroid@bobo.none>
- <CALCETrWFjOXAd5=ctX3tzgUbyfwM+bT-f8WY_QWOeuDdFxhWbg@mail.gmail.com>
- <1607224014.8xeujbleij.astroid@bobo.none>
- <CALCETrV5BzXuUYm5YAoEKPZZPfLrbHckvwBHzWKrxZS8hqzHEg@mail.gmail.com>
-In-Reply-To: <CALCETrV5BzXuUYm5YAoEKPZZPfLrbHckvwBHzWKrxZS8hqzHEg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] powerpc/64s: Trim offlined CPUs from mm_cpumasks
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20201120025757.325930-1-npiggin@gmail.com>
+ <20201120025757.325930-3-npiggin@gmail.com>
+ <CAMuHMdUdorW03=mipgm92SXNPBZO5owW1Wp6_SacRDZ7fOe9gw@mail.gmail.com>
+In-Reply-To: <CAMuHMdUdorW03=mipgm92SXNPBZO5owW1Wp6_SacRDZ7fOe9gw@mail.gmail.com>
 MIME-Version: 1.0
-Message-Id: <1607918323.6muyu2l982.astroid@bobo.none>
+Message-Id: <1607919238.kj439g85v5.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,53 +80,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Anton Vorontsov <anton.vorontsov@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Andy Lutomirski's message of December 11, 2020 10:11 am:
->> On Dec 5, 2020, at 7:59 PM, Nicholas Piggin <npiggin@gmail.com> wrote:
+Excerpts from Geert Uytterhoeven's message of December 10, 2020 7:06 pm:
+> Hi Nicholas,
+>=20
+> On Fri, Nov 20, 2020 at 4:01 AM Nicholas Piggin <npiggin@gmail.com> wrote=
+:
 >>
+>> When offlining a CPU, powerpc/64s does not flush TLBs, rather it just
+>> leaves the CPU set in mm_cpumasks, so it continues to receive TLBIEs
+>> to manage its TLBs.
+>>
+>> However the exit_flush_lazy_tlbs() function expects that after
+>> returning, all CPUs (except self) have flushed TLBs for that mm, in
+>> which case TLBIEL can be used for this flush. This breaks for offline
+>> CPUs because they don't get the IPI to flush their TLB. This can lead
+>> to stale translations.
+>>
+>> Fix this by clearing the CPU from mm_cpumasks, then flushing all TLBs
+>> before going offline.
+>>
+>> These offlined CPU bits stuck in the cpumask also prevents the cpumask
+>> from being trimmed back to local mode, which means continual broadcast
+>> IPIs or TLBIEs are needed for TLB flushing. This patch prevents that
+>> situation too.
+>>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >=20
->> I'm still going to persue shoot-lazies for the merge window. As you
->> see it's about a dozen lines and a if (IS_ENABLED(... in core code.
->> Your change is common code, but a significant complexity (which
->> affects all archs) so needs a lot more review and testing at this
->> point.
+> Thanks for your patch!
 >=20
-> I don't think it's ready for this merge window.
+>> --- a/arch/powerpc/platforms/powermac/smp.c
+>> +++ b/arch/powerpc/platforms/powermac/smp.c
+>> @@ -911,6 +911,8 @@ static int smp_core99_cpu_disable(void)
+>>
+>>         mpic_cpu_set_priority(0xf);
+>>
+>> +       cleanup_cpu_mmu_context();
+>> +
+>=20
+> I guess this change broke pmac32_defconfig+SMP in v5.10-rc7?
+>=20
+> arch/powerpc/platforms/powermac/smp.c: error: implicit
+> declaration of function 'cleanup_cpu_mmu_context'
+> [-Werror=3Dimplicit-function-declaration]:  =3D> 914:2
+>=20
+> http://kisskb.ellerman.id.au/kisskb/buildresult/14423174/
 
-Yes next one I meant (aka this one for development perspective :)).
+Hey, yeah it does thanks for catching it. This patch fixes it for me
 
-> I read the early
-> patches again, and I think they make the membarrier code worse, not
-> better.
+---
+From a9b5ec92ffac975e81c6d7db6ff2b1486b2723f7 Mon Sep 17 00:00:00 2001
+From: Nicholas Piggin <npiggin@gmail.com>
+Date: Mon, 14 Dec 2020 13:52:39 +1000
+Subject: [PATCH] powerpc/32s: Fix cleanup_cpu_mmu_context() compile bug
 
-Mathieu and I disagree, so we are at an impasse. I addressed your=20
-comment about not being able to do the additional core sync avoidance=20
-from the exit tlb call (you can indeed do so in your arch code) and=20
-about exit_lazy_tlb being a call into the scheduler (it's not) and
-about the arch code not being able to reconcile lazy tlb mm with the
-core scheduler code (you can).
+32s has no tlbiel_all() defined, so just disable the cleanup with a
+comment.
 
-I fundamentally think the core sync is an issue with what the membarrier
-/ arch specifics are doing with lazy tlb mm switching, and not something
-the core scheduler needs to know about at all. I don't see the big
-problem with essentially moving it from an explicit call to=20
-exit_lazy_tlb (which from scheduler POV describes better what it is=20
-doing, not how).
+Fixes: 01b0f0eae081 ("powerpc/64s: Trim offlined CPUs from mm_cpumasks")
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/platforms/powermac/smp.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-> I'm not fundamentally opposed to the shoot-lazies concept,
-> but it needs more thought and it needs a cleaner foundation.
+diff --git a/arch/powerpc/platforms/powermac/smp.c b/arch/powerpc/platforms=
+/powermac/smp.c
+index adae2a6712e1..66ef5f8f4445 100644
+--- a/arch/powerpc/platforms/powermac/smp.c
++++ b/arch/powerpc/platforms/powermac/smp.c
+@@ -911,7 +911,16 @@ static int smp_core99_cpu_disable(void)
+=20
+ 	mpic_cpu_set_priority(0xf);
+=20
++	/*
++	 * Would be nice for consistency if all platforms clear mm_cpumask and
++	 * flush TLBs on unplug, but the TLB invalidation bug described in
++	 * commit 01b0f0eae081 ("powerpc/64s: Trim offlined CPUs from
++	 * mm_cpumasks") only applies to 64s and for now we only have the TLB
++	 * flush code for that platform.
++	 */
++#ifdef CONFIG_PPC64
+ 	cleanup_cpu_mmu_context();
++#endif
+=20
+ 	return 0;
+ }
+--=20
+2.23.0
 
-Well shoot lazies actually doesn't really rely on that membarrier
-change at all, it just came as a nice looking cleanup so that part
-can be dropped from the series. It's not really foundational.
-
-Thanks,
-Nick
