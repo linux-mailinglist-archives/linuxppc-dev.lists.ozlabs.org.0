@@ -1,50 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE732D91EB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 03:57:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D17D2D9234
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 05:09:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CvQyz3DfBzDqJq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 13:56:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CvSZS2t87zDqSQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 15:09:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=jBTloPwF; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CvQwh3hNkzDqQH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 13:54:59 +1100 (AEDT)
-IronPort-SDR: MDHEeeTZQ0oIQt+6nammf3PZJ0gnE8OjxvkHI/zuyVndk1yTd9a8zC0cwQbbgDFfdfsbT3Oon2
- buon1RAfQJ5g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9834"; a="171138388"
-X-IronPort-AV: E=Sophos;i="5.78,417,1599548400"; d="scan'208";a="171138388"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Dec 2020 18:54:52 -0800
-IronPort-SDR: sP1g7jaVN4zFpB/2scsJpxq+niK96ZJsu5VK/KGNFIoruI0YTrtq7UuzqsObmzsDK8ffwXNJTc
- BqG2kfyrwO8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,417,1599548400"; d="scan'208";a="447513006"
-Received: from lkp-server02.sh.intel.com (HELO a947d92d0467) ([10.239.97.151])
- by fmsmga001.fm.intel.com with ESMTP; 13 Dec 2020 18:54:51 -0800
-Received: from kbuild by a947d92d0467 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1koe0g-00007H-Oq; Mon, 14 Dec 2020 02:54:50 +0000
-Date: Mon, 14 Dec 2020 10:54:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS WITH WARNING
- dddc4ef92d1ce92987da1d6926cdfa99e8acb622
-Message-ID: <5fd6d3f5.vMQifsqQN+kdhk+e%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CvSXd6c7bzDqRv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 15:07:44 +1100 (AEDT)
+Received: by mail-pf1-x444.google.com with SMTP id x126so2419755pfc.7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Dec 2020 20:07:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=PWh+Vdx5/CQGyHUaGmwrxc21bpz+T3vvjsxDr9do1W0=;
+ b=jBTloPwFVdlwdlyZC+hyxpB8boEXRewMRO9QCB0wjdmJOmvQb80Ek4uI5dvhIFgIUN
+ wSKp+HV+IHGiktwJA1TU+TMZf+X7ZRlOLvK0X4IEYwtvStmIsH2unXn4Ek85lTmYj0eP
+ Wnr1x3fWaGpVL1qqbaasFyRoQxNoWidjeeDS7jMm6BIAgHEljWpEp0mJGpKO26gbxkPN
+ jD3d4spmbJmrIjKKZ+IzejsU0bowKWdXcuMRD/DC2XuOsVdrFbv4SMYpMXeiX8rw5r5N
+ KY3WPknXhjPc5qPpz7J7VoDsQVWeQTs7DhT73S/0wyCEWsVGzZ1wMh0Esl6ayKxhsjZe
+ pGWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=PWh+Vdx5/CQGyHUaGmwrxc21bpz+T3vvjsxDr9do1W0=;
+ b=Iboeu4XLmwTqjg+EewfWRN/aH7sRS/afX7oPuEELm5lCra7/5EeLqKib2wtUM/rRPz
+ 9AcZ97oC2wK7Eiekqr2Lpz32TlkIzceh5aSwjZVTD/TkQ+NZc2/lM0vyldRzLC/LuFSB
+ 15DizPg3k7Vl4GXUgEql8uon3+r1M5RBTKBpNqiAmIXwZKC58QnKGF2c8McOz+Oe4GAI
+ tr3K3KKYyzjeTJHnqas3w/Yh0n1pLzYAwo1uOED4IUlAJyCzUlmctevTbCjOcU0aG3SX
+ pzZztZsRkCjJpDef2RB1N9bwejS6W0KG0RAFx55C+SSMjDsrp0s/cVg1xr75MJ1t2fsE
+ iRRA==
+X-Gm-Message-State: AOAM533tDDTM2Np3O5qYzMyWHbQFZW+U1Rnf8Pq/wYKx5aHkhVBPFGP1
+ ih2z+S1iuYniXHUhJubwZdo=
+X-Google-Smtp-Source: ABdhPJyIyQ6qEDAOiugwK5Wi7/4KOuz1OqcXosU9vwHYM/fnFbs9BdwPCBgfN29SdfYCrzjFH+R7Vw==
+X-Received: by 2002:a62:6c2:0:b029:19e:b63a:91e9 with SMTP id
+ 185-20020a6206c20000b029019eb63a91e9mr18792139pfg.79.1607918861170; 
+ Sun, 13 Dec 2020 20:07:41 -0800 (PST)
+Received: from localhost ([220.240.228.148])
+ by smtp.gmail.com with ESMTPSA id 37sm14724169pjz.41.2020.12.13.20.07.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 13 Dec 2020 20:07:40 -0800 (PST)
+Date: Mon, 14 Dec 2020 14:07:27 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 2/8] x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
+To: Andy Lutomirski <luto@kernel.org>
+References: <1607152918.fkgmomgfw9.astroid@bobo.none>
+ <116A6B40-C77B-4B6A-897B-18342CD62CEC@amacapital.net>
+ <1607209402.fogfsh8ov4.astroid@bobo.none>
+ <CALCETrWFjOXAd5=ctX3tzgUbyfwM+bT-f8WY_QWOeuDdFxhWbg@mail.gmail.com>
+ <1607224014.8xeujbleij.astroid@bobo.none>
+ <CALCETrV5BzXuUYm5YAoEKPZZPfLrbHckvwBHzWKrxZS8hqzHEg@mail.gmail.com>
+In-Reply-To: <CALCETrV5BzXuUYm5YAoEKPZZPfLrbHckvwBHzWKrxZS8hqzHEg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Message-Id: <1607918323.6muyu2l982.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,175 +85,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next
-branch HEAD: dddc4ef92d1ce92987da1d6926cdfa99e8acb622  KVM: PPC: Book3S HV: XIVE: Add a comment regarding VP numbering
+Excerpts from Andy Lutomirski's message of December 11, 2020 10:11 am:
+>> On Dec 5, 2020, at 7:59 PM, Nicholas Piggin <npiggin@gmail.com> wrote:
+>>
+>=20
+>> I'm still going to persue shoot-lazies for the merge window. As you
+>> see it's about a dozen lines and a if (IS_ENABLED(... in core code.
+>> Your change is common code, but a significant complexity (which
+>> affects all archs) so needs a lot more review and testing at this
+>> point.
+>=20
+> I don't think it's ready for this merge window.
 
-Warning reports:
+Yes next one I meant (aka this one for development perspective :)).
 
-https://lore.kernel.org/linuxppc-dev/202012042220.zO7hSFT2-lkp@intel.com
+> I read the early
+> patches again, and I think they make the membarrier code worse, not
+> better.
 
-Warning in current branch:
+Mathieu and I disagree, so we are at an impasse. I addressed your=20
+comment about not being able to do the additional core sync avoidance=20
+from the exit tlb call (you can indeed do so in your arch code) and=20
+about exit_lazy_tlb being a call into the scheduler (it's not) and
+about the arch code not being able to reconcile lazy tlb mm with the
+core scheduler code (you can).
 
-arch/powerpc/kernel/vdso32/vgettimeofday.c:13:5: warning: no previous prototype for function '__c_kernel_clock_gettime64' [-Wmissing-prototypes]
+I fundamentally think the core sync is an issue with what the membarrier
+/ arch specifics are doing with lazy tlb mm switching, and not something
+the core scheduler needs to know about at all. I don't see the big
+problem with essentially moving it from an explicit call to=20
+exit_lazy_tlb (which from scheduler POV describes better what it is=20
+doing, not how).
 
-Warning ids grouped by kconfigs:
+> I'm not fundamentally opposed to the shoot-lazies concept,
+> but it needs more thought and it needs a cleaner foundation.
 
-clang_recent_errors
-`-- powerpc64-randconfig-r025-20201213
-    `-- arch-powerpc-kernel-vdso32-vgettimeofday.c:warning:no-previous-prototype-for-function-__c_kernel_clock_gettime64
+Well shoot lazies actually doesn't really rely on that membarrier
+change at all, it just came as a nice looking cleanup so that part
+can be dropped from the series. It's not really foundational.
 
-elapsed time: 1767m
-
-configs tested: 138
-configs skipped: 48
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-nios2                            alldefconfig
-sh                          polaris_defconfig
-m68k                        mvme16x_defconfig
-openrisc                            defconfig
-mips                        qi_lb60_defconfig
-arm                           tegra_defconfig
-mips                           ip27_defconfig
-s390                             alldefconfig
-mips                       bmips_be_defconfig
-arm                          exynos_defconfig
-arm                          collie_defconfig
-arc                          axs101_defconfig
-sh                          urquell_defconfig
-sh                        dreamcast_defconfig
-mips                          rm200_defconfig
-sh                               j2_defconfig
-powerpc                     pseries_defconfig
-mips                        bcm63xx_defconfig
-mips                        nlm_xlp_defconfig
-arm                        shmobile_defconfig
-powerpc                 linkstation_defconfig
-sh                        apsh4ad0a_defconfig
-arc                           tb10x_defconfig
-riscv                             allnoconfig
-arm                        multi_v5_defconfig
-sh                                  defconfig
-powerpc                      pcm030_defconfig
-m68k                          atari_defconfig
-mips                      loongson3_defconfig
-arm                           efm32_defconfig
-arm                      footbridge_defconfig
-powerpc                      ppc6xx_defconfig
-powerpc                    amigaone_defconfig
-powerpc                       ebony_defconfig
-x86_64                              defconfig
-alpha                            allyesconfig
-mips                      maltasmvp_defconfig
-mips                malta_kvm_guest_defconfig
-c6x                        evmc6678_defconfig
-powerpc                     rainier_defconfig
-powerpc                          g5_defconfig
-mips                            e55_defconfig
-powerpc                      pmac32_defconfig
-sh                          lboxre2_defconfig
-sh                           se7206_defconfig
-i386                             alldefconfig
-xtensa                  audio_kc705_defconfig
-arc                 nsimosci_hs_smp_defconfig
-powerpc                 mpc832x_mds_defconfig
-powerpc                   currituck_defconfig
-arm                          pxa910_defconfig
-arm                          imote2_defconfig
-h8300                       h8s-sim_defconfig
-microblaze                      mmu_defconfig
-sh                           se7724_defconfig
-m68k                         apollo_defconfig
-mips                       capcella_defconfig
-powerpc                mpc7448_hpc2_defconfig
-m68k                          hp300_defconfig
-powerpc                    klondike_defconfig
-xtensa                    smp_lx200_defconfig
-sparc64                             defconfig
-ia64                         bigsur_defconfig
-parisc                generic-32bit_defconfig
-csky                                defconfig
-arm                       multi_v4t_defconfig
-sh                         ecovec24_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a003-20201213
-x86_64               randconfig-a006-20201213
-x86_64               randconfig-a002-20201213
-x86_64               randconfig-a005-20201213
-x86_64               randconfig-a004-20201213
-x86_64               randconfig-a001-20201213
-i386                 randconfig-a001-20201213
-i386                 randconfig-a004-20201213
-i386                 randconfig-a003-20201213
-i386                 randconfig-a002-20201213
-i386                 randconfig-a005-20201213
-i386                 randconfig-a006-20201213
-i386                 randconfig-a014-20201213
-i386                 randconfig-a013-20201213
-i386                 randconfig-a012-20201213
-i386                 randconfig-a011-20201213
-i386                 randconfig-a016-20201213
-i386                 randconfig-a015-20201213
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a016-20201213
-x86_64               randconfig-a012-20201213
-x86_64               randconfig-a013-20201213
-x86_64               randconfig-a015-20201213
-x86_64               randconfig-a014-20201213
-x86_64               randconfig-a011-20201213
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Thanks,
+Nick
