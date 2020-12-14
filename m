@@ -2,81 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B392D9E9E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 19:12:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5122DA3F3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 00:07:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CvqHK3fFfzDqDC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 05:12:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CvxqM4y3XzDqPf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 10:07:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=joelfernandes.org (client-ip=2607:f8b0:4864:20::741;
- helo=mail-qk1-x741.google.com; envelope-from=joel@joelfernandes.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=joelfernandes.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=joelfernandes.org header.i=@joelfernandes.org
- header.a=rsa-sha256 header.s=google header.b=IrTGKI/n; 
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=UAk4LB1g; 
  dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CvqF00ld1zDqG1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 05:10:25 +1100 (AEDT)
-Received: by mail-qk1-x741.google.com with SMTP id b64so12452296qkc.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 10:10:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=joelfernandes.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to;
- bh=80A3v/WEjVbaiRbX2zqJ242KMRN7qmG3DpyY691VhNU=;
- b=IrTGKI/n7ayvbWMN0a7X/KHMS9wogZpz8jXczVP3WHMLZ2OioqQf8rwZllbIOzir+t
- sEehucHHdhqGg1HiD4LHnj3oQN1C+HBI6SoP8p8tqD+mZQ5fFFEKtrGaaBMzERcJdPvM
- 9bIFtqhqJVo8i4kNOZFi0T7+9sY9Rwpb/0OIw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=80A3v/WEjVbaiRbX2zqJ242KMRN7qmG3DpyY691VhNU=;
- b=Zvo5WkbFuW8NiklIgZHrcbrLnYmaGptBQYucd8rOVdjhUwmSUrZW+k8C0HdyhDbskt
- CmOsA82WUDQcdQ4sJwa1DkgJ0FpWQTbAO84gA2WjOmVB+p4b4p7gA2qegNYNEYiy/sdM
- z/rtpFP0mKbndfZd2gG1tL9ogKw5vwN8GledNWF6z5P+4p1WLqeFiHBVPCPEFduO4bRy
- 1ibpCQDy5acpzTd0++z8FZK8RQ4srQy7tty+DesvLC1Ntd8rN3XrBvsWxh6QqG1DbZeM
- soIwg7em3wXo0DqqPuqb2iXpOym4tprLBHYzwjZDuB73QzKsbbGauFqrmcbVEjEMtnwg
- AHcg==
-X-Gm-Message-State: AOAM532GqKODdzqdjx+J5pOBo+pSyqqDG0DnGQYgCV/xM6XF1EzkgoDP
- dQiUMj2MJ7e3VC8Qv++eVfwnzw==
-X-Google-Smtp-Source: ABdhPJyfBtJ7ukfd4lWK/6JV64PA0nYgtm5rutT93yEigIeKNLOh4kyhUcVeIWDo3MK9DwEflPfRgw==
-X-Received: by 2002:ae9:e10d:: with SMTP id g13mr33504576qkm.444.1607969422214; 
- Mon, 14 Dec 2020 10:10:22 -0800 (PST)
-Received: from localhost ([2620:15c:6:411:cad3:ffff:feb3:bd59])
- by smtp.gmail.com with ESMTPSA id i13sm5321115qkk.83.2020.12.14.10.10.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Dec 2020 10:10:20 -0800 (PST)
-Date: Mon, 14 Dec 2020 13:10:20 -0500
-From: Joel Fernandes <joel@joelfernandes.org>
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Subject: Re: [PATCH v12 00/31] Speculative page faults
-Message-ID: <X9eqjA8rNsQ91sg3@google.com>
-References: <20190416134522.17540-1-ldufour@linux.ibm.com>
- <20190606065129.d5s3534p23twksgp@haiyan.sh.intel.com>
- <3d3cefa2-0ebb-e86d-b060-7ba67c48a59f@linux.ibm.com>
- <1c412ebe-c213-ee67-d261-c70ddcd34b79@linux.ibm.com>
- <20190620081945.hwj6ruqddefnxg6z@haiyan.sh.intel.com>
- <1594027500.30360.32.camel@mtkswgap22>
- <490c0811-50cd-0802-2cbc-9c031ef309f6@linux.ibm.com>
- <1594099897.30360.58.camel@mtkswgap22>
- <X9bIDHZbe4MB+BAg@google.com>
- <b256e5ed-0d4c-4baf-16a6-f32f122e344f@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CvxnQ68LbzDqNr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 10:05:30 +1100 (AEDT)
+Date: Mon, 14 Dec 2020 23:05:22 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1607987128;
+ bh=5TsguwUz8VJK8ed5bDwSWwfzf/cJOL0KfWWRDjoJhzQ=;
+ h=From:To:Cc:Subject:References:In-Reply-To:From;
+ b=UAk4LB1gakF+U6GGpj55Ykx0xhrgf1wtLYgo9r9mFeGtMMIUlQosvriFGgdFwiXeC
+ IMuICyeGuCBx+14A+DqLiEZQP22TONAInVWdM5n49DxlVWfXAhICFXY58y6wpVsqU9
+ +/x+SeHiERi8NqQ18agSEF4pSFmSFlQy5i2Cz8iQpiYgJLYkvasjxZ+mgFNNEpahMT
+ UGmUFefAp3QT9mdbW9QFW/LuG3NPWfVA0lyiu0fI/XKpBCjF35lh0ax0CdwhdD03kG
+ djx8wy94NUek0W0az2sJTnimVI7JdePAliR5FelHiMnIvT+Qyj+PDJcZZDKH9ttMKk
+ rirQyugEJC3JQ==
+From: Will Deacon <will@kernel.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH 2/3] kbuild: LD_VERSION redenomination
+Message-ID: <20201214230521.GA14124@willie-the-truck>
+References: <20201212165431.150750-1-masahiroy@kernel.org>
+ <20201212165431.150750-2-masahiroy@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b256e5ed-0d4c-4baf-16a6-f32f122e344f@linux.ibm.com>
+In-Reply-To: <20201212165431.150750-2-masahiroy@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,102 +56,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jack@suse.cz, sergey.senozhatsky.work@gmail.com, peterz@infradead.org,
- Will Deacon <will.deacon@arm.com>, mhocko@kernel.org, linux-mm@kvack.org,
- paulus@samba.org, Punit Agrawal <punitagrawal@gmail.com>, hpa@zytor.com,
- Michel Lespinasse <walken@google.com>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Andrea Arcangeli <aarcange@redhat.com>, ak@linux.intel.com,
- Minchan Kim <minchan@kernel.org>, aneesh.kumar@linux.ibm.com, x86@kernel.org,
- Matthew Wilcox <willy@infradead.org>,
- Daniel Jordan <daniel.m.jordan@oracle.com>, Ingo Molnar <mingo@redhat.com>,
- zhong jiang <zhongjiang@huawei.com>,
- Chinwen Chang <chinwen.chang@mediatek.com>,
- David Rientjes <rientjes@google.com>, paulmck@linux.vnet.ibm.com,
- npiggin@gmail.com, sj38.park@gmail.com, Jerome Glisse <jglisse@redhat.com>,
- dave@stgolabs.net, kemi.wang@intel.com, kirill@shutemov.name,
- Thomas Gleixner <tglx@linutronix.de>, Haiyan Song <haiyanx.song@intel.com>,
- Ganesh Mahendran <opensource.ganesh@gmail.com>,
- Yang Shi <yang.shi@linux.alibaba.com>, Mike Rapoport <rppt@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>, miles.chen@mediatek.com,
- vinayak menon <vinayakm.list@gmail.com>, akpm@linux-foundation.org,
- Tim Chen <tim.c.chen@linux.intel.com>, haren@linux.vnet.ibm.com
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ linux-kbuild@vger.kernel.org, Dominique Martinet <asmadeus@codewreck.org>,
+ linux-kernel@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhc@lemote.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 14, 2020 at 10:36:29AM +0100, Laurent Dufour wrote:
-> Le 14/12/2020 à 03:03, Joel Fernandes a écrit :
-> > On Tue, Jul 07, 2020 at 01:31:37PM +0800, Chinwen Chang wrote:
-> > [..]
-> > > > > Hi Laurent,
-> > > > > 
-> > > > > We merged SPF v11 and some patches from v12 into our platforms. After
-> > > > > several experiments, we observed SPF has obvious improvements on the
-> > > > > launch time of applications, especially for those high-TLP ones,
-> > > > > 
-> > > > > # launch time of applications(s):
-> > > > > 
-> > > > > package           version      w/ SPF      w/o SPF      improve(%)
-> > > > > ------------------------------------------------------------------
-> > > > > Baidu maps        10.13.3      0.887       0.98         9.49
-> > > > > Taobao            8.4.0.35     1.227       1.293        5.10
-> > > > > Meituan           9.12.401     1.107       1.543        28.26
-> > > > > WeChat            7.0.3        2.353       2.68         12.20
-> > > > > Honor of Kings    1.43.1.6     6.63        6.713        1.24
-> > > > 
-> > > > That's great news, thanks for reporting this!
-> > > > 
-> > > > > 
-> > > > > By the way, we have verified our platforms with those patches and
-> > > > > achieved the goal of mass production.
-> > > > 
-> > > > Another good news!
-> > > > For my information, what is your targeted hardware?
-> > > > 
-> > > > Cheers,
-> > > > Laurent.
-> > > 
-> > > Hi Laurent,
-> > > 
-> > > Our targeted hardware belongs to ARM64 multi-core series.
-> > 
-> > Hello!
-> > 
-> > I was trying to develop an intuition about why does SPF give improvement for
-> > you on small CPU systems. This is just a high-level theory but:
-> > 
-> > 1. Assume the improvement is because of elimination of "blocking" on
-> > mmap_sem.
-> > Could it be that the mmap_sem is acquired in write-mode unnecessarily in some
-> > places, thus causing blocking on mmap_sem in other paths? If so, is it
-> > feasible to convert such usages to acquiring them in read-mode?
+On Sun, Dec 13, 2020 at 01:54:30AM +0900, Masahiro Yamada wrote:
+> Commit ccbef1674a15 ("Kbuild, lto: add ld-version and ld-ifversion
+> macros") introduced scripts/ld-version.sh for GCC LTO.
 > 
-> That's correct, and the goal of this series is to try not holding the
-> mmap_sem in read mode during page fault processing.
+> At that time, this script handled 5 version fields because GCC LTO
+> needed the downstream binutils. (https://lkml.org/lkml/2014/4/8/272)
 > 
-> Converting mmap_sem holder from write to read mode is not so easy and that
-> work as already been done in some places. If you think there are areas where
-> this could be done, you're welcome to send patches fixing that.
+> The code snippet from the submitted patch was as follows:
 > 
-> > 2. Assume the improvement is because of lesser read-side contention on
-> > mmap_sem.
-> > On small CPU systems, I would not expect reducing cache-line bouncing to give
-> > such a dramatic improvement in performance as you are seeing.
+>     # We need HJ Lu's Linux binutils because mainline binutils does not
+>     # support mixing assembler and LTO code in the same ld -r object.
+>     # XXX check if the gcc plugin ld is the expected one too
+>     # XXX some Fedora binutils should also support it. How to check for that?
+>     ifeq ($(call ld-ifversion,-ge,22710001,y),y)
+>         ...
 > 
-> I don't think cache line bouncing reduction is the main sourcec of
-> performance improvement, I would rather think this is the lower part here.
-> I guess this is mainly because during loading time a lot of page fault is
-> occuring and thus SPF is reducing the contention on the mmap_sem.
+> However, GCC LTO was not merged into the mainline after all.
+> (https://lkml.org/lkml/2014/4/8/272)
+> 
+> So, the 4th and 5th fields were never used, and finally removed by
+> commit 0d61ed17dd30 ("ld-version: Drop the 4th and 5th version
+> components").
+> 
+> Since then, the last 4-digits returned by this script is always zeros.
+> 
+> Remove the meaningless last 4-digits. This makes the version format
+> consistent with GCC_VERSION, CLANG_VERSION, LLD_VERSION.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+>  arch/arm64/Kconfig            | 2 +-
+>  arch/mips/loongson64/Platform | 2 +-
+>  arch/mips/vdso/Kconfig        | 2 +-
+>  arch/powerpc/Makefile         | 2 +-
+>  arch/powerpc/lib/Makefile     | 2 +-
+>  scripts/ld-version.sh         | 2 +-
+>  6 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index a6b5b7ef40ae..69d56b21a6ec 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1499,7 +1499,7 @@ config ARM64_PTR_AUTH
+>  	depends on (CC_HAS_SIGN_RETURN_ADDRESS || CC_HAS_BRANCH_PROT_PAC_RET) && AS_HAS_PAC
+>  	# Modern compilers insert a .note.gnu.property section note for PAC
+>  	# which is only understood by binutils starting with version 2.33.1.
+> -	depends on LD_IS_LLD || LD_VERSION >= 233010000 || (CC_IS_GCC && GCC_VERSION < 90100)
+> +	depends on LD_IS_LLD || LD_VERSION >= 23301 || (CC_IS_GCC && GCC_VERSION < 90100)
+>  	depends on !CC_IS_CLANG || AS_HAS_CFI_NEGATE_RA_STATE
+>  	depends on (!FUNCTION_GRAPH_TRACER || DYNAMIC_FTRACE_WITH_REGS)
+>  	help
 
-Thanks for the reply. I think I also wrongly assumed that acquiring mmap
-rwsem in write mode in a syscall makes SPF moot. Peter explained to me on IRC
-that tere's still perf improvement in write mode if an unrelated VMA is
-modified while another VMA is faulting.  CMIIW - not an mm expert by any
-stretch.
+Acked-by: Will Deacon <will@kernel.org>
 
-Thanks!
-
- - Joel
-
+Will
