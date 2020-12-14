@@ -1,93 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF0D2D96A6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 11:54:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAA62D96F1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 12:06:25 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CvdZD6rYKzDqTq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 21:54:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cvdqd34ptzDqV1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 22:06:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=NkQPI8Wp; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Lq669Sqv; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CvdXq29VRzDqSS
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 21:53:31 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0BEAgRim013643; Mon, 14 Dec 2020 05:53:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=PE0rZt60ZTfWmk21Zw03rCMUftC0XN/Aq8mECYOMU34=;
- b=NkQPI8WpwRUEWezdrKFwczr1eLUyP9iqRY1DYUwzp/8uereokjTZSNARSJuoUiXCtKIB
- MCqeg/WQ4BI1AH/bliZYM16a286oiHMNXJ7HA/o8EsW6BDzbOFyE1G60o8PhVhyWv4VT
- Tyz83B+1UfVIybOKTzrHPf+2nPO7zOoUpVgSESXkHmp7pTTm6QKYTA2GOiCyODOXmtN1
- N1v41r2IcfH+xK8pkcBNKg4FQ5bEbD0iywPsY5lM2pPAVX8/EfD6oKtV/Sch72rE21Q1
- PUl1YSTYoWuZfAWvU2RwKfnMaGTG4Ytg3E0KwfGnPFr0G0zHHN0KojmTMq4ADDiAVyWK Vg== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35e6hfr8mr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Dec 2020 05:53:25 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BEAhwi4022206;
- Mon, 14 Dec 2020 10:53:23 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06ams.nl.ibm.com with ESMTP id 35cn4ha2j1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Dec 2020 10:53:23 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0BEArKVK30409132
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Dec 2020 10:53:20 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1607142042;
- Mon, 14 Dec 2020 10:53:20 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6C03542047;
- Mon, 14 Dec 2020 10:53:19 +0000 (GMT)
-Received: from [9.102.1.15] (unknown [9.102.1.15])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 14 Dec 2020 10:53:19 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.17\))
-Subject: Re: [PATCH v2] powerpc/book3s/kup: Mark the kuap/keup function non
- __init
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-In-Reply-To: <20201214080121.358567-1-aneesh.kumar@linux.ibm.com>
-Date: Mon, 14 Dec 2020 16:23:18 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CvdnH58gCzDqG0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 22:04:17 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id t8so11861836pfg.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 03:04:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=giOKidC9koKbUCA23vFcqUz66kzKhj7G43+rbP55W1Q=;
+ b=Lq669SqvkvMuTktRXXiRsU5TldllIx3Uqe67TuFsslWmurjDTftGmgIFTCv3LM+ytt
+ Oun1j+y3J28/kG6u0nO80ix5eqMOB0CFE9d0I6RTnQSaxaQAtGwYOUtnaT4Hn0sBaElp
+ 8c/lJFLeHxsEfkoI3cAUuCqpcIvnOK+wkxodEOJOsyWSis4S/8C/IHIwrkXX+UXnPioW
+ 4ROutlW/IaLa4jkMEC7+dxgomMqA8mZEc4Ws/MVupQBrKyJ8eZxPwO+Y8L9Ljo3dtxmI
+ FkwreZImnjfRhzJUxonQCgqq5rsyfE2k6gT71v2/JZwuAf2alfqOiS+JHpKQ/Blhq3ch
+ jtuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=giOKidC9koKbUCA23vFcqUz66kzKhj7G43+rbP55W1Q=;
+ b=tNRpUclkUo85yiCTbPZVuQqX6cchjLrEo9KDMle57sIaIaSTWklsroLdcopL62PR5k
+ aNFFJVyhJGy8yKZ3zhDG3V9IQJQyAFvkgCIM06/ffHFE30FTPETDlxFQsZsoBiqZ3ckp
+ QLzJEkHAlFdU55XyeIQ91HwySkb95SEKfXXQ74C6c+2ujmMO9Xrv9cO1GFV7W/3Ilv9q
+ u01oMOWKSH8rOBhBDxy7bumP7lczEW6oaWWtQbTeM+w3vRVKEqh38lcvKS52GvGjs6kL
+ f2nccvQ7bFCBlHEg0nP1KnELe3c3evC6/BYQuaQ6EVq2haHaRVoSNcwZV3Y1XEHHoOKH
+ MBEQ==
+X-Gm-Message-State: AOAM531AlYBCVZFNBDrk02Ae31KUEBIj/tmmmcLdc6fwLuJmcUwIeCmn
+ q0QBfdKzurZhgqymekai2UE=
+X-Google-Smtp-Source: ABdhPJwumjWaIWUY8c2o3q91Ja5o96+pEAQQlVCvtSje50/bfmNrhO7ELnmk5cBKo4zsRbRfgCmGKg==
+X-Received: by 2002:aa7:959a:0:b029:1a1:ffc5:531d with SMTP id
+ z26-20020aa7959a0000b02901a1ffc5531dmr13277998pfj.27.1607943854398; 
+ Mon, 14 Dec 2020 03:04:14 -0800 (PST)
+Received: from localhost ([220.240.228.148])
+ by smtp.gmail.com with ESMTPSA id k21sm18458132pfu.7.2020.12.14.03.04.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Dec 2020 03:04:13 -0800 (PST)
+Date: Mon, 14 Dec 2020 21:04:08 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 2/2] powerpc/64s: Trim offlined CPUs from mm_cpumasks
+To: Geert Uytterhoeven <geert@linux-m68k.org>, Michael Ellerman
+ <mpe@ellerman.id.au>
+References: <20201120025757.325930-1-npiggin@gmail.com>
+ <20201120025757.325930-3-npiggin@gmail.com>
+ <CAMuHMdUdorW03=mipgm92SXNPBZO5owW1Wp6_SacRDZ7fOe9gw@mail.gmail.com>
+ <1607919238.kj439g85v5.astroid@bobo.none>
+ <87h7oozn06.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87h7oozn06.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Message-Id: <1607943765.29hccd2b8p.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <86CB1DAC-A345-4D35-A8FA-7884DF99E415@linux.vnet.ibm.com>
-References: <20201214080121.358567-1-aneesh.kumar@linux.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-X-Mailer: Apple Mail (2.3445.104.17)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-14_04:2020-12-11,
- 2020-12-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 mlxlogscore=935
- bulkscore=0 clxscore=1015 priorityscore=1501 spamscore=0 adultscore=0
- suspectscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012140072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,28 +84,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Anton Vorontsov <anton.vorontsov@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-> On 14-Dec-2020, at 1:31 PM, Aneesh Kumar K.V =
-<aneesh.kumar@linux.ibm.com> wrote:
+Excerpts from Michael Ellerman's message of December 14, 2020 8:43 pm:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>> Excerpts from Geert Uytterhoeven's message of December 10, 2020 7:06 pm:
+>>> Hi Nicholas,
+>>>=20
+>>> On Fri, Nov 20, 2020 at 4:01 AM Nicholas Piggin <npiggin@gmail.com> wro=
+te:
+>>>>
+>>>> When offlining a CPU, powerpc/64s does not flush TLBs, rather it just
+>>>> leaves the CPU set in mm_cpumasks, so it continues to receive TLBIEs
+>>>> to manage its TLBs.
+>>>>
+>>>> However the exit_flush_lazy_tlbs() function expects that after
+>>>> returning, all CPUs (except self) have flushed TLBs for that mm, in
+>>>> which case TLBIEL can be used for this flush. This breaks for offline
+>>>> CPUs because they don't get the IPI to flush their TLB. This can lead
+>>>> to stale translations.
+>>>>
+>>>> Fix this by clearing the CPU from mm_cpumasks, then flushing all TLBs
+>>>> before going offline.
+>>>>
+>>>> These offlined CPU bits stuck in the cpumask also prevents the cpumask
+>>>> from being trimmed back to local mode, which means continual broadcast
+>>>> IPIs or TLBIEs are needed for TLB flushing. This patch prevents that
+>>>> situation too.
+>>>>
+>>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>>=20
+>>> Thanks for your patch!
+>>>=20
+>>>> --- a/arch/powerpc/platforms/powermac/smp.c
+>>>> +++ b/arch/powerpc/platforms/powermac/smp.c
+>>>> @@ -911,6 +911,8 @@ static int smp_core99_cpu_disable(void)
+>>>>
+>>>>         mpic_cpu_set_priority(0xf);
+>>>>
+>>>> +       cleanup_cpu_mmu_context();
+>>>> +
+>>>=20
+>>> I guess this change broke pmac32_defconfig+SMP in v5.10-rc7?
+>>>=20
+>>> arch/powerpc/platforms/powermac/smp.c: error: implicit
+>>> declaration of function 'cleanup_cpu_mmu_context'
+>>> [-Werror=3Dimplicit-function-declaration]:  =3D> 914:2
+>>>=20
+>>> http://kisskb.ellerman.id.au/kisskb/buildresult/14423174/
+>>
+>> Hey, yeah it does thanks for catching it. This patch fixes it for me
+>>
+>> ---
+>> From a9b5ec92ffac975e81c6d7db6ff2b1486b2723f7 Mon Sep 17 00:00:00 2001
+>> From: Nicholas Piggin <npiggin@gmail.com>
+>> Date: Mon, 14 Dec 2020 13:52:39 +1000
+>> Subject: [PATCH] powerpc/32s: Fix cleanup_cpu_mmu_context() compile bug
+>>
+>> 32s has no tlbiel_all() defined, so just disable the cleanup with a
+>> comment.
 >=20
-> The kernel call these functions on cpu online and hence they should
-> not be marked __init.
+> Or what about just:
+
+That works, I kind of wanted it in there explicit that we don't
+clean up on 32s. I don't mind if you prefer this though.
+
+Thanks,
+Nick
+
 >=20
-> Fixes: 3b47b7549ead ("powerpc/book3s64/kuap: Move KUAP related =
-function outside radix")
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> =E2=80=94
-
-This fixes the reported crash I ran into during a cpu online operation.
-
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-
--Sachin
-
+> diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc=
+/include/asm/book3s/32/mmu-hash.h
+> index 331187661236..685c589e723f 100644
+> --- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
+> +++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
+> @@ -94,6 +94,7 @@ typedef struct {
+>  } mm_context_t;
+>=20
+>  void update_bats(void);
+> +static inline void cleanup_cpu_mmu_context(void) { };
+>=20
+>  /* patch sites */
+>  extern s32 patch__hash_page_A0, patch__hash_page_A1, patch__hash_page_A2=
+;
+>=20
+>=20
+> cheers
+>=20
+>=20
