@@ -2,68 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFEB82D90A2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Dec 2020 21:45:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1236C2D91A6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 03:05:50 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CvGjt0vgQzDqRg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 07:45:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CvPqr52xKzDqLq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Dec 2020 13:05:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::441;
- helo=mail-wr1-x441.google.com; envelope-from=arielmarcovitch@gmail.com;
+ smtp.mailfrom=joelfernandes.org (client-ip=2607:f8b0:4864:20::843;
+ helo=mail-qt1-x843.google.com; envelope-from=joel@joelfernandes.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qaaBc6mL; dkim-atps=neutral
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=joelfernandes.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=joelfernandes.org header.i=@joelfernandes.org
+ header.a=rsa-sha256 header.s=google header.b=jIFuMyW0; 
+ dkim-atps=neutral
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CvCsG4CF3zDqGl
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 05:36:14 +1100 (AEDT)
-Received: by mail-wr1-x441.google.com with SMTP id a11so6479786wrr.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Dec 2020 10:36:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=tRMxD6v/l4OYj8cB5TYdPB+UxT0+Cs8k23OwIsOoa6w=;
- b=qaaBc6mL2Q1PG70ICvG9frD4YhqrsocLR/cM/kFR3jGKnrG+fif/zDFAmQi9hFcQlC
- Fytf+ZR/DEiH3A1Fj9bz1jElvbtYdQXhnDssenZ+ra82JclYBGMEUdD/zCCDG55uTmvo
- BgWtGXBs26X+tVaBS9MMwa9km2VNmHBhsIIU8azZPxIvArNNJptjjHghci2r91QhDERY
- efM59ssYeoxIVCTZ9GTgwjpqUkclGCFifQsmI6tK7gLZttB8eU8UwK/qomJLDt3jUpiv
- dIQJKrjfE/t9UnLwT8lAKn0vm08nuQve5+tmICg5MZv7uFKwqgEL4NW5/KAJWVNyLBdh
- 99qA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CvPny0PCmzDqQQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Dec 2020 13:04:02 +1100 (AEDT)
+Received: by mail-qt1-x843.google.com with SMTP id 7so10949441qtp.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Dec 2020 18:04:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=joelfernandes.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=3joCMQEgMYTRWtwvNU8XfkRxQvl1XcPWoJqmHhlAjNg=;
+ b=jIFuMyW0CXPwPbzjytq1fyl28f5h7j18cK1dq9/kuoMitNcBn2VPPr+iiAdwiyshf8
+ Sass69snymAmlv2w9RPxsB1q6+LKmXCPfpDzo0XV15UccAlREbVBq+V+jHCI6ci5QwI2
+ xW3KXMx8jhphyq6rezDemv6LqKppWr9EI6OjM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=tRMxD6v/l4OYj8cB5TYdPB+UxT0+Cs8k23OwIsOoa6w=;
- b=M93FORsLCH5Vq3POpwpcnU6xgK/i686Gv9cE/THOzXgPdqQxucU6bszMQHbu1PJMbE
- JLbEJWAMxvQBkiewm72s9pvN+uSSKwe9q8d6M/JFu0XMWemWBVa1r/lsE/dlEhPmKN+R
- 4TvmDMgBK0+HdoXukWqjyaztVLZ8ILqiBfQZfdMBObXHo7txqV7k0pfF8IdvNlM2wsgM
- 9uVYq9vcXBbC1i/DU8lwSkuB6UCDQH82Hw20vflzYVWNK8EwAJCZVzP8xdpiC7IoCImN
- uSovK3kxEG5kkf9Me2N1o8U2SCkPoz45Dx6FVslLZpASPOhFIqWMROxtYh5yJBE4zqb6
- Zk3w==
-X-Gm-Message-State: AOAM532Y7Ay3xVcFarGGG0uptd8IzeTBNuWbpbRsGEpsOpi6TgYva+NI
- xXfhED3k4o/Vcp2Wzx4yDbQ=
-X-Google-Smtp-Source: ABdhPJyCOGMk3hxPAqiAu4T7D/5s0amN+QVqbFuXJL6qvZltKjCzWpjAxNbfC0BKZvhdXjlJ78TPDg==
-X-Received: by 2002:adf:b74d:: with SMTP id n13mr25371535wre.101.1607884569599; 
- Sun, 13 Dec 2020 10:36:09 -0800 (PST)
-Received: from localhost.localdomain (bzq-109-64-2-78.red.bezeqint.net.
- [109.64.2.78])
- by smtp.gmail.com with ESMTPSA id x7sm19125928wmi.11.2020.12.13.10.36.08
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=3joCMQEgMYTRWtwvNU8XfkRxQvl1XcPWoJqmHhlAjNg=;
+ b=Si5xss+9e3i0J+PGZJrZ0dh8e7FaaNsNb+SW3Bt6YlN2zzNxMGjnBkTMKHdWZioCkL
+ JtFKrH5JoIu4O4OabD+HJYBXbFyNM9liXdsyygwMVfRnVe9Sib5Vi2g5Kx+570N6tN18
+ lhVvIcqP5feGabhIxSfQvZc4waqQtwBBnYS5M6qF/Jik+3Td+j2aX+yMbMGsC2LFL+y1
+ grDzjnU0cvPGbFu1CcMzTGFa1pYR3Nsbkm6f+4vKgfuDsB1hZ3orW0y8jofi84U2hMBS
+ y2g56qeHmhQnETlSwU87bE7muKDaqFPUGuukH/wooClUFrQ/13qTT1uqIjPQQ6YxPjzo
+ I1jg==
+X-Gm-Message-State: AOAM533baiRjBKv7BD9O1QYafnKTnPTcNFwtqHBsOt34G3LIn4QIQ1Qd
+ Q03A3XoYvVAzbc++alWKNG4NbQ==
+X-Google-Smtp-Source: ABdhPJyNrnChYZI79mij49ui4I23lfJGjf54I4Witq/Vsja69LURczot4O1GWdNPlqyHDHsWm5RREQ==
+X-Received: by 2002:ac8:6758:: with SMTP id n24mr29731870qtp.258.1607911438765; 
+ Sun, 13 Dec 2020 18:03:58 -0800 (PST)
+Received: from localhost ([2620:15c:6:411:cad3:ffff:feb3:bd59])
+ by smtp.gmail.com with ESMTPSA id g63sm13912475qkf.80.2020.12.13.18.03.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Dec 2020 10:36:09 -0800 (PST)
-From: Ariel Marcovitch <arielmarcovitch@gmail.com>
-X-Google-Original-From: Ariel Marcovitch <ariel.marcovitch@gmail.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc: fix alignment bug whithin the init sections
-Date: Sun, 13 Dec 2020 20:35:56 +0200
-Message-Id: <20201213183556.16976-1-ariel.marcovitch@gmail.com>
-X-Mailer: git-send-email 2.17.1
-X-Mailman-Approved-At: Mon, 14 Dec 2020 07:43:52 +1100
+ Sun, 13 Dec 2020 18:03:57 -0800 (PST)
+Date: Sun, 13 Dec 2020 21:03:56 -0500
+From: Joel Fernandes <joel@joelfernandes.org>
+To: Chinwen Chang <chinwen.chang@mediatek.com>
+Subject: Re: [PATCH v12 00/31] Speculative page faults
+Message-ID: <X9bIDHZbe4MB+BAg@google.com>
+References: <20190416134522.17540-1-ldufour@linux.ibm.com>
+ <20190606065129.d5s3534p23twksgp@haiyan.sh.intel.com>
+ <3d3cefa2-0ebb-e86d-b060-7ba67c48a59f@linux.ibm.com>
+ <1c412ebe-c213-ee67-d261-c70ddcd34b79@linux.ibm.com>
+ <20190620081945.hwj6ruqddefnxg6z@haiyan.sh.intel.com>
+ <1594027500.30360.32.camel@mtkswgap22>
+ <490c0811-50cd-0802-2cbc-9c031ef309f6@linux.ibm.com>
+ <1594099897.30360.58.camel@mtkswgap22>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1594099897.30360.58.camel@mtkswgap22>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,67 +84,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- Ariel Marcovitch <ariel.marcovitch@gmail.com>, linux-kernel@vger.kernel.org
+Cc: jack@suse.cz, sergey.senozhatsky.work@gmail.com, peterz@infradead.org,
+ Will Deacon <will.deacon@arm.com>, mhocko@kernel.org, linux-mm@kvack.org,
+ paulus@samba.org, Punit Agrawal <punitagrawal@gmail.com>, hpa@zytor.com,
+ Michel Lespinasse <walken@google.com>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Andrea Arcangeli <aarcange@redhat.com>, ak@linux.intel.com,
+ Minchan Kim <minchan@kernel.org>, aneesh.kumar@linux.ibm.com, x86@kernel.org,
+ Matthew Wilcox <willy@infradead.org>,
+ Daniel Jordan <daniel.m.jordan@oracle.com>, Ingo Molnar <mingo@redhat.com>,
+ zhong jiang <zhongjiang@huawei.com>, David Rientjes <rientjes@google.com>,
+ paulmck@linux.vnet.ibm.com, npiggin@gmail.com, sj38.park@gmail.com,
+ Jerome Glisse <jglisse@redhat.com>, dave@stgolabs.net, kemi.wang@intel.com,
+ kirill@shutemov.name, Thomas Gleixner <tglx@linutronix.de>,
+ Laurent Dufour <ldufour@linux.ibm.com>, Haiyan Song <haiyanx.song@intel.com>,
+ Ganesh Mahendran <opensource.ganesh@gmail.com>,
+ Yang Shi <yang.shi@linux.alibaba.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>, miles.chen@mediatek.com,
+ vinayak menon <vinayakm.list@gmail.com>, akpm@linux-foundation.org,
+ Tim Chen <tim.c.chen@linux.intel.com>, haren@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a bug that can cause early crashes in configurations with a
-.exit.text section smaller than a page and a .init.text section that
-ends in the beginning of a physical page (this is kinda random, which
-might explain why this wasn't really encountered before).
+On Tue, Jul 07, 2020 at 01:31:37PM +0800, Chinwen Chang wrote:
+[..]
+> > > Hi Laurent,
+> > > 
+> > > We merged SPF v11 and some patches from v12 into our platforms. After
+> > > several experiments, we observed SPF has obvious improvements on the
+> > > launch time of applications, especially for those high-TLP ones,
+> > > 
+> > > # launch time of applications(s):
+> > > 
+> > > package           version      w/ SPF      w/o SPF      improve(%)
+> > > ------------------------------------------------------------------
+> > > Baidu maps        10.13.3      0.887       0.98         9.49
+> > > Taobao            8.4.0.35     1.227       1.293        5.10
+> > > Meituan           9.12.401     1.107       1.543        28.26
+> > > WeChat            7.0.3        2.353       2.68         12.20
+> > > Honor of Kings    1.43.1.6     6.63        6.713        1.24
+> > 
+> > That's great news, thanks for reporting this!
+> > 
+> > > 
+> > > By the way, we have verified our platforms with those patches and
+> > > achieved the goal of mass production.
+> > 
+> > Another good news!
+> > For my information, what is your targeted hardware?
+> > 
+> > Cheers,
+> > Laurent.
+> 
+> Hi Laurent,
+> 
+> Our targeted hardware belongs to ARM64 multi-core series.
 
-The init sections are ordered like this:
-	.init.text
-	.exit.text
-	.init.data
+Hello!
 
-Currently, these sections aren't page aligned.
+I was trying to develop an intuition about why does SPF give improvement for
+you on small CPU systems. This is just a high-level theory but:
 
-Because the init code is mapped read-only at runtime and because the
-.init.text section can potentially reside on the same physical page as
-.init.data, the beginning of .init.data might be mapped read-only along
-with .init.text.
+1. Assume the improvement is because of elimination of "blocking" on
+mmap_sem.
+Could it be that the mmap_sem is acquired in write-mode unnecessarily in some
+places, thus causing blocking on mmap_sem in other paths? If so, is it
+feasible to convert such usages to acquiring them in read-mode?
 
-Then when the kernel tries to modify a variable in .init.data (like
-kthreadd_done, used in kernel_init()) the kernel panics.
+2. Assume the improvement is because of lesser read-side contention on
+mmap_sem.
+On small CPU systems, I would not expect reducing cache-line bouncing to give
+such a dramatic improvement in performance as you are seeing.
 
-To avoid this, I made these sections page aligned.
+Thanks for any insight on this!
 
-Fixes: 060ef9d89d18 ("powerpc32: PAGE_EXEC required for inittext")
-Signed-off-by: Ariel Marcovitch <ariel.marcovitch@gmail.com>
----
- arch/powerpc/kernel/vmlinux.lds.S | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 326e113d2e45..e3a7c90c03f4 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -179,6 +179,11 @@ SECTIONS
- #endif
- 	} :text
- 
-+	/* .init.text is made RO and .exit.text is not, so we must
-+	 * ensure these sections reside in separate physical pages.
-+	 */
-+	. = ALIGN(PAGE_SIZE);
-+
- 	/* .exit.text is discarded at runtime, not link time,
- 	 * to deal with references from __bug_table
- 	 */
-@@ -186,6 +191,8 @@ SECTIONS
- 		EXIT_TEXT
- 	}
- 
-+	. = ALIGN(PAGE_SIZE);
-+
- 	.init.data : AT(ADDR(.init.data) - LOAD_OFFSET) {
- 		INIT_DATA
- 	}
-
-base-commit: 1398820fee515873379809a6415930ad0764b2f6
--- 
-2.17.1
+- Joel
 
