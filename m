@@ -2,59 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6E52DAFC0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 16:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0750A2DAED0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 15:22:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CwM9y2b9RzDqSd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Dec 2020 02:09:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CwL7F4Nm2zDqQT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Dec 2020 01:22:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.96.117; helo=1.mo52.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 6870 seconds by postgrey-1.36 at bilbo;
- Wed, 16 Dec 2020 02:07:30 AEDT
-Received: from 1.mo52.mail-out.ovh.net (1.mo52.mail-out.ovh.net
- [178.32.96.117])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CwM7Q0hsxzDqFY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Dec 2020 02:07:26 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.20.243])
- by mo52.mail-out.ovh.net (Postfix) with ESMTPS id 56B63221A34;
- Tue, 15 Dec 2020 13:33:04 +0100 (CET)
-Received: from kaod.org (37.59.142.95) by DAG4EX2.mxp5.local (172.16.2.32)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Tue, 15 Dec
- 2020 13:33:03 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-95G0018ecf23da-3f7a-4d66-b472-983f194a5c08,
- 183EAEFD93E47124B0E2BAA2234C33E21A9C0622) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Subject: Re: [PATCH] powerpc/vas: Fix IRQ name allocation
-To: Haren Myneni <haren@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
-References: <20201212142707.2102141-1-clg@kaod.org>
- <facf50fec946b5ee85f8151c4e539acf60cc149e.camel@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <6d2e255d-cb16-4f28-b081-6fb7a97fcded@kaod.org>
-Date: Tue, 15 Dec 2020 13:33:03 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+ smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
+ envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=alpha.franken.de
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4CwL3M4NXJzDqFB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Dec 2020 01:18:49 +1100 (AEDT)
+Received: from uucp (helo=alpha)
+ by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+ id 1kpBA4-0002PO-00; Tue, 15 Dec 2020 15:18:44 +0100
+Received: by alpha.franken.de (Postfix, from userid 1000)
+ id 6A4DEC03B1; Tue, 15 Dec 2020 14:48:36 +0100 (CET)
+Date: Tue, 15 Dec 2020 14:48:36 +0100
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH 2/3] kbuild: LD_VERSION redenomination
+Message-ID: <20201215134836.GA9946@alpha.franken.de>
+References: <20201212165431.150750-1-masahiroy@kernel.org>
+ <20201212165431.150750-2-masahiroy@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <facf50fec946b5ee85f8151c4e539acf60cc149e.camel@linux.ibm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.95]
-X-ClientProxiedBy: DAG2EX2.mxp5.local (172.16.2.12) To DAG4EX2.mxp5.local
- (172.16.2.32)
-X-Ovh-Tracer-GUID: 347f26c3-f3e6-4454-a8a7-c3b1d41fb460
-X-Ovh-Tracer-Id: 12465963768765844448
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrudeltddggedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtohephhgrrhgvnheslhhinhhugidrihgsmhdrtghomh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201212165431.150750-2-masahiroy@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,153 +45,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+Cc: linux-kbuild@vger.kernel.org, Dominique Martinet <asmadeus@codewreck.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Huacai Chen <chenhc@lemote.com>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/15/20 11:56 AM, Haren Myneni wrote:
-> On Sat, 2020-12-12 at 15:27 +0100, Cédric Le Goater wrote:
->> The VAS device allocates a generic interrupt to handle page faults
->> but
->> the IRQ name doesn't show under /proc. This is because it's on
->> stack. Allocate the name.
->>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+On Sun, Dec 13, 2020 at 01:54:30AM +0900, Masahiro Yamada wrote:
+> Commit ccbef1674a15 ("Kbuild, lto: add ld-version and ld-ifversion
+> macros") introduced scripts/ld-version.sh for GCC LTO.
 > 
-> Thanks for fixing.
-
-I was wondering where those ^B interrupt numbers were coming from.
-
-/proc/interrupts looks better now: 
-
-     36:  ...   0  XIVE-IRQ 50331732 Edge      vas-6
-     40:  ...   0  XIVE-IRQ 33554504 Edge      vas-4
-     72:  ...   0  XIVE-IRQ 16777304 Edge      vas-2
-    124:  ...   0  XIVE-IRQ      124 Edge      vas-0
-
-
+> At that time, this script handled 5 version fields because GCC LTO
+> needed the downstream binutils. (https://lkml.org/lkml/2014/4/8/272)
 > 
-> Acked-by: Haren Myneni <haren@linux.ibm.com>
+> The code snippet from the submitted patch was as follows:
 > 
->> ---
->>
->>  I didn't understand this part in init_vas_instance() :
->>
->> 	if (vinst->virq) {
->> 		rc = vas_irq_fault_window_setup(vinst);
->> 		/*
->> 		 * Fault window is used only for user space send
->> windows.
->> 		 * So if vinst->virq is NULL, tx_win_open returns
->> -ENODEV
->> 		 * for user space.
->> 		 */
->> 		if (rc)
->> 			vinst->virq = 0;
->> 	}
->>
->>  If the IRQ cannot be requested, the device probing should fail but
->>  it's not today. The use of 'vinst->virq' is suspicious.
+>     # We need HJ Lu's Linux binutils because mainline binutils does not
+>     # support mixing assembler and LTO code in the same ld -r object.
+>     # XXX check if the gcc plugin ld is the expected one too
+>     # XXX some Fedora binutils should also support it. How to check for that?
+>     ifeq ($(call ld-ifversion,-ge,22710001,y),y)
+>         ...
 > 
-> VAS raises an interrupt only when NX sees fault on request buffers and
-> faults can happen only for user space requests. So Fault window setup
-> is needed for user space requests. For kernel requests, continue even
-> if IRQ / fault_window_setup is failed. 
->
-> When window open request is issued from user space, kernel returns
-> -ENODEV if vinst->virq = 0 (means fault window setup is failed). 
-
-It looks ok to deactivate a feature (page faulting for user space 
-requests) if vas_setup_fault_window() fails but if the IRQ layer 
-routine request_threaded_irq() fails, something is really wrong 
-in the system and we should stop probing IMO.
-
-We should probably move the IRQ request after allocating/mapping 
-the XIVE IPI IRQ.
-
-this test is always true : 
-
-	if (vinst->virq) {
-		rc = vas_irq_fault_window_setup(vinst);
-	
-since above, we did : 
-
-	vinst->virq = irq_create_mapping(NULL, hwirq);
-	if (!vinst->virq) {
-		pr_err("Inst%d: Unable to map global irq %d\n",
-				vinst->vas_id, hwirq);
-		return -EINVAL;
-	}
-
-Cheers,
-
-C.
-
-
+> However, GCC LTO was not merged into the mainline after all.
+> (https://lkml.org/lkml/2014/4/8/272)
 > 
+> So, the 4th and 5th fields were never used, and finally removed by
+> commit 0d61ed17dd30 ("ld-version: Drop the 4th and 5th version
+> components").
 > 
->>
->>  arch/powerpc/platforms/powernv/vas.h |  1 +
->>  arch/powerpc/platforms/powernv/vas.c | 11 ++++++++---
->>  2 files changed, 9 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/powernv/vas.h
->> b/arch/powerpc/platforms/powernv/vas.h
->> index 70f793e8f6cc..c7db3190baca 100644
->> --- a/arch/powerpc/platforms/powernv/vas.h
->> +++ b/arch/powerpc/platforms/powernv/vas.h
->> @@ -340,6 +340,7 @@ struct vas_instance {
->>  	struct vas_window *rxwin[VAS_COP_TYPE_MAX];
->>  	struct vas_window *windows[VAS_WINDOWS_PER_CHIP];
->>  
->> +	char *name;
->>  	char *dbgname;
->>  	struct dentry *dbgdir;
->>  };
->> diff --git a/arch/powerpc/platforms/powernv/vas.c
->> b/arch/powerpc/platforms/powernv/vas.c
->> index 598e4cd563fb..b65256a63e87 100644
->> --- a/arch/powerpc/platforms/powernv/vas.c
->> +++ b/arch/powerpc/platforms/powernv/vas.c
->> @@ -28,12 +28,10 @@ static DEFINE_PER_CPU(int, cpu_vas_id);
->>  
->>  static int vas_irq_fault_window_setup(struct vas_instance *vinst)
->>  {
->> -	char devname[64];
->>  	int rc = 0;
->>  
->> -	snprintf(devname, sizeof(devname), "vas-%d", vinst->vas_id);
->>  	rc = request_threaded_irq(vinst->virq, vas_fault_handler,
->> -				vas_fault_thread_fn, 0, devname,
->> vinst);
->> +				vas_fault_thread_fn, 0, vinst->name,
->> vinst);
->>  
->>  	if (rc) {
->>  		pr_err("VAS[%d]: Request IRQ(%d) failed with %d\n",
->> @@ -80,6 +78,12 @@ static int init_vas_instance(struct
->> platform_device *pdev)
->>  	if (!vinst)
->>  		return -ENOMEM;
->>  
->> +	vinst->name = kasprintf(GFP_KERNEL, "vas-%d", vasid);
->> +	if (!vinst->name) {
->> +		kfree(vinst);
->> +		return -ENOMEM;
->> +	}
->> +
->>  	INIT_LIST_HEAD(&vinst->node);
->>  	ida_init(&vinst->ida);
->>  	mutex_init(&vinst->mutex);
->> @@ -162,6 +166,7 @@ static int init_vas_instance(struct
->> platform_device *pdev)
->>  	return 0;
->>  
->>  free_vinst:
->> +	kfree(vinst->name);
->>  	kfree(vinst);
->>  	return -ENODEV;
->>  
+> Since then, the last 4-digits returned by this script is always zeros.
 > 
+> Remove the meaningless last 4-digits. This makes the version format
+> consistent with GCC_VERSION, CLANG_VERSION, LLD_VERSION.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+>  arch/mips/loongson64/Platform | 2 +-
+>  arch/mips/vdso/Kconfig        | 2 +-
 
+Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
