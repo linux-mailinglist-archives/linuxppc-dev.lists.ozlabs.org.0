@@ -2,49 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5122DA3F3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 00:07:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C5C2DA50E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 01:52:33 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CvxqM4y3XzDqPf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 10:07:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cw08s0r4JzDqBP
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 11:52:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=gromero@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=UAk4LB1g; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=jzowWCjL; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CvxnQ68LbzDqNr
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 10:05:30 +1100 (AEDT)
-Date: Mon, 14 Dec 2020 23:05:22 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1607987128;
- bh=5TsguwUz8VJK8ed5bDwSWwfzf/cJOL0KfWWRDjoJhzQ=;
- h=From:To:Cc:Subject:References:In-Reply-To:From;
- b=UAk4LB1gakF+U6GGpj55Ykx0xhrgf1wtLYgo9r9mFeGtMMIUlQosvriFGgdFwiXeC
- IMuICyeGuCBx+14A+DqLiEZQP22TONAInVWdM5n49DxlVWfXAhICFXY58y6wpVsqU9
- +/x+SeHiERi8NqQ18agSEF4pSFmSFlQy5i2Cz8iQpiYgJLYkvasjxZ+mgFNNEpahMT
- UGmUFefAp3QT9mdbW9QFW/LuG3NPWfVA0lyiu0fI/XKpBCjF35lh0ax0CdwhdD03kG
- djx8wy94NUek0W0az2sJTnimVI7JdePAliR5FelHiMnIvT+Qyj+PDJcZZDKH9ttMKk
- rirQyugEJC3JQ==
-From: Will Deacon <will@kernel.org>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH 2/3] kbuild: LD_VERSION redenomination
-Message-ID: <20201214230521.GA14124@willie-the-truck>
-References: <20201212165431.150750-1-masahiroy@kernel.org>
- <20201212165431.150750-2-masahiroy@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201212165431.150750-2-masahiroy@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cw05s4QZ8zDqM5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 11:49:46 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0BF0WFUk146676; Mon, 14 Dec 2020 19:49:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=CKyRv7Q4Fyt8qIWe2IOsm0mBjfnjoG0nr/UkyWu3Nyw=;
+ b=jzowWCjLwLpVfcZYKRr4Z6ubpkdhdNrXVYko+yhrExZu9V5/qPU1HKF05ueXpKBx1+Nk
+ 4N9THcunxrjB8+4wZTa0cIpbD0IZ4i8C8f0YieAQcrGieVlVGCPxsbYfnTXmtJTYOE4r
+ trmnR9fA22EJwJQLEfC0A1UefKB3d5yF8QCqZqS3zSLRsHi2NYE2B9/GeKVmE3qEIPTM
+ XRwxGEJeJpt0gCEPR/hBDFSKsTbLDrKk6m+TkCGxG2Nt6EKI1DPV7TT3016Otqyuht+Z
+ mbTWMo4P1aWgmvFelNm19alO2gmxTj7Anm2tqQxHGhs7JODsb6vw4bxemboIIbhJSMQf XQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35ehy7h8nk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Dec 2020 19:49:38 -0500
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0BF0ncix010625;
+ Mon, 14 Dec 2020 19:49:38 -0500
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35ehy7h8ne-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Dec 2020 19:49:38 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BF0W3hM029829;
+ Tue, 15 Dec 2020 00:49:37 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma04wdc.us.ibm.com with ESMTP id 35cng8uu78-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Dec 2020 00:49:37 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0BF0nb9r29163776
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 15 Dec 2020 00:49:37 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2677AAE05C;
+ Tue, 15 Dec 2020 00:49:37 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 68744AE05F;
+ Tue, 15 Dec 2020 00:49:34 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.201.212])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 15 Dec 2020 00:49:33 +0000 (GMT)
+From: Gustavo Romero <gromero@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] selftests/powerpc: Add test to check if TM is disabled when
+ it must be
+Date: Mon, 14 Dec 2020 19:49:01 -0500
+Message-Id: <1607993341-30377-1-git-send-email-gromero@linux.ibm.com>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2020-12-14_13:2020-12-11,
+ 2020-12-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0
+ mlxlogscore=999 mlxscore=0 priorityscore=1501 phishscore=0 clxscore=1011
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012140158
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,69 +97,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- linux-kbuild@vger.kernel.org, Dominique Martinet <asmadeus@codewreck.org>,
- linux-kernel@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhc@lemote.com>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: mikey@neuling.org, gustavo.romero@protonmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Dec 13, 2020 at 01:54:30AM +0900, Masahiro Yamada wrote:
-> Commit ccbef1674a15 ("Kbuild, lto: add ld-version and ld-ifversion
-> macros") introduced scripts/ld-version.sh for GCC LTO.
-> 
-> At that time, this script handled 5 version fields because GCC LTO
-> needed the downstream binutils. (https://lkml.org/lkml/2014/4/8/272)
-> 
-> The code snippet from the submitted patch was as follows:
-> 
->     # We need HJ Lu's Linux binutils because mainline binutils does not
->     # support mixing assembler and LTO code in the same ld -r object.
->     # XXX check if the gcc plugin ld is the expected one too
->     # XXX some Fedora binutils should also support it. How to check for that?
->     ifeq ($(call ld-ifversion,-ge,22710001,y),y)
->         ...
-> 
-> However, GCC LTO was not merged into the mainline after all.
-> (https://lkml.org/lkml/2014/4/8/272)
-> 
-> So, the 4th and 5th fields were never used, and finally removed by
-> commit 0d61ed17dd30 ("ld-version: Drop the 4th and 5th version
-> components").
-> 
-> Since then, the last 4-digits returned by this script is always zeros.
-> 
-> Remove the meaningless last 4-digits. This makes the version format
-> consistent with GCC_VERSION, CLANG_VERSION, LLD_VERSION.
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
-> 
->  arch/arm64/Kconfig            | 2 +-
->  arch/mips/loongson64/Platform | 2 +-
->  arch/mips/vdso/Kconfig        | 2 +-
->  arch/powerpc/Makefile         | 2 +-
->  arch/powerpc/lib/Makefile     | 2 +-
->  scripts/ld-version.sh         | 2 +-
->  6 files changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index a6b5b7ef40ae..69d56b21a6ec 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -1499,7 +1499,7 @@ config ARM64_PTR_AUTH
->  	depends on (CC_HAS_SIGN_RETURN_ADDRESS || CC_HAS_BRANCH_PROT_PAC_RET) && AS_HAS_PAC
->  	# Modern compilers insert a .note.gnu.property section note for PAC
->  	# which is only understood by binutils starting with version 2.33.1.
-> -	depends on LD_IS_LLD || LD_VERSION >= 233010000 || (CC_IS_GCC && GCC_VERSION < 90100)
-> +	depends on LD_IS_LLD || LD_VERSION >= 23301 || (CC_IS_GCC && GCC_VERSION < 90100)
->  	depends on !CC_IS_CLANG || AS_HAS_CFI_NEGATE_RA_STATE
->  	depends on (!FUNCTION_GRAPH_TRACER || DYNAMIC_FTRACE_WITH_REGS)
->  	help
+Add a TM test to check that when TM is not advertised by the OS (is disabled) a
+transaction can not really be started and generates a SIGILL, which is the right
+behavior in that case.
 
-Acked-by: Will Deacon <will@kernel.org>
+Signed-off-by: Gustavo Romero <gromero@linux.ibm.com>
+---
+ tools/testing/selftests/powerpc/tm/.gitignore |  1 +
+ tools/testing/selftests/powerpc/tm/Makefile   |  2 +-
+ tools/testing/selftests/powerpc/tm/tm-no-tm.c | 48 +++++++++++++++++++++++++++
+ 3 files changed, 50 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/powerpc/tm/tm-no-tm.c
 
-Will
+diff --git a/tools/testing/selftests/powerpc/tm/.gitignore b/tools/testing/selftests/powerpc/tm/.gitignore
+index d8900a0..1d23309 100644
+--- a/tools/testing/selftests/powerpc/tm/.gitignore
++++ b/tools/testing/selftests/powerpc/tm/.gitignore
+@@ -20,3 +20,4 @@ tm-unavailable
+ tm-trap
+ tm-sigreturn
+ tm-poison
++tm-no-tm
+diff --git a/tools/testing/selftests/powerpc/tm/Makefile b/tools/testing/selftests/powerpc/tm/Makefile
+index 5881e97..756a03f 100644
+--- a/tools/testing/selftests/powerpc/tm/Makefile
++++ b/tools/testing/selftests/powerpc/tm/Makefile
+@@ -5,7 +5,7 @@ SIGNAL_CONTEXT_CHK_TESTS := tm-signal-context-chk-gpr tm-signal-context-chk-fpu
+ TEST_GEN_PROGS := tm-resched-dscr tm-syscall tm-signal-msr-resv tm-signal-stack \
+ 	tm-vmxcopy tm-fork tm-tar tm-tmspr tm-vmx-unavail tm-unavailable tm-trap \
+ 	$(SIGNAL_CONTEXT_CHK_TESTS) tm-sigreturn tm-signal-sigreturn-nt \
+-	tm-signal-context-force-tm tm-poison tm-signal-pagefault
++	tm-signal-context-force-tm tm-poison tm-signal-pagefault tm-no-tm
+ 
+ TEST_FILES := settings
+ 
+diff --git a/tools/testing/selftests/powerpc/tm/tm-no-tm.c b/tools/testing/selftests/powerpc/tm/tm-no-tm.c
+new file mode 100644
+index 0000000..3b83e20
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/tm/tm-no-tm.c
+@@ -0,0 +1,48 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright 2020, Gustavo Romero, IBM Corp.
++ *
++ * This test checks if when TM is not supported by the OS indeed it's not
++ * possible to start a TM transaction. Moreover, when trying to start a new
++ * transaction the user gets an illegal instruction, which is the correct
++ * behavior in that case, instead of any other signal, like SIGSEGV etc.
++ *
++ * Since firmware can change the TM instruction behavior in many ways, it's good
++ * to have a test to check if TM is properly disabled when the OS advertises
++ * that TM is not available in userspace.
++ *
++ */
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <signal.h>
++
++#include "utils.h"
++#include "tm.h"
++
++void illegal_signal_handler(int signo_notused, siginfo_t *si_notused, void *uc_notused)
++{
++	exit(EXIT_SUCCESS);
++}
++
++int tm_no_tm_test(void)
++{
++	struct sigaction illegal_sa;
++
++	SKIP_IF(have_htm());
++
++	illegal_sa.sa_flags = SA_SIGINFO;
++	illegal_sa.sa_sigaction = illegal_signal_handler;
++
++	sigaction(SIGILL, &illegal_sa, NULL);
++
++	/* It must cause a SIGILL since TM is not supported by the OS */
++	asm("tbegin.;");
++
++	return EXIT_FAILURE;
++}
++
++int main(int argc, char **argv)
++{
++	return test_harness(tm_no_tm_test, "tm_no_tm_test");
++}
+-- 
+2.7.4
+
