@@ -2,34 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E785F2DAB99
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 12:05:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AEEC2DABAA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 12:12:49 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CwFm55JX6zDqCD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 22:05:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CwFwY6MC3zDqLT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 22:12:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CwFP74lKMzDqD9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 21:48:59 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CwFP91y2MzDqD9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 21:49:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4CwFP73mT6z9sS8; Tue, 15 Dec 2020 21:48:59 +1100 (AEDT)
+ id 4CwFP90V7mz9sVM; Tue, 15 Dec 2020 21:49:00 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Paul Mackerras <paulus@samba.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, giuseppe@sguazz.it,
+To: Colin King <colin.king@canonical.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <e3e0d8042a3ba75cb4a9546c19c408b5b5b28994.1607404931.git.christophe.leroy@csgroup.eu>
-References: <e3e0d8042a3ba75cb4a9546c19c408b5b5b28994.1607404931.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2] powerpc/powermac: Fix low_sleep_handler with
- CONFIG_VMAP_STACK
-Message-Id: <160802920697.504444.16573519537431837820.b4-ty@ellerman.id.au>
-Date: Tue, 15 Dec 2020 21:48:59 +1100 (AEDT)
+In-Reply-To: <20201207155420.172370-1-colin.king@canonical.com>
+References: <20201207155420.172370-1-colin.king@canonical.com>
+Subject: Re: [PATCH] powerpc: fix spelling mistake in Kconfig "seleted" ->
+ "selected"
+Message-Id: <160802920673.504444.13601215684567124032.b4-ty@ellerman.id.au>
+Date: Tue, 15 Dec 2020 21:49:00 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,24 +41,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 8 Dec 2020 05:24:19 +0000 (UTC), Christophe Leroy wrote:
-> low_sleep_handler() can't restore the context from standard
-> stack because the stack can hardly be accessed with MMU OFF.
-> 
-> Store everything in a global storage area instead of storing
-> a pointer to the stack in that global storage area.
-> 
-> To avoid a complete churn of the function, still use r1 as
-> the pointer to the storage area during restore.
+On Mon, 7 Dec 2020 15:54:20 +0000, Colin King wrote:
+> There is a spelling mistake in the help text of the Kconfig. Fix it.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/powermac: Fix low_sleep_handler with CONFIG_VMAP_STACK
-      https://git.kernel.org/powerpc/c/db972a3787d12b1ce9ba7a31ec376d8a79e04c47
+[1/1] powerpc: fix spelling mistake in Kconfig "seleted" -> "selected"
+      https://git.kernel.org/powerpc/c/f8a4b277c3cf39ec8efe50114924a7743cc84800
 
 cheers
