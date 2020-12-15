@@ -2,90 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C5C2DA50E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 01:52:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E8282DA527
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 02:02:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cw08s0r4JzDqBP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 11:52:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cw0NT2cMszDqDc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 12:02:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=gromero@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jzowWCjL; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cw05s4QZ8zDqM5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 11:49:46 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0BF0WFUk146676; Mon, 14 Dec 2020 19:49:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject : date : message-id; s=pp1;
- bh=CKyRv7Q4Fyt8qIWe2IOsm0mBjfnjoG0nr/UkyWu3Nyw=;
- b=jzowWCjLwLpVfcZYKRr4Z6ubpkdhdNrXVYko+yhrExZu9V5/qPU1HKF05ueXpKBx1+Nk
- 4N9THcunxrjB8+4wZTa0cIpbD0IZ4i8C8f0YieAQcrGieVlVGCPxsbYfnTXmtJTYOE4r
- trmnR9fA22EJwJQLEfC0A1UefKB3d5yF8QCqZqS3zSLRsHi2NYE2B9/GeKVmE3qEIPTM
- XRwxGEJeJpt0gCEPR/hBDFSKsTbLDrKk6m+TkCGxG2Nt6EKI1DPV7TT3016Otqyuht+Z
- mbTWMo4P1aWgmvFelNm19alO2gmxTj7Anm2tqQxHGhs7JODsb6vw4bxemboIIbhJSMQf XQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35ehy7h8nk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Dec 2020 19:49:38 -0500
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0BF0ncix010625;
- Mon, 14 Dec 2020 19:49:38 -0500
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35ehy7h8ne-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Dec 2020 19:49:38 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BF0W3hM029829;
- Tue, 15 Dec 2020 00:49:37 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma04wdc.us.ibm.com with ESMTP id 35cng8uu78-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Dec 2020 00:49:37 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0BF0nb9r29163776
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Dec 2020 00:49:37 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2677AAE05C;
- Tue, 15 Dec 2020 00:49:37 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 68744AE05F;
- Tue, 15 Dec 2020 00:49:34 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.201.212])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 15 Dec 2020 00:49:33 +0000 (GMT)
-From: Gustavo Romero <gromero@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] selftests/powerpc: Add test to check if TM is disabled when
- it must be
-Date: Mon, 14 Dec 2020 19:49:01 -0500
-Message-Id: <1607993341-30377-1-git-send-email-gromero@linux.ibm.com>
-X-Mailer: git-send-email 2.7.4
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-14_13:2020-12-11,
- 2020-12-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0
- mlxlogscore=999 mlxscore=0 priorityscore=1501 phishscore=0 clxscore=1011
- bulkscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012140158
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cw0JD398NzDqBS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 11:58:51 +1100 (AEDT)
+IronPort-SDR: +vOjAxzwBX+OJ7ALYDDuKsNSJg80U8dBd51tum5kwCI+tNWL8RAwo+I7mVEdtF7ZZKPFl9Gg2L
+ XOj60Nc777NQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9835"; a="174035886"
+X-IronPort-AV: E=Sophos;i="5.78,420,1599548400"; d="scan'208";a="174035886"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Dec 2020 16:58:47 -0800
+IronPort-SDR: C0bMxkDB87kc51MqaB3LihHUAomanCaaKLH/T+i5Wx2qIMroCBjinZq6i0M9u9GsC7mke+/O+Y
+ gYiqYe2242sA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,420,1599548400"; d="scan'208";a="487419059"
+Received: from lkp-server02.sh.intel.com (HELO a947d92d0467) ([10.239.97.151])
+ by orsmga004.jf.intel.com with ESMTP; 14 Dec 2020 16:58:45 -0800
+Received: from kbuild by a947d92d0467 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1koyft-0000X8-8I; Tue, 15 Dec 2020 00:58:45 +0000
+Date: Tue, 15 Dec 2020 08:57:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 3a6a31edf52760dbc480853232f7bae9867f8e72
+Message-ID: <5fd80a0b.k6Xq5VIIglB5m4Zi%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,99 +55,189 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, gustavo.romero@protonmail.com
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a TM test to check that when TM is not advertised by the OS (is disabled) a
-transaction can not really be started and generates a SIGILL, which is the right
-behavior in that case.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: 3a6a31edf52760dbc480853232f7bae9867f8e72  Automatic merge of 'next' into merge (2020-12-14 23:35)
 
-Signed-off-by: Gustavo Romero <gromero@linux.ibm.com>
+elapsed time: 723m
+
+configs tested: 163
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+m68k                        m5307c3_defconfig
+ia64                          tiger_defconfig
+arm                            u300_defconfig
+powerpc                      ppc44x_defconfig
+xtensa                           allyesconfig
+arm                      pxa255-idp_defconfig
+mips                    maltaup_xpa_defconfig
+mips                          rb532_defconfig
+arm                          badge4_defconfig
+h8300                       h8s-sim_defconfig
+arm                         axm55xx_defconfig
+arm                          moxart_defconfig
+powerpc                      pasemi_defconfig
+powerpc                    adder875_defconfig
+arm                     eseries_pxa_defconfig
+sparc                            allyesconfig
+m68k                          amiga_defconfig
+arm                            dove_defconfig
+powerpc                     akebono_defconfig
+arc                                 defconfig
+mips                         db1xxx_defconfig
+mips                        vocore2_defconfig
+sh                      rts7751r2d1_defconfig
+arm                         hackkit_defconfig
+mips                         bigsur_defconfig
+m68k                       m5275evb_defconfig
+i386                                defconfig
+powerpc                       maple_defconfig
+h8300                     edosk2674_defconfig
+sh                          sdk7780_defconfig
+m68k                           sun3_defconfig
+mips                  cavium_octeon_defconfig
+m68k                        m5407c3_defconfig
+sh                           se7712_defconfig
+xtensa                  audio_kc705_defconfig
+mips                       rbtx49xx_defconfig
+arm                           h5000_defconfig
+i386                             alldefconfig
+arm                       cns3420vb_defconfig
+arc                            hsdk_defconfig
+m68k                          sun3x_defconfig
+powerpc                      acadia_defconfig
+arm                          pxa168_defconfig
+arm                            lart_defconfig
+arm                   milbeaut_m10v_defconfig
+sparc                       sparc32_defconfig
+mips                           ip22_defconfig
+xtensa                  nommu_kc705_defconfig
+arm                       aspeed_g4_defconfig
+arm                        shmobile_defconfig
+mips                            ar7_defconfig
+powerpc                 mpc8560_ads_defconfig
+powerpc                          g5_defconfig
+powerpc                     stx_gp3_defconfig
+powerpc                 xes_mpc85xx_defconfig
+mips                          rm200_defconfig
+powerpc                     tqm8548_defconfig
+arm                          lpd270_defconfig
+mips                   sb1250_swarm_defconfig
+powerpc                         ps3_defconfig
+powerpc                      obs600_defconfig
+sh                ecovec24-romimage_defconfig
+sh                   sh7770_generic_defconfig
+powerpc                     kmeter1_defconfig
+mips                        nlm_xlp_defconfig
+sh                         ap325rxa_defconfig
+powerpc                     tqm5200_defconfig
+csky                             alldefconfig
+mips                      pistachio_defconfig
+xtensa                         virt_defconfig
+nds32                             allnoconfig
+sh                        edosk7760_defconfig
+mips                       capcella_defconfig
+sh                          lboxre2_defconfig
+sh                         microdev_defconfig
+powerpc64                        alldefconfig
+mips                 decstation_r4k_defconfig
+arm                         cm_x300_defconfig
+m68k                            q40_defconfig
+arm                          prima2_defconfig
+h8300                            alldefconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20201214
+i386                 randconfig-a004-20201214
+i386                 randconfig-a003-20201214
+i386                 randconfig-a002-20201214
+i386                 randconfig-a006-20201214
+i386                 randconfig-a005-20201214
+i386                 randconfig-a001-20201213
+i386                 randconfig-a004-20201213
+i386                 randconfig-a003-20201213
+i386                 randconfig-a002-20201213
+i386                 randconfig-a005-20201213
+i386                 randconfig-a006-20201213
+x86_64               randconfig-a016-20201214
+x86_64               randconfig-a012-20201214
+x86_64               randconfig-a013-20201214
+x86_64               randconfig-a015-20201214
+x86_64               randconfig-a014-20201214
+x86_64               randconfig-a011-20201214
+i386                 randconfig-a014-20201214
+i386                 randconfig-a013-20201214
+i386                 randconfig-a012-20201214
+i386                 randconfig-a011-20201214
+i386                 randconfig-a015-20201214
+i386                 randconfig-a016-20201214
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a003-20201214
+x86_64               randconfig-a006-20201214
+x86_64               randconfig-a002-20201214
+x86_64               randconfig-a005-20201214
+x86_64               randconfig-a004-20201214
+x86_64               randconfig-a001-20201214
+x86_64               randconfig-a016-20201213
+x86_64               randconfig-a012-20201213
+x86_64               randconfig-a013-20201213
+x86_64               randconfig-a015-20201213
+x86_64               randconfig-a014-20201213
+x86_64               randconfig-a011-20201213
+
 ---
- tools/testing/selftests/powerpc/tm/.gitignore |  1 +
- tools/testing/selftests/powerpc/tm/Makefile   |  2 +-
- tools/testing/selftests/powerpc/tm/tm-no-tm.c | 48 +++++++++++++++++++++++++++
- 3 files changed, 50 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/powerpc/tm/tm-no-tm.c
-
-diff --git a/tools/testing/selftests/powerpc/tm/.gitignore b/tools/testing/selftests/powerpc/tm/.gitignore
-index d8900a0..1d23309 100644
---- a/tools/testing/selftests/powerpc/tm/.gitignore
-+++ b/tools/testing/selftests/powerpc/tm/.gitignore
-@@ -20,3 +20,4 @@ tm-unavailable
- tm-trap
- tm-sigreturn
- tm-poison
-+tm-no-tm
-diff --git a/tools/testing/selftests/powerpc/tm/Makefile b/tools/testing/selftests/powerpc/tm/Makefile
-index 5881e97..756a03f 100644
---- a/tools/testing/selftests/powerpc/tm/Makefile
-+++ b/tools/testing/selftests/powerpc/tm/Makefile
-@@ -5,7 +5,7 @@ SIGNAL_CONTEXT_CHK_TESTS := tm-signal-context-chk-gpr tm-signal-context-chk-fpu
- TEST_GEN_PROGS := tm-resched-dscr tm-syscall tm-signal-msr-resv tm-signal-stack \
- 	tm-vmxcopy tm-fork tm-tar tm-tmspr tm-vmx-unavail tm-unavailable tm-trap \
- 	$(SIGNAL_CONTEXT_CHK_TESTS) tm-sigreturn tm-signal-sigreturn-nt \
--	tm-signal-context-force-tm tm-poison tm-signal-pagefault
-+	tm-signal-context-force-tm tm-poison tm-signal-pagefault tm-no-tm
- 
- TEST_FILES := settings
- 
-diff --git a/tools/testing/selftests/powerpc/tm/tm-no-tm.c b/tools/testing/selftests/powerpc/tm/tm-no-tm.c
-new file mode 100644
-index 0000000..3b83e20
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/tm/tm-no-tm.c
-@@ -0,0 +1,48 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright 2020, Gustavo Romero, IBM Corp.
-+ *
-+ * This test checks if when TM is not supported by the OS indeed it's not
-+ * possible to start a TM transaction. Moreover, when trying to start a new
-+ * transaction the user gets an illegal instruction, which is the correct
-+ * behavior in that case, instead of any other signal, like SIGSEGV etc.
-+ *
-+ * Since firmware can change the TM instruction behavior in many ways, it's good
-+ * to have a test to check if TM is properly disabled when the OS advertises
-+ * that TM is not available in userspace.
-+ *
-+ */
-+
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <signal.h>
-+
-+#include "utils.h"
-+#include "tm.h"
-+
-+void illegal_signal_handler(int signo_notused, siginfo_t *si_notused, void *uc_notused)
-+{
-+	exit(EXIT_SUCCESS);
-+}
-+
-+int tm_no_tm_test(void)
-+{
-+	struct sigaction illegal_sa;
-+
-+	SKIP_IF(have_htm());
-+
-+	illegal_sa.sa_flags = SA_SIGINFO;
-+	illegal_sa.sa_sigaction = illegal_signal_handler;
-+
-+	sigaction(SIGILL, &illegal_sa, NULL);
-+
-+	/* It must cause a SIGILL since TM is not supported by the OS */
-+	asm("tbegin.;");
-+
-+	return EXIT_FAILURE;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	return test_harness(tm_no_tm_test, "tm_no_tm_test");
-+}
--- 
-2.7.4
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
