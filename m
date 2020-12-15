@@ -2,45 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DB92DA616
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 03:17:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE042DA6D4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 04:31:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cw22w1b1xzDqDc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 13:17:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cw3gq24yGzDqN1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 14:31:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cw20y19MKzDqN5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 13:15:46 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cw3dg0BCtzDqMf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 14:29:11 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=a1eIbgUR; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4Cw20x5ZWFz9sRR; Tue, 15 Dec 2020 13:15:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1607998545; bh=HIoL3hYia/VL0H8kxL6qHX8RQtpD9XmN0+Gy2vsT9c0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=a1eIbgUR8izZ8apPi6OAsVBqalg61msyq1wD1KLkArhkC7vAdmdAS17cb/B+XGiWp
- jnZ6skMXJvFPwVxQq2KWtYBYNCjp+ZdBVksqX/q+xu/6IcPTL+DGNa0lQK9QX9KpMd
- eHLkop+Fe+3aemWoK7rxsXDWTBAMk70i53x0QzNnkfPsj7+iE+QRjKRDLMk/zVLlWR
- dPrVU8f7K6tz7iljIYbmoKtqSGc8DVZPqx+kryU/lV8eI1m1OL9oAyasRL9N6ibJF3
- NjtCVm4ByCnE/nASHWNADKGa3k/ogFFdYirxOzRfsPCop290p0shx2iF0WTPCqkfn8
- FJNGj5C+s9XOw==
-Date: Tue, 15 Dec 2020 13:15:23 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Leonardo Bras <leobras.c@gmail.com>
-Subject: Re: [PATCH v2 1/1] powerpc/kvm: Fix mask size for emulated msgsndp
-Message-ID: <20201215021523.GC2441086@thinks.paulus.ozlabs.org>
-References: <20201208215707.31149-1-leobras.c@gmail.com>
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=YXr9wTd8; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4Cw3df5kH4z9sSC; Tue, 15 Dec 2020 14:29:10 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4Cw3df4vv1z9sTL; Tue, 15 Dec 2020 14:29:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1608002950;
+ bh=51HQqD+LFXc1awO15HMTfrlKXfR/56aQ965FGFAbY44=;
+ h=From:To:Cc:Subject:Date:From;
+ b=YXr9wTd8GA/hgTGEGrZTq9JTJPPL+O9rs8QDlTEMbkU3SysborVGWP75mMI7aj2T4
+ zYXwHZoxDHFPflpq/3iOhiSvLc+eGG7WrYpKdB9MxJrLD932MXZJd3wIrrKFJFQbPy
+ dYwB2+j+4i8LuWeXwwWVcmpcAoE3+ozF0h7P6ZwN9GgqSfFRO+4BMVkqekUjTKTD6f
+ I3LSc0Xb4DR1v/ETGphbeiJlfpvhSCnHCILgl206cfiPQniJpDeOaNp3sh3CbWOTON
+ HealgboC8TJyf7660tRfy3VruacOOQwv2V4Vnv2ud/Hj/cjleFbEKEYTn3CayIUS5r
+ vkjFl9v3opHSg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: masahiroy@kernel.org
+Subject: [PATCH] powerpc/boot: Fix build of dts/fsl
+Date: Tue, 15 Dec 2020 14:29:06 +1100
+Message-Id: <20201215032906.473460-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201208215707.31149-1-leobras.c@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,24 +55,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 08, 2020 at 06:57:08PM -0300, Leonardo Bras wrote:
-> According to ISAv3.1 and ISAv3.0b, the msgsndp is described to split RB in:
-> msgtype <- (RB) 32:36
-> payload <- (RB) 37:63
-> t       <- (RB) 57:63
-> 
-> The current way of getting 'msgtype', and 't' is missing their MSB:
-> msgtype: ((arg >> 27) & 0xf) : Gets (RB) 33:36, missing bit 32
-> t:       (arg &= 0x3f)       : Gets (RB) 58:63, missing bit 57
-> 
-> Fixes this by applying the correct mask.
-> 
-> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+The lkp robot reported that some configs fail to build, for example
+mpc85xx_smp_defconfig, with:
 
-Acked-by: Paul Mackerras <paulus@ozlabs.org>
+  cc1: fatal error: opening output file arch/powerpc/boot/dts/fsl/.mpc8540ads.dtb.dts.tmp: No such file or directory
+
+This bisects to:
+  cc8a51ca6f05 ("kbuild: always create directories of targets")
+
+Although that commit claims to be about in-tree builds, it somehow
+breaks out-of-tree builds. But presumably it's just exposing a latent
+bug in our Makefiles.
+
+We can fix it by adding to targets for dts/fsl in the same way that we
+do for dts.
+
+Fixes: cc8a51ca6f05 ("kbuild: always create directories of targets")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/boot/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index 68a7534454cd..c3e084cceaed 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -372,6 +372,8 @@ initrd-y := $(filter-out $(image-y), $(initrd-y))
+ targets	+= $(image-y) $(initrd-y)
+ targets += $(foreach x, dtbImage uImage cuImage simpleImage treeImage, \
+ 		$(patsubst $(x).%, dts/%.dtb, $(filter $(x).%, $(image-y))))
++targets += $(foreach x, dtbImage uImage cuImage simpleImage treeImage, \
++		$(patsubst $(x).%, dts/fsl/%.dtb, $(filter $(x).%, $(image-y))))
+ 
+ $(addprefix $(obj)/, $(initrd-y)): $(obj)/ramdisk.image.gz
+ 
+-- 
+2.25.1
+
