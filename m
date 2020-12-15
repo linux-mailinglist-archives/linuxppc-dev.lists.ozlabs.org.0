@@ -1,34 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 423492DAC70
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 12:58:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E7E02DAC9B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 13:04:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CwGwv3wftzDq63
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 22:58:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CwH4C6XRnzDqQs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Dec 2020 23:04:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Facu5ci7; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CwFVN3G2dzDqRh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 21:53:32 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4CwFVN2CBTz9sS8; Tue, 15 Dec 2020 21:53:32 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <648e2448e938d52d0b5887445e018ca584edc06d.1603348103.git.christophe.leroy@csgroup.eu>
-References: <648e2448e938d52d0b5887445e018ca584edc06d.1603348103.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v1 01/20] powerpc/feature: Fix CPU_FTRS_ALWAYS by removing
- CPU_FTRS_GENERIC_32
-Message-Id: <160802955561.509074.16674731922690701129.b4-ty@ellerman.id.au>
-Date: Tue, 15 Dec 2020 21:53:32 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CwFZS01cTzDqNQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Dec 2020 21:56:57 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0BFAX8R2021990; Tue, 15 Dec 2020 05:56:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=Qb0rZ1dVPtQFGzSjliyhSM8lSw3Zwf5Vb1nHA2IeKME=;
+ b=Facu5ci7ViQYG/8M5n7WLXp9ObWoUKCXlEqhGGcy6QLQi+KlkfVmq/7C71Dr7ZLB8nwJ
+ gACsy/qRKKnErwuHnNGSwTq64IfOjlVruCrXVwfVnMQCxi01GcXCW8L215jXNGQwEN2L
+ y1ysY+dmtIoWY7+cpLKkn2t38OC2QfbDmiXBzD94ZmjPWuHNAZAzCcKfCJ5ppl6mhyGx
+ LnmDdISaopu8JYXzs0PwMmbCzmGAm0Jl+30cZLH4Y+QkwrtS4d0wt4jmmXcWA2Vtyq8u
+ ZwqB9ipB3XrcKorpbyP7bq+lZ+rUKhftB6GHXpAmzBV3fJnw/Pq9tTsn9VmEM8zdbl52 rA== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 35epsw94n5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Dec 2020 05:56:44 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BFAm2f9011723;
+ Tue, 15 Dec 2020 10:56:43 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma02wdc.us.ibm.com with ESMTP id 35cng8y107-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Dec 2020 10:56:43 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0BFAugfP23593242
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 15 Dec 2020 10:56:42 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 62EECC605A;
+ Tue, 15 Dec 2020 10:56:42 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 40899C605D;
+ Tue, 15 Dec 2020 10:56:41 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.204.57])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 15 Dec 2020 10:56:40 +0000 (GMT)
+Message-ID: <facf50fec946b5ee85f8151c4e539acf60cc149e.camel@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/vas: Fix IRQ name allocation
+From: Haren Myneni <haren@linux.ibm.com>
+To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org
+Date: Tue, 15 Dec 2020 02:56:38 -0800
+In-Reply-To: <20201212142707.2102141-1-clg@kaod.org>
+References: <20201212142707.2102141-1-clg@kaod.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2020-12-15_08:2020-12-14,
+ 2020-12-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 mlxscore=0
+ phishscore=0 clxscore=1011 malwarescore=0 adultscore=0 priorityscore=1501
+ spamscore=0 impostorscore=0 bulkscore=0 mlxlogscore=999 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012150070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,62 +98,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 22 Oct 2020 06:29:26 +0000 (UTC), Christophe Leroy wrote:
-> On 8xx, we get the following features:
+On Sat, 2020-12-12 at 15:27 +0100, Cédric Le Goater wrote:
+> The VAS device allocates a generic interrupt to handle page faults
+> but
+> the IRQ name doesn't show under /proc. This is because it's on
+> stack. Allocate the name.
 > 
-> [    0.000000] cpu_features      = 0x0000000000000100
-> [    0.000000]   possible        = 0x0000000000000120
-> [    0.000000]   always          = 0x0000000000000000
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks for fixing.
+
+Acked-by: Haren Myneni <haren@linux.ibm.com>
+
+> ---
 > 
-> This is not correct. As CONFIG_PPC_8xx is mutually exclusive with all
-> other configurations, the three lines should be equal.
+>  I didn't understand this part in init_vas_instance() :
 > 
-> [...]
+> 	if (vinst->virq) {
+> 		rc = vas_irq_fault_window_setup(vinst);
+> 		/*
+> 		 * Fault window is used only for user space send
+> windows.
+> 		 * So if vinst->virq is NULL, tx_win_open returns
+> -ENODEV
+> 		 * for user space.
+> 		 */
+> 		if (rc)
+> 			vinst->virq = 0;
+> 	}
+> 
+>  If the IRQ cannot be requested, the device probing should fail but
+>  it's not today. The use of 'vinst->virq' is suspicious.
 
-Patches 1-19 applied to powerpc/next.
+VAS raises an interrupt only when NX sees fault on request buffers and
+faults can happen only for user space requests. So Fault window setup
+is needed for user space requests. For kernel requests, continue even
+if IRQ / fault_window_setup is failed. 
 
-[01/20] powerpc/feature: Fix CPU_FTRS_ALWAYS by removing CPU_FTRS_GENERIC_32
-        https://git.kernel.org/powerpc/c/78665179e569c7e1fe102fb6c21d0f5b6951f084
-[02/20] powerpc/mm: Add mask of always present MMU features
-        https://git.kernel.org/powerpc/c/f9158d58a4e1d91f21741e4e8ebe67f770b84e12
-[03/20] powerpc/mm: Remove flush_tlb_page_nohash() prototype.
-        https://git.kernel.org/powerpc/c/a54d310856b9c1fe15ad67a2f8ee9edc02965a3a
-[04/20] powerpc/32s: Make bat_addrs[] static
-        https://git.kernel.org/powerpc/c/03d5b19c7243d6e605d360972dd7b701e2b1ba72
-[05/20] powerpc/32s: Use mmu_has_feature(MMU_FTR_HPTE_TABLE) instead of checking Hash var
-        https://git.kernel.org/powerpc/c/4cc445b4ff456f3a3997c321d7a353360feea04f
-[06/20] powerpc/32s: Make Hash var static
-        https://git.kernel.org/powerpc/c/4b74a35fc7e9b8efd9067b8a365bab0fefe889ff
-[07/20] powerpc/32s: Declare Hash related vars as __initdata
-        https://git.kernel.org/powerpc/c/6e980b5c56a266de479fcd022a03e094574e9a03
-[08/20] powerpc/32s: Move _tlbie() and _tlbia() prototypes to tlbflush.h
-        https://git.kernel.org/powerpc/c/cfe32ad0b3dc74df34ab6fea38ccb1e53f904a10
-[09/20] powerpc/32s: Inline _tlbie() on non SMP
-        https://git.kernel.org/powerpc/c/b91280f3f36d64cc6f8022893af00935c99de197
-[10/20] powerpc/32s: Move _tlbie() and _tlbia() in a new file
-        https://git.kernel.org/powerpc/c/f265512582a047e09390b1b41384f365d7dc806f
-[11/20] powerpc/32s: Split and inline flush_tlb_mm() and flush_tlb_page()
-        https://git.kernel.org/powerpc/c/fd1b4b7f51d0d75b73eeda41ef459ea7791aaab2
-[12/20] powerpc/32s: Inline flush_tlb_range() and flush_tlb_kernel_range()
-        https://git.kernel.org/powerpc/c/1e83396f29d75aae8a1d365f597996fec87ca4d0
-[13/20] powerpc/32s: Split and inline flush_range()
-        https://git.kernel.org/powerpc/c/91ec450f8d8c1e599a943c526ab1d2a4acf73c22
-[14/20] powerpc/32s: Inline tlb_flush()
-        https://git.kernel.org/powerpc/c/ef08d95546ccea540f6a592b89822bb085bf09c6
-[15/20] powerpc/32s: Inline flush_hash_entry()
-        https://git.kernel.org/powerpc/c/80007a17fc59bc2766f7d5cb2f79b4c65651504b
-[16/20] powerpc/32s: Move early_mmu_init() into mmu.c
-        https://git.kernel.org/powerpc/c/068fdba10ea54b6ebc12c2b2d85020b2137316d1
-[17/20] powerpc/32s: Remove CONFIG_PPC_BOOK3S_6xx
-        https://git.kernel.org/powerpc/c/a6a50d8495d098b6459166c3707ab251d3dc9e06
-[18/20] powerpc/32s: Regroup 603 based CPUs in cputable
-        https://git.kernel.org/powerpc/c/ad510e37e4b48f7da462650946aeaa078b977277
-[19/20] powerpc/32s: Make support for 603 and 604+ selectable
-        https://git.kernel.org/powerpc/c/44e9754d63c7b419874e4c18c0b5e7a770e058c6
+When window open request is issued from user space, kernel returns
+-ENODEV if vinst->virq = 0 (means fault window setup is failed). 
 
-cheers
+
+> 
+>  arch/powerpc/platforms/powernv/vas.h |  1 +
+>  arch/powerpc/platforms/powernv/vas.c | 11 ++++++++---
+>  2 files changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/vas.h
+> b/arch/powerpc/platforms/powernv/vas.h
+> index 70f793e8f6cc..c7db3190baca 100644
+> --- a/arch/powerpc/platforms/powernv/vas.h
+> +++ b/arch/powerpc/platforms/powernv/vas.h
+> @@ -340,6 +340,7 @@ struct vas_instance {
+>  	struct vas_window *rxwin[VAS_COP_TYPE_MAX];
+>  	struct vas_window *windows[VAS_WINDOWS_PER_CHIP];
+>  
+> +	char *name;
+>  	char *dbgname;
+>  	struct dentry *dbgdir;
+>  };
+> diff --git a/arch/powerpc/platforms/powernv/vas.c
+> b/arch/powerpc/platforms/powernv/vas.c
+> index 598e4cd563fb..b65256a63e87 100644
+> --- a/arch/powerpc/platforms/powernv/vas.c
+> +++ b/arch/powerpc/platforms/powernv/vas.c
+> @@ -28,12 +28,10 @@ static DEFINE_PER_CPU(int, cpu_vas_id);
+>  
+>  static int vas_irq_fault_window_setup(struct vas_instance *vinst)
+>  {
+> -	char devname[64];
+>  	int rc = 0;
+>  
+> -	snprintf(devname, sizeof(devname), "vas-%d", vinst->vas_id);
+>  	rc = request_threaded_irq(vinst->virq, vas_fault_handler,
+> -				vas_fault_thread_fn, 0, devname,
+> vinst);
+> +				vas_fault_thread_fn, 0, vinst->name,
+> vinst);
+>  
+>  	if (rc) {
+>  		pr_err("VAS[%d]: Request IRQ(%d) failed with %d\n",
+> @@ -80,6 +78,12 @@ static int init_vas_instance(struct
+> platform_device *pdev)
+>  	if (!vinst)
+>  		return -ENOMEM;
+>  
+> +	vinst->name = kasprintf(GFP_KERNEL, "vas-%d", vasid);
+> +	if (!vinst->name) {
+> +		kfree(vinst);
+> +		return -ENOMEM;
+> +	}
+> +
+>  	INIT_LIST_HEAD(&vinst->node);
+>  	ida_init(&vinst->ida);
+>  	mutex_init(&vinst->mutex);
+> @@ -162,6 +166,7 @@ static int init_vas_instance(struct
+> platform_device *pdev)
+>  	return 0;
+>  
+>  free_vinst:
+> +	kfree(vinst->name);
+>  	kfree(vinst);
+>  	return -ENODEV;
+>  
+
