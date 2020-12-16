@@ -2,100 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD462DB7F1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Dec 2020 01:50:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED4642DB85B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Dec 2020 02:18:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cwc4B1YJLzDqBg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Dec 2020 11:50:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cwchj6Nj0zDqKD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Dec 2020 12:18:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=yahoo.ca (client-ip=98.137.64.84;
- helo=sonic305-21.consmr.mail.gq1.yahoo.com; envelope-from=alex_y_xu@yahoo.ca;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=yahoo.ca
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=yahoo.ca header.i=@yahoo.ca header.a=rsa-sha256
- header.s=s2048 header.b=bsOksqOj; dkim-atps=neutral
-Received: from sonic305-21.consmr.mail.gq1.yahoo.com
- (sonic305-21.consmr.mail.gq1.yahoo.com [98.137.64.84])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CwZV93x1XzDqJ8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Dec 2020 10:39:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.ca; s=s2048;
- t=1608075561; bh=ZkwtcN1Znn8ElcNfcf+qBswC+LM15JB4pYSZu2ijlTk=;
- h=Date:From:Subject:To:References:In-Reply-To:From:Subject;
- b=bsOksqOjy08JRuM1vNMYKY63ugniz6HKC1zmUhBC5VKH2e12SAHB008RzBECewMo+icMFJI6NYQhG4/OH7Z/GLk5hLZgxT6F8kZiz5UMvuAYx2D/hINMWnQtozRzOnLfAyfg4lGjSjjFIIidoNVJcMiw2bwjvwedEWRGxpRnyM3Ldt3qrWOgqFbOOiBgI3BZuVeYXjfeaWjeGeT0MBIBWTGZika6x6BAqY+x1IAlvkfZB4WTzvSUQjuyI/HEv0kpieYrUu5GWR9OVUjFxGsut6hwHVFFNYOj3DlUB/PQIYAldTAgtvZgISakZfFzJiNQVM/20ujq6L1prYQ3+1aTYw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
- t=1608075561; bh=sa9UqAHRB7t41f/GLWfHt+ZwGcZHRuwzz9vsWaaIuHi=;
- h=Date:From:Subject:To:From:Subject;
- b=jBqLOED7uPJH+hPV5WVZNIV/P86RjHeCPnWryS+Z+teP5vUvDvppKa/KgpFjsDGAyX9x5IVqe+MNZRFJB5wO7GjSO7NrcrdbtS1i1Cme4DGBGEmM0jUIHuBXr+OHecGvV7frx91OwbA8b5xY+qrzhHM/5e4s7p781cSM5YNwfIKpYsLgKfnFNg83UyrBfJWg4ioEuMwW13uUB7hTvBTivVGYHzSpMaP5scMnwuPq4A0xgJH7L62FGyU7yxofnHAZEjRZVoCzfy4+YdMpUhltJUNVEe2aZs4O59gIQy2zlFm0AkPZB1YIqvAWU3PE6Sh8JQefZqwhHUv/kiFoAQioAQ==
-X-YMail-OSG: JulUi2QVM1nOM7VAg5vRbxJvcPrCfaXBKUng8mGlePCsxSIq3rtbyl96cSN5qFK
- 7.h4Aa88liq6HVnGOUXcsPeXL74TBWciCtyW_KeIQUDxofTYYXt5IHkQm_umaVImY3W8liebEIU4
- szvNP5o2H3HY3PIhLLi9iNOUkBJ2yguyZZ4umprzcIXvxROcjUkrtUF8dVFU5Y3xwGuCdvPCLPqj
- mLREEVIFTPri8ysQqktoHfLQdaQYt8xV18xWtfZtrMrOK_JzwXGk7SW7sYwSNosu9uwQQJEIYp25
- cTHfIxdQVf4lWmsA.CIzdUsg8QPSpTavYfCr6LO0SfIZRWuzGApiP8U6LWearQZG1UoSMaGOlmvV
- QK3kWN4RGWv9HSH1Hg82mcZreKjG.nLZe.u_SHz2u_rWetzTpPUsB1yRuKpBnteJnWvrO.qum9.z
- mv0L0fE0DATM5I0.NwaT7tn2NiCPFmwsqfsc9.kyWtiASArq.zAo2RpYFPlBPXhEbPBlCENQEQKv
- s5QeeeNSDN1OwLxmgN5B5wiM7K_r72En.FDRAtdIxWMRCAOJKiCjmnzIEoMIk3FFRaoSWD9jNBrW
- Oax9cagl6c79yx1SMZUw7ySAIVUiSnngUQlsee9F1VF7DviJZxvYlHBMNbteIpirbYjbC6Z9rvGd
- uIH6K0NPiK9DtjyFmrZzLewFlF_wE_jjzO.nvjjRG5DkZVtY4xYLtBfRNyfvz.5E4gb6oRmifOoI
- yfzOfhS68sbdmcv.z2QoB95lDfu3Lh2usQc9_iLkRfF2x0fJZKLWl5yMHJXhjqc5CL0OBrD_Quwn
- vlJyTIvFRHi9cuQOYThWQ7mmLMLJno6OSpcAiAh_Ov4rS_62MmN5bX.L_8AtKoD663erfbVNhRAK
- _rkXoHsNSR41yhY_.keMq9DQU_iI2kQWkNUYGpVI5GpnJWjdlBqWagg20f40YxDoPHDa6tXsqhlb
- ZZA.yEr0wXymIX4mjuMRnTLupT1nD4oq_M65fcyBFE.nyrW3Fet4XndSxEbOE.bwMM60PNwxD1Nz
- eJvvTM6.CqVT_feH0fVAhigwiI4l.YfplONEEAyRsLwhS_HH6gbt4JPTz6fLQWku6QOq5lpehXsZ
- KUeYwDTIJkmNzjjmCeg3GbP4xFEhYYaUIg42LJ.97ldAT9iYf8g.c7P.7KUMMArV5ypQrnw1j6CD
- 0JxTjhsdTnF49PUfrYa0s_MEKYvrly5B2WyCbpAcG9EFoTFhU.LWSbdyHz8C.Dcva4VHJIgt8XYf
- Gi5MaKoYfAvOC4MAgTmJ4ZOg0q3eMDsHGs.gyr.XUwV6rOJIFsQkmWHe5rSAMGlXIPUW8t8tg3dJ
- EvwOP9NXlwMJ566bOyAKEwOMCM34ICqvVjQsUOrkPwQ4lyO74vG6CfNeJQLhgtteaNJckXbbMYom
- 0JTVZbosF0m5qEi1TVusHClEGP7Z4xbDXarz8NRWZI_ZNZFL.tIYlsO22EHLzE22YQPFWcWAkth1
- NZ_M2bnWezpO5GVnUliz65SktX_0SpmT5rqk7GR_19caN3LB.MaDOkY4ecZ0XcBRN8uEIFI64YWy
- 1My91erfKvO3oXGTtA7m7jZSqJjGz3K7Il_Tb_XdT8YVxK._qI6DnY0Qp4Yh0m5nj4k9R6JN.Ikx
- VasRMIlnL.xwcgifvV.4GjcKSJahPRp5GpCTEBPcurH1zDt9QwztI3Zv07uC5koUrcwqGNtnc3XD
- gFmL1quC.BGbahu9v8eRrCAEIppDmZO.72mlMtzLhZENeSQiSuo4cPtoMsGBJN_KUy8VeztqYzFD
- EfxCmL21bPq.A4QLIFTpRzDhKirGiOWr0Bq2IHZfHT5ijhUpfqv5K.6JgXPa1IMg7DM_Gow4vzuP
- SeW27Y0P4zHN3SxUy2r61UDe1ZbNJ9k4MwzC6YoC_d6QOi46NjldipKhbIqHo6o71_eEjH9uwL_i
- _zgJQIT_J3itRCrREf451k4iZvlUlSyX5IczmCMYrOsE7cfoqb0Nyc7DTrbKJHMnBwBJix09Ckpz
- .teceLV2ymIU0aOOwiX.44MLRrUl5Wg7YYqY8CI2J7cC3fPw5cIxg5O4UXv7pvPyVvE2W3hJgO9F
- wrGwyKCcY0bXQu3GN6OoCkX6jNSHTPoYu5k7WLYoK7tcL3eS0LE5PG9xVEoyy7oXWUlyZshME2qI
- KO_DK.c_1z4S77qdx7g5kAF.OHVQX6ndSiRlwpiBBGFE2ThKR.xWlfNg8OtjD_wkPzbb8jPOhVmZ
- _pWEzmIMWTGML6UG6XRrr26iSpK.L_5qJkOWiU_JTnF0dRNmoQeW6JpP_jzs8qwn3izwaxkDlldY
- 4.oHtiHpqde8T4uIl9ob33_.aMuSa_PkLK9CJYHa7_B_gmqr37Xx9ToobzNTJjlOlg5SwfFGAHk7
- 3vK2RZcMYwoQjAmf3xX38T1lWinVefLaW4ivnACyz9UikzJX0SBJKjQLkSc_afdyIjXARY_Urvn_
- QMkkwGljA8VbvJ2CWPJ0BMEmUwiCYzPtTyHlmQiOv9yAAxhuCg32.jgPJVuvGU7Iet6xroUXpqsM
- t99A9lEGlYWGE_SBf56PyMeXAk.yv3NBa7T4I43u.X.xjVy7D01r4ED5lpaQ7RCnx.XfVJFK6Btg
- sQRdIz_UER_rNkMUrGDlzs8dnJMpxICv7gh0fSIrB4JgTsIn9g3Oy5eZZvHp5d6lEj6PgrUHyrSu
- qCDbrnZdiqIFiE3TS9ywhnHJKOP31TMCVzhypQtBC9KPedUuZe0GGlqPLWBVgc2E6nm8L4s2b56N
- UlyZdlKFUyeBoFy8vhS8Q1XuFHcLinhhwKHbG8s60WOAZAmRNkYJ1AEtD_trNzcKQ7a8f.oS6a8I
- _UgJD1jFuMJeAjp4Nd2zY.fTu_1t5CBIPBgaVlesmI_6dUDjGS5M6zjHuoD.IHF5YAwJNQW764XX
- hYuc-
-Received: from sonic.gate.mail.ne1.yahoo.com by
- sonic305.consmr.mail.gq1.yahoo.com with HTTP; Tue, 15 Dec 2020 23:39:21 +0000
-Received: by smtp409.mail.ne1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA
- ID 7f42f66753ff764add4cd34d24e29391; 
- Tue, 15 Dec 2020 23:39:20 +0000 (UTC)
-Date: Tue, 15 Dec 2020 18:39:17 -0500
-From: "Alex Xu (Hello71)" <alex_y_xu@yahoo.ca>
-Subject: Re: [RFC PATCH] treewide: remove bzip2 compression support
-To: linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
- linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org
-References: <20201215190315.8681-1-alex_y_xu.ref@yahoo.ca>
- <20201215190315.8681-1-alex_y_xu@yahoo.ca>
-In-Reply-To: <20201215190315.8681-1-alex_y_xu@yahoo.ca>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CwcbB4lbgzDqJl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Dec 2020 12:13:54 +1100 (AEDT)
+IronPort-SDR: qiDRJ6UtGDqwxMns4T8yDZqB/zgpzk+zNZ+fU1fQFTUpLMawpm5McCa6tZcJ40w+frfTydL9pb
+ visFqFRzCzKg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9836"; a="162034687"
+X-IronPort-AV: E=Sophos;i="5.78,423,1599548400"; d="scan'208";a="162034687"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Dec 2020 17:13:51 -0800
+IronPort-SDR: X/GQAWs2wHbj7rJaEVH1W7BbyV3jr0K9jvk/CMWdnx7g01vz9/i+izy3dvFhd0KeCkpv8A22WY
+ 2Lpd3hcI54/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,423,1599548400"; d="scan'208";a="391085126"
+Received: from lkp-server02.sh.intel.com (HELO a947d92d0467) ([10.239.97.151])
+ by FMSMGA003.fm.intel.com with ESMTP; 15 Dec 2020 17:13:50 -0800
+Received: from kbuild by a947d92d0467 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1kpLO2-000150-5C; Wed, 16 Dec 2020 01:13:50 +0000
+Date: Wed, 16 Dec 2020 09:13:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS a1d4aa500bfb93c4ea6eb9a3c5c9cb6720ed8f46
+Message-ID: <5fd95f3b.gixXVbwu+KXoYPUU%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Message-Id: <1608075451.ootu1tx25o.none@localhost>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: WebService/1.1.17278
- mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
- Apache-HttpAsyncClient/4.1.4 (Java/11.0.8)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,20 +55,160 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Alex Xu (Hello71)'s message of December 15, 2020 2:03 pm:
-> bzip2 is either slower or larger than every other supported algorithm,
-> according to benchmarks at [0]. It is far slower to decompress than any
-> other algorithm, and still larger than lzma, xz, and zstd.
->=20
-> [0] https://lore.kernel.org/lkml/1588791882.08g1378g67.none@localhost/
->=20
-> Signed-off-by: Alex Xu (Hello71) <alex_y_xu@yahoo.ca>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: a1d4aa500bfb93c4ea6eb9a3c5c9cb6720ed8f46  Automatic merge of 'next' into merge (2020-12-15 23:50)
 
-Upon further research, I found that bzip2 removal was already=20
-implemented as part of zstd addition, but were apparently abandoned in=20
-an effort to get zstd in. I will check those patches and try sending=20
-those instead. Thanks to all reviewers for comments on this patch.
+elapsed time: 727m
+
+configs tested: 134
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arc                 nsimosci_hs_smp_defconfig
+riscv                            allyesconfig
+mips                      bmips_stb_defconfig
+arm                        realview_defconfig
+mips                     decstation_defconfig
+arm64                            alldefconfig
+powerpc                       holly_defconfig
+powerpc                 mpc837x_mds_defconfig
+arm                        shmobile_defconfig
+sh                ecovec24-romimage_defconfig
+arm                      pxa255-idp_defconfig
+h8300                       h8s-sim_defconfig
+powerpc                     powernv_defconfig
+arm                         assabet_defconfig
+ia64                      gensparse_defconfig
+openrisc                 simple_smp_defconfig
+powerpc                 mpc836x_mds_defconfig
+arm                    vt8500_v6_v7_defconfig
+riscv                    nommu_k210_defconfig
+mips                            ar7_defconfig
+powerpc                       ppc64_defconfig
+arm                          ep93xx_defconfig
+powerpc                        warp_defconfig
+nios2                         10m50_defconfig
+mips                       bmips_be_defconfig
+xtensa                    xip_kc705_defconfig
+sh                           se7724_defconfig
+arm                            lart_defconfig
+um                             i386_defconfig
+ia64                         bigsur_defconfig
+powerpc                 mpc85xx_cds_defconfig
+arm                        clps711x_defconfig
+powerpc                     ep8248e_defconfig
+arm                       netwinder_defconfig
+arm                           h5000_defconfig
+powerpc                     kmeter1_defconfig
+arm                      integrator_defconfig
+powerpc                     pq2fads_defconfig
+powerpc                     tqm5200_defconfig
+sh                        sh7763rdp_defconfig
+arm                          collie_defconfig
+arm                      jornada720_defconfig
+arm                     davinci_all_defconfig
+powerpc                 linkstation_defconfig
+m68k                            mac_defconfig
+powerpc64                        alldefconfig
+arm                           sunxi_defconfig
+arm                            zeus_defconfig
+mips                         tb0287_defconfig
+powerpc                     sequoia_defconfig
+mips                  decstation_64_defconfig
+arm                       omap2plus_defconfig
+powerpc                 mpc834x_itx_defconfig
+xtensa                          iss_defconfig
+sh                           sh2007_defconfig
+sh                        dreamcast_defconfig
+arm                           corgi_defconfig
+parisc                           alldefconfig
+mips                      pic32mzda_defconfig
+mips                           xway_defconfig
+arm                         mv78xx0_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a003-20201215
+x86_64               randconfig-a006-20201215
+x86_64               randconfig-a002-20201215
+x86_64               randconfig-a005-20201215
+x86_64               randconfig-a004-20201215
+x86_64               randconfig-a001-20201215
+i386                 randconfig-a001-20201215
+i386                 randconfig-a004-20201215
+i386                 randconfig-a003-20201215
+i386                 randconfig-a002-20201215
+i386                 randconfig-a006-20201215
+i386                 randconfig-a005-20201215
+i386                 randconfig-a014-20201215
+i386                 randconfig-a013-20201215
+i386                 randconfig-a012-20201215
+i386                 randconfig-a011-20201215
+i386                 randconfig-a015-20201215
+i386                 randconfig-a016-20201215
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a016-20201215
+x86_64               randconfig-a012-20201215
+x86_64               randconfig-a013-20201215
+x86_64               randconfig-a015-20201215
+x86_64               randconfig-a014-20201215
+x86_64               randconfig-a011-20201215
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
