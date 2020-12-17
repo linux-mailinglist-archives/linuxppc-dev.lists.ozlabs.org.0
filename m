@@ -1,50 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C3A2DCB27
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 03:57:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CD42DCB82
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 04:56:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CxGrL5ctGzDqN3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 13:57:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CxJ8X1ZBgzDqVH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 14:56:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CxGpY6m1GzDqD2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 13:56:05 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CxJ6y3RyPzDqJL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 14:55:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=YSAqPGpK; 
+ header.from=gibson.dropbear.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=AnZ2uWwW; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CxGpX3C6Yz9sTK;
- Thu, 17 Dec 2020 13:56:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1608173765;
- bh=0hZNggZ84WIE/wYSVyJZPAYI+EbjoxXSfGZrGmkZx2Y=;
- h=From:To:Subject:Date:From;
- b=YSAqPGpKb1KxXjGRS4FDHXnb410TCAM61oWufKDqtu951M5uXAXTCxZpASNcLKb7O
- sFeryFGr/3dKLv3K/R6XcwsRuICM3Ave1Umh5QDD3uGivvYGm9F5d42hNHN7GzzQVY
- YuBgWiP7+IPu+8KtvqHrCj37sZQI7F4FfOS+6gqkGWnFIuN2mPfjdLiYh4JEXOExtX
- j0T8mK6d77QjYNSsR2SvhhnAE1/15kLT6xnp+sWDzXR3pOwRIncbKVMl/bzlr+OGVj
- p66VWNunfvwgVyYlC5XrupIUZaQvIU0lQQf5N+CrLYvfOOdSMEFG0ytmTcOpTvFJcB
- 9q9H4Ht7xjVgA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Masahiro Yamada <masahiroy@kernel.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, linux-kbuild@vger.kernel.org
-Subject: powerpc VDSO files being unnecessarily rebuilt
-Date: Thu, 17 Dec 2020 13:56:01 +1100
-Message-ID: <87tuslxhry.fsf@mpe.ellerman.id.au>
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4CxJ6y0MzKz9sTK; Thu, 17 Dec 2020 14:55:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1608177322;
+ bh=cvgT7gwiMUPIhgMBd9kg9Hf6iDUYg9kOAYSlr1+qXUU=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=AnZ2uWwWKqUVXSWLWJsrGGFWu/L0y3N9fFj/Fa0d2kdB8zS8/+T63tbyQD0q/CBHP
+ M0qTYdswJ3Xejgcw37hgTBt4o+bUFYVMp273QhyZsbX/cIpoHyhSUMo1B8bYqfn42l
+ Ur/bMRvKY+AXCWj5710xJyqNv9AumpfnEAAp0umg=
+Date: Thu, 17 Dec 2020 14:33:35 +1100
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v2 0/2] Support for H_RPT_INVALIDATE in PowerPC KVM
+Message-ID: <20201217033335.GD310465@yekko.fritz.box>
+References: <20201216085447.1265433-1-bharata@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="d01dLTUuW90fS44H"
+Content-Disposition: inline
+In-Reply-To: <20201216085447.1265433-1-bharata@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,77 +52,164 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: aneesh.kumar@linux.ibm.com, npiggin@gmail.com, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
 
-Since the merge of the C VDSO I see we are repeatedly rebuilding some
-files in the VDSO, eg:
+--d01dLTUuW90fS44H
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-  $ make V=2
-  make[1]: Entering directory '/home/michael/linux/build~'
-    GEN     Makefile
-    CALL    /home/michael/linux/scripts/checksyscalls.sh - due to target missing
-    CALL    /home/michael/linux/scripts/atomic/check-atomics.sh - due to target missing
-    CHK     include/generated/compile.h
-    CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to vgettimeofday.o not in $(targets)
+On Wed, Dec 16, 2020 at 02:24:45PM +0530, Bharata B Rao wrote:
+> This patchset adds support for the new hcall H_RPT_INVALIDATE
+> and replaces the nested tlb flush calls with this new hcall
+> if support for the same exists.
+>=20
+> Changes in v2:
+> -------------
+> - Not enabling the hcall by default now, userspace can enable it when
+>   required.
+> - Added implementation for process-scoped invalidations in the hcall.
+>=20
+> v1: https://lore.kernel.org/linuxppc-dev/20201019112642.53016-1-bharata@l=
+inux.ibm.com/T/#t
+>=20
+> H_RPT_INVALIDATE
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Syntax:
+> int64=A0=A0 /* H_Success: Return code on successful completion */
+> =A0=A0=A0=A0=A0=A0=A0 /* H_Busy - repeat the call with the same */
+> =A0=A0=A0=A0=A0=A0=A0 /* H_Parameter, H_P2, H_P3, H_P4, H_P5 : Invalid pa=
+rameters */
+> =A0=A0=A0=A0=A0=A0=A0 hcall(const uint64 H_RPT_INVALIDATE, /* Invalidate =
+RPT translation lookaside information */
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 uint64 pid,=A0=A0=A0=A0=A0=A0 /* =
+PID/LPID to invalidate */
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 uint64 target,=A0=A0=A0 /* Invali=
+dation target */
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 uint64 type,=A0=A0=A0=A0=A0 /* Ty=
+pe of lookaside information */
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 uint64 pageSizes,=A0=A0=A0=A0 /* =
+Page sizes */
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 uint64 start,=A0=A0=A0=A0 /* Star=
+t of Effective Address (EA) range (inclusive) */
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 uint64 end)=A0=A0=A0=A0=A0=A0 /* =
+End of EA range (exclusive) */
+>=20
+> Invalidation targets (target)
+> -----------------------------
+> Core MMU=A0=A0=A0=A0=A0=A0=A0 0x01 /* All virtual processors in the parti=
+tion */
+> Core local MMU=A0 0x02 /* Current virtual processor */
+> Nest MMU=A0=A0=A0=A0=A0=A0=A0 0x04 /* All nest/accelerator agents in use =
+by the partition */
+>=20
+> A combination of the above can be specified, except core and core local.
+>=20
+> Type of translation to invalidate (type)
+> ---------------------------------------
+> NESTED=A0=A0=A0=A0=A0=A0 0x0001=A0 /* Invalidate nested guest partition-s=
+cope */
+> TLB=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0002=A0 /* Invalidate TLB */
+> PWC=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0004=A0 /* Invalidate Page Walk Cache =
+*/
+> PRT=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0008=A0 /* Invalidate Process Table En=
+tries if NESTED is clear */
+> PAT=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0008=A0 /* Invalidate Partition Table =
+Entries=A0if NESTED is set */
+>=20
+> A combination of the above can be specified.
+>=20
+> Page size mask (pageSizes)
+> --------------------------
+> 4K=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x01
+> 64K=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x02
+> 2M=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x04
+> 1G=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x08
+> All sizes=A0=A0=A0=A0=A0=A0 (-1UL)
 
-This then causes multiple other files to be rebuilt.
+PAPR really has a real talent for tying its own shoelaces together.
+They could have just made the bit for each pagesize be... the size of
+the page, but why use something obviously extensible to any future
+pagesizes when we can make it both less flexible and more complicated
+to deal with.  Sigh.
 
-So the obvious fix is to add it to targets:
+>=20
+> A combination of the above can be specified.
+> All page sizes can be selected with -1.
+>=20
+> Semantics: Invalidate radix tree lookaside information
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 matching the parameters given.
+> * Return H_P2, H_P3 or H_P4 if target, type, or pageSizes parameters are
+> =A0 different from the defined values.
+> * Return H_PARAMETER if NESTED is set and pid is not a valid nested
+>   LPID allocated to this partition
+> * Return H_P5 if (start, end) doesn't form a valid range. Start and end
+>   should be a valid Quadrant address and=A0 end > start.
+> * Return H_NotSupported if the partition is not in running in radix
+>   translation mode.
+> * May invalidate more translation information than requested.
+> * If start =3D 0 and end =3D -1, set the range to cover all valid address=
+es.
+> =A0 Else start and end should be aligned to 4kB (lower 11 bits clear).
+> * If NESTED is clear, then invalidate process scoped lookaside informatio=
+n.
+> =A0 Else pid specifies a nested LPID, and the invalidation is performed
+> =A0 on nested guest partition table and nested guest partition scope real
+>   addresses.
+> * If pid =3D 0 and NESTED is clear, then valid addresses are quadrant 3 a=
+nd
+> =A0 quadrant 0 spaces, Else valid addresses are quadrant 0.
+> * Pages which are fully covered by the range are to be invalidated.
+> =A0 Those which are partially covered are considered outside invalidation
+> =A0 range, which allows a caller to optimally invalidate ranges that may
+> =A0 contain mixed page sizes.
+> * Return H_SUCCESS on success.
+>=20
+> Bharata B Rao (2):
+>   KVM: PPC: Book3S HV: Add support for H_RPT_INVALIDATE
+>   KVM: PPC: Book3S HV: Use H_RPT_INVALIDATE in nested KVM
+>=20
+>  Documentation/virt/kvm/api.rst                |  17 +++
+>  .../include/asm/book3s/64/tlbflush-radix.h    |  18 +++
+>  arch/powerpc/include/asm/kvm_book3s.h         |   3 +
+>  arch/powerpc/kvm/book3s_64_mmu_radix.c        |  27 +++-
+>  arch/powerpc/kvm/book3s_hv.c                  | 121 ++++++++++++++++++
+>  arch/powerpc/kvm/book3s_hv_nested.c           | 106 ++++++++++++++-
+>  arch/powerpc/kvm/powerpc.c                    |   3 +
+>  arch/powerpc/mm/book3s64/radix_tlb.c          |   4 -
+>  include/uapi/linux/kvm.h                      |   1 +
+>  9 files changed, 289 insertions(+), 11 deletions(-)
+>=20
 
-diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vdso64/Makefile
-index d365810a689a..5386532866ce 100644
---- a/arch/powerpc/kernel/vdso64/Makefile
-+++ b/arch/powerpc/kernel/vdso64/Makefile
-@@ -5,6 +5,7 @@ ARCH_REL_TYPE_ABS := R_PPC_JUMP_SLOT|R_PPC_GLOB_DAT|R_PPC_ADDR32|R_PPC_ADDR24|R_
- include $(srctree)/lib/vdso/Makefile
- 
- obj-vdso64 = sigtramp.o gettimeofday.o datapage.o cacheflush.o note.o getcpu.o
-+targets := $(obj-vdso64) vdso64.so.dbg
- 
- ifneq ($(c-gettimeofday-y),)
-   CFLAGS_vgettimeofday.o += -include $(c-gettimeofday-y)
-@@ -13,11 +14,11 @@ ifneq ($(c-gettimeofday-y),)
-   CFLAGS_vgettimeofday.o += -DDISABLE_BRANCH_PROFILING
-   CFLAGS_vgettimeofday.o += -ffreestanding -fasynchronous-unwind-tables
-   CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE)
-+  targets += vgettimeofday.o
- endif
- 
- # Build rules
- 
--targets := $(obj-vdso64) vdso64.so.dbg
- obj-vdso64 := $(addprefix $(obj)/, $(obj-vdso64))
- 
- GCOV_PROFILE := n
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
+--d01dLTUuW90fS44H
+Content-Type: application/pgp-signature; name="signature.asc"
 
-But then I see it still rebuilt:
+-----BEGIN PGP SIGNATURE-----
 
-  CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl/a0Y0ACgkQbDjKyiDZ
+s5IY3g//RYfZQj7oWfCOGQ+WiPvmXzedSNgcem45g35yyy7rO/PITIkfIpRQYfcJ
+C28T90418pE5b6bqIsFwkWrWhVUye3htZv51A41LItymTEFwsN7TA60BByMEHkw5
+SFromcnxg6hWw07vrYP9YPUBcDyDNk/b53kbEQ34x0Rb04X9/jRcQfP7mh8lRthN
+cJUpzrtunAlEsHRdWrkZgSlVEOf9jgnrDAjsf0jrnVTjEydt9EQRlcz3/xrDgXOi
+N71adhtfOVYin8nEEIGhBfdDt04LrLhh/bS/AxGtsNUKEf/XUZUqS0I4gowjPrDA
+Wkp3iZf08fTHJ9BBT+FIAjSvTkak58z8CUw2fLQLNTsX1MgwbtiY9FfvvNfh/u+9
+0lWobO3uA7CGVXPAmPNefk7wYtVh8NVUWRPgcqZVpk1h+C0dmuve9tuXnjySi1SC
+JVwYtGPHtg9gLgkCZ6WGF6o226++Kpf60qZR1bdrUYmyJNYL8sUi8LFRSdF6+5B+
+hKqhlwlsoqhoT7wcfyWnRmmjcqGw30Z4dlu7wN/FR0FaC2/B7HtHNocByDDuB/9V
+PChVQGKhrMcJhnNmVK1/fXvgtpxw8Y2QgXQ0/I87T6F7LCZNuDjXOq8DnDpDNWQO
+Hywz9usBXeRjl19j91LWQ7fvJgmrKgepUeSR2l7pO9PMdjf4UpY=
+=weEp
+-----END PGP SIGNATURE-----
 
-
-I'm not changing the command line, and AFAICS the .cmd file is not
-changing either:
-
-  $ make V=2
-  ...
-    CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
-  
-  $ sha256sum build\~/arch/powerpc/kernel/vdso64/vgettimeofday.o
-  7f635546bc2768c7b929d3de1724d83285f3cd54394fcd7104f8b1301d689d65  build~/arch/powerpc/kernel/vdso64/vgettimeofday.o
-  
-  $ make V=2
-  ...
-    CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
-  
-  $ sha256sum build\~/arch/powerpc/kernel/vdso64/vgettimeofday.o
-  7f635546bc2768c7b929d3de1724d83285f3cd54394fcd7104f8b1301d689d65  build~/arch/powerpc/kernel/vdso64/vgettimeofday.o
-
-
-So any hints on what I'm missing here?
-
-cheers
+--d01dLTUuW90fS44H--
