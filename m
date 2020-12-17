@@ -2,52 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAA22DCA25
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 01:50:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 381DC2DCA33
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 01:54:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CxD266CdbzDqNd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 11:50:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CxD6C1RBTzDqQV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 11:54:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CxCzh0rq5zDqNN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 11:48:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CxD4j5Q4mzDqNs
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 11:53:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
+ header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=kLR639Nc; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Tr+csHdn; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CxCzf3ncRz9sTK;
- Thu, 17 Dec 2020 11:48:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1608166127;
- bh=es0EnsoCQ2ifCTtAA+adaRfzfcRnwMUs2I8Ux5lFmD8=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=kLR639NcfbLoXZUlgkG4fIGl19uM4kCYDARQzm/b+0MYzgb2tddZtktyajhX8fjqF
- nw0ndWXzphISZcPy63dtAW6dOSqnrp8/dIb+ApuffRw1Va8x5nzttGhVz10gt68nYp
- 5IcyecRBp2nCR31rHhz+cxv/ZBXtS71XsPGJJQOegcolxD+OjbHIqnOj32z8rMdSfB
- c2rkQlQX8o5PngZzgYcQIGBHnCzy9zjUAgp0wg0Epm9+TCwfBpxvU2oLMXng1NuR2I
- Q3kXfWlfgKTridgquKZSkFH3+JwksOek98Ccj+yYdoUs9DpLv+J3yUYKbLqCxTRG1P
- hSywz+pPz7krw==
-Date: Thu, 17 Dec 2020 11:48:45 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: linux-next: manual merge of the akpm-current tree with the
- powerpc tree
-Message-ID: <20201217114845.47fe50fb@canb.auug.org.au>
-In-Reply-To: <20201208204016.4eb18ca4@canb.auug.org.au>
-References: <20201208204016.4eb18ca4@canb.auug.org.au>
+Received: by ozlabs.org (Postfix)
+ id 4CxD4j4wNmz9sSC; Thu, 17 Dec 2020 11:53:09 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4CxD4j41STz9sTK; Thu, 17 Dec 2020 11:53:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1608166389;
+ bh=AAuyZdbb8StTce5WPqR04EltV5yZoBk88U5H9yI0nsE=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Tr+csHdnIB+f71kNMFtkFvPW/u25dFK8owc0tfx0GDPMgok88NmERQJ2qgxLxvG0b
+ bYa7JYV3DL71QDdCs4bH6Y5n89Xa3X1lzVFLjsJOWPFe53YJHjy04oTqXiCABUeVug
+ 7eCkaLAsMxs8c0cNNLc2oy8A2RWlm9AnR2oOpm6mOleQ/sqVwTOV7Y1kovM2XPMqy4
+ wN8sRswSIA1PEaI6wHmqZG2ZiE+UfxdwLV0PJM0Ftl766Rqd+DM6B+2VAqz2ayGezU
+ mcO66WBdAfBMOV/qR2CGYhAkyhI5UbeFlUhn4CJz3Cw5GxEiij5RFBK+yTRtq+m/lZ
+ wDjHYR+XmnqLg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc/64s/kuap: Use mmu_has_feature()
+Date: Thu, 17 Dec 2020 11:53:06 +1100
+Message-Id: <20201217005306.895685-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/T61_sMexRa0TWOjwLJzjnGx";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,110 +55,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Francis Laniel <laniel_francis@privacyrequired.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/T61_sMexRa0TWOjwLJzjnGx
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+In commit 8150a153c013 ("powerpc/64s: Use early_mmu_has_feature() in
+set_kuap()") we switched the KUAP code to use early_mmu_has_feature(),
+to avoid a bug where we called set_kuap() before feature patching had
+been done, leading to recursion and crashes.
 
-Hi all,
+That path, which called probe_kernel_read() from printk(), has since
+been removed, see commit 2ac5a3bf7042 ("vsprintf: Do not break early
+boot with probing addresses").
 
-On Tue, 8 Dec 2020 20:40:16 +1100 Stephen Rothwell <sfr@canb.auug.org.au> w=
-rote:
->
-> Today's linux-next merge of the akpm-current tree got conflicts in:
->=20
->   drivers/misc/lkdtm/Makefile
->   drivers/misc/lkdtm/lkdtm.h
->   tools/testing/selftests/lkdtm/tests.txt
->=20
-> between commit:
->=20
->   3ba150fb2120 ("lkdtm/powerpc: Add SLB multihit test")
->=20
-> from the powerpc tree and commit:
->=20
->   014a486edd8a ("drivers/misc/lkdtm: add new file in LKDTM to test fortif=
-ied strscpy")
->=20
-> from the akpm-current tree.
->=20
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
->=20
->=20
-> diff --cc drivers/misc/lkdtm/Makefile
-> index 5a92c74eca92,d898f7b22045..000000000000
-> --- a/drivers/misc/lkdtm/Makefile
-> +++ b/drivers/misc/lkdtm/Makefile
-> @@@ -10,7 -10,7 +10,8 @@@ lkdtm-$(CONFIG_LKDTM)		+=3D rodata_objcop
->   lkdtm-$(CONFIG_LKDTM)		+=3D usercopy.o
->   lkdtm-$(CONFIG_LKDTM)		+=3D stackleak.o
->   lkdtm-$(CONFIG_LKDTM)		+=3D cfi.o
-> + lkdtm-$(CONFIG_LKDTM)		+=3D fortify.o
->  +lkdtm-$(CONFIG_PPC_BOOK3S_64)	+=3D powerpc.o
->  =20
->   KASAN_SANITIZE_stackleak.o	:=3D n
->   KCOV_INSTRUMENT_rodata.o	:=3D n
-> diff --cc drivers/misc/lkdtm/lkdtm.h
-> index 79ec05c18dd1,6aa6d6a1a839..000000000000
-> --- a/drivers/misc/lkdtm/lkdtm.h
-> +++ b/drivers/misc/lkdtm/lkdtm.h
-> @@@ -102,7 -104,7 +104,10 @@@ void lkdtm_STACKLEAK_ERASING(void)
->   /* cfi.c */
->   void lkdtm_CFI_FORWARD_PROTO(void);
->  =20
-> + /* fortify.c */
-> + void lkdtm_FORTIFIED_STRSCPY(void);
-> +=20
->  +/* powerpc.c */
->  +void lkdtm_PPC_SLB_MULTIHIT(void);
->  +
->   #endif
-> diff --cc tools/testing/selftests/lkdtm/tests.txt
-> index 18e4599863c0,92ba4cc41314..000000000000
-> --- a/tools/testing/selftests/lkdtm/tests.txt
-> +++ b/tools/testing/selftests/lkdtm/tests.txt
-> @@@ -68,4 -68,4 +68,5 @@@ USERCOPY_STACK_BEYON
->   USERCOPY_KERNEL
->   STACKLEAK_ERASING OK: the rest of the thread stack is properly erased
->   CFI_FORWARD_PROTO
-> + FORTIFIED_STRSCPY
->  +PPC_SLB_MULTIHIT Recovered
+Additionally probe_kernel_read() no longer invokes any KUAP routines,
+since commit fe557319aa06 ("maccess: rename probe_kernel_{read,write}
+to copy_{from,to}_kernel_nofault") and c33165253492 ("powerpc: use
+non-set_fs based maccess routines").
 
-These conflicts are now between the powerpc tree and Linus' tree.
+So it should now be safe to use mmu_has_feature() in the KUAP
+routines, because we shouldn't invoke them prior to feature patching.
 
---=20
-Cheers,
-Stephen Rothwell
+This is essentially a revert of commit 8150a153c013 ("powerpc/64s: Use
+early_mmu_has_feature() in set_kuap()"), but we've since added a
+second usage of early_mmu_has_feature() in get_kuap(), so we convert
+that to use mmu_has_feature() as well.
 
---Sig_/T61_sMexRa0TWOjwLJzjnGx
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Depends-on: c33165253492 ("powerpc: use non-set_fs based maccess routines").
+Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/include/asm/book3s/64/kup.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
+index f50f72e535aa..2298eac49763 100644
+--- a/arch/powerpc/include/asm/book3s/64/kup.h
++++ b/arch/powerpc/include/asm/book3s/64/kup.h
+@@ -333,7 +333,7 @@ static inline unsigned long get_kuap(void)
+ 	 * This has no effect in terms of actually blocking things on hash,
+ 	 * so it doesn't break anything.
+ 	 */
+-	if (!early_mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
++	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
+ 		return AMR_KUAP_BLOCKED;
+ 
+ 	return mfspr(SPRN_AMR);
+@@ -341,7 +341,7 @@ static inline unsigned long get_kuap(void)
+ 
+ static inline void set_kuap(unsigned long value)
+ {
+-	if (!early_mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
++	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
+ 		return;
+ 
+ 	/*
+-- 
+2.25.1
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl/aqu0ACgkQAVBC80lX
-0Gzh1Qf/YjaYBc6q7yRUBcnVpD/l9a4dHyHV/exrXAIx6st0ZX4YNtRXKt3p9LJ+
-S6kpR3lntIc61u/YV1zMgD0rT6wPRk9cPYc9iqz+mW7iyXlPgh2h7diuF1WNNpgt
-ChBgpuHNdi+E6KZ7rhhCwJIEzSmzPb6kD13eMCxgjVGOQFGf1W4oWPhBGVcJTbzc
-XwXGWun+BtsASn2VTIeMzVsJWYaHYnkGrF8ZtKo31kSt4wStiYCDA3xw8r/wlRue
-lTqqJsmJ5qxmbzc5oRWX9KuhHDjYRVZzMriNuERQvVcPNmifRzB9basXdfi+MNTl
-S3RZk4xR66z1DyZHjZ4UkfaN1gJRMw==
-=BO9i
------END PGP SIGNATURE-----
-
---Sig_/T61_sMexRa0TWOjwLJzjnGx--
