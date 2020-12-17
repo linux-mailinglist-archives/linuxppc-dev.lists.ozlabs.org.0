@@ -2,63 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E376E2DCE34
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 10:25:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C03102DCEEC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 10:56:32 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CxRS4180vzDqVK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 20:25:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CxS7d4qwfzDqWR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 20:56:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.81;
- helo=conssluserg-02.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=XmDJJxJq; 
- dkim-atps=neutral
-Received: from conssluserg-02.nifty.com (conssluserg-02.nifty.com
- [210.131.2.81])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CxRQd02sPzDqQ5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 20:24:23 +1100 (AEDT)
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com
- [209.85.210.172]) (authenticated)
- by conssluserg-02.nifty.com with ESMTP id 0BH9NqEt031525
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 18:23:52 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com 0BH9NqEt031525
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1608197032;
- bh=lyxy4N+QmOZIbc6zKUBg3yTh+qgTGZx7JrxlFrkCOdo=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=XmDJJxJqFOfe/ZyX/MKTNAjDY8YCW4nuPfsPrbOjqkojFtXAjn4mAHQDXuVIBkEtd
- hnrbar2ehWcfG0EYEeKu+fkN3R2KtsS9OGFu4nmTuyPZteOt5a+lw39N63VgSF6vKN
- p926NalzFoZeyXCZVinNz5NwC7mFDu3aPEuGNJPLPhN+lonSIBkvyFwhYyESleeJX1
- UlcBKWb3Gg4mJ5piLkakEV4YxbkoL1h2uU+vOjbMZncqb+D/HMW/8Avqdq5iKelhdM
- sCeOC5cA8Yli8Ga2+Ix95t9fqjnQewE9Kv+PEo+aSvTDsCskNTlpWaBYq/SX2ZQg4G
- WItP37MZlHr8w==
-X-Nifty-SrcIP: [209.85.210.172]
-Received: by mail-pf1-f172.google.com with SMTP id v2so1130106pfm.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 01:23:52 -0800 (PST)
-X-Gm-Message-State: AOAM5323Wz/r9/xZvDkpzqU44ACJQSaYxsfL/FPe5CHpNla1zA1iVRqc
- PEcCQJ0r2LDaVN+uRru8J8ZWda52u6k4E9FcUzA=
-X-Google-Smtp-Source: ABdhPJwc9MNYAmTGPUg7dh12WG/08zOBKgv8lIvTBlaBqx9kjxJRueD6dgY/prkqvXrzn6IGsyI2O05m9D2gEikLus8=
-X-Received: by 2002:a65:6a16:: with SMTP id m22mr37274788pgu.175.1608197031781; 
- Thu, 17 Dec 2020 01:23:51 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CxS5p55ZPzDqNV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 20:54:50 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CxS5X2DHlz9v0PW;
+ Thu, 17 Dec 2020 10:54:40 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 1Zv_-zH0n3ZU; Thu, 17 Dec 2020 10:54:40 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CxS5X19YGz9v0PP;
+ Thu, 17 Dec 2020 10:54:40 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 65DAC8B7EB;
+ Thu, 17 Dec 2020 10:54:41 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id qEOXafSG18AY; Thu, 17 Dec 2020 10:54:41 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 540E18B7CD;
+ Thu, 17 Dec 2020 10:54:40 +0100 (CET)
+Subject: Re: [RFC PATCH v1 7/7] powerpc/bpf: Implement extended BPF on PPC32
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+References: <cover.1608112796.git.christophe.leroy@csgroup.eu>
+ <1fed5e11ba08ee28d12f3f57986e5b143a6aa937.1608112797.git.christophe.leroy@csgroup.eu>
+ <20201217061133.lnfnhbzvikgtjb3i@ast-mbp>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <854404a0-1951-91d9-2ebb-208390a64c77@csgroup.eu>
+Date: Thu, 17 Dec 2020 10:54:34 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-References: <87tuslxhry.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87tuslxhry.fsf@mpe.ellerman.id.au>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 17 Dec 2020 18:23:14 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASTXyxhLzH7kRyAKCixe6ksJaKPiuPxWnsYZ6NJVCWDhQ@mail.gmail.com>
-Message-ID: <CAK7LNASTXyxhLzH7kRyAKCixe6ksJaKPiuPxWnsYZ6NJVCWDhQ@mail.gmail.com>
-Subject: Re: powerpc VDSO files being unnecessarily rebuilt
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20201217061133.lnfnhbzvikgtjb3i@ast-mbp>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,122 +65,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc: songliubraving@fb.com, daniel@iogearbox.net, john.fastabend@gmail.com,
+ andrii@kernel.org, ast@kernel.org, naveen.n.rao@linux.ibm.com,
+ netdev@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ sandipan@linux.ibm.com, kpsingh@chromium.org, yhs@fb.com, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kafai@fb.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 17, 2020 at 11:56 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Hi all,
->
-> Since the merge of the C VDSO I see we are repeatedly rebuilding some
-> files in the VDSO, eg:
->
->   $ make V=2
->   make[1]: Entering directory '/home/michael/linux/build~'
->     GEN     Makefile
->     CALL    /home/michael/linux/scripts/checksyscalls.sh - due to target missing
->     CALL    /home/michael/linux/scripts/atomic/check-atomics.sh - due to target missing
->     CHK     include/generated/compile.h
->     CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to vgettimeofday.o not in $(targets)
->
-> This then causes multiple other files to be rebuilt.
->
-> So the obvious fix is to add it to targets:
->
-> diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vdso64/Makefile
-> index d365810a689a..5386532866ce 100644
-> --- a/arch/powerpc/kernel/vdso64/Makefile
-> +++ b/arch/powerpc/kernel/vdso64/Makefile
-> @@ -5,6 +5,7 @@ ARCH_REL_TYPE_ABS := R_PPC_JUMP_SLOT|R_PPC_GLOB_DAT|R_PPC_ADDR32|R_PPC_ADDR24|R_
->  include $(srctree)/lib/vdso/Makefile
->
->  obj-vdso64 = sigtramp.o gettimeofday.o datapage.o cacheflush.o note.o getcpu.o
-> +targets := $(obj-vdso64) vdso64.so.dbg
->
->  ifneq ($(c-gettimeofday-y),)
->    CFLAGS_vgettimeofday.o += -include $(c-gettimeofday-y)
-> @@ -13,11 +14,11 @@ ifneq ($(c-gettimeofday-y),)
->    CFLAGS_vgettimeofday.o += -DDISABLE_BRANCH_PROFILING
->    CFLAGS_vgettimeofday.o += -ffreestanding -fasynchronous-unwind-tables
->    CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE)
-> +  targets += vgettimeofday.o
->  endif
->
->  # Build rules
->
-> -targets := $(obj-vdso64) vdso64.so.dbg
->  obj-vdso64 := $(addprefix $(obj)/, $(obj-vdso64))
->
->  GCOV_PROFILE := n
->
->
-> But then I see it still rebuilt:
->
->   CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
->
->
-> I'm not changing the command line, and AFAICS the .cmd file is not
-> changing either:
->
->   $ make V=2
->   ...
->     CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
->
->   $ sha256sum build\~/arch/powerpc/kernel/vdso64/vgettimeofday.o
->   7f635546bc2768c7b929d3de1724d83285f3cd54394fcd7104f8b1301d689d65  build~/arch/powerpc/kernel/vdso64/vgettimeofday.o
->
->   $ make V=2
->   ...
->     CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
->
->   $ sha256sum build\~/arch/powerpc/kernel/vdso64/vgettimeofday.o
->   7f635546bc2768c7b929d3de1724d83285f3cd54394fcd7104f8b1301d689d65  build~/arch/powerpc/kernel/vdso64/vgettimeofday.o
->
->
-> So any hints on what I'm missing here?
->
-> cheers
 
 
-This is because PPC builds the vdso twice
-with different command arguments.
+Le 17/12/2020 à 07:11, Alexei Starovoitov a écrit :
+> On Wed, Dec 16, 2020 at 10:07:37AM +0000, Christophe Leroy wrote:
+>> Implement Extended Berkeley Packet Filter on Powerpc 32
+>>
+>> Test result with test_bpf module:
+>>
+>> 	test_bpf: Summary: 378 PASSED, 0 FAILED, [354/366 JIT'ed]
+> 
+> nice!
+> 
+>> Registers mapping:
+>>
+>> 	[BPF_REG_0] = r11-r12
+>> 	/* function arguments */
+>> 	[BPF_REG_1] = r3-r4
+>> 	[BPF_REG_2] = r5-r6
+>> 	[BPF_REG_3] = r7-r8
+>> 	[BPF_REG_4] = r9-r10
+>> 	[BPF_REG_5] = r21-r22 (Args 9 and 10 come in via the stack)
+>> 	/* non volatile registers */
+>> 	[BPF_REG_6] = r23-r24
+>> 	[BPF_REG_7] = r25-r26
+>> 	[BPF_REG_8] = r27-r28
+>> 	[BPF_REG_9] = r29-r30
+>> 	/* frame pointer aka BPF_REG_10 */
+>> 	[BPF_REG_FP] = r31
+>> 	/* eBPF jit internal registers */
+>> 	[BPF_REG_AX] = r19-r20
+>> 	[TMP_REG] = r18
+>>
+>> As PPC32 doesn't have a redzone in the stack,
+>> use r17 as tail call counter.
+>>
+>> r0 is used as temporary register as much as possible. It is referenced
+>> directly in the code in order to avoid misuse of it, because some
+>> instructions interpret it as value 0 instead of register r0
+>> (ex: addi, addis, stw, lwz, ...)
+>>
+>> The following operations are not implemented:
+>>
+>> 		case BPF_ALU64 | BPF_DIV | BPF_X: /* dst /= src */
+>> 		case BPF_ALU64 | BPF_MOD | BPF_X: /* dst %= src */
+>> 		case BPF_STX | BPF_XADD | BPF_DW: /* *(u64 *)(dst + off) += src */
+>>
+>> The following operations are only implemented for power of two constants:
+>>
+>> 		case BPF_ALU64 | BPF_MOD | BPF_K: /* dst %= imm */
+>> 		case BPF_ALU64 | BPF_DIV | BPF_K: /* dst /= imm */
+> 
+> Those are sensible limitations. MOD and DIV are rare, but XADD is common.
+> Please consider doing it as a cmpxchg loop in the future.
+> 
+> Also please run test_progs. It will give a lot better coverage than test_bpf.ko
+> 
 
+I'm having hard time cross building test_progs:
 
-First time:
+~/linux-powerpc/tools/testing/selftests/bpf/$ make CROSS_COMPILE=ppc-linux-
+...
+   GEN 
+/home/chr/linux-powerpc/tools/testing/selftests/bpf/tools/build/bpftool/Documentation/bpf-helpers.7
+   INSTALL  eBPF_helpers-manpage
+   INSTALL  Documentation-man
+   GEN      vmlinux.h
+/bin/sh: /home/chr/linux-powerpc/tools/testing/selftests/bpf/tools/sbin/bpftool: cannot execute 
+binary file
+make: *** [/home/chr/linux-powerpc/tools/testing/selftests/bpf/tools/include/vmlinux.h] Error 126
+make: *** Deleting file `/home/chr/linux-powerpc/tools/testing/selftests/bpf/tools/include/vmlinux.h'
 
-vdso_prepare: prepare0
-         $(if $(CONFIG_VDSO32),$(Q)$(MAKE) \
-                 $(build)=arch/powerpc/kernel/vdso32
-include/generated/vdso32-offsets.h)
-         $(if $(CONFIG_PPC64),$(Q)$(MAKE) \
-                 $(build)=arch/powerpc/kernel/vdso64
-include/generated/vdso64-offsets.h)
+Looks like it builds bpftool for powerpc and tries to run it on my x86.
+How should I proceed ?
 
-
-Second time:
-   from  arch/powerpc/kernel/Makefile
-
-
-
-
-
-For the first build, -Werror is missing because
-Kbuild directly descends into arch/powerpc/kernel/vdso[32,64]/.
-
-
-For the second build,
-
-arch/powerpc/Kbuild appends the following:
-
-subdir-ccflags-$(CONFIG_PPC_WERROR) := -Werror
-
-
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+Thanks
+Christophe
