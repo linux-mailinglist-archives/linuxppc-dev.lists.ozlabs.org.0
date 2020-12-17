@@ -2,98 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F62B2DCDDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 09:50:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E376E2DCE34
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 10:25:42 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CxQg702QwzDqDJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 19:50:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CxRS4180vzDqVK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 20:25:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=210.131.2.81;
+ helo=conssluserg-02.nifty.com; envelope-from=masahiroy@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=q3cKLAX7; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
+ header.s=dec2015msa header.b=XmDJJxJq; 
+ dkim-atps=neutral
+Received: from conssluserg-02.nifty.com (conssluserg-02.nifty.com
+ [210.131.2.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CxQdb14PVzDqNy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 19:48:50 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0BH8Xbk0131878; Thu, 17 Dec 2020 03:48:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=ozxBhOl1SuqosX/HAVycuIaOOxGz/bupH0buGh3EHyI=;
- b=q3cKLAX76nmVBpKfRu4HTDgstT/NyfVe4/Ik04hkrwUcaYU/cm38ueYeEgRXFZ3XQduE
- I6jCUSEBoLVH6VBqMhfLbWX/+eys58cIaDxN+9dV1n/ECih50s0oxYJ9M12I6qEqkJR6
- qwGX7H2n8rECdt/Px3Z3fra5AvP3x4e/QQeBpxAgzq9zPgKnysT3hx+U2Xl9a3XVqleE
- g+SPgrdlaH/udRKFjokNqLiOzkkOhtzp6dBaws74cuVwZoyiXhDitQDIjWRcFzgKX+Wu
- +jReo3bbAje2xhRLk35uqUPNJbapMnrRgmQYcXoXsbK90UDnD60h4t+ZEIyEUI9qXK+o Mg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 35g3x70cr7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Dec 2020 03:48:44 -0500
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0BH8cjmV149533;
- Thu, 17 Dec 2020 03:48:44 -0500
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 35g3x70cqk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Dec 2020 03:48:44 -0500
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BH8m69g016851;
- Thu, 17 Dec 2020 08:48:42 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03ams.nl.ibm.com with ESMTP id 35cng8d4mh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Dec 2020 08:48:42 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0BH8meUp41156954
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Dec 2020 08:48:40 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 68F5AA4057;
- Thu, 17 Dec 2020 08:48:40 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1AFACA405B;
- Thu, 17 Dec 2020 08:48:39 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.85.69.25])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Thu, 17 Dec 2020 08:48:38 +0000 (GMT)
-Date: Thu, 17 Dec 2020 14:18:36 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v2 1/2] KVM: PPC: Book3S HV: Add support for
- H_RPT_INVALIDATE
-Message-ID: <20201217084836.GD775394@in.ibm.com>
-References: <20201216085447.1265433-1-bharata@linux.ibm.com>
- <20201216085447.1265433-2-bharata@linux.ibm.com>
- <20201217034215.GE310465@yekko.fritz.box>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CxRQd02sPzDqQ5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 20:24:23 +1100 (AEDT)
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com
+ [209.85.210.172]) (authenticated)
+ by conssluserg-02.nifty.com with ESMTP id 0BH9NqEt031525
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 18:23:52 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com 0BH9NqEt031525
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1608197032;
+ bh=lyxy4N+QmOZIbc6zKUBg3yTh+qgTGZx7JrxlFrkCOdo=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=XmDJJxJqFOfe/ZyX/MKTNAjDY8YCW4nuPfsPrbOjqkojFtXAjn4mAHQDXuVIBkEtd
+ hnrbar2ehWcfG0EYEeKu+fkN3R2KtsS9OGFu4nmTuyPZteOt5a+lw39N63VgSF6vKN
+ p926NalzFoZeyXCZVinNz5NwC7mFDu3aPEuGNJPLPhN+lonSIBkvyFwhYyESleeJX1
+ UlcBKWb3Gg4mJ5piLkakEV4YxbkoL1h2uU+vOjbMZncqb+D/HMW/8Avqdq5iKelhdM
+ sCeOC5cA8Yli8Ga2+Ix95t9fqjnQewE9Kv+PEo+aSvTDsCskNTlpWaBYq/SX2ZQg4G
+ WItP37MZlHr8w==
+X-Nifty-SrcIP: [209.85.210.172]
+Received: by mail-pf1-f172.google.com with SMTP id v2so1130106pfm.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 01:23:52 -0800 (PST)
+X-Gm-Message-State: AOAM5323Wz/r9/xZvDkpzqU44ACJQSaYxsfL/FPe5CHpNla1zA1iVRqc
+ PEcCQJ0r2LDaVN+uRru8J8ZWda52u6k4E9FcUzA=
+X-Google-Smtp-Source: ABdhPJwc9MNYAmTGPUg7dh12WG/08zOBKgv8lIvTBlaBqx9kjxJRueD6dgY/prkqvXrzn6IGsyI2O05m9D2gEikLus8=
+X-Received: by 2002:a65:6a16:: with SMTP id m22mr37274788pgu.175.1608197031781; 
+ Thu, 17 Dec 2020 01:23:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201217034215.GE310465@yekko.fritz.box>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-17_04:2020-12-15,
- 2020-12-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- spamscore=0 mlxscore=0 adultscore=0 priorityscore=1501 phishscore=0
- malwarescore=0 bulkscore=0 mlxlogscore=999 suspectscore=0 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012170061
+References: <87tuslxhry.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87tuslxhry.fsf@mpe.ellerman.id.au>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Thu, 17 Dec 2020 18:23:14 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASTXyxhLzH7kRyAKCixe6ksJaKPiuPxWnsYZ6NJVCWDhQ@mail.gmail.com>
+Message-ID: <CAK7LNASTXyxhLzH7kRyAKCixe6ksJaKPiuPxWnsYZ6NJVCWDhQ@mail.gmail.com>
+Subject: Re: powerpc VDSO files being unnecessarily rebuilt
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,96 +70,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: aneesh.kumar@linux.ibm.com, npiggin@gmail.com, kvm-ppc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 17, 2020 at 02:42:15PM +1100, David Gibson wrote:
-> On Wed, Dec 16, 2020 at 02:24:46PM +0530, Bharata B Rao wrote:
-> > +static void do_tlb_invalidate(unsigned long rs, unsigned long target,
-> > +			      unsigned long type, unsigned long page_size,
-> > +			      unsigned long ap, unsigned long start,
-> > +			      unsigned long end)
-> > +{
-> > +	unsigned long rb;
-> > +	unsigned long addr = start;
-> > +
-> > +	if ((type & H_RPTI_TYPE_ALL) == H_RPTI_TYPE_ALL) {
-> > +		rb = PPC_BIT(53); /* IS = 1 */
-> > +		do_tlb_invalidate_all(rb, rs);
-> > +		return;
-> > +	}
-> > +
-> > +	if (type & H_RPTI_TYPE_PWC) {
-> > +		rb = PPC_BIT(53); /* IS = 1 */
-> > +		do_tlb_invalidate_pwc(rb, rs);
-> > +	}
-> > +
-> > +	if (!addr && end == -1) { /* PID */
-> > +		rb = PPC_BIT(53); /* IS = 1 */
-> > +		do_tlb_invalidate_tlb(rb, rs);
-> > +	} else { /* EA */
-> > +		do {
-> > +			rb = addr & ~(PPC_BITMASK(52, 63));
-> > +			rb |= ap << PPC_BITLSHIFT(58);
-> > +			do_tlb_invalidate_tlb(rb, rs);
-> > +			addr += page_size;
-> > +		} while (addr < end);
-> > +	}
-> > +}
-> > +
-> > +static long kvmppc_h_rpt_invalidate(struct kvm_vcpu *vcpu,
-> > +				    unsigned long pid, unsigned long target,
-> > +				    unsigned long type, unsigned long pg_sizes,
-> > +				    unsigned long start, unsigned long end)
-> > +{
-> > +	unsigned long rs, ap, psize;
-> > +
-> > +	if (!kvm_is_radix(vcpu->kvm))
-> > +		return H_FUNCTION;
-> 
-> IIUC The cover note said this case was H_NOT_SUPPORTED, rather than H_FUNCTION.
-> 
-> > +
-> > +	if (end < start)
-> > +		return H_P5;
-> > +
-> > +	if (type & H_RPTI_TYPE_NESTED) {
-> > +		if (!nesting_enabled(vcpu->kvm))
-> > +			return H_FUNCTION;
-> 
-> Likewise, I'm not sure that H_FUNCTION is the right choice here.
+On Thu, Dec 17, 2020 at 11:56 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> Hi all,
+>
+> Since the merge of the C VDSO I see we are repeatedly rebuilding some
+> files in the VDSO, eg:
+>
+>   $ make V=2
+>   make[1]: Entering directory '/home/michael/linux/build~'
+>     GEN     Makefile
+>     CALL    /home/michael/linux/scripts/checksyscalls.sh - due to target missing
+>     CALL    /home/michael/linux/scripts/atomic/check-atomics.sh - due to target missing
+>     CHK     include/generated/compile.h
+>     CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to vgettimeofday.o not in $(targets)
+>
+> This then causes multiple other files to be rebuilt.
+>
+> So the obvious fix is to add it to targets:
+>
+> diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vdso64/Makefile
+> index d365810a689a..5386532866ce 100644
+> --- a/arch/powerpc/kernel/vdso64/Makefile
+> +++ b/arch/powerpc/kernel/vdso64/Makefile
+> @@ -5,6 +5,7 @@ ARCH_REL_TYPE_ABS := R_PPC_JUMP_SLOT|R_PPC_GLOB_DAT|R_PPC_ADDR32|R_PPC_ADDR24|R_
+>  include $(srctree)/lib/vdso/Makefile
+>
+>  obj-vdso64 = sigtramp.o gettimeofday.o datapage.o cacheflush.o note.o getcpu.o
+> +targets := $(obj-vdso64) vdso64.so.dbg
+>
+>  ifneq ($(c-gettimeofday-y),)
+>    CFLAGS_vgettimeofday.o += -include $(c-gettimeofday-y)
+> @@ -13,11 +14,11 @@ ifneq ($(c-gettimeofday-y),)
+>    CFLAGS_vgettimeofday.o += -DDISABLE_BRANCH_PROFILING
+>    CFLAGS_vgettimeofday.o += -ffreestanding -fasynchronous-unwind-tables
+>    CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE)
+> +  targets += vgettimeofday.o
+>  endif
+>
+>  # Build rules
+>
+> -targets := $(obj-vdso64) vdso64.so.dbg
+>  obj-vdso64 := $(addprefix $(obj)/, $(obj-vdso64))
+>
+>  GCOV_PROFILE := n
+>
+>
+> But then I see it still rebuilt:
+>
+>   CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
+>
+>
+> I'm not changing the command line, and AFAICS the .cmd file is not
+> changing either:
+>
+>   $ make V=2
+>   ...
+>     CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
+>
+>   $ sha256sum build\~/arch/powerpc/kernel/vdso64/vgettimeofday.o
+>   7f635546bc2768c7b929d3de1724d83285f3cd54394fcd7104f8b1301d689d65  build~/arch/powerpc/kernel/vdso64/vgettimeofday.o
+>
+>   $ make V=2
+>   ...
+>     CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
+>
+>   $ sha256sum build\~/arch/powerpc/kernel/vdso64/vgettimeofday.o
+>   7f635546bc2768c7b929d3de1724d83285f3cd54394fcd7104f8b1301d689d65  build~/arch/powerpc/kernel/vdso64/vgettimeofday.o
+>
+>
+> So any hints on what I'm missing here?
+>
+> cheers
 
-Yes to both, will switch to H_FUNCTION in the next iteration.
 
-> 
-> > +
-> > +		/* Support only cores as target */
-> > +		if (target != H_RPTI_TARGET_CMMU)
-> > +			return H_P2;
-> > +
-> > +		return kvmhv_h_rpti_nested(vcpu, pid,
-> > +					   (type & ~H_RPTI_TYPE_NESTED),
-> > +					    pg_sizes, start, end);
-> > +	}
-> > +
-> > +	rs = pid << PPC_BITLSHIFT(31);
-> > +	rs |= vcpu->kvm->arch.lpid;
-> > +
-> > +	if (pg_sizes & H_RPTI_PAGE_64K) {
-> > +		psize = rpti_pgsize_to_psize(pg_sizes & H_RPTI_PAGE_64K);
-> > +		ap = mmu_get_ap(psize);
-> > +		do_tlb_invalidate(rs, target, type, (1UL << 16), ap, start,
-> > +				  end);
-> 
-> Should these be conditional on the TLB flag in type?
+This is because PPC builds the vdso twice
+with different command arguments.
 
-Didn't quite get you. Do you mean that depending on the type flag
-we may not need to do invalidations for different page sizes
-separately?
 
-Regards,
-Bharata.
+First time:
+
+vdso_prepare: prepare0
+         $(if $(CONFIG_VDSO32),$(Q)$(MAKE) \
+                 $(build)=arch/powerpc/kernel/vdso32
+include/generated/vdso32-offsets.h)
+         $(if $(CONFIG_PPC64),$(Q)$(MAKE) \
+                 $(build)=arch/powerpc/kernel/vdso64
+include/generated/vdso64-offsets.h)
+
+
+Second time:
+   from  arch/powerpc/kernel/Makefile
+
+
+
+
+
+For the first build, -Werror is missing because
+Kbuild directly descends into arch/powerpc/kernel/vdso[32,64]/.
+
+
+For the second build,
+
+arch/powerpc/Kbuild appends the following:
+
+subdir-ccflags-$(CONFIG_PPC_WERROR) := -Werror
+
+
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
