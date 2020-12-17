@@ -2,48 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381DC2DCA33
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 01:54:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C3A2DCB27
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 03:57:41 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CxD6C1RBTzDqQV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 11:54:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CxGrL5ctGzDqN3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 13:57:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CxD4j5Q4mzDqNs
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 11:53:09 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CxGpY6m1GzDqD2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 13:56:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Tr+csHdn; 
+ header.a=rsa-sha256 header.s=201909 header.b=YSAqPGpK; 
  dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4CxD4j4wNmz9sSC; Thu, 17 Dec 2020 11:53:09 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4CxD4j41STz9sTK; Thu, 17 Dec 2020 11:53:09 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CxGpX3C6Yz9sTK;
+ Thu, 17 Dec 2020 13:56:04 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1608166389;
- bh=AAuyZdbb8StTce5WPqR04EltV5yZoBk88U5H9yI0nsE=;
- h=From:To:Cc:Subject:Date:From;
- b=Tr+csHdnIB+f71kNMFtkFvPW/u25dFK8owc0tfx0GDPMgok88NmERQJ2qgxLxvG0b
- bYa7JYV3DL71QDdCs4bH6Y5n89Xa3X1lzVFLjsJOWPFe53YJHjy04oTqXiCABUeVug
- 7eCkaLAsMxs8c0cNNLc2oy8A2RWlm9AnR2oOpm6mOleQ/sqVwTOV7Y1kovM2XPMqy4
- wN8sRswSIA1PEaI6wHmqZG2ZiE+UfxdwLV0PJM0Ftl766Rqd+DM6B+2VAqz2ayGezU
- mcO66WBdAfBMOV/qR2CGYhAkyhI5UbeFlUhn4CJz3Cw5GxEiij5RFBK+yTRtq+m/lZ
- wDjHYR+XmnqLg==
+ s=201909; t=1608173765;
+ bh=0hZNggZ84WIE/wYSVyJZPAYI+EbjoxXSfGZrGmkZx2Y=;
+ h=From:To:Subject:Date:From;
+ b=YSAqPGpKb1KxXjGRS4FDHXnb410TCAM61oWufKDqtu951M5uXAXTCxZpASNcLKb7O
+ sFeryFGr/3dKLv3K/R6XcwsRuICM3Ave1Umh5QDD3uGivvYGm9F5d42hNHN7GzzQVY
+ YuBgWiP7+IPu+8KtvqHrCj37sZQI7F4FfOS+6gqkGWnFIuN2mPfjdLiYh4JEXOExtX
+ j0T8mK6d77QjYNSsR2SvhhnAE1/15kLT6xnp+sWDzXR3pOwRIncbKVMl/bzlr+OGVj
+ p66VWNunfvwgVyYlC5XrupIUZaQvIU0lQQf5N+CrLYvfOOdSMEFG0ytmTcOpTvFJcB
+ 9q9H4Ht7xjVgA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/64s/kuap: Use mmu_has_feature()
-Date: Thu, 17 Dec 2020 11:53:06 +1100
-Message-Id: <20201217005306.895685-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+To: linuxppc-dev@lists.ozlabs.org, Masahiro Yamada <masahiroy@kernel.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, linux-kbuild@vger.kernel.org
+Subject: powerpc VDSO files being unnecessarily rebuilt
+Date: Thu, 17 Dec 2020 13:56:01 +1100
+Message-ID: <87tuslxhry.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,57 +60,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In commit 8150a153c013 ("powerpc/64s: Use early_mmu_has_feature() in
-set_kuap()") we switched the KUAP code to use early_mmu_has_feature(),
-to avoid a bug where we called set_kuap() before feature patching had
-been done, leading to recursion and crashes.
+Hi all,
 
-That path, which called probe_kernel_read() from printk(), has since
-been removed, see commit 2ac5a3bf7042 ("vsprintf: Do not break early
-boot with probing addresses").
+Since the merge of the C VDSO I see we are repeatedly rebuilding some
+files in the VDSO, eg:
 
-Additionally probe_kernel_read() no longer invokes any KUAP routines,
-since commit fe557319aa06 ("maccess: rename probe_kernel_{read,write}
-to copy_{from,to}_kernel_nofault") and c33165253492 ("powerpc: use
-non-set_fs based maccess routines").
+  $ make V=2
+  make[1]: Entering directory '/home/michael/linux/build~'
+    GEN     Makefile
+    CALL    /home/michael/linux/scripts/checksyscalls.sh - due to target missing
+    CALL    /home/michael/linux/scripts/atomic/check-atomics.sh - due to target missing
+    CHK     include/generated/compile.h
+    CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to vgettimeofday.o not in $(targets)
 
-So it should now be safe to use mmu_has_feature() in the KUAP
-routines, because we shouldn't invoke them prior to feature patching.
+This then causes multiple other files to be rebuilt.
 
-This is essentially a revert of commit 8150a153c013 ("powerpc/64s: Use
-early_mmu_has_feature() in set_kuap()"), but we've since added a
-second usage of early_mmu_has_feature() in get_kuap(), so we convert
-that to use mmu_has_feature() as well.
+So the obvious fix is to add it to targets:
 
-Depends-on: c33165253492 ("powerpc: use non-set_fs based maccess routines").
-Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/include/asm/book3s/64/kup.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-index f50f72e535aa..2298eac49763 100644
---- a/arch/powerpc/include/asm/book3s/64/kup.h
-+++ b/arch/powerpc/include/asm/book3s/64/kup.h
-@@ -333,7 +333,7 @@ static inline unsigned long get_kuap(void)
- 	 * This has no effect in terms of actually blocking things on hash,
- 	 * so it doesn't break anything.
- 	 */
--	if (!early_mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
-+	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
- 		return AMR_KUAP_BLOCKED;
+diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vdso64/Makefile
+index d365810a689a..5386532866ce 100644
+--- a/arch/powerpc/kernel/vdso64/Makefile
++++ b/arch/powerpc/kernel/vdso64/Makefile
+@@ -5,6 +5,7 @@ ARCH_REL_TYPE_ABS := R_PPC_JUMP_SLOT|R_PPC_GLOB_DAT|R_PPC_ADDR32|R_PPC_ADDR24|R_
+ include $(srctree)/lib/vdso/Makefile
  
- 	return mfspr(SPRN_AMR);
-@@ -341,7 +341,7 @@ static inline unsigned long get_kuap(void)
+ obj-vdso64 = sigtramp.o gettimeofday.o datapage.o cacheflush.o note.o getcpu.o
++targets := $(obj-vdso64) vdso64.so.dbg
  
- static inline void set_kuap(unsigned long value)
- {
--	if (!early_mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
-+	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
- 		return;
+ ifneq ($(c-gettimeofday-y),)
+   CFLAGS_vgettimeofday.o += -include $(c-gettimeofday-y)
+@@ -13,11 +14,11 @@ ifneq ($(c-gettimeofday-y),)
+   CFLAGS_vgettimeofday.o += -DDISABLE_BRANCH_PROFILING
+   CFLAGS_vgettimeofday.o += -ffreestanding -fasynchronous-unwind-tables
+   CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE)
++  targets += vgettimeofday.o
+ endif
  
- 	/*
--- 
-2.25.1
+ # Build rules
+ 
+-targets := $(obj-vdso64) vdso64.so.dbg
+ obj-vdso64 := $(addprefix $(obj)/, $(obj-vdso64))
+ 
+ GCOV_PROFILE := n
 
+
+But then I see it still rebuilt:
+
+  CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
+
+
+I'm not changing the command line, and AFAICS the .cmd file is not
+changing either:
+
+  $ make V=2
+  ...
+    CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
+  
+  $ sha256sum build\~/arch/powerpc/kernel/vdso64/vgettimeofday.o
+  7f635546bc2768c7b929d3de1724d83285f3cd54394fcd7104f8b1301d689d65  build~/arch/powerpc/kernel/vdso64/vgettimeofday.o
+  
+  $ make V=2
+  ...
+    CC      arch/powerpc/kernel/vdso64/vgettimeofday.o - due to command line change
+  
+  $ sha256sum build\~/arch/powerpc/kernel/vdso64/vgettimeofday.o
+  7f635546bc2768c7b929d3de1724d83285f3cd54394fcd7104f8b1301d689d65  build~/arch/powerpc/kernel/vdso64/vgettimeofday.o
+
+
+So any hints on what I'm missing here?
+
+cheers
