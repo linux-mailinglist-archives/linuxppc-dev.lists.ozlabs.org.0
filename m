@@ -1,59 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C03102DCEEC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 10:56:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB282DD07A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 12:37:53 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CxS7d4qwfzDqWR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 20:56:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CxVNY1MYBzDqTJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Dec 2020 22:37:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=SA/NWuFm; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CxS5p55ZPzDqNV
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 20:54:50 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CxS5X2DHlz9v0PW;
- Thu, 17 Dec 2020 10:54:40 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 1Zv_-zH0n3ZU; Thu, 17 Dec 2020 10:54:40 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CxS5X19YGz9v0PP;
- Thu, 17 Dec 2020 10:54:40 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 65DAC8B7EB;
- Thu, 17 Dec 2020 10:54:41 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id qEOXafSG18AY; Thu, 17 Dec 2020 10:54:41 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 540E18B7CD;
- Thu, 17 Dec 2020 10:54:40 +0100 (CET)
-Subject: Re: [RFC PATCH v1 7/7] powerpc/bpf: Implement extended BPF on PPC32
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-References: <cover.1608112796.git.christophe.leroy@csgroup.eu>
- <1fed5e11ba08ee28d12f3f57986e5b143a6aa937.1608112797.git.christophe.leroy@csgroup.eu>
- <20201217061133.lnfnhbzvikgtjb3i@ast-mbp>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <854404a0-1951-91d9-2ebb-208390a64c77@csgroup.eu>
-Date: Thu, 17 Dec 2020 10:54:34 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CxVJN6Q2jzDqS7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Dec 2020 22:34:09 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0BHBWDpm014233; Thu, 17 Dec 2020 06:34:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=sD0/bJGaQNhvpmduiEa9jmNhI2dYNQMxJFGLEi2uvdA=;
+ b=SA/NWuFm9X9WZ1vtxZxnSrxMKTP/mcQJqK80q3tZGfE9wfbO/RS++E+9iFYRIR1Nutli
+ vrkOdCQ5SZEplg8QwUByuu9Mpd0LZfuA8RAXbEVKm9EHWqvRxq/Y31Pt56A7WPu0/2i8
+ WMd8BSe3YJ+0LOq0eD7vY9b7Ri97u7W8/88MSPF+5BGIW92fjf1uaSkHR3uq6G3nkM3Q
+ 6CmlWD31s1rGNVrM2dr3yrt6SqUpC2B9oIHKePpS03yP8rnXHrBR6SWTkriVwAIxtoG0
+ XgUNAmsyqfAw8YLrPBPOxFGGWHIGL9aCvzzLk1e3rwrVkJPZ3XQnAxOBJTiHrki4vbER 5A== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 35g5ukh9vd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Dec 2020 06:34:01 -0500
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BHBNKBZ012484;
+ Thu, 17 Dec 2020 11:33:59 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03fra.de.ibm.com with ESMTP id 35cng8fu21-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Dec 2020 11:33:59 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0BHBWffU12779934
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 17 Dec 2020 11:32:42 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A0C8911C06C;
+ Thu, 17 Dec 2020 11:32:41 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C911011C069;
+ Thu, 17 Dec 2020 11:32:39 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.79.209.142])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 17 Dec 2020 11:32:39 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/perf/hv-24x7: Dont create sysfs event files for dummy
+ events
+Date: Thu, 17 Dec 2020 17:02:30 +0530
+Message-Id: <20201217113230.1069882-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <20201217061133.lnfnhbzvikgtjb3i@ast-mbp>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2020-12-17_07:2020-12-15,
+ 2020-12-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1011 bulkscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012170080
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,88 +94,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: songliubraving@fb.com, daniel@iogearbox.net, john.fastabend@gmail.com,
- andrii@kernel.org, ast@kernel.org, naveen.n.rao@linux.ibm.com,
- netdev@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- sandipan@linux.ibm.com, kpsingh@chromium.org, yhs@fb.com, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kafai@fb.com, linux-kernel@vger.kernel.org
+Cc: kjain@linux.ibm.com, suka@us.ibm.com, maddy@linux.vnet.ibm.com,
+ atrajeev@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+hv_24x7 performance monitoring unit creates list of supported events
+from the event catalog obtained via HCALL. hv_24x7 catalog could also
+contain invalid or dummy events (with names like FREE_  or CPM_FREE_ so
+on). These events does not have any hardware counters backing them.
+So patch adds a check to string compare the event names to filter
+out them.
 
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+---
+ arch/powerpc/perf/hv-24x7.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Le 17/12/2020 à 07:11, Alexei Starovoitov a écrit :
-> On Wed, Dec 16, 2020 at 10:07:37AM +0000, Christophe Leroy wrote:
->> Implement Extended Berkeley Packet Filter on Powerpc 32
->>
->> Test result with test_bpf module:
->>
->> 	test_bpf: Summary: 378 PASSED, 0 FAILED, [354/366 JIT'ed]
-> 
-> nice!
-> 
->> Registers mapping:
->>
->> 	[BPF_REG_0] = r11-r12
->> 	/* function arguments */
->> 	[BPF_REG_1] = r3-r4
->> 	[BPF_REG_2] = r5-r6
->> 	[BPF_REG_3] = r7-r8
->> 	[BPF_REG_4] = r9-r10
->> 	[BPF_REG_5] = r21-r22 (Args 9 and 10 come in via the stack)
->> 	/* non volatile registers */
->> 	[BPF_REG_6] = r23-r24
->> 	[BPF_REG_7] = r25-r26
->> 	[BPF_REG_8] = r27-r28
->> 	[BPF_REG_9] = r29-r30
->> 	/* frame pointer aka BPF_REG_10 */
->> 	[BPF_REG_FP] = r31
->> 	/* eBPF jit internal registers */
->> 	[BPF_REG_AX] = r19-r20
->> 	[TMP_REG] = r18
->>
->> As PPC32 doesn't have a redzone in the stack,
->> use r17 as tail call counter.
->>
->> r0 is used as temporary register as much as possible. It is referenced
->> directly in the code in order to avoid misuse of it, because some
->> instructions interpret it as value 0 instead of register r0
->> (ex: addi, addis, stw, lwz, ...)
->>
->> The following operations are not implemented:
->>
->> 		case BPF_ALU64 | BPF_DIV | BPF_X: /* dst /= src */
->> 		case BPF_ALU64 | BPF_MOD | BPF_X: /* dst %= src */
->> 		case BPF_STX | BPF_XADD | BPF_DW: /* *(u64 *)(dst + off) += src */
->>
->> The following operations are only implemented for power of two constants:
->>
->> 		case BPF_ALU64 | BPF_MOD | BPF_K: /* dst %= imm */
->> 		case BPF_ALU64 | BPF_DIV | BPF_K: /* dst /= imm */
-> 
-> Those are sensible limitations. MOD and DIV are rare, but XADD is common.
-> Please consider doing it as a cmpxchg loop in the future.
-> 
-> Also please run test_progs. It will give a lot better coverage than test_bpf.ko
-> 
+diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+index 6e7e820508df..c3252d8a7818 100644
+--- a/arch/powerpc/perf/hv-24x7.c
++++ b/arch/powerpc/perf/hv-24x7.c
+@@ -894,6 +894,11 @@ static int create_events_from_catalog(struct attribute ***events_,
+ 
+ 		name = event_name(event, &nl);
+ 
++		if (strstr(name, "FREE_")) {
++			pr_info("invalid event %zu (%.*s)\n", event_idx, nl, name);
++			junk_events++;
++			continue;
++		}
+ 		if (event->event_group_record_len == 0) {
+ 			pr_devel("invalid event %zu (%.*s): group_record_len == 0, skipping\n",
+ 					event_idx, nl, name);
+@@ -955,6 +960,9 @@ static int create_events_from_catalog(struct attribute ***events_,
+ 			continue;
+ 
+ 		name  = event_name(event, &nl);
++		if (strstr(name, "FREE_"))
++			continue;
++
+ 		nonce = event_uniq_add(&ev_uniq, name, nl, event->domain);
+ 		ct    = event_data_to_attrs(event_idx, events + event_attr_ct,
+ 					    event, nonce);
+-- 
+2.26.2
 
-I'm having hard time cross building test_progs:
-
-~/linux-powerpc/tools/testing/selftests/bpf/$ make CROSS_COMPILE=ppc-linux-
-...
-   GEN 
-/home/chr/linux-powerpc/tools/testing/selftests/bpf/tools/build/bpftool/Documentation/bpf-helpers.7
-   INSTALL  eBPF_helpers-manpage
-   INSTALL  Documentation-man
-   GEN      vmlinux.h
-/bin/sh: /home/chr/linux-powerpc/tools/testing/selftests/bpf/tools/sbin/bpftool: cannot execute 
-binary file
-make: *** [/home/chr/linux-powerpc/tools/testing/selftests/bpf/tools/include/vmlinux.h] Error 126
-make: *** Deleting file `/home/chr/linux-powerpc/tools/testing/selftests/bpf/tools/include/vmlinux.h'
-
-Looks like it builds bpftool for powerpc and tries to run it on my x86.
-How should I proceed ?
-
-Thanks
-Christophe
