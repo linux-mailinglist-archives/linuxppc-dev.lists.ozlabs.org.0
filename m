@@ -1,51 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4602A2DE1F0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 12:26:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4A72DE3B1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 15:10:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cy65V6WM3zDqYV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 22:26:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cy9k04956zDqYX
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 01:10:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cy5t81XXYzDqXJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Dec 2020 22:17:04 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=KNaTChVn; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4Cy5t44fHbz9sWX; Fri, 18 Dec 2020 22:17:00 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4Cy5t41Bqzz9sWd; Fri, 18 Dec 2020 22:16:59 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1608290220;
- bh=LrxTOR9y2PTwVqNsYpSYzqRjocgGNwhM+AtWxTHDCFw=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=KNaTChVnlCroaQ3LBFVeNC9LQ5vcigM6wYELPUt4n+nB9z10XYRKBAqzniDFcKBys
- Uh9OTijIMat5iOTKX2iluCh3bL2Y2r3g2TPXGC+hdxlag0NAmTu9gxRhTAaK3FJY7m
- CwiCOj5Px9o/OJqRQJRMYJtqC+AWx8zpuwvhxHtV5VZhRxhmJBLn2QxUqU7zeowF7O
- 3NT12C2HauaWxiy+5GW6eopn2sQwJg1N8xMQzMFPVI9ID/kQx0AAXgkqXRsEWwGQa/
- fMVqr28zoW8122gwzriTPUPiMWf2yX7qbKcbrdeNtkkQmhZdriu7PT4LxRfnFTHejs
- o4BylW9k9QIDw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH 3/3] powerpc/vdso: Fix DOTSYM for 32-bit LE VDSO
-Date: Fri, 18 Dec 2020 22:16:19 +1100
-Message-Id: <20201218111619.1206391-3-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201218111619.1206391-1-mpe@ellerman.id.au>
-References: <20201218111619.1206391-1-mpe@ellerman.id.au>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cy9gd63ylzDqWN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 01:08:05 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4Cy9gL3Ck1z9txvg;
+ Fri, 18 Dec 2020 15:07:58 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 5Ndh04yO9aS3; Fri, 18 Dec 2020 15:07:58 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Cy9gL1tj2z9txvB;
+ Fri, 18 Dec 2020 15:07:58 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B41FD8B783;
+ Fri, 18 Dec 2020 15:07:59 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ynTuRuN7N3DG; Fri, 18 Dec 2020 15:07:59 +0100 (CET)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.204.43])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C2E88B75F;
+ Fri, 18 Dec 2020 15:07:59 +0100 (CET)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id F030266868; Fri, 18 Dec 2020 14:07:58 +0000 (UTC)
+Message-Id: <320d7a9ed7b379a6e0edf16d539bc22447272e65.1608299993.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] mm: Remove arch_remap() and mm-arch-hooks.h
+To: Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>
+Date: Fri, 18 Dec 2020 14:07:58 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,94 +57,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: skirmisher@protonmail.com
+Cc: linux-arch@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+ Jeff Dike <jdike@addtoit.com>, linux-um@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, Anton Ivanov <anton.ivanov@cambridgegreys.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Skirmisher reported on IRC that the 32-bit LE VDSO was hanging. This
-turned out to be due to a branch to self in eg. __kernel_gettimeofday.
-Looking at the disassembly with objdump -dR shows why:
+powerpc was the last provider of arch_remap() and the last
+user of mm-arch-hooks.h.
 
-  00000528 <__kernel_gettimeofday>:
-   528:   f0 ff 21 94     stwu    r1,-16(r1)
-   52c:   a6 02 08 7c     mflr    r0
-   530:   f0 ff 21 94     stwu    r1,-16(r1)
-   534:   14 00 01 90     stw     r0,20(r1)
-   538:   05 00 9f 42     bcl     20,4*cr7+so,53c <__kernel_gettimeofday+0x14>
-   53c:   a6 02 a8 7c     mflr    r5
-   540:   ff ff a5 3c     addis   r5,r5,-1
-   544:   c4 fa a5 38     addi    r5,r5,-1340
-   548:   f0 00 a5 38     addi    r5,r5,240
-   54c:   01 00 00 48     bl      54c <__kernel_gettimeofday+0x24>
-                          54c: R_PPC_REL24        .__c_kernel_gettimeofday
+Since commit 526a9c4a7234 ("powerpc/vdso: Provide vdso_remap()"),
+arch_remap() hence mm-arch-hooks.h are not used anymore.
 
-Because we don't process relocations for the VDSO, this branch remains
-a branch from 0x54c to 0x54c.
+Remove them.
 
-With the preceding patch to prohibit R_PPC_REL24 relocations, we
-instead get a build failure:
-
-  0000054c R_PPC_REL24       .__c_kernel_gettimeofday
-  00000598 R_PPC_REL24       .__c_kernel_clock_gettime
-  000005e4 R_PPC_REL24       .__c_kernel_clock_gettime64
-  00000630 R_PPC_REL24       .__c_kernel_clock_getres
-  0000067c R_PPC_REL24       .__c_kernel_time
-  arch/powerpc/kernel/vdso32/vdso32.so.dbg: dynamic relocations are not supported
-
-The root cause is that we're branching to `.__c_kernel_gettimeofday`.
-But this is 32-bit LE code, which doesn't use function descriptors, so
-there are no dot symbols.
-
-The reason we're trying to branch to a dot symbol is because we're
-using the DOTSYM macro, but the ifdefs we use to define the DOTSYM
-macro do not currently work for 32-bit LE.
-
-So like previous commits we need to differentiate if the current
-compilation unit is 64-bit, rather than the kernel as a whole. ie.
-switch from CONFIG_PPC64 to __powerpc64__.
-
-With that fixed 32-bit LE code gets the empty version of DOTSYM, which
-just resolves to the original symbol name, leading to a direct branch
-and no relocations:
-
-  000003f8 <__kernel_gettimeofday>:
-   3f8:   f0 ff 21 94     stwu    r1,-16(r1)
-   3fc:   a6 02 08 7c     mflr    r0
-   400:   f0 ff 21 94     stwu    r1,-16(r1)
-   404:   14 00 01 90     stw     r0,20(r1)
-   408:   05 00 9f 42     bcl     20,4*cr7+so,40c <__kernel_gettimeofday+0x14>
-   40c:   a6 02 a8 7c     mflr    r5
-   410:   ff ff a5 3c     addis   r5,r5,-1
-   414:   f4 fb a5 38     addi    r5,r5,-1036
-   418:   f0 00 a5 38     addi    r5,r5,240
-   41c:   85 06 00 48     bl      aa0 <__c_kernel_gettimeofday>
-
-Fixes: ab037dd87a2f ("powerpc/vdso: Switch VDSO to generic C implementation.")
-Reported-by: "Will Springer <skirmisher@protonmail.com>"
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/ppc_asm.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/um/include/asm/Kbuild          |  1 -
+ include/asm-generic/Kbuild          |  1 -
+ include/asm-generic/mm-arch-hooks.h | 16 ----------------
+ include/linux/mm-arch-hooks.h       | 22 ----------------------
+ mm/mremap.c                         |  3 ---
+ 5 files changed, 43 deletions(-)
+ delete mode 100644 include/asm-generic/mm-arch-hooks.h
+ delete mode 100644 include/linux/mm-arch-hooks.h
 
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index cfa814824285..cc1bca571332 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -180,7 +180,12 @@ END_FW_FTR_SECTION_IFSET(FW_FEATURE_SPLPAR)
- #define VCPU_GPR(n)	__VCPU_GPR(__REG_##n)
+diff --git a/arch/um/include/asm/Kbuild b/arch/um/include/asm/Kbuild
+index 1c63b260ecc4..314979467db1 100644
+--- a/arch/um/include/asm/Kbuild
++++ b/arch/um/include/asm/Kbuild
+@@ -14,7 +14,6 @@ generic-y += irq_regs.h
+ generic-y += irq_work.h
+ generic-y += kdebug.h
+ generic-y += mcs_spinlock.h
+-generic-y += mm-arch-hooks.h
+ generic-y += mmiowb.h
+ generic-y += module.lds.h
+ generic-y += param.h
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index 4365b9aa3e3f..e867eb3058d5 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -34,7 +34,6 @@ mandatory-y += kmap_size.h
+ mandatory-y += kprobes.h
+ mandatory-y += linkage.h
+ mandatory-y += local.h
+-mandatory-y += mm-arch-hooks.h
+ mandatory-y += mmiowb.h
+ mandatory-y += mmu.h
+ mandatory-y += mmu_context.h
+diff --git a/include/asm-generic/mm-arch-hooks.h b/include/asm-generic/mm-arch-hooks.h
+deleted file mode 100644
+index 5ff0e5193f85..000000000000
+--- a/include/asm-generic/mm-arch-hooks.h
++++ /dev/null
+@@ -1,16 +0,0 @@
+-/*
+- * Architecture specific mm hooks
+- */
+-
+-#ifndef _ASM_GENERIC_MM_ARCH_HOOKS_H
+-#define _ASM_GENERIC_MM_ARCH_HOOKS_H
+-
+-/*
+- * This file should be included through arch/../include/asm/Kbuild for
+- * the architecture which doesn't need specific mm hooks.
+- *
+- * In that case, the generic hooks defined in include/linux/mm-arch-hooks.h
+- * are used.
+- */
+-
+-#endif /* _ASM_GENERIC_MM_ARCH_HOOKS_H */
+diff --git a/include/linux/mm-arch-hooks.h b/include/linux/mm-arch-hooks.h
+deleted file mode 100644
+index 9c4bedc95504..000000000000
+--- a/include/linux/mm-arch-hooks.h
++++ /dev/null
+@@ -1,22 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-/*
+- * Generic mm no-op hooks.
+- *
+- * Copyright (C) 2015, IBM Corporation
+- * Author: Laurent Dufour <ldufour@linux.vnet.ibm.com>
+- */
+-#ifndef _LINUX_MM_ARCH_HOOKS_H
+-#define _LINUX_MM_ARCH_HOOKS_H
+-
+-#include <asm/mm-arch-hooks.h>
+-
+-#ifndef arch_remap
+-static inline void arch_remap(struct mm_struct *mm,
+-			      unsigned long old_start, unsigned long old_end,
+-			      unsigned long new_start, unsigned long new_end)
+-{
+-}
+-#define arch_remap arch_remap
+-#endif
+-
+-#endif /* _LINUX_MM_ARCH_HOOKS_H */
+diff --git a/mm/mremap.c b/mm/mremap.c
+index c5590afe7165..e43696a91260 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -22,7 +22,6 @@
+ #include <linux/syscalls.h>
+ #include <linux/mmu_notifier.h>
+ #include <linux/uaccess.h>
+-#include <linux/mm-arch-hooks.h>
+ #include <linux/userfaultfd_k.h>
  
- #ifdef __KERNEL__
--#ifdef CONFIG_PPC64
-+
-+/*
-+ * We use __powerpc64__ here because we want the compat VDSO to use the 32-bit
-+ * version below in the else case of the ifdef.
-+ */
-+#ifdef __powerpc64__
+ #include <asm/cacheflush.h>
+@@ -560,8 +559,6 @@ static unsigned long move_vma(struct vm_area_struct *vma,
+ 		new_addr = err;
+ 	} else {
+ 		mremap_userfaultfd_prep(new_vma, uf);
+-		arch_remap(mm, old_addr, old_addr + old_len,
+-			   new_addr, new_addr + new_len);
+ 	}
  
- #define STACKFRAMESIZE 256
- #define __STK_REG(i)   (112 + ((i)-14)*8)
+ 	/* Conceal VM_ACCOUNT so old reservation is not undone */
 -- 
-2.25.1
+2.25.0
 
