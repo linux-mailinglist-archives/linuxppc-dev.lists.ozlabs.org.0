@@ -2,66 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1362DEB41
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 22:45:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 547DF2DEB45
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 22:47:26 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CyMqV0Fm1zDqXm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 08:45:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CyMsR42KYzDqXD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 08:47:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::e33;
- helo=mail-vs1-xe33.google.com; envelope-from=arielmarcovitch@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux-powerpc.org (client-ip=2a00:1450:4864:20::634;
+ helo=mail-ej1-x634.google.com; envelope-from=kda@linux-powerpc.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-powerpc.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=jxyfIMje; dkim-atps=neutral
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com
- [IPv6:2607:f8b0:4864:20::e33])
+ unprotected) header.d=linux-powerpc-org.20150623.gappssmtp.com
+ header.i=@linux-powerpc-org.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=iASBSEhj; dkim-atps=neutral
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com
+ [IPv6:2a00:1450:4864:20::634])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CyLRZ6Ly2zDqD8
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 07:43:21 +1100 (AEDT)
-Received: by mail-vs1-xe33.google.com with SMTP id z16so2065608vsp.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Dec 2020 12:43:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=l62fXWBivGwlBoP6Q6yUTArybDInvE3dJbHgou5OuB4=;
- b=jxyfIMjeU+V/pldNXEBYpau02vKGdYbw6iFBxIoxftZL9QzHL6vHuSwolxtLvA2wqH
- KzmhXUUaparUZkE+NieyArCHqLxwTTG3DcPTCbkGn0Xy7KXgP8+Z7ZKFK+uueKL/WmX2
- 2D+F0jghJGSD9gPb8trOo/kpwbzZdIZsDW4eyEuUVhje15U5w4VFGJiJhTZA0xQ0jF92
- vxd86+5kYbrt9ymOlGQyhOalBC6zquGtpxQS3Okio4VIFpUmpFOyR5F5Px7nojC+MeWm
- C9dBCCHYxwmBflovDELfN0Tm2lIyloWhpqAyy2RHuLBCbhzjS1cSDF2coxs6QkQRkGCN
- cJyg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CyMMq183kzDqWL
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 08:25:07 +1100 (AEDT)
+Received: by mail-ej1-x634.google.com with SMTP id j22so5189435eja.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Dec 2020 13:25:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-powerpc-org.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+ :cc; bh=qdU33s6awzfJTAEq5NkXSmgg5OUu2HQOgM878KutAs8=;
+ b=iASBSEhjmdVcfcb0MBwMf3JZzoqprIKBN310SLgMN8LSbT+/r0oNkSkx4c9bWIjlcb
+ S57f+lYDq0g0c6DmX76T2Hxu/Ubf8QGK0rp4cJvYun6BSxc0myMm1y/VE1fJRegbDtMt
+ A4dUYgB5fIJBZdxjBV288udkd8/PcTM2WTX1mvTjg2DnZOl/pavBMVXh1A4P+VnIsz7c
+ 6FDAiB8G9RDr23zZZwuAQaZGVK0G3JKuJ0TdsWcBVWU0N142zXVG7F8J8GicIjdBf3HF
+ +tbr8F2rK394gYlDOy6XvvKQnN8XyBecJd8Z7P0EDsfzLmG2tH/avsmR8lsiA3ETLI+Q
+ v7tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ h=x-gm-message-state:mime-version:in-reply-to:references:from:date
  :message-id:subject:to:cc;
- bh=l62fXWBivGwlBoP6Q6yUTArybDInvE3dJbHgou5OuB4=;
- b=Z9fBj9mas1ReyFakSOZ+aAJl7Hw7KoB5ghNM68jUEw1JrkBKqSJKGN7+MtP76H6x/m
- ugGyqHf13HO2LWXwtwf/8g2GiZQu3YqeIZDeP+TybML64kAsThgbHwxiAEDrX0wcbxly
- oCseuvEjS0MhpTW1gTIP3ZGtDvVjVx+rJieq0bLuHPhasgyTu6gKFnHriaj+tDwuS5er
- bcUhrKoFwM9I92Elz6Et7TMSj0fr87E9Vmfm3GuY5DwCvvViqpbgDsmRC8jvxF5GGPyB
- c4cyFTSMCQa/jTPtwca/pk75QOGJ/+00RdAMCDTa46cjul0Vr+Hn9yP07Wvn3YFiQKj4
- iCHA==
-X-Gm-Message-State: AOAM532dk1ni4HJkskHfsPlCV8Td8N9txCIhBwoFK/etzSXSYGc8W9lF
- 6hWHTd77r5YL1n/0EhZXp6ub0RsrB5UD/Ajs+be70sdXrCmQBQ==
-X-Google-Smtp-Source: ABdhPJwgcv8pviA1ZBB44l0qFlV7DI5XKtkmGAn3tN+l3zsJKq3EPmg2ySD9zVDcZkEm3YOe5odgyqrfotBXkCTYbIc=
-X-Received: by 2002:a67:8011:: with SMTP id b17mr6838074vsd.2.1608324197703;
- Fri, 18 Dec 2020 12:43:17 -0800 (PST)
+ bh=qdU33s6awzfJTAEq5NkXSmgg5OUu2HQOgM878KutAs8=;
+ b=swiy4KMwGfHMJp4N6Dm+HU/mC+RNY1B1Jgp0KlV8jxYAB8sHRdSTgM01I1KNatVuHP
+ 2K/D2wvgTSXpOhEoBZXvsp8TMJSxeBuLnWEtzvfaLN7/Msok2+EKeIMDiRiRovgUjT5O
+ F0CyFffxr/QgyIbkLlEgsHx8G6AN3gux0S5O+vx327z2rzaLcThEJSsArToHcoEvcczC
+ GKrOfiBwPu0j2r+nyxQtxp/kg4AdMtNc/SSSoRWb0sAQLPmRvSz3vIGwxbVBBFobDsOS
+ RPuhcwVIxaeT9cNVgKqFgZ/m8dDWwtqOXj5jIBhD7lStuRi5aTvQDcyHMktmC3KTma2l
+ wK3Q==
+X-Gm-Message-State: AOAM5308BJAYkg8+Xs6ooiYl6g9Q5cdFq3M9QQQnbxYGrnNObx8GOp/W
+ fjfLWHzEhE6/ow4M04QrdHQvyNH5xIk3Axa1caEZHg==
+X-Google-Smtp-Source: ABdhPJyvv4D78oMlwuI6+h8Mle1MxvLghiI4dinH5NMNG+0jh5Kt6wtHkryYG8DxSxQvpydcV08RsPr3fWop7oXqf1I=
+X-Received: by 2002:a17:906:cd06:: with SMTP id
+ oz6mr5951259ejb.25.1608326703325; 
+ Fri, 18 Dec 2020 13:25:03 -0800 (PST)
 MIME-Version: 1.0
-References: <20201213183556.16976-1-ariel.marcovitch@gmail.com>
- <4716e80b-db6f-7669-684f-398971ed5f2e@csgroup.eu>
-In-Reply-To: <4716e80b-db6f-7669-684f-398971ed5f2e@csgroup.eu>
-From: ariel marcovitch <arielmarcovitch@gmail.com>
-Date: Fri, 18 Dec 2020 22:43:06 +0200
-Message-ID: <CAFGKuwoE=Mh3jEnzjfCGzMw3d+R_Z=i+HGEVR+6-PrMYL9oO1g@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: fix alignment bug whithin the init sections
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
+Received: by 2002:a54:3c91:0:0:0:0:0 with HTTP; Fri, 18 Dec 2020 13:25:02
+ -0800 (PST)
+X-Originating-IP: [2a00:1fa0:406:e1a6:1ed:df38:8f1b:4315]
+In-Reply-To: <a546bc22-1e18-8e71-e973-65cf7095594a@xenosoft.de>
+References: <a546bc22-1e18-8e71-e973-65cf7095594a@xenosoft.de>
+From: Denis Kirjanov <kda@linux-powerpc.org>
+Date: Sat, 19 Dec 2020 00:25:02 +0300
+Message-ID: <CAOJe8K3+j3kGHYhSfjyywXcSQFca0Y370LiAa2uVsW5znUPsAA@mail.gmail.com>
+Subject: Re: GIT kernel with the PowerPC updates 5.11-1 doesn't boot on a FSL
+ P5040 board and in a virtual e5500 QEMU machine
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Content-Type: multipart/alternative; boundary="000000000000d5b6d205b6c3bd4d"
 X-Mailman-Approved-At: Sat, 19 Dec 2020 08:42:47 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,119 +80,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Darren Stevens <darren@stevens-zone.net>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 18, 2020 at 5:39 PM Christophe Leroy <
-christophe.leroy@csgroup.eu> wrote:
+--000000000000d5b6d205b6c3bd4d
+Content-Type: text/plain; charset="UTF-8"
 
-> It can cause, or it causes ? Did you encounter the issue ?
->
-Yes, in configs that result in the section layout I described, the crush is
-consistent.
+On Friday, December 18, 2020, Christian Zigotzky <chzigotzky@xenosoft.de>
+wrote:
 
+> Hello,
 >
-> > The init sections are ordered like this:
-> >       .init.text
-> >       .exit.text
-> >       .init.data
-> >
-> > Currently, these sections aren't page aligned.
-> >
-> > Because the init code is mapped read-only at runtime and because the
-> > .init.text section can potentially reside on the same physical page as
-> > .init.data, the beginning of .init.data might be mapped read-only along
-> > with .init.text.
+> I compiled the latest Git kernel with the new PowerPC updates 5.11-1 [1]
+> today. Unfortunately this kernel doesn't boot on my FSL P5040 board [2] and
+> in a virtual e5500 QEMU machine [3].
 >
-> init code is mapped PAGE_KERNEL_TEXT.
+> I was able to revert the new PowerPC updates 5.11-1 [4] and after a new
+> compiling, the kernel boots without any problems on my FSL P5040 board.
 >
-> Whether PAGE_KERNEL_TEXT is read-only or not depends on the selected
-> options.
->
-You are right, of course. Should I change the commit message to 'might be
-mapped' or something?
+> Please check the new PowerPC updates 5.11-1.
 
->
-> > Then when the kernel tries to modify a variable in .init.data (like
-> > kthreadd_done, used in kernel_init()) the kernel panics.
-> >
-> > To avoid this, I made these sections page aligned.
->
-> Should write this unpersonal, something like "To avoid this, make these
-> sections page aligned"
->
-Noted, thanks.
+
+Can you bisect the bad commit?
+
 
 
 >
-> >
-> > Fixes: 060ef9d89d18 ("powerpc32: PAGE_EXEC required for inittext")
-> > Signed-off-by: Ariel Marcovitch <ariel.marcovitch@gmail.com>
-> > ---
-> >   arch/powerpc/kernel/vmlinux.lds.S | 7 +++++++
-> >   1 file changed, 7 insertions(+)
-> >
-> > diff --git a/arch/powerpc/kernel/vmlinux.lds.S
-> b/arch/powerpc/kernel/vmlinux.lds.S
-> > index 326e113d2e45..e3a7c90c03f4 100644
-> > --- a/arch/powerpc/kernel/vmlinux.lds.S
-> > +++ b/arch/powerpc/kernel/vmlinux.lds.S
-> > @@ -179,6 +179,11 @@ SECTIONS
-> >   #endif
-> >       } :text
-> >
-> > +     /* .init.text is made RO and .exit.text is not, so we must
-> > +      * ensure these sections reside in separate physical pages.
-> > +      */
-> > +     . = ALIGN(PAGE_SIZE);
-> > +
+> Thanks,
+> Christian
 >
-> In principle, as it is text, it should be made RO as well. But what
-> happens at the begining doesn't
-> really matter, anyway .exit.text should never be executed and is discarded
-> together with init text.
-> So, I think it is OK the live with it as is for the time being.
-
-
-> Making it page aligned makes sense anyway.
 >
-> Should we make _einittext page aligned instead, just like _etext ?
-
-Yes, this will probably be better (because when _einittext is not aligned,
-the part of the page after _einittext is mapped RO implicitly, and it's
-hard to notice from the code). I suppose you mean something like this:
-                _sinittext = .;
-                INIT_TEXT
-+
-+               . = ALIGN(.);
-                _einittext = .;
-
->       /* .exit.text is discarded at runtime, not link time,
-> >        * to deal with references from __bug_table
-> >        */
-> > @@ -186,6 +191,8 @@ SECTIONS
-> >               EXIT_TEXT
-> >       }
-> >
-> > +     . = ALIGN(PAGE_SIZE);
-> > +
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
+> ux.git/commit/?id=8a5be36b9303ae167468d4f5e1b3c090b9981396
+> [2] http://wiki.amiga.org/index.php?title=X5000
+> [3] qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage -drive
+> format=raw,file=MintPPC32-X5000.img,index=0,if=virtio -netdev
+> user,id=mynet0 -device virtio-net-pci,netdev=mynet0 -append "rw
+> root=/dev/vda" -device virtio-vga -usb -device usb-ehci,id=ehci -device
+> usb-tablet -device virtio-keyboard-pci -smp 4 -vnc :1
+> [4] git revert 8a5be36b9303ae167468d4f5e1b3c090b9981396 -m 1
 >
-> Here for sure, as you explain in the coming log, this needs to be
-> separated from init text. So
-> making it aligned is a must.
 
+--000000000000d5b6d205b6c3bd4d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> >       .init.data : AT(ADDR(.init.data) - LOAD_OFFSET) {
-> >               INIT_DATA
-> >       }
-> >
-> > base-commit: 1398820fee515873379809a6415930ad0764b2f6
-> >
->
-> Christophe
->
-Thanks for your time,
-        Ariel Marcovitch
+<br><br>On Friday, December 18, 2020, Christian Zigotzky &lt;<a href=3D"mai=
+lto:chzigotzky@xenosoft.de">chzigotzky@xenosoft.de</a>&gt; wrote:<br><block=
+quote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc=
+ solid;padding-left:1ex">Hello,<br>
+<br>
+I compiled the latest Git kernel with the new PowerPC updates 5.11-1 [1] to=
+day. Unfortunately this kernel doesn&#39;t boot on my FSL P5040 board [2] a=
+nd in a virtual e5500 QEMU machine [3].<br>
+<br>
+I was able to revert the new PowerPC updates 5.11-1 [4] and after a new com=
+piling, the kernel boots without any problems on my FSL P5040 board.<br>
+<br>
+Please check the new PowerPC updates 5.11-1.</blockquote><div><br></div><di=
+v>Can you bisect the bad commit?</div><div><br></div><div>=C2=A0</div><bloc=
+kquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #cc=
+c solid;padding-left:1ex">
+<br>
+Thanks,<br>
+Christian<br>
+<br>
+<br>
+[1] <a href=3D"https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin=
+ux.git/commit/?id=3D8a5be36b9303ae167468d4f5e1b3c090b9981396" target=3D"_bl=
+ank">https://git.kernel.org/pub/scm<wbr>/linux/kernel/git/torvalds/lin<wbr>=
+ux.git/commit/?id=3D8a5be36b9303<wbr>ae167468d4f5e1b3c090b9981396</a><br>
+[2] <a href=3D"http://wiki.amiga.org/index.php?title=3DX5000" target=3D"_bl=
+ank">http://wiki.amiga.org/index.ph<wbr>p?title=3DX5000</a><br>
+[3] qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage -drive f=
+ormat=3Draw,file=3DMintPPC32-X500<wbr>0.img,index=3D0,if=3Dvirtio -netdev u=
+ser,id=3Dmynet0 -device virtio-net-pci,netdev=3Dmynet0 -append &quot;rw roo=
+t=3D/dev/vda&quot; -device virtio-vga -usb -device usb-ehci,id=3Dehci -devi=
+ce usb-tablet -device virtio-keyboard-pci -smp 4 -vnc :1<br>
+[4] git revert 8a5be36b9303ae167468d4f5e1b3c0<wbr>90b9981396 -m 1<br>
+</blockquote>
+
+--000000000000d5b6d205b6c3bd4d--
