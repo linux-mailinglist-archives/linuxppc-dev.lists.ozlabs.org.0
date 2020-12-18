@@ -1,87 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3EC2DDE8A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 07:23:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C78CD2DDEC4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 07:57:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CxzLz27hJzDqXJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 17:23:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cy06w0d6qzDqZG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 17:57:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=TVpDwF5F; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CxzKD5l1vzDqQs
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Dec 2020 17:21:30 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0BI62Jv6160568; Fri, 18 Dec 2020 01:21:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=v0I4Firm0Qr586y5SeVV+M1N6ptYXQ/oTT7Jl73AOCc=;
- b=TVpDwF5FoljaNIbcfaOA2Uue9DH85YjBloyDzPkdSiGP4fDVUB3BNjByEvcty24Zeb+s
- i0TJN9ejdupz1AqxO91WEGudPcsSgwDnOOZSffvE9hE/oZpK+IPuZQbxo4txDERLz6Y2
- iSvqGreu9EGHemDOZVhNNTH34viJla0vVhS/TLRrLLFY7UagBN4WXDq8Kh5yTWUVw3GC
- SeTH5WBBAPI+hUhmC58/mRa3SDpjCiJjtu1x/ra0qWjoZ4fHSqKZSo2K1CN8AihRe9xz
- WTxDlafekJwNlbxYgrHb9Nh4lDWjwuu7Ydav1bRO5GQtuIIGQAC9Fjh5UDFCY8UsZBkR /w== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35gpkerphc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 18 Dec 2020 01:21:22 -0500
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BI6FrHK023987;
- Fri, 18 Dec 2020 06:21:22 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma01wdc.us.ibm.com with ESMTP id 35cng9dfyq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 18 Dec 2020 06:21:22 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0BI6LLth29426150
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 18 Dec 2020 06:21:21 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 18B19BE059;
- Fri, 18 Dec 2020 06:21:21 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5548CBE054;
- Fri, 18 Dec 2020 06:21:19 +0000 (GMT)
-Received: from manicouagan.localdomain.com (unknown [9.85.195.64])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 18 Dec 2020 06:21:18 +0000 (GMT)
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/mm: Limit allocation of SWIOTLB on server machines
-Date: Fri, 18 Dec 2020 03:21:03 -0300
-Message-Id: <20201218062103.76102-1-bauerman@linux.ibm.com>
-X-Mailer: git-send-email 2.29.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-18_03:2020-12-17,
- 2020-12-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- phishscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0 malwarescore=0
- mlxlogscore=999 adultscore=0 clxscore=1011 mlxscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012180040
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cy05F6Vh6zDqWS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Dec 2020 17:56:10 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4Cy0512qD5z9vBn3;
+ Fri, 18 Dec 2020 07:56:05 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 6cf9Mvim-Poy; Fri, 18 Dec 2020 07:56:05 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Cy0511vfJz9vBmT;
+ Fri, 18 Dec 2020 07:56:05 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 33C738B777;
+ Fri, 18 Dec 2020 07:56:06 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 8HqV_UhUuv6t; Fri, 18 Dec 2020 07:56:06 +0100 (CET)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E52788B75F;
+ Fri, 18 Dec 2020 07:56:05 +0100 (CET)
+Received: by localhost.localdomain (Postfix, from userid 0)
+ id A739166934; Fri, 18 Dec 2020 06:56:05 +0000 (UTC)
+Message-Id: <62df436454ef06e104cc334a0859a2878d7888d5.1608274548.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2] powerpc/32s: Only build hash code when
+ CONFIG_PPC_BOOK3S_604 is selected
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri, 18 Dec 2020 06:56:05 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,77 +59,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On server-class POWER machines, we don't need the SWIOTLB unless we're a
-secure VM. Nevertheless, if CONFIG_SWIOTLB is enabled we unconditionally
-allocate it.
+It is now possible to only build book3s/32 kernel for
+CPUs without hash table.
 
-In most cases this is harmless, but on a few machine configurations (e.g.,
-POWER9 powernv systems with 4 GB area reserved for crashdump kernel) it can
-happen that memblock can't find a 64 MB chunk of memory for the SWIOTLB and
-fails with a scary-looking WARN_ONCE:
+Opt out hash related code when CONFIG_PPC_BOOK3S_604 is not selected.
 
- ------------[ cut here ]------------
- memblock: bottom-up allocation failed, memory hotremove may be affected
- WARNING: CPU: 0 PID: 0 at mm/memblock.c:332 memblock_find_in_range_node+0x328/0x340
- Modules linked in:
- CPU: 0 PID: 0 Comm: swapper Not tainted 5.10.0-rc2-orig+ #6
- NIP:  c000000000442f38 LR: c000000000442f34 CTR: c0000000001e0080
- REGS: c000000001def900 TRAP: 0700   Not tainted  (5.10.0-rc2-orig+)
- MSR:  9000000002021033 <SF,HV,VEC,ME,IR,DR,RI,LE>  CR: 28022222  XER: 20040000
- CFAR: c00000000014b7b4 IRQMASK: 1
- GPR00: c000000000442f34 c000000001defba0 c000000001deff00 0000000000000047
- GPR04: 00000000ffff7fff c000000001def828 c000000001def820 0000000000000000
- GPR08: 0000001ffc3e0000 c000000001b75478 c000000001b75478 0000000000000001
- GPR12: 0000000000002000 c000000002030000 0000000000000000 0000000000000000
- GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000002030000
- GPR20: 0000000000000000 0000000000010000 0000000000010000 c000000001defc10
- GPR24: c000000001defc08 c000000001c91868 c000000001defc18 c000000001c91890
- GPR28: 0000000000000000 ffffffffffffffff 0000000004000000 00000000ffffffff
- NIP [c000000000442f38] memblock_find_in_range_node+0x328/0x340
- LR [c000000000442f34] memblock_find_in_range_node+0x324/0x340
- Call Trace:
- [c000000001defba0] [c000000000442f34] memblock_find_in_range_node+0x324/0x340 (unreliable)
- [c000000001defc90] [c0000000015ac088] memblock_alloc_range_nid+0xec/0x1b0
- [c000000001defd40] [c0000000015ac1f8] memblock_alloc_internal+0xac/0x110
- [c000000001defda0] [c0000000015ac4d0] memblock_alloc_try_nid+0x94/0xcc
- [c000000001defe30] [c00000000159c3c8] swiotlb_init+0x78/0x104
- [c000000001defea0] [c00000000158378c] mem_init+0x4c/0x98
- [c000000001defec0] [c00000000157457c] start_kernel+0x714/0xac8
- [c000000001deff90] [c00000000000d244] start_here_common+0x1c/0x58
- Instruction dump:
- 2c230000 4182ffd4 ea610088 ea810090 4bfffe84 39200001 3d42fff4 3c62ff60
- 3863c560 992a8bfc 4bd0881d 60000000 <0fe00000> ea610088 4bfffd94 60000000
- random: get_random_bytes called from __warn+0x128/0x184 with crng_init=0
- ---[ end trace 0000000000000000 ]---
- software IO TLB: Cannot allocate buffer
-
-Unless this is a secure VM the message can actually be ignored, because the
-SWIOTLB isn't needed. Therefore, let's avoid the SWIOTLB in those cases.
-
-Fixes: eae9eec476d1 ("powerpc/pseries/svm: Allocate SWIOTLB buffer anywhere in memory")
-Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/mm/mem.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+v2: Rebased
+---
+ arch/powerpc/kernel/head_book3s_32.S | 12 ++++++++++++
+ arch/powerpc/mm/book3s32/Makefile    |  4 +++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index afab328d0887..3af991844145 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -300,7 +300,8 @@ void __init mem_init(void)
- 	memblock_set_bottom_up(true);
- 	if (is_secure_guest())
- 		svm_swiotlb_init();
--	else
-+	/* Server machines don't need SWIOTLB if they're not secure guests. */
-+	else if (!machine_is(pseries) && !machine_is(powernv))
- 		swiotlb_init(0);
- #endif
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
+index 349bf3f0c3af..c02024bce544 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -286,6 +286,7 @@ MachineCheck:
+ 	DO_KVM  0x300
+ DataAccess:
+ #ifdef CONFIG_VMAP_STACK
++#ifdef CONFIG_PPC_BOOK3S_604
+ BEGIN_MMU_FTR_SECTION
+ 	mtspr	SPRN_SPRG_SCRATCH2,r10
+ 	mfspr	r10, SPRN_SPRG_THREAD
+@@ -302,12 +303,14 @@ BEGIN_MMU_FTR_SECTION
+ MMU_FTR_SECTION_ELSE
+ 	b	1f
+ ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_HPTE_TABLE)
++#endif
+ 1:	EXCEPTION_PROLOG_0 handle_dar_dsisr=1
+ 	EXCEPTION_PROLOG_1
+ 	b	handle_page_fault_tramp_1
+ #else	/* CONFIG_VMAP_STACK */
+ 	EXCEPTION_PROLOG handle_dar_dsisr=1
+ 	get_and_save_dar_dsisr_on_stack	r4, r5, r11
++#ifdef CONFIG_PPC_BOOK3S_604
+ BEGIN_MMU_FTR_SECTION
+ 	andis.	r0, r5, (DSISR_BAD_FAULT_32S | DSISR_DABRMATCH)@h
+ 	bne	handle_page_fault_tramp_2	/* if not, try to put a PTE */
+@@ -315,8 +318,11 @@ BEGIN_MMU_FTR_SECTION
+ 	bl	hash_page
+ 	b	handle_page_fault_tramp_1
+ MMU_FTR_SECTION_ELSE
++#endif
+ 	b	handle_page_fault_tramp_2
++#ifdef CONFIG_PPC_BOOK3S_604
+ ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_HPTE_TABLE)
++#endif
+ #endif	/* CONFIG_VMAP_STACK */
  
+ /* Instruction access exception. */
+@@ -332,12 +338,14 @@ InstructionAccess:
+ 	mfspr	r11, SPRN_SRR1		/* check whether user or kernel */
+ 	stw	r11, SRR1(r10)
+ 	mfcr	r10
++#ifdef CONFIG_PPC_BOOK3S_604
+ BEGIN_MMU_FTR_SECTION
+ 	andis.	r11, r11, SRR1_ISI_NOPT@h	/* no pte found? */
+ 	bne	hash_page_isi
+ .Lhash_page_isi_cont:
+ 	mfspr	r11, SPRN_SRR1		/* check whether user or kernel */
+ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
++#endif
+ 	andi.	r11, r11, MSR_PR
+ 
+ 	EXCEPTION_PROLOG_1
+@@ -348,9 +356,11 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
+ 	beq	1f			/* if so, try to put a PTE */
+ 	li	r3,0			/* into the hash table */
+ 	mr	r4,r12			/* SRR0 is fault address */
++#ifdef CONFIG_PPC_BOOK3S_604
+ BEGIN_MMU_FTR_SECTION
+ 	bl	hash_page
+ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
++#endif
+ #endif	/* CONFIG_VMAP_STACK */
+ 1:	mr	r4,r12
+ 	andis.	r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 bits */
+@@ -683,6 +693,7 @@ handle_page_fault_tramp_2:
+ 	EXC_XFER_LITE(0x300, handle_page_fault)
+ 
+ #ifdef CONFIG_VMAP_STACK
++#ifdef CONFIG_PPC_BOOK3S_604
+ .macro save_regs_thread		thread
+ 	stw	r0, THR0(\thread)
+ 	stw	r3, THR3(\thread)
+@@ -754,6 +765,7 @@ fast_hash_page_return:
+ 	mfspr	r11, SPRN_SPRG_SCRATCH1
+ 	mfspr	r10, SPRN_SPRG_SCRATCH0
+ 	rfi
++#endif /* CONFIG_PPC_BOOK3S_604 */
+ 
+ stack_overflow:
+ 	vmap_stack_overflow_exception
+diff --git a/arch/powerpc/mm/book3s32/Makefile b/arch/powerpc/mm/book3s32/Makefile
+index 3f972db17761..446d9de88ce4 100644
+--- a/arch/powerpc/mm/book3s32/Makefile
++++ b/arch/powerpc/mm/book3s32/Makefile
+@@ -6,4 +6,6 @@ ifdef CONFIG_KASAN
+ CFLAGS_mmu.o  		+= -DDISABLE_BRANCH_PROFILING
+ endif
+ 
+-obj-y += mmu.o hash_low.o mmu_context.o tlb.o nohash_low.o
++obj-y += mmu.o mmu_context.o
++obj-$(CONFIG_PPC_BOOK3S_603) += nohash_low.o
++obj-$(CONFIG_PPC_BOOK3S_604) += hash_low.o tlb.o
+-- 
+2.25.0
+
