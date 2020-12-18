@@ -1,53 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78CD2DDEC4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 07:57:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E49A2DDF41
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 08:53:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cy06w0d6qzDqZG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 17:57:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cy1M16pSzzDqWy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 18:53:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=qahQlHkJ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cy05F6Vh6zDqWS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Dec 2020 17:56:10 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Cy0512qD5z9vBn3;
- Fri, 18 Dec 2020 07:56:05 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 6cf9Mvim-Poy; Fri, 18 Dec 2020 07:56:05 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Cy0511vfJz9vBmT;
- Fri, 18 Dec 2020 07:56:05 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 33C738B777;
- Fri, 18 Dec 2020 07:56:06 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 8HqV_UhUuv6t; Fri, 18 Dec 2020 07:56:06 +0100 (CET)
-Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E52788B75F;
- Fri, 18 Dec 2020 07:56:05 +0100 (CET)
-Received: by localhost.localdomain (Postfix, from userid 0)
- id A739166934; Fri, 18 Dec 2020 06:56:05 +0000 (UTC)
-Message-Id: <62df436454ef06e104cc334a0859a2878d7888d5.1608274548.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2] powerpc/32s: Only build hash code when
- CONFIG_PPC_BOOK3S_604 is selected
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Fri, 18 Dec 2020 06:56:05 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cy1KQ4lFtzDqWt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Dec 2020 18:51:54 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0BI7VhPr193626; Fri, 18 Dec 2020 02:51:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=KfF9Unjnv7wYxVnd65HkfntXnDg0A15oGsKwxlu1lxE=;
+ b=qahQlHkJwQ8QmlSbBHmZnX4iaX6Z2S44H7gODkVovVyQThMt/38nRixflgDeindpQOpl
+ M55nnrDUuPwNxZING98bYgp1W4w1G0GMYt/QuQBVFQtWQrp9j+UlmXThJG/t6qyb1xst
+ LGefZioWzrWm5AeQImKZoKWlc7ssCljWhDLgLfmol15sngh7kmSZ401ilyGD7n3FLfGH
+ f9avw87n7MpfYpPVm6/JGxwXSs2Gl8KZcRv2jbUuWEciLZfb9FYkiT2JrteRLG37RgE0
+ nMtIp5wt5c63gJqdzEtzsMYNdHgTvRrq05p4gaZHbA2QHnuS+KryEeTCgAZrEHhCuUby /w== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35gk3y70ng-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 18 Dec 2020 02:51:45 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BI7h0Y4029048;
+ Fri, 18 Dec 2020 07:51:44 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma02dal.us.ibm.com with ESMTP id 35d526kcd5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 18 Dec 2020 07:51:44 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0BI7ph0311534774
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 18 Dec 2020 07:51:43 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 30B247805F;
+ Fri, 18 Dec 2020 07:51:43 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 05F6E78060;
+ Fri, 18 Dec 2020 07:51:39 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.77.198.66])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 18 Dec 2020 07:51:39 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/perf/hv-24x7: Dont create sysfs event files for
+ dummy events
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20201217113230.1069882-1-kjain@linux.ibm.com>
+ <87o8isx77u.fsf@mpe.ellerman.id.au>
+From: kajoljain <kjain@linux.ibm.com>
+Message-ID: <4f5e6642-3c0b-94e4-d213-e98368e03445@linux.ibm.com>
+Date: Fri, 18 Dec 2020 13:21:38 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
+MIME-Version: 1.0
+In-Reply-To: <87o8isx77u.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2020-12-18_04:2020-12-17,
+ 2020-12-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0
+ phishscore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012180050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,118 +101,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: suka@us.ibm.com, maddy@linux.vnet.ibm.com, atrajeev@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It is now possible to only build book3s/32 kernel for
-CPUs without hash table.
 
-Opt out hash related code when CONFIG_PPC_BOOK3S_604 is not selected.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v2: Rebased
----
- arch/powerpc/kernel/head_book3s_32.S | 12 ++++++++++++
- arch/powerpc/mm/book3s32/Makefile    |  4 +++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+On 12/18/20 6:26 AM, Michael Ellerman wrote:
+> Kajol Jain <kjain@linux.ibm.com> writes:
+>> hv_24x7 performance monitoring unit creates list of supported events
+>> from the event catalog obtained via HCALL. hv_24x7 catalog could also
+>> contain invalid or dummy events (with names like FREE_  or CPM_FREE_ so
+>> on). These events does not have any hardware counters backing them.
+>> So patch adds a check to string compare the event names to filter
+>> out them.
+>>
+>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+>> ---
+>>  arch/powerpc/perf/hv-24x7.c | 8 ++++++++
+>>  1 file changed, 8 insertions(+)
+>>
+>> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+>> index 6e7e820508df..c3252d8a7818 100644
+>> --- a/arch/powerpc/perf/hv-24x7.c
+>> +++ b/arch/powerpc/perf/hv-24x7.c
+>> @@ -894,6 +894,11 @@ static int create_events_from_catalog(struct attribute ***events_,
+>>  
+>>  		name = event_name(event, &nl);
+>>  
+>> +		if (strstr(name, "FREE_")) {
+>> +			pr_info("invalid event %zu (%.*s)\n", event_idx, nl, name);
+>> +			junk_events++;
+>> +			continue;
+> 
+> I don't think we want a print for each event, just one at the end saying
+> "Dropped %d invalid events" would be preferable I think.
 
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index 349bf3f0c3af..c02024bce544 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -286,6 +286,7 @@ MachineCheck:
- 	DO_KVM  0x300
- DataAccess:
- #ifdef CONFIG_VMAP_STACK
-+#ifdef CONFIG_PPC_BOOK3S_604
- BEGIN_MMU_FTR_SECTION
- 	mtspr	SPRN_SPRG_SCRATCH2,r10
- 	mfspr	r10, SPRN_SPRG_THREAD
-@@ -302,12 +303,14 @@ BEGIN_MMU_FTR_SECTION
- MMU_FTR_SECTION_ELSE
- 	b	1f
- ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_HPTE_TABLE)
-+#endif
- 1:	EXCEPTION_PROLOG_0 handle_dar_dsisr=1
- 	EXCEPTION_PROLOG_1
- 	b	handle_page_fault_tramp_1
- #else	/* CONFIG_VMAP_STACK */
- 	EXCEPTION_PROLOG handle_dar_dsisr=1
- 	get_and_save_dar_dsisr_on_stack	r4, r5, r11
-+#ifdef CONFIG_PPC_BOOK3S_604
- BEGIN_MMU_FTR_SECTION
- 	andis.	r0, r5, (DSISR_BAD_FAULT_32S | DSISR_DABRMATCH)@h
- 	bne	handle_page_fault_tramp_2	/* if not, try to put a PTE */
-@@ -315,8 +318,11 @@ BEGIN_MMU_FTR_SECTION
- 	bl	hash_page
- 	b	handle_page_fault_tramp_1
- MMU_FTR_SECTION_ELSE
-+#endif
- 	b	handle_page_fault_tramp_2
-+#ifdef CONFIG_PPC_BOOK3S_604
- ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_HPTE_TABLE)
-+#endif
- #endif	/* CONFIG_VMAP_STACK */
- 
- /* Instruction access exception. */
-@@ -332,12 +338,14 @@ InstructionAccess:
- 	mfspr	r11, SPRN_SRR1		/* check whether user or kernel */
- 	stw	r11, SRR1(r10)
- 	mfcr	r10
-+#ifdef CONFIG_PPC_BOOK3S_604
- BEGIN_MMU_FTR_SECTION
- 	andis.	r11, r11, SRR1_ISI_NOPT@h	/* no pte found? */
- 	bne	hash_page_isi
- .Lhash_page_isi_cont:
- 	mfspr	r11, SPRN_SRR1		/* check whether user or kernel */
- END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
-+#endif
- 	andi.	r11, r11, MSR_PR
- 
- 	EXCEPTION_PROLOG_1
-@@ -348,9 +356,11 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
- 	beq	1f			/* if so, try to put a PTE */
- 	li	r3,0			/* into the hash table */
- 	mr	r4,r12			/* SRR0 is fault address */
-+#ifdef CONFIG_PPC_BOOK3S_604
- BEGIN_MMU_FTR_SECTION
- 	bl	hash_page
- END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
-+#endif
- #endif	/* CONFIG_VMAP_STACK */
- 1:	mr	r4,r12
- 	andis.	r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 bits */
-@@ -683,6 +693,7 @@ handle_page_fault_tramp_2:
- 	EXC_XFER_LITE(0x300, handle_page_fault)
- 
- #ifdef CONFIG_VMAP_STACK
-+#ifdef CONFIG_PPC_BOOK3S_604
- .macro save_regs_thread		thread
- 	stw	r0, THR0(\thread)
- 	stw	r3, THR3(\thread)
-@@ -754,6 +765,7 @@ fast_hash_page_return:
- 	mfspr	r11, SPRN_SPRG_SCRATCH1
- 	mfspr	r10, SPRN_SPRG_SCRATCH0
- 	rfi
-+#endif /* CONFIG_PPC_BOOK3S_604 */
- 
- stack_overflow:
- 	vmap_stack_overflow_exception
-diff --git a/arch/powerpc/mm/book3s32/Makefile b/arch/powerpc/mm/book3s32/Makefile
-index 3f972db17761..446d9de88ce4 100644
---- a/arch/powerpc/mm/book3s32/Makefile
-+++ b/arch/powerpc/mm/book3s32/Makefile
-@@ -6,4 +6,6 @@ ifdef CONFIG_KASAN
- CFLAGS_mmu.o  		+= -DDISABLE_BRANCH_PROFILING
- endif
- 
--obj-y += mmu.o hash_low.o mmu_context.o tlb.o nohash_low.o
-+obj-y += mmu.o mmu_context.o
-+obj-$(CONFIG_PPC_BOOK3S_603) += nohash_low.o
-+obj-$(CONFIG_PPC_BOOK3S_604) += hash_low.o tlb.o
--- 
-2.25.0
+Hi Michael,
+  Sure I will remove prints for each event. Having one print for number of dropped
+events may not be useful. So I will drop that too.
 
+> 
+> 
+>> +		}
+>>  		if (event->event_group_record_len == 0) {
+>>  			pr_devel("invalid event %zu (%.*s): group_record_len == 0, skipping\n",
+>>  					event_idx, nl, name);
+>> @@ -955,6 +960,9 @@ static int create_events_from_catalog(struct attribute ***events_,
+>>  			continue;
+>>  
+>>  		name  = event_name(event, &nl);
+>> +		if (strstr(name, "FREE_"))
+>> +			continue;
+> 
+> Would be nice if the string comparison was in a single place, ie. in a
+> helper function.
+
+Sure I will make that change.
+
+Thanks,
+Kajol Jain
+> 
+> cheers
+> 
