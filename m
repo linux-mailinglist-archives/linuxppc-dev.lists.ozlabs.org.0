@@ -2,56 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007682DE6EF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 16:50:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E479A2DE70E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 16:57:44 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CyCxZ08nwzDrFr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 02:50:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CyD5x50mWzDqlK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 02:57:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d;
+ helo=mail-pf1-x42d.google.com; envelope-from=andy.shevchenko@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=CBfVYlZ7; dkim-atps=neutral
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com
+ [IPv6:2607:f8b0:4864:20::42d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CyChV4GFVzDrfY
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 02:39:03 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4CyChK731PzB09ZH;
- Fri, 18 Dec 2020 16:38:57 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id PZwKgVWi-XEt; Fri, 18 Dec 2020 16:38:57 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4CyChK5tZxzB09ZF;
- Fri, 18 Dec 2020 16:38:57 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3D9598B7BC;
- Fri, 18 Dec 2020 16:38:59 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 2u1BljZQkhYI; Fri, 18 Dec 2020 16:38:59 +0100 (CET)
-Received: from [192.168.204.43] (unknown [192.168.204.43])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5DE1A8B75F;
- Fri, 18 Dec 2020 16:38:58 +0100 (CET)
-Subject: Re: [PATCH] powerpc: fix alignment bug whithin the init sections
-To: Ariel Marcovitch <arielmarcovitch@gmail.com>, mpe@ellerman.id.au
-References: <20201213183556.16976-1-ariel.marcovitch@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <4716e80b-db6f-7669-684f-398971ed5f2e@csgroup.eu>
-Date: Fri, 18 Dec 2020 16:38:46 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CyD4C2mf2zDqC9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 02:56:10 +1100 (AEDT)
+Received: by mail-pf1-x42d.google.com with SMTP id x126so1775259pfc.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Dec 2020 07:56:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=abkacR5EtfH7n3c7FX6aX1PPXUx2EG3knfWGOF7I8KQ=;
+ b=CBfVYlZ7drbVWtqD4bM3rkW3OWAqtTHQ4tOTswiI8hMNopfxOrNSevY5aJbqvp0mM5
+ TCt5A9KlDha/typLUMvAinFqZihBhKDs4BnfOvsBgN1UEuOfn2IctSX1c7RAJE00PX2w
+ n7klcFUYA8+Wh03OFueMg42mGZ0RkQcUL9Og1KFLwVu3sptluQTtOKanGWeSuBQ6+cvG
+ IQarphsJdlgszUZ2XFgxxcoIxIFcXYZtA7DiUUAY+OhzWh0reHMzfpVaZ6Tbo/44jQMr
+ d42Q7DDFcqvQMmrXsNBpvMeT3nysS6sMGtm6mQ7XQdIwUbkG3/ZAqQL4skrB49QcSHxQ
+ YUtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=abkacR5EtfH7n3c7FX6aX1PPXUx2EG3knfWGOF7I8KQ=;
+ b=sJpMlewlz+Wx8Yoei2gprDKMEVhxKLPtKi0AqDxz4nrSqSRw05cEBQ0vvbqUg2Gqnb
+ lJOIj/E1WBcGNqU4pv5aNMErXIb6MTRwBYLS392W4VZZqcBRXVKfJlVOPdkMzdzgVwHo
+ 5l3JhaYyXI2a1wu8sYyyIuKQLmGAlLFnul6pDXtAno/MSaMUoerkW/2Nsm3LKnSmhzZJ
+ 2TCsRIUDv5r2x0TjBUJIfdHgWVtxzJBdhkQswXPOD0NJmiCqCk5P30+beS4hkMgWfequ
+ DSRVUBr9yS1UtrbcihRTiMPFDeNtGGTbWuvGG0t+M9MQks9/wi8z9DugL+OkAJa/0A0k
+ jBkw==
+X-Gm-Message-State: AOAM531LRXGhjjFqeCUhAl+QcxmA4m45Bjy4vNG+ZSOgra7/JjFliedA
+ /KK1ijXX8jw1CIlsI48ncW+K1dE/8rEhdNfFuu4=
+X-Google-Smtp-Source: ABdhPJx7CKHKNahHF7wOhrRaWmRijCkWWyTNv/8H9aIqR6dzxIZFoFPjsHMLJGY+VN1uh1mCeWPnu3uWBQAXjL7LLn4=
+X-Received: by 2002:a63:b1e:: with SMTP id 30mr4683229pgl.203.1608306966654;
+ Fri, 18 Dec 2020 07:56:06 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20201213183556.16976-1-ariel.marcovitch@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20201218143122.19459-1-info@metux.net>
+ <20201218143122.19459-2-info@metux.net>
+In-Reply-To: <20201218143122.19459-2-info@metux.net>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 18 Dec 2020 17:55:50 +0200
+Message-ID: <CAHp75VfYz_K2BYOxqmSx0q+1F2F9Lp1eb70RrNYzJHs3FX+quQ@mail.gmail.com>
+Subject: Re: [PATCH 01/23] kernel: irq: irqdescs: warn on spurious IRQ
+To: "Enrico Weigelt, metux IT consult" <info@metux.net>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,94 +73,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, paulus@samba.org,
- linux-kernel@vger.kernel.org, Ariel Marcovitch <ariel.marcovitch@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, Linux-SH <linux-sh@vger.kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>, linux-mips@vger.kernel.org,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, gerg@linux-m68k.org,
+ Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Jiri Olsa <jolsa@redhat.com>, Helge Deller <deller@gmx.de>,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+ Tony Lindgren <tony@atomide.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-alpha@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, msalter@redhat.com, jacquiot.aurelien@gmail.com,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Marc Zyngier <maz@kernel.org>,
+ "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
+ <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Dec 18, 2020 at 4:37 PM Enrico Weigelt, metux IT consult
+<info@metux.net> wrote:
 
+> +               if (printk_ratelimit())
+> +                       pr_warn("spurious IRQ: irq=%d hwirq=%d nr_irqs=%d\n",
+> +                               irq, hwirq, nr_irqs);
 
-Le 13/12/2020 à 19:35, Ariel Marcovitch a écrit :
-> This is a bug that can cause early crashes in configurations with a
-> .exit.text section smaller than a page and a .init.text section that
-> ends in the beginning of a physical page (this is kinda random, which
-> might explain why this wasn't really encountered before).
+Perhaps you missed pr_warn_ratelimit() macro which is already in the
+kernel for a long time.
 
-It can cause, or it causes ? Did you encounter the issue ?
-
-> 
-> The init sections are ordered like this:
-> 	.init.text
-> 	.exit.text
-> 	.init.data
-> 
-> Currently, these sections aren't page aligned.
-> 
-> Because the init code is mapped read-only at runtime and because the
-> .init.text section can potentially reside on the same physical page as
-> .init.data, the beginning of .init.data might be mapped read-only along
-> with .init.text.
-
-init code is mapped PAGE_KERNEL_TEXT.
-
-Whether PAGE_KERNEL_TEXT is read-only or not depends on the selected options.
-
-> 
-> Then when the kernel tries to modify a variable in .init.data (like
-> kthreadd_done, used in kernel_init()) the kernel panics.
-> 
-> To avoid this, I made these sections page aligned.
-
-Should write this unpersonal, something like "To avoid this, make these sections page aligned"
-
-> 
-> Fixes: 060ef9d89d18 ("powerpc32: PAGE_EXEC required for inittext")
-> Signed-off-by: Ariel Marcovitch <ariel.marcovitch@gmail.com>
-> ---
->   arch/powerpc/kernel/vmlinux.lds.S | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-> index 326e113d2e45..e3a7c90c03f4 100644
-> --- a/arch/powerpc/kernel/vmlinux.lds.S
-> +++ b/arch/powerpc/kernel/vmlinux.lds.S
-> @@ -179,6 +179,11 @@ SECTIONS
->   #endif
->   	} :text
->   
-> +	/* .init.text is made RO and .exit.text is not, so we must
-> +	 * ensure these sections reside in separate physical pages.
-> +	 */
-> +	. = ALIGN(PAGE_SIZE);
-> +
-
-In principle, as it is text, it should be made RO as well. But what happens at the begining doesn't 
-really matter, anyway .exit.text should never be executed and is discarded together with init text.
-So, I think it is OK the live with it as is for the time being.
-
-Making it page aligned makes sense anyway.
-
-Should we make _einittext page aligned instead, just like _etext ?
-
->   	/* .exit.text is discarded at runtime, not link time,
->   	 * to deal with references from __bug_table
->   	 */
-> @@ -186,6 +191,8 @@ SECTIONS
->   		EXIT_TEXT
->   	}
->   
-> +	. = ALIGN(PAGE_SIZE);
-> +
-
-Here for sure, as you explain in the coming log, this needs to be separated from init text. So 
-making it aligned is a must.
-
->   	.init.data : AT(ADDR(.init.data) - LOAD_OFFSET) {
->   		INIT_DATA
->   	}
-> 
-> base-commit: 1398820fee515873379809a6415930ad0764b2f6
-> 
-
-Christophe
+-- 
+With Best Regards,
+Andy Shevchenko
