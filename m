@@ -1,51 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F9D2DE687
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 16:29:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 055262DE665
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 16:20:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CyCSn6Z0czDsNQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 02:28:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CyCH41hRRzDrPW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 02:20:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=metux.net
- (client-ip=212.227.126.133; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.134; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CyBsP319fzDr0t
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 02:01:44 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CyBsB0KbPzDqpk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 02:01:33 +1100 (AEDT)
 Received: from orion.localdomain ([95.115.54.243]) by mrelayeu.kundenserver.de
  (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MZCrZ-1kdKnx3N4r-00V4mg; Fri, 18 Dec 2020 15:58:09 +0100
+ 1MsZ7T-1jxu6T2b19-00u1Gq; Fri, 18 Dec 2020 15:58:10 +0100
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 04/23] arch: c6x: drop misleading warning on spurious IRQ
-Date: Fri, 18 Dec 2020 15:57:27 +0100
-Message-Id: <20201218145746.24205-5-info@metux.net>
+Subject: [PATCH 05/23] arch: ia64: drop misleading warning on spurious IRQ
+Date: Fri, 18 Dec 2020 15:57:28 +0100
+Message-Id: <20201218145746.24205-6-info@metux.net>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20201218145746.24205-1-info@metux.net>
 References: <20201218145746.24205-1-info@metux.net>
-X-Provags-ID: V03:K1:gDN+tfC1WayznC4KJBWf12CrfD19o/lE/XbtVVLhscNrRB7gWg1
- Vds4YKpH0BcdAUFWRKPE6U7CB0zNVoGprjXD0HNU5mY/cL9JZ2C61KcLtCHdMtMeKmRsK2u
- sGPBLqMBMF2UQuyDRRjLhSWq2H4N16poMBoiqVCf58AwRx2yU2Cy6diDJO0RxTO+LKhZ3Dc
- U+V3J7YKyzDx9EkuuDsIQ==
+X-Provags-ID: V03:K1:Kj2U1IX7ryjw5cKrOzUXYJpQNFOW7CX9Si6kyRrMMQGGY2QbEbe
+ NAKnClvg5kWFWYVKOK0yNd/zanHNfpRsebQLJyJbvrl65B/ojKUxxJhEzA0/q58WMmCe7d8
+ JjMySWsHaJSoAyc+u4O0V5W9Fur9DshKYhquflTZSigSkwgr8YxIm7c9bcix0tZKtZZcNlU
+ CT+IaOvoZ1CXRGb0dxEGA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:vrGjq169sr0=:3ZxaxoQ6clszTP12SF+WrC
- nuEktM8jCWgAyBbSFvd8SZ2xXR5h7hBFwAt6Nn/tOtXnniRqw2R1B0ufcHnwcGupEGCxID1PR
- wFPWGj8k/UadYQIC0dfKEWumuas4Jh1HQSpOCbunHMLWRy3guj1zFYnYyRPqfA/TCvUja7Klu
- zyIjniE9DSd7NwlZ/JC6Fj0xGQKv0RQpRT1CJXJVRauwjlbuf0gUiFq49rnAJfZhAzNgXmoH3
- oJofeVSlgEr4B5TvyIeJyQu5JVTfvQW/pyUwKxsI8IhmO8rAOGqiQEs69Ssd6zV3HQK6wgPaL
- Pq/ckWUmavU5mDpIbmxQEwd+bzV6ZJrrQxSIHbZBEJ26Fzle21T0BUUvefu5kpPTZbcarrfSD
- DkeHLzlxH4h/BadwHPzZEA07v+i9rkiXIBNNvv+/oimjY9xQ7eRGQesMLqSJjf7uS65HScJRz
- tkpPz3EK/TfYQIc6ZZ+L4E0G4A+sM2vlQeDBFg7xGOjuwz2cOKBLYYiNVOVrZixIDRAox5mon
- PMc+LqQAuN9+TADEDDmbp8=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jo/jeyC06JQ=:0f9E4K6fSimqNf7RovGUWs
+ 3DMEdcpM3V2qseOZgadhZCUBrKGXS2BsS8oq4BzQYi6hXhYJ/DkpSgf5HH2X09Mki1oImJ/lq
+ vXiGC+5gHA+yfKgzAXFDe2WAw6p+0KsZXbIg5IvVa63xwmMPATv1yG23eRJ6rHpX6z89ltbWT
+ BiPlDTrHH3RDdo9yJeFRQsfxMrBlYEntmuSlCK3Yr8YlEQY7g1WynmbFW3Z151xUUWoE9+1up
+ 4O+QHCRn6k9DYxlouUf6uoAWn6F/3bt1xiDxkwy2h4NIc8hWr5F/3KckViaEQYBma5QZ+KXHm
+ 0s4aJ/Ke3PWUcft8nMQiVdVsxyKqBBVi4m7x1fmE0cZ4/hwNYkjO881UBgiazLRToA9OWF+fp
+ xkcU2i+WXgTvYGADve7fJ22tZIld7qNrr/wHO/d8f5WFEtjXLSrryrKGGSSVh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,7 +76,7 @@ Sender: "Linuxppc-dev"
 The warning in ack_bad_irq() is misleading in several ways:
 * the term "vector" isn't quite correct
 * the printing format isn't consistent across the archs: some print decimal,
-  some hex, some hex w/o 0x prefix.
+  some hex, some hex w/o "0x" prefix.
 * the printed linux irq isn't meaningful in all cases - we actually would
   want it to print the hw irq.
 
@@ -87,20 +85,41 @@ we just don't need to duplicate this in each single arch. So just drop it.
 
 Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 ---
- arch/c6x/kernel/irq.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/ia64/include/asm/hardirq.h | 2 +-
+ arch/ia64/kernel/irq.c          | 9 ---------
+ 2 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/arch/c6x/kernel/irq.c b/arch/c6x/kernel/irq.c
-index e4c53d185b62..b9f7cfa2ed21 100644
---- a/arch/c6x/kernel/irq.c
-+++ b/arch/c6x/kernel/irq.c
-@@ -116,7 +116,6 @@ void __init init_IRQ(void)
+diff --git a/arch/ia64/include/asm/hardirq.h b/arch/ia64/include/asm/hardirq.h
+index ccde7c2ba00f..dddaafaf84e0 100644
+--- a/arch/ia64/include/asm/hardirq.h
++++ b/arch/ia64/include/asm/hardirq.h
+@@ -22,6 +22,6 @@
  
- void ack_bad_irq(int irq)
- {
--	printk(KERN_ERR "IRQ: spurious interrupt %d\n", irq);
- 	irq_err_count++;
- }
+ extern void __iomem *ipi_base_addr;
+ 
+-void ack_bad_irq(unsigned int irq);
++#define ack_bad_irq(irq)
+ 
+ #endif /* _ASM_IA64_HARDIRQ_H */
+diff --git a/arch/ia64/kernel/irq.c b/arch/ia64/kernel/irq.c
+index ecef17c7c35b..1365c7cf2095 100644
+--- a/arch/ia64/kernel/irq.c
++++ b/arch/ia64/kernel/irq.c
+@@ -28,15 +28,6 @@
+ #include <asm/xtp.h>
+ 
+ /*
+- * 'what should we do if we get a hw irq event on an illegal vector'.
+- * each architecture has to answer this themselves.
+- */
+-void ack_bad_irq(unsigned int irq)
+-{
+-	printk(KERN_ERR "Unexpected irq vector 0x%x on CPU %u!\n", irq, smp_processor_id());
+-}
+-
+-/*
+  * Interrupt statistics:
+  */
  
 -- 
 2.11.0
