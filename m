@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC772DE52C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 15:56:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5CC2DE538
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 15:59:08 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CyBkm7153zDqkR
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 01:56:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CyBpK3z6qzDqfs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 01:59:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=metux.net
- (client-ip=212.227.126.130; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.131; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CyBH40DDczDqWh
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 01:35:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CyBH54f2TzDqYV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 01:35:29 +1100 (AEDT)
 Received: from orion.localdomain ([95.115.54.243]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MD9Kj-1kzJDr1AGX-0099IA; Fri, 18 Dec 2020 15:31:58 +0100
+ 1MplPh-1kIFED0xaP-00qCoo; Fri, 18 Dec 2020 15:32:00 +0100
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 09/23] arch: s390: drop misleading warning on spurious IRQ
-Date: Fri, 18 Dec 2020 15:31:08 +0100
-Message-Id: <20201218143122.19459-10-info@metux.net>
+Subject: [PATCH 10/23] arch: sh: drop misleading warning on spurious IRQ
+Date: Fri, 18 Dec 2020 15:31:09 +0100
+Message-Id: <20201218143122.19459-11-info@metux.net>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20201218143122.19459-1-info@metux.net>
 References: <20201218143122.19459-1-info@metux.net>
-X-Provags-ID: V03:K1:+Fk5XG1M51DsDMqllxhuk9QMdwKM8nFiYzagO2Q/2cSgAuejovr
- dtmISK1c/qztd4178uEaymF5uh/0I6XlA2Tqnyx7Bfb0v6ONN47Yqppdl3VTdau8eLZW2Uv
- /pHid2mGQ+3dMXHd9bKt92Duo1y1rPLeQr5rGle5B4uBkwH7iz9s0bsnzCRdN3jFBUhSf/r
- +0OdIMQ80t8v/+o43h3+A==
+X-Provags-ID: V03:K1:6TL4KPw+Ks7RU+AOsNXR+Ltfqz8XJW1b6vQsJcdupkFn/HGWZEu
+ Pxb0W8VDuSp/eowGr2QZ2YYTQOeQIZ9sqLBhLlV4U0gn+9wxn0ZUCYDi1tihD8RSGfUeK0C
+ FGo4l2UrGrTty9YtCH6eYRewFkVOo2b5I9IK1HudQLPzVrlY+lg/sg4fjnmPhPdkFl0hPAj
+ +B/DBmIm2JthV5pOD9Lkg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Z2f4lndISjI=:zHUd/iqf0O3qag8NkEcoBz
- x4x9TA7Ovp04jopysG/BlFtt1L5oIEmvskqof0AHt9vQMAKkztiscW5ztKv8l1IPCHM4FRUK7
- ob3aoPzcMvd0E5ijhnPp1qaioD3QFkMaBe+oev+iwsti2I965xNEIIOKQakRqrgwN7V2zYzBB
- 8XgP9bUY+3Tiv6CMn8DT42WJvWvHPiqPqpw8bGh8YBe9MMOekLpBZz6OTOzdFxDgJdyVlkxMc
- Woo6ULY0pjIcEj/2+3mzbmDNZrNjx4xo4WB6FTNIsI5UvulnLwvmYxAQR8juEJf6ShH7cGcxY
- kk6tE44rK5SWHHMaqfK5sZEBFToA3VUjtPeCZxjWMfyLWLVp6UOq4BJ74AXDFlPs57qLm8Xbb
- uH6PiWBNvirOZkAb5kUMzlHPjSXYR1xgbCzp2pBMri5zdtt3HN0eVFGqhHnrw
+X-UI-Out-Filterresults: notjunk:1;V03:K0:UEl1mf8Ej6U=:vVuWyafI8JwPT8IqekTwUf
+ kJjVjnagJeZHcYrcEXI6WwIlGSzMR+6bJyDiDgrQgM7iWZQNxupfE9+KZ4CH8xwAl9bz0An2S
+ g9SX/sJHYF9btvrHzN98Mv01lN2WXq/JdCqiiTmep8ayCtPYeqZm1MWA+VpMPBqXCiySp4nKx
+ YrriRyCaFlryZz82ICVCzrhapzFYKL90MwPaC/6LLngk9MDuAZXPEeA0CD9w5aVk5j4WXyXy5
+ moMvzvbBtoDNV/k1qA+tVeoczyKN9TMEwdpIVorDrHaUiPErxH0/+N3nGQGgxmN6gMk3qWGdm
+ EQ926JDJncMRW18rLb97838aejHl2X+vn6odNyiZ81k15fjExFGn5Wsknjg4EIF4+ChUIckPq
+ +B2MnXPkaLoMWdjQowJZMdiHVoEkc5t1KkUtVQLM/6nWRTJu4GUgNhKYVSNhR
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,24 +85,21 @@ we just don't need to duplicate this in each single arch. So just drop it.
 
 Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 ---
- arch/s390/include/asm/hardirq.h | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/sh/kernel/irq.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/hardirq.h b/arch/s390/include/asm/hardirq.h
-index dfbc3c6c0674..56d95fcb310a 100644
---- a/arch/s390/include/asm/hardirq.h
-+++ b/arch/s390/include/asm/hardirq.h
-@@ -21,9 +21,6 @@
- #define __ARCH_HAS_DO_SOFTIRQ
- #define __ARCH_IRQ_EXIT_IRQS_DISABLED
+diff --git a/arch/sh/kernel/irq.c b/arch/sh/kernel/irq.c
+index ab5f790b0cd2..c14a142efe60 100644
+--- a/arch/sh/kernel/irq.c
++++ b/arch/sh/kernel/irq.c
+@@ -31,7 +31,6 @@ atomic_t irq_err_count;
+ void ack_bad_irq(unsigned int irq)
+ {
+ 	atomic_inc(&irq_err_count);
+-	printk("unexpected IRQ trap at vector %02x\n", irq);
+ }
  
--static inline void ack_bad_irq(unsigned int irq)
--{
--	printk(KERN_CRIT "unexpected IRQ trap at vector %02x\n", irq);
--}
-+#define ack_bad_irq(irq)
- 
- #endif /* __ASM_HARDIRQ_H */
+ #if defined(CONFIG_PROC_FS)
 -- 
 2.11.0
 
