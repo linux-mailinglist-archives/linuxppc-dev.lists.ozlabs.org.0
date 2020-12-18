@@ -2,48 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6742DE6C8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 16:41:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 007682DE6EF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 16:50:29 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CyCl50sChzDqfV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 02:41:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CyCxZ08nwzDrFr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 02:50:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=metux.net
- (client-ip=212.227.126.187; helo=mout.kundenserver.de;
- envelope-from=info@metux.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CyBx53NXRzDqlW
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 02:01:57 +1100 (AEDT)
-Received: from orion.localdomain ([95.115.54.243]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MXGes-1kaJzo1mqk-00Yf1R; Fri, 18 Dec 2020 15:58:34 +0100
-From: "Enrico Weigelt, metux IT consult" <info@metux.net>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 19/23] arch: c6x: use generic irq error counter
-Date: Fri, 18 Dec 2020 15:57:42 +0100
-Message-Id: <20201218145746.24205-20-info@metux.net>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20201218145746.24205-1-info@metux.net>
-References: <20201218145746.24205-1-info@metux.net>
-X-Provags-ID: V03:K1:vGxAbbeZY4OEgvOO7MYiKmDZBDY60quvsSjppUQCMRjagdSkOZ8
- ydkb3jUw1Lyn17JCeP/6k4+TqopM4qU1u6GcFgQQxcfzxRZ1My3C4c9VypwnijkEKg6TS0H
- yVy/RbRMfZmz8LOVqZxbqkRmrY5j854jH7TOuqcn0rLrYfZ+sOLf82j2aqwcE+ql1Y6Xrt3
- vpKfIhWW4REXCGcZ2VJOw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:XqgpVchyEE4=:YfHTOR4ZwcuZgE0r+kH/gB
- MnZZDfS38xi8T78o6xqRorG2Of+3B0SvDxkxuJcbYF67XLmsfJKSEK9lSLOQExXUbNkEpbG3C
- q4qDZMR6BK4N0DXeY1JhMC+eWYf3ibfDVP8o1Gvnp0So19Mw+VmVSsjOLVI5Wz0rHHmsTst9j
- upnd5iT4m0hQ6az76D6IgKZ4c2KHI96HleQ64QpYAzwRwwUjCOM4lN0fPEu3/9ZDZ6IDsJZNb
- g+VGcOpfKZvyhZmOV3cyTWhwbUfo3JkSAvuc+zGrJeSvkHJAJA5SP5B3aCPuVqpPf3c4+A1qU
- yrFYlt2jq6KpPhqajAE5BRMMUv1B69rIdivA9h57YuvnTCl2byNNRDKwKYiTKIgf7ODPhTwnF
- A7vwknLG88D7u32kCc94EGty/dOHzCb1QwLlb10XCLOmbAEsmiOdjcj9bjqR6
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CyChV4GFVzDrfY
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 02:39:03 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CyChK731PzB09ZH;
+ Fri, 18 Dec 2020 16:38:57 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id PZwKgVWi-XEt; Fri, 18 Dec 2020 16:38:57 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CyChK5tZxzB09ZF;
+ Fri, 18 Dec 2020 16:38:57 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3D9598B7BC;
+ Fri, 18 Dec 2020 16:38:59 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 2u1BljZQkhYI; Fri, 18 Dec 2020 16:38:59 +0100 (CET)
+Received: from [192.168.204.43] (unknown [192.168.204.43])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5DE1A8B75F;
+ Fri, 18 Dec 2020 16:38:58 +0100 (CET)
+Subject: Re: [PATCH] powerpc: fix alignment bug whithin the init sections
+To: Ariel Marcovitch <arielmarcovitch@gmail.com>, mpe@ellerman.id.au
+References: <20201213183556.16976-1-ariel.marcovitch@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <4716e80b-db6f-7669-684f-398971ed5f2e@csgroup.eu>
+Date: Fri, 18 Dec 2020 16:38:46 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
+MIME-Version: 1.0
+In-Reply-To: <20201213183556.16976-1-ariel.marcovitch@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,92 +63,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, dalias@libc.org, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, alexander.shishkin@linux.intel.com,
- linus.walleij@linaro.org, James.Bottomley@HansenPartnership.com,
- paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org, will@kernel.org,
- gerg@linux-m68k.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-c6x-dev@linux-c6x.org, ysato@users.sourceforge.jp, jolsa@redhat.com,
- deller@gmx.de, x86@kernel.org, bgolaszewski@baylibre.com, tony@atomide.com,
- geert@linux-m68k.org, catalin.marinas@arm.com, linux-alpha@vger.kernel.org,
- arnd@arndb.de, msalter@redhat.com, jacquiot.aurelien@gmail.com,
- linux-gpio@vger.kernel.org, linux-m68k@lists.linux-m68k.org, bp@alien8.de,
- namhyung@kernel.org, tglx@linutronix.de, linux-omap@vger.kernel.org,
- tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
- linux-mips@vger.kernel.org, maz@kernel.org, linuxppc-dev@lists.ozlabs.org,
- davem@davemloft.net
+Cc: linuxppc-dev@lists.ozlabs.org, paulus@samba.org,
+ linux-kernel@vger.kernel.org, Ariel Marcovitch <ariel.marcovitch@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the newly introduced irq error counter, that's already maintained
-by all callers of ack_bad_irq(), in order to remove duplicate code.
 
-Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
----
- arch/c6x/include/asm/hardirq.h |  3 ---
- arch/c6x/include/asm/irq.h     |  2 --
- arch/c6x/kernel/irq.c          | 11 ++---------
- 3 files changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/arch/c6x/include/asm/hardirq.h b/arch/c6x/include/asm/hardirq.h
-index f37d07d31040..f70f6113e53a 100644
---- a/arch/c6x/include/asm/hardirq.h
-+++ b/arch/c6x/include/asm/hardirq.h
-@@ -9,9 +9,6 @@
- #ifndef _ASM_C6X_HARDIRQ_H
- #define _ASM_C6X_HARDIRQ_H
- 
--extern void ack_bad_irq(int irq);
--#define ack_bad_irq ack_bad_irq
--
- #include <asm-generic/hardirq.h>
- 
- #endif /* _ASM_C6X_HARDIRQ_H */
-diff --git a/arch/c6x/include/asm/irq.h b/arch/c6x/include/asm/irq.h
-index 9da4d1afd0d7..f42c5747c3ee 100644
---- a/arch/c6x/include/asm/irq.h
-+++ b/arch/c6x/include/asm/irq.h
-@@ -45,6 +45,4 @@ struct pt_regs;
- 
- extern asmlinkage void c6x_do_IRQ(unsigned int prio, struct pt_regs *regs);
- 
--extern unsigned long irq_err_count;
--
- #endif /* _ASM_C6X_IRQ_H */
-diff --git a/arch/c6x/kernel/irq.c b/arch/c6x/kernel/irq.c
-index b9f7cfa2ed21..9f9d798925de 100644
---- a/arch/c6x/kernel/irq.c
-+++ b/arch/c6x/kernel/irq.c
-@@ -21,12 +21,10 @@
- #include <linux/of_irq.h>
- #include <linux/interrupt.h>
- #include <linux/kernel_stat.h>
--
-+#include <asm-generic/irq-err.h>
- #include <asm/megamod-pic.h>
- #include <asm/special_insns.h>
- 
--unsigned long irq_err_count;
--
- static DEFINE_RAW_SPINLOCK(core_irq_lock);
- 
- static void mask_core_irq(struct irq_data *data)
-@@ -114,13 +112,8 @@ void __init init_IRQ(void)
- 	set_creg(ICR, 0xfff0);
- }
- 
--void ack_bad_irq(int irq)
--{
--	irq_err_count++;
--}
--
- int arch_show_interrupts(struct seq_file *p, int prec)
- {
--	seq_printf(p, "%*s: %10lu\n", prec, "Err", irq_err_count);
-+	seq_printf(p, "%*s: %10lu\n", prec, "Err", irq_err_get());
- 	return 0;
- }
--- 
-2.11.0
+Le 13/12/2020 à 19:35, Ariel Marcovitch a écrit :
+> This is a bug that can cause early crashes in configurations with a
+> .exit.text section smaller than a page and a .init.text section that
+> ends in the beginning of a physical page (this is kinda random, which
+> might explain why this wasn't really encountered before).
 
+It can cause, or it causes ? Did you encounter the issue ?
+
+> 
+> The init sections are ordered like this:
+> 	.init.text
+> 	.exit.text
+> 	.init.data
+> 
+> Currently, these sections aren't page aligned.
+> 
+> Because the init code is mapped read-only at runtime and because the
+> .init.text section can potentially reside on the same physical page as
+> .init.data, the beginning of .init.data might be mapped read-only along
+> with .init.text.
+
+init code is mapped PAGE_KERNEL_TEXT.
+
+Whether PAGE_KERNEL_TEXT is read-only or not depends on the selected options.
+
+> 
+> Then when the kernel tries to modify a variable in .init.data (like
+> kthreadd_done, used in kernel_init()) the kernel panics.
+> 
+> To avoid this, I made these sections page aligned.
+
+Should write this unpersonal, something like "To avoid this, make these sections page aligned"
+
+> 
+> Fixes: 060ef9d89d18 ("powerpc32: PAGE_EXEC required for inittext")
+> Signed-off-by: Ariel Marcovitch <ariel.marcovitch@gmail.com>
+> ---
+>   arch/powerpc/kernel/vmlinux.lds.S | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+> index 326e113d2e45..e3a7c90c03f4 100644
+> --- a/arch/powerpc/kernel/vmlinux.lds.S
+> +++ b/arch/powerpc/kernel/vmlinux.lds.S
+> @@ -179,6 +179,11 @@ SECTIONS
+>   #endif
+>   	} :text
+>   
+> +	/* .init.text is made RO and .exit.text is not, so we must
+> +	 * ensure these sections reside in separate physical pages.
+> +	 */
+> +	. = ALIGN(PAGE_SIZE);
+> +
+
+In principle, as it is text, it should be made RO as well. But what happens at the begining doesn't 
+really matter, anyway .exit.text should never be executed and is discarded together with init text.
+So, I think it is OK the live with it as is for the time being.
+
+Making it page aligned makes sense anyway.
+
+Should we make _einittext page aligned instead, just like _etext ?
+
+>   	/* .exit.text is discarded at runtime, not link time,
+>   	 * to deal with references from __bug_table
+>   	 */
+> @@ -186,6 +191,8 @@ SECTIONS
+>   		EXIT_TEXT
+>   	}
+>   
+> +	. = ALIGN(PAGE_SIZE);
+> +
+
+Here for sure, as you explain in the coming log, this needs to be separated from init text. So 
+making it aligned is a must.
+
+>   	.init.data : AT(ADDR(.init.data) - LOAD_OFFSET) {
+>   		INIT_DATA
+>   	}
+> 
+> base-commit: 1398820fee515873379809a6415930ad0764b2f6
+> 
+
+Christophe
