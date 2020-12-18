@@ -1,46 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF6F2DE1EC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 12:23:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4602A2DE1F0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 12:26:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cy61b07TzzDqTL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 22:23:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Cy65V6WM3zDqYV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 22:26:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cy5t44gSfzDqXG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Dec 2020 22:17:00 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Cy5t81XXYzDqXJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Dec 2020 22:17:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=OYvISIZt; 
+ header.a=rsa-sha256 header.s=201909 header.b=KNaTChVn; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 4Cy5t36F0Bz9sTc; Fri, 18 Dec 2020 22:16:59 +1100 (AEDT)
+ id 4Cy5t44fHbz9sWX; Fri, 18 Dec 2020 22:17:00 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4Cy5t33Ybnz9sWc; Fri, 18 Dec 2020 22:16:59 +1100 (AEDT)
+ id 4Cy5t41Bqzz9sWd; Fri, 18 Dec 2020 22:16:59 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1608290219;
- bh=8Kw/XOrjAqo+YwwdIsGSkKDPvMyfX6cFP4qoT79bImI=;
+ s=201909; t=1608290220;
+ bh=LrxTOR9y2PTwVqNsYpSYzqRjocgGNwhM+AtWxTHDCFw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=OYvISIZtBX9yyBrQZdurDcoBioKrc6g7aPdgKGtjWgQhNCcgz+eszyAoM1UVnWDwQ
- 14kjOnlRgqnkM0rAf4rQj3DppcqcBxoI3vr87XE+H/q4Qe7K9iIcvppcf4bqmfeetW
- n9grBkSi0KoqW7hRyX57G1Rw6a0kTs4gcNCcf/q/ypEPR2IDtvAvZSTNEVA87dITwV
- 0x2rUvLDtooVJc+X1mt6Eb+LNsW68IwDbDRdeC7mc3tzF5W1Gwx4Eqlac0sg1L8NM1
- SE7piMzXdNxAVWytVoEi4RFkDmrgMiiYU8Gmo0kq/msLrgIMRB8tO/JCR8/DFdtMeh
- RnT24ivNcs4jQ==
+ b=KNaTChVnlCroaQ3LBFVeNC9LQ5vcigM6wYELPUt4n+nB9z10XYRKBAqzniDFcKBys
+ Uh9OTijIMat5iOTKX2iluCh3bL2Y2r3g2TPXGC+hdxlag0NAmTu9gxRhTAaK3FJY7m
+ CwiCOj5Px9o/OJqRQJRMYJtqC+AWx8zpuwvhxHtV5VZhRxhmJBLn2QxUqU7zeowF7O
+ 3NT12C2HauaWxiy+5GW6eopn2sQwJg1N8xMQzMFPVI9ID/kQx0AAXgkqXRsEWwGQa/
+ fMVqr28zoW8122gwzriTPUPiMWf2yX7qbKcbrdeNtkkQmhZdriu7PT4LxRfnFTHejs
+ o4BylW9k9QIDw==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH 2/3] powerpc/vdso: Don't pass 64-bit ABI cflags to 32-bit VDSO
-Date: Fri, 18 Dec 2020 22:16:18 +1100
-Message-Id: <20201218111619.1206391-2-mpe@ellerman.id.au>
+Subject: [PATCH 3/3] powerpc/vdso: Fix DOTSYM for 32-bit LE VDSO
+Date: Fri, 18 Dec 2020 22:16:19 +1100
+Message-Id: <20201218111619.1206391-3-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201218111619.1206391-1-mpe@ellerman.id.au>
 References: <20201218111619.1206391-1-mpe@ellerman.id.au>
@@ -62,60 +62,89 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When building the 32-bit VDSO, we are building 32-bit code as part of
-a 64-bit kernel build. That requires us to tweak the cflags to trick
-the compiler into building 32-bit code for us. The main way we do that
-is by passing -m32, but there are other options that affect code
-generation and ABI selection.
+Skirmisher reported on IRC that the 32-bit LE VDSO was hanging. This
+turned out to be due to a branch to self in eg. __kernel_gettimeofday.
+Looking at the disassembly with objdump -dR shows why:
 
-In particular when building vgettimeofday.c, we end up passing
--mcall-aixdesc because it's in KBUILD_CFLAGS, which causes the
-compiler to generate function descriptors, and dot symbols, eg:
+  00000528 <__kernel_gettimeofday>:
+   528:   f0 ff 21 94     stwu    r1,-16(r1)
+   52c:   a6 02 08 7c     mflr    r0
+   530:   f0 ff 21 94     stwu    r1,-16(r1)
+   534:   14 00 01 90     stw     r0,20(r1)
+   538:   05 00 9f 42     bcl     20,4*cr7+so,53c <__kernel_gettimeofday+0x14>
+   53c:   a6 02 a8 7c     mflr    r5
+   540:   ff ff a5 3c     addis   r5,r5,-1
+   544:   c4 fa a5 38     addi    r5,r5,-1340
+   548:   f0 00 a5 38     addi    r5,r5,240
+   54c:   01 00 00 48     bl      54c <__kernel_gettimeofday+0x24>
+                          54c: R_PPC_REL24        .__c_kernel_gettimeofday
 
-  $ nm arch/powerpc/kernel/vdso32/vgettimeofday.o
-  000005d0 T .__c_kernel_clock_getres
-  00000024 D __c_kernel_clock_getres
-  ...
+Because we don't process relocations for the VDSO, this branch remains
+a branch from 0x54c to 0x54c.
 
-We get away with that at the moment because we also use the DOTSYM
-macro, and that is also incorrectly prepending a '.' in 32-bit VDSO
-code due to a separate bug.
+With the preceding patch to prohibit R_PPC_REL24 relocations, we
+instead get a build failure:
 
-But we shouldn't be generating function descriptors for this file,
-there's no 32-bit ABI that includes function descriptors, so the
-resulting object file is some frankenstein and it's surprising that it
-even links.
+  0000054c R_PPC_REL24       .__c_kernel_gettimeofday
+  00000598 R_PPC_REL24       .__c_kernel_clock_gettime
+  000005e4 R_PPC_REL24       .__c_kernel_clock_gettime64
+  00000630 R_PPC_REL24       .__c_kernel_clock_getres
+  0000067c R_PPC_REL24       .__c_kernel_time
+  arch/powerpc/kernel/vdso32/vdso32.so.dbg: dynamic relocations are not supported
 
-So filter out all the ABI-related options we add to CFLAGS for 64-bit
-builds, so that they're not used when building 32-bit code. With that
-we only see regular text symbols:
+The root cause is that we're branching to `.__c_kernel_gettimeofday`.
+But this is 32-bit LE code, which doesn't use function descriptors, so
+there are no dot symbols.
 
-  $ nm arch/powerpc/kernel/vdso32/vgettimeofday.o                                                                                                                                     michael@alpine1-p1
-  000005d0 T __c_kernel_clock_getres
-  00000000 T __c_kernel_clock_gettime
-  00000200 T __c_kernel_clock_gettime64
-  00000410 T __c_kernel_gettimeofday
-  00000650 T __c_kernel_time
+The reason we're trying to branch to a dot symbol is because we're
+using the DOTSYM macro, but the ifdefs we use to define the DOTSYM
+macro do not currently work for 32-bit LE.
+
+So like previous commits we need to differentiate if the current
+compilation unit is 64-bit, rather than the kernel as a whole. ie.
+switch from CONFIG_PPC64 to __powerpc64__.
+
+With that fixed 32-bit LE code gets the empty version of DOTSYM, which
+just resolves to the original symbol name, leading to a direct branch
+and no relocations:
+
+  000003f8 <__kernel_gettimeofday>:
+   3f8:   f0 ff 21 94     stwu    r1,-16(r1)
+   3fc:   a6 02 08 7c     mflr    r0
+   400:   f0 ff 21 94     stwu    r1,-16(r1)
+   404:   14 00 01 90     stw     r0,20(r1)
+   408:   05 00 9f 42     bcl     20,4*cr7+so,40c <__kernel_gettimeofday+0x14>
+   40c:   a6 02 a8 7c     mflr    r5
+   410:   ff ff a5 3c     addis   r5,r5,-1
+   414:   f4 fb a5 38     addi    r5,r5,-1036
+   418:   f0 00 a5 38     addi    r5,r5,240
+   41c:   85 06 00 48     bl      aa0 <__c_kernel_gettimeofday>
 
 Fixes: ab037dd87a2f ("powerpc/vdso: Switch VDSO to generic C implementation.")
+Reported-by: "Will Springer <skirmisher@protonmail.com>"
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/kernel/vdso32/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/ppc_asm.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/vdso32/Makefile b/arch/powerpc/kernel/vdso32/Makefile
-index 6616f4e794d0..9cb6f524854b 100644
---- a/arch/powerpc/kernel/vdso32/Makefile
-+++ b/arch/powerpc/kernel/vdso32/Makefile
-@@ -27,7 +27,7 @@ endif
- CC32FLAGS :=
- ifdef CONFIG_PPC64
- CC32FLAGS += -m32
--KBUILD_CFLAGS := $(filter-out -mcmodel=medium,$(KBUILD_CFLAGS))
-+KBUILD_CFLAGS := $(filter-out -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc,$(KBUILD_CFLAGS))
- endif
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index cfa814824285..cc1bca571332 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -180,7 +180,12 @@ END_FW_FTR_SECTION_IFSET(FW_FEATURE_SPLPAR)
+ #define VCPU_GPR(n)	__VCPU_GPR(__REG_##n)
  
- targets := $(obj-vdso32) vdso32.so.dbg
+ #ifdef __KERNEL__
+-#ifdef CONFIG_PPC64
++
++/*
++ * We use __powerpc64__ here because we want the compat VDSO to use the 32-bit
++ * version below in the else case of the ifdef.
++ */
++#ifdef __powerpc64__
+ 
+ #define STACKFRAMESIZE 256
+ #define __STK_REG(i)   (112 + ((i)-14)*8)
 -- 
 2.25.1
 
