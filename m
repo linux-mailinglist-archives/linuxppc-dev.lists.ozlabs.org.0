@@ -2,50 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A082DE6A4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 16:33:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D69A42DE682
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Dec 2020 16:27:15 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CyCZ94RVgzDrYb
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 02:33:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CyCQk3ylmzDqWr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Dec 2020 02:27:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=metux.net
- (client-ip=212.227.126.131; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.187; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CyBsN54LzzDqlP
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 02:01:43 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CyBsG6LDkzDqf2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 02:01:37 +1100 (AEDT)
 Received: from orion.localdomain ([95.115.54.243]) by mrelayeu.kundenserver.de
  (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MirX2-1kBSkS2U8y-00ewYZ; Fri, 18 Dec 2020 15:58:20 +0100
+ 1N0Fh1-1jucJt14Nz-00xIWK; Fri, 18 Dec 2020 15:58:22 +0100
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 11/23] arch: sparc: drop misleading warning on spurious IRQ
-Date: Fri, 18 Dec 2020 15:57:34 +0100
-Message-Id: <20201218145746.24205-12-info@metux.net>
+Subject: [PATCH 12/23] arch: x86: drop misleading warning on spurious IRQ
+Date: Fri, 18 Dec 2020 15:57:35 +0100
+Message-Id: <20201218145746.24205-13-info@metux.net>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20201218145746.24205-1-info@metux.net>
 References: <20201218145746.24205-1-info@metux.net>
-X-Provags-ID: V03:K1:PrIh9ptnry2iRq4Mx3UP2iHIAvXo2nMAiiq3tP5jbdjQCpBFjqO
- 3ySbh/k8vY07uczZqzeZ+Fu/cv71D0Pa6PrsOUt8ZN53XV8mE/27YSicbx11WrRLSKvujG5
- iUWDGTqX4IPmQOVsUHSDKQeG2ojJv7iaZPw/hA7EV2Tz17NrO/VXgNx2nA5mDPZBychhm/7
- U558HJoCjNGxea/p6G6Bw==
+X-Provags-ID: V03:K1:0sbtQbefw8DQehEDviccuy0g2n3RO+b59+ihLBG4lLCKZynjSrI
+ NPySoNrWbmhPWz0zjwKwrHWKuL/81jaRyevBRrHOPztRsHF4wxMuMRTaSK51mrdACZ96DRC
+ Bun60UcXXd1iKXb9KhVkLzHK1IV0u6XGuGbtMZI5aJNMMlLVJLjYDgh8A4AwsQEFLHZoUHu
+ 5JUvMnmUoCKVsXwMey7XQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:QSqUnzGzKoI=:1RKvWdbnF3qQKmnLDyloG2
- cqgnxcP3BVO/SgQfaAYZXKEQAXE2j4+WxKWW1xIJamb+GzRy4exUCeWZnlxXF+WRDA1sJaA0O
- 1vbz++Wi8IPGKiv8DTihePwG8WNkboP9FZmPjbVqMsBlUG17KKEgI4GluUSW1EdzF/CzaTH9/
- k3N99CCsoXP4WRzdHljOiyz0Ui+DDiVy0ScYiul/RdDQlMNgSpjrzBf1Zod6NJf3p8HMPbH2s
- 1JXJzW3y/N7qNV4d2PLhz406dA3cc9ayIevg1II0vH3/IXRNy6c9RrpXuVxzf8Rn77hEbEMSo
- tE5WNTst0W5SlLTcMOFm++RWdRqmXdbwLPFyxOKOpGVGwMe4yFXXucPxwzX400dKjXZm29+8P
- h/+dtZRhpXVhWxHIm8tnRmEXrJQE4jC9IrRB283coi5QhBx9uT2d6B6jYlx0mYanXw/aA1BAP
- 8isbTAw64zK2xgkmj4vHE4iA8v/d6xHcx/EHNP3F66NPLLPrWDL4WlpaV4sAhQQcBxzTsZWsM
- Sw2HZYEEdehqFnILi6vkAU=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:EnZ1T1GVBLA=:CKePjyo1KyFCkC4uxmd+BO
+ Z3yoeE4a4pCsGC1fG8PmlRC5S2hwgdnyWHnBriA5prvGI/QUTQBVWU21S6V6h3cTpKFbFfEV5
+ NNFXWLmW99vgTGiPqP77i45iQCeZMwUpfzuqawXJyZQ8823Z3w33M+2WIIT6HzHRL8VDlu0hH
+ GnnNvQUmlileL1b+T8E7bvrtIFJ1564KNxdvQuF7Vqgi6esH5rpeZOLc/CpBI4XTTy6U6fkG+
+ 8DTTVUP5gL9zafWjgP7ZHMOzo1TinGD/C9mKLaC0CsASAmEyGbErnBRvWbyqYo3F8/8eLlvm9
+ YYNdihZLUyVTzmxnwfWq681RURVj9eNqo0rJFVEYVvWX3MHOthIIkfhhKn/P9HwnBX3JLPr1C
+ 3TkDt/bSNRY8PWcqeM6DdV60QgkJ0h72AymRd5hD8bOJhDdkIRkym6xulIk1N
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,38 +85,23 @@ we just don't need to duplicate this in each single arch. So just drop it.
 
 Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 ---
- arch/sparc/include/asm/hardirq_64.h | 2 +-
- arch/sparc/kernel/irq_64.c          | 5 -----
- 2 files changed, 1 insertion(+), 6 deletions(-)
+ arch/x86/kernel/irq.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/sparc/include/asm/hardirq_64.h b/arch/sparc/include/asm/hardirq_64.h
-index 75b92bfe04b5..874151f520de 100644
---- a/arch/sparc/include/asm/hardirq_64.h
-+++ b/arch/sparc/include/asm/hardirq_64.h
-@@ -14,6 +14,6 @@
- #define local_softirq_pending_ref \
- 	__cpu_data.__softirq_pending
- 
--void ack_bad_irq(unsigned int irq);
-+#define ack_bad_irq(irq)
- 
- #endif /* !(__SPARC64_HARDIRQ_H) */
-diff --git a/arch/sparc/kernel/irq_64.c b/arch/sparc/kernel/irq_64.c
-index 3ec9f1402aad..ea2a52f7fe53 100644
---- a/arch/sparc/kernel/irq_64.c
-+++ b/arch/sparc/kernel/irq_64.c
-@@ -284,11 +284,6 @@ static unsigned int sysino_exists(u32 devhandle, unsigned int devino)
- 	return irq;
- }
- 
--void ack_bad_irq(unsigned int irq)
--{
--	pr_crit("BAD IRQ ack %d\n", irq);
--}
+diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
+index c5dd50369e2f..5c66c44b6b60 100644
+--- a/arch/x86/kernel/irq.c
++++ b/arch/x86/kernel/irq.c
+@@ -36,9 +36,6 @@ atomic_t irq_err_count;
+  */
+ void ack_bad_irq(unsigned int irq)
+ {
+-	if (printk_ratelimit())
+-		pr_err("unexpected IRQ trap at vector %02x\n", irq);
 -
- void irq_install_pre_handler(int irq,
- 			     void (*func)(unsigned int, void *, void *),
- 			     void *arg1, void *arg2)
+ 	/*
+ 	 * Currently unexpected vectors happen only on SMP and APIC.
+ 	 * We _must_ ack these because every local APIC has only N
 -- 
 2.11.0
 
