@@ -1,73 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5812DF264
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Dec 2020 00:58:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A38582DF545
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Dec 2020 12:41:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Cz2kK6lVVzDqcq
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Dec 2020 10:58:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CzLJd1HtKzDqN0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Dec 2020 22:40:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e;
- helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=KstXafR1; dkim-atps=neutral
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
- [IPv6:2607:f8b0:4864:20::102e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Cz2Vp55TPzDqT7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Dec 2020 10:48:34 +1100 (AEDT)
-Received: by mail-pj1-x102e.google.com with SMTP id m5so3750859pjv.5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Dec 2020 15:48:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=GyyTQXFMxJsrMrABK3N9juVNdcOA1lOIsRRvLqBrr3g=;
- b=KstXafR1CkK9Gg/55qJHCilXLC4QXyCj7ZuILru8kQWm36zE87zg+pES2W0nXuwUOi
- UABt5t6aLezwO2o5Kl2cZErpmGK/Wdb9BQ2OZiHQbj25c7XrEAOGp5bD8OAsnwJn6e7G
- s1e+1HQJk/Gsedmu/xfNZyBVi6q57xohOmVa0Whb+hf/ytrDsUa83AtkjqLJvNh8gh0Y
- /fbJ4YCwpadDV0HUFzEH6DkoLCROZCL6tWDa3vtwcNAd/nZZFB1nryeYlHxrDK5QeZ/v
- PSUk3nFDIDbcOQjD7Eg0bP9T3rb/GiyGQDaVOiIxMGfs6oshCEPujflPzmQ23p7goAl/
- Q/OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=GyyTQXFMxJsrMrABK3N9juVNdcOA1lOIsRRvLqBrr3g=;
- b=bmQhlyLQGsOERLj9VTJHd2KDs9QEidPnIOM/3khhUnncKhtXIFjgc4TTQSbXGKtio2
- 51Kz3vGJwJ4Rk04wgNdiaH0XMyEy3hRSuG0JnAYOTW5o7zj2QBe3TgmUF9wSN6VDw0gP
- hAqzvHYGrVLD+Tkc2CXElyLp26vlBUKKS9UsRgqauoKvv7rsB5OqkGZo1lyvLbKI2VL8
- iud2Jbwluybi9jJELBF2BG9npeKBhbLi6kY8Th10vN3X5X/jkLjUH1bekwCqBRq6MkYZ
- sMTgW2qU9utXD4TmdzLQLf+tJm4q7t4EwZu/yHQjD6wd5dEiDrKuQwf+dOzts0W67EA2
- 8A0g==
-X-Gm-Message-State: AOAM531Y2KB6OZ+fJ3g2od2xVcBQ38BjBKrn4gQg11uyouxdy3Yp6F36
- 0hNdZUhO/MbfdGXJZmXflc7nzcPM+uM=
-X-Google-Smtp-Source: ABdhPJwJQJksidauYmUYMkPKfziuiUFmZojxRk+2y3N+1ZETorDs41RlufTDH/5eJg0cysfrJoSQlA==
-X-Received: by 2002:a17:90b:e0d:: with SMTP id
- ge13mr10699863pjb.111.1608421712702; 
- Sat, 19 Dec 2020 15:48:32 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (193-116-97-30.tpgi.com.au. [193.116.97.30])
- by smtp.gmail.com with ESMTPSA id k15sm12729275pfh.40.2020.12.19.15.48.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 19 Dec 2020 15:48:32 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 5/5] powerpc/64s/radix: Use non-atomic PTE updates if the
- MMU does not modify the PTE
-Date: Sun, 20 Dec 2020 09:48:13 +1000
-Message-Id: <20201219234813.830747-6-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20201219234813.830747-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CzLFG0lfxzDqMx
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Dec 2020 22:37:45 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4CzLDv0SFtz9tyt4;
+ Sun, 20 Dec 2020 12:37:35 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id X1AU_5tc4Ftt; Sun, 20 Dec 2020 12:37:34 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4CzLDt6dpsz9tyt3;
+ Sun, 20 Dec 2020 12:37:34 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3A71D8B77E;
+ Sun, 20 Dec 2020 12:37:38 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id drW-rd6jzlLm; Sun, 20 Dec 2020 12:37:38 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B607E8B75B;
+ Sun, 20 Dec 2020 12:37:37 +0100 (CET)
+Subject: Re: [RFC PATCH 1/5] powerpc/64s: update_mmu_cache inline the radix
+ test
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20201219234813.830747-1-npiggin@gmail.com>
+ <20201219234813.830747-2-npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <7190cf34-af03-ca35-d2b5-aa152d300ec0@csgroup.eu>
+Date: Sun, 20 Dec 2020 12:37:32 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
+In-Reply-To: <20201219234813.830747-2-npiggin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,211 +65,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PTE updates performed by Linux are serialized by the page table locks.
-There is no need to use atomic operations for these modifications if the
-hardware does not perform updates asynchronously (e.g., via the MMU RC
-update mechanism).
 
-Current POWER CPUs that support radix do not perform such updates in the
-core MMU, but the nest MMU does so make this conditional on whether the
-nest mmu is active for the mm.
 
-This improves a page fault / mprotect microbenchmark by about 10% on
-POWER9.
+Le 20/12/2020 à 00:48, Nicholas Piggin a écrit :
+> This allows the function to be entirely noped if hash support is
+> compiled out (not possible yet).
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   arch/powerpc/include/asm/book3s/pgtable.h | 11 ++++++++++-
+>   arch/powerpc/mm/book3s32/mmu.c            |  4 ++--
+>   arch/powerpc/mm/book3s64/hash_utils.c     |  7 ++-----
+>   3 files changed, 14 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/book3s/pgtable.h b/arch/powerpc/include/asm/book3s/pgtable.h
+> index 0e1263455d73..914e9fc7b069 100644
+> --- a/arch/powerpc/include/asm/book3s/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/pgtable.h
+> @@ -35,7 +35,16 @@ extern pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
+>    * corresponding HPTE into the hash table ahead of time, instead of
+>    * waiting for the inevitable extra hash-table miss exception.
+>    */
+> -void update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep);
+> +void hash__update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep);
+> +
+> +static inline void update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep)
+> +{
+> +#ifdef CONFIG_PPC64
 
-There is a question of how compatibility would be work if a future
-processor implements core MMU PTE udpates. This is being discussed with
-ISA developers at the moment...
+You shouldn't need that ifdef. radix_enabled() is always defined.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/book3s/64/radix.h | 54 ++++++---------
- arch/powerpc/mm/book3s64/radix_pgtable.c   | 79 ++++++++++++++++++----
- 2 files changed, 83 insertions(+), 50 deletions(-)
+> +	if (radix_enabled())
+> +		return;
+> +#endif
+> +	hash__update_mmu_cache(vma, address, ptep);
+> +}
+>   
+>   #endif /* __ASSEMBLY__ */
+>   #endif
+> diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+> index 859e5bd603ac..c5a570ca37ff 100644
+> --- a/arch/powerpc/mm/book3s32/mmu.c
+> +++ b/arch/powerpc/mm/book3s32/mmu.c
+> @@ -325,8 +325,8 @@ static void hash_preload(struct mm_struct *mm, unsigned long ea)
+>    *
+>    * This must always be called with the pte lock held.
+>    */
+> -void update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
+> -		      pte_t *ptep)
+> +void hash__update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
+> +			    pte_t *ptep)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
-index 2491f3befda0..837ed6fb1c7d 100644
---- a/arch/powerpc/include/asm/book3s/64/radix.h
-+++ b/arch/powerpc/include/asm/book3s/64/radix.h
-@@ -137,16 +137,17 @@ extern void radix__mark_rodata_ro(void);
- extern void radix__mark_initmem_nx(void);
- #endif
- 
--extern void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
--					 pte_t entry, unsigned long address,
--					 int psize);
--
--extern void radix__ptep_modify_prot_commit(struct vm_area_struct *vma,
--					   unsigned long addr, pte_t *ptep,
--					   pte_t old_pte, pte_t pte);
--
--static inline unsigned long __radix_pte_update(pte_t *ptep, unsigned long clr,
--					       unsigned long set)
-+void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
-+				pte_t entry, unsigned long address, int psize);
-+void radix__ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+				pte_t old_pte, pte_t pte);
-+unsigned long radix__pte_update(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-+				unsigned long clr, unsigned long set, int huge);
-+pte_t radix__ptep_get_and_clear_full(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-+				int full);
-+
-+static inline unsigned long __radix_pte_update_atomic(pte_t *ptep, unsigned long clr,
-+							unsigned long set)
- {
- 	__be64 old_be, tmp_be;
- 
-@@ -163,38 +164,21 @@ static inline unsigned long __radix_pte_update(pte_t *ptep, unsigned long clr,
- 	return be64_to_cpu(old_be);
- }
- 
--static inline unsigned long radix__pte_update(struct mm_struct *mm,
--					unsigned long addr,
--					pte_t *ptep, unsigned long clr,
--					unsigned long set,
--					int huge)
-+static inline unsigned long __radix_pte_update_nonatomic(pte_t *ptep, unsigned long clr,
-+							unsigned long set)
- {
--	unsigned long old_pte;
-+	unsigned long old_pte = pte_val(*ptep);
- 
--	old_pte = __radix_pte_update(ptep, clr, set);
--	if (!huge)
--		assert_pte_locked(mm, addr);
-+	*ptep = __pte((old_pte & ~clr) | set);
- 
- 	return old_pte;
- }
- 
--static inline pte_t radix__ptep_get_and_clear_full(struct mm_struct *mm,
--						   unsigned long addr,
--						   pte_t *ptep, int full)
-+static inline unsigned long __radix_pte_update(pte_t *ptep, unsigned long clr,
-+						unsigned long set)
- {
--	unsigned long old_pte;
--
--	if (full) {
--		/*
--		 * We know that this is a full mm pte clear and
--		 * hence can be sure there is no parallel set_pte.
--		 */
--		old_pte = pte_val(*ptep);
--		*ptep = __pte(0);
--	} else
--		old_pte = radix__pte_update(mm, addr, ptep, ~0ul, 0, 0);
--
--	return __pte(old_pte);
-+	/* Must use atomic updates because accelerators may be attached which can modify the pte */
-+	return __radix_pte_update_atomic(ptep, clr, set);
- }
- 
- static inline int radix__pte_same(pte_t pte_a, pte_t pte_b)
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 9495206b9b91..f7ecb90daf87 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1030,6 +1030,47 @@ pmd_t radix__pmdp_huge_get_and_clear(struct mm_struct *mm,
- 
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
-+static inline bool radix__mm_has_atomic_pte_update(struct mm_struct *mm)
-+{
-+	if (mm_has_nmmu(mm))
-+		return true;
-+	return false;
-+}
-+
-+static inline bool radix__mm_has_core_atomic_pte_update(struct mm_struct *mm)
-+{
-+	return false;
-+}
-+
-+unsigned long radix__pte_update(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-+				unsigned long clr, unsigned long set, int huge)
-+{
-+	unsigned long old_pte;
-+
-+	if (!huge)
-+		assert_pte_locked(mm, addr);
-+
-+	if (radix__mm_has_atomic_pte_update(mm))
-+		old_pte = __radix_pte_update_atomic(ptep, clr, set);
-+	else
-+		old_pte = __radix_pte_update_nonatomic(ptep, clr, set);
-+
-+	return old_pte;
-+}
-+
-+pte_t radix__ptep_get_and_clear_full(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-+				int full)
-+{
-+	unsigned long old_pte;
-+
-+	if (full)
-+		old_pte = __radix_pte_update_nonatomic(ptep, ~0ul, 0);
-+	else
-+		old_pte = radix__pte_update(mm, addr, ptep, ~0ul, 0, 0);
-+
-+	return __pte(old_pte);
-+}
-+
- void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
- 				  pte_t entry, unsigned long address, int psize)
- {
-@@ -1037,23 +1078,31 @@ void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
- 	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_ACCESSED |
- 					      _PAGE_RW | _PAGE_EXEC);
- 
--	unsigned long change = pte_val(entry) ^ pte_val(*ptep);
--	/*
--	 * To avoid NMMU hang while relaxing access, we need mark
--	 * the pte invalid in between.
--	 */
--	if ((change & _PAGE_RW) && mm_has_nmmu(mm)) {
--		unsigned long old_pte, new_pte;
-+	if (mm_has_nmmu(mm)) {
-+		unsigned long change = pte_val(entry) ^ pte_val(*ptep);
- 
--		old_pte = __radix_pte_update(ptep, _PAGE_PRESENT, _PAGE_INVALID);
--		/*
--		 * new value of pte
--		 */
--		new_pte = old_pte | set;
--		radix__flush_tlb_page_psize(mm, address, psize);
--		__radix_pte_update(ptep, _PAGE_INVALID, new_pte);
-+		if ((change & _PAGE_RW)) {
-+			unsigned long old_pte, new_pte;
-+
-+			/*
-+			 * To avoid NMMU hang while relaxing access, we need mark
-+			 * the pte invalid in between.
-+			 */
-+			old_pte = __radix_pte_update(ptep, _PAGE_PRESENT, _PAGE_INVALID);
-+			/*
-+			 * new value of pte
-+			 */
-+			new_pte = old_pte | set;
-+			radix__flush_tlb_page_psize(mm, address, psize);
-+			__radix_pte_update(ptep, _PAGE_INVALID, new_pte);
-+		} else {
-+			__radix_pte_update(ptep, 0, set);
-+		}
- 	} else {
--		__radix_pte_update(ptep, 0, set);
-+		if (radix__mm_has_core_atomic_pte_update(mm))
-+			__radix_pte_update_atomic(ptep, 0, set);
-+		else
-+			__radix_pte_update_nonatomic(ptep, 0, set);
- 		/*
- 		 * Book3S does not require a TLB flush when relaxing access
- 		 * restrictions when the address space is not attached to a
--- 
-2.23.0
+Now the limit is 100 chars per line. This should fit on a single line I think.
 
+>   {
+>   	if (!mmu_has_feature(MMU_FTR_HPTE_TABLE))
+>   		return;
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+> index 73b06adb6eeb..d52a3dee7cf2 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -1667,8 +1667,8 @@ static void hash_preload(struct mm_struct *mm, pte_t *ptep, unsigned long ea,
+>    *
+>    * This must always be called with the pte lock held.
+>    */
+> -void update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
+> -		      pte_t *ptep)
+> +void hash__update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
+> +			    pte_t *ptep)
+
+Now the limit is 100 chars per line. This should fit on a single line I think.
+
+>   {
+>   	/*
+>   	 * We don't need to worry about _PAGE_PRESENT here because we are
+> @@ -1677,9 +1677,6 @@ void update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
+>   	unsigned long trap;
+>   	bool is_exec;
+>   
+> -	if (radix_enabled())
+> -		return;
+> -
+>   	/* We only want HPTEs for linux PTEs that have _PAGE_ACCESSED set */
+>   	if (!pte_young(*ptep) || address >= TASK_SIZE)
+>   		return;
+> 
