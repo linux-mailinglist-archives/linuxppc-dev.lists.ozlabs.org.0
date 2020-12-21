@@ -1,31 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746DA2DFB8E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Dec 2020 12:37:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF5A2DFB9F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Dec 2020 12:42:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Czy9s2Dv3zDqQ3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Dec 2020 22:37:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CzyJK4l9bzDqQX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Dec 2020 22:42:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4CzxR913XpzDqP5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Dec 2020 22:03:33 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CzxRB41M7zDqP5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Dec 2020 22:03:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4CzxR86Ph8z9sWK; Mon, 21 Dec 2020 22:03:32 +1100 (AEDT)
+ id 4CzxR95HsHz9sVn; Mon, 21 Dec 2020 22:03:33 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Vincent Stehlé <vincent.stehle@laposte.net>, linux-kernel@vger.kernel.org
-In-Reply-To: <20201213182622.23047-1-vincent.stehle@laposte.net>
-References: <20201213182622.23047-1-vincent.stehle@laposte.net>
-Subject: Re: [PATCH] powerpc/ps3: use dma_mapping_error()
-Message-Id: <160854857859.1696279.14497114768296534603.b4-ty@ellerman.id.au>
-Date: Mon, 21 Dec 2020 22:03:32 +1100 (AEDT)
+To: "xiakaixu1987@gmail.com" <xiakaixu1987@gmail.com>, paulus@ozlabs.org
+In-Reply-To: <1604730382-5810-1-git-send-email-kaixuxia@tencent.com>
+References: <1604730382-5810-1-git-send-email-kaixuxia@tencent.com>
+Subject: Re: [PATCH] KVM: PPC: Book3S: Assign boolean values to a bool variable
+Message-Id: <160854857711.1696279.4751962341706112640.b4-ty@ellerman.id.au>
+Date: Mon, 21 Dec 2020 22:03:33 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,19 +37,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Geoff Levand <geoff@infradead.org>,
- Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+Cc: Kaixu Xia <kaixuxia@tencent.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 13 Dec 2020 19:26:22 +0100, Vincent Stehlé wrote:
-> The DMA address returned by dma_map_single() should be checked with
-> dma_mapping_error(). Fix the ps3stor_setup() function accordingly.
+On Sat, 7 Nov 2020 14:26:22 +0800, xiakaixu1987@gmail.com wrote:
+> Fix the following coccinelle warnings:
+> 
+> ./arch/powerpc/kvm/book3s_xics.c:476:3-15: WARNING: Assignment of 0/1 to bool variable
+> ./arch/powerpc/kvm/book3s_xics.c:504:3-15: WARNING: Assignment of 0/1 to bool variable
 
 Applied to powerpc/next.
 
-[1/1] powerpc/ps3: use dma_mapping_error()
-      https://git.kernel.org/powerpc/c/d0edaa28a1f7830997131cbce87b6c52472825d1
+[1/1] KVM: PPC: Book3S: Assign boolean values to a bool variable
+      https://git.kernel.org/powerpc/c/13751f8747519fe3bdc738fa6d802fbd94a85ac4
 
 cheers
