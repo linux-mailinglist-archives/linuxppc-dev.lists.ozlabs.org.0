@@ -2,49 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 210D92DF8DF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Dec 2020 06:42:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2B62DF8F1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Dec 2020 06:45:59 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4CzpJJ6TxHzDqLM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Dec 2020 16:42:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4CzpNh2RlCzDqLG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Dec 2020 16:45:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4CzpGc6cPZzDqKs
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Dec 2020 16:40:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4CzpLx6HzbzDqKs
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Dec 2020 16:44:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=NexIgke5; 
+ header.a=rsa-sha256 header.s=201909 header.b=ZnWF70Nm; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4CzpGc0z8pz9sVk;
- Mon, 21 Dec 2020 16:40:39 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4CzpLk1qPgz9sVk;
+ Mon, 21 Dec 2020 16:44:14 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1608529240;
- bh=QZjaGsP20Bc9X9hyCXPWA9UWMoG7P+zj6bb9h8pPwTY=;
+ s=201909; t=1608529465;
+ bh=8q8pjXmt3fb3/FcKFZZhBpNNcXsp66j8Isw1H4VoFss=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=NexIgke5e7rs//whl9xKdvo6hVstOJCOdZN9Gg0GpQNlBPXx7iHEy0qWltWHS1GkJ
- Fx3rS/oAQxRVidn3kxYdLoU8EzrhSdRSfQDj5luRMbzzSIqV3DX0LL/FWNkkuMFPRD
- UynVnXubJwoncvXlb1P0ojUS7TGCmxjUsokTqo50eYCsqpveVH6h5ET71uFDsR2Uix
- v7fHytBqDqqVzWUor7LWNtuSVqqFUxGVyQTAgSLzT9dkJ0YDI3LE6vpDuhVy5L7dYX
- yAztcjA40i0Hwzxlc2T+VVk93IrO8XtluKc001WO6oPynqFdfM1o8faeXF18nERHrG
- 3xmKhUT8mLPmQ==
+ b=ZnWF70NmUxyOGkj7ajnBegDo04rv8gH5Ux9NWJhGuiFgnNMVogs2qsK/JPPvTOxX3
+ hzwMtUhjiDSqvHc4ZZWFFrTwkUdkYXJq/1ML2X0U5qamtbWBfarkCtNAXDelPjKyYu
+ 4R5GrwJUkFnZSYIfsBFzv3+C8RVv3a9uzsg9fDjFKnZkRtQDx75FnOmDIw99taeAnd
+ QCskX9h/ngj+6oMYoBPKKaJh3wx/SkbDouSAAbUuPyGD0ebzLrrNquc0B/69DXdzQf
+ fJmTp61f2fzdZls70bVcMCLTyxKnMkjf3NMjT+RK4eF560XOppbITSBixDl2QbJUdX
+ VnJ3dZzhE+mIA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Kajol Jain <kjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] powerpc/perf/hv-24x7: Dont create sysfs event files
- for dummy events
-In-Reply-To: <20201218100100.1166111-1-kjain@linux.ibm.com>
-References: <20201218100100.1166111-1-kjain@linux.ibm.com>
-Date: Mon, 21 Dec 2020 16:40:36 +1100
-Message-ID: <87im8vyawb.fsf@mpe.ellerman.id.au>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>, "Enrico Weigelt\,
+ metux IT consult" <info@metux.net>
+Subject: Re: [PATCH 01/23] kernel: irq: irqdescs: warn on spurious IRQ
+In-Reply-To: <CAHp75VfYz_K2BYOxqmSx0q+1F2F9Lp1eb70RrNYzJHs3FX+quQ@mail.gmail.com>
+References: <20201218143122.19459-1-info@metux.net>
+ <20201218143122.19459-2-info@metux.net>
+ <CAHp75VfYz_K2BYOxqmSx0q+1F2F9Lp1eb70RrNYzJHs3FX+quQ@mail.gmail.com>
+Date: Mon, 21 Dec 2020 16:44:13 +1100
+Message-ID: <87ft3zyaqa.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -58,96 +60,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, suka@us.ibm.com, maddy@linux.vnet.ibm.com,
- atrajeev@linux.vnet.ibm.com
+Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, Linux-SH <linux-sh@vger.kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>, linux-mips@vger.kernel.org,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ Paul Mackerras <paulus@samba.org>, "H.
+ Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Will Deacon <will@kernel.org>, gerg@linux-m68k.org,
+ Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Jiri Olsa <jolsa@redhat.com>, Helge Deller <deller@gmx.de>,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+ Tony Lindgren <tony@atomide.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-alpha@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, msalter@redhat.com, jacquiot.aurelien@gmail.com,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Marc Zyngier <maz@kernel.org>, "open list:LINUX
+ FOR POWERPC PA SEMI PWRFICIENT" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kajol Jain <kjain@linux.ibm.com> writes:
-> hv_24x7 performance monitoring unit creates list of supported events
-> from the event catalog obtained via HCALL. hv_24x7 catalog could also
-> contain invalid or dummy events (with names like FREE_* or CPM_FREE_*
-> and RESERVED*). These events do not have any hardware counters
-> backing them. So patch adds a check to string compare the event names
-> to filter out them.
+Andy Shevchenko <andy.shevchenko@gmail.com> writes:
+> On Fri, Dec 18, 2020 at 4:37 PM Enrico Weigelt, metux IT consult
+> <info@metux.net> wrote:
 >
-> Result in power9 machine:
+>> +               if (printk_ratelimit())
+>> +                       pr_warn("spurious IRQ: irq=%d hwirq=%d nr_irqs=%d\n",
+>> +                               irq, hwirq, nr_irqs);
 >
-> Before this patch:
-> .....
->   hv_24x7/PM_XLINK2_OUT_ODD_CYC,chip=?/              [Kernel PMU event]
->   hv_24x7/PM_XLINK2_OUT_ODD_DATA_COUNT,chip=?/       [Kernel PMU event]
->   hv_24x7/PM_XLINK2_OUT_ODD_TOTAL_UTIL,chip=?/       [Kernel PMU event]
->   hv_24x7/PM_XTS_ATR_DEMAND_CHECKOUT,chip=?/         [Kernel PMU event]
->   hv_24x7/PM_XTS_ATR_DEMAND_CHECKOUT_MISS,chip=?/    [Kernel PMU event]
->   hv_24x7/PM_XTS_ATSD_SENT,chip=?/                   [Kernel PMU event]
->   hv_24x7/PM_XTS_ATSD_TLBI_RCV,chip=?/               [Kernel PMU event]
->   hv_24x7/RESERVED_NEST1,chip=?/                     [Kernel PMU event]
->   hv_24x7/RESERVED_NEST10,chip=?/                    [Kernel PMU event]
->   hv_24x7/RESERVED_NEST11,chip=?/                    [Kernel PMU event]
->   hv_24x7/RESERVED_NEST12,chip=?/                    [Kernel PMU event]
->   hv_24x7/RESERVED_NEST13,chip=?/                    [Kernel PMU event]
-> ......
->
-> Dmesg:
-> [    0.000362] printk: console [hvc0] enabled
-> [    0.815452] hv-24x7: read 1530 catalog entries, created 537 event attrs
-> (0 failures), 275 descs
->
-> After this patch:
-> ......
->   hv_24x7/PM_XLINK2_OUT_ODD_AVLBL_CYC,chip=?/        [Kernel PMU event]
->   hv_24x7/PM_XLINK2_OUT_ODD_CYC,chip=?/              [Kernel PMU event]
->   hv_24x7/PM_XLINK2_OUT_ODD_DATA_COUNT,chip=?/       [Kernel PMU event]
->   hv_24x7/PM_XLINK2_OUT_ODD_TOTAL_UTIL,chip=?/       [Kernel PMU event]
->   hv_24x7/PM_XTS_ATR_DEMAND_CHECKOUT,chip=?/         [Kernel PMU event]
->   hv_24x7/PM_XTS_ATR_DEMAND_CHECKOUT_MISS,chip=?/    [Kernel PMU event]
->   hv_24x7/PM_XTS_ATSD_SENT,chip=?/                   [Kernel PMU event]
->   hv_24x7/PM_XTS_ATSD_TLBI_RCV,chip=?/               [Kernel PMU event]
->   hv_24x7/TOD,chip=?/                                [Kernel PMU event]
-> ......
->
-> Demsg:
-> [    0.000357] printk: console [hvc0] enabled
-> [    0.808592] hv-24x7: read 1530 catalog entries, created 509 event attrs
-> (0 failures), 275 descs
->
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> ---
->  arch/powerpc/perf/hv-24x7.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->
-> ---
-> Changelog
-> v1 -> v2
-> - Include "RESERVED*" as part of the invalid event check as
->   suggested by Madhavan Srinivasan
-> - Add new helper function "ignore_event" to check invalid/dummy
->   events as suggested by Michael Ellerman
-> - Remove pr_info to print each invalid event as suggested by
->   Michael Ellerman
-> ---
-> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-> index 6e7e820508df..1a6004d88f98 100644
-> --- a/arch/powerpc/perf/hv-24x7.c
-> +++ b/arch/powerpc/perf/hv-24x7.c
-> @@ -764,6 +764,16 @@ static ssize_t catalog_event_len_validate(struct hv_24x7_event_data *event,
->  	return ev_len;
->  }
->  
-> +/*
-> + * Return true incase of invalid or dummy events with names like FREE_* or CPM_FREE_*
-> + * and RESERVED*
-> + */
-> +static bool ignore_event(const char *name)
-> +{
-> +	return (strstr(name, "FREE_") || !strncmp(name, "RESERVED", 8)) ?
-> +			true : false;
+> Perhaps you missed pr_warn_ratelimit() macro which is already in the
+> kernel for a long time.
 
-That's FREE_ anywhere in the string, which seems a bit loose.
+pr_warn_ratelimited() which calls printk_ratelimited().
 
-Do we have any documentation or anything that tells us that any event
-with "FREE_" in the name will always be invalid?
+And see the comment above printk_ratelimit():
+
+/*
+ * Please don't use printk_ratelimit(), because it shares ratelimiting state
+ * with all other unrelated printk_ratelimit() callsites.  Instead use
+ * printk_ratelimited() or plain old __ratelimit().
+ */
+
 
 cheers
