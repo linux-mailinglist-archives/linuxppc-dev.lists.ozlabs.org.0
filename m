@@ -1,102 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951622E0DE4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Dec 2020 18:40:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BC82E0DF4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Dec 2020 18:47:42 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D0kBY2T1pzDqSv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Dec 2020 04:40:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D0kLz4Th6zDqTF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Dec 2020 04:47:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=kaF4LqkX; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D0k8y3PpXzDqRD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Dec 2020 04:38:57 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0BMHMY9l144137; Tue, 22 Dec 2020 12:38:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=mzxAJ2qdjDobwjZYtIc9FAiKEaQborbGTrAtKji3Sl4=;
- b=kaF4LqkXSahyPn3BiKIoRWHfIqFMBHf5gtGGlrAcsepsLNhhZ5USsLMdBnHl6WhdUR2L
- qmnz1TY/0qEdNLKUaR5RtCcMyYFjM/+tEjTMJwsS9Jm+QTYl7HZwSR/WAhJR58+oqRzM
- Vg1cdniVcl9hl2jO4OljplJd/Reyh67Q9ym3vfXX6gegTL5UYhSGEioRFvcMBIU6l7Kv
- Kt5+PD2GZ3x+VGQEUEBxCuwybpGJfCV4LlN6noasMdOzpNgL0JecTpzlQEVUl9NocPcV
- xSJDFBFe8oU2mjwpv5YHqF9hLeSGfX5bcN/96uGtoWgfxE7gzvG9tYyVDkDWyqSA4Ary og== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35kn510aeg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Dec 2020 12:38:51 -0500
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0BMHOeBK155030;
- Tue, 22 Dec 2020 12:38:51 -0500
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35kn510ae9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Dec 2020 12:38:50 -0500
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BMHSRDu029108;
- Tue, 22 Dec 2020 17:38:49 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma03wdc.us.ibm.com with ESMTP id 35kdqy2wym-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Dec 2020 17:38:49 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0BMHcmrX28770794
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 22 Dec 2020 17:38:49 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D32E96A05A;
- Tue, 22 Dec 2020 17:38:48 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4C13B6A057;
- Tue, 22 Dec 2020 17:38:47 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.160.78.58])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 22 Dec 2020 17:38:47 +0000 (GMT)
-Subject: Re: [PATCH 3/3] ibmvfc: use correlation token to tag commands
-To: Nathan Chancellor <natechancellor@gmail.com>
-References: <20201117185031.129939-1-tyreld@linux.ibm.com>
- <20201117185031.129939-3-tyreld@linux.ibm.com>
- <20201222062403.GA2190683@ubuntu-m3-large-x86>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <b71fcc6f-bb07-f02d-8e1e-79fe4f5802dc@linux.ibm.com>
-Date: Tue, 22 Dec 2020 09:38:46 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D0kKH6D4BzDqGX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Dec 2020 04:46:07 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4D0kK44K6fz9v0yl;
+ Tue, 22 Dec 2020 18:46:00 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id PX7TMhZx0fje; Tue, 22 Dec 2020 18:46:00 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4D0kK41B2Tz9v0yj;
+ Tue, 22 Dec 2020 18:46:00 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C98CE8B81B;
+ Tue, 22 Dec 2020 18:46:01 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id vLezCVy7nlQs; Tue, 22 Dec 2020 18:46:01 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D3EC68B812;
+ Tue, 22 Dec 2020 18:46:00 +0100 (CET)
+Subject: Re: [PATCH] powerpc:Don't print raw EIP/LR hex values in dump_stack()
+ and show_regs()
+To: Segher Boessenkool <segher@kernel.crashing.org>,
+ Xiaoming Ni <nixiaoming@huawei.com>
+References: <20201221032758.12143-1-nixiaoming@huawei.com>
+ <2279fc96-1f10-0c3f-64d9-734f18758620@csgroup.eu>
+ <20201221163130.GZ2672@gate.crashing.org>
+ <ad814ccf34c14c76b45e50b6e7741c3a@AcuMS.aculab.com>
+ <20201221171228.GA2672@gate.crashing.org>
+ <9b874bd4-9ac8-eb94-8432-8d6193c3feaf@huawei.com>
+ <20201222172922.GE2672@gate.crashing.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <57a31937-9332-f05b-9200-b071e2fee132@csgroup.eu>
+Date: Tue, 22 Dec 2020 18:45:50 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <20201222062403.GA2190683@ubuntu-m3-large-x86>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-22_09:2020-12-21,
- 2020-12-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- lowpriorityscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
- spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0 clxscore=1011
- adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012220126
+In-Reply-To: <20201222172922.GE2672@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,57 +71,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
- linux-kernel@vger.kernel.org, james.bottomley@hansenpartnership.com,
- clang-built-linux@googlegroups.com, brking@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: "ravi.bangoria@linux.ibm.com" <ravi.bangoria@linux.ibm.com>,
+ "mikey@neuling.org" <mikey@neuling.org>,
+ "yanaijie@huawei.com" <yanaijie@huawei.com>,
+ "wangle6@huawei.com" <wangle6@huawei.com>,
+ "haren@linux.ibm.com" <haren@linux.ibm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "npiggin@gmail.com" <npiggin@gmail.com>,
+ David Laight <David.Laight@aculab.com>, "paulus@samba.org" <paulus@samba.org>,
+ "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/21/20 10:24 PM, Nathan Chancellor wrote:
-> On Tue, Nov 17, 2020 at 12:50:31PM -0600, Tyrel Datwyler wrote:
->> The vfcFrame correlation field is 64bit handle that is intended to trace
->> I/O operations through both the client stack and VIOS stack when the
->> underlying physical FC adapter supports tagging.
->>
->> Tag vfcFrames with the associated ibmvfc_event pointer handle.
->>
->> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
->> ---
->>  drivers/scsi/ibmvscsi/ibmvfc.c | 4 ++++
->>  1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
->> index 0cab4b852b48..3922441a117d 100644
->> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
->> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
->> @@ -1693,6 +1693,8 @@ static int ibmvfc_queuecommand_lck(struct scsi_cmnd *cmnd,
->>  		vfc_cmd->iu.pri_task_attr = IBMVFC_SIMPLE_TASK;
->>  	}
->>  
->> +	vfc_cmd->correlation = cpu_to_be64(evt);
->> +
->>  	if (likely(!(rc = ibmvfc_map_sg_data(cmnd, evt, vfc_cmd, vhost->dev))))
->>  		return ibmvfc_send_event(evt, vhost, 0);
->>  
->> @@ -2370,6 +2372,8 @@ static int ibmvfc_abort_task_set(struct scsi_device *sdev)
->>  		tmf->iu.tmf_flags = IBMVFC_ABORT_TASK_SET;
->>  		evt->sync_iu = &rsp_iu;
->>  
->> +		tmf->correlation = cpu_to_be64(evt);
->> +
->>  		init_completion(&evt->comp);
->>  		rsp_rc = ibmvfc_send_event(evt, vhost, default_timeout);
->>  	}
->> -- 
->> 2.27.0
->>
+
+
+Le 22/12/2020 à 18:29, Segher Boessenkool a écrit :
+> On Tue, Dec 22, 2020 at 09:45:03PM +0800, Xiaoming Ni wrote:
+>> On 2020/12/22 1:12, Segher Boessenkool wrote:
+>>> On Mon, Dec 21, 2020 at 04:42:23PM +0000, David Laight wrote:
+>>>> From: Segher Boessenkool
+>>>>> Sent: 21 December 2020 16:32
+>>>>>
+>>>>> On Mon, Dec 21, 2020 at 04:17:21PM +0100, Christophe Leroy wrote:
+>>>>>> Le 21/12/2020 à 04:27, Xiaoming Ni a écrit :
+>>>>>>> Since the commit 2b0e86cc5de6 ("powerpc/fsl_booke/32: implement KASLR
+>>>>>>> infrastructure"), the powerpc system is ready to support KASLR.
+>>>>>>> To reduces the risk of invalidating address randomization, don't print
+>>>>>>> the
+>>>>>>> EIP/LR hex values in dump_stack() and show_regs().
+>>>>>
+>>>>>> I think your change is not enough to hide EIP address, see below a dump
+>>>>>> with you patch, you get "Faulting instruction address: 0xc03a0c14"
+>>>>>
+>>>>> As far as I can see the patch does nothing to the GPR printout.  Often
+>>>>> GPRs contain code addresses.  As one example, the LR is moved via a GPR
+>>>>> (often GPR0, but not always) for storing on the stack.
+>>>>>
+>>>>> So this needs more work.
+>>>>
+>>>> If the dump_stack() is from an oops you need the real EIP value
+>>>> on order to stand any chance of making headway.
+>>>
+>>> Or at least the function name + offset, yes.
+>>>
+>> When the system is healthy, only symbols and offsets are printed,
+>> Output address and symbol + offset when the system is dying
+>> Does this meet both debugging and security requirements?
 > 
-> This patch introduces a clang warning, is this intentional behavior?
+> If you have the vmlinux, sym+off is enough to find what instruction
+> caused the crash.
+> 
+> It does of course not give all the information you get in a crash dump
+> with all the registers, so it does hinder debugging a bit.  This is a
+> tradeoff.
+> 
+> Most debugging will need xmon or similar (or printf-style debugging)
+> anyway; and otoh the register dump will render KASLR largely
+> ineffective.
+> 
+>> For example:
+>>
+>> +static void __show_regs_ip_lr(const char *flag, unsigned long addr)
+>> +{
+>> + if (system_going_down()) { /* panic oops reboot */
+>> +         pr_cont("%s["REG"] %pS", flag, addr, (void *)addr);
+>> + } else {
+>> +         pr_cont("%s%pS", flag, (void *)addr);
+>> + }
+>> +}
+> 
+> *If* you are certain the system goes down immediately, and you are also
+> certain this information will not help defeat ASLR after a reboot, you
+> could just print whatever, sure.
+> 
+> Otherwise, you only want to show some very few registers.  Or, make sure
+> no attackers can ever see these dumps (which is hard, many systems trust
+> all (local) users with it!)  Which means we first will need some very
+> different patches, before any of this can be much useful :-(
+> 
 
-Nope, I just missed the required cast. I've got a fixes patch queued up. I just
-haven't sent it yet.
+So IIUC, on one side we enlarge the dumping of registers with commits like 
+https://github.com/linuxppc/linux/commit/bf13718bc57ada25016d9fe80323238d0b94506e#diff-8b965e0e62fc1b6ad5e51bf0a539941e929754cdb716041b06b4f4a5f73590f9, 
+and on the other side we want to narrow it and hide registers ? I'm lost.
 
--Tyrel
-
+Christophe
