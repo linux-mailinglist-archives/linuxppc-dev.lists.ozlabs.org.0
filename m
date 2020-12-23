@@ -1,101 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A362E1542
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Dec 2020 03:49:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE172E17DE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Dec 2020 04:54:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D0yNM6DYKzDqRj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Dec 2020 13:49:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D0zpx1gF7zDqTF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Dec 2020 14:54:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::734;
- helo=mail-qk1-x734.google.com; envelope-from=boqun.feng@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vEiy5S47; dkim-atps=neutral
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com
- [IPv6:2607:f8b0:4864:20::734])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D0yJr3wX4zDqDx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Dec 2020 13:46:30 +1100 (AEDT)
-Received: by mail-qk1-x734.google.com with SMTP id n142so13913709qkn.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Dec 2020 18:46:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=aTJCA29fRUEz9E6QxArbuqAqpHdZixDcoTrfn7uJ+gI=;
- b=vEiy5S47fXYfBkx3BPI2vrMJAfZvgfb76log3s0hlf1RVpKTX2+1Nf4PHugfP4qB+y
- qM1mfvgxs/FUXAvUrE2m8YdNWasTBBRyie5N+cfL9hm+XooJy/RKKFwbJ1/Nw5iPiSqg
- SQFnVJbGPcWQtjPTTVdQO0FsYG0qzfipE4zTMbUV5C1KlfVklV+UiE7O//0Ysqqln4U1
- +q33vi1lvgzPIupwVzBuW8HRm/tbKfqeh6p6oS5kXgfBQ6MT+nHwWQYHfK2DZa5j0rUN
- 0orwtySgU3PhWebNP4YyEu2E4XzfvBsBGoLigX4nw2Czv5zk2ZK79BRa5iRnbYnhEsRK
- zVyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=aTJCA29fRUEz9E6QxArbuqAqpHdZixDcoTrfn7uJ+gI=;
- b=Sum568HaZX/0z5060+9yVQufyVftZuME17PpNJAbUdGOLE8JDW0EWMpYyqw3jyAHuC
- pWuksA1MeCZiF2c91xFzoyQZEPkp9NUhVOm/n5v7MlBcUUnyKMvb/6WdAEB854LLYJEy
- VnUb2E1BBNwVtBWqIWqyDfBEqXCua0kdxnpf720gbDDATgaq6E1ezY8tVhUGMEUUczwk
- BEUJqn6ssbfKF/vRmbTgMDbXuVu7hYOFzTKGZCEmfdbs1ZCirKuopREfbvEwhcFR2m0i
- Ba4Nu1lHHtFbKGnlDpe3DTOpLX3UhtB68tBgXaA+IRYWnylhFUtfGJK/yPg3UWWNjevz
- 4fOQ==
-X-Gm-Message-State: AOAM5301gm/JGebKYv5N9UjUqS83OiJYH0oB6niZJoXzNRA8kgia8hJr
- XBTnycnz2gp77kbvtryoHkY=
-X-Google-Smtp-Source: ABdhPJxKW6eMfx2FcIh5RdAJZxL2nPQDJJmGlzGOdHWHXN+pZFdtdSCpQEaP67NTCW+6s22rmfgGJA==
-X-Received: by 2002:a37:994:: with SMTP id 142mr24731734qkj.257.1608691585981; 
- Tue, 22 Dec 2020 18:46:25 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com.
- [66.111.4.228])
- by smtp.gmail.com with ESMTPSA id u4sm13293329qtv.49.2020.12.22.18.46.24
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 22 Dec 2020 18:46:25 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailauth.nyi.internal (Postfix) with ESMTP id 2FB8D27C0054;
- Tue, 22 Dec 2020 21:46:24 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute5.internal (MEProxy); Tue, 22 Dec 2020 21:46:24 -0500
-X-ME-Sender: <xms:fK_iXy-4fMjmhLFCkXxUbry6TwiQl7MS1nGaWvCYyq6Oo7Eb9vmw-A>
- <xme:fK_iXyvC3j9yhqkArxoiMDP5vHJ6-UD-A9Hym916jKKQ7jP7_lma34jBSt-RX_lfw
- _HipUOzSzZhbTWF9Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrvddtiedgudefucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
- ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
- htvghrnhepvdelieegudfggeevjefhjeevueevieetjeeikedvgfejfeduheefhffggedv
- geejnecukfhppedufedurddutdejrddugeejrdduvdeinecuvehluhhsthgvrhfuihiivg
- eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
- phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
- drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:fK_iX4CmT5Xo_dRZKPMSGY5ZKvNmeIYMOxvzfg6h_Y-30f_5gmXWeQ>
- <xmx:fK_iX6dQZOVBcdkZQk5WYJrwx0fLiQb-dLAb9HUU2Gt551EHL7zvxw>
- <xmx:fK_iX3MlZDSEKksyYZzSz3pCsMdELySC_TNi6YkbY2FhVJsg4wIh2g>
- <xmx:gK_iXwgvNTJfnNZRE8SNh0F1GntNgn_679XoiHpXKG4SEs_6T0Gi9s8zato>
-Received: from localhost (unknown [131.107.147.126])
- by mail.messagingengine.com (Postfix) with ESMTPA id 187361080059;
- Tue, 22 Dec 2020 21:46:20 -0500 (EST)
-Date: Wed, 23 Dec 2020 10:45:47 +0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 3/3] powerpc: rewrite atomics to use ARCH_ATOMIC
-Message-ID: <X+KvWzrkV+3pxnz2@boqun-archlinux>
-References: <20201111110723.3148665-1-npiggin@gmail.com>
- <20201111110723.3148665-4-npiggin@gmail.com>
- <20201113153012.GD286534@boqun-archlinux>
- <1608608903.7wgw6zmbi8.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D0znW67KMzDqS1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Dec 2020 14:52:59 +1100 (AEDT)
+IronPort-SDR: pyAHkZ+v87+OwpxA+wRZW1amTontB3MkAvJzzOabmKcILcXtWuMmKMW/EbgXGeM310RHSdFNsC
+ QJ3tVK0J/HAw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9843"; a="175182612"
+X-IronPort-AV: E=Sophos;i="5.78,441,1599548400"; d="scan'208";a="175182612"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Dec 2020 19:52:54 -0800
+IronPort-SDR: dxoE1/hfqteMfU42L6akSjsBXOMxCOr4k8OUqAoasGlBKuuMuhpNI3rp49a7efM+TE4CbIYo+w
+ 8P9g/LP4wBYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,441,1599548400"; d="scan'208";a="397764757"
+Received: from lkp-server02.sh.intel.com (HELO 4242b19f17ef) ([10.239.97.151])
+ by FMSMGA003.fm.intel.com with ESMTP; 22 Dec 2020 19:52:53 -0800
+Received: from kbuild by 4242b19f17ef with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1krvCn-00005m-6N; Wed, 23 Dec 2020 03:52:53 +0000
+Date: Wed, 23 Dec 2020 11:52:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 9c7422b92cb27369653c371ad9c44a502e5eea8f
+Message-ID: <5fe2bee9.DOPS2m2+4u21gc4q%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1608608903.7wgw6zmbi8.astroid@bobo.none>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,210 +56,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>, linux-arch@vger.kernel.org,
- Arnd Bergmann <arnd@arndb.de>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- linux-kernel@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Will Deacon <will@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 22, 2020 at 01:52:50PM +1000, Nicholas Piggin wrote:
-> Excerpts from Boqun Feng's message of November 14, 2020 1:30 am:
-> > Hi Nicholas,
-> > 
-> > On Wed, Nov 11, 2020 at 09:07:23PM +1000, Nicholas Piggin wrote:
-> >> All the cool kids are doing it.
-> >> 
-> >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> >> ---
-> >>  arch/powerpc/include/asm/atomic.h  | 681 ++++++++++-------------------
-> >>  arch/powerpc/include/asm/cmpxchg.h |  62 +--
-> >>  2 files changed, 248 insertions(+), 495 deletions(-)
-> >> 
-> >> diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
-> >> index 8a55eb8cc97b..899aa2403ba7 100644
-> >> --- a/arch/powerpc/include/asm/atomic.h
-> >> +++ b/arch/powerpc/include/asm/atomic.h
-> >> @@ -11,185 +11,285 @@
-> >>  #include <asm/cmpxchg.h>
-> >>  #include <asm/barrier.h>
-> >>  
-> >> +#define ARCH_ATOMIC
-> >> +
-> >> +#ifndef CONFIG_64BIT
-> >> +#include <asm-generic/atomic64.h>
-> >> +#endif
-> >> +
-> >>  /*
-> >>   * Since *_return_relaxed and {cmp}xchg_relaxed are implemented with
-> >>   * a "bne-" instruction at the end, so an isync is enough as a acquire barrier
-> >>   * on the platform without lwsync.
-> >>   */
-> >>  #define __atomic_acquire_fence()					\
-> >> -	__asm__ __volatile__(PPC_ACQUIRE_BARRIER "" : : : "memory")
-> >> +	asm volatile(PPC_ACQUIRE_BARRIER "" : : : "memory")
-> >>  
-> >>  #define __atomic_release_fence()					\
-> >> -	__asm__ __volatile__(PPC_RELEASE_BARRIER "" : : : "memory")
-> >> +	asm volatile(PPC_RELEASE_BARRIER "" : : : "memory")
-> >>  
-> >> -static __inline__ int atomic_read(const atomic_t *v)
-> >> -{
-> >> -	int t;
-> >> +#define __atomic_pre_full_fence		smp_mb
-> >>  
-> >> -	__asm__ __volatile__("lwz%U1%X1 %0,%1" : "=r"(t) : "m"(v->counter));
-> >> +#define __atomic_post_full_fence	smp_mb
-> >>  
-> 
-> Thanks for the review.
-> 
-> > Do you need to define __atomic_{pre,post}_full_fence for PPC? IIRC, they
-> > are default smp_mb__{before,atomic}_atomic(), so are smp_mb() defautly
-> > on PPC.
-> 
-> Okay I didn't realise that's not required.
-> 
-> >> -	return t;
-> >> +#define arch_atomic_read(v)			__READ_ONCE((v)->counter)
-> >> +#define arch_atomic_set(v, i)			__WRITE_ONCE(((v)->counter), (i))
-> >> +#ifdef CONFIG_64BIT
-> >> +#define ATOMIC64_INIT(i)			{ (i) }
-> >> +#define arch_atomic64_read(v)			__READ_ONCE((v)->counter)
-> >> +#define arch_atomic64_set(v, i)			__WRITE_ONCE(((v)->counter), (i))
-> >> +#endif
-> >> +
-> > [...]
-> >>  
-> >> +#define ATOMIC_FETCH_OP_UNLESS_RELAXED(name, type, dtype, width, asm_op) \
-> >> +static inline int arch_##name##_relaxed(type *v, dtype a, dtype u)	\
-> > 
-> > I don't think we have atomic_fetch_*_unless_relaxed() at atomic APIs,
-> > ditto for:
-> > 
-> > 	atomic_fetch_add_unless_relaxed()
-> > 	atomic_inc_not_zero_relaxed()
-> > 	atomic_dec_if_positive_relaxed()
-> > 
-> > , and we don't have the _acquire() and _release() variants for them
-> > either, and if you don't define their fully-ordered version (e.g.
-> > atomic_inc_not_zero()), atomic-arch-fallback.h will use read and cmpxchg
-> > to implement them, and I think not what we want.
-> 
-> Okay. How can those be added? The atoimc generation is pretty 
-> complicated.
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
+branch HEAD: 9c7422b92cb27369653c371ad9c44a502e5eea8f  powerpc/32s: Fix RTAS machine check with VMAP stack
 
-Yeah, I know ;-) I think you can just implement and define fully-ordered
-verions:
+elapsed time: 875m
 
-	arch_atomic_fetch_*_unless()
-	arch_atomic_inc_not_zero()
-	arch_atomic_dec_if_postive()
+configs tested: 118
+configs skipped: 109
 
-, that should work.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Rules of atomic generation, IIRC:
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                     kilauea_defconfig
+powerpc                     tqm8555_defconfig
+arc                           tb10x_defconfig
+xtensa                       common_defconfig
+c6x                        evmc6474_defconfig
+powerpc                        fsp2_defconfig
+m68k                           sun3_defconfig
+powerpc                     skiroot_defconfig
+powerpc                 mpc834x_itx_defconfig
+m68k                            q40_defconfig
+m68k                       m5208evb_defconfig
+arm                           h5000_defconfig
+arm                          pxa168_defconfig
+powerpc                        icon_defconfig
+powerpc                    ge_imp3a_defconfig
+sh                               j2_defconfig
+arm                           spitz_defconfig
+arm                          badge4_defconfig
+powerpc                     tqm8548_defconfig
+powerpc                     mpc512x_defconfig
+mips                           xway_defconfig
+powerpc                      ppc64e_defconfig
+arm                      pxa255-idp_defconfig
+arm                           tegra_defconfig
+arm                      integrator_defconfig
+powerpc                    adder875_defconfig
+mips                      fuloong2e_defconfig
+powerpc                       ebony_defconfig
+arm                            dove_defconfig
+sh                             espt_defconfig
+arm                        realview_defconfig
+s390                             alldefconfig
+powerpc                 canyonlands_defconfig
+powerpc                       ppc64_defconfig
+powerpc                    mvme5100_defconfig
+arm                       cns3420vb_defconfig
+arm                             rpc_defconfig
+arm                         palmz72_defconfig
+powerpc                 mpc85xx_cds_defconfig
+arm                    vt8500_v6_v7_defconfig
+arm                     eseries_pxa_defconfig
+mips                           mtx1_defconfig
+um                             i386_defconfig
+m68k                       bvme6000_defconfig
+sh                           sh2007_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a001-20201221
+x86_64               randconfig-a006-20201221
+x86_64               randconfig-a002-20201221
+x86_64               randconfig-a004-20201221
+x86_64               randconfig-a003-20201221
+x86_64               randconfig-a005-20201221
+i386                 randconfig-a005-20201222
+i386                 randconfig-a002-20201222
+i386                 randconfig-a006-20201222
+i386                 randconfig-a004-20201222
+i386                 randconfig-a003-20201222
+i386                 randconfig-a001-20201222
+i386                 randconfig-a011-20201221
+i386                 randconfig-a016-20201221
+i386                 randconfig-a014-20201221
+i386                 randconfig-a012-20201221
+i386                 randconfig-a015-20201221
+i386                 randconfig-a013-20201221
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-1.	If you define _relaxed, _acquire, _release or fully-ordered
-	version, atomic generation will use that version
+clang tested configs:
+x86_64               randconfig-a015-20201221
+x86_64               randconfig-a014-20201221
+x86_64               randconfig-a012-20201221
+x86_64               randconfig-a013-20201221
+x86_64               randconfig-a011-20201221
+x86_64               randconfig-a001-20201222
+x86_64               randconfig-a006-20201222
+x86_64               randconfig-a002-20201222
+x86_64               randconfig-a004-20201222
+x86_64               randconfig-a003-20201222
+x86_64               randconfig-a005-20201222
 
-2.	If you define _relaxed, atomic generation will use that and
-	barriers to generate _acquire, _release and fully-ordered
-	versions, unless they are already defined (as Rule #1 says)
-
-3.	If you don't define _relaxed, but define the fully-ordered
-	version, atomic generation will use the fully-ordered version
-	and use it as _relaxed variants and generate the rest using Rule
-	#2.
-
-> > [...]
-> >>  
-> >>  #endif /* __KERNEL__ */
-> >>  #endif /* _ASM_POWERPC_ATOMIC_H_ */
-> >> diff --git a/arch/powerpc/include/asm/cmpxchg.h b/arch/powerpc/include/asm/cmpxchg.h
-> >> index cf091c4c22e5..181f7e8b3281 100644
-> >> --- a/arch/powerpc/include/asm/cmpxchg.h
-> >> +++ b/arch/powerpc/include/asm/cmpxchg.h
-> >> @@ -192,7 +192,7 @@ __xchg_relaxed(void *ptr, unsigned long x, unsigned int size)
-> >>       		(unsigned long)_x_, sizeof(*(ptr))); 			     \
-> >>    })
-> >>  
-> >> -#define xchg_relaxed(ptr, x)						\
-> >> +#define arch_xchg_relaxed(ptr, x)					\
-> >>  ({									\
-> >>  	__typeof__(*(ptr)) _x_ = (x);					\
-> >>  	(__typeof__(*(ptr))) __xchg_relaxed((ptr),			\
-> >> @@ -448,35 +448,7 @@ __cmpxchg_relaxed(void *ptr, unsigned long old, unsigned long new,
-> >>  	return old;
-> >>  }
-> >>  
-> >> -static __always_inline unsigned long
-> >> -__cmpxchg_acquire(void *ptr, unsigned long old, unsigned long new,
-> >> -		  unsigned int size)
-> >> -{
-> >> -	switch (size) {
-> >> -	case 1:
-> >> -		return __cmpxchg_u8_acquire(ptr, old, new);
-> >> -	case 2:
-> >> -		return __cmpxchg_u16_acquire(ptr, old, new);
-> >> -	case 4:
-> >> -		return __cmpxchg_u32_acquire(ptr, old, new);
-> >> -#ifdef CONFIG_PPC64
-> >> -	case 8:
-> >> -		return __cmpxchg_u64_acquire(ptr, old, new);
-> >> -#endif
-> >> -	}
-> >> -	BUILD_BUG_ON_MSG(1, "Unsupported size for __cmpxchg_acquire");
-> >> -	return old;
-> >> -}
-> >> -#define cmpxchg(ptr, o, n)						 \
-> >> -  ({									 \
-> >> -     __typeof__(*(ptr)) _o_ = (o);					 \
-> >> -     __typeof__(*(ptr)) _n_ = (n);					 \
-> >> -     (__typeof__(*(ptr))) __cmpxchg((ptr), (unsigned long)_o_,		 \
-> >> -				    (unsigned long)_n_, sizeof(*(ptr))); \
-> >> -  })
-> >> -
-> >> -
-> > 
-> > If you remove {atomic_}_cmpxchg_{,_acquire}() and use the version
-> > provided by atomic-arch-fallback.h, then a fail cmpxchg or
-> > cmpxchg_acquire() will still result into a full barrier or a acquire
-> > barrier after the RMW operation, the barrier is not necessary and
-> > probably this is not what we want?
-> 
-> Why is that done? That seems like a very subtle difference. Shouldn't
-> the fallback version skip the barrier?
-> 
-
-The fallback version is something like:
-
-	smp_mb__before_atomic();
-	cmpxchg_relaxed();
-	smp_mb__after_atomic();
-
-, so there will be a full barrier on PPC after the cmpxchg no matter
-whether the cmpxchg succeed or not. And the fallback version cannot skip
-the barrier, because there is no way the fallback version tells whether
-the cmpxchg_relaxed() succeed or not. So in my previous version of PPC
-atomic variants support, I defined cmpxchg_acquire() in asm header
-instead of using atomic generation.
-
-That said, now I think about this, maybe we can implement the fallback
-version as:
-
-	smp_mb__before_atomic();
-	ret = cmpxchg_relaxed(ptr, old, new);
-	if (old == ret)
-		smp_mb__after_atomic();
-
-, in this way, the fallback version can handle the barrier skipping
-better.
-
-Regards,
-Boqun
-
-> Thanks,
-> Nick
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
