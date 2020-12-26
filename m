@@ -1,76 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347CB2E2DAF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Dec 2020 09:20:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A8B2E2DDD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Dec 2020 10:59:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D2xb01l2hzDqML
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Dec 2020 19:20:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D2znC4ZsxzDqFm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Dec 2020 20:59:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=cLssCxKE; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D2xYJ2JVTzDq8w
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Dec 2020 19:19:15 +1100 (AEDT)
-Received: by mail-pg1-x532.google.com with SMTP id n7so4327721pgg.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Dec 2020 00:19:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=eGo689KM/QMsTQ2b2iCHdJdH9GUywaOrUeQ68krJZ0E=;
- b=cLssCxKEONXTIJkJMXHoe4YH99cBZs2OqM5A1Z3As7ub8LkpUFChh42IvsAS0khlVI
- xX43z4xeMRE1lVlh5awDMBeTxHf3dKTvETu74Ungdydl2JgrptydqH4rcQhvKWzYQ0HC
- JMLbewLYZ0C6ngCKSr3S0QSHbcPUkS6CIfat1bS0HHASka55I8wsN0AhN5BIokfq6iIN
- 8bERvZmjaDIWUv8xY88pKMZjpzEIuHJg8l8VR8pefdcBxKnxtHK7RVgWz59K7smfgyXR
- F5N97JeQv9loS28MY5ssANKULL/R1nPeGUv+x4j2Ovbz3ddmcYYKfVkNZz6rN6H4Sacw
- Rp0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=eGo689KM/QMsTQ2b2iCHdJdH9GUywaOrUeQ68krJZ0E=;
- b=Y2nmYNcNWtk9OrL4ZpdB/t2+0aEgCPArPinVpZFsxkpv6VMEyDPEsxltqloeB/lxTw
- CT8RrTK9dbdwcCoGxFa9yINDcrx4TkfU+uTLpSK4ELw25OKTCiKSMncuZXiRbkZrL+lA
- bPii8pV5sYvpnRhKxtsEKQlQDVyCfx/bhIwjOGWEZbFFemljTmcJrZMjyJUYPNcwI+No
- 51fYhCq74wKDY815U9FQKfz18y/K0WtI+qdvU7eYCyM7GzLVMIcOsU2rOhUF+H1PAucZ
- 7sNGcmLXq+16dHfCa4g7nrNQk0pM9m2yJCQq91JwoCTdAIYNiTHZbrA8hyEhawxapZpB
- 4gmg==
-X-Gm-Message-State: AOAM5330eMv/48NI+p0XBmY6IEDFpLuwTNDflF5pkLmU2MOaEQFqTDWF
- 1LuXit2SZZ92tRDGRX02zes=
-X-Google-Smtp-Source: ABdhPJwVw9LciDc1x6uLjl6CZK2JTydhvcwZc4MQwrHIUDDdM8T0XntF3FKAFz9hKcbcNUGd614e2w==
-X-Received: by 2002:a65:6542:: with SMTP id a2mr24210290pgw.148.1608970750736; 
- Sat, 26 Dec 2020 00:19:10 -0800 (PST)
-Received: from localhost (193-116-97-30.tpgi.com.au. [193.116.97.30])
- by smtp.gmail.com with ESMTPSA id m15sm30666412pfa.72.2020.12.26.00.19.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 26 Dec 2020 00:19:10 -0800 (PST)
-Date: Sat, 26 Dec 2020 18:19:04 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 03/19] powerpc: bad_page_fault, do_break get registers
- from regs
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org
-References: <20201128144114.944000-1-npiggin@gmail.com>
- <20201128144114.944000-4-npiggin@gmail.com>
- <312d3d14-329c-a0c9-89c4-e21d1f9e616d@csgroup.eu>
-In-Reply-To: <312d3d14-329c-a0c9-89c4-e21d1f9e616d@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D2zlg2981zDqFm
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Dec 2020 20:58:23 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4D2zld2BXvz8w86
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Dec 2020 20:58:21 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4D2zld1g8cz9sWy; Sat, 26 Dec 2020 20:58:21 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=nefkom.net (client-ip=2001:a60:0:28:0:1:25:1;
+ helo=mail-out.m-online.net; envelope-from=whitebox@nefkom.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+X-Greylist: delayed 485 seconds by postgrey-1.36 at bilbo;
+ Sat, 26 Dec 2020 20:58:20 AEDT
+Received: from mail-out.m-online.net (mail-out.m-online.net
+ [IPv6:2001:a60:0:28:0:1:25:1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4D2zlc3JKCz9sWw
+ for <linuxppc-dev@ozlabs.org>; Sat, 26 Dec 2020 20:58:16 +1100 (AEDT)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 4D2zZ11KtDz1rvBT;
+ Sat, 26 Dec 2020 10:50:00 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 4D2zZ03K4Hz1qr4j;
+ Sat, 26 Dec 2020 10:50:00 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id c3_oiDhxysEo; Sat, 26 Dec 2020 10:49:59 +0100 (CET)
+X-Auth-Info: 2EEmDzUlXOxjxOJGfx6FKHaSNBbYrfnTInfA+yJb7gWjx4jhYW00c4TYsKS2AS5x
+Received: from hase.home (ppp-46-244-161-5.dynamic.mnet-online.de
+ [46.244.161.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Sat, 26 Dec 2020 10:49:59 +0100 (CET)
+Received: by hase.home (Postfix, from userid 1000)
+ id E90CB102A62; Sat, 26 Dec 2020 10:49:57 +0100 (CET)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v14 6/9] powerpc/vdso: Prepare for switching VDSO to
+ generic C implementation.
+References: <20201126131006.2431205-1-mpe@ellerman.id.au>
+ <20201126131006.2431205-6-mpe__7176.90246399201$1606398872$gmane$org@ellerman.id.au>
+X-Yow: Gee, I feel kind of LIGHT in the head now, knowing I can't make
+ my satellite dish PAYMENTS!
+Date: Sat, 26 Dec 2020 10:49:57 +0100
+In-Reply-To: <20201126131006.2431205-6-mpe__7176.90246399201$1606398872$gmane$org@ellerman.id.au>
+ (Michael Ellerman's message of "Fri, 27 Nov 2020 00:10:03 +1100")
+Message-ID: <87czywsxq2.fsf@linux-m68k.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1.90 (gnu/linux)
 MIME-Version: 1.0
-Message-Id: <1608970380.delquel806.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,72 +83,131 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of December 23, 2020 12:42 am:
->=20
->=20
-> Le 28/11/2020 =C3=A0 15:40, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Similar to the previous patch this makes interrupt handler function
->> types more regular so they can be wrapped with the next patch.
->>=20
->> bad_page_fault and do_break are not performance critical.
->=20
-> I partly took your changes into one of my series, in different order thou=
-gh.
->=20
-> Please have a look at https://patchwork.ozlabs.org/project/linuxppc-dev/l=
-ist/?series=3D221656 patches=20
-> 4 to 7
+On Nov 27 2020, Michael Ellerman wrote:
 
-Thanks, I had a look. Seems like the result is basically the same as my=20
-series, so that's good if you like the end result now :)
+> diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h b/arch/powerpc/include/asm/vdso/gettimeofday.h
+> new file mode 100644
+> index 000000000000..43dd1dc47c37
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
+> @@ -0,0 +1,187 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_POWERPC_VDSO_GETTIMEOFDAY_H
+> +#define _ASM_POWERPC_VDSO_GETTIMEOFDAY_H
+> +
+> +#ifdef __ASSEMBLY__
+> +
+> +#include <asm/ppc_asm.h>
+> +
+> +/*
+> + * The macros sets two stack frames, one for the caller and one for the callee
+> + * because there are no requirement for the caller to set a stack frame when
+> + * calling VDSO so it may have omitted to set one, especially on PPC64
+> + */
+> +
+> +.macro cvdso_call funct
+> +  .cfi_startproc
+> +	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
+> +	mflr		r0
+> +  .cfi_register lr, r0
+> +	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
+> +	PPC_STL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
+> +	get_datapage	r5, r0
+> +	addi		r5, r5, VDSO_DATA_OFFSET
+> +	bl		DOTSYM(\funct)
+> +	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
+> +	cmpwi		r3, 0
+> +	mtlr		r0
+> +  .cfi_restore lr
+> +	addi		r1, r1, 2 * PPC_MIN_STKFRM
+> +	crclr		so
+> +	beqlr+
+> +	crset		so
+> +	neg		r3, r3
+> +	blr
+> +  .cfi_endproc
+> +.endm
+> +
+> +.macro cvdso_call_time funct
+> +  .cfi_startproc
+> +	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
+> +	mflr		r0
+> +  .cfi_register lr, r0
+> +	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
+> +	PPC_STL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
+> +	get_datapage	r4, r0
+> +	addi		r4, r4, VDSO_DATA_OFFSET
+> +	bl		DOTSYM(\funct)
+> +	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
+> +	crclr		so
+> +	mtlr		r0
+> +  .cfi_restore lr
+> +	addi		r1, r1, 2 * PPC_MIN_STKFRM
+> +	blr
+> +  .cfi_endproc
+> +.endm
+> +
+> +#else
+> +
+> +#include <asm/vdso/timebase.h>
+> +#include <asm/barrier.h>
+> +#include <asm/unistd.h>
+> +#include <uapi/linux/time.h>
+> +
+> +#define VDSO_HAS_CLOCK_GETRES		1
+> +
+> +#define VDSO_HAS_TIME			1
+> +
+> +static __always_inline int do_syscall_2(const unsigned long _r0, const unsigned long _r3,
+> +					const unsigned long _r4)
+> +{
+> +	register long r0 asm("r0") = _r0;
+> +	register unsigned long r3 asm("r3") = _r3;
+> +	register unsigned long r4 asm("r4") = _r4;
+> +	register int ret asm ("r3");
+> +
+> +	asm volatile(
+> +		"       sc\n"
+> +		"	bns+	1f\n"
+> +		"	neg	%0, %0\n"
+> +		"1:\n"
+> +	: "=r" (ret), "+r" (r4), "+r" (r0)
+> +	: "r" (r3)
+> +	: "memory", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "cr0", "ctr");
+> +
+> +	return ret;
+> +}
+> +
+> +static __always_inline
+> +int gettimeofday_fallback(struct __kernel_old_timeval *_tv, struct timezone *_tz)
+> +{
+> +	return do_syscall_2(__NR_gettimeofday, (unsigned long)_tv, (unsigned long)_tz);
+> +}
+> +
+> +static __always_inline
+> +int clock_gettime_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
+> +{
+> +	return do_syscall_2(__NR_clock_gettime, _clkid, (unsigned long)_ts);
 
-> I think some of the changes are missing in your series, especially the ch=
-anges in entry_32.S from=20
-> patch 7.
+Doesn't that need to be __NR_clock_gettime64 for ppc32?
 
-Okay I could take them in. In your patch 7/15, why do you leave this=20
-load of DSISR?
+> +}
+> +
+> +static __always_inline
+> +int clock_getres_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
+> +{
+> +	return do_syscall_2(__NR_clock_getres, _clkid, (unsigned long)_ts);
 
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/hea=
-d_book3s_32.S
-index 15e6003fd3b8..0133a02d1d47 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -369,9 +369,9 @@  BEGIN_MMU_FTR_SECTION
- END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
- #endif
- #endif	/* CONFIG_VMAP_STACK */
--1:	mr	r4,r12
- 	andis.	r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 bits */
--	stw	r4, _DAR(r11)
-+	stw	r12, _DAR(r11)
-+	stw	r5, _DSISR(r11)
- 	EXC_XFER_LITE(0x400, handle_page_fault)
-=20
- /* External interrupt */
-@@ -693,7 +693,6 @@  handle_page_fault_tramp_1:
- #ifdef CONFIG_VMAP_STACK
- 	EXCEPTION_PROLOG_2 handle_dar_dsisr=3D1
- #endif
--	lwz	r4, _DAR(r11)
- 	lwz	r5, _DSISR(r11)
-	^^^^^^^^^^^^^^^^^^^^^^
- 	/* fall through */
- handle_page_fault_tramp_2:
+And here __NR_clock_getres_time64?
 
-?
+Andreas.
 
-> Will see how our two series make their way into mainline, yours needs reb=
-ase anyway.
-
-I have it rebased, just waiting for a bit after merge window to repost.
-Would be good if mine can go first so I don't have to redo the 64s page=20
-fault to C conversion again. AFAIKS after that you can just drop 4-7, no=20
-conflicts? (after bugs are fixed)
-
-Thanks,
-Nick
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
