@@ -2,46 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E922E3177
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Dec 2020 15:07:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9AB12E326E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Dec 2020 19:30:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D3jDS1Zv2zDqDq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Dec 2020 01:07:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D3q3l75GqzDqDD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Dec 2020 05:30:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=metux.net
- (client-ip=217.72.192.75; helo=mout.kundenserver.de;
- envelope-from=info@metux.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D3jBq08vYzDq7F
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Dec 2020 01:05:51 +1100 (AEDT)
-Received: from orion.localdomain ([95.114.11.119]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MybbH-1k6EDg42CD-00z0ya; Sun, 27 Dec 2020 15:01:42 +0100
-From: "Enrico Weigelt, metux IT consult" <info@metux.net>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2] arch: consolidate pm_power_off callback
-Date: Sun, 27 Dec 2020 15:01:28 +0100
-Message-Id: <20201227140129.19932-1-info@metux.net>
-X-Mailer: git-send-email 2.11.0
-X-Provags-ID: V03:K1:22PqiqwOpZh8agmKGH43iqfV1GmeR3GHk4Eu0lKnKo5JMKrP/aH
- u6CpYumM0T5GEJc7rS0tq9Bg/xKyr3+o2Gr9fCdB7eUMKG8cgMD+PLKrI3zI7Q0DCYL27l3
- yH5+7F3cR/5fzfUvsAuPUn4aJ8uyhb1112UFNfkozaNc26eeXZ/L/GwCHQqRBlVeFU8zCCP
- eqdvizyW0mf1u3JeKbaqQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:O0FFj0hCZoY=:x53KUPu82U2t0h9Swai2he
- lJu6z7JrQ2ajJ7Biw9aCJWIXep50l37kuwjhiKNoZ58f5TNa1h8D6bBFHpGD3l0T+XZczwfZP
- PRR0dq3RS/1FxJyg9u7iSK9/SQWqPP5W6goYk6XEzx1ZPvLqD3m8VCkKhsyBcwlkPXyOzIRqB
- HWiu765XCoqo2gaekI+DYkSsNmFI38ts+WUN/lsqkv52c4URoP3FOWGxWIuz9TJGUnsowE16a
- kLWxSjuHU26gtfeLm9j51Y64NizikF+f5c1PXKKAJi87bHJCYlAVBWwbroMHDLefhwzfpptKk
- PeeXh25kKN/pV9C8nVxrq7G17nLr/W0Wj462mR1vFEs1iAOfq4qcd7ryhbs5g1z2xFWBiSOmI
- 2a9XQfV2f7DbA3NpANvxnGujgcJ9mUoDBWSZpfPxUhsAoxeezSjV5/l8g1mMl
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Xuu2/PKG; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D3q2F5g2KzDqC3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Dec 2020 05:28:53 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6BF0B22581;
+ Sun, 27 Dec 2020 18:28:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1609093730;
+ bh=05x9RIgyX6N5z5rdFMcZxUneGi7hanlx97TfczlGpX4=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Xuu2/PKGeyaIf0Yn55akma67YxDhziu24hMSr+XJ1E/67Acv5G+ZNFixmA5x/0fPd
+ MiLSxl1gaHpt97zSrKRHVPuLygDeooinUPfQcigAcpbXscEjg7bLTWXW8WdWuLNvV2
+ rhog7z7rE47RTD8rsF/lvc75Hcq9Ps8b/QpiOL4gz8A8hh0EuR25c5mesi1DGAZr8e
+ i+un4PlhRQcvo3CI9kIw1PeWS2UxhbnC9RFrL/AIQ4ZqZVOnjaXH6niSVH0S8g18+j
+ tAAbn5kcfMXbBFgX7rOuZxRvqC1t9jKMXF4VAnkPUp0p1GS5zl6eC0NdPIeHb6m14T
+ c6KC9eNiFbZNA==
+From: Andy Lutomirski <luto@kernel.org>
+To: x86@kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: [RFC please help] membarrier: Rewrite sync_core_before_usermode()
+Date: Sun, 27 Dec 2020 10:28:45 -0800
+Message-Id: <bf59ecb5487171a852bcc8cdd553ec797aedc485.1609093476.git.luto@kernel.org>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,634 +55,272 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, paulus@samba.org,
- linux-csky@vger.kernel.org, hpa@zytor.com, linux-riscv@lists.infradead.org,
- will@kernel.org, tglx@linutronix.de, jonas@southpole.se,
- linux-s390@vger.kernel.org, sstabellini@kernel.org,
- linux-c6x-dev@linux-c6x.org, ysato@users.sourceforge.jp,
- linux-hexagon@vger.kernel.org, deller@gmx.de, x86@kernel.org,
- ley.foon.tan@intel.com, mingo@redhat.com, geert@linux-m68k.org,
- catalin.marinas@arm.com, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, linux-pm@vger.kernel.org, msalter@redhat.com,
- jacquiot.aurelien@gmail.com, linux-m68k@lists.linux-m68k.org,
- openrisc@lists.librecores.org, bp@alien8.de, shorne@gmail.com,
- stefan.kristiansson@saunalahti.fi, christian@brauner.io, chris@zankel.net,
- tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Will Deacon <will@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ stable@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move the pm_power_off callback into one global place and also add an
-function for conditionally calling it (when not NULL), in order to remove
-code duplication in all individual archs.
+The old sync_core_before_usermode() comments said that a non-icache-syncing
+return-to-usermode instruction is x86-specific and that all other
+architectures automatically notice cross-modified code on return to
+userspace.  Based on my general understanding of how CPUs work and based on
+my atttempt to read the ARM manual, this is not true at all.  In fact, x86
+seems to be a bit of an anomaly in the other direction: x86's IRET is
+unusually heavyweight for a return-to-usermode instruction.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+So let's drop any pretense that we can have a generic way implementation
+behind membarrier's SYNC_CORE flush and require all architectures that opt
+in to supply their own.  This means x86, arm64, and powerpc for now.  Let's
+also rename the function from sync_core_before_usermode() to
+membarrier_sync_core_before_usermode() because the precise flushing details
+may very well be specific to membarrier, and even the concept of
+"sync_core" in the kernel is mostly an x86-ism.
 
-----
+I admit that I'm rather surprised that the code worked at all on arm64,
+and I'm suspicious that it has never been very well tested.  My apologies
+for not reviewing this more carefully in the first place.
 
-changes v2:
-  * fix forgotten removal of pm_power_off in arch/powerpc, as reported by lkp
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: x86@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 70216e18e519 ("membarrier: Provide core serializing command, *_SYNC_CORE")
+Signed-off-by: Andy Lutomirski <luto@kernel.org>
 ---
- arch/alpha/kernel/process.c        |  6 ------
- arch/arc/kernel/reset.c            |  3 ---
- arch/arm/kernel/reboot.c           |  6 ++----
- arch/arm64/kernel/process.c        |  6 +-----
- arch/c6x/kernel/process.c          | 10 ++--------
- arch/csky/kernel/power.c           | 10 +++-------
- arch/h8300/kernel/process.c        |  3 ---
- arch/hexagon/kernel/reset.c        |  3 ---
- arch/ia64/kernel/process.c         |  5 +----
- arch/m68k/kernel/process.c         |  3 ---
- arch/microblaze/kernel/process.c   |  3 ---
- arch/mips/kernel/reset.c           |  6 +-----
- arch/nds32/kernel/process.c        |  7 ++-----
- arch/nios2/kernel/process.c        |  3 ---
- arch/openrisc/kernel/process.c     |  3 ---
- arch/parisc/kernel/process.c       |  9 +++------
- arch/powerpc/kernel/setup-common.c |  8 ++------
- arch/powerpc/xmon/xmon.c           |  4 ++--
- arch/riscv/kernel/reset.c          |  9 ++++-----
- arch/s390/kernel/setup.c           |  3 ---
- arch/sh/kernel/reboot.c            |  6 +-----
- arch/x86/kernel/reboot.c           | 15 ++++-----------
- arch/x86/xen/enlighten_pv.c        |  4 ++--
- arch/xtensa/kernel/process.c       |  4 ----
- include/linux/pm.h                 |  2 ++
- kernel/reboot.c                    | 10 ++++++++++
- 26 files changed, 42 insertions(+), 109 deletions(-)
 
-diff --git a/arch/alpha/kernel/process.c b/arch/alpha/kernel/process.c
-index 6c71554206cc..df0df869751d 100644
---- a/arch/alpha/kernel/process.c
-+++ b/arch/alpha/kernel/process.c
-@@ -43,12 +43,6 @@
- #include "proto.h"
- #include "pci_impl.h"
- 
--/*
-- * Power off function, if any
-- */
--void (*pm_power_off)(void) = machine_power_off;
--EXPORT_SYMBOL(pm_power_off);
--
- #ifdef CONFIG_ALPHA_WTINT
- /*
-  * Sleep the CPU.
-diff --git a/arch/arc/kernel/reset.c b/arch/arc/kernel/reset.c
-index fd6c3eb930ba..3a27b6a202d4 100644
---- a/arch/arc/kernel/reset.c
-+++ b/arch/arc/kernel/reset.c
-@@ -26,6 +26,3 @@ void machine_power_off(void)
- 	/* FIXME ::  power off ??? */
- 	machine_halt();
- }
--
--void (*pm_power_off) (void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
-diff --git a/arch/arm/kernel/reboot.c b/arch/arm/kernel/reboot.c
-index 0ce388f15422..9e1bf0e9b3e0 100644
---- a/arch/arm/kernel/reboot.c
-+++ b/arch/arm/kernel/reboot.c
-@@ -6,6 +6,7 @@
- #include <linux/cpu.h>
- #include <linux/delay.h>
- #include <linux/reboot.h>
-+#include <linux/pm.h>
- 
- #include <asm/cacheflush.h>
- #include <asm/idmap.h>
-@@ -19,8 +20,6 @@ typedef void (*phys_reset_t)(unsigned long, bool);
-  * Function pointers to optional machine specific functions
-  */
- void (*arm_pm_restart)(enum reboot_mode reboot_mode, const char *cmd);
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
- 
- /*
-  * A temporary stack to use for CPU reset. This is static so that we
-@@ -118,8 +117,7 @@ void machine_power_off(void)
- 	local_irq_disable();
- 	smp_send_stop();
- 
--	if (pm_power_off)
--		pm_power_off();
-+	do_power_off();
- }
- 
- /*
-diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
-index 6616486a58fe..a5d4c1e80abd 100644
---- a/arch/arm64/kernel/process.c
-+++ b/arch/arm64/kernel/process.c
-@@ -67,9 +67,6 @@ EXPORT_SYMBOL(__stack_chk_guard);
- /*
-  * Function pointers to optional machine specific functions
-  */
--void (*pm_power_off)(void);
--EXPORT_SYMBOL_GPL(pm_power_off);
--
- void (*arm_pm_restart)(enum reboot_mode reboot_mode, const char *cmd);
- 
- static void noinstr __cpu_do_idle(void)
-@@ -172,8 +169,7 @@ void machine_power_off(void)
- {
- 	local_irq_disable();
- 	smp_send_stop();
--	if (pm_power_off)
--		pm_power_off();
-+	do_power_off();
- }
- 
- /*
-diff --git a/arch/c6x/kernel/process.c b/arch/c6x/kernel/process.c
-index 9f4fd6a40a10..8b4b24476162 100644
---- a/arch/c6x/kernel/process.c
-+++ b/arch/c6x/kernel/process.c
-@@ -15,6 +15,7 @@
- #include <linux/reboot.h>
- #include <linux/sched/task.h>
- #include <linux/sched/task_stack.h>
-+#include <linux/pm.h>
- 
- #include <asm/syscalls.h>
- 
-@@ -25,12 +26,6 @@ void	(*c6x_halt)(void);
- extern asmlinkage void ret_from_fork(void);
- extern asmlinkage void ret_from_kernel_thread(void);
- 
--/*
-- * power off function, if any
-- */
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
- void arch_cpu_idle(void)
- {
- 	unsigned long tmp;
-@@ -71,8 +66,7 @@ void machine_halt(void)
- 
- void machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_power_off();
- 	halt_loop();
- }
- 
-diff --git a/arch/csky/kernel/power.c b/arch/csky/kernel/power.c
-index 923ee4e381b8..c702e66ce03a 100644
---- a/arch/csky/kernel/power.c
-+++ b/arch/csky/kernel/power.c
-@@ -2,23 +2,19 @@
- // Copyright (C) 2018 Hangzhou C-SKY Microsystems co.,ltd.
- 
- #include <linux/reboot.h>
--
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
-+#include <linux/pm.h>
- 
- void machine_power_off(void)
- {
- 	local_irq_disable();
--	if (pm_power_off)
--		pm_power_off();
-+	do_power_off();
- 	asm volatile ("bkpt");
- }
- 
- void machine_halt(void)
- {
- 	local_irq_disable();
--	if (pm_power_off)
--		pm_power_off();
-+	do_power_off();
- 	asm volatile ("bkpt");
- }
- 
-diff --git a/arch/h8300/kernel/process.c b/arch/h8300/kernel/process.c
-index bc1364db58fe..020bf78a779c 100644
---- a/arch/h8300/kernel/process.c
-+++ b/arch/h8300/kernel/process.c
-@@ -46,9 +46,6 @@
- #include <asm/traps.h>
- #include <asm/setup.h>
- 
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
--
- asmlinkage void ret_from_fork(void);
- asmlinkage void ret_from_kernel_thread(void);
- 
-diff --git a/arch/hexagon/kernel/reset.c b/arch/hexagon/kernel/reset.c
-index da36114d928f..8370ddbcdfd9 100644
---- a/arch/hexagon/kernel/reset.c
-+++ b/arch/hexagon/kernel/reset.c
-@@ -19,6 +19,3 @@ void machine_halt(void)
- void machine_restart(char *cmd)
- {
- }
--
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
-diff --git a/arch/ia64/kernel/process.c b/arch/ia64/kernel/process.c
-index 4ebbfa076a26..72104b967668 100644
---- a/arch/ia64/kernel/process.c
-+++ b/arch/ia64/kernel/process.c
-@@ -57,8 +57,6 @@ void (*ia64_mark_idle)(int);
- 
- unsigned long boot_option_idle_override = IDLE_NO_OVERRIDE;
- EXPORT_SYMBOL(boot_option_idle_override);
--void (*pm_power_off) (void);
--EXPORT_SYMBOL(pm_power_off);
- 
- static void
- ia64_do_show_stack (struct unw_frame_info *info, void *arg)
-@@ -602,8 +600,7 @@ machine_halt (void)
- void
- machine_power_off (void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_power_off()
- 	machine_halt();
- }
- 
-diff --git a/arch/m68k/kernel/process.c b/arch/m68k/kernel/process.c
-index 08359a6e058f..b8dc10a630e1 100644
---- a/arch/m68k/kernel/process.c
-+++ b/arch/m68k/kernel/process.c
-@@ -72,9 +72,6 @@ void machine_power_off(void)
- 	for (;;);
- }
- 
--void (*pm_power_off)(void) = machine_power_off;
--EXPORT_SYMBOL(pm_power_off);
--
- void show_regs(struct pt_regs * regs)
- {
- 	pr_info("Format %02x  Vector: %04x  PC: %08lx  Status: %04x    %s\n",
-diff --git a/arch/microblaze/kernel/process.c b/arch/microblaze/kernel/process.c
-index 657c2beb665e..f1dd66a14ab6 100644
---- a/arch/microblaze/kernel/process.c
-+++ b/arch/microblaze/kernel/process.c
-@@ -46,9 +46,6 @@ void show_regs(struct pt_regs *regs)
- 				regs->msr, regs->ear, regs->esr, regs->fsr);
- }
- 
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
--
- void flush_thread(void)
- {
- }
-diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
-index 6288780b779e..73e32eba422f 100644
---- a/arch/mips/kernel/reset.c
-+++ b/arch/mips/kernel/reset.c
-@@ -25,9 +25,6 @@
-  */
- void (*_machine_restart)(char *command);
- void (*_machine_halt)(void);
--void (*pm_power_off)(void);
--
--EXPORT_SYMBOL(pm_power_off);
- 
- static void machine_hang(void)
- {
-@@ -114,8 +111,7 @@ void machine_halt(void)
- 
- void machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_power_off();
- 
- #ifdef CONFIG_SMP
- 	preempt_disable();
-diff --git a/arch/nds32/kernel/process.c b/arch/nds32/kernel/process.c
-index e01ad5d17224..624e2a563082 100644
---- a/arch/nds32/kernel/process.c
-+++ b/arch/nds32/kernel/process.c
-@@ -12,6 +12,7 @@
- #include <asm/fpu.h>
- #include <linux/ptrace.h>
- #include <linux/reboot.h>
-+#include <linux/pm.h>
- 
- #if IS_ENABLED(CONFIG_LAZY_FPU)
- struct task_struct *last_task_used_math;
-@@ -27,9 +28,6 @@ extern inline void arch_reset(char mode)
- 	}
- }
- 
--void (*pm_power_off) (void);
--EXPORT_SYMBOL(pm_power_off);
--
- static char reboot_mode_nds32 = 'h';
- 
- int __init reboot_setup(char *str)
-@@ -54,8 +52,7 @@ EXPORT_SYMBOL(machine_halt);
- 
- void machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_power_off();
- }
- 
- EXPORT_SYMBOL(machine_power_off);
-diff --git a/arch/nios2/kernel/process.c b/arch/nios2/kernel/process.c
-index 50b4eb19a6cc..a6195cc02ea4 100644
---- a/arch/nios2/kernel/process.c
-+++ b/arch/nios2/kernel/process.c
-@@ -28,9 +28,6 @@
- asmlinkage void ret_from_fork(void);
- asmlinkage void ret_from_kernel_thread(void);
- 
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
--
- void arch_cpu_idle(void)
- {
- 	raw_local_irq_enable();
-diff --git a/arch/openrisc/kernel/process.c b/arch/openrisc/kernel/process.c
-index 3c98728cce24..c02343bacf59 100644
---- a/arch/openrisc/kernel/process.c
-+++ b/arch/openrisc/kernel/process.c
-@@ -84,9 +84,6 @@ void arch_cpu_idle(void)
- 		mtspr(SPR_PMR, mfspr(SPR_PMR) | SPR_PMR_DME);
- }
- 
--void (*pm_power_off) (void) = machine_power_off;
--EXPORT_SYMBOL(pm_power_off);
--
- /*
-  * When a process does an "exec", machine state like FPU and debug
-  * registers need to be reset.  This is a hook function for that.
-diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-index a92a23d6acd9..8b94599c9480 100644
---- a/arch/parisc/kernel/process.c
-+++ b/arch/parisc/kernel/process.c
-@@ -41,6 +41,7 @@
- #include <linux/rcupdate.h>
- #include <linux/random.h>
- #include <linux/nmi.h>
-+#include <linux/pm.h>
- 
- #include <asm/io.h>
- #include <asm/asm-offsets.h>
-@@ -117,9 +118,8 @@ void machine_power_off(void)
- 	pdc_chassis_send_status(PDC_CHASSIS_DIRECT_SHUTDOWN);
- 
- 	/* ipmi_poweroff may have been installed. */
--	if (pm_power_off)
--		pm_power_off();
--		
-+	do_power_off();
+Hi arm64 and powerpc people-
+
+This is part of a series here:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/luto/linux.git/log/?h=x86/fixes
+
+Before I send out the whole series, I'm hoping that some arm64 and powerpc
+people can help me verify that I did this patch right.  Once I get
+some feedback on this patch, I'll send out the whole pile.  And once
+*that's* done, I'll start giving the mm lazy stuff some serious thought.
+
+The x86 part is already fixed in Linus' tree.
+
+Thanks,
+Andy
+
+ arch/arm64/include/asm/sync_core.h   | 21 +++++++++++++++++++++
+ arch/powerpc/include/asm/sync_core.h | 20 ++++++++++++++++++++
+ arch/x86/Kconfig                     |  1 -
+ arch/x86/include/asm/sync_core.h     |  7 +++----
+ include/linux/sched/mm.h             |  1 -
+ include/linux/sync_core.h            | 21 ---------------------
+ init/Kconfig                         |  3 ---
+ kernel/sched/membarrier.c            | 15 +++++++++++----
+ 8 files changed, 55 insertions(+), 34 deletions(-)
+ create mode 100644 arch/arm64/include/asm/sync_core.h
+ create mode 100644 arch/powerpc/include/asm/sync_core.h
+ delete mode 100644 include/linux/sync_core.h
+
+diff --git a/arch/arm64/include/asm/sync_core.h b/arch/arm64/include/asm/sync_core.h
+new file mode 100644
+index 000000000000..5be4531caabd
+--- /dev/null
++++ b/arch/arm64/include/asm/sync_core.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_ARM64_SYNC_CORE_H
++#define _ASM_ARM64_SYNC_CORE_H
 +
- 	/* It seems we have no way to power the system off via
- 	 * software. The user has to press the button himself. */
- 
-@@ -132,9 +132,6 @@ void machine_power_off(void)
- 	for (;;);
- }
- 
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
- void machine_halt(void)
- {
- 	machine_power_off();
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 71f38e9248be..3ed44b6ee232 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -32,6 +32,7 @@
- #include <linux/of_platform.h>
- #include <linux/hugetlb.h>
- #include <linux/pgtable.h>
-+#include <linux/pm.h>
- #include <asm/debugfs.h>
- #include <asm/io.h>
- #include <asm/paca.h>
-@@ -163,18 +164,13 @@ void machine_restart(char *cmd)
- void machine_power_off(void)
- {
- 	machine_shutdown();
--	if (pm_power_off)
--		pm_power_off();
--
-+	do_power_off();
- 	smp_send_stop();
- 	machine_hang();
- }
- /* Used by the G5 thermal driver */
- EXPORT_SYMBOL_GPL(machine_power_off);
- 
--void (*pm_power_off)(void);
--EXPORT_SYMBOL_GPL(pm_power_off);
--
- void machine_halt(void)
- {
- 	machine_shutdown();
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index dcd817ca2edf..38d76c283412 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -26,6 +26,7 @@
- #include <linux/ctype.h>
- #include <linux/highmem.h>
- #include <linux/security.h>
-+#include <linux/pm.h>
- 
- #include <asm/debugfs.h>
- #include <asm/ptrace.h>
-@@ -1237,8 +1238,7 @@ static void bootcmds(void)
- 	} else if (cmd == 'h') {
- 		ppc_md.halt();
- 	} else if (cmd == 'p') {
--		if (pm_power_off)
--			pm_power_off();
-+		do_power_off();
- 	}
- }
- 
-diff --git a/arch/riscv/kernel/reset.c b/arch/riscv/kernel/reset.c
-index ee5878d968cc..f8bcf4d8b19b 100644
---- a/arch/riscv/kernel/reset.c
-+++ b/arch/riscv/kernel/reset.c
-@@ -12,9 +12,6 @@ static void default_power_off(void)
- 		wait_for_interrupt();
- }
- 
--void (*pm_power_off)(void) = default_power_off;
--EXPORT_SYMBOL(pm_power_off);
--
- void machine_restart(char *cmd)
- {
- 	do_kernel_restart(cmd);
-@@ -23,10 +20,12 @@ void machine_restart(char *cmd)
- 
- void machine_halt(void)
- {
--	pm_power_off();
-+	do_power_off();
-+	default_power_off();
- }
- 
- void machine_power_off(void)
- {
--	pm_power_off();
-+	do_power_off();
-+	default_power_off();
- }
-diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
-index 1fbed91c73bc..4e348d3b711f 100644
---- a/arch/s390/kernel/setup.c
-+++ b/arch/s390/kernel/setup.c
-@@ -302,9 +302,6 @@ void machine_power_off(void)
- /*
-  * Dummy power off function.
-  */
--void (*pm_power_off)(void) = machine_power_off;
--EXPORT_SYMBOL_GPL(pm_power_off);
--
- void *restart_stack;
- 
- unsigned long stack_alloc(void)
-diff --git a/arch/sh/kernel/reboot.c b/arch/sh/kernel/reboot.c
-index 5c33f036418b..8c9b63e1dbba 100644
---- a/arch/sh/kernel/reboot.c
-+++ b/arch/sh/kernel/reboot.c
-@@ -10,9 +10,6 @@
- #include <asm/tlbflush.h>
- #include <asm/traps.h>
- 
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
- static void watchdog_trigger_immediate(void)
- {
- 	sh_wdt_write_cnt(0xFF);
-@@ -46,8 +43,7 @@ static void native_machine_shutdown(void)
- 
- static void native_machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_power_off();
- }
- 
- static void native_machine_halt(void)
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index db115943e8bd..cddf9ca4e6f6 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -34,12 +34,6 @@
- #include <asm/efi.h>
- 
- /*
-- * Power off function, if any
-- */
--void (*pm_power_off)(void);
--EXPORT_SYMBOL(pm_power_off);
--
--/*
-  * This is set if we need to go through the 'emergency' path.
-  * When machine_emergency_restart() is called, we may be on
-  * an inconsistent state and won't be able to do a clean cleanup
-@@ -747,11 +741,10 @@ static void native_machine_halt(void)
- 
- static void native_machine_power_off(void)
- {
--	if (pm_power_off) {
--		if (!reboot_force)
--			machine_shutdown();
--		pm_power_off();
--	}
-+	if (!reboot_force)
-+		machine_shutdown();
-+	do_power_off();
++#include <asm/barrier.h>
 +
- 	/* A fallback in case there is no PM info available */
- 	tboot_shutdown(TB_SHUTDOWN_HALT);
- }
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 4409306364dc..7e5416c316d3 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -33,6 +33,7 @@
- #include <linux/gfp.h>
- #include <linux/edd.h>
- #include <linux/objtool.h>
-+#include <linux/pm.h>
- 
- #include <xen/xen.h>
- #include <xen/events.h>
-@@ -1084,8 +1085,7 @@ static void xen_machine_halt(void)
- 
- static void xen_machine_power_off(void)
- {
--	if (pm_power_off)
--		pm_power_off();
-+	do_power_off();
- 	xen_reboot(SHUTDOWN_poweroff);
- }
- 
-diff --git a/arch/xtensa/kernel/process.c b/arch/xtensa/kernel/process.c
-index 397a7de56377..fb8d5e9829ba 100644
---- a/arch/xtensa/kernel/process.c
-+++ b/arch/xtensa/kernel/process.c
-@@ -51,10 +51,6 @@
- extern void ret_from_fork(void);
- extern void ret_from_kernel_thread(void);
- 
--void (*pm_power_off)(void) = NULL;
--EXPORT_SYMBOL(pm_power_off);
--
--
- #ifdef CONFIG_STACKPROTECTOR
- #include <linux/stackprotector.h>
- unsigned long __stack_chk_guard __read_mostly;
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index 47aca6bac1d6..78627c970be0 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -22,6 +22,8 @@
- extern void (*pm_power_off)(void);
- extern void (*pm_power_off_prepare)(void);
- 
-+extern void do_power_off(void);
-+
- struct device; /* we have a circular dep with device.h */
- #ifdef CONFIG_VT_CONSOLE_SLEEP
- extern void pm_vt_switch_required(struct device *dev, bool required);
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index eb1b15850761..ec4cd66dd1ae 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -53,6 +53,16 @@ int reboot_force;
- void (*pm_power_off_prepare)(void);
- EXPORT_SYMBOL_GPL(pm_power_off_prepare);
- 
-+void (*pm_power_off)(void);
-+EXPORT_SYMBOL_GPL(pm_power_off);
-+
-+void do_power_off(void)
++/*
++ * Ensure that the CPU notices any instruction changes before the next time
++ * it returns to usermode.
++ */
++static inline void membarrier_sync_core_before_usermode(void)
 +{
-+	if (pm_power_off)
-+		pm_power_off();
++	/*
++	 * XXX: is this enough or do we need a DMB first to make sure that
++	 * writes from other CPUs become visible to this CPU?  We have an
++	 * smp_mb() already, but that's not quite the same thing.
++	 */
++	isb();
 +}
-+EXPORT_SYMBOL_GPL(do_power_off);
 +
- /**
-  *	emergency_restart - reboot the system
-  *
++#endif /* _ASM_ARM64_SYNC_CORE_H */
+diff --git a/arch/powerpc/include/asm/sync_core.h b/arch/powerpc/include/asm/sync_core.h
+new file mode 100644
+index 000000000000..71dfbe7794e5
+--- /dev/null
++++ b/arch/powerpc/include/asm/sync_core.h
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_POWERPC_SYNC_CORE_H
++#define _ASM_POWERPC_SYNC_CORE_H
++
++#include <asm/barrier.h>
++
++/*
++ * Ensure that the CPU notices any instruction changes before the next time
++ * it returns to usermode.
++ */
++static inline void membarrier_sync_core_before_usermode(void)
++{
++	/*
++	 * XXX: I know basically nothing about powerpc cache management.
++	 * Is this correct?
++	 */
++	isync();
++}
++
++#endif /* _ASM_POWERPC_SYNC_CORE_H */
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index b5137cc5b7b4..895f70fd4a61 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -81,7 +81,6 @@ config X86
+ 	select ARCH_HAS_SET_DIRECT_MAP
+ 	select ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_HAS_STRICT_MODULE_RWX
+-	select ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+ 	select ARCH_HAS_SYSCALL_WRAPPER
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_HAS_DEBUG_WX
+diff --git a/arch/x86/include/asm/sync_core.h b/arch/x86/include/asm/sync_core.h
+index ab7382f92aff..c665b453969a 100644
+--- a/arch/x86/include/asm/sync_core.h
++++ b/arch/x86/include/asm/sync_core.h
+@@ -89,11 +89,10 @@ static inline void sync_core(void)
+ }
+ 
+ /*
+- * Ensure that a core serializing instruction is issued before returning
+- * to user-mode. x86 implements return to user-space through sysexit,
+- * sysrel, and sysretq, which are not core serializing.
++ * Ensure that the CPU notices any instruction changes before the next time
++ * it returns to usermode.
+  */
+-static inline void sync_core_before_usermode(void)
++static inline void membarrier_sync_core_before_usermode(void)
+ {
+ 	/* With PTI, we unconditionally serialize before running user code. */
+ 	if (static_cpu_has(X86_FEATURE_PTI))
+diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+index 48640db6ca86..81ba47910a73 100644
+--- a/include/linux/sched/mm.h
++++ b/include/linux/sched/mm.h
+@@ -7,7 +7,6 @@
+ #include <linux/sched.h>
+ #include <linux/mm_types.h>
+ #include <linux/gfp.h>
+-#include <linux/sync_core.h>
+ 
+ /*
+  * Routines for handling mm_structs
+diff --git a/include/linux/sync_core.h b/include/linux/sync_core.h
+deleted file mode 100644
+index 013da4b8b327..000000000000
+--- a/include/linux/sync_core.h
++++ /dev/null
+@@ -1,21 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _LINUX_SYNC_CORE_H
+-#define _LINUX_SYNC_CORE_H
+-
+-#ifdef CONFIG_ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+-#include <asm/sync_core.h>
+-#else
+-/*
+- * This is a dummy sync_core_before_usermode() implementation that can be used
+- * on all architectures which return to user-space through core serializing
+- * instructions.
+- * If your architecture returns to user-space through non-core-serializing
+- * instructions, you need to write your own functions.
+- */
+-static inline void sync_core_before_usermode(void)
+-{
+-}
+-#endif
+-
+-#endif /* _LINUX_SYNC_CORE_H */
+-
+diff --git a/init/Kconfig b/init/Kconfig
+index c9446911cf41..eb9772078cd4 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2334,9 +2334,6 @@ source "kernel/Kconfig.locks"
+ config ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	bool
+ 
+-config ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+-	bool
+-
+ # It may be useful for an architecture to override the definitions of the
+ # SYSCALL_DEFINE() and __SYSCALL_DEFINEx() macros in <linux/syscalls.h>
+ # and the COMPAT_ variants in <linux/compat.h>, in particular to use a
+diff --git a/kernel/sched/membarrier.c b/kernel/sched/membarrier.c
+index b3a82d7635da..db4945e1ec94 100644
+--- a/kernel/sched/membarrier.c
++++ b/kernel/sched/membarrier.c
+@@ -5,6 +5,9 @@
+  * membarrier system call
+  */
+ #include "sched.h"
++#ifdef CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE
++#include <asm/sync_core.h>
++#endif
+ 
+ /*
+  * The basic principle behind the regular memory barrier mode of membarrier()
+@@ -221,6 +224,7 @@ static void ipi_mb(void *info)
+ 	smp_mb();	/* IPIs should be serializing but paranoid. */
+ }
+ 
++#ifdef CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE
+ static void ipi_sync_core(void *info)
+ {
+ 	/*
+@@ -230,13 +234,14 @@ static void ipi_sync_core(void *info)
+ 	 * the big comment at the top of this file.
+ 	 *
+ 	 * A sync_core() would provide this guarantee, but
+-	 * sync_core_before_usermode() might end up being deferred until
+-	 * after membarrier()'s smp_mb().
++	 * membarrier_sync_core_before_usermode() might end up being deferred
++	 * until after membarrier()'s smp_mb().
+ 	 */
+ 	smp_mb();	/* IPIs should be serializing but paranoid. */
+ 
+-	sync_core_before_usermode();
++	membarrier_sync_core_before_usermode();
+ }
++#endif
+ 
+ static void ipi_rseq(void *info)
+ {
+@@ -368,12 +373,14 @@ static int membarrier_private_expedited(int flags, int cpu_id)
+ 	smp_call_func_t ipi_func = ipi_mb;
+ 
+ 	if (flags == MEMBARRIER_FLAG_SYNC_CORE) {
+-		if (!IS_ENABLED(CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE))
++#ifndef CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE
+ 			return -EINVAL;
++#else
+ 		if (!(atomic_read(&mm->membarrier_state) &
+ 		      MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE_READY))
+ 			return -EPERM;
+ 		ipi_func = ipi_sync_core;
++#endif
+ 	} else if (flags == MEMBARRIER_FLAG_RSEQ) {
+ 		if (!IS_ENABLED(CONFIG_RSEQ))
+ 			return -EINVAL;
 -- 
-2.11.0
+2.29.2
 
