@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441552E3E3C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Dec 2020 15:27:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B6C2E3E90
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Dec 2020 15:30:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D4Kcd1qzNzDqBd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Dec 2020 01:26:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D4KhV0b6czDqCY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Dec 2020 01:30:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,17 +18,17 @@ Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D4KXM5w49zDqBP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Dec 2020 01:23:15 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 1AA0A22AEC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Dec 2020 14:23:13 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D4KYJ58VWzDqBm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Dec 2020 01:24:04 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPS id B5BDD22B30
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Dec 2020 14:23:58 +0000 (UTC)
 Received: by pdx-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
- id 0C01B81F1E; Mon, 28 Dec 2020 14:23:13 +0000 (UTC)
+ id AC42281F1E; Mon, 28 Dec 2020 14:23:58 +0000 (UTC)
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 200055] [Bisected][Regression] WARNING: CPU: 0 PID: 1 at
  kernel/locking/lockdep.c:3214 .__lockdep_init_map+0x260/0x270
-Date: Mon, 28 Dec 2020 14:23:12 +0000
+Date: Mon, 28 Dec 2020 14:23:58 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -43,8 +43,8 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
-Message-ID: <bug-200055-206035-fYfUgbupKV@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-200055-206035-tvgxH2oAyO@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-200055-206035@https.bugzilla.kernel.org/>
 References: <bug-200055-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -69,21 +69,10 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D200055
 
-Erhard F. (erhard_f@mailbox.org) changed:
-
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
- Attachment #283675|0                           |1
-        is obsolete|                            |
- Attachment #283677|0                           |1
-        is obsolete|                            |
-
---- Comment #22 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 294375
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D294375&action=3Dedit
-dmesg (kernel 5.11-rc1, G5 11,2)
-
-Still in 5.11-rc1.
+--- Comment #23 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 294377
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D294377&action=3Dedit
+kernel .config (kernel 5.11-rc1, G5 11,2)
 
 --=20
 You may reply to this email to add a comment.
