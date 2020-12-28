@@ -1,88 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031102E353D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Dec 2020 09:53:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E752E35F4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Dec 2020 11:33:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D4BD51QkDzDqDZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Dec 2020 19:53:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D4DRW3WHLzDqD1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Dec 2020 21:33:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk
+ (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk;
+ envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=armlinux.org.uk
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ETcFxcoX; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D4BBc0nmRzDqBv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Dec 2020 19:52:23 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0BS8nvvb069862; Mon, 28 Dec 2020 03:52:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=lm/14L4B31f/728y9VwO7J3Q9JvfcFXzNDDqbk+7ydc=;
- b=ETcFxcoXSN7/bcZsGEMQMtpcPVI9FXS8A4QjXS2rc07b9wxhRNE2Lo1cELMO2VPJsYRe
- Tr8KbPD3J+pcYu0+aEW2F6DBlQqHBFmQO7yrdRw/iyKZesOVhtNQQAHPHrP/Es/IlIh/
- VMropwGlXCmKcW/QYY/yQbiMIed4ut5PQZeYH9s+PQHBfu2iXyenQttqckVUMpgnUcUE
- 89GAdEVhi/X3HS1yVNQ6KMaMkpPmJoa3Fcoq1EA21IZcYQaY7LNuiT4f82cOD2ujGSaD
- ZSCjQcVOakbCuNapuSJDRkUyuHLLMa+Xa9zpQO7MaQ/Y5PuEjmXxFw2ySyb5Po40O73u nw== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35qc6rr0rs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Dec 2020 03:52:17 -0500
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0BS8lnLj024100;
- Mon, 28 Dec 2020 08:52:15 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma02fra.de.ibm.com with ESMTP id 35nvt80xds-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Dec 2020 08:52:14 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0BS8qCYm44499234
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 28 Dec 2020 08:52:12 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B70E211C04A;
- Mon, 28 Dec 2020 08:52:12 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 02CD611C04C;
- Mon, 28 Dec 2020 08:52:11 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.199.39.1])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 28 Dec 2020 08:52:10 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc/perf/hv-24x7: Dont create sysfs event files for
- dummy events
-Date: Mon, 28 Dec 2020 14:22:04 +0530
-Message-Id: <20201228085204.18026-1-kjain@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256
+ header.s=pandora-2019 header.b=h30/Gxdg; 
+ dkim-atps=neutral
+X-Greylist: delayed 377 seconds by postgrey-1.36 at bilbo;
+ Mon, 28 Dec 2020 21:32:22 AEDT
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk
+ [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D4DPy562KzDqBl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Dec 2020 21:32:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=KFHMNIJdJQgc7k2MpIWgEZIVRXKh/hl0VpPbl95Wj24=; b=h30/GxdgAhHlsBbJPSjlJ8Mug
+ 9M1YG6RYYa/gwy5tEt6qDesqLU2ezI2zY0VuJgJZS2sgz8cuBtJbDnH4HxigRXUUhDIx1hPBRuiTk
+ lZxIdGgnk9leKNqn0Ez2tBKl8ZyUMTp+wcNjizIlk1FW1Cw9yOzCn5Q6cYRndJo51zAP6allXlrrU
+ Oo7bDiUkZwnIBHqdr+VCfUn3qCmOUzN5Cd0UMG1P0wzdNyotxaag/94/kmDJOpznJlcfiWaoaRut0
+ F76z3eNzY2KD85mOAGw14rTXAMSQ72umaaa6LpJrHqH3Ofaz3fy397PGK0IkueabDrOeV+UZ/fuXm
+ V76NAbWCw==;
+Received: from shell.armlinux.org.uk
+ ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:44598)
+ by pandora.armlinux.org.uk with esmtpsa
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <linux@armlinux.org.uk>)
+ id 1ktpig-0004Lr-Ob; Mon, 28 Dec 2020 10:25:42 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+ (envelope-from <linux@shell.armlinux.org.uk>)
+ id 1ktpib-0000CL-9P; Mon, 28 Dec 2020 10:25:37 +0000
+Date: Mon, 28 Dec 2020 10:25:37 +0000
+From: Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To: Andy Lutomirski <luto@kernel.org>
+Subject: Re: [RFC please help] membarrier: Rewrite sync_core_before_usermode()
+Message-ID: <20201228102537.GG1551@shell.armlinux.org.uk>
+References: <bf59ecb5487171a852bcc8cdd553ec797aedc485.1609093476.git.luto@kernel.org>
+ <1836294649.3345.1609100294833.JavaMail.zimbra@efficios.com>
+ <CALCETrVdcn2r2Jvd1=-bM=FQ8KbX4aH-v4ytdojL7r7Nb6k8YQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2020-12-28_07:2020-12-24,
- 2020-12-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- spamscore=0 bulkscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0
- impostorscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012280047
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALCETrVdcn2r2Jvd1=-bM=FQ8KbX4aH-v4ytdojL7r7Nb6k8YQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,118 +74,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, suka@us.ibm.com, maddy@linux.vnet.ibm.com,
- atrajeev@linux.vnet.ibm.com
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ x86 <x86@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Will Deacon <will@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ stable <stable@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-hv_24x7 performance monitoring unit creates list of supported events
-from the event catalog obtained via HCALL. hv_24x7 catalog could also
-contain invalid or dummy events with names like RESERVED*.
-These events does not have any hardware counters backing them.
-So patch adds a check to string compare the event names
-to filter out them.
+On Sun, Dec 27, 2020 at 01:36:13PM -0800, Andy Lutomirski wrote:
+> On Sun, Dec 27, 2020 at 12:18 PM Mathieu Desnoyers
+> <mathieu.desnoyers@efficios.com> wrote:
+> >
+> > ----- On Dec 27, 2020, at 1:28 PM, Andy Lutomirski luto@kernel.org wrote:
+> >
+> 
+> > >
+> > > I admit that I'm rather surprised that the code worked at all on arm64,
+> > > and I'm suspicious that it has never been very well tested.  My apologies
+> > > for not reviewing this more carefully in the first place.
+> >
+> > Please refer to Documentation/features/sched/membarrier-sync-core/arch-support.txt
+> >
+> > It clearly states that only arm, arm64, powerpc and x86 support the membarrier
+> > sync core feature as of now:
+> 
+> Sigh, I missed arm (32).  Russell or ARM folks, what's the right
+> incantation to make the CPU notice instruction changes initiated by
+> other cores on 32-bit ARM?
 
-Result in power9 machine:
+You need to call flush_icache_range(), since the changes need to be
+flushed from the data cache to the point of unification (of the Harvard
+I and D), and the instruction cache needs to be invalidated so it can
+then see those updated instructions. This will also take care of the
+necessary barriers that the CPU requires for you.
 
-Before this patch:
-.....
-  hv_24x7/PM_XLINK2_OUT_ODD_CYC,chip=?/              [Kernel PMU event]
-  hv_24x7/PM_XLINK2_OUT_ODD_DATA_COUNT,chip=?/       [Kernel PMU event]
-  hv_24x7/PM_XLINK2_OUT_ODD_TOTAL_UTIL,chip=?/       [Kernel PMU event]
-  hv_24x7/PM_XTS_ATR_DEMAND_CHECKOUT,chip=?/         [Kernel PMU event]
-  hv_24x7/PM_XTS_ATR_DEMAND_CHECKOUT_MISS,chip=?/    [Kernel PMU event]
-  hv_24x7/PM_XTS_ATSD_SENT,chip=?/                   [Kernel PMU event]
-  hv_24x7/PM_XTS_ATSD_TLBI_RCV,chip=?/               [Kernel PMU event]
-  hv_24x7/RESERVED_NEST1,chip=?/                     [Kernel PMU event]
-  hv_24x7/RESERVED_NEST10,chip=?/                    [Kernel PMU event]
-  hv_24x7/RESERVED_NEST11,chip=?/                    [Kernel PMU event]
-  hv_24x7/RESERVED_NEST12,chip=?/                    [Kernel PMU event]
-  hv_24x7/RESERVED_NEST13,chip=?/                    [Kernel PMU event]
-......
+... as documented in Documentation/core-api/cachetlb.rst and so
+should be available on every kernel supported CPU.
 
-Dmesg:
-[    0.000362] printk: console [hvc0] enabled
-[    0.815452] hv-24x7: read 1530 catalog entries, created 537 event attrs
-(0 failures), 275 descs
-
-After this patch:
-......
-  hv_24x7/PM_XLINK2_OUT_ODD_AVLBL_CYC,chip=?/        [Kernel PMU event]
-  hv_24x7/PM_XLINK2_OUT_ODD_CYC,chip=?/              [Kernel PMU event]
-  hv_24x7/PM_XLINK2_OUT_ODD_DATA_COUNT,chip=?/       [Kernel PMU event]
-  hv_24x7/PM_XLINK2_OUT_ODD_TOTAL_UTIL,chip=?/       [Kernel PMU event]
-  hv_24x7/PM_XTS_ATR_DEMAND_CHECKOUT,chip=?/         [Kernel PMU event]
-  hv_24x7/PM_XTS_ATR_DEMAND_CHECKOUT_MISS,chip=?/    [Kernel PMU event]
-  hv_24x7/PM_XTS_ATSD_SENT,chip=?/                   [Kernel PMU event]
-  hv_24x7/PM_XTS_ATSD_TLBI_RCV,chip=?/               [Kernel PMU event]
-  hv_24x7/TOD,chip=?/                                [Kernel PMU event]
-......
-
-Demsg:
-[    0.000357] printk: console [hvc0] enabled
-[    0.808592] hv-24x7: read 1530 catalog entries, created 509 event attrs
-(0 failures), 275 descs
-
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- arch/powerpc/perf/hv-24x7.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
----
-Changelog
-v2 -> v3
-- Removed "FREE_" check from "ignore_event".
-
-v1 -> v2
-- Include "RESERVED*" as part of the invalid event check as
-  suggested by Madhavan Srinivasan
-- Add new helper function "ignore_event" to check invalid/dummy
-  events as suggested by Michael Ellerman
-- Remove pr_info to print each invalid event as suggested by
-  Michael Ellerman
----
-diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-index 6e7e820508df..2f32b532b359 100644
---- a/arch/powerpc/perf/hv-24x7.c
-+++ b/arch/powerpc/perf/hv-24x7.c
-@@ -764,6 +764,14 @@ static ssize_t catalog_event_len_validate(struct hv_24x7_event_data *event,
- 	return ev_len;
- }
- 
-+/*
-+ * Return true incase of invalid or dummy events with names like RESERVED*
-+ */
-+static bool ignore_event(const char *name)
-+{
-+	return (!strncmp(name, "RESERVED", 8)) ? true : false;
-+}
-+
- #define MAX_4K (SIZE_MAX / 4096)
- 
- static int create_events_from_catalog(struct attribute ***events_,
-@@ -894,6 +902,10 @@ static int create_events_from_catalog(struct attribute ***events_,
- 
- 		name = event_name(event, &nl);
- 
-+		if (ignore_event(name)) {
-+			junk_events++;
-+			continue;
-+		}
- 		if (event->event_group_record_len == 0) {
- 			pr_devel("invalid event %zu (%.*s): group_record_len == 0, skipping\n",
- 					event_idx, nl, name);
-@@ -955,6 +967,9 @@ static int create_events_from_catalog(struct attribute ***events_,
- 			continue;
- 
- 		name  = event_name(event, &nl);
-+		if (ignore_event(name))
-+			continue;
-+
- 		nonce = event_uniq_add(&ev_uniq, name, nl, event->domain);
- 		ct    = event_data_to_attrs(event_idx, events + event_attr_ct,
- 					    event, nonce);
 -- 
-2.27.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
