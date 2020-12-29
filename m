@@ -2,74 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB152E6AFF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Dec 2020 22:28:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0F72E6CC2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Dec 2020 01:12:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D4Vyr2wCQzDqF7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Dec 2020 08:28:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D4Zck3nkzzDqDQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Dec 2020 11:12:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d;
+ helo=mail-pg1-x52d.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=efficios.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=APaKQfS/; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=IRcovKNG; dkim-atps=neutral
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com
+ [IPv6:2607:f8b0:4864:20::52d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D4Vx32DqGzDqD9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Dec 2020 08:26:46 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id DD2AF276346;
- Mon, 28 Dec 2020 16:26:42 -0500 (EST)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id bbvVjxmkCU_s; Mon, 28 Dec 2020 16:26:42 -0500 (EST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 680D4276524;
- Mon, 28 Dec 2020 16:26:42 -0500 (EST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 680D4276524
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1609190802;
- bh=z5SadIcR2lzpMzQSq0MlMGX6w4abtftg0yLn7xs5uL0=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=APaKQfS/4RtIWzaWOaHYIx5R3o6+lMdlIwnwMvuRpQPipj9Vp5blrwND39rR+isBS
- si6sR5LIrYQxIyVChB8SzsIXIJhMANi1S1teS4XeCjz7xEY1a/JyedylDqgsP4pQjR
- NVMmTbwC4A7eYN3McEdVHyAjaancpxsGQFXHYaJlOm/t4D0jIkO9hm+CJVECVz12AJ
- F4K2OUbbRpRsgnd2ALM5tqH11Nd6ye1S7LIH8C3PnR4reveNmvnbnvNTLaK1WasdWp
- nT6sVspVjGFMUSzI/+326EQCOivv6yCkn0Tda/qm3O/aASJ47v7WebROPCfSbx+mlR
- dECQokSZCgHOw==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id 6zlFCT90YhfK; Mon, 28 Dec 2020 16:26:42 -0500 (EST)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id 53B23276602;
- Mon, 28 Dec 2020 16:26:42 -0500 (EST)
-Date: Mon, 28 Dec 2020 16:26:42 -0500 (EST)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Andy Lutomirski <luto@kernel.org>
-Message-ID: <1378834482.3699.1609190802236.JavaMail.zimbra@efficios.com>
-In-Reply-To: <CALCETrXx3Xe+4Y6WM-mp0cTUU=r3bW6PV2b25yA8bm1Gvak6wQ@mail.gmail.com>
-References: <bf59ecb5487171a852bcc8cdd553ec797aedc485.1609093476.git.luto@kernel.org>
- <20201228102537.GG1551@shell.armlinux.org.uk>
- <CALCETrWQx0qwthBc5pJBxs2PWAQo-roAz-6g=7HOs+dsiokVsg@mail.gmail.com>
- <CAG48ez0YZ_iy6qZpdGUj38wqeg_NzLHHhU-mBCBf5hcopYGVPg@mail.gmail.com>
- <20201228190852.GI1551@shell.armlinux.org.uk>
- <CALCETrVpvrBufrJgXNY=ogtZQLo7zgxQmD7k9eVCFjcdcvarmA@mail.gmail.com>
- <1086654515.3607.1609187556216.JavaMail.zimbra@efficios.com>
- <CALCETrXx3Xe+4Y6WM-mp0cTUU=r3bW6PV2b25yA8bm1Gvak6wQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D4Zb40gcZzDqBc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Dec 2020 11:11:27 +1100 (AEDT)
+Received: by mail-pg1-x52d.google.com with SMTP id i7so8244539pgc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Dec 2020 16:11:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=+x0jg3kgtAnVsZSiLJVqeiqq/kBhePK5zrv50jFdLuw=;
+ b=IRcovKNGSDtnXPhGzyqD7eyJ8xFOY06mgqPAH+dIQcl1Q2qBdd1KfvZaTUAaCWSouR
+ OF7dcFcaTAAMkiQ4Hc9JLvPgOFnEetNx9BpimyxpCVgv5ifpx10XC+yZKl/JOtC2OMn5
+ M7kgyvd1BUR1+0S8aDjsWCCD6Jk6pPEHO9a3j4oayoVYcGXLLAEd/4eyc0h/83/pqHG4
+ j55aC4Z20m1D1cMPUX8l+BkAtcB7XVS5+AAW/HS7DDlCE+UJYC6/HCTjzt0dkdDs7Qql
+ j4eXnCP8ybnbZ0qK8O+2WMlivBPVkLMSTzR3m+dS3hyeR5ZLkae8RJawpTHjti7+jC68
+ zytg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=+x0jg3kgtAnVsZSiLJVqeiqq/kBhePK5zrv50jFdLuw=;
+ b=BgJaZyPeQrdY8B6ZO8Cx8REYhAmQ1mWK85IKdMbf04kr8oThe4Q0H8Ea1cDfg70+BD
+ zP56ENQ3ovywVQDrCSJO8fdvBDXwV/l+5jGxHnJ3B8fQkw5Eel/WivNCoTcIcemxT/r3
+ O8DPtcvdmKyvNOWujpPOT2OcCpUAp8ruWoL56xHt+HgB3AMccPoH0hFsavKfdt3P5f0Q
+ ijDmtL5MFMilGkN4KXFWrE+YCZSk6PtHaUBfyC9gjgDguW6hUeDPHKSeZ+9Xo0pw+DKz
+ XfCWAuNE+K8GpM7cCyrLJYPB86TC8g3LDUQLbsSUltFozPRUK616Lul7eRqSdck+yZ3j
+ zXRQ==
+X-Gm-Message-State: AOAM531/mjqxeGaYbUc8KfzLCnofaDRxZt8E+rkrVwMnYPj8qUMbMQ2S
+ NZBMeu1dxdRNWWgaojzA2+A=
+X-Google-Smtp-Source: ABdhPJziWQaDuQ55fGtxjE6fQbAeK72BPSalCM5Tcc9+bonmCukOTiRZskRtE1A/1ZjpqIusBtl70w==
+X-Received: by 2002:a62:63c5:0:b029:1a9:3a46:7d32 with SMTP id
+ x188-20020a6263c50000b02901a93a467d32mr43109410pfb.39.1609200683417; 
+ Mon, 28 Dec 2020 16:11:23 -0800 (PST)
+Received: from localhost (193-116-97-30.tpgi.com.au. [193.116.97.30])
+ by smtp.gmail.com with ESMTPSA id 92sm589278pjv.15.2020.12.28.16.11.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 28 Dec 2020 16:11:22 -0800 (PST)
+Date: Tue, 29 Dec 2020 10:11:16 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
 Subject: Re: [RFC please help] membarrier: Rewrite sync_core_before_usermode()
+To: Andy Lutomirski <luto@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, x86@kernel.org
+References: <bf59ecb5487171a852bcc8cdd553ec797aedc485.1609093476.git.luto@kernel.org>
+In-Reply-To: <bf59ecb5487171a852bcc8cdd553ec797aedc485.1609093476.git.luto@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_3991 (ZimbraWebClient - FF84 (Linux)/8.8.15_GA_3980)
-Thread-Topic: membarrier: Rewrite sync_core_before_usermode()
-Thread-Index: tIlQLlu+op3Kl5YqWG9aEqEFkV0nuQ==
+Message-Id: <1609199804.yrsu9vagzk.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,106 +80,167 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- paulmck <paulmck@kernel.org>, Jann Horn <jannh@google.com>,
- Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>, "Russell King,
- ARM Linux" <linux@armlinux.org.uk>, Nicholas Piggin <npiggin@gmail.com>,
- linux-kernel <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- stable <stable@vger.kernel.org>, Will Deacon <will@kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, LKML <linux-kernel@vger.kernel.org>,
+ stable@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------ On Dec 28, 2020, at 4:06 PM, Andy Lutomirski luto@kernel.org wrote:
+Excerpts from Andy Lutomirski's message of December 28, 2020 4:28 am:
+> The old sync_core_before_usermode() comments said that a non-icache-synci=
+ng
+> return-to-usermode instruction is x86-specific and that all other
+> architectures automatically notice cross-modified code on return to
+> userspace.  Based on my general understanding of how CPUs work and based =
+on
+> my atttempt to read the ARM manual, this is not true at all.  In fact, x8=
+6
+> seems to be a bit of an anomaly in the other direction: x86's IRET is
+> unusually heavyweight for a return-to-usermode instruction.
 
-> On Mon, Dec 28, 2020 at 12:32 PM Mathieu Desnoyers
-> <mathieu.desnoyers@efficios.com> wrote:
->>
->> ----- On Dec 28, 2020, at 2:44 PM, Andy Lutomirski luto@kernel.org wrote:
->>
->> > On Mon, Dec 28, 2020 at 11:09 AM Russell King - ARM Linux admin
->> > <linux@armlinux.org.uk> wrote:
->> >>
->> >> On Mon, Dec 28, 2020 at 07:29:34PM +0100, Jann Horn wrote:
->> >> > After chatting with rmk about this (but without claiming that any of
->> >> > this is his opinion), based on the manpage, I think membarrier()
->> >> > currently doesn't really claim to be synchronizing caches? It just
->> >> > serializes cores. So arguably if userspace wants to use membarrier()
->> >> > to synchronize code changes, userspace should first do the code
->> >> > change, then flush icache as appropriate for the architecture, and
->> >> > then do the membarrier() to ensure that the old code is unused?
->>
->> ^ exactly, yes.
->>
->> >> >
->> >> > For 32-bit arm, rmk pointed out that that would be the cacheflush()
->> >> > syscall. That might cause you to end up with two IPIs instead of one
->> >> > in total, but we probably don't care _that_ much about extra IPIs on
->> >> > 32-bit arm?
->>
->> This was the original thinking, yes. The cacheflush IPI will flush specific
->> regions of code, and the membarrier IPI issues context synchronizing
->> instructions.
->>
->> Architectures with coherent i/d caches don't need the cacheflush step.
-> 
-> There are different levels of coherency -- VIVT architectures may have
-> differing requirements compared to PIPT, etc.
-> 
-> In any case, I feel like the approach taken by the documentation is
-> fundamentally confusing.  Architectures don't all speak the same
-> language
+"sync_core_before_usermode" as I've said says nothing to arch, or to the=20
+scheduler, or to membarrier. It's badly named to start with so if=20
+renaming it it should be something else. exit_lazy_tlb() at least says
+something quite precise to scheudler and arch code that implements
+the membarrier.
 
-Agreed.
+But I don't mind the idea of just making it x86 specific if as you say the
+arch code can detect lazy mm switches more precisely than generic and=20
+you want to do that.
 
-> How about something like:
+> So let's drop any pretense that we can have a generic way implementation
+> behind membarrier's SYNC_CORE flush and require all architectures that op=
+t
+> in to supply their own.  This means x86, arm64, and powerpc for now.  Let=
+'s
+> also rename the function from sync_core_before_usermode() to
+> membarrier_sync_core_before_usermode() because the precise flushing detai=
+ls
+> may very well be specific to membarrier, and even the concept of
+> "sync_core" in the kernel is mostly an x86-ism.
 
-I dislike the wording "barrier" and the association between "write" and
-"instruction fetch" done in the descriptions below. It leads to think that
-this behaves like a memory barrier, when in fact my understanding of
-a context synchronizing instruction is that it simply flushes internal
-CPU state, which would cause coherency issues if the CPU observes both the
-old and then the new code without having this state flushed.
+The concept of "sync_core" (x86: serializing instruction, powerpc: context
+synchronizing instruction, etc) is not an x86-ism at all. x86 just wanted
+to add a serializing instruction to generic code so it grew this nasty API,
+but the concept applies broadly.
 
-[ Sorry if I take more time to reply and if my replies are a bit more
-  concise than usual. I'm currently on parental leave, so I have
-  non-maskable interrupts to attend to. ;-) ]
+>=20
+> I admit that I'm rather surprised that the code worked at all on arm64,
+> and I'm suspicious that it has never been very well tested.  My apologies
+> for not reviewing this more carefully in the first place.
+
+
+>=20
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: x86@kernel.org
+> Cc: stable@vger.kernel.org
+> Fixes: 70216e18e519 ("membarrier: Provide core serializing command, *_SYN=
+C_CORE")
+> Signed-off-by: Andy Lutomirski <luto@kernel.org>
+> ---
+>=20
+> Hi arm64 and powerpc people-
+>=20
+> This is part of a series here:
+>=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/luto/linux.git/log/?h=3Dx=
+86/fixes
+>=20
+> Before I send out the whole series, I'm hoping that some arm64 and powerp=
+c
+> people can help me verify that I did this patch right.  Once I get
+> some feedback on this patch, I'll send out the whole pile.  And once
+> *that's* done, I'll start giving the mm lazy stuff some serious thought.
+>=20
+> The x86 part is already fixed in Linus' tree.
+>=20
+> Thanks,
+> Andy
+>=20
+>  arch/arm64/include/asm/sync_core.h   | 21 +++++++++++++++++++++
+>  arch/powerpc/include/asm/sync_core.h | 20 ++++++++++++++++++++
+>  arch/x86/Kconfig                     |  1 -
+>  arch/x86/include/asm/sync_core.h     |  7 +++----
+>  include/linux/sched/mm.h             |  1 -
+>  include/linux/sync_core.h            | 21 ---------------------
+>  init/Kconfig                         |  3 ---
+>  kernel/sched/membarrier.c            | 15 +++++++++++----
+>  8 files changed, 55 insertions(+), 34 deletions(-)
+>  create mode 100644 arch/arm64/include/asm/sync_core.h
+>  create mode 100644 arch/powerpc/include/asm/sync_core.h
+>  delete mode 100644 include/linux/sync_core.h
+>=20
+> diff --git a/arch/arm64/include/asm/sync_core.h b/arch/arm64/include/asm/=
+sync_core.h
+> new file mode 100644
+> index 000000000000..5be4531caabd
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/sync_core.h
+> @@ -0,0 +1,21 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_ARM64_SYNC_CORE_H
+> +#define _ASM_ARM64_SYNC_CORE_H
+> +
+> +#include <asm/barrier.h>
+> +
+> +/*
+> + * Ensure that the CPU notices any instruction changes before the next t=
+ime
+> + * it returns to usermode.
+> + */
+> +static inline void membarrier_sync_core_before_usermode(void)
+> +{
+> +	/*
+> +	 * XXX: is this enough or do we need a DMB first to make sure that
+> +	 * writes from other CPUs become visible to this CPU?  We have an
+> +	 * smp_mb() already, but that's not quite the same thing.
+> +	 */
+> +	isb();
+> +}
+> +
+> +#endif /* _ASM_ARM64_SYNC_CORE_H */
+> diff --git a/arch/powerpc/include/asm/sync_core.h b/arch/powerpc/include/=
+asm/sync_core.h
+> new file mode 100644
+> index 000000000000..71dfbe7794e5
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/sync_core.h
+> @@ -0,0 +1,20 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_POWERPC_SYNC_CORE_H
+> +#define _ASM_POWERPC_SYNC_CORE_H
+> +
+> +#include <asm/barrier.h>
+> +
+> +/*
+> + * Ensure that the CPU notices any instruction changes before the next t=
+ime
+> + * it returns to usermode.
+> + */
+> +static inline void membarrier_sync_core_before_usermode(void)
+> +{
+> +	/*
+> +	 * XXX: I know basically nothing about powerpc cache management.
+> +	 * Is this correct?
+> +	 */
+> +	isync();
+
+This is not about memory ordering or cache management, it's about=20
+pipeline management. Powerpc's return to user mode serializes the
+CPU (aka the hardware thread, _not_ the core; another wrongness of
+the name, but AFAIKS the HW thread is what is required for
+membarrier). So this is wrong, powerpc needs nothing here.
 
 Thanks,
+Nick
 
-Mathieu
-
-> 
-> The SYNC_CORE operation causes all threads in the caller's address
-> space (including the caller) to execute an architecture-defined
-> barrier operation.  membarrier() will ensure that this barrier is
-> executed at a time such that all data writes done by the calling
-> thread before membarrier() are made visible by the barrier.
-> Additional architecture-dependent cache management operations may be
-> required to use this for JIT code.
-> 
-> x86: SYNC_CORE executes a barrier that will cause subsequent
-> instruction fetches to observe prior writes.  Currently this will be a
-> "serializing" instruction, but, if future improved CPU documentation
-> becomes available and relaxes this requirement, the barrier may
-> change.  The kernel guarantees that writing new or modified
-> instructions to normal memory (and issuing SFENCE if the writes were
-> non-temporal) then doing a membarrier SYNC_CORE operation is
-> sufficient to cause all threads in the caller's address space to
-> execute the new or modified instructions.  This is true regardless of
-> whether or not those instructions are written at the same virtual
-> address from which they are subsequently executed.  No additional
-> cache management is required on x86.
-> 
-> arm: Something about the cache management syscalls.
-> 
-> arm64: Ditto
-> 
-> powerpc: I have no idea.
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
