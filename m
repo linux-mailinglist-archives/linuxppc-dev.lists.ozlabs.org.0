@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9D12E876E
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jan 2021 14:14:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C3B2E876F
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jan 2021 14:16:59 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D7Mmv61KvzDqxH
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 00:14:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D7MqW5f77zDqv2
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 00:16:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
- helo=mail-pl1-x634.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=kDApWUON; dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
+ header.s=20161025 header.b=PZmwCeKj; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D7Lhx4jsHzDqpv
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jan 2021 23:26:09 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id x12so12033884plr.10
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 Jan 2021 04:26:09 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D7Lhy70G5zDqJ5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jan 2021 23:26:10 +1100 (AEDT)
+Received: by mail-pj1-x1031.google.com with SMTP id z12so7147092pjn.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 Jan 2021 04:26:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=RgL8Vm2dmUOfdddnVzmUO5NHqAf0RbTGNNWu5N8TpeM=;
- b=kDApWUONkrwxl4THdhJAx8Z/SRu6Pa7Kb0FAIgKMP/z7xYeMuWnRAjV3h00HpCO+Dt
- Z0/5fPahvEAgYMH7et7AU532pZ0/xovAAicKlMnxm+JFNwu3+q3pUQWe6XDMIDupgZym
- A36FHUWufPX8Q0KU3r18fJ8mklsTLbq4UIr966d70z0fyobnoZeF0KIowqaD1ngnKJTQ
- ra1AEc7D/uMz+UN8pIaBPcwqWbdsSfdh9+qXczDZsvQ4l5Cw3r2vCnp5VdK842hD+qdQ
- 4+a4AHqYttoep05FsAxm59/o+60YGybuCRfnAgq5gVRKLBB7ql0tbl2WXoFUc09hXJj/
- oz4w==
+ bh=kvmYJftH5cZTZ8nIj8KJCNRdHKsOtD9t58PDCh76PRA=;
+ b=PZmwCeKjL7n/HyexvXWWx9d6Z+uKCsP7kybgYOPrA+YwpOI/N4sDePRvVCH2F1f/kD
+ HK/RUhWssvtPsyV3XkeGIcrSQBsBz8T1xqBC0+oUUA5xNXWSLV0U0Ip3KOgzb5W8ZxeC
+ oivOBKtzR9kxSUoxelH+bqhAEzrcuuQF+09CnJWHa53/iOhZW80YZm4Wm8FOi9gPGGtJ
+ nxhGVo5rXud1Ce19qFFa5/PlGeTf2/x13xMTDS17hUmx43EnxyPyjc1mOGgimUgzeuon
+ pe4nbBuJr1EC4gdN/sca62WYfYJ/tC41fQ5neOlDzPKd8jIQsevNXPzfcrVKJh9Acl1z
+ lmRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=RgL8Vm2dmUOfdddnVzmUO5NHqAf0RbTGNNWu5N8TpeM=;
- b=VRFv+wGKnQOHnHU09wxyAqMkL9+EdRnq80fPdosZGJqz6E8b7Tr4erfNWXhxont7vy
- Yy5i0DtnBOst4j/GM5zRWQYpEBQgmwZXdUW5RUJnp65NIRcy/PW+ZyWUMAtljUcFguui
- xWiQUSqocfiqT1PaUVkFTod7csk9OTDDDPfoXoChO03V4sMCga08B4l/GiBD/GcPdunp
- JiXn3XO561Mh93smt6NdZiIaDIWpij3PLxCOrmuESB2EY5P1ekmpAbVgNlq2chbuMzHV
- fmkMPoayP2h5xznw4J59DfEdzvqdiTkU1XKAzmIjskXGS8ocLuOTtji3EmDrF26O9EP1
- /wzw==
-X-Gm-Message-State: AOAM531jX3zbhZl1KlH/bjMYIUGy2vp2FgwO1kirgHqwVQv/YMHSTEb7
- Rfq5m5FBEvOpBlgE7R+D18Zu9x3I1yQ=
-X-Google-Smtp-Source: ABdhPJxpfsZAZGKiZaGZDy0UjG4A4NnHB03bgOh5OGBNsWJlKN/cmB4CY7cxMvvktV39qGCzLmjYRQ==
-X-Received: by 2002:a17:90a:74cd:: with SMTP id
- p13mr21028851pjl.25.1609590366047; 
- Sat, 02 Jan 2021 04:26:06 -0800 (PST)
+ bh=kvmYJftH5cZTZ8nIj8KJCNRdHKsOtD9t58PDCh76PRA=;
+ b=uPaRxNAySyOdGj/N9Irg5EXmHSD8mtm9etEq2pBRgen1DrJp9Jyx2FLEDeWwyqsih1
+ PwYNzHkARs7le2ggsTiK9il8bnGVap53eb8m+kWdeqMW/vI8GvFJSWtVib5iUHAmEBkj
+ FsbvGrroTmJUDplveTssRUxed1Ag9J7D0s0Z3iwz9cVjKMuRRp2/s4vefh2+uTvtZgIL
+ N8hVRP1eezkiyDjfEQ1YHNKu7Jtk4M1aYXNPFPRfa5/2MTUenwGUNuVKRLTbiYwm1Qyu
+ 7OMK73LJ2mYOhSfmQFKoZ3eAr7Nn14ifAkHuJpzPBT2uWmFHsYSQ84HI7GP96tBItwdk
+ JlKQ==
+X-Gm-Message-State: AOAM530wpusXDQJo+hDPArrt0UreQWj2a+Glp0hjWKtjIjrybn+OeKpG
+ 3YNRfpfeR2mO/zLwR4oOViym8WO40DI=
+X-Google-Smtp-Source: ABdhPJyBxZIqUWrl37EmU1aZNFAVSN6WYHnmffgMIwdLI+GuOGPQfwTksA9a0KU4TuRsqlBbLvrevw==
+X-Received: by 2002:a17:90b:a4a:: with SMTP id
+ gw10mr21343350pjb.29.1609590368878; 
+ Sat, 02 Jan 2021 04:26:08 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (193-116-97-30.tpgi.com.au. [193.116.97.30])
- by smtp.gmail.com with ESMTPSA id h4sm58501413pgp.8.2021.01.02.04.26.03
+ by smtp.gmail.com with ESMTPSA id h4sm58501413pgp.8.2021.01.02.04.26.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Jan 2021 04:26:05 -0800 (PST)
+ Sat, 02 Jan 2021 04:26:08 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 16/21] powerpc/64: move account_stolen_time into its own
- function
-Date: Sat,  2 Jan 2021 22:25:03 +1000
-Message-Id: <20210102122508.1950592-17-npiggin@gmail.com>
+Subject: [PATCH v4 17/21] powerpc/64: entry cpu time accounting in C
+Date: Sat,  2 Jan 2021 22:25:04 +1000
+Message-Id: <20210102122508.1950592-18-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210102122508.1950592-1-npiggin@gmail.com>
 References: <20210102122508.1950592-1-npiggin@gmail.com>
@@ -85,67 +84,125 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This will be used by interrupt entry as well.
+There is no need for this to be in asm, use the new intrrupt entry wrapper.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/cputime.h | 15 +++++++++++++++
- arch/powerpc/kernel/syscall_64.c   | 10 +---------
- 2 files changed, 16 insertions(+), 9 deletions(-)
+ arch/powerpc/include/asm/interrupt.h |  7 +++++++
+ arch/powerpc/include/asm/ppc_asm.h   | 24 ------------------------
+ arch/powerpc/kernel/exceptions-64e.S |  1 -
+ arch/powerpc/kernel/exceptions-64s.S |  5 -----
+ 4 files changed, 7 insertions(+), 30 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/cputime.h b/arch/powerpc/include/asm/cputime.h
-index ed75d1c318e3..3f61604e1fcf 100644
---- a/arch/powerpc/include/asm/cputime.h
-+++ b/arch/powerpc/include/asm/cputime.h
-@@ -87,6 +87,18 @@ static notrace inline void account_cpu_user_exit(void)
- 	acct->starttime_user = tb;
- }
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index 6eba7c489753..e278dffe7657 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -4,6 +4,7 @@
  
-+static notrace inline void account_stolen_time(void)
-+{
-+#ifdef CONFIG_PPC_SPLPAR
-+	if (IS_ENABLED(CONFIG_VIRT_CPU_ACCOUNTING_NATIVE) &&
-+	    firmware_has_feature(FW_FEATURE_SPLPAR)) {
-+		struct lppaca *lp = local_paca->lppaca_ptr;
+ #include <linux/context_tracking.h>
+ #include <linux/hardirq.h>
++#include <asm/cputime.h>
+ #include <asm/ftrace.h>
+ 
+ struct interrupt_state {
+@@ -25,6 +26,9 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
+ 	if (user_mode(regs)) {
+ 		CT_WARN_ON(ct_state() != CONTEXT_USER);
+ 		user_exit_irqoff();
 +
-+		if (unlikely(local_paca->dtl_ridx != be64_to_cpu(lp->dtl_idx)))
-+			accumulate_stolen_time();
-+	}
-+#endif
-+}
- 
- #endif /* __KERNEL__ */
- #else /* CONFIG_VIRT_CPU_ACCOUNTING_NATIVE */
-@@ -96,5 +108,8 @@ static inline void account_cpu_user_entry(void)
- static inline void account_cpu_user_exit(void)
- {
++		account_cpu_user_entry();
++		account_stolen_time();
+ 	} else {
+ 		/*
+ 		 * CT_WARN_ON comes here via program_check_exception,
+@@ -38,6 +42,9 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
+ #ifdef CONFIG_PPC_BOOK3E_64
+ 	state->ctx_state = exception_enter();
+ #endif
++
++	if (!IS_ENABLED(CONFIG_PPC_BOOK3S_64) && user_mode(regs))
++		account_cpu_user_entry();
  }
-+static notrace inline void account_stolen_time(void)
-+{
-+}
- #endif /* CONFIG_VIRT_CPU_ACCOUNTING_NATIVE */
- #endif /* __POWERPC_CPUTIME_H */
-diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
-index 42f0ad4b2fbb..32f72965da26 100644
---- a/arch/powerpc/kernel/syscall_64.c
-+++ b/arch/powerpc/kernel/syscall_64.c
-@@ -69,15 +69,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
  
- 	account_cpu_user_entry();
- 
--#ifdef CONFIG_PPC_SPLPAR
--	if (IS_ENABLED(CONFIG_VIRT_CPU_ACCOUNTING_NATIVE) &&
--	    firmware_has_feature(FW_FEATURE_SPLPAR)) {
--		struct lppaca *lp = local_paca->lppaca_ptr;
+ /*
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index cc1bca571332..3dceb64fc9af 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -25,7 +25,6 @@
+ #ifndef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
+ #define ACCOUNT_CPU_USER_ENTRY(ptr, ra, rb)
+ #define ACCOUNT_CPU_USER_EXIT(ptr, ra, rb)
+-#define ACCOUNT_STOLEN_TIME
+ #else
+ #define ACCOUNT_CPU_USER_ENTRY(ptr, ra, rb)				\
+ 	MFTB(ra);			/* get timebase */		\
+@@ -44,29 +43,6 @@
+ 	PPC_LL	ra, ACCOUNT_SYSTEM_TIME(ptr);				\
+ 	add	ra,ra,rb;		/* add on to system time */	\
+ 	PPC_STL	ra, ACCOUNT_SYSTEM_TIME(ptr)
 -
--		if (unlikely(local_paca->dtl_ridx != be64_to_cpu(lp->dtl_idx)))
--			accumulate_stolen_time();
--	}
--#endif
-+	account_stolen_time();
+-#ifdef CONFIG_PPC_SPLPAR
+-#define ACCOUNT_STOLEN_TIME						\
+-BEGIN_FW_FTR_SECTION;							\
+-	beq	33f;							\
+-	/* from user - see if there are any DTL entries to process */	\
+-	ld	r10,PACALPPACAPTR(r13);	/* get ptr to VPA */		\
+-	ld	r11,PACA_DTL_RIDX(r13);	/* get log read index */	\
+-	addi	r10,r10,LPPACA_DTLIDX;					\
+-	LDX_BE	r10,0,r10;		/* get log write index */	\
+-	cmpd	cr1,r11,r10;						\
+-	beq+	cr1,33f;						\
+-	bl	accumulate_stolen_time;				\
+-	ld	r12,_MSR(r1);						\
+-	andi.	r10,r12,MSR_PR;		/* Restore cr0 (coming from user) */ \
+-33:									\
+-END_FW_FTR_SECTION_IFSET(FW_FEATURE_SPLPAR)
+-
+-#else  /* CONFIG_PPC_SPLPAR */
+-#define ACCOUNT_STOLEN_TIME
+-
+-#endif /* CONFIG_PPC_SPLPAR */
+-
+ #endif /* CONFIG_VIRT_CPU_ACCOUNTING_NATIVE */
  
- 	/*
- 	 * This is not required for the syscall exit path, but makes the
+ /*
+diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+index 52421042a020..87b3e74ded41 100644
+--- a/arch/powerpc/kernel/exceptions-64e.S
++++ b/arch/powerpc/kernel/exceptions-64e.S
+@@ -398,7 +398,6 @@ exc_##n##_common:							    \
+ 	std	r10,_NIP(r1);		/* save SRR0 to stackframe */	    \
+ 	std	r11,_MSR(r1);		/* save SRR1 to stackframe */	    \
+ 	beq	2f;			/* if from kernel mode */	    \
+-	ACCOUNT_CPU_USER_ENTRY(r13,r10,r11);/* accounting (uses cr0+eq) */  \
+ 2:	ld	r3,excf+EX_R10(r13);	/* get back r10 */		    \
+ 	ld	r4,excf+EX_R11(r13);	/* get back r11 */		    \
+ 	mfspr	r5,scratch;		/* get back r13 */		    \
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 398194711713..e6e61c6f7298 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -577,7 +577,6 @@ DEFINE_FIXED_SYMBOL(\name\()_common_real)
+ 	kuap_save_amr_and_lock r9, r10, cr1, cr0
+ 	.endif
+ 	beq	101f			/* if from kernel mode		*/
+-	ACCOUNT_CPU_USER_ENTRY(r13, r9, r10)
+ BEGIN_FTR_SECTION
+ 	ld	r9,IAREA+EX_PPR(r13)	/* Read PPR from paca		*/
+ 	std	r9,_PPR(r1)
+@@ -645,10 +644,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	ld	r11,exception_marker@toc(r2)
+ 	std	r10,RESULT(r1)		/* clear regs->result		*/
+ 	std	r11,STACK_FRAME_OVERHEAD-16(r1) /* mark the frame	*/
+-
+-	.if ISTACK
+-	ACCOUNT_STOLEN_TIME
+-	.endif
+ .endm
+ 
+ /*
 -- 
 2.23.0
 
