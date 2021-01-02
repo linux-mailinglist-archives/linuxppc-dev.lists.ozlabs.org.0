@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5CB12E8774
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jan 2021 14:21:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 553F42E8775
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jan 2021 14:23:29 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D7MwN1BDxzDrPp
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 00:21:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D7Mz15GsZzDr13
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 00:23:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
- helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=f2w+yWbB; dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
- [IPv6:2607:f8b0:4864:20::636])
+ header.s=20161025 header.b=fj1DmPNW; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D7Lj50HhrzDqJP
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jan 2021 23:26:16 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id r4so12031431pls.11
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 Jan 2021 04:26:16 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D7Lj86YwgzDqJY
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jan 2021 23:26:20 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id t6so12054871plq.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 Jan 2021 04:26:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=x5UAwzLFO5TvLOq/IMH2drBgv7LNQGOM+LyddVV7ctw=;
- b=f2w+yWbBN4KmnV8k8HQF+ZQHMTPk4GYUN28l03IPRqfM4FCaguHF1ZSZLeOZ7R38LU
- P6tO8suip3bexI+TD4qT4EOiLWK/nmJ1NGIk2i8kccl9MCFVjBy09qSrkEgdzJcC5dLx
- QvbK5hflH9I9hQqIG6DmvByfJQUOIsfRT4b1SuAhP8NR2O0PsomgTmbIUwD2kvn/9oEa
- Ka8zif48HbQ2kN5H9F9y+esoBYjH2qSws8v8WWt819N1IhzNnkajm2IJbe0NcbKBUmaO
- kwjBvvubKWrLJxRWveWQWYo3hLucNSxcHbEEzB+aiZoINbOM7z7AgksQ9NFZqmNQpalL
- hZYw==
+ bh=/ni/D9khR0eQz0INnFGUEyIliDMWoFa5F/AUgCFbEHs=;
+ b=fj1DmPNW7/+hv2bvlSUrj1Hj+MZ0RUaPlvOq00sFMldH62gBlL2H6UNq0hBKznhdXL
+ 69HFPT7udU48zJz+Ps13uoaQQnmTMCk/9h2NNYFSOIr+UsfExphQ/fwcJyXWCactQx/q
+ VhZIJHE7+z0L1ShD4CG6iEKSBFUPNpuI6MctmvtxqCfYJvCd+rjIsBjopHJOJWizFdGI
+ 9kDpsDHKEKtzMEFXtQ/SPNj0Ojyz/sr7k1bGGgLdsaOISYsQgO6RsqCz+T9DxMp6GbhC
+ XyC/z+4Zmj+qgaBritH+Ui+1kXrs8FderdKyGvT5sFqtrcq4gtq7VFiPFrycNrY9ai2E
+ dLfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=x5UAwzLFO5TvLOq/IMH2drBgv7LNQGOM+LyddVV7ctw=;
- b=r1APdKzfKFVxCGnIv/5I/EuUNm5lGyAfXAvfBSuZESqXo3BVGz4UWd0kX3n4J6Z1fR
- u1HQg/mwcl8K6FnPdBlj/HGHoLOfJ8uQGdhOjETBnNcQ98+PVogat+X8cGBtvpcUov7a
- qkCPsIFUSDlJbKjLauwRuPsluug6Qh1cAagGCFVu1D8WdXNDH1zte/M94e3xnayWHvGq
- EjKQ+wuhG//88x1yWAJmMFbdA36J+xikwsSDyYnwEt3b71XS6W0K0ZGp5AyhNTGX4Wyy
- NWlvbMiUiiT8QR1ODUswdnl/gXn6CqcR7d0UyHIZHVZXbyOqMoRhdN6OrnoE7nL1A5uY
- YSig==
-X-Gm-Message-State: AOAM533FuS+sHvCuKAIRErS7qHtg8HxmEYjxdaFW9LkqhyRDEK+Nx3rV
- Jvcau7r109RaFw50g2qTWT/i1+wCMjc=
-X-Google-Smtp-Source: ABdhPJxUCxEsTkgotfwUJ9mFFPhG99UyFCU/rE/DTTVZ223ScIxvLDSl8eraXsgdGj7DtGEKMliUbg==
-X-Received: by 2002:a17:902:e901:b029:db:c0d6:62cc with SMTP id
- k1-20020a170902e901b02900dbc0d662ccmr64482848pld.7.1609590373798; 
- Sat, 02 Jan 2021 04:26:13 -0800 (PST)
+ bh=/ni/D9khR0eQz0INnFGUEyIliDMWoFa5F/AUgCFbEHs=;
+ b=U4YV8ZXuI+f9Dfp6m1eFgshA44MvgJfhc4MN6JdYNP7hSx795soxEZOGUtW7WW6Czk
+ NhpCR5iFElCaA8NjGRL7j4yUdwQo3NOQbUD92UQvUxqQqjM1YXQuvNMeWypTJirQzLub
+ ScgsohOrIjIy3ts9X7Sds5gP5zBhDiNyauUnPK+GzOGQie8vhIMHsARVNyD3pEe2m99V
+ NZ9d8YrXs4F6ImTylRg1we02NuBtVaJT9PkVde6WiJbWpoitzK/NpXRJjKSn3Vg0PhHa
+ bUe8LtRQ9vW0PK5d1xAr0C5r3+qRGp0bKTxxc6DdnjWPpi8hIjNvOY7ZAZaHfWKe5MF1
+ WC/g==
+X-Gm-Message-State: AOAM532g/o7mEj38t45buzYVOP9to7ZcZPLuUP0Ss2npETx6RtRTLi1v
+ S00OphGeGXQCj6ndfUom9soP7dfgCVI=
+X-Google-Smtp-Source: ABdhPJzVYQvHa7fbPUcxF5t7KwOh51cnSuixMoZZroP8DgiL0moVlm87NJvqAUuXA1zcNX7bODYz9Q==
+X-Received: by 2002:a17:90a:764f:: with SMTP id
+ s15mr21057908pjl.98.1609590377157; 
+ Sat, 02 Jan 2021 04:26:17 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (193-116-97-30.tpgi.com.au. [193.116.97.30])
- by smtp.gmail.com with ESMTPSA id h4sm58501413pgp.8.2021.01.02.04.26.11
+ by smtp.gmail.com with ESMTPSA id h4sm58501413pgp.8.2021.01.02.04.26.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Jan 2021 04:26:13 -0800 (PST)
+ Sat, 02 Jan 2021 04:26:16 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 19/21] powerpc/64s: move NMI soft-mask handling to C
-Date: Sat,  2 Jan 2021 22:25:06 +1000
-Message-Id: <20210102122508.1950592-20-npiggin@gmail.com>
+Subject: [PATCH v4 20/21] powerpc/64s: runlatch interrupt handling in C
+Date: Sat,  2 Jan 2021 22:25:07 +1000
+Message-Id: <20210102122508.1950592-21-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210102122508.1950592-1-npiggin@gmail.com>
 References: <20210102122508.1950592-1-npiggin@gmail.com>
@@ -84,170 +84,124 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Saving and restoring soft-mask state can now be done in C using the
-interrupt handler wrapper functions.
+There is no need for this to be in asm, use the new intrrupt entry wrapper.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/interrupt.h | 26 ++++++++++++
- arch/powerpc/kernel/exceptions-64s.S | 60 ----------------------------
- 2 files changed, 26 insertions(+), 60 deletions(-)
+ arch/powerpc/include/asm/interrupt.h |  7 +++++++
+ arch/powerpc/kernel/exceptions-64s.S | 18 ------------------
+ 2 files changed, 7 insertions(+), 18 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index 01192e213f9a..db89ecfef762 100644
+index db89ecfef762..9c16e9a48df6 100644
 --- a/arch/powerpc/include/asm/interrupt.h
 +++ b/arch/powerpc/include/asm/interrupt.h
-@@ -96,6 +96,10 @@ static inline void interrupt_async_exit_prepare(struct pt_regs *regs, struct int
+@@ -6,6 +6,7 @@
+ #include <linux/hardirq.h>
+ #include <asm/cputime.h>
+ #include <asm/ftrace.h>
++#include <asm/runlatch.h>
  
- struct interrupt_nmi_state {
- #ifdef CONFIG_PPC64
-+#ifdef CONFIG_PPC_BOOK3S_64
-+	u8 irq_soft_mask;
-+	u8 irq_happened;
-+#endif
- 	u8 ftrace_enabled;
- #endif
- };
-@@ -103,6 +107,21 @@ struct interrupt_nmi_state {
- static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct interrupt_nmi_state *state)
+ struct interrupt_state {
+ #ifdef CONFIG_PPC_BOOK3E_64
+@@ -84,6 +85,12 @@ static inline void interrupt_exit_prepare(struct pt_regs *regs, struct interrupt
+ 
+ static inline void interrupt_async_enter_prepare(struct pt_regs *regs, struct interrupt_state *state)
  {
- #ifdef CONFIG_PPC64
 +#ifdef CONFIG_PPC_BOOK3S_64
-+	state->irq_soft_mask = local_paca->irq_soft_mask;
-+	state->irq_happened = local_paca->irq_happened;
-+
-+	/*
-+	 * Set IRQS_ALL_DISABLED unconditionally so irqs_disabled() does
-+	 * the right thing, and set IRQ_HARD_DIS. We do not want to reconcile
-+	 * because that goes through irq tracing which we don't want in NMI.
-+	 */
-+	local_paca->irq_soft_mask = IRQS_ALL_DISABLED;
-+	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
-+
-+	/* Don't do any per-CPU operations until interrupt state is fixed */
-+	state->ftrace_enabled = this_cpu_get_ftrace_enabled();
++	if (cpu_has_feature(CPU_FTR_CTRL) &&
++	    !test_thread_local_flags(_TLF_RUNLATCH))
++		__ppc64_runlatch_on();
 +#endif
- 	state->ftrace_enabled = this_cpu_get_ftrace_enabled();
- 	this_cpu_set_ftrace_enabled(0);
- #endif
-@@ -126,6 +145,13 @@ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct inter
- 
- #ifdef CONFIG_PPC64
- 	this_cpu_set_ftrace_enabled(state->ftrace_enabled);
 +
-+#ifdef CONFIG_PPC_BOOK3S_64
-+	/* Check we didn't change the pending interrupt mask. */
-+	WARN_ON_ONCE((state->irq_happened | PACA_IRQ_HARD_DIS) != local_paca->irq_happened);
-+	local_paca->irq_happened = state->irq_happened;
-+	local_paca->irq_soft_mask = state->irq_soft_mask;
-+#endif
- #endif
+ 	interrupt_enter_prepare(regs, state);
+ 	irq_enter();
  }
- 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index e6e61c6f7298..f9a2751570ef 100644
+index f9a2751570ef..05a358559274 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1008,20 +1008,6 @@ EXC_COMMON_BEGIN(system_reset_common)
- 	ld	r1,PACA_NMI_EMERG_SP(r13)
- 	subi	r1,r1,INT_FRAME_SIZE
- 	__GEN_COMMON_BODY system_reset
--	/*
--	 * Set IRQS_ALL_DISABLED unconditionally so irqs_disabled() does
--	 * the right thing. We do not want to reconcile because that goes
--	 * through irq tracing which we don't want in NMI.
--	 *
--	 * Save PACAIRQHAPPENED to RESULT (otherwise unused), and set HARD_DIS
--	 * as we are running with MSR[EE]=0.
--	 */
--	li	r10,IRQS_ALL_DISABLED
--	stb	r10,PACAIRQSOFTMASK(r13)
--	lbz	r10,PACAIRQHAPPENED(r13)
--	std	r10,RESULT(r1)
--	ori	r10,r10,PACA_IRQ_HARD_DIS
--	stb	r10,PACAIRQHAPPENED(r13)
+@@ -692,14 +692,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	ld	r1,GPR1(r1)
+ .endm
  
+-#define RUNLATCH_ON				\
+-BEGIN_FTR_SECTION				\
+-	ld	r3, PACA_THREAD_INFO(r13);	\
+-	ld	r4,TI_LOCAL_FLAGS(r3);		\
+-	andi.	r0,r4,_TLF_RUNLATCH;		\
+-	beql	ppc64_runlatch_on_trampoline;	\
+-END_FTR_SECTION_IFSET(CPU_FTR_CTRL)
+-
+ /*
+  * When the idle code in power4_idle puts the CPU into NAP mode,
+  * it has to do so in a loop, and relies on the external interrupt
+@@ -1582,7 +1574,6 @@ EXC_VIRT_END(hardware_interrupt, 0x4500, 0x100)
+ EXC_COMMON_BEGIN(hardware_interrupt_common)
+ 	GEN_COMMON hardware_interrupt
+ 	FINISH_NAP
+-	RUNLATCH_ON
  	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	system_reset_exception
-@@ -1037,14 +1023,6 @@ EXC_COMMON_BEGIN(system_reset_common)
- 	subi	r10,r10,1
- 	sth	r10,PACA_IN_NMI(r13)
- 
--	/*
--	 * Restore soft mask settings.
--	 */
--	ld	r10,RESULT(r1)
--	stb	r10,PACAIRQHAPPENED(r13)
--	ld	r10,SOFTE(r1)
--	stb	r10,PACAIRQSOFTMASK(r13)
--
- 	kuap_kernel_restore r9, r10
- 	EXCEPTION_RESTORE_REGS
- 	RFI_TO_USER_OR_KERNEL
-@@ -1190,30 +1168,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
- 	li	r10,MSR_RI
- 	mtmsrd	r10,1
- 
--	/*
--	 * Set IRQS_ALL_DISABLED and save PACAIRQHAPPENED (see
--	 * system_reset_common)
--	 */
--	li	r10,IRQS_ALL_DISABLED
--	stb	r10,PACAIRQSOFTMASK(r13)
--	lbz	r10,PACAIRQHAPPENED(r13)
--	std	r10,RESULT(r1)
--	ori	r10,r10,PACA_IRQ_HARD_DIS
--	stb	r10,PACAIRQHAPPENED(r13)
--
+ 	bl	do_IRQ
+ 	b	interrupt_return
+@@ -1768,7 +1759,6 @@ EXC_VIRT_END(decrementer, 0x4900, 0x80)
+ EXC_COMMON_BEGIN(decrementer_common)
+ 	GEN_COMMON decrementer
+ 	FINISH_NAP
+-	RUNLATCH_ON
  	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	machine_check_early
- 	std	r3,RESULT(r1)	/* Save result */
- 	ld	r12,_MSR(r1)
+ 	bl	timer_interrupt
+ 	b	interrupt_return
+@@ -1854,7 +1844,6 @@ EXC_VIRT_END(doorbell_super, 0x4a00, 0x100)
+ EXC_COMMON_BEGIN(doorbell_super_common)
+ 	GEN_COMMON doorbell_super
+ 	FINISH_NAP
+-	RUNLATCH_ON
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ #ifdef CONFIG_PPC_DOORBELL
+ 	bl	doorbell_exception
+@@ -2209,7 +2198,6 @@ EXC_COMMON_BEGIN(hmi_exception_early_common)
+ EXC_COMMON_BEGIN(hmi_exception_common)
+ 	GEN_COMMON hmi_exception
+ 	FINISH_NAP
+-	RUNLATCH_ON
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	handle_hmi_exception
+ 	b	interrupt_return
+@@ -2239,7 +2227,6 @@ EXC_VIRT_END(h_doorbell, 0x4e80, 0x20)
+ EXC_COMMON_BEGIN(h_doorbell_common)
+ 	GEN_COMMON h_doorbell
+ 	FINISH_NAP
+-	RUNLATCH_ON
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ #ifdef CONFIG_PPC_DOORBELL
+ 	bl	doorbell_exception
+@@ -2273,7 +2260,6 @@ EXC_VIRT_END(h_virt_irq, 0x4ea0, 0x20)
+ EXC_COMMON_BEGIN(h_virt_irq_common)
+ 	GEN_COMMON h_virt_irq
+ 	FINISH_NAP
+-	RUNLATCH_ON
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	do_IRQ
+ 	b	interrupt_return
+@@ -2320,7 +2306,6 @@ EXC_VIRT_END(performance_monitor, 0x4f00, 0x20)
+ EXC_COMMON_BEGIN(performance_monitor_common)
+ 	GEN_COMMON performance_monitor
+ 	FINISH_NAP
+-	RUNLATCH_ON
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	performance_monitor_exception
+ 	b	interrupt_return
+@@ -3035,9 +3020,6 @@ kvmppc_skip_Hinterrupt:
+ 	 * come here.
+ 	 */
  
--	/*
--	 * Restore soft mask settings.
--	 */
--	ld	r10,RESULT(r1)
--	stb	r10,PACAIRQHAPPENED(r13)
--	ld	r10,SOFTE(r1)
--	stb	r10,PACAIRQSOFTMASK(r13)
+-EXC_COMMON_BEGIN(ppc64_runlatch_on_trampoline)
+-	b	__ppc64_runlatch_on
 -
- #ifdef CONFIG_PPC_P7_NAP
+ USE_FIXED_SECTION(virt_trampolines)
  	/*
- 	 * Check if thread was in power saving mode. We come here when any
-@@ -2815,17 +2774,6 @@ EXC_COMMON_BEGIN(soft_nmi_common)
- 	subi	r1,r1,INT_FRAME_SIZE
- 	__GEN_COMMON_BODY soft_nmi
- 
--	/*
--	 * Set IRQS_ALL_DISABLED and save PACAIRQHAPPENED (see
--	 * system_reset_common)
--	 */
--	li	r10,IRQS_ALL_DISABLED
--	stb	r10,PACAIRQSOFTMASK(r13)
--	lbz	r10,PACAIRQHAPPENED(r13)
--	std	r10,RESULT(r1)
--	ori	r10,r10,PACA_IRQ_HARD_DIS
--	stb	r10,PACAIRQHAPPENED(r13)
--
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	soft_nmi_interrupt
- 
-@@ -2833,14 +2781,6 @@ EXC_COMMON_BEGIN(soft_nmi_common)
- 	li	r9,0
- 	mtmsrd	r9,1
- 
--	/*
--	 * Restore soft mask settings.
--	 */
--	ld	r10,RESULT(r1)
--	stb	r10,PACAIRQHAPPENED(r13)
--	ld	r10,SOFTE(r1)
--	stb	r10,PACAIRQSOFTMASK(r13)
--
- 	kuap_kernel_restore r9, r10
- 	EXCEPTION_RESTORE_REGS hsrr=0
- 	RFI_TO_KERNEL
+ 	 * All code below __end_interrupts is treated as soft-masked. If
 -- 
 2.23.0
 
