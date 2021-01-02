@@ -2,72 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056562E8776
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jan 2021 14:25:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6729F2E882C
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jan 2021 18:56:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D7N1P1qF9zDrR1
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 00:25:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D7V1f6Lj8zDqvT
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 04:56:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
- helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uZ2pYqak; dkim-atps=neutral
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D7LjB1X40zDqpv
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jan 2021 23:26:21 +1100 (AEDT)
-Received: by mail-pf1-x434.google.com with SMTP id 11so13570248pfu.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 Jan 2021 04:26:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=0WP9XYjh4SVM2AwcwuTEABEXwqRFlJZTmdvQDsuGPFg=;
- b=uZ2pYqakBWuWZmFMpEJjo+t/qlWq9nWNeg0NEMq8qOEQ+VLbHq4AHdglO7sfN9l0uT
- iwpDmbAMWvg1gF8mwBmpR6VpVaoGLqWXGp4aGIzINIjQGDdQxCtNGT9Ave/ZVYlcoGda
- KDkHRYW9oero2JmV0fgjFGXF4G9kvttSNA1F0UkF+ONmCGlISat9HmZOjh7ZovqUjHq5
- onclf0cEpekbNen/gMTseA0lH87Zg4W1NhvXYS6W2ohmu2pfoWJlyW/32Lc+72TK25TY
- j99LXaVdmCMpadGX8DhoYnqjUAGtPPM2SzHWfC/Ya+oaBlYU86bPfksh81iKwMJO4Lkx
- OuJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=0WP9XYjh4SVM2AwcwuTEABEXwqRFlJZTmdvQDsuGPFg=;
- b=gU0DV39rTb48GdbuUQXcjwPslIq12+Zt7toorXstwgxXQd61sXTW51/BP4ZwgIFTEm
- anDeObzTEcLGrOM1WTPwlnfimtwOhtSIZ6ftGVHb70WlwwB4ucIr6YEYyuoee58P7CAc
- t6OHyohdaV3Aa3NtArZJGWQwysvGGwdGCkpu60uuP/5fkE/MBhu/5UH0z1wTs/5TP09c
- n0m/LirR5rat6PRsiNAsGqEMpJwefW5Friq92aL8FbBqE4TTVI0y6m+y/MjFWmoH2Xg+
- 5XEMqVqdIfgR38GmFZt/HBzTrgEfzC6zgRvJ9Y1cv7lJFuBadNDcun5ap9c/rWaWjHXB
- W3dA==
-X-Gm-Message-State: AOAM5326GqZ4V71Sx6+y5BbTt2Noc1Tu5dsXrYezm/fqty3qSLOV6CGC
- m4mYo/tGsVBrXJ4yrMuaRp2QPig79tg=
-X-Google-Smtp-Source: ABdhPJwp4r4suKxArKuFflLZfSOlfasQ5TCRblDu5vHRkrvPhWD94Nm9DUBSkppN0JiI1Q8ppFwCyQ==
-X-Received: by 2002:a62:14c4:0:b029:19d:d3f5:c304 with SMTP id
- 187-20020a6214c40000b029019dd3f5c304mr58455047pfu.55.1609590379676; 
- Sat, 02 Jan 2021 04:26:19 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (193-116-97-30.tpgi.com.au. [193.116.97.30])
- by smtp.gmail.com with ESMTPSA id h4sm58501413pgp.8.2021.01.02.04.26.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Jan 2021 04:26:19 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 21/21] powerpc/64s: power4 nap fixup in C
-Date: Sat,  2 Jan 2021 22:25:08 +1000
-Message-Id: <20210102122508.1950592-22-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20210102122508.1950592-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D7TyP2JvszDqtj
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jan 2021 04:53:05 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4D7Ty15p1rz9vBmm;
+ Sat,  2 Jan 2021 18:52:57 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id BC0wL56FylRY; Sat,  2 Jan 2021 18:52:57 +0100 (CET)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4D7Ty14CbZz9vBml;
+ Sat,  2 Jan 2021 18:52:57 +0100 (CET)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id 40671656; Sat,  2 Jan 2021 18:56:30 +0100 (CET)
+Received: from 37.171.162.12 ([37.171.162.12]) by messagerie.c-s.fr (Horde
+ Framework) with HTTP; Sat, 02 Jan 2021 18:56:30 +0100
+Date: Sat, 02 Jan 2021 18:56:30 +0100
+Message-ID: <20210102185630.Horde.GwG0xTTuKDzS6PsMZTUftw1@messagerie.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 02/21] powerpc/64s: move the last of the page fault
+ handling logic to C
 References: <20210102122508.1950592-1-npiggin@gmail.com>
+ <20210102122508.1950592-3-npiggin@gmail.com>
+In-Reply-To: <20210102122508.1950592-3-npiggin@gmail.com>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,223 +58,467 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is no need for this to be in asm, use the new intrrupt entry wrapper.
+Nicholas Piggin <npiggin@gmail.com> a =C3=A9crit=C2=A0:
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/interrupt.h   | 15 +++++++++
- arch/powerpc/include/asm/processor.h   |  1 +
- arch/powerpc/include/asm/thread_info.h |  6 ++++
- arch/powerpc/kernel/exceptions-64s.S   | 45 --------------------------
- arch/powerpc/kernel/idle_book3s.S      |  4 +++
- 5 files changed, 26 insertions(+), 45 deletions(-)
+> The page fault handling still has some complex logic particularly around
+> hash table handling, in asm. Implement this in C instead.
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index 9c16e9a48df6..4e290680f461 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -8,6 +8,16 @@
- #include <asm/ftrace.h>
- #include <asm/runlatch.h>
- 
-+static inline void nap_adjust_return(struct pt_regs *regs)
-+{
-+#ifdef CONFIG_PPC_970_NAP
-+	if (unlikely(test_thread_local_flags(_TLF_NAPPING))) {
-+		clear_thread_local_flags(_TLF_NAPPING);
-+		regs->nip = (unsigned long)power4_idle_nap_return;
-+	}
-+#endif
-+}
-+
- struct interrupt_state {
- #ifdef CONFIG_PPC_BOOK3E_64
- 	enum ctx_state ctx_state;
-@@ -99,6 +109,9 @@ static inline void interrupt_async_exit_prepare(struct pt_regs *regs, struct int
- {
- 	irq_exit();
- 	interrupt_exit_prepare(regs, state);
-+
-+	/* Adjust at exit so the main handler sees the true NIA */
-+	nap_adjust_return(regs);
- }
- 
- struct interrupt_nmi_state {
-@@ -150,6 +163,8 @@ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct inter
- 			radix_enabled() || (mfmsr() & MSR_DR))
- 		nmi_exit();
- 
-+	nap_adjust_return(regs);
-+
- #ifdef CONFIG_PPC64
- 	this_cpu_set_ftrace_enabled(state->ftrace_enabled);
- 
-diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-index 8acc3590c971..eedc3c775141 100644
---- a/arch/powerpc/include/asm/processor.h
-+++ b/arch/powerpc/include/asm/processor.h
-@@ -393,6 +393,7 @@ extern unsigned long isa300_idle_stop_mayloss(unsigned long psscr_val);
- extern unsigned long isa206_idle_insn_mayloss(unsigned long type);
- #ifdef CONFIG_PPC_970_NAP
- extern void power4_idle_nap(void);
-+void power4_idle_nap_return(void);
- #endif
- 
- extern unsigned long cpuidle_disable;
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index 386d576673a1..bf137151100b 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -152,6 +152,12 @@ void arch_setup_new_exec(void);
- 
- #ifndef __ASSEMBLY__
- 
-+static inline void clear_thread_local_flags(unsigned int flags)
-+{
-+	struct thread_info *ti = current_thread_info();
-+	ti->local_flags &= ~flags;
-+}
-+
- static inline bool test_thread_local_flags(unsigned int flags)
- {
- 	struct thread_info *ti = current_thread_info();
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 05a358559274..c3351c9a0a4c 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -692,25 +692,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
- 	ld	r1,GPR1(r1)
- .endm
- 
--/*
-- * When the idle code in power4_idle puts the CPU into NAP mode,
-- * it has to do so in a loop, and relies on the external interrupt
-- * and decrementer interrupt entry code to get it out of the loop.
-- * It sets the _TLF_NAPPING bit in current_thread_info()->local_flags
-- * to signal that it is in the loop and needs help to get out.
-- */
--#ifdef CONFIG_PPC_970_NAP
--#define FINISH_NAP				\
--BEGIN_FTR_SECTION				\
--	ld	r11, PACA_THREAD_INFO(r13);	\
--	ld	r9,TI_LOCAL_FLAGS(r11);		\
--	andi.	r10,r9,_TLF_NAPPING;		\
--	bnel	power4_fixup_nap;		\
--END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
--#else
--#define FINISH_NAP
--#endif
--
- /*
-  * There are a few constraints to be concerned with.
-  * - Real mode exceptions code/data must be located at their physical location.
-@@ -1248,7 +1229,6 @@ EXC_COMMON_BEGIN(machine_check_common)
- 	 */
- 	GEN_COMMON machine_check
- 
--	FINISH_NAP
- 	/* Enable MSR_RI when finished with PACA_EXMC */
- 	li	r10,MSR_RI
- 	mtmsrd 	r10,1
-@@ -1573,7 +1553,6 @@ EXC_VIRT_BEGIN(hardware_interrupt, 0x4500, 0x100)
- EXC_VIRT_END(hardware_interrupt, 0x4500, 0x100)
- EXC_COMMON_BEGIN(hardware_interrupt_common)
- 	GEN_COMMON hardware_interrupt
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_IRQ
- 	b	interrupt_return
-@@ -1758,7 +1737,6 @@ EXC_VIRT_BEGIN(decrementer, 0x4900, 0x80)
- EXC_VIRT_END(decrementer, 0x4900, 0x80)
- EXC_COMMON_BEGIN(decrementer_common)
- 	GEN_COMMON decrementer
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	timer_interrupt
- 	b	interrupt_return
-@@ -1843,7 +1821,6 @@ EXC_VIRT_BEGIN(doorbell_super, 0x4a00, 0x100)
- EXC_VIRT_END(doorbell_super, 0x4a00, 0x100)
- EXC_COMMON_BEGIN(doorbell_super_common)
- 	GEN_COMMON doorbell_super
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- #ifdef CONFIG_PPC_DOORBELL
- 	bl	doorbell_exception
-@@ -2197,7 +2174,6 @@ EXC_COMMON_BEGIN(hmi_exception_early_common)
- 
- EXC_COMMON_BEGIN(hmi_exception_common)
- 	GEN_COMMON hmi_exception
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	handle_hmi_exception
- 	b	interrupt_return
-@@ -2226,7 +2202,6 @@ EXC_VIRT_BEGIN(h_doorbell, 0x4e80, 0x20)
- EXC_VIRT_END(h_doorbell, 0x4e80, 0x20)
- EXC_COMMON_BEGIN(h_doorbell_common)
- 	GEN_COMMON h_doorbell
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- #ifdef CONFIG_PPC_DOORBELL
- 	bl	doorbell_exception
-@@ -2259,7 +2234,6 @@ EXC_VIRT_BEGIN(h_virt_irq, 0x4ea0, 0x20)
- EXC_VIRT_END(h_virt_irq, 0x4ea0, 0x20)
- EXC_COMMON_BEGIN(h_virt_irq_common)
- 	GEN_COMMON h_virt_irq
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_IRQ
- 	b	interrupt_return
-@@ -2305,7 +2279,6 @@ EXC_VIRT_BEGIN(performance_monitor, 0x4f00, 0x20)
- EXC_VIRT_END(performance_monitor, 0x4f00, 0x20)
- EXC_COMMON_BEGIN(performance_monitor_common)
- 	GEN_COMMON performance_monitor
--	FINISH_NAP
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	performance_monitor_exception
- 	b	interrupt_return
-@@ -3037,24 +3010,6 @@ USE_FIXED_SECTION(virt_trampolines)
- __end_interrupts:
- DEFINE_FIXED_SYMBOL(__end_interrupts)
- 
--#ifdef CONFIG_PPC_970_NAP
--	/*
--	 * Called by exception entry code if _TLF_NAPPING was set, this clears
--	 * the NAPPING flag, and redirects the exception exit to
--	 * power4_fixup_nap_return.
--	 */
--	.globl power4_fixup_nap
--EXC_COMMON_BEGIN(power4_fixup_nap)
--	andc	r9,r9,r10
--	std	r9,TI_LOCAL_FLAGS(r11)
--	LOAD_REG_ADDR(r10, power4_idle_nap_return)
--	std	r10,_NIP(r1)
--	blr
--
--power4_idle_nap_return:
--	blr
--#endif
--
- CLOSE_FIXED_SECTION(real_vectors);
- CLOSE_FIXED_SECTION(real_trampolines);
- CLOSE_FIXED_SECTION(virt_vectors);
-diff --git a/arch/powerpc/kernel/idle_book3s.S b/arch/powerpc/kernel/idle_book3s.S
-index 22f249b6f58d..27d2e6a72ec9 100644
---- a/arch/powerpc/kernel/idle_book3s.S
-+++ b/arch/powerpc/kernel/idle_book3s.S
-@@ -201,4 +201,8 @@ _GLOBAL(power4_idle_nap)
- 	mtmsrd	r7
- 	isync
- 	b	1b
-+
-+	.globl power4_idle_nap_return
-+power4_idle_nap_return:
-+	blr
- #endif
--- 
-2.23.0
+Hi,
+
+I'm afk at the moment and unable to look at this in details before one=20=
+=20
+week=20but this looks pretty complexe, especially the churn around=20=20
+___do_page_fault
+Do=20we really need 3 layers of do_page_fault() ?
+
+I think it would likely be more straight forward to just move=20=20
+handle_page_fault()=20to C.
+
+There also seems to be some unrelated changes, like the (msr & MSR_PR)=20=
+=20
+changed=20to user_mode(regs).
+
+Christophe
+
+
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/include/asm/book3s/64/mmu-hash.h |   1 +
+>  arch/powerpc/kernel/exceptions-64s.S          | 131 +++---------------
+>  arch/powerpc/mm/book3s64/hash_utils.c         |  77 ++++++----
+>  arch/powerpc/mm/fault.c                       |  59 ++++++--
+>  4 files changed, 119 insertions(+), 149 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/book3s/64/mmu-hash.h=20=20
+>=20b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+> index 066b1d34c7bc..60a669379aa0 100644
+> --- a/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+> +++ b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+> @@ -454,6 +454,7 @@ static inline unsigned long hpt_hash(unsigned long vp=
+n,
+>  #define HPTE_NOHPTE_UPDATE	0x2
+>  #define HPTE_USE_KERNEL_KEY	0x4
+>
+> +int do_hash_fault(struct pt_regs *regs, unsigned long ea, unsigned=20=20
+>=20long dsisr);
+>  extern int __hash_page_4K(unsigned long ea, unsigned long access,
+>  			  unsigned long vsid, pte_t *ptep, unsigned long trap,
+>  			  unsigned long flags, int ssize, int subpage_prot);
+> diff --git a/arch/powerpc/kernel/exceptions-64s.S=20=20
+>=20b/arch/powerpc/kernel/exceptions-64s.S
+> index e02ad6fefa46..bda91c79b261 100644
+> --- a/arch/powerpc/kernel/exceptions-64s.S
+> +++ b/arch/powerpc/kernel/exceptions-64s.S
+> @@ -1401,14 +1401,15 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
+>   *
+>   * Handling:
+>   * - Hash MMU
+> - *   Go to do_hash_page first to see if the HPT can be filled from=20=20
+>=20an entry in
+> - *   the Linux page table. Hash faults can hit in kernel mode in a fairl=
+y
+> + *   Go to do_hash_fault, which attempts to fill the HPT from an=20=20
+>=20entry in the
+> + *   Linux page table. Hash faults can hit in kernel mode in a fairly
+>   *   arbitrary state (e.g., interrupts disabled, locks held) when access=
+ing
+>   *   "non-bolted" regions, e.g., vmalloc space. However these=20=20
+>=20should always be
+> - *   backed by Linux page tables.
+> + *   backed by Linux page table entries.
+>   *
+> - *   If none is found, do a Linux page fault. Linux page faults can=20=
+=20
+>=20happen in
+> - *   kernel mode due to user copy operations of course.
+> + *   If no entry is found the Linux page fault handler is invoked (by
+> + *   do_hash_fault). Linux page faults can happen in kernel mode due to =
+user
+> + *   copy operations of course.
+>   *
+>   *   KVM: The KVM HDSI handler may perform a load with MSR[DR]=3D1 in gu=
+est
+>   *   MMU context, which may cause a DSI in the host, which must go to th=
+e
+> @@ -1439,13 +1440,17 @@ EXC_COMMON_BEGIN(data_access_common)
+>  	GEN_COMMON data_access
+>  	ld	r4,_DAR(r1)
+>  	ld	r5,_DSISR(r1)
+> +	addi	r3,r1,STACK_FRAME_OVERHEAD
+>  BEGIN_MMU_FTR_SECTION
+> -	ld	r6,_MSR(r1)
+> -	li	r3,0x300
+> -	b	do_hash_page		/* Try to handle as hpte fault */
+> +	bl	do_hash_fault
+>  MMU_FTR_SECTION_ELSE
+> -	b	handle_page_fault
+> +	bl	do_page_fault
+>  ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+> +        cmpdi	r3,0
+> +	beq+	interrupt_return
+> +	/* We need to restore NVGPRS */
+> +	REST_NVGPRS(r1)
+> +	b       interrupt_return
+>
+>  	GEN_KVM data_access
+>
+> @@ -1540,13 +1545,17 @@ EXC_COMMON_BEGIN(instruction_access_common)
+>  	GEN_COMMON instruction_access
+>  	ld	r4,_DAR(r1)
+>  	ld	r5,_DSISR(r1)
+> +	addi	r3,r1,STACK_FRAME_OVERHEAD
+>  BEGIN_MMU_FTR_SECTION
+> -	ld      r6,_MSR(r1)
+> -	li	r3,0x400
+> -	b	do_hash_page		/* Try to handle as hpte fault */
+> +	bl	do_hash_fault
+>  MMU_FTR_SECTION_ELSE
+> -	b	handle_page_fault
+> +	bl	do_page_fault
+>  ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+> +        cmpdi	r3,0
+> +	beq+	interrupt_return
+> +	/* We need to restore NVGPRS */
+> +	REST_NVGPRS(r1)
+> +	b       interrupt_return
+>
+>  	GEN_KVM instruction_access
+>
+> @@ -3202,99 +3211,3 @@ disable_machine_check:
+>  	RFI_TO_KERNEL
+>  1:	mtlr	r0
+>  	blr
+> -
+> -/*
+> - * Hash table stuff
+> - */
+> -	.balign	IFETCH_ALIGN_BYTES
+> -do_hash_page:
+> -#ifdef CONFIG_PPC_BOOK3S_64
+> -	lis	r0,(DSISR_BAD_FAULT_64S | DSISR_DABRMATCH | DSISR_KEYFAULT)@h
+> -	ori	r0,r0,DSISR_BAD_FAULT_64S@l
+> -	and.	r0,r5,r0		/* weird error? */
+> -	bne-	handle_page_fault	/* if not, try to insert a HPTE */
+> -
+> -	/*
+> -	 * If we are in an "NMI" (e.g., an interrupt when soft-disabled), then
+> -	 * don't call hash_page, just fail the fault. This is required to
+> -	 * prevent re-entrancy problems in the hash code, namely perf
+> -	 * interrupts hitting while something holds H_PAGE_BUSY, and taking a
+> -	 * hash fault. See the comment in hash_preload().
+> -	 */
+> -	ld	r11, PACA_THREAD_INFO(r13)
+> -	lwz	r0,TI_PREEMPT(r11)
+> -	andis.	r0,r0,NMI_MASK@h
+> -	bne	77f
+> -
+> -	/*
+> -	 * r3 contains the trap number
+> -	 * r4 contains the faulting address
+> -	 * r5 contains dsisr
+> -	 * r6 msr
+> -	 *
+> -	 * at return r3 =3D 0 for success, 1 for page fault, negative for error
+> -	 */
+> -	bl	__hash_page		/* build HPTE if possible */
+> -        cmpdi	r3,0			/* see if __hash_page succeeded */
+> -
+> -	/* Success */
+> -	beq	interrupt_return	/* Return from exception on success */
+> -
+> -	/* Error */
+> -	blt-	13f
+> -
+> -	/* Reload DAR/DSISR into r4/r5 for the DABR check below */
+> -	ld	r4,_DAR(r1)
+> -	ld      r5,_DSISR(r1)
+> -#endif /* CONFIG_PPC_BOOK3S_64 */
+> -
+> -/* Here we have a page fault that hash_page can't handle. */
+> -handle_page_fault:
+> -11:	andis.  r0,r5,DSISR_DABRMATCH@h
+> -	bne-    handle_dabr_fault
+> -	addi	r3,r1,STACK_FRAME_OVERHEAD
+> -	bl	do_page_fault
+> -	cmpdi	r3,0
+> -	beq+	interrupt_return
+> -	mr	r5,r3
+> -	addi	r3,r1,STACK_FRAME_OVERHEAD
+> -	ld	r4,_DAR(r1)
+> -	bl	__bad_page_fault
+> -	b	interrupt_return
+> -
+> -/* We have a data breakpoint exception - handle it */
+> -handle_dabr_fault:
+> -	ld      r4,_DAR(r1)
+> -	ld      r5,_DSISR(r1)
+> -	addi    r3,r1,STACK_FRAME_OVERHEAD
+> -	bl      do_break
+> -	/*
+> -	 * do_break() may have changed the NV GPRS while handling a breakpoint.
+> -	 * If so, we need to restore them with their updated values.
+> -	 */
+> -	REST_NVGPRS(r1)
+> -	b       interrupt_return
+> -
+> -
+> -#ifdef CONFIG_PPC_BOOK3S_64
+> -/* We have a page fault that hash_page could handle but HV refused
+> - * the PTE insertion
+> - */
+> -13:	mr	r5,r3
+> -	addi	r3,r1,STACK_FRAME_OVERHEAD
+> -	ld	r4,_DAR(r1)
+> -	bl	low_hash_fault
+> -	b	interrupt_return
+> -#endif
+> -
+> -/*
+> - * We come here as a result of a DSI at a point where we don't want
+> - * to call hash_page, such as when we are accessing memory (possibly
+> - * user memory) inside a PMU interrupt that occurred while interrupts
+> - * were soft-disabled.  We want to invoke the exception handler for
+> - * the access, or panic if there isn't a handler.
+> - */
+> -77:	addi	r3,r1,STACK_FRAME_OVERHEAD
+> -	li	r5,SIGSEGV
+> -	bl	bad_page_fault
+> -	b	interrupt_return
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c=20=20
+>=20b/arch/powerpc/mm/book3s64/hash_utils.c
+> index 73b06adb6eeb..5a61182ddf75 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -1512,16 +1512,40 @@ int hash_page(unsigned long ea, unsigned=20=20
+>=20long access, unsigned long trap,
+>  }
+>  EXPORT_SYMBOL_GPL(hash_page);
+>
+> -int __hash_page(unsigned long trap, unsigned long ea, unsigned long dsis=
+r,
+> -		unsigned long msr)
+> +int do_hash_fault(struct pt_regs *regs, unsigned long ea, unsigned=20=20
+>=20long dsisr)
+>  {
+>  	unsigned long access =3D _PAGE_PRESENT | _PAGE_READ;
+>  	unsigned long flags =3D 0;
+> -	struct mm_struct *mm =3D current->mm;
+> -	unsigned int region_id =3D get_region_id(ea);
+> +	struct mm_struct *mm;
+> +	unsigned int region_id;
+> +	int err;
+> +
+> +	if (unlikely(dsisr & (DSISR_BAD_FAULT_64S | DSISR_DABRMATCH |=20=20
+>=20DSISR_KEYFAULT)))
+> +		goto page_fault;
+> +
+> +	/*
+> +	 * If we are in an "NMI" (e.g., an interrupt when soft-disabled), then
+> +	 * don't call hash_page, just fail the fault. This is required to
+> +	 * prevent re-entrancy problems in the hash code, namely perf
+> +	 * interrupts hitting while something holds H_PAGE_BUSY, and taking a
+> +	 * hash fault. See the comment in hash_preload().
+> +	 *
+> +	 * We come here as a result of a DSI at a point where we don't want
+> +	 * to call hash_page, such as when we are accessing memory (possibly
+> +	 * user memory) inside a PMU interrupt that occurred while interrupts
+> +	 * were soft-disabled.  We want to invoke the exception handler for
+> +	 * the access, or panic if there isn't a handler.
+> +	 */
+> +	if (unlikely(in_nmi())) {
+> +		bad_page_fault(regs, ea, SIGSEGV);
+> +		return 0;
+> +	}
+>
+> +	region_id =3D get_region_id(ea);
+>  	if ((region_id =3D=3D VMALLOC_REGION_ID) || (region_id =3D=3D IO_REGION=
+_ID))
+>  		mm =3D &init_mm;
+> +	else
+> +		mm =3D current->mm;
+>
+>  	if (dsisr & DSISR_NOHPTE)
+>  		flags |=3D HPTE_NOHPTE_UPDATE;
+> @@ -1537,13 +1561,31 @@ int __hash_page(unsigned long trap, unsigned=20=
+=20
+>=20long ea, unsigned long dsisr,
+>  	 * 2) user space access kernel space.
+>  	 */
+>  	access |=3D _PAGE_PRIVILEGED;
+> -	if ((msr & MSR_PR) || (region_id =3D=3D USER_REGION_ID))
+> +	if (user_mode(regs) || (region_id =3D=3D USER_REGION_ID))
+>  		access &=3D ~_PAGE_PRIVILEGED;
+>
+> -	if (trap =3D=3D 0x400)
+> +	if (regs->trap =3D=3D 0x400)
+>  		access |=3D _PAGE_EXEC;
+>
+> -	return hash_page_mm(mm, ea, access, trap, flags);
+> +	err =3D hash_page_mm(mm, ea, access, regs->trap, flags);
+> +	if (unlikely(err < 0)) {
+> +		// failed to instert a hash PTE due to an hypervisor error
+> +		if (user_mode(regs)) {
+> +			if (IS_ENABLED(CONFIG_PPC_SUBPAGE_PROT) && err =3D=3D -2)
+> +				_exception(SIGSEGV, regs, SEGV_ACCERR, ea);
+> +			else
+> +				_exception(SIGBUS, regs, BUS_ADRERR, ea);
+> +		} else {
+> +			bad_page_fault(regs, ea, SIGBUS);
+> +		}
+> +		err =3D 0;
+> +
+> +	} else if (err) {
+> +page_fault:
+> +		err =3D do_page_fault(regs, ea, dsisr);
+> +	}
+> +
+> +	return err;
+>  }
+>
+>  #ifdef CONFIG_PPC_MM_SLICES
+> @@ -1843,27 +1885,6 @@ void flush_hash_range(unsigned long number, int lo=
+cal)
+>  	}
+>  }
+>
+> -/*
+> - * low_hash_fault is called when we the low level hash code failed
+> - * to instert a PTE due to an hypervisor error
+> - */
+> -void low_hash_fault(struct pt_regs *regs, unsigned long address, int rc)
+> -{
+> -	enum ctx_state prev_state =3D exception_enter();
+> -
+> -	if (user_mode(regs)) {
+> -#ifdef CONFIG_PPC_SUBPAGE_PROT
+> -		if (rc =3D=3D -2)
+> -			_exception(SIGSEGV, regs, SEGV_ACCERR, address);
+> -		else
+> -#endif
+> -			_exception(SIGBUS, regs, BUS_ADRERR, address);
+> -	} else
+> -		bad_page_fault(regs, address, SIGBUS);
+> -
+> -	exception_exit(prev_state);
+> -}
+> -
+>  long hpte_insert_repeating(unsigned long hash, unsigned long vpn,
+>  			   unsigned long pa, unsigned long rflags,
+>  			   unsigned long vflags, int psize, int ssize)
+> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+> index 8961b44f350c..6af4516d1c50 100644
+> --- a/arch/powerpc/mm/fault.c
+> +++ b/arch/powerpc/mm/fault.c
+> @@ -369,7 +369,9 @@ static void sanity_check_fault(bool is_write,=20=20
+>=20bool is_user,
+>  #define page_fault_is_bad(__err)	(0)
+>  #elif defined(CONFIG_PPC_8xx)
+>  #define page_fault_is_bad(__err)	((__err) & DSISR_NOEXEC_OR_G)
+> -#elif defined(CONFIG_PPC64)
+> +#elif defined(CONFIG_PPC_BOOK3S_64)
+> +#define page_fault_is_bad(__err)	((__err) & (DSISR_BAD_FAULT_64S |=20=20
+>=20DSISR_DABRMATCH))
+> +#elif defined(CONFIG_PPC_BOOK3E_64)
+>  #define page_fault_is_bad(__err)	((__err) & DSISR_BAD_FAULT_64S)
+>  #else
+>  #define page_fault_is_bad(__err)	((__err) & DSISR_BAD_FAULT_32S)
+> @@ -388,7 +390,7 @@ static void sanity_check_fault(bool is_write,=20=20
+>=20bool is_user,
+>   * The return value is 0 if the fault was handled, or the signal
+>   * number if this is a kernel fault that can't be handled here.
+>   */
+> -static int __do_page_fault(struct pt_regs *regs, unsigned long address,
+> +static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+>  			   unsigned long error_code)
+>  {
+>  	struct vm_area_struct * vma;
+> @@ -404,6 +406,9 @@ static int __do_page_fault(struct pt_regs *regs,=20=
+=20
+>=20unsigned long address,
+>  		return 0;
+>
+>  	if (unlikely(page_fault_is_bad(error_code))) {
+> +		if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && (error_code & DSISR_DABRMATCH)=
+)
+> +			return -1;
+> +
+>  		if (is_user) {
+>  			_exception(SIGBUS, regs, BUS_OBJERR, address);
+>  			return 0;
+> @@ -540,25 +545,55 @@ static int __do_page_fault(struct pt_regs=20=20
+>=20*regs, unsigned long address,
+>
+>  	return 0;
+>  }
+> +NOKPROBE_SYMBOL(___do_page_fault);
+> +
+> +static int __do_page_fault(struct pt_regs *regs, unsigned long address,
+> +		  unsigned long error_code)
+> +{
+> +	int err;
+> +
+> +	err =3D ___do_page_fault(regs, address, error_code);
+> +	if (unlikely(err)) {
+> +		const struct exception_table_entry *entry;
+> +
+> +		entry =3D search_exception_tables(regs->nip);
+> +		if (likely(entry)) {
+> +			instruction_pointer_set(regs, extable_fixup(entry));
+> +			err =3D 0;
+> +		}
+> +	}
+> +
+> +#ifdef CONFIG_PPC_BOOK3S_64
+> +	/* 32 and 64e handle these errors in asm */
+> +	if (unlikely(err)) {
+> +		if (err > 0) {
+> +			__bad_page_fault(regs, address, err);
+> +			err =3D 0;
+> +		} else {
+> +			/*
+> +			 * do_break() may change NV GPRS while handling the
+> +			 * breakpoint. Return -ve to caller to do that.
+> +			 */
+> +			do_break(regs, address, error_code);
+> +		}
+> +	}
+> +#endif
+> +
+> +	return err;
+> +}
+>  NOKPROBE_SYMBOL(__do_page_fault);
+>
+>  int do_page_fault(struct pt_regs *regs, unsigned long address,
+>  		  unsigned long error_code)
+>  {
+> -	const struct exception_table_entry *entry;
+>  	enum ctx_state prev_state =3D exception_enter();
+> -	int rc =3D __do_page_fault(regs, address, error_code);
+> -	exception_exit(prev_state);
+> -	if (likely(!rc))
+> -		return 0;
+> +	int err;
+>
+> -	entry =3D search_exception_tables(regs->nip);
+> -	if (unlikely(!entry))
+> -		return rc;
+> +	err =3D __do_page_fault(regs, address, error_code);
+>
+> -	instruction_pointer_set(regs, extable_fixup(entry));
+> +	exception_exit(prev_state);
+>
+> -	return 0;
+> +	return err;
+>  }
+>  NOKPROBE_SYMBOL(do_page_fault);
+>
+> --
+> 2.23.0
+
 
