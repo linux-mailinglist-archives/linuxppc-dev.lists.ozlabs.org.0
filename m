@@ -1,62 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45372E89DE
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 02:37:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FC32E8B78
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 10:19:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D7hGY1ZbFzDqtj
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 12:37:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D7tVc2fMDzDqDs
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 20:19:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=protonmail.com (client-ip=185.70.41.103;
- helo=mail-41103.protonmail.ch; envelope-from=skirmisher@protonmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c;
+ helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
- header.from=protonmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256
- header.s=protonmail header.b=B1+8CTe8; 
- dkim-atps=neutral
-Received: from mail-41103.protonmail.ch (mail-41103.protonmail.ch
- [185.70.41.103])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=D/NIdKBS; dkim-atps=neutral
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
+ [IPv6:2607:f8b0:4864:20::62c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D7hDC04jjzDqrT
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jan 2021 12:35:55 +1100 (AEDT)
-Received: from mail-03.mail-europe.com (mail-03.mail-europe.com
- [91.134.188.129])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail-41103.protonmail.ch (Postfix) with ESMTPS id DCD2D20025CC
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jan 2021 01:35:51 +0000 (UTC)
-Authentication-Results: mail-41103.protonmail.ch;
- dkim=pass (1024-bit key) header.d=protonmail.com header.i=@protonmail.com
- header.b="B1+8CTe8"
-Date: Sun, 03 Jan 2021 01:35:30 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
- s=protonmail; t=1609637739;
- bh=qZNZ9nBES3QJsrohNACQf4zL9RxQEkRcEfIjqiJcAco=;
- h=Date:To:From:Cc:Reply-To:Subject:From;
- b=B1+8CTe8rR69Qdg/mP7johLk38DxqYFEk/KnYqmtkMlETWIp7n476mbNRK6XWtCJO
- Ez2t0B16ysqHFW5PwRTymprnmFq/j/KclpTnY70pUkmzko8JpHKHMGare8Fw2hHZy8
- YqTI9dVDwHOtJmnX7c82Hu/ebZw5f3w6nDgrlDzU=
-To: linuxppc-dev@lists.ozlabs.org
-From: Will Springer <skirmisher@protonmail.com>
-Subject: [PATCH 2/2] powerpc/compat_sys: swap hi/lo parts of 64-bit syscall
- args in LE mode
-Message-ID: <2765111.e9J7NaK4W3@sheen>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D7tSv0kZ3zDqDc
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jan 2021 20:17:30 +1100 (AEDT)
+Received: by mail-pl1-x62c.google.com with SMTP id s15so12832869plr.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Jan 2021 01:17:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=CBNRAqcJ6O6vwf7NUgGTfHkjviEakxNQ01Fv3RvUaHA=;
+ b=D/NIdKBSGNS9ZBOGRDP6SDeUoVuS2dvc/a6LnEknoHAZF5kdZ7+L6QYkiWu1u6r00O
+ aBR+u6iSVM2uuccPoHTOQHq8/H126oCjk/dRAVdmXuIygsMHyHiG66yMZQCGI1+rACsh
+ 3Aqk/XOIHPKjMULnA68IPJ640jos1I2fYDA4288pQfDGi7STIe0rdttxCKUeOIq10BOL
+ rXXGGHdiKtPwntFSRWU9mZB1weG/1Xx3mOnnYZ8MRlD4d72uSlU6baRYnEFtpuIY8Qmj
+ uwSvUQZYUHetCGBnF/ORnLEmcqMZvYZTgvhJkw3zA6PWKNY5ne9nIQwVoj7+RfPgSngo
+ rkRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=CBNRAqcJ6O6vwf7NUgGTfHkjviEakxNQ01Fv3RvUaHA=;
+ b=SpSWe2wnhG7P9yeutFKdNTRZqjYtRJ0EvoxR+pQf+lLXXvn3zeZ1yofH6K8S5B/iDZ
+ xwpaGW2pMXOJZ0m0lIkD5IvvSzHmHoUQpG+tuZ1lgDeBPNrIgutodwPgSwuPjmau3Tni
+ QCUHrlw1T15RoVEKdA6FgdXVAIihzvPU2+hx04ISQxkl9RaEkZXk7yRy4xDVzaaFDWfv
+ XYfRqhkJ9SmtRgJ5t7Uaf9t+a+6Q3IClb3QMqs/7/7xaBw4UeOsSf3g+NSl5cjrsRBqK
+ knjUrtxy8yCUgBbuoDvzsG+fN+DahsYSdz7xWqP0ogci9cu/5AQhFovivg6ge/ynNV5h
+ sMYQ==
+X-Gm-Message-State: AOAM533Rg2pyZ0MbxMXzN8xEPugzAXOL8oVqTcuy4+0lEZXP2VHaY2Nf
+ 4UaC0Kw+TW9UG1GNtIJK+zQ=
+X-Google-Smtp-Source: ABdhPJx5KyywU5QZ2U+ginjxxFqYYarqCdDkDcYuvqZkWBt95aFAkqtKK1nuU4x2RPiL0Bvm29fwzg==
+X-Received: by 2002:a17:90a:4a4:: with SMTP id
+ g33mr24180760pjg.221.1609665447289; 
+ Sun, 03 Jan 2021 01:17:27 -0800 (PST)
+Received: from localhost (193-116-97-30.tpgi.com.au. [193.116.97.30])
+ by smtp.gmail.com with ESMTPSA id z3sm37209604pgs.61.2021.01.03.01.17.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 03 Jan 2021 01:17:26 -0800 (PST)
+Date: Sun, 03 Jan 2021 19:17:20 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 02/21] powerpc/64s: move the last of the page fault
+ handling logic to C
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20210102122508.1950592-1-npiggin@gmail.com>
+ <20210102122508.1950592-3-npiggin@gmail.com>
+ <20210102185630.Horde.GwG0xTTuKDzS6PsMZTUftw1@messagerie.c-s.fr>
+In-Reply-To: <20210102185630.Horde.GwG0xTTuKDzS6PsMZTUftw1@messagerie.c-s.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Message-Id: <1609663625.fcccd2vjjf.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
- DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
- autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
- mailout.protonmail.ch
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,131 +82,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Will Springer <skirmisher@protonmail.com>
-Cc: eerykitty@gmail.com, daniel@octaforge.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Swap upper/lower 32 bits for 64-bit compat syscalls, conditioned on
-endianness. This is modeled after the same functionality in
-arch/mips/kernel/linux32.c.
+Excerpts from Christophe Leroy's message of January 3, 2021 3:56 am:
+> Nicholas Piggin <npiggin@gmail.com> a =C3=A9crit=C2=A0:
+>=20
+>> The page fault handling still has some complex logic particularly around
+>> hash table handling, in asm. Implement this in C instead.
+>=20
+> Hi,
+>=20
+> I'm afk at the moment and unable to look at this in details before one =20
+> week but this looks pretty complexe, especially the churn around =20
+> ___do_page_fault
+> Do we really need 3 layers of do_page_fault() ?
 
-This fixes compat_sys on ppc64le, when called by 32-bit little-endian
-processes.
+Actually it doesn't, patch 10 wants it. I can move it to there at least
+which should make this a bit less churn.
 
-Tested with `file /bin/bash` (pread64) and `truncate -s 5G test`
-(ftruncate64).
+It's convenient because lots of return paths in __do_page_fault, but I=20
+could try convert that to a `goto out` style.
 
-Signed-off-by: Will Springer <skirmisher@protonmail.com>
----
- arch/powerpc/kernel/sys_ppc32.c | 49 +++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 21 deletions(-)
+> I think it would likely be more straight forward to just move =20
+> handle_page_fault() to C.
 
-diff --git a/arch/powerpc/kernel/sys_ppc32.c b/arch/powerpc/kernel/sys_ppc3=
-2.c
-index d36c6391eaf5..16ff0399a257 100644
---- a/arch/powerpc/kernel/sys_ppc32.c
-+++ b/arch/powerpc/kernel/sys_ppc32.c
-@@ -59,57 +59,64 @@ unsigned long compat_sys_mmap2(unsigned long addr, size=
-_t len,
- /*=20
-  * long long munging:
-  * The 32 bit ABI passes long longs in an odd even register pair.
-+ * High and low parts are swapped depending on endian mode,
-+ * so define a macro (similar to mips linux32) to handle that.
-  */
-+#ifdef __LITTLE_ENDIAN__
-+#define merge_64(low, high) ((u64)high << 32) | low
-+#else
-+#define merge_64(high, low) ((u64)high << 32) | low
-+#endif
-=20
- compat_ssize_t compat_sys_pread64(unsigned int fd, char __user *ubuf, comp=
-at_size_t count,
--=09=09=09     u32 reg6, u32 poshi, u32 poslo)
-+=09=09=09     u32 reg6, u32 pos1, u32 pos2)
- {
--=09return ksys_pread64(fd, ubuf, count, ((loff_t)poshi << 32) | poslo);
-+=09return ksys_pread64(fd, ubuf, count, merge_64(pos1, pos2));
- }
-=20
- compat_ssize_t compat_sys_pwrite64(unsigned int fd, const char __user *ubu=
-f, compat_size_t count,
--=09=09=09      u32 reg6, u32 poshi, u32 poslo)
-+=09=09=09      u32 reg6, u32 pos1, u32 pos2)
- {
--=09return ksys_pwrite64(fd, ubuf, count, ((loff_t)poshi << 32) | poslo);
-+=09return ksys_pwrite64(fd, ubuf, count, merge_64(pos1, pos2));
- }
-=20
--compat_ssize_t compat_sys_readahead(int fd, u32 r4, u32 offhi, u32 offlo, =
-u32 count)
-+compat_ssize_t compat_sys_readahead(int fd, u32 r4, u32 offset1, u32 offse=
-t2, u32 count)
- {
--=09return ksys_readahead(fd, ((loff_t)offhi << 32) | offlo, count);
-+=09return ksys_readahead(fd, merge_64(offset1, offset2), count);
- }
-=20
- asmlinkage int compat_sys_truncate64(const char __user * path, u32 reg4,
--=09=09=09=09unsigned long high, unsigned long low)
-+=09=09=09=09unsigned long len1, unsigned long len2)
- {
--=09return ksys_truncate(path, (high << 32) | low);
-+=09return ksys_truncate(path, merge_64(len1, len2));
- }
-=20
--asmlinkage long compat_sys_fallocate(int fd, int mode, u32 offhi, u32 offl=
-o,
--=09=09=09=09     u32 lenhi, u32 lenlo)
-+asmlinkage long compat_sys_fallocate(int fd, int mode, u32 offset1, u32 of=
-fset2,
-+=09=09=09=09     u32 len1, u32 len2)
- {
--=09return ksys_fallocate(fd, mode, ((loff_t)offhi << 32) | offlo,
--=09=09=09     ((loff_t)lenhi << 32) | lenlo);
-+=09return ksys_fallocate(fd, mode, ((loff_t)offset1 << 32) | offset2,
-+=09=09=09     merge_64(len1, len2));
- }
-=20
--asmlinkage int compat_sys_ftruncate64(unsigned int fd, u32 reg4, unsigned =
-long high,
--=09=09=09=09 unsigned long low)
-+asmlinkage int compat_sys_ftruncate64(unsigned int fd, u32 reg4, unsigned =
-long len1,
-+=09=09=09=09 unsigned long len2)
- {
--=09return ksys_ftruncate(fd, (high << 32) | low);
-+=09return ksys_ftruncate(fd, merge_64(len1, len2));
- }
-=20
--long ppc32_fadvise64(int fd, u32 unused, u32 offset_high, u32 offset_low,
-+long ppc32_fadvise64(int fd, u32 unused, u32 offset1, u32 offset2,
- =09=09     size_t len, int advice)
- {
--=09return ksys_fadvise64_64(fd, (u64)offset_high << 32 | offset_low, len,
-+=09return ksys_fadvise64_64(fd, merge_64(offset1, offset2), len,
- =09=09=09=09 advice);
- }
-=20
- asmlinkage long compat_sys_sync_file_range2(int fd, unsigned int flags,
--=09=09=09=09   unsigned offset_hi, unsigned offset_lo,
--=09=09=09=09   unsigned nbytes_hi, unsigned nbytes_lo)
-+=09=09=09=09   unsigned offset1, unsigned offset2,
-+=09=09=09=09   unsigned nbytes1, unsigned nbytes2)
- {
--=09loff_t offset =3D ((loff_t)offset_hi << 32) | offset_lo;
--=09loff_t nbytes =3D ((loff_t)nbytes_hi << 32) | nbytes_lo;
-+=09loff_t offset =3D merge_64(offset1, offset2);
-+=09loff_t nbytes =3D merge_64(nbytes1, nbytes2);
-=20
- =09return ksys_sync_file_range(fd, offset, nbytes, flags);
- }
---=20
-2.29.2
+The hash fault stuff makes things work better this way. Perhaps if I can=20
+get to the bottom of the context tracking in the hash fault (I think we
+perhaps should avoid it), then it could go back to a common code path.
 
+> There also seems to be some unrelated changes, like the (msr & MSR_PR) =20
+> changed to user_mode(regs).
 
+That's part of making it callable from asm and the radix vs hash
+prototypes the same so there are no added complexity in the asm:
 
+>> @@ -1439,13 +1440,17 @@ EXC_COMMON_BEGIN(data_access_common)
+>>  	GEN_COMMON data_access
+>>  	ld	r4,_DAR(r1)
+>>  	ld	r5,_DSISR(r1)
+>> +	addi	r3,r1,STACK_FRAME_OVERHEAD
+>>  BEGIN_MMU_FTR_SECTION
+>> -	ld	r6,_MSR(r1)
+>> -	li	r3,0x300
+>> -	b	do_hash_page		/* Try to handle as hpte fault */
+>> +	bl	do_hash_fault
+>>  MMU_FTR_SECTION_ELSE
+>> -	b	handle_page_fault
+>> +	bl	do_page_fault
+>>  ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
 
+I'll see if anything can be done to move some such changes ahead.
 
+Thanks,
+Nick
