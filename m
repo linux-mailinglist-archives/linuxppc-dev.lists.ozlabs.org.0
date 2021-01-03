@@ -1,68 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537BF2E8869
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jan 2021 21:14:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760D22E89DC
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 02:34:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D7Y5M4wfVzDqtr
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 07:14:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D7hBK3FsPzDqv2
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 12:34:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32d;
- helo=mail-wm1-x32d.google.com; envelope-from=arielmarcovitch@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=OqTDsRn4; dkim-atps=neutral
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com
- [IPv6:2a00:1450:4864:20::32d])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D7Y331xdtzDqss
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jan 2021 07:12:29 +1100 (AEDT)
-Received: by mail-wm1-x32d.google.com with SMTP id v14so13582637wml.1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 Jan 2021 12:12:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=QUB4+4d1LDuvfodpASBj+IEX3GafEWaRMquf7qx7cRs=;
- b=OqTDsRn4oML0wLkk1QCLGIRyCp4OOlaZzpkr28FjjsuARS1LNhgAufItGJP/3AfynU
- 5KQJoIsIMXNYsk3FgMHtSz8odKgz0wxAcbd1naGdDS7p3A+9uBxeMbf2kqxKX9pH7PEf
- NarlxHv6F9gE8bpCWidZJ/Ffwxjc2FYc28xMSMKVQD/lasEwWC0tb/SMKJh9sAZUO372
- RCu8uocVyeaEM7jR+3oL7E8v7uPYgsrkHstpy9aH+RC9q8tofULPk0QnDRnk+HH+kZjd
- UwDF/LWmi69M+j3eY1VSWRCDxi7Ms4xInlEKeAoB0KeTcidyqC7smvNpxsC7nWE6AALI
- Cx6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=QUB4+4d1LDuvfodpASBj+IEX3GafEWaRMquf7qx7cRs=;
- b=guqm5JwpkINyG1M51cTZWtBzySPTW6zsHHeKOjOEK7KTqni9IjS6GtnjmVJP9PZMeQ
- qTRZM2XSxLcTS8vuv5SPz+nbtPUXuMNMqTRu8KCX+93t/CZsPu03Ac70xrw9zj/FHIcu
- wwdRQPBEJgu3/jC+yiGIConv6DnyuFb+FHDX3ZUcouOM9UiyLdTdyWWJQrMVYZIEPnKf
- K6QVL+vIJEeXH2q7a5i/d0nvhabd37EQttYL3a1xn81lfBnT2dxAVQcoGjkJnumEVtMg
- jdNLV5FvObdiNljPWoAKTspqvNgHoquo6aVL9PKBcw7f8Zwj2TlNryeMVlU3pAX0zpFp
- sJVA==
-X-Gm-Message-State: AOAM531gc38vlmyR5yS9GZS/IEeSm5Lndy2myIM+hnPbTqIDWn14h5Bi
- cIv9wWRK1z4iRynUU/0y8P4=
-X-Google-Smtp-Source: ABdhPJwgK6UuqAY6qoQQUSAP+SFTqQPtExweuUv2K2cP05/4Km2aJ9YB2hQvBPPO0xTrg8NgKXSIKQ==
-X-Received: by 2002:a7b:c4c7:: with SMTP id g7mr20838226wmk.29.1609618344134; 
- Sat, 02 Jan 2021 12:12:24 -0800 (PST)
-Received: from localhost.localdomain (bzq-109-64-2-78.red.bezeqint.net.
- [109.64.2.78])
- by smtp.gmail.com with ESMTPSA id x18sm95692603wrg.55.2021.01.02.12.12.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Jan 2021 12:12:23 -0800 (PST)
-From: Ariel Marcovitch <arielmarcovitch@gmail.com>
-X-Google-Original-From: Ariel Marcovitch <ariel.marcovitch@gmail.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc: fix alignment bug whithin the init sections
-Date: Sat,  2 Jan 2021 22:11:56 +0200
-Message-Id: <20210102201156.10805-1-ariel.marcovitch@gmail.com>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D7h8m1SjZzDqDq
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jan 2021 12:32:56 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=protonmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256
+ header.s=protonmail header.b=J/2WWRuu; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by ozlabs.org (Postfix) with ESMTP id 4D7h8m0QsVz9sVx
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jan 2021 12:32:56 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4D7h8l72jKz9sVv; Sun,  3 Jan 2021 12:32:55 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=protonmail.com (client-ip=185.70.41.103;
+ helo=mail-41103.protonmail.ch; envelope-from=skirmisher@protonmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=protonmail.com
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256
+ header.s=protonmail header.b=J/2WWRuu; 
+ dkim-atps=neutral
+Received: from mail-41103.protonmail.ch (mail-41103.protonmail.ch
+ [185.70.41.103])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4D7h8h2gpvz9sVr
+ for <linuxppc-dev@ozlabs.org>; Sun,  3 Jan 2021 12:32:51 +1100 (AEDT)
+Received: from mail-02.mail-europe.com (mail-02.mail-europe.com
+ [51.89.119.103])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail-41103.protonmail.ch (Postfix) with ESMTPS id 78F8720025CC
+ for <linuxppc-dev@ozlabs.org>; Sun,  3 Jan 2021 01:32:48 +0000 (UTC)
+Authentication-Results: mail-41103.protonmail.ch;
+ dkim=pass (1024-bit key) header.d=protonmail.com header.i=@protonmail.com
+ header.b="J/2WWRuu"
+Date: Sun, 03 Jan 2021 01:32:24 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+ s=protonmail; t=1609637552;
+ bh=iGy/bfBWKKbuV9TiOepbx4mYbR80oJFZ+lF4H8NvxZA=;
+ h=Date:To:From:Cc:Reply-To:Subject:From;
+ b=J/2WWRuu/6om8FkdwMQTHUlB3rk5m+oX/C/CqSJabkImpLoxRXmevg8WrXKvC8CwO
+ zM4X+pT0boKo5U9P37JDoE7PeW7F3tEFqXIdaPoVVhEbrjvXUTWpAfo8I5daUwgpv+
+ fb68JhzVg7ChWa+WJdmKZEpXWT5w45tHy9oCq8PA=
+To: linuxppc-dev@ozlabs.org
+From: Will Springer <skirmisher@protonmail.com>
+Subject: [PATCH 0/2] powerpc: fixes for 32-bit little-endian processes
+Message-ID: <2191723.ElGaqSPkdT@sheen>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+ DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
+ autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+ mailout.protonmail.ch
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,70 +85,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: keescook@chromium.org, maskray@google.com, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, oss@buserror.net, paulus@samba.org,
- ariel.marcovitch@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Reply-To: Will Springer <skirmisher@protonmail.com>
+Cc: eerykitty@gmail.com, daniel@octaforge.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a bug that causes early crashes in builds with a
-.exit.text section smaller than a page and a .init.text section that
-ends in the beginning of a physical page (this is kinda random, which
-might explain why this wasn't really encountered before).
+These are a couple small fixes that enable 32-bit little endian ("ppcle")
+processes to run on a ppc64le kernel. Currently this is of interest for
+the purposes of emulating ia32 programs with native userland assistance
+via box86[1] (see PR#279 for initial ppc support), but a standalone
+userland is functional, and may be used to complement a future ppcle
+kernel port. We (those of us working on the userland effort in the
+void-ppc project[2]) hope to come up with an ABI proposal to submit to
+submit to the libc projects as a new port.
 
-The init sections are ordered like this:
-	.init.text
-	.exit.text
-	.init.data
+Cheers to Christophe Leroy and Michael Ellerman for converting the ppc
+vDSO to C, and Michael in particular for tracking down a small issue
+with it on ppcle, meaning the 32-bit LE vDSO gets to be functional
+instead of half-broken with the old asm. (Sorry it took a minute to push
+these patches, protonmail would not cooperate with git-send-email and then
+I took off for the holidays.)
 
-Currently, these sections aren't page aligned.
+Cheers,
+Will Springer [she/her]
 
-Because the init code might become read-only at runtime and because the
-.init.text section can potentially reside on the same physical page as
-.init.data, the beginning of .init.data might be mapped read-only along
-with .init.text.
+[1]: https://github.com/ptitSeb/box86
+[2]: https://voidlinux-ppc.org/
 
-Then when the kernel tries to modify a variable in .init.data (like
-kthreadd_done, used in kernel_init()) the kernel panics.
+Joseph J Allen (1):
+  powerpc: use kernel endianness in MSR in 32-bit signal handler
 
-To avoid this, make _einittext page aligned and also align .exit.text
-to make sure .init.data is always seperated from the text segments.
+Will Springer (1):
+  powerpc/compat_sys: swap hi/lo parts of 64-bit syscall args in LE mode
 
-Fixes: 060ef9d89d18 ("powerpc32: PAGE_EXEC required for inittext")
-Signed-off-by: Ariel Marcovitch <ariel.marcovitch@gmail.com>
----
- arch/powerpc/kernel/vmlinux.lds.S | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/powerpc/kernel/signal_32.c |  3 +-
+ arch/powerpc/kernel/sys_ppc32.c | 49 +++++++++++++++++++--------------
+ 2 files changed, 30 insertions(+), 22 deletions(-)
 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 6db90cdf11da..b6c765d8e7ee 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -187,6 +187,11 @@ SECTIONS
- 	.init.text : AT(ADDR(.init.text) - LOAD_OFFSET) {
- 		_sinittext = .;
- 		INIT_TEXT
-+
-+		/* .init.text might be RO so we must
-+		* ensure this section ends in a page boundary.
-+		*/
-+		. = ALIGN(PAGE_SIZE);
- 		_einittext = .;
- #ifdef CONFIG_PPC64
- 		*(.tramp.ftrace.init);
-@@ -200,6 +205,8 @@ SECTIONS
- 		EXIT_TEXT
- 	}
- 
-+	. = ALIGN(PAGE_SIZE);
-+
- 	.init.data : AT(ADDR(.init.data) - LOAD_OFFSET) {
- 		INIT_DATA
- 	}
+--=20
+2.29.2
 
-base-commit: 2c85ebc57b3e1817b6ce1a6b703928e113a90442
--- 
-2.17.1
+
+
+
 
