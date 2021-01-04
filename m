@@ -1,94 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25312E9228
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 09:52:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED21D2E92CB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 10:48:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D8Ts239jlzDqM0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 19:52:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D8W5c0ZwKzDqFs
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 20:48:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=TZVcY9mm; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=aBBzV1QE; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D8TqC5g6DzDqFC
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 19:50:24 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D8W3t11QnzDqFJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 20:46:33 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 1048Wj2I088073; Mon, 4 Jan 2021 03:50:13 -0500
+ 1049W76N006501
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 4 Jan 2021 04:46:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
+ h=subject : to :
  references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=nyKf2bl5uGOVZiBGFJPeSR/NNjbqCaEOoDtTzHHJ6KI=;
- b=TZVcY9mmtDskZM/wVTE4c8x0Ht/se4XH7f/tz1uywChf2f4tJDqu9oF1+T2kWBS6Nyxi
- hLtwmQWC25XgfrIQ51YAAp4ldge5PFY0SOYtDj/nO0WOmHY/5Q35cdw9EF0KdCVMu2eu
- F+empap1qQk/QmsCTePvhl6TWIVCf/GGSpJ8gAbd/LZRPb8HS0tizdFQalqXJRoAcjmS
- CxNVglA656Dj++ozdVnDLb5WP4eDjwUga9qpUo5W2+bKMIAh3efmw0C4mWyhJN/dBBYX
- mSkPtMhXnjgUffomvN/k2ChJP2x1NYnIL5j7fbax3JNGQuRjiVmsCKyFZJ2OW3u4Gf5b Qg== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35uuwpmrrr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Jan 2021 03:50:13 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1048ll4C015815;
- Mon, 4 Jan 2021 08:50:10 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06ams.nl.ibm.com with ESMTP id 35tg3h9phn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Jan 2021 08:50:10 +0000
+ bh=m5Jn27UCH5q3n1VfntGF+9ZSEzAGklTuRd1+UTav9zk=;
+ b=aBBzV1QEBMt8FxRtSCZ97hxoQbNzL+56SMQGf/2Fa6ildgKpWYP8PSlye3tEV4j+njt7
+ snajJypYLi8ZXZrkKHUm3j4IMVI01id3q9BO0LiW94aDyaTjCore3FKreu50iL6/KpoJ
+ UP+JURui6e079/HL9x7kmgqgh/hRo9p/XZ5o6uBeY23sA/CDqQKoobiTPgDST+FVn5GS
+ 9CO1cLEFlDeXoxd7R8t1GOJslGWB+j7RZbC8iMmMlSQLLc/NMdjdhyEALcYOR8HIS8wF
+ r3zoD7hR9AJDzrsJTCO0wealoi5575tcJf41dL5iWgw2qncYyvt5X3v3MfQdeFQaQ0t5 aw== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35v0er8aut-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Jan 2021 04:46:29 -0500
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1049WSe2011085
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 4 Jan 2021 09:46:27 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 35tgf89qpk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Jan 2021 09:46:27 +0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1048o8Ql45089236
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Jan 2021 08:50:08 GMT
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 1049kM5j31326502
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 4 Jan 2021 09:46:22 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 724DFA405C;
- Mon,  4 Jan 2021 08:50:08 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7F903A405C
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 09:46:25 +0000 (GMT)
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2AF23A4062;
- Mon,  4 Jan 2021 08:50:08 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 6557FA405B
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 09:46:25 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.145.75.217])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  4 Jan 2021 08:50:08 +0000 (GMT)
-Subject: Re: [PATCH v2 -next] misc: ocxl: use DEFINE_MUTEX() for mutex lock
-To: Zheng Yongjun <zhengyongjun3@huawei.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-References: <20201224132446.31286-1-zhengyongjun3@huawei.com>
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 09:46:25 +0000 (GMT)
+Subject: Re: [PATCH] selftests/powerpc: make the test check in eeh-basic.sh
+ posix compliant
+To: linuxppc-dev@lists.ozlabs.org
+References: <20201228043459.14281-1-po-hsu.lin@canonical.com>
 From: Frederic Barrat <fbarrat@linux.ibm.com>
-Message-ID: <a27edb92-25e6-0047-96a3-911d06d001fa@linux.ibm.com>
-Date: Mon, 4 Jan 2021 09:50:07 +0100
+Message-ID: <8f943d9b-21cd-49b8-fb45-706cb49e4093@linux.ibm.com>
+Date: Mon, 4 Jan 2021 10:46:25 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <20201224132446.31286-1-zhengyongjun3@huawei.com>
+In-Reply-To: <20201228043459.14281-1-po-hsu.lin@canonical.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-04_04:2020-12-31,
+ definitions=2021-01-04_07:2020-12-31,
  2021-01-04 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0
- mlxlogscore=999 priorityscore=1501 suspectscore=0 impostorscore=0
- malwarescore=0 lowpriorityscore=0 spamscore=0 bulkscore=0 clxscore=1011
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101040057
+ lowpriorityscore=0
+ adultscore=0 clxscore=1015 impostorscore=0 mlxlogscore=999 phishscore=0
+ suspectscore=0 mlxscore=0 spamscore=0 priorityscore=1501 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101040061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,48 +101,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, ajd@linux.ibm.com, arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 24/12/2020 14:24, Zheng Yongjun wrote:
-> mutex lock can be initialized automatically with DEFINE_MUTEX()
-> rather than explicitly calling mutex_init().
+On 28/12/2020 05:34, Po-Hsu Lin wrote:
+> The == operand is a bash extension, thus this will fail on Ubuntu with
 > 
-> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+
+Error message is somehow missing. It should read:
+"./eeh-basic.sh: 89: test: 2: unexpected operator"
+
+> As the /bin/sh on Ubuntu is pointed to DASH.
+> 
+> Use -eq to fix this posix compatibility issue.
+> 
+> Fixes: 996f9e0f93f162 ("selftests/powerpc: Fix eeh-basic.sh exit codes")
+> Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
 > ---
 
 
+With the above,
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+
 Thanks!
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-
-
->   drivers/misc/ocxl/file.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
+>   tools/testing/selftests/powerpc/eeh/eeh-basic.sh | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
-> index 4d1b44de1492..e70525eedaae 100644
-> --- a/drivers/misc/ocxl/file.c
-> +++ b/drivers/misc/ocxl/file.c
-> @@ -15,7 +15,7 @@
+> diff --git a/tools/testing/selftests/powerpc/eeh/eeh-basic.sh b/tools/testing/selftests/powerpc/eeh/eeh-basic.sh
+> index 0d783e1..64779f0 100755
+> --- a/tools/testing/selftests/powerpc/eeh/eeh-basic.sh
+> +++ b/tools/testing/selftests/powerpc/eeh/eeh-basic.sh
+> @@ -86,5 +86,5 @@ echo "$failed devices failed to recover ($dev_count tested)"
+>   lspci | diff -u $pre_lspci -
+>   rm -f $pre_lspci
 >   
->   static dev_t ocxl_dev;
->   static struct class *ocxl_class;
-> -static struct mutex minors_idr_lock;
-> +static DEFINE_MUTEX(minors_idr_lock);
->   static struct idr minors_idr;
->   
->   static struct ocxl_file_info *find_and_get_file_info(dev_t devno)
-> @@ -588,7 +588,6 @@ int ocxl_file_init(void)
->   {
->   	int rc;
->   
-> -	mutex_init(&minors_idr_lock);
->   	idr_init(&minors_idr);
->   
->   	rc = alloc_chrdev_region(&ocxl_dev, 0, OCXL_NUM_MINORS, "ocxl");
+> -test "$failed" == 0
+> +test "$failed" -eq 0
+>   exit $?
 > 
