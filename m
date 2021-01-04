@@ -2,75 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FC32E8B78
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 10:19:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C25312E9228
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 09:52:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D7tVc2fMDzDqDs
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jan 2021 20:19:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D8Ts239jlzDqM0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 19:52:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c;
- helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=D/NIdKBS; dkim-atps=neutral
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
- [IPv6:2607:f8b0:4864:20::62c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=TZVcY9mm; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D7tSv0kZ3zDqDc
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jan 2021 20:17:30 +1100 (AEDT)
-Received: by mail-pl1-x62c.google.com with SMTP id s15so12832869plr.9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Jan 2021 01:17:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=CBNRAqcJ6O6vwf7NUgGTfHkjviEakxNQ01Fv3RvUaHA=;
- b=D/NIdKBSGNS9ZBOGRDP6SDeUoVuS2dvc/a6LnEknoHAZF5kdZ7+L6QYkiWu1u6r00O
- aBR+u6iSVM2uuccPoHTOQHq8/H126oCjk/dRAVdmXuIygsMHyHiG66yMZQCGI1+rACsh
- 3Aqk/XOIHPKjMULnA68IPJ640jos1I2fYDA4288pQfDGi7STIe0rdttxCKUeOIq10BOL
- rXXGGHdiKtPwntFSRWU9mZB1weG/1Xx3mOnnYZ8MRlD4d72uSlU6baRYnEFtpuIY8Qmj
- uwSvUQZYUHetCGBnF/ORnLEmcqMZvYZTgvhJkw3zA6PWKNY5ne9nIQwVoj7+RfPgSngo
- rkRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=CBNRAqcJ6O6vwf7NUgGTfHkjviEakxNQ01Fv3RvUaHA=;
- b=SpSWe2wnhG7P9yeutFKdNTRZqjYtRJ0EvoxR+pQf+lLXXvn3zeZ1yofH6K8S5B/iDZ
- xwpaGW2pMXOJZ0m0lIkD5IvvSzHmHoUQpG+tuZ1lgDeBPNrIgutodwPgSwuPjmau3Tni
- QCUHrlw1T15RoVEKdA6FgdXVAIihzvPU2+hx04ISQxkl9RaEkZXk7yRy4xDVzaaFDWfv
- XYfRqhkJ9SmtRgJ5t7Uaf9t+a+6Q3IClb3QMqs/7/7xaBw4UeOsSf3g+NSl5cjrsRBqK
- knjUrtxy8yCUgBbuoDvzsG+fN+DahsYSdz7xWqP0ogci9cu/5AQhFovivg6ge/ynNV5h
- sMYQ==
-X-Gm-Message-State: AOAM533Rg2pyZ0MbxMXzN8xEPugzAXOL8oVqTcuy4+0lEZXP2VHaY2Nf
- 4UaC0Kw+TW9UG1GNtIJK+zQ=
-X-Google-Smtp-Source: ABdhPJx5KyywU5QZ2U+ginjxxFqYYarqCdDkDcYuvqZkWBt95aFAkqtKK1nuU4x2RPiL0Bvm29fwzg==
-X-Received: by 2002:a17:90a:4a4:: with SMTP id
- g33mr24180760pjg.221.1609665447289; 
- Sun, 03 Jan 2021 01:17:27 -0800 (PST)
-Received: from localhost (193-116-97-30.tpgi.com.au. [193.116.97.30])
- by smtp.gmail.com with ESMTPSA id z3sm37209604pgs.61.2021.01.03.01.17.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Jan 2021 01:17:26 -0800 (PST)
-Date: Sun, 03 Jan 2021 19:17:20 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 02/21] powerpc/64s: move the last of the page fault
- handling logic to C
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20210102122508.1950592-1-npiggin@gmail.com>
- <20210102122508.1950592-3-npiggin@gmail.com>
- <20210102185630.Horde.GwG0xTTuKDzS6PsMZTUftw1@messagerie.c-s.fr>
-In-Reply-To: <20210102185630.Horde.GwG0xTTuKDzS6PsMZTUftw1@messagerie.c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D8TqC5g6DzDqFC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 19:50:24 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 1048Wj2I088073; Mon, 4 Jan 2021 03:50:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=nyKf2bl5uGOVZiBGFJPeSR/NNjbqCaEOoDtTzHHJ6KI=;
+ b=TZVcY9mmtDskZM/wVTE4c8x0Ht/se4XH7f/tz1uywChf2f4tJDqu9oF1+T2kWBS6Nyxi
+ hLtwmQWC25XgfrIQ51YAAp4ldge5PFY0SOYtDj/nO0WOmHY/5Q35cdw9EF0KdCVMu2eu
+ F+empap1qQk/QmsCTePvhl6TWIVCf/GGSpJ8gAbd/LZRPb8HS0tizdFQalqXJRoAcjmS
+ CxNVglA656Dj++ozdVnDLb5WP4eDjwUga9qpUo5W2+bKMIAh3efmw0C4mWyhJN/dBBYX
+ mSkPtMhXnjgUffomvN/k2ChJP2x1NYnIL5j7fbax3JNGQuRjiVmsCKyFZJ2OW3u4Gf5b Qg== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35uuwpmrrr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 04 Jan 2021 03:50:13 -0500
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1048ll4C015815;
+ Mon, 4 Jan 2021 08:50:10 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06ams.nl.ibm.com with ESMTP id 35tg3h9phn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 04 Jan 2021 08:50:10 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1048o8Ql45089236
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 4 Jan 2021 08:50:08 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 724DFA405C;
+ Mon,  4 Jan 2021 08:50:08 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2AF23A4062;
+ Mon,  4 Jan 2021 08:50:08 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.145.75.217])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  4 Jan 2021 08:50:08 +0000 (GMT)
+Subject: Re: [PATCH v2 -next] misc: ocxl: use DEFINE_MUTEX() for mutex lock
+To: Zheng Yongjun <zhengyongjun3@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20201224132446.31286-1-zhengyongjun3@huawei.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Message-ID: <a27edb92-25e6-0047-96a3-911d06d001fa@linux.ibm.com>
+Date: Mon, 4 Jan 2021 09:50:07 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Message-Id: <1609663625.fcccd2vjjf.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20201224132446.31286-1-zhengyongjun3@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-04_04:2020-12-31,
+ 2021-01-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxscore=0
+ mlxlogscore=999 priorityscore=1501 suspectscore=0 impostorscore=0
+ malwarescore=0 lowpriorityscore=0 spamscore=0 bulkscore=0 clxscore=1011
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101040057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,59 +100,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: gregkh@linuxfoundation.org, ajd@linux.ibm.com, arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of January 3, 2021 3:56 am:
-> Nicholas Piggin <npiggin@gmail.com> a =C3=A9crit=C2=A0:
->=20
->> The page fault handling still has some complex logic particularly around
->> hash table handling, in asm. Implement this in C instead.
->=20
-> Hi,
->=20
-> I'm afk at the moment and unable to look at this in details before one =20
-> week but this looks pretty complexe, especially the churn around =20
-> ___do_page_fault
-> Do we really need 3 layers of do_page_fault() ?
 
-Actually it doesn't, patch 10 wants it. I can move it to there at least
-which should make this a bit less churn.
 
-It's convenient because lots of return paths in __do_page_fault, but I=20
-could try convert that to a `goto out` style.
+On 24/12/2020 14:24, Zheng Yongjun wrote:
+> mutex lock can be initialized automatically with DEFINE_MUTEX()
+> rather than explicitly calling mutex_init().
+> 
+> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+> ---
 
-> I think it would likely be more straight forward to just move =20
-> handle_page_fault() to C.
 
-The hash fault stuff makes things work better this way. Perhaps if I can=20
-get to the bottom of the context tracking in the hash fault (I think we
-perhaps should avoid it), then it could go back to a common code path.
+Thanks!
+Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-> There also seems to be some unrelated changes, like the (msr & MSR_PR) =20
-> changed to user_mode(regs).
 
-That's part of making it callable from asm and the radix vs hash
-prototypes the same so there are no added complexity in the asm:
 
->> @@ -1439,13 +1440,17 @@ EXC_COMMON_BEGIN(data_access_common)
->>  	GEN_COMMON data_access
->>  	ld	r4,_DAR(r1)
->>  	ld	r5,_DSISR(r1)
->> +	addi	r3,r1,STACK_FRAME_OVERHEAD
->>  BEGIN_MMU_FTR_SECTION
->> -	ld	r6,_MSR(r1)
->> -	li	r3,0x300
->> -	b	do_hash_page		/* Try to handle as hpte fault */
->> +	bl	do_hash_fault
->>  MMU_FTR_SECTION_ELSE
->> -	b	handle_page_fault
->> +	bl	do_page_fault
->>  ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
-
-I'll see if anything can be done to move some such changes ahead.
-
-Thanks,
-Nick
+>   drivers/misc/ocxl/file.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
+> index 4d1b44de1492..e70525eedaae 100644
+> --- a/drivers/misc/ocxl/file.c
+> +++ b/drivers/misc/ocxl/file.c
+> @@ -15,7 +15,7 @@
+>   
+>   static dev_t ocxl_dev;
+>   static struct class *ocxl_class;
+> -static struct mutex minors_idr_lock;
+> +static DEFINE_MUTEX(minors_idr_lock);
+>   static struct idr minors_idr;
+>   
+>   static struct ocxl_file_info *find_and_get_file_info(dev_t devno)
+> @@ -588,7 +588,6 @@ int ocxl_file_init(void)
+>   {
+>   	int rc;
+>   
+> -	mutex_init(&minors_idr_lock);
+>   	idr_init(&minors_idr);
+>   
+>   	rc = alloc_chrdev_region(&ocxl_dev, 0, OCXL_NUM_MINORS, "ocxl");
+> 
