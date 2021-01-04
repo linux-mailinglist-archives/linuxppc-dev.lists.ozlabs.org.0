@@ -2,48 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F772E94DE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 13:31:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26ED32E94F7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 13:37:18 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D8Zjv5TDkzDqLM
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 23:31:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D8Zrq17N3zDqHK
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 23:37:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=szxga06-in.huawei.com;
+ envelope-from=dingtianhong@huawei.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D8Zdz4CDwzDqB2
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 23:27:51 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=LU8GC11/; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4D8Zdz2nF0z9sTv; Mon,  4 Jan 2021 23:27:51 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4D8Zdz0LkCz9sVs; Mon,  4 Jan 2021 23:27:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1609763271;
- bh=v8wG597noNfuWICjVdBWzSu8L6bYdzednOXuYaV8Bmo=;
- h=From:To:Cc:Subject:Date:From;
- b=LU8GC11/wUmEVJMoE/TpTt42hD46k3xmSL2ev+vxfx4xhmkw/xSKDNjqj0F1i7YFe
- +e/Yp6p3hgJQASNp6cj66Cw8smUR5t8KpbJiiEIJELBPZfzC4KXmf58xIkcFDJnpVe
- LnQd2wpMDbAzr/x3m7pUAtkszdFhOqt8QxFPHyXxI95TTxnIKQUFITP7RMbunZKFW2
- I8H/ALbVUopEtdMrkdtYHnY2rNSiao3FnS6UhzGQhltClXoJ+hOpEFyJINBz7pF6Lt
- 17gtXMNy9WvBjDoJB6PP3ujxSxLXLpltGiwsDFk6wJiIwPBn16FLz6wGyb0Prtn6d4
- WD7GPXYvpvVtA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: acme@redhat.com
-Subject: [PATCH] tools headers UAPI: Sync linux/types.h with the kernel sources
-Date: Mon,  4 Jan 2021 23:27:44 +1100
-Message-Id: <20210104122744.4095768-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D8ZnG684QzDqBt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 23:34:08 +1100 (AEDT)
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+ by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4D8Zm9499Mzj1mf;
+ Mon,  4 Jan 2021 20:33:13 +0800 (CST)
+Received: from [10.174.177.80] (10.174.177.80) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.498.0; Mon, 4 Jan 2021 20:33:50 +0800
+Subject: Re: [PATCH v9 05/12] mm: HUGE_VMAP arch support cleanup
+To: Nicholas Piggin <npiggin@gmail.com>, <linux-mm@kvack.org>, Andrew Morton
+ <akpm@linux-foundation.org>
+References: <20201205065725.1286370-1-npiggin@gmail.com>
+ <20201205065725.1286370-6-npiggin@gmail.com>
+From: Ding Tianhong <dingtianhong@huawei.com>
+Message-ID: <c7eb5ba6-1187-d82f-d74c-0ca2c8ae8faf@huawei.com>
+Date: Mon, 4 Jan 2021 20:33:49 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201205065725.1286370-6-npiggin@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.80]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,114 +53,451 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: daniel@iogearbox.net, linuxppc-dev@ozlabs.org, linux-kernel@vger.kernel.org,
- ast@kernel.org, vt@altlinux.org, andrii@kernel.org, yhs@fb.com, kafai@fb.com
+Cc: linux-arch@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Zefan Li <lizefan@huawei.com>,
+ Borislav Petkov <bp@alien8.de>, Jonathan
+ Cameron <Jonathan.Cameron@Huawei.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Unlike the other headers in tools/include/uapi/linux, types.h has
-never been synced from the exported headers, instead it's been hand
-written over time. This means it doesn't match the exported headers
-which can cause build errors on some architectures.
+On 2020/12/5 14:57, Nicholas Piggin wrote:
+> This changes the awkward approach where architectures provide init
+> functions to determine which levels they can provide large mappings for,
+> to one where the arch is queried for each call.
+> 
+> This removes code and indirection, and allows constant-folding of dead
+> code for unsupported levels.
+> 
+> This also adds a prot argument to the arch query. This is unused
+> currently but could help with some architectures (e.g., some powerpc
+> processors can't map uncacheable memory with large pages).
+> 
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: x86@kernel.org
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com> [arm64]
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/arm64/include/asm/vmalloc.h         |  8 +++
+>  arch/arm64/mm/mmu.c                      | 10 +--
+>  arch/powerpc/include/asm/vmalloc.h       |  8 +++
+>  arch/powerpc/mm/book3s64/radix_pgtable.c |  8 +--
+>  arch/x86/include/asm/vmalloc.h           |  7 ++
+>  arch/x86/mm/ioremap.c                    | 10 +--
+>  include/linux/io.h                       |  9 ---
+>  include/linux/vmalloc.h                  |  6 ++
+>  init/main.c                              |  1 -
+>  mm/ioremap.c                             | 88 +++++++++---------------
+>  10 files changed, 77 insertions(+), 78 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmalloc.h
+> index 2ca708ab9b20..597b40405319 100644
+> --- a/arch/arm64/include/asm/vmalloc.h
+> +++ b/arch/arm64/include/asm/vmalloc.h
+> @@ -1,4 +1,12 @@
+>  #ifndef _ASM_ARM64_VMALLOC_H
+>  #define _ASM_ARM64_VMALLOC_H
+>  
+> +#include <asm/page.h>
+> +
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +bool arch_vmap_p4d_supported(pgprot_t prot);
+> +bool arch_vmap_pud_supported(pgprot_t prot);
+> +bool arch_vmap_pmd_supported(pgprot_t prot);
+> +#endif
+> +
+>  #endif /* _ASM_ARM64_VMALLOC_H */
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index ca692a815731..1b60079c1cef 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1315,12 +1315,12 @@ void *__init fixmap_remap_fdt(phys_addr_t dt_phys, int *size, pgprot_t prot)
+>  	return dt_virt;
+>  }
+>  
+> -int __init arch_ioremap_p4d_supported(void)
+> +bool arch_vmap_p4d_supported(pgprot_t prot)
+>  {
+> -	return 0;
+> +	return false;
+>  }
+>  
 
-For example on powerpc, tools/bpf doesn't build:
+I think you should put this function in the CONFIG_HAVE_ARCH_HUGE_VMAP, otherwise it may break the compile when disable the CONFIG_HAVE_ARCH_HUGE_VMAP, the same
+as the x86 and ppc.
 
-  $ make O=/build -C tools/bpf/
-  make: Entering directory '/linux/tools/bpf'
+Ding
 
-  Auto-detecting system features:
-  ...                        libbfd: [ on  ]
-  ...        disassembler-four-args: [ on  ]
-
-    CC       /build/bpf_jit_disasm.o
-    LINK     /build/bpf_jit_disasm
-    CC       /build/bpf_dbg.o
-  In file included from /usr/include/powerpc64le-linux-gnu/asm/sigcontext.h:14,
-                   from /usr/include/powerpc64le-linux-gnu/bits/sigcontext.h:30,
-                   from /usr/include/signal.h:288,
-                   from /linux/tools/bpf/bpf_dbg.c:51:
-  /usr/include/powerpc64le-linux-gnu/asm/elf.h:160:9: error: unknown type name '__vector128'
-    160 | typedef __vector128 elf_vrreg_t;
-        |         ^~~~~~~~~~~
-  make: *** [Makefile:67: /build/bpf_dbg.o] Error 1
-
-This is because tools/include/uapi/linux/types.h doesn't include
-asm/types.h, where __vector128 is defined in the powerpc headers.
-
-We can fix it by syncing the tools header with the exported kernel
-header, as is done for the other headers in tools/include/uapi/linux.
-
-Reported-by: Vitaly Chikunov <vt@altlinux.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
-
-Earlier discussion: https://lore.kernel.org/netdev/20201024203040.4cjxnxrdy6qx557c@altlinux.org/
-
-Build tested on powerpc and x86.
----
- tools/include/uapi/linux/types.h | 41 ++++++++++++++++++++++++++------
- 1 file changed, 34 insertions(+), 7 deletions(-)
-
-diff --git a/tools/include/uapi/linux/types.h b/tools/include/uapi/linux/types.h
-index 91fa51a9c31d..999cb0fa88eb 100644
---- a/tools/include/uapi/linux/types.h
-+++ b/tools/include/uapi/linux/types.h
-@@ -1,11 +1,26 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _UAPI_LINUX_TYPES_H
--#define _UAPI_LINUX_TYPES_H
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#ifndef _LINUX_TYPES_H
-+#define _LINUX_TYPES_H
- 
--#include <asm-generic/int-ll64.h>
-+#include <asm/types.h>
-+
-+#ifndef __ASSEMBLY__
-+
-+#include <linux/posix_types.h>
-+
-+
-+/*
-+ * Below are truly Linux-specific types that should never collide with
-+ * any application/library that wants linux/types.h.
-+ */
-+
-+#ifdef __CHECKER__
-+#define __bitwise__ __attribute__((bitwise))
-+#else
-+#define __bitwise__
-+#endif
-+#define __bitwise __bitwise__
- 
--/* copied from linux:include/uapi/linux/types.h */
--#define __bitwise
- typedef __u16 __bitwise __le16;
- typedef __u16 __bitwise __be16;
- typedef __u32 __bitwise __le32;
-@@ -16,8 +31,20 @@ typedef __u64 __bitwise __be64;
- typedef __u16 __bitwise __sum16;
- typedef __u32 __bitwise __wsum;
- 
-+/*
-+ * aligned_u64 should be used in defining kernel<->userspace ABIs to avoid
-+ * common 32/64-bit compat problems.
-+ * 64-bit values align to 4-byte boundaries on x86_32 (and possibly other
-+ * architectures) and to 8-byte boundaries on 64-bit architectures.  The new
-+ * aligned_64 type enforces 8-byte alignment so that structs containing
-+ * aligned_64 values have the same alignment on 32-bit and 64-bit architectures.
-+ * No conversions are necessary between 32-bit user-space and a 64-bit kernel.
-+ */
- #define __aligned_u64 __u64 __attribute__((aligned(8)))
- #define __aligned_be64 __be64 __attribute__((aligned(8)))
- #define __aligned_le64 __le64 __attribute__((aligned(8)))
- 
--#endif /* _UAPI_LINUX_TYPES_H */
-+typedef unsigned __bitwise __poll_t;
-+
-+#endif /*  __ASSEMBLY__ */
-+#endif /* _LINUX_TYPES_H */
--- 
-2.25.1
+> -int __init arch_ioremap_pud_supported(void)
+> +bool arch_vmap_pud_supported(pgprot_t prot);
+>  {
+>  	/*
+>  	 * Only 4k granule supports level 1 block mappings.
+> @@ -1330,9 +1330,9 @@ int __init arch_ioremap_pud_supported(void)
+>  	       !IS_ENABLED(CONFIG_PTDUMP_DEBUGFS);
+>  }
+>  
+> -int __init arch_ioremap_pmd_supported(void)
+> +bool arch_vmap_pmd_supported(pgprot_t prot)
+>  {
+> -	/* See arch_ioremap_pud_supported() */
+> +	/* See arch_vmap_pud_supported() */
+>  	return !IS_ENABLED(CONFIG_PTDUMP_DEBUGFS);
+>  }
+>  
+> diff --git a/arch/powerpc/include/asm/vmalloc.h b/arch/powerpc/include/asm/vmalloc.h
+> index b992dfaaa161..105abb73f075 100644
+> --- a/arch/powerpc/include/asm/vmalloc.h
+> +++ b/arch/powerpc/include/asm/vmalloc.h
+> @@ -1,4 +1,12 @@
+>  #ifndef _ASM_POWERPC_VMALLOC_H
+>  #define _ASM_POWERPC_VMALLOC_H
+>  
+> +#include <asm/page.h>
+> +
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +bool arch_vmap_p4d_supported(pgprot_t prot);
+> +bool arch_vmap_pud_supported(pgprot_t prot);
+> +bool arch_vmap_pmd_supported(pgprot_t prot);
+> +#endif
+> +
+>  #endif /* _ASM_POWERPC_VMALLOC_H */
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index 3adcf730f478..ab426fc0cd4b 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -1121,13 +1121,13 @@ void radix__ptep_modify_prot_commit(struct vm_area_struct *vma,
+>  	set_pte_at(mm, addr, ptep, pte);
+>  }
+>  
+> -int __init arch_ioremap_pud_supported(void)
+> +bool arch_vmap_pud_supported(pgprot_t prot)
+>  {
+>  	/* HPT does not cope with large pages in the vmalloc area */
+>  	return radix_enabled();
+>  }
+>  
+> -int __init arch_ioremap_pmd_supported(void)
+> +bool arch_vmap_pmd_supported(pgprot_t prot)
+>  {
+>  	return radix_enabled();
+>  }
+> @@ -1221,7 +1221,7 @@ int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
+>  	return 1;
+>  }
+>  
+> -int __init arch_ioremap_p4d_supported(void)
+> +bool arch_vmap_p4d_supported(pgprot_t prot)
+>  {
+> -	return 0;
+> +	return false;
+>  }
+> diff --git a/arch/x86/include/asm/vmalloc.h b/arch/x86/include/asm/vmalloc.h
+> index 29837740b520..094ea2b565f3 100644
+> --- a/arch/x86/include/asm/vmalloc.h
+> +++ b/arch/x86/include/asm/vmalloc.h
+> @@ -1,6 +1,13 @@
+>  #ifndef _ASM_X86_VMALLOC_H
+>  #define _ASM_X86_VMALLOC_H
+>  
+> +#include <asm/page.h>
+>  #include <asm/pgtable_areas.h>
+>  
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +bool arch_vmap_p4d_supported(pgprot_t prot);
+> +bool arch_vmap_pud_supported(pgprot_t prot);
+> +bool arch_vmap_pmd_supported(pgprot_t prot);
+> +#endif
+> +
+>  #endif /* _ASM_X86_VMALLOC_H */
+> diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+> index 9e5ccc56f8e0..762b5ff4edad 100644
+> --- a/arch/x86/mm/ioremap.c
+> +++ b/arch/x86/mm/ioremap.c
+> @@ -481,21 +481,21 @@ void iounmap(volatile void __iomem *addr)
+>  }
+>  EXPORT_SYMBOL(iounmap);
+>  
+> -int __init arch_ioremap_p4d_supported(void)
+> +bool arch_vmap_p4d_supported(pgprot_t prot)
+>  {
+> -	return 0;
+> +	return false;
+>  }
+>  
+> -int __init arch_ioremap_pud_supported(void)
+> +bool arch_vmap_pud_supported(pgprot_t prot)
+>  {
+>  #ifdef CONFIG_X86_64
+>  	return boot_cpu_has(X86_FEATURE_GBPAGES);
+>  #else
+> -	return 0;
+> +	return false;
+>  #endif
+>  }
+>  
+> -int __init arch_ioremap_pmd_supported(void)
+> +bool arch_vmap_pmd_supported(pgprot_t prot)
+>  {
+>  	return boot_cpu_has(X86_FEATURE_PSE);
+>  }
+> diff --git a/include/linux/io.h b/include/linux/io.h
+> index 8394c56babc2..f1effd4d7a3c 100644
+> --- a/include/linux/io.h
+> +++ b/include/linux/io.h
+> @@ -31,15 +31,6 @@ static inline int ioremap_page_range(unsigned long addr, unsigned long end,
+>  }
+>  #endif
+>  
+> -#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> -void __init ioremap_huge_init(void);
+> -int arch_ioremap_p4d_supported(void);
+> -int arch_ioremap_pud_supported(void);
+> -int arch_ioremap_pmd_supported(void);
+> -#else
+> -static inline void ioremap_huge_init(void) { }
+> -#endif
+> -
+>  /*
+>   * Managed iomap interface
+>   */
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index 938eaf9517e2..b3218ba0904d 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -85,6 +85,12 @@ struct vmap_area {
+>  	};
+>  };
+>  
+> +#ifndef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +static inline bool arch_vmap_p4d_supported(pgprot_t prot) { return false; }
+> +static inline bool arch_vmap_pud_supported(pgprot_t prot) { return false; }
+> +static inline bool arch_vmap_pmd_supported(pgprot_t prot) { return false; }
+> +#endif
+> +
+>  /*
+>   *	Highlevel APIs for driver use
+>   */
+> diff --git a/init/main.c b/init/main.c
+> index 20baced721ad..5bd2f4f41d30 100644
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -833,7 +833,6 @@ static void __init mm_init(void)
+>  	pgtable_init();
+>  	debug_objects_mem_init();
+>  	vmalloc_init();
+> -	ioremap_huge_init();
+>  	/* Should be run before the first non-init thread is created */
+>  	init_espfix_bsp();
+>  	/* Should be run after espfix64 is set up. */
+> diff --git a/mm/ioremap.c b/mm/ioremap.c
+> index 3f4d36f9745a..c67f91164401 100644
+> --- a/mm/ioremap.c
+> +++ b/mm/ioremap.c
+> @@ -16,49 +16,16 @@
+>  #include "pgalloc-track.h"
+>  
+>  #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> -static int __read_mostly ioremap_p4d_capable;
+> -static int __read_mostly ioremap_pud_capable;
+> -static int __read_mostly ioremap_pmd_capable;
+> -static int __read_mostly ioremap_huge_disabled;
+> +static bool __ro_after_init iomap_max_page_shift = PAGE_SHIFT;
+>  
+>  static int __init set_nohugeiomap(char *str)
+>  {
+> -	ioremap_huge_disabled = 1;
+> +	iomap_max_page_shift = P4D_SHIFT;
+>  	return 0;
+>  }
+>  early_param("nohugeiomap", set_nohugeiomap);
+> -
+> -void __init ioremap_huge_init(void)
+> -{
+> -	if (!ioremap_huge_disabled) {
+> -		if (arch_ioremap_p4d_supported())
+> -			ioremap_p4d_capable = 1;
+> -		if (arch_ioremap_pud_supported())
+> -			ioremap_pud_capable = 1;
+> -		if (arch_ioremap_pmd_supported())
+> -			ioremap_pmd_capable = 1;
+> -	}
+> -}
+> -
+> -static inline int ioremap_p4d_enabled(void)
+> -{
+> -	return ioremap_p4d_capable;
+> -}
+> -
+> -static inline int ioremap_pud_enabled(void)
+> -{
+> -	return ioremap_pud_capable;
+> -}
+> -
+> -static inline int ioremap_pmd_enabled(void)
+> -{
+> -	return ioremap_pmd_capable;
+> -}
+> -
+> -#else	/* !CONFIG_HAVE_ARCH_HUGE_VMAP */
+> -static inline int ioremap_p4d_enabled(void) { return 0; }
+> -static inline int ioremap_pud_enabled(void) { return 0; }
+> -static inline int ioremap_pmd_enabled(void) { return 0; }
+> +#else /* CONFIG_HAVE_ARCH_HUGE_VMAP */
+> +static const bool iomap_max_page_shift = PAGE_SHIFT;
+>  #endif	/* CONFIG_HAVE_ARCH_HUGE_VMAP */
+>  
+>  static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+> @@ -82,9 +49,13 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+>  }
+>  
+>  static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
+> -			phys_addr_t phys_addr, pgprot_t prot)
+> +			phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
+>  {
+> -	if (!ioremap_pmd_enabled())
+> +	if (max_page_shift < PMD_SHIFT)
+> +		return 0;
+> +
+> +	if (!arch_vmap_pmd_supported(prot))
+>  		return 0;
+>  
+>  	if ((end - addr) != PMD_SIZE)
+> @@ -104,7 +75,7 @@ static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
+>  
+>  static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+>  			phys_addr_t phys_addr, pgprot_t prot,
+> -			pgtbl_mod_mask *mask)
+> +			unsigned int max_page_shift, pgtbl_mod_mask *mask)
+>  {
+>  	pmd_t *pmd;
+>  	unsigned long next;
+> @@ -115,7 +86,7 @@ static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+>  	do {
+>  		next = pmd_addr_end(addr, end);
+>  
+> -		if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot)) {
+> +		if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot, max_page_shift)) {
+>  			*mask |= PGTBL_PMD_MODIFIED;
+>  			continue;
+>  		}
+> @@ -127,9 +98,13 @@ static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+>  }
+>  
+>  static int vmap_try_huge_pud(pud_t *pud, unsigned long addr, unsigned long end,
+> -			phys_addr_t phys_addr, pgprot_t prot)
+> +			phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
+>  {
+> -	if (!ioremap_pud_enabled())
+> +	if (max_page_shift < PUD_SHIFT)
+> +		return 0;
+> +
+> +	if (!arch_vmap_pud_supported(prot))
+>  		return 0;
+>  
+>  	if ((end - addr) != PUD_SIZE)
+> @@ -149,7 +124,7 @@ static int vmap_try_huge_pud(pud_t *pud, unsigned long addr, unsigned long end,
+>  
+>  static int vmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+>  			phys_addr_t phys_addr, pgprot_t prot,
+> -			pgtbl_mod_mask *mask)
+> +			unsigned int max_page_shift, pgtbl_mod_mask *mask)
+>  {
+>  	pud_t *pud;
+>  	unsigned long next;
+> @@ -160,21 +135,25 @@ static int vmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+>  	do {
+>  		next = pud_addr_end(addr, end);
+>  
+> -		if (vmap_try_huge_pud(pud, addr, next, phys_addr, prot)) {
+> +		if (vmap_try_huge_pud(pud, addr, next, phys_addr, prot, max_page_shift)) {
+>  			*mask |= PGTBL_PUD_MODIFIED;
+>  			continue;
+>  		}
+>  
+> -		if (vmap_pmd_range(pud, addr, next, phys_addr, prot, mask))
+> +		if (vmap_pmd_range(pud, addr, next, phys_addr, prot, max_page_shift, mask))
+>  			return -ENOMEM;
+>  	} while (pud++, phys_addr += (next - addr), addr = next, addr != end);
+>  	return 0;
+>  }
+>  
+>  static int vmap_try_huge_p4d(p4d_t *p4d, unsigned long addr, unsigned long end,
+> -			phys_addr_t phys_addr, pgprot_t prot)
+> +			phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
+>  {
+> -	if (!ioremap_p4d_enabled())
+> +	if (max_page_shift < P4D_SHIFT)
+> +		return 0;
+> +
+> +	if (!arch_vmap_p4d_supported(prot))
+>  		return 0;
+>  
+>  	if ((end - addr) != P4D_SIZE)
+> @@ -194,7 +173,7 @@ static int vmap_try_huge_p4d(p4d_t *p4d, unsigned long addr, unsigned long end,
+>  
+>  static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
+>  			phys_addr_t phys_addr, pgprot_t prot,
+> -			pgtbl_mod_mask *mask)
+> +			unsigned int max_page_shift, pgtbl_mod_mask *mask)
+>  {
+>  	p4d_t *p4d;
+>  	unsigned long next;
+> @@ -205,19 +184,20 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
+>  	do {
+>  		next = p4d_addr_end(addr, end);
+>  
+> -		if (vmap_try_huge_p4d(p4d, addr, next, phys_addr, prot)) {
+> +		if (vmap_try_huge_p4d(p4d, addr, next, phys_addr, prot, max_page_shift)) {
+>  			*mask |= PGTBL_P4D_MODIFIED;
+>  			continue;
+>  		}
+>  
+> -		if (vmap_pud_range(p4d, addr, next, phys_addr, prot, mask))
+> +		if (vmap_pud_range(p4d, addr, next, phys_addr, prot, max_page_shift, mask))
+>  			return -ENOMEM;
+>  	} while (p4d++, phys_addr += (next - addr), addr = next, addr != end);
+>  	return 0;
+>  }
+>  
+>  static int vmap_range(unsigned long addr, unsigned long end,
+> -			phys_addr_t phys_addr, pgprot_t prot)
+> +			phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
+>  {
+>  	pgd_t *pgd;
+>  	unsigned long start;
+> @@ -232,7 +212,7 @@ static int vmap_range(unsigned long addr, unsigned long end,
+>  	pgd = pgd_offset_k(addr);
+>  	do {
+>  		next = pgd_addr_end(addr, end);
+> -		err = vmap_p4d_range(pgd, addr, next, phys_addr, prot, &mask);
+> +		err = vmap_p4d_range(pgd, addr, next, phys_addr, prot, max_page_shift, &mask);
+>  		if (err)
+>  			break;
+>  	} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
+> @@ -248,7 +228,7 @@ static int vmap_range(unsigned long addr, unsigned long end,
+>  int ioremap_page_range(unsigned long addr,
+>  		       unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
+>  {
+> -	return vmap_range(addr, end, phys_addr, prot);
+> +	return vmap_range(addr, end, phys_addr, prot, iomap_max_page_shift);
+>  }
+>  
+>  #ifdef CONFIG_GENERIC_IOREMAP
+> 
 
