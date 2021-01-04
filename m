@@ -2,70 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3CF2E9C4E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 18:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FCF2E9CED
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 19:21:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D8jhb3lM1zDqQq
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 04:45:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D8kTs2c2HzDqQF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 05:21:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.215.182;
- helo=mail-pg1-f182.google.com; envelope-from=bart.vanassche@gmail.com;
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=ieqh=gh=paulmck-thinkpad-p72.home=paulmck@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=acm.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com
- [209.85.215.182])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=TJ/P9NLk; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D8jfm0VSVzDqND
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 04:43:53 +1100 (AEDT)
-Received: by mail-pg1-f182.google.com with SMTP id i7so19501181pgc.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Jan 2021 09:43:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=W41s4SpHuFxfP2VmE7HCI4KFVMEE3WKx0iXTMwP7vnM=;
- b=RbD84B/VnUth1kBa31gH8TE30uzAOL6jvp7IVEfBBrorkS5QQ72EVtpSYZtQneULZy
- SZp1HprWiNJZSvij8jsaAoCGQkL07yPhEAwQyeRO1cxn9hOPBbjuATf3/OTS0PkLGfGp
- jmshb8etFu2mNewXa7ko20MAkiebIkPQpKziE6wp2SuDUfyRvFSLX3DBoSc/vZddGXJp
- hhtw4Wf/9WIVW1TY+Uiy9aC0WHFTHQQhTItLxhFxsaeFlfuqsQTlWYlXOtNAopsTTTev
- IFLfx+PzBu99bWg4OBcnZkcJ9OQucWoxj90PckYboXxo1iq0ezUGBGdhaYOHKY7UBDs8
- WGXQ==
-X-Gm-Message-State: AOAM531H0lNioTH95QLXZJXDDo29KQasZOmydaRKBgK9I+L/p6GnIbAX
- MfLPiSYofSe1u9tb90ct96U=
-X-Google-Smtp-Source: ABdhPJwKTIkHd9jD106iNYsMCjlbG9ke8DsYiuUgJzn38bv0xFujzmC1vyllUPjkZAgfvXQ07hPHdg==
-X-Received: by 2002:a63:c1e:: with SMTP id b30mr71096758pgl.72.1609782229216; 
- Mon, 04 Jan 2021 09:43:49 -0800 (PST)
-Received: from [192.168.3.217] (c-73-241-217-19.hsd1.ca.comcast.net.
- [73.241.217.19])
- by smtp.gmail.com with ESMTPSA id b4sm10376pju.33.2021.01.04.09.43.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Jan 2021 09:43:48 -0800 (PST)
-Subject: Re: [PATCH] scsi: target/sbp: remove firewire SBP target driver
-To: Finn Thain <fthain@telegraphics.com.au>
-References: <01020172acd3d10f-3964f076-a820-43fc-9494-3f3946e9b7b5-000000@eu-west-1.amazonses.com>
- <alpine.LNX.2.22.394.2006140934520.15@nippy.intranet>
- <7ad14946-5c25-fc49-1e48-72d37a607832@boo.tc>
- <alpine.LNX.2.22.394.2006150919110.8@nippy.intranet>
- <8da0c285-d707-a3d2-063e-472af5cc560f@boo.tc>
- <alpine.LNX.2.22.394.2006161929380.8@nippy.intranet>
- <8cbab988-fba7-8e27-7faf-9f7aa36ca235@acm.org>
- <alpine.LNX.2.22.394.2006171104540.11@nippy.intranet>
-From: Bart Van Assche <bvanassche@acm.org>
-Message-ID: <e3b5ce6a-0152-01b8-89d2-80bcdb9c1c57@acm.org>
-Date: Mon, 4 Jan 2021 09:43:46 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D8kRt0smKzDqNx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 05:19:37 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E30E62075E;
+ Mon,  4 Jan 2021 18:19:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1609784374;
+ bh=ukt7xqDhEg4NPsqEIeqnYcJ4ZsYfKDlQcDv8APTbPPs=;
+ h=Date:From:To:Cc:Subject:Reply-To:From;
+ b=TJ/P9NLkiyCMcNQ8Fbb24X3VwvH0lcuNOd/RqtQowt4CzPPOSF0SLw2P54RuwXuuw
+ FI2GesZHuSLY2ySNk5vfYi74AaAm2TH8297OtRgSf5uh1xE5AcQKcaVedGvL5KuCGr
+ fAndVP6EkS+hh2S/kpebHt8QTkmLNhaN+A/L0mrNQX9rpG5azTGX30Q+1N+jp3co1b
+ eY9Nk/iazgr5Zw01/MJK0O9X3slK1R03JfHSzcM39LZQ5S9ikh4CVnC4vKeG7KGMam
+ ZVynrSvn6JT9A4dlaSMN5+AOtSBa+PGO6wuh0qgkaLe7slSFTPqLVGlYhWdhGITRku
+ eRi5JE4YDTlKg==
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+ id 80F3A3522F46; Mon,  4 Jan 2021 10:19:34 -0800 (PST)
+Date: Mon, 4 Jan 2021 10:19:34 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: torvalds@linux-foundation.org
+Subject: [GIT PULL] Fix kprobes issue by moving RCU-tasks initialization
+ earlier
+Message-ID: <20210104181934.GA16612@paulmck-ThinkPad-P72>
 MIME-Version: 1.0
-In-Reply-To: <alpine.LNX.2.22.394.2006171104540.11@nippy.intranet>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,53 +59,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
- linux-scsi@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>,
- linux-kernel@vger.kernel.org, Nicholas Bellinger <nab@linux-iscsi.org>,
- target-devel@vger.kernel.org, Chris Boot <bootc@boo.tc>,
- linux1394-devel@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org,
- Stefan Richter <stefanr@s5r6.in-berlin.de>
+Reply-To: paulmck@kernel.org
+Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, urezki@gmail.com,
+ tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/16/20 7:07 PM, Finn Thain wrote:
-> On Tue, 16 Jun 2020, Bart Van Assche wrote:
->> As far as I know the sbp driver only has had one user ever and that user 
->> is no longer user the sbp driver.
-> 
-> So, you estimate the userbase at zero. Can you give a confidence level? 
-> Actual measurement is hard because when end users encounter breakage, they 
-> look for quick workarounds before they undertake post mortem, log 
-> collection, bug reporting, mailing list discussions, analysis etc.
+Hello, Linus,
 
-(replying to an e-mail from six months ago)
+This fix is for a regression in the v5.10 merge window, but it was
+reported quite late in the v5.10 process, plus generating and testing
+the fix took some time.
 
-Hi Finn,
+The regression is due to 36dadef23fcc ("kprobes: Init kprobes in
+early_initcall") which on powerpc can use RCU Tasks before initialization,
+resulting in boot failures.  The fix is straightforward, simply moving
+initialization of RCU Tasks before the early_initcall()s.  The fix has
+been exposed to -next and kbuild test robot testing, and has been
+tested by the PowerPC guys.
 
-I am confident that my estimate is an accurate estimate since I have not
-seen any sbp support requests, sbp bug reports nor any sbp bug fixes since
-the sbp target driver has been accepted upstream.
+The following changes since commit 0477e92881850d44910a7e94fc2c46f96faa131f:
 
-> Here's a different question: "Why remove it from the kernel tree?"
-> 
-> If maintaining this code is a burden, is it not the kind of tax that all 
-> developers/users pay to all developers/users? Does this driver impose an 
-> unreasonably high burden for some reason?
+  Linux 5.10-rc7 (2020-12-06 14:25:12 -0800)
 
-Yes. If anyone wants to change the interface between SCSI target core and
-SCSI target drivers, all target drivers, including the sbp and FCoE target
-driver have to be retested. In other words, keeping unused target drivers
-inside the kernel tree involves a significant maintenance burden for anyone
-who wants to modify the interface between the SCSI target core and SCSI
-target drivers.
+are available in the git repository at:
 
-Additionally, there is a good alternative available for the sbp driver.
-Every system I know of that is equipped with a Firewire port also has an
-Ethernet port. So users who want to provide SCSI target functionality on
-such systems can use any SCSI transport protocol that is compatible with
-Ethernet (iSCSI, iSER over soft-RoCE, SRP over soft-RoCE, ...).
+  git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git rcu/urgent
 
-Thanks,
+for you to fetch changes up to 1b04fa9900263b4e217ca2509fd778b32c2b4eb2:
 
-Bart.
+  rcu-tasks: Move RCU-tasks initialization to before early_initcall() (2020-12-14 15:31:13 -0800)
+
+----------------------------------------------------------------
+Uladzislau Rezki (Sony) (1):
+      rcu-tasks: Move RCU-tasks initialization to before early_initcall()
+
+ include/linux/rcupdate.h |  6 ++++++
+ init/main.c              |  1 +
+ kernel/rcu/tasks.h       | 25 +++++++++++++++++++++----
+ 3 files changed, 28 insertions(+), 4 deletions(-)
