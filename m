@@ -1,95 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED21D2E92CB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 10:48:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F772E94DE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 13:31:20 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D8W5c0ZwKzDqFs
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 20:48:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D8Zjv5TDkzDqLM
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 23:31:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=aBBzV1QE; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D8W3t11QnzDqFJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 20:46:33 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 1049W76N006501
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 4 Jan 2021 04:46:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=m5Jn27UCH5q3n1VfntGF+9ZSEzAGklTuRd1+UTav9zk=;
- b=aBBzV1QEBMt8FxRtSCZ97hxoQbNzL+56SMQGf/2Fa6ildgKpWYP8PSlye3tEV4j+njt7
- snajJypYLi8ZXZrkKHUm3j4IMVI01id3q9BO0LiW94aDyaTjCore3FKreu50iL6/KpoJ
- UP+JURui6e079/HL9x7kmgqgh/hRo9p/XZ5o6uBeY23sA/CDqQKoobiTPgDST+FVn5GS
- 9CO1cLEFlDeXoxd7R8t1GOJslGWB+j7RZbC8iMmMlSQLLc/NMdjdhyEALcYOR8HIS8wF
- r3zoD7hR9AJDzrsJTCO0wealoi5575tcJf41dL5iWgw2qncYyvt5X3v3MfQdeFQaQ0t5 aw== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35v0er8aut-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Jan 2021 04:46:29 -0500
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1049WSe2011085
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 4 Jan 2021 09:46:27 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03ams.nl.ibm.com with ESMTP id 35tgf89qpk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Jan 2021 09:46:27 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1049kM5j31326502
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 4 Jan 2021 09:46:22 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7F903A405C
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 09:46:25 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6557FA405B
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 09:46:25 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.145.75.217])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 09:46:25 +0000 (GMT)
-Subject: Re: [PATCH] selftests/powerpc: make the test check in eeh-basic.sh
- posix compliant
-To: linuxppc-dev@lists.ozlabs.org
-References: <20201228043459.14281-1-po-hsu.lin@canonical.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Message-ID: <8f943d9b-21cd-49b8-fb45-706cb49e4093@linux.ibm.com>
-Date: Mon, 4 Jan 2021 10:46:25 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D8Zdz4CDwzDqB2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 23:27:51 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=LU8GC11/; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4D8Zdz2nF0z9sTv; Mon,  4 Jan 2021 23:27:51 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4D8Zdz0LkCz9sVs; Mon,  4 Jan 2021 23:27:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1609763271;
+ bh=v8wG597noNfuWICjVdBWzSu8L6bYdzednOXuYaV8Bmo=;
+ h=From:To:Cc:Subject:Date:From;
+ b=LU8GC11/wUmEVJMoE/TpTt42hD46k3xmSL2ev+vxfx4xhmkw/xSKDNjqj0F1i7YFe
+ +e/Yp6p3hgJQASNp6cj66Cw8smUR5t8KpbJiiEIJELBPZfzC4KXmf58xIkcFDJnpVe
+ LnQd2wpMDbAzr/x3m7pUAtkszdFhOqt8QxFPHyXxI95TTxnIKQUFITP7RMbunZKFW2
+ I8H/ALbVUopEtdMrkdtYHnY2rNSiao3FnS6UhzGQhltClXoJ+hOpEFyJINBz7pF6Lt
+ 17gtXMNy9WvBjDoJB6PP3ujxSxLXLpltGiwsDFk6wJiIwPBn16FLz6wGyb0Prtn6d4
+ WD7GPXYvpvVtA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: acme@redhat.com
+Subject: [PATCH] tools headers UAPI: Sync linux/types.h with the kernel sources
+Date: Mon,  4 Jan 2021 23:27:44 +1100
+Message-Id: <20210104122744.4095768-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20201228043459.14281-1-po-hsu.lin@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-04_07:2020-12-31,
- 2021-01-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- adultscore=0 clxscore=1015 impostorscore=0 mlxlogscore=999 phishscore=0
- suspectscore=0 mlxscore=0 spamscore=0 priorityscore=1501 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101040061
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,45 +55,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: daniel@iogearbox.net, linuxppc-dev@ozlabs.org, linux-kernel@vger.kernel.org,
+ ast@kernel.org, vt@altlinux.org, andrii@kernel.org, yhs@fb.com, kafai@fb.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Unlike the other headers in tools/include/uapi/linux, types.h has
+never been synced from the exported headers, instead it's been hand
+written over time. This means it doesn't match the exported headers
+which can cause build errors on some architectures.
 
+For example on powerpc, tools/bpf doesn't build:
 
-On 28/12/2020 05:34, Po-Hsu Lin wrote:
-> The == operand is a bash extension, thus this will fail on Ubuntu with
-> 
+  $ make O=/build -C tools/bpf/
+  make: Entering directory '/linux/tools/bpf'
 
-Error message is somehow missing. It should read:
-"./eeh-basic.sh: 89: test: 2: unexpected operator"
+  Auto-detecting system features:
+  ...                        libbfd: [ on  ]
+  ...        disassembler-four-args: [ on  ]
 
-> As the /bin/sh on Ubuntu is pointed to DASH.
-> 
-> Use -eq to fix this posix compatibility issue.
-> 
-> Fixes: 996f9e0f93f162 ("selftests/powerpc: Fix eeh-basic.sh exit codes")
-> Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
-> ---
+    CC       /build/bpf_jit_disasm.o
+    LINK     /build/bpf_jit_disasm
+    CC       /build/bpf_dbg.o
+  In file included from /usr/include/powerpc64le-linux-gnu/asm/sigcontext.h:14,
+                   from /usr/include/powerpc64le-linux-gnu/bits/sigcontext.h:30,
+                   from /usr/include/signal.h:288,
+                   from /linux/tools/bpf/bpf_dbg.c:51:
+  /usr/include/powerpc64le-linux-gnu/asm/elf.h:160:9: error: unknown type name '__vector128'
+    160 | typedef __vector128 elf_vrreg_t;
+        |         ^~~~~~~~~~~
+  make: *** [Makefile:67: /build/bpf_dbg.o] Error 1
 
+This is because tools/include/uapi/linux/types.h doesn't include
+asm/types.h, where __vector128 is defined in the powerpc headers.
 
-With the above,
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+We can fix it by syncing the tools header with the exported kernel
+header, as is done for the other headers in tools/include/uapi/linux.
 
-Thanks!
+Reported-by: Vitaly Chikunov <vt@altlinux.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
 
->   tools/testing/selftests/powerpc/eeh/eeh-basic.sh | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/powerpc/eeh/eeh-basic.sh b/tools/testing/selftests/powerpc/eeh/eeh-basic.sh
-> index 0d783e1..64779f0 100755
-> --- a/tools/testing/selftests/powerpc/eeh/eeh-basic.sh
-> +++ b/tools/testing/selftests/powerpc/eeh/eeh-basic.sh
-> @@ -86,5 +86,5 @@ echo "$failed devices failed to recover ($dev_count tested)"
->   lspci | diff -u $pre_lspci -
->   rm -f $pre_lspci
->   
-> -test "$failed" == 0
-> +test "$failed" -eq 0
->   exit $?
-> 
+Earlier discussion: https://lore.kernel.org/netdev/20201024203040.4cjxnxrdy6qx557c@altlinux.org/
+
+Build tested on powerpc and x86.
+---
+ tools/include/uapi/linux/types.h | 41 ++++++++++++++++++++++++++------
+ 1 file changed, 34 insertions(+), 7 deletions(-)
+
+diff --git a/tools/include/uapi/linux/types.h b/tools/include/uapi/linux/types.h
+index 91fa51a9c31d..999cb0fa88eb 100644
+--- a/tools/include/uapi/linux/types.h
++++ b/tools/include/uapi/linux/types.h
+@@ -1,11 +1,26 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _UAPI_LINUX_TYPES_H
+-#define _UAPI_LINUX_TYPES_H
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++#ifndef _LINUX_TYPES_H
++#define _LINUX_TYPES_H
+ 
+-#include <asm-generic/int-ll64.h>
++#include <asm/types.h>
++
++#ifndef __ASSEMBLY__
++
++#include <linux/posix_types.h>
++
++
++/*
++ * Below are truly Linux-specific types that should never collide with
++ * any application/library that wants linux/types.h.
++ */
++
++#ifdef __CHECKER__
++#define __bitwise__ __attribute__((bitwise))
++#else
++#define __bitwise__
++#endif
++#define __bitwise __bitwise__
+ 
+-/* copied from linux:include/uapi/linux/types.h */
+-#define __bitwise
+ typedef __u16 __bitwise __le16;
+ typedef __u16 __bitwise __be16;
+ typedef __u32 __bitwise __le32;
+@@ -16,8 +31,20 @@ typedef __u64 __bitwise __be64;
+ typedef __u16 __bitwise __sum16;
+ typedef __u32 __bitwise __wsum;
+ 
++/*
++ * aligned_u64 should be used in defining kernel<->userspace ABIs to avoid
++ * common 32/64-bit compat problems.
++ * 64-bit values align to 4-byte boundaries on x86_32 (and possibly other
++ * architectures) and to 8-byte boundaries on 64-bit architectures.  The new
++ * aligned_64 type enforces 8-byte alignment so that structs containing
++ * aligned_64 values have the same alignment on 32-bit and 64-bit architectures.
++ * No conversions are necessary between 32-bit user-space and a 64-bit kernel.
++ */
+ #define __aligned_u64 __u64 __attribute__((aligned(8)))
+ #define __aligned_be64 __be64 __attribute__((aligned(8)))
+ #define __aligned_le64 __le64 __attribute__((aligned(8)))
+ 
+-#endif /* _UAPI_LINUX_TYPES_H */
++typedef unsigned __bitwise __poll_t;
++
++#endif /*  __ASSEMBLY__ */
++#endif /* _LINUX_TYPES_H */
+-- 
+2.25.1
+
