@@ -1,52 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779552E95B9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 14:19:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3972E95D2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 14:23:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D8bnl159JzDqBH
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 00:19:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D8btP74H4zDqM5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 00:23:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ smtp.mailfrom=kroah.com (client-ip=64.147.123.24;
+ helo=wout1-smtp.messagingengine.com; envelope-from=greg@kroah.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=W4RRbJKn; 
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=kroah.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kroah.com header.i=@kroah.com header.a=rsa-sha256
+ header.s=fm2 header.b=BstwvCO4; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm1 header.b=CXuNXhgg; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+X-Greylist: delayed 361 seconds by postgrey-1.36 at bilbo;
+ Tue, 05 Jan 2021 00:00:59 AEDT
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
+ [64.147.123.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D8bDr622jzDqLC
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 23:54:36 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BB53621BE5;
- Mon,  4 Jan 2021 12:54:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1609764874;
- bh=qG0jf9UFL5r8CpHGo5ZJIKDGB7vyvuSz0z8xuIW05fw=;
- h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=W4RRbJKnxa96Ad4PjqnMRnhLe9jTdslyB023oHHPayrQyFqcbiKN7+hjt2b2lgYoC
- r6koW2t0utbx+NoJiGQy76u0AkVxq1IErxz8VkfW12cykJCQPnZPGct9KGGHmbREB9
- zoqMEnGmtFH3bJvoHnSlMqEi5Cw/uNTqf5xbPYV0=
-Subject: Patch "powerpc/mmu_gather: enable RCU_TABLE_FREE even for !SMP case"
- has been added to the 4.19-stable tree
-To: aneesh.kumar@linux.ibm.com, greg@kroah.com, gregkh@linuxfoundation.org,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, santosh@fossix.org,
- sashal@kernel.org
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Jan 2021 13:55:44 +0100
-In-Reply-To: <20200312132740.225241-5-santosh@fossix.org>
-Message-ID: <1609764944147180@kroah.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D8bNC3PsnzDqLP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 00:00:58 +1100 (AEDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.west.internal (Postfix) with ESMTP id 63BCF15D8;
+ Mon,  4 Jan 2021 07:54:51 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute4.internal (MEProxy); Mon, 04 Jan 2021 07:54:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+ date:from:to:cc:subject:message-id:references:mime-version
+ :content-type:in-reply-to; s=fm2; bh=KhhpB57NCBwpsFegDp/KnPnpp7y
+ 0kN/0LqejfDPizYU=; b=BstwvCO45AX5wufflWvrmbBT66O2gIu3of5PillHp+B
+ olanTnFeqtBX3bvOPUCHGQvtvj/At1/6yUrKqSCK2gpucasA8FklB5ryawame91E
+ Jh72PBICEfwhoZTtbT7HuHZL9lCXqhh3rXkwzxjL3EnJt/7oP9bttVLLTirsFtw/
+ 4gcwOtslgVHC4DPzkQg765oQR2lU3SRWMmFLPYJc0TeV2JMzLDXT93dq0GsYBtTJ
+ wOhJfwvIwf1wmwGuLSyUpdS4z0G/zPvkRDOv0CoTprcvinyT7IJZ5hFmS0hr165Q
+ qN3cNKBfX/EMB0Cfqwn/aM6n/yADHB5TXXZv+L5cPLw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=KhhpB5
+ 7NCBwpsFegDp/KnPnpp7y0kN/0LqejfDPizYU=; b=CXuNXhggS1+G2FAMsx5FRf
+ 4gHh15OrQKgdFn36edFhpWruQtxNiSioWgTifqBzrVPGtlip0xqkmCxPTvPG/WNn
+ jpczDrIsaftrAygtsXDf13zDwulrn3QD5sSE4fz8h4wEAK6DNut4ZF0LaK843cdH
+ K8Q33ls4PqcZ/+9weNBGZSzfnMU4qG3fe/glwRMGw5yJh2mG2fAi7yNCio2ikMVM
+ pi4D8VxVukDA8N/oc8x6rYe0coCmvR587gZ5U9xSzCZfrU5v2wlxsAaqvODb2tBV
+ j1O2CYD/Ao7kyqvJ2XdDEhxAMcCoj5KMbcjzaXMyPdcVM0l99K1dQZ2AG4Nxfo+Q
+ ==
+X-ME-Sender: <xms:GRDzX580XrG7L4y-te7UOtjGkJaliwTBj2cYmDRXCb5_ucPi2ZmZdQ>
+ <xme:GRDzX9td7dS8jiCbdZaS3Cq3DAILp2lD49PttWSztc8KBOSO_Vck6SrSjSkn_BA76
+ tQPUDWTRaBysg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrvdeffedggeekucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+ mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeeuleeltd
+ ehkeeltefhleduuddvhfffuedvffduveegheekgeeiffevheegfeetgfenucffohhmrghi
+ nhepkhgvrhhnvghlrdhorhhgnecukfhppeekfedrkeeirdejgedrieegnecuvehluhhsth
+ gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghh
+ rdgtohhm
+X-ME-Proxy: <xmx:GRDzX3AQqFJnXnrmC3UjRFjIZUebCpPjHsyxfCVzG8hdg38jzJ4huA>
+ <xmx:GRDzX9cLd7y1ywko0vtHERMDOFLTUy1-vqwH6Cu01fEQON-gmpiuSQ>
+ <xmx:GRDzX-P4ysuU4f9wvyZecIZa5tJWiashaEH-gBL8PU-5hI4k17JzYA>
+ <xmx:GxDzX3YfWQgP05R12ZNthlYzoH27bd8WdxCnhjN2JOAxXv4b-RImRg>
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 786DC24005B;
+ Mon,  4 Jan 2021 07:54:49 -0500 (EST)
+Date: Mon, 4 Jan 2021 13:56:16 +0100
+From: Greg KH <greg@kroah.com>
+To: Santosh Sivaraj <santosh@fossix.org>
+Subject: Re: [PATCH v3 0/6] Memory corruption may occur due to incorrent tlb
+ flush
+Message-ID: <X/MQcIep4k15cHe4@kroah.com>
+References: <20200312132740.225241-1-santosh@fossix.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200312132740.225241-1-santosh@fossix.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,222 +96,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable-commits@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Mar 12, 2020 at 06:57:34PM +0530, Santosh Sivaraj wrote:
+> The TLB flush optimisation (a46cc7a90f: powerpc/mm/radix: Improve TLB/PWC
+> flushes) may result in random memory corruption. Any concurrent page-table walk
+> could end up with a Use-after-Free. Even on UP this might give issues, since
+> mmu_gather is preemptible these days. An interrupt or preempted task accessing
+> user pages might stumble into the free page if the hardware caches page
+> directories.
+> 
+> The series is a backport of the fix sent by Peter [1].
+> 
+> The first three patches are dependencies for the last patch (avoid potential
+> double flush). If the performance impact due to double flush is considered
+> trivial then the first three patches and last patch may be dropped.
+> 
+> This is only for v4.19 stable.
+> 
+> [1] https://patchwork.kernel.org/cover/11284843/
 
-This is a note to let you know that I've just added the patch titled
+Sorry for the delay, now queued up, let's see what the test-builders say
+about it...
 
-    powerpc/mmu_gather: enable RCU_TABLE_FREE even for !SMP case
+thanks,
 
-to the 4.19-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     powerpc-mmu_gather-enable-rcu_table_free-even-for-smp-case.patch
-and it can be found in the queue-4.19 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
-
-
-From foo@baz Mon Jan  4 01:45:29 PM CET 2021
-From: Santosh Sivaraj <santosh@fossix.org>
-Date: Thu, 12 Mar 2020 18:57:38 +0530
-Subject: powerpc/mmu_gather: enable RCU_TABLE_FREE even for !SMP case
-To: <stable@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Greg KH <greg@kroah.com>, Sasha Levin <sashal@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <20200312132740.225241-5-santosh@fossix.org>
-
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-
-commit 12e4d53f3f04e81f9e83d6fc10edc7314ab9f6b9 upstream.
-
-Patch series "Fixup page directory freeing", v4.
-
-This is a repost of patch series from Peter with the arch specific changes
-except ppc64 dropped.  ppc64 changes are added here because we are redoing
-the patch series on top of ppc64 changes.  This makes it easy to backport
-these changes.  Only the first 2 patches need to be backported to stable.
-
-The thing is, on anything SMP, freeing page directories should observe the
-exact same order as normal page freeing:
-
- 1) unhook page/directory
- 2) TLB invalidate
- 3) free page/directory
-
-Without this, any concurrent page-table walk could end up with a
-Use-after-Free.  This is esp.  trivial for anything that has software
-page-table walkers (HAVE_FAST_GUP / software TLB fill) or the hardware
-caches partial page-walks (ie.  caches page directories).
-
-Even on UP this might give issues since mmu_gather is preemptible these
-days.  An interrupt or preempted task accessing user pages might stumble
-into the free page if the hardware caches page directories.
-
-This patch series fixes ppc64 and add generic MMU_GATHER changes to
-support the conversion of other architectures.  I haven't added patches
-w.r.t other architecture because they are yet to be acked.
-
-This patch (of 9):
-
-A followup patch is going to make sure we correctly invalidate page walk
-cache before we free page table pages.  In order to keep things simple
-enable RCU_TABLE_FREE even for !SMP so that we don't have to fixup the
-!SMP case differently in the followup patch
-
-!SMP case is right now broken for radix translation w.r.t page walk
-cache flush.  We can get interrupted in between page table free and
-that would imply we have page walk cache entries pointing to tables
-which got freed already.  Michael said "both our platforms that run on
-Power9 force SMP on in Kconfig, so the !SMP case is unlikely to be a
-problem for anyone in practice, unless they've hacked their kernel to
-build it !SMP."
-
-Link: http://lkml.kernel.org/r/20200116064531.483522-2-aneesh.kumar@linux.ibm.com
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: <stable@vger.kernel.org> # 4.19
-Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-[santosh: backported for 4.19 stable]
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/powerpc/Kconfig                         |    2 +-
- arch/powerpc/include/asm/book3s/32/pgalloc.h |    8 --------
- arch/powerpc/include/asm/book3s/64/pgalloc.h |    2 --
- arch/powerpc/include/asm/nohash/32/pgalloc.h |    8 --------
- arch/powerpc/include/asm/nohash/64/pgalloc.h |    9 +--------
- arch/powerpc/mm/pgtable-book3s64.c           |    7 -------
- 6 files changed, 2 insertions(+), 34 deletions(-)
-
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -216,7 +216,7 @@ config PPC
- 	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI && !HAVE_HARDLOCKUP_DETECTOR_ARCH
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
--	select HAVE_RCU_TABLE_FREE		if SMP
-+	select HAVE_RCU_TABLE_FREE
- 	select HAVE_RCU_TABLE_NO_INVALIDATE	if HAVE_RCU_TABLE_FREE
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RELIABLE_STACKTRACE		if PPC64 && CPU_LITTLE_ENDIAN
---- a/arch/powerpc/include/asm/book3s/32/pgalloc.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgalloc.h
-@@ -110,7 +110,6 @@ static inline void pgtable_free(void *ta
- #define check_pgt_cache()	do { } while (0)
- #define get_hugepd_cache_index(x)  (x)
- 
--#ifdef CONFIG_SMP
- static inline void pgtable_free_tlb(struct mmu_gather *tlb,
- 				    void *table, int shift)
- {
-@@ -127,13 +126,6 @@ static inline void __tlb_remove_table(vo
- 
- 	pgtable_free(table, shift);
- }
--#else
--static inline void pgtable_free_tlb(struct mmu_gather *tlb,
--				    void *table, int shift)
--{
--	pgtable_free(table, shift);
--}
--#endif
- 
- static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t table,
- 				  unsigned long address)
---- a/arch/powerpc/include/asm/book3s/64/pgalloc.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgalloc.h
-@@ -47,9 +47,7 @@ extern pmd_t *pmd_fragment_alloc(struct
- extern void pte_fragment_free(unsigned long *, int);
- extern void pmd_fragment_free(unsigned long *);
- extern void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int shift);
--#ifdef CONFIG_SMP
- extern void __tlb_remove_table(void *_table);
--#endif
- 
- static inline pgd_t *radix__pgd_alloc(struct mm_struct *mm)
- {
---- a/arch/powerpc/include/asm/nohash/32/pgalloc.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgalloc.h
-@@ -111,7 +111,6 @@ static inline void pgtable_free(void *ta
- #define check_pgt_cache()	do { } while (0)
- #define get_hugepd_cache_index(x)	(x)
- 
--#ifdef CONFIG_SMP
- static inline void pgtable_free_tlb(struct mmu_gather *tlb,
- 				    void *table, int shift)
- {
-@@ -128,13 +127,6 @@ static inline void __tlb_remove_table(vo
- 
- 	pgtable_free(table, shift);
- }
--#else
--static inline void pgtable_free_tlb(struct mmu_gather *tlb,
--				    void *table, int shift)
--{
--	pgtable_free(table, shift);
--}
--#endif
- 
- static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t table,
- 				  unsigned long address)
---- a/arch/powerpc/include/asm/nohash/64/pgalloc.h
-+++ b/arch/powerpc/include/asm/nohash/64/pgalloc.h
-@@ -142,7 +142,7 @@ static inline void pgtable_free(void *ta
- }
- 
- #define get_hugepd_cache_index(x)	(x)
--#ifdef CONFIG_SMP
-+
- static inline void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int shift)
- {
- 	unsigned long pgf = (unsigned long)table;
-@@ -160,13 +160,6 @@ static inline void __tlb_remove_table(vo
- 	pgtable_free(table, shift);
- }
- 
--#else
--static inline void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int shift)
--{
--	pgtable_free(table, shift);
--}
--#endif
--
- static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t table,
- 				  unsigned long address)
- {
---- a/arch/powerpc/mm/pgtable-book3s64.c
-+++ b/arch/powerpc/mm/pgtable-book3s64.c
-@@ -432,7 +432,6 @@ static inline void pgtable_free(void *ta
- 	}
- }
- 
--#ifdef CONFIG_SMP
- void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int index)
- {
- 	unsigned long pgf = (unsigned long)table;
-@@ -449,12 +448,6 @@ void __tlb_remove_table(void *_table)
- 
- 	return pgtable_free(table, index);
- }
--#else
--void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int index)
--{
--	return pgtable_free(table, index);
--}
--#endif
- 
- #ifdef CONFIG_PROC_FS
- atomic_long_t direct_pages_count[MMU_PAGE_COUNT];
-
-
-Patches currently in stable-queue which might be from santosh@fossix.org are
-
-queue-4.19/asm-generic-tlb-track-which-levels-of-the-page-tables-have-been-cleared.patch
-queue-4.19/asm-generic-tlb-track-freeing-of-page-table-directories-in-struct-mmu_gather.patch
-queue-4.19/asm-generic-tlb-avoid-potential-double-flush.patch
-queue-4.19/mm-mmu_gather-invalidate-tlb-correctly-on-batch-allocation-failure-and-flush.patch
-queue-4.19/powerpc-mmu_gather-enable-rcu_table_free-even-for-smp-case.patch
-queue-4.19/asm-generic-tlb-arch-invert-config_have_rcu_table_invalidate.patch
+greg k-h
