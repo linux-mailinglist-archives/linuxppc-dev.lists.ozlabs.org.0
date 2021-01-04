@@ -1,53 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B54B82E95E3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 14:26:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A742E96B8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 15:05:33 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D8bxm4NvbzDqMk
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 00:26:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D8cpf02M9zDqNT
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 01:05:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
+ helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from smtpout1.mo804.mail-out.ovh.net
+ (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D8bQD4BLpzDqLC
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 00:02:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=U0ijzSIt; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4D8bQ82vFyz9sVw;
- Tue,  5 Jan 2021 00:02:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1609765361;
- bh=I6gu+WnV61ml7N9YKJuSvHuz1prsrkoQR4jFijLhY0Q=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=U0ijzSItrDytH92e6K5/rOeI3oJXLbOZq+XDRZXBARr3q0UcGE701Eip7j08Q/cuF
- AF3eBWViqN/Lb9x/zEnsVVVQCvz6KomJiKm7QczYMiu5Jk5JOQnzM4YueRV0TsAs3g
- Ln7o6vCCulNY9xLdgHDUiC8V16iMfEM8EsRUqJ82ANv/0UP9Kt0ukksOnhtD0seZmS
- nHbk89KtTeuPJfGXsmzjF1QFm6AVDufXZqN5fJqDamYJcs+7u1S8prlkK9ANZNrgNZ
- KJ/37ywj7aY4VI/UQWLo1Po2Fc7ihgWEneJdqkCQ/RD+BVEsIClkVu9SBqKhD9V6kI
- Ng+35IvyZf03A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Larry Finger <Larry.Finger@lwfinger.net>,
- Christophe LEROY <christophe.leroy@c-s.fr>
-Subject: Re: Regression for 32-bit ppc on PowerBook G4 Aluminum (bisected to
- commit d0e3fc69d00d)
-In-Reply-To: <04289c09-50c3-26f8-26d7-f43975fbb76a@lwfinger.net>
-References: <04289c09-50c3-26f8-26d7-f43975fbb76a@lwfinger.net>
-Date: Tue, 05 Jan 2021 00:02:35 +1100
-Message-ID: <8735zghn2s.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D8cmc70XxzDqDG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 01:03:36 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.4.12])
+ by mo804.mail-out.ovh.net (Postfix) with ESMTPS id 11D7A7F358D0;
+ Mon,  4 Jan 2021 15:03:26 +0100 (CET)
+Received: from kaod.org (37.59.142.101) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Mon, 4 Jan 2021
+ 15:03:25 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-101G004d5da9b64-da8c-42c2-b526-71373a01c04d,
+ E6F5FD2F8B81D51FFC90B89046B6334D311E5876) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Subject: Re: [PATCH 17/23] powerpc/watchdog: Declare soft_nmi_interrupt()
+ prototype
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ <linuxppc-dev@lists.ozlabs.org>
+References: <20201221074222.403894-1-clg@kaod.org>
+ <20201221074222.403894-18-clg@kaod.org>
+ <8174a721-0407-1788-c2d1-dd4b274b314e@csgroup.eu>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <8387a97a-75b6-02ec-421f-8184ff2caa03@kaod.org>
+Date: Mon, 4 Jan 2021 15:03:24 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <8174a721-0407-1788-c2d1-dd4b274b314e@csgroup.eu>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.101]
+X-ClientProxiedBy: DAG2EX2.mxp5.local (172.16.2.12) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: ae3e8330-5ed0-441e-8057-d9e7ae1b79b2
+X-Ovh-Tracer-Id: 2318509386801712093
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrvdeffedgiedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeehtdeviefhgfeugfevjeeiveefvedtvdehhfejleduveejieefhfeffeetfeeunecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,14 +68,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, ppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Larry Finger <Larry.Finger@lwfinger.net> writes:
-> I tested 5.11.0-rc1 and it booted OK. My problem is fixed.
+On 12/21/20 9:48 AM, Christophe Leroy wrote:
+> 
+> 
+> Le 21/12/2020 à 08:42, Cédric Le Goater a écrit :
+>> It fixes this W=1 compile error :
+>>
+>> ../arch/powerpc/kernel/watchdog.c:250:6: error: no previous prototype for ‘soft_nmi_interrupt’ [-Werror=missing-prototypes]
+>>    250 | void soft_nmi_interrupt(struct pt_regs *regs)
+>>        |      ^~~~~~~~~~~~~~~~~~
+>>
+>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>   arch/powerpc/include/asm/asm-prototypes.h | 1 +
+> 
+> This is a misuse of asm/asm-prototypes.h
 
-Thanks.
+yes. <asm/nmi.h> is a better place.
 
-cheers
+Thanks for the review,
+
+C. 
+
+
+> This file is for prototypes of ASM functions.
+> 
+> See discussion at https://patchwork.ozlabs.org/project/linuxppc-dev/patch/1463534212-4879-2-git-send-email-dja@axtens.net/
+> 
+> 
+>>   arch/powerpc/kernel/watchdog.c            | 1 +
+>>   2 files changed, 2 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
+>> index d0b832cbbec8..0f39eefbd5a5 100644
+>> --- a/arch/powerpc/include/asm/asm-prototypes.h
+>> +++ b/arch/powerpc/include/asm/asm-prototypes.h
+>> @@ -84,6 +84,7 @@ void machine_check_exception(struct pt_regs *regs);
+>>   void emulation_assist_interrupt(struct pt_regs *regs);
+>>   long do_slb_fault(struct pt_regs *regs, unsigned long ea);
+>>   void do_bad_slb_fault(struct pt_regs *regs, unsigned long ea, long err);
+>> +void soft_nmi_interrupt(struct pt_regs *regs);
+>>     /* signals, syscalls and interrupts */
+>>   long sys_swapcontext(struct ucontext __user *old_ctx,
+>> diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
+>> index af3c15a1d41e..855716f563ac 100644
+>> --- a/arch/powerpc/kernel/watchdog.c
+>> +++ b/arch/powerpc/kernel/watchdog.c
+>> @@ -27,6 +27,7 @@
+>>   #include <linux/smp.h>
+>>     #include <asm/paca.h>
+>> +#include <asm/asm-prototypes.h>
+>>     /*
+>>    * The powerpc watchdog ensures that each CPU is able to service timers.
+>>
+
