@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3E42E976D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 15:38:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60F32E9768
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 15:36:43 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D8dXY3YSpzDqMM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 01:38:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D8dVd1dW7zDqMt
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 01:36:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -20,48 +20,47 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D8dPn3dyBzDqJ2
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 01:32:29 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D8dPm2ZZpzDqJ2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 01:32:27 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 104EVkII018088; Mon, 4 Jan 2021 09:32:18 -0500
+ 104E2quU166672; Mon, 4 Jan 2021 09:32:19 -0500
 Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
  [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35v49hs6cy-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35v2d2vjft-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Jan 2021 09:32:18 -0500
+ Mon, 04 Jan 2021 09:32:19 -0500
 Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 104EWFx5017634;
- Mon, 4 Jan 2021 14:32:15 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma05fra.de.ibm.com with ESMTP id 35tgf890r6-1
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 104EWHCc017638;
+ Mon, 4 Jan 2021 14:32:17 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma05fra.de.ibm.com with ESMTP id 35tgf890r7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Jan 2021 14:32:15 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 104EWCc242271034
+ Mon, 04 Jan 2021 14:32:17 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 104EWB2730474588
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Jan 2021 14:32:12 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 36C7B4C04A;
- Mon,  4 Jan 2021 14:32:12 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E91734C046;
- Mon,  4 Jan 2021 14:32:11 +0000 (GMT)
+ Mon, 4 Jan 2021 14:32:11 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 250BFAE04D;
+ Mon,  4 Jan 2021 14:32:14 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D4ED0AE045;
+ Mon,  4 Jan 2021 14:32:13 +0000 (GMT)
 Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Mon,  4 Jan 2021 14:32:11 +0000 (GMT)
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Mon,  4 Jan 2021 14:32:13 +0000 (GMT)
 Received: from yukon.ibmuc.com (sig-9-145-4-90.uk.ibm.com [9.145.4.90])
- by smtp.tlslab.ibm.com (Postfix) with ESMTP id 309EF220073;
- Mon,  4 Jan 2021 15:32:11 +0100 (CET)
+ by smtp.tlslab.ibm.com (Postfix) with ESMTP id 1333822016B;
+ Mon,  4 Jan 2021 15:32:13 +0100 (CET)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 04/23] powerpc/pseries/ras: Make init_ras_hotplug_IRQ()
- static
-Date: Mon,  4 Jan 2021 15:31:47 +0100
-Message-Id: <20210104143206.695198-5-clg@kaod.org>
+Subject: [PATCH v2 07/23] powerpc/mce: Include prototypes
+Date: Mon,  4 Jan 2021 15:31:50 +0100
+Message-Id: <20210104143206.695198-8-clg@kaod.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20210104143206.695198-1-clg@kaod.org>
 References: <20210104143206.695198-1-clg@kaod.org>
@@ -73,10 +72,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
  definitions=2021-01-04_08:2021-01-04,
  2021-01-04 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=800 spamscore=0
- adultscore=0 bulkscore=0 impostorscore=0 mlxscore=0 suspectscore=0
- phishscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
- clxscore=1034 classifier=spam adjust=0 reason=mlx scancount=1
+ spamscore=0 suspectscore=0
+ phishscore=0 adultscore=0 impostorscore=0 malwarescore=0 mlxscore=0
+ bulkscore=0 mlxlogscore=855 priorityscore=1501 clxscore=1034
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2101040091
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -97,41 +96,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-init_ras_hotplug_IRQ() is a local routine used by a machine init call
-and it doesn't need to be external.
+It fixes these W=3D1 compile errors :
 
-It fixes this W=3D1 compile error:
+../arch/powerpc/kernel/mce.c:591:14: error: no previous prototype for =E2=
+=80=98machine_check_early=E2=80=99 [-Werror=3Dmissing-prototypes]
+  591 | long notrace machine_check_early(struct pt_regs *regs)
+      |              ^~~~~~~~~~~~~~~~~~~
+../arch/powerpc/kernel/mce.c:725:6: error: no previous prototype for =E2=80=
+=98hmi_exception_realmode=E2=80=99 [-Werror=3Dmissing-prototypes]
+  725 | long hmi_exception_realmode(struct pt_regs *regs)
+      |      ^~~~~~~~~~~~~~~~~~~~~~
 
-../arch/powerpc/platforms/pseries/ras.c:125:12: error: no previous protot=
-ype for =E2=80=98init_ras_hotplug_IRQ=E2=80=99 [-Werror=3Dmissing-prototy=
-pes]
-  125 | int __init init_ras_hotplug_IRQ(void)
-      |            ^~~~~~~~~~~~~~~~~~~~
-
-Fixes: c9dccf1d074a ("powerpc/pseries: Enable RAS hotplug events later")
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 ---
- arch/powerpc/platforms/pseries/ras.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/mce.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platform=
-s/pseries/ras.c
-index bcb614ffce6a..d2fca1aa6742 100644
---- a/arch/powerpc/platforms/pseries/ras.c
-+++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -122,7 +122,7 @@ static inline u8 rtas_mc_error_sub_type(const struct =
-pseries_mc_errorlog *mlog)
-  * devices or systems (e.g. hugepages) that have not been initialized at=
- the
-  * subsys stage.
-  */
--int __init init_ras_hotplug_IRQ(void)
-+static int __init init_ras_hotplug_IRQ(void)
- {
- 	struct device_node *np;
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index 9f3e133b57b7..c381dc2f9858 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -21,6 +21,7 @@
+ #include <asm/machdep.h>
+ #include <asm/mce.h>
+ #include <asm/nmi.h>
++#include <asm/asm-prototypes.h>
 =20
+ static DEFINE_PER_CPU(int, mce_nest_count);
+ static DEFINE_PER_CPU(struct machine_check_event[MAX_MC_EVT], mce_event)=
+;
 --=20
 2.26.2
 
