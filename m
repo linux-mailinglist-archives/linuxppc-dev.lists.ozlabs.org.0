@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3CC12E9563
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 13:59:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6952A2E957F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 14:04:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D8bLH1cbSzDq7W
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 23:59:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D8bS50ndnzDqLq
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 00:04:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,32 +17,31 @@ Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=gwWyuVpH; 
+ header.a=rsa-sha256 header.s=korg header.b=eY6MA2Kh; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D8bDY45jnzDqD7
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 23:54:19 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1B5DB207B1;
- Mon,  4 Jan 2021 12:54:16 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D8bDg2blmzDqD7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jan 2021 23:54:27 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A87F821D93;
+ Mon,  4 Jan 2021 12:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1609764857;
- bh=o7uryaidOHeA0EtVzCNfEhaxgxoZgOQpbeMfHVwjz9w=;
+ s=korg; t=1609764865;
+ bh=tdZ0nyxPBv4edj4M1RxWgpDXpG751uA7wR/41NIirVQ=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=gwWyuVpHM+i0meH56KM2E3nrpBRs4PuTUTrYeYscbkRSjUj5JzSxWjU0N0pnL0GXj
- Xkawnra9GV4HTUKD7tcCngdxuMkMwIfeilD1Iv+w0/6O3GsBWkPmh9h/3MhFz8U6Yc
- LYZWIthFGVQgyV3joct1tUEcky2I7aMwg3+KTWrM=
-Subject: Patch "asm-generic/tlb,
- arch: Invert CONFIG_HAVE_RCU_TABLE_INVALIDATE" has been added to the
- 4.19-stable tree
-To: greg@kroah.com, gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au, peterz@infradead.org, santosh@fossix.org,
- sashal@kernel.org
+ b=eY6MA2KhWWXYYexSL0zB3XPdWPjPOh9femHgSjyT3brhaQo8kkdKf8pJ47+cjR0C9
+ H+rVf+OQKUPeaWywKJ5ePx03p58FSwujrtFMG+Tl97buXrJ0xWL0ojfdGmb6oOi6x/
+ WWIZ2HF9j7kJF5NLfkw+6YY/Zlk3pgt4HIHGVh/4=
+Subject: Patch "asm-generic/tlb: avoid potential double flush" has been added
+ to the 4.19-stable tree
+To: aneesh.kumar@linux.ibm.com, greg@kroah.com, gregkh@linuxfoundation.org,
+ linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, peterz@infradead.org,
+ santosh@fossix.org, sashal@kernel.org
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 04 Jan 2021 13:55:43 +0100
-In-Reply-To: <20200312132740.225241-4-santosh@fossix.org>
-Message-ID: <160976494313579@kroah.com>
+In-Reply-To: <20200312132740.225241-7-santosh@fossix.org>
+Message-ID: <160976494321888@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -67,13 +66,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    asm-generic/tlb, arch: Invert CONFIG_HAVE_RCU_TABLE_INVALIDATE
+    asm-generic/tlb: avoid potential double flush
 
 to the 4.19-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     asm-generic-tlb-arch-invert-config_have_rcu_table_invalidate.patch
+     asm-generic-tlb-avoid-potential-double-flush.patch
 and it can be found in the queue-4.19 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -82,93 +81,65 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon Jan  4 01:45:29 PM CET 2021
 From: Santosh Sivaraj <santosh@fossix.org>
-Date: Thu, 12 Mar 2020 18:57:37 +0530
-Subject: asm-generic/tlb, arch: Invert CONFIG_HAVE_RCU_TABLE_INVALIDATE
+Date: Thu, 12 Mar 2020 18:57:40 +0530
+Subject: asm-generic/tlb: avoid potential double flush
 To: <stable@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Greg KH <greg@kroah.com>, Sasha Levin <sashal@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Message-ID: <20200312132740.225241-4-santosh@fossix.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Greg KH <greg@kroah.com>, Sasha Levin <sashal@kernel.org>, Peter Zijlstra <peterz@infradead.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <20200312132740.225241-7-santosh@fossix.org>
 
 From: Peter Zijlstra <peterz@infradead.org>
 
-commit 96bc9567cbe112e9320250f01b9c060c882e8619 upstream.
+commit 0758cd8304942292e95a0f750c374533db378b32 upstream.
 
-Make issuing a TLB invalidate for page-table pages the normal case.
+Aneesh reported that:
 
-The reason is twofold:
+	tlb_flush_mmu()
+	  tlb_flush_mmu_tlbonly()
+	    tlb_flush()			<-- #1
+	  tlb_flush_mmu_free()
+	    tlb_table_flush()
+	      tlb_table_invalidate()
+		tlb_flush_mmu_tlbonly()
+		  tlb_flush()		<-- #2
 
- - too many invalidates is safer than too few,
- - most architectures use the linux page-tables natively
-   and would thus require this.
+does two TLBIs when tlb->fullmm, because __tlb_reset_range() will not
+clear tlb->end in that case.
 
-Make it an opt-out, instead of an opt-in.
+Observe that any caller to __tlb_adjust_range() also sets at least one of
+the tlb->freed_tables || tlb->cleared_p* bits, and those are
+unconditionally cleared by __tlb_reset_range().
 
-No change in behavior intended.
+Change the condition for actually issuing TLBI to having one of those bits
+set, as opposed to having tlb->end != 0.
 
+Link: http://lkml.kernel.org/r/20200116064531.483522-4-aneesh.kumar@linux.ibm.com
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org> # 4.19
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Reported-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: <stable@vger.kernel.org>  # 4.19
 Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-[santosh: prerequisite for upcoming tlbflush backports]
+[santosh: backported to 4.19 stable]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/Kconfig         |    2 +-
- arch/powerpc/Kconfig |    1 +
- arch/sparc/Kconfig   |    1 +
- arch/x86/Kconfig     |    1 -
- mm/memory.c          |    2 +-
- 5 files changed, 4 insertions(+), 3 deletions(-)
+ include/asm-generic/tlb.h |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -363,7 +363,7 @@ config HAVE_ARCH_JUMP_LABEL
- config HAVE_RCU_TABLE_FREE
- 	bool
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -179,7 +179,12 @@ static inline void __tlb_reset_range(str
  
--config HAVE_RCU_TABLE_INVALIDATE
-+config HAVE_RCU_TABLE_NO_INVALIDATE
- 	bool
- 
- config ARCH_WANT_IRQS_OFF_ACTIVATE_MM
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -217,6 +217,7 @@ config PPC
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
- 	select HAVE_RCU_TABLE_FREE		if SMP
-+	select HAVE_RCU_TABLE_NO_INVALIDATE	if HAVE_RCU_TABLE_FREE
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RELIABLE_STACKTRACE		if PPC64 && CPU_LITTLE_ENDIAN
- 	select HAVE_SYSCALL_TRACEPOINTS
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -64,6 +64,7 @@ config SPARC64
- 	select HAVE_KRETPROBES
- 	select HAVE_KPROBES
- 	select HAVE_RCU_TABLE_FREE if SMP
-+	select HAVE_RCU_TABLE_NO_INVALIDATE if HAVE_RCU_TABLE_FREE
- 	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
- 	select HAVE_DYNAMIC_FTRACE
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -181,7 +181,6 @@ config X86
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
- 	select HAVE_RCU_TABLE_FREE		if PARAVIRT
--	select HAVE_RCU_TABLE_INVALIDATE	if HAVE_RCU_TABLE_FREE
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RELIABLE_STACKTRACE		if X86_64 && (UNWINDER_FRAME_POINTER || UNWINDER_ORC) && STACK_VALIDATION
- 	select HAVE_STACKPROTECTOR		if CC_HAS_SANE_STACKPROTECTOR
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -339,7 +339,7 @@ bool __tlb_remove_page_size(struct mmu_g
-  */
- static inline void tlb_table_invalidate(struct mmu_gather *tlb)
+ static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
  {
--#ifdef CONFIG_HAVE_RCU_TABLE_INVALIDATE
-+#ifndef CONFIG_HAVE_RCU_TABLE_NO_INVALIDATE
- 	/*
- 	 * Invalidate page-table caches used by hardware walkers. Then we still
- 	 * need to RCU-sched wait while freeing the pages because software
+-	if (!tlb->end)
++	/*
++	 * Anything calling __tlb_adjust_range() also sets at least one of
++	 * these bits.
++	 */
++	if (!(tlb->freed_tables || tlb->cleared_ptes || tlb->cleared_pmds ||
++	      tlb->cleared_puds || tlb->cleared_p4ds))
+ 		return;
+ 
+ 	tlb_flush(tlb);
 
 
 Patches currently in stable-queue which might be from santosh@fossix.org are
