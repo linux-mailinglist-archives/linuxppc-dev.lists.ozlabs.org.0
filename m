@@ -1,99 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465092EB50E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 22:55:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D952EB571
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 23:37:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D9RBK3b52zDqbx
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jan 2021 08:55:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D9S7R3JtlzDqdl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jan 2021 09:37:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=qcai@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=eZraZRAh; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=cj/m0ghM; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=cj/m0ghM; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D9R8T05bVzDqbf
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jan 2021 08:53:43 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 105LVVBI030036; Tue, 5 Jan 2021 16:53:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=DyiP0RrmtBLEw+DXLTWXmJKvMB5vgP39H0eWDpcqFqY=;
- b=eZraZRAhPJu7QWI3kCfZqvJnhzHux7ZY162mCAvAZl8wkesjT1LKWmvRU8U6hNxiZIIT
- 1OV04RywWuuNUJRXCiZ30JF12xSG7sjhPk3YH4zM7/xMnj8c/sdAsKmz0UHggq+acK03
- DC7nYDsQE+BXGO04dTuDsnNT8L6vbULjuqCAMl8Spe6/hrIgISBTbYK5Gkse2LPppv8l
- 4KXAHuK4HdBNUc6gYF2TxSCh/LVRGntM2C9LZB0Y83p5c1N/tX6EiZQNLbC2McHJzNfl
- fud/8oXLTXhdfrU6OjykJtAMR3O2yVvitDXmq+dBR/ehk0if8bx21oqhSzzfB9mBOnz1 Xg== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 35vy231ytq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Jan 2021 16:53:34 -0500
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 105LmA0d004339;
- Tue, 5 Jan 2021 21:53:33 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma02fra.de.ibm.com with ESMTP id 35tgf89ph4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Jan 2021 21:53:32 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 105LrUJC15991070
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Jan 2021 21:53:30 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B9792A405C;
- Tue,  5 Jan 2021 21:53:30 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 63ECBA4054;
- Tue,  5 Jan 2021 21:53:30 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  5 Jan 2021 21:53:30 +0000 (GMT)
-Received: from [9.206.201.155] (unknown [9.206.201.155])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D9S5f02BVzDqbt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jan 2021 09:36:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1609886178;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=EZZnqZ7bOfUDFseawd2jueyjyFb8lfB/zNJXFRgDiL8=;
+ b=cj/m0ghMR2+YDQmi5apCOYhZ/9QGIf5qzUr5Kpc1T6UC2mCFkkzfnZ5hET8uRoS7qOW/LW
+ ZBliiC7+uvadfwSdV8iKPbD6fswO5U3LJLDAMMt31V96DYWpChAFy9Ik4wjdRt93pKCg3m
+ J9gsoCXQU1OfaPuJZvje2KsPCLJq+/Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1609886178;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=EZZnqZ7bOfUDFseawd2jueyjyFb8lfB/zNJXFRgDiL8=;
+ b=cj/m0ghMR2+YDQmi5apCOYhZ/9QGIf5qzUr5Kpc1T6UC2mCFkkzfnZ5hET8uRoS7qOW/LW
+ ZBliiC7+uvadfwSdV8iKPbD6fswO5U3LJLDAMMt31V96DYWpChAFy9Ik4wjdRt93pKCg3m
+ J9gsoCXQU1OfaPuJZvje2KsPCLJq+/Q=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-367-Bi46ccUIOT6eSv4xnZQ-Pg-1; Tue, 05 Jan 2021 17:36:14 -0500
+X-MC-Unique: Bi46ccUIOT6eSv4xnZQ-Pg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id EFBAA606F8;
- Wed,  6 Jan 2021 08:53:28 +1100 (AEDT)
-Subject: Re: [PATCH v2 -next] misc: ocxl: use DEFINE_MUTEX() for mutex lock
-To: Zheng Yongjun <zhengyongjun3@huawei.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-References: <20201224132446.31286-1-zhengyongjun3@huawei.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Message-ID: <9cfa9da6-39e1-58f3-c11d-ac2b0f8ca2b1@linux.ibm.com>
-Date: Wed, 6 Jan 2021 08:53:28 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
-MIME-Version: 1.0
-In-Reply-To: <20201224132446.31286-1-zhengyongjun3@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 06EF515720;
+ Tue,  5 Jan 2021 22:36:13 +0000 (UTC)
+Received: from ovpn-115-104.rdu2.redhat.com (ovpn-115-104.rdu2.redhat.com
+ [10.10.115.104])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7C44760BE5;
+ Tue,  5 Jan 2021 22:36:12 +0000 (UTC)
+Message-ID: <09f87692f844cdaac5b13a7b4ba25e658559f517.camel@redhat.com>
+Subject: Power9 NV linux-next random process hang
+From: Qian Cai <qcai@redhat.com>
+To: linuxppc-dev@lists.ozlabs.org
+Date: Tue, 05 Jan 2021 17:36:11 -0500
+Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-05_07:2021-01-05,
- 2021-01-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- suspectscore=0 mlxlogscore=909 malwarescore=0 impostorscore=0
- clxscore=1011 bulkscore=0 priorityscore=1501 adultscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101050124
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,20 +79,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: fbarrat@linux.ibm.com, gregkh@linuxfoundation.org, arnd@arndb.de
+Cc: linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25/12/20 12:24 am, Zheng Yongjun wrote:
-> mutex lock can be initialized automatically with DEFINE_MUTEX()
-> rather than explicitly calling mutex_init().
-> 
-> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+.config: https://cailca.coding.net/public/linux/mm/git/files/master/powerpc.config
 
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+Today's linux-next starts to generate random process hang quite easily.
+Yesterday's build seems work fine. Sometimes, the process stack seems corrupt
+while the process is running 100% CPU with gdb shows it just entered a
+subroutine that really can't see why it hangs.
 
+[ 6732.309621][T11627] task:ranbug          state:R  running task     stack:24176 pid: 2893 ppid:  2867 flags:0x00040000 
+[ 6732.309779][T11627] Call Trace: 
+[ 6732.309826][T11627] [c00000006166fa30] [c00000006166fb60] 0xc00000006166fb60 (unreliable) 
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+Also, running LTP syscalls ended up hanging with lots of zombie process. Any idea?
+
+root        2023  0.0  0.0      0     0 ?        Zs   14:10   0:00 [login] <defunct>
+root       52052  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [recv01] <defunct>
+root       52054  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [recvfrom01] <defunct>
+root       52056  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [recvmsg01] <defunct>
+root       52155  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [rt_sigtimedwait] <defunct>
+root       52305  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [semctl01] <defunct>
+root       52362  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [send01] <defunct>
+root       52386  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04] <defunct>
+root       52387  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04] <defunct>
+root       52388  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04] <defunct>
+root       52389  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04] <defunct>
+root       52390  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04] <defunct>
+root       52392  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04_64] <defunct>
+root       52393  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04_64] <defunct>
+root       52394  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04_64] <defunct>
+root       52395  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04_64] <defunct>
+root       52396  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04_64] <defunct>
+root       52398  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile05] <defunct>
+root       52400  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile05_64] <defunct>
+root       52415  0.0  0.0      0     0 pts/0    Z    15:04   0:00 [sendmsg01] <defunct>
+root       53470  0.0  0.0      0     0 pts/0    Z    15:04   0:00 [sendto01] <defunct>
+root       53763  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53764  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53765  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53766  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53767  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53768  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53769  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53770  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53771  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53772  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53773  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53774  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53775  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53776  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53777  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53778  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53779  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53780  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+root       53782  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
+nobody     54290  0.0  0.0      0     0 pts/0    Z    15:07   0:00 [sysctl03] <defunct>
+root       56813  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56814  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56815  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56816  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56817  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56818  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56819  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56820  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56821  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56822  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56823  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56825  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56826  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56827  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56828  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56829  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56830  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56831  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56832  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56833  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56834  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56835  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56836  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
+root       56838  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid04] <defunct>
+sshd       58675  0.0  0.0      0     0 ?        Z    17:21   0:00 [sshd] <defunct>
+
