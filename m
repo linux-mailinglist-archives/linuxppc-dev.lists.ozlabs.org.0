@@ -1,73 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D952EB571
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 23:37:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F9D2EB57A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 23:43:15 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D9S7R3JtlzDqdl
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jan 2021 09:37:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D9SFX2RD6zDqdP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jan 2021 09:43:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=qcai@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=cj/m0ghM; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=cj/m0ghM; 
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=nEGBJJsu; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D9S5f02BVzDqbt
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jan 2021 09:36:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1609886178;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=EZZnqZ7bOfUDFseawd2jueyjyFb8lfB/zNJXFRgDiL8=;
- b=cj/m0ghMR2+YDQmi5apCOYhZ/9QGIf5qzUr5Kpc1T6UC2mCFkkzfnZ5hET8uRoS7qOW/LW
- ZBliiC7+uvadfwSdV8iKPbD6fswO5U3LJLDAMMt31V96DYWpChAFy9Ik4wjdRt93pKCg3m
- J9gsoCXQU1OfaPuJZvje2KsPCLJq+/Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1609886178;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=EZZnqZ7bOfUDFseawd2jueyjyFb8lfB/zNJXFRgDiL8=;
- b=cj/m0ghMR2+YDQmi5apCOYhZ/9QGIf5qzUr5Kpc1T6UC2mCFkkzfnZ5hET8uRoS7qOW/LW
- ZBliiC7+uvadfwSdV8iKPbD6fswO5U3LJLDAMMt31V96DYWpChAFy9Ik4wjdRt93pKCg3m
- J9gsoCXQU1OfaPuJZvje2KsPCLJq+/Q=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-367-Bi46ccUIOT6eSv4xnZQ-Pg-1; Tue, 05 Jan 2021 17:36:14 -0500
-X-MC-Unique: Bi46ccUIOT6eSv4xnZQ-Pg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 06EF515720;
- Tue,  5 Jan 2021 22:36:13 +0000 (UTC)
-Received: from ovpn-115-104.rdu2.redhat.com (ovpn-115-104.rdu2.redhat.com
- [10.10.115.104])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7C44760BE5;
- Tue,  5 Jan 2021 22:36:12 +0000 (UTC)
-Message-ID: <09f87692f844cdaac5b13a7b4ba25e658559f517.camel@redhat.com>
-Subject: Power9 NV linux-next random process hang
-From: Qian Cai <qcai@redhat.com>
-To: linuxppc-dev@lists.ozlabs.org
-Date: Tue, 05 Jan 2021 17:36:11 -0500
-Content-Type: text/plain; charset="UTF-8"
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D9SCX0jj8zDqLv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jan 2021 09:41:27 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B64C422D6E;
+ Tue,  5 Jan 2021 22:41:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1609886485;
+ bh=Hd0WCK5SrMVNFPBh9xnoTwtX6vl1dAnkrgvh+w7m70g=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=nEGBJJsu9wtcnOowraQpQglsTKmrBSp9f3SOj7ZqNb60xHmYkXWumhwpw4iZyFXrY
+ Q2qgJsYv0Uc4U1FS1g+rl2+EyHUsnieBTu9iDunwMfTa7r6xIEQg8z+JA8rtbmc53I
+ APYe/v66W4ITmKuq5bLpQJLqW8NGMHHGMCT3bgOKj5burfUi4IFUSjy8LI/JhC+iHX
+ KdQUa/KGMwpB7qG4JDZPNcihKwEBNzm6aG9KvPH6AFwCE3hg/jXcodrUOZZ6QaZigD
+ mGef+R7mmqmwscyztviJVtPN2ZWeAF0YZx2hBcUPTxUnPqaljWb9WXTltRIFi9nR/3
+ OSwNnvpOP3N6A==
+Date: Tue, 5 Jan 2021 22:41:19 +0000
+From: Will Deacon <will@kernel.org>
+To: Andy Lutomirski <luto@amacapital.net>
+Subject: Re: [RFC please help] membarrier: Rewrite sync_core_before_usermode()
+Message-ID: <20210105224119.GA13005@willie-the-truck>
+References: <20210105132623.GB11108@willie-the-truck>
+ <7BFAB97C-1949-46A3-A1E2-DFE108DC7D5E@amacapital.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7BFAB97C-1949-46A3-A1E2-DFE108DC7D5E@amacapital.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,88 +59,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, X86 ML <x86@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andy Lutomirski <luto@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Paul Mackerras <paulus@samba.org>, stable <stable@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-.config: https://cailca.coding.net/public/linux/mm/git/files/master/powerpc.config
+On Tue, Jan 05, 2021 at 08:20:51AM -0800, Andy Lutomirski wrote:
+> > On Jan 5, 2021, at 5:26 AM, Will Deacon <will@kernel.org> wrote:
+> > Sorry for the slow reply, I was socially distanced from my keyboard.
+> > 
+> >> On Mon, Dec 28, 2020 at 04:36:11PM -0800, Andy Lutomirski wrote:
+> >> On Mon, Dec 28, 2020 at 4:11 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+> >>>> +static inline void membarrier_sync_core_before_usermode(void)
+> >>>> +{
+> >>>> +     /*
+> >>>> +      * XXX: I know basically nothing about powerpc cache management.
+> >>>> +      * Is this correct?
+> >>>> +      */
+> >>>> +     isync();
+> >>> 
+> >>> This is not about memory ordering or cache management, it's about
+> >>> pipeline management. Powerpc's return to user mode serializes the
+> >>> CPU (aka the hardware thread, _not_ the core; another wrongness of
+> >>> the name, but AFAIKS the HW thread is what is required for
+> >>> membarrier). So this is wrong, powerpc needs nothing here.
+> >> 
+> >> Fair enough.  I'm happy to defer to you on the powerpc details.  In
+> >> any case, this just illustrates that we need feedback from a person
+> >> who knows more about ARM64 than I do.
+> > 
+> > I think we're in a very similar boat to PowerPC, fwiw. Roughly speaking:
+> > 
+> >  1. SYNC_CORE does _not_ perform any cache management; that is the
+> >     responsibility of userspace, either by executing the relevant
+> >     maintenance instructions (arm64) or a system call (arm32). Crucially,
+> >     the hardware will ensure that this cache maintenance is broadcast
+> >     to all other CPUs.
+> 
+> Is this guaranteed regardless of any aliases?  That is, if I flush from
+> one CPU at one VA and then execute the same physical address from another
+> CPU at a different VA, does this still work?
 
-Today's linux-next starts to generate random process hang quite easily.
-Yesterday's build seems work fine. Sometimes, the process stack seems corrupt
-while the process is running 100% CPU with gdb shows it just entered a
-subroutine that really can't see why it hangs.
+The data side will be fine, but the instruction side can have virtual
+aliases. We handle this in flush_ptrace_access() by blowing away the whole
+I-cache if we're not physically-indexed, but userspace would be in trouble
+if it wanted to handle this situation alone.
 
-[ 6732.309621][T11627] task:ranbug          state:R  running task     stack:24176 pid: 2893 ppid:  2867 flags:0x00040000 
-[ 6732.309779][T11627] Call Trace: 
-[ 6732.309826][T11627] [c00000006166fa30] [c00000006166fb60] 0xc00000006166fb60 (unreliable) 
+> >  2. Even with all the cache maintenance in the world, a CPU could have
+> >     speculatively fetched stale instructions into its "pipeline" ahead of
+> >     time, and these are _not_ flushed by the broadcast maintenance instructions
+> >     in (1). SYNC_CORE provides a means for userspace to discard these stale
+> >     instructions.
+> > 
+> >  3. The context synchronization event on exception entry/exit is
+> >     sufficient here. The Arm ARM isn't very good at describing what it
+> >     does, because it's in denial about the existence of a pipeline, but
+> >     it does have snippets such as:
+> > 
+> >    (s/PE/CPU/)
+> >       | For all types of memory:
+> >       | The PE might have fetched the instructions from memory at any time
+> >       | since the last Context synchronization event on that PE.
+> > 
+> >     Interestingly, the architecture recently added a control bit to remove
+> >     this synchronisation from exception return, so if we set that then we'd
+> >     have a problem with SYNC_CORE and adding an ISB would be necessary (and
+> >     we could probable then make kernel->kernel returns cheaper, but I
+> >     suspect we're relying on this implicit synchronisation in other places
+> >     too).
+> > 
+> 
+> Is ISB just a context synchronization event or does it do more?
 
-Also, running LTP syscalls ended up hanging with lots of zombie process. Any idea?
+That's a good question. Barrier instructions on ARM do tend to get
+overloaded with extra behaviours over time, so it could certainly end up
+doing the context synchronization event + extra stuff in future. Right now,
+the only thing that springs to mind is the spectre-v1 heavy mitigation
+barrier of 'DSB; ISB' which, for example, probably doesn't work for 'DSB;
+ERET' because the ERET can be treated like a conditional (!) branch.
 
-root        2023  0.0  0.0      0     0 ?        Zs   14:10   0:00 [login] <defunct>
-root       52052  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [recv01] <defunct>
-root       52054  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [recvfrom01] <defunct>
-root       52056  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [recvmsg01] <defunct>
-root       52155  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [rt_sigtimedwait] <defunct>
-root       52305  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [semctl01] <defunct>
-root       52362  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [send01] <defunct>
-root       52386  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04] <defunct>
-root       52387  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04] <defunct>
-root       52388  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04] <defunct>
-root       52389  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04] <defunct>
-root       52390  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04] <defunct>
-root       52392  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04_64] <defunct>
-root       52393  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04_64] <defunct>
-root       52394  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04_64] <defunct>
-root       52395  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04_64] <defunct>
-root       52396  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile04_64] <defunct>
-root       52398  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile05] <defunct>
-root       52400  0.0  0.0      0     0 pts/0    Z    15:03   0:00 [sendfile05_64] <defunct>
-root       52415  0.0  0.0      0     0 pts/0    Z    15:04   0:00 [sendmsg01] <defunct>
-root       53470  0.0  0.0      0     0 pts/0    Z    15:04   0:00 [sendto01] <defunct>
-root       53763  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53764  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53765  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53766  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53767  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53768  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53769  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53770  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53771  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53772  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53773  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53774  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53775  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53776  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53777  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53778  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53779  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53780  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-root       53782  0.0  0.0      0     0 pts/0    Z    15:06   0:00 [setrlimit01] <defunct>
-nobody     54290  0.0  0.0      0     0 pts/0    Z    15:07   0:00 [sysctl03] <defunct>
-root       56813  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56814  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56815  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56816  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56817  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56818  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56819  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56820  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56821  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56822  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56823  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56825  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56826  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56827  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56828  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56829  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56830  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56831  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56832  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56833  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56834  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56835  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56836  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid03] <defunct>
-root       56838  0.0  0.0      0     0 pts/0    Z    16:09   0:00 [waitpid04] <defunct>
-sshd       58675  0.0  0.0      0     0 ?        Z    17:21   0:00 [sshd] <defunct>
+> On x86, it’s very hard to tell that MFENCE does any more than LOCK, but
+> it’s much slower.  And we have LFENCE, which, as documented, doesn’t
+> appear to have any semantics at all.  (Or at least it didn’t before
+> Spectre.)
 
+I tend to think of ISB as a front-end barrier relating to instruction fetch
+whereas DMB, acquire/release and DSB are all back-end barriers relating to
+memory accesses. You _can_ use ISB in conjunction with control dependencies
+to order a pair of loads (like you can with ISYNC on Power), but it's a
+really expensive way to do it.
+
+> > Are you seeing a problem in practice, or did this come up while trying to
+> > decipher the semantics of SYNC_CORE?
+> 
+> It came up while trying to understand the code and work through various
+> bugs in it.  The code was written using something approximating x86
+> terminology, but it was definitely wrong on x86 (at least if you believe
+> the SDM, and I haven’t convinced any architects to say otherwise).
+
+Ok, thanks.
+
+Will
