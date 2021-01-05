@@ -1,44 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7732EA032
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jan 2021 23:52:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81052EA1F4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 02:02:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D8rVC01MCzDqSt
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 09:52:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D8vN71hqCzDqTC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 12:01:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=telegraphics.com.au (client-ip=98.124.60.144;
- helo=kvm5.telegraphics.com.au; envelope-from=fthain@telegraphics.com.au;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=telegraphics.com.au
-Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
- [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 4D8rSJ0ZWYzDqRK
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 09:50:23 +1100 (AEDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
- by kvm5.telegraphics.com.au (Postfix) with ESMTP id 8F2BB282AD;
- Mon,  4 Jan 2021 17:50:15 -0500 (EST)
-Date: Tue, 5 Jan 2021 09:50:14 +1100 (AEDT)
-From: Finn Thain <fthain@telegraphics.com.au>
-To: Bart Van Assche <bvanassche@acm.org>
-Subject: Re: [PATCH] scsi: target/sbp: remove firewire SBP target driver
-In-Reply-To: <e3b5ce6a-0152-01b8-89d2-80bcdb9c1c57@acm.org>
-Message-ID: <alpine.LNX.2.23.453.2101050840010.6@nippy.intranet>
-References: <01020172acd3d10f-3964f076-a820-43fc-9494-3f3946e9b7b5-000000@eu-west-1.amazonses.com>
- <alpine.LNX.2.22.394.2006140934520.15@nippy.intranet>
- <7ad14946-5c25-fc49-1e48-72d37a607832@boo.tc>
- <alpine.LNX.2.22.394.2006150919110.8@nippy.intranet>
- <8da0c285-d707-a3d2-063e-472af5cc560f@boo.tc>
- <alpine.LNX.2.22.394.2006161929380.8@nippy.intranet>
- <8cbab988-fba7-8e27-7faf-9f7aa36ca235@acm.org>
- <alpine.LNX.2.22.394.2006171104540.11@nippy.intranet>
- <e3b5ce6a-0152-01b8-89d2-80bcdb9c1c57@acm.org>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=J3TSwo3n; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D8vKW2bZBzDqFK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 11:59:43 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ADCE6229C4;
+ Tue,  5 Jan 2021 00:59:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1609808380;
+ bh=k5tUJHFjMO2s79xpLs4QJPdGWhJciPZsye1o8rF3dAs=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=J3TSwo3nNU7X1fflv8qhWlBhn2SmnPDX6zcIj6O9oxknpuMjJ7N3yvo9ua4URUl0A
+ PuUfYceIKgapinnC/7xgRiktpmKCh88uXW3LIc+YIkYPxRD/9TsV1xs0NmEEJ6pjuk
+ oOPR+/OyUvkgYYruRtYDpBW7qfr/apzWLFoFvF4TGS/TmChN4wb9jYM6uX/RFJil+Z
+ yH/zKrmA41wjU1rucnDW1bq8SawDIgRo6A2eiQ22TOP0a4SI8/53r6h2GhKGeDbolu
+ KP0RRqhT1KCPIJETNATjvr6VeQAgN6iMWTc1LgWYyJbTxVaFthxWvx/CpUMxRgvKs3
+ 4F1Hff+G6hnoQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 13/17] local64.h: make <asm/local64.h> mandatory
+Date: Mon,  4 Jan 2021 19:59:11 -0500
+Message-Id: <20210105005915.3954208-13-sashal@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20210105005915.3954208-1-sashal@kernel.org>
+References: <20210105005915.3954208-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,104 +59,309 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
- linux-scsi@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>,
- linux-kernel@vger.kernel.org, Nicholas Bellinger <nab@linux-iscsi.org>,
- target-devel@vger.kernel.org, Chris Boot <bootc@boo.tc>,
- linux1394-devel@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org,
- Stefan Richter <stefanr@s5r6.in-berlin.de>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, linux-csky@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Sasha Levin <sashal@kernel.org>, linux-s390@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ Masahiro Yamada <masahiroy@kernel.org>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Christoph Hellwig <hch@infradead.org>, Mark Salter <msalter@redhat.com>,
+ linux-snps-arc@lists.infradead.org, uclinux-h8-devel@lists.sourceforge.jp,
+ linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
+ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+ linux-m68k@lists.linux-m68k.org, linux-arm-kernel@lists.infradead.org,
+ Jens Axboe <axboe@kernel.dk>, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>,
+ linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 4 Jan 2021, Bart Van Assche wrote:
+From: Randy Dunlap <rdunlap@infradead.org>
 
-> On 6/16/20 7:07 PM, Finn Thain wrote:
-> > On Tue, 16 Jun 2020, Bart Van Assche wrote:
-> >> As far as I know the sbp driver only has had one user ever and that 
-> >> user is no longer user the sbp driver.
-> > 
-> > So, you estimate the userbase at zero. Can you give a confidence 
-> > level? Actual measurement is hard because when end users encounter 
-> > breakage, they look for quick workarounds before they undertake post 
-> > mortem, log collection, bug reporting, mailing list discussions, 
-> > analysis etc.
-> 
-> (replying to an e-mail from six months ago)
-> 
-> Hi Finn,
-> 
-> I am confident that my estimate is an accurate estimate since I have not 
-> seen any sbp support requests, sbp bug reports nor any sbp bug fixes 
-> since the sbp target driver has been accepted upstream.
-> 
+[ Upstream commit 87dbc209ea04645fd2351981f09eff5d23f8e2e9 ]
 
-That suggests to me that the code that you're hoping to remove 1) has no 
-bugs, or 2) has no reported bugs, or 3) has no users at present.
+Make <asm-generic/local64.h> mandatory in include/asm-generic/Kbuild and
+remove all arch/*/include/asm/local64.h arch-specific files since they
+only #include <asm-generic/local64.h>.
 
-I am confident that your evidence does not support your conclusion (i.e. 
-the code will never be used again).
+This fixes build errors on arch/c6x/ and arch/nios2/ for
+block/blk-iocost.c.
 
-Sometimes, users only appear after the unreported bugs get fixed. I've 
-seen it happen.
+Build-tested on 21 of 25 arch-es.  (tools problems on the others)
 
-> > Here's a different question: "Why remove it from the kernel tree?"
-> > 
-> > If maintaining this code is a burden, is it not the kind of tax that 
-> > all developers/users pay to all developers/users? Does this driver 
-> > impose an unreasonably high burden for some reason?
-> 
-> Yes. If anyone wants to change the interface between SCSI target core 
-> and SCSI target drivers, all target drivers, including the sbp and FCoE 
-> target driver have to be retested.
+Yes, we could even rename <asm-generic/local64.h> to
+<linux/local64.h> and change all #includes to use
+<linux/local64.h> instead.
 
-I'm unaware of such an obligation. API changes happen often. When they do, 
-we see good test coverage of commercially viable hardware, some 
-best-effort testing of common hardware, and some perfunctory build 
-testing.
+Link: https://lkml.kernel.org/r/20201227024446.17018-1-rdunlap@infradead.org
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Ley Foon Tan <ley.foon.tan@intel.com>
+Cc: Mark Salter <msalter@redhat.com>
+Cc: Aurelien Jacquiot <jacquiot.aurelien@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/alpha/include/asm/local64.h   | 1 -
+ arch/arc/include/asm/Kbuild        | 1 -
+ arch/arm/include/asm/Kbuild        | 1 -
+ arch/arm64/include/asm/Kbuild      | 1 -
+ arch/csky/include/asm/Kbuild       | 1 -
+ arch/h8300/include/asm/Kbuild      | 1 -
+ arch/hexagon/include/asm/Kbuild    | 1 -
+ arch/ia64/include/asm/local64.h    | 1 -
+ arch/m68k/include/asm/Kbuild       | 1 -
+ arch/microblaze/include/asm/Kbuild | 1 -
+ arch/mips/include/asm/Kbuild       | 1 -
+ arch/nds32/include/asm/Kbuild      | 1 -
+ arch/parisc/include/asm/Kbuild     | 1 -
+ arch/powerpc/include/asm/Kbuild    | 1 -
+ arch/riscv/include/asm/Kbuild      | 1 -
+ arch/s390/include/asm/Kbuild       | 1 -
+ arch/sh/include/asm/Kbuild         | 1 -
+ arch/sparc/include/asm/Kbuild      | 1 -
+ arch/x86/include/asm/local64.h     | 1 -
+ arch/xtensa/include/asm/Kbuild     | 1 -
+ include/asm-generic/Kbuild         | 1 +
+ 21 files changed, 1 insertion(+), 20 deletions(-)
+ delete mode 100644 arch/alpha/include/asm/local64.h
+ delete mode 100644 arch/ia64/include/asm/local64.h
+ delete mode 100644 arch/x86/include/asm/local64.h
 
-But that is missing the point, which was about a particular driver, not 
-about development process. You have not shown how the target API is 
-special, to support your claim that this driver imposes an unreasonable 
-burden.
+diff --git a/arch/alpha/include/asm/local64.h b/arch/alpha/include/asm/local64.h
+deleted file mode 100644
+index 36c93b5cc239b..0000000000000
+--- a/arch/alpha/include/asm/local64.h
++++ /dev/null
+@@ -1 +0,0 @@
+-#include <asm-generic/local64.h>
+diff --git a/arch/arc/include/asm/Kbuild b/arch/arc/include/asm/Kbuild
+index 81f4edec0c2a9..3c1afa524b9c2 100644
+--- a/arch/arc/include/asm/Kbuild
++++ b/arch/arc/include/asm/Kbuild
+@@ -1,7 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ generic-y += extable.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += parport.h
+ generic-y += user.h
+diff --git a/arch/arm/include/asm/Kbuild b/arch/arm/include/asm/Kbuild
+index 383635b68763c..f1398b9267c08 100644
+--- a/arch/arm/include/asm/Kbuild
++++ b/arch/arm/include/asm/Kbuild
+@@ -2,7 +2,6 @@
+ generic-y += early_ioremap.h
+ generic-y += extable.h
+ generic-y += flat.h
+-generic-y += local64.h
+ generic-y += parport.h
+ generic-y += seccomp.h
+ 
+diff --git a/arch/arm64/include/asm/Kbuild b/arch/arm64/include/asm/Kbuild
+index ff9cbb6312128..07ac208edc894 100644
+--- a/arch/arm64/include/asm/Kbuild
++++ b/arch/arm64/include/asm/Kbuild
+@@ -1,6 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0
+ generic-y += early_ioremap.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += qrwlock.h
+ generic-y += qspinlock.h
+diff --git a/arch/csky/include/asm/Kbuild b/arch/csky/include/asm/Kbuild
+index 64876e59e2ef9..2a5a4d94fafad 100644
+--- a/arch/csky/include/asm/Kbuild
++++ b/arch/csky/include/asm/Kbuild
+@@ -2,7 +2,6 @@
+ generic-y += asm-offsets.h
+ generic-y += gpio.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += qrwlock.h
+ generic-y += seccomp.h
+ generic-y += user.h
+diff --git a/arch/h8300/include/asm/Kbuild b/arch/h8300/include/asm/Kbuild
+index ddf04f32b5467..60ee7f0d60a8f 100644
+--- a/arch/h8300/include/asm/Kbuild
++++ b/arch/h8300/include/asm/Kbuild
+@@ -2,7 +2,6 @@
+ generic-y += asm-offsets.h
+ generic-y += extable.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += parport.h
+ generic-y += spinlock.h
+diff --git a/arch/hexagon/include/asm/Kbuild b/arch/hexagon/include/asm/Kbuild
+index 373964bb177e4..3ece3c93fe086 100644
+--- a/arch/hexagon/include/asm/Kbuild
++++ b/arch/hexagon/include/asm/Kbuild
+@@ -2,5 +2,4 @@
+ generic-y += extable.h
+ generic-y += iomap.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+diff --git a/arch/ia64/include/asm/local64.h b/arch/ia64/include/asm/local64.h
+deleted file mode 100644
+index 36c93b5cc239b..0000000000000
+--- a/arch/ia64/include/asm/local64.h
++++ /dev/null
+@@ -1 +0,0 @@
+-#include <asm-generic/local64.h>
+diff --git a/arch/m68k/include/asm/Kbuild b/arch/m68k/include/asm/Kbuild
+index 1bff55aa2d54e..0dbf9c5c6faeb 100644
+--- a/arch/m68k/include/asm/Kbuild
++++ b/arch/m68k/include/asm/Kbuild
+@@ -2,6 +2,5 @@
+ generated-y += syscall_table.h
+ generic-y += extable.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += spinlock.h
+diff --git a/arch/microblaze/include/asm/Kbuild b/arch/microblaze/include/asm/Kbuild
+index 63bce836b9f10..29b0e557aa7c5 100644
+--- a/arch/microblaze/include/asm/Kbuild
++++ b/arch/microblaze/include/asm/Kbuild
+@@ -2,7 +2,6 @@
+ generated-y += syscall_table.h
+ generic-y += extable.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += parport.h
+ generic-y += syscalls.h
+diff --git a/arch/mips/include/asm/Kbuild b/arch/mips/include/asm/Kbuild
+index 198b3bafdac97..95b4fa7bd0d1f 100644
+--- a/arch/mips/include/asm/Kbuild
++++ b/arch/mips/include/asm/Kbuild
+@@ -6,7 +6,6 @@ generated-y += syscall_table_64_n64.h
+ generated-y += syscall_table_64_o32.h
+ generic-y += export.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += parport.h
+ generic-y += qrwlock.h
+diff --git a/arch/nds32/include/asm/Kbuild b/arch/nds32/include/asm/Kbuild
+index ff1e94299317d..82a4453c9c2d5 100644
+--- a/arch/nds32/include/asm/Kbuild
++++ b/arch/nds32/include/asm/Kbuild
+@@ -4,6 +4,5 @@ generic-y += cmpxchg.h
+ generic-y += export.h
+ generic-y += gpio.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += parport.h
+ generic-y += user.h
+diff --git a/arch/parisc/include/asm/Kbuild b/arch/parisc/include/asm/Kbuild
+index e3ee5c0bfe80f..a1bd2adc63e3a 100644
+--- a/arch/parisc/include/asm/Kbuild
++++ b/arch/parisc/include/asm/Kbuild
+@@ -3,7 +3,6 @@ generated-y += syscall_table_32.h
+ generated-y += syscall_table_64.h
+ generated-y += syscall_table_c32.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += seccomp.h
+ generic-y += user.h
+diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
+index 90cd5c53af666..e1f9b4ea1c537 100644
+--- a/arch/powerpc/include/asm/Kbuild
++++ b/arch/powerpc/include/asm/Kbuild
+@@ -5,7 +5,6 @@ generated-y += syscall_table_c32.h
+ generated-y += syscall_table_spu.h
+ generic-y += export.h
+ generic-y += kvm_types.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += qrwlock.h
+ generic-y += vtime.h
+diff --git a/arch/riscv/include/asm/Kbuild b/arch/riscv/include/asm/Kbuild
+index 59dd7be550054..445ccc97305a5 100644
+--- a/arch/riscv/include/asm/Kbuild
++++ b/arch/riscv/include/asm/Kbuild
+@@ -3,6 +3,5 @@ generic-y += early_ioremap.h
+ generic-y += extable.h
+ generic-y += flat.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += user.h
+ generic-y += vmlinux.lds.h
+diff --git a/arch/s390/include/asm/Kbuild b/arch/s390/include/asm/Kbuild
+index 319efa0e6d024..1a18d7b82f86d 100644
+--- a/arch/s390/include/asm/Kbuild
++++ b/arch/s390/include/asm/Kbuild
+@@ -7,5 +7,4 @@ generated-y += unistd_nr.h
+ generic-y += asm-offsets.h
+ generic-y += export.h
+ generic-y += kvm_types.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+diff --git a/arch/sh/include/asm/Kbuild b/arch/sh/include/asm/Kbuild
+index 7435182ef8465..fc44d9c88b419 100644
+--- a/arch/sh/include/asm/Kbuild
++++ b/arch/sh/include/asm/Kbuild
+@@ -1,6 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0
+ generated-y += syscall_table.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += parport.h
+diff --git a/arch/sparc/include/asm/Kbuild b/arch/sparc/include/asm/Kbuild
+index 5269a704801fa..3688fdae50e45 100644
+--- a/arch/sparc/include/asm/Kbuild
++++ b/arch/sparc/include/asm/Kbuild
+@@ -6,5 +6,4 @@ generated-y += syscall_table_64.h
+ generated-y += syscall_table_c32.h
+ generic-y += export.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+diff --git a/arch/x86/include/asm/local64.h b/arch/x86/include/asm/local64.h
+deleted file mode 100644
+index 36c93b5cc239b..0000000000000
+--- a/arch/x86/include/asm/local64.h
++++ /dev/null
+@@ -1 +0,0 @@
+-#include <asm-generic/local64.h>
+diff --git a/arch/xtensa/include/asm/Kbuild b/arch/xtensa/include/asm/Kbuild
+index c59c42a1221a8..adefb1636f7ae 100644
+--- a/arch/xtensa/include/asm/Kbuild
++++ b/arch/xtensa/include/asm/Kbuild
+@@ -2,7 +2,6 @@
+ generated-y += syscall_table.h
+ generic-y += extable.h
+ generic-y += kvm_para.h
+-generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += param.h
+ generic-y += qrwlock.h
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index e78bbb9a07e90..d1300c6e0a471 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -34,6 +34,7 @@ mandatory-y += kmap_types.h
+ mandatory-y += kprobes.h
+ mandatory-y += linkage.h
+ mandatory-y += local.h
++mandatory-y += local64.h
+ mandatory-y += mm-arch-hooks.h
+ mandatory-y += mmiowb.h
+ mandatory-y += mmu.h
+-- 
+2.27.0
 
-In the interests of making forward progress in this discussion, shall we 
-discuss the kind of SCSI Target API changes that you anticipate?
-
-> In other words, keeping unused target drivers inside the kernel tree 
-> involves a significant maintenance burden for anyone who wants to modify 
-> the interface between the SCSI target core and SCSI target drivers.
-> 
-
-Keeping _any_ driver in the kernel involves a maintenance burden. There 
-are two good ways to address that.
-
-Firstly, by improving the development process. For example, an API change 
-is mostly mechanical work that lends itself to automated refactoring.
-Secondly, by involving all interested parties, so that the burden is 
-shared.
-
-Of course, there are other ways. E.g. "don't ship code when doing so won't 
-turn a profit". That, by the way, was the policy that gave us 10 billion 
-Android devices (or more) that don't function with a mainline kernel.
-
-> Additionally, there is a good alternative available for the sbp driver. 
-> Every system I know of that is equipped with a Firewire port also has an 
-> Ethernet port. So users who want to provide SCSI target functionality on 
-> such systems can use any SCSI transport protocol that is compatible with 
-> Ethernet (iSCSI, iSER over soft-RoCE, SRP over soft-RoCE, ...).
-> 
-
-Ethernet is not always an alternative. That was already discussed in this 
-thread. But let's assume for a moment that you can migrate any and all 
-users of this driver over to an ethernet driver.
-
-Why would the maintainers of that ethernet driver and its API accept that 
-plan, if adding users would extend their maintenance and testing 
-obligations? Do you think those maintainers should pay the "kind of tax 
-that all developers/users pay to all developers/users?"
-
-> Thanks,
-> 
-> Bart.
-> 
