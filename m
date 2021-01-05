@@ -2,54 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978BE2EA39E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 04:04:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3960B2EA6E8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 10:05:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D8y4v6sT7zDqYP
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 14:03:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D966L2WwZzDqXJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 20:05:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D8y3P0SGFzDqTp
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 14:02:41 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lunn.ch
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by ozlabs.org (Postfix) with ESMTP id 4D8y3N6v1bz9sVs
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 14:02:40 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4D8y3N6MxGz9sVr; Tue,  5 Jan 2021 14:02:40 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch
- (client-ip=185.16.172.187; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kroah.com (client-ip=64.147.123.20;
+ helo=wout4-smtp.messagingengine.com; envelope-from=greg@kroah.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lunn.ch
-X-Greylist: delayed 1385 seconds by postgrey-1.36 at bilbo;
- Tue, 05 Jan 2021 14:02:40 AEDT
-Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4D8y3N5KNnz9sVq;
- Tue,  5 Jan 2021 14:02:40 +1100 (AEDT)
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
- (envelope-from <andrew@lunn.ch>)
- id 1kwcFr-00G4Zi-QU; Tue, 05 Jan 2021 03:39:27 +0100
-Date: Tue, 5 Jan 2021 03:39:27 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] net: ethernet: fs_enet: Add missing MODULE_LICENSE
-Message-ID: <X/PRX+RziaU3IJGi@lunn.ch>
-References: <20210105022229.54601-1-mpe@ellerman.id.au>
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=kroah.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kroah.com header.i=@kroah.com header.a=rsa-sha256
+ header.s=fm2 header.b=QUkfYFO0; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm1 header.b=GYVfhsTf; 
+ dkim-atps=neutral
+Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com
+ [64.147.123.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D964V5LS6zDqW0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jan 2021 20:04:09 +1100 (AEDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.west.internal (Postfix) with ESMTP id BFE11666;
+ Tue,  5 Jan 2021 04:04:05 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute4.internal (MEProxy); Tue, 05 Jan 2021 04:04:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+ date:from:to:cc:subject:message-id:references:mime-version
+ :content-type:in-reply-to; s=fm2; bh=TUtgNPoXuUOXJrOKmvGYB7SWZxy
+ RvgbHZr1AL8pLDcQ=; b=QUkfYFO0QyjEPrDpLPAEkcaL5ojVa+jsyZOfIV8wRVU
+ n799CYY6dGOf0YiWZEL8dgsZiAt/L9LteY8ZAsR232NaC/p1KGF1Q9bfJEQ4Q5u3
+ DUsqoxQpdq6+DQZBMQVomxvLUDUGzKcZ1sW3rCNd8HijJIgn8FqC/I/M2ms+opLO
+ dJKVmSs8R0EtGeA4dBt5g7neNlaqjS1wXNWOUskXxKIFdmFLeHL3Vt65OahcL2ao
+ giGLasN0AqlDRU0t5n5FrkuwXhdJDnyQxYaO3JfapURovMdkj8Xxg5SY/yvHw3JA
+ 1E4KcPmxkZC/PnPCwKhAg/EZ+AaNRqkZlO1sc7sVLYg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=TUtgNP
+ oXuUOXJrOKmvGYB7SWZxyRvgbHZr1AL8pLDcQ=; b=GYVfhsTff/cHx0SG/Z3Rui
+ KQn97aw8kfYEb0LCegAGDZgIuy4I1PTTsc1sXGc48RreKGba2ua9KHRGAN4wz9HH
+ YugeF898+PKV19Mn8KAgqSyxiCCLauy+Eea/fBAmJKhtid1VIhViJ6ijWrGUF2+W
+ YPDnoIG1LBPln8QFK1D2+CTh6MfXieTlOX2dqc6kRx66H8gmPXFDb+buNihCKEnj
+ 6ILwcG6mltnQ4bJczGMqkZF1n7MN5nDDmeYimd/UZ3X0UCOJcU1WO407x9bRShV2
+ 7fdAbSRZfFA9SfiRDiRIEoB+VowU44D5dgVV4c0asF8CYLmYlPzuGuESHM3nCbuw
+ ==
+X-ME-Sender: <xms:gyv0X-S6jQbYrcGUCxJz51H6Q8rJrjlIDoQ-JTa_qpmdTeAetboGAg>
+ <xme:gyv0XzyHZ2oEQebqSKIKEEbQM43AEDksGPiX4Tc_pfjlLz9E9zarcPfGIiq3lLau6
+ A6K9ZqIaBLsBw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrvdefgedguddvhecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+ necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+ enucfjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+ ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepueelle
+ dtheekleethfeludduvdfhffeuvdffudevgeehkeegieffveehgeeftefgnecuffhomhgr
+ ihhnpehkvghrnhgvlhdrohhrghenucfkphepkeefrdekiedrjeegrdeigeenucevlhhush
+ htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgr
+ hhdrtghomh
+X-ME-Proxy: <xmx:gyv0X73URPx0fSGfQsHGvldZ-nzGtjBO7g96IPRBbwaI9bnFTbqABw>
+ <xmx:gyv0X6DOj4mf0AgB6EZ9JOwMMcuJ4EtZ3G0ZZAlZoXaSr9JuiMOZlA>
+ <xmx:gyv0X3h-oj2QrHqcqLmPazTriarzbXnTJSt8ueDl7cR94clwltN1Lg>
+ <xmx:hSv0X3e3YO9Xh4gu0bit7oTbL2fe0aKGtn98MVlOIcmvEdohzTfOig>
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 037AC1080057;
+ Tue,  5 Jan 2021 04:04:02 -0500 (EST)
+Date: Tue, 5 Jan 2021 10:05:28 +0100
+From: Greg KH <greg@kroah.com>
+To: Santosh Sivaraj <santosh@fossix.org>
+Subject: Re: [PATCH v3 5/6] mm/mmu_gather: invalidate TLB correctly on batch
+ allocation failure and flush
+Message-ID: <X/Qr2Om3vW+4XdnI@kroah.com>
+References: <20200312132740.225241-1-santosh@fossix.org>
+ <20200312132740.225241-6-santosh@fossix.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210105022229.54601-1-mpe@ellerman.id.au>
+In-Reply-To: <20200312132740.225241-6-santosh@fossix.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,54 +95,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@ozlabs.org, kuba@kernel.org, davem@davemloft.net
+Cc: Sasha Levin <sashal@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ stable@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 05, 2021 at 01:22:29PM +1100, Michael Ellerman wrote:
-> Since commit 1d6cd3929360 ("modpost: turn missing MODULE_LICENSE()
-> into error") the ppc32_allmodconfig build fails with:
+On Thu, Mar 12, 2020 at 06:57:39PM +0530, Santosh Sivaraj wrote:
+> From: Peter Zijlstra <peterz@infradead.org>
 > 
->   ERROR: modpost: missing MODULE_LICENSE() in drivers/net/ethernet/freescale/fs_enet/mii-fec.o
->   ERROR: modpost: missing MODULE_LICENSE() in drivers/net/ethernet/freescale/fs_enet/mii-bitbang.o
+> commit 0ed1325967ab5f7a4549a2641c6ebe115f76e228 upstream.
 > 
-> Add the missing MODULE_LICENSEs to fix the build. Both files include a
-> copyright header indicating they are GPL v2.
+> Architectures for which we have hardware walkers of Linux page table
+> should flush TLB on mmu gather batch allocation failures and batch flush.
+> Some architectures like POWER supports multiple translation modes (hash
+> and radix) and in the case of POWER only radix translation mode needs the
+> above TLBI.  This is because for hash translation mode kernel wants to
+> avoid this extra flush since there are no hardware walkers of linux page
+> table.  With radix translation, the hardware also walks linux page table
+> and with that, kernel needs to make sure to TLB invalidate page walk cache
+> before page table pages are freed.
 > 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> More details in commit d86564a2f085 ("mm/tlb, x86/mm: Support invalidating
+> TLB caches for RCU_TABLE_FREE")
+> 
+> The changes to sparc are to make sure we keep the old behavior since we
+> are now removing HAVE_RCU_TABLE_NO_INVALIDATE.  The default value for
+> tlb_needs_table_invalidate is to always force an invalidate and sparc can
+> avoid the table invalidate.  Hence we define tlb_needs_table_invalidate to
+> false for sparc architecture.
+> 
+> Link: http://lkml.kernel.org/r/20200116064531.483522-3-aneesh.kumar@linux.ibm.com
+> Fixes: a46cc7a90fd8 ("powerpc/mm/radix: Improve TLB/PWC flushes")
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Cc: <stable@vger.kernel.org>  # 4.19
+> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+> [santosh: backported to 4.19 stable]
 > ---
->  drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 1 +
->  drivers/net/ethernet/freescale/fs_enet/mii-fec.c     | 1 +
->  2 files changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-> index c8e5d889bd81..76ac1a9eab58 100644
-> --- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-> +++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-> @@ -223,3 +223,4 @@ static struct platform_driver fs_enet_bb_mdio_driver = {
->  };
->  
->  module_platform_driver(fs_enet_bb_mdio_driver);
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-fec.c b/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
-> index 8b51ee142fa3..407c330b432f 100644
-> --- a/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
-> +++ b/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
-> @@ -224,3 +224,4 @@ static struct platform_driver fs_enet_fec_mdio_driver = {
->  };
->  
->  module_platform_driver(fs_enet_fec_mdio_driver);
-> +MODULE_LICENSE("GPL v2");
+>  arch/Kconfig                    |  3 ---
+>  arch/powerpc/Kconfig            |  1 -
+>  arch/powerpc/include/asm/tlb.h  | 11 +++++++++++
+>  arch/sparc/Kconfig              |  1 -
+>  arch/sparc/include/asm/tlb_64.h |  9 +++++++++
+>  include/asm-generic/tlb.h       | 15 +++++++++++++++
+>  mm/memory.c                     | 16 ++++++++--------
+>  7 files changed, 43 insertions(+), 13 deletions(-)
 
-Hi Michael
+As the testing pointed out, this breaks the build on lots of arches:
+	https://lore.kernel.org/r/CAEUSe78+F1Q9LFjpf8SQzQa6+Ak4wcPiiNcUVxEcv+KPdrYvBw@mail.gmail.com
+	https://lore.kernel.org/r/cff87cd2-8cd5-241e-3a05-a817b1a56b8c@roeck-us.net
 
-The use of "GPL v2" has been deprecated. Please use just "GPL". There
-is a discussion about this here:
+so I'm going to drop this whole series and do a -rc2.
 
-https://lore.kernel.org/patchwork/patch/1036331/
+If you still want/need this series in 4.19, please make sure it really
+works for everyone :)
 
-https://www.kernel.org/doc/html/latest/process/license-rules.html#id1
+thanks,
 
-	Andrew
+greg k-h
