@@ -1,53 +1,125 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261672EABE8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 14:28:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FA52EAD3E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 15:19:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D9Cxd121RzDqZN
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jan 2021 00:28:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D9F4T5lmfzDqk7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jan 2021 01:19:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=infinera.com (client-ip=2a01:111:f400:fe45::61e;
+ helo=nam02-cy1-obe.outbound.protection.outlook.com;
+ envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=h6CBueej; 
+ dmarc=pass (p=none dis=none) header.from=infinera.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
+ header.s=selector2 header.b=LpYnf8sZ; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from NAM02-CY1-obe.outbound.protection.outlook.com
+ (mail-cys01nam02on061e.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe45::61e])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D9CvD3sBJzDqXg
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jan 2021 00:26:31 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F2194225AC;
- Tue,  5 Jan 2021 13:26:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1609853189;
- bh=TmYNnmKpWB2t2Q9JsIHgrp8V/YLclj6QFBBv76JxcGI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=h6CBueejxaIU+YgJTNSnl5xkqm0WnsJZ3JQodk76eUGNSvSvFWbgqtFlerBNe46O7
- KCfs6qTXHvoxl+KgOgnyYCRImBCjtoRl0Sv9bjlNM7osRSXL5kzyWRuDlBkuA2sEY2
- QXO+02ZXf0Vjg2WEgjj4nZeO5cWIkYARBS9IHsx3rT4etAm5hg7/iHbpBjw4rbhuhK
- qIJDgYPl94MPe9+jLH00xJ+fEhNuG22bB4+WGxTTh4ZRaynB+XUSxJRtTlY+EJebkh
- /xRJUMzBCY5wKF+Ee1YMNjFs4ud+Tv7pSwnGv6QdEHPG7ED4APzW6rwyo2ugYIjNbk
- qXL4nmbqdI1PQ==
-Date: Tue, 5 Jan 2021 13:26:23 +0000
-From: Will Deacon <will@kernel.org>
-To: Andy Lutomirski <luto@kernel.org>
-Subject: Re: [RFC please help] membarrier: Rewrite sync_core_before_usermode()
-Message-ID: <20210105132623.GB11108@willie-the-truck>
-References: <bf59ecb5487171a852bcc8cdd553ec797aedc485.1609093476.git.luto@kernel.org>
- <1609199804.yrsu9vagzk.astroid@bobo.none>
- <CALCETrX4v1KEf6ikVtFg6juh3Z_esJ-+6PLT1A21JJeTVh2k8g@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D9F2Y09BpzDqf9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jan 2021 01:17:53 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fvr7ZgH0N1QB602WbtFEW5P0d5IEoGV2iozfvpZJt+DLSzF3VSbfZt8Qkk9nv9rOAfk6AsL2vG7gcauhMDsjqEMHR1pxIkUx0rVXikubjC+2jD5RlIegqjMm+4G2p5nsMssyLId8PdfN80E0hpPxQIa4Uw6QM5Bby6y5w1dvJzjdPvX+Ch27AM4/d3ULtD+gmzxWn6LyKOHzSMK0WAxLYgd+Goiew9qv5BZgqKxA/dZv2pVjcOIQ6D2DrWX+m3C6v7qKL5qb64SdJRUkWllq5cL6Bl/c5KOp1L9nsBMylgWmJM8SBOWDGcCO/NkgOP9WORQoHGrOkh3ws6IOZfMlGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DJePtYBLAr40yF0gUjx0DgIFf4llN7s+DV7X2u3S/Mw=;
+ b=ZsStXKNhqNbBs82Fd2AztjXYSEZvZ8afrtrLJjCohavMn9zNV0pBgu4s2lOQjKLMDLoDpHgxht0bofMGHAN67mxgmEedJumzldMDk3oGARHc3hBr04HSdGHuZ1I70uaoDlyE3brjoqwKAhCdfXskwpt0RMyQ7dgXkOwt2nL+L9CzA+x97DRG69rP9p/ThCHYTKCHd6QYdkbiIyYJiVpD3G7iMjsls7u2F7Zg+xvSFV7z8B3pIAo1gKDMd1DLAoT0XA69L+8uGema8axyU+Oas6E0h74EK6QAfIhfz+fYoEqc19r8G0hIFnXwThN7xTZQY4Bofsw21Pi4Ps/7vR5LTQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=infinera.com; dmarc=pass action=none header.from=infinera.com;
+ dkim=pass header.d=infinera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DJePtYBLAr40yF0gUjx0DgIFf4llN7s+DV7X2u3S/Mw=;
+ b=LpYnf8sZpNt8AStu4tQgB0yioehiFURcxCIYaYQQ00VYreVeNsITAss0n8o4ymP2gXrUJyR+J04Hk6VMHMb8kQxg5k3h+z0V7dP+rpBDF2O9qa3MHvGG1V1sjsoWkoN5qSCIBcq9g8WRObb1/sXRZnbM2rZA0iibQgHlo35Z1mo=
+Received: from CY4PR1001MB2389.namprd10.prod.outlook.com
+ (2603:10b6:910:45::21) by CY4PR1001MB2312.namprd10.prod.outlook.com
+ (2603:10b6:910:49::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3721.24; Tue, 5 Jan
+ 2021 14:17:42 +0000
+Received: from CY4PR1001MB2389.namprd10.prod.outlook.com
+ ([fe80::e83b:f5de:35:9fa7]) by CY4PR1001MB2389.namprd10.prod.outlook.com
+ ([fe80::e83b:f5de:35:9fa7%7]) with mapi id 15.20.3721.024; Tue, 5 Jan 2021
+ 14:17:42 +0000
+From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+To: "rasmus.villemoes@prevas.dk" <rasmus.villemoes@prevas.dk>,
+ "andrew@lunn.ch" <andrew@lunn.ch>
+Subject: Re: [PATCH 01/20] ethernet: ucc_geth: set dev->max_mtu to 1518
+Thread-Topic: [PATCH 01/20] ethernet: ucc_geth: set dev->max_mtu to 1518
+Thread-Index: AQHWyzvztwOyjy9i30WJ0/nUUTDGzanvkBgAgCm0fAA=
+Date: Tue, 5 Jan 2021 14:17:42 +0000
+Message-ID: <33816fa937efc8d4865d95754965e59ccfb75f2c.camel@infinera.com>
+References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
+ <20201205191744.7847-2-rasmus.villemoes@prevas.dk>
+ <20201210012502.GB2638572@lunn.ch>
+In-Reply-To: <20201210012502.GB2638572@lunn.ch>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.38.2 
+authentication-results: prevas.dk; dkim=none (message not signed)
+ header.d=none;prevas.dk; dmarc=none action=none header.from=infinera.com;
+x-originating-ip: [88.131.87.201]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 86cbe9ba-9faf-4095-3fc5-08d8b184aa36
+x-ms-traffictypediagnostic: CY4PR1001MB2312:
+x-microsoft-antispam-prvs: <CY4PR1001MB23120102779635469298D607F4D10@CY4PR1001MB2312.namprd10.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: IaTAfWeT6/KN06pXDWtDxG8Ny6UzPb792D8ISzWm1Rfefxvi26wSXV1gYZtBByfw9hwtMXRa1ABjPCY/mIGILDXfIw7IHbSSM67juMHhvq8OgEu4yxMs27MrJwOuR8rAma1O6FSL/xvYDXJEsLOkTW9eGjfiP3FDQ3/vWYJyTyp9SPa8XyCiMluvae+9J5wCYkbCDC002BvWGUUVfhlBW4Ep9L93g4olMlG6EVleI681JCbGzJoS+S5vdPLxoAUPL4IO8SuQYdBPdlOHfDdDIpdCuCqxa82DitusPhQT4y5E9PMp20HzvescyVy63wtzxHRqcYH/w5wrfiOngn7Y28lxcaPP+ISEIUi0cca98gXEENY/c4bhG+l9LP2CA46kvILUxqL+zGE63qNcLRy3tA==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY4PR1001MB2389.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(376002)(39850400004)(366004)(136003)(396003)(346002)(66476007)(86362001)(2906002)(2616005)(8676002)(64756008)(186003)(316002)(66556008)(66446008)(4326008)(91956017)(76116006)(6486002)(6512007)(6506007)(26005)(4001150100001)(478600001)(71200400001)(66946007)(83380400001)(36756003)(54906003)(7416002)(110136005)(5660300002)(8936002);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata: =?utf-8?B?M2k5dWxHY25qanpETlE3SzR6KzdpSmNjNGNjSERuSkJSY2l2U09PcEsvQ2ZI?=
+ =?utf-8?B?bUVWdzNjd1lFY1lPeW45NkM2OXB6RTcyWG9NaGgxN2NCTi93UTV3YXNkdWl5?=
+ =?utf-8?B?U0p3aGlrMDh2bW5kOWxJRi8yVld0c2xzK2VTdllWUnZtVC9PSGx5WEJpZjVZ?=
+ =?utf-8?B?SzJuMEQvYTRsVkNBMDJaNDhPNUoydUxnQkJMa3E0T3VLVXg1QXdFNFhFTEZi?=
+ =?utf-8?B?TW1rc3NYNUlVNk0vS042RWlGSUV3S3ltSVZnZUFCblFnMTNxZFZZeTZkUU5s?=
+ =?utf-8?B?M2NrOGNNQjVqYUFqSDZIdlpZS0x0RTIyWkVLN3dWNlpIRE8xSFVpS1Y4dEJt?=
+ =?utf-8?B?YkxmYjQ2Z2RkdHhnWVJabW5adW1sbFdUdm43b2J4VkQreGJ4aFpIUlZCN1o4?=
+ =?utf-8?B?K3J6eFk3NXdmbjM5dzNCVE53aUUybDVTaitCemxDYlVpRTg3UnFzR1lza1NI?=
+ =?utf-8?B?MEdiNUNRRTRFd3c5VHVHYkMwSE5JRzJ0enpRYXZGTGZvTDNYbnQwaDRleEg5?=
+ =?utf-8?B?cmpEb2liUjhjVnJGZjRJVFZuRE5oMUVQTFkwV0JsV3Rva1VUNDdPT3ZpelBN?=
+ =?utf-8?B?enZTSkg4ck5vV3JqVmpDU0l0SXQ4UzNWWjBST2FSYkdhOTBabkdwTENjUksz?=
+ =?utf-8?B?akdtZWFRUk1LbU11b2lvU3djbEZ5dURlc05pdnlnNDB4MXNxRjVmME85bFJ1?=
+ =?utf-8?B?MTI1L1NLM2hDai9LVHVTMjNKcWVwdHpGV0JhaVFvQWpLZ1o0QjF4Z2VZYXgr?=
+ =?utf-8?B?ODkrVW1YZk1Cb2krK3dva2x1TUorcmVQZjIrc210QTJjVHVoK2pEcVZzNmND?=
+ =?utf-8?B?OVh6YmJEUEQxbVhSQlJLUCsyUUxHNnhUdjhhdWc2MkdjRENGaVdUdW1yOU84?=
+ =?utf-8?B?QlZVVG9MYzB5ZTUxdmJ0ZElsdE94eFVITTYxbFZReVlCR2MxT2VDRytWTE53?=
+ =?utf-8?B?N0tDWXVwd00wbnVlaVgxREEyVXI0bGVjbFdaQnFtK1lWdjUzRUlOL0xJQUw0?=
+ =?utf-8?B?eWJhWjI1aldKQWd3dTlCK1RmMnd5L05yMmFIVVJSenpPaHFHOWV0ZGlzRG5y?=
+ =?utf-8?B?d0gzbEJFWDNMWXVkeVp6cG1TMW1WZ1RqYjUzV1d1NXI3eFJqK0NnZkVPRWJE?=
+ =?utf-8?B?MUpCYWV6Q0hBajlYSHZablhxeWlqSk9nYjZSd012cnVOWHFPUzdHc091WHB5?=
+ =?utf-8?B?Y2tEaVlpSHRUaUNKYWtKaE9GSXhkUHNjU3Rnc1czR2dLakxMOHliS1kvYmpL?=
+ =?utf-8?B?b240NHdNKzA0MkpPMEVlUisrYjd0eGR0QUJkcDh6RFVETTMrVXZ3aEEzSW9R?=
+ =?utf-8?Q?A7C9nWqK0wP3Noe8JVmZ2sQOlYPmSMisHt?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9D24AF8C590D064A9D4993127EC4B716@namprd10.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALCETrX4v1KEf6ikVtFg6juh3Z_esJ-+6PLT1A21JJeTVh2k8g@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-OriginatorOrg: infinera.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY4PR1001MB2389.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86cbe9ba-9faf-4095-3fc5-08d8b184aa36
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Jan 2021 14:17:42.1217 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: wWKIKOtb00ROncMfMWhkU84cK10sQQwpERSNPq91+s6pdzYJjPE1aT8qJ7pG/qLSEABi5BdsLGoSI5S1FkuWbA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1001MB2312
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,72 +131,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, X86 ML <x86@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
- stable <stable@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+ "vladimir.oltean@nxp.com" <vladimir.oltean@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "murali.policharla@broadcom.com" <murali.policharla@broadcom.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "kuba@kernel.org" <kuba@kernel.org>, "leoyang.li@nxp.com" <leoyang.li@nxp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "qiang.zhao@nxp.com" <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Andy,
-
-Sorry for the slow reply, I was socially distanced from my keyboard.
-
-On Mon, Dec 28, 2020 at 04:36:11PM -0800, Andy Lutomirski wrote:
-> On Mon, Dec 28, 2020 at 4:11 PM Nicholas Piggin <npiggin@gmail.com> wrote:
-> > > +static inline void membarrier_sync_core_before_usermode(void)
-> > > +{
-> > > +     /*
-> > > +      * XXX: I know basically nothing about powerpc cache management.
-> > > +      * Is this correct?
-> > > +      */
-> > > +     isync();
-> >
-> > This is not about memory ordering or cache management, it's about
-> > pipeline management. Powerpc's return to user mode serializes the
-> > CPU (aka the hardware thread, _not_ the core; another wrongness of
-> > the name, but AFAIKS the HW thread is what is required for
-> > membarrier). So this is wrong, powerpc needs nothing here.
-> 
-> Fair enough.  I'm happy to defer to you on the powerpc details.  In
-> any case, this just illustrates that we need feedback from a person
-> who knows more about ARM64 than I do.
-
-I think we're in a very similar boat to PowerPC, fwiw. Roughly speaking:
-
-  1. SYNC_CORE does _not_ perform any cache management; that is the
-     responsibility of userspace, either by executing the relevant
-     maintenance instructions (arm64) or a system call (arm32). Crucially,
-     the hardware will ensure that this cache maintenance is broadcast
-     to all other CPUs.
-
-  2. Even with all the cache maintenance in the world, a CPU could have
-     speculatively fetched stale instructions into its "pipeline" ahead of
-     time, and these are _not_ flushed by the broadcast maintenance instructions
-     in (1). SYNC_CORE provides a means for userspace to discard these stale
-     instructions.
-
-  3. The context synchronization event on exception entry/exit is
-     sufficient here. The Arm ARM isn't very good at describing what it
-     does, because it's in denial about the existence of a pipeline, but
-     it does have snippets such as:
-
-	(s/PE/CPU/)
-       | For all types of memory:
-       | The PE might have fetched the instructions from memory at any time
-       | since the last Context synchronization event on that PE.
-
-     Interestingly, the architecture recently added a control bit to remove
-     this synchronisation from exception return, so if we set that then we'd
-     have a problem with SYNC_CORE and adding an ISB would be necessary (and
-     we could probable then make kernel->kernel returns cheaper, but I
-     suspect we're relying on this implicit synchronisation in other places
-     too).
-
-Are you seeing a problem in practice, or did this come up while trying to
-decipher the semantics of SYNC_CORE?
-
-Will
+T24gVGh1LCAyMDIwLTEyLTEwIGF0IDAyOjI1ICswMTAwLCBBbmRyZXcgTHVubiB3cm90ZToNCj4g
+T24gU2F0LCBEZWMgMDUsIDIwMjAgYXQgMDg6MTc6MjRQTSArMDEwMCwgUmFzbXVzIFZpbGxlbW9l
+cyB3cm90ZToNCj4gPiBBbGwgdGhlIGJ1ZmZlcnMgYW5kIHJlZ2lzdGVycyBhcmUgYWxyZWFkeSBz
+ZXQgdXAgYXBwcm9wcmlhdGVseSBmb3IgYW4NCj4gPiBNVFUgc2xpZ2h0bHkgYWJvdmUgMTUwMCwg
+c28gd2UganVzdCBuZWVkIHRvIGV4cG9zZSB0aGlzIHRvIHRoZQ0KPiA+IG5ldHdvcmtpbmcgc3Rh
+Y2suIEFGQUlDVCwgdGhlcmUncyBubyBuZWVkIHRvIGltcGxlbWVudCAubmRvX2NoYW5nZV9tdHUN
+Cj4gPiB3aGVuIHRoZSByZWNlaXZlIGJ1ZmZlcnMgYXJlIGFsd2F5cyBzZXQgdXAgdG8gc3VwcG9y
+dCB0aGUgbWF4X210dS4NCj4gPiANCj4gPiBUaGlzIGZpeGVzIHNldmVyYWwgd2FybmluZ3MgZHVy
+aW5nIGJvb3Qgb24gb3VyIG1wYzgzMDktYm9hcmQgd2l0aCBhbg0KPiA+IGVtYmVkZGVkIG12ODhl
+NjI1MCBzd2l0Y2g6DQo+ID4gDQo+ID4gbXY4OGU2MDg1IG1kaW9AZTAxMDIxMjA6MTA6IG5vbmZh
+dGFsIGVycm9yIC0zNCBzZXR0aW5nIE1UVSAxNTAwIG9uIHBvcnQgMA0KPiA+IC4uLg0KPiA+IG12
+ODhlNjA4NSBtZGlvQGUwMTAyMTIwOjEwOiBub25mYXRhbCBlcnJvciAtMzQgc2V0dGluZyBNVFUg
+MTUwMCBvbiBwb3J0IDQNCj4gPiB1Y2NfZ2V0aCBlMDEwMjAwMC5ldGhlcm5ldCBldGgxOiBlcnJv
+ciAtMjIgc2V0dGluZyBNVFUgdG8gMTUwNCB0byBpbmNsdWRlIERTQSBvdmVyaGVhZA0KPiA+IA0K
+PiA+IFRoZSBsYXN0IGxpbmUgZXhwbGFpbnMgd2hhdCB0aGUgRFNBIHN0YWNrIHRyaWVzIHRvIGRv
+OiBhY2hpZXZpbmcgYW4gTVRVDQo+ID4gb2YgMTUwMCBvbi10aGUtd2lyZSByZXF1aXJlcyB0aGF0
+IHRoZSBtYXN0ZXIgbmV0ZGV2aWNlIGNvbm5lY3RlZCB0bw0KPiA+IHRoZSBDUFUgcG9ydCBzdXBw
+b3J0cyBhbiBNVFUgb2YgMTUwMCt0aGUgdGFnZ2luZyBvdmVyaGVhZC4NCj4gPiANCj4gPiBGaXhl
+czogYmZjYjgxMzIwM2U2ICgibmV0OiBkc2E6IGNvbmZpZ3VyZSB0aGUgTVRVIGZvciBzd2l0Y2gg
+cG9ydHMiKQ0KPiA+IENjOiBWbGFkaW1pciBPbHRlYW4gPHZsYWRpbWlyLm9sdGVhbkBueHAuY29t
+Pg0KPiA+IFNpZ25lZC1vZmYtYnk6IFJhc211cyBWaWxsZW1vZXMgPHJhc211cy52aWxsZW1vZXNA
+cHJldmFzLmRrPg0KPiANCj4gUmV2aWV3ZWQtYnk6IEFuZHJldyBMdW5uIDxhbmRyZXdAbHVubi5j
+aD4NCj4gDQo+IMKgwqDCoMKgQW5kcmV3DQoNCkkgZG9uJ3Qgc2VlIHRoaXMgaW4gYW55IGtlcm5l
+bCwgc2VlbXMgc3R1Y2s/IE1heWJlIGJlY2F1c2UgdGhlIHNlcmllcyBhcyBhIHdob2xlIGlzIG5v
+dCBhcHByb3ZlZD8NCg0KIEpvY2tlDQo=
