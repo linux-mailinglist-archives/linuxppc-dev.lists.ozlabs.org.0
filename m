@@ -2,43 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAE82EADBF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 15:56:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9592EADE5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jan 2021 16:04:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4D9Ftb6JHHzDqkV
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jan 2021 01:56:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4D9G4D0vkWzDqcl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jan 2021 02:04:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4D9G2T29DbzDqcl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jan 2021 02:02:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lunn.ch
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by ozlabs.org (Postfix) with ESMTP id 4D9G2T07qNz9sVq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jan 2021 02:02:57 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4D9G2S6mckz9sVx; Wed,  6 Jan 2021 02:02:56 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
  spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch
  (client-ip=185.16.172.187; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
+Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lunn.ch
 Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4D9Frr2hmwzDqSk
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jan 2021 01:54:36 +1100 (AEDT)
+ by ozlabs.org (Postfix) with ESMTPS id 4D9G2S5wjTz9sVq
+ for <linuxppc-dev@ozlabs.org>; Wed,  6 Jan 2021 02:02:56 +1100 (AEDT)
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
  (envelope-from <andrew@lunn.ch>)
- id 1kwnj7-00GBNf-Pw; Tue, 05 Jan 2021 15:54:25 +0100
-Date: Tue, 5 Jan 2021 15:54:25 +0100
+ id 1kwnEW-00GB5H-A9; Tue, 05 Jan 2021 15:22:48 +0100
+Date: Tue, 5 Jan 2021 15:22:48 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-Subject: Re: [PATCH 01/20] ethernet: ucc_geth: set dev->max_mtu to 1518
-Message-ID: <X/R9oWNNxkY2pTC6@lunn.ch>
-References: <20201205191744.7847-1-rasmus.villemoes@prevas.dk>
- <20201205191744.7847-2-rasmus.villemoes@prevas.dk>
- <20201210012502.GB2638572@lunn.ch>
- <33816fa937efc8d4865d95754965e59ccfb75f2c.camel@infinera.com>
- <X/R4tqny72Bjt28b@lunn.ch>
- <6c56889ce3d0e9fc7a6ca7e7a43091b1ae8cd309.camel@infinera.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2] net: ethernet: fs_enet: Add missing MODULE_LICENSE
+Message-ID: <X/R2OPcvQ6YcYkc0@lunn.ch>
+References: <20210105091515.87509-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6c56889ce3d0e9fc7a6ca7e7a43091b1ae8cd309.camel@infinera.com>
+In-Reply-To: <20210105091515.87509-1-mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,29 +59,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
- "rasmus.villemoes@prevas.dk" <rasmus.villemoes@prevas.dk>,
- "vladimir.oltean@nxp.com" <vladimir.oltean@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "murali.policharla@broadcom.com" <murali.policharla@broadcom.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "kuba@kernel.org" <kuba@kernel.org>, "leoyang.li@nxp.com" <leoyang.li@nxp.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "qiang.zhao@nxp.com" <qiang.zhao@nxp.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@ozlabs.org, kuba@kernel.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> Hi Andrew
+On Tue, Jan 05, 2021 at 08:15:15PM +1100, Michael Ellerman wrote:
+> Since commit 1d6cd3929360 ("modpost: turn missing MODULE_LICENSE()
+> into error") the ppc32_allmodconfig build fails with:
 > 
-> I found here: 
-> https://patchwork.kernel.org/project/netdevbpf/patch/20201218105538.30563-2-rasmus.villemoes@prevas.dk/
+>   ERROR: modpost: missing MODULE_LICENSE() in drivers/net/ethernet/freescale/fs_enet/mii-fec.o
+>   ERROR: modpost: missing MODULE_LICENSE() in drivers/net/ethernet/freescale/fs_enet/mii-bitbang.o
 > 
-> Seem to be underway but stable isn't included, I think it should be.
+> Add the missing MODULE_LICENSEs to fix the build. Both files include a
+> copyright header indicating they are GPL v2.
+> 
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Stable should happen, since this was posted with [net,v2,3/3]. David
-or Jakub handles stable for netdev. Give it a few more days. If not,
-ask Jakub what is happening.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
     Andrew
