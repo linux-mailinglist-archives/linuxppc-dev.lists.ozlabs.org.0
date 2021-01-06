@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24BD2EC4D7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jan 2021 21:23:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1364F2EC4DB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jan 2021 21:25:38 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DB16D0WQczDqkS
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jan 2021 07:23:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DB18G6b5FzDqjN
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jan 2021 07:25:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,59 +17,59 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=tWtyGhNv; dkim-atps=neutral
+ header.s=pp1 header.b=jlYddjqo; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DB10X2Q59zDqXJ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DB10X2hZ4zDqXK
  for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jan 2021 07:18:51 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 106K1hwe120070; Wed, 6 Jan 2021 15:18:48 -0500
+ 106K2qwu131990; Wed, 6 Jan 2021 15:18:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=JZJirEr2ZMKDam+PzZs2jlJjmCPtCO/qBj7ZlGBTUeI=;
- b=tWtyGhNvG7C9vpyj03ViXT+tKOvq9E7E4pu3YkC7DBBZqlH2XWsqjv5HmkJc17YYj5AK
- TH0qfg1I5nEPGTAjP4jUF+je08ZESw2DHElRYmA2mHO9OWbx+jjjkbC/XY8aJ0BznxwL
- WjIo8rLl+5gHJjwC55hOEtiOnIUbphyet0qMjaOmKi+wDxVazTxfhIWaN4iocnG3CrrV
- bftr+lxF/BvYHAqZrBALoh37xLYYg5rsYF+JGrUMcPvYcVXEntTlfdNKgOD+GzHMMmyt
- dCjg+K9nfvtt0coGHgQBPokD4kCQdYpdJaobcHex3oEP4rQUEulZSlmU9OQbbmUf06ni 3w== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35wkmkrw8h-1
+ bh=cj6IE0ErS4Q/shDuCwCjKhD6UD8J6yps+V4H4B4GawM=;
+ b=jlYddjqoMJmJNfNvOR2ZDZoTDGP9BlfAGvynTIaj+S41NxCEdRQ5DsenkKzYvIUi4tZU
+ LDanFoqODgmdp4Vug/VsApWIp3K2pSyLfPL7Cwu57vK59lolQegr1oe/2sNRWXnN5uTK
+ Ef+qk/PXI3pH97tWPqnBmpRLjhni+oykeRXweVxIQQRbY6uJrZXNCt4ZJ50zG0HQVHZq
+ XWuYxX46EKTwb7Yyn/KKjgqx2hj2FOdlaUkFmmK/znGEnWdmDYUETrAeX9RB1IzYUnLm
+ mKRYdQfdWtnU1v96OXI8LM7lwmFQYW9coejMKNXewAc9DooJpMBbwre1pF/uDhQpGAT9 OQ== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 35wkj78x0x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 06 Jan 2021 15:18:48 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 106KH1TQ004175;
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 106KGstI014214;
  Wed, 6 Jan 2021 20:18:47 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma04wdc.us.ibm.com with ESMTP id 35tgf9yfw4-1
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma03wdc.us.ibm.com with ESMTP id 35tgf97fp0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 06 Jan 2021 20:18:47 +0000
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 106KIjaT26149186
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 106KIk8K28574128
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Jan 2021 20:18:45 GMT
+ Wed, 6 Jan 2021 20:18:46 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C0655C6055;
- Wed,  6 Jan 2021 20:18:45 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 27CF4C6057;
+ Wed,  6 Jan 2021 20:18:46 +0000 (GMT)
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6726FC605A;
+ by IMSVA (Postfix) with ESMTP id CD651C605D;
  Wed,  6 Jan 2021 20:18:45 +0000 (GMT)
 Received: from vios4361.aus.stglabs.ibm.com (unknown [9.3.43.61])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
  Wed,  6 Jan 2021 20:18:45 +0000 (GMT)
 From: Tyrel Datwyler <tyreld@linux.ibm.com>
 To: james.bottomley@hansenpartnership.com
-Subject: [PATCH v2 2/5] ibmvfc: make command event pool queue specific
-Date: Wed,  6 Jan 2021 14:18:32 -0600
-Message-Id: <20210106201835.1053593-3-tyreld@linux.ibm.com>
+Subject: [PATCH v2 3/5] ibmvfc: define per-queue state/list locks
+Date: Wed,  6 Jan 2021 14:18:33 -0600
+Message-Id: <20210106201835.1053593-4-tyreld@linux.ibm.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210106201835.1053593-1-tyreld@linux.ibm.com>
 References: <20210106201835.1053593-1-tyreld@linux.ibm.com>
@@ -80,11 +80,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
  definitions=2021-01-06_11:2021-01-06,
  2021-01-06 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0
- priorityscore=1501 mlxscore=0 adultscore=0 suspectscore=0 clxscore=1015
- phishscore=0 lowpriorityscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101060109
+ lowpriorityscore=0
+ phishscore=0 suspectscore=0 spamscore=0 mlxscore=0 priorityscore=1501
+ mlxlogscore=999 bulkscore=0 impostorscore=0 adultscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101060109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,435 +104,409 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is currently a single command event pool per host. In anticipation
-of providing multiple queues add a per-queue event pool definition and
-reimplement the existing CRQ to use its queue defined event pool for
-command submission and completion.
+Define per-queue locks for protecting queue state and event pool
+sent/free lists. The evt list lock is initially redundant but it allows
+the driver to be modified in the follow-up patches to relax the queue
+locking around submissions and completions.
 
 Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
 Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
 ---
- drivers/scsi/ibmvscsi/ibmvfc.c | 95 ++++++++++++++++++----------------
- drivers/scsi/ibmvscsi/ibmvfc.h | 10 ++--
- 2 files changed, 55 insertions(+), 50 deletions(-)
+ drivers/scsi/ibmvscsi/ibmvfc.c | 93 +++++++++++++++++++++++++++-------
+ drivers/scsi/ibmvscsi/ibmvfc.h |  7 ++-
+ 2 files changed, 80 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index c8e7c4701ac4..8de2a25b05ee 100644
+index 8de2a25b05ee..69a6401ca504 100644
 --- a/drivers/scsi/ibmvscsi/ibmvfc.c
 +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -852,12 +852,11 @@ static int ibmvfc_valid_event(struct ibmvfc_event_pool *pool,
-  **/
+@@ -176,8 +176,9 @@ static void ibmvfc_trc_start(struct ibmvfc_event *evt)
+ 	struct ibmvfc_mad_common *mad = &evt->iu.mad_common;
+ 	struct ibmvfc_fcp_cmd_iu *iu = ibmvfc_get_fcp_iu(vhost, vfc_cmd);
+ 	struct ibmvfc_trace_entry *entry;
++	int index = atomic_inc_return(&vhost->trace_index) & IBMVFC_TRACE_INDEX_MASK;
+ 
+-	entry = &vhost->trace[vhost->trace_index++];
++	entry = &vhost->trace[index];
+ 	entry->evt = evt;
+ 	entry->time = jiffies;
+ 	entry->fmt = evt->crq.format;
+@@ -211,8 +212,10 @@ static void ibmvfc_trc_end(struct ibmvfc_event *evt)
+ 	struct ibmvfc_mad_common *mad = &evt->xfer_iu->mad_common;
+ 	struct ibmvfc_fcp_cmd_iu *iu = ibmvfc_get_fcp_iu(vhost, vfc_cmd);
+ 	struct ibmvfc_fcp_rsp *rsp = ibmvfc_get_fcp_rsp(vhost, vfc_cmd);
+-	struct ibmvfc_trace_entry *entry = &vhost->trace[vhost->trace_index++];
++	struct ibmvfc_trace_entry *entry;
++	int index = atomic_inc_return(&vhost->trace_index) & IBMVFC_TRACE_INDEX_MASK;
+ 
++	entry = &vhost->trace[index];
+ 	entry->evt = evt;
+ 	entry->time = jiffies;
+ 	entry->fmt = evt->crq.format;
+@@ -805,6 +808,7 @@ static int ibmvfc_reset_crq(struct ibmvfc_host *vhost)
+ 	} while (rc == H_BUSY || H_IS_LONG_BUSY(rc));
+ 
+ 	spin_lock_irqsave(vhost->host->host_lock, flags);
++	spin_lock(vhost->crq.q_lock);
+ 	vhost->state = IBMVFC_NO_CRQ;
+ 	vhost->logged_in = 0;
+ 
+@@ -821,6 +825,7 @@ static int ibmvfc_reset_crq(struct ibmvfc_host *vhost)
+ 		dev_warn(vhost->dev, "Partner adapter not ready\n");
+ 	else if (rc != 0)
+ 		dev_warn(vhost->dev, "Couldn't register crq (rc=%d)\n", rc);
++	spin_unlock(vhost->crq.q_lock);
+ 	spin_unlock_irqrestore(vhost->host->host_lock, flags);
+ 
+ 	return rc;
+@@ -853,10 +858,16 @@ static int ibmvfc_valid_event(struct ibmvfc_event_pool *pool,
  static void ibmvfc_free_event(struct ibmvfc_event *evt)
  {
--	struct ibmvfc_host *vhost = evt->vhost;
--	struct ibmvfc_event_pool *pool = &vhost->pool;
-+	struct ibmvfc_event_pool *pool = &evt->queue->evt_pool;
+ 	struct ibmvfc_event_pool *pool = &evt->queue->evt_pool;
++	unsigned long flags;
  
  	BUG_ON(!ibmvfc_valid_event(pool, evt));
  	BUG_ON(atomic_inc_return(&evt->free) != 1);
--	list_add_tail(&evt->queue, &vhost->free);
-+	list_add_tail(&evt->queue_list, &evt->queue->free);
++
++	spin_lock_irqsave(&evt->queue->l_lock, flags);
+ 	list_add_tail(&evt->queue_list, &evt->queue->free);
++	if (evt->eh_comp)
++		complete(evt->eh_comp);
++	spin_unlock_irqrestore(&evt->queue->l_lock, flags);
  }
  
  /**
-@@ -898,7 +897,7 @@ static void ibmvfc_fail_request(struct ibmvfc_event *evt, int error_code)
+@@ -875,12 +886,27 @@ static void ibmvfc_scsi_eh_done(struct ibmvfc_event *evt)
+ 		cmnd->scsi_done(cmnd);
+ 	}
+ 
+-	if (evt->eh_comp)
+-		complete(evt->eh_comp);
+-
+ 	ibmvfc_free_event(evt);
+ }
+ 
++/**
++ * ibmvfc_complete_purge - Complete failed command list
++ * @purge_list:		list head of failed commands
++ *
++ * This function runs completions on commands to fail as a result of a
++ * host reset or platform migration. Caller must hold host_lock.
++ **/
++static void ibmvfc_complete_purge(struct list_head *purge_list)
++{
++	struct ibmvfc_event *evt, *pos;
++
++	list_for_each_entry_safe(evt, pos, purge_list, queue_list) {
++		list_del(&evt->queue_list);
++		ibmvfc_trc_end(evt);
++		evt->done(evt);
++	}
++}
++
+ /**
+  * ibmvfc_fail_request - Fail request with specified error code
+  * @evt:		ibmvfc event struct
+@@ -897,10 +923,7 @@ static void ibmvfc_fail_request(struct ibmvfc_event *evt, int error_code)
  	} else
  		evt->xfer_iu->mad_common.status = cpu_to_be16(IBMVFC_MAD_DRIVER_FAILED);
  
--	list_del(&evt->queue);
-+	list_del(&evt->queue_list);
+-	list_del(&evt->queue_list);
  	del_timer(&evt->timer);
- 	ibmvfc_trc_end(evt);
- 	evt->done(evt);
-@@ -917,7 +916,7 @@ static void ibmvfc_purge_requests(struct ibmvfc_host *vhost, int error_code)
- 	struct ibmvfc_event *evt, *pos;
- 
- 	ibmvfc_dbg(vhost, "Purging all requests\n");
--	list_for_each_entry_safe(evt, pos, &vhost->sent, queue)
-+	list_for_each_entry_safe(evt, pos, &vhost->crq.sent, queue_list)
- 		ibmvfc_fail_request(evt, error_code);
+-	ibmvfc_trc_end(evt);
+-	evt->done(evt);
  }
  
-@@ -1292,10 +1291,11 @@ static void ibmvfc_set_login_info(struct ibmvfc_host *vhost)
-  *
-  * Returns zero on success.
-  **/
--static int ibmvfc_init_event_pool(struct ibmvfc_host *vhost)
-+static int ibmvfc_init_event_pool(struct ibmvfc_host *vhost,
-+				  struct ibmvfc_queue *queue)
+ /**
+@@ -914,10 +937,14 @@ static void ibmvfc_fail_request(struct ibmvfc_event *evt, int error_code)
+ static void ibmvfc_purge_requests(struct ibmvfc_host *vhost, int error_code)
  {
- 	int i;
--	struct ibmvfc_event_pool *pool = &vhost->pool;
-+	struct ibmvfc_event_pool *pool = &queue->evt_pool;
+ 	struct ibmvfc_event *evt, *pos;
++	unsigned long flags;
  
- 	ENTER;
- 	pool->size = max_requests + IBMVFC_NUM_INTERNAL_REQ;
-@@ -1312,6 +1312,9 @@ static int ibmvfc_init_event_pool(struct ibmvfc_host *vhost)
- 		return -ENOMEM;
- 	}
+ 	ibmvfc_dbg(vhost, "Purging all requests\n");
++	spin_lock_irqsave(&vhost->crq.l_lock, flags);
+ 	list_for_each_entry_safe(evt, pos, &vhost->crq.sent, queue_list)
+ 		ibmvfc_fail_request(evt, error_code);
++	list_splice_init(&vhost->crq.sent, &vhost->purge);
++	spin_unlock_irqrestore(&vhost->crq.l_lock, flags);
+ }
  
-+	INIT_LIST_HEAD(&queue->sent);
-+	INIT_LIST_HEAD(&queue->free);
-+
+ /**
+@@ -1314,6 +1341,7 @@ static int ibmvfc_init_event_pool(struct ibmvfc_host *vhost,
+ 
+ 	INIT_LIST_HEAD(&queue->sent);
+ 	INIT_LIST_HEAD(&queue->free);
++	spin_lock_init(&queue->l_lock);
+ 
  	for (i = 0; i < pool->size; ++i) {
  		struct ibmvfc_event *evt = &pool->events[i];
- 		atomic_set(&evt->free, 1);
-@@ -1319,8 +1322,9 @@ static int ibmvfc_init_event_pool(struct ibmvfc_host *vhost)
- 		evt->crq.ioba = cpu_to_be64(pool->iu_token + (sizeof(*evt->xfer_iu) * i));
- 		evt->xfer_iu = pool->iu_storage + i;
- 		evt->vhost = vhost;
-+		evt->queue = queue;
- 		evt->ext_list = NULL;
--		list_add_tail(&evt->queue, &vhost->free);
-+		list_add_tail(&evt->queue_list, &queue->free);
- 	}
- 
- 	LEAVE;
-@@ -1332,14 +1336,15 @@ static int ibmvfc_init_event_pool(struct ibmvfc_host *vhost)
-  * @vhost:	ibmvfc host who owns the event pool
-  *
-  **/
--static void ibmvfc_free_event_pool(struct ibmvfc_host *vhost)
-+static void ibmvfc_free_event_pool(struct ibmvfc_host *vhost,
-+				   struct ibmvfc_queue *queue)
- {
- 	int i;
--	struct ibmvfc_event_pool *pool = &vhost->pool;
-+	struct ibmvfc_event_pool *pool = &queue->evt_pool;
- 
- 	ENTER;
- 	for (i = 0; i < pool->size; ++i) {
--		list_del(&pool->events[i].queue);
-+		list_del(&pool->events[i].queue_list);
- 		BUG_ON(atomic_read(&pool->events[i].free) != 1);
- 		if (pool->events[i].ext_list)
- 			dma_pool_free(vhost->sg_pool,
-@@ -1360,14 +1365,14 @@ static void ibmvfc_free_event_pool(struct ibmvfc_host *vhost)
-  *
-  * Returns a free event from the pool.
-  **/
--static struct ibmvfc_event *ibmvfc_get_event(struct ibmvfc_host *vhost)
-+static struct ibmvfc_event *ibmvfc_get_event(struct ibmvfc_queue *queue)
+@@ -1368,11 +1396,14 @@ static void ibmvfc_free_event_pool(struct ibmvfc_host *vhost,
+ static struct ibmvfc_event *ibmvfc_get_event(struct ibmvfc_queue *queue)
  {
  	struct ibmvfc_event *evt;
++	unsigned long flags;
  
--	BUG_ON(list_empty(&vhost->free));
--	evt = list_entry(vhost->free.next, struct ibmvfc_event, queue);
-+	BUG_ON(list_empty(&queue->free));
-+	evt = list_entry(queue->free.next, struct ibmvfc_event, queue_list);
++	spin_lock_irqsave(&queue->l_lock, flags);
+ 	BUG_ON(list_empty(&queue->free));
+ 	evt = list_entry(queue->free.next, struct ibmvfc_event, queue_list);
  	atomic_set(&evt->free, 0);
--	list_del(&evt->queue);
-+	list_del(&evt->queue_list);
+ 	list_del(&evt->queue_list);
++	spin_unlock_irqrestore(&queue->l_lock, flags);
  	return evt;
  }
  
-@@ -1512,7 +1517,7 @@ static int ibmvfc_send_event(struct ibmvfc_event *evt,
+@@ -1506,6 +1537,7 @@ static int ibmvfc_send_event(struct ibmvfc_event *evt,
+ 			     struct ibmvfc_host *vhost, unsigned long timeout)
+ {
+ 	__be64 *crq_as_u64 = (__be64 *) &evt->crq;
++	unsigned long flags;
+ 	int rc;
+ 
+ 	/* Copy the IU into the transfer area */
+@@ -1517,7 +1549,6 @@ static int ibmvfc_send_event(struct ibmvfc_event *evt,
  	else
  		BUG();
  
--	list_add_tail(&evt->queue, &vhost->sent);
-+	list_add_tail(&evt->queue_list, &evt->queue->sent);
+-	list_add_tail(&evt->queue_list, &evt->queue->sent);
  	timer_setup(&evt->timer, ibmvfc_timeout, 0);
  
  	if (timeout) {
-@@ -1524,7 +1529,7 @@ static int ibmvfc_send_event(struct ibmvfc_event *evt,
+@@ -1525,11 +1556,15 @@ static int ibmvfc_send_event(struct ibmvfc_event *evt,
+ 		add_timer(&evt->timer);
+ 	}
+ 
++	spin_lock_irqsave(&evt->queue->l_lock, flags);
++	list_add_tail(&evt->queue_list, &evt->queue->sent);
++
+ 	mb();
  
  	if ((rc = ibmvfc_send_crq(vhost, be64_to_cpu(crq_as_u64[0]),
  				  be64_to_cpu(crq_as_u64[1])))) {
--		list_del(&evt->queue);
-+		list_del(&evt->queue_list);
+ 		list_del(&evt->queue_list);
++		spin_unlock_irqrestore(&evt->queue->l_lock, flags);
  		del_timer(&evt->timer);
  
  		/* If send_crq returns H_CLOSED, return SCSI_MLQUEUE_HOST_BUSY.
-@@ -1747,7 +1752,7 @@ static int ibmvfc_queuecommand_lck(struct scsi_cmnd *cmnd,
+@@ -1554,8 +1589,10 @@ static int ibmvfc_send_event(struct ibmvfc_event *evt,
+ 			evt->xfer_iu->mad_common.status = cpu_to_be16(IBMVFC_MAD_CRQ_ERROR);
+ 
+ 		evt->done(evt);
+-	} else
++	} else {
++		spin_unlock_irqrestore(&evt->queue->l_lock, flags);
+ 		ibmvfc_trc_start(evt);
++	}
+ 
+ 	return 0;
+ }
+@@ -1663,9 +1700,6 @@ static void ibmvfc_scsi_done(struct ibmvfc_event *evt)
+ 		cmnd->scsi_done(cmnd);
  	}
  
- 	cmnd->result = (DID_OK << 16);
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	ibmvfc_init_event(evt, ibmvfc_scsi_done, IBMVFC_CMD_FORMAT);
- 	evt->cmnd = cmnd;
- 	cmnd->scsi_done = done;
-@@ -1836,7 +1841,7 @@ static int ibmvfc_bsg_timeout(struct bsg_job *job)
- 	}
+-	if (evt->eh_comp)
+-		complete(evt->eh_comp);
+-
+ 	ibmvfc_free_event(evt);
+ }
  
- 	vhost->aborting_passthru = 1;
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	ibmvfc_init_event(evt, ibmvfc_bsg_timeout_done, IBMVFC_MAD_FORMAT);
- 
- 	tmf = &evt->iu.tmf;
-@@ -1894,7 +1899,7 @@ static int ibmvfc_bsg_plogi(struct ibmvfc_host *vhost, unsigned int port_id)
- 	if (unlikely((rc = ibmvfc_host_chkready(vhost))))
- 		goto unlock_out;
- 
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_MAD_FORMAT);
- 	plogi = &evt->iu.plogi;
- 	memset(plogi, 0, sizeof(*plogi));
-@@ -2012,7 +2017,7 @@ static int ibmvfc_bsg_request(struct bsg_job *job)
- 		goto out;
- 	}
- 
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_MAD_FORMAT);
- 	mad = &evt->iu.passthru;
- 
-@@ -2096,7 +2101,7 @@ static int ibmvfc_reset_device(struct scsi_device *sdev, int type, char *desc)
- 
- 	spin_lock_irqsave(vhost->host->host_lock, flags);
- 	if (vhost->state == IBMVFC_ACTIVE) {
--		evt = ibmvfc_get_event(vhost);
-+		evt = ibmvfc_get_event(&vhost->crq);
- 		ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_CMD_FORMAT);
- 		tmf = ibmvfc_init_vfc_cmd(evt, sdev);
- 		iu = ibmvfc_get_fcp_iu(vhost, tmf);
-@@ -2215,7 +2220,7 @@ static int ibmvfc_wait_for_ops(struct ibmvfc_host *vhost, void *device,
+@@ -2219,28 +2253,28 @@ static int ibmvfc_wait_for_ops(struct ibmvfc_host *vhost, void *device,
+ 	ENTER;
  	do {
  		wait = 0;
- 		spin_lock_irqsave(vhost->host->host_lock, flags);
--		list_for_each_entry(evt, &vhost->sent, queue) {
-+		list_for_each_entry(evt, &vhost->crq.sent, queue_list) {
+-		spin_lock_irqsave(vhost->host->host_lock, flags);
++		spin_lock_irqsave(&vhost->crq.l_lock, flags);
+ 		list_for_each_entry(evt, &vhost->crq.sent, queue_list) {
  			if (match(evt, device)) {
  				evt->eh_comp = &comp;
  				wait++;
-@@ -2229,7 +2234,7 @@ static int ibmvfc_wait_for_ops(struct ibmvfc_host *vhost, void *device,
+ 			}
+ 		}
+-		spin_unlock_irqrestore(vhost->host->host_lock, flags);
++		spin_unlock_irqrestore(&vhost->crq.l_lock, flags);
+ 
+ 		if (wait) {
+ 			timeout = wait_for_completion_timeout(&comp, timeout);
+ 
  			if (!timeout) {
  				wait = 0;
- 				spin_lock_irqsave(vhost->host->host_lock, flags);
--				list_for_each_entry(evt, &vhost->sent, queue) {
-+				list_for_each_entry(evt, &vhost->crq.sent, queue_list) {
+-				spin_lock_irqsave(vhost->host->host_lock, flags);
++				spin_lock_irqsave(&vhost->crq.l_lock, flags);
+ 				list_for_each_entry(evt, &vhost->crq.sent, queue_list) {
  					if (match(evt, device)) {
  						evt->eh_comp = NULL;
  						wait++;
-@@ -2274,7 +2279,7 @@ static int ibmvfc_cancel_all(struct scsi_device *sdev, int type)
+ 					}
+ 				}
+-				spin_unlock_irqrestore(vhost->host->host_lock, flags);
++				spin_unlock_irqrestore(&vhost->crq.l_lock, flags);
+ 				if (wait)
+ 					dev_err(vhost->dev, "Timed out waiting for aborted commands\n");
+ 				LEAVE;
+@@ -2277,14 +2311,16 @@ static int ibmvfc_cancel_all(struct scsi_device *sdev, int type)
+ 	u16 status;
+ 
  	ENTER;
- 	spin_lock_irqsave(vhost->host->host_lock, flags);
+-	spin_lock_irqsave(vhost->host->host_lock, flags);
  	found_evt = NULL;
--	list_for_each_entry(evt, &vhost->sent, queue) {
-+	list_for_each_entry(evt, &vhost->crq.sent, queue_list) {
++	spin_lock_irqsave(vhost->host->host_lock, flags);
++	spin_lock(&vhost->crq.l_lock);
+ 	list_for_each_entry(evt, &vhost->crq.sent, queue_list) {
  		if (evt->cmnd && evt->cmnd->device == sdev) {
  			found_evt = evt;
  			break;
-@@ -2289,7 +2294,7 @@ static int ibmvfc_cancel_all(struct scsi_device *sdev, int type)
+ 		}
  	}
++	spin_unlock(&vhost->crq.l_lock);
  
- 	if (vhost->logged_in) {
--		evt = ibmvfc_get_event(vhost);
-+		evt = ibmvfc_get_event(&vhost->crq);
- 		ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_MAD_FORMAT);
+ 	if (!found_evt) {
+ 		if (vhost->log_level > IBMVFC_DEFAULT_LOG_LEVEL)
+@@ -2414,14 +2450,16 @@ static int ibmvfc_abort_task_set(struct scsi_device *sdev)
+ 	unsigned long flags, timeout = IBMVFC_ABORT_TIMEOUT;
+ 	int rsp_code = 0;
  
- 		tmf = &evt->iu.tmf;
-@@ -2411,7 +2416,7 @@ static int ibmvfc_abort_task_set(struct scsi_device *sdev)
- 
- 	spin_lock_irqsave(vhost->host->host_lock, flags);
+-	spin_lock_irqsave(vhost->host->host_lock, flags);
  	found_evt = NULL;
--	list_for_each_entry(evt, &vhost->sent, queue) {
-+	list_for_each_entry(evt, &vhost->crq.sent, queue_list) {
++	spin_lock_irqsave(vhost->host->host_lock, flags);
++	spin_lock(&vhost->crq.l_lock);
+ 	list_for_each_entry(evt, &vhost->crq.sent, queue_list) {
  		if (evt->cmnd && evt->cmnd->device == sdev) {
  			found_evt = evt;
  			break;
-@@ -2426,7 +2431,7 @@ static int ibmvfc_abort_task_set(struct scsi_device *sdev)
+ 		}
  	}
++	spin_unlock(&vhost->crq.l_lock);
  
- 	if (vhost->state == IBMVFC_ACTIVE) {
--		evt = ibmvfc_get_event(vhost);
-+		evt = ibmvfc_get_event(&vhost->crq);
- 		ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_CMD_FORMAT);
- 		tmf = ibmvfc_init_vfc_cmd(evt, sdev);
- 		iu = ibmvfc_get_fcp_iu(vhost, tmf);
-@@ -2917,7 +2922,7 @@ static void ibmvfc_handle_crq(struct ibmvfc_crq *crq, struct ibmvfc_host *vhost)
- 	 * things we send. Make sure this response is to something we
- 	 * actually sent
- 	 */
--	if (unlikely(!ibmvfc_valid_event(&vhost->pool, evt))) {
-+	if (unlikely(!ibmvfc_valid_event(&vhost->crq.evt_pool, evt))) {
- 		dev_err(vhost->dev, "Returned correlation_token 0x%08llx is invalid!\n",
- 			crq->ioba);
- 		return;
-@@ -2930,7 +2935,7 @@ static void ibmvfc_handle_crq(struct ibmvfc_crq *crq, struct ibmvfc_host *vhost)
+ 	if (!found_evt) {
+ 		if (vhost->log_level > IBMVFC_DEFAULT_LOG_LEVEL)
+@@ -2935,7 +2973,9 @@ static void ibmvfc_handle_crq(struct ibmvfc_crq *crq, struct ibmvfc_host *vhost)
  	}
  
  	del_timer(&evt->timer);
--	list_del(&evt->queue);
-+	list_del(&evt->queue_list);
++	spin_lock(&evt->queue->l_lock);
+ 	list_del(&evt->queue_list);
++	spin_unlock(&evt->queue->l_lock);
  	ibmvfc_trc_end(evt);
  	evt->done(evt);
  }
-@@ -3508,7 +3513,7 @@ static void ibmvfc_tgt_send_prli(struct ibmvfc_target *tgt)
- 		return;
+@@ -3328,6 +3368,7 @@ static void ibmvfc_tasklet(void *data)
+ 	int done = 0;
  
- 	kref_get(&tgt->kref);
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	vhost->discovery_threads++;
- 	ibmvfc_init_event(evt, ibmvfc_tgt_prli_done, IBMVFC_MAD_FORMAT);
- 	evt->tgt = tgt;
-@@ -3615,7 +3620,7 @@ static void ibmvfc_tgt_send_plogi(struct ibmvfc_target *tgt)
+ 	spin_lock_irqsave(vhost->host->host_lock, flags);
++	spin_lock(vhost->crq.q_lock);
+ 	while (!done) {
+ 		/* Pull all the valid messages off the async CRQ */
+ 		while ((async = ibmvfc_next_async_crq(vhost)) != NULL) {
+@@ -3358,6 +3399,7 @@ static void ibmvfc_tasklet(void *data)
+ 			done = 1;
+ 	}
  
- 	kref_get(&tgt->kref);
- 	tgt->logo_rcvd = 0;
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	vhost->discovery_threads++;
- 	ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_INIT_WAIT);
- 	ibmvfc_init_event(evt, ibmvfc_tgt_plogi_done, IBMVFC_MAD_FORMAT);
-@@ -3690,7 +3695,7 @@ static struct ibmvfc_event *__ibmvfc_tgt_get_implicit_logout_evt(struct ibmvfc_t
- 	struct ibmvfc_event *evt;
++	spin_unlock(vhost->crq.q_lock);
+ 	spin_unlock_irqrestore(vhost->host->host_lock, flags);
+ }
  
- 	kref_get(&tgt->kref);
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	ibmvfc_init_event(evt, done, IBMVFC_MAD_FORMAT);
- 	evt->tgt = tgt;
- 	mad = &evt->iu.implicit_logout;
-@@ -3855,7 +3860,7 @@ static void ibmvfc_tgt_move_login(struct ibmvfc_target *tgt)
- 		return;
+@@ -4734,6 +4776,7 @@ static void ibmvfc_do_work(struct ibmvfc_host *vhost)
+ 	struct ibmvfc_target *tgt;
+ 	unsigned long flags;
+ 	struct fc_rport *rport;
++	LIST_HEAD(purge);
+ 	int rc;
  
- 	kref_get(&tgt->kref);
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	vhost->discovery_threads++;
- 	ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_INIT_WAIT);
- 	ibmvfc_init_event(evt, ibmvfc_tgt_move_login_done, IBMVFC_MAD_FORMAT);
-@@ -4021,7 +4026,7 @@ static void ibmvfc_adisc_timeout(struct timer_list *t)
+ 	ibmvfc_log_ae(vhost, vhost->events_to_log);
+@@ -4746,6 +4789,8 @@ static void ibmvfc_do_work(struct ibmvfc_host *vhost)
+ 		break;
+ 	case IBMVFC_HOST_ACTION_RESET:
+ 		vhost->action = IBMVFC_HOST_ACTION_TGT_DEL;
++		list_splice_init(&vhost->purge, &purge);
++		ibmvfc_complete_purge(&purge);
+ 		spin_unlock_irqrestore(vhost->host->host_lock, flags);
+ 		rc = ibmvfc_reset_crq(vhost);
+ 		spin_lock_irqsave(vhost->host->host_lock, flags);
+@@ -4759,6 +4804,8 @@ static void ibmvfc_do_work(struct ibmvfc_host *vhost)
+ 		break;
+ 	case IBMVFC_HOST_ACTION_REENABLE:
+ 		vhost->action = IBMVFC_HOST_ACTION_TGT_DEL;
++		list_splice_init(&vhost->purge, &purge);
++		ibmvfc_complete_purge(&purge);
+ 		spin_unlock_irqrestore(vhost->host->host_lock, flags);
+ 		rc = ibmvfc_reenable_crq_queue(vhost);
+ 		spin_lock_irqsave(vhost->host->host_lock, flags);
+@@ -4936,6 +4983,9 @@ static int ibmvfc_alloc_queue(struct ibmvfc_host *vhost,
+ 	size_t fmt_size;
  
- 	vhost->abort_threads++;
- 	kref_get(&tgt->kref);
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	ibmvfc_init_event(evt, ibmvfc_tgt_adisc_cancel_done, IBMVFC_MAD_FORMAT);
+ 	ENTER;
++	spin_lock_init(&queue->_lock);
++	queue->q_lock = &queue->_lock;
++
+ 	switch (fmt) {
+ 	case IBMVFC_CRQ_FMT:
+ 		fmt_size = sizeof(*queue->msgs.crq);
+@@ -5098,6 +5148,7 @@ static int ibmvfc_alloc_mem(struct ibmvfc_host *vhost)
  
- 	evt->tgt = tgt;
-@@ -4071,7 +4076,7 @@ static void ibmvfc_tgt_adisc(struct ibmvfc_target *tgt)
- 		return;
+ 	vhost->trace = kcalloc(IBMVFC_NUM_TRACE_ENTRIES,
+ 			       sizeof(struct ibmvfc_trace_entry), GFP_KERNEL);
++	atomic_set(&vhost->trace_index, -1);
  
- 	kref_get(&tgt->kref);
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	vhost->discovery_threads++;
- 	ibmvfc_init_event(evt, ibmvfc_tgt_adisc_done, IBMVFC_MAD_FORMAT);
- 	evt->tgt = tgt;
-@@ -4174,7 +4179,7 @@ static void ibmvfc_tgt_query_target(struct ibmvfc_target *tgt)
- 		return;
- 
- 	kref_get(&tgt->kref);
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	vhost->discovery_threads++;
- 	evt->tgt = tgt;
- 	ibmvfc_init_event(evt, ibmvfc_tgt_query_target_done, IBMVFC_MAD_FORMAT);
-@@ -4341,7 +4346,7 @@ static void ibmvfc_discover_targets_done(struct ibmvfc_event *evt)
- static void ibmvfc_discover_targets(struct ibmvfc_host *vhost)
- {
- 	struct ibmvfc_discover_targets *mad;
--	struct ibmvfc_event *evt = ibmvfc_get_event(vhost);
-+	struct ibmvfc_event *evt = ibmvfc_get_event(&vhost->crq);
- 
- 	ibmvfc_init_event(evt, ibmvfc_discover_targets_done, IBMVFC_MAD_FORMAT);
- 	mad = &evt->iu.discover_targets;
-@@ -4454,7 +4459,7 @@ static void ibmvfc_npiv_login_done(struct ibmvfc_event *evt)
- static void ibmvfc_npiv_login(struct ibmvfc_host *vhost)
- {
- 	struct ibmvfc_npiv_login_mad *mad;
--	struct ibmvfc_event *evt = ibmvfc_get_event(vhost);
-+	struct ibmvfc_event *evt = ibmvfc_get_event(&vhost->crq);
- 
- 	ibmvfc_gather_partition_info(vhost);
- 	ibmvfc_set_login_info(vhost);
-@@ -4491,7 +4496,7 @@ static void ibmvfc_npiv_logout_done(struct ibmvfc_event *evt)
- 
- 	switch (mad_status) {
- 	case IBMVFC_MAD_SUCCESS:
--		if (list_empty(&vhost->sent) &&
-+		if (list_empty(&vhost->crq.sent) &&
- 		    vhost->action == IBMVFC_HOST_ACTION_LOGO_WAIT) {
- 			ibmvfc_init_host(vhost);
- 			return;
-@@ -4519,7 +4524,7 @@ static void ibmvfc_npiv_logout(struct ibmvfc_host *vhost)
- 	struct ibmvfc_npiv_logout_mad *mad;
- 	struct ibmvfc_event *evt;
- 
--	evt = ibmvfc_get_event(vhost);
-+	evt = ibmvfc_get_event(&vhost->crq);
- 	ibmvfc_init_event(evt, ibmvfc_npiv_logout_done, IBMVFC_MAD_FORMAT);
- 
- 	mad = &evt->iu.npiv_logout;
-@@ -5208,8 +5213,6 @@ static int ibmvfc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
- 	shost->unique_id = shost->host_no;
+ 	if (!vhost->trace)
+ 		goto free_disc_buffer;
+@@ -5214,6 +5265,7 @@ static int ibmvfc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
  
  	vhost = shost_priv(shost);
--	INIT_LIST_HEAD(&vhost->sent);
--	INIT_LIST_HEAD(&vhost->free);
  	INIT_LIST_HEAD(&vhost->targets);
++	INIT_LIST_HEAD(&vhost->purge);
  	sprintf(vhost->name, IBMVFC_NAME);
  	vhost->host = shost;
-@@ -5241,7 +5244,7 @@ static int ibmvfc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
- 		goto kill_kthread;
- 	}
+ 	vhost->dev = dev;
+@@ -5298,6 +5350,7 @@ static int ibmvfc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ static int ibmvfc_remove(struct vio_dev *vdev)
+ {
+ 	struct ibmvfc_host *vhost = dev_get_drvdata(&vdev->dev);
++	LIST_HEAD(purge);
+ 	unsigned long flags;
  
--	if ((rc = ibmvfc_init_event_pool(vhost))) {
-+	if ((rc = ibmvfc_init_event_pool(vhost, &vhost->crq))) {
- 		dev_err(dev, "Couldn't initialize event pool. rc=%d\n", rc);
- 		goto release_crq;
- 	}
-@@ -5271,7 +5274,7 @@ static int ibmvfc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
- remove_shost:
- 	scsi_remove_host(shost);
- release_event_pool:
--	ibmvfc_free_event_pool(vhost);
-+	ibmvfc_free_event_pool(vhost, &vhost->crq);
- release_crq:
- 	ibmvfc_release_crq_queue(vhost);
- kill_kthread:
-@@ -5313,7 +5316,7 @@ static int ibmvfc_remove(struct vio_dev *vdev)
+ 	ENTER;
+@@ -5315,6 +5368,8 @@ static int ibmvfc_remove(struct vio_dev *vdev)
+ 
  	spin_lock_irqsave(vhost->host->host_lock, flags);
  	ibmvfc_purge_requests(vhost, DID_ERROR);
++	list_splice_init(&vhost->purge, &purge);
++	ibmvfc_complete_purge(&purge);
  	spin_unlock_irqrestore(vhost->host->host_lock, flags);
--	ibmvfc_free_event_pool(vhost);
-+	ibmvfc_free_event_pool(vhost, &vhost->crq);
+ 	ibmvfc_free_event_pool(vhost, &vhost->crq);
  
- 	ibmvfc_free_mem(vhost);
- 	spin_lock(&ibmvfc_driver_lock);
 diff --git a/drivers/scsi/ibmvscsi/ibmvfc.h b/drivers/scsi/ibmvscsi/ibmvfc.h
-index 5bf1621223d6..61c73b6f7a77 100644
+index 61c73b6f7a77..faf5b50d65b9 100644
 --- a/drivers/scsi/ibmvscsi/ibmvfc.h
 +++ b/drivers/scsi/ibmvscsi/ibmvfc.h
-@@ -726,8 +726,9 @@ struct ibmvfc_target {
- 
- /* a unit of work for the hosting partition */
- struct ibmvfc_event {
--	struct list_head queue;
-+	struct list_head queue_list;
- 	struct ibmvfc_host *vhost;
-+	struct ibmvfc_queue *queue;
- 	struct ibmvfc_target *tgt;
- 	struct scsi_cmnd *cmnd;
- 	atomic_t free;
-@@ -767,6 +768,10 @@ struct ibmvfc_queue {
+@@ -768,10 +768,13 @@ struct ibmvfc_queue {
  	dma_addr_t msg_token;
  	enum ibmvfc_msg_fmt fmt;
  	int size, cur;
-+
-+	struct ibmvfc_event_pool evt_pool;
-+	struct list_head sent;
-+	struct list_head free;
++	spinlock_t _lock;
++	spinlock_t *q_lock;
+ 
+ 	struct ibmvfc_event_pool evt_pool;
+ 	struct list_head sent;
+ 	struct list_head free;
++	spinlock_t l_lock;
  };
  
  enum ibmvfc_host_action {
-@@ -808,10 +813,7 @@ struct ibmvfc_host {
- 	u32 trace_index:IBMVFC_NUM_TRACE_INDEX_BITS;
+@@ -808,11 +811,13 @@ struct ibmvfc_host {
+ 	enum ibmvfc_host_action action;
+ #define IBMVFC_NUM_TRACE_INDEX_BITS		8
+ #define IBMVFC_NUM_TRACE_ENTRIES		(1 << IBMVFC_NUM_TRACE_INDEX_BITS)
++#define IBMVFC_TRACE_INDEX_MASK			(IBMVFC_NUM_TRACE_ENTRIES - 1)
+ #define IBMVFC_TRACE_SIZE	(sizeof(struct ibmvfc_trace_entry) * IBMVFC_NUM_TRACE_ENTRIES)
+ 	struct ibmvfc_trace_entry *trace;
+-	u32 trace_index:IBMVFC_NUM_TRACE_INDEX_BITS;
++	atomic_t trace_index;
  	int num_targets;
  	struct list_head targets;
--	struct list_head sent;
--	struct list_head free;
++	struct list_head purge;
  	struct device *dev;
--	struct ibmvfc_event_pool pool;
  	struct dma_pool *sg_pool;
  	mempool_t *tgt_pool;
- 	struct ibmvfc_queue crq;
 -- 
 2.27.0
 
