@@ -2,93 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5002ECF03
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jan 2021 12:50:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E1D72ED5D0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jan 2021 18:41:25 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DBPgc3CKJzDr7B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jan 2021 22:50:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DBYSL49VczDqhH
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jan 2021 04:41:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d30;
+ helo=mail-io1-xd30.google.com; envelope-from=tientzu@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jmU+8u3h; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=RjsCv0SB; dkim-atps=neutral
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com
+ [IPv6:2607:f8b0:4864:20::d30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DBPZw5CybzDr6l
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jan 2021 22:46:32 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 107Amkbi135711; Thu, 7 Jan 2021 06:01:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=kUHKC8Ouu5hkPT7SgwvRQkbJKMe+bQqCf0tKTXgtduo=;
- b=jmU+8u3hNmQQHo7WrkRCGgND/vkoWkC363O4xPbHQUNSWXgE/F8IlVFYHKdJxbTLrJWD
- Xk/3rglbbzxT4RwE7YOIfBpTs0XILmYYHGwq7zPaUTgNAC4WPoKZWd9KVs6HH3mdd672
- EApisGtDWLlcGZPqF6Slkts54rxbklqo+X72uFzAG5D1Tl97TeMYpA9+uuFIVHt/CdaA
- baFRxBECL7ubrh2i6Q5tyNdzaHVnIsVxOFDyXMvG4bJKRpVmn0fYCwe+SiEZXI4413MP
- uLr6jqdrIcAPXDH4Nzhd5GXGF2j/aVeNjZaqop8CigBmf1cMOA8CRcEDhJQjvVo5L2GD dA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35x0vj8cfh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 07 Jan 2021 06:01:04 -0500
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 107Anca2139440;
- Thu, 7 Jan 2021 06:01:04 -0500
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35x0vj8cds-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 07 Jan 2021 06:01:03 -0500
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 107AqrMH027552;
- Thu, 7 Jan 2021 11:01:01 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma04fra.de.ibm.com with ESMTP id 35va37hajb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 07 Jan 2021 11:01:01 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 107B0w4W28967168
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 7 Jan 2021 11:00:58 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2D003AE045;
- Thu,  7 Jan 2021 11:00:58 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DD9DAAE05D;
- Thu,  7 Jan 2021 11:00:56 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.85.74.175])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  7 Jan 2021 11:00:56 +0000 (GMT)
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc/mce: Remove per cpu variables from MCE handlers
-Date: Thu,  7 Jan 2021 16:30:17 +0530
-Message-Id: <20210107110017.62938-1-ganeshgr@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DBYQH3drwzDq5t
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jan 2021 04:39:34 +1100 (AEDT)
+Received: by mail-io1-xd30.google.com with SMTP id d9so6938639iob.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Jan 2021 09:39:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=BpWY74vWVa1L8Raewx13V4/TopbXG6j16e2kYWK8TMo=;
+ b=RjsCv0SB3G2nr2VhqjbT5oDz8W7DNBKHdnzTnNqkj1iJof0+bV7fP3DrwRkndy/u4k
+ Ygt4ObgL6c6fDwINAZBbrt6q9Nyu03KM8Jtf+6CaIHJDQhHurg1bvBaIn5xYb5DYi3P3
+ O7pPyZUh0Fpetb+g793rmuwtHVk+BC0HuhiVQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=BpWY74vWVa1L8Raewx13V4/TopbXG6j16e2kYWK8TMo=;
+ b=jfg7QKF+yJ5noEbJXxXKr981U36ooLVEhjH0vpidwCtDmu5dZaySvflFAIUtS1XVid
+ e9CfiiCDlpy31nMDia6qvmIxCu2I1Hmy+QnTMlyarqXlhHku33DRnUG6xErydHFdSOun
+ SDioxVuDKUIY1uPHO2AxmwV2W5xHU7YZjak2MfjyFUqlX88JCmRj/YQ8CgZSA3PUuflP
+ P+x/poDmNlQVMa7XSFX98o8NO59Q3m9ITccvWVu3ZeGHM36l1w6dv+BO5Ic3Z9ZtPiYd
+ 0A9qggJptwjmxpVWEdOifTrISdUd6u/r8AaKfowZ7o5Kl4vAaL6BaEPX/PZ4vKxDL1uy
+ hNKg==
+X-Gm-Message-State: AOAM533JrTsC8h1M9qEJPdcmgnYWo1mVi7ELFQuPge/FA3aooBBBYeNJ
+ z8LsS+mR1hbuLCw0kKTW24u81rTmecpFgbt2
+X-Google-Smtp-Source: ABdhPJy8vjDtUaUcFPAGNk0aCKzej7LE0b0CINhSzMq+l5/3G6kxTDepR1Q2BHimuqCQVTPLPw/pHA==
+X-Received: by 2002:a05:6602:3303:: with SMTP id
+ b3mr2110426ioz.179.1610041172042; 
+ Thu, 07 Jan 2021 09:39:32 -0800 (PST)
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com.
+ [209.85.166.48])
+ by smtp.gmail.com with ESMTPSA id k76sm5358030ilk.36.2021.01.07.09.39.30
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Jan 2021 09:39:31 -0800 (PST)
+Received: by mail-io1-f48.google.com with SMTP id w18so6960018iot.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Jan 2021 09:39:30 -0800 (PST)
+X-Received: by 2002:a92:c206:: with SMTP id j6mr9799328ilo.189.1610041168940; 
+ Thu, 07 Jan 2021 09:39:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-07_05:2021-01-07,
- 2021-01-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 mlxscore=0
- suspectscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101070059
+References: <20210106034124.30560-1-tientzu@chromium.org>
+ <20210106034124.30560-3-tientzu@chromium.org>
+ <20210106185241.GA109735@localhost.localdomain>
+In-Reply-To: <20210106185241.GA109735@localhost.localdomain>
+From: Claire Chang <tientzu@chromium.org>
+Date: Fri, 8 Jan 2021 01:39:18 +0800
+X-Gmail-Original-Message-ID: <CALiNf2-HDf6tFcvVgCttr-ta=88ZMH=OvB5XoryTPc6MNvwV+Q@mail.gmail.com>
+Message-ID: <CALiNf2-HDf6tFcvVgCttr-ta=88ZMH=OvB5XoryTPc6MNvwV+Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 2/6] swiotlb: Add restricted DMA pool
+To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,303 +83,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com,
- npiggin@gmail.com
+Cc: heikki.krogerus@linux.intel.com, peterz@infradead.org, grant.likely@arm.com,
+ paulus@samba.org, Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>, sstabellini@kernel.org,
+ Saravana Kannan <saravanak@google.com>,
+ "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>,
+ Joerg Roedel <joro@8bytes.org>, " <joro@8bytes.org>,
+ rafael.j.wysocki@intel.com, Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+ xen-devel@lists.xenproject.org, Thierry Reding <treding@nvidia.com>,
+ linux-devicetree <devicetree@vger.kernel.org>, will@kernel.org,
+ dan.j.williams@intel.com, linuxppc-dev@lists.ozlabs.org,
+ Rob Herring <robh+dt@kernel.org>, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ rdunlap@infradead.org, lkml <linux-kernel@vger.kernel.org>,
+ Tomasz Figa <tfiga@chromium.org>,
+ "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>,
+ Joerg Roedel <joro@8bytes.org>, " <iommu@lists.linux-foundation.org>,
+ xypron.glpk@gmx.de, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Access to per-cpu variables requires translation to be enabled on
-pseries machine running in hash mmu mode, Since part of MCE handler
-runs in realmode and part of MCE handling code is shared between ppc
-architectures pseries and powernv, it becomes difficult to manage
-these variables differently on different architectures, So have
-these variables in paca instead of having them as per-cpu variables
-to avoid complications.
+Hi Greg and Konrad,
 
-Maximum recursive depth of MCE is 4, Considering the maximum depth
-allowed reduce the size of event to 10 from 100.
+This change is intended to be non-arch specific. Any arch that lacks DMA access
+control and has devices not behind an IOMMU can make use of it. Could you share
+why you think this should be arch specific?
 
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
----
-v2: Dynamically allocate memory for machine check event info
----
- arch/powerpc/include/asm/mce.h     | 21 +++++++-
- arch/powerpc/include/asm/paca.h    |  4 ++
- arch/powerpc/kernel/mce.c          | 86 ++++++++++++++++++------------
- arch/powerpc/kernel/setup-common.c |  2 +-
- 4 files changed, 78 insertions(+), 35 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
-index e6c27ae843dc..8d6e3a7a9f37 100644
---- a/arch/powerpc/include/asm/mce.h
-+++ b/arch/powerpc/include/asm/mce.h
-@@ -204,7 +204,18 @@ struct mce_error_info {
- 	bool			ignore_event;
- };
- 
--#define MAX_MC_EVT	100
-+#define MAX_MC_EVT	10
-+
-+struct mce_info {
-+	int mce_nest_count;
-+	struct machine_check_event mce_event[MAX_MC_EVT];
-+	/* Queue for delayed MCE events. */
-+	int mce_queue_count;
-+	struct machine_check_event mce_event_queue[MAX_MC_EVT];
-+	/* Queue for delayed MCE UE events. */
-+	int mce_ue_count;
-+	struct machine_check_event  mce_ue_event_queue[MAX_MC_EVT];
-+};
- 
- /* Release flags for get_mce_event() */
- #define MCE_EVENT_RELEASE	true
-@@ -233,5 +244,13 @@ long __machine_check_early_realmode_p7(struct pt_regs *regs);
- long __machine_check_early_realmode_p8(struct pt_regs *regs);
- long __machine_check_early_realmode_p9(struct pt_regs *regs);
- long __machine_check_early_realmode_p10(struct pt_regs *regs);
-+#define get_mce_info() local_paca->mce_info
-+#endif /* CONFIG_PPC_BOOK3S_64 */
-+
-+#ifdef CONFIG_PPC_BOOK3S_64
-+void mce_init(void);
-+#else
-+static inline void mce_init(void) { };
- #endif /* CONFIG_PPC_BOOK3S_64 */
-+
- #endif /* __ASM_PPC64_MCE_H__ */
-diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
-index 9454d29ff4b4..38e0c55e845d 100644
---- a/arch/powerpc/include/asm/paca.h
-+++ b/arch/powerpc/include/asm/paca.h
-@@ -29,6 +29,7 @@
- #include <asm/hmi.h>
- #include <asm/cpuidle.h>
- #include <asm/atomic.h>
-+#include <asm/mce.h>
- 
- #include <asm-generic/mmiowb_types.h>
- 
-@@ -273,6 +274,9 @@ struct paca_struct {
- #ifdef CONFIG_MMIOWB
- 	struct mmiowb_state mmiowb_state;
- #endif
-+#ifdef CONFIG_PPC_BOOK3S_64
-+	struct mce_info *mce_info;
-+#endif /* CONFIG_PPC_BOOK3S_64 */
- } ____cacheline_aligned;
- 
- extern void copy_mm_to_paca(struct mm_struct *mm);
-diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-index 9f3e133b57b7..14142ddbedf2 100644
---- a/arch/powerpc/kernel/mce.c
-+++ b/arch/powerpc/kernel/mce.c
-@@ -17,23 +17,12 @@
- #include <linux/irq_work.h>
- #include <linux/extable.h>
- #include <linux/ftrace.h>
-+#include <linux/memblock.h>
- 
- #include <asm/machdep.h>
- #include <asm/mce.h>
- #include <asm/nmi.h>
- 
--static DEFINE_PER_CPU(int, mce_nest_count);
--static DEFINE_PER_CPU(struct machine_check_event[MAX_MC_EVT], mce_event);
--
--/* Queue for delayed MCE events. */
--static DEFINE_PER_CPU(int, mce_queue_count);
--static DEFINE_PER_CPU(struct machine_check_event[MAX_MC_EVT], mce_event_queue);
--
--/* Queue for delayed MCE UE events. */
--static DEFINE_PER_CPU(int, mce_ue_count);
--static DEFINE_PER_CPU(struct machine_check_event[MAX_MC_EVT],
--					mce_ue_event_queue);
--
- static void machine_check_process_queued_event(struct irq_work *work);
- static void machine_check_ue_irq_work(struct irq_work *work);
- static void machine_check_ue_event(struct machine_check_event *evt);
-@@ -103,8 +92,8 @@ void save_mce_event(struct pt_regs *regs, long handled,
- 		    struct mce_error_info *mce_err,
- 		    uint64_t nip, uint64_t addr, uint64_t phys_addr)
- {
--	int index = __this_cpu_inc_return(mce_nest_count) - 1;
--	struct machine_check_event *mce = this_cpu_ptr(&mce_event[index]);
-+	int index = get_mce_info()->mce_nest_count++;
-+	struct machine_check_event *mce = &get_mce_info()->mce_event[index];
- 
- 	/*
- 	 * Return if we don't have enough space to log mce event.
-@@ -191,7 +180,7 @@ void save_mce_event(struct pt_regs *regs, long handled,
-  */
- int get_mce_event(struct machine_check_event *mce, bool release)
- {
--	int index = __this_cpu_read(mce_nest_count) - 1;
-+	int index = get_mce_info()->mce_nest_count - 1;
- 	struct machine_check_event *mc_evt;
- 	int ret = 0;
- 
-@@ -201,7 +190,7 @@ int get_mce_event(struct machine_check_event *mce, bool release)
- 
- 	/* Check if we have MCE info to process. */
- 	if (index < MAX_MC_EVT) {
--		mc_evt = this_cpu_ptr(&mce_event[index]);
-+		mc_evt = &get_mce_info()->mce_event[index];
- 		/* Copy the event structure and release the original */
- 		if (mce)
- 			*mce = *mc_evt;
-@@ -211,7 +200,7 @@ int get_mce_event(struct machine_check_event *mce, bool release)
- 	}
- 	/* Decrement the count to free the slot. */
- 	if (release)
--		__this_cpu_dec(mce_nest_count);
-+		get_mce_info()->mce_nest_count--;
- 
- 	return ret;
- }
-@@ -233,13 +222,13 @@ static void machine_check_ue_event(struct machine_check_event *evt)
- {
- 	int index;
- 
--	index = __this_cpu_inc_return(mce_ue_count) - 1;
-+	index = get_mce_info()->mce_ue_count++;
- 	/* If queue is full, just return for now. */
- 	if (index >= MAX_MC_EVT) {
--		__this_cpu_dec(mce_ue_count);
-+		get_mce_info()->mce_ue_count--;
- 		return;
- 	}
--	memcpy(this_cpu_ptr(&mce_ue_event_queue[index]), evt, sizeof(*evt));
-+	memcpy(&get_mce_info()->mce_ue_event_queue[index], evt, sizeof(*evt));
- 
- 	/* Queue work to process this event later. */
- 	irq_work_queue(&mce_ue_event_irq_work);
-@@ -256,13 +245,13 @@ void machine_check_queue_event(void)
- 	if (!get_mce_event(&evt, MCE_EVENT_RELEASE))
- 		return;
- 
--	index = __this_cpu_inc_return(mce_queue_count) - 1;
-+	index = get_mce_info()->mce_queue_count++;
- 	/* If queue is full, just return for now. */
- 	if (index >= MAX_MC_EVT) {
--		__this_cpu_dec(mce_queue_count);
-+		get_mce_info()->mce_queue_count--;
- 		return;
- 	}
--	memcpy(this_cpu_ptr(&mce_event_queue[index]), &evt, sizeof(evt));
-+	memcpy(&get_mce_info()->mce_event_queue[index], &evt, sizeof(evt));
- 
- 	/* Queue irq work to process this event later. */
- 	irq_work_queue(&mce_event_process_work);
-@@ -289,9 +278,9 @@ static void machine_process_ue_event(struct work_struct *work)
- 	int index;
- 	struct machine_check_event *evt;
- 
--	while (__this_cpu_read(mce_ue_count) > 0) {
--		index = __this_cpu_read(mce_ue_count) - 1;
--		evt = this_cpu_ptr(&mce_ue_event_queue[index]);
-+	while (get_mce_info()->mce_ue_count > 0) {
-+		index = get_mce_info()->mce_ue_count - 1;
-+		evt = &get_mce_info()->mce_ue_event_queue[index];
- 		blocking_notifier_call_chain(&mce_notifier_list, 0, evt);
- #ifdef CONFIG_MEMORY_FAILURE
- 		/*
-@@ -304,7 +293,7 @@ static void machine_process_ue_event(struct work_struct *work)
- 		 */
- 		if (evt->error_type == MCE_ERROR_TYPE_UE) {
- 			if (evt->u.ue_error.ignore_event) {
--				__this_cpu_dec(mce_ue_count);
-+				get_mce_info()->mce_ue_count--;
- 				continue;
- 			}
- 
-@@ -320,7 +309,7 @@ static void machine_process_ue_event(struct work_struct *work)
- 					"was generated\n");
- 		}
- #endif
--		__this_cpu_dec(mce_ue_count);
-+		get_mce_info()->mce_ue_count--;
- 	}
- }
- /*
-@@ -338,17 +327,17 @@ static void machine_check_process_queued_event(struct irq_work *work)
- 	 * For now just print it to console.
- 	 * TODO: log this error event to FSP or nvram.
- 	 */
--	while (__this_cpu_read(mce_queue_count) > 0) {
--		index = __this_cpu_read(mce_queue_count) - 1;
--		evt = this_cpu_ptr(&mce_event_queue[index]);
-+	while (get_mce_info()->mce_queue_count > 0) {
-+		index = get_mce_info()->mce_queue_count - 1;
-+		evt = &get_mce_info()->mce_event_queue[index];
- 
- 		if (evt->error_type == MCE_ERROR_TYPE_UE &&
- 		    evt->u.ue_error.ignore_event) {
--			__this_cpu_dec(mce_queue_count);
-+			get_mce_info()->mce_queue_count--;
- 			continue;
- 		}
- 		machine_check_print_event_info(evt, false, false);
--		__this_cpu_dec(mce_queue_count);
-+		get_mce_info()->mce_queue_count--;
- 	}
- }
- 
-@@ -741,3 +730,34 @@ long hmi_exception_realmode(struct pt_regs *regs)
- 
- 	return 1;
- }
-+
-+void __init mce_init(void)
-+{
-+	int i, size;
-+	struct mce_info *mce_info;
-+
-+	if (!radix_enabled() && firmware_has_feature(FW_FEATURE_LPAR)) {
-+		size = sizeof(struct mce_info) * num_possible_cpus();
-+		mce_info = memblock_alloc_try_nid(size, sizeof(struct mce_info),
-+						  MEMBLOCK_LOW_LIMIT,
-+						  ppc64_rma_size,
-+						  NUMA_NO_NODE);
-+		if (!mce_info)
-+			goto err;
-+		for_each_possible_cpu(i)
-+			paca_ptrs[i]->mce_info = mce_info + i;
-+		return;
-+	}
-+	for_each_possible_cpu(i) {
-+		mce_info =
-+		      memblock_alloc_node(sizeof(struct mce_info),
-+					  __alignof__(*paca_ptrs[i]->mce_info),
-+					  cpu_to_node(i));
-+		if (!mce_info)
-+			goto err;
-+		paca_ptrs[i]->mce_info = mce_info;
-+	}
-+	return;
-+err:
-+	panic("Failed allocate memory MCE event data\n");
-+}
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 71f38e9248be..17dc451f0e45 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -916,7 +916,6 @@ void __init setup_arch(char **cmdline_p)
- 	/* On BookE, setup per-core TLB data structures. */
- 	setup_tlb_core_data();
- #endif
--
- 	/* Print various info about the machine that has been gathered so far. */
- 	print_system_info();
- 
-@@ -938,6 +937,7 @@ void __init setup_arch(char **cmdline_p)
- 	exc_lvl_early_init();
- 	emergency_stack_init();
- 
-+	mce_init();
- 	smp_release_cpus();
- 
- 	initmem_init();
--- 
-2.26.2
-
+Thanks!
