@@ -1,61 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B06822EF1A9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jan 2021 12:53:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE142EF631
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jan 2021 18:05:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DC1hp3ZdZzDr24
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jan 2021 22:53:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DC8cC3Jt9zDrDD
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jan 2021 04:05:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DC1c41MC7zDqhH
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jan 2021 22:49:37 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-227-JrkSGbMLN9-FUY2lxHNdvQ-1; Fri, 08 Jan 2021 11:49:28 +0000
-X-MC-Unique: JrkSGbMLN9-FUY2lxHNdvQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Fri, 8 Jan 2021 11:49:27 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Fri, 8 Jan 2021 11:49:27 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Christoph Hellwig' <hch@lst.de>, Alexander Viro <viro@zeniv.linux.org.uk>
-Subject: RE: [PATCH 05/11] iov_iter: merge the compat case into
- rw_copy_check_uvector
-Thread-Topic: [PATCH 05/11] iov_iter: merge the compat case into
- rw_copy_check_uvector
-Thread-Index: AQHWkCRUvpDO9SBAlU68E+WeFLSma6oeR04A
-Date: Fri, 8 Jan 2021 11:49:27 +0000
-Message-ID: <7167a94511a84f30b18733d56007a7a5@AcuMS.aculab.com>
-References: <20200921143434.707844-1-hch@lst.de>
- <20200921143434.707844-6-hch@lst.de>
-In-Reply-To: <20200921143434.707844-6-hch@lst.de>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DC8XM6QHSzDqDW
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jan 2021 04:01:55 +1100 (AEDT)
+IronPort-SDR: l/dgHwvyN7oSZNzvxQcLUbR0e5hxBtB332LyYZkkc9wL+aoRHdPp1Owm5FESBwG/1kQYqrDbmZ
+ d5i8tIlMvujw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9858"; a="156807798"
+X-IronPort-AV: E=Sophos;i="5.79,331,1602572400"; d="scan'208";a="156807798"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jan 2021 09:01:53 -0800
+IronPort-SDR: 2JaCXbZgXCRYdIPU1Dpb0RUPGVHsohk7BFQTHC/4Pm9i+fDT0+NAyFuqUZvMZ92x/AfsYrSCT/
+ 7RxpoqW4uBhg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,331,1602572400"; d="scan'208";a="362393215"
+Received: from lkp-server01.sh.intel.com (HELO 412602b27703) ([10.239.97.150])
+ by orsmga002.jf.intel.com with ESMTP; 08 Jan 2021 09:01:51 -0800
+Received: from kbuild by 412602b27703 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1kxv92-0000SF-Am; Fri, 08 Jan 2021 17:01:48 +0000
+Date: Sat, 09 Jan 2021 01:01:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 3ce47d95b7346dcafd9bed3556a8d072cb2b8571
+Message-ID: <5ff88fd4./FwDfJc0LoEh1RBU%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,87 +56,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, "linux-aio@kvack.org" <linux-aio@kvack.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- David Howells <dhowells@redhat.com>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christoph Hellwig <hch@lst.de>
-> Sent: 21 September 2020 15:34
->=20
-> Stop duplicating the iovec verify code, and instead add add a
-> __import_iovec helper that does the whole verify and import, but takes
-> a bool compat to decided on the native or compat layout.  This also
-> ends up massively simplifying the calling conventions.
->=20
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  lib/iov_iter.c | 195 ++++++++++++++++++-------------------------------
->  1 file changed, 70 insertions(+), 125 deletions(-)
->=20
-> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-> index a64867501a7483..8bfa47b63d39aa 100644
-> --- a/lib/iov_iter.c
-> +++ b/lib/iov_iter.c
-> @@ -10,6 +10,7 @@
->  #include <net/checksum.h>
->  #include <linux/scatterlist.h>
->  #include <linux/instrumented.h>
-> +#include <linux/compat.h>
->=20
->  #define PIPE_PARANOIA /* for now */
->=20
-> @@ -1650,43 +1651,76 @@ const void *dup_iter(struct iov_iter *new, struct=
- iov_iter *old, gfp_t flags)
->  }
->  EXPORT_SYMBOL(dup_iter);
->=20
-> -static ssize_t rw_copy_check_uvector(int type,
-> -=09=09const struct iovec __user *uvector, unsigned long nr_segs,
-> -=09=09unsigned long fast_segs, struct iovec *fast_pointer,
-> -=09=09struct iovec **ret_pointer)
-> +static int compat_copy_iovecs_from_user(struct iovec *iov,
-> +=09=09const struct iovec __user *uvector, unsigned long nr_segs)
-> +{
-> +=09const struct compat_iovec __user *uiov =3D
-> +=09=09(const struct compat_iovec __user *)uvector;
-> +=09unsigned long i;
-> +=09int ret =3D -EFAULT;
-> +
-> +=09if (!user_access_begin(uvector, nr_segs * sizeof(*uvector)))
-> +=09=09return -EFAULT;
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
+branch HEAD: 3ce47d95b7346dcafd9bed3556a8d072cb2b8571  powerpc: Handle .text.{hot,unlikely}.* in linker script
 
-I little bit late, but the above isn't quite right.
-It should be sizeof(*iouv) - the length is double what it should be.
+elapsed time: 900m
 
-Not that access_ok() can fail for compat addresses
-and the extra length won't matter for architectures that
-need the address/length to open an address hole into userspace.
+configs tested: 55
+configs skipped: 109
 
-=09David
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+gcc tested configs:
+arc                     haps_hs_smp_defconfig
+um                           x86_64_defconfig
+sparc64                          alldefconfig
+arm                        oxnas_v6_defconfig
+sh                           se7721_defconfig
+arm                           h3600_defconfig
+m68k                          atari_defconfig
+sparc                       sparc64_defconfig
+c6x                        evmc6472_defconfig
+mips                          ath25_defconfig
+nios2                         3c120_defconfig
+mips                         bigsur_defconfig
+powerpc                  storcenter_defconfig
+powerpc                mpc7448_hpc2_defconfig
+m68k                        m5272c3_defconfig
+sh                         ecovec24_defconfig
+arm                     eseries_pxa_defconfig
+sh                          r7780mp_defconfig
+powerpc                      acadia_defconfig
+arc                          axs103_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20210108
+x86_64               randconfig-a006-20210108
+x86_64               randconfig-a001-20210108
+x86_64               randconfig-a002-20210108
+x86_64               randconfig-a003-20210108
+x86_64               randconfig-a005-20210108
+i386                 randconfig-a005-20210108
+i386                 randconfig-a002-20210108
+i386                 randconfig-a001-20210108
+i386                 randconfig-a003-20210108
+i386                 randconfig-a006-20210108
+i386                 randconfig-a004-20210108
+i386                 randconfig-a016-20210108
+i386                 randconfig-a011-20210108
+i386                 randconfig-a014-20210108
+i386                 randconfig-a015-20210108
+i386                 randconfig-a013-20210108
+i386                 randconfig-a012-20210108
 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
