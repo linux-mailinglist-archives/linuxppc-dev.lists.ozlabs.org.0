@@ -1,91 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42472EFC1C
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jan 2021 01:28:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C772EFD37
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jan 2021 03:55:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DCLRs6stQzDrBH
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jan 2021 11:28:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DCPj16cL8zDqvV
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jan 2021 13:55:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=QNEXeEnk; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DCLQC20wwzDr95
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jan 2021 11:27:14 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 1090EbME063778; Fri, 8 Jan 2021 19:27:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=references : from : to :
- cc : subject : in-reply-to : date : message-id : mime-version :
- content-type; s=pp1; bh=N8AZ8auiitbxJ7ZQ1LZIrNKSD4SZO4FWsvxsVDUFFNk=;
- b=QNEXeEnkUB1IsHEjEVWgiTXaYd3Th2Zq7Edfym6ZCMq2+VkkmIo4coXi0fkRDi9V04ro
- Cpvr6oUhSGDWzTbnBLouo1NZCQ30lCfh1ZDWFWmgRTPUHC6zEU6bAcqOEyR8Yg9La2NM
- 6g3IucVq7A7czXtqTzO+dOJI7edrlYZfoEdbgiFdjvTjbwk1Vo525pyMMhjuIaJ5JPCb
- DmrXWK84WKQ4kaUtfLviOg+qJeD4T+bncn3vzq/f5InEVeWPcNxAup4JmPDB3igtcbZX
- WhgyGs8hzy7lg3pehWOqLk9HOlQh7rvxdlmaeejrZDP77cZ1XzJ1+ioh8FlRT9BMGeNt sg== 
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 35y1sb05td-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Jan 2021 19:27:07 -0500
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1090Dpcf024182;
- Sat, 9 Jan 2021 00:27:06 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma02wdc.us.ibm.com with ESMTP id 35tgf9qep3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 09 Jan 2021 00:27:06 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1090R5Ua27263302
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 9 Jan 2021 00:27:05 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E40C112062;
- Sat,  9 Jan 2021 00:27:05 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 00419112061;
- Sat,  9 Jan 2021 00:27:03 +0000 (GMT)
-Received: from manicouagan.localdomain (unknown [9.80.199.144])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
- Sat,  9 Jan 2021 00:27:03 +0000 (GMT)
-References: <20201218062103.76102-1-bauerman@linux.ibm.com>
- <20201223205838.GA4102@ram-ibm-com.ibm.com>
- <87o8ikukye.fsf@manicouagan.localdomain>
- <20201224031409.GB4102@ram-ibm-com.ibm.com>
-User-agent: mu4e 1.4.10; emacs 27.1
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: Ram Pai <linuxram@us.ibm.com>
-Subject: Re: [PATCH] powerpc/mm: Limit allocation of SWIOTLB on server machines
-In-reply-to: <20201224031409.GB4102@ram-ibm-com.ibm.com>
-Date: Fri, 08 Jan 2021 21:27:01 -0300
-Message-ID: <87bldzlzu2.fsf@manicouagan.localdomain>
+ smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
+ envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=alpha.franken.de
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DCKnF71WNzDr95
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jan 2021 10:58:40 +1100 (AEDT)
+Received: from uucp (helo=alpha)
+ by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+ id 1ky1e2-0007pu-00; Sat, 09 Jan 2021 00:58:14 +0100
+Received: by alpha.franken.de (Postfix, from userid 1000)
+ id 804DDC086F; Sat,  9 Jan 2021 00:58:05 +0100 (CET)
+Date: Sat, 9 Jan 2021 00:58:05 +0100
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [patch V3 13/37] mips/mm/highmem: Switch to generic kmap atomic
+Message-ID: <20210108235805.GA17543@alpha.franken.de>
+References: <JUTMMQ.NNFWKIUV7UUJ1@crapouillou.net>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-08_12:2021-01-07,
- 2021-01-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- adultscore=0 mlxscore=0 priorityscore=1501 impostorscore=0 mlxlogscore=884
- lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101080126
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <JUTMMQ.NNFWKIUV7UUJ1@crapouillou.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailman-Approved-At: Sat, 09 Jan 2021 13:54:00 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,103 +45,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: juri.lelli@redhat.com, linux-aio@kvack.org, airlied@linux.ie,
+ nouveau@lists.freedesktop.org, bigeasy@linutronix.de,
+ dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
+ bsegall@google.com, jcmvbkbc@gmail.com, ray.huang@amd.com, paulus@samba.org,
+ kraxel@redhat.com, sparclinux@vger.kernel.org, deanbo422@gmail.com, hch@lst.de,
+ vincent.guittot@linaro.org, paulmck@kernel.org, x86@kernel.org,
+ linux@armlinux.org.uk, linux-csky@vger.kernel.org, mingo@kernel.org,
+ peterz@infradead.org, linux-graphics-maintainer@vmware.com, bskeggs@redhat.com,
+ airlied@redhat.com, linux-snps-arc@lists.infradead.org, linux-mm@kvack.org,
+ mgorman@suse.de, linux-xtensa@linux-xtensa.org, arnd@arndb.de,
+ intel-gfx@lists.freedesktop.org, sroland@vmware.com, josef@toxicpanda.com,
+ rostedt@goodmis.org, torvalds@linuxfoundation.org, green.hu@gmail.com,
+ rodrigo.vivi@intel.com, dsterba@suse.com, tglx@linutronix.de,
+ virtualization@lists.linux-foundation.org, dietmar.eggemann@arm.com,
+ linux-arm-kernel@lists.infradead.org, chris@zankel.net, monstr@monstr.eu,
+ nickhu@andestech.com, clm@fb.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, christian.koenig@amd.com, bcrl@kvack.org,
+ spice-devel@lists.freedesktop.org, vgupta@synopsys.com,
+ linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, bristot@redhat.com,
+ davem@davemloft.net, linux-btrfs@vger.kernel.org, viro@zeniv.linux.org.uk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Jan 08, 2021 at 08:20:43PM +0000, Paul Cercueil wrote:
+> Hi Thomas,
+> 
+> 5.11 does not boot anymore on Ingenic SoCs, I bisected it to this commit.
+> 
+> Any idea what could be happening?
 
-Ram Pai <linuxram@us.ibm.com> writes:
+not yet, kernel crash log of a Malta QEMU is below.
 
-> On Wed, Dec 23, 2020 at 09:06:01PM -0300, Thiago Jung Bauermann wrote:
->> 
->> Hi Ram,
->> 
->> Thanks for reviewing this patch.
->> 
->> Ram Pai <linuxram@us.ibm.com> writes:
->> 
->> > On Fri, Dec 18, 2020 at 03:21:03AM -0300, Thiago Jung Bauermann wrote:
->> >> On server-class POWER machines, we don't need the SWIOTLB unless we're a
->> >> secure VM. Nevertheless, if CONFIG_SWIOTLB is enabled we unconditionally
->> >> allocate it.
->> >> 
->> >> In most cases this is harmless, but on a few machine configurations (e.g.,
->> >> POWER9 powernv systems with 4 GB area reserved for crashdump kernel) it can
->> >> happen that memblock can't find a 64 MB chunk of memory for the SWIOTLB and
->> >> fails with a scary-looking WARN_ONCE:
->> >> 
->> >>  ------------[ cut here ]------------
->> >>  memblock: bottom-up allocation failed, memory hotremove may be affected
->> >>  WARNING: CPU: 0 PID: 0 at mm/memblock.c:332 memblock_find_in_range_node+0x328/0x340
->> >>  Modules linked in:
->> >>  CPU: 0 PID: 0 Comm: swapper Not tainted 5.10.0-rc2-orig+ #6
->> >>  NIP:  c000000000442f38 LR: c000000000442f34 CTR: c0000000001e0080
->> >>  REGS: c000000001def900 TRAP: 0700   Not tainted  (5.10.0-rc2-orig+)
->> >>  MSR:  9000000002021033 <SF,HV,VEC,ME,IR,DR,RI,LE>  CR: 28022222  XER: 20040000
->> >>  CFAR: c00000000014b7b4 IRQMASK: 1
->> >>  GPR00: c000000000442f34 c000000001defba0 c000000001deff00 0000000000000047
->> >>  GPR04: 00000000ffff7fff c000000001def828 c000000001def820 0000000000000000
->> >>  GPR08: 0000001ffc3e0000 c000000001b75478 c000000001b75478 0000000000000001
->> >>  GPR12: 0000000000002000 c000000002030000 0000000000000000 0000000000000000
->> >>  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000002030000
->> >>  GPR20: 0000000000000000 0000000000010000 0000000000010000 c000000001defc10
->> >>  GPR24: c000000001defc08 c000000001c91868 c000000001defc18 c000000001c91890
->> >>  GPR28: 0000000000000000 ffffffffffffffff 0000000004000000 00000000ffffffff
->> >>  NIP [c000000000442f38] memblock_find_in_range_node+0x328/0x340
->> >>  LR [c000000000442f34] memblock_find_in_range_node+0x324/0x340
->> >>  Call Trace:
->> >>  [c000000001defba0] [c000000000442f34] memblock_find_in_range_node+0x324/0x340 (unreliable)
->> >>  [c000000001defc90] [c0000000015ac088] memblock_alloc_range_nid+0xec/0x1b0
->> >>  [c000000001defd40] [c0000000015ac1f8] memblock_alloc_internal+0xac/0x110
->> >>  [c000000001defda0] [c0000000015ac4d0] memblock_alloc_try_nid+0x94/0xcc
->> >>  [c000000001defe30] [c00000000159c3c8] swiotlb_init+0x78/0x104
->> >>  [c000000001defea0] [c00000000158378c] mem_init+0x4c/0x98
->> >>  [c000000001defec0] [c00000000157457c] start_kernel+0x714/0xac8
->> >>  [c000000001deff90] [c00000000000d244] start_here_common+0x1c/0x58
->> >>  Instruction dump:
->> >>  2c230000 4182ffd4 ea610088 ea810090 4bfffe84 39200001 3d42fff4 3c62ff60
->> >>  3863c560 992a8bfc 4bd0881d 60000000 <0fe00000> ea610088 4bfffd94 60000000
->> >>  random: get_random_bytes called from __warn+0x128/0x184 with crng_init=0
->> >>  ---[ end trace 0000000000000000 ]---
->> >>  software IO TLB: Cannot allocate buffer
->> >> 
->> >> Unless this is a secure VM the message can actually be ignored, because the
->> >> SWIOTLB isn't needed. Therefore, let's avoid the SWIOTLB in those cases.
->> >
->> > The above warn_on is conveying a genuine warning. Should it be silenced?
->> 
->> Not sure I understand your point. This patch doesn't silence the
->> warning, it avoids the problem it is warning about.
->
-> Sorry, I should have explained it better. My point is...  
->
-> 	If CONFIG_SWIOTLB is enabled, it means that the kernel is
-> 	promising the bounce buffering capability. I know, currently we
-> 	do not have any kernel subsystems that use bounce buffers on
-> 	non-secure-pseries-kernel or powernv-kernel.  But that does not
-> 	mean, there wont be any. In case there is such a third-party
-> 	module needing bounce buffering, it wont be able to operate,
-> 	because of the proposed change in your patch.
->
-> 	Is that a good thing or a bad thing, I do not know. I will let
-> 	the experts opine.
+Thomas.
 
-Ping? Does anyone else has an opinion on this? The other option I can
-think of is changing the crashkernel code to not reserve so much memory
-below 4 GB. Other people are considering this option, but it's not
-planned for the near future.
+Kernel bug detected[#1]:
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.11.0-rc1-00017-gccb21774863a #2
+$ 0   : 00000000 00000001 00000000 00000010
+$ 4   : 00000001 000005cf 9e00059f 00000000
+$ 8   : 00118173 809e6db8 9e00059f 00000000
+$12   : 82023c00 00000001 810da04c 0212422f
+$16   : 810da000 00027800 000005cf 80b4bf9c
+$20   : 809e968c 82602400 810da000 0000000b
+$24   : 021558f9 00000000                  
+$28   : 820e0000 820e3928 80b10000 802710d0
+Hi    : 0000346c
+Lo    : 000002dd
+epc   : 80271114 __kmap_local_pfn_prot+0x78/0x1c0
+ra    : 802710d0 __kmap_local_pfn_prot+0x34/0x1c0
+Status: 1000a403	KERNEL EXL IE 
+Cause : 00800034 (ExcCode 0d)
+PrId  : 0001a800 (MIPS P5600)
+Modules linked in:
+Process swapper/0 (pid: 1, threadinfo=(ptrval), task=(ptrval), tls=00000000)
+Stack : 7fffffff 820c2408 820e3990 ffffff04 ffff0a00 80518224 000081a4 810da000
+        00000001 000005cf fff64000 8011c77c 820e3b26 ffffff04 ffff0a00 80518440
+        80b30000 80b4bf64 9e0005cf 000005cf fff64000 80271188 00000000 820e3a60
+        80b10000 80194478 0000005e 80954406 809e0000 810da000 00000001 000005cf
+        fff68000 8011c77c 8088fd44 809f6074 000000f4 00000000 00000000 80b4bf68
+        ...
+Call Trace:
+[<80271114>] __kmap_local_pfn_prot+0x78/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<8011c77c>] __update_cache+0x16c/0x174
+[<80271188>] __kmap_local_pfn_prot+0xec/0x1c0
+[<802c49a0>] copy_string_kernel+0x168/0x264
+[<802c5d18>] kernel_execve+0xd0/0x164
+[<801006cc>] try_to_run_init_process+0x18/0x5c
+[<80859e0c>] kernel_init+0xd0/0x120
+[<801037f8>] ret_from_kernel_thread+0x14/0x1c
 
-Also, there's a patch currently in linux-next which removes the scary
-warning because of unrelated reasons:
-
-https://lore.kernel.org/lkml/20201217201214.3414100-2-guro@fb.com
-
-So assuming that the patch above goes in and keeping the assumption that
-the swiotlb won't be needed in the powernv machines where I've seen the
-warning happen, we can just leave things as they are now.
+Code: 8c630564  28640010  38840001 <00040336> 8f82000c  2463ffff  00021100  00431021  2403ffbf 
 
 -- 
-Thiago Jung Bauermann
-IBM Linux Technology Center
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
