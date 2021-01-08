@@ -2,80 +2,148 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5895C2EE9C2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jan 2021 00:33:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E29802EEC78
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jan 2021 05:25:54 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DBjGG1hl6zDqQb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jan 2021 10:33:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DBqlz1t63zDr15
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jan 2021 15:25:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=oracle.com (client-ip=156.151.31.86; helo=userp2130.oracle.com;
- envelope-from=konrad.wilk@oracle.com; receiver=<UNKNOWN>)
+ envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=k3kFeIEg; 
- dkim-atps=neutral
+ header.s=corp-2020-01-29 header.b=ZmeJpEX0; 
+ dkim=pass (1024-bit key;
+ unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
+ header.b=uLaG4r4Q; dkim-atps=neutral
 Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DBjDs21WKzDqHK
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jan 2021 10:31:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DBqkP376czDqJ7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jan 2021 15:24:29 +1100 (AEDT)
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
- by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 107HrhgY122489;
- Thu, 7 Jan 2021 18:02:40 GMT
+ by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1083TWZ7016748;
+ Fri, 8 Jan 2021 03:40:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=ONFAFUzWR9/dYKX6R5UPSmvsMe/XM4yxSwwcXYnlluo=;
- b=k3kFeIEgW4vzaR4ZfvPTjVDuH82iItpQcMeLnIZSpNlBXO/nlBJ/2BedFegemuW7x/n9
- 5T6zuoIODh1nvQIYNbV9vtdd0rkp3MUUvbNymJpULPQWthCaupOJ61QzYsXDU2hvVRhn
- qSOhtKNsApENoFNmZMg9EGRXgSsWsgqbyJEs0W+O4pQl3q7wgB3x2Tc1NIu0vNPjaYLF
- ahKo9px5Rnbgx2GNFk96Gn3MxndBpVBPpEgZqrkAzR0w7bYROrVdVAjXFF1piDy5oe49
- 6/Q4bDILkejn3BnDHnJupHVRcGxIzzKa+mHpAQh45hxoZjVrh8Rc5ocBK4sOtLZhDO5Y lQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by userp2130.oracle.com with ESMTP id 35wftxd6hd-1
+ h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : content-type :
+ mime-version; s=corp-2020-01-29;
+ bh=YajzJkXDaDsbhO2tXvRxCtn5SnZGSrGEu5fhXa+mqnA=;
+ b=ZmeJpEX04m1h7YPX9ZpkVa8yV0UCy3QyUPvaWol6a/CKFYUMJ5/8vRfjgtdayLD0LZqA
+ d6c1ldSaPl8zKgxw42kvr/SqMjnTmL1cRJPKGaro65Af5yEuNKoeY7GxWi08pLI3BnqU
+ Vmi1KZEEG+tAWLotJ8lTHf5x1uZO01JNDV+51LuF9FsksiUK9w2S/RqLBqGB2KlaijxR
+ +mEKJxQoKyoz8PAodtyKoSz+5el2Y6UmzlqLb8vwoVCA8Ffsl0yjaT9sNYpnITc3Hsxe
+ g8k4Gn0Avc9XYL2+wlmGWjzuF3VC2s0CGC1TAG5mSQv6YpGoTCg4btpqgR89NtxGt5RM aw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+ by userp2130.oracle.com with ESMTP id 35wftxewr0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Thu, 07 Jan 2021 18:02:40 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 107HsxJ2096626;
- Thu, 7 Jan 2021 18:00:39 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by aserp3020.oracle.com with ESMTP id 35v1fbhu8s-1
+ Fri, 08 Jan 2021 03:40:55 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+ by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1083UUAT146225;
+ Fri, 8 Jan 2021 03:38:55 GMT
+Received: from nam12-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
+ by userp3020.oracle.com with ESMTP id 35w3qur59j-2
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 07 Jan 2021 18:00:39 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 107I0YBv019522;
- Thu, 7 Jan 2021 18:00:34 GMT
-Received: from char.us.oracle.com (/10.152.32.25)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Thu, 07 Jan 2021 18:00:33 +0000
-Received: by char.us.oracle.com (Postfix, from userid 1000)
- id 56A6B6A00C3; Thu,  7 Jan 2021 13:00:32 -0500 (EST)
-Date: Thu, 7 Jan 2021 13:00:32 -0500
-From: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [RFC PATCH v3 5/6] dt-bindings: of: Add restricted DMA pool
-Message-ID: <20210107180032.GB16519@char.us.oracle.com>
-References: <20210106034124.30560-1-tientzu@chromium.org>
- <20210106034124.30560-6-tientzu@chromium.org>
- <20210106185757.GB109735@localhost.localdomain>
- <CALiNf2_dV13jbHqLt-r1eK+dtOcAKBGcWQCVMQn+eL6MuOrETQ@mail.gmail.com>
+ Fri, 08 Jan 2021 03:38:54 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Lg/8pRwAlbwSBTFHWrxnUo8/b6lmNBVxF7Tpv3iJObxWFJMcHMQCVQTnrmPhY4q7AT1l2fn0VVgwR0m+DbyqSFwTKuRS2bQuOlvwBvA8ms8hkWNZqCZOfblsK5VoFwOraZWZJxMhhEUraGEfZT0tVvNqYoo16kZYIfTr5NEgoDr3aOnI8wZs1/RCF3FoEBkNIlqjUVDlPnHxrcqtb7sXFd91JzwOH5pcWYr7xlUXpCXF1AxEYdy87FGSS7j1hncUkuK9bgQQJGHzS2/RbgGBprTve9twg9TfCVDEO6zLd1uqfKW8fXKocvk3oGW1dUjyh+EqN37Y/OsKEjR5mKorGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YajzJkXDaDsbhO2tXvRxCtn5SnZGSrGEu5fhXa+mqnA=;
+ b=oD2li6jpY+1ByCC/vG1SpqU+le+9ubkCkqUi9zosTDK5LGQVaa5VQgzf6MhNvxTgUqLWqUOuw3sE08JIai5i65ShGzt+hulrGxZMaaL7OI4kYAEl8f5Yv4tAe2+QG1XWi6Q/TdGgeqzIO0GqQJ26E7A4hL5/yWPQXKh52Il9DtDY8bvzo5/BWUgyLq1pMT+JQ13tyzNeJdK7ypjRImLLz90lOv/yDflkjPt0DituEurX3I0bdBKgvBJaoTdfhqNN39SIf2QKoPRkYuJe7uX2vOSmeNQpoHGC7EZ7djgxjFIedsKA9gBAMe5ld4pr27d5kax7/VWDAF2wSzSR9roVaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YajzJkXDaDsbhO2tXvRxCtn5SnZGSrGEu5fhXa+mqnA=;
+ b=uLaG4r4QGN5ylPJiSwPseS6OOFwlwJLxnTqcxf7rY/SwbjaSY7uSeETpu8Gb026G2Hv2JMxpk++IfI+yvNhh1eRwJtd+geOHwRC8gGcV0AyRCJoQZXZeAsT3jHRrrUwriBhxkYVSwsnkmdATMSj/45soAWaymFsf1oZLlNhQDfY=
+Authentication-Results: linux.ibm.com; dkim=none (message not signed)
+ header.d=none;linux.ibm.com; dmarc=none action=none header.from=oracle.com;
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by PH0PR10MB4437.namprd10.prod.outlook.com (2603:10b6:510:3a::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3742.6; Fri, 8 Jan
+ 2021 03:38:52 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::54f3:a8aa:a2cd:a3a4]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::54f3:a8aa:a2cd:a3a4%5]) with mapi id 15.20.3742.006; Fri, 8 Jan 2021
+ 03:38:52 +0000
+To: Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: Re: [PATCH v2 0/5] ibmvfc: MQ preparatory locking work
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1ft3ccd34.fsf@ca-mkp.ca.oracle.com>
+References: <20210106201835.1053593-1-tyreld@linux.ibm.com>
+Date: Thu, 07 Jan 2021 22:38:48 -0500
+In-Reply-To: <20210106201835.1053593-1-tyreld@linux.ibm.com> (Tyrel Datwyler's
+ message of "Wed, 6 Jan 2021 14:18:30 -0600")
+Content-Type: text/plain
+X-Originating-IP: [138.3.200.58]
+X-ClientProxiedBy: DM5PR16CA0025.namprd16.prod.outlook.com
+ (2603:10b6:4:15::11) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALiNf2_dV13jbHqLt-r1eK+dtOcAKBGcWQCVMQn+eL6MuOrETQ@mail.gmail.com>
-User-Agent: Mutt/1.9.1 (2017-09-22)
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from ca-mkp.ca.oracle.com (138.3.200.58) by
+ DM5PR16CA0025.namprd16.prod.outlook.com (2603:10b6:4:15::11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3742.6 via Frontend Transport; Fri, 8 Jan 2021 03:38:51 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a0074805-8f02-4659-718e-08d8b386eae2
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4437:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <PH0PR10MB443754D68106D260536687A48EAE0@PH0PR10MB4437.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: gJ8otq7lRiHb7UBV6J0J2pOoj6/TquduQETqYGzps9LUF93jb9qiy70SbTYBDf93HWNZ7zJJHl3PFxfWprdd/JQnMoTFr5ZcF73rQB8jR/tP9ITaOKnnS/N185FiEHhw0/HHkZuhIhFFoeBE50aM7q+xmHnNoErGkiAecLqwUT1DXMKzwQY4byRyk0wRsCRzaGj3+NHhZ4357Q7vNt2bPRcnNRAEniCq47hNR3Q/xmosAYeM4F/XMzenBbmppr73bS0BzdFgjtT0/KcowWjDvGF9LG8Wfnistq1exldjqOiS/gbJCkzAR760UpQI334aMeGAuKsQQqXOfoMFucS49QnEs9PiURQ67bH2vNGmxNSIHUNEEYZG24jpUYDmmTozFUoe1mZ9oon9tQS1/dRt4w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB4759.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(346002)(396003)(39850400004)(376002)(366004)(136003)(478600001)(16526019)(86362001)(316002)(186003)(4744005)(26005)(55016002)(7696005)(83380400001)(2906002)(956004)(52116002)(8676002)(66476007)(5660300002)(8936002)(4326008)(66556008)(6666004)(36916002)(66946007)(6916009);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?tcPTrulh0f8mhcv1WAMBROy4q770hVQRlutH7dNQDMzHF4ZP7ucEaZ3ZhTng?=
+ =?us-ascii?Q?PzrbqTW3pgBAHzrZT8MRV6Ed071X2xk77C+ZsjYEIRtDVeo8v8TXW40scva7?=
+ =?us-ascii?Q?oIovOV9thX7/zNqacyHcEZ0m+ittJtlssPmeaH1L8xxC5TnC6+BAYWB/OsFC?=
+ =?us-ascii?Q?5ujEwNQYS1iOnsTYDrlEJigmZqS8bypWgSSS4Ljo48AihaNCdnHq099uj0+s?=
+ =?us-ascii?Q?pwB3eg1HUTIYq/VvI5DXHYWvYtMqxXkB9ChM2bRgJ26HM1+QkInq02traqho?=
+ =?us-ascii?Q?67ddvPS7ofdExQwFcYV0lzhY0X6R43abXYLkGFiZCFv+WN3rKc7HQIrHTfjU?=
+ =?us-ascii?Q?6/8b8RohfT9an40XZRunbcA4zqChlg3WR6VKU2tlyln/H+CVrZgvQlAboXFt?=
+ =?us-ascii?Q?fshmYDiAsM6LtOHi/nJcgh6Xa3CT6ZmZ6Y2J14KzDrN/9Ml2RXYYBsDxI/OP?=
+ =?us-ascii?Q?GdXGy/USKZy2PB5BoQfsGjpJ8stWFZ68G7jOw9TWNCUGjaahSnmuc1pafcDU?=
+ =?us-ascii?Q?tkz1DYQyo1fwCHLHGXEGu88L6L6boEp3yQ0j8HuOtg4V5Bt3NEGWWDeBQZJi?=
+ =?us-ascii?Q?coJ3wyqT2QbOwRIveOeS8Icpg+jvSlSiGfflgYq6LR9ti9EprB1U4hbMhj/o?=
+ =?us-ascii?Q?dFyt+Vh2UDRpkjDXPTB8lPfmg8reJY+TMjf7nqqTdgF6xIkzLhUTmnDoZn2n?=
+ =?us-ascii?Q?Umvo72bVwKo8am92R0btQg+h4MeB+/s2PCIT45+vFKHda+9p6MuNYW6SB0FH?=
+ =?us-ascii?Q?vaW0HNFNsG8vht8lnF9MJaA7vOLTHrbvbXyytNkZKAaqtlOavJkznlhgaADy?=
+ =?us-ascii?Q?S/RVyqyq0Mf+VDdO3oo/tSLvvwvV3u7DBdskMQMa+DBid7AD3JgfD4QRUdY8?=
+ =?us-ascii?Q?NCm3cG37WNw6KdrWzGNQjyk/3jpzXQjT3bANjPykUWKnTU+80VU3m8y7AZmx?=
+ =?us-ascii?Q?IHj17Kn8fVDAiKiSygNcD1bfoYbEkaxnpsSNoTOgUCA=3D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2021 03:38:51.9209 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0074805-8f02-4659-718e-08d8b386eae2
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hDrcJ/qJBskgBXu4sDePCTUkrPLW1bjO+wlvKyhn0nbYudand4r/QZ6bSjugx3uZpk91oZMCnW8SwtGlWgN9w4RktHQkzENqhvSmytHbEsY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4437
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9857
  signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- phishscore=0
- suspectscore=0 spamscore=0 bulkscore=0 adultscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101070105
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ malwarescore=0 mlxscore=0
+ spamscore=0 mlxlogscore=999 phishscore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101080018
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9857
  signatures=668683
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
@@ -83,7 +151,7 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  bulkscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
  lowpriorityscore=0 mlxlogscore=999 malwarescore=0 spamscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101070105
+ definitions=main-2101080018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,108 +163,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, peterz@infradead.org, grant.likely@arm.com,
- paulus@samba.org, Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
- Marek Szyprowski <m.szyprowski@samsung.com>, sstabellini@kernel.org,
- Saravana Kannan <saravanak@google.com>,
- "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>,
- Joerg Roedel <joro@8bytes.org>, " <joro@8bytes.org>,
- rafael.j.wysocki@intel.com, Christoph Hellwig <hch@lst.de>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>,
- xen-devel@lists.xenproject.org, Thierry Reding <treding@nvidia.com>,
- linux-devicetree <devicetree@vger.kernel.org>, will@kernel.org,
- dan.j.williams@intel.com, linuxppc-dev@lists.ozlabs.org,
- Rob Herring <robh+dt@kernel.org>, boris.ostrovsky@oracle.com,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
- Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
- rdunlap@infradead.org, lkml <linux-kernel@vger.kernel.org>,
- Tomasz Figa <tfiga@chromium.org>,
- "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>,
- Joerg Roedel <joro@8bytes.org>, " <iommu@lists.linux-foundation.org>,
- xypron.glpk@gmx.de, Robin Murphy <robin.murphy@arm.com>,
- bauerman@linux.ibm.com
+Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, james.bottomley@hansenpartnership.com,
+ brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 08, 2021 at 01:39:43AM +0800, Claire Chang wrote:
-> On Thu, Jan 7, 2021 at 2:58 AM Konrad Rzeszutek Wilk
-> <konrad.wilk@oracle.com> wrote:
-> >
-> > On Wed, Jan 06, 2021 at 11:41:23AM +0800, Claire Chang wrote:
-> > > Introduce the new compatible string, restricted-dma-pool, for restricted
-> > > DMA. One can specify the address and length of the restricted DMA memory
-> > > region by restricted-dma-pool in the device tree.
-> > >
-> > > Signed-off-by: Claire Chang <tientzu@chromium.org>
-> > > ---
-> > >  .../reserved-memory/reserved-memory.txt       | 24 +++++++++++++++++++
-> > >  1 file changed, 24 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> > > index e8d3096d922c..44975e2a1fd2 100644
-> > > --- a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> > > +++ b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> > > @@ -51,6 +51,20 @@ compatible (optional) - standard definition
-> > >            used as a shared pool of DMA buffers for a set of devices. It can
-> > >            be used by an operating system to instantiate the necessary pool
-> > >            management subsystem if necessary.
-> > > +        - restricted-dma-pool: This indicates a region of memory meant to be
-> > > +          used as a pool of restricted DMA buffers for a set of devices. The
-> > > +          memory region would be the only region accessible to those devices.
-> > > +          When using this, the no-map and reusable properties must not be set,
-> > > +          so the operating system can create a virtual mapping that will be used
-> > > +          for synchronization. The main purpose for restricted DMA is to
-> > > +          mitigate the lack of DMA access control on systems without an IOMMU,
-> > > +          which could result in the DMA accessing the system memory at
-> > > +          unexpected times and/or unexpected addresses, possibly leading to data
-> > > +          leakage or corruption. The feature on its own provides a basic level
-> > > +          of protection against the DMA overwriting buffer contents at
-> > > +          unexpected times. However, to protect against general data leakage and
-> > > +          system memory corruption, the system needs to provide way to restrict
-> > > +          the DMA to a predefined memory region.
-> >
-> > Heya!
-> >
-> > I think I am missing something obvious here so please bear with my
-> > questions:
-> >
-> >  - This code adds the means of having the SWIOTLB pool tied to a specific
-> >    memory correct?
-> 
-> It doesn't affect the existing SWIOTLB. It just utilizes the existing SWIOTLB
-> code to create another DMA pool tied to a specific memory region for a given set
-> of devices. It bounces the streaming DMA (map/unmap) in and out of that region
-> and does the memory allocation (dma_direct_alloc) from the same region.
 
-Right, so why can't it follow the same mechanism that Xen SWIOTLB does - which
-had exactly the same problem (needed special handling on the pool) - and do
-a similar code?
+Tyrel,
 
-> 
-> >
-> >
-> >  - Nothing stops the physical device from bypassing the SWIOTLB buffer.
-> >    That is if an errant device screwed up the length or DMA address, the
-> >    SWIOTLB would gladly do what the device told it do?
-> 
-> So the system needs to provide a way to lock down the memory access, e.g. MPU.
+> The ibmvfc driver in its current form relies heavily on the
+> host_lock. This patchset introduces a genric queue with its own queue
+> lock and sent/free event list locks. This generic queue allows the
+> driver to decouple the primary queue and future subordinate queues
+> from the host lock reducing lock contention while also relaxing
+> locking for submissions and completions to simply the list lock of the
+> queue in question.
 
-OK! Would it be prudent to have this in the description above perhaps?
-> 
-> >
-> >  - This has to be combined with SWIOTLB-force-ish to always use the
-> >    bounce buffer, otherwise you could still do DMA without using
-> >    SWIOTLB (by not hitting the criteria for needing to use SWIOTLB)?
-> 
-> Since restricted DMA is for the devices that are not behind an IOMMU, I change
-> the criteria
-> `if (unlikely(swiotlb_force == SWIOTLB_FORCE))`
-> to
-> `if (unlikely(swiotlb_force == SWIOTLB_FORCE) || dev->dma_io_tlb_mem)`
-> in dma_direct_map_page().
-> 
-> Also, even if SWIOTLB=force, the restricted DMA pool is preferred if available
-> (get_io_tlb_mem in https://lore.kernel.org/patchwork/patch/1360995/).
-> 
-> Thanks!
+Applied to 5.12/scsi-staging, thanks!
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
