@@ -1,40 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94D02EFD3D
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jan 2021 03:57:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B292EFD97
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jan 2021 04:45:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DCPl52KzVzDr0t
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jan 2021 13:57:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DCQps0ZjvzDr81
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jan 2021 14:45:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
- envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=alpha.franken.de
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DCLZb1sX6zDr95
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jan 2021 11:34:31 +1100 (AEDT)
-Received: from uucp (helo=alpha)
- by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
- id 1ky2D2-0008AZ-00; Sat, 09 Jan 2021 01:34:24 +0100
-Received: by alpha.franken.de (Postfix, from userid 1000)
- id AFC99C0870; Sat,  9 Jan 2021 01:33:52 +0100 (CET)
-Date: Sat, 9 Jan 2021 01:33:52 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [patch V3 13/37] mips/mm/highmem: Switch to generic kmap atomic
-Message-ID: <20210109003352.GA18102@alpha.franken.de>
-References: <JUTMMQ.NNFWKIUV7UUJ1@crapouillou.net>
- <20210108235805.GA17543@alpha.franken.de>
+ smtp.mailfrom=codefail.de (client-ip=131.153.2.42;
+ helo=h1.fbrelay.privateemail.com; envelope-from=cmr@codefail.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=codefail.de
+Received: from h1.fbrelay.privateemail.com (h1.fbrelay.privateemail.com
+ [131.153.2.42])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DCQbm6SlfzDqyH
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jan 2021 14:35:47 +1100 (AEDT)
+Received: from MTA-07-4.privateemail.com (mta-07.privateemail.com
+ [198.54.127.57])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id E2EB1800D8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jan 2021 22:26:15 -0500 (EST)
+Received: from MTA-07.privateemail.com (localhost [127.0.0.1])
+ by MTA-07.privateemail.com (Postfix) with ESMTP id DA997600C7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jan 2021 22:26:04 -0500 (EST)
+Received: from oc8246131445.ibm.com (unknown [10.20.151.217])
+ by MTA-07.privateemail.com (Postfix) with ESMTPA id A9CF46009B
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jan 2021 03:26:04 +0000 (UTC)
+From: "Christopher M. Riedl" <cmr@codefail.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 0/8] Improve signal performance on PPC64 with KUAP
+Date: Fri,  8 Jan 2021 21:25:49 -0600
+Message-Id: <20210109032557.13831-1-cmr@codefail.de>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210108235805.GA17543@alpha.franken.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Mailman-Approved-At: Sat, 09 Jan 2021 13:54:00 +1100
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,63 +53,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, linux-aio@kvack.org, airlied@linux.ie,
- nouveau@lists.freedesktop.org, bigeasy@linutronix.de,
- dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
- bsegall@google.com, jcmvbkbc@gmail.com, ray.huang@amd.com, paulus@samba.org,
- kraxel@redhat.com, sparclinux@vger.kernel.org, deanbo422@gmail.com, hch@lst.de,
- vincent.guittot@linaro.org, paulmck@kernel.org, x86@kernel.org,
- linux@armlinux.org.uk, linux-csky@vger.kernel.org, mingo@kernel.org,
- peterz@infradead.org, linux-graphics-maintainer@vmware.com, bskeggs@redhat.com,
- airlied@redhat.com, linux-snps-arc@lists.infradead.org, linux-mm@kvack.org,
- mgorman@suse.de, linux-xtensa@linux-xtensa.org, arnd@arndb.de,
- intel-gfx@lists.freedesktop.org, sroland@vmware.com, josef@toxicpanda.com,
- rostedt@goodmis.org, torvalds@linuxfoundation.org, green.hu@gmail.com,
- rodrigo.vivi@intel.com, dsterba@suse.com, tglx@linutronix.de,
- virtualization@lists.linux-foundation.org, dietmar.eggemann@arm.com,
- linux-arm-kernel@lists.infradead.org, chris@zankel.net, monstr@monstr.eu,
- nickhu@andestech.com, clm@fb.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, christian.koenig@amd.com, bcrl@kvack.org,
- spice-devel@lists.freedesktop.org, vgupta@synopsys.com,
- linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, bristot@redhat.com,
- davem@davemloft.net, linux-btrfs@vger.kernel.org, viro@zeniv.linux.org.uk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jan 09, 2021 at 12:58:05AM +0100, Thomas Bogendoerfer wrote:
-> On Fri, Jan 08, 2021 at 08:20:43PM +0000, Paul Cercueil wrote:
-> > Hi Thomas,
-> > 
-> > 5.11 does not boot anymore on Ingenic SoCs, I bisected it to this commit.
-> > 
-> > Any idea what could be happening?
-> 
-> not yet, kernel crash log of a Malta QEMU is below.
+As reported by Anton, there is a large penalty to signal handling
+performance on radix systems using KUAP. The signal handling code
+performs many user access operations, each of which needs to switch the
+KUAP permissions bit to open and then close user access. This involves a
+costly 'mtspr' operation [0].
 
-update:
+There is existing work done on x86 and by Christopher Leroy for PPC32 to
+instead open up user access in "blocks" using user_*_access_{begin,end}.
+We can do the same in PPC64 to bring performance back up on KUAP-enabled
+radix and now also hash MMU systems [1].
 
-This dirty hack lets the Malta QEMU boot again:
+Hash MMU KUAP support along with uaccess flush has landed in linuxppc/next
+since the last revision. This series also provides a large benefit on hash
+with KUAP. However, in the hash implementation of KUAP the user AMR is
+always restored during system_call_exception() which cannot be avoided.
+Fewer user access switches naturally also result in less uaccess flushing.
 
-diff --git a/mm/highmem.c b/mm/highmem.c
-index c3a9ea7875ef..190cdda1149d 100644
---- a/mm/highmem.c
-+++ b/mm/highmem.c
-@@ -515,7 +515,7 @@ void *__kmap_local_pfn_prot(unsigned long pfn, pgprot_t prot)
- 	vaddr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
- 	BUG_ON(!pte_none(*(kmap_pte - idx)));
- 	pteval = pfn_pte(pfn, prot);
--	set_pte_at(&init_mm, vaddr, kmap_pte - idx, pteval);
-+	set_pte(kmap_pte - idx, pteval);
- 	arch_kmap_local_post_map(vaddr, pteval);
- 	current->kmap_ctrl.pteval[kmap_local_idx()] = pteval;
- 	preempt_enable();
+The first two patches add some needed 'unsafe' versions of copy-from
+functions. While these do not make use of asm-goto they still allow for
+avoiding the repeated uaccess switches.
 
-set_pte_at() tries to update cache and could do an kmap_atomic() there.
-Not sure, if this is allowed at this point.
+The third patch moves functions called by setup_sigcontext() into a new
+prepare_setup_sigcontext() to simplify converting setup_sigcontext()
+into an 'unsafe' version which assumes an open uaccess window later.
 
-Thomas.
+The fourth patch cleans-up some of the Transactional Memory ifdef stuff
+to simplify using uaccess blocks later.
+
+The next two patches rewrite some of the signal64 helper functions to
+be 'unsafe'. Finally, the last two patches update the main signal
+handling functions to make use of the new 'unsafe' helpers and eliminate
+some additional uaccess switching.
+
+I used the will-it-scale signal1 benchmark to measure and compare
+performance [2]. The below results are from running a minimal
+kernel+initramfs QEMU/KVM guest on a POWER9 Blackbird:
+
+	signal1_threads -t1 -s10
+
+	|                             | hash   | radix  |
+	| --------------------------- | ------ | ------ |
+	| linuxppc/next               | 118693 | 133296 |
+	| linuxppc/next w/o KUAP+KUEP | 228911 | 228654 |
+	| unsafe-signal64             | 200480 | 234067 |
+
+There were questions previously about the unsafe_copy_from_user() and
+unsafe_copy_{vsx,fpr}_from_user() implementations in the first two
+patches of this series [3][4]. The two results below show the performance
+degradations when using the proposed alternate implementations:
+
+	| unsafe-signal64-regs        | 178688 | 201128 |
+	| unsafe-signal64-copy        | 147443 | 165759 |
+
+Full trees with the two alternate implementations are available [5][6].
+
+[0]: https://github.com/linuxppc/issues/issues/277
+[1]: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=196278
+[2]: https://github.com/antonblanchard/will-it-scale/blob/master/tests/signal1.c
+[3]: https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-October/219355.html
+[4]: https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-October/219351.html
+[5]: https://git.sr.ht/~cmr/linux/tree/unsafe-signal64-v3-regs
+[6]: https://git.sr.ht/~cmr/linux/tree/unsafe-signal64-v3-copy
+
+v3:	* Rebase on latest linuxppc/next
+	* Reword confusing commit messages
+	* Add missing comma in macro in signal.h which broke compiles without
+	  CONFIG_ALTIVEC
+	* Validate hash KUAP signal performance improvements
+
+v2:	* Rebase on latest linuxppc/next + Christophe Leroy's PPC32
+	  signal series
+	* Simplify/remove TM ifdefery similar to PPC32 series and clean
+	  up the uaccess begin/end calls
+	* Isolate non-inline functions so they are not called when
+	  uaccess window is open
+
+
+Christopher M. Riedl (6):
+  powerpc/uaccess: Add unsafe_copy_from_user
+  powerpc/signal: Add unsafe_copy_{vsx,fpr}_from_user()
+  powerpc/signal64: Move non-inline functions out of setup_sigcontext()
+  powerpc/signal64: Remove TM ifdefery in middle of if/else block
+  powerpc/signal64: Replace setup_sigcontext() w/
+    unsafe_setup_sigcontext()
+  powerpc/signal64: Replace restore_sigcontext() w/
+    unsafe_restore_sigcontext()
+
+Daniel Axtens (2):
+  powerpc/signal64: Rewrite handle_rt_signal64() to minimise uaccess
+    switches
+  powerpc/signal64: Rewrite rt_sigreturn() to minimise uaccess switches
+
+ arch/powerpc/include/asm/uaccess.h |  28 ++--
+ arch/powerpc/kernel/signal.h       |  33 ++++
+ arch/powerpc/kernel/signal_64.c    | 237 ++++++++++++++++++-----------
+ 3 files changed, 198 insertions(+), 100 deletions(-)
 
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+2.26.1
+
