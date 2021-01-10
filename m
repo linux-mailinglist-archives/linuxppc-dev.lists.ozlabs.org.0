@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B4CA2F0A47
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 00:20:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7BF42F0A64
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 00:26:01 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DDXr13tJ9zDqNX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 10:20:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DDXyY3lHCzDqLx
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 10:25:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,21 +19,23 @@ Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
  [217.70.183.194])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DDXng116GzDqLZ
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DDXnj1WyMzDqLq
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jan 2021 10:18:14 +1100 (AEDT)
 X-Originating-IP: 86.202.109.140
 Received: from localhost (lfbn-lyo-1-13-140.w86-202.abo.wanadoo.fr
  [86.202.109.140])
  (Authenticated sender: alexandre.belloni@bootlin.com)
- by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 3FDA640005;
- Sun, 10 Jan 2021 23:18:05 +0000 (UTC)
+ by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id E8FE740006;
+ Sun, 10 Jan 2021 23:18:06 +0000 (UTC)
 From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: linux-rtc@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
+To: linux-rtc@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
  Alessandro Zummo <a.zummo@towertech.it>,
  Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 02/17] rtc: pl031: use RTC_FEATURE_ALARM
-Date: Mon, 11 Jan 2021 00:17:37 +0100
-Message-Id: <20210110231752.1418816-3-alexandre.belloni@bootlin.com>
+Subject: [PATCH 03/17] rtc: armada38x: remove armada38x_rtc_ops_noirq
+Date: Mon, 11 Jan 2021 00:17:38 +0100
+Message-Id: <20210110231752.1418816-4-alexandre.belloni@bootlin.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210110231752.1418816-1-alexandre.belloni@bootlin.com>
 References: <20210110231752.1418816-1-alexandre.belloni@bootlin.com>
@@ -56,33 +58,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Clear RTC_FEATURE_ALARM instead of setting set_alarm, read_alarm and
-alarm_irq_enable to NULL.
+Clear RTC_FEATURE_ALARM to signal that alarms are not available instead of
+having a supplementary struct rtc_class_ops with a NULL .set_alarm.
 
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 ---
- drivers/rtc/rtc-pl031.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/rtc/rtc-armada38x.c | 21 ++++-----------------
+ 1 file changed, 4 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/rtc/rtc-pl031.c b/drivers/rtc/rtc-pl031.c
-index 224bbf096262..7c3967df4f9a 100644
---- a/drivers/rtc/rtc-pl031.c
-+++ b/drivers/rtc/rtc-pl031.c
-@@ -352,12 +352,8 @@ static int pl031_probe(struct amba_device *adev, const struct amba_id *id)
- 		}
+diff --git a/drivers/rtc/rtc-armada38x.c b/drivers/rtc/rtc-armada38x.c
+index 807a79c07f08..cc542e6b1d5b 100644
+--- a/drivers/rtc/rtc-armada38x.c
++++ b/drivers/rtc/rtc-armada38x.c
+@@ -458,14 +458,6 @@ static const struct rtc_class_ops armada38x_rtc_ops = {
+ 	.set_offset = armada38x_rtc_set_offset,
+ };
+ 
+-static const struct rtc_class_ops armada38x_rtc_ops_noirq = {
+-	.read_time = armada38x_rtc_read_time,
+-	.set_time = armada38x_rtc_set_time,
+-	.read_alarm = armada38x_rtc_read_alarm,
+-	.read_offset = armada38x_rtc_read_offset,
+-	.set_offset = armada38x_rtc_set_offset,
+-};
+-
+ static const struct armada38x_rtc_data armada38x_data = {
+ 	.update_mbus_timing = rtc_update_38x_mbus_timing_params,
+ 	.read_rtc_reg = read_rtc_register_38x_wa,
+@@ -540,20 +532,15 @@ static __init int armada38x_rtc_probe(struct platform_device *pdev)
  	}
+ 	platform_set_drvdata(pdev, rtc);
  
--	if (!adev->irq[0]) {
--		/* When there's no interrupt, no point in exposing the alarm */
--		ops->read_alarm = NULL;
--		ops->set_alarm = NULL;
--		ops->alarm_irq_enable = NULL;
+-	if (rtc->irq != -1) {
++	if (rtc->irq != -1)
+ 		device_init_wakeup(&pdev->dev, 1);
+-		rtc->rtc_dev->ops = &armada38x_rtc_ops;
+-	} else {
+-		/*
+-		 * If there is no interrupt available then we can't
+-		 * use the alarm
+-		 */
+-		rtc->rtc_dev->ops = &armada38x_rtc_ops_noirq;
 -	}
-+	if (!adev->irq[0])
-+		clear_bit(RTC_FEATURE_ALARM, ldata->rtc->features);
++	else
++		clear_bit(RTC_FEATURE_ALARM, rtc->rtc_dev->features);
  
- 	device_init_wakeup(&adev->dev, true);
- 	ldata->rtc = devm_rtc_allocate_device(&adev->dev);
+ 	/* Update RTC-MBUS bridge timing parameters */
+ 	rtc->data->update_mbus_timing(rtc);
+ 
++	rtc->rtc_dev->ops = &armada38x_rtc_ops;
+ 	rtc->rtc_dev->range_max = U32_MAX;
+ 
+ 	return devm_rtc_register_device(rtc->rtc_dev);
 -- 
 2.29.2
 
