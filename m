@@ -2,58 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2922D2F099E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Jan 2021 21:08:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E14262F0A0D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Jan 2021 23:48:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DDSb91srTzDqPc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 07:08:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DDX743qYlzDqMy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 09:48:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=bootlin.com (client-ip=217.70.183.198;
+ helo=relay6-d.mail.gandi.net; envelope-from=alexandre.belloni@bootlin.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=ldkVfRSq; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=bootlin.com
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DDSYT6RXxzDqLR
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jan 2021 07:07:25 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 9E6A722A84;
- Sun, 10 Jan 2021 20:07:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1610309243;
- bh=l3BYfZ9T4jh8uGFh0LOO19KGji5xf/gQwKY/slc5NCU=;
- h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
- b=ldkVfRSq4T0s2vxKCgDLSjSweL8wzlAgdolv7kLoOtcT0Xkm5K6zzcwNehYBYnqmO
- hgr9IKYaviPJHGWvO76Bxe8pub+v0jWiLrge204srobYl5SNWEciYjXYMGwtDhgT1O
- zeDbUfRUvjdhy0+HRANOg2VQavypIKzuuNWm5bsds/1B4zfmNm+XCrgpNZxLKMvFUg
- VrGgSnq22J9dH9y3Fz1XsHrVWMfD05Vl1AqO9lyl/eTYZYDGmfNWJSTICnQLfmvZfj
- tJIgjK6hPvYufPgI6QkxRrWoHkbeiAbgb1jrPTxwX643C6ftDae0U7kuU7v4AJNR4w
- fJmD+z1W7Sz9g==
-Received: from pdx-korg-docbuild-1.ci.codeaurora.org (localhost.localdomain
- [127.0.0.1])
- by pdx-korg-docbuild-1.ci.codeaurora.org (Postfix) with ESMTP id 93F9760141;
- Sun, 10 Jan 2021 20:07:23 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.11-3 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87y2h1j6k9.fsf@mpe.ellerman.id.au>
-References: <87y2h1j6k9.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87y2h1j6k9.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.11-3
-X-PR-Tracked-Commit-Id: 3ce47d95b7346dcafd9bed3556a8d072cb2b8571
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b3cd1a16cc8829776523fcd114299373be4e5187
-Message-Id: <161030924359.466.12818097113991379322.pr-tracker-bot@kernel.org>
-Date: Sun, 10 Jan 2021 20:07:23 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DDX5C2lTSzDqMB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jan 2021 09:46:24 +1100 (AEDT)
+X-Originating-IP: 86.202.109.140
+Received: from localhost (lfbn-lyo-1-13-140.w86-202.abo.wanadoo.fr
+ [86.202.109.140])
+ (Authenticated sender: alexandre.belloni@bootlin.com)
+ by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 1D1D7C0003;
+ Sun, 10 Jan 2021 22:46:18 +0000 (UTC)
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Alessandro Zummo <a.zummo@towertech.it>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH] rtc: opal: set range
+Date: Sun, 10 Jan 2021 23:46:06 +0100
+Message-Id: <20210110224606.1414307-1-alexandre.belloni@bootlin.com>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,21 +49,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, natechancellor@gmail.com,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org
+Cc: linux-rtc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sun, 10 Jan 2021 23:54:30 +1100:
+It is a BCD RTC with 4 digits for the year.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.11-3
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+---
+ drivers/rtc/rtc-opal.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b3cd1a16cc8829776523fcd114299373be4e5187
-
-Thank you!
-
+diff --git a/drivers/rtc/rtc-opal.c b/drivers/rtc/rtc-opal.c
+index 7b9f8bcf86fe..c586f695bdc9 100644
+--- a/drivers/rtc/rtc-opal.c
++++ b/drivers/rtc/rtc-opal.c
+@@ -233,6 +233,10 @@ static int opal_rtc_probe(struct platform_device *pdev)
+ {
+ 	struct rtc_device *rtc;
+ 
++	rtc = devm_rtc_allocate_device(&pdev->dev);
++	if (IS_ERR(rtc))
++		return PTR_ERR(rtc);
++
+ 	if (pdev->dev.of_node &&
+ 	    (of_property_read_bool(pdev->dev.of_node, "wakeup-source") ||
+ 	     of_property_read_bool(pdev->dev.of_node, "has-tpo")/* legacy */)) {
+@@ -242,14 +246,12 @@ static int opal_rtc_probe(struct platform_device *pdev)
+ 		opal_rtc_ops.alarm_irq_enable = opal_tpo_alarm_irq_enable;
+ 	}
+ 
+-	rtc = devm_rtc_device_register(&pdev->dev, DRVNAME, &opal_rtc_ops,
+-				       THIS_MODULE);
+-	if (IS_ERR(rtc))
+-		return PTR_ERR(rtc);
+-
++	rtc->ops = &opal_rtc_ops;
++	rtc->range_min = RTC_TIMESTAMP_BEGIN_0000;
++	rtc->range_max = RTC_TIMESTAMP_END_9999;
+ 	rtc->uie_unsupported = 1;
+ 
+-	return 0;
++	return devm_rtc_register_device(rtc);
+ }
+ 
+ static const struct of_device_id opal_rtc_match[] = {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.29.2
+
