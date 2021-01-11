@@ -1,65 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053CD2F10BD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 12:02:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B872F1290
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 13:49:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DDrQB1Y8nzDqXC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 22:02:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DDtnr3SrTzDqGF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 23:49:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=uCnnwbct; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=aQ0P+BB7; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DDp4Y56DWzDqWM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jan 2021 20:17:01 +1100 (AEDT)
-Date: Mon, 11 Jan 2021 10:16:46 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1610356608;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=LEXe/B0Q3kSQ+pyi11QVzunFEXSDJfyzRctZD/mSGwY=;
- b=uCnnwbctZA1rQ3V0p2kZu+d3zaZFHTKUJPOo76b5D7cuxWEOXVJdpIqiLFP5aTXpvIjv9s
- qwAvW5WhwffRTnvcztEi2+1v/oENxwE79UOubMC7jJKeubOBD6zsvQUL74GztGQIAKB8HO
- BT4sxjhTakFs4dVqAQh6GY6Sn14JBtplCvPA2cmstH/p72FEB2TnSYVyeSL8sjTNI80v3T
- oCsDUl6wYJXQ9QueQxoB6wuP+fNUTobWuAtyizRQCOtZthAqYs4ojlXRNfsr2J83hANEKU
- KrLFmoV7Ai9vVG4RtXD3Lh/qUjXo6jULZnNtu/UYw3EhRXUZtNRGRg4NMuxugQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1610356608;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=LEXe/B0Q3kSQ+pyi11QVzunFEXSDJfyzRctZD/mSGwY=;
- b=aQ0P+BB77W0OA8uLsIQDcnYrwKkOka8jvG0VLRGl2/Wpm04Edp57/CM7syBgLiKrsJkDcC
- 9SLKzMSTP9RzBiAw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: Re: [patch V3 13/37] mips/mm/highmem: Switch to generic kmap atomic
-Message-ID: <20210111091646.hkugbtlcced3vmno@linutronix.de>
-References: <JUTMMQ.NNFWKIUV7UUJ1@crapouillou.net>
- <20210108235805.GA17543@alpha.franken.de>
- <20210109003352.GA18102@alpha.franken.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210109003352.GA18102@alpha.franken.de>
-X-Mailman-Approved-At: Mon, 11 Jan 2021 21:59:25 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DDtjq6lTKzDqWv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jan 2021 23:46:04 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DDtjY61Tyz9v02P;
+ Mon, 11 Jan 2021 13:45:53 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id flsZkM5S4mty; Mon, 11 Jan 2021 13:45:53 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DDtjY57wJz9v02R;
+ Mon, 11 Jan 2021 13:45:53 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2B76D8B791;
+ Mon, 11 Jan 2021 13:45:59 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id WTqNKj9scYew; Mon, 11 Jan 2021 13:45:59 +0100 (CET)
+Received: from localhost.localdomain (po15451.idsi0.si.c-s.fr [172.25.230.103])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EE6728B78E;
+ Mon, 11 Jan 2021 13:45:58 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id C32B166978; Mon, 11 Jan 2021 12:45:58 +0000 (UTC)
+Message-Id: <8c74fc9ce8131cabb10b3e95dc0e430f396ee83e.1610369143.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 1/3] powerpc: get rid of small constant size cases in
+ raw_copy_{to,from}_user()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ cmr@codefail.de
+Date: Mon, 11 Jan 2021 12:45:58 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,78 +60,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, linux-aio@kvack.org,
- Paul Cercueil <paul@crapouillou.net>, airlied@linux.ie,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-mips@vger.kernel.org, bsegall@google.com, jcmvbkbc@gmail.com,
- ray.huang@amd.com, paulus@samba.org, kraxel@redhat.com,
- sparclinux@vger.kernel.org, deanbo422@gmail.com, hch@lst.de,
- vincent.guittot@linaro.org, paulmck@kernel.org, x86@kernel.org,
- linux@armlinux.org.uk, linux-csky@vger.kernel.org, mingo@kernel.org,
- peterz@infradead.org, linux-graphics-maintainer@vmware.com, bskeggs@redhat.com,
- airlied@redhat.com, linux-snps-arc@lists.infradead.org, linux-mm@kvack.org,
- mgorman@suse.de, linux-xtensa@linux-xtensa.org, arnd@arndb.de,
- intel-gfx@lists.freedesktop.org, sroland@vmware.com, josef@toxicpanda.com,
- rostedt@goodmis.org, torvalds@linuxfoundation.org, green.hu@gmail.com,
- rodrigo.vivi@intel.com, dsterba@suse.com, tglx@linutronix.de,
- virtualization@lists.linux-foundation.org, dietmar.eggemann@arm.com,
- linux-arm-kernel@lists.infradead.org, chris@zankel.net, monstr@monstr.eu,
- nickhu@andestech.com, clm@fb.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, christian.koenig@amd.com, bcrl@kvack.org,
- spice-devel@lists.freedesktop.org, vgupta@synopsys.com,
- linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, bristot@redhat.com,
- davem@davemloft.net, linux-btrfs@vger.kernel.org, viro@zeniv.linux.org.uk
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-01-09 01:33:52 [+0100], Thomas Bogendoerfer wrote:
-> On Sat, Jan 09, 2021 at 12:58:05AM +0100, Thomas Bogendoerfer wrote:
-> > On Fri, Jan 08, 2021 at 08:20:43PM +0000, Paul Cercueil wrote:
-> > > Hi Thomas,
-> > > 
-> > > 5.11 does not boot anymore on Ingenic SoCs, I bisected it to this commit.
-> > > 
-> > > Any idea what could be happening?
-> > 
-> > not yet, kernel crash log of a Malta QEMU is below.
-> 
-> update:
-> 
-> This dirty hack lets the Malta QEMU boot again:
-> 
-> diff --git a/mm/highmem.c b/mm/highmem.c
-> index c3a9ea7875ef..190cdda1149d 100644
-> --- a/mm/highmem.c
-> +++ b/mm/highmem.c
-> @@ -515,7 +515,7 @@ void *__kmap_local_pfn_prot(unsigned long pfn, pgprot_t prot)
->  	vaddr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
->  	BUG_ON(!pte_none(*(kmap_pte - idx)));
->  	pteval = pfn_pte(pfn, prot);
-> -	set_pte_at(&init_mm, vaddr, kmap_pte - idx, pteval);
-> +	set_pte(kmap_pte - idx, pteval);
->  	arch_kmap_local_post_map(vaddr, pteval);
->  	current->kmap_ctrl.pteval[kmap_local_idx()] = pteval;
->  	preempt_enable();
-> 
-> set_pte_at() tries to update cache and could do an kmap_atomic() there.
-So the old implementation used set_pte() while the new one uses
-set_pte_at().
+Copied from commit 4b842e4e25b1 ("x86: get rid of small
+constant size cases in raw_copy_{to,from}_user()")
 
-> Not sure, if this is allowed at this point.
-The problem is the recursion
-  kmap_atomic() -> __update_cache() -> kmap_atomic()
+Very few call sites where that would be triggered remain, and none
+of those is anywhere near hot enough to bother.
 
-and kmap_local_idx_push() runs out if index space before stack space.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/uaccess.h | 45 ------------------------------
+ 1 file changed, 45 deletions(-)
 
-I'm not sure if the __update_cache() worked for highmem. It has been
-added for that in commit
-   f4281bba81810 ("MIPS: Handle highmem pages in __update_cache")
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 501c9a79038c..6e97616e03e8 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -407,30 +407,6 @@ static inline unsigned long raw_copy_from_user(void *to,
+ 		const void __user *from, unsigned long n)
+ {
+ 	unsigned long ret;
+-	if (__builtin_constant_p(n) && (n <= 8)) {
+-		ret = 1;
+-
+-		switch (n) {
+-		case 1:
+-			barrier_nospec();
+-			__get_user_size(*(u8 *)to, from, 1, ret);
+-			break;
+-		case 2:
+-			barrier_nospec();
+-			__get_user_size(*(u16 *)to, from, 2, ret);
+-			break;
+-		case 4:
+-			barrier_nospec();
+-			__get_user_size(*(u32 *)to, from, 4, ret);
+-			break;
+-		case 8:
+-			barrier_nospec();
+-			__get_user_size(*(u64 *)to, from, 8, ret);
+-			break;
+-		}
+-		if (ret == 0)
+-			return 0;
+-	}
+ 
+ 	barrier_nospec();
+ 	allow_read_from_user(from, n);
+@@ -442,27 +418,6 @@ static inline unsigned long raw_copy_from_user(void *to,
+ static inline unsigned long
+ raw_copy_to_user_allowed(void __user *to, const void *from, unsigned long n)
+ {
+-	if (__builtin_constant_p(n) && (n <= 8)) {
+-		unsigned long ret = 1;
+-
+-		switch (n) {
+-		case 1:
+-			__put_user_size_allowed(*(u8 *)from, (u8 __user *)to, 1, ret);
+-			break;
+-		case 2:
+-			__put_user_size_allowed(*(u16 *)from, (u16 __user *)to, 2, ret);
+-			break;
+-		case 4:
+-			__put_user_size_allowed(*(u32 *)from, (u32 __user *)to, 4, ret);
+-			break;
+-		case 8:
+-			__put_user_size_allowed(*(u64 *)from, (u64 __user *)to, 8, ret);
+-			break;
+-		}
+-		if (ret == 0)
+-			return 0;
+-	}
+-
+ 	return __copy_tofrom_user(to, (__force const void __user *)from, n);
+ }
+ 
+-- 
+2.25.0
 
-but it assumes that the address returned by kmap_atomic() is the same or
-related enough for flush_data_cache_page() to work.
-
-> Thomas.
-> 
-
-Sebastian
