@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D025B2F0D0D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 07:58:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C192F0D19
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 08:07:55 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DDl125cbkzDqXL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 17:58:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DDlCX5P3CzDqWq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jan 2021 18:07:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,43 +17,38 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DDkzS1sLxzDqP9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jan 2021 17:57:18 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DDl9q1CLPzDqPC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jan 2021 18:06:21 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DDkz86g5jz9vBmm;
- Mon, 11 Jan 2021 07:57:08 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DDl9d1xKXz9vBnG;
+ Mon, 11 Jan 2021 08:06:13 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id RpWUxy8JRXa2; Mon, 11 Jan 2021 07:57:08 +0100 (CET)
+ with ESMTP id prXPXq5z2Ylb; Mon, 11 Jan 2021 08:06:13 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DDkz857YNz9vBmk;
- Mon, 11 Jan 2021 07:57:08 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DDl9c3cZSz9vBnB;
+ Mon, 11 Jan 2021 08:06:12 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A8DE18B78A;
- Mon, 11 Jan 2021 07:57:13 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3D0D38B78A;
+ Mon, 11 Jan 2021 08:06:17 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 8JmCnz_6i7ZZ; Mon, 11 Jan 2021 07:57:13 +0100 (CET)
+ with ESMTP id HC1KZHsRdfsP; Mon, 11 Jan 2021 08:06:17 +0100 (CET)
 Received: from [172.25.230.103] (po15451.idsi0.si.c-s.fr [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6CF9B8B75B;
- Mon, 11 Jan 2021 07:57:13 +0100 (CET)
-Subject: Re: [PATCH v1 06/15] powerpc: Remove address and errorcode arguments
- from do_break()
-To: Nicholas Piggin <npiggin@gmail.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-References: <cover.1608641532.git.christophe.leroy@csgroup.eu>
- <0246430576c2ff0aed1d35ccbd6f44e658908102.1608641533.git.christophe.leroy@csgroup.eu>
- <1609039258.ijw9vns8wh.astroid@bobo.none>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EA1D08B75B;
+ Mon, 11 Jan 2021 08:06:16 +0100 (CET)
+Subject: Re: [PATCH v2] powerpc: fix alignment bug whithin the init sections
+To: Ariel Marcovitch <arielmarcovitch@gmail.com>, mpe@ellerman.id.au
+References: <20210102201156.10805-1-ariel.marcovitch@gmail.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <5332bb98-0d65-c51f-8514-04d76bf448c4@csgroup.eu>
-Date: Mon, 11 Jan 2021 07:57:13 +0100
+Message-ID: <dacc0535-217d-1a35-fcfe-7ff730e32735@csgroup.eu>
+Date: Mon, 11 Jan 2021 08:06:16 +0100
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <1609039258.ijw9vns8wh.astroid@bobo.none>
+In-Reply-To: <20210102201156.10805-1-ariel.marcovitch@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -68,74 +63,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: keescook@chromium.org, maskray@google.com, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com, oss@buserror.net, paulus@samba.org,
+ ariel.marcovitch@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 27/12/2020 à 04:25, Nicholas Piggin a écrit :
-> Excerpts from Christophe Leroy's message of December 22, 2020 11:28 pm:
->> Let do_break() retrieve address and errorcode from regs.
->>
->> This simplifies the code and shouldn't impeed performance as
->> address and errorcode are likely still hot in the cache.
->>
->> Suggested-by: Nicholas Piggin <npiggin@gmail.com>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   arch/powerpc/include/asm/debug.h     | 3 +--
->>   arch/powerpc/kernel/exceptions-64s.S | 2 --
->>   arch/powerpc/kernel/head_8xx.S       | 5 -----
->>   arch/powerpc/kernel/process.c        | 8 +++-----
->>   4 files changed, 4 insertions(+), 14 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/debug.h b/arch/powerpc/include/asm/debug.h
->> index ec57daf87f40..0550eceab3ca 100644
->> --- a/arch/powerpc/include/asm/debug.h
->> +++ b/arch/powerpc/include/asm/debug.h
->> @@ -52,8 +52,7 @@ extern void do_send_trap(struct pt_regs *regs, unsigned long address,
->>   			 unsigned long error_code, int brkpt);
->>   #else
->>   
->> -extern void do_break(struct pt_regs *regs, unsigned long address,
->> -		     unsigned long error_code);
->> +void do_break(struct pt_regs *regs);
->>   #endif
->>   
->>   #endif /* _ASM_POWERPC_DEBUG_H */
->> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
->> index cfbd1d690033..3ea067bcbb95 100644
->> --- a/arch/powerpc/kernel/exceptions-64s.S
->> +++ b/arch/powerpc/kernel/exceptions-64s.S
->> @@ -3262,8 +3262,6 @@ handle_page_fault:
->>   
->>   /* We have a data breakpoint exception - handle it */
->>   handle_dabr_fault:
->> -	ld      r4,_DAR(r1)
->> -	ld      r5,_DSISR(r1)
->>   	addi    r3,r1,STACK_FRAME_OVERHEAD
->>   	bl      do_break
->>   	/*
->> diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
->> index 52702f3db6df..81f3c984f50c 100644
->> --- a/arch/powerpc/kernel/head_8xx.S
->> +++ b/arch/powerpc/kernel/head_8xx.S
->> @@ -364,11 +364,6 @@ do_databreakpoint:
->>   	addi	r3,r1,STACK_FRAME_OVERHEAD
->>   	mfspr	r4,SPRN_BAR
->>   	stw	r4,_DAR(r11)
->> -#ifdef CONFIG_VMAP_STACK
->> -	lwz	r5,_DSISR(r11)
->> -#else
->> -	mfspr	r5,SPRN_DSISR
->> -#endif
+Le 02/01/2021 à 21:11, Ariel Marcovitch a écrit :
+> This is a bug that causes early crashes in builds with a
+> .exit.text section smaller than a page and a .init.text section that
+> ends in the beginning of a physical page (this is kinda random, which
+> might explain why this wasn't really encountered before).
 > 
-> I didn't think you can do this (at leastuntil after your patch 10). I have my
-> !VMAP path doing mfspr r5,DSISR ; stw r3,_DSISR(r11);
+> The init sections are ordered like this:
+> 	.init.text
+> 	.exit.text
+> 	.init.data
 > 
+> Currently, these sections aren't page aligned.
+> 
+> Because the init code might become read-only at runtime and because the
+> .init.text section can potentially reside on the same physical page as
+> .init.data, the beginning of .init.data might be mapped read-only along
+> with .init.text.
+> 
+> Then when the kernel tries to modify a variable in .init.data (like
+> kthreadd_done, used in kernel_init()) the kernel panics.
+> 
+> To avoid this, make _einittext page aligned and also align .exit.text
+> to make sure .init.data is always seperated from the text segments.
+> 
+> Fixes: 060ef9d89d18 ("powerpc32: PAGE_EXEC required for inittext")
+> Signed-off-by: Ariel Marcovitch <ariel.marcovitch@gmail.com>
 
-Yes you are right, I went too quick.
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Christophe
+> ---
+>   arch/powerpc/kernel/vmlinux.lds.S | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+> index 6db90cdf11da..b6c765d8e7ee 100644
+> --- a/arch/powerpc/kernel/vmlinux.lds.S
+> +++ b/arch/powerpc/kernel/vmlinux.lds.S
+> @@ -187,6 +187,11 @@ SECTIONS
+>   	.init.text : AT(ADDR(.init.text) - LOAD_OFFSET) {
+>   		_sinittext = .;
+>   		INIT_TEXT
+> +
+> +		/* .init.text might be RO so we must
+> +		* ensure this section ends in a page boundary.
+> +		*/
+> +		. = ALIGN(PAGE_SIZE);
+>   		_einittext = .;
+>   #ifdef CONFIG_PPC64
+>   		*(.tramp.ftrace.init);
+> @@ -200,6 +205,8 @@ SECTIONS
+>   		EXIT_TEXT
+>   	}
+>   
+> +	. = ALIGN(PAGE_SIZE);
+> +
+>   	.init.data : AT(ADDR(.init.data) - LOAD_OFFSET) {
+>   		INIT_DATA
+>   	}
+> 
+> base-commit: 2c85ebc57b3e1817b6ce1a6b703928e113a90442
+> 
