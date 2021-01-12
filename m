@@ -2,54 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA272F3935
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 19:51:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D7D2F39B1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 20:11:53 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DFfmy3hqVzDrQF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 05:51:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DFgDR2bQ0zDrQ3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 06:11:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72e;
+ helo=mail-qk1-x72e.google.com; envelope-from=natechancellor@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=WiSTIs/5; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Ph1/Gxgy; dkim-atps=neutral
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com
+ [IPv6:2607:f8b0:4864:20::72e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DFfkX1gftzDqrC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 05:49:23 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F14B022B4B;
- Tue, 12 Jan 2021 18:49:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1610477361;
- bh=+wilW7PR6EUwuOxtL99UfUGxy2Y3s4HM648aqDLGvwQ=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=WiSTIs/5MU3rCUxPQxxY/GuKYx1VicPZeMoEfe9QgXpL6SNF2KfL2sxOGcKTFPnvq
- zSCMSDbeHOt2/UyUpwPt6m4obluPhqZKH2mSGyEEhnrhSrgiLfRv6NvM2AjZIjMEjE
- fyPy8uYlPfq+CHXXns6yleUqwKsP6nalVhu2sA/4+8GTGuve3q6C4yyKSmG0GIw4x1
- LkysKVr0ypvfhDlGvovfK0QGiTRV84Q7LFIbaeIB6z4cvj89h4xteLNFfb8mhPptqF
- BMHPGvKmpBVsqnpUyan7x5MjXsyJyqeXkKjANBcLIcqkEMIWjvMcLF0j+JX4Ujry4N
- XsSS0/5UigVPw==
-Date: Tue, 12 Jan 2021 18:48:48 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Nathan Chancellor <natechancellor@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DFg9h4vtHzDqkc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 06:09:27 +1100 (AEDT)
+Received: by mail-qk1-x72e.google.com with SMTP id w79so2892588qkb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 11:09:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=CPfEryF2bxPOdgxHkNjvHkSKCpA8G96wI04AOG3xMSg=;
+ b=Ph1/Gxgy/41uF4BAAfVDKy7+imzx904TvEw+Eu/WblDKtQtdri1X4MDaStPM7awQ7I
+ sOI/tgXlhTD39bLtKzCH3BBetYGzwkHWCn420dJExppM8vIn63xtrRpMg2cfcnmmhuKC
+ rruw5KY6mTE53Wkxicns7eEBwcy2BPkue5zB0u3bN/gZOYSLNuHc94DIZoqWz4bdnCnm
+ osZp+ndQyIlh3Zqfh8yn/oQgYOgWayRSBaeczRwJjpsm/qa1CI6ReZDOmnulR63X/ATQ
+ fHCWmB74oiCx5teGkpmHMmgnXFa53TQVBafdSCGjtJk3YnEsf8id6sWiWMyADr+7fFrb
+ f8dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=CPfEryF2bxPOdgxHkNjvHkSKCpA8G96wI04AOG3xMSg=;
+ b=NCWGqXq+DfhhdGMJuFYlgVicD129EAYjMjPiNjv/Xor26zCxpYYa9if7Dh6CnRkNs5
+ pYbhTDU1M4CgN/8mbOHQ6ZjD3R4nak8o2CKFCmw4kwSV3QsNIBzgmwOVXXxTHUoeIbtU
+ CYvPGMJjJQZcKbW1q5r4+voEqqO41h3Cn4Rju0Hnu7hEfNx+SHRMGH0Mx8RyJoVR8n9x
+ 0vwwZe7Cfc6FdsTt4UzZwPWDpP5dlFt5dv/Ct8VXNT9bCyLa4Hdkhhjh7h7cZlSEOs7t
+ a4lULSRyjhzRH2CqtJuQaz4NVfFrwjj0DmToBEvsAZJ7eRv5JmHMIlnYfnI0Q8ruEmil
+ mokg==
+X-Gm-Message-State: AOAM530OsC6Mc04b86pLAyDJ6Vi3Mbqn5kUiogEnf+I/YKDy5WWdOuZZ
+ xn8YEB5KTu7sctNFyzAJ1eQ=
+X-Google-Smtp-Source: ABdhPJzPgfw/zVoqhZTuXj+3LsvbWpph1NVpC1slqYO+oR5yTcVJwoUscYt3sisXvbLe7akxa/MdDg==
+X-Received: by 2002:a05:620a:10a8:: with SMTP id
+ h8mr821484qkk.315.1610478564017; 
+ Tue, 12 Jan 2021 11:09:24 -0800 (PST)
+Received: from ubuntu-m3-large-x86 ([2604:1380:45f1:1d00::1])
+ by smtp.gmail.com with ESMTPSA id v4sm1629295qth.16.2021.01.12.11.09.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Jan 2021 11:09:23 -0800 (PST)
+Date: Tue, 12 Jan 2021 12:09:21 -0700
+From: Nathan Chancellor <natechancellor@gmail.com>
+To: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH] ASoC: imx-hdmi: Fix warning of the uninitialized
  variable ret
-Message-ID: <20210112184848.GG4646@sirena.org.uk>
+Message-ID: <20210112190921.GA3561911@ubuntu-m3-large-x86>
 References: <1608115464-18710-1-git-send-email-shengjiu.wang@nxp.com>
  <20210112181949.GA3241630@ubuntu-m3-large-x86>
+ <20210112184848.GG4646@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="6BvahUXLYAruDZOj"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210112181949.GA3241630@ubuntu-m3-large-x86>
-X-Cookie: Stay away from hurricanes for a while.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20210112184848.GG4646@sirena.org.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,47 +90,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Jan 12, 2021 at 06:48:48PM +0000, Mark Brown wrote:
+> This is a random warning fix, why would you expect it to be sent as a
+> bug fix?  This is the first indication I've seen that anyone is seeing
+> it in mainline, in general the people who report and fix warnings are
+> doing so based on -next and the patch seems to be from a month ago.  I
+> don't have this in my inbox so I assume it's applied already or needs to
+> be resubmitted anyway.
 
---6BvahUXLYAruDZOj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Well, I consider compiler warnings bugs. I have had plenty of my
+compiler warning patches sent as bug fixes for an -rc. Furthermore, this
+patch was sent three times by different people, that should give you some
+indication that people are tripping over it.
 
-On Tue, Jan 12, 2021 at 11:19:49AM -0700, Nathan Chancellor wrote:
+https://lore.kernel.org/alsa-devel/X9NGQaF4pmK8oUAF@mwanda/
+https://lore.kernel.org/alsa-devel/1608115464-18710-1-git-send-email-shengjiu.wang@nxp.com/
+https://lore.kernel.org/alsa-devel/20201230154443.656997-1-arnd@kernel.org/
 
-Please delete unneeded context from mails when replying.  Doing this
-makes it much easier to find your reply in the message, helping ensure
-it won't be missed by people scrolling through the irrelevant quoted
-material.
+The first version was sent on December 11th, it looks like your pull for
+5.11 went on the December 14th, then the second version was applied on
+December 16th so I figured it might be destined for 5.11 but I could not
+tell (your for-next branch is a merge of your for-5.11 and for-5.12):
 
-> >
-> > Signed-off-by: shengjiu wang <shengjiu.wang@nxp.com>
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > ---
+https://lore.kernel.org/alsa-devel/160813397775.31838.8934909997692637790.b4-ty@kernel.org/
 
-> I still see a warning in v5.11-rc3 that is fixed by this patch, is it
-> not going in this release cycle? It is a regression fix, seems like it
-> should.
-
-This is a random warning fix, why would you expect it to be sent as a
-bug fix?  This is the first indication I've seen that anyone is seeing
-it in mainline, in general the people who report and fix warnings are
-doing so based on -next and the patch seems to be from a month ago.  I
-don't have this in my inbox so I assume it's applied already or needs to
-be resubmitted anyway.
-
---6BvahUXLYAruDZOj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/97w8ACgkQJNaLcl1U
-h9C44Qf/bxW+CXB4DwJTofrPuzVBuAQ6vUrmIqtZSde3b3oZ60V4fS3Weuw63ihH
-QkztqOp+rn7uoHY3X1+XDUwi4+suPoag7X04Q8EKvLyhtovjOZP0Tp+gC+FXEPad
-SM9gdRlMJLyJoVQSvjzJueO9vkXLy9OZoq73zH444VcmzTzGXP6Bz5wug2m9LHC2
-rMEMY3mbhLDLD9zGqL/CVE5OOsFHRfAlqWb+QMJaa9QY+IrPri8XqO72mNceYFbg
-grmrNQjES0IvzOa+7mxrK58M/L6iT+m9LybUHxxxINucdDdEYMV5hIY1OLzretHi
-4BhzHK5m28Q8w3p+a7ZXY2D59aZbOg==
-=DgaF
------END PGP SIGNATURE-----
-
---6BvahUXLYAruDZOj--
+Cheers,
+Nathan
