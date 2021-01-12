@@ -1,53 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC532F2458
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 02:15:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 508032F298D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 08:59:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DFCL31GhszDqyP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 12:15:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DFNJ34MXczDr0t
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 18:58:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::f35;
+ helo=mail-qv1-xf35.google.com; envelope-from=tientzu@chromium.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=Muj3J6AU; dkim-atps=neutral
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com
+ [IPv6:2607:f8b0:4864:20::f35])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DFCHy22xWzDqlh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 12:13:18 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=YRh6ZWH6; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DFCHq17dGz9sVb;
- Tue, 12 Jan 2021 12:13:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1610413996;
- bh=S/7jgyEMX8jCF5ztHgwvPqBfJNWba57wkdKj3Nr9QCw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=YRh6ZWH6YuZrrwd6OqvvWNWIDNFe6gjRx+RhHgekSnr4iTmcRETBtNN8OY4l1RGWu
- PGaXOw/talGTPXbsb/6uL4tKQl63WmMdSvx5Zs3I3QFcTmSZi5mFKi1B2hV58SSXR6
- wP1OhqQbVEXK5K2EVjzZCJlh+BZeYfGx78I1auMbIwwrVVCccgg10AQpUF9Iexmy0+
- Pen36dQldkfejeM7Q4zdsef9R+hRcKAZOvbkVxoEWDIuSOWm71uWWDk5nzlqOMmd5G
- BprOb35vsULgTcFLTQmvQHW2p4Lx77kTryrgK1mr+ao88v54ZOaE25HWgksJA7BFP5
- KJqyZAIc5YzRw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, schwab@linux-m68k.org
-Subject: Re: [PATCH v2] powerpc/vdso: fix clock_gettime_fallback for vdso32
-In-Reply-To: <77cb8f5e668a2f6e00ea6e90d5f4f37763957b5b.1610383963.git.christophe.leroy@csgroup.eu>
-References: <77cb8f5e668a2f6e00ea6e90d5f4f37763957b5b.1610383963.git.christophe.leroy@csgroup.eu>
-Date: Tue, 12 Jan 2021 12:13:06 +1100
-Message-ID: <87v9c3j6u5.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DFND71Cc0zDqxH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 18:55:30 +1100 (AEDT)
+Received: by mail-qv1-xf35.google.com with SMTP id h16so542142qvu.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jan 2021 23:55:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=j7gLFMlxBCQENVWtNxS2npLHFlF1Oh0HPmJ2b4uXz4E=;
+ b=Muj3J6AUcKeWXk2QVKpBxfCJmD1ZNU3ECoTrLMhnZ3l10BcmT1KWV3KJZVJiyjnmgp
+ tXnYNLGybukalejR/JL4Ccq0hthA+yksiWl3Xj9n38DlJXhcHL4x7k7Hi60j74u9oC5X
+ xVXg0JvakYs/Mgnk3DB5tWgDJ2Wm5qz5NT8oI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=j7gLFMlxBCQENVWtNxS2npLHFlF1Oh0HPmJ2b4uXz4E=;
+ b=jCHnrMF0nJbIxQTP2yk7ABKoTQFmuvYWW0MmH9I/z/6cLXYA455ztMYgW7Xp6rsZWl
+ 7CG97JIEugGeMuL+6LM7fGKOuKSN+rW8FR/Try1TcOPE8RI0p6hzxl012KPznihpUOW4
+ m9lLQ6tNR4C2dRaZA0x1a8GxhKDM49EYG3aE9OE3CuExzaZ/NJnUCODLpJbYtiG8uHWw
+ 3VGtcSA5i38CsYmdnr8AQpuUuMRuit8NlTNsKl4grMlCS+Cgz7UcxfG4BgebOw4Tb3zx
+ cdjXaRmzABTiDkjd5cEMjpIp+cSGt1b4qWSFL143wTtFm7deN4qLieXtFU7pMO4ANo7t
+ 8m7g==
+X-Gm-Message-State: AOAM533r8kLBiZxvaxQsnu2bPa3d9s58pZNauG3LJigKuWHnL6FTX8NS
+ rg+LXXJSHZnZd5AEThn84sFmUo2ZfK2B0+f8
+X-Google-Smtp-Source: ABdhPJyh7IKHCp3nIrEla2jTSJwRc39Ot9oOnX6wqp8uu0XGi0HcSnVdjOOINhlhBck4gC0EzTaubg==
+X-Received: by 2002:ad4:4390:: with SMTP id s16mr3388596qvr.28.1610438126151; 
+ Mon, 11 Jan 2021 23:55:26 -0800 (PST)
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com.
+ [209.85.160.177])
+ by smtp.gmail.com with ESMTPSA id k141sm1009948qke.38.2021.01.11.23.55.25
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Jan 2021 23:55:25 -0800 (PST)
+Received: by mail-qt1-f177.google.com with SMTP id v5so1022913qtv.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jan 2021 23:55:25 -0800 (PST)
+X-Received: by 2002:a05:6638:c52:: with SMTP id
+ g18mr3073726jal.84.1610437670186; 
+ Mon, 11 Jan 2021 23:47:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20210106034124.30560-1-tientzu@chromium.org>
+ <20210106034124.30560-6-tientzu@chromium.org>
+ <20210106185757.GB109735@localhost.localdomain>
+ <CALiNf2_dV13jbHqLt-r1eK+dtOcAKBGcWQCVMQn+eL6MuOrETQ@mail.gmail.com>
+ <20210107180032.GB16519@char.us.oracle.com>
+ <4cce7692-7184-9b25-70f2-b821065f3b25@gmail.com>
+In-Reply-To: <4cce7692-7184-9b25-70f2-b821065f3b25@gmail.com>
+From: Claire Chang <tientzu@chromium.org>
+Date: Tue, 12 Jan 2021 15:47:39 +0800
+X-Gmail-Original-Message-ID: <CALiNf29Kqr1WP3BEjX-y5Xtife7AinqiXAcRD2g4eB9isTaXfQ@mail.gmail.com>
+Message-ID: <CALiNf29Kqr1WP3BEjX-y5Xtife7AinqiXAcRD2g4eB9isTaXfQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 5/6] dt-bindings: of: Add restricted DMA pool
+To: Florian Fainelli <f.fainelli@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,88 +86,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: heikki.krogerus@linux.intel.com, peterz@infradead.org, grant.likely@arm.com,
+ paulus@samba.org, Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>, sstabellini@kernel.org,
+ Saravana Kannan <saravanak@google.com>, Joerg Roedel <joro@8bytes.org>,
+ rafael.j.wysocki@intel.com, Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+ xen-devel@lists.xenproject.org, Thierry Reding <treding@nvidia.com>,
+ linux-devicetree <devicetree@vger.kernel.org>, will@kernel.org,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, dan.j.williams@intel.com,
+ linuxppc-dev@lists.ozlabs.org, Rob Herring <robh+dt@kernel.org>,
+ boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ rdunlap@infradead.org, lkml <linux-kernel@vger.kernel.org>,
+ Tomasz Figa <tfiga@chromium.org>,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ xypron.glpk@gmx.de, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> From: Andreas Schwab <schwab@linux-m68k.org>
+On Fri, Jan 8, 2021 at 2:15 AM Florian Fainelli <f.fainelli@gmail.com> wrote:
 >
-> The second argument of __kernel_clock_gettime64 points to a struct
-> __kernel_timespec, with 64-bit time_t, so use the clock_gettime64 syscall
-> in the fallback function for the 32-bit vdso.  Similarily,
-> clock_getres_fallback should use the clock_getres_time64 syscall, though
-> it isn't yet called from the 32-bit vdso.
+> On 1/7/21 10:00 AM, Konrad Rzeszutek Wilk wrote:
+> >>>
+> >>>
+> >>>  - Nothing stops the physical device from bypassing the SWIOTLB buffer.
+> >>>    That is if an errant device screwed up the length or DMA address, the
+> >>>    SWIOTLB would gladly do what the device told it do?
+> >>
+> >> So the system needs to provide a way to lock down the memory access, e.g. MPU.
+> >
+> > OK! Would it be prudent to have this in the description above perhaps?
 >
-> Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
-> [chleroy: Moved into the #ifdef CONFIG_VDSO32 block]
+> Yes this is something that must be documented as a requirement for the
+> restricted DMA pool users, otherwise attempting to do restricted DMA
+> pool is no different than say, using a device private CMA region.
+> Without the enforcement, this is just a best effort.
 
-That doesn't build for 64-bit with compat VDSO. Should I just take
-Andreas' version, or do you want to send a v3?
+Will add in the next version.
 
-cheers
-
-> Fixes: d0e3fc69d00d ("powerpc/vdso: Provide __kernel_clock_gettime64() on vdso32")
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/include/asm/vdso/gettimeofday.h | 27 +++++++++++++++-----
->  1 file changed, 21 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h b/arch/powerpc/include/asm/vdso/gettimeofday.h
-> index 7a215cc5da77..3ecddd9c6302 100644
-> --- a/arch/powerpc/include/asm/vdso/gettimeofday.h
-> +++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
-> @@ -102,22 +102,22 @@ int gettimeofday_fallback(struct __kernel_old_timeval *_tv, struct timezone *_tz
->  	return do_syscall_2(__NR_gettimeofday, (unsigned long)_tv, (unsigned long)_tz);
->  }
->  
-> +#ifdef CONFIG_VDSO32
-> +
-> +#define BUILD_VDSO32		1
-> +
->  static __always_inline
->  int clock_gettime_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
->  {
-> -	return do_syscall_2(__NR_clock_gettime, _clkid, (unsigned long)_ts);
-> +	return do_syscall_2(__NR_clock_gettime64, _clkid, (unsigned long)_ts);
->  }
->  
->  static __always_inline
->  int clock_getres_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
->  {
-> -	return do_syscall_2(__NR_clock_getres, _clkid, (unsigned long)_ts);
-> +	return do_syscall_2(__NR_clock_getres_time64, _clkid, (unsigned long)_ts);
->  }
->  
-> -#ifdef CONFIG_VDSO32
-> -
-> -#define BUILD_VDSO32		1
-> -
->  static __always_inline
->  int clock_gettime32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
->  {
-> @@ -129,6 +129,21 @@ int clock_getres32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
->  {
->  	return do_syscall_2(__NR_clock_getres, _clkid, (unsigned long)_ts);
->  }
-> +
-> +#else
-> +
-> +static __always_inline
-> +int clock_gettime_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
-> +{
-> +	return do_syscall_2(__NR_clock_gettime, _clkid, (unsigned long)_ts);
-> +}
-> +
-> +static __always_inline
-> +int clock_getres_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
-> +{
-> +	return do_syscall_2(__NR_clock_getres, _clkid, (unsigned long)_ts);
-> +}
-> +
->  #endif
->  
->  static __always_inline u64 __arch_get_hw_counter(s32 clock_mode,
-> -- 
-> 2.25.0
+> --
+> Florian
