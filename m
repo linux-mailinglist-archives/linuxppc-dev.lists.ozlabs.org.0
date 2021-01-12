@@ -1,57 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FD42F3B9B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 21:46:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DF32F3C7D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 23:58:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DFjKs1DtnzDrRd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 07:46:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DFmGD4ckfzDrR3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 09:58:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=mZYw9S7J; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=kronnr2g; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DFjJ43dmHzDr6w
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 07:45:08 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3C5A322DFA;
- Tue, 12 Jan 2021 20:45:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1610484304;
- bh=6EV3PSRRIdASeuowUAFkcXsesrpHli+gEefyPnm+dvY=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=mZYw9S7JwjZ2GBclKbnznUziE9VCzkI10RYictFpWWLU/3cq2mtd9VT3xq4Vt1gc+
- 03JCn5nskTb5MZRwDY23aAA3rSoPcL7NO9YTWkYBDpNlgIdhwn2jyGKJTI0KmcG8Tw
- GcKqSLYybezYqcsz8tKmfEhowVjK0oiYepXsbxtoGvK92pbEVfqouw+uAbte3GOOnz
- ln5oFNLXa6RUEdYwcUCG6AZLWrWg+/IQeQQKM8o9rgMt9QWKaT/oKAtuzawGsnmVkR
- 0uoX6l2fMbtrmpwxydD/60fX2moN8VupeYNQPJQF2slYF1EyTqJVZ6ZolFQ0I0N4VT
- HZNd5LXsIRvIQ==
-Date: Tue, 12 Jan 2021 20:44:31 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Nathan Chancellor <natechancellor@gmail.com>
-Subject: Re: [PATCH] ASoC: imx-hdmi: Fix warning of the uninitialized
- variable ret
-Message-ID: <20210112204431.GH4646@sirena.org.uk>
-References: <1608115464-18710-1-git-send-email-shengjiu.wang@nxp.com>
- <20210112181949.GA3241630@ubuntu-m3-large-x86>
- <20210112184848.GG4646@sirena.org.uk>
- <20210112190921.GA3561911@ubuntu-m3-large-x86>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DFm9l1wPDzDrQt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 09:54:44 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10CMfcBH081848; Tue, 12 Jan 2021 17:54:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=VySuknCdRYrl/Kuiqjz7iBvWmozseQlh3kZ9bh90Zm0=;
+ b=kronnr2g7UZOx0/ns/LbuSkG/pkCXeoJ3M+aG52UqpxyhjDt33yhiNInMK8Mx4Z+U3oW
+ z4ZCkWZ6eHzh73VQPgTHTQlmcheVntCCXUCX55adBFlyuf3CaHHJDtGgPK4nEhenPUHC
+ 7sdQsjukH2jU+GiPBsjtv82XmbZ7wmc23bH9ocsF6BWQGkP5RZa9QffZitlVNXgizBug
+ eYhoXeVcwT78j3raiFGjyiZW1wzMZj9K6mlN14GYeMdJrh0Fyr8cU1kwTE8E8bKgWojG
+ 5MMNRQwcsryYBhj+i379a3iGCEjzZzRnsIc2o+rkuhjkg30BFCyTTPnkL4ZrMBrkusI6 YQ== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 361mshr6ca-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Jan 2021 17:54:41 -0500
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10CMhVqm015346;
+ Tue, 12 Jan 2021 22:54:39 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma04wdc.us.ibm.com with ESMTP id 35y4491a4r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Jan 2021 22:54:39 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10CMscHC11534774
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Jan 2021 22:54:38 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 67D4B6E5B8;
+ Tue, 12 Jan 2021 22:54:38 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D987D6E5B7;
+ Tue, 12 Jan 2021 22:54:37 +0000 (GMT)
+Received: from oc6034535106.ibm.com (unknown [9.211.156.88])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 12 Jan 2021 22:54:37 +0000 (GMT)
+Subject: Re: [PATCH v4 01/21] ibmvfc: add vhost fields and defaults for MQ
+ enablement
+To: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ james.bottomley@hansenpartnership.com
+References: <20210111231225.105347-1-tyreld@linux.ibm.com>
+ <20210111231225.105347-2-tyreld@linux.ibm.com>
+From: Brian King <brking@linux.vnet.ibm.com>
+Message-ID: <0525bee7-433f-dcc7-9e35-e8706d6edee5@linux.vnet.ibm.com>
+Date: Tue, 12 Jan 2021 16:54:37 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="cfJ13FhsvNR/yOpm"
-Content-Disposition: inline
-In-Reply-To: <20210112190921.GA3561911@ubuntu-m3-large-x86>
-X-Cookie: Stay away from hurricanes for a while.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20210111231225.105347-2-tyreld@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-12_19:2021-01-12,
+ 2021-01-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ adultscore=0 phishscore=0 impostorscore=0 mlxlogscore=999 clxscore=1011
+ mlxscore=0 bulkscore=0 spamscore=0 suspectscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101120128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,75 +102,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>,
- tiwai@suse.com, perex@perex.cz, nicoleotsuka@gmail.com, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+ james.smart@broadcom.com, linux-kernel@vger.kernel.org, brking@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 1/11/21 5:12 PM, Tyrel Datwyler wrote:
+> Introduce several new vhost fields for managing MQ state of the adapter
+> as well as initial defaults for MQ enablement.
+> 
+> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+> ---
+>  drivers/scsi/ibmvscsi/ibmvfc.c | 8 ++++++++
+>  drivers/scsi/ibmvscsi/ibmvfc.h | 9 +++++++++
+>  2 files changed, 17 insertions(+)
+> 
+> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+> index ba95438a8912..9200fe49c57e 100644
+> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
+> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+> @@ -3302,6 +3302,7 @@ static struct scsi_host_template driver_template = {
+>  	.max_sectors = IBMVFC_MAX_SECTORS,
+>  	.shost_attrs = ibmvfc_attrs,
+>  	.track_queue_depth = 1,
+> +	.host_tagset = 1,
 
---cfJ13FhsvNR/yOpm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This doesn't seem right. You are setting host_tagset, which means you want a
+shared, host wide, tag set for commands. It also means that the total
+queue depth for the host is can_queue. However, it looks like you are allocating
+max_requests events for each sub crq, which means you are over allocating memory.
 
-On Tue, Jan 12, 2021 at 12:09:21PM -0700, Nathan Chancellor wrote:
-> On Tue, Jan 12, 2021 at 06:48:48PM +0000, Mark Brown wrote:
+Looking at this closer, we might have bigger problems. There is a host wide
+max number of commands that the VFC host supports, which gets returned on
+NPIV Login. This value can change across a live migration event. 
 
-> > This is a random warning fix, why would you expect it to be sent as a
-> > bug fix?  This is the first indication I've seen that anyone is seeing
-> > it in mainline, in general the people who report and fix warnings are
-> > doing so based on -next and the patch seems to be from a month ago.  I
-> > don't have this in my inbox so I assume it's applied already or needs to
-> > be resubmitted anyway.
+The ibmvfc driver, which does the same thing the lpfc driver does, modifies
+can_queue on the scsi_host *after* the tag set has been allocated. This looks
+to be a concern with ibmvfc, not sure about lpfc, as it doesn't look like
+we look at can_queue once the tag set is setup, and I'm not seeing a good way
+to dynamically change the host queue depth once the tag set is setup. 
 
-> Well, I consider compiler warnings bugs. I have had plenty of my
-> compiler warning patches sent as bug fixes for an -rc. Furthermore, this
-> patch was sent three times by different people, that should give you some
-> indication that people are tripping over it.
+Unless I'm missing something, our best options appear to either be to implement
+our own host wide busy reference counting, which doesn't sound very good, or
+we need to add some API to block / scsi that allows us to dynamically change
+can_queue.
 
-I really don't have that good a recall of what warning fixes people are
-sending, I might notice if I get two versions of the same thing that I
-look at at roughly the same time but even with a few hours between it's
-most likely that I'll have completely forgotten.  Warning fixes are in
-general not memorable, it's not a good sign if they are.  The default
-assumption for any warning fix that doesn't say anything else is going
-to be that either the issue or the toolchain is very new.
+Thanks,
 
-For any kind of fix if you think that things are in some way urgent you
-should say something promptly (or provide some indication of this in the
-submission if you're sending the fix yourself, such as with a fixes
-tag).  If nobody says anything then you should assume that nobody else
-is going to be aware of any urgency and that this will affect handling.
-Should it happen that things aren't flagged up then of course do so but
-consider that this may well be the first time people will be aware
-there's any urgency, don't assume that people will have been operating
-with information they didn't have.
+Brian
 
-> The first version was sent on December 11th, it looks like your pull for
-> 5.11 went on the December 14th, then the second version was applied on
-> December 16th so I figured it might be destined for 5.11 but I could not
-> tell (your for-next branch is a merge of your for-5.11 and for-5.12):
 
-If it's on the for-5.11 branch then it will be for 5.11, which it must
-be if it was applied then.  If it was and it was applied that long ago
-it'll already be queued in Takashi's tree and I guess he didn't send it
-on yet.
+-- 
+Brian King
+Power Linux I/O
+IBM Linux Technology Center
 
---cfJ13FhsvNR/yOpm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/+Ci4ACgkQJNaLcl1U
-h9AqTQf9Hd+NaLX8SdaivLSggl2+aq3vh152OKzmXnxVAeMvwXXPL5/73LMlierc
-POZ+45qPlmd5XO5IXdmwjCgQ9TWEacSSYKvK66n9taQq2sExQqIOBFtEuC9P/brJ
-GwIDJFjHSqdpLHOq9aiqH4/gPHR9bIDQbpXJiQrcib2EPKJzRnq43vSDH705EgUS
-QZga5MEbDI3FimHW0j5Q7PMtwDHm0WnDDRqwFFYAABdal9ZQcLQdQnUpSEfLAa6t
-Ai8DRIPPXe9JVllrS7TsG911f2XMK/EB/oiTSa+6jBCszuFJRd8wSLZeFIYdxqdV
-74KXV6vlSh4JfXlHUbk/Mz4XeuUbuw==
-=wfLB
------END PGP SIGNATURE-----
-
---cfJ13FhsvNR/yOpm--
