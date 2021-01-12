@@ -2,53 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A482F328E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 15:06:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B78302F32B4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 15:13:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DFXRb1fH9zDrQH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 01:06:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DFXbp201MzDrQ6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 01:13:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=EAVLRpz7; 
+ header.s=k20201202 header.b=S+ljzYYL; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DFVxk5ZVgzDr1g
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 23:58:34 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 067A123127;
- Tue, 12 Jan 2021 12:58:31 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DFXQd579MzDrQ7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 01:05:13 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A42AE22CE3;
+ Tue, 12 Jan 2021 14:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1610456313;
- bh=bg1MGApZXy1snbKFE985TK9dD1gMRCuiC9DNpBwFJYE=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=EAVLRpz7DHMNbe8EZX384wfIhUT3fSQ/JxoK13WbefGac90zNJpT7PsSVlkdALy9Z
- RnTi+88vpDI+fjruu6rfQIIr1QUsDTfu3/bQpak17cq6kk50uDu1/rk7eVm+SIfa2K
- 5Cx0SDuQUzQQokwt1Luj7FzPuh3+yinz3R4SJI00FyT6EPt7aRayuAOESdDNaEaBhq
- WQmAEEuueM8eyHwd4vyifNK8YyWGc/Wek4nI1O48pn+e1QgY19FiP4UZecrpbEn4f4
- yY0GA0CxxM3MrKqyCUJD8v69P7i/Qc408TxF1bWqMNFWPXJzfYdAhTKhj7plKVW/Um
- oxBay+2daqidg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 6/8] net: ethernet: fs_enet: Add missing
- MODULE_LICENSE
-Date: Tue, 12 Jan 2021 07:58:21 -0500
-Message-Id: <20210112125823.71463-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210112125823.71463-1-sashal@kernel.org>
-References: <20210112125823.71463-1-sashal@kernel.org>
+ s=k20201202; t=1610460310;
+ bh=YIZSFd4ngdBu3d+V+tCrhUDlUF7epBaWbFsCZCkzGJs=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=S+ljzYYL3QMPhhApX5VwhFNyceVrA27EHM0FStNvwzUR1cQ7GFOIPOcEYTO0fdDaA
+ Kj7O7lmy0yWuWK+AZisJL2LrmlkoM/j63MxdM7S787vyvaT4LD71jTgKDStmGrzxuQ
+ L0/NqqEzqp6wU8ndgl0gsmTuxMJL2Vz98cUyPebone1iHGoyH3HLXEv/yY8kVzE9/C
+ 3JxXpkug6tFhHh2/KJ9Ii5coAgelm+gr542ObqppAE3GEOphOgXDNiAJFxaofg4s3u
+ N68pjfATVrUXDVMPlwIcydiug5iK5JLd2AIK2alwIqlmLf7Si7Qy4TLd2kqk9nbCgG
+ c2IYKYoLXP3bw==
+Date: Tue, 12 Jan 2021 14:05:00 +0000
+From: Will Deacon <will@kernel.org>
+To: "Enrico Weigelt, metux IT consult" <info@metux.net>
+Subject: Re: [PATCH v2] arch: consolidate pm_power_off callback
+Message-ID: <20210112140459.GC9277@willie-the-truck>
+References: <20201227140129.19932-1-info@metux.net>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201227140129.19932-1-info@metux.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,53 +57,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>
+Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com,
+ jcmvbkbc@gmail.com, paulus@samba.org, linux-csky@vger.kernel.org,
+ hpa@zytor.com, linux-riscv@lists.infradead.org, tglx@linutronix.de,
+ jonas@southpole.se, linux-s390@vger.kernel.org, sstabellini@kernel.org,
+ linux-c6x-dev@linux-c6x.org, ysato@users.sourceforge.jp,
+ linux-hexagon@vger.kernel.org, deller@gmx.de, x86@kernel.org,
+ ley.foon.tan@intel.com, mingo@redhat.com, geert@linux-m68k.org,
+ catalin.marinas@arm.com, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, linux-pm@vger.kernel.org, msalter@redhat.com,
+ jacquiot.aurelien@gmail.com, linux-m68k@lists.linux-m68k.org,
+ openrisc@lists.librecores.org, bp@alien8.de, shorne@gmail.com,
+ stefan.kristiansson@saunalahti.fi, christian@brauner.io, chris@zankel.net,
+ tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+On Sun, Dec 27, 2020 at 03:01:28PM +0100, Enrico Weigelt, metux IT consult wrote:
+> Move the pm_power_off callback into one global place and also add an
+> function for conditionally calling it (when not NULL), in order to remove
+> code duplication in all individual archs.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 
-[ Upstream commit 445c6198fe7be03b7d38e66fe8d4b3187bc251d4 ]
+[...]
 
-Since commit 1d6cd3929360 ("modpost: turn missing MODULE_LICENSE()
-into error") the ppc32_allmodconfig build fails with:
+> diff --git a/kernel/reboot.c b/kernel/reboot.c
+> index eb1b15850761..ec4cd66dd1ae 100644
+> --- a/kernel/reboot.c
+> +++ b/kernel/reboot.c
+> @@ -53,6 +53,16 @@ int reboot_force;
+>  void (*pm_power_off_prepare)(void);
+>  EXPORT_SYMBOL_GPL(pm_power_off_prepare);
+>  
+> +void (*pm_power_off)(void);
+> +EXPORT_SYMBOL_GPL(pm_power_off);
+> +
+> +void do_power_off(void)
+> +{
+> +	if (pm_power_off)
+> +		pm_power_off();
+> +}
+> +EXPORT_SYMBOL_GPL(do_power_off);
 
-  ERROR: modpost: missing MODULE_LICENSE() in drivers/net/ethernet/freescale/fs_enet/mii-fec.o
-  ERROR: modpost: missing MODULE_LICENSE() in drivers/net/ethernet/freescale/fs_enet/mii-bitbang.o
+Could this just live as a static inline in pm.h to avoid having to export
+the extra symbol?
 
-Add the missing MODULE_LICENSEs to fix the build. Both files include a
-copyright header indicating they are GPL v2.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 1 +
- drivers/net/ethernet/freescale/fs_enet/mii-fec.c     | 1 +
- 2 files changed, 2 insertions(+)
-
-diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-index 68a428de0bc0e..cfae74d8e6590 100644
---- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-@@ -231,3 +231,4 @@ static struct platform_driver fs_enet_bb_mdio_driver = {
- };
- 
- module_platform_driver(fs_enet_bb_mdio_driver);
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-fec.c b/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
-index 2be383e6d2585..3b6232a6a56d6 100644
---- a/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
-@@ -232,3 +232,4 @@ static struct platform_driver fs_enet_fec_mdio_driver = {
- };
- 
- module_platform_driver(fs_enet_fec_mdio_driver);
-+MODULE_LICENSE("GPL");
--- 
-2.27.0
-
+Will
