@@ -1,79 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED51E2F2B7F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 10:40:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3DA2F2E51
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 12:48:25 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DFQXc4XFgzDr2d
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 20:40:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DFTNg6fzYzDr0t
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 22:48:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=63.128.21.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=jolsa@redhat.com;
+ smtp.mailfrom=huawei.com (client-ip=185.176.79.56;
+ helo=frasgout.his.huawei.com; envelope-from=john.garry@huawei.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=XUckyEyp; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=XUckyEyp; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [63.128.21.124])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com
+ [185.176.79.56])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DFQVs4dCtzDqJq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 20:38:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1610444299;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=M2YUbzTNTo+u/6WuZUqpyQ6bpHfdOyLxqxTbatpQROA=;
- b=XUckyEypIcZGDgpwBxGUalpvJb4QnxwSO/5K+eLrWcTbHo7/XtavSNS1xgDJUixsSViSRW
- Z2tWcwUUFEepTw7w1Vt3CfdSvjcu+IwQ2HU7azzz4cx18+RNPg+Dcn4/QdvEz3zpjNmkZx
- ufU9xtfofMAd44mg3MLuaEqhpPBMIVY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1610444299;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=M2YUbzTNTo+u/6WuZUqpyQ6bpHfdOyLxqxTbatpQROA=;
- b=XUckyEypIcZGDgpwBxGUalpvJb4QnxwSO/5K+eLrWcTbHo7/XtavSNS1xgDJUixsSViSRW
- Z2tWcwUUFEepTw7w1Vt3CfdSvjcu+IwQ2HU7azzz4cx18+RNPg+Dcn4/QdvEz3zpjNmkZx
- ufU9xtfofMAd44mg3MLuaEqhpPBMIVY=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-192-xTMu6VdUOIKLTnQ7nGxXJQ-1; Tue, 12 Jan 2021 04:38:16 -0500
-X-MC-Unique: xTMu6VdUOIKLTnQ7nGxXJQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C5AAD8018A7;
- Tue, 12 Jan 2021 09:38:14 +0000 (UTC)
-Received: from krava (unknown [10.40.195.50])
- by smtp.corp.redhat.com (Postfix) with SMTP id 9CEC319712;
- Tue, 12 Jan 2021 09:38:12 +0000 (UTC)
-Date: Tue, 12 Jan 2021 10:38:11 +0100
-From: Jiri Olsa <jolsa@redhat.com>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH] tools/perf: Fix powerpc gap between kernel end and
- module start
-Message-ID: <20210112093811.GA1272772@krava>
-References: <1609208054-1566-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DFTJN3nXqzDr0l
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 22:44:30 +1100 (AEDT)
+Received: from fraeml705-chm.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DFTBH5127z67Zll;
+ Tue, 12 Jan 2021 19:39:19 +0800 (CST)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ fraeml705-chm.china.huawei.com (10.206.15.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2106.2; Tue, 12 Jan 2021 12:44:24 +0100
+Received: from [10.210.171.61] (10.210.171.61) by
+ lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Tue, 12 Jan 2021 11:44:23 +0000
+Subject: Re: [PATCH v4 01/21] ibmvfc: add vhost fields and defaults for MQ
+ enablement
+To: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ <james.bottomley@hansenpartnership.com>
+References: <20210111231225.105347-1-tyreld@linux.ibm.com>
+ <20210111231225.105347-2-tyreld@linux.ibm.com>
+From: John Garry <john.garry@huawei.com>
+Message-ID: <b9b2f3c0-0d88-6c64-8b45-fe2ce6d581fd@huawei.com>
+Date: Tue, 12 Jan 2021 11:43:15 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-In-Reply-To: <1609208054-1566-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=jolsa@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <20210111231225.105347-2-tyreld@linux.ibm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.210.171.61]
+X-ClientProxiedBy: lhreml744-chm.china.huawei.com (10.201.108.194) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,101 +63,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, acme@kernel.org, jolsa@kernel.org, kjain@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 28, 2020 at 09:14:14PM -0500, Athira Rajeev wrote:
-
-SNIP
-
-> c000000002799370 b backtrace_flag
-> c000000002799378 B radix_tree_node_cachep
-> c000000002799380 B __bss_stop
-> c0000000027a0000 B _end
-> c008000003890000 t icmp_checkentry      [ip_tables]
-> c008000003890038 t ipt_alloc_initial_table      [ip_tables]
-> c008000003890468 T ipt_do_table [ip_tables]
-> c008000003890de8 T ipt_unregister_table_pre_exit        [ip_tables]
-> ...
+On 11/01/2021 23:12, Tyrel Datwyler wrote:
+> Introduce several new vhost fields for managing MQ state of the adapter
+> as well as initial defaults for MQ enablement.
 > 
-> Perf calls function symbols__fixup_end() which sets the end of symbol
-> to 0xc008000003890000, which is the next address and this is the start
-> address of first module (icmp_checkentry in above) which will make the
-> huge symbol size of 0x80000010f0000.
-> 
-> After symbols__fixup_end:
-> symbols__fixup_end: sym->name: _end, sym->start: 0xc0000000027a0000,
-> sym->end: 0xc008000003890000
-> 
-> On powerpc, kernel text segment is located at 0xc000000000000000
-> whereas the modules are located at very high memory addresses,
-> 0xc00800000xxxxxxx. Since the gap between end of kernel text segment
-> and beginning of first module's address is high, histogram allocation
-> using calloc fails.
-> 
-> Fix this by detecting the kernel's last symbol and limiting
-> the range of last kernel symbol to pagesize.
-> 
-> Signed-off-by: Athira Rajeev<atrajeev@linux.vnet.ibm.com>
-
-I can't test, but since the same approach works for arm and s390,
-this also looks ok
-
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-
-thanks,
-jirka
-
+> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
 > ---
->  tools/perf/arch/powerpc/util/Build     |  1 +
->  tools/perf/arch/powerpc/util/machine.c | 24 ++++++++++++++++++++++++
->  2 files changed, 25 insertions(+)
->  create mode 100644 tools/perf/arch/powerpc/util/machine.c
+>   drivers/scsi/ibmvscsi/ibmvfc.c | 8 ++++++++
+>   drivers/scsi/ibmvscsi/ibmvfc.h | 9 +++++++++
+>   2 files changed, 17 insertions(+)
 > 
-> diff --git a/tools/perf/arch/powerpc/util/Build b/tools/perf/arch/powerpc/util/Build
-> index e86e210bf514..b7945e5a543b 100644
-> --- a/tools/perf/arch/powerpc/util/Build
-> +++ b/tools/perf/arch/powerpc/util/Build
-> @@ -1,4 +1,5 @@
->  perf-y += header.o
-> +perf-y += machine.o
->  perf-y += kvm-stat.o
->  perf-y += perf_regs.o
->  perf-y += mem-events.o
-> diff --git a/tools/perf/arch/powerpc/util/machine.c b/tools/perf/arch/powerpc/util/machine.c
-> new file mode 100644
-> index 000000000000..c30e5cc88c16
-> --- /dev/null
-> +++ b/tools/perf/arch/powerpc/util/machine.c
-> @@ -0,0 +1,24 @@
-> +// SPDX-License-Identifier: GPL-2.0
+> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+> index ba95438a8912..9200fe49c57e 100644
+> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
+> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+> @@ -3302,6 +3302,7 @@ static struct scsi_host_template driver_template = {
+>   	.max_sectors = IBMVFC_MAX_SECTORS,
+>   	.shost_attrs = ibmvfc_attrs,
+>   	.track_queue_depth = 1,
+> +	.host_tagset = 1,
+
+Good to see another user :)
+
+I didn't check the whole series very thoroughly, but I guess that you 
+only need to set this when shost->nr_hw_queues > 1. Having said that, it 
+should be fine when shost->nr_hw_queues = 0 or 1.
+
+Thanks,
+John
+
+>   };
+>   
+>   /**
+> @@ -5290,6 +5291,7 @@ static int ibmvfc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+>   	shost->max_sectors = IBMVFC_MAX_SECTORS;
+>   	shost->max_cmd_len = IBMVFC_MAX_CDB_LEN;
+>   	shost->unique_id = shost->host_no;
+> +	shost->nr_hw_queues = IBMVFC_MQ ? IBMVFC_SCSI_HW_QUEUES : 1;
+>   
+>   	vhost = shost_priv(shost);
+>   	INIT_LIST_HEAD(&vhost->targets);
+> @@ -5300,6 +5302,12 @@ static int ibmvfc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+>   	vhost->partition_number = -1;
+>   	vhost->log_level = log_level;
+>   	vhost->task_set = 1;
 > +
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <internal/lib.h> // page_size
-> +#include "debug.h"
-> +#include "symbol.h"
+> +	vhost->mq_enabled = IBMVFC_MQ;
+> +	vhost->client_scsi_channels = IBMVFC_SCSI_CHANNELS;
+> +	vhost->using_channels = 0;
+> +	vhost->do_enquiry = 1;
 > +
-> +/* On powerpc kernel text segment start at memory addresses, 0xc000000000000000
-> + * whereas the modules are located at very high memory addresses,
-> + * for example 0xc00800000xxxxxxx. The gap between end of kernel text segment
-> + * and beginning of first module's text segment is very high.
-> + * Therefore do not fill this gap and do not assign it to the kernel dso map.
-> + */
-> +
-> +void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
-> +{
-> +	if (strchr(p->name, '[') == NULL && strchr(c->name, '['))
-> +		/* Limit the range of last kernel symbol */
-> +		p->end += page_size;
-> +	else
-> +		p->end = c->start;
-> +	pr_debug4("%s sym:%s end:%#lx\n", __func__, p->name, p->end);
-> +}
-> -- 
-> 1.8.3.1
+>   	strcpy(vhost->partition_name, "UNKNOWN");
+>   	init_waitqueue_head(&vhost->work_wait_q);
+>   	init_waitqueue_head(&vhost->init_wait_q);
+> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.h b/drivers/scsi/ibmvscsi/ibmvfc.h
+> index 632e977449c5..dd6d89292867 100644
+> --- a/drivers/scsi/ibmvscsi/ibmvfc.h
+> +++ b/drivers/scsi/ibmvscsi/ibmvfc.h
+> @@ -41,6 +41,11 @@
+>   #define IBMVFC_DEFAULT_LOG_LEVEL	2
+>   #define IBMVFC_MAX_CDB_LEN		16
+>   #define IBMVFC_CLS3_ERROR		0
+> +#define IBMVFC_MQ			0
+> +#define IBMVFC_SCSI_CHANNELS		0
+> +#define IBMVFC_SCSI_HW_QUEUES		1
+> +#define IBMVFC_MIG_NO_SUB_TO_CRQ	0
+> +#define IBMVFC_MIG_NO_N_TO_M		0
+>   
+>   /*
+>    * Ensure we have resources for ERP and initialization:
+> @@ -840,6 +845,10 @@ struct ibmvfc_host {
+>   	int delay_init;
+>   	int scan_complete;
+>   	int logged_in;
+> +	int mq_enabled;
+> +	int using_channels;
+> +	int do_enquiry;
+> +	int client_scsi_channels;
+>   	int aborting_passthru;
+>   	int events_to_log;
+>   #define IBMVFC_AE_LINKUP	0x0001
 > 
 
