@@ -2,72 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12BAF2F3873
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 19:21:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DF02F38CB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 19:27:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DFf6M2jwBzDrBq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 05:21:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DFfF52g3szDqS8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 05:27:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::731;
- helo=mail-qk1-x731.google.com; envelope-from=natechancellor@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=LynGEmqa; dkim-atps=neutral
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com
- [IPv6:2607:f8b0:4864:20::731])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DFf4b4THzzDr82
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 05:19:55 +1100 (AEDT)
-Received: by mail-qk1-x731.google.com with SMTP id f26so2761414qka.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 10:19:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=6/4/dr7fn+zRTbNcUowmMs8Ol/J2eKhumjr3A4Q7PFg=;
- b=LynGEmqaTLG2T0txzoExer0ZVvjQ7ErcUJn8AJ46RHf/x34wtEtL7n7G5pZi3WcIkm
- 2liRj0IBu3R/Tn5gyMpYhSPxmjvwY6kit3j+p+XB9kjWHJBvy87NuxGprIcmz7T4o+Pa
- ja9De+tLhO5ZymbHezPq6orUehBQJUjfP6yIJac6hT9UTC18Ywi00zftsU9YWd/crE+o
- BsH3yQICgUmTf3AHw/mNFffhDx8hkP7Mlux1H5J1fwO5BrBh/5oMSETzzv1jeDEN1Lpi
- w5gViEURf6IPAXIyznPwQsFVgMI7nur9g1x8FOe4lj8E8w59WZ3DCMqDSgfo4l5ea68X
- 86Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=6/4/dr7fn+zRTbNcUowmMs8Ol/J2eKhumjr3A4Q7PFg=;
- b=IMshOP1gw4Va0E70hXAiSI/9FsXY7CmiSr8IzBpogwgb3YgYia3Jdr8GDxZ6L01KSc
- fHfwhk5PGwpaNYjBXA6Zg29dN6KWNyLS/hLGOtfGF0hr30L8tUTp3mcz31fxT5Jf1HZS
- eaN6BUM1sk1lbv/drKqpbLycho+EPhCvJgjxcquUfRnjQeSPDExRXTKFzckmgAmaGw7F
- lVXS6sQ0xhN1wnWRp2GUXIIrb3J0ZfT3BBDwra/eq5Eb1NdWGAECQvcIGG6oWIe+DVS7
- WlC51jw1+BATw6jkPNXVf4WAu2cc7S+p/5PaOtAF1kgjNob91Ac0P2DUFOnzqNigQex1
- EtPA==
-X-Gm-Message-State: AOAM5305WMeY38n/d9ofwP/D80Q/PVAK4CYO6dV5eNjbC8mlZ2Z2npUu
- HE3N51HfA8AkaGrBvXdsmuM=
-X-Google-Smtp-Source: ABdhPJw0IfeM/ZZbNMvRUDF9MbEZALByeR0JUGlFVpnEJrx3y+U/PumG28kscAX3wbxVu5lB/HcYjQ==
-X-Received: by 2002:a37:4f11:: with SMTP id d17mr615113qkb.53.1610475591791;
- Tue, 12 Jan 2021 10:19:51 -0800 (PST)
-Received: from ubuntu-m3-large-x86 ([2604:1380:45f1:1d00::1])
- by smtp.gmail.com with ESMTPSA id q70sm1736569qka.107.2021.01.12.10.19.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Jan 2021 10:19:51 -0800 (PST)
-Date: Tue, 12 Jan 2021 11:19:49 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: imx-hdmi: Fix warning of the uninitialized
- variable ret
-Message-ID: <20210112181949.GA3241630@ubuntu-m3-large-x86>
-References: <1608115464-18710-1-git-send-email-shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DFfC85Y9WzDqTy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 05:25:38 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DFfBz0Pnyz9tyLw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 19:25:31 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Fvqg_1vNs4ft for <linuxppc-dev@lists.ozlabs.org>;
+ Tue, 12 Jan 2021 19:25:30 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DFfBy66zmz9tyLb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 19:25:30 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D9668B7D3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 19:25:32 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id LD4SopIqvY20 for <linuxppc-dev@lists.ozlabs.org>;
+ Tue, 12 Jan 2021 19:25:32 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F0ECF8B7CD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 19:25:31 +0100 (CET)
+Subject: Re: [PATCH] tty: serial: cpm_uart: Add udbg support for enabling xmon
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: linuxppc-dev@lists.ozlabs.org
+References: <e4471bf81089252470efb3eed735d71a5b32adbd.1608716197.git.christophe.leroy@csgroup.eu>
+Message-ID: <6619e42e-38ca-8fa0-b154-8550b14c41d6@csgroup.eu>
+Date: Tue, 12 Jan 2021 19:25:25 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1608115464-18710-1-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <e4471bf81089252470efb3eed735d71a5b32adbd.1608716197.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,46 +65,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, perex@perex.cz,
- nicoleotsuka@gmail.com, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 16, 2020 at 06:44:24PM +0800, Shengjiu Wang wrote:
-> From: shengjiu wang <shengjiu.wang@nxp.com>
+
+
+Le 23/12/2020 à 10:38, Christophe Leroy a écrit :
+> In order to use xmon with powerpc 8xx, the serial driver
+> must provide udbg_putc() and udpb_getc().
 > 
-> When condition ((hdmi_out && hdmi_in) || (!hdmi_out && !hdmi_in))
-> is true, then goto fail, the uninitialized variable ret will be
-> returned.
+> Provide them via cpm_put_poll_char() and cpm_get_poll_char().
 > 
-> Signed-off-by: shengjiu wang <shengjiu.wang@nxp.com>
-> Reported-by: kernel test robot <lkp@intel.com>
+> This requires CONFIG_CONSOLE_POLL.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+This patch has been merged in tty-next, it is visible in linux-next
+
+Christophe
+
 > ---
->  sound/soc/fsl/imx-hdmi.c | 1 +
->  1 file changed, 1 insertion(+)
+>   drivers/tty/serial/cpm_uart/cpm_uart_core.c | 40 ++++++++++++++++++++-
+>   1 file changed, 39 insertions(+), 1 deletion(-)
 > 
-> diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
-> index 2c2a76a71940..ede4a9ad1054 100644
-> --- a/sound/soc/fsl/imx-hdmi.c
-> +++ b/sound/soc/fsl/imx-hdmi.c
-> @@ -164,6 +164,7 @@ static int imx_hdmi_probe(struct platform_device *pdev)
->  
->  	if ((hdmi_out && hdmi_in) || (!hdmi_out && !hdmi_in)) {
->  		dev_err(&pdev->dev, "Invalid HDMI DAI link\n");
-> +		ret = -EINVAL;
->  		goto fail;
->  	}
->  
-> -- 
-> 2.17.1
+> diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+> index ba14ec5b9bc4..2920b9b602b3 100644
+> --- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+> +++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+> @@ -1145,6 +1145,32 @@ static void cpm_put_poll_char(struct uart_port *port,
+>   	ch[0] = (char)c;
+>   	cpm_uart_early_write(pinfo, ch, 1, false);
+>   }
+> +
+> +static struct uart_port *udbg_port;
+> +
+> +static void udbg_cpm_putc(char c)
+> +{
+> +	if (c == '\n')
+> +		cpm_put_poll_char(udbg_port, '\r');
+> +	cpm_put_poll_char(udbg_port, c);
+> +}
+> +
+> +static int udbg_cpm_getc_poll(void)
+> +{
+> +	int c = cpm_get_poll_char(udbg_port);
+> +
+> +	return c == NO_POLL_CHAR ? -1 : c;
+> +}
+> +
+> +static int udbg_cpm_getc(void)
+> +{
+> +	int c;
+> +
+> +	while ((c = udbg_cpm_getc_poll()) == -1)
+> +		cpu_relax();
+> +	return c;
+> +}
+> +
+>   #endif /* CONFIG_CONSOLE_POLL */
+>   
+>   static const struct uart_ops cpm_uart_pops = {
+> @@ -1251,7 +1277,10 @@ static int cpm_uart_init_port(struct device_node *np,
+>   		pinfo->gpios[i] = NULL;
+>   
+>   #ifdef CONFIG_PPC_EARLY_DEBUG_CPM
+> -	udbg_putc = NULL;
+> +#ifdef CONFIG_CONSOLE_POLL
+> +	if (!udbg_port)
+> +#endif
+> +		udbg_putc = NULL;
+>   #endif
+>   
+>   	return cpm_uart_request_port(&pinfo->port);
+> @@ -1370,6 +1399,15 @@ static int __init cpm_uart_console_setup(struct console *co, char *options)
+>   	uart_set_options(port, co, baud, parity, bits, flow);
+>   	cpm_line_cr_cmd(pinfo, CPM_CR_RESTART_TX);
+>   
+> +#ifdef CONFIG_CONSOLE_POLL
+> +	if (!udbg_port) {
+> +		udbg_port = &pinfo->port;
+> +		udbg_putc = udbg_cpm_putc;
+> +		udbg_getc = udbg_cpm_getc;
+> +		udbg_getc_poll = udbg_cpm_getc_poll;
+> +	}
+> +#endif
+> +
+>   	return 0;
+>   }
+>   
 > 
-
-I still see a warning in v5.11-rc3 that is fixed by this patch, is it
-not going in this release cycle? It is a regression fix, seems like it
-should.
-
-Cheers,
-Nathan
