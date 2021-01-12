@@ -2,58 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10DF02F38CB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 19:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA272F3935
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jan 2021 19:51:34 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DFfF52g3szDqS8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 05:27:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DFfmy3hqVzDrQF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 05:51:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=WiSTIs/5; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DFfC85Y9WzDqTy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 05:25:38 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DFfBz0Pnyz9tyLw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 19:25:31 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Fvqg_1vNs4ft for <linuxppc-dev@lists.ozlabs.org>;
- Tue, 12 Jan 2021 19:25:30 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DFfBy66zmz9tyLb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 19:25:30 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D9668B7D3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 19:25:32 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id LD4SopIqvY20 for <linuxppc-dev@lists.ozlabs.org>;
- Tue, 12 Jan 2021 19:25:32 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F0ECF8B7CD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 19:25:31 +0100 (CET)
-Subject: Re: [PATCH] tty: serial: cpm_uart: Add udbg support for enabling xmon
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: linuxppc-dev@lists.ozlabs.org
-References: <e4471bf81089252470efb3eed735d71a5b32adbd.1608716197.git.christophe.leroy@csgroup.eu>
-Message-ID: <6619e42e-38ca-8fa0-b154-8550b14c41d6@csgroup.eu>
-Date: Tue, 12 Jan 2021 19:25:25 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DFfkX1gftzDqrC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 05:49:23 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F14B022B4B;
+ Tue, 12 Jan 2021 18:49:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1610477361;
+ bh=+wilW7PR6EUwuOxtL99UfUGxy2Y3s4HM648aqDLGvwQ=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=WiSTIs/5MU3rCUxPQxxY/GuKYx1VicPZeMoEfe9QgXpL6SNF2KfL2sxOGcKTFPnvq
+ zSCMSDbeHOt2/UyUpwPt6m4obluPhqZKH2mSGyEEhnrhSrgiLfRv6NvM2AjZIjMEjE
+ fyPy8uYlPfq+CHXXns6yleUqwKsP6nalVhu2sA/4+8GTGuve3q6C4yyKSmG0GIw4x1
+ LkysKVr0ypvfhDlGvovfK0QGiTRV84Q7LFIbaeIB6z4cvj89h4xteLNFfb8mhPptqF
+ BMHPGvKmpBVsqnpUyan7x5MjXsyJyqeXkKjANBcLIcqkEMIWjvMcLF0j+JX4Ujry4N
+ XsSS0/5UigVPw==
+Date: Tue, 12 Jan 2021 18:48:48 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Nathan Chancellor <natechancellor@gmail.com>
+Subject: Re: [PATCH] ASoC: imx-hdmi: Fix warning of the uninitialized
+ variable ret
+Message-ID: <20210112184848.GG4646@sirena.org.uk>
+References: <1608115464-18710-1-git-send-email-shengjiu.wang@nxp.com>
+ <20210112181949.GA3241630@ubuntu-m3-large-x86>
 MIME-Version: 1.0
-In-Reply-To: <e4471bf81089252470efb3eed735d71a5b32adbd.1608716197.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="6BvahUXLYAruDZOj"
+Content-Disposition: inline
+In-Reply-To: <20210112181949.GA3241630@ubuntu-m3-large-x86>
+X-Cookie: Stay away from hurricanes for a while.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,93 +61,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ tiwai@suse.com, perex@perex.cz, nicoleotsuka@gmail.com, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--6BvahUXLYAruDZOj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Le 23/12/2020 à 10:38, Christophe Leroy a écrit :
-> In order to use xmon with powerpc 8xx, the serial driver
-> must provide udbg_putc() and udpb_getc().
-> 
-> Provide them via cpm_put_poll_char() and cpm_get_poll_char().
-> 
-> This requires CONFIG_CONSOLE_POLL.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+On Tue, Jan 12, 2021 at 11:19:49AM -0700, Nathan Chancellor wrote:
 
-This patch has been merged in tty-next, it is visible in linux-next
+Please delete unneeded context from mails when replying.  Doing this
+makes it much easier to find your reply in the message, helping ensure
+it won't be missed by people scrolling through the irrelevant quoted
+material.
 
-Christophe
+> >
+> > Signed-off-by: shengjiu wang <shengjiu.wang@nxp.com>
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > ---
 
-> ---
->   drivers/tty/serial/cpm_uart/cpm_uart_core.c | 40 ++++++++++++++++++++-
->   1 file changed, 39 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-> index ba14ec5b9bc4..2920b9b602b3 100644
-> --- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-> +++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-> @@ -1145,6 +1145,32 @@ static void cpm_put_poll_char(struct uart_port *port,
->   	ch[0] = (char)c;
->   	cpm_uart_early_write(pinfo, ch, 1, false);
->   }
-> +
-> +static struct uart_port *udbg_port;
-> +
-> +static void udbg_cpm_putc(char c)
-> +{
-> +	if (c == '\n')
-> +		cpm_put_poll_char(udbg_port, '\r');
-> +	cpm_put_poll_char(udbg_port, c);
-> +}
-> +
-> +static int udbg_cpm_getc_poll(void)
-> +{
-> +	int c = cpm_get_poll_char(udbg_port);
-> +
-> +	return c == NO_POLL_CHAR ? -1 : c;
-> +}
-> +
-> +static int udbg_cpm_getc(void)
-> +{
-> +	int c;
-> +
-> +	while ((c = udbg_cpm_getc_poll()) == -1)
-> +		cpu_relax();
-> +	return c;
-> +}
-> +
->   #endif /* CONFIG_CONSOLE_POLL */
->   
->   static const struct uart_ops cpm_uart_pops = {
-> @@ -1251,7 +1277,10 @@ static int cpm_uart_init_port(struct device_node *np,
->   		pinfo->gpios[i] = NULL;
->   
->   #ifdef CONFIG_PPC_EARLY_DEBUG_CPM
-> -	udbg_putc = NULL;
-> +#ifdef CONFIG_CONSOLE_POLL
-> +	if (!udbg_port)
-> +#endif
-> +		udbg_putc = NULL;
->   #endif
->   
->   	return cpm_uart_request_port(&pinfo->port);
-> @@ -1370,6 +1399,15 @@ static int __init cpm_uart_console_setup(struct console *co, char *options)
->   	uart_set_options(port, co, baud, parity, bits, flow);
->   	cpm_line_cr_cmd(pinfo, CPM_CR_RESTART_TX);
->   
-> +#ifdef CONFIG_CONSOLE_POLL
-> +	if (!udbg_port) {
-> +		udbg_port = &pinfo->port;
-> +		udbg_putc = udbg_cpm_putc;
-> +		udbg_getc = udbg_cpm_getc;
-> +		udbg_getc_poll = udbg_cpm_getc_poll;
-> +	}
-> +#endif
-> +
->   	return 0;
->   }
->   
-> 
+> I still see a warning in v5.11-rc3 that is fixed by this patch, is it
+> not going in this release cycle? It is a regression fix, seems like it
+> should.
+
+This is a random warning fix, why would you expect it to be sent as a
+bug fix?  This is the first indication I've seen that anyone is seeing
+it in mainline, in general the people who report and fix warnings are
+doing so based on -next and the patch seems to be from a month ago.  I
+don't have this in my inbox so I assume it's applied already or needs to
+be resubmitted anyway.
+
+--6BvahUXLYAruDZOj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/97w8ACgkQJNaLcl1U
+h9C44Qf/bxW+CXB4DwJTofrPuzVBuAQ6vUrmIqtZSde3b3oZ60V4fS3Weuw63ihH
+QkztqOp+rn7uoHY3X1+XDUwi4+suPoag7X04Q8EKvLyhtovjOZP0Tp+gC+FXEPad
+SM9gdRlMJLyJoVQSvjzJueO9vkXLy9OZoq73zH444VcmzTzGXP6Bz5wug2m9LHC2
+rMEMY3mbhLDLD9zGqL/CVE5OOsFHRfAlqWb+QMJaa9QY+IrPri8XqO72mNceYFbg
+grmrNQjES0IvzOa+7mxrK58M/L6iT+m9LybUHxxxINucdDdEYMV5hIY1OLzretHi
+4BhzHK5m28Q8w3p+a7ZXY2D59aZbOg==
+=DgaF
+-----END PGP SIGNATURE-----
+
+--6BvahUXLYAruDZOj--
