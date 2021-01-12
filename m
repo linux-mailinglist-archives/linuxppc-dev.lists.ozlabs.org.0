@@ -1,64 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E1342F3C9C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 00:43:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA792F3CA3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 00:50:08 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DFnFm2tQszDr2y
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 10:43:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DFnPT3dXXzDr7k
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 10:50:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
- helo=mail-pl1-x634.google.com; envelope-from=f.fainelli@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
+ helo=mail-pg1-x532.google.com; envelope-from=f.fainelli@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=MNrJSs5y; dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
+ header.s=20161025 header.b=g0a+XeY1; dkim-atps=neutral
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
+ [IPv6:2607:f8b0:4864:20::532])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DFnD23NfgzDqpK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 10:41:54 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id j1so24756pld.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 15:41:53 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DFnMg10CczDqkp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 10:48:29 +1100 (AEDT)
+Received: by mail-pg1-x532.google.com with SMTP id z21so262554pgj.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 15:48:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=jiJJEd6NpHk7kCu6CYi0ZOx+ayTWk5LzTwqK3Nr8GN4=;
- b=MNrJSs5yR5TAV4nJFeyDAe0GGDw0/pTlXcrpyP0L7R3V+gr2Lk4hfPKWiwiFM+qx5/
- Smd8qlJ6dgU/DkKE3VnYw7ycSyr3o3UOv5bYo8SJ9vbaOZ6C4EhheS1DWAVWe278M1Ra
- 1/X1N0cW/V6Wrv/8AaK6vyArWm2laMHdai7WRr7xxU2dcC3M4OCik/jeSbsqQDC623p1
- OToEnPGssKkEVG3tgVrBMhwTqCNRIxsvviwAUlsrSTNMPVdeOUTDaflEPg8bLmOk4j2T
- KYYIO63SDSa0mLFCDcHwHvVZ0DBmyOtl8oBp1BarP4CUElETFdI85krO8+INBge5NN0a
- NQ2A==
+ bh=ZruxYcBQXCXWok/YmCXjga0Z3PUTOQ6pNhSzq4bpJR4=;
+ b=g0a+XeY1WpelCJ57IOHLZ5ClC3bxDfY0fE91b/U+a2JYIHKaMmcVwduCeAlYvDQQoL
+ xjVCiINgK4qb5c/LcNp+C22h/uUgi0vdQ2TGhNzY6s+CaSrHxAQGfwwzQ0rH8W+88b31
+ +XIJb8l5Nq1FsvPziTU9NZKAoS+c5TQjnwVX/6Eb1twaMPfwDQB6B2io0xNovCRZS7Ij
+ F7Je6GW1bm2Mx6XSiUeKYKWTmiprOX72+CStoB8qTs5qJrO8vTUdnJMoWGnoJdNzQpBe
+ moohYHc39LCcIAkyfVB+kDMXKifn7ejJk+tALEXkSKv8wCTdSj3tqESBUNBzgPdtMQj4
+ jzPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=jiJJEd6NpHk7kCu6CYi0ZOx+ayTWk5LzTwqK3Nr8GN4=;
- b=uhUHcFwHvr1VrLgSd29iPSjXHYTVe8IXS1n2FaL3yMC7G2SVTNR3bBegWEkY5B1+0W
- KWGs9kCW9yjwFEDXeViS9rvjCG/dc2z/vGQOpV9KFmVI4v7pqyRObP7aOCLJdIAC9FZr
- u0VsYsnqKCaHAuPziX5zHUVXPbUiC/kevQs1L8e5zuzH7ILdjNQyDLtxgs554TGO+ftC
- qfGwz5sgDu6ZARxLw1f5FIJN6dGHa6XGe4sIX30izZvM+kzxZ/CFJ9TK0K8WQx4bV7Gq
- uk5VOSXzBK0RBMYt2NsyYaXgIHb+urkY1CkuNM4DjTW4MGAFC3lTX5K61cx4XabdqBfC
- tKPA==
-X-Gm-Message-State: AOAM5338gkUCEym+yaZR2MDYV1jEge/rWg3gPY+9oxJ6KDxF7/Fulz0b
- wck/ufJxNfHN+QVjmHXDUlA=
-X-Google-Smtp-Source: ABdhPJwrt/Z/EmHNy2d3yoZ568Za3OrumA7har7HRFuVqqkJomUyFjrO1CFroe8EilBTG4QSlZLX5w==
-X-Received: by 2002:a17:90a:5802:: with SMTP id h2mr137566pji.68.1610494910815; 
- Tue, 12 Jan 2021 15:41:50 -0800 (PST)
+ bh=ZruxYcBQXCXWok/YmCXjga0Z3PUTOQ6pNhSzq4bpJR4=;
+ b=Fo6C9CZlj8Ai6Oiw0qZ6jMw7LnhuB0RU55d+2LfPPedsZ14bKcHS+tWGX/vfYj/CEg
+ zEZbCXkkGgfgfE2yGXZ2q73RzIJL//hnWax4mIuAxi4Y4z2ktCKdsp6mQTbkBBHP+4UR
+ WatT5ZrUL/77W3s+WMbsWFdOFtqRJTU9drvG9i1CcRPPnub0yYCTAaH92+4GRVHxajud
+ d/aUF5lJDBSXcEeH+7eaZKQAFkvJnTn2X5xdpUs3EZCNYr8bGtTGn9i0xkYdvC7B7tup
+ nkMqdjSyTwNVHxhtkrAAyNK7DCndlBiM4FNHMmdNx4bpQrGNrsCgnFdzTM8liPp47Db8
+ PFTg==
+X-Gm-Message-State: AOAM530imXYMLDvWBMyDa293C2I99Jh3SC+ekpYwIx095rGRgI7QZcbG
+ mNxT9sIzRj6L9qjpjyh3r2s=
+X-Google-Smtp-Source: ABdhPJzcsesZOG8VoM+izCkYUl4yjaLgepIotHJQF1QgVivbf7byOhsDdoAO8dQh9VGDhIePy7ZM6A==
+X-Received: by 2002:a63:1865:: with SMTP id 37mr1523162pgy.206.1610495307478; 
+ Tue, 12 Jan 2021 15:48:27 -0800 (PST)
 Received: from [10.67.48.230] ([192.19.223.252])
- by smtp.googlemail.com with ESMTPSA id q2sm149460pjd.33.2021.01.12.15.41.47
+ by smtp.googlemail.com with ESMTPSA id k3sm57763pgm.94.2021.01.12.15.48.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Jan 2021 15:41:50 -0800 (PST)
-Subject: Re: [RFC PATCH v3 4/6] swiotlb: Add restricted DMA alloc/free support.
+ Tue, 12 Jan 2021 15:48:26 -0800 (PST)
+Subject: Re: [RFC PATCH v3 6/6] of: Add plumbing for restricted DMA pool
 To: Claire Chang <tientzu@chromium.org>, robh+dt@kernel.org,
  mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
  joro@8bytes.org, will@kernel.org, frowand.list@gmail.com,
@@ -66,7 +66,7 @@ To: Claire Chang <tientzu@chromium.org>, robh+dt@kernel.org,
  sstabellini@kernel.org, hch@lst.de, m.szyprowski@samsung.com,
  robin.murphy@arm.com
 References: <20210106034124.30560-1-tientzu@chromium.org>
- <20210106034124.30560-5-tientzu@chromium.org>
+ <20210106034124.30560-7-tientzu@chromium.org>
 From: Florian Fainelli <f.fainelli@gmail.com>
 Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  mQGiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
@@ -122,12 +122,12 @@ Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  caxTGgc5zzQHeX67eMzrGomG3ZnIxmd1sAbgvJUDaD2GrYlulfwGWwWyTNbWRvMighVdPkSF
  6XFgQaosWxkV0OELLy2N485YrTr2Uq64VKyxpncLh50e2RnyAJ9Za0Dx0yyp44iD1OvHtkEI
  M5kY0ACeNhCZJvZ5g4C2Lc9fcTHu8jxmEkI=
-Message-ID: <cc23b28f-4ebf-3183-cb4c-7c6fd17f5663@gmail.com>
-Date: Tue, 12 Jan 2021 15:41:46 -0800
+Message-ID: <95e6dd76-5e18-e445-c351-19fba18f36de@gmail.com>
+Date: Tue, 12 Jan 2021 15:48:24 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210106034124.30560-5-tientzu@chromium.org>
+In-Reply-To: <20210106034124.30560-7-tientzu@chromium.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -155,28 +155,91 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 1/5/21 7:41 PM, Claire Chang wrote:
-> Add the functions, swiotlb_alloc and swiotlb_free to support the
-> memory allocation from restricted DMA pool.
+> If a device is not behind an IOMMU, we look up the device node and set
+> up the restricted DMA when the restricted-dma-pool is presented.
 > 
 > Signed-off-by: Claire Chang <tientzu@chromium.org>
 > ---
 
 [snip]
 
-> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-> index 30ccbc08e229..126e9b3354d6 100644
-> --- a/kernel/dma/direct.c
-> +++ b/kernel/dma/direct.c
-> @@ -137,6 +137,11 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->  	void *ret;
->  	int err;
->  
-> +#ifdef CONFIG_SWIOTLB
-> +	if (unlikely(dev->dma_io_tlb_mem))
-> +		return swiotlb_alloc(dev, size, dma_handle, attrs);
-> +#endif
+> +int of_dma_set_restricted_buffer(struct device *dev)
+> +{
+> +	struct device_node *node;
+> +	int count, i;
+> +
+> +	if (!dev->of_node)
+> +		return 0;
+> +
+> +	count = of_property_count_elems_of_size(dev->of_node, "memory-region",
+> +						sizeof(phandle));
 
-While this is potentially a hot path, I am not sure of the unkikely is
-warranted, maybe best left as a plain conditional.
+You could have an early check for count < 0, along with an error
+message, if that is deemed useful.
+
+> +	for (i = 0; i < count; i++) {
+> +		node = of_parse_phandle(dev->of_node, "memory-region", i);
+> +		if (of_device_is_compatible(node, "restricted-dma-pool"))
+
+And you may want to add here an of_device_is_available(node). A platform
+that provides the Device Tree firmware and try to support multiple
+different SoCs may try to determine if an IOMMU is present, and if it
+is, it could be marking the restriced-dma-pool region with a 'status =
+"disabled"' property, or any variant of that scheme.
+
+> +			return of_reserved_mem_device_init_by_idx(
+> +				dev, dev->of_node, i);
+
+This does not seem to be supporting more than one memory region, did not
+you want something like instead:
+
+		ret = of_reserved_mem_device_init_by_idx(...);
+		if (ret)
+			return ret;
+
+> +	}
+> +
+> +	return 0;
+> +}
+> diff --git a/drivers/of/device.c b/drivers/of/device.c
+> index aedfaaafd3e7..e2c7409956ab 100644
+> --- a/drivers/of/device.c
+> +++ b/drivers/of/device.c
+> @@ -182,6 +182,10 @@ int of_dma_configure_id(struct device *dev, struct device_node *np,
+>  	arch_setup_dma_ops(dev, dma_start, size, iommu, coherent);
+>  
+>  	dev->dma_range_map = map;
+> +
+> +	if (!iommu)
+> +		return of_dma_set_restricted_buffer(dev);
+> +
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(of_dma_configure_id);
+> diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
+> index d9e6a324de0a..28a2dfa197ba 100644
+> --- a/drivers/of/of_private.h
+> +++ b/drivers/of/of_private.h
+> @@ -161,12 +161,17 @@ struct bus_dma_region;
+>  #if defined(CONFIG_OF_ADDRESS) && defined(CONFIG_HAS_DMA)
+>  int of_dma_get_range(struct device_node *np,
+>  		const struct bus_dma_region **map);
+> +int of_dma_set_restricted_buffer(struct device *dev);
+>  #else
+>  static inline int of_dma_get_range(struct device_node *np,
+>  		const struct bus_dma_region **map)
+>  {
+>  	return -ENODEV;
+>  }
+> +static inline int of_dma_get_restricted_buffer(struct device *dev)
+> +{
+> +	return -ENODEV;
+> +}
+>  #endif
+>  
+>  #endif /* _LINUX_OF_PRIVATE_H */
+> 
+
+
 -- 
 Florian
