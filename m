@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2372F4B8C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 13:45:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155C02F4B97
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 13:48:20 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DG6c45TcszDrXR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 23:45:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DG6gN6BLrzDqMy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 23:48:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,21 +18,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DG6XR4GLxzDqDh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 23:42:15 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DG6Zw4mM7zDrQP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 23:44:24 +1100 (AEDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 3EA2768B02; Wed, 13 Jan 2021 13:42:09 +0100 (CET)
-Date: Wed, 13 Jan 2021 13:42:09 +0100
+ id 5DAEB68AFE; Wed, 13 Jan 2021 13:44:16 +0100 (CET)
+Date: Wed, 13 Jan 2021 13:44:16 +0100
 From: Christoph Hellwig <hch@lst.de>
 To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [RFC PATCH v3 2/6] swiotlb: Add restricted DMA pool
-Message-ID: <20210113124209.GA1383@lst.de>
+Subject: Re: [RFC PATCH v3 3/6] swiotlb: Use restricted DMA pool if available
+Message-ID: <20210113124416.GB1383@lst.de>
 References: <20210106034124.30560-1-tientzu@chromium.org>
- <20210106034124.30560-3-tientzu@chromium.org>
+ <20210106034124.30560-4-tientzu@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210106034124.30560-3-tientzu@chromium.org>
+In-Reply-To: <20210106034124.30560-4-tientzu@chromium.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -62,31 +62,21 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 > +#ifdef CONFIG_SWIOTLB
-> +	struct io_tlb_mem	*dma_io_tlb_mem;
->  #endif
+> +	if (unlikely(swiotlb_force == SWIOTLB_FORCE) || dev->dma_io_tlb_mem)
+>  		return swiotlb_map(dev, phys, size, dir, attrs);
+> +#endif
 
-Please add a new config option for this code instead of always building
-it when swiotlb is enabled.
+Please provide a wrapper for the dev->dma_io_tlb_mem check that
+always returns false if the per-device swiotlb support is not enabled.
 
-> +static int swiotlb_init_io_tlb_mem(struct io_tlb_mem *mem, phys_addr_t start,
-> +				   size_t size)
+> index 7fb2ac087d23..1f05af09e61a 100644
+> --- a/kernel/dma/swiotlb.c
+> +++ b/kernel/dma/swiotlb.c
+> @@ -222,7 +222,6 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+>  		mem->orig_addr[i] = INVALID_PHYS_ADDR;
+>  	}
+>  	mem->index = 0;
+> -	no_iotlb_memory = false;
 
-Can you split the refactoring in swiotlb.c into one or more prep
-patches?
+How does this fit in here?
 
-> +static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
-> +				    struct device *dev)
-> +{
-> +	struct io_tlb_mem *mem = rmem->priv;
-> +	int ret;
-> +
-> +	if (dev->dma_io_tlb_mem)
-> +		return -EBUSY;
-> +
-> +	if (!mem) {
-> +		mem = kzalloc(sizeof(*mem), GFP_KERNEL);
-> +		if (!mem)
-> +			return -ENOMEM;
-
-What is the calling convention here that allows for a NULL and non-NULL
-private data?
