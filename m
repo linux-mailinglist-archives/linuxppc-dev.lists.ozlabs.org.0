@@ -2,95 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7362F3CBF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 01:35:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 927572F4165
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 02:54:49 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DFpPM0wQmzDrNc
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 11:35:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DFr9L3MVMzDqXK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 12:54:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=QWo3sEZk; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DFpMk3LHhzDr5V
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 11:33:36 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10D0X7vx081560; Tue, 12 Jan 2021 19:33:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=fHpUwCpPpEwMh0UVJzkXZBdzGvfanSshJxK+UoDE7b4=;
- b=QWo3sEZkOJ3Gf0pEWn92zuXBaa03g8WPQ9rK4lcbCTLtNI6DYv1elPdt+o8/N3gVQrem
- 9CV5mUS+979NGAtPrr5VdK6o3JxEc/xnnby1dma9UPNDXNgBC7DUJvfUaWzKInpru4Ci
- Ml+yNhzFbHwGJy5ARebIdoicfpvOeRc3JT/l25nc6djGkG+1H25P0n4G3rGsiRB4/nhx
- HmtKwXL774Eobg9B8AMM+XCnV4bVO44pcuoBDIV7wZLm5bQG4En0QnHSdUMgJ4Luyh/n
- cH/ZFd/OiDJOKyqzM6odXpJ0nTx+NS9AYcqY6LmEK+cHXEebIzYxbMeBLsubvD/7mgvJ aQ== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 361nds1cfx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Jan 2021 19:33:31 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10D0WWWE032202;
- Wed, 13 Jan 2021 00:33:30 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma04dal.us.ibm.com with ESMTP id 35y4498arm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 13 Jan 2021 00:33:30 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 10D0XULn27328804
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 13 Jan 2021 00:33:30 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1A7B9AC059;
- Wed, 13 Jan 2021 00:33:30 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DB426AC05E;
- Wed, 13 Jan 2021 00:33:28 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.160.27.90])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 13 Jan 2021 00:33:28 +0000 (GMT)
-Subject: Re: [PATCH v4 01/21] ibmvfc: add vhost fields and defaults for MQ
- enablement
-To: Brian King <brking@linux.vnet.ibm.com>,
- james.bottomley@hansenpartnership.com
-References: <20210111231225.105347-1-tyreld@linux.ibm.com>
- <20210111231225.105347-2-tyreld@linux.ibm.com>
- <0525bee7-433f-dcc7-9e35-e8706d6edee5@linux.vnet.ibm.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <a8623705-6d49-2056-09bb-80190e0b6f52@linux.ibm.com>
-Date: Tue, 12 Jan 2021 16:33:27 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DFr7d6vmdzDqBr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 12:53:12 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8E760101E;
+ Tue, 12 Jan 2021 17:53:09 -0800 (PST)
+Received: from [10.57.56.43] (unknown [10.57.56.43])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A2E913F719;
+ Tue, 12 Jan 2021 17:53:03 -0800 (PST)
+Subject: Re: [RFC PATCH v3 2/6] swiotlb: Add restricted DMA pool
+To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Claire Chang <tientzu@chromium.org>
+References: <20210106034124.30560-1-tientzu@chromium.org>
+ <20210106034124.30560-3-tientzu@chromium.org>
+ <20210106185241.GA109735@localhost.localdomain>
+ <CALiNf2-HDf6tFcvVgCttr-ta=88ZMH=OvB5XoryTPc6MNvwV+Q@mail.gmail.com>
+ <20210107175740.GA16519@char.us.oracle.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Message-ID: <41b466d0-0271-2d84-0623-4c877fcffe32@arm.com>
+Date: Wed, 13 Jan 2021 01:53:02 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <0525bee7-433f-dcc7-9e35-e8706d6edee5@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <20210107175740.GA16519@char.us.oracle.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-12_21:2021-01-12,
- 2021-01-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0
- malwarescore=0 mlxlogscore=999 spamscore=0 mlxscore=0 lowpriorityscore=0
- phishscore=0 impostorscore=0 suspectscore=0 clxscore=1011
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101130001
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,81 +53,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
- james.smart@broadcom.com, linux-kernel@vger.kernel.org, brking@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: heikki.krogerus@linux.intel.com, peterz@infradead.org, grant.likely@arm.com,
+ paulus@samba.org, Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>, sstabellini@kernel.org,
+ Saravana Kannan <saravanak@google.com>, Joerg Roedel <joro@8bytes.org>,
+ rafael.j.wysocki@intel.com, Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+ xen-devel@lists.xenproject.org, Thierry Reding <treding@nvidia.com>,
+ linux-devicetree <devicetree@vger.kernel.org>, will@kernel.org,
+ dan.j.williams@intel.com, Rob Herring <robh+dt@kernel.org>,
+ boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ rdunlap@infradead.org, lkml <linux-kernel@vger.kernel.org>,
+ Tomasz Figa <tfiga@chromium.org>, iommu@lists.linux-foundation.org,
+ xypron.glpk@gmx.de, linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/12/21 2:54 PM, Brian King wrote:
-> On 1/11/21 5:12 PM, Tyrel Datwyler wrote:
->> Introduce several new vhost fields for managing MQ state of the adapter
->> as well as initial defaults for MQ enablement.
+On 2021-01-07 17:57, Konrad Rzeszutek Wilk wrote:
+> On Fri, Jan 08, 2021 at 01:39:18AM +0800, Claire Chang wrote:
+>> Hi Greg and Konrad,
 >>
->> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
->> ---
->>  drivers/scsi/ibmvscsi/ibmvfc.c | 8 ++++++++
->>  drivers/scsi/ibmvscsi/ibmvfc.h | 9 +++++++++
->>  2 files changed, 17 insertions(+)
->>
->> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
->> index ba95438a8912..9200fe49c57e 100644
->> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
->> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
->> @@ -3302,6 +3302,7 @@ static struct scsi_host_template driver_template = {
->>  	.max_sectors = IBMVFC_MAX_SECTORS,
->>  	.shost_attrs = ibmvfc_attrs,
->>  	.track_queue_depth = 1,
->> +	.host_tagset = 1,
+>> This change is intended to be non-arch specific. Any arch that lacks DMA access
+>> control and has devices not behind an IOMMU can make use of it. Could you share
+>> why you think this should be arch specific?
 > 
-> This doesn't seem right. You are setting host_tagset, which means you want a
-> shared, host wide, tag set for commands. It also means that the total
-> queue depth for the host is can_queue. However, it looks like you are allocating
-> max_requests events for each sub crq, which means you are over allocating memory.
+> The idea behind non-arch specific code is it to be generic. The devicetree
+> is specific to PowerPC, Sparc, and ARM, and not to x86 - hence it should
+> be in arch specific code.
 
-With the shared tagset yes the queue depth for the host is can_queue, but this
-also implies that the max queue depth for each hw queue is also can_queue. So,
-in the worst case that all commands are queued down the same hw queue we need an
-event pool with can_queue commands.
+Sorry, but that's an absurd argument. By the same token you'd equally 
+have to claim that bits of, say, the Broadcom WiFi driver (not to 
+mention dozens of others) should be split out into arch code, since not 
+all platforms use the devicetree parts, nor the ACPI parts, nor the PCI 
+parts...
 
-> 
-> Looking at this closer, we might have bigger problems. There is a host wide
-> max number of commands that the VFC host supports, which gets returned on
-> NPIV Login. This value can change across a live migration event.
+There is nothing architecture-specific about using devicetree as a 
+system description - AFAIK there *are* a handful of x86 platforms that 
+use it, besides even more architectures than you've listed above. It has 
+long been the policy that devicetree-related code for a particular 
+subsystem should just live within that subsystem. Sometimes if there's 
+enough of it it gets collected together into its own file - e.g. 
+drivers/pci/of.c - otherwise it tends to just get #ifdef'ed - e.g. 
+of_spi_parse_dt(), or the other DMA reserved-memory consumers that 
+already exist as Florian points out.
 
-From what I understand the max commands can only become less.
+Besides, there are far more platforms that enable CONFIG_OF than enable 
+CONFIG_SWIOTLB, so by that metric the whole of the SWIOTLB code itself 
+is even less "generic" than any DT parsing :P
 
-> 
-> The ibmvfc driver, which does the same thing the lpfc driver does, modifies
-> can_queue on the scsi_host *after* the tag set has been allocated. This looks
-> to be a concern with ibmvfc, not sure about lpfc, as it doesn't look like
-> we look at can_queue once the tag set is setup, and I'm not seeing a good way
-> to dynamically change the host queue depth once the tag set is setup. 
-> 
-> Unless I'm missing something, our best options appear to either be to implement
-> our own host wide busy reference counting, which doesn't sound very good, or
-> we need to add some API to block / scsi that allows us to dynamically change
-> can_queue.
-
-Changing can_queue won't do use any good with the shared tagset becasue each
-queue still needs to be able to queue can_queue number of commands in the worst
-case.
-
-The complaint before was not using shared tags increases the tag memory
-allocation because they are statically allocated for each queue. The question is
-what claims more memory our event pool allocation or the tagset per queue
-allocation.
-
-If we chose to not use the shared tagset then the queue depth for each hw queue
-becomes (can_queue / nr_hw_queues).
-
--Tyrel
-
-> 
-> Thanks,
-> 
-> Brian
-> 
-> 
-
+Robin.
