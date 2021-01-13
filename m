@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9DC2F4593
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 08:55:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5B42F4597
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 08:57:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DG09M2SL3zDrNS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 18:55:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DG0CX1WZSzDrSd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 18:57:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
- helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f;
+ helo=mail-pl1-x62f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=V3c8BGYq; dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
+ header.s=20161025 header.b=JhWsql9x; dkim-atps=neutral
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
+ [IPv6:2607:f8b0:4864:20::62f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DFzgQ5msrzDqxM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 18:32:50 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id v1so588171pjr.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 23:32:50 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DFzgR3VFfzDqxM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 18:32:51 +1100 (AEDT)
+Received: by mail-pl1-x62f.google.com with SMTP id q4so581727plr.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jan 2021 23:32:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=mZzZMK6pQ4+jnZ6DMuKH6m/gvLUsKx4bPYcsKUG6wk4=;
- b=V3c8BGYqrVTeMgIb7Qp5Qh2QArBz9IkwhNQZjLSnkQ0BZAwFR0gYLWTNOM3UqxKSv+
- s2/IniizpJ+D37lDmsTpWWiCSrzQIJJB7WvpygHas72pjgBdvA3Yx8dgyr8TolXZxJEv
- U47oHydzQnMsdZod3XslxzI+Z+dNQrY3YF/jCiHgeEsQlRRqQQ03StCDb/vy9J4YmSJT
- 56GH2TJhiVdKelVKABOt6NKpdHzEtBLa9Qvjt9kNYK7NKb3rivDqeM2ghZ7yymoGHgkS
- 3Rvpo789hQMhGWCmz9VE4eWhTGZtquZJNJYQvNQhKlAmMezn6Z3JRRGVLU+J4TaY45r6
- nC4A==
+ bh=l6d+6VYdDdP3oBm/yuIboyzIzyfxrGfpnAQvNu/gTJQ=;
+ b=JhWsql9xgfhdUjeoERlen3gfsowUwvW9l8ZRSH8kPMXlq+d6lPgDnpDDzILpBwPDop
+ EyjXVxyDk7ZdAVeZllXCd94fWNUWWINKSEQZQSZK8vyueNC6mbanpHt1kZkgcu7Hv2U9
+ zC9SbytS1lZOmor5h1+26Kg902X3dPMwL8vWi7PfZQW3/lN/gsoCtrCJbyO1akT7oIKn
+ U14rltKdaNgUDOBtpJwaX9CyurYIAZcYhbsZbxnRMMn/JskW1S6WfMEQcudkh7UzJGID
+ iI85MQ07Yd2CoP5CywG3ft+I5Q0QDkWWPjx2XdJIZFduf8b7wxQYXEIC/iVYF8+XpwVy
+ 64Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=mZzZMK6pQ4+jnZ6DMuKH6m/gvLUsKx4bPYcsKUG6wk4=;
- b=lKUzlhWLS2Us4S53LmpXSIhkiDNC/FTGGyVeqSzceEg8NmDjmPVVn5NeqF0SoUujzf
- zzXjRdFehyVM3r1ge/ylGQPzAs+tl02SjHjIDzzXRzPw/ve6WqhP7W7avaXhnVjFDcGv
- zovpl6MuBWjBoO3NTH8OWg9+FV538kFflrG5MqLRwH++sfygyQhvjQdyhC6IZWaRvKxr
- HwN3LKhi4QK/Z9kUP7USN1kPFhwV8U0K4axctXSI7kxnIa0l4KeeB8WMLdtVINOnH67g
- hKGU9VmnZ1euwCbiWrx1ANLBZfUoXZMXlr4V+9oaQu8H7866II9wOKJc67C5R0nHPenQ
- I3PA==
-X-Gm-Message-State: AOAM5307MZShm7h8iI3qCcUEmXgshcC9p8+PdhKw7vsSQ7XggRIu0oya
- praULWuE9aFSBmEQBbqaCFL96qM0td8=
-X-Google-Smtp-Source: ABdhPJwnloyOb/XPgEfnEuYeVNVniZzB38vk7b3aPVlxbeCNPcVggTjwWWxyWe7uUsZQhxMlU+b7Og==
-X-Received: by 2002:a17:90a:d308:: with SMTP id
- p8mr914015pju.110.1610523165944; 
- Tue, 12 Jan 2021 23:32:45 -0800 (PST)
+ bh=l6d+6VYdDdP3oBm/yuIboyzIzyfxrGfpnAQvNu/gTJQ=;
+ b=U4lATByRCIuDluMx6KAjqyJ1gsxiBnnxVGz+u3/Qjblu6Uh1M27POP1dWOjwNDqgLS
+ MfXvlIYjVzVNe9+GP9ZYz/PBHEZ6rxEv3XTv7gR6BElgZy0ZnRgIcsjdf/FKgliVB0P+
+ cxMsjCJaSuH67DVfkP0hgkkthfIFwzF8+TqeJbKyIDa6vLd5xbr+nWKhqKtKFlzDaxZS
+ XfNUiyAw5hdvBNRhsTvE6hk9w6Zc1LeT7wr95SQpxaBu6IUHYY1+Bi9Bn0wEke4rDxRf
+ T3TQdg8NL5nCDtGZMMfAXH8j1BITrNg0QHTi1oHTMLvTpb7CrzTDAi1Ib+s8ls8BV+ye
+ mmHg==
+X-Gm-Message-State: AOAM5306hResLQjvIkoB76i7CFYS11DIt4F3v8LOVPGp5lIw6tzzKf5y
+ tjBBE/b5WJFK0dzOVlapQyy7xUEEI6s=
+X-Google-Smtp-Source: ABdhPJzzXV+aJTMJTS+/tuHdSxBzmW7DpThc5wqJRRUnBAS7igBWsX6yiuVCzvizUgDYyfgpy1KY6w==
+X-Received: by 2002:a17:90a:5a86:: with SMTP id n6mr897089pji.65.1610523168231; 
+ Tue, 12 Jan 2021 23:32:48 -0800 (PST)
 Received: from bobo.ibm.com ([124.170.13.62])
- by smtp.gmail.com with ESMTPSA id m77sm1394264pfd.105.2021.01.12.23.32.43
+ by smtp.gmail.com with ESMTPSA id m77sm1394264pfd.105.2021.01.12.23.32.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Jan 2021 23:32:45 -0800 (PST)
+ Tue, 12 Jan 2021 23:32:47 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 09/21] powerpc/64: context tracking remove _TIF_NOHZ
-Date: Wed, 13 Jan 2021 17:32:03 +1000
-Message-Id: <20210113073215.516986-10-npiggin@gmail.com>
+Subject: [PATCH v5 10/21] powerpc/64s/hash: improve context tracking of hash
+ faults
+Date: Wed, 13 Jan 2021 17:32:04 +1000
+Message-Id: <20210113073215.516986-11-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210113073215.516986-1-npiggin@gmail.com>
 References: <20210113073215.516986-1-npiggin@gmail.com>
@@ -84,149 +84,150 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add context tracking to the system call handler explicitly, and remove
-_TIF_NOHZ.
+This moves the 64s/hash context tracking from hash_page_mm() to
+__do_hash_fault(), so it's no longer called by OCXL / SPU
+accelerators, which was certainly the wrong thing to be doing,
+because those callers are not low level interrupt handlers, so
+should have entered a kernel context tracking already.
 
-This saves 35 cycles on gettid system call cost on POWER9 with a
-CONFIG_NOHZ_FULL kernel.
+Then remain in kernel context for the duration of the fault,
+rather than enter/exit for the hash fault then enter/exit for
+the page fault, which is pointless.
+
+Even still, calling exception_enter/exit in __do_hash_fault seems
+questionable because that's touching per-cpu variables, tracing,
+etc., which might have been interrupted by this hash fault or
+themselves cause hash faults. But maybe I miss something because
+hash_page_mm very deliberately calls trace_hash_fault too, for
+example. So for now go with it, it's no worse than before, in this
+regard.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/Kconfig                   |  1 -
- arch/powerpc/include/asm/thread_info.h |  4 +---
- arch/powerpc/kernel/ptrace/ptrace.c    |  4 ----
- arch/powerpc/kernel/signal.c           |  4 ----
- arch/powerpc/kernel/syscall_64.c       | 10 ++++++++++
- 5 files changed, 11 insertions(+), 12 deletions(-)
+ arch/powerpc/include/asm/bug.h        |  1 +
+ arch/powerpc/mm/book3s64/hash_utils.c |  7 ++++---
+ arch/powerpc/mm/fault.c               | 29 ++++++++++++++++++++++-----
+ 3 files changed, 29 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 107bb4319e0e..28d5a1b1510f 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -196,7 +196,6 @@ config PPC
- 	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
- 	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
- 	select HAVE_CONTEXT_TRACKING		if PPC64
--	select HAVE_TIF_NOHZ			if PPC64
- 	select HAVE_DEBUG_KMEMLEAK
- 	select HAVE_DEBUG_STACKOVERFLOW
- 	select HAVE_DYNAMIC_FTRACE
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index 3d8a47af7a25..386d576673a1 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -94,7 +94,6 @@ void arch_setup_new_exec(void);
- #define TIF_PATCH_PENDING	6	/* pending live patching update */
- #define TIF_SYSCALL_AUDIT	7	/* syscall auditing active */
- #define TIF_SINGLESTEP		8	/* singlestepping active */
--#define TIF_NOHZ		9	/* in adaptive nohz mode */
- #define TIF_SECCOMP		10	/* secure computing */
- #define TIF_RESTOREALL		11	/* Restore all regs (implies NOERROR) */
- #define TIF_NOERROR		12	/* Force successful syscall return */
-@@ -128,11 +127,10 @@ void arch_setup_new_exec(void);
- #define _TIF_UPROBE		(1<<TIF_UPROBE)
- #define _TIF_SYSCALL_TRACEPOINT	(1<<TIF_SYSCALL_TRACEPOINT)
- #define _TIF_EMULATE_STACK_STORE	(1<<TIF_EMULATE_STACK_STORE)
--#define _TIF_NOHZ		(1<<TIF_NOHZ)
- #define _TIF_SYSCALL_EMU	(1<<TIF_SYSCALL_EMU)
- #define _TIF_SYSCALL_DOTRACE	(_TIF_SYSCALL_TRACE | _TIF_SYSCALL_AUDIT | \
- 				 _TIF_SECCOMP | _TIF_SYSCALL_TRACEPOINT | \
--				 _TIF_NOHZ | _TIF_SYSCALL_EMU)
-+				 _TIF_SYSCALL_EMU)
+diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+index 4220789b9a97..e048c820ca02 100644
+--- a/arch/powerpc/include/asm/bug.h
++++ b/arch/powerpc/include/asm/bug.h
+@@ -112,6 +112,7 @@
  
- #define _TIF_USER_WORK_MASK	(_TIF_SIGPENDING | _TIF_NEED_RESCHED | \
- 				 _TIF_NOTIFY_RESUME | _TIF_UPROBE | \
-diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index 3d44b73adb83..4f3d4ff3728c 100644
---- a/arch/powerpc/kernel/ptrace/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -262,8 +262,6 @@ long do_syscall_trace_enter(struct pt_regs *regs)
+ struct pt_regs;
+ long do_page_fault(struct pt_regs *);
++long hash__do_page_fault(struct pt_regs *);
+ void bad_page_fault(struct pt_regs *, int);
+ void __bad_page_fault(struct pt_regs *regs, int sig);
+ extern void _exception(int, struct pt_regs *, int, unsigned long);
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 453afb9ae9b4..801d5e94cd2b 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1289,7 +1289,6 @@ int hash_page_mm(struct mm_struct *mm, unsigned long ea,
+ 		 unsigned long flags)
  {
- 	u32 flags;
+ 	bool is_thp;
+-	enum ctx_state prev_state = exception_enter();
+ 	pgd_t *pgdir;
+ 	unsigned long vsid;
+ 	pte_t *ptep;
+@@ -1491,7 +1490,6 @@ int hash_page_mm(struct mm_struct *mm, unsigned long ea,
+ 	DBG_LOW(" -> rc=%d\n", rc);
  
--	user_exit();
--
- 	flags = READ_ONCE(current_thread_info()->flags) &
- 		(_TIF_SYSCALL_EMU | _TIF_SYSCALL_TRACE);
+ bail:
+-	exception_exit(prev_state);
+ 	return rc;
+ }
+ EXPORT_SYMBOL_GPL(hash_page_mm);
+@@ -1515,6 +1513,7 @@ EXPORT_SYMBOL_GPL(hash_page);
  
-@@ -340,8 +338,6 @@ void do_syscall_trace_leave(struct pt_regs *regs)
- 	step = test_thread_flag(TIF_SINGLESTEP);
- 	if (step || test_thread_flag(TIF_SYSCALL_TRACE))
- 		tracehook_report_syscall_exit(regs, step);
--
--	user_enter();
+ DEFINE_INTERRUPT_HANDLER_RET(__do_hash_fault)
+ {
++	enum ctx_state prev_state = exception_enter();
+ 	unsigned long ea = regs->dar;
+ 	unsigned long dsisr = regs->dsisr;
+ 	unsigned long access = _PAGE_PRESENT | _PAGE_READ;
+@@ -1563,9 +1562,11 @@ DEFINE_INTERRUPT_HANDLER_RET(__do_hash_fault)
+ 		err = 0;
+ 
+ 	} else if (err) {
+-		err = do_page_fault(regs);
++		err = hash__do_page_fault(regs);
+ 	}
+ 
++	exception_exit(prev_state);
++
+ 	return err;
  }
  
- void __init pt_regs_check(void);
-diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
-index 53782aa60ade..9ded046edb0e 100644
---- a/arch/powerpc/kernel/signal.c
-+++ b/arch/powerpc/kernel/signal.c
-@@ -282,8 +282,6 @@ static void do_signal(struct task_struct *tsk)
- 
- void do_notify_resume(struct pt_regs *regs, unsigned long thread_info_flags)
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index e971712c95c6..495edce9dc51 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -391,7 +391,7 @@ static void sanity_check_fault(bool is_write, bool is_user,
+  * The return value is 0 if the fault was handled, or the signal
+  * number if this is a kernel fault that can't be handled here.
+  */
+-static int __do_page_fault(struct pt_regs *regs, unsigned long address,
++static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+ 			   unsigned long error_code)
  {
--	user_exit();
--
- 	if (thread_info_flags & _TIF_UPROBE)
- 		uprobe_notify_resume(regs);
+ 	struct vm_area_struct * vma;
+@@ -544,16 +544,15 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
  
-@@ -299,8 +297,6 @@ void do_notify_resume(struct pt_regs *regs, unsigned long thread_info_flags)
- 		tracehook_notify_resume(regs);
- 		rseq_handle_notify_resume(NULL, regs);
- 	}
--
--	user_enter();
+ 	return 0;
  }
+-NOKPROBE_SYMBOL(__do_page_fault);
++NOKPROBE_SYMBOL(___do_page_fault);
  
- static unsigned long get_tm_stackpointer(struct task_struct *tsk)
-diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
-index dd87b2118620..d7d256a7a41f 100644
---- a/arch/powerpc/kernel/syscall_64.c
-+++ b/arch/powerpc/kernel/syscall_64.c
-@@ -1,9 +1,11 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
+-DEFINE_INTERRUPT_HANDLER_RET(do_page_fault)
++static long __do_page_fault(struct pt_regs *regs)
+ {
+-	enum ctx_state prev_state = exception_enter();
+ 	unsigned long address = regs->dar;
+ 	unsigned long error_code = regs->dsisr;
+ 	long err;
  
-+#include <linux/context_tracking.h>
- #include <linux/err.h>
- #include <asm/asm-prototypes.h>
- #include <asm/kup.h>
- #include <asm/cputime.h>
-+#include <asm/interrupt.h>
- #include <asm/hw_irq.h>
- #include <asm/interrupt.h>
- #include <asm/kprobes.h>
-@@ -28,6 +30,9 @@ notrace long system_call_exception(long r3, long r4, long r5,
- 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
- 		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
+-	err = __do_page_fault(regs, address, error_code);
++	err = ___do_page_fault(regs, address, error_code);
+ 	if (unlikely(err)) {
+ 		const struct exception_table_entry *entry;
  
-+	CT_WARN_ON(ct_state() == CONTEXT_KERNEL);
-+	user_exit_irqoff();
-+
- 	trace_hardirqs_off(); /* finish reconciling */
- 
- 	if (IS_ENABLED(CONFIG_PPC_BOOK3S))
-@@ -182,6 +187,8 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 	unsigned long ti_flags;
- 	unsigned long ret = 0;
- 
-+	CT_WARN_ON(ct_state() == CONTEXT_USER);
-+
- 	kuap_check_amr();
- 
- 	regs->result = r3;
-@@ -258,8 +265,11 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 		}
+@@ -580,12 +579,32 @@ DEFINE_INTERRUPT_HANDLER_RET(do_page_fault)
  	}
+ #endif
  
-+	user_enter_irqoff();
++	return err;
++}
++NOKPROBE_SYMBOL(__do_page_fault);
 +
- 	/* scv need not set RI=0 because SRRs are not used */
- 	if (unlikely(!prep_irq_for_enabled_exit(!scv))) {
-+		user_exit_irqoff();
- 		local_irq_enable();
- 		goto again;
- 	}
++DEFINE_INTERRUPT_HANDLER_RET(do_page_fault)
++{
++	enum ctx_state prev_state = exception_enter();
++	long err;
++
++	err = __do_page_fault(regs);
++
+ 	exception_exit(prev_state);
+ 
+ 	return err;
+ }
+ NOKPROBE_SYMBOL(do_page_fault);
+ 
++#ifdef CONFIG_PPC_BOOK3S_64
++/* Same as do_page_fault but interrupt entry has already run in do_hash_fault */
++long hash__do_page_fault(struct pt_regs *regs)
++{
++	return __do_page_fault(regs);
++}
++NOKPROBE_SYMBOL(hash__do_page_fault);
++#endif
++
+ /*
+  * bad_page_fault is called when we have a bad access from the kernel.
+  * It is called from the DSI and ISI handlers in head.S and from some
 -- 
 2.23.0
 
