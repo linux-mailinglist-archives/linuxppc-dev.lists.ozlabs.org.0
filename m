@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155C02F4B97
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 13:48:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6912F4BA7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 13:52:04 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DG6gN6BLrzDqMy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 23:48:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DG6lj1TdNzDrYy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 23:52:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,21 +18,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DG6Zw4mM7zDrQP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 23:44:24 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DG6h60HTyzDq8M
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 23:48:53 +1100 (AEDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 5DAEB68AFE; Wed, 13 Jan 2021 13:44:16 +0100 (CET)
-Date: Wed, 13 Jan 2021 13:44:16 +0100
+ id D787F68AFE; Wed, 13 Jan 2021 13:48:47 +0100 (CET)
+Date: Wed, 13 Jan 2021 13:48:47 +0100
 From: Christoph Hellwig <hch@lst.de>
 To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [RFC PATCH v3 3/6] swiotlb: Use restricted DMA pool if available
-Message-ID: <20210113124416.GB1383@lst.de>
+Subject: Re: [RFC PATCH v3 4/6] swiotlb: Add restricted DMA alloc/free support.
+Message-ID: <20210113124847.GC1383@lst.de>
 References: <20210106034124.30560-1-tientzu@chromium.org>
- <20210106034124.30560-4-tientzu@chromium.org>
+ <20210106034124.30560-5-tientzu@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210106034124.30560-4-tientzu@chromium.org>
+In-Reply-To: <20210106034124.30560-5-tientzu@chromium.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -62,21 +62,58 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 > +#ifdef CONFIG_SWIOTLB
-> +	if (unlikely(swiotlb_force == SWIOTLB_FORCE) || dev->dma_io_tlb_mem)
->  		return swiotlb_map(dev, phys, size, dir, attrs);
+> +	if (unlikely(dev->dma_io_tlb_mem))
+> +		return swiotlb_alloc(dev, size, dma_handle, attrs);
 > +#endif
 
-Please provide a wrapper for the dev->dma_io_tlb_mem check that
-always returns false if the per-device swiotlb support is not enabled.
+Another place where the dma_io_tlb_mem is useful to avoid the ifdef.
 
-> index 7fb2ac087d23..1f05af09e61a 100644
-> --- a/kernel/dma/swiotlb.c
-> +++ b/kernel/dma/swiotlb.c
-> @@ -222,7 +222,6 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
->  		mem->orig_addr[i] = INVALID_PHYS_ADDR;
->  	}
->  	mem->index = 0;
-> -	no_iotlb_memory = false;
+> -phys_addr_t swiotlb_tbl_map_single(struct device *hwdev, phys_addr_t orig_addr,
+> -		size_t mapping_size, size_t alloc_size,
+> -		enum dma_data_direction dir, unsigned long attrs)
+> +static int swiotlb_tbl_find_free_region(struct device *hwdev,
+> +					dma_addr_t tbl_dma_addr,
+> +					size_t alloc_size,
+> +					unsigned long attrs)
 
-How does this fit in here?
+> +static void swiotlb_tbl_release_region(struct device *hwdev, int index,
+> +				       size_t size)
 
+This refactoring should be another prep patch.
+
+
+> +void *swiotlb_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
+> +		    unsigned long attrs)
+
+I'd rather have the names convey there are for the per-device bounce
+buffer in some form.
+
+> +	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
+
+While we're at it I wonder if the io_tlb is something we could change
+while we're at it.  Maybe replace io_tlb_mem with struct swiotlb
+and rename the field in struct device to dev_swiotlb?
+
+> +	int index;
+> +	void *vaddr;
+> +	phys_addr_t tlb_addr;
+> +
+> +	size = PAGE_ALIGN(size);
+> +	index = swiotlb_tbl_find_free_region(dev, mem->start, size, attrs);
+> +	if (index < 0)
+> +		return NULL;
+> +
+> +	tlb_addr = mem->start + (index << IO_TLB_SHIFT);
+> +	*dma_handle = phys_to_dma_unencrypted(dev, tlb_addr);
+> +
+> +	if (!dev_is_dma_coherent(dev)) {
+> +		unsigned long pfn = PFN_DOWN(tlb_addr);
+> +
+> +		/* remove any dirty cache lines on the kernel alias */
+> +		arch_dma_prep_coherent(pfn_to_page(pfn), size);
+
+Can we hook in somewhat lower level in the dma-direct code so that all
+the remapping in dma-direct can be reused instead of duplicated?  That
+also becomes important if we want to use non-remapping uncached support,
+e.g. on mips or x86, or the direct changing of the attributes that Will
+planned to look into for arm64.
