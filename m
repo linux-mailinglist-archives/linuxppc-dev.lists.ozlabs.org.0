@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900252F505F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 17:50:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8372F5068
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jan 2021 17:52:38 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DGD2S5BBwzDr31
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 03:50:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DGD5G5yr4zDrgB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 03:52:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,36 +16,36 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Pkt1JARf; 
+ header.s=k20201202 header.b=HGX4OqU+; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DGD0c5W2ZzDqxL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 03:48:32 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EEAC3233F6;
- Wed, 13 Jan 2021 16:48:29 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DGD3G0RQxzDq97
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 03:50:49 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F010D2339D;
+ Wed, 13 Jan 2021 16:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1610556510;
- bh=DnL73vKlQSXlWUYZg/eWP8NDNE5x28qj3Gv+Ku3NoTo=;
+ s=k20201202; t=1610556647;
+ bh=ysD0aOZlpy8PxTCm/xkip8tKV8y+DTQffVf/nrmIYqU=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Pkt1JARf98QPcGtbmKSASRKHfIk/DDZqSGH/Ea6KdL1TrPgS1tVUCvpA9nS+EbYF0
- qRri12p1oAw6iljdnizhmnxTMTBMv1vSLMmzmW1BsDXnOLLWc9SffaIGwDBSZ9r3D4
- UICd50FGkKfHNxkKMJdW6Il71G+UfH7J1L0TWu5kRQKV2KAEq/ynHMgMis7KFEkFcp
- oqkW38Qy5qmJLmnglO9YCoxAbpPyWNq5n5v6MhFCf+hnEi0IkllNrMa8SWJ8l+fqvO
- MbZCADTuC8e+CsVAxdOhxEk9G0/Xhaq52GtdqPKZeQRH9by3FlbrWA8b1xObyQCNR6
- BRX0ICm1+A96g==
-Date: Wed, 13 Jan 2021 11:48:28 -0500
+ b=HGX4OqU+XgYThqLOmnMF/3SKFuN0/EbxlBo4UN5oYFcdtYGCwM47sBa4DxS0YDdOm
+ N+VcE0uKUDDmsT74qp394RYptOKGnTVXI9fGL+gadYFUkx0WpC9JQSm8XaAHly2iUf
+ 64iFQTLNZmCfx9m0nX6dlEiOpGadbeqI0p+szxpSAb88RCb8IiH0vbDKv55a43Ql94
+ AQvZB9A5QalbDNaN8E2bjPqfLBgzi2JhvhIQJ647jNc85SC2igQ/JVS9412B1YP/zw
+ JLNynrjaS6/BuUw0Pr2Ol6HEHMUoLPUG+nZ9nXKRlWwaFhGrMOC85rJAXMK9EKDdWQ
+ tz69tPbWscC1g==
+Date: Wed, 13 Jan 2021 11:50:45 -0500
 From: Sasha Levin <sashal@kernel.org>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH for 4.9/4.14] powerpc: Fix incorrect stw{, ux, u, x}
- instructions in __set_pte_at
-Message-ID: <20210113164828.GQ4035784@sasha-vm>
-References: <af07f8f0bb734bc1f906c1f79219f81c13c6ad2c.1610521804.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH for 5.10] powerpc/32s: Fix RTAS machine check with VMAP
+ stack
+Message-ID: <20210113165045.GR4035784@sasha-vm>
+References: <790e46767a5f10ae991969b064682c8c82f96bc3.1610519852.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <af07f8f0bb734bc1f906c1f79219f81c13c6ad2c.1610521804.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <790e46767a5f10ae991969b064682c8c82f96bc3.1610519852.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,34 +63,24 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 13, 2021 at 07:12:44AM +0000, Christophe Leroy wrote:
->From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+On Wed, Jan 13, 2021 at 06:40:20AM +0000, Christophe Leroy wrote:
+>This is backport for 5.10
 >
->Backport for 4.9 and 4.14
+>(cherry picked from commit 98bf2d3f4970179c702ef64db658e0553bc6ef3a)
 >
->(cherry picked from commit d85be8a49e733dcd23674aa6202870d54bf5600d)
+>When we have VMAP stack, exception prolog 1 sets r1, not r11.
 >
->The placeholder for instruction selection should use the second
->argument's operand, which is %1, not %0. This could generate incorrect
->assembly code if the memory addressing of operand %0 is a different
->form from that of operand %1.
+>When it is not an RTAS machine check, don't trash r1 because it is
+>needed by prolog 1.
 >
->Also remove the %Un placeholder because having %Un placeholders
->for two operands which are based on the same local var (ptep) doesn't
->make much sense. By the way, it doesn't change the current behaviour
->because "<>" constraint is missing for the associated "=m".
->
->[chleroy: revised commit log iaw segher's comments and removed %U0]
->
->Fixes: 9bf2b5cdc5fe ("powerpc: Fixes for CONFIG_PTE_64BIT for SMP support")
->Cc: <stable@vger.kernel.org> # v2.6.28+
->Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+>Fixes: da7bb43ab9da ("powerpc/32: Fix vmap stack - Properly set r1 before activating MMU")
+>Cc: stable@vger.kernel.org # v5.10+
 >Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->Acked-by: Segher Boessenkool <segher@kernel.crashing.org>
+>[mpe: Squash in fixup for RTAS machine check from Christophe]
 >Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->Link: https://lore.kernel.org/r/96354bd77977a6a933fe9020da57629007fdb920.1603358942.git.christophe.leroy@csgroup.eu
+>Link: https://lore.kernel.org/r/bc77d61d1c18940e456a2dee464f1e2eda65a3f0.1608621048.git.christophe.leroy@csgroup.eu
 
-I took this and the 4.4 backport, thanks!
+Queued up, thanks!
 
 -- 
 Thanks,
