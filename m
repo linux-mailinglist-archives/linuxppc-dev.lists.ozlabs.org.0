@@ -1,75 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B095B2F58E2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 04:27:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB3D2F58E7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 04:29:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DGV9S20HPzDrft
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 14:27:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DGVCy4d2BzDrcG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 14:29:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
- helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d;
+ helo=mail-pg1-x52d.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=XFrkEKm5; dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
- [IPv6:2607:f8b0:4864:20::629])
+ header.s=20161025 header.b=LAITRyyI; dkim-atps=neutral
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com
+ [IPv6:2607:f8b0:4864:20::52d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DGV714Bf6zDrSg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 14:24:59 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id y8so2214573plp.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 19:24:59 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DGV8Z2cw0zDrpm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 14:26:21 +1100 (AEDT)
+Received: by mail-pg1-x52d.google.com with SMTP id n10so2821869pgl.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 19:26:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:references:in-reply-to:mime-version:message-id
  :content-transfer-encoding;
- bh=AUmTdV5pBWiPVDsWDJCsfQoW0ALxJls0h5m5KRuxFjo=;
- b=XFrkEKm5Ot8IxrVawFW90oYCEp1UCJueeAO+m3cmRFsTzpoPsZSBGp6v3epqWrv1sn
- SmgVtbQxF52XFttO4qucmOTyrBPBBub6W5jl4f+19Nl3un9WKxnnLZfI48qoICwyAfGL
- 9Ikw300GgW2YtVUrvBPJtr2UfvRHZkRyrHQEj0dKtwYNhMxu/ks+M/VWeNYhPOtPHBTG
- TJUlXie3tGqdh/ZDFXEYCY6wN0SdHgZLjOtgVghtqYyJwkg9966s2MWZSTHf5XagaJBN
- Iwh6fgHLJt44F4i66+4XjBTxHdLHyC+b3wr+VhfxTCp/I3cx4zbQgHzrm1tAN8WWqZv7
- AvHw==
+ bh=zB37YcxtPTMw6gNDLMA5sNYUExUjrie1n7CZCF8Dguk=;
+ b=LAITRyyI4iDv859jDxPlKtINnt1WERsmNIKUPn7j0PI3ntVXH3lAkeVVsB2SlPCuFI
+ GgXX/54+JyEPwGj+ceimhqrNwdC+d/yWSc/WiW5moNFdfktdGyxNl6zJxKbwy0pkA4rb
+ vWMfUWmU/gIgoxlBMcO6aGcHsvOq0Q+zMPQzBIRcNwzDQzSMBLQLDxe7UNaMaIBesJhW
+ NeG9ATRkHU4tZE/3CfFUi3DvsfJ5jWGDChlEI2yP+torokqTHu2B1euhcR0ZOia+Jn8a
+ 6UybUq4Tu2rsSAkrkcNzeafcmpxzfUar8DgW7piyykPO8YwG3kFmGBdKrGuD4p9w5zx/
+ 9GzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=AUmTdV5pBWiPVDsWDJCsfQoW0ALxJls0h5m5KRuxFjo=;
- b=PRd7EdiDTy9ncUO0wsgp6zMZ9inBSIazKvGVlHbYI8bUtAujuBLCfONyIvw0JnxsiS
- yfR05LFs0s+NwdigCCmXGgiSSmzIyZSskOo1gwPRqdNyD3n7HmuWNXuDCHkJ99IFiyMR
- JMXTv+cKT6Cfjr8sLly85bABcR7efjcaWGK8zmr2p8yorrayzX32CpwEk8yhK2pIq85W
- FCoyI5JmiiBkNrRm82JGx11nGppA6xqfdmEHhxaHFh+tUQm4QeHghCdQO7dLMZuL9Lh9
- Af/B4PDdZrN0Gwod8Fc+6Mj7oxXHySb8DgD1ou+FfZzCMoBrgfrXGuzaU1B5UP22Ve4K
- whiw==
-X-Gm-Message-State: AOAM5307TJvJNfHAYI5qEWuZwG8oml3WGADOtSGojECR0GkwxnxPtun1
- WRmorNTLt4DYe82h6b60TwSkN9ZpQgQxUA==
-X-Google-Smtp-Source: ABdhPJy7bO4cAQA6qpxTqwa0fIHU5Y2067qBy2ey7r1qiys4MRQtUuz2mxOQfEBwJsl27DK6wHI6rw==
-X-Received: by 2002:a17:902:f688:b029:da:a817:1753 with SMTP id
- l8-20020a170902f688b02900daa8171753mr5445931plg.76.1610594696221; 
- Wed, 13 Jan 2021 19:24:56 -0800 (PST)
-Received: from localhost ([1.132.231.127])
- by smtp.gmail.com with ESMTPSA id f67sm3902367pfg.159.2021.01.13.19.24.54
+ bh=zB37YcxtPTMw6gNDLMA5sNYUExUjrie1n7CZCF8Dguk=;
+ b=DHQTj7B5sYUzj9vxypD6eXG3HiiQWXkJ+MlsZYKp7b0CoeyC17deLSqwnNRpSr+rPm
+ A+/2602tkVDKTal3CFN6gZd0GXCd7qRtLGGTg3Q1hg+kZueaE6/3w0XaD4Zywl1fcYz2
+ TaYzjKLO27r26k/L83RzFYd3Oinn0ObLva4VB+eD2gCWp8JFSEzsjMa3CtFGd8HJgIQb
+ P8GAg1nopi8YbsGQj/Nv5z40wqT2wXNLCKc1u+KQ8Fz4S/kG9O54hrLbnJYjeNm7VKNi
+ sjYMxGbv6L7/uNn558EYiSsDU2MKS0H6I0TADA2ItGxDObAShzvOFtRIAXAmjHZiwuAn
+ Pyqw==
+X-Gm-Message-State: AOAM533wc+ohUx8lP7hO73cxMwD8HUabN10SkkmvDzyK/54VgjTQDKfb
+ N3tToM/OhpYa35hlHLsJsrY=
+X-Google-Smtp-Source: ABdhPJxE2AYAGcuXIzSZ4W11PCIT7GdHwTBuQl2yUabziBagU+vISkX8B2wp+HXT7E9LuEmwFXjr4Q==
+X-Received: by 2002:a62:7a43:0:b029:19e:c33b:c498 with SMTP id
+ v64-20020a627a430000b029019ec33bc498mr5712994pfc.20.1610594777747; 
+ Wed, 13 Jan 2021 19:26:17 -0800 (PST)
+Received: from localhost ([1.132.229.93])
+ by smtp.gmail.com with ESMTPSA id l8sm732888pjn.46.2021.01.13.19.26.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Jan 2021 19:24:55 -0800 (PST)
-Date: Thu, 14 Jan 2021 13:24:48 +1000
+ Wed, 13 Jan 2021 19:26:17 -0800 (PST)
+Date: Thu, 14 Jan 2021 13:26:10 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v5 02/21] powerpc/64s: move the last of the page fault
- handling logic to C
+Subject: Re: [PATCH v5 04/21] powerpc: bad_page_fault, do_break get registers
+ from regs
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
  linuxppc-dev@lists.ozlabs.org
 References: <20210113073215.516986-1-npiggin@gmail.com>
- <20210113073215.516986-3-npiggin@gmail.com>
- <b3f8fffd-ebbe-277d-9c71-cf3a6d8c4475@csgroup.eu>
-In-Reply-To: <b3f8fffd-ebbe-277d-9c71-cf3a6d8c4475@csgroup.eu>
+ <20210113073215.516986-5-npiggin@gmail.com>
+ <27997243-fbec-acb5-6399-f0ee4cccfa27@csgroup.eu>
+In-Reply-To: <27997243-fbec-acb5-6399-f0ee4cccfa27@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1610592763.5wfbleady7.astroid@bobo.none>
+Message-Id: <1610594717.i0rllts6sj.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,120 +87,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of January 14, 2021 12:12 am:
+Excerpts from Christophe Leroy's message of January 14, 2021 12:25 am:
 >=20
 >=20
 > Le 13/01/2021 =C3=A0 08:31, Nicholas Piggin a =C3=A9crit=C2=A0:
->> The page fault handling still has some complex logic particularly around
->> hash table handling, in asm. Implement this in C instead.
+>> Similar to the previous patch this makes interrupt handler function
+>> types more regular so they can be wrapped with the next patch.
 >>=20
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>   arch/powerpc/include/asm/book3s/64/mmu-hash.h |   1 +
->>   arch/powerpc/kernel/exceptions-64s.S          | 131 +++---------------
->>   arch/powerpc/mm/book3s64/hash_utils.c         |  77 ++++++----
->>   arch/powerpc/mm/fault.c                       |  46 ++++--
->>   4 files changed, 107 insertions(+), 148 deletions(-)
->>=20
->> diff --git a/arch/powerpc/include/asm/book3s/64/mmu-hash.h b/arch/powerp=
-c/include/asm/book3s/64/mmu-hash.h
->> index 066b1d34c7bc..60a669379aa0 100644
->> --- a/arch/powerpc/include/asm/book3s/64/mmu-hash.h
->> +++ b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
->> @@ -454,6 +454,7 @@ static inline unsigned long hpt_hash(unsigned long v=
-pn,
->>   #define HPTE_NOHPTE_UPDATE	0x2
->>   #define HPTE_USE_KERNEL_KEY	0x4
->>  =20
->> +int do_hash_fault(struct pt_regs *regs, unsigned long ea, unsigned long=
- dsisr);
->>   extern int __hash_page_4K(unsigned long ea, unsigned long access,
->>   			  unsigned long vsid, pte_t *ptep, unsigned long trap,
->>   			  unsigned long flags, int ssize, int subpage_prot);
->> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/=
-exceptions-64s.S
->> index 6e53f7638737..bcb5e81d2088 100644
->> --- a/arch/powerpc/kernel/exceptions-64s.S
->> +++ b/arch/powerpc/kernel/exceptions-64s.S
->> @@ -1401,14 +1401,15 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
->>    *
->>    * Handling:
->>    * - Hash MMU
->> - *   Go to do_hash_page first to see if the HPT can be filled from an e=
-ntry in
->> - *   the Linux page table. Hash faults can hit in kernel mode in a fair=
-ly
->> + *   Go to do_hash_fault, which attempts to fill the HPT from an entry =
-in the
->> + *   Linux page table. Hash faults can hit in kernel mode in a fairly
->>    *   arbitrary state (e.g., interrupts disabled, locks held) when acce=
-ssing
->>    *   "non-bolted" regions, e.g., vmalloc space. However these should a=
-lways be
->> - *   backed by Linux page tables.
->> + *   backed by Linux page table entries.
->>    *
->> - *   If none is found, do a Linux page fault. Linux page faults can hap=
-pen in
->> - *   kernel mode due to user copy operations of course.
->> + *   If no entry is found the Linux page fault handler is invoked (by
->> + *   do_hash_fault). Linux page faults can happen in kernel mode due to=
- user
->> + *   copy operations of course.
->>    *
->>    *   KVM: The KVM HDSI handler may perform a load with MSR[DR]=3D1 in =
-guest
->>    *   MMU context, which may cause a DSI in the host, which must go to =
-the
->> @@ -1439,13 +1440,17 @@ EXC_COMMON_BEGIN(data_access_common)
->>   	GEN_COMMON data_access
->>   	ld	r4,_DAR(r1)
->>   	ld	r5,_DSISR(r1)
+>> bad_page_fault and do_break are not performance critical.
 >=20
-> We have DSISR here. I think the dispatch between page fault or do_break()=
- should be done here:
-> - It would be more similar to other arches
-
-Other sub-archs?
-
-> - Would avoid doing it also in instruction fault
-
-True but it's hidden under an unlikely branch so won't really help=20
-instruction fault.
-
-> - Would avoid that -1 return which looks more like a hack.
-
-I don't really see it as a hack, we return a code to asm caller to
-direct whether to restore registers or not, we alrady have this
-pattern.
-
-(I'm hoping all that might be go away one day by conrolling NV
-regs from C if we can get good code generation but even if not we
-still have it in the interrupt returns).
-
-That said I will give it a try here. At very least it might be a
-better intermediate step.
-
-[snip]
-
->> +#ifdef CONFIG_PPC_BOOK3S_64
+> It's a bit different between do_break() and bad_page_fault():
+> - do_break() is not performance critical for sure
+> - bad_page_fault(), it doesn't matter, because bad_page_fault() was not u=
+sing the address param so=20
+> it doesn't get anything from regs at the end.
 >=20
-> Seems like you are re-implementing handle_page_fault() inside do_page_fau=
-lt(). Wouldn't it be=20
-> possible to keep do_page_fault() as is for the moment and implement a C v=
-ersion of handle_page_fault() ?
+> Maybe it would be worth splitting in two patches, one for bad_page_fault(=
+) and one for do_break()
 
-The test goes in a better place (existing unlikely branch) if we do it=20
-in do_page_fault.
-
-> Or just keep it in assembly ? It is not that big, keeping it in assembly =
-would keep things more=20
-> common with PPC32, and would still allow to save NV GPRS only when needed=
-.
-
-I think it's better to go the other way and move more of the other archs=20
-to C (in general that is, but for this patch as I said I will try the DABR
-test in asm).
+Okay I'll try it.
 
 Thanks,
 Nick
