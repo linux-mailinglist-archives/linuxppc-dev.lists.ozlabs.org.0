@@ -1,75 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C322F6118
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 13:37:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40AA02F612B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 13:44:26 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DGkNj50RQzDrhc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 23:37:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DGkXN558dzDrvG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 23:44:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DGkJV2ccZzDqrs
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 23:34:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by ozlabs.org (Postfix) with ESMTP id 4DGkJV0XvYz9sVX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 23:34:02 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4DGkJT6SBfz9sVr; Thu, 14 Jan 2021 23:34:01 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4DGkJT2l4Sz9sVX
- for <linuxppc-dev@ozlabs.org>; Thu, 14 Jan 2021 23:33:57 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DGkJJ3Lfgz9v18w;
- Thu, 14 Jan 2021 13:33:52 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id COdaRAD3npDY; Thu, 14 Jan 2021 13:33:52 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DGkJJ0k3nz9v18j;
- Thu, 14 Jan 2021 13:33:52 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 535568B803;
- Thu, 14 Jan 2021 13:33:53 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id t241AWXWMGBq; Thu, 14 Jan 2021 13:33:53 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7D1FA8B801;
- Thu, 14 Jan 2021 13:33:52 +0100 (CET)
-Subject: Re: SPI not working on 5.10 and 5.11, bisected to 766c6b63aa04 ("spi:
- fix client driver breakages when using GPIO descriptors")
-To: Mark Brown <broonie@kernel.org>
-References: <dc5d8d35-31aa-b36d-72b0-17c8a7c13061@csgroup.eu>
- <20210113123345.GD4641@sirena.org.uk>
- <9400d900-f315-815f-a358-16ed4963da6c@csgroup.eu>
- <20210114115958.GB4854@sirena.org.uk>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <006d1594-8eec-3aad-1651-919071e89f3b@csgroup.eu>
-Date: Thu, 14 Jan 2021 13:33:50 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DGkRy0mhxzDqv9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 23:40:29 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id D3100B80A;
+ Thu, 14 Jan 2021 12:40:24 +0000 (UTC)
+Date: Thu, 14 Jan 2021 13:40:23 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: KVM on POWER8 host lock up since 10d91611f426 ("powerpc/64s:
+ Reimplement book3s idle code in C")
+Message-ID: <20210114124023.GL6564@kitsune.suse.cz>
+References: <20200830201145.GA29521@kitsune.suse.cz>
+ <1598835313.5688ngko4f.astroid@bobo.none>
+ <20200831091523.GC29521@kitsune.suse.cz>
+ <87y2lv1430.fsf@mpe.ellerman.id.au>
+ <1599484062.vgmycu6q5i.astroid@bobo.none>
+ <20201016201410.GH29778@kitsune.suse.cz>
+ <1603066878.gtbyofrzyo.astroid@bobo.none>
+ <1603082970.5545yt7raj.astroid@bobo.none>
 MIME-Version: 1.0
-In-Reply-To: <20210114115958.GB4854@sirena.org.uk>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <1603082970.5545yt7raj.astroid@bobo.none>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,50 +55,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>,
- Sven Van Asbroeck <thesven73@gmail.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- linux-spi <linux-spi@vger.kernel.org>
+Cc: ro@suse.de, linuxppc-dev@lists.ozlabs.org,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Oct 19, 2020 at 02:50:51PM +1000, Nicholas Piggin wrote:
+> Excerpts from Nicholas Piggin's message of October 19, 2020 11:00 am:
+> > Excerpts from Michal Suchánek's message of October 17, 2020 6:14 am:
+> >> On Mon, Sep 07, 2020 at 11:13:47PM +1000, Nicholas Piggin wrote:
+> >>> Excerpts from Michael Ellerman's message of August 31, 2020 8:50 pm:
+> >>> > Michal Suchánek <msuchanek@suse.de> writes:
+> >>> >> On Mon, Aug 31, 2020 at 11:14:18AM +1000, Nicholas Piggin wrote:
+> >>> >>> Excerpts from Michal Suchánek's message of August 31, 2020 6:11 am:
+> >>> >>> > Hello,
+> >>> >>> > 
+> >>> >>> > on POWER8 KVM hosts lock up since commit 10d91611f426 ("powerpc/64s:
+> >>> >>> > Reimplement book3s idle code in C").
+> >>> >>> > 
+> >>> >>> > The symptom is host locking up completely after some hours of KVM
+> >>> >>> > workload with messages like
+> >>> >>> > 
+> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
+> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 71
+> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
+> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 71
+> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
+> >>> >>> > 
+> >>> >>> > printed before the host locks up.
+> >>> >>> > 
+> >>> >>> > The machines run sandboxed builds which is a mixed workload resulting in
+> >>> >>> > IO/single core/mutiple core load over time and there are periods of no
+> >>> >>> > activity and no VMS runnig as well. The VMs are shortlived so VM
+> >>> >>> > setup/terdown is somewhat excercised as well.
+> >>> >>> > 
+> >>> >>> > POWER9 with the new guest entry fast path does not seem to be affected.
+> >>> >>> > 
+> >>> >>> > Reverted the patch and the followup idle fixes on top of 5.2.14 and
+> >>> >>> > re-applied commit a3f3072db6ca ("powerpc/powernv/idle: Restore IAMR
+> >>> >>> > after idle") which gives same idle code as 5.1.16 and the kernel seems
+> >>> >>> > stable.
+> >>> >>> > 
+> >>> >>> > Config is attached.
+> >>> >>> > 
+> >>> >>> > I cannot easily revert this commit, especially if I want to use the same
+> >>> >>> > kernel on POWER8 and POWER9 - many of the POWER9 fixes are applicable
+> >>> >>> > only to the new idle code.
+> >>> >>> > 
+> >>> >>> > Any idea what can be the problem?
+> >>> >>> 
+> >>> >>> So hwthread_state is never getting back to to HWTHREAD_IN_IDLE on
+> >>> >>> those threads. I wonder what they are doing. POWER8 doesn't have a good
+> >>> >>> NMI IPI and I don't know if it supports pdbg dumping registers from the
+> >>> >>> BMC unfortunately.
+> >>> >>
+> >>> >> It may be possible to set up fadump with a later kernel version that
+> >>> >> supports it on powernv and dump the whole kernel.
+> >>> > 
+> >>> > Your firmware won't support it AFAIK.
+> >>> > 
+> >>> > You could try kdump, but if we have CPUs stuck in KVM then there's a
+> >>> > good chance it won't work :/
+> >>> 
+> >>> I haven't had any luck yet reproducing this still. Testing with sub 
+> >>> cores of various different combinations, etc. I'll keep trying though.
+> >> 
+> >> Hello,
+> >> 
+> >> I tried running some KVM guests to simulate the workload and what I get
+> >> is guests failing to start with a rcu stall. Tried both 5.3 and 5.9
+> >> kernel and qemu 4.2.1 and 5.1.0
+> >> 
+> >> To start some guests I run
+> >> 
+> >> for i in $(seq 0 9) ; do /opt/qemu/bin/qemu-system-ppc64 -m 2048 -accel kvm -smp 8 -kernel /boot/vmlinux -initrd /boot/initrd -nodefaults -nographic -serial mon:telnet::444$i,server,wait & done
+> >> 
+> >> To simulate some workload I run
+> >> 
+> >> xz -zc9T0 < /dev/zero > /dev/null &
+> >> while true; do
+> >>     killall -STOP xz; sleep 1; killall -CONT xz; sleep 1;
+> >> done &
+> >> 
+> >> on the host and add a job that executes this to the ramdisk. However, most
+> >> guests never get to the point where the job is executed.
+> >> 
+> >> Any idea what might be the problem?
+> > 
+> > I would say try without pv queued spin locks (but if the same thing is 
+> > happening with 5.3 then it must be something else I guess). 
+> > 
+> > I'll try to test a similar setup on a POWER8 here.
+> 
+> Couldn't reproduce the guest hang, they seem to run fine even with 
+> queued spinlocks. Might have a different .config.
+> 
+> I might have got a lockup in the host (although different symptoms than 
+> the original report). I'll look into that a bit further.
 
+Hello,
 
-Le 14/01/2021 à 12:59, Mark Brown a écrit :
-> On Thu, Jan 14, 2021 at 12:27:42PM +0100, Christophe Leroy wrote:
-> 
->> Today I have in the DTS the CS GPIOs declared as ACTIVE_LOW.
-> 
->> If I declare them as ACTIVE_HIGH instead, then I also have to set
->> spi-cs-high property, otherwise of_gpio_flags_quirks() is not happy and
->> forces the GPIO ACTIVE LOW.
-> 
->> When I set spi-cs-high property, it sets the SPI_CS_HIGH bit in spi->mode.
-> 
-> OK, so it sounds like you want SPI_CS_HIGH and that is being set
-> correctly?
-> 
->> In fsl_spi_chipselect(), we have
->>
->> 	bool pol = spi->mode & SPI_CS_HIGH
->>
->> Then
->> 	pdata->cs_control(spi, pol);
-> 
->> So changing the board config is compensated by the above, and at the end it still doesn't work.
-> 
-> This is a driver bug, the driver set_cs() operation should not be
-> modifying the value it is told to set.
-> 
+any progress on this?
 
-A driver bug ? Or maybe a change forgotten in commit  766c6b63aa04 ("spi: fix client driver 
-breakages when using GPIO descriptors") ?
+I considered reinstating the old assembly code for POWER[78] but even
+the way it's called has changed slightly.
 
-I'm almost sure it was not a bug, it is in line which what is said in the comment removed by the 
-above mentionned commit.
+Thanks
 
-I'll send a fix.
-
-Christophe
+Michal
