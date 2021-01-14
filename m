@@ -2,76 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E125B2F6287
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 14:58:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4ED22F629D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 15:03:25 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DGm9W1hzrzDsF0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 00:58:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DGmHY2cHkzDsg0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 01:03:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DGlqj6dF9zDqGx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 00:42:41 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DGmCL6m7bzDqrX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 00:59:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by ozlabs.org (Postfix) with ESMTP id 4DGlqf4Lxcz9sWK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 00:42:38 +1100 (AEDT)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=MS2p0keP; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by ozlabs.org (Postfix) with ESMTP id 4DGmCL5PKHz9sVt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 00:59:42 +1100 (AEDT)
 Received: by ozlabs.org (Postfix)
- id 4DGlqd6qq9z9sWX; Fri, 15 Jan 2021 00:42:37 +1100 (AEDT)
+ id 4DGmCL4n3wz9sWC; Fri, 15 Jan 2021 00:59:42 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=MS2p0keP; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4DGlqZ2ZZ1z9sWK
- for <linuxppc-dev@ozlabs.org>; Fri, 15 Jan 2021 00:42:28 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DGlqM5wN3z9v19N;
- Thu, 14 Jan 2021 14:42:23 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id u1zD7buZkaAG; Thu, 14 Jan 2021 14:42:23 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DGlqM4cB3z9v19G;
- Thu, 14 Jan 2021 14:42:23 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 27DBD8B802;
- Thu, 14 Jan 2021 14:42:25 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 5HIyx97OUY-n; Thu, 14 Jan 2021 14:42:25 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B45028B800;
- Thu, 14 Jan 2021 14:42:24 +0100 (CET)
-Subject: Re: SPI not working on 5.10 and 5.11, bisected to 766c6b63aa04 ("spi:
- fix client driver breakages when using GPIO descriptors")
-To: Mark Brown <broonie@kernel.org>
+ by ozlabs.org (Postfix) with ESMTPS id 4DGmCL1XPQz9sVt
+ for <linuxppc-dev@ozlabs.org>; Fri, 15 Jan 2021 00:59:42 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 83AA123A69;
+ Thu, 14 Jan 2021 13:59:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1610632780;
+ bh=ladoP6+LmH3OTLqx40cXlLNjDwqMk+v5QZwHRlHcYHQ=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=MS2p0kePgx1mItBQV8PxP9zm4Rnw2L2Xxk/El67hV9Vi+315U5V7diGBJwg8b7BN5
+ iSK4UmtGJFl6amo5/6t+q2BaLGWNMsqhUBTZevtK4j7TRCcvt8lS5rcKboq2tP99dK
+ e8asBdVB5kJVmvKsk7Ky5qWtUZG+HwuDiXlwRTOqJBtnLYg2iSroSnsVfWyohxaauQ
+ hmD5v1B36dJFqur3QcKpCornGufYDgx9LY3fy5KXxYZd7NjkL4lJ2jQPhD62nCLEAz
+ vA31LD5zSHLLDP24y7U18dWC1AnsCjaWze1PkuZB0RPOHeN1f+6IvNz6pOnZnj0lUq
+ r24FRwrefZGMw==
+Date: Thu, 14 Jan 2021 13:59:06 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: SPI not working on 5.10 and 5.11, bisected to 766c6b63aa04
+ ("spi: fix client driver breakages when using GPIO descriptors")
+Message-ID: <20210114135906.GF4854@sirena.org.uk>
 References: <dc5d8d35-31aa-b36d-72b0-17c8a7c13061@csgroup.eu>
  <20210113123345.GD4641@sirena.org.uk>
  <9400d900-f315-815f-a358-16ed4963da6c@csgroup.eu>
  <20210114115958.GB4854@sirena.org.uk>
  <006d1594-8eec-3aad-1651-919071e89f3b@csgroup.eu>
  <20210114132258.GD4854@sirena.org.uk>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <adbf508d-ed5a-e06a-4a59-98df0229d7b4@csgroup.eu>
-Date: Thu, 14 Jan 2021 14:42:26 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+ <adbf508d-ed5a-e06a-4a59-98df0229d7b4@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <20210114132258.GD4854@sirena.org.uk>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="Il7n/DHsA0sMLmDu"
+Content-Disposition: inline
+In-Reply-To: <adbf508d-ed5a-e06a-4a59-98df0229d7b4@csgroup.eu>
+X-Cookie: You have taken yourself too seriously.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,15 +94,47 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--Il7n/DHsA0sMLmDu
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Le 14/01/2021 à 14:22, Mark Brown a écrit :
-> 
-> For GPIO chipselects you should really fix the driver to just hand the
-> GPIO off to the core rather than trying to implement this itself, that
-> will avoid driver specific differences like this.
-> 
+On Thu, Jan 14, 2021 at 02:42:26PM +0100, Christophe Leroy wrote:
+> Le 14/01/2021 =E0 14:22, Mark Brown a =E9crit=A0:
 
-IIUC, it is not trivial as it requires implementing transfer_one() instead of the existing 
-transfer_one_message() in the driver. Am I right ?
+> > For GPIO chipselects you should really fix the driver to just hand the
+> > GPIO off to the core rather than trying to implement this itself, that
+> > will avoid driver specific differences like this.
 
-What's the difference/benefit of transfer_one() compared to the existing transfer_one_message() ?
+> IIUC, it is not trivial as it requires implementing transfer_one() instead
+> of the existing transfer_one_message() in the driver. Am I right ?
+
+Yes, that's a good idea in general though.  It should normally be pretty
+simple since the conversion is mostly just deleting code doing things
+which will be handled by the core.
+
+> What's the difference/benefit of transfer_one() compared to the existing =
+transfer_one_message() ?
+
+It factors out all the handling of chip selects, including per-transfer
+chip select inversion and so on, and also factors out all the handling
+of in-message delays.  If nothing else it reduces the amount of
+duplicated code that might require maintainance can have issues with
+misaligned expectations from the core or client drivers.
+
+--Il7n/DHsA0sMLmDu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmAATikACgkQJNaLcl1U
+h9BW6Af+Pw9Y1WvW7FDLeDR69lK5Jq9X67HuG7iEoAFDhmj/Q6Jb4DzPkSeG1LRs
+YRbcTBvXoPs2vVAU3bisyy4MmTmnhW5BtlkigV2NTXPKi3qzRu5YjhxEjPAmgeJ9
+RZhHco4yXMm7dP7g7EPvlb3VqjBH+ARZRnT5SN870EkDnQV6aEBR9YRHbQmKsabV
+VkU2uvRlXIdpJ9FKBbDcV0jWKqJdVphdBhEKhr9mWKxG5FBQ05iGyJdDL0c2zr5x
+oBubtYUiq/yd41w96NV4/4O9h9DmTDxiQ1QM8kW6mbgU4JykUhq5qr6ua3G0pRLC
+/9vXvRuBpx6IbHr7IM1p2oasKi1WsA==
+=nlRk
+-----END PGP SIGNATURE-----
+
+--Il7n/DHsA0sMLmDu--
