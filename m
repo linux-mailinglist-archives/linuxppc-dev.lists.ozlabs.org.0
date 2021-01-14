@@ -2,74 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501322F59B8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 05:02:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD9C82F5A0F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 05:56:26 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DGVyH26MKzDr0v
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 15:02:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DGX8R0wH0zDrfR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 15:56:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430;
- helo=mail-pf1-x430.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.47; helo=mail-lf1-f47.google.com;
+ envelope-from=namhyung@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=KZtxlPVn; dkim-atps=neutral
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com
- [IPv6:2607:f8b0:4864:20::430])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com
+ [209.85.167.47])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DGVvk0t45zDrgP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 15:00:17 +1100 (AEDT)
-Received: by mail-pf1-x430.google.com with SMTP id c79so2599455pfc.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 20:00:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=5FkF/Jm+W1MF0p8hdn7mrYiFhYCMvCMKVahC+/OJKSU=;
- b=KZtxlPVn5sefhlkFBuJ+NKZEzuwDqyKZp30zPwn32jg2jOvnW5TiIfCfcCk/d8EBpi
- usTq4FNoYfcMTafD0XpcI6wymvT5X2Uu9dHodiJSy3l6Uv6wA8Irkk6VEfFNkmICqAB6
- IxB9e4fcwkhV0VSlOZbecJ+duuQupPQxpP/RR2gAzf95MdyvhPdoKLcg6p6deMX6N8aI
- v/HxiQ4TGjCVdCbznOEoISpf63kCps3gURczNADynrTCAYkQOR9f+dPhWJVW8BTDzeFv
- byRHiuao5kwZaCVcAaAzAjjN49JxIE/UNXEfoO2rAuZtKu1CccrBUUnjrdBR6hfIgtLk
- AzfQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DGX6C5M30zDrTP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 15:54:22 +1100 (AEDT)
+Received: by mail-lf1-f47.google.com with SMTP id m25so6204623lfc.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 20:54:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=5FkF/Jm+W1MF0p8hdn7mrYiFhYCMvCMKVahC+/OJKSU=;
- b=MsROLZLyqw5+NwWFzon9OjFiIVbT+SrlbVKSyAb2do0pysG59ing7v/DrihTkX7noW
- UqKivn9f1nwsygFVXNiY/kpV0NY5+SRIv7I2dDnVYOQL+e2d5ryRB5DXLX2nQFc14131
- KU1fgZ67EfFwnmqeIxx4B6QIy4kCzMHBRmtRkyVjC74DaGIuuC7Il3XUFig9whJCERB/
- bNs01upHmnOtI0/NueCJ48eM+Yo1ObiGwXp7ou0Egal2WhBNnZTIJn0OHzcy/KS14d19
- 6Y5PaWKzscCHH1ubkj6EsbzU+ncxX//3veqWdH0wfTMffrxx3uidfe3QAUetDUW0IWDB
- e8Lg==
-X-Gm-Message-State: AOAM531MNdqV266fgFhzjVHDHSYV0mCYN5uKusSrGl8aoz9KSliQuytO
- PuV/SNZq7aEHLTF28g4biWnhPVipwak=
-X-Google-Smtp-Source: ABdhPJxH5OtzzlTr05cK+YTaz+zuyVmsxL2fiEgxBnuzXATqwhvuJMw7mcgQSKFelBIjGBKWfYKjAQ==
-X-Received: by 2002:a63:e4a:: with SMTP id 10mr5433585pgo.45.1610596814585;
- Wed, 13 Jan 2021 20:00:14 -0800 (PST)
-Received: from localhost ([1.132.234.103])
- by smtp.gmail.com with ESMTPSA id c3sm4121495pfi.135.2021.01.13.20.00.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Jan 2021 20:00:14 -0800 (PST)
-Date: Thu, 14 Jan 2021 14:00:07 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v5 18/21] powerpc: move NMI entry/exit code into wrapper
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org
-References: <20210113073215.516986-1-npiggin@gmail.com>
- <20210113073215.516986-19-npiggin@gmail.com>
- <b8006c6e-0828-66b7-067f-cbfd0ddf99a1@csgroup.eu>
-In-Reply-To: <b8006c6e-0828-66b7-067f-cbfd0ddf99a1@csgroup.eu>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=4QNuc5f5wtLLJ36D9lt2nfW/3BD8HkXS2QxBwmwSVa8=;
+ b=j9qWHx1c5yZiiSc/XOFnXAIk3itFfPxTxHzGmMw4SV4VMHy1bKsG0dRJjFfOEwh6bN
+ pbnkGwxmEinK2NzTFhkGD80Wn+Y9H2O+bzBNu1naqCQ4HRTEWkn4/n5nnGw/ddfW5Fz+
+ ACwr5C1qi2TbxeUWdlpJpKSh1fY8KpXY/V/1nLkPAgQUVTRK7H80CFj8bUO6qpIy1Sf9
+ 3XgWZ15K0SJ5yciiaU1KKICpJkMRjrgRiqJwfrh9jLX0cVNeyZyevlqysBiTiSYtc4pU
+ mHfIeJIUvChGKuAkMhkToP564ZFV3zC0wGhp82fsrvz6LPZIlwvSb5fnRKPCE5OCCiTB
+ vziQ==
+X-Gm-Message-State: AOAM532qMErBnRIY8+IQCHLD48lFRBFe1MhHh0ig5izh/gyGimOBNiA5
+ wd293OsGdmMLIq5yuirIeN5f7gloMuqa1tSKKL0=
+X-Google-Smtp-Source: ABdhPJwIoCOczUufg2qa2oKWPRqPOtlucA6dn40C0SaO7Ked72QkH4MA5vrl1RMC89iee0EPMcniw8nO6/dbDVxpPjQ=
+X-Received: by 2002:a19:8584:: with SMTP id h126mr2512631lfd.152.1610600058061; 
+ Wed, 13 Jan 2021 20:54:18 -0800 (PST)
 MIME-Version: 1.0
-Message-Id: <1610596741.u4twtiygam.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20210113080128.10286-1-jslaby@suse.cz>
+ <20210113104618.GB1331835@krava>
+ <388a2e21-14ee-4609-84d0-c8824154c015@suse.cz>
+In-Reply-To: <388a2e21-14ee-4609-84d0-c8824154c015@suse.cz>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Thu, 14 Jan 2021 13:54:06 +0900
+Message-ID: <CAM9d7cgmUqLX+C1wDPe9qaxDh1tY4sVmLx2qZqey3CQSmZSo2Q@mail.gmail.com>
+Subject: Re: [PATCH] perf tools: Resolve symbols against debug file first
+To: Jiri Slaby <jslaby@suse.cz>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,189 +61,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of January 14, 2021 1:13 am:
->=20
->=20
-> Le 13/01/2021 =C3=A0 08:32, Nicholas Piggin a =C3=A9crit=C2=A0:
->> This moves the common NMI entry and exit code into the interrupt handler
->> wrappers.
->>=20
->> This changes the behaviour of soft-NMI (watchdog) and HMI interrupts, an=
-d
->> also MCE interrupts on 64e, by adding missing parts of the NMI entry to
->> them.
->>=20
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>   arch/powerpc/include/asm/interrupt.h | 24 ++++++++++++++++
->>   arch/powerpc/kernel/mce.c            | 11 --------
->>   arch/powerpc/kernel/traps.c          | 42 +++++-----------------------
->>   arch/powerpc/kernel/watchdog.c       | 10 +++----
->>   4 files changed, 35 insertions(+), 52 deletions(-)
->>=20
->> diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include=
-/asm/interrupt.h
->> index e278dffe7657..01192e213f9a 100644
->> --- a/arch/powerpc/include/asm/interrupt.h
->> +++ b/arch/powerpc/include/asm/interrupt.h
->> @@ -95,14 +95,38 @@ static inline void interrupt_async_exit_prepare(stru=
-ct pt_regs *regs, struct int
->>   }
->>  =20
->>   struct interrupt_nmi_state {
->> +#ifdef CONFIG_PPC64
->> +	u8 ftrace_enabled;
->> +#endif
->>   };
->>  =20
->>   static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, s=
-truct interrupt_nmi_state *state)
->>   {
->> +#ifdef CONFIG_PPC64
->> +	state->ftrace_enabled =3D this_cpu_get_ftrace_enabled();
->> +	this_cpu_set_ftrace_enabled(0);
->> +#endif
->> +
->> +	/*
->> +	 * Do not use nmi_enter() for pseries hash guest taking a real-mode
->> +	 * NMI because not everything it touches is within the RMA limit.
->> +	 */
->> +	if (!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
->> +			!firmware_has_feature(FW_FEATURE_LPAR) ||
->> +			radix_enabled() || (mfmsr() & MSR_DR))
->> +		nmi_enter();
->>   }
->>  =20
->>   static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, st=
-ruct interrupt_nmi_state *state)
->>   {
->> +	if (!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
->> +			!firmware_has_feature(FW_FEATURE_LPAR) ||
->> +			radix_enabled() || (mfmsr() & MSR_DR))
->> +		nmi_exit();
->> +
->> +#ifdef CONFIG_PPC64
->> +	this_cpu_set_ftrace_enabled(state->ftrace_enabled);
->> +#endif
->>   }
->>  =20
->>   /**
->> diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
->> index 54269947113d..51456217ec40 100644
->> --- a/arch/powerpc/kernel/mce.c
->> +++ b/arch/powerpc/kernel/mce.c
->> @@ -592,12 +592,6 @@ EXPORT_SYMBOL_GPL(machine_check_print_event_info);
->>   DEFINE_INTERRUPT_HANDLER_NMI(machine_check_early)
->>   {
->>   	long handled =3D 0;
->> -	u8 ftrace_enabled =3D this_cpu_get_ftrace_enabled();
->> -
->> -	this_cpu_set_ftrace_enabled(0);
->> -	/* Do not use nmi_enter/exit for pseries hpte guest */
->> -	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
->> -		nmi_enter();
->>  =20
->>   	hv_nmi_check_nonrecoverable(regs);
->>  =20
->> @@ -607,11 +601,6 @@ DEFINE_INTERRUPT_HANDLER_NMI(machine_check_early)
->>   	if (ppc_md.machine_check_early)
->>   		handled =3D ppc_md.machine_check_early(regs);
->>  =20
->> -	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
->> -		nmi_exit();
->> -
->> -	this_cpu_set_ftrace_enabled(ftrace_enabled);
->> -
->>   	return handled;
->>   }
->>  =20
->> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
->> index b4f23e871a68..43d23232ef5c 100644
->> --- a/arch/powerpc/kernel/traps.c
->> +++ b/arch/powerpc/kernel/traps.c
->> @@ -435,11 +435,6 @@ DEFINE_INTERRUPT_HANDLER_NMI(system_reset_exception=
-)
->>   {
->>   	unsigned long hsrr0, hsrr1;
->>   	bool saved_hsrrs =3D false;
->> -	u8 ftrace_enabled =3D this_cpu_get_ftrace_enabled();
->> -
->> -	this_cpu_set_ftrace_enabled(0);
->> -
->> -	nmi_enter();
->>  =20
->>   	/*
->>   	 * System reset can interrupt code where HSRRs are live and MSR[RI]=
-=3D1.
->> @@ -511,10 +506,6 @@ DEFINE_INTERRUPT_HANDLER_NMI(system_reset_exception=
-)
->>   		mtspr(SPRN_HSRR1, hsrr1);
->>   	}
->>  =20
->> -	nmi_exit();
->> -
->> -	this_cpu_set_ftrace_enabled(ftrace_enabled);
->> -
->>   	/* What should we do here? We could issue a shutdown or hard reset. *=
-/
->>  =20
->>   	return 0;
->> @@ -792,6 +783,12 @@ int machine_check_generic(struct pt_regs *regs)
->>   #endif /* everything else */
->>  =20
->>  =20
->> +/*
->> + * BOOK3S_64 does not call this handler as a non-maskable interrupt
->> + * (it uses its own early real-mode handler to handle the MCE proper
->> + * and then raises irq_work to call this handler when interrupts are
->> + * enabled).
->> + */
->>   #ifdef CONFIG_PPC_BOOK3S_64
->>   DEFINE_INTERRUPT_HANDLER_ASYNC(machine_check_exception)
->>   #else
->> @@ -800,20 +797,6 @@ DEFINE_INTERRUPT_HANDLER_NMI(machine_check_exceptio=
-n)
->>   {
->>   	int recover =3D 0;
->>  =20
->> -	/*
->> -	 * BOOK3S_64 does not call this handler as a non-maskable interrupt
->> -	 * (it uses its own early real-mode handler to handle the MCE proper
->> -	 * and then raises irq_work to call this handler when interrupts are
->> -	 * enabled).
->> -	 *
->> -	 * This is silly. The BOOK3S_64 should just call a different function
->> -	 * rather than expecting semantics to magically change. Something
->> -	 * like 'non_nmi_machine_check_exception()', perhaps?
->> -	 */
->> -	const bool nmi =3D !IS_ENABLED(CONFIG_PPC_BOOK3S_64);
->> -
->> -	if (nmi) nmi_enter();
->> -
->>   	__this_cpu_inc(irq_stat.mce_exceptions);
->>  =20
->>   	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_NOW_UNRELIABLE);
->> @@ -838,24 +821,17 @@ DEFINE_INTERRUPT_HANDLER_NMI(machine_check_excepti=
-on)
->>   	if (check_io_access(regs))
->>   		goto bail;
->>  =20
->> -	if (nmi) nmi_exit();
->> -
->=20
-> IIRC, not doing the nmi_exit() before the die() is problematic.
->=20
-> See=20
-> https://github.com/linuxppc/linux/commit/daf00ae71dad8aa05965713c62558aee=
-bf2df48e#diff-70077148c383252ca949063eaf1b0250620e4607b43f4ef3fd2d8f448a83a=
-b0a
+Hi both of Jiri,
 
-Yes good catch. Maybe putting it into a nmi_die() or having die=20
-explicitly check for the NMI case might be the go.
+On Wed, Jan 13, 2021 at 8:43 PM Jiri Slaby <jslaby@suse.cz> wrote:
+>
+> On 13. 01. 21, 11:46, Jiri Olsa wrote:
+> > On Wed, Jan 13, 2021 at 09:01:28AM +0100, Jiri Slaby wrote:
+> >> With LTO, there are symbols like these:
+> >> /usr/lib/debug/usr/lib64/libantlr4-runtime.so.4.8-4.8-1.4.x86_64.debug
+> >>   10305: 0000000000955fa4     0 NOTYPE  LOCAL  DEFAULT   29 Predicate.cpp.2bc410e7
+> >>
+> >> This comes from a runtime/debug split done by the standard way:
+> >> objcopy --only-keep-debug $runtime $debug
+> >> objcopy --add-gnu-debuglink=$debugfn -R .comment -R .GCC.command.line --strip-all $runtime
+> >>
+> >> perf currently cannot resolve such symbols (relicts of LTO), as section
+> >> 29 exists only in the debug file (29 is .debug_info). And perf resolves
+> >> symbols only against runtime file. This results in all symbols from such
+> >> a library being unresolved:
+> >>       0.38%  main2    libantlr4-runtime.so.4.8  [.] 0x00000000000671e0
+> >>
+> >> So try resolving against the debug file first. And only if it fails (the
+> >> section has NOBITS set), try runtime file. We can do this, as "objcopy
+> >> --only-keep-debug" per documentation preserves all sections, but clears
+> >> data of some of them (the runtime ones) and marks them as NOBITS.
+> >>
+> >> The correct result is now:
+> >>       0.38%  main2    libantlr4-runtime.so.4.8  [.] antlr4::IntStream::~IntStream
+> >>
+> >> Note that these LTO symbols are properly skipped anyway as they belong
+> >> neither to *text* nor to *data* (is_label && !elf_sec__filter(&shdr,
+> >> secstrs) is true).
+> >>
+> >> Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+> >> Cc: Peter Zijlstra <peterz@infradead.org>
+> >> Cc: Ingo Molnar <mingo@redhat.com>
+> >> Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+> >> Cc: Mark Rutland <mark.rutland@arm.com>
+> >> Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> >> Cc: Jiri Olsa <jolsa@redhat.com>
+> >> Cc: Namhyung Kim <namhyung@kernel.org>
+> >> ---
+> >>   tools/perf/util/symbol-elf.c | 10 +++++++++-
+> >>   1 file changed, 9 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
+> >> index f3577f7d72fe..a31b716fa61c 100644
+> >> --- a/tools/perf/util/symbol-elf.c
+> >> +++ b/tools/perf/util/symbol-elf.c
+> >> @@ -1226,12 +1226,20 @@ int dso__load_sym(struct dso *dso, struct map *map, struct symsrc *syms_ss,
+> >>              if (sym.st_shndx == SHN_ABS)
+> >>                      continue;
+> >>
+> >> -            sec = elf_getscn(runtime_ss->elf, sym.st_shndx);
+> >> +            sec = elf_getscn(syms_ss->elf, sym.st_shndx);
+> >>              if (!sec)
+> >>                      goto out_elf_end;
+> >
+> > we iterate symbols from syms_ss, so the fix seems to be correct
+> > to call elf_getscn on syms_ss, not on runtime_ss as we do now
+> >
+> > I'd think this worked only when runtime_ss == syms_ss
+>
+> No, because the headers are copied 1:1 from runtime_ss to syms_ss. And
+> runtime_ss is then stripped, so only .debug* sections are removed there.
+> (And syms_ss's are set as NOBITS.)
+>
+> We iterated .debug* sections in syms_ss and used runtime_ss section
+> _headers_ only to adjust symbols (sometimes). That worked.
+
+It seems PPC has an opd section only in the runtime_ss and that's why
+we use it for section headers.
+
+>
+> >>              gelf_getshdr(sec, &shdr);
+> >>
+> >> +            if (shdr.sh_type == SHT_NOBITS) {
+> >> +                    sec = elf_getscn(runtime_ss->elf, sym.st_shndx);
+> >> +                    if (!sec)
+> >> +                            goto out_elf_end;
+> >> +
+> >> +                    gelf_getshdr(sec, &shdr);
+> >> +            }
+> >
+> > is that fallback necessary? the symbol is from syms_ss
+>
+> Provided the above, we don't need the section data here, only headers,
+> so the NOBITS test is superfluous and the fallback shouldn't be needed.
+> Let me test it.
+
+We need to talk to PPC folks like I said.  Or maybe we can change the
+default ss depending on the arch.
 
 Thanks,
-Nick
+Namhyung
