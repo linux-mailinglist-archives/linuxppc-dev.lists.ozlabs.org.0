@@ -2,54 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9C82F5A0F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 05:56:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E63C2F5C83
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 09:36:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DGX8R0wH0zDrfR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 15:56:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DGd2T61ffzDrf6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 19:36:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.47; helo=mail-lf1-f47.google.com;
- envelope-from=namhyung@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32e;
+ helo=mail-wm1-x32e.google.com; envelope-from=lee.jones@linaro.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com
- [209.85.167.47])
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=ZIGADg3B; dkim-atps=neutral
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com
+ [IPv6:2a00:1450:4864:20::32e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DGX6C5M30zDrTP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 15:54:22 +1100 (AEDT)
-Received: by mail-lf1-f47.google.com with SMTP id m25so6204623lfc.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jan 2021 20:54:21 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DGczW2jNRzDrVM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 19:33:56 +1100 (AEDT)
+Received: by mail-wm1-x32e.google.com with SMTP id g10so3896426wmh.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 00:33:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to;
+ bh=GjeLGr4dGUje6MMvo6pIfAne61VxoEvoHdwrClfl8/s=;
+ b=ZIGADg3BlaqD32ynUhvAKUHK36WggmBH+HgCus+Lt0OiuAae5RFKTAAdAUBLBkfKrY
+ g9mCLwos3GLeOzEZCwhYZwr8T5fiAWm2JBAxzVNiTStafjzlYckMK2ml72RUD1geMllQ
+ TC4hDVHt/O8I3ZmVeHGXt1O5WQbtt/JbiFBmQso//vGSagy4KDFQiNpFLKIWEZL1gEtU
+ rgvHU8MtqxV21EHUgiCzhfSYfGoPkgsH0esb0o3x3F9ayqx2pdlhR+Ode/A4/hYpSf0j
+ AnO7uTlxvNucWcVxTJhpnRX7DXNGWSrX8lPRCWwv6I8P7aSS+LVkhBxZp6+rLxq35MjL
+ qO4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=4QNuc5f5wtLLJ36D9lt2nfW/3BD8HkXS2QxBwmwSVa8=;
- b=j9qWHx1c5yZiiSc/XOFnXAIk3itFfPxTxHzGmMw4SV4VMHy1bKsG0dRJjFfOEwh6bN
- pbnkGwxmEinK2NzTFhkGD80Wn+Y9H2O+bzBNu1naqCQ4HRTEWkn4/n5nnGw/ddfW5Fz+
- ACwr5C1qi2TbxeUWdlpJpKSh1fY8KpXY/V/1nLkPAgQUVTRK7H80CFj8bUO6qpIy1Sf9
- 3XgWZ15K0SJ5yciiaU1KKICpJkMRjrgRiqJwfrh9jLX0cVNeyZyevlqysBiTiSYtc4pU
- mHfIeJIUvChGKuAkMhkToP564ZFV3zC0wGhp82fsrvz6LPZIlwvSb5fnRKPCE5OCCiTB
- vziQ==
-X-Gm-Message-State: AOAM532qMErBnRIY8+IQCHLD48lFRBFe1MhHh0ig5izh/gyGimOBNiA5
- wd293OsGdmMLIq5yuirIeN5f7gloMuqa1tSKKL0=
-X-Google-Smtp-Source: ABdhPJwIoCOczUufg2qa2oKWPRqPOtlucA6dn40C0SaO7Ked72QkH4MA5vrl1RMC89iee0EPMcniw8nO6/dbDVxpPjQ=
-X-Received: by 2002:a19:8584:: with SMTP id h126mr2512631lfd.152.1610600058061; 
- Wed, 13 Jan 2021 20:54:18 -0800 (PST)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=GjeLGr4dGUje6MMvo6pIfAne61VxoEvoHdwrClfl8/s=;
+ b=dP+43qXudiu1E3mXyfkMXR+jgLrn4tzXzr0gWuFaXj3AKfiTdFKLncXVr863QS2n5D
+ sG+Ulezwnvc1HjsSk1biIz0xHoDeNumRRELg+fr8eDKGo6M62IqZ1zd3QBVefFPA+DcI
+ eHKS0/AvKCvH8GaMl0Dxy+pxVYUIAtVjk2Tz2RQTODHRDg7vSklStacprEMz0nc/TOBe
+ TdF1HEfVcCkcGrcnd5bEexBWgge24pmPOKmhOMmmBhHaqAcytgBeXuwkAUh6Ox4nEgCz
+ XvAaqleKz0opu+GQE0ocC0hQAr/DBWodb7kDWSgyy3rL7Wp6lcEvyJZ4G6Y9H7oXzStu
+ STVg==
+X-Gm-Message-State: AOAM530zMK3MevjoVzkjVZNCyRGzW9nuZR8Im2CcQXRZQedanZ5Rd18w
+ 3HuJrQfD6jGRKiFghyAobmsOzg==
+X-Google-Smtp-Source: ABdhPJw3p4X/u/75/T9prjNVjPSDyTRHFC+ksLZ/wQbHtHizclaVB59YVOGqKuRlDUU9mMmbgYlTNw==
+X-Received: by 2002:a1c:2d6:: with SMTP id 205mr2866556wmc.60.1610613232251;
+ Thu, 14 Jan 2021 00:33:52 -0800 (PST)
+Received: from dell ([91.110.221.178])
+ by smtp.gmail.com with ESMTPSA id b14sm8094410wrx.77.2021.01.14.00.33.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Jan 2021 00:33:51 -0800 (PST)
+Date: Thu, 14 Jan 2021 08:33:49 +0000
+From: Lee Jones <lee.jones@linaro.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH v2 0/7] Rid W=1 warnings in Ethernet
+Message-ID: <20210114083349.GI3975472@dell>
+References: <20210113164123.1334116-1-lee.jones@linaro.org>
+ <20210113183551.6551a6a2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
-References: <20210113080128.10286-1-jslaby@suse.cz>
- <20210113104618.GB1331835@krava>
- <388a2e21-14ee-4609-84d0-c8824154c015@suse.cz>
-In-Reply-To: <388a2e21-14ee-4609-84d0-c8824154c015@suse.cz>
-From: Namhyung Kim <namhyung@kernel.org>
-Date: Thu, 14 Jan 2021 13:54:06 +0900
-Message-ID: <CAM9d7cgmUqLX+C1wDPe9qaxDh1tY4sVmLx2qZqey3CQSmZSo2Q@mail.gmail.com>
-Subject: Re: [PATCH] perf tools: Resolve symbols against debug file first
-To: Jiri Slaby <jslaby@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210113183551.6551a6a2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,106 +81,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@redhat.com>
+Cc: Paul Durrant <paul@xen.org>, Kurt Kanzenbach <kurt@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, Peter Cammaert <pc@denkart.be>,
+ Paul Mackerras <paulus@samba.org>, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+ Wei Liu <wei.liu@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Santiago Leon <santi_leon@yahoo.com>, xen-devel@lists.xenproject.org,
+ Grygorii Strashko <grygorii.strashko@ti.com>,
+ Thomas Falcon <tlfalcon@linux.vnet.ibm.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Jens Osterkamp <Jens.Osterkamp@de.ibm.com>,
+ Rusty Russell <rusty@rustcorp.com.au>, Daris A Nevil <dnevil@snmc.com>,
+ Lijun Pan <ljp@linux.ibm.com>, Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+ Nicolas Pitre <nico@fluxnic.net>, Geoff Levand <geoff@infradead.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Erik Stahlman <erik@vt.edu>, John Allen <jallen@linux.vnet.ibm.com>,
+ Utz Bacher <utz.bacher@de.ibm.com>, Dany Madden <drt@linux.ibm.com>,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>, Russell King <rmk@arm.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi both of Jiri,
+On Wed, 13 Jan 2021, Jakub Kicinski wrote:
 
-On Wed, Jan 13, 2021 at 8:43 PM Jiri Slaby <jslaby@suse.cz> wrote:
->
-> On 13. 01. 21, 11:46, Jiri Olsa wrote:
-> > On Wed, Jan 13, 2021 at 09:01:28AM +0100, Jiri Slaby wrote:
-> >> With LTO, there are symbols like these:
-> >> /usr/lib/debug/usr/lib64/libantlr4-runtime.so.4.8-4.8-1.4.x86_64.debug
-> >>   10305: 0000000000955fa4     0 NOTYPE  LOCAL  DEFAULT   29 Predicate.cpp.2bc410e7
-> >>
-> >> This comes from a runtime/debug split done by the standard way:
-> >> objcopy --only-keep-debug $runtime $debug
-> >> objcopy --add-gnu-debuglink=$debugfn -R .comment -R .GCC.command.line --strip-all $runtime
-> >>
-> >> perf currently cannot resolve such symbols (relicts of LTO), as section
-> >> 29 exists only in the debug file (29 is .debug_info). And perf resolves
-> >> symbols only against runtime file. This results in all symbols from such
-> >> a library being unresolved:
-> >>       0.38%  main2    libantlr4-runtime.so.4.8  [.] 0x00000000000671e0
-> >>
-> >> So try resolving against the debug file first. And only if it fails (the
-> >> section has NOBITS set), try runtime file. We can do this, as "objcopy
-> >> --only-keep-debug" per documentation preserves all sections, but clears
-> >> data of some of them (the runtime ones) and marks them as NOBITS.
-> >>
-> >> The correct result is now:
-> >>       0.38%  main2    libantlr4-runtime.so.4.8  [.] antlr4::IntStream::~IntStream
-> >>
-> >> Note that these LTO symbols are properly skipped anyway as they belong
-> >> neither to *text* nor to *data* (is_label && !elf_sec__filter(&shdr,
-> >> secstrs) is true).
-> >>
-> >> Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-> >> Cc: Peter Zijlstra <peterz@infradead.org>
-> >> Cc: Ingo Molnar <mingo@redhat.com>
-> >> Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-> >> Cc: Mark Rutland <mark.rutland@arm.com>
-> >> Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-> >> Cc: Jiri Olsa <jolsa@redhat.com>
-> >> Cc: Namhyung Kim <namhyung@kernel.org>
-> >> ---
-> >>   tools/perf/util/symbol-elf.c | 10 +++++++++-
-> >>   1 file changed, 9 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
-> >> index f3577f7d72fe..a31b716fa61c 100644
-> >> --- a/tools/perf/util/symbol-elf.c
-> >> +++ b/tools/perf/util/symbol-elf.c
-> >> @@ -1226,12 +1226,20 @@ int dso__load_sym(struct dso *dso, struct map *map, struct symsrc *syms_ss,
-> >>              if (sym.st_shndx == SHN_ABS)
-> >>                      continue;
-> >>
-> >> -            sec = elf_getscn(runtime_ss->elf, sym.st_shndx);
-> >> +            sec = elf_getscn(syms_ss->elf, sym.st_shndx);
-> >>              if (!sec)
-> >>                      goto out_elf_end;
-> >
-> > we iterate symbols from syms_ss, so the fix seems to be correct
-> > to call elf_getscn on syms_ss, not on runtime_ss as we do now
-> >
-> > I'd think this worked only when runtime_ss == syms_ss
->
-> No, because the headers are copied 1:1 from runtime_ss to syms_ss. And
-> runtime_ss is then stripped, so only .debug* sections are removed there.
-> (And syms_ss's are set as NOBITS.)
->
-> We iterated .debug* sections in syms_ss and used runtime_ss section
-> _headers_ only to adjust symbols (sometimes). That worked.
+> On Wed, 13 Jan 2021 16:41:16 +0000 Lee Jones wrote:
+> > Resending the stragglers again.                                                                                  
+> > 
+> > This set is part of a larger effort attempting to clean-up W=1                                                   
+> > kernel builds, which are currently overwhelmingly riddled with                                                   
+> > niggly little warnings.                                                                                          
+> >                                                                                                                  
+> > v2:                                                                                                              
+> >  - Squashed IBM patches                                                                                      
+> >  - Fixed real issue in SMSC
+> >  - Added Andrew's Reviewed-by tags on remainder
+> 
+> Does not apply, please rebase on net-next/master.
 
-It seems PPC has an opd section only in the runtime_ss and that's why
-we use it for section headers.
+These are based on Tuesday's next/master.
 
->
-> >>              gelf_getshdr(sec, &shdr);
-> >>
-> >> +            if (shdr.sh_type == SHT_NOBITS) {
-> >> +                    sec = elf_getscn(runtime_ss->elf, sym.st_shndx);
-> >> +                    if (!sec)
-> >> +                            goto out_elf_end;
-> >> +
-> >> +                    gelf_getshdr(sec, &shdr);
-> >> +            }
-> >
-> > is that fallback necessary? the symbol is from syms_ss
->
-> Provided the above, we don't need the section data here, only headers,
-> so the NOBITS test is superfluous and the fallback shouldn't be needed.
-> Let me test it.
+I just rebased them now with no issue.
 
-We need to talk to PPC folks like I said.  Or maybe we can change the
-default ss depending on the arch.
+What conflict are you seeing?
 
-Thanks,
-Namhyung
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
