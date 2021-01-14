@@ -1,76 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867B02F6264
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 14:51:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4FA2F6275
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 14:55:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DGm1d0lNVzDscm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 00:51:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DGm5z2k5YzDsdY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 00:55:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DGlPl5T9PzDscc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 00:23:39 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=H+NvHe0O; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by ozlabs.org (Postfix) with ESMTP id 4DGlPh0RvLz9sWL
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 00:23:36 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 4DGlPg5D0pz9sWK; Fri, 15 Jan 2021 00:23:35 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=H+NvHe0O; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4DGlPf3hC3z9sWF
- for <linuxppc-dev@ozlabs.org>; Fri, 15 Jan 2021 00:23:34 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A8F5923A05;
- Thu, 14 Jan 2021 13:23:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1610630612;
- bh=N4MLOcaBrg+ObtW8saTWFTIwry4CM2IZkHEMOlfdUBE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=H+NvHe0OMhIhxGZRoLH3VviN3uYMqqteXIlzhRhOHJnEZvYSuZ7Y6encH1ZUWYMAD
- coxOX1wuKEmfzBiY/Z0aNGdPIr0exq130aoFm3FTBd81APc8Yrs1Y2am7rXFKZ7CNr
- LfQtavxrV7gKDpAxYI+oOXmctLAaw6Vv2hPhXIGr1gH+Kv2RcdOOmgeRvXKkzL/u8V
- iNjhcLSF8LObyOL8P62i0/HbGqhBH6Vt58eRxfU7lhh0hh5kFhVLAbWc23qwthKXks
- 2R4f3Kr14WAbHRMzV8hcGKrPO/IqcTHX7EbmYG1OjlplbYlsXNVzli5yMRItxsMgGd
- 3HlSoc7iXPkkw==
-Date: Thu, 14 Jan 2021 13:22:58 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: SPI not working on 5.10 and 5.11, bisected to 766c6b63aa04
- ("spi: fix client driver breakages when using GPIO descriptors")
-Message-ID: <20210114132258.GD4854@sirena.org.uk>
-References: <dc5d8d35-31aa-b36d-72b0-17c8a7c13061@csgroup.eu>
- <20210113123345.GD4641@sirena.org.uk>
- <9400d900-f315-815f-a358-16ed4963da6c@csgroup.eu>
- <20210114115958.GB4854@sirena.org.uk>
- <006d1594-8eec-3aad-1651-919071e89f3b@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DGlWG5ty2zDscr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 00:28:17 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DGlVy4nNkz9txfg;
+ Thu, 14 Jan 2021 14:28:10 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id pBRC_5wTPWti; Thu, 14 Jan 2021 14:28:10 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DGlVy3xLlz9txff;
+ Thu, 14 Jan 2021 14:28:10 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 169F68B802;
+ Thu, 14 Jan 2021 14:28:12 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id k3GzDk_Fsu50; Thu, 14 Jan 2021 14:28:11 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 98B908B800;
+ Thu, 14 Jan 2021 14:28:11 +0100 (CET)
+Subject: Re: [PATCH v5 02/21] powerpc/64s: move the last of the page fault
+ handling logic to C
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210113073215.516986-1-npiggin@gmail.com>
+ <20210113073215.516986-3-npiggin@gmail.com>
+ <b3f8fffd-ebbe-277d-9c71-cf3a6d8c4475@csgroup.eu>
+ <1610592763.5wfbleady7.astroid@bobo.none>
+ <1610625340.tqgg2ar1jg.astroid@bobo.none>
+ <c07a91b3-561e-7197-1498-874281059e20@csgroup.eu>
+ <1610629691.3ut6cgruc6.astroid@bobo.none>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <afa9875c-e8ed-de3e-d395-435be86bd958@csgroup.eu>
+Date: Thu, 14 Jan 2021 14:28:13 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="WChQLJJJfbwij+9x"
-Content-Disposition: inline
-In-Reply-To: <006d1594-8eec-3aad-1651-919071e89f3b@csgroup.eu>
-X-Cookie: You have taken yourself too seriously.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <1610629691.3ut6cgruc6.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,88 +70,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>,
- Sven Van Asbroeck <thesven73@gmail.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- linux-spi <linux-spi@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---WChQLJJJfbwij+9x
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 14, 2021 at 01:33:50PM +0100, Christophe Leroy wrote:
-> Le 14/01/2021 =E0 12:59, Mark Brown a =E9crit=A0:
-> > On Thu, Jan 14, 2021 at 12:27:42PM +0100, Christophe Leroy wrote:
+Le 14/01/2021 à 14:17, Nicholas Piggin a écrit :
+> Excerpts from Christophe Leroy's message of January 14, 2021 10:25 pm:
+>>
+>>
+>> Le 14/01/2021 à 13:09, Nicholas Piggin a écrit :
+>>> Excerpts from Nicholas Piggin's message of January 14, 2021 1:24 pm:
+>>>> Excerpts from Christophe Leroy's message of January 14, 2021 12:12 am:
+>>>>>
+>>>>>
+>>>>> Le 13/01/2021 à 08:31, Nicholas Piggin a écrit :
+>>>>>> The page fault handling still has some complex logic particularly around
+>>>>>> hash table handling, in asm. Implement this in C instead.
+>>>>>>
+>>>>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>>>>> ---
+>>>>>>     arch/powerpc/include/asm/book3s/64/mmu-hash.h |   1 +
+>>>>>>     arch/powerpc/kernel/exceptions-64s.S          | 131 +++---------------
+>>>>>>     arch/powerpc/mm/book3s64/hash_utils.c         |  77 ++++++----
+>>>>>>     arch/powerpc/mm/fault.c                       |  46 ++++--
+>>>>>>     4 files changed, 107 insertions(+), 148 deletions(-)
+>>>>>>
+>>>>>> diff --git a/arch/powerpc/include/asm/book3s/64/mmu-hash.h b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+>>>>>> index 066b1d34c7bc..60a669379aa0 100644
+>>>>>> --- a/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+>>>>>> +++ b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+>>>>>> @@ -454,6 +454,7 @@ static inline unsigned long hpt_hash(unsigned long vpn,
+>>>>>>     #define HPTE_NOHPTE_UPDATE	0x2
+>>>>>>     #define HPTE_USE_KERNEL_KEY	0x4
+>>>>>>     
+>>>>>> +int do_hash_fault(struct pt_regs *regs, unsigned long ea, unsigned long dsisr);
+>>>>>>     extern int __hash_page_4K(unsigned long ea, unsigned long access,
+>>>>>>     			  unsigned long vsid, pte_t *ptep, unsigned long trap,
+>>>>>>     			  unsigned long flags, int ssize, int subpage_prot);
+>>>>>> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+>>>>>> index 6e53f7638737..bcb5e81d2088 100644
+>>>>>> --- a/arch/powerpc/kernel/exceptions-64s.S
+>>>>>> +++ b/arch/powerpc/kernel/exceptions-64s.S
+>>>>>> @@ -1401,14 +1401,15 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
+>>>>>>      *
+>>>>>>      * Handling:
+>>>>>>      * - Hash MMU
+>>>>>> - *   Go to do_hash_page first to see if the HPT can be filled from an entry in
+>>>>>> - *   the Linux page table. Hash faults can hit in kernel mode in a fairly
+>>>>>> + *   Go to do_hash_fault, which attempts to fill the HPT from an entry in the
+>>>>>> + *   Linux page table. Hash faults can hit in kernel mode in a fairly
+>>>>>>      *   arbitrary state (e.g., interrupts disabled, locks held) when accessing
+>>>>>>      *   "non-bolted" regions, e.g., vmalloc space. However these should always be
+>>>>>> - *   backed by Linux page tables.
+>>>>>> + *   backed by Linux page table entries.
+>>>>>>      *
+>>>>>> - *   If none is found, do a Linux page fault. Linux page faults can happen in
+>>>>>> - *   kernel mode due to user copy operations of course.
+>>>>>> + *   If no entry is found the Linux page fault handler is invoked (by
+>>>>>> + *   do_hash_fault). Linux page faults can happen in kernel mode due to user
+>>>>>> + *   copy operations of course.
+>>>>>>      *
+>>>>>>      *   KVM: The KVM HDSI handler may perform a load with MSR[DR]=1 in guest
+>>>>>>      *   MMU context, which may cause a DSI in the host, which must go to the
+>>>>>> @@ -1439,13 +1440,17 @@ EXC_COMMON_BEGIN(data_access_common)
+>>>>>>     	GEN_COMMON data_access
+>>>>>>     	ld	r4,_DAR(r1)
+>>>>>>     	ld	r5,_DSISR(r1)
+>>>>>
+>>>>> We have DSISR here. I think the dispatch between page fault or do_break() should be done here:
+>>>>> - It would be more similar to other arches
+>>>>
+>>>> Other sub-archs?
+>>>>
+>>>>> - Would avoid doing it also in instruction fault
+>>>>
+>>>> True but it's hidden under an unlikely branch so won't really help
+>>>> instruction fault.
+>>>>
+>>>>> - Would avoid that -1 return which looks more like a hack.
+>>>>
+>>>> I don't really see it as a hack, we return a code to asm caller to
+>>>> direct whether to restore registers or not, we alrady have this
+>>>> pattern.
+>>>>
+>>>> (I'm hoping all that might be go away one day by conrolling NV
+>>>> regs from C if we can get good code generation but even if not we
+>>>> still have it in the interrupt returns).
+>>>>
+>>>> That said I will give it a try here. At very least it might be a
+>>>> better intermediate step.
+>>>
+>>> Ah yes, this way doesn't work well for later patches because you end
+>>> e.g., with the do_break call having to call the interrupt handler
+>>> wrappers again when they actually expect to be in the asm entry state
+>>> (e.g., irq soft-mask state) when called, and return via interrupt_return
+>>> after the exit wrapper runs (which 64s uses to implement better context
+>>> tracking for example).
+>>>
+>>> That could possibly be hacked up to deal with multiple interrupt
+>>> wrappers per interrupt, but I'd rather not go backwards.
+>>>
+>>> That does leave the other sub archs as having this issue, but they don't
+>>> do so much in their handlers. 32 doesn't have soft-mask or context
+>>> tracking to deal with for example. We will need to fix this up though
+>>> and unify things more.
+>>>
+>>
+>> Not sure I understand what you mean exactly.
+>>
+>> On the 8xx, do_break() is called by totally different exceptions:
+>> - Exception 0x1c00 Data breakpoint ==> do_break()
+>> - Exception 0x1300 Instruction TLB error ==> handle_page_fault()
+>> - Exception 0x1400 Data TLB error ==> handle_page_fault()
+>>
+>> On book3s/32, we now (after my patch ie patch 1 in your series ) have either do_break() or
+>> handle_page_fault() being called from very early in ASM.
+>>
+>> If you do the same in book3s/64, then there is no issue with interrupt wrappers being called twice,
+>> is it ?
+> 
+> bad_page_fault is the problem, it has to go afterwards.
+> 
+> Once we have the changed 64s behaviour of do_page_fault, I don't know if
+> there is any point leaving do_break in asm is there? I guess it is neat
+> to treat it quite separately, I might need to count fast path branches...
+> I have done the split anyway already, so I will post your way first.
+> 
 
-> > > Today I have in the DTS the CS GPIOs declared as ACTIVE_LOW.
+As far as I understand, not taken unlikely branches are costless (at least on book3s/32), so you 
+would only suffer the cost of the logical 'and.' on the value of DSISR that you already have in a 
+register. Should be in the noise.
 
-> > > If I declare them as ACTIVE_HIGH instead, then I also have to set
-> > > spi-cs-high property, otherwise of_gpio_flags_quirks() is not happy a=
-nd
-> > > forces the GPIO ACTIVE LOW.
+bad_page_fault() is not in the fast path anymore since we now handle the exception fixup at the end 
+of do_page_fault(). So I think it shouldn't be a concern to call the wrapper again for bad_page_fault()
 
-> > > When I set spi-cs-high property, it sets the SPI_CS_HIGH bit in spi->=
-mode.
-
-> > OK, so it sounds like you want SPI_CS_HIGH and that is being set
-> > correctly?
-
-> > > In fsl_spi_chipselect(), we have
-> > >=20
-> > > 	bool pol =3D spi->mode & SPI_CS_HIGH
-> > >=20
-> > > Then
-> > > 	pdata->cs_control(spi, pol);
-
-> > > So changing the board config is compensated by the above, and at the =
-end it still doesn't work.
-
-> > This is a driver bug, the driver set_cs() operation should not be
-> > modifying the value it is told to set.
-
-> A driver bug ? Or maybe a change forgotten in commit  766c6b63aa04 ("spi:
-> fix client driver breakages when using GPIO descriptors") ?
-
-The expectation that the driver will be using the chip select exactly as
-passed in and not attempting to implement SPI_CS_HIGH itself when it has
-set_cs() has been there for a considerable time now, that's not new with
-the cleanup.  Drivers should only be paying attention to SPI_CS_HIGH in
-cases where the hardware controls the chip select autonomously and so
-set_cs() can't be provided.
-
-> I'm almost sure it was not a bug, it is in line which what is said in
-> the comment removed by the above mentionned commit.
-
-Please take a look at the list archive discussions around this - there's
-been a lot of confusion with GPIO descriptors in particular due to there
-being multiple places where you can set the inversion.  Note that the
-situation you describe above is that you end up with all the various
-places other than your driver agreeing that the chip select is active
-high as it (AFAICT from what you're saying) actually is. =20
-
-For GPIO chipselects you should really fix the driver to just hand the
-GPIO off to the core rather than trying to implement this itself, that
-will avoid driver specific differences like this.
-
---WChQLJJJfbwij+9x
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmAARbEACgkQJNaLcl1U
-h9APTgf/aLwStecUVq1BEe96Q18/NhiIwRQPg/47gbkg+FKp4HlYPvBaXHWBArpP
-1fUIEScYwM6Fw4n+mrL3+fxvQUaYacXxD37oQcBV6R+WlTPPSLofypBXy44k45vj
-oMB3QWLUcLIC+K7AFAAbo9RA6QnSRT719RYo9NHF4qzcgGfweVckj7AkbIkcAbqN
-Vte+RnwqZkY3iLTviZyfCMdIGtDy3+9pNHO9La9/LaLULemKMcMf2sdgHH2j7Ult
-SnihJ2d39fxoNHSw+BgurYZ9APuiiHLL7Hq8sYbCkAZvdpFHR2TD8uovZeMbXZrs
-42Uykbf8X9XIV9EtnwEkNN5ulcQnKw==
-=oOhx
------END PGP SIGNATURE-----
-
---WChQLJJJfbwij+9x--
+Christophe
