@@ -1,72 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE052F6063
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 12:40:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A416E2F606D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 12:45:37 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DGj756D89zDrYf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 22:40:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DGjDZ4WgHzDrdV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 22:45:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=viresh.kumar@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::52c;
+ helo=mail-pg1-x52c.google.com; envelope-from=viresh.kumar@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=DW82SJds; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
+ header.s=google header.b=fY4+qIrz; dkim-atps=neutral
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
+ [IPv6:2607:f8b0:4864:20::52c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DGj1x17x6zDrdV
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 22:36:16 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id x12so2756599plr.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 03:36:16 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DGj200X00zDrdV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 22:36:23 +1100 (AEDT)
+Received: by mail-pg1-x52c.google.com with SMTP id c132so3612899pga.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 03:36:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=5hXkp3gg4YGPt+TOgCHux/nhvRnHEfJIXXAJayhktZY=;
- b=DW82SJds3N9KAdK1ScEVl6U0a25BF08f9YxnCaHTOX+Nwu5XPabB95rw7OJfQu30iK
- MBukVwhgImVfttUJJsZ4kord3QL3pPURiFsbUeeyk+dZL1rpyB8IxIg028kA0ptkq6oL
- +ul5dEr2s6l2cZQETylRTcIyA2gcuShDo9IfzY0ZjIvJtxkrjXY+3slyCdLD09h7OKw6
- vy/1G7dVOB0jPVKXH959n6/pEeoUukJqWnZzfT9YzFtYpgaPiPL8+TCxH1WiIoXdMER3
- eG7VSU+FWHI3T8Sr7VXA5nCL+Plbh2brKKhul5gfc1LYT4K151XJ1hvr4oZp7fAAG8rJ
- 8J0A==
+ bh=dXLnsMtexuirrUQvBFEV48LoyWOSeTBSCYW9UHunA14=;
+ b=fY4+qIrz41uuteLnzy0f7sq3bUAM25+peTD0+CfEYUn4889o2nRdvPyoCdWQoxArn4
+ 2/tvrOSmlVwxQwu5+FlMm/O+gJqhUDTt+K+w9lpuUomKob976deamwbXJUKzS7LmwalQ
+ 4Rrx2+rQ4qY94ydaSyZP+ASZjFgee5Wy/D0/j20SeFUEJizpFWh7QkoPK+ZCittQA489
+ XzrjPSjniZfbgvABjXQjcTyEOpw/TFRW/zBY3w6zSrTVLbsGTUuatGl0hcS1CBmMZtLw
+ 0sIz/wNfOK18VF7fls7m/G6/m2ceui0p+5o7UXpy60RNZE34R+qaoQ0U4Wz7LpdXGGwk
+ S6mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=5hXkp3gg4YGPt+TOgCHux/nhvRnHEfJIXXAJayhktZY=;
- b=BaaFETUS5B8HqJ9aZXjdoFxA4IAYTnaOiEY5/qnHmeLIgJf0n+WPK2MOVB/KXixXot
- WzsAAKXaF37RjDYfTS/r4OlVfks00wa6ee85PkcHZz3uTYNZx7ywGmpivhymw28GGDym
- Qot4vqRXxS9+lWS8zlWRLK5RoR97L9Hs9nEs6zdpUgGau13RQaI+GFDj2qgwOQAaQYLV
- 5lV/L+g9XTUivuXeWgooEFlVBj6K0UtZq5Tswv2vjC8QKBsDgAi/qvCJJtt8LyyiYQ6s
- MDgUK7tWoNnzaUEVIWSABWl+5FCJ/VJa9eX20PaA+sASTCE34BkiUbD/YWmEYJTZfCe6
- 1VRA==
-X-Gm-Message-State: AOAM532jeQ59GrUO4LajbXHxDelUTZkzoDGuWQC7bSTABptkdXcIQX4m
- N2UDXi1AqgQDQ4xskSwUj3NF3Q==
-X-Google-Smtp-Source: ABdhPJxZ7RZ1nbV3MVlfwFb21ITzaTUXMFj6g3fYQiOznVszLZllMLMWxZYnEyxSGaMe1g2bLpchNw==
-X-Received: by 2002:a17:902:b203:b029:dc:973:3ad0 with SMTP id
- t3-20020a170902b203b02900dc09733ad0mr7168019plr.44.1610624173104; 
- Thu, 14 Jan 2021 03:36:13 -0800 (PST)
+ bh=dXLnsMtexuirrUQvBFEV48LoyWOSeTBSCYW9UHunA14=;
+ b=Hnldpw30jy6y2ixAu1CeY07QmbZNUaW+N8U2dSk9NvR7G8eP0UyvO7EOrBU/8HIUME
+ SeGCNdeYOUGVezVf6YA+V00hFvww4CP2U7ZM+EmFChHGX8ap060Jya/Z8wYSQxIWK7bj
+ EX2l/npgZz2eAQTO77JSoKGacBgL2ydmUGuzQuRmujAI3eAO2rwIz7PA4B7tMc1OWyLs
+ pilqhOhEVjgwkwvyFjFWpbvOmJ64JV8PYXMW3W/mszp+HexiU8pl3UjezpZ1m/mdYPxA
+ 3SgAWio0nadrw0nPXDEgRNpzWH5ZmOr+Csmr5G2fE8gQOz3AaJQ+B8MJGa7kYJRCJlOg
+ 57ZQ==
+X-Gm-Message-State: AOAM5322XwhGV7ll6rX5RZx8xcmQa6fZUFcsnn2VTUfqSeysHuZf8Jru
+ 2K8yG12zcIkIGg9xq5wondo4IQ==
+X-Google-Smtp-Source: ABdhPJw3hkYFQoZEI+KQ/Z78370xJFG/AJkGEwXGWDtyp6F8fyUhuwbt5gVSzRpD4q01jDyMH5TDPw==
+X-Received: by 2002:a05:6a00:1716:b029:19e:11b0:7804 with SMTP id
+ h22-20020a056a001716b029019e11b07804mr6974010pfc.57.1610624178760; 
+ Thu, 14 Jan 2021 03:36:18 -0800 (PST)
 Received: from localhost ([122.172.85.111])
- by smtp.gmail.com with ESMTPSA id c10sm5227584pfj.54.2021.01.14.03.36.11
+ by smtp.gmail.com with ESMTPSA id y6sm5108338pfn.145.2021.01.14.03.36.17
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 14 Jan 2021 03:36:12 -0800 (PST)
+ Thu, 14 Jan 2021 03:36:18 -0800 (PST)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
  Robert Richter <rric@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Arnd Bergmann <arnd@arndb.de>,
- Jeremy Kerr <jk@ozlabs.org>
-Subject: [PATCH 10/18] arch: powerpc: Stop building and using oprofile
-Date: Thu, 14 Jan 2021 17:05:23 +0530
-Message-Id: <fd155a0a1e52650ddc9ec57a1d211fdc777beddb.1610622251.git.viresh.kumar@linaro.org>
+ Paul Mackerras <paulus@samba.org>
+Subject: [PATCH 11/18] arch: powerpc: Remove oprofile
+Date: Thu, 14 Jan 2021 17:05:24 +0530
+Message-Id: <05a2cf74573fb6a818ff938296464b35655fca78.1610622251.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.25.0.rc1.19.g042ed3e048af
 In-Reply-To: <cover.1610622251.git.viresh.kumar@linaro.org>
 References: <cover.1610622251.git.viresh.kumar@linaro.org>
@@ -93,1069 +92,4748 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The "oprofile" user-space tools don't use the kernel OPROFILE support
-any more, and haven't in a long time. User-space has been converted to
-the perf interfaces.
-
-This commits stops building oprofile for powerpc and removes any
-reference to it from directories in arch/powerpc/ apart from
-arch/powerpc/oprofile, which will be removed in the next commit (this is
-broken into two commits as the size of the commit became very big, ~5k
-lines).
-
-Note that the member "oprofile_cpu_type" in "struct cpu_spec" isn't
-removed as it was also used by other parts of the code.
+The previous commit already disabled building oprofile, lets remove the
+oprofile directory now.
 
 Suggested-by: Christoph Hellwig <hch@infradead.org>
 Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- arch/powerpc/Kconfig                          |   1 -
- arch/powerpc/Makefile                         |   2 -
- arch/powerpc/configs/44x/akebono_defconfig    |   1 -
- arch/powerpc/configs/44x/currituck_defconfig  |   1 -
- arch/powerpc/configs/44x/fsp2_defconfig       |   1 -
- arch/powerpc/configs/44x/iss476-smp_defconfig |   1 -
- arch/powerpc/configs/cell_defconfig           |   1 -
- arch/powerpc/configs/g5_defconfig             |   1 -
- arch/powerpc/configs/maple_defconfig          |   1 -
- arch/powerpc/configs/pasemi_defconfig         |   1 -
- arch/powerpc/configs/pmac32_defconfig         |   1 -
- arch/powerpc/configs/powernv_defconfig        |   1 -
- arch/powerpc/configs/ppc64_defconfig          |   1 -
- arch/powerpc/configs/ppc64e_defconfig         |   1 -
- arch/powerpc/configs/ppc6xx_defconfig         |   1 -
- arch/powerpc/configs/ps3_defconfig            |   1 -
- arch/powerpc/configs/pseries_defconfig        |   1 -
- arch/powerpc/include/asm/cputable.h           |  20 ---
- arch/powerpc/include/asm/oprofile_impl.h      | 135 ------------------
- arch/powerpc/include/asm/spu.h                |  33 -----
- arch/powerpc/kernel/cputable.c                |  67 ---------
- arch/powerpc/kernel/dt_cpu_ftrs.c             |   2 -
- arch/powerpc/platforms/cell/Kconfig           |   5 -
- arch/powerpc/platforms/cell/spu_notify.c      |  55 -------
- arch/powerpc/platforms/cell/spufs/run.c       |   4 +-
- arch/powerpc/platforms/cell/spufs/sched.c     |   5 -
- arch/powerpc/platforms/cell/spufs/spufs.h     |   1 -
- 27 files changed, 1 insertion(+), 344 deletions(-)
- delete mode 100644 arch/powerpc/include/asm/oprofile_impl.h
- delete mode 100644 arch/powerpc/platforms/cell/spu_notify.c
+ arch/powerpc/oprofile/Makefile             |   19 -
+ arch/powerpc/oprofile/backtrace.c          |  120 --
+ arch/powerpc/oprofile/cell/pr_util.h       |  110 --
+ arch/powerpc/oprofile/cell/spu_profiler.c  |  248 ---
+ arch/powerpc/oprofile/cell/spu_task_sync.c |  657 --------
+ arch/powerpc/oprofile/cell/vma_map.c       |  279 ----
+ arch/powerpc/oprofile/common.c             |  243 ---
+ arch/powerpc/oprofile/op_model_7450.c      |  207 ---
+ arch/powerpc/oprofile/op_model_cell.c      | 1709 --------------------
+ arch/powerpc/oprofile/op_model_fsl_emb.c   |  380 -----
+ arch/powerpc/oprofile/op_model_pa6t.c      |  227 ---
+ arch/powerpc/oprofile/op_model_power4.c    |  438 -----
+ 12 files changed, 4637 deletions(-)
+ delete mode 100644 arch/powerpc/oprofile/Makefile
+ delete mode 100644 arch/powerpc/oprofile/backtrace.c
+ delete mode 100644 arch/powerpc/oprofile/cell/pr_util.h
+ delete mode 100644 arch/powerpc/oprofile/cell/spu_profiler.c
+ delete mode 100644 arch/powerpc/oprofile/cell/spu_task_sync.c
+ delete mode 100644 arch/powerpc/oprofile/cell/vma_map.c
+ delete mode 100644 arch/powerpc/oprofile/common.c
+ delete mode 100644 arch/powerpc/oprofile/op_model_7450.c
+ delete mode 100644 arch/powerpc/oprofile/op_model_cell.c
+ delete mode 100644 arch/powerpc/oprofile/op_model_fsl_emb.c
+ delete mode 100644 arch/powerpc/oprofile/op_model_pa6t.c
+ delete mode 100644 arch/powerpc/oprofile/op_model_power4.c
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 107bb4319e0e..1897c0ff2f2b 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -226,7 +226,6 @@ config PPC
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
- 	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if (PPC64 && PPC_BOOK3S)
--	select HAVE_OPROFILE
- 	select HAVE_OPTPROBES			if PPC64
- 	select HAVE_PERF_EVENTS
- 	select HAVE_PERF_EVENTS_NMI		if PPC64
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 08cf0eade56a..b959fdaec713 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -276,8 +276,6 @@ head-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE)  += arch/powerpc/kernel/prom_init.o
- # See arch/powerpc/Kbuild for content of core part of the kernel
- core-y += arch/powerpc/
- 
--drivers-$(CONFIG_OPROFILE)	+= arch/powerpc/oprofile/
+diff --git a/arch/powerpc/oprofile/Makefile b/arch/powerpc/oprofile/Makefile
+deleted file mode 100644
+index bb2d94c8cbe6..000000000000
+--- a/arch/powerpc/oprofile/Makefile
++++ /dev/null
+@@ -1,19 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0
 -
- # Default to zImage, override when needed
- all: zImage
- 
-diff --git a/arch/powerpc/configs/44x/akebono_defconfig b/arch/powerpc/configs/44x/akebono_defconfig
-index 3894ba8f8ffc..72b8f93a9bdd 100644
---- a/arch/powerpc/configs/44x/akebono_defconfig
-+++ b/arch/powerpc/configs/44x/akebono_defconfig
-@@ -8,7 +8,6 @@ CONFIG_EXPERT=y
- CONFIG_KALLSYMS_ALL=y
- # CONFIG_SLUB_CPU_PARTIAL is not set
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
-diff --git a/arch/powerpc/configs/44x/currituck_defconfig b/arch/powerpc/configs/44x/currituck_defconfig
-index 34c86b3abecb..717827219921 100644
---- a/arch/powerpc/configs/44x/currituck_defconfig
-+++ b/arch/powerpc/configs/44x/currituck_defconfig
-@@ -6,7 +6,6 @@ CONFIG_LOG_BUF_SHIFT=14
- CONFIG_EXPERT=y
- CONFIG_KALLSYMS_ALL=y
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
-diff --git a/arch/powerpc/configs/44x/fsp2_defconfig b/arch/powerpc/configs/44x/fsp2_defconfig
-index 30845ce0885a..8da316e61a08 100644
---- a/arch/powerpc/configs/44x/fsp2_defconfig
-+++ b/arch/powerpc/configs/44x/fsp2_defconfig
-@@ -17,7 +17,6 @@ CONFIG_KALLSYMS_ALL=y
- CONFIG_BPF_SYSCALL=y
- CONFIG_EMBEDDED=y
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
-diff --git a/arch/powerpc/configs/44x/iss476-smp_defconfig b/arch/powerpc/configs/44x/iss476-smp_defconfig
-index 2c3834eebca3..c11e777b2f3d 100644
---- a/arch/powerpc/configs/44x/iss476-smp_defconfig
-+++ b/arch/powerpc/configs/44x/iss476-smp_defconfig
-@@ -7,7 +7,6 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_EXPERT=y
- CONFIG_KALLSYMS_ALL=y
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
-diff --git a/arch/powerpc/configs/cell_defconfig b/arch/powerpc/configs/cell_defconfig
-index 42fbc70cec33..cc2c0d51f493 100644
---- a/arch/powerpc/configs/cell_defconfig
-+++ b/arch/powerpc/configs/cell_defconfig
-@@ -14,7 +14,6 @@ CONFIG_CPUSETS=y
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=m
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_PARTITION_ADVANCED=y
-diff --git a/arch/powerpc/configs/g5_defconfig b/arch/powerpc/configs/g5_defconfig
-index 1de0dbf6cbba..63d611cc160f 100644
---- a/arch/powerpc/configs/g5_defconfig
-+++ b/arch/powerpc/configs/g5_defconfig
-@@ -12,7 +12,6 @@ CONFIG_CGROUPS=y
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
-diff --git a/arch/powerpc/configs/maple_defconfig b/arch/powerpc/configs/maple_defconfig
-index 161351a18517..9424c1e67e1c 100644
---- a/arch/powerpc/configs/maple_defconfig
-+++ b/arch/powerpc/configs/maple_defconfig
-@@ -9,7 +9,6 @@ CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=m
- CONFIG_KPROBES=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
-diff --git a/arch/powerpc/configs/pasemi_defconfig b/arch/powerpc/configs/pasemi_defconfig
-index 15ed8d0aa014..78606b7e42df 100644
---- a/arch/powerpc/configs/pasemi_defconfig
-+++ b/arch/powerpc/configs/pasemi_defconfig
-@@ -7,7 +7,6 @@ CONFIG_NO_HZ=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_BLK_DEV_BSG is not set
-diff --git a/arch/powerpc/configs/pmac32_defconfig b/arch/powerpc/configs/pmac32_defconfig
-index 665a8d7cded0..7aefac5afab0 100644
---- a/arch/powerpc/configs/pmac32_defconfig
-+++ b/arch/powerpc/configs/pmac32_defconfig
-@@ -10,7 +10,6 @@ CONFIG_LOG_BUF_SHIFT=14
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODULE_FORCE_UNLOAD=y
-diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
-index 60a30fffeda0..2c87e856d839 100644
---- a/arch/powerpc/configs/powernv_defconfig
-+++ b/arch/powerpc/configs/powernv_defconfig
-@@ -30,7 +30,6 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_BPF_SYSCALL=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=m
- CONFIG_KPROBES=y
- CONFIG_JUMP_LABEL=y
- CONFIG_MODULES=y
-diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
-index 48759656a067..4f05a6652478 100644
---- a/arch/powerpc/configs/ppc64_defconfig
-+++ b/arch/powerpc/configs/ppc64_defconfig
-@@ -62,7 +62,6 @@ CONFIG_VIRTUALIZATION=y
- CONFIG_KVM_BOOK3S_64=m
- CONFIG_KVM_BOOK3S_64_HV=m
- CONFIG_VHOST_NET=m
--CONFIG_OPROFILE=m
- CONFIG_KPROBES=y
- CONFIG_JUMP_LABEL=y
- CONFIG_MODULES=y
-diff --git a/arch/powerpc/configs/ppc64e_defconfig b/arch/powerpc/configs/ppc64e_defconfig
-index 33a01a9e86be..5cf49a515f8e 100644
---- a/arch/powerpc/configs/ppc64e_defconfig
-+++ b/arch/powerpc/configs/ppc64e_defconfig
-@@ -14,7 +14,6 @@ CONFIG_CPUSETS=y
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index ef09f3cce1fa..10c055eaebf0 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -19,7 +19,6 @@ CONFIG_USER_NS=y
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=m
- CONFIG_KPROBES=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
-diff --git a/arch/powerpc/configs/ps3_defconfig b/arch/powerpc/configs/ps3_defconfig
-index 142f1321fa58..f300dcb937cc 100644
---- a/arch/powerpc/configs/ps3_defconfig
-+++ b/arch/powerpc/configs/ps3_defconfig
-@@ -13,7 +13,6 @@ CONFIG_EMBEDDED=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLAB=y
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=m
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_PPC_POWERNV is not set
-diff --git a/arch/powerpc/configs/pseries_defconfig b/arch/powerpc/configs/pseries_defconfig
-index d5dece981c02..777221775c83 100644
---- a/arch/powerpc/configs/pseries_defconfig
-+++ b/arch/powerpc/configs/pseries_defconfig
-@@ -29,7 +29,6 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_BPF_SYSCALL=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=m
- CONFIG_KPROBES=y
- CONFIG_JUMP_LABEL=y
- CONFIG_MODULES=y
-diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
-index 5f21a5bab467..e85c849214a2 100644
---- a/arch/powerpc/include/asm/cputable.h
-+++ b/arch/powerpc/include/asm/cputable.h
-@@ -17,16 +17,6 @@ struct cpu_spec;
- typedef	void (*cpu_setup_t)(unsigned long offset, struct cpu_spec* spec);
- typedef	void (*cpu_restore_t)(void);
- 
--enum powerpc_oprofile_type {
--	PPC_OPROFILE_INVALID = 0,
--	PPC_OPROFILE_RS64 = 1,
--	PPC_OPROFILE_POWER4 = 2,
--	PPC_OPROFILE_G4 = 3,
--	PPC_OPROFILE_FSL_EMB = 4,
--	PPC_OPROFILE_CELL = 5,
--	PPC_OPROFILE_PA6T = 6,
+-ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
+-
+-obj-$(CONFIG_OPROFILE) += oprofile.o
+-
+-DRIVER_OBJS := $(addprefix ../../../drivers/oprofile/, \
+-		oprof.o cpu_buffer.o buffer_sync.o \
+-		event_buffer.o oprofile_files.o \
+-		oprofilefs.o oprofile_stats.o \
+-		timer_int.o )
+-
+-oprofile-y := $(DRIVER_OBJS) common.o backtrace.o
+-oprofile-$(CONFIG_OPROFILE_CELL) += op_model_cell.o \
+-		cell/spu_profiler.o cell/vma_map.o \
+-		cell/spu_task_sync.o
+-oprofile-$(CONFIG_PPC_BOOK3S_64) += op_model_power4.o op_model_pa6t.o
+-oprofile-$(CONFIG_FSL_EMB_PERFMON) += op_model_fsl_emb.o
+-oprofile-$(CONFIG_PPC_BOOK3S_32) += op_model_7450.o
+diff --git a/arch/powerpc/oprofile/backtrace.c b/arch/powerpc/oprofile/backtrace.c
+deleted file mode 100644
+index 9db7ada79d10..000000000000
+--- a/arch/powerpc/oprofile/backtrace.c
++++ /dev/null
+@@ -1,120 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/**
+- * Copyright (C) 2005 Brian Rogan <bcr6@cornell.edu>, IBM
+- *
+-**/
+-
+-#include <linux/time.h>
+-#include <linux/oprofile.h>
+-#include <linux/sched.h>
+-#include <asm/processor.h>
+-#include <linux/uaccess.h>
+-#include <linux/compat.h>
+-#include <asm/oprofile_impl.h>
+-
+-#define STACK_SP(STACK)		*(STACK)
+-
+-#define STACK_LR64(STACK)	*((unsigned long *)(STACK) + 2)
+-#define STACK_LR32(STACK)	*((unsigned int *)(STACK) + 1)
+-
+-#ifdef CONFIG_PPC64
+-#define STACK_LR(STACK)		STACK_LR64(STACK)
+-#else
+-#define STACK_LR(STACK)		STACK_LR32(STACK)
+-#endif
+-
+-static unsigned int user_getsp32(unsigned int sp, int is_first)
+-{
+-	unsigned int stack_frame[2];
+-	void __user *p = compat_ptr(sp);
+-
+-	/*
+-	 * The most likely reason for this is that we returned -EFAULT,
+-	 * which means that we've done all that we can do from
+-	 * interrupt context.
+-	 */
+-	if (copy_from_user_nofault(stack_frame, (void __user *)p,
+-			sizeof(stack_frame)))
+-		return 0;
+-
+-	if (!is_first)
+-		oprofile_add_trace(STACK_LR32(stack_frame));
+-
+-	/*
+-	 * We do not enforce increasing stack addresses here because
+-	 * we may transition to a different stack, eg a signal handler.
+-	 */
+-	return STACK_SP(stack_frame);
+-}
+-
+-#ifdef CONFIG_PPC64
+-static unsigned long user_getsp64(unsigned long sp, int is_first)
+-{
+-	unsigned long stack_frame[3];
+-
+-	if (copy_from_user_nofault(stack_frame, (void __user *)sp,
+-			sizeof(stack_frame)))
+-		return 0;
+-
+-	if (!is_first)
+-		oprofile_add_trace(STACK_LR64(stack_frame));
+-
+-	return STACK_SP(stack_frame);
+-}
+-#endif
+-
+-static unsigned long kernel_getsp(unsigned long sp, int is_first)
+-{
+-	unsigned long *stack_frame = (unsigned long *)sp;
+-
+-	if (!validate_sp(sp, current, STACK_FRAME_OVERHEAD))
+-		return 0;
+-
+-	if (!is_first)
+-		oprofile_add_trace(STACK_LR(stack_frame));
+-
+-	/*
+-	 * We do not enforce increasing stack addresses here because
+-	 * we might be transitioning from an interrupt stack to a kernel
+-	 * stack. validate_sp() is designed to understand this, so just
+-	 * use it.
+-	 */
+-	return STACK_SP(stack_frame);
+-}
+-
+-void op_powerpc_backtrace(struct pt_regs * const regs, unsigned int depth)
+-{
+-	unsigned long sp = regs->gpr[1];
+-	int first_frame = 1;
+-
+-	/* We ditch the top stackframe so need to loop through an extra time */
+-	depth += 1;
+-
+-	if (!user_mode(regs)) {
+-		while (depth--) {
+-			sp = kernel_getsp(sp, first_frame);
+-			if (!sp)
+-				break;
+-			first_frame = 0;
+-		}
+-	} else {
+-#ifdef CONFIG_PPC64
+-		if (!is_32bit_task()) {
+-			while (depth--) {
+-				sp = user_getsp64(sp, first_frame);
+-				if (!sp)
+-					break;
+-				first_frame = 0;
+-			}
+-			return;
+-		}
+-#endif
+-
+-		while (depth--) {
+-			sp = user_getsp32(sp, first_frame);
+-			if (!sp)
+-				break;
+-			first_frame = 0;
+-		}
+-	}
+-}
+diff --git a/arch/powerpc/oprofile/cell/pr_util.h b/arch/powerpc/oprofile/cell/pr_util.h
+deleted file mode 100644
+index e198efa9113a..000000000000
+--- a/arch/powerpc/oprofile/cell/pr_util.h
++++ /dev/null
+@@ -1,110 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+- /*
+- * Cell Broadband Engine OProfile Support
+- *
+- * (C) Copyright IBM Corporation 2006
+- *
+- * Author: Maynard Johnson <maynardj@us.ibm.com>
+- */
+-
+-#ifndef PR_UTIL_H
+-#define PR_UTIL_H
+-
+-#include <linux/cpumask.h>
+-#include <linux/oprofile.h>
+-#include <asm/cell-pmu.h>
+-#include <asm/cell-regs.h>
+-#include <asm/spu.h>
+-
+-/* Defines used for sync_start */
+-#define SKIP_GENERIC_SYNC 0
+-#define SYNC_START_ERROR -1
+-#define DO_GENERIC_SYNC 1
+-#define SPUS_PER_NODE   8
+-#define DEFAULT_TIMER_EXPIRE  (HZ / 10)
+-
+-extern struct delayed_work spu_work;
+-extern int spu_prof_running;
+-
+-#define TRACE_ARRAY_SIZE 1024
+-
+-extern spinlock_t oprof_spu_smpl_arry_lck;
+-
+-struct spu_overlay_info {	/* map of sections within an SPU overlay */
+-	unsigned int vma;	/* SPU virtual memory address from elf */
+-	unsigned int size;	/* size of section from elf */
+-	unsigned int offset;	/* offset of section into elf file */
+-	unsigned int buf;
 -};
 -
- enum powerpc_pmc_type {
- 	PPC_PMC_DEFAULT = 0,
- 	PPC_PMC_IBM = 1,
-@@ -83,16 +73,6 @@ struct cpu_spec {
- 	/* Used by oprofile userspace to select the right counters */
- 	char		*oprofile_cpu_type;
- 
--	/* Processor specific oprofile operations */
--	enum powerpc_oprofile_type oprofile_type;
+-struct vma_to_fileoffset_map {	/* map of sections within an SPU program */
+-	struct vma_to_fileoffset_map *next;	/* list pointer */
+-	unsigned int vma;	/* SPU virtual memory address from elf */
+-	unsigned int size;	/* size of section from elf */
+-	unsigned int offset;	/* offset of section into elf file */
+-	unsigned int guard_ptr;
+-	unsigned int guard_val;
+-        /*
+-	 * The guard pointer is an entry in the _ovly_buf_table,
+-	 * computed using ovly.buf as the index into the table.  Since
+-	 * ovly.buf values begin at '1' to reference the first (or 0th)
+-	 * entry in the _ovly_buf_table, the computation subtracts 1
+-	 * from ovly.buf.
+-	 * The guard value is stored in the _ovly_buf_table entry and
+-	 * is an index (starting at 1) back to the _ovly_table entry
+-	 * that is pointing at this _ovly_buf_table entry.  So, for
+-	 * example, for an overlay scenario with one overlay segment
+-	 * and two overlay sections:
+-	 *      - Section 1 points to the first entry of the
+-	 *        _ovly_buf_table, which contains a guard value
+-	 *        of '1', referencing the first (index=0) entry of
+-	 *        _ovly_table.
+-	 *      - Section 2 points to the second entry of the
+-	 *        _ovly_buf_table, which contains a guard value
+-	 *        of '2', referencing the second (index=1) entry of
+-	 *        _ovly_table.
+-	 */
 -
--	/* Bit locations inside the mmcra change */
--	unsigned long	oprofile_mmcra_sihv;
--	unsigned long	oprofile_mmcra_sipr;
+-};
 -
--	/* Bits to clear during an oprofile exception */
--	unsigned long	oprofile_mmcra_clear;
+-struct spu_buffer {
+-	int last_guard_val;
+-	int ctx_sw_seen;
+-	unsigned long *buff;
+-	unsigned int head, tail;
+-};
 -
- 	/* Name of processor class, for the ELF AT_PLATFORM entry */
- 	char		*platform;
- 
-diff --git a/arch/powerpc/include/asm/oprofile_impl.h b/arch/powerpc/include/asm/oprofile_impl.h
-deleted file mode 100644
-index 2a166c297f97..000000000000
---- a/arch/powerpc/include/asm/oprofile_impl.h
-+++ /dev/null
-@@ -1,135 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
+-
+-/* The three functions below are for maintaining and accessing
+- * the vma-to-fileoffset map.
+- */
+-struct vma_to_fileoffset_map *create_vma_map(const struct spu *spu,
+-					     unsigned long objectid);
+-unsigned int vma_map_lookup(struct vma_to_fileoffset_map *map,
+-			    unsigned int vma, const struct spu *aSpu,
+-			    int *grd_val);
+-void vma_map_free(struct vma_to_fileoffset_map *map);
+-
 -/*
+- * Entry point for SPU profiling.
+- * cycles_reset is the SPU_CYCLES count value specified by the user.
+- */
+-int start_spu_profiling_cycles(unsigned int cycles_reset);
+-void start_spu_profiling_events(void);
+-
+-void stop_spu_profiling_cycles(void);
+-void stop_spu_profiling_events(void);
+-
+-/* add the necessary profiling hooks */
+-int spu_sync_start(void);
+-
+-/* remove the hooks */
+-int spu_sync_stop(void);
+-
+-/* Record SPU program counter samples to the oprofile event buffer. */
+-void spu_sync_buffer(int spu_num, unsigned int *samples,
+-		     int num_samples);
+-
+-void set_spu_profiling_frequency(unsigned int freq_khz, unsigned int cycles_reset);
+-
+-#endif	  /* PR_UTIL_H */
+diff --git a/arch/powerpc/oprofile/cell/spu_profiler.c b/arch/powerpc/oprofile/cell/spu_profiler.c
+deleted file mode 100644
+index cdf883445a9f..000000000000
+--- a/arch/powerpc/oprofile/cell/spu_profiler.c
++++ /dev/null
+@@ -1,248 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Cell Broadband Engine OProfile Support
+- *
+- * (C) Copyright IBM Corporation 2006
+- *
+- * Authors: Maynard Johnson <maynardj@us.ibm.com>
+- *	    Carl Love <carll@us.ibm.com>
+- */
+-
+-#include <linux/hrtimer.h>
+-#include <linux/smp.h>
+-#include <linux/slab.h>
+-#include <asm/cell-pmu.h>
+-#include <asm/time.h>
+-#include "pr_util.h"
+-
+-#define SCALE_SHIFT 14
+-
+-static u32 *samples;
+-
+-/* spu_prof_running is a flag used to indicate if spu profiling is enabled
+- * or not.  It is set by the routines start_spu_profiling_cycles() and
+- * start_spu_profiling_events().  The flag is cleared by the routines
+- * stop_spu_profiling_cycles() and stop_spu_profiling_events().  These
+- * routines are called via global_start() and global_stop() which are called in
+- * op_powerpc_start() and op_powerpc_stop().  These routines are called once
+- * per system as a result of the user starting/stopping oprofile.  Hence, only
+- * one CPU per user at a time will be changing  the value of spu_prof_running.
+- * In general, OProfile does not protect against multiple users trying to run
+- * OProfile at a time.
+- */
+-int spu_prof_running;
+-static unsigned int profiling_interval;
+-
+-#define NUM_SPU_BITS_TRBUF 16
+-#define SPUS_PER_TB_ENTRY   4
+-
+-#define SPU_PC_MASK	     0xFFFF
+-
+-DEFINE_SPINLOCK(oprof_spu_smpl_arry_lck);
+-static unsigned long oprof_spu_smpl_arry_lck_flags;
+-
+-void set_spu_profiling_frequency(unsigned int freq_khz, unsigned int cycles_reset)
+-{
+-	unsigned long ns_per_cyc;
+-
+-	if (!freq_khz)
+-		freq_khz = ppc_proc_freq/1000;
+-
+-	/* To calculate a timeout in nanoseconds, the basic
+-	 * formula is ns = cycles_reset * (NSEC_PER_SEC / cpu frequency).
+-	 * To avoid floating point math, we use the scale math
+-	 * technique as described in linux/jiffies.h.  We use
+-	 * a scale factor of SCALE_SHIFT, which provides 4 decimal places
+-	 * of precision.  This is close enough for the purpose at hand.
+-	 *
+-	 * The value of the timeout should be small enough that the hw
+-	 * trace buffer will not get more than about 1/3 full for the
+-	 * maximum user specified (the LFSR value) hw sampling frequency.
+-	 * This is to ensure the trace buffer will never fill even if the
+-	 * kernel thread scheduling varies under a heavy system load.
+-	 */
+-
+-	ns_per_cyc = (USEC_PER_SEC << SCALE_SHIFT)/freq_khz;
+-	profiling_interval = (ns_per_cyc * cycles_reset) >> SCALE_SHIFT;
+-
+-}
+-
+-/*
+- * Extract SPU PC from trace buffer entry
+- */
+-static void spu_pc_extract(int cpu, int entry)
+-{
+-	/* the trace buffer is 128 bits */
+-	u64 trace_buffer[2];
+-	u64 spu_mask;
+-	int spu;
+-
+-	spu_mask = SPU_PC_MASK;
+-
+-	/* Each SPU PC is 16 bits; hence, four spus in each of
+-	 * the two 64-bit buffer entries that make up the
+-	 * 128-bit trace_buffer entry.	Process two 64-bit values
+-	 * simultaneously.
+-	 * trace[0] SPU PC contents are: 0 1 2 3
+-	 * trace[1] SPU PC contents are: 4 5 6 7
+-	 */
+-
+-	cbe_read_trace_buffer(cpu, trace_buffer);
+-
+-	for (spu = SPUS_PER_TB_ENTRY-1; spu >= 0; spu--) {
+-		/* spu PC trace entry is upper 16 bits of the
+-		 * 18 bit SPU program counter
+-		 */
+-		samples[spu * TRACE_ARRAY_SIZE + entry]
+-			= (spu_mask & trace_buffer[0]) << 2;
+-		samples[(spu + SPUS_PER_TB_ENTRY) * TRACE_ARRAY_SIZE + entry]
+-			= (spu_mask & trace_buffer[1]) << 2;
+-
+-		trace_buffer[0] = trace_buffer[0] >> NUM_SPU_BITS_TRBUF;
+-		trace_buffer[1] = trace_buffer[1] >> NUM_SPU_BITS_TRBUF;
+-	}
+-}
+-
+-static int cell_spu_pc_collection(int cpu)
+-{
+-	u32 trace_addr;
+-	int entry;
+-
+-	/* process the collected SPU PC for the node */
+-
+-	entry = 0;
+-
+-	trace_addr = cbe_read_pm(cpu, trace_address);
+-	while (!(trace_addr & CBE_PM_TRACE_BUF_EMPTY)) {
+-		/* there is data in the trace buffer to process */
+-		spu_pc_extract(cpu, entry);
+-
+-		entry++;
+-
+-		if (entry >= TRACE_ARRAY_SIZE)
+-			/* spu_samples is full */
+-			break;
+-
+-		trace_addr = cbe_read_pm(cpu, trace_address);
+-	}
+-
+-	return entry;
+-}
+-
+-
+-static enum hrtimer_restart profile_spus(struct hrtimer *timer)
+-{
+-	ktime_t kt;
+-	int cpu, node, k, num_samples, spu_num;
+-
+-	if (!spu_prof_running)
+-		goto stop;
+-
+-	for_each_online_cpu(cpu) {
+-		if (cbe_get_hw_thread_id(cpu))
+-			continue;
+-
+-		node = cbe_cpu_to_node(cpu);
+-
+-		/* There should only be one kernel thread at a time processing
+-		 * the samples.	 In the very unlikely case that the processing
+-		 * is taking a very long time and multiple kernel threads are
+-		 * started to process the samples.  Make sure only one kernel
+-		 * thread is working on the samples array at a time.  The
+-		 * sample array must be loaded and then processed for a given
+-		 * cpu.	 The sample array is not per cpu.
+-		 */
+-		spin_lock_irqsave(&oprof_spu_smpl_arry_lck,
+-				  oprof_spu_smpl_arry_lck_flags);
+-		num_samples = cell_spu_pc_collection(cpu);
+-
+-		if (num_samples == 0) {
+-			spin_unlock_irqrestore(&oprof_spu_smpl_arry_lck,
+-					       oprof_spu_smpl_arry_lck_flags);
+-			continue;
+-		}
+-
+-		for (k = 0; k < SPUS_PER_NODE; k++) {
+-			spu_num = k + (node * SPUS_PER_NODE);
+-			spu_sync_buffer(spu_num,
+-					samples + (k * TRACE_ARRAY_SIZE),
+-					num_samples);
+-		}
+-
+-		spin_unlock_irqrestore(&oprof_spu_smpl_arry_lck,
+-				       oprof_spu_smpl_arry_lck_flags);
+-
+-	}
+-	smp_wmb();	/* insure spu event buffer updates are written */
+-			/* don't want events intermingled... */
+-
+-	kt = profiling_interval;
+-	if (!spu_prof_running)
+-		goto stop;
+-	hrtimer_forward(timer, timer->base->get_time(), kt);
+-	return HRTIMER_RESTART;
+-
+- stop:
+-	printk(KERN_INFO "SPU_PROF: spu-prof timer ending\n");
+-	return HRTIMER_NORESTART;
+-}
+-
+-static struct hrtimer timer;
+-/*
+- * Entry point for SPU cycle profiling.
+- * NOTE:  SPU profiling is done system-wide, not per-CPU.
+- *
+- * cycles_reset is the count value specified by the user when
+- * setting up OProfile to count SPU_CYCLES.
+- */
+-int start_spu_profiling_cycles(unsigned int cycles_reset)
+-{
+-	ktime_t kt;
+-
+-	pr_debug("timer resolution: %lu\n", TICK_NSEC);
+-	kt = profiling_interval;
+-	hrtimer_init(&timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+-	hrtimer_set_expires(&timer, kt);
+-	timer.function = profile_spus;
+-
+-	/* Allocate arrays for collecting SPU PC samples */
+-	samples = kcalloc(SPUS_PER_NODE * TRACE_ARRAY_SIZE, sizeof(u32),
+-			  GFP_KERNEL);
+-
+-	if (!samples)
+-		return -ENOMEM;
+-
+-	spu_prof_running = 1;
+-	hrtimer_start(&timer, kt, HRTIMER_MODE_REL);
+-	schedule_delayed_work(&spu_work, DEFAULT_TIMER_EXPIRE);
+-
+-	return 0;
+-}
+-
+-/*
+- * Entry point for SPU event profiling.
+- * NOTE:  SPU profiling is done system-wide, not per-CPU.
+- *
+- * cycles_reset is the count value specified by the user when
+- * setting up OProfile to count SPU_CYCLES.
+- */
+-void start_spu_profiling_events(void)
+-{
+-	spu_prof_running = 1;
+-	schedule_delayed_work(&spu_work, DEFAULT_TIMER_EXPIRE);
+-
+-	return;
+-}
+-
+-void stop_spu_profiling_cycles(void)
+-{
+-	spu_prof_running = 0;
+-	hrtimer_cancel(&timer);
+-	kfree(samples);
+-	pr_debug("SPU_PROF: stop_spu_profiling_cycles issued\n");
+-}
+-
+-void stop_spu_profiling_events(void)
+-{
+-	spu_prof_running = 0;
+-}
+diff --git a/arch/powerpc/oprofile/cell/spu_task_sync.c b/arch/powerpc/oprofile/cell/spu_task_sync.c
+deleted file mode 100644
+index 489f993100d5..000000000000
+--- a/arch/powerpc/oprofile/cell/spu_task_sync.c
++++ /dev/null
+@@ -1,657 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Cell Broadband Engine OProfile Support
+- *
+- * (C) Copyright IBM Corporation 2006
+- *
+- * Author: Maynard Johnson <maynardj@us.ibm.com>
+- */
+-
+-/* The purpose of this file is to handle SPU event task switching
+- * and to record SPU context information into the OProfile
+- * event buffer.
+- *
+- * Additionally, the spu_sync_buffer function is provided as a helper
+- * for recoding actual SPU program counter samples to the event buffer.
+- */
+-#include <linux/dcookies.h>
+-#include <linux/kref.h>
+-#include <linux/mm.h>
+-#include <linux/fs.h>
+-#include <linux/file.h>
+-#include <linux/module.h>
+-#include <linux/notifier.h>
+-#include <linux/numa.h>
+-#include <linux/oprofile.h>
+-#include <linux/slab.h>
+-#include <linux/spinlock.h>
+-#include "pr_util.h"
+-
+-#define RELEASE_ALL 9999
+-
+-static DEFINE_SPINLOCK(buffer_lock);
+-static DEFINE_SPINLOCK(cache_lock);
+-static int num_spu_nodes;
+-static int spu_prof_num_nodes;
+-
+-struct spu_buffer spu_buff[MAX_NUMNODES * SPUS_PER_NODE];
+-struct delayed_work spu_work;
+-static unsigned max_spu_buff;
+-
+-static void spu_buff_add(unsigned long int value, int spu)
+-{
+-	/* spu buff is a circular buffer.  Add entries to the
+-	 * head.  Head is the index to store the next value.
+-	 * The buffer is full when there is one available entry
+-	 * in the queue, i.e. head and tail can't be equal.
+-	 * That way we can tell the difference between the
+-	 * buffer being full versus empty.
+-	 *
+-	 *  ASSUMPTION: the buffer_lock is held when this function
+-	 *             is called to lock the buffer, head and tail.
+-	 */
+-	int full = 1;
+-
+-	if (spu_buff[spu].head >= spu_buff[spu].tail) {
+-		if ((spu_buff[spu].head - spu_buff[spu].tail)
+-		    <  (max_spu_buff - 1))
+-			full = 0;
+-
+-	} else if (spu_buff[spu].tail > spu_buff[spu].head) {
+-		if ((spu_buff[spu].tail - spu_buff[spu].head)
+-		    > 1)
+-			full = 0;
+-	}
+-
+-	if (!full) {
+-		spu_buff[spu].buff[spu_buff[spu].head] = value;
+-		spu_buff[spu].head++;
+-
+-		if (spu_buff[spu].head >= max_spu_buff)
+-			spu_buff[spu].head = 0;
+-	} else {
+-		/* From the user's perspective make the SPU buffer
+-		 * size management/overflow look like we are using
+-		 * per cpu buffers.  The user uses the same
+-		 * per cpu parameter to adjust the SPU buffer size.
+-		 * Increment the sample_lost_overflow to inform
+-		 * the user the buffer size needs to be increased.
+-		 */
+-		oprofile_cpu_buffer_inc_smpl_lost();
+-	}
+-}
+-
+-/* This function copies the per SPU buffers to the
+- * OProfile kernel buffer.
+- */
+-static void sync_spu_buff(void)
+-{
+-	int spu;
+-	unsigned long flags;
+-	int curr_head;
+-
+-	for (spu = 0; spu < num_spu_nodes; spu++) {
+-		/* In case there was an issue and the buffer didn't
+-		 * get created skip it.
+-		 */
+-		if (spu_buff[spu].buff == NULL)
+-			continue;
+-
+-		/* Hold the lock to make sure the head/tail
+-		 * doesn't change while spu_buff_add() is
+-		 * deciding if the buffer is full or not.
+-		 * Being a little paranoid.
+-		 */
+-		spin_lock_irqsave(&buffer_lock, flags);
+-		curr_head = spu_buff[spu].head;
+-		spin_unlock_irqrestore(&buffer_lock, flags);
+-
+-		/* Transfer the current contents to the kernel buffer.
+-		 * data can still be added to the head of the buffer.
+-		 */
+-		oprofile_put_buff(spu_buff[spu].buff,
+-				  spu_buff[spu].tail,
+-				  curr_head, max_spu_buff);
+-
+-		spin_lock_irqsave(&buffer_lock, flags);
+-		spu_buff[spu].tail = curr_head;
+-		spin_unlock_irqrestore(&buffer_lock, flags);
+-	}
+-
+-}
+-
+-static void wq_sync_spu_buff(struct work_struct *work)
+-{
+-	/* move data from spu buffers to kernel buffer */
+-	sync_spu_buff();
+-
+-	/* only reschedule if profiling is not done */
+-	if (spu_prof_running)
+-		schedule_delayed_work(&spu_work, DEFAULT_TIMER_EXPIRE);
+-}
+-
+-/* Container for caching information about an active SPU task. */
+-struct cached_info {
+-	struct vma_to_fileoffset_map *map;
+-	struct spu *the_spu;	/* needed to access pointer to local_store */
+-	struct kref cache_ref;
+-};
+-
+-static struct cached_info *spu_info[MAX_NUMNODES * 8];
+-
+-static void destroy_cached_info(struct kref *kref)
+-{
+-	struct cached_info *info;
+-
+-	info = container_of(kref, struct cached_info, cache_ref);
+-	vma_map_free(info->map);
+-	kfree(info);
+-	module_put(THIS_MODULE);
+-}
+-
+-/* Return the cached_info for the passed SPU number.
+- * ATTENTION:  Callers are responsible for obtaining the
+- *	       cache_lock if needed prior to invoking this function.
+- */
+-static struct cached_info *get_cached_info(struct spu *the_spu, int spu_num)
+-{
+-	struct kref *ref;
+-	struct cached_info *ret_info;
+-
+-	if (spu_num >= num_spu_nodes) {
+-		printk(KERN_ERR "SPU_PROF: "
+-		       "%s, line %d: Invalid index %d into spu info cache\n",
+-		       __func__, __LINE__, spu_num);
+-		ret_info = NULL;
+-		goto out;
+-	}
+-	if (!spu_info[spu_num] && the_spu) {
+-		ref = spu_get_profile_private_kref(the_spu->ctx);
+-		if (ref) {
+-			spu_info[spu_num] = container_of(ref, struct cached_info, cache_ref);
+-			kref_get(&spu_info[spu_num]->cache_ref);
+-		}
+-	}
+-
+-	ret_info = spu_info[spu_num];
+- out:
+-	return ret_info;
+-}
+-
+-
+-/* Looks for cached info for the passed spu.  If not found, the
+- * cached info is created for the passed spu.
+- * Returns 0 for success; otherwise, -1 for error.
+- */
+-static int
+-prepare_cached_spu_info(struct spu *spu, unsigned long objectId)
+-{
+-	unsigned long flags;
+-	struct vma_to_fileoffset_map *new_map;
+-	int retval = 0;
+-	struct cached_info *info;
+-
+-	/* We won't bother getting cache_lock here since
+-	 * don't do anything with the cached_info that's returned.
+-	 */
+-	info = get_cached_info(spu, spu->number);
+-
+-	if (info) {
+-		pr_debug("Found cached SPU info.\n");
+-		goto out;
+-	}
+-
+-	/* Create cached_info and set spu_info[spu->number] to point to it.
+-	 * spu->number is a system-wide value, not a per-node value.
+-	 */
+-	info = kzalloc(sizeof(*info), GFP_KERNEL);
+-	if (!info) {
+-		printk(KERN_ERR "SPU_PROF: "
+-		       "%s, line %d: create vma_map failed\n",
+-		       __func__, __LINE__);
+-		retval = -ENOMEM;
+-		goto err_alloc;
+-	}
+-	new_map = create_vma_map(spu, objectId);
+-	if (!new_map) {
+-		printk(KERN_ERR "SPU_PROF: "
+-		       "%s, line %d: create vma_map failed\n",
+-		       __func__, __LINE__);
+-		retval = -ENOMEM;
+-		goto err_alloc;
+-	}
+-
+-	pr_debug("Created vma_map\n");
+-	info->map = new_map;
+-	info->the_spu = spu;
+-	kref_init(&info->cache_ref);
+-	spin_lock_irqsave(&cache_lock, flags);
+-	spu_info[spu->number] = info;
+-	/* Increment count before passing off ref to SPUFS. */
+-	kref_get(&info->cache_ref);
+-
+-	/* We increment the module refcount here since SPUFS is
+-	 * responsible for the final destruction of the cached_info,
+-	 * and it must be able to access the destroy_cached_info()
+-	 * function defined in the OProfile module.  We decrement
+-	 * the module refcount in destroy_cached_info.
+-	 */
+-	try_module_get(THIS_MODULE);
+-	spu_set_profile_private_kref(spu->ctx, &info->cache_ref,
+-				destroy_cached_info);
+-	spin_unlock_irqrestore(&cache_lock, flags);
+-	goto out;
+-
+-err_alloc:
+-	kfree(info);
+-out:
+-	return retval;
+-}
+-
+-/*
+- * NOTE:  The caller is responsible for locking the
+- *	  cache_lock prior to calling this function.
+- */
+-static int release_cached_info(int spu_index)
+-{
+-	int index, end;
+-
+-	if (spu_index == RELEASE_ALL) {
+-		end = num_spu_nodes;
+-		index = 0;
+-	} else {
+-		if (spu_index >= num_spu_nodes) {
+-			printk(KERN_ERR "SPU_PROF: "
+-				"%s, line %d: "
+-				"Invalid index %d into spu info cache\n",
+-				__func__, __LINE__, spu_index);
+-			goto out;
+-		}
+-		end = spu_index + 1;
+-		index = spu_index;
+-	}
+-	for (; index < end; index++) {
+-		if (spu_info[index]) {
+-			kref_put(&spu_info[index]->cache_ref,
+-				 destroy_cached_info);
+-			spu_info[index] = NULL;
+-		}
+-	}
+-
+-out:
+-	return 0;
+-}
+-
+-/* The source code for fast_get_dcookie was "borrowed"
+- * from drivers/oprofile/buffer_sync.c.
+- */
+-
+-/* Optimisation. We can manage without taking the dcookie sem
+- * because we cannot reach this code without at least one
+- * dcookie user still being registered (namely, the reader
+- * of the event buffer).
+- */
+-static inline unsigned long fast_get_dcookie(const struct path *path)
+-{
+-	unsigned long cookie;
+-
+-	if (path->dentry->d_flags & DCACHE_COOKIE)
+-		return (unsigned long)path->dentry;
+-	get_dcookie(path, &cookie);
+-	return cookie;
+-}
+-
+-/* Look up the dcookie for the task's mm->exe_file,
+- * which corresponds loosely to "application name". Also, determine
+- * the offset for the SPU ELF object.  If computed offset is
+- * non-zero, it implies an embedded SPU object; otherwise, it's a
+- * separate SPU binary, in which case we retrieve it's dcookie.
+- * For the embedded case, we must determine if SPU ELF is embedded
+- * in the executable application or another file (i.e., shared lib).
+- * If embedded in a shared lib, we must get the dcookie and return
+- * that to the caller.
+- */
+-static unsigned long
+-get_exec_dcookie_and_offset(struct spu *spu, unsigned int *offsetp,
+-			    unsigned long *spu_bin_dcookie,
+-			    unsigned long spu_ref)
+-{
+-	unsigned long app_cookie = 0;
+-	unsigned int my_offset = 0;
+-	struct vm_area_struct *vma;
+-	struct file *exe_file;
+-	struct mm_struct *mm = spu->mm;
+-
+-	if (!mm)
+-		goto out;
+-
+-	exe_file = get_mm_exe_file(mm);
+-	if (exe_file) {
+-		app_cookie = fast_get_dcookie(&exe_file->f_path);
+-		pr_debug("got dcookie for %pD\n", exe_file);
+-		fput(exe_file);
+-	}
+-
+-	mmap_read_lock(mm);
+-	for (vma = mm->mmap; vma; vma = vma->vm_next) {
+-		if (vma->vm_start > spu_ref || vma->vm_end <= spu_ref)
+-			continue;
+-		my_offset = spu_ref - vma->vm_start;
+-		if (!vma->vm_file)
+-			goto fail_no_image_cookie;
+-
+-		pr_debug("Found spu ELF at %X(object-id:%lx) for file %pD\n",
+-			 my_offset, spu_ref, vma->vm_file);
+-		*offsetp = my_offset;
+-		break;
+-	}
+-
+-	*spu_bin_dcookie = fast_get_dcookie(&vma->vm_file->f_path);
+-	pr_debug("got dcookie for %pD\n", vma->vm_file);
+-
+-	mmap_read_unlock(mm);
+-
+-out:
+-	return app_cookie;
+-
+-fail_no_image_cookie:
+-	mmap_read_unlock(mm);
+-
+-	printk(KERN_ERR "SPU_PROF: "
+-		"%s, line %d: Cannot find dcookie for SPU binary\n",
+-		__func__, __LINE__);
+-	goto out;
+-}
+-
+-
+-
+-/* This function finds or creates cached context information for the
+- * passed SPU and records SPU context information into the OProfile
+- * event buffer.
+- */
+-static int process_context_switch(struct spu *spu, unsigned long objectId)
+-{
+-	unsigned long flags;
+-	int retval;
+-	unsigned int offset = 0;
+-	unsigned long spu_cookie = 0, app_dcookie;
+-
+-	retval = prepare_cached_spu_info(spu, objectId);
+-	if (retval)
+-		goto out;
+-
+-	/* Get dcookie first because a mutex_lock is taken in that
+-	 * code path, so interrupts must not be disabled.
+-	 */
+-	app_dcookie = get_exec_dcookie_and_offset(spu, &offset, &spu_cookie, objectId);
+-	if (!app_dcookie || !spu_cookie) {
+-		retval  = -ENOENT;
+-		goto out;
+-	}
+-
+-	/* Record context info in event buffer */
+-	spin_lock_irqsave(&buffer_lock, flags);
+-	spu_buff_add(ESCAPE_CODE, spu->number);
+-	spu_buff_add(SPU_CTX_SWITCH_CODE, spu->number);
+-	spu_buff_add(spu->number, spu->number);
+-	spu_buff_add(spu->pid, spu->number);
+-	spu_buff_add(spu->tgid, spu->number);
+-	spu_buff_add(app_dcookie, spu->number);
+-	spu_buff_add(spu_cookie, spu->number);
+-	spu_buff_add(offset, spu->number);
+-
+-	/* Set flag to indicate SPU PC data can now be written out.  If
+-	 * the SPU program counter data is seen before an SPU context
+-	 * record is seen, the postprocessing will fail.
+-	 */
+-	spu_buff[spu->number].ctx_sw_seen = 1;
+-
+-	spin_unlock_irqrestore(&buffer_lock, flags);
+-	smp_wmb();	/* insure spu event buffer updates are written */
+-			/* don't want entries intermingled... */
+-out:
+-	return retval;
+-}
+-
+-/*
+- * This function is invoked on either a bind_context or unbind_context.
+- * If called for an unbind_context, the val arg is 0; otherwise,
+- * it is the object-id value for the spu context.
+- * The data arg is of type 'struct spu *'.
+- */
+-static int spu_active_notify(struct notifier_block *self, unsigned long val,
+-				void *data)
+-{
+-	int retval;
+-	unsigned long flags;
+-	struct spu *the_spu = data;
+-
+-	pr_debug("SPU event notification arrived\n");
+-	if (!val) {
+-		spin_lock_irqsave(&cache_lock, flags);
+-		retval = release_cached_info(the_spu->number);
+-		spin_unlock_irqrestore(&cache_lock, flags);
+-	} else {
+-		retval = process_context_switch(the_spu, val);
+-	}
+-	return retval;
+-}
+-
+-static struct notifier_block spu_active = {
+-	.notifier_call = spu_active_notify,
+-};
+-
+-static int number_of_online_nodes(void)
+-{
+-        u32 cpu; u32 tmp;
+-        int nodes = 0;
+-        for_each_online_cpu(cpu) {
+-                tmp = cbe_cpu_to_node(cpu) + 1;
+-                if (tmp > nodes)
+-                        nodes++;
+-        }
+-        return nodes;
+-}
+-
+-static int oprofile_spu_buff_create(void)
+-{
+-	int spu;
+-
+-	max_spu_buff = oprofile_get_cpu_buffer_size();
+-
+-	for (spu = 0; spu < num_spu_nodes; spu++) {
+-		/* create circular buffers to store the data in.
+-		 * use locks to manage accessing the buffers
+-		 */
+-		spu_buff[spu].head = 0;
+-		spu_buff[spu].tail = 0;
+-
+-		/*
+-		 * Create a buffer for each SPU.  Can't reliably
+-		 * create a single buffer for all spus due to not
+-		 * enough contiguous kernel memory.
+-		 */
+-
+-		spu_buff[spu].buff = kzalloc((max_spu_buff
+-					      * sizeof(unsigned long)),
+-					     GFP_KERNEL);
+-
+-		if (!spu_buff[spu].buff) {
+-			printk(KERN_ERR "SPU_PROF: "
+-			       "%s, line %d:  oprofile_spu_buff_create "
+-		       "failed to allocate spu buffer %d.\n",
+-			       __func__, __LINE__, spu);
+-
+-			/* release the spu buffers that have been allocated */
+-			while (spu >= 0) {
+-				kfree(spu_buff[spu].buff);
+-				spu_buff[spu].buff = 0;
+-				spu--;
+-			}
+-			return -ENOMEM;
+-		}
+-	}
+-	return 0;
+-}
+-
+-/* The main purpose of this function is to synchronize
+- * OProfile with SPUFS by registering to be notified of
+- * SPU task switches.
+- *
+- * NOTE: When profiling SPUs, we must ensure that only
+- * spu_sync_start is invoked and not the generic sync_start
+- * in drivers/oprofile/oprof.c.	 A return value of
+- * SKIP_GENERIC_SYNC or SYNC_START_ERROR will
+- * accomplish this.
+- */
+-int spu_sync_start(void)
+-{
+-	int spu;
+-	int ret = SKIP_GENERIC_SYNC;
+-	int register_ret;
+-	unsigned long flags = 0;
+-
+-	spu_prof_num_nodes = number_of_online_nodes();
+-	num_spu_nodes = spu_prof_num_nodes * 8;
+-	INIT_DELAYED_WORK(&spu_work, wq_sync_spu_buff);
+-
+-	/* create buffer for storing the SPU data to put in
+-	 * the kernel buffer.
+-	 */
+-	ret = oprofile_spu_buff_create();
+-	if (ret)
+-		goto out;
+-
+-	spin_lock_irqsave(&buffer_lock, flags);
+-	for (spu = 0; spu < num_spu_nodes; spu++) {
+-		spu_buff_add(ESCAPE_CODE, spu);
+-		spu_buff_add(SPU_PROFILING_CODE, spu);
+-		spu_buff_add(num_spu_nodes, spu);
+-	}
+-	spin_unlock_irqrestore(&buffer_lock, flags);
+-
+-	for (spu = 0; spu < num_spu_nodes; spu++) {
+-		spu_buff[spu].ctx_sw_seen = 0;
+-		spu_buff[spu].last_guard_val = 0;
+-	}
+-
+-	/* Register for SPU events  */
+-	register_ret = spu_switch_event_register(&spu_active);
+-	if (register_ret) {
+-		ret = SYNC_START_ERROR;
+-		goto out;
+-	}
+-
+-	pr_debug("spu_sync_start -- running.\n");
+-out:
+-	return ret;
+-}
+-
+-/* Record SPU program counter samples to the oprofile event buffer. */
+-void spu_sync_buffer(int spu_num, unsigned int *samples,
+-		     int num_samples)
+-{
+-	unsigned long long file_offset;
+-	unsigned long flags;
+-	int i;
+-	struct vma_to_fileoffset_map *map;
+-	struct spu *the_spu;
+-	unsigned long long spu_num_ll = spu_num;
+-	unsigned long long spu_num_shifted = spu_num_ll << 32;
+-	struct cached_info *c_info;
+-
+-	/* We need to obtain the cache_lock here because it's
+-	 * possible that after getting the cached_info, the SPU job
+-	 * corresponding to this cached_info may end, thus resulting
+-	 * in the destruction of the cached_info.
+-	 */
+-	spin_lock_irqsave(&cache_lock, flags);
+-	c_info = get_cached_info(NULL, spu_num);
+-	if (!c_info) {
+-		/* This legitimately happens when the SPU task ends before all
+-		 * samples are recorded.
+-		 * No big deal -- so we just drop a few samples.
+-		 */
+-		pr_debug("SPU_PROF: No cached SPU context "
+-			  "for SPU #%d. Dropping samples.\n", spu_num);
+-		goto out;
+-	}
+-
+-	map = c_info->map;
+-	the_spu = c_info->the_spu;
+-	spin_lock(&buffer_lock);
+-	for (i = 0; i < num_samples; i++) {
+-		unsigned int sample = *(samples+i);
+-		int grd_val = 0;
+-		file_offset = 0;
+-		if (sample == 0)
+-			continue;
+-		file_offset = vma_map_lookup( map, sample, the_spu, &grd_val);
+-
+-		/* If overlays are used by this SPU application, the guard
+-		 * value is non-zero, indicating which overlay section is in
+-		 * use.	 We need to discard samples taken during the time
+-		 * period which an overlay occurs (i.e., guard value changes).
+-		 */
+-		if (grd_val && grd_val != spu_buff[spu_num].last_guard_val) {
+-			spu_buff[spu_num].last_guard_val = grd_val;
+-			/* Drop the rest of the samples. */
+-			break;
+-		}
+-
+-		/* We must ensure that the SPU context switch has been written
+-		 * out before samples for the SPU.  Otherwise, the SPU context
+-		 * information is not available and the postprocessing of the
+-		 * SPU PC will fail with no available anonymous map information.
+-		 */
+-		if (spu_buff[spu_num].ctx_sw_seen)
+-			spu_buff_add((file_offset | spu_num_shifted),
+-					 spu_num);
+-	}
+-	spin_unlock(&buffer_lock);
+-out:
+-	spin_unlock_irqrestore(&cache_lock, flags);
+-}
+-
+-
+-int spu_sync_stop(void)
+-{
+-	unsigned long flags = 0;
+-	int ret;
+-	int k;
+-
+-	ret = spu_switch_event_unregister(&spu_active);
+-
+-	if (ret)
+-		printk(KERN_ERR "SPU_PROF: "
+-		       "%s, line %d: spu_switch_event_unregister "	\
+-		       "returned %d\n",
+-		       __func__, __LINE__, ret);
+-
+-	/* flush any remaining data in the per SPU buffers */
+-	sync_spu_buff();
+-
+-	spin_lock_irqsave(&cache_lock, flags);
+-	ret = release_cached_info(RELEASE_ALL);
+-	spin_unlock_irqrestore(&cache_lock, flags);
+-
+-	/* remove scheduled work queue item rather then waiting
+-	 * for every queued entry to execute.  Then flush pending
+-	 * system wide buffer to event buffer.
+-	 */
+-	cancel_delayed_work(&spu_work);
+-
+-	for (k = 0; k < num_spu_nodes; k++) {
+-		spu_buff[k].ctx_sw_seen = 0;
+-
+-		/*
+-		 * spu_sys_buff will be null if there was a problem
+-		 * allocating the buffer.  Only delete if it exists.
+-		 */
+-		kfree(spu_buff[k].buff);
+-		spu_buff[k].buff = 0;
+-	}
+-	pr_debug("spu_sync_stop -- done.\n");
+-	return ret;
+-}
+-
+diff --git a/arch/powerpc/oprofile/cell/vma_map.c b/arch/powerpc/oprofile/cell/vma_map.c
+deleted file mode 100644
+index 7c4b19cfde88..000000000000
+--- a/arch/powerpc/oprofile/cell/vma_map.c
++++ /dev/null
+@@ -1,279 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Cell Broadband Engine OProfile Support
+- *
+- * (C) Copyright IBM Corporation 2006
+- *
+- * Author: Maynard Johnson <maynardj@us.ibm.com>
+- */
+-
+-/* The code in this source file is responsible for generating
+- * vma-to-fileOffset maps for both overlay and non-overlay SPU
+- * applications.
+- */
+-
+-#include <linux/mm.h>
+-#include <linux/string.h>
+-#include <linux/uaccess.h>
+-#include <linux/elf.h>
+-#include <linux/slab.h>
+-#include "pr_util.h"
+-
+-
+-void vma_map_free(struct vma_to_fileoffset_map *map)
+-{
+-	while (map) {
+-		struct vma_to_fileoffset_map *next = map->next;
+-		kfree(map);
+-		map = next;
+-	}
+-}
+-
+-unsigned int
+-vma_map_lookup(struct vma_to_fileoffset_map *map, unsigned int vma,
+-	       const struct spu *aSpu, int *grd_val)
+-{
+-	/*
+-	 * Default the offset to the physical address + a flag value.
+-	 * Addresses of dynamically generated code can't be found in the vma
+-	 * map.  For those addresses the flagged value will be sent on to
+-	 * the user space tools so they can be reported rather than just
+-	 * thrown away.
+-	 */
+-	u32 offset = 0x10000000 + vma;
+-	u32 ovly_grd;
+-
+-	for (; map; map = map->next) {
+-		if (vma < map->vma || vma >= map->vma + map->size)
+-			continue;
+-
+-		if (map->guard_ptr) {
+-			ovly_grd = *(u32 *)(aSpu->local_store + map->guard_ptr);
+-			if (ovly_grd != map->guard_val)
+-				continue;
+-			*grd_val = ovly_grd;
+-		}
+-		offset = vma - map->vma + map->offset;
+-		break;
+-	}
+-
+-	return offset;
+-}
+-
+-static struct vma_to_fileoffset_map *
+-vma_map_add(struct vma_to_fileoffset_map *map, unsigned int vma,
+-	    unsigned int size, unsigned int offset, unsigned int guard_ptr,
+-	    unsigned int guard_val)
+-{
+-	struct vma_to_fileoffset_map *new = kzalloc(sizeof(*new), GFP_KERNEL);
+-
+-	if (!new) {
+-		printk(KERN_ERR "SPU_PROF: %s, line %d: malloc failed\n",
+-		       __func__, __LINE__);
+-		vma_map_free(map);
+-		return NULL;
+-	}
+-
+-	new->next = map;
+-	new->vma = vma;
+-	new->size = size;
+-	new->offset = offset;
+-	new->guard_ptr = guard_ptr;
+-	new->guard_val = guard_val;
+-
+-	return new;
+-}
+-
+-
+-/* Parse SPE ELF header and generate a list of vma_maps.
+- * A pointer to the first vma_map in the generated list
+- * of vma_maps is returned.  */
+-struct vma_to_fileoffset_map *create_vma_map(const struct spu *aSpu,
+-					     unsigned long __spu_elf_start)
+-{
+-	static const unsigned char expected[EI_PAD] = {
+-		[EI_MAG0] = ELFMAG0,
+-		[EI_MAG1] = ELFMAG1,
+-		[EI_MAG2] = ELFMAG2,
+-		[EI_MAG3] = ELFMAG3,
+-		[EI_CLASS] = ELFCLASS32,
+-		[EI_DATA] = ELFDATA2MSB,
+-		[EI_VERSION] = EV_CURRENT,
+-		[EI_OSABI] = ELFOSABI_NONE
+-	};
+-
+-	int grd_val;
+-	struct vma_to_fileoffset_map *map = NULL;
+-	void __user *spu_elf_start = (void __user *)__spu_elf_start;
+-	struct spu_overlay_info ovly;
+-	unsigned int overlay_tbl_offset = -1;
+-	Elf32_Phdr __user *phdr_start;
+-	Elf32_Shdr __user *shdr_start;
+-	Elf32_Ehdr ehdr;
+-	Elf32_Phdr phdr;
+-	Elf32_Shdr shdr, shdr_str;
+-	Elf32_Sym sym;
+-	int i, j;
+-	char name[32];
+-
+-	unsigned int ovly_table_sym = 0;
+-	unsigned int ovly_buf_table_sym = 0;
+-	unsigned int ovly_table_end_sym = 0;
+-	unsigned int ovly_buf_table_end_sym = 0;
+-	struct spu_overlay_info __user *ovly_table;
+-	unsigned int n_ovlys;
+-
+-	/* Get and validate ELF header.	 */
+-
+-	if (copy_from_user(&ehdr, spu_elf_start, sizeof (ehdr)))
+-		goto fail;
+-
+-	if (memcmp(ehdr.e_ident, expected, EI_PAD) != 0) {
+-		printk(KERN_ERR "SPU_PROF: "
+-		       "%s, line %d: Unexpected e_ident parsing SPU ELF\n",
+-		       __func__, __LINE__);
+-		goto fail;
+-	}
+-	if (ehdr.e_machine != EM_SPU) {
+-		printk(KERN_ERR "SPU_PROF: "
+-		       "%s, line %d: Unexpected e_machine parsing SPU ELF\n",
+-		       __func__,  __LINE__);
+-		goto fail;
+-	}
+-	if (ehdr.e_type != ET_EXEC) {
+-		printk(KERN_ERR "SPU_PROF: "
+-		       "%s, line %d: Unexpected e_type parsing SPU ELF\n",
+-		       __func__, __LINE__);
+-		goto fail;
+-	}
+-	phdr_start = spu_elf_start + ehdr.e_phoff;
+-	shdr_start = spu_elf_start + ehdr.e_shoff;
+-
+-	/* Traverse program headers.  */
+-	for (i = 0; i < ehdr.e_phnum; i++) {
+-		if (copy_from_user(&phdr, phdr_start + i, sizeof(phdr)))
+-			goto fail;
+-
+-		if (phdr.p_type != PT_LOAD)
+-			continue;
+-		if (phdr.p_flags & (1 << 27))
+-			continue;
+-
+-		map = vma_map_add(map, phdr.p_vaddr, phdr.p_memsz,
+-				  phdr.p_offset, 0, 0);
+-		if (!map)
+-			goto fail;
+-	}
+-
+-	pr_debug("SPU_PROF: Created non-overlay maps\n");
+-	/* Traverse section table and search for overlay-related symbols.  */
+-	for (i = 0; i < ehdr.e_shnum; i++) {
+-		if (copy_from_user(&shdr, shdr_start + i, sizeof(shdr)))
+-			goto fail;
+-
+-		if (shdr.sh_type != SHT_SYMTAB)
+-			continue;
+-		if (shdr.sh_entsize != sizeof (sym))
+-			continue;
+-
+-		if (copy_from_user(&shdr_str,
+-				   shdr_start + shdr.sh_link,
+-				   sizeof(shdr)))
+-			goto fail;
+-
+-		if (shdr_str.sh_type != SHT_STRTAB)
+-			goto fail;
+-
+-		for (j = 0; j < shdr.sh_size / sizeof (sym); j++) {
+-			if (copy_from_user(&sym, spu_elf_start +
+-						 shdr.sh_offset +
+-						 j * sizeof (sym),
+-					   sizeof (sym)))
+-				goto fail;
+-
+-			if (copy_from_user(name, 
+-					   spu_elf_start + shdr_str.sh_offset +
+-					   sym.st_name,
+-					   20))
+-				goto fail;
+-
+-			if (memcmp(name, "_ovly_table", 12) == 0)
+-				ovly_table_sym = sym.st_value;
+-			if (memcmp(name, "_ovly_buf_table", 16) == 0)
+-				ovly_buf_table_sym = sym.st_value;
+-			if (memcmp(name, "_ovly_table_end", 16) == 0)
+-				ovly_table_end_sym = sym.st_value;
+-			if (memcmp(name, "_ovly_buf_table_end", 20) == 0)
+-				ovly_buf_table_end_sym = sym.st_value;
+-		}
+-	}
+-
+-	/* If we don't have overlays, we're done.  */
+-	if (ovly_table_sym == 0 || ovly_buf_table_sym == 0
+-	    || ovly_table_end_sym == 0 || ovly_buf_table_end_sym == 0) {
+-		pr_debug("SPU_PROF: No overlay table found\n");
+-		goto out;
+-	} else {
+-		pr_debug("SPU_PROF: Overlay table found\n");
+-	}
+-
+-	/* The _ovly_table symbol represents a table with one entry
+-	 * per overlay section.	 The _ovly_buf_table symbol represents
+-	 * a table with one entry per overlay region.
+-	 * The struct spu_overlay_info gives the structure of the _ovly_table
+-	 * entries.  The structure of _ovly_table_buf is simply one
+-	 * u32 word per entry.
+-	 */
+-	overlay_tbl_offset = vma_map_lookup(map, ovly_table_sym,
+-					    aSpu, &grd_val);
+-	if (overlay_tbl_offset > 0x10000000) {
+-		printk(KERN_ERR "SPU_PROF: "
+-		       "%s, line %d: Error finding SPU overlay table\n",
+-		       __func__, __LINE__);
+-		goto fail;
+-	}
+-	ovly_table = spu_elf_start + overlay_tbl_offset;
+-
+-	n_ovlys = (ovly_table_end_sym -
+-		   ovly_table_sym) / sizeof (ovly);
+-
+-	/* Traverse overlay table.  */
+-	for (i = 0; i < n_ovlys; i++) {
+-		if (copy_from_user(&ovly, ovly_table + i, sizeof (ovly)))
+-			goto fail;
+-
+-		/* The ovly.vma/size/offset arguments are analogous to the same
+-		 * arguments used above for non-overlay maps.  The final two
+-		 * args are referred to as the guard pointer and the guard
+-		 * value.
+-		 * The guard pointer is an entry in the _ovly_buf_table,
+-		 * computed using ovly.buf as the index into the table.	 Since
+-		 * ovly.buf values begin at '1' to reference the first (or 0th)
+-		 * entry in the _ovly_buf_table, the computation subtracts 1
+-		 * from ovly.buf.
+-		 * The guard value is stored in the _ovly_buf_table entry and
+-		 * is an index (starting at 1) back to the _ovly_table entry
+-		 * that is pointing at this _ovly_buf_table entry.  So, for
+-		 * example, for an overlay scenario with one overlay segment
+-		 * and two overlay sections:
+-		 *	- Section 1 points to the first entry of the
+-		 *	  _ovly_buf_table, which contains a guard value
+-		 *	  of '1', referencing the first (index=0) entry of
+-		 *	  _ovly_table.
+-		 *	- Section 2 points to the second entry of the
+-		 *	  _ovly_buf_table, which contains a guard value
+-		 *	  of '2', referencing the second (index=1) entry of
+-		 *	  _ovly_table.
+-		 */
+-		map = vma_map_add(map, ovly.vma, ovly.size, ovly.offset,
+-				  ovly_buf_table_sym + (ovly.buf-1) * 4, i+1);
+-		if (!map)
+-			goto fail;
+-	}
+-	goto out;
+-
+- fail:
+-	map = NULL;
+- out:
+-	return map;
+-}
+diff --git a/arch/powerpc/oprofile/common.c b/arch/powerpc/oprofile/common.c
+deleted file mode 100644
+index 0fb528c2b3a1..000000000000
+--- a/arch/powerpc/oprofile/common.c
++++ /dev/null
+@@ -1,243 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * PPC 64 oprofile support:
 - * Copyright (C) 2004 Anton Blanchard <anton@au.ibm.com>, IBM
+- * PPC 32 oprofile support: (based on PPC 64 support)
+- * Copyright (C) Freescale Semiconductor, Inc 2004
+- *	Author: Andy Fleming
 - *
 - * Based on alpha version.
 - */
 -
--#ifndef _ASM_POWERPC_OPROFILE_IMPL_H
--#define _ASM_POWERPC_OPROFILE_IMPL_H
--#ifdef __KERNEL__
+-#include <linux/oprofile.h>
+-#include <linux/init.h>
+-#include <linux/smp.h>
+-#include <linux/errno.h>
+-#include <asm/ptrace.h>
+-#include <asm/pmc.h>
+-#include <asm/cputable.h>
+-#include <asm/oprofile_impl.h>
+-#include <asm/firmware.h>
 -
--#define OP_MAX_COUNTER 8
+-static struct op_powerpc_model *model;
 -
--/* Per-counter configuration as set via oprofilefs.  */
--struct op_counter_config {
--	unsigned long enabled;
--	unsigned long event;
--	unsigned long count;
--	/* Classic doesn't support per-counter user/kernel selection */
--	unsigned long kernel;
--	unsigned long user;
--	unsigned long unit_mask;
--};
+-static struct op_counter_config ctr[OP_MAX_COUNTER];
+-static struct op_system_config sys;
 -
--/* System-wide configuration as set via oprofilefs.  */
--struct op_system_config {
--#ifdef CONFIG_PPC64
--	unsigned long mmcr0;
--	unsigned long mmcr1;
--	unsigned long mmcra;
--#ifdef CONFIG_OPROFILE_CELL
--	/* Register for oprofile user tool to check cell kernel profiling
--	 * support.
+-static int op_per_cpu_rc;
+-
+-static void op_handle_interrupt(struct pt_regs *regs)
+-{
+-	model->handle_interrupt(regs, ctr);
+-}
+-
+-static void op_powerpc_cpu_setup(void *dummy)
+-{
+-	int ret;
+-
+-	ret = model->cpu_setup(ctr);
+-
+-	if (ret != 0)
+-		op_per_cpu_rc = ret;
+-}
+-
+-static int op_powerpc_setup(void)
+-{
+-	int err;
+-
+-	op_per_cpu_rc = 0;
+-
+-	/* Grab the hardware */
+-	err = reserve_pmc_hardware(op_handle_interrupt);
+-	if (err)
+-		return err;
+-
+-	/* Pre-compute the values to stuff in the hardware registers.  */
+-	op_per_cpu_rc = model->reg_setup(ctr, &sys, model->num_counters);
+-
+-	if (op_per_cpu_rc)
+-		goto out;
+-
+-	/* Configure the registers on all cpus.	 If an error occurs on one
+-	 * of the cpus, op_per_cpu_rc will be set to the error */
+-	on_each_cpu(op_powerpc_cpu_setup, NULL, 1);
+-
+-out:	if (op_per_cpu_rc) {
+-		/* error on setup release the performance counter hardware */
+-		release_pmc_hardware();
+-	}
+-
+-	return op_per_cpu_rc;
+-}
+-
+-static void op_powerpc_shutdown(void)
+-{
+-	release_pmc_hardware();
+-}
+-
+-static void op_powerpc_cpu_start(void *dummy)
+-{
+-	/* If any of the cpus have return an error, set the
+-	 * global flag to the error so it can be returned
+-	 * to the generic OProfile caller.
 -	 */
--	unsigned long cell_support;
+-	int ret;
+-
+-	ret = model->start(ctr);
+-	if (ret != 0)
+-		op_per_cpu_rc = ret;
+-}
+-
+-static int op_powerpc_start(void)
+-{
+-	op_per_cpu_rc = 0;
+-
+-	if (model->global_start)
+-		return model->global_start(ctr);
+-	if (model->start) {
+-		on_each_cpu(op_powerpc_cpu_start, NULL, 1);
+-		return op_per_cpu_rc;
+-	}
+-	return -EIO; /* No start function is defined for this
+-			power architecture */
+-}
+-
+-static inline void op_powerpc_cpu_stop(void *dummy)
+-{
+-	model->stop();
+-}
+-
+-static void op_powerpc_stop(void)
+-{
+-	if (model->stop)
+-		on_each_cpu(op_powerpc_cpu_stop, NULL, 1);
+-        if (model->global_stop)
+-                model->global_stop();
+-}
+-
+-static int op_powerpc_create_files(struct dentry *root)
+-{
+-	int i;
+-
+-#ifdef CONFIG_PPC64
+-	/*
+-	 * There is one mmcr0, mmcr1 and mmcra for setting the events for
+-	 * all of the counters.
+-	 */
+-	oprofilefs_create_ulong(root, "mmcr0", &sys.mmcr0);
+-	oprofilefs_create_ulong(root, "mmcr1", &sys.mmcr1);
+-	oprofilefs_create_ulong(root, "mmcra", &sys.mmcra);
+-#ifdef CONFIG_OPROFILE_CELL
+-	/* create a file the user tool can check to see what level of profiling
+-	 * support exits with this kernel. Initialize bit mask to indicate
+-	 * what support the kernel has:
+-	 * bit 0      -  Supports SPU event profiling in addition to PPU
+-	 *               event and cycles; and SPU cycle profiling
+-	 * bits 1-31  -  Currently unused.
+-	 *
+-	 * If the file does not exist, then the kernel only supports SPU
+-	 * cycle profiling, PPU event and cycle profiling.
+-	 */
+-	oprofilefs_create_ulong(root, "cell_support", &sys.cell_support);
+-	sys.cell_support = 0x1; /* Note, the user OProfile tool must check
+-				 * that this bit is set before attempting to
+-				 * user SPU event profiling.  Older kernels
+-				 * will not have this file, hence the user
+-				 * tool is not allowed to do SPU event
+-				 * profiling on older kernels.  Older kernels
+-				 * will accept SPU events but collected data
+-				 * is garbage.
+-				 */
 -#endif
 -#endif
--	unsigned long enable_kernel;
--	unsigned long enable_user;
+-
+-	for (i = 0; i < model->num_counters; ++i) {
+-		struct dentry *dir;
+-		char buf[4];
+-
+-		snprintf(buf, sizeof buf, "%d", i);
+-		dir = oprofilefs_mkdir(root, buf);
+-
+-		oprofilefs_create_ulong(dir, "enabled", &ctr[i].enabled);
+-		oprofilefs_create_ulong(dir, "event", &ctr[i].event);
+-		oprofilefs_create_ulong(dir, "count", &ctr[i].count);
+-
+-		/*
+-		 * Classic PowerPC doesn't support per-counter
+-		 * control like this, but the options are
+-		 * expected, so they remain.  For Freescale
+-		 * Book-E style performance monitors, we do
+-		 * support them.
+-		 */
+-		oprofilefs_create_ulong(dir, "kernel", &ctr[i].kernel);
+-		oprofilefs_create_ulong(dir, "user", &ctr[i].user);
+-
+-		oprofilefs_create_ulong(dir, "unit_mask", &ctr[i].unit_mask);
+-	}
+-
+-	oprofilefs_create_ulong(root, "enable_kernel", &sys.enable_kernel);
+-	oprofilefs_create_ulong(root, "enable_user", &sys.enable_user);
+-
+-	/* Default to tracing both kernel and user */
+-	sys.enable_kernel = 1;
+-	sys.enable_user = 1;
+-
+-	return 0;
+-}
+-
+-int __init oprofile_arch_init(struct oprofile_operations *ops)
+-{
+-	if (!cur_cpu_spec->oprofile_cpu_type)
+-		return -ENODEV;
+-
+-	switch (cur_cpu_spec->oprofile_type) {
+-#ifdef CONFIG_PPC_BOOK3S_64
+-#ifdef CONFIG_OPROFILE_CELL
+-		case PPC_OPROFILE_CELL:
+-			if (firmware_has_feature(FW_FEATURE_LPAR))
+-				return -ENODEV;
+-			model = &op_model_cell;
+-			ops->sync_start = model->sync_start;
+-			ops->sync_stop = model->sync_stop;
+-			break;
+-#endif
+-		case PPC_OPROFILE_POWER4:
+-			model = &op_model_power4;
+-			break;
+-		case PPC_OPROFILE_PA6T:
+-			model = &op_model_pa6t;
+-			break;
+-#endif
+-#ifdef CONFIG_PPC_BOOK3S_32
+-		case PPC_OPROFILE_G4:
+-			model = &op_model_7450;
+-			break;
+-#endif
+-#if defined(CONFIG_FSL_EMB_PERFMON)
+-		case PPC_OPROFILE_FSL_EMB:
+-			model = &op_model_fsl_emb;
+-			break;
+-#endif
+-		default:
+-			return -ENODEV;
+-	}
+-
+-	model->num_counters = cur_cpu_spec->num_pmcs;
+-
+-	ops->cpu_type = cur_cpu_spec->oprofile_cpu_type;
+-	ops->create_files = op_powerpc_create_files;
+-	ops->setup = op_powerpc_setup;
+-	ops->shutdown = op_powerpc_shutdown;
+-	ops->start = op_powerpc_start;
+-	ops->stop = op_powerpc_stop;
+-	ops->backtrace = op_powerpc_backtrace;
+-
+-	printk(KERN_DEBUG "oprofile: using %s performance monitoring.\n",
+-	       ops->cpu_type);
+-
+-	return 0;
+-}
+-
+-void oprofile_arch_exit(void)
+-{
+-}
+diff --git a/arch/powerpc/oprofile/op_model_7450.c b/arch/powerpc/oprofile/op_model_7450.c
+deleted file mode 100644
+index 5ebc25188a72..000000000000
+--- a/arch/powerpc/oprofile/op_model_7450.c
++++ /dev/null
+@@ -1,207 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * arch/powerpc/oprofile/op_model_7450.c
+- *
+- * Freescale 745x/744x oprofile support, based on fsl_booke support
+- * Copyright (C) 2004 Anton Blanchard <anton@au.ibm.com>, IBM
+- *
+- * Copyright (c) 2004 Freescale Semiconductor, Inc
+- *
+- * Author: Andy Fleming
+- * Maintainer: Kumar Gala <galak@kernel.crashing.org>
+- */
+-
+-#include <linux/oprofile.h>
+-#include <linux/smp.h>
+-#include <asm/ptrace.h>
+-#include <asm/processor.h>
+-#include <asm/cputable.h>
+-#include <asm/page.h>
+-#include <asm/pmc.h>
+-#include <asm/oprofile_impl.h>
+-
+-static unsigned long reset_value[OP_MAX_COUNTER];
+-
+-static int oprofile_running;
+-static u32 mmcr0_val, mmcr1_val, mmcr2_val, num_pmcs;
+-
+-#define MMCR0_PMC1_SHIFT	6
+-#define MMCR0_PMC2_SHIFT	0
+-#define MMCR1_PMC3_SHIFT	27
+-#define MMCR1_PMC4_SHIFT	22
+-#define MMCR1_PMC5_SHIFT	17
+-#define MMCR1_PMC6_SHIFT	11
+-
+-#define mmcr0_event1(event) \
+-	((event << MMCR0_PMC1_SHIFT) & MMCR0_PMC1SEL)
+-#define mmcr0_event2(event) \
+-	((event << MMCR0_PMC2_SHIFT) & MMCR0_PMC2SEL)
+-
+-#define mmcr1_event3(event) \
+-	((event << MMCR1_PMC3_SHIFT) & MMCR1_PMC3SEL)
+-#define mmcr1_event4(event) \
+-	((event << MMCR1_PMC4_SHIFT) & MMCR1_PMC4SEL)
+-#define mmcr1_event5(event) \
+-	((event << MMCR1_PMC5_SHIFT) & MMCR1_PMC5SEL)
+-#define mmcr1_event6(event) \
+-	((event << MMCR1_PMC6_SHIFT) & MMCR1_PMC6SEL)
+-
+-#define MMCR0_INIT (MMCR0_FC | MMCR0_FCS | MMCR0_FCP | MMCR0_FCM1 | MMCR0_FCM0)
+-
+-/* Unfreezes the counters on this CPU, enables the interrupt,
+- * enables the counters to trigger the interrupt, and sets the
+- * counters to only count when the mark bit is not set.
+- */
+-static void pmc_start_ctrs(void)
+-{
+-	u32 mmcr0 = mfspr(SPRN_MMCR0);
+-
+-	mmcr0 &= ~(MMCR0_FC | MMCR0_FCM0);
+-	mmcr0 |= (MMCR0_FCECE | MMCR0_PMC1CE | MMCR0_PMCnCE | MMCR0_PMXE);
+-
+-	mtspr(SPRN_MMCR0, mmcr0);
+-}
+-
+-/* Disables the counters on this CPU, and freezes them */
+-static void pmc_stop_ctrs(void)
+-{
+-	u32 mmcr0 = mfspr(SPRN_MMCR0);
+-
+-	mmcr0 |= MMCR0_FC;
+-	mmcr0 &= ~(MMCR0_FCECE | MMCR0_PMC1CE | MMCR0_PMCnCE | MMCR0_PMXE);
+-
+-	mtspr(SPRN_MMCR0, mmcr0);
+-}
+-
+-/* Configures the counters on this CPU based on the global
+- * settings */
+-static int fsl7450_cpu_setup(struct op_counter_config *ctr)
+-{
+-	/* freeze all counters */
+-	pmc_stop_ctrs();
+-
+-	mtspr(SPRN_MMCR0, mmcr0_val);
+-	mtspr(SPRN_MMCR1, mmcr1_val);
+-	if (num_pmcs > 4)
+-		mtspr(SPRN_MMCR2, mmcr2_val);
+-
+-	return 0;
+-}
+-
+-/* Configures the global settings for the countes on all CPUs. */
+-static int fsl7450_reg_setup(struct op_counter_config *ctr,
+-			     struct op_system_config *sys,
+-			     int num_ctrs)
+-{
+-	int i;
+-
+-	num_pmcs = num_ctrs;
+-	/* Our counters count up, and "count" refers to
+-	 * how much before the next interrupt, and we interrupt
+-	 * on overflow.  So we calculate the starting value
+-	 * which will give us "count" until overflow.
+-	 * Then we set the events on the enabled counters */
+-	for (i = 0; i < num_ctrs; ++i)
+-		reset_value[i] = 0x80000000UL - ctr[i].count;
+-
+-	/* Set events for Counters 1 & 2 */
+-	mmcr0_val = MMCR0_INIT | mmcr0_event1(ctr[0].event)
+-		| mmcr0_event2(ctr[1].event);
+-
+-	/* Setup user/kernel bits */
+-	if (sys->enable_kernel)
+-		mmcr0_val &= ~(MMCR0_FCS);
+-
+-	if (sys->enable_user)
+-		mmcr0_val &= ~(MMCR0_FCP);
+-
+-	/* Set events for Counters 3-6 */
+-	mmcr1_val = mmcr1_event3(ctr[2].event)
+-		| mmcr1_event4(ctr[3].event);
+-	if (num_ctrs > 4)
+-		mmcr1_val |= mmcr1_event5(ctr[4].event)
+-			| mmcr1_event6(ctr[5].event);
+-
+-	mmcr2_val = 0;
+-
+-	return 0;
+-}
+-
+-/* Sets the counters on this CPU to the chosen values, and starts them */
+-static int fsl7450_start(struct op_counter_config *ctr)
+-{
+-	int i;
+-
+-	mtmsr(mfmsr() | MSR_PMM);
+-
+-	for (i = 0; i < num_pmcs; ++i) {
+-		if (ctr[i].enabled)
+-			classic_ctr_write(i, reset_value[i]);
+-		else
+-			classic_ctr_write(i, 0);
+-	}
+-
+-	/* Clear the freeze bit, and enable the interrupt.
+-	 * The counters won't actually start until the rfi clears
+-	 * the PMM bit */
+-	pmc_start_ctrs();
+-
+-	oprofile_running = 1;
+-
+-	return 0;
+-}
+-
+-/* Stop the counters on this CPU */
+-static void fsl7450_stop(void)
+-{
+-	/* freeze counters */
+-	pmc_stop_ctrs();
+-
+-	oprofile_running = 0;
+-
+-	mb();
+-}
+-
+-
+-/* Handle the interrupt on this CPU, and log a sample for each
+- * event that triggered the interrupt */
+-static void fsl7450_handle_interrupt(struct pt_regs *regs,
+-				    struct op_counter_config *ctr)
+-{
+-	unsigned long pc;
+-	int is_kernel;
+-	int val;
+-	int i;
+-
+-	/* set the PMM bit (see comment below) */
+-	mtmsr(mfmsr() | MSR_PMM);
+-
+-	pc = mfspr(SPRN_SIAR);
+-	is_kernel = is_kernel_addr(pc);
+-
+-	for (i = 0; i < num_pmcs; ++i) {
+-		val = classic_ctr_read(i);
+-		if (val < 0) {
+-			if (oprofile_running && ctr[i].enabled) {
+-				oprofile_add_ext_sample(pc, regs, i, is_kernel);
+-				classic_ctr_write(i, reset_value[i]);
+-			} else {
+-				classic_ctr_write(i, 0);
+-			}
+-		}
+-	}
+-
+-	/* The freeze bit was set by the interrupt. */
+-	/* Clear the freeze bit, and reenable the interrupt.
+-	 * The counters won't actually start until the rfi clears
+-	 * the PM/M bit */
+-	pmc_start_ctrs();
+-}
+-
+-struct op_powerpc_model op_model_7450= {
+-	.reg_setup		= fsl7450_reg_setup,
+-	.cpu_setup		= fsl7450_cpu_setup,
+-	.start			= fsl7450_start,
+-	.stop			= fsl7450_stop,
+-	.handle_interrupt	= fsl7450_handle_interrupt,
+-};
+diff --git a/arch/powerpc/oprofile/op_model_cell.c b/arch/powerpc/oprofile/op_model_cell.c
+deleted file mode 100644
+index 7eb73070b7be..000000000000
+--- a/arch/powerpc/oprofile/op_model_cell.c
++++ /dev/null
+@@ -1,1709 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Cell Broadband Engine OProfile Support
+- *
+- * (C) Copyright IBM Corporation 2006
+- *
+- * Author: David Erb (djerb@us.ibm.com)
+- * Modifications:
+- *	   Carl Love <carll@us.ibm.com>
+- *	   Maynard Johnson <maynardj@us.ibm.com>
+- */
+-
+-#include <linux/cpufreq.h>
+-#include <linux/delay.h>
+-#include <linux/jiffies.h>
+-#include <linux/kthread.h>
+-#include <linux/oprofile.h>
+-#include <linux/percpu.h>
+-#include <linux/smp.h>
+-#include <linux/spinlock.h>
+-#include <linux/timer.h>
+-#include <asm/cell-pmu.h>
+-#include <asm/cputable.h>
+-#include <asm/firmware.h>
+-#include <asm/io.h>
+-#include <asm/oprofile_impl.h>
+-#include <asm/processor.h>
+-#include <asm/prom.h>
+-#include <asm/ptrace.h>
+-#include <asm/reg.h>
+-#include <asm/rtas.h>
+-#include <asm/cell-regs.h>
+-
+-#include "../platforms/cell/interrupt.h"
+-#include "cell/pr_util.h"
+-
+-#define PPU_PROFILING            0
+-#define SPU_PROFILING_CYCLES     1
+-#define SPU_PROFILING_EVENTS     2
+-
+-#define SPU_EVENT_NUM_START      4100
+-#define SPU_EVENT_NUM_STOP       4399
+-#define SPU_PROFILE_EVENT_ADDR          4363  /* spu, address trace, decimal */
+-#define SPU_PROFILE_EVENT_ADDR_MASK_A   0x146 /* sub unit set to zero */
+-#define SPU_PROFILE_EVENT_ADDR_MASK_B   0x186 /* sub unit set to zero */
+-
+-#define NUM_SPUS_PER_NODE    8
+-#define SPU_CYCLES_EVENT_NUM 2	/*  event number for SPU_CYCLES */
+-
+-#define PPU_CYCLES_EVENT_NUM 1	/*  event number for CYCLES */
+-#define PPU_CYCLES_GRP_NUM   1	/* special group number for identifying
+-				 * PPU_CYCLES event
+-				 */
+-#define CBE_COUNT_ALL_CYCLES 0x42800000 /* PPU cycle event specifier */
+-
+-#define NUM_THREADS 2         /* number of physical threads in
+-			       * physical processor
+-			       */
+-#define NUM_DEBUG_BUS_WORDS 4
+-#define NUM_INPUT_BUS_WORDS 2
+-
+-#define MAX_SPU_COUNT 0xFFFFFF	/* maximum 24 bit LFSR value */
+-
+-/* Minimum HW interval timer setting to send value to trace buffer is 10 cycle.
+- * To configure counter to send value every N cycles set counter to
+- * 2^32 - 1 - N.
+- */
+-#define NUM_INTERVAL_CYC  0xFFFFFFFF - 10
+-
+-/*
+- * spu_cycle_reset is the number of cycles between samples.
+- * This variable is used for SPU profiling and should ONLY be set
+- * at the beginning of cell_reg_setup; otherwise, it's read-only.
+- */
+-static unsigned int spu_cycle_reset;
+-static unsigned int profiling_mode;
+-static int spu_evnt_phys_spu_indx;
+-
+-struct pmc_cntrl_data {
+-	unsigned long vcntr;
+-	unsigned long evnts;
+-	unsigned long masks;
+-	unsigned long enabled;
 -};
 -
--/* Per-arch configuration */
--struct op_powerpc_model {
--	int (*reg_setup) (struct op_counter_config *,
--			   struct op_system_config *,
--			   int num_counters);
--	int  (*cpu_setup) (struct op_counter_config *);
--	int  (*start) (struct op_counter_config *);
--	int  (*global_start) (struct op_counter_config *);
--	void (*stop) (void);
--	void (*global_stop) (void);
--	int (*sync_start)(void);
--	int (*sync_stop)(void);
--	void (*handle_interrupt) (struct pt_regs *,
--				  struct op_counter_config *);
--	int num_counters;
+-/*
+- * ibm,cbe-perftools rtas parameters
+- */
+-struct pm_signal {
+-	u16 cpu;		/* Processor to modify */
+-	u16 sub_unit;		/* hw subunit this applies to (if applicable)*/
+-	short int signal_group; /* Signal Group to Enable/Disable */
+-	u8 bus_word;		/* Enable/Disable on this Trace/Trigger/Event
+-				 * Bus Word(s) (bitmask)
+-				 */
+-	u8 bit;			/* Trigger/Event bit (if applicable) */
 -};
 -
--extern struct op_powerpc_model op_model_fsl_emb;
--extern struct op_powerpc_model op_model_power4;
--extern struct op_powerpc_model op_model_7450;
--extern struct op_powerpc_model op_model_cell;
--extern struct op_powerpc_model op_model_pa6t;
+-/*
+- * rtas call arguments
+- */
+-enum {
+-	SUBFUNC_RESET = 1,
+-	SUBFUNC_ACTIVATE = 2,
+-	SUBFUNC_DEACTIVATE = 3,
+-
+-	PASSTHRU_IGNORE = 0,
+-	PASSTHRU_ENABLE = 1,
+-	PASSTHRU_DISABLE = 2,
+-};
+-
+-struct pm_cntrl {
+-	u16 enable;
+-	u16 stop_at_max;
+-	u16 trace_mode;
+-	u16 freeze;
+-	u16 count_mode;
+-	u16 spu_addr_trace;
+-	u8  trace_buf_ovflw;
+-};
+-
+-static struct {
+-	u32 group_control;
+-	u32 debug_bus_control;
+-	struct pm_cntrl pm_cntrl;
+-	u32 pm07_cntrl[NR_PHYS_CTRS];
+-} pm_regs;
+-
+-#define GET_SUB_UNIT(x) ((x & 0x0000f000) >> 12)
+-#define GET_BUS_WORD(x) ((x & 0x000000f0) >> 4)
+-#define GET_BUS_TYPE(x) ((x & 0x00000300) >> 8)
+-#define GET_POLARITY(x) ((x & 0x00000002) >> 1)
+-#define GET_COUNT_CYCLES(x) (x & 0x00000001)
+-#define GET_INPUT_CONTROL(x) ((x & 0x00000004) >> 2)
+-
+-static DEFINE_PER_CPU(unsigned long[NR_PHYS_CTRS], pmc_values);
+-static unsigned long spu_pm_cnt[MAX_NUMNODES * NUM_SPUS_PER_NODE];
+-static struct pmc_cntrl_data pmc_cntrl[NUM_THREADS][NR_PHYS_CTRS];
+-
+-/*
+- * The CELL profiling code makes rtas calls to setup the debug bus to
+- * route the performance signals.  Additionally, SPU profiling requires
+- * a second rtas call to setup the hardware to capture the SPU PCs.
+- * The EIO error value is returned if the token lookups or the rtas
+- * call fail.  The EIO error number is the best choice of the existing
+- * error numbers.  The probability of rtas related error is very low.  But
+- * by returning EIO and printing additional information to dmsg the user
+- * will know that OProfile did not start and dmesg will tell them why.
+- * OProfile does not support returning errors on Stop.	Not a huge issue
+- * since failure to reset the debug bus or stop the SPU PC collection is
+- * not a fatel issue.  Chances are if the Stop failed, Start doesn't work
+- * either.
+- */
+-
+-/*
+- * Interpetation of hdw_thread:
+- * 0 - even virtual cpus 0, 2, 4,...
+- * 1 - odd virtual cpus 1, 3, 5, ...
+- *
+- * FIXME: this is strictly wrong, we need to clean this up in a number
+- * of places. It works for now. -arnd
+- */
+-static u32 hdw_thread;
+-
+-static u32 virt_cntr_inter_mask;
+-static struct timer_list timer_virt_cntr;
+-static struct timer_list timer_spu_event_swap;
+-
+-/*
+- * pm_signal needs to be global since it is initialized in
+- * cell_reg_setup at the time when the necessary information
+- * is available.
+- */
+-static struct pm_signal pm_signal[NR_PHYS_CTRS];
+-static int pm_rtas_token;    /* token for debug bus setup call */
+-static int spu_rtas_token;   /* token for SPU cycle profiling */
+-
+-static u32 reset_value[NR_PHYS_CTRS];
+-static int num_counters;
+-static int oprofile_running;
+-static DEFINE_SPINLOCK(cntr_lock);
+-
+-static u32 ctr_enabled;
+-
+-static unsigned char input_bus[NUM_INPUT_BUS_WORDS];
+-
+-/*
+- * Firmware interface functions
+- */
+-static int
+-rtas_ibm_cbe_perftools(int subfunc, int passthru,
+-		       void *address, unsigned long length)
+-{
+-	u64 paddr = __pa(address);
+-
+-	return rtas_call(pm_rtas_token, 5, 1, NULL, subfunc,
+-			 passthru, paddr >> 32, paddr & 0xffffffff, length);
+-}
+-
+-static void pm_rtas_reset_signals(u32 node)
+-{
+-	int ret;
+-	struct pm_signal pm_signal_local;
+-
+-	/*
+-	 * The debug bus is being set to the passthru disable state.
+-	 * However, the FW still expects at least one legal signal routing
+-	 * entry or it will return an error on the arguments.	If we don't
+-	 * supply a valid entry, we must ignore all return values.  Ignoring
+-	 * all return values means we might miss an error we should be
+-	 * concerned about.
+-	 */
+-
+-	/*  fw expects physical cpu #. */
+-	pm_signal_local.cpu = node;
+-	pm_signal_local.signal_group = 21;
+-	pm_signal_local.bus_word = 1;
+-	pm_signal_local.sub_unit = 0;
+-	pm_signal_local.bit = 0;
+-
+-	ret = rtas_ibm_cbe_perftools(SUBFUNC_RESET, PASSTHRU_DISABLE,
+-				     &pm_signal_local,
+-				     sizeof(struct pm_signal));
+-
+-	if (unlikely(ret))
+-		/*
+-		 * Not a fatal error. For Oprofile stop, the oprofile
+-		 * functions do not support returning an error for
+-		 * failure to stop OProfile.
+-		 */
+-		printk(KERN_WARNING "%s: rtas returned: %d\n",
+-		       __func__, ret);
+-}
+-
+-static int pm_rtas_activate_signals(u32 node, u32 count)
+-{
+-	int ret;
+-	int i, j;
+-	struct pm_signal pm_signal_local[NR_PHYS_CTRS];
+-
+-	/*
+-	 * There is no debug setup required for the cycles event.
+-	 * Note that only events in the same group can be used.
+-	 * Otherwise, there will be conflicts in correctly routing
+-	 * the signals on the debug bus.  It is the responsibility
+-	 * of the OProfile user tool to check the events are in
+-	 * the same group.
+-	 */
+-	i = 0;
+-	for (j = 0; j < count; j++) {
+-		if (pm_signal[j].signal_group != PPU_CYCLES_GRP_NUM) {
+-
+-			/* fw expects physical cpu # */
+-			pm_signal_local[i].cpu = node;
+-			pm_signal_local[i].signal_group
+-				= pm_signal[j].signal_group;
+-			pm_signal_local[i].bus_word = pm_signal[j].bus_word;
+-			pm_signal_local[i].sub_unit = pm_signal[j].sub_unit;
+-			pm_signal_local[i].bit = pm_signal[j].bit;
+-			i++;
+-		}
+-	}
+-
+-	if (i != 0) {
+-		ret = rtas_ibm_cbe_perftools(SUBFUNC_ACTIVATE, PASSTHRU_ENABLE,
+-					     pm_signal_local,
+-					     i * sizeof(struct pm_signal));
+-
+-		if (unlikely(ret)) {
+-			printk(KERN_WARNING "%s: rtas returned: %d\n",
+-			       __func__, ret);
+-			return -EIO;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-/*
+- * PM Signal functions
+- */
+-static void set_pm_event(u32 ctr, int event, u32 unit_mask)
+-{
+-	struct pm_signal *p;
+-	u32 signal_bit;
+-	u32 bus_word, bus_type, count_cycles, polarity, input_control;
+-	int j, i;
+-
+-	if (event == PPU_CYCLES_EVENT_NUM) {
+-		/* Special Event: Count all cpu cycles */
+-		pm_regs.pm07_cntrl[ctr] = CBE_COUNT_ALL_CYCLES;
+-		p = &(pm_signal[ctr]);
+-		p->signal_group = PPU_CYCLES_GRP_NUM;
+-		p->bus_word = 1;
+-		p->sub_unit = 0;
+-		p->bit = 0;
+-		goto out;
+-	} else {
+-		pm_regs.pm07_cntrl[ctr] = 0;
+-	}
+-
+-	bus_word = GET_BUS_WORD(unit_mask);
+-	bus_type = GET_BUS_TYPE(unit_mask);
+-	count_cycles = GET_COUNT_CYCLES(unit_mask);
+-	polarity = GET_POLARITY(unit_mask);
+-	input_control = GET_INPUT_CONTROL(unit_mask);
+-	signal_bit = (event % 100);
+-
+-	p = &(pm_signal[ctr]);
+-
+-	p->signal_group = event / 100;
+-	p->bus_word = bus_word;
+-	p->sub_unit = GET_SUB_UNIT(unit_mask);
+-
+-	pm_regs.pm07_cntrl[ctr] = 0;
+-	pm_regs.pm07_cntrl[ctr] |= PM07_CTR_COUNT_CYCLES(count_cycles);
+-	pm_regs.pm07_cntrl[ctr] |= PM07_CTR_POLARITY(polarity);
+-	pm_regs.pm07_cntrl[ctr] |= PM07_CTR_INPUT_CONTROL(input_control);
+-
+-	/*
+-	 * Some of the islands signal selection is based on 64 bit words.
+-	 * The debug bus words are 32 bits, the input words to the performance
+-	 * counters are defined as 32 bits.  Need to convert the 64 bit island
+-	 * specification to the appropriate 32 input bit and bus word for the
+-	 * performance counter event selection.	 See the CELL Performance
+-	 * monitoring signals manual and the Perf cntr hardware descriptions
+-	 * for the details.
+-	 */
+-	if (input_control == 0) {
+-		if (signal_bit > 31) {
+-			signal_bit -= 32;
+-			if (bus_word == 0x3)
+-				bus_word = 0x2;
+-			else if (bus_word == 0xc)
+-				bus_word = 0x8;
+-		}
+-
+-		if ((bus_type == 0) && p->signal_group >= 60)
+-			bus_type = 2;
+-		if ((bus_type == 1) && p->signal_group >= 50)
+-			bus_type = 0;
+-
+-		pm_regs.pm07_cntrl[ctr] |= PM07_CTR_INPUT_MUX(signal_bit);
+-	} else {
+-		pm_regs.pm07_cntrl[ctr] = 0;
+-		p->bit = signal_bit;
+-	}
+-
+-	for (i = 0; i < NUM_DEBUG_BUS_WORDS; i++) {
+-		if (bus_word & (1 << i)) {
+-			pm_regs.debug_bus_control |=
+-				(bus_type << (30 - (2 * i)));
+-
+-			for (j = 0; j < NUM_INPUT_BUS_WORDS; j++) {
+-				if (input_bus[j] == 0xff) {
+-					input_bus[j] = i;
+-					pm_regs.group_control |=
+-						(i << (30 - (2 * j)));
+-
+-					break;
+-				}
+-			}
+-		}
+-	}
+-out:
+-	;
+-}
+-
+-static void write_pm_cntrl(int cpu)
+-{
+-	/*
+-	 * Oprofile will use 32 bit counters, set bits 7:10 to 0
+-	 * pmregs.pm_cntrl is a global
+-	 */
+-
+-	u32 val = 0;
+-	if (pm_regs.pm_cntrl.enable == 1)
+-		val |= CBE_PM_ENABLE_PERF_MON;
+-
+-	if (pm_regs.pm_cntrl.stop_at_max == 1)
+-		val |= CBE_PM_STOP_AT_MAX;
+-
+-	if (pm_regs.pm_cntrl.trace_mode != 0)
+-		val |= CBE_PM_TRACE_MODE_SET(pm_regs.pm_cntrl.trace_mode);
+-
+-	if (pm_regs.pm_cntrl.trace_buf_ovflw == 1)
+-		val |= CBE_PM_TRACE_BUF_OVFLW(pm_regs.pm_cntrl.trace_buf_ovflw);
+-	if (pm_regs.pm_cntrl.freeze == 1)
+-		val |= CBE_PM_FREEZE_ALL_CTRS;
+-
+-	val |= CBE_PM_SPU_ADDR_TRACE_SET(pm_regs.pm_cntrl.spu_addr_trace);
+-
+-	/*
+-	 * Routine set_count_mode must be called previously to set
+-	 * the count mode based on the user selection of user and kernel.
+-	 */
+-	val |= CBE_PM_COUNT_MODE_SET(pm_regs.pm_cntrl.count_mode);
+-	cbe_write_pm(cpu, pm_control, val);
+-}
+-
+-static inline void
+-set_count_mode(u32 kernel, u32 user)
+-{
+-	/*
+-	 * The user must specify user and kernel if they want them. If
+-	 *  neither is specified, OProfile will count in hypervisor mode.
+-	 *  pm_regs.pm_cntrl is a global
+-	 */
+-	if (kernel) {
+-		if (user)
+-			pm_regs.pm_cntrl.count_mode = CBE_COUNT_ALL_MODES;
+-		else
+-			pm_regs.pm_cntrl.count_mode =
+-				CBE_COUNT_SUPERVISOR_MODE;
+-	} else {
+-		if (user)
+-			pm_regs.pm_cntrl.count_mode = CBE_COUNT_PROBLEM_MODE;
+-		else
+-			pm_regs.pm_cntrl.count_mode =
+-				CBE_COUNT_HYPERVISOR_MODE;
+-	}
+-}
+-
+-static inline void enable_ctr(u32 cpu, u32 ctr, u32 *pm07_cntrl)
+-{
+-
+-	pm07_cntrl[ctr] |= CBE_PM_CTR_ENABLE;
+-	cbe_write_pm07_control(cpu, ctr, pm07_cntrl[ctr]);
+-}
+-
+-/*
+- * Oprofile is expected to collect data on all CPUs simultaneously.
+- * However, there is one set of performance counters per node.	There are
+- * two hardware threads or virtual CPUs on each node.  Hence, OProfile must
+- * multiplex in time the performance counter collection on the two virtual
+- * CPUs.  The multiplexing of the performance counters is done by this
+- * virtual counter routine.
+- *
+- * The pmc_values used below is defined as 'per-cpu' but its use is
+- * more akin to 'per-node'.  We need to store two sets of counter
+- * values per node -- one for the previous run and one for the next.
+- * The per-cpu[NR_PHYS_CTRS] gives us the storage we need.  Each odd/even
+- * pair of per-cpu arrays is used for storing the previous and next
+- * pmc values for a given node.
+- * NOTE: We use the per-cpu variable to improve cache performance.
+- *
+- * This routine will alternate loading the virtual counters for
+- * virtual CPUs
+- */
+-static void cell_virtual_cntr(struct timer_list *unused)
+-{
+-	int i, prev_hdw_thread, next_hdw_thread;
+-	u32 cpu;
+-	unsigned long flags;
+-
+-	/*
+-	 * Make sure that the interrupt_hander and the virt counter are
+-	 * not both playing with the counters on the same node.
+-	 */
+-
+-	spin_lock_irqsave(&cntr_lock, flags);
+-
+-	prev_hdw_thread = hdw_thread;
+-
+-	/* switch the cpu handling the interrupts */
+-	hdw_thread = 1 ^ hdw_thread;
+-	next_hdw_thread = hdw_thread;
+-
+-	pm_regs.group_control = 0;
+-	pm_regs.debug_bus_control = 0;
+-
+-	for (i = 0; i < NUM_INPUT_BUS_WORDS; i++)
+-		input_bus[i] = 0xff;
+-
+-	/*
+-	 * There are some per thread events.  Must do the
+-	 * set event, for the thread that is being started
+-	 */
+-	for (i = 0; i < num_counters; i++)
+-		set_pm_event(i,
+-			pmc_cntrl[next_hdw_thread][i].evnts,
+-			pmc_cntrl[next_hdw_thread][i].masks);
+-
+-	/*
+-	 * The following is done only once per each node, but
+-	 * we need cpu #, not node #, to pass to the cbe_xxx functions.
+-	 */
+-	for_each_online_cpu(cpu) {
+-		if (cbe_get_hw_thread_id(cpu))
+-			continue;
+-
+-		/*
+-		 * stop counters, save counter values, restore counts
+-		 * for previous thread
+-		 */
+-		cbe_disable_pm(cpu);
+-		cbe_disable_pm_interrupts(cpu);
+-		for (i = 0; i < num_counters; i++) {
+-			per_cpu(pmc_values, cpu + prev_hdw_thread)[i]
+-				= cbe_read_ctr(cpu, i);
+-
+-			if (per_cpu(pmc_values, cpu + next_hdw_thread)[i]
+-			    == 0xFFFFFFFF)
+-				/* If the cntr value is 0xffffffff, we must
+-				 * reset that to 0xfffffff0 when the current
+-				 * thread is restarted.	 This will generate a
+-				 * new interrupt and make sure that we never
+-				 * restore the counters to the max value.  If
+-				 * the counters were restored to the max value,
+-				 * they do not increment and no interrupts are
+-				 * generated.  Hence no more samples will be
+-				 * collected on that cpu.
+-				 */
+-				cbe_write_ctr(cpu, i, 0xFFFFFFF0);
+-			else
+-				cbe_write_ctr(cpu, i,
+-					      per_cpu(pmc_values,
+-						      cpu +
+-						      next_hdw_thread)[i]);
+-		}
+-
+-		/*
+-		 * Switch to the other thread. Change the interrupt
+-		 * and control regs to be scheduled on the CPU
+-		 * corresponding to the thread to execute.
+-		 */
+-		for (i = 0; i < num_counters; i++) {
+-			if (pmc_cntrl[next_hdw_thread][i].enabled) {
+-				/*
+-				 * There are some per thread events.
+-				 * Must do the set event, enable_cntr
+-				 * for each cpu.
+-				 */
+-				enable_ctr(cpu, i,
+-					   pm_regs.pm07_cntrl);
+-			} else {
+-				cbe_write_pm07_control(cpu, i, 0);
+-			}
+-		}
+-
+-		/* Enable interrupts on the CPU thread that is starting */
+-		cbe_enable_pm_interrupts(cpu, next_hdw_thread,
+-					 virt_cntr_inter_mask);
+-		cbe_enable_pm(cpu);
+-	}
+-
+-	spin_unlock_irqrestore(&cntr_lock, flags);
+-
+-	mod_timer(&timer_virt_cntr, jiffies + HZ / 10);
+-}
+-
+-static void start_virt_cntrs(void)
+-{
+-	timer_setup(&timer_virt_cntr, cell_virtual_cntr, 0);
+-	timer_virt_cntr.expires = jiffies + HZ / 10;
+-	add_timer(&timer_virt_cntr);
+-}
+-
+-static int cell_reg_setup_spu_cycles(struct op_counter_config *ctr,
+-			struct op_system_config *sys, int num_ctrs)
+-{
+-	spu_cycle_reset = ctr[0].count;
+-
+-	/*
+-	 * Each node will need to make the rtas call to start
+-	 * and stop SPU profiling.  Get the token once and store it.
+-	 */
+-	spu_rtas_token = rtas_token("ibm,cbe-spu-perftools");
+-
+-	if (unlikely(spu_rtas_token == RTAS_UNKNOWN_SERVICE)) {
+-		printk(KERN_ERR
+-		       "%s: rtas token ibm,cbe-spu-perftools unknown\n",
+-		       __func__);
+-		return -EIO;
+-	}
+-	return 0;
+-}
+-
+-/* Unfortunately, the hardware will only support event profiling
+- * on one SPU per node at a time.  Therefore, we must time slice
+- * the profiling across all SPUs in the node.  Note, we do this
+- * in parallel for each node.  The following routine is called
+- * periodically based on kernel timer to switch which SPU is
+- * being monitored in a round robbin fashion.
+- */
+-static void spu_evnt_swap(struct timer_list *unused)
+-{
+-	int node;
+-	int cur_phys_spu, nxt_phys_spu, cur_spu_evnt_phys_spu_indx;
+-	unsigned long flags;
+-	int cpu;
+-	int ret;
+-	u32 interrupt_mask;
 -
 -
--/* All the classic PPC parts use these */
--static inline unsigned int classic_ctr_read(unsigned int i)
+-	/* enable interrupts on cntr 0 */
+-	interrupt_mask = CBE_PM_CTR_OVERFLOW_INTR(0);
+-
+-	hdw_thread = 0;
+-
+-	/* Make sure spu event interrupt handler and spu event swap
+-	 * don't access the counters simultaneously.
+-	 */
+-	spin_lock_irqsave(&cntr_lock, flags);
+-
+-	cur_spu_evnt_phys_spu_indx = spu_evnt_phys_spu_indx;
+-
+-	if (++(spu_evnt_phys_spu_indx) == NUM_SPUS_PER_NODE)
+-		spu_evnt_phys_spu_indx = 0;
+-
+-	pm_signal[0].sub_unit = spu_evnt_phys_spu_indx;
+-	pm_signal[1].sub_unit = spu_evnt_phys_spu_indx;
+-	pm_signal[2].sub_unit = spu_evnt_phys_spu_indx;
+-
+-	/* switch the SPU being profiled on each node */
+-	for_each_online_cpu(cpu) {
+-		if (cbe_get_hw_thread_id(cpu))
+-			continue;
+-
+-		node = cbe_cpu_to_node(cpu);
+-		cur_phys_spu = (node * NUM_SPUS_PER_NODE)
+-			+ cur_spu_evnt_phys_spu_indx;
+-		nxt_phys_spu = (node * NUM_SPUS_PER_NODE)
+-			+ spu_evnt_phys_spu_indx;
+-
+-		/*
+-		 * stop counters, save counter values, restore counts
+-		 * for previous physical SPU
+-		 */
+-		cbe_disable_pm(cpu);
+-		cbe_disable_pm_interrupts(cpu);
+-
+-		spu_pm_cnt[cur_phys_spu]
+-			= cbe_read_ctr(cpu, 0);
+-
+-		/* restore previous count for the next spu to sample */
+-		/* NOTE, hardware issue, counter will not start if the
+-		 * counter value is at max (0xFFFFFFFF).
+-		 */
+-		if (spu_pm_cnt[nxt_phys_spu] >= 0xFFFFFFFF)
+-			cbe_write_ctr(cpu, 0, 0xFFFFFFF0);
+-		 else
+-			 cbe_write_ctr(cpu, 0, spu_pm_cnt[nxt_phys_spu]);
+-
+-		pm_rtas_reset_signals(cbe_cpu_to_node(cpu));
+-
+-		/* setup the debug bus measure the one event and
+-		 * the two events to route the next SPU's PC on
+-		 * the debug bus
+-		 */
+-		ret = pm_rtas_activate_signals(cbe_cpu_to_node(cpu), 3);
+-		if (ret)
+-			printk(KERN_ERR "%s: pm_rtas_activate_signals failed, "
+-			       "SPU event swap\n", __func__);
+-
+-		/* clear the trace buffer, don't want to take PC for
+-		 * previous SPU*/
+-		cbe_write_pm(cpu, trace_address, 0);
+-
+-		enable_ctr(cpu, 0, pm_regs.pm07_cntrl);
+-
+-		/* Enable interrupts on the CPU thread that is starting */
+-		cbe_enable_pm_interrupts(cpu, hdw_thread,
+-					 interrupt_mask);
+-		cbe_enable_pm(cpu);
+-	}
+-
+-	spin_unlock_irqrestore(&cntr_lock, flags);
+-
+-	/* swap approximately every 0.1 seconds */
+-	mod_timer(&timer_spu_event_swap, jiffies + HZ / 25);
+-}
+-
+-static void start_spu_event_swap(void)
+-{
+-	timer_setup(&timer_spu_event_swap, spu_evnt_swap, 0);
+-	timer_spu_event_swap.expires = jiffies + HZ / 25;
+-	add_timer(&timer_spu_event_swap);
+-}
+-
+-static int cell_reg_setup_spu_events(struct op_counter_config *ctr,
+-			struct op_system_config *sys, int num_ctrs)
+-{
+-	int i;
+-
+-	/* routine is called once for all nodes */
+-
+-	spu_evnt_phys_spu_indx = 0;
+-	/*
+-	 * For all events except PPU CYCLEs, each node will need to make
+-	 * the rtas cbe-perftools call to setup and reset the debug bus.
+-	 * Make the token lookup call once and store it in the global
+-	 * variable pm_rtas_token.
+-	 */
+-	pm_rtas_token = rtas_token("ibm,cbe-perftools");
+-
+-	if (unlikely(pm_rtas_token == RTAS_UNKNOWN_SERVICE)) {
+-		printk(KERN_ERR
+-		       "%s: rtas token ibm,cbe-perftools unknown\n",
+-		       __func__);
+-		return -EIO;
+-	}
+-
+-	/* setup the pm_control register settings,
+-	 * settings will be written per node by the
+-	 * cell_cpu_setup() function.
+-	 */
+-	pm_regs.pm_cntrl.trace_buf_ovflw = 1;
+-
+-	/* Use the occurrence trace mode to have SPU PC saved
+-	 * to the trace buffer.  Occurrence data in trace buffer
+-	 * is not used.  Bit 2 must be set to store SPU addresses.
+-	 */
+-	pm_regs.pm_cntrl.trace_mode = 2;
+-
+-	pm_regs.pm_cntrl.spu_addr_trace = 0x1;  /* using debug bus
+-						   event 2 & 3 */
+-
+-	/* setup the debug bus event array with the SPU PC routing events.
+-	*  Note, pm_signal[0] will be filled in by set_pm_event() call below.
+-	*/
+-	pm_signal[1].signal_group = SPU_PROFILE_EVENT_ADDR / 100;
+-	pm_signal[1].bus_word = GET_BUS_WORD(SPU_PROFILE_EVENT_ADDR_MASK_A);
+-	pm_signal[1].bit = SPU_PROFILE_EVENT_ADDR % 100;
+-	pm_signal[1].sub_unit = spu_evnt_phys_spu_indx;
+-
+-	pm_signal[2].signal_group = SPU_PROFILE_EVENT_ADDR / 100;
+-	pm_signal[2].bus_word = GET_BUS_WORD(SPU_PROFILE_EVENT_ADDR_MASK_B);
+-	pm_signal[2].bit = SPU_PROFILE_EVENT_ADDR % 100;
+-	pm_signal[2].sub_unit = spu_evnt_phys_spu_indx;
+-
+-	/* Set the user selected spu event to profile on,
+-	 * note, only one SPU profiling event is supported
+-	 */
+-	num_counters = 1;  /* Only support one SPU event at a time */
+-	set_pm_event(0, ctr[0].event, ctr[0].unit_mask);
+-
+-	reset_value[0] = 0xFFFFFFFF - ctr[0].count;
+-
+-	/* global, used by cell_cpu_setup */
+-	ctr_enabled |= 1;
+-
+-	/* Initialize the count for each SPU to the reset value */
+-	for (i=0; i < MAX_NUMNODES * NUM_SPUS_PER_NODE; i++)
+-		spu_pm_cnt[i] = reset_value[0];
+-
+-	return 0;
+-}
+-
+-static int cell_reg_setup_ppu(struct op_counter_config *ctr,
+-			struct op_system_config *sys, int num_ctrs)
+-{
+-	/* routine is called once for all nodes */
+-	int i, j, cpu;
+-
+-	num_counters = num_ctrs;
+-
+-	if (unlikely(num_ctrs > NR_PHYS_CTRS)) {
+-		printk(KERN_ERR
+-		       "%s: Oprofile, number of specified events " \
+-		       "exceeds number of physical counters\n",
+-		       __func__);
+-		return -EIO;
+-	}
+-
+-	set_count_mode(sys->enable_kernel, sys->enable_user);
+-
+-	/* Setup the thread 0 events */
+-	for (i = 0; i < num_ctrs; ++i) {
+-
+-		pmc_cntrl[0][i].evnts = ctr[i].event;
+-		pmc_cntrl[0][i].masks = ctr[i].unit_mask;
+-		pmc_cntrl[0][i].enabled = ctr[i].enabled;
+-		pmc_cntrl[0][i].vcntr = i;
+-
+-		for_each_possible_cpu(j)
+-			per_cpu(pmc_values, j)[i] = 0;
+-	}
+-
+-	/*
+-	 * Setup the thread 1 events, map the thread 0 event to the
+-	 * equivalent thread 1 event.
+-	 */
+-	for (i = 0; i < num_ctrs; ++i) {
+-		if ((ctr[i].event >= 2100) && (ctr[i].event <= 2111))
+-			pmc_cntrl[1][i].evnts = ctr[i].event + 19;
+-		else if (ctr[i].event == 2203)
+-			pmc_cntrl[1][i].evnts = ctr[i].event;
+-		else if ((ctr[i].event >= 2200) && (ctr[i].event <= 2215))
+-			pmc_cntrl[1][i].evnts = ctr[i].event + 16;
+-		else
+-			pmc_cntrl[1][i].evnts = ctr[i].event;
+-
+-		pmc_cntrl[1][i].masks = ctr[i].unit_mask;
+-		pmc_cntrl[1][i].enabled = ctr[i].enabled;
+-		pmc_cntrl[1][i].vcntr = i;
+-	}
+-
+-	for (i = 0; i < NUM_INPUT_BUS_WORDS; i++)
+-		input_bus[i] = 0xff;
+-
+-	/*
+-	 * Our counters count up, and "count" refers to
+-	 * how much before the next interrupt, and we interrupt
+-	 * on overflow.	 So we calculate the starting value
+-	 * which will give us "count" until overflow.
+-	 * Then we set the events on the enabled counters.
+-	 */
+-	for (i = 0; i < num_counters; ++i) {
+-		/* start with virtual counter set 0 */
+-		if (pmc_cntrl[0][i].enabled) {
+-			/* Using 32bit counters, reset max - count */
+-			reset_value[i] = 0xFFFFFFFF - ctr[i].count;
+-			set_pm_event(i,
+-				     pmc_cntrl[0][i].evnts,
+-				     pmc_cntrl[0][i].masks);
+-
+-			/* global, used by cell_cpu_setup */
+-			ctr_enabled |= (1 << i);
+-		}
+-	}
+-
+-	/* initialize the previous counts for the virtual cntrs */
+-	for_each_online_cpu(cpu)
+-		for (i = 0; i < num_counters; ++i) {
+-			per_cpu(pmc_values, cpu)[i] = reset_value[i];
+-		}
+-
+-	return 0;
+-}
+-
+-
+-/* This function is called once for all cpus combined */
+-static int cell_reg_setup(struct op_counter_config *ctr,
+-			struct op_system_config *sys, int num_ctrs)
+-{
+-	int ret=0;
+-	spu_cycle_reset = 0;
+-
+-	/* initialize the spu_arr_trace value, will be reset if
+-	 * doing spu event profiling.
+-	 */
+-	pm_regs.group_control = 0;
+-	pm_regs.debug_bus_control = 0;
+-	pm_regs.pm_cntrl.stop_at_max = 1;
+-	pm_regs.pm_cntrl.trace_mode = 0;
+-	pm_regs.pm_cntrl.freeze = 1;
+-	pm_regs.pm_cntrl.trace_buf_ovflw = 0;
+-	pm_regs.pm_cntrl.spu_addr_trace = 0;
+-
+-	/*
+-	 * For all events except PPU CYCLEs, each node will need to make
+-	 * the rtas cbe-perftools call to setup and reset the debug bus.
+-	 * Make the token lookup call once and store it in the global
+-	 * variable pm_rtas_token.
+-	 */
+-	pm_rtas_token = rtas_token("ibm,cbe-perftools");
+-
+-	if (unlikely(pm_rtas_token == RTAS_UNKNOWN_SERVICE)) {
+-		printk(KERN_ERR
+-		       "%s: rtas token ibm,cbe-perftools unknown\n",
+-		       __func__);
+-		return -EIO;
+-	}
+-
+-	if (ctr[0].event == SPU_CYCLES_EVENT_NUM) {
+-		profiling_mode = SPU_PROFILING_CYCLES;
+-		ret = cell_reg_setup_spu_cycles(ctr, sys, num_ctrs);
+-	} else if ((ctr[0].event >= SPU_EVENT_NUM_START) &&
+-		   (ctr[0].event <= SPU_EVENT_NUM_STOP)) {
+-		profiling_mode = SPU_PROFILING_EVENTS;
+-		spu_cycle_reset = ctr[0].count;
+-
+-		/* for SPU event profiling, need to setup the
+-		 * pm_signal array with the events to route the
+-		 * SPU PC before making the FW call.  Note, only
+-		 * one SPU event for profiling can be specified
+-		 * at a time.
+-		 */
+-		cell_reg_setup_spu_events(ctr, sys, num_ctrs);
+-	} else {
+-		profiling_mode = PPU_PROFILING;
+-		ret = cell_reg_setup_ppu(ctr, sys, num_ctrs);
+-	}
+-
+-	return ret;
+-}
+-
+-
+-
+-/* This function is called once for each cpu */
+-static int cell_cpu_setup(struct op_counter_config *cntr)
+-{
+-	u32 cpu = smp_processor_id();
+-	u32 num_enabled = 0;
+-	int i;
+-	int ret;
+-
+-	/* Cycle based SPU profiling does not use the performance
+-	 * counters.  The trace array is configured to collect
+-	 * the data.
+-	 */
+-	if (profiling_mode == SPU_PROFILING_CYCLES)
+-		return 0;
+-
+-	/* There is one performance monitor per processor chip (i.e. node),
+-	 * so we only need to perform this function once per node.
+-	 */
+-	if (cbe_get_hw_thread_id(cpu))
+-		return 0;
+-
+-	/* Stop all counters */
+-	cbe_disable_pm(cpu);
+-	cbe_disable_pm_interrupts(cpu);
+-
+-	cbe_write_pm(cpu, pm_start_stop, 0);
+-	cbe_write_pm(cpu, group_control, pm_regs.group_control);
+-	cbe_write_pm(cpu, debug_bus_control, pm_regs.debug_bus_control);
+-	write_pm_cntrl(cpu);
+-
+-	for (i = 0; i < num_counters; ++i) {
+-		if (ctr_enabled & (1 << i)) {
+-			pm_signal[num_enabled].cpu = cbe_cpu_to_node(cpu);
+-			num_enabled++;
+-		}
+-	}
+-
+-	/*
+-	 * The pm_rtas_activate_signals will return -EIO if the FW
+-	 * call failed.
+-	 */
+-	if (profiling_mode == SPU_PROFILING_EVENTS) {
+-		/* For SPU event profiling also need to setup the
+-		 * pm interval timer
+-		 */
+-		ret = pm_rtas_activate_signals(cbe_cpu_to_node(cpu),
+-					       num_enabled+2);
+-		/* store PC from debug bus to Trace buffer as often
+-		 * as possible (every 10 cycles)
+-		 */
+-		cbe_write_pm(cpu, pm_interval, NUM_INTERVAL_CYC);
+-		return ret;
+-	} else
+-		return pm_rtas_activate_signals(cbe_cpu_to_node(cpu),
+-						num_enabled);
+-}
+-
+-#define ENTRIES	 303
+-#define MAXLFSR	 0xFFFFFF
+-
+-/* precomputed table of 24 bit LFSR values */
+-static int initial_lfsr[] = {
+- 8221349, 12579195, 5379618, 10097839, 7512963, 7519310, 3955098, 10753424,
+- 15507573, 7458917, 285419, 2641121, 9780088, 3915503, 6668768, 1548716,
+- 4885000, 8774424, 9650099, 2044357, 2304411, 9326253, 10332526, 4421547,
+- 3440748, 10179459, 13332843, 10375561, 1313462, 8375100, 5198480, 6071392,
+- 9341783, 1526887, 3985002, 1439429, 13923762, 7010104, 11969769, 4547026,
+- 2040072, 4025602, 3437678, 7939992, 11444177, 4496094, 9803157, 10745556,
+- 3671780, 4257846, 5662259, 13196905, 3237343, 12077182, 16222879, 7587769,
+- 14706824, 2184640, 12591135, 10420257, 7406075, 3648978, 11042541, 15906893,
+- 11914928, 4732944, 10695697, 12928164, 11980531, 4430912, 11939291, 2917017,
+- 6119256, 4172004, 9373765, 8410071, 14788383, 5047459, 5474428, 1737756,
+- 15967514, 13351758, 6691285, 8034329, 2856544, 14394753, 11310160, 12149558,
+- 7487528, 7542781, 15668898, 12525138, 12790975, 3707933, 9106617, 1965401,
+- 16219109, 12801644, 2443203, 4909502, 8762329, 3120803, 6360315, 9309720,
+- 15164599, 10844842, 4456529, 6667610, 14924259, 884312, 6234963, 3326042,
+- 15973422, 13919464, 5272099, 6414643, 3909029, 2764324, 5237926, 4774955,
+- 10445906, 4955302, 5203726, 10798229, 11443419, 2303395, 333836, 9646934,
+- 3464726, 4159182, 568492, 995747, 10318756, 13299332, 4836017, 8237783,
+- 3878992, 2581665, 11394667, 5672745, 14412947, 3159169, 9094251, 16467278,
+- 8671392, 15230076, 4843545, 7009238, 15504095, 1494895, 9627886, 14485051,
+- 8304291, 252817, 12421642, 16085736, 4774072, 2456177, 4160695, 15409741,
+- 4902868, 5793091, 13162925, 16039714, 782255, 11347835, 14884586, 366972,
+- 16308990, 11913488, 13390465, 2958444, 10340278, 1177858, 1319431, 10426302,
+- 2868597, 126119, 5784857, 5245324, 10903900, 16436004, 3389013, 1742384,
+- 14674502, 10279218, 8536112, 10364279, 6877778, 14051163, 1025130, 6072469,
+- 1988305, 8354440, 8216060, 16342977, 13112639, 3976679, 5913576, 8816697,
+- 6879995, 14043764, 3339515, 9364420, 15808858, 12261651, 2141560, 5636398,
+- 10345425, 10414756, 781725, 6155650, 4746914, 5078683, 7469001, 6799140,
+- 10156444, 9667150, 10116470, 4133858, 2121972, 1124204, 1003577, 1611214,
+- 14304602, 16221850, 13878465, 13577744, 3629235, 8772583, 10881308, 2410386,
+- 7300044, 5378855, 9301235, 12755149, 4977682, 8083074, 10327581, 6395087,
+- 9155434, 15501696, 7514362, 14520507, 15808945, 3244584, 4741962, 9658130,
+- 14336147, 8654727, 7969093, 15759799, 14029445, 5038459, 9894848, 8659300,
+- 13699287, 8834306, 10712885, 14753895, 10410465, 3373251, 309501, 9561475,
+- 5526688, 14647426, 14209836, 5339224, 207299, 14069911, 8722990, 2290950,
+- 3258216, 12505185, 6007317, 9218111, 14661019, 10537428, 11731949, 9027003,
+- 6641507, 9490160, 200241, 9720425, 16277895, 10816638, 1554761, 10431375,
+- 7467528, 6790302, 3429078, 14633753, 14428997, 11463204, 3576212, 2003426,
+- 6123687, 820520, 9992513, 15784513, 5778891, 6428165, 8388607
+-};
+-
+-/*
+- * The hardware uses an LFSR counting sequence to determine when to capture
+- * the SPU PCs.	 An LFSR sequence is like a puesdo random number sequence
+- * where each number occurs once in the sequence but the sequence is not in
+- * numerical order. The SPU PC capture is done when the LFSR sequence reaches
+- * the last value in the sequence.  Hence the user specified value N
+- * corresponds to the LFSR number that is N from the end of the sequence.
+- *
+- * To avoid the time to compute the LFSR, a lookup table is used.  The 24 bit
+- * LFSR sequence is broken into four ranges.  The spacing of the precomputed
+- * values is adjusted in each range so the error between the user specified
+- * number (N) of events between samples and the actual number of events based
+- * on the precomputed value will be les then about 6.2%.  Note, if the user
+- * specifies N < 2^16, the LFSR value that is 2^16 from the end will be used.
+- * This is to prevent the loss of samples because the trace buffer is full.
+- *
+- *	   User specified N		     Step between	   Index in
+- *					 precomputed values	 precomputed
+- *								    table
+- * 0		    to	2^16-1			----		      0
+- * 2^16	    to	2^16+2^19-1		2^12		    1 to 128
+- * 2^16+2^19	    to	2^16+2^19+2^22-1	2^15		  129 to 256
+- * 2^16+2^19+2^22  to	2^24-1			2^18		  257 to 302
+- *
+- *
+- * For example, the LFSR values in the second range are computed for 2^16,
+- * 2^16+2^12, ... , 2^19-2^16, 2^19 and stored in the table at indicies
+- * 1, 2,..., 127, 128.
+- *
+- * The 24 bit LFSR value for the nth number in the sequence can be
+- * calculated using the following code:
+- *
+- * #define size 24
+- * int calculate_lfsr(int n)
+- * {
+- *	int i;
+- *	unsigned int newlfsr0;
+- *	unsigned int lfsr = 0xFFFFFF;
+- *	unsigned int howmany = n;
+- *
+- *	for (i = 2; i < howmany + 2; i++) {
+- *		newlfsr0 = (((lfsr >> (size - 1 - 0)) & 1) ^
+- *		((lfsr >> (size - 1 - 1)) & 1) ^
+- *		(((lfsr >> (size - 1 - 6)) & 1) ^
+- *		((lfsr >> (size - 1 - 23)) & 1)));
+- *
+- *		lfsr >>= 1;
+- *		lfsr = lfsr | (newlfsr0 << (size - 1));
+- *	}
+- *	return lfsr;
+- * }
+- */
+-
+-#define V2_16  (0x1 << 16)
+-#define V2_19  (0x1 << 19)
+-#define V2_22  (0x1 << 22)
+-
+-static int calculate_lfsr(int n)
+-{
+-	/*
+-	 * The ranges and steps are in powers of 2 so the calculations
+-	 * can be done using shifts rather then divide.
+-	 */
+-	int index;
+-
+-	if ((n >> 16) == 0)
+-		index = 0;
+-	else if (((n - V2_16) >> 19) == 0)
+-		index = ((n - V2_16) >> 12) + 1;
+-	else if (((n - V2_16 - V2_19) >> 22) == 0)
+-		index = ((n - V2_16 - V2_19) >> 15 ) + 1 + 128;
+-	else if (((n - V2_16 - V2_19 - V2_22) >> 24) == 0)
+-		index = ((n - V2_16 - V2_19 - V2_22) >> 18 ) + 1 + 256;
+-	else
+-		index = ENTRIES-1;
+-
+-	/* make sure index is valid */
+-	if ((index >= ENTRIES) || (index < 0))
+-		index = ENTRIES-1;
+-
+-	return initial_lfsr[index];
+-}
+-
+-static int pm_rtas_activate_spu_profiling(u32 node)
+-{
+-	int ret, i;
+-	struct pm_signal pm_signal_local[NUM_SPUS_PER_NODE];
+-
+-	/*
+-	 * Set up the rtas call to configure the debug bus to
+-	 * route the SPU PCs.  Setup the pm_signal for each SPU
+-	 */
+-	for (i = 0; i < ARRAY_SIZE(pm_signal_local); i++) {
+-		pm_signal_local[i].cpu = node;
+-		pm_signal_local[i].signal_group = 41;
+-		/* spu i on word (i/2) */
+-		pm_signal_local[i].bus_word = 1 << i / 2;
+-		/* spu i */
+-		pm_signal_local[i].sub_unit = i;
+-		pm_signal_local[i].bit = 63;
+-	}
+-
+-	ret = rtas_ibm_cbe_perftools(SUBFUNC_ACTIVATE,
+-				     PASSTHRU_ENABLE, pm_signal_local,
+-				     (ARRAY_SIZE(pm_signal_local)
+-				      * sizeof(struct pm_signal)));
+-
+-	if (unlikely(ret)) {
+-		printk(KERN_WARNING "%s: rtas returned: %d\n",
+-		       __func__, ret);
+-		return -EIO;
+-	}
+-
+-	return 0;
+-}
+-
+-#ifdef CONFIG_CPU_FREQ
+-static int
+-oprof_cpufreq_notify(struct notifier_block *nb, unsigned long val, void *data)
+-{
+-	int ret = 0;
+-	struct cpufreq_freqs *frq = data;
+-	if ((val == CPUFREQ_PRECHANGE && frq->old < frq->new) ||
+-	    (val == CPUFREQ_POSTCHANGE && frq->old > frq->new))
+-		set_spu_profiling_frequency(frq->new, spu_cycle_reset);
+-	return ret;
+-}
+-
+-static struct notifier_block cpu_freq_notifier_block = {
+-	.notifier_call	= oprof_cpufreq_notify
+-};
+-#endif
+-
+-/*
+- * Note the generic OProfile stop calls do not support returning
+- * an error on stop.  Hence, will not return an error if the FW
+- * calls fail on stop.	Failure to reset the debug bus is not an issue.
+- * Failure to disable the SPU profiling is not an issue.  The FW calls
+- * to enable the performance counters and debug bus will work even if
+- * the hardware was not cleanly reset.
+- */
+-static void cell_global_stop_spu_cycles(void)
+-{
+-	int subfunc, rtn_value;
+-	unsigned int lfsr_value;
+-	int cpu;
+-
+-	oprofile_running = 0;
+-	smp_wmb();
+-
+-#ifdef CONFIG_CPU_FREQ
+-	cpufreq_unregister_notifier(&cpu_freq_notifier_block,
+-				    CPUFREQ_TRANSITION_NOTIFIER);
+-#endif
+-
+-	for_each_online_cpu(cpu) {
+-		if (cbe_get_hw_thread_id(cpu))
+-			continue;
+-
+-		subfunc = 3;	/*
+-				 * 2 - activate SPU tracing,
+-				 * 3 - deactivate
+-				 */
+-		lfsr_value = 0x8f100000;
+-
+-		rtn_value = rtas_call(spu_rtas_token, 3, 1, NULL,
+-				      subfunc, cbe_cpu_to_node(cpu),
+-				      lfsr_value);
+-
+-		if (unlikely(rtn_value != 0)) {
+-			printk(KERN_ERR
+-			       "%s: rtas call ibm,cbe-spu-perftools " \
+-			       "failed, return = %d\n",
+-			       __func__, rtn_value);
+-		}
+-
+-		/* Deactivate the signals */
+-		pm_rtas_reset_signals(cbe_cpu_to_node(cpu));
+-	}
+-
+-	stop_spu_profiling_cycles();
+-}
+-
+-static void cell_global_stop_spu_events(void)
+-{
+-	int cpu;
+-	oprofile_running = 0;
+-
+-	stop_spu_profiling_events();
+-	smp_wmb();
+-
+-	for_each_online_cpu(cpu) {
+-		if (cbe_get_hw_thread_id(cpu))
+-			continue;
+-
+-		cbe_sync_irq(cbe_cpu_to_node(cpu));
+-		/* Stop the counters */
+-		cbe_disable_pm(cpu);
+-		cbe_write_pm07_control(cpu, 0, 0);
+-
+-		/* Deactivate the signals */
+-		pm_rtas_reset_signals(cbe_cpu_to_node(cpu));
+-
+-		/* Deactivate interrupts */
+-		cbe_disable_pm_interrupts(cpu);
+-	}
+-	del_timer_sync(&timer_spu_event_swap);
+-}
+-
+-static void cell_global_stop_ppu(void)
+-{
+-	int cpu;
+-
+-	/*
+-	 * This routine will be called once for the system.
+-	 * There is one performance monitor per node, so we
+-	 * only need to perform this function once per node.
+-	 */
+-	del_timer_sync(&timer_virt_cntr);
+-	oprofile_running = 0;
+-	smp_wmb();
+-
+-	for_each_online_cpu(cpu) {
+-		if (cbe_get_hw_thread_id(cpu))
+-			continue;
+-
+-		cbe_sync_irq(cbe_cpu_to_node(cpu));
+-		/* Stop the counters */
+-		cbe_disable_pm(cpu);
+-
+-		/* Deactivate the signals */
+-		pm_rtas_reset_signals(cbe_cpu_to_node(cpu));
+-
+-		/* Deactivate interrupts */
+-		cbe_disable_pm_interrupts(cpu);
+-	}
+-}
+-
+-static void cell_global_stop(void)
+-{
+-	if (profiling_mode == PPU_PROFILING)
+-		cell_global_stop_ppu();
+-	else if (profiling_mode == SPU_PROFILING_EVENTS)
+-		cell_global_stop_spu_events();
+-	else
+-		cell_global_stop_spu_cycles();
+-}
+-
+-static int cell_global_start_spu_cycles(struct op_counter_config *ctr)
+-{
+-	int subfunc;
+-	unsigned int lfsr_value;
+-	int cpu;
+-	int ret;
+-	int rtas_error;
+-	unsigned int cpu_khzfreq = 0;
+-
+-	/* The SPU profiling uses time-based profiling based on
+-	 * cpu frequency, so if configured with the CPU_FREQ
+-	 * option, we should detect frequency changes and react
+-	 * accordingly.
+-	 */
+-#ifdef CONFIG_CPU_FREQ
+-	ret = cpufreq_register_notifier(&cpu_freq_notifier_block,
+-					CPUFREQ_TRANSITION_NOTIFIER);
+-	if (ret < 0)
+-		/* this is not a fatal error */
+-		printk(KERN_ERR "CPU freq change registration failed: %d\n",
+-		       ret);
+-
+-	else
+-		cpu_khzfreq = cpufreq_quick_get(smp_processor_id());
+-#endif
+-
+-	set_spu_profiling_frequency(cpu_khzfreq, spu_cycle_reset);
+-
+-	for_each_online_cpu(cpu) {
+-		if (cbe_get_hw_thread_id(cpu))
+-			continue;
+-
+-		/*
+-		 * Setup SPU cycle-based profiling.
+-		 * Set perf_mon_control bit 0 to a zero before
+-		 * enabling spu collection hardware.
+-		 */
+-		cbe_write_pm(cpu, pm_control, 0);
+-
+-		if (spu_cycle_reset > MAX_SPU_COUNT)
+-			/* use largest possible value */
+-			lfsr_value = calculate_lfsr(MAX_SPU_COUNT-1);
+-		else
+-			lfsr_value = calculate_lfsr(spu_cycle_reset);
+-
+-		/* must use a non zero value. Zero disables data collection. */
+-		if (lfsr_value == 0)
+-			lfsr_value = calculate_lfsr(1);
+-
+-		lfsr_value = lfsr_value << 8; /* shift lfsr to correct
+-						* register location
+-						*/
+-
+-		/* debug bus setup */
+-		ret = pm_rtas_activate_spu_profiling(cbe_cpu_to_node(cpu));
+-
+-		if (unlikely(ret)) {
+-			rtas_error = ret;
+-			goto out;
+-		}
+-
+-
+-		subfunc = 2;	/* 2 - activate SPU tracing, 3 - deactivate */
+-
+-		/* start profiling */
+-		ret = rtas_call(spu_rtas_token, 3, 1, NULL, subfunc,
+-				cbe_cpu_to_node(cpu), lfsr_value);
+-
+-		if (unlikely(ret != 0)) {
+-			printk(KERN_ERR
+-			       "%s: rtas call ibm,cbe-spu-perftools failed, " \
+-			       "return = %d\n", __func__, ret);
+-			rtas_error = -EIO;
+-			goto out;
+-		}
+-	}
+-
+-	rtas_error = start_spu_profiling_cycles(spu_cycle_reset);
+-	if (rtas_error)
+-		goto out_stop;
+-
+-	oprofile_running = 1;
+-	return 0;
+-
+-out_stop:
+-	cell_global_stop_spu_cycles();	/* clean up the PMU/debug bus */
+-out:
+-	return rtas_error;
+-}
+-
+-static int cell_global_start_spu_events(struct op_counter_config *ctr)
+-{
+-	int cpu;
+-	u32 interrupt_mask = 0;
+-	int rtn = 0;
+-
+-	hdw_thread = 0;
+-
+-	/* spu event profiling, uses the performance counters to generate
+-	 * an interrupt.  The hardware is setup to store the SPU program
+-	 * counter into the trace array.  The occurrence mode is used to
+-	 * enable storing data to the trace buffer.  The bits are set
+-	 * to send/store the SPU address in the trace buffer.  The debug
+-	 * bus must be setup to route the SPU program counter onto the
+-	 * debug bus.  The occurrence data in the trace buffer is not used.
+-	 */
+-
+-	/* This routine gets called once for the system.
+-	 * There is one performance monitor per node, so we
+-	 * only need to perform this function once per node.
+-	 */
+-
+-	for_each_online_cpu(cpu) {
+-		if (cbe_get_hw_thread_id(cpu))
+-			continue;
+-
+-		/*
+-		 * Setup SPU event-based profiling.
+-		 * Set perf_mon_control bit 0 to a zero before
+-		 * enabling spu collection hardware.
+-		 *
+-		 * Only support one SPU event on one SPU per node.
+-		 */
+-		if (ctr_enabled & 1) {
+-			cbe_write_ctr(cpu, 0, reset_value[0]);
+-			enable_ctr(cpu, 0, pm_regs.pm07_cntrl);
+-			interrupt_mask |=
+-				CBE_PM_CTR_OVERFLOW_INTR(0);
+-		} else {
+-			/* Disable counter */
+-			cbe_write_pm07_control(cpu, 0, 0);
+-		}
+-
+-		cbe_get_and_clear_pm_interrupts(cpu);
+-		cbe_enable_pm_interrupts(cpu, hdw_thread, interrupt_mask);
+-		cbe_enable_pm(cpu);
+-
+-		/* clear the trace buffer */
+-		cbe_write_pm(cpu, trace_address, 0);
+-	}
+-
+-	/* Start the timer to time slice collecting the event profile
+-	 * on each of the SPUs.  Note, can collect profile on one SPU
+-	 * per node at a time.
+-	 */
+-	start_spu_event_swap();
+-	start_spu_profiling_events();
+-	oprofile_running = 1;
+-	smp_wmb();
+-
+-	return rtn;
+-}
+-
+-static int cell_global_start_ppu(struct op_counter_config *ctr)
+-{
+-	u32 cpu, i;
+-	u32 interrupt_mask = 0;
+-
+-	/* This routine gets called once for the system.
+-	 * There is one performance monitor per node, so we
+-	 * only need to perform this function once per node.
+-	 */
+-	for_each_online_cpu(cpu) {
+-		if (cbe_get_hw_thread_id(cpu))
+-			continue;
+-
+-		interrupt_mask = 0;
+-
+-		for (i = 0; i < num_counters; ++i) {
+-			if (ctr_enabled & (1 << i)) {
+-				cbe_write_ctr(cpu, i, reset_value[i]);
+-				enable_ctr(cpu, i, pm_regs.pm07_cntrl);
+-				interrupt_mask |= CBE_PM_CTR_OVERFLOW_INTR(i);
+-			} else {
+-				/* Disable counter */
+-				cbe_write_pm07_control(cpu, i, 0);
+-			}
+-		}
+-
+-		cbe_get_and_clear_pm_interrupts(cpu);
+-		cbe_enable_pm_interrupts(cpu, hdw_thread, interrupt_mask);
+-		cbe_enable_pm(cpu);
+-	}
+-
+-	virt_cntr_inter_mask = interrupt_mask;
+-	oprofile_running = 1;
+-	smp_wmb();
+-
+-	/*
+-	 * NOTE: start_virt_cntrs will result in cell_virtual_cntr() being
+-	 * executed which manipulates the PMU.	We start the "virtual counter"
+-	 * here so that we do not need to synchronize access to the PMU in
+-	 * the above for-loop.
+-	 */
+-	start_virt_cntrs();
+-
+-	return 0;
+-}
+-
+-static int cell_global_start(struct op_counter_config *ctr)
+-{
+-	if (profiling_mode == SPU_PROFILING_CYCLES)
+-		return cell_global_start_spu_cycles(ctr);
+-	else if (profiling_mode == SPU_PROFILING_EVENTS)
+-		return cell_global_start_spu_events(ctr);
+-	else
+-		return cell_global_start_ppu(ctr);
+-}
+-
+-
+-/* The SPU interrupt handler
+- *
+- * SPU event profiling works as follows:
+- * The pm_signal[0] holds the one SPU event to be measured.  It is routed on
+- * the debug bus using word 0 or 1.  The value of pm_signal[1] and
+- * pm_signal[2] contain the necessary events to route the SPU program
+- * counter for the selected SPU onto the debug bus using words 2 and 3.
+- * The pm_interval register is setup to write the SPU PC value into the
+- * trace buffer at the maximum rate possible.  The trace buffer is configured
+- * to store the PCs, wrapping when it is full.  The performance counter is
+- * initialized to the max hardware count minus the number of events, N, between
+- * samples.  Once the N events have occurred, a HW counter overflow occurs
+- * causing the generation of a HW counter interrupt which also stops the
+- * writing of the SPU PC values to the trace buffer.  Hence the last PC
+- * written to the trace buffer is the SPU PC that we want.  Unfortunately,
+- * we have to read from the beginning of the trace buffer to get to the
+- * last value written.  We just hope the PPU has nothing better to do then
+- * service this interrupt. The PC for the specific SPU being profiled is
+- * extracted from the trace buffer processed and stored.  The trace buffer
+- * is cleared, interrupts are cleared, the counter is reset to max - N.
+- * A kernel timer is used to periodically call the routine spu_evnt_swap()
+- * to switch to the next physical SPU in the node to profile in round robbin
+- * order.  This way data is collected for all SPUs on the node. It does mean
+- * that we need to use a relatively small value of N to ensure enough samples
+- * on each SPU are collected each SPU is being profiled 1/8 of the time.
+- * It may also be necessary to use a longer sample collection period.
+- */
+-static void cell_handle_interrupt_spu(struct pt_regs *regs,
+-				      struct op_counter_config *ctr)
+-{
+-	u32 cpu, cpu_tmp;
+-	u64 trace_entry;
+-	u32 interrupt_mask;
+-	u64 trace_buffer[2];
+-	u64 last_trace_buffer;
+-	u32 sample;
+-	u32 trace_addr;
+-	unsigned long sample_array_lock_flags;
+-	int spu_num;
+-	unsigned long flags;
+-
+-	/* Make sure spu event interrupt handler and spu event swap
+-	 * don't access the counters simultaneously.
+-	 */
+-	cpu = smp_processor_id();
+-	spin_lock_irqsave(&cntr_lock, flags);
+-
+-	cpu_tmp = cpu;
+-	cbe_disable_pm(cpu);
+-
+-	interrupt_mask = cbe_get_and_clear_pm_interrupts(cpu);
+-
+-	sample = 0xABCDEF;
+-	trace_entry = 0xfedcba;
+-	last_trace_buffer = 0xdeadbeaf;
+-
+-	if ((oprofile_running == 1) && (interrupt_mask != 0)) {
+-		/* disable writes to trace buff */
+-		cbe_write_pm(cpu, pm_interval, 0);
+-
+-		/* only have one perf cntr being used, cntr 0 */
+-		if ((interrupt_mask & CBE_PM_CTR_OVERFLOW_INTR(0))
+-		    && ctr[0].enabled)
+-			/* The SPU PC values will be read
+-			 * from the trace buffer, reset counter
+-			 */
+-
+-			cbe_write_ctr(cpu, 0, reset_value[0]);
+-
+-		trace_addr = cbe_read_pm(cpu, trace_address);
+-
+-		while (!(trace_addr & CBE_PM_TRACE_BUF_EMPTY)) {
+-			/* There is data in the trace buffer to process
+-			 * Read the buffer until you get to the last
+-			 * entry.  This is the value we want.
+-			 */
+-
+-			cbe_read_trace_buffer(cpu, trace_buffer);
+-			trace_addr = cbe_read_pm(cpu, trace_address);
+-		}
+-
+-		/* SPU Address 16 bit count format for 128 bit
+-		 * HW trace buffer is used for the SPU PC storage
+-		 *    HDR bits          0:15
+-		 *    SPU Addr 0 bits   16:31
+-		 *    SPU Addr 1 bits   32:47
+-		 *    unused bits       48:127
+-		 *
+-		 * HDR: bit4 = 1 SPU Address 0 valid
+-		 * HDR: bit5 = 1 SPU Address 1 valid
+-		 *  - unfortunately, the valid bits don't seem to work
+-		 *
+-		 * Note trace_buffer[0] holds bits 0:63 of the HW
+-		 * trace buffer, trace_buffer[1] holds bits 64:127
+-		 */
+-
+-		trace_entry = trace_buffer[0]
+-			& 0x00000000FFFF0000;
+-
+-		/* only top 16 of the 18 bit SPU PC address
+-		 * is stored in trace buffer, hence shift right
+-		 * by 16 -2 bits */
+-		sample = trace_entry >> 14;
+-		last_trace_buffer = trace_buffer[0];
+-
+-		spu_num = spu_evnt_phys_spu_indx
+-			+ (cbe_cpu_to_node(cpu) * NUM_SPUS_PER_NODE);
+-
+-		/* make sure only one process at a time is calling
+-		 * spu_sync_buffer()
+-		 */
+-		spin_lock_irqsave(&oprof_spu_smpl_arry_lck,
+-				  sample_array_lock_flags);
+-		spu_sync_buffer(spu_num, &sample, 1);
+-		spin_unlock_irqrestore(&oprof_spu_smpl_arry_lck,
+-				       sample_array_lock_flags);
+-
+-		smp_wmb();    /* insure spu event buffer updates are written
+-			       * don't want events intermingled... */
+-
+-		/* The counters were frozen by the interrupt.
+-		 * Reenable the interrupt and restart the counters.
+-		 */
+-		cbe_write_pm(cpu, pm_interval, NUM_INTERVAL_CYC);
+-		cbe_enable_pm_interrupts(cpu, hdw_thread,
+-					 virt_cntr_inter_mask);
+-
+-		/* clear the trace buffer, re-enable writes to trace buff */
+-		cbe_write_pm(cpu, trace_address, 0);
+-		cbe_write_pm(cpu, pm_interval, NUM_INTERVAL_CYC);
+-
+-		/* The writes to the various performance counters only writes
+-		 * to a latch.  The new values (interrupt setting bits, reset
+-		 * counter value etc.) are not copied to the actual registers
+-		 * until the performance monitor is enabled.  In order to get
+-		 * this to work as desired, the performance monitor needs to
+-		 * be disabled while writing to the latches.  This is a
+-		 * HW design issue.
+-		 */
+-		write_pm_cntrl(cpu);
+-		cbe_enable_pm(cpu);
+-	}
+-	spin_unlock_irqrestore(&cntr_lock, flags);
+-}
+-
+-static void cell_handle_interrupt_ppu(struct pt_regs *regs,
+-				      struct op_counter_config *ctr)
+-{
+-	u32 cpu;
+-	u64 pc;
+-	int is_kernel;
+-	unsigned long flags = 0;
+-	u32 interrupt_mask;
+-	int i;
+-
+-	cpu = smp_processor_id();
+-
+-	/*
+-	 * Need to make sure the interrupt handler and the virt counter
+-	 * routine are not running at the same time. See the
+-	 * cell_virtual_cntr() routine for additional comments.
+-	 */
+-	spin_lock_irqsave(&cntr_lock, flags);
+-
+-	/*
+-	 * Need to disable and reenable the performance counters
+-	 * to get the desired behavior from the hardware.  This
+-	 * is hardware specific.
+-	 */
+-
+-	cbe_disable_pm(cpu);
+-
+-	interrupt_mask = cbe_get_and_clear_pm_interrupts(cpu);
+-
+-	/*
+-	 * If the interrupt mask has been cleared, then the virt cntr
+-	 * has cleared the interrupt.  When the thread that generated
+-	 * the interrupt is restored, the data count will be restored to
+-	 * 0xffffff0 to cause the interrupt to be regenerated.
+-	 */
+-
+-	if ((oprofile_running == 1) && (interrupt_mask != 0)) {
+-		pc = regs->nip;
+-		is_kernel = is_kernel_addr(pc);
+-
+-		for (i = 0; i < num_counters; ++i) {
+-			if ((interrupt_mask & CBE_PM_CTR_OVERFLOW_INTR(i))
+-			    && ctr[i].enabled) {
+-				oprofile_add_ext_sample(pc, regs, i, is_kernel);
+-				cbe_write_ctr(cpu, i, reset_value[i]);
+-			}
+-		}
+-
+-		/*
+-		 * The counters were frozen by the interrupt.
+-		 * Reenable the interrupt and restart the counters.
+-		 * If there was a race between the interrupt handler and
+-		 * the virtual counter routine.	 The virtual counter
+-		 * routine may have cleared the interrupts.  Hence must
+-		 * use the virt_cntr_inter_mask to re-enable the interrupts.
+-		 */
+-		cbe_enable_pm_interrupts(cpu, hdw_thread,
+-					 virt_cntr_inter_mask);
+-
+-		/*
+-		 * The writes to the various performance counters only writes
+-		 * to a latch.	The new values (interrupt setting bits, reset
+-		 * counter value etc.) are not copied to the actual registers
+-		 * until the performance monitor is enabled.  In order to get
+-		 * this to work as desired, the performance monitor needs to
+-		 * be disabled while writing to the latches.  This is a
+-		 * HW design issue.
+-		 */
+-		cbe_enable_pm(cpu);
+-	}
+-	spin_unlock_irqrestore(&cntr_lock, flags);
+-}
+-
+-static void cell_handle_interrupt(struct pt_regs *regs,
+-				  struct op_counter_config *ctr)
+-{
+-	if (profiling_mode == PPU_PROFILING)
+-		cell_handle_interrupt_ppu(regs, ctr);
+-	else
+-		cell_handle_interrupt_spu(regs, ctr);
+-}
+-
+-/*
+- * This function is called from the generic OProfile
+- * driver.  When profiling PPUs, we need to do the
+- * generic sync start; otherwise, do spu_sync_start.
+- */
+-static int cell_sync_start(void)
+-{
+-	if ((profiling_mode == SPU_PROFILING_CYCLES) ||
+-	    (profiling_mode == SPU_PROFILING_EVENTS))
+-		return spu_sync_start();
+-	else
+-		return DO_GENERIC_SYNC;
+-}
+-
+-static int cell_sync_stop(void)
+-{
+-	if ((profiling_mode == SPU_PROFILING_CYCLES) ||
+-	    (profiling_mode == SPU_PROFILING_EVENTS))
+-		return spu_sync_stop();
+-	else
+-		return 1;
+-}
+-
+-struct op_powerpc_model op_model_cell = {
+-	.reg_setup = cell_reg_setup,
+-	.cpu_setup = cell_cpu_setup,
+-	.global_start = cell_global_start,
+-	.global_stop = cell_global_stop,
+-	.sync_start = cell_sync_start,
+-	.sync_stop = cell_sync_stop,
+-	.handle_interrupt = cell_handle_interrupt,
+-};
+diff --git a/arch/powerpc/oprofile/op_model_fsl_emb.c b/arch/powerpc/oprofile/op_model_fsl_emb.c
+deleted file mode 100644
+index 25dc6813ecee..000000000000
+--- a/arch/powerpc/oprofile/op_model_fsl_emb.c
++++ /dev/null
+@@ -1,380 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Freescale Embedded oprofile support, based on ppc64 oprofile support
+- * Copyright (C) 2004 Anton Blanchard <anton@au.ibm.com>, IBM
+- *
+- * Copyright (c) 2004, 2010 Freescale Semiconductor, Inc
+- *
+- * Author: Andy Fleming
+- * Maintainer: Kumar Gala <galak@kernel.crashing.org>
+- */
+-
+-#include <linux/oprofile.h>
+-#include <linux/smp.h>
+-#include <asm/ptrace.h>
+-#include <asm/processor.h>
+-#include <asm/cputable.h>
+-#include <asm/reg_fsl_emb.h>
+-#include <asm/page.h>
+-#include <asm/pmc.h>
+-#include <asm/oprofile_impl.h>
+-
+-static unsigned long reset_value[OP_MAX_COUNTER];
+-
+-static int num_counters;
+-static int oprofile_running;
+-
+-static inline u32 get_pmlca(int ctr)
+-{
+-	u32 pmlca;
+-
+-	switch (ctr) {
+-		case 0:
+-			pmlca = mfpmr(PMRN_PMLCA0);
+-			break;
+-		case 1:
+-			pmlca = mfpmr(PMRN_PMLCA1);
+-			break;
+-		case 2:
+-			pmlca = mfpmr(PMRN_PMLCA2);
+-			break;
+-		case 3:
+-			pmlca = mfpmr(PMRN_PMLCA3);
+-			break;
+-		case 4:
+-			pmlca = mfpmr(PMRN_PMLCA4);
+-			break;
+-		case 5:
+-			pmlca = mfpmr(PMRN_PMLCA5);
+-			break;
+-		default:
+-			panic("Bad ctr number\n");
+-	}
+-
+-	return pmlca;
+-}
+-
+-static inline void set_pmlca(int ctr, u32 pmlca)
+-{
+-	switch (ctr) {
+-		case 0:
+-			mtpmr(PMRN_PMLCA0, pmlca);
+-			break;
+-		case 1:
+-			mtpmr(PMRN_PMLCA1, pmlca);
+-			break;
+-		case 2:
+-			mtpmr(PMRN_PMLCA2, pmlca);
+-			break;
+-		case 3:
+-			mtpmr(PMRN_PMLCA3, pmlca);
+-			break;
+-		case 4:
+-			mtpmr(PMRN_PMLCA4, pmlca);
+-			break;
+-		case 5:
+-			mtpmr(PMRN_PMLCA5, pmlca);
+-			break;
+-		default:
+-			panic("Bad ctr number\n");
+-	}
+-}
+-
+-static inline unsigned int ctr_read(unsigned int i)
 -{
 -	switch(i) {
--	case 0:
--		return mfspr(SPRN_PMC1);
--	case 1:
--		return mfspr(SPRN_PMC2);
--	case 2:
--		return mfspr(SPRN_PMC3);
--	case 3:
--		return mfspr(SPRN_PMC4);
--	case 4:
--		return mfspr(SPRN_PMC5);
--	case 5:
--		return mfspr(SPRN_PMC6);
+-		case 0:
+-			return mfpmr(PMRN_PMC0);
+-		case 1:
+-			return mfpmr(PMRN_PMC1);
+-		case 2:
+-			return mfpmr(PMRN_PMC2);
+-		case 3:
+-			return mfpmr(PMRN_PMC3);
+-		case 4:
+-			return mfpmr(PMRN_PMC4);
+-		case 5:
+-			return mfpmr(PMRN_PMC5);
+-		default:
+-			return 0;
+-	}
+-}
 -
--/* No PPC32 chip has more than 6 so far */
--#ifdef CONFIG_PPC64
--	case 6:
--		return mfspr(SPRN_PMC7);
--	case 7:
--		return mfspr(SPRN_PMC8);
--#endif
+-static inline void ctr_write(unsigned int i, unsigned int val)
+-{
+-	switch(i) {
+-		case 0:
+-			mtpmr(PMRN_PMC0, val);
+-			break;
+-		case 1:
+-			mtpmr(PMRN_PMC1, val);
+-			break;
+-		case 2:
+-			mtpmr(PMRN_PMC2, val);
+-			break;
+-		case 3:
+-			mtpmr(PMRN_PMC3, val);
+-			break;
+-		case 4:
+-			mtpmr(PMRN_PMC4, val);
+-			break;
+-		case 5:
+-			mtpmr(PMRN_PMC5, val);
+-			break;
+-		default:
+-			break;
+-	}
+-}
+-
+-
+-static void init_pmc_stop(int ctr)
+-{
+-	u32 pmlca = (PMLCA_FC | PMLCA_FCS | PMLCA_FCU |
+-			PMLCA_FCM1 | PMLCA_FCM0);
+-	u32 pmlcb = 0;
+-
+-	switch (ctr) {
+-		case 0:
+-			mtpmr(PMRN_PMLCA0, pmlca);
+-			mtpmr(PMRN_PMLCB0, pmlcb);
+-			break;
+-		case 1:
+-			mtpmr(PMRN_PMLCA1, pmlca);
+-			mtpmr(PMRN_PMLCB1, pmlcb);
+-			break;
+-		case 2:
+-			mtpmr(PMRN_PMLCA2, pmlca);
+-			mtpmr(PMRN_PMLCB2, pmlcb);
+-			break;
+-		case 3:
+-			mtpmr(PMRN_PMLCA3, pmlca);
+-			mtpmr(PMRN_PMLCB3, pmlcb);
+-			break;
+-		case 4:
+-			mtpmr(PMRN_PMLCA4, pmlca);
+-			mtpmr(PMRN_PMLCB4, pmlcb);
+-			break;
+-		case 5:
+-			mtpmr(PMRN_PMLCA5, pmlca);
+-			mtpmr(PMRN_PMLCB5, pmlcb);
+-			break;
+-		default:
+-			panic("Bad ctr number!\n");
+-	}
+-}
+-
+-static void set_pmc_event(int ctr, int event)
+-{
+-	u32 pmlca;
+-
+-	pmlca = get_pmlca(ctr);
+-
+-	pmlca = (pmlca & ~PMLCA_EVENT_MASK) |
+-		((event << PMLCA_EVENT_SHIFT) &
+-		 PMLCA_EVENT_MASK);
+-
+-	set_pmlca(ctr, pmlca);
+-}
+-
+-static void set_pmc_user_kernel(int ctr, int user, int kernel)
+-{
+-	u32 pmlca;
+-
+-	pmlca = get_pmlca(ctr);
+-
+-	if(user)
+-		pmlca &= ~PMLCA_FCU;
+-	else
+-		pmlca |= PMLCA_FCU;
+-
+-	if(kernel)
+-		pmlca &= ~PMLCA_FCS;
+-	else
+-		pmlca |= PMLCA_FCS;
+-
+-	set_pmlca(ctr, pmlca);
+-}
+-
+-static void set_pmc_marked(int ctr, int mark0, int mark1)
+-{
+-	u32 pmlca = get_pmlca(ctr);
+-
+-	if(mark0)
+-		pmlca &= ~PMLCA_FCM0;
+-	else
+-		pmlca |= PMLCA_FCM0;
+-
+-	if(mark1)
+-		pmlca &= ~PMLCA_FCM1;
+-	else
+-		pmlca |= PMLCA_FCM1;
+-
+-	set_pmlca(ctr, pmlca);
+-}
+-
+-static void pmc_start_ctr(int ctr, int enable)
+-{
+-	u32 pmlca = get_pmlca(ctr);
+-
+-	pmlca &= ~PMLCA_FC;
+-
+-	if (enable)
+-		pmlca |= PMLCA_CE;
+-	else
+-		pmlca &= ~PMLCA_CE;
+-
+-	set_pmlca(ctr, pmlca);
+-}
+-
+-static void pmc_start_ctrs(int enable)
+-{
+-	u32 pmgc0 = mfpmr(PMRN_PMGC0);
+-
+-	pmgc0 &= ~PMGC0_FAC;
+-	pmgc0 |= PMGC0_FCECE;
+-
+-	if (enable)
+-		pmgc0 |= PMGC0_PMIE;
+-	else
+-		pmgc0 &= ~PMGC0_PMIE;
+-
+-	mtpmr(PMRN_PMGC0, pmgc0);
+-}
+-
+-static void pmc_stop_ctrs(void)
+-{
+-	u32 pmgc0 = mfpmr(PMRN_PMGC0);
+-
+-	pmgc0 |= PMGC0_FAC;
+-
+-	pmgc0 &= ~(PMGC0_PMIE | PMGC0_FCECE);
+-
+-	mtpmr(PMRN_PMGC0, pmgc0);
+-}
+-
+-static int fsl_emb_cpu_setup(struct op_counter_config *ctr)
+-{
+-	int i;
+-
+-	/* freeze all counters */
+-	pmc_stop_ctrs();
+-
+-	for (i = 0;i < num_counters;i++) {
+-		init_pmc_stop(i);
+-
+-		set_pmc_event(i, ctr[i].event);
+-
+-		set_pmc_user_kernel(i, ctr[i].user, ctr[i].kernel);
+-	}
+-
+-	return 0;
+-}
+-
+-static int fsl_emb_reg_setup(struct op_counter_config *ctr,
+-			     struct op_system_config *sys,
+-			     int num_ctrs)
+-{
+-	int i;
+-
+-	num_counters = num_ctrs;
+-
+-	/* Our counters count up, and "count" refers to
+-	 * how much before the next interrupt, and we interrupt
+-	 * on overflow.  So we calculate the starting value
+-	 * which will give us "count" until overflow.
+-	 * Then we set the events on the enabled counters */
+-	for (i = 0; i < num_counters; ++i)
+-		reset_value[i] = 0x80000000UL - ctr[i].count;
+-
+-	return 0;
+-}
+-
+-static int fsl_emb_start(struct op_counter_config *ctr)
+-{
+-	int i;
+-
+-	mtmsr(mfmsr() | MSR_PMM);
+-
+-	for (i = 0; i < num_counters; ++i) {
+-		if (ctr[i].enabled) {
+-			ctr_write(i, reset_value[i]);
+-			/* Set each enabled counter to only
+-			 * count when the Mark bit is *not* set */
+-			set_pmc_marked(i, 1, 0);
+-			pmc_start_ctr(i, 1);
+-		} else {
+-			ctr_write(i, 0);
+-
+-			/* Set the ctr to be stopped */
+-			pmc_start_ctr(i, 0);
+-		}
+-	}
+-
+-	/* Clear the freeze bit, and enable the interrupt.
+-	 * The counters won't actually start until the rfi clears
+-	 * the PMM bit */
+-	pmc_start_ctrs(1);
+-
+-	oprofile_running = 1;
+-
+-	pr_debug("start on cpu %d, pmgc0 %x\n", smp_processor_id(),
+-			mfpmr(PMRN_PMGC0));
+-
+-	return 0;
+-}
+-
+-static void fsl_emb_stop(void)
+-{
+-	/* freeze counters */
+-	pmc_stop_ctrs();
+-
+-	oprofile_running = 0;
+-
+-	pr_debug("stop on cpu %d, pmgc0 %x\n", smp_processor_id(),
+-			mfpmr(PMRN_PMGC0));
+-
+-	mb();
+-}
+-
+-
+-static void fsl_emb_handle_interrupt(struct pt_regs *regs,
+-				    struct op_counter_config *ctr)
+-{
+-	unsigned long pc;
+-	int is_kernel;
+-	int val;
+-	int i;
+-
+-	pc = regs->nip;
+-	is_kernel = is_kernel_addr(pc);
+-
+-	for (i = 0; i < num_counters; ++i) {
+-		val = ctr_read(i);
+-		if (val < 0) {
+-			if (oprofile_running && ctr[i].enabled) {
+-				oprofile_add_ext_sample(pc, regs, i, is_kernel);
+-				ctr_write(i, reset_value[i]);
+-			} else {
+-				ctr_write(i, 0);
+-			}
+-		}
+-	}
+-
+-	/* The freeze bit was set by the interrupt. */
+-	/* Clear the freeze bit, and reenable the interrupt.  The
+-	 * counters won't actually start until the rfi clears the PMM
+-	 * bit.  The PMM bit should not be set until after the interrupt
+-	 * is cleared to avoid it getting lost in some hypervisor
+-	 * environments.
+-	 */
+-	mtmsr(mfmsr() | MSR_PMM);
+-	pmc_start_ctrs(1);
+-}
+-
+-struct op_powerpc_model op_model_fsl_emb = {
+-	.reg_setup		= fsl_emb_reg_setup,
+-	.cpu_setup		= fsl_emb_cpu_setup,
+-	.start			= fsl_emb_start,
+-	.stop			= fsl_emb_stop,
+-	.handle_interrupt	= fsl_emb_handle_interrupt,
+-};
+diff --git a/arch/powerpc/oprofile/op_model_pa6t.c b/arch/powerpc/oprofile/op_model_pa6t.c
+deleted file mode 100644
+index d23061cf76bc..000000000000
+--- a/arch/powerpc/oprofile/op_model_pa6t.c
++++ /dev/null
+@@ -1,227 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Copyright (C) 2006-2007 PA Semi, Inc
+- *
+- * Author: Shashi Rao, PA Semi
+- *
+- * Maintained by: Olof Johansson <olof@lixom.net>
+- *
+- * Based on arch/powerpc/oprofile/op_model_power4.c
+- */
+-
+-#include <linux/oprofile.h>
+-#include <linux/smp.h>
+-#include <linux/percpu.h>
+-#include <asm/processor.h>
+-#include <asm/cputable.h>
+-#include <asm/oprofile_impl.h>
+-#include <asm/reg.h>
+-
+-static unsigned char oprofile_running;
+-
+-/* mmcr values are set in pa6t_reg_setup, used in pa6t_cpu_setup */
+-static u64 mmcr0_val;
+-static u64 mmcr1_val;
+-
+-/* inited in pa6t_reg_setup */
+-static u64 reset_value[OP_MAX_COUNTER];
+-
+-static inline u64 ctr_read(unsigned int i)
+-{
+-	switch (i) {
+-	case 0:
+-		return mfspr(SPRN_PA6T_PMC0);
+-	case 1:
+-		return mfspr(SPRN_PA6T_PMC1);
+-	case 2:
+-		return mfspr(SPRN_PA6T_PMC2);
+-	case 3:
+-		return mfspr(SPRN_PA6T_PMC3);
+-	case 4:
+-		return mfspr(SPRN_PA6T_PMC4);
+-	case 5:
+-		return mfspr(SPRN_PA6T_PMC5);
 -	default:
+-		printk(KERN_ERR "ctr_read called with bad arg %u\n", i);
 -		return 0;
 -	}
 -}
 -
--static inline void classic_ctr_write(unsigned int i, unsigned int val)
+-static inline void ctr_write(unsigned int i, u64 val)
 -{
--	switch(i) {
+-	switch (i) {
 -	case 0:
--		mtspr(SPRN_PMC1, val);
+-		mtspr(SPRN_PA6T_PMC0, val);
 -		break;
 -	case 1:
--		mtspr(SPRN_PMC2, val);
+-		mtspr(SPRN_PA6T_PMC1, val);
 -		break;
 -	case 2:
--		mtspr(SPRN_PMC3, val);
+-		mtspr(SPRN_PA6T_PMC2, val);
 -		break;
 -	case 3:
--		mtspr(SPRN_PMC4, val);
+-		mtspr(SPRN_PA6T_PMC3, val);
 -		break;
 -	case 4:
--		mtspr(SPRN_PMC5, val);
+-		mtspr(SPRN_PA6T_PMC4, val);
 -		break;
 -	case 5:
--		mtspr(SPRN_PMC6, val);
+-		mtspr(SPRN_PA6T_PMC5, val);
 -		break;
--
--/* No PPC32 chip has more than 6, yet */
--#ifdef CONFIG_PPC64
--	case 6:
--		mtspr(SPRN_PMC7, val);
--		break;
--	case 7:
--		mtspr(SPRN_PMC8, val);
--		break;
--#endif
 -	default:
+-		printk(KERN_ERR "ctr_write called with bad arg %u\n", i);
 -		break;
 -	}
 -}
 -
 -
--extern void op_powerpc_backtrace(struct pt_regs * const regs, unsigned int depth);
+-/* precompute the values to stuff in the hardware registers */
+-static int pa6t_reg_setup(struct op_counter_config *ctr,
+-			   struct op_system_config *sys,
+-			   int num_ctrs)
+-{
+-	int pmc;
 -
--#endif /* __KERNEL__ */
--#endif /* _ASM_POWERPC_OPROFILE_IMPL_H */
-diff --git a/arch/powerpc/include/asm/spu.h b/arch/powerpc/include/asm/spu.h
-index 9666491bcb8a..8a2d11ba0dae 100644
---- a/arch/powerpc/include/asm/spu.h
-+++ b/arch/powerpc/include/asm/spu.h
-@@ -201,20 +201,6 @@ int spu_64k_pages_available(void);
- struct mm_struct;
- extern void spu_flush_all_slbs(struct mm_struct *mm);
- 
--/* This interface allows a profiler (e.g., OProfile) to store a ref
-- * to spu context information that it creates.	This caching technique
-- * avoids the need to recreate this information after a save/restore operation.
-- *
-- * Assumes the caller has already incremented the ref count to
-- * profile_info; then spu_context_destroy must call kref_put
-- * on prof_info_kref.
-- */
--void spu_set_profile_private_kref(struct spu_context *ctx,
--				  struct kref *prof_info_kref,
--				  void ( * prof_info_release) (struct kref *kref));
+-	/*
+-	 * adjust the mmcr0.en[0-5] and mmcr0.inten[0-5] values obtained from the
+-	 * event_mappings file by turning off the counters that the user doesn't
+-	 * care about
+-	 *
+-	 * setup user and kernel profiling
+-	 */
+-	for (pmc = 0; pmc < cur_cpu_spec->num_pmcs; pmc++)
+-		if (!ctr[pmc].enabled) {
+-			sys->mmcr0 &= ~(0x1UL << pmc);
+-			sys->mmcr0 &= ~(0x1UL << (pmc+12));
+-			pr_debug("turned off counter %u\n", pmc);
+-		}
 -
--void *spu_get_profile_private_kref(struct spu_context *ctx);
+-	if (sys->enable_kernel)
+-		sys->mmcr0 |= PA6T_MMCR0_SUPEN | PA6T_MMCR0_HYPEN;
+-	else
+-		sys->mmcr0 &= ~(PA6T_MMCR0_SUPEN | PA6T_MMCR0_HYPEN);
 -
- /* system callbacks from the SPU */
- struct spu_syscall_block {
- 	u64 nr_ret;
-@@ -266,25 +252,6 @@ void spu_remove_dev_attr(struct device_attribute *attr);
- int spu_add_dev_attr_group(struct attribute_group *attrs);
- void spu_remove_dev_attr_group(struct attribute_group *attrs);
- 
--/*
-- * Notifier blocks:
-- *
-- * oprofile can get notified when a context switch is performed
-- * on an spe. The notifer function that gets called is passed
-- * a pointer to the SPU structure as well as the object-id that
-- * identifies the binary running on that SPU now.
-- *
-- * For a context save, the object-id that is passed is zero,
-- * identifying that the kernel will run from that moment on.
-- *
-- * For a context restore, the object-id is the value written
-- * to object-id spufs file from user space and the notifer
-- * function can assume that spu->ctx is valid.
-- */
--struct notifier_block;
--int spu_switch_event_register(struct notifier_block * n);
--int spu_switch_event_unregister(struct notifier_block * n);
+-	if (sys->enable_user)
+-		sys->mmcr0 |= PA6T_MMCR0_PREN;
+-	else
+-		sys->mmcr0 &= ~PA6T_MMCR0_PREN;
 -
- extern void notify_spus_active(void);
- extern void do_notify_spus_active(void);
- 
-diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
-index 65f35ec052d4..ae0fdef0ac11 100644
---- a/arch/powerpc/kernel/cputable.c
-+++ b/arch/powerpc/kernel/cputable.c
-@@ -13,7 +13,6 @@
- #include <linux/export.h>
- #include <linux/jump_label.h>
- 
--#include <asm/oprofile_impl.h>
- #include <asm/cputable.h>
- #include <asm/prom.h>		/* for PTRRELOC on ARCH=ppc */
- #include <asm/mce.h>
-@@ -151,7 +150,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.cpu_setup		= __setup_cpu_ppc970,
- 		.cpu_restore		= __restore_cpu_ppc970,
- 		.oprofile_cpu_type	= "ppc64/970",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
- 		.platform		= "ppc970",
- 	},
- 	{	/* PPC970FX */
-@@ -169,7 +167,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.cpu_setup		= __setup_cpu_ppc970,
- 		.cpu_restore		= __restore_cpu_ppc970,
- 		.oprofile_cpu_type	= "ppc64/970",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
- 		.platform		= "ppc970",
- 	},
- 	{	/* PPC970MP DD1.0 - no DEEPNAP, use regular 970 init */
-@@ -187,7 +184,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.cpu_setup		= __setup_cpu_ppc970,
- 		.cpu_restore		= __restore_cpu_ppc970,
- 		.oprofile_cpu_type	= "ppc64/970MP",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
- 		.platform		= "ppc970",
- 	},
- 	{	/* PPC970MP */
-@@ -205,7 +201,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.cpu_setup		= __setup_cpu_ppc970MP,
- 		.cpu_restore		= __restore_cpu_ppc970,
- 		.oprofile_cpu_type	= "ppc64/970MP",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
- 		.platform		= "ppc970",
- 	},
- 	{	/* PPC970GX */
-@@ -222,7 +217,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_IBM,
- 		.cpu_setup		= __setup_cpu_ppc970,
- 		.oprofile_cpu_type	= "ppc64/970",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
- 		.platform		= "ppc970",
- 	},
- 	{	/* Power5 GR */
-@@ -237,12 +231,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power5",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
--		/* SIHV / SIPR bits are implemented on POWER4+ (GQ)
--		 * and above but only works on POWER5 and above
--		 */
--		.oprofile_mmcra_sihv	= MMCRA_SIHV,
--		.oprofile_mmcra_sipr	= MMCRA_SIPR,
- 		.platform		= "power5",
- 	},
- 	{	/* Power5++ */
-@@ -256,9 +244,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.dcache_bsize		= 128,
- 		.num_pmcs		= 6,
- 		.oprofile_cpu_type	= "ppc64/power5++",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
--		.oprofile_mmcra_sihv	= MMCRA_SIHV,
--		.oprofile_mmcra_sipr	= MMCRA_SIPR,
- 		.platform		= "power5+",
- 	},
- 	{	/* Power5 GS */
-@@ -273,9 +258,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power5+",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
--		.oprofile_mmcra_sihv	= MMCRA_SIHV,
--		.oprofile_mmcra_sipr	= MMCRA_SIPR,
- 		.platform		= "power5+",
- 	},
- 	{	/* POWER6 in P5+ mode; 2.04-compliant processor */
-@@ -288,7 +270,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.icache_bsize		= 128,
- 		.dcache_bsize		= 128,
- 		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
- 		.platform		= "power5+",
- 	},
- 	{	/* Power6 */
-@@ -304,11 +285,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power6",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
--		.oprofile_mmcra_sihv	= POWER6_MMCRA_SIHV,
--		.oprofile_mmcra_sipr	= POWER6_MMCRA_SIPR,
--		.oprofile_mmcra_clear	= POWER6_MMCRA_THRM |
--			POWER6_MMCRA_OTHER,
- 		.platform		= "power6x",
- 	},
- 	{	/* 2.05-compliant processor, i.e. Power6 "architected" mode */
-@@ -321,7 +297,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.icache_bsize		= 128,
- 		.dcache_bsize		= 128,
- 		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
- 		.platform		= "power6",
- 	},
- 	{	/* 2.06-compliant processor, i.e. Power7 "architected" mode */
-@@ -334,7 +309,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.mmu_features		= MMU_FTRS_POWER7,
- 		.icache_bsize		= 128,
- 		.dcache_bsize		= 128,
--		.oprofile_type		= PPC_OPROFILE_POWER4,
- 		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
- 		.cpu_setup		= __setup_cpu_power7,
- 		.cpu_restore		= __restore_cpu_power7,
-@@ -351,7 +325,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.mmu_features		= MMU_FTRS_POWER8,
- 		.icache_bsize		= 128,
- 		.dcache_bsize		= 128,
--		.oprofile_type		= PPC_OPROFILE_INVALID,
- 		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
- 		.cpu_setup		= __setup_cpu_power8,
- 		.cpu_restore		= __restore_cpu_power8,
-@@ -368,7 +341,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.mmu_features		= MMU_FTRS_POWER9,
- 		.icache_bsize		= 128,
- 		.dcache_bsize		= 128,
--		.oprofile_type		= PPC_OPROFILE_INVALID,
- 		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
- 		.cpu_setup		= __setup_cpu_power9,
- 		.cpu_restore		= __restore_cpu_power9,
-@@ -384,7 +356,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.mmu_features		= MMU_FTRS_POWER10,
- 		.icache_bsize		= 128,
- 		.dcache_bsize		= 128,
--		.oprofile_type		= PPC_OPROFILE_INVALID,
- 		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
- 		.cpu_setup		= __setup_cpu_power10,
- 		.cpu_restore		= __restore_cpu_power10,
-@@ -403,7 +374,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power7",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
- 		.cpu_setup		= __setup_cpu_power7,
- 		.cpu_restore		= __restore_cpu_power7,
- 		.machine_check_early	= __machine_check_early_realmode_p7,
-@@ -422,7 +392,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power7",
--		.oprofile_type		= PPC_OPROFILE_POWER4,
- 		.cpu_setup		= __setup_cpu_power7,
- 		.cpu_restore		= __restore_cpu_power7,
- 		.machine_check_early	= __machine_check_early_realmode_p7,
-@@ -441,7 +410,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power8",
--		.oprofile_type		= PPC_OPROFILE_INVALID,
- 		.cpu_setup		= __setup_cpu_power8,
- 		.cpu_restore		= __restore_cpu_power8,
- 		.machine_check_early	= __machine_check_early_realmode_p8,
-@@ -460,7 +428,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power8",
--		.oprofile_type		= PPC_OPROFILE_INVALID,
- 		.cpu_setup		= __setup_cpu_power8,
- 		.cpu_restore		= __restore_cpu_power8,
- 		.machine_check_early	= __machine_check_early_realmode_p8,
-@@ -479,7 +446,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power8",
--		.oprofile_type		= PPC_OPROFILE_INVALID,
- 		.cpu_setup		= __setup_cpu_power8,
- 		.cpu_restore		= __restore_cpu_power8,
- 		.machine_check_early	= __machine_check_early_realmode_p8,
-@@ -498,7 +464,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power9",
--		.oprofile_type		= PPC_OPROFILE_INVALID,
- 		.cpu_setup		= __setup_cpu_power9,
- 		.cpu_restore		= __restore_cpu_power9,
- 		.machine_check_early	= __machine_check_early_realmode_p9,
-@@ -517,7 +482,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power9",
--		.oprofile_type		= PPC_OPROFILE_INVALID,
- 		.cpu_setup		= __setup_cpu_power9,
- 		.cpu_restore		= __restore_cpu_power9,
- 		.machine_check_early	= __machine_check_early_realmode_p9,
-@@ -536,7 +500,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power9",
--		.oprofile_type		= PPC_OPROFILE_INVALID,
- 		.cpu_setup		= __setup_cpu_power9,
- 		.cpu_restore		= __restore_cpu_power9,
- 		.machine_check_early	= __machine_check_early_realmode_p9,
-@@ -555,7 +518,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 6,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/power10",
--		.oprofile_type		= PPC_OPROFILE_INVALID,
- 		.cpu_setup		= __setup_cpu_power10,
- 		.cpu_restore		= __restore_cpu_power10,
- 		.machine_check_early	= __machine_check_early_realmode_p10,
-@@ -575,7 +537,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.num_pmcs		= 4,
- 		.pmc_type		= PPC_PMC_IBM,
- 		.oprofile_cpu_type	= "ppc64/cell-be",
--		.oprofile_type		= PPC_OPROFILE_CELL,
- 		.platform		= "ppc-cell-be",
- 	},
- 	{	/* PA Semi PA6T */
-@@ -592,7 +553,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.cpu_setup		= __setup_cpu_pa6t,
- 		.cpu_restore		= __restore_cpu_pa6t,
- 		.oprofile_cpu_type	= "ppc64/pa6t",
--		.oprofile_type		= PPC_OPROFILE_PA6T,
- 		.platform		= "pa6t",
- 	},
- 	{	/* default match */
-@@ -757,7 +717,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc750",
- 		.oprofile_cpu_type      = "ppc/750",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 	},
- 	{	/* 745/755 */
- 		.pvr_mask		= 0xfffff000,
-@@ -789,7 +748,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc750",
- 		.oprofile_cpu_type      = "ppc/750",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 	},
- 	{	/* 750FX rev 2.0 must disable HID0[DPM] */
- 		.pvr_mask		= 0xffffffff,
-@@ -806,7 +764,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc750",
- 		.oprofile_cpu_type      = "ppc/750",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 	},
- 	{	/* 750FX (All revs except 2.0) */
- 		.pvr_mask		= 0xffff0000,
-@@ -823,7 +780,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc750",
- 		.oprofile_cpu_type      = "ppc/750",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 	},
- 	{	/* 750GX */
- 		.pvr_mask		= 0xffff0000,
-@@ -840,7 +796,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc750",
- 		.oprofile_cpu_type      = "ppc/750",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 	},
- 	{	/* 740/750 (L2CR bit need fixup for 740) */
- 		.pvr_mask		= 0xffff0000,
-@@ -919,7 +874,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_G4,
- 		.cpu_setup		= __setup_cpu_745x,
- 		.oprofile_cpu_type      = "ppc/7450",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc7450",
- 	},
-@@ -937,7 +891,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_G4,
- 		.cpu_setup		= __setup_cpu_745x,
- 		.oprofile_cpu_type      = "ppc/7450",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc7450",
- 	},
-@@ -955,7 +908,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_G4,
- 		.cpu_setup		= __setup_cpu_745x,
- 		.oprofile_cpu_type      = "ppc/7450",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc7450",
- 	},
-@@ -973,7 +925,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_G4,
- 		.cpu_setup		= __setup_cpu_745x,
- 		.oprofile_cpu_type      = "ppc/7450",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc7450",
- 	},
-@@ -991,7 +942,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_G4,
- 		.cpu_setup		= __setup_cpu_745x,
- 		.oprofile_cpu_type      = "ppc/7450",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc7450",
- 	},
-@@ -1009,7 +959,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_G4,
- 		.cpu_setup		= __setup_cpu_745x,
- 		.oprofile_cpu_type      = "ppc/7450",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc7450",
- 	},
-@@ -1027,7 +976,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_G4,
- 		.cpu_setup		= __setup_cpu_745x,
- 		.oprofile_cpu_type      = "ppc/7450",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc7450",
- 	},
-@@ -1045,7 +993,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_G4,
- 		.cpu_setup		= __setup_cpu_745x,
- 		.oprofile_cpu_type      = "ppc/7450",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc7450",
- 	},
-@@ -1062,7 +1009,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_G4,
- 		.cpu_setup		= __setup_cpu_745x,
- 		.oprofile_cpu_type      = "ppc/7450",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc7450",
- 	},
-@@ -1080,7 +1026,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_G4,
- 		.cpu_setup		= __setup_cpu_745x,
- 		.oprofile_cpu_type      = "ppc/7450",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc7450",
- 	},
-@@ -1098,7 +1043,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.pmc_type		= PPC_PMC_G4,
- 		.cpu_setup		= __setup_cpu_745x,
- 		.oprofile_cpu_type      = "ppc/7450",
--		.oprofile_type		= PPC_OPROFILE_G4,
- 		.machine_check		= machine_check_generic,
- 		.platform		= "ppc7450",
- 	},
-@@ -1211,7 +1155,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check		= machine_check_83xx,
- 		.num_pmcs		= 4,
- 		.oprofile_cpu_type	= "ppc/e300",
--		.oprofile_type		= PPC_OPROFILE_FSL_EMB,
- 		.platform		= "ppc603",
- 	},
- 	{	/* e300c4 (e300c1, plus one IU) */
-@@ -1228,7 +1171,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check		= machine_check_83xx,
- 		.num_pmcs		= 4,
- 		.oprofile_cpu_type	= "ppc/e300",
--		.oprofile_type		= PPC_OPROFILE_FSL_EMB,
- 		.platform		= "ppc603",
- 	},
- #endif
-@@ -1925,7 +1867,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.dcache_bsize		= 32,
- 		.num_pmcs		= 4,
- 		.oprofile_cpu_type	= "ppc/e500",
--		.oprofile_type		= PPC_OPROFILE_FSL_EMB,
- 		.cpu_setup		= __setup_cpu_e500v1,
- 		.machine_check		= machine_check_e500,
- 		.platform		= "ppc8540",
-@@ -1945,7 +1886,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.dcache_bsize		= 32,
- 		.num_pmcs		= 4,
- 		.oprofile_cpu_type	= "ppc/e500",
--		.oprofile_type		= PPC_OPROFILE_FSL_EMB,
- 		.cpu_setup		= __setup_cpu_e500v2,
- 		.machine_check		= machine_check_e500,
- 		.platform		= "ppc8548",
-@@ -1965,7 +1905,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.dcache_bsize		= 64,
- 		.num_pmcs		= 4,
- 		.oprofile_cpu_type	= "ppc/e500mc",
--		.oprofile_type		= PPC_OPROFILE_FSL_EMB,
- 		.cpu_setup		= __setup_cpu_e500mc,
- 		.machine_check		= machine_check_e500mc,
- 		.platform		= "ppce500mc",
-@@ -1987,7 +1926,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.dcache_bsize		= 64,
- 		.num_pmcs		= 4,
- 		.oprofile_cpu_type	= "ppc/e500mc",
--		.oprofile_type		= PPC_OPROFILE_FSL_EMB,
- 		.cpu_setup		= __setup_cpu_e5500,
- #ifndef CONFIG_PPC32
- 		.cpu_restore		= __restore_cpu_e5500,
-@@ -2010,7 +1948,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.dcache_bsize		= 64,
- 		.num_pmcs		= 6,
- 		.oprofile_cpu_type	= "ppc/e6500",
--		.oprofile_type		= PPC_OPROFILE_FSL_EMB,
- 		.cpu_setup		= __setup_cpu_e6500,
- #ifndef CONFIG_PPC32
- 		.cpu_restore		= __restore_cpu_e6500,
-@@ -2076,10 +2013,6 @@ static struct cpu_spec * __init setup_cpu_spec(unsigned long offset,
- 	if (old.num_pmcs && !s->num_pmcs) {
- 		t->num_pmcs = old.num_pmcs;
- 		t->pmc_type = old.pmc_type;
--		t->oprofile_type = old.oprofile_type;
--		t->oprofile_mmcra_sihv = old.oprofile_mmcra_sihv;
--		t->oprofile_mmcra_sipr = old.oprofile_mmcra_sipr;
--		t->oprofile_mmcra_clear = old.oprofile_mmcra_clear;
- 
- 		/*
- 		 * If we have passed through this logic once before and
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index b5478b72c08c..358aee7c2d79 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -19,7 +19,6 @@
- #include <asm/dt_cpu_ftrs.h>
- #include <asm/mce.h>
- #include <asm/mmu.h>
--#include <asm/oprofile_impl.h>
- #include <asm/prom.h>
- #include <asm/setup.h>
- 
-@@ -103,7 +102,6 @@ static struct cpu_spec __initdata base_cpu_spec = {
- 	.num_pmcs		= 0,
- 	.pmc_type		= PPC_PMC_DEFAULT,
- 	.oprofile_cpu_type	= NULL,
--	.oprofile_type		= PPC_OPROFILE_INVALID,
- 	.cpu_setup		= NULL,
- 	.cpu_restore		= __restore_cpu_cpufeatures,
- 	.machine_check_early	= NULL,
-diff --git a/arch/powerpc/platforms/cell/Kconfig b/arch/powerpc/platforms/cell/Kconfig
-index f2ff359041ee..e7c976bcadff 100644
---- a/arch/powerpc/platforms/cell/Kconfig
-+++ b/arch/powerpc/platforms/cell/Kconfig
-@@ -100,8 +100,3 @@ config CBE_CPUFREQ_SPU_GOVERNOR
- 	  the minimal possible frequency.
- 
- endmenu
+-	/*
+-	 * The performance counter event settings are given in the mmcr0 and
+-	 * mmcr1 values passed from the user in the op_system_config
+-	 * structure (sys variable).
+-	 */
+-	mmcr0_val = sys->mmcr0;
+-	mmcr1_val = sys->mmcr1;
+-	pr_debug("mmcr0_val inited to %016lx\n", sys->mmcr0);
+-	pr_debug("mmcr1_val inited to %016lx\n", sys->mmcr1);
 -
--config OPROFILE_CELL
--	def_bool y
--	depends on PPC_CELL_NATIVE && (OPROFILE = m || OPROFILE = y) && SPU_BASE
+-	for (pmc = 0; pmc < cur_cpu_spec->num_pmcs; pmc++) {
+-		/* counters are 40 bit. Move to cputable at some point? */
+-		reset_value[pmc] = (0x1UL << 39) - ctr[pmc].count;
+-		pr_debug("reset_value for pmc%u inited to 0x%llx\n",
+-				 pmc, reset_value[pmc]);
+-	}
 -
-diff --git a/arch/powerpc/platforms/cell/spu_notify.c b/arch/powerpc/platforms/cell/spu_notify.c
+-	return 0;
+-}
+-
+-/* configure registers on this cpu */
+-static int pa6t_cpu_setup(struct op_counter_config *ctr)
+-{
+-	u64 mmcr0 = mmcr0_val;
+-	u64 mmcr1 = mmcr1_val;
+-
+-	/* Default is all PMCs off */
+-	mmcr0 &= ~(0x3FUL);
+-	mtspr(SPRN_PA6T_MMCR0, mmcr0);
+-
+-	/* program selected programmable events in */
+-	mtspr(SPRN_PA6T_MMCR1, mmcr1);
+-
+-	pr_debug("setup on cpu %d, mmcr0 %016lx\n", smp_processor_id(),
+-		mfspr(SPRN_PA6T_MMCR0));
+-	pr_debug("setup on cpu %d, mmcr1 %016lx\n", smp_processor_id(),
+-		mfspr(SPRN_PA6T_MMCR1));
+-
+-	return 0;
+-}
+-
+-static int pa6t_start(struct op_counter_config *ctr)
+-{
+-	int i;
+-
+-	/* Hold off event counting until rfid */
+-	u64 mmcr0 = mmcr0_val | PA6T_MMCR0_HANDDIS;
+-
+-	for (i = 0; i < cur_cpu_spec->num_pmcs; i++)
+-		if (ctr[i].enabled)
+-			ctr_write(i, reset_value[i]);
+-		else
+-			ctr_write(i, 0UL);
+-
+-	mtspr(SPRN_PA6T_MMCR0, mmcr0);
+-
+-	oprofile_running = 1;
+-
+-	pr_debug("start on cpu %d, mmcr0 %llx\n", smp_processor_id(), mmcr0);
+-
+-	return 0;
+-}
+-
+-static void pa6t_stop(void)
+-{
+-	u64 mmcr0;
+-
+-	/* freeze counters */
+-	mmcr0 = mfspr(SPRN_PA6T_MMCR0);
+-	mmcr0 |= PA6T_MMCR0_FCM0;
+-	mtspr(SPRN_PA6T_MMCR0, mmcr0);
+-
+-	oprofile_running = 0;
+-
+-	pr_debug("stop on cpu %d, mmcr0 %llx\n", smp_processor_id(), mmcr0);
+-}
+-
+-/* handle the perfmon overflow vector */
+-static void pa6t_handle_interrupt(struct pt_regs *regs,
+-				  struct op_counter_config *ctr)
+-{
+-	unsigned long pc = mfspr(SPRN_PA6T_SIAR);
+-	int is_kernel = is_kernel_addr(pc);
+-	u64 val;
+-	int i;
+-	u64 mmcr0;
+-
+-	/* disable perfmon counting until rfid */
+-	mmcr0 = mfspr(SPRN_PA6T_MMCR0);
+-	mtspr(SPRN_PA6T_MMCR0, mmcr0 | PA6T_MMCR0_HANDDIS);
+-
+-	/* Record samples. We've got one global bit for whether a sample
+-	 * was taken, so add it for any counter that triggered overflow.
+-	 */
+-	for (i = 0; i < cur_cpu_spec->num_pmcs; i++) {
+-		val = ctr_read(i);
+-		if (val & (0x1UL << 39)) { /* Overflow bit set */
+-			if (oprofile_running && ctr[i].enabled) {
+-				if (mmcr0 & PA6T_MMCR0_SIARLOG)
+-					oprofile_add_ext_sample(pc, regs, i, is_kernel);
+-				ctr_write(i, reset_value[i]);
+-			} else {
+-				ctr_write(i, 0UL);
+-			}
+-		}
+-	}
+-
+-	/* Restore mmcr0 to a good known value since the PMI changes it */
+-	mmcr0 = mmcr0_val | PA6T_MMCR0_HANDDIS;
+-	mtspr(SPRN_PA6T_MMCR0, mmcr0);
+-}
+-
+-struct op_powerpc_model op_model_pa6t = {
+-	.reg_setup		= pa6t_reg_setup,
+-	.cpu_setup		= pa6t_cpu_setup,
+-	.start			= pa6t_start,
+-	.stop			= pa6t_stop,
+-	.handle_interrupt	= pa6t_handle_interrupt,
+-};
+diff --git a/arch/powerpc/oprofile/op_model_power4.c b/arch/powerpc/oprofile/op_model_power4.c
 deleted file mode 100644
-index 67870abf3715..000000000000
---- a/arch/powerpc/platforms/cell/spu_notify.c
+index 2ae6b86ff97b..000000000000
+--- a/arch/powerpc/oprofile/op_model_power4.c
 +++ /dev/null
-@@ -1,55 +0,0 @@
+@@ -1,438 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * Move OProfile dependencies from spufs module to the kernel so it
-- * can run on non-cell PPC.
-- *
-- * Copyright (C) IBM 2005
+- * Copyright (C) 2004 Anton Blanchard <anton@au.ibm.com>, IBM
+- * Added mmcra[slot] support:
+- * Copyright (C) 2006-2007 Will Schmidt <willschm@us.ibm.com>, IBM
 - */
 -
--#undef DEBUG
+-#include <linux/oprofile.h>
+-#include <linux/smp.h>
+-#include <asm/firmware.h>
+-#include <asm/ptrace.h>
+-#include <asm/processor.h>
+-#include <asm/cputable.h>
+-#include <asm/rtas.h>
+-#include <asm/oprofile_impl.h>
+-#include <asm/reg.h>
 -
--#include <linux/export.h>
--#include <linux/notifier.h>
--#include <asm/spu.h>
--#include "spufs/spufs.h"
+-#define dbg(args...)
+-#define OPROFILE_PM_PMCSEL_MSK      0xffULL
+-#define OPROFILE_PM_UNIT_SHIFT      60
+-#define OPROFILE_PM_UNIT_MSK        0xfULL
+-#define OPROFILE_MAX_PMC_NUM        3
+-#define OPROFILE_PMSEL_FIELD_WIDTH  8
+-#define OPROFILE_UNIT_FIELD_WIDTH   4
+-#define MMCRA_SIAR_VALID_MASK       0x10000000ULL
 -
--static BLOCKING_NOTIFIER_HEAD(spu_switch_notifier);
+-static unsigned long reset_value[OP_MAX_COUNTER];
 -
--void spu_switch_notify(struct spu *spu, struct spu_context *ctx)
+-static int oprofile_running;
+-static int use_slot_nums;
+-
+-/* mmcr values are set in power4_reg_setup, used in power4_cpu_setup */
+-static u32 mmcr0_val;
+-static u64 mmcr1_val;
+-static u64 mmcra_val;
+-static u32 cntr_marked_events;
+-
+-static int power7_marked_instr_event(u64 mmcr1)
 -{
--	blocking_notifier_call_chain(&spu_switch_notifier,
--				     ctx ? ctx->object_id : 0, spu);
--}
--EXPORT_SYMBOL_GPL(spu_switch_notify);
+-	u64 psel, unit;
+-	int pmc, cntr_marked_events = 0;
 -
--int spu_switch_event_register(struct notifier_block *n)
--{
--	int ret;
--	ret = blocking_notifier_chain_register(&spu_switch_notifier, n);
--	if (!ret)
--		notify_spus_active();
--	return ret;
--}
--EXPORT_SYMBOL_GPL(spu_switch_event_register);
+-	/* Given the MMCR1 value, look at the field for each counter to
+-	 * determine if it is a marked event.  Code based on the function
+-	 * power7_marked_instr_event() in file arch/powerpc/perf/power7-pmu.c.
+-	 */
+-	for (pmc = 0; pmc < 4; pmc++) {
+-		psel = mmcr1 & (OPROFILE_PM_PMCSEL_MSK
+-				<< (OPROFILE_MAX_PMC_NUM - pmc)
+-				* OPROFILE_PMSEL_FIELD_WIDTH);
+-		psel = (psel >> ((OPROFILE_MAX_PMC_NUM - pmc)
+-				 * OPROFILE_PMSEL_FIELD_WIDTH)) & ~1ULL;
+-		unit = mmcr1 & (OPROFILE_PM_UNIT_MSK
+-				<< (OPROFILE_PM_UNIT_SHIFT
+-				    - (pmc * OPROFILE_PMSEL_FIELD_WIDTH )));
+-		unit = unit >> (OPROFILE_PM_UNIT_SHIFT
+-				- (pmc * OPROFILE_PMSEL_FIELD_WIDTH));
 -
--int spu_switch_event_unregister(struct notifier_block *n)
--{
--	return blocking_notifier_chain_unregister(&spu_switch_notifier, n);
--}
--EXPORT_SYMBOL_GPL(spu_switch_event_unregister);
--
--void spu_set_profile_private_kref(struct spu_context *ctx,
--				  struct kref *prof_info_kref,
--				  void (* prof_info_release) (struct kref *kref))
--{
--	ctx->prof_priv_kref = prof_info_kref;
--	ctx->prof_priv_release = prof_info_release;
--}
--EXPORT_SYMBOL_GPL(spu_set_profile_private_kref);
--
--void *spu_get_profile_private_kref(struct spu_context *ctx)
--{
--	return ctx->prof_priv_kref;
--}
--EXPORT_SYMBOL_GPL(spu_get_profile_private_kref);
--
-diff --git a/arch/powerpc/platforms/cell/spufs/run.c b/arch/powerpc/platforms/cell/spufs/run.c
-index 3f2380f40f99..466006918003 100644
---- a/arch/powerpc/platforms/cell/spufs/run.c
-+++ b/arch/powerpc/platforms/cell/spufs/run.c
-@@ -389,10 +389,8 @@ long spufs_run_spu(struct spu_context *ctx, u32 *npc, u32 *event)
- 		spu = ctx->spu;
- 		if (unlikely(test_and_clear_bit(SPU_SCHED_NOTIFY_ACTIVE,
- 						&ctx->sched_flags))) {
--			if (!(status & SPU_STATUS_STOPPED_BY_STOP)) {
--				spu_switch_notify(spu, ctx);
-+			if (!(status & SPU_STATUS_STOPPED_BY_STOP))
- 				continue;
+-		switch (psel >> 4) {
+-		case 2:
+-			cntr_marked_events |= (pmc == 1 || pmc == 3) << pmc;
+-			break;
+-		case 3:
+-			if (psel == 0x3c) {
+-				cntr_marked_events |= (pmc == 0) << pmc;
+-				break;
 -			}
- 		}
- 
- 		spuctx_switch_state(ctx, SPU_UTIL_SYSTEM);
-diff --git a/arch/powerpc/platforms/cell/spufs/sched.c b/arch/powerpc/platforms/cell/spufs/sched.c
-index f18d5067cd0f..9d06fffb1526 100644
---- a/arch/powerpc/platforms/cell/spufs/sched.c
-+++ b/arch/powerpc/platforms/cell/spufs/sched.c
-@@ -181,9 +181,6 @@ void do_notify_spus_active(void)
- 
- 	/*
- 	 * Wake up the active spu_contexts.
+-
+-			if (psel == 0x3e) {
+-				cntr_marked_events |= (pmc != 1) << pmc;
+-				break;
+-			}
+-
+-			cntr_marked_events |= 1 << pmc;
+-			break;
+-		case 4:
+-		case 5:
+-			cntr_marked_events |= (unit == 0xd) << pmc;
+-			break;
+-		case 6:
+-			if (psel == 0x64)
+-				cntr_marked_events |= (pmc >= 2) << pmc;
+-			break;
+-		case 8:
+-			cntr_marked_events |= (unit == 0xd) << pmc;
+-			break;
+-		}
+-	}
+-	return cntr_marked_events;
+-}
+-
+-static int power4_reg_setup(struct op_counter_config *ctr,
+-			     struct op_system_config *sys,
+-			     int num_ctrs)
+-{
+-	int i;
+-
+-	/*
+-	 * The performance counter event settings are given in the mmcr0,
+-	 * mmcr1 and mmcra values passed from the user in the
+-	 * op_system_config structure (sys variable).
+-	 */
+-	mmcr0_val = sys->mmcr0;
+-	mmcr1_val = sys->mmcr1;
+-	mmcra_val = sys->mmcra;
+-
+-	/* Power 7+ and newer architectures:
+-	 * Determine which counter events in the group (the group of events is
+-	 * specified by the bit settings in the MMCR1 register) are marked
+-	 * events for use in the interrupt handler.  Do the calculation once
+-	 * before OProfile starts.  Information is used in the interrupt
+-	 * handler.  Starting with Power 7+ we only record the sample for
+-	 * marked events if the SIAR valid bit is set.  For non marked events
+-	 * the sample is always recorded.
+-	 */
+-	if (pvr_version_is(PVR_POWER7p))
+-		cntr_marked_events = power7_marked_instr_event(mmcr1_val);
+-	else
+-		cntr_marked_events = 0; /* For older processors, set the bit map
+-					 * to zero so the sample will always be
+-					 * be recorded.
+-					 */
+-
+-	for (i = 0; i < cur_cpu_spec->num_pmcs; ++i)
+-		reset_value[i] = 0x80000000UL - ctr[i].count;
+-
+-	/* setup user and kernel profiling */
+-	if (sys->enable_kernel)
+-		mmcr0_val &= ~MMCR0_KERNEL_DISABLE;
+-	else
+-		mmcr0_val |= MMCR0_KERNEL_DISABLE;
+-
+-	if (sys->enable_user)
+-		mmcr0_val &= ~MMCR0_PROBLEM_DISABLE;
+-	else
+-		mmcr0_val |= MMCR0_PROBLEM_DISABLE;
+-
+-	if (pvr_version_is(PVR_POWER4) || pvr_version_is(PVR_POWER4p) ||
+-	    pvr_version_is(PVR_970) || pvr_version_is(PVR_970FX) ||
+-	    pvr_version_is(PVR_970MP) || pvr_version_is(PVR_970GX) ||
+-	    pvr_version_is(PVR_POWER5) || pvr_version_is(PVR_POWER5p))
+-		use_slot_nums = 1;
+-
+-	return 0;
+-}
+-
+-extern void ppc_enable_pmcs(void);
+-
+-/*
+- * Older CPUs require the MMCRA sample bit to be always set, but newer 
+- * CPUs only want it set for some groups. Eventually we will remove all
+- * knowledge of this bit in the kernel, oprofile userspace should be
+- * setting it when required.
+- *
+- * In order to keep current installations working we force the bit for
+- * those older CPUs. Once everyone has updated their oprofile userspace we
+- * can remove this hack.
+- */
+-static inline int mmcra_must_set_sample(void)
+-{
+-	if (pvr_version_is(PVR_POWER4) || pvr_version_is(PVR_POWER4p) ||
+-	    pvr_version_is(PVR_970) || pvr_version_is(PVR_970FX) ||
+-	    pvr_version_is(PVR_970MP) || pvr_version_is(PVR_970GX))
+-		return 1;
+-
+-	return 0;
+-}
+-
+-static int power4_cpu_setup(struct op_counter_config *ctr)
+-{
+-	unsigned int mmcr0 = mmcr0_val;
+-	unsigned long mmcra = mmcra_val;
+-
+-	ppc_enable_pmcs();
+-
+-	/* set the freeze bit */
+-	mmcr0 |= MMCR0_FC;
+-	mtspr(SPRN_MMCR0, mmcr0);
+-
+-	mmcr0 |= MMCR0_FCM1|MMCR0_PMXE|MMCR0_FCECE;
+-	mmcr0 |= MMCR0_PMC1CE|MMCR0_PMCjCE;
+-	mtspr(SPRN_MMCR0, mmcr0);
+-
+-	mtspr(SPRN_MMCR1, mmcr1_val);
+-
+-	if (mmcra_must_set_sample())
+-		mmcra |= MMCRA_SAMPLE_ENABLE;
+-	mtspr(SPRN_MMCRA, mmcra);
+-
+-	dbg("setup on cpu %d, mmcr0 %lx\n", smp_processor_id(),
+-	    mfspr(SPRN_MMCR0));
+-	dbg("setup on cpu %d, mmcr1 %lx\n", smp_processor_id(),
+-	    mfspr(SPRN_MMCR1));
+-	dbg("setup on cpu %d, mmcra %lx\n", smp_processor_id(),
+-	    mfspr(SPRN_MMCRA));
+-
+-	return 0;
+-}
+-
+-static int power4_start(struct op_counter_config *ctr)
+-{
+-	int i;
+-	unsigned int mmcr0;
+-
+-	/* set the PMM bit (see comment below) */
+-	mtmsr(mfmsr() | MSR_PMM);
+-
+-	for (i = 0; i < cur_cpu_spec->num_pmcs; ++i) {
+-		if (ctr[i].enabled) {
+-			classic_ctr_write(i, reset_value[i]);
+-		} else {
+-			classic_ctr_write(i, 0);
+-		}
+-	}
+-
+-	mmcr0 = mfspr(SPRN_MMCR0);
+-
+-	/*
+-	 * We must clear the PMAO bit on some (GQ) chips. Just do it
+-	 * all the time
+-	 */
+-	mmcr0 &= ~MMCR0_PMAO;
+-
+-	/*
+-	 * now clear the freeze bit, counting will not start until we
+-	 * rfid from this excetion, because only at that point will
+-	 * the PMM bit be cleared
+-	 */
+-	mmcr0 &= ~MMCR0_FC;
+-	mtspr(SPRN_MMCR0, mmcr0);
+-
+-	oprofile_running = 1;
+-
+-	dbg("start on cpu %d, mmcr0 %x\n", smp_processor_id(), mmcr0);
+-	return 0;
+-}
+-
+-static void power4_stop(void)
+-{
+-	unsigned int mmcr0;
+-
+-	/* freeze counters */
+-	mmcr0 = mfspr(SPRN_MMCR0);
+-	mmcr0 |= MMCR0_FC;
+-	mtspr(SPRN_MMCR0, mmcr0);
+-
+-	oprofile_running = 0;
+-
+-	dbg("stop on cpu %d, mmcr0 %x\n", smp_processor_id(), mmcr0);
+-
+-	mb();
+-}
+-
+-/* Fake functions used by canonicalize_pc */
+-static void __used hypervisor_bucket(void)
+-{
+-}
+-
+-static void __used rtas_bucket(void)
+-{
+-}
+-
+-static void __used kernel_unknown_bucket(void)
+-{
+-}
+-
+-/*
+- * On GQ and newer the MMCRA stores the HV and PR bits at the time
+- * the SIAR was sampled. We use that to work out if the SIAR was sampled in
+- * the hypervisor, our exception vectors or RTAS.
+- * If the MMCRA_SAMPLE_ENABLE bit is set, we can use the MMCRA[slot] bits
+- * to more accurately identify the address of the sampled instruction. The
+- * mmcra[slot] bits represent the slot number of a sampled instruction
+- * within an instruction group.  The slot will contain a value between 1
+- * and 5 if MMCRA_SAMPLE_ENABLE is set, otherwise 0.
+- */
+-static unsigned long get_pc(struct pt_regs *regs)
+-{
+-	unsigned long pc = mfspr(SPRN_SIAR);
+-	unsigned long mmcra;
+-	unsigned long slot;
+-
+-	/* Can't do much about it */
+-	if (!cur_cpu_spec->oprofile_mmcra_sihv)
+-		return pc;
+-
+-	mmcra = mfspr(SPRN_MMCRA);
+-
+-	if (use_slot_nums && (mmcra & MMCRA_SAMPLE_ENABLE)) {
+-		slot = ((mmcra & MMCRA_SLOT) >> MMCRA_SLOT_SHIFT);
+-		if (slot > 1)
+-			pc += 4 * (slot - 1);
+-	}
+-
+-	/* Were we in the hypervisor? */
+-	if (firmware_has_feature(FW_FEATURE_LPAR) &&
+-	    (mmcra & cur_cpu_spec->oprofile_mmcra_sihv))
+-		/* function descriptor madness */
+-		return *((unsigned long *)hypervisor_bucket);
+-
+-	/* We were in userspace, nothing to do */
+-	if (mmcra & cur_cpu_spec->oprofile_mmcra_sipr)
+-		return pc;
+-
+-#ifdef CONFIG_PPC_RTAS
+-	/* Were we in RTAS? */
+-	if (pc >= rtas.base && pc < (rtas.base + rtas.size))
+-		/* function descriptor madness */
+-		return *((unsigned long *)rtas_bucket);
+-#endif
+-
+-	/* Were we in our exception vectors or SLB real mode miss handler? */
+-	if (pc < 0x1000000UL)
+-		return (unsigned long)__va(pc);
+-
+-	/* Not sure where we were */
+-	if (!is_kernel_addr(pc))
+-		/* function descriptor madness */
+-		return *((unsigned long *)kernel_unknown_bucket);
+-
+-	return pc;
+-}
+-
+-static int get_kernel(unsigned long pc, unsigned long mmcra)
+-{
+-	int is_kernel;
+-
+-	if (!cur_cpu_spec->oprofile_mmcra_sihv) {
+-		is_kernel = is_kernel_addr(pc);
+-	} else {
+-		is_kernel = ((mmcra & cur_cpu_spec->oprofile_mmcra_sipr) == 0);
+-	}
+-
+-	return is_kernel;
+-}
+-
+-static bool pmc_overflow(unsigned long val)
+-{
+-	if ((int)val < 0)
+-		return true;
+-
+-	/*
+-	 * Events on POWER7 can roll back if a speculative event doesn't
+-	 * eventually complete. Unfortunately in some rare cases they will
+-	 * raise a performance monitor exception. We need to catch this to
+-	 * ensure we reset the PMC. In all cases the PMC will be 256 or less
+-	 * cycles from overflow.
 -	 *
--	 * When the awakened processes see their "notify_active" flag is set,
--	 * they will call spu_switch_notify().
- 	 */
- 	for_each_online_node(node) {
- 		struct spu *spu;
-@@ -239,7 +236,6 @@ static void spu_bind_context(struct spu *spu, struct spu_context *ctx)
- 	spu_switch_log_notify(spu, ctx, SWITCH_LOG_START, 0);
- 	spu_restore(&ctx->csa, spu);
- 	spu->timestamp = jiffies;
--	spu_switch_notify(spu, ctx);
- 	ctx->state = SPU_STATE_RUNNABLE;
- 
- 	spuctx_switch_state(ctx, SPU_UTIL_USER);
-@@ -440,7 +436,6 @@ static void spu_unbind_context(struct spu *spu, struct spu_context *ctx)
- 		 */
- 		atomic_dec_if_positive(&ctx->gang->aff_sched_count);
- 
--	spu_switch_notify(spu, NULL);
- 	spu_unmap_mappings(ctx);
- 	spu_save(&ctx->csa, spu);
- 	spu_switch_log_notify(spu, ctx, SWITCH_LOG_STOP, 0);
-diff --git a/arch/powerpc/platforms/cell/spufs/spufs.h b/arch/powerpc/platforms/cell/spufs/spufs.h
-index 1ba4d884febf..afc1d6604d12 100644
---- a/arch/powerpc/platforms/cell/spufs/spufs.h
-+++ b/arch/powerpc/platforms/cell/spufs/spufs.h
-@@ -281,7 +281,6 @@ void spu_del_from_rq(struct spu_context *ctx);
- int spu_activate(struct spu_context *ctx, unsigned long flags);
- void spu_deactivate(struct spu_context *ctx);
- void spu_yield(struct spu_context *ctx);
--void spu_switch_notify(struct spu *spu, struct spu_context *ctx);
- void spu_switch_log_notify(struct spu *spu, struct spu_context *ctx,
- 		u32 type, u32 val);
- void spu_set_timeslice(struct spu_context *ctx);
+-	 * We only do this if the first pass fails to find any overflowing
+-	 * PMCs because a user might set a period of less than 256 and we
+-	 * don't want to mistakenly reset them.
+-	 */
+-	if (pvr_version_is(PVR_POWER7) && ((0x80000000 - val) <= 256))
+-		return true;
+-
+-	return false;
+-}
+-
+-static void power4_handle_interrupt(struct pt_regs *regs,
+-				    struct op_counter_config *ctr)
+-{
+-	unsigned long pc;
+-	int is_kernel;
+-	int val;
+-	int i;
+-	unsigned int mmcr0;
+-	unsigned long mmcra;
+-	bool siar_valid = false;
+-
+-	mmcra = mfspr(SPRN_MMCRA);
+-
+-	pc = get_pc(regs);
+-	is_kernel = get_kernel(pc, mmcra);
+-
+-	/* set the PMM bit (see comment below) */
+-	mtmsr(mfmsr() | MSR_PMM);
+-
+-	/* Check that the SIAR  valid bit in MMCRA is set to 1. */
+-	if ((mmcra & MMCRA_SIAR_VALID_MASK) == MMCRA_SIAR_VALID_MASK)
+-		siar_valid = true;
+-
+-	for (i = 0; i < cur_cpu_spec->num_pmcs; ++i) {
+-		val = classic_ctr_read(i);
+-		if (pmc_overflow(val)) {
+-			if (oprofile_running && ctr[i].enabled) {
+-				/* Power 7+ and newer architectures:
+-				 * If the event is a marked event, then only
+-				 * save the sample if the SIAR valid bit is
+-				 * set.  If the event is not marked, then
+-				 * always save the sample.
+-				 * Note, the Sample enable bit in the MMCRA
+-				 * register must be set to 1 if the group
+-				 * contains a marked event.
+-				 */
+-				if ((siar_valid &&
+-				     (cntr_marked_events & (1 << i)))
+-				    || !(cntr_marked_events & (1 << i)))
+-					oprofile_add_ext_sample(pc, regs, i,
+-								is_kernel);
+-
+-				classic_ctr_write(i, reset_value[i]);
+-			} else {
+-				classic_ctr_write(i, 0);
+-			}
+-		}
+-	}
+-
+-	mmcr0 = mfspr(SPRN_MMCR0);
+-
+-	/* reset the perfmon trigger */
+-	mmcr0 |= MMCR0_PMXE;
+-
+-	/*
+-	 * We must clear the PMAO bit on some (GQ) chips. Just do it
+-	 * all the time
+-	 */
+-	mmcr0 &= ~MMCR0_PMAO;
+-
+-	/* Clear the appropriate bits in the MMCRA */
+-	mmcra &= ~cur_cpu_spec->oprofile_mmcra_clear;
+-	mtspr(SPRN_MMCRA, mmcra);
+-
+-	/*
+-	 * now clear the freeze bit, counting will not start until we
+-	 * rfid from this exception, because only at that point will
+-	 * the PMM bit be cleared
+-	 */
+-	mmcr0 &= ~MMCR0_FC;
+-	mtspr(SPRN_MMCR0, mmcr0);
+-}
+-
+-struct op_powerpc_model op_model_power4 = {
+-	.reg_setup		= power4_reg_setup,
+-	.cpu_setup		= power4_cpu_setup,
+-	.start			= power4_start,
+-	.stop			= power4_stop,
+-	.handle_interrupt	= power4_handle_interrupt,
+-};
 -- 
 2.25.0.rc1.19.g042ed3e048af
 
