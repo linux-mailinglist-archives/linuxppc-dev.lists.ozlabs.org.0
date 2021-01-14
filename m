@@ -1,75 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E63C2F5C83
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 09:36:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E092F5CDF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 10:08:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DGd2T61ffzDrf6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 19:36:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DGdkq0JDZzDrfg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jan 2021 20:08:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32e;
- helo=mail-wm1-x32e.google.com; envelope-from=lee.jones@linaro.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=tientzu@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=ZIGADg3B; dkim-atps=neutral
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com
- [IPv6:2a00:1450:4864:20::32e])
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=X7SGbsqs; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DGczW2jNRzDrVM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 19:33:56 +1100 (AEDT)
-Received: by mail-wm1-x32e.google.com with SMTP id g10so3896426wmh.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 00:33:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to;
- bh=GjeLGr4dGUje6MMvo6pIfAne61VxoEvoHdwrClfl8/s=;
- b=ZIGADg3BlaqD32ynUhvAKUHK36WggmBH+HgCus+Lt0OiuAae5RFKTAAdAUBLBkfKrY
- g9mCLwos3GLeOzEZCwhYZwr8T5fiAWm2JBAxzVNiTStafjzlYckMK2ml72RUD1geMllQ
- TC4hDVHt/O8I3ZmVeHGXt1O5WQbtt/JbiFBmQso//vGSagy4KDFQiNpFLKIWEZL1gEtU
- rgvHU8MtqxV21EHUgiCzhfSYfGoPkgsH0esb0o3x3F9ayqx2pdlhR+Ode/A4/hYpSf0j
- AnO7uTlxvNucWcVxTJhpnRX7DXNGWSrX8lPRCWwv6I8P7aSS+LVkhBxZp6+rLxq35MjL
- qO4Q==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DGdj26Jk0zDrSt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 20:06:25 +1100 (AEDT)
+Received: by mail-pg1-x533.google.com with SMTP id c132so3357324pga.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 01:06:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=r2clGFKfMvWdEL24a/hrPW/SoKgcT/5YZOK8G2tupLA=;
+ b=X7SGbsqsGRlUtP0PJCg54RJ4TAlmaAHUG3xPdqjVb0oScLVfStGatbndpS03GsNgnP
+ Ay7KF7sGV28MuK8UBUQD50tmV7MICCg9iHgn3dDmdiN2V0+w2jb02zv0Fvhtiq/Aou7X
+ FWO4E0ky5/69bheieFiKWNwRnHzuorBEbyewE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=GjeLGr4dGUje6MMvo6pIfAne61VxoEvoHdwrClfl8/s=;
- b=dP+43qXudiu1E3mXyfkMXR+jgLrn4tzXzr0gWuFaXj3AKfiTdFKLncXVr863QS2n5D
- sG+Ulezwnvc1HjsSk1biIz0xHoDeNumRRELg+fr8eDKGo6M62IqZ1zd3QBVefFPA+DcI
- eHKS0/AvKCvH8GaMl0Dxy+pxVYUIAtVjk2Tz2RQTODHRDg7vSklStacprEMz0nc/TOBe
- TdF1HEfVcCkcGrcnd5bEexBWgge24pmPOKmhOMmmBhHaqAcytgBeXuwkAUh6Ox4nEgCz
- XvAaqleKz0opu+GQE0ocC0hQAr/DBWodb7kDWSgyy3rL7Wp6lcEvyJZ4G6Y9H7oXzStu
- STVg==
-X-Gm-Message-State: AOAM530zMK3MevjoVzkjVZNCyRGzW9nuZR8Im2CcQXRZQedanZ5Rd18w
- 3HuJrQfD6jGRKiFghyAobmsOzg==
-X-Google-Smtp-Source: ABdhPJw3p4X/u/75/T9prjNVjPSDyTRHFC+ksLZ/wQbHtHizclaVB59YVOGqKuRlDUU9mMmbgYlTNw==
-X-Received: by 2002:a1c:2d6:: with SMTP id 205mr2866556wmc.60.1610613232251;
- Thu, 14 Jan 2021 00:33:52 -0800 (PST)
-Received: from dell ([91.110.221.178])
- by smtp.gmail.com with ESMTPSA id b14sm8094410wrx.77.2021.01.14.00.33.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Jan 2021 00:33:51 -0800 (PST)
-Date: Thu, 14 Jan 2021 08:33:49 +0000
-From: Lee Jones <lee.jones@linaro.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH v2 0/7] Rid W=1 warnings in Ethernet
-Message-ID: <20210114083349.GI3975472@dell>
-References: <20210113164123.1334116-1-lee.jones@linaro.org>
- <20210113183551.6551a6a2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=r2clGFKfMvWdEL24a/hrPW/SoKgcT/5YZOK8G2tupLA=;
+ b=Gd61tGkguUhlAH4sIiabTpr9WsuPVcsxZHkl7jJNd0/hXm6m4MGz3Ueb8wLVDwR+YC
+ l4qKgScG12ssWUYga2IhJwD2JMLyYP0TP76VHpfrT/6ze1i94AmQwNonTLHV931p0auz
+ DaYxicKPjli0uL6h4ceISN+ZkLEsnJFxE8E4tfamC6upZAOQxeI/FsvFapjTowNKXry4
+ OUAXZO9H9S9ESeQAFgs4Zk51iZBeY/B+VjA837nV/fMzg4HzcLaCft758S9K7yeDt/2Q
+ y0ZYiATxMKr7EuTigl1+XrgtAw6i4UkVM8SuLQRU8HKO1SXMHkXrLWcb5mRscJsq/r4l
+ MSjQ==
+X-Gm-Message-State: AOAM530HKkBkv+htot0BefAiHVxHJGYmCSJo9F45zwNWOWLl6owPiFRs
+ xoPDcwGovGuBNA85poNlLxMEYlL6RF0YJw==
+X-Google-Smtp-Source: ABdhPJzyzlE8Xnu/OJ9/un9GfMJLp8FZoZVBENYc9jchcJUWe5UK2LW3aeHwKifMtY/KoxqIwAHxAA==
+X-Received: by 2002:aa7:99c9:0:b029:1ae:7bed:df12 with SMTP id
+ v9-20020aa799c90000b02901ae7beddf12mr6688481pfi.53.1610615181741; 
+ Thu, 14 Jan 2021 01:06:21 -0800 (PST)
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com.
+ [209.85.215.173])
+ by smtp.gmail.com with ESMTPSA id n10sm4729311pfu.176.2021.01.14.01.06.20
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 14 Jan 2021 01:06:21 -0800 (PST)
+Received: by mail-pg1-f173.google.com with SMTP id q7so3347357pgm.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 01:06:20 -0800 (PST)
+X-Received: by 2002:a92:ce8f:: with SMTP id r15mr4926327ilo.303.1610615178346; 
+ Thu, 14 Jan 2021 01:06:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210113183551.6551a6a2@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+References: <20210106034124.30560-1-tientzu@chromium.org>
+ <20210106034124.30560-3-tientzu@chromium.org>
+ <20210113124209.GA1383@lst.de>
+In-Reply-To: <20210113124209.GA1383@lst.de>
+From: Claire Chang <tientzu@chromium.org>
+Date: Thu, 14 Jan 2021 17:06:07 +0800
+X-Gmail-Original-Message-ID: <CALiNf2-a6JpbeyfCoGdjFAbguxwW5kn1r_Oq6yr+k1rGum7O8Q@mail.gmail.com>
+Message-ID: <CALiNf2-a6JpbeyfCoGdjFAbguxwW5kn1r_Oq6yr+k1rGum7O8Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 2/6] swiotlb: Add restricted DMA pool
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,53 +83,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Durrant <paul@xen.org>, Kurt Kanzenbach <kurt@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, Peter Cammaert <pc@denkart.be>,
- Paul Mackerras <paulus@samba.org>, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
- Wei Liu <wei.liu@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Santiago Leon <santi_leon@yahoo.com>, xen-devel@lists.xenproject.org,
- Grygorii Strashko <grygorii.strashko@ti.com>,
- Thomas Falcon <tlfalcon@linux.vnet.ibm.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Jens Osterkamp <Jens.Osterkamp@de.ibm.com>,
- Rusty Russell <rusty@rustcorp.com.au>, Daris A Nevil <dnevil@snmc.com>,
- Lijun Pan <ljp@linux.ibm.com>, Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
- Nicolas Pitre <nico@fluxnic.net>, Geoff Levand <geoff@infradead.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Erik Stahlman <erik@vt.edu>, John Allen <jallen@linux.vnet.ibm.com>,
- Utz Bacher <utz.bacher@de.ibm.com>, Dany Madden <drt@linux.ibm.com>,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, Russell King <rmk@arm.linux.org.uk>
+Cc: heikki.krogerus@linux.intel.com, peterz@infradead.org, grant.likely@arm.com,
+ paulus@samba.org, Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>, sstabellini@kernel.org,
+ Saravana Kannan <saravanak@google.com>,
+ "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>,
+ Joerg Roedel <joro@8bytes.org>, " <joro@8bytes.org>,
+ rafael.j.wysocki@intel.com, Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+ xen-devel@lists.xenproject.org, Thierry Reding <treding@nvidia.com>,
+ linux-devicetree <devicetree@vger.kernel.org>, will@kernel.org,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, dan.j.williams@intel.com,
+ linuxppc-dev@lists.ozlabs.org, Rob Herring <robh+dt@kernel.org>,
+ boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ rdunlap@infradead.org, lkml <linux-kernel@vger.kernel.org>,
+ Tomasz Figa <tfiga@chromium.org>,
+ "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>,
+ Joerg Roedel <joro@8bytes.org>, " <iommu@lists.linux-foundation.org>,
+ xypron.glpk@gmx.de, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 13 Jan 2021, Jakub Kicinski wrote:
+On Wed, Jan 13, 2021 at 8:42 PM Christoph Hellwig <hch@lst.de> wrote:
+>
+> > +#ifdef CONFIG_SWIOTLB
+> > +     struct io_tlb_mem       *dma_io_tlb_mem;
+> >  #endif
+>
+> Please add a new config option for this code instead of always building
+> it when swiotlb is enabled.
+>
+> > +static int swiotlb_init_io_tlb_mem(struct io_tlb_mem *mem, phys_addr_t start,
+> > +                                size_t size)
+>
+> Can you split the refactoring in swiotlb.c into one or more prep
+> patches?
+>
+> > +static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
+> > +                                 struct device *dev)
+> > +{
+> > +     struct io_tlb_mem *mem = rmem->priv;
+> > +     int ret;
+> > +
+> > +     if (dev->dma_io_tlb_mem)
+> > +             return -EBUSY;
+> > +
+> > +     if (!mem) {
+> > +             mem = kzalloc(sizeof(*mem), GFP_KERNEL);
+> > +             if (!mem)
+> > +                     return -ENOMEM;
+>
+> What is the calling convention here that allows for a NULL and non-NULL
+> private data?
 
-> On Wed, 13 Jan 2021 16:41:16 +0000 Lee Jones wrote:
-> > Resending the stragglers again.                                                                                  
-> > 
-> > This set is part of a larger effort attempting to clean-up W=1                                                   
-> > kernel builds, which are currently overwhelmingly riddled with                                                   
-> > niggly little warnings.                                                                                          
-> >                                                                                                                  
-> > v2:                                                                                                              
-> >  - Squashed IBM patches                                                                                      
-> >  - Fixed real issue in SMSC
-> >  - Added Andrew's Reviewed-by tags on remainder
-> 
-> Does not apply, please rebase on net-next/master.
-
-These are based on Tuesday's next/master.
-
-I just rebased them now with no issue.
-
-What conflict are you seeing?
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Since multiple devices can share the same pool, the private data,
+io_tlb_mem struct, will be initialized by the first device attached to
+it.
+This is similar to rmem_dma_device_init() in kernel/dma/coherent.c.
+I'll add a comment for it in next version.
