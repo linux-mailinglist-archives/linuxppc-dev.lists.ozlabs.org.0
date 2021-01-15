@@ -2,76 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C3A2F71AA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 05:46:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6EB82F71B3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 05:48:08 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DH7tD560VzDsYY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 15:46:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DH7wP5r61zDsbF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 15:48:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::533;
- helo=mail-pg1-x533.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::632;
+ helo=mail-pl1-x632.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=PzM68DKO; dkim-atps=neutral
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
+ header.s=20150623 header.b=QOCu8Beq; dkim-atps=neutral
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
+ [IPv6:2607:f8b0:4864:20::632])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DH7jh1CkVzDsZ4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 15:38:46 +1100 (AEDT)
-Received: by mail-pg1-x533.google.com with SMTP id i5so5248222pgo.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 20:38:46 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DH7k10fn3zDsZ1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 15:39:04 +1100 (AEDT)
+Received: by mail-pl1-x632.google.com with SMTP id x12so4056660plr.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 20:39:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=mRFw7h/qCyY+ie0onRf7SRoJ59WBMJNEeAqCuORIwXI=;
- b=PzM68DKO8esTofwyCUuifnqC1fm0jdTmzcpMAYL2NolrRMQYkbrrjaCStInKkS8bGI
- XUAox4xkRKmLGbu9OY2ATQ0BiyCOV3QniKk1VtSWaTrpHxJF7pzdDxBHj7J/a8ue570o
- Go0Kzz+cpLM/TW7vXJ2CWIECt36EGFbc0tNNGsjvrhr3PJyz+LyH6VYDd6FOpjELeQGn
- mXZUhU1iZJmTnBjVz3tAB/JUgyVQZtRfzO0XN2uDjJwNr0IzNnYvnYEcVoDMMv+H6hoW
- 9QQwJAI0Ltw4G7JO/HQ8G58zEmsGxwAlQsiLEusT+NZtD9JuS0d5IOPlhgTlznR1Hrtp
- Gs/A==
+ bh=dMbJHwLkPAXWWFhKWn5CEoHQOIl/KOyAwyeSh9CMGWA=;
+ b=QOCu8Beq3P+zhMlrVaEEFkYLC0t6f9oVFNBcIdZPVloIBfoRxWvwzrJ+o1ysAyAUiR
+ UuicMOlNhIvOkXpIixZaX4gxP1aEJpgD9tSqO4MfTtO7pvsDTtC6BLvh6Oyn2fGSS1nS
+ fuVcvNy+/Dv0jx12qeRrwLql2xHFCpuWtnWJFM2VFY8eTMeWXXFgzcnMzZVIEWCHMXK6
+ cYaAkwQC8I8hjeQ7CMr5ha64cpXSXWXV76fWm32BYmyjskORqNEgQnmspfYUShLpfNZa
+ oIq44O/It3VCKf4mDzSybjBgveYa01EiKDJ4aVU5zuRabXpUzIhqX5YyRugEH84A2RNU
+ qpQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=mRFw7h/qCyY+ie0onRf7SRoJ59WBMJNEeAqCuORIwXI=;
- b=NErrffEmsrTjM6xIE/6+a7zZDyLQJAvGcsE4knl32JHDYoQnFhEYkeIqzfytqIJKju
- qbPZ9w3UfD2R9mvn/EtSxw/clvo8WBczU7Aib7YPcTTDh1E6FIL3xYLAwGPkXphsRQ5u
- jEyRel1yb+vwzCpjXsfYmeno1f8WzLd8Vvs3pobA+Q8i4jFjQGQ+6oUOgJOzCAjMP9En
- a/9S6bC9IFxEWjs9j08o+3flAYI5JQgZjC9bWuGcGnoGSJAFXE6J2clgRVZQSOoTWL0S
- 5Duz+2sPy+6KPcj8P/x4bkruCDAWqVEnI8f1+8TglGBvTawblBuVLsmlpOSAnAcLouG/
- qazg==
-X-Gm-Message-State: AOAM533jYMVPkhc7rhZjQdV5l9I3CfYq1QF6dZADt2+L5gp33Aw6br4B
- T2YK3nbwEzEU04PDzoWeTkwAKQ==
-X-Google-Smtp-Source: ABdhPJxwIGycsk63vKJLB0sbAhgUklawMtfPoEs+Tpih4xbZJZMU8CIhZm2mPmMi1SSXRxhON+wDXQ==
-X-Received: by 2002:a65:689a:: with SMTP id e26mr10835515pgt.413.1610685524704; 
- Thu, 14 Jan 2021 20:38:44 -0800 (PST)
+ bh=dMbJHwLkPAXWWFhKWn5CEoHQOIl/KOyAwyeSh9CMGWA=;
+ b=WiSlw0UHlLUCmJAcgqeHdlsBjPHzXr7e2owVyAArhO0Z8vpkFdEHIQRVEpFWnrJ6Ml
+ ZKVWCwzWNhXmUluHWHXfqKh2FV1TTnjEB9wcAQNPKuBLHqvPe7S6aeGPLiQsL3ZqMXXp
+ Z/X9okuMx2kFbZKeODVV84TEddP5fQDFM0SWPUaC2fPSRIMNHjv/77d+53QbahfbpHD1
+ biNoEamYThGgZv7oRMpBsBA1Z94BKxegfkVc/MnVOnIbmJPCp4rCHCaUgKqk2klxLlpy
+ 25tJSok8zmH1yZE4p+1Aog7aO753J8ENINea1O5a7wKw1lijkHIVyB6MfGN7HonJAVj4
+ Ygzg==
+X-Gm-Message-State: AOAM5302n2S2SqGtyKbGLofBSE8lPcLJO+psBBZ0xVnQHXlbrlbWhoqv
+ IDJQqut5v6FHG8y1nBmTzyWMOg/O9LU/cQ==
+X-Google-Smtp-Source: ABdhPJzaUSqQg7QquuewdybXRJSH3UPokpumPRD8XVvxlPQyO+EJaqz7hGFC08qeFvb+nYPUhFPkmA==
+X-Received: by 2002:a17:902:c209:b029:de:76f8:395 with SMTP id
+ 9-20020a170902c209b02900de76f80395mr141756pll.85.1610685541450; 
+ Thu, 14 Jan 2021 20:39:01 -0800 (PST)
 Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
  [124.171.107.241])
- by smtp.gmail.com with UTF8SMTPSA id w131sm6621517pfc.46.2021.01.14.20.38.41
+ by smtp.gmail.com with UTF8SMTPSA id g30sm6152578pfr.152.2021.01.14.20.38.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Jan 2021 20:38:44 -0800 (PST)
-Subject: Re: [PATCH 3/6] powerpc/rtas: remove ibm_suspend_me_token
+ Thu, 14 Jan 2021 20:39:00 -0800 (PST)
+Subject: Re: [PATCH 1/6] powerpc/rtas: improve ppc_rtas_rmo_buf_show
+ documentation
 To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 References: <20210114220004.1138993-1-nathanl@linux.ibm.com>
- <20210114220004.1138993-4-nathanl@linux.ibm.com>
+ <20210114220004.1138993-2-nathanl@linux.ibm.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <c1e60579-a731-9518-6834-5d441b66807d@ozlabs.ru>
-Date: Fri, 15 Jan 2021 15:38:39 +1100
+Message-ID: <9ed7d0c4-9130-2a7e-4539-906bce4b5879@ozlabs.ru>
+Date: Fri, 15 Jan 2021 15:38:56 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:85.0) Gecko/20100101
  Thunderbird/85.0
 MIME-Version: 1.0
-In-Reply-To: <20210114220004.1138993-4-nathanl@linux.ibm.com>
+In-Reply-To: <20210114220004.1138993-2-nathanl@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -94,54 +96,46 @@ Sender: "Linuxppc-dev"
 
 
 
-On 15/01/2021 09:00, Nathan Lynch wrote:
-> There's not a compelling reason to cache the value of the token for
-> the ibm,suspend-me function. Just look it up when needed in the RTAS
-> syscall's special case for it.
+On 15/01/2021 08:59, Nathan Lynch wrote:
+> Add kerneldoc for ppc_rtas_rmo_buf_show(), the callback for
+> /proc/powerpc/rtas/rmo_buffer, explaining its expected use.
 > 
 > Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+> ---
+>   arch/powerpc/kernel/rtas-proc.c | 11 ++++++++++-
+>   1 file changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kernel/rtas-proc.c b/arch/powerpc/kernel/rtas-proc.c
+> index 2d33f342a293..e0f8329966d6 100644
+> --- a/arch/powerpc/kernel/rtas-proc.c
+> +++ b/arch/powerpc/kernel/rtas-proc.c
+> @@ -757,7 +757,16 @@ static int ppc_rtas_tone_volume_show(struct seq_file *m, void *v)
+>   
+>   #define RMO_READ_BUF_MAX 30
+>   
+> -/* RTAS Userspace access */
+> +/**
+> + * ppc_rtas_rmo_buf_show() - Describe RTAS-addressable region for user space.
+> + *
+> + * Base + size description of a range of RTAS-addressable memory set
+> + * aside for user space to use as work area(s) for certain RTAS
+> + * functions. User space accesses this region via /dev/mem.
 
+
+mmm ufff wuuuuut argh^w^w^w^w Thanks for documenting it :)
 
 Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
 
-> ---
->   arch/powerpc/kernel/rtas.c | 7 ++-----
->   1 file changed, 2 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-> index d126d71ea5bd..60fcf7f7b0b8 100644
-> --- a/arch/powerpc/kernel/rtas.c
-> +++ b/arch/powerpc/kernel/rtas.c
-> @@ -828,7 +828,6 @@ void rtas_activate_firmware(void)
->   		pr_err("ibm,activate-firmware failed (%i)\n", fwrc);
->   }
->   
-> -static int ibm_suspend_me_token = RTAS_UNKNOWN_SERVICE;
->   #ifdef CONFIG_PPC_PSERIES
->   /**
->    * rtas_call_reentrant() - Used for reentrant rtas calls
-> @@ -1103,7 +1102,7 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
->   		return -EINVAL;
->   
->   	/* Need to handle ibm,suspend_me call specially */
-> -	if (token == ibm_suspend_me_token) {
-> +	if (token == rtas_token("ibm,suspend-me")) {
->   
->   		/*
->   		 * rtas_ibm_suspend_me assumes the streamid handle is in cpu
-> @@ -1191,10 +1190,8 @@ void __init rtas_initialize(void)
->   	 * the stop-self token if any
->   	 */
->   #ifdef CONFIG_PPC64
-> -	if (firmware_has_feature(FW_FEATURE_LPAR)) {
-> +	if (firmware_has_feature(FW_FEATURE_LPAR))
->   		rtas_region = min(ppc64_rma_size, RTAS_INSTANTIATE_MAX);
-> -		ibm_suspend_me_token = rtas_token("ibm,suspend-me");
-> -	}
->   #endif
->   	rtas_rmo_buf = memblock_phys_alloc_range(RTAS_RMOBUF_MAX, PAGE_SIZE,
->   						 0, rtas_region);
+
+> Apart from
+> + * security policies, the kernel does not arbitrate or serialize
+> + * access to this region, and user space must ensure that concurrent
+> + * users do not interfere with each other.
+> + */
+>   static int ppc_rtas_rmo_buf_show(struct seq_file *m, void *v)
+>   {
+>   	seq_printf(m, "%016lx %x\n", rtas_rmo_buf, RTAS_RMOBUF_MAX);
 > 
 
 -- 
