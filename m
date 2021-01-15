@@ -1,100 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBDA2F72BF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 07:12:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDDE42F72C9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 07:18:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DH9p342bzzDsb9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 17:12:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DH9wD0dyDzDsWK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 17:18:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=UJcoudd5; dkim-atps=neutral
+ header.s=pp1 header.b=mR74Mn9r; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DH9mF1j0hzDsXY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 17:11:08 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DH9tV4ywtzDqB2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 17:16:34 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10F63ZjF176012; Fri, 15 Jan 2021 01:11:04 -0500
+ 10F62AKm076774; Fri, 15 Jan 2021 01:16:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=SKHjk0aEXlBXClqvrHF6segTwPWRiN26ZQgj5Pg+l7M=;
- b=UJcoudd5JNLsY2wFNTsAjt/UlN4YdmPVVKVBQHMB45c2USmfjvbmYH5qf4/MbMIh7fQe
- hDpMu9Y/OV7xBMBeJO83Sd38zT5S8MGUNzpGnvAF9xdrpVGci46qyhn6P0XFHmIro2y9
- PLyrpRpGt3PsDXHf0Z4DCS48LvQeH7Ix5oSWOpirhU+vTg+TJszs88P4mTinWXq+CfQW
- +W5SlrkH8ZT3FLqnAvoqMRhb9fjjW4Ar3MqRKdVlc1o7fvXfn4fu8x48xL3ETamQrpRQ
- Jepb93q+ATnTvbJBQsNq9x3a0U3ss/m/xecYlUW6XS2jt0/jLEzLZB5qysoOQsokXfKw +w== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3634ns9djb-1
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=98rgnhvDfACiQJuLd/w/T6bc5DrbraZo/Iuds/YV1r8=;
+ b=mR74Mn9rFdP/SD15DK7VxLnjY8Jl1Y82jt9NBUy8rxLw/juit0h0kzO9Kj0jWx32ngUK
+ qWnBKxlbAsUp3GqPTogkt6cblCzblc9hssxMY9aiWenGmV8JCuPUrQULUj1QTX2vrigc
+ 0Nh1HLcazF7aIg9fIeyW9P3W5tV93SMqN6HI6aLlkYLHUYFPBdWclm6h42xC44Ac4iW0
+ lYnDz5TnEEtpsaURqbvQMfK2eBJUoSQZxwe6s4o4RZMUwIn6FNgR/mol5mZE49PIw2iw
+ 4HjtpDbRiZhWEf/7LLyzLpnQoGemQrL13aeRJjLyK2lZT7eb0ZfaJLL/lv83okJD3Dkt +g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3635e60dt2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Jan 2021 01:11:03 -0500
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10F66laH030790;
- Fri, 15 Jan 2021 06:11:01 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma01fra.de.ibm.com with ESMTP id 35y4483sh6-1
+ Fri, 15 Jan 2021 01:16:29 -0500
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10F63uPi089871;
+ Fri, 15 Jan 2021 01:16:29 -0500
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3635e60dsk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Jan 2021 06:11:01 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 10F6Astg30933264
+ Fri, 15 Jan 2021 01:16:29 -0500
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10F69Fb7028867;
+ Fri, 15 Jan 2021 06:16:27 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma02fra.de.ibm.com with ESMTP id 35y448ks7f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 15 Jan 2021 06:16:27 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10F6GOfj41746892
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 15 Jan 2021 06:10:54 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E4B6A4040;
- Fri, 15 Jan 2021 06:10:59 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E1050A4055;
- Fri, 15 Jan 2021 06:10:58 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 15 Jan 2021 06:10:58 +0000 (GMT)
-Received: from [9.102.61.252] (unknown [9.102.61.252])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 9CDCD601F5;
- Fri, 15 Jan 2021 17:10:57 +1100 (AEDT)
-Subject: Re: [PATCH 5/6] powerpc/rtas: rename RTAS_RMOBUF_MAX to
- RTAS_USER_REGION_SIZE
-To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210114220004.1138993-1-nathanl@linux.ibm.com>
- <20210114220004.1138993-6-nathanl@linux.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Message-ID: <a5d56bc4-ae7a-ba75-9e6c-0a1d53a6f823@linux.ibm.com>
-Date: Fri, 15 Jan 2021 17:10:56 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ Fri, 15 Jan 2021 06:16:24 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E6A6F4C04A;
+ Fri, 15 Jan 2021 06:16:23 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 352244C044;
+ Fri, 15 Jan 2021 06:16:22 +0000 (GMT)
+Received: from bangoria.ibmuc.com (unknown [9.199.41.69])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 15 Jan 2021 06:16:21 +0000 (GMT)
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/sstep: Fix array out of bound warning
+Date: Fri, 15 Jan 2021 11:46:20 +0530
+Message-Id: <20210115061620.692500-1-ravi.bangoria@linux.ibm.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <20210114220004.1138993-6-nathanl@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
  definitions=2021-01-15_01:2021-01-15,
  2021-01-15 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0
- priorityscore=1501 clxscore=1015 mlxlogscore=999 mlxscore=0 bulkscore=0
- phishscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101150033
+ priorityscore=1501
+ suspectscore=0 mlxlogscore=992 impostorscore=0 clxscore=1011
+ malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
+ adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101150031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,26 +100,200 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, tyreld@linux.ibm.com, brking@linux.ibm.com,
- aneesh.kumar@linux.ibm.com
+Cc: naveen.n.rao@linux.ibm.com, ravi.bangoria@linux.ibm.com, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, jniethe5@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 15/1/21 9:00 am, Nathan Lynch wrote:
-> RTAS_RMOBUF_MAX doesn't actually describe a "maximum" value in any
-> sense. It represents the size of an area of memory set aside for user
-> space to use as work areas for certain RTAS calls.
-> 
-> Rename it to RTAS_USER_REGION, and express the value in terms of the
-> number of work areas allocated.
-> 
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> 
-> squash! powerpc/rtas: rename RTAS_RMOBUF_MAX to RTAS_USER_REGION_SIZE
+Compiling kernel with -Warray-bounds throws below warning:
 
-I think you meant to get rid of this line...
+  In function 'emulate_vsx_store':
+  warning: array subscript is above array bounds [-Warray-bounds]
+  buf.d[2] = byterev_8(reg->d[1]);
+  ~~~~~^~~
+  buf.d[3] = byterev_8(reg->d[0]);
+  ~~~~~^~~
 
+Fix it by converting local variable 'union vsx_reg buf' into an array.
+Also consider function argument 'union vsx_reg *reg' as array instead
+of pointer because callers are actually passing an array to it.
+
+Fixes: af99da74333b ("powerpc/sstep: Support VSX vector paired storage access instructions")
+Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+---
+ arch/powerpc/lib/sstep.c | 61 ++++++++++++++++++++--------------------
+ 1 file changed, 31 insertions(+), 30 deletions(-)
+
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index bf7a7d62ae8b..5b4281ade5b6 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -723,7 +723,8 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+ 	const unsigned char *bp;
+ 
+ 	size = GETSIZE(op->type);
+-	reg->d[0] = reg->d[1] = 0;
++	reg[0].d[0] = reg[0].d[1] = 0;
++	reg[1].d[0] = reg[1].d[1] = 0;
+ 
+ 	switch (op->element_size) {
+ 	case 32:
+@@ -742,25 +743,25 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+ 		/* scalar loads, lxvd2x, lxvdsx */
+ 		read_size = (size >= 8) ? 8 : size;
+ 		i = IS_LE ? 8 : 8 - read_size;
+-		memcpy(&reg->b[i], mem, read_size);
++		memcpy(&reg[0].b[i], mem, read_size);
+ 		if (rev)
+-			do_byte_reverse(&reg->b[i], 8);
++			do_byte_reverse(&reg[0].b[i], 8);
+ 		if (size < 8) {
+ 			if (op->type & SIGNEXT) {
+ 				/* size == 4 is the only case here */
+-				reg->d[IS_LE] = (signed int) reg->d[IS_LE];
++				reg[0].d[IS_LE] = (signed int)reg[0].d[IS_LE];
+ 			} else if (op->vsx_flags & VSX_FPCONV) {
+ 				preempt_disable();
+-				conv_sp_to_dp(&reg->fp[1 + IS_LE],
+-					      &reg->dp[IS_LE]);
++				conv_sp_to_dp(&reg[0].fp[1 + IS_LE],
++					      &reg[0].dp[IS_LE]);
+ 				preempt_enable();
+ 			}
+ 		} else {
+ 			if (size == 16) {
+ 				unsigned long v = *(unsigned long *)(mem + 8);
+-				reg->d[IS_BE] = !rev ? v : byterev_8(v);
++				reg[0].d[IS_BE] = !rev ? v : byterev_8(v);
+ 			} else if (op->vsx_flags & VSX_SPLAT)
+-				reg->d[IS_BE] = reg->d[IS_LE];
++				reg[0].d[IS_BE] = reg[0].d[IS_LE];
+ 		}
+ 		break;
+ 	case 4:
+@@ -768,13 +769,13 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+ 		wp = mem;
+ 		for (j = 0; j < size / 4; ++j) {
+ 			i = IS_LE ? 3 - j : j;
+-			reg->w[i] = !rev ? *wp++ : byterev_4(*wp++);
++			reg[0].w[i] = !rev ? *wp++ : byterev_4(*wp++);
+ 		}
+ 		if (op->vsx_flags & VSX_SPLAT) {
+-			u32 val = reg->w[IS_LE ? 3 : 0];
++			u32 val = reg[0].w[IS_LE ? 3 : 0];
+ 			for (; j < 4; ++j) {
+ 				i = IS_LE ? 3 - j : j;
+-				reg->w[i] = val;
++				reg[0].w[i] = val;
+ 			}
+ 		}
+ 		break;
+@@ -783,7 +784,7 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+ 		hp = mem;
+ 		for (j = 0; j < size / 2; ++j) {
+ 			i = IS_LE ? 7 - j : j;
+-			reg->h[i] = !rev ? *hp++ : byterev_2(*hp++);
++			reg[0].h[i] = !rev ? *hp++ : byterev_2(*hp++);
+ 		}
+ 		break;
+ 	case 1:
+@@ -791,7 +792,7 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+ 		bp = mem;
+ 		for (j = 0; j < size; ++j) {
+ 			i = IS_LE ? 15 - j : j;
+-			reg->b[i] = *bp++;
++			reg[0].b[i] = *bp++;
+ 		}
+ 		break;
+ 	}
+@@ -804,7 +805,7 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ {
+ 	int size, write_size;
+ 	int i, j;
+-	union vsx_reg buf;
++	union vsx_reg buf[2];
+ 	unsigned int *wp;
+ 	unsigned short *hp;
+ 	unsigned char *bp;
+@@ -818,11 +819,11 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ 			break;
+ 		if (rev) {
+ 			/* reverse 32 bytes */
+-			buf.d[0] = byterev_8(reg->d[3]);
+-			buf.d[1] = byterev_8(reg->d[2]);
+-			buf.d[2] = byterev_8(reg->d[1]);
+-			buf.d[3] = byterev_8(reg->d[0]);
+-			reg = &buf;
++			buf[0].d[0] = byterev_8(reg[1].d[1]);
++			buf[0].d[1] = byterev_8(reg[1].d[0]);
++			buf[1].d[0] = byterev_8(reg[0].d[1]);
++			buf[1].d[1] = byterev_8(reg[0].d[0]);
++			reg = buf;
+ 		}
+ 		memcpy(mem, reg, size);
+ 		break;
+@@ -834,9 +835,9 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ 			rev = !rev;
+ 		if (rev) {
+ 			/* reverse 16 bytes */
+-			buf.d[0] = byterev_8(reg->d[1]);
+-			buf.d[1] = byterev_8(reg->d[0]);
+-			reg = &buf;
++			buf[0].d[0] = byterev_8(reg[0].d[1]);
++			buf[0].d[1] = byterev_8(reg[0].d[0]);
++			reg = buf;
+ 		}
+ 		memcpy(mem, reg, size);
+ 		break;
+@@ -845,15 +846,15 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ 		write_size = (size >= 8) ? 8 : size;
+ 		i = IS_LE ? 8 : 8 - write_size;
+ 		if (size < 8 && op->vsx_flags & VSX_FPCONV) {
+-			buf.d[0] = buf.d[1] = 0;
++			buf[0].d[0] = buf[0].d[1] = 0;
+ 			preempt_disable();
+-			conv_dp_to_sp(&reg->dp[IS_LE], &buf.fp[1 + IS_LE]);
++			conv_dp_to_sp(&reg[0].dp[IS_LE], &buf[0].fp[1 + IS_LE]);
+ 			preempt_enable();
+-			reg = &buf;
++			reg = buf;
+ 		}
+-		memcpy(mem, &reg->b[i], write_size);
++		memcpy(mem, &reg[0].b[i], write_size);
+ 		if (size == 16)
+-			memcpy(mem + 8, &reg->d[IS_BE], 8);
++			memcpy(mem + 8, &reg[0].d[IS_BE], 8);
+ 		if (unlikely(rev)) {
+ 			do_byte_reverse(mem, write_size);
+ 			if (size == 16)
+@@ -865,7 +866,7 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ 		wp = mem;
+ 		for (j = 0; j < size / 4; ++j) {
+ 			i = IS_LE ? 3 - j : j;
+-			*wp++ = !rev ? reg->w[i] : byterev_4(reg->w[i]);
++			*wp++ = !rev ? reg[0].w[i] : byterev_4(reg[0].w[i]);
+ 		}
+ 		break;
+ 	case 2:
+@@ -873,7 +874,7 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ 		hp = mem;
+ 		for (j = 0; j < size / 2; ++j) {
+ 			i = IS_LE ? 7 - j : j;
+-			*hp++ = !rev ? reg->h[i] : byterev_2(reg->h[i]);
++			*hp++ = !rev ? reg[0].h[i] : byterev_2(reg[0].h[i]);
+ 		}
+ 		break;
+ 	case 1:
+@@ -881,7 +882,7 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ 		bp = mem;
+ 		for (j = 0; j < size; ++j) {
+ 			i = IS_LE ? 15 - j : j;
+-			*bp++ = reg->b[i];
++			*bp++ = reg[0].b[i];
+ 		}
+ 		break;
+ 	}
 -- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+2.26.2
+
