@@ -1,69 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AA52F824B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 18:29:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C950D2F8273
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 18:32:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DHSpL2SPlzDqFK
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 04:28:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DHStF5lGYzDqC8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 04:32:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d;
- helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
+ helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ABnkoFRE; dkim-atps=neutral
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
- [IPv6:2607:f8b0:4864:20::62d])
+ header.s=20161025 header.b=ULxRs5Sz; dkim-atps=neutral
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
+ [IPv6:2607:f8b0:4864:20::431])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DHRz36jPmzDsTv
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 03:51:27 +1100 (AEDT)
-Received: by mail-pl1-x62d.google.com with SMTP id g3so5003036plp.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 08:51:27 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DHRz511CjzDshY
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 03:51:28 +1100 (AEDT)
+Received: by mail-pf1-x431.google.com with SMTP id y205so17944pfc.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 08:51:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=aMdoj0wQ9tAdaFDLpkWxZpb7QCzY+FwQMv5Ch1ewqTw=;
- b=ABnkoFRECutWoVxqv/quVgNr0sAONSw89rUzd1s7KKKVkx15OYFUyKpq7xqQhwhcg/
- UuwMrV3fYXHaXTWJvKiiBgXs8gxvrlleQmEv3JlN4UxHJG7u2ar1AixZutWboFRkSYXy
- HjOAfPw3m/bjcVvNcTsszwRNEjCBbvMWEiPF7kvkjBf63mXoxWfK/Iwl8PV7UGdd5Aqb
- olheNjLfs2+O0oM2kAUbQqjqo7LnCZ1CmOg45NAcJicj5juNNDdN4VZf04sjDcCmiecg
- ZVhCHylLlTvFd5ZNEoUQkIx+NYfhOVIUmPMNtY6syZ0GDZrkaTxUBmWlwadsdNJbAtfI
- vfBQ==
+ bh=z317hW2Txl9c4yYLL5iRt3v1VXzKopLn1scM1YoAuNM=;
+ b=ULxRs5SzCiIqQVUXHBErL1XJrZjU1laERTAoDHxNV2MA8syRtwbgOp+ETmkJzB6RGK
+ lPn6xZs9yLwe5lyYXDm39lokyRrbFHN3R84blFQ1R44u2+DKwegADQWL9QuO9VcEufP3
+ C76QK9LIpVphbQ0oq4N10sd2qO0sflwK/ruEYgDTUV+YDqIK8O1FFW9D5zQiECKf9h/0
+ GKmiFNxvrYikeRBzB1hNE1rdmIYQATKiVMIW0HA8zqMo15kqdZT0noFAN1QlUQcSRPCq
+ dNYlRN3x4BV8kFDkZp2p+yYa7g44p9TCEQGFkuAgSkxTZDmQNFevxsiRubySPJHG9D25
+ 4PPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=aMdoj0wQ9tAdaFDLpkWxZpb7QCzY+FwQMv5Ch1ewqTw=;
- b=fd3OSdOnXl+pr2FFpoZ91OJejnpouBq9qZbGOD6T05xhv82Yz/q2ae0EK2mamLzy9j
- zhoXZIM0bFYb2qZtvYGO78m3eISjzzxrxFY8iUfKW0FKE8V+MAYTVN6uvZZepEnpW7B0
- CQE4sAXPwJ2fWQxSbb0JbQbnhJLhxAZyNKLBJxX/MhUs/tL3CAyGaPqtHdAtbTgwJv24
- WN7yCDtWki6DUjFhOGAa67LhOSoOblTENgJ6R3sveID8g18BlsS3GDgJJ3dQ1Z4ELoLi
- GKQwLHd/6wZmc9GQH3eoltp2ogCyg7LzF10g4kdvuD5Ug6vfTAwbiOpzbcoPQnQe7wYa
- TclA==
-X-Gm-Message-State: AOAM532p31HTMzrSrxVHACI/wS7Gnyd6KjnDz/iCPVSQalo+gyQ0OI8W
- LYafEUHBfYacIGCu8yfctp6Vpxj4tHY=
-X-Google-Smtp-Source: ABdhPJwWQN6VDHrjTyWx9OBtAJjAr5Dhy/hQBaMmYx7/vXOFyT7sfDFYOXU3rQCjpClGkOD4WkbB2w==
-X-Received: by 2002:a17:90b:287:: with SMTP id
- az7mr10181509pjb.70.1610729482989; 
- Fri, 15 Jan 2021 08:51:22 -0800 (PST)
+ bh=z317hW2Txl9c4yYLL5iRt3v1VXzKopLn1scM1YoAuNM=;
+ b=RejgZP/iwOpYGvBiLWhp8WtgnTQwLRh6qo5Hz/OgDDq+UPj9PBfkbUDgrqUbhQ4xv2
+ Hc2eRJmwnB71ftCRSvnFDzAslnXeLVImrjcqJ1pWRhW5gtdMlDtY126es47CDreAUmVQ
+ 1ry9ej01ZASF6QQYzA4ZtcAkHcM/MOfMqeLEpFZA0wuTPqt5HOK9e8Cpkh/9pt5J+Bi9
+ xDhNrCd6tMwJ9mZbGYewcgtUxA1gO4USeYvBBesjPpFjE6HXTUHJd78oD/HFZTfjaXqC
+ 2fQmwmP4ytRT4wtFSIM9NEvry4yG4/nwZWjBOBQHuUQAXRjaqvmZ/YRTT7Oxpa0OlbAJ
+ KcXw==
+X-Gm-Message-State: AOAM530AeXKht4I+wZckHnotN036cnN/n0Hb3G0BQiwBPEH8WrPKbBmk
+ GM32eJmQjXZjxHxQNqyYK3cpiUETdgk=
+X-Google-Smtp-Source: ABdhPJzrg2gmdb7hyB3yi0axTOIMrK7odGsgi/RPplVtFM7D72QaM1ZZ2LA9BF/yhL0TrNRQoJnD9g==
+X-Received: by 2002:a63:5309:: with SMTP id h9mr13561322pgb.19.1610729485641; 
+ Fri, 15 Jan 2021 08:51:25 -0800 (PST)
 Received: from bobo.ibm.com ([124.170.13.62])
- by smtp.gmail.com with ESMTPSA id u1sm8455477pjr.51.2021.01.15.08.51.20
+ by smtp.gmail.com with ESMTPSA id u1sm8455477pjr.51.2021.01.15.08.51.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Jan 2021 08:51:22 -0800 (PST)
+ Fri, 15 Jan 2021 08:51:25 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v6 15/39] powerpc/time: move timer_broadcast_interrupt
- prototype to asm/time.h
-Date: Sat, 16 Jan 2021 02:49:48 +1000
-Message-Id: <20210115165012.1260253-16-npiggin@gmail.com>
+Subject: [PATCH v6 16/39] powerpc: add and use unknown_async_exception
+Date: Sat, 16 Jan 2021 02:49:49 +1000
+Message-Id: <20210115165012.1260253-17-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210115165012.1260253-1-npiggin@gmail.com>
 References: <20210115165012.1260253-1-npiggin@gmail.com>
@@ -85,40 +83,99 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Interrupt handler prototypes are going to be rearranged in a
-future patch, so tidy this out of the way first.
+This is currently the same as unknown_exception, but it will diverge
+after interrupt wrappers are added and code moved out of asm into the
+wrappers (e.g., async handlers will check FINISH_NAP).
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/hw_irq.h | 1 -
- arch/powerpc/include/asm/time.h   | 2 ++
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/hw_irq.h    |  1 +
+ arch/powerpc/kernel/exceptions-64s.S |  4 ++--
+ arch/powerpc/kernel/head_book3s_32.S |  6 +++---
+ arch/powerpc/kernel/traps.c          | 12 ++++++++++++
+ 4 files changed, 18 insertions(+), 5 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
-index 0363734ff56e..e5def36212cf 100644
+index e5def36212cf..75c2b137fc00 100644
 --- a/arch/powerpc/include/asm/hw_irq.h
 +++ b/arch/powerpc/include/asm/hw_irq.h
-@@ -54,7 +54,6 @@ extern void replay_system_reset(void);
- extern void replay_soft_interrupts(void);
- 
- extern void timer_interrupt(struct pt_regs *);
--extern void timer_broadcast_interrupt(void);
+@@ -57,6 +57,7 @@ extern void timer_interrupt(struct pt_regs *);
  extern void performance_monitor_exception(struct pt_regs *regs);
  extern void WatchdogException(struct pt_regs *regs);
  extern void unknown_exception(struct pt_regs *regs);
-diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
-index 8f789b597bae..8dd3cdb25338 100644
---- a/arch/powerpc/include/asm/time.h
-+++ b/arch/powerpc/include/asm/time.h
-@@ -102,6 +102,8 @@ DECLARE_PER_CPU(u64, decrementers_next_tb);
- /* Convert timebase ticks to nanoseconds */
- unsigned long long tb_to_ns(unsigned long long tb_ticks);
++void unknown_async_exception(struct pt_regs *regs);
  
-+void timer_broadcast_interrupt(void);
+ #ifdef CONFIG_PPC64
+ #include <asm/paca.h>
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index e69a912c2cc6..fe33197ea8fb 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -1926,7 +1926,7 @@ EXC_COMMON_BEGIN(doorbell_super_common)
+ #ifdef CONFIG_PPC_DOORBELL
+ 	bl	doorbell_exception
+ #else
+-	bl	unknown_exception
++	bl	unknown_async_exception
+ #endif
+ 	b	interrupt_return
+ 
+@@ -2312,7 +2312,7 @@ EXC_COMMON_BEGIN(h_doorbell_common)
+ #ifdef CONFIG_PPC_DOORBELL
+ 	bl	doorbell_exception
+ #else
+-	bl	unknown_exception
++	bl	unknown_async_exception
+ #endif
+ 	b	interrupt_return
+ 
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
+index 94ad1372c490..9b4d5432e2db 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -238,8 +238,8 @@ __secondary_hold_acknowledge:
+ 
+ /* System reset */
+ /* core99 pmac starts the seconary here by changing the vector, and
+-   putting it back to what it was (unknown_exception) when done.  */
+-	EXCEPTION(0x100, Reset, unknown_exception, EXC_XFER_STD)
++   putting it back to what it was (unknown_async_exception) when done.  */
++	EXCEPTION(0x100, Reset, unknown_async_exception, EXC_XFER_STD)
+ 
+ /* Machine check */
+ /*
+@@ -631,7 +631,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
+ #endif
+ 
+ #ifndef CONFIG_TAU_INT
+-#define TAUException	unknown_exception
++#define TAUException	unknown_async_exception
+ #endif
+ 
+ 	EXCEPTION(0x1300, Trap_13, instruction_breakpoint_exception, EXC_XFER_STD)
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index bd55f201115b..639bcafbad5e 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1073,6 +1073,18 @@ void unknown_exception(struct pt_regs *regs)
+ 	exception_exit(prev_state);
+ }
+ 
++void unknown_async_exception(struct pt_regs *regs)
++{
++	enum ctx_state prev_state = exception_enter();
 +
- /* SPLPAR */
- void accumulate_stolen_time(void);
- 
++	printk("Bad trap at PC: %lx, SR: %lx, vector=%lx\n",
++	       regs->nip, regs->msr, regs->trap);
++
++	_exception(SIGTRAP, regs, TRAP_UNK, 0);
++
++	exception_exit(prev_state);
++}
++
+ void instruction_breakpoint_exception(struct pt_regs *regs)
+ {
+ 	enum ctx_state prev_state = exception_enter();
 -- 
 2.23.0
 
