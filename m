@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C6F2F864E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 21:13:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0272F8668
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 21:14:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DHXRc0kVQzDvYr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 07:13:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DHXTb0Wz3zDvYB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 07:14:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,58 +17,57 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=pZsRMv5b; dkim-atps=neutral
+ header.s=google header.b=r4oAoo9y; dkim-atps=neutral
 Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com
  [IPv6:2a00:1450:4864:20::32e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DHXMV2Y53zDvXG
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DHXMV4F9DzDvXL
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 07:09:26 +1100 (AEDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 190so8483854wmz.0
+Received: by mail-wm1-x32e.google.com with SMTP id c124so8462806wma.5
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 12:09:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=yDzb65IKn3nwovbfX3R0K/7WXOxWh6GWTqzLuh+BAmI=;
- b=pZsRMv5bhHtvqYJamsuJ75nikyt6zcEJQlYa5vQNiBCiISvirtV/ccexo7zQxCL1hu
- FyMdw6tJFzSL+XN4ohF9JDJi5bNXyHBfqEqyKGKVtQFvIof1HSwxObDjQ06yYJD+Ny56
- MKCOrA9dCzWddMH10Sre5X+JgsGLmIc++r0XDgmiQQ/UVjhhhmCg2myrmmjsK0CckMSX
- aKr2n65VSUKW1Facr/jNVjR4IeSnYHdw2rTWy//Bt6I1nB7nbCnmxCW/lkikEvkBxrgY
- MzhZpHTN2iXSiKX9uLQIRu6p2MsCvQzueB4ji7GPjK5Z4qOIpiZbDuW1S0rybK4pqPFZ
- o0aw==
+ bh=+qXCFwBbPWtbGR33uyQvB+16QfHJsg8zQueyUlEuj0c=;
+ b=r4oAoo9yjHlPOAHenr5g1EEQfCJWwxaNTfc1ja5O6o5T1ZICU4yaeYLTltJ1ZwhWt1
+ hYVV2trVas9eLp1262M7RtfrYIEz7l+5afdXAZLDAVgmpGypz488LOz8xh5YUONIahkt
+ eE1JpBPouAfU6ZbgapMKocnQObleFyJlMh17sdT9uSaDfAJK1H4RLL3fR/jf1vPbZSl2
+ 3ZXGy84XFr6wdgvBhg4tUDvEZEEb9HvFdLNJXx4pfxdQa+bod0l65TCpu6pNojaqfRmz
+ GZBTnODZc6DO9w3kWfCa8POUDB0h8esIyL2gH/Yx7pqneNMukxKM+5ngce4TNsbAFuly
+ uH2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=yDzb65IKn3nwovbfX3R0K/7WXOxWh6GWTqzLuh+BAmI=;
- b=AEPitCnkqZf9H71j/p8HAb6KM/bqZLWCNsrHLRc1ShiWaWm2EQPnZijM6cIrz/fnV7
- L9KHDFQLoW3pOPKCNoeYLXKUWEtTxi2Btuz9dkAdvn4dVVTo+a1ejERaYtddmV/gm6+H
- fu344Md3sZe6wevlDiltMOR8MCF3IJEAr8dCloI5h0nJ0GJiiWrZ2rWnXidUOTXQEbX5
- hbh+ZnSnre1YTm6uTvf40tsn3w7edWXsuKT4UStJpEdlsT2dEHuMjjGX1tsv+jdUvYss
- ztFFbIz9bZJDZitluKlXhNVgk6WXvARZbnGjnEiNk9NdmfwBdTzrwXQjyOU4oYjWaHEl
- AIsQ==
-X-Gm-Message-State: AOAM531zmcAoMy11lLfyRxvFojOt6prRXYAWCvDICL4W3HADkFIKWuJo
- A+bN1m+PfF1eO8qKafPs/jHQ1A==
-X-Google-Smtp-Source: ABdhPJwKdwqNYtrjcalQ/mSZfe/zNNTb1WZf+Bx43LDkCZUpxVVkCGbnv0e+Kgl19uj2hk4l/rtILA==
-X-Received: by 2002:a05:600c:d1:: with SMTP id
- u17mr7533052wmm.20.1610741362266; 
- Fri, 15 Jan 2021 12:09:22 -0800 (PST)
+ bh=+qXCFwBbPWtbGR33uyQvB+16QfHJsg8zQueyUlEuj0c=;
+ b=oKJ95DTyznrFl7dxYLZHJ+roTzcdVcE2FzfU6YrrZQi8OMF+dk8UW/tHCg9aE5Zox7
+ LAHhw04LtC0P3BLcvKVlW4nN2KUlV1kOmJ3Yx4oPCsJckr/aeNXm5eXb+PrkDhSm3xnD
+ 6lmExGEgXjbFmR3oBxYfK9fnp/pDFLlXfmXTXBdLbuh2LMDc2G0WRvlvUT9bwI0EhE+J
+ nNifcd7AUkQcK1YOMV2/f4xfNwsBm0oQtZMtToUt1jjOlsEJD+iY+dEDfQ3Hj1BWLOwj
+ lyVBu6z53Gr1zdimRTUCClLYoeNjLoF8X12ekNgCfcrBAbyza7RcQ2mykuQi/pUuUUTr
+ 6Xsw==
+X-Gm-Message-State: AOAM532kbfNTzWVvmHJcIOlxTQprYTLgCLe5NZUt7lH2NWUC23n9bnU9
+ iYvunzHQpVt9AHskZ6GHHw5Xyg==
+X-Google-Smtp-Source: ABdhPJxGn2F+giS73DFxVcuMgHRX52afEr2GWeLUY9WVozvsYAH2KsUVC7lFq4bGhVvc5fGD15RuMQ==
+X-Received: by 2002:a1c:1f86:: with SMTP id
+ f128mr10246918wmf.174.1610741363617; 
+ Fri, 15 Jan 2021 12:09:23 -0800 (PST)
 Received: from dell.default ([91.110.221.158])
- by smtp.gmail.com with ESMTPSA id d85sm9187863wmd.2.2021.01.15.12.09.20
+ by smtp.gmail.com with ESMTPSA id d85sm9187863wmd.2.2021.01.15.12.09.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Jan 2021 12:09:21 -0800 (PST)
+ Fri, 15 Jan 2021 12:09:22 -0800 (PST)
 From: Lee Jones <lee.jones@linaro.org>
 To: lee.jones@linaro.org
-Subject: [PATCH 5/7] net: ethernet: ibm: ibmvnic: Fix some kernel-doc
- misdemeanours
-Date: Fri, 15 Jan 2021 20:09:03 +0000
-Message-Id: <20210115200905.3470941-6-lee.jones@linaro.org>
+Subject: [PATCH 6/7] net: ethernet: toshiba: ps3_gelic_net: Fix some
+ kernel-doc misdemeanours
+Date: Fri, 15 Jan 2021 20:09:04 +0000
+Message-Id: <20210115200905.3470941-7-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210115200905.3470941-1-lee.jones@linaro.org>
 References: <20210115200905.3470941-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -81,149 +80,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Falcon <tlfalcon@linux.vnet.ibm.com>,
- John Allen <jallen@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org,
- Santiago Leon <santi_leon@yahoo.com>, Jakub Kicinski <kuba@kernel.org>,
- netdev@vger.kernel.org, Lijun Pan <ljp@linux.ibm.com>,
- Dany Madden <drt@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Sukadev Bhattiprolu <sukadev@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew@lunn.ch>, Geoff Levand <geoff@infradead.org>,
+ linux-kernel@vger.kernel.org, Jens Osterkamp <Jens.Osterkamp@de.ibm.com>,
+ netdev@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Utz Bacher <utz.bacher@de.ibm.com>, Jakub Kicinski <kuba@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Fixes the following W=1 kernel build warning(s):
 
- from drivers/net/ethernet/ibm/ibmvnic.c:35:
- inlined from ‘handle_vpd_rsp’ at drivers/net/ethernet/ibm/ibmvnic.c:4124:3:
- drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter or member 'hdr_field' not described in 'build_hdr_data'
- drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter or member 'skb' not described in 'build_hdr_data'
- drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter or member 'hdr_len' not described in 'build_hdr_data'
- drivers/net/ethernet/ibm/ibmvnic.c:1362: warning: Function parameter or member 'hdr_data' not described in 'build_hdr_data'
- drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter or member 'hdr_field' not described in 'create_hdr_descs'
- drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter or member 'hdr_data' not described in 'create_hdr_descs'
- drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter or member 'len' not described in 'create_hdr_descs'
- drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter or member 'hdr_len' not described in 'create_hdr_descs'
- drivers/net/ethernet/ibm/ibmvnic.c:1423: warning: Function parameter or member 'scrq_arr' not described in 'create_hdr_descs'
- drivers/net/ethernet/ibm/ibmvnic.c:1474: warning: Function parameter or member 'txbuff' not described in 'build_hdr_descs_arr'
- drivers/net/ethernet/ibm/ibmvnic.c:1474: warning: Function parameter or member 'num_entries' not described in 'build_hdr_descs_arr'
- drivers/net/ethernet/ibm/ibmvnic.c:1474: warning: Function parameter or member 'hdr_field' not described in 'build_hdr_descs_arr'
- drivers/net/ethernet/ibm/ibmvnic.c:1832: warning: Function parameter or member 'adapter' not described in 'do_change_param_reset'
- drivers/net/ethernet/ibm/ibmvnic.c:1832: warning: Function parameter or member 'rwi' not described in 'do_change_param_reset'
- drivers/net/ethernet/ibm/ibmvnic.c:1832: warning: Function parameter or member 'reset_state' not described in 'do_change_param_reset'
- drivers/net/ethernet/ibm/ibmvnic.c:1911: warning: Function parameter or member 'adapter' not described in 'do_reset'
- drivers/net/ethernet/ibm/ibmvnic.c:1911: warning: Function parameter or member 'rwi' not described in 'do_reset'
- drivers/net/ethernet/ibm/ibmvnic.c:1911: warning: Function parameter or member 'reset_state' not described in 'do_reset'
+ drivers/net/ethernet/toshiba/ps3_gelic_net.c:1107: warning: Function parameter or member 'irq' not described in 'gelic_card_interrupt'
+ drivers/net/ethernet/toshiba/ps3_gelic_net.c:1107: warning: Function parameter or member 'ptr' not described in 'gelic_card_interrupt'
+ drivers/net/ethernet/toshiba/ps3_gelic_net.c:1407: warning: Function parameter or member 'txqueue' not described in 'gelic_net_tx_timeout'
+ drivers/net/ethernet/toshiba/ps3_gelic_net.c:1439: warning: Function parameter or member 'napi' not described in 'gelic_ether_setup_netdev_ops'
+ drivers/net/ethernet/toshiba/ps3_gelic_net.c:1639: warning: Function parameter or member 'dev' not described in 'ps3_gelic_driver_probe'
+ drivers/net/ethernet/toshiba/ps3_gelic_net.c:1795: warning: Function parameter or member 'dev' not described in 'ps3_gelic_driver_remove'
 
-Cc: Dany Madden <drt@linux.ibm.com>
-Cc: Lijun Pan <ljp@linux.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+Cc: Geoff Levand <geoff@infradead.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Cc: Paul Mackerras <paulus@samba.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Santiago Leon <santi_leon@yahoo.com>
-Cc: Thomas Falcon <tlfalcon@linux.vnet.ibm.com>
-Cc: John Allen <jallen@linux.vnet.ibm.com>
+Cc: Utz Bacher <utz.bacher@de.ibm.com>
+Cc: Jens Osterkamp <Jens.Osterkamp@de.ibm.com>
 Cc: netdev@vger.kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 27 +++++++++++++--------------
- drivers/net/xen-netfront.c         |  6 +++---
- 2 files changed, 16 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/toshiba/ps3_gelic_net.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index aed985e08e8ad..4c4252e68de5a 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -1384,10 +1384,10 @@ static int ibmvnic_close(struct net_device *netdev)
- 
- /**
-  * build_hdr_data - creates L2/L3/L4 header data buffer
-- * @hdr_field - bitfield determining needed headers
-- * @skb - socket buffer
-- * @hdr_len - array of header lengths
-- * @tot_len - total length of data
-+ * @hdr_field: bitfield determining needed headers
-+ * @skb: socket buffer
-+ * @hdr_len: array of header lengths
-+ * @hdr_data: buffer to write the header to
-  *
-  * Reads hdr_field to determine which headers are needed by firmware.
-  * Builds a buffer containing these headers.  Saves individual header
-@@ -1444,11 +1444,11 @@ static int build_hdr_data(u8 hdr_field, struct sk_buff *skb,
- 
- /**
-  * create_hdr_descs - create header and header extension descriptors
-- * @hdr_field - bitfield determining needed headers
-- * @data - buffer containing header data
-- * @len - length of data buffer
-- * @hdr_len - array of individual header lengths
-- * @scrq_arr - descriptor array
-+ * @hdr_field: bitfield determining needed headers
-+ * @hdr_data: buffer containing header data
-+ * @len: length of data buffer
-+ * @hdr_len: array of individual header lengths
-+ * @scrq_arr: descriptor array
-  *
-  * Creates header and, if needed, header extension descriptors and
-  * places them in a descriptor array, scrq_arr
-@@ -1496,10 +1496,9 @@ static int create_hdr_descs(u8 hdr_field, u8 *hdr_data, int len, int *hdr_len,
- 
- /**
-  * build_hdr_descs_arr - build a header descriptor array
-- * @skb - socket buffer
-- * @num_entries - number of descriptors to be sent
-- * @subcrq - first TX descriptor
-- * @hdr_field - bit field determining which headers will be sent
-+ * @txbuff: tx buffer
-+ * @num_entries: number of descriptors to be sent
-+ * @hdr_field: bit field determining which headers will be sent
-  *
-  * This function will build a TX descriptor array with applicable
-  * L2/L3/L4 packet header descriptors to be sent by send_subcrq_indirect.
-@@ -1925,7 +1924,7 @@ static int ibmvnic_set_mac(struct net_device *netdev, void *p)
- 	return rc;
+diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
+index 3d1fc8d2ca667..55e652624bd76 100644
+--- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
++++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
+@@ -1100,7 +1100,7 @@ static int gelic_net_poll(struct napi_struct *napi, int budget)
+ 	return packets_done;
  }
  
 -/**
 +/*
-  * do_reset returns zero if we are able to keep processing reset events, or
-  * non-zero if we hit a fatal error and must halt.
+  * gelic_card_interrupt - event handler for gelic_net
   */
-diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
-index b01848ef46493..811ddc8a94eea 100644
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -1582,7 +1582,7 @@ static struct net_device *xennet_create_dev(struct xenbus_device *dev)
- 	return ERR_PTR(err);
- }
- 
--/**
-+/*
-  * Entry point to this code when a new device is created.  Allocate the basic
-  * structures and the ring buffers for communication with the backend, and
-  * inform the backend of the appropriate details for those.
-@@ -1659,7 +1659,7 @@ static void xennet_disconnect_backend(struct netfront_info *info)
- 	}
- }
- 
--/**
-+/*
-  * We are reconnecting to the backend, due to a suspend/resume, or a backend
-  * driver restart.  We tear down our netif structure and recreate it, but
-  * leave the device-layer structures intact so that this is transparent to the
-@@ -2305,7 +2305,7 @@ static int xennet_connect(struct net_device *dev)
- 	return 0;
- }
- 
--/**
-+/*
-  * Callback received when the backend's state changes.
+ static irqreturn_t gelic_card_interrupt(int irq, void *ptr)
+@@ -1400,6 +1400,7 @@ static void gelic_net_tx_timeout_task(struct work_struct *work)
+ /**
+  * gelic_net_tx_timeout - called when the tx timeout watchdog kicks in.
+  * @netdev: interface device structure
++ * @txqueue: unused
+  *
+  * called, if tx hangs. Schedules a task that resets the interface
   */
- static void netback_changed(struct xenbus_device *dev,
+@@ -1431,6 +1432,7 @@ static const struct net_device_ops gelic_netdevice_ops = {
+ /**
+  * gelic_ether_setup_netdev_ops - initialization of net_device operations
+  * @netdev: net_device structure
++ * @napi: napi structure
+  *
+  * fills out function pointers in the net_device structure
+  */
+@@ -1632,7 +1634,7 @@ static void gelic_card_get_vlan_info(struct gelic_card *card)
+ 	dev_info(ctodev(card), "internal vlan %s\n",
+ 		 card->vlan_required? "enabled" : "disabled");
+ }
+-/**
++/*
+  * ps3_gelic_driver_probe - add a device to the control of this driver
+  */
+ static int ps3_gelic_driver_probe(struct ps3_system_bus_device *dev)
+@@ -1787,7 +1789,7 @@ static int ps3_gelic_driver_probe(struct ps3_system_bus_device *dev)
+ 	return result;
+ }
+ 
+-/**
++/*
+  * ps3_gelic_driver_remove - remove a device from the control of this driver
+  */
+ 
 -- 
 2.25.1
 
