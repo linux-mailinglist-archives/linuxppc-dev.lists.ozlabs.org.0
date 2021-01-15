@@ -1,73 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CFF2F73D2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 08:47:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6FAF2F73D6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 08:49:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DHCtt6km5zDsbK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 18:47:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DHCxW5k8zzDsdD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 18:49:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
- helo=mail-pf1-x431.google.com; envelope-from=sonicadvance1@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=sonicadvance1@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VuQxLNre; dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
+ header.s=20161025 header.b=tj4DTccm; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DHBx73sVDzDsXW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 18:03:52 +1100 (AEDT)
-Received: by mail-pf1-x431.google.com with SMTP id m6so4912321pfm.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 23:03:52 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DHCFR6c9LzDsP3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 18:18:02 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id y8so4243623plp.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jan 2021 23:18:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=GHiYLWes15995yc06JXjproFwSKI9EhRTzfJK8Em9SI=;
- b=VuQxLNreZ35kgOv9t50bPmMmRYfdkoMyenmcQ/EDiL+khkwLjA9TiaeWqm8RE+0z5J
- dJMnoqkNtpJ1vG4fRJ04X1k47+3GXa8DrrEpMY9XbvvaQDogHwCuIKtSthDXdn7B+psV
- LLMjBR/e+Dkqs27AHDNisqoPuW0e47Zp2vCrNUEJRIsM65Y1hyOF60ujN5G+mVYCqmRt
- lE+aEa9thbHHIIwH/bcuweSMJ/b5Zp+RON0M0MddkMSsHMojeueLCI6AYwxpCXSqVODX
- 3qjJY+iwd58/bhyAB4Ak0o5l/ViRZO3c3fC0mS1r/UaLnBREjoKNbKdVPsSTW8eGAeJr
- TlQQ==
+ bh=fDBgTqph7U6sqOSXdt8AcS70Ilsiw0uIpXx8fn1angs=;
+ b=tj4DTccmh3ZQGUeqObnceaG0RemZklXTh5qssoEslhdzP0IvX6IzjS7dNL2lxBOffY
+ HkNStF1IOROuK+FkBE1ipDnikzcP3W2yAFJn1ZFOWrkZpgprx5iXGuk1HuIq/QBpXYpX
+ ZnbYUnkmOaTFPBZdZGwHrMxyPm1CnRftniktjtISvy/bYUG/pY2e4cC6Z/CcR3H73ucr
+ ervLAuU1fFhlXHaeEJEcU8ob7crnGhBqvTu5nFcRFE+cagJQdQIJzcq+VykJi3n9FtKM
+ fKwI4DRLGQtgFnLFMTkA8X00tYzFJ9js1tYR/leJe45ACMHo9kMOAdn3gnEYsucDbWLU
+ MErA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=GHiYLWes15995yc06JXjproFwSKI9EhRTzfJK8Em9SI=;
- b=EO1f9VMQHn8B/GHfRxgouqA8/RYFnQxgXshv3hk10JY1dALT/+vjOst8mk2ev1f0hb
- u7MVf6UhFjlF4ahfeJ/foemwoyab0xfiAhLkEpjszhw+0V2B5ax7tAMChGtHL/wiP97e
- 6Qq49KDkAhF6xsCfrr7w6mImd/8e54dzibsFtnl7kTVergNQLLKUlqnTgGha7QzHs5kk
- yxK4YXAv5wj+GFu4sCiN4GsnXFGHAEO6Z0iiybxjr1WKBkq7eYTlwwt3QgDIR+gao1DL
- 7SJsWlIEXKvt0r9ASQzGs4T2LVE+TYTSqXsn5p5rJ4fokZbbRVrU5kdMiH7rYP3FzS6v
- oBRA==
-X-Gm-Message-State: AOAM533MXvfPt86qkJFrlwtTGDHNyxJwaPypg4snFwhcZxbyOyDZHz1t
- w1nFKIkCA4gaPDrqVX/Lo20=
-X-Google-Smtp-Source: ABdhPJy33sFGOuEJVL/71ZTFrs1JqOaDhD02Tw/th8z46pDfvhRBV6ViKBsRBoDKqTo0JFodgh2g5A==
-X-Received: by 2002:a62:8050:0:b029:19d:e8b4:ba1 with SMTP id
- j77-20020a6280500000b029019de8b40ba1mr11371438pfd.69.1610694229866; 
- Thu, 14 Jan 2021 23:03:49 -0800 (PST)
+ bh=fDBgTqph7U6sqOSXdt8AcS70Ilsiw0uIpXx8fn1angs=;
+ b=Rdlw7AfGcosc1F+/wsu898bRrWYSqm1WokTcAMiyC2/eBIH9TOVrpqLaoH+oLOudMr
+ poKR4rMeOW/jHQgCD+uTOyGHO8l65is8yjT32HN+DwDFbaBPOihvZ5pKDvcl8t6UepzU
+ 4aBAzCtFTsUCHQjs+GU30j8Xc2GrC6hEt8hf5Xrjy7Qnd8YkvhQTfupswOmsLIc7vFRD
+ 2H9Ajv8CeOnpOhUajh+z6g9OQi8ezvLVzEWGYOk18bV/BAx8lOlTAgjVK2DnIIAv7hiz
+ /zj6T3r8HhbxiCfB9YiIsqyS03bePjAt/qddCgoO9LinQ5T2wmpo+RbsQNcXPfmIOsLQ
+ Swlw==
+X-Gm-Message-State: AOAM5313CnA9Xl9JSyTyRa6230CVuGjHDSqBPr3fqdvCW6M7LuxQCfyY
+ sDgYAHJ94KceIlJ9UWxgcf0=
+X-Google-Smtp-Source: ABdhPJzxCbaWhr5YDOC8CbRfvLQL9StIWqn3Qw30/BIDB8yn3be1W3dAF+FL/5uyfEj6iJOcPD8xNw==
+X-Received: by 2002:a17:90b:368f:: with SMTP id
+ mj15mr8883373pjb.201.1610695078447; 
+ Thu, 14 Jan 2021 23:17:58 -0800 (PST)
 Received: from localhost.localdomain
  (76-242-91-105.lightspeed.sntcca.sbcglobal.net. [76.242.91.105])
- by smtp.gmail.com with ESMTPSA id h8sm8399086pjc.2.2021.01.14.23.03.45
+ by smtp.gmail.com with ESMTPSA id w1sm7037456pfn.151.2021.01.14.23.17.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Jan 2021 23:03:49 -0800 (PST)
+ Thu, 14 Jan 2021 23:17:57 -0800 (PST)
 From: sonicadvance1@gmail.com
 X-Google-Original-From: Sonicadvance1@gmail.com
 To: 
-Subject: [PATCH] Adds a new ioctl32 syscall for backwards compatibility layers
-Date: Thu, 14 Jan 2021 23:02:50 -0800
-Message-Id: <20210115070326.294332-1-Sonicadvance1@gmail.com>
+Subject: [PATCH v2] Adds a new ioctl32 syscall for backwards compatibility
+ layers
+Date: Thu, 14 Jan 2021 23:17:14 -0800
+Message-Id: <20210115071740.295973-1-Sonicadvance1@gmail.com>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210106064807.253112-1-Sonicadvance1@gmail.com>
-References: <20210106064807.253112-1-Sonicadvance1@gmail.com>
+In-Reply-To: <20210115070326.294332-1-Sonicadvance1@gmail.com>
+References: <20210115070326.294332-1-Sonicadvance1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Fri, 15 Jan 2021 18:44:40 +1100
@@ -83,12 +84,12 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-xtensa@linux-xtensa.org, Rich Felker <dalias@libc.org>,
- Jan Kara <jack@suse.cz>, Miklos Szeredi <mszeredi@redhat.com>,
- Dominik Brodowski <linux@dominikbrodowski.net>, linux-kernel@vger.kernel.org,
+ linux-ia64@vger.kernel.org, Miklos Szeredi <mszeredi@redhat.com>,
+ Dominik Brodowski <linux@dominikbrodowski.net>, linux-mips@vger.kernel.org,
  "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
  Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
  "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- linux-ia64@vger.kernel.org, Christian Brauner <christian.brauner@ubuntu.com>,
+ Christian Brauner <christian.brauner@ubuntu.com>,
  Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>,
  linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
  Arnd Bergmann <arnd@arndb.de>, Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -98,12 +99,12 @@ Cc: linux-xtensa@linux-xtensa.org, Rich Felker <dalias@libc.org>,
  Geert Uytterhoeven <geert@linux-m68k.org>,
  linux-arm-kernel@lists.infradead.org,
  Catalin Marinas <catalin.marinas@arm.com>, Matt Turner <mattst88@gmail.com>,
- linux-mips@vger.kernel.org, Fenghua Yu <fenghua.yu@intel.com>,
- Arnaldo Carvalho de Melo <acme@redhat.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Ryan Houdek <Sonicadvance1@gmail.com>, Brian Gerst <brgerst@gmail.com>,
- Heiko Carstens <hca@linux.ibm.com>, David Rientjes <rientjes@google.com>,
- Willem de Bruijn <willemb@google.com>, Nicholas Piggin <npiggin@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>, Aleksa Sarai <cyphar@cyphar.com>,
+ Fenghua Yu <fenghua.yu@intel.com>, Arnaldo Carvalho de Melo <acme@redhat.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Ryan Houdek <Sonicadvance1@gmail.com>,
+ Brian Gerst <brgerst@gmail.com>, Heiko Carstens <hca@linux.ibm.com>,
+ David Rientjes <rientjes@google.com>, Willem de Bruijn <willemb@google.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
+ linux-fsdevel@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
  Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
  Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
@@ -112,9 +113,9 @@ Cc: linux-xtensa@linux-xtensa.org, Rich Felker <dalias@libc.org>,
  Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
  Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
  linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org,
- Oleg Nesterov <oleg@redhat.com>, Minchan Kim <minchan@kernel.org>,
+ linux-kernel@vger.kernel.org, Minchan Kim <minchan@kernel.org>,
  "Eric W. Biederman" <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+ Joe Perches <joe@perches.com>, Borislav Petkov <bp@alien8.de>,
  Andrew Morton <akpm@linux-foundation.org>, linux-api@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
@@ -215,6 +216,12 @@ packing across the boundary
   - Prone to failure keeping the kernel ioctl and userspace ioctl
   handling in sync
   - Really want to have it in the kernel space as much as possible
+
+Changes in v2:
+- Added the syscall to all architecture tables
+- Disabled on 32bit and BE platforms. They can call ioctl directly.
+- Disabled on x86-64 as well since you can call this from ia32 or x32
+dispatch tables
 
 Signed-off-by: Ryan Houdek <Sonicadvance1@gmail.com>
 ---
