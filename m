@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3621E2F8206
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 18:20:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFAF42F8217
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 18:22:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DHScG1SgjzDsbT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 04:20:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DHSgM6pPdzDsgf
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 04:22:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
- helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534;
+ helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=UkdVuQMH; dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
+ header.s=20161025 header.b=ej+F/ta0; dkim-atps=neutral
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
+ [IPv6:2607:f8b0:4864:20::534])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DHRyr2MJDzDshY
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 03:51:16 +1100 (AEDT)
-Received: by mail-pj1-x102a.google.com with SMTP id v1so5385540pjr.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 08:51:16 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DHRyw26gfzDsj8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 03:51:20 +1100 (AEDT)
+Received: by mail-pg1-x534.google.com with SMTP id i7so6355960pgc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 08:51:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=ZsVbgqM/DNFt1/n0lamYI6JL/0G+ykNB7Vok8GqIgNs=;
- b=UkdVuQMHlPs50GnqtLaXeYAVCjGbHK3Kp+uzuLEqN/JmvaWA/x4/RG0HCOS6YA9XaX
- jzMjWJS4+a/xqq3pZuQABcQo46W4j7VOHxZXmQNMaWSwDQELPJHnM6QrMXQ8Nr8kVveG
- gORVL7TlACYyIncfzxoetL1OxGw0iPh1jYrcZB21524WG/veU8vsfeWHgD571AWdgLkk
- xHL76kELs0WiHUXTDldYtdTIr55LAvIuf7W1yKtkeoZac94V4i1H0zHE/WkxvQRZJSWw
- LSRCYFkHP3p+8e2b4gQT1DFDMoEZX0FaxKj1fDTN9Bq+LOas1CJmAJrbQ0GoxdRrU5GA
- /+0w==
+ bh=z7BR0zvwJO7bVat/aEvyQpEj7sPpuAlkQ/ruo5bglt8=;
+ b=ej+F/ta0prNpjzFLSu7qSL/h6gTpZBFwlxURHO4OslrQklm63pgFZOemINFKpKNk1M
+ zpOa4gqc7JwOkSOJBktQygF62U0hXfQ1xhQakLKmLIyCL2RFsL6HdOpWr9QpXB+9UOHA
+ W+mt3UPyHLKeY+jmJoNIrz3/oSoABtD/SKhsFHCTh3VXaf86gazvT7ENlChj//Tg+ANS
+ zLXyHMOMWaIlHeNBWpqeXJIPkNWsLsrgoz/S/nhcWrLoUUtWGd8LvP9xrJkeIBN4ycPK
+ cS9PN02VmqZTVWWW/Eb1LN61r3DsyChl4QOPTmVUZnxOYRcm1nfgU5sEKIw8aeOlUp8L
+ fbkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=ZsVbgqM/DNFt1/n0lamYI6JL/0G+ykNB7Vok8GqIgNs=;
- b=olmkE32+hU9wZ3qu2DIswf16dPKro+H+vWMGyN3loTh5cyyDXsp1DjYe43NGqxj2XJ
- +SA82gpUlyeY6qBpjpmVWWldVTJIAAsVB/iOMaYbw7yH4lFQ2qOwvMQBVgnb01e9SoXL
- YGYoHdNf/y3JsO2SBzMl7PnJdDm9QJKw+OQ1wB3ZrvaJuDCyV4V8xj1BCxihhTmGgAPB
- cb/5s0BZLUwaK822dAa82f92DxrE9uuWtI8MwvXJ1EXQAhsV5cUC7lyIV7xKe7+B8cHx
- JiciQgbUyzbldOdvQgpsOlF2mVsQoV6tn49p16pOK/0sH9Rc5c3AbU7E/6Q6N/9ng8Pg
- M3aQ==
-X-Gm-Message-State: AOAM533moZkcheEFJdnEBbqPQ/oP7SszgAH5+Kjl74QYPnDFOan8xJ54
- FcSyo7eLPs7xWUmjliQR8exFzDx29Uw=
-X-Google-Smtp-Source: ABdhPJw3TDxhsMa3/okFynTufeGp4IiiiF9SdFBJ/CDE9DgHITHnDHNBDRmkBt5xZUDQimFCHVsufw==
-X-Received: by 2002:a17:90a:4306:: with SMTP id
- q6mr11590237pjg.231.1610729471010; 
- Fri, 15 Jan 2021 08:51:11 -0800 (PST)
+ bh=z7BR0zvwJO7bVat/aEvyQpEj7sPpuAlkQ/ruo5bglt8=;
+ b=pRv09LwVy3R4L/qVcHx5w1egEerWB0JXLp2aodIcjfRcoolOhMstE3abESxWTe5Un3
+ GFunMpMo6x6hzHuqKGFl8gIRmrhcBzOGDgdlwKmvRMvp9h6U+0KDDdoe6lavHL5r+iR6
+ vycGipu9X/1kcNK3XD75kk20tDl0JQOY34H2G4WyPOoJm1G3uznAPv+Z3/F/tu7ElXxF
+ H2VRQ/EhgiFpernReCxaMjbZ8b9mm79IHiM3Ej5b/+eiJEiFGpu9rUno8Exn7G6eKqXE
+ r43ya7oh/cv5bXQoLz2AtQwLUy/I6rt6q7qFEvRn+xmyTMExh/Ns0xdUx5Y6hp5qgo68
+ C5Jg==
+X-Gm-Message-State: AOAM530Cuygr5wfKQhgasheMH/llIjJFTzRyy/WMv6KRQ05ri48YtC9q
+ MRot/p0tAfpPRtHhDLvz+YGuyX3PPpQ=
+X-Google-Smtp-Source: ABdhPJx+mei07kqJRx1eij2Bix4mP0cDs972d9bqxPzG/X7rK+U7u/x9USQBf03qVpNxaw18Uj0Hdw==
+X-Received: by 2002:aa7:954b:0:b029:19e:cb57:f3c with SMTP id
+ w11-20020aa7954b0000b029019ecb570f3cmr13529394pfq.51.1610729473750; 
+ Fri, 15 Jan 2021 08:51:13 -0800 (PST)
 Received: from bobo.ibm.com ([124.170.13.62])
- by smtp.gmail.com with ESMTPSA id u1sm8455477pjr.51.2021.01.15.08.51.03
+ by smtp.gmail.com with ESMTPSA id u1sm8455477pjr.51.2021.01.15.08.51.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Jan 2021 08:51:10 -0800 (PST)
+ Fri, 15 Jan 2021 08:51:13 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v6 11/39] powerpc/mm: Remove stale do_page_fault comment
- referring to SLB faults
-Date: Sat, 16 Jan 2021 02:49:44 +1000
-Message-Id: <20210115165012.1260253-12-npiggin@gmail.com>
+Subject: [PATCH v6 12/39] powerpc/64s: slb comment update
+Date: Sat, 16 Jan 2021 02:49:45 +1000
+Message-Id: <20210115165012.1260253-13-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210115165012.1260253-1-npiggin@gmail.com>
 References: <20210115165012.1260253-1-npiggin@gmail.com>
@@ -85,37 +84,54 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SLB faults no longer call do_page_fault, this was removed somewhere
-between 2.6.0 and 2.6.12.
+This makes a small improvement to the description of the SLB interrupt
+environment. Move the memory access restrictions into one paragraph,
+and the interrupt restrictions into the next rather than mix them.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/mm/fault.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ arch/powerpc/mm/book3s64/slb.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 965c89e63997..900901d0038e 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -377,13 +377,11 @@ static void sanity_check_fault(bool is_write, bool is_user,
+diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
+index c581548b533f..14c62b685f0c 100644
+--- a/arch/powerpc/mm/book3s64/slb.c
++++ b/arch/powerpc/mm/book3s64/slb.c
+@@ -825,19 +825,21 @@ long do_slb_fault(struct pt_regs *regs)
+ 		return -EINVAL;
  
- /*
-  * For 600- and 800-family processors, the error_code parameter is DSISR
-- * for a data fault, SRR1 for an instruction fault. For 400-family processors
-- * the error_code parameter is ESR for a data fault, 0 for an instruction
-- * fault.
-- * For 64-bit processors, the error_code parameter is
-- *  - DSISR for a non-SLB data access fault,
-- *  - SRR1 & 0x08000000 for a non-SLB instruction access fault
-- *  - 0 any SLB fault.
-+ * for a data fault, SRR1 for an instruction fault.
-+ * For 400-family processors the error_code parameter is ESR for a data fault,
-+ * 0 for an instruction fault.
-+ * For 64-bit processors, the error_code parameter is DSISR for a data access
-+ * fault, SRR1 & 0x08000000 for an instruction access fault.
-  *
-  * The return value is 0 if the fault was handled, or the signal
-  * number if this is a kernel fault that can't be handled here.
+ 	/*
+-	 * SLB kernel faults must be very careful not to touch anything
+-	 * that is not bolted. E.g., PACA and global variables are okay,
+-	 * mm->context stuff is not.
+-	 *
+-	 * SLB user faults can access all of kernel memory, but must be
+-	 * careful not to touch things like IRQ state because it is not
+-	 * "reconciled" here. The difficulty is that we must use
+-	 * fast_exception_return to return from kernel SLB faults without
+-	 * looking at possible non-bolted memory. We could test user vs
+-	 * kernel faults in the interrupt handler asm and do a full fault,
+-	 * reconcile, ret_from_except for user faults which would make them
+-	 * first class kernel code. But for performance it's probably nicer
+-	 * if they go via fast_exception_return too.
++	 * SLB kernel faults must be very careful not to touch anything that is
++	 * not bolted. E.g., PACA and global variables are okay, mm->context
++	 * stuff is not. SLB user faults may access all of memory (and induce
++	 * one recursive SLB kernel fault), so the kernel fault must not
++	 * trample on the user fault state at those points.
++	 */
++
++	/*
++	 * The interrupt state is not reconciled, for performance, so that
++	 * fast_interrupt_return can be used. The handler must not touch local
++	 * irq state, or schedule. We could test for usermode and upgrade to a
++	 * normal process context (synchronous) interrupt for those, which
++	 * would make them first-class kernel code and able to be traced and
++	 * instrumented, although performance would suffer a bit, it would
++	 * probably be a good tradeoff.
+ 	 */
+ 	if (id >= LINEAR_MAP_REGION_ID) {
+ 		long err;
 -- 
 2.23.0
 
