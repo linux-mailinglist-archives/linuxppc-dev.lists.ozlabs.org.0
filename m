@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB8B2F81E4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 18:14:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 132632F81EC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 18:17:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DHSTd5rLkzDsj3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 04:14:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DHSXt326hzDqBd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 04:17:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
- helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f;
+ helo=mail-pl1-x62f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=QJJgo1CS; dkim-atps=neutral
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
- [IPv6:2607:f8b0:4864:20::432])
+ header.s=20161025 header.b=VZf7LCFC; dkim-atps=neutral
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
+ [IPv6:2607:f8b0:4864:20::62f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DHRyT6mZQzDsj8
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 03:50:57 +1100 (AEDT)
-Received: by mail-pf1-x432.google.com with SMTP id c12so5835982pfo.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 08:50:57 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DHRyd3JVtzDsj5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 03:51:05 +1100 (AEDT)
+Received: by mail-pl1-x62f.google.com with SMTP id y8so4991257plp.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 08:51:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=30ztDOD3lXTwn+XDGjWOrtEQKE1kjC0Q7RaaABxo/Tk=;
- b=QJJgo1CSR1sY0YDFt3E3zSkMYBUUOdoyAYaykAEtjLATkIVriOg+j0nRWZKCJw1g/7
- Jmcf/rqptRem/FuDZ+1T5uMvP46tJfVseG/BYAwmvbhXoVmoOMmzclC59/n2XTM4gnjs
- QNt2XLU1caFD8fNbbQ0V9PX8q1PwJvvUO64noZivmOiDUeyZSiTyoSMT8MPV3Tc1N7CC
- xn506l5bOB8+cVV9qJTJVf5L9cYAMgKHC79E5l4HSxLNTczU2BsvaAHP17wDFN+A+lqe
- oyj+w4CZsbAQxyp1o6WEiR/66HAS3Pv/90w+XWRvQOnrKVd9c+af9SSuLs0B+4pRAHU7
- 4byQ==
+ bh=YThq0+tj5Xq3TBJJj6IoR+O9eLTtgrUfwujJIu+gsQM=;
+ b=VZf7LCFCbn+o0nCK+Wu1CFBJZxw3qqTcoAbIopW9AtNSHA3E5jeWW6umJzjRjWM/nS
+ yeQLiO4Ouy4Om0zIi6BfuvVwS3NdHaJ4orFOo3AeaCxTQsvUBiI87SZHk8K8/VaEWgGV
+ hxluv37CI5eAIjSjaLaMl+PlD9xJFU56O03A7Y/zRdj9vWlYZ27drgyARyw0M3jWMN/3
+ nEFl3V6QKHr2+K/Zy6PgYU9o1UBCjsGUIlS+S0u/ALUJbpW3x7Y7B8AXUHiJjzOL+zQZ
+ oxx0kOSo7tlwIMQ1Yo2ZqCIiXIwkDljG2AnNAunLLVirbohOBwpS6D3Wlx1Tfw/aauWp
+ JS6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=30ztDOD3lXTwn+XDGjWOrtEQKE1kjC0Q7RaaABxo/Tk=;
- b=lyHOI57wbaONhW0PJ/5fYhMfUSG1o1G45W/zMBa2RdheZIN49UqrU1CCxDNRQ95khm
- lFhzsAbbh2RYrTM2iw8E4UqOt0axTV+AqqZpU93x7fY8noV61cVlf993lTaFXHxGaWrh
- 2pKiV5EkYBS9JNm6QMgP/a+OfSq2dpy92xAxHwnd5zu5fJiO4wgOMdtUOmccr2+iD5oF
- pvg7jqEfTtxSn2afift/VQ3af1LyJhcNE4ll2+ILH2G2jrWiN+TChTmR84ToQKWo8ZeN
- EdsN1vnCcnbS6TGWqnN3r981aUjaHGEm3zYjMz8DOwSy13IVo6p1IB8M97n1zYfRn67+
- 4H0Q==
-X-Gm-Message-State: AOAM533nvCTRRHyXduP9r8k62Ai5lTSu8q+WqlZZ1Lq8ZZjpkxlUig3p
- ctCxmUNg4uwtPLw6D2Qfc/0FUd9ovws=
-X-Google-Smtp-Source: ABdhPJwn0l9LHFibKPwElbu4YOYiF+4afiq+BcrSUwRlNYXuqkU/qx4nh4f73WcK0B9+VUGydZjYVA==
-X-Received: by 2002:a62:25c7:0:b029:156:72a3:b0c0 with SMTP id
- l190-20020a6225c70000b029015672a3b0c0mr13245977pfl.59.1610729453779; 
- Fri, 15 Jan 2021 08:50:53 -0800 (PST)
+ bh=YThq0+tj5Xq3TBJJj6IoR+O9eLTtgrUfwujJIu+gsQM=;
+ b=UDfxDz453CKRMcSA0mmvXV6k3CcBEEtfjTdoQvnVQdkTdD9jG4ns2BbscbbRD2JF6B
+ MlxXcxotwg2bxWxuqkvQQSpT+MEx7AKUXB4n34Ac+SNcEuz03O9x3TbLE6A61EvgmeEp
+ /iciYhCrLsXMrCwanft80wZ00MsIgLPp/ezvfCk2aVctWm1P4XZpWy9+Axvg8p/7gXce
+ IxLqFmwNsyfjxTNnWqqiAzKxwRzz44J/9WN2cKx8nOkiNemkAZQoOdT9gzmAy9Inr1F7
+ wCIa0OcKRZ7KMtaV9wUrgZr1KZZMdPMtPIWhUAnhVg8N8+utzjT98pVF+koOaMxrjtSh
+ UC5w==
+X-Gm-Message-State: AOAM533rcN5M5cQCPI7B2gKJG2ANRQKk16I1Cw0EbYT1CoAWGzvwem5x
+ T0s1iB1o4O7L2IeuKiZxyWd/YQ5gcMY=
+X-Google-Smtp-Source: ABdhPJymUavJ8+RriSI/UmUijg4WcdHIfiQ3lEA3imLRMfhOvJ3j5FqxV8UX34JuqnJKqbn9mCoQrw==
+X-Received: by 2002:a17:902:6b43:b029:db:c7fc:82f3 with SMTP id
+ g3-20020a1709026b43b02900dbc7fc82f3mr13774491plt.74.1610729462242; 
+ Fri, 15 Jan 2021 08:51:02 -0800 (PST)
 Received: from bobo.ibm.com ([124.170.13.62])
- by smtp.gmail.com with ESMTPSA id u1sm8455477pjr.51.2021.01.15.08.50.47
+ by smtp.gmail.com with ESMTPSA id u1sm8455477pjr.51.2021.01.15.08.50.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Jan 2021 08:50:53 -0800 (PST)
+ Fri, 15 Jan 2021 08:51:01 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v6 09/39] powerpc/64s: move bad_page_fault handling to C
-Date: Sat, 16 Jan 2021 02:49:42 +1000
-Message-Id: <20210115165012.1260253-10-npiggin@gmail.com>
+Subject: [PATCH v6 10/39] powerpc/64s: split do_hash_fault
+Date: Sat, 16 Jan 2021 02:49:43 +1000
+Message-Id: <20210115165012.1260253-11-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210115165012.1260253-1-npiggin@gmail.com>
 References: <20210115165012.1260253-1-npiggin@gmail.com>
@@ -84,65 +84,95 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This simplifies code, and it is also useful when introducing
-interrupt handler wrappers when introducing wrapper functionality
-that doesn't cope with asm entry code calling into more than one
-handler function.
-
-32-bit and 64e still have some such cases, which limits some ways
-they can use interrupt wrappers.
+This is required for subsequent interrupt wrapper implementation.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 12 ------------
- arch/powerpc/mm/fault.c              |  4 ++++
- 2 files changed, 4 insertions(+), 12 deletions(-)
+ arch/powerpc/mm/book3s64/hash_utils.c | 56 ++++++++++++++++-----------
+ 1 file changed, 33 insertions(+), 23 deletions(-)
 
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index b90d3cde14cf..e69a912c2cc6 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1447,12 +1447,6 @@ BEGIN_MMU_FTR_SECTION
- MMU_FTR_SECTION_ELSE
- 	bl	do_page_fault
- ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
--	cmpdi	r3,0
--	beq+	interrupt_return
--	mr	r5,r3
--	addi	r3,r1,STACK_FRAME_OVERHEAD
--	ld	r4,_DAR(r1)
--	bl	__bad_page_fault
- 	b	interrupt_return
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 1a270cc37d97..d7d3a80a51d4 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1512,7 +1512,7 @@ int hash_page(unsigned long ea, unsigned long access, unsigned long trap,
+ }
+ EXPORT_SYMBOL_GPL(hash_page);
  
- 1:	bl	do_break
-@@ -1557,12 +1551,6 @@ BEGIN_MMU_FTR_SECTION
- MMU_FTR_SECTION_ELSE
- 	bl	do_page_fault
- ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
--	cmpdi	r3,0
--	beq+	interrupt_return
--	mr	r5,r3
--	addi	r3,r1,STACK_FRAME_OVERHEAD
--	ld	r4,_DAR(r1)
--	bl	__bad_page_fault
- 	b	interrupt_return
+-long do_hash_fault(struct pt_regs *regs)
++static long __do_hash_fault(struct pt_regs *regs)
+ {
+ 	unsigned long ea = regs->dar;
+ 	unsigned long dsisr = regs->dsisr;
+@@ -1522,27 +1522,6 @@ long do_hash_fault(struct pt_regs *regs)
+ 	unsigned int region_id;
+ 	long err;
  
- 	GEN_KVM instruction_access
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index e4121fd9fcf1..965c89e63997 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -556,6 +556,10 @@ long do_page_fault(struct pt_regs *regs)
- 		if (likely(entry)) {
- 			instruction_pointer_set(regs, extable_fixup(entry));
- 			err = 0;
-+		} else if (IS_ENABLED(CONFIG_PPC_BOOK3S_64)) {
-+			/* 32 and 64e handle this in asm */
-+			__bad_page_fault(regs, err);
-+			err = 0;
+-	if (unlikely(dsisr & (DSISR_BAD_FAULT_64S | DSISR_KEYFAULT)))
+-		goto page_fault;
+-
+-	/*
+-	 * If we are in an "NMI" (e.g., an interrupt when soft-disabled), then
+-	 * don't call hash_page, just fail the fault. This is required to
+-	 * prevent re-entrancy problems in the hash code, namely perf
+-	 * interrupts hitting while something holds H_PAGE_BUSY, and taking a
+-	 * hash fault. See the comment in hash_preload().
+-	 *
+-	 * We come here as a result of a DSI at a point where we don't want
+-	 * to call hash_page, such as when we are accessing memory (possibly
+-	 * user memory) inside a PMU interrupt that occurred while interrupts
+-	 * were soft-disabled.  We want to invoke the exception handler for
+-	 * the access, or panic if there isn't a handler.
+-	 */
+-	if (unlikely(in_nmi())) {
+-		bad_page_fault(regs, SIGSEGV);
+-		return 0;
+-	}
+-
+ 	region_id = get_region_id(ea);
+ 	if ((region_id == VMALLOC_REGION_ID) || (region_id == IO_REGION_ID))
+ 		mm = &init_mm;
+@@ -1581,8 +1560,39 @@ long do_hash_fault(struct pt_regs *regs)
+ 			bad_page_fault(regs, SIGBUS);
  		}
- 	}
+ 		err = 0;
++	}
++
++	return err;
++}
++
++long do_hash_fault(struct pt_regs *regs)
++{
++	unsigned long dsisr = regs->dsisr;
++	long err;
++
++	if (unlikely(dsisr & (DSISR_BAD_FAULT_64S | DSISR_KEYFAULT)))
++		goto page_fault;
++
++	/*
++	 * If we are in an "NMI" (e.g., an interrupt when soft-disabled), then
++	 * don't call hash_page, just fail the fault. This is required to
++	 * prevent re-entrancy problems in the hash code, namely perf
++	 * interrupts hitting while something holds H_PAGE_BUSY, and taking a
++	 * hash fault. See the comment in hash_preload().
++	 *
++	 * We come here as a result of a DSI at a point where we don't want
++	 * to call hash_page, such as when we are accessing memory (possibly
++	 * user memory) inside a PMU interrupt that occurred while interrupts
++	 * were soft-disabled.  We want to invoke the exception handler for
++	 * the access, or panic if there isn't a handler.
++	 */
++	if (unlikely(in_nmi())) {
++		bad_page_fault(regs, SIGSEGV);
++		return 0;
++	}
  
+-	} else if (err) {
++	err = __do_hash_fault(regs);
++	if (err) {
+ page_fault:
+ 		err = do_page_fault(regs);
+ 	}
 -- 
 2.23.0
 
