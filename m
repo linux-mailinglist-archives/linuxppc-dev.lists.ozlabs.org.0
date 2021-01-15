@@ -1,61 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B172F7437
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 09:22:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E9D2F7441
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 09:23:55 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DHDgV5BS5zDsfJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 19:22:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DHDjN27lRzDsgT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jan 2021 19:23:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.208.54; helo=mail-ed1-f54.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.218.45; helo=mail-ej1-f45.google.com;
  envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com
- [209.85.208.54])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com
+ [209.85.218.45])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DHDd05xVDzDsbM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 19:20:00 +1100 (AEDT)
-Received: by mail-ed1-f54.google.com with SMTP id s11so1277356edd.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 00:20:00 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DHDdV3DGdzDsdC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 19:20:29 +1100 (AEDT)
+Received: by mail-ej1-f45.google.com with SMTP id q22so12092297eja.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 00:20:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=q3u1c2cmK2DITir507fdDBtH+U4eOB5jtHbxWlFMVtQ=;
- b=WY0S/hzXONrzB2ZcI3RDdejcRLXjFAd7fUzYEH2EefWpNuKyDaZOporbC+Jnj7A09p
- NQqJiL0bIEZ29RTO7QTxu0AqTzqUcUSzs7oEssrcxjSKwwcc3BLd1gail7da7YlRNTb5
- WmiQXmLhuX3GGFgK3xa9fdEUPptqySfZCIzm7nb3w6bEt+W5aOeWcKIRbGbTRuSApCek
- B7tU+e1WqcdEhuQS+0+0SiSgpj+Mw16r4PXUZ6w00MZmvfC3ENqzmn7lWxHj1aunuATS
- a4UEBQJ9M1NcOGiBltK2sSIQkmio969scsd+0Z316/tn8nwzF7hB3nCwlGOcvOm3kv3W
- kouQ==
-X-Gm-Message-State: AOAM531qSFrfjlF3JXkHipt9N/v90DsxpTYcLnc0xvmZQBhnlVU6q9OQ
- D1yYb9CLoXKNDN6iGgfWVTg=
-X-Google-Smtp-Source: ABdhPJwWBbtrNN8Dt/03jdN8TWPQGNvz2cTqSx6WvSbbavMAhwqQ7OozTqX2J4z2mqMcfAOpbO1pBg==
-X-Received: by 2002:aa7:d2d4:: with SMTP id k20mr6782073edr.361.1610698796929; 
- Fri, 15 Jan 2021 00:19:56 -0800 (PST)
+ bh=jEyFAI8Tiov/SBHpNo3029tSX/H+CCtTPEByvcBUUrQ=;
+ b=DoSYGLPFuASAkBnAH3tqWnbGsJVBBvAMFuNUCmVRDfWyM0Zv9pbgFdihBNxK353S6l
+ bUlQomorDNlUayCvGsRuJv3L+EdUEQowuejgY/nSaDou2TuHYcvG/InOI0lulf+MaPf/
+ vAn7TJclGlcgv4WfML4awRwlw/WMkQgcj8gkUfUgvmhBwOGGoGd1Gnqkv0jGNgwepOYj
+ ZMAF+F0pqGoJJQCEsIkRiwSmFWZhKqfZlMkY8lbC9F4AHY2wlOTLDapsNVlYjkZFT5AF
+ HT/VvrfBwC+ntv0M7AnhbDARYDsli7bD4mcDYQMnayT/pR3dgn1ple+lgg+jDLhxWVTR
+ 7w0w==
+X-Gm-Message-State: AOAM5315hmh0jMLNkY0knn1r3HbjbEkAu9B7LqhE1hC4i7hoLEVFueSY
+ yZ68fZ6cwoXeNGQpbsYuuyA=
+X-Google-Smtp-Source: ABdhPJza8YUJJ+T+zmo3FTE2Q4CTVcyXE8IE5bnUQXWXBR8ur4YO/4xQ/EJM/R7aABO9UuVSd7Ptxw==
+X-Received: by 2002:a17:906:4893:: with SMTP id
+ v19mr77844ejq.454.1610698825555; 
+ Fri, 15 Jan 2021 00:20:25 -0800 (PST)
 Received: from ?IPv6:2a0b:e7c0:0:107::49? ([2a0b:e7c0:0:107::49])
- by smtp.gmail.com with ESMTPSA id o20sm2929393ejb.123.2021.01.15.00.19.55
+ by smtp.gmail.com with ESMTPSA id h23sm2923600ejg.37.2021.01.15.00.20.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Jan 2021 00:19:56 -0800 (PST)
-Subject: Re: [PATCH 1/3] tty: hvcs: Drop unnecessary if block
+ Fri, 15 Jan 2021 00:20:24 -0800 (PST)
+Subject: Re: [PATCH 2/3] tty: vcc: Drop unnecessary if block
 To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 References: <20210114175718.137483-1-u.kleine-koenig@pengutronix.de>
- <20210114175718.137483-2-u.kleine-koenig@pengutronix.de>
+ <20210114175718.137483-3-u.kleine-koenig@pengutronix.de>
 From: Jiri Slaby <jirislaby@kernel.org>
-Message-ID: <1afca17b-f148-4412-c80f-6168e79fd2ac@kernel.org>
-Date: Fri, 15 Jan 2021 09:19:55 +0100
+Message-ID: <9a1c68fc-f3bf-79e7-e2ae-238059241e2f@kernel.org>
+Date: Fri, 15 Jan 2021 09:20:24 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <20210114175718.137483-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20210114175718.137483-3-u.kleine-koenig@pengutronix.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -77,10 +78,10 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 14. 01. 21, 18:57, Uwe Kleine-König wrote:
-> If hvcs_probe() succeeded dev_set_drvdata() is called with a non-NULL
-> value, and if hvcs_probe() failed hvcs_remove() isn't called.
+> If vcc_probe() succeeded dev_set_drvdata() is called with a non-NULL
+> value, and if vcc_probe() failed vcc_remove() isn't called.
 > 
-> So there is no way dev_get_drvdata() can return NULL in hvcs_remove() and
+> So there is no way dev_get_drvdata() can return NULL in vcc_remove() and
 > the check can just go away.
 > 
 > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
@@ -88,23 +89,23 @@ On 14. 01. 21, 18:57, Uwe Kleine-König wrote:
 Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
 
 > ---
->   drivers/tty/hvc/hvcs.c | 3 ---
+>   drivers/tty/vcc.c | 3 ---
 >   1 file changed, 3 deletions(-)
 > 
-> diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
-> index 509d1042825a..3e0461285c34 100644
-> --- a/drivers/tty/hvc/hvcs.c
-> +++ b/drivers/tty/hvc/hvcs.c
-> @@ -825,9 +825,6 @@ static int hvcs_remove(struct vio_dev *dev)
->   	unsigned long flags;
->   	struct tty_struct *tty;
+> diff --git a/drivers/tty/vcc.c b/drivers/tty/vcc.c
+> index 9ffd42e333b8..d9b0dc6deae9 100644
+> --- a/drivers/tty/vcc.c
+> +++ b/drivers/tty/vcc.c
+> @@ -681,9 +681,6 @@ static int vcc_remove(struct vio_dev *vdev)
+>   {
+>   	struct vcc_port *port = dev_get_drvdata(&vdev->dev);
 >   
-> -	if (!hvcsd)
+> -	if (!port)
 > -		return -ENODEV;
 > -
->   	/* By this time the vty-server won't be getting any more interrupts */
+>   	del_timer_sync(&port->rx_timer);
+>   	del_timer_sync(&port->tx_timer);
 >   
->   	spin_lock_irqsave(&hvcsd->lock, flags);
 > 
 
 
