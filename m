@@ -1,76 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4AF2F8CD4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 11:35:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA45B2F8CDA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 11:39:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DHvbB6JWlzDspB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 21:35:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DHvgn5nTQzDsmW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 21:39:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
- helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=hI1pZ3py; dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
+ header.s=20161025 header.b=Osq5c9+/; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DHvYT5xKnzDsmR
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 21:34:19 +1100 (AEDT)
-Received: by mail-pf1-x42f.google.com with SMTP id y205so1318606pfc.5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 02:34:19 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DHvf3622dzDsmR
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 21:38:18 +1100 (AEDT)
+Received: by mail-pg1-x533.google.com with SMTP id i7so7710993pgc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 02:38:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=Zbi9c6TlTu8Pnu5w2s9Xwax6JzQkCYrNQdeLe/ph60E=;
- b=hI1pZ3pyHERNby1kms2KxDCSfyj0ucx1pK6xrxHkOMBYLDCTY1tfstl0J2ghViC6ja
- H5pf47HBBntYLsBbW9eWDrBrogZOpB1B6EklnXGnOW3My5TnzgfFIwpxSM3ABk2q4PlD
- 4WEvDGQLKgHcSdq9CMg9y661pEekORs2ii1fxe66bcM0QxPY1eaPOPvopnr1L9HI0JSE
- Cq6LPD7sNhVMFKZsPuYy6f12id5wSKtGnV9rD2jTwidLVZOIGYRHIATDCd1mfrtIFuN1
- tfNcQtjVa4yHeHKd/tl6Pgbl+fz6p3PNIUAo1wo1fmSlXxzL4riQCGCuJIgZZ1XjvWg3
- TjPQ==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=Dv7ZtUGF5N76AH1yjyB/TMo+vv8bzhaMc3Fq9dVsxRE=;
+ b=Osq5c9+/2WPZg3KAPAK8VrG6lV8UpWky3+vpo4bIrYuOCyc04jjrNzTkUdFJC7s+oc
+ OyYpk8xvorFh51DPvrGsBaUF94I4s98FpmGXLTl8Aht5SeQ2hLaXi8Za36WNzrJXNedG
+ BKBigJ7PaU8CkT7fOfDOHq99rCSFp/z2Va59PDgcB+WrevHcLyhKc2qlccUtWFK4tLUh
+ 5bQyO6idm7NSlck4Zk3Q/pNrmFR0iUmvPbqjmRviXJsHl0bdKGXKuxmhNFcMED+pt8N1
+ bD0GcQQdTaDJYExa9VYpBqlXK3FU0uVL6nik0sArN6e0tefxMxo/lTzolufxxEyzviTn
+ EvAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=Zbi9c6TlTu8Pnu5w2s9Xwax6JzQkCYrNQdeLe/ph60E=;
- b=EgkoeVkZM81LcOL+LMWVQTi8n1WDuWAcUsrEfOlbA4qEnzGq3uhnojFB5ra24kLQee
- b+qWM9Q4MB+mEG+aER5dgTgL64GfiAilOdVH9kqO9xXcbfx7l/eVwylZ678sINSt1vmI
- hcYNfZpZJyldqFkxZVIL4lDuk14Mtrl5jHd+hMdjh+zhzVNNztXQ0oGoADB3u1OwPGcZ
- +vp7ogEGkhzLqks1zuvwf9U79O6ERV5z0MgKFLqTSSAF4CHFjOiUFqegjolcdBziB6e6
- wkpbamSstdqA9dlkKB4CboHq1CYmmUCW9QokFIfHGDAkXmVfQdrNwwovS0wvr8Xx2A/W
- c5Iw==
-X-Gm-Message-State: AOAM530XEBdQnQ6g0aB+GircBBSafhwQ8NIz/Y8j7JtUC9I+HXUWQ3ja
- yQGh/bdRWZthu21KjRuWhrk=
-X-Google-Smtp-Source: ABdhPJxetsYDU4CI8E3k0zspqa8razqW9Z/yvzVotg2lsYdzDhaqxWAJ1nWWxEG0QeBK1HrAik7w2Q==
-X-Received: by 2002:a65:644b:: with SMTP id s11mr681219pgv.4.1610793255423;
- Sat, 16 Jan 2021 02:34:15 -0800 (PST)
+ bh=Dv7ZtUGF5N76AH1yjyB/TMo+vv8bzhaMc3Fq9dVsxRE=;
+ b=pXdRzInAhf0qzBTzWPXjvg+vI1ISQ9yIk2kSLmbXUTjuAP0+oT38f9yIISCLnnjRVr
+ ebc7WQL9sscDYkt+9FAZhFkDMULS5TWvhkMlUl8EalU3tbPlml4kk4z8OJtsdDicK0VE
+ awACKh7h0197EYd7+m1IwPGHIek332kmng8+uD/ZcN1dUdkqWEgsOMxaXikIzQL5JeOp
+ asEIDkJx34TAwhTYPBh3YLLCts5I7pttkWqD9tYoR9JVlJgqLKFATafDbPNrXQJnYqp2
+ zjkCZJtBYTmWFCtFDFJRP+c/VsxpH0qrlnGe71q7MB/TNs9CxQardGJN8vSr6gWMHoHc
+ ON0g==
+X-Gm-Message-State: AOAM533oj9N6krjVPUVFkD+pmyD+kglJzylWDOxQHcZM1+IydWQQ+bGU
+ U0gIMATjfueiPHrIKbLm4RS0dTqm8f4=
+X-Google-Smtp-Source: ABdhPJw/arx1cHJ4qBao6kLXDqM4y4YOSqdKGExCN8Evh5w6/aXWgW694RePyU3ekFPBjG+Ty9JZVg==
+X-Received: by 2002:a65:6450:: with SMTP id s16mr16796698pgv.71.1610793494788; 
+ Sat, 16 Jan 2021 02:38:14 -0800 (PST)
 Received: from localhost ([124.170.13.62])
- by smtp.gmail.com with ESMTPSA id w2sm10751413pfj.110.2021.01.16.02.34.13
+ by smtp.gmail.com with ESMTPSA id a11sm11040894pfr.198.2021.01.16.02.38.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 16 Jan 2021 02:34:14 -0800 (PST)
-Date: Sat, 16 Jan 2021 20:34:09 +1000
+ Sat, 16 Jan 2021 02:38:14 -0800 (PST)
+Date: Sat, 16 Jan 2021 20:38:09 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v6 17/39] powerpc/fsl_booke/32: CacheLockingException
- remove args
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v6 01/39] KVM: PPC: Book3S HV: Context tracking exit guest
+ context before enabling irqs
+To: linuxppc-dev@lists.ozlabs.org
 References: <20210115165012.1260253-1-npiggin@gmail.com>
- <20210115165012.1260253-18-npiggin@gmail.com>
- <1bd92a69-71ab-cc7f-fec5-e2a67830c81b@csgroup.eu>
- <1610757796.o87kxvdq5e.astroid@bobo.none>
- <0d953b03-b908-0fd6-61bf-d0e461312874@csgroup.eu>
-In-Reply-To: <0d953b03-b908-0fd6-61bf-d0e461312874@csgroup.eu>
+ <20210115165012.1260253-2-npiggin@gmail.com>
+In-Reply-To: <20210115165012.1260253-2-npiggin@gmail.com>
 MIME-Version: 1.0
-Message-Id: <1610793173.p0wt85cufb.astroid@bobo.none>
+Message-Id: <1610793296.fjhomer31g.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,66 +80,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of January 16, 2021 5:38 pm:
->=20
->=20
-> Le 16/01/2021 =C3=A0 01:43, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Excerpts from Christophe Leroy's message of January 16, 2021 3:14 am:
->>>
->>>
->>> Le 15/01/2021 =C3=A0 17:49, Nicholas Piggin a =C3=A9crit=C2=A0:
->>>> Like other interrupt handler conversions, switch to getting registers
->>>> from the pt_regs argument.
->>>>
->>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>>> ---
->>>>    arch/powerpc/kernel/head_fsl_booke.S | 6 +++---
->>>>    arch/powerpc/kernel/traps.c          | 5 +++--
->>>>    2 files changed, 6 insertions(+), 5 deletions(-)
->>>>
->>>> diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kerne=
-l/head_fsl_booke.S
->>>> index fdd4d274c245..0d4d9a6fcca1 100644
->>>> --- a/arch/powerpc/kernel/head_fsl_booke.S
->>>> +++ b/arch/powerpc/kernel/head_fsl_booke.S
->>>> @@ -364,12 +364,12 @@ interrupt_base:
->>>>    	/* Data Storage Interrupt */
->>>>    	START_EXCEPTION(DataStorage)
->>>>    	NORMAL_EXCEPTION_PROLOG(DATA_STORAGE)
->>>> -	mfspr	r5,SPRN_ESR		/* Grab the ESR, save it, pass arg3 */
->>>> +	mfspr	r5,SPRN_ESR		/* Grab the ESR, save it3 */
->>>>    	stw	r5,_ESR(r11)
->>>> -	mfspr	r4,SPRN_DEAR		/* Grab the DEAR, save it, pass arg2 */
->>>> +	mfspr	r4,SPRN_DEAR		/* Grab the DEAR, save it */
->>>> +	stw	r4, _DEAR(r11)
->>>>    	andis.	r10,r5,(ESR_ILK|ESR_DLK)@h
->>>>    	bne	1f
->>>> -	stw	r4, _DEAR(r11)
->>>>    	EXC_XFER_LITE(0x0300, handle_page_fault)
->>>>    1:
->>>>    	addi	r3,r1,STACK_FRAME_OVERHEAD
->>>
->>> Why isn't the above done in patch 5 ?
->>=20
->> I don't think it's required there, is it?
->=20
-> Ah yes, moving the 'stw' is needed only here.
->=20
-> But the comments changes belong to patch 5, you have done exactly similar=
- changes there in=20
-> kernel/head_40x.S
->=20
-> By the way, I think patch 17 could immediately follow patch 5 and patch 1=
-8 could follow patch 6.
+Excerpts from Nicholas Piggin's message of January 16, 2021 2:49 am:
+> Interrupts that occur in kernel mode expect that context tracking
+> is set to kernel. Enabling local irqs before context tracking
+> switches from guest to host means interrupts can come in and trigger
+> warnings about wrong context, and possibly worse.
 
-I can probably do all these. I'll wait a couple of days and check if=20
-Michael will merge the series before sending an update for small
-changes.
+I think this is not actually a fix per se with context as it is today
+because the interrupt handlers will save and update the state. It only=20
+starts throwing warnings when moving to the more precise tracking
+where kernel interrupts always expect context to be in kernel mode.
+
+The patch stands on its own just fine, but I'll reword slightly and
+move it in the series to where it's needed.
 
 Thanks,
 Nick
 
+>=20
+> Cc: kvm-ppc@vger.kernel.org
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 6f612d240392..d348e77cee20 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -3407,8 +3407,9 @@ static noinline void kvmppc_run_core(struct kvmppc_=
+vcore *vc)
+> =20
+>  	kvmppc_set_host_core(pcpu);
+> =20
+> +	guest_exit_irqoff();
+> +
+>  	local_irq_enable();
+> -	guest_exit();
+> =20
+>  	/* Let secondaries go back to the offline loop */
+>  	for (i =3D 0; i < controlled_threads; ++i) {
+> @@ -4217,8 +4218,9 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u6=
+4 time_limit,
+> =20
+>  	kvmppc_set_host_core(pcpu);
+> =20
+> +	guest_exit_irqoff();
+> +
+>  	local_irq_enable();
+> -	guest_exit();
+> =20
+>  	cpumask_clear_cpu(pcpu, &kvm->arch.cpu_in_guest);
+> =20
+> --=20
+> 2.23.0
+>=20
+>=20
