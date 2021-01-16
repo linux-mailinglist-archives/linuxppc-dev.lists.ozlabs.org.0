@@ -1,73 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A6D2F8A05
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 01:44:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDE62F8A07
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 01:46:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DHfSX2mQYzDvVQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 11:44:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DHfVq05rzzDvWR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jan 2021 11:46:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a;
- helo=mail-pg1-x52a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a;
+ helo=mail-pf1-x42a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=HuKNXDA+; dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
- [IPv6:2607:f8b0:4864:20::52a])
+ header.s=20161025 header.b=ChQuMVvh; dkim-atps=neutral
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
+ [IPv6:2607:f8b0:4864:20::42a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DHfQq6BkmzDql6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 11:42:41 +1100 (AEDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 30so7077226pgr.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 16:42:41 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DHfSF3B22zDskM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jan 2021 11:43:57 +1100 (AEDT)
+Received: by mail-pf1-x42a.google.com with SMTP id c12so6542358pfo.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jan 2021 16:43:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:references:in-reply-to:mime-version:message-id
  :content-transfer-encoding;
- bh=ZQNYWV/RLXBfRM+YtaOB8Q/1UCvLHv5bLFTu/vYdz9Y=;
- b=HuKNXDA+BpDOb9eCfIoGwAC0vD6PF6haeaSvCe3Lt3ACpyZSz3lIl0dx3KM5EXVLs9
- 4yCp9KVWBe1ONoxcHxjLcyHj2sw+A5Gb3jccfCFrfDb6a7Hagzn2MyGeh00Vz4UNduam
- 16Pye9FSKsCycHBADN9bWGrKQrKqpZR2oGxhpi1F9Kqni9fF0x9uu4eT6tSmWa2tO6Kx
- IjHzW5AM1BvcI0i6xJ0RD7xbodGrs00QCSyVvkn2/h05ObtQmQiOSoIAJVhX3In8X+q6
- IXgFcKKWqsXjInFE+8cyPigtoelxUj6aiIrnB+Vg4oU5JlQjJ4O39VrbNSfFNxkUZ1ri
- 5Xog==
+ bh=iD4DvkyUpKC0TmIEHyF5NvBvNlTKRDkGIBCwbt9M/fA=;
+ b=ChQuMVvhqwxnVu5hmIhgH8wg+JKeBc58oKQhiDu0a5TBVPlpTfxPJaek80Ku2mNs8q
+ nhU6PdHn9PXqD+e3degIpm3LZ/7DccpEp9l8at8vRqoXorDYN4y0l4h4zmG/u+XdUwWE
+ +AVa4Vp8Rdrhci5LqYGh/hKoTrA6SPp7reqS/HMucLxjAyjrfMVCJ/BWZeIZXCjL3Rqj
+ wb0EMqobzoiONgADa/ZL7XKYx9FlX+2+cXsfHM68HSNzadb60ySbEv88lP1papojf5jz
+ WhGW4kbYPJnjIDbkjIzxLcUkqusrpbPfbqmODtliyzcetJqkrwSc4Vv4GhrFh6uPpEHO
+ BejA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=ZQNYWV/RLXBfRM+YtaOB8Q/1UCvLHv5bLFTu/vYdz9Y=;
- b=j0wqMh6FDEF6/zKnsZ6M6yK3dytcU3Sb7qtRtCLw7DrNpGvpd2j6a52Nw1tjfnYpj7
- +V8J9PzQ1bUXhQXNwX0FoIBdR6rfTvPwfhdo7QjxMIHI6NTToHGZ9mCTLCDYegRxbzFr
- Sgf2JKt6T5tg+JW3IWitOjQZEctDh6KqOADuCZoyqUgp0780YJYmeHRZSSbcpK9WcrcH
- HZLIl3jkmYqcruw92GkJ9GMNn69GEfX9Z2QvGDIjFyjcBXGK238/pCCQIitoDQEn6dJ+
- v+yhv4FOQ5XLyR+g5QNtE/uI4Kej/DnzpBpD17CVYAMcb/6cB6oaW+jOPp6Fss7Ft0fk
- fAMA==
-X-Gm-Message-State: AOAM5328deVV8HTno8dFRVHPhNA9P7spGD08JYcaWkTEmr7xOpSjNCap
- yGfECuD1oasP22VnltS4NLg=
-X-Google-Smtp-Source: ABdhPJwXp8NMOUTZFNVmiITxlYFSERGkCGpV0ufMBtlg06TLlPkE504AKE6u+apJzgVOdUl6+E9wpw==
-X-Received: by 2002:a63:101d:: with SMTP id f29mr15110896pgl.165.1610757758314; 
- Fri, 15 Jan 2021 16:42:38 -0800 (PST)
+ bh=iD4DvkyUpKC0TmIEHyF5NvBvNlTKRDkGIBCwbt9M/fA=;
+ b=dNUMmCyfIg6GRYNlvLsKJablxXOvrm8VIivgTm4d/52RK41Z3MRj+w/2hqrVWnL6Ba
+ AY2md2uaGazOTiwN6m96SyysNMKA/UhsGYwW5UDoiTmTYCOnaWiWiIrIAvum7czRpyip
+ 1YRLrxwKYnHO/x6H1IuvZTVuEol+ixEz/DcsUeXkRe3FpwmCkUPskq6CiVI1/4LS4Src
+ s72Wk+jcuxgqXCweJGbrTW5ONPA1vGsJK/XK1xV7YdWIGd5HIE+c5xkuXq1ofmk0X2ik
+ 77j1pLD5wvmPIO89neXjspQ5879hKTCqob7bSEg6kXAT0wAaaLA+U1C9Q/43pvzNPI4r
+ mgrw==
+X-Gm-Message-State: AOAM5317jBYa1KdVjPKyvx1En4wO37KibI6n2jfc4A1KPvNOc2GDQTPZ
+ 0udB/zz/JSnJEqj08IZgx1Y=
+X-Google-Smtp-Source: ABdhPJw/aEApokrrtUhDHEEAZbVYNI70uYQUDmNBz71xfqk/s4jzxWxPGZsGIhvBqCGB+KqyxxlR6Q==
+X-Received: by 2002:a62:3002:0:b029:1aa:d858:cdd7 with SMTP id
+ w2-20020a6230020000b02901aad858cdd7mr15656902pfw.1.1610757833636; 
+ Fri, 15 Jan 2021 16:43:53 -0800 (PST)
 Received: from localhost ([124.170.13.62])
- by smtp.gmail.com with ESMTPSA id q23sm9380728pgm.89.2021.01.15.16.42.35
+ by smtp.gmail.com with ESMTPSA id r20sm9399151pgb.3.2021.01.15.16.43.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Jan 2021 16:42:36 -0800 (PST)
-Date: Sat, 16 Jan 2021 10:42:31 +1000
+ Fri, 15 Jan 2021 16:43:53 -0800 (PST)
+Date: Sat, 16 Jan 2021 10:43:48 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v6 07/39] powerpc: bad_page_fault get registers from regs
+Subject: Re: [PATCH v6 17/39] powerpc/fsl_booke/32: CacheLockingException
+ remove args
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
  linuxppc-dev@lists.ozlabs.org
 References: <20210115165012.1260253-1-npiggin@gmail.com>
- <20210115165012.1260253-8-npiggin@gmail.com>
- <9120125b-6dce-4e89-7113-dfdcea43e191@csgroup.eu>
-In-Reply-To: <9120125b-6dce-4e89-7113-dfdcea43e191@csgroup.eu>
+ <20210115165012.1260253-18-npiggin@gmail.com>
+ <1bd92a69-71ab-cc7f-fec5-e2a67830c81b@csgroup.eu>
+In-Reply-To: <1bd92a69-71ab-cc7f-fec5-e2a67830c81b@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1610757552.lreg4wgkti.astroid@bobo.none>
+Message-Id: <1610757796.o87kxvdq5e.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,47 +87,44 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of January 16, 2021 3:09 am:
+Excerpts from Christophe Leroy's message of January 16, 2021 3:14 am:
 >=20
 >=20
 > Le 15/01/2021 =C3=A0 17:49, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Similar to the previous patch this makes interrupt handler function
->> types more regular so they can be wrapped with the next patch.
+>> Like other interrupt handler conversions, switch to getting registers
+>> from the pt_regs argument.
 >>=20
 >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >> ---
->>   arch/powerpc/include/asm/bug.h             |  5 +++--
->>   arch/powerpc/kernel/entry_32.S             |  3 +--
->>   arch/powerpc/kernel/exceptions-64e.S       |  3 +--
->>   arch/powerpc/kernel/exceptions-64s.S       |  4 +---
->>   arch/powerpc/kernel/traps.c                |  2 +-
->>   arch/powerpc/mm/book3s64/hash_utils.c      |  4 ++--
->>   arch/powerpc/mm/book3s64/slb.c             |  2 +-
->>   arch/powerpc/mm/fault.c                    | 13 ++++++++++---
->>   arch/powerpc/platforms/8xx/machine_check.c |  2 +-
->>   9 files changed, 21 insertions(+), 17 deletions(-)
+>>   arch/powerpc/kernel/head_fsl_booke.S | 6 +++---
+>>   arch/powerpc/kernel/traps.c          | 5 +++--
+>>   2 files changed, 6 insertions(+), 5 deletions(-)
 >>=20
->> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/b=
-ug.h
->> index f7827e993196..8f09ddae9305 100644
->> --- a/arch/powerpc/include/asm/bug.h
->> +++ b/arch/powerpc/include/asm/bug.h
->> @@ -112,8 +112,9 @@
->>  =20
->>   struct pt_regs;
->>   long do_page_fault(struct pt_regs *);
->> -extern void bad_page_fault(struct pt_regs *, unsigned long, int);
->> -void __bad_page_fault(struct pt_regs *regs, unsigned long address, int =
-sig);
->> +void bad_page_fault(struct pt_regs *, int);
->> +void __bad_page_fault(struct pt_regs *regs, int sig);
->> +void do_bad_page_fault_segv(struct pt_regs *regs);
+>> diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/=
+head_fsl_booke.S
+>> index fdd4d274c245..0d4d9a6fcca1 100644
+>> --- a/arch/powerpc/kernel/head_fsl_booke.S
+>> +++ b/arch/powerpc/kernel/head_fsl_booke.S
+>> @@ -364,12 +364,12 @@ interrupt_base:
+>>   	/* Data Storage Interrupt */
+>>   	START_EXCEPTION(DataStorage)
+>>   	NORMAL_EXCEPTION_PROLOG(DATA_STORAGE)
+>> -	mfspr	r5,SPRN_ESR		/* Grab the ESR, save it, pass arg3 */
+>> +	mfspr	r5,SPRN_ESR		/* Grab the ESR, save it3 */
+>>   	stw	r5,_ESR(r11)
+>> -	mfspr	r4,SPRN_DEAR		/* Grab the DEAR, save it, pass arg2 */
+>> +	mfspr	r4,SPRN_DEAR		/* Grab the DEAR, save it */
+>> +	stw	r4, _DEAR(r11)
+>>   	andis.	r10,r5,(ESR_ILK|ESR_DLK)@h
+>>   	bne	1f
+>> -	stw	r4, _DEAR(r11)
+>>   	EXC_XFER_LITE(0x0300, handle_page_fault)
+>>   1:
+>>   	addi	r3,r1,STACK_FRAME_OVERHEAD
 >=20
-> What is that do_bad_page_fault_segv() ? Shouldn't it be in a separate pat=
-ch ?
+> Why isn't the above done in patch 5 ?
 
-Hmm, yeah probably. It will be an interrupt handler (that doesn't=20
-require SIGSEGV argument).
+I don't think it's required there, is it?
 
 Thanks,
 Nick
