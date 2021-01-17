@@ -1,47 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070F52F9425
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Jan 2021 18:28:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 869392F953D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Jan 2021 21:46:37 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DJhhV2VR7zDqTL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 04:28:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DJn5Q1fCYzDrRF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 07:46:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=codefail.de (client-ip=131.153.2.42;
- helo=h1.fbrelay.privateemail.com; envelope-from=cmr@codefail.de;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::532;
+ helo=mail-ed1-x532.google.com; envelope-from=jbx6244@gmail.com;
  receiver=<UNKNOWN>)
-Received: from h1.fbrelay.privateemail.com (h1.fbrelay.privateemail.com
- [131.153.2.42])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Z3jIlgWo; dkim-atps=neutral
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com
+ [IPv6:2a00:1450:4864:20::532])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DJhfy0K7gzDrcH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jan 2021 04:26:49 +1100 (AEDT)
-Received: from MTA-08-4.privateemail.com (mta-08.privateemail.com
- [68.65.122.18])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id CDC7B800C6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jan 2021 12:26:46 -0500 (EST)
-Received: from MTA-08.privateemail.com (localhost [127.0.0.1])
- by MTA-08.privateemail.com (Postfix) with ESMTP id 27B9760090;
- Sun, 17 Jan 2021 12:26:43 -0500 (EST)
-Received: from localhost (unknown [10.20.151.227])
- by MTA-08.privateemail.com (Postfix) with ESMTPA id E892F6008F;
- Sun, 17 Jan 2021 17:26:42 +0000 (UTC)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Subject: Re: [PATCH v3 1/8] powerpc/uaccess: Add unsafe_copy_from_user
-From: "Christopher M. Riedl" <cmr@codefail.de>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- <linuxppc-dev@lists.ozlabs.org>
-Date: Sun, 17 Jan 2021 11:19:18 -0600
-Message-Id: <C8LLSM3UC598.L4E2VMGJOI06@geist>
-In-Reply-To: <eb4f68f4-f606-007d-6552-8a46cb9912b4@csgroup.eu>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DJfyj2k3SzDrQK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jan 2021 03:10:16 +1100 (AEDT)
+Received: by mail-ed1-x532.google.com with SMTP id by27so14857425edb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jan 2021 08:10:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=AC5FWFmc+QTt0xSwIGW5Ve415efkuLFNzYSONRpyY3A=;
+ b=Z3jIlgWoZFgSihGakcm0/3i9PnUa5Mldf0etdusMFVD6qeABjeb9Bzg/TMV0v8wYS7
+ 2YP50bGWIYaL7bDG1A1C9LnD9ZDKvcns0g8fxORrfS70yeEq6uaani6aQ4ce63nWqZKb
+ XcRC/Pr8aIsx4GyJF0QB1RqXm12XctFH99pmdZvc1cH6qiGGqN9stfgt8w/jFf2icHZb
+ hb2cA8rzhusgWU52WHErYn0VksmsInJEjY9qAF/yNxCEVtbK3Jn6ltVhxyX5o2RBbroG
+ DHHceUgDFwGHPn740YhOjzdXPNZQcrH4Kv1g9PU/4mi9lRUplXaHt71bJU1jLl9p11xf
+ wuew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=AC5FWFmc+QTt0xSwIGW5Ve415efkuLFNzYSONRpyY3A=;
+ b=D4Ct9XxVn3I98WIHS3PnnU9R2RLO66SkgL8Y5DRgOGPaR7WKNW+Ot6/2edf5wLhFCZ
+ GoD1JHrlW1kckkfhD1trOAqYyYFofjQCwBAg7s5hC4hl3ztv5g1LWc8H0MZPTQE4g95j
+ s2fRi0Iq9tEe2tuT3y09KkNGEQiVDt16AI0caSosZ5I1lBadBsbc4C1gD92S81x54R72
+ TBuTthOs0bflIzcFAq2x+HJ+nx7v/0Y0s9uP7vXdqe7A3eok+udPkMX90svAsq+SRBf7
+ Xm4XWAGfk1jtB74DI9lK5a/pXKjANkwkOtfTEgCZcWu6cmQssakqjV39hxXf+phyy/HY
+ okFA==
+X-Gm-Message-State: AOAM532uoq9+gT/JCu6Rblq830LGqqjNGcT5a6SlIB8hJQKa5i+1/Eq5
+ THWZB3jx8aHir5vWfnvgOe0=
+X-Google-Smtp-Source: ABdhPJyg8dZx1Wx6RZW2DUzsycvLMXgXRa57jQLGpJv594NuwqT+1gHHzty/XrnPy/vGD3Kc0WjhEA==
+X-Received: by 2002:a05:6402:17cb:: with SMTP id
+ s11mr16034374edy.119.1610899807548; 
+ Sun, 17 Jan 2021 08:10:07 -0800 (PST)
+Received: from [192.168.2.2] (81-204-249-205.fixed.kpn.net. [81.204.249.205])
+ by smtp.gmail.com with ESMTPSA id
+ dm6sm4885472ejc.32.2021.01.17.08.10.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 17 Jan 2021 08:10:06 -0800 (PST)
+Subject: Re: [PATCH 1/2] dt-bindings: powerpc: Add a schema for the 'sleep'
+ property
+To: Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
+References: <20201008142420.2083861-1-robh@kernel.org>
+From: Johan Jonker <jbx6244@gmail.com>
+Message-ID: <752e9355-defb-6d3c-248b-f626247d4cee@gmail.com>
+Date: Sun, 17 Jan 2021 17:10:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
+MIME-Version: 1.0
+In-Reply-To: <20201008142420.2083861-1-robh@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Mon, 18 Jan 2021 07:44:59 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,135 +84,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org,
+ "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Jan 11, 2021 at 7:22 AM CST, Christophe Leroy wrote:
->
->
-> Le 09/01/2021 =C3=A0 04:25, Christopher M. Riedl a =C3=A9crit :
-> > Implement raw_copy_from_user_allowed() which assumes that userspace rea=
-d
-> > access is open. Use this new function to implement raw_copy_from_user()=
-.
-> > Finally, wrap the new function to follow the usual "unsafe_" convention
-> > of taking a label argument.
->
-> I think there is no point implementing raw_copy_from_user_allowed(), see
-> https://github.com/linuxppc/linux/commit/4b842e4e25b1 and
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/8c74fc9ce8131cabb=
-10b3e95dc0e430f396ee83e.1610369143.git.christophe.leroy@csgroup.eu/
->
-> You should simply do:
->
-> #define unsafe_copy_from_user(d, s, l, e) \
-> unsafe_op_wrap(__copy_tofrom_user((__force void __user *)d, s, l), e)
->
+Hi Rob,
 
-I gave this a try and the signal ops decreased by ~8K. Now, to be
-honest, I am not sure what an "acceptable" benchmark number here
-actually is - so maybe this is ok? Same loss with both radix and hash:
+This patch generates notifications in the Rockchip ARM and arm64 tree.
+Could you limit the scope to PowerPC only.
 
-	|                                      | hash   | radix  |
-	| ------------------------------------ | ------ | ------ |
-	| linuxppc/next                        | 118693 | 133296 |
-	| linuxppc/next w/o KUAP+KUEP          | 228911 | 228654 |
-	| unsafe-signal64                      | 200480 | 234067 |
-	| unsafe-signal64 (__copy_tofrom_user) | 192467 | 225119 |
+Kind regards,
 
-To put this into perspective, prior to KUAP and uaccess flush, signal
-performance in this benchmark was ~290K on hash.
+Johan Jonker
 
->
-> Christophe
->
-> >=20
-> > The new raw_copy_from_user_allowed() calls non-inline __copy_tofrom_use=
-r()
-> > internally. This is still safe to call inside user access blocks formed
-> > with user_*_access_begin()/user_*_access_end() since asm functions are =
-not
-> > instrumented for tracing.
-> >=20
-> > Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
-> > ---
-> >   arch/powerpc/include/asm/uaccess.h | 28 +++++++++++++++++++---------
-> >   1 file changed, 19 insertions(+), 9 deletions(-)
-> >=20
-> > diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/=
-asm/uaccess.h
-> > index 501c9a79038c..698f3a6d6ae5 100644
-> > --- a/arch/powerpc/include/asm/uaccess.h
-> > +++ b/arch/powerpc/include/asm/uaccess.h
-> > @@ -403,38 +403,45 @@ raw_copy_in_user(void __user *to, const void __us=
-er *from, unsigned long n)
-> >   }
-> >   #endif /* __powerpc64__ */
-> >  =20
-> > -static inline unsigned long raw_copy_from_user(void *to,
-> > -		const void __user *from, unsigned long n)
-> > +static inline unsigned long
-> > +raw_copy_from_user_allowed(void *to, const void __user *from, unsigned=
- long n)
-> >   {
-> > -	unsigned long ret;
-> >   	if (__builtin_constant_p(n) && (n <=3D 8)) {
-> > -		ret =3D 1;
-> > +		unsigned long ret =3D 1;
-> >  =20
-> >   		switch (n) {
-> >   		case 1:
-> >   			barrier_nospec();
-> > -			__get_user_size(*(u8 *)to, from, 1, ret);
-> > +			__get_user_size_allowed(*(u8 *)to, from, 1, ret);
-> >   			break;
-> >   		case 2:
-> >   			barrier_nospec();
-> > -			__get_user_size(*(u16 *)to, from, 2, ret);
-> > +			__get_user_size_allowed(*(u16 *)to, from, 2, ret);
-> >   			break;
-> >   		case 4:
-> >   			barrier_nospec();
-> > -			__get_user_size(*(u32 *)to, from, 4, ret);
-> > +			__get_user_size_allowed(*(u32 *)to, from, 4, ret);
-> >   			break;
-> >   		case 8:
-> >   			barrier_nospec();
-> > -			__get_user_size(*(u64 *)to, from, 8, ret);
-> > +			__get_user_size_allowed(*(u64 *)to, from, 8, ret);
-> >   			break;
-> >   		}
-> >   		if (ret =3D=3D 0)
-> >   			return 0;
-> >   	}
-> >  =20
-> > +	return __copy_tofrom_user((__force void __user *)to, from, n);
-> > +}
-> > +
-> > +static inline unsigned long
-> > +raw_copy_from_user(void *to, const void __user *from, unsigned long n)
-> > +{
-> > +	unsigned long ret;
-> > +
-> >   	barrier_nospec();
-> >   	allow_read_from_user(from, n);
-> > -	ret =3D __copy_tofrom_user((__force void __user *)to, from, n);
-> > +	ret =3D raw_copy_from_user_allowed(to, from, n);
-> >   	prevent_read_from_user(from, n);
-> >   	return ret;
-> >   }
-> > @@ -542,6 +549,9 @@ user_write_access_begin(const void __user *ptr, siz=
-e_t len)
-> >   #define unsafe_get_user(x, p, e) unsafe_op_wrap(__get_user_allowed(x,=
- p), e)
-> >   #define unsafe_put_user(x, p, e) __put_user_goto(x, p, e)
-> >  =20
-> > +#define unsafe_copy_from_user(d, s, l, e) \
-> > +	unsafe_op_wrap(raw_copy_from_user_allowed(d, s, l), e)
-> > +
-> >   #define unsafe_copy_to_user(d, s, l, e) \
-> >   do {									\
-> >   	u8 __user *_dst =3D (u8 __user *)(d);				\
-> >=20
+make ARCH=arm dtbs_check
+DT_SCHEMA_FILES=Documentation/devicetree/bindings/powerpc/sleep.yaml
+
+make ARCH=arm64 dtbs_check
+DT_SCHEMA_FILES=Documentation/devicetree/bindings/powerpc/sleep.yaml
+
+Example:
+
+/arch/arm64/boot/dts/rockchip/rk3399pro-rock-pi-n10.dt.yaml: pinctrl:
+sleep: {'ddrio-pwroff': {'rockchip,pins': [[0, 1, 1, 168]]},
+'ap-pwroff': {'rockchip,pins': [[1, 5, 1, 168]]}} is not of type 'array'
+	From schema: /Documentation/devicetree/bindings/powerpc/sleep.yaml
+
+On 10/8/20 4:24 PM, Rob Herring wrote:
+> Document the PowerPC specific 'sleep' property as a schema. It is
+> currently only documented in booting-without-of.rst which is getting
+> removed.
+> 
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../devicetree/bindings/powerpc/sleep.yaml    | 47 +++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/sleep.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/powerpc/sleep.yaml b/Documentation/devicetree/bindings/powerpc/sleep.yaml
+> new file mode 100644
+> index 000000000000..6494c7d08b93
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/sleep.yaml
+> @@ -0,0 +1,47 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/sleep.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: PowerPC sleep property
+> +
+> +maintainers:
+> +  - Rob Herring <robh@kernel.org>
+> +
+> +description: |
+> +  Devices on SOCs often have mechanisms for placing devices into low-power
+> +  states that are decoupled from the devices' own register blocks.  Sometimes,
+> +  this information is more complicated than a cell-index property can
+> +  reasonably describe.  Thus, each device controlled in such a manner
+> +  may contain a "sleep" property which describes these connections.
+> +
+> +  The sleep property consists of one or more sleep resources, each of
+> +  which consists of a phandle to a sleep controller, followed by a
+> +  controller-specific sleep specifier of zero or more cells.
+> +
+> +  The semantics of what type of low power modes are possible are defined
+> +  by the sleep controller.  Some examples of the types of low power modes
+> +  that may be supported are:
+> +
+> +   - Dynamic: The device may be disabled or enabled at any time.
+> +   - System Suspend: The device may request to be disabled or remain
+> +     awake during system suspend, but will not be disabled until then.
+> +   - Permanent: The device is disabled permanently (until the next hard
+> +     reset).
+> +
+> +  Some devices may share a clock domain with each other, such that they should
+> +  only be suspended when none of the devices are in use.  Where reasonable,
+> +  such nodes should be placed on a virtual bus, where the bus has the sleep
+> +  property.  If the clock domain is shared among devices that cannot be
+> +  reasonably grouped in this manner, then create a virtual sleep controller
+> +  (similar to an interrupt nexus, except that defining a standardized
+> +  sleep-map should wait until its necessity is demonstrated).
+> +
+> +select: true
+> +
+> +properties:
+> +  sleep:
+> +    $ref: /schemas/types.yaml#definitions/phandle-array
+> +
+> +additionalProperties: true
+> 
 
