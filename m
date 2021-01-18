@@ -1,72 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930C62F99FF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 07:39:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C61C42F9C1E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 11:00:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DK2FM6NgJzDqSv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 17:39:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DK6jS6D6NzDqS4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 21:00:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
- helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=N0eb0hKe; dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
- [IPv6:2607:f8b0:4864:20::629])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=lIY9bYin; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DK20t092FzDqCD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jan 2021 17:28:29 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id b8so8072627plh.12
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jan 2021 22:28:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=UiAmv+Y6nRSowY9FUmRqMjFf96IEIuV+ew6LphQamhM=;
- b=N0eb0hKejT3cF5qk+iys/MlopNKWN6fTNAyXS5tzBZ9o6kiIOH7SPkQGqfW9G1jPEL
- XBsRMx/rbAIq2ZNtH6cx3VA2h94/5YnaJWhH6Ca1MHuPFGI+/4cBi+s9qvLAGwyc6pHW
- EGcXEAsku6Y8qx+sa6WxHS6uaxO/eVS747bLJ+33dx0Wkac69eeoVkhlEedBGDx3I/K2
- 3E+Par39Phq9+NtG85LbR/IhzERxsjUQVW8CZkK7l3eWkN8kG9BThxj1rIMMqJIRuZiC
- HwbblkJfjCL9Uch6JzlJNmb+4EYlYNr2INLmKQK3A95xURwxPdW6/PL6nHzn3SpMRACa
- cvjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=UiAmv+Y6nRSowY9FUmRqMjFf96IEIuV+ew6LphQamhM=;
- b=fvJyJSVwQWpM2ADiEFuQ34M3qDt26FIH+2iJU7wgEvaWmK0Vvx1GVqP080BxkhnEvp
- s5REcWj5DthNhwlM8xvtmLCia07bwB2yPTA4KOanfmvhgEfnk1p+qnfiZBLOPJ90Cftb
- owBMK+Q6Nnko4KaqUo4sbUX7J2KADgE+tVjhrCojvM/QLYC2dG4+QLZiLyhPs+Vbbzbm
- WjqzkqW+MPh/HGb9c+n1gCDzbDZALMQBd/FKvgsu8f5eL31WYhPn+oBryAhdNATiKhYI
- YKtVlN3/M2iGoaL/FL/ZEwfy6RPqPEPY0SZZ7iE81p3qLsCRE33tZzlstz4YsI0o2uy0
- axwA==
-X-Gm-Message-State: AOAM531u48Kc3sbT5gGCYLOLNo8UZPEyTKHnCf/qGz+Tr/155pOakQpx
- kLWOJhv9FSNrxZEMCCZwpaY=
-X-Google-Smtp-Source: ABdhPJy8axW3TJYhPYIy4ERbkxXXE2ScyvW18xHdn1mnhayeW21IiVY99Gm9u6CdAigBEAXn93qPRg==
-X-Received: by 2002:a17:90b:1649:: with SMTP id
- il9mr20972704pjb.62.1610951307059; 
- Sun, 17 Jan 2021 22:28:27 -0800 (PST)
-Received: from bobo.ibm.com ([124.170.13.62])
- by smtp.gmail.com with ESMTPSA id w25sm8502318pfg.103.2021.01.17.22.28.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Jan 2021 22:28:26 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: kvm-ppc@vger.kernel.org
-Subject: [PATCH 4/4] KVM: PPC: Book3S HV: Use POWER9 SLBIA IH=6 variant to
- clear SLB
-Date: Mon, 18 Jan 2021 16:28:09 +1000
-Message-Id: <20210118062809.1430920-5-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20210118062809.1430920-1-npiggin@gmail.com>
-References: <20210118062809.1430920-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DK6gc5pyrzDqNX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jan 2021 20:58:52 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10I9WPvo080519; Mon, 18 Jan 2021 04:32:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=WxAb0VXeJrJNS5LodmQVdUbWo16N+IfRjsa1wS1ZlgU=;
+ b=lIY9bYin6RRcoBXRKOJt4MXzeKVJa6rNiUDsNCLnPl0appJP9Iq2h3sE8ql9lFRxEthL
+ jpzzvYPZG9VsA7LQPH7+lE8816qM9RKpgo+FP1TjiHL1pKY7lH0bbj3aYvsXgedgNA1/
+ nFUL1KK8dT6fcKSFX9hI5xtalTH/+s2GBRxqX1MsqnTyTxJ9k7jbJuT8QZi2ihGUjMqd
+ 9nOeFvBQplnoQlkUFs60tIesROJlA2VZ9EPrgoOC4TLk/ryBrNYi6saORqAhvKaa8nwD
+ socHxpYI5MN2G39X7XnoPySuLEKxXv10JR2DHCWH9vfJMXqMRBJEGMWL1grg6h/R9toW JQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3657g9gg34-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Jan 2021 04:32:31 -0500
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10I9WTEh080998;
+ Mon, 18 Jan 2021 04:32:29 -0500
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3657g9gfqv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Jan 2021 04:32:27 -0500
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10I9RIhT019906;
+ Mon, 18 Jan 2021 09:31:51 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 363qs7hvhj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Jan 2021 09:31:50 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 10I9VgX525821548
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 18 Jan 2021 09:31:42 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D6FA84C052;
+ Mon, 18 Jan 2021 09:31:47 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD77B4C044;
+ Mon, 18 Jan 2021 09:31:46 +0000 (GMT)
+Received: from fir03.in.ibm.com (unknown [9.121.59.65])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 18 Jan 2021 09:31:46 +0000 (GMT)
+From: Sandipan Das <sandipan@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] selftests/powerpc: Fix exit status of pkey tests
+Date: Mon, 18 Jan 2021 15:01:45 +0530
+Message-Id: <20210118093145.10134-1-sandipan@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-18_07:2021-01-15,
+ 2021-01-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 malwarescore=0
+ lowpriorityscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ clxscore=1011 mlxscore=0 phishscore=0 mlxlogscore=999 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101180053
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,50 +98,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: harish@linux.ibm.com, aneesh.kumar@linux.ibm.com, efuller@redhat.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-IH=6 may preserve hypervisor real-mode ERAT entries and is the
-recommended SLBIA hint for switching partitions.
+Since main() does not return a value explicitly, the
+return values from FAIL_IF() conditions are ignored
+and the tests can still pass irrespective of failures.
+This makes sure that we always explicitly return the
+correct test exit status.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reported-by: Eirik Fuller <efuller@redhat.com>
+Fixes: 1addb6444791 ("selftests/powerpc: Add test for execute-disabled pkeys")
+Fixes: c27f2fd1705a ("selftests/powerpc: Add test for pkey siginfo verification")
+Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
 ---
- arch/powerpc/kvm/book3s_hv_rmhandlers.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/powerpc/mm/pkey_exec_prot.c | 2 +-
+ tools/testing/selftests/powerpc/mm/pkey_siginfo.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index 9f0fdbae4b44..8cf1f69f442e 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -898,7 +898,7 @@ BEGIN_MMU_FTR_SECTION
- 	/* Radix host won't have populated the SLB, so no need to clear */
- 	li	r6, 0
- 	slbmte	r6, r6
--	slbia
-+	PPC_SLBIA(6)
- 	ptesync
- END_MMU_FTR_SECTION_IFCLR(MMU_FTR_TYPE_RADIX)
+diff --git a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+index 9e5c7f3f498a..0af4f02669a1 100644
+--- a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
++++ b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+@@ -290,5 +290,5 @@ static int test(void)
  
-@@ -1506,7 +1506,7 @@ guest_exit_cont:		/* r9 = vcpu, r12 = trap, r13 = paca */
- 	/* Finally clear out the SLB */
- 	li	r0,0
- 	slbmte	r0,r0
--	slbia
-+	PPC_SLBIA(6)
- 	ptesync
- 	stw	r5,VCPU_SLB_MAX(r9)
+ int main(void)
+ {
+-	test_harness(test, "pkey_exec_prot");
++	return test_harness(test, "pkey_exec_prot");
+ }
+diff --git a/tools/testing/selftests/powerpc/mm/pkey_siginfo.c b/tools/testing/selftests/powerpc/mm/pkey_siginfo.c
+index 4f815d7c1214..2db76e56d4cb 100644
+--- a/tools/testing/selftests/powerpc/mm/pkey_siginfo.c
++++ b/tools/testing/selftests/powerpc/mm/pkey_siginfo.c
+@@ -329,5 +329,5 @@ static int test(void)
  
-@@ -3329,7 +3329,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
- 
- 	/* Clear hash and radix guest SLB, see guest_exit_short_path comment. */
- 	slbmte	r0, r0
--	slbia
-+	PPC_SLBIA(6)
- 
- BEGIN_MMU_FTR_SECTION
- 	b	4f
+ int main(void)
+ {
+-	test_harness(test, "pkey_siginfo");
++	return test_harness(test, "pkey_siginfo");
+ }
 -- 
-2.23.0
+2.25.1
 
