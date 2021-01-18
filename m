@@ -1,81 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22292F9894
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 05:15:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BC02F9898
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 05:17:50 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DJz311bqnzDrPv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 15:15:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DJz6265SXzDrPy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 15:17:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::530;
+ helo=mail-pg1-x530.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=lH9p2Kbx; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
+ header.s=20150623 header.b=GeK0Qowi; dkim-atps=neutral
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
+ [IPv6:2607:f8b0:4864:20::530])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DJz0d3Mn0zDqm6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jan 2021 15:13:02 +1100 (AEDT)
-Received: by mail-pj1-x1030.google.com with SMTP id cq1so8631054pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jan 2021 20:13:02 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DJz446mnJzDqm6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jan 2021 15:16:04 +1100 (AEDT)
+Received: by mail-pg1-x530.google.com with SMTP id n10so10128618pgl.10
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jan 2021 20:16:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=tLTmDb7Sn99oTxNR4i6w76cwCUK+qAEpFF0lq63zckA=;
- b=lH9p2Kbxl5mIleldDx2khKoRFsywv82NlKBXOvROwPImratdO6+Cy57Y7iyWEyUI+W
- O/uKsoe/HLzHnGPpFNEHjUW0512YEQBYL0NWZtLURwcQsFj0PH7RAcASCfDqcbEC4s2Z
- fUOEtfLTZMo+7HQyWCZ8HFVq5D/yr5SreB8hRKNjngEtV9qQYsD9H5KBUc+Oum9deu7G
- 257tsoXJglysLaVW6+UnOu+KLI9TEkvpcUpyHqE0Glhezfg6o32uQnTWTvipHGLoWI/0
- k3+RTV0JO8xvZmKDdFXKpvARJ9hWALy3A7BkibxeLldJBq3qgx2EKDVgaUUBeTlqykAe
- 3VWQ==
+ bh=ZMsaSxf4zuxG0jJN9z4+6EOG9sctH6uCfuBTKntZy5M=;
+ b=GeK0QowikC5oIe4mj0Sa7NaG1ZFyB5oqbcdB4aR5FKY8KEtfScjW96/V8xh3lkEbnX
+ qSSeEfBnYXBvuLm2TgDuRNf+fKpui+Tl3zy66exm3GB12HQm5wj9jgaEGzLCfhocNvEF
+ XFmaGorh5a/25jJFw0wLtpv5PjOu4hgBZdowesdGBpOdnRxkX5CbR7Lv/NohGTPwoNvF
+ X2OkiRDXjThpYMjpezRl2mqEqaxmxo43PDRFDbkw5ABPJwamqI9iFjjh2oCaM5GfUSRA
+ 8DEi53eOlh1LMgRoTPrUgF0VW6b/vvrZBRNM6XJeSx7QOFlO/1EcHc3N7giqnj/M5ntb
+ BAdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=tLTmDb7Sn99oTxNR4i6w76cwCUK+qAEpFF0lq63zckA=;
- b=qZjZL5aHhxspSFsYaCdGj+o3BGAq9ICbaXGQfvOB4ietpM6304rs4WIeebUsdNo5iU
- LADgras5FuAxQv7jmg6OfkFJdRCwAuPkA4nAgllXhxkmUOrOn7r/NU3aaHEDnlKKnAkc
- jVGdGN1DaHT0F8Jh+Asxe+Y5unU9a57Ld2P9aQuAwMN/wdAQUzzWKV8+OzMRG70VewtL
- tpBoopJHMMbpYfUlzQXM0ipmxTsLoiTUQTvmTRWmPB7uJvLa2UdBUQc5HQnwfmKHK4tA
- YobT/42sOTO3TJ5ZPz0d/0Qyt1jF8TK7ioVgyp4DKqY1Uyt92MPJz1XQNZXjle7iKCQZ
- gNzg==
-X-Gm-Message-State: AOAM531NxMFgbAmEUNXdbfMtdBqZcmHoiOhyyj8a0v7zk/oMmDwhhFQ8
- m2Qr8VxKrHwb8wiu7ELe7ej0TA==
-X-Google-Smtp-Source: ABdhPJwNGwBPbg78bYgEnTJjIT7C2CX8mMffcE1UrJ0CAuF/YXUt1ik+EheJcoXrw3mKGzDt5xvWvA==
-X-Received: by 2002:a17:902:9894:b029:da:5698:7f7b with SMTP id
- s20-20020a1709029894b02900da56987f7bmr24665976plp.78.1610943178095; 
- Sun, 17 Jan 2021 20:12:58 -0800 (PST)
+ bh=ZMsaSxf4zuxG0jJN9z4+6EOG9sctH6uCfuBTKntZy5M=;
+ b=cdoyste8mv7elGbJ/xLva3/oxooOdOGzsYGuhy56fY9oiMYxdulLOC5cgEzCwRlPc4
+ 4H+PJJHbhrQFPA7TCq54Ku1OeteAJkmnIyMTw2It3lJegXId/VpRPpx9sGlf9WEjX8q4
+ ztehJd/uOdNsVlJGuAEt5bqHXbrDPsPYsx0yK4YTg4RGXYXbAOs9NL3zrrvune6fREWo
+ 0055cGnrZ8rZIb4apcGhLYCTE2o0HnF00NFudwvvfERGNkzFK19MFpZug9AaQsxBG9LI
+ zp/lO3q6Iq+4v+/n928iXaiPdsiY+t5w4xRBDdB9klWTaGY6mu+bU7HqNxEig6my/fQ+
+ f9nA==
+X-Gm-Message-State: AOAM53370dU9umjVTp+uP5HCTgsDcq6zo0798pvIETYZ4E2PPU2CkwLN
+ qVXGvz6v3F4Pfm0wV06Jx91obg==
+X-Google-Smtp-Source: ABdhPJzBLRrL6KuKDeHK5ZyLQEp//KGu0qVa3LxwviOpPXCo6QBFUFLER/WKJxaWVUBi2zUip97s9A==
+X-Received: by 2002:a63:4966:: with SMTP id y38mr23946598pgk.428.1610943361042; 
+ Sun, 17 Jan 2021 20:16:01 -0800 (PST)
 Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
  [124.171.107.241])
- by smtp.gmail.com with UTF8SMTPSA id z3sm14383559pfq.89.2021.01.17.20.12.53
+ by smtp.gmail.com with UTF8SMTPSA id me5sm9054855pjb.19.2021.01.17.20.15.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 17 Jan 2021 20:12:57 -0800 (PST)
-Subject: Re: [PATCH 6/6] powerpc/rtas: constrain user region allocation to RMA
+ Sun, 17 Jan 2021 20:16:00 -0800 (PST)
+Subject: Re: [PATCH 5/6] powerpc/rtas: rename RTAS_RMOBUF_MAX to
+ RTAS_USER_REGION_SIZE
 To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 References: <20210114220004.1138993-1-nathanl@linux.ibm.com>
- <20210114220004.1138993-7-nathanl@linux.ibm.com>
- <5276937f-b72a-89ba-d0d8-19e4be55ae35@ozlabs.ru>
- <87czy6xlap.fsf@linux.ibm.com>
+ <20210114220004.1138993-6-nathanl@linux.ibm.com>
+ <d91c5b15-7c3d-a332-45ac-1b865341e962@ozlabs.ru>
+ <87a6taxkgf.fsf@linux.ibm.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <3c5141d5-ee78-3771-3410-37635d423945@ozlabs.ru>
-Date: Mon, 18 Jan 2021 15:12:51 +1100
+Message-ID: <6905c3d2-e524-b6d8-036f-7812ea3f8b85@ozlabs.ru>
+Date: Mon, 18 Jan 2021 15:15:55 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:85.0) Gecko/20100101
  Thunderbird/85.0
 MIME-Version: 1.0
-In-Reply-To: <87czy6xlap.fsf@linux.ibm.com>
+In-Reply-To: <87a6taxkgf.fsf@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,122 +95,48 @@ Sender: "Linuxppc-dev"
 
 
 
-On 16/01/2021 02:38, Nathan Lynch wrote:
+On 16/01/2021 02:56, Nathan Lynch wrote:
 > Alexey Kardashevskiy <aik@ozlabs.ru> writes:
 >> On 15/01/2021 09:00, Nathan Lynch wrote:
->>> Memory locations passed as arguments from the OS to RTAS usually need
->>> to be addressable in 32-bit mode and must reside in the Real Mode
->>> Area. On PAPR guests, the RMA starts at logical address 0 and is the
->>> first logical memory block reported in the LPAR’s device tree.
->>>
->>> On powerpc targets with RTAS, Linux makes available to user space a
->>> region of memory suitable for arguments to be passed to RTAS via
->>> sys_rtas(). This region (rtas_rmo_buf) is allocated via the memblock
->>> API during boot in order to ensure that it satisfies the requirements
->>> described above.
->>>
->>> With radix MMU, the upper limit supplied to the memblock allocation
->>> can exceed the bounds of the first logical memory block, since
->>> ppc64_rma_size is ULONG_MAX and RTAS_INSTANTIATE_MAX is 1GB. (512MB is
->>> a common size of the first memory block according to a small sample of
->>> LPARs I have checked.) This leads to failures when user space invokes
->>> an RTAS function that uses a work area, such as
->>> ibm,configure-connector.
->>>
->>> Alter the determination of the upper limit for rtas_rmo_buf's
->>> allocation to consult the device tree directly, ensuring placement
->>> within the RMA regardless of the MMU in use.
+>>> diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
+>>> index 332e1000ca0f..1aa7ab1cbc84 100644
+>>> --- a/arch/powerpc/include/asm/rtas.h
+>>> +++ b/arch/powerpc/include/asm/rtas.h
+>>> @@ -19,8 +19,11 @@
+>>>    #define RTAS_UNKNOWN_SERVICE (-1)
+>>>    #define RTAS_INSTANTIATE_MAX (1ULL<<30) /* Don't instantiate rtas at/above this value */
+>>>    
+>>> -/* Buffer size for ppc_rtas system call. */
+>>> -#define RTAS_RMOBUF_MAX (64 * 1024)
+>>> +/* Work areas shared with RTAS must be 4K, naturally aligned. */
 >>
->> Can we tie this with RTAS (which also needs to be in RMA) and simply add
->> extra 64K in prom_instantiate_rtas() and advertise this address
->> (ALIGH_UP(rtas-base + rtas-size, PAGE_SIZE)) to the user space? We do
->> not need this RMO area before that point.
+>> Why exactly 4K and not (for example) PAGE_SIZE?
 > 
-> Can you explain more about what advantage that would bring? I'm not
-> seeing it. It's a more significant change than what I've written
-> here.
+> 4K is a platform requirement and isn't related to Linux's configured
+> page size. See the PAPR specification for RTAS functions such as
+> ibm,configure-connector, ibm,update-nodes, ibm,update-properties.
+
+Good, since we are documenting things here - add to the comment ("per 
+PAPR")?
 
 
-We already allocate space for RTAS and (like RMO) it needs to be in RMA, 
-and RMO is useless without RTAS. We can reuse RTAS allocation code for 
-RMO like this:
-
-===
-diff --git a/arch/powerpc/kernel/prom_init.c 
-b/arch/powerpc/kernel/prom_init.c
-index e9d4eb6144e1..d9527d3e01d2 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -1821,7 +1821,8 @@ static void __init prom_instantiate_rtas(void)
-         if (size == 0)
-                 return;
-
--       base = alloc_down(size, PAGE_SIZE, 0);
-+       /* One page for RTAS, one for RMO */
-+       base = alloc_down(size, PAGE_SIZE + PAGE_SIZE, 0);
-         if (base == 0)
-                 prom_panic("Could not allocate memory for RTAS\n");
-
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index d126d71ea5bd..885d95cf4ed3 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -1186,6 +1186,7 @@ void __init rtas_initialize(void)
-         rtas.size = size;
-         no_entry = of_property_read_u32(rtas.dev, "linux,rtas-entry", 
-&entry);
-         rtas.entry = no_entry ? rtas.base : entry;
-+       rtas_rmo_buf = rtas.base + PAGE_SIZE;
-
-         /* If RTAS was found, allocate the RMO buffer for it and look for
-          * the stop-self token if any
-@@ -1196,11 +1197,6 @@ void __init rtas_initialize(void)
-                 ibm_suspend_me_token = rtas_token("ibm,suspend-me");
-         }
-  #endif
--       rtas_rmo_buf = memblock_phys_alloc_range(RTAS_RMOBUF_MAX, PAGE_SIZE,
--                                                0, rtas_region);
--       if (!rtas_rmo_buf)
--               panic("ERROR: RTAS: Failed to allocate %lx bytes below 
-%pa\n",
--                     PAGE_SIZE, &rtas_region);
-===
-
-
-May be store in the FDT as "linux,rmo-base" next to "linux,rtas-base", 
-for clarity, as sharing symbols between prom and main kernel is a bit 
-tricky.
-
-The benefit is that we do not do the same thing   (== find 64K in RMA) 
-in 2 different ways and if the RMO allocated my way is broken - we'll 
-know it much sooner as RTAS itself will break too.
-
-
-> Would it interact well with kexec?
-
-
-Good point. For this, the easiest will be setting rtas-size in the FDT 
-to the allocated RTAS space (PAGE_SIZE*2 with the hunk above applied). 
-Probably.
-
-
->> And probably do the same with per-cpu RTAS argument structures mentioned
->> in the cover letter?
+> There are other calls with work area parameters where alignment isn't
+> specified (e.g. ibm,get-system-parameter) but 4KB alignment is a safe
+> choice for those.
 > 
-> I don't think so, since those need to be allocated with the pacas and
-> limited to the maximum possible CPUs, which is discovered by the kernel
-> much later.
+>>> +#define RTAS_WORK_AREA_SIZE   4096
+>>> +
+>>> +/* Work areas allocated for user space access. */
+>>> +#define RTAS_USER_REGION_SIZE (RTAS_WORK_AREA_SIZE * 16)
+>>
+>> This is still 64K but no clarity why. There is 16 of something, what
+>> is it?
+> 
+> There are 16 4KB work areas in the region. I can name it
+> RTAS_NR_USER_WORK_AREAS or similar.
 
 
-The first cell of /proc/device-tree/cpus/ibm,drc-indexes is the number 
-of cores, it is there when RTAS is instantiated, we know SMT after 
-"ibm,client-architecture-support" (if I remember correctly).
-
-
-> But maybe I misunderstand what you're suggesting.
-
-
-Usually it is me missing the bigger picture :)
+Why 16? PAPR (then add "per PAPR") or we just like 16 ("should be enough")?
 
 
 -- 
