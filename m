@@ -1,81 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BC02F9898
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 05:17:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E48892F98DB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 05:49:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DJz6265SXzDrPy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 15:17:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DJzpD0PYFzDrCM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jan 2021 15:49:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::530;
- helo=mail-pg1-x530.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::536;
+ helo=mail-pg1-x536.google.com; envelope-from=viresh.kumar@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=GeK0Qowi; dkim-atps=neutral
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
- [IPv6:2607:f8b0:4864:20::530])
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=LcrQFfbq; dkim-atps=neutral
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
+ [IPv6:2607:f8b0:4864:20::536])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DJz446mnJzDqm6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jan 2021 15:16:04 +1100 (AEDT)
-Received: by mail-pg1-x530.google.com with SMTP id n10so10128618pgl.10
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jan 2021 20:16:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=ZMsaSxf4zuxG0jJN9z4+6EOG9sctH6uCfuBTKntZy5M=;
- b=GeK0QowikC5oIe4mj0Sa7NaG1ZFyB5oqbcdB4aR5FKY8KEtfScjW96/V8xh3lkEbnX
- qSSeEfBnYXBvuLm2TgDuRNf+fKpui+Tl3zy66exm3GB12HQm5wj9jgaEGzLCfhocNvEF
- XFmaGorh5a/25jJFw0wLtpv5PjOu4hgBZdowesdGBpOdnRxkX5CbR7Lv/NohGTPwoNvF
- X2OkiRDXjThpYMjpezRl2mqEqaxmxo43PDRFDbkw5ABPJwamqI9iFjjh2oCaM5GfUSRA
- 8DEi53eOlh1LMgRoTPrUgF0VW6b/vvrZBRNM6XJeSx7QOFlO/1EcHc3N7giqnj/M5ntb
- BAdA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DJzmT5CchzDr2J
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jan 2021 15:47:37 +1100 (AEDT)
+Received: by mail-pg1-x536.google.com with SMTP id c132so10203932pga.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jan 2021 20:47:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=rTJZHyk4t8Gugvj+lnFByV1qa/S239wOnkv0tkeq884=;
+ b=LcrQFfbq2DgyjtEw+XwXil8SMVWAvoBGFPQ1xNnHeqrSjU6FHo10ZmvcBDhRIVephc
+ 6/Bjug8Iwkbe987mh30YDtQ1eNA0JSnEioxymlCsS6zgy5BaSmGqIKVgxvXci7qHz+CX
+ Hcj7UhFuI6eQ5WPOWQeMJ6ALX26h7YVUUQG7uwDcfzyewyPiv7RA/6wXxV2ijs5HtGl2
+ N3yCD9hSxLa/e1pkMF3WZUCutFASEXihiMcG7IPYhM6JogqWNQH3TF8vD3pR0xcOovzJ
+ EEiwq/afZTQz3Je1Pi+IdBVGrlLftD3O9oUuPrlhGDhm40aNt19SeVlqni9aXTd+/9S2
+ tRGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=ZMsaSxf4zuxG0jJN9z4+6EOG9sctH6uCfuBTKntZy5M=;
- b=cdoyste8mv7elGbJ/xLva3/oxooOdOGzsYGuhy56fY9oiMYxdulLOC5cgEzCwRlPc4
- 4H+PJJHbhrQFPA7TCq54Ku1OeteAJkmnIyMTw2It3lJegXId/VpRPpx9sGlf9WEjX8q4
- ztehJd/uOdNsVlJGuAEt5bqHXbrDPsPYsx0yK4YTg4RGXYXbAOs9NL3zrrvune6fREWo
- 0055cGnrZ8rZIb4apcGhLYCTE2o0HnF00NFudwvvfERGNkzFK19MFpZug9AaQsxBG9LI
- zp/lO3q6Iq+4v+/n928iXaiPdsiY+t5w4xRBDdB9klWTaGY6mu+bU7HqNxEig6my/fQ+
- f9nA==
-X-Gm-Message-State: AOAM53370dU9umjVTp+uP5HCTgsDcq6zo0798pvIETYZ4E2PPU2CkwLN
- qVXGvz6v3F4Pfm0wV06Jx91obg==
-X-Google-Smtp-Source: ABdhPJzBLRrL6KuKDeHK5ZyLQEp//KGu0qVa3LxwviOpPXCo6QBFUFLER/WKJxaWVUBi2zUip97s9A==
-X-Received: by 2002:a63:4966:: with SMTP id y38mr23946598pgk.428.1610943361042; 
- Sun, 17 Jan 2021 20:16:01 -0800 (PST)
-Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
- [124.171.107.241])
- by smtp.gmail.com with UTF8SMTPSA id me5sm9054855pjb.19.2021.01.17.20.15.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 17 Jan 2021 20:16:00 -0800 (PST)
-Subject: Re: [PATCH 5/6] powerpc/rtas: rename RTAS_RMOBUF_MAX to
- RTAS_USER_REGION_SIZE
-To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210114220004.1138993-1-nathanl@linux.ibm.com>
- <20210114220004.1138993-6-nathanl@linux.ibm.com>
- <d91c5b15-7c3d-a332-45ac-1b865341e962@ozlabs.ru>
- <87a6taxkgf.fsf@linux.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <6905c3d2-e524-b6d8-036f-7812ea3f8b85@ozlabs.ru>
-Date: Mon, 18 Jan 2021 15:15:55 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:85.0) Gecko/20100101
- Thunderbird/85.0
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=rTJZHyk4t8Gugvj+lnFByV1qa/S239wOnkv0tkeq884=;
+ b=ZGqoWr+IB8HODky38yzidWcCHFBc7q+C0Y/Cejgg9QgQ6OHNqmQcqn/nZK4JlWOVO0
+ 0lZFNmcLXXeABPgLI7vcJOqE/AgBlFUVigj4fAb1ArQMQTTvC5Kkdb54qP+viCpujpPJ
+ 5QUJvWz8/dznNIX4clFMWyM7O31hlulv1KItDSbcqDcimpYQ95qx4dT7rlYI1QgbN2Wq
+ Kd8Blx0u1Ital9I1+NPNrZq4vlPc3j0cPO8Bgr93R9TQSCNcLl7GL8oJ1IYG3y3zCIKx
+ 9+OE6OiEmhr3AsHIcPDKgZqZX2sZIb3H8CUbT1H/dgozsmMhUxQuyz9Luieps6/h8UnA
+ kArw==
+X-Gm-Message-State: AOAM531ZN6x310QYo3HhizNSkqTbfjLhU8MQT5o3MlIQqwUN6xaaSj5W
+ PkCQQ7Gn8iB1vBabXRIs4n838A==
+X-Google-Smtp-Source: ABdhPJynUWLanc6SluN4pJDVPiUJTTJKU/6YxXhX0vjc19aR9mWq5EEgNrgbdwzek/NvTyhBfsFB0A==
+X-Received: by 2002:a62:7e46:0:b029:19e:786b:9615 with SMTP id
+ z67-20020a627e460000b029019e786b9615mr24394761pfc.37.1610945252531; 
+ Sun, 17 Jan 2021 20:47:32 -0800 (PST)
+Received: from localhost ([122.172.59.240])
+ by smtp.gmail.com with ESMTPSA id 145sm14726406pge.88.2021.01.17.20.47.30
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Sun, 17 Jan 2021 20:47:31 -0800 (PST)
+Date: Mon, 18 Jan 2021 10:17:29 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Robert Richter <rric@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jeremy Kerr <jk@ozlabs.org>
+Subject: Re: [PATCH 10/18] arch: powerpc: Stop building and using oprofile
+Message-ID: <20210118044729.g24gnfdmao7or5kp@vireshk-i7>
+References: <cover.1610622251.git.viresh.kumar@linaro.org>
+ <fd155a0a1e52650ddc9ec57a1d211fdc777beddb.1610622251.git.viresh.kumar@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <87a6taxkgf.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fd155a0a1e52650ddc9ec57a1d211fdc777beddb.1610622251.git.viresh.kumar@linaro.org>
+User-Agent: NeoMutt/20180716-391-311a52
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,57 +83,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, brking@linux.ibm.com, ajd@linux.ibm.com,
- aneesh.kumar@linux.ibm.com
+Cc: Arnd Bergmann <arnd@kernel.org>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Christoph Hellwig <hch@infradead.org>, linux-kernel@vger.kernel.org,
+ anmar.oueja@linaro.org, oprofile-list@lists.sf.net,
+ Alexander Viro <viro@zeniv.linux.org.uk>, William Cohen <wcohen@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 16/01/2021 02:56, Nathan Lynch wrote:
-> Alexey Kardashevskiy <aik@ozlabs.ru> writes:
->> On 15/01/2021 09:00, Nathan Lynch wrote:
->>> diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
->>> index 332e1000ca0f..1aa7ab1cbc84 100644
->>> --- a/arch/powerpc/include/asm/rtas.h
->>> +++ b/arch/powerpc/include/asm/rtas.h
->>> @@ -19,8 +19,11 @@
->>>    #define RTAS_UNKNOWN_SERVICE (-1)
->>>    #define RTAS_INSTANTIATE_MAX (1ULL<<30) /* Don't instantiate rtas at/above this value */
->>>    
->>> -/* Buffer size for ppc_rtas system call. */
->>> -#define RTAS_RMOBUF_MAX (64 * 1024)
->>> +/* Work areas shared with RTAS must be 4K, naturally aligned. */
->>
->> Why exactly 4K and not (for example) PAGE_SIZE?
+On 14-01-21, 17:05, Viresh Kumar wrote:
+> The "oprofile" user-space tools don't use the kernel OPROFILE support
+> any more, and haven't in a long time. User-space has been converted to
+> the perf interfaces.
 > 
-> 4K is a platform requirement and isn't related to Linux's configured
-> page size. See the PAPR specification for RTAS functions such as
-> ibm,configure-connector, ibm,update-nodes, ibm,update-properties.
-
-Good, since we are documenting things here - add to the comment ("per 
-PAPR")?
-
-
-> There are other calls with work area parameters where alignment isn't
-> specified (e.g. ibm,get-system-parameter) but 4KB alignment is a safe
-> choice for those.
+> This commits stops building oprofile for powerpc and removes any
+> reference to it from directories in arch/powerpc/ apart from
+> arch/powerpc/oprofile, which will be removed in the next commit (this is
+> broken into two commits as the size of the commit became very big, ~5k
+> lines).
 > 
->>> +#define RTAS_WORK_AREA_SIZE   4096
->>> +
->>> +/* Work areas allocated for user space access. */
->>> +#define RTAS_USER_REGION_SIZE (RTAS_WORK_AREA_SIZE * 16)
->>
->> This is still 64K but no clarity why. There is 16 of something, what
->> is it?
+> Note that the member "oprofile_cpu_type" in "struct cpu_spec" isn't
+> removed as it was also used by other parts of the code.
 > 
-> There are 16 4KB work areas in the region. I can name it
-> RTAS_NR_USER_WORK_AREAS or similar.
+> Suggested-by: Christoph Hellwig <hch@infradead.org>
+> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> ---
+>  arch/powerpc/Kconfig                          |   1 -
+>  arch/powerpc/Makefile                         |   2 -
+>  arch/powerpc/configs/44x/akebono_defconfig    |   1 -
+>  arch/powerpc/configs/44x/currituck_defconfig  |   1 -
+>  arch/powerpc/configs/44x/fsp2_defconfig       |   1 -
+>  arch/powerpc/configs/44x/iss476-smp_defconfig |   1 -
+>  arch/powerpc/configs/cell_defconfig           |   1 -
+>  arch/powerpc/configs/g5_defconfig             |   1 -
+>  arch/powerpc/configs/maple_defconfig          |   1 -
+>  arch/powerpc/configs/pasemi_defconfig         |   1 -
+>  arch/powerpc/configs/pmac32_defconfig         |   1 -
+>  arch/powerpc/configs/powernv_defconfig        |   1 -
+>  arch/powerpc/configs/ppc64_defconfig          |   1 -
+>  arch/powerpc/configs/ppc64e_defconfig         |   1 -
+>  arch/powerpc/configs/ppc6xx_defconfig         |   1 -
+>  arch/powerpc/configs/ps3_defconfig            |   1 -
+>  arch/powerpc/configs/pseries_defconfig        |   1 -
+>  arch/powerpc/include/asm/cputable.h           |  20 ---
+>  arch/powerpc/include/asm/oprofile_impl.h      | 135 ------------------
+>  arch/powerpc/include/asm/spu.h                |  33 -----
+>  arch/powerpc/kernel/cputable.c                |  67 ---------
+>  arch/powerpc/kernel/dt_cpu_ftrs.c             |   2 -
+>  arch/powerpc/platforms/cell/Kconfig           |   5 -
+>  arch/powerpc/platforms/cell/spu_notify.c      |  55 -------
 
++ this..
 
-Why 16? PAPR (then add "per PAPR") or we just like 16 ("should be enough")?
-
+diff --git a/arch/powerpc/platforms/cell/Makefile b/arch/powerpc/platforms/cell/Makefile
+index 10064a33ca96..7ea6692f67e2 100644
+--- a/arch/powerpc/platforms/cell/Makefile
++++ b/arch/powerpc/platforms/cell/Makefile
+@@ -19,7 +19,6 @@ spu-priv1-$(CONFIG_PPC_CELL_COMMON)   += spu_priv1_mmio.o
+ spu-manage-$(CONFIG_PPC_CELL_COMMON)   += spu_manage.o
+ 
+ obj-$(CONFIG_SPU_BASE)                 += spu_callbacks.o spu_base.o \
+-                                          spu_notify.o \
+                                           spu_syscalls.o \
+                                           $(spu-priv1-y) \
+                                           $(spu-manage-y) \
 
 -- 
-Alexey
+viresh
