@@ -2,100 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39982FB2F0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 08:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A032FB355
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 08:41:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DKgG36V5dzDr0w
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 18:27:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DKgZx3qGRzDqGW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 18:41:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gPRGb6lX; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=CloMoG8R; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DKgD30XDFzDqyd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 18:25:22 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DKgT92XTqzDqyp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 18:36:44 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10J73fDp141028; Tue, 19 Jan 2021 02:12:53 -0500
+ 10J7X2kM113164; Tue, 19 Jan 2021 02:36:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=TjgaFPFDJH1Zmk+EzMNJQgevie8By4s9zWMwEvR//Lo=;
- b=gPRGb6lXM+mGqGH+seThTFc3N3rUpsS8X8QVKzuHcMRFuHUURfThfsB8YZCKmPHnB2Ne
- 9NgJHgddYYhJCrpEr1Da9CdIsheLpF2jyKTcVrNeS69FICG67Fa1GM6Yn7KAeiuISurp
- 4FIBtP259ujP5O1ikYGsfQEaYUu5S+26fylmtBL02CtD9HcKwBTLYNKCvBIhmQVPxkgq
- KyODj0p26OUxl0XixLgn2FX2WB5vDsz460HgHpuPjZRHx2pa4nuK93XWrw0QqrRoj79r
- RUMq/kreWzc+uAJnf4cW5i5VvPknivmpbmDexXhmfQTlAXARQTk4KyO09NVFwveJ0IcG jQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 365sm19mf5-1
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=+qIzXIBMsoplKGqI4+slcFF/1Ae/KuT5AYoNIFZCeYk=;
+ b=CloMoG8R9lJlgcj21AxKhZSfewBzaW6MojVjS9RNmPOAvb9x1itSGaEBvj+ZrQDl3xPJ
+ JmGcPBn8g2xLSBEobsBNThDqDI+MhYlCSX7F9oustC/MBaQFzhvRMWd4P+mjBfizuoDg
+ YtUCDV5/FHW15eMw8rEtVkw07DIMY5ayzq0KPe7MXWNtJMYeH3B78iEPLyMdUassSIt2
+ 7Jp6Mmqzkjx094Kuu/TYarmtiUxsDOWXJsu6+4+d2CQuB5hWRYOoERN+yQPpnX2LjuXk
+ NpNxnG2ZfiQqaC0g0i9iLBFAwF3TMbmfaBgcmXv0NaAYObvafN7FkOX2atqJ+n6dSRaf ow== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 365t87195n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Jan 2021 02:12:52 -0500
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10J75AUW003059;
- Tue, 19 Jan 2021 02:12:52 -0500
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 365sm19mej-1
+ Tue, 19 Jan 2021 02:36:37 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10J7W4SN004403;
+ Tue, 19 Jan 2021 07:36:34 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma01wdc.us.ibm.com with ESMTP id 363qs8vgxf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Jan 2021 02:12:52 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10J7032Q025006;
- Tue, 19 Jan 2021 07:12:50 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 363qdhat4d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Jan 2021 07:12:49 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 10J7Cl1r40763666
+ Tue, 19 Jan 2021 07:36:34 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10J7aXQL33423776
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Jan 2021 07:12:47 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BA9C3A4051;
- Tue, 19 Jan 2021 07:12:47 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 97971A4040;
- Tue, 19 Jan 2021 07:12:44 +0000 (GMT)
-Received: from [9.77.206.253] (unknown [9.77.206.253])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 19 Jan 2021 07:12:44 +0000 (GMT)
-Subject: Re: [RFC Qemu PATCH v2 1/2] spapr: drc: Add support for async hcalls
- at the drc level
-To: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>
-References: <160674929554.2492771.17651548703390170573.stgit@lep8c.aus.stglabs.ibm.com>
- <160674938210.2492771.1728601884822491679.stgit@lep8c.aus.stglabs.ibm.com>
- <20201221130853.15c8ddfd@bahia.lan> <20201228083800.GN6952@yekko.fritz.box>
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Message-ID: <3b47312a-217f-8df5-0bfd-1a653598abad@linux.ibm.com>
-Date: Tue, 19 Jan 2021 12:40:31 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
-MIME-Version: 1.0
-In-Reply-To: <20201228083800.GN6952@yekko.fritz.box>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+ Tue, 19 Jan 2021 07:36:33 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 573B42805E;
+ Tue, 19 Jan 2021 07:36:33 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 877EE2805C;
+ Tue, 19 Jan 2021 07:36:32 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.79.213.81])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 19 Jan 2021 07:36:32 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 01E2F2E2EE0; Tue, 19 Jan 2021 13:06:27 +0530 (IST)
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Nathan Lynch <nathanl@linux.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: [PATCH 0/2] powerpc/cacheinfo: Add "ibm,thread-groups" awareness
+Date: Tue, 19 Jan 2021 13:06:18 +0530
+Message-Id: <1611041780-8640-1-git-send-email-ego@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
  definitions=2021-01-19_01:2021-01-18,
  2021-01-19 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- spamscore=0 suspectscore=0 clxscore=1011 mlxlogscore=999 phishscore=0
- adultscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101190041
+ suspectscore=0 mlxscore=0
+ spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0 phishscore=0
+ malwarescore=0 mlxlogscore=860 clxscore=1015 lowpriorityscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101190044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,50 +91,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: xiaoguangrong.eric@gmail.com, linux-nvdimm@lists.01.org,
- aneesh.kumar@linux.ibm.com, mst@redhat.com, qemu-devel@nongnu.org,
- kvm-ppc@vger.kernel.org, shivaprasadbhat@gmail.com, qemu-ppc@nongnu.org,
- bharata@linux.vnet.ibm.com, imammedo@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks for the comments!
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
+Hi,
 
-On 12/28/20 2:08 PM, David Gibson wrote:
+Currently the cacheinfo code on powerpc indexes the "cache" objects
+(modelling the L1/L2/L3 caches) where the key is device-tree node
+corresponding to that cache. On some of the POWER server platforms
+thread-groups within the core share different sets of caches (Eg: On
+SMT8 POWER9 systems, threads 0,2,4,6 of a core share L1 cache and
+threads 1,3,5,7 of the same core share another L1 cache). On such
+platforms, there is a single device-tree node corresponding to that
+cache and the cache-configuration within the threads of the core is
+indicated via "ibm,thread-groups" device-tree property.
 
-> On Mon, Dec 21, 2020 at 01:08:53PM +0100, Greg Kurz wrote:
-...
->> The overall idea looks good but I think you should consider using
->> a thread pool to implement it. See below.
-> I am not convinced, however.  Specifically, attaching this to the DRC
-> doesn't make sense to me.  We're adding exactly one DRC related async
-> hcall, and I can't really see much call for another one.  We could
-> have other async hcalls - indeed we already have one for HPT resizing
-> - but attaching this to DRCs doesn't help for those.
+Since the current code is not aware of the "ibm,thread-groups"
+property, on the aforementoined systems, cacheinfo code still treats
+all the threads in the core to be sharing the cache because of the
+single device-tree node (In the earlier example, the cacheinfo code
+would says CPUs 0-7 share L1 cache).
 
-The semantics of the hcall made me think, if this is going to be
+In this patch series, we make the powerpc cacheinfo code aware of the
+"ibm,thread-groups" property. We indexe the "cache" objects by the
+key-pair (device-tree node, thread-group id). For any CPUX, for a
+given level of cache, the thread-group id is defined to be the first
+CPU in the "ibm,thread-groups" cache-group containing CPUX. For levels
+of cache which are not represented in "ibm,thread-groups" property,
+the thread-group id is -1.
 
-re-usable for future if implemented at DRC level. Other option
+We can now remove the helper function get_shared_cpu_map() and
+index_dir_to_cpu() since the cache->shared_cpu_map contains the
+correct satate of the thread-siblings sharing the cache.
 
-is to move the async-hcall-state/list into the NVDIMMState structure
+This has been tested on a SMT8 POWER9 system where L1 cache is split
+between groups of threads in the core and on an SMT8 POWER10 system
+where L1 and L2 caches are split between groups of threads in a core.
 
-in include/hw/mem/nvdimm.h and handle it with machine->nvdimms_state
+With this patch series, on POWER10 SMT8 system, we see the following
+reported via sysfs:
 
-at a global level.
+$ grep . /sys/devices/system/cpu/cpu[89]/cache/index[0123]/shared_cpu_list
+/sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list:8,10,12,14
+/sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list:8,10,12,14
+/sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list:8,10,12,14
+/sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list:8-15
+/sys/devices/system/cpu/cpu9/cache/index0/shared_cpu_list:9,11,13,15
+/sys/devices/system/cpu/cpu9/cache/index1/shared_cpu_list:9,11,13,15
+/sys/devices/system/cpu/cpu9/cache/index2/shared_cpu_list:9,11,13,15
+/sys/devices/system/cpu/cpu9/cache/index3/shared_cpu_list:8-15
 
+$ ppc64_cpu --smt=4
+$ grep . /sys/devices/system/cpu/cpu[89]/cache/index[0123]/shared_cpu_list
+/sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list:8,10
+/sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list:8,10
+/sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list:8,10
+/sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list:8-11
+/sys/devices/system/cpu/cpu9/cache/index0/shared_cpu_list:9,11
+/sys/devices/system/cpu/cpu9/cache/index1/shared_cpu_list:9,11
+/sys/devices/system/cpu/cpu9/cache/index2/shared_cpu_list:9,11
+/sys/devices/system/cpu/cpu9/cache/index3/shared_cpu_list:8-11
 
-Hope you are okay with using the pool based approach that Greg
+$ ppc64_cpu --smt=2
+$ grep . /sys/devices/system/cpu/cpu[89]/cache/index[0123]/shared_cpu_list
+/sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list:8
+/sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list:8
+/sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list:8
+/sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list:8-9
+/sys/devices/system/cpu/cpu9/cache/index0/shared_cpu_list:9
+/sys/devices/system/cpu/cpu9/cache/index1/shared_cpu_list:9
+/sys/devices/system/cpu/cpu9/cache/index2/shared_cpu_list:9
+/sys/devices/system/cpu/cpu9/cache/index3/shared_cpu_list:8-9
 
-suggested.
+$ ppc64_cpu --smt=1
+$ grep . /sys/devices/system/cpu/cpu[89]/cache/index[0123]/shared_cpu_list
+/sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list:8
+/sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list:8
+/sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list:8
+/sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list:8
 
+Gautham R. Shenoy (2):
+  powerpc/cacheinfo: Lookup cache by dt node and thread-group id
+  powerpc/cacheinfo: Remove the redundant get_shared_cpu_map()
 
-Please let me know.
+ arch/powerpc/include/asm/smp.h  |   3 +
+ arch/powerpc/kernel/cacheinfo.c | 121 ++++++++++++++++++++--------------------
+ 2 files changed, 62 insertions(+), 62 deletions(-)
 
-
-Thanks,
-
-Shivaprasad
-
+-- 
+1.9.4
 
