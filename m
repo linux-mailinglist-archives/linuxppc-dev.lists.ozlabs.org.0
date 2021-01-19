@@ -1,50 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8C42FB4E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 10:29:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D662FB4B9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 10:02:33 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DKjzf1FDBzDqCp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 20:29:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DKjN65HRnzDr41
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 20:02:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DKjy61BDfzDqLt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 20:28:27 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DKjxy3kpzz9tygP;
- Tue, 19 Jan 2021 10:28:22 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id fCy10mwiE3V2; Tue, 19 Jan 2021 10:28:22 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DKjxy2py0z9tygH;
- Tue, 19 Jan 2021 10:28:22 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 70C058B7AE;
- Tue, 19 Jan 2021 10:28:23 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id MfolsJsVvjLe; Tue, 19 Jan 2021 10:28:23 +0100 (CET)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3DB408B7BB;
- Tue, 19 Jan 2021 10:28:23 +0100 (CET)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 3234C66A64; Tue, 19 Jan 2021 07:00:00 +0000 (UTC)
-Message-Id: <2fed79b1154c872194f98bac4422c23918325e61.1611039590.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/47x: Disable 256k page size
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 19 Jan 2021 07:00:00 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DKjL56zhczDqkd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 20:00:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=UW4jOfQ1; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DKjL46NJdz9s24;
+ Tue, 19 Jan 2021 20:00:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1611046844;
+ bh=cHNpqBjjlw8Pr4axpRHQyxwCq/g05L5in9E5bsY/hec=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=UW4jOfQ1xHYkRKzCwGIRSdeDy4jQDIYAV33Z8Zo7vISoNzYqYS3BmGmVhKG52kC8u
+ Dp3b3EdqeMoq1IK4R9rZBNuscFWGL72u2B3VicH0kuqkNEKB46JDgpTqWYfD/yiyxZ
+ rbSKLH9Phi+lDCe7XRAitpTTW34Sfx0FQLl1tmG31+brFeUZGLDyKrxT53RXogEVW4
+ DpWC8I/Ug1F8S+21SaVKgeutlm3QQqnONGETffaoNqXl5vUHdYRWcDT/3yoIpcWVqW
+ 36XvbAIQSZZslCv/Z35ZCW2QY7STj3Qt/dAx0u3kwf2KTFgRfmH0a18ZNEjHYo8Ur9
+ L8br38tfmUG5w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 6/6] powerpc/rtas: constrain user region allocation to RMA
+In-Reply-To: <20210114220004.1138993-7-nathanl@linux.ibm.com>
+References: <20210114220004.1138993-1-nathanl@linux.ibm.com>
+ <20210114220004.1138993-7-nathanl@linux.ibm.com>
+Date: Tue, 19 Jan 2021 20:00:43 +1100
+Message-ID: <87mtx5qp1g.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,34 +57,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: aik@ozlabs.ru, tyreld@linux.ibm.com, brking@linux.ibm.com,
+ ajd@linux.ibm.com, aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PPC47x_TLBE_SIZE isn't defined for 256k pages, so
-this size of page shall not be selected for 47x.
+Nathan Lynch <nathanl@linux.ibm.com> writes:
+> Memory locations passed as arguments from the OS to RTAS usually need
+> to be addressable in 32-bit mode and must reside in the Real Mode
+> Area. On PAPR guests, the RMA starts at logical address 0 and is the
+> first logical memory block reported in the LPAR=E2=80=99s device tree.
+>
+> On powerpc targets with RTAS, Linux makes available to user space a
+> region of memory suitable for arguments to be passed to RTAS via
+> sys_rtas(). This region (rtas_rmo_buf) is allocated via the memblock
+> API during boot in order to ensure that it satisfies the requirements
+> described above.
+>
+> With radix MMU, the upper limit supplied to the memblock allocation
+> can exceed the bounds of the first logical memory block, since
+> ppc64_rma_size is ULONG_MAX and RTAS_INSTANTIATE_MAX is 1GB.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Fixes: e7f75ad01d59 ("powerpc/47x: Base ppc476 support")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Why does the size of the first memory block matter for radix?
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 107bb4319e0e..a685e42d3993 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -772,7 +772,7 @@ config PPC_64K_PAGES
- 
- config PPC_256K_PAGES
- 	bool "256k page size"
--	depends on 44x && !STDBINUTILS
-+	depends on 44x && !STDBINUTILS && !PPC_47x
- 	help
- 	  Make the page size 256k.
- 
--- 
-2.25.0
+The 1GB limit is sufficient to make it accessible by 32-bit code.
 
+> (512MB is a common size of the first memory block according to a small sa=
+mple of
+> LPARs I have checked.)
+
+That's the minimum we request, see prom_init.c:
+
+	/* option vector 2: Open Firmware options supported */
+	.vec2 =3D {
+		.byte1 =3D OV2_REAL_MODE,
+		.reserved =3D 0,
+		.real_base =3D cpu_to_be32(0xffffffff),
+		.real_size =3D cpu_to_be32(0xffffffff),
+		.virt_base =3D cpu_to_be32(0xffffffff),
+		.virt_size =3D cpu_to_be32(0xffffffff),
+		.load_base =3D cpu_to_be32(0xffffffff),
+		.min_rma =3D cpu_to_be32(512),		/* 512MB min RMA */
+
+Since v4.12 in 2017.
+
+cheers
