@@ -1,50 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C62D52FAEA5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 03:13:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0DA2FAF1C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 04:28:54 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DKXJ85md7zDr2F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 13:13:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DKYz72ZpMzDr2d
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 14:28:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52c;
+ helo=mail-pg1-x52c.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=WzlPZUCP; dkim-atps=neutral
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
+ [IPv6:2607:f8b0:4864:20::52c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DKXGR4bsLzDqwC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 13:11:59 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=L5GUSdpn; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DKXGP6kwPz9sW0;
- Tue, 19 Jan 2021 13:11:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1611022318;
- bh=XdDjocR66FjgT9c3Vu9dMdlGS/UuVcCUJTKfZcyx08Q=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=L5GUSdpnYiqB4akSEJGDG1VFndEgc8hdHJA+tKifLH2sXkBmAYuIxvA+FeJN4Bp5W
- yy3WMC/W/8hyGhIiGnFLPvbhYR+VsVKpwfagBdI5CPuq9KWX7lgDSxjCBIYZ/B8fqv
- DQk3BLH7r8mzt8605YD6O6k/R+K4K1N0EVTtmfDChEC9IIMa+gPMQ6GS1dqaim2Ywo
- EUeqJcysZlGKIRYYNf3M15aPplSKWBr9XoF5mCtf/ud6DixzpqyGQHRZEYu2C9Lf1i
- nl4+z99+iZDUMBjA0Kgd79pE56LhfQotDK70WIP23WFvL0nFkSwZ1pyZCrCWeA38t+
- D7aHB3JR98pDA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Christopher M. Riedl" <cmr@codefail.de>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 1/8] powerpc/uaccess: Add unsafe_copy_from_user
-In-Reply-To: <C8LLSM3UC598.L4E2VMGJOI06@geist>
-References: <C8LLSM3UC598.L4E2VMGJOI06@geist>
-Date: Tue, 19 Jan 2021 13:11:56 +1100
-Message-ID: <87pn21r7yr.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DKYxX6g9wzDqTj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 14:27:27 +1100 (AEDT)
+Received: by mail-pg1-x52c.google.com with SMTP id 15so12172157pgx.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jan 2021 19:27:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=IvOBsG72TdtWfS2ELjW2ZROhGBBtphs2og0NRX6347g=;
+ b=WzlPZUCPM1Cpmyg5zbkdCabBVvDTpgo8HeopahJpAXcJuBQctVehr4fdJ7m2jOoTt+
+ vkFbB+v/gPYeVUQo7bAffL3xndtPaPwPxhtT8hzJcxSYC5PU71DcbGJxuNbOM+XdHcLK
+ L75NUaoLyUSyKV0k2c27k1iIhCjoSDuHgDsbDaIIP6BYY0pu/lPJnhutPEMwsBOMZvjm
+ OvkLMroUT/L2C3UQJJIyRJjVCiA4iXPN4O6Gz5OVVYBrbSMIhdbgRxvyG4lehy2x7iEO
+ llE/soVjr3po/L0NOpvUEKcKpsMDVUL/d/HQj5NmbyyOUlOYGKjduvccvEfuGATDBKVY
+ JnOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=IvOBsG72TdtWfS2ELjW2ZROhGBBtphs2og0NRX6347g=;
+ b=IuDMF9bb9m67QI5JBqImoNe28GP/sbc4V5ZI6oME7o2ix1921M3T9KFKbNwyhOUlHG
+ ejNtFD31Z4prxoreARcJf9l4r8PtBXtD5oJh3159RGPPVOy4LK1BjNCvI19T0DicQpFm
+ 8SzMLOyGVZzRvxc+5AY8zLND/tGxYqPCNJ93yWtrHihwgB1QgQjYIJ5oV9P9BbFKBM2/
+ Hf3qqvd0Cusdda8ujQVtK7L+GQBPob4zqVUJha2c+SrIPXC2hnazbxS6sDH+xV7KcaRT
+ kLD41GYBm54jz2p4ubj51PNUhSiHYqdguOyZsxrw+lsxcptYZwiqya9zbyHHHoI+ROw7
+ ON8Q==
+X-Gm-Message-State: AOAM533Bxk3YG78hS2U3WMVtP+cjLVih6kDZcPSv1AUgrmzoWiHFY0xn
+ VU9Kj/smVoJucnejjx4UQSo=
+X-Google-Smtp-Source: ABdhPJx3qm+cpo9wollUnAI7zsT1q9W49I+QP8XB1qmGNZRU8jW7AlePuZqpCb/i2a/qtXU0ANS1HA==
+X-Received: by 2002:a63:4e44:: with SMTP id o4mr2666091pgl.46.1611026840999;
+ Mon, 18 Jan 2021 19:27:20 -0800 (PST)
+Received: from localhost ([124.170.13.62])
+ by smtp.gmail.com with ESMTPSA id b72sm16882132pfb.129.2021.01.18.19.27.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 18 Jan 2021 19:27:20 -0800 (PST)
+Date: Tue, 19 Jan 2021 13:27:15 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 1/4] KVM: PPC: Book3S HV: Remove support for running HPT
+ guest on RPT host without mixed mode support
+To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
+References: <20210118062809.1430920-1-npiggin@gmail.com>
+ <20210118062809.1430920-2-npiggin@gmail.com> <87czy1bsvz.fsf@linux.ibm.com>
+In-Reply-To: <87czy1bsvz.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Message-Id: <1611025782.s66bkxjtqz.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -57,52 +78,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Christopher M. Riedl" <cmr@codefail.de> writes:
-> On Mon Jan 11, 2021 at 7:22 AM CST, Christophe Leroy wrote:
->> Le 09/01/2021 =C3=A0 04:25, Christopher M. Riedl a =C3=A9crit :
->> > Implement raw_copy_from_user_allowed() which assumes that userspace re=
-ad
->> > access is open. Use this new function to implement raw_copy_from_user(=
-).
->> > Finally, wrap the new function to follow the usual "unsafe_" convention
->> > of taking a label argument.
+Excerpts from Fabiano Rosas's message of January 19, 2021 11:46 am:
+> Resending because the previous got spam-filtered:
+>=20
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>=20
+>> This reverts much of commit c01015091a770 ("KVM: PPC: Book3S HV: Run HPT
+>> guests on POWER9 radix hosts"), which was required to run HPT guests on
+>> RPT hosts on early POWER9 CPUs without support for "mixed mode", which
+>> meant the host could not run with MMU on while guests were running.
 >>
->> I think there is no point implementing raw_copy_from_user_allowed(), see
->> https://github.com/linuxppc/linux/commit/4b842e4e25b1 and
->> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/8c74fc9ce8131cab=
-b10b3e95dc0e430f396ee83e.1610369143.git.christophe.leroy@csgroup.eu/
->>
->> You should simply do:
->>
->> #define unsafe_copy_from_user(d, s, l, e) \
->> unsafe_op_wrap(__copy_tofrom_user((__force void __user *)d, s, l), e)
->>
->
-> I gave this a try and the signal ops decreased by ~8K. Now, to be
-> honest, I am not sure what an "acceptable" benchmark number here
-> actually is - so maybe this is ok? Same loss with both radix and hash:
->
-> 	|                                      | hash   | radix  |
-> 	| ------------------------------------ | ------ | ------ |
-> 	| linuxppc/next                        | 118693 | 133296 |
-> 	| linuxppc/next w/o KUAP+KUEP          | 228911 | 228654 |
-> 	| unsafe-signal64                      | 200480 | 234067 |
-> 	| unsafe-signal64 (__copy_tofrom_user) | 192467 | 225119 |
->
-> To put this into perspective, prior to KUAP and uaccess flush, signal
-> performance in this benchmark was ~290K on hash.
+>> This code has some corner case bugs, e.g., when the guest hits a machine
+>> check or HMI the primary locks up waiting for secondaries to switch LPCR
+>> to host, which they never do. This could all be fixed in software, but
+>> most CPUs in production have mixed mode support, and those that don't
+>> are believed to be all in installations that don't use this capability.
+>> So simplify things and remove support.
+>=20
+> With this patch in a DD2.1 machine + indep_threads_mode=3DN +
+> disable_radix, QEMU aborts and dumps registers, is that intended?
 
-If I'm doing the math right 8K is ~4% of the best number.
+Yes. That configuration is hanging handling MCEs in the guest with some=20
+threads waiting forever to synchronize. Paul suggested it was never a
+supported configuration so we might just remove it.
 
-It seems like 4% is worth a few lines of code to handle these constant
-sizes. It's not like we have performance to throw away.
+> Could we use the 'no_mixing_hpt_and_radix' logic in check_extension to
+> advertise only KVM_CAP_PPC_MMU_RADIX to the guest via OV5 so it doesn't
+> try to run hash?
+>=20
+> For instance, if I hack QEMU's 'spapr_dt_ov5_platform_support' from
+> OV5_MMU_BOTH to OV5_MMU_RADIX_300 then it boots succesfuly, but the
+> guest turns into radix, due to this code in prom_init:
+>=20
+> prom_parse_mmu_model:
+>=20
+> case OV5_FEAT(OV5_MMU_RADIX): /* Only Radix */
+> 	prom_debug("MMU - radix only\n");
+> 	if (prom_radix_disable) {
+> 		/*
+> 		 * If we __have__ to do radix, we're better off ignoring
+> 		 * the command line rather than not booting.
+> 		 */
+> 		prom_printf("WARNING: Ignoring cmdline option disable_radix\n");
+> 	}
+> 	support->radix_mmu =3D true;
+> 	break;
+>=20
+> It seems we could explicitly say that the host does not support hash and
+> that would align with the above code.
 
-Or, we should chase down where the call sites are that are doing small
-constant copies with copy_to/from_user() and change them to use
-get/put_user().
+I'm not sure, sounds like you could, on the other hand these aborts seem=20
+like the prefered failure mode for these kinds of configuration issues,=20
+I don't know what the policy is, is reverting back to radix acceptable?
 
-cheers
+Thanks,
+Nick
+
