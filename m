@@ -2,89 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED292FB354
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 08:40:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5292FB49D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 09:55:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DKgXz3c0yzDqld
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 18:40:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DKjD546LJzDr3X
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 19:55:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Fw0KAC5n; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DKgT74T6qzDqyp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 18:36:39 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10J7Y64N050168; Tue, 19 Jan 2021 02:36:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references; s=pp1;
- bh=cjUj6ZQ7xttD9or/tZBsGAZYHXa//N6DVWt3L+kbweU=;
- b=Fw0KAC5nFNRRlnms3mQwD5DwQHHnutHRIQdKFLWPKrv7HZeCgGT5ic1Eu5y/BQu/x4Ve
- R3JzND4Bda8G50euSQNBC8x4jbNuBmsKO/SQb41xo72fWpU5D+9XK1W4f/nhssE59Shc
- 6e6x1ekI9AHn7Wt36PjJh/QR+y7/aLvZuVFq+Wjur8F+apuki89dN5Z5ePKLWO4RRyFx
- /dDf7hc998++IPAIkJINJ0ycTs7GFnZ+hjEVvpPkiz16mY07hY6E9QXS6HLuNybhVD7B
- QmxA4eLemrhrVygaWWA+f5akqjQuPPO5P1tSzJRxIU7lejKRup6OV8Ncola5ja3tsCSt yQ== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 365tebs3j7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Jan 2021 02:36:35 -0500
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10J7WOPI027224;
- Tue, 19 Jan 2021 07:36:34 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma02dal.us.ibm.com with ESMTP id 363qs91kyx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Jan 2021 07:36:34 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 10J7aXcq12845728
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Jan 2021 07:36:33 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 59DB66A047;
- Tue, 19 Jan 2021 07:36:33 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 78CBC6A04D;
- Tue, 19 Jan 2021 07:36:32 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.79.213.81])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 19 Jan 2021 07:36:32 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 110BF2E2F1A; Tue, 19 Jan 2021 13:06:28 +0530 (IST)
-From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Nathan Lynch <nathanl@linux.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: [PATCH 2/2] powerpc/cacheinfo: Remove the redundant
- get_shared_cpu_map()
-Date: Tue, 19 Jan 2021 13:06:20 +0530
-Message-Id: <1611041780-8640-3-git-send-email-ego@linux.vnet.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1611041780-8640-1-git-send-email-ego@linux.vnet.ibm.com>
-References: <1611041780-8640-1-git-send-email-ego@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-19_01:2021-01-18,
- 2021-01-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- impostorscore=0 spamscore=0 bulkscore=0 phishscore=0 adultscore=0
- mlxlogscore=999 clxscore=1015 priorityscore=1501 mlxscore=0
- lowpriorityscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2101190044
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DKjBJ3yBwzDr1F
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 19:53:55 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DKjB66gTVz9tyhW;
+ Tue, 19 Jan 2021 09:53:50 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id ZS4zMvIw1KiY; Tue, 19 Jan 2021 09:53:50 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DKjB65jcHz9tyh3;
+ Tue, 19 Jan 2021 09:53:50 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D22498B7AE;
+ Tue, 19 Jan 2021 09:53:51 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 1ZAV85L9P2Ej; Tue, 19 Jan 2021 09:53:51 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 568338B7B9;
+ Tue, 19 Jan 2021 09:53:51 +0100 (CET)
+Subject: Re: [PATCH v3 1/8] powerpc/uaccess: Add unsafe_copy_from_user
+To: "Christopher M. Riedl" <cmr@codefail.de>, linuxppc-dev@lists.ozlabs.org
+References: <C8LLSM3UC598.L4E2VMGJOI06@geist>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <5863d631-08a2-29ed-09b5-78d9009ca1df@csgroup.eu>
+Date: Tue, 19 Jan 2021 08:29:11 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
+MIME-Version: 1.0
+In-Reply-To: <C8LLSM3UC598.L4E2VMGJOI06@geist>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,147 +61,131 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
-The helper function get_shared_cpu_map() was added in
 
-'commit 500fe5f550ec ("powerpc/cacheinfo: Report the correct
-shared_cpu_map on big-cores")'
+Le 17/01/2021 à 18:19, Christopher M. Riedl a écrit :
+> On Mon Jan 11, 2021 at 7:22 AM CST, Christophe Leroy wrote:
+>>
+>>
+>> Le 09/01/2021 à 04:25, Christopher M. Riedl a écrit :
+>>> Implement raw_copy_from_user_allowed() which assumes that userspace read
+>>> access is open. Use this new function to implement raw_copy_from_user().
+>>> Finally, wrap the new function to follow the usual "unsafe_" convention
+>>> of taking a label argument.
+>>
+>> I think there is no point implementing raw_copy_from_user_allowed(), see
+>> https://github.com/linuxppc/linux/commit/4b842e4e25b1 and
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/8c74fc9ce8131cabb10b3e95dc0e430f396ee83e.1610369143.git.christophe.leroy@csgroup.eu/
+>>
+>> You should simply do:
+>>
+>> #define unsafe_copy_from_user(d, s, l, e) \
+>> unsafe_op_wrap(__copy_tofrom_user((__force void __user *)d, s, l), e)
+>>
+> 
+> I gave this a try and the signal ops decreased by ~8K. Now, to be
+> honest, I am not sure what an "acceptable" benchmark number here
+> actually is - so maybe this is ok? Same loss with both radix and hash:
 
-and subsequently expanded upon in
+I don't think this is ok, but it probably means that you are using unsafe_copy_from_user() to copy 
+small constant size data that should be copied with unsafe_get_user() instead.
 
-'commit 0be47634db0b ("powerpc/cacheinfo: Print correct cache-sibling
-map/list for L2 cache")'
-
-in order to help report the correct groups of threads sharing these caches
-on big-core systems where groups of threads within a core can share
-different sets of caches.
-
-Now that powerpc/cacheinfo is aware of "ibm,thread-groups" property,
-cache->shared_cpu_map contains the correct set of thread-siblings
-sharing the cache. Hence we no longer need the functions
-get_shared_cpu_map(). This patch removes this function. We also remove
-the helper function index_dir_to_cpu() which was only called by
-get_shared_cpu_map().
-
-With these functions removed, we can still see the correct
-cache-sibling map/list for L1 and L2 caches on systems with L1 and L2
-caches distributed among groups of threads in a core.
-
-With this patch, on a SMT8 POWER10 system where the L1 and L2 caches
-are split between the two groups of threads in a core, for CPUs 8,9,
-the L1-Data, L1-Instruction, L2, L3 cache CPU sibling list is as
-follows:
-
-$ grep . /sys/devices/system/cpu/cpu[89]/cache/index[0123]/shared_cpu_list
-/sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list:8,10,12,14
-/sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list:8,10,12,14
-/sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list:8,10,12,14
-/sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list:8-15
-/sys/devices/system/cpu/cpu9/cache/index0/shared_cpu_list:9,11,13,15
-/sys/devices/system/cpu/cpu9/cache/index1/shared_cpu_list:9,11,13,15
-/sys/devices/system/cpu/cpu9/cache/index2/shared_cpu_list:9,11,13,15
-/sys/devices/system/cpu/cpu9/cache/index3/shared_cpu_list:8-15
-
-$ ppc64_cpu --smt=4
-$ grep . /sys/devices/system/cpu/cpu[89]/cache/index[0123]/shared_cpu_list
-/sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list:8,10
-/sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list:8,10
-/sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list:8,10
-/sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list:8-11
-/sys/devices/system/cpu/cpu9/cache/index0/shared_cpu_list:9,11
-/sys/devices/system/cpu/cpu9/cache/index1/shared_cpu_list:9,11
-/sys/devices/system/cpu/cpu9/cache/index2/shared_cpu_list:9,11
-/sys/devices/system/cpu/cpu9/cache/index3/shared_cpu_list:8-11
-
-$ ppc64_cpu --smt=2
-$ grep . /sys/devices/system/cpu/cpu[89]/cache/index[0123]/shared_cpu_list
-/sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list:8
-/sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list:8
-/sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list:8
-/sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list:8-9
-/sys/devices/system/cpu/cpu9/cache/index0/shared_cpu_list:9
-/sys/devices/system/cpu/cpu9/cache/index1/shared_cpu_list:9
-/sys/devices/system/cpu/cpu9/cache/index2/shared_cpu_list:9
-/sys/devices/system/cpu/cpu9/cache/index3/shared_cpu_list:8-9
-
-$ ppc64_cpu --smt=1
-$ grep . /sys/devices/system/cpu/cpu[89]/cache/index[0123]/shared_cpu_list
-/sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list:8
-/sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list:8
-/sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list:8
-/sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list:8
-
-Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
----
- arch/powerpc/kernel/cacheinfo.c | 41 +----------------------------------------
- 1 file changed, 1 insertion(+), 40 deletions(-)
-
-diff --git a/arch/powerpc/kernel/cacheinfo.c b/arch/powerpc/kernel/cacheinfo.c
-index 5a6925d..20d9169 100644
---- a/arch/powerpc/kernel/cacheinfo.c
-+++ b/arch/powerpc/kernel/cacheinfo.c
-@@ -675,45 +675,6 @@ static ssize_t level_show(struct kobject *k, struct kobj_attribute *attr, char *
- static struct kobj_attribute cache_level_attr =
- 	__ATTR(level, 0444, level_show, NULL);
- 
--static unsigned int index_dir_to_cpu(struct cache_index_dir *index)
--{
--	struct kobject *index_dir_kobj = &index->kobj;
--	struct kobject *cache_dir_kobj = index_dir_kobj->parent;
--	struct kobject *cpu_dev_kobj = cache_dir_kobj->parent;
--	struct device *dev = kobj_to_dev(cpu_dev_kobj);
--
--	return dev->id;
--}
--
--/*
-- * On big-core systems, each core has two groups of CPUs each of which
-- * has its own L1-cache. The thread-siblings which share l1-cache with
-- * @cpu can be obtained via cpu_smallcore_mask().
-- *
-- * On some big-core systems, the L2 cache is shared only between some
-- * groups of siblings. This is already parsed and encoded in
-- * cpu_l2_cache_mask().
-- *
-- * TODO: cache_lookup_or_instantiate() needs to be made aware of the
-- *       "ibm,thread-groups" property so that cache->shared_cpu_map
-- *       reflects the correct siblings on platforms that have this
-- *       device-tree property. This helper function is only a stop-gap
-- *       solution so that we report the correct siblings to the
-- *       userspace via sysfs.
-- */
--static const struct cpumask *get_shared_cpu_map(struct cache_index_dir *index, struct cache *cache)
--{
--	if (has_big_cores) {
--		int cpu = index_dir_to_cpu(index);
--		if (cache->level == 1)
--			return cpu_smallcore_mask(cpu);
--		if (cache->level == 2 && thread_group_shares_l2)
--			return cpu_l2_cache_mask(cpu);
--	}
--
--	return &cache->shared_cpu_map;
--}
--
- static ssize_t
- show_shared_cpumap(struct kobject *k, struct kobj_attribute *attr, char *buf, bool list)
- {
-@@ -724,7 +685,7 @@ static const struct cpumask *get_shared_cpu_map(struct cache_index_dir *index, s
- 	index = kobj_to_cache_index_dir(k);
- 	cache = index->cache;
- 
--	mask = get_shared_cpu_map(index, cache);
-+	mask = &cache->shared_cpu_map;
- 
- 	return cpumap_print_to_pagebuf(list, buf, mask);
- }
--- 
-1.9.4
-
+> 
+> 	|                                      | hash   | radix  |
+> 	| ------------------------------------ | ------ | ------ |
+> 	| linuxppc/next                        | 118693 | 133296 |
+> 	| linuxppc/next w/o KUAP+KUEP          | 228911 | 228654 |
+> 	| unsafe-signal64                      | 200480 | 234067 |
+> 	| unsafe-signal64 (__copy_tofrom_user) | 192467 | 225119 |
+> 
+> To put this into perspective, prior to KUAP and uaccess flush, signal
+> performance in this benchmark was ~290K on hash.
+> 
+>>
+>> Christophe
+>>
+>>>
+>>> The new raw_copy_from_user_allowed() calls non-inline __copy_tofrom_user()
+>>> internally. This is still safe to call inside user access blocks formed
+>>> with user_*_access_begin()/user_*_access_end() since asm functions are not
+>>> instrumented for tracing.
+>>>
+>>> Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
+>>> ---
+>>>    arch/powerpc/include/asm/uaccess.h | 28 +++++++++++++++++++---------
+>>>    1 file changed, 19 insertions(+), 9 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+>>> index 501c9a79038c..698f3a6d6ae5 100644
+>>> --- a/arch/powerpc/include/asm/uaccess.h
+>>> +++ b/arch/powerpc/include/asm/uaccess.h
+>>> @@ -403,38 +403,45 @@ raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
+>>>    }
+>>>    #endif /* __powerpc64__ */
+>>>    
+>>> -static inline unsigned long raw_copy_from_user(void *to,
+>>> -		const void __user *from, unsigned long n)
+>>> +static inline unsigned long
+>>> +raw_copy_from_user_allowed(void *to, const void __user *from, unsigned long n)
+>>>    {
+>>> -	unsigned long ret;
+>>>    	if (__builtin_constant_p(n) && (n <= 8)) {
+>>> -		ret = 1;
+>>> +		unsigned long ret = 1;
+>>>    
+>>>    		switch (n) {
+>>>    		case 1:
+>>>    			barrier_nospec();
+>>> -			__get_user_size(*(u8 *)to, from, 1, ret);
+>>> +			__get_user_size_allowed(*(u8 *)to, from, 1, ret);
+>>>    			break;
+>>>    		case 2:
+>>>    			barrier_nospec();
+>>> -			__get_user_size(*(u16 *)to, from, 2, ret);
+>>> +			__get_user_size_allowed(*(u16 *)to, from, 2, ret);
+>>>    			break;
+>>>    		case 4:
+>>>    			barrier_nospec();
+>>> -			__get_user_size(*(u32 *)to, from, 4, ret);
+>>> +			__get_user_size_allowed(*(u32 *)to, from, 4, ret);
+>>>    			break;
+>>>    		case 8:
+>>>    			barrier_nospec();
+>>> -			__get_user_size(*(u64 *)to, from, 8, ret);
+>>> +			__get_user_size_allowed(*(u64 *)to, from, 8, ret);
+>>>    			break;
+>>>    		}
+>>>    		if (ret == 0)
+>>>    			return 0;
+>>>    	}
+>>>    
+>>> +	return __copy_tofrom_user((__force void __user *)to, from, n);
+>>> +}
+>>> +
+>>> +static inline unsigned long
+>>> +raw_copy_from_user(void *to, const void __user *from, unsigned long n)
+>>> +{
+>>> +	unsigned long ret;
+>>> +
+>>>    	barrier_nospec();
+>>>    	allow_read_from_user(from, n);
+>>> -	ret = __copy_tofrom_user((__force void __user *)to, from, n);
+>>> +	ret = raw_copy_from_user_allowed(to, from, n);
+>>>    	prevent_read_from_user(from, n);
+>>>    	return ret;
+>>>    }
+>>> @@ -542,6 +549,9 @@ user_write_access_begin(const void __user *ptr, size_t len)
+>>>    #define unsafe_get_user(x, p, e) unsafe_op_wrap(__get_user_allowed(x, p), e)
+>>>    #define unsafe_put_user(x, p, e) __put_user_goto(x, p, e)
+>>>    
+>>> +#define unsafe_copy_from_user(d, s, l, e) \
+>>> +	unsafe_op_wrap(raw_copy_from_user_allowed(d, s, l), e)
+>>> +
+>>>    #define unsafe_copy_to_user(d, s, l, e) \
+>>>    do {									\
+>>>    	u8 __user *_dst = (u8 __user *)(d);				\
+>>>
