@@ -1,50 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83CD22FC054
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 20:52:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E82C2FC0BA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 21:16:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DKznX4V5qzDqjM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 06:52:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DL0LG6MbPzDqX8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 07:16:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
- receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DKzlc3p4tzDqLR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 06:50:20 +1100 (AEDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1l1x0r-00004s-6z; Tue, 19 Jan 2021 20:50:01 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1l1x0q-0000Wp-2l; Tue, 19 Jan 2021 20:50:00 +0100
-Date: Tue, 19 Jan 2021 20:49:59 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Lijun Pan <ljp@linux.ibm.com>
-Subject: Re: [PATCH net RFC] ibmvnic: device remove has higher precedence
- over reset
-Message-ID: <20210119194959.a67nlfbngx4drvyz@pengutronix.de>
-References: <20210119193313.43791-1-ljp@linux.ibm.com>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DL00C2Ds8zDqS4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 07:01:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=TeLHWEk4; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by ozlabs.org (Postfix) with ESMTP id 4DL00C1Mw6z9sW8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 07:01:15 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 4DL00C1097z9sVy; Wed, 20 Jan 2021 07:01:15 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
+ envelope-from=lpechacek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=TeLHWEk4; dkim-atps=neutral
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4DL00B5Vnjz9sVr
+ for <linuxppc-dev@ozlabs.org>; Wed, 20 Jan 2021 07:01:13 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1611086468; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=uhp7vaLHjs9Tk81yLi/x0yqdOjAbc2dEtLX5Qqby/TQ=;
+ b=TeLHWEk4Azxz4zpaHKcFoSIw5YH3QFZhAZJs0M1cNBb6d1Uauj218Np2jKxoBwJ32LeF0c
+ zGSMzTxlP0BG4+VZ3WVbg4L4L2vCpXPMLacMfbk53f53Qg+9kgbHWDGbcvuJFtuPnk8w8i
+ SRDXuwh/03vCkUkMBU6IbVE/cMrCEu0=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 330AFAC63;
+ Tue, 19 Jan 2021 20:01:08 +0000 (UTC)
+Date: Tue, 19 Jan 2021 21:01:07 +0100
+From: Libor Pechacek <lpechacek@suse.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] selftests/powerpc: Only test lwm/stmw on big endian
+Message-ID: <YAc6g2laaVprHX7K@fmn>
+References: <20210119041800.3093047-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="ifdlur3z3zt3xfst"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20210119193313.43791-1-ljp@linux.ibm.com>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210119041800.3093047-1-mpe@ellerman.id.au>
+X-Mailman-Approved-At: Wed, 20 Jan 2021 07:15:17 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,97 +71,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, julietk@linux.vnet.ibm.com,
- netdev@vger.kernel.org, paulus@samba.org, kernel@pengutronix.de,
- drt@linux.ibm.com, kuba@kernel.org, sukadev@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: linuxppc-dev@ozlabs.org, msuchanek@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Út 19-01-21 15:18:00, Michael Ellerman wrote:
+> Newer binutils (>= 2.36) refuse to assemble lmw/stmw when building in
+> little endian mode. That breaks compilation of our alignment handler
+> test:
+> 
+>   /tmp/cco4l14N.s: Assembler messages:
+>   /tmp/cco4l14N.s:1440: Error: `lmw' invalid when little-endian
+>   /tmp/cco4l14N.s:1814: Error: `stmw' invalid when little-endian
+>   make[2]: *** [../../lib.mk:139: /output/kselftest/powerpc/alignment/alignment_handler] Error 1
+> 
+> These tests do pass on little endian machines, as the kernel will
+> still emulate those instructions even when running little
+> endian (which is arguably a kernel bug).
+> 
+> But we don't really need to test that case, so ifdef those
+> instructions out to get the alignment test building again.
+> 
+> Reported-by: Libor Pechacek <lpechacek@suse.com>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
---ifdlur3z3zt3xfst
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Tested-by: Libor Pechacek <lpechacek@suse.com>
 
-On Tue, Jan 19, 2021 at 01:33:13PM -0600, Lijun Pan wrote:
-> Returning -EBUSY in ibmvnic_remove() does not actually hold the
-> removal procedure since driver core doesn't care for the return
-> value (see __device_release_driver() in drivers/base/dd.c
-> calling dev->bus->remove()) though vio_bus_remove
-> (in arch/powerpc/platforms/pseries/vio.c) records the
-> return value and passes it on. [1]
->=20
-> During the device removal precedure, we should not schedule
-> any new reset, and rely on the flush_work and flush_delayed_work
-> to complete the pending resets, and specifically we need to
-> let __ibmvnic_reset() keep running while in REMOVING state since
-> flush_work and flush_delayed_work shall call __ibmvnic_reset finally.
->=20
-> [1] https://lore.kernel.org/linuxppc-dev/20210117101242.dpwayq6wdgfdzirl@=
-pengutronix.de/T/#m48f5befd96bc9842ece2a3ad14f4c27747206a53
-> Reported-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> Fixes: 7d7195a026ba ("ibmvnic: Do not process device remove during device=
- reset")
-> Signed-off-by: Lijun Pan <ljp@linux.ibm.com>
+Thanks, Michael, for the fix!
+
+Libor
+
 > ---
->  drivers/net/ethernet/ibm/ibmvnic.c | 8 +-------
->  1 file changed, 1 insertion(+), 7 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ib=
-m/ibmvnic.c
-> index aed985e08e8a..11f28fd03057 100644
-> --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> @@ -2235,8 +2235,7 @@ static void __ibmvnic_reset(struct work_struct *wor=
-k)
->  	while (rwi) {
->  		spin_lock_irqsave(&adapter->state_lock, flags);
-> =20
-> -		if (adapter->state =3D=3D VNIC_REMOVING ||
-> -		    adapter->state =3D=3D VNIC_REMOVED) {
-> +		if (adapter->state =3D=3D VNIC_REMOVED) {
+>  .../testing/selftests/powerpc/alignment/alignment_handler.c  | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/powerpc/alignment/alignment_handler.c b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
+> index cb53a8b777e6..c25cf7cd45e9 100644
+> --- a/tools/testing/selftests/powerpc/alignment/alignment_handler.c
+> +++ b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
+> @@ -443,7 +443,6 @@ int test_alignment_handler_integer(void)
+>  	LOAD_DFORM_TEST(ldu);
+>  	LOAD_XFORM_TEST(ldx);
+>  	LOAD_XFORM_TEST(ldux);
+> -	LOAD_DFORM_TEST(lmw);
+>  	STORE_DFORM_TEST(stb);
+>  	STORE_XFORM_TEST(stbx);
+>  	STORE_DFORM_TEST(stbu);
+> @@ -462,7 +461,11 @@ int test_alignment_handler_integer(void)
+>  	STORE_XFORM_TEST(stdx);
+>  	STORE_DFORM_TEST(stdu);
+>  	STORE_XFORM_TEST(stdux);
+> +
+> +#ifdef __BIG_ENDIAN__
+> +	LOAD_DFORM_TEST(lmw);
+>  	STORE_DFORM_TEST(stmw);
+> +#endif
+>  
+>  	return rc;
+>  }
+> -- 
+> 2.25.1
+> 
 
-I think you need to keep the check for VNIC_REMOVING. Otherwise you
-don't prevent that a new reset being queued after ibmvnic_remove() set
-the state to VNIC_REMOVING. Am I missing something?
-
->  			spin_unlock_irqrestore(&adapter->state_lock, flags);
->  			kfree(rwi);
->  			rc =3D EBUSY;
-> @@ -5372,11 +5371,6 @@ static int ibmvnic_remove(struct vio_dev *dev)
->  	unsigned long flags;
-> =20
->  	spin_lock_irqsave(&adapter->state_lock, flags);
-> -	if (test_bit(0, &adapter->resetting)) {
-> -		spin_unlock_irqrestore(&adapter->state_lock, flags);
-> -		return -EBUSY;
-> -	}
-> -
->  	adapter->state =3D VNIC_REMOVING;
->  	spin_unlock_irqrestore(&adapter->state_lock, flags);
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ifdlur3z3zt3xfst
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmAHN+UACgkQwfwUeK3K
-7An/jwf/bC16CArScNyPsAO++IqJQ++XUuvOLoHeIeyOHln+dF0H5pXXO9YhQZJQ
-OpQfjv4j3TBBzNofJvc/qtmJbuLrpIySTXK/OEgsBAV9VpoD/xr4c+Q5YP9zxIg6
-Ehz/fuQ8Fw2U0vGJFnqlfi+vq0NsiSW4XIDVvtCLpbfTEJ8M9o9d91aTZxO+4CPk
-Ep4JHLe9dSfd6FRIzCaBQtnqca5IihXdUor8INDWkWhSAe+vJvhWtK0KGffr0lrd
-+4Fp2/1vPmj1yl+fkwMZZAOs4jtAJCw77HlV3PgHOE/nrRHYvAQk0ISX5QTBktcH
-ZyCcmi+PUx6ZJUd/RJn1YQlpmKAjbw==
-=7T34
------END PGP SIGNATURE-----
-
---ifdlur3z3zt3xfst--
+-- 
+Libor Pechacek
+SUSE Labs                                Remember to have fun...
