@@ -2,75 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF712FBD8C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 18:28:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D852FBD9E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 18:30:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DKwbY23MfzDqx4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 04:28:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DKwdw5yNmzDqJ8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 04:30:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=oleg@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=A3TBUaI4; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Tmd+C37l; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DKwYT5xgdzDqyP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 04:26:17 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1611077174;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mAzpHVdlnMaDyvxGTKzMDyi59keeJ2kOytyejQDWyqg=;
- b=A3TBUaI40AOAUFrkN/5HW9PVF17Ua7uAwz0L/GOItz2ko8k4oGl+ErH65vh2/U3rfuWfIO
- 2mUn3UyHl6e18BemLqrCi9QrqJDKojuTK76aA4t+PWLKNq6PYtn0vMaQnTKf3XxcZoereo
- FCwy/XVemOliGRb+NdkwpTrWVHkYWuw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1611077175;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mAzpHVdlnMaDyvxGTKzMDyi59keeJ2kOytyejQDWyqg=;
- b=Tmd+C37lin2uvhOfSYvesO6v22bF1T/JWWafoCivLs2LVQyJ6c4W5D/0Y599gLyLirwLdS
- Kssw83pIzBUh807iL2OwvjtC+Cswq9V8ik6DFwL0AyDJssoacG5QHQL+xJHWJiTsnjFEYD
- CN43kn7AQt8Nz3QHfh7IszGVNxEbFC8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-299-AXabtRcgOPCQB4xr3nWivg-1; Tue, 19 Jan 2021 12:26:10 -0500
-X-MC-Unique: AXabtRcgOPCQB4xr3nWivg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B3CF01936B8A;
- Tue, 19 Jan 2021 17:26:07 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.194.45])
- by smtp.corp.redhat.com (Postfix) with SMTP id 0C6A260C9C;
- Tue, 19 Jan 2021 17:26:04 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
- oleg@redhat.com; Tue, 19 Jan 2021 18:26:07 +0100 (CET)
-Date: Tue, 19 Jan 2021 18:26:03 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/uprobes: Don't allow probe on suffix of prefixed
- instruction
-Message-ID: <20210119172603.GA16696@redhat.com>
-References: <20210119091234.76317-1-ravi.bangoria@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DKwZj01d0zDr0k
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 04:27:19 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DKwZR4Ybsz9v6Jy;
+ Tue, 19 Jan 2021 18:27:11 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id tQGVZ9BnH2i8; Tue, 19 Jan 2021 18:27:11 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DKwZR3Wlbz9v6Jw;
+ Tue, 19 Jan 2021 18:27:11 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 309A08B7DE;
+ Tue, 19 Jan 2021 18:27:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id H3vc7DNMvSAO; Tue, 19 Jan 2021 18:27:13 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D0A3A8B7C7;
+ Tue, 19 Jan 2021 18:27:12 +0100 (CET)
+Subject: Re: [PATCH v3 1/8] powerpc/uaccess: Add unsafe_copy_from_user
+To: "Christopher M. Riedl" <cmr@codefail.de>,
+ Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <C8NAORBNJH4S.KKQFN1HWO8XH@geist>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <1e6309a4-58fe-c6a4-6e47-d8659177846c@csgroup.eu>
+Date: Tue, 19 Jan 2021 18:27:04 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210119091234.76317-1-ravi.bangoria@linux.ibm.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+In-Reply-To: <C8NAORBNJH4S.KKQFN1HWO8XH@geist>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,55 +62,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, rostedt@goodmis.org, paulus@samba.org,
- sandipan@linux.ibm.com, jniethe5@gmail.com, naveen.n.rao@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01/19, Ravi Bangoria wrote:
->
-> Probe on 2nd word of a prefixed instruction is invalid scenario and
-> should be restricted.
 
-I don't understand this ppc-specific problem, but...
 
-> +#ifdef CONFIG_PPC64
-> +int arch_uprobe_verify_opcode(struct page *page, unsigned long vaddr,
-> +			      uprobe_opcode_t opcode)
-> +{
-> +	uprobe_opcode_t prefix;
-> +	void *kaddr;
-> +	struct ppc_inst inst;
-> +
-> +	/* Don't check if vaddr is pointing to the beginning of page */
-> +	if (!(vaddr & ~PAGE_MASK))
-> +		return 0;
+Le 19/01/2021 à 18:02, Christopher M. Riedl a écrit :
+> On Tue Jan 19, 2021 at 6:33 AM CST, Christophe Leroy wrote:
+>>
+>>
+>> Le 19/01/2021 à 03:11, Michael Ellerman a écrit :
+>>> "Christopher M. Riedl" <cmr@codefail.de> writes:
+>>>> On Mon Jan 11, 2021 at 7:22 AM CST, Christophe Leroy wrote:
+>>>>> Le 09/01/2021 à 04:25, Christopher M. Riedl a écrit :
+>>>>>> Implement raw_copy_from_user_allowed() which assumes that userspace read
+>>>>>> access is open. Use this new function to implement raw_copy_from_user().
+>>>>>> Finally, wrap the new function to follow the usual "unsafe_" convention
+>>>>>> of taking a label argument.
+>>>>>
+>>>>> I think there is no point implementing raw_copy_from_user_allowed(), see
+>>>>> https://github.com/linuxppc/linux/commit/4b842e4e25b1 and
+>>>>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/8c74fc9ce8131cabb10b3e95dc0e430f396ee83e.1610369143.git.christophe.leroy@csgroup.eu/
+>>>>>
+>>>>> You should simply do:
+>>>>>
+>>>>> #define unsafe_copy_from_user(d, s, l, e) \
+>>>>> unsafe_op_wrap(__copy_tofrom_user((__force void __user *)d, s, l), e)
+>>>>>
+>>>>
+>>>> I gave this a try and the signal ops decreased by ~8K. Now, to be
+>>>> honest, I am not sure what an "acceptable" benchmark number here
+>>>> actually is - so maybe this is ok? Same loss with both radix and hash:
+>>>>
+>>>> 	|                                      | hash   | radix  |
+>>>> 	| ------------------------------------ | ------ | ------ |
+>>>> 	| linuxppc/next                        | 118693 | 133296 |
+>>>> 	| linuxppc/next w/o KUAP+KUEP          | 228911 | 228654 |
+>>>> 	| unsafe-signal64                      | 200480 | 234067 |
+>>>> 	| unsafe-signal64 (__copy_tofrom_user) | 192467 | 225119 |
+>>>>
+>>>> To put this into perspective, prior to KUAP and uaccess flush, signal
+>>>> performance in this benchmark was ~290K on hash.
+>>>
+>>> If I'm doing the math right 8K is ~4% of the best number.
+>>>
+>>> It seems like 4% is worth a few lines of code to handle these constant
+>>> sizes. It's not like we have performance to throw away.
+>>>
+>>> Or, we should chase down where the call sites are that are doing small
+>>> constant copies with copy_to/from_user() and change them to use
+>>> get/put_user().
+>>>
+>>
+>> Christopher, when you say you gave it a try, is I my series or only the
+>> following ?
+>>
+>> #define unsafe_copy_from_user(d, s, l, e) \
+>> unsafe_op_wrap(__copy_tofrom_user((__force void __user *)d, s, l), e)
+>>
+> 
+> I only used the above to replace this patch in my series (so none of my
+> changes implementing raw_copy_from_user_allowed() are included).
 
-So the fix is incomplete? Or insn at the start of page can't be prefixed?
+Then I see no reason why the performance would be different, because you only call 
+unsafe_copy_from_user() with non trivial lengthes.
 
-> +int __weak arch_uprobe_verify_opcode(struct page *page, unsigned long vaddr,
-> +				     uprobe_opcode_t opcode)
-> +{
-> +	return 0;
-> +}
-> +
->  static int verify_opcode(struct page *page, unsigned long vaddr, uprobe_opcode_t *new_opcode)
->  {
->  	uprobe_opcode_t old_opcode;
-> @@ -275,6 +281,8 @@ static int verify_opcode(struct page *page, unsigned long vaddr, uprobe_opcode_t
->  	if (is_swbp_insn(new_opcode)) {
->  		if (is_swbp)		/* register: already installed? */
->  			return 0;
-> +		if (arch_uprobe_verify_opcode(page, vaddr, old_opcode))
-> +			return -EINVAL;
-
-Well, this doesn't look good...
-
-To me it would be better to change the prepare_uprobe() path to copy
-the potential prefix into uprobe->arch and check ppc_inst_prefixed()
-in arch_uprobe_analyze_insn(). What do you think?
-
-Oleg.
-
+> 
+>>
+>> Because I see no use of unsafe_copy_from_user() that would explain that.
+>>
+>> Christophe
