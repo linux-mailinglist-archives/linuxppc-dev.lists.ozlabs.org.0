@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D37D2FAE62
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 02:41:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AC02FAE66
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 02:48:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DKWbT32FrzDr1x
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 12:41:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DKWl45TNRzDqlW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 12:48:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,67 +15,69 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Zo8+ZDwb; dkim-atps=neutral
+ header.s=pp1 header.b=iKN8q6SU; dkim-atps=neutral
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DKWYQ3f80zDq9T
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 12:39:49 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DKWjN4WfLzDqjn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 12:46:47 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10J1VDGH022172; Mon, 18 Jan 2021 20:39:47 -0500
+ 10J1WoFp013781; Mon, 18 Jan 2021 20:46:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=vCnPONhsbszbjEO+eNVCR6n012BR8Inlxk4aaej4GK4=;
- b=Zo8+ZDwbkWobMpPWjsP8yhDeUYmMTGiKHIyuAVssfHwJV5AneHNuCm1NXuhTMsFqKmhQ
- 7iLMGWLNk0qjX25JxvTobuH0rIK43F+/BEQOvNXMATG8SMOpDDnbqQ8AP4KGTHOLm4jz
- 9AKNpirYPEEIvakkFNYA/QENbXHKTvHTA/bvI1jkhL63JSp79Lv4bzTm43LVZc1v5Q7t
- UGyg7VINuaAYeNeIBDwihgObbA0Qy1XQvSrYs9QtxqBHO0PTlfzry9nkmaKEZle1puDL
- J+0ZAPbK8sIOrggvOsqsqLonFRZ12tov5noEL9HICt6lB7UQszGNhovtFvDhucncJev0 xQ== 
+ content-type; s=pp1; bh=VkwXbtiycoBLpXv+lHsNDBbKhMWzZCm66uRFB9QdKbw=;
+ b=iKN8q6SU/Bnv6jYZj+R86xc2iTFCE4cQYV4hY5RJ1suAC02QQXKTBYdB3ewVcdq+rE+W
+ FqYWKQ6OGlj66Mf71p0kkOHWdsf+ugnDUhZ5aWq9UvBRQXMOQdHhXfDELn/c+TETZmSf
+ Du+8xSzMPeL8rymV3WuQCgwubwwCTZqQm4xYLcG2z0D8Ggz9EPinYYaiUQI9vIaxV0B6
+ g/yUVChOb4JMfW7bnTVOAaxJH66+a/wO0jD4atjYzvOdZGdFR5sM5zal7PTQy2M4F8ln
+ lP4z7CqJVIIglD4x0h3JQZGrS68VLg0FX2Cmhsd0iULnFkNO9k8yBwCKsKm6qStHUAwM ow== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 365gs0eg6c-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 365n4ks0nx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Jan 2021 20:39:47 -0500
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10J1Xpp0031960;
- Mon, 18 Jan 2021 20:39:46 -0500
+ Mon, 18 Jan 2021 20:46:45 -0500
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10J1XNkm017143;
+ Mon, 18 Jan 2021 20:46:44 -0500
 Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
  [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 365gs0eg62-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 365n4ks0ns-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Jan 2021 20:39:46 -0500
+ Mon, 18 Jan 2021 20:46:44 -0500
 Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10J1VYCx019261;
- Tue, 19 Jan 2021 01:39:46 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma03wdc.us.ibm.com with ESMTP id 363qs8twvs-1
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10J1fXVe030200;
+ Tue, 19 Jan 2021 01:46:44 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma03wdc.us.ibm.com with ESMTP id 363qs8ty6h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Jan 2021 01:39:45 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 10J1djdU26739002
+ Tue, 19 Jan 2021 01:46:44 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10J1khgV20840940
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Jan 2021 01:39:45 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 79A37112062;
- Tue, 19 Jan 2021 01:39:45 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8AA1C112061;
- Tue, 19 Jan 2021 01:39:44 +0000 (GMT)
+ Tue, 19 Jan 2021 01:46:43 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7E80FC6055;
+ Tue, 19 Jan 2021 01:46:43 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B8493C6057;
+ Tue, 19 Jan 2021 01:46:42 +0000 (GMT)
 Received: from localhost (unknown [9.211.51.53])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
- Tue, 19 Jan 2021 01:39:44 +0000 (GMT)
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Tue, 19 Jan 2021 01:46:42 +0000 (GMT)
 From: Fabiano Rosas <farosas@linux.ibm.com>
 To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH 2/4] KVM: PPC: Book3S HV: Fix radix guest SLB side channel
-In-Reply-To: <20210118062809.1430920-3-npiggin@gmail.com>
+Subject: Re: [PATCH 1/4] KVM: PPC: Book3S HV: Remove support for running HPT
+ guest on RPT host without mixed mode support
+In-Reply-To: <20210118062809.1430920-2-npiggin@gmail.com>
 References: <20210118062809.1430920-1-npiggin@gmail.com>
- <20210118062809.1430920-3-npiggin@gmail.com>
-Date: Mon, 18 Jan 2021 22:39:41 -0300
-Message-ID: <87ft2xbt7m.fsf@linux.ibm.com>
+ <20210118062809.1430920-2-npiggin@gmail.com>
+Date: Mon, 18 Jan 2021 22:46:40 -0300
+Message-ID: <87czy1bsvz.fsf@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-TM-AS-GCONF: 00
@@ -83,11 +85,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
  definitions=2021-01-18_15:2021-01-18,
  2021-01-18 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0
- malwarescore=0 adultscore=0 impostorscore=0 mlxscore=0 suspectscore=0
- clxscore=1015 mlxlogscore=999 priorityscore=1501 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101190003
+ spamscore=0 suspectscore=0
+ bulkscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 adultscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101190007
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,110 +106,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Resending because the previous got spam-filtered:
+
 Nicholas Piggin <npiggin@gmail.com> writes:
 
-> The slbmte instruction is legal in radix mode, including radix guest
-> mode. This means radix guests can load the SLB with arbitrary data.
+> This reverts much of commit c01015091a770 ("KVM: PPC: Book3S HV: Run HPT
+> guests on POWER9 radix hosts"), which was required to run HPT guests on
+> RPT hosts on early POWER9 CPUs without support for "mixed mode", which
+> meant the host could not run with MMU on while guests were running.
 >
-> KVM host does not clear the SLB when exiting a guest if it was a
-> radix guest, which would allow a rogue radix guest to use the SLB as
-> a side channel to communicate with other guests.
->
-> Fix this by ensuring the SLB is cleared when coming out of a radix
-> guest. Only the first 4 entries are a concern, because radix guests
-> always run with LPCR[UPRT]=1, which limits the reach of slbmte. slbia
-> is not used (except in a non-performance-critical path) because it
-> can clear cached translations.
+> This code has some corner case bugs, e.g., when the guest hits a machine
+> check or HMI the primary locks up waiting for secondaries to switch LPCR
+> to host, which they never do. This could all be fixed in software, but
+> most CPUs in production have mixed mode support, and those that don't
+> are believed to be all in installations that don't use this capability.
+> So simplify things and remove support.
+
+With this patch in a DD2.1 machine + indep_threads_mode=N +
+disable_radix, QEMU aborts and dumps registers, is that intended?
+
+Could we use the 'no_mixing_hpt_and_radix' logic in check_extension to
+advertise only KVM_CAP_PPC_MMU_RADIX to the guest via OV5 so it doesn't
+try to run hash?
+
+For instance, if I hack QEMU's 'spapr_dt_ov5_platform_support' from
+OV5_MMU_BOTH to OV5_MMU_RADIX_300 then it boots succesfuly, but the
+guest turns into radix, due to this code in prom_init:
+
+prom_parse_mmu_model:
+
+case OV5_FEAT(OV5_MMU_RADIX): /* Only Radix */
+	prom_debug("MMU - radix only\n");
+	if (prom_radix_disable) {
+		/*
+		 * If we __have__ to do radix, we're better off ignoring
+		 * the command line rather than not booting.
+		 */
+		prom_printf("WARNING: Ignoring cmdline option disable_radix\n");
+	}
+	support->radix_mmu = true;
+	break;
+
+It seems we could explicitly say that the host does not support hash and
+that would align with the above code.
+
 >
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
-
 > ---
->  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 39 ++++++++++++++++++++-----
->  1 file changed, 31 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index d5a9b57ec129..0e1f5bf168a1 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -1157,6 +1157,20 @@ EXPORT_SYMBOL_GPL(__kvmhv_vcpu_entry_p9)
->  	mr	r4, r3
->  	b	fast_guest_entry_c
->  guest_exit_short_path:
-> +	/*
-> +	 * Malicious or buggy radix guests may have inserted SLB entries
-> +	 * (only 0..3 because radix always runs with UPRT=1), so these must
-> +	 * be cleared here to avoid side-channels. slbmte is used rather
-> +	 * than slbia, as it won't clear cached translations.
-> +	 */
-> +	li	r0,0
-> +	slbmte	r0,r0
-> +	li	r4,1
-> +	slbmte	r0,r4
-> +	li	r4,2
-> +	slbmte	r0,r4
-> +	li	r4,3
-> +	slbmte	r0,r4
->
->  	li	r0, KVM_GUEST_MODE_NONE
->  	stb	r0, HSTATE_IN_GUEST(r13)
-> @@ -1469,7 +1483,7 @@ guest_exit_cont:		/* r9 = vcpu, r12 = trap, r13 = paca */
->  	lbz	r0, KVM_RADIX(r5)
->  	li	r5, 0
->  	cmpwi	r0, 0
-> -	bne	3f			/* for radix, save 0 entries */
-> +	bne	0f			/* for radix, save 0 entries */
->  	lwz	r0,VCPU_SLB_NR(r9)	/* number of entries in SLB */
->  	mtctr	r0
->  	li	r6,0
-> @@ -1490,12 +1504,9 @@ guest_exit_cont:		/* r9 = vcpu, r12 = trap, r13 = paca */
->  	slbmte	r0,r0
->  	slbia
->  	ptesync
-> -3:	stw	r5,VCPU_SLB_MAX(r9)
-> +	stw	r5,VCPU_SLB_MAX(r9)
->
->  	/* load host SLB entries */
-> -BEGIN_MMU_FTR_SECTION
-> -	b	0f
-> -END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_RADIX)
->  	ld	r8,PACA_SLBSHADOWPTR(r13)
->
->  	.rept	SLB_NUM_BOLTED
-> @@ -1508,7 +1519,17 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_RADIX)
->  	slbmte	r6,r5
->  1:	addi	r8,r8,16
->  	.endr
-> -0:
-> +	b	guest_bypass
-> +
-> +0:	/* Sanitise radix guest SLB, see guest_exit_short_path comment. */
-> +	li	r0,0
-> +	slbmte	r0,r0
-> +	li	r4,1
-> +	slbmte	r0,r4
-> +	li	r4,2
-> +	slbmte	r0,r4
-> +	li	r4,3
-> +	slbmte	r0,r4
->
->  guest_bypass:
->  	stw	r12, STACK_SLOT_TRAP(r1)
-> @@ -3302,12 +3323,14 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
->  	mtspr	SPRN_CIABR, r0
->  	mtspr	SPRN_DAWRX0, r0
->
-> +	/* Clear hash and radix guest SLB, see guest_exit_short_path comment. */
-> +	slbmte	r0, r0
-> +	slbia
-> +
->  BEGIN_MMU_FTR_SECTION
->  	b	4f
->  END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_RADIX)
->
-> -	slbmte	r0, r0
-> -	slbia
->  	ptesync
->  	ld	r8, PACA_SLBSHADOWPTR(r13)
->  	.rept	SLB_NUM_BOLTED
