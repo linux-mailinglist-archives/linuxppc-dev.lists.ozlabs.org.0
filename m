@@ -2,67 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F762FC09F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 21:10:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E55752FC1C1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jan 2021 22:02:49 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DL0BN3Qv8zDqgn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 07:10:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DL1MC0s7pzDr2q
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 08:02:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::335;
- helo=mail-wm1-x335.google.com; envelope-from=lijunp213@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=f8s9eiBw; dkim-atps=neutral
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com
- [IPv6:2a00:1450:4864:20::335])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=CEpaa6KR; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DL08q1v6VzDqT3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 07:08:40 +1100 (AEDT)
-Received: by mail-wm1-x335.google.com with SMTP id e15so882929wme.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 12:08:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=gUbElotSDC5VjMwIga4WOXAKVvCXV926k6hzZgmzzKo=;
- b=f8s9eiBwX0BAYgTTiS9iO+QNwEqYZwj8DStyNa1yjK4wsqYVXC3Zsj15HDc1DrObws
- o8aUi0EE1VUj9Xk055rdTv0Y9QauywK2PuRFbCbXhIbAE0q8HKTqdaaCcurbtdlv9h26
- q4VBSOuR6lRnXTU93lB/eoI3Gx9d4AfEKE4UaXkIONv3E57E6GnLvRtMRcvsHttFhw78
- uFju6QTUN43rbbW28mO9U3C6XgnUmqzmdb1LqlPeCDlw9hQCLij2S2YJZFgX4wx7nqut
- DaF1TvxlRZ/9kon465I+dAt80nqvMZtm/t/UZbRQkgaXdYCiiJgw0ftRBp9iH5fE5duY
- VoEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=gUbElotSDC5VjMwIga4WOXAKVvCXV926k6hzZgmzzKo=;
- b=oR09FB6j0pSVFz6AYZCuOLUQP9fjnZUxuD4QoJOl2WrIEn9Vzz5D6DE1sQTJzBiO0L
- /3g+881qD8gmy5cbOA7vrfvogEtd4OrmFlnHN8RWZmNp5SKocWL1hv5OB1HZuN/BXkNj
- BXdkaGxZam3fdOep4o1QSwESRrBOAssi5tRMLdov8oplPRksTkFM9LPRMfzJHcckyqCu
- Un8dF/QsLYSe9zwg+w0SYBAyiLz/jsIAy3QJlDUNPYi58fnD1Qz2iiNk5aiQ14cCRyzm
- EhOWcRiMXtApWDYFjZhKyTVyrJ2Gvb3lTKmV/Gf0ER1TaY6FTEUYt86gCc4oPUkPXyf+
- 5iVQ==
-X-Gm-Message-State: AOAM532iqOC82V+0IHFy7i641mhYJpa4k3Rod1vyVjbtpv/n0nKTFM+6
- +k3xZh0+pyxI+TLE844T8VzSAmxHbktBb2K5HEc=
-X-Google-Smtp-Source: ABdhPJzrByNHbxqQDoB5h5ZZFMFxCtyIYWGU1zYgenco9ZaYf+wvAgUsCDWmr+8dnoCWDmWDLWUkCsPQ3dcf5zQZwqU=
-X-Received: by 2002:a1c:9c01:: with SMTP id f1mr1085750wme.159.1611086916064; 
- Tue, 19 Jan 2021 12:08:36 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DL1K45ZtPzDq7k
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 08:00:56 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10JKv5Vd033393; Tue, 19 Jan 2021 16:00:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ZchYG6yr7O7lmZfuAmsSaKC/kbB5ljiGSYyFQnFfZys=;
+ b=CEpaa6KRt9eyZIKQ8VHV1vmnYSA+Y5mFHtLdz2wDvNg4/jFijvE+4YVBRizBHiQUmXNm
+ Wu9Xri//OT7Atzr8KmU+ZaW5SWHPbFDiyWxI6B7WLkxILIW+oQEET4jxZf0AO4/W/Emk
+ Ipzh8t7qxui/n1MIXRl1h7Yl4PaFB9noQzTjQa5YmkoLtolH2taMTN3KRRc1jTaQAXoo
+ dICt+SJp544+o2PorlrGWWKFoWqIEOP9PV9s4JDRnp2aq157dtvHTS3CDQWitt6Xunrd
+ mvRD670Webk0bd0NIYM3LKRJ/7/q2sFvKyogK/Lv+nqMLag045PJTMyeMAqhF9FqHFfk zA== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3666wmg2yf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Jan 2021 16:00:50 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10JKuvTa028439;
+ Tue, 19 Jan 2021 21:00:50 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma02wdc.us.ibm.com with ESMTP id 363qs90xty-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Jan 2021 21:00:49 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10JL0mPn21299484
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Jan 2021 21:00:48 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8F1BC6E058;
+ Tue, 19 Jan 2021 21:00:48 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 70A356E053;
+ Tue, 19 Jan 2021 21:00:48 +0000 (GMT)
+Received: from localhost (unknown [9.211.72.22])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 19 Jan 2021 21:00:48 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 6/6] powerpc/rtas: constrain user region allocation to RMA
+In-Reply-To: <87mtx5qp1g.fsf@mpe.ellerman.id.au>
+References: <20210114220004.1138993-1-nathanl@linux.ibm.com>
+ <20210114220004.1138993-7-nathanl@linux.ibm.com>
+ <87mtx5qp1g.fsf@mpe.ellerman.id.au>
+Date: Tue, 19 Jan 2021 15:00:48 -0600
+Message-ID: <874kjcy73z.fsf@linux.ibm.com>
 MIME-Version: 1.0
-References: <20210119193313.43791-1-ljp@linux.ibm.com>
- <20210119194959.a67nlfbngx4drvyz@pengutronix.de>
-In-Reply-To: <20210119194959.a67nlfbngx4drvyz@pengutronix.de>
-From: Lijun Pan <lijunp213@gmail.com>
-Date: Tue, 19 Jan 2021 14:08:25 -0600
-Message-ID: <CAOhMmr5pmLLCdm7Jjkkfvuyof9PZ+R4zgidEFgC_ms-r6rv4ow@mail.gmail.com>
-Subject: Re: [PATCH net RFC] ibmvnic: device remove has higher precedence over
- reset
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-19_09:2021-01-18,
+ 2021-01-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 adultscore=0
+ suspectscore=0 malwarescore=0 mlxlogscore=999 phishscore=0 spamscore=0
+ impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2009150000 definitions=main-2101190110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,90 +96,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, julietk@linux.vnet.ibm.com,
- netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- Lijun Pan <ljp@linux.ibm.com>, kernel@pengutronix.de, drt@linux.ibm.com,
- paulus@samba.org, sukadev@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- davem@davemloft.net
+Cc: aik@ozlabs.ru, tyreld@linux.ibm.com, brking@linux.ibm.com,
+ ajd@linux.ibm.com, aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 19, 2021 at 1:56 PM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Nathan Lynch <nathanl@linux.ibm.com> writes:
+>> Memory locations passed as arguments from the OS to RTAS usually need
+>> to be addressable in 32-bit mode and must reside in the Real Mode
+>> Area. On PAPR guests, the RMA starts at logical address 0 and is the
+>> first logical memory block reported in the LPAR=E2=80=99s device tree.
+>>
+>> On powerpc targets with RTAS, Linux makes available to user space a
+>> region of memory suitable for arguments to be passed to RTAS via
+>> sys_rtas(). This region (rtas_rmo_buf) is allocated via the memblock
+>> API during boot in order to ensure that it satisfies the requirements
+>> described above.
+>>
+>> With radix MMU, the upper limit supplied to the memblock allocation
+>> can exceed the bounds of the first logical memory block, since
+>> ppc64_rma_size is ULONG_MAX and RTAS_INSTANTIATE_MAX is 1GB.
 >
-> On Tue, Jan 19, 2021 at 01:33:13PM -0600, Lijun Pan wrote:
-> > Returning -EBUSY in ibmvnic_remove() does not actually hold the
-> > removal procedure since driver core doesn't care for the return
-> > value (see __device_release_driver() in drivers/base/dd.c
-> > calling dev->bus->remove()) though vio_bus_remove
-> > (in arch/powerpc/platforms/pseries/vio.c) records the
-> > return value and passes it on. [1]
-> >
-> > During the device removal precedure, we should not schedule
-> > any new reset, and rely on the flush_work and flush_delayed_work
-> > to complete the pending resets, and specifically we need to
-> > let __ibmvnic_reset() keep running while in REMOVING state since
-> > flush_work and flush_delayed_work shall call __ibmvnic_reset finally.
-> >
-> > [1] https://lore.kernel.org/linuxppc-dev/20210117101242.dpwayq6wdgfdzir=
-l@pengutronix.de/T/#m48f5befd96bc9842ece2a3ad14f4c27747206a53
-> > Reported-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> > Fixes: 7d7195a026ba ("ibmvnic: Do not process device remove during devi=
-ce reset")
-> > Signed-off-by: Lijun Pan <ljp@linux.ibm.com>
-> > ---
-> >  drivers/net/ethernet/ibm/ibmvnic.c | 8 +-------
-> >  1 file changed, 1 insertion(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/=
-ibm/ibmvnic.c
-> > index aed985e08e8a..11f28fd03057 100644
-> > --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> > +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> > @@ -2235,8 +2235,7 @@ static void __ibmvnic_reset(struct work_struct *w=
-ork)
-> >       while (rwi) {
-> >               spin_lock_irqsave(&adapter->state_lock, flags);
-> >
-> > -             if (adapter->state =3D=3D VNIC_REMOVING ||
-> > -                 adapter->state =3D=3D VNIC_REMOVED) {
-> > +             if (adapter->state =3D=3D VNIC_REMOVED) {
->
-> I think you need to keep the check for VNIC_REMOVING. Otherwise you
-> don't prevent that a new reset being queued after ibmvnic_remove() set
-> the state to VNIC_REMOVING. Am I missing something?
+> Why does the size of the first memory block matter for radix?
 
-I leave the checking for REMOVING there in ibmvnic_reset, which is the
-function to schedule/queue up the resets.
-Here I delete the REMOVING in __ibmvnic_reset to let it run and finish.
-Otherwise flush_work will not do anything if __ibmvnic_reset() just return
-doing nothing.
+Here is my understanding: in the platform architecture, the size of the
+first memory block equals the RMA, regardless of the MMU mode. It just
+so happens that when using radix, Linux can pass ibm,configure-connector
+a work area address outside of the RMA because the allocation
+constraints for the work area are computed differently. It would be
+wrong of the OS to pass RTAS arguments outside of this region with hash
+MMU as well.
 
-I can explain it in the commit message.
+> The 1GB limit is sufficient to make it accessible by 32-bit code.
 
+But the requirement is that memory arguments passed to RTAS reside in
+the RMA, which may be less than 1GB.
+
+
+>> (512MB is a common size of the first memory block according to a small s=
+ample of
+>> LPARs I have checked.)
 >
-> >                       spin_unlock_irqrestore(&adapter->state_lock, flag=
-s);
-> >                       kfree(rwi);
-> >                       rc =3D EBUSY;
-> > @@ -5372,11 +5371,6 @@ static int ibmvnic_remove(struct vio_dev *dev)
-> >       unsigned long flags;
-> >
-> >       spin_lock_irqsave(&adapter->state_lock, flags);
-> > -     if (test_bit(0, &adapter->resetting)) {
-> > -             spin_unlock_irqrestore(&adapter->state_lock, flags);
-> > -             return -EBUSY;
-> > -     }
-> > -
-> >       adapter->state =3D VNIC_REMOVING;
-> >       spin_unlock_irqrestore(&adapter->state_lock, flags);
+> That's the minimum we request, see prom_init.c:
 >
-> Best regards
-> Uwe
+> 	/* option vector 2: Open Firmware options supported */
+> 	.vec2 =3D {
+> 		.byte1 =3D OV2_REAL_MODE,
+> 		.reserved =3D 0,
+> 		.real_base =3D cpu_to_be32(0xffffffff),
+> 		.real_size =3D cpu_to_be32(0xffffffff),
+> 		.virt_base =3D cpu_to_be32(0xffffffff),
+> 		.virt_size =3D cpu_to_be32(0xffffffff),
+> 		.load_base =3D cpu_to_be32(0xffffffff),
+> 		.min_rma =3D cpu_to_be32(512),		/* 512MB min RMA */
 >
-> --
-> Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig       =
-     |
-> Industrial Linux Solutions                 | https://www.pengutronix.de/ =
-|
+> Since v4.12 in 2017.
+
+Thanks for the pointer, I had been trying to find this without success.
