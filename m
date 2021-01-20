@@ -1,70 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E592FCC17
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 08:56:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C212FCD80
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 10:34:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLHss5CQ0zDqvH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 18:56:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLL2p2sy0zDqvY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 20:34:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
- helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ngyX+jv3; dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLHkM43x7zDqw0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 18:50:17 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id x18so12071018pln.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 23:50:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=NVUQStI8R3vooOw/aI2S7mU/fM8wYcvR1cyugASxQcc=;
- b=ngyX+jv3o6ZoWfN55UCVS3lUgVf1B9naosJt/CxL/pgGiirDmXWnefCgR2AKxSt0HD
- K9B5mKVOuhCPJWJWb12il4SabcA5264GXWdB4xZcRpMSRwH73FqhECk2miU/rt0R050A
- da1qarXQYjMSVGmgKPzb8SbV5GntuhlaM9ryAjQDQqKBk3R96qUswpdmaqGek+AsHLbh
- GsSOPlQQzAy2xmA6mtM5P48SK3rnBnHdB/AbnCKEXbav6Jbemd/C43fzfcsF9TRi2zrD
- INSRCO4cQToUj/4wEtdgMLsWTRIA89ZVKVdOHUaOoU7TGNGY/3ZKqA1mOPI67KpuPvJR
- zF0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=NVUQStI8R3vooOw/aI2S7mU/fM8wYcvR1cyugASxQcc=;
- b=KMNCerZtaCtsgNH5rYyTcgZ1qbh6jphzgg4O0Uo4hAtWYbeuNuA+rA2PWBivzpW1WA
- R/1Rlcg0UolYWdEnoCjMyVHCu+R6g061oEUaKcjeG05Ui3FFXmJVeiBgLCNnNKjTXC3O
- ueczyCpTjkW44u0HhmmJVHNMSfkp2NigafHZz7t3/6eqqnwA0BMesf3YDD3e3VhuLA2f
- bBfGoOQylr2kWggGtfxWIeq4Fi8XSpQ16tONxVn6a/nP6HGnjKTJbZ/dmQ2t5QCktsYj
- 0/lqBXpvgQHcP64u6Feumwt2CZ+/LCBbOsviDTzjKBsu2EoH7b9IqC8Oh/xgdyGihuB0
- awAg==
-X-Gm-Message-State: AOAM530UCya5lmAzNG8bo5xYSWitaLbRSxMSOMj38+QtlNSO+rRZcoNZ
- lfA9mUf657SDHdG5lW94xs3yLEXVC3U=
-X-Google-Smtp-Source: ABdhPJx8OxgsfbAy0WQpQKVyY+8XxWUlnp+dpw7sS2ZohbZt+vEvu4UP8XZnoEo8lBv4KNjIeZZGOw==
-X-Received: by 2002:a17:90b:1a86:: with SMTP id
- ng6mr4198091pjb.113.1611129012952; 
- Tue, 19 Jan 2021 23:50:12 -0800 (PST)
-Received: from bobo.ibm.com ([124.170.13.62])
- by smtp.gmail.com with ESMTPSA id a5sm1218092pgl.41.2021.01.19.23.50.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Jan 2021 23:50:12 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64: prevent replayed interrupt handlers from running
- softirqs
-Date: Wed, 20 Jan 2021 17:50:05 +1000
-Message-Id: <20210120075005.1678565-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLL134Y2rzDqq8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 20:33:09 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-136-FlUOqhZwNni2kAj9MZ8Nhg-1; Wed, 20 Jan 2021 09:33:01 +0000
+X-MC-Unique: FlUOqhZwNni2kAj9MZ8Nhg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Wed, 20 Jan 2021 09:33:00 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Wed, 20 Jan 2021 09:33:00 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Christophe Leroy' <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Michael
+ Ellerman" <mpe@ellerman.id.au>
+Subject: RE: [PATCH 2/2] powerpc/44x: Remove STDBINUTILS kconfig option
+Thread-Topic: [PATCH 2/2] powerpc/44x: Remove STDBINUTILS kconfig option
+Thread-Index: AQHW7wFdZXRNi2FVUEGR2+8ye/HSkqowP30w
+Date: Wed, 20 Jan 2021 09:33:00 +0000
+Message-ID: <e19c6d6bf92d4f7399a939c7c3c7ad0d@AcuMS.aculab.com>
+References: <2fed79b1154c872194f98bac4422c23918325e61.1611128938.git.christophe.leroy@csgroup.eu>
+ <f9981e819009aa121a998dc483052ec76f78f991.1611128938.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <f9981e819009aa121a998dc483052ec76f78f991.1611128938.git.christophe.leroy@csgroup.eu>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,85 +65,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Running softirqs enables interrupts, which can then end up recursing
-into the irq soft-mask code we're adjusting, including replaying
-interrupts itself, which might be theoretically unbounded.
+From: Christophe Leroy
+> Sent: 20 January 2021 07:49
+>=20
+> STDBINUTILS is just a toggle to allow 256k page size
+> to appear in the possible page sizes list for the 44x.
+>=20
+> Make 256k page size appear all the time with an
+> explicit warning on binutils, and remove this unneccessary
+> STDBINUTILS config option.
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/Kconfig | 27 +++++++--------------------
+>  1 file changed, 7 insertions(+), 20 deletions(-)
+>=20
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index a685e42d3993..3e29995540a7 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -720,18 +720,6 @@ config ARCH_MEMORY_PROBE
+>  =09def_bool y
+>  =09depends on MEMORY_HOTPLUG
+>=20
+> -config STDBINUTILS
+> -=09bool "Using standard binutils settings"
+> -=09depends on 44x
+> -=09default y
+> -=09help
+> -=09  Turning this option off allows you to select 256KB PAGE_SIZE on 44x=
+.
+> -=09  Note, that kernel will be able to run only those applications,
+> -=09  which had been compiled using binutils later than 2.17.50.0.3 with
+> -=09  '-zmax-page-size' set to 256K (the default is 64K). Or, if using
+> -=09  the older binutils, you can patch them with a trivial patch, which
+> -=09  changes the ELF_MAXPAGESIZE definition from 0x10000 to 0x40000.
+> -
+>  choice
+>  =09prompt "Page size"
+>  =09default PPC_4K_PAGES
+> @@ -771,17 +759,16 @@ config PPC_64K_PAGES
+>  =09select HAVE_ARCH_SOFT_DIRTY if PPC_BOOK3S_64
+>=20
+>  config PPC_256K_PAGES
+> -=09bool "256k page size"
+> -=09depends on 44x && !STDBINUTILS && !PPC_47x
+> +=09bool "256k page size (Requires non-standard binutils settings)"
+> +=09depends on 44x && !PPC_47x
+>  =09help
+>  =09  Make the page size 256k.
+>=20
+> -=09  As the ELF standard only requires alignment to support page
+> -=09  sizes up to 64k, you will need to compile all of your user
+> -=09  space applications with a non-standard binutils settings
+> -=09  (see the STDBINUTILS description for details).
+> -
+> -=09  Say N unless you know what you are doing.
+> +=09  That kernel will be able to run only those applications,
+> +=09  which had been compiled using binutils later than 2.17.50.0.3 with
+> +=09  '-zmax-page-size' set to 256K (the default is 64K). Or, if using
+> +=09  the older binutils, you can patch them with a trivial patch, which
+> +=09  changes the ELF_MAXPAGESIZE definition from 0x10000 to 0x40000.
 
-This abridged trace shows how this can occur:
 
-! NIP replay_soft_interrupts
-  LR  interrupt_exit_kernel_prepare
-  Call Trace:
-    interrupt_exit_kernel_prepare (unreliable)
-    interrupt_return
-  --- interrupt: ea0 at __rb_reserve_next
-  NIP __rb_reserve_next
-  LR __rb_reserve_next
-  Call Trace:
-    ring_buffer_lock_reserve
-    trace_function
-    function_trace_call
-    ftrace_call
-    __do_softirq
-    irq_exit
-    timer_interrupt
-!   replay_soft_interrupts
-    interrupt_exit_kernel_prepare
-    interrupt_return
-  --- interrupt: ea0 at arch_local_irq_restore
+The kernel will only be able to run applications that have been
+compiled with '-zmax-page-size' set to 256K (the default is 64K)
+using binutils later than 2.17.50.0.3, or by patching the
+ELF_MAXPAGESIZE definition from 0x10000 to 0x40000 in older versions.
 
-Fix this by disabling bhs (softirqs) around the interrupt replay.
+>=20
+>  endchoice
+>=20
+> --
+> 2.25.0
 
-I don't know that commit 3282a3da25bd ("powerpc/64: Implement soft
-interrupt replay in C") actually introduced the problem. Prior to that
-change, the interrupt replay seems like it should still be subect to
-this recusion, however it's done after all the irq state has been fixed
-up at the end of the replay, so it seems reasonable to fix back to this
-commit.
-
-Fixes: 3282a3da25bd ("powerpc/64: Implement soft interrupt replay in C")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/irq.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 6b1eca53e36c..7064135f9dc3 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -188,6 +188,18 @@ void replay_soft_interrupts(void)
- 	unsigned char happened = local_paca->irq_happened;
- 	struct pt_regs regs;
- 
-+	/*
-+	 * Prevent softirqs from being run when an interrupt handler returns
-+	 * and calls irq_exit(), because softirq processing enables interrupts.
-+	 * If an interrupt is taken, it may then call replay_soft_interrupts
-+	 * on its way out, which gets messy and recursive.
-+	 *
-+	 * softirqs created by replayed interrupts will be run at the end of
-+	 * this function when bhs are enabled (if they were enabled in our
-+	 * caller).
-+	 */
-+	local_bh_disable();
-+
- 	ppc_save_regs(&regs);
- 	regs.softe = IRQS_ENABLED;
- 
-@@ -263,6 +275,8 @@ void replay_soft_interrupts(void)
- 		trace_hardirqs_off();
- 		goto again;
- 	}
-+
-+	local_bh_enable();
- }
- 
- notrace void arch_local_irq_restore(unsigned long mask)
--- 
-2.23.0
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
