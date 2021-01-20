@@ -1,41 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6B02FD6E7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 18:32:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7752FD789
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 18:54:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLXdj5ZWDzDqvR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 04:32:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLY7H2g9zzDqlw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 04:54:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DLXbf5TS4zDqJY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 04:30:22 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0CA6C31B;
- Wed, 20 Jan 2021 09:30:15 -0800 (PST)
-Received: from [10.57.39.58] (unknown [10.57.39.58])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF5433F68F;
- Wed, 20 Jan 2021 09:30:08 -0800 (PST)
-Subject: Re: [RFC PATCH v3 5/6] dt-bindings: of: Add restricted DMA pool
-To: Rob Herring <robh@kernel.org>, Claire Chang <tientzu@chromium.org>
-References: <20210106034124.30560-1-tientzu@chromium.org>
- <20210106034124.30560-6-tientzu@chromium.org>
- <20210120165348.GA220770@robh.at.kernel.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Message-ID: <313f8052-a591-75de-c4c2-ee9ea8f02e7f@arm.com>
-Date: Wed, 20 Jan 2021 17:30:07 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=merlin.20170209 header.b=FjAfLsSy; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLY4f4FNszDqjQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 04:52:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
+ Reply-To:Cc:Content-ID:Content-Description;
+ bh=+PVp3ta0WjC0TXJF4d2xbzQfNDYRHuF/qzM1UrQhb/w=; b=FjAfLsSy+2CNVXeEZwe03ra1jt
+ B6QHrL6tVmursLRUvc76d9gLKVlK2YgI+kpun4cBfpiMG9k/Gon0ZV47qeqHCGLjhbEN+wDQT7GT9
+ YPyVqPHgQhChPn/VfXGEYZFArkb847ZTjY0UikX5H93R1uGnChmgCixSfXDoWRx4XTwODA9KwW8+d
+ m9/tdlyth1m5q9e/6qk+MUCyujVVyRO1HY5/cJ/yclrdD117cyWCkdO8LrNSTONI1kcOtpf1x0h0z
+ p2ocncmN4nviDKPr9gVriFMeUmY9MaNtTRhUQxAQ5V3abodSuDDzoBrOm/qvsOK+2dH+KTRG/1MpT
+ kmYC1tDQ==;
+Received: from [2601:1c0:6280:3f0::9abc]
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1l2He8-0001SU-En; Wed, 20 Jan 2021 17:51:56 +0000
+Subject: Re: [PATCH] arch: powerpc: mm: book3s64: Fixed spelling architectue
+ -> architecture in line number 1061
+To: Bhaskar Chowdhury <unixbhaskar@gmail.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, akpm@linux-foundation.org,
+ rppt@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20210120142020.2623355-1-unixbhaskar@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <540548b6-a7b3-9a5b-67ee-17d18395ddb6@infradead.org>
+Date: Wed, 20 Jan 2021 09:51:50 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <20210120165348.GA220770@robh.at.kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
+In-Reply-To: <20210120142020.2623355-1-unixbhaskar@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -48,97 +64,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, peterz@infradead.org,
- linux-kernel@vger.kernel.org, grant.likely@arm.com, paulus@samba.org,
- will@kernel.org, mingo@kernel.org, m.szyprowski@samsung.com,
- sstabellini@kernel.org, saravanak@google.com, joro@8bytes.org,
- rafael.j.wysocki@intel.com, hch@lst.de, bgolaszewski@baylibre.com,
- xen-devel@lists.xenproject.org, treding@nvidia.com, devicetree@vger.kernel.org,
- konrad.wilk@oracle.com, dan.j.williams@intel.com, drinkcat@chromium.org,
- boris.ostrovsky@oracle.com, andriy.shevchenko@linux.intel.com, jgross@suse.com,
- gregkh@linuxfoundation.org, rdunlap@infradead.org, frowand.list@gmail.com,
- tfiga@chromium.org, iommu@lists.linux-foundation.org, xypron.glpk@gmx.de,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-01-20 16:53, Rob Herring wrote:
-> On Wed, Jan 06, 2021 at 11:41:23AM +0800, Claire Chang wrote:
->> Introduce the new compatible string, restricted-dma-pool, for restricted
->> DMA. One can specify the address and length of the restricted DMA memory
->> region by restricted-dma-pool in the device tree.
+On 1/20/21 6:20 AM, Bhaskar Chowdhury wrote:
+> s/architectue/architecture/
 > 
-> If this goes into DT, I think we should be able to use dma-ranges for
-> this purpose instead. Normally, 'dma-ranges' is for physical bus
-> restrictions, but there's no reason it can't be used for policy or to
-> express restrictions the firmware has enabled.
+> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 
-There would still need to be some way to tell SWIOTLB to pick up the 
-corresponding chunk of memory and to prevent the kernel from using it 
-for anything else, though.
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
 
->> Signed-off-by: Claire Chang <tientzu@chromium.org>
->> ---
->>   .../reserved-memory/reserved-memory.txt       | 24 +++++++++++++++++++
->>   1 file changed, 24 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
->> index e8d3096d922c..44975e2a1fd2 100644
->> --- a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
->> +++ b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
->> @@ -51,6 +51,20 @@ compatible (optional) - standard definition
->>             used as a shared pool of DMA buffers for a set of devices. It can
->>             be used by an operating system to instantiate the necessary pool
->>             management subsystem if necessary.
->> +        - restricted-dma-pool: This indicates a region of memory meant to be
->> +          used as a pool of restricted DMA buffers for a set of devices. The
->> +          memory region would be the only region accessible to those devices.
->> +          When using this, the no-map and reusable properties must not be set,
->> +          so the operating system can create a virtual mapping that will be used
->> +          for synchronization. The main purpose for restricted DMA is to
->> +          mitigate the lack of DMA access control on systems without an IOMMU,
->> +          which could result in the DMA accessing the system memory at
->> +          unexpected times and/or unexpected addresses, possibly leading to data
->> +          leakage or corruption. The feature on its own provides a basic level
->> +          of protection against the DMA overwriting buffer contents at
->> +          unexpected times. However, to protect against general data leakage and
->> +          system memory corruption, the system needs to provide way to restrict
->> +          the DMA to a predefined memory region.
->>           - vendor specific string in the form <vendor>,[<device>-]<usage>
->>   no-map (optional) - empty property
->>       - Indicates the operating system must not create a virtual mapping
->> @@ -120,6 +134,11 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
->>   			compatible = "acme,multimedia-memory";
->>   			reg = <0x77000000 0x4000000>;
->>   		};
->> +
->> +		restricted_dma_mem_reserved: restricted_dma_mem_reserved {
->> +			compatible = "restricted-dma-pool";
->> +			reg = <0x50000000 0x400000>;
->> +		};
->>   	};
->>   
->>   	/* ... */
->> @@ -138,4 +157,9 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
->>   		memory-region = <&multimedia_reserved>;
->>   		/* ... */
->>   	};
->> +
->> +	pcie_device: pcie_device@0,0 {
->> +		memory-region = <&restricted_dma_mem_reserved>;
+Thanks.
+
+Line number in $Subject is just too much.
+
+> ---
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> PCI hosts often have inbound window configurations that limit the
-> address range and translate PCI to bus addresses. Those windows happen
-> to be configured by dma-ranges. In any case, wouldn't you want to put
-> the configuration in the PCI host node? Is there a usecase of
-> restricting one PCIe device and not another?
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index 98f0b243c1ab..8b8f1451e944 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -1058,7 +1058,7 @@ void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
+>  		 * Book3S does not require a TLB flush when relaxing access
+>  		 * restrictions when the address space is not attached to a
+>  		 * NMMU, because the core MMU will reload the pte after taking
+> -		 * an access fault, which is defined by the architectue.
+> +		 * an access fault, which is defined by the architecture.
+>  		 */
+>  	}
+>  	/* See ptesync comment in radix__set_pte_at */
+> --
+> 2.30.0
+> 
 
-The general design seems to accommodate devices having their own pools 
-such that they can't even snoop on each others' transient DMA data. If 
-the interconnect had a way of wiring up, say, PCI RIDs to AMBA NSAIDs, 
-then in principle you could certainly apply that to PCI endpoints too 
-(presumably you'd also disallow them from peer-to-peer transactions at 
-the PCI level too).
 
-Robin.
+-- 
+~Randy
+"He closes his eyes and drops the goggles.  You can't get hurt
+by looking at a bitmap.  Or can you?"
+(Neal Stephenson: Snow Crash)
