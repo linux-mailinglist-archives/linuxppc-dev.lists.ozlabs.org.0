@@ -1,88 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307DB2FCD8D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 10:47:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB66D2FCDC1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 11:17:54 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLLL32NT0zDqvV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 20:47:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLM0Z2FxmzDqys
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 21:17:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ananth@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=MHfk7JJn; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=Ev6WH+vS; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLLJG426xzDqc7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 20:46:19 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10K9gsiA079772; Wed, 20 Jan 2021 04:46:12 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLLyh4WlGzDqqD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 21:16:06 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10KA1dUl065581; Wed, 20 Jan 2021 05:15:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : from : to : cc
- : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=pp1;
- bh=5jbV/iw4rK6+502Tg/Y8kIWXA2lci081wdhQhqZUXvI=;
- b=MHfk7JJnIHZR9VZvw2jsqM2HsS/KE7KBbKfRzyFVPRvEDjQarnFUo/HLbWBLv8V6t+lC
- 8u++OLYuR/vT73cBQAplG6YCe4plBj+8i1l+He5vCQUUiVJBfzcGbHc0fC9O/VkdVsFR
- oQG/+fBLwDPbZgjud5+ntpVxdi8gh8YAEfkNP8zi26h821zDh2LNaCjXediDUrlQ63e3
- FTVNX2W953h4mQx7+2PHDTXxI1IhCB9xhn+XkAcPUGLNJ0o3H1uPfV78jbu663eS/peh
- aa6GVi4/xc7i7KK2t737lc/YaaE/iqYoPQGFpjybjDy33+ZXDB8yQWd7uE9n48jqjgF7 0w== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0b-001b2d01.pphosted.com with ESMTP id 366j4j82kc-1
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=WqtRsn4wX5UFovXUMrD6eX6wPMkgMTu0brw8VHhW5uA=;
+ b=Ev6WH+vSLU16+XHvpnI7f1U4DBTvwstozi1NxQmtbojM6pHbJ+vGs9MtCqvw57MpcjaL
+ bfKNtAsOlIvJ4T14Npv/nkZobwEH3iFl1IdcE6myA64GtUM1en4F5x8eu7cEFlQzsUc/
+ +apZ5mV3vQDeBalZ12JvM45552diGaH0xe5dLBC2a/wpa1hODLb9oodQA6Fdjo3/FNaW
+ MG2X7749/o5OCfgEWxtSW3393Jh6M/1cEgo8IHOnJn2/hZfxdiIfI864wGSXVc590itt
+ 8YUwTFRYvOVZjYjKsyZWSSJ9byZH8A+itEZOKDEtsz4/QxX4UIi+dJwQpDbepLQZ2Bxq +g== 
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 366j470vtk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 20 Jan 2021 04:46:12 -0500
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10K9S7Zr012189;
- Wed, 20 Jan 2021 09:46:10 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma01fra.de.ibm.com with ESMTP id 3668p4g7fx-1
+ Wed, 20 Jan 2021 05:15:59 -0500
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10KAFJc5001797;
+ Wed, 20 Jan 2021 10:15:56 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma05fra.de.ibm.com with ESMTP id 3668p807wb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 20 Jan 2021 09:46:10 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 10K9k7YM20316576
+ Wed, 20 Jan 2021 10:15:56 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10KAFr7Y46399822
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 20 Jan 2021 09:46:07 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7CCB24204B;
- Wed, 20 Jan 2021 09:46:07 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 44F1E42041;
- Wed, 20 Jan 2021 09:46:06 +0000 (GMT)
-Received: from thinktux.local (unknown [9.199.63.129])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 20 Jan 2021 09:46:06 +0000 (GMT)
-Subject: [PATCH] [PATCH] powerpc/sstep: Check ISA 3.0 instruction validity
- before emulation
-From: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Date: Wed, 20 Jan 2021 15:16:05 +0530
-Message-ID: <161113596420.206556.5023431229030762544.stgit@thinktux.local>
-User-Agent: StGit/0.23
+ Wed, 20 Jan 2021 10:15:53 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 692C7A404D;
+ Wed, 20 Jan 2021 10:15:53 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F222BA4059;
+ Wed, 20 Jan 2021 10:15:52 +0000 (GMT)
+Received: from localhost (unknown [9.102.18.143])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 20 Jan 2021 10:15:52 +0000 (GMT)
+Date: Wed, 20 Jan 2021 15:44:45 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+To: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
+Subject: Re: [PATCH] [PATCH] powerpc/sstep: Check ISA 3.0 instruction
+ validity before emulation
+Message-ID: <20210120101445.GA80@DESKTOP-TDPLP67.localdomain>
+References: <161113596420.206556.5023431229030762544.stgit@thinktux.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <161113596420.206556.5023431229030762544.stgit@thinktux.local>
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
  definitions=2021-01-20_02:2021-01-18,
  2021-01-20 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- spamscore=0 clxscore=1011 lowpriorityscore=0 bulkscore=0 malwarescore=0
- mlxlogscore=810 impostorscore=0 suspectscore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101200052
+ spamscore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 malwarescore=0 phishscore=0
+ lowpriorityscore=0 mlxscore=0 bulkscore=0 clxscore=1011 impostorscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101200054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,201 +94,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.ibm.com, ravi.bangoria@linux.ibm.com, dja@axtens.net
+Cc: naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ ravi.bangoria@linux.ibm.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We currently unconditionally try to newer emulate instructions on older
-Power versions that could cause issues. Gate it.
+On 2021/01/20 03:16PM, Ananth N Mavinakayanahalli wrote:
+> We currently unconditionally try to newer emulate instructions on older
+				      ^^^^^ never?
+				      Or: "emulate newer"?
 
-Signed-off-by: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
----
- arch/powerpc/lib/sstep.c |   40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+> Power versions that could cause issues. Gate it.
+> 
+> Signed-off-by: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
+> ---
+>  arch/powerpc/lib/sstep.c |   40 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 40 insertions(+)
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index bf7a7d62ae8b..ed119858e5e9 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -1528,6 +1528,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		goto compute_done;
- 
- 	case 19:
-+		if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+			return -1;
- 		if (((word >> 1) & 0x1f) == 2) {
- 			/* addpcis */
- 			imm = (short) (word & 0xffc1);	/* d0 + d2 fields */
-@@ -2439,6 +2441,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 268:	/* lxvx */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(LOAD_VSX, 0, 16);
- 			op->element_size = 16;
-@@ -2448,6 +2452,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		case 269:	/* lxvl */
- 		case 301: {	/* lxvll */
- 			int nb;
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->ea = ra ? regs->gpr[ra] : 0;
- 			nb = regs->gpr[rb] & 0xff;
-@@ -2475,6 +2481,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 364:	/* lxvwsx */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(LOAD_VSX, 0, 4);
- 			op->element_size = 4;
-@@ -2482,6 +2490,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 396:	/* stxvx */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(STORE_VSX, 0, 16);
- 			op->element_size = 16;
-@@ -2491,6 +2501,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		case 397:	/* stxvl */
- 		case 429: {	/* stxvll */
- 			int nb;
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->ea = ra ? regs->gpr[ra] : 0;
- 			nb = regs->gpr[rb] & 0xff;
-@@ -2542,6 +2554,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 781:	/* lxsibzx */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(LOAD_VSX, 0, 1);
- 			op->element_size = 8;
-@@ -2549,6 +2563,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 812:	/* lxvh8x */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(LOAD_VSX, 0, 16);
- 			op->element_size = 2;
-@@ -2556,6 +2572,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 813:	/* lxsihzx */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(LOAD_VSX, 0, 2);
- 			op->element_size = 8;
-@@ -2569,6 +2587,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 876:	/* lxvb16x */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(LOAD_VSX, 0, 16);
- 			op->element_size = 1;
-@@ -2582,6 +2602,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 909:	/* stxsibx */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(STORE_VSX, 0, 1);
- 			op->element_size = 8;
-@@ -2589,6 +2611,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 940:	/* stxvh8x */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(STORE_VSX, 0, 16);
- 			op->element_size = 2;
-@@ -2596,6 +2620,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 941:	/* stxsihx */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(STORE_VSX, 0, 2);
- 			op->element_size = 8;
-@@ -2609,6 +2635,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 1004:	/* stxvb16x */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(STORE_VSX, 0, 16);
- 			op->element_size = 1;
-@@ -2717,12 +2745,16 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			op->type = MKOP(LOAD_FP, 0, 16);
- 			break;
- 		case 2:		/* lxsd */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd + 32;
- 			op->type = MKOP(LOAD_VSX, 0, 8);
- 			op->element_size = 8;
- 			op->vsx_flags = VSX_CHECK_VEC;
- 			break;
- 		case 3:		/* lxssp */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->reg = rd + 32;
- 			op->type = MKOP(LOAD_VSX, 0, 4);
- 			op->element_size = 8;
-@@ -2775,6 +2807,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 1:		/* lxv */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->ea = dqform_ea(word, regs);
- 			if (word & 8)
- 				op->reg = rd + 32;
-@@ -2785,6 +2819,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 
- 		case 2:		/* stxsd with LSB of DS field = 0 */
- 		case 6:		/* stxsd with LSB of DS field = 1 */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->ea = dsform_ea(word, regs);
- 			op->reg = rd + 32;
- 			op->type = MKOP(STORE_VSX, 0, 8);
-@@ -2794,6 +2830,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 
- 		case 3:		/* stxssp with LSB of DS field = 0 */
- 		case 7:		/* stxssp with LSB of DS field = 1 */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->ea = dsform_ea(word, regs);
- 			op->reg = rd + 32;
- 			op->type = MKOP(STORE_VSX, 0, 4);
-@@ -2802,6 +2840,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			break;
- 
- 		case 5:		/* stxv */
-+			if (!cpu_has_feature(CPU_FTR_ARCH_300))
-+				return -1;
- 			op->ea = dqform_ea(word, regs);
- 			if (word & 8)
- 				op->reg = rd + 32;
+Thanks!
 
+> 
+> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> index bf7a7d62ae8b..ed119858e5e9 100644
+> --- a/arch/powerpc/lib/sstep.c
+> +++ b/arch/powerpc/lib/sstep.c
+> @@ -1528,6 +1528,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+>  		goto compute_done;
+>  
+>  	case 19:
+> +		if (!cpu_has_feature(CPU_FTR_ARCH_300))
+> +			return -1;
+>  		if (((word >> 1) & 0x1f) == 2) {
+>  			/* addpcis */
+>  			imm = (short) (word & 0xffc1);	/* d0 + d2 fields */
+
+The cpu feature check should be within the if condition above since 
+there are other instructions under opcode 19. This is not an issue right 
+now as we don't emulate any of the others after this point, but it would 
+be good to restrict the change to specific instructions.
+
+Rest of the changes below look good to me. The only other v3.0 
+instruction we need to gate is the 'scv' instruction. It would be good 
+to handle that too.
+
+- Naveen
 
