@@ -2,59 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173A82FDB3D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 21:57:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E9D2FDB40
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 21:59:50 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLdC72xbpzDqnv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 07:57:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLdFH3RJrzDqZ2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 07:59:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=walle.cc (client-ip=2a01:4f8:151:8464::1:2;
- helo=ssl.serverraum.org; envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256
- header.s=mail2016061301 header.b=miTTwPJ3; 
- dkim-atps=neutral
-X-Greylist: delayed 30747 seconds by postgrey-1.36 at bilbo;
- Thu, 21 Jan 2021 06:25:58 AEDT
-Received: from ssl.serverraum.org (ssl.serverraum.org
- [IPv6:2a01:4f8:151:8464::1:2])
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2b;
+ helo=mail-yb1-xb2b.google.com; envelope-from=saravanak@google.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=gqXXWU/D; dkim-atps=neutral
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com
+ [IPv6:2607:f8b0:4864:20::b2b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLb924kqNzDqCY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 06:25:53 +1100 (AEDT)
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ssl.serverraum.org (Postfix) with ESMTPSA id 27EE622727;
- Wed, 20 Jan 2021 20:25:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
- s=mail2016061301; t=1611170746;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8Ob7KUwKuR0nwFPm6ISDKf74WkwKvOKiqWXqn3cjXq4=;
- b=miTTwPJ3DtMSDIJ557R+SQ07RWGLYMYbiHcOHy/FBwqEOPhREbpehfwHDCrQ1LUSLmRfIQ
- Gv/SFl3qrWmnvAEQl1eh+Mtx3U9pOR+3PjPlrugHpuLdvZxxeAhu0ZZNdKS317cRghifnO
- rcfP8XLVRxq17yPcSoiTiTE4L/tdBpY=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLbfk4RLYzDqTg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 06:48:13 +1100 (AEDT)
+Received: by mail-yb1-xb2b.google.com with SMTP id y128so20569871ybf.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 11:48:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=Z+VKdic9vQLplZ5dRDPFBsqTAKEx7zvAEih/IIGE3o4=;
+ b=gqXXWU/DUfCRlZqg6VB4WrIPdIGgIy2FpoB64Tw6CtQ1jL1wrLFZqp3MrEbrMBYGiZ
+ N4/i+WbY5NkRoGQ0TOQ8gSx1H/xButR/QyThA+B2Gz/O5XBV3DuftVSBSZBLeyg1OLU+
+ UOnY3ZnpvA9fS2hSivgKSdxrfkTqrNLOncrFUlwoHemuKABuY67DntKltT3SJx0D9dWo
+ /9pBl19rfoJS1N1WX6MM6xVcEDMYzyaqXAJ7Q6wXNhN/hh/u8nnQojbYlYlOdnqtABHz
+ lhAfatORzVUNAHTBDkjRB1KD+A8zB99tvQ/Y4CW0lF2FN6Oz8vdPn1HEE/kgKprBbKFe
+ sZcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Z+VKdic9vQLplZ5dRDPFBsqTAKEx7zvAEih/IIGE3o4=;
+ b=ZbFyzhev4f0pBIIsu7FPMjl22VRuMNzWN+LNHoVSF5xgt7CEw1MMjNFJXE8q8Y+Vsm
+ BHhnl5CNKjndsy4jI3Daw7iZs5dTB0G1NWDDmGsElUaH3ccg/J/s3fqH/T0Pk8cU69i2
+ ecXCjLIt04rYHqGF1f4UqrGskD9heFzHmkSquXbsUr2DCMZ39p4E79k65lhIU1wOWrGm
+ t/wPN/FdZMUiebqcHfatm2FobjpQoWfsFD3cH+biwsuWgfqAwkHGJxGi1c1YW/JF4MW1
+ WTLxRB/1UxnjsR9zrilmcWkWA71n9WCCja9Soepcq00Isfkb/m4aSEgnSV8ShVv6k8ac
+ 03FA==
+X-Gm-Message-State: AOAM530v58Lx1fw/RcNZRbEqv/vN0FlciMC4cUOfpma1AUmdZ/UJ0dJ5
+ m8/K5bZhZ0Wc2LCzUlro4zfUEH6wm90gJ5vTkmeNxA==
+X-Google-Smtp-Source: ABdhPJy6lnzImOgxZ62zFBVY/BNYqrbN/QRRos+AWvRoeObCVMQxkr4MeX9zWJIX5eWD7W+mqvC8d3XxTrbOt6hpwoA=
+X-Received: by 2002:a25:77d4:: with SMTP id s203mr17677961ybc.32.1611172088185; 
+ Wed, 20 Jan 2021 11:48:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Wed, 20 Jan 2021 20:25:45 +0100
-From: Michael Walle <michael@walle.cc>
-To: undisclosed-recipients:;
-Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
-In-Reply-To: <CAGETcx86HMo=gaDdXFyJ4QQ-pGXWzw2G0J=SjC-eq4K7B1zQHg@mail.gmail.com>
 References: <20210120105246.23218-1-michael@walle.cc>
  <CAL_JsqLSJCLtgPyAdKSqsy=JoHSLYef_0s-stTbiJ+VCq2qaSA@mail.gmail.com>
  <CAGETcx86HMo=gaDdXFyJ4QQ-pGXWzw2G0J=SjC-eq4K7B1zQHg@mail.gmail.com>
-User-Agent: Roundcube Webmail/1.4.10
-Message-ID: <66e4bf55b2809893ad9c87458c170f99@walle.cc>
-X-Sender: michael@walle.cc
+ <c3e35b90e173b15870a859fd7001a712@walle.cc>
+In-Reply-To: <c3e35b90e173b15870a859fd7001a712@walle.cc>
+From: Saravana Kannan <saravanak@google.com>
+Date: Wed, 20 Jan 2021 11:47:31 -0800
+Message-ID: <CAGETcx8eZRd1fJ3yuO_t2UXBFHObeNdv-c8oFH3mXw6zi=zOkQ@mail.gmail.com>
+Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
+To: Michael Walle <michael@walle.cc>
+Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Thu, 21 Jan 2021 07:49:58 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,40 +74,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Roy Zang <roy.zang@nxp.com>,
+ PCI <linux-pci@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Am 2021-01-20 20:02, schrieb Saravana Kannan:
-> On Wed, Jan 20, 2021 at 6:24 AM Rob Herring <robh@kernel.org> wrote:
->> 
->> On Wed, Jan 20, 2021 at 4:53 AM Michael Walle <michael@walle.cc> 
->> wrote:
->> >
->> > fw_devlink will defer the probe until all suppliers are ready. We can't
->> > use builtin_platform_driver_probe() because it doesn't retry after probe
->> > deferral. Convert it to builtin_platform_driver().
->> 
->> If builtin_platform_driver_probe() doesn't work with fw_devlink, then
->> shouldn't it be fixed or removed?
-> 
-> I was actually thinking about this too. The problem with fixing
-> builtin_platform_driver_probe() to behave like
-> builtin_platform_driver() is that these probe functions could be
-> marked with __init. But there are also only 20 instances of
-> builtin_platform_driver_probe() in the kernel:
-> $ git grep ^builtin_platform_driver_probe | wc -l
-> 20
-> 
-> So it might be easier to just fix them to not use
-> builtin_platform_driver_probe().
-> 
-> Michael,
-> 
-> Any chance you'd be willing to help me by converting all these to
-> builtin_platform_driver() and delete builtin_platform_driver_probe()?
+On Wed, Jan 20, 2021 at 11:28 AM Michael Walle <michael@walle.cc> wrote:
+>
+> [RESEND, fat-fingered the buttons of my mail client and converted
+> all CCs to BCCs :(]
+>
+> Am 2021-01-20 20:02, schrieb Saravana Kannan:
+> > On Wed, Jan 20, 2021 at 6:24 AM Rob Herring <robh@kernel.org> wrote:
+> >>
+> >> On Wed, Jan 20, 2021 at 4:53 AM Michael Walle <michael@walle.cc>
+> >> wrote:
+> >> >
+> >> > fw_devlink will defer the probe until all suppliers are ready. We can't
+> >> > use builtin_platform_driver_probe() because it doesn't retry after probe
+> >> > deferral. Convert it to builtin_platform_driver().
+> >>
+> >> If builtin_platform_driver_probe() doesn't work with fw_devlink, then
+> >> shouldn't it be fixed or removed?
+> >
+> > I was actually thinking about this too. The problem with fixing
+> > builtin_platform_driver_probe() to behave like
+> > builtin_platform_driver() is that these probe functions could be
+> > marked with __init. But there are also only 20 instances of
+> > builtin_platform_driver_probe() in the kernel:
+> > $ git grep ^builtin_platform_driver_probe | wc -l
+> > 20
+> >
+> > So it might be easier to just fix them to not use
+> > builtin_platform_driver_probe().
+> >
+> > Michael,
+> >
+> > Any chance you'd be willing to help me by converting all these to
+> > builtin_platform_driver() and delete builtin_platform_driver_probe()?
+>
+> If it just moving the probe function to the _driver struct and
+> remove the __init annotations. I could look into that.
 
-If it just moving the probe function to the _driver struct and
-remove the __init annotations. I could look into that.
+Yup. That's pretty much it AFAICT.
 
--michael
+builtin_platform_driver_probe() also makes sure the driver doesn't ask
+for async probe, etc. But I doubt anyone is actually setting async
+flags and still using builtin_platform_driver_probe().
+
+-Saravana
