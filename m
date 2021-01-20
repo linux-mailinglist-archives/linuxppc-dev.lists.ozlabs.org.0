@@ -1,74 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884B72FC555
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 01:08:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C39B2FC5F9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 01:41:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DL5Sp6WTgzDqwW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 11:07:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DL6CF6pFCzDqxX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 11:41:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
- helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=jdMFwPdl; dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
- [IPv6:2607:f8b0:4864:20::636])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=MnWsMJPd; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DL5QB3hKczDqtv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 11:05:34 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id s15so11494304plr.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jan 2021 16:05:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=EAdRD/xx+bAvooVg2g8XSDfPG9CYbvMEhwhjgESQ1qQ=;
- b=jdMFwPdlnyt0GrcsgV+KQE6Mg/B0XOZ3i6/2xOiFMps8/tfhaoWIHF2MqFGik2B+w4
- YHLWbPkjZ0s5se9AmCjkY8WME83/ZaKZrBFqgvJzh5uzNoZfr9/7Z1jQ/hhOCxG0eRiY
- qwmr/QPKCgJeBiGSA9QIPN/7sD8pxjPb3Dpz9XBkw26HV5hhHp6280PyFUHQcEtLwwtA
- HZwWehYoG6eOXl654rERnf/Tv0q4r7i82EhIbAntq7SpfA8d3lkohHRjpslF0gw6E4qv
- zAg1LMiN8cno1ee4ngFBv+wILAS997v1B+o2zcQeHXwI2Ypbz1JUa2j7rq3zUlO3ShjJ
- 2nsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=EAdRD/xx+bAvooVg2g8XSDfPG9CYbvMEhwhjgESQ1qQ=;
- b=VF0YZuwc7ZOyVZbCZ91Sx6d1lgWKFaFs5mpVK9X6SdGNx+4XjPUgl1DrytNpeQvjDf
- /vqMToy2dN9aBWh14DnjTjXDTqsf9sNTj6ho+OlceAQ24OYm/JzNgS6S7vBciVkU2slm
- BSykAt6V4zj9KvlIsOJEdhCkuA7nirjx0er+aARMBbx3ab0EA7Lgb4sdvK2JX5U5sVF1
- W5jW/Z8OMwa95U0CcC/SaDj/g9D8T00VE3uaU5ZXDnK9qYmxiOaHyQERZXqObLYi0NC/
- 1mCdAanc7xXzI//vTANCNVqNbQ2lke60boAtWJ/VmgIB6/WnXS5OgmcEFmfVMdReXLWC
- MGfA==
-X-Gm-Message-State: AOAM533CSX3YuGn+Yx6jB/svJOZ87KWsoO9+he9uzbvfUp5gxw8auBsT
- ReE7lSngwvoodaYyAPJsR4Y=
-X-Google-Smtp-Source: ABdhPJzD+c6uuZYhWBX2ucGwVR2Optt3mtSMiKgeLe5BvpvTWKTLnFou+/KA9464XWRs/6xKYsWD2w==
-X-Received: by 2002:a17:90a:bd12:: with SMTP id
- y18mr2398382pjr.146.1611101127203; 
- Tue, 19 Jan 2021 16:05:27 -0800 (PST)
-Received: from localhost ([124.170.13.62])
- by smtp.gmail.com with ESMTPSA id j123sm238264pfg.36.2021.01.19.16.05.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Jan 2021 16:05:26 -0800 (PST)
-Date: Wed, 20 Jan 2021 10:05:20 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 1/4] KVM: PPC: Book3S HV: Remove support for running HPT
- guest on RPT host without mixed mode support
-To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
-References: <20210118062809.1430920-1-npiggin@gmail.com>
- <20210118062809.1430920-2-npiggin@gmail.com> <87czy1bsvz.fsf@linux.ibm.com>
- <1611025782.s66bkxjtqz.astroid@bobo.none> <87a6t4bpp2.fsf@linux.ibm.com>
-In-Reply-To: <87a6t4bpp2.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DL69P1wJlzDqvY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 11:39:35 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10K0VYY9129863; Tue, 19 Jan 2021 19:39:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=Okur1r/0S2RByMZx9Zoi3iq9hvnuT6E8bDnqtseireE=;
+ b=MnWsMJPdk8LOyHRtaFIJKyF1+TQAL5soViujBYudS4l8kATWJblJvBev9m4Gf6M+Dnee
+ 17r+lPWGXWEffFzNJ8/dHkUKi1y0Wmug8jbcrWfVNUwYb7+BMnE4dJg0KDqKi2HkjcJU
+ R61rS2Mofp1XHHGk6nYdT0VcUI5yPSeup77Gxrvh0NWBNV1LRniBTPH7IzZA0kXGsbIa
+ G8tbwwJnSWvfzxyunjijsAK/g0ve0c/cILaRJkHDu6Y6jtUy2wJ6CA7u+1yzFDcjXxDl
+ g13BJXUStC67Xi0Qpt9KobVl4A2c2xzws4RArMjN38wj7+ZuZddret2H47q4eleE53S9 /g== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36696xs5mk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Jan 2021 19:39:32 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10K0ZSXW013245;
+ Wed, 20 Jan 2021 00:39:31 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma01wdc.us.ibm.com with ESMTP id 3668s70e0r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 Jan 2021 00:39:31 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10K0dVLW26673494
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 20 Jan 2021 00:39:31 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4975B12405A;
+ Wed, 20 Jan 2021 00:39:31 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 17C55124055;
+ Wed, 20 Jan 2021 00:39:31 +0000 (GMT)
+Received: from localhost (unknown [9.211.72.22])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 20 Jan 2021 00:39:30 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 6/6] powerpc/rtas: constrain user region allocation to RMA
+In-Reply-To: <3c5141d5-ee78-3771-3410-37635d423945@ozlabs.ru>
+References: <20210114220004.1138993-1-nathanl@linux.ibm.com>
+ <20210114220004.1138993-7-nathanl@linux.ibm.com>
+ <5276937f-b72a-89ba-d0d8-19e4be55ae35@ozlabs.ru>
+ <87czy6xlap.fsf@linux.ibm.com>
+ <3c5141d5-ee78-3771-3410-37635d423945@ozlabs.ru>
+Date: Tue, 19 Jan 2021 18:39:30 -0600
+Message-ID: <871regxwzh.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1611099866.a9bsenxeey.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-19_15:2021-01-18,
+ 2021-01-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 suspectscore=0
+ lowpriorityscore=0 impostorscore=0 mlxscore=0 bulkscore=0 adultscore=0
+ mlxlogscore=999 spamscore=0 priorityscore=1501 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101190128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,164 +97,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: tyreld@linux.ibm.com, brking@linux.ibm.com, ajd@linux.ibm.com,
+ aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Fabiano Rosas's message of January 20, 2021 7:07 am:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->=20
->> Excerpts from Fabiano Rosas's message of January 19, 2021 11:46 am:
->>> Resending because the previous got spam-filtered:
->>>=20
->>> Nicholas Piggin <npiggin@gmail.com> writes:
->>>=20
->>>> This reverts much of commit c01015091a770 ("KVM: PPC: Book3S HV: Run H=
-PT
->>>> guests on POWER9 radix hosts"), which was required to run HPT guests o=
-n
->>>> RPT hosts on early POWER9 CPUs without support for "mixed mode", which
->>>> meant the host could not run with MMU on while guests were running.
+Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+> On 16/01/2021 02:38, Nathan Lynch wrote:
+>> Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+>>> On 15/01/2021 09:00, Nathan Lynch wrote:
+>>>> Memory locations passed as arguments from the OS to RTAS usually need
+>>>> to be addressable in 32-bit mode and must reside in the Real Mode
+>>>> Area. On PAPR guests, the RMA starts at logical address 0 and is the
+>>>> first logical memory block reported in the LPAR=E2=80=99s device tree.
 >>>>
->>>> This code has some corner case bugs, e.g., when the guest hits a machi=
-ne
->>>> check or HMI the primary locks up waiting for secondaries to switch LP=
-CR
->>>> to host, which they never do. This could all be fixed in software, but
->>>> most CPUs in production have mixed mode support, and those that don't
->>>> are believed to be all in installations that don't use this capability=
-.
->>>> So simplify things and remove support.
->>>=20
->>> With this patch in a DD2.1 machine + indep_threads_mode=3DN +
->>> disable_radix, QEMU aborts and dumps registers, is that intended?
->>
->> Yes. That configuration is hanging handling MCEs in the guest with some=20
->> threads waiting forever to synchronize. Paul suggested it was never a
->> supported configuration so we might just remove it.
->>
->=20
-> OK, so:
->=20
-> Tested-by: Fabiano Rosas <farosas@linux.ibm.com>
->=20
->>> Could we use the 'no_mixing_hpt_and_radix' logic in check_extension to
->>> advertise only KVM_CAP_PPC_MMU_RADIX to the guest via OV5 so it doesn't
->>> try to run hash?
->>>=20
->>> For instance, if I hack QEMU's 'spapr_dt_ov5_platform_support' from
->>> OV5_MMU_BOTH to OV5_MMU_RADIX_300 then it boots succesfuly, but the
->>> guest turns into radix, due to this code in prom_init:
->>>=20
->>> prom_parse_mmu_model:
->>>=20
->>> case OV5_FEAT(OV5_MMU_RADIX): /* Only Radix */
->>> 	prom_debug("MMU - radix only\n");
->>> 	if (prom_radix_disable) {
->>> 		/*
->>> 		 * If we __have__ to do radix, we're better off ignoring
->>> 		 * the command line rather than not booting.
->>> 		 */
->>> 		prom_printf("WARNING: Ignoring cmdline option disable_radix\n");
->>> 	}
->>> 	support->radix_mmu =3D true;
->>> 	break;
->>>=20
->>> It seems we could explicitly say that the host does not support hash an=
-d
->>> that would align with the above code.
->>
->> I'm not sure, sounds like you could, on the other hand these aborts seem=
+>>>> On powerpc targets with RTAS, Linux makes available to user space a
+>>>> region of memory suitable for arguments to be passed to RTAS via
+>>>> sys_rtas(). This region (rtas_rmo_buf) is allocated via the memblock
+>>>> API during boot in order to ensure that it satisfies the requirements
+>>>> described above.
+>>>>
+>>>> With radix MMU, the upper limit supplied to the memblock allocation
+>>>> can exceed the bounds of the first logical memory block, since
+>>>> ppc64_rma_size is ULONG_MAX and RTAS_INSTANTIATE_MAX is 1GB. (512MB is
+>>>> a common size of the first memory block according to a small sample of
+>>>> LPARs I have checked.) This leads to failures when user space invokes
+>>>> an RTAS function that uses a work area, such as
+>>>> ibm,configure-connector.
+>>>>
+>>>> Alter the determination of the upper limit for rtas_rmo_buf's
+>>>> allocation to consult the device tree directly, ensuring placement
+>>>> within the RMA regardless of the MMU in use.
+>>>
+>>> Can we tie this with RTAS (which also needs to be in RMA) and simply add
+>>> extra 64K in prom_instantiate_rtas() and advertise this address
+>>> (ALIGH_UP(rtas-base + rtas-size, PAGE_SIZE)) to the user space? We do
+>>> not need this RMO area before that point.
+>>=20
+>> Can you explain more about what advantage that would bring? I'm not
+>> seeing it. It's a more significant change than what I've written
+>> here.
+>
+>
+> We already allocate space for RTAS and (like RMO) it needs to be in RMA,=
 =20
->> like the prefered failure mode for these kinds of configuration issues,=20
->> I don't know what the policy is, is reverting back to radix acceptable?
->>
->=20
-> Yeah, I couldn't find documentation about why we're reverting back to
-> radix. I personally dislike it, but there is already a precedent so I'm
-> not sure. A radix guest on a hash host does the same transparent
-> conversion AFAICT.
->=20
-> But despite that, this patch removes support for hash MMU in this
-> particular scenario. I don't see why continuing to tell the guest we
-> support hash.
->=20
-> Anyway, here's a patch if you decide to go that way (tested w/ DD2.1 &
-> 2.3 machines):
+> and RMO is useless without RTAS. We can reuse RTAS allocation code for=20
+> RMO like this:
 
-Thanks, I don't mind it, have to see if the maintainer will take it :)
+When you say RMO I assume you are referring to rtas_rmo_buf? (I don't
+think it is well-named.)
 
-You could add a small changelog / SOB and I could putit after my patch?
 
->=20
-> ---
-> diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/as=
-m/kvm_ppc.h
-> index 0a056c64c317b..53743555676d6 100644
-> --- a/arch/powerpc/include/asm/kvm_ppc.h
-> +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> @@ -314,6 +314,7 @@ struct kvmppc_ops {
->  			      int size);
->  	int (*enable_svm)(struct kvm *kvm);
->  	int (*svm_off)(struct kvm *kvm);
-> +	bool (*hash_possible)(void);
->  };
-> =20
->  extern struct kvmppc_ops *kvmppc_hv_ops;
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 6f612d240392f..2d1e8aba22b85 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -5599,6 +5599,15 @@ static int kvmhv_svm_off(struct kvm *kvm)
->  	return ret;
->  }
-> =20
-> +static bool kvmppc_hash_possible(void)
-> +{
-> +	if (radix_enabled() && no_mixing_hpt_and_radix)
-> +		return false;
-> +
-> +	return cpu_has_feature(CPU_FTR_ARCH_300) &&
-> +		cpu_has_feature(CPU_FTR_HVMODE);
-> +}
+> =3D=3D=3D
+> diff --git a/arch/powerpc/kernel/prom_init.c=20
+> b/arch/powerpc/kernel/prom_init.c
+> index e9d4eb6144e1..d9527d3e01d2 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -1821,7 +1821,8 @@ static void __init prom_instantiate_rtas(void)
+>          if (size =3D=3D 0)
+>                  return;
+>
+> -       base =3D alloc_down(size, PAGE_SIZE, 0);
+> +       /* One page for RTAS, one for RMO */
 
-Just be careful, it's hash_v3 specifically. Either make this return true=20
-for arch < 300 add the ARCH_300 check in the ioctl, or rename to include
-v3.
+One page for RTAS? RTAS is ~20MB on LPARs I've checked:
 
-> +
->  static struct kvmppc_ops kvm_ops_hv =3D {
->  	.get_sregs =3D kvm_arch_vcpu_ioctl_get_sregs_hv,
->  	.set_sregs =3D kvm_arch_vcpu_ioctl_set_sregs_hv,
-> @@ -5642,6 +5651,7 @@ static struct kvmppc_ops kvm_ops_hv =3D {
->  	.store_to_eaddr =3D kvmhv_store_to_eaddr,
->  	.enable_svm =3D kvmhv_enable_svm,
->  	.svm_off =3D kvmhv_svm_off,
-> +	.hash_possible =3D kvmppc_hash_possible,
->  };
-> =20
+# lsprop /proc/device-tree/rtas/{rtas-size,linux,rtas-base}
+/proc/device-tree/rtas/rtas-size
+		 01370000 (20381696)
 
-How about adding an op which can check extensions? It could return false
-if it wasn't checked and so default to the generic checks in=20
-kvm_vm_ioctl_check_extension, and take a pointer to 'r' to set.
+> +       base =3D alloc_down(size, PAGE_SIZE + PAGE_SIZE, 0);
 
->  static int kvm_init_subcore_bitmap(void)
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index cf52d26f49cd7..99ced6c570e74 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -611,8 +611,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
-g ext)
->  		r =3D !!(hv_enabled && radix_enabled());
->  		break;
->  	case KVM_CAP_PPC_MMU_HASH_V3:
-> -		r =3D !!(hv_enabled && cpu_has_feature(CPU_FTR_ARCH_300) &&
-> -		       cpu_has_feature(CPU_FTR_HVMODE));
-> +		r =3D !!(hv_enabled && kvmppc_hv_ops->hash_possible());
->  		break;
->  	case KVM_CAP_PPC_NESTED_HV:
->  		r =3D !!(hv_enabled && kvmppc_hv_ops->enable_nested &&
+This changes the alignment but not the size of the allocation.
 
-Thanks,
-Nick
+
+>          if (base =3D=3D 0)
+>                  prom_panic("Could not allocate memory for RTAS\n");
+>
+> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+> index d126d71ea5bd..885d95cf4ed3 100644
+> --- a/arch/powerpc/kernel/rtas.c
+> +++ b/arch/powerpc/kernel/rtas.c
+> @@ -1186,6 +1186,7 @@ void __init rtas_initialize(void)
+>          rtas.size =3D size;
+>          no_entry =3D of_property_read_u32(rtas.dev, "linux,rtas-entry",=
+=20
+> &entry);
+>          rtas.entry =3D no_entry ? rtas.base : entry;
+> +       rtas_rmo_buf =3D rtas.base + PAGE_SIZE;
+
+I think this would overlay the user region on top of the RTAS private
+data area, allowing user space to corrupt it.
+
+
+>
+>          /* If RTAS was found, allocate the RMO buffer for it and look for
+>           * the stop-self token if any
+> @@ -1196,11 +1197,6 @@ void __init rtas_initialize(void)
+>                  ibm_suspend_me_token =3D rtas_token("ibm,suspend-me");
+>          }
+>   #endif
+> -       rtas_rmo_buf =3D memblock_phys_alloc_range(RTAS_RMOBUF_MAX, PAGE_=
+SIZE,
+> -                                                0, rtas_region);
+> -       if (!rtas_rmo_buf)
+> -               panic("ERROR: RTAS: Failed to allocate %lx bytes below=20
+> %pa\n",
+> -                     PAGE_SIZE, &rtas_region);
+> =3D=3D=3D
+>
+> May be store in the FDT as "linux,rmo-base" next to "linux,rtas-base",=20
+> for clarity, as sharing symbols between prom and main kernel is a bit=20
+> tricky.
+>
+> The benefit is that we do not do the same thing   (=3D=3D find 64K in RMA=
+)=20
+> in 2 different ways and if the RMO allocated my way is broken - we'll=20
+> know it much sooner as RTAS itself will break too.
+
+Implementation details aside... I'll grant that combining the
+allocations into one in prom_init reduces some duplication in the sense
+that both are subject to the same constraints (mostly - the RTAS data
+area must not cross a 256MB boundary, while the user region may). But
+they really are distinct concerns. The RTAS private data area is
+specified in the platform architecture, the OS is obligated to allocate
+it and pass it to instantiate-rtas, etc etc. However the user region
+(rtas_rmo_buf) is purely a Linux construct which is there to support
+sys_rtas.
+
+Now, there are multiple sites in the kernel proper that must allocate
+memory suitable for passing to RTAS. Obviously there is value in
+consolidating the logic for that purpose in one place, so I'll work on
+adding that in v2. OK?
