@@ -2,58 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C212FCD80
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 10:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 307DB2FCD8D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 10:47:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLL2p2sy0zDqvY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 20:34:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLLL32NT0zDqvV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 20:47:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ananth@linux.ibm.com;
  receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=MHfk7JJn; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLL134Y2rzDqq8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 20:33:09 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-136-FlUOqhZwNni2kAj9MZ8Nhg-1; Wed, 20 Jan 2021 09:33:01 +0000
-X-MC-Unique: FlUOqhZwNni2kAj9MZ8Nhg-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Wed, 20 Jan 2021 09:33:00 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Wed, 20 Jan 2021 09:33:00 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Christophe Leroy' <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Michael
- Ellerman" <mpe@ellerman.id.au>
-Subject: RE: [PATCH 2/2] powerpc/44x: Remove STDBINUTILS kconfig option
-Thread-Topic: [PATCH 2/2] powerpc/44x: Remove STDBINUTILS kconfig option
-Thread-Index: AQHW7wFdZXRNi2FVUEGR2+8ye/HSkqowP30w
-Date: Wed, 20 Jan 2021 09:33:00 +0000
-Message-ID: <e19c6d6bf92d4f7399a939c7c3c7ad0d@AcuMS.aculab.com>
-References: <2fed79b1154c872194f98bac4422c23918325e61.1611128938.git.christophe.leroy@csgroup.eu>
- <f9981e819009aa121a998dc483052ec76f78f991.1611128938.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <f9981e819009aa121a998dc483052ec76f78f991.1611128938.git.christophe.leroy@csgroup.eu>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLLJG426xzDqc7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 20:46:19 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10K9gsiA079772; Wed, 20 Jan 2021 04:46:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : from : to : cc
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=5jbV/iw4rK6+502Tg/Y8kIWXA2lci081wdhQhqZUXvI=;
+ b=MHfk7JJnIHZR9VZvw2jsqM2HsS/KE7KBbKfRzyFVPRvEDjQarnFUo/HLbWBLv8V6t+lC
+ 8u++OLYuR/vT73cBQAplG6YCe4plBj+8i1l+He5vCQUUiVJBfzcGbHc0fC9O/VkdVsFR
+ oQG/+fBLwDPbZgjud5+ntpVxdi8gh8YAEfkNP8zi26h821zDh2LNaCjXediDUrlQ63e3
+ FTVNX2W953h4mQx7+2PHDTXxI1IhCB9xhn+XkAcPUGLNJ0o3H1uPfV78jbu663eS/peh
+ aa6GVi4/xc7i7KK2t737lc/YaaE/iqYoPQGFpjybjDy33+ZXDB8yQWd7uE9n48jqjgF7 0w== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 366j4j82kc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 Jan 2021 04:46:12 -0500
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10K9S7Zr012189;
+ Wed, 20 Jan 2021 09:46:10 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma01fra.de.ibm.com with ESMTP id 3668p4g7fx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 Jan 2021 09:46:10 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10K9k7YM20316576
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 20 Jan 2021 09:46:07 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7CCB24204B;
+ Wed, 20 Jan 2021 09:46:07 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 44F1E42041;
+ Wed, 20 Jan 2021 09:46:06 +0000 (GMT)
+Received: from thinktux.local (unknown [9.199.63.129])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 20 Jan 2021 09:46:06 +0000 (GMT)
+Subject: [PATCH] [PATCH] powerpc/sstep: Check ISA 3.0 instruction validity
+ before emulation
+From: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Date: Wed, 20 Jan 2021 15:16:05 +0530
+Message-ID: <161113596420.206556.5023431229030762544.stgit@thinktux.local>
+User-Agent: StGit/0.23
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-20_02:2021-01-18,
+ 2021-01-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ spamscore=0 clxscore=1011 lowpriorityscore=0 bulkscore=0 malwarescore=0
+ mlxlogscore=810 impostorscore=0 suspectscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101200052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,88 +94,201 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: naveen.n.rao@linux.ibm.com, ravi.bangoria@linux.ibm.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy
-> Sent: 20 January 2021 07:49
->=20
-> STDBINUTILS is just a toggle to allow 256k page size
-> to appear in the possible page sizes list for the 44x.
->=20
-> Make 256k page size appear all the time with an
-> explicit warning on binutils, and remove this unneccessary
-> STDBINUTILS config option.
->=20
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/Kconfig | 27 +++++++--------------------
->  1 file changed, 7 insertions(+), 20 deletions(-)
->=20
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index a685e42d3993..3e29995540a7 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -720,18 +720,6 @@ config ARCH_MEMORY_PROBE
->  =09def_bool y
->  =09depends on MEMORY_HOTPLUG
->=20
-> -config STDBINUTILS
-> -=09bool "Using standard binutils settings"
-> -=09depends on 44x
-> -=09default y
-> -=09help
-> -=09  Turning this option off allows you to select 256KB PAGE_SIZE on 44x=
-.
-> -=09  Note, that kernel will be able to run only those applications,
-> -=09  which had been compiled using binutils later than 2.17.50.0.3 with
-> -=09  '-zmax-page-size' set to 256K (the default is 64K). Or, if using
-> -=09  the older binutils, you can patch them with a trivial patch, which
-> -=09  changes the ELF_MAXPAGESIZE definition from 0x10000 to 0x40000.
-> -
->  choice
->  =09prompt "Page size"
->  =09default PPC_4K_PAGES
-> @@ -771,17 +759,16 @@ config PPC_64K_PAGES
->  =09select HAVE_ARCH_SOFT_DIRTY if PPC_BOOK3S_64
->=20
->  config PPC_256K_PAGES
-> -=09bool "256k page size"
-> -=09depends on 44x && !STDBINUTILS && !PPC_47x
-> +=09bool "256k page size (Requires non-standard binutils settings)"
-> +=09depends on 44x && !PPC_47x
->  =09help
->  =09  Make the page size 256k.
->=20
-> -=09  As the ELF standard only requires alignment to support page
-> -=09  sizes up to 64k, you will need to compile all of your user
-> -=09  space applications with a non-standard binutils settings
-> -=09  (see the STDBINUTILS description for details).
-> -
-> -=09  Say N unless you know what you are doing.
-> +=09  That kernel will be able to run only those applications,
-> +=09  which had been compiled using binutils later than 2.17.50.0.3 with
-> +=09  '-zmax-page-size' set to 256K (the default is 64K). Or, if using
-> +=09  the older binutils, you can patch them with a trivial patch, which
-> +=09  changes the ELF_MAXPAGESIZE definition from 0x10000 to 0x40000.
+We currently unconditionally try to newer emulate instructions on older
+Power versions that could cause issues. Gate it.
 
+Signed-off-by: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
+---
+ arch/powerpc/lib/sstep.c |   40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-The kernel will only be able to run applications that have been
-compiled with '-zmax-page-size' set to 256K (the default is 64K)
-using binutils later than 2.17.50.0.3, or by patching the
-ELF_MAXPAGESIZE definition from 0x10000 to 0x40000 in older versions.
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index bf7a7d62ae8b..ed119858e5e9 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -1528,6 +1528,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		goto compute_done;
+ 
+ 	case 19:
++		if (!cpu_has_feature(CPU_FTR_ARCH_300))
++			return -1;
+ 		if (((word >> 1) & 0x1f) == 2) {
+ 			/* addpcis */
+ 			imm = (short) (word & 0xffc1);	/* d0 + d2 fields */
+@@ -2439,6 +2441,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 268:	/* lxvx */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 16);
+ 			op->element_size = 16;
+@@ -2448,6 +2452,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		case 269:	/* lxvl */
+ 		case 301: {	/* lxvll */
+ 			int nb;
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->ea = ra ? regs->gpr[ra] : 0;
+ 			nb = regs->gpr[rb] & 0xff;
+@@ -2475,6 +2481,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 364:	/* lxvwsx */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 4);
+ 			op->element_size = 4;
+@@ -2482,6 +2490,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 396:	/* stxvx */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 16);
+ 			op->element_size = 16;
+@@ -2491,6 +2501,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		case 397:	/* stxvl */
+ 		case 429: {	/* stxvll */
+ 			int nb;
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->ea = ra ? regs->gpr[ra] : 0;
+ 			nb = regs->gpr[rb] & 0xff;
+@@ -2542,6 +2554,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 781:	/* lxsibzx */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 1);
+ 			op->element_size = 8;
+@@ -2549,6 +2563,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 812:	/* lxvh8x */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 16);
+ 			op->element_size = 2;
+@@ -2556,6 +2572,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 813:	/* lxsihzx */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 2);
+ 			op->element_size = 8;
+@@ -2569,6 +2587,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 876:	/* lxvb16x */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 16);
+ 			op->element_size = 1;
+@@ -2582,6 +2602,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 909:	/* stxsibx */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 1);
+ 			op->element_size = 8;
+@@ -2589,6 +2611,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 940:	/* stxvh8x */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 16);
+ 			op->element_size = 2;
+@@ -2596,6 +2620,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 941:	/* stxsihx */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 2);
+ 			op->element_size = 8;
+@@ -2609,6 +2635,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 1004:	/* stxvb16x */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(STORE_VSX, 0, 16);
+ 			op->element_size = 1;
+@@ -2717,12 +2745,16 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			op->type = MKOP(LOAD_FP, 0, 16);
+ 			break;
+ 		case 2:		/* lxsd */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd + 32;
+ 			op->type = MKOP(LOAD_VSX, 0, 8);
+ 			op->element_size = 8;
+ 			op->vsx_flags = VSX_CHECK_VEC;
+ 			break;
+ 		case 3:		/* lxssp */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->reg = rd + 32;
+ 			op->type = MKOP(LOAD_VSX, 0, 4);
+ 			op->element_size = 8;
+@@ -2775,6 +2807,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 1:		/* lxv */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->ea = dqform_ea(word, regs);
+ 			if (word & 8)
+ 				op->reg = rd + 32;
+@@ -2785,6 +2819,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 
+ 		case 2:		/* stxsd with LSB of DS field = 0 */
+ 		case 6:		/* stxsd with LSB of DS field = 1 */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->ea = dsform_ea(word, regs);
+ 			op->reg = rd + 32;
+ 			op->type = MKOP(STORE_VSX, 0, 8);
+@@ -2794,6 +2830,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 
+ 		case 3:		/* stxssp with LSB of DS field = 0 */
+ 		case 7:		/* stxssp with LSB of DS field = 1 */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->ea = dsform_ea(word, regs);
+ 			op->reg = rd + 32;
+ 			op->type = MKOP(STORE_VSX, 0, 4);
+@@ -2802,6 +2840,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 
+ 		case 5:		/* stxv */
++			if (!cpu_has_feature(CPU_FTR_ARCH_300))
++				return -1;
+ 			op->ea = dqform_ea(word, regs);
+ 			if (word & 8)
+ 				op->reg = rd + 32;
 
->=20
->  endchoice
->=20
-> --
-> 2.25.0
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
 
