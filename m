@@ -1,61 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3A52FD633
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 17:56:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C10AF2FD6BF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 18:19:13 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLWr25msYzDr4F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 03:56:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLXLk1RqVzDr48
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 04:19:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.53; helo=mail-ot1-f53.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com
- [209.85.210.53])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=PCySfe32; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLWnc1rgWzDqyw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 03:53:53 +1100 (AEDT)
-Received: by mail-ot1-f53.google.com with SMTP id o11so24014116ote.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 08:53:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=+Nevn/Hsb1/pSSLD/4PKRZrIOGJGLolaHEVGjwXHh7g=;
- b=O0TcIlGFPCPdxh1GIuZybyDLfKwR74/H09/GdohowgeZd/wwYRwUc2NAIqC0kp31tb
- 4udEUN/p5ZCd3F0qS/az/bCbbMSIqmLpNq4cJgzpau2n06OkKKl752YhJ767DG1F2XOD
- QmGZq2t6eeJK5KshgqcOW0lp5qLhPXTNu/SCRJ0RiFm97YzfnqnQOo7SmaYPAVCdXbGb
- NF8mza6QH+P+2aPewY5Jd1KwKSU7pa+pkdpQgNDyR4RAX2HoIkq2GnInxX/+5PB7iKC/
- qVf1Egnby94bfYqMdO2cmovRQKPJE6V0mlkRKJqUiD4S9YGxxj47RzQrFF/aKAUIBrNP
- rB0A==
-X-Gm-Message-State: AOAM530oJgyTOOkBuEsZa/2faOZHFXUZCXqbbaryJa8JmR4uGMcptpI4
- CQKVwd4pccvVBE8A1FW6Ow==
-X-Google-Smtp-Source: ABdhPJwaG3j9UrY6/UvK8tGFavZ8pchhV25GbY2yn1OpU1TWw5L3kI0PQYj6i0y3Xx2xzLR+yGRYiw==
-X-Received: by 2002:a05:6830:20c2:: with SMTP id
- z2mr7356498otq.322.1611161630884; 
- Wed, 20 Jan 2021 08:53:50 -0800 (PST)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net.
- [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id d10sm444480ooh.32.2021.01.20.08.53.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Jan 2021 08:53:49 -0800 (PST)
-Received: (nullmailer pid 328496 invoked by uid 1000);
- Wed, 20 Jan 2021 16:53:48 -0000
-Date: Wed, 20 Jan 2021 10:53:48 -0600
-From: Rob Herring <robh@kernel.org>
-To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [RFC PATCH v3 5/6] dt-bindings: of: Add restricted DMA pool
-Message-ID: <20210120165348.GA220770@robh.at.kernel.org>
-References: <20210106034124.30560-1-tientzu@chromium.org>
- <20210106034124.30560-6-tientzu@chromium.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLXJP4CnRzDqNL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 04:17:08 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10KH2nCW173241; Wed, 20 Jan 2021 12:17:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=2MjYTQAKg0XcBO/QYJ9eWIey23lQUMAlaNMBygShzeQ=;
+ b=PCySfe32pH4LgMJecWe5JOM64akELCHpqhnbpn/SVRX5rrY9/Jx2wzCBUaK/xyEK4lZE
+ HfXUuxU2eYpTP/B4daMW7BnZrKJIznzdleUjATimhSXw5Bzchedq73u6GKy2b9Ux5tbq
+ gueq7qq4Rmmron/PzFKg+G52/uIHEvU9RUkK36au7yfAuvosv1Y47uc8fUkGzie7CZyB
+ 4aCvJU9M9gZg/nDETcKI4zJ7Vk2rijpRxmm+G3wUin0VVMTkTOkjeQ0C03/wlQ9Qd4Or
+ QVDBUVZwmivcb4w7kHEbC4a8cVy7kaEioUncsa8gR4Jm4VbYvc817+Y1d/0Yud4A4nfa ow== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 366rbj0vn4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 Jan 2021 12:17:00 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10KHGPD5011286;
+ Wed, 20 Jan 2021 17:17:00 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma02dal.us.ibm.com with ESMTP id 3668ps7d22-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 Jan 2021 17:17:00 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10KHGx1U15860140
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 20 Jan 2021 17:16:59 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 70D8A112067;
+ Wed, 20 Jan 2021 17:16:59 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5C453112064;
+ Wed, 20 Jan 2021 17:16:58 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.65.196.188])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 20 Jan 2021 17:16:58 +0000 (GMT)
+Subject: Re: [PATCH 1/3] tty: hvcs: Drop unnecessary if block
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>
+References: <20210114175718.137483-1-u.kleine-koenig@pengutronix.de>
+ <20210114175718.137483-2-u.kleine-koenig@pengutronix.de>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <ce62e2fb-d882-ab6b-1a81-2315ce9a2b64@linux.ibm.com>
+Date: Wed, 20 Jan 2021 09:16:56 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210106034124.30560-6-tientzu@chromium.org>
+In-Reply-To: <20210114175718.137483-2-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-20_10:2021-01-20,
+ 2021-01-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0
+ lowpriorityscore=0 priorityscore=1501 mlxscore=0 clxscore=1011 spamscore=0
+ adultscore=0 bulkscore=0 mlxlogscore=961 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101200097
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,86 +99,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, peterz@infradead.org,
- linux-kernel@vger.kernel.org, grant.likely@arm.com, paulus@samba.org,
- will@kernel.org, mingo@kernel.org, m.szyprowski@samsung.com,
- sstabellini@kernel.org, saravanak@google.com, joro@8bytes.org,
- rafael.j.wysocki@intel.com, hch@lst.de, bgolaszewski@baylibre.com,
- xen-devel@lists.xenproject.org, treding@nvidia.com, devicetree@vger.kernel.org,
- konrad.wilk@oracle.com, dan.j.williams@intel.com,
- linuxppc-dev@lists.ozlabs.org, drinkcat@chromium.org,
- boris.ostrovsky@oracle.com, andriy.shevchenko@linux.intel.com, jgross@suse.com,
- gregkh@linuxfoundation.org, rdunlap@infradead.org, frowand.list@gmail.com,
- tfiga@chromium.org, iommu@lists.linux-foundation.org, xypron.glpk@gmx.de,
- robin.murphy@arm.com, bauerman@linux.ibm.com
+Cc: sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 06, 2021 at 11:41:23AM +0800, Claire Chang wrote:
-> Introduce the new compatible string, restricted-dma-pool, for restricted
-> DMA. One can specify the address and length of the restricted DMA memory
-> region by restricted-dma-pool in the device tree.
-
-If this goes into DT, I think we should be able to use dma-ranges for 
-this purpose instead. Normally, 'dma-ranges' is for physical bus 
-restrictions, but there's no reason it can't be used for policy or to 
-express restrictions the firmware has enabled.
-
-> Signed-off-by: Claire Chang <tientzu@chromium.org>
-> ---
->  .../reserved-memory/reserved-memory.txt       | 24 +++++++++++++++++++
->  1 file changed, 24 insertions(+)
+On 1/14/21 9:57 AM, Uwe Kleine-König wrote:
+> If hvcs_probe() succeeded dev_set_drvdata() is called with a non-NULL
+> value, and if hvcs_probe() failed hvcs_remove() isn't called.
 > 
-> diff --git a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> index e8d3096d922c..44975e2a1fd2 100644
-> --- a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> +++ b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-> @@ -51,6 +51,20 @@ compatible (optional) - standard definition
->            used as a shared pool of DMA buffers for a set of devices. It can
->            be used by an operating system to instantiate the necessary pool
->            management subsystem if necessary.
-> +        - restricted-dma-pool: This indicates a region of memory meant to be
-> +          used as a pool of restricted DMA buffers for a set of devices. The
-> +          memory region would be the only region accessible to those devices.
-> +          When using this, the no-map and reusable properties must not be set,
-> +          so the operating system can create a virtual mapping that will be used
-> +          for synchronization. The main purpose for restricted DMA is to
-> +          mitigate the lack of DMA access control on systems without an IOMMU,
-> +          which could result in the DMA accessing the system memory at
-> +          unexpected times and/or unexpected addresses, possibly leading to data
-> +          leakage or corruption. The feature on its own provides a basic level
-> +          of protection against the DMA overwriting buffer contents at
-> +          unexpected times. However, to protect against general data leakage and
-> +          system memory corruption, the system needs to provide way to restrict
-> +          the DMA to a predefined memory region.
->          - vendor specific string in the form <vendor>,[<device>-]<usage>
->  no-map (optional) - empty property
->      - Indicates the operating system must not create a virtual mapping
-> @@ -120,6 +134,11 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
->  			compatible = "acme,multimedia-memory";
->  			reg = <0x77000000 0x4000000>;
->  		};
-> +
-> +		restricted_dma_mem_reserved: restricted_dma_mem_reserved {
-> +			compatible = "restricted-dma-pool";
-> +			reg = <0x50000000 0x400000>;
-> +		};
->  	};
->  
->  	/* ... */
-> @@ -138,4 +157,9 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
->  		memory-region = <&multimedia_reserved>;
->  		/* ... */
->  	};
-> +
-> +	pcie_device: pcie_device@0,0 {
-> +		memory-region = <&restricted_dma_mem_reserved>;
+> So there is no way dev_get_drvdata() can return NULL in hvcs_remove() and
+> the check can just go away.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-PCI hosts often have inbound window configurations that limit the 
-address range and translate PCI to bus addresses. Those windows happen 
-to be configured by dma-ranges. In any case, wouldn't you want to put 
-the configuration in the PCI host node? Is there a usecase of 
-restricting one PCIe device and not another? 
+Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
 
-Rob
+> ---
+>  drivers/tty/hvc/hvcs.c | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
+> index 509d1042825a..3e0461285c34 100644
+> --- a/drivers/tty/hvc/hvcs.c
+> +++ b/drivers/tty/hvc/hvcs.c
+> @@ -825,9 +825,6 @@ static int hvcs_remove(struct vio_dev *dev)
+>  	unsigned long flags;
+>  	struct tty_struct *tty;
+> 
+> -	if (!hvcsd)
+> -		return -ENODEV;
+> -
+>  	/* By this time the vty-server won't be getting any more interrupts */
+> 
+>  	spin_lock_irqsave(&hvcsd->lock, flags);
+> 
+
