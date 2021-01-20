@@ -1,51 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C762FD8FE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 20:02:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8902FD909
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jan 2021 20:04:37 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLZdZ6b9SzDqbq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 06:02:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLZhK6NG2zDqHZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 06:04:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLZXM1T6zzDqR6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 05:57:33 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DLZX54r44z9tybl;
- Wed, 20 Jan 2021 19:57:25 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id spdC_h7kWmvk; Wed, 20 Jan 2021 19:57:25 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DLZX53xvZz9tybZ;
- Wed, 20 Jan 2021 19:57:25 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 76BAF8B7F8;
- Wed, 20 Jan 2021 19:57:25 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 0BLiNn7tEHnH; Wed, 20 Jan 2021 19:57:25 +0100 (CET)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 16A798B7F2;
- Wed, 20 Jan 2021 19:57:25 +0100 (CET)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id D92D866A56; Wed, 20 Jan 2021 18:57:24 +0000 (UTC)
-Message-Id: <4b7a870573f485b9fea496b13c9b02d86dd97314.1611169001.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 1/2] crypto: talitos - Work around SEC6 ERRATA (AES-CTR mode
- data size error)
-To: Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>
-Date: Wed, 20 Jan 2021 18:57:24 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLZd54DgKzDqZq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 06:01:44 +1100 (AEDT)
+IronPort-SDR: RFu+ZpK1YmBMRwLy4o0Ek1xD4ZWB2jKgQIDBdjdhDa+p5/imU4OPk9hPiKlv5Q41Fo6LVZm/Tk
+ Hq3jxkBGhBJw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9870"; a="243231785"
+X-IronPort-AV: E=Sophos;i="5.79,361,1602572400"; d="scan'208";a="243231785"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2021 11:01:40 -0800
+IronPort-SDR: /T0DpETwD0nXy6HZh5AAyvCsmdRwcucQuBRlQXAcBJYYWD3oqwUrFpluB9YJ6/5Z65j3fhHOwW
+ WY1665617iUw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,361,1602572400"; d="scan'208";a="402861942"
+Received: from lkp-server01.sh.intel.com (HELO 260eafd5ecd0) ([10.239.97.150])
+ by fmsmga002.fm.intel.com with ESMTP; 20 Jan 2021 11:01:38 -0800
+Received: from kbuild by 260eafd5ecd0 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1l2IjZ-0005x5-SA; Wed, 20 Jan 2021 19:01:37 +0000
+Date: Thu, 21 Jan 2021 03:00:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ dd3a44c06f7b4f14e90065bf05d62c255b20005f
+Message-ID: <60087de7.KGhVJOBzK9VrY/OI%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,157 +54,188 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Talitos Security Engine AESU considers any input
-data size that is not a multiple of 16 bytes to be an error.
-This is not a problem in general, except for Counter mode
-that is a stream cipher and can have an input of any size.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: dd3a44c06f7b4f14e90065bf05d62c255b20005f  selftests/powerpc: Only test lwm/stmw on big endian
 
-Test Manager for ctr(aes) fails on 4th test vector which has
-a length of 499 while all previous vectors which have a 16 bytes
-multiple length succeed.
+elapsed time: 820m
 
-As suggested by Freescale, round up the input data length to the
-nearest 16 bytes.
+configs tested: 162
+configs skipped: 2
 
-Fixes: 5e75ae1b3cef ("crypto: talitos - add new crypto modes")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+s390                          debug_defconfig
+mips                     cu1830-neo_defconfig
+arm                          moxart_defconfig
+xtensa                    smp_lx200_defconfig
+powerpc                     stx_gp3_defconfig
+sh                          polaris_defconfig
+powerpc                      pasemi_defconfig
+sparc64                             defconfig
+arc                           tb10x_defconfig
+m68k                        m5272c3_defconfig
+c6x                        evmc6474_defconfig
+sh                          rsk7269_defconfig
+arm                           h3600_defconfig
+um                             i386_defconfig
+sh                          rsk7201_defconfig
+sh                     magicpanelr2_defconfig
+powerpc                      mgcoge_defconfig
+powerpc                 mpc8313_rdb_defconfig
+riscv                            alldefconfig
+arm                         cm_x300_defconfig
+powerpc                 xes_mpc85xx_defconfig
+arm                         s3c6400_defconfig
+powerpc                     ep8248e_defconfig
+powerpc                 mpc834x_mds_defconfig
+arm                           sunxi_defconfig
+mips                           gcw0_defconfig
+xtensa                         virt_defconfig
+sh                         apsh4a3a_defconfig
+m68k                       m5249evb_defconfig
+mips                      loongson3_defconfig
+arm                  colibri_pxa300_defconfig
+powerpc                   lite5200b_defconfig
+mips                          malta_defconfig
+m68k                        mvme147_defconfig
+xtensa                          iss_defconfig
+mips                            e55_defconfig
+powerpc                     sbc8548_defconfig
+c6x                        evmc6472_defconfig
+powerpc                 mpc837x_mds_defconfig
+mips                         cobalt_defconfig
+sh                           se7206_defconfig
+powerpc                 mpc8540_ads_defconfig
+arc                    vdk_hs38_smp_defconfig
+mips                        maltaup_defconfig
+powerpc                       ppc64_defconfig
+powerpc                        cell_defconfig
+arm                           corgi_defconfig
+m68k                        m5407c3_defconfig
+m68k                          amiga_defconfig
+powerpc                      cm5200_defconfig
+arm                       omap2plus_defconfig
+powerpc                     pq2fads_defconfig
+powerpc                       eiger_defconfig
+arc                              alldefconfig
+powerpc                     redwood_defconfig
+arm                         at91_dt_defconfig
+powerpc                     rainier_defconfig
+m68k                         amcore_defconfig
+mips                        bcm63xx_defconfig
+arm                              alldefconfig
+mips                         tb0287_defconfig
+arm                       aspeed_g4_defconfig
+powerpc                       maple_defconfig
+parisc                generic-64bit_defconfig
+arm                            hisi_defconfig
+mips                     loongson1b_defconfig
+mips                           jazz_defconfig
+mips                        omega2p_defconfig
+powerpc                 canyonlands_defconfig
+nds32                            alldefconfig
+xtensa                    xip_kc705_defconfig
+sh                           se7724_defconfig
+arm                          pcm027_defconfig
+sh                   secureedge5410_defconfig
+mips                       lemote2f_defconfig
+ia64                        generic_defconfig
+powerpc                     mpc83xx_defconfig
+arm                        spear6xx_defconfig
+openrisc                            defconfig
+powerpc                     skiroot_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20210120
+i386                 randconfig-a002-20210120
+i386                 randconfig-a004-20210120
+i386                 randconfig-a006-20210120
+i386                 randconfig-a005-20210120
+i386                 randconfig-a003-20210120
+x86_64               randconfig-a012-20210120
+x86_64               randconfig-a015-20210120
+x86_64               randconfig-a016-20210120
+x86_64               randconfig-a011-20210120
+x86_64               randconfig-a013-20210120
+x86_64               randconfig-a014-20210120
+i386                 randconfig-a011-20210119
+i386                 randconfig-a012-20210119
+i386                 randconfig-a016-20210119
+i386                 randconfig-a015-20210119
+i386                 randconfig-a013-20210119
+i386                 randconfig-a014-20210119
+i386                 randconfig-a013-20210120
+i386                 randconfig-a011-20210120
+i386                 randconfig-a012-20210120
+i386                 randconfig-a014-20210120
+i386                 randconfig-a015-20210120
+i386                 randconfig-a016-20210120
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a002-20210120
+x86_64               randconfig-a003-20210120
+x86_64               randconfig-a001-20210120
+x86_64               randconfig-a005-20210120
+x86_64               randconfig-a006-20210120
+x86_64               randconfig-a004-20210120
+
 ---
- drivers/crypto/talitos.c | 28 ++++++++++++++++------------
- drivers/crypto/talitos.h |  1 +
- 2 files changed, 17 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/crypto/talitos.c b/drivers/crypto/talitos.c
-index 4fd85f31630a..b656983c1ef4 100644
---- a/drivers/crypto/talitos.c
-+++ b/drivers/crypto/talitos.c
-@@ -1093,11 +1093,12 @@ static void ipsec_esp_decrypt_hwauth_done(struct device *dev,
-  */
- static int sg_to_link_tbl_offset(struct scatterlist *sg, int sg_count,
- 				 unsigned int offset, int datalen, int elen,
--				 struct talitos_ptr *link_tbl_ptr)
-+				 struct talitos_ptr *link_tbl_ptr, int align)
- {
- 	int n_sg = elen ? sg_count + 1 : sg_count;
- 	int count = 0;
- 	int cryptlen = datalen + elen;
-+	int padding = ALIGN(cryptlen, align) - cryptlen;
- 
- 	while (cryptlen && sg && n_sg--) {
- 		unsigned int len = sg_dma_len(sg);
-@@ -1121,7 +1122,7 @@ static int sg_to_link_tbl_offset(struct scatterlist *sg, int sg_count,
- 			offset += datalen;
- 		}
- 		to_talitos_ptr(link_tbl_ptr + count,
--			       sg_dma_address(sg) + offset, len, 0);
-+			       sg_dma_address(sg) + offset, sg_next(sg) ? len : len + padding, 0);
- 		to_talitos_ptr_ext_set(link_tbl_ptr + count, 0, 0);
- 		count++;
- 		cryptlen -= len;
-@@ -1144,10 +1145,11 @@ static int talitos_sg_map_ext(struct device *dev, struct scatterlist *src,
- 			      unsigned int len, struct talitos_edesc *edesc,
- 			      struct talitos_ptr *ptr, int sg_count,
- 			      unsigned int offset, int tbl_off, int elen,
--			      bool force)
-+			      bool force, int align)
- {
- 	struct talitos_private *priv = dev_get_drvdata(dev);
- 	bool is_sec1 = has_ftr_sec1(priv);
-+	int aligned_len = ALIGN(len, align);
- 
- 	if (!src) {
- 		to_talitos_ptr(ptr, 0, 0, is_sec1);
-@@ -1155,22 +1157,22 @@ static int talitos_sg_map_ext(struct device *dev, struct scatterlist *src,
- 	}
- 	to_talitos_ptr_ext_set(ptr, elen, is_sec1);
- 	if (sg_count == 1 && !force) {
--		to_talitos_ptr(ptr, sg_dma_address(src) + offset, len, is_sec1);
-+		to_talitos_ptr(ptr, sg_dma_address(src) + offset, aligned_len, is_sec1);
- 		return sg_count;
- 	}
- 	if (is_sec1) {
--		to_talitos_ptr(ptr, edesc->dma_link_tbl + offset, len, is_sec1);
-+		to_talitos_ptr(ptr, edesc->dma_link_tbl + offset, aligned_len, is_sec1);
- 		return sg_count;
- 	}
- 	sg_count = sg_to_link_tbl_offset(src, sg_count, offset, len, elen,
--					 &edesc->link_tbl[tbl_off]);
-+					 &edesc->link_tbl[tbl_off], align);
- 	if (sg_count == 1 && !force) {
- 		/* Only one segment now, so no link tbl needed*/
- 		copy_talitos_ptr(ptr, &edesc->link_tbl[tbl_off], is_sec1);
- 		return sg_count;
- 	}
- 	to_talitos_ptr(ptr, edesc->dma_link_tbl +
--			    tbl_off * sizeof(struct talitos_ptr), len, is_sec1);
-+			    tbl_off * sizeof(struct talitos_ptr), aligned_len, is_sec1);
- 	to_talitos_ptr_ext_or(ptr, DESC_PTR_LNKTBL_JUMP, is_sec1);
- 
- 	return sg_count;
-@@ -1182,7 +1184,7 @@ static int talitos_sg_map(struct device *dev, struct scatterlist *src,
- 			  unsigned int offset, int tbl_off)
- {
- 	return talitos_sg_map_ext(dev, src, len, edesc, ptr, sg_count, offset,
--				  tbl_off, 0, false);
-+				  tbl_off, 0, false, 1);
- }
- 
- /*
-@@ -1251,7 +1253,7 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
- 
- 	ret = talitos_sg_map_ext(dev, areq->src, cryptlen, edesc, &desc->ptr[4],
- 				 sg_count, areq->assoclen, tbl_off, elen,
--				 false);
-+				 false, 1);
- 
- 	if (ret > 1) {
- 		tbl_off += ret;
-@@ -1271,7 +1273,7 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
- 		elen = 0;
- 	ret = talitos_sg_map_ext(dev, areq->dst, cryptlen, edesc, &desc->ptr[5],
- 				 sg_count, areq->assoclen, tbl_off, elen,
--				 is_ipsec_esp && !encrypt);
-+				 is_ipsec_esp && !encrypt, 1);
- 	tbl_off += ret;
- 
- 	if (!encrypt && is_ipsec_esp) {
-@@ -1577,6 +1579,8 @@ static int common_nonsnoop(struct talitos_edesc *edesc,
- 	bool sync_needed = false;
- 	struct talitos_private *priv = dev_get_drvdata(dev);
- 	bool is_sec1 = has_ftr_sec1(priv);
-+	bool is_ctr = (desc->hdr & DESC_HDR_SEL0_MASK) == DESC_HDR_SEL0_AESU &&
-+		      (desc->hdr & DESC_HDR_MODE0_AESU_MASK) == DESC_HDR_MODE0_AESU_CTR;
- 
- 	/* first DWORD empty */
- 
-@@ -1597,8 +1601,8 @@ static int common_nonsnoop(struct talitos_edesc *edesc,
- 	/*
- 	 * cipher in
- 	 */
--	sg_count = talitos_sg_map(dev, areq->src, cryptlen, edesc,
--				  &desc->ptr[3], sg_count, 0, 0);
-+	sg_count = talitos_sg_map_ext(dev, areq->src, cryptlen, edesc, &desc->ptr[3],
-+				      sg_count, 0, 0, 0, false, is_ctr ? 16 : 1);
- 	if (sg_count > 1)
- 		sync_needed = true;
- 
-diff --git a/drivers/crypto/talitos.h b/drivers/crypto/talitos.h
-index 1469b956948a..32825119e880 100644
---- a/drivers/crypto/talitos.h
-+++ b/drivers/crypto/talitos.h
-@@ -344,6 +344,7 @@ static inline bool has_ftr_sec1(struct talitos_private *priv)
- 
- /* primary execution unit mode (MODE0) and derivatives */
- #define	DESC_HDR_MODE0_ENCRYPT		cpu_to_be32(0x00100000)
-+#define	DESC_HDR_MODE0_AESU_MASK	cpu_to_be32(0x00600000)
- #define	DESC_HDR_MODE0_AESU_CBC		cpu_to_be32(0x00200000)
- #define	DESC_HDR_MODE0_AESU_CTR		cpu_to_be32(0x00600000)
- #define	DESC_HDR_MODE0_DEU_CBC		cpu_to_be32(0x00400000)
--- 
-2.25.0
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
