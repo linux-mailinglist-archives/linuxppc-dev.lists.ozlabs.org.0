@@ -1,111 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD1752FE5F8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 10:11:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0622FE6D7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 10:57:02 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLxTb27hXzDr68
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 20:11:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLyV23ycTzDr9K
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 20:56:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=cqRzMTKh; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLxRJ5R7dzDqts
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 20:09:32 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10L91lQD055285; Thu, 21 Jan 2021 04:09:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=MIROihBdMjJIKhC+tSW35NZfjljBZpxTZ8W3u2vfuks=;
- b=cqRzMTKhA3pIGU3ja/nPBQ6238mE5b0d+97NdxaDtJ0tRYkjJhOzCXL1l8aCxifmwgHZ
- qVqUV9k4C78ZhZ8vhRFP9BV1FUriz1RCcRWz75zyk8r16N0xIB45wuRmXRN0rz2gNGuh
- 9xI9gSwtCZRGiqGZja8/wiPFBGZaWbf8cb77ZnkugirJOus/GoiCHgp0O4Y0vR6eTf6w
- x0UE0OMgnznKtW3mkZm9BSyMHsUrMoZg/X/OkEe0Np5Idkzq1pw87HgoNiS0qvfdtz+q
- Za9YfQC5j3kAQO5AReZU5Kg+Ey1AJSsZiwlpRdP9jg2L+zi7vRuWnAXR5IFlwn6BW8iR sw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3675ych8rm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Jan 2021 04:09:24 -0500
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10L92YCS057489;
- Thu, 21 Jan 2021 04:09:23 -0500
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3675ych8qs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Jan 2021 04:09:22 -0500
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10L97s4S031626;
- Thu, 21 Jan 2021 09:09:20 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 3668pasfrk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Jan 2021 09:09:20 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 10L99Ilw32506304
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 Jan 2021 09:09:18 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0EFD5A4066;
- Thu, 21 Jan 2021 09:09:18 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A859FA405F;
- Thu, 21 Jan 2021 09:09:17 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 21 Jan 2021 09:09:17 +0000 (GMT)
-Received: from [9.81.210.19] (unknown [9.81.210.19])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 9A4B160167;
- Thu, 21 Jan 2021 20:09:15 +1100 (AEDT)
-Subject: Re: [PATCH 01/13] powerpc/powernv: remove get_cxl_module
-To: Christoph Hellwig <hch@lst.de>, Frederic Barrat <fbarrat@linux.ibm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
- Jessica Yu <jeyu@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
- Jiri Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>,
- Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>
-References: <20210121074959.313333-1-hch@lst.de>
- <20210121074959.313333-2-hch@lst.de>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Message-ID: <a9e53c05-cfb9-2946-542d-4acda109a49d@linux.ibm.com>
-Date: Thu, 21 Jan 2021 20:09:02 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLyRl2Z83zDqNk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 20:54:53 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DLyRS5HVVz9v6L3;
+ Thu, 21 Jan 2021 10:54:44 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id ldGUfcVV3v_f; Thu, 21 Jan 2021 10:54:44 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DLyRS4Qzdz9v6Kv;
+ Thu, 21 Jan 2021 10:54:44 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C069B8B7FB;
+ Thu, 21 Jan 2021 10:54:45 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id TDQ7okhBwX9c; Thu, 21 Jan 2021 10:54:45 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 350708B7F9;
+ Thu, 21 Jan 2021 10:54:45 +0100 (CET)
+Subject: Re: [PATCH 1/2] crypto: talitos - Work around SEC6 ERRATA (AES-CTR
+ mode data size error)
+To: Ard Biesheuvel <ardb@kernel.org>
+References: <4b7a870573f485b9fea496b13c9b02d86dd97314.1611169001.git.christophe.leroy@csgroup.eu>
+ <CAMj1kXE7B05eAnR7KoDCym09Cw5qnzrV8KfNT2zJrko+mFic+w@mail.gmail.com>
+ <6b804eff-bc9f-5e05-d479-f398de4e2b30@csgroup.eu>
+ <CAMj1kXHz8LdDgfOcifcB-MBMM9-TbymOU_psT3JBFQfyvQ=EjQ@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <ecdd07b3-afca-7e26-b6b6-3a3a985bc5a1@csgroup.eu>
+Date: Thu, 21 Jan 2021 10:54:43 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-In-Reply-To: <20210121074959.313333-2-hch@lst.de>
+In-Reply-To: <CAMj1kXHz8LdDgfOcifcB-MBMM9-TbymOU_psT3JBFQfyvQ=EjQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-21_03:2021-01-20,
- 2021-01-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxlogscore=999
- adultscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 suspectscore=0
- phishscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101210045
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,27 +65,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Marek <michal.lkml@markovi.net>, linux-kbuild@vger.kernel.org,
- Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, live-patching@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
+ <linuxppc-dev@lists.ozlabs.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21/1/21 6:49 pm, Christoph Hellwig wrote:
-> The static inline get_cxl_module function is entirely unused,
-> remove it.
+
+
+Le 21/01/2021 à 08:31, Ard Biesheuvel a écrit :
+> On Thu, 21 Jan 2021 at 06:35, Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>>
+>>
+>>
+>> Le 20/01/2021 à 23:23, Ard Biesheuvel a écrit :
+>>> On Wed, 20 Jan 2021 at 19:59, Christophe Leroy
+>>> <christophe.leroy@csgroup.eu> wrote:
+>>>>
+>>>> Talitos Security Engine AESU considers any input
+>>>> data size that is not a multiple of 16 bytes to be an error.
+>>>> This is not a problem in general, except for Counter mode
+>>>> that is a stream cipher and can have an input of any size.
+>>>>
+>>>> Test Manager for ctr(aes) fails on 4th test vector which has
+>>>> a length of 499 while all previous vectors which have a 16 bytes
+>>>> multiple length succeed.
+>>>>
+>>>> As suggested by Freescale, round up the input data length to the
+>>>> nearest 16 bytes.
+>>>>
+>>>> Fixes: 5e75ae1b3cef ("crypto: talitos - add new crypto modes")
+>>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>>
+>>> Doesn't this cause the hardware to write outside the given buffer?
+>>
+>>
+>> Only the input length is modified. Not the output length.
+>>
+>> The ERRATA says:
+>>
+>> The input data length (in the descriptor) can be rounded up to the nearest 16B. Set the
+>> data-in length (in the descriptor) to include X bytes of data beyond the payload. Set the
+>> data-out length to only output the relevant payload (don't need to output the padding).
+>> SEC reads from memory are not destructive, so the extra bytes included in the AES-CTR
+>> operation can be whatever bytes are contiguously trailing the payload.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> So what happens if the input is not 16 byte aligned, and rounding it
+> up causes it to extend across a page boundary into a page that is not
+> mapped by the IOMMU/SMMU?
+> 
 
-The one user of this was removed in 8bf6b91a5125a ("Revert 
-"powerpc/powernv: Add support for the cxl kernel api on the real phb").
+What is the IOMMU/SMMU ?
 
-Thanks for picking this up.
+The mpc8xx, mpc82xx and mpc83xx which embed the Talitos Security Engine don't have such thing, the 
+security engine uses DMA and has direct access to the memory bus for reading and writing.
 
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+Christophe
