@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D472FE483
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 08:59:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E642FE487
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 09:01:38 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLvtf2dJzzDqnv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 18:59:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLvww0CZSzDr9M
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 19:01:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -16,28 +16,28 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=wILKHrE7; 
+ header.s=casper.20170209 header.b=Ktv0btKA; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLvm4550JzDqvR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 18:53:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLvmN1gMxzDr41
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 18:54:12 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=CBn0nIvzF4lsJIlmcNwvI6PwAlNBtY57zO+JFTdIDBA=; b=wILKHrE7zJ5ukZC9RHuI0Uk3fe
- EiDCI/52xf99CaCWMXlzY0E74cAz6IXo4v2Mu6qm6hpykxhDEoPz4TqKYKZxGxXpznewjH7NJXIhm
- 3wwDBW9PxX/8Ls3odBp8+swR/7BGL44uzxP4UCWiIBU1t0Gniwi5nL/pVazEPwP3ucRVGnz8LH3JS
- aRn0VX7Ip3Hx9YvdI1cdwznnGnyhpjrLbdLbHLOnDc49Eu3Mc+6a4xIuxYiCHUjyxDVBBBE+HRSZD
- MI38XZRZXTIz9bbpTPfhcUyG6pEQ08XubgPMvqPcgIgikuuTk5lY4R3EhePGY35H1ubDwdprJFg10
- D6cBk3ag==;
+ bh=GGrjojACjhG+8+TH5sgivGQzb3BJ/eSauJM3q5KfBTs=; b=Ktv0btKAweC7bgWiS0Tq9kQcDq
+ lur3JwNvnp9BIFyDhZcmUI1H3pxmjd/ZLvA2pRyULJoTJauKkKBe3DSoBTDJQV1JqQkoFJq9Bggb/
+ 9fo/7N4p/S2mX+gKVtR2JCvftPc1c+niZwyH3x8iQYowJRjI1y9N55LbKj6NZXHZ9lNyh1bcQc0is
+ 82naw907YI2rbhBZ6CTkkzH9BFv9pwJu+HRnB8QYUDtNr1CDTSoaXl2Sx7RwAd218qaJbpAr0dal1
+ UFAfSxVf8j/5ACKYD7rhFBOTJkxhehMlzgqP21VL+D/N0FubU73KdhAX/7mIcfo+iJ4E5TJ9qGcpg
+ z/nWA2Ug==;
 Received: from [2001:4bb8:188:1954:d5b3:2657:287:e45f] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1l2UmN-00Gm5Z-VJ; Thu, 21 Jan 2021 07:53:25 +0000
+ id 1l2Umc-00Gm60-80; Thu, 21 Jan 2021 07:53:35 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Frederic Barrat <fbarrat@linux.ibm.com>,
  Andrew Donnellan <ajd@linux.ibm.com>,
@@ -48,9 +48,9 @@ To: Frederic Barrat <fbarrat@linux.ibm.com>,
  Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
  Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
  Joe Lawrence <joe.lawrence@redhat.com>
-Subject: [PATCH 02/13] module: add a module_loaded helper
-Date: Thu, 21 Jan 2021 08:49:48 +0100
-Message-Id: <20210121074959.313333-3-hch@lst.de>
+Subject: [PATCH 03/13] livepatch: refactor klp_init_object
+Date: Thu, 21 Jan 2021 08:49:49 +0100
+Message-Id: <20210121074959.313333-4-hch@lst.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210121074959.313333-1-hch@lst.de>
 References: <20210121074959.313333-1-hch@lst.de>
@@ -77,98 +77,61 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a helper that takes modules_mutex and uses find_module to check if a
-given module is loaded.  This provides a better abstraction for the two
-callers, and allows to unexport modules_mutex and find_module.
+Merge three calls to klp_is_module (including one hidden inside
+klp_find_object_module) into a single one to simplify the code a bit.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/gpu/drm/drm_fb_helper.c |  7 +------
- include/linux/module.h          |  3 +++
- kernel/module.c                 | 14 ++++++++++++--
- kernel/trace/trace_kprobe.c     |  4 +---
- 4 files changed, 17 insertions(+), 11 deletions(-)
+ kernel/livepatch/core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-index 4b81195106875d..ce6d63ca75c32a 100644
---- a/drivers/gpu/drm/drm_fb_helper.c
-+++ b/drivers/gpu/drm/drm_fb_helper.c
-@@ -2508,13 +2508,8 @@ int __init drm_fb_helper_modinit(void)
+diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
+index f76fdb9255323d..a7f625dc24add3 100644
+--- a/kernel/livepatch/core.c
++++ b/kernel/livepatch/core.c
+@@ -54,9 +54,6 @@ static void klp_find_object_module(struct klp_object *obj)
  {
- #if defined(CONFIG_FRAMEBUFFER_CONSOLE_MODULE) && !defined(CONFIG_EXPERT)
- 	const char name[] = "fbcon";
--	struct module *fbcon;
+ 	struct module *mod;
  
--	mutex_lock(&module_mutex);
--	fbcon = find_module(name);
--	mutex_unlock(&module_mutex);
+-	if (!klp_is_module(obj))
+-		return;
 -
--	if (!fbcon)
-+	if (!module_loaded(name))
- 		request_module_nowait(name);
- #endif
- 	return 0;
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 7a0bcb5b1ffccd..b4654f8a408134 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -589,6 +589,9 @@ static inline bool within_module(unsigned long addr, const struct module *mod)
- /* Search for module by name: must hold module_mutex. */
- struct module *find_module(const char *name);
- 
-+/* Check if a module is loaded. */
-+bool module_loaded(const char *name);
-+
- struct symsearch {
- 	const struct kernel_symbol *start, *stop;
- 	const s32 *crcs;
-diff --git a/kernel/module.c b/kernel/module.c
-index 4bf30e4b3eaaa1..619ea682e64cd1 100644
---- a/kernel/module.c
-+++ b/kernel/module.c
-@@ -88,7 +88,6 @@
-  * (delete and add uses RCU list operations).
-  */
- DEFINE_MUTEX(module_mutex);
--EXPORT_SYMBOL_GPL(module_mutex);
- static LIST_HEAD(modules);
- 
- /* Work queue for freeing init sections in success case */
-@@ -672,7 +671,18 @@ struct module *find_module(const char *name)
- 	module_assert_mutex();
- 	return find_module_all(name, strlen(name), false);
+ 	mutex_lock(&module_mutex);
+ 	/*
+ 	 * We do not want to block removal of patched modules and therefore
+@@ -73,7 +70,6 @@ static void klp_find_object_module(struct klp_object *obj)
+ 	 */
+ 	if (mod && mod->klp_alive)
+ 		obj->mod = mod;
+-
+ 	mutex_unlock(&module_mutex);
  }
--EXPORT_SYMBOL_GPL(find_module);
-+
-+bool module_loaded(const char *name)
-+{
-+	bool ret;
-+
-+	mutex_lock(&module_mutex);
-+	ret = !!find_module(name);
-+	mutex_unlock(&module_mutex);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(module_loaded);
  
- #ifdef CONFIG_SMP
+@@ -823,15 +819,19 @@ static int klp_init_object(struct klp_patch *patch, struct klp_object *obj)
+ 	int ret;
+ 	const char *name;
  
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index e6fba1798771b4..c2e453f88bce70 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -124,9 +124,7 @@ static nokprobe_inline bool trace_kprobe_module_exist(struct trace_kprobe *tk)
- 	if (!p)
- 		return true;
- 	*p = '\0';
--	mutex_lock(&module_mutex);
--	ret = !!find_module(tk->symbol);
--	mutex_unlock(&module_mutex);
-+	ret = module_loaded(tk->symbol);
- 	*p = ':';
+-	if (klp_is_module(obj) && strlen(obj->name) >= MODULE_NAME_LEN)
+-		return -EINVAL;
+-
+ 	obj->patched = false;
+ 	obj->mod = NULL;
  
- 	return ret;
+-	klp_find_object_module(obj);
++	if (klp_is_module(obj)) {
++		if (strlen(obj->name) >= MODULE_NAME_LEN)
++			return -EINVAL;
++		name = obj->name;
++
++		klp_find_object_module(obj);
++	} else {
++		name = "vmlinux";
++	}
+ 
+-	name = klp_is_module(obj) ? obj->name : "vmlinux";
+ 	ret = kobject_add(&obj->kobj, &patch->kobj, "%s", name);
+ 	if (ret)
+ 		return ret;
 -- 
 2.29.2
 
