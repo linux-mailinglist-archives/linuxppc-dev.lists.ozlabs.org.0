@@ -1,65 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F09D2FE3C1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 08:19:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A902FE404
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 08:34:34 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLv0f2fLxzDqwL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 18:19:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLvKd5gryzDqtt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 18:34:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d32;
- helo=mail-io1-xd32.google.com; envelope-from=yury.norov@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=QwVlgg8H; dkim-atps=neutral
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com
- [IPv6:2607:f8b0:4864:20::d32])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=um7p9khj; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLtyb4TlGzDqqD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 18:17:59 +1100 (AEDT)
-Received: by mail-io1-xd32.google.com with SMTP id u17so2154033iow.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 23:17:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=FvUB6aKTOzb1ncLTrU4MC8B0a/Xf0eV3JbdY7KR8XWI=;
- b=QwVlgg8H6YaIXQT8K3QbhZQTqbg+fz1+f8csutbYeK0afl43h35YReYeN7eW0fK7uM
- cKKo4VHjgH0wfjQJ/0bHJqJR5ZLU1zmy1t8aS2f4SnwCza3+QJKLdP3IrUq9Ds9BdDia
- bwXPDY26PwIHrJu6ccb3XvEV9wkek0iOJl5R5N/ptYEnf8h1AkmMMPVavUTSzJ4VIbyY
- hf87LxPVQv4SBjrFWEV8s3T6sipvBuG6jj5fp63VzQbBlg/ZQPLVUrVgDf9NeCD3U2mT
- 5kwSHK1LHp8cwvAQ+ENR2VJbtAyElHXd2rWyliC0FoH7HHagDNOdfCKwh2zP6rl1MEf7
- B/Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=FvUB6aKTOzb1ncLTrU4MC8B0a/Xf0eV3JbdY7KR8XWI=;
- b=Ql2bxsOmP0BD5rRhWMfVohwqeSUZ1ee90gMorKXbKjHFv5I9Su8Rix00HTt8Uiub2w
- dNxdRNOodxxutzzgkZVobiU9w9w2EQ8iX6DQTHWjPCU+3H+w9zDM1O+6AooqEXoUzJOy
- TqMwKE+S6fLqor9A4qlQLp9n5XE2wsOKUVxLJBvFWjBNdTK6NfK2SfpYFYaKMV1Jtkl2
- dZKOQAEs5ZZqVcP3FAgpM2oDoByw/iP8WL+RVomx0IlU1r/DZB7onCA25dFnnzQRob4q
- YLOOpisH5haNoQN+KRSfCKX3d9g4Y4wN0Ax9619Mu0FmqxWIUTyTfod7VYXAIfckF49q
- 3dtQ==
-X-Gm-Message-State: AOAM532h1iMD+KF3LLMAN9ZgXjIm4S1udqPQy8MsXU26Z4LtPjTabOXJ
- YAR3C76uOHTjdMkKZFLIZYdXl1kKDzhq4btn3NE=
-X-Google-Smtp-Source: ABdhPJwgRob+ZjxdJAWZNxtHrVKFw7ZkLEMIbc6KQ7HYWxcfM4fkRI2BTyyG9XtnH6owVm+gjLQlUk2Q+xSGkAr+Odw=
-X-Received: by 2002:a6b:d804:: with SMTP id y4mr9243979iob.141.1611213475934; 
- Wed, 20 Jan 2021 23:17:55 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLvGv0jVLzDqtW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 18:32:07 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E106F2396D
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 07:32:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1611214324;
+ bh=q3em4ttxmd/mm5bQE6zL/zuR3Glx3mnZ0Ny4CAvnbkk=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=um7p9khjJbhGbtt0RJxEABDbc1l0x9d13FR1vOyaKt4QIpk2hNnUUBfVJEWZf+OcQ
+ iKIBpafdwMEmoLo3lopPHAz84vDcApfDCKPQuJhkjY9ydbAZFNQ2a67mGJH2CnT4A2
+ jPh04Ki0izdantto4qGzert1HtSZXAv3mInVLzqGpNX7DJ/jJUxb6CRk8+QwLeSeWi
+ j0SfIXZNLCvXC/sCdp6w2gT5jSUUpPmdLyJc10CF1JFnGvAbQUqeMza5Ixh9yx+518
+ hAgykouFneMKO9PIDjCcZPjJ3ENuJoKmBQdySkbhw5hrkqSrg93+/ECHvto9dAolYd
+ lItiFoGMTU9nw==
+Received: by mail-ot1-f45.google.com with SMTP id a109so774080otc.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 23:32:03 -0800 (PST)
+X-Gm-Message-State: AOAM532ooaNJzPlbbnMQJt/crWTgVej6G+vBCbSGeBnzz+5QGC4SrB/k
+ OW2diV/YJRf1JkO/6DvCPei1BzJU9Mrfa0xxrfQ=
+X-Google-Smtp-Source: ABdhPJwX5S75sDg7kRN312ywLjqyiIco3BWWsXzxEB/auPLbBSN709Hrw+A31zd0V9BIGYEUP/+35z8M6uqwlv2vO9Q=
+X-Received: by 2002:a05:6830:1614:: with SMTP id
+ g20mr3700710otr.77.1611214323096; 
+ Wed, 20 Jan 2021 23:32:03 -0800 (PST)
 MIME-Version: 1.0
-References: <CAAH8bW8-6Dp29fe6rrnA4eL1vo+mu0HuAVJ-5yjbwxDSvaHdeQ@mail.gmail.com>
- <6c442012-3bef-321b-bbc3-09c54608661f@infradead.org>
-In-Reply-To: <6c442012-3bef-321b-bbc3-09c54608661f@infradead.org>
-From: Yury Norov <yury.norov@gmail.com>
-Date: Wed, 20 Jan 2021 23:17:45 -0800
-Message-ID: <CAAH8bW-az-WSnbHshwmFuu=oANiZyVKCZ+dHoN119Cy-5KftMA@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: fix AKEBONO build failures
-To: Randy Dunlap <rdunlap@infradead.org>
+References: <4b7a870573f485b9fea496b13c9b02d86dd97314.1611169001.git.christophe.leroy@csgroup.eu>
+ <CAMj1kXE7B05eAnR7KoDCym09Cw5qnzrV8KfNT2zJrko+mFic+w@mail.gmail.com>
+ <6b804eff-bc9f-5e05-d479-f398de4e2b30@csgroup.eu>
+In-Reply-To: <6b804eff-bc9f-5e05-d479-f398de4e2b30@csgroup.eu>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 21 Jan 2021 08:31:51 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHz8LdDgfOcifcB-MBMM9-TbymOU_psT3JBFQfyvQ=EjQ@mail.gmail.com>
+Message-ID: <CAMj1kXHz8LdDgfOcifcB-MBMM9-TbymOU_psT3JBFQfyvQ=EjQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] crypto: talitos - Work around SEC6 ERRATA (AES-CTR
+ mode data size error)
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,72 +66,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
+Cc: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>
+ "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
+ <linuxppc-dev@lists.ozlabs.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 20, 2021 at 10:10 PM Randy Dunlap <rdunlap@infradead.org> wrote:
+On Thu, 21 Jan 2021 at 06:35, Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
 >
-> On 1/20/21 1:29 PM, Yury Norov wrote:
-> > Hi all,
+>
+>
+> Le 20/01/2021 =C3=A0 23:23, Ard Biesheuvel a =C3=A9crit :
+> > On Wed, 20 Jan 2021 at 19:59, Christophe Leroy
+> > <christophe.leroy@csgroup.eu> wrote:
+> >>
+> >> Talitos Security Engine AESU considers any input
+> >> data size that is not a multiple of 16 bytes to be an error.
+> >> This is not a problem in general, except for Counter mode
+> >> that is a stream cipher and can have an input of any size.
+> >>
+> >> Test Manager for ctr(aes) fails on 4th test vector which has
+> >> a length of 499 while all previous vectors which have a 16 bytes
+> >> multiple length succeed.
+> >>
+> >> As suggested by Freescale, round up the input data length to the
+> >> nearest 16 bytes.
+> >>
+> >> Fixes: 5e75ae1b3cef ("crypto: talitos - add new crypto modes")
+> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > >
-> > I found the power pc build broken on today's
-> > linux-next (647060f3b592).
+> > Doesn't this cause the hardware to write outside the given buffer?
 >
-> Darn, I was building linux-5.11-rc4.
 >
-> I'll try linux-next after I send this.
+> Only the input length is modified. Not the output length.
 >
-> ---
-> From: Randy Dunlap <rdunlap@infradead.org>
+> The ERRATA says:
 >
-> Fulfill AKEBONO Kconfig requirements.
->
-> Fixes these Kconfig warnings (and more) and fixes the subsequent
-> build errors:
->
-> WARNING: unmet direct dependencies detected for NETDEVICES
->   Depends on [n]: NET [=n]
->   Selected by [y]:
->   - AKEBONO [=y] && PPC_47x [=y]
->
-> WARNING: unmet direct dependencies detected for MMC_SDHCI
->   Depends on [n]: MMC [=n] && HAS_DMA [=y]
->   Selected by [y]:
->   - AKEBONO [=y] && PPC_47x [=y]
->
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: Yury Norov <yury.norov@gmail.com>
-> ---
->  arch/powerpc/platforms/44x/Kconfig |    2 ++
->  1 file changed, 2 insertions(+)
->
-> --- lnx-511-rc4.orig/arch/powerpc/platforms/44x/Kconfig
-> +++ lnx-511-rc4/arch/powerpc/platforms/44x/Kconfig
-> @@ -206,6 +206,7 @@ config AKEBONO
->         select PPC4xx_HSTA_MSI
->         select I2C
->         select I2C_IBM_IIC
-> +       select NET
->         select NETDEVICES
->         select ETHERNET
->         select NET_VENDOR_IBM
-> @@ -213,6 +214,7 @@ config AKEBONO
->         select USB if USB_SUPPORT
->         select USB_OHCI_HCD_PLATFORM if USB_OHCI_HCD
->         select USB_EHCI_HCD_PLATFORM if USB_EHCI_HCD
-> +       select MMC
->         select MMC_SDHCI
->         select MMC_SDHCI_PLTFM
->         select ATA
+> The input data length (in the descriptor) can be rounded up to the neares=
+t 16B. Set the
+> data-in length (in the descriptor) to include X bytes of data beyond the =
+payload. Set the
+> data-out length to only output the relevant payload (don't need to output=
+ the padding).
+> SEC reads from memory are not destructive, so the extra bytes included in=
+ the AES-CTR
+> operation can be whatever bytes are contiguously trailing the payload.
 
-Looks working, thanks.
-
-Tested-by: Yury Norov <yury.norov@gmail.com>
+So what happens if the input is not 16 byte aligned, and rounding it
+up causes it to extend across a page boundary into a page that is not
+mapped by the IOMMU/SMMU?
