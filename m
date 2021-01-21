@@ -1,49 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110AD2FF81D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 23:41:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB0C2FF820
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 23:43:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DMHRy65LqzDrdD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 09:41:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DMHVG4rLLzDrcY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 09:43:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
- helo=linux.microsoft.com; envelope-from=tyhicks@linux.microsoft.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=Fmcd9Krw; 
- dkim-atps=neutral
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DM8jC2WztzDqML
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 04:37:19 +1100 (AEDT)
-Received: from sequoia (162-237-133-238.lightspeed.rcsntx.sbcglobal.net
- [162.237.133.238])
- by linux.microsoft.com (Postfix) with ESMTPSA id 30AE920B7192;
- Thu, 21 Jan 2021 09:37:17 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 30AE920B7192
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1611250637;
- bh=fbcRcp3idFFWOwiOjLdBsLqpIczhr4t2xXWIs0rFOng=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Fmcd9KrwyIO9TqvZmr0jqA0gEJmzIDHUMnaPFQFbijMEsfENZEAaX5Xo++kbH58i2
- agEegx67+IM2QDODuukFUevio4kE2yxldq9dWrZ+0CmuNgv6vejrdDnHKRZRE9PLqW
- uEJDWxGe0Mz7g7InS7KFcW/oXqQJKMMVZuGT+FUw=
-Date: Thu, 21 Jan 2021 11:37:15 -0600
-From: Tyler Hicks <tyhicks@linux.microsoft.com>
-To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Subject: Re: [PATCH 2/2] ima: Free IMA measurement buffer after kexec syscall
-Message-ID: <20210121173715.GF259508@sequoia>
-References: <20210121173003.18324-1-nramas@linux.microsoft.com>
- <20210121173003.18324-2-nramas@linux.microsoft.com>
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=QuQNZ9Bn; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DMHNt4fW0zDrTY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 09:38:32 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10LMWc8N150608; Thu, 21 Jan 2021 17:38:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=V9pkF9N+hZpa0Vz2hTWbrqRBmqHOHgaZE8NC6FKusVA=;
+ b=QuQNZ9BnMVrIlIv8QxhCd+IpImdRK2fV55FxflmKsPjqifEzNgTVomYq5G6DjY5j7LhV
+ nk9d7INzVVV+1DcTnU8MX0mAd+bMDizjSnvWD8vMy7SX7MyKUN4GRVXmZvlgZgGCA8LH
+ SN0SssSJc98NUxer32Fhz8nMGhUG1AhLWZT1cJCxlRJFZeIaSq7553rKeqyDIW2oMi9A
+ fX9USi30dKKF1nQ5jR5w8jEtv97cEkXzQAvkSC9tmO/p7ZQEg9MGsHUnGlKhAKbHJaPn
+ le/dj9XOIDgiECd9xBMLH25vcedr4Ad60mO4OS1DcrNos5Jhk2QJbT2ZUEFWXt5Zsomp qQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 367j5w0h8k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Jan 2021 17:38:16 -0500
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10LMXYx4157432;
+ Thu, 21 Jan 2021 17:38:15 -0500
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 367j5w0h82-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Jan 2021 17:38:15 -0500
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10LMVaRE014495;
+ Thu, 21 Jan 2021 22:38:13 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma03wdc.us.ibm.com with ESMTP id 3668pc7fk7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Jan 2021 22:38:13 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10LMcDR228443046
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 21 Jan 2021 22:38:13 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 59D7812407D;
+ Thu, 21 Jan 2021 22:38:13 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3507912407F;
+ Thu, 21 Jan 2021 22:38:13 +0000 (GMT)
+Received: from suka-w540.localdomain (unknown [9.85.147.100])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 21 Jan 2021 22:38:13 +0000 (GMT)
+Received: by suka-w540.localdomain (Postfix, from userid 1000)
+ id 65DA72E2718; Thu, 21 Jan 2021 14:38:10 -0800 (PST)
+Date: Thu, 21 Jan 2021 14:38:10 -0800
+From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+To: Lijun Pan <lijunp213@gmail.com>
+Subject: Re: [PATCH net] ibmvnic: device remove has higher precedence over
+ reset
+Message-ID: <20210121223810.GA374395@us.ibm.com>
+References: <20210121062005.53271-1-ljp@linux.ibm.com>
+ <c34816a13d857b7f5d1a25991b58ec63@imap.linux.ibm.com>
+ <CAOhMmr78mzJpfPBSwp9JWmE+KwLxd6JtqpwaA9tmqxU5fCjcgg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210121173003.18324-2-nramas@linux.microsoft.com>
-X-Mailman-Approved-At: Fri, 22 Jan 2021 09:37:36 +1100
+In-Reply-To: <CAOhMmr78mzJpfPBSwp9JWmE+KwLxd6JtqpwaA9tmqxU5fCjcgg@mail.gmail.com>
+X-Operating-System: Linux 2.0.32 on an i486
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-21_10:2021-01-21,
+ 2021-01-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 phishscore=0
+ adultscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
+ impostorscore=0 bulkscore=0 spamscore=0 mlxscore=0 clxscore=1011
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101210115
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,84 +105,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sashal@kernel.org, dmitry.kasatkin@gmail.com, linux-kernel@vger.kernel.org,
- zohar@linux.ibm.com, ebiederm@xmission.com, gregkh@linuxfoundation.org,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com
+Cc: gregkh@linuxfoundation.org, julietk@linux.vnet.ibm.com,
+ netdev@vger.kernel.org,
+ Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+ Jakub Kicinski <kuba@kernel.org>, Lijun Pan <ljp@linux.ibm.com>,
+ kernel@pengutronix.de, Dany Madden <drt@linux.ibm.com>, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-01-21 09:30:03, Lakshmi Ramasubramanian wrote:
-> IMA allocates kernel virtual memory to carry forward the measurement
-> list, from the current kernel to the next kernel on kexec system call,
-> in ima_add_kexec_buffer() function.  This buffer is not freed before
-> completing the kexec system call resulting in memory leak.
-> 
-> Add ima_buffer field in "struct kimage" to store the virtual address
-> of the buffer allocated for the IMA measurement list.
-> Free the memory allocated for the IMA measurement list in
-> kimage_file_post_load_cleanup() function.
-> 
-> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-> Suggested-by: Tyler Hicks <tyhicks@linux.microsoft.com>
-> Fixes: 7b8589cc29e7 ("ima: on soft reboot, save the measurement list")
+Lijun Pan [lijunp213@gmail.com] wrote:
+> > > diff --git a/drivers/net/ethernet/ibm/ibmvnic.c
+> > > b/drivers/net/ethernet/ibm/ibmvnic.c
+> > > index aed985e08e8a..11f28fd03057 100644
+> > > --- a/drivers/net/ethernet/ibm/ibmvnic.c
+> > > +++ b/drivers/net/ethernet/ibm/ibmvnic.c
+> > > @@ -2235,8 +2235,7 @@ static void __ibmvnic_reset(struct work_struct
+> > > *work)
+> > >       while (rwi) {
+> > >               spin_lock_irqsave(&adapter->state_lock, flags);
+> > >
+> > > -             if (adapter->state == VNIC_REMOVING ||
+> > > -                 adapter->state == VNIC_REMOVED) {
+> > > +             if (adapter->state == VNIC_REMOVED) {
 
-Reviewed-by: Tyler Hicks <tyhicks@linux.microsoft.com>
+If the adapter is in REMOVING state, there is no point going
+through the reset process. We could just bail out here. We
+should also drain any other resets in the queue (something
+my other patch set was addressing).
 
-Tyler
+Sukadev
 
-> ---
->  include/linux/kexec.h              | 5 +++++
->  kernel/kexec_file.c                | 5 +++++
->  security/integrity/ima/ima_kexec.c | 2 ++
->  3 files changed, 12 insertions(+)
+> >
+> > If we do get here, we would crash because ibmvnic_remove() happened. It
+> > frees the adapter struct already.
 > 
-> diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-> index 9e93bef52968..5f61389f5f36 100644
-> --- a/include/linux/kexec.h
-> +++ b/include/linux/kexec.h
-> @@ -300,6 +300,11 @@ struct kimage {
->  	/* Information for loading purgatory */
->  	struct purgatory_info purgatory_info;
->  #endif
-> +
-> +#ifdef CONFIG_IMA_KEXEC
-> +	/* Virtual address of IMA measurement buffer for kexec syscall */
-> +	void *ima_buffer;
-> +#endif
->  };
->  
->  /* kexec interface functions */
-> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-> index b02086d70492..5c3447cf7ad5 100644
-> --- a/kernel/kexec_file.c
-> +++ b/kernel/kexec_file.c
-> @@ -166,6 +166,11 @@ void kimage_file_post_load_cleanup(struct kimage *image)
->  	vfree(pi->sechdrs);
->  	pi->sechdrs = NULL;
->  
-> +#ifdef CONFIG_IMA_KEXEC
-> +	vfree(image->ima_buffer);
-> +	image->ima_buffer = NULL;
-> +#endif /* CONFIG_IMA_KEXEC */
-> +
->  	/* See if architecture has anything to cleanup post load */
->  	arch_kimage_file_post_load_cleanup(image);
->  
-> diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
-> index 212145008a01..8eadd0674629 100644
-> --- a/security/integrity/ima/ima_kexec.c
-> +++ b/security/integrity/ima/ima_kexec.c
-> @@ -130,6 +130,8 @@ void ima_add_kexec_buffer(struct kimage *image)
->  		return;
->  	}
->  
-> +	image->ima_buffer = kexec_buffer;
-> +
->  	pr_debug("kexec measurement buffer for the loaded kernel at 0x%lx.\n",
->  		 kbuf.mem);
->  }
-> -- 
-> 2.30.0
+> Not exactly. viodev is gone; netdev is gone; ibmvnic_adapter is still there.
 > 
+> Lijun
+
