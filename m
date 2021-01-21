@@ -1,57 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B49A42FE1CA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 06:37:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6583D2FE257
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 07:11:39 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLrkG3rRmzDr3D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 16:37:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLsV044SfzDqtt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 17:11:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=merlin.20170209 header.b=oBTVnZOa; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLrh90GH9zDqPF
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 16:35:13 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DLrgs5Dygz9tylG;
- Thu, 21 Jan 2021 06:35:05 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id UHuL7YWFM_p1; Thu, 21 Jan 2021 06:35:05 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DLrgs42TKz9txsL;
- Thu, 21 Jan 2021 06:35:05 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5F5BA8B771;
- Thu, 21 Jan 2021 06:35:06 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id LKB-aJWdnlVp; Thu, 21 Jan 2021 06:35:06 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F27398B75E;
- Thu, 21 Jan 2021 06:35:05 +0100 (CET)
-Subject: Re: [PATCH 1/2] crypto: talitos - Work around SEC6 ERRATA (AES-CTR
- mode data size error)
-To: Ard Biesheuvel <ardb@kernel.org>
-References: <4b7a870573f485b9fea496b13c9b02d86dd97314.1611169001.git.christophe.leroy@csgroup.eu>
- <CAMj1kXE7B05eAnR7KoDCym09Cw5qnzrV8KfNT2zJrko+mFic+w@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <6b804eff-bc9f-5e05-d479-f398de4e2b30@csgroup.eu>
-Date: Thu, 21 Jan 2021 06:35:06 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLsS80fjDzDqRG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 17:09:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:Cc:References:To:Subject:Sender
+ :Reply-To:Content-ID:Content-Description;
+ bh=lZeKd0/0hrDPS8SZ5doWRcY0buqZrAFLpJtW5s5Vcoc=; b=oBTVnZOasjW9P7RU4VtlWCmY/o
+ 0h8E8P6JpjBDjXG3T3tDAhbLw5i9EwHqCU1dMFlIOT1C31v9VksnteT+FeX5/k18nHjoI3FWTguKT
+ fR1t5Hv0GLymg6WM6dHnXR5jLCZNSjDvGe4xIwU+hhdWOeiBsnPbYEDjAwtYJsIeT/bzFduN9S6hd
+ YytXSCWcDRJWupfaRzlWT2q4xMtvgiPl3RvuXKHHcnMKs5kJlRl/ZHj/LSllabJmghSMifP9rjIGA
+ JhGU8lsITbDrpfXXLE1qjhEqVM0oXIvNBz0mSIrrfpNPtdCHvVDui9mPPxlHRsuruTfEIyjjUEr3F
+ K/Za5wVw==;
+Received: from [2601:1c0:6280:3f0::9abc]
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1l2TAG-0007vT-6u; Thu, 21 Jan 2021 06:09:52 +0000
+Subject: [PATCH] powerpc: fix AKEBONO build failures
+To: Yury Norov <yury.norov@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <CAAH8bW8-6Dp29fe6rrnA4eL1vo+mu0HuAVJ-5yjbwxDSvaHdeQ@mail.gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <6c442012-3bef-321b-bbc3-09c54608661f@infradead.org>
+Date: Wed, 20 Jan 2021 22:09:46 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <CAMj1kXE7B05eAnR7KoDCym09Cw5qnzrV8KfNT2zJrko+mFic+w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAH8bW8-6Dp29fe6rrnA4eL1vo+mu0HuAVJ-5yjbwxDSvaHdeQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,45 +62,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 20/01/2021 à 23:23, Ard Biesheuvel a écrit :
-> On Wed, 20 Jan 2021 at 19:59, Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->>
->> Talitos Security Engine AESU considers any input
->> data size that is not a multiple of 16 bytes to be an error.
->> This is not a problem in general, except for Counter mode
->> that is a stream cipher and can have an input of any size.
->>
->> Test Manager for ctr(aes) fails on 4th test vector which has
->> a length of 499 while all previous vectors which have a 16 bytes
->> multiple length succeed.
->>
->> As suggested by Freescale, round up the input data length to the
->> nearest 16 bytes.
->>
->> Fixes: 5e75ae1b3cef ("crypto: talitos - add new crypto modes")
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+On 1/20/21 1:29 PM, Yury Norov wrote:
+> Hi all,
 > 
-> Doesn't this cause the hardware to write outside the given buffer?
+> I found the power pc build broken on today's
+> linux-next (647060f3b592).
 
+Darn, I was building linux-5.11-rc4.
 
-Only the input length is modified. Not the output length.
+I'll try linux-next after I send this.
 
-The ERRATA says:
+---
+From: Randy Dunlap <rdunlap@infradead.org>
 
-The input data length (in the descriptor) can be rounded up to the nearest 16B. Set the
-data-in length (in the descriptor) to include X bytes of data beyond the payload. Set the
-data-out length to only output the relevant payload (don't need to output the padding).
-SEC reads from memory are not destructive, so the extra bytes included in the AES-CTR
-operation can be whatever bytes are contiguously trailing the payload.
+Fulfill AKEBONO Kconfig requirements.
+
+Fixes these Kconfig warnings (and more) and fixes the subsequent
+build errors:
+
+WARNING: unmet direct dependencies detected for NETDEVICES
+  Depends on [n]: NET [=n]
+  Selected by [y]:
+  - AKEBONO [=y] && PPC_47x [=y]
+
+WARNING: unmet direct dependencies detected for MMC_SDHCI
+  Depends on [n]: MMC [=n] && HAS_DMA [=y]
+  Selected by [y]:
+  - AKEBONO [=y] && PPC_47x [=y]
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Yury Norov <yury.norov@gmail.com>
+---
+ arch/powerpc/platforms/44x/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- lnx-511-rc4.orig/arch/powerpc/platforms/44x/Kconfig
++++ lnx-511-rc4/arch/powerpc/platforms/44x/Kconfig
+@@ -206,6 +206,7 @@ config AKEBONO
+ 	select PPC4xx_HSTA_MSI
+ 	select I2C
+ 	select I2C_IBM_IIC
++	select NET
+ 	select NETDEVICES
+ 	select ETHERNET
+ 	select NET_VENDOR_IBM
+@@ -213,6 +214,7 @@ config AKEBONO
+ 	select USB if USB_SUPPORT
+ 	select USB_OHCI_HCD_PLATFORM if USB_OHCI_HCD
+ 	select USB_EHCI_HCD_PLATFORM if USB_EHCI_HCD
++	select MMC
+ 	select MMC_SDHCI
+ 	select MMC_SDHCI_PLTFM
+ 	select ATA
