@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0E72FE4AD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 09:12:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D997E2FE4B2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 09:14:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLw9C54wxzDqCx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 19:12:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLwCT5r1YzDqDN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 19:14:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -16,28 +16,28 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=ESsvgyjn; 
+ header.s=casper.20170209 header.b=VJgiX3rO; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLvp23mkPzDqpC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 18:55:38 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLvpt2t7gzDqnT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 18:56:22 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=pDVrAQODm5MVEOopuQVfAeRLjXskf/bF8mZuyUX3ZZA=; b=ESsvgyjnfo/9h/O2QrIVrOVh84
- ID9uydF9M6oVObzA4HwZIF2bshL9psjwIVVdtPWQ/mdl0u8LY3qvS7nICXTvlcW7QeM59CgSH59+p
- YESRp7AANijbNBaGAmHcLzVAMjg3lDja22MN+wJoMI8zbcyGLzidqoq3DKxSInB1fqf74hlcw21f/
- x5aJ3fvDnaCs3vxzpvN5EN+olckdQCRPXhYgCHNeMY0LQXN1vuuWGzgWQjP+0Ngp7q8gEsOjrWjRC
- 95zxt51w7ULeLNJEMQWrF7PaiEDebcNM4yw3K064lypfQASrIv/oD1Z5d106G2azwZTRPyMrHvh7m
- EwmMp5gQ==;
+ bh=vzLkuMf82/aWxii/Oync9Hqdb/cDk0SHw40dy3Repg0=; b=VJgiX3rOi2+FvYX5K5bZdmJKbV
+ KmbjKxv/yhVynbQ7YxZjphpBXnAb9lcS8Rm2DWl0XO5d7lbUNmsSJ4iiecBH1ptIEV1DzaF/tDYcX
+ 40Fc3Q93GDV/NSPdipbTiWzTuYSjJ3S/ljICeomlVqQNnENFw4OSbarDQcAaUnUOZvoeKuvR3Ocqi
+ g1RH5DmKsuETnSyhbKuOPUkYKh0aTiYF4rSpIymKGKNuJcvkQo0JEt1kMD9RHcHM1bUNJso5wzyQT
+ oTCpvteHfm8HTp1ikJRrPxgT/MA3ey7JlWDMT+gUyKMJG7F0kp2M7rT18zJPkmynaYm5STnNt7R6V
+ V/mRJgbw==;
 Received: from [2001:4bb8:188:1954:d5b3:2657:287:e45f] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1l2Unz-00Gm9t-Ky; Thu, 21 Jan 2021 07:55:04 +0000
+ id 1l2UoB-00GmEr-Go; Thu, 21 Jan 2021 07:55:13 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Frederic Barrat <fbarrat@linux.ibm.com>,
  Andrew Donnellan <ajd@linux.ibm.com>,
@@ -48,9 +48,9 @@ To: Frederic Barrat <fbarrat@linux.ibm.com>,
  Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
  Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
  Joe Lawrence <joe.lawrence@redhat.com>
-Subject: [PATCH 08/13] drm: remove drm_fb_helper_modinit
-Date: Thu, 21 Jan 2021 08:49:54 +0100
-Message-Id: <20210121074959.313333-9-hch@lst.de>
+Subject: [PATCH 09/13] module: remove each_symbol_in_section
+Date: Thu, 21 Jan 2021 08:49:55 +0100
+Message-Id: <20210121074959.313333-10-hch@lst.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210121074959.313333-1-hch@lst.de>
 References: <20210121074959.313333-1-hch@lst.de>
@@ -77,99 +77,74 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-drm_fb_helper_modinit has a lot of boilerplate for what is not very
-simple functionality.  Just open code it in the only caller using
-IS_ENABLED and IS_MODULE.
+each_symbol_in_section just contains a trivial loop over its arguments.
+Just open code the loop in the two callers.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/gpu/drm/drm_crtc_helper_internal.h | 10 ---------
- drivers/gpu/drm/drm_fb_helper.c            | 16 -------------
- drivers/gpu/drm/drm_kms_helper_common.c    | 26 +++++++++++-----------
- 3 files changed, 13 insertions(+), 39 deletions(-)
+ kernel/module.c | 29 +++++++----------------------
+ 1 file changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_crtc_helper_internal.h b/drivers/gpu/drm/drm_crtc_helper_internal.h
-index 25ce42e799952c..61e09f8a8d0ff0 100644
---- a/drivers/gpu/drm/drm_crtc_helper_internal.h
-+++ b/drivers/gpu/drm/drm_crtc_helper_internal.h
-@@ -32,16 +32,6 @@
- #include <drm/drm_encoder.h>
- #include <drm/drm_modes.h>
+diff --git a/kernel/module.c b/kernel/module.c
+index d163c78ca8ed69..a9d092765c4eab 100644
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -433,30 +433,13 @@ extern const s32 __start___kcrctab_unused_gpl[];
+ #define symversion(base, idx) ((base != NULL) ? ((base) + (idx)) : NULL)
+ #endif
  
--/* drm_fb_helper.c */
--#ifdef CONFIG_DRM_FBDEV_EMULATION
--int drm_fb_helper_modinit(void);
--#else
--static inline int drm_fb_helper_modinit(void)
+-static bool each_symbol_in_section(const struct symsearch *arr,
+-				   unsigned int arrsize,
+-				   struct module *owner,
+-				   bool (*fn)(const struct symsearch *syms,
+-					      struct module *owner,
+-					      void *data),
+-				   void *data)
 -{
--	return 0;
+-	unsigned int j;
+-
+-	for (j = 0; j < arrsize; j++) {
+-		if (fn(&arr[j], owner, data))
+-			return true;
+-	}
+-
+-	return false;
 -}
--#endif
 -
- /* drm_dp_aux_dev.c */
- #ifdef CONFIG_DRM_DP_AUX_CHARDEV
- int drm_dp_aux_dev_init(void);
-diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-index ce6d63ca75c32a..0b9f1ae1b7864c 100644
---- a/drivers/gpu/drm/drm_fb_helper.c
-+++ b/drivers/gpu/drm/drm_fb_helper.c
-@@ -2499,19 +2499,3 @@ void drm_fbdev_generic_setup(struct drm_device *dev,
- 	drm_client_register(&fb_helper->client);
- }
- EXPORT_SYMBOL(drm_fbdev_generic_setup);
--
--/* The Kconfig DRM_KMS_HELPER selects FRAMEBUFFER_CONSOLE (if !EXPERT)
-- * but the module doesn't depend on any fb console symbols.  At least
-- * attempt to load fbcon to avoid leaving the system without a usable console.
-- */
--int __init drm_fb_helper_modinit(void)
--{
--#if defined(CONFIG_FRAMEBUFFER_CONSOLE_MODULE) && !defined(CONFIG_EXPERT)
--	const char name[] = "fbcon";
--
--	if (!module_loaded(name))
--		request_module_nowait(name);
--#endif
--	return 0;
--}
--EXPORT_SYMBOL(drm_fb_helper_modinit);
-diff --git a/drivers/gpu/drm/drm_kms_helper_common.c b/drivers/gpu/drm/drm_kms_helper_common.c
-index 221a8528c9937a..b694a7da632eae 100644
---- a/drivers/gpu/drm/drm_kms_helper_common.c
-+++ b/drivers/gpu/drm/drm_kms_helper_common.c
-@@ -64,19 +64,19 @@ MODULE_PARM_DESC(edid_firmware,
- 
- static int __init drm_kms_helper_init(void)
+ /* Returns true as soon as fn returns true, otherwise false. */
+ static bool each_symbol_section(bool (*fn)(const struct symsearch *arr,
+ 				    struct module *owner,
+ 				    void *data),
+ 			 void *data)
  {
--	int ret;
--
--	/* Call init functions from specific kms helpers here */
--	ret = drm_fb_helper_modinit();
--	if (ret < 0)
--		goto out;
--
--	ret = drm_dp_aux_dev_init();
--	if (ret < 0)
--		goto out;
--
--out:
--	return ret;
-+	/*
-+	 * The Kconfig DRM_KMS_HELPER selects FRAMEBUFFER_CONSOLE (if !EXPERT)
-+	 * but the module doesn't depend on any fb console symbols.  At least
-+	 * attempt to load fbcon to avoid leaving the system without a usable
-+	 * console.
-+	 */
-+	if (IS_ENABLED(CONFIG_DRM_FBDEV_EMULATION) &&
-+	    IS_MODULE(CONFIG_FRAMEBUFFER_CONSOLE) &&
-+	    !IS_ENABLED(CONFIG_EXPERT) &&
-+	    !module_loaded("fbcon"))
-+		request_module_nowait("fbcon");
-+
-+	return drm_dp_aux_dev_init();
- }
++	unsigned int i;
+ 	struct module *mod;
+ 	static const struct symsearch arr[] = {
+ 		{ __start___ksymtab, __stop___ksymtab, __start___kcrctab,
+@@ -479,8 +462,9 @@ static bool each_symbol_section(bool (*fn)(const struct symsearch *arr,
  
- static void __exit drm_kms_helper_exit(void)
+ 	module_assert_mutex_or_preempt();
+ 
+-	if (each_symbol_in_section(arr, ARRAY_SIZE(arr), NULL, fn, data))
+-		return true;
++	for (i = 0; i < ARRAY_SIZE(arr); i++)
++		if (fn(&arr[i], NULL, data))
++			return true;
+ 
+ 	list_for_each_entry_rcu(mod, &modules, list,
+ 				lockdep_is_held(&module_mutex)) {
+@@ -509,8 +493,9 @@ static bool each_symbol_section(bool (*fn)(const struct symsearch *arr,
+ 		if (mod->state == MODULE_STATE_UNFORMED)
+ 			continue;
+ 
+-		if (each_symbol_in_section(arr, ARRAY_SIZE(arr), mod, fn, data))
+-			return true;
++		for (i = 0; i < ARRAY_SIZE(arr); i++)
++			if (fn(&arr[i], mod, data))
++				return true;
+ 	}
+ 	return false;
+ }
 -- 
 2.29.2
 
