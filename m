@@ -1,50 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72FDE2FEAF9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 14:03:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7419A2FEE52
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 16:20:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DM2ct1Dc7zDr5J
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 00:03:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DM5gD4xHXzDqgw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 02:20:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DM2L03TBhzDqhn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 23:50:16 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=iFVmCkJT; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DM2Kt1KHyz9sW1;
- Thu, 21 Jan 2021 23:50:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1611233410;
- bh=XHCeHRPB17e6W5oTYwmRoW+xHauobiDv1JWSkqFtzyY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=iFVmCkJTJ5p+XqR7Kc++YMHjhd8MM22TSwZUkI8H4s+AYW0qFwMH2m/Hl/tc8lfAY
- jtWM7Y832eafaBrzuYbWSx1X+qdh8i8v7fwsYOlKKXBa3qsGUadmVLUlQfTHd25941
- f7G6AdIj2z6zJ5akwhnWjMPVlb1SGmqRgG92Uo6N82ICt1mJIM2sz/sEOBHVRgyYTi
- FN/b8KAlF605y7ubUn7q3GkaNteysYa/mco9ysjnBHgRgafuWOby/z3/O7yH9HcwPp
- 6O2+jIwpCWs3wmIUhKfTZQ40g501w9Ed6RGtU7bS3rohW1c1if1Zk1k0bzh2i1lYRO
- k7Rxac/JuGADg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/64: prevent replayed interrupt handlers from
- running softirqs
-In-Reply-To: <20210120075005.1678565-1-npiggin@gmail.com>
-References: <20210120075005.1678565-1-npiggin@gmail.com>
-Date: Thu, 21 Jan 2021 23:50:02 +1100
-Message-ID: <878s8mqwsl.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=cVegAoeL; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DM5cR03j0zDrQ6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 02:17:58 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10LF3065132417; Thu, 21 Jan 2021 10:17:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=ZwCqDLvURQTzikupODkfrJJ6B1CwILev7OOhbTHepgw=;
+ b=cVegAoeLTl/P8h6jN2+JNniXEZl7FVJVP0kKRMsFyn6ZSsJlGkLgpGtaMCgWCLhxU6iR
+ GF6Nk6+Ox9VrWtb9jog5R9iH2E3/x2bYglYUFfEczYLIFOLyPaiCs96Z7/pIzIxzHujI
+ RqkIfPEIh1TiZpI62/KWig5Us7AzGS1lQLBx+wAySyZTo6UyfJrbSoVV1urFn1TgD4/O
+ uzQO2gwxgdBLJMgWDmyI/zES8NdKG0qiJpGf6PLpIpVXtiQUHGt4i4qwFpqMy8ACrq1J
+ GfKBrmGeILC6iiaKxylhIQgkvBVsGgcSDGC6eT7gpI/oDoowP/eVe5feC1Lj9WnVI1cI BA== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 367bs1h0g3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Jan 2021 10:17:55 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10LFCaPg024929;
+ Thu, 21 Jan 2021 15:17:54 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma05wdc.us.ibm.com with ESMTP id 3668nwcwra-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Jan 2021 15:17:54 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10LFHqo827459934
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 21 Jan 2021 15:17:52 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 68F9B7805F;
+ Thu, 21 Jan 2021 15:17:52 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 41F1578069;
+ Thu, 21 Jan 2021 15:17:52 +0000 (GMT)
+Received: from localhost (unknown [9.211.72.22])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 21 Jan 2021 15:17:52 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 5/6] powerpc/rtas: rename RTAS_RMOBUF_MAX to
+ RTAS_USER_REGION_SIZE
+In-Reply-To: <7988dce5-6cf3-df79-1276-7bc91ce7c8b2@ozlabs.ru>
+References: <20210114220004.1138993-1-nathanl@linux.ibm.com>
+ <20210114220004.1138993-6-nathanl@linux.ibm.com>
+ <d91c5b15-7c3d-a332-45ac-1b865341e962@ozlabs.ru>
+ <87a6taxkgf.fsf@linux.ibm.com>
+ <6905c3d2-e524-b6d8-036f-7812ea3f8b85@ozlabs.ru>
+ <87y2gowgo6.fsf@linux.ibm.com>
+ <7988dce5-6cf3-df79-1276-7bc91ce7c8b2@ozlabs.ru>
+Date: Thu, 21 Jan 2021 09:17:51 -0600
+Message-ID: <87sg6uwc80.fsf@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-21_08:2021-01-21,
+ 2021-01-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ priorityscore=1501 spamscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ phishscore=0 impostorscore=0 bulkscore=0 mlxlogscore=999
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101210081
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,137 +99,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: tyreld@linux.ibm.com, brking@linux.ibm.com, ajd@linux.ibm.com,
+ aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Running softirqs enables interrupts, which can then end up recursing
-> into the irq soft-mask code we're adjusting, including replaying
-> interrupts itself, which might be theoretically unbounded.
+Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+> On 20/01/2021 12:17, Nathan Lynch wrote:
+>> Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+>>> On 16/01/2021 02:56, Nathan Lynch wrote:
+>>>> Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+>>>>> On 15/01/2021 09:00, Nathan Lynch wrote:
+>>>>>> +#define RTAS_WORK_AREA_SIZE   4096
+>>>>>> +
+>>>>>> +/* Work areas allocated for user space access. */
+>>>>>> +#define RTAS_USER_REGION_SIZE (RTAS_WORK_AREA_SIZE * 16)
+>>>>>
+>>>>> This is still 64K but no clarity why. There is 16 of something, what
+>>>>> is it?
+>>>>
+>>>> There are 16 4KB work areas in the region. I can name it
+>>>> RTAS_NR_USER_WORK_AREAS or similar.
+>>>
+>>>
+>>> Why 16? PAPR (then add "per PAPR") or we just like 16 ("should be
+>>> enough")?
+>> 
+>> PAPR doesn't know anything about the user region; it's a Linux
+>> construct. It's been 64KB since pre-git days and I'm not sure what the
+>> original reason is. At this point, maintaining a kernel-user ABI seems
+>> like enough justification for the value.
 >
-> This abridged trace shows how this can occur:
->
-> ! NIP replay_soft_interrupts
->   LR  interrupt_exit_kernel_prepare
->   Call Trace:
->     interrupt_exit_kernel_prepare (unreliable)
->     interrupt_return
->   --- interrupt: ea0 at __rb_reserve_next
->   NIP __rb_reserve_next
->   LR __rb_reserve_next
->   Call Trace:
->     ring_buffer_lock_reserve
->     trace_function
->     function_trace_call
->     ftrace_call
->     __do_softirq
->     irq_exit
->     timer_interrupt
-> !   replay_soft_interrupts
->     interrupt_exit_kernel_prepare
->     interrupt_return
->   --- interrupt: ea0 at arch_local_irq_restore
->
-> Fix this by disabling bhs (softirqs) around the interrupt replay.
->
-> I don't know that commit 3282a3da25bd ("powerpc/64: Implement soft
-> interrupt replay in C") actually introduced the problem. Prior to that
-> change, the interrupt replay seems like it should still be subect to
-> this recusion, however it's done after all the irq state has been fixed
-> up at the end of the replay, so it seems reasonable to fix back to this
-> commit.
+> I am not arguing keeping the numbers but you are replacing one magic 
+> number with another and for neither it is horribly obvious where they 
+> came from.
 
-This seems very unhappy for me (on P9 bare metal):
+When I wrote it I viewed it as changing one of the factors in (64 *
+1024) to a named constant that better expresses how the region is used
+and adjusting the remaining factor to arrive at the same end result. I
+considered it a net improvement even if we're not sure how 64K was
+arrived at in the first place, although I suspect it was chosen to
+support multiple concurrent users, and to be compatible with both 4K
+and 64K page sizes. Then again 64K pages came a bit after this was
+introduced.
 
-[    0.038571] Mountpoint-cache hash table entries: 131072 (order: 4, 1048576 bytes, linear)
-[    0.040194] ------------[ cut here ]------------
-[    0.040228] WARNING: CPU: 0 PID: 0 at kernel/softirq.c:176 __local_bh_enable_ip+0x150/0x210
-[    0.040263] Modules linked in:
-[    0.040280] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.11.0-rc2-00008-g4899f32e4f2a #1
-[    0.040321] NIP:  c000000000114bc0 LR: c0000000000172a0 CTR: c00000000002a020
-[    0.040360] REGS: c00000000177f670 TRAP: 0700   Not tainted  (5.11.0-rc2-00008-g4899f32e4f2a)
-[    0.040410] MSR:  9000000002021033 <SF,HV,VEC,ME,IR,DR,RI,LE>  CR: 28000224  XER: 20040000
-[    0.040472] CFAR: c000000000114ae8 IRQMASK: 3
-               GPR00: c0000000000172a0 c00000000177f910 c000000001783900 c000000000017290
-               GPR04: 0000000000000200 4000000000000000 0000000000000002 00000001312d0000
-               GPR08: 0000000000000000 c0000000016f3480 0000000000000202 0000000000000000
-               GPR12: c00000000002a020 c0000000023a0000 0000000000000000 0000000000000000
-               GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-               GPR20: 0000000000000001 00000000100051c6 0000000000000000 0000000000000009
-               GPR24: 0000000000000e60 0000000000000900 0000000000000500 0000000000000a00
-               GPR28: 0000000000000f00 0000000000000002 0000000000000003 0000000000000200
-[    0.040824] NIP [c000000000114bc0] __local_bh_enable_ip+0x150/0x210
-[    0.040863] LR [c0000000000172a0] replay_soft_interrupts+0x2e0/0x340
-[    0.040904] Call Trace:
-[    0.040926] [c00000000177f910] [0000000000000500] 0x500 (unreliable)
-[    0.040962] [c00000000177f950] [c0000000000172a0] replay_soft_interrupts+0x2e0/0x340
-[    0.041008] [c00000000177fb50] [c000000000017370] arch_local_irq_restore+0x70/0xe0
-[    0.041042] [c00000000177fb80] [c000000000476514] kmem_cache_alloc+0x474/0x520
-[    0.041066] [c00000000177fc00] [c0000000004e394c] __d_alloc+0x4c/0x2e0
-[    0.041109] [c00000000177fc50] [c0000000004e40ac] d_make_root+0x3c/0xa0
-[    0.041142] [c00000000177fc80] [c000000000679ce0] ramfs_fill_super+0x80/0xb0
-[    0.041186] [c00000000177fcb0] [c0000000004c1b04] get_tree_nodev+0xb4/0x130
-[    0.041230] [c00000000177fcf0] [c000000000679578] ramfs_get_tree+0x28/0x40
-[    0.041282] [c00000000177fd10] [c0000000004bee78] vfs_get_tree+0x48/0x120
-[    0.041325] [c00000000177fd80] [c0000000004f7fe0] vfs_kern_mount.part.0+0xd0/0x130
-[    0.041368] [c00000000177fdc0] [c000000001366700] mnt_init+0x1c8/0x2fc
-[    0.041420] [c00000000177fe60] [c000000001366178] vfs_caches_init+0x110/0x138
-[    0.041454] [c00000000177fee0] [c000000001331020] start_kernel+0x6d8/0x780
-[    0.041497] [c00000000177ff90] [c00000000000d354] start_here_common+0x1c/0x5c8
-[    0.041539] Instruction dump:
-[    0.041555] e9490002 394a0001 91490000 e90d0028 3d42ffcc 394a4730 7d0a42aa e9490002
-[    0.041608] 2c280000 394affff 91490000 4082ff30 <0fe00000> 892d0988 39400001 994d0988
-[    0.041660] irq event stamp: 555
-[    0.041674] hardirqs last  enabled at (553): [<c00000000047654c>] kmem_cache_alloc+0x4ac/0x520
-[    0.041707] hardirqs last disabled at (554): [<c000000000017368>] arch_local_irq_restore+0x68/0xe0
-[    0.041750] softirqs last  enabled at (0): [<0000000000000000>] 0x0
-[    0.041778] softirqs last disabled at (555): [<c000000000016fd0>] replay_soft_interrupts+0x10/0x340
-[    0.041824] ---[ end trace aa6f9769e07e43db ]---
+The change that introduced RTAS_RMOBUF_MAX (here renamed to
+RTAS_USER_REGION_SIZE) does not explain how the value was derived:
 
+================
+Author: Andrew Morton <akpm@osdl.org>
+Date:   Sun Jan 18 18:17:30 2004 -0800
 
-And lots and lots of these, or similar:
+    [PATCH] ppc64: add rtas syscall, from John Rose
+    
+    From: Anton Blanchard <anton@samba.org>
+    
+    Added RTAS syscall.  Reserved lowmem rtas_rmo_buf for userspace use.  Created
+    "rmo_buffer" proc file to export bounds of rtas_rmo_buf.
 
+[...]
 
-[   14.369838] =============================
-[   14.369839] WARNING: suspicious RCU usage
-[   14.369841] 5.11.0-rc2-00008-g4899f32e4f2a #1 Tainted: G        W
-[   14.369843] -----------------------------
-[   14.369844] include/linux/rcupdate.h:692 rcu_read_unlock() used illegally while idle!
-[   14.369846]
-               other info that might help us debug this:
+diff --git a/include/asm-ppc64/rtas.h b/include/asm-ppc64/rtas.h
+index 42a0b484077c..d9e426161044 100644
+--- a/include/asm-ppc64/rtas.h
++++ b/include/asm-ppc64/rtas.h
+@@ -19,6 +19,9 @@
+ #define RTAS_UNKNOWN_SERVICE (-1)
+ #define RTAS_INSTANTIATE_MAX (1UL<<30) /* Don't instantiate rtas at/above this value */
+ 
++/* Buffer size for ppc_rtas system call. */
++#define RTAS_RMOBUF_MAX (64 * 1024)
++
+================
 
-[   14.369848]
-               rcu_scheduler_active = 2, debug_locks = 1
-[   14.369850] RCU used illegally from extended quiescent state!
-[   14.369851] 2 locks held by swapper/32/0:
-[   14.369853]  #0: c0000000015e6fc0 (rcu_callback){....}-{0:0}, at: rcu_core+0x2e0/0x990
-[   14.369864]  #1: c0000000015e6f30 (rcu_read_lock){....}-{1:3}, at: kmem_cache_free+0x7cc/0x7e0
-[   14.369874]
-               stack backtrace:
-[   14.369876] CPU: 32 PID: 0 Comm: swapper/32 Tainted: G        W         5.11.0-rc2-00008-g4899f32e4f2a #1
-[   14.369879] Call Trace:
-[   14.369880] [c000001fff557c10] [c0000000008630b8] dump_stack+0xec/0x144 (unreliable)
-[   14.369886] [c000001fff557c60] [c0000000001ad2d0] lockdep_rcu_suspicious+0x124/0x144
-[   14.369890] [c000001fff557cf0] [c00000000047783c] kmem_cache_free+0x2ac/0x7e0
-[   14.369894] [c000001fff557db0] [c0000000004bdeac] file_free_rcu+0x5c/0xa0
-[   14.369898] [c000001fff557de0] [c0000000001e214c] rcu_core+0x33c/0x990
-[   14.369902] [c000001fff557e90] [c000000000f496d0] __do_softirq+0x180/0x688
-[   14.369906] [c000001fff557f90] [c0000000000307bc] call_do_softirq+0x14/0x24
-[   14.369911] [c000000002e1fab0] [c000000000017418] do_softirq_own_stack+0x38/0x50
-[   14.369916] [c000000002e1fad0] [c000000000114a60] do_softirq+0x120/0x130
-[   14.369920] [c000000002e1fb00] [c000000000114c64] __local_bh_enable_ip+0x1f4/0x210
-[   14.369924] [c000000002e1fb40] [c0000000000172a0] replay_soft_interrupts+0x2e0/0x340
-[   14.369928] [c000000002e1fd40] [c000000000017370] arch_local_irq_restore+0x70/0xe0
-[   14.369933] [c000000002e1fd70] [c000000000c87184] snooze_loop+0x64/0x2e4
-[   14.369937] [c000000002e1fdb0] [c000000000c84204] cpuidle_enter_state+0x2e4/0x550
-[   14.369941] [c000000002e1fe10] [c000000000c8450c] cpuidle_enter+0x4c/0x70
-[   14.369946] [c000000002e1fe50] [c00000000016892c] call_cpuidle+0x4c/0x90
-[   14.369949] [c000000002e1fe70] [c000000000168d74] do_idle+0x2f4/0x380
-[   14.369953] [c000000002e1ff10] [c000000000169208] cpu_startup_entry+0x38/0x40
-[   14.369957] [c000000002e1ff40] [c000000000053484] start_secondary+0x2a4/0x2b0
-[   14.369961] [c000000002e1ff90] [c00000000000d254] start_secondary_prolog+0x10/0x14
+The comment "Buffer size for ppc_rtas system call" (removed by my
+change) is not really appropriate because 1. not all sys_rtas
+invocations use the buffer, and 2. no callers use the entire buffer.
 
+> Is 16 the max number of concurrently running sys_rtas system 
+> calls? Does the userspace ensure there is no more than 16?
 
-cheers
+No and no; not all calls to sys_rtas need to use a work area. However,
+librtas uses record locking to arbitrate access to the user region, and
+the unit of allocation is 4KB. This is a reasonable choice: many RTAS
+calls which take a work area require 4KB alignment. But some do not
+(ibm,get-system-parameter), and librtas conceivably could be made to
+perform finer-grained allocations.
+
+It's not the kernel's concern how librtas partitions the user region, so
+I'm inclined to leave the (64 * 1024) expression alone now. Thanks for
+your review.
+
+> btw where is that userspace code? I thought
+> https://github.com/power-ras/ppc64-diag.git but no. Thanks,
+
+librtas, of which ppc64-diag and powerpc-utils are users:
+
+https://github.com/ibm-power-utilities/librtas
