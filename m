@@ -1,91 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79892FDDD8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 01:28:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2AD2FDE88
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 02:12:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLjsY3RTGzDqgw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 11:28:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLkrg0K5tzDqpH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 12:12:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=B2uKyheb; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLjqp1bczzDqYj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 11:26:29 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10L02fd7187368; Wed, 20 Jan 2021 19:26:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=/mtKNzmnrudwEwjWIAtKj/SObnLcmtngw7yz5z1JiCc=;
- b=B2uKyhebCsJ0LrH6cw/Ts2VP74oGaNt47SexS0zcU+YC9+mk9gJLA49+EFyd9EEvq1a7
- Gkeg1u1uV8qBz/TmAriGbyl0sUAm0CxuHgYkDX68ZunJY+lQKBCc7mFQJyFcwEdpjY38
- CsnRlOtuK1sldveAT4cJir1jwaoi4EWlKttig7i4VbL8ZgrT+b1N6G+7Ucb8OnlQ6ZAR
- 2Toa05nQVVpRbtPOpf914S8/K8gQ/nByBxn0jDJetXxi/jq79IwhNdANLQEAPO1j5lJT
- kMo99ysPDXa4I35DhEi4HE5AgWp3ki1wJWNG7dZ41WX0q+K7OLsyyK8Yk7uOsx/5HWeb ew== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 366x9a8xbk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 20 Jan 2021 19:26:21 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10L0CNUu025371;
- Thu, 21 Jan 2021 00:26:20 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma03dal.us.ibm.com with ESMTP id 3668psa5y2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Jan 2021 00:26:20 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 10L0QIvO22872526
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 Jan 2021 00:26:18 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ACAC2BE04F;
- Thu, 21 Jan 2021 00:26:18 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 85A6DBE053;
- Thu, 21 Jan 2021 00:26:18 +0000 (GMT)
-Received: from localhost (unknown [9.211.72.22])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 21 Jan 2021 00:26:18 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 6/6] powerpc/rtas: constrain user region allocation to RMA
-In-Reply-To: <87czxzrel3.fsf@mpe.ellerman.id.au>
-References: <20210114220004.1138993-1-nathanl@linux.ibm.com>
- <20210114220004.1138993-7-nathanl@linux.ibm.com>
- <87mtx5qp1g.fsf@mpe.ellerman.id.au> <874kjcy73z.fsf@linux.ibm.com>
- <87czxzrel3.fsf@mpe.ellerman.id.au>
-Date: Wed, 20 Jan 2021 18:26:17 -0600
-Message-ID: <87v9brw2xi.fsf@linux.ibm.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DLkp952dPzDqLW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 12:10:07 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D2B7B14FF;
+ Wed, 20 Jan 2021 17:10:04 -0800 (PST)
+Received: from [10.57.39.58] (unknown [10.57.39.58])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8A93E3F68F;
+ Wed, 20 Jan 2021 17:09:58 -0800 (PST)
+Subject: Re: [RFC PATCH v3 5/6] dt-bindings: of: Add restricted DMA pool
+To: Rob Herring <robh@kernel.org>
+References: <20210106034124.30560-1-tientzu@chromium.org>
+ <20210106034124.30560-6-tientzu@chromium.org>
+ <20210120165348.GA220770@robh.at.kernel.org>
+ <313f8052-a591-75de-c4c2-ee9ea8f02e7f@arm.com>
+ <CAL_JsqKjTqcCbCLksRbCh7=f-A3Y09A3jNqtUApaA+p=RKd_Eg@mail.gmail.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Message-ID: <c0d631de-8840-4f6e-aebf-41bb8449f78c@arm.com>
+Date: Thu, 21 Jan 2021 01:09:56 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-20_10:2021-01-20,
- 2021-01-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- adultscore=0 mlxlogscore=999 spamscore=0 impostorscore=0
- lowpriorityscore=0 bulkscore=0 phishscore=0 clxscore=1015
- priorityscore=1501 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2101200135
+In-Reply-To: <CAL_JsqKjTqcCbCLksRbCh7=f-A3Y09A3jNqtUApaA+p=RKd_Eg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,52 +50,158 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, tyreld@linux.ibm.com, brking@linux.ibm.com,
- ajd@linux.ibm.com, aneesh.kumar@linux.ibm.com
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Grant Likely <grant.likely@arm.com>,
+ Paul Mackerras <paulus@samba.org>, Frank Rowand <frowand.list@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Saravana Kannan <saravanak@google.com>,
+ Heinrich Schuchardt <xypron.glpk@gmx.de>, Joerg Roedel <joro@8bytes.org>,
+ "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+ xen-devel@lists.xenproject.org, Thierry Reding <treding@nvidia.com>,
+ devicetree@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Nicolas Boichat <drinkcat@chromium.org>, Claire Chang <tientzu@chromium.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Juergen Gross <jgross@suse.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Tomasz Figa <tfiga@chromium.org>,
+ Linux IOMMU <iommu@lists.linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-> Nathan Lynch <nathanl@linux.ibm.com> writes:
->> Michael Ellerman <mpe@ellerman.id.au> writes:
->>> Nathan Lynch <nathanl@linux.ibm.com> writes:
->>>> Memory locations passed as arguments from the OS to RTAS usually need
->>>> to be addressable in 32-bit mode and must reside in the Real Mode
->>>> Area. On PAPR guests, the RMA starts at logical address 0 and is the
->>>> first logical memory block reported in the LPAR=E2=80=99s device tree.
->>>>
->>>> On powerpc targets with RTAS, Linux makes available to user space a
->>>> region of memory suitable for arguments to be passed to RTAS via
->>>> sys_rtas(). This region (rtas_rmo_buf) is allocated via the memblock
->>>> API during boot in order to ensure that it satisfies the requirements
->>>> described above.
->>>>
->>>> With radix MMU, the upper limit supplied to the memblock allocation
->>>> can exceed the bounds of the first logical memory block, since
->>>> ppc64_rma_size is ULONG_MAX and RTAS_INSTANTIATE_MAX is 1GB.
->>>
->>> Why does the size of the first memory block matter for radix?
+On 2021-01-20 21:31, Rob Herring wrote:
+> On Wed, Jan 20, 2021 at 11:30 AM Robin Murphy <robin.murphy@arm.com> wrote:
 >>
->> Here is my understanding: in the platform architecture, the size of the
->> first memory block equals the RMA, regardless of the MMU mode. It just
->> so happens that when using radix, Linux can pass ibm,configure-connector
->> a work area address outside of the RMA because the allocation
->> constraints for the work area are computed differently. It would be
->> wrong of the OS to pass RTAS arguments outside of this region with hash
->> MMU as well.
->
-> If that's the requirement then shouldn't we be adjusting ppc64_rma_size?
-> Otherwise aren't other uses of ppc64_rma_size going to run into similar
-> problems.
+>> On 2021-01-20 16:53, Rob Herring wrote:
+>>> On Wed, Jan 06, 2021 at 11:41:23AM +0800, Claire Chang wrote:
+>>>> Introduce the new compatible string, restricted-dma-pool, for restricted
+>>>> DMA. One can specify the address and length of the restricted DMA memory
+>>>> region by restricted-dma-pool in the device tree.
+>>>
+>>> If this goes into DT, I think we should be able to use dma-ranges for
+>>> this purpose instead. Normally, 'dma-ranges' is for physical bus
+>>> restrictions, but there's no reason it can't be used for policy or to
+>>> express restrictions the firmware has enabled.
+>>
+>> There would still need to be some way to tell SWIOTLB to pick up the
+>> corresponding chunk of memory and to prevent the kernel from using it
+>> for anything else, though.
+> 
+> Don't we already have that problem if dma-ranges had a very small
+> range? We just get lucky because the restriction is generally much
+> more RAM than needed.
 
-Not all allocations limited by ppc64_rma_size set up memory that is
-passed to RTAS though, do they? e.g. emergency_stack_init and
-init_fallback_flush? Those shouldn't be confined to the first LMB
-unnecessarily.
+Not really - if a device has a naturally tiny addressing capability that 
+doesn't even cover ZONE_DMA32 where the regular SWIOTLB buffer will be 
+allocated then it's unlikely to work well, but that's just crap system 
+design. Yes, memory pressure in ZONE_DMA{32} is particularly problematic 
+for such limited devices, but it's irrelevant to the issue at hand here.
 
-That's why I'm thinking what I've written here should be generalized a
-bit and placed in an early allocator function that can be used to set up
-the user region and the per-cpu reentrant RTAS argument buffers
-(see allocate_paca_ptrs/new_rtas_args). So far those two sites are the
-only ones I'm convinced need attention.
+What we have here is a device that's not allowed to see *kernel* memory 
+at all. It's been artificially constrained to a particular region by a 
+TZASC or similar, and the only data which should ever be placed in that 
+region is data intended for that device to see. That way if it tries to 
+go rogue it physically can't start slurping data intended for other 
+devices or not mapped for DMA at all. The bouncing is an important part 
+of this - I forget the title off-hand but there was an interesting paper 
+a few years ago which demonstrated that even with an IOMMU, streaming 
+DMA of in-place buffers could reveal enough adjacent data from the same 
+page to mount an attack on the system. Memory pressure should be 
+immaterial since the size of each bounce pool carveout will presumably 
+be tuned for the needs of the given device.
+
+> In any case, wouldn't finding all the dma-ranges do this? We're
+> already walking the tree to find the max DMA address now.
+
+If all you can see are two "dma-ranges" properties, how do you propose 
+to tell that one means "this is the extent of what I can address, please 
+set my masks and dma-range-map accordingly and try to allocate things 
+where I can reach them" while the other means "take this output range 
+away from the page allocator and hook it up as my dedicated bounce pool, 
+because it is Serious Security Time"? Especially since getting that 
+choice wrong either way would be a Bad Thing.
+
+Robin.
+
+>>>> Signed-off-by: Claire Chang <tientzu@chromium.org>
+>>>> ---
+>>>>    .../reserved-memory/reserved-memory.txt       | 24 +++++++++++++++++++
+>>>>    1 file changed, 24 insertions(+)
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
+>>>> index e8d3096d922c..44975e2a1fd2 100644
+>>>> --- a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
+>>>> +++ b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
+>>>> @@ -51,6 +51,20 @@ compatible (optional) - standard definition
+>>>>              used as a shared pool of DMA buffers for a set of devices. It can
+>>>>              be used by an operating system to instantiate the necessary pool
+>>>>              management subsystem if necessary.
+>>>> +        - restricted-dma-pool: This indicates a region of memory meant to be
+>>>> +          used as a pool of restricted DMA buffers for a set of devices. The
+>>>> +          memory region would be the only region accessible to those devices.
+>>>> +          When using this, the no-map and reusable properties must not be set,
+>>>> +          so the operating system can create a virtual mapping that will be used
+>>>> +          for synchronization. The main purpose for restricted DMA is to
+>>>> +          mitigate the lack of DMA access control on systems without an IOMMU,
+>>>> +          which could result in the DMA accessing the system memory at
+>>>> +          unexpected times and/or unexpected addresses, possibly leading to data
+>>>> +          leakage or corruption. The feature on its own provides a basic level
+>>>> +          of protection against the DMA overwriting buffer contents at
+>>>> +          unexpected times. However, to protect against general data leakage and
+>>>> +          system memory corruption, the system needs to provide way to restrict
+>>>> +          the DMA to a predefined memory region.
+>>>>            - vendor specific string in the form <vendor>,[<device>-]<usage>
+>>>>    no-map (optional) - empty property
+>>>>        - Indicates the operating system must not create a virtual mapping
+>>>> @@ -120,6 +134,11 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
+>>>>                       compatible = "acme,multimedia-memory";
+>>>>                       reg = <0x77000000 0x4000000>;
+>>>>               };
+>>>> +
+>>>> +            restricted_dma_mem_reserved: restricted_dma_mem_reserved {
+>>>> +                    compatible = "restricted-dma-pool";
+>>>> +                    reg = <0x50000000 0x400000>;
+>>>> +            };
+>>>>       };
+>>>>
+>>>>       /* ... */
+>>>> @@ -138,4 +157,9 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
+>>>>               memory-region = <&multimedia_reserved>;
+>>>>               /* ... */
+>>>>       };
+>>>> +
+>>>> +    pcie_device: pcie_device@0,0 {
+>>>> +            memory-region = <&restricted_dma_mem_reserved>;
+>>>
+>>> PCI hosts often have inbound window configurations that limit the
+>>> address range and translate PCI to bus addresses. Those windows happen
+>>> to be configured by dma-ranges. In any case, wouldn't you want to put
+>>> the configuration in the PCI host node? Is there a usecase of
+>>> restricting one PCIe device and not another?
+>>
+>> The general design seems to accommodate devices having their own pools
+>> such that they can't even snoop on each others' transient DMA data. If
+>> the interconnect had a way of wiring up, say, PCI RIDs to AMBA NSAIDs,
+>> then in principle you could certainly apply that to PCI endpoints too
+>> (presumably you'd also disallow them from peer-to-peer transactions at
+>> the PCI level too).
+> 
+> At least for PCI, I think we can handle this. We have the BDF in the
+> 3rd address cell in dma-ranges. The Openfirmware spec says those are 0
+> in the case of ranges. It doesn't talk about dma-ranges though. But I
+> think we could extend it to allow for BDF. Though typically with PCIe
+> every device is behind its own bridge and each bridge node can have a
+> dma-ranges.
+> 
+> Rob
+> 
