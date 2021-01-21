@@ -1,60 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A902FE404
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 08:34:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BD32FE469
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 08:55:33 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLvKd5gryzDqtt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 18:34:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLvnv0jBGzDr5J
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 18:55:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+5b2bf2cc950c4867fd89+6360+infradead.org+hch@casper.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=um7p9khj; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=lEUjKYCe; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLvGv0jVLzDqtW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 18:32:07 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E106F2396D
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 07:32:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1611214324;
- bh=q3em4ttxmd/mm5bQE6zL/zuR3Glx3mnZ0Ny4CAvnbkk=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=um7p9khjJbhGbtt0RJxEABDbc1l0x9d13FR1vOyaKt4QIpk2hNnUUBfVJEWZf+OcQ
- iKIBpafdwMEmoLo3lopPHAz84vDcApfDCKPQuJhkjY9ydbAZFNQ2a67mGJH2CnT4A2
- jPh04Ki0izdantto4qGzert1HtSZXAv3mInVLzqGpNX7DJ/jJUxb6CRk8+QwLeSeWi
- j0SfIXZNLCvXC/sCdp6w2gT5jSUUpPmdLyJc10CF1JFnGvAbQUqeMza5Ixh9yx+518
- hAgykouFneMKO9PIDjCcZPjJ3ENuJoKmBQdySkbhw5hrkqSrg93+/ECHvto9dAolYd
- lItiFoGMTU9nw==
-Received: by mail-ot1-f45.google.com with SMTP id a109so774080otc.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jan 2021 23:32:03 -0800 (PST)
-X-Gm-Message-State: AOAM532ooaNJzPlbbnMQJt/crWTgVej6G+vBCbSGeBnzz+5QGC4SrB/k
- OW2diV/YJRf1JkO/6DvCPei1BzJU9Mrfa0xxrfQ=
-X-Google-Smtp-Source: ABdhPJwX5S75sDg7kRN312ywLjqyiIco3BWWsXzxEB/auPLbBSN709Hrw+A31zd0V9BIGYEUP/+35z8M6uqwlv2vO9Q=
-X-Received: by 2002:a05:6830:1614:: with SMTP id
- g20mr3700710otr.77.1611214323096; 
- Wed, 20 Jan 2021 23:32:03 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLvm156NczDqvV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 18:53:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=UGANRP/KM5q83XfobVV7DWx5ZvtoCTKMobbFGMONdGw=; b=lEUjKYCeFs939aYUT/oDk6x8Y8
+ cQ3mrs840LqXWpjhVo/H1r9njWTQ2UPMp9vFEXNfezGdicLLr/cpJYuAIPKokMcQdsrz5ps+wCZNK
+ nZ2RUpOEkYuO5olwBDJmnGrb7/ILlsTg617y335c8QBpy3BbsWSMBVQgNHVcD3kQsM+HbV3hK4fA9
+ oqMsrTu5NsH9B5ZNHX/iQUwurf1JG18BrQ4usaMdfm8xeUK3jmKB47YIhmvEp4W3VqZRJ+yOtCKrq
+ 95e+rD3HXbyxkwd44BUDiR7XtNG/my8cZkRGEyei9qwBKaHcXWITUTwK8+IKHsYEr6qESVUJyPNHu
+ 1BsbRzLQ==;
+Received: from 089144206130.atnat0015.highway.bob.at ([89.144.206.130]
+ helo=localhost)
+ by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+ id 1l2UlI-00Gm22-Ef; Thu, 21 Jan 2021 07:52:17 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Frederic Barrat <fbarrat@linux.ibm.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@linux.ie>,
+ Daniel Vetter <daniel@ffwll.ch>, Jessica Yu <jeyu@kernel.org>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
+ Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
+ Joe Lawrence <joe.lawrence@redhat.com>
+Subject: module loader dead code removal and cleanusp
+Date: Thu, 21 Jan 2021 08:49:46 +0100
+Message-Id: <20210121074959.313333-1-hch@lst.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-References: <4b7a870573f485b9fea496b13c9b02d86dd97314.1611169001.git.christophe.leroy@csgroup.eu>
- <CAMj1kXE7B05eAnR7KoDCym09Cw5qnzrV8KfNT2zJrko+mFic+w@mail.gmail.com>
- <6b804eff-bc9f-5e05-d479-f398de4e2b30@csgroup.eu>
-In-Reply-To: <6b804eff-bc9f-5e05-d479-f398de4e2b30@csgroup.eu>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 21 Jan 2021 08:31:51 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHz8LdDgfOcifcB-MBMM9-TbymOU_psT3JBFQfyvQ=EjQ@mail.gmail.com>
-Message-ID: <CAMj1kXHz8LdDgfOcifcB-MBMM9-TbymOU_psT3JBFQfyvQ=EjQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] crypto: talitos - Work around SEC6 ERRATA (AES-CTR
- mode data size error)
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,56 +68,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>
+Cc: Michal Marek <michal.lkml@markovi.net>, linux-kbuild@vger.kernel.org,
+ Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, live-patching@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 21 Jan 2021 at 06:35, Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 20/01/2021 =C3=A0 23:23, Ard Biesheuvel a =C3=A9crit :
-> > On Wed, 20 Jan 2021 at 19:59, Christophe Leroy
-> > <christophe.leroy@csgroup.eu> wrote:
-> >>
-> >> Talitos Security Engine AESU considers any input
-> >> data size that is not a multiple of 16 bytes to be an error.
-> >> This is not a problem in general, except for Counter mode
-> >> that is a stream cipher and can have an input of any size.
-> >>
-> >> Test Manager for ctr(aes) fails on 4th test vector which has
-> >> a length of 499 while all previous vectors which have a 16 bytes
-> >> multiple length succeed.
-> >>
-> >> As suggested by Freescale, round up the input data length to the
-> >> nearest 16 bytes.
-> >>
-> >> Fixes: 5e75ae1b3cef ("crypto: talitos - add new crypto modes")
-> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> >
-> > Doesn't this cause the hardware to write outside the given buffer?
->
->
-> Only the input length is modified. Not the output length.
->
-> The ERRATA says:
->
-> The input data length (in the descriptor) can be rounded up to the neares=
-t 16B. Set the
-> data-in length (in the descriptor) to include X bytes of data beyond the =
-payload. Set the
-> data-out length to only output the relevant payload (don't need to output=
- the padding).
-> SEC reads from memory are not destructive, so the extra bytes included in=
- the AES-CTR
-> operation can be whatever bytes are contiguously trailing the payload.
+Hi all,
 
-So what happens if the input is not 16 byte aligned, and rounding it
-up causes it to extend across a page boundary into a page that is not
-mapped by the IOMMU/SMMU?
+this series removes support for long term unused export types and
+cleans up various loose ends in the module loader.
+
+Diffstat:
+ arch/arm/configs/bcm2835_defconfig          |    1 
+ arch/arm/configs/mxs_defconfig              |    1 
+ arch/mips/configs/nlm_xlp_defconfig         |    1 
+ arch/mips/configs/nlm_xlr_defconfig         |    1 
+ arch/parisc/configs/generic-32bit_defconfig |    1 
+ arch/parisc/configs/generic-64bit_defconfig |    1 
+ arch/powerpc/configs/ppc6xx_defconfig       |    1 
+ arch/powerpc/platforms/powernv/pci-cxl.c    |   22 -
+ arch/s390/configs/debug_defconfig           |    1 
+ arch/s390/configs/defconfig                 |    1 
+ arch/sh/configs/edosk7760_defconfig         |    1 
+ arch/sh/configs/sdk7780_defconfig           |    1 
+ arch/x86/configs/i386_defconfig             |    1 
+ arch/x86/configs/x86_64_defconfig           |    1 
+ arch/x86/tools/relocs.c                     |    4 
+ drivers/gpu/drm/drm_crtc_helper_internal.h  |   10 
+ drivers/gpu/drm/drm_fb_helper.c             |   21 -
+ drivers/gpu/drm/drm_kms_helper_common.c     |   26 +-
+ include/asm-generic/vmlinux.lds.h           |   42 ---
+ include/linux/export.h                      |    9 
+ include/linux/kallsyms.h                    |   17 -
+ include/linux/module.h                      |   42 ---
+ init/Kconfig                                |   17 -
+ kernel/kallsyms.c                           |    8 
+ kernel/livepatch/core.c                     |   61 +----
+ kernel/module.c                             |  319 ++++++++++------------------
+ kernel/trace/trace_kprobe.c                 |    4 
+ lib/bug.c                                   |    3 
+ scripts/checkpatch.pl                       |    6 
+ scripts/mod/modpost.c                       |   50 ----
+ scripts/mod/modpost.h                       |    3 
+ scripts/module.lds.S                        |    6 
+ tools/include/linux/export.h                |    3 
+ 33 files changed, 181 insertions(+), 505 deletions(-)
