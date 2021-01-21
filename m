@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0622FE6D7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 10:57:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 136702FE6F9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 11:01:56 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DLyV23ycTzDr9K
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 20:56:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DLybj22rXzDrP5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jan 2021 21:01:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,42 +15,41 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DLyRl2Z83zDqNk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 20:54:53 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DLyYL5zpJzDqNk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 20:59:50 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DLyRS5HVVz9v6L3;
- Thu, 21 Jan 2021 10:54:44 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DLyYG3QtFz9v6LB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 10:59:46 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ldGUfcVV3v_f; Thu, 21 Jan 2021 10:54:44 +0100 (CET)
+ with ESMTP id I0XrV7X-HrtA for <linuxppc-dev@lists.ozlabs.org>;
+ Thu, 21 Jan 2021 10:59:46 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DLyRS4Qzdz9v6Kv;
- Thu, 21 Jan 2021 10:54:44 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DLyYG2d5Nz9v6L9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 10:59:46 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C069B8B7FB;
- Thu, 21 Jan 2021 10:54:45 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8B75A8B7F9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 10:59:47 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id TDQ7okhBwX9c; Thu, 21 Jan 2021 10:54:45 +0100 (CET)
+ with ESMTP id lqP7a_NL8FEy for <linuxppc-dev@lists.ozlabs.org>;
+ Thu, 21 Jan 2021 10:59:47 +0100 (CET)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 350708B7F9;
- Thu, 21 Jan 2021 10:54:45 +0100 (CET)
-Subject: Re: [PATCH 1/2] crypto: talitos - Work around SEC6 ERRATA (AES-CTR
- mode data size error)
-To: Ard Biesheuvel <ardb@kernel.org>
-References: <4b7a870573f485b9fea496b13c9b02d86dd97314.1611169001.git.christophe.leroy@csgroup.eu>
- <CAMj1kXE7B05eAnR7KoDCym09Cw5qnzrV8KfNT2zJrko+mFic+w@mail.gmail.com>
- <6b804eff-bc9f-5e05-d479-f398de4e2b30@csgroup.eu>
- <CAMj1kXHz8LdDgfOcifcB-MBMM9-TbymOU_psT3JBFQfyvQ=EjQ@mail.gmail.com>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 56DF98B771
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jan 2021 10:59:47 +0100 (CET)
+Subject: Re: [PATCH 02/13] module: add a module_loaded helper
+To: linuxppc-dev@lists.ozlabs.org
+References: <20210121074959.313333-1-hch@lst.de>
+ <20210121074959.313333-3-hch@lst.de>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <ecdd07b3-afca-7e26-b6b6-3a3a985bc5a1@csgroup.eu>
-Date: Thu, 21 Jan 2021 10:54:43 +0100
+Message-ID: <9052b54a-e05a-1534-9e0f-c73c8b3509bd@csgroup.eu>
+Date: Thu, 21 Jan 2021 10:59:47 +0100
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.1
 MIME-Version: 1.0
-In-Reply-To: <CAMj1kXHz8LdDgfOcifcB-MBMM9-TbymOU_psT3JBFQfyvQ=EjQ@mail.gmail.com>
+In-Reply-To: <20210121074959.313333-3-hch@lst.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -65,63 +64,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 21/01/2021 à 08:31, Ard Biesheuvel a écrit :
-> On Thu, 21 Jan 2021 at 06:35, Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->>
->>
->>
->> Le 20/01/2021 à 23:23, Ard Biesheuvel a écrit :
->>> On Wed, 20 Jan 2021 at 19:59, Christophe Leroy
->>> <christophe.leroy@csgroup.eu> wrote:
->>>>
->>>> Talitos Security Engine AESU considers any input
->>>> data size that is not a multiple of 16 bytes to be an error.
->>>> This is not a problem in general, except for Counter mode
->>>> that is a stream cipher and can have an input of any size.
->>>>
->>>> Test Manager for ctr(aes) fails on 4th test vector which has
->>>> a length of 499 while all previous vectors which have a 16 bytes
->>>> multiple length succeed.
->>>>
->>>> As suggested by Freescale, round up the input data length to the
->>>> nearest 16 bytes.
->>>>
->>>> Fixes: 5e75ae1b3cef ("crypto: talitos - add new crypto modes")
->>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>>
->>> Doesn't this cause the hardware to write outside the given buffer?
->>
->>
->> Only the input length is modified. Not the output length.
->>
->> The ERRATA says:
->>
->> The input data length (in the descriptor) can be rounded up to the nearest 16B. Set the
->> data-in length (in the descriptor) to include X bytes of data beyond the payload. Set the
->> data-out length to only output the relevant payload (don't need to output the padding).
->> SEC reads from memory are not destructive, so the extra bytes included in the AES-CTR
->> operation can be whatever bytes are contiguously trailing the payload.
+Le 21/01/2021 à 08:49, Christoph Hellwig a écrit :
+> Add a helper that takes modules_mutex and uses find_module to check if a
+> given module is loaded.  This provides a better abstraction for the two
+> callers, and allows to unexport modules_mutex and find_module.
 > 
-> So what happens if the input is not 16 byte aligned, and rounding it
-> up causes it to extend across a page boundary into a page that is not
-> mapped by the IOMMU/SMMU?
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>   drivers/gpu/drm/drm_fb_helper.c |  7 +------
+>   include/linux/module.h          |  3 +++
+>   kernel/module.c                 | 14 ++++++++++++--
+>   kernel/trace/trace_kprobe.c     |  4 +---
+>   4 files changed, 17 insertions(+), 11 deletions(-)
 > 
 
-What is the IOMMU/SMMU ?
+> diff --git a/include/linux/module.h b/include/linux/module.h
+> index 7a0bcb5b1ffccd..b4654f8a408134 100644
+> --- a/include/linux/module.h
+> +++ b/include/linux/module.h
+> @@ -589,6 +589,9 @@ static inline bool within_module(unsigned long addr, const struct module *mod)
+>   /* Search for module by name: must hold module_mutex. */
+>   struct module *find_module(const char *name);
+>   
+> +/* Check if a module is loaded. */
+> +bool module_loaded(const char *name);
 
-The mpc8xx, mpc82xx and mpc83xx which embed the Talitos Security Engine don't have such thing, the 
-security engine uses DMA and has direct access to the memory bus for reading and writing.
-
-Christophe
+Maybe module_is_loaded() would be a better name.
