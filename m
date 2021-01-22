@@ -1,43 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84762FFB48
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 04:42:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B7C2FFB54
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 04:44:40 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DMQ7X5NHSzDrVT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 14:42:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DMQ9w1wcRzDrRJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 14:44:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DMQ3b3jybzDrYX
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DMQ3b6mjXzDrZp
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 14:39:07 +1100 (AEDT)
-IronPort-SDR: r2RWWcFumjkt/mioAkX+UST/VTnvWv7Y3HVUvT/ZQDQbmJ6l6loAWb1c/7weEx0hAqrOVD/Ay1
- G5nqIreXijPg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9871"; a="159165844"
-X-IronPort-AV: E=Sophos;i="5.79,365,1602572400"; d="scan'208";a="159165844"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+IronPort-SDR: hDWKa3kKUIEDvoOP3oFC2JICEreFunzjuvFhBFh50sa/GveXMKila/KnQlv0jqOoMzv2VDHxYf
+ fL0XdT0jTabQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9871"; a="198131757"
+X-IronPort-AV: E=Sophos;i="5.79,365,1602572400"; d="scan'208";a="198131757"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  21 Jan 2021 19:39:05 -0800
-IronPort-SDR: S34J+xbX9cmdfmbSQl2kzce9xz/6Rr55S583SaGf/RPmMxpeNyenS0Tdtt7mzYYkB55ayYLQjM
- C6g9Vi65+NYQ==
+IronPort-SDR: GqgdnDTE+mdMgzdjaACx5RuYW3RmKKJnLolyN+28S0JByhmEBQHDTTZXoHBKmAQKNBOFLoCRXf
+ 24DO/DzNk8SQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,365,1602572400"; d="scan'208";a="356771455"
+X-IronPort-AV: E=Sophos;i="5.79,365,1602572400"; d="scan'208";a="385594066"
 Received: from lkp-server01.sh.intel.com (HELO 260eafd5ecd0) ([10.239.97.150])
- by fmsmga008.fm.intel.com with ESMTP; 21 Jan 2021 19:39:04 -0800
+ by orsmga008.jf.intel.com with ESMTP; 21 Jan 2021 19:39:03 -0800
 Received: from kbuild by 260eafd5ecd0 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1l2nHq-0006sf-MQ; Fri, 22 Jan 2021 03:39:02 +0000
-Date: Fri, 22 Jan 2021 11:38:05 +0800
+ id 1l2nHq-0006sd-Lb; Fri, 22 Jan 2021 03:39:02 +0000
+Date: Fri, 22 Jan 2021 11:38:26 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes] BUILD SUCCESS 08685be7761d69914f08c3d6211c543a385a5b9c
-Message-ID: <600a489d.Of5e6ywKEZzuqFN6%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 534e43a737e9ad2b438eda651272f2774484b922
+Message-ID: <600a48b2.+PKbEPgA4O7teVK2%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -58,12 +59,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes
-branch HEAD: 08685be7761d69914f08c3d6211c543a385a5b9c  powerpc/64s: fix scv entry fallback flush vs interrupt
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 534e43a737e9ad2b438eda651272f2774484b922  powerpc/44x: Remove STDBINUTILS kconfig option
 
 elapsed time: 735m
 
-configs tested: 91
+configs tested: 95
 configs skipped: 2
 
 The following configs have been built successfully.
@@ -75,27 +76,31 @@ arm64                            allyesconfig
 arm64                               defconfig
 arm                              allyesconfig
 arm                              allmodconfig
-powerpc                 mpc8313_rdb_defconfig
-arm                           sama5_defconfig
-mips                            ar7_defconfig
-m68k                       m5275evb_defconfig
-arm                           h5000_defconfig
+openrisc                         alldefconfig
+arm                            lart_defconfig
+arm                            pleb_defconfig
+arm                         assabet_defconfig
 sh                           se7619_defconfig
-h8300                       h8s-sim_defconfig
-mips                    maltaup_xpa_defconfig
-sparc64                          alldefconfig
-arm                        cerfcube_defconfig
+arm                        trizeps4_defconfig
+arm                          pxa3xx_defconfig
+arm                            mmp2_defconfig
+c6x                         dsk6455_defconfig
 m68k                        stmark2_defconfig
+arm                         cm_x300_defconfig
+mips                           ip27_defconfig
+m68k                         amcore_defconfig
+powerpc                     sequoia_defconfig
+mips                          ath25_defconfig
+arm                         orion5x_defconfig
 powerpc                 xes_mpc85xx_defconfig
 sh                          kfr2r09_defconfig
 mips                      pic32mzda_defconfig
 mips                      loongson3_defconfig
-arm                       imx_v4_v5_defconfig
-arm                     eseries_pxa_defconfig
-mips                        jmr3927_defconfig
-sh                   sh7770_generic_defconfig
-arm                          tango4_defconfig
-arm                           omap1_defconfig
+s390                       zfcpdump_defconfig
+arm                       aspeed_g4_defconfig
+mips                          malta_defconfig
+csky                             alldefconfig
+powerpc                     ppa8548_defconfig
 ia64                             allmodconfig
 ia64                                defconfig
 ia64                             allyesconfig
