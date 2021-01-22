@@ -1,79 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CCC30019A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 12:31:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3756300352
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 13:39:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DMcXg2tNyzDrQl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 22:31:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DMf3251KZzDrSt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 23:39:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=63.128.21.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=fweimer@redhat.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=i1BOwIEN; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZDaChUPs; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [63.128.21.124])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=nREwNGTm; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DMcS53RRdzDrQl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 22:27:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1611314842;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xZhDs7nwXoEv9bFTcxpNyWp1SGJsGzJKieaJ/PsaYo0=;
- b=i1BOwIENAWNI4bWtnSVdXW3svz+pDeUHZIa1R+5UgkVRUV9ToBS8QnmGku3QIqhAoHgZoI
- AiCuAq0/FjsR/TVt2gkQkN/Cum2L74sLZkT4l/VaXfQNt2gmwSfX0pzfu1Xid9f44S8hY2
- 4bnhH+tJVEWz5JRcrNmMBym1O6J/yWU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1611314843;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xZhDs7nwXoEv9bFTcxpNyWp1SGJsGzJKieaJ/PsaYo0=;
- b=ZDaChUPsc29MQKqKmWQL/YW6OyrpyYquRfqRnFQaeurN3KkNtdbyf/CCQkqq4Mgkhw8Rki
- QJHl4SPbwRuGpg4dXyQVlYIuCIvNyYGGziQgrTAyqIKSP5MKi9jIRa/5PuedugLtQ06u66
- sLF9NA0/zqVuLJ4qHKk/7bEcC8f+qIM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-560-K6C89M0PNcCw2SmyYe8Rrg-1; Fri, 22 Jan 2021 06:27:19 -0500
-X-MC-Unique: K6C89M0PNcCw2SmyYe8Rrg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 25D24180A096;
- Fri, 22 Jan 2021 11:27:18 +0000 (UTC)
-Received: from oldenburg.str.redhat.com (ovpn-113-35.ams2.redhat.com
- [10.36.113.35])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AB33810023BF;
- Fri, 22 Jan 2021 11:27:16 +0000 (UTC)
-From: Florian Weimer <fweimer@redhat.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2] powerpc/64/signal: balance return predictor stack in
- signal trampoline
-References: <20200511101952.1463138-1-npiggin@gmail.com>
-Date: Fri, 22 Jan 2021 12:27:14 +0100
-In-Reply-To: <20200511101952.1463138-1-npiggin@gmail.com> (Nicholas Piggin's
- message of "Mon, 11 May 2020 20:19:52 +1000")
-Message-ID: <87im7pp5yl.fsf@oldenburg.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DMdzG435JzDrhj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 23:36:09 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10MCWFCD065479; Fri, 22 Jan 2021 07:36:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=SHnzhGD4oBooIlyVBC+ydTu2qpB0/5867UuPCGUeLws=;
+ b=nREwNGTmoFBVCHMFaqUjziSBmnU5tCdwFLN9aT6B+QyijcSAeP+PYg1/WiS85NjcajLl
+ iVGmeHiPUOkWFeKM9mH15mEt1lywEfTIcC+/K6wGXZ5t6jMOOisyTX6Br4tRjoHEOubw
+ MoziR57H4kFAIa0nflQjFxUeYE79vQkkqBNz8p4datq91lbGFELmKe+IxZYtlpnDTGkd
+ hPS1LyRwu/bZc6C9pJV0xKlv7nbgXkWJt+EutweOWiJJYaYUtqJvMnOeWE9fpG6sS3sW
+ 2V/eH1BYXouP0kweFKBUCqfFjXL78J0BW+C/EwwRMds4POYbAmyB9juuM2cJeeAhhDE7 rw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 367wmkjek1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Jan 2021 07:36:02 -0500
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10MCWjwN070275;
+ Fri, 22 Jan 2021 07:36:02 -0500
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 367wmkjehq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Jan 2021 07:36:02 -0500
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10MCWxjr015308;
+ Fri, 22 Jan 2021 12:35:59 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma04ams.nl.ibm.com with ESMTP id 367k0s8jfr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Jan 2021 12:35:59 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10MCZuoJ23331174
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 22 Jan 2021 12:35:56 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 22E37AE045;
+ Fri, 22 Jan 2021 12:35:56 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 99D99AE04D;
+ Fri, 22 Jan 2021 12:35:54 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.85.72.84])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 22 Jan 2021 12:35:54 +0000 (GMT)
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v4 1/2] powerpc/mce: Reduce the size of event arrays
+Date: Fri, 22 Jan 2021 18:02:43 +0530
+Message-Id: <20210122123244.34033-1-ganeshgr@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=fweimer@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-22_09:2021-01-21,
+ 2021-01-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0 bulkscore=0
+ suspectscore=0 clxscore=1015 mlxscore=0 mlxlogscore=999 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101220067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,71 +98,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: musl@lists.openwall.com, libc-alpha@sourceware.org,
- linuxppc-dev@lists.ozlabs.org, Alan Modra <amodra@gmail.com>
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Nicholas Piggin:
+Maximum recursive depth of MCE is 4, Considering the maximum depth
+allowed reduce the size of event to 10 from 100. This saves us ~19kB
+of memory and has no fatal consequences.
 
-> diff --git a/arch/powerpc/kernel/vdso64/sigtramp.S b/arch/powerpc/kernel/vdso64/sigtramp.S
-> index a8cc0409d7d2..bbf68cd01088 100644
-> --- a/arch/powerpc/kernel/vdso64/sigtramp.S
-> +++ b/arch/powerpc/kernel/vdso64/sigtramp.S
-> @@ -6,6 +6,7 @@
->   * Copyright (C) 2004 Benjamin Herrenschmuidt (benh@kernel.crashing.org), IBM Corp.
->   * Copyright (C) 2004 Alan Modra (amodra@au.ibm.com)), IBM Corp.
->   */
-> +#include <asm/cache.h>		/* IFETCH_ALIGN_BYTES */
->  #include <asm/processor.h>
->  #include <asm/ppc_asm.h>
->  #include <asm/unistd.h>
-> @@ -14,21 +15,17 @@
->  
->  	.text
->  
-> -/* The nop here is a hack.  The dwarf2 unwind routines subtract 1 from
-> -   the return address to get an address in the middle of the presumed
-> -   call instruction.  Since we don't have a call here, we artificially
-> -   extend the range covered by the unwind info by padding before the
-> -   real start.  */
-> -	nop
->  	.balign 8
-> +	.balign IFETCH_ALIGN_BYTES
->  V_FUNCTION_BEGIN(__kernel_sigtramp_rt64)
-> -.Lsigrt_start = . - 4
-> +.Lsigrt_start:
-> +	bctrl	/* call the handler */
->  	addi	r1, r1, __SIGNAL_FRAMESIZE
->  	li	r0,__NR_rt_sigreturn
->  	sc
->  .Lsigrt_end:
->  V_FUNCTION_END(__kernel_sigtramp_rt64)
-> -/* The ".balign 8" above and the following zeros mimic the old stack
-> +/* The .balign 8 above and the following zeros mimic the old stack
->     trampoline layout.  The last magic value is the ucontext pointer,
->     chosen in such a way that older libgcc unwind code returns a zero
->     for a sigcontext pointer.  */
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+---
+v4: This patch is a fragment of the orignal patch which is 
+    split into two.
+---
+ arch/powerpc/include/asm/mce.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-As far as I understand it, this breaks cancellation handling on musl and
-future glibc because it is necessary to look at the signal delivery
-location to see if a system call sequence has result in an action, and
-that location is no longer in user code after this change.
-
-We have a glibc test in preparation of our change, and it started
-failing:
-
-  Linux 5.10 breaks sigcontext_get_pc on powerpc64
-  <https://sourceware.org/bugzilla/show_bug.cgi?id=27223>
-
-Isn't it possible to avoid the return predictor desynchronization by
-adding the appropriate hint?
-
-Thanks,
-Florian
+diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
+index e6c27ae843dc..7d8b6679ec68 100644
+--- a/arch/powerpc/include/asm/mce.h
++++ b/arch/powerpc/include/asm/mce.h
+@@ -204,7 +204,7 @@ struct mce_error_info {
+ 	bool			ignore_event;
+ };
+ 
+-#define MAX_MC_EVT	100
++#define MAX_MC_EVT	10
+ 
+ /* Release flags for get_mce_event() */
+ #define MCE_EVENT_RELEASE	true
 -- 
-Red Hat GmbH, https://de.redhat.com/ , Registered seat: Grasbrunn,
-Commercial register: Amtsgericht Muenchen, HRB 153243,
-Managing Directors: Charles Cachera, Brian Klemm, Laurie Krebs, Michael O'Neill
+2.26.2
 
