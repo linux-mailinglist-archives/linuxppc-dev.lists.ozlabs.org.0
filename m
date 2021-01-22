@@ -2,77 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D2C2FFDA4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 08:52:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9A62FFFE0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 11:14:25 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DMWgw4194zDr7f
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 18:52:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DMZqd2lDNzDqVD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 21:14:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kaod.org (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=clg@kaod.org;
- receiver=<UNKNOWN>)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DMWf93XwkzDrcW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 18:50:56 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10M7Yvfl104084; Fri, 22 Jan 2021 02:50:36 -0500
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 367q7vd1g9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 22 Jan 2021 02:50:35 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10M7kmpG004110;
- Fri, 22 Jan 2021 07:50:34 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06ams.nl.ibm.com with ESMTP id 367k0p0au4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 22 Jan 2021 07:50:33 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 10M7oPTe31588770
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 22 Jan 2021 07:50:25 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C4A9BA4051;
- Fri, 22 Jan 2021 07:50:31 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 92330A4053;
- Fri, 22 Jan 2021 07:50:31 +0000 (GMT)
-Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri, 22 Jan 2021 07:50:31 +0000 (GMT)
-Received: from yukon.ibmuc.com (sig-9-145-158-191.de.ibm.com [9.145.158.191])
- by smtp.tlslab.ibm.com (Postfix) with ESMTP id DF7FD2200C9;
- Fri, 22 Jan 2021 08:50:30 +0100 (CET)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/prom: Fix "ibm,arch-vec-5-platform-support" scan
-Date: Fri, 22 Jan 2021 08:50:29 +0100
-Message-Id: <20210122075029.797013-1-clg@kaod.org>
-X-Mailer: git-send-email 2.26.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-22_03:2021-01-21,
- 2021-01-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0
- impostorscore=0 mlxscore=0 adultscore=0 clxscore=1034 malwarescore=0
- lowpriorityscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101220036
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DMZdT346YzDrdT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 21:05:30 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DMZdG4THgz9vBmm;
+ Fri, 22 Jan 2021 11:05:22 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id HmvJJTgS_C-x; Fri, 22 Jan 2021 11:05:22 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DMZdG3RDHz9vBml;
+ Fri, 22 Jan 2021 11:05:22 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A889B8B818;
+ Fri, 22 Jan 2021 11:05:23 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 3nCgHEcowuoo; Fri, 22 Jan 2021 11:05:23 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5FBD38B773;
+ Fri, 22 Jan 2021 11:05:23 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 3015F66AAE; Fri, 22 Jan 2021 10:05:23 +0000 (UTC)
+Message-Id: <cover.1611309841.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 00/14] powerpc/32: Reduce head complexity and re-activate
+ MMU earlier
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com
+Date: Fri, 22 Jan 2021 10:05:23 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,64 +58,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- stable@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The "ibm,arch-vec-5-platform-support" property is a list of pairs of
-bytes representing the options and values supported by the platform
-firmware. At boot time, Linux scans this list and activates the
-available features it recognizes : Radix and XIVE.
+This series is a first step on the way to C syscall/exception entry/exit.
 
-A recent change modified the number of entries to loop on and 8 bytes,
-4 pairs of { options, values } entries are always scanned. This is
-fine on KVM but not on PowerVM which can advertises less. As a
-consequence on this platform, Linux reads extra entries pointing to
-random data, interprets these as available features and tries to
-activate them, leading to a firmware crash in
-ibm,client-architecture-support.
+This series aims at reducing exception/syscall prologs complexity.
+It also brings earlier MMU re-activation.
 
-Fix that by using the property length of "ibm,arch-vec-5-platform-support=
-".
+This series is based on Nick's v6 series "powerpc: interrupt wrappers".
+It takes benefit of the removal of traps arguments (patches 2-7 of that series).
+I have squashed those patches as second patch of my series in order to
+please test robots. My series cleanly applies on top of entire Nick's series.
 
-Cc: stable@vger.kernel.org # v4.20+
-Fixes: ab91239942a9 ("powerpc/prom: Remove VLA in prom_check_platform_sup=
-port()")
-Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
----
- arch/powerpc/kernel/prom_init.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+v2 has been reworked in order to apply to all PPC32, including BOOKE and 40x.
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_i=
-nit.c
-index e9d4eb6144e1..ccf77b985c8f 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -1331,14 +1331,10 @@ static void __init prom_check_platform_support(vo=
-id)
- 		if (prop_len > sizeof(vec))
- 			prom_printf("WARNING: ibm,arch-vec-5-platform-support longer than exp=
-ected (len: %d)\n",
- 				    prop_len);
--		prom_getprop(prom.chosen, "ibm,arch-vec-5-platform-support",
--			     &vec, sizeof(vec));
--		for (i =3D 0; i < sizeof(vec); i +=3D 2) {
--			prom_debug("%d: index =3D 0x%x val =3D 0x%x\n", i / 2
--								  , vec[i]
--								  , vec[i + 1]);
--			prom_parse_platform_support(vec[i], vec[i + 1],
--						    &supported);
-+		prom_getprop(prom.chosen, "ibm,arch-vec-5-platform-support", &vec, siz=
-eof(vec));
-+		for (i =3D 0; i < prop_len; i +=3D 2) {
-+			prom_debug("%d: index =3D 0x%x val =3D 0x%x\n", i / 2, vec[i], vec[i =
-+ 1]);
-+			prom_parse_platform_support(vec[i], vec[i + 1], &supported);
- 		}
- 	}
-=20
---=20
-2.26.2
+At the time being, we have two pathes in the prologs: one for
+when we have VMAP stack and one when we don't.
+
+When VMAP stack is supported, there is special prolog code to
+allow accessing stack with MMU on.
+
+That code that accesses VM stack with MMU on is also able to access
+linear memory, so it can also access non VM stack with MMU on.
+
+CONFIG_VMAP_STACK as been on by default on 6xx and 8xx for several
+kernel releases now, so it is known to work.
+
+On the 8xx, null_syscall runs in 292 cycles with VMAP_STACK and in
+296 cycles without VMAP stack.
+On the 832x, null_syscall runs in 224 cycles with VMAP_STACK and in
+213 cycles without VMAP stack.
+
+By removing the old non VMAP stack code, and using the same prolog
+regardless of the activation of VMAP stacks, we make the code a lot
+simplier and reduce the number of test cases.
+
+BOOKE has MMU always on, so there is no change needed for that.
+To allow removal of the old non VMAP stack code, only 40x need
+to get adapted to support earlier MMU activation. That's what
+patches 3-8 are for.
+
+Once this is done, we easily go one step further and re-activate
+Instruction translation at the same time as data translation.
+
+At the end, null_syscall runs in 286 cycles on the 8xx and in 216
+cycles on the 832x
+
+Changes in v2:
+- Implemented early MMU activation also on 40x
+- Added BOOKE in the loop
+- Removed the patches that replace r11 by r1 all over the place (too
+much churn for very small benefit for now)
+
+Christophe Leroy (14):
+  powerpc/32s: Only build hash code when CONFIG_PPC_BOOK3S_604 is
+    selected
+  NOT TO BE MERGED - Squash of patches 2-7 of v6 series "powerpc:
+    interrupt wrappers"
+  powerpc/40x: Don't use SPRN_SPRG_SCRATCH0/1 in TLB miss handlers
+  powerpc/40x: Change CRITICAL_EXCEPTION_PROLOG macro to a gas macro
+  powerpc/40x: Save SRR0/SRR1 and r10/r11 earlier in critical exception
+  powerpc/40x: Reorder a few instructions in critical exception prolog
+  powerpc/40x: Prepare for enabling MMU in critical exception prolog
+  powerpc/40x: Prepare normal exception handler for enabling MMU early
+  powerpc/32: Preserve cr1 in exception prolog stack check
+  powerpc/32: Use LOAD_REG_IMMEDIATE() to load MSR values
+  powerpc/32: Always enable data translation in exception prolog
+  powerpc/32: Enable instruction translation at the same time as data
+    translation
+  powerpc/32: Remove msr argument in EXC_XFER_TEMPLATE()
+  powerpc/32: Use fast instructions to change MSR EE/RI when available
+
+ arch/powerpc/include/asm/asm-prototypes.h     |   4 +-
+ arch/powerpc/include/asm/book3s/64/mmu-hash.h |   1 +
+ arch/powerpc/include/asm/bug.h                |   7 +-
+ arch/powerpc/include/asm/debug.h              |   3 +-
+ arch/powerpc/include/asm/hw_irq.h             |  46 +++++
+ arch/powerpc/include/asm/processor.h          |   4 +-
+ arch/powerpc/kernel/asm-offsets.c             |   2 -
+ arch/powerpc/kernel/entry_32.S                | 128 ++++----------
+ arch/powerpc/kernel/exceptions-64e.S          |   5 +-
+ arch/powerpc/kernel/exceptions-64s.S          | 164 +++++------------
+ arch/powerpc/kernel/fpu.S                     |   2 -
+ arch/powerpc/kernel/head_32.h                 | 167 ++++--------------
+ arch/powerpc/kernel/head_40x.S                | 161 +++++++++--------
+ arch/powerpc/kernel/head_8xx.S                |  26 +--
+ arch/powerpc/kernel/head_book3s_32.S          |  52 ++----
+ arch/powerpc/kernel/head_booke.h              |  20 +--
+ arch/powerpc/kernel/idle_6xx.S                |  12 +-
+ arch/powerpc/kernel/idle_e500.S               |   4 +-
+ arch/powerpc/kernel/process.c                 |   7 +-
+ arch/powerpc/kernel/traps.c                   |   2 +-
+ arch/powerpc/kernel/vector.S                  |   2 -
+ arch/powerpc/mm/book3s32/Makefile             |   4 +-
+ arch/powerpc/mm/book3s32/hash_low.S           |  14 --
+ arch/powerpc/mm/book3s64/hash_utils.c         |  79 ++++++---
+ arch/powerpc/mm/book3s64/slb.c                |  11 +-
+ arch/powerpc/mm/fault.c                       |  18 +-
+ arch/powerpc/platforms/8xx/machine_check.c    |   2 +-
+ 27 files changed, 354 insertions(+), 593 deletions(-)
+
+-- 
+2.25.0
 
