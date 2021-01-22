@@ -2,57 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B37E2FF9E3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 02:24:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB6F2FFB2B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 04:40:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DMM3d3v9DzDrV2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 12:23:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DMQ4v5ssDzDrRL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jan 2021 14:40:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=tjZvK6kI; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DMM1v4JwqzDrRc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 12:22:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=Message-ID:From:CC:To:Subject:
- Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:
- Date:Sender:Reply-To:Content-ID:Content-Description;
- bh=nsfHN4ruMgctb+T/nWfwgWtc4d+dx9Cp+YY+RpU/dvk=; b=tjZvK6kIQJkVoUh0XH5KaPSzs4
- 8lr3MIgIr75RIY4aA23wlTr3OM76gWx1LXz10+q2hpKQdXr6ktfXV3qzhbeh4r4LH8otlwsyyJpjn
- UdBiPxQtBG/6d/PrKlA52hMEi8SdcOX3ErqodvY1/ZbBV83IkZ6IHdxY4MK9t0H5HFbjL7Ckp4vQq
- QS1d79EtonYd0+OZhRASIc7t1W4sKH/rch/pro1+wo9CaREke+CCiIweeTPBLC3oAD45lmEzubspX
- wpGfFntPlb9c2xs01lmYLfKSrJ0PrVzgLSNtkqVhf7ZFIi0oO64Z0EShmUC+pNFoGuNyhuYVrQGnB
- NjscAPdA==;
-Received: from [2601:1c0:6280:3f0:c52a:3cbc:74:978c]
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l2l9X-0001A2-Tf; Fri, 22 Jan 2021 01:22:21 +0000
-Date: Thu, 21 Jan 2021 17:22:10 -0800
-User-Agent: K-9 Mail for Android
-In-Reply-To: <875z3prcwg.fsf@mpe.ellerman.id.au>
-References: <CAAH8bW8-6Dp29fe6rrnA4eL1vo+mu0HuAVJ-5yjbwxDSvaHdeQ@mail.gmail.com>
- <6c442012-3bef-321b-bbc3-09c54608661f@infradead.org>
- <875z3prcwg.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DMQ2X2fv0zDrRH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 14:38:07 +1100 (AEDT)
+IronPort-SDR: 8zY4nfgA88lbmjk4CCkukm3xS4O7WWKMaQaUDCBbIz/mVywSLTb+FBGelymYpv7VXk490Pyxwg
+ +xigj1AC9L8A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9871"; a="264205549"
+X-IronPort-AV: E=Sophos;i="5.79,365,1602572400"; d="scan'208";a="264205549"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2021 19:38:05 -0800
+IronPort-SDR: e5i7/PJ0r5uHRteT44QYolNtGtSFYOThNHiNvD49q27YUkfRKXAfGPvKMCkhlFp1KJyfolURgq
+ Os794Be3y6gg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,365,1602572400"; d="scan'208";a="403450381"
+Received: from lkp-server01.sh.intel.com (HELO 260eafd5ecd0) ([10.239.97.150])
+ by fmsmga002.fm.intel.com with ESMTP; 21 Jan 2021 19:38:03 -0800
+Received: from kbuild by 260eafd5ecd0 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1l2nGs-0006sU-D8; Fri, 22 Jan 2021 03:38:02 +0000
+Date: Fri, 22 Jan 2021 11:37:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 4899f32e4f2a936dc20fbfc4fde85b003387c5c2
+Message-ID: <600a4883.SjLzSfI3pcmcWR79%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] powerpc: fix AKEBONO build failures
-To: Michael Ellerman <mpe@ellerman.id.au>, Yury Norov <yury.norov@gmail.com>,
- linuxppc-dev@lists.ozlabs.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <8AC16666-0EBD-4E2B-84AB-880DAF3A04EE@infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,124 +54,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On January 21, 2021 5:14:23 PM PST, Michael Ellerman <mpe@ellerman=2Eid=2Ea=
-u> wrote:
->Randy Dunlap <rdunlap@infradead=2Eorg> writes:
->> On 1/20/21 1:29 PM, Yury Norov wrote:
->>> Hi all,
->>>=20
->>> I found the power pc build broken on today's
->>> linux-next (647060f3b592)=2E
->>
->> Darn, I was building linux-5=2E11-rc4=2E
->>
->> I'll try linux-next after I send this=2E
->>
->> ---
->> From: Randy Dunlap <rdunlap@infradead=2Eorg>
->>
->> Fulfill AKEBONO Kconfig requirements=2E
->>
->> Fixes these Kconfig warnings (and more) and fixes the subsequent
->> build errors:
->>
->> WARNING: unmet direct dependencies detected for NETDEVICES
->>   Depends on [n]: NET [=3Dn]
->>   Selected by [y]:
->>   - AKEBONO [=3Dy] && PPC_47x [=3Dy]
->>
->> WARNING: unmet direct dependencies detected for MMC_SDHCI
->>   Depends on [n]: MMC [=3Dn] && HAS_DMA [=3Dy]
->>   Selected by [y]:
->>   - AKEBONO [=3Dy] && PPC_47x [=3Dy]
->>
->> Signed-off-by: Randy Dunlap <rdunlap@infradead=2Eorg>
->> Cc: Michael Ellerman <mpe@ellerman=2Eid=2Eau>
->> Cc: Benjamin Herrenschmidt <benh@kernel=2Ecrashing=2Eorg>
->> Cc: Paul Mackerras <paulus@samba=2Eorg>
->> Cc: linuxppc-dev@lists=2Eozlabs=2Eorg
->> Cc: Yury Norov <yury=2Enorov@gmail=2Ecom>
->> ---
->>  arch/powerpc/platforms/44x/Kconfig |    2 ++
->>  1 file changed, 2 insertions(+)
->>
->> --- lnx-511-rc4=2Eorig/arch/powerpc/platforms/44x/Kconfig
->> +++ lnx-511-rc4/arch/powerpc/platforms/44x/Kconfig
->> @@ -206,6 +206,7 @@ config AKEBONO
->>  	select PPC4xx_HSTA_MSI
->>  	select I2C
->>  	select I2C_IBM_IIC
->> +	select NET
->>  	select NETDEVICES
->>  	select ETHERNET
->>  	select NET_VENDOR_IBM
->
->I think the problem here is too much use of select, for things that
->should instead be in the defconfig=2E
->
->The patch below results in the same result for make
->44x/akebono_defconfig=2E Does it fix the original issue?
->
->We don't need to add ETHERNET or NET_VENDOR_IBM to the defconfig
->because
->they're both default y=2E
->
->cheers
->
->
->diff --git a/arch/powerpc/configs/44x/akebono_defconfig
->b/arch/powerpc/configs/44x/akebono_defconfig
->index 3894ba8f8ffc=2E=2E6b08a85f4ce6 100644
->--- a/arch/powerpc/configs/44x/akebono_defconfig
->+++ b/arch/powerpc/configs/44x/akebono_defconfig
->@@ -21,6 +21,7 @@ CONFIG_IRQ_ALL_CPUS=3Dy
-> # CONFIG_COMPACTION is not set
-> # CONFIG_SUSPEND is not set
-> CONFIG_NET=3Dy
->+CONFIG_NETDEVICES=3Dy
-> CONFIG_PACKET=3Dy
-> CONFIG_UNIX=3Dy
-> CONFIG_INET=3Dy
->@@ -98,6 +99,8 @@ CONFIG_USB_OHCI_HCD=3Dy
-> # CONFIG_USB_OHCI_HCD_PCI is not set
-> CONFIG_USB_STORAGE=3Dy
-> CONFIG_MMC=3Dy
->+CONFIG_MMC_SDHCI=3Dy
->+CONFIG_MMC_SDHCI_PLTFM=3Dy
-> CONFIG_RTC_CLASS=3Dy
-> CONFIG_RTC_DRV_M41T80=3Dy
-> CONFIG_EXT2_FS=3Dy
->diff --git a/arch/powerpc/platforms/44x/Kconfig
->b/arch/powerpc/platforms/44x/Kconfig
->index 78ac6d67a935=2E=2E509b329c112f 100644
->--- a/arch/powerpc/platforms/44x/Kconfig
->+++ b/arch/powerpc/platforms/44x/Kconfig
->@@ -206,15 +206,10 @@ config AKEBONO
->        select PPC4xx_HSTA_MSI
->        select I2C
->        select I2C_IBM_IIC
->-       select NETDEVICES
->-       select ETHERNET
->-       select NET_VENDOR_IBM
->        select IBM_EMAC_EMAC4 if IBM_EMAC
->        select USB if USB_SUPPORT
->        select USB_OHCI_HCD_PLATFORM if USB_OHCI_HCD
->        select USB_EHCI_HCD_PLATFORM if USB_EHCI_HCD
->-       select MMC_SDHCI
->-       select MMC_SDHCI_PLTFM
->        select ATA
->        select SATA_AHCI_PLATFORM
->        help
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 4899f32e4f2a936dc20fbfc4fde85b003387c5c2  powerpc/64: prevent replayed interrupt handlers from running softirqs
 
-Sure=2E I thought that lots of what was already there
-should be in the defconfig=2E I  was just going with the flow=2E=20
+elapsed time: 735m
 
-Thanks for fixing it=2E=20
+configs tested: 91
+configs skipped: 2
 
---=20
-Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                      chrp32_defconfig
+sh                          rsk7203_defconfig
+arm                           h3600_defconfig
+m68k                        m5407c3_defconfig
+sh                          sdk7786_defconfig
+c6x                         dsk6455_defconfig
+xtensa                generic_kc705_defconfig
+powerpc                    socrates_defconfig
+m68k                          atari_defconfig
+arm                             mxs_defconfig
+powerpc                   currituck_defconfig
+arm                        trizeps4_defconfig
+h8300                       h8s-sim_defconfig
+c6x                        evmc6678_defconfig
+arm                      tct_hammer_defconfig
+mips                         bigsur_defconfig
+powerpc                      makalu_defconfig
+powerpc                 xes_mpc85xx_defconfig
+sh                          kfr2r09_defconfig
+mips                      pic32mzda_defconfig
+mips                      loongson3_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                               tinyconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20210121
+i386                 randconfig-a002-20210121
+i386                 randconfig-a004-20210121
+i386                 randconfig-a006-20210121
+i386                 randconfig-a005-20210121
+i386                 randconfig-a003-20210121
+x86_64               randconfig-a002-20210121
+x86_64               randconfig-a003-20210121
+x86_64               randconfig-a001-20210121
+x86_64               randconfig-a005-20210121
+x86_64               randconfig-a006-20210121
+x86_64               randconfig-a004-20210121
+i386                 randconfig-a013-20210121
+i386                 randconfig-a011-20210121
+i386                 randconfig-a012-20210121
+i386                 randconfig-a014-20210121
+i386                 randconfig-a015-20210121
+i386                 randconfig-a016-20210121
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
