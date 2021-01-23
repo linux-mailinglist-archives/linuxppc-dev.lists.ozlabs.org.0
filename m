@@ -2,65 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E8D30138A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Jan 2021 07:14:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C8330138B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Jan 2021 07:16:49 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DN5SV1sYVzDrnj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Jan 2021 17:14:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DN5W23z6GzDrQj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Jan 2021 17:16:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
- helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
+ helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=m+R379Ny; dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
+ header.s=20161025 header.b=bqZq8ou2; dkim-atps=neutral
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DN5Qf4jLBzDrcC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Jan 2021 17:12:58 +1100 (AEDT)
-Received: by mail-pf1-x431.google.com with SMTP id u67so5251682pfb.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 22:12:58 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DN5TJ0TfszDrcC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Jan 2021 17:15:13 +1100 (AEDT)
+Received: by mail-pj1-x1034.google.com with SMTP id cq1so5142126pjb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 22:15:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=jp19mRpQwZnvv85mrajBlhi6pTq2o+J1gDNce3NL3r8=;
- b=m+R379Nyo8jzj9996uWXXR5OfxcYudHgJCMKPgTchHsecBmKMG9R9HURc8CvZFNesi
- EryIGsNTK1kJqTYYMzrLCPrMzFgtWhsLvUKXcG0/1esAthwPTgpWGJWkYBh0N9wbjwIo
- N71fLvCOZNpYRO2nveCqHeIJEV+6/Ppx0k6TkHTl9LDfoxSfzW+f02js09HOOLEdqUwh
- AtVX61C784L/0UewTCN4P0gRp0vL9yPNMnc8Hsk1jNgBAecCdhFoWOYYjq2iIAqMqGVr
- tziXuPlD0q3tJkGrqOVuSY/X9t/u9YSmBahwdl4auyv+ggD9d1XZ1saxChEdw5au6B52
- EZMw==
+ bh=tr+DGZlRQvNAFkrvntOvjagnngKZ2WVNbtgGPG5Jj0A=;
+ b=bqZq8ou2Wzdw0MxvGquo76SowBuKvLj9fVNPzjU/LPsplIYEg7ibI81cT8/TzYFI1R
+ PDgpjhooBsqQjUDstppYQHFn7ufpuhGNKngZYGEFcbbKsMBQm3ZJjD6amB0rH3RsDx1z
+ FC4GoaF3ZEciZx3y/tM9OwNRl7AqE8LQpehO+oLd/+2YzYuC699kICkRFPMM2f6OBMqY
+ YjaWaTiao30y6TDHkYejgmnp7BMrp/r32mkLPT+nO8iwzsxTXksAwq9UWtzy9H6GhgJp
+ sjR7jEFmXokT/6efnfBwNFxTsJvhm6EsT87XKV9PlwVqnMdTsB871Z5PXbCvA7CDO0xp
+ VfRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=jp19mRpQwZnvv85mrajBlhi6pTq2o+J1gDNce3NL3r8=;
- b=JJgBmFgMOmPRqJMmNkujs/tK9ma3Xp7APJtqyy9EC77hHND6X/UXs5MuXtS2P19c1y
- iyZ0CTblV+ZHtFEs+Tr5DzyJ5+E1krLjbPqTiUBFy9hz+gyYKeX94ysDtEHp9vHmUoKn
- erW+MPp+JPj5PqYz3Yw6zBnl4e5GEivlTCND81AQxedax+yqQQO8EmKQx6+7+8ArfnaQ
- vM+lHKbkAKO+6NxcYvPXxsJS/MaiXEULCdW+OR1VQ5fi66uM48HnD8h2j81CUjCEqakA
- 3SqL8JS/gFOA2j4hiUw0c3GfML5KuNeGVJBiumW79FvSDwK1PdqkN3HtSHa3AtQkSsqi
- ABxg==
-X-Gm-Message-State: AOAM532jy5v2nZkcMRoFSIe2dIpJEf3wIG+TYZO5NGmWkksakhLqvXYh
- rFLrFpgkQRIwjQRO355Ui9T92oJTOw8=
-X-Google-Smtp-Source: ABdhPJz+3+9FoWxe4TRehAxaFrVocblqVpcX4QsNbqHE7x6b9HZtFZXQd7vP8tSqMd8hU1B+zVUTmg==
-X-Received: by 2002:a63:5304:: with SMTP id h4mr8192034pgb.199.1611382374073; 
- Fri, 22 Jan 2021 22:12:54 -0800 (PST)
+ bh=tr+DGZlRQvNAFkrvntOvjagnngKZ2WVNbtgGPG5Jj0A=;
+ b=X69NLEuQST+5Kh3Z6azGp+YAtT4AG+PkZ/ClTprEBP6ICFAfqbBfdZTDvav4Hawx3q
+ Gfrioz3Igh/6yEofEvYXDT2SVXeNvCLHJybrgkfFJdJXtcySYUe9gG5Re5Jo4KLnxhvE
+ 51gNpeN08NJjc/Mly6EryOtKfwaxWJpMyuoIKPaRpqLTT8NEx3JO2NDx84vS77C2Au67
+ V6MEvVTCWYJtNO8Q+Fc1qj6aSQW6RMJmxA60B/qmt8ZSWAUq1G+FbfNPrIalgZF5Vy5s
+ o5CspXas1pCgp8R/j4WRYkVXc5Z/m+jwuZ0Cp+dl8MnNYMe0mXQ/HWg6mwk8op88zc46
+ cYZg==
+X-Gm-Message-State: AOAM531nSOI+MLSUH+gevTPxtneo3N3k2NbuFtCHvnhd+TLzyfrpzqFA
+ SkHW1qJmCx6XE1tOo4Nv3pX5EOxF3v0=
+X-Google-Smtp-Source: ABdhPJyVDJKM9zqOnDD8ephWgsqhi9+84HUAsaBjATiEfQxnYXxKm5IHBJhTxC3dpn4z9xLoHo9mvw==
+X-Received: by 2002:a17:902:d481:b029:df:cfe4:362a with SMTP id
+ c1-20020a170902d481b02900dfcfe4362amr8247266plg.37.1611382510138; 
+ Fri, 22 Jan 2021 22:15:10 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com ([124.170.13.62])
- by smtp.gmail.com with ESMTPSA id y12sm10648194pfp.166.2021.01.22.22.12.51
+ by smtp.gmail.com with ESMTPSA id w66sm10655233pfd.48.2021.01.22.22.15.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Jan 2021 22:12:53 -0800 (PST)
+ Fri, 22 Jan 2021 22:15:09 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s: prevent recursive replay_soft_interrupts causing
- superfluous interrupt
-Date: Sat, 23 Jan 2021 16:12:44 +1000
-Message-Id: <20210123061244.2076145-1-npiggin@gmail.com>
+Subject: [PATCH] powerpc/64s: interrupt exit improve bounding of interrupt
+ recursion
+Date: Sat, 23 Jan 2021 16:15:04 +1000
+Message-Id: <20210123061504.2076317-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -81,151 +82,141 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When an asynchronous interrupt calls irq_exit, it checks for softirqs
-that may have been created, and runs them. Running softirqs enables
-local irqs, which can replay pending interrupts causing recursion in
-replay_soft_interrupts. This abridged trace shows how this can occur:
+When replaying pending soft-masked interrupts when an interrupt returns
+to an irqs-enabled context, there is a special case required if this was
+an asynchronous interrupt to avoid unbounded interrupt recursion.
 
-! NIP replay_soft_interrupts
-  LR  interrupt_exit_kernel_prepare
-  Call Trace:
-    interrupt_exit_kernel_prepare (unreliable)
-    interrupt_return
-  --- interrupt: ea0 at __rb_reserve_next
-  NIP __rb_reserve_next
-  LR __rb_reserve_next
-  Call Trace:
-    ring_buffer_lock_reserve
-    trace_function
-    function_trace_call
-    ftrace_call
-    __do_softirq
-    irq_exit
-    timer_interrupt
-!   replay_soft_interrupts
-    interrupt_exit_kernel_prepare
-    interrupt_return
-  --- interrupt: ea0 at arch_local_irq_restore
+This case was not tested for in the case the asynchronous interrupt hit
+in user context, because a subsequent nested interrupt would by definition
+hit in kernel mode, which then exits via the kernel path which does test
+this case.
 
-This can not be prevented easily, because softirqs must not block hard
-irqs, so it has to be dealt with.
+There is no reason to allow this for such interrupts. While recursion is
+bounded at the next level, it's simpler and uses less stack to apply the
+replay logic consistently.
 
-The recursion is bounded by design in the softirq code because softirq
-replay disables softirqs and loops around again to check for new
-softirqs created while it ran, so that's not a problem.
+This also expands the comment which was really pretty poor and didn't
+explain the problem (I can say that because I wrote it).
 
-However it does mess up interrupt replay state, causing superfluous
-interrupts when the second replay_soft_interrupts clears a pending
-interrupt, leaving it still set in the first call in the 'happened'
-local variable.
-
-Fix this by not caching a copy of irqs_happened across interrupt
-handler calls.
-
-Fixes: 3282a3da25bd ("powerpc/64: Implement soft interrupt replay in C")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-It's actually very tricky / practically impossible to prevent softirqs
-from being run like my previous attempt tried to do, when you really
-get into details. Certainly not for a fix. I might try to attempt that
-some time in future, but it would require kernel/softirq.c changes and
-what we do now isn't conceptually different from architectures without
-soft-masking, it's just another complexity to the complex soft-masking
-code.
-
-Anyway this hopefully fixes the PMU bug, but as I said I couldn't
-reproduce it with your test case so it would be good if you could
-give it a test.
+This is another little thing I found along the way, I don't think it
+actually fixes a bug, but it avoids a recursion case, makes logic more
+consistent, and improves the comment. So I'll submit it for next merge
+window.
 
 Thanks,
 Nick
 
- arch/powerpc/kernel/irq.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ arch/powerpc/kernel/syscall_64.c | 55 +++++++++++++++++++-------------
+ 1 file changed, 33 insertions(+), 22 deletions(-)
 
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 6b1eca53e36c..cc7a6271b6b4 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -180,13 +180,18 @@ void notrace restore_interrupts(void)
- 
- void replay_soft_interrupts(void)
+diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
+index 7c85ed04a164..e0eb2a502db3 100644
+--- a/arch/powerpc/kernel/syscall_64.c
++++ b/arch/powerpc/kernel/syscall_64.c
+@@ -138,8 +138,12 @@ notrace long system_call_exception(long r3, long r4, long r5,
+ /*
+  * local irqs must be disabled. Returns false if the caller must re-enable
+  * them, check for new work, and try again.
++ *
++ * This should be called with local irqs disabled, but if they were previously
++ * enabled when the interrupt handler returns (indicating a process-context /
++ * synchronous interrupt) then irqs_enabled should be true.
+  */
+-static notrace inline bool prep_irq_for_enabled_exit(bool clear_ri)
++static notrace inline bool prep_irq_for_enabled_exit(bool clear_ri, bool irqs_enabled)
  {
-+	struct pt_regs regs;
+ 	/* This must be done with RI=1 because tracing may touch vmaps */
+ 	trace_hardirqs_on();
+@@ -156,6 +160,29 @@ static notrace inline bool prep_irq_for_enabled_exit(bool clear_ri)
+ 		trace_hardirqs_off();
+ 		local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
+ 
++		/*
++		 * Must replay pending soft-masked interrupts now. Don't just
++		 * local_irq_enabe(); local_irq_disable(); because if we are
++		 * returning from an asynchronous interrupt here, another one
++		 * might hit after irqs are enabled, and it would exit via this
++		 * same path allowing another to fire, and so on unbounded.
++		 *
++		 * If interrupts were enabled when this interrupt exited,
++		 * indicating a process context (synchronous) interrupt,
++		 * local_irq_enable/disable can be used, which will enable
++		 * interrupts rather than keeping them masked (unclear how
++		 * much benefit this is over just replaying for all cases,
++		 * because we immediately disable again, so all we're really
++		 * doing is allowing hard interrupts to execute directly for
++		 * a very small time, rather than being masked and replayed).
++		 */
++		if (irqs_enabled) {
++			local_irq_enable();
++			local_irq_disable();
++		} else {
++			replay_soft_interrupts();
++		}
 +
- 	/*
--	 * We use local_paca rather than get_paca() to avoid all
--	 * the debug_smp_processor_id() business in this low level
--	 * function
-+	 * Be careful here, calling these interrupt handlers can cause
-+	 * softirqs to be raised, which they may run when calling irq_exit,
-+	 * which will cause local_irq_enable() to be run, which can then
-+	 * recurse into this function. Don't keep any state across
-+	 * interrupt handler calls which may change underneath us.
-+	 *
-+	 * We use local_paca rather than get_paca() to avoid all the
-+	 * debug_smp_processor_id() business in this low level function.
- 	 */
--	unsigned char happened = local_paca->irq_happened;
--	struct pt_regs regs;
- 
- 	ppc_save_regs(&regs);
- 	regs.softe = IRQS_ENABLED;
-@@ -209,7 +214,7 @@ void replay_soft_interrupts(void)
- 	 * This is a higher priority interrupt than the others, so
- 	 * replay it first.
- 	 */
--	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && (happened & PACA_IRQ_HMI)) {
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && (local_paca->irq_happened & PACA_IRQ_HMI)) {
- 		local_paca->irq_happened &= ~PACA_IRQ_HMI;
- 		regs.trap = 0xe60;
- 		handle_hmi_exception(&regs);
-@@ -217,7 +222,7 @@ void replay_soft_interrupts(void)
- 			hard_irq_disable();
+ 		return false;
+ 	}
+ 	local_paca->irq_happened = 0;
+@@ -212,8 +239,9 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 		ret |= _TIF_RESTOREALL;
  	}
  
--	if (happened & PACA_IRQ_DEC) {
-+	if (local_paca->irq_happened & PACA_IRQ_DEC) {
- 		local_paca->irq_happened &= ~PACA_IRQ_DEC;
- 		regs.trap = 0x900;
- 		timer_interrupt(&regs);
-@@ -225,7 +230,7 @@ void replay_soft_interrupts(void)
- 			hard_irq_disable();
+-again:
+ 	local_irq_disable();
++
++again:
+ 	ti_flags = READ_ONCE(*ti_flagsp);
+ 	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
+ 		local_irq_enable();
+@@ -258,10 +286,8 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
  	}
  
--	if (happened & PACA_IRQ_EE) {
-+	if (local_paca->irq_happened & PACA_IRQ_EE) {
- 		local_paca->irq_happened &= ~PACA_IRQ_EE;
- 		regs.trap = 0x500;
- 		do_IRQ(&regs);
-@@ -233,7 +238,7 @@ void replay_soft_interrupts(void)
- 			hard_irq_disable();
+ 	/* scv need not set RI=0 because SRRs are not used */
+-	if (unlikely(!prep_irq_for_enabled_exit(!scv))) {
+-		local_irq_enable();
++	if (unlikely(!prep_irq_for_enabled_exit(!scv, true)))
+ 		goto again;
+-	}
+ 
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	local_paca->tm_scratch = regs->msr;
+@@ -336,11 +362,8 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
+ 		}
  	}
  
--	if (IS_ENABLED(CONFIG_PPC_DOORBELL) && (happened & PACA_IRQ_DBELL)) {
-+	if (IS_ENABLED(CONFIG_PPC_DOORBELL) && (local_paca->irq_happened & PACA_IRQ_DBELL)) {
- 		local_paca->irq_happened &= ~PACA_IRQ_DBELL;
- 		if (IS_ENABLED(CONFIG_PPC_BOOK3E))
- 			regs.trap = 0x280;
-@@ -245,7 +250,7 @@ void replay_soft_interrupts(void)
- 	}
+-	if (unlikely(!prep_irq_for_enabled_exit(true))) {
+-		local_irq_enable();
+-		local_irq_disable();
++	if (unlikely(!prep_irq_for_enabled_exit(true, !irqs_disabled_flags(flags))))
+ 		goto again;
+-	}
  
- 	/* Book3E does not support soft-masking PMI interrupts */
--	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && (happened & PACA_IRQ_PMI)) {
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && (local_paca->irq_happened & PACA_IRQ_PMI)) {
- 		local_paca->irq_happened &= ~PACA_IRQ_PMI;
- 		regs.trap = 0xf00;
- 		performance_monitor_exception(&regs);
-@@ -253,8 +258,7 @@ void replay_soft_interrupts(void)
- 			hard_irq_disable();
- 	}
+ #ifdef CONFIG_PPC_BOOK3E
+ 	if (unlikely(ts->debug.dbcr0 & DBCR0_IDM)) {
+@@ -403,20 +426,8 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
+ 			}
+ 		}
  
--	happened = local_paca->irq_happened;
--	if (happened & ~PACA_IRQ_HARD_DIS) {
-+	if (local_paca->irq_happened & ~PACA_IRQ_HARD_DIS) {
- 		/*
- 		 * We are responding to the next interrupt, so interrupt-off
- 		 * latencies should be reset here.
+-		if (unlikely(!prep_irq_for_enabled_exit(true))) {
+-			/*
+-			 * Can't local_irq_restore to replay if we were in
+-			 * interrupt context. Must replay directly.
+-			 */
+-			if (irqs_disabled_flags(flags)) {
+-				replay_soft_interrupts();
+-			} else {
+-				local_irq_restore(flags);
+-				local_irq_save(flags);
+-			}
+-			/* Took an interrupt, may have more exit work to do. */
++		if (unlikely(!prep_irq_for_enabled_exit(true, !irqs_disabled_flags(flags))))
+ 			goto again;
+-		}
+ 	} else {
+ 		/* Returning to a kernel context with local irqs disabled. */
+ 		__hard_EE_RI_disable();
 -- 
 2.23.0
 
