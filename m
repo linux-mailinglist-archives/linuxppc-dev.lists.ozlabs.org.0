@@ -2,84 +2,169 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40EB6301223
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Jan 2021 02:56:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A8530130B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Jan 2021 05:26:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DMzkZ1NKczDsP0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Jan 2021 12:56:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DN33c441tzDsRF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Jan 2021 15:26:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1036;
- helo=mail-pj1-x1036.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
+ envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=0Upr4ZoT; dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=FCN7XtEd; 
+ dkim=pass (1024-bit key;
+ unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
+ header.b=BcMoYjSA; dkim-atps=neutral
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DMzhd3RvvzDrpp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Jan 2021 12:54:34 +1100 (AEDT)
-Received: by mail-pj1-x1036.google.com with SMTP id lw17so7179191pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jan 2021 17:54:34 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DN31h63mjzDrqJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Jan 2021 15:24:40 +1100 (AEDT)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+ by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10N4ONUr066522;
+ Sat, 23 Jan 2021 04:24:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=corp-2020-01-29;
+ bh=8nKXgeDBZe8C9QIc1ADgVn7S8VVUdCc7SIg20AflIuk=;
+ b=FCN7XtEdBINf2/WKbWyyvDp673IeU5aFY6hVmGhAVUbsmn5uIIWNcdPB9jUH8Y/eb3Bk
+ Yp0NYeal5QJLkCpKOdPidluwyzBmb8CRpEFp+7yqaZeDGdBZw/PxaunieV6N5MYr+kOF
+ kM7HS9TzVR4Zoke5ZMyNFKzv4she4Vs2G9ztIiU+BQzTrUK7H/HdbQtGLmB6E2XQfsmC
+ /y/LvZ4QV0RldAMcsB9U/59dT1w0DAZfZCtuZFMLQ3uTDtvIZ86mItveUnsN+PdCdK2i
+ 8vbwrUi6OblliTTVlm0gbYtxKUTZ/l5T0qRPLiWlgaroT6o+gzERJUPpXEUogfgXQXNs ew== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by aserp2120.oracle.com with ESMTP id 368brk82yh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 23 Jan 2021 04:24:22 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10N4KngR078352;
+ Sat, 23 Jan 2021 04:22:22 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2172.outbound.protection.outlook.com [104.47.56.172])
+ by aserp3030.oracle.com with ESMTP id 3689u8v0nc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 23 Jan 2021 04:22:22 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DbV8pp1DPN3mkaR1s2FcRODyEA3wmygDyy6OdTso6KIxkGHqYWWuh/WhGP+EekKc7s1kh5LKjGwyFcERcxeZgGPp/oYH1Cy7YlWsgc3o+25P226f9Mko1FTLkuGBEXhZg8VcXGL33i8mk5z2iy7XKsMmUqsN6gZrI+8uWTgO7c1S+lV6ffjEhhbced+1fXVsX4qVwNYPD5qumTKjx27Sbs+wIuraAsjLl9pYVohXOgwZFfojZH1uvf4TyQH49+ThrcGdlTeva6+BOV/jrXpTPhatpor/thYSNVloQa8P2CnYOxBiM/MedqMj/XmjgiE7rM84bAOaSBqTwt58y048Qw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8nKXgeDBZe8C9QIc1ADgVn7S8VVUdCc7SIg20AflIuk=;
+ b=OzLZFFLzAzTrUJ50vZ4WVDLVOQQm4cBGYrOYsNBt5h1D8yqZGhYzWBJyMM6GPLUW+r5CDTQom7WIr2/wpaxwvv0upVhya8/jExNKcxy0EQagfJ4MgnmKFAAKnFO9Sn/bs9KWMQla9T+Pu9p+K3cTdLsrpD1gQ7gx9LQuceyR03ijPQJPTbaGYKXmAWDITxRI4F7+uVtC5itgrOZTxwWMzWTRxmy00VHtvYa5a45o6CYS+x9GuR6lbRpZEHj54jjg8JBl4oigRpdHuLtMnOx9TQ8Dz49gpRpuWmQ4tN4Z28U29kkrz2JOb+7D4SuMQuBEInZrTftsEkQ2L6bHstx2Rw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=XI9vKXk5EP/Dm/QXrNVsBKjyEoziM3g5R/yMYQpWHKM=;
- b=0Upr4ZoTE7r/8g2HExNWkSBJVhaUtoDAMVjxnGpvazeX6Hd6TlGJ3JKRd0Ubi2koEy
- No25AXMh7HTcWSS8tRJrcQEf8ndWMrsCwZNqIa+9jOecJmFPO/WEuOZ81OwBIgI28R/t
- NniuPDVBeeK1t/oYr2pR8ezlACOLzsWruhn+d8fLeA3LBifZgJzJ1fp72kEhB90P/Z4a
- O2r3cs6L9QFY63qSSoiY8aT1tPBlNmm6rddcV8+OFp3I1gkmSnLNB1DYOkSz9tGP2uo9
- /DOFmDPiejQiQ2/04u7GwBm7ZIDkyxx1MXMg89p1ysAmeWwMQvCEnkytmoJbKZ4XHDnh
- Cpww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=XI9vKXk5EP/Dm/QXrNVsBKjyEoziM3g5R/yMYQpWHKM=;
- b=D2tbBtXHZZqaiKAs2+mBKOUzgopXIuKFQY8WnMqxjoreWV15EtNTNGWZEQ0sokx7fm
- MnwEjcXf/cwoFnQrDoK1iyZBREBGG/ks/6HZ5O0jt4nruK7siyQVCAXWqeANP2qcfHk6
- o4rPzK69uPVi6eDtAh7uZ/usEfrucjqA8Hnn7n/ZukpPAPCIl8HPccv1aemrvIjaQWri
- rf6N3997CWdRTbEGeMAG/W3miECBVvMiIQqNYqQzNbRSlAyR0HvxCi5yBZr3ka8E860J
- ZbwPZOmGhLgMBS1O9zLrhG6xhEf/pxrz2XhtJhP3FZ0z7WWERbxjKKJsNQ1eEcKx/kgo
- /e5w==
-X-Gm-Message-State: AOAM532TenYMuszKeFY7m88SCM1DVuYoaNMIMfDfXhjqKjdiUqeWGVd0
- 5FkClYOdsuH13Ju6Vrc3+s0J2w==
-X-Google-Smtp-Source: ABdhPJzq+IxWW4M/7deU1y4vkxphfXKjaH23F/USnGhw6gktux6pFiAZu2ogOEpt7JMkekfT5TPcvA==
-X-Received: by 2002:a17:902:fe08:b029:de:36a1:9f12 with SMTP id
- g8-20020a170902fe08b02900de36a19f12mr7962570plj.30.1611366871054; 
- Fri, 22 Jan 2021 17:54:31 -0800 (PST)
-Received: from [192.168.10.23] (124-171-107-241.dyn.iinet.net.au.
- [124.171.107.241])
- by smtp.gmail.com with UTF8SMTPSA id a25sm9734046pgv.40.2021.01.22.17.54.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Jan 2021 17:54:30 -0800 (PST)
-Subject: Re: [PATCH 6/6] powerpc/rtas: constrain user region allocation to RMA
-To: Nathan Lynch <nathanl@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20210114220004.1138993-1-nathanl@linux.ibm.com>
- <20210114220004.1138993-7-nathanl@linux.ibm.com>
- <5276937f-b72a-89ba-d0d8-19e4be55ae35@ozlabs.ru>
- <87czy6xlap.fsf@linux.ibm.com>
- <3c5141d5-ee78-3771-3410-37635d423945@ozlabs.ru>
- <871regxwzh.fsf@linux.ibm.com> <87ft2vrew6.fsf@mpe.ellerman.id.au>
- <87pn1ywbs9.fsf@linux.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <a3193f7b-dc34-5252-217f-bea80829c2bc@ozlabs.ru>
-Date: Sat, 23 Jan 2021 12:54:24 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:85.0) Gecko/20100101
- Thunderbird/85.0
-MIME-Version: 1.0
-In-Reply-To: <87pn1ywbs9.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Language: en-US
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8nKXgeDBZe8C9QIc1ADgVn7S8VVUdCc7SIg20AflIuk=;
+ b=BcMoYjSAlrgYDbxwIHup0/FDjjkjtLC+/iycJBhZBL3s9T1nYSegc6Ma1R6LyWCmX+lD3yzfUIYYUfavBLHdmjd36l+edARSv2oacb3bHNMRtx6xFDSPEoXbzMCEAkolkIhzoJsBPCOitDnOJyadPXu+KQnook2bGieIE79Txq0=
+Authentication-Results: kernel.crashing.org; dkim=none (message not signed)
+ header.d=none;kernel.crashing.org; dmarc=none action=none
+ header.from=oracle.com;
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by PH0PR10MB4439.namprd10.prod.outlook.com (2603:10b6:510:41::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.13; Sat, 23 Jan
+ 2021 04:22:20 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::54f3:a8aa:a2cd:a3a4]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::54f3:a8aa:a2cd:a3a4%5]) with mapi id 15.20.3784.016; Sat, 23 Jan 2021
+ 04:22:20 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
+ "James E . J . Bottomley" <jejb@linux.ibm.com>,
+ Colin King <colin.king@canonical.com>, linux-scsi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH][next] scsi: ibmvfc: Fix spelling mistake "succeded" ->
+ "succeeded"
+Date: Fri, 22 Jan 2021 23:22:05 -0500
+Message-Id: <161136635066.28733.17649415088814618744.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210118111346.70798-1-colin.king@canonical.com>
+References: <20210118111346.70798-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [138.3.200.9]
+X-ClientProxiedBy: DM5PR12CA0019.namprd12.prod.outlook.com (2603:10b6:4:1::29)
+ To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from ca-mkp.mkp.ca.oracle.com (138.3.200.9) by
+ DM5PR12CA0019.namprd12.prod.outlook.com (2603:10b6:4:1::29) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3784.14 via Frontend Transport; Sat, 23 Jan 2021 04:22:17 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: aa816512-f9c5-4f59-5663-08d8bf567974
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4439:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <PH0PR10MB44393A885CF9F8B5BAD0C3C78EBF9@PH0PR10MB4439.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2887;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: BsEziW+sRQ8KQ9cOVhdRwCho1G5ZmkDLuucAfXd2x9DInhHb5Fz9v9uilVj/bK2ny3+ye63A40P+hR2vBRQdF3CdbrLgBtgFYGdPwmd541oIY3zdXOmHCA4o47u2ZegB5kH7mJ1N61EIVKJX7koq8SdQBEYwJaWPb0oHlYHJGGM6Lzk3gx2c/eMBMeONc82xkq136/aC6sAsUQOmYENgxDjUiy6V1WpdBO8ZIaaR2wK7cf5BnpJGLi5fvdnoe4kjH9QkmM63j5BE6p3boKLFUIzNniDE+cgcbsN21rLvuSS6dRJmb9Ce7A7j6cWOw82+c5tK9Z4wtiDxokmDGZIhUq7cppWijTKNd6u18hocYH+RSvo+HMzS3WfwE/3At0q59MCnGezzgaOKQ/jfkJY7g9JTSu96DUQjtd+ORisNzxiWSZyeE2tJBAYhbOI6FsfiojD0BLBgncTMNinPTj01VA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB4759.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(366004)(39860400002)(396003)(136003)(376002)(346002)(52116002)(6486002)(110136005)(7696005)(2616005)(186003)(316002)(4326008)(5660300002)(8676002)(478600001)(956004)(16526019)(4744005)(86362001)(103116003)(966005)(83380400001)(66946007)(2906002)(66556008)(26005)(8936002)(7416002)(66476007)(36756003)(6666004);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?MmpTVWVaUWpGZVc5TFNxZjJWMnhwem1yUnE1V2ZEWHBOcmk3Y09jeUFGcUJP?=
+ =?utf-8?B?T1ZBeG82Nmlzd3VTUDVZWkZic0ttQnY0MVNNb2NMOEgvS0docjFNbDZqM0VW?=
+ =?utf-8?B?OFczUmd5Z200cDFublU4eXJ2aTNEZEJGNGlEdzkydVlISmZtRzFtSnBvaFBL?=
+ =?utf-8?B?WlJEYXRTc25TOTlIekJ1bmpjUlRDNHJKVHJTQlg2c2hpTVhQRXRFT0NLbm5M?=
+ =?utf-8?B?TmdmcHZhTm5HclFQTTloc3NON2RPME8rWkFJTTNUZ0cwS2JDUnpoaVdnT1dS?=
+ =?utf-8?B?YU5wNXAwKzluZXBYTlNqZWxITExvdnhMQm5ZS001VEI2VjBDSWd6R2o3UnR2?=
+ =?utf-8?B?UzhuNmVYd2N6WVhya29ib2g0ZFVTYVlVTU14S0Y4K3lHY1FwalFpeUI3K0lU?=
+ =?utf-8?B?QnhRYm9sOFJqZkVTN0plbEorb0cvZ3hTK3VjOGlCTG5laE5jQW5hdkJPcDJw?=
+ =?utf-8?B?Wi9xdS9YL2xKZ1IrTzhCVXFnSnFCWm9kV0ZsejBCdmtiNk9SSjdUWGlqWmo5?=
+ =?utf-8?B?ZFp4TDJ5SWtRVkhlcWxrQVV0cTZWODR5V1VCbTFacnArd0xWL3RIc1dIdjEx?=
+ =?utf-8?B?dFdndFdqYzRLY3cxSnBuSXlwK2FXUVVkclQ4c1FaeFRVT0V2T3FVMlFsa2dJ?=
+ =?utf-8?B?UnpLblN1dWRUejdubEQvZ3FLemxzMkZRM0luYzN0YkR6NE1ZWHp2d3M5a25p?=
+ =?utf-8?B?UFl0MDdGbi9lRTJrY1k3MTZ4NWZyRmYxYmlodTJ4blJheGRHY2xwL0pqUkgv?=
+ =?utf-8?B?ZFlWdUFhVTBZakJWQWZRaW5pWHdIV050N1NndXQ3SzZ0WEFhZzhBZkF4V2NW?=
+ =?utf-8?B?b25LR0ZDNDFyWlBsWlZUUWpWclJsWjArRVkvNENEWTFiN2xhUXNsNmthaWxw?=
+ =?utf-8?B?UkNrN1JPZGcyaXQ2YVVXdlJTa1pnellOSmxmSS94S1B3Q0JNN20zNFNDTy9M?=
+ =?utf-8?B?QXMvSkQxZzFOa3Y2NHlZeGRwdWRibHA4dkhuQ1pWL0puNnlaTlFXWUJQVlF2?=
+ =?utf-8?B?TjRFMU04SXlVU0FwQWRuTDZ3RTN2YUhmSVNxREdrQjdvOWgxTEt6VXBodG1O?=
+ =?utf-8?B?SE9ZSm00aWpjQnd5eWFQTW8zY0hJRC81ajZzT3g1RnM0VkJwQUcxNHdvY21s?=
+ =?utf-8?B?ZG90Zjd1dzc3TDl5dWw4RUlmck1mRVowaStONklCMEllMzNJNHV1dWEwbkE2?=
+ =?utf-8?B?ZllPdHIzNDF0c0NKcTBZUUdnamtIeTN5eG0rQzJsNjdzRlRVLzZSbWJxdkVx?=
+ =?utf-8?B?Vkp2TTJKNVlZZUhHVTV2RHlIaGljUHNHQ0U4SkMwVklTRHRwbnNoK3ZLYnFY?=
+ =?utf-8?B?WmZ2dDZlVUk5MWpLbXZzMzR2RW9EVUlHak45Mk0wRWRQRXFueFQzS09mbjUx?=
+ =?utf-8?B?aGozemMyd1l1Y3lpL2ZHTGtJWXh6dHQ2TzdKeUFZck9mU3hBZnFqUGwxVVNp?=
+ =?utf-8?Q?hQLeRymm?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa816512-f9c5-4f59-5663-08d8bf567974
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2021 04:22:20.0985 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jAkSBLhAvPZM1Fv1p9DOWoXy19wWyULq1FAcYu4J7U6vUGwm15hlT+3CVfXv7FncLRSKFfPGB3EgoMlm4Y8qHrzU9D1SWCnEI1feyFWzhJ4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4439
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9872
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ spamscore=0 mlxlogscore=999
+ adultscore=0 suspectscore=0 phishscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2101230022
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9872
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ impostorscore=0
+ phishscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
+ lowpriorityscore=0 spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101230022
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,112 +176,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, brking@linux.ibm.com, ajd@linux.ibm.com,
- aneesh.kumar@linux.ibm.com
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Martin K . Petersen" <martin.petersen@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, 18 Jan 2021 11:13:46 +0000, Colin King wrote:
 
+> There is a spelling mistake in a ibmvfc_dbg debug message. Fix it.
 
-On 22/01/2021 02:27, Nathan Lynch wrote:
-> Michael Ellerman <mpe@ellerman.id.au> writes:
->> Nathan Lynch <nathanl@linux.ibm.com> writes:
->>> Alexey Kardashevskiy <aik@ozlabs.ru> writes:
->>>> On 16/01/2021 02:38, Nathan Lynch wrote:
->>>>> Alexey Kardashevskiy <aik@ozlabs.ru> writes:
->>>>>> On 15/01/2021 09:00, Nathan Lynch wrote:
->>>>>>> Memory locations passed as arguments from the OS to RTAS usually need
->>>>>>> to be addressable in 32-bit mode and must reside in the Real Mode
->>>>>>> Area. On PAPR guests, the RMA starts at logical address 0 and is the
->>>>>>> first logical memory block reported in the LPAR’s device tree.
->>>>>>>
->>>>>>> On powerpc targets with RTAS, Linux makes available to user space a
->>>>>>> region of memory suitable for arguments to be passed to RTAS via
->>>>>>> sys_rtas(). This region (rtas_rmo_buf) is allocated via the memblock
->>>>>>> API during boot in order to ensure that it satisfies the requirements
->>>>>>> described above.
->>>>>>>
->>>>>>> With radix MMU, the upper limit supplied to the memblock allocation
->>>>>>> can exceed the bounds of the first logical memory block, since
->>>>>>> ppc64_rma_size is ULONG_MAX and RTAS_INSTANTIATE_MAX is 1GB. (512MB is
->>>>>>> a common size of the first memory block according to a small sample of
->>>>>>> LPARs I have checked.) This leads to failures when user space invokes
->>>>>>> an RTAS function that uses a work area, such as
->>>>>>> ibm,configure-connector.
->>>>>>>
->>>>>>> Alter the determination of the upper limit for rtas_rmo_buf's
->>>>>>> allocation to consult the device tree directly, ensuring placement
->>>>>>> within the RMA regardless of the MMU in use.
->>>>>>
->>>>>> Can we tie this with RTAS (which also needs to be in RMA) and simply add
->>>>>> extra 64K in prom_instantiate_rtas() and advertise this address
->>>>>> (ALIGH_UP(rtas-base + rtas-size, PAGE_SIZE)) to the user space? We do
->>>>>> not need this RMO area before that point.
->>>>>
->>>>> Can you explain more about what advantage that would bring? I'm not
->>>>> seeing it. It's a more significant change than what I've written
->>>>> here.
->>>>
->>>>
->>>> We already allocate space for RTAS and (like RMO) it needs to be in RMA,
->>>> and RMO is useless without RTAS. We can reuse RTAS allocation code for
->>>> RMO like this:
->>>
->>> When you say RMO I assume you are referring to rtas_rmo_buf? (I don't
->>> think it is well-named.)
->> ...
->>
->> RMO (Real mode offset) is the old term we used to use to refer to what
->> is now called the RMA (Real mode area). There are still many references
->> to RMO in Linux, but they almost certainly all refer to what we now call
->> the RMA.
-> 
-> Yes... but I think in this discussion Alexey was using RMO to stand in
-> for rtas_rmo_buf, which was what I was trying to clarify.
+Applied to 5.12/scsi-queue, thanks!
 
-
-Correct. Thanks for the clarification, appreciated.
-
-> 
->>>> May be store in the FDT as "linux,rmo-base" next to "linux,rtas-base",
->>>> for clarity, as sharing symbols between prom and main kernel is a bit
->>>> tricky.
->>>>
->>>> The benefit is that we do not do the same thing   (== find 64K in RMA)
->>>> in 2 different ways and if the RMO allocated my way is broken - we'll
->>>> know it much sooner as RTAS itself will break too.
->>>
->>> Implementation details aside... I'll grant that combining the
->>> allocations into one in prom_init reduces some duplication in the sense
->>> that both are subject to the same constraints (mostly - the RTAS data
->>> area must not cross a 256MB boundary, while the user region may). But
->>> they really are distinct concerns. The RTAS private data area is
->>> specified in the platform architecture, the OS is obligated to allocate
->>> it and pass it to instantiate-rtas, etc etc. However the user region
->>> (rtas_rmo_buf) is purely a Linux construct which is there to support
->>> sys_rtas.
->>>
->>> Now, there are multiple sites in the kernel proper that must allocate
->>> memory suitable for passing to RTAS. Obviously there is value in
->>> consolidating the logic for that purpose in one place, so I'll work on
->>> adding that in v2. OK?
->>
->> I don't think we want to move any allocations into prom_init.c unless we
->> have to.
->>
->> It's best thought of as a trampoline, that runs before the kernel
->> proper, to transition from live OF to a flat DT environment. One thing
->> that must be done as part of that is instantiating RTAS, because it's
->> basically a runtime copy of the live OF. But any other allocs are for
->> Linux to handle later, IMHO.
-> 
-> Agreed.
-
-Then the only comment I have left is may be use of_address_to_resource() 
-+ resource_size() instead of of_n_addr_cells()/of_n_size_cells() (like 
-pseries_memory_block_size()). And now I shut up :) Thanks,
-
+[1/1] scsi: ibmvfc: Fix spelling mistake "succeded" -> "succeeded"
+      https://git.kernel.org/mkp/scsi/c/ff79acc49af8
 
 -- 
-Alexey
+Martin K. Petersen	Oracle Linux Engineering
