@@ -1,74 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1946B301A60
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Jan 2021 08:45:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C15301A8A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Jan 2021 09:25:53 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DNlR12s97zDqVc
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Jan 2021 18:45:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DNmKT4MJSzDqmq
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Jan 2021 19:25:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
- helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
+ helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ECst8pGK; dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
+ header.s=20161025 header.b=Fs0JCb3p; dkim-atps=neutral
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DNlP66t40zDqV8
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Jan 2021 18:43:54 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id my11so7959044pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Jan 2021 23:43:54 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DNmGD2fGrzDqkB
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Jan 2021 19:22:58 +1100 (AEDT)
+Received: by mail-pj1-x1034.google.com with SMTP id b5so6621409pjl.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Jan 2021 00:22:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=+/6kKIloWjHkv6epE2TcP1cNMAlAxbqvJ/hMS+1BVS4=;
- b=ECst8pGK76Kt1i3hYRpk0C6YXFoVILwmhhITV8vLf7lxSp2DLkJIQbiJRMgNAQ8RhZ
- 2FVBi6yU5cpVn2+k1ymdhPEiD0mTUZewRMTA/C2lx5qVisItC7g1Qk4OGg76U8ceJGgf
- oVWl3fnrKEggNSaXGGGHmXoOoXhZnwiVh1RBJL+lYFEHkFwpvlYF/ZZKyKChrGABAFdp
- R/fMbwbCbc15w5wSt5bs8uhzzHSiG/b/UpPKVMdktKCdkIGIrgNk1sVD54D/UhBtSvjQ
- s/HrxyZxn4pyAnjsJNo50WHO0keUtTPyw5qR6gy6UgFyMCLXWft4SR0fRSKV2J1bQRZG
- TWVg==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=vxwgyuW5XH28Q8/mj8v779VyclgJcF5KFu/DzCcjZnI=;
+ b=Fs0JCb3pwKQ3Qw2tgKBDrI0dac88HUkrErNJBG0hmRLf5MyNBR21T+TPQXWbZhzXWR
+ 5CKgAqureRQX5U3msaUj+PUlSx+eroPq001obnVV7TfXWOm2oSyNkyE7wZM7J9Pv8Mta
+ xDge4jkywbVh2WRt+ij2Wvj7yIwZDjn6BDaEtOt4/C2gHaR7aiHu96kIa1ZiMKOG6JX1
+ Vdh6g9cgk2rsp+rAgX7ps8P3fUZTlODulpbF24noaVvODB7zOCWZr/S0xRJRBhHCPNRm
+ j4Jo4Rxa5z8wzdHpC1OgyDz4e7JPp8DkXwn0yn6X7IPbVkLVco3Zbc8HUofZ34N5kcGN
+ zLUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=+/6kKIloWjHkv6epE2TcP1cNMAlAxbqvJ/hMS+1BVS4=;
- b=YnDkGDKfz7ntXsxqrRmwEKIdzrK0AuTqXikTKt3A2Y2mNP6auEKQImTQCHQmFzngbM
- GYkjGl1/VohEGtnBCbS7DfYHdtlZrBz6FnRzcDQWDytYuwsAGAIYYzGdACeMcMp7xR04
- c7dP4VL9GFJPiI9GMjbZEBc8q2yqhSLusGmijQFric/4fWZvPALqQfMr8jlOWlwMTfGI
- /DVvJQ+8FcIw/ZeENFzOtiRYGwIIo+IGOUWO3XsWnpPB6wKrogmKSYwFdrvis0/HE5AH
- xe03S1TwGli3tRC8pHOBvUMdCpel8CSdU8w56SIAMc0LA457LnSlU7NgQGRjUzTAFl2K
- 9vDQ==
-X-Gm-Message-State: AOAM5334u99yU16YajNbiASj01UC0UmyYpZZ12YrkhW2YMUygGL/MfJ+
- c5//oZkFg7QDS8Xa75ttIBs=
-X-Google-Smtp-Source: ABdhPJzN8ma2KWKosLen5J4F3FRMoKuPNeofyB7rb0dBGiGJZybg1BFnjDhMrrGiBy+u68O8a9eDMw==
-X-Received: by 2002:a17:90a:de97:: with SMTP id
- n23mr6422067pjv.216.1611474229873; 
- Sat, 23 Jan 2021 23:43:49 -0800 (PST)
-Received: from localhost ([124.170.13.62])
- by smtp.gmail.com with ESMTPSA id b17sm12014448pfp.167.2021.01.23.23.43.48
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=vxwgyuW5XH28Q8/mj8v779VyclgJcF5KFu/DzCcjZnI=;
+ b=OVYZVG1q7d9/Flh0HC9QR6VKCXcZfBShmeF54k5qK/VNrUpY0h8dUKLDMzsXTWqEpA
+ dSN9oXddizFDWUd+oBqSAJA7m+/VEoP7p1S6K9rRMx2xYbeD4BuU70xTZnG+5MrDK17y
+ zgCKHJGjYgB0uR4TCvft/uoDl7M5BbLthyDz5f13w4MBK4CoKmqLUbROSoqv9G0omXSK
+ RPd5wY6DlEY22NjFp/fShSgFbdaWT8qYYmTeeVardcnNRXhx+X6PUAI5RMjMt3qp1GGl
+ gTq/yKMVTq1uQPh005CJb9j4kUO9RqL3BGmhSQB3a7j4K5pZdP5KgvD1MSBnqqSBY173
+ ETcA==
+X-Gm-Message-State: AOAM531ZQvnlOonUKYCHPBoJcnFH3zINoQxCR0zlzYKi3RVbCvhu8Efy
+ F3tHhTHl8FVOWJjMsASzX3eAR+a1yDs=
+X-Google-Smtp-Source: ABdhPJwork++HKOseNPRq3Vls6uVbkN5KsPiEY5ah8ze3Qk+PSvpG3taYXPMNJK4g7gAUsggjvJOSg==
+X-Received: by 2002:a17:90b:b0b:: with SMTP id
+ bf11mr10064810pjb.122.1611476573791; 
+ Sun, 24 Jan 2021 00:22:53 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com ([124.170.13.62])
+ by smtp.gmail.com with ESMTPSA id gb12sm11799757pjb.51.2021.01.24.00.22.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 23 Jan 2021 23:43:49 -0800 (PST)
-Date: Sun, 24 Jan 2021 17:43:43 +1000
+ Sun, 24 Jan 2021 00:22:53 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v9 05/12] mm: HUGE_VMAP arch support cleanup
-To: Andrew Morton <akpm@linux-foundation.org>, Ding Tianhong
- <dingtianhong@huawei.com>, linux-mm@kvack.org
-References: <20201205065725.1286370-1-npiggin@gmail.com>
- <20201205065725.1286370-6-npiggin@gmail.com>
- <c7eb5ba6-1187-d82f-d74c-0ca2c8ae8faf@huawei.com>
-In-Reply-To: <c7eb5ba6-1187-d82f-d74c-0ca2c8ae8faf@huawei.com>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v10 00/12] huge vmalloc mappings
+Date: Sun, 24 Jan 2021 18:22:18 +1000
+Message-Id: <20210124082230.2118861-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Message-Id: <1611473993.etnqidihnt.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,100 +76,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, x86@kernel.org, Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Zefan Li <lizefan@huawei.com>, Borislav Petkov <bp@alien8.de>,
- =?iso-8859-1?q?Jonathan=0A?= Cameron <Jonathan.Cameron@Huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- =?iso-8859-1?q?Rick=0A?= Edgecombe <rick.p.edgecombe@intel.com>,
- linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@redhat.com>,
- linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@vger.kernel.org, Ding Tianhong <dingtianhong@huawei.com>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Christoph Hellwig <hch@infradead.org>, Zefan Li <lizefan@huawei.com>,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Ding Tianhong's message of January 4, 2021 10:33 pm:
-> On 2020/12/5 14:57, Nicholas Piggin wrote:
->> This changes the awkward approach where architectures provide init
->> functions to determine which levels they can provide large mappings for,
->> to one where the arch is queried for each call.
->>=20
->> This removes code and indirection, and allows constant-folding of dead
->> code for unsupported levels.
->>=20
->> This also adds a prot argument to the arch query. This is unused
->> currently but could help with some architectures (e.g., some powerpc
->> processors can't map uncacheable memory with large pages).
->>=20
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: Thomas Gleixner <tglx@linutronix.de>
->> Cc: Ingo Molnar <mingo@redhat.com>
->> Cc: Borislav Petkov <bp@alien8.de>
->> Cc: x86@kernel.org
->> Cc: "H. Peter Anvin" <hpa@zytor.com>
->> Acked-by: Catalin Marinas <catalin.marinas@arm.com> [arm64]
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>  arch/arm64/include/asm/vmalloc.h         |  8 +++
->>  arch/arm64/mm/mmu.c                      | 10 +--
->>  arch/powerpc/include/asm/vmalloc.h       |  8 +++
->>  arch/powerpc/mm/book3s64/radix_pgtable.c |  8 +--
->>  arch/x86/include/asm/vmalloc.h           |  7 ++
->>  arch/x86/mm/ioremap.c                    | 10 +--
->>  include/linux/io.h                       |  9 ---
->>  include/linux/vmalloc.h                  |  6 ++
->>  init/main.c                              |  1 -
->>  mm/ioremap.c                             | 88 +++++++++---------------
->>  10 files changed, 77 insertions(+), 78 deletions(-)
->>=20
->> diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/v=
-malloc.h
->> index 2ca708ab9b20..597b40405319 100644
->> --- a/arch/arm64/include/asm/vmalloc.h
->> +++ b/arch/arm64/include/asm/vmalloc.h
->> @@ -1,4 +1,12 @@
->>  #ifndef _ASM_ARM64_VMALLOC_H
->>  #define _ASM_ARM64_VMALLOC_H
->> =20
->> +#include <asm/page.h>
->> +
->> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
->> +bool arch_vmap_p4d_supported(pgprot_t prot);
->> +bool arch_vmap_pud_supported(pgprot_t prot);
->> +bool arch_vmap_pmd_supported(pgprot_t prot);
->> +#endif
->> +
->>  #endif /* _ASM_ARM64_VMALLOC_H */
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index ca692a815731..1b60079c1cef 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -1315,12 +1315,12 @@ void *__init fixmap_remap_fdt(phys_addr_t dt_phy=
-s, int *size, pgprot_t prot)
->>  	return dt_virt;
->>  }
->> =20
->> -int __init arch_ioremap_p4d_supported(void)
->> +bool arch_vmap_p4d_supported(pgprot_t prot)
->>  {
->> -	return 0;
->> +	return false;
->>  }
->> =20
->=20
-> I think you should put this function in the CONFIG_HAVE_ARCH_HUGE_VMAP, o=
-therwise it may break the compile when disable the CONFIG_HAVE_ARCH_HUGE_VM=
-AP, the same
-> as the x86 and ppc.
-
-Ah, good catch. arm64 is okay because it always selects=20
-HAVE_ARCH_HUGE_VMAP, powerpc is okay because it places
-them in a file that's only compiled for configs that select
-huge vmap, but x86-32 without PAE build breaks. I'll fix that.
+Fixed a couple of bugs that Ding noticed in review and testing.
 
 Thanks,
 Nick
+
+Since v9:
+- Fixed intermediate build breakage on x86-32 !PAE [thanks Ding]
+- Fixed small page fallback case vm_struct double-free [thanks Ding]
+
+Since v8:
+- Fixed nommu compile.
+- Added Kconfig option help text
+- Added VM_NOHUGE which should help archs implement it [suggested by Rick]
+
+Since v7:
+- Rebase, added some acks, compile fix
+- Removed "order=" from vmallocinfo, it's a bit confusing (nr_pages
+  is in small page size for compatibility).
+- Added arch_vmap_pmd_supported() test before starting to allocate
+  the large page, rather than only testing it when doing the map, to
+  avoid unsupported configs trying to allocate huge pages for no
+  reason.
+
+Since v6:
+- Fixed a false positive warning introduced in patch 2, found by
+  kbuild test robot.
+
+Since v5:
+- Split arch changes out better and make the constant folding work
+- Avoid most of the 80 column wrap, fix a reference to lib/ioremap.c
+- Fix compile error on some archs
+
+Since v4:
+- Fixed an off-by-page-order bug in v4
+- Several minor cleanups.
+- Added page order to /proc/vmallocinfo
+- Added hugepage to alloc_large_system_hage output.
+- Made an architecture config option, powerpc only for now.
+
+Since v3:
+- Fixed an off-by-one bug in a loop
+- Fix !CONFIG_HAVE_ARCH_HUGE_VMAP build fail
+
+*** BLURB HERE ***
+
+Nicholas Piggin (12):
+  mm/vmalloc: fix vmalloc_to_page for huge vmap mappings
+  mm: apply_to_pte_range warn and fail if a large pte is encountered
+  mm/vmalloc: rename vmap_*_range vmap_pages_*_range
+  mm/ioremap: rename ioremap_*_range to vmap_*_range
+  mm: HUGE_VMAP arch support cleanup
+  powerpc: inline huge vmap supported functions
+  arm64: inline huge vmap supported functions
+  x86: inline huge vmap supported functions
+  mm: Move vmap_range from mm/ioremap.c to mm/vmalloc.c
+  mm/vmalloc: add vmap_range_noflush variant
+  mm/vmalloc: Hugepage vmalloc mappings
+  powerpc/64s/radix: Enable huge vmalloc mappings
+
+ .../admin-guide/kernel-parameters.txt         |   2 +
+ arch/Kconfig                                  |  10 +
+ arch/arm64/include/asm/vmalloc.h              |  25 +
+ arch/arm64/mm/mmu.c                           |  26 -
+ arch/powerpc/Kconfig                          |   1 +
+ arch/powerpc/include/asm/vmalloc.h            |  21 +
+ arch/powerpc/kernel/module.c                  |  13 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |  21 -
+ arch/x86/include/asm/vmalloc.h                |  23 +
+ arch/x86/mm/ioremap.c                         |  19 -
+ arch/x86/mm/pgtable.c                         |  13 -
+ include/linux/io.h                            |   9 -
+ include/linux/vmalloc.h                       |  27 ++
+ init/main.c                                   |   1 -
+ mm/ioremap.c                                  | 225 +--------
+ mm/memory.c                                   |  66 ++-
+ mm/page_alloc.c                               |   5 +-
+ mm/vmalloc.c                                  | 455 +++++++++++++++---
+ 18 files changed, 563 insertions(+), 399 deletions(-)
+
+-- 
+2.23.0
+
