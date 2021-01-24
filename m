@@ -1,55 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B067301CEF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Jan 2021 16:10:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B24301E0B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Jan 2021 19:08:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DNxJH1l15zDqCT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 02:10:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DP1G93dY5zDr0P
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 05:08:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
- helo=casper.infradead.org;
- envelope-from=batv+340bc88fe697da228867+6363+infradead.org+hch@casper.srs.infradead.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=BaxCQ4JE; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DNxG25rcYzDqbr
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jan 2021 02:08:26 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DP1DG1dHHzDqpd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jan 2021 05:07:05 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=dqC43SexXCFMHHthuyPfm6btpOzYB4LGWqFz9yXsqsE=; b=BaxCQ4JETgnTSdx5ZJfhAASEhz
- esJxRvOHbYrbto7O+p7uVv9HyRKOsua3l0BNbionSzcJZYiFYGlrrsKktY3c1b+BZT6Jvi4bMVnRh
- YMM5aTMq54Usa7gYS+B5up/PU+FCWP3uGZdJvgC/xWqtrcQP4J8ijpnrxV6i9kRC8XIps5RoOeeP7
- xH3mTPg9YiPd6SrCb0IQ1Y/ggPND+C8Nd3UP3F4wna0oB6yS4GH2gtr7whM8eUD+xOYQmfHa6lvGt
- ZqumIqBYwteZOy+D5Nbx7ifw1DVDCsylJstsUAgx/MVfCAuQO1amZqC/E6lkCNtIT42NvJUAofeaS
- M/wnOpuA==;
-Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat
- Linux)) id 1l3gzB-0035uS-SZ; Sun, 24 Jan 2021 15:07:31 +0000
-Date: Sun, 24 Jan 2021 15:07:29 +0000
-From: Christoph Hellwig <hch@infradead.org>
-To: Nicholas Piggin <npiggin@gmail.com>
+ d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+ :Reply-To:Content-ID:Content-Description;
+ bh=HhUOvfM5GjLoCSC9whTRSyY37b8Gp9Xbo3KKD5Qng4w=; b=Nwh9j/1vJ8QEsuvNwtNUS53AZP
+ B38LmqvapqV8SptCubayYSP2OuIeQ6MxXiDON/5O+8kXCwiVcpe43dZc9MafsKTosxTt9DBbrnDSM
+ k2oHopY0jVBsKwZQ3ueHF6jKmUEbIaZETsuminnNe59InN6H+eEiBI2auMvEIraO54KQTTWw5ILo0
+ nhM/B0Bzp0377P4emjTM7b5LkEkIdxWQMVx8T65tE8ZkEe5k6f3aU1q89hxXo29vUTdj0S6/5GYgV
+ GgG7i+3dL4Pz1ET9P5wB7pBkc/KF+QI2uf757Nh/mhsWiiyBgu/aAb9UipGTkbARES+uas+If+78v
+ kxfsuXhA==;
+Received: from [2601:1c0:6280:3f0::7650]
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1l3jmD-0005We-6p; Sun, 24 Jan 2021 18:06:18 +0000
 Subject: Re: [PATCH v10 11/12] mm/vmalloc: Hugepage vmalloc mappings
-Message-ID: <20210124150729.GC733865@infradead.org>
+To: Christoph Hellwig <hch@infradead.org>, Nicholas Piggin <npiggin@gmail.com>
 References: <20210124082230.2118861-1-npiggin@gmail.com>
  <20210124082230.2118861-12-npiggin@gmail.com>
+ <20210124150729.GC733865@infradead.org>
+From: Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <a420ccc5-91de-78e3-4276-7bca3e97b88b@infradead.org>
+Date: Sun, 24 Jan 2021 10:06:09 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210124082230.2118861-12-npiggin@gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20210124150729.GC733865@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,78 +60,33 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-arch@vger.kernel.org, Ding Tianhong <dingtianhong@huawei.com>,
- linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- linux-mm@kvack.org, Zefan Li <lizefan@huawei.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Zefan Li <lizefan@huawei.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jan 24, 2021 at 06:22:29PM +1000, Nicholas Piggin wrote:
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index 24862d15f3a3..f87feb616184 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -724,6 +724,16 @@ config HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->  config HAVE_ARCH_HUGE_VMAP
->  	bool
->  
-> +config HAVE_ARCH_HUGE_VMALLOC
-> +	depends on HAVE_ARCH_HUGE_VMAP
-> +	bool
-> +	help
-> +	  Archs that select this would be capable of PMD-sized vmaps (i.e.,
-> +	  arch_vmap_pmd_supported() returns true), and they must make no
-> +	  assumptions that vmalloc memory is mapped with PAGE_SIZE ptes. The
-> +	  VM_NOHUGE flag can be used to prohibit arch-specific allocations from
-> +	  using hugepages to help with this (e.g., modules may require it).
+On 1/24/21 7:07 AM, Christoph Hellwig wrote:
+>> +config HAVE_ARCH_HUGE_VMALLOC
+>> +	depends on HAVE_ARCH_HUGE_VMAP
+>> +	bool
+>> +	help
+>> +	  Archs that select this would be capable of PMD-sized vmaps (i.e.,
+>> +	  arch_vmap_pmd_supported() returns true), and they must make no
+>> +	  assumptions that vmalloc memory is mapped with PAGE_SIZE ptes. The
+>> +	  VM_NOHUGE flag can be used to prohibit arch-specific allocations from
+>> +	  using hugepages to help with this (e.g., modules may require it).
+> help texts don't make sense for options that aren't user visible.
 
-help texts don't make sense for options that aren't user visible.
+It's good that the Kconfig symbol is documented and it's better here
+than having to dig thru git commit logs IMO.
 
-More importantly, is there any good reason to keep the option and not
-just go the extra step and enable huge page vmalloc for arm64 and x86
-as well?
+It could be done as "# Arhcs that select" style comments instead
+of Kconfig help text.
 
-> +static inline bool is_vm_area_hugepages(const void *addr)
-> +{
-> +	/*
-> +	 * This may not 100% tell if the area is mapped with > PAGE_SIZE
-> +	 * page table entries, if for some reason the architecture indicates
-> +	 * larger sizes are available but decides not to use them, nothing
-> +	 * prevents that. This only indicates the size of the physical page
-> +	 * allocated in the vmalloc layer.
-> +	 */
-> +	return (find_vm_area(addr)->page_order > 0);
 
-No need for the braces here.
+-- 
+~Randy
 
->  }
->  
-> +static int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-> +		pgprot_t prot, struct page **pages, unsigned int page_shift)
-> +{
-> +	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
-> +
-> +	WARN_ON(page_shift < PAGE_SHIFT);
-> +
-> +	if (page_shift == PAGE_SHIFT)
-> +		return vmap_small_pages_range_noflush(addr, end, prot, pages);
-
-This begs for a IS_ENABLED check to disable the hugepage code for
-architectures that don't need it.
-
-> +int map_kernel_range_noflush(unsigned long addr, unsigned long size,
-> +			     pgprot_t prot, struct page **pages)
-> +{
-> +	return vmap_pages_range_noflush(addr, addr + size, prot, pages, PAGE_SHIFT);
-> +}
-
-Please just kill off map_kernel_range_noflush and map_kernel_range
-off entirely in favor of the vmap versions.
-
-> +	for (i = 0; i < area->nr_pages; i += 1U << area->page_order) {
-
-Maybe using a helper that takes the vm_area_struct and either returns
-area->page_order or always 0 based on IS_ENABLED?
