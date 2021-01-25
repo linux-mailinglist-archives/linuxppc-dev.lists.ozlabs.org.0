@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585E53026E8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 16:31:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C873026EC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 16:33:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DPYk253whzDrRr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 02:31:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DPYm71NRNzDrRY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 02:33:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,41 +15,41 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DPXml01jbzDqnG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 01:48:38 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DPXml68BczDqnG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 01:48:39 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DPXmZ4p91z9v0Hv;
- Mon, 25 Jan 2021 15:48:30 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DPXmb3P71z9v0Ht;
+ Mon, 25 Jan 2021 15:48:31 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id DEG9IjJZt4Za; Mon, 25 Jan 2021 15:48:30 +0100 (CET)
+ with ESMTP id P6Kxlvizs71j; Mon, 25 Jan 2021 15:48:31 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DPXmZ3sL7z9v0Ht;
- Mon, 25 Jan 2021 15:48:30 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DPXmb2ctpz9v0Hk;
+ Mon, 25 Jan 2021 15:48:31 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C04718B79E;
- Mon, 25 Jan 2021 15:48:35 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DA1698B7A0;
+ Mon, 25 Jan 2021 15:48:36 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id UVexfQb7Kmg0; Mon, 25 Jan 2021 15:48:35 +0100 (CET)
+ with ESMTP id U6Dxr_he3iTE; Mon, 25 Jan 2021 15:48:36 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 96FD98B79B;
- Mon, 25 Jan 2021 15:48:35 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9CFD78B79E;
+ Mon, 25 Jan 2021 15:48:36 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 86FFB66AD8; Mon, 25 Jan 2021 14:48:35 +0000 (UTC)
-Message-Id: <8d08b80adf3f5aebb3ffc679629bcfa27829bf5a.1611585031.git.christophe.leroy@csgroup.eu>
+ id 8F12E66AD8; Mon, 25 Jan 2021 14:48:36 +0000 (UTC)
+Message-Id: <b4feabb6a7860d36eb858ede68a276ae739fda33.1611585031.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1611585031.git.christophe.leroy@csgroup.eu>
 References: <cover.1611585031.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v4 22/23] powerpc/syscall: Optimise checks in beginning of
- system_call_exception()
+Subject: [PATCH v4 23/23] powerpc/syscall: Avoid storing 'current' in another
+ pointer
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com, msuchanek@suse.de
-Date: Mon, 25 Jan 2021 14:48:35 +0000 (UTC)
+Date: Mon, 25 Jan 2021 14:48:36 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,66 +66,69 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Combine all tests of regs->msr into a single logical one.
+By saving the pointer pointing to thread_info.flags, gcc copies r2
+in a non-volatile register.
 
-Before the patch:
+We know 'current' doesn't change, so avoid that intermediaite pointer.
 
-   0:	81 6a 00 84 	lwz     r11,132(r10)
-   4:	90 6a 00 88 	stw     r3,136(r10)
-   8:	69 60 00 02 	xori    r0,r11,2
-   c:	54 00 ff fe 	rlwinm  r0,r0,31,31,31
-  10:	0f 00 00 00 	twnei   r0,0
-  14:	69 63 40 00 	xori    r3,r11,16384
-  18:	54 63 97 fe 	rlwinm  r3,r3,18,31,31
-  1c:	0f 03 00 00 	twnei   r3,0
-  20:	69 6b 80 00 	xori    r11,r11,32768
-  24:	55 6b 8f fe 	rlwinm  r11,r11,17,31,31
-  28:	0f 0b 00 00 	twnei   r11,0
+Reduces null_syscall benchmark by 2 cycles (322 => 320 cycles)
 
-After the patch:
-
-   0:	81 6a 00 84 	lwz     r11,132(r10)
-   4:	90 6a 00 88 	stw     r3,136(r10)
-   8:	7d 6b 58 f8 	not     r11,r11
-   c:	71 6b c0 02 	andi.   r11,r11,49154
-  10:	0f 0b 00 00 	twnei   r11,0
-
-6 cycles less on powerpc 8xx (328 => 322 cycles).
+On PPC64, gcc seems to know that 'current' is not changing, and it keeps
+it in a non volatile register to avoid multiple read of 'current' in paca.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/syscall.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/syscall.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/arch/powerpc/kernel/syscall.c b/arch/powerpc/kernel/syscall.c
-index a40775daa88b..47ae55f94d1c 100644
+index 47ae55f94d1c..72e0b18b88d8 100644
 --- a/arch/powerpc/kernel/syscall.c
 +++ b/arch/powerpc/kernel/syscall.c
-@@ -28,6 +28,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
- 				   unsigned long r0, struct pt_regs *regs)
+@@ -186,7 +186,6 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 					   struct pt_regs *regs,
+ 					   long scv)
  {
- 	syscall_fn f;
-+	unsigned long expected_msr;
+-	unsigned long *ti_flagsp = &current_thread_info()->flags;
+ 	unsigned long ti_flags;
+ 	unsigned long ret = 0;
  
- 	regs->orig_gpr3 = r3;
+@@ -202,7 +201,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 	/* Check whether the syscall is issued inside a restartable sequence */
+ 	rseq_syscall(regs);
  
-@@ -39,10 +40,13 @@ notrace long system_call_exception(long r3, long r4, long r5,
+-	ti_flags = *ti_flagsp;
++	ti_flags = current_thread_info()->flags;
  
- 	trace_hardirqs_off(); /* finish reconciling */
+ 	if (unlikely(r3 >= (unsigned long)-MAX_ERRNO) && !scv) {
+ 		if (likely(!(ti_flags & (_TIF_NOERROR | _TIF_RESTOREALL)))) {
+@@ -216,7 +215,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 			ret = _TIF_RESTOREALL;
+ 		else
+ 			regs->gpr[3] = r3;
+-		clear_bits(_TIF_PERSYSCALL_MASK, ti_flagsp);
++		clear_bits(_TIF_PERSYSCALL_MASK, &current_thread_info()->flags);
+ 	} else {
+ 		regs->gpr[3] = r3;
+ 	}
+@@ -228,7 +227,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
  
-+	expected_msr = MSR_PR;
- 	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x))
--		BUG_ON(!(regs->msr & MSR_RI));
--	BUG_ON(!(regs->msr & MSR_PR));
--	BUG_ON(arch_irq_disabled_regs(regs));
-+		expected_msr |= MSR_RI;
-+	if (IS_ENABLED(CONFIG_PPC32))
-+		expected_msr |= MSR_EE;
-+	BUG_ON((regs->msr & expected_msr) ^ expected_msr);
-+	BUG_ON(IS_ENABLED(CONFIG_PPC64) && arch_irq_disabled_regs(regs));
+ again:
+ 	local_irq_disable();
+-	ti_flags = READ_ONCE(*ti_flagsp);
++	ti_flags = READ_ONCE(current_thread_info()->flags);
+ 	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
+ 		local_irq_enable();
+ 		if (ti_flags & _TIF_NEED_RESCHED) {
+@@ -244,7 +243,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 			do_notify_resume(regs, ti_flags);
+ 		}
+ 		local_irq_disable();
+-		ti_flags = READ_ONCE(*ti_flagsp);
++		ti_flags = READ_ONCE(current_thread_info()->flags);
+ 	}
  
- #ifdef CONFIG_PPC_PKEY
- 	if (mmu_has_feature(MMU_FTR_PKEY)) {
+ 	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && IS_ENABLED(CONFIG_PPC_FPU)) {
 -- 
 2.25.0
 
