@@ -2,54 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C873026EC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 16:33:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 352CB302837
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 17:52:46 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DPYm71NRNzDrRY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 02:33:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DPbWv06JBzDr2h
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 03:52:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DPXml68BczDqnG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 01:48:39 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DPXmb3P71z9v0Ht;
- Mon, 25 Jan 2021 15:48:31 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id P6Kxlvizs71j; Mon, 25 Jan 2021 15:48:31 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DPXmb2ctpz9v0Hk;
- Mon, 25 Jan 2021 15:48:31 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DA1698B7A0;
- Mon, 25 Jan 2021 15:48:36 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id U6Dxr_he3iTE; Mon, 25 Jan 2021 15:48:36 +0100 (CET)
-Received: from po16121vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9CFD78B79E;
- Mon, 25 Jan 2021 15:48:36 +0100 (CET)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 8F12E66AD8; Mon, 25 Jan 2021 14:48:36 +0000 (UTC)
-Message-Id: <b4feabb6a7860d36eb858ede68a276ae739fda33.1611585031.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1611585031.git.christophe.leroy@csgroup.eu>
-References: <cover.1611585031.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v4 23/23] powerpc/syscall: Avoid storing 'current' in another
- pointer
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- npiggin@gmail.com, msuchanek@suse.de
-Date: Mon, 25 Jan 2021 14:48:36 +0000 (UTC)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=lorenzo.pieralisi@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DPbTr6dlCzDqFJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 03:50:53 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 18AD511FB;
+ Mon, 25 Jan 2021 08:50:48 -0800 (PST)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com
+ [10.1.196.255])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 874043F68F;
+ Mon, 25 Jan 2021 08:50:46 -0800 (PST)
+Date: Mon, 25 Jan 2021 16:50:41 +0000
+From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To: Michael Walle <michael@walle.cc>
+Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
+Message-ID: <20210125165041.GA5979@e121166-lin.cambridge.arm.com>
+References: <20210120105246.23218-1-michael@walle.cc>
+ <CAL_JsqLSJCLtgPyAdKSqsy=JoHSLYef_0s-stTbiJ+VCq2qaSA@mail.gmail.com>
+ <CAGETcx86HMo=gaDdXFyJ4QQ-pGXWzw2G0J=SjC-eq4K7B1zQHg@mail.gmail.com>
+ <c3e35b90e173b15870a859fd7001a712@walle.cc>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c3e35b90e173b15870a859fd7001a712@walle.cc>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,74 +48,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+ Roy Zang <roy.zang@nxp.com>, PCI <linux-pci@vger.kernel.org>,
+ linux-kernel@vger.kernel.org, Minghuan Lian <minghuan.Lian@nxp.com>,
+ Mingkai Hu <mingkai.hu@nxp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-By saving the pointer pointing to thread_info.flags, gcc copies r2
-in a non-volatile register.
+On Wed, Jan 20, 2021 at 08:28:36PM +0100, Michael Walle wrote:
+> [RESEND, fat-fingered the buttons of my mail client and converted
+> all CCs to BCCs :(]
+> 
+> Am 2021-01-20 20:02, schrieb Saravana Kannan:
+> > On Wed, Jan 20, 2021 at 6:24 AM Rob Herring <robh@kernel.org> wrote:
+> > > 
+> > > On Wed, Jan 20, 2021 at 4:53 AM Michael Walle <michael@walle.cc>
+> > > wrote:
+> > > >
+> > > > fw_devlink will defer the probe until all suppliers are ready. We can't
+> > > > use builtin_platform_driver_probe() because it doesn't retry after probe
+> > > > deferral. Convert it to builtin_platform_driver().
+> > > 
+> > > If builtin_platform_driver_probe() doesn't work with fw_devlink, then
+> > > shouldn't it be fixed or removed?
+> > 
+> > I was actually thinking about this too. The problem with fixing
+> > builtin_platform_driver_probe() to behave like
+> > builtin_platform_driver() is that these probe functions could be
+> > marked with __init. But there are also only 20 instances of
+> > builtin_platform_driver_probe() in the kernel:
+> > $ git grep ^builtin_platform_driver_probe | wc -l
+> > 20
+> > 
+> > So it might be easier to just fix them to not use
+> > builtin_platform_driver_probe().
+> > 
+> > Michael,
+> > 
+> > Any chance you'd be willing to help me by converting all these to
+> > builtin_platform_driver() and delete builtin_platform_driver_probe()?
+> 
+> If it just moving the probe function to the _driver struct and
+> remove the __init annotations. I could look into that.
 
-We know 'current' doesn't change, so avoid that intermediaite pointer.
+Can I drop this patch then ?
 
-Reduces null_syscall benchmark by 2 cycles (322 => 320 cycles)
-
-On PPC64, gcc seems to know that 'current' is not changing, and it keeps
-it in a non volatile register to avoid multiple read of 'current' in paca.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/syscall.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/kernel/syscall.c b/arch/powerpc/kernel/syscall.c
-index 47ae55f94d1c..72e0b18b88d8 100644
---- a/arch/powerpc/kernel/syscall.c
-+++ b/arch/powerpc/kernel/syscall.c
-@@ -186,7 +186,6 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 					   struct pt_regs *regs,
- 					   long scv)
- {
--	unsigned long *ti_flagsp = &current_thread_info()->flags;
- 	unsigned long ti_flags;
- 	unsigned long ret = 0;
- 
-@@ -202,7 +201,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 	/* Check whether the syscall is issued inside a restartable sequence */
- 	rseq_syscall(regs);
- 
--	ti_flags = *ti_flagsp;
-+	ti_flags = current_thread_info()->flags;
- 
- 	if (unlikely(r3 >= (unsigned long)-MAX_ERRNO) && !scv) {
- 		if (likely(!(ti_flags & (_TIF_NOERROR | _TIF_RESTOREALL)))) {
-@@ -216,7 +215,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 			ret = _TIF_RESTOREALL;
- 		else
- 			regs->gpr[3] = r3;
--		clear_bits(_TIF_PERSYSCALL_MASK, ti_flagsp);
-+		clear_bits(_TIF_PERSYSCALL_MASK, &current_thread_info()->flags);
- 	} else {
- 		regs->gpr[3] = r3;
- 	}
-@@ -228,7 +227,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 
- again:
- 	local_irq_disable();
--	ti_flags = READ_ONCE(*ti_flagsp);
-+	ti_flags = READ_ONCE(current_thread_info()->flags);
- 	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
- 		local_irq_enable();
- 		if (ti_flags & _TIF_NEED_RESCHED) {
-@@ -244,7 +243,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 			do_notify_resume(regs, ti_flags);
- 		}
- 		local_irq_disable();
--		ti_flags = READ_ONCE(*ti_flagsp);
-+		ti_flags = READ_ONCE(current_thread_info()->flags);
- 	}
- 
- 	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && IS_ENABLED(CONFIG_PPC_FPU)) {
--- 
-2.25.0
-
+Thanks,
+Lorenzo
