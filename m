@@ -2,58 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9DA3024C3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 13:17:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF3B3024EC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 13:28:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DPTQJ04f4zDqvR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 23:17:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DPTfz6ntJzDqwp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 23:28:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DPTLc0j9SzDqNL
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jan 2021 23:14:06 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DPTLF5mjtz9tytf;
- Mon, 25 Jan 2021 13:13:57 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id fjwqXeu-7KdQ; Mon, 25 Jan 2021 13:13:57 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DPTLF4vfBz9tytY;
- Mon, 25 Jan 2021 13:13:57 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 06A1A8B79B;
- Mon, 25 Jan 2021 13:14:03 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id g4AmfjdBibuV; Mon, 25 Jan 2021 13:14:02 +0100 (CET)
-Received: from [172.25.230.103] (po15451.idsi0.si.c-s.fr [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B35128B75F;
- Mon, 25 Jan 2021 13:14:02 +0100 (CET)
-Subject: Re: [PATCH v10 11/12] mm/vmalloc: Hugepage vmalloc mappings
-To: Nicholas Piggin <npiggin@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DPTbL2MX3zDqNL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jan 2021 23:25:17 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-82-6XwU-z6xP--r2gJKmt1_cg-1; Mon, 25 Jan 2021 12:23:59 +0000
+X-MC-Unique: 6XwU-z6xP--r2gJKmt1_cg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Mon, 25 Jan 2021 12:24:01 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Mon, 25 Jan 2021 12:24:01 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Christophe Leroy' <christophe.leroy@csgroup.eu>, Nicholas Piggin
+ <npiggin@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Andrew Morton
+ <akpm@linux-foundation.org>
+Subject: RE: [PATCH v10 11/12] mm/vmalloc: Hugepage vmalloc mappings
+Thread-Topic: [PATCH v10 11/12] mm/vmalloc: Hugepage vmalloc mappings
+Thread-Index: AQHW8vrJGsfXJcLsV0a1KHeguqyGFao4Q6bA
+Date: Mon, 25 Jan 2021 12:24:01 +0000
+Message-ID: <7749b310046c4b9baa07037af1d97d87@AcuMS.aculab.com>
 References: <20210124082230.2118861-1-npiggin@gmail.com>
  <20210124082230.2118861-12-npiggin@gmail.com>
  <933352bd-dcf3-c483-4d7a-07afe1116cf1@csgroup.eu>
- <1611574637.k9njsi2um5.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <a3b26f6e-6f33-a606-6d60-5671e5ee395f@csgroup.eu>
-Date: Mon, 25 Jan 2021 13:13:59 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+In-Reply-To: <933352bd-dcf3-c483-4d7a-07afe1116cf1@csgroup.eu>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-In-Reply-To: <1611574637.k9njsi2um5.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,83 +66,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Ding Tianhong <dingtianhong@huawei.com>,
- linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Zefan Li <lizefan@huawei.com>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Ding Tianhong <dingtianhong@huawei.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Christoph Hellwig <hch@infradead.org>, Zefan
+ Li <lizefan@huawei.com>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+RnJvbTogQ2hyaXN0b3BoZSBMZXJveQ0KPiBTZW50OiAyNSBKYW51YXJ5IDIwMjEgMDk6MTUNCj4g
+DQo+IExlIDI0LzAxLzIwMjEgw6AgMDk6MjIsIE5pY2hvbGFzIFBpZ2dpbiBhIMOpY3JpdMKgOg0K
+PiA+IFN1cHBvcnQgaHVnZSBwYWdlIHZtYWxsb2MgbWFwcGluZ3MuIENvbmZpZyBvcHRpb24gSEFW
+RV9BUkNIX0hVR0VfVk1BTExPQw0KPiA+IGVuYWJsZXMgc3VwcG9ydCBvbiBhcmNoaXRlY3R1cmVz
+IHRoYXQgZGVmaW5lIEhBVkVfQVJDSF9IVUdFX1ZNQVAgYW5kDQo+ID4gc3VwcG9ydHMgUE1EIHNp
+emVkIHZtYXAgbWFwcGluZ3MuDQo+ID4NCj4gPiB2bWFsbG9jIHdpbGwgYXR0ZW1wdCB0byBhbGxv
+Y2F0ZSBQTUQtc2l6ZWQgcGFnZXMgaWYgYWxsb2NhdGluZyBQTUQgc2l6ZQ0KPiA+IG9yIGxhcmdl
+ciwgYW5kIGZhbGwgYmFjayB0byBzbWFsbCBwYWdlcyBpZiB0aGF0IHdhcyB1bnN1Y2Nlc3NmdWwu
+DQo+ID4NCj4gPiBBcmNoaXRlY3R1cmVzIG11c3QgZW5zdXJlIHRoYXQgYW55IGFyY2ggc3BlY2lm
+aWMgdm1hbGxvYyBhbGxvY2F0aW9ucw0KPiA+IHRoYXQgcmVxdWlyZSBQQUdFX1NJWkUgbWFwcGlu
+Z3MgKGUuZy4sIG1vZHVsZSBhbGxvY2F0aW9ucyB2cyBzdHJpY3QNCj4gPiBtb2R1bGUgcnd4KSB1
+c2UgdGhlIFZNX05PSFVHRSBmbGFnIHRvIGluaGliaXQgbGFyZ2VyIG1hcHBpbmdzLg0KPiA+DQo+
+ID4gV2hlbiBodWdlcGFnZSB2bWFsbG9jIG1hcHBpbmdzIGFyZSBlbmFibGVkIGluIHRoZSBuZXh0
+IHBhdGNoLCB0aGlzDQo+ID4gcmVkdWNlcyBUTEIgbWlzc2VzIGJ5IG5lYXJseSAzMHggb24gYSBg
+Z2l0IGRpZmZgIHdvcmtsb2FkIG9uIGEgMi1ub2RlDQo+ID4gUE9XRVI5ICg1OSw4MDAgLT4gMiwx
+MDApIGFuZCByZWR1Y2VzIENQVSBjeWNsZXMgYnkgMC41NCUuDQo+ID4NCj4gPiBUaGlzIGNhbiBy
+ZXN1bHQgaW4gbW9yZSBpbnRlcm5hbCBmcmFnbWVudGF0aW9uIGFuZCBtZW1vcnkgb3ZlcmhlYWQg
+Zm9yIGENCj4gPiBnaXZlbiBhbGxvY2F0aW9uLCBhbiBvcHRpb24gbm9odWdldm1hbGxvYyBpcyBh
+ZGRlZCB0byBkaXNhYmxlIGF0IGJvb3QuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBOaWNob2xh
+cyBQaWdnaW4gPG5waWdnaW5AZ21haWwuY29tPg0KPiA+IC0tLQ0KPiA+ICAgYXJjaC9LY29uZmln
+ICAgICAgICAgICAgfCAgMTAgKysrDQo+ID4gICBpbmNsdWRlL2xpbnV4L3ZtYWxsb2MuaCB8ICAx
+OCArKysrDQo+ID4gICBtbS9wYWdlX2FsbG9jLmMgICAgICAgICB8ICAgNSArLQ0KPiA+ICAgbW0v
+dm1hbGxvYy5jICAgICAgICAgICAgfCAxOTIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+LS0tLS0tLS0tLQ0KPiA+ICAgNCBmaWxlcyBjaGFuZ2VkLCAxNzcgaW5zZXJ0aW9ucygrKSwgNDgg
+ZGVsZXRpb25zKC0pDQo+ID4NCj4gDQo+ID4gZGlmZiAtLWdpdCBhL21tL3ZtYWxsb2MuYyBiL21t
+L3ZtYWxsb2MuYw0KPiA+IGluZGV4IDAzNzdlMWQwNTllNS4uZWVmNjFlMGY1MTcwIDEwMDY0NA0K
+PiA+IC0tLSBhL21tL3ZtYWxsb2MuYw0KPiA+ICsrKyBiL21tL3ZtYWxsb2MuYw0KPiANCj4gPiBA
+QCAtMjY5MSwxNSArMjc0NiwxOCBAQCBFWFBPUlRfU1lNQk9MX0dQTCh2bWFwX3Bmbik7DQo+ID4g
+ICAjZW5kaWYgLyogQ09ORklHX1ZNQVBfUEZOICovDQo+ID4NCj4gPiAgIHN0YXRpYyB2b2lkICpf
+X3ZtYWxsb2NfYXJlYV9ub2RlKHN0cnVjdCB2bV9zdHJ1Y3QgKmFyZWEsIGdmcF90IGdmcF9tYXNr
+LA0KPiA+IC0JCQkJIHBncHJvdF90IHByb3QsIGludCBub2RlKQ0KPiA+ICsJCQkJIHBncHJvdF90
+IHByb3QsIHVuc2lnbmVkIGludCBwYWdlX3NoaWZ0LA0KPiA+ICsJCQkJIGludCBub2RlKQ0KPiA+
+ICAgew0KPiA+ICAgCWNvbnN0IGdmcF90IG5lc3RlZF9nZnAgPSAoZ2ZwX21hc2sgJiBHRlBfUkVD
+TEFJTV9NQVNLKSB8IF9fR0ZQX1pFUk87DQo+ID4gLQl1bnNpZ25lZCBpbnQgbnJfcGFnZXMgPSBn
+ZXRfdm1fYXJlYV9zaXplKGFyZWEpID4+IFBBR0VfU0hJRlQ7DQo+ID4gLQl1bnNpZ25lZCBsb25n
+IGFycmF5X3NpemU7DQo+ID4gLQl1bnNpZ25lZCBpbnQgaTsNCj4gPiArCXVuc2lnbmVkIGludCBw
+YWdlX29yZGVyID0gcGFnZV9zaGlmdCAtIFBBR0VfU0hJRlQ7DQo+ID4gKwl1bnNpZ25lZCBsb25n
+IGFkZHIgPSAodW5zaWduZWQgbG9uZylhcmVhLT5hZGRyOw0KPiA+ICsJdW5zaWduZWQgbG9uZyBz
+aXplID0gZ2V0X3ZtX2FyZWFfc2l6ZShhcmVhKTsNCj4gPiArCXVuc2lnbmVkIGludCBucl9zbWFs
+bF9wYWdlcyA9IHNpemUgPj4gUEFHRV9TSElGVDsNCj4gPiAgIAlzdHJ1Y3QgcGFnZSAqKnBhZ2Vz
+Ow0KPiA+ICsJdW5zaWduZWQgaW50IGk7DQo+ID4NCj4gPiAtCWFycmF5X3NpemUgPSAodW5zaWdu
+ZWQgbG9uZylucl9wYWdlcyAqIHNpemVvZihzdHJ1Y3QgcGFnZSAqKTsNCj4gPiArCWFycmF5X3Np
+emUgPSAodW5zaWduZWQgbG9uZylucl9zbWFsbF9wYWdlcyAqIHNpemVvZihzdHJ1Y3QgcGFnZSAq
+KTsNCj4gDQo+IGFycmF5X3NpemUoKSBpcyBhIGZ1bmN0aW9uIGluIGluY2x1ZGUvbGludXgvb3Zl
+cmZsb3cuaA0KPiANCj4gRm9yIHNvbWUgcmVhc29uLCBpdCBicmVha3MgdGhlIGJ1aWxkIHdpdGgg
+eW91ciBzZXJpZXMuDQoNCkkgY2FuJ3Qgc2VlIHRoZSByZXBsYWNlbWVudCBkZWZpbml0aW9uIGZv
+ciBhcnJheV9zaXplLg0KVGhlIG9sZCBsb2NhbCB2YXJpYWJsZSBpcyBkZWxldGVkLg0KDQoJRGF2
+aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50
+IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTcz
+ODYgKFdhbGVzKQ0K
 
-
-Le 25/01/2021 à 12:37, Nicholas Piggin a écrit :
-> Excerpts from Christophe Leroy's message of January 25, 2021 7:14 pm:
->>
->>
->> Le 24/01/2021 à 09:22, Nicholas Piggin a écrit :
->>> Support huge page vmalloc mappings. Config option HAVE_ARCH_HUGE_VMALLOC
->>> enables support on architectures that define HAVE_ARCH_HUGE_VMAP and
->>> supports PMD sized vmap mappings.
->>>
->>> vmalloc will attempt to allocate PMD-sized pages if allocating PMD size
->>> or larger, and fall back to small pages if that was unsuccessful.
->>>
->>> Architectures must ensure that any arch specific vmalloc allocations
->>> that require PAGE_SIZE mappings (e.g., module allocations vs strict
->>> module rwx) use the VM_NOHUGE flag to inhibit larger mappings.
->>>
->>> When hugepage vmalloc mappings are enabled in the next patch, this
->>> reduces TLB misses by nearly 30x on a `git diff` workload on a 2-node
->>> POWER9 (59,800 -> 2,100) and reduces CPU cycles by 0.54%.
->>>
->>> This can result in more internal fragmentation and memory overhead for a
->>> given allocation, an option nohugevmalloc is added to disable at boot.
->>>
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> ---
->>>    arch/Kconfig            |  10 +++
->>>    include/linux/vmalloc.h |  18 ++++
->>>    mm/page_alloc.c         |   5 +-
->>>    mm/vmalloc.c            | 192 ++++++++++++++++++++++++++++++----------
->>>    4 files changed, 177 insertions(+), 48 deletions(-)
->>>
->>
->>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>> index 0377e1d059e5..eef61e0f5170 100644
->>> --- a/mm/vmalloc.c
->>> +++ b/mm/vmalloc.c
->>
->>> @@ -2691,15 +2746,18 @@ EXPORT_SYMBOL_GPL(vmap_pfn);
->>>    #endif /* CONFIG_VMAP_PFN */
->>>    
->>>    static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
->>> -				 pgprot_t prot, int node)
->>> +				 pgprot_t prot, unsigned int page_shift,
->>> +				 int node)
->>>    {
->>>    	const gfp_t nested_gfp = (gfp_mask & GFP_RECLAIM_MASK) | __GFP_ZERO;
->>> -	unsigned int nr_pages = get_vm_area_size(area) >> PAGE_SHIFT;
->>> -	unsigned long array_size;
->>> -	unsigned int i;
->>> +	unsigned int page_order = page_shift - PAGE_SHIFT;
->>> +	unsigned long addr = (unsigned long)area->addr;
->>> +	unsigned long size = get_vm_area_size(area);
->>> +	unsigned int nr_small_pages = size >> PAGE_SHIFT;
->>>    	struct page **pages;
->>> +	unsigned int i;
->>>    
->>> -	array_size = (unsigned long)nr_pages * sizeof(struct page *);
->>> +	array_size = (unsigned long)nr_small_pages * sizeof(struct page *);
->>
->> array_size() is a function in include/linux/overflow.h
->>
->> For some reason, it breaks the build with your series.
-> 
-> What config? I haven't seen it.
-> 
-
-Several configs I believe. I saw it this morning in 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210124082230.2118861-13-npiggin@gmail.com/
-
-Though the reports have all disappeared now.
