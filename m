@@ -2,46 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BDD3020ED
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 05:02:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F6B302173
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 05:54:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DPGRV16J1zDqpM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 15:02:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DPHZb4kSHzDqlc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 15:53:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ananth@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=fe6TLaUR; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DPGLk0pSMzDqWP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jan 2021 14:58:35 +1100 (AEDT)
-IronPort-SDR: TUIn887/yeYaGmxWsFbF7OckVRwfO+CKKpQug61iynbKRlE6COl+Vyo/0f5gXr0fHNVuY1Pq50
- +WsZYnNPFc2Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9874"; a="159433165"
-X-IronPort-AV: E=Sophos;i="5.79,372,1602572400"; d="scan'208";a="159433165"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2021 19:58:32 -0800
-IronPort-SDR: xefzWGluWCR4sdZz5276Im0x6Yow6Z6JJEwZxHOrA3yF27IryeC7X1Wwaf9XR2UARhn/S6sWd9
- a8b1Yj2ctm7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,372,1602572400"; d="scan'208";a="429076726"
-Received: from lkp-server01.sh.intel.com (HELO 27c4e0a4b6d9) ([10.239.97.150])
- by orsmga001.jf.intel.com with ESMTP; 24 Jan 2021 19:58:30 -0800
-Received: from kbuild by 27c4e0a4b6d9 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1l3t1I-0000eq-41; Mon, 25 Jan 2021 03:58:28 +0000
-Date: Mon, 25 Jan 2021 11:58:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS 44158b256b30415079588d0fcb1bccbdc2ccd009
-Message-ID: <600e41d4.idZm0G6g47eWbGy2%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DPHXt3GSMzDqjy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jan 2021 15:52:29 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10P4VFoQ142104; Sun, 24 Jan 2021 23:52:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=reply-to : subject : to
+ : cc : references : from : message-id : date : mime-version : in-reply-to
+ : content-type : content-transfer-encoding; s=pp1;
+ bh=uXwS8pEZBOv0UZXHNmaJyaLojpd95+/Z/7F7wb6AYoE=;
+ b=fe6TLaURcEbSgZYhAx5Id4S86ir69AxzYS3KJh83dWEojap2jGp4KmX9gY5IfZQDJmOJ
+ Fw5bOiyN4n99/faIn4CyJGpv4nkD3L35DSQcZ/+2BxJ/vtvT9G2CJTFIgjT5vJVM8Kj7
+ dyqy7lzKU62D5A81aowhVYQyumYO35nC0QUN/I2JJZ2+Kb1cj2zWG+Z6eldpK3m7bmUT
+ Fol6dgsvYVDFQFNlFx1n+8KXMwAS8a+ZqP9of8k2X8UvjOYoBaLbrQ74U/xvcfeRBNZV
+ YASu/JsfgUVe0s3HWwxRDrLBJCz308lq7IZgFVN4tWcqyRHcVrJ9Y+T6N26UpfQdwogk Dw== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 369pregn45-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 24 Jan 2021 23:52:22 -0500
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10P4gXMA000339;
+ Mon, 25 Jan 2021 04:52:22 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma03dal.us.ibm.com with ESMTP id 368be8q8vb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Jan 2021 04:52:22 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10P4qK5M30999006
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 25 Jan 2021 04:52:20 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 814F67805E;
+ Mon, 25 Jan 2021 04:52:20 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 89F117805F;
+ Mon, 25 Jan 2021 04:52:18 +0000 (GMT)
+Received: from [9.199.63.224] (unknown [9.199.63.224])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 25 Jan 2021 04:52:18 +0000 (GMT)
+Subject: Re: [PATCH] lib/sstep: Fix incorrect return from analyze_instr()
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <161124771457.333703.14641179082577500423.stgit@thinktux.local>
+ <87zh10pk50.fsf@mpe.ellerman.id.au>
+From: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
+Organization: IBM
+Message-ID: <c3ed79d8-ab18-ddd9-2dab-216a19a73f34@linux.ibm.com>
+Date: Mon, 25 Jan 2021 10:22:17 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <87zh10pk50.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-25_01:2021-01-22,
+ 2021-01-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 bulkscore=0
+ impostorscore=0 mlxlogscore=999 malwarescore=0 lowpriorityscore=0
+ mlxscore=0 phishscore=0 clxscore=1015 priorityscore=1501 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101250020
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,166 +99,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Reply-To: ananth@linux.ibm.com
+Cc: naveen.n.rao@linux.ibm.com, ravi.bangoria@linux.ibm.com, paulus@samba.org,
+ sandipan@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 44158b256b30415079588d0fcb1bccbdc2ccd009  Automatic merge of 'fixes' into merge (2021-01-24 09:52)
+On 1/23/21 6:03 AM, Michael Ellerman wrote:
+> Ananth N Mavinakayanahalli <ananth@linux.ibm.com> writes:
+>> We currently just percolate the return value from analyze_instr()
+>> to the caller of emulate_step(), especially if it is a -1.
+>>
+>> For one particular case (opcode = 4) for instructions that
+>> aren't currently emulated, we are returning 'should not be
+>> single-stepped' while we should have returned 0 which says
+>> 'did not emulate, may have to single-step'.
+>>
+>> Signed-off-by: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
+>> Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+>> ---
+>>   arch/powerpc/lib/sstep.c |   49 +++++++++++++++++++++++++---------------------
+>>   1 file changed, 27 insertions(+), 22 deletions(-)
+>>
+>> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+>> index 5a425a4a1d88..a3a0373843cd 100644
+>> --- a/arch/powerpc/lib/sstep.c
+>> +++ b/arch/powerpc/lib/sstep.c
+>> @@ -1445,34 +1445,39 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+>>   
+>>   #ifdef __powerpc64__
+>>   	case 4:
+>> -		if (!cpu_has_feature(CPU_FTR_ARCH_300))
+>> -			return -1;
+>> -
+>> -		switch (word & 0x3f) {
+>> -		case 48:	/* maddhd */
+>> -			asm volatile(PPC_MADDHD(%0, %1, %2, %3) :
+>> -				     "=r" (op->val) : "r" (regs->gpr[ra]),
+>> -				     "r" (regs->gpr[rb]), "r" (regs->gpr[rc]));
+>> -			goto compute_done;
+>> +		/*
+>> +		 * There are very many instructions with this primary opcode
+>> +		 * introduced in the ISA as early as v2.03. However, the ones
+>> +		 * we currently emulate were all introduced with ISA 3.0
+>> +		 */
+>> +		if (cpu_has_feature(CPU_FTR_ARCH_300)) {
+>> +			switch (word & 0x3f) {
+>> +			case 48:	/* maddhd */
+>> +				asm volatile(PPC_MADDHD(%0, %1, %2, %3) :
+>> +					     "=r" (op->val) : "r" (regs->gpr[ra]),
+>> +					     "r" (regs->gpr[rb]), "r" (regs->gpr[rc]));
+>> +				goto compute_done;
+> 
+> Indenting everything makes this patch harder to read, and I think makes
+> the resulting code harder to read too. We already have two levels of
+> switch here, and we're inside a ~1700 line function, so keeping things
+> simple is important I think.
+> 
+> Doesn't this achieve the same result?
+> 
+> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> index bf7a7d62ae8b..d631baaf1da2 100644
+> --- a/arch/powerpc/lib/sstep.c
+> +++ b/arch/powerpc/lib/sstep.c
+> @@ -1443,8 +1443,10 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+>   
+>   #ifdef __powerpc64__
+>   	case 4:
+> -		if (!cpu_has_feature(CPU_FTR_ARCH_300))
+> -			return -1;
+> +		if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
+> +			op->type = UNKNOWN;
+> +			return 0;
+> +		}
+>   
+>   		switch (word & 0x3f) {
+>   		case 48:	/* maddhd */
+> @@ -1470,7 +1472,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+>   		 * There are other instructions from ISA 3.0 with the same
+>   		 * primary opcode which do not have emulation support yet.
+>   		 */
+> -		return -1;
+> +		op->type = UNKNOWN;
+> +		return 0;
+>   #endif
+>   
+>   	case 7:		/* mulli */
+> 
 
-elapsed time: 954m
+Looks good to me.
 
-configs tested: 140
-configs skipped: 2
+Acked-by: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-mips                         tb0287_defconfig
-mips                         mpc30x_defconfig
-arm                           h5000_defconfig
-sh                          rsk7264_defconfig
-powerpc                 linkstation_defconfig
-arm                      pxa255-idp_defconfig
-arm                     am200epdkit_defconfig
-mips                      pistachio_defconfig
-xtensa                  cadence_csp_defconfig
-powerpc                      chrp32_defconfig
-arm                             mxs_defconfig
-mips                     cu1000-neo_defconfig
-powerpc                     tqm8560_defconfig
-powerpc64                        alldefconfig
-sh                        sh7757lcr_defconfig
-sh                          kfr2r09_defconfig
-arm                       cns3420vb_defconfig
-powerpc                     ppa8548_defconfig
-m68k                          multi_defconfig
-sh                      rts7751r2d1_defconfig
-mips                         tb0219_defconfig
-mips                           ip27_defconfig
-m68k                         apollo_defconfig
-arc                        nsimosci_defconfig
-powerpc                  mpc885_ads_defconfig
-s390                          debug_defconfig
-arm                          iop32x_defconfig
-arm                          tango4_defconfig
-mips                        nlm_xlr_defconfig
-arm                          pxa3xx_defconfig
-arm                         hackkit_defconfig
-arm                          pcm027_defconfig
-sh                            shmin_defconfig
-powerpc                     mpc512x_defconfig
-arm                      integrator_defconfig
-h8300                       h8s-sim_defconfig
-powerpc                      mgcoge_defconfig
-arm                       aspeed_g5_defconfig
-sh                     sh7710voipgw_defconfig
-arm                          imote2_defconfig
-mips                     loongson1b_defconfig
-arm                            dove_defconfig
-arm                            mps2_defconfig
-sh                   rts7751r2dplus_defconfig
-mips                        workpad_defconfig
-powerpc                      walnut_defconfig
-arm                           sama5_defconfig
-mips                          ath79_defconfig
-sh                           se7751_defconfig
-mips                         bigsur_defconfig
-csky                             alldefconfig
-arm                          pxa168_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20210124
-i386                 randconfig-a002-20210124
-i386                 randconfig-a003-20210124
-i386                 randconfig-a001-20210125
-i386                 randconfig-a002-20210125
-i386                 randconfig-a004-20210125
-i386                 randconfig-a006-20210125
-i386                 randconfig-a005-20210125
-i386                 randconfig-a003-20210125
-i386                 randconfig-a004-20210124
-i386                 randconfig-a006-20210124
-i386                 randconfig-a005-20210124
-x86_64               randconfig-a012-20210124
-x86_64               randconfig-a016-20210124
-x86_64               randconfig-a015-20210124
-x86_64               randconfig-a011-20210124
-x86_64               randconfig-a013-20210124
-x86_64               randconfig-a014-20210124
-i386                 randconfig-a013-20210124
-i386                 randconfig-a011-20210124
-i386                 randconfig-a012-20210124
-i386                 randconfig-a015-20210124
-i386                 randconfig-a014-20210124
-i386                 randconfig-a016-20210124
-x86_64               randconfig-a003-20210125
-x86_64               randconfig-a002-20210125
-x86_64               randconfig-a001-20210125
-x86_64               randconfig-a005-20210125
-x86_64               randconfig-a006-20210125
-x86_64               randconfig-a004-20210125
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a003-20210124
-x86_64               randconfig-a002-20210124
-x86_64               randconfig-a001-20210124
-x86_64               randconfig-a005-20210124
-x86_64               randconfig-a006-20210124
-x86_64               randconfig-a004-20210124
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Ananth
