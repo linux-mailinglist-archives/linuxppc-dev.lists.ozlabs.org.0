@@ -1,85 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FE2303179
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 02:50:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E11303333
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 05:48:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DPqSl68ttzDqbW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 12:50:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DPvPh1bSCzDqwY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 15:48:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a;
+ helo=mail-pg1-x52a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=A4jcBSUC; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=SYAJDvZ6; dkim-atps=neutral
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
+ [IPv6:2607:f8b0:4864:20::52a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DPqQn2jWKzDqld
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 12:49:01 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10Q1WAfm079981; Mon, 25 Jan 2021 20:48:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=qDlLTrJhI9pAWTPZzvEj2myghWfEoN4K/hh1AcU5nnc=;
- b=A4jcBSUCed/y8O6j82+m2GYzSBr/aUIO0I73UYCGUArwUx0K6/bFzkcfMLmIocKzPkUq
- Pjeg/MGeo+XSF55PgkgFMmnWYIW5HA5TWW1yvNQN4yWyKuNfnxL/GgGwOd5SbroyMUgg
- UJjsrzaJvSsOtjfEp2cX6O2HwjykI1FkY7y0XJ7t0pwdwQt9jGmjctaGMACTj0Z3M02B
- DXYDLrc0axFPvjGSSOtfGyg7bL4DMvtocZ6VF2wK0jdCbNQ83GS2XLVi8JJUYMW7cT4t
- bjfiMrfljNQnviIi21EAJiAFk1zXPcjwHmhwRyES4BDRIfngTiMSB+CWnydyRKtNEt18 uQ== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36a4ttpfta-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 25 Jan 2021 20:48:45 -0500
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10Q1kXDu004438;
- Tue, 26 Jan 2021 01:48:44 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma01wdc.us.ibm.com with ESMTP id 36a8uh09ax-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 26 Jan 2021 01:48:44 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 10Q1mhJw17891772
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 26 Jan 2021 01:48:43 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A3AC26A057;
- Tue, 26 Jan 2021 01:48:43 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 13A986A04F;
- Tue, 26 Jan 2021 01:48:42 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 26 Jan 2021 01:48:42 +0000 (GMT)
-From: Stefan Berger <stefanb@linux.vnet.ibm.com>
-To: jarkko@kernel.org, linux-integrity@vger.kernel.org
-Subject: [PATCH v2] tpm: ibmvtpm: fix error return code in tpm_ibmvtpm_probe()
-Date: Mon, 25 Jan 2021 20:47:53 -0500
-Message-Id: <20210126014753.340299-1-stefanb@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DPvLL3yB5zDqjx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 15:45:26 +1100 (AEDT)
+Received: by mail-pg1-x52a.google.com with SMTP id z21so10779130pgj.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jan 2021 20:45:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AFfFN2OAQ8TwttkY21sH9afv+ooH6c07LAgyNmn2ne8=;
+ b=SYAJDvZ64NU29shcQLyX9k6o8kTN0WBUv14l0TWsjcwt8g3sIOk5GSfxvOS92GwMXa
+ 92FOajX3UORP5tkqQE8zpafN6H0PJy2u9A3rTMrcLw8LMjH7/+qNT+ap0yxO9khh7zAq
+ NIWoLk0pvSRhR3EmUFm26IVns/dfQAJVn0JkomMdxpVi6Oi0Bis/Z+KTFbG0Hv3iJvqZ
+ yDrOp9taoWmnsfzRZ+bFeBqsEAJz9pC91YSXuzzQ8rIrJHvDtrDcSdwlWV+T95BvQueB
+ WRwTdYuxABa/YgIi4hWkzme/RTHYzfOqkWro6yeCdVn8hefk8d9DcQ+qV2MdXbZqJ3q+
+ WM6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AFfFN2OAQ8TwttkY21sH9afv+ooH6c07LAgyNmn2ne8=;
+ b=ozw3e2MW5DqqPL1aEeG4IEUaGaSW30qmedgbS9B8MtKyHbbv28dq5n2Oxlq849yLoy
+ 5qHY4/8lK/wBZ+ZJ4F6iwK7GS3KfQgdKQbtjY8EQ50o/ohD1ZYmWUME6MuGMl1DODkya
+ Cs1p5hUAD4/ldLKtMT/cjrfbQOKXw8hEON05Y9uSddTZok1yEZz2C+XwvPFGatLqeJIg
+ dordYBBv9C+BgBrGYr7xmxogRg4yLRBgG+e+hXlU8vXPVfr8O4IUKpexz8bH2OnjOWbw
+ XPlBdrpHkVMIVl0UcDhfR2EotWtySjA0BwRX/Iqn3Jo/7q/ZgWYiWCHs4R5uq2DJT/TU
+ fK3g==
+X-Gm-Message-State: AOAM5315rolFZms8GU2Yy320Vw291Xp8QqVGBONeRmoQtd35BSz3lwgl
+ OQLry2DH8cNoFOJC2vzR92E=
+X-Google-Smtp-Source: ABdhPJw2TZnjjQ2toXtftBVanmOt8gohLfB95odGUonFep85R53b56tt4Y6Y/w91de6NlHaKOXitiw==
+X-Received: by 2002:a63:df09:: with SMTP id u9mr3890007pgg.187.1611636323069; 
+ Mon, 25 Jan 2021 20:45:23 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com
+ (192.156.221.203.dial.dynamic.acc50-nort-cbr.comindico.com.au.
+ [203.221.156.192])
+ by smtp.gmail.com with ESMTPSA id 68sm19272293pfg.90.2021.01.25.20.45.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 25 Jan 2021 20:45:22 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v11 00/13] huge vmalloc mappings
+Date: Tue, 26 Jan 2021 14:44:57 +1000
+Message-Id: <20210126044510.2491820-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-25_10:2021-01-25,
- 2021-01-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- priorityscore=1501 impostorscore=0 spamscore=0 clxscore=1011
- mlxlogscore=999 bulkscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0
- adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101260002
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,38 +77,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Wang Hai <wanghai38@huawei.com>, linux-kernel@vger.kernel.org,
- Hulk Robot <hulkci@huawei.com>, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org, Stefan Berger <stefanb@linux.ibm.com>
+Cc: linux-arch@vger.kernel.org, Ding Tianhong <dingtianhong@huawei.com>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Christoph Hellwig <hch@infradead.org>,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+I think I ended up implementing all Christoph's comments because
+they turned out better in the end. Cleanups coming in another
+series though.
 
-Return error code -ETIMEDOUT rather than '0' when waiting for the
-rtce_buf to be set has timed out.
+Thanks,
+Nick
 
-Fixes: d8d74ea3c002 ("tpm: ibmvtpm: Wait for buffer to be set before proceeding")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
----
- drivers/char/tpm/tpm_ibmvtpm.c | 1 +
- 1 file changed, 1 insertion(+)
+Since v10:
+- Fixed code style, most > 80 colums, tweak patch titles, etc [thanks Christoph]
+- Made huge vmalloc code and data structure compile away if unselected
+  [Christoph]
+- Archs only have to provide arch_vmap_p?d_supported for levels they
+  implement [Christoph]
 
-diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
-index 994385bf37c0..813eb2cac0ce 100644
---- a/drivers/char/tpm/tpm_ibmvtpm.c
-+++ b/drivers/char/tpm/tpm_ibmvtpm.c
-@@ -687,6 +687,7 @@ static int tpm_ibmvtpm_probe(struct vio_dev *vio_dev,
- 				ibmvtpm->rtce_buf != NULL,
- 				HZ)) {
- 		dev_err(dev, "CRQ response timed out\n");
-+		rc = -ETIMEDOUT;
- 		goto init_irq_cleanup;
- 	}
- 
+Since v9:
+- Fixed intermediate build breakage on x86-32 !PAE [thanks Ding]
+- Fixed small page fallback case vm_struct double-free [thanks Ding]
+
+Since v8:
+- Fixed nommu compile.
+- Added Kconfig option help text
+- Added VM_NOHUGE which should help archs implement it [suggested by Rick]
+
+Since v7:
+- Rebase, added some acks, compile fix
+- Removed "order=" from vmallocinfo, it's a bit confusing (nr_pages
+  is in small page size for compatibility).
+- Added arch_vmap_pmd_supported() test before starting to allocate
+  the large page, rather than only testing it when doing the map, to
+  avoid unsupported configs trying to allocate huge pages for no
+  reason.
+
+Since v6:
+- Fixed a false positive warning introduced in patch 2, found by
+  kbuild test robot.
+
+Since v5:
+- Split arch changes out better and make the constant folding work
+- Avoid most of the 80 column wrap, fix a reference to lib/ioremap.c
+- Fix compile error on some archs
+
+Since v4:
+- Fixed an off-by-page-order bug in v4
+- Several minor cleanups.
+- Added page order to /proc/vmallocinfo
+- Added hugepage to alloc_large_system_hage output.
+- Made an architecture config option, powerpc only for now.
+
+Since v3:
+- Fixed an off-by-one bug in a loop
+- Fix !CONFIG_HAVE_ARCH_HUGE_VMAP build fail
+
+Nicholas Piggin (13):
+  mm/vmalloc: fix HUGE_VMAP regression by enabling huge pages in
+    vmalloc_to_page
+  mm: apply_to_pte_range warn and fail if a large pte is encountered
+  mm/vmalloc: rename vmap_*_range vmap_pages_*_range
+  mm/ioremap: rename ioremap_*_range to vmap_*_range
+  mm: HUGE_VMAP arch support cleanup
+  powerpc: inline huge vmap supported functions
+  arm64: inline huge vmap supported functions
+  x86: inline huge vmap supported functions
+  mm/vmalloc: provide fallback arch huge vmap support functions
+  mm: Move vmap_range from mm/ioremap.c to mm/vmalloc.c
+  mm/vmalloc: add vmap_range_noflush variant
+  mm/vmalloc: Hugepage vmalloc mappings
+  powerpc/64s/radix: Enable huge vmalloc mappings
+
+ .../admin-guide/kernel-parameters.txt         |   2 +
+ arch/Kconfig                                  |  11 +
+ arch/arm64/include/asm/vmalloc.h              |  24 +
+ arch/arm64/mm/mmu.c                           |  26 -
+ arch/powerpc/Kconfig                          |   1 +
+ arch/powerpc/include/asm/vmalloc.h            |  20 +
+ arch/powerpc/kernel/module.c                  |  21 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |  21 -
+ arch/x86/include/asm/vmalloc.h                |  20 +
+ arch/x86/mm/ioremap.c                         |  19 -
+ arch/x86/mm/pgtable.c                         |  13 -
+ include/linux/io.h                            |   9 -
+ include/linux/vmalloc.h                       |  46 ++
+ init/main.c                                   |   1 -
+ mm/ioremap.c                                  | 225 +-------
+ mm/memory.c                                   |  66 ++-
+ mm/page_alloc.c                               |   5 +-
+ mm/vmalloc.c                                  | 484 +++++++++++++++---
+ 18 files changed, 614 insertions(+), 400 deletions(-)
+
 -- 
-2.25.4
+2.23.0
 
