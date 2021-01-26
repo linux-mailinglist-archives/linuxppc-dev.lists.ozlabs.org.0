@@ -1,72 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9C7302F41
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jan 2021 23:44:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D9B3030FB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 01:32:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DPlKh5cyvzDqvV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 09:44:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DPnkw12z8zDr28
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 11:32:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b33;
- helo=mail-yb1-xb33.google.com; envelope-from=saravanak@google.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=v0CUYdsf; dkim-atps=neutral
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com
- [IPv6:2607:f8b0:4864:20::b33])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=lLtaOxwg; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DPlHS6MWYzDqn1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 09:42:26 +1100 (AEDT)
-Received: by mail-yb1-xb33.google.com with SMTP id p185so14891039ybg.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jan 2021 14:42:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=uUoNf9BBFKkgh2ppnaejSB621RRoaZzYwArQ/+nGs5I=;
- b=v0CUYdsfdi78E2T5lQL29cB54rzB1CtEtGaQywaH8ndp/fK0k15CDrNwlYXhEyXGnP
- 6Y0DHhTk81aGdBor3d8zkKCVoBmT7D/aXbgN9n3yrbsMPRuS2Rkmo8oNkhOz/3Ki0RfW
- SmbaFODL6ySPYtok39wzAJVIjIvR/s2vbkntxDz+Ej1rnJsMqqury3SsKXGmeviI1BDH
- SoD+MDozlVTb89r7Zm2Gf6P18wk2T4ZUw7OavjOg7m/kq5cQNSvN+NKHXZvv9HhVNZlq
- tEI6rOU7qvZuDYFGdHCnakyn8Y0+1yJrwo3rRs/OdJZ0ScW7WullbDpbVzq35Aa+PxTR
- lj4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=uUoNf9BBFKkgh2ppnaejSB621RRoaZzYwArQ/+nGs5I=;
- b=bJeBPEKoiH525XZmUVB5Hzn/Xj/wH3nJtqE2h6CUz2j9S4fhge0IFVegWHVl4O8Mxn
- KxWPV3Zv5g9Twk6HNlO4sWnPJrWeVcS1VYkDPr/q8L9+Vn3JQhnqhLmoa6Vk2c0gQJ5G
- /tSIwNLAH5i7RsBpVsBZscZtPvt7MfJ4wIjDc7wXOAi66OV04KF6f6gb0x4XMLFZnE23
- hh5pCqbdgieyWULRFyVEPNkcMRHAZdd2Kskx8NHdLPyWDYlBj0pyAdCSXxExnHKb0up0
- 89OWDVGHA2ItPxdiULJACa+LfwVZiT9hW1pr9Fa1zxFPe+G2C3GB1OKe5bkrWQUwlCCI
- 8K7Q==
-X-Gm-Message-State: AOAM532UiCpctSrcrKIYFWBZ9Cpd03rXbRVxthrSYRlWVU+34dyR/ibj
- jLUu/KpULc2aNDIsfiFSTb5vlTmxQeXmFj76sN0AWw==
-X-Google-Smtp-Source: ABdhPJzstPk4hc3oMjRFyfDYbQKEtMFjvVapEAWEK8W/jH+3yeTl2JV0+Uap2GESBQLTIzc5VXYaLlyzC7kWrcxtQPQ=
-X-Received: by 2002:a25:3345:: with SMTP id z66mr4179764ybz.466.1611614542807; 
- Mon, 25 Jan 2021 14:42:22 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DPnjB4R20zDqWM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 11:31:25 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10Q02eSN052276; Mon, 25 Jan 2021 19:31:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=references : from : to :
+ cc : subject : in-reply-to : date : message-id : mime-version :
+ content-type; s=pp1; bh=5orEmH7GjXb9T6dppAu3nZMub/TPP4rO1PEClnt1LXU=;
+ b=lLtaOxwg1Fv1ZjUNm2LyqU+iZJvHxtlxbbORaNuqcfncuVIndP1hXMRkQDCjJ5CigIVr
+ QMW5NmzbbiGQDrq+k0YekUqP0iDbbZUt72lOM+rTGhE2E+GvTMOwNTfn0zYAEv+jau4Z
+ vH1Xct0QqDS5JsySaQWMGg8D7ZQfq+S4z02ZhYEwEbaHL+RiCnZQKQBgAf4mSQbAOrDw
+ V3HrKiKXVuT37T1RjmFx1P/MFbjbcLtmh1DXUI8/1xb0HuZG+UoOcSWHDvqSmz2ekqka
+ g98K9EikZdCbZ/tYl/BufLVPUDTsLMXFkMFnCHpfH2I8tevDt7/xRAX906B35wBIt/oJ dw== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36a64yk2rh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Jan 2021 19:31:03 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10Q0KIPk018190;
+ Tue, 26 Jan 2021 00:31:02 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma02wdc.us.ibm.com with ESMTP id 36a6wsrk92-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 26 Jan 2021 00:31:02 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10Q0V1nI4588032
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 26 Jan 2021 00:31:01 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8B552C6059;
+ Tue, 26 Jan 2021 00:31:01 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0FC57C6055;
+ Tue, 26 Jan 2021 00:30:57 +0000 (GMT)
+Received: from manicouagan.localdomain (unknown [9.85.183.123])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Tue, 26 Jan 2021 00:30:57 +0000 (GMT)
+References: <20201220064959.GB392325@kernel.org>
+ <20210122043714.266075-1-bauerman@linux.ibm.com>
+ <20210123180911.aafa8404a3a7a30779713456@linux-foundation.org>
+ <20210124073421.GG6332@kernel.org>
+User-agent: mu4e 1.4.10; emacs 27.1
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v2 2/2] memblock: do not start bottom-up allocations
+ with kernel_end
+In-reply-to: <20210124073421.GG6332@kernel.org>
+Date: Mon, 25 Jan 2021 21:30:55 -0300
+Message-ID: <87h7n44k00.fsf@manicouagan.localdomain>
 MIME-Version: 1.0
-References: <20210120105246.23218-1-michael@walle.cc>
- <CAL_JsqLSJCLtgPyAdKSqsy=JoHSLYef_0s-stTbiJ+VCq2qaSA@mail.gmail.com>
- <CAGETcx86HMo=gaDdXFyJ4QQ-pGXWzw2G0J=SjC-eq4K7B1zQHg@mail.gmail.com>
- <c3e35b90e173b15870a859fd7001a712@walle.cc>
- <CAGETcx8eZRd1fJ3yuO_t2UXBFHObeNdv-c8oFH3mXw6zi=zOkQ@mail.gmail.com>
- <f706c0e4b684e07635396fcf02f4c9a6@walle.cc>
- <CAGETcx8_6Hp+MWFOhRohXwdWFSfCc7A=zpb5QYNHZE5zv0bDig@mail.gmail.com>
- <CAMuHMdWvFej-6vkaLM44t7eX2LpkDSXu4_7VH-X-3XRueXTO=A@mail.gmail.com>
- <a24391e62b107040435766fff52bdd31@walle.cc>
-In-Reply-To: <a24391e62b107040435766fff52bdd31@walle.cc>
-From: Saravana Kannan <saravanak@google.com>
-Date: Mon, 25 Jan 2021 14:41:46 -0800
-Message-ID: <CAGETcx8FO+YSM0jwCnDdnvE3NCdjZ=1FSmAZpyaOEOvCgd4SXw@mail.gmail.com>
-Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
-To: Michael Walle <michael@walle.cc>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-25_10:2021-01-25,
+ 2021-01-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ priorityscore=1501 impostorscore=0 lowpriorityscore=0 bulkscore=0
+ spamscore=0 adultscore=0 clxscore=1015 malwarescore=0 mlxlogscore=999
+ phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101250119
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,90 +97,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roy Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- PCI <linux-pci@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- Minghuan Lian <minghuan.Lian@nxp.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
+Cc: riel@surriel.com, kernel-team@fb.com, Ram Pai <linuxram@us.ibm.com>,
+ linux-kernel@vger.kernel.org, guro@fb.com, linux-mm@kvack.org,
+ Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Konrad Rzeszutek Wilk <konrad@darnok.org>, iamjoonsoo.kim@lge.com,
+ mhocko@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 25, 2021 at 11:49 AM Michael Walle <michael@walle.cc> wrote:
->
-> Am 2021-01-21 12:01, schrieb Geert Uytterhoeven:
-> > Hi Saravana,
-> >
-> > On Thu, Jan 21, 2021 at 1:05 AM Saravana Kannan <saravanak@google.com>
-> > wrote:
-> >> On Wed, Jan 20, 2021 at 3:53 PM Michael Walle <michael@walle.cc>
-> >> wrote:
-> >> > Am 2021-01-20 20:47, schrieb Saravana Kannan:
-> >> > > On Wed, Jan 20, 2021 at 11:28 AM Michael Walle <michael@walle.cc>
-> >> > > wrote:
-> >> > >>
-> >> > >> [RESEND, fat-fingered the buttons of my mail client and converted
-> >> > >> all CCs to BCCs :(]
-> >> > >>
-> >> > >> Am 2021-01-20 20:02, schrieb Saravana Kannan:
-> >> > >> > On Wed, Jan 20, 2021 at 6:24 AM Rob Herring <robh@kernel.org> wrote:
-> >> > >> >>
-> >> > >> >> On Wed, Jan 20, 2021 at 4:53 AM Michael Walle <michael@walle.cc>
-> >> > >> >> wrote:
-> >> > >> >> >
-> >> > >> >> > fw_devlink will defer the probe until all suppliers are ready. We can't
-> >> > >> >> > use builtin_platform_driver_probe() because it doesn't retry after probe
-> >> > >> >> > deferral. Convert it to builtin_platform_driver().
-> >> > >> >>
-> >> > >> >> If builtin_platform_driver_probe() doesn't work with fw_devlink, then
-> >> > >> >> shouldn't it be fixed or removed?
-> >> > >> >
-> >> > >> > I was actually thinking about this too. The problem with fixing
-> >> > >> > builtin_platform_driver_probe() to behave like
-> >> > >> > builtin_platform_driver() is that these probe functions could be
-> >> > >> > marked with __init. But there are also only 20 instances of
-> >> > >> > builtin_platform_driver_probe() in the kernel:
-> >> > >> > $ git grep ^builtin_platform_driver_probe | wc -l
-> >> > >> > 20
-> >> > >> >
-> >> > >> > So it might be easier to just fix them to not use
-> >> > >> > builtin_platform_driver_probe().
-> >> > >> >
-> >> > >> > Michael,
-> >> > >> >
-> >> > >> > Any chance you'd be willing to help me by converting all these to
-> >> > >> > builtin_platform_driver() and delete builtin_platform_driver_probe()?
-> >> > >>
-> >> > >> If it just moving the probe function to the _driver struct and
-> >> > >> remove the __init annotations. I could look into that.
-> >> > >
-> >> > > Yup. That's pretty much it AFAICT.
-> >> > >
-> >> > > builtin_platform_driver_probe() also makes sure the driver doesn't ask
-> >> > > for async probe, etc. But I doubt anyone is actually setting async
-> >> > > flags and still using builtin_platform_driver_probe().
-> >> >
-> >> > Hasn't module_platform_driver_probe() the same problem? And there
-> >> > are ~80 drivers which uses that.
-> >>
-> >> Yeah. The biggest problem with all of these is the __init markers.
-> >> Maybe some familiar with coccinelle can help?
-> >
-> > And dropping them will increase memory usage.
->
-> Although I do have the changes for the builtin_platform_driver_probe()
-> ready, I don't think it makes much sense to send these unless we agree
-> on the increased memory footprint. While there are just a few
-> builtin_platform_driver_probe() and memory increase _might_ be
-> negligible, there are many more module_platform_driver_probe().
 
-While it's good to drop code that'll not be used past kernel init, the
-module_platform_driver_probe() is going even more extreme. It doesn't
-even allow deferred probe (well before kernel init is done). I don't
-think that behavior is right and that's why we should delete it. Also,
-I doubt if any of these probe functions even take up 4KB of memory.
+Mike Rapoport <rppt@kernel.org> writes:
 
--Saravana
+> On Sat, Jan 23, 2021 at 06:09:11PM -0800, Andrew Morton wrote:
+>> On Fri, 22 Jan 2021 01:37:14 -0300 Thiago Jung Bauermann <bauerman@linux.ibm.com> wrote:
+>> 
+>> > Mike Rapoport <rppt@kernel.org> writes:
+>> > 
+>> > > > Signed-off-by: Roman Gushchin <guro@fb.com>
+>> > > 
+>> > > Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
+>> > 
+>> > I've seen a couple of spurious triggers of the WARN_ONCE() removed by this
+>> > patch. This happens on some ppc64le bare metal (powernv) server machines with
+>> > CONFIG_SWIOTLB=y and crashkernel=4G, as described in a candidate patch I posted
+>> > to solve this issue in a different way:
+>> > 
+>> > https://lore.kernel.org/linuxppc-dev/20201218062103.76102-1-bauerman@linux.ibm.com/
+>> > 
+>> > Since this patch solves that problem, is it possible to include it in the next
+>> > feasible v5.11-rcX, with the following tag?
+>> 
+>> We could do this,
+
+Thanks!
+
+>> if we're confident that this patch doesn't depend on
+>> [1/2] "mm: cma: allocate cma areas bottom-up"?  I think it is...
+>
+> A think it does not depend on cma bottom-up allocation, it's rather the other
+> way around: without this CMA bottom-up allocation could fail with KASLR
+> enabled.
+
+I agree. Conceptually, this could have been patch 1 in this series.
+
+> Still, this patch may need updates to the way x86 does early reservations:
+>
+> https://lore.kernel.org/lkml/20210115083255.12744-1-rppt@kernel.org
+
+Ah, I wasn't aware of this. Thanks for fixing those issues. That series
+seems to be well accepted.
+
+>> > Fixes: 8fabc623238e ("powerpc: Ensure that swiotlb buffer is allocated from low memory")
+>> 
+>> I added that.
+
+Thanks!
+-- 
+Thiago Jung Bauermann
+IBM Linux Technology Center
