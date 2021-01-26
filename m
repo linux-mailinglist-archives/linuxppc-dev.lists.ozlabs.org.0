@@ -2,68 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FFE13033B2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 06:04:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E4F3033D4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 06:06:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DPvmJ2FnCzDqPG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 16:04:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DPvpX5rWfzDqMB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 16:06:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
- helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
+ helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=viLXuq+p; dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
+ header.s=20161025 header.b=J12z3jif; dkim-atps=neutral
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
+ [IPv6:2607:f8b0:4864:20::636])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DPvMB0NM8zDqpd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 15:46:13 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id g15so1508219pjd.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jan 2021 20:46:13 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DPvMH2Y5dzDqnV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 15:46:19 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id h15so6659831pli.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jan 2021 20:46:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=80Po72abxrqXJsVTjT2d7/68A0xoEHKX9fHFXJoIAvk=;
- b=viLXuq+pOoJhiIJfe3V53L70i2VCM5Kx2zpp1vzlriFsS7XnMzjIeGHXf6XeUUnQqL
- DT4NxshjZo/ZsM40oISLUsEiIrY7A+chXuVUfRv6f7vz7lPqLMi4JHdIOZX79O01P/Ap
- fTfsPaI3F3k1d1EMB9lC6vuzdt49EadkfQIxASWs3/kIiQ+6zYj5lp8MIsyUYvr7XfSZ
- bYpVRMV4hT3l0TGn0y+IPpyvkUcDpcMJHQxkZ/gGwLh8CRj/V3sZCkHjEQYOmNrJmvKe
- T3GjSk+u/NVlYDadRweAx8D7mH96FsmQUc+D106H0+5DYwUUbGkaGldFSiMPfxQjOE5y
- 6LKw==
+ bh=gApOKbU6H3fO0DOtJ4xuolfMmes5P/L4pnflvulqjKs=;
+ b=J12z3jif/XPiTYZb7Tn6H2wNEPPg9fOcdC17l8zNulNwMm3k5YZYnhlBx+CQtiUN0t
+ FNZNd8qgYrkTBrfASSZSofGt+UgLsrMPgvtSXktDLy1B8s7MFTBQYwzXSUMrR3SRv37q
+ Yh60PhLt+ONpXaW2TPkwUVrC8mYiY/4CucBgy4AoGqNqtG6En9JS7GBTQgqNpGtl1AiZ
+ mSGRgAbVNQTy5/2sJb1B8j7vdP1oW4XmRsN4e3VjlXQmDKg9V8niuzf2xO3N9p7+6rt/
+ zZGwfQF/1nWlX1IJQGnFmfnRj2ieyieS2DcomKckIFvFVvY8MYIIaAcj98XGI/sv4fw8
+ jEsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=80Po72abxrqXJsVTjT2d7/68A0xoEHKX9fHFXJoIAvk=;
- b=l2/lLdKcyj4wM7oHQ0tW11JgjZKjvIFbDhP2srWVF9oxGiDWAjRR6YdN/df4AJjhWl
- To40VVbdfmrEBpM5CHLBfBHYS4EjRaZnV73LXYiStrdAHGkQGkP1YlqFNb07zKihl0Qz
- 2ed6ito0eVdSYJmZiM83/mBayW96olHi8RRS+gZLejzqmhWxU/oScJWDv96BFYXdrfFA
- /W5FaOgX279at5/9bRDMjMLtyWh2mhoyXqg3Z7lt8n+8DAOfzsGRjsNAWrVQcK4CUuR4
- Vt3Q9xVT6MNRNdmqFiauCAyqgURjLkT2B3/jRbJackLsXH36LC+GGiWKRo2sCT0XK1hw
- Vrjw==
-X-Gm-Message-State: AOAM532qHspxubTbajaJ71W6ha7ucVgJQ6XjqhS6RGmxHF5fNXJQrO1b
- yyEQ7WcxZ/ahXk3HIi2ohvU=
-X-Google-Smtp-Source: ABdhPJx0MEaL9UthAXE+lEl19XW53SVj2As+HvUb7kW+EEQDhe4oaMJEGdAx5EmAU394pBr2oTER/A==
-X-Received: by 2002:a17:90b:19c7:: with SMTP id
- nm7mr4133639pjb.20.1611636370000; 
- Mon, 25 Jan 2021 20:46:10 -0800 (PST)
+ bh=gApOKbU6H3fO0DOtJ4xuolfMmes5P/L4pnflvulqjKs=;
+ b=MYPaYulQvsWjv7m47i2fS4Nymey7pSYq2ZgWlUqQmPN3No5EwkzyFd3OMPrvNNi/Yg
+ UdMIEOiTrv2gvwa5DosDKXZZ9YGZVGpinqfmlc+LNmH/uqGWmTikgpj8eA39sifT9Z6M
+ pU4ZPzzXI8VZ1yIdxXfgnro5SFzwmHD5UKDr3UnfOpqF24HoXrrnJWp8gsdolxqw5DkW
+ TPkXoLwvK2GuewsSAKaMm9P8Ul8b/xUyS/2sltwxrQZxwKC+JAuDC3n6FmUOXvQGkSQV
+ K30THg93cQWKDto136m76FsDoKfhvMVcS4A4Jv+ht0QQuTcWZEJ9G6+HZ7lqOBBAvuNI
+ T8rA==
+X-Gm-Message-State: AOAM531r+/11n/8CjGgbZoSGcGIKwLtBJXbjnbCysDxu0XHicA/3wlyw
+ wth8bpPC0jxnEcnbLi/0L0M=
+X-Google-Smtp-Source: ABdhPJy9i7oKiPdhuf/AF9Q80a0Jgn5v98zhIuT84Z/8lhpx28KUNiXyS/LgF6cLICfknkVh6SwdGQ==
+X-Received: by 2002:a17:902:d915:b029:de:30a3:fdd6 with SMTP id
+ c21-20020a170902d915b02900de30a3fdd6mr3938742plz.45.1611636374963; 
+ Mon, 25 Jan 2021 20:46:14 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com
  (192.156.221.203.dial.dynamic.acc50-nort-cbr.comindico.com.au.
  [203.221.156.192])
- by smtp.gmail.com with ESMTPSA id 68sm19272293pfg.90.2021.01.25.20.46.03
+ by smtp.gmail.com with ESMTPSA id 68sm19272293pfg.90.2021.01.25.20.46.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Jan 2021 20:46:09 -0800 (PST)
+ Mon, 25 Jan 2021 20:46:14 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linux-mm@kvack.org,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v11 08/13] x86: inline huge vmap supported functions
-Date: Tue, 26 Jan 2021 14:45:05 +1000
-Message-Id: <20210126044510.2491820-9-npiggin@gmail.com>
+Subject: [PATCH v11 09/13] mm/vmalloc: provide fallback arch huge vmap support
+ functions
+Date: Tue, 26 Jan 2021 14:45:06 +1000
+Message-Id: <20210126044510.2491820-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210126044510.2491820-1-npiggin@gmail.com>
 References: <20210126044510.2491820-1-npiggin@gmail.com>
@@ -80,132 +81,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Ding Tianhong <dingtianhong@huawei.com>,
+Cc: linux-arch@vger.kernel.org, Ding Tianhong <dingtianhong@huawei.com>,
  linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Christoph Hellwig <hch@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
+ Christoph Hellwig <hch@infradead.org>,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This allows unsupported levels to be constant folded away, and so
-p4d_free_pud_page can be removed because it's no longer linked to.
+If an architecture doesn't support a particular page table level as
+a huge vmap page size then allow it to skip defining the support
+query function.
 
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/x86/include/asm/vmalloc.h | 22 +++++++++++++++++++---
- arch/x86/mm/ioremap.c          | 21 ---------------------
- arch/x86/mm/pgtable.c          | 13 -------------
- 3 files changed, 19 insertions(+), 37 deletions(-)
+ arch/arm64/include/asm/vmalloc.h   |  7 +++----
+ arch/powerpc/include/asm/vmalloc.h |  7 +++----
+ arch/x86/include/asm/vmalloc.h     | 13 +++++--------
+ include/linux/vmalloc.h            | 24 ++++++++++++++++++++----
+ 4 files changed, 31 insertions(+), 20 deletions(-)
 
+diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmalloc.h
+index fc9a12d6cc1a..7a22aeea9bb5 100644
+--- a/arch/arm64/include/asm/vmalloc.h
++++ b/arch/arm64/include/asm/vmalloc.h
+@@ -4,11 +4,8 @@
+ #include <asm/page.h>
+ 
+ #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+-static inline bool arch_vmap_p4d_supported(pgprot_t prot)
+-{
+-	return false;
+-}
+ 
++#define arch_vmap_pud_supported arch_vmap_pud_supported
+ static inline bool arch_vmap_pud_supported(pgprot_t prot)
+ {
+ 	/*
+@@ -19,11 +16,13 @@ static inline bool arch_vmap_pud_supported(pgprot_t prot)
+ 	       !IS_ENABLED(CONFIG_PTDUMP_DEBUGFS);
+ }
+ 
++#define arch_vmap_pmd_supported arch_vmap_pmd_supported
+ static inline bool arch_vmap_pmd_supported(pgprot_t prot)
+ {
+ 	/* See arch_vmap_pud_supported() */
+ 	return !IS_ENABLED(CONFIG_PTDUMP_DEBUGFS);
+ }
++
+ #endif
+ 
+ #endif /* _ASM_ARM64_VMALLOC_H */
+diff --git a/arch/powerpc/include/asm/vmalloc.h b/arch/powerpc/include/asm/vmalloc.h
+index 3f0c153befb0..4c69ece52a31 100644
+--- a/arch/powerpc/include/asm/vmalloc.h
++++ b/arch/powerpc/include/asm/vmalloc.h
+@@ -5,21 +5,20 @@
+ #include <asm/page.h>
+ 
+ #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+-static inline bool arch_vmap_p4d_supported(pgprot_t prot)
+-{
+-	return false;
+-}
+ 
++#define arch_vmap_pud_supported arch_vmap_pud_supported
+ static inline bool arch_vmap_pud_supported(pgprot_t prot)
+ {
+ 	/* HPT does not cope with large pages in the vmalloc area */
+ 	return radix_enabled();
+ }
+ 
++#define arch_vmap_pmd_supported arch_vmap_pmd_supported
+ static inline bool arch_vmap_pmd_supported(pgprot_t prot)
+ {
+ 	return radix_enabled();
+ }
++
+ #endif
+ 
+ #endif /* _ASM_POWERPC_VMALLOC_H */
 diff --git a/arch/x86/include/asm/vmalloc.h b/arch/x86/include/asm/vmalloc.h
-index 094ea2b565f3..e714b00fc0ca 100644
+index e714b00fc0ca..49ce331f3ac6 100644
 --- a/arch/x86/include/asm/vmalloc.h
 +++ b/arch/x86/include/asm/vmalloc.h
-@@ -1,13 +1,29 @@
- #ifndef _ASM_X86_VMALLOC_H
- #define _ASM_X86_VMALLOC_H
- 
-+#include <asm/cpufeature.h>
- #include <asm/page.h>
+@@ -6,24 +6,21 @@
  #include <asm/pgtable_areas.h>
  
  #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
--bool arch_vmap_p4d_supported(pgprot_t prot);
--bool arch_vmap_pud_supported(pgprot_t prot);
--bool arch_vmap_pmd_supported(pgprot_t prot);
+-static inline bool arch_vmap_p4d_supported(pgprot_t prot)
+-{
+-	return false;
+-}
+ 
++#ifdef CONFIG_X86_64
++#define arch_vmap_pud_supported arch_vmap_pud_supported
+ static inline bool arch_vmap_pud_supported(pgprot_t prot)
+ {
+-#ifdef CONFIG_X86_64
+ 	return boot_cpu_has(X86_FEATURE_GBPAGES);
+-#else
+-	return false;
+-#endif
+ }
++#endif
+ 
++#define arch_vmap_pmd_supported arch_vmap_pmd_supported
+ static inline bool arch_vmap_pmd_supported(pgprot_t prot)
+ {
+ 	return boot_cpu_has(X86_FEATURE_PSE);
+ }
++
+ #endif
+ 
+ #endif /* _ASM_X86_VMALLOC_H */
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index 00bd62bd701e..9f7b8b00101b 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -83,10 +83,26 @@ struct vmap_area {
+ 	};
+ };
+ 
+-#ifndef CONFIG_HAVE_ARCH_HUGE_VMAP
+-static inline bool arch_vmap_p4d_supported(pgprot_t prot) { return false; }
+-static inline bool arch_vmap_pud_supported(pgprot_t prot) { return false; }
+-static inline bool arch_vmap_pmd_supported(pgprot_t prot) { return false; }
++/* archs that select HAVE_ARCH_HUGE_VMAP should override one or more of these */
++#ifndef arch_vmap_p4d_supported
 +static inline bool arch_vmap_p4d_supported(pgprot_t prot)
 +{
 +	return false;
 +}
++#endif
 +
++#ifndef arch_vmap_pud_supported
 +static inline bool arch_vmap_pud_supported(pgprot_t prot)
 +{
-+#ifdef CONFIG_X86_64
-+	return boot_cpu_has(X86_FEATURE_GBPAGES);
-+#else
 +	return false;
-+#endif
 +}
++#endif
 +
++#ifndef arch_vmap_pmd_supported
 +static inline bool arch_vmap_pmd_supported(pgprot_t prot)
 +{
-+	return boot_cpu_has(X86_FEATURE_PSE);
++	return false;
 +}
  #endif
  
- #endif /* _ASM_X86_VMALLOC_H */
-diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
-index fbaf0c447986..12c686c65ea9 100644
---- a/arch/x86/mm/ioremap.c
-+++ b/arch/x86/mm/ioremap.c
-@@ -481,27 +481,6 @@ void iounmap(volatile void __iomem *addr)
- }
- EXPORT_SYMBOL(iounmap);
- 
--#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
--bool arch_vmap_p4d_supported(pgprot_t prot)
--{
--	return false;
--}
--
--bool arch_vmap_pud_supported(pgprot_t prot)
--{
--#ifdef CONFIG_X86_64
--	return boot_cpu_has(X86_FEATURE_GBPAGES);
--#else
--	return false;
--#endif
--}
--
--bool arch_vmap_pmd_supported(pgprot_t prot)
--{
--	return boot_cpu_has(X86_FEATURE_PSE);
--}
--#endif
--
  /*
-  * Convert a physical pointer to a virtual kernel pointer for /dev/mem
-  * access
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index f6a9e2e36642..d27cf69e811d 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -780,14 +780,6 @@ int pmd_clear_huge(pmd_t *pmd)
- 	return 0;
- }
- 
--/*
-- * Until we support 512GB pages, skip them in the vmap area.
-- */
--int p4d_free_pud_page(p4d_t *p4d, unsigned long addr)
--{
--	return 0;
--}
--
- #ifdef CONFIG_X86_64
- /**
-  * pud_free_pmd_page - Clear pud entry and free pmd page.
-@@ -861,11 +853,6 @@ int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
- 
- #else /* !CONFIG_X86_64 */
- 
--int pud_free_pmd_page(pud_t *pud, unsigned long addr)
--{
--	return pud_none(*pud);
--}
--
- /*
-  * Disable free page handling on x86-PAE. This assures that ioremap()
-  * does not update sync'd pmd entries. See vmalloc_sync_one().
 -- 
 2.23.0
 
