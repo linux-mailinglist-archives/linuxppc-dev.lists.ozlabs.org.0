@@ -1,63 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440B4303A44
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 11:30:39 +0100 (CET)
-Received: from bilbo.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQ30X3VVKzDqgj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 21:30:36 +1100 (AEDT)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3615303A92
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 11:42:29 +0100 (CET)
+Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQ3GB1wHjzDqJM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 21:42:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ smtp.mailfrom=walle.cc (client-ip=176.9.125.105; helo=ssl.serverraum.org;
+ envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256
+ header.s=mail2016061301 header.b=GKqOOoub; 
+ dkim-atps=neutral
+Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DQ3Cb6dPjzDq94
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 21:40:04 +1100 (AEDT)
+Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DQ2xv4dfYzDqbY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 21:28:17 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-103-0STilh9oPG2ZWsVCMifh3A-1; Tue, 26 Jan 2021 10:28:09 +0000
-X-MC-Unique: 0STilh9oPG2ZWsVCMifh3A-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Tue, 26 Jan 2021 10:28:09 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Tue, 26 Jan 2021 10:28:09 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Nicholas Piggin' <npiggin@gmail.com>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>, "msuchanek@suse.de"
- <msuchanek@suse.de>, Paul Mackerras <paulus@samba.org>
-Subject: RE: [PATCH v4 11/23] powerpc/syscall: Rename syscall_64.c into
- syscall.c
-Thread-Topic: [PATCH v4 11/23] powerpc/syscall: Rename syscall_64.c into
- syscall.c
-Thread-Index: AQHW8807JGe39joh3kmpEKEvm5M8jao5syyQ
-Date: Tue, 26 Jan 2021 10:28:09 +0000
-Message-ID: <d9993f034db848d1afeffa322373b811@AcuMS.aculab.com>
-References: <cover.1611585031.git.christophe.leroy@csgroup.eu>
- <ff9dd4accdc897013594768833d54444e4823bf9.1611585031.git.christophe.leroy@csgroup.eu>
- <1611656343.yaxha7r2q4.astroid@bobo.none>
-In-Reply-To: <1611656343.yaxha7r2q4.astroid@bobo.none>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by ssl.serverraum.org (Postfix) with ESMTPSA id B900223E6C;
+ Tue, 26 Jan 2021 11:39:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
+ s=mail2016061301; t=1611657595;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dCH/YXfZ9HXdQBHPo7Nn9zVU+J0dd/QGNvh+wOZ/2X0=;
+ b=GKqOOoubkXGqrd/zE5rlnqsPTy9r0oLk3z+IM3Sf/2UoHZvkZLtvwOhunJfmhZwOa6B0aK
+ cdugxcwYILhWGaAagQO7wh0vXI4z0begDwW+Die9587dy0ps0+RVeAl6opeJ7UERxokhLv
+ UX9LiZSc46WBwqVpsZdf7Ik5uNyVZGk=
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Tue, 26 Jan 2021 11:39:54 +0100
+From: Michael Walle <michael@walle.cc>
+To: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
+In-Reply-To: <20210126100256.GA20547@e121166-lin.cambridge.arm.com>
+References: <20210120105246.23218-1-michael@walle.cc>
+ <20210126100256.GA20547@e121166-lin.cambridge.arm.com>
+User-Agent: Roundcube Webmail/1.4.10
+Message-ID: <1a36ef741c5ab2a6e90b38c58944aa25@walle.cc>
+X-Sender: michael@walle.cc
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,25 +62,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Roy Zang <roy.zang@nxp.com>, Saravana Kannan <saravanak@google.com>,
+ Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Minghuan Lian <minghuan.Lian@nxp.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org,
+ Mingkai Hu <mingkai.hu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogTmljaG9sYXMgUGlnZ2luDQo+IFNlbnQ6IDI2IEphbnVhcnkgMjAyMSAxMDoyMQ0KPiAN
-Cj4gRXhjZXJwdHMgZnJvbSBDaHJpc3RvcGhlIExlcm95J3MgbWVzc2FnZSBvZiBKYW51YXJ5IDI2
-LCAyMDIxIDEyOjQ4IGFtOg0KPiA+IHN5c2NhbGxfNjQuYyB3aWxsIGJlIHJldXNlZCBhbG1vc3Qg
-YXMgaXMgZm9yIFBQQzMyLg0KPiA+DQo+ID4gUmVuYW1lIGl0IHN5c2NhbGwuYw0KPiANCj4gQ291
-bGQgeW91IHJlbmFtZSBpdCB0byBpbnRlcnJ1cHQuYyBpbnN0ZWFkPyBBIHN5c3RlbSBjYWxsIGlz
-IGFuDQo+IGludGVycnVwdCwgYW5kIHRoZSBmaWxlIG5vdyBhbHNvIGhhcyBjb2RlIHRvIHJldHVy
-biBmcm9tIG90aGVyDQo+IGludGVycnVwdHMgYXMgd2VsbCwgYW5kIGl0IG1hdGNoZXMgdGhlIG5l
-dyBhc20vaW50ZXJydXB0LmggZnJvbQ0KPiB0aGUgaW50ZXJydXB0cyBzZXJpZXMuDQoNCkhtbW0u
-Li4uDQoNClRoYXQgbWlnaHQgbWFrZSBpdCBoYXJkZXIgZm9yIHNvbWVvbmUgbG9va2luZyBmb3Ig
-dGhlIHN5c3RlbSBjYWxsDQplbnRyeSBjb2RlIHRvIGZpbmQgaXQuDQoNCkluIHNvbWUgc2Vuc2Ug
-aW50ZXJydXB0cyBhcmUgdGhlIHNpbXBsZXIgY2FzZS4NCg0KRXNwZWNpYWxseSB3aGVuIGNvbXBh
-cmluZyB3aXRoIG90aGVyIGFyY2hpdGVjdHVyZXMgd2hpY2ggaGF2ZQ0Kc3BlY2lhbCBpbnN0cnVj
-dGlvbnMgZm9yIHN5c2NhbGwgZW50cnkuDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJl
-c3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsx
-IDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
+Am 2021-01-26 11:02, schrieb Lorenzo Pieralisi:
+> On Wed, Jan 20, 2021 at 11:52:46AM +0100, Michael Walle wrote:
+>> fw_devlink will defer the probe until all suppliers are ready. We 
+>> can't
+>> use builtin_platform_driver_probe() because it doesn't retry after 
+>> probe
+>> deferral. Convert it to builtin_platform_driver().
+>> 
+>> Fixes: e590474768f1 ("driver core: Set fw_devlink=on by default")
+> 
+> I will have to drop this Fixes: tag if you don't mind, it is not
+> in the mainline.
 
+That commit is in Greg's for-next tree:
+https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git/commit/?h=driver-core-next&id=e590474768f1cc04852190b61dec692411b22e2a
+
+I was under the impression there are other commits with this
+particular fixes tag, too. Either it was removed from
+for-next queues or I was confused.
+
+But I'm fine with removing the tag, assuming this will end
+up together with the "driver core: Set fw_devlink=on by default"
+commit in 5.11.
+
+-michael
