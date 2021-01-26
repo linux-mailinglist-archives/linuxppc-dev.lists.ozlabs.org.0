@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8FF530398D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 10:55:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1623039A4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 10:57:34 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQ2Cd5bTdzDqpJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 20:55:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQ2GL71CyzDqnw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 20:57:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,32 +15,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DPxvw3CJhzDqCY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 17:41:08 +1100 (AEDT)
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4DPxst15TDzl9tD;
- Tue, 26 Jan 2021 14:39:30 +0800 (CST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DPy5t5VnlzDq7d
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 17:49:48 +1100 (AEDT)
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4DPy4K0Svxz15yXj;
+ Tue, 26 Jan 2021 14:48:33 +0800 (CST)
 Received: from [10.174.179.117] (10.174.179.117) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.498.0; Tue, 26 Jan 2021 14:40:50 +0800
-Subject: Re: [PATCH v11 01/13] mm/vmalloc: fix HUGE_VMAP regression by
- enabling huge pages in vmalloc_to_page
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 26 Jan 2021 14:49:34 +0800
+Subject: Re: [PATCH v11 02/13] mm: apply_to_pte_range warn and fail if a large
+ pte is encountered
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20210126044510.2491820-1-npiggin@gmail.com>
- <20210126044510.2491820-2-npiggin@gmail.com>
+ <20210126044510.2491820-3-npiggin@gmail.com>
 From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <76f6c211-c383-51d2-7c5a-575f0d51b82d@huawei.com>
-Date: Tue, 26 Jan 2021 14:40:50 +0800
+Message-ID: <4cb12137-2944-7973-b0f0-070f6f48bead@huawei.com>
+Date: Tue, 26 Jan 2021 14:49:34 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <20210126044510.2491820-2-npiggin@gmail.com>
+In-Reply-To: <20210126044510.2491820-3-npiggin@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.174.179.117]
 X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Tue, 26 Jan 2021 20:53:31 +1100
+X-Mailman-Approved-At: Tue, 26 Jan 2021 20:53:32 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,105 +64,123 @@ Sender: "Linuxppc-dev"
 
 Hi:
 On 2021/1/26 12:44, Nicholas Piggin wrote:
-> vmalloc_to_page returns NULL for addresses mapped by larger pages[*].
-> Whether or not a vmap is huge depends on the architecture details,
-> alignments, boot options, etc., which the caller can not be expected
-> to know. Therefore HUGE_VMAP is a regression for vmalloc_to_page.
-> 
-> This change teaches vmalloc_to_page about larger pages, and returns
-> the struct page that corresponds to the offset within the large page.
-> This makes the API agnostic to mapping implementation details.
-> 
-> [*] As explained by commit 029c54b095995 ("mm/vmalloc.c: huge-vmap:
->     fail gracefully on unexpected huge vmap mappings")
+> apply_to_pte_range might mistake a large pte for bad, or treat it as a
+> page table, resulting in a crash or corruption. Add a test to warn and
+> return error if large entries are found.
 > 
 > Reviewed-by: Christoph Hellwig <hch@lst.de>
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  mm/vmalloc.c | 41 ++++++++++++++++++++++++++---------------
->  1 file changed, 26 insertions(+), 15 deletions(-)
+>  mm/memory.c | 66 +++++++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 49 insertions(+), 17 deletions(-)
 > 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index e6f352bf0498..62372f9e0167 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -34,7 +34,7 @@
->  #include <linux/bitops.h>
->  #include <linux/rbtree_augmented.h>
->  #include <linux/overflow.h>
-> -
-> +#include <linux/pgtable.h>
->  #include <linux/uaccess.h>
->  #include <asm/tlbflush.h>
->  #include <asm/shmparam.h>
-> @@ -343,7 +343,9 @@ int is_vmalloc_or_module_addr(const void *x)
+> diff --git a/mm/memory.c b/mm/memory.c
+> index feff48e1465a..672e39a72788 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2440,13 +2440,21 @@ static int apply_to_pmd_range(struct mm_struct *mm, pud_t *pud,
+>  	}
+>  	do {
+>  		next = pmd_addr_end(addr, end);
+> -		if (create || !pmd_none_or_clear_bad(pmd)) {
+> -			err = apply_to_pte_range(mm, pmd, addr, next, fn, data,
+> -						 create, mask);
+> -			if (err)
+> -				break;
+> +		if (pmd_none(*pmd) && !create)
+> +			continue;
+> +		if (WARN_ON_ONCE(pmd_leaf(*pmd)))
+> +			return -EINVAL;
+> +		if (!pmd_none(*pmd) && WARN_ON_ONCE(pmd_bad(*pmd))) {
+> +			if (!create)
+> +				continue;
+> +			pmd_clear_bad(pmd);
+>  		}
+> +		err = apply_to_pte_range(mm, pmd, addr, next,
+> +					 fn, data, create, mask);
+> +		if (err)
+> +			break;
+>  	} while (pmd++, addr = next, addr != end);
+> +
+>  	return err;
 >  }
 >  
->  /*
-> - * Walk a vmap address to the struct page it maps.
-> + * Walk a vmap address to the struct page it maps. Huge vmap mappings will
-> + * return the tail page that corresponds to the base page address, which
-> + * matches small vmap mappings.
->   */
->  struct page *vmalloc_to_page(const void *vmalloc_addr)
->  {
-> @@ -363,25 +365,33 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
->  
->  	if (pgd_none(*pgd))
->  		return NULL;
-> +	if (WARN_ON_ONCE(pgd_leaf(*pgd)))
-> +		return NULL; /* XXX: no allowance for huge pgd */
-> +	if (WARN_ON_ONCE(pgd_bad(*pgd)))
-> +		return NULL;
+> @@ -2468,13 +2476,21 @@ static int apply_to_pud_range(struct mm_struct *mm, p4d_t *p4d,
+>  	}
+>  	do {
+>  		next = pud_addr_end(addr, end);
+> -		if (create || !pud_none_or_clear_bad(pud)) {
+> -			err = apply_to_pmd_range(mm, pud, addr, next, fn, data,
+> -						 create, mask);
+> -			if (err)
+> -				break;
+> +		if (pud_none(*pud) && !create)
+> +			continue;
+> +		if (WARN_ON_ONCE(pud_leaf(*pud)))
+> +			return -EINVAL;
+> +		if (!pud_none(*pud) && WARN_ON_ONCE(pud_bad(*pud))) {
+> +			if (!create)
+> +				continue;
+> +			pud_clear_bad(pud);
+>  		}
+> +		err = apply_to_pmd_range(mm, pud, addr, next,
+> +					 fn, data, create, mask);
+> +		if (err)
+> +			break;
+>  	} while (pud++, addr = next, addr != end);
 > +
->  	p4d = p4d_offset(pgd, addr);
->  	if (p4d_none(*p4d))
->  		return NULL;
-> -	pud = pud_offset(p4d, addr);
-> +	if (p4d_leaf(*p4d))
-> +		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
-> +	if (WARN_ON_ONCE(p4d_bad(*p4d)))
-> +		return NULL;
->  
-> -	/*
-> -	 * Don't dereference bad PUD or PMD (below) entries. This will also
-> -	 * identify huge mappings, which we may encounter on architectures
-> -	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=y. Such regions will be
-> -	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
-> -	 * not [unambiguously] associated with a struct page, so there is
-> -	 * no correct value to return for them.
-> -	 */
-> -	WARN_ON_ONCE(pud_bad(*pud));
-> -	if (pud_none(*pud) || pud_bad(*pud))
-> +	pud = pud_offset(p4d, addr);
-> +	if (pud_none(*pud))
-> +		return NULL;
-> +	if (pud_leaf(*pud))
-> +		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
-> +	if (WARN_ON_ONCE(pud_bad(*pud)))
->  		return NULL;
-> +
->  	pmd = pmd_offset(pud, addr);
-> -	WARN_ON_ONCE(pmd_bad(*pmd));
-> -	if (pmd_none(*pmd) || pmd_bad(*pmd))
-> +	if (pmd_none(*pmd))
-> +		return NULL;
-> +	if (pmd_leaf(*pmd))
-> +		return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
-> +	if (WARN_ON_ONCE(pmd_bad(*pmd)))
->  		return NULL;
->  
->  	ptep = pte_offset_map(pmd, addr);
-> @@ -389,6 +399,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
->  	if (pte_present(pte))
->  		page = pte_page(pte);
->  	pte_unmap(ptep);
-> +
->  	return page;
+>  	return err;
 >  }
->  EXPORT_SYMBOL(vmalloc_to_page);
+>  
+> @@ -2496,13 +2512,21 @@ static int apply_to_p4d_range(struct mm_struct *mm, pgd_t *pgd,
+>  	}
+>  	do {
+>  		next = p4d_addr_end(addr, end);
+> -		if (create || !p4d_none_or_clear_bad(p4d)) {
+> -			err = apply_to_pud_range(mm, p4d, addr, next, fn, data,
+> -						 create, mask);
+> -			if (err)
+> -				break;
+> +		if (p4d_none(*p4d) && !create)
+> +			continue;
+> +		if (WARN_ON_ONCE(p4d_leaf(*p4d)))
+> +			return -EINVAL;
+> +		if (!p4d_none(*p4d) && WARN_ON_ONCE(p4d_bad(*p4d))) {
+> +			if (!create)
+> +				continue;
+> +			p4d_clear_bad(p4d);
+>  		}
+> +		err = apply_to_pud_range(mm, p4d, addr, next,
+> +					 fn, data, create, mask);
+> +		if (err)
+> +			break;
+>  	} while (p4d++, addr = next, addr != end);
+> +
+>  	return err;
+>  }
+>  
+> @@ -2522,9 +2546,17 @@ static int __apply_to_page_range(struct mm_struct *mm, unsigned long addr,
+>  	pgd = pgd_offset(mm, addr);
+>  	do {
+>  		next = pgd_addr_end(addr, end);
+> -		if (!create && pgd_none_or_clear_bad(pgd))
+> +		if (pgd_none(*pgd) && !create)
+>  			continue;
+> -		err = apply_to_p4d_range(mm, pgd, addr, next, fn, data, create, &mask);
+> +		if (WARN_ON_ONCE(pgd_leaf(*pgd)))
+> +			return -EINVAL;
+> +		if (!pgd_none(*pgd) && WARN_ON_ONCE(pgd_bad(*pgd))) {
+> +			if (!create)
+> +				continue;
+> +			pgd_clear_bad(pgd);
+> +		}
+> +		err = apply_to_p4d_range(mm, pgd, addr, next,
+> +					 fn, data, create, &mask);
+>  		if (err)
+>  			break;
+>  	} while (pgd++, addr = next, addr != end);
 > 
 
-LGTM. Thanks.
+Looks good to me, thanks.
 
 Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
