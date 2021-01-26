@@ -1,45 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD393036F9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 08:01:52 +0100 (CET)
-Received: from bilbo.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DPyMd5rnTzDqBV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 18:01:49 +1100 (AEDT)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D17EE30385E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 09:52:25 +0100 (CET)
+Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQ0qB1r4fzDqSD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 19:52:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com;
- envelope-from=dingtianhong@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DPyK76Fl4zDqhT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 17:59:37 +1100 (AEDT)
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4DPyHF2WRNzMQ8f;
- Tue, 26 Jan 2021 14:58:01 +0800 (CST)
-Received: from [10.174.177.80] (10.174.177.80) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.498.0; Tue, 26 Jan 2021 14:59:24 +0800
-Subject: Re: [PATCH v11 12/13] mm/vmalloc: Hugepage vmalloc mappings
-To: Nicholas Piggin <npiggin@gmail.com>, <linux-mm@kvack.org>, Andrew Morton
- <akpm@linux-foundation.org>
-References: <20210126044510.2491820-1-npiggin@gmail.com>
- <20210126044510.2491820-13-npiggin@gmail.com>
-From: Ding Tianhong <dingtianhong@huawei.com>
-Message-ID: <0f360e6e-6d34-19ce-6c76-a17a5f4f7fc3@huawei.com>
-Date: Tue, 26 Jan 2021 14:59:24 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.2
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.48; helo=mail-ot1-f48.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com
+ [209.85.210.48])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DQ0n60gLzzDqMB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 19:50:29 +1100 (AEDT)
+Received: by mail-ot1-f48.google.com with SMTP id d1so15501704otl.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 00:50:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=dQS05gAa+WfDRZQbLeXyiyoUlWSeuuqlrJ0M+LF4pGw=;
+ b=VIbs0eaZxgIyvmdas4mvtUBuc4+vzknpJpH7EiNhcuBMp++oMYY56X65fkCjAXySbD
+ NKZ9MpevBj8CSVwreeBk7Ml3IfQKpc3LbTrzc/+RqmGyyKSd8ke77WjEnih83HXFAgdp
+ ybp47CrLMqS/ALfk8wVNF1hBDcPzVrGXyDNDX50almd8ilNcpc0BL2k4KFZnDcWISE4M
+ pyK0IX+IIywv2sRyFin6SrXk3+XAAMH9uCI9t2p3prD1V4UnyB7hwfQtK56h0wYmuaqk
+ HDLKcZaW030TWnErfFHetkTad4lxcoVEDphJ+/BHJToPwn2RpG8nrHG0+dqa9UEM5Ecm
+ jjCA==
+X-Gm-Message-State: AOAM532kseQFLx2v9UueMUG11qTMm+LknPKueqDooxhyuzXq2Vg6YONo
+ fJ6S3nI8NUJv0cZCt8JMdwbFHyBt0JjjLNf1Cdg=
+X-Google-Smtp-Source: ABdhPJydB/0YI6k0pmQhCEPbC77QKWeRVaG2MIkeegbghOEhRTqm/NdHbTtvjdrHIu5hkpVekXoUN0XUzbHHm5UHQp4=
+X-Received: by 2002:a05:6830:15cc:: with SMTP id
+ j12mr3278439otr.145.1611651025336; 
+ Tue, 26 Jan 2021 00:50:25 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20210126044510.2491820-13-npiggin@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.80]
-X-CFilter-Loop: Reflected
+References: <20210120105246.23218-1-michael@walle.cc>
+ <CAL_JsqLSJCLtgPyAdKSqsy=JoHSLYef_0s-stTbiJ+VCq2qaSA@mail.gmail.com>
+ <CAGETcx86HMo=gaDdXFyJ4QQ-pGXWzw2G0J=SjC-eq4K7B1zQHg@mail.gmail.com>
+ <c3e35b90e173b15870a859fd7001a712@walle.cc>
+ <CAGETcx8eZRd1fJ3yuO_t2UXBFHObeNdv-c8oFH3mXw6zi=zOkQ@mail.gmail.com>
+ <f706c0e4b684e07635396fcf02f4c9a6@walle.cc>
+ <CAGETcx8_6Hp+MWFOhRohXwdWFSfCc7A=zpb5QYNHZE5zv0bDig@mail.gmail.com>
+ <CAMuHMdWvFej-6vkaLM44t7eX2LpkDSXu4_7VH-X-3XRueXTO=A@mail.gmail.com>
+ <a24391e62b107040435766fff52bdd31@walle.cc>
+ <CAGETcx8FO+YSM0jwCnDdnvE3NCdjZ=1FSmAZpyaOEOvCgd4SXw@mail.gmail.com>
+In-Reply-To: <CAGETcx8FO+YSM0jwCnDdnvE3NCdjZ=1FSmAZpyaOEOvCgd4SXw@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 26 Jan 2021 09:50:14 +0100
+Message-ID: <CAMuHMdX8__juNc-Lx8Tu9abMKq-pT=yA4s6D1w4ZeStKOasGpg@mail.gmail.com>
+Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
+To: Saravana Kannan <saravanak@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,513 +67,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>,
- Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Roy Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ PCI <linux-pci@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Minghuan Lian <minghuan.Lian@nxp.com>, Michael Walle <michael@walle.cc>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/1/26 12:45, Nicholas Piggin wrote:
-> Support huge page vmalloc mappings. Config option HAVE_ARCH_HUGE_VMALLOC
-> enables support on architectures that define HAVE_ARCH_HUGE_VMAP and
-> supports PMD sized vmap mappings.
-> 
-> vmalloc will attempt to allocate PMD-sized pages if allocating PMD size
-> or larger, and fall back to small pages if that was unsuccessful.
-> 
-> Architectures must ensure that any arch specific vmalloc allocations
-> that require PAGE_SIZE mappings (e.g., module allocations vs strict
-> module rwx) use the VM_NOHUGE flag to inhibit larger mappings.
-> 
-> When hugepage vmalloc mappings are enabled in the next patch, this
-> reduces TLB misses by nearly 30x on a `git diff` workload on a 2-node
-> POWER9 (59,800 -> 2,100) and reduces CPU cycles by 0.54%.
-> 
-> This can result in more internal fragmentation and memory overhead for a
-> given allocation, an option nohugevmalloc is added to disable at boot.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/Kconfig            |  11 ++
->  include/linux/vmalloc.h |  21 ++++
->  mm/page_alloc.c         |   5 +-
->  mm/vmalloc.c            | 215 +++++++++++++++++++++++++++++++---------
->  4 files changed, 205 insertions(+), 47 deletions(-)
-> 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index 24862d15f3a3..eef170e0c9b8 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -724,6 +724,17 @@ config HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->  config HAVE_ARCH_HUGE_VMAP
->  	bool
->  
-> +#
-> +#  Archs that select this would be capable of PMD-sized vmaps (i.e.,
-> +#  arch_vmap_pmd_supported() returns true), and they must make no assumptions
-> +#  that vmalloc memory is mapped with PAGE_SIZE ptes. The VM_NO_HUGE_VMAP flag
-> +#  can be used to prohibit arch-specific allocations from using hugepages to
-> +#  help with this (e.g., modules may require it).
-> +#
-> +config HAVE_ARCH_HUGE_VMALLOC
-> +	depends on HAVE_ARCH_HUGE_VMAP
-> +	bool
-> +
->  config ARCH_WANT_HUGE_PMD_SHARE
->  	bool
->  
-> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-> index 99ea72d547dc..93270adf5db5 100644
-> --- a/include/linux/vmalloc.h
-> +++ b/include/linux/vmalloc.h
-> @@ -25,6 +25,7 @@ struct notifier_block;		/* in notifier.h */
->  #define VM_NO_GUARD		0x00000040      /* don't add guard page */
->  #define VM_KASAN		0x00000080      /* has allocated kasan shadow memory */
->  #define VM_MAP_PUT_PAGES	0x00000100	/* put pages and free array in vfree */
-> +#define VM_NO_HUGE_VMAP		0x00000200	/* force PAGE_SIZE pte mapping */
-> 
->  /*
->   * VM_KASAN is used slighly differently depending on CONFIG_KASAN_VMALLOC.
-> @@ -59,6 +60,9 @@ struct vm_struct {
->  	unsigned long		size;
->  	unsigned long		flags;
->  	struct page		**pages;
-> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
-> +	unsigned int		page_order;
-> +#endif
->  	unsigned int		nr_pages;
->  	phys_addr_t		phys_addr;
->  	const void		*caller;
-Hi Nicholas:
+Hi Saravana,
 
-Give a suggestion :)
+On Mon, Jan 25, 2021 at 11:42 PM Saravana Kannan <saravanak@google.com> wrote:
+> On Mon, Jan 25, 2021 at 11:49 AM Michael Walle <michael@walle.cc> wrote:
+> > Am 2021-01-21 12:01, schrieb Geert Uytterhoeven:
+> > > On Thu, Jan 21, 2021 at 1:05 AM Saravana Kannan <saravanak@google.com>
+> > > wrote:
+> > >> On Wed, Jan 20, 2021 at 3:53 PM Michael Walle <michael@walle.cc>
+> > >> wrote:
+> > >> > Am 2021-01-20 20:47, schrieb Saravana Kannan:
+> > >> > > On Wed, Jan 20, 2021 at 11:28 AM Michael Walle <michael@walle.cc>
+> > >> > > wrote:
+> > >> > >>
+> > >> > >> [RESEND, fat-fingered the buttons of my mail client and converted
+> > >> > >> all CCs to BCCs :(]
+> > >> > >>
+> > >> > >> Am 2021-01-20 20:02, schrieb Saravana Kannan:
+> > >> > >> > On Wed, Jan 20, 2021 at 6:24 AM Rob Herring <robh@kernel.org> wrote:
+> > >> > >> >>
+> > >> > >> >> On Wed, Jan 20, 2021 at 4:53 AM Michael Walle <michael@walle.cc>
+> > >> > >> >> wrote:
+> > >> > >> >> >
+> > >> > >> >> > fw_devlink will defer the probe until all suppliers are ready. We can't
+> > >> > >> >> > use builtin_platform_driver_probe() because it doesn't retry after probe
+> > >> > >> >> > deferral. Convert it to builtin_platform_driver().
+> > >> > >> >>
+> > >> > >> >> If builtin_platform_driver_probe() doesn't work with fw_devlink, then
+> > >> > >> >> shouldn't it be fixed or removed?
+> > >> > >> >
+> > >> > >> > I was actually thinking about this too. The problem with fixing
+> > >> > >> > builtin_platform_driver_probe() to behave like
+> > >> > >> > builtin_platform_driver() is that these probe functions could be
+> > >> > >> > marked with __init. But there are also only 20 instances of
+> > >> > >> > builtin_platform_driver_probe() in the kernel:
+> > >> > >> > $ git grep ^builtin_platform_driver_probe | wc -l
+> > >> > >> > 20
+> > >> > >> >
+> > >> > >> > So it might be easier to just fix them to not use
+> > >> > >> > builtin_platform_driver_probe().
+> > >> > >> >
+> > >> > >> > Michael,
+> > >> > >> >
+> > >> > >> > Any chance you'd be willing to help me by converting all these to
+> > >> > >> > builtin_platform_driver() and delete builtin_platform_driver_probe()?
+> > >> > >>
+> > >> > >> If it just moving the probe function to the _driver struct and
+> > >> > >> remove the __init annotations. I could look into that.
+> > >> > >
+> > >> > > Yup. That's pretty much it AFAICT.
+> > >> > >
+> > >> > > builtin_platform_driver_probe() also makes sure the driver doesn't ask
+> > >> > > for async probe, etc. But I doubt anyone is actually setting async
+> > >> > > flags and still using builtin_platform_driver_probe().
+> > >> >
+> > >> > Hasn't module_platform_driver_probe() the same problem? And there
+> > >> > are ~80 drivers which uses that.
+> > >>
+> > >> Yeah. The biggest problem with all of these is the __init markers.
+> > >> Maybe some familiar with coccinelle can help?
+> > >
+> > > And dropping them will increase memory usage.
+> >
+> > Although I do have the changes for the builtin_platform_driver_probe()
+> > ready, I don't think it makes much sense to send these unless we agree
+> > on the increased memory footprint. While there are just a few
+> > builtin_platform_driver_probe() and memory increase _might_ be
+> > negligible, there are many more module_platform_driver_probe().
+>
+> While it's good to drop code that'll not be used past kernel init, the
+> module_platform_driver_probe() is going even more extreme. It doesn't
+> even allow deferred probe (well before kernel init is done). I don't
+> think that behavior is right and that's why we should delete it. Also,
 
-The page order was only used to indicate the huge page flag for vm area, and only valid when
-size bigger than PMD_SIZE, so can we use the vm flgas to instead of that, just like define the
-new flag named VM_HUGEPAGE, it would not break the vm struct, and it is easier for me to backport the serious
-patches to our own branches. (Base on the lts version).
+This construct is typically used for builtin hardware for which the
+dependencies are registered very early, and thus known to probe at
+first try (if present).
 
-Tianhong
+> I doubt if any of these probe functions even take up 4KB of memory.
 
-> @@ -193,6 +197,22 @@ void free_vm_area(struct vm_struct *area);
->  extern struct vm_struct *remove_vm_area(const void *addr);
->  extern struct vm_struct *find_vm_area(const void *addr);
->  
-> +static inline bool is_vm_area_hugepages(const void *addr)
-> +{
-> +	/*
-> +	 * This may not 100% tell if the area is mapped with > PAGE_SIZE
-> +	 * page table entries, if for some reason the architecture indicates
-> +	 * larger sizes are available but decides not to use them, nothing
-> +	 * prevents that. This only indicates the size of the physical page
-> +	 * allocated in the vmalloc layer.
-> +	 */
-> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
-> +	return find_vm_area(addr)->page_order > 0;
-> +#else
-> +	return false;
-> +#endif
-> +}
-> +
->  #ifdef CONFIG_MMU
->  int vmap_range(unsigned long addr, unsigned long end,
->  			phys_addr_t phys_addr, pgprot_t prot,
-> @@ -210,6 +230,7 @@ static inline void set_vm_flush_reset_perms(void *addr)
->  	if (vm)
->  		vm->flags |= VM_FLUSH_RESET_PERMS;
->  }
-> +
->  #else
->  static inline int
->  map_kernel_range_noflush(unsigned long start, unsigned long size,
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 027f6481ba59..b7a9661fa232 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -72,6 +72,7 @@
->  #include <linux/padata.h>
->  #include <linux/khugepaged.h>
->  #include <linux/buffer_head.h>
-> +#include <linux/vmalloc.h>
->  
->  #include <asm/sections.h>
->  #include <asm/tlbflush.h>
-> @@ -8238,6 +8239,7 @@ void *__init alloc_large_system_hash(const char *tablename,
->  	void *table = NULL;
->  	gfp_t gfp_flags;
->  	bool virt;
-> +	bool huge;
->  
->  	/* allow the kernel cmdline to have a say */
->  	if (!numentries) {
-> @@ -8305,6 +8307,7 @@ void *__init alloc_large_system_hash(const char *tablename,
->  		} else if (get_order(size) >= MAX_ORDER || hashdist) {
->  			table = __vmalloc(size, gfp_flags);
->  			virt = true;
-> +			huge = is_vm_area_hugepages(table);
->  		} else {
->  			/*
->  			 * If bucketsize is not a power-of-two, we may free
-> @@ -8321,7 +8324,7 @@ void *__init alloc_large_system_hash(const char *tablename,
->  
->  	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
->  		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
-> -		virt ? "vmalloc" : "linear");
-> +		virt ? (huge ? "vmalloc hugepage" : "vmalloc") : "linear");
->  
->  	if (_hash_shift)
->  		*_hash_shift = log2qty;
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 47ab4338cfff..e9a28de04182 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -42,6 +42,19 @@
->  #include "internal.h"
->  #include "pgalloc-track.h"
->  
-> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
-> +static bool __ro_after_init vmap_allow_huge = true;
-> +
-> +static int __init set_nohugevmalloc(char *str)
-> +{
-> +	vmap_allow_huge = false;
-> +	return 0;
-> +}
-> +early_param("nohugevmalloc", set_nohugevmalloc);
-> +#else /* CONFIG_HAVE_ARCH_HUGE_VMALLOC */
-> +static const bool vmap_allow_huge = false;
-> +#endif	/* CONFIG_HAVE_ARCH_HUGE_VMALLOC */
-> +
->  bool is_vmalloc_addr(const void *x)
->  {
->  	unsigned long addr = (unsigned long)x;
-> @@ -483,31 +496,12 @@ static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
->  	return 0;
->  }
->  
-> -/**
-> - * map_kernel_range_noflush - map kernel VM area with the specified pages
-> - * @addr: start of the VM area to map
-> - * @size: size of the VM area to map
-> - * @prot: page protection flags to use
-> - * @pages: pages to map
-> - *
-> - * Map PFN_UP(@size) pages at @addr.  The VM area @addr and @size specify should
-> - * have been allocated using get_vm_area() and its friends.
-> - *
-> - * NOTE:
-> - * This function does NOT do any cache flushing.  The caller is responsible for
-> - * calling flush_cache_vmap() on to-be-mapped areas before calling this
-> - * function.
-> - *
-> - * RETURNS:
-> - * 0 on success, -errno on failure.
-> - */
-> -int map_kernel_range_noflush(unsigned long addr, unsigned long size,
-> -			     pgprot_t prot, struct page **pages)
-> +static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
-> +		pgprot_t prot, struct page **pages)
->  {
->  	unsigned long start = addr;
-> -	unsigned long end = addr + size;
-> -	unsigned long next;
->  	pgd_t *pgd;
-> +	unsigned long next;
->  	int err = 0;
->  	int nr = 0;
->  	pgtbl_mod_mask mask = 0;
-> @@ -529,6 +523,66 @@ int map_kernel_range_noflush(unsigned long addr, unsigned long size,
->  	return 0;
->  }
->  
-> +static int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-> +		pgprot_t prot, struct page **pages, unsigned int page_shift)
-> +{
-> +	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
-> +
-> +	WARN_ON(page_shift < PAGE_SHIFT);
-> +
-> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
-> +			page_shift == PAGE_SHIFT)
-> +		return vmap_small_pages_range_noflush(addr, end, prot, pages);
-> +
-> +	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
-> +		int err;
-> +
-> +		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
-> +					__pa(page_address(pages[i])), prot,
-> +					page_shift);
-> +		if (err)
-> +			return err;
-> +
-> +		addr += 1UL << page_shift;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int vmap_pages_range(unsigned long addr, unsigned long end,
-> +		pgprot_t prot, struct page **pages, unsigned int page_shift)
-> +{
-> +	int err;
-> +
-> +	err = vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
-> +	flush_cache_vmap(addr, end);
-> +	return err;
-> +}
-> +
-> +/**
-> + * map_kernel_range_noflush - map kernel VM area with the specified pages
-> + * @addr: start of the VM area to map
-> + * @size: size of the VM area to map
-> + * @prot: page protection flags to use
-> + * @pages: pages to map
-> + *
-> + * Map PFN_UP(@size) pages at @addr.  The VM area @addr and @size specify should
-> + * have been allocated using get_vm_area() and its friends.
-> + *
-> + * NOTE:
-> + * This function does NOT do any cache flushing.  The caller is responsible for
-> + * calling flush_cache_vmap() on to-be-mapped areas before calling this
-> + * function.
-> + *
-> + * RETURNS:
-> + * 0 on success, -errno on failure.
-> + */
-> +int map_kernel_range_noflush(unsigned long addr, unsigned long size,
-> +			     pgprot_t prot, struct page **pages)
-> +{
-> +	return vmap_pages_range_noflush(addr, addr + size, prot, pages, PAGE_SHIFT);
-> +}
-> +
->  int map_kernel_range(unsigned long start, unsigned long size, pgprot_t prot,
->  		struct page **pages)
->  {
-> @@ -2112,6 +2166,24 @@ EXPORT_SYMBOL(vm_map_ram);
->  
->  static struct vm_struct *vmlist __initdata;
->  
-> +static inline unsigned int vm_area_page_order(struct vm_struct *vm)
-> +{
-> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
-> +	return vm->page_order;
-> +#else
-> +	return 0;
-> +#endif
-> +}
-> +
-> +static inline void set_vm_area_page_order(struct vm_struct *vm, unsigned int order)
-> +{
-> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
-> +	vm->page_order = order;
-> +#else
-> +	BUG_ON(order != 0);
-> +#endif
-> +}
-> +
->  /**
->   * vm_area_add_early - add vmap area early during boot
->   * @vm: vm_struct to add
-> @@ -2422,6 +2494,7 @@ static inline void set_area_direct_map(const struct vm_struct *area,
->  {
->  	int i;
->  
-> +	/* HUGE_VMALLOC passes small pages to set_direct_map */
->  	for (i = 0; i < area->nr_pages; i++)
->  		if (page_address(area->pages[i]))
->  			set_direct_map(area->pages[i]);
-> @@ -2431,6 +2504,7 @@ static inline void set_area_direct_map(const struct vm_struct *area,
->  static void vm_remove_mappings(struct vm_struct *area, int deallocate_pages)
->  {
->  	unsigned long start = ULONG_MAX, end = 0;
-> +	unsigned int page_order = vm_area_page_order(area);
->  	int flush_reset = area->flags & VM_FLUSH_RESET_PERMS;
->  	int flush_dmap = 0;
->  	int i;
-> @@ -2455,11 +2529,14 @@ static void vm_remove_mappings(struct vm_struct *area, int deallocate_pages)
->  	 * map. Find the start and end range of the direct mappings to make sure
->  	 * the vm_unmap_aliases() flush includes the direct map.
->  	 */
-> -	for (i = 0; i < area->nr_pages; i++) {
-> +	for (i = 0; i < area->nr_pages; i += 1U << page_order) {
->  		unsigned long addr = (unsigned long)page_address(area->pages[i]);
->  		if (addr) {
-> +			unsigned long page_size;
-> +
-> +			page_size = PAGE_SIZE << page_order;
->  			start = min(addr, start);
-> -			end = max(addr + PAGE_SIZE, end);
-> +			end = max(addr + page_size, end);
->  			flush_dmap = 1;
->  		}
->  	}
-> @@ -2500,13 +2577,14 @@ static void __vunmap(const void *addr, int deallocate_pages)
->  	vm_remove_mappings(area, deallocate_pages);
->  
->  	if (deallocate_pages) {
-> +		unsigned int page_order = vm_area_page_order(area);
->  		int i;
->  
-> -		for (i = 0; i < area->nr_pages; i++) {
-> +		for (i = 0; i < area->nr_pages; i += 1U << page_order) {
->  			struct page *page = area->pages[i];
->  
->  			BUG_ON(!page);
-> -			__free_pages(page, 0);
-> +			__free_pages(page, page_order);
->  		}
->  		atomic_long_sub(area->nr_pages, &nr_vmalloc_pages);
->  
-> @@ -2697,15 +2775,19 @@ EXPORT_SYMBOL_GPL(vmap_pfn);
->  #endif /* CONFIG_VMAP_PFN */
->  
->  static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
-> -				 pgprot_t prot, int node)
-> +				 pgprot_t prot, unsigned int page_shift,
-> +				 int node)
->  {
->  	const gfp_t nested_gfp = (gfp_mask & GFP_RECLAIM_MASK) | __GFP_ZERO;
-> -	unsigned int nr_pages = get_vm_area_size(area) >> PAGE_SHIFT;
-> +	unsigned long addr = (unsigned long)area->addr;
-> +	unsigned long size = get_vm_area_size(area);
->  	unsigned long array_size;
-> -	unsigned int i;
-> +	unsigned int nr_small_pages = size >> PAGE_SHIFT;
-> +	unsigned int page_order;
->  	struct page **pages;
-> +	unsigned int i;
->  
-> -	array_size = (unsigned long)nr_pages * sizeof(struct page *);
-> +	array_size = (unsigned long)nr_small_pages * sizeof(struct page *);
->  	gfp_mask |= __GFP_NOWARN;
->  	if (!(gfp_mask & (GFP_DMA | GFP_DMA32)))
->  		gfp_mask |= __GFP_HIGHMEM;
-> @@ -2724,30 +2806,37 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
->  	}
->  
->  	area->pages = pages;
-> -	area->nr_pages = nr_pages;
-> +	area->nr_pages = nr_small_pages;
-> +	set_vm_area_page_order(area, page_shift - PAGE_SHIFT);
->  
-> -	for (i = 0; i < area->nr_pages; i++) {
-> -		struct page *page;
-> +	page_order = vm_area_page_order(area);
->  
-> -		if (node == NUMA_NO_NODE)
-> -			page = alloc_page(gfp_mask);
-> -		else
-> -			page = alloc_pages_node(node, gfp_mask, 0);
-> +	/*
-> +	 * Careful, we allocate and map page_order pages, but tracking is done
-> +	 * per PAGE_SIZE page so as to keep the vm_struct APIs independent of
-> +	 * the physical/mapped size.
-> +	 */
-> +	for (i = 0; i < area->nr_pages; i += 1U << page_order) {
-> +		struct page *page;
-> +		int p;
->  
-> +		page = alloc_pages_node(node, gfp_mask, page_order);
->  		if (unlikely(!page)) {
->  			/* Successfully allocated i pages, free them in __vfree() */
->  			area->nr_pages = i;
->  			atomic_long_add(area->nr_pages, &nr_vmalloc_pages);
->  			goto fail;
->  		}
-> -		area->pages[i] = page;
-> +
-> +		for (p = 0; p < (1U << page_order); p++)
-> +			area->pages[i + p] = page + p;
-> +
->  		if (gfpflags_allow_blocking(gfp_mask))
->  			cond_resched();
->  	}
->  	atomic_long_add(area->nr_pages, &nr_vmalloc_pages);
->  
-> -	if (map_kernel_range((unsigned long)area->addr, get_vm_area_size(area),
-> -			prot, pages) < 0)
-> +	if (vmap_pages_range(addr, addr + size, prot, pages, page_shift) < 0)
->  		goto fail;
->  
->  	return area->addr;
-> @@ -2755,7 +2844,7 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
->  fail:
->  	warn_alloc(gfp_mask, NULL,
->  			  "vmalloc: allocation failure, allocated %ld of %ld bytes",
-> -			  (area->nr_pages*PAGE_SIZE), area->size);
-> +			  (area->nr_pages*PAGE_SIZE), size);
->  	__vfree(area->addr);
->  	return NULL;
->  }
-> @@ -2786,19 +2875,43 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
->  	struct vm_struct *area;
->  	void *addr;
->  	unsigned long real_size = size;
-> +	unsigned long real_align = align;
-> +	unsigned int shift = PAGE_SHIFT;
->  
-> -	size = PAGE_ALIGN(size);
->  	if (!size || (size >> PAGE_SHIFT) > totalram_pages())
->  		goto fail;
->  
-> -	area = __get_vm_area_node(real_size, align, VM_ALLOC | VM_UNINITIALIZED |
-> +	if (vmap_allow_huge && !(vm_flags & VM_NO_HUGE_VMAP) &&
-> +			arch_vmap_pmd_supported(prot)) {
-> +		unsigned long size_per_node;
-> +
-> +		/*
-> +		 * Try huge pages. Only try for PAGE_KERNEL allocations,
-> +		 * others like modules don't yet expect huge pages in
-> +		 * their allocations due to apply_to_page_range not
-> +		 * supporting them.
-> +		 */
-> +
-> +		size_per_node = size;
-> +		if (node == NUMA_NO_NODE)
-> +			size_per_node /= num_online_nodes();
-> +		if (size_per_node >= PMD_SIZE) {
-> +			shift = PMD_SHIFT;
-> +			align = max(real_align, 1UL << shift);
-> +			size = ALIGN(real_size, 1UL << shift);
-> +		}
-> +	}
-> +
-> +again:
-> +	size = PAGE_ALIGN(size);
-> +	area = __get_vm_area_node(size, align, VM_ALLOC | VM_UNINITIALIZED |
->  				vm_flags, start, end, node, gfp_mask, caller);
->  	if (!area)
->  		goto fail;
->  
-> -	addr = __vmalloc_area_node(area, gfp_mask, prot, node);
-> +	addr = __vmalloc_area_node(area, gfp_mask, prot, shift, node);
->  	if (!addr)
-> -		return NULL;
-> +		goto fail;
->  
->  	/*
->  	 * In this function, newly allocated vm_struct has VM_UNINITIALIZED
-> @@ -2812,8 +2925,18 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
->  	return addr;
->  
->  fail:
-> -	warn_alloc(gfp_mask, NULL,
-> +	if (shift > PAGE_SHIFT) {
-> +		shift = PAGE_SHIFT;
-> +		align = real_align;
-> +		size = real_size;
-> +		goto again;
-> +	}
-> +
-> +	if (!area) {
-> +		/* Warn for area allocation, page allocations already warn */
-> +		warn_alloc(gfp_mask, NULL,
->  			  "vmalloc: allocation failure: %lu bytes", real_size);
-> +	}
->  	return NULL;
->  }
->  
-> 
+How many 4 KiB pages do you have in a system with 10 MiB of SRAM?
+How many can you afford to waste?
 
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
