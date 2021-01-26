@@ -2,58 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3D3303BB5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 12:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C41303CB2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 13:14:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQ4QG4b8xzDqDF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 22:34:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQ5Jf0b0tzDr0T
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 23:14:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.33.254.192; helo=3.mo52.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 14592 seconds by postgrey-1.36 at bilbo;
- Tue, 26 Jan 2021 22:29:07 AEDT
-Received: from 3.mo52.mail-out.ovh.net (3.mo52.mail-out.ovh.net
- [178.33.254.192])
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=szxga07-in.huawei.com;
+ envelope-from=dingtianhong@huawei.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 1174 seconds by postgrey-1.36 at bilbo;
+ Tue, 26 Jan 2021 23:08:48 AEDT
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DQ4J34WrDzDqn1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 22:28:57 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.16.163])
- by mo52.mail-out.ovh.net (Postfix) with ESMTPS id 259872368DE;
- Tue, 26 Jan 2021 08:25:37 +0100 (CET)
-Received: from kaod.org (37.59.142.100) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 26 Jan
- 2021 08:25:37 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-100R0036943b526-2570-4cdc-a1d4-711e75c6cee5,
- 5D556FFD98B84F2EA34A7A8BED120B5F5B9D3368) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Subject: Re: [PATCH 3/5] powerpc/xive: remove unnecessary unmap_kernel_range
-To: Nicholas Piggin <npiggin@gmail.com>, <linux-mm@kvack.org>, Andrew Morton
- <akpm@linux-foundation.org>
-References: <20210126045404.2492588-1-npiggin@gmail.com>
- <20210126045404.2492588-4-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <336902f4-58e6-0240-fe7a-ec06a45e118e@kaod.org>
-Date: Tue, 26 Jan 2021 08:25:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DQ59r2NtszDqvj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 23:08:40 +1100 (AEDT)
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+ by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4DQ4jV433Mz7Wyh;
+ Tue, 26 Jan 2021 19:47:42 +0800 (CST)
+Received: from [10.174.177.80] (10.174.177.80) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 26 Jan 2021 19:48:46 +0800
+Subject: Re: [PATCH v11 12/13] mm/vmalloc: Hugepage vmalloc mappings
+To: Nicholas Piggin <npiggin@gmail.com>, Andrew Morton
+ <akpm@linux-foundation.org>, <linux-mm@kvack.org>
+References: <20210126044510.2491820-1-npiggin@gmail.com>
+ <20210126044510.2491820-13-npiggin@gmail.com>
+ <0f360e6e-6d34-19ce-6c76-a17a5f4f7fc3@huawei.com>
+ <1611653945.t3oot63nwn.astroid@bobo.none>
+From: Ding Tianhong <dingtianhong@huawei.com>
+Message-ID: <a84836bb-d913-eb58-cd16-b268f479bd8b@huawei.com>
+Date: Tue, 26 Jan 2021 19:48:45 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-In-Reply-To: <20210126045404.2492588-4-npiggin@gmail.com>
+In-Reply-To: <1611653945.t3oot63nwn.astroid@bobo.none>
 Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.100]
-X-ClientProxiedBy: DAG2EX2.mxp5.local (172.16.2.12) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 85cc3d89-2df3-4a71-b88c-7de071b97d5b
-X-Ovh-Tracer-Id: 14119066310198463270
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdeggddutdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehnphhighhgihhnsehgmhgrihhlrdgtohhm
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.80]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,51 +55,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/26/21 5:54 AM, Nicholas Piggin wrote:
-> iounmap will remove ptes.
+On 2021/1/26 17:47, Nicholas Piggin wrote:
+> Excerpts from Ding Tianhong's message of January 26, 2021 4:59 pm:
+>> On 2021/1/26 12:45, Nicholas Piggin wrote:
+>>> Support huge page vmalloc mappings. Config option HAVE_ARCH_HUGE_VMALLOC
+>>> enables support on architectures that define HAVE_ARCH_HUGE_VMAP and
+>>> supports PMD sized vmap mappings.
+>>>
+>>> vmalloc will attempt to allocate PMD-sized pages if allocating PMD size
+>>> or larger, and fall back to small pages if that was unsuccessful.
+>>>
+>>> Architectures must ensure that any arch specific vmalloc allocations
+>>> that require PAGE_SIZE mappings (e.g., module allocations vs strict
+>>> module rwx) use the VM_NOHUGE flag to inhibit larger mappings.
+>>>
+>>> When hugepage vmalloc mappings are enabled in the next patch, this
+>>> reduces TLB misses by nearly 30x on a `git diff` workload on a 2-node
+>>> POWER9 (59,800 -> 2,100) and reduces CPU cycles by 0.54%.
+>>>
+>>> This can result in more internal fragmentation and memory overhead for a
+>>> given allocation, an option nohugevmalloc is added to disable at boot.
+>>>
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>> ---
+>>>  arch/Kconfig            |  11 ++
+>>>  include/linux/vmalloc.h |  21 ++++
+>>>  mm/page_alloc.c         |   5 +-
+>>>  mm/vmalloc.c            | 215 +++++++++++++++++++++++++++++++---------
+>>>  4 files changed, 205 insertions(+), 47 deletions(-)
+>>>
+>>> diff --git a/arch/Kconfig b/arch/Kconfig
+>>> index 24862d15f3a3..eef170e0c9b8 100644
+>>> --- a/arch/Kconfig
+>>> +++ b/arch/Kconfig
+>>> @@ -724,6 +724,17 @@ config HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>  config HAVE_ARCH_HUGE_VMAP
+>>>  	bool
+>>>  
+>>> +#
+>>> +#  Archs that select this would be capable of PMD-sized vmaps (i.e.,
+>>> +#  arch_vmap_pmd_supported() returns true), and they must make no assumptions
+>>> +#  that vmalloc memory is mapped with PAGE_SIZE ptes. The VM_NO_HUGE_VMAP flag
+>>> +#  can be used to prohibit arch-specific allocations from using hugepages to
+>>> +#  help with this (e.g., modules may require it).
+>>> +#
+>>> +config HAVE_ARCH_HUGE_VMALLOC
+>>> +	depends on HAVE_ARCH_HUGE_VMAP
+>>> +	bool
+>>> +
+>>>  config ARCH_WANT_HUGE_PMD_SHARE
+>>>  	bool
+>>>  
+>>> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+>>> index 99ea72d547dc..93270adf5db5 100644
+>>> --- a/include/linux/vmalloc.h
+>>> +++ b/include/linux/vmalloc.h
+>>> @@ -25,6 +25,7 @@ struct notifier_block;		/* in notifier.h */
+>>>  #define VM_NO_GUARD		0x00000040      /* don't add guard page */
+>>>  #define VM_KASAN		0x00000080      /* has allocated kasan shadow memory */
+>>>  #define VM_MAP_PUT_PAGES	0x00000100	/* put pages and free array in vfree */
+>>> +#define VM_NO_HUGE_VMAP		0x00000200	/* force PAGE_SIZE pte mapping */
+>>>
+>>>  /*
+>>>   * VM_KASAN is used slighly differently depending on CONFIG_KASAN_VMALLOC.
+>>> @@ -59,6 +60,9 @@ struct vm_struct {
+>>>  	unsigned long		size;
+>>>  	unsigned long		flags;
+>>>  	struct page		**pages;
+>>> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
+>>> +	unsigned int		page_order;
+>>> +#endif
+>>>  	unsigned int		nr_pages;
+>>>  	phys_addr_t		phys_addr;
+>>>  	const void		*caller;
+>> Hi Nicholas:
+>>
+>> Give a suggestion :)
+>>
+>> The page order was only used to indicate the huge page flag for vm area, and only valid when
+>> size bigger than PMD_SIZE, so can we use the vm flgas to instead of that, just like define the
+>> new flag named VM_HUGEPAGE, it would not break the vm struct, and it is easier for me to backport the serious
+>> patches to our own branches. (Base on the lts version).
 > 
-> Cc: "Cédric Le Goater" <clg@kaod.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-Looks good. 
-
-Acked-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C. 
-
-> ---
->  arch/powerpc/sysdev/xive/common.c | 4 ----
->  1 file changed, 4 deletions(-)
+> Hmm, it might be possible. I'm not sure if 1GB vmallocs will be used any 
+> time soon (or maybe they will for edge case configurations? It would be 
+> trivial to add support for).
 > 
-> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-> index 595310e056f4..d6c2069cc828 100644
-> --- a/arch/powerpc/sysdev/xive/common.c
-> +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -959,16 +959,12 @@ EXPORT_SYMBOL_GPL(is_xive_irq);
->  void xive_cleanup_irq_data(struct xive_irq_data *xd)
->  {
->  	if (xd->eoi_mmio) {
-> -		unmap_kernel_range((unsigned long)xd->eoi_mmio,
-> -				   1u << xd->esb_shift);
->  		iounmap(xd->eoi_mmio);
->  		if (xd->eoi_mmio == xd->trig_mmio)
->  			xd->trig_mmio = NULL;
->  		xd->eoi_mmio = NULL;
->  	}
->  	if (xd->trig_mmio) {
-> -		unmap_kernel_range((unsigned long)xd->trig_mmio,
-> -				   1u << xd->esb_shift);
->  		iounmap(xd->trig_mmio);
->  		xd->trig_mmio = NULL;
->  	}
+
+1GB vmallocs is really crazy, but maybe used for future. :)
+
+> The other concern I have is that Christophe IIRC was asking about 
+> implementing a mapping for PPC which used TLB mappings that were 
+> different than kernel page table tree size. Although I guess we could 
+> deal with that when it comes.
+> 
+
+I didn't check the PPC platform, but a agree with you.
+
+> I like the flexibility of page_order though. How hard would it be for 
+> you to do the backport with VM_HUGEPAGE yourself?
+> 
+
+Yes, i can fix it with VM_HUGEPAGE for my own branch.
+
+> I should also say, thanks for all the review and testing from the Huawei 
+> team. Do you have an x86 patch?
+I only enable and use it for x86 and aarch64 platform, this serious patches is
+really help us a lot. Thanks.
+
+Ding
+
+> Thanks,
+> Nick
+> .
 > 
 
