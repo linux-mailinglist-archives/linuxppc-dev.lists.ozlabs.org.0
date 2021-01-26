@@ -2,60 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17EE30385E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 09:52:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8FF530398D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 10:55:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQ0qB1r4fzDqSD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 19:52:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQ2Cd5bTdzDqpJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 20:55:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.48; helo=mail-ot1-f48.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com
- [209.85.210.48])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DQ0n60gLzzDqMB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 19:50:29 +1100 (AEDT)
-Received: by mail-ot1-f48.google.com with SMTP id d1so15501704otl.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 00:50:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=dQS05gAa+WfDRZQbLeXyiyoUlWSeuuqlrJ0M+LF4pGw=;
- b=VIbs0eaZxgIyvmdas4mvtUBuc4+vzknpJpH7EiNhcuBMp++oMYY56X65fkCjAXySbD
- NKZ9MpevBj8CSVwreeBk7Ml3IfQKpc3LbTrzc/+RqmGyyKSd8ke77WjEnih83HXFAgdp
- ybp47CrLMqS/ALfk8wVNF1hBDcPzVrGXyDNDX50almd8ilNcpc0BL2k4KFZnDcWISE4M
- pyK0IX+IIywv2sRyFin6SrXk3+XAAMH9uCI9t2p3prD1V4UnyB7hwfQtK56h0wYmuaqk
- HDLKcZaW030TWnErfFHetkTad4lxcoVEDphJ+/BHJToPwn2RpG8nrHG0+dqa9UEM5Ecm
- jjCA==
-X-Gm-Message-State: AOAM532kseQFLx2v9UueMUG11qTMm+LknPKueqDooxhyuzXq2Vg6YONo
- fJ6S3nI8NUJv0cZCt8JMdwbFHyBt0JjjLNf1Cdg=
-X-Google-Smtp-Source: ABdhPJydB/0YI6k0pmQhCEPbC77QKWeRVaG2MIkeegbghOEhRTqm/NdHbTtvjdrHIu5hkpVekXoUN0XUzbHHm5UHQp4=
-X-Received: by 2002:a05:6830:15cc:: with SMTP id
- j12mr3278439otr.145.1611651025336; 
- Tue, 26 Jan 2021 00:50:25 -0800 (PST)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com;
+ envelope-from=linmiaohe@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DPxvw3CJhzDqCY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 17:41:08 +1100 (AEDT)
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4DPxst15TDzl9tD;
+ Tue, 26 Jan 2021 14:39:30 +0800 (CST)
+Received: from [10.174.179.117] (10.174.179.117) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 26 Jan 2021 14:40:50 +0800
+Subject: Re: [PATCH v11 01/13] mm/vmalloc: fix HUGE_VMAP regression by
+ enabling huge pages in vmalloc_to_page
+To: Nicholas Piggin <npiggin@gmail.com>
+References: <20210126044510.2491820-1-npiggin@gmail.com>
+ <20210126044510.2491820-2-npiggin@gmail.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <76f6c211-c383-51d2-7c5a-575f0d51b82d@huawei.com>
+Date: Tue, 26 Jan 2021 14:40:50 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-References: <20210120105246.23218-1-michael@walle.cc>
- <CAL_JsqLSJCLtgPyAdKSqsy=JoHSLYef_0s-stTbiJ+VCq2qaSA@mail.gmail.com>
- <CAGETcx86HMo=gaDdXFyJ4QQ-pGXWzw2G0J=SjC-eq4K7B1zQHg@mail.gmail.com>
- <c3e35b90e173b15870a859fd7001a712@walle.cc>
- <CAGETcx8eZRd1fJ3yuO_t2UXBFHObeNdv-c8oFH3mXw6zi=zOkQ@mail.gmail.com>
- <f706c0e4b684e07635396fcf02f4c9a6@walle.cc>
- <CAGETcx8_6Hp+MWFOhRohXwdWFSfCc7A=zpb5QYNHZE5zv0bDig@mail.gmail.com>
- <CAMuHMdWvFej-6vkaLM44t7eX2LpkDSXu4_7VH-X-3XRueXTO=A@mail.gmail.com>
- <a24391e62b107040435766fff52bdd31@walle.cc>
- <CAGETcx8FO+YSM0jwCnDdnvE3NCdjZ=1FSmAZpyaOEOvCgd4SXw@mail.gmail.com>
-In-Reply-To: <CAGETcx8FO+YSM0jwCnDdnvE3NCdjZ=1FSmAZpyaOEOvCgd4SXw@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 26 Jan 2021 09:50:14 +0100
-Message-ID: <CAMuHMdX8__juNc-Lx8Tu9abMKq-pT=yA4s6D1w4ZeStKOasGpg@mail.gmail.com>
-Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
-To: Saravana Kannan <saravanak@google.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210126044510.2491820-2-npiggin@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.179.117]
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Tue, 26 Jan 2021 20:53:31 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,106 +52,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roy Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- PCI <linux-pci@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- Minghuan Lian <minghuan.Lian@nxp.com>, Michael Walle <michael@walle.cc>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
+Cc: linux-arch@vger.kernel.org, Ding Tianhong <dingtianhong@huawei.com>,
+ linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Linux-MM <linux-mm@kvack.org>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Saravana,
+Hi:
+On 2021/1/26 12:44, Nicholas Piggin wrote:
+> vmalloc_to_page returns NULL for addresses mapped by larger pages[*].
+> Whether or not a vmap is huge depends on the architecture details,
+> alignments, boot options, etc., which the caller can not be expected
+> to know. Therefore HUGE_VMAP is a regression for vmalloc_to_page.
+> 
+> This change teaches vmalloc_to_page about larger pages, and returns
+> the struct page that corresponds to the offset within the large page.
+> This makes the API agnostic to mapping implementation details.
+> 
+> [*] As explained by commit 029c54b095995 ("mm/vmalloc.c: huge-vmap:
+>     fail gracefully on unexpected huge vmap mappings")
+> 
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  mm/vmalloc.c | 41 ++++++++++++++++++++++++++---------------
+>  1 file changed, 26 insertions(+), 15 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index e6f352bf0498..62372f9e0167 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -34,7 +34,7 @@
+>  #include <linux/bitops.h>
+>  #include <linux/rbtree_augmented.h>
+>  #include <linux/overflow.h>
+> -
+> +#include <linux/pgtable.h>
+>  #include <linux/uaccess.h>
+>  #include <asm/tlbflush.h>
+>  #include <asm/shmparam.h>
+> @@ -343,7 +343,9 @@ int is_vmalloc_or_module_addr(const void *x)
+>  }
+>  
+>  /*
+> - * Walk a vmap address to the struct page it maps.
+> + * Walk a vmap address to the struct page it maps. Huge vmap mappings will
+> + * return the tail page that corresponds to the base page address, which
+> + * matches small vmap mappings.
+>   */
+>  struct page *vmalloc_to_page(const void *vmalloc_addr)
+>  {
+> @@ -363,25 +365,33 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+>  
+>  	if (pgd_none(*pgd))
+>  		return NULL;
+> +	if (WARN_ON_ONCE(pgd_leaf(*pgd)))
+> +		return NULL; /* XXX: no allowance for huge pgd */
+> +	if (WARN_ON_ONCE(pgd_bad(*pgd)))
+> +		return NULL;
+> +
+>  	p4d = p4d_offset(pgd, addr);
+>  	if (p4d_none(*p4d))
+>  		return NULL;
+> -	pud = pud_offset(p4d, addr);
+> +	if (p4d_leaf(*p4d))
+> +		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
+> +	if (WARN_ON_ONCE(p4d_bad(*p4d)))
+> +		return NULL;
+>  
+> -	/*
+> -	 * Don't dereference bad PUD or PMD (below) entries. This will also
+> -	 * identify huge mappings, which we may encounter on architectures
+> -	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=y. Such regions will be
+> -	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
+> -	 * not [unambiguously] associated with a struct page, so there is
+> -	 * no correct value to return for them.
+> -	 */
+> -	WARN_ON_ONCE(pud_bad(*pud));
+> -	if (pud_none(*pud) || pud_bad(*pud))
+> +	pud = pud_offset(p4d, addr);
+> +	if (pud_none(*pud))
+> +		return NULL;
+> +	if (pud_leaf(*pud))
+> +		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+> +	if (WARN_ON_ONCE(pud_bad(*pud)))
+>  		return NULL;
+> +
+>  	pmd = pmd_offset(pud, addr);
+> -	WARN_ON_ONCE(pmd_bad(*pmd));
+> -	if (pmd_none(*pmd) || pmd_bad(*pmd))
+> +	if (pmd_none(*pmd))
+> +		return NULL;
+> +	if (pmd_leaf(*pmd))
+> +		return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+> +	if (WARN_ON_ONCE(pmd_bad(*pmd)))
+>  		return NULL;
+>  
+>  	ptep = pte_offset_map(pmd, addr);
+> @@ -389,6 +399,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+>  	if (pte_present(pte))
+>  		page = pte_page(pte);
+>  	pte_unmap(ptep);
+> +
+>  	return page;
+>  }
+>  EXPORT_SYMBOL(vmalloc_to_page);
+> 
 
-On Mon, Jan 25, 2021 at 11:42 PM Saravana Kannan <saravanak@google.com> wrote:
-> On Mon, Jan 25, 2021 at 11:49 AM Michael Walle <michael@walle.cc> wrote:
-> > Am 2021-01-21 12:01, schrieb Geert Uytterhoeven:
-> > > On Thu, Jan 21, 2021 at 1:05 AM Saravana Kannan <saravanak@google.com>
-> > > wrote:
-> > >> On Wed, Jan 20, 2021 at 3:53 PM Michael Walle <michael@walle.cc>
-> > >> wrote:
-> > >> > Am 2021-01-20 20:47, schrieb Saravana Kannan:
-> > >> > > On Wed, Jan 20, 2021 at 11:28 AM Michael Walle <michael@walle.cc>
-> > >> > > wrote:
-> > >> > >>
-> > >> > >> [RESEND, fat-fingered the buttons of my mail client and converted
-> > >> > >> all CCs to BCCs :(]
-> > >> > >>
-> > >> > >> Am 2021-01-20 20:02, schrieb Saravana Kannan:
-> > >> > >> > On Wed, Jan 20, 2021 at 6:24 AM Rob Herring <robh@kernel.org> wrote:
-> > >> > >> >>
-> > >> > >> >> On Wed, Jan 20, 2021 at 4:53 AM Michael Walle <michael@walle.cc>
-> > >> > >> >> wrote:
-> > >> > >> >> >
-> > >> > >> >> > fw_devlink will defer the probe until all suppliers are ready. We can't
-> > >> > >> >> > use builtin_platform_driver_probe() because it doesn't retry after probe
-> > >> > >> >> > deferral. Convert it to builtin_platform_driver().
-> > >> > >> >>
-> > >> > >> >> If builtin_platform_driver_probe() doesn't work with fw_devlink, then
-> > >> > >> >> shouldn't it be fixed or removed?
-> > >> > >> >
-> > >> > >> > I was actually thinking about this too. The problem with fixing
-> > >> > >> > builtin_platform_driver_probe() to behave like
-> > >> > >> > builtin_platform_driver() is that these probe functions could be
-> > >> > >> > marked with __init. But there are also only 20 instances of
-> > >> > >> > builtin_platform_driver_probe() in the kernel:
-> > >> > >> > $ git grep ^builtin_platform_driver_probe | wc -l
-> > >> > >> > 20
-> > >> > >> >
-> > >> > >> > So it might be easier to just fix them to not use
-> > >> > >> > builtin_platform_driver_probe().
-> > >> > >> >
-> > >> > >> > Michael,
-> > >> > >> >
-> > >> > >> > Any chance you'd be willing to help me by converting all these to
-> > >> > >> > builtin_platform_driver() and delete builtin_platform_driver_probe()?
-> > >> > >>
-> > >> > >> If it just moving the probe function to the _driver struct and
-> > >> > >> remove the __init annotations. I could look into that.
-> > >> > >
-> > >> > > Yup. That's pretty much it AFAICT.
-> > >> > >
-> > >> > > builtin_platform_driver_probe() also makes sure the driver doesn't ask
-> > >> > > for async probe, etc. But I doubt anyone is actually setting async
-> > >> > > flags and still using builtin_platform_driver_probe().
-> > >> >
-> > >> > Hasn't module_platform_driver_probe() the same problem? And there
-> > >> > are ~80 drivers which uses that.
-> > >>
-> > >> Yeah. The biggest problem with all of these is the __init markers.
-> > >> Maybe some familiar with coccinelle can help?
-> > >
-> > > And dropping them will increase memory usage.
-> >
-> > Although I do have the changes for the builtin_platform_driver_probe()
-> > ready, I don't think it makes much sense to send these unless we agree
-> > on the increased memory footprint. While there are just a few
-> > builtin_platform_driver_probe() and memory increase _might_ be
-> > negligible, there are many more module_platform_driver_probe().
->
-> While it's good to drop code that'll not be used past kernel init, the
-> module_platform_driver_probe() is going even more extreme. It doesn't
-> even allow deferred probe (well before kernel init is done). I don't
-> think that behavior is right and that's why we should delete it. Also,
+LGTM. Thanks.
 
-This construct is typically used for builtin hardware for which the
-dependencies are registered very early, and thus known to probe at
-first try (if present).
-
-> I doubt if any of these probe functions even take up 4KB of memory.
-
-How many 4 KiB pages do you have in a system with 10 MiB of SRAM?
-How many can you afford to waste?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
