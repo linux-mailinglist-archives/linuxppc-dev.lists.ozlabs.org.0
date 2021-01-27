@@ -2,51 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADB7F30637E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 19:45:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D971730640A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 20:32:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQsx067gHzDr1N
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 05:45:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQtz35wclzDqCD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 06:32:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::62f;
+ helo=mail-pl1-x62f.google.com; envelope-from=axboe@kernel.dk;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=hq9cayEC; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=WCxXI6l8; dkim-atps=neutral
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
+ [IPv6:2607:f8b0:4864:20::62f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DQstq1FflzDqZX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 05:43:31 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6B141601FB;
- Wed, 27 Jan 2021 18:43:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1611773008;
- bh=GZ0Dc/tE/vX/hQMmkRpmanBmWtj6NrDessKfg0CzNQc=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=hq9cayECysR7wC0JyvXib4KeHkGCaDldIGwVp3rDHBgGkQ1LymJfYzNCHYTWnOteh
- D/a4R7QdG6BOOOf3X8N/DYX4m5Ylj8hR8GIRpKFTInswxgi9aim5djfTEopswbiYBh
- 5cA3sd60j8+bOtwsXdyKysCNG6+ZDeOICgWE8vnTanfwhOSE9JVUDFtyd3gYWECdt5
- uJ23zMZoj7kUW4bL5vIrmLcZeFPgxo+vAXyEmEU1WFwVLyjQQDigv+6af5vmTVauJf
- vhk8QGF8ckom1KSdAuAF9nbs/lM+XOOP1TzBNrf9cDTNKAeVMosfDtKRDoEL8tGPUi
- Tv/6eJXRVeqfg==
-Date: Wed, 27 Jan 2021 18:43:20 +0000
-From: Will Deacon <will@kernel.org>
-To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Subject: Re: [PATCH v15 09/10] arm64: Call kmalloc() to allocate DTB buffer
-Message-ID: <20210127184319.GA676@willie-the-truck>
-References: <20210115173017.30617-1-nramas@linux.microsoft.com>
- <20210115173017.30617-10-nramas@linux.microsoft.com>
- <20210127165208.GA358@willie-the-truck>
- <d3330793-6054-6e59-b727-44bf8e5653cd@linux.microsoft.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DQtw22CNzzDqVc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 06:29:26 +1100 (AEDT)
+Received: by mail-pl1-x62f.google.com with SMTP id g3so1610918plp.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 11:29:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:references:from:message-id:date:user-agent:mime-version
+ :in-reply-to:content-language:content-transfer-encoding;
+ bh=3nxLNarXQ29Yg2Hz3t6EeZEp1KHskuPJfvoq2pAdKKo=;
+ b=WCxXI6l8hXrKYgGnft+poPr2JNhkp97zieTu9Y+1xounAHsyplYbUQ9AmpxZwhM45O
+ M24ssk+uDi6DzGgDlFWFV7TmldyayG43RAfp3IAW0sOnXTmX4s9bFWBB11nhxNbcv+E7
+ KI/HMGD90C5fld2q8s3yjReTwcKncuzDIjRj5sz/7sXGHjauOhDMbv3S/81ld8fYSaNS
+ yzfdURkF8vSAnGdSml1U1ic6LBCZRAsYzl0S+P9Z5AZyL1ahAPS/0mJUp/vV18uxjj2g
+ 6FTNp+lW9Rj264fNzApo0lQ9BUXg3r1cHgs1rX4YTcOV6kcXAJ/XOYGUkV43bqrBWHT7
+ RxvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=3nxLNarXQ29Yg2Hz3t6EeZEp1KHskuPJfvoq2pAdKKo=;
+ b=pp1qtYi0pfoIosG2ofbBcBMtDR/Jvugul7TPtLvaYe0YWohiegpwmFXll0hS7iaf8U
+ pX+Fuys4iqnjlTzgqnoIK9HOn70iQFoFM3wHUW9VQXZK02WPaZwyMYmANEbZQtRlddeM
+ tbzGkC3h8t/nHeGqZWFMsFkZatTeLyc3YmUIn3mWtXWRKpoZZqMMNtJatNroekVSNETI
+ +iya9jo6NyRyMibO8vZKjO7P5cAre85MRV90+YipQfCPgWwXHzzkTkVvOV6C+6ZJYllm
+ rKV54rBSB/xymp9tYQASVk0LANULuYbgHoyTqtxGPdOBbUM3MTMRaw4SNmYYKhnUUGUq
+ iL2w==
+X-Gm-Message-State: AOAM533WRZeogzO2bRm1+7cDZop2oPMOuJ5uxWkj0K1b3ADoMpxx5B3Q
+ EGBFIUWFy5TipmVJIggpajpmpyQToQZXTQ==
+X-Google-Smtp-Source: ABdhPJzjO+Iy7Dzo+tURRCmwALJfN5UkXpRRJ8rrOKGEIelhJIVwbyLSA31pIfVCFbQb/MIWWFEwkA==
+X-Received: by 2002:a17:902:a504:b029:da:fbca:d49 with SMTP id
+ s4-20020a170902a504b02900dafbca0d49mr13102536plq.72.1611775762415; 
+ Wed, 27 Jan 2021 11:29:22 -0800 (PST)
+Received: from [192.168.4.41] (cpe-72-132-29-68.dc.res.rr.com. [72.132.29.68])
+ by smtp.gmail.com with ESMTPSA id
+ 30sm3188932pgl.77.2021.01.27.11.29.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 27 Jan 2021 11:29:21 -0800 (PST)
+Subject: Re: [PATCH] powerpc/fault: fix wrong KUAP fault for IO_URING
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Zorro Lang <zlang@redhat.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210127145648.348135-1-zlang@redhat.com>
+ <cce83328-d996-defc-6c87-97cd24ec7027@csgroup.eu>
+From: Jens Axboe <axboe@kernel.dk>
+Message-ID: <a8013c71-433a-96b3-c657-66ac2ba5b838@kernel.dk>
+Date: Wed, 27 Jan 2021 12:29:20 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d3330793-6054-6e59-b727-44bf8e5653cd@linux.microsoft.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <cce83328-d996-defc-6c87-97cd24ec7027@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,67 +86,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, bhsharma@redhat.com, tao.li@vivo.com,
- zohar@linux.ibm.com, paulus@samba.org, vincenzo.frascino@arm.com,
- frowand.list@gmail.com, sashal@kernel.org, robh@kernel.org,
- masahiroy@kernel.org, jmorris@namei.org, takahiro.akashi@linaro.org,
- linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
- serge@hallyn.com, devicetree@vger.kernel.org, pasha.tatashin@soleen.com,
- prsriva@linux.microsoft.com, hsinyi@chromium.org, allison@lohutok.net,
- christophe.leroy@c-s.fr, mbrugger@suse.com, balajib@linux.microsoft.com,
- dmitry.kasatkin@gmail.com, linux-kernel@vger.kernel.org, james.morse@arm.com,
- gregkh@linuxfoundation.org, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 27, 2021 at 09:59:38AM -0800, Lakshmi Ramasubramanian wrote:
-> On 1/27/21 8:52 AM, Will Deacon wrote:
+On 1/27/21 9:38 AM, Christophe Leroy wrote:
 > 
-> Hi Will,
 > 
-> > On Fri, Jan 15, 2021 at 09:30:16AM -0800, Lakshmi Ramasubramanian wrote:
-> > > create_dtb() function allocates kernel virtual memory for
-> > > the device tree blob (DTB).  This is not consistent with other
-> > > architectures, such as powerpc, which calls kmalloc() for allocating
-> > > memory for the DTB.
-> > > 
-> > > Call kmalloc() to allocate memory for the DTB, and kfree() to free
-> > > the allocated memory.
-> > > 
-> > > Co-developed-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
-> > > Signed-off-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
-> > > Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-> > > ---
-> > >   arch/arm64/kernel/machine_kexec_file.c | 12 +++++++-----
-> > >   1 file changed, 7 insertions(+), 5 deletions(-)
-> > > 
-> > > diff --git a/arch/arm64/kernel/machine_kexec_file.c b/arch/arm64/kernel/machine_kexec_file.c
-> > > index 7de9c47dee7c..51c40143d6fa 100644
-> > > --- a/arch/arm64/kernel/machine_kexec_file.c
-> > > +++ b/arch/arm64/kernel/machine_kexec_file.c
-> > > @@ -29,7 +29,7 @@ const struct kexec_file_ops * const kexec_file_loaders[] = {
-> > >   int arch_kimage_file_post_load_cleanup(struct kimage *image)
-> > >   {
-> > > -	vfree(image->arch.dtb);
-> > > +	kfree(image->arch.dtb);
-> > >   	image->arch.dtb = NULL;
-> > >   	vfree(image->arch.elf_headers);
-> > > @@ -59,19 +59,21 @@ static int create_dtb(struct kimage *image,
-> > >   			+ cmdline_len + DTB_EXTRA_SPACE;
-> > >   	for (;;) {
-> > > -		buf = vmalloc(buf_size);
-> > > +		buf = kmalloc(buf_size, GFP_KERNEL);
-> > 
-> > Is there a functional need for this patch? I build the 'dtbs' target just
-> > now and sdm845-db845c.dtb is approaching 100K, which feels quite large
-> > for kmalloc().
+> Le 27/01/2021 à 15:56, Zorro Lang a écrit :
+>> On powerpc, io_uring test hit below KUAP fault on __do_page_fault.
+>> The fail source line is:
+>>
+>>    if (unlikely(!is_user && bad_kernel_fault(regs, error_code, address, is_write)))
+>>        return SIGSEGV;
+>>
+>> The is_user() is based on user_mod(regs) only. This's not suit for
+>> io_uring, where the helper thread can assume the user app identity
+>> and could perform this fault just fine. So turn to use mm to decide
+>> if this is valid or not.
 > 
-> Changing the allocation from vmalloc() to kmalloc() would help us further
-> consolidate the DTB setup code for powerpc and arm64.
+> I don't understand why testing is_user would be an issue. KUAP purpose
+> it to block any unallowed access from kernel to user memory
+> (Equivalent to SMAP on x86). So it really must be based on MSR_PR bit,
+> that is what is_user provides.
+> 
+> If the kernel access is legitimate, kernel should have opened
+> userspace access then you shouldn't get this "Bug: Read fault blocked
+> by KUAP!".
+> 
+> As far as I understand, the fault occurs in
+> iov_iter_fault_in_readable() which calls fault_in_pages_readable() And
+> fault_in_pages_readable() uses __get_user() so it is a legitimate
+> access and you really should get a KUAP fault.
+> 
+> So the problem is somewhere else, I think you proposed patch just
+> hides the problem, it doesn't fix it.
 
-Ok, but at the risk of allocation failure. Can powerpc use vmalloc()
-instead?
+If we do kthread_use_mm(), can we agree that the user access is valid?
+We should be able to copy to/from user space, and including faults, if
+that's been done and the new mm assigned. Because it really should be.
+If SMAP was a problem on x86, we would have seen it long ago.
 
-Will
+I'm assuming this may be breakage related to the recent uaccess changes
+related to set_fs and friends? Or maybe recent changes on the powerpc
+side?
+
+Zorro, did 5.10 work?
+
+-- 
+Jens Axboe
+
