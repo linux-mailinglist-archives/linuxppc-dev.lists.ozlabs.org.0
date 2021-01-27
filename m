@@ -2,77 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5697330619D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 18:14:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 159A73062D1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 18:58:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQqvc4PpNzDqLW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 04:14:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQrvB2XftzDqhn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 04:58:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b29;
- helo=mail-yb1-xb29.google.com; envelope-from=saravanak@google.com;
+ smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
+ helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=buF+e6cQ; dkim-atps=neutral
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com
- [IPv6:2607:f8b0:4864:20::b29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DQqrk643LzDqjp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 04:11:34 +1100 (AEDT)
-Received: by mail-yb1-xb29.google.com with SMTP id b11so2694276ybj.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 09:11:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=SCMC9c1Y3UdZlZUZ7gotdft22BvIa2n17Y+bk6uxrpU=;
- b=buF+e6cQQikru+I+wPmZzNHqUP53S5gn9SMSJhpEVq/IXcbgB6FO65hbHfPo5g2lK5
- tUusqRpXb7HvQiCBMvWBMVL5Oid4fmEwGQ/2fQo47okY61Ue2gIUeT/kfiIac7f/Hwyj
- 6FFRbPsxZnt7Sma6ev9KJH145i55FdneRppghjcezH8k7lsQBohDAsn1SSjCT2nBwLVL
- eHJ3P7RvYKqs/+NCcq/RDW145cZKVpfugES4mbapMWIaTaMMwD21YwXD8+fYXkgMReNw
- k3RHPl/7T3Z9hcN33LNPPMq/w+APPDTRZPmfjV7r5YSKnh7nEVYr+/9yphZuhauCX4zE
- skMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=SCMC9c1Y3UdZlZUZ7gotdft22BvIa2n17Y+bk6uxrpU=;
- b=SOcD7NmlcsHSEPXfxWJQ+DZtoYgQLw//VJesO7jwmRstkWsMvxydWR1e1bkS3is6ez
- 2kjqtVHbkX+1ZI5KiNfTDTUKFjfwTE0phcS1x9HpuIcyxPeDwLDugtvMAt5NWUNp7Nh/
- +288f9sjw8+kuRvm+ShKanBz7qOFOVJdpZNQ6Llx9711S1TN+LH/B+JaiZe40m26LIMf
- +Gv6jkpSP1ErOkj7AV5pc/A7aNCVEdQhX99vboo5AmXJEM6Amgif47K0pqdwl1wIzLGi
- QbVdDQfWqsbw3mA0j8/O37pxqYy2IPkcIEXY9cyV6bXFvyW+Ezl/v5vGq95jiQUNdp9S
- xLSg==
-X-Gm-Message-State: AOAM533mhZ2DDN94KTsKmfS7A52A922+ZA2aFpVHMq3jBGQR1oE1IMYs
- Phno6MmAakQ7EwRIl29Pfw4d3ThC4742BKugiDwLJw==
-X-Google-Smtp-Source: ABdhPJxrBQe4Av/shkBNQ8ehUaFA7s4Ekhjqa1UpGiP1H/CtNg0Du0ryBzR8ZDxVbe7g6lqnkfZP88faYZGZi40TLVg=
-X-Received: by 2002:a25:8b8b:: with SMTP id j11mr16073043ybl.310.1611767490478; 
- Wed, 27 Jan 2021 09:11:30 -0800 (PST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
+ header.a=rsa-sha256 header.s=default header.b=CMvoZn/y; 
+ dkim-atps=neutral
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DQrs51L8jzDqfv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 04:56:56 +1100 (AEDT)
+Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
+ [73.42.176.67])
+ by linux.microsoft.com (Postfix) with ESMTPSA id 2122320B7192;
+ Wed, 27 Jan 2021 09:56:54 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2122320B7192
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1611770214;
+ bh=vvGJ3Dw+P3cv0U4VoHgL/alIB6MLatAQqWQeXHRPyf8=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=CMvoZn/y9uX2BE+OvTUHQY580cu1ambGmPIPDRbaJIGKZMJ6YhIkHXDfgZcxExCuz
+ Y4TEVyk1LhecePWTsRk2No/AJ+BCXh+Oj/mhdv526SghnwMzyzjuSpVWvT+boP9LTp
+ du3iLImTUK2O4SNWCPna1xtTn1T8OeHEXsaBMnkg=
+Subject: Re: [PATCH v15 10/10] arm64: Add IMA log information in kimage used
+ for kexec
+To: Will Deacon <will@kernel.org>
+References: <20210115173017.30617-1-nramas@linux.microsoft.com>
+ <20210115173017.30617-11-nramas@linux.microsoft.com>
+ <20210127165424.GB358@willie-the-truck>
+From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <dec23eb8-0b27-3227-d1ef-f759338a7f9f@linux.microsoft.com>
+Date: Wed, 27 Jan 2021 09:56:53 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20210120105246.23218-1-michael@walle.cc>
- <CAL_JsqLSJCLtgPyAdKSqsy=JoHSLYef_0s-stTbiJ+VCq2qaSA@mail.gmail.com>
- <CAGETcx86HMo=gaDdXFyJ4QQ-pGXWzw2G0J=SjC-eq4K7B1zQHg@mail.gmail.com>
- <c3e35b90e173b15870a859fd7001a712@walle.cc>
- <CAGETcx8eZRd1fJ3yuO_t2UXBFHObeNdv-c8oFH3mXw6zi=zOkQ@mail.gmail.com>
- <f706c0e4b684e07635396fcf02f4c9a6@walle.cc>
- <CAGETcx8_6Hp+MWFOhRohXwdWFSfCc7A=zpb5QYNHZE5zv0bDig@mail.gmail.com>
- <CAMuHMdWvFej-6vkaLM44t7eX2LpkDSXu4_7VH-X-3XRueXTO=A@mail.gmail.com>
- <a24391e62b107040435766fff52bdd31@walle.cc>
- <CAGETcx8FO+YSM0jwCnDdnvE3NCdjZ=1FSmAZpyaOEOvCgd4SXw@mail.gmail.com>
- <CAMuHMdX8__juNc-Lx8Tu9abMKq-pT=yA4s6D1w4ZeStKOasGpg@mail.gmail.com>
- <CAGETcx-0G-Y8wT_+BfP5vbi0gW6KonwgoJ6DdqjaGbFkutTGag@mail.gmail.com>
- <CAMuHMdXMaAtrbQibJh+Z2v5qhe_Tg0hQU9YqxuU0ow_iNO1atg@mail.gmail.com>
- <CAGETcx8=woX_SVckG+gs68KMif-JGoy3a1PQGfonMNBH18Ak6A@mail.gmail.com>
- <CAMuHMdUpzaRutO+jKffXtGDoy5g2QoXkbO+-tzbEzibNYbhCuA@mail.gmail.com>
-In-Reply-To: <CAMuHMdUpzaRutO+jKffXtGDoy5g2QoXkbO+-tzbEzibNYbhCuA@mail.gmail.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Wed, 27 Jan 2021 09:10:54 -0800
-Message-ID: <CAGETcx_81qOe2LvX-J_PBZWdouykPoPYdf5=yMVhnjgDxAkgaw@mail.gmail.com>
-Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210127165424.GB358@willie-the-truck>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,150 +59,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roy Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- PCI <linux-pci@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- Minghuan Lian <minghuan.Lian@nxp.com>, Michael Walle <michael@walle.cc>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
+Cc: mark.rutland@arm.com, bhsharma@redhat.com, tao.li@vivo.com,
+ zohar@linux.ibm.com, paulus@samba.org, vincenzo.frascino@arm.com,
+ frowand.list@gmail.com, sashal@kernel.org, robh@kernel.org,
+ masahiroy@kernel.org, jmorris@namei.org, takahiro.akashi@linaro.org,
+ linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+ serge@hallyn.com, devicetree@vger.kernel.org, pasha.tatashin@soleen.com,
+ prsriva@linux.microsoft.com, hsinyi@chromium.org, allison@lohutok.net,
+ christophe.leroy@c-s.fr, mbrugger@suse.com, balajib@linux.microsoft.com,
+ dmitry.kasatkin@gmail.com, linux-kernel@vger.kernel.org, james.morse@arm.com,
+ gregkh@linuxfoundation.org, linux-integrity@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 27, 2021 at 8:56 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Saravana,
->
-> On Wed, Jan 27, 2021 at 5:42 PM Saravana Kannan <saravanak@google.com> wrote:
-> > On Tue, Jan 26, 2021 at 11:43 PM Geert Uytterhoeven
-> > <geert@linux-m68k.org> wrote:
-> > > On Wed, Jan 27, 2021 at 1:44 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > > On Tue, Jan 26, 2021 at 12:50 AM Geert Uytterhoeven
-> > > > <geert@linux-m68k.org> wrote:
-> > > > > On Mon, Jan 25, 2021 at 11:42 PM Saravana Kannan <saravanak@google.com> wrote:
-> > > > > > On Mon, Jan 25, 2021 at 11:49 AM Michael Walle <michael@walle.cc> wrote:
-> > > > > > > Am 2021-01-21 12:01, schrieb Geert Uytterhoeven:
-> > > > > > > > On Thu, Jan 21, 2021 at 1:05 AM Saravana Kannan <saravanak@google.com>
-> > > > > > > > wrote:
-> > > > > > > >> On Wed, Jan 20, 2021 at 3:53 PM Michael Walle <michael@walle.cc>
-> > > > > > > >> wrote:
-> > > > > > > >> > Am 2021-01-20 20:47, schrieb Saravana Kannan:
-> > > > > > > >> > > On Wed, Jan 20, 2021 at 11:28 AM Michael Walle <michael@walle.cc>
-> > > > > > > >> > > wrote:
-> > > > > > > >> > >>
-> > > > > > > >> > >> [RESEND, fat-fingered the buttons of my mail client and converted
-> > > > > > > >> > >> all CCs to BCCs :(]
-> > > > > > > >> > >>
-> > > > > > > >> > >> Am 2021-01-20 20:02, schrieb Saravana Kannan:
-> > > > > > > >> > >> > On Wed, Jan 20, 2021 at 6:24 AM Rob Herring <robh@kernel.org> wrote:
-> > > > > > > >> > >> >>
-> > > > > > > >> > >> >> On Wed, Jan 20, 2021 at 4:53 AM Michael Walle <michael@walle.cc>
-> > > > > > > >> > >> >> wrote:
-> > > > > > > >> > >> >> >
-> > > > > > > >> > >> >> > fw_devlink will defer the probe until all suppliers are ready. We can't
-> > > > > > > >> > >> >> > use builtin_platform_driver_probe() because it doesn't retry after probe
-> > > > > > > >> > >> >> > deferral. Convert it to builtin_platform_driver().
-> > > > > > > >> > >> >>
-> > > > > > > >> > >> >> If builtin_platform_driver_probe() doesn't work with fw_devlink, then
-> > > > > > > >> > >> >> shouldn't it be fixed or removed?
-> > > > > > > >> > >> >
-> > > > > > > >> > >> > I was actually thinking about this too. The problem with fixing
-> > > > > > > >> > >> > builtin_platform_driver_probe() to behave like
-> > > > > > > >> > >> > builtin_platform_driver() is that these probe functions could be
-> > > > > > > >> > >> > marked with __init. But there are also only 20 instances of
-> > > > > > > >> > >> > builtin_platform_driver_probe() in the kernel:
-> > > > > > > >> > >> > $ git grep ^builtin_platform_driver_probe | wc -l
-> > > > > > > >> > >> > 20
-> > > > > > > >> > >> >
-> > > > > > > >> > >> > So it might be easier to just fix them to not use
-> > > > > > > >> > >> > builtin_platform_driver_probe().
-> > > > > > > >> > >> >
-> > > > > > > >> > >> > Michael,
-> > > > > > > >> > >> >
-> > > > > > > >> > >> > Any chance you'd be willing to help me by converting all these to
-> > > > > > > >> > >> > builtin_platform_driver() and delete builtin_platform_driver_probe()?
-> > > > > > > >> > >>
-> > > > > > > >> > >> If it just moving the probe function to the _driver struct and
-> > > > > > > >> > >> remove the __init annotations. I could look into that.
-> > > > > > > >> > >
-> > > > > > > >> > > Yup. That's pretty much it AFAICT.
-> > > > > > > >> > >
-> > > > > > > >> > > builtin_platform_driver_probe() also makes sure the driver doesn't ask
-> > > > > > > >> > > for async probe, etc. But I doubt anyone is actually setting async
-> > > > > > > >> > > flags and still using builtin_platform_driver_probe().
-> > > > > > > >> >
-> > > > > > > >> > Hasn't module_platform_driver_probe() the same problem? And there
-> > > > > > > >> > are ~80 drivers which uses that.
-> > > > > > > >>
-> > > > > > > >> Yeah. The biggest problem with all of these is the __init markers.
-> > > > > > > >> Maybe some familiar with coccinelle can help?
-> > > > > > > >
-> > > > > > > > And dropping them will increase memory usage.
-> > > > > > >
-> > > > > > > Although I do have the changes for the builtin_platform_driver_probe()
-> > > > > > > ready, I don't think it makes much sense to send these unless we agree
-> > > > > > > on the increased memory footprint. While there are just a few
-> > > > > > > builtin_platform_driver_probe() and memory increase _might_ be
-> > > > > > > negligible, there are many more module_platform_driver_probe().
-> > > > > >
-> > > > > > While it's good to drop code that'll not be used past kernel init, the
-> > > > > > module_platform_driver_probe() is going even more extreme. It doesn't
-> > > > > > even allow deferred probe (well before kernel init is done). I don't
-> > > > > > think that behavior is right and that's why we should delete it. Also,
-> > > > >
-> > > > > This construct is typically used for builtin hardware for which the
-> > > > > dependencies are registered very early, and thus known to probe at
-> > > > > first try (if present).
-> > > > >
-> > > > > > I doubt if any of these probe functions even take up 4KB of memory.
-> > > > >
-> > > > > How many 4 KiB pages do you have in a system with 10 MiB of SRAM?
-> > > > > How many can you afford to waste?
-> > > >
-> > > > There are only a few instances of this macro in the kernel. How many
-> > >
-> > > $ git grep -lw builtin_platform_driver_probe | wc -l
-> > > 21
-> > > $ git grep -lw module_platform_driver_probe | wc -l
-> > > 86
-> > >
-> > > + the ones that haven't been converted to the above yet:
-> > >
-> > > $ git grep -lw platform_driver_probe | wc -l
-> > > 58
-> > >
-> >
-> > Yeah, this adds up in terms of the number of places we'd need to fix.
-> > But thinking more about it, a couple of points:
-> > 1. Not all builtin_platform_driver_probe() are problems for
-> > fw_devlink. So we can just fix them as we go if we need to.
-> >
-> > 2. The problem with builtin_platform_driver_probe() isn't really with
-> > the use of __init. It's the fact that it doesn't allow deferred
-> > probes. builtin_platform_driver_probe()/platform_driver_probe() could
-> > still be fixed up to allow deferred probe until we get to the point
-> > where we free the __init section (so at least till late_initcall).
->
-> That's intentional: it is used for cases that will (must) never be deferred.
-> That's why it's safe to use __init.
+On 1/27/21 8:54 AM, Will Deacon wrote:
 
-So was the usage of builtin_platform_driver_probe() wrong in the
-driver Michael fixed? Because, deferring and probing again clearly
-works?
+Hi Will,
 
-Also, "must never be deferred" seems like a weird condition to
-enforce. I think the real "rule" is that if it defers, the platform is
-not expected to work. But disallowing a probe reattempt seems weird.
-What is it going to hurt if it's attempted again? At worst it fails
-one more time?
+> On Fri, Jan 15, 2021 at 09:30:17AM -0800, Lakshmi Ramasubramanian wrote:
+>> Address and size of the buffer containing the IMA measurement log need
+>> to be passed from the current kernel to the next kernel on kexec.
+>>
+>> Add address and size fields to "struct kimage_arch" for ARM64 platform
+>> to hold the address and size of the IMA measurement log buffer.
+>>
+>> Update CONFIG_KEXEC_FILE to select CONFIG_HAVE_IMA_KEXEC, if CONFIG_IMA
+>> is enabled, to indicate that the IMA measurement log information is
+>> present in the device tree for ARM64.
+>>
+>> Co-developed-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
+>> Signed-off-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
+>> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+>> Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+>> ---
+>>   arch/arm64/Kconfig             | 1 +
+>>   arch/arm64/include/asm/kexec.h | 5 +++++
+>>   2 files changed, 6 insertions(+)
+>>
+>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+>> index 1d466addb078..ea7f7fe3dccd 100644
+>> --- a/arch/arm64/Kconfig
+>> +++ b/arch/arm64/Kconfig
+>> @@ -1094,6 +1094,7 @@ config KEXEC
+>>   config KEXEC_FILE
+>>   	bool "kexec file based system call"
+>>   	select KEXEC_CORE
+>> +	select HAVE_IMA_KEXEC if IMA
+>>   	help
+>>   	  This is new version of kexec system call. This system call is
+>>   	  file based and takes file descriptors as system call argument
+>> diff --git a/arch/arm64/include/asm/kexec.h b/arch/arm64/include/asm/kexec.h
+>> index d24b527e8c00..2bd19ccb6c43 100644
+>> --- a/arch/arm64/include/asm/kexec.h
+>> +++ b/arch/arm64/include/asm/kexec.h
+>> @@ -100,6 +100,11 @@ struct kimage_arch {
+>>   	void *elf_headers;
+>>   	unsigned long elf_headers_mem;
+>>   	unsigned long elf_headers_sz;
+>> +
+>> +#ifdef CONFIG_IMA_KEXEC
+>> +	phys_addr_t ima_buffer_addr;
+>> +	size_t ima_buffer_size;
+>> +#endif
+> 
+> Why do these need to be in the arch structure instead of 'struct kimage'?
+> 
 
-Also, I'd argue that all/most of the "can't defer, but I'm still a
-proper struct device" cases are all just patchwork to deal with the
-fact we were playing initcall chicken when there was no fw_devlink.
-I'm hoping we can move people away from that mindset. And the first
-step towards that would be to allow *platform_probe() to allow
-deferred probes until late_initcall().
+Currently, only powerpc and, with this patch set, arm64 have support for 
+carrying forward IMA measurement list across kexec system call. The 
+above fields are used for tracking IMA measurement list.
 
+Do you see a reason to move these fields to "struct kimage"?
 
--Saravana
+thanks,
+  -lakshmi
