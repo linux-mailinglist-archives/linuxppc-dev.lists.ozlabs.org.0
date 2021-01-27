@@ -1,50 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF893304040
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jan 2021 15:28:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B52F304D9F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 01:47:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQ8H80f8TzDr28
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 01:28:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQQ0q44VrzDqtQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 11:47:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=jeyu@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b30;
+ helo=mail-yb1-xb30.google.com; envelope-from=saravanak@google.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=AwWJCyWM; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=YFwJyraN; dkim-atps=neutral
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com
+ [IPv6:2607:f8b0:4864:20::b30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DQ8CV113ZzDqkS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 01:25:26 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6961222D58;
- Tue, 26 Jan 2021 14:25:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1611671122;
- bh=zHnnr84X+sq4MJebqrUFKLvmgQBWczP8DyHjmXerqPg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=AwWJCyWMMlFIlbu/JtuoYt7B++r72LxtstkUf4QFYfAtgvNAJcO+WUudPI+0YAm7X
- 6+fXHHEIDTMTt6kZg6TDZE3I494pl2x+zX+0+Z3zEqrei25Exd4peOX9KjXbAQhMZW
- Xa3bV03H1QYILOE5MzIPVTXLt6G2TfZkhII8H/n8NeE44Jcp4oDH6zKlyiiGpcSKVc
- WuVOo/vdgulzezm729DrHzj9hm6nPGrcz0PM9LaYzOPQKp4Sd2o9i+pM1Kp8WLmR0+
- U2mB0+m3dKee3MVHvNpv99t3i1c1nsU5sjIS0dr1L4bsBmwPtOHhYgrpk2Li8EKP+Y
- WcqC3Dro3fjsw==
-Date: Tue, 26 Jan 2021 15:25:16 +0100
-From: Jessica Yu <jeyu@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 04/13] livepatch: move klp_find_object_module to module.c
-Message-ID: <YBAmTAsT3S01kU1x@gunter>
-References: <20210121074959.313333-1-hch@lst.de>
- <20210121074959.313333-5-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DQPyP75FhzDqfv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 11:44:58 +1100 (AEDT)
+Received: by mail-yb1-xb30.google.com with SMTP id y128so371360ybf.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jan 2021 16:44:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=cZ1VOxuGzH4//g/DaFwaGuEQdEVHQtm8F+WWpgu+EU4=;
+ b=YFwJyraNsG0Ipsao5vP9jRz0JyTwxqIANtk6nOQvZcx29nRAsdCLR454XFhdNB/idA
+ a3FNw884X2BUO1qiZsLlgWPb+/KCVDt3R+chLAaTpm17Fua/LBF+uUKkAf7aOi9HrG9p
+ 5dpDZ8ieVaz3zoxM5tOHYe16Jw9bnA4d96zpVhB9gPwYy/GWLl/RKqHBBalAj9es8iCH
+ /tiEeD08cviEUow2rlvj1zDrv+FrDqCUzEM+A4rD6vr+xtrZoz1J//6JSZ82sFxVLi/5
+ Xp2fPWAgj666ooBEDH3gmcJ8tnwxPVi3dqK6yGJEh3FiUN+W2E9P9zRPX78dyoM16Mzk
+ xWKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=cZ1VOxuGzH4//g/DaFwaGuEQdEVHQtm8F+WWpgu+EU4=;
+ b=FN32lcFBMNmG2k/YzjN1cT3WGSpuT/uwTO2Vd23GWxvc0OewO2zCEFHt60HvZNznNN
+ fJotLd25Fyat113dUpqM2XqFDrPLx9jCJ1Gug8bp4uHQtk8kuWY4agHU6lr67go36G4v
+ 2ncwkOgsh/DZvAYCwmuAe16PAcoMtCtyQLRQozJwph42DuSzCJlor1GD0ZrwkcQnO4To
+ b9BD0uyGarnPLGRRaWibIUp8COB17Uqt4C919ay+RjaR8Apvj1wrvPsKk3pRZOsxrgK3
+ PYGgxxyaihNYW5ypv2MsUhKsvxTHCQ9fNvc8xeRlY2Z7Ugtg3+JvFS79JFi2vxxUHZTt
+ AGUg==
+X-Gm-Message-State: AOAM531BpaUfXozEx5cvKa+3hC5pl3s9Ry7qItav/9WEqiA5XZBeCMdM
+ VcPG+YCkw5x4JqZPyLbCHLfZWBdN3J9DEvlQS6jruw==
+X-Google-Smtp-Source: ABdhPJz06rM3i8q6OzxaIC/5CSA959lRbZ/D6V9CzjqmU5rjnj+8/8N4uqtfABX3dPXZ1Isz9zmWSUJ0cBdlthZyPRw=
+X-Received: by 2002:a25:f8a:: with SMTP id 132mr12458631ybp.228.1611708293540; 
+ Tue, 26 Jan 2021 16:44:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20210121074959.313333-5-hch@lst.de>
-X-OS: Linux gunter 5.10.7-1-default x86_64
+References: <20210120105246.23218-1-michael@walle.cc>
+ <CAL_JsqLSJCLtgPyAdKSqsy=JoHSLYef_0s-stTbiJ+VCq2qaSA@mail.gmail.com>
+ <CAGETcx86HMo=gaDdXFyJ4QQ-pGXWzw2G0J=SjC-eq4K7B1zQHg@mail.gmail.com>
+ <c3e35b90e173b15870a859fd7001a712@walle.cc>
+ <CAGETcx8eZRd1fJ3yuO_t2UXBFHObeNdv-c8oFH3mXw6zi=zOkQ@mail.gmail.com>
+ <f706c0e4b684e07635396fcf02f4c9a6@walle.cc>
+ <CAGETcx8_6Hp+MWFOhRohXwdWFSfCc7A=zpb5QYNHZE5zv0bDig@mail.gmail.com>
+ <CAMuHMdWvFej-6vkaLM44t7eX2LpkDSXu4_7VH-X-3XRueXTO=A@mail.gmail.com>
+ <a24391e62b107040435766fff52bdd31@walle.cc>
+ <CAGETcx8FO+YSM0jwCnDdnvE3NCdjZ=1FSmAZpyaOEOvCgd4SXw@mail.gmail.com>
+ <CAMuHMdX8__juNc-Lx8Tu9abMKq-pT=yA4s6D1w4ZeStKOasGpg@mail.gmail.com>
+In-Reply-To: <CAMuHMdX8__juNc-Lx8Tu9abMKq-pT=yA4s6D1w4ZeStKOasGpg@mail.gmail.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Tue, 26 Jan 2021 16:44:17 -0800
+Message-ID: <CAGETcx-0G-Y8wT_+BfP5vbi0gW6KonwgoJ6DdqjaGbFkutTGag@mail.gmail.com>
+Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,96 +80,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, linux-kbuild@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Masahiro Yamada <masahiroy@kernel.org>,
- Jiri Kosina <jikos@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
- live-patching@vger.kernel.org, Michal Marek <michal.lkml@markovi.net>,
- dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Frederic Barrat <fbarrat@linux.ibm.com>,
- Daniel Vetter <daniel@ffwll.ch>, Miroslav Benes <mbenes@suse.cz>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Roy Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ PCI <linux-pci@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Minghuan Lian <minghuan.Lian@nxp.com>, Michael Walle <michael@walle.cc>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-+++ Christoph Hellwig [21/01/21 08:49 +0100]:
->To uncouple the livepatch code from module loader internals move a
->slightly refactored version of klp_find_object_module to module.c
->This allows to mark find_module static and removes one of the last
->users of module_mutex outside of module.c.
+On Tue, Jan 26, 2021 at 12:50 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
 >
->Signed-off-by: Christoph Hellwig <hch@lst.de>
->---
-> include/linux/module.h  |  3 +--
-> kernel/livepatch/core.c | 39 +++++++++++++--------------------------
-> kernel/module.c         | 17 ++++++++++++++++-
-> 3 files changed, 30 insertions(+), 29 deletions(-)
+> Hi Saravana,
 >
->diff --git a/include/linux/module.h b/include/linux/module.h
->index b4654f8a408134..8588482bde4116 100644
->--- a/include/linux/module.h
->+++ b/include/linux/module.h
->@@ -586,8 +586,7 @@ static inline bool within_module(unsigned long addr, const struct module *mod)
-> 	return within_module_init(addr, mod) || within_module_core(addr, mod);
-> }
+> On Mon, Jan 25, 2021 at 11:42 PM Saravana Kannan <saravanak@google.com> wrote:
+> > On Mon, Jan 25, 2021 at 11:49 AM Michael Walle <michael@walle.cc> wrote:
+> > > Am 2021-01-21 12:01, schrieb Geert Uytterhoeven:
+> > > > On Thu, Jan 21, 2021 at 1:05 AM Saravana Kannan <saravanak@google.com>
+> > > > wrote:
+> > > >> On Wed, Jan 20, 2021 at 3:53 PM Michael Walle <michael@walle.cc>
+> > > >> wrote:
+> > > >> > Am 2021-01-20 20:47, schrieb Saravana Kannan:
+> > > >> > > On Wed, Jan 20, 2021 at 11:28 AM Michael Walle <michael@walle.cc>
+> > > >> > > wrote:
+> > > >> > >>
+> > > >> > >> [RESEND, fat-fingered the buttons of my mail client and converted
+> > > >> > >> all CCs to BCCs :(]
+> > > >> > >>
+> > > >> > >> Am 2021-01-20 20:02, schrieb Saravana Kannan:
+> > > >> > >> > On Wed, Jan 20, 2021 at 6:24 AM Rob Herring <robh@kernel.org> wrote:
+> > > >> > >> >>
+> > > >> > >> >> On Wed, Jan 20, 2021 at 4:53 AM Michael Walle <michael@walle.cc>
+> > > >> > >> >> wrote:
+> > > >> > >> >> >
+> > > >> > >> >> > fw_devlink will defer the probe until all suppliers are ready. We can't
+> > > >> > >> >> > use builtin_platform_driver_probe() because it doesn't retry after probe
+> > > >> > >> >> > deferral. Convert it to builtin_platform_driver().
+> > > >> > >> >>
+> > > >> > >> >> If builtin_platform_driver_probe() doesn't work with fw_devlink, then
+> > > >> > >> >> shouldn't it be fixed or removed?
+> > > >> > >> >
+> > > >> > >> > I was actually thinking about this too. The problem with fixing
+> > > >> > >> > builtin_platform_driver_probe() to behave like
+> > > >> > >> > builtin_platform_driver() is that these probe functions could be
+> > > >> > >> > marked with __init. But there are also only 20 instances of
+> > > >> > >> > builtin_platform_driver_probe() in the kernel:
+> > > >> > >> > $ git grep ^builtin_platform_driver_probe | wc -l
+> > > >> > >> > 20
+> > > >> > >> >
+> > > >> > >> > So it might be easier to just fix them to not use
+> > > >> > >> > builtin_platform_driver_probe().
+> > > >> > >> >
+> > > >> > >> > Michael,
+> > > >> > >> >
+> > > >> > >> > Any chance you'd be willing to help me by converting all these to
+> > > >> > >> > builtin_platform_driver() and delete builtin_platform_driver_probe()?
+> > > >> > >>
+> > > >> > >> If it just moving the probe function to the _driver struct and
+> > > >> > >> remove the __init annotations. I could look into that.
+> > > >> > >
+> > > >> > > Yup. That's pretty much it AFAICT.
+> > > >> > >
+> > > >> > > builtin_platform_driver_probe() also makes sure the driver doesn't ask
+> > > >> > > for async probe, etc. But I doubt anyone is actually setting async
+> > > >> > > flags and still using builtin_platform_driver_probe().
+> > > >> >
+> > > >> > Hasn't module_platform_driver_probe() the same problem? And there
+> > > >> > are ~80 drivers which uses that.
+> > > >>
+> > > >> Yeah. The biggest problem with all of these is the __init markers.
+> > > >> Maybe some familiar with coccinelle can help?
+> > > >
+> > > > And dropping them will increase memory usage.
+> > >
+> > > Although I do have the changes for the builtin_platform_driver_probe()
+> > > ready, I don't think it makes much sense to send these unless we agree
+> > > on the increased memory footprint. While there are just a few
+> > > builtin_platform_driver_probe() and memory increase _might_ be
+> > > negligible, there are many more module_platform_driver_probe().
+> >
+> > While it's good to drop code that'll not be used past kernel init, the
+> > module_platform_driver_probe() is going even more extreme. It doesn't
+> > even allow deferred probe (well before kernel init is done). I don't
+> > think that behavior is right and that's why we should delete it. Also,
 >
->-/* Search for module by name: must hold module_mutex. */
->-struct module *find_module(const char *name);
->+struct module *find_klp_module(const char *name);
+> This construct is typically used for builtin hardware for which the
+> dependencies are registered very early, and thus known to probe at
+> first try (if present).
 >
-> /* Check if a module is loaded. */
-> bool module_loaded(const char *name);
->diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
->index a7f625dc24add3..878759baadd81c 100644
->--- a/kernel/livepatch/core.c
->+++ b/kernel/livepatch/core.c
->@@ -49,30 +49,6 @@ static bool klp_is_module(struct klp_object *obj)
-> 	return obj->name;
-> }
+> > I doubt if any of these probe functions even take up 4KB of memory.
 >
->-/* sets obj->mod if object is not vmlinux and module is found */
->-static void klp_find_object_module(struct klp_object *obj)
->-{
->-	struct module *mod;
->-
->-	mutex_lock(&module_mutex);
->-	/*
->-	 * We do not want to block removal of patched modules and therefore
->-	 * we do not take a reference here. The patches are removed by
->-	 * klp_module_going() instead.
->-	 */
->-	mod = find_module(obj->name);
->-	/*
->-	 * Do not mess work of klp_module_coming() and klp_module_going().
->-	 * Note that the patch might still be needed before klp_module_going()
->-	 * is called. Module functions can be called even in the GOING state
->-	 * until mod->exit() finishes. This is especially important for
->-	 * patches that modify semantic of the functions.
->-	 */
->-	if (mod && mod->klp_alive)
->-		obj->mod = mod;
->-	mutex_unlock(&module_mutex);
->-}
+> How many 4 KiB pages do you have in a system with 10 MiB of SRAM?
+> How many can you afford to waste?
 
-Hmm, I am not a huge fan of moving more livepatch code into module.c, I
-wonder if we can keep them separate.
+There are only a few instances of this macro in the kernel. How many
+of those actually fit the description above? We can probably just
+check the DT?
 
-Why not have module_is_loaded() kill two birds with one stone? That
-is, just have it return a module pointer to signify that the module is
-loaded, NULL if not. Then we don't need an extra find_klp_module()
-function just to call find_module() and return a pointer, as
-module_is_loaded() can just do that for us.
-
-As for the mod->klp_alive check, I believe this function
-(klp_find_object_module()) is called with klp_mutex held, and
-mod->klp_alive is only modified under klp_mutex. Also, if klp_alive is
-true, the module is at least COMING and cannot be GOING until it
-acquires the klp_mutex again in klp_module_going(). So does that hunk
-really need to be under module_mutex? It has been a long time since
-I've looked at livepatch code so it would be great if someone could
-double check.
-
-Jessica
+-Saravana
