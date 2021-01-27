@@ -2,55 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8E8306796
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 00:15:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5878330684B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 00:52:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQzwg4jx6zDr3h
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 10:15:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DR0kq3F0VzDr5R
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 10:52:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a;
+ helo=mail-pg1-x52a.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=hiXR4SPi; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=fGLqz9Us; dkim-atps=neutral
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
+ [IPv6:2607:f8b0:4864:20::52a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DQztg429rzDqFD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 10:13:47 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1951460C3D;
- Wed, 27 Jan 2021 23:13:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1611789225;
- bh=OG86KZQjlQK/iphbVSEABQExPs4plghOMLe7bxUvZQk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=hiXR4SPij5BE91XtvMKGChI7asIK50gRj/Z4Lxm/glG9RzkAxpyJspZLwbwys9nps
- tI03uwRMyhgEkIxQcuiaPm3ZgMz4bBEtPlvi3IDzC5wDtZcL2A4lAoqMpt1g+UosSA
- wLTOZ9jePGGUbsufEsqPvQnmsgTqhAr99x2RSYgByv1mkkpm6EkRbk8bv1XdG7HMqN
- lKxGdoLkSbt4X+NuVD6ceY/nb7J2Ff7mFQj2a1j/FnikHzR6RurcOQhNhtq5tlslBa
- gfuiakBGS5QnzkiMepjRh+mx4bTXDq7IRbBz/yUbE4efmesD8ZExJtOZR2bk1CpbeT
- 4NEmBQoS+pSdw==
-Date: Wed, 27 Jan 2021 23:13:35 +0000
-From: Will Deacon <will@kernel.org>
-To: Mimi Zohar <zohar@linux.ibm.com>
-Subject: Re: [PATCH v15 10/10] arm64: Add IMA log information in kimage used
- for kexec
-Message-ID: <20210127231334.GB1016@willie-the-truck>
-References: <20210115173017.30617-1-nramas@linux.microsoft.com>
- <20210115173017.30617-11-nramas@linux.microsoft.com>
- <20210127165424.GB358@willie-the-truck>
- <dec23eb8-0b27-3227-d1ef-f759338a7f9f@linux.microsoft.com>
- <20210127180230.GA593@willie-the-truck>
- <8a573f84-732a-3591-8751-f7b08edaa01d@linux.microsoft.com>
- <6343ab2eec390ab7582beea04f8006af095850c8.camel@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DR0hv62rMzDqD1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 10:50:22 +1100 (AEDT)
+Received: by mail-pg1-x52a.google.com with SMTP id o16so2896313pgg.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 15:50:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=XsErl/cimO7wftOceCRiamL1P72e2kHrMeV9MFjW27g=;
+ b=fGLqz9UsgK9Cr9me5mJkGUUHZ/ke2usuBxuSHXBCSgMAeh8tHZ4FMurwWB5rlSQeDo
+ bemL1e/oAsER36IcSonYKQfzwXrATmHWRNnVyLXNVunMnwmQ/6UkWKx24BjgWPbcs+Sz
+ PRCJ5rJ8HRVTkKeKmnYynuL7P0Z9wyQg0yKdq4ezgecbXb5C18uMVENT0iSAOVQ8DT5e
+ 7sZTGp9nvfjpfwxGqQZbfXbzQLm68F0h7BpVi1d4byqSVDCCP9ahAQXe/AJ7YibeAlkz
+ fhmRVpGnoTfaFtXnX3r7ZaMuY2o56WzZTKzZ3XZOvcNFf1MP+q4xLghbJpi5QIHQfGvS
+ uzZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=XsErl/cimO7wftOceCRiamL1P72e2kHrMeV9MFjW27g=;
+ b=OdNBmYbTFnyJsQ4Hobd89fNn4VEvoZGS7zCc88e4RJf8Q+8J/U3Qk/SQ01XNBXxXpk
+ LzQu3Us8AuBn/yEM1qfCln1TcKAgu7GjBoH9vugl1nn6DuA53gKZC41Y8PFfKJjtfz6i
+ KkPojCI4xWfsR7PnJGabfdWYDxeKray2xSFavjPne/sOrt71R1cuI2XZ+t+puwSdPbJu
+ BvZ1bvYu0FACPF5RnMR9vGqVPCVt+vvD7qsyPup53RYjXKDWA9fEj/J9qxZ496NkOzu8
+ bjcg3e+6Fi7IgFV0no8KaiDzHiU6/La6juex3nBBdQ+RDhJ/W+21W8Q0/IUaMolLkuKR
+ 42GQ==
+X-Gm-Message-State: AOAM533rvwwS42s7T3yFJPmD2Bo5oeKUCSQWX/JNcU8sA3M721oVNQrs
+ d7XWK5En3HqsOnKzW/Ba48Q=
+X-Google-Smtp-Source: ABdhPJzPxvfNcOGRxVoxGRJhNJzeeR6LVj1ni1YjcQZl5ymQxjDeLCfX6QUO6JSQd/lT4PTM1qPt3g==
+X-Received: by 2002:a63:4764:: with SMTP id w36mr13533232pgk.127.1611791419066; 
+ Wed, 27 Jan 2021 15:50:19 -0800 (PST)
+Received: from localhost
+ (192.156.221.203.dial.dynamic.acc50-nort-cbr.comindico.com.au.
+ [203.221.156.192])
+ by smtp.gmail.com with ESMTPSA id g22sm3455973pfu.200.2021.01.27.15.50.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 27 Jan 2021 15:50:18 -0800 (PST)
+Date: Thu, 28 Jan 2021 09:50:12 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: RE: [PATCH v4 11/23] powerpc/syscall: Rename syscall_64.c into
+ syscall.c
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, David Laight <David.Laight@ACULAB.COM>,
+ Michael Ellerman <mpe@ellerman.id.au>, "msuchanek@suse.de"
+ <msuchanek@suse.de>, Paul Mackerras <paulus@samba.org>
+References: <cover.1611585031.git.christophe.leroy@csgroup.eu>
+ <ff9dd4accdc897013594768833d54444e4823bf9.1611585031.git.christophe.leroy@csgroup.eu>
+ <1611656343.yaxha7r2q4.astroid@bobo.none>
+ <d9993f034db848d1afeffa322373b811@AcuMS.aculab.com>
+In-Reply-To: <d9993f034db848d1afeffa322373b811@AcuMS.aculab.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6343ab2eec390ab7582beea04f8006af095850c8.camel@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-Id: <1611791083.sqnnh21vv0.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,94 +85,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, bhsharma@redhat.com, tao.li@vivo.com,
- paulus@samba.org, vincenzo.frascino@arm.com, frowand.list@gmail.com,
- sashal@kernel.org, robh@kernel.org,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>, masahiroy@kernel.org,
- jmorris@namei.org, takahiro.akashi@linaro.org,
- linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
- serge@hallyn.com, devicetree@vger.kernel.org, pasha.tatashin@soleen.com,
- prsriva@linux.microsoft.com, hsinyi@chromium.org, allison@lohutok.net,
- christophe.leroy@c-s.fr, mbrugger@suse.com, balajib@linux.microsoft.com,
- dmitry.kasatkin@gmail.com, linux-kernel@vger.kernel.org, james.morse@arm.com,
- gregkh@linuxfoundation.org, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 27, 2021 at 01:31:02PM -0500, Mimi Zohar wrote:
-> On Wed, 2021-01-27 at 10:24 -0800, Lakshmi Ramasubramanian wrote:
-> > On 1/27/21 10:02 AM, Will Deacon wrote:
-> > > On Wed, Jan 27, 2021 at 09:56:53AM -0800, Lakshmi Ramasubramanian wrote:
-> > >> On 1/27/21 8:54 AM, Will Deacon wrote:
-> > >>> On Fri, Jan 15, 2021 at 09:30:17AM -0800, Lakshmi Ramasubramanian wrote:
-> > >>>> Address and size of the buffer containing the IMA measurement log need
-> > >>>> to be passed from the current kernel to the next kernel on kexec.
-> > >>>>
-> > >>>> Add address and size fields to "struct kimage_arch" for ARM64 platform
-> > >>>> to hold the address and size of the IMA measurement log buffer.
-> > >>>>
-> > >>>> Update CONFIG_KEXEC_FILE to select CONFIG_HAVE_IMA_KEXEC, if CONFIG_IMA
-> > >>>> is enabled, to indicate that the IMA measurement log information is
-> > >>>> present in the device tree for ARM64.
-> > >>>>
-> > >>>> Co-developed-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
-> > >>>> Signed-off-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
-> > >>>> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-> > >>>> Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> > >>>> ---
-> > >>>>    arch/arm64/Kconfig             | 1 +
-> > >>>>    arch/arm64/include/asm/kexec.h | 5 +++++
-> > >>>>    2 files changed, 6 insertions(+)
-> > >>>>
-> > >>>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> > >>>> index 1d466addb078..ea7f7fe3dccd 100644
-> > >>>> --- a/arch/arm64/Kconfig
-> > >>>> +++ b/arch/arm64/Kconfig
-> > >>>> @@ -1094,6 +1094,7 @@ config KEXEC
-> > >>>>    config KEXEC_FILE
-> > >>>>    	bool "kexec file based system call"
-> > >>>>    	select KEXEC_CORE
-> > >>>> +	select HAVE_IMA_KEXEC if IMA
-> > >>>>    	help
-> > >>>>    	  This is new version of kexec system call. This system call is
-> > >>>>    	  file based and takes file descriptors as system call argument
-> > >>>> diff --git a/arch/arm64/include/asm/kexec.h b/arch/arm64/include/asm/kexec.h
-> > >>>> index d24b527e8c00..2bd19ccb6c43 100644
-> > >>>> --- a/arch/arm64/include/asm/kexec.h
-> > >>>> +++ b/arch/arm64/include/asm/kexec.h
-> > >>>> @@ -100,6 +100,11 @@ struct kimage_arch {
-> > >>>>    	void *elf_headers;
-> > >>>>    	unsigned long elf_headers_mem;
-> > >>>>    	unsigned long elf_headers_sz;
-> > >>>> +
-> > >>>> +#ifdef CONFIG_IMA_KEXEC
-> > >>>> +	phys_addr_t ima_buffer_addr;
-> > >>>> +	size_t ima_buffer_size;
-> > >>>> +#endif
-> > >>>
-> > >>> Why do these need to be in the arch structure instead of 'struct kimage'?
-> > >>>
-> > >>
-> > >> Currently, only powerpc and, with this patch set, arm64 have support for
-> > >> carrying forward IMA measurement list across kexec system call. The above
-> > >> fields are used for tracking IMA measurement list.
-> > >>
-> > >> Do you see a reason to move these fields to "struct kimage"?
-> > > 
-> > > If they're gated on CONFIG_IMA_KEXEC, then it seems harmless for them to
-> > > be added to the shared structure. Or are you saying that there are
-> > > architectures which have CONFIG_IMA_KEXEC but do not want these fields?
-> > > 
-> > 
-> > As far as I know, there are no other architectures that define 
-> > CONFIG_IMA_KEXEC, but do not use these fields.
-> 
-> Yes, CONFIG_IMA_KEXEC enables "carrying the IMA measurement list across
-> a soft boot".   The only arch that currently carries the IMA
-> measurement across kexec is powerpc.
+Excerpts from David Laight's message of January 26, 2021 8:28 pm:
+> From: Nicholas Piggin
+>> Sent: 26 January 2021 10:21
+>>=20
+>> Excerpts from Christophe Leroy's message of January 26, 2021 12:48 am:
+>> > syscall_64.c will be reused almost as is for PPC32.
+>> >
+>> > Rename it syscall.c
+>>=20
+>> Could you rename it to interrupt.c instead? A system call is an
+>> interrupt, and the file now also has code to return from other
+>> interrupts as well, and it matches the new asm/interrupt.h from
+>> the interrupts series.
+>=20
+> Hmmm....
+>=20
+> That might make it harder for someone looking for the system call
+> entry code to find it.
 
-Ok, in which case this sounds like it should be in the shared structure, no?
+It's very grep'able.
 
-Will
+> In some sense interrupts are the simpler case.
+>=20
+> Especially when comparing with other architectures which have
+> special instructions for syscall entry.
+
+powerpc does have a special instruction for syscall, and it causes a
+system call interrupt.
+
+I'm not sure about other architectures, but for powerpc its more=20
+sensible to call it interrupt.c than syscall.c.
+
+Thanks,
+Nick
