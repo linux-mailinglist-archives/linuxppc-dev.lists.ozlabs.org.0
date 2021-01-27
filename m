@@ -2,42 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE884306166
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 17:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5697330619D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 18:14:07 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQqYx6jy6zDqs8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 03:58:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQqvc4PpNzDqLW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 04:14:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.180;
- helo=mail-oi1-f180.google.com; envelope-from=geert.uytterhoeven@gmail.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b29;
+ helo=mail-yb1-xb29.google.com; envelope-from=saravanak@google.com;
  receiver=<UNKNOWN>)
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com
- [209.85.167.180])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=buF+e6cQ; dkim-atps=neutral
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com
+ [IPv6:2607:f8b0:4864:20::b29])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DQqWc6nYwzDr0P
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 03:56:43 +1100 (AEDT)
-Received: by mail-oi1-f180.google.com with SMTP id k25so2818042oik.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 08:56:43 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DQqrk643LzDqjp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 04:11:34 +1100 (AEDT)
+Received: by mail-yb1-xb29.google.com with SMTP id b11so2694276ybj.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 09:11:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=SCMC9c1Y3UdZlZUZ7gotdft22BvIa2n17Y+bk6uxrpU=;
+ b=buF+e6cQQikru+I+wPmZzNHqUP53S5gn9SMSJhpEVq/IXcbgB6FO65hbHfPo5g2lK5
+ tUusqRpXb7HvQiCBMvWBMVL5Oid4fmEwGQ/2fQo47okY61Ue2gIUeT/kfiIac7f/Hwyj
+ 6FFRbPsxZnt7Sma6ev9KJH145i55FdneRppghjcezH8k7lsQBohDAsn1SSjCT2nBwLVL
+ eHJ3P7RvYKqs/+NCcq/RDW145cZKVpfugES4mbapMWIaTaMMwD21YwXD8+fYXkgMReNw
+ k3RHPl/7T3Z9hcN33LNPPMq/w+APPDTRZPmfjV7r5YSKnh7nEVYr+/9yphZuhauCX4zE
+ skMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=s3xf6Uj3TbfKhQEJk82fq5fqzQLpVMzJXmRWZDS7dvk=;
- b=RdRO4Pomww++34+OqdravOe22l2kwmCe2drS6jPt34UutxqwGe35OgvnhYUMw8tkyC
- apKdrmWTK3WagzqewfYXu7u5VPdB94F/CSPgmmQOW/qhEusKif4F8nnnvTzee2RpT1qN
- RIUghh5Nt9JXXYm2rC9YCdr3wcSahYAhwzR+V8cvge/XEIcJDaDWkd0Fz8Y7DMNufOoq
- w83BEi5TBJRE3PQcCs8JCTlXxrV2TuC2wd30S/Pg9rAZsQWuxsUjh3TAxZ7QyYuWXVG2
- Sn4jSBR4b+xLKSXA5nFxfQAlysYFIUg3u6jWiuNTA5eX9A4aqkFX/UfsOrE3hpAVh28y
- Pv8A==
-X-Gm-Message-State: AOAM530Ojs4M8y8Ht6kZ8/iCr/fqRBpVidkAB/OfAgSEoOPC1lFY4rMc
- YXoTITreE4pe1OkjlQue+WlFsaLYvMtNhluJJ8A=
-X-Google-Smtp-Source: ABdhPJzrftirO9q8y5qRSTJjzPt8PKf7o5QMJ5YRZIls94zP1/ZFWbzW7vKZsZi8Q26ezhYy6mhE78Bj+1LTwsp+OYI=
-X-Received: by 2002:aca:4d8d:: with SMTP id a135mr3681544oib.153.1611766600227; 
- Wed, 27 Jan 2021 08:56:40 -0800 (PST)
+ bh=SCMC9c1Y3UdZlZUZ7gotdft22BvIa2n17Y+bk6uxrpU=;
+ b=SOcD7NmlcsHSEPXfxWJQ+DZtoYgQLw//VJesO7jwmRstkWsMvxydWR1e1bkS3is6ez
+ 2kjqtVHbkX+1ZI5KiNfTDTUKFjfwTE0phcS1x9HpuIcyxPeDwLDugtvMAt5NWUNp7Nh/
+ +288f9sjw8+kuRvm+ShKanBz7qOFOVJdpZNQ6Llx9711S1TN+LH/B+JaiZe40m26LIMf
+ +Gv6jkpSP1ErOkj7AV5pc/A7aNCVEdQhX99vboo5AmXJEM6Amgif47K0pqdwl1wIzLGi
+ QbVdDQfWqsbw3mA0j8/O37pxqYy2IPkcIEXY9cyV6bXFvyW+Ezl/v5vGq95jiQUNdp9S
+ xLSg==
+X-Gm-Message-State: AOAM533mhZ2DDN94KTsKmfS7A52A922+ZA2aFpVHMq3jBGQR1oE1IMYs
+ Phno6MmAakQ7EwRIl29Pfw4d3ThC4742BKugiDwLJw==
+X-Google-Smtp-Source: ABdhPJxrBQe4Av/shkBNQ8ehUaFA7s4Ekhjqa1UpGiP1H/CtNg0Du0ryBzR8ZDxVbe7g6lqnkfZP88faYZGZi40TLVg=
+X-Received: by 2002:a25:8b8b:: with SMTP id j11mr16073043ybl.310.1611767490478; 
+ Wed, 27 Jan 2021 09:11:30 -0800 (PST)
 MIME-Version: 1.0
 References: <20210120105246.23218-1-michael@walle.cc>
  <CAL_JsqLSJCLtgPyAdKSqsy=JoHSLYef_0s-stTbiJ+VCq2qaSA@mail.gmail.com>
@@ -53,12 +65,13 @@ References: <20210120105246.23218-1-michael@walle.cc>
  <CAGETcx-0G-Y8wT_+BfP5vbi0gW6KonwgoJ6DdqjaGbFkutTGag@mail.gmail.com>
  <CAMuHMdXMaAtrbQibJh+Z2v5qhe_Tg0hQU9YqxuU0ow_iNO1atg@mail.gmail.com>
  <CAGETcx8=woX_SVckG+gs68KMif-JGoy3a1PQGfonMNBH18Ak6A@mail.gmail.com>
-In-Reply-To: <CAGETcx8=woX_SVckG+gs68KMif-JGoy3a1PQGfonMNBH18Ak6A@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 27 Jan 2021 17:56:28 +0100
-Message-ID: <CAMuHMdUpzaRutO+jKffXtGDoy5g2QoXkbO+-tzbEzibNYbhCuA@mail.gmail.com>
+ <CAMuHMdUpzaRutO+jKffXtGDoy5g2QoXkbO+-tzbEzibNYbhCuA@mail.gmail.com>
+In-Reply-To: <CAMuHMdUpzaRutO+jKffXtGDoy5g2QoXkbO+-tzbEzibNYbhCuA@mail.gmail.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Wed, 27 Jan 2021 09:10:54 -0800
+Message-ID: <CAGETcx_81qOe2LvX-J_PBZWdouykPoPYdf5=yMVhnjgDxAkgaw@mail.gmail.com>
 Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
-To: Saravana Kannan <saravanak@google.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,128 +95,139 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Saravana,
-
-On Wed, Jan 27, 2021 at 5:42 PM Saravana Kannan <saravanak@google.com> wrote:
-> On Tue, Jan 26, 2021 at 11:43 PM Geert Uytterhoeven
-> <geert@linux-m68k.org> wrote:
-> > On Wed, Jan 27, 2021 at 1:44 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > On Tue, Jan 26, 2021 at 12:50 AM Geert Uytterhoeven
-> > > <geert@linux-m68k.org> wrote:
-> > > > On Mon, Jan 25, 2021 at 11:42 PM Saravana Kannan <saravanak@google.com> wrote:
-> > > > > On Mon, Jan 25, 2021 at 11:49 AM Michael Walle <michael@walle.cc> wrote:
-> > > > > > Am 2021-01-21 12:01, schrieb Geert Uytterhoeven:
-> > > > > > > On Thu, Jan 21, 2021 at 1:05 AM Saravana Kannan <saravanak@google.com>
-> > > > > > > wrote:
-> > > > > > >> On Wed, Jan 20, 2021 at 3:53 PM Michael Walle <michael@walle.cc>
-> > > > > > >> wrote:
-> > > > > > >> > Am 2021-01-20 20:47, schrieb Saravana Kannan:
-> > > > > > >> > > On Wed, Jan 20, 2021 at 11:28 AM Michael Walle <michael@walle.cc>
-> > > > > > >> > > wrote:
-> > > > > > >> > >>
-> > > > > > >> > >> [RESEND, fat-fingered the buttons of my mail client and converted
-> > > > > > >> > >> all CCs to BCCs :(]
-> > > > > > >> > >>
-> > > > > > >> > >> Am 2021-01-20 20:02, schrieb Saravana Kannan:
-> > > > > > >> > >> > On Wed, Jan 20, 2021 at 6:24 AM Rob Herring <robh@kernel.org> wrote:
-> > > > > > >> > >> >>
-> > > > > > >> > >> >> On Wed, Jan 20, 2021 at 4:53 AM Michael Walle <michael@walle.cc>
-> > > > > > >> > >> >> wrote:
-> > > > > > >> > >> >> >
-> > > > > > >> > >> >> > fw_devlink will defer the probe until all suppliers are ready. We can't
-> > > > > > >> > >> >> > use builtin_platform_driver_probe() because it doesn't retry after probe
-> > > > > > >> > >> >> > deferral. Convert it to builtin_platform_driver().
-> > > > > > >> > >> >>
-> > > > > > >> > >> >> If builtin_platform_driver_probe() doesn't work with fw_devlink, then
-> > > > > > >> > >> >> shouldn't it be fixed or removed?
-> > > > > > >> > >> >
-> > > > > > >> > >> > I was actually thinking about this too. The problem with fixing
-> > > > > > >> > >> > builtin_platform_driver_probe() to behave like
-> > > > > > >> > >> > builtin_platform_driver() is that these probe functions could be
-> > > > > > >> > >> > marked with __init. But there are also only 20 instances of
-> > > > > > >> > >> > builtin_platform_driver_probe() in the kernel:
-> > > > > > >> > >> > $ git grep ^builtin_platform_driver_probe | wc -l
-> > > > > > >> > >> > 20
-> > > > > > >> > >> >
-> > > > > > >> > >> > So it might be easier to just fix them to not use
-> > > > > > >> > >> > builtin_platform_driver_probe().
-> > > > > > >> > >> >
-> > > > > > >> > >> > Michael,
-> > > > > > >> > >> >
-> > > > > > >> > >> > Any chance you'd be willing to help me by converting all these to
-> > > > > > >> > >> > builtin_platform_driver() and delete builtin_platform_driver_probe()?
-> > > > > > >> > >>
-> > > > > > >> > >> If it just moving the probe function to the _driver struct and
-> > > > > > >> > >> remove the __init annotations. I could look into that.
-> > > > > > >> > >
-> > > > > > >> > > Yup. That's pretty much it AFAICT.
-> > > > > > >> > >
-> > > > > > >> > > builtin_platform_driver_probe() also makes sure the driver doesn't ask
-> > > > > > >> > > for async probe, etc. But I doubt anyone is actually setting async
-> > > > > > >> > > flags and still using builtin_platform_driver_probe().
-> > > > > > >> >
-> > > > > > >> > Hasn't module_platform_driver_probe() the same problem? And there
-> > > > > > >> > are ~80 drivers which uses that.
-> > > > > > >>
-> > > > > > >> Yeah. The biggest problem with all of these is the __init markers.
-> > > > > > >> Maybe some familiar with coccinelle can help?
+On Wed, Jan 27, 2021 at 8:56 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>
+> Hi Saravana,
+>
+> On Wed, Jan 27, 2021 at 5:42 PM Saravana Kannan <saravanak@google.com> wrote:
+> > On Tue, Jan 26, 2021 at 11:43 PM Geert Uytterhoeven
+> > <geert@linux-m68k.org> wrote:
+> > > On Wed, Jan 27, 2021 at 1:44 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > > On Tue, Jan 26, 2021 at 12:50 AM Geert Uytterhoeven
+> > > > <geert@linux-m68k.org> wrote:
+> > > > > On Mon, Jan 25, 2021 at 11:42 PM Saravana Kannan <saravanak@google.com> wrote:
+> > > > > > On Mon, Jan 25, 2021 at 11:49 AM Michael Walle <michael@walle.cc> wrote:
+> > > > > > > Am 2021-01-21 12:01, schrieb Geert Uytterhoeven:
+> > > > > > > > On Thu, Jan 21, 2021 at 1:05 AM Saravana Kannan <saravanak@google.com>
+> > > > > > > > wrote:
+> > > > > > > >> On Wed, Jan 20, 2021 at 3:53 PM Michael Walle <michael@walle.cc>
+> > > > > > > >> wrote:
+> > > > > > > >> > Am 2021-01-20 20:47, schrieb Saravana Kannan:
+> > > > > > > >> > > On Wed, Jan 20, 2021 at 11:28 AM Michael Walle <michael@walle.cc>
+> > > > > > > >> > > wrote:
+> > > > > > > >> > >>
+> > > > > > > >> > >> [RESEND, fat-fingered the buttons of my mail client and converted
+> > > > > > > >> > >> all CCs to BCCs :(]
+> > > > > > > >> > >>
+> > > > > > > >> > >> Am 2021-01-20 20:02, schrieb Saravana Kannan:
+> > > > > > > >> > >> > On Wed, Jan 20, 2021 at 6:24 AM Rob Herring <robh@kernel.org> wrote:
+> > > > > > > >> > >> >>
+> > > > > > > >> > >> >> On Wed, Jan 20, 2021 at 4:53 AM Michael Walle <michael@walle.cc>
+> > > > > > > >> > >> >> wrote:
+> > > > > > > >> > >> >> >
+> > > > > > > >> > >> >> > fw_devlink will defer the probe until all suppliers are ready. We can't
+> > > > > > > >> > >> >> > use builtin_platform_driver_probe() because it doesn't retry after probe
+> > > > > > > >> > >> >> > deferral. Convert it to builtin_platform_driver().
+> > > > > > > >> > >> >>
+> > > > > > > >> > >> >> If builtin_platform_driver_probe() doesn't work with fw_devlink, then
+> > > > > > > >> > >> >> shouldn't it be fixed or removed?
+> > > > > > > >> > >> >
+> > > > > > > >> > >> > I was actually thinking about this too. The problem with fixing
+> > > > > > > >> > >> > builtin_platform_driver_probe() to behave like
+> > > > > > > >> > >> > builtin_platform_driver() is that these probe functions could be
+> > > > > > > >> > >> > marked with __init. But there are also only 20 instances of
+> > > > > > > >> > >> > builtin_platform_driver_probe() in the kernel:
+> > > > > > > >> > >> > $ git grep ^builtin_platform_driver_probe | wc -l
+> > > > > > > >> > >> > 20
+> > > > > > > >> > >> >
+> > > > > > > >> > >> > So it might be easier to just fix them to not use
+> > > > > > > >> > >> > builtin_platform_driver_probe().
+> > > > > > > >> > >> >
+> > > > > > > >> > >> > Michael,
+> > > > > > > >> > >> >
+> > > > > > > >> > >> > Any chance you'd be willing to help me by converting all these to
+> > > > > > > >> > >> > builtin_platform_driver() and delete builtin_platform_driver_probe()?
+> > > > > > > >> > >>
+> > > > > > > >> > >> If it just moving the probe function to the _driver struct and
+> > > > > > > >> > >> remove the __init annotations. I could look into that.
+> > > > > > > >> > >
+> > > > > > > >> > > Yup. That's pretty much it AFAICT.
+> > > > > > > >> > >
+> > > > > > > >> > > builtin_platform_driver_probe() also makes sure the driver doesn't ask
+> > > > > > > >> > > for async probe, etc. But I doubt anyone is actually setting async
+> > > > > > > >> > > flags and still using builtin_platform_driver_probe().
+> > > > > > > >> >
+> > > > > > > >> > Hasn't module_platform_driver_probe() the same problem? And there
+> > > > > > > >> > are ~80 drivers which uses that.
+> > > > > > > >>
+> > > > > > > >> Yeah. The biggest problem with all of these is the __init markers.
+> > > > > > > >> Maybe some familiar with coccinelle can help?
+> > > > > > > >
+> > > > > > > > And dropping them will increase memory usage.
 > > > > > > >
-> > > > > > > And dropping them will increase memory usage.
+> > > > > > > Although I do have the changes for the builtin_platform_driver_probe()
+> > > > > > > ready, I don't think it makes much sense to send these unless we agree
+> > > > > > > on the increased memory footprint. While there are just a few
+> > > > > > > builtin_platform_driver_probe() and memory increase _might_ be
+> > > > > > > negligible, there are many more module_platform_driver_probe().
 > > > > > >
-> > > > > > Although I do have the changes for the builtin_platform_driver_probe()
-> > > > > > ready, I don't think it makes much sense to send these unless we agree
-> > > > > > on the increased memory footprint. While there are just a few
-> > > > > > builtin_platform_driver_probe() and memory increase _might_ be
-> > > > > > negligible, there are many more module_platform_driver_probe().
+> > > > > > While it's good to drop code that'll not be used past kernel init, the
+> > > > > > module_platform_driver_probe() is going even more extreme. It doesn't
+> > > > > > even allow deferred probe (well before kernel init is done). I don't
+> > > > > > think that behavior is right and that's why we should delete it. Also,
 > > > > >
-> > > > > While it's good to drop code that'll not be used past kernel init, the
-> > > > > module_platform_driver_probe() is going even more extreme. It doesn't
-> > > > > even allow deferred probe (well before kernel init is done). I don't
-> > > > > think that behavior is right and that's why we should delete it. Also,
+> > > > > This construct is typically used for builtin hardware for which the
+> > > > > dependencies are registered very early, and thus known to probe at
+> > > > > first try (if present).
+> > > > >
+> > > > > > I doubt if any of these probe functions even take up 4KB of memory.
+> > > > >
+> > > > > How many 4 KiB pages do you have in a system with 10 MiB of SRAM?
+> > > > > How many can you afford to waste?
 > > > >
-> > > > This construct is typically used for builtin hardware for which the
-> > > > dependencies are registered very early, and thus known to probe at
-> > > > first try (if present).
-> > > >
-> > > > > I doubt if any of these probe functions even take up 4KB of memory.
-> > > >
-> > > > How many 4 KiB pages do you have in a system with 10 MiB of SRAM?
-> > > > How many can you afford to waste?
+> > > > There are only a few instances of this macro in the kernel. How many
 > > >
-> > > There are only a few instances of this macro in the kernel. How many
+> > > $ git grep -lw builtin_platform_driver_probe | wc -l
+> > > 21
+> > > $ git grep -lw module_platform_driver_probe | wc -l
+> > > 86
+> > >
+> > > + the ones that haven't been converted to the above yet:
+> > >
+> > > $ git grep -lw platform_driver_probe | wc -l
+> > > 58
+> > >
 > >
-> > $ git grep -lw builtin_platform_driver_probe | wc -l
-> > 21
-> > $ git grep -lw module_platform_driver_probe | wc -l
-> > 86
+> > Yeah, this adds up in terms of the number of places we'd need to fix.
+> > But thinking more about it, a couple of points:
+> > 1. Not all builtin_platform_driver_probe() are problems for
+> > fw_devlink. So we can just fix them as we go if we need to.
 > >
-> > + the ones that haven't been converted to the above yet:
-> >
-> > $ git grep -lw platform_driver_probe | wc -l
-> > 58
-> >
+> > 2. The problem with builtin_platform_driver_probe() isn't really with
+> > the use of __init. It's the fact that it doesn't allow deferred
+> > probes. builtin_platform_driver_probe()/platform_driver_probe() could
+> > still be fixed up to allow deferred probe until we get to the point
+> > where we free the __init section (so at least till late_initcall).
 >
-> Yeah, this adds up in terms of the number of places we'd need to fix.
-> But thinking more about it, a couple of points:
-> 1. Not all builtin_platform_driver_probe() are problems for
-> fw_devlink. So we can just fix them as we go if we need to.
->
-> 2. The problem with builtin_platform_driver_probe() isn't really with
-> the use of __init. It's the fact that it doesn't allow deferred
-> probes. builtin_platform_driver_probe()/platform_driver_probe() could
-> still be fixed up to allow deferred probe until we get to the point
-> where we free the __init section (so at least till late_initcall).
+> That's intentional: it is used for cases that will (must) never be deferred.
+> That's why it's safe to use __init.
 
-That's intentional: it is used for cases that will (must) never be deferred.
-That's why it's safe to use __init.
+So was the usage of builtin_platform_driver_probe() wrong in the
+driver Michael fixed? Because, deferring and probing again clearly
+works?
 
-Gr{oetje,eeting}s,
+Also, "must never be deferred" seems like a weird condition to
+enforce. I think the real "rule" is that if it defers, the platform is
+not expected to work. But disallowing a probe reattempt seems weird.
+What is it going to hurt if it's attempted again? At worst it fails
+one more time?
 
-                        Geert
+Also, I'd argue that all/most of the "can't defer, but I'm still a
+proper struct device" cases are all just patchwork to deal with the
+fact we were playing initcall chicken when there was no fw_devlink.
+I'm hoping we can move people away from that mindset. And the first
+step towards that would be to allow *platform_probe() to allow
+deferred probes until late_initcall().
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-Saravana
