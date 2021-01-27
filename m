@@ -1,50 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C09305D93
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 14:52:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57405305EFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 16:02:37 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQlQs164MzDqjv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 00:52:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQmzs6c0JzDqcG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 02:02:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=jeyu@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=oMEQhTvG; 
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=zlang@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=A+PEFuDO; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=PYk1RY2s; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DQlMx02XtzDqWq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 00:49:48 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 33261207A3;
- Wed, 27 Jan 2021 13:49:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1611755386;
- bh=24kau5dRxNvNkOJxfzZ0cHryerwzFFv0aEway+hPzJg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=oMEQhTvGgFb516J1ynVDH68s1bM6PW9bB7Crgw2gra4DFSIBeyHNfLsM227UBHxso
- xvHiYDiqVqj838JGX7Kv3b25oLXqTSCBwKDu67BYwKWt8wuzBNflZMpHtFpST57z8x
- YMF5SSMDoxf728i4nQgG4JhYFMdA3pZF4bVyEwMpGdY2564k3MZoIG8v1w0vYbjznr
- k5ZWbJaff5rJOqpUfaFSzfHsc1Njb7Wp9W7Er49xImkmn2Um9cZ60JWRH7ROQlrjHO
- FmEvZgvDBrp1P+gX7idKIN0DlOS+lf+gPe6BKEDWOZb4yFOCTUHvx6PPnkyXK5qfMS
- vajLS/4k4ayWg==
-Date: Wed, 27 Jan 2021 14:49:38 +0100
-From: Jessica Yu <jeyu@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 13/13] module: remove EXPORY_UNUSED_SYMBOL*
-Message-ID: <YBFvcmUiHRjkucbf@gunter>
-References: <20210121074959.313333-1-hch@lst.de>
- <20210121074959.313333-14-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DQmsY6Tj4zDqbW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 01:57:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1611759419;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=u1ZifOAH4pQW6hobNUUZnwon9l7JfwxzNFC3G1KgeG4=;
+ b=A+PEFuDOHDCvW7LgK1K6Ez5smIqNbdPdqnUujmv76dex6p2NM9csaXNTYnBr6wFmtHVqYx
+ w9bYrPcd+UgEdJB2WMpgOiUYzJzufzs6RVH3yCs6iY+kClPvMH4NSbfNOHy7sh/Jh+8ylz
+ JtMU0zdf5qe0v6qP7YZ21jW3Ky2ndT4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1611759420;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=u1ZifOAH4pQW6hobNUUZnwon9l7JfwxzNFC3G1KgeG4=;
+ b=PYk1RY2sg4pCjwBydOxPRrc0Jm/cthquUggnk+EjzI3dAESyMSWl82E0QlMRpci/CB2q2v
+ IAE5igI7SQR9XYpY+Y3lgSK8s7wLBb3j2jFO0lFVa/8UDo+Qbd46/N3j0Vd8iz0cjo40jr
+ 8CRSryAayzNv3REkn2vXDqI5XUKc7ls=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-93-VFtA1DW1Ok-VOWHGYYo4bw-1; Wed, 27 Jan 2021 09:56:57 -0500
+X-MC-Unique: VFtA1DW1Ok-VOWHGYYo4bw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4D6A159;
+ Wed, 27 Jan 2021 14:56:56 +0000 (UTC)
+Received: from zlang-laptop.redhat.com (ovpn-12-16.pek2.redhat.com
+ [10.72.12.16])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 18E615C1C2;
+ Wed, 27 Jan 2021 14:56:54 +0000 (UTC)
+From: Zorro Lang <zlang@redhat.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/fault: fix wrong KUAP fault for IO_URING
+Date: Wed, 27 Jan 2021 22:56:48 +0800
+Message-Id: <20210127145648.348135-1-zlang@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20210121074959.313333-14-hch@lst.de>
-X-OS: Linux gunter 5.10.7-1-default x86_64
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=zlang@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+X-Mailman-Approved-At: Thu, 28 Jan 2021 02:00:01 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,321 +82,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, linux-kbuild@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Masahiro Yamada <masahiroy@kernel.org>,
- Jiri Kosina <jikos@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
- live-patching@vger.kernel.org, Michal Marek <michal.lkml@markovi.net>,
- dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Frederic Barrat <fbarrat@linux.ibm.com>,
- Daniel Vetter <daniel@ffwll.ch>, Miroslav Benes <mbenes@suse.cz>,
- linuxppc-dev@lists.ozlabs.org
+Cc: axboe@kernel.dk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-+++ Christoph Hellwig [21/01/21 08:49 +0100]:
->EXPORT_UNUSED_SYMBOL* is not actually used anywhere.  Remove the
->unused functionality as we generally just remove unused code anyway.
->
->Signed-off-by: Christoph Hellwig <hch@lst.de>
->---
-> arch/arm/configs/bcm2835_defconfig          |  1 -
-> arch/arm/configs/mxs_defconfig              |  1 -
-> arch/mips/configs/nlm_xlp_defconfig         |  1 -
-> arch/mips/configs/nlm_xlr_defconfig         |  1 -
-> arch/parisc/configs/generic-32bit_defconfig |  1 -
-> arch/parisc/configs/generic-64bit_defconfig |  1 -
-> arch/powerpc/configs/ppc6xx_defconfig       |  1 -
-> arch/s390/configs/debug_defconfig           |  1 -
-> arch/s390/configs/defconfig                 |  1 -
-> arch/sh/configs/edosk7760_defconfig         |  1 -
-> arch/sh/configs/sdk7780_defconfig           |  1 -
-> arch/x86/configs/i386_defconfig             |  1 -
-> arch/x86/configs/x86_64_defconfig           |  1 -
-> arch/x86/tools/relocs.c                     |  4 +-
-> include/asm-generic/vmlinux.lds.h           | 28 ---------
-> include/linux/export.h                      |  8 ---
-> include/linux/module.h                      | 13 ----
-> init/Kconfig                                | 17 -----
-> kernel/module.c                             | 69 ++-------------------
-> scripts/checkpatch.pl                       |  6 +-
-> scripts/mod/modpost.c                       | 39 +-----------
-> scripts/mod/modpost.h                       |  2 -
-> scripts/module.lds.S                        |  4 --
-> tools/include/linux/export.h                |  2 -
-> 24 files changed, 13 insertions(+), 192 deletions(-)
->
->diff --git a/arch/arm/configs/bcm2835_defconfig b/arch/arm/configs/bcm2835_defconfig
->index 44ff9cd88d8161..d6c6c2e031c43a 100644
->--- a/arch/arm/configs/bcm2835_defconfig
->+++ b/arch/arm/configs/bcm2835_defconfig
->@@ -177,7 +177,6 @@ CONFIG_BOOT_PRINTK_DELAY=y
-> CONFIG_DYNAMIC_DEBUG=y
-> CONFIG_DEBUG_INFO=y
-> # CONFIG_ENABLE_MUST_CHECK is not set
->-CONFIG_UNUSED_SYMBOLS=y
-> CONFIG_DEBUG_MEMORY_INIT=y
-> CONFIG_LOCKUP_DETECTOR=y
-> CONFIG_SCHED_TRACER=y
->diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defconfig
->index a9c6f32a9b1c9d..ca32446b187f5d 100644
->--- a/arch/arm/configs/mxs_defconfig
->+++ b/arch/arm/configs/mxs_defconfig
->@@ -164,7 +164,6 @@ CONFIG_FONTS=y
-> CONFIG_PRINTK_TIME=y
-> CONFIG_DEBUG_INFO=y
-> CONFIG_FRAME_WARN=2048
->-CONFIG_UNUSED_SYMBOLS=y
-> CONFIG_MAGIC_SYSRQ=y
-> CONFIG_DEBUG_KERNEL=y
-> CONFIG_SOFTLOCKUP_DETECTOR=y
->diff --git a/arch/mips/configs/nlm_xlp_defconfig b/arch/mips/configs/nlm_xlp_defconfig
->index 72a211d2d556fd..32c29061172325 100644
->--- a/arch/mips/configs/nlm_xlp_defconfig
->+++ b/arch/mips/configs/nlm_xlp_defconfig
->@@ -549,7 +549,6 @@ CONFIG_PRINTK_TIME=y
-> CONFIG_DEBUG_INFO=y
-> # CONFIG_ENABLE_MUST_CHECK is not set
-> CONFIG_FRAME_WARN=1024
->-CONFIG_UNUSED_SYMBOLS=y
-> CONFIG_DEBUG_MEMORY_INIT=y
-> CONFIG_DETECT_HUNG_TASK=y
-> CONFIG_SCHEDSTATS=y
->diff --git a/arch/mips/configs/nlm_xlr_defconfig b/arch/mips/configs/nlm_xlr_defconfig
->index 4ecb157e56d427..bf9b9244929ecd 100644
->--- a/arch/mips/configs/nlm_xlr_defconfig
->+++ b/arch/mips/configs/nlm_xlr_defconfig
->@@ -500,7 +500,6 @@ CONFIG_CRC7=m
-> CONFIG_PRINTK_TIME=y
-> CONFIG_DEBUG_INFO=y
-> # CONFIG_ENABLE_MUST_CHECK is not set
->-CONFIG_UNUSED_SYMBOLS=y
-> CONFIG_DEBUG_MEMORY_INIT=y
-> CONFIG_DETECT_HUNG_TASK=y
-> CONFIG_SCHEDSTATS=y
->diff --git a/arch/parisc/configs/generic-32bit_defconfig b/arch/parisc/configs/generic-32bit_defconfig
->index 3cbcfad5f7249d..7611d48c599e01 100644
->--- a/arch/parisc/configs/generic-32bit_defconfig
->+++ b/arch/parisc/configs/generic-32bit_defconfig
->@@ -22,7 +22,6 @@ CONFIG_PCI_LBA=y
-> CONFIG_MODULES=y
-> CONFIG_MODULE_UNLOAD=y
-> CONFIG_MODULE_FORCE_UNLOAD=y
->-CONFIG_UNUSED_SYMBOLS=y
-> # CONFIG_BLK_DEV_BSG is not set
-> # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-> CONFIG_BINFMT_MISC=m
->diff --git a/arch/parisc/configs/generic-64bit_defconfig b/arch/parisc/configs/generic-64bit_defconfig
->index 8f81fcbf04c413..53054b81461a10 100644
->--- a/arch/parisc/configs/generic-64bit_defconfig
->+++ b/arch/parisc/configs/generic-64bit_defconfig
->@@ -31,7 +31,6 @@ CONFIG_MODULE_FORCE_LOAD=y
-> CONFIG_MODULE_UNLOAD=y
-> CONFIG_MODULE_FORCE_UNLOAD=y
-> CONFIG_MODVERSIONS=y
->-CONFIG_UNUSED_SYMBOLS=y
-> CONFIG_BLK_DEV_INTEGRITY=y
-> CONFIG_BINFMT_MISC=m
-> # CONFIG_COMPACTION is not set
->diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
->index ef09f3cce1fa85..34c3859040f9f7 100644
->--- a/arch/powerpc/configs/ppc6xx_defconfig
->+++ b/arch/powerpc/configs/ppc6xx_defconfig
->@@ -1072,7 +1072,6 @@ CONFIG_NLS_ISO8859_15=m
-> CONFIG_NLS_KOI8_R=m
-> CONFIG_NLS_KOI8_U=m
-> CONFIG_DEBUG_INFO=y
->-CONFIG_UNUSED_SYMBOLS=y
-> CONFIG_HEADERS_INSTALL=y
-> CONFIG_MAGIC_SYSRQ=y
-> CONFIG_DEBUG_KERNEL=y
->diff --git a/arch/s390/configs/debug_defconfig b/arch/s390/configs/debug_defconfig
->index c4f6ff98a612cd..58e54d17e3154b 100644
->--- a/arch/s390/configs/debug_defconfig
->+++ b/arch/s390/configs/debug_defconfig
->@@ -71,7 +71,6 @@ CONFIG_MODULE_FORCE_UNLOAD=y
-> CONFIG_MODVERSIONS=y
-> CONFIG_MODULE_SRCVERSION_ALL=y
-> CONFIG_MODULE_SIG_SHA256=y
->-CONFIG_UNUSED_SYMBOLS=y
-> CONFIG_BLK_DEV_INTEGRITY=y
-> CONFIG_BLK_DEV_THROTTLING=y
-> CONFIG_BLK_WBT=y
->diff --git a/arch/s390/configs/defconfig b/arch/s390/configs/defconfig
->index 51135893cffe34..b5e62c0d3e23e0 100644
->--- a/arch/s390/configs/defconfig
->+++ b/arch/s390/configs/defconfig
->@@ -66,7 +66,6 @@ CONFIG_MODULE_FORCE_UNLOAD=y
-> CONFIG_MODVERSIONS=y
-> CONFIG_MODULE_SRCVERSION_ALL=y
-> CONFIG_MODULE_SIG_SHA256=y
->-CONFIG_UNUSED_SYMBOLS=y
-> CONFIG_BLK_DEV_THROTTLING=y
-> CONFIG_BLK_WBT=y
-> CONFIG_BLK_CGROUP_IOLATENCY=y
->diff --git a/arch/sh/configs/edosk7760_defconfig b/arch/sh/configs/edosk7760_defconfig
->index 02ba622985769d..d77f54e906fd04 100644
->--- a/arch/sh/configs/edosk7760_defconfig
->+++ b/arch/sh/configs/edosk7760_defconfig
->@@ -102,7 +102,6 @@ CONFIG_NLS_UTF8=y
-> CONFIG_PRINTK_TIME=y
-> # CONFIG_ENABLE_MUST_CHECK is not set
-> CONFIG_MAGIC_SYSRQ=y
->-CONFIG_UNUSED_SYMBOLS=y
-> CONFIG_DEBUG_KERNEL=y
-> CONFIG_DEBUG_SHIRQ=y
-> CONFIG_DETECT_HUNG_TASK=y
->diff --git a/arch/sh/configs/sdk7780_defconfig b/arch/sh/configs/sdk7780_defconfig
->index d10a0414123a51..d53c4595fb2e98 100644
->--- a/arch/sh/configs/sdk7780_defconfig
->+++ b/arch/sh/configs/sdk7780_defconfig
->@@ -130,7 +130,6 @@ CONFIG_NLS_ISO8859_15=y
-> CONFIG_NLS_UTF8=y
-> # CONFIG_ENABLE_MUST_CHECK is not set
-> CONFIG_MAGIC_SYSRQ=y
->-CONFIG_UNUSED_SYMBOLS=y
-> CONFIG_DEBUG_KERNEL=y
-> CONFIG_DETECT_HUNG_TASK=y
-> # CONFIG_SCHED_DEBUG is not set
->diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
->index 78210793d357cf..9c9c4a888b1dbf 100644
->--- a/arch/x86/configs/i386_defconfig
->+++ b/arch/x86/configs/i386_defconfig
->@@ -50,7 +50,6 @@ CONFIG_JUMP_LABEL=y
-> CONFIG_MODULES=y
-> CONFIG_MODULE_UNLOAD=y
-> CONFIG_MODULE_FORCE_UNLOAD=y
->-# CONFIG_UNUSED_SYMBOLS is not set
-> CONFIG_BINFMT_MISC=y
-> CONFIG_NET=y
-> CONFIG_PACKET=y
->diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
->index 9936528e19393a..b60bd2d8603499 100644
->--- a/arch/x86/configs/x86_64_defconfig
->+++ b/arch/x86/configs/x86_64_defconfig
->@@ -48,7 +48,6 @@ CONFIG_JUMP_LABEL=y
-> CONFIG_MODULES=y
-> CONFIG_MODULE_UNLOAD=y
-> CONFIG_MODULE_FORCE_UNLOAD=y
->-# CONFIG_UNUSED_SYMBOLS is not set
-> CONFIG_BINFMT_MISC=y
-> CONFIG_NET=y
-> CONFIG_PACKET=y
->diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
->index 0d210d0e83e241..b9c577a3cacca6 100644
->--- a/arch/x86/tools/relocs.c
->+++ b/arch/x86/tools/relocs.c
->@@ -61,8 +61,8 @@ static const char * const sym_regex_kernel[S_NSYMTYPES] = {
-> 	"(__iommu_table|__apicdrivers|__smp_locks)(|_end)|"
-> 	"__(start|end)_pci_.*|"
-> 	"__(start|end)_builtin_fw|"
->-	"__(start|stop)___ksymtab(|_gpl|_unused|_unused_gpl)|"
->-	"__(start|stop)___kcrctab(|_gpl|_unused|_unused_gpl)|"
->+	"__(start|stop)___ksymtab(|_gpl)|"
->+	"__(start|stop)___kcrctab(|_gpl)|"
-> 	"__(start|stop)___param|"
-> 	"__(start|stop)___modver|"
-> 	"__(start|stop)___bug_table|"
->diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
->index 83243506e68b00..1fa338ac6a5477 100644
->--- a/include/asm-generic/vmlinux.lds.h
->+++ b/include/asm-generic/vmlinux.lds.h
->@@ -481,20 +481,6 @@
-> 		__stop___ksymtab_gpl = .;				\
-> 	}								\
-> 									\
->-	/* Kernel symbol table: Normal unused symbols */		\
->-	__ksymtab_unused  : AT(ADDR(__ksymtab_unused) - LOAD_OFFSET) {	\
->-		__start___ksymtab_unused = .;				\
->-		KEEP(*(SORT(___ksymtab_unused+*)))			\
->-		__stop___ksymtab_unused = .;				\
->-	}								\
->-									\
->-	/* Kernel symbol table: GPL-only unused symbols */		\
->-	__ksymtab_unused_gpl : AT(ADDR(__ksymtab_unused_gpl) - LOAD_OFFSET) { \
->-		__start___ksymtab_unused_gpl = .;			\
->-		KEEP(*(SORT(___ksymtab_unused_gpl+*)))			\
->-		__stop___ksymtab_unused_gpl = .;			\
->-	}								\
->-									\
-> 	/* Kernel symbol table: Normal symbols */			\
-> 	__kcrctab         : AT(ADDR(__kcrctab) - LOAD_OFFSET) {		\
-> 		__start___kcrctab = .;					\
->@@ -509,20 +495,6 @@
-> 		__stop___kcrctab_gpl = .;				\
-> 	}								\
-> 									\
->-	/* Kernel symbol table: Normal unused symbols */		\
->-	__kcrctab_unused  : AT(ADDR(__kcrctab_unused) - LOAD_OFFSET) {	\
->-		__start___kcrctab_unused = .;				\
->-		KEEP(*(SORT(___kcrctab_unused+*)))			\
->-		__stop___kcrctab_unused = .;				\
->-	}								\
->-									\
->-	/* Kernel symbol table: GPL-only unused symbols */		\
->-	__kcrctab_unused_gpl : AT(ADDR(__kcrctab_unused_gpl) - LOAD_OFFSET) { \
->-		__start___kcrctab_unused_gpl = .;			\
->-		KEEP(*(SORT(___kcrctab_unused_gpl+*)))			\
->-		__stop___kcrctab_unused_gpl = .;			\
->-	}								\
->-									\
-> 	/* Kernel symbol table: strings */				\
->         __ksymtab_strings : AT(ADDR(__ksymtab_strings) - LOAD_OFFSET) {	\
-> 		*(__ksymtab_strings)					\
->diff --git a/include/linux/export.h b/include/linux/export.h
->index 362b64f8d4a7c2..6271a5d9c988fa 100644
->--- a/include/linux/export.h
->+++ b/include/linux/export.h
->@@ -160,14 +160,6 @@ struct kernel_symbol {
-> #define EXPORT_SYMBOL_NS(sym, ns)	__EXPORT_SYMBOL(sym, "", #ns)
-> #define EXPORT_SYMBOL_NS_GPL(sym, ns)	__EXPORT_SYMBOL(sym, "_gpl", #ns)
->
->-#ifdef CONFIG_UNUSED_SYMBOLS
->-#define EXPORT_UNUSED_SYMBOL(sym)	_EXPORT_SYMBOL(sym, "_unused")
->-#define EXPORT_UNUSED_SYMBOL_GPL(sym)	_EXPORT_SYMBOL(sym, "_unused_gpl")
->-#else
->-#define EXPORT_UNUSED_SYMBOL(sym)
->-#define EXPORT_UNUSED_SYMBOL_GPL(sym)
->-#endif
->-
-> #endif /* !__ASSEMBLY__ */
->
-> #endif /* _LINUX_EXPORT_H */
->diff --git a/include/linux/module.h b/include/linux/module.h
->index 8f4d577d4707c2..0e70596c9a704a 100644
->--- a/include/linux/module.h
->+++ b/include/linux/module.h
->@@ -392,18 +392,6 @@ struct module {
-> 	const s32 *gpl_crcs;
-> 	bool using_gplonly_symbols;
->
->-#ifdef CONFIG_UNUSED_SYMBOLS
->-	/* unused exported symbols. */
->-	const struct kernel_symbol *unused_syms;
->-	const s32 *unused_crcs;
->-	unsigned int num_unused_syms;
->-
->-	/* GPL-only, unused exported symbols. */
->-	unsigned int num_unused_gpl_syms;
->-	const struct kernel_symbol *unused_gpl_syms;
->-	const s32 *unused_gpl_crcs;
->-#endif
->-
-> #ifdef CONFIG_MODULE_SIG
-> 	/* Signature was verified. */
-> 	bool sig_ok;
->@@ -592,7 +580,6 @@ struct symsearch {
-> 		GPL_ONLY,
-> 		WILL_BE_GPL_ONLY,
-> 	} license;
->-	bool unused;
-> };
+On powerpc, io_uring test hit below KUAP fault on __do_page_fault.
+The fail source line is:
 
-Thanks for the cleanups. While we're here, I noticed that struct
-symsearch is only used internally in kernel/module.c, so I don't think
-it actually needs to be in include/linux/module.h. I don't see it used
-anywhere else. We could move maybe that to kernel/module-internal.h.
+  if (unlikely(!is_user && bad_kernel_fault(regs, error_code, address, is_write)))
+      return SIGSEGV;
+
+The is_user() is based on user_mod(regs) only. This's not suit for
+io_uring, where the helper thread can assume the user app identity
+and could perform this fault just fine. So turn to use mm to decide
+if this is valid or not.
+
+[  556.472666] ------------[ cut here ]------------
+[  556.472686] Bug: Read fault blocked by KUAP!
+[  556.472697] WARNING: CPU: 1 PID: 101841 at arch/powerpc/mm/fault.c:229 __do_page_fault+0x6b4/0xcd0
+[  556.472728] Modules linked in: bonding rfkill sunrpc pseries_rng xts uio_pdrv_genirq vmx_crypto uio ip_tables xfs libcrc32c sd_mod t10_pi sg ibmvscsi ibmveth scsi_transport_srp
+[  556.472816] CPU: 1 PID: 101841 Comm: io_wqe_worker-0 Tainted: G        W         5.11.0-rc3+ #2
+[  556.472830] NIP:  c00000000009e7e4 LR: c00000000009e7e0 CTR: 0000000000000000
+[  556.472842] REGS: c000000016367090 TRAP: 0700   Tainted: G        W          (5.11.0-rc3+)
+[  556.472853] MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 48022424  XER: 00000001
+[  556.472901] CFAR: c0000000001822ac IRQMASK: 1
+               GPR00: c00000000009e7e0 c000000016367330 c0000000023fc300 0000000000000020
+               GPR04: c000000001e3c2b8 0000000000000001 0000000000000027 c0000007fbcccc90
+               GPR08: 0000000000000023 0000000000000000 c000000024ed0900 fffffffffc464a58
+               GPR12: 0000000000002000 c00000001ecaf280 c0000000001caee8 c000000014d547c0
+               GPR16: 0000000000000000 0000000000000000 0000000000000000 c000000002454018
+               GPR20: c000000001336480 bfffffffffffffff 0000000000000000 c00000000b0e5800
+               GPR24: a8aaaaaaaaaaaaaa 0000000000000000 0000000000200000 c00000002cc38880
+               GPR28: 000001000e3c9310 c0000000013424c0 c0000000163674a0 c000000001e0d2c0
+[  556.473125] NIP [c00000000009e7e4] __do_page_fault+0x6b4/0xcd0
+[  556.473139] LR [c00000000009e7e0] __do_page_fault+0x6b0/0xcd0
+[  556.473152] Call Trace:
+[  556.473168] [c000000016367330] [c00000000009e7e0] __do_page_fault+0x6b0/0xcd0 (unreliable)
+[  556.473198] [c0000000163673e0] [c00000000009ee3c] do_page_fault+0x3c/0x120
+[  556.473216] [c000000016367430] [c00000000000c848] handle_page_fault+0x10/0x2c
+[  556.473232] --- interrupt: 300 at iov_iter_fault_in_readable+0x148/0x6f0
+[  556.473245] NIP:  c0000000008e8228 LR: c0000000008e834c CTR: 0000000000000000
+[  556.473257] REGS: c0000000163674a0 TRAP: 0300   Tainted: G        W          (5.11.0-rc3+)
+[  556.473268] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 44008482  XER: 00000001
+[  556.473339] CFAR: c0000000008e81f0 DAR: 000001000e3c9310 DSISR: 00200000 IRQMASK: 0
+               GPR00: c0000000008e834c c000000016367740 c0000000023fc300 0000000000000000
+               GPR04: c00000002cc389e0 0000000000000001 00000007fa4b0000 c0000000025bc520
+               GPR08: 00000007fa4b0000 0000000000000200 fcffffffffffffff ffffffffffea2ad8
+               GPR12: 0000000000008000 c00000001ecaf280 c0000000001caee8 c000000014d547c0
+               GPR16: 0000000000000000 0000000000000000 0000000000000000 c000000002454018
+               GPR20: c000000001336480 bfffffffffffffff 0000000000000000 c00000000b0e5800
+               GPR24: a8aaaaaaaaaaaaaa fcffffffffffffff 00000000000004b1 00000000000004b1
+               GPR28: c00000000b0e5888 000001000e3c97c0 0000000000000000 000001000e3c9310
+[  556.473667] NIP [c0000000008e8228] iov_iter_fault_in_readable+0x148/0x6f0
+[  556.473688] LR [c0000000008e834c] iov_iter_fault_in_readable+0x26c/0x6f0
+[  556.473708] --- interrupt: 300
+[  556.473722] [c0000000163677e0] [c0000000007154a0] iomap_write_actor+0xc0/0x280
+[  556.473770] [c000000016367880] [c00000000070fc94] iomap_apply+0x1c4/0x780
+[  556.473804] [c000000016367990] [c000000000710330] iomap_file_buffered_write+0xa0/0x120
+[  556.473839] [c0000000163679e0] [c00800000040791c] xfs_file_buffered_aio_write+0x314/0x5e0 [xfs]
+[  556.474053] [c000000016367a90] [c0000000006d74bc] io_write+0x10c/0x460
+[  556.474101] [c000000016367bb0] [c0000000006d80e4] io_issue_sqe+0x8d4/0x1200
+[  556.474132] [c000000016367c70] [c0000000006d8ad0] io_wq_submit_work+0xc0/0x250
+[  556.474161] [c000000016367cb0] [c0000000006e2578] io_worker_handle_work+0x498/0x800
+[  556.474192] [c000000016367d40] [c0000000006e2cdc] io_wqe_worker+0x3fc/0x4f0
+[  556.474223] [c000000016367da0] [c0000000001cb0a4] kthread+0x1c4/0x1d0
+[  556.474254] [c000000016367e10] [c00000000000dbf0] ret_from_kernel_thread+0x5c/0x6c
+[  556.474286] Instruction dump:
+[  556.474310] e87e0100 481287f1 60000000 2fa30000 419e01ec 408e0400 3c82fef4 388461d0
+[  556.474395] 3c62fef4 386362d0 480e3a69 60000000 <0fe00000> 3860000b 4bfffa08 3d220006
+[  556.474479] irq event stamp: 1280
+[  556.474505] hardirqs last  enabled at (1279): [<c0000000005a0104>] __slab_free+0x3e4/0x570
+[  556.474540] hardirqs last disabled at (1280): [<c000000000008a04>] data_access_common_virt+0x1a4/0x1c0
+[  556.474565] softirqs last  enabled at (536): [<c00000000107cdfc>] __do_softirq+0x6ac/0x7f4
+[  556.474590] softirqs last disabled at (437): [<c00000000019179c>] irq_exit+0x2ec/0x320
+[  556.474615] ---[ end trace 4c1967c400992302 ]---
+
+Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=211151
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Zorro Lang <zlang@redhat.com>
+---
+
+Hi,
+
+Thanks to Jens reviewed this bug report from io_uring side, and then suggest this
+fix. But we're not expert of powerpc, so report this bug to powerpc maillist to
+get more review.
+
+I've tested this patch, I can't reproduce this bug after merge this patch. And
+can reproduce it after remove this patch.
+
+Thanks,
+Zorro
+
+ arch/powerpc/mm/fault.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index 8961b44f350c..5a4d6af04c99 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -417,9 +417,12 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
+ 	/*
+ 	 * The kernel should never take an execute fault nor should it
+ 	 * take a page fault to a kernel address or a page fault to a user
+-	 * address outside of dedicated places
++	 * address outside of dedicated places. Use mm to decide if this is
++	 * valid or not, it's perfectly legitimate to have a kernel thread
++	 * take a fault as long as it's performed kthread_use_mm() prior. An
++	 * example of that would be io_uring helper threads.
+ 	 */
+-	if (unlikely(!is_user && bad_kernel_fault(regs, error_code, address, is_write)))
++	if (unlikely(!mm && bad_kernel_fault(regs, error_code, address, is_write)))
+ 		return SIGSEGV;
+ 
+ 	/*
+-- 
+2.29.2
 
