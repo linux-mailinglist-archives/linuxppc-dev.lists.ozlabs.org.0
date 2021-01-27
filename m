@@ -1,56 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D31305638
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 09:56:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1071A30585E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 11:28:05 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQcsy3gbNzDqvN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 19:56:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQfv61J8MzDqtR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 21:28:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DQcr00WvqzDqjY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 19:55:02 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DQcqd6d2Xz9tyrl;
- Wed, 27 Jan 2021 09:54:53 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id i9Tzt1a1HmZY; Wed, 27 Jan 2021 09:54:53 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DQcqd5qqZz9tyrb;
- Wed, 27 Jan 2021 09:54:53 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D7E8F8B7E9;
- Wed, 27 Jan 2021 09:54:54 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id wg5onOpqKAIN; Wed, 27 Jan 2021 09:54:54 +0100 (CET)
-Received: from [172.25.230.103] (po15451.idsi0.si.c-s.fr [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id ACC638B7E1;
- Wed, 27 Jan 2021 09:54:54 +0100 (CET)
-Subject: Re: [PATCH v3 28/32] powerpc/64s: interrupt implement exit logic in C
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200225173541.1549955-1-npiggin@gmail.com>
- <20200225173541.1549955-29-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <a6357db2-51d4-f116-85d4-f774fe7115fd@csgroup.eu>
-Date: Wed, 27 Jan 2021 09:54:46 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DQfs458WlzDqcL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 21:26:16 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=DyrsykGh; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DQfrx33xvz9sW8;
+ Wed, 27 Jan 2021 21:26:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1611743176;
+ bh=zryxgSLQjWiTOLD0UNSsw16+SrNjwYCl/LrpeqtsbiY=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=DyrsykGhL7Xp3tlspIoxzVoyNszca4ctJbln+LsxEzARiBiP2f7oa45V0QTswDfoc
+ Cl5PRnAjD2cK63emo/Vlk7y7TVbZ96PKRzJR+YEOEso3cSKEJ6sMw1AVZ0TNPJtTiG
+ efL77s8j0uGdHOawkZ51ugE8To6++G7bAG06R3VqR5izgvxz9DDbbPpVPIcMJ2Vqmx
+ ICV6oIorPqbZ0+s8wzXSWX06bDGo2IRutQoRcfqUOhcWoi1WUlFKe97S3kG2l2OmVQ
+ oS3xdg+yplepHRFmZPj2/TgwqxzIjNtApPn5VXrBZfprp5TDyBnCCucNMXptgoEmRO
+ bdpnitg9VTrzQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v11 13/13] powerpc/64s/radix: Enable huge vmalloc mappings
+In-Reply-To: <20210126044510.2491820-14-npiggin@gmail.com>
+References: <20210126044510.2491820-1-npiggin@gmail.com>
+ <20210126044510.2491820-14-npiggin@gmail.com>
+Date: Wed, 27 Jan 2021 21:26:08 +1100
+Message-ID: <87mtwuptfj.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200225173541.1549955-29-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,30 +57,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Suchanek <msuchanek@suse.de>
+Cc: linux-arch@vger.kernel.org, Ding Tianhong <dingtianhong@huawei.com>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Christoph Hellwig <hch@infradead.org>,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
 
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Le 25/02/2020 à 18:35, Nicholas Piggin a écrit :
-> Implement the bulk of interrupt return logic in C. The asm return code
-> must handle a few cases: restoring full GPRs, and emulating stack store.
-> 
-> The stack store emulation is significantly simplfied, rather than creating
-> a new return frame and switching to that before performing the store, it
-> uses the PACA to keep a scratch register around to perform thestore.
-> 
-> The asm return code is moved into 64e for now. The new logic has made
-> allowance for 64e, but I don't have a full environment that works well
-> to test it, and even booting in emulated qemu is not great for stress
-> testing. 64e shouldn't be too far off working with this, given a bit
-> more testing and auditing of the logic.
-> 
-> This is slightly faster on a POWER9 (page fault speed increases about
-> 1.1%), probably due to reduced mtmsrd.
-> 
+cheers
 
-How do you measure 'page fault' speed ?
-
+>  .../admin-guide/kernel-parameters.txt         |  2 ++
+>  arch/powerpc/Kconfig                          |  1 +
+>  arch/powerpc/kernel/module.c                  | 21 +++++++++++++++----
+>  3 files changed, 20 insertions(+), 4 deletions(-)
+>
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index a10b545c2070..d62df53e5200 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -3225,6 +3225,8 @@
+>  
+>  	nohugeiomap	[KNL,X86,PPC,ARM64] Disable kernel huge I/O mappings.
+>  
+> +	nohugevmalloc	[PPC] Disable kernel huge vmalloc mappings.
+> +
+>  	nosmt		[KNL,S390] Disable symmetric multithreading (SMT).
+>  			Equivalent to smt=1.
+>  
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 107bb4319e0e..781da6829ab7 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -181,6 +181,7 @@ config PPC
+>  	select GENERIC_GETTIMEOFDAY
+>  	select HAVE_ARCH_AUDITSYSCALL
+>  	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
+> +	select HAVE_ARCH_HUGE_VMALLOC		if HAVE_ARCH_HUGE_VMAP
+>  	select HAVE_ARCH_JUMP_LABEL
+>  	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
+>  	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
+> diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/module.c
+> index a211b0253cdb..07026335d24d 100644
+> --- a/arch/powerpc/kernel/module.c
+> +++ b/arch/powerpc/kernel/module.c
+> @@ -87,13 +87,26 @@ int module_finalize(const Elf_Ehdr *hdr,
+>  	return 0;
+>  }
+>  
+> -#ifdef MODULES_VADDR
+>  void *module_alloc(unsigned long size)
+>  {
+> +	unsigned long start = VMALLOC_START;
+> +	unsigned long end = VMALLOC_END;
+> +
+> +#ifdef MODULES_VADDR
+>  	BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
+> +	start = MODULES_VADDR;
+> +	end = MODULES_END;
+> +#endif
+> +
+> +	/*
+> +	 * Don't do huge page allocations for modules yet until more testing
+> +	 * is done. STRICT_MODULE_RWX may require extra work to support this
+> +	 * too.
+> +	 */
+>  
+> -	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END, GFP_KERNEL,
+> -				    PAGE_KERNEL_EXEC, VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
+> +	return __vmalloc_node_range(size, 1, start, end, GFP_KERNEL,
+> +				    PAGE_KERNEL_EXEC,
+> +				    VM_NO_HUGE_VMAP | VM_FLUSH_RESET_PERMS,
+> +				    NUMA_NO_NODE,
+>  				    __builtin_return_address(0));
+>  }
+> -#endif
+> -- 
+> 2.23.0
