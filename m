@@ -2,39 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9ECE30654E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 21:38:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DC4306567
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Jan 2021 21:52:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DQwRt2qV3zDrBl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 07:38:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DQwlS5JRwzDq7j
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 07:52:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=canonical.com
- (client-ip=91.189.89.112; helo=youngberry.canonical.com;
- envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
-Received: from youngberry.canonical.com (youngberry.canonical.com
- [91.189.89.112])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=V6ucyWyV; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DQrHZ0WdqzDqNN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 04:31:21 +1100 (AEDT)
-Received: from 1.general.khfeng.uk.vpn ([10.172.196.174] helo=localhost)
- by youngberry.canonical.com with esmtpsa
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
- (envelope-from <kai.heng.feng@canonical.com>)
- id 1l4oev-0001Q5-UE; Wed, 27 Jan 2021 17:31:14 +0000
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-To: bhelgaas@google.com
-Subject: [PATCH 2/2] PCI/DPC: Disable DPC interrupt during suspend
-Date: Thu, 28 Jan 2021 01:31:01 +0800
-Message-Id: <20210127173101.446940-2-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210127173101.446940-1-kai.heng.feng@canonical.com>
-References: <20210127173101.446940-1-kai.heng.feng@canonical.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DQwjx1FmKzDr1N
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 07:51:01 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E854264D9F;
+ Wed, 27 Jan 2021 20:50:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1611780657;
+ bh=PG1IVVNWLnFqxSk+/vBnwpgrgPzUioifx7UoAF6paEM=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=V6ucyWyVzhwo9MAVgd72z/OiDy+6W7Eb8HOigwQfsd/393QNAIAAkOCXSdOVYko7/
+ tOeDvNRqS8mngQv6eXjLYDW3wiRvtdwGc2cCIPDawIjeUQZgStSP5d/oP5llxKBJBg
+ wCVo2QPaC59YuuxolKClPPp3gacA1VMuNeFHjeKllA4mZyUV1V20NipHu8RLuflVTl
+ rlihkD/NwuDrAvCG3k5bQ4gJc0ko2TnQ7EDUtUlQYqkxQSwKyjU5QqEDrszynVJZo3
+ G2EyH9ZcgW1Ow8vHd9aA/lZwYcTyrQfYRgsNrsYoQH87bp5qp/AU8k649wDA6OX7uY
+ GH4mT9MLsSSuw==
+Date: Wed, 27 Jan 2021 14:50:53 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Subject: Re: [PATCH 1/2] PCI/AER: Disable AER interrupt during suspend
+Message-ID: <20210127205053.GA3049358@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 28 Jan 2021 07:35:53 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210127173101.446940-1-kai.heng.feng@canonical.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,123 +54,90 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Joerg Roedel <jroedel@suse.de>,
- "open list:PCI ENHANCED ERROR HANDLING EEH FOR POWERPC"
+ "open list:PCI ENHANCED ERROR HANDLING \(EEH\) FOR POWERPC"
  <linuxppc-dev@lists.ozlabs.org>,
  "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
  open list <linux-kernel@vger.kernel.org>,
  Lalithambika Krishnakumar <lalithambika.krishnakumar@intel.com>,
- Kai-Heng Feng <kai.heng.feng@canonical.com>,
- Oliver O'Halloran <oohall@gmail.com>,
+ Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com,
  Mika Westerberg <mika.westerberg@linux.intel.com>,
  Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in
-hint") enables ACS, and some platforms lose its NVMe after resume from
-firmware:
-[   50.947816] pcieport 0000:00:1b.0: DPC: containment event, status:0x1f01 source:0x0000
-[   50.947817] pcieport 0000:00:1b.0: DPC: unmasked uncorrectable error detected
-[   50.947829] pcieport 0000:00:1b.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Receiver ID)
-[   50.947830] pcieport 0000:00:1b.0:   device [8086:06ac] error status/mask=00200000/00010000
-[   50.947831] pcieport 0000:00:1b.0:    [21] ACSViol                (First)
-[   50.947841] pcieport 0000:00:1b.0: AER: broadcast error_detected message
-[   50.947843] nvme nvme0: frozen state error detected, reset controller
+On Thu, Jan 28, 2021 at 01:31:00AM +0800, Kai-Heng Feng wrote:
+> Commit 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in
+> hint") enables ACS, and some platforms lose its NVMe after resume from
+> firmware:
+> [   50.947816] pcieport 0000:00:1b.0: DPC: containment event, status:0x1f01 source:0x0000
+> [   50.947817] pcieport 0000:00:1b.0: DPC: unmasked uncorrectable error detected
+> [   50.947829] pcieport 0000:00:1b.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Receiver ID)
+> [   50.947830] pcieport 0000:00:1b.0:   device [8086:06ac] error status/mask=00200000/00010000
+> [   50.947831] pcieport 0000:00:1b.0:    [21] ACSViol                (First)
+> [   50.947841] pcieport 0000:00:1b.0: AER: broadcast error_detected message
+> [   50.947843] nvme nvme0: frozen state error detected, reset controller
+> 
+> It happens right after ACS gets enabled during resume.
+> 
+> To prevent that from happening, disable AER interrupt and enable it on
+> system suspend and resume, respectively.
 
-Like what previous patch does to AER, introduce new helpers to disable
-DPC interrupt and enable it on system suspend and resume, respectively.
+Lots of questions here.  Maybe this is what we'll end up doing, but I
+am curious about why the error is reported in the first place.
 
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=209149
-Fixes: 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in hint")
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
- drivers/pci/pcie/dpc.c | 49 ++++++++++++++++++++++++++++++++----------
- 1 file changed, 38 insertions(+), 11 deletions(-)
+Is this a consequence of the link going down and back up?
 
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index e05aba86a317..d12289cb5d44 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -279,6 +279,28 @@ void pci_dpc_init(struct pci_dev *pdev)
- 	}
- }
- 
-+static void dpc_enable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	u16 cap, ctl;
-+
-+	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CAP, &cap);
-+	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-+
-+	ctl = (ctl & 0xfff4) | PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
-+	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+}
-+
-+static void dpc_disable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	u16 ctl;
-+
-+	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-+	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
-+	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+}
-+
- #define FLAG(x, y) (((x) & (y)) ? '+' : '-')
- static int dpc_probe(struct pcie_device *dev)
- {
-@@ -299,11 +321,7 @@ static int dpc_probe(struct pcie_device *dev)
- 		return status;
- 	}
- 
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CAP, &cap);
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--
--	ctl = (ctl & 0xfff4) | PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+	dpc_enable(dev);
- 	pci_info(pdev, "enabled with IRQ %d\n", dev->irq);
- 
- 	pci_info(pdev, "error containment capabilities: Int Msg #%d, RPExt%c PoisonedTLP%c SwTrigger%c RP PIO Log %d, DL_ActiveErr%c\n",
-@@ -316,14 +334,21 @@ static int dpc_probe(struct pcie_device *dev)
- 	return status;
- }
- 
--static void dpc_remove(struct pcie_device *dev)
-+static int dpc_suspend(struct pcie_device *dev)
- {
--	struct pci_dev *pdev = dev->port;
--	u16 ctl;
-+	dpc_disable(dev);
-+	return 0;
-+}
- 
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+static int dpc_resume(struct pcie_device *dev)
-+{
-+	dpc_enable(dev);
-+	return 0;
-+}
-+
-+static void dpc_remove(struct pcie_device *dev)
-+{
-+	dpc_disable(dev);
- }
- 
- static struct pcie_port_service_driver dpcdriver = {
-@@ -331,6 +356,8 @@ static struct pcie_port_service_driver dpcdriver = {
- 	.port_type	= PCIE_ANY_PORT,
- 	.service	= PCIE_PORT_SERVICE_DPC,
- 	.probe		= dpc_probe,
-+	.suspend	= dpc_suspend,
-+	.resume		= dpc_resume,
- 	.remove		= dpc_remove,
- };
- 
--- 
-2.29.2
+Is it consequence of the device doing a DMA when it shouldn't?
 
+Are we doing something in the wrong order during suspend?  Or maybe
+resume, since I assume the error is reported during resume?
+
+If we *do* take the error, why doesn't DPC recovery work?
+
+> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=209149
+> Fixes: 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in hint")
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> ---
+>  drivers/pci/pcie/aer.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 77b0f2c45bc0..0e9a85530ae6 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -1365,6 +1365,22 @@ static int aer_probe(struct pcie_device *dev)
+>  	return 0;
+>  }
+>  
+> +static int aer_suspend(struct pcie_device *dev)
+> +{
+> +	struct aer_rpc *rpc = get_service_data(dev);
+> +
+> +	aer_disable_rootport(rpc);
+> +	return 0;
+> +}
+> +
+> +static int aer_resume(struct pcie_device *dev)
+> +{
+> +	struct aer_rpc *rpc = get_service_data(dev);
+> +
+> +	aer_enable_rootport(rpc);
+> +	return 0;
+> +}
+> +
+>  /**
+>   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
+>   * @dev: pointer to Root Port, RCEC, or RCiEP
+> @@ -1437,6 +1453,8 @@ static struct pcie_port_service_driver aerdriver = {
+>  	.service	= PCIE_PORT_SERVICE_AER,
+>  
+>  	.probe		= aer_probe,
+> +	.suspend	= aer_suspend,
+> +	.resume		= aer_resume,
+>  	.remove		= aer_remove,
+>  };
+>  
+> -- 
+> 2.29.2
+> 
