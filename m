@@ -1,68 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D0D306BD2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 05:06:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8716306C0B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 05:17:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DR6N75N0wzDrCD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 15:06:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DR6cx01gdzDqJH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 15:17:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.80;
- helo=conssluserg-01.nifty.com; envelope-from=masahiroy@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=codefail.de (client-ip=131.153.2.42;
+ helo=h1.fbrelay.privateemail.com; envelope-from=cmr@codefail.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=p1GoLVJt; 
- dkim-atps=neutral
-Received: from conssluserg-01.nifty.com (conssluserg-01.nifty.com
- [210.131.2.80])
+Received: from h1.fbrelay.privateemail.com (h1.fbrelay.privateemail.com
+ [131.153.2.42])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DR6JD43vTzDrQ5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 15:02:52 +1100 (AEDT)
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com
- [209.85.215.178]) (authenticated)
- by conssluserg-01.nifty.com with ESMTP id 10S42Y82030324
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 13:02:34 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 10S42Y82030324
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1611806554;
- bh=UGFEFBZO6XyE53sikxcKH18p4Hi/bQ7cwfMaMlbekaw=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=p1GoLVJtc6WAUhXop6XjMbAfaAGuj2ucB7PePaZf8RjP7a/xAS7Y0Q+CtkCiiw7s7
- hxPk7DMFZWb4JJ01ukPwfaouXxFRBXrLnRtVwYuoVnRp42F4jlzYin/7+hywIvHCv5
- E20P7nNm5z69P3uklPsgHIteYVrsjyd88Z313r+myyhSyWKfo35ZBWDfg/rH0+Pdo1
- gSQRHzsQsLG55mXJ1KEm6kqQpekjOqlKJcP17kAwSrz2DOtN0hqvRz5Ontyzlb8rev
- SatdqeLJLJ/J01VfEwAFHIi9sLjdKGfXmVl7pkV949G+CGcaho3jkpXz4HbYpXx3Q4
- rBsamdaS6IfEg==
-X-Nifty-SrcIP: [209.85.215.178]
-Received: by mail-pg1-f178.google.com with SMTP id j2so1764979pgl.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 20:02:34 -0800 (PST)
-X-Gm-Message-State: AOAM533PFcTvhHAFD0xFItmpLDyYZUwLON4okFuNnFY81F1sN7EEwG1N
- V1hwIL1tTz+mOtz7qBeH0alpf34IUfnIHTDJOlI=
-X-Google-Smtp-Source: ABdhPJydqxki6OSEnMrqa1NZ5TxUJLm2/BivHYqaw1ccMRHfmLbg3Xxtl5/PfyePwq4wmVGWu1nRz4xdTcu7k/HCCD8=
-X-Received: by 2002:aa7:8602:0:b029:1bb:4dfd:92fc with SMTP id
- p2-20020aa786020000b02901bb4dfd92fcmr14034248pfn.63.1611806553757; Wed, 27
- Jan 2021 20:02:33 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DR6LG71QJzDrgK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 15:04:38 +1100 (AEDT)
+Received: from MTA-09-3.privateemail.com (mta-09.privateemail.com
+ [198.54.127.58])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id AD889800BA
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 23:04:34 -0500 (EST)
+Received: from MTA-09.privateemail.com (localhost [127.0.0.1])
+ by MTA-09.privateemail.com (Postfix) with ESMTP id 5CBA5600DE
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 23:04:30 -0500 (EST)
+Received: from oc8246131445.ibm.com (unknown [10.20.151.215])
+ by MTA-09.privateemail.com (Postfix) with ESMTPA id 2D4EB600BC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 04:04:30 +0000 (UTC)
+From: "Christopher M. Riedl" <cmr@codefail.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4 00/10] Improve signal performance on PPC64 with KUAP
+Date: Wed, 27 Jan 2021 22:04:14 -0600
+Message-Id: <20210128040424.12720-1-cmr@codefail.de>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-References: <20201223171142.707053-1-masahiroy@kernel.org>
- <20201223171142.707053-2-masahiroy@kernel.org>
-In-Reply-To: <20201223171142.707053-2-masahiroy@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 28 Jan 2021 13:01:56 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAS_vvLwjBG=MSJv=-n-Y4-AgsiPsj2VpH7qO4KLkUA2dw@mail.gmail.com>
-Message-ID: <CAK7LNAS_vvLwjBG=MSJv=-n-Y4-AgsiPsj2VpH7qO4KLkUA2dw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] powerpc/vdso64: remove meaningless vgettimeofday.o
- build rule
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,50 +51,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Greentime Hu <green.hu@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 24, 2020 at 2:12 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> VDSO64 is only built for the 64-bit kernel, hence vgettimeofday.o is
-> built by the generic rule in scripts/Makefile.build.
->
-> This line does not provide anything useful.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+As reported by Anton, there is a large penalty to signal handling
+performance on radix systems using KUAP. The signal handling code
+performs many user access operations, each of which needs to switch the
+KUAP permissions bit to open and then close user access. This involves a
+costly 'mtspr' operation [0].
 
+There is existing work done on x86 and by Christopher Leroy for PPC32 to
+instead open up user access in "blocks" using user_*_access_{begin,end}.
+We can do the same in PPC64 to bring performance back up on KUAP-enabled
+radix and now also hash MMU systems [1].
 
-Michael, please take a  look at this too.
+Hash MMU KUAP support along with uaccess flush has landed in linuxppc/next
+since the last revision. This series also provides a large benefit on hash
+with KUAP. However, in the hash implementation of KUAP the user AMR is
+always restored during system_call_exception() which cannot be avoided.
+Fewer user access switches naturally also result in less uaccess flushing.
 
+The first two patches add some needed 'unsafe' versions of copy-from
+functions. While these do not make use of asm-goto they still allow for
+avoiding the repeated uaccess switches.
 
+The third patch moves functions called by setup_sigcontext() into a new
+prepare_setup_sigcontext() to simplify converting setup_sigcontext()
+into an 'unsafe' version which assumes an open uaccess window later.
 
-> ---
->
->  arch/powerpc/kernel/vdso64/Makefile | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vdso64/Makefile
-> index b50b39fedf74..422addf394c7 100644
-> --- a/arch/powerpc/kernel/vdso64/Makefile
-> +++ b/arch/powerpc/kernel/vdso64/Makefile
-> @@ -32,8 +32,6 @@ asflags-y := -D__VDSO64__ -s
->  targets += vdso64.lds
->  CPPFLAGS_vdso64.lds += -P -C -U$(ARCH)
->
-> -$(obj)/vgettimeofday.o: %.o: %.c FORCE
-> -
->  # link rule for the .so file, .lds has to be first
->  $(obj)/vdso64.so.dbg: $(src)/vdso64.lds $(obj-vdso64) $(obj)/vgettimeofday.o FORCE
->         $(call if_changed,vdso64ld_and_check)
-> --
-> 2.27.0
->
+The fourth and fifths patches clean-up some of the Transactional Memory
+ifdef stuff to simplify using uaccess blocks later.
 
+The next two patches rewrite some of the signal64 helper functions to
+be 'unsafe'. Finally, the last three patches update the main signal
+handling functions to make use of the new 'unsafe' helpers and eliminate
+some additional uaccess switching.
+
+I used the will-it-scale signal1 benchmark to measure and compare
+performance [2]. The below results are from running a minimal
+kernel+initramfs QEMU/KVM guest on a POWER9 Blackbird:
+
+	signal1_threads -t1 -s10
+
+	|                             | hash   | radix  |
+	| --------------------------- | ------ | ------ |
+	| linuxppc/next               | 118693 | 133296 |
+	| linuxppc/next w/o KUAP+KUEP | 228911 | 228654 |
+	| unsafe-signal64             | 199443 | 234716 |
+
+[0]: https://github.com/linuxppc/issues/issues/277
+[1]: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=196278
+[2]: https://github.com/antonblanchard/will-it-scale/blob/master/tests/signal1.c
+
+v4:	* Fix issues identified by Christophe Leroy (thanks for review)
+	* Use __get_user() directly to copy the 8B sigset_t
+
+v3:	* Rebase on latest linuxppc/next
+	* Reword confusing commit messages
+	* Add missing comma in macro in signal.h which broke compiles without
+	  CONFIG_ALTIVEC
+	* Validate hash KUAP signal performance improvements
+
+v2:	* Rebase on latest linuxppc/next + Christophe Leroy's PPC32
+	  signal series
+	* Simplify/remove TM ifdefery similar to PPC32 series and clean
+	  up the uaccess begin/end calls
+	* Isolate non-inline functions so they are not called when
+	  uaccess window is open
+
+Christopher M. Riedl (8):
+  powerpc/uaccess: Add unsafe_copy_from_user
+  powerpc/signal: Add unsafe_copy_{vsx,fpr}_from_user()
+  powerpc/signal64: Move non-inline functions out of setup_sigcontext()
+  powerpc: Reference param in MSR_TM_ACTIVE() macro
+  powerpc/signal64: Remove TM ifdefery in middle of if/else block
+  powerpc/signal64: Replace setup_sigcontext() w/
+    unsafe_setup_sigcontext()
+  powerpc/signal64: Replace restore_sigcontext() w/
+    unsafe_restore_sigcontext()
+  powerpc/signal64: Use __get_user() to copy sigset_t
+
+Daniel Axtens (2):
+  powerpc/signal64: Rewrite handle_rt_signal64() to minimise uaccess
+    switches
+  powerpc/signal64: Rewrite rt_sigreturn() to minimise uaccess switches
+
+ arch/powerpc/include/asm/reg.h     |   2 +-
+ arch/powerpc/include/asm/uaccess.h |   3 +
+ arch/powerpc/kernel/signal.h       |  33 ++++
+ arch/powerpc/kernel/signal_64.c    | 251 ++++++++++++++++++-----------
+ 4 files changed, 196 insertions(+), 93 deletions(-)
 
 -- 
-Best Regards
-Masahiro Yamada
+2.26.1
+
