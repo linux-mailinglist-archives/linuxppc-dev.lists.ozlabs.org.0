@@ -1,102 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FCA3072B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 10:34:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F9A307374
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 11:13:10 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DRFff4SRgzDqVV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 20:34:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DRGWR4d3NzDrYX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 21:13:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=atomide.com
+ (client-ip=72.249.23.125; helo=muru.com; envelope-from=tony@atomide.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Oz/hC8P0; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DRFWh67ztzDrh8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 20:28:16 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10S93RLT066492; Thu, 28 Jan 2021 04:28:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=viwW/T4T2KsoiZ1TKJqm8+soc8R9DXGKTHTvbVhwUmA=;
- b=Oz/hC8P0ym/RZne+yoG2nnyxpjL+1nhSc/nrb21xv0hxuLIr7Mn72sBMFCy2K7RTeeSe
- YN0WZpB/svHNG3VXdp3qBx10R/NvccHOjT2GtkSUW1rC1uhQR0RMupv/xHpxVn2/bLgq
- 915F2CUhhQzwVphDuvKabBc8TweUTgAe1mzKN4KnU6mCRcZZFR0E9XT70FZ4EKqZdmse
- GNMwkDzBzJT+XMtnV3AfFx8duB+a7s+cNTfInJWevmDUDH3b+dXqXEHXaZ06S/iQZGjH
- NAKpMkqIWHqbGvVDA+nPMiKIJbkHV2X+Zn5Qcl0dYx4Md9Pvp46bCmzKazlF5QDyP6+i fQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36bqkx5kd9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Jan 2021 04:28:01 -0500
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10S965vG077721;
- Thu, 28 Jan 2021 04:28:01 -0500
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36bqkx5kbr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Jan 2021 04:28:01 -0500
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10S9HOhE024673;
- Thu, 28 Jan 2021 09:27:58 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06ams.nl.ibm.com with ESMTP id 368b2h4nk2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Jan 2021 09:27:58 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 10S9Ruwn23593372
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 28 Jan 2021 09:27:56 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 166F311C052;
- Thu, 28 Jan 2021 09:27:56 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C4F7B11C050;
- Thu, 28 Jan 2021 09:27:54 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.68.86])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 28 Jan 2021 09:27:54 +0000 (GMT)
-Subject: Re: [PATCH v4 2/2] powerpc/mce: Remove per cpu variables from MCE
- handlers
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-References: <20210122123244.34033-1-ganeshgr@linux.ibm.com>
- <20210122123244.34033-2-ganeshgr@linux.ibm.com>
- <90f24b44-1747-21f4-3829-7af20cf95e46@csgroup.eu>
-From: Ganesh <ganeshgr@linux.ibm.com>
-Message-ID: <044b07c3-a122-ac66-7158-0e09f4cd023f@linux.ibm.com>
-Date: Thu, 28 Jan 2021 14:57:53 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+X-Greylist: delayed 646 seconds by postgrey-1.36 at bilbo;
+ Thu, 28 Jan 2021 21:11:32 AEDT
+Received: from muru.com (muru.com [72.249.23.125])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DRGTc51LYzDrgt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 21:11:32 +1100 (AEDT)
+Received: from atomide.com (localhost [127.0.0.1])
+ by muru.com (Postfix) with ESMTPS id 752CB80A9;
+ Thu, 28 Jan 2021 10:00:44 +0000 (UTC)
+Date: Thu, 28 Jan 2021 12:00:35 +0200
+From: Tony Lindgren <tony@atomide.com>
+To: Michael Walle <michael@walle.cc>
+Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
+Message-ID: <YBKLQ1m35Bouc6/B@atomide.com>
+References: <20210120105246.23218-1-michael@walle.cc>
+ <CAL_JsqLSJCLtgPyAdKSqsy=JoHSLYef_0s-stTbiJ+VCq2qaSA@mail.gmail.com>
+ <CAGETcx86HMo=gaDdXFyJ4QQ-pGXWzw2G0J=SjC-eq4K7B1zQHg@mail.gmail.com>
+ <c3e35b90e173b15870a859fd7001a712@walle.cc>
+ <CAGETcx8eZRd1fJ3yuO_t2UXBFHObeNdv-c8oFH3mXw6zi=zOkQ@mail.gmail.com>
+ <f706c0e4b684e07635396fcf02f4c9a6@walle.cc>
+ <CAGETcx8_6Hp+MWFOhRohXwdWFSfCc7A=zpb5QYNHZE5zv0bDig@mail.gmail.com>
+ <CAMuHMdWvFej-6vkaLM44t7eX2LpkDSXu4_7VH-X-3XRueXTO=A@mail.gmail.com>
+ <a24391e62b107040435766fff52bdd31@walle.cc>
 MIME-Version: 1.0
-In-Reply-To: <90f24b44-1747-21f4-3829-7af20cf95e46@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-28_05:2021-01-27,
- 2021-01-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- suspectscore=0 mlxscore=0 impostorscore=0 adultscore=0 priorityscore=1501
- clxscore=1011 bulkscore=0 malwarescore=0 phishscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101280046
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a24391e62b107040435766fff52bdd31@walle.cc>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,63 +50,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: Roy Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Saravana Kannan <saravanak@google.com>, PCI <linux-pci@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Kishon Vijay Abraham I <kishon@ti.com>,
+ Minghuan Lian <minghuan.Lian@nxp.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Mingkai Hu <mingkai.hu@nxp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/25/21 2:54 PM, Christophe Leroy wrote:
+Hi,
 
->
->
-> Le 22/01/2021 à 13:32, Ganesh Goudar a écrit :
->> Access to per-cpu variables requires translation to be enabled on
->> pseries machine running in hash mmu mode, Since part of MCE handler
->> runs in realmode and part of MCE handling code is shared between ppc
->> architectures pseries and powernv, it becomes difficult to manage
->> these variables differently on different architectures, So have
->> these variables in paca instead of having them as per-cpu variables
->> to avoid complications.
->>
->> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
->> ---
->> v2: Dynamically allocate memory for machine check event info
->>
->> v3: Remove check for hash mmu lpar, use memblock_alloc_try_nid
->>      to allocate memory.
->>
->> v4: Spliting the patch into two.
->> ---
->>   arch/powerpc/include/asm/mce.h     | 18 +++++++
->>   arch/powerpc/include/asm/paca.h    |  4 ++
->>   arch/powerpc/kernel/mce.c          | 79 ++++++++++++++++++------------
->>   arch/powerpc/kernel/setup-common.c |  2 +-
->>   4 files changed, 70 insertions(+), 33 deletions(-)
->>
->> diff --git a/arch/powerpc/kernel/setup-common.c 
->> b/arch/powerpc/kernel/setup-common.c
->> index 71f38e9248be..17dc451f0e45 100644
->> --- a/arch/powerpc/kernel/setup-common.c
->> +++ b/arch/powerpc/kernel/setup-common.c
->> @@ -916,7 +916,6 @@ void __init setup_arch(char **cmdline_p)
->>       /* On BookE, setup per-core TLB data structures. */
->>       setup_tlb_core_data();
->>   #endif
->> -
->
-> This line removal is really required for this patch ?
-I will correct it, Thanks for catching.
->
->>       /* Print various info about the machine that has been gathered 
->> so far. */
->>       print_system_info();
->>   @@ -938,6 +937,7 @@ void __init setup_arch(char **cmdline_p)
->>       exc_lvl_early_init();
->>       emergency_stack_init();
->>   +    mce_init();
->
-> You have to include mce.h to avoid build failure on PPC32.
-Sure, thanks
->>       smp_release_cpus();
->>         initmem_init();
->>
+* Michael Walle <michael@walle.cc> [210125 19:52]:
+> Although I do have the changes for the builtin_platform_driver_probe()
+> ready, I don't think it makes much sense to send these unless we agree
+> on the increased memory footprint. While there are just a few
+> builtin_platform_driver_probe() and memory increase _might_ be
+> negligible, there are many more module_platform_driver_probe().
+
+I just noticed this thread today and have pretty much come to the same
+conclusions. No need to post a patch for pci-dra7xx.c, I already posted
+a patch for pci-dra7xx.c yesterday as part of genpd related changes.
+
+For me probing started breaking as the power-domains property got added.
+
+FYI, it's the following patch:
+
+[PATCH 01/15] PCI: pci-dra7xx: Prepare for deferred probe with module_platform_driver
+
+Regards,
+
+Tony
+
+
