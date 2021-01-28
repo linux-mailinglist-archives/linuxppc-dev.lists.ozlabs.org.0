@@ -1,99 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D27307E94
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 20:12:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4C4307F2A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 21:10:20 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DRVTs317yzDr1d
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 06:12:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DRWmT3sKszDsQ7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 07:10:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sukadev@linux.ibm.com;
+ smtp.mailfrom=kleine-koenig.org (client-ip=94.130.110.236;
+ helo=antares.kleine-koenig.org; envelope-from=uwe@kleine-koenig.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fXUhpDX+; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 80289 seconds by postgrey-1.36 at bilbo;
+ Fri, 29 Jan 2021 07:08:54 AEDT
+Received: from antares.kleine-koenig.org (antares.kleine-koenig.org
+ [94.130.110.236])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DRVRk40YmzDrHl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jan 2021 06:10:42 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10SIlrdp178755; Thu, 28 Jan 2021 14:07:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=pp1;
- bh=AAH4RWau8pNbmU49YGUbY4FFvCzo0Ar79vdi/fV4VP0=;
- b=fXUhpDX+UWkcSx1KfK4h7YIXW6hXMnhEMDSq8pHsBjvT5jxeX8c3sE4qYvJteY5kLnVw
- rLE56ztvS78/wpwevyawkNFkyMMI3HEhzBTpW9D7BO1rGuj1wVWSBD4fyOuKjj04aqSd
- egDLyaBDCtU3SgKXrhn2Vli1uPP3xtlFHafs3m0iV+5i259Rg/3lX6XrXdNsLimby2n+
- PbZvJR8X5glCOuWX7kDs9zG/NJznjk7B3/Z7dPq/zCbJ4XkR8mR2tju4ck/TCxfJelaJ
- av+UMDSFIWYwtE0Z3FpQheTGKU+o4ePD71m9YyaT0tMJTzkdFtwDNe9BdOpBHsNiNwa3 VA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36bqtess9h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Jan 2021 14:07:57 -0500
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10SJ6jfk076145;
- Thu, 28 Jan 2021 14:07:57 -0500
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36bqtess8w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Jan 2021 14:07:57 -0500
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10SJ7tT2001518;
- Thu, 28 Jan 2021 19:07:55 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma03wdc.us.ibm.com with ESMTP id 36a0t2yubs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Jan 2021 19:07:55 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 10SJ7sG920316556
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 28 Jan 2021 19:07:54 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 38F466A05F;
- Thu, 28 Jan 2021 19:07:54 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D8C8A6A04F;
- Thu, 28 Jan 2021 19:07:53 +0000 (GMT)
-Received: from suka-w540.localdomain (unknown [9.85.183.51])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 28 Jan 2021 19:07:53 +0000 (GMT)
-Received: by suka-w540.localdomain (Postfix, from userid 1000)
- id DE5DD2E2954; Thu, 28 Jan 2021 11:07:50 -0800 (PST)
-Date: Thu, 28 Jan 2021 11:07:50 -0800
-From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DRWkt6JjMzDrQg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jan 2021 07:08:48 +1100 (AEDT)
+Received: from antares.kleine-koenig.org (localhost [127.0.0.1])
+ by antares.kleine-koenig.org (Postfix) with ESMTP id 2969DAE1E57;
+ Thu, 28 Jan 2021 21:08:43 +0100 (CET)
+Received: from antares.kleine-koenig.org ([94.130.110.236])
+ by antares.kleine-koenig.org (antares.kleine-koenig.org [94.130.110.236])
+ (amavisd-new, port 10024)
+ with ESMTP id NYAo-JJQbWWS; Thu, 28 Jan 2021 21:08:40 +0100 (CET)
+Received: from taurus.defre.kleine-koenig.org (unknown
+ [IPv6:2a02:8071:b5ad:20fc:2b29:ca75:841e:b14c])
+ by antares.kleine-koenig.org (Postfix) with ESMTPSA;
+ Thu, 28 Jan 2021 21:08:40 +0100 (CET)
 Subject: Re: [PATCH] vio: make remove callback return void
-Message-ID: <20210128190750.GA490196@us.ibm.com>
+To: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
 References: <20210127215010.99954-1-uwe@kleine-koenig.org>
+ <20210128190750.GA490196@us.ibm.com>
+From: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <uwe@kleine-koenig.org>
+Message-ID: <f3655d10-26ba-5f9f-761e-2f48d13d0b11@kleine-koenig.org>
+Date: Thu, 28 Jan 2021 21:08:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210127215010.99954-1-uwe@kleine-koenig.org>
-X-Operating-System: Linux 2.0.32 on an i486
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-28_12:2021-01-28,
- 2021-01-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0
- clxscore=1011 mlxscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- priorityscore=1501 phishscore=0 adultscore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101280087
+In-Reply-To: <20210128190750.GA490196@us.ibm.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="0WS2s8Dj7oAQDuvcAexs4Jz4r6U02PT15"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,7 +61,7 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
  Cristobal Forno <cforno12@linux.ibm.com>, sparclinux@vger.kernel.org,
  target-devel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Breno =?iso-8859-1?Q?Leit=E3o?= <leitao@debian.org>,
+ =?UTF-8?Q?Breno_Leit=c3=a3o?= <leitao@debian.org>,
  Peter Huewe <peterhuewe@gmx.de>, Jiri Slaby <jirislaby@kernel.org>,
  Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
  Nayna Jain <nayna@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
@@ -127,27 +80,78 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--0WS2s8Dj7oAQDuvcAexs4Jz4r6U02PT15
+Content-Type: multipart/mixed; boundary="C8P4GGVXo3CFpsOyigcYdiPTK9L9mB3i8";
+ protected-headers="v1"
+From: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <uwe@kleine-koenig.org>
+To: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, "David S. Miller" <davem@davemloft.net>,
+ Jens Axboe <axboe@kernel.dk>, Matt Mackall <mpm@selenic.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Peter Huewe <peterhuewe@gmx.de>,
+ Jarkko Sakkinen <jarkko@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Haren Myneni <haren@us.ibm.com>, =?UTF-8?Q?Breno_Leit=c3=a3o?=
+ <leitao@debian.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+ Steven Royer <seroyer@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Cristobal Forno <cforno12@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>,
+ Dany Madden <drt@linux.ibm.com>, Lijun Pan <ljp@linux.ibm.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Michael Cyr <mikecyr@linux.ibm.com>, Jiri Slaby <jirislaby@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+ netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org
+Message-ID: <f3655d10-26ba-5f9f-761e-2f48d13d0b11@kleine-koenig.org>
+Subject: Re: [PATCH] vio: make remove callback return void
+References: <20210127215010.99954-1-uwe@kleine-koenig.org>
+ <20210128190750.GA490196@us.ibm.com>
+In-Reply-To: <20210128190750.GA490196@us.ibm.com>
 
-Uwe Kleine-K=F6nig [uwe@kleine-koenig.org] wrote:
-> The driver core ignores the return value of struct bus_type::remove()
-> because there is only little that can be done. To simplify the quest to
-> make this function return void, let struct vio_driver::remove() return
-> void, too. All users already unconditionally return 0, this commit makes
-> it obvious that returning an error code is a bad idea and makes it
-> obvious for future driver authors that returning an error code isn't
-> intended.
+--C8P4GGVXo3CFpsOyigcYdiPTK9L9mB3i8
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-Slightly off-topic, should ndo_stop() also return a void? Its return value
-seems to be mostly ignored and __dev_close_many() has:
+Hello Sukadev,
 
-                /*
-                 *      Call the device specific close. This cannot fail.
-                 *      Only if device is UP
-                 *
-                 *      We allow it to be called even after a DETACH hot-pl=
-ug
-                 *      event.
-                 */
-                if (ops->ndo_stop)
-                        ops->ndo_stop(dev);
-Sukadev
+On 1/28/21 8:07 PM, Sukadev Bhattiprolu wrote:
+> Slightly off-topic, should ndo_stop() also return a void? Its return va=
+lue
+> seems to be mostly ignored and [...]
+
+I don't know enough about the network stack to tell. Probably it's a=20
+good idea to start a separate thread for this and address this to the=20
+netdev list only.
+
+Best regards
+Uwe
+
+
+
+--C8P4GGVXo3CFpsOyigcYdiPTK9L9mB3i8--
+
+--0WS2s8Dj7oAQDuvcAexs4Jz4r6U02PT15
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmATGcQACgkQwfwUeK3K
+7AljPggAhaj+JnoGN++1YO/4Nz81FEvRKFR9Eky+A4TCDGs8NvV1eVbhztqchotk
+bm71ZlCLS23+/m5xoA/4bjOHPxc0ETs8V37z86n9Tcf/QTiwI1eN4UYU0l7cPqGO
+cxuT/eLxm7WQ/kKwlJucUUHREWVCXH5NNTw4/zH9r+qc3MVQ++uUrKjtF94cnkGa
+iOO8nW+fhP+e8bVENm+gcTwONaL45UG+qABpFj9mXiWMrA7L0kSEyqG4wUMgeKb3
+YUtPKsAuS8xpUhT5C/zEQJ6qWI3rXkGCPEMUMcpWk+ut4McB9mE+TP6XWC36nfFy
+uq8ofa7nTpO48ZQIj/PU3d+UIzp2eQ==
+=XsiK
+-----END PGP SIGNATURE-----
+
+--0WS2s8Dj7oAQDuvcAexs4Jz4r6U02PT15--
