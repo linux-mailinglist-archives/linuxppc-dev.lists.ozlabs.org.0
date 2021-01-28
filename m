@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F019530691B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 02:00:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5C6306962
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 02:06:37 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DR2FS0s2SzDqWt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 12:00:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DR2Nq3Bv4zDrBZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 12:06:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=F+klgDhG; 
+ header.s=dec2015msa header.b=SWxDVkAF; 
  dkim-atps=neutral
 Received: from conuserg-12.nifty.com (conuserg-12.nifty.com [210.131.2.79])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DR24m4DlFzDqRt
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 11:52:36 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DR24m68hszDqZX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 11:52:37 +1100 (AEDT)
 Received: from oscar.flets-west.jp (softbank126026094251.bbtec.net
  [126.26.94.251]) (authenticated)
- by conuserg-12.nifty.com with ESMTP id 10S0pjIZ024172;
- Thu, 28 Jan 2021 09:51:50 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 10S0pjIZ024172
+ by conuserg-12.nifty.com with ESMTP id 10S0pjIX024172;
+ Thu, 28 Jan 2021 09:51:48 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 10S0pjIX024172
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1611795111;
- bh=xfUMpPHMW1i+7E5Ee4SBhF1anYC2XCsj+hKMg2Rt8Gk=;
+ s=dec2015msa; t=1611795109;
+ bh=gbMbtPrd1uw4SfvZtDPN5tcO1lAksGEXidy2tzv1gck=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=F+klgDhGqjPkW0iyljZtDS/UVVookoKMar9wbf4BweDN3xyA6byQpu9mcEEUtCPXr
- 5Em1w71Sr4WmKw8UMJaHxg3Y6MP5Hquxu+aJ6aDLe5mi0bJllocGuR5nubDzp89f1N
- ZTIUFIoM/8w9fZDq6mot9Gvb+SafgOabPs5htRub+OqIYi3STKdebYBgO4x7pbnHe2
- VZkfgtX2BHgbXDMMLkA9iKXN+H+PrVkaYfjLsYCMZ8fIDFjrqpY19b9ztBNvyLQV23
- e08U3RVcWC+e2J6L6nyDK/8a+LetbQM5v4IzJ4hvr77kc/bebiilTElVi1wC1EWUl2
- gFfoK2caGKw7Q==
+ b=SWxDVkAFQuRWzyvDXKhEirM3GO9HVgiEkoPwsziGrvA7UHp95u8zOvl2m3BNNeRcn
+ v0X+PTytGRvV0KXggsA0+sczavCS/X8fsffUaDv+X+yehtphUYPdkwYjeipobfCz/a
+ 8pZmwG/BWtM/M2zhRXbfxUnzxSPcifSt4r5t5+vqnrh+liLvpH4qIj+8b5xaZCodWY
+ l9jrY+Drka/f4haON0F/9+X4wb+aJTiV2DF+HEhY0UEXW6HzAPz/KVjoBqfgvW8k5Z
+ +l+UHueS+m36Ex3b3/IZtMxZgI7SdQL2BTY2S5lFJxEGaNwIun784zcwCV86iKsFLo
+ sXJ9FgfjTFX7g==
 X-Nifty-SrcIP: [126.26.94.251]
 From: Masahiro Yamada <masahiroy@kernel.org>
 To: linux-arch@vger.kernel.org, x86@kernel.org
-Subject: [PATCH 04/27] x86/entry/x32: rename __x32_compat_sys_* to
- __x64_compat_sys_*
-Date: Thu, 28 Jan 2021 09:50:46 +0900
-Message-Id: <20210128005110.2613902-5-masahiroy@kernel.org>
+Subject: [PATCH 02/27] x86/syscalls: fix -Wmissing-prototypes warnings from
+ COND_SYSCALL()
+Date: Thu, 28 Jan 2021 09:50:44 +0900
+Message-Id: <20210128005110.2613902-3-masahiroy@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210128005110.2613902-1-masahiroy@kernel.org>
 References: <20210128005110.2613902-1-masahiroy@kernel.org>
@@ -72,108 +72,61 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In arch/x86/entry/syscall_x32.c, the macros are mapped to symbols
-as follows:
+Building kernel/sys_ni.c with W=1 omits tons of -Wmissing-prototypes
+warnings.
 
-  __SYSCALL_COMMON(nr, sym)  -->  __x64_<sym>
-  __SYSCALL_X32(nr, sym)     -->  __x32_<sym>
+$ make W=1 kernel/sys_ni.o
+  [ snip ]
+  CC      kernel/sys_ni.o
+In file included from kernel/sys_ni.c:10:
+./arch/x86/include/asm/syscall_wrapper.h:83:14: warning: no previous prototype for '__x64_sys_io_setup' [-Wmissing-prototypes]
+   83 |  __weak long __##abi##_##name(const struct pt_regs *__unused) \
+      |              ^~
+./arch/x86/include/asm/syscall_wrapper.h:100:2: note: in expansion of macro '__COND_SYSCALL'
+  100 |  __COND_SYSCALL(x64, sys_##name)
+      |  ^~~~~~~~~~~~~~
+./arch/x86/include/asm/syscall_wrapper.h:256:2: note: in expansion of macro '__X64_COND_SYSCALL'
+  256 |  __X64_COND_SYSCALL(name)     \
+      |  ^~~~~~~~~~~~~~~~~~
+kernel/sys_ni.c:39:1: note: in expansion of macro 'COND_SYSCALL'
+   39 | COND_SYSCALL(io_setup);
+      | ^~~~~~~~~~~~
+./arch/x86/include/asm/syscall_wrapper.h:83:14: warning: no previous prototype for '__ia32_sys_io_setup' [-Wmissing-prototypes]
+   83 |  __weak long __##abi##_##name(const struct pt_regs *__unused) \
+      |              ^~
+./arch/x86/include/asm/syscall_wrapper.h:120:2: note: in expansion of macro '__COND_SYSCALL'
+  120 |  __COND_SYSCALL(ia32, sys_##name)
+      |  ^~~~~~~~~~~~~~
+./arch/x86/include/asm/syscall_wrapper.h:257:2: note: in expansion of macro '__IA32_COND_SYSCALL'
+  257 |  __IA32_COND_SYSCALL(name)
+      |  ^~~~~~~~~~~~~~~~~~~
+kernel/sys_ni.c:39:1: note: in expansion of macro 'COND_SYSCALL'
+   39 | COND_SYSCALL(io_setup);
+      | ^~~~~~~~~~~~
+  ...
 
-Originally, the syscalls in the x32 special range (512-547) were all
-compat.
-
-This assumption is now broken after the following commits:
-
-  55db9c0e8534 ("net: remove compat_sys_{get,set}sockopt")
-  5f764d624a89 ("fs: remove the compat readv/writev syscalls")
-  598b3cec831f ("fs: remove compat_sys_vmsplice")
-  c3973b401ef2 ("mm: remove compat_process_vm_{readv,writev}")
-
-Those commits redefined __x32_sys_* to __x64_sys_* because there is
-no stub like __x32_sys_*.
-
-I think defining as follows is sensible and cleaner.
-
-  __SYSCALL_COMMON(nr, sym)  -->  __x64_<sym>
-  __SYSCALL_X32(nr, sym)     -->  __x64_<sym>
-
-The ugly #define __x32_sys_* will go away.
+__SYS_STUB0() and __SYS_STUBx() defined a few lines above have forward
+declarations. Let's do likewise for __COND_SYSCALL() to fix the
+warnings.
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
 
- arch/x86/entry/syscall_x32.c           | 16 ++--------------
- arch/x86/include/asm/syscall_wrapper.h | 10 +++++-----
- 2 files changed, 7 insertions(+), 19 deletions(-)
+ arch/x86/include/asm/syscall_wrapper.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/entry/syscall_x32.c b/arch/x86/entry/syscall_x32.c
-index f2fe0a33bcfd..3fea8fb9cd6a 100644
---- a/arch/x86/entry/syscall_x32.c
-+++ b/arch/x86/entry/syscall_x32.c
-@@ -8,27 +8,15 @@
- #include <asm/unistd.h>
- #include <asm/syscall.h>
- 
--/*
-- * Reuse the 64-bit entry points for the x32 versions that occupy different
-- * slots in the syscall table.
-- */
--#define __x32_sys_readv		__x64_sys_readv
--#define __x32_sys_writev	__x64_sys_writev
--#define __x32_sys_getsockopt	__x64_sys_getsockopt
--#define __x32_sys_setsockopt	__x64_sys_setsockopt
--#define __x32_sys_vmsplice	__x64_sys_vmsplice
--#define __x32_sys_process_vm_readv	__x64_sys_process_vm_readv
--#define __x32_sys_process_vm_writev	__x64_sys_process_vm_writev
--
- #define __SYSCALL_64(nr, sym)
- 
--#define __SYSCALL_X32(nr, sym) extern long __x32_##sym(const struct pt_regs *);
-+#define __SYSCALL_X32(nr, sym) extern long __x64_##sym(const struct pt_regs *);
- #define __SYSCALL_COMMON(nr, sym) extern long __x64_##sym(const struct pt_regs *);
- #include <asm/syscalls_64.h>
- #undef __SYSCALL_X32
- #undef __SYSCALL_COMMON
- 
--#define __SYSCALL_X32(nr, sym) [nr] = __x32_##sym,
-+#define __SYSCALL_X32(nr, sym) [nr] = __x64_##sym,
- #define __SYSCALL_COMMON(nr, sym) [nr] = __x64_##sym,
- 
- asmlinkage const sys_call_ptr_t x32_sys_call_table[__NR_x32_syscall_max+1] = {
 diff --git a/arch/x86/include/asm/syscall_wrapper.h b/arch/x86/include/asm/syscall_wrapper.h
-index 80c08c7d5e72..6a2827d0681f 100644
+index a84333adeef2..80c08c7d5e72 100644
 --- a/arch/x86/include/asm/syscall_wrapper.h
 +++ b/arch/x86/include/asm/syscall_wrapper.h
-@@ -17,7 +17,7 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
-  * __x64_sys_*()         - 64-bit native syscall
-  * __ia32_sys_*()        - 32-bit native syscall or common compat syscall
-  * __ia32_compat_sys_*() - 32-bit compat syscall
-- * __x32_compat_sys_*()  - 64-bit X32 compat syscall
-+ * __x64_compat_sys_*()  - 64-bit X32 compat syscall
-  *
-  * The registers are decoded according to the ABI:
-  * 64-bit: RDI, RSI, RDX, R10, R8, R9
-@@ -166,17 +166,17 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
-  * with x86_64 obviously do not need such care.
-  */
- #define __X32_COMPAT_SYS_STUB0(name)					\
--	__SYS_STUB0(x32, compat_sys_##name)
-+	__SYS_STUB0(x64, compat_sys_##name)
+@@ -80,6 +80,7 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
+ 	}
  
- #define __X32_COMPAT_SYS_STUBx(x, name, ...)				\
--	__SYS_STUBx(x32, compat_sys##name,				\
-+	__SYS_STUBx(x64, compat_sys##name,				\
- 		    SC_X86_64_REGS_TO_ARGS(x, __VA_ARGS__))
- 
- #define __X32_COMPAT_COND_SYSCALL(name)					\
--	__COND_SYSCALL(x32, compat_sys_##name)
-+	__COND_SYSCALL(x64, compat_sys_##name)
- 
- #define __X32_COMPAT_SYS_NI(name)					\
--	__SYS_NI(x32, compat_sys_##name)
-+	__SYS_NI(x64, compat_sys_##name)
- #else /* CONFIG_X86_X32 */
- #define __X32_COMPAT_SYS_STUB0(name)
- #define __X32_COMPAT_SYS_STUBx(x, name, ...)
+ #define __COND_SYSCALL(abi, name)					\
++	__weak long __##abi##_##name(const struct pt_regs *__unused);	\
+ 	__weak long __##abi##_##name(const struct pt_regs *__unused)	\
+ 	{								\
+ 		return sys_ni_syscall();				\
 -- 
 2.27.0
 
