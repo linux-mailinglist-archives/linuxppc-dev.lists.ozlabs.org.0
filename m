@@ -1,77 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5878330684B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 00:52:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D8430685C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 01:07:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DR0kq3F0VzDr5R
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 10:52:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DR14Z6spYzDr48
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 11:07:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a;
- helo=mail-pg1-x52a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
+ helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=fGLqz9Us; dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
- [IPv6:2607:f8b0:4864:20::52a])
+ header.s=20161025 header.b=btCRPZ9B; dkim-atps=neutral
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
+ [IPv6:2607:f8b0:4864:20::431])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DR0hv62rMzDqD1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 10:50:22 +1100 (AEDT)
-Received: by mail-pg1-x52a.google.com with SMTP id o16so2896313pgg.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 15:50:22 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DR12d60LWzDqyv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 11:05:42 +1100 (AEDT)
+Received: by mail-pf1-x431.google.com with SMTP id q131so2593292pfq.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 16:05:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=XsErl/cimO7wftOceCRiamL1P72e2kHrMeV9MFjW27g=;
- b=fGLqz9UsgK9Cr9me5mJkGUUHZ/ke2usuBxuSHXBCSgMAeh8tHZ4FMurwWB5rlSQeDo
- bemL1e/oAsER36IcSonYKQfzwXrATmHWRNnVyLXNVunMnwmQ/6UkWKx24BjgWPbcs+Sz
- PRCJ5rJ8HRVTkKeKmnYynuL7P0Z9wyQg0yKdq4ezgecbXb5C18uMVENT0iSAOVQ8DT5e
- 7sZTGp9nvfjpfwxGqQZbfXbzQLm68F0h7BpVi1d4byqSVDCCP9ahAQXe/AJ7YibeAlkz
- fhmRVpGnoTfaFtXnX3r7ZaMuY2o56WzZTKzZ3XZOvcNFf1MP+q4xLghbJpi5QIHQfGvS
- uzZw==
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=VCuZxPGQl5NqiS3kjT/OWcgqac0mzVDF5lSD+vD32D0=;
+ b=btCRPZ9B3xtKI72xr/MsJCAW2wAxm4A8gJ4F6dVVplQvEh4WnEkIEYfrNyfTzyXJ8I
+ C6QAAbMwFfZJbYe0vKO8LLsJkZzuLuNYl57UYRxlFpe0t6FVCK/NFkyhD64zb5eBIOP9
+ 023883u7f19UjMcGf4tJ68lco4BYoJOL5IvdONcL/iu6Zuhvi30hmAE2T5CEH59vB3Bf
+ IIO0dGO3dZVvPKNAptm+lC+7lwLse6uz3DDfMTLi+TBBKIL2LrVHMJ/fMTVxP1tJhxcX
+ ghar3vUwr/OO+4j8XZr1zGBSPKQu29qzZSRork8uQxvsD3WCZZFJE5qiZtO5zjD53j9v
+ KD+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=XsErl/cimO7wftOceCRiamL1P72e2kHrMeV9MFjW27g=;
- b=OdNBmYbTFnyJsQ4Hobd89fNn4VEvoZGS7zCc88e4RJf8Q+8J/U3Qk/SQ01XNBXxXpk
- LzQu3Us8AuBn/yEM1qfCln1TcKAgu7GjBoH9vugl1nn6DuA53gKZC41Y8PFfKJjtfz6i
- KkPojCI4xWfsR7PnJGabfdWYDxeKray2xSFavjPne/sOrt71R1cuI2XZ+t+puwSdPbJu
- BvZ1bvYu0FACPF5RnMR9vGqVPCVt+vvD7qsyPup53RYjXKDWA9fEj/J9qxZ496NkOzu8
- bjcg3e+6Fi7IgFV0no8KaiDzHiU6/La6juex3nBBdQ+RDhJ/W+21W8Q0/IUaMolLkuKR
- 42GQ==
-X-Gm-Message-State: AOAM533rvwwS42s7T3yFJPmD2Bo5oeKUCSQWX/JNcU8sA3M721oVNQrs
- d7XWK5En3HqsOnKzW/Ba48Q=
-X-Google-Smtp-Source: ABdhPJzPxvfNcOGRxVoxGRJhNJzeeR6LVj1ni1YjcQZl5ymQxjDeLCfX6QUO6JSQd/lT4PTM1qPt3g==
-X-Received: by 2002:a63:4764:: with SMTP id w36mr13533232pgk.127.1611791419066; 
- Wed, 27 Jan 2021 15:50:19 -0800 (PST)
+ bh=VCuZxPGQl5NqiS3kjT/OWcgqac0mzVDF5lSD+vD32D0=;
+ b=jPGndDpy5gb/4w8ZYML/dMkgmzSI+PCbrZIzqg2hZnm0S9VP/T3vMveVD4FPSdzz/2
+ cnwfVbjXqrpdQbtAR4KV3kaeyyHVfC1lBOL2VNV5gxN870F8h9DAQDEzVNfEukBMlU91
+ GeYiuHZS5Cs4gMMSx37LggozZop4qFQ1fm/77WApxIZV3C7jUbkOjRIKL35dLNy+HnJP
+ OoDPDq8cZuUVzdTNjSB1UuC5srkoG/Xu2uiQV/KqXSIUt1ibPK55UZpnNfzP/OR1nvNP
+ vMVYD8BBrSFT/P31Hr/pJYvbRe6mqfpBGuywptPWaqNKdc2RB+IkYuSEIYcOQyegfihO
+ NnZA==
+X-Gm-Message-State: AOAM533y+68SaBEH1ce+mL5OxQzTeegq4nno9aevgLdUVs2h/5LbgH0S
+ gHsYLfJpmNIr6Yqpqf+w+7k=
+X-Google-Smtp-Source: ABdhPJxHdcUgEXTDLhjWpnIGYvjT6RaGsI5F+Vl39gaO28hNIMzK9IPrPTgi9BHzQJw+iU98fTH/mw==
+X-Received: by 2002:a62:36c4:0:b029:1b9:7ca6:5d6b with SMTP id
+ d187-20020a6236c40000b02901b97ca65d6bmr13054982pfa.43.1611792339701; 
+ Wed, 27 Jan 2021 16:05:39 -0800 (PST)
 Received: from localhost
  (192.156.221.203.dial.dynamic.acc50-nort-cbr.comindico.com.au.
  [203.221.156.192])
- by smtp.gmail.com with ESMTPSA id g22sm3455973pfu.200.2021.01.27.15.50.17
+ by smtp.gmail.com with ESMTPSA id x67sm3468888pfd.106.2021.01.27.16.05.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Jan 2021 15:50:18 -0800 (PST)
-Date: Thu, 28 Jan 2021 09:50:12 +1000
+ Wed, 27 Jan 2021 16:05:38 -0800 (PST)
+Date: Thu, 28 Jan 2021 10:05:33 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: RE: [PATCH v4 11/23] powerpc/syscall: Rename syscall_64.c into
- syscall.c
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, David Laight <David.Laight@ACULAB.COM>,
- Michael Ellerman <mpe@ellerman.id.au>, "msuchanek@suse.de"
- <msuchanek@suse.de>, Paul Mackerras <paulus@samba.org>
-References: <cover.1611585031.git.christophe.leroy@csgroup.eu>
- <ff9dd4accdc897013594768833d54444e4823bf9.1611585031.git.christophe.leroy@csgroup.eu>
- <1611656343.yaxha7r2q4.astroid@bobo.none>
- <d9993f034db848d1afeffa322373b811@AcuMS.aculab.com>
-In-Reply-To: <d9993f034db848d1afeffa322373b811@AcuMS.aculab.com>
+Subject: Re: [PATCH v6 05/39] powerpc: remove arguments from fault handler
+ functions
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20210115165012.1260253-1-npiggin@gmail.com>
+ <20210115165012.1260253-6-npiggin@gmail.com>
+ <86bdad6b-2591-6992-b739-caa0874ca558@csgroup.eu>
+In-Reply-To: <86bdad6b-2591-6992-b739-caa0874ca558@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1611791083.sqnnh21vv0.astroid@bobo.none>
+Message-Id: <1611791489.gto0xh54hf.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,43 +83,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from David Laight's message of January 26, 2021 8:28 pm:
-> From: Nicholas Piggin
->> Sent: 26 January 2021 10:21
+Excerpts from Christophe Leroy's message of January 27, 2021 4:38 pm:
+>=20
+>=20
+> Le 15/01/2021 =C3=A0 17:49, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> Make mm fault handlers all just take the pt_regs * argument and load
+>> DAR/DSISR from that. Make those that return a value return long.
 >>=20
->> Excerpts from Christophe Leroy's message of January 26, 2021 12:48 am:
->> > syscall_64.c will be reused almost as is for PPC32.
->> >
->> > Rename it syscall.c
+>> This is done to make the function signatures match other handlers, which
+>> will help with a future patch to add wrappers. Explicit arguments could
+>> be added for performance but that would require more wrapper macro
+>> variants.
 >>=20
->> Could you rename it to interrupt.c instead? A system call is an
->> interrupt, and the file now also has code to return from other
->> interrupts as well, and it matches the new asm/interrupt.h from
->> the interrupts series.
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   arch/powerpc/include/asm/asm-prototypes.h     |  4 ++--
+>>   arch/powerpc/include/asm/book3s/64/mmu-hash.h |  2 +-
+>>   arch/powerpc/include/asm/bug.h                |  2 +-
+>>   arch/powerpc/kernel/entry_32.S                |  7 +------
+>>   arch/powerpc/kernel/exceptions-64e.S          |  2 --
+>>   arch/powerpc/kernel/exceptions-64s.S          | 17 ++++-------------
+>>   arch/powerpc/kernel/head_40x.S                | 10 +++++-----
+>>   arch/powerpc/kernel/head_8xx.S                |  6 +++---
+>>   arch/powerpc/kernel/head_book3s_32.S          |  5 ++---
+>>   arch/powerpc/kernel/head_booke.h              |  4 +---
+>>   arch/powerpc/mm/book3s64/hash_utils.c         |  8 +++++---
+>>   arch/powerpc/mm/book3s64/slb.c                | 11 +++++++----
+>>   arch/powerpc/mm/fault.c                       |  5 ++---
+>>   13 files changed, 34 insertions(+), 49 deletions(-)
+>>=20
 >=20
-> Hmmm....
+>> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_=
+32.S
+>> index 238eacfda7b0..d6ea3f2d6cc0 100644
+>> --- a/arch/powerpc/kernel/entry_32.S
+>> +++ b/arch/powerpc/kernel/entry_32.S
+>> @@ -276,8 +276,7 @@ reenable_mmu:
+>>   	 * We save a bunch of GPRs,
+>>   	 * r3 can be different from GPR3(r1) at this point, r9 and r11
+>>   	 * contains the old MSR and handler address respectively,
+>> -	 * r4 & r5 can contain page fault arguments that need to be passed
+>> -	 * along as well. r0, r6-r8, r12, CCR, CTR, XER etc... are left
+>> +	 * r0, r4-r8, r12, CCR, CTR, XER etc... are left
+>>   	 * clobbered as they aren't useful past this point.
+>>   	 */
+>>  =20
+>> @@ -285,15 +284,11 @@ reenable_mmu:
+>>   	stw	r9,8(r1)
+>>   	stw	r11,12(r1)
+>>   	stw	r3,16(r1)
 >=20
-> That might make it harder for someone looking for the system call
-> entry code to find it.
+> As all functions only take 'regs' as input parameter, maybe we can avoid =
+saving 'r3' by=20
+> recalculating it from r1 after the call with 'addi	r3,r1,STACK_FRAME_OVER=
+HEAD' ?
 
-It's very grep'able.
+It seems like it. All functions have regs as first parameter already=20
+don't they? So this change could be done before this patch as well.
 
-> In some sense interrupts are the simpler case.
 >=20
-> Especially when comparing with other architectures which have
-> special instructions for syscall entry.
+>> -	stw	r4,20(r1)
+>> -	stw	r5,24(r1)
+>=20
+> Patch 6 needs to go before this change. Probably the easiest would be to =
+apply patch 6 before patch=20
+> 5. Or this change needs to go after.
 
-powerpc does have a special instruction for syscall, and it causes a
-system call interrupt.
-
-I'm not sure about other architectures, but for powerpc its more=20
-sensible to call it interrupt.c than syscall.c.
+Hmm okay thanks for finding that.
 
 Thanks,
 Nick
