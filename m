@@ -2,59 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4CA306C38
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 05:29:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F918306C3E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 05:31:04 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DR6tj6qDXzDrTy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 15:29:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DR6wg6m1gzDsQg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 15:30:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=canonical.com
- (client-ip=91.189.89.112; helo=youngberry.canonical.com;
- envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
-Received: from youngberry.canonical.com (youngberry.canonical.com
- [91.189.89.112])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ZrfRqqM5; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DR6SM2QMYzDrP0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 15:09:54 +1100 (AEDT)
-Received: from mail-lj1-f200.google.com ([209.85.208.200])
- by youngberry.canonical.com with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
- (envelope-from <kai.heng.feng@canonical.com>) id 1l4ycw-0002lr-3i
- for linuxppc-dev@lists.ozlabs.org; Thu, 28 Jan 2021 04:09:50 +0000
-Received: by mail-lj1-f200.google.com with SMTP id c19so2357342lji.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 20:09:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=7fl7bm6buw7fD0rpOxqw4tFNpwhOF3QlYfdvY0hGN/E=;
- b=Aqwf1DbTArhWMg85GuGa5Gr1NGqMwzmvUZsGrl7tCf2PpzgECauinycIHEPYIU/dLK
- ddJ5dupZj4zc9K/GoUGWw7lLaNqe+sMGEQFR3a6ZY3YEhs4/XRt6QujnjXU3qH1jaVWH
- VqtB/PjqU0lm8boQ5+THRqLPGD/NncQTCu7x+CRGnEgAGrQHvQAoGTj6wtjcNomkhbmW
- CUtGWq+JHJsyW4ZyX15T5DKfNoeVdXnJqsmto2GRA5shD7hfq0/Hyow7YTdmhhSdaFEU
- txP9ocGJ+I6Ql+/XFpWZQB41c/4QPXBjhIkoHBS/BXjtLle2LCE+uEnNF7GaGwS3TfGC
- tTvQ==
-X-Gm-Message-State: AOAM530SNso+BlAjnmFkX2OdTge1/mPtDgvLp6iGHj9yqE8d6UJMtcdE
- B3GToyJIuBwp2i2Lm38fgVrQolQPv6GJKmUpps7TywbzNFsADF9a1Imzlq5Dv7F2A00eCEwkjJf
- czvfI8uCnw69ljHRsc+hHakmgTYsHFURxEpKxLjwhwpIBvQwreS4o7WRirEI=
-X-Received: by 2002:a2e:7a05:: with SMTP id v5mr7107373ljc.402.1611806989356; 
- Wed, 27 Jan 2021 20:09:49 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzUZ61PxNciB0RDZ4gO3Vtagr/TV9bDy/Ex9ys0/59vTDw6Y6nGIPGqgglSPQLGt2i2uXLbz1zcOkH5OoCjSQU=
-X-Received: by 2002:a2e:7a05:: with SMTP id v5mr7107359ljc.402.1611806989056; 
- Wed, 27 Jan 2021 20:09:49 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DR6ZL4yskzDrcY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 15:15:06 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10S41sEk194154; Wed, 27 Jan 2021 23:14:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=references : from : to :
+ cc : subject : in-reply-to : date : message-id : mime-version :
+ content-type; s=pp1; bh=rzdWeCeDaDZ75/E3nrAbc0/tPvq1J7TvmXi13WDek9k=;
+ b=ZrfRqqM52DyJ+gPNe88xOWZ5pPCi3RhAnqLFx6ODGpkKfjFMUfHhXa/roKG2/ZVx25f1
+ Ex4Kg3rC2vJyWwl5Yucbkdn8GvCXGv0X3Aesas15EM/79OyGS0fVGV8z1QYkxdWGUEg2
+ lWWszueNUsZYAzdcyPWyI9iydaWXoJ/+hUZWDazKZpmlxWTZOkM3sQaZ/Nm6o3yUeCPS
+ sGeC5OiLGlTfrHoItf6gxuU4STEHSrAwZg3xkUWGC0Qp+ZfLWx8zkJHhlEdHPLjRplz9
+ jA2YxxS5EXpXEK2gaoC1O99JaZzVXoDfbE1Erux0AIIwsbDD0PSvf8tfAkvDyjJioH4s dA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 36becsay0e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Jan 2021 23:14:48 -0500
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10S42j3X001507;
+ Wed, 27 Jan 2021 23:14:48 -0500
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 36becsay07-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Jan 2021 23:14:48 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10S3udQb013671;
+ Thu, 28 Jan 2021 04:14:47 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma01wdc.us.ibm.com with ESMTP id 36a8uhfy03-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 28 Jan 2021 04:14:46 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10S4EiPM11403618
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 28 Jan 2021 04:14:44 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 776E47805F;
+ Thu, 28 Jan 2021 04:14:44 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9E3B97805C;
+ Thu, 28 Jan 2021 04:14:36 +0000 (GMT)
+Received: from manicouagan.localdomain (unknown [9.85.200.195])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Thu, 28 Jan 2021 04:14:36 +0000 (GMT)
+References: <20210115173017.30617-1-nramas@linux.microsoft.com>
+ <20210115173017.30617-10-nramas@linux.microsoft.com>
+ <20210127165208.GA358@willie-the-truck>
+ <d3330793-6054-6e59-b727-44bf8e5653cd@linux.microsoft.com>
+ <20210127184319.GA676@willie-the-truck>
+ <871re5soof.fsf@manicouagan.localdomain>
+ <58d3ffbf-4d80-c893-34d6-366ebfac55bd@linux.microsoft.com>
+User-agent: mu4e 1.4.10; emacs 27.1
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Subject: Re: [PATCH v15 09/10] arm64: Call kmalloc() to allocate DTB buffer
+In-reply-to: <58d3ffbf-4d80-c893-34d6-366ebfac55bd@linux.microsoft.com>
+Date: Thu, 28 Jan 2021 01:14:34 -0300
+Message-ID: <87y2gdr93p.fsf@manicouagan.localdomain>
 MIME-Version: 1.0
-References: <20210127173101.446940-1-kai.heng.feng@canonical.com>
- <20210127205053.GA3049358@bjorn-Precision-5520>
-In-Reply-To: <20210127205053.GA3049358@bjorn-Precision-5520>
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date: Thu, 28 Jan 2021 12:09:37 +0800
-Message-ID: <CAAd53p7FfRCgfC5dGL3HyP+rbVtR2VCfMPYBBvJ=-DFCWFeVPA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] PCI/AER: Disable AER interrupt during suspend
-To: Bjorn Helgaas <helgaas@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-28_01:2021-01-27,
+ 2021-01-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ priorityscore=1501 malwarescore=0 suspectscore=0 mlxlogscore=999
+ clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101280017
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,145 +106,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joerg Roedel <jroedel@suse.de>,
- "open list:PCI ENHANCED ERROR HANDLING \(EEH\) FOR POWERPC"
- <linuxppc-dev@lists.ozlabs.org>,
- "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- Lalithambika Krishnakumar <lalithambika.krishnakumar@intel.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: mark.rutland@arm.com, bhsharma@redhat.com, tao.li@vivo.com,
+ zohar@linux.ibm.com, paulus@samba.org, vincenzo.frascino@arm.com,
+ frowand.list@gmail.com, sashal@kernel.org, robh@kernel.org,
+ masahiroy@kernel.org, jmorris@namei.org, takahiro.akashi@linaro.org,
+ linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+ serge@hallyn.com, devicetree@vger.kernel.org, pasha.tatashin@soleen.com,
+ Will Deacon <will@kernel.org>, prsriva@linux.microsoft.com,
+ hsinyi@chromium.org, allison@lohutok.net, christophe.leroy@c-s.fr,
+ mbrugger@suse.com, balajib@linux.microsoft.com, dmitry.kasatkin@gmail.com,
+ linux-kernel@vger.kernel.org, james.morse@arm.com, gregkh@linuxfoundation.org,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 28, 2021 at 4:51 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+
+Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
+
+> On 1/27/21 7:52 PM, Thiago Jung Bauermann wrote:
+>> Will Deacon <will@kernel.org> writes:
+>> 
+>>> On Wed, Jan 27, 2021 at 09:59:38AM -0800, Lakshmi Ramasubramanian wrote:
+>>>> On 1/27/21 8:52 AM, Will Deacon wrote:
+>>>>
+>>>> Hi Will,
+>>>>
+>>>>> On Fri, Jan 15, 2021 at 09:30:16AM -0800, Lakshmi Ramasubramanian wrote:
+>>>>>> create_dtb() function allocates kernel virtual memory for
+>>>>>> the device tree blob (DTB).  This is not consistent with other
+>>>>>> architectures, such as powerpc, which calls kmalloc() for allocating
+>>>>>> memory for the DTB.
+>>>>>>
+>>>>>> Call kmalloc() to allocate memory for the DTB, and kfree() to free
+>>>>>> the allocated memory.
+>>>>>>
+>>>>>> Co-developed-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
+>>>>>> Signed-off-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
+>>>>>> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+>>>>>> ---
+>>>>>>    arch/arm64/kernel/machine_kexec_file.c | 12 +++++++-----
+>>>>>>    1 file changed, 7 insertions(+), 5 deletions(-)
+>>>>>>
+>>>>>> diff --git a/arch/arm64/kernel/machine_kexec_file.c b/arch/arm64/kernel/machine_kexec_file.c
+>>>>>> index 7de9c47dee7c..51c40143d6fa 100644
+>>>>>> --- a/arch/arm64/kernel/machine_kexec_file.c
+>>>>>> +++ b/arch/arm64/kernel/machine_kexec_file.c
+>>>>>> @@ -29,7 +29,7 @@ const struct kexec_file_ops * const kexec_file_loaders[] = {
+>>>>>>    int arch_kimage_file_post_load_cleanup(struct kimage *image)
+>>>>>>    {
+>>>>>> -	vfree(image->arch.dtb);
+>>>>>> +	kfree(image->arch.dtb);
+>>>>>>    	image->arch.dtb = NULL;
+>>>>>>    	vfree(image->arch.elf_headers);
+>>>>>> @@ -59,19 +59,21 @@ static int create_dtb(struct kimage *image,
+>>>>>>    			+ cmdline_len + DTB_EXTRA_SPACE;
+>>>>>>    	for (;;) {
+>>>>>> -		buf = vmalloc(buf_size);
+>>>>>> +		buf = kmalloc(buf_size, GFP_KERNEL);
+>>>>>
+>>>>> Is there a functional need for this patch? I build the 'dtbs' target just
+>>>>> now and sdm845-db845c.dtb is approaching 100K, which feels quite large
+>>>>> for kmalloc().
+>>>>
+>>>> Changing the allocation from vmalloc() to kmalloc() would help us further
+>>>> consolidate the DTB setup code for powerpc and arm64.
+>>>
+>>> Ok, but at the risk of allocation failure. Can powerpc use vmalloc()
+>>> instead?
+>> I believe this patch stems from this suggestion by Rob Herring:
+>> 
+>>> This could be taken a step further and do the allocation of the new
+>>> FDT. The difference is arm64 uses vmalloc and powerpc uses kmalloc. The
+>>> arm64 version also retries with a bigger allocation. That seems
+>>> unnecessary.
+>> in
+>> https://lore.kernel.org/linux-integrity/20201211221006.1052453-3-robh@kernel.org/
+>> The problem is that this patch implements only part of the suggestion,
+>> which isn't useful in itself. So the patch series should either drop
+>> this patch or consolidate the FDT allocation between the arches.
+>> I just tested on powernv and pseries platforms and powerpc can use
+>> vmalloc for the FDT buffer.
+>> 
 >
-> On Thu, Jan 28, 2021 at 01:31:00AM +0800, Kai-Heng Feng wrote:
-> > Commit 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in
-> > hint") enables ACS, and some platforms lose its NVMe after resume from
-> > firmware:
-> > [   50.947816] pcieport 0000:00:1b.0: DPC: containment event, status:0x1f01 source:0x0000
-> > [   50.947817] pcieport 0000:00:1b.0: DPC: unmasked uncorrectable error detected
-> > [   50.947829] pcieport 0000:00:1b.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Receiver ID)
-> > [   50.947830] pcieport 0000:00:1b.0:   device [8086:06ac] error status/mask=00200000/00010000
-> > [   50.947831] pcieport 0000:00:1b.0:    [21] ACSViol                (First)
-> > [   50.947841] pcieport 0000:00:1b.0: AER: broadcast error_detected message
-> > [   50.947843] nvme nvme0: frozen state error detected, reset controller
-> >
-> > It happens right after ACS gets enabled during resume.
-> >
-> > To prevent that from happening, disable AER interrupt and enable it on
-> > system suspend and resume, respectively.
+> Thanks for verifying on powerpc platform Thiago.
 >
-> Lots of questions here.  Maybe this is what we'll end up doing, but I
-> am curious about why the error is reported in the first place.
+> I'll update the patch to do the following:
 >
-> Is this a consequence of the link going down and back up?
-
-Could be. From the observations, it only happens when firmware suspend
-(S3) is used.
-Maybe it happens when it's gets powered up, but I don't have equipment
-to debug at hardware level.
-
-If we use non-firmware suspend method, enabling ACS after resume won't
-trip AER and DPC.
-
+> => Use vmalloc for FDT buffer allocation on powerpc
+> => Keep vmalloc for arm64, but remove the retry on allocation.
+> => Also, there was a memory leak of FDT buffer in the error code path on arm64,
+> which I'll fix as well.
 >
-> Is it consequence of the device doing a DMA when it shouldn't?
+> Did I miss anything?
 
-If it's doing DMA while suspending, the same error should also happen
-after NVMe is suspended and before PCIe port suspending.
-Furthermore, if non-firmware suspend method is used, there's so such
-issue, so less likely to be any DMA operation.
+Yes, you missed the second part of Rob's suggestion I was mentioning,
+which is factoring out the code which allocates the new FDT from both
+arm64 and powerpc.
 
->
-> Are we doing something in the wrong order during suspend?  Or maybe
-> resume, since I assume the error is reported during resume?
-
-Yes the error is reported during resume. The suspend/resume order
-seems fine as non-firmware suspend doesn't have this issue.
-
->
-> If we *do* take the error, why doesn't DPC recovery work?
-
-It works for the root port, but not for the NVMe drive:
-[   50.947816] pcieport 0000:00:1b.0: DPC: containment event,
-status:0x1f01 source:0x0000
-[   50.947817] pcieport 0000:00:1b.0: DPC: unmasked uncorrectable error detected
-[   50.947829] pcieport 0000:00:1b.0: PCIe Bus Error:
-severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Receiver
-ID)
-[   50.947830] pcieport 0000:00:1b.0:   device [8086:06ac] error
-status/mask=00200000/00010000
-[   50.947831] pcieport 0000:00:1b.0:    [21] ACSViol                (First)
-[   50.947841] pcieport 0000:00:1b.0: AER: broadcast error_detected message
-[   50.947843] nvme nvme0: frozen state error detected, reset controller
-[   50.948400] ACPI: EC: event unblocked
-[   50.948432] xhci_hcd 0000:00:14.0: PME# disabled
-[   50.948444] xhci_hcd 0000:00:14.0: enabling bus mastering
-[   50.949056] pcieport 0000:00:1b.0: PME# disabled
-[   50.949068] pcieport 0000:00:1c.0: PME# disabled
-[   50.949416] e1000e 0000:00:1f.6: PME# disabled
-[   50.949463] e1000e 0000:00:1f.6: enabling bus mastering
-[   50.951606] sd 0:0:0:0: [sda] Starting disk
-[   50.951610] nvme 0000:01:00.0: can't change power state from D3hot
-to D0 (config space inaccessible)
-[   50.951730] nvme nvme0: Removing after probe failure status: -19
-[   50.952360] nvme nvme0: failed to set APST feature (-19)
-[   50.971136] snd_hda_intel 0000:00:1f.3: PME# disabled
-[   51.089330] pcieport 0000:00:1b.0: AER: broadcast resume message
-[   51.089345] pcieport 0000:00:1b.0: AER: device recovery successful
-
-But I think why recovery doesn't work for NVMe is for another discussion...
-
-Kai-Heng
-
->
-> > Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=209149
-> > Fixes: 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in hint")
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > ---
-> >  drivers/pci/pcie/aer.c | 18 ++++++++++++++++++
-> >  1 file changed, 18 insertions(+)
-> >
-> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> > index 77b0f2c45bc0..0e9a85530ae6 100644
-> > --- a/drivers/pci/pcie/aer.c
-> > +++ b/drivers/pci/pcie/aer.c
-> > @@ -1365,6 +1365,22 @@ static int aer_probe(struct pcie_device *dev)
-> >       return 0;
-> >  }
-> >
-> > +static int aer_suspend(struct pcie_device *dev)
-> > +{
-> > +     struct aer_rpc *rpc = get_service_data(dev);
-> > +
-> > +     aer_disable_rootport(rpc);
-> > +     return 0;
-> > +}
-> > +
-> > +static int aer_resume(struct pcie_device *dev)
-> > +{
-> > +     struct aer_rpc *rpc = get_service_data(dev);
-> > +
-> > +     aer_enable_rootport(rpc);
-> > +     return 0;
-> > +}
-> > +
-> >  /**
-> >   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
-> >   * @dev: pointer to Root Port, RCEC, or RCiEP
-> > @@ -1437,6 +1453,8 @@ static struct pcie_port_service_driver aerdriver = {
-> >       .service        = PCIE_PORT_SERVICE_AER,
-> >
-> >       .probe          = aer_probe,
-> > +     .suspend        = aer_suspend,
-> > +     .resume         = aer_resume,
-> >       .remove         = aer_remove,
-> >  };
-> >
-> > --
-> > 2.29.2
-> >
+-- 
+Thiago Jung Bauermann
+IBM Linux Technology Center
