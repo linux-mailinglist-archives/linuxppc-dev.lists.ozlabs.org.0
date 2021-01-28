@@ -1,43 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BD33073DD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 11:37:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A943073ED
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 11:41:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DRH3X1TT1zDsGt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 21:37:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DRH8X6ZYNzDrdh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 21:41:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=atomide.com
- (client-ip=72.249.23.125; helo=muru.com; envelope-from=tony@atomide.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
-Received: from muru.com (muru.com [72.249.23.125])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DRH1D1TtzzDrdf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 21:35:27 +1100 (AEDT)
-Received: from atomide.com (localhost [127.0.0.1])
- by muru.com (Postfix) with ESMTPS id 6A61380A9;
- Thu, 28 Jan 2021 10:35:30 +0000 (UTC)
-Date: Thu, 28 Jan 2021 12:35:21 +0200
-From: Tony Lindgren <tony@atomide.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] PCI: dwc: layerscape: convert to builtin_platform_driver()
-Message-ID: <YBKTadhZZsySC9ak@atomide.com>
-References: <CAMuHMdWvFej-6vkaLM44t7eX2LpkDSXu4_7VH-X-3XRueXTO=A@mail.gmail.com>
- <a24391e62b107040435766fff52bdd31@walle.cc>
- <CAGETcx8FO+YSM0jwCnDdnvE3NCdjZ=1FSmAZpyaOEOvCgd4SXw@mail.gmail.com>
- <CAMuHMdX8__juNc-Lx8Tu9abMKq-pT=yA4s6D1w4ZeStKOasGpg@mail.gmail.com>
- <CAGETcx-0G-Y8wT_+BfP5vbi0gW6KonwgoJ6DdqjaGbFkutTGag@mail.gmail.com>
- <CAMuHMdXMaAtrbQibJh+Z2v5qhe_Tg0hQU9YqxuU0ow_iNO1atg@mail.gmail.com>
- <CAGETcx8=woX_SVckG+gs68KMif-JGoy3a1PQGfonMNBH18Ak6A@mail.gmail.com>
- <CAMuHMdUpzaRutO+jKffXtGDoy5g2QoXkbO+-tzbEzibNYbhCuA@mail.gmail.com>
- <CAGETcx_81qOe2LvX-J_PBZWdouykPoPYdf5=yMVhnjgDxAkgaw@mail.gmail.com>
- <CAMuHMdVHouzMFiGcUz=0M0_RFL-OBvkRvQiF5h56XKDMZuC7Kg@mail.gmail.com>
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DRH6Z3qYvzDqWl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 21:40:06 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-22-Mh8XAN6PMv-tzehDTK-v6g-1; Thu, 28 Jan 2021 10:38:18 +0000
+X-MC-Unique: Mh8XAN6PMv-tzehDTK-v6g-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Thu, 28 Jan 2021 10:38:16 +0000
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Thu, 28 Jan 2021 10:38:16 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: "'Christopher M. Riedl'" <cmr@codefail.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: RE: [PATCH v4 02/10] powerpc/signal: Add unsafe_copy_{vsx,
+ fpr}_from_user()
+Thread-Topic: [PATCH v4 02/10] powerpc/signal: Add unsafe_copy_{vsx,
+ fpr}_from_user()
+Thread-Index: AQHW9SvhJlSFmYQ9tkmGvwf2LRQAGqo811Mw
+Date: Thu, 28 Jan 2021 10:38:16 +0000
+Message-ID: <6a6ce1a53fcf4669a9848114d3460fef@AcuMS.aculab.com>
+References: <20210128040424.12720-1-cmr@codefail.de>
+ <20210128040424.12720-3-cmr@codefail.de>
+In-Reply-To: <20210128040424.12720-3-cmr@codefail.de>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVHouzMFiGcUz=0M0_RFL-OBvkRvQiF5h56XKDMZuC7Kg@mail.gmail.com>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,34 +66,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roy Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Saravana Kannan <saravanak@google.com>, PCI <linux-pci@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>,
- Michael Walle <michael@walle.cc>, Mingkai Hu <mingkai.hu@nxp.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Geert Uytterhoeven <geert@linux-m68k.org> [210128 09:32]:
-> It wasn't.  The regression is that the driver no longer probes at first
-> try, because its dependencies are now probed later.  The question is:
-> why are the dependencies now probed later?  How to fix that?
+From: Christopher M. Riedl
+> Sent: 28 January 2021 04:04
+>=20
+> Reuse the "safe" implementation from signal.c except for calling
+> unsafe_copy_from_user() to copy into a local buffer.
+>=20
+> Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
+> ---
+>  arch/powerpc/kernel/signal.h | 33 +++++++++++++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+>=20
+> diff --git a/arch/powerpc/kernel/signal.h b/arch/powerpc/kernel/signal.h
+> index 2559a681536e..c18402d625f1 100644
+> --- a/arch/powerpc/kernel/signal.h
+> +++ b/arch/powerpc/kernel/signal.h
+> @@ -53,6 +53,33 @@ unsigned long copy_ckfpr_from_user(struct task_struct =
+*task, void __user *from);
+>  =09=09=09=09&buf[i], label);\
+>  } while (0)
+>=20
+> +#define unsafe_copy_fpr_from_user(task, from, label)=09do {=09=09\
+> +=09struct task_struct *__t =3D task;=09=09=09=09=09\
+> +=09u64 __user *__f =3D (u64 __user *)from;=09=09=09=09\
+> +=09u64 buf[ELF_NFPREG];=09=09=09=09=09=09\
 
-I'm afraid that may be unfixable.. It depends on things like the bus
-driver probe that might get also deferred.
+How big is that buffer?
+Isn't is likely to be reasonably large compared to a reasonable
+kernel stack frame.
+Especially since this isn't even a leaf function.
 
-As suggested, I agree it's best to get rid of builtin_platform_driver_probe
-where possible at the cost of dropping the __init as needed.
+> +=09int i;=09=09=09=09=09=09=09=09\
+> +=09=09=09=09=09=09=09=09=09\
+> +=09unsafe_copy_from_user(buf, __f, ELF_NFPREG * sizeof(double),=09\
 
-To me it seems we can't even add a warning to __platform_driver_probe()
-if there's drv->driver.of_match_table for example. That warning would
-show up on all the devices with driver in question built in even if
-the device has no such hardware.
+That really ought to be sizeof(buf).
 
-Regards,
+=09David
 
-Tony
+
+> +=09=09=09=09label);=09=09=09=09=09\
+> +=09for (i =3D 0; i < ELF_NFPREG - 1; i++)=09=09=09=09\
+> +=09=09__t->thread.TS_FPR(i) =3D buf[i];=09=09=09=09\
+> +=09__t->thread.fp_state.fpscr =3D buf[i];=09=09=09=09\
+> +} while (0)
+> +
+> +#define unsafe_copy_vsx_from_user(task, from, label)=09do {=09=09\
+> +=09struct task_struct *__t =3D task;=09=09=09=09=09\
+> +=09u64 __user *__f =3D (u64 __user *)from;=09=09=09=09\
+> +=09u64 buf[ELF_NVSRHALFREG];=09=09=09=09=09\
+> +=09int i;=09=09=09=09=09=09=09=09\
+> +=09=09=09=09=09=09=09=09=09\
+> +=09unsafe_copy_from_user(buf, __f,=09=09=09=09=09\
+> +=09=09=09=09ELF_NVSRHALFREG * sizeof(double),=09\
+> +=09=09=09=09label);=09=09=09=09=09\
+> +=09for (i =3D 0; i < ELF_NVSRHALFREG ; i++)=09=09=09=09\
+> +=09=09__t->thread.fp_state.fpr[i][TS_VSRLOWOFFSET] =3D buf[i];=09\
+> +} while (0)
+> +
+> +
+>  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+>  #define unsafe_copy_ckfpr_to_user(to, task, label)=09do {=09=09\
+>  =09struct task_struct *__t =3D task;=09=09=09=09=09\
+> @@ -80,6 +107,10 @@ unsigned long copy_ckfpr_from_user(struct task_struct=
+ *task, void __user *from);
+>  =09unsafe_copy_to_user(to, (task)->thread.fp_state.fpr,=09\
+>  =09=09=09    ELF_NFPREG * sizeof(double), label)
+>=20
+> +#define unsafe_copy_fpr_from_user(task, from, label)=09=09=09\
+> +=09unsafe_copy_from_user((task)->thread.fp_state.fpr, from,=09\
+> +=09=09=09    ELF_NFPREG * sizeof(double), label)
+> +
+>  static inline unsigned long
+>  copy_fpr_to_user(void __user *to, struct task_struct *task)
+>  {
+> @@ -115,6 +146,8 @@ copy_ckfpr_from_user(struct task_struct *task, void _=
+_user *from)
+>  #else
+>  #define unsafe_copy_fpr_to_user(to, task, label) do { } while (0)
+>=20
+> +#define unsafe_copy_fpr_from_user(task, from, label) do { } while (0)
+> +
+>  static inline unsigned long
+>  copy_fpr_to_user(void __user *to, struct task_struct *task)
+>  {
+> --
+> 2.26.1
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
