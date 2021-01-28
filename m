@@ -1,42 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F349306C2F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 05:24:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D90F8306BF0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 05:10:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DR6mb6NGPzDqHj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 15:23:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DR6ST0QlJzDrQT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 15:10:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=codefail.de (client-ip=131.153.2.42;
- helo=h1.fbrelay.privateemail.com; envelope-from=cmr@codefail.de;
+ smtp.mailfrom=codefail.de (client-ip=131.153.2.45;
+ helo=h4.fbrelay.privateemail.com; envelope-from=cmr@codefail.de;
  receiver=<UNKNOWN>)
-Received: from h1.fbrelay.privateemail.com (h1.fbrelay.privateemail.com
- [131.153.2.42])
+Received: from h4.fbrelay.privateemail.com (h4.fbrelay.privateemail.com
+ [131.153.2.45])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DR6LG6x1szDrdk
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DR6LG75XCzDrgN
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 15:04:38 +1100 (AEDT)
 Received: from MTA-09-3.privateemail.com (mta-09.privateemail.com
  [198.54.127.58])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id 203EA8009F
+ by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id 6C5C7800C3
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 23:04:35 -0500 (EST)
 Received: from MTA-09.privateemail.com (localhost [127.0.0.1])
- by MTA-09.privateemail.com (Postfix) with ESMTP id 248E0600E9
+ by MTA-09.privateemail.com (Postfix) with ESMTP id 6291C600EB
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 23:04:31 -0500 (EST)
 Received: from oc8246131445.ibm.com (unknown [10.20.151.215])
- by MTA-09.privateemail.com (Postfix) with ESMTPA id EAA48600EB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 04:04:30 +0000 (UTC)
+ by MTA-09.privateemail.com (Postfix) with ESMTPA id 34E9B600F0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 04:04:31 +0000 (UTC)
 From: "Christopher M. Riedl" <cmr@codefail.de>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 03/10] powerpc/signal64: Move non-inline functions out of
- setup_sigcontext()
-Date: Wed, 27 Jan 2021 22:04:17 -0600
-Message-Id: <20210128040424.12720-4-cmr@codefail.de>
+Subject: [PATCH v4 04/10] powerpc: Reference param in MSR_TM_ACTIVE() macro
+Date: Wed, 27 Jan 2021 22:04:18 -0600
+Message-Id: <20210128040424.12720-5-cmr@codefail.de>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20210128040424.12720-1-cmr@codefail.de>
 References: <20210128040424.12720-1-cmr@codefail.de>
@@ -58,112 +57,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are non-inline functions which get called in setup_sigcontext() to
-save register state to the thread struct. Move these functions into a
-separate prepare_setup_sigcontext() function so that
-setup_sigcontext() can be refactored later into an "unsafe" version
-which assumes an open uaccess window. Non-inline functions should be
-avoided when uaccess is open.
+Unlike the other MSR_TM_* macros, MSR_TM_ACTIVE does not reference or
+use its parameter unless CONFIG_PPC_TRANSACTIONAL_MEM is defined. This
+causes an 'unused variable' compile warning unless the variable is also
+guarded with CONFIG_PPC_TRANSACTIONAL_MEM.
 
-The majority of setup_sigcontext() can be refactored to execute in an
-"unsafe" context (uaccess window is opened) except for some non-inline
-functions. Move these out into a separate prepare_setup_sigcontext()
-function which must be called first and before opening up a uaccess
-window. A follow-up commit converts setup_sigcontext() to be "unsafe".
+Reference but do nothing with the argument in the macro to avoid a
+potential compile warning.
 
 Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
 ---
- arch/powerpc/kernel/signal_64.c | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ arch/powerpc/include/asm/reg.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index f9e4a1ac440f..b211a8ea4f6e 100644
---- a/arch/powerpc/kernel/signal_64.c
-+++ b/arch/powerpc/kernel/signal_64.c
-@@ -79,6 +79,24 @@ static elf_vrreg_t __user *sigcontext_vmx_regs(struct sigcontext __user *sc)
- }
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index e40a921d78f9..c5a3e856191c 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -124,7 +124,7 @@
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ #define MSR_TM_ACTIVE(x) (((x) & MSR_TS_MASK) != 0) /* Transaction active? */
+ #else
+-#define MSR_TM_ACTIVE(x) 0
++#define MSR_TM_ACTIVE(x) ((void)(x), 0)
  #endif
  
-+static void prepare_setup_sigcontext(struct task_struct *tsk, int ctx_has_vsx_region)
-+{
-+#ifdef CONFIG_ALTIVEC
-+	/* save altivec registers */
-+	if (tsk->thread.used_vr)
-+		flush_altivec_to_thread(tsk);
-+	if (cpu_has_feature(CPU_FTR_ALTIVEC))
-+		tsk->thread.vrsave = mfspr(SPRN_VRSAVE);
-+#endif /* CONFIG_ALTIVEC */
-+
-+	flush_fp_to_thread(tsk);
-+
-+#ifdef CONFIG_VSX
-+	if (tsk->thread.used_vsr && ctx_has_vsx_region)
-+		flush_vsx_to_thread(tsk);
-+#endif /* CONFIG_VSX */
-+}
-+
- /*
-  * Set up the sigcontext for the signal frame.
-  */
-@@ -97,7 +115,6 @@ static long setup_sigcontext(struct sigcontext __user *sc,
- 	 */
- #ifdef CONFIG_ALTIVEC
- 	elf_vrreg_t __user *v_regs = sigcontext_vmx_regs(sc);
--	unsigned long vrsave;
- #endif
- 	struct pt_regs *regs = tsk->thread.regs;
- 	unsigned long msr = regs->msr;
-@@ -112,7 +129,6 @@ static long setup_sigcontext(struct sigcontext __user *sc,
- 
- 	/* save altivec registers */
- 	if (tsk->thread.used_vr) {
--		flush_altivec_to_thread(tsk);
- 		/* Copy 33 vec registers (vr0..31 and vscr) to the stack */
- 		err |= __copy_to_user(v_regs, &tsk->thread.vr_state,
- 				      33 * sizeof(vector128));
-@@ -124,17 +140,10 @@ static long setup_sigcontext(struct sigcontext __user *sc,
- 	/* We always copy to/from vrsave, it's 0 if we don't have or don't
- 	 * use altivec.
- 	 */
--	vrsave = 0;
--	if (cpu_has_feature(CPU_FTR_ALTIVEC)) {
--		vrsave = mfspr(SPRN_VRSAVE);
--		tsk->thread.vrsave = vrsave;
--	}
--
--	err |= __put_user(vrsave, (u32 __user *)&v_regs[33]);
-+	err |= __put_user(tsk->thread.vrsave, (u32 __user *)&v_regs[33]);
- #else /* CONFIG_ALTIVEC */
- 	err |= __put_user(0, &sc->v_regs);
- #endif /* CONFIG_ALTIVEC */
--	flush_fp_to_thread(tsk);
- 	/* copy fpr regs and fpscr */
- 	err |= copy_fpr_to_user(&sc->fp_regs, tsk);
- 
-@@ -150,7 +159,6 @@ static long setup_sigcontext(struct sigcontext __user *sc,
- 	 * VMX data.
- 	 */
- 	if (tsk->thread.used_vsr && ctx_has_vsx_region) {
--		flush_vsx_to_thread(tsk);
- 		v_regs += ELF_NVRREG;
- 		err |= copy_vsx_to_user(v_regs, tsk);
- 		/* set MSR_VSX in the MSR value in the frame to
-@@ -655,6 +663,7 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
- 		ctx_has_vsx_region = 1;
- 
- 	if (old_ctx != NULL) {
-+		prepare_setup_sigcontext(current, ctx_has_vsx_region);
- 		if (!access_ok(old_ctx, ctx_size)
- 		    || setup_sigcontext(&old_ctx->uc_mcontext, current, 0, NULL, 0,
- 					ctx_has_vsx_region)
-@@ -842,6 +851,7 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- #endif
- 	{
- 		err |= __put_user(0, &frame->uc.uc_link);
-+		prepare_setup_sigcontext(tsk, 1);
- 		err |= setup_sigcontext(&frame->uc.uc_mcontext, tsk, ksig->sig,
- 					NULL, (unsigned long)ksig->ka.sa.sa_handler,
- 					1);
+ #if defined(CONFIG_PPC_BOOK3S_64)
 -- 
 2.26.1
 
