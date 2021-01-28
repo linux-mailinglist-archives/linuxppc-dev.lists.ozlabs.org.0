@@ -2,80 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F26306B63
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 04:08:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F52F306B7B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 04:15:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DR55D5M3bzDrSG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 14:08:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DR5FG4D7zzDrZZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 14:15:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::52a;
- helo=mail-pg1-x52a.google.com; envelope-from=axboe@kernel.dk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel-dk.20150623.gappssmtp.com
- header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=V4lrTq6a; dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
- [IPv6:2607:f8b0:4864:20::52a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DR53W3sgFzDrRQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 14:06:43 +1100 (AEDT)
-Received: by mail-pg1-x52a.google.com with SMTP id i7so3337950pgc.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Jan 2021 19:06:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=kernel-dk.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=ZHGhaggkiWKHKI1RBp1ORHwIPl9NAUcAJ7g4Qaj7Ygc=;
- b=V4lrTq6awed93ip+WwCzdy0piJjONZe373p4vZljaK8MhCZ5AglnYmuwzwYrde8roh
- z/aR4pZRFSlz/ZCzrXwQVisWsOWop5a6S+ABi80WzflRDtUSQCLp0js7T9wIAl6SJIVS
- n2Ej7kEFU/hBzMXECoDxviQpZTOp7IrkHLYebr3Jv9cxP1XJQfOC5IygLclMigrCEsSH
- JkH94jJt7G8+3XSpqtzcjMLomFJ7IgnY2Fuv8EhZwDvGQW1CQyUiJSF+9wE2QwEhW65o
- f0zOhZ+luDTgV4Kl20EgkFbPOwKgpbE/bg69KdkE7EaIpkB7LWz5skvXR5+c+hJmH/Wu
- ITHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=ZHGhaggkiWKHKI1RBp1ORHwIPl9NAUcAJ7g4Qaj7Ygc=;
- b=A7I287DyCeN/tBkfG88WFhi46+QDXcIy03GR+jme9EiKjcvxLTuseMDgEwBSAa47t9
- GzfH38ArxV9cGavx+LLDbew2Cgmmw242cVLEeyGAp1/mmo8x7rBypR/iuJTsP5TDOiNZ
- /vywT4t19b3hsV8jnu8k1qvoJXiSI41U/AEwRd9qmyYQ4KjlxAxCfVRvAF3rzSrYSvam
- YfccRvr7CWrUhZ7IqIiUBUXN18+NpFNncgHDJ8ZdneEJpkEGbZAk8CPlY07y838q/9j7
- kEIWhXHmyArgTzxFGPBBVmOLgufAattU7jUb6vQXE9jE7tl0jBpg9TRZQDI1RuUCUPgp
- ehOQ==
-X-Gm-Message-State: AOAM5306RKXP3svrtbxkjI/HljYShu1TppuHnr/WI4m7xEf2HbbpvZtP
- IrXcOxdeZe1nd0QGOYEg9OmMZa6gU39Tlw==
-X-Google-Smtp-Source: ABdhPJyZQJBwJAMZuh90P/2Q6e9SCYjIsDiflUTPUPShMvz1hvnZUEzc0CBTUFiZU0MfxOa8vVMZUQ==
-X-Received: by 2002:a63:7e10:: with SMTP id z16mr14497437pgc.263.1611803199650; 
- Wed, 27 Jan 2021 19:06:39 -0800 (PST)
-Received: from [192.168.4.41] (cpe-72-132-29-68.dc.res.rr.com. [72.132.29.68])
- by smtp.gmail.com with ESMTPSA id
- b65sm3926172pfg.3.2021.01.27.19.06.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Jan 2021 19:06:39 -0800 (PST)
-Subject: Re: [PATCH] powerpc/fault: fix wrong KUAP fault for IO_URING
-To: Zorro Lang <zlang@redhat.com>, Nicholas Piggin <npiggin@gmail.com>
-References: <20210127145648.348135-1-zlang@redhat.com>
- <cce83328-d996-defc-6c87-97cd24ec7027@csgroup.eu>
- <a8013c71-433a-96b3-c657-66ac2ba5b838@kernel.dk>
- <1611792928.nw4g8h8kj4.astroid@bobo.none>
- <20210128031355.GP14354@localhost.localdomain>
-From: Jens Axboe <axboe@kernel.dk>
-Message-ID: <66061f75-c8de-c1eb-aaaf-9594a31be790@kernel.dk>
-Date: Wed, 27 Jan 2021 20:06:37 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com;
+ envelope-from=dingtianhong@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DR5Cc2jw5zDqYY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 14:13:41 +1100 (AEDT)
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4DR59Y4L1szMR3L;
+ Thu, 28 Jan 2021 11:12:01 +0800 (CST)
+Received: from [10.174.177.80] (10.174.177.80) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.498.0; Thu, 28 Jan 2021 11:13:20 +0800
+Subject: Re: [PATCH v11 01/13] mm/vmalloc: fix HUGE_VMAP regression by
+ enabling huge pages in vmalloc_to_page
+To: Nicholas Piggin <npiggin@gmail.com>, <linux-mm@kvack.org>, Andrew Morton
+ <akpm@linux-foundation.org>
+References: <20210126044510.2491820-1-npiggin@gmail.com>
+ <20210126044510.2491820-2-npiggin@gmail.com>
+From: Ding Tianhong <dingtianhong@huawei.com>
+Message-ID: <2dcbe2c9-c968-4895-fc43-c40dfe9f06d3@huawei.com>
+Date: Thu, 28 Jan 2021 11:13:20 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-In-Reply-To: <20210128031355.GP14354@localhost.localdomain>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210126044510.2491820-2-npiggin@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.80]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,70 +52,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/27/21 8:13 PM, Zorro Lang wrote:
-> On Thu, Jan 28, 2021 at 10:18:07AM +1000, Nicholas Piggin wrote:
->> Excerpts from Jens Axboe's message of January 28, 2021 5:29 am:
->>> On 1/27/21 9:38 AM, Christophe Leroy wrote:
->>>>
->>>>
->>>> Le 27/01/2021 à 15:56, Zorro Lang a écrit :
->>>>> On powerpc, io_uring test hit below KUAP fault on __do_page_fault.
->>>>> The fail source line is:
->>>>>
->>>>>    if (unlikely(!is_user && bad_kernel_fault(regs, error_code, address, is_write)))
->>>>>        return SIGSEGV;
->>>>>
->>>>> The is_user() is based on user_mod(regs) only. This's not suit for
->>>>> io_uring, where the helper thread can assume the user app identity
->>>>> and could perform this fault just fine. So turn to use mm to decide
->>>>> if this is valid or not.
->>>>
->>>> I don't understand why testing is_user would be an issue. KUAP purpose
->>>> it to block any unallowed access from kernel to user memory
->>>> (Equivalent to SMAP on x86). So it really must be based on MSR_PR bit,
->>>> that is what is_user provides.
->>>>
->>>> If the kernel access is legitimate, kernel should have opened
->>>> userspace access then you shouldn't get this "Bug: Read fault blocked
->>>> by KUAP!".
->>>>
->>>> As far as I understand, the fault occurs in
->>>> iov_iter_fault_in_readable() which calls fault_in_pages_readable() And
->>>> fault_in_pages_readable() uses __get_user() so it is a legitimate
->>>> access and you really should get a KUAP fault.
->>>>
->>>> So the problem is somewhere else, I think you proposed patch just
->>>> hides the problem, it doesn't fix it.
->>>
->>> If we do kthread_use_mm(), can we agree that the user access is valid?
->>
->> Yeah the io uring code is fine, provided it uses the uaccess primitives 
->> like any other kernel code. It's looking more like a an arch/powerpc bug.
->>
->>> We should be able to copy to/from user space, and including faults, if
->>> that's been done and the new mm assigned. Because it really should be.
->>> If SMAP was a problem on x86, we would have seen it long ago.
->>>
->>> I'm assuming this may be breakage related to the recent uaccess changes
->>> related to set_fs and friends? Or maybe recent changes on the powerpc
->>> side?
->>>
->>> Zorro, did 5.10 work?
->>
->> Would be interesting to know.
+On 2021/1/26 12:44, Nicholas Piggin wrote:
+> vmalloc_to_page returns NULL for addresses mapped by larger pages[*].
+> Whether or not a vmap is huge depends on the architecture details,
+> alignments, boot options, etc., which the caller can not be expected
+> to know. Therefore HUGE_VMAP is a regression for vmalloc_to_page.
 > 
-> Sure Nick and Jens, which 5.10 rc? version do you want to know ? Or any git
-> commit(be the HEAD) in 5.10 phase?
+> This change teaches vmalloc_to_page about larger pages, and returns
+> the struct page that corresponds to the offset within the large page.
+> This makes the API agnostic to mapping implementation details.
+> 
+> [*] As explained by commit 029c54b095995 ("mm/vmalloc.c: huge-vmap:
+>     fail gracefully on unexpected huge vmap mappings")
+> 
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  mm/vmalloc.c | 41 ++++++++++++++++++++++++++---------------
+>  1 file changed, 26 insertions(+), 15 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index e6f352bf0498..62372f9e0167 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -34,7 +34,7 @@
+>  #include <linux/bitops.h>
+>  #include <linux/rbtree_augmented.h>
+>  #include <linux/overflow.h>
+> -
+> +#include <linux/pgtable.h>
+>  #include <linux/uaccess.h>
+>  #include <asm/tlbflush.h>
+>  #include <asm/shmparam.h>
+> @@ -343,7 +343,9 @@ int is_vmalloc_or_module_addr(const void *x)
+>  }
+>  
+>  /*
+> - * Walk a vmap address to the struct page it maps.
+> + * Walk a vmap address to the struct page it maps. Huge vmap mappings will
+> + * return the tail page that corresponds to the base page address, which
+> + * matches small vmap mappings.
+>   */
+>  struct page *vmalloc_to_page(const void *vmalloc_addr)
+>  {
+> @@ -363,25 +365,33 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+>  
+>  	if (pgd_none(*pgd))
+>  		return NULL;
+> +	if (WARN_ON_ONCE(pgd_leaf(*pgd)))
+> +		return NULL; /* XXX: no allowance for huge pgd */
+> +	if (WARN_ON_ONCE(pgd_bad(*pgd)))
+> +		return NULL;
+> +
+>  	p4d = p4d_offset(pgd, addr);
+>  	if (p4d_none(*p4d))
+>  		return NULL;
+> -	pud = pud_offset(p4d, addr);
+> +	if (p4d_leaf(*p4d))
+> +		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
+> +	if (WARN_ON_ONCE(p4d_bad(*p4d)))
+> +		return NULL;
+>  
+> -	/*
+> -	 * Don't dereference bad PUD or PMD (below) entries. This will also
+> -	 * identify huge mappings, which we may encounter on architectures
+> -	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=y. Such regions will be
+> -	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
+> -	 * not [unambiguously] associated with a struct page, so there is
+> -	 * no correct value to return for them.
+> -	 */
+> -	WARN_ON_ONCE(pud_bad(*pud));
+> -	if (pud_none(*pud) || pud_bad(*pud))
+> +	pud = pud_offset(p4d, addr);
+> +	if (pud_none(*pud))
+> +		return NULL;
+> +	if (pud_leaf(*pud))
+> +		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
 
-I forget which versions had what series of this, but 5.10 final - and if
-that fails, then 5.9 final. IIRC, 5.9 was pre any of these changes, and
-5.10 definitely has them.
+Hi Nicho:
 
--- 
-Jens Axboe
+/builds/1mzfdQzleCy69KZFb5qHNSEgabZ/mm/vmalloc.c: In function 'vmalloc_to_page':
+/builds/1mzfdQzleCy69KZFb5qHNSEgabZ/include/asm-generic/pgtable-nop4d-hack.h:48:27: error: implicit declaration of function 'pud_page'; did you mean 'put_page'? [-Werror=implicit-function-declaration]
+   48 | #define pgd_page(pgd)    (pud_page((pud_t){ pgd }))
+      |                           ^~~~~~~~
+
+the pug_page is not defined for aarch32 when enabling 2-level page config, it break the system building.
+
+
+> +	if (WARN_ON_ONCE(pud_bad(*pud)))
+>  		return NULL;
+> +
+>  	pmd = pmd_offset(pud, addr);
+> -	WARN_ON_ONCE(pmd_bad(*pmd));
+> -	if (pmd_none(*pmd) || pmd_bad(*pmd))
+> +	if (pmd_none(*pmd))
+> +		return NULL;
+> +	if (pmd_leaf(*pmd))
+> +		return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+> +	if (WARN_ON_ONCE(pmd_bad(*pmd)))
+>  		return NULL;
+>  
+>  	ptep = pte_offset_map(pmd, addr);
+> @@ -389,6 +399,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+>  	if (pte_present(pte))
+>  		page = pte_page(pte);
+>  	pte_unmap(ptep);
+> +
+>  	return page;
+>  }
+>  EXPORT_SYMBOL(vmalloc_to_page);
+> 
 
