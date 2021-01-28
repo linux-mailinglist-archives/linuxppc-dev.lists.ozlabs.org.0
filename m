@@ -2,92 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78D2307C29
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 18:23:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C263F307DAA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 19:19:14 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DRS3T6KC5zDqLG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 04:23:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DRTJH6h4szDrhZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 05:19:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+81cfe4b7420194b52767+6367+infradead.org+hch@casper.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ZMmSPnpm; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=iqY1YkZh; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DRS182h86zDrb6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jan 2021 04:21:00 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10SH2JMT021222; Thu, 28 Jan 2021 12:20:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=iY57LuSLr2oYwoOL8GSy52rBFT8/92Ao6DafqS2vOlg=;
- b=ZMmSPnpmkjKlZ6/+YNN113MECSpLpdtchxOKRHuDlasWcZz5boeY3WiRuchy/wcGWCbG
- Khn900a8FK7P7WNhMWK+9DJ+oqimvOH5UzttK/wOf6aoT2IBbl4/kRZLVMMYCMYRwgrP
- g3NihKUGQa3VoJZmWFzP2CTFRZdMVLm+XpyGsHI6pihyYIz2GNvhJnCBjHK9Fb5zgiZl
- X7qmePpP1t71KsXcdpwRg3dZ4BQdPNWfU8G3kiqFem/YuHTMNyrIrwy0hvBbjdtE+Wet
- k6nNwK9qASzAxrMBvQ+lk/Ai8YzUTOZ+PSmIRpXwlSM3hNynhbmca9wzdBhglc+awajn 8g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36bqterx5c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Jan 2021 12:20:52 -0500
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10SH2Qp2022003;
- Thu, 28 Jan 2021 12:20:51 -0500
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36bqterx4b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Jan 2021 12:20:51 -0500
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10SHBpIL028382;
- Thu, 28 Jan 2021 17:20:49 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03fra.de.ibm.com with ESMTP id 368be8amce-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Jan 2021 17:20:49 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 10SHKc2C33096098
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 28 Jan 2021 17:20:38 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 41F304203F;
- Thu, 28 Jan 2021 17:20:46 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B73C142045;
- Thu, 28 Jan 2021 17:20:45 +0000 (GMT)
-Received: from localhost (unknown [9.77.192.88])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 28 Jan 2021 17:20:45 +0000 (GMT)
-Date: Thu, 28 Jan 2021 22:50:43 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/sstep: Fix array out of bound warning
-Message-ID: <20210128172043.GB117@DESKTOP-TDPLP67.localdomain>
-References: <20210115061620.692500-1-ravi.bangoria@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DRTCn2rm1zDrYj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jan 2021 05:15:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=7s5dD/3siooJ6nsDrgQUKG6OOTocrmy+kkM/wYIzMpc=; b=iqY1YkZhUVUBceYZp90531D8xU
+ ZKg4JwNC+GLLwqAbNZA2rDL2oOqW9LDy/mNx7ttNdwk3ksr1oMYETuKMCln0h0VUfdxtBMttHh0x0
+ 5+uUYyyM7n+4VkMxTF9lfnhHn/y96OKGLLG0ulbN7rxlOce4T4wYSTy4/sBkeVNI6KNgWOZZiP9/W
+ LZLrtCdREv2wRQ8tM3SQM6NaI1DYOzhJc8ewPKTWOSO82sgKNR3yqkXV4E2u7aI5qE7heyacTyvwO
+ tWV9YWth5K239OX2a9Mqc+2+ussOlN3yXBOUrAX0k/nm9QlLULsE0vTRtN35Z8BHHPTHPXpHjb8Be
+ yt7k5vKQ==;
+Received: from [2001:4bb8:198:6bf4:e052:196b:7e32:37d9] (helo=localhost)
+ by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+ id 1l5BoE-008nqb-2X; Thu, 28 Jan 2021 18:14:27 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Frederic Barrat <fbarrat@linux.ibm.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@linux.ie>,
+ Daniel Vetter <daniel@ffwll.ch>, Jessica Yu <jeyu@kernel.org>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
+ Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
+ Joe Lawrence <joe.lawrence@redhat.com>
+Subject: module loader dead code removal and cleanups v2
+Date: Thu, 28 Jan 2021 19:14:08 +0100
+Message-Id: <20210128181421.2279-1-hch@lst.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210115061620.692500-1-ravi.bangoria@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
- definitions=2021-01-28_12:2021-01-28,
- 2021-01-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0
- clxscore=1015 mlxscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- priorityscore=1501 phishscore=0 adultscore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101280081
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,55 +67,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.ibm.com, paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- jniethe5@gmail.com
+Cc: Michal Marek <michal.lkml@markovi.net>, linux-kbuild@vger.kernel.org,
+ Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, live-patching@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/01/15 11:46AM, Ravi Bangoria wrote:
-> Compiling kernel with -Warray-bounds throws below warning:
-> 
->   In function 'emulate_vsx_store':
->   warning: array subscript is above array bounds [-Warray-bounds]
->   buf.d[2] = byterev_8(reg->d[1]);
->   ~~~~~^~~
->   buf.d[3] = byterev_8(reg->d[0]);
->   ~~~~~^~~
-> 
-> Fix it by converting local variable 'union vsx_reg buf' into an array.
-> Also consider function argument 'union vsx_reg *reg' as array instead
-> of pointer because callers are actually passing an array to it.
+Hi all,
 
-I think you should change the function prototype to reflect this.
+this series removes support for long term unused export types and
+cleans up various loose ends in the module loader.
 
-However, while I agree with this change in principle, it looks to be a 
-lot of code churn for a fairly narrow use. Perhaps we should just 
-address the specific bug. Something like the below (not tested)?
+Changes since v1:
+ - move struct symsearch to module.c
+ - rework drm to not call find_module at all
+ - llow RCU-sched locking for find_module
+ - keep find_module as a public API instead of module_loaded
+ - update a few comments and commit logs
 
-@@ -818,13 +818,15 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
-                        break;
-                if (rev) {
-                        /* reverse 32 bytes */
--                       buf.d[0] = byterev_8(reg->d[3]);
--                       buf.d[1] = byterev_8(reg->d[2]);
--                       buf.d[2] = byterev_8(reg->d[1]);
--                       buf.d[3] = byterev_8(reg->d[0]);
--                       reg = &buf;
-+                       union vsx_reg buf32[2];
-+                       buf32[0].d[0] = byterev_8(reg[1].d[1]);
-+                       buf32[0].d[1] = byterev_8(reg[1].d[0]);
-+                       buf32[1].d[0] = byterev_8(reg[0].d[1]);
-+                       buf32[1].d[1] = byterev_8(reg[0].d[0]);
-+                       memcpy(mem, buf32, size);
-+               } else {
-+                       memcpy(mem, reg, size);
-                }
--               memcpy(mem, reg, size);
-                break;
-        case 16:
-                /* stxv, stxvx, stxvl, stxvll */
-
-
-- Naveen
-
+Diffstat:
+ arch/arm/configs/bcm2835_defconfig          |    1 
+ arch/arm/configs/mxs_defconfig              |    1 
+ arch/mips/configs/nlm_xlp_defconfig         |    1 
+ arch/mips/configs/nlm_xlr_defconfig         |    1 
+ arch/parisc/configs/generic-32bit_defconfig |    1 
+ arch/parisc/configs/generic-64bit_defconfig |    1 
+ arch/powerpc/configs/ppc6xx_defconfig       |    1 
+ arch/powerpc/platforms/powernv/pci-cxl.c    |   22 -
+ arch/s390/configs/debug_defconfig           |    1 
+ arch/s390/configs/defconfig                 |    1 
+ arch/sh/configs/edosk7760_defconfig         |    1 
+ arch/sh/configs/sdk7780_defconfig           |    1 
+ arch/x86/configs/i386_defconfig             |    1 
+ arch/x86/configs/x86_64_defconfig           |    1 
+ arch/x86/tools/relocs.c                     |    4 
+ drivers/gpu/drm/drm_crtc_helper_internal.h  |   10 
+ drivers/gpu/drm/drm_fb_helper.c             |   21 -
+ drivers/gpu/drm/drm_kms_helper_common.c     |   25 +-
+ include/asm-generic/vmlinux.lds.h           |   42 ---
+ include/linux/export.h                      |    9 
+ include/linux/kallsyms.h                    |   17 -
+ include/linux/module.h                      |   48 ----
+ init/Kconfig                                |   17 -
+ kernel/kallsyms.c                           |    8 
+ kernel/livepatch/core.c                     |   11 
+ kernel/module.c                             |  310 +++++++++-------------------
+ kernel/trace/trace_kprobe.c                 |    4 
+ lib/bug.c                                   |    3 
+ scripts/checkpatch.pl                       |    6 
+ scripts/mod/modpost.c                       |   50 ----
+ scripts/mod/modpost.h                       |    3 
+ scripts/module.lds.S                        |    6 
+ tools/include/linux/export.h                |    3 
+ 33 files changed, 142 insertions(+), 490 deletions(-)
