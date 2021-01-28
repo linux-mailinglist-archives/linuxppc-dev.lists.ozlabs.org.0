@@ -2,41 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6DD93074DB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 12:34:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43267307598
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 13:11:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DRJJs03r7zDqBm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 22:34:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DRK7p2BN3zDqBr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 23:11:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cmss.chinamobile.com (client-ip=221.176.66.80;
- helo=cmccmta2.chinamobile.com; envelope-from=tangbin@cmss.chinamobile.com;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 188 seconds by postgrey-1.36 at bilbo;
- Thu, 28 Jan 2021 22:30:58 AEDT
-Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com
- [221.176.66.80])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DRJFG1ZqgzDqN8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 22:30:57 +1100 (AEDT)
-Received: from spf.mail.chinamobile.com (unknown[172.16.121.9]) by
- rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee560129f8fdaf-37a3b;
- Thu, 28 Jan 2021 19:27:11 +0800 (CST)
-X-RM-TRANSID: 2ee560129f8fdaf-37a3b
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG: 00000000
-Received: from localhost.localdomain (unknown[223.112.105.130])
- by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee560129f8be3a-d290f;
- Thu, 28 Jan 2021 19:27:11 +0800 (CST)
-X-RM-TRANSID: 2ee560129f8be3a-d290f
-From: Tang Bin <tangbin@cmss.chinamobile.com>
-To: broonie@kernel.org, timur@kernel.org, nicoleotsuka@gmail.com,
- Xiubo.Lee@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com
-Subject: [PATCH] ASoC: fsl_spdif: Utilize the defined parameter to clear code
-Date: Thu, 28 Jan 2021 19:27:14 +0800
-Message-Id: <20210128112714.16324-1-tangbin@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.20.1.windows.1
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DRK1B2TM4zDrWX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 23:05:24 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DRK0r2MLjz9twps;
+ Thu, 28 Jan 2021 13:05:16 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id BwZBJ3dTp9E0; Thu, 28 Jan 2021 13:05:16 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DRK0r1LFMz9twpr;
+ Thu, 28 Jan 2021 13:05:16 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B67528B800;
+ Thu, 28 Jan 2021 13:05:17 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id GighYdz2HD0J; Thu, 28 Jan 2021 13:05:17 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1EA208B7F3;
+ Thu, 28 Jan 2021 13:05:17 +0100 (CET)
+Subject: Re: [PATCH v4 02/10] powerpc/signal: Add unsafe_copy_{vsx,
+ fpr}_from_user()
+To: David Laight <David.Laight@ACULAB.COM>,
+ "'Christopher M. Riedl'" <cmr@codefail.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20210128040424.12720-1-cmr@codefail.de>
+ <20210128040424.12720-3-cmr@codefail.de>
+ <6a6ce1a53fcf4669a9848114d3460fef@AcuMS.aculab.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <2e0dedc0-fce6-5b80-354d-c0d5ff1258e0@csgroup.eu>
+Date: Thu, 28 Jan 2021 13:05:17 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
+In-Reply-To: <6a6ce1a53fcf4669a9848114d3460fef@AcuMS.aculab.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -49,53 +66,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Tang Bin <tangbin@cmss.chinamobile.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Utilize the defined parameter 'dev' to make the code cleaner.
-
-Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
----
- sound/soc/fsl/fsl_spdif.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-index 455f96908..b6d5563df 100644
---- a/sound/soc/fsl/fsl_spdif.c
-+++ b/sound/soc/fsl/fsl_spdif.c
-@@ -1215,7 +1215,7 @@ static int fsl_spdif_probe_txclk(struct fsl_spdif_priv *spdif_priv,
- 
- 	for (i = 0; i < STC_TXCLK_SRC_MAX; i++) {
- 		sprintf(tmp, "rxtx%d", i);
--		clk = devm_clk_get(&pdev->dev, tmp);
-+		clk = devm_clk_get(dev, tmp);
- 		if (IS_ERR(clk)) {
- 			dev_err(dev, "no rxtx%d clock in devicetree\n", i);
- 			return PTR_ERR(clk);
-@@ -1237,14 +1237,14 @@ static int fsl_spdif_probe_txclk(struct fsl_spdif_priv *spdif_priv,
- 			break;
- 	}
- 
--	dev_dbg(&pdev->dev, "use rxtx%d as tx clock source for %dHz sample rate\n",
-+	dev_dbg(dev, "use rxtx%d as tx clock source for %dHz sample rate\n",
- 			spdif_priv->txclk_src[index], rate[index]);
--	dev_dbg(&pdev->dev, "use txclk df %d for %dHz sample rate\n",
-+	dev_dbg(dev, "use txclk df %d for %dHz sample rate\n",
- 			spdif_priv->txclk_df[index], rate[index]);
- 	if (clk_is_match(spdif_priv->txclk[index], spdif_priv->sysclk))
--		dev_dbg(&pdev->dev, "use sysclk df %d for %dHz sample rate\n",
-+		dev_dbg(dev, "use sysclk df %d for %dHz sample rate\n",
- 				spdif_priv->sysclk_df[index], rate[index]);
--	dev_dbg(&pdev->dev, "the best rate for %dHz sample rate is %dHz\n",
-+	dev_dbg(dev, "the best rate for %dHz sample rate is %dHz\n",
- 			rate[index], spdif_priv->txrate[index]);
- 
- 	return 0;
--- 
-2.20.1.windows.1
 
 
+Le 28/01/2021 à 11:38, David Laight a écrit :
+> From: Christopher M. Riedl
+>> Sent: 28 January 2021 04:04
+>>
+>> Reuse the "safe" implementation from signal.c except for calling
+>> unsafe_copy_from_user() to copy into a local buffer.
+>>
+>> Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
+>> ---
+>>   arch/powerpc/kernel/signal.h | 33 +++++++++++++++++++++++++++++++++
+>>   1 file changed, 33 insertions(+)
+>>
+>> diff --git a/arch/powerpc/kernel/signal.h b/arch/powerpc/kernel/signal.h
+>> index 2559a681536e..c18402d625f1 100644
+>> --- a/arch/powerpc/kernel/signal.h
+>> +++ b/arch/powerpc/kernel/signal.h
+>> @@ -53,6 +53,33 @@ unsigned long copy_ckfpr_from_user(struct task_struct *task, void __user *from);
+>>   				&buf[i], label);\
+>>   } while (0)
+>>
+>> +#define unsafe_copy_fpr_from_user(task, from, label)	do {		\
+>> +	struct task_struct *__t = task;					\
+>> +	u64 __user *__f = (u64 __user *)from;				\
+>> +	u64 buf[ELF_NFPREG];						\
+> 
+> How big is that buffer?
 
+#define ELF_NFPREG	33
+
+So that's 264 bytes.
+
+That's a bit big but still reasonable I think.
+
+Christophe
+
+> Isn't is likely to be reasonably large compared to a reasonable
+> kernel stack frame.
+> Especially since this isn't even a leaf function.
+> 
+>> +	int i;								\
+>> +									\
+>> +	unsafe_copy_from_user(buf, __f, ELF_NFPREG * sizeof(double),	\
+> 
+> That really ought to be sizeof(buf).
+> 
+> 	David
+> 
+> 
+>> +				label);					\
+>> +	for (i = 0; i < ELF_NFPREG - 1; i++)				\
+>> +		__t->thread.TS_FPR(i) = buf[i];				\
+>> +	__t->thread.fp_state.fpscr = buf[i];				\
+>> +} while (0)
+>> +
+>> +#define unsafe_copy_vsx_from_user(task, from, label)	do {		\
+>> +	struct task_struct *__t = task;					\
+>> +	u64 __user *__f = (u64 __user *)from;				\
+>> +	u64 buf[ELF_NVSRHALFREG];					\
+>> +	int i;								\
+>> +									\
+>> +	unsafe_copy_from_user(buf, __f,					\
+>> +				ELF_NVSRHALFREG * sizeof(double),	\
+>> +				label);					\
+>> +	for (i = 0; i < ELF_NVSRHALFREG ; i++)				\
+>> +		__t->thread.fp_state.fpr[i][TS_VSRLOWOFFSET] = buf[i];	\
+>> +} while (0)
+>> +
+>> +
+>>   #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+>>   #define unsafe_copy_ckfpr_to_user(to, task, label)	do {		\
+>>   	struct task_struct *__t = task;					\
+>> @@ -80,6 +107,10 @@ unsigned long copy_ckfpr_from_user(struct task_struct *task, void __user *from);
+>>   	unsafe_copy_to_user(to, (task)->thread.fp_state.fpr,	\
+>>   			    ELF_NFPREG * sizeof(double), label)
+>>
+>> +#define unsafe_copy_fpr_from_user(task, from, label)			\
+>> +	unsafe_copy_from_user((task)->thread.fp_state.fpr, from,	\
+>> +			    ELF_NFPREG * sizeof(double), label)
+>> +
+>>   static inline unsigned long
+>>   copy_fpr_to_user(void __user *to, struct task_struct *task)
+>>   {
+>> @@ -115,6 +146,8 @@ copy_ckfpr_from_user(struct task_struct *task, void __user *from)
+>>   #else
+>>   #define unsafe_copy_fpr_to_user(to, task, label) do { } while (0)
+>>
+>> +#define unsafe_copy_fpr_from_user(task, from, label) do { } while (0)
+>> +
+>>   static inline unsigned long
+>>   copy_fpr_to_user(void __user *to, struct task_struct *task)
+>>   {
+>> --
+>> 2.26.1
+> 
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+> Registration No: 1397386 (Wales)
+> 
