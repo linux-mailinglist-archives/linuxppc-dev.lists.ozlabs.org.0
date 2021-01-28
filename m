@@ -2,45 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F52F306B7B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 04:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E5F306BBC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 04:54:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DR5FG4D7zzDrZZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 14:15:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DR66x1L3qzDrdN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Jan 2021 14:54:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com;
- envelope-from=dingtianhong@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DR5Cc2jw5zDqYY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 14:13:41 +1100 (AEDT)
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4DR59Y4L1szMR3L;
- Thu, 28 Jan 2021 11:12:01 +0800 (CST)
-Received: from [10.174.177.80] (10.174.177.80) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.498.0; Thu, 28 Jan 2021 11:13:20 +0800
-Subject: Re: [PATCH v11 01/13] mm/vmalloc: fix HUGE_VMAP regression by
- enabling huge pages in vmalloc_to_page
-To: Nicholas Piggin <npiggin@gmail.com>, <linux-mm@kvack.org>, Andrew Morton
- <akpm@linux-foundation.org>
-References: <20210126044510.2491820-1-npiggin@gmail.com>
- <20210126044510.2491820-2-npiggin@gmail.com>
-From: Ding Tianhong <dingtianhong@huawei.com>
-Message-ID: <2dcbe2c9-c968-4895-fc43-c40dfe9f06d3@huawei.com>
-Date: Thu, 28 Jan 2021 11:13:20 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.2
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=k8vWXsAi; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DR65K3TfJzDrBr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Jan 2021 14:53:24 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10S3WSkn115533; Wed, 27 Jan 2021 22:53:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=references : from : to :
+ cc : subject : in-reply-to : date : message-id : mime-version :
+ content-type; s=pp1; bh=mphtyr7bxoawE01T3pM8T9wObaEFhCrepFpBhh7nMlA=;
+ b=k8vWXsAimExK65/25AL1Dx5UF7MqJTHm+v8TStgFR/UD87qFTrqvJzc4nVWSWE+UaabI
+ 3s/WiuuQXRwjsxi5spkZ7WPFNFSNIoqHYcX9IC+OGIaSe1E6dPu525gL7T6XBXxef2Ly
+ v0PWdLhSwUnG0Vurrg/ExR5Z7REhQNbCiF2ZBTKwI0yAmKiJFiCmv43k9WBKj4dxQMkH
+ oX5xXS/Dfw6Mctr0kbsEuEdsRXjoeL2CRCR2RQD/vcGYoIBw/1x7dAJ/fMZr4MO/+bHM
+ 81UcobnoR9Xor0jpfbIEPDGRBCDIc931gb6CN/t8ZOUN/yp54TfowrKVlpdS2OQJS41Q NA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36bdh8kq7c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Jan 2021 22:53:01 -0500
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10S3qiEH184922;
+ Wed, 27 Jan 2021 22:53:01 -0500
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36bdh8kq72-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Jan 2021 22:53:00 -0500
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10S3VsHp021689;
+ Thu, 28 Jan 2021 03:53:00 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma03wdc.us.ibm.com with ESMTP id 36a0t2tua7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 28 Jan 2021 03:53:00 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10S3qxpa19792354
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 28 Jan 2021 03:52:59 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0ABE0BE051;
+ Thu, 28 Jan 2021 03:52:59 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BA087BE04F;
+ Thu, 28 Jan 2021 03:52:50 +0000 (GMT)
+Received: from manicouagan.localdomain (unknown [9.85.200.195])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Thu, 28 Jan 2021 03:52:50 +0000 (GMT)
+References: <20210115173017.30617-1-nramas@linux.microsoft.com>
+ <20210115173017.30617-10-nramas@linux.microsoft.com>
+ <20210127165208.GA358@willie-the-truck>
+ <d3330793-6054-6e59-b727-44bf8e5653cd@linux.microsoft.com>
+ <20210127184319.GA676@willie-the-truck>
+User-agent: mu4e 1.4.10; emacs 27.1
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v15 09/10] arm64: Call kmalloc() to allocate DTB buffer
+In-reply-to: <20210127184319.GA676@willie-the-truck>
+Date: Thu, 28 Jan 2021 00:52:48 -0300
+Message-ID: <871re5soof.fsf@manicouagan.localdomain>
 MIME-Version: 1.0
-In-Reply-To: <20210126044510.2491820-2-npiggin@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.80]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343, 18.0.737
+ definitions=2021-01-27_10:2021-01-27,
+ 2021-01-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0
+ suspectscore=0 malwarescore=0 mlxlogscore=999 adultscore=0
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101280014
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,123 +104,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>,
- Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>
+Cc: mark.rutland@arm.com, bhsharma@redhat.com, tao.li@vivo.com,
+ zohar@linux.ibm.com, paulus@samba.org, vincenzo.frascino@arm.com,
+ frowand.list@gmail.com, sashal@kernel.org, robh@kernel.org,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>, masahiroy@kernel.org,
+ jmorris@namei.org, takahiro.akashi@linaro.org,
+ linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+ serge@hallyn.com, devicetree@vger.kernel.org, pasha.tatashin@soleen.com,
+ prsriva@linux.microsoft.com, hsinyi@chromium.org, allison@lohutok.net,
+ christophe.leroy@c-s.fr, mbrugger@suse.com, balajib@linux.microsoft.com,
+ dmitry.kasatkin@gmail.com, linux-kernel@vger.kernel.org, james.morse@arm.com,
+ gregkh@linuxfoundation.org, linux-integrity@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/1/26 12:44, Nicholas Piggin wrote:
-> vmalloc_to_page returns NULL for addresses mapped by larger pages[*].
-> Whether or not a vmap is huge depends on the architecture details,
-> alignments, boot options, etc., which the caller can not be expected
-> to know. Therefore HUGE_VMAP is a regression for vmalloc_to_page.
-> 
-> This change teaches vmalloc_to_page about larger pages, and returns
-> the struct page that corresponds to the offset within the large page.
-> This makes the API agnostic to mapping implementation details.
-> 
-> [*] As explained by commit 029c54b095995 ("mm/vmalloc.c: huge-vmap:
->     fail gracefully on unexpected huge vmap mappings")
-> 
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  mm/vmalloc.c | 41 ++++++++++++++++++++++++++---------------
->  1 file changed, 26 insertions(+), 15 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index e6f352bf0498..62372f9e0167 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -34,7 +34,7 @@
->  #include <linux/bitops.h>
->  #include <linux/rbtree_augmented.h>
->  #include <linux/overflow.h>
-> -
-> +#include <linux/pgtable.h>
->  #include <linux/uaccess.h>
->  #include <asm/tlbflush.h>
->  #include <asm/shmparam.h>
-> @@ -343,7 +343,9 @@ int is_vmalloc_or_module_addr(const void *x)
->  }
->  
->  /*
-> - * Walk a vmap address to the struct page it maps.
-> + * Walk a vmap address to the struct page it maps. Huge vmap mappings will
-> + * return the tail page that corresponds to the base page address, which
-> + * matches small vmap mappings.
->   */
->  struct page *vmalloc_to_page(const void *vmalloc_addr)
->  {
-> @@ -363,25 +365,33 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
->  
->  	if (pgd_none(*pgd))
->  		return NULL;
-> +	if (WARN_ON_ONCE(pgd_leaf(*pgd)))
-> +		return NULL; /* XXX: no allowance for huge pgd */
-> +	if (WARN_ON_ONCE(pgd_bad(*pgd)))
-> +		return NULL;
-> +
->  	p4d = p4d_offset(pgd, addr);
->  	if (p4d_none(*p4d))
->  		return NULL;
-> -	pud = pud_offset(p4d, addr);
-> +	if (p4d_leaf(*p4d))
-> +		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
-> +	if (WARN_ON_ONCE(p4d_bad(*p4d)))
-> +		return NULL;
->  
-> -	/*
-> -	 * Don't dereference bad PUD or PMD (below) entries. This will also
-> -	 * identify huge mappings, which we may encounter on architectures
-> -	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=y. Such regions will be
-> -	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
-> -	 * not [unambiguously] associated with a struct page, so there is
-> -	 * no correct value to return for them.
-> -	 */
-> -	WARN_ON_ONCE(pud_bad(*pud));
-> -	if (pud_none(*pud) || pud_bad(*pud))
-> +	pud = pud_offset(p4d, addr);
-> +	if (pud_none(*pud))
-> +		return NULL;
-> +	if (pud_leaf(*pud))
-> +		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
 
-Hi Nicho:
+Will Deacon <will@kernel.org> writes:
 
-/builds/1mzfdQzleCy69KZFb5qHNSEgabZ/mm/vmalloc.c: In function 'vmalloc_to_page':
-/builds/1mzfdQzleCy69KZFb5qHNSEgabZ/include/asm-generic/pgtable-nop4d-hack.h:48:27: error: implicit declaration of function 'pud_page'; did you mean 'put_page'? [-Werror=implicit-function-declaration]
-   48 | #define pgd_page(pgd)    (pud_page((pud_t){ pgd }))
-      |                           ^~~~~~~~
+> On Wed, Jan 27, 2021 at 09:59:38AM -0800, Lakshmi Ramasubramanian wrote:
+>> On 1/27/21 8:52 AM, Will Deacon wrote:
+>> 
+>> Hi Will,
+>> 
+>> > On Fri, Jan 15, 2021 at 09:30:16AM -0800, Lakshmi Ramasubramanian wrote:
+>> > > create_dtb() function allocates kernel virtual memory for
+>> > > the device tree blob (DTB).  This is not consistent with other
+>> > > architectures, such as powerpc, which calls kmalloc() for allocating
+>> > > memory for the DTB.
+>> > > 
+>> > > Call kmalloc() to allocate memory for the DTB, and kfree() to free
+>> > > the allocated memory.
+>> > > 
+>> > > Co-developed-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
+>> > > Signed-off-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
+>> > > Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+>> > > ---
+>> > >   arch/arm64/kernel/machine_kexec_file.c | 12 +++++++-----
+>> > >   1 file changed, 7 insertions(+), 5 deletions(-)
+>> > > 
+>> > > diff --git a/arch/arm64/kernel/machine_kexec_file.c b/arch/arm64/kernel/machine_kexec_file.c
+>> > > index 7de9c47dee7c..51c40143d6fa 100644
+>> > > --- a/arch/arm64/kernel/machine_kexec_file.c
+>> > > +++ b/arch/arm64/kernel/machine_kexec_file.c
+>> > > @@ -29,7 +29,7 @@ const struct kexec_file_ops * const kexec_file_loaders[] = {
+>> > >   int arch_kimage_file_post_load_cleanup(struct kimage *image)
+>> > >   {
+>> > > -	vfree(image->arch.dtb);
+>> > > +	kfree(image->arch.dtb);
+>> > >   	image->arch.dtb = NULL;
+>> > >   	vfree(image->arch.elf_headers);
+>> > > @@ -59,19 +59,21 @@ static int create_dtb(struct kimage *image,
+>> > >   			+ cmdline_len + DTB_EXTRA_SPACE;
+>> > >   	for (;;) {
+>> > > -		buf = vmalloc(buf_size);
+>> > > +		buf = kmalloc(buf_size, GFP_KERNEL);
+>> > 
+>> > Is there a functional need for this patch? I build the 'dtbs' target just
+>> > now and sdm845-db845c.dtb is approaching 100K, which feels quite large
+>> > for kmalloc().
+>> 
+>> Changing the allocation from vmalloc() to kmalloc() would help us further
+>> consolidate the DTB setup code for powerpc and arm64.
+>
+> Ok, but at the risk of allocation failure. Can powerpc use vmalloc()
+> instead?
 
-the pug_page is not defined for aarch32 when enabling 2-level page config, it break the system building.
+I believe this patch stems from this suggestion by Rob Herring:
 
+> This could be taken a step further and do the allocation of the new
+> FDT. The difference is arm64 uses vmalloc and powerpc uses kmalloc. The
+> arm64 version also retries with a bigger allocation. That seems
+> unnecessary.
 
-> +	if (WARN_ON_ONCE(pud_bad(*pud)))
->  		return NULL;
-> +
->  	pmd = pmd_offset(pud, addr);
-> -	WARN_ON_ONCE(pmd_bad(*pmd));
-> -	if (pmd_none(*pmd) || pmd_bad(*pmd))
-> +	if (pmd_none(*pmd))
-> +		return NULL;
-> +	if (pmd_leaf(*pmd))
-> +		return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
-> +	if (WARN_ON_ONCE(pmd_bad(*pmd)))
->  		return NULL;
->  
->  	ptep = pte_offset_map(pmd, addr);
-> @@ -389,6 +399,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
->  	if (pte_present(pte))
->  		page = pte_page(pte);
->  	pte_unmap(ptep);
-> +
->  	return page;
->  }
->  EXPORT_SYMBOL(vmalloc_to_page);
-> 
+in https://lore.kernel.org/linux-integrity/20201211221006.1052453-3-robh@kernel.org/
 
+The problem is that this patch implements only part of the suggestion,
+which isn't useful in itself. So the patch series should either drop
+this patch or consolidate the FDT allocation between the arches.
+
+I just tested on powernv and pseries platforms and powerpc can use
+vmalloc for the FDT buffer.
+
+-- 
+Thiago Jung Bauermann
+IBM Linux Technology Center
