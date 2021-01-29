@@ -1,51 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C3BD308878
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 12:45:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF746308899
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 12:52:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DRwWS39r8zDrp4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 22:45:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DRwgx1nd7zDqDV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 22:52:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DRwQq5fcDzDrhn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jan 2021 22:41:23 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DRwbR6b6fzDqVW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jan 2021 22:48:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=R81CIsQ7; 
+ header.a=rsa-sha256 header.s=201909 header.b=k/4lvtNL; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DRwQh2FfCz9s1l;
- Fri, 29 Jan 2021 22:41:16 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DRwbR1t80z9rx8;
+ Fri, 29 Jan 2021 22:48:51 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1611920481;
- bh=xzHILf+29xPZ0aQ6YxqaatCYkWf8taJuwJRNrFUdFnM=;
+ s=201909; t=1611920931;
+ bh=9mvhq6e3q54eqU+ls5klwsLWQlHmF+qb2ZXsCQd1h4k=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=R81CIsQ71oN+2wG2HJbeXjtDGytU9PT1DGw/3VnLzkUjN2VNI5KJz3T0OpP4FfWfs
- aiUppaWH87mHCLyV70ca1YTg/L0vmmwdhlF+53OMHhqGKCPtgoiBqyp8kajeuDS7xJ
- 9eZzbYj4hyee+qwTCd4Xph3V9bgHx7m0yGEuBTbuLJ5yxD+d5TYQHtDRGIDxLZmMaw
- KOEjI5y7L5G6oXtRL6oBRS/Jf9jWOQ8U2u1w2ReBe9wbdipfRE/dZeemqmztFTsobs
- zk1j5L0sOUFVNB+ZtbG0tRseTq4TFhWcR68Ag6GuIpLjDtyxbx2JWRKIXUFuO36+n/
- 8yt1mfsWHcVWg==
+ b=k/4lvtNLHl+scPyWXQcIGKkR9vjOv6X6EYDd7hUuDB8oZKHFJqgdySSbTqocZ6NQ7
+ Yj6V3bJg5wEPVhfOlPSd1hcXc5C5aeyH0dSnK5qoFFCZGsd42wzb4rkro2NEh7zzql
+ qRAa9XdA3hJzm+Hsa+PuNTbh1dZZJkhpjKo2fkyjkcWg15aXlks3C7fbDih2VC4xCM
+ zWydrgMTvs2LokyE50EiSqYqC3hMJQwgG4OgVIsNXL301ddwJ2geNcuAZR+y2ArI30
+ gCOfNApD4ehac2wkJlYnfCs/mH2cYm+ywgm4nW1WT3fqJp6/l+DxaojEt/xIW5zYaH
+ JSGCgOYmWBGmA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Masahiro Yamada <masahiroy@kernel.org>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH 1/2] powerpc/vdso: fix unnecessary rebuilds of
- vgettimeofday.o
-In-Reply-To: <CAK7LNASEVM8e5hohV4jbXOvMxSJ_Prm3es+fhezPkRc6UL=vdw@mail.gmail.com>
-References: <20201223171142.707053-1-masahiroy@kernel.org>
- <CAK7LNASEVM8e5hohV4jbXOvMxSJ_Prm3es+fhezPkRc6UL=vdw@mail.gmail.com>
-Date: Fri, 29 Jan 2021 22:41:15 +1100
-Message-ID: <87y2gcc6n8.fsf@mpe.ellerman.id.au>
+To: Chengyang Fan <cy.fan@huawei.com>
+Subject: Re: [PATCH] powerpc: remove unneeded semicolons
+In-Reply-To: <20210125095338.1719405-1-cy.fan@huawei.com>
+References: <20210125095338.1719405-1-cy.fan@huawei.com>
+Date: Fri, 29 Jan 2021 22:48:50 +1100
+Message-ID: <87v9bgc6al.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,54 +55,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Oliver O'Halloran <oohall@gmail.com>,
- Greentime Hu <green.hu@gmail.com>, Michal Suchanek <msuchanek@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>, Daniel Axtens <dja@axtens.net>
+Cc: joe@perches.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Masahiro Yamada <masahiroy@kernel.org> writes:
-> On Thu, Dec 24, 2020 at 2:12 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
->>
->> vgettimeofday.o is unnecessarily rebuilt. Adding it to 'targets' is not
->> enough to fix the issue. Kbuild is correctly rebuilding it because the
->> command line is changed.
->>
->> PowerPC builds each vdso directory twice; first in vdso_prepare to
->> generate vdso{32,64}-offsets.h, second as part of the ordinary build
->> process to embed vdso{32,64}.so.dbg into the kernel.
->>
->> The problem shows up when CONFIG_PPC_WERROR=y due to the following line
->> in arch/powerpc/Kbuild:
->>
->>   subdir-ccflags-$(CONFIG_PPC_WERROR) := -Werror
->>
->> In the preparation stage, Kbuild directly visits the vdso directories,
->> hence it does not inherit subdir-ccflags-y. In the second descend,
->> Kbuild adds -Werror, which results in the command line flipping
->> with/without -Werror.
->>
->> It implies a potential danger; if a more critical flag that would impact
->> the resulted vdso, the offsets recorded in the headers might be different
->> from real offsets in the embedded vdso images.
->>
->> Removing the unneeded second descend solves the problem.
->>
->> Link: https://lore.kernel.org/linuxppc-dev/87tuslxhry.fsf@mpe.ellerman.id.au/
->> Reported-by: Michael Ellerman <mpe@ellerman.id.au>
->> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
->> ---
->
->
-> Michael, please take a  look at this.
->
-> The unneeded rebuild problem is still remaining.
+Chengyang Fan <cy.fan@huawei.com> writes:
+> Remove superfluous semicolons after function definitions.
 
-Sorry missed those.
+Is there a good reason why?
 
-I guess I'll pick these up as fixes for v5.10.
+I realise they're superfluous, but they're also harmless as far as I'm
+aware.
 
 cheers
+
+>  arch/powerpc/include/asm/book3s/32/mmu-hash.h       |  2 +-
+>  arch/powerpc/include/asm/book3s/64/mmu.h            |  2 +-
+>  arch/powerpc/include/asm/book3s/64/tlbflush-radix.h |  2 +-
+>  arch/powerpc/include/asm/book3s/64/tlbflush.h       |  2 +-
+>  arch/powerpc/include/asm/firmware.h                 |  2 +-
+>  arch/powerpc/include/asm/kvm_ppc.h                  |  6 +++---
+>  arch/powerpc/include/asm/paca.h                     |  6 +++---
+>  arch/powerpc/include/asm/rtas.h                     |  2 +-
+>  arch/powerpc/include/asm/setup.h                    |  6 +++---
+>  arch/powerpc/include/asm/simple_spinlock.h          |  4 ++--
+>  arch/powerpc/include/asm/smp.h                      |  2 +-
+>  arch/powerpc/include/asm/xmon.h                     |  4 ++--
+>  arch/powerpc/kernel/prom.c                          |  2 +-
+>  arch/powerpc/kernel/setup.h                         | 12 ++++++------
+>  arch/powerpc/platforms/powernv/subcore.h            |  2 +-
+>  arch/powerpc/platforms/pseries/pseries.h            |  2 +-
+>  16 files changed, 29 insertions(+), 29 deletions(-)
