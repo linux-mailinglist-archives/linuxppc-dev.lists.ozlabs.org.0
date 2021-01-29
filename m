@@ -1,98 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F94308761
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 10:36:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C62B308787
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 10:45:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DRsfk18pwzDrVP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 20:36:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DRsrp5FwczDrYX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 20:45:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=DjORXRoU; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=m+vDf8Ls; dkim-atps=neutral
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DRscW6mKyzDrTN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jan 2021 20:34:35 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 10T9W0hE018951; Fri, 29 Jan 2021 04:34:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=FsWDudmo6J8oBj8K9RB+KyjOXFuT6cep1iOIv31WAlY=;
- b=DjORXRoUOFOq79973Ts+B2IQ9elvjqmwAS3bDEkhZoF4yXeQtzBbnIScmr0NOAdprUoC
- SG0aUngFYDJy6BL3sSVycqz2r7MVXWbdoD5N02ZEtUFQ5WI6m0VeaS6zfC9bl0mziAUr
- 0bAXjbEo2TgL19P3rktD0alU+A3967+UbnEXK30UZ/5OnYbYqL5DNtA/33dLLmrentAE
- eC91nHQmYHv/8IDivxxmwJdqFa3uToQ4rroPlbX8unB4tK2NWGlM+lLlU8edANJsPs9u
- GVjiJRRr6Ke6tAD3iJ144v0BWpOxySPZRcCvr10dAa78xLPFodhsCvz9zE6QFox39Vth 8A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36cdwnu6h5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 29 Jan 2021 04:34:30 -0500
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10T9YUc6031323;
- Fri, 29 Jan 2021 04:34:30 -0500
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36cdwnu6gg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 29 Jan 2021 04:34:30 -0500
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10T9NMI0018074;
- Fri, 29 Jan 2021 09:34:28 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma02fra.de.ibm.com with ESMTP id 368be8ayed-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 29 Jan 2021 09:34:28 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 10T9YIJA30540274
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 29 Jan 2021 09:34:18 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E76EF11C050;
- Fri, 29 Jan 2021 09:34:25 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A72A911C054;
- Fri, 29 Jan 2021 09:34:25 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.145.29.111])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 29 Jan 2021 09:34:25 +0000 (GMT)
-Subject: Re: [PATCH] cxl: Simplify bool conversion
-To: Yang Li <yang.lee@linux.alibaba.com>
-References: <1611908705-98507-1-git-send-email-yang.lee@linux.alibaba.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Message-ID: <eacd0324-26c5-dbb5-f5cb-da711e9af74f@linux.ibm.com>
-Date: Fri, 29 Jan 2021 10:34:25 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DRsq85nRDzDrWZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jan 2021 20:43:47 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1611913418; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0PVYDsEOtMHVLwKO3WRBkDYemaOm+tK3a7ZQAdkFUXQ=;
+ b=m+vDf8Lsaep1Xkphb0bF+JOXSQS+ZeN/XpcjQzbGwuXp/Z48gUP6AakMj93wgIfxvq6+AA
+ aiLt36DqXMOUqTW+/4QyvxsT8zuX++qqf2uQ8pnxmRFiCv/El994cdzU1jHrvu+ZCxuzBt
+ BAOASE+cIhm8sysLqjXC2l+jDDs6EHU=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id D683EAD26;
+ Fri, 29 Jan 2021 09:43:37 +0000 (UTC)
+Date: Fri, 29 Jan 2021 10:43:36 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 05/13] kallsyms: refactor {,module_}kallsyms_on_each_symbol
+Message-ID: <YBPYyEvesLMrRtZM@alley>
+References: <20210128181421.2279-1-hch@lst.de>
+ <20210128181421.2279-6-hch@lst.de>
 MIME-Version: 1.0
-In-Reply-To: <1611908705-98507-1-git-send-email-yang.lee@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
- definitions=2021-01-29_04:2021-01-28,
- 2021-01-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 spamscore=0
- priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0
- suspectscore=0 clxscore=1015 impostorscore=0 phishscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101290049
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210128181421.2279-6-hch@lst.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,42 +54,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
- ajd@linux.ibm.com, arnd@arndb.de, linux-kernel@vger.kernel.org
+Cc: Jiri Kosina <jikos@kernel.org>, Andrew Donnellan <ajd@linux.ibm.com>,
+ linux-kbuild@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ Masahiro Yamada <masahiroy@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
+ live-patching@vger.kernel.org, Michal Marek <michal.lkml@markovi.net>,
+ Joe Lawrence <joe.lawrence@redhat.com>, dri-devel@lists.freedesktop.org,
+ Thomas Zimmermann <tzimmermann@suse.de>, Jessica Yu <jeyu@kernel.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Miroslav Benes <mbenes@suse.cz>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 29/01/2021 09:25, Yang Li wrote:
-> Fix the following coccicheck warning:
-> ./drivers/misc/cxl/sysfs.c:181:48-53: WARNING: conversion to bool not
-> needed here
+On Thu 2021-01-28 19:14:13, Christoph Hellwig wrote:
+> Require an explicit call to module_kallsyms_on_each_symbol to look
+> for symbols in modules instead of the call from kallsyms_on_each_symbol,
+> and acquire module_mutex inside of module_kallsyms_on_each_symbol instead
+> of leaving that up to the caller.
 > 
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
-
-
-Thanks!
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
-
-
->   drivers/misc/cxl/sysfs.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  kernel/kallsyms.c       | 6 +++++-
+>  kernel/livepatch/core.c | 6 +-----
+>  kernel/module.c         | 8 ++++----
+>  3 files changed, 10 insertions(+), 10 deletions(-)
 > 
-> diff --git a/drivers/misc/cxl/sysfs.c b/drivers/misc/cxl/sysfs.c
-> index d97a243..c173a5e 100644
-> --- a/drivers/misc/cxl/sysfs.c
-> +++ b/drivers/misc/cxl/sysfs.c
-> @@ -178,7 +178,7 @@ static ssize_t perst_reloads_same_image_store(struct device *device,
->   	if ((rc != 1) || !(val == 1 || val == 0))
->   		return -EINVAL;
->   
-> -	adapter->perst_same_image = (val == 1 ? true : false);
-> +	adapter->perst_same_image = (val == 1);
->   	return count;
->   }
->   
-> 
+> diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
+> index fe9de067771c34..a0d3f0865916f9 100644
+> --- a/kernel/kallsyms.c
+> +++ b/kernel/kallsyms.c
+> @@ -177,6 +177,10 @@ unsigned long kallsyms_lookup_name(const char *name)
+>  	return module_kallsyms_lookup_name(name);
+>  }
+>  
+> +/*
+> + * Iterate over all symbols in vmlinux.  For symbols from modules use
+> + * module_kallsyms_on_each_symbol instead.
+> + */
+>  int kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *,
+>  				      unsigned long),
+>  			    void *data)
+> @@ -192,7 +196,7 @@ int kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *,
+>  		if (ret != 0)
+>  			return ret;
+>  	}
+> -	return module_kallsyms_on_each_symbol(fn, data);
+> +	return 0;
+>  }
+>  
+>  static unsigned long get_symbol_pos(unsigned long addr,
+> diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
+> index 262cd9b003b9f0..f591dac5e86ef4 100644
+> --- a/kernel/livepatch/core.c
+> +++ b/kernel/livepatch/core.c
+> @@ -164,12 +164,8 @@ static int klp_find_object_symbol(const char *objname, const char *name,
+>  		.pos = sympos,
+>  	};
+>  
+> -	mutex_lock(&module_mutex);
+> -	if (objname)
+> +	if (objname || !kallsyms_on_each_symbol(klp_find_callback, &args))
+>  		module_kallsyms_on_each_symbol(klp_find_callback, &args);
+> -	else
+> -		kallsyms_on_each_symbol(klp_find_callback, &args);
+> -	mutex_unlock(&module_mutex);
+
+This change is not needed. (objname == NULL) means that we are
+interested only in symbols in "vmlinux".
+
+module_kallsyms_on_each_symbol(klp_find_callback, &args)
+will always fail when objname == NULL.
+
+Best Regards,
+Petr
