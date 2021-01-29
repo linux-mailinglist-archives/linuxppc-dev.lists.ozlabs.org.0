@@ -1,66 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9A9308D0E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 20:11:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAAA308F79
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 22:32:08 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DS6PZ2gM1zDrWN
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 06:10:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DS9XQ0Y6DzDrj8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 08:32:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::435;
- helo=mail-wr1-x435.google.com; envelope-from=lijunp213@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DdVDH9ZX; dkim-atps=neutral
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com
- [IPv6:2a00:1450:4864:20::435])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=E19mGMjF; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DS6MP4kz6zDrT5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 06:09:05 +1100 (AEDT)
-Received: by mail-wr1-x435.google.com with SMTP id g10so9912364wrx.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jan 2021 11:09:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=O23rlZtfo1FZK0qx/WutTi+hkYR2QPOf0nbtZy10Zxw=;
- b=DdVDH9ZXqAC6pKsXfQftK93OjTPC27Nw5D2M6I8L/f2uvZev0A9JsuKm0emyUXWDAF
- SM7M/J5PhQl9LL8FbOW4nNny9Or4Gkqp9wlfYzTawOjIgh2P71w8aSqwWH9J6OkZmR/z
- GpY8TDRxBO79rLhpmj6+29vwqm6hJmzjOy6ym74Rq3Qd5KbAWfoHO4pMnjuFrxqw5gbE
- 9uGCmsJhWd+lFYGDpi2mUqyJdWdAgaeMHNofQjputA9/s65xjOmhqiCTbD+tW5nU+Ex1
- RJTAI7mK3KBmLP/le5Q01NDo6Ed8KhScv3SWrGEHMCjKt6GT6Tf5HZfXLQ5/5hIB8Y1Z
- 5qpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=O23rlZtfo1FZK0qx/WutTi+hkYR2QPOf0nbtZy10Zxw=;
- b=OyKQsHCNNxFYyT06JH92c+OKhDnFRiCySec1+jkHjIvIaKAaUVz+LTd2YBdZUfuVat
- N7epJ+lI+mtES/GGKueYqw7SB1oTK69wVsElstZq3A9m2477pS08IuM0zx8a7DFk/V2b
- Cn3JZKP3ntxVVM8sSz/Vww5JGZUG/sXiTNHZZHtqqUJkM6K9K8pFUIYm0exZwZJPq/QJ
- P3Rpd87TvpY/v9IsvMiKMpWEXhTFWl/ZaBXErJjl2cFvWc1qoPmlFMT1bXJ+1fgHvu5T
- DaWzb2jmEXYFRfIRBaPIKfUXaQoIdyqWM6BHdS1lyzY+jgLqR7zTYQRTK+txvUExwSpX
- ARhQ==
-X-Gm-Message-State: AOAM530oGaAdHU7fIG2QQcurt18A0Lo37oMem5D2NnHEwMgRKLw+H+o+
- dN+sTMnzCK5Sq1gw+RiAjtqfmrgQ3boQbqMohx0=
-X-Google-Smtp-Source: ABdhPJzAbgdkkapiGmzGouxTGwveq5m7LmJNveRCk+Kv9qY2evOh0QQsbBh6o6uIYkABxwRfFnIBxorHq8dmbcxo0OQ=
-X-Received: by 2002:a5d:49cf:: with SMTP id t15mr6034971wrs.217.1611947338629; 
- Fri, 29 Jan 2021 11:08:58 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DS9V52kp8zDrQg
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 08:30:03 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 10TLKQ2l167538; Fri, 29 Jan 2021 16:29:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=references : from : to :
+ cc : subject : in-reply-to : date : message-id : mime-version :
+ content-type; s=pp1; bh=ZG/SONqMH36JuI71papBw9mGUgHN41poRpOJhmSspxY=;
+ b=E19mGMjFRHQhXI9/QfhJ544SmB8WnJrj5o6p/rfyUS2OgzA3558CrfUgOE4mkybSJX6L
+ 94wS4IfbarkiKrSX5r+rHwkkMFHaRMA+NVqhfcJOrd9WITMr2pZHtY7aVp4qi+e5AD//
+ 4dt5xcDpqbeR4E0ZXJY2eIPIeHW6eNSMmS+GMcvKa/gtB/ty3EYnG+56xIqNWLIiFv5T
+ HTS4xmqDQBRXoR5DledudOfiVHZPG+adNCdT1/aH8KtjHfYoilEf3L5ICsD5lbId8PGc
+ sQ/BfGhXsijzQxtYOxpqMyUklUjh7CCiz/Rn5+63wORuKprO+/RszEWTA01aSXq5qnYV LA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36ct6p050x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 29 Jan 2021 16:29:56 -0500
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10TLKmhp167910;
+ Fri, 29 Jan 2021 16:29:55 -0500
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36ct6p04ye-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 29 Jan 2021 16:29:55 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10TLKstU030510;
+ Fri, 29 Jan 2021 21:29:49 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma01wdc.us.ibm.com with ESMTP id 36a8uhw5tw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 29 Jan 2021 21:29:49 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 10TLTnS726477012
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 29 Jan 2021 21:29:49 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5BC36AC05E;
+ Fri, 29 Jan 2021 21:29:49 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 003E5AC059;
+ Fri, 29 Jan 2021 21:29:44 +0000 (GMT)
+Received: from manicouagan.localdomain (unknown [9.85.189.105])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Fri, 29 Jan 2021 21:29:44 +0000 (GMT)
+References: <20210128181421.2279-1-hch@lst.de>
+ <20210128181421.2279-5-hch@lst.de>
+ <874kj023bj.fsf@manicouagan.localdomain> <20210129051012.GA2053@lst.de>
+User-agent: mu4e 1.4.10; emacs 27.1
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 04/13] module: use RCU to synchronize find_module
+In-reply-to: <20210129051012.GA2053@lst.de>
+Date: Fri, 29 Jan 2021 18:29:43 -0300
+Message-ID: <871re31lfc.fsf@manicouagan.localdomain>
 MIME-Version: 1.0
-References: <20210127215010.99954-1-uwe@kleine-koenig.org>
-In-Reply-To: <20210127215010.99954-1-uwe@kleine-koenig.org>
-From: Lijun Pan <lijunp213@gmail.com>
-Date: Fri, 29 Jan 2021 13:08:45 -0600
-Message-ID: <CAOhMmr4ZMXS+R3AcdKm3qcePfuaZeC-0dNWvsSzowbv5hXo2-Q@mail.gmail.com>
-Subject: Re: [PATCH] vio: make remove callback return void
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <uwe@kleine-koenig.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
+ definitions=2021-01-29_09:2021-01-29,
+ 2021-01-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0
+ lowpriorityscore=0 adultscore=0 clxscore=1015 phishscore=0 suspectscore=0
+ impostorscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101290100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,53 +101,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Cristobal Forno <cforno12@linux.ibm.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>, sparclinux@vger.kernel.org,
- target-devel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- =?UTF-8?Q?Breno_Leit=C3=A3o?= <leitao@debian.org>,
- Peter Huewe <peterhuewe@gmx.de>, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
- Jiri Slaby <jirislaby@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- linux-scsi@vger.kernel.org, Nayna Jain <nayna@linux.ibm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Michael Cyr <mikecyr@linux.ibm.com>,
- Jakub Kicinski <kuba@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-block@vger.kernel.org,
- Lijun Pan <ljp@linux.ibm.com>, Matt Mackall <mpm@selenic.com>,
- Jens Axboe <axboe@kernel.dk>, Steven Royer <seroyer@linux.ibm.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Jarkko Sakkinen <jarkko@kernel.org>, linux-crypto@vger.kernel.org,
- netdev@vger.kernel.org, Dany Madden <drt@linux.ibm.com>,
- Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Petr Mladek <pmladek@suse.com>, Jiri Kosina <jikos@kernel.org>,
+ Andrew Donnellan <ajd@linux.ibm.com>, linux-kbuild@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Masahiro Yamada <masahiroy@kernel.org>,
+ Josh Poimboeuf <jpoimboe@redhat.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
+ live-patching@vger.kernel.org, Michal Marek <michal.lkml@markovi.net>,
+ Joe Lawrence <joe.lawrence@redhat.com>, dri-devel@lists.freedesktop.org,
+ Thomas Zimmermann <tzimmermann@suse.de>, Jessica Yu <jeyu@kernel.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Miroslav Benes <mbenes@suse.cz>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 27, 2021 at 6:41 PM Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.or=
-g> wrote:
->
-> The driver core ignores the return value of struct bus_type::remove()
-> because there is only little that can be done. To simplify the quest to
-> make this function return void, let struct vio_driver::remove() return
-> void, too. All users already unconditionally return 0, this commit makes
-> it obvious that returning an error code is a bad idea and makes it
-> obvious for future driver authors that returning an error code isn't
-> intended.
->
-> Note there are two nominally different implementations for a vio bus:
-> one in arch/sparc/kernel/vio.c and the other in
-> arch/powerpc/platforms/pseries/vio.c. I didn't care to check which
-> driver is using which of these busses (or if even some of them can be
-> used with both) and simply adapt all drivers and the two bus codes in
-> one go.
->
-> Note that for the powerpc implementation there is a semantical change:
-> Before this patch for a device that was bound to a driver without a
-> remove callback vio_cmo_bus_remove(viodev) wasn't called. As the device
-> core still considers the device unbound after vio_bus_remove() returns
-> calling this unconditionally is the consistent behaviour which is
-> implemented here.
->
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.org>
 
-Acked-by: Lijun Pan <ljp@linux.ibm.com>
+Christoph Hellwig <hch@lst.de> writes:
+
+> On Thu, Jan 28, 2021 at 05:50:56PM -0300, Thiago Jung Bauermann wrote:
+>> >  struct module *find_module(const char *name)
+>> >  {
+>> > -	module_assert_mutex();
+>> 
+>> Does it make sense to replace the assert above with the warn below (untested)?
+>> 
+>>      RCU_LOCKDEP_WARN(rcu_read_lock_sched_held());
+>
+> One caller actually holds module_mutex still.  And find_module_all,
+> which implements the actual logic already asserts that either
+> module_mutex is held or rcu_read_lock, so I don't tink we need an
+> extra one here.
+
+Ok, thanks for the clarification.
+
+-- 
+Thiago Jung Bauermann
+IBM Linux Technology Center
