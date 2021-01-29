@@ -1,61 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C2D3087FD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 11:58:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C3BD308878
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 12:45:29 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DRvTl37lzzDrj8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 21:58:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DRwWS39r8zDrp4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 22:45:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=kKPmEvCE; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DRvRz60b5zDrbn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jan 2021 21:57:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=gmJnKiOpmIO5sxf/3PEyvhKZXg73QWNeq0qkSTPfgWo=; b=kKPmEvCEfxEjYQl/sS+44NOzxO
- Gqmi3S3Tf4cMGdOazyj/DxQvuCP8kAxaebOCNnEDraOWqHCb2QlbmMfk1ekS3U7elMO5rWlkwd+dd
- SkRu6fdc6jABkh8TKmUKTO7BSwhuNCx/oDT5TUBFdfy4Y4XHdCWXjQ04jseR+UbyEgPBvpbo/ukyH
- aISvMKS3t3C33B4JbCdxWkNWuD94xAdy9lgMXypUFsIG3FJS4uCALUjkGlQqbgYDDzyAUkkHPiUUY
- lXMUXB5WVZM0ldMMVlHENqgTfhjvKTaJZFmgpjfUdoUIfM9OznIl3kkjNX3KXdP2U5YzyRq6NdlV/
- hsEJJ9mA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1l5RRE-009ivk-7k; Fri, 29 Jan 2021 10:55:40 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 71F043019CE;
- Fri, 29 Jan 2021 11:55:36 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 300892D19736B; Fri, 29 Jan 2021 11:55:36 +0100 (CET)
-Date: Fri, 29 Jan 2021 11:55:36 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Subject: Re: [PATCH 0/3] sched: Task priority related cleanups
-Message-ID: <YBPpqAe5id97csAj@hirez.programming.kicks-ass.net>
-References: <20210128131040.296856-1-dietmar.eggemann@arm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DRwQq5fcDzDrhn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Jan 2021 22:41:23 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=R81CIsQ7; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DRwQh2FfCz9s1l;
+ Fri, 29 Jan 2021 22:41:16 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1611920481;
+ bh=xzHILf+29xPZ0aQ6YxqaatCYkWf8taJuwJRNrFUdFnM=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=R81CIsQ71oN+2wG2HJbeXjtDGytU9PT1DGw/3VnLzkUjN2VNI5KJz3T0OpP4FfWfs
+ aiUppaWH87mHCLyV70ca1YTg/L0vmmwdhlF+53OMHhqGKCPtgoiBqyp8kajeuDS7xJ
+ 9eZzbYj4hyee+qwTCd4Xph3V9bgHx7m0yGEuBTbuLJ5yxD+d5TYQHtDRGIDxLZmMaw
+ KOEjI5y7L5G6oXtRL6oBRS/Jf9jWOQ8U2u1w2ReBe9wbdipfRE/dZeemqmztFTsobs
+ zk1j5L0sOUFVNB+ZtbG0tRseTq4TFhWcR68Ag6GuIpLjDtyxbx2JWRKIXUFuO36+n/
+ 8yt1mfsWHcVWg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Masahiro Yamada <masahiroy@kernel.org>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH 1/2] powerpc/vdso: fix unnecessary rebuilds of
+ vgettimeofday.o
+In-Reply-To: <CAK7LNASEVM8e5hohV4jbXOvMxSJ_Prm3es+fhezPkRc6UL=vdw@mail.gmail.com>
+References: <20201223171142.707053-1-masahiroy@kernel.org>
+ <CAK7LNASEVM8e5hohV4jbXOvMxSJ_Prm3es+fhezPkRc6UL=vdw@mail.gmail.com>
+Date: Fri, 29 Jan 2021 22:41:15 +1100
+Message-ID: <87y2gcc6n8.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210128131040.296856-1-dietmar.eggemann@arm.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,20 +59,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Hillf Danton <hdanton@sina.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- Ingo Molnar <mingo@redhat.com>, Jeremy Kerr <jk@ozlabs.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Greentime Hu <green.hu@gmail.com>, Michal Suchanek <msuchanek@suse.de>,
+ Ard Biesheuvel <ardb@kernel.org>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 28, 2021 at 02:10:37PM +0100, Dietmar Eggemann wrote:
+Masahiro Yamada <masahiroy@kernel.org> writes:
+> On Thu, Dec 24, 2020 at 2:12 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>>
+>> vgettimeofday.o is unnecessarily rebuilt. Adding it to 'targets' is not
+>> enough to fix the issue. Kbuild is correctly rebuilding it because the
+>> command line is changed.
+>>
+>> PowerPC builds each vdso directory twice; first in vdso_prepare to
+>> generate vdso{32,64}-offsets.h, second as part of the ordinary build
+>> process to embed vdso{32,64}.so.dbg into the kernel.
+>>
+>> The problem shows up when CONFIG_PPC_WERROR=y due to the following line
+>> in arch/powerpc/Kbuild:
+>>
+>>   subdir-ccflags-$(CONFIG_PPC_WERROR) := -Werror
+>>
+>> In the preparation stage, Kbuild directly visits the vdso directories,
+>> hence it does not inherit subdir-ccflags-y. In the second descend,
+>> Kbuild adds -Werror, which results in the command line flipping
+>> with/without -Werror.
+>>
+>> It implies a potential danger; if a more critical flag that would impact
+>> the resulted vdso, the offsets recorded in the headers might be different
+>> from real offsets in the embedded vdso images.
+>>
+>> Removing the unneeded second descend solves the problem.
+>>
+>> Link: https://lore.kernel.org/linuxppc-dev/87tuslxhry.fsf@mpe.ellerman.id.au/
+>> Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+>> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+>> ---
+>
+>
+> Michael, please take a  look at this.
+>
+> The unneeded rebuild problem is still remaining.
 
-> Dietmar Eggemann (3):
->   sched: Remove MAX_USER_RT_PRIO
->   sched: Remove USER_PRIO, TASK_USER_PRIO and MAX_USER_PRIO
->   sched/core: Update task_prio() function header
+Sorry missed those.
 
-Thanks!
+I guess I'll pick these up as fixes for v5.10.
+
+cheers
