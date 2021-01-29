@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62312308A16
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 16:51:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B624308A19
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 16:53:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DS1zs5k05zDsXS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 02:51:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DS21n0PxJzDsP3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 02:53:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,35 +14,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=dV39hhwH; 
+ header.s=k20201202 header.b=KWLy0/35; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DS1j660BbzDrj8
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 02:39:06 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6C5E364E12;
- Fri, 29 Jan 2021 15:39:03 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DS1jC3RDpzDrgF
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 02:39:11 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EFE0A64E1E;
+ Fri, 29 Jan 2021 15:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1611934744;
- bh=Nogwv7lW236FlG9laAEQyERHcHhF0IvFYA0aUlAnmuo=;
+ s=k20201202; t=1611934749;
+ bh=Us5gES8gNKwpPLlRnhglkoSBD+OMQjnda/umdH3VCw0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=dV39hhwH9ZtNd92CZ3mJIze9KJOuLoPfUZPCnzZcI3XvxKg98B/4tEy9Pfhbq1KvX
- waJLV+4HJneztPbrIPAXWnNEPKefnjTQElxQg+7N9MQ+30n2GsxumHkMU/Hc86UcbX
- 7aK0YahwPlvdXl69GotRg6zoxN/YL9bRyYIk4w0omfNNs5U8MzuXFBnhz5cGcr3mFC
- Hae5Ym2ktSPEDU3Ru2ig+jteXLEX2nD1sJsSWZ/T28/RQ6uhB8NBAXjn55WnGGHciN
- a7IfaiUdg2mWbPIhrTFUwtQbkOS1kHSb8iB32H8nqhCYurGj+MbTGX6WumWw87s35e
- XYEd5oSAL6RWw==
+ b=KWLy0/35rP2zKjJ7oeQYyeIv7FDHWm1sx3WMSc7EvAIeMhh1U8eR8owyuD50klpTg
+ 8KxyEVs4J7NhCLvhPHxgzQP3C+GViDuKuDBkD1tpwj6z57q7SRmQx4xPSqd/vQCr9j
+ wtVoid+sZqLnJfL30I01GJjnAuSF+AhrKevGW7LSSZxHzrjR64PFctXnGjo3lT/2sq
+ gzXGDP+zZPuJBY++/aFkP35oNKDP+wLcLujOc3kXndgr9thHy2VGE8kL9sKxrasBM1
+ 9FEnVfOwCNUbvHpMRHZhWvnh289QFIBxhEUl2zSAOi/NfzWMkGWSiEYi+wJvV3QKSm
+ kT4CGCd2VEMXA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 3/4] scsi: ibmvfc: Set default timeout to avoid
+Subject: [PATCH AUTOSEL 4.4 2/2] scsi: ibmvfc: Set default timeout to avoid
  crash during migration
-Date: Fri, 29 Jan 2021 10:38:58 -0500
-Message-Id: <20210129153859.1593031-3-sashal@kernel.org>
+Date: Fri, 29 Jan 2021 10:39:06 -0500
+Message-Id: <20210129153906.1593114-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210129153859.1593031-1-sashal@kernel.org>
-References: <20210129153859.1593031-1-sashal@kernel.org>
+In-Reply-To: <20210129153906.1593114-1-sashal@kernel.org>
+References: <20210129153906.1593114-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -127,10 +127,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index 04b3ac17531db..7865feb8e5e83 100644
+index db80ab8335dfb..aa74f72e582ab 100644
 --- a/drivers/scsi/ibmvscsi/ibmvfc.c
 +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -2891,8 +2891,10 @@ static int ibmvfc_slave_configure(struct scsi_device *sdev)
+@@ -2883,8 +2883,10 @@ static int ibmvfc_slave_configure(struct scsi_device *sdev)
  	unsigned long flags = 0;
  
  	spin_lock_irqsave(shost->host_lock, flags);
