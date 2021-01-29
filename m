@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E13308A03
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 16:41:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A11308A04
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Jan 2021 16:43:13 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DS1lt1JlfzDrj9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 02:41:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DS1nn0HKBzDrgN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 02:43:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,35 +14,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Q0Mv5EzY; 
+ header.s=k20201202 header.b=llKAEGpd; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DS1gf69m2zDrgl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 02:37:50 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B5FDF64E1B;
- Fri, 29 Jan 2021 15:37:47 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DS1hG11v8zDrhZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 02:38:22 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B685E64E31;
+ Fri, 29 Jan 2021 15:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1611934668;
- bh=mfiiNN2iZPRQejpl2BGTt2sEn3eQDVkN/A1SY07Oq/M=;
+ s=k20201202; t=1611934699;
+ bh=WLCOk0yKmp1Fxy9rZNxmYOR/Idxo7Q1TOjFo7D7uzTc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Q0Mv5EzYWe5cTuBc955DiIGqxFe0ikRqZizqTSWigHxyMK/gCibnXrSrGHLfyWTtN
- MlqHlqtsZr2hsvDPD+RTT5epzgYvTWoZZLCv8M65hyf2BqaWPQM3SDsMgiI9YmOO6g
- JCbFLLjO1/5zaTkzXRVL6w2GCysHZp7DUkdv+CCKmRTB3j7+gPSz9OvTkiZilbHDey
- Aj4V2MOfzpy/JoDI0X5FvHePpSDsj882ub8GxYR2qIwboAePM2uE8ClAU2VZ9xIJl+
- 8QQNr5T4P0wux4XbDnDK8Yd3E01u5/GddD8McPz07NP28jMwH8xExk2vmCdwUWP6NP
- mQDgJE5BkOlxw==
+ b=llKAEGpdFQ+UlpriuULRo9xrUS3USh2wRMjwESbmT1+of1BPfEU0RCGZT4zpIF90w
+ kbW2xWvZFlqdL7lxkUPrOu2mp15qxoyole995fCuckkLSjSmj8Az3yi6zagXPXBILX
+ mkPyRMYPz5OODNm9EpfvqS1YgdEvxsPAvYaEIqR2v42ewAvZQ58RUaMeNXGDSdoPX3
+ FsXG08vRARMn+acI4MTe15iv3WbpbWQQEVXSHWXVznVlswn+yWo8KfsgisyZWppK3f
+ cvt+yQH/YgnaRSulyDVazmaXjtd8tE8RGxGrWrKh4Vpn0JUuzHfnoKeFd5esjyeKgN
+ jSiZW4ru5LNUA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 28/41] selftests/powerpc: Only test lwm/stmw on
- big endian
-Date: Fri, 29 Jan 2021 10:36:59 -0500
-Message-Id: <20210129153713.1592185-28-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 10/19] scsi: ibmvfc: Set default timeout to avoid
+ crash during migration
+Date: Fri, 29 Jan 2021 10:37:57 -0500
+Message-Id: <20210129153806.1592565-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210129153713.1592185-1-sashal@kernel.org>
-References: <20210129153713.1592185-1-sashal@kernel.org>
+In-Reply-To: <20210129153806.1592565-1-sashal@kernel.org>
+References: <20210129153806.1592565-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -58,64 +58,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kselftest@vger.kernel.org, Libor Pechacek <lpechacek@suse.com>
+Cc: Brian King <brking@linux.vnet.ibm.com>, Sasha Levin <sashal@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-scsi@vger.kernel.org,
+ "Martin K . Petersen" <martin.petersen@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Brian King <brking@linux.vnet.ibm.com>
 
-[ Upstream commit dd3a44c06f7b4f14e90065bf05d62c255b20005f ]
+[ Upstream commit 764907293edc1af7ac857389af9dc858944f53dc ]
 
-Newer binutils (>= 2.36) refuse to assemble lmw/stmw when building in
-little endian mode. That breaks compilation of our alignment handler
-test:
+While testing live partition mobility, we have observed occasional crashes
+of the Linux partition. What we've seen is that during the live migration,
+for specific configurations with large amounts of memory, slow network
+links, and workloads that are changing memory a lot, the partition can end
+up being suspended for 30 seconds or longer. This resulted in the following
+scenario:
 
-  /tmp/cco4l14N.s: Assembler messages:
-  /tmp/cco4l14N.s:1440: Error: `lmw' invalid when little-endian
-  /tmp/cco4l14N.s:1814: Error: `stmw' invalid when little-endian
-  make[2]: *** [../../lib.mk:139: /output/kselftest/powerpc/alignment/alignment_handler] Error 1
+CPU 0                          CPU 1
+-------------------------------  ----------------------------------
+scsi_queue_rq                    migration_store
+ -> blk_mq_start_request          -> rtas_ibm_suspend_me
+  -> blk_add_timer                 -> on_each_cpu(rtas_percpu_suspend_me
+              _______________________________________V
+             |
+             V
+    -> IPI from CPU 1
+     -> rtas_percpu_suspend_me
+                                     -> __rtas_suspend_last_cpu
 
-These tests do pass on little endian machines, as the kernel will
-still emulate those instructions even when running little
-endian (which is arguably a kernel bug).
+-- Linux partition suspended for > 30 seconds --
+                                      -> for_each_online_cpu(cpu)
+                                           plpar_hcall_norets(H_PROD
+ -> scsi_dispatch_cmd
+                                      -> scsi_times_out
+                                       -> scsi_abort_command
+                                        -> queue_delayed_work
+  -> ibmvfc_queuecommand_lck
+   -> ibmvfc_send_event
+    -> ibmvfc_send_crq
+     - returns H_CLOSED
+   <- returns SCSI_MLQUEUE_HOST_BUSY
+-> __blk_mq_requeue_request
 
-But we don't really need to test that case, so ifdef those
-instructions out to get the alignment test building again.
+                                      -> scmd_eh_abort_handler
+                                       -> scsi_try_to_abort_cmd
+                                         - returns SUCCESS
+                                       -> scsi_queue_insert
 
-Reported-by: Libor Pechacek <lpechacek@suse.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Tested-by: Libor Pechacek <lpechacek@suse.com>
-Link: https://lore.kernel.org/r/20210119041800.3093047-1-mpe@ellerman.id.au
+Normally, the SCMD_STATE_COMPLETE bit would protect against the command
+completion and the timeout, but that doesn't work here, since we don't
+check that at all in the SCSI_MLQUEUE_HOST_BUSY path.
+
+In this case we end up calling scsi_queue_insert on a request that has
+already been queued, or possibly even freed, and we crash.
+
+The patch below simply increases the default I/O timeout to avoid this race
+condition. This is also the timeout value that nearly all IBM SAN storage
+recommends setting as the default value.
+
+Link: https://lore.kernel.org/r/1610463998-19791-1-git-send-email-brking@linux.vnet.ibm.com
+Signed-off-by: Brian King <brking@linux.vnet.ibm.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/powerpc/alignment/alignment_handler.c  | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/ibmvscsi/ibmvfc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/powerpc/alignment/alignment_handler.c b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-index cb53a8b777e68..c25cf7cd45e9f 100644
---- a/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-+++ b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-@@ -443,7 +443,6 @@ int test_alignment_handler_integer(void)
- 	LOAD_DFORM_TEST(ldu);
- 	LOAD_XFORM_TEST(ldx);
- 	LOAD_XFORM_TEST(ldux);
--	LOAD_DFORM_TEST(lmw);
- 	STORE_DFORM_TEST(stb);
- 	STORE_XFORM_TEST(stbx);
- 	STORE_DFORM_TEST(stbu);
-@@ -462,7 +461,11 @@ int test_alignment_handler_integer(void)
- 	STORE_XFORM_TEST(stdx);
- 	STORE_DFORM_TEST(stdu);
- 	STORE_XFORM_TEST(stdux);
-+
-+#ifdef __BIG_ENDIAN__
-+	LOAD_DFORM_TEST(lmw);
- 	STORE_DFORM_TEST(stmw);
-+#endif
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index 8a76284b59b08..523809a8a2323 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -2881,8 +2881,10 @@ static int ibmvfc_slave_configure(struct scsi_device *sdev)
+ 	unsigned long flags = 0;
  
- 	return rc;
+ 	spin_lock_irqsave(shost->host_lock, flags);
+-	if (sdev->type == TYPE_DISK)
++	if (sdev->type == TYPE_DISK) {
+ 		sdev->allow_restart = 1;
++		blk_queue_rq_timeout(sdev->request_queue, 120 * HZ);
++	}
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
+ 	return 0;
  }
 -- 
 2.27.0
