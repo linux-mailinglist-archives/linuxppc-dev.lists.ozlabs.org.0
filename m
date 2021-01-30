@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7381330956E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 14:38:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F041B309573
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 14:40:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DSZyv1594zDqTw
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 00:37:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DSb1s5P1NzDqQ1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 00:40:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::529;
- helo=mail-pg1-x529.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52c;
+ helo=mail-pg1-x52c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=BdkpIhPv; dkim-atps=neutral
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
- [IPv6:2607:f8b0:4864:20::529])
+ header.s=20161025 header.b=dQKzE0Zb; dkim-atps=neutral
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
+ [IPv6:2607:f8b0:4864:20::52c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DSZLB3F7gzDrTf
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 00:09:37 +1100 (AEDT)
-Received: by mail-pg1-x529.google.com with SMTP id g15so8494094pgu.9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 05:09:37 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DSZLD0lmKzDrTC
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 00:09:40 +1100 (AEDT)
+Received: by mail-pg1-x52c.google.com with SMTP id g15so8494178pgu.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 05:09:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=4KaqbIbZCf8cZawDRivc6DU3QbwIaKzwxG1I1cHwtpw=;
- b=BdkpIhPvyFo5/mrCx2M9ZliPAmDBxxQpQ23Rltnx6Mfwy4s9FYKQUsSKU5WZfyIsIG
- hHQFPl9YrjyCBnCJcYORjB+U1/7HqvD7mdh8oj796qiCZorxxJaQ/DOpXbNwa3lU3Hud
- dTw1Oh1Kizlg3aOjVL584lT2PUgroxT4XTi3DsNcafpx5mFcvHS8KF2XC0Og80nadNYP
- qjFp+qoUJ9o0YAcHvhtJWmAaqGLESd59AhkquSkuJH+5Q2eO2ase0PJ0D22/RpJ/UwGz
- yTAN72Jkbxm+icNmtvAltvkJ6DwLbOeg7H5RzSNau3DVqoeBfp6HSuyiXcSWgW0Hbdyh
- NTsQ==
+ bh=1JuI3VBPIXDrq46gac4glssKFenTBLQSHobdLMO5dU4=;
+ b=dQKzE0ZbTR1cVu3xOibTg01FLmbGvOfMgZLup9Yks+H+9/4Ft2f9lfVbnMlCwtx8sd
+ 9flbJIpRKXYUMQ6ZZ4CJvUl4x1ysgwxmJhWYRwH1MRDqnbuKbxSvxdnggEIJIiMX2Did
+ Z9kCViBnQ0ULPruTCHg8AybzrRO7cyAD9s0TlUf/yoaB2u/nKxtlyPLEkHYK8t6RDlgD
+ LjVS53Tu46Pk/xABF3BsnkImULitObvCP3J5w1HpXnI6o9TzwjLVatA113DSoB2Olkvk
+ vcC2I24dvUuB/ZUI5+cHXRy4rCh41aJJPs84zve9flZHACLf0khowr8SW85MQFB/Zegm
+ aElA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=4KaqbIbZCf8cZawDRivc6DU3QbwIaKzwxG1I1cHwtpw=;
- b=OT14s0AAgk8Dklq97ClEdp0JjAhfdh5LMYnq+gPPplT6Ii9czo3JNr6noMULxBVxV9
- hopxfbrPViaruTde8NWZQDK4zwt9+OsmsBugxUqCG+3w9tlGTY2tNiQCYLe+n/+LYg6Q
- gTD4uUIRRTyL5vGe69EkqoPKpdbzazWHXBOrZqSbhBy3LGgast9Zqxtfu6Y3s7Q3Wo0F
- J31tWtzBs+Jmj2gOcjckQlEDBoxnqlXDkR6lVWnCgiNjWqbyLB9uIcQNX/XT3TUzCOOX
- mGWwOEh3yPNhHKXaCZ2PTdjQ0palcK36UDyPYGbJwgzX15L4ThLE9FvHLAKAVukMNM5a
- 2BzQ==
-X-Gm-Message-State: AOAM531lwF0BERP/nHYnEtZhM9YwbLlnzHGcy3VmZgddZGPWoCdHSwV3
- HT0GGca4Ony259hUiulKcvRVM5nwpDc=
-X-Google-Smtp-Source: ABdhPJz9akVzuCyTjRWJvEsTG4roXZqxyGPXSt5w46tEqiD0TsNv8gXu8BHXR1wdDx7azxkRLKlxdw==
-X-Received: by 2002:a65:498e:: with SMTP id r14mr8798194pgs.235.1612012175007; 
- Sat, 30 Jan 2021 05:09:35 -0800 (PST)
+ bh=1JuI3VBPIXDrq46gac4glssKFenTBLQSHobdLMO5dU4=;
+ b=M/MlbZqh+GXg6tNEHEs/5buRvCCiiGDEqgApU2BSTjiGU31EWU5HvLr/KYjqyXcxOj
+ Kqceplb9ShWT7WFEu68stPp+41uykbXei7h86D6CEm0knlmus3gtVM4BZIo5cNNIkgi6
+ R3BiGfhsegeBM3N3hjVzG0rbTPuSab4KHLlF1rrrISxI4hN2I9CU3foa51utX7BngHAc
+ xS7lWI5GlvAYYfIFz11tV8YqiC3ezGFsyr9N4w5ObC5hxM3JmthP9o5vswUulcE1Ur7Q
+ 1isuhvoPR440DNpn2YjwHqS54oGGuKBZSnTg7KK8WOcVl6ksrY6b7rNKb7uh/uueO+An
+ sjtg==
+X-Gm-Message-State: AOAM533J7gJmV0xqoNByAM6SsNC8qQwdmdmF6XMJSDQU7DVxF6Rn7yz5
+ JxOVtZTcNGfOj2pS45HdB2m36F/6GeM=
+X-Google-Smtp-Source: ABdhPJynioIJx4SHuxyro7xC1JBqFC5XwSSn+tSWe4wc1l9f38FS6fak4D50Qf+ad6KFxsph455CIQ==
+X-Received: by 2002:a65:6453:: with SMTP id s19mr8791716pgv.280.1612012178014; 
+ Sat, 30 Jan 2021 05:09:38 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com
  (192.156.221.203.dial.dynamic.acc50-nort-cbr.comindico.com.au.
  [203.221.156.192])
- by smtp.gmail.com with ESMTPSA id y16sm12102240pgg.20.2021.01.30.05.09.32
+ by smtp.gmail.com with ESMTPSA id y16sm12102240pgg.20.2021.01.30.05.09.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 30 Jan 2021 05:09:34 -0800 (PST)
+ Sat, 30 Jan 2021 05:09:37 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v7 08/42] powerpc: do_break get registers from regs
-Date: Sat, 30 Jan 2021 23:08:18 +1000
-Message-Id: <20210130130852.2952424-9-npiggin@gmail.com>
+Subject: [PATCH v7 09/42] powerpc: DebugException remove args
+Date: Sat, 30 Jan 2021 23:08:19 +1000
+Message-Id: <20210130130852.2952424-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210130130852.2952424-1-npiggin@gmail.com>
 References: <20210130130852.2952424-1-npiggin@gmail.com>
@@ -84,74 +84,85 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Similar to the previous patch this makes interrupt handler function
-types more regular so they can be wrapped with the next patch.
+Like other interrupt handler conversions, switch to getting registers
+from the pt_regs argument.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/debug.h | 3 +--
- arch/powerpc/kernel/head_8xx.S   | 5 ++---
- arch/powerpc/kernel/process.c    | 7 +++----
- 3 files changed, 6 insertions(+), 9 deletions(-)
+ arch/powerpc/kernel/exceptions-64e.S | 2 --
+ arch/powerpc/kernel/head_40x.S       | 1 +
+ arch/powerpc/kernel/head_booke.h     | 2 ++
+ arch/powerpc/kernel/traps.c          | 4 +++-
+ 4 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/debug.h b/arch/powerpc/include/asm/debug.h
-index ec57daf87f40..0550eceab3ca 100644
---- a/arch/powerpc/include/asm/debug.h
-+++ b/arch/powerpc/include/asm/debug.h
-@@ -52,8 +52,7 @@ extern void do_send_trap(struct pt_regs *regs, unsigned long address,
- 			 unsigned long error_code, int brkpt);
- #else
- 
--extern void do_break(struct pt_regs *regs, unsigned long address,
--		     unsigned long error_code);
-+void do_break(struct pt_regs *regs);
- #endif
- 
- #endif /* _ASM_POWERPC_DEBUG_H */
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 0b2c247cfdff..7869db974185 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -364,10 +364,9 @@ do_databreakpoint:
+diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+index 43e71d86dcbf..1a7291daadfd 100644
+--- a/arch/powerpc/kernel/exceptions-64e.S
++++ b/arch/powerpc/kernel/exceptions-64e.S
+@@ -791,7 +791,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+ 	EXCEPTION_COMMON_CRIT(0xd00)
+ 	std	r14,_DSISR(r1)
  	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	mfspr	r4,SPRN_BAR
- 	stw	r4,_DAR(r11)
--#ifdef CONFIG_VMAP_STACK
--	lwz	r5,_DSISR(r11)
--#else
-+#ifndef CONFIG_VMAP_STACK
- 	mfspr	r5,SPRN_DSISR
-+	stw	r5,_DSISR(r11)
- #endif
- 	EXC_XFER_STD(0x1c00, do_break)
+-	mr	r4,r14
+ 	ld	r14,PACA_EXCRIT+EX_R14(r13)
+ 	ld	r15,PACA_EXCRIT+EX_R15(r13)
+ 	bl	save_nvgprs
+@@ -864,7 +863,6 @@ kernel_dbg_exc:
+ 	INTS_DISABLE
+ 	std	r14,_DSISR(r1)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	mr	r4,r14
+ 	ld	r14,PACA_EXDBG+EX_R14(r13)
+ 	ld	r15,PACA_EXDBG+EX_R15(r13)
+ 	bl	save_nvgprs
+diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
+index 3c5577ac4dc8..24724a7dad49 100644
+--- a/arch/powerpc/kernel/head_40x.S
++++ b/arch/powerpc/kernel/head_40x.S
+@@ -476,6 +476,7 @@ _ENTRY(saved_ksp_limit)
  
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index a66f435dabbf..4f0f81e9420b 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -659,11 +659,10 @@ static void do_break_handler(struct pt_regs *regs)
- 	}
+ 	/* continue normal handling for a critical exception... */
+ 2:	mfspr	r4,SPRN_DBSR
++	stw	r4,_ESR(r11)		/* DebugException takes DBSR in _ESR */
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	EXC_XFER_TEMPLATE(DebugException, 0x2002, \
+ 		(MSR_KERNEL & ~(MSR_ME|MSR_DE|MSR_CE)), \
+diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
+index 0fbdacc7fab7..bf33af714d11 100644
+--- a/arch/powerpc/kernel/head_booke.h
++++ b/arch/powerpc/kernel/head_booke.h
+@@ -406,6 +406,7 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
+ 									      \
+ 	/* continue normal handling for a debug exception... */		      \
+ 2:	mfspr	r4,SPRN_DBSR;						      \
++	stw	r4,_ESR(r11);		/* DebugException takes DBSR in _ESR */\
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD;				      \
+ 	EXC_XFER_TEMPLATE(DebugException, 0x2008, (MSR_KERNEL & ~(MSR_ME|MSR_DE|MSR_CE)), debug_transfer_to_handler, ret_from_debug_exc)
+ 
+@@ -459,6 +460,7 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
+ 									      \
+ 	/* continue normal handling for a critical exception... */	      \
+ 2:	mfspr	r4,SPRN_DBSR;						      \
++	stw	r4,_ESR(r11);		/* DebugException takes DBSR in _ESR */\
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD;				      \
+ 	EXC_XFER_TEMPLATE(DebugException, 0x2002, (MSR_KERNEL & ~(MSR_ME|MSR_DE|MSR_CE)), crit_transfer_to_handler, ret_from_crit_exc)
+ 
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 1c77b1a8f7c9..dfb0d3325f4b 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1957,8 +1957,10 @@ static void handle_debug(struct pt_regs *regs, unsigned long debug_status)
+ 		mtspr(SPRN_DBCR0, current->thread.debug.dbcr0);
  }
  
--void do_break (struct pt_regs *regs, unsigned long address,
--		    unsigned long error_code)
-+void do_break(struct pt_regs *regs)
+-void DebugException(struct pt_regs *regs, unsigned long debug_status)
++void DebugException(struct pt_regs *regs)
  {
- 	current->thread.trap_nr = TRAP_HWBKPT;
--	if (notify_die(DIE_DABR_MATCH, "dabr_match", regs, error_code,
-+	if (notify_die(DIE_DABR_MATCH, "dabr_match", regs, regs->dsisr,
- 			11, SIGSEGV) == NOTIFY_STOP)
- 		return;
++	unsigned long debug_status = regs->dsisr;
++
+ 	current->thread.debug.dbsr = debug_status;
  
-@@ -681,7 +680,7 @@ void do_break (struct pt_regs *regs, unsigned long address,
- 		do_break_handler(regs);
- 
- 	/* Deliver the signal to userspace */
--	force_sig_fault(SIGTRAP, TRAP_HWBKPT, (void __user *)address);
-+	force_sig_fault(SIGTRAP, TRAP_HWBKPT, (void __user *)regs->dar);
- }
- #endif	/* CONFIG_PPC_ADV_DEBUG_REGS */
- 
+ 	/* Hack alert: On BookE, Branch Taken stops on the branch itself, while
 -- 
 2.23.0
 
