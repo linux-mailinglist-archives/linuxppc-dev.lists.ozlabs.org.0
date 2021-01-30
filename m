@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17C830954D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 14:24:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7D2309555
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 14:26:59 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DSZfk5ngtzDrTN
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 00:23:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DSZk86lwQzDrCF
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 00:26:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
- helo=mail-pl1-x634.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=f75ntVIz; dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
+ header.s=20161025 header.b=r6+aIhlf; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DSZKs6Q5bzDrRn
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 00:09:21 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id s15so7086276plr.9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 05:09:21 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DSZKw47sQzDrRn
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 00:09:24 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id q2so7098073plk.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 05:09:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=tz+dGlIlud8b846NlZPsODSAtHGoLrNLOcqbQTXiVvg=;
- b=f75ntVIzqpvo4nKGhYtx/C9xk095ujxWAS5e1UqNtb0+HnIIQhZr2sF7fg2dNSB1HB
- TW9z2/iT8G1lcOgsrYipZc8exDd0Yx8XocwEgmjNy8242LP6xefGT1gxd2NP4070dSsh
- 91H3HwkiFx2hOwIpuZapzdsqpvsGtPOOUx/Zeau3GzqhaABMZ2rMLEE2rzbJzwlmIvAm
- BESA+5uEHvC8acHLCk0rFZGkATAA4Vd0maeIeN7mB3Rwvtw0zgcMKeFAtoUK9vsJG5le
- WQbvrT92eD2qNzLURpKtWY5nRyUA4F+jAXA2rQeJvfSAMkavYN/2XseYgjkRtCmcGE+X
- 1szw==
+ bh=urwJAA8tSck3fcCwGbZlLSb/aJxTZkh9sbovhbvuZ38=;
+ b=r6+aIhlfYeMqHcz0jVxgj7oVHpm6AQorJRW6VNtQAY5cEfmyo14d6mtMGQrutSEppg
+ Swd+DXI5LM/ABFCJvYwlgtxwmtjsIa1wzfm4kY0ARXKHG4EBAK42LdVal2UbLHYopbyu
+ 8tzZTzLpRCDOuStiQlKMEVZ28FWo2Vl5RKbCtvknP1d7QNc1W+IgMG6IkoF/U9g6Dpok
+ V3gECunhFf8hALJXDgch0rSwHjgftT4HN8lELySY+WBMObQvs5Vo27PlAaXlTNBsQrmy
+ a3VWawD3R3ziE8iyN7hMbAwgtEfBVdFlu9Z6fBBAxY0xqaAUyiU+DNMAGR4wpuh13cRE
+ /+6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=tz+dGlIlud8b846NlZPsODSAtHGoLrNLOcqbQTXiVvg=;
- b=iTkWohNU1DZUaOYMC8x7nxPoj1aY1M7ZINY62sVtanT0+RDh9xz2WxxX8JG+9gAI2a
- GXbw7cCHjSOgy4L2OV53mFmL6/T+xeeLBZmg0FxpAXt/qlz32Hdrmw/wboNO3MIwYkjM
- mIVi4Zz4Bshe65CBO9n1AiW5YoiciSvPXwqUGXAtjGrKo7Yts5E7v3vmHEjl7B4AH6KN
- Pf9cXR/L5Gp4jlV74UzoYUtXK7jRf+JTnf9nR2yu+MT9HcAaxYHc0YiWXB8Z5oREqLKK
- Q3GrHPFBykl1mByVGz3X7YkrvSnHKCEzOksXFSPX8WHsw6zJctbt7qT4ExpAmLDn6AvR
- PXyQ==
-X-Gm-Message-State: AOAM531VTnCStQDgm4W1OwyWbLiXlQIFrrzktxc9bbj1Kr2JI6pwh9xT
- 6TMXA3+ckWhyGSQopHibV7OW/XAsR+8=
-X-Google-Smtp-Source: ABdhPJzQsKlAV0ITNwSpxUt6cjcnTlyI+P5bBkIvOGTOuFR/I36+MRb9oTpU08G6DKouT0VG9uT/Aw==
-X-Received: by 2002:a17:90a:4606:: with SMTP id
- w6mr1419921pjg.205.1612012158833; 
- Sat, 30 Jan 2021 05:09:18 -0800 (PST)
+ bh=urwJAA8tSck3fcCwGbZlLSb/aJxTZkh9sbovhbvuZ38=;
+ b=BTMHltnAdeQPw0pqlQDhlNIIiX5tXF/epOEde9fFM4wNzVhDkPXnZzDSpX8PhdEbhR
+ MM5hp5KamOrfl0vuwqivh6edLjZqHThCuWv3MANvd1mH4KH/SDVVkZt3mPoBQ6yX6Nin
+ tAOBaVmO90CTHXgXlUZg61yMlsRDIy68XqxIc/6+S4Hk4nrS3z3UWWvUvv8kbVGS9OXU
+ XjdxhKLgNzN0JhDOq2UfwQ6sj7a98I+s1uyZOfDQ0306Ij2sUYW15uAN1TVqVsnWGwDb
+ SaRoMzUlbd8AwJ8XWH/gtXKMvjBaWFoEql0LmWZ7ABrBULdpBm6yJ8OiAfjPRpSvks91
+ wLlg==
+X-Gm-Message-State: AOAM531W/C3H0yvZZ+RqlCQMEZUTDbi6XPcmx85yA3UvpCV7oTfZ57iw
+ jSKFVl2xEmWHniX2qEh5ArdAjWRonhQ=
+X-Google-Smtp-Source: ABdhPJxZYz0fmsIjDL9P8j/8Qf6UIR8Ajh5Yo5huoSHGLIftayTYyPUGJSBhPRIt050mqnqZ6MzaxQ==
+X-Received: by 2002:a17:90a:886:: with SMTP id
+ v6mr9198154pjc.143.1612012161711; 
+ Sat, 30 Jan 2021 05:09:21 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com
  (192.156.221.203.dial.dynamic.acc50-nort-cbr.comindico.com.au.
  [203.221.156.192])
- by smtp.gmail.com with ESMTPSA id y16sm12102240pgg.20.2021.01.30.05.09.16
+ by smtp.gmail.com with ESMTPSA id y16sm12102240pgg.20.2021.01.30.05.09.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 30 Jan 2021 05:09:18 -0800 (PST)
+ Sat, 30 Jan 2021 05:09:21 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v7 03/42] powerpc/32s: move DABR match out of handle_page_fault
-Date: Sat, 30 Jan 2021 23:08:13 +1000
-Message-Id: <20210130130852.2952424-4-npiggin@gmail.com>
+Subject: [PATCH v7 04/42] powerpc/64s: move DABR match out of handle_page_fault
+Date: Sat, 30 Jan 2021 23:08:14 +1000
+Message-Id: <20210130130852.2952424-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210130130852.2952424-1-npiggin@gmail.com>
 References: <20210130130852.2952424-1-npiggin@gmail.com>
@@ -85,71 +85,94 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Similar to the 32/s change, move the test and call to the do_break
+handler to the DSI.
 
-handle_page_fault() has some code dedicated to book3s/32 to
-call do_break() when the DSI is a DABR match.
-
-On other platforms, do_break() is handled separately.
-
-Do the same for book3s/32, do it earlier in the process of DSI.
-
-This change also avoid doing the test on ISI.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/entry_32.S       | 15 ---------------
- arch/powerpc/kernel/head_book3s_32.S |  3 +++
- 2 files changed, 3 insertions(+), 15 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 34 +++++++++++++---------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 1c9b0ccc2172..238eacfda7b0 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -670,10 +670,6 @@ ppc_swapcontext:
- 	.globl	handle_page_fault
- handle_page_fault:
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
--#ifdef CONFIG_PPC_BOOK3S_32
--	andis.  r0,r5,DSISR_DABRMATCH@h
--	bne-    handle_dabr_fault
--#endif
- 	bl	do_page_fault
- 	cmpwi	r3,0
- 	beq+	ret_from_except
-@@ -687,17 +683,6 @@ handle_page_fault:
- 	bl	__bad_page_fault
- 	b	ret_from_except_full
- 
--#ifdef CONFIG_PPC_BOOK3S_32
--	/* We have a data breakpoint exception - handle it */
--handle_dabr_fault:
--	SAVE_NVGPRS(r1)
--	lwz	r0,_TRAP(r1)
--	clrrwi	r0,r0,1
--	stw	r0,_TRAP(r1)
--	bl      do_break
--	b	ret_from_except_full
--#endif
--
- /*
-  * This routine switches between two different tasks.  The process
-  * state of one is saved on its kernel stack.  Then the state
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index 858fbc8b19f3..6d411b8fd5d3 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -689,7 +689,10 @@ handle_page_fault_tramp_1:
- 	lwz	r5, _DSISR(r11)
- 	/* fall through */
- handle_page_fault_tramp_2:
-+	andis.	r0, r5, DSISR_DABRMATCH@h
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 6e53f7638737..a6333b986a57 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -1439,6 +1439,8 @@ EXC_COMMON_BEGIN(data_access_common)
+ 	GEN_COMMON data_access
+ 	ld	r4,_DAR(r1)
+ 	ld	r5,_DSISR(r1)
++	andis.	r0,r5,DSISR_DABRMATCH@h
 +	bne-	1f
- 	EXC_XFER_LITE(0x300, handle_page_fault)
-+1:	EXC_XFER_STD(0x300, do_break)
+ BEGIN_MMU_FTR_SECTION
+ 	ld	r6,_MSR(r1)
+ 	li	r3,0x300
+@@ -1447,6 +1449,18 @@ MMU_FTR_SECTION_ELSE
+ 	b	handle_page_fault
+ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
  
- #ifdef CONFIG_VMAP_STACK
- .macro save_regs_thread		thread
++1:	/* We have a data breakpoint exception - handle it */
++	ld      r4,_DAR(r1)
++	ld      r5,_DSISR(r1)
++	addi    r3,r1,STACK_FRAME_OVERHEAD
++	bl      do_break
++	/*
++	 * do_break() may have changed the NV GPRS while handling a breakpoint.
++	 * If so, we need to restore them with their updated values.
++	 */
++	REST_NVGPRS(r1)
++	b       interrupt_return
++
+ 	GEN_KVM data_access
+ 
+ 
+@@ -3228,7 +3242,7 @@ disable_machine_check:
+ 	.balign	IFETCH_ALIGN_BYTES
+ do_hash_page:
+ #ifdef CONFIG_PPC_BOOK3S_64
+-	lis	r0,(DSISR_BAD_FAULT_64S | DSISR_DABRMATCH | DSISR_KEYFAULT)@h
++	lis	r0,(DSISR_BAD_FAULT_64S | DSISR_KEYFAULT)@h
+ 	ori	r0,r0,DSISR_BAD_FAULT_64S@l
+ 	and.	r0,r5,r0		/* weird error? */
+ 	bne-	handle_page_fault	/* if not, try to insert a HPTE */
+@@ -3262,15 +3276,13 @@ do_hash_page:
+ 	/* Error */
+ 	blt-	13f
+ 
+-	/* Reload DAR/DSISR into r4/r5 for the DABR check below */
++	/* Reload DAR/DSISR into r4/r5 for handle_page_fault */
+ 	ld	r4,_DAR(r1)
+ 	ld      r5,_DSISR(r1)
+ #endif /* CONFIG_PPC_BOOK3S_64 */
+ 
+ /* Here we have a page fault that hash_page can't handle. */
+ handle_page_fault:
+-11:	andis.  r0,r5,DSISR_DABRMATCH@h
+-	bne-    handle_dabr_fault
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	do_page_fault
+ 	cmpdi	r3,0
+@@ -3281,20 +3293,6 @@ handle_page_fault:
+ 	bl	__bad_page_fault
+ 	b	interrupt_return
+ 
+-/* We have a data breakpoint exception - handle it */
+-handle_dabr_fault:
+-	ld      r4,_DAR(r1)
+-	ld      r5,_DSISR(r1)
+-	addi    r3,r1,STACK_FRAME_OVERHEAD
+-	bl      do_break
+-	/*
+-	 * do_break() may have changed the NV GPRS while handling a breakpoint.
+-	 * If so, we need to restore them with their updated values.
+-	 */
+-	REST_NVGPRS(r1)
+-	b       interrupt_return
+-
+-
+ #ifdef CONFIG_PPC_BOOK3S_64
+ /* We have a page fault that hash_page could handle but HV refused
+  * the PTE insertion
 -- 
 2.23.0
 
