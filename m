@@ -2,60 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BC93094B6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 12:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D44843094EB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 12:36:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DSX2l0fVRzDrQt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 22:26:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DSXGJ4P6hzDrVW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 22:36:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DSWyt2GcVzDr6c
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 22:22:46 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DSX9d2XBmzDrBk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 22:32:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=jNpRT5Jp; 
+ header.a=rsa-sha256 header.s=201909 header.b=ph98rtcH; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DSWyr1s0Sz9t0k;
- Sat, 30 Jan 2021 22:22:43 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DSX9c3mFLz9t1D;
+ Sat, 30 Jan 2021 22:32:04 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1612005765;
- bh=8V293Tkag6x6U3djETvMcWGEUpxkEYNW4bxNdoMbQ+Y=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=jNpRT5JpKeaZ2F+n3+BjFEdmC8AXhGpN2xwOvqowtvGaAs7WlT2lIUPh9uyGflNqJ
- wY5yLKu/TajMgfHrnAOf0WKcWC9EQZxdLOzLAKtA2OXQqYBu1NphYr/srdBgv9ZEOx
- rw5WnHMUGoljg2hFCZJEHjT1ARcLF+kzOgtLAO24cByCpOl+vxmjItf/OdX5jrGzCm
- EioJ5RnwcVLX9G5DS+InACyv2Mmu2z1NDrVf5ma8IpF9m5TeRZVKw1miOV+MWty9cW
- oYcDSRYqC17XOGQtb+vEtL2BdOfcNzduvsdPtyBm6M94QyBwXQ+3j7s1W5KV7nGvZX
- WjS1OlJ6lC1+Q==
+ s=201909; t=1612006324;
+ bh=3bK9NCOYpREx5rmqh/92wGfjgXID65ju0DUBHDn3arI=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=ph98rtcHH2/ZQWDGXHInEnSZIm3bfsnbupoo3zW9aMGiO0FwOCRVs2FhyGHEJnpE2
+ DsQE+xIwTRhK0sggPmMw+Ce1yhf7OQsVlI9e+TijoOH9/AQ6nRK9kT3UIycXT7Vw4L
+ cxC3p7rrYe544BUg5B2ic/++LmFnvpAm0fPJEjBzrXo6k8sYwLQ98VxUCMf4s75lkH
+ hAaEldFvKMq3yBhDIvLuLgujPNum1PADifrUaJvhceuMFyrJQ5zvp7j/X/byr3Mkge
+ Crq/X8ycHc5TkTTJzEFr28vo3lmf8AX1+bQWU1fFzKReu1kSz+kDocFf1s/zfS1qiH
+ 2i4SkJ4VOwusA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Zorro Lang
- <zlang@redhat.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/fault: fix wrong KUAP fault for IO_URING
-In-Reply-To: <18dd441b-440a-fe95-0907-d8cec5b49410@csgroup.eu>
-References: <20210127145648.348135-1-zlang@redhat.com>
- <cce83328-d996-defc-6c87-97cd24ec7027@csgroup.eu>
- <a8013c71-433a-96b3-c657-66ac2ba5b838@kernel.dk>
- <1611792928.nw4g8h8kj4.astroid@bobo.none>
- <20210128031355.GP14354@localhost.localdomain>
- <66061f75-c8de-c1eb-aaaf-9594a31be790@kernel.dk>
- <20210128135220.GQ14354@localhost.localdomain>
- <aedb880b-da2b-ec29-3b66-66f01733be9b@kernel.dk>
- <17ae2706-fe95-a5de-b9da-e3480800daf7@csgroup.eu>
- <20210129065220.GS14354@localhost.localdomain>
- <18dd441b-440a-fe95-0907-d8cec5b49410@csgroup.eu>
-Date: Sat, 30 Jan 2021 22:22:39 +1100
-Message-ID: <87r1m2d5z4.fsf@mpe.ellerman.id.au>
+To: "Christopher M. Riedl" <cmr@codefail.de>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc64/idle: Fix SP offsets when saving GPRs
+In-Reply-To: <20210130030430.11369-1-cmr@codefail.de>
+References: <20210130030430.11369-1-cmr@codefail.de>
+Date: Sat, 30 Jan 2021 22:32:03 +1100
+Message-ID: <87o8h6d5jg.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,88 +56,188 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> +Aneesh
->
-> Le 29/01/2021 =C3=A0 07:52, Zorro Lang a =C3=A9crit=C2=A0:
-..
->> [   96.200296] ------------[ cut here ]------------
->> [   96.200304] Bug: Read fault blocked by KUAP!
->> [   96.200309] WARNING: CPU: 3 PID: 1876 at arch/powerpc/mm/fault.c:229 =
-bad_kernel_fault+0x180/0x310
->
->> [   96.200734] NIP [c000000000849424] fault_in_pages_readable+0x104/0x350
->> [   96.200741] LR [c00000000084952c] fault_in_pages_readable+0x20c/0x350
->> [   96.200747] --- interrupt: 300
->
->
-> Problem happens in a section where userspace access is supposed to be gra=
-nted, so the patch you=20
-> proposed is definitely not the right fix.
->
-> c000000000849408:	2c 01 00 4c 	isync
-> c00000000084940c:	a6 03 3d 7d 	mtspr   29,r9  <=3D=3D granting userspace =
-access permission
-> c000000000849410:	2c 01 00 4c 	isync
-> c000000000849414:	00 00 36 e9 	ld      r9,0(r22)
-> c000000000849418:	20 00 29 81 	lwz     r9,32(r9)
-> c00000000084941c:	00 02 29 71 	andi.   r9,r9,512
-> c000000000849420:	78 d3 5e 7f 	mr      r30,r26
-> =3D=3D> c000000000849424:	00 00 bf 8b 	lbz     r29,0(r31)  <=3D=3D access=
-ing userspace
-> c000000000849428:	10 00 82 41 	beq     c000000000849438 <fault_in_pages_r=
-eadable+0x118>
-> c00000000084942c:	2c 01 00 4c 	isync
-> c000000000849430:	a6 03 bd 7e 	mtspr   29,r21  <=3D=3D clearing userspace=
- access permission
-> c000000000849434:	2c 01 00 4c 	isync
->
-> My first guess is that the problem is linked to the following function, s=
-ee the comment
->
-> /*
->   * For kernel thread that doesn't have thread.regs return
->   * default AMR/IAMR values.
->   */
-> static inline u64 current_thread_amr(void)
-> {
-> 	if (current->thread.regs)
-> 		return current->thread.regs->amr;
-> 	return AMR_KUAP_BLOCKED;
-> }
->
-> Above function was introduced by commit 48a8ab4eeb82 ("powerpc/book3s64/p=
-keys: Don't update SPRN_AMR=20
-> when in kernel mode")
+"Christopher M. Riedl" <cmr@codefail.de> writes:
+> The idle entry/exit code saves/restores GPRs in the stack "red zone"
+> (Protected Zone according to PowerPC64 ELF ABI v2). However, the offset
+> used for the first GPR is incorrect and overwrites the back chain - the
+> Protected Zone actually starts below the current SP. In practice this is
+> probably not an issue, but it's still incorrect so fix it.
 
-Yeah that's a bit of a curly one.
+Nice catch.
 
-At some point io_uring did kthread_use_mm(), which is supposed to mean
-the kthread can operate on behalf of the original process that submitted
-the IO.
+Corrupting the back chain means you can't backtrace from there, which
+could be confusing for debugging one day.
 
-But because KUAP is implemented using memory protection keys, it depends
-on the value of the AMR register, which is not part of the mm, it's in
-thread.regs->amr.
+It does make me wonder why we don't just create a stack frame and use
+the normal macros? It would use a bit more stack space, but we shouldn't
+be short of stack space when going idle.
 
-And what's worse by the time we're in kthread_use_mm() we no longer have
-access to the thread.regs->amr of the original process that submitted
-the IO.
-
-We also can't simply move the AMR into the mm, precisely because it's
-per thread, not per mm.
-
-So TBH I don't know how we're going to fix this.
-
-I guess we could return AMR=3Dunblocked for kernel threads, but that's
-arguably a bug because it allows a process to circumvent memory keys by
-asking the kernel to do the access.
-
+Nick, was there a particular reason for using the red zone?
 
 cheers
+
+
+> diff --git a/arch/powerpc/kernel/idle_book3s.S b/arch/powerpc/kernel/idle_book3s.S
+> index 22f249b6f58d..80cf35183e9d 100644
+> --- a/arch/powerpc/kernel/idle_book3s.S
+> +++ b/arch/powerpc/kernel/idle_book3s.S
+> @@ -53,27 +53,27 @@ _GLOBAL(isa300_idle_stop_mayloss)
+>  	mflr	r4
+>  	mfcr	r5
+>  	/* use stack red zone rather than a new frame for saving regs */
+> -	std	r2,-8*0(r1)
+> -	std	r14,-8*1(r1)
+> -	std	r15,-8*2(r1)
+> -	std	r16,-8*3(r1)
+> -	std	r17,-8*4(r1)
+> -	std	r18,-8*5(r1)
+> -	std	r19,-8*6(r1)
+> -	std	r20,-8*7(r1)
+> -	std	r21,-8*8(r1)
+> -	std	r22,-8*9(r1)
+> -	std	r23,-8*10(r1)
+> -	std	r24,-8*11(r1)
+> -	std	r25,-8*12(r1)
+> -	std	r26,-8*13(r1)
+> -	std	r27,-8*14(r1)
+> -	std	r28,-8*15(r1)
+> -	std	r29,-8*16(r1)
+> -	std	r30,-8*17(r1)
+> -	std	r31,-8*18(r1)
+> -	std	r4,-8*19(r1)
+> -	std	r5,-8*20(r1)
+> +	std	r2,-8*1(r1)
+> +	std	r14,-8*2(r1)
+> +	std	r15,-8*3(r1)
+> +	std	r16,-8*4(r1)
+> +	std	r17,-8*5(r1)
+> +	std	r18,-8*6(r1)
+> +	std	r19,-8*7(r1)
+> +	std	r20,-8*8(r1)
+> +	std	r21,-8*9(r1)
+> +	std	r22,-8*10(r1)
+> +	std	r23,-8*11(r1)
+> +	std	r24,-8*12(r1)
+> +	std	r25,-8*13(r1)
+> +	std	r26,-8*14(r1)
+> +	std	r27,-8*15(r1)
+> +	std	r28,-8*16(r1)
+> +	std	r29,-8*17(r1)
+> +	std	r30,-8*18(r1)
+> +	std	r31,-8*19(r1)
+> +	std	r4,-8*20(r1)
+> +	std	r5,-8*21(r1)
+>  	/* 168 bytes */
+>  	PPC_STOP
+>  	b	.	/* catch bugs */
+> @@ -89,8 +89,8 @@ _GLOBAL(isa300_idle_stop_mayloss)
+>   */
+>  _GLOBAL(idle_return_gpr_loss)
+>  	ld	r1,PACAR1(r13)
+> -	ld	r4,-8*19(r1)
+> -	ld	r5,-8*20(r1)
+> +	ld	r4,-8*20(r1)
+> +	ld	r5,-8*21(r1)
+>  	mtlr	r4
+>  	mtcr	r5
+>  	/*
+> @@ -98,25 +98,25 @@ _GLOBAL(idle_return_gpr_loss)
+>  	 * from PACATOC. This could be avoided for that less common case
+>  	 * if KVM saved its r2.
+>  	 */
+> -	ld	r2,-8*0(r1)
+> -	ld	r14,-8*1(r1)
+> -	ld	r15,-8*2(r1)
+> -	ld	r16,-8*3(r1)
+> -	ld	r17,-8*4(r1)
+> -	ld	r18,-8*5(r1)
+> -	ld	r19,-8*6(r1)
+> -	ld	r20,-8*7(r1)
+> -	ld	r21,-8*8(r1)
+> -	ld	r22,-8*9(r1)
+> -	ld	r23,-8*10(r1)
+> -	ld	r24,-8*11(r1)
+> -	ld	r25,-8*12(r1)
+> -	ld	r26,-8*13(r1)
+> -	ld	r27,-8*14(r1)
+> -	ld	r28,-8*15(r1)
+> -	ld	r29,-8*16(r1)
+> -	ld	r30,-8*17(r1)
+> -	ld	r31,-8*18(r1)
+> +	ld	r2,-8*1(r1)
+> +	ld	r14,-8*2(r1)
+> +	ld	r15,-8*3(r1)
+> +	ld	r16,-8*4(r1)
+> +	ld	r17,-8*5(r1)
+> +	ld	r18,-8*6(r1)
+> +	ld	r19,-8*7(r1)
+> +	ld	r20,-8*8(r1)
+> +	ld	r21,-8*9(r1)
+> +	ld	r22,-8*10(r1)
+> +	ld	r23,-8*11(r1)
+> +	ld	r24,-8*12(r1)
+> +	ld	r25,-8*13(r1)
+> +	ld	r26,-8*14(r1)
+> +	ld	r27,-8*15(r1)
+> +	ld	r28,-8*16(r1)
+> +	ld	r29,-8*17(r1)
+> +	ld	r30,-8*18(r1)
+> +	ld	r31,-8*19(r1)
+>  	blr
+>  
+>  /*
+> @@ -155,27 +155,27 @@ _GLOBAL(isa206_idle_insn_mayloss)
+>  	mflr	r4
+>  	mfcr	r5
+>  	/* use stack red zone rather than a new frame for saving regs */
+> -	std	r2,-8*0(r1)
+> -	std	r14,-8*1(r1)
+> -	std	r15,-8*2(r1)
+> -	std	r16,-8*3(r1)
+> -	std	r17,-8*4(r1)
+> -	std	r18,-8*5(r1)
+> -	std	r19,-8*6(r1)
+> -	std	r20,-8*7(r1)
+> -	std	r21,-8*8(r1)
+> -	std	r22,-8*9(r1)
+> -	std	r23,-8*10(r1)
+> -	std	r24,-8*11(r1)
+> -	std	r25,-8*12(r1)
+> -	std	r26,-8*13(r1)
+> -	std	r27,-8*14(r1)
+> -	std	r28,-8*15(r1)
+> -	std	r29,-8*16(r1)
+> -	std	r30,-8*17(r1)
+> -	std	r31,-8*18(r1)
+> -	std	r4,-8*19(r1)
+> -	std	r5,-8*20(r1)
+> +	std	r2,-8*1(r1)
+> +	std	r14,-8*2(r1)
+> +	std	r15,-8*3(r1)
+> +	std	r16,-8*4(r1)
+> +	std	r17,-8*5(r1)
+> +	std	r18,-8*6(r1)
+> +	std	r19,-8*7(r1)
+> +	std	r20,-8*8(r1)
+> +	std	r21,-8*9(r1)
+> +	std	r22,-8*10(r1)
+> +	std	r23,-8*11(r1)
+> +	std	r24,-8*12(r1)
+> +	std	r25,-8*13(r1)
+> +	std	r26,-8*14(r1)
+> +	std	r27,-8*15(r1)
+> +	std	r28,-8*16(r1)
+> +	std	r29,-8*17(r1)
+> +	std	r30,-8*18(r1)
+> +	std	r31,-8*19(r1)
+> +	std	r4,-8*20(r1)
+> +	std	r5,-8*21(r1)
+>  	cmpwi	r3,PNV_THREAD_NAP
+>  	bne	1f
+>  	IDLE_STATE_ENTER_SEQ_NORET(PPC_NAP)
+> -- 
+> 2.26.1
