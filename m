@@ -2,69 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C822B3098B5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 23:57:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0E33098CC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 00:24:06 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DSqNP5M6ZzDrnp
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 09:57:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DSqz62gSwzDrcZ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 10:24:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
- helo=mail-pl1-x630.google.com; envelope-from=f.fainelli@gmail.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=jtOeDLjX; dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=RvXATeux; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DSqLm61QmzDrSc
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 09:55:58 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id q2so7872169plk.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 14:55:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=Edg7SZe/LYVxNnbqgoVBuhXRLciPrmz39JuMkpRhFiA=;
- b=jtOeDLjXqNR+NBB2WQniFEW0/yIOiVzAwR7rltKGD+fPE41wL2WNKadGm1B+2q2qIO
- CoGQv7UBcY34jlC8792KbsLWCUGpH5Fl9K+5XAOpxiZKPBHzl1ozreywYYwjumKb9V+o
- yGUYQMadNYKoIgB5fRIGvUTQshE513XPXA2xh7a6SWZtklWL4BCVQ8mgj1yLK26X4zmb
- OOGMMmjtsDEGwB4DW+4L8bvHpA7fJvFmlldBNkGSE3ZBS/ctgc2extbBAYU3DXJ7h83w
- sri7VPyE7k2BJU1oZh4eg7+e7LRfDBrSD4tz/q0t/Wa8aMBuLwZDlQFvonfwZjJ83uQQ
- BPWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=Edg7SZe/LYVxNnbqgoVBuhXRLciPrmz39JuMkpRhFiA=;
- b=saHSEnWuV+8+3fI1MbMo3JP8LwPSun5TIRiCZtEOAAxVAbEOlgFmSmfIu1z1b0EQg2
- 8EKTv1VUvawSVxrgYT1IEIVKNt+t/Dmw98d0lcNaLtrpPcvA2jkdzO5syOfv6UlUSo0Y
- sE9SCX/TF9rHVQ78VWvQcGQEJdO6eoVgweYgLcC8dixJriVbAD7ZA4M/+AxHemy8oZEV
- 3FU6zXZLMFWgW5HqvHwXsMnww6bhPDDaB0mAX/G+hgS8+wTfXdCyCvOjE0lUTpLdXvp+
- CwnD4KOYQ1oZsXvLo1OglEgX/cOJ2You5qgxdwWTv5wABD+l/9qxa+ZMOBrFHmwmOACF
- g65w==
-X-Gm-Message-State: AOAM532H745gA0gmILyKMf5JMlutaaQ7KvVkMPJRFWMy1GJyhuNm+QBI
- VdZm/VHMfquKVtsxX4n6X24=
-X-Google-Smtp-Source: ABdhPJyxErqd59tSEM3iz4Sx0478rW57srYbnQpr9fq+lnOhrqy3rvjMYzKoZnS7LUbYWBTkx5opxA==
-X-Received: by 2002:a17:90a:3988:: with SMTP id
- z8mr3665888pjb.46.1612047354575; 
- Sat, 30 Jan 2021 14:55:54 -0800 (PST)
-Received: from 1G5JKC2.Broadcom.net ([192.19.228.250])
- by smtp.gmail.com with ESMTPSA id 14sm12989104pfy.55.2021.01.30.14.55.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 30 Jan 2021 14:55:53 -0800 (PST)
-From: Florian Fainelli <f.fainelli@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	arndb@kernel.org
-Subject: [PATCH 1/2] powerpc/Kconfig: Fix unmet direct dependency on NET
-Date: Sat, 30 Jan 2021 14:55:37 -0800
-Message-Id: <20210130225540.1639-1-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DSqxL1VS8zDq6t
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 10:22:28 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+ :Reply-To:Content-ID:Content-Description;
+ bh=NKrR+Lj4ywGNRc3dhLV33eCl8FFCpLqHQ8RPAMbWaq0=; b=RvXATeuxxW9BPT4eFoS+ezlA7x
+ AzNeUxYcC16HVzGdJl+y74LgICGZPe+VYIS3Q62YiVrX3HON5BGuc1hGtvAM1VETG0DqKI9h0yKHc
+ L5bNP9w3VjFmpMrgsxXIReZZrMRz9o+Cbz/1RT3aXew0HO984JrfPFN/z1TCmvbLcGoltgYNggYWv
+ 1Mdnb4hsS9tFYvbavjx8xzQY5MMXEyosFv34THawvsqDuP6n9Gx9XbQpCjUwBZiEYkMVCh90Ch8KA
+ tynGusYEKRnJT0fQMhq0vaaMlXIsxuimSqolnx2jE0u98/QkL3uuaWmjuhsZT2WY8iGCQnUPg2vWB
+ XJOJmbIw==;
+Received: from [2601:1c0:6280:3f0::1d53]
+ by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+ id 1l5zZ0-00Bft3-IK; Sat, 30 Jan 2021 23:22:02 +0000
+Subject: Re: [PATCH] powerpc: fix AKEBONO build failures
+To: Michael Ellerman <mpe@ellerman.id.au>, Yury Norov <yury.norov@gmail.com>, 
+ linuxppc-dev@lists.ozlabs.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <CAAH8bW8-6Dp29fe6rrnA4eL1vo+mu0HuAVJ-5yjbwxDSvaHdeQ@mail.gmail.com>
+ <6c442012-3bef-321b-bbc3-09c54608661f@infradead.org>
+ <875z3prcwg.fsf@mpe.ellerman.id.au>
+From: Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <4572579a-7208-628d-cbe2-b70a74a84ae7@infradead.org>
+Date: Sat, 30 Jan 2021 15:21:55 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <875z3prcwg.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,48 +65,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- Florian Fainelli <f.fainelli@gmail.com>, kbuild-all@lists.01.org,
- kernel test robot <lkp@intel.com>, Arnd Bergmann <arnd@arndb.de>,
- Michal Simek <michal.simek@xilinx.com>, Paul Mackerras <paulus@samba.org>,
- "open list:LINUX FOR POWERPC EMBEDDED PPC4XX" <linuxppc-dev@lists.ozlabs.org>
+Cc: Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The kbuild test robot was able to generate a configuration where
-ETHERNET and NETDEVICES was selected by the Akenobo platform but not
-NET, which resulted in various build failures and these Kconfig
-warnings:
+On 1/21/21 5:14 PM, Michael Ellerman wrote:
+> Randy Dunlap <rdunlap@infradead.org> writes:
+>> On 1/20/21 1:29 PM, Yury Norov wrote:
+>>> Hi all,
+>>>
+>>> I found the power pc build broken on today's
+>>> linux-next (647060f3b592).
+>>
+>> Darn, I was building linux-5.11-rc4.
+>>
+>> I'll try linux-next after I send this.
+>>
+>> ---
+>> From: Randy Dunlap <rdunlap@infradead.org>
+>>
+>> Fulfill AKEBONO Kconfig requirements.
+>>
+>> Fixes these Kconfig warnings (and more) and fixes the subsequent
+>> build errors:
+>>
+>> WARNING: unmet direct dependencies detected for NETDEVICES
+>>    Depends on [n]: NET [=n]
+>>    Selected by [y]:
+>>    - AKEBONO [=y] && PPC_47x [=y]
+>>
+>> WARNING: unmet direct dependencies detected for MMC_SDHCI
+>>    Depends on [n]: MMC [=n] && HAS_DMA [=y]
+>>    Selected by [y]:
+>>    - AKEBONO [=y] && PPC_47x [=y]
+>>
+>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: Yury Norov <yury.norov@gmail.com>
+>> ---
+>>   arch/powerpc/platforms/44x/Kconfig |    2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> --- lnx-511-rc4.orig/arch/powerpc/platforms/44x/Kconfig
+>> +++ lnx-511-rc4/arch/powerpc/platforms/44x/Kconfig
+>> @@ -206,6 +206,7 @@ config AKEBONO
+>>   	select PPC4xx_HSTA_MSI
+>>   	select I2C
+>>   	select I2C_IBM_IIC
+>> +	select NET
+>>   	select NETDEVICES
+>>   	select ETHERNET
+>>   	select NET_VENDOR_IBM
+> 
+> I think the problem here is too much use of select, for things that
+> should instead be in the defconfig.
+> 
+> The patch below results in the same result for make
+> 44x/akebono_defconfig. Does it fix the original issue?
 
-WARNING: unmet direct dependencies detected for NETDEVICES
-  Depends on [n]: NET [=n]
-  Selected by [y]:
-  - AKEBONO [=y] && PPC_47x [=y]
+Hi Michael,
+Sorry for the delay.
 
-WARNING: unmet direct dependencies detected for ETHERNET
-  Depends on [n]: NETDEVICES [=y] && NET [=n]
-  Selected by [y]:
-  - AKEBONO [=y] && PPC_47x [=y]
+Changing the akebono_defconfig doesn't cause the missing symbols
+to be set -- the defconfig is not being used here.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- arch/powerpc/platforms/44x/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+I guess that if you have users who set CONFIG_AKEBONO and expect
+it to build cleanly, you will need something like my patch or the
+patch that Florian just posted.
 
-diff --git a/arch/powerpc/platforms/44x/Kconfig b/arch/powerpc/platforms/44x/Kconfig
-index 78ac6d67a935..68bd647c878f 100644
---- a/arch/powerpc/platforms/44x/Kconfig
-+++ b/arch/powerpc/platforms/44x/Kconfig
-@@ -206,6 +206,7 @@ config AKEBONO
- 	select PPC4xx_HSTA_MSI
- 	select I2C
- 	select I2C_IBM_IIC
-+	select NET
- 	select NETDEVICES
- 	select ETHERNET
- 	select NET_VENDOR_IBM
--- 
-2.25.1
+Changing the akebono_defconfig also would not help 'make randconfig'
+builds to build cleanly if they had happened to enable AKEBONO.
+
+
+> We don't need to add ETHERNET or NET_VENDOR_IBM to the defconfig because
+> they're both default y.
+> 
+> cheers
 
