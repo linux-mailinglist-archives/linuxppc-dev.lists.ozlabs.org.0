@@ -1,73 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E00C30960F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 15:53:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99452309611
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 15:55:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DScfX4YtvzDqhY
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 01:53:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DSchJ53wNzDsc1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 01:55:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
- helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
+ helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rs4FBn3E; dkim-atps=neutral
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
- [IPv6:2607:f8b0:4864:20::102b])
+ header.s=20161025 header.b=P+RLxVau; dkim-atps=neutral
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
+ [IPv6:2607:f8b0:4864:20::42f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DSb695NDNzDrBs
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 00:44:16 +1100 (AEDT)
-Received: by mail-pj1-x102b.google.com with SMTP id p15so7254205pjv.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 05:44:16 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DSbKw6K9KzDrRH
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 00:54:27 +1100 (AEDT)
+Received: by mail-pf1-x42f.google.com with SMTP id y205so8063720pfc.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 05:54:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=UAboT/GabEbo58MyOirSfbzov9bh7nr57h/tHqkGk8U=;
- b=rs4FBn3EUx1wIYVYZQ9ush/iT+FTVOOlG6vvNLY3M8gx7HSiTvUODmVnGoXX5UIu0+
- P65UQcQVoXjAcJUn137qumMHAlS3qUxKfjRf/cqHi4UJhcbJJmI/hKc5OztcSw/JibK3
- iAhhAhQzjyi2G9C0Z6tTpLxpYvMyAzCpxtX3s9jJ2Xz3Mx2pjHfWRPpcwSTAi2mtmbhm
- MMy66+mUYywqPK8xL1MrKsUaBUi3lUqUq3twZDIN1Qj6Sbnl1Ef+eKgGjY/1ejqSrrIx
- Q2BkBYlKIY8ELfIqpDNzc0WEhIVsFGpvMRVEHzJtwdXq0cXFU7GfH+Li/8taXlVUB1zw
- 3sGQ==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=iB/Mn5DKxfzvSgwZ1NnsZ2zA6keRMohRH8sOnCuYDuk=;
+ b=P+RLxVauLoTyfiOtlYDiQcRlYvUX4pTMHp86t6MjpB/K2pNmZieB/3lTrhcjVr6xHt
+ DfbqpSO7sqTqheazQmubqweNQqeDnWetqLqi8DJrYPCToY6jk6799sg0ofIWP5Knk7HR
+ N+4zg3ewtSfVD2lIYBC3BcktwX9KZg4oW19CMk311IhKqTCa/OxUHiNHHPsATXd6R2MG
+ u/zy5t6qwYblwF3rXt5FP0ppGL6RQgjaU0qO3A+SksMSGffCpPQwD96SS0aeopNui+GP
+ IYtlogUUO1duP8BTw3JR3ppzzENu2Vr0suTLM3oeOPd4H/8wX5JKsePoZoZw8YHTqc3i
+ w2Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=UAboT/GabEbo58MyOirSfbzov9bh7nr57h/tHqkGk8U=;
- b=guI29K0Bq62Jh5fe7UfZneELGGIAhQ6mpuk+UzLUuAK1W3I8ae/i6AFSuj9KxYirl2
- 4tOLGQqvxI5GdlCgENIU9FU+yWCITEcLNK/YU33nC352SUiXzMAQa4tyakcHSzSx0PGY
- 8tvWc0eOWT52DDF70jtAvQCC6QQmJ+Iq1YIDjcAbrs/0kGhf0tJ9HhLUEK7scHNZOj4Y
- g/LtfkPoj7X8Dl0GnsrLGp/1e/j0pYtrBweVpskyukJjnyBtbXUo8vEq4wk9Oy0kljG7
- k2C2Z2zOD1n07dqmFa7g870pnfSqvTZEyFY+U31Yy33YGU/usoAThKspj5I2q87YKuKo
- Gmzw==
-X-Gm-Message-State: AOAM531jajT8wZOZjKbQjS30Y0fgo1C0eoSCSt8dYsx/jZ3KeFJBGfFT
- YMcS4QKHxKFwVJVqrtPwHpX14nYudp8=
-X-Google-Smtp-Source: ABdhPJwN/WNjbO6P+Z62Ysst7yLF1sarutUc7hheAmQxTcJzNvs5UEavRjtorzraCFhAnF2D+VqyZA==
-X-Received: by 2002:a17:902:b7cc:b029:de:4450:ef9e with SMTP id
- v12-20020a170902b7ccb02900de4450ef9emr9689436plz.23.1612014254436; 
- Sat, 30 Jan 2021 05:44:14 -0800 (PST)
+ bh=iB/Mn5DKxfzvSgwZ1NnsZ2zA6keRMohRH8sOnCuYDuk=;
+ b=rHwNmzeBG16cxdUHVaTZhk9dsanQCYTuZqqEjYkPkoJ3vKpaEA8l3wOCePeMovEt2D
+ R1y9gExuiuQfV/wHJm0cyTiQYVx/b1mfcgAUC/h9C77LBtmehEW6W4L5hn3cOq53v9rW
+ 6tuVzzpAC6HTxkQXHoU3qQR0hf4ieCfAAGCOWDwgJUB5U/owYw6u5ohRllakLP7p7l2z
+ u7fy43ajXWO5/6iL5f7WxSIr5sWoHr+WQTtQ9G5s1YqVe0f1K0rB9HQSuu4++ep3vWqf
+ Sry53Wd3xrTx6PEvzBsHj6uEqnIZ0eA0/Fu9yKYDi6njmKlJW2UWwUgw58apRHm7RYav
+ O2HQ==
+X-Gm-Message-State: AOAM5331gPrTHnJp8/cdMISO5bE03f+Y6BRe4t8eymV8yYL2pVgNOc9q
+ x2XS8mBeLwaw83HAy145K/XfMDN1EQ0=
+X-Google-Smtp-Source: ABdhPJzQ03uLd63f1oiVWF2fVtE0Rh2MuLS+y4a501CyOCg135PXmLMN17WdH/FlOdAvxhy45w3Yvg==
+X-Received: by 2002:a63:4e63:: with SMTP id o35mr8746098pgl.291.1612014863365; 
+ Sat, 30 Jan 2021 05:54:23 -0800 (PST)
 Received: from localhost
  (192.156.221.203.dial.dynamic.acc50-nort-cbr.comindico.com.au.
  [203.221.156.192])
- by smtp.gmail.com with ESMTPSA id k31sm12678720pgi.5.2021.01.30.05.44.13
+ by smtp.gmail.com with ESMTPSA id g5sm12341095pfm.115.2021.01.30.05.54.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 30 Jan 2021 05:44:14 -0800 (PST)
-Date: Sat, 30 Jan 2021 23:44:08 +1000
+ Sat, 30 Jan 2021 05:54:22 -0800 (PST)
+Date: Sat, 30 Jan 2021 23:54:16 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc64/idle: Fix SP offsets when saving GPRs
-To: "Christopher M. Riedl" <cmr@codefail.de>, linuxppc-dev@lists.ozlabs.org,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20210130030430.11369-1-cmr@codefail.de>
- <87o8h6d5jg.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87o8h6d5jg.fsf@mpe.ellerman.id.au>
+Subject: Re: [PATCH] powerpc/fault: fix wrong KUAP fault for IO_URING
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Zorro Lang <zlang@redhat.com>
+References: <20210127145648.348135-1-zlang@redhat.com>
+ <cce83328-d996-defc-6c87-97cd24ec7027@csgroup.eu>
+ <a8013c71-433a-96b3-c657-66ac2ba5b838@kernel.dk>
+ <1611792928.nw4g8h8kj4.astroid@bobo.none>
+ <20210128031355.GP14354@localhost.localdomain>
+ <66061f75-c8de-c1eb-aaaf-9594a31be790@kernel.dk>
+ <20210128135220.GQ14354@localhost.localdomain>
+ <aedb880b-da2b-ec29-3b66-66f01733be9b@kernel.dk>
+ <17ae2706-fe95-a5de-b9da-e3480800daf7@csgroup.eu>
+ <20210129065220.GS14354@localhost.localdomain>
+ <18dd441b-440a-fe95-0907-d8cec5b49410@csgroup.eu>
+ <87r1m2d5z4.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87r1m2d5z4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1612014056.e1qcnzac7c.astroid@bobo.none>
+Message-Id: <1612014260.b4fac0liie.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,37 +91,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of January 30, 2021 9:32 pm:
-> "Christopher M. Riedl" <cmr@codefail.de> writes:
->> The idle entry/exit code saves/restores GPRs in the stack "red zone"
->> (Protected Zone according to PowerPC64 ELF ABI v2). However, the offset
->> used for the first GPR is incorrect and overwrites the back chain - the
->> Protected Zone actually starts below the current SP. In practice this is
->> probably not an issue, but it's still incorrect so fix it.
+Excerpts from Michael Ellerman's message of January 30, 2021 9:22 pm:
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>> +Aneesh
+>>
+>> Le 29/01/2021 =C3=A0 07:52, Zorro Lang a =C3=A9crit=C2=A0:
+> ..
+>>> [   96.200296] ------------[ cut here ]------------
+>>> [   96.200304] Bug: Read fault blocked by KUAP!
+>>> [   96.200309] WARNING: CPU: 3 PID: 1876 at arch/powerpc/mm/fault.c:229=
+ bad_kernel_fault+0x180/0x310
+>>
+>>> [   96.200734] NIP [c000000000849424] fault_in_pages_readable+0x104/0x3=
+50
+>>> [   96.200741] LR [c00000000084952c] fault_in_pages_readable+0x20c/0x35=
+0
+>>> [   96.200747] --- interrupt: 300
+>>
+>>
+>> Problem happens in a section where userspace access is supposed to be gr=
+anted, so the patch you=20
+>> proposed is definitely not the right fix.
+>>
+>> c000000000849408:	2c 01 00 4c 	isync
+>> c00000000084940c:	a6 03 3d 7d 	mtspr   29,r9  <=3D=3D granting userspace=
+ access permission
+>> c000000000849410:	2c 01 00 4c 	isync
+>> c000000000849414:	00 00 36 e9 	ld      r9,0(r22)
+>> c000000000849418:	20 00 29 81 	lwz     r9,32(r9)
+>> c00000000084941c:	00 02 29 71 	andi.   r9,r9,512
+>> c000000000849420:	78 d3 5e 7f 	mr      r30,r26
+>> =3D=3D> c000000000849424:	00 00 bf 8b 	lbz     r29,0(r31)  <=3D=3D acces=
+sing userspace
+>> c000000000849428:	10 00 82 41 	beq     c000000000849438 <fault_in_pages_=
+readable+0x118>
+>> c00000000084942c:	2c 01 00 4c 	isync
+>> c000000000849430:	a6 03 bd 7e 	mtspr   29,r21  <=3D=3D clearing userspac=
+e access permission
+>> c000000000849434:	2c 01 00 4c 	isync
+>>
+>> My first guess is that the problem is linked to the following function, =
+see the comment
+>>
+>> /*
+>>   * For kernel thread that doesn't have thread.regs return
+>>   * default AMR/IAMR values.
+>>   */
+>> static inline u64 current_thread_amr(void)
+>> {
+>> 	if (current->thread.regs)
+>> 		return current->thread.regs->amr;
+>> 	return AMR_KUAP_BLOCKED;
+>> }
+>>
+>> Above function was introduced by commit 48a8ab4eeb82 ("powerpc/book3s64/=
+pkeys: Don't update SPRN_AMR=20
+>> when in kernel mode")
 >=20
-> Nice catch.
+> Yeah that's a bit of a curly one.
 >=20
-> Corrupting the back chain means you can't backtrace from there, which
-> could be confusing for debugging one day.
-
-Yeah, we seem to have got away without noticing because the CPU will=20
-wake up and return out of here before it tries to unwind the stack,
-but if you tried to walk it by hand if the CPU got stuck in idle or=20
-something, then we'd get confused.
-
-> It does make me wonder why we don't just create a stack frame and use
-> the normal macros? It would use a bit more stack space, but we shouldn't
-> be short of stack space when going idle.
+> At some point io_uring did kthread_use_mm(), which is supposed to mean
+> the kthread can operate on behalf of the original process that submitted
+> the IO.
 >=20
-> Nick, was there a particular reason for using the red zone?
+> But because KUAP is implemented using memory protection keys, it depends
+> on the value of the AMR register, which is not part of the mm, it's in
+> thread.regs->amr.
+>=20
+> And what's worse by the time we're in kthread_use_mm() we no longer have
+> access to the thread.regs->amr of the original process that submitted
+> the IO.
+>=20
+> We also can't simply move the AMR into the mm, precisely because it's
+> per thread, not per mm.
+>=20
+> So TBH I don't know how we're going to fix this.
+>=20
+> I guess we could return AMR=3Dunblocked for kernel threads, but that's
+> arguably a bug because it allows a process to circumvent memory keys by
+> asking the kernel to do the access.
 
-I don't recall a particular reason, I think a normal stack frame is=20
-probably a good idea.
+We shouldn't need to inherit AMR should we? We only need it to be locked=20
+for kernel threads until it's explicitly unlocked -- nothing mm specific=20
+there. I think current_thread_amr could return 0 for kernel threads? Or
+I would even avoid using that function for allow_user_access and open
+code the kthread case and remove it from current_thread_amr().
 
 Thanks,
 Nick
-
