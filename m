@@ -1,69 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78EC9309587
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 14:51:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD5530958C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Jan 2021 14:54:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DSbGS4yb0zDrQH
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 00:51:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DSbKX1znDzDrgb
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 00:54:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
- helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Xa4qdw2w; dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
- [IPv6:2607:f8b0:4864:20::629])
+ header.s=20161025 header.b=qMQo2/dq; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DSZLT1zp3zDrTL
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 00:09:53 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id y10so2838432plk.7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 05:09:53 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DSZLW6wnNzDrVB
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 00:09:55 +1100 (AEDT)
+Received: by mail-pj1-x102b.google.com with SMTP id kx7so7232073pjb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Jan 2021 05:09:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=YYhlx1AbEH4h9GiU/j7CJo15sE/z/XimzYIwcAFgUNA=;
- b=Xa4qdw2w4WhpqTiwGzPQplgjFifCWae5dGnImCEWuDSLBoaZgY4xNrErhCpCP49zTv
- MnR4fZijuPoeRjMlWOsYuIFnD32i5WZGO3DT47aIQ5aGAK+EgFhccEpGS/uaCqlFqlrD
- r5tFv5gpK65XRX+e6YgHoUGtv43IrDldly/8x+h8RFePPYHjOzXClJ62fEN+MJqqR5Jm
- 0bIacSTnmaXTSxC64s5PtTNj+VGT+ujwaOSLG654nUPEbskVW95UN4DMg3uyyG8DptcY
- iPWxpm8qms7GJC5Z0ihMi8TUXnJokGekRZIFWCpgqxjFR3UA/JLSnVbUdRJk05Vu+IeV
- F/og==
+ bh=P6Rg/OvcuORrJnj77VeKmQfxdobIRUXeNtbab+f2Lc8=;
+ b=qMQo2/dqs1c3nARSqnLFWFui0P1V8XRrcI+UqU6yfivPii7ZCqLLCFK+29D1KhwOKy
+ Okqmzjf7fG0wNHyvX6syG059aNQfzRj1jSQkTct5hr/ylMshxrLvXLXHkiQf4Sx76sDi
+ 59mfcNJJ0UWkeZ0ZrWqLNafVI3gV0Au85lnctJkzZOUorlMF62OqV2Wm7ImpUGydZN9U
+ KIVcJY4d4IMFt82LU9kA03ndER2kpb1q3kKaMmMPO3TUe7vD/dwRtNbz7s1qq1kJt5Uo
+ F9TihoFZzrDcXni5NddXJ7iFyprk5AxgLKOiqwzkUjY/ixovxgtBVkyIUZk9cy/sXIRg
+ kYaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=YYhlx1AbEH4h9GiU/j7CJo15sE/z/XimzYIwcAFgUNA=;
- b=moEG2HLQ4AUqOKcR6ebsyFD126luKlaZk9Hfp+wlBmMTTafHBuyp4c+zNu/VDr5ITr
- F+gWogaPfwZLDUEZw2PEThl39ipod9V7HyXrCK1SFcluz989jIQt0vYdH30id6pPJWTY
- wE7RBISO838xhYTWK1rV/fNyP/MBo4tgWCHsuOO3lcgxzpDtHUUVFCwbSid9x5cOfUG5
- cEFLxR/bYSSTzoaLlPAFC42PfvU+Fvxq2RKviAsu8qnqOHq5mMYXoPLlazQnl2EtS7QV
- a4PAEbQKG5O3DZltuKGeY9LeyIKm9cg+DDc0y81069jmVZxkmLs/UdNjRa4VEPQj5SL5
- vFeA==
-X-Gm-Message-State: AOAM532FzkIOqpbqC1ukEBHpvKgtYGG70jG1XP2x8R1jyvRQOWzzoLRo
- UeBaw166dVWf+XYK1sORHSuDPBMOhMA=
-X-Google-Smtp-Source: ABdhPJzp3xAODtbBqgA0mOh9XJS9SZ7Q6Z2FYwQ/6DU7yY8UyTI0j98Z9yR8jF7oFutnf71QSfGi1Q==
-X-Received: by 2002:a17:90a:2e88:: with SMTP id
- r8mr9269406pjd.84.1612012189848; 
- Sat, 30 Jan 2021 05:09:49 -0800 (PST)
+ bh=P6Rg/OvcuORrJnj77VeKmQfxdobIRUXeNtbab+f2Lc8=;
+ b=BP6ZH7dQ1n3Ptl5nSr8ZpdjRpHD3aMheTRR0CM+F7tvD/deBz0ZH5EyTe3Vet09TEh
+ ErMbmGyaFboz49iooCaSQ2taSrQ5fH11SZ+G9Dhy3zZTarjaMqTuflbeMGsI/K7cu/fQ
+ AUcO267MQ9aLIXeraYE0m9FOGSu+5RHwE0rak7gWHJwlRijSKYhiSEvnHOcBewX9MPiL
+ 1Gk3hMwcY88zXxUHWDpOMxa6zrGMiwZTgOwpDTsZ1JpuSyX6uBIVHzlcsslk/4Ho0Rh+
+ OWDhBsQnvwtbP+r3GWZD62CuyVZU0WIPqPtdTd8F/ED5HagOXq5aeMt3SExW0hC8frEF
+ 0XjQ==
+X-Gm-Message-State: AOAM530n70qL3DqslYcgApxessjF41o5CDGaKbiEJzbNYGQEZkbTo12n
+ i82yssKnsMFYeDlIFd1oxbzongEcUvs=
+X-Google-Smtp-Source: ABdhPJyEDMrbdcDmEp5y8ari82l/l9xtPcLHwMwxieRbnlZdrHbzV+xzVS0uxnqbqv6uvts6/k9Jtw==
+X-Received: by 2002:a17:90b:182:: with SMTP id t2mr9166784pjs.50.1612012192820; 
+ Sat, 30 Jan 2021 05:09:52 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com
  (192.156.221.203.dial.dynamic.acc50-nort-cbr.comindico.com.au.
  [203.221.156.192])
- by smtp.gmail.com with ESMTPSA id y16sm12102240pgg.20.2021.01.30.05.09.47
+ by smtp.gmail.com with ESMTPSA id y16sm12102240pgg.20.2021.01.30.05.09.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 30 Jan 2021 05:09:49 -0800 (PST)
+ Sat, 30 Jan 2021 05:09:52 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v7 13/42] powerpc: rearrange do_page_fault error case to be
- inside exception_enter
-Date: Sat, 30 Jan 2021 23:08:23 +1000
-Message-Id: <20210130130852.2952424-14-npiggin@gmail.com>
+Subject: [PATCH v7 14/42] powerpc/64s: move bad_page_fault handling to C
+Date: Sat, 30 Jan 2021 23:08:24 +1000
+Message-Id: <20210130130852.2952424-15-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210130130852.2952424-1-npiggin@gmail.com>
 References: <20210130130852.2952424-1-npiggin@gmail.com>
@@ -86,52 +84,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This keeps the context tracking over the entire interrupt handler which
-helps later with moving context tracking into interrupt wrappers.
+This simplifies code, and it is also useful when introducing
+interrupt handler wrappers when introducing wrapper functionality
+that doesn't cope with asm entry code calling into more than one
+handler function.
+
+32-bit and 64e still have some such cases, which limits some ways
+they can use interrupt wrappers.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/mm/fault.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 12 ------------
+ arch/powerpc/mm/fault.c              |  4 ++++
+ 2 files changed, 4 insertions(+), 12 deletions(-)
 
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index b90d3cde14cf..e69a912c2cc6 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -1447,12 +1447,6 @@ BEGIN_MMU_FTR_SECTION
+ MMU_FTR_SECTION_ELSE
+ 	bl	do_page_fault
+ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+-	cmpdi	r3,0
+-	beq+	interrupt_return
+-	mr	r5,r3
+-	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	ld	r4,_DAR(r1)
+-	bl	__bad_page_fault
+ 	b	interrupt_return
+ 
+ 1:	bl	do_break
+@@ -1557,12 +1551,6 @@ BEGIN_MMU_FTR_SECTION
+ MMU_FTR_SECTION_ELSE
+ 	bl	do_page_fault
+ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+-	cmpdi	r3,0
+-	beq+	interrupt_return
+-	mr	r5,r3
+-	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	ld	r4,_DAR(r1)
+-	bl	__bad_page_fault
+ 	b	interrupt_return
+ 
+ 	GEN_KVM instruction_access
 diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index e476d7701413..970ac317e018 100644
+index 970ac317e018..fc2d9a27c649 100644
 --- a/arch/powerpc/mm/fault.c
 +++ b/arch/powerpc/mm/fault.c
-@@ -545,19 +545,24 @@ NOKPROBE_SYMBOL(__do_page_fault);
- long do_page_fault(struct pt_regs *regs)
- {
- 	const struct exception_table_entry *entry;
--	enum ctx_state prev_state = exception_enter();
--	int rc = __do_page_fault(regs, regs->dar, regs->dsisr);
--	exception_exit(prev_state);
--	if (likely(!rc))
--		return 0;
-+	enum ctx_state prev_state;
-+	long err;
-+
-+	prev_state = exception_enter();
-+	err = __do_page_fault(regs, regs->dar, regs->dsisr);
-+	if (likely(!err))
-+		goto out;
- 
- 	entry = search_exception_tables(regs->nip);
--	if (unlikely(!entry))
--		return rc;
-+	if (likely(entry)) {
-+		instruction_pointer_set(regs, extable_fixup(entry));
+@@ -557,6 +557,10 @@ long do_page_fault(struct pt_regs *regs)
+ 	if (likely(entry)) {
+ 		instruction_pointer_set(regs, extable_fixup(entry));
+ 		err = 0;
++	} else if (IS_ENABLED(CONFIG_PPC_BOOK3S_64)) {
++		/* 32 and 64e handle this in asm */
++		__bad_page_fault(regs, err);
 +		err = 0;
-+	}
+ 	}
  
--	instruction_pointer_set(regs, extable_fixup(entry));
-+out:
-+	exception_exit(prev_state);
- 
--	return 0;
-+	return err;
- }
- NOKPROBE_SYMBOL(do_page_fault);
- 
+ out:
 -- 
 2.23.0
 
