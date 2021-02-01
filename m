@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6FD30A6DF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 12:52:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FB030A6F9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 12:57:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DTmXM1SSHzDq8x
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 22:52:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DTmfN2GRHzDrQ6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 22:57:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,22 +16,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DTmPy627NzDq8M
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Feb 2021 22:46:59 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DTmR01vrbzDr5s
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Feb 2021 22:47:53 +1100 (AEDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 56C7C6736F; Mon,  1 Feb 2021 12:46:49 +0100 (CET)
-Date: Mon, 1 Feb 2021 12:46:49 +0100
+ id DD5826736F; Mon,  1 Feb 2021 12:47:49 +0100 (CET)
+Date: Mon, 1 Feb 2021 12:47:49 +0100
 From: Christoph Hellwig <hch@lst.de>
-To: Miroslav Benes <mbenes@suse.cz>
-Subject: Re: [PATCH 04/13] module: use RCU to synchronize find_module
-Message-ID: <20210201114649.GA19696@lst.de>
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH 05/13] kallsyms: refactor {,module_}kallsyms_on_each_symbol
+Message-ID: <20210201114749.GB19696@lst.de>
 References: <20210128181421.2279-1-hch@lst.de>
- <20210128181421.2279-5-hch@lst.de>
- <alpine.LSU.2.21.2101291626080.22237@pobox.suse.cz>
+ <20210128181421.2279-6-hch@lst.de> <YBPYyEvesLMrRtZM@alley>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.LSU.2.21.2101291626080.22237@pobox.suse.cz>
+In-Reply-To: <YBPYyEvesLMrRtZM@alley>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -44,35 +43,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, Jiri Kosina <jikos@kernel.org>,
- Andrew Donnellan <ajd@linux.ibm.com>, linux-kbuild@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Masahiro Yamada <masahiroy@kernel.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>,
+Cc: Jiri Kosina <jikos@kernel.org>, Andrew Donnellan <ajd@linux.ibm.com>,
+ linux-kbuild@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ Masahiro Yamada <masahiroy@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
  live-patching@vger.kernel.org, Michal Marek <michal.lkml@markovi.net>,
  Joe Lawrence <joe.lawrence@redhat.com>, dri-devel@lists.freedesktop.org,
  Thomas Zimmermann <tzimmermann@suse.de>, Jessica Yu <jeyu@kernel.org>,
  Frederic Barrat <fbarrat@linux.ibm.com>, Daniel Vetter <daniel@ffwll.ch>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+ Miroslav Benes <mbenes@suse.cz>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 29, 2021 at 04:29:02PM +0100, Miroslav Benes wrote:
+On Fri, Jan 29, 2021 at 10:43:36AM +0100, Petr Mladek wrote:
+> > --- a/kernel/livepatch/core.c
+> > +++ b/kernel/livepatch/core.c
+> > @@ -164,12 +164,8 @@ static int klp_find_object_symbol(const char *objname, const char *name,
+> >  		.pos = sympos,
+> >  	};
 > >  
 > > -	mutex_lock(&module_mutex);
-> > +	rcu_read_lock_sched();
-> >  	/*
-> >  	 * We do not want to block removal of patched modules and therefore
-> >  	 * we do not take a reference here. The patches are removed by
-> > @@ -74,7 +75,7 @@ static void klp_find_object_module(struct klp_object *obj)
-> >  	if (mod && mod->klp_alive)
+> > -	if (objname)
+> > +	if (objname || !kallsyms_on_each_symbol(klp_find_callback, &args))
+> >  		module_kallsyms_on_each_symbol(klp_find_callback, &args);
+> > -	else
+> > -		kallsyms_on_each_symbol(klp_find_callback, &args);
+> > -	mutex_unlock(&module_mutex);
 > 
-> RCU always baffles me a bit, so I'll ask. Don't we need 
-> rcu_dereference_sched() here? "mod" comes from a RCU-protected list, so I 
-> wonder.
+> This change is not needed. (objname == NULL) means that we are
+> interested only in symbols in "vmlinux".
+> 
+> module_kallsyms_on_each_symbol(klp_find_callback, &args)
+> will always fail when objname == NULL.
 
-rcu_dereference* is only used for dereferencing points where that
-reference itself is RCU protected, that is the lookup of mod itself down
-in find_module_all in this case.
+I just tried to keep the old behavior.  I can respin it with your
+recommended change noting the change in behavior, though.
