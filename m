@@ -2,46 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2BEE309FFB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 02:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C98330A013
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 02:46:13 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DTVfz18BRzDrQR
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 12:27:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DTW4d6RYZzDrQY
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 12:46:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DTVcL6FmtzDrR3
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Feb 2021 12:25:06 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=cIc4gIQv; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4DTVcK44gGz9t2b; Mon,  1 Feb 2021 12:25:05 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4DTVcK2TB9z9t1Q; Mon,  1 Feb 2021 12:25:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1612142705;
- bh=PCO2w4aIauaxp6DLHardPS8+O9QHuutYiXOVRz3249o=;
- h=From:To:Cc:Subject:Date:From;
- b=cIc4gIQvWwESyVzaNpfl64fvxPRhK1bmV4/x0dqJnK6WUc+1oCfMTywg7zm/8FEIg
- XKn645WfsNHEf8EZv5CrYx3cdIdoNEPNhWlLofv+gt+rP5zt+JxaJbCA8R4xRSvKi+
- T68sh1v9xjes9anKRu4NZr3PSrAzxOCt1cBB2QqzFPm/92MbU8741jFvO3KVhUFOD0
- 6kMRGRfKaP9iNQudGKhkkMCU8HQAEWxCu2Yt5na8ILgzCk3/S892WCYLsgIygt5boW
- iXm/tX66Ij2mGIuXToMOFNURN5XiNHZT8hSJ3URQMn649/kVUSVCz7l84BW7/WeuFP
- I4QXw/gDBx7hg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/akebono: Fix unmet dependency errors
-Date: Mon,  1 Feb 2021 12:25:03 +1100
-Message-Id: <20210201012503.940145-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=m2Ga3wy8; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DTW2n4svkzDrCW
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Feb 2021 12:44:32 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 1111VIje095320; Sun, 31 Jan 2021 20:44:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=cHsIuP5Z4/Yi57ZdkhzxQxn/1cUm9hMlQlWW/53b2gw=;
+ b=m2Ga3wy8KrLyob3g1hTIuWqw++iG1G9EmaO6lE38oUGgkCM2ILfzU0lMsKp7dogkbTeS
+ 3mG+f/5RZ09UmByNvZiQxmeY6S+VySf8JeTgZbtcV6ta14G13C5Zph4nvFmX4osdoazv
+ ck43LvxvWycUgomLrd3WMKpC2yVKcYHt5jvUQJbzCYprQ/pClQCfvjIT/+AEQ0FLEnyC
+ bm4LZ9YrZ4VO8auKR/k2Zv9+J75EPEMRKipLQoFeH/IsyVNT57fw1D72bCsAfQCHDSVR
+ DcxZAPt5BCTmnRkaYMB2RgXO6Y0WyLMkjfkuCwRFs3jRjfK4YwGg1OMQ8FXk6XYQ87HX rg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 36e828g7kw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 31 Jan 2021 20:44:22 -0500
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 1111Wsur098740;
+ Sun, 31 Jan 2021 20:44:22 -0500
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 36e828g7kn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 31 Jan 2021 20:44:22 -0500
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1111ZxHY010170;
+ Mon, 1 Feb 2021 01:44:19 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04ams.nl.ibm.com with ESMTP id 36cy38hcq9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 01 Feb 2021 01:44:19 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1111iHnE42664346
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 1 Feb 2021 01:44:17 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 39BBA5204F;
+ Mon,  1 Feb 2021 01:44:17 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id DDA495204E;
+ Mon,  1 Feb 2021 01:44:16 +0000 (GMT)
+Received: from [9.206.149.12] (unknown [9.206.149.12])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 98B2C60036;
+ Mon,  1 Feb 2021 12:44:15 +1100 (AEDT)
+Subject: Re: [PATCH] cxl: Simplify bool conversion
+To: Yang Li <yang.lee@linux.alibaba.com>, fbarrat@linux.ibm.com
+References: <1611908705-98507-1-git-send-email-yang.lee@linux.alibaba.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Message-ID: <58b3b4f2-09eb-841e-406b-4ec836eaebab@linux.ibm.com>
+Date: Mon, 1 Feb 2021 12:44:12 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1611908705-98507-1-git-send-email-yang.lee@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
+ definitions=2021-01-31_09:2021-01-29,
+ 2021-01-31 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=0
+ priorityscore=1501 mlxlogscore=999 clxscore=1011 phishscore=0 bulkscore=0
+ impostorscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102010003
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,116 +106,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: f.fainelli@gmail.com, rdunlap@infradead.org, yury.norov@gmail.com
+Cc: gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The AKEBONO config has various selects under it, including some with
-user-selectable dependencies, which means those dependencies can be
-disabled. This leads to warnings from Kconfig.
+On 29/1/21 7:25 pm, Yang Li wrote:
+> Fix the following coccicheck warning:
+> ./drivers/misc/cxl/sysfs.c:181:48-53: WARNING: conversion to bool not
+> needed here
+> 
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
 
-This can be seen with eg:
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-  $ make allnoconfig
-  $ ./scripts/config --file build~/.config -k -e CONFIG_44x -k -e CONFIG_PPC_47x -e CONFIG_AKEBONO
-  $ make olddefconfig
+Thanks!
 
-  WARNING: unmet direct dependencies detected for ATA
-    Depends on [n]: HAS_IOMEM [=y] && BLOCK [=n]
-    Selected by [y]:
-    - AKEBONO [=y] && PPC_47x [=y]
+> ---
+>   drivers/misc/cxl/sysfs.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/misc/cxl/sysfs.c b/drivers/misc/cxl/sysfs.c
+> index d97a243..c173a5e 100644
+> --- a/drivers/misc/cxl/sysfs.c
+> +++ b/drivers/misc/cxl/sysfs.c
+> @@ -178,7 +178,7 @@ static ssize_t perst_reloads_same_image_store(struct device *device,
+>   	if ((rc != 1) || !(val == 1 || val == 0))
+>   		return -EINVAL;
+>   
+> -	adapter->perst_same_image = (val == 1 ? true : false);
+> +	adapter->perst_same_image = (val == 1);
+>   	return count;
+>   }
+>   
+> 
 
-  WARNING: unmet direct dependencies detected for NETDEVICES
-    Depends on [n]: NET [=n]
-    Selected by [y]:
-    - AKEBONO [=y] && PPC_47x [=y]
-
-  WARNING: unmet direct dependencies detected for ETHERNET
-    Depends on [n]: NETDEVICES [=y] && NET [=n]
-    Selected by [y]:
-    - AKEBONO [=y] && PPC_47x [=y]
-
-  WARNING: unmet direct dependencies detected for MMC_SDHCI
-    Depends on [n]: MMC [=n] && HAS_DMA [=y]
-    Selected by [y]:
-    - AKEBONO [=y] && PPC_47x [=y]
-
-  WARNING: unmet direct dependencies detected for MMC_SDHCI_PLTFM
-    Depends on [n]: MMC [=n] && MMC_SDHCI [=y]
-    Selected by [y]:
-    - AKEBONO [=y] && PPC_47x [=y]
-
-The problem is that AKEBONO is using select to enable things that are
-not true dependencies, but rather things you probably want enabled in
-an AKEBONO kernel. That is what a defconfig is for.
-
-So drop those selects and instead move those symbols into the
-defconfig. This fixes all the kconfig warnings, and the result of make
-44x/akebono_defconfig is the same before and after the patch.
-
-Reported-by: Yury Norov <yury.norov@gmail.com>
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/configs/44x/akebono_defconfig | 5 +++++
- arch/powerpc/platforms/44x/Kconfig         | 7 -------
- 2 files changed, 5 insertions(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/configs/44x/akebono_defconfig b/arch/powerpc/configs/44x/akebono_defconfig
-index 3894ba8f8ffc..ae9b7beefdd6 100644
---- a/arch/powerpc/configs/44x/akebono_defconfig
-+++ b/arch/powerpc/configs/44x/akebono_defconfig
-@@ -21,6 +21,7 @@ CONFIG_IRQ_ALL_CPUS=y
- # CONFIG_COMPACTION is not set
- # CONFIG_SUSPEND is not set
- CONFIG_NET=y
-+CONFIG_NETDEVICES=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
- CONFIG_INET=y
-@@ -41,7 +42,9 @@ CONFIG_BLK_DEV_RAM_SIZE=35000
- # CONFIG_SCSI_PROC_FS is not set
- CONFIG_BLK_DEV_SD=y
- # CONFIG_SCSI_LOWLEVEL is not set
-+CONFIG_ATA=y
- # CONFIG_SATA_PMP is not set
-+CONFIG_SATA_AHCI_PLATFORM=y
- # CONFIG_ATA_SFF is not set
- # CONFIG_NET_VENDOR_3COM is not set
- # CONFIG_NET_VENDOR_ADAPTEC is not set
-@@ -98,6 +101,8 @@ CONFIG_USB_OHCI_HCD=y
- # CONFIG_USB_OHCI_HCD_PCI is not set
- CONFIG_USB_STORAGE=y
- CONFIG_MMC=y
-+CONFIG_MMC_SDHCI=y
-+CONFIG_MMC_SDHCI_PLTFM=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_M41T80=y
- CONFIG_EXT2_FS=y
-diff --git a/arch/powerpc/platforms/44x/Kconfig b/arch/powerpc/platforms/44x/Kconfig
-index 78ac6d67a935..7d41e9264510 100644
---- a/arch/powerpc/platforms/44x/Kconfig
-+++ b/arch/powerpc/platforms/44x/Kconfig
-@@ -206,17 +206,10 @@ config AKEBONO
- 	select PPC4xx_HSTA_MSI
- 	select I2C
- 	select I2C_IBM_IIC
--	select NETDEVICES
--	select ETHERNET
--	select NET_VENDOR_IBM
- 	select IBM_EMAC_EMAC4 if IBM_EMAC
- 	select USB if USB_SUPPORT
- 	select USB_OHCI_HCD_PLATFORM if USB_OHCI_HCD
- 	select USB_EHCI_HCD_PLATFORM if USB_EHCI_HCD
--	select MMC_SDHCI
--	select MMC_SDHCI_PLTFM
--	select ATA
--	select SATA_AHCI_PLATFORM
- 	help
- 	  This option enables support for the IBM Akebono (476gtr) evaluation board
- 
 -- 
-2.25.1
-
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
