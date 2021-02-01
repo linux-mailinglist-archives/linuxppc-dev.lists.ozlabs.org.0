@@ -1,74 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 467AF309E51
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Jan 2021 20:41:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3332309FF9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 02:25:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DTLzH67GczDrB2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 06:40:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DTVd473mbzDrCW
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 12:25:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::22f;
- helo=mail-lj1-x22f.google.com; envelope-from=torvalds@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=GZl8pdXm; 
- dkim-atps=neutral
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com
- [IPv6:2a00:1450:4864:20::22f])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DTLxJ2CSqzDr7W
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Feb 2021 06:39:09 +1100 (AEDT)
-Received: by mail-lj1-x22f.google.com with SMTP id c18so16949334ljd.9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 11:39:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=/prez2NnS5ONN2JEGbaH8ZceOC33z6jLmIIRaywDxM0=;
- b=GZl8pdXmgI/+/bvVFugC4BXdlZNhjQK1C34M0NtdchE5n0o7I5hcnwnXr2sLd4qklc
- zzMCCS2S5tJkhQp8gY8jhOSb21ViCHJMKQY/GVBvQCOCOvS0PBueqgs+DbGeREUyJKhR
- A6k5bcLDkfoPkcjuq9U5tXsGVwGC0jdpRYTCo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=/prez2NnS5ONN2JEGbaH8ZceOC33z6jLmIIRaywDxM0=;
- b=XwXUoT1lbNBnqdGFBnIaVBMuD/UP0Dn12tiQnCVv8+NzVj9VkmaTBJi9bTu44fEbYq
- w2bdOFpQXioc29CrfKjptrcNqFR08AWln7e7NurmrnjRavO0Ml4UkGTkO/vIr7zOaCTl
- +IWj5cOHyeXbPtk1sGzBwnSsfdLIemQ1662qflmLbGiPf5D1IN777/RmsydIH3ok2Uq9
- nD3rPoRONxM2osFQg0pCfuFRKqny7o5BYSjtfUFyc2QemV9xcD8PI96A7qwE5H4yNVua
- VsC0LPlZVmfDgVqvNh4jXUaW3P9EUjdoBAhLODVlpg9YBOvQgeY84MQBzKmBmN0fTo/B
- uBlQ==
-X-Gm-Message-State: AOAM5334czLW8Pnc6tU/zl1MhMl0lMSn3gqm3f2YRhLxfLTi4mRxTDqa
- ZhFYqCaznTIW6ErCEt4fnedajdL82jOSbA==
-X-Google-Smtp-Source: ABdhPJxGg2CSlpTVB2C6O4gwNWPS+RMmGejT/ipji7cTUrrB6O6E7UJgm2LyZjRWYqlu9WzfpjAQsQ==
-X-Received: by 2002:a2e:8741:: with SMTP id q1mr8510966ljj.20.1612121943677;
- Sun, 31 Jan 2021 11:39:03 -0800 (PST)
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com.
- [209.85.208.170])
- by smtp.gmail.com with ESMTPSA id v2sm3455562ljk.60.2021.01.31.11.39.02
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 31 Jan 2021 11:39:03 -0800 (PST)
-Received: by mail-lj1-f170.google.com with SMTP id t8so16912771ljk.10
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Jan 2021 11:39:02 -0800 (PST)
-X-Received: by 2002:a2e:860f:: with SMTP id a15mr8349039lji.411.1612121942529; 
- Sun, 31 Jan 2021 11:39:02 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DTVbB3q1HzDrBs
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Feb 2021 12:24:06 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=MAwG8RI0; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DTVb70JMzz9t0l;
+ Mon,  1 Feb 2021 12:24:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1612142646;
+ bh=HbIjopcRWZABJVCXfOmM9n/j7wZ9ZlwMD6E6rJz/GAI=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=MAwG8RI0m7hkGtS7aYwp0jtzAu2nyutyZpfSeTvhwn+/98Tum48hBD8wVqQXXeVRC
+ UCEzf2Q+FKT2Ih/kAzGnlREAWut8voKrr3SB3tGD7i1YoLxdkaUAecLzTGuVkh67Cp
+ YiZH9gUVi1yQoe1x0lLYWz57sFUVLOtXQEFesQBox681EgliNclHoHr2nLMpLoeQYh
+ aGP4Vi+PMYgb47LjbDA5DG6zFylCJK2ylbTbZ/KS5KMTSS9WmJovkv+ZE9D+oUOGtz
+ 6GPjnbG1Z4sL4zwlQMqyYMIEsEayd+OxidkMWgNodefCr2O/kjL8cIWRUli8wrVPzH
+ fyLWc9gcnJxBg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Randy Dunlap <rdunlap@infradead.org>, Yury Norov <yury.norov@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] powerpc: fix AKEBONO build failures
+In-Reply-To: <4572579a-7208-628d-cbe2-b70a74a84ae7@infradead.org>
+References: <CAAH8bW8-6Dp29fe6rrnA4eL1vo+mu0HuAVJ-5yjbwxDSvaHdeQ@mail.gmail.com>
+ <6c442012-3bef-321b-bbc3-09c54608661f@infradead.org>
+ <875z3prcwg.fsf@mpe.ellerman.id.au>
+ <4572579a-7208-628d-cbe2-b70a74a84ae7@infradead.org>
+Date: Mon, 01 Feb 2021 12:24:01 +1100
+Message-ID: <87eei0d1hq.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <87lfc9cnuw.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87lfc9cnuw.fsf@mpe.ellerman.id.au>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 31 Jan 2021 11:38:46 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wjPfxVm0F8Eb0Wba_kCy9hzM6Go-qgOgP6Tf6SKhf-P9w@mail.gmail.com>
-Message-ID: <CAHk-=wjPfxVm0F8Eb0Wba_kCy9hzM6Go-qgOgP6Tf6SKhf-P9w@mail.gmail.com>
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.11-6 tag
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,17 +60,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nick Piggin <npiggin@gmail.com>
+Cc: Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jan 31, 2021 at 4:06 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+Randy Dunlap <rdunlap@infradead.org> writes:
+> On 1/21/21 5:14 PM, Michael Ellerman wrote:
+>> Randy Dunlap <rdunlap@infradead.org> writes:
+>>> On 1/20/21 1:29 PM, Yury Norov wrote:
+>>>> Hi all,
+>>>>
+>>>> I found the power pc build broken on today's
+>>>> linux-next (647060f3b592).
+>>>
+>>> Darn, I was building linux-5.11-rc4.
+>>>
+>>> I'll try linux-next after I send this.
+>>>
+>>> ---
+>>> From: Randy Dunlap <rdunlap@infradead.org>
+>>>
+>>> Fulfill AKEBONO Kconfig requirements.
+>>>
+>>> Fixes these Kconfig warnings (and more) and fixes the subsequent
+>>> build errors:
+>>>
+>>> WARNING: unmet direct dependencies detected for NETDEVICES
+>>>    Depends on [n]: NET [=n]
+>>>    Selected by [y]:
+>>>    - AKEBONO [=y] && PPC_47x [=y]
+>>>
+>>> WARNING: unmet direct dependencies detected for MMC_SDHCI
+>>>    Depends on [n]: MMC [=n] && HAS_DMA [=y]
+>>>    Selected by [y]:
+>>>    - AKEBONO [=y] && PPC_47x [=y]
+>>>
+>>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>>> Cc: Paul Mackerras <paulus@samba.org>
+>>> Cc: linuxppc-dev@lists.ozlabs.org
+>>> Cc: Yury Norov <yury.norov@gmail.com>
+>>> ---
+>>>   arch/powerpc/platforms/44x/Kconfig |    2 ++
+>>>   1 file changed, 2 insertions(+)
+>>>
+>>> --- lnx-511-rc4.orig/arch/powerpc/platforms/44x/Kconfig
+>>> +++ lnx-511-rc4/arch/powerpc/platforms/44x/Kconfig
+>>> @@ -206,6 +206,7 @@ config AKEBONO
+>>>   	select PPC4xx_HSTA_MSI
+>>>   	select I2C
+>>>   	select I2C_IBM_IIC
+>>> +	select NET
+>>>   	select NETDEVICES
+>>>   	select ETHERNET
+>>>   	select NET_VENDOR_IBM
+>> 
+>> I think the problem here is too much use of select, for things that
+>> should instead be in the defconfig.
+>> 
+>> The patch below results in the same result for make
+>> 44x/akebono_defconfig. Does it fix the original issue?
 >
-> Please pull another powerpc fix for 5.11:
+> Hi Michael,
+> Sorry for the delay.
+>
+> Changing the akebono_defconfig doesn't cause the missing symbols
+> to be set -- the defconfig is not being used here.
 
-Manual pr-tracker-bot says thanks,
+Yep, but that's OK. None of those selected symbols are hard dependencies
+of AKEBONO, they're just things you probably want in your kernel to
+actually boot on an akebono board.
 
-           Linus
+> I guess that if you have users who set CONFIG_AKEBONO and expect
+> it to build cleanly, you will need something like my patch or the
+> patch that Florian just posted.
+
+It will build cleanly, it just won't necessarily boot on a real board.
+Users who enable AKEBONO manually need to know what they're doing, or
+they should just use the defconfig.
+
+> Changing the akebono_defconfig also would not help 'make randconfig'
+> builds to build cleanly if they had happened to enable AKEBONO.
+
+Changing the defconfig doesn't help randconfig, but dropping the selects
+does.
+
+Anyway I'll send a proper version of my patch, which I'm pretty
+confident will fix all the issues.
+
+cheers
