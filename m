@@ -1,39 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80E430ACA1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 17:31:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C5A30AD67
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 18:07:51 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DTtjq4VFYzDrQM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 03:31:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DTvX50RFTzDrcY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 04:07:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (sender SPF authorized) smtp.mailfrom=iram.es
+ (client-ip=130.206.19.142; helo=mx01.puc.rediris.es;
+ envelope-from=paubert@iram.es; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256
+ header.s=DKIM header.b=obUC0PXt; dkim-atps=neutral
+X-Greylist: delayed 643 seconds by postgrey-1.36 at bilbo;
+ Tue, 02 Feb 2021 04:06:04 AEDT
+Received: from mx01.puc.rediris.es (outbound3mad.lav.puc.rediris.es
+ [130.206.19.142])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DTtg82tJKzDrNZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 03:28:49 +1100 (AEDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id A28F56736F; Mon,  1 Feb 2021 17:28:42 +0100 (CET)
-Date: Mon, 1 Feb 2021 17:28:42 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Miroslav Benes <mbenes@suse.cz>
-Subject: Re: [PATCH 05/13] kallsyms: refactor {,module_}kallsyms_on_each_symbol
-Message-ID: <20210201162842.GB7276@lst.de>
-References: <20210128181421.2279-1-hch@lst.de>
- <20210128181421.2279-6-hch@lst.de> <YBPYyEvesLMrRtZM@alley>
- <20210201114749.GB19696@lst.de>
- <alpine.LSU.2.21.2102011436320.21637@pobox.suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DTvV46GSpzDr37
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 04:06:04 +1100 (AEDT)
+Received: from mta-out02.sim.rediris.es (mta-out02.sim.rediris.es
+ [130.206.24.44])
+ by mx01.puc.rediris.es  with ESMTP id 111GslsD020546-111GslsF020546
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Mon, 1 Feb 2021 17:54:51 +0100
+Received: from mta-out02.sim.rediris.es (localhost.localdomain [127.0.0.1])
+ by mta-out02.sim.rediris.es (Postfix) with ESMTPS id 76F53C198DD;
+ Mon,  1 Feb 2021 17:54:47 +0100 (CET)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+ by mta-out02.sim.rediris.es (Postfix) with ESMTP id 3E003C198FD;
+ Mon,  1 Feb 2021 17:54:47 +0100 (CET)
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+ mta-out02.sim.rediris.es
+Received: from mta-out02.sim.rediris.es ([127.0.0.1])
+ by localhost (mta-out02.sim.rediris.es [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id LUN52aY3j52m; Mon,  1 Feb 2021 17:54:47 +0100 (CET)
+Received: from lt-gp.iram.es (150.148.223.87.dynamic.jazztel.es
+ [87.223.148.150])
+ by mta-out02.sim.rediris.es (Postfix) with ESMTPA id DF8F9C198DD;
+ Mon,  1 Feb 2021 17:54:45 +0100 (CET)
+Date: Mon, 1 Feb 2021 17:54:40 +0100
+From: Gabriel Paubert <paubert@iram.es>
+To: "Christopher M. Riedl" <cmr@codefail.de>
+Subject: Re: [PATCH v4 02/10] powerpc/signal: Add unsafe_copy_{vsx,
+ fpr}_from_user()
+Message-ID: <20210201165440.GA8929@lt-gp.iram.es>
+References: <6a6ce1a53fcf4669a9848114d3460fef@AcuMS.aculab.com>
+ <C8YBET4IGYGF.3QYANVRRHMV0R@geist>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.LSU.2.21.2102011436320.21637@pobox.suse.cz>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <C8YBET4IGYGF.3QYANVRRHMV0R@geist>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-FE-Policy-ID: 2:8:0:SYSTEM
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=iram.es; s=DKIM;
+ c=relaxed/relaxed; 
+ h=date:from:to:cc:subject:message-id:references:mime-version:content-type;
+ bh=wnB4FYtg2ofDcmCKB7DjkrZl5i0BtFcc1/fSXfFGh4Q=;
+ b=obUC0PXt/VNJD0wcEXYPQzlZhgBgwH1OUmtsfXKtBvcuRHBtrMuWBkMW9/NJLbvVRveH/UlqNkzi
+ 43uxdMcYRT3YZp600NMrPBC6Yy0hDmoRCjlhnnBVi5bjckpqu3yZCEedhu5SpgrGJ4dy63ZHf2nr
+ CZIHM6DjSfPVAN63qQOD1hi/G6bDRV5HgaPVUymd6il/VsyeqZ6Vv42M7uRf0nh+RclwDG5Gzy/c
+ jx9CbuYDpk7gwnyt7m7OQPiTgCPNIyPS3ONOv5HMySVrHSbMMaHXHwcf/PWVwPkPQIpJvVPQjdac
+ pw9pEMb6jM9OVfP15tGCZYaVcXoZuqeuPEgFXg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,137 +79,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, Jiri Kosina <jikos@kernel.org>,
- Andrew Donnellan <ajd@linux.ibm.com>, linux-kbuild@vger.kernel.org,
- David Airlie <airlied@linux.ie>, Masahiro Yamada <masahiroy@kernel.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
- live-patching@vger.kernel.org, Michal Marek <michal.lkml@markovi.net>,
- Joe Lawrence <joe.lawrence@redhat.com>, dri-devel@lists.freedesktop.org,
- Thomas Zimmermann <tzimmermann@suse.de>, Jessica Yu <jeyu@kernel.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Daniel Vetter <daniel@ffwll.ch>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: David Laight <David.Laight@ACULAB.COM>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 01, 2021 at 02:37:12PM +0100, Miroslav Benes wrote:
-> > > This change is not needed. (objname == NULL) means that we are
-> > > interested only in symbols in "vmlinux".
+On Mon, Feb 01, 2021 at 09:55:44AM -0600, Christopher M. Riedl wrote:
+> On Thu Jan 28, 2021 at 4:38 AM CST, David Laight wrote:
+> > From: Christopher M. Riedl
+> > > Sent: 28 January 2021 04:04
 > > > 
-> > > module_kallsyms_on_each_symbol(klp_find_callback, &args)
-> > > will always fail when objname == NULL.
-> > 
-> > I just tried to keep the old behavior.  I can respin it with your
-> > recommended change noting the change in behavior, though.
+> > > Reuse the "safe" implementation from signal.c except for calling
+> > > unsafe_copy_from_user() to copy into a local buffer.
+> > > 
+> > > Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
+> > > ---
+> > >  arch/powerpc/kernel/signal.h | 33 +++++++++++++++++++++++++++++++++
+> > >  1 file changed, 33 insertions(+)
+> > > 
+> > > diff --git a/arch/powerpc/kernel/signal.h b/arch/powerpc/kernel/signal.h
+> > > index 2559a681536e..c18402d625f1 100644
+> > > --- a/arch/powerpc/kernel/signal.h
+> > > +++ b/arch/powerpc/kernel/signal.h
+> > > @@ -53,6 +53,33 @@ unsigned long copy_ckfpr_from_user(struct task_struct *task, void __user *from);
+> > >  				&buf[i], label);\
+> > >  } while (0)
+> > > 
+> > > +#define unsafe_copy_fpr_from_user(task, from, label)	do {		\
+> > > +	struct task_struct *__t = task;					\
+> > > +	u64 __user *__f = (u64 __user *)from;				\
+> > > +	u64 buf[ELF_NFPREG];						\
+> >
+> > How big is that buffer?
+> > Isn't is likely to be reasonably large compared to a reasonable
+> > kernel stack frame.
+> > Especially since this isn't even a leaf function.
+> >
 > 
-> Yes, please. It would be cleaner that way.
+> I think Christophe answered this - I don't really have an opinion either
+> way. What would be a 'reasonable' kernel stack frame for reference?
 
-Let me know if this works for you:
+See include/linux/poll.h, where the limit is of the order of 800 bytes
+and the number of entries in an on stack array is chosen at compile time
+(different between 32 and 64 bit for example).
 
----
-From 18af41e88d088cfb8680d1669fcae2bc2ede5328 Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Wed, 20 Jan 2021 16:23:16 +0100
-Subject: kallsyms: refactor {,module_}kallsyms_on_each_symbol
+The values are used in do_sys_poll, which, with almost 1000 bytes of
+stack footprint, appears close to the top of "make checkstack". In
+addition do_sys_poll has to call the ->poll function of every file
+descriptor in its table, so it is not a tail function.
 
-Require an explicit call to module_kallsyms_on_each_symbol to look
-for symbols in modules instead of the call from kallsyms_on_each_symbol,
-and acquire module_mutex inside of module_kallsyms_on_each_symbol instead
-of leaving that up to the caller.  Note that this slightly changes the
-behavior for the livepatch code in that the symbols from vmlinux are not
-iterated anymore if objname is set, but that actually is the desired
-behavior in this case.
+This 264 bytes array looks reasonable, but please use 'make checkstack'
+to verify that the function's total stack usage stays within reason.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- kernel/kallsyms.c       |  6 +++++-
- kernel/livepatch/core.c |  2 --
- kernel/module.c         | 13 ++++---------
- 3 files changed, 9 insertions(+), 12 deletions(-)
+	Gabriel
 
-diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
-index fe9de067771c34..a0d3f0865916f9 100644
---- a/kernel/kallsyms.c
-+++ b/kernel/kallsyms.c
-@@ -177,6 +177,10 @@ unsigned long kallsyms_lookup_name(const char *name)
- 	return module_kallsyms_lookup_name(name);
- }
+> 
+> > > +	int i;								\
+> > > +									\
+> > > +	unsafe_copy_from_user(buf, __f, ELF_NFPREG * sizeof(double),	\
+> >
+> > That really ought to be sizeof(buf).
+> >
+> 
+> Agreed, I will fix this. Thanks!
+> 
+> > David
+> >
+> >
+> > > +				label);					\
+> > > +	for (i = 0; i < ELF_NFPREG - 1; i++)				\
+> > > +		__t->thread.TS_FPR(i) = buf[i];				\
+> > > +	__t->thread.fp_state.fpscr = buf[i];				\
+> > > +} while (0)
+> > > +
+> > > +#define unsafe_copy_vsx_from_user(task, from, label)	do {		\
+> > > +	struct task_struct *__t = task;					\
+> > > +	u64 __user *__f = (u64 __user *)from;				\
+> > > +	u64 buf[ELF_NVSRHALFREG];					\
+> > > +	int i;								\
+> > > +									\
+> > > +	unsafe_copy_from_user(buf, __f,					\
+> > > +				ELF_NVSRHALFREG * sizeof(double),	\
+> > > +				label);					\
+> > > +	for (i = 0; i < ELF_NVSRHALFREG ; i++)				\
+> > > +		__t->thread.fp_state.fpr[i][TS_VSRLOWOFFSET] = buf[i];	\
+> > > +} while (0)
+> > > +
+> > > +
+> > >  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+> > >  #define unsafe_copy_ckfpr_to_user(to, task, label)	do {		\
+> > >  	struct task_struct *__t = task;					\
+> > > @@ -80,6 +107,10 @@ unsigned long copy_ckfpr_from_user(struct task_struct *task, void __user *from);
+> > >  	unsafe_copy_to_user(to, (task)->thread.fp_state.fpr,	\
+> > >  			    ELF_NFPREG * sizeof(double), label)
+> > > 
+> > > +#define unsafe_copy_fpr_from_user(task, from, label)			\
+> > > +	unsafe_copy_from_user((task)->thread.fp_state.fpr, from,	\
+> > > +			    ELF_NFPREG * sizeof(double), label)
+> > > +
+> > >  static inline unsigned long
+> > >  copy_fpr_to_user(void __user *to, struct task_struct *task)
+> > >  {
+> > > @@ -115,6 +146,8 @@ copy_ckfpr_from_user(struct task_struct *task, void __user *from)
+> > >  #else
+> > >  #define unsafe_copy_fpr_to_user(to, task, label) do { } while (0)
+> > > 
+> > > +#define unsafe_copy_fpr_from_user(task, from, label) do { } while (0)
+> > > +
+> > >  static inline unsigned long
+> > >  copy_fpr_to_user(void __user *to, struct task_struct *task)
+> > >  {
+> > > --
+> > > 2.26.1
+> >
+> > -
+> > Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes,
+> > MK1 1PT, UK
+> > Registration No: 1397386 (Wales)
+> 
  
-+/*
-+ * Iterate over all symbols in vmlinux.  For symbols from modules use
-+ * module_kallsyms_on_each_symbol instead.
-+ */
- int kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *,
- 				      unsigned long),
- 			    void *data)
-@@ -192,7 +196,7 @@ int kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *,
- 		if (ret != 0)
- 			return ret;
- 	}
--	return module_kallsyms_on_each_symbol(fn, data);
-+	return 0;
- }
- 
- static unsigned long get_symbol_pos(unsigned long addr,
-diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
-index 262cd9b003b9f0..335d988bd81117 100644
---- a/kernel/livepatch/core.c
-+++ b/kernel/livepatch/core.c
-@@ -164,12 +164,10 @@ static int klp_find_object_symbol(const char *objname, const char *name,
- 		.pos = sympos,
- 	};
- 
--	mutex_lock(&module_mutex);
- 	if (objname)
- 		module_kallsyms_on_each_symbol(klp_find_callback, &args);
- 	else
- 		kallsyms_on_each_symbol(klp_find_callback, &args);
--	mutex_unlock(&module_mutex);
- 
- 	/*
- 	 * Ensure an address was found. If sympos is 0, ensure symbol is unique;
-diff --git a/kernel/module.c b/kernel/module.c
-index 6772fb2680eb3e..25345792c770d1 100644
---- a/kernel/module.c
-+++ b/kernel/module.c
-@@ -255,11 +255,6 @@ static void mod_update_bounds(struct module *mod)
- struct list_head *kdb_modules = &modules; /* kdb needs the list of modules */
- #endif /* CONFIG_KGDB_KDB */
- 
--static void module_assert_mutex(void)
--{
--	lockdep_assert_held(&module_mutex);
--}
--
- static void module_assert_mutex_or_preempt(void)
- {
- #ifdef CONFIG_LOCKDEP
-@@ -4379,8 +4374,7 @@ int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
- 	unsigned int i;
- 	int ret;
- 
--	module_assert_mutex();
--
-+	mutex_lock(&module_mutex);
- 	list_for_each_entry(mod, &modules, list) {
- 		/* We hold module_mutex: no need for rcu_dereference_sched */
- 		struct mod_kallsyms *kallsyms = mod->kallsyms;
-@@ -4396,10 +4390,11 @@ int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
- 			ret = fn(data, kallsyms_symbol_name(kallsyms, i),
- 				 mod, kallsyms_symbol_value(sym));
- 			if (ret != 0)
--				return ret;
-+				break;
- 		}
- 	}
--	return 0;
-+	mutex_unlock(&module_mutex);
-+	return ret;
- }
- #endif /* CONFIG_KALLSYMS */
- 
--- 
-2.29.2
 
