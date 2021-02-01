@@ -1,68 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECB630A7D3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 13:43:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9372530A7F2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 13:50:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DTnfP2hNWzDqdM
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 23:42:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DTnph5CbLzDqBg
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 23:50:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=thalesgroup.com (client-ip=192.93.158.29;
- helo=thsbbfxrt02p.thalesgroup.com;
- envelope-from=christoph.plattner@thalesgroup.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=thalesgroup.com header.i=@thalesgroup.com header.a=rsa-sha256
- header.s=xrt20181201 header.b=1W1yIUhd; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=m7ji0VO1; 
  dkim-atps=neutral
-X-Greylist: delayed 153 seconds by postgrey-1.36 at bilbo;
- Mon, 01 Feb 2021 23:38:29 AEDT
-Received: from thsbbfxrt02p.thalesgroup.com (thsbbfxrt02p.thalesgroup.com
- [192.93.158.29])
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DTnYK6Y1mzDr4N
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Feb 2021 23:38:29 +1100 (AEDT)
-Received: from thsbbfxrt02p.thalesgroup.com (localhost [127.0.0.1])
- by localhost (Postfix) with SMTP id 4DTnVG1XSYzJpJL;
- Mon,  1 Feb 2021 13:35:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thalesgroup.com;
- s=xrt20181201; t=1612182950;
- bh=qtfpK5tjKyUoljO0lXeTO/GBAYaTsQ1VB18gL/yZUZc=;
- h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
- Content-Transfer-Encoding:MIME-Version:From;
- b=1W1yIUhd54H98rWcFhbK5S1ezDedE3tQrlZsSE5y1vTEtmILtRHqV7pkDKr9ab7Wg
- h/UbsCeKBMefGifNFdmf4IuuK5P+LR3ncKLyvn/Y5BflPdbg7eZtDAYzdD4BzuxUsr
- e52f9/HhwX4WgXyvQU7Nxop9iOLorNUgJphkPZ4DvvS16ObrridjO7RDV1tynZdlry
- DY+2yO9lU+2vFHJyc7x+VuT7IH8BOZW1MdorMs8+TkmwTm4ykTA8IiAv/dGIiZrb8y
- xKM6OkpkZ0WsEutGXlz4jo/DgEQ5nmpNr8F+97HsUOo1oCj/EKj9aPc4oQIR6D1Quv
- jLS9KzAZtjFCQ==
-From: PLATTNER Christoph <christoph.plattner@thalesgroup.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Michael
- Ellerman" <mpe@ellerman.id.au>
-Subject: RE: [PATCH] powerpc/603: Fix protection of user pages mapped with
- PROT_NONE
-Thread-Topic: [PATCH] powerpc/603: Fix protection of user pages mapped with
- PROT_NONE
-Thread-Index: AQHW+GOl2yWYuEbTpkiT/C3KqD+6EapDLQPbgAAOyuA=
-Date: Mon, 1 Feb 2021 12:35:45 +0000
-Message-ID: <63ddf61b-88de-4f42-8342-c4d273b745de@THSDC1IRIMBX11P.iris.infra.thales>
-References: <4a0c6e3bb8f0c162457bf54d9bc6fd8d7b55129f.1612160907.git.christophe.leroy@csgroup.eu>
- <1b194840-d4e6-4660-94d9-6bac623442cf@THSDC1IRIMBX13P.iris.infra.thales>
- <035a7cde-7ffd-5f27-81e1-a8d3648e4c1c@csgroup.eu>
-In-Reply-To: <035a7cde-7ffd-5f27-81e1-a8d3648e4c1c@csgroup.eu>
-Accept-Language: en-US, fr-FR
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-pmwin-version: 4.0.3, Antivirus-Engine: 3.79.0, Antivirus-Data: 5.81
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DTnhp1QYLzDqm6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Feb 2021 23:44:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=iS8iy+q7Izh8AM4pbDoHtBgYLQUACj4slse1odTb8Xw=; b=m7ji0VO1MSn1lX6BI0jJ/Yb9pR
+ 9LbSnyqEyG+WShVFDi6LLpOxh725y4TN5ZOzvkdZzaqe2VLLrMyA0w5DmjmAmnD9zsr9kHInq0sjB
+ ii38K9XKQhFn7sOI40UlVOovRxxAgm9h9jejp9eCBLKegUodvH0TprmeRQ27HIdL/dZ9Y9TeAXH+T
+ AH4kD9PgJxscyRe30c+nsFbhAUZbIF86CVRIvrNnDHqiAHo82ZC5vwPaZdUNJSPPkp0ldDsBPBc8P
+ BJXcBzycInlMsr0+a7N0JA8WObI/EMjH6YDE79gmnKGPIcRn4F4Lq0ejsbhou5qIjm5vd3EqnQ2UW
+ /oN5DJpg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+ id 1l6YZH-00Dm54-Iu; Mon, 01 Feb 2021 12:44:36 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 7D8C9303A02;
+ Mon,  1 Feb 2021 13:44:34 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 65B2620C8E303; Mon,  1 Feb 2021 13:44:34 +0100 (CET)
+Date: Mon, 1 Feb 2021 13:44:34 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Nadav Amit <namit@vmware.com>
+Subject: Re: [RFC 00/20] TLB batching consolidation and enhancements
+Message-ID: <YBf3sl3M+j3hJRoM@hirez.programming.kicks-ass.net>
+References: <20210131001132.3368247-1-namit@vmware.com>
+ <1612063149.2awdsvvmhj.astroid@bobo.none>
+ <A1589669-34AE-4E15-8358-79BAD7C72520@vmware.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <A1589669-34AE-4E15-8358-79BAD7C72520@vmware.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,121 +69,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "christoph.plattner@gmx.at" <christoph.plattner@gmx.at>,
- KOENIG Werner <werner.koenig@thalesgroup.com>, HAMETNER
- Reinhard <reinhard.hametner@thalesgroup.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- REITHER Robert - Contractor <robert.reither@external.thalesgroup.com>,
- PLATTNER Christoph <christoph.plattner@thalesgroup.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+ linux-s390 <linux-s390@vger.kernel.org>, X86 ML <x86@kernel.org>,
+ Yu Zhao <yuzhao@google.com>, Will Deacon <will@kernel.org>,
+ Mel Gorman <mgorman@techsingularity.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
+ "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+ Andy Lutomirski <luto@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-VGhhbmsgeW91IHZlcnkgbXVjaCwgSSBhcHByZWNpYXRlIHlvdXIgZmFzdCByZXNwb25zZXMuDQpU
-aGFuayB5b3UgYWxzbyBmb3IgY2xhcmlmaWNhdGlvbiwgSSBkaWQgY29tcGxldGVseSBvdmVyc2Vl
-DQp0aGUgcGVybWlzc2lvbiBzZXR0aW5ncyBpbiB0aGUgc2VnbWVudCBzZXR1cCBhbmQgZXhwZWN0
-ZWQNCnRoZSBmYXVsdCByZWFjdGlvbiBvbiB0aGUgUFAgYml0cyBpbiB0aGUgVExCLg0KQW5kIEkg
-d2lsbCByZS1yZWFkIHRoZSBjaGFwdGVycywgZ290IGdldCBkZWVwZXIgaW50byB0aGlzIHRvcGlj
-Lg0KDQpHcmVldGluZ3MNCkNocmlzdG9waCANCg0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0t
-LQ0KRnJvbTogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1PiAN
-ClNlbnQ6IE1vbnRhZywgMS4gRmVicnVhciAyMDIxIDEyOjM5DQpUbzogUExBVFRORVIgQ2hyaXN0
-b3BoIDxjaHJpc3RvcGgucGxhdHRuZXJAdGhhbGVzZ3JvdXAuY29tPjsgQmVuamFtaW4gSGVycmVu
-c2NobWlkdCA8YmVuaEBrZXJuZWwuY3Jhc2hpbmcub3JnPjsgUGF1bCBNYWNrZXJyYXMgPHBhdWx1
-c0BzYW1iYS5vcmc+OyBNaWNoYWVsIEVsbGVybWFuIDxtcGVAZWxsZXJtYW4uaWQuYXU+DQpDYzog
-bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5v
-cmc7IEhBTUVUTkVSIFJlaW5oYXJkIDxyZWluaGFyZC5oYW1ldG5lckB0aGFsZXNncm91cC5jb20+
-OyBSRUlUSEVSIFJvYmVydCAtIENvbnRyYWN0b3IgPHJvYmVydC5yZWl0aGVyQGV4dGVybmFsLnRo
-YWxlc2dyb3VwLmNvbT47IEtPRU5JRyBXZXJuZXIgPHdlcm5lci5rb2VuaWdAdGhhbGVzZ3JvdXAu
-Y29tPg0KU3ViamVjdDogUmU6IFtQQVRDSF0gcG93ZXJwYy82MDM6IEZpeCBwcm90ZWN0aW9uIG9m
-IHVzZXIgcGFnZXMgbWFwcGVkIHdpdGggUFJPVF9OT05FDQoNCg0KDQpMZSAwMS8wMi8yMDIxIMOg
-IDExOjIyLCBQTEFUVE5FUiBDaHJpc3RvcGggYSDDqWNyaXTCoDoNCj4gSGVsbG8gdG8gYWxsLCBh
-bmQgdGhhbmsgeW91IHZlcnkgbXVjaCBmb3IgZmlyc3QgYW5kIHNlY29uZCBmYXN0IHJlc3BvbnNl
-Lg0KPiANCj4gSSBkbyBub3QgaGF2ZSBhIGxvbmcgaGlzdG9yeSBvbiBQb3dlclBDIE1NVSBlbnZp
-cm9ubWVudCwgSSBoYWNrZWQgaW50byANCj4gdGhpcyB0b3BpYyBmb3IgYWJvdXQgMyBtb250aHMg
-Zm9yIGFuYWx5emluZyB0aGF0IHByb2JsZW0tIHNvLCBzb3JyeSwgaWYgSSBhbSB3cm9uZyBpbiBz
-b21lIHBvaW50cyAuLi4NCg0KWWVzIHlvdSBhcmUgd3Jvbmcgb24gc29tZSBwb2ludHMsIHNvcnJ5
-LCBzZWUgYmVsb3cuDQoNCg0KPiANCj4gV2hhdCBJIGxlYXJuIHNvIGZhciBmcm9tIHRoaXMgTVBD
-NTEyMWUgKHZhcmlhbnQgb2YgZTMwMGM0IGNvcmUpOg0KPiAtIEl0IHVzZXMgYm9vazNzMzIgaGFz
-aC1jb2RlLCBidXQgaXQgRE9FUyBOT1QgcHJvdmlkZSBLRVkgaGFzaCBtZXRob2QsIHNvIGFsd2F5
-cyB0aGUNCj4gICAgIGJyYW5jaCAgImlmICghIEhhc2gpIC4uLi4iIGlzIHRha2VuLCBzbywgSSBh
-c3N1bWUgdGhhdCAia2V5IDAiIGFuZCAia2V5IDEiIHNldHVwcyBhcmUgbm90DQo+ICAgICB1c2Vk
-IG9uIHRoaXMgQ1BVIChub3Qgc3VwcG9ydGluZyBNTVVfRlRSX0hQVEVfVEFCTEUpDQoNCmhhc2gg
-bWV0aG9kIGlzIG5vdCB1c2VkLCB0aGlzIGlzIFNXIFRMQiBsb2FkaW5nIHRoYXQgaXMgdXNlZCwg
-YnV0IHN0aWxsLCBhbGwgdGhlIFBQIGFuZCBLcy9LcCBrZXlzIGRlZmluZWQgaW4gdGhlIHNlZ21l
-bnQgcmVnaXN0ZXIgYXJlIHVzZWQsIHNlZSBlMzAwIGNvcmUgcmVmZXJlbmNlIG1hbnVhbCDCpzYu
-NC4yIFBhZ2UgTWVtb3J5IFByb3RlY3Rpb24NCg0KPiAtIFRoZSBQUCBiaXRzIGFyZSBOT1QgY2hl
-Y2tlZCBieSB0aGUgQ1BVIGluIEhXLCBldmVuIGlmIHNldCB0byAwMCwgdGhlIENQVSBkb2VzIG5v
-dCByZWFjdC4NCj4gICAgIEFzIGZhciBJIGhhdmUgdW5kZXJzdG9vZCwgdGhlIFRMQiBtaXNzIHJv
-dXRpbmVzIGFyZSByZXNwb25zaWJsZSBmb3IgY2hlY2tpbmcgcGVybWlzc2lvbnMuDQo+ICAgICBU
-aGUgVExCIG1pc3Mgcm91dGluZXMgY2hlY2sgdGhlIExpbnV4IFBURSBzdHlsZWQgZW50cmllcyBh
-bmQgZ2VuZXJhdGVzIHRoZSBQUCBiaXRzDQo+ICAgICBmb3IgdGhlIFRMQiBlbnRyeS4gVGhlIFBv
-d2VyUEMgUFAgYml0cyBhcmUgbmV2ZXIgY2hlY2sgZWxzZXdoZXJlIG9uIHRoYXQgQ1BVIG1vZGVs
-cyAuLi4NCg0KUFAgYml0cyBBUkUgY2hlY2tlZCBob3BwZWZ1bGx5LiBJZiBpdCB3YXMgbm90IHRo
-ZSBjYXNlLCB0aGVuIHRoZSBUTEIgbWlzcyByb3V0aW5lcyB3b3VsZCBpbnN0YWxsIGEgVExCIG9u
-IGEgcmVhZCwgdGhlbiB0aGUgdXNlciBjb3VsZCBkbyBhIHdyaXRlIHdpdGhvdXQgYW55IHZlcmlm
-aWNhdGlvbiBiZWluZyBkb25lID8NCg0KUmVmZXIgdG8gZTMwMCBDb3JlIHJlZmVyZW5jZSBNYW51
-YWwsIMKnNi4xLjQgTWVtb3J5IFByb3RlY3Rpb24gRmFjaWxpdGllcw0KDQpBcyBJIGV4cGxhaW5l
-ZCBpbiB0aGUgcGF0Y2gsIHRoZSBwcm9ibGVtIGlzIG5vdCB0aGF0IHRoZSBIVyBkb2Vzbid0IGNo
-ZWNrIHRoZSBwZXJtaXNzaW9uLiBJdCBpcyB0aGF0IHVzZXIgYWNjZXNzZWQgYmVlbiBkb25lIHdp
-dGgga2V5IDAgYXMgcHJvZ3JhbW1lZCBpbiB0aGUgc2VnbWVudCByZWdpc3RlcnMsIFBQIDAwIG1l
-YW5zIFJXIGFjY2Vzcy4NCg0KPiAtIFRoZSBQVEUgZW50cmllcyBpbiBMaW51eCBhcmUgZnVsbHkg
-InZvaWQiIGluIHNlbnNlIG9mIHRoaXMgQ1BVIHR5cGUsIGFzIHRoaXMgQ1BVIGRvZXMgbm90DQo+
-ICAgICByZWFkIGFueSBQVEVzIGZyb20gUkFNIChubyBIVyBzdXBwb3J0IGluIGNvbnRyYXN0IHRv
-IHg4NiBvciBBUk0gb3IgbGF0ZXIgcHBjLi4uKS4NCg0KTm8sIHRoZSBQVEUgYXJlIHJlYWQgYnkg
-dGhlIFRMQiBtaXNzIGV4Y2VwdGlvbiBoYW5kbGVycyBhbmQgd3JpdGVuIGludG8gVExCIGVudHJp
-ZXMuDQoNCj4gDQo+IEluIHN1bW1hcnkgLSBhcyBmYXIgYXMgSSB1bmRlcnN0YW5kIGl0IG5vdyAt
-IHdlIGhhdmUgdG8gaGFuZGxlIHRoZSBQVEUgDQo+IGJpdHMgZGlmZmVyZW50bHkgKExpbnV4IHN0
-eWxlKSBmb3IgUFJPVF9OT05FIHBlcm1pc3Npb25zIC0gT1IgLSB3ZSANCj4gaGF2ZSB0byBleHBh
-bmQgdGhlIHBlcm1pc3Npb24gY2hlY2tpbmcgbGlrZSBteSBwcm9wb3NlZCBleHBlcmltZW50YWwg
-DQo+IHBhdGNoLiAoUFJPVF9OT05FIGlzIG5vdCBOVU1BIHJlbGF0ZWQgb25seSwgYnV0IG1heSBu
-b3QgdXNlZCB2ZXJ5IG9mdGVuIC4uLikuDQoNClllcywgZXhwYW5kaW5nIHRoZSBwZXJtaXNzaW9u
-IGNoZWNraW5nIGlzIHRoZSBlYXNpZXN0IHNvbHV0aW9uLCBoZW5jZSB0aGUgcGF0Y2ggSSBzZW50
-IG91dCBiYXNlZCBvbiB5b3VyIHByb3Bvc2FsLg0KDQo+IA0KPiBBbm90aGVyIHJlbGF0ZWQgcG9p
-bnQ6DQo+IEFjY29yZGluZyBlMzAwIFJNIChtYW51YWwpIHRoZSBBQ0NFU1NFRCBiaXQgaW4gdGhl
-IFBURSBzaGFsbCBiZSBzZXQgb24gDQo+IFRMQiBtaXNzLCBhcyBpdCBpcyBhbiBpbmRpY2F0aW9u
-LCB0aGF0IHBhZ2UgaXMgdXNlZC4gSW4gNC40IGtlcm5lbCANCj4gdGhpcyB3cml0ZSBiYWNrIG9m
-IHRoZSBfUEFHRV9BQ0NFU1NFRCBiaXQgd2FzIHBlcmZvcm1lZCBhZnRlciBzdWNjZXNzZnVsIHBl
-cm1pc3Npb24gY2hlY2s6DQo+IA0KPiAgICAgICAgICBibmUtICAgIERhdGFBZGRyZXNzSW52YWxp
-ZCAgICAgIC8qIHJldHVybiBpZiBhY2Nlc3Mgbm90IHBlcm1pdHRlZCAqLw0KPiAgICAgICAgICBv
-cmkgICAgIHIwLHIwLF9QQUdFX0FDQ0VTU0VEICAgIC8qIHNldCBfUEFHRV9BQ0NFU1NFRCBpbiBw
-dGUgKi8NCj4gICAgICAgICAgLyoNCj4gICAgICAgICAgICogTk9URSEgV2UgYXJlIGFzc3VtaW5n
-IHRoaXMgaXMgbm90IGFuIFNNUCBzeXN0ZW0sIG90aGVyd2lzZQ0KPiAgICAgICAgICAgKiB3ZSB3
-b3VsZCBuZWVkIHRvIHVwZGF0ZSB0aGUgcHRlIGF0b21pY2FsbHkgd2l0aCBsd2FyeC9zdHdjeC4N
-Cj4gICAgICAgICAgICovDQo+ICAgICAgICAgIHN0dyAgICAgcjAsMChyMikgICAgICAgICAgICAg
-ICAgLyogdXBkYXRlIFBURSAoYWNjZXNzZWQgYml0KSAqLw0KPiAgICAgICAgICAvKiBDb252ZXJ0
-IGxpbnV4LXN0eWxlIFBURSB0byBsb3cgd29yZCBvZiBQUEMtc3R5bGUgUFRFICovDQo+IA0KPiBC
-aXQgaXMgc2V0IChvcmkgLi4uKSBhbmQgd3JpdHRlbiBiYWNrIChzdHcgLi4uKSB0byBMaW51eCBQ
-VEUuIE1heSBiZSwgDQo+IHRoaXMgaXMgbm90IG5lZWRlZCwgYXMgdGhlIFBURSBpcyBuZXZlciBz
-ZWVuIGJ5IHRoZSBQUEMgY2hpcC4gQnV0IEkgZG8gDQo+IG5vdCB1bmRlcnN0YW5kLCBXSFkgdGhl
-IFBBR0VfQUNDQ0VTU0VEIGlzIHVzZWQgZm9yIHBlcm1pc3Npb24gY2hlY2sgaW4gdGhlIGxhdGUg
-NS40IGtlcm5lbCAobm90IHVzZWQgaW4gNC40IGtlcm5lbCk6DQo+IA0KPiAJY21wbHcJMCxyMSxy
-Mw0KPiAgIAltZnNwcglyMiwgU1BSTl9TRFIxDQo+IAlsaQlyMSwgX1BBR0VfUFJFU0VOVCB8IF9Q
-QUdFX0FDQ0VTU0VEDQo+IAlybHdpbm0JcjIsIHIyLCAyOCwgMHhmZmZmZjAwMA0KPiAgIAliZ3Qt
-CTExMmYNCj4gDQo+IFdoYXQgaXMgdGhlIHJlYXNvbiBvciByZWxldmFuY2UgZm9yIGNoZWNraW5n
-IHRoaXMgaGVyZSA/DQo+IFdhcyBub3QgY2hlY2tlZCBpbiA0LjQsIGJpdCBvci1lZCBhZnRlcndh
-cmRzLCBhcyBpdCBpcyBhY2Nlc3NlZCBub3cuDQo+IERvIHlvdSBrbm93IHRoZSByZWFzb24gb2Yg
-Y2hhbmdlIG9uIHRoaXMgcG9pbnQgPw0KDQpQQUdFX0FDQ0VTU0VEIGlzIGltcG9ydGFudCBmb3Ig
-bWVtb3J5IG1hbmFnZW1lbnQsIGxpbnV4IGtlcm5lbCBuZWVkIGl0Lg0KDQpCdXQgaW5zdGVhZCBv
-ZiBzcGVuZGluZyB0aW1lIGF0IGV2ZXJ5IG1pc3MgdG8gcGVyZm9ybSBhIHdyaXRlIHdoaWNoIHdp
-bGwgYmUgYSBuby1vcCBpbiA5OSUgb2YgY2FzZXMsIHdlIHByZWZlciBiYWlsaW5nIG91dCB0byB0
-aGUgcGFnZV9mYXVsdCBsb2dpYyB3aGVuIHRoZSBhY2Nlc3NlZCBiaXQgaXMgbm90IHNldC4gVGhl
-biB0aGUgcGFnZV9mYXVsdCBsb2dpYyB3aWxsIHNldCB0aGUgYml0Lg0KVGhpcyBhbHNvIGFsbG93
-ZWQgdG8gc2ltcGxpZnkgdGhlIGhhbmRsaW5nIGluIF9fc2V0X3B0ZSgpX2F0IGZ1bmN0aW9uIGJ5
-IGF2b2lkaW5nIHJhY2VzIGluIHRoZSB1cGRhdGUgb2YgUFRFcy4NCg0KPiANCj4gQW5vdGhlciBy
-ZW1hcmsgdG8gQ29yZSBtYW51YWwgcmVsZXZhbnQgZm9yIHRoaXM6DQo+IFRoZXJlIGlzIHRoZSBy
-ZWZlcmVuY2UgbWFudWFsIGZvciBlMzAwIGNvcmUgYXZhaWxhYmxlIChlMzAwIFJNKS4gSXQgaW5j
-bHVkZXMNCj4gbWFueSByZW1hcmtzIGluIHJhbmdlIG9mIE1lbW9yeSBNYW5hZ2VtZW50IHNlY3Rp
-b24sIHRoYXQgbWFueSBmZWF0dXJlcw0KPiBhcmUgb3B0aW9uYWwgb3IgdmFyaWFibGUgZm9yIGRl
-ZGljYXRlZCBpbXBsZW1lbnRhdGlvbnMuIE9uIHRoZSBvdGhlciBoYW5kLA0KPiB0aGUgTVBDNTEy
-MWUgcmVmZXJlbmNlIG1hbnVhbCByZWZlcnMgdG8gdGhlIGUzMDAgY29yZSBSTSwgYnV0IERPRVMg
-Tk9UDQo+IGluZm9ybWF0aW9uLCB3aGljaCBvZiB0aGUgb3B0aW9uYWwgcG9pbnRzIGFyZSB0aGVy
-ZSBvciBub3IuIEFjY29yZGluZyBteQ0KPiBhbmFseXNpcywgTVBDNTEyMWUgZG9lcyBub3QgaW5j
-bHVkZSBhbnkgb2YgdGhlIG9wdGlvbmFsIGZlYXR1cmVzLg0KPiANCg0KTm90IHN1cmUgd2hhdCB5
-b3UgbWVhbi4gQXMgZmFyIGFzIEkgdW5kZXJzdGFuZCwgdGhhdCBjaGFwdGVyIHRlbGxzIHlvdSB0
-aGF0IHNvbWUgZnVuY3Rpb25uYWxpdGllcyANCmFyZSBvcHRpb25hbCBmb3IgdGhlIHBvd2VycGMg
-YXJjaGl0ZWN0ZWN0dXJlLCBhbmQgcHJvdmlkZWQgKG9yIG5vdCkgYnkgdGhlIGUzMDAgY29yZS4g
-VGhlIE1QQzUxMjEgDQpzdXBwb3J0cyBhbGwgdGhlIHRoaW5ncyB0aGF0IGFyZSBkZWZpbmVkIGJ5
-IGUzMDAgY29yZS4NCg0KDQo+IA0KPiBUaGFua3MgYSBsb3QgZm9yIGZpcnN0IHJlYWN0aW9ucw0K
-DQpZb3UgYXJlIHdlbGNvbWUsIGRvbid0IGhlc2l0YXRlIGlmIHlvdSBoYXZlIGFkZGl0aW9uYWwg
-cXVlc3Rpb25zLg0KDQpDaHJpc3RvcGhlDQo=
+On Sun, Jan 31, 2021 at 07:57:01AM +0000, Nadav Amit wrote:
+> > On Jan 30, 2021, at 7:30 PM, Nicholas Piggin <npiggin@gmail.com> wrote:
+
+> > I'll go through the patches a bit more closely when they all come 
+> > through. Sparc and powerpc of course need the arch lazy mode to get 
+> > per-page/pte information for operations that are not freeing pages, 
+> > which is what mmu gather is designed for.
+> 
+> IIUC you mean any PTE change requires a TLB flush. Even setting up a new PTE
+> where no previous PTE was set, right?
+
+These are the HASH architectures. Their hardware doesn't walk the
+page-tables, but it consults a hash-table to resolve page translations.
+
+They _MUST_ flush the entries under the PTL to avoid ever seeing
+conflicting information, which will make them really unhappy. They can
+do this because they have TLBI broadcast.
+
+There's a few more details I'm sure, but those seem to have slipped from
+my mind.
