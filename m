@@ -2,95 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7DF30B152
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 21:07:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C021730B1CB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Feb 2021 21:59:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DTzW219NVzDrvG
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 07:07:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DV0g72LW7zDrVM
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 07:59:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=raoni@linux.ibm.com;
+ smtp.mailfrom=codefail.de (client-ip=131.153.2.45;
+ helo=h4.fbrelay.privateemail.com; envelope-from=cmr@codefail.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=T9uSv7Tm; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from h4.fbrelay.privateemail.com (h4.fbrelay.privateemail.com
+ [131.153.2.45])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DTzSv2x7rzDr3V
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 07:05:19 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 111K2G4a097712; Mon, 1 Feb 2021 15:05:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : mime-version : content-type; s=pp1;
- bh=ULdOemOg4PEnXZk2kuUlz2YazOcNlbB8x5li5xiOgNM=;
- b=T9uSv7TmyogtXBoBtJ6Ig3xLAtbfW27/Xhn2SqrIKj1XDrNxGDy/9oZfM9tAWZvL+k4q
- 2q64nOjl8M31DOCMEE1DE1KpQYaSrEy+d58FxN3GOtcGFVrwohyOnqkn1+FZ07Rb9F5x
- S5WNmdJK4RVzuf21zJSbJfn5GnhygmkAO0gI9EncCSG5+34gYfCRiti99j56qX/XJvtz
- YhEecZIi0Yv94hXXfQei4BrA4wWzjWY7fmDuCoQdB0jwep+WcL9CJJgW5QzTjO3hrZei
- XtDqpkau7vxhlQmGxkxre+kzUMIjJqVD4DNKHk86lJcUa5ZT/vlAsoFSqZD+Zb+znzuL LA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36eqqw11yv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 01 Feb 2021 15:05:12 -0500
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 111K2nvG099708;
- Mon, 1 Feb 2021 15:05:11 -0500
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36eqqw11y1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 01 Feb 2021 15:05:11 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 111K22Kt016358;
- Mon, 1 Feb 2021 20:05:10 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com
- (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
- by ppma04dal.us.ibm.com with ESMTP id 36er4cg3pq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 01 Feb 2021 20:05:10 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 111K598127656534
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 1 Feb 2021 20:05:09 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0C0CF7805F;
- Mon,  1 Feb 2021 20:05:09 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 01EC97805C;
- Mon,  1 Feb 2021 20:05:07 +0000 (GMT)
-Received: from work-tp (unknown [9.65.197.147])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Mon,  1 Feb 2021 20:05:07 +0000 (GMT)
-Date: Mon, 1 Feb 2021 17:05:05 -0300
-From: Raoni Fassina Firmino <raoni@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64/signal: Fix regression in __kernel_sigtramp_rt64
- semantics
-Message-ID: <20210201200505.iz46ubcizipnkcxe@work-tp>
-Mail-Followup-To: linuxppc-dev@lists.ozlabs.org,
- Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
- definitions=2021-02-01_08:2021-01-29,
- 2021-02-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 mlxlogscore=999
- adultscore=0 priorityscore=1501 malwarescore=0 bulkscore=0 clxscore=1011
- lowpriorityscore=0 impostorscore=0 phishscore=0 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102010103
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DV0dN0w3HzDqyb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 07:57:44 +1100 (AEDT)
+Received: from MTA-08-4.privateemail.com (mta-08.privateemail.com
+ [68.65.122.18])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id A79D5812D9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Feb 2021 15:57:38 -0500 (EST)
+Received: from MTA-08.privateemail.com (localhost [127.0.0.1])
+ by MTA-08.privateemail.com (Postfix) with ESMTP id 879CB6005C;
+ Mon,  1 Feb 2021 15:57:33 -0500 (EST)
+Received: from localhost (unknown [10.20.151.241])
+ by MTA-08.privateemail.com (Postfix) with ESMTPA id 437EB60052;
+ Mon,  1 Feb 2021 20:57:33 +0000 (UTC)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v4 02/10] powerpc/signal: Add unsafe_copy_{vsx,
+ fpr}_from_user()
+From: "Christopher M. Riedl" <cmr@codefail.de>
+To: "Gabriel Paubert" <paubert@iram.es>
+Date: Mon, 01 Feb 2021 14:55:50 -0600
+Message-Id: <C8YHSKQ99VC4.M9Y0WOFVUTBQ@geist>
+In-Reply-To: <20210201165440.GA8929@lt-gp.iram.es>
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,82 +53,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: David Laight <David.Laight@ACULAB.COM>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tested on powerpc64 and powerpc64le, with a glibc build and running the
-affected glibc's testcase[2], inspected that glibc's backtrace() now gives
-the correct result and gdb backtrace also keeps working as before.
+On Mon Feb 1, 2021 at 10:54 AM CST, Gabriel Paubert wrote:
+> On Mon, Feb 01, 2021 at 09:55:44AM -0600, Christopher M. Riedl wrote:
+> > On Thu Jan 28, 2021 at 4:38 AM CST, David Laight wrote:
+> > > From: Christopher M. Riedl
+> > > > Sent: 28 January 2021 04:04
+> > > >=20
+> > > > Reuse the "safe" implementation from signal.c except for calling
+> > > > unsafe_copy_from_user() to copy into a local buffer.
+> > > >=20
+> > > > Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
+> > > > ---
+> > > >  arch/powerpc/kernel/signal.h | 33 ++++++++++++++++++++++++++++++++=
++
+> > > >  1 file changed, 33 insertions(+)
+> > > >=20
+> > > > diff --git a/arch/powerpc/kernel/signal.h b/arch/powerpc/kernel/sig=
+nal.h
+> > > > index 2559a681536e..c18402d625f1 100644
+> > > > --- a/arch/powerpc/kernel/signal.h
+> > > > +++ b/arch/powerpc/kernel/signal.h
+> > > > @@ -53,6 +53,33 @@ unsigned long copy_ckfpr_from_user(struct task_s=
+truct *task, void __user *from);
+> > > >  				&buf[i], label);\
+> > > >  } while (0)
+> > > >=20
+> > > > +#define unsafe_copy_fpr_from_user(task, from, label)	do {		\
+> > > > +	struct task_struct *__t =3D task;					\
+> > > > +	u64 __user *__f =3D (u64 __user *)from;				\
+> > > > +	u64 buf[ELF_NFPREG];						\
+> > >
+> > > How big is that buffer?
+> > > Isn't is likely to be reasonably large compared to a reasonable
+> > > kernel stack frame.
+> > > Especially since this isn't even a leaf function.
+> > >
+> >=20
+> > I think Christophe answered this - I don't really have an opinion eithe=
+r
+> > way. What would be a 'reasonable' kernel stack frame for reference?
+>
+> See include/linux/poll.h, where the limit is of the order of 800 bytes
+> and the number of entries in an on stack array is chosen at compile time
+> (different between 32 and 64 bit for example).
+>
+> The values are used in do_sys_poll, which, with almost 1000 bytes of
+> stack footprint, appears close to the top of "make checkstack". In
+> addition do_sys_poll has to call the ->poll function of every file
+> descriptor in its table, so it is not a tail function.
+>
+> This 264 bytes array looks reasonable, but please use 'make checkstack'
+> to verify that the function's total stack usage stays within reason.
 
-I believe this should be backported to releases 5.9 and 5.10 as userspace
-is affected in this releases.
+Neat, looks like total usage is a bit larger but still reasonable and
+less than half of 800B:
 
----- 8< ----
+0xc000000000017e900 __unsafe_restore_sigcontext.constprop.0 [vmlinux]:352
 
-A Change[1] in __kernel_sigtramp_rt64 VDSO and trampoline code introduced a
-regression in the way glibc's backtrace()[2] detects the signal-handler
-stack frame.  Apart from the practical implications, __kernel_sigtram_rt64
-was a VDSO with the semantics that it is a function you can call from
-userspace to end a signal handling.  Now this semantics are no longer
-valid.
+Thanks for the tip!
 
-I believe the aforementioned change affects all releases since 5.9.
-
-This patch tries to fix both the semantics and practical aspect of
-__kernel_sigtramp_rt64 returning it to the previous code, whilst keeping
-the intended behavior from[1] by adding a new symbol to serve as the jump
-target from the kernel to the trampoline. Now the trampoline has two parts,
-an new entry point and the old return point.
-
-[1] commit 0138ba5783ae0dcc799ad401a1e8ac8333790df9 ("powerpc/64/signal:
-    Balance return predictor stack in signal trampoline")
-[2] https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-January/223194.html
-
-Fixes: 0138ba5783ae ("powerpc/64/signal: Balance return predictor stack in signal trampoline")
-Signed-off-by: Raoni Fassina Firmino <raoni@linux.ibm.com>
----
- arch/powerpc/kernel/vdso64/sigtramp.S   | 9 ++++++++-
- arch/powerpc/kernel/vdso64/vdso64.lds.S | 2 +-
- 2 files changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/kernel/vdso64/sigtramp.S b/arch/powerpc/kernel/vdso64/sigtramp.S
-index bbf68cd01088..f0fd8d2a9fc4 100644
---- a/arch/powerpc/kernel/vdso64/sigtramp.S
-+++ b/arch/powerpc/kernel/vdso64/sigtramp.S
-@@ -15,11 +15,18 @@
- 
- 	.text
- 
-+/* __kernel_start_sigtramp_rt64 and __kernel_sigtramp_rt64 together
-+   are one function split in two parts. The kernel jumps to the former
-+   and the signal handler indirectly (by blr) returns to the latter.
-+   __kernel_sigtramp_rt64 needs to point to the return address so
-+   glibc can correctly identify the trampoline stack frame.  */
- 	.balign 8
- 	.balign IFETCH_ALIGN_BYTES
--V_FUNCTION_BEGIN(__kernel_sigtramp_rt64)
-+V_FUNCTION_BEGIN(__kernel_start_sigtramp_rt64)
- .Lsigrt_start:
- 	bctrl	/* call the handler */
-+V_FUNCTION_END(__kernel_start_sigtramp_rt64)
-+V_FUNCTION_BEGIN(__kernel_sigtramp_rt64)
- 	addi	r1, r1, __SIGNAL_FRAMESIZE
- 	li	r0,__NR_rt_sigreturn
- 	sc
-diff --git a/arch/powerpc/kernel/vdso64/vdso64.lds.S b/arch/powerpc/kernel/vdso64/vdso64.lds.S
-index 6164d1a1ba11..2f3c359cacd3 100644
---- a/arch/powerpc/kernel/vdso64/vdso64.lds.S
-+++ b/arch/powerpc/kernel/vdso64/vdso64.lds.S
-@@ -131,4 +131,4 @@ VERSION
- /*
-  * Make the sigreturn code visible to the kernel.
-  */
--VDSO_sigtramp_rt64	= __kernel_sigtramp_rt64;
-+VDSO_sigtramp_rt64	= __kernel_start_sigtramp_rt64;
-
-base-commit: 76c057c84d286140c6c416c3b4ba832cd1d8984e
--- 
-2.26.2
+>
+> Gabriel
+>
+> >=20
+> > > > +	int i;								\
+> > > > +									\
+> > > > +	unsafe_copy_from_user(buf, __f, ELF_NFPREG * sizeof(double),	\
+> > >
+> > > That really ought to be sizeof(buf).
+> > >
+> >=20
+> > Agreed, I will fix this. Thanks!
+> >=20
+> > > David
+> > >
+> > >
+> > > > +				label);					\
+> > > > +	for (i =3D 0; i < ELF_NFPREG - 1; i++)				\
+> > > > +		__t->thread.TS_FPR(i) =3D buf[i];				\
+> > > > +	__t->thread.fp_state.fpscr =3D buf[i];				\
+> > > > +} while (0)
+> > > > +
+> > > > +#define unsafe_copy_vsx_from_user(task, from, label)	do {		\
+> > > > +	struct task_struct *__t =3D task;					\
+> > > > +	u64 __user *__f =3D (u64 __user *)from;				\
+> > > > +	u64 buf[ELF_NVSRHALFREG];					\
+> > > > +	int i;								\
+> > > > +									\
+> > > > +	unsafe_copy_from_user(buf, __f,					\
+> > > > +				ELF_NVSRHALFREG * sizeof(double),	\
+> > > > +				label);					\
+> > > > +	for (i =3D 0; i < ELF_NVSRHALFREG ; i++)				\
+> > > > +		__t->thread.fp_state.fpr[i][TS_VSRLOWOFFSET] =3D buf[i];	\
+> > > > +} while (0)
+> > > > +
+> > > > +
+> > > >  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+> > > >  #define unsafe_copy_ckfpr_to_user(to, task, label)	do {		\
+> > > >  	struct task_struct *__t =3D task;					\
+> > > > @@ -80,6 +107,10 @@ unsigned long copy_ckfpr_from_user(struct task_=
+struct *task, void __user *from);
+> > > >  	unsafe_copy_to_user(to, (task)->thread.fp_state.fpr,	\
+> > > >  			    ELF_NFPREG * sizeof(double), label)
+> > > >=20
+> > > > +#define unsafe_copy_fpr_from_user(task, from, label)			\
+> > > > +	unsafe_copy_from_user((task)->thread.fp_state.fpr, from,	\
+> > > > +			    ELF_NFPREG * sizeof(double), label)
+> > > > +
+> > > >  static inline unsigned long
+> > > >  copy_fpr_to_user(void __user *to, struct task_struct *task)
+> > > >  {
+> > > > @@ -115,6 +146,8 @@ copy_ckfpr_from_user(struct task_struct *task, =
+void __user *from)
+> > > >  #else
+> > > >  #define unsafe_copy_fpr_to_user(to, task, label) do { } while (0)
+> > > >=20
+> > > > +#define unsafe_copy_fpr_from_user(task, from, label) do { } while =
+(0)
+> > > > +
+> > > >  static inline unsigned long
+> > > >  copy_fpr_to_user(void __user *to, struct task_struct *task)
+> > > >  {
+> > > > --
+> > > > 2.26.1
+> > >
+> > > -
+> > > Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes,
+> > > MK1 1PT, UK
+> > > Registration No: 1397386 (Wales)
+> >=20
+> =20
 
