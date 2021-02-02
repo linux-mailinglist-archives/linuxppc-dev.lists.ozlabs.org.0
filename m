@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8335430D086
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 01:54:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F5B30D088
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 01:55:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVjqW4yBmzDqdm
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 11:53:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVjsK48gkzDqJ8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 11:55:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b;
- helo=mail-pf1-x42b.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=XB61lX1Z; dkim-atps=neutral
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
- [IPv6:2607:f8b0:4864:20::42b])
+ header.s=20161025 header.b=X5Gmr6o7; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVMRc15RbzDqgf
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 22:05:31 +1100 (AEDT)
-Received: by mail-pf1-x42b.google.com with SMTP id y205so14087874pfc.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Feb 2021 03:05:31 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVMRk4N2ZzDqgf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 22:05:38 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id j11so9663639plt.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Feb 2021 03:05:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=vAbu4uylyD/1yZsJCHQjYIcITelz2x29iNZ/QiXVtA4=;
- b=XB61lX1Z4jTiaTn6F2TEgL9yy2HEpkCa4LEy14gBY61wcjtayhfijNdSUiYWEKnC0b
- Gr4gY14wuTx4N3GPxjmBQgPPbflA14HDXrkIMpvUCKjUM+ZvCd2V9RHJLqhnnykGpnmi
- ii4PbA6qaK5JS6pCJ08xdnIfLVbWR+I/7jOtTWQu7ZOjGOtox6vyFQ269nfVDTSaBGKF
- 73ya1YZU3m7dknQ7mYnJLQ+8idRn2Jf81SlidA9eaXQzYa3JAWDtCWGnZMbrQeUPMtKF
- QnBcajgu8RWGcSenhBxa7ensCih8tLH9hK6GnxPxKBbZO5ySSgTv2JlKOx8Hg/NpJG7s
- R/4Q==
+ bh=z7TTkxjv7kH92yRavCWr3ozA0ymdaV4WqylsmXEFcEA=;
+ b=X5Gmr6o7rZjWh4lQKjrWeIYtAjKZBhAPpZ6EkV4pPSkfSRtBYS+uElKVbsnZiEW6cS
+ m8CDnvh0qc/Jj/m3uarRKf2oOLvDBe55eJ8Uu57rkYcGqLnBwzdzgPSnwEzswltDa0Mt
+ Tmg8CP/KMkbZT2OcCkrEgoc3plgljVApF5YJ6FRFMAY6Vk7/+35PTv5vVn4WQaAq606l
+ sg3X2gqkeodFfjyiIUr1QGmo1qVXzh/l2JLSr89Us38X3nFd1j6Nukqt1Tih6QxKsRYd
+ ZYYLl3hzlnxoxzlrP6dNi52Ha+RWjNZY/AMvLdZgNKjHgjuiB3rG2432oa6NK2xDudLc
+ 9AiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=vAbu4uylyD/1yZsJCHQjYIcITelz2x29iNZ/QiXVtA4=;
- b=RsxiWEL7uOFP3LZ6VqOEbbyhPvJVFlTdZ32f8S6zVvOBNtl8sBYOWhaOCyaISwBUo7
- zNtiuZiFuS617goZm/qSDzdZRJARlB0iiypz1bPUI3fIPA9eg4TmKYNPTOzNZBM7O8rp
- iauOYEPHNQe10RPj8O4ppptK8Z5Xh0Gcc/Gnaw4iYSaGh0l1CJlyw0BSWnrfIIAjFdIm
- FSI8CCryjmGN8NRXK7J6TgYkte4UQYJtGHXZDyzyU494S/Uffw50VCF7R2m38MUfxB7r
- ieum1iwjOys7wE0aVUw031zMVnt6TAs8nwTHR3E09Clgf/cEsWrkKDduDgpbMqIqtogi
- wt3Q==
-X-Gm-Message-State: AOAM531y5wGJZDi8E6P6bQC2s9SrjcEVCialMYly86G3otMXDtdqEhQf
- v6OYCYfhJCKiGuyO/xAgzlQ=
-X-Google-Smtp-Source: ABdhPJxVMcdgA1+Y8LqXd2e61PK20uUftYJf8JWfAFkTyxXbbKor8wFP6q9LQTBVsxFGjf6kJasOew==
-X-Received: by 2002:aa7:9694:0:b029:1bc:d0ba:10ff with SMTP id
- f20-20020aa796940000b02901bcd0ba10ffmr20855469pfk.18.1612263929711; 
- Tue, 02 Feb 2021 03:05:29 -0800 (PST)
+ bh=z7TTkxjv7kH92yRavCWr3ozA0ymdaV4WqylsmXEFcEA=;
+ b=TpQ1kSKkrtMbt8yhgT7yGf1U1yznv2td6Ah233XFW4r3UvP7Iqtf8FLOqNRkj/bvvZ
+ rJ2Yn75YgXS/D+cNpD6Cg/9JXLz/IYfREfhuQ7lu0oCVA/PXO8ZL9xEy4ZrjhqOhigPY
+ 3TfqVVKNguwOWF/PutT8QnwO3Zp66wsqsDe5hC28yUYT3NLdmJD29shi3yzBfSZ8FpsF
+ x4Ew1RWWL0fyGXFI2/pUL3P5XQsQ8Adea++iU+f3ERsL02OXyckGF4G4VRu2Rv06Sdlk
+ PG5mg5X6pkOeTym8wzK9OKqzzUFoUV383w7v4owD2wE/xihpm3/aSv/QYhF8pzwYcdz6
+ u6qg==
+X-Gm-Message-State: AOAM532YjGzlLddtDSREAXIPRxtu1n0Doy2SJ7/xj6PK/RNOxSVhEN0H
+ u23zA6wcxg37Q+N2q/tBPX0=
+X-Google-Smtp-Source: ABdhPJyzdK/FxUKtd6l8H2RxfDW8ApCyd9jou0qkaEA9aLGxxC+wSN16PnxrQHqgaZoLGKTYswrK6Q==
+X-Received: by 2002:a17:90a:6288:: with SMTP id
+ d8mr3775240pjj.49.1612263935550; 
+ Tue, 02 Feb 2021 03:05:35 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (60-242-11-44.static.tpgi.com.au.
  [60.242.11.44])
- by smtp.gmail.com with ESMTPSA id g19sm3188979pfk.113.2021.02.02.03.05.24
+ by smtp.gmail.com with ESMTPSA id g19sm3188979pfk.113.2021.02.02.03.05.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Feb 2021 03:05:29 -0800 (PST)
+ Tue, 02 Feb 2021 03:05:35 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linux-mm@kvack.org,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v12 01/14] ARM: mm: add missing pud_page define to 2-level
- page tables
-Date: Tue,  2 Feb 2021 21:05:02 +1000
-Message-Id: <20210202110515.3575274-2-npiggin@gmail.com>
+Subject: [PATCH v12 02/14] mm/vmalloc: fix HUGE_VMAP regression by enabling
+ huge pages in vmalloc_to_page
+Date: Tue,  2 Feb 2021 21:05:03 +1000
+Message-Id: <20210202110515.3575274-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210202110515.3575274-1-npiggin@gmail.com>
 References: <20210202110515.3575274-1-npiggin@gmail.com>
@@ -80,56 +80,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Ding Tianhong <dingtianhong@huawei.com>,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Christoph Hellwig <hch@infradead.org>,
+Cc: linux-arch@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
+ Ding Tianhong <dingtianhong@huawei.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Christoph Hellwig <hch@infradead.org>,
  Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ARM uses its own PMD folding scheme which is missing pud_page which
-should just pass through to pmd_page. Move this from the 3-level
-page table to common header.
+vmalloc_to_page returns NULL for addresses mapped by larger pages[*].
+Whether or not a vmap is huge depends on the architecture details,
+alignments, boot options, etc., which the caller can not be expected
+to know. Therefore HUGE_VMAP is a regression for vmalloc_to_page.
 
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Ding Tianhong <dingtianhong@huawei.com>
-Cc: linux-arm-kernel@lists.infradead.org
+This change teaches vmalloc_to_page about larger pages, and returns
+the struct page that corresponds to the offset within the large page.
+This makes the API agnostic to mapping implementation details.
+
+[*] As explained by commit 029c54b095995 ("mm/vmalloc.c: huge-vmap:
+    fail gracefully on unexpected huge vmap mappings")
+
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/arm/include/asm/pgtable-3level.h | 2 --
- arch/arm/include/asm/pgtable.h        | 3 +++
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ mm/vmalloc.c | 41 ++++++++++++++++++++++++++---------------
+ 1 file changed, 26 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm/include/asm/pgtable-3level.h b/arch/arm/include/asm/pgtable-3level.h
-index 2b85d175e999..d4edab51a77c 100644
---- a/arch/arm/include/asm/pgtable-3level.h
-+++ b/arch/arm/include/asm/pgtable-3level.h
-@@ -186,8 +186,6 @@ static inline pte_t pte_mkspecial(pte_t pte)
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index e6f352bf0498..62372f9e0167 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -34,7 +34,7 @@
+ #include <linux/bitops.h>
+ #include <linux/rbtree_augmented.h>
+ #include <linux/overflow.h>
+-
++#include <linux/pgtable.h>
+ #include <linux/uaccess.h>
+ #include <asm/tlbflush.h>
+ #include <asm/shmparam.h>
+@@ -343,7 +343,9 @@ int is_vmalloc_or_module_addr(const void *x)
+ }
  
- #define pmd_write(pmd)		(pmd_isclear((pmd), L_PMD_SECT_RDONLY))
- #define pmd_dirty(pmd)		(pmd_isset((pmd), L_PMD_SECT_DIRTY))
--#define pud_page(pud)		pmd_page(__pmd(pud_val(pud)))
--#define pud_write(pud)		pmd_write(__pmd(pud_val(pud)))
+ /*
+- * Walk a vmap address to the struct page it maps.
++ * Walk a vmap address to the struct page it maps. Huge vmap mappings will
++ * return the tail page that corresponds to the base page address, which
++ * matches small vmap mappings.
+  */
+ struct page *vmalloc_to_page(const void *vmalloc_addr)
+ {
+@@ -363,25 +365,33 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
  
- #define pmd_hugewillfault(pmd)	(!pmd_young(pmd) || !pmd_write(pmd))
- #define pmd_thp_or_huge(pmd)	(pmd_huge(pmd) || pmd_trans_huge(pmd))
-diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
-index c02f24400369..d63a5bb6bd0c 100644
---- a/arch/arm/include/asm/pgtable.h
-+++ b/arch/arm/include/asm/pgtable.h
-@@ -166,6 +166,9 @@ extern struct page *empty_zero_page;
- 
- extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
- 
-+#define pud_page(pud)		pmd_page(__pmd(pud_val(pud)))
-+#define pud_write(pud)		pmd_write(__pmd(pud_val(pud)))
+ 	if (pgd_none(*pgd))
+ 		return NULL;
++	if (WARN_ON_ONCE(pgd_leaf(*pgd)))
++		return NULL; /* XXX: no allowance for huge pgd */
++	if (WARN_ON_ONCE(pgd_bad(*pgd)))
++		return NULL;
 +
- #define pmd_none(pmd)		(!pmd_val(pmd))
+ 	p4d = p4d_offset(pgd, addr);
+ 	if (p4d_none(*p4d))
+ 		return NULL;
+-	pud = pud_offset(p4d, addr);
++	if (p4d_leaf(*p4d))
++		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
++	if (WARN_ON_ONCE(p4d_bad(*p4d)))
++		return NULL;
  
- static inline pte_t *pmd_page_vaddr(pmd_t pmd)
+-	/*
+-	 * Don't dereference bad PUD or PMD (below) entries. This will also
+-	 * identify huge mappings, which we may encounter on architectures
+-	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=y. Such regions will be
+-	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
+-	 * not [unambiguously] associated with a struct page, so there is
+-	 * no correct value to return for them.
+-	 */
+-	WARN_ON_ONCE(pud_bad(*pud));
+-	if (pud_none(*pud) || pud_bad(*pud))
++	pud = pud_offset(p4d, addr);
++	if (pud_none(*pud))
++		return NULL;
++	if (pud_leaf(*pud))
++		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
++	if (WARN_ON_ONCE(pud_bad(*pud)))
+ 		return NULL;
++
+ 	pmd = pmd_offset(pud, addr);
+-	WARN_ON_ONCE(pmd_bad(*pmd));
+-	if (pmd_none(*pmd) || pmd_bad(*pmd))
++	if (pmd_none(*pmd))
++		return NULL;
++	if (pmd_leaf(*pmd))
++		return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
++	if (WARN_ON_ONCE(pmd_bad(*pmd)))
+ 		return NULL;
+ 
+ 	ptep = pte_offset_map(pmd, addr);
+@@ -389,6 +399,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+ 	if (pte_present(pte))
+ 		page = pte_page(pte);
+ 	pte_unmap(ptep);
++
+ 	return page;
+ }
+ EXPORT_SYMBOL(vmalloc_to_page);
 -- 
 2.23.0
 
