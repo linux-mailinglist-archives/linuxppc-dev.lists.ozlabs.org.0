@@ -2,74 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F82E30B7F8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 07:44:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3433230B827
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 08:00:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVFfQ0ZbvzDqvR
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 17:44:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVG0w2dsWzDsbM
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 18:00:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52c;
- helo=mail-pg1-x52c.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=PWite5q3; dkim-atps=neutral
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
- [IPv6:2607:f8b0:4864:20::52c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVFb04B7qzDr4m
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 17:41:32 +1100 (AEDT)
-Received: by mail-pg1-x52c.google.com with SMTP id v19so14242563pgj.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Feb 2021 22:41:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=rC09dL3t0JmuXKRGS11QfpT22mY/bCGC3yvB+dUe0fk=;
- b=PWite5q3ilvWPrNzABf1n2ObHEBeUkcRaH7O0mz9AUYo+3gOXj1emeuovYEtUxa40D
- Pprs3M/4nSbG5F422bG4VwKat8Yp6XPMULl2rGLdYqtHigSUo61/0wIy78mG+4EzglQp
- lVpv80EHwoEh1xUNYr4+xQm4xm1O4J5JMT974md8qoEZNixRctDEXLd3PlFg4Lo4Wm5U
- 9GDmEgEdFw09Kn10gxC6lSyxDMixod5KD0FStaEkanlSCWPLmLZNDxsNG6BkKW+2qSG5
- ITkh8hkgQvpJ541DDIyNaR1Gmci80t/qg+3wM0UTKUpsB32nnu9zSJJOIw5EswRPmx1+
- o8VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=rC09dL3t0JmuXKRGS11QfpT22mY/bCGC3yvB+dUe0fk=;
- b=CsKd2V/DSqpK/gePpisP0tpRoG36zGDM3HhzIup8Xmpqfa9gM9qllcQehRaevo9wbQ
- Rmdl7heEe9lFelphrMlOUwYIL6LWnQwcJHMyg3BCmUiYr7Rs/YpoYfWwTFXAs5AMmdSI
- jum9ftZTPeC5b+2jVHjDrM1hzLpyQi7rpljMhzJgzuGhkYQ1hrxLZaqIAUwxK+W/9FMm
- TjKVq6XdL7WhpSE9wKNKYEjlMqGOD7OIcIdUQOGodrgJreQSN+LTxxxgwnOTR/JcoIgI
- wIvYj+Gsb8tTWsx8uHMM+rMh5fQgzk+/8ZtKP+rmGsFYsXFACqX+Gltw0qmmG+GkpZuT
- kP3Q==
-X-Gm-Message-State: AOAM533/MSwiIZsqo7b4wSo1btoz+/VM/WO6nxoSMrOkBT/qrYP6wO3Y
- Q3JsHaO2z0RHOIIroRVlZzA=
-X-Google-Smtp-Source: ABdhPJyaqrVbEaywPer83Q1yamTBUdgzhSLBAu5yKXicZ9+owt7LJ3m0errPFW51m0M7fMC12YcztQ==
-X-Received: by 2002:a62:7694:0:b029:1b9:8d43:95af with SMTP id
- r142-20020a6276940000b02901b98d4395afmr20512354pfc.2.1612248088518; 
- Mon, 01 Feb 2021 22:41:28 -0800 (PST)
-Received: from localhost
- (192.156.221.203.dial.dynamic.acc50-nort-cbr.comindico.com.au.
- [203.221.156.192])
- by smtp.gmail.com with ESMTPSA id k10sm20969227pfk.0.2021.02.01.22.41.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Feb 2021 22:41:27 -0800 (PST)
-Date: Tue, 02 Feb 2021 16:41:22 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC 11/20] mm/tlb: remove arch-specific tlb_start/end_vma()
-To: Nadav Amit <nadav.amit@gmail.com>, Peter Zijlstra <peterz@infradead.org>
-References: <20210131001132.3368247-1-namit@vmware.com>
- <20210131001132.3368247-12-namit@vmware.com>
- <YBfvh1Imz6RRTUDV@hirez.programming.kicks-ass.net>
-In-Reply-To: <YBfvh1Imz6RRTUDV@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVFyj4dQDzDqss
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 17:58:32 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DVFyV0qPRz9v1gg;
+ Tue,  2 Feb 2021 07:58:26 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id hKMwTTkBdW-E; Tue,  2 Feb 2021 07:58:26 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DVFyT6w57z9v1gf;
+ Tue,  2 Feb 2021 07:58:25 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D15E38B7AC;
+ Tue,  2 Feb 2021 07:58:26 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id wIlmC9JCL9xm; Tue,  2 Feb 2021 07:58:26 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3BEAA8B75B;
+ Tue,  2 Feb 2021 07:58:26 +0100 (CET)
+Subject: Re: [PATCH v4 11/23] powerpc/syscall: Rename syscall_64.c into
+ syscall.c
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ David Laight <David.Laight@ACULAB.COM>, Michael Ellerman
+ <mpe@ellerman.id.au>, "msuchanek@suse.de" <msuchanek@suse.de>,
+ Paul Mackerras <paulus@samba.org>
+References: <cover.1611585031.git.christophe.leroy@csgroup.eu>
+ <ff9dd4accdc897013594768833d54444e4823bf9.1611585031.git.christophe.leroy@csgroup.eu>
+ <1611656343.yaxha7r2q4.astroid@bobo.none>
+ <d9993f034db848d1afeffa322373b811@AcuMS.aculab.com>
+ <1611791083.sqnnh21vv0.astroid@bobo.none>
+ <0cf90825-da89-6464-98d4-dc7490bff557@csgroup.eu>
+ <1612247170.ea0f766ml4.astroid@bobo.none>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <77f211fe-e4bf-009f-7942-7d12df824529@csgroup.eu>
+Date: Tue, 2 Feb 2021 07:58:25 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Message-Id: <1612247956.0a1r1yjmm3.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1612247170.ea0f766ml4.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,75 +72,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, linux-s390@vger.kernel.org,
- x86@kernel.org, Yu Zhao <yuzhao@google.com>, Will Deacon <will@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
- linux-csky@vger.kernel.org, linux-mm@kvack.org, Nadav Amit <namit@vmware.com>,
- Andy Lutomirski <luto@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Peter Zijlstra's message of February 1, 2021 10:09 pm:
-> On Sat, Jan 30, 2021 at 04:11:23PM -0800, Nadav Amit wrote:
->=20
->> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
->> index 427bfcc6cdec..b97136b7010b 100644
->> --- a/include/asm-generic/tlb.h
->> +++ b/include/asm-generic/tlb.h
->> @@ -334,8 +334,8 @@ static inline void __tlb_reset_range(struct mmu_gath=
-er *tlb)
->> =20
->>  #ifdef CONFIG_MMU_GATHER_NO_RANGE
->> =20
->> -#if defined(tlb_flush) || defined(tlb_start_vma) || defined(tlb_end_vma=
-)
->> -#error MMU_GATHER_NO_RANGE relies on default tlb_flush(), tlb_start_vma=
-() and tlb_end_vma()
->> +#if defined(tlb_flush)
->> +#error MMU_GATHER_NO_RANGE relies on default tlb_flush()
->>  #endif
->> =20
->>  /*
->> @@ -362,10 +362,6 @@ static inline void tlb_end_vma(struct mmu_gather *t=
-lb, struct vm_area_struct *vm
->> =20
->>  #ifndef tlb_flush
->> =20
->> -#if defined(tlb_start_vma) || defined(tlb_end_vma)
->> -#error Default tlb_flush() relies on default tlb_start_vma() and tlb_en=
-d_vma()
->> -#endif
->=20
-> #ifdef CONFIG_ARCH_WANT_AGGRESSIVE_TLB_FLUSH_BATCHING
-> #error ....
-> #endif
->=20
-> goes here...
->=20
->=20
->>  static inline void tlb_end_vma(struct mmu_gather *tlb, struct vm_area_s=
-truct *vma)
->>  {
->>  	if (tlb->fullmm)
->>  		return;
->> =20
->> +	if (IS_ENABLED(CONFIG_ARCH_WANT_AGGRESSIVE_TLB_FLUSH_BATCHING))
->> +		return;
->=20
-> Also, can you please stick to the CONFIG_MMU_GATHER_* namespace?
->=20
-> I also don't think AGRESSIVE_FLUSH_BATCHING quite captures what it does.
-> How about:
->=20
-> 	CONFIG_MMU_GATHER_NO_PER_VMA_FLUSH
 
-Yes please, have to have descriptive names.
 
-I didn't quite see why this was much of an improvement though. Maybe=20
-follow up patches take advantage of it? I didn't see how they all fit=20
-together.
+Le 02/02/2021 à 07:38, Nicholas Piggin a écrit :
+> Excerpts from Christophe Leroy's message of February 2, 2021 4:15 pm:
+>>
+>>
+>> Le 28/01/2021 à 00:50, Nicholas Piggin a écrit :
+>>> Excerpts from David Laight's message of January 26, 2021 8:28 pm:
+>>>> From: Nicholas Piggin
+>>>>> Sent: 26 January 2021 10:21
+>>>>>
+>>>>> Excerpts from Christophe Leroy's message of January 26, 2021 12:48 am:
+>>>>>> syscall_64.c will be reused almost as is for PPC32.
+>>>>>>
+>>>>>> Rename it syscall.c
+>>>>>
+>>>>> Could you rename it to interrupt.c instead? A system call is an
+>>>>> interrupt, and the file now also has code to return from other
+>>>>> interrupts as well, and it matches the new asm/interrupt.h from
+>>>>> the interrupts series.
+>>>>
+>>>> Hmmm....
+>>>>
+>>>> That might make it harder for someone looking for the system call
+>>>> entry code to find it.
+>>>
+>>> It's very grep'able.
+>>>
+>>>> In some sense interrupts are the simpler case.
+>>>>
+>>>> Especially when comparing with other architectures which have
+>>>> special instructions for syscall entry.
+>>>
+>>> powerpc does have a special instruction for syscall, and it causes a
+>>> system call interrupt.
+>>>
+>>> I'm not sure about other architectures, but for powerpc its more
+>>> sensible to call it interrupt.c than syscall.c.
+>>
+>> Many other architectures have a syscall.c but for a different purpose: it contains arch specific
+>> system calls. We have that in powerpc as well, it is called syscalls.c
+>>
+>> So to avoid confusion, I'll rename it. But I think "interrupt" is maybe not the right name. An
+>> interrupt most of the time refers to IRQ.
+> 
+> That depends what you mean by interrupt and IRQ.
+> 
+> Linux kind of considers any asynchronous maskable interrupt an irq
+> (local_irq_disable()). But if you say irq it's more likely to mean
+> a device interrupt, and "interrupt" usually refres to the asynch
+> ones.
+> 
+> But Linux doesn't really assign names to synchronous interrupts in
+> core code. It doesn't say they aren't interrupts, it just doesn't
+> really have a convention for them at all.
+> 
+> Other architectures e.g., x86 also have things like interrupt
+> descriptor table for synchronous interrupts as well. That's where
+> I got the interrupt wrappers code from actually.
+> 
+> So it's really fine to use the proper arch-specific names for things
+> in arch code. I'm trying to slowly change names from exception to
+> interrupt.
+> 
+>> For me system call is not an interrupt in the way it
+>> doesn't unexpectedly interrupt a program flow. In powerpc manuals it is generally called exceptions,
+>> no I'm more inclined to call it exception.c
+> 
+> Actually that's backwards. Powerpc manuals (at least the one I look at)
+> calls them all interrupts including system calls, and also the system
+> call interrupt is actually the only one that doesn't appear to be
+> associated with an exception.
+> 
+> Also there is no distinction about expecte/unexpected -- a data storage
+> interrupt is expected if you access a location without the right access
+> permissions for example, but it is still an interrupt.
+> 
+> These handlers very specifically deal with the change to execution flow
+> (i.e., the interrupt), they do *not* deal with the exception which may
+> be associated with it (that is the job of the handler).
+> 
+> And on the other hand you can deal with exceptions in some cases without
+> taking an interrupt at all. For example if you had MSR[EE]=0 you could
+> change the decrementer or execute msgclr or change HMER SPR etc to clear
+> various exceptions without ever taking the interrupt.
+> 
 
-Thanks,
-Nick
+Ok, let's call it interrupt.c then, to be consistant with the interrupt wrapper story.
+
+Christophe
