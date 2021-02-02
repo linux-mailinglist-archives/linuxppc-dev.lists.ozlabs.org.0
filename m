@@ -2,79 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6EE430D03C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 01:23:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5823D30D040
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 01:27:04 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVj865S2VzDrnl
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 11:23:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVjDP1N8SzDqKK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 11:27:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ghlUHrzC; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=LQ6tFnwE; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVJwJ5nFQzDqLS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 20:11:44 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVJwM1HkXzDqWx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 20:11:46 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 11291mY3028774; Tue, 2 Feb 2021 04:11:33 -0500
+ 112927FQ125477; Tue, 2 Feb 2021 04:11:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=uNThwRAtFO/ZyPG03c/+c89dgzVsNzp5JwgKu/lBB9k=;
- b=ghlUHrzCAcrgJajs40dDPRjtXgU2KhSOWaBhyOVk7v4V0vYbL6pa5mmDvMXCdRQCUNoM
- WA0EZqS5ehYCgtP3GGFXt1UUzZvuQFPN1pSYF4JTNyDKTBLBZzllSus4tWs5FZQoySHA
- fjtKLZr0vKnSMDmmhO9/AoTkgP2uGQZraevf8gPTZag65TTzLfnBzLDvasDSHOqykAi7
- WBZBKc3vU0AudM8V4yqr/S4UmKLYWbB5gLzp/JahXXM1R8isDixV/VAwNVDGmOFD0msu
- zb/xnF++s+f6rdnrdOttCxcv6362VO7eDZzsdwmQhfcnioXpExc80A9mHNrvtqkNHYmQ cw== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=unpid1XboFIP7xQdeLDjgLlxdIrVjLZI6BD7wO6EMUM=;
+ b=LQ6tFnwEiuIYJ+8DvaEyWpnJ9d87DD7ygdGWb8e31V1TswRSLq9cY8aYwgYmoDAHUqd4
+ wi/+JtX3DL0TxR9VWNYCeVMTGuCGAd3XEqek60bF2RF2m0NerQ7e9oLISW5JzG2gWPkJ
+ UIRkBGQiMwKP4DIVDzPToVKVXxTS25G6dG6NcmidPLet1gYImgApmw6owhikxfQrRULO
+ c4hkyo2kt3wG5vNZFEWEjKJ/dkQPGJcxWG8CFJaCh8OcOOCME7NKZcrMRWw0FNPTjx6h
+ KoGJJsolAjUq3n39n6b4QPY58FKAOYSTwtLfFp/F7jln+m4YG3OQtBty48JW0+ZujX6V 6Q== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36f2jxt6g4-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36f38ch6kb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Feb 2021 04:11:32 -0500
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 112928En029977;
- Tue, 2 Feb 2021 04:11:31 -0500
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36f2jxt6du-1
+ Tue, 02 Feb 2021 04:11:30 -0500
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 112959O6140319;
+ Tue, 2 Feb 2021 04:11:29 -0500
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36f38ch6jy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Feb 2021 04:11:31 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 112982k2003233;
- Tue, 2 Feb 2021 09:11:25 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma04dal.us.ibm.com with ESMTP id 36ex3njc9f-1
+ Tue, 02 Feb 2021 04:11:29 -0500
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 112987s4031104;
+ Tue, 2 Feb 2021 09:11:28 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma03wdc.us.ibm.com with ESMTP id 36f2nwrfmq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Feb 2021 09:11:25 +0000
+ Tue, 02 Feb 2021 09:11:28 +0000
 Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
  [9.57.199.106])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1129BONL32506230
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1129BShO28901792
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 2 Feb 2021 09:11:24 GMT
+ Tue, 2 Feb 2021 09:11:28 GMT
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 70D5928058;
- Tue,  2 Feb 2021 09:11:24 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3A5482805E;
+ Tue,  2 Feb 2021 09:11:28 +0000 (GMT)
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D86628059;
- Tue,  2 Feb 2021 09:11:21 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 207E428058;
+ Tue,  2 Feb 2021 09:11:25 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.35.92])
  by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  2 Feb 2021 09:11:21 +0000 (GMT)
+ Tue,  2 Feb 2021 09:11:24 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: [RFC PATCH 1/6] selftest/mremap_test: Update the test to handle
- pagesize other than 4K
-Date: Tue,  2 Feb 2021 14:41:11 +0530
-Message-Id: <20210202091116.196134-1-aneesh.kumar@linux.ibm.com>
+Subject: [RFC PATCH 2/6] selftest/mremap_test: Avoid crash with static build
+Date: Tue,  2 Feb 2021 14:41:12 +0530
+Message-Id: <20210202091116.196134-2-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210202091116.196134-1-aneesh.kumar@linux.ibm.com>
+References: <20210202091116.196134-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
@@ -82,10 +84,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
  definitions=2021-02-02_04:2021-01-29,
  2021-02-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 spamscore=0
- bulkscore=0 impostorscore=0 phishscore=0 malwarescore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ spamscore=0 impostorscore=0
+ bulkscore=0 malwarescore=0 mlxscore=0 phishscore=0 mlxlogscore=999
+ clxscore=1011 suspectscore=0 adultscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2009150000 definitions=main-2102020059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -105,164 +107,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Instead of hardcoding 4K page size fetch it using sysconf(). For the performance
-measurements test still assume 2M and 1G are hugepage sizes.
+With a large mmap map size, we can overlap with the text area and using
+MAP_FIXED results in unmapping that area. Switch to MAP_FIXED_NOREPLACE
+and handle the EEXIST error.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- tools/testing/selftests/vm/mremap_test.c | 113 ++++++++++++-----------
- 1 file changed, 61 insertions(+), 52 deletions(-)
+ tools/testing/selftests/vm/mremap_test.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/tools/testing/selftests/vm/mremap_test.c b/tools/testing/selftests/vm/mremap_test.c
-index 9c391d016922..c9a5461eb786 100644
+index c9a5461eb786..0624d1bd71b5 100644
 --- a/tools/testing/selftests/vm/mremap_test.c
 +++ b/tools/testing/selftests/vm/mremap_test.c
-@@ -45,14 +45,15 @@ enum {
- 	_4MB = 4ULL << 20,
- 	_1GB = 1ULL << 30,
- 	_2GB = 2ULL << 30,
--	PTE = _4KB,
- 	PMD = _2MB,
- 	PUD = _1GB,
- };
- 
-+#define PTE page_size
-+
- #define MAKE_TEST(source_align, destination_align, size,	\
- 		  overlaps, should_fail, test_name)		\
--{								\
-+(struct test){							\
- 	.name = test_name,					\
- 	.config = {						\
- 		.src_alignment = source_align,			\
-@@ -252,12 +253,17 @@ static int parse_args(int argc, char **argv, unsigned int *threshold_mb,
- 	return 0;
- }
- 
-+#define MAX_TEST 13
-+#define MAX_PERF_TEST 3
- int main(int argc, char **argv)
- {
- 	int failures = 0;
- 	int i, run_perf_tests;
- 	unsigned int threshold_mb = VALIDATION_DEFAULT_THRESHOLD;
- 	unsigned int pattern_seed;
-+	struct test test_cases[MAX_TEST];
-+	struct test perf_test_cases[MAX_PERF_TEST];
-+	int page_size;
- 	time_t t;
- 
- 	pattern_seed = (unsigned int) time(&t);
-@@ -268,56 +274,59 @@ int main(int argc, char **argv)
- 	ksft_print_msg("Test configs:\n\tthreshold_mb=%u\n\tpattern_seed=%u\n\n",
- 		       threshold_mb, pattern_seed);
- 
--	struct test test_cases[] = {
--		/* Expected mremap failures */
--		MAKE_TEST(_4KB, _4KB, _4KB, OVERLAPPING, EXPECT_FAILURE,
--		  "mremap - Source and Destination Regions Overlapping"),
--		MAKE_TEST(_4KB, _1KB, _4KB, NON_OVERLAPPING, EXPECT_FAILURE,
--		  "mremap - Destination Address Misaligned (1KB-aligned)"),
--		MAKE_TEST(_1KB, _4KB, _4KB, NON_OVERLAPPING, EXPECT_FAILURE,
--		  "mremap - Source Address Misaligned (1KB-aligned)"),
--
--		/* Src addr PTE aligned */
--		MAKE_TEST(PTE, PTE, _8KB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "8KB mremap - Source PTE-aligned, Destination PTE-aligned"),
--
--		/* Src addr 1MB aligned */
--		MAKE_TEST(_1MB, PTE, _2MB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "2MB mremap - Source 1MB-aligned, Destination PTE-aligned"),
--		MAKE_TEST(_1MB, _1MB, _2MB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "2MB mremap - Source 1MB-aligned, Destination 1MB-aligned"),
--
--		/* Src addr PMD aligned */
--		MAKE_TEST(PMD, PTE, _4MB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "4MB mremap - Source PMD-aligned, Destination PTE-aligned"),
--		MAKE_TEST(PMD, _1MB, _4MB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "4MB mremap - Source PMD-aligned, Destination 1MB-aligned"),
--		MAKE_TEST(PMD, PMD, _4MB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "4MB mremap - Source PMD-aligned, Destination PMD-aligned"),
--
--		/* Src addr PUD aligned */
--		MAKE_TEST(PUD, PTE, _2GB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "2GB mremap - Source PUD-aligned, Destination PTE-aligned"),
--		MAKE_TEST(PUD, _1MB, _2GB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "2GB mremap - Source PUD-aligned, Destination 1MB-aligned"),
--		MAKE_TEST(PUD, PMD, _2GB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "2GB mremap - Source PUD-aligned, Destination PMD-aligned"),
--		MAKE_TEST(PUD, PUD, _2GB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "2GB mremap - Source PUD-aligned, Destination PUD-aligned"),
--	};
--
--	struct test perf_test_cases[] = {
--		/*
--		 * mremap 1GB region - Page table level aligned time
--		 * comparison.
--		 */
--		MAKE_TEST(PTE, PTE, _1GB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "1GB mremap - Source PTE-aligned, Destination PTE-aligned"),
--		MAKE_TEST(PMD, PMD, _1GB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "1GB mremap - Source PMD-aligned, Destination PMD-aligned"),
--		MAKE_TEST(PUD, PUD, _1GB, NON_OVERLAPPING, EXPECT_SUCCESS,
--		  "1GB mremap - Source PUD-aligned, Destination PUD-aligned"),
--	};
-+	page_size = sysconf(_SC_PAGESIZE);
-+
-+	/* Expected mremap failures */
-+	test_cases[0] =	MAKE_TEST(page_size, page_size, page_size,
-+				  OVERLAPPING, EXPECT_FAILURE,
-+				  "mremap - Source and Destination Regions Overlapping");
-+
-+	test_cases[1] = MAKE_TEST(page_size, page_size/4, page_size,
-+				  NON_OVERLAPPING, EXPECT_FAILURE,
-+				  "mremap - Destination Address Misaligned (1KB-aligned)");
-+	test_cases[2] = MAKE_TEST(page_size/4, page_size, page_size,
-+				  NON_OVERLAPPING, EXPECT_FAILURE,
-+				  "mremap - Source Address Misaligned (1KB-aligned)");
-+
-+	/* Src addr PTE aligned */
-+	test_cases[3] = MAKE_TEST(PTE, PTE, PTE * 2,
-+				  NON_OVERLAPPING, EXPECT_SUCCESS,
-+				  "8KB mremap - Source PTE-aligned, Destination PTE-aligned");
-+
-+	/* Src addr 1MB aligned */
-+	test_cases[4] = MAKE_TEST(_1MB, PTE, _2MB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+				  "2MB mremap - Source 1MB-aligned, Destination PTE-aligned");
-+	test_cases[5] = MAKE_TEST(_1MB, _1MB, _2MB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+				  "2MB mremap - Source 1MB-aligned, Destination 1MB-aligned");
-+
-+	/* Src addr PMD aligned */
-+	test_cases[6] = MAKE_TEST(PMD, PTE, _4MB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+				  "4MB mremap - Source PMD-aligned, Destination PTE-aligned");
-+	test_cases[7] =	MAKE_TEST(PMD, _1MB, _4MB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+				  "4MB mremap - Source PMD-aligned, Destination 1MB-aligned");
-+	test_cases[8] = MAKE_TEST(PMD, PMD, _4MB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+				  "4MB mremap - Source PMD-aligned, Destination PMD-aligned");
-+
-+	/* Src addr PUD aligned */
-+	test_cases[9] = MAKE_TEST(PUD, PTE, _2GB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+				  "2GB mremap - Source PUD-aligned, Destination PTE-aligned");
-+	test_cases[10] = MAKE_TEST(PUD, _1MB, _2GB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+				   "2GB mremap - Source PUD-aligned, Destination 1MB-aligned");
-+	test_cases[11] = MAKE_TEST(PUD, PMD, _2GB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+				   "2GB mremap - Source PUD-aligned, Destination PMD-aligned");
-+	test_cases[12] = MAKE_TEST(PUD, PUD, _2GB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+				   "2GB mremap - Source PUD-aligned, Destination PUD-aligned");
-+
-+	perf_test_cases[0] =  MAKE_TEST(page_size, page_size, _1GB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+					"1GB mremap - Source PTE-aligned, Destination PTE-aligned");
-+	/*
-+	 * mremap 1GB region - Page table level aligned time
-+	 * comparison.
-+	 */
-+	perf_test_cases[1] = MAKE_TEST(PMD, PMD, _1GB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+				       "1GB mremap - Source PMD-aligned, Destination PMD-aligned");
-+	perf_test_cases[2] = MAKE_TEST(PUD, PUD, _1GB, NON_OVERLAPPING, EXPECT_SUCCESS,
-+				       "1GB mremap - Source PUD-aligned, Destination PUD-aligned");
- 
- 	run_perf_tests =  (threshold_mb == VALIDATION_NO_THRESHOLD) ||
- 				(threshold_mb * _1MB >= _1GB);
+@@ -75,9 +75,10 @@ static void *get_source_mapping(struct config c)
+ retry:
+ 	addr += c.src_alignment;
+ 	src_addr = mmap((void *) addr, c.region_size, PROT_READ | PROT_WRITE,
+-			MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, -1, 0);
++			MAP_FIXED_NOREPLACE | MAP_ANONYMOUS | MAP_SHARED,
++			-1, 0);
+ 	if (src_addr == MAP_FAILED) {
+-		if (errno == EPERM)
++		if (errno == EPERM || errno == EEXIST)
+ 			goto retry;
+ 		goto error;
+ 	}
 -- 
 2.29.2
 
