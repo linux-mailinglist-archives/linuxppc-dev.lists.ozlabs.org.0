@@ -2,36 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6566830B5F2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 04:43:24 +0100 (CET)
-Received: from bilbo.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DV9dP3ZL0zDqSK
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 14:43:21 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE3A30B605
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 04:45:56 +0100 (CET)
+Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DV9hL0XGDzDqvN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Feb 2021 14:45:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.43;
- helo=out30-43.freemail.mail.aliyun.com;
- envelope-from=yang.lee@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-43.freemail.mail.aliyun.com
- (out30-43.freemail.mail.aliyun.com [115.124.30.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82b;
+ helo=mail-qt1-x82b.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ACGMOTA/; dkim-atps=neutral
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com
+ [IPv6:2607:f8b0:4864:20::82b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DV9b74z9xzDqrN
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 14:41:22 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R141e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04420; MF=yang.lee@linux.alibaba.com;
- NM=1; PH=DS; RN=7; SR=0; TI=SMTPD_---0UNeB--C_1612237277; 
-Received: from
- j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com
- fp:SMTPD_---0UNeB--C_1612237277) by smtp.aliyun-inc.com(127.0.0.1);
- Tue, 02 Feb 2021 11:41:18 +0800
-From: Yang Li <yang.lee@linux.alibaba.com>
-To: geoff@infradead.org
-Subject: [PATCH] dma-mapping: remove unneeded semicolon
-Date: Tue,  2 Feb 2021 11:41:16 +0800
-Message-Id: <1612237276-111378-1-git-send-email-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DV9fN1mRszDqNF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 14:44:11 +1100 (AEDT)
+Received: by mail-qt1-x82b.google.com with SMTP id r20so10479081qtm.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Feb 2021 19:44:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=rBhoyGWjkRsTCiTBILJWwj9Boa8VrzqKZ3SeTMdXre0=;
+ b=ACGMOTA/8OZpInV0ItquQboxn9LAVxz6UJHSJIvcpOgRc/coMLx1GWsFQkrf+YlpPx
+ qKl0peVuqCoKZgOsgH/lkY1YWvXBTQDZtsKsqa3pN56ktuWc8bCxVdtMcZ9DijXcnn8a
+ HzvQ9PHH/ByPWra9+J1ObXTxEW87yRqD7/uoATM0MQlwnFIu5P6nXXjs3aGBKlOxpvzn
+ ET30ue827ygRTsQUXCDmxz7gN7qMreMEcNECfW4FWSPyLETOQ3+iHGqPxP9CBy1aA7Sd
+ wGrGB4VCEqQhJ97i4Un/bZQHCrDOZc6cEBI5X7V8zlJxZagNUFoyPVBQhLNc4Lj0hAe5
+ aahg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=rBhoyGWjkRsTCiTBILJWwj9Boa8VrzqKZ3SeTMdXre0=;
+ b=QAUKzi3WlReY8aArE1N7SahnsMs0VqqWAldKlmOPdE8sXv9OfvY3TNw37XQ86WqZBx
+ wYly+bpQCOmRpMxSv6NS6h2qAU3FvUG7GCAB5i0UYN2sz+wWWOr6HsydYaEgD8uOY3ln
+ Kq5HJMnVBx6j9lxT1ZLDoWCVOaNlcSHktMUhwa2rk4w67D5o5ZJvwjOxq/dVSxi1qEVm
+ hE4susaGgqqTln23EyVZWV59mpYG41MPO9rfbvTiv7qrf74uaB319E/SeLZ88mOqJeuE
+ /hp3GHmwt7FFE406NWyZuvCQsBXaV+heyVIm3U5AHr6PDJePENO6QuttlvvOHvMar7fm
+ 3Evw==
+X-Gm-Message-State: AOAM530ZD0IKcK/9ntuyflBAlY3ZZ8TkOBuSsZGDIcd31aYlWeDuv0Rq
+ oNhPgRYllCnHxyTI+gV1cEtpJ31/qnMOi0zaCMk=
+X-Google-Smtp-Source: ABdhPJxzk7x152gj1ZR/fWJAgd6iIGwx/YPu/xELj1cCgD8ICJ9wFnTTN6i8d/IlUIhSBV9Uxps4qvOpKumMUMMgurM=
+X-Received: by 2002:ac8:554d:: with SMTP id o13mr18240722qtr.55.1612237447824; 
+ Mon, 01 Feb 2021 19:44:07 -0800 (PST)
+MIME-Version: 1.0
+References: <1612236096-91154-1-git-send-email-yang.lee@linux.alibaba.com>
+In-Reply-To: <1612236096-91154-1-git-send-email-yang.lee@linux.alibaba.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Tue, 2 Feb 2021 14:43:57 +1100
+Message-ID: <CAOSf1CHrTda_mezUCspges_yTbrhJPLekb1uibA7qFWxbBG_3Q@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/eeh: remove unneeded semicolon
+To: Yang Li <yang.lee@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,44 +70,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Eliminate the following coccicheck warning:
-./arch/powerpc/platforms/ps3/system-bus.c:606:2-3: Unneeded semicolon
-./arch/powerpc/platforms/ps3/system-bus.c:765:2-3: Unneeded semicolon
+On Tue, Feb 2, 2021 at 2:21 PM Yang Li <yang.lee@linux.alibaba.com> wrote:
+>
+> Eliminate the following coccicheck warning:
+> ./arch/powerpc/kernel/eeh.c:782:2-3: Unneeded semicolon
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- arch/powerpc/platforms/ps3/system-bus.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Doesn't appear to be a load-bearing semicolon. It's hard to tell with EEH.
 
-diff --git a/arch/powerpc/platforms/ps3/system-bus.c b/arch/powerpc/platforms/ps3/system-bus.c
-index b431f41..5c73926 100644
---- a/arch/powerpc/platforms/ps3/system-bus.c
-+++ b/arch/powerpc/platforms/ps3/system-bus.c
-@@ -603,7 +603,7 @@ static dma_addr_t ps3_ioc0_map_page(struct device *_dev, struct page *page,
- 	default:
- 		/* not happned */
- 		BUG();
--	};
-+	}
- 	result = ps3_dma_map(dev->d_region, (unsigned long)ptr, size,
- 			     &bus_addr, iopte_flag);
- 
-@@ -762,7 +762,7 @@ int ps3_system_bus_device_register(struct ps3_system_bus_device *dev)
- 		break;
- 	default:
- 		BUG();
--	};
-+	}
- 
- 	dev->core.of_node = NULL;
- 	set_dev_node(&dev->core, 0);
--- 
-1.8.3.1
+Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
 
+>
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+> ---
+>  arch/powerpc/kernel/eeh.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+> index 813713c..02c058d 100644
+> --- a/arch/powerpc/kernel/eeh.c
+> +++ b/arch/powerpc/kernel/eeh.c
+> @@ -779,7 +779,7 @@ int pcibios_set_pcie_reset_state(struct pci_dev *dev, enum pcie_reset_state stat
+>         default:
+>                 eeh_pe_state_clear(pe, EEH_PE_ISOLATED | EEH_PE_CFG_BLOCKED, true);
+>                 return -EINVAL;
+> -       };
+> +       }
+>
+>         return 0;
+>  }
+> --
+> 1.8.3.1
+>
