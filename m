@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B383230D0C2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 02:30:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C415B30D0D2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 02:34:52 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVkdm2cC1zDrf7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 12:30:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVkkd6XF2zDwpk
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 12:34:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -16,28 +16,28 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=srM/EzIf; 
+ header.s=casper.20170209 header.b=meSQP3l8; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVNyg4hkyzDr9L
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 23:14:03 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVNyf6NZCzDqdW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 23:14:02 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
- Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:In-Reply-To:References;
- bh=x0ild1pWjAVS3WJxvq5XS64FoqpcDSC4Uujd61u50FE=; b=srM/EzIfbz/5riWYH6qumnb+zn
- j+mvi5gYrNB+AOYu3bH2i/2M1fx63vsCsf2YIiEVvlyENL+ojTgqwGXMJUGdqwp4OEMWQ4aObiZ3H
- B+0koplMVj7VdqGLo6QxINw2K1pPISxF+kTMN0mNirghPTmZYC8RLKeCQ/OCR8Ff7Rqv5Be4TQVuK
- M5qKT5l3HuJyH04i8EHBxJh98XWMNEPc+qGqhCjgDNrLd36g6Ug04LWZyNF/qW+Hj7Vqx9COZL6rr
- jFQnwP7EDOpAKJHGVY2nr8FtSMZvZlG3rLoxmOxEMmdSrfWNwf6Xks/iXNj+HglObnNEjoXvCOzCs
- PaXZle4w==;
+ References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+ Content-Type:Content-ID:Content-Description;
+ bh=Dfm4t6IzWCBDJPMpGdSuNSi4QcgFqA2qDwRcbyxPWlk=; b=meSQP3l8vTyTYW+K+VqSw+ahTJ
+ IgWgZijK/yzJk+GJkTA1nnmzS+VgIxBWgpGF1YpmRy5ZRkFJTCVVlrje4myb0Nd7UgF2mEAPeycFc
+ 1XhdAx9rNr0wuo6uzBO9Ydlw1fy0QDTIqDGFe1iXqFlsuKzM/8REf5puUEA7+M3qT5hz+mlgJAmtV
+ 4uNpmSWQiYBLp0coCUlLgVMQ+4jC9LZ073kECuGnQugmsbcU+zlqqtxjmb00xjUUbO7RDKROjnk7c
+ uQieKR5ydi9tOJkVQvC50ixgGsYJQ8WupFRldzFldko0RcYXevgpYHcqiHIZ6dNhiHAocZgN37tTq
+ ZNx/iELw==;
 Received: from [2001:4bb8:198:6bf4:7f38:755e:a6e0:73e9] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1l6uYq-00FAKY-Ez; Tue, 02 Feb 2021 12:13:37 +0000
+ id 1l6uYs-00FAKd-RF; Tue, 02 Feb 2021 12:13:39 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Frederic Barrat <fbarrat@linux.ibm.com>,
  Andrew Donnellan <ajd@linux.ibm.com>,
@@ -48,10 +48,12 @@ To: Frederic Barrat <fbarrat@linux.ibm.com>,
  Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
  Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
  Joe Lawrence <joe.lawrence@redhat.com>
-Subject: module loader dead code removal and cleanups v3
-Date: Tue,  2 Feb 2021 13:13:21 +0100
-Message-Id: <20210202121334.1361503-1-hch@lst.de>
+Subject: [PATCH 01/13] powerpc/powernv: remove get_cxl_module
+Date: Tue,  2 Feb 2021 13:13:22 +0100
+Message-Id: <20210202121334.1361503-2-hch@lst.de>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210202121334.1361503-1-hch@lst.de>
+References: <20210202121334.1361503-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
@@ -75,20 +77,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
+The static inline get_cxl_module function is entirely unused since commit
+8bf6b91a5125a ("Revert "powerpc/powernv: Add support for the cxl kernel
+api on the real phb"), so remove it.
 
-this series removes support for long term unused export types and
-cleans up various loose ends in the module loader.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+---
+ arch/powerpc/platforms/powernv/pci-cxl.c | 22 ----------------------
+ 1 file changed, 22 deletions(-)
 
-Changes since v2:
- - clean up klp_find_object_symbol a bit
- - remove the now unused module_assert_mutex helper 
+diff --git a/arch/powerpc/platforms/powernv/pci-cxl.c b/arch/powerpc/platforms/powernv/pci-cxl.c
+index 8c739c94ed28d6..53172862d23bd3 100644
+--- a/arch/powerpc/platforms/powernv/pci-cxl.c
++++ b/arch/powerpc/platforms/powernv/pci-cxl.c
+@@ -150,25 +150,3 @@ int pnv_cxl_ioda_msi_setup(struct pci_dev *dev, unsigned int hwirq,
+ 	return 0;
+ }
+ EXPORT_SYMBOL(pnv_cxl_ioda_msi_setup);
+-
+-#if IS_MODULE(CONFIG_CXL)
+-static inline int get_cxl_module(void)
+-{
+-	struct module *cxl_module;
+-
+-	mutex_lock(&module_mutex);
+-
+-	cxl_module = find_module("cxl");
+-	if (cxl_module)
+-		__module_get(cxl_module);
+-
+-	mutex_unlock(&module_mutex);
+-
+-	if (!cxl_module)
+-		return -ENODEV;
+-
+-	return 0;
+-}
+-#else
+-static inline int get_cxl_module(void) { return 0; }
+-#endif
+-- 
+2.29.2
 
-Changes since v1:
- - move struct symsearch to module.c
- - rework drm to not call find_module at all
- - allow RCU-sched locking for find_module
- - keep find_module as a public API instead of module_loaded
- - update a few comments and commit logs
-
-Diffstat:
