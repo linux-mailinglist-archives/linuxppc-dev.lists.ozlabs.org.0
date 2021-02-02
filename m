@@ -1,129 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B37730D057
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 01:38:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD66630D05E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 01:42:21 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVjTv67TXzDwhb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 11:38:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVjZ05mzhzDqZq
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 11:42:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vmware.com (client-ip=40.107.93.79;
- helo=nam10-dm6-obe.outbound.protection.outlook.com;
- envelope-from=namit@vmware.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=vmware.com header.i=@vmware.com header.a=rsa-sha256
- header.s=selector2 header.b=S/03B23n; 
- dkim-atps=neutral
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2079.outbound.protection.outlook.com [40.107.93.79])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e;
+ helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Hsn610B9; dkim-atps=neutral
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
+ [IPv6:2607:f8b0:4864:20::102e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVKt210hZzDqrV
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 20:54:46 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ftECuGUFxLy5gj8hYJ/+6jUb5EcZoscICST/93Di9NlzpXYrcR/87naCdRRk48gkyPV+JTAEMjxA5Xx0DMCzic8RisIYilWVIVhEeP5+7C99Rwo3PM7EM2XSytR5lr9I1Lv1R5Znw5JmUjurxS6n1/dLH46Y1aNJVlCgd5fZhYNa4brEjIYUhDaUVUocU8veB6CradGpPvF/b9LEKWyMXui0AVBc9GdA3dBiUvb/7ArO30aOfP6l0dX/VArqbWckKMSQT2KHPOMW61EYcKLUbcmfIC0jx0TS5K0Z4/dXdYxOyopN2qF4W2TW3+8zblD2oHISK+LeqqccRmUnmZaz4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/2RR/AYzKVUa5s+3J3RjS7aldU89Q81zJxbN64DYC5c=;
- b=Xt7aERzdilv075lEgKW4dbmNAUEZpOtTurrPtlzBpdhmzFw65VRZIDYmsVRAmi3+KwaEwNiCGWxTWfmcAKM6aVlP7WUhi9bvcmy1Yqog9BHElUXWJEDCUJcsShEd67s3czGdZoq/MOaOtditt38Couhpcc0jQnUt0M3aMcMABrvQTm5DRkRFmc5XA6TMQgtQfiEw+CvmfkrtNQc7EzoWXXRFm8h3SMxZ2HYDP3ZvTZLI9+SG/8RCs6ZS2i9olOsnbNR103F4mhcUndFcw+o8dAzt4iIplMEugLoVZ+JxxadFk82B/kU8AwqZwg1P3n4DIwrVKnh8/lUFVe8PweEYGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vmware.com; dmarc=pass action=none header.from=vmware.com;
- dkim=pass header.d=vmware.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vmware.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/2RR/AYzKVUa5s+3J3RjS7aldU89Q81zJxbN64DYC5c=;
- b=S/03B23ne9WGx1vTwjmRCcfC6MGAaIdHmbzZmfiYQSYriH5z7y8s98pDU8qcSqq/08O3KXtBpWr9qHXfIs3MhxhzJmY8NGxK+GmxeNwNnQXqAjUQaSHLy17Gh/hA2OniqrSgGYqaLjgpnnLbByK9qL47WycA7+IQ1CYGBtDNuvg=
-Received: from (2603:10b6:a03:4a::18) by
- BYAPR05MB4248.namprd05.prod.outlook.com (2603:10b6:a02:ff::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3805.6; Tue, 2 Feb 2021 09:54:36 +0000
-Received: from BYAPR05MB4776.namprd05.prod.outlook.com
- ([fe80::ddba:e1e9:fde7:3b31]) by BYAPR05MB4776.namprd05.prod.outlook.com
- ([fe80::ddba:e1e9:fde7:3b31%3]) with mapi id 15.20.3825.013; Tue, 2 Feb 2021
- 09:54:36 +0000
-From: Nadav Amit <namit@vmware.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [RFC 11/20] mm/tlb: remove arch-specific tlb_start/end_vma()
-Thread-Topic: [RFC 11/20] mm/tlb: remove arch-specific tlb_start/end_vma()
-Thread-Index: AQHW+JMuIjRLErxJlUWOv0AHOQSsJqpEa7AAgAALDACAACR+gIAABnKA
-Date: Tue, 2 Feb 2021 09:54:36 +0000
-Message-ID: <9100B8AE-129A-4E13-8F01-7B9C14C98B4C@vmware.com>
-References: <20210131001132.3368247-1-namit@vmware.com>
- <20210131001132.3368247-12-namit@vmware.com>
- <YBfvh1Imz6RRTUDV@hirez.programming.kicks-ass.net>
- <1612247956.0a1r1yjmm3.astroid@bobo.none>
- <F1C67840-C62F-4583-8593-B621706034F6@vmware.com>
- <YBkb8yKSUKTPJvxk@hirez.programming.kicks-ass.net>
-In-Reply-To: <YBkb8yKSUKTPJvxk@hirez.programming.kicks-ass.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: infradead.org; dkim=none (message not signed)
- header.d=none;infradead.org; dmarc=none action=none header.from=vmware.com;
-x-originating-ip: [24.6.216.183]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c6818f7a-6092-486e-e0bb-08d8c7608cbd
-x-ms-traffictypediagnostic: BYAPR05MB4248:
-x-microsoft-antispam-prvs: <BYAPR05MB4248A679B365380C5C9D6C04D0B59@BYAPR05MB4248.namprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6108;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: uB3WS/CEu+TutNysO4AIlnMpTI2LZsDuB8ZnE7tU1ZeLW8uS4KDkvylt1cIOf9edzIpXlnDzwn+qVjmzFU+hHVGa3gVpebTk4RgdhyWaWzKSetiIoP8bBDIm9gNDE7ca/rEeqQoFkGGvq+XpcO8tf4UWh9nVrAc5gPxLWL/0IkcVZcx9TURuGTUo6lDUrT9wpeYAitSwhOKr+/YjujeSgwyf3rsY/PxDkefinx7VYWzLQ765tr6T6sey/B1tlaHXVQf9eFGaBUXsSlrbwPYYO5YT9WCI3/Vv/NVRBtJoelAdo6nDntbzFzs7M2wRPjcBYMbl68j2sDGIQ5KVZoQGdES0tfafRe3TP9OHGw383mvh2sMMmLvyFUoxciQQwugAYLqynY/u/y+DDGvGkikxx0ZTmhOL3Alq2ggAgruiqnLD6+lPINRtrqYk5UKBgbVOJ84I3GPyQ3diqPtjxxEKPuXmjn/jNg6sSzSntpiKT8iVHdWfL1lbTxCdvB1rkkOaGH6fRfMGe+7LBIFUE6MWm+J2NnSHpeRmBjuK096+llId2Eiv+UbBR5Yd0Cg1qTceg4xKd/vlzShtyvlmEB8kXg==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR05MB4776.namprd05.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(376002)(39860400002)(396003)(346002)(136003)(2616005)(6916009)(76116006)(54906003)(86362001)(33656002)(2906002)(71200400001)(8676002)(66446008)(64756008)(66556008)(66946007)(4326008)(5660300002)(26005)(7416002)(316002)(8936002)(36756003)(6512007)(478600001)(6486002)(53546011)(6506007)(66476007)(186003)(45980500001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: =?utf-8?B?SlZGT0EyeHFJaWR6cXpma0YyQ2xKbnp5QzNmWE5qQVlqejlZdm1IMDZROEN4?=
- =?utf-8?B?MjgzNGZxRTlrR211VTcvdWtJdVZoZEtpcjkySzJQTFZmTjllNHMvV25mOUxl?=
- =?utf-8?B?NXFLc3JDU0tVS1VudndrQlovWFVHSHYzN3gxOEN6VklCWjhsUG1RT1ZIOXVu?=
- =?utf-8?B?TWI5emFzZkJldzJOcWY2b1N1cW1UakVqa1VIaVhTaDhFRnEyTWo0M2JURjlE?=
- =?utf-8?B?UjUvUlpFYjR3M040TFl5S1kvTy9EQXEyblVqNU9aVVZNbXhpRGU4dk9ta2VV?=
- =?utf-8?B?Z1IybHcyRkcyQzdVM2JlOVUxZUdtNnowUnBmaFhSMloyYXM4OHdsQis5Nk1C?=
- =?utf-8?B?c1BoYW1zd0ZNT0dqc1dhYnFqRHZ1OWYwSDJrSk4yaFd5RWg1ZndZR1M4UGxu?=
- =?utf-8?B?OW94ZSt4Q2s1SnN4VW9UYnUwQjg5UGc2ZmpQUU13SnVIOU1yUXJBVTkyMHp5?=
- =?utf-8?B?SWpFZGw4Y1R5aGgvZElVTjkxeFVFZWpob1ptTzVHeHJraGFPUTdkTVdvRENY?=
- =?utf-8?B?SVl0UkJaenZIYzZvQWh3ZkNjcUpKa2JPYndhV25BamtEZjY5UHl4S3VkVy9S?=
- =?utf-8?B?bXUwdzFhTTM2Y0ZCSnNZRlVzbEtCT3JxbG0ySEVYd1gxNjJ0ZW5ZQ2xjY2Rv?=
- =?utf-8?B?VjhXSVZLbFQ2MUQxVW9LaXVYeFJWdTRTNWhWZDFIVmtDRWlnMHpxNVFoMjBk?=
- =?utf-8?B?dWhkaCswemU5TlBiTk9IYUpuTTlaWDVwcm5OS2NPQ3FUNlRjL3ErU2p5RC9J?=
- =?utf-8?B?MmsxQVRYaUxLakhiVlpWOFFoZjZxNUVIeGc1ZHF2Zkw0VWxmTUUvSGg3b1hV?=
- =?utf-8?B?QlB3WnY4dVE2YTMwVm9TZnlCSzJvSC9aNXU4VzFRTCtQRC9KdzI3WHozQXll?=
- =?utf-8?B?emhxQkJJUkU2Rkl1bHVxTzJYeUJHbmNiNnA2WUtYMTk1aTR5THVyTFZzdnpI?=
- =?utf-8?B?YUNFb01Rdm1oQ1BVZ1RiMEkyT3p4NGN0WitHNFVnSkc5MVJGZCt6OUgrKzAr?=
- =?utf-8?B?Y3ZpRi95N285ZDJEWDdzekJWbmVNRCtvK05XOVIzNkVncW94RVY0UUYvcS9i?=
- =?utf-8?B?Sm1NdmZ0VEpLMXdFVUY3SHhnWHNqV0x1czRzTDJBODFudjdrbnZZOFlWWk1o?=
- =?utf-8?B?ckNWVnFtUmdRZm1GS3ZXdUJTb1paRFBaSzZnSEFOTll3YjFyRENaVUZzYkRZ?=
- =?utf-8?B?WG95OUN1aGZET2VzYlgxWGdETTNaajEreGg2ZTJmQ0Z1RGRrMElTV2JpR24r?=
- =?utf-8?B?bXl2UzhiOERFT01LbjhXbkNlbkowVFcxd0huS3FWRzVTNzFGb1dZcmlsNVJF?=
- =?utf-8?B?RXBBUmJqcmthaDc1bEZHL2xvU093M2Z2THdSTjRyL2Fmd1ZseVg2VVZ5dkZp?=
- =?utf-8?B?aVp2elM1eEtWM2VkWFdlaS9iZUF5QnF4TVhEcEswdFJRWlVKaUZ1RS9iOHBq?=
- =?utf-8?B?Zmt6UWdtVFQ2UzFiYUtuQmF1OUJNRzdMSUFuNWE4a2JWYURyWGJ1NW80Q2tW?=
- =?utf-8?B?NldwMnBaandxNWpoVExsRitPa2Vod2FlL3p2bVlzY3g2aDlyK2J6WWJIaUZk?=
- =?utf-8?B?bGZiYzBOSTZ2RU5ZUDNsT3hVejVtQzFLSnJWUFdzSmVPTm5OemNHWDZRNGFB?=
- =?utf-8?B?eTYwSHhBYWRSQlM0WDFzZXk4MkF4NzFmUzg3K0Z4SGRzUkVITVJnWXk4L3BQ?=
- =?utf-8?B?S0dCUzhVTzVLeUdNakJ5OUZ1QXNWM1ZKQnFZTnlMOXI4c3F5Y2RZc3Z4RHJR?=
- =?utf-8?Q?/MHPMuzXc5B/shpU2BGyWWxP5A/pS0AZLo9/1+H?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D9DC8C5CE9FEB9418B5FBA96785E57B8@namprd05.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVLVH61NbzDqwg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 21:22:43 +1100 (AEDT)
+Received: by mail-pj1-x102e.google.com with SMTP id s24so1975074pjp.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Feb 2021 02:22:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=feNMs9NZIZZBFRuPZuPQAraD1ls2HBTzJnPTDra1dJo=;
+ b=Hsn610B9baMjUo1dtjNGVVl0OMIYTZTIqhnRX3zMn7zT8usqwHFf51r2OfflOoiC0c
+ 19XwAcKChgc/bO3PHxkM0Sszy87AP165fkRjy9N9U5+kYTBBFGNrGeeMkAHUGleudAgh
+ 54LrQGzm/wtP2C3shypmgkoFHl1Peul+jfBAvSV9vdz+0Ah0FzSZ9hGANzqMRm4IDNhC
+ Y7lLxrRQxpvh1/LVTxLwGEhvGLkM1b/wWBUPLvVlX8QBHq2pAhmDzzDPLIphrrd6Bljg
+ aGFaAJHE9uUfySvC5HASZYUAGc4IyII5YQS6M975rZTgLCb/ciN2JNJi3IlkvM8ZJeVN
+ A/qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=feNMs9NZIZZBFRuPZuPQAraD1ls2HBTzJnPTDra1dJo=;
+ b=DSlxjyPezTOUexEnK0IFeoUIb1yzGAf/bRF4X/rhdausVWYHr6h3Sih0+gZM3S94Wk
+ H01BdmsyYauSPE6cz9UjB3SzSY3GpAfdwKD6kUA5s8SfgIDlUX6tJqt/qzhF3kfW46/R
+ aw+lR5qZHwOE8kCelsAat3a89ruVGuiV0kPfia0pHZl3WXeRm1Q/QwNkKyQGowJkSzoK
+ DLmswIbwodTQwZIBsaxT5A6uQeLG53gISC2CadpH5nNvl7LpzkntEs0Vqc86XCE9gdOF
+ QlGor+gKEc+FnKWmqeBHF8jD7vBhb5yV/3YtVnYtiRXLT4p8xVLscZMB4Xk7fkACSTYV
+ LWmg==
+X-Gm-Message-State: AOAM532y6WwLwc2PHT1TUYWO2rzfjvHi6cDOBHrfnAfIffX0kiKnslJc
+ 2j92EbGAKLU+1Xhso3WEACiEFcrtwf8=
+X-Google-Smtp-Source: ABdhPJwAydycRDrEu05vCkvnwXNns+f1xdrkCkAXHMftwOd5L2+xxwr6QxnPETGvBPuRovul4hnQfw==
+X-Received: by 2002:a17:90a:aa85:: with SMTP id
+ l5mr3754761pjq.230.1612261361659; 
+ Tue, 02 Feb 2021 02:22:41 -0800 (PST)
+Received: from localhost (60-242-11-44.static.tpgi.com.au. [60.242.11.44])
+ by smtp.gmail.com with ESMTPSA id o10sm21105273pfp.87.2021.02.02.02.22.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Feb 2021 02:22:40 -0800 (PST)
+Date: Tue, 02 Feb 2021 20:22:35 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v11 01/13] mm/vmalloc: fix HUGE_VMAP regression by
+ enabling huge pages in vmalloc_to_page
+To: Andrew Morton <akpm@linux-foundation.org>, Ding Tianhong
+ <dingtianhong@huawei.com>, linux-mm@kvack.org
+References: <20210126044510.2491820-1-npiggin@gmail.com>
+ <20210126044510.2491820-2-npiggin@gmail.com>
+ <2dcbe2c9-c968-4895-fc43-c40dfe9f06d3@huawei.com>
+In-Reply-To: <2dcbe2c9-c968-4895-fc43-c40dfe9f06d3@huawei.com>
 MIME-Version: 1.0
-X-OriginatorOrg: vmware.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR05MB4776.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6818f7a-6092-486e-e0bb-08d8c7608cbd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Feb 2021 09:54:36.3657 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jFIznUjwJEV875gICSVXrXqGKb70u7v5tV+sMy+ktQssc2O+a5yhzPdDLORyiR1bO2c35VZEgmQMHghaauUFhg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR05MB4248
+Message-Id: <1612261080.2gjaa5ecdf.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,40 +81,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrea Arcangeli <aarcange@redhat.com>,
- linux-s390 <linux-s390@vger.kernel.org>, X86 ML <x86@kernel.org>,
- Yu Zhao <yuzhao@google.com>, Will Deacon <will@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, LKML <linux-kernel@vger.kernel.org>,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- Linux-MM <linux-mm@kvack.org>, Nicholas Piggin <npiggin@gmail.com>,
- Andy Lutomirski <luto@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PiBPbiBGZWIgMiwgMjAyMSwgYXQgMTozMSBBTSwgUGV0ZXIgWmlqbHN0cmEgPHBldGVyekBpbmZy
-YWRlYWQub3JnPiB3cm90ZToNCj4gDQo+IE9uIFR1ZSwgRmViIDAyLCAyMDIxIGF0IDA3OjIwOjU1
-QU0gKzAwMDAsIE5hZGF2IEFtaXQgd3JvdGU6DQo+PiBBcm0gZG9lcyBub3QgZGVmaW5lIHRsYl9l
-bmRfdm1hLCBhbmQgY29uc2VxdWVudGx5IGl0IGZsdXNoZXMgdGhlIFRMQiBhZnRlcg0KPj4gZWFj
-aCBWTUEuIEkgc3VzcGVjdCBpdCBpcyBub3QgaW50ZW50aW9uYWwuDQo+IA0KPiBBUk0gaXMgb25l
-IG9mIHRob3NlIHRoYXQgbG9vayBhdCB0aGUgVk1fRVhFQyBiaXQgdG8gZXhwbGljaXRseSBmbHVz
-aA0KPiBJVExCIElJUkMsIHNvIGl0IGhhcyB0by4NCg0KSG1t4oCmIEkgZG9u4oCZdCB0aGluayBB
-cm0gaXMgZG9pbmcgdGhhdC4gQXQgbGVhc3QgYXJtNjQgZG9lcyBub3QgdXNlIHRoZQ0KZGVmYXVs
-dCB0bGJfZmx1c2goKSwgYW5kIGl0IGRvZXMgbm90IHNlZW0gdG8gY29uc2lkZXIgVk1fRVhFQyAo
-YXQgbGVhc3QgaW4NCnRoaXMgcGF0aCk6DQoNCnN0YXRpYyBpbmxpbmUgdm9pZCB0bGJfZmx1c2go
-c3RydWN0IG1tdV9nYXRoZXIgKnRsYikNCnsNCiAgICAgICAgc3RydWN0IHZtX2FyZWFfc3RydWN0
-IHZtYSA9IFRMQl9GTFVTSF9WTUEodGxiLT5tbSwgMCk7DQogICAgICAgIGJvb2wgbGFzdF9sZXZl
-bCA9ICF0bGItPmZyZWVkX3RhYmxlczsNCiAgICAgICAgdW5zaWduZWQgbG9uZyBzdHJpZGUgPSB0
-bGJfZ2V0X3VubWFwX3NpemUodGxiKTsNCiAgICAgICAgaW50IHRsYl9sZXZlbCA9IHRsYl9nZXRf
-bGV2ZWwodGxiKTsNCiAgICAgICAgDQogICAgICAgIC8qDQogICAgICAgICAqIElmIHdlJ3JlIHRl
-YXJpbmcgZG93biB0aGUgYWRkcmVzcyBzcGFjZSB0aGVuIHdlIG9ubHkgY2FyZSBhYm91dA0KICAg
-ICAgICAgKiBpbnZhbGlkYXRpbmcgdGhlIHdhbGstY2FjaGUsIHNpbmNlIHRoZSBBU0lEIGFsbG9j
-YXRvciB3b24ndA0KICAgICAgICAgKiByZWFsbG9jYXRlIG91ciBBU0lEIHdpdGhvdXQgaW52YWxp
-ZGF0aW5nIHRoZSBlbnRpcmUgVExCLg0KICAgICAgICAgKi8NCiAgICAgICAgaWYgKHRsYi0+bW1f
-ZXhpdGluZykgew0KICAgICAgICAgICAgICAgIGlmICghbGFzdF9sZXZlbCkNCiAgICAgICAgICAg
-ICAgICAgICAgICAgIGZsdXNoX3RsYl9tbSh0bGItPm1tKTsNCiAgICAgICAgICAgICAgICByZXR1
-cm47DQogICAgICAgIH0gICAgICAgDQogICAgICAgIA0KICAgICAgICBfX2ZsdXNoX3RsYl9yYW5n
-ZSgmdm1hLCB0bGItPnN0YXJ0LCB0bGItPmVuZCwgc3RyaWRlLA0KICAgICAgICAgICAgICAgICAg
-ICAgICAgICBsYXN0X2xldmVsLCB0bGJfbGV2ZWwpOw0KfQ==
+Excerpts from Ding Tianhong's message of January 28, 2021 1:13 pm:
+> On 2021/1/26 12:44, Nicholas Piggin wrote:
+>> vmalloc_to_page returns NULL for addresses mapped by larger pages[*].
+>> Whether or not a vmap is huge depends on the architecture details,
+>> alignments, boot options, etc., which the caller can not be expected
+>> to know. Therefore HUGE_VMAP is a regression for vmalloc_to_page.
+>>=20
+>> This change teaches vmalloc_to_page about larger pages, and returns
+>> the struct page that corresponds to the offset within the large page.
+>> This makes the API agnostic to mapping implementation details.
+>>=20
+>> [*] As explained by commit 029c54b095995 ("mm/vmalloc.c: huge-vmap:
+>>     fail gracefully on unexpected huge vmap mappings")
+>>=20
+>> Reviewed-by: Christoph Hellwig <hch@lst.de>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>  mm/vmalloc.c | 41 ++++++++++++++++++++++++++---------------
+>>  1 file changed, 26 insertions(+), 15 deletions(-)
+>>=20
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index e6f352bf0498..62372f9e0167 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -34,7 +34,7 @@
+>>  #include <linux/bitops.h>
+>>  #include <linux/rbtree_augmented.h>
+>>  #include <linux/overflow.h>
+>> -
+>> +#include <linux/pgtable.h>
+>>  #include <linux/uaccess.h>
+>>  #include <asm/tlbflush.h>
+>>  #include <asm/shmparam.h>
+>> @@ -343,7 +343,9 @@ int is_vmalloc_or_module_addr(const void *x)
+>>  }
+>> =20
+>>  /*
+>> - * Walk a vmap address to the struct page it maps.
+>> + * Walk a vmap address to the struct page it maps. Huge vmap mappings w=
+ill
+>> + * return the tail page that corresponds to the base page address, whic=
+h
+>> + * matches small vmap mappings.
+>>   */
+>>  struct page *vmalloc_to_page(const void *vmalloc_addr)
+>>  {
+>> @@ -363,25 +365,33 @@ struct page *vmalloc_to_page(const void *vmalloc_a=
+ddr)
+>> =20
+>>  	if (pgd_none(*pgd))
+>>  		return NULL;
+>> +	if (WARN_ON_ONCE(pgd_leaf(*pgd)))
+>> +		return NULL; /* XXX: no allowance for huge pgd */
+>> +	if (WARN_ON_ONCE(pgd_bad(*pgd)))
+>> +		return NULL;
+>> +
+>>  	p4d =3D p4d_offset(pgd, addr);
+>>  	if (p4d_none(*p4d))
+>>  		return NULL;
+>> -	pud =3D pud_offset(p4d, addr);
+>> +	if (p4d_leaf(*p4d))
+>> +		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
+>> +	if (WARN_ON_ONCE(p4d_bad(*p4d)))
+>> +		return NULL;
+>> =20
+>> -	/*
+>> -	 * Don't dereference bad PUD or PMD (below) entries. This will also
+>> -	 * identify huge mappings, which we may encounter on architectures
+>> -	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=3Dy. Such regions will be
+>> -	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
+>> -	 * not [unambiguously] associated with a struct page, so there is
+>> -	 * no correct value to return for them.
+>> -	 */
+>> -	WARN_ON_ONCE(pud_bad(*pud));
+>> -	if (pud_none(*pud) || pud_bad(*pud))
+>> +	pud =3D pud_offset(p4d, addr);
+>> +	if (pud_none(*pud))
+>> +		return NULL;
+>> +	if (pud_leaf(*pud))
+>> +		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+>=20
+> Hi Nicho:
+>=20
+> /builds/1mzfdQzleCy69KZFb5qHNSEgabZ/mm/vmalloc.c: In function 'vmalloc_to=
+_page':
+> /builds/1mzfdQzleCy69KZFb5qHNSEgabZ/include/asm-generic/pgtable-nop4d-hac=
+k.h:48:27: error: implicit declaration of function 'pud_page'; did you mean=
+ 'put_page'? [-Werror=3Dimplicit-function-declaration]
+>    48 | #define pgd_page(pgd)    (pud_page((pud_t){ pgd }))
+>       |                           ^~~~~~~~
+>=20
+> the pug_page is not defined for aarch32 when enabling 2-level page config=
+, it break the system building.
+
+Hey thanks for finding that, not sure why that didn't trigger any CI.
+
+Anyway newer kernels don't have the ptable-*-hack.h headers, but even so=20
+it still breaks upstream. arm is using some hand-rolled 2-level folding
+of its own (which is fair enough because most 32-bit archs were 2 level
+at the time I added pgtable-nopud.h header).
+
+This patch seems to at least make it build.
+
+Thanks,
+Nick
+
+---
+ arch/arm/include/asm/pgtable-3level.h | 2 --
+ arch/arm/include/asm/pgtable.h        | 3 +++
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/include/asm/pgtable-3level.h b/arch/arm/include/asm/p=
+gtable-3level.h
+index 2b85d175e999..d4edab51a77c 100644
+--- a/arch/arm/include/asm/pgtable-3level.h
++++ b/arch/arm/include/asm/pgtable-3level.h
+@@ -186,8 +186,6 @@ static inline pte_t pte_mkspecial(pte_t pte)
+=20
+ #define pmd_write(pmd)		(pmd_isclear((pmd), L_PMD_SECT_RDONLY))
+ #define pmd_dirty(pmd)		(pmd_isset((pmd), L_PMD_SECT_DIRTY))
+-#define pud_page(pud)		pmd_page(__pmd(pud_val(pud)))
+-#define pud_write(pud)		pmd_write(__pmd(pud_val(pud)))
+=20
+ #define pmd_hugewillfault(pmd)	(!pmd_young(pmd) || !pmd_write(pmd))
+ #define pmd_thp_or_huge(pmd)	(pmd_huge(pmd) || pmd_trans_huge(pmd))
+diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.=
+h
+index c02f24400369..d63a5bb6bd0c 100644
+--- a/arch/arm/include/asm/pgtable.h
++++ b/arch/arm/include/asm/pgtable.h
+@@ -166,6 +166,9 @@ extern struct page *empty_zero_page;
+=20
+ extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
+=20
++#define pud_page(pud)		pmd_page(__pmd(pud_val(pud)))
++#define pud_write(pud)		pmd_write(__pmd(pud_val(pud)))
++
+ #define pmd_none(pmd)		(!pmd_val(pmd))
+=20
+ static inline pte_t *pmd_page_vaddr(pmd_t pmd)
+--=20
+2.23.0
+
