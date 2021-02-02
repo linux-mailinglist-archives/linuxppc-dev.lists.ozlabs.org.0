@@ -2,64 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965D530D053
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 01:35:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A3930D243
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 04:56:18 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVjPc4QSSzDwlH
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 11:35:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVnsq5qyjzDwr2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 14:56:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::730;
+ helo=mail-qk1-x730.google.com; envelope-from=unixbhaskar@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=WQI9v3Fm; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=H21XDKE7; dkim-atps=neutral
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com
+ [IPv6:2607:f8b0:4864:20::730])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVKMX4XvdzDq9k
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 20:31:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=9KzakhvbdvrVuIhJCaujo2BiN5IuFWAm6tV0NCLB24Q=; b=WQI9v3Fm+YGJL5PLHXu17b3K22
- RuE4J49J6OEbD5VOJtDDNX8J+nxknxSho7XSv0wKzrtz5CbKv4IUELjrmqWTGl24O9yh/iUa1MrJu
- sf5qftPGCUIFqrjbI3r5y1Pp1FxAQMZoJqSO8A0ZwFmIpx1/kgsopT5zDn7A55SSypQOR4CORQjar
- 9fa7lWvlOC8S1H0VISKCVuCxvEm9FmduwfoWJqql7E8FFP145R9+IbtnXq75beFHh7yAV6gWlrDkM
- 7GLyL0AZ1NJkL/xHJWf50KjJGZ5zw67ZToWpSTlsNsP72bxYZUAKWhci2Dy8smLhif9sweQykcOqR
- bqXrtItg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1l6s26-0001fV-Rv; Tue, 02 Feb 2021 09:31:39 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 3E8E83003D8;
- Tue,  2 Feb 2021 10:31:32 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 0BE1D299C9F56; Tue,  2 Feb 2021 10:31:32 +0100 (CET)
-Date: Tue, 2 Feb 2021 10:31:31 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Nadav Amit <namit@vmware.com>
-Subject: Re: [RFC 11/20] mm/tlb: remove arch-specific tlb_start/end_vma()
-Message-ID: <YBkb8yKSUKTPJvxk@hirez.programming.kicks-ass.net>
-References: <20210131001132.3368247-1-namit@vmware.com>
- <20210131001132.3368247-12-namit@vmware.com>
- <YBfvh1Imz6RRTUDV@hirez.programming.kicks-ass.net>
- <1612247956.0a1r1yjmm3.astroid@bobo.none>
- <F1C67840-C62F-4583-8593-B621706034F6@vmware.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVKWB37JhzDqDT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 20:38:27 +1100 (AEDT)
+Received: by mail-qk1-x730.google.com with SMTP id a12so19155445qkh.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Feb 2021 01:38:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Yg8qLn6EBRblBdGN89hb4qppVjdAkF53EYMnS584DQ8=;
+ b=H21XDKE7kj6eviodyCfNiCshUr6Jl60NQwPGMYhq3Avfd4XS+uk55A2YxdbbFgzxui
+ sL8c36XDslXNHh7ezBTjvKUKd/rdbrP+XeDnJg6BSONj3kFyiCP1BqqYjWZAKovb0L8Y
+ VVt1+afdyxEhdTLjPf8UGL4I9rbDHEOd3EZ7QGqenX6ehu++KcdY5csfm9S7lrnOb58a
+ dpBsBnPgWchQ74AWLHFheE2/fIvkkTxgiw7oZC13UwRhs4brUZAiP9M5nql3/PFP+2lb
+ wuCfUTiV13Qxcd4YZ24kag/2/Qsm8J2h8kO7GpPaLrUelbs1buIpIbq0Wa/szKLNdIxd
+ qenA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Yg8qLn6EBRblBdGN89hb4qppVjdAkF53EYMnS584DQ8=;
+ b=dVpQWZpjRGodGU4+MvuOLPAnPc9IusHc9fDgqKu4C9mn8ftI3Hpo/nGSD3bQ/0k3E0
+ KIk0l3+C4//X1unmaNgUKjjFbo3Q37t6oG1R1qfZUP5d6gIQDmaCBQoIMwBqXuYKr4hU
+ nqQtjSOfcF+wC6FvrAV21rFu1xp7x/wf/pgzuTazR73CFRlUK/abeUMLh8whzZzIQ+2M
+ Gcu/WHK/MJUNe7uiNzV6mziRthyYUqjSe+e4/gkIQjd8434fEo9hYVQL+rsoJqBp6CHC
+ kmkAWo4AFy0uYylHDgbGrhgPB3UhJktgrVHH+D3UtzZ8lHKwDd35DuBUKlcw/1ww2tHj
+ x8GA==
+X-Gm-Message-State: AOAM531rnsNNEY145drSmoT7NBR3asHOrNs0XjNbarUcFQhn5+es3weG
+ FLqLCrJkJVzoRdckM899Ap8=
+X-Google-Smtp-Source: ABdhPJxq86fkMmfu4iLXPxDRIKQK7ZUhUum7zoVW/6IbluNr5HO7IxuObUF0GYjcobviYxjSr/GGlQ==
+X-Received: by 2002:a05:620a:132a:: with SMTP id
+ p10mr20466699qkj.124.1612258703039; 
+ Tue, 02 Feb 2021 01:38:23 -0800 (PST)
+Received: from localhost.localdomain ([156.146.58.43])
+ by smtp.gmail.com with ESMTPSA id z5sm16608357qkc.61.2021.02.02.01.38.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Feb 2021 01:38:22 -0800 (PST)
+From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ akpm@linux-foundation.org, rppt@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: [PATCH] arch: powerpc: kernel: Fix the spelling mismach to mismatch
+ in head.44x.S
+Date: Tue,  2 Feb 2021 15:07:46 +0530
+Message-Id: <20210202093746.5198-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <F1C67840-C62F-4583-8593-B621706034F6@vmware.com>
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Wed, 03 Feb 2021 14:55:03 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,22 +79,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrea Arcangeli <aarcange@redhat.com>,
- linux-s390 <linux-s390@vger.kernel.org>, X86 ML <x86@kernel.org>,
- Yu Zhao <yuzhao@google.com>, Will Deacon <will@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, LKML <linux-kernel@vger.kernel.org>,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- Linux-MM <linux-mm@kvack.org>, Nicholas Piggin <npiggin@gmail.com>,
- Andy Lutomirski <luto@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Thomas Gleixner <tglx@linutronix.de>
+Cc: rdunlap@infradead.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 02, 2021 at 07:20:55AM +0000, Nadav Amit wrote:
-> Arm does not define tlb_end_vma, and consequently it flushes the TLB after
-> each VMA. I suspect it is not intentional.
 
-ARM is one of those that look at the VM_EXEC bit to explicitly flush
-ITLB IIRC, so it has to.
+s/mismach/mismatch/
+
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ arch/powerpc/kernel/head_44x.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/kernel/head_44x.S b/arch/powerpc/kernel/head_44x.S
+index 8e36718f3167..813fa305c33b 100644
+--- a/arch/powerpc/kernel/head_44x.S
++++ b/arch/powerpc/kernel/head_44x.S
+@@ -376,7 +376,7 @@ interrupt_base:
+ 	/* Load the next available TLB index */
+ 	lwz	r13,tlb_44x_index@l(r10)
+
+-	bne	2f			/* Bail if permission mismach */
++	bne	2f			/* Bail if permission mismatch */
+
+ 	/* Increment, rollover, and store TLB index */
+ 	addi	r13,r13,1
+@@ -471,7 +471,7 @@ interrupt_base:
+ 	/* Load the next available TLB index */
+ 	lwz	r13,tlb_44x_index@l(r10)
+
+-	bne	2f			/* Bail if permission mismach */
++	bne	2f			/* Bail if permission mismatch */
+
+ 	/* Increment, rollover, and store TLB index */
+ 	addi	r13,r13,1
+--
+2.26.2
+
