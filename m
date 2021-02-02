@@ -1,52 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8208630D0B5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 02:19:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C5130D0B9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 02:23:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVkPG3qxczDqNW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 12:19:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVkTd16sjzDwm7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 12:23:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVMk63l1VzDqqs
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 22:18:06 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=MdAZieYX; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DVMk472jpz9sWj;
- Tue,  2 Feb 2021 22:18:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1612264685;
- bh=iE+gbEP060kvP74UY/8AE3SdYXHv8DpZ3HU98j2rBPA=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=MdAZieYXTkUrkVV4Hi5KYqXPuDDnasCpzlh271BrgmtaIdLAlF5amJq3qMAzCXpt7
- 6ZfntSG+HfbGGEgQ6i5S5az87Bgy709RNAgroIg+T4V9wwinaf2+/BRBsBvY57Yl21
- 7kOmTHHppjnknit7zqmDskzE35bF/42NRWCejp6/HN8Hiw5E4shibyAfjReg9eVY4G
- PJafYcwoAReocdeudpyot1cdIbIlwItw/bPPWvTLP6x/+v/bSDpxGyGKGHpb5ZLt6C
- eH/EhE+/cSWyTB8UcH+lYrHIaZeUGA9BpHwGbFcX3SzaN/BMDqvLZtGoVli7GNdga/
- fFcNWUiQw4uUA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Raoni Fassina Firmino <raoni@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/64/signal: Fix regression in
- __kernel_sigtramp_rt64 semantics
-In-Reply-To: <1612251472.a7pzsfoixm.astroid@bobo.none>
-References: <20210201200505.iz46ubcizipnkcxe@work-tp>
- <1612251472.a7pzsfoixm.astroid@bobo.none>
-Date: Tue, 02 Feb 2021 22:18:03 +1100
-Message-ID: <875z3ad8gk.fsf@mpe.ellerman.id.au>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com;
+ envelope-from=dingtianhong@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVNN86JZ1zDr4m
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 22:47:23 +1100 (AEDT)
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4DVNKq0sXyzMSry;
+ Tue,  2 Feb 2021 19:45:35 +0800 (CST)
+Received: from [10.174.177.80] (10.174.177.80) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 2 Feb 2021 19:47:04 +0800
+Subject: Re: [PATCH v12 01/14] ARM: mm: add missing pud_page define to 2-level
+ page tables
+To: Russell King - ARM Linux admin <linux@armlinux.org.uk>, Nicholas Piggin
+ <npiggin@gmail.com>
+References: <20210202110515.3575274-1-npiggin@gmail.com>
+ <20210202110515.3575274-2-npiggin@gmail.com>
+ <20210202111319.GL1463@shell.armlinux.org.uk>
+From: Ding Tianhong <dingtianhong@huawei.com>
+Message-ID: <d1f661f2-f473-1dd8-94cc-fe76714249b5@huawei.com>
+Date: Tue, 2 Feb 2021 19:47:04 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20210202111319.GL1463@shell.armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.80]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,79 +53,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Excerpts from Raoni Fassina Firmino's message of February 2, 2021 6:05 am:
->> Tested on powerpc64 and powerpc64le, with a glibc build and running the
->> affected glibc's testcase[2], inspected that glibc's backtrace() now gives
->> the correct result and gdb backtrace also keeps working as before.
->> 
->> I believe this should be backported to releases 5.9 and 5.10 as userspace
->> is affected in this releases.
->> 
->> ---- 8< ----
->
-> Thanks for this, I don't know the glibc code but the kernel change seems 
-> okay to me.
-
-I turned this into an Acked-by from you.
- 
->> A Change[1] in __kernel_sigtramp_rt64 VDSO and trampoline code introduced a
->> regression in the way glibc's backtrace()[2] detects the signal-handler
->> stack frame.  Apart from the practical implications, __kernel_sigtram_rt64
->> was a VDSO with the semantics that it is a function you can call from
->> userspace to end a signal handling.  Now this semantics are no longer
->> valid.
->> 
->> I believe the aforementioned change affects all releases since 5.9.
->> 
->> This patch tries to fix both the semantics and practical aspect of
->> __kernel_sigtramp_rt64 returning it to the previous code, whilst keeping
->> the intended behavior from[1] by adding a new symbol to serve as the jump
->> target from the kernel to the trampoline. Now the trampoline has two parts,
->> an new entry point and the old return point.
->> 
->> [1] commit 0138ba5783ae0dcc799ad401a1e8ac8333790df9 ("powerpc/64/signal:
->>     Balance return predictor stack in signal trampoline")
->> [2] https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-January/223194.html
->> 
->> Fixes: 0138ba5783ae ("powerpc/64/signal: Balance return predictor stack in signal trampoline")
->> Signed-off-by: Raoni Fassina Firmino <raoni@linux.ibm.com>
->> ---
->>  arch/powerpc/kernel/vdso64/sigtramp.S   | 9 ++++++++-
->>  arch/powerpc/kernel/vdso64/vdso64.lds.S | 2 +-
->>  2 files changed, 9 insertions(+), 2 deletions(-)
->> 
->> diff --git a/arch/powerpc/kernel/vdso64/sigtramp.S b/arch/powerpc/kernel/vdso64/sigtramp.S
->> index bbf68cd01088..f0fd8d2a9fc4 100644
->> --- a/arch/powerpc/kernel/vdso64/sigtramp.S
->> +++ b/arch/powerpc/kernel/vdso64/sigtramp.S
->> @@ -15,11 +15,18 @@
+On 2021/2/2 19:13, Russell King - ARM Linux admin wrote:
+> On Tue, Feb 02, 2021 at 09:05:02PM +1000, Nicholas Piggin wrote:
+>> diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
+>> index c02f24400369..d63a5bb6bd0c 100644
+>> --- a/arch/arm/include/asm/pgtable.h
+>> +++ b/arch/arm/include/asm/pgtable.h
+>> @@ -166,6 +166,9 @@ extern struct page *empty_zero_page;
 >>  
->>  	.text
+>>  extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
 >>  
->> +/* __kernel_start_sigtramp_rt64 and __kernel_sigtramp_rt64 together
->> +   are one function split in two parts. The kernel jumps to the former
->> +   and the signal handler indirectly (by blr) returns to the latter.
->> +   __kernel_sigtramp_rt64 needs to point to the return address so
->> +   glibc can correctly identify the trampoline stack frame.  */
->
-> Are you planning to update glibc to cope with this as well? Any idea 
-> about musl? If so, including version numbers would be good (not that
-> it's really a problem to carry this patch around).
->
-> I was just about to ask to turn the comment into kernel style, but the
-> whole file has this style so nevermind about that! :)
+>> +#define pud_page(pud)		pmd_page(__pmd(pud_val(pud)))
+>> +#define pud_write(pud)		pmd_write(__pmd(pud_val(pud)))
+> 
+> As there is no PUD, does it really make sense to return a valid
+> struct page (which will be the PTE page) for pud_page(), which is
+> several tables above?
+> 
+--- a/arch/arm/include/asm/pgtable-2level.h
++++ b/arch/arm/include/asm/pgtable-2level.h
 
-Yeah, copying the existing style was the right thing to do.
++static inline int pud_none(pud_t pud)
++{
++          return 0;
++}
 
-... but I really can't deal with that comment style so I reformatted it
-to match kernel style :)
+I think it could be fix like this.
 
-Parts of that file use two-space indents as well, the whole thing could
-do with a pass through clang-format or similar one day.
-
-cheers
+Ding
