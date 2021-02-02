@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BF430D19C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 03:35:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2A630D1A8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 03:37:50 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVm4d6Bl3zDwp0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 13:35:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVm7G50sSzDwnB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 13:37:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,20 +16,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVT9w27LmzDqx9
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 02:23:55 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVTZV5WtWzDq9s
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 02:41:54 +1100 (AEDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 4FA6068AFE; Tue,  2 Feb 2021 16:23:46 +0100 (CET)
-Date: Tue, 2 Feb 2021 16:23:45 +0100
+ id 4164167373; Tue,  2 Feb 2021 16:41:49 +0100 (CET)
+Date: Tue, 2 Feb 2021 16:41:48 +0100
 From: Christoph Hellwig <hch@lst.de>
-To: Jessica Yu <jeyu@kernel.org>
-Subject: Re: module loader dead code removal and cleanups v3
-Message-ID: <20210202152345.GA11849@lst.de>
-References: <20210202121334.1361503-1-hch@lst.de> <YBljkDgMFcqKcH8H@gunter>
+To: Miroslav Benes <mbenes@suse.cz>
+Subject: Re: [PATCH 10/13] module: pass struct find_symbol_args to find_symbol
+Message-ID: <20210202154148.GA12433@lst.de>
+References: <20210202121334.1361503-1-hch@lst.de>
+ <20210202121334.1361503-11-hch@lst.de>
+ <alpine.LSU.2.21.2102021504550.570@pobox.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YBljkDgMFcqKcH8H@gunter>
+In-Reply-To: <alpine.LSU.2.21.2102021504550.570@pobox.suse.cz>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -42,28 +44,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
+Cc: Petr Mladek <pmladek@suse.com>, Jiri Kosina <jikos@kernel.org>,
  Andrew Donnellan <ajd@linux.ibm.com>, linux-kbuild@vger.kernel.org,
  David Airlie <airlied@linux.ie>, Masahiro Yamada <masahiroy@kernel.org>,
- Jiri Kosina <jikos@kernel.org>,
+ Josh Poimboeuf <jpoimboe@redhat.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
  live-patching@vger.kernel.org, Michal Marek <michal.lkml@markovi.net>,
- dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Frederic Barrat <fbarrat@linux.ibm.com>,
- Daniel Vetter <daniel@ffwll.ch>, Miroslav Benes <mbenes@suse.cz>,
+ Joe Lawrence <joe.lawrence@redhat.com>, dri-devel@lists.freedesktop.org,
+ Thomas Zimmermann <tzimmermann@suse.de>, Jessica Yu <jeyu@kernel.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Daniel Vetter <daniel@ffwll.ch>,
  linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 02, 2021 at 03:37:04PM +0100, Jessica Yu wrote:
-> The patchset looks good so far. After Miroslav's comments are
-> addressed, I'll wait an extra day or two in case there are more
-> comments before queueing them onto modules-next. I can take the first
-> two patches as well provided the acks are there (I think patch 2 is
-> missing Daniel Vetter's ack from v1 of the series, but I'll add that
-> back in).
+On Tue, Feb 02, 2021 at 03:07:51PM +0100, Miroslav Benes wrote:
+> >  	preempt_disable();
+> > -	sym = find_symbol(symbol, &owner, NULL, NULL, true, true);
+> > -	if (sym && strong_try_module_get(owner))
+> > -		sym = NULL;
+> > +	if (!find_symbol(&fsa) || !strong_try_module_get(fsa.owner)) {
+> 
+> I think this should be in fact
+> 
+>   if (!find_symbol(&fsa) || strong_try_module_get(fsa.owner)) {
+> 
+> to get the logic right (note the missing !). We want to return NULL if 
+> strong_try_module_get() does not succeed for a found symbol.
 
-I did remove the find_module entirely compared to v1, so I'd prefer
-another explicit ACK for the new version.
+Indeed. Fixed for the next version.
