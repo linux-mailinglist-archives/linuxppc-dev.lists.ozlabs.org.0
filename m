@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FEB30D0EB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 02:42:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2F930D0EF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 02:43:59 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVktz0VjGzDsG1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 12:42:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVkx86q6pzDqnF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 12:43:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -16,28 +16,28 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=psfxOa0D; 
+ header.s=casper.20170209 header.b=Nvd24owx; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVNyz4PVgzDqSR
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 23:14:19 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVNz065J4zDqSR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Feb 2021 23:14:20 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=3zZ674D/hSamgKerxl0NPrKVSmIU6F+ADPuSgbFjeOk=; b=psfxOa0DhcxM9+t6+KWP8PcNiA
- tZQ7o5ADDBYCa6UB/jXhfCH+xsvY0bj589xKyz17cpzYN1qXkPpBxWXLQxz1nre8g+/0HoaAX1ped
- /jR3MD3wKWNw2nDr35+tXLG4zgpupjf1TkzYOVyXSDq/+1Ut8fQoWhzAwon49wUlyHqaSJQakPJ4S
- qwMaMHMZAO7Lh/u8AmbBjrcpL4Y+P2d/2gbaeclV41Wqo93CKQRFKPXrOj6rBkcDgJPQ6cNK6UZ7O
- zuRm6r9L5rfalMYQsg5GJO4h4nz3od5nB/6600tZvDlyK/O7vfg2hAQa1QqYD1oGWSk4hpAxy9RR1
- ZWw/vuMA==;
+ bh=8NxK820uFUydC9QGaqCC8FKN2i1E7yLrklCQP+JUF/Y=; b=Nvd24owxzlLlfxwU5CdyHv0gP6
+ v2r+G5RzDJ0QgLCJJp3dS/1GGIXWUJPZb5TyM3Ju2IKb6tFlgAZFLmNdfDUNgQ4GLdNKrf1AaelKe
+ A5RRzqmBjgw624Cttt1t5foDV45qMKnN5Ccz/g95NIrz3jZCzd394/KpbkWzMgrqdCUlaotFstKaP
+ g7IEuLkgfi3mpPFsh6+vpVczTsSPYnFUQVp4ugAsNDaO6cX7kZWj1XUxTEO4AuqwidwhMDGuESv/U
+ 1q3xWs5eqwYIFNjb+wOyT9V3PIA/oyWAdDF6yHKB6WQO4pKWPRxl+ggc479VBRGUtNLPP3EDR/iP0
+ mCSF3Qjg==;
 Received: from [2001:4bb8:198:6bf4:7f38:755e:a6e0:73e9] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1l6uZ7-00FAMG-3y; Tue, 02 Feb 2021 12:13:54 +0000
+ id 1l6uZB-00FAMg-7C; Tue, 02 Feb 2021 12:13:57 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Frederic Barrat <fbarrat@linux.ibm.com>,
  Andrew Donnellan <ajd@linux.ibm.com>,
@@ -48,9 +48,9 @@ To: Frederic Barrat <fbarrat@linux.ibm.com>,
  Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
  Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
  Joe Lawrence <joe.lawrence@redhat.com>
-Subject: [PATCH 07/13] module: mark module_mutex static
-Date: Tue,  2 Feb 2021 13:13:28 +0100
-Message-Id: <20210202121334.1361503-8-hch@lst.de>
+Subject: [PATCH 08/13] module: remove each_symbol_in_section
+Date: Tue,  2 Feb 2021 13:13:29 +0100
+Message-Id: <20210202121334.1361503-9-hch@lst.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210202121334.1361503-1-hch@lst.de>
 References: <20210202121334.1361503-1-hch@lst.de>
@@ -77,65 +77,74 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Except for two lockdep asserts module_mutex is only used in module.c.
-Remove the two asserts given that the functions they are in are not
-exported and just called from the module code, and mark module_mutex
-static.
+each_symbol_in_section just contains a trivial loop over its arguments.
+Just open code the loop in the two callers.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/linux/module.h | 2 --
- kernel/module.c        | 2 +-
- lib/bug.c              | 3 ---
- 3 files changed, 1 insertion(+), 6 deletions(-)
+ kernel/module.c | 29 +++++++----------------------
+ 1 file changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 3ea4ffae608f97..0f360c48fe92a6 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -550,8 +550,6 @@ static inline unsigned long kallsyms_symbol_value(const Elf_Sym *sym)
- }
- #endif
- 
--extern struct mutex module_mutex;
--
- /* FIXME: It'd be nice to isolate modules during init, too, so they
-    aren't used before they (may) fail.  But presently too much code
-    (IDE & SCSI) require entry into the module during init.*/
 diff --git a/kernel/module.c b/kernel/module.c
-index 470fd9d9d68f97..1635656d47654a 100644
+index 1635656d47654a..b050c836a0061f 100644
 --- a/kernel/module.c
 +++ b/kernel/module.c
-@@ -87,7 +87,7 @@
-  * 3) module_addr_min/module_addr_max.
-  * (delete and add uses RCU list operations).
-  */
--DEFINE_MUTEX(module_mutex);
-+static DEFINE_MUTEX(module_mutex);
- static LIST_HEAD(modules);
+@@ -428,30 +428,13 @@ extern const s32 __start___kcrctab_unused_gpl[];
+ #define symversion(base, idx) ((base != NULL) ? ((base) + (idx)) : NULL)
+ #endif
  
- /* Work queue for freeing init sections in success case */
-diff --git a/lib/bug.c b/lib/bug.c
-index 7103440c0ee1af..8f9d537bfb2a59 100644
---- a/lib/bug.c
-+++ b/lib/bug.c
-@@ -91,8 +91,6 @@ void module_bug_finalize(const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs,
- 	char *secstrings;
- 	unsigned int i;
- 
--	lockdep_assert_held(&module_mutex);
+-static bool each_symbol_in_section(const struct symsearch *arr,
+-				   unsigned int arrsize,
+-				   struct module *owner,
+-				   bool (*fn)(const struct symsearch *syms,
+-					      struct module *owner,
+-					      void *data),
+-				   void *data)
+-{
+-	unsigned int j;
 -
- 	mod->bug_table = NULL;
- 	mod->num_bugs = 0;
- 
-@@ -118,7 +116,6 @@ void module_bug_finalize(const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs,
- 
- void module_bug_cleanup(struct module *mod)
+-	for (j = 0; j < arrsize; j++) {
+-		if (fn(&arr[j], owner, data))
+-			return true;
+-	}
+-
+-	return false;
+-}
+-
+ /* Returns true as soon as fn returns true, otherwise false. */
+ static bool each_symbol_section(bool (*fn)(const struct symsearch *arr,
+ 				    struct module *owner,
+ 				    void *data),
+ 			 void *data)
  {
--	lockdep_assert_held(&module_mutex);
- 	list_del_rcu(&mod->bug_list);
- }
++	unsigned int i;
+ 	struct module *mod;
+ 	static const struct symsearch arr[] = {
+ 		{ __start___ksymtab, __stop___ksymtab, __start___kcrctab,
+@@ -474,8 +457,9 @@ static bool each_symbol_section(bool (*fn)(const struct symsearch *arr,
  
+ 	module_assert_mutex_or_preempt();
+ 
+-	if (each_symbol_in_section(arr, ARRAY_SIZE(arr), NULL, fn, data))
+-		return true;
++	for (i = 0; i < ARRAY_SIZE(arr); i++)
++		if (fn(&arr[i], NULL, data))
++			return true;
+ 
+ 	list_for_each_entry_rcu(mod, &modules, list,
+ 				lockdep_is_held(&module_mutex)) {
+@@ -504,8 +488,9 @@ static bool each_symbol_section(bool (*fn)(const struct symsearch *arr,
+ 		if (mod->state == MODULE_STATE_UNFORMED)
+ 			continue;
+ 
+-		if (each_symbol_in_section(arr, ARRAY_SIZE(arr), mod, fn, data))
+-			return true;
++		for (i = 0; i < ARRAY_SIZE(arr); i++)
++			if (fn(&arr[i], mod, data))
++				return true;
+ 	}
+ 	return false;
+ }
 -- 
 2.29.2
 
