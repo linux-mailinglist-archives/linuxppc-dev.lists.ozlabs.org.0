@@ -2,50 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BC530E165
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 18:49:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF4A30E2F1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 19:56:47 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DW8M24pnnzDywC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 04:49:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DW9rs0WsjzF3Jw
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 05:56:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
- helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
+ smtp.mailfrom=codefail.de (client-ip=68.65.122.27;
+ helo=mta-07-4.privateemail.com; envelope-from=cmr@codefail.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=ajqWrUw9; 
- dkim-atps=neutral
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DW8KR6GmDzDwyL
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 04:47:55 +1100 (AEDT)
-Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
- [73.42.176.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id 60A2620B7192;
- Wed,  3 Feb 2021 09:47:54 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 60A2620B7192
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1612374474;
- bh=ccdnldXd7ffStD/bkTdf0JjvxcE1PixsU1LgmFGE+AQ=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=ajqWrUw9CR8dAwPmXY6LCKNUEia6bR5EjopHsReroJkEk/G8oj/LNYo6yVlhZHRPT
- gifIXM2rLnviz18/bU47RYoODn6g6eAz/ehhd+XdLDkL4/Db9ETaET7WsCMd4Jm0IR
- qbpqJGZRQppoEWCB6hHj8+tqyW4Ca58BYHrUL/GM=
-Subject: Re: [PATCH 1/2] ima: Free IMA measurement buffer on error
-To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-References: <20210121173003.18324-1-nramas@linux.microsoft.com>
- <87eeic1u6b.fsf@manicouagan.localdomain>
-From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <918ff442-2a0d-0e5b-4e95-c47dafc11382@linux.microsoft.com>
-Date: Wed, 3 Feb 2021 09:47:53 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Received: from MTA-07-4.privateemail.com (mta-07-4.privateemail.com
+ [68.65.122.27])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DW9Yg4r66zDwts
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 05:43:33 +1100 (AEDT)
+Received: from MTA-07.privateemail.com (localhost [127.0.0.1])
+ by MTA-07.privateemail.com (Postfix) with ESMTP id E5AD360056
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 13:43:29 -0500 (EST)
+Received: from oc8246131445.ibm.com (unknown [10.20.151.227])
+ by MTA-07.privateemail.com (Postfix) with ESMTPA id B5FEA60054
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 18:43:29 +0000 (UTC)
+From: "Christopher M. Riedl" <cmr@codefail.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v5 00/10] Improve signal performance on PPC64 with KUAP
+Date: Wed,  3 Feb 2021 12:43:13 -0600
+Message-Id: <20210203184323.20792-1-cmr@codefail.de>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-In-Reply-To: <87eeic1u6b.fsf@manicouagan.localdomain>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,71 +45,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sashal@kernel.org, dmitry.kasatkin@gmail.com, linux-kernel@vger.kernel.org,
- zohar@linux.ibm.com, tyhicks@linux.microsoft.com, ebiederm@xmission.com,
- gregkh@linuxfoundation.org, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/22/21 2:30 PM, Thiago Jung Bauermann wrote:
-> 
-> Hi Lakshmi,
-> 
-> Lakshmi Ramasubramanian <nramas@linux.microsoft.com> writes:
-> 
->> IMA allocates kernel virtual memory to carry forward the measurement
->> list, from the current kernel to the next kernel on kexec system call,
->> in ima_add_kexec_buffer() function.  In error code paths this memory
->> is not freed resulting in memory leak.
->>
->> Free the memory allocated for the IMA measurement list in
->> the error code paths in ima_add_kexec_buffer() function.
->>
->> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
->> Suggested-by: Tyler Hicks <tyhicks@linux.microsoft.com>
->> Fixes: 7b8589cc29e7 ("ima: on soft reboot, save the measurement list")
->> ---
->>   security/integrity/ima/ima_kexec.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
->> index 121de3e04af2..212145008a01 100644
->> --- a/security/integrity/ima/ima_kexec.c
->> +++ b/security/integrity/ima/ima_kexec.c
->> @@ -119,12 +119,14 @@ void ima_add_kexec_buffer(struct kimage *image)
->>   	ret = kexec_add_buffer(&kbuf);
->>   	if (ret) {
->>   		pr_err("Error passing over kexec measurement buffer.\n");
->> +		vfree(kexec_buffer);
->>   		return;
->>   	}
-> 
-> This is a good catch.
+As reported by Anton, there is a large penalty to signal handling
+performance on radix systems using KUAP. The signal handling code
+performs many user access operations, each of which needs to switch the
+KUAP permissions bit to open and then close user access. This involves a
+costly 'mtspr' operation [0].
 
-Thanks.
+There is existing work done on x86 and by Christophe Leroy for PPC32 to
+instead open up user access in "blocks" using user_*_access_{begin,end}.
+We can do the same in PPC64 to bring performance back up on KUAP-enabled
+radix and now also hash MMU systems [1].
 
-> 
->>   
->>   	ret = arch_ima_add_kexec_buffer(image, kbuf.mem, kexec_segment_size);
->>   	if (ret) {
->>   		pr_err("Error passing over kexec measurement buffer.\n");
->> +		vfree(kexec_buffer);
->>   		return;
->>   	}
-> 
-> But this would cause problems, because the buffer is still there in the
-> kimage and would cause kimage_load_segment() to access invalid memory.
-> 
-> There's no function to undo a kexec_add_buffer() to avoid this problem,
-> so I'd suggest just accepting the leak in this case. Fortunately, the
-> current implementations of arch_ima_add_kexec_buffer() are very simple
-> and cannot fail, so this is a theoretical problem.
-> 
+Hash MMU KUAP support along with uaccess flush has landed in linuxppc/next
+since the last revision. This series also provides a large benefit on hash
+with KUAP. However, in the hash implementation of KUAP the user AMR is
+always restored during system_call_exception() which cannot be avoided.
+Fewer user access switches naturally also result in less uaccess flushing.
 
-Agreed. I'll post a new patch with the above change removed.
+The first two patches add some needed 'unsafe' versions of copy-from
+functions. While these do not make use of asm-goto they still allow for
+avoiding the repeated uaccess switches.
 
-thanks,
-  -lakshmi
+The third patch moves functions called by setup_sigcontext() into a new
+prepare_setup_sigcontext() to simplify converting setup_sigcontext()
+into an 'unsafe' version which assumes an open uaccess window later.
+
+The fourth and fifths patches clean-up some of the Transactional Memory
+ifdef stuff to simplify using uaccess blocks later.
+
+The next two patches rewrite some of the signal64 helper functions to
+be 'unsafe'. Finally, the last three patches update the main signal
+handling functions to make use of the new 'unsafe' helpers and eliminate
+some additional uaccess switching.
+
+I used the will-it-scale signal1 benchmark to measure and compare
+performance [2]. The below results are from running a minimal
+kernel+initramfs QEMU/KVM guest on a POWER9 Blackbird:
+
+	signal1_threads -t1 -s10
+
+	|                              | hash   | radix  |
+	| ---------------------------- | ------ | ------ |
+	| linuxppc/next                | 117667 | 135752 |
+	| linuxppc/next w/o KUAP+KUEP  | 225273 | 227567 |
+	| unsafe-signal64              | 193402 | 230983 |
+
+[0]: https://github.com/linuxppc/issues/issues/277
+[1]: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=196278
+[2]: https://github.com/antonblanchard/will-it-scale/blob/master/tests/signal1.c
+
+v5:	* Use sizeof(buf) in copy_{vsx,fpr}_from_user() (Thanks David Laight)
+	* Rebase on latest linuxppc/next
+
+v4:	* Fix issues identified by Christophe Leroy (Thanks for review)
+	* Use __get_user() directly to copy the 8B sigset_t
+
+v3:	* Rebase on latest linuxppc/next
+	* Reword confusing commit messages
+	* Add missing comma in macro in signal.h which broke compiles without
+	  CONFIG_ALTIVEC
+	* Validate hash KUAP signal performance improvements
+
+v2:	* Rebase on latest linuxppc/next + Christophe Leroy's PPC32
+	  signal series
+	* Simplify/remove TM ifdefery similar to PPC32 series and clean
+	  up the uaccess begin/end calls
+	* Isolate non-inline functions so they are not called when
+	  uaccess window is open
+
+Christopher M. Riedl (8):
+  powerpc/uaccess: Add unsafe_copy_from_user
+  powerpc/signal: Add unsafe_copy_{vsx,fpr}_from_user()
+  powerpc/signal64: Move non-inline functions out of setup_sigcontext()
+  powerpc: Reference param in MSR_TM_ACTIVE() macro
+  powerpc/signal64: Remove TM ifdefery in middle of if/else block
+  powerpc/signal64: Replace setup_sigcontext() w/
+    unsafe_setup_sigcontext()
+  powerpc/signal64: Replace restore_sigcontext() w/
+    unsafe_restore_sigcontext()
+  powerpc/signal64: Use __get_user() to copy sigset_t
+
+Daniel Axtens (2):
+  powerpc/signal64: Rewrite handle_rt_signal64() to minimise uaccess
+    switches
+  powerpc/signal64: Rewrite rt_sigreturn() to minimise uaccess switches
+
+ arch/powerpc/include/asm/reg.h     |   2 +-
+ arch/powerpc/include/asm/uaccess.h |   3 +
+ arch/powerpc/kernel/signal.h       |  30 ++++
+ arch/powerpc/kernel/signal_64.c    | 251 ++++++++++++++++++-----------
+ 4 files changed, 193 insertions(+), 93 deletions(-)
+
+-- 
+2.26.1
 
