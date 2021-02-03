@@ -1,44 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B19330D40D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 08:32:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BEB30D410
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 08:34:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVtgr1KcFzDwyp
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 18:32:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVtjG0FnmzDwvT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 18:34:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVtff1rj6zDqDJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 18:31:53 +1100 (AEDT)
-IronPort-SDR: BMBfGIA0geXF8vuZDYrq5ZRZ5rNiGdfTCjRkuhJRPKct8cnAtY+Ot/KF9bSnWfPHF18seZfp/q
- kkNB9e+BXfLQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9883"; a="177492155"
-X-IronPort-AV: E=Sophos;i="5.79,397,1602572400"; d="scan'208";a="177492155"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Feb 2021 23:31:11 -0800
-IronPort-SDR: vPjVraSflFmNzqNzGEkkasO1XnfX+JbDZkZqk8Rs3h9PuaG29mTIgkAR7QRcaPWGbOxY6ZVdbU
- DIM8FeWhimfg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVth943FXzDwqx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 18:33:12 +1100 (AEDT)
+IronPort-SDR: Tldra8kPSxIZXJy4ZrPD06INPb/dLKQaNzeu0vhp9IYUbKNLvLHrbnAzQIVyKXVI+EF214EGN1
+ +9ZuhK78fU/A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9883"; a="199950647"
+X-IronPort-AV: E=Sophos;i="5.79,397,1602572400"; d="scan'208";a="199950647"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Feb 2021 23:33:05 -0800
+IronPort-SDR: dXYfsR+qD5ADE696/gouiMmSeSD2RGNv4gyjJCPxfNPOnqVERjBA/cQMHxGU1/QLmNTLhpWSKv
+ VC7hHaNvRYSg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,397,1602572400"; d="scan'208";a="372280760"
+X-IronPort-AV: E=Sophos;i="5.79,397,1602572400"; d="scan'208";a="371312392"
 Received: from lkp-server02.sh.intel.com (HELO 8b832f01bb9c) ([10.239.97.151])
- by orsmga002.jf.intel.com with ESMTP; 02 Feb 2021 23:31:04 -0800
+ by fmsmga008.fm.intel.com with ESMTP; 02 Feb 2021 23:33:01 -0800
 Received: from kbuild by 8b832f01bb9c with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1l7Cct-00008e-Bk; Wed, 03 Feb 2021 07:30:59 +0000
-Date: Wed, 03 Feb 2021 15:30:54 +0800
+ id 1l7Cer-00009H-28; Wed, 03 Feb 2021 07:33:01 +0000
+Date: Wed, 03 Feb 2021 15:32:57 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 24321ac668e452a4942598533d267805f291fdc9
-Message-ID: <601a512e.3j09C88n+01a4oac%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD REGRESSION
+ a4d002e384ba1909c1c03799603f00c5909d6097
+Message-ID: <601a51a9.XG4nsVnyCwa8Q9Gl%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -59,16 +59,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 24321ac668e452a4942598533d267805f291fdc9  powerpc/64/signal: Fix regression in __kernel_sigtramp_rt64() semantics
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: a4d002e384ba1909c1c03799603f00c5909d6097  powerpc: remove unneeded semicolons
 
-elapsed time: 725m
+Error/Warning reports:
 
-configs tested: 171
-configs skipped: 4
+https://lore.kernel.org/linuxppc-dev/202102030601.iJkLZMTX-lkp@intel.com
+https://lore.kernel.org/linuxppc-dev/202102031026.HFU4AdQ8-lkp@intel.com
+https://lore.kernel.org/linuxppc-dev/202102031251.hW2Tyxj2-lkp@intel.com
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Error/Warning in current branch:
+
+arch/powerpc/kernel/pci-common.c:1704:12: error: no previous prototype for function 'discover_phbs' [-Werror,-Wmissing-prototypes]
+arch/powerpc/kernel/tau_6xx.c:103:1: error: no previous prototype for function 'DEFINE_INTERRUPT_HANDLER_ASYNC' [-Werror,-Wmissing-prototypes]
+arch/powerpc/kernel/tau_6xx.c:103:1: warning: no previous prototype for function 'DEFINE_INTERRUPT_HANDLER_ASYNC' [-Wmissing-prototypes]
+arch/powerpc/kernel/tau_6xx.c:103:31: error: this old-style function definition is not preceded by a prototype [-Werror,-Wstrict-prototypes]
+arch/powerpc/kernel/tau_6xx.c:110:1: error: non-void function does not return a value [-Werror,-Wreturn-type]
+arch/powerpc/kernel/tau_6xx.c:113:1: error: non-void function does not return a value [-Werror,-Wreturn-type]
+
+Error/Warning ids grouped by kconfigs:
+
+clang_recent_errors
+|-- powerpc-randconfig-r003-20210202
+|   |-- arch-powerpc-kernel-tau_6xx.c:error:non-void-function-does-not-return-a-value-Werror-Wreturn-type
+|   |-- arch-powerpc-kernel-tau_6xx.c:error:this-old-style-function-definition-is-not-preceded-by-a-prototype-Werror-Wstrict-prototypes
+|   `-- arch-powerpc-kernel-tau_6xx.c:warning:no-previous-prototype-for-function-DEFINE_INTERRUPT_HANDLER_ASYNC
+`-- powerpc64-randconfig-r035-20210202
+    |-- arch-powerpc-kernel-pci-common.c:error:no-previous-prototype-for-function-discover_phbs-Werror-Wmissing-prototypes
+    |-- arch-powerpc-kernel-tau_6xx.c:error:no-previous-prototype-for-function-DEFINE_INTERRUPT_HANDLER_ASYNC-Werror-Wmissing-prototypes
+    |-- arch-powerpc-kernel-tau_6xx.c:error:non-void-function-does-not-return-a-value-Werror-Wreturn-type
+    `-- arch-powerpc-kernel-tau_6xx.c:error:this-old-style-function-definition-is-not-preceded-by-a-prototype-Werror-Wstrict-prototypes
+
+elapsed time: 727m
+
+configs tested: 164
+configs skipped: 3
 
 gcc tested configs:
 arm                                 defconfig
@@ -91,7 +116,6 @@ mips                      malta_kvm_defconfig
 powerpc                    klondike_defconfig
 powerpc                     ep8248e_defconfig
 parisc                generic-32bit_defconfig
-riscv                               defconfig
 powerpc                     mpc5200_defconfig
 arm                             pxa_defconfig
 powerpc                      acadia_defconfig
@@ -105,12 +129,10 @@ mips                        vocore2_defconfig
 mips                     loongson1c_defconfig
 mips                          malta_defconfig
 sh                        apsh4ad0a_defconfig
-alpha                            allyesconfig
 powerpc                    ge_imp3a_defconfig
 xtensa                    xip_kc705_defconfig
 m68k                        mvme16x_defconfig
 arm                          collie_defconfig
-openrisc                    or1ksim_defconfig
 arm                         cm_x300_defconfig
 sh                           se7206_defconfig
 powerpc                     pq2fads_defconfig
@@ -124,7 +146,6 @@ arc                           tb10x_defconfig
 c6x                        evmc6474_defconfig
 openrisc                  or1klitex_defconfig
 arm                          pcm027_defconfig
-powerpc64                        alldefconfig
 powerpc                    adder875_defconfig
 powerpc                 mpc8313_rdb_defconfig
 mips                           mtx1_defconfig
@@ -149,25 +170,19 @@ powerpc                       holly_defconfig
 mips                       rbtx49xx_defconfig
 mips                           ip32_defconfig
 mips                      maltasmvp_defconfig
-nios2                         10m50_defconfig
-mips                            e55_defconfig
-sh                            migor_defconfig
 sh                             espt_defconfig
 arm                           stm32_defconfig
 powerpc                     tqm8555_defconfig
 c6x                        evmc6472_defconfig
 c6x                              alldefconfig
 microblaze                      mmu_defconfig
-m68k                          hp300_defconfig
-powerpc                      pasemi_defconfig
-m68k                          amiga_defconfig
-sh                   secureedge5410_defconfig
 um                             i386_defconfig
 powerpc                  storcenter_defconfig
 mips                    maltaup_xpa_defconfig
 mips                       lemote2f_defconfig
 arm                        realview_defconfig
 m68k                        mvme147_defconfig
+powerpc64                        alldefconfig
 mips                      bmips_stb_defconfig
 powerpc                      cm5200_defconfig
 powerpc                     skiroot_defconfig
@@ -176,6 +191,7 @@ powerpc                          allyesconfig
 powerpc                 mpc832x_rdb_defconfig
 powerpc                        fsp2_defconfig
 powerpc                      ppc40x_defconfig
+sh                            migor_defconfig
 ia64                             allmodconfig
 ia64                                defconfig
 ia64                             allyesconfig
@@ -190,6 +206,7 @@ nds32                               defconfig
 nios2                            allyesconfig
 csky                                defconfig
 alpha                               defconfig
+alpha                            allyesconfig
 xtensa                           allyesconfig
 h8300                            allyesconfig
 arc                                 defconfig
@@ -227,6 +244,7 @@ i386                 randconfig-a011-20210202
 riscv                    nommu_k210_defconfig
 riscv                    nommu_virt_defconfig
 riscv                             allnoconfig
+riscv                               defconfig
 riscv                          rv32_defconfig
 riscv                            allmodconfig
 x86_64                                   rhel
