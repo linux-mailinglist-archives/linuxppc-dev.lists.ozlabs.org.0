@@ -1,73 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4FE30D1F4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 04:10:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78F630D203
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 04:12:20 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVmrq2rRTzDwnG
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 14:10:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVmv60DNbzDwhp
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 14:12:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
- helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=TywQ7cLI; dkim-atps=neutral
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
- [IPv6:2607:f8b0:4864:20::432])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVl9v4QQszDrgw
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 12:54:57 +1100 (AEDT)
-Received: by mail-pf1-x432.google.com with SMTP id t29so15618537pfg.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Feb 2021 17:54:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=52wnESMUBv8mP6ywU/q2qM80qIUYWpmW1Db10Wm46VQ=;
- b=TywQ7cLIRgH2WNfJw8ntQZ0xAPwKyaMQ6Ln0aK7EJX8lGiuXXq9fw1zTD+pwsBsNa3
- 09Dwxts51AWRk4wADQajrwQDLtC/ri4Mg6YNLyWd0HAzJZ8dYNoQITc72Mg6Axn8w7Oi
- uqh95tXBJOPPxYI8objEubNPoVMQhtVLQCYaZ4l18yF+g8smVQzvVCBVZVaSFWE1T6vE
- An5qD5M5eh409Db6+BY39uLmSKc2zgvAAlyKq/DqgIlT0oexlvHMEuoGWyfpdolDx8pt
- 0faorIse14yw/fMr6ipRBm9F92PyaZ6oUB6GiGg8xuKXpBm127o6c8A/yTE9fgeMem5F
- NvOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=52wnESMUBv8mP6ywU/q2qM80qIUYWpmW1Db10Wm46VQ=;
- b=fuRIbr+OKUGF5lU3LIkqRXs40ADL9dnrDE/EPZm/Dk66kPr5kkgocZjD9pyZUsqj+I
- kKPV6X9Nar0JEt6Zbp6ogW672EjbB58GiQua94F7LfUNJuBlJBr7ngB2wVBDp1OG6qps
- TjFApXhHIZNRURbT6FI4vjfhxsjiTE87JIT+FXlHfQZeJRqAbfJJY1hYbLhMzKSjIHaw
- 343n9sMBIBotbIcfKbR+nUUY7YZHJMOc77DxOQdOO2XhvgzDoyd2ogWqua8ERwVcbC9y
- ZsEmmvNIXJidQdTgwwc2tCtCQiuS6ue7NPUs4omfoiob6DAvmjaa1kcz1GkIwSg4jKGp
- x6Mw==
-X-Gm-Message-State: AOAM533qLEXGop0CP3Y1GtLSEIkB4pHo3JUGqpVJCWAWtnVuSbnKWYCO
- r7JNTL9yOCGLnnvLky4EAG+ipiWpHUs=
-X-Google-Smtp-Source: ABdhPJyGOLPzsnR49Mf+408eAC6Tt5k3EcwLjNtJGTw1rRTJ8evCjTLN6Vi5R45Zq5sKtdQzvvg85Q==
-X-Received: by 2002:a62:1ad5:0:b029:1c5:111b:91cf with SMTP id
- a204-20020a621ad50000b02901c5111b91cfmr820232pfa.13.1612317293939; 
- Tue, 02 Feb 2021 17:54:53 -0800 (PST)
-Received: from localhost (60-242-11-44.static.tpgi.com.au. [60.242.11.44])
- by smtp.gmail.com with ESMTPSA id c19sm235717pfc.122.2021.02.02.17.54.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Feb 2021 17:54:53 -0800 (PST)
-Date: Wed, 03 Feb 2021 11:54:47 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v7 28/42] powerpc: convert interrupt handlers to use
- wrappers
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DVlT128kczDwhr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 13:08:03 +1100 (AEDT)
+Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id 38835AE80017;
+ Tue,  2 Feb 2021 21:07:57 -0500 (EST)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
 To: linuxppc-dev@lists.ozlabs.org
-References: <20210130130852.2952424-1-npiggin@gmail.com>
- <20210130130852.2952424-29-npiggin@gmail.com>
-In-Reply-To: <20210130130852.2952424-29-npiggin@gmail.com>
-MIME-Version: 1.0
-Message-Id: <1612317180.3sqh02nwaa.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH kernel v2] powerpc/uaccess: Skip might_fault() when user
+ access is enabled
+Date: Wed,  3 Feb 2021 13:07:55 +1100
+Message-Id: <20210203020755.117593-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,36 +36,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nicholas Piggin's message of January 30, 2021 11:08 pm:
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+The amount of code executed with enabled user space access (unlocked KUAP)
+should be minimal. However with CONFIG_PROVE_LOCKING or
+CONFIG_DEBUG_ATOMIC_SLEEP enabled, might_fault() may end up replaying
+interrupts which in turn may access the user space and forget to restore
+the KUAP state.
 
-powerpc: fix tau6xxx compile error in convert interrupt handlers to use wra=
-ppers
+The problem places are strncpy_from_user (and similar) which unlock KUAP
+and call unsafe_get_user -> __get_user_allowed -> __get_user_nocheck()
+with do_allow=false to skip KUAP as the caller took care of it.
 
-This should fix the missing declaration compile error although it=20
-doesn't show up with my toolchain.
+This changes __get_user_nocheck() to look at @do_allow to decide whether
+to skip might_fault(). Since strncpy_from_user/etc call might_fault()
+anyway before unlocking KUAP, there should be no visible change.
 
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- arch/powerpc/kernel/tau_6xx.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes:
+v2:
+* s/!do_allow/do_allow/
+---
+ arch/powerpc/include/asm/uaccess.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/tau_6xx.c b/arch/powerpc/kernel/tau_6xx.c
-index 46b2e5de4ef5..3f300eccc09e 100644
---- a/arch/powerpc/kernel/tau_6xx.c
-+++ b/arch/powerpc/kernel/tau_6xx.c
-@@ -22,6 +22,7 @@
- #include <linux/delay.h>
- #include <linux/workqueue.h>
-=20
-+#include <asm/interrupt.h>
- #include <asm/io.h>
- #include <asm/reg.h>
- #include <asm/nvram.h>
---=20
-2.23.0
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 501c9a79038c..27e109866c42 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -313,7 +313,7 @@ do {								\
+ 	__typeof__(size) __gu_size = (size);			\
+ 								\
+ 	__chk_user_ptr(__gu_addr);				\
+-	if (!is_kernel_addr((unsigned long)__gu_addr))		\
++	if (do_allow && !is_kernel_addr((unsigned long)__gu_addr)) \
+ 		might_fault();					\
+ 	barrier_nospec();					\
+ 	if (do_allow)								\
+-- 
+2.17.1
 
