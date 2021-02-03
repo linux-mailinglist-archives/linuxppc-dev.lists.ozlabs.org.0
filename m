@@ -1,87 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC25430D2BC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 06:03:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A64B30D357
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 07:19:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVqMk5p4czDww5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 16:03:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVs3Z2b5szDwy9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 17:19:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
+ helo=mail-pf1-x432.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=EXArw6TF; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=rvzmnppN; dkim-atps=neutral
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
+ [IPv6:2607:f8b0:4864:20::432])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVqFf0lCGzDwqd
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 15:58:29 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 1134Xdg6063344; Tue, 2 Feb 2021 23:58:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=aHkbgF+19HjTCFG4Y+B9Sm8NgPquUjfAZBW0B40kPKM=;
- b=EXArw6TF3eqvZr7pz9X4mW6kEOVsMe5hvzCicYq8Rorfr8Aoeb1QUe6MFpRd0Q36S5Vp
- 5zWBJaPfIYpDb9MjlGgbMRbQ1bx1X3FDXCdGFKgY5LnQH/zngX1Vj2Rhk3leL9QcTu+1
- KwsuuKfbyu5ICO6N1u69fM6/7+yoSA2Qf5Y7iAq4J3Y4dsYdptH/aiQ868CkueSEjVLp
- 5i7R1YxbKZzOCJSIfdD0Y4Cq3TluCFngdop7RycSnMBTdosSMBR0cCkhrIevLjwhp8om
- s6KXdNE0OCUfbppokTy/5xZrJZwJBRDcv2caMKN6frIELQd+RhP3LtoGN/cPKhTsaFVo Hw== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36fm83hbgc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Feb 2021 23:58:26 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1134uA3W028704;
- Wed, 3 Feb 2021 04:58:25 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma04dal.us.ibm.com with ESMTP id 36ex3ntm1m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 03 Feb 2021 04:58:25 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1134wOlR26149254
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 3 Feb 2021 04:58:24 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 79A0D28058;
- Wed,  3 Feb 2021 04:58:24 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1FDDF2805C;
- Wed,  3 Feb 2021 04:58:23 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.85.69.155])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed,  3 Feb 2021 04:58:22 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH 3/3] powerpc/mm: Remove dcache flush from memory remove.
-Date: Wed,  3 Feb 2021 10:28:12 +0530
-Message-Id: <20210203045812.234439-3-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210203045812.234439-1-aneesh.kumar@linux.ibm.com>
-References: <20210203045812.234439-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVs2G6tpgzDwrY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 17:18:41 +1100 (AEDT)
+Received: by mail-pf1-x432.google.com with SMTP id o20so15993767pfu.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Feb 2021 22:18:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=yfuhTssRBKsR8DPYWEtr03vdAgJS9K6gTpSTd0Upr5g=;
+ b=rvzmnppNVqsqTNwu+xtsy+JQ1sUZP+BivAkxyMQEyCnZTw9+sS2Upxo38f2dIMSKyH
+ xVtPYpyk2Odfl9/OvYISMT8oNPYL71W+q9K8xmWBLUJSPZFClJx4QAp27YddjLP6pnAw
+ 5aYAEvsLnTM97TkdfiRKwpslTOEgpRo8PFt+m1SzeyNGzGaJBUyVEyTyjDE7dbmrKs/T
+ wtXGdpneggyU7Od0xfrQC2OjKZKa3E+aaVVdv9LC4zQwjRk301Y9g6ts4ypdirHQ9myX
+ URr+8UAjZHgWT1QJv2unk+DrK/71blxiV1tgTu+t84gT+Pkh4OA1hzscvapu+xjvwWnv
+ 2C2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=yfuhTssRBKsR8DPYWEtr03vdAgJS9K6gTpSTd0Upr5g=;
+ b=RYK48GxBiMDjU+ykf5vU4+1qjQmap6kfKS/GsxumEXXIB0SUqxxEIknEBMW9BgyxXj
+ N/hW3bgmW3oCnx5Zjzyi+4VztjJGYqIVdEJ58eu9kZmloukL5Lv6U2/IsL9lk7YEKXZl
+ 4VcXAiqIMG0hkK/NCM/febQoxu/9XnZfdNZzk7l1ordUfh5uO7+Qcu2kZN2rd5BHkVof
+ U3RqVUo7QENUO6wms2+0J9Y+zza+mnVcG0iKse0fsVNstFG0BSczgOtCtDmiODH1MPkm
+ 4hbe5d22nelXlkrHylycRGpGBsmuC7VT5/0fghtGfaYC2CzuXkcAcoTaxtMSAEE7EjaU
+ FbKA==
+X-Gm-Message-State: AOAM533OqpSb+CGrVpqoNI/ASzW27VbYGu1RzaHmUhPXpNTOXpqn8IXR
+ PNl5+2Q+4B9vUSniLhPUCzY7bWw0lI09lw==
+X-Google-Smtp-Source: ABdhPJxkqSTNNu2jej7/CgUpW9so1kqy8omS6uP28LN4JTGUqolSg3iAye9lw9EXSZi/Fxucrjvj9Q==
+X-Received: by 2002:a62:444:0:b029:1bc:ebb6:71f8 with SMTP id
+ 65-20020a6204440000b02901bcebb671f8mr1677271pfe.75.1612333117882; 
+ Tue, 02 Feb 2021 22:18:37 -0800 (PST)
+Received: from tee480.ibm.com ([159.196.117.139])
+ by smtp.gmail.com with ESMTPSA id bv21sm595734pjb.15.2021.02.02.22.18.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Feb 2021 22:18:37 -0800 (PST)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/2] powerpc/64s: Fix pte update for kernel memory on radix
+Date: Wed,  3 Feb 2021 17:18:28 +1100
+Message-Id: <20210203061829.879868-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
- definitions=2021-02-03_01:2021-02-02,
- 2021-02-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- malwarescore=0 suspectscore=0 adultscore=0 bulkscore=0 priorityscore=1501
- phishscore=0 mlxlogscore=999 lowpriorityscore=0 spamscore=0 clxscore=1015
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102030024
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,136 +75,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Jordan Niethe <jniethe5@gmail.com>, npiggin@gmail.com, cmr@codefail.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We added dcache flush on memory add/remove in
-commit fb5924fddf9e ("powerpc/mm: Flush cache on memory hot(un)plug")
-to handle crashes on GPU hotplug. Instead of adding dcache flush in
-generic memory add/remove routine which is used even for regular
-memory, we should handle these devices specific flush in the device
-driver code.
+The recommended sequence for updating a PTE from ISA Book III 6.10
+Translation Update Synchronization Requirements is:
 
-memtrace did handle this in the driver and that was removed by
-commit 7fd6641de28f ("powerpc/powernv/memtrace: Let the arch
-hotunplug code flush cache"). This patch reverts that commit.
+*ptep = pte
+eieio
+tlbsync
+ptesync
 
-The dcache flush in memory add was removed by
-Fixes: ea458effa88e ("powerpc: Don't flush caches when adding memory")
-which I don't think is correct. The reason why we require dcache flush
-in memtrace is to make sure we don't have a dirty cache when we remap
-a pfn to cache inhibited. We should do that when the memtrace module
-removes the memory and make the pfn available for HTM traces to map it
-as cache inhibited.
+This needs to be done to order the update of the pte with subsequent
+accesses otherwise a spurious fault may be raised.
 
-The other device mentioned in
-commit fb5924fddf9e ("powerpc/mm: Flush cache on memory hot(un)plug") is
-nvlink device with coherent memory. The support for that was removed in
-commit 3182215dd0b2 ("powerpc/powernv/npu: Remove NPU DMA ops")
-and commit 25b2995a35b6 ("mm: remove MEMORY_DEVICE_PUBLIC support")
+radix__set_pte_at() does not do this for performance gains. For
+non-kernel memory this is not an issue as any faults of this kind are
+corrected by the page fault handler.  For kernel memory these faults are
+not handled.  The current solution is that there is a ptesync in
+flush_cache_vmap() which should be called when mapping from the vmalloc
+region.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+However, map_kernel_page() does not call flush_cache_vmap(). This is
+troublesome in particular for code patching with Strict RWX on radix. In
+do_patch_instruction() the page frame that contains the instruction to
+be patched is mapped and then immediately patched. With no ordering or
+synchronization between setting up the pte and writing to the page it is
+possible for faults.
+
+As the code patching is done using __put_user_asm_goto() the resulting
+fault is obscured - but using a normal store instead it can be seen:
+
+[  418.498768][  T757] BUG: Unable to handle kernel data access on write at 0xc008000008f24a3c
+[  418.498790][  T757] Faulting instruction address: 0xc00000000008bd74
+[  418.498805][  T757] Oops: Kernel access of bad area, sig: 11 [#1]
+[  418.498828][  T757] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
+[  418.498843][  T757] Modules linked in: nop_module(PO+) [last unloaded: nop_module]
+[  418.498872][  T757] CPU: 4 PID: 757 Comm: sh Tainted: P           O      5.10.0-rc5-01361-ge3c1b78c8440-dirty #43
+[  418.498936][  T757] NIP:  c00000000008bd74 LR: c00000000008bd50 CTR: c000000000025810
+[  418.498979][  T757] REGS: c000000016f634a0 TRAP: 0300   Tainted: P           O       (5.10.0-rc5-01361-ge3c1b78c8440-dirty)
+[  418.499033][  T757] MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 44002884  XER: 00000000
+[  418.499084][  T757] CFAR: c00000000007c68c DAR: c008000008f24a3c DSISR: 42000000 IRQMASK: 1
+
+This results in the kind of issue reported here:
+https://lore.kernel.org/linuxppc-dev/15AC5B0E-A221-4B8C-9039-FA96B8EF7C88@lca.pw/
+
+Chris Riedl suggested a reliable way to reproduce the issue:
+$ mount -t debugfs none /sys/kernel/debug
+$ (while true; do echo function > /sys/kernel/debug/tracing/current_tracer ; echo nop > /sys/kernel/debug/tracing/current_tracer ; done)&
+
+Turning ftrace on and off does a large amount of code patching which in
+usually less then 5min will crash giving a trace like:
+
+[  146.668988][  T809] ftrace-powerpc: (____ptrval____): replaced (4b473b11) != old (60000000)
+[  146.668995][  T809] ------------[ ftrace bug ]------------
+[  146.669031][  T809] ftrace failed to modify
+[  146.669039][  T809] [<c000000000bf8e5c>] napi_busy_loop+0xc/0x390
+[  146.669045][  T809]  actual:   11:3b:47:4b
+[  146.669070][  T809] Setting ftrace call site to call ftrace function
+[  146.669075][  T809] ftrace record flags: 80000001
+[  146.669081][  T809]  (1)
+[  146.669081][  T809]  expected tramp: c00000000006c96c
+[  146.669096][  T809] ------------[ cut here ]------------
+[  146.669104][  T809] WARNING: CPU: 4 PID: 809 at kernel/trace/ftrace.c:2065 ftrace_bug+0x28c/0x2e8
+[  146.669109][  T809] Modules linked in: nop_module(PO-) [last unloaded: nop_module]
+[  146.669130][  T809] CPU: 4 PID: 809 Comm: sh Tainted: P           O      5.10.0-rc5-01360-gf878ccaf250a #1
+[  146.669136][  T809] NIP:  c00000000024f334 LR: c00000000024f330 CTR: c0000000001a5af0
+[  146.669142][  T809] REGS: c000000004c8b760 TRAP: 0700   Tainted: P           O       (5.10.0-rc5-01360-gf878ccaf250a)
+[  146.669147][  T809] MSR:  900000000282b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 28008848  XER: 20040000
+[  146.669208][  T809] CFAR: c0000000001a9c98 IRQMASK: 0
+[  146.669208][  T809] GPR00: c00000000024f330 c000000004c8b9f0 c000000002770600 0000000000000022
+[  146.669208][  T809] GPR04: 00000000ffff7fff c000000004c8b6d0 0000000000000027 c0000007fe9bcdd8
+[  146.669208][  T809] GPR08: 0000000000000023 ffffffffffffffd8 0000000000000027 c000000002613118
+[  146.669208][  T809] GPR12: 0000000000008000 c0000007fffdca00 0000000000000000 0000000000000000
+[  146.669208][  T809] GPR16: 0000000023ec37c5 0000000000000000 0000000000000000 0000000000000008
+[  146.669208][  T809] GPR20: c000000004c8bc90 c0000000027a2d20 c000000004c8bcd0 c000000002612fe8
+[  146.669208][  T809] GPR24: 0000000000000038 0000000000000030 0000000000000028 0000000000000020
+[  146.669208][  T809] GPR28: c000000000ff1b68 c000000000bf8e5c c00000000312f700 c000000000fbb9b0
+[  146.669384][  T809] NIP [c00000000024f334] ftrace_bug+0x28c/0x2e8
+[  146.669391][  T809] LR [c00000000024f330] ftrace_bug+0x288/0x2e8
+[  146.669396][  T809] Call Trace:
+[  146.669403][  T809] [c000000004c8b9f0] [c00000000024f330] ftrace_bug+0x288/0x2e8 (unreliable)
+[  146.669418][  T809] [c000000004c8ba80] [c000000000248778] ftrace_modify_all_code+0x168/0x210
+[  146.669429][  T809] [c000000004c8bab0] [c00000000006c528] arch_ftrace_update_code+0x18/0x30
+[  146.669440][  T809] [c000000004c8bad0] [c000000000248954] ftrace_run_update_code+0x44/0xc0
+[  146.669451][  T809] [c000000004c8bb00] [c00000000024dc88] ftrace_startup+0xf8/0x1c0
+[  146.669461][  T809] [c000000004c8bb40] [c00000000024dd9c] register_ftrace_function+0x4c/0xc0
+[  146.669472][  T809] [c000000004c8bb70] [c00000000026e750] function_trace_init+0x80/0xb0
+[  146.669484][  T809] [c000000004c8bba0] [c000000000266b84] tracing_set_tracer+0x2a4/0x4f0
+[  146.669495][  T809] [c000000004c8bc70] [c000000000266ea4] tracing_set_trace_write+0xd4/0x130
+[  146.669506][  T809] [c000000004c8bd20] [c000000000422790] vfs_write+0xf0/0x330
+[  146.669518][  T809] [c000000004c8bd70] [c000000000422bb4] ksys_write+0x84/0x140
+[  146.669529][  T809] [c000000004c8bdc0] [c00000000003499c] system_call_exception+0x14c/0x230
+[  146.669540][  T809] [c000000004c8be20] [c00000000000d860] system_call_common+0xf0/0x27c
+[  146.669549][  T809] Instruction dump:
+[  146.669558][  T809] 48000014 3c62fe88 38631718 4bf5a941 60000000 7fc3f378 4bff877d 7c641b78
+[  146.669598][  T809] 3c62fe88 38631730 4bf5a925 60000000 <0fe00000> 38210090 3d22fd90 39000001
+[  146.669638][  T809] ---[ end trace 5ea7076ea28c0fbd ]---
+
+To fix this when updating kernel memory ptes, follow the ISA recommended sequence.
+
+Fixes: 37bc3e5fd764 ("powerpc/lib/code-patching: Use alternate map for patch_instruction()")
+Fixes: f1cb8f9beba8 ("powerpc/64s/radix: avoid ptesync after set_pte and ptep_set_access_flags")
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/mm/mem.c                     | 22 -----------------
- arch/powerpc/platforms/powernv/memtrace.c | 29 +++++++++++++++++++++++
- 2 files changed, 29 insertions(+), 22 deletions(-)
+ arch/powerpc/include/asm/book3s/64/radix.h | 6 ++++--
+ arch/powerpc/mm/book3s64/radix_pgtable.c   | 4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 883e67d37bbc..4e8ce6d85232 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -91,27 +91,6 @@ int __weak remove_section_mapping(unsigned long start, unsigned long end)
- 	return -ENODEV;
+diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
+index c7813dc628fc..59cab558e2f0 100644
+--- a/arch/powerpc/include/asm/book3s/64/radix.h
++++ b/arch/powerpc/include/asm/book3s/64/radix.h
+@@ -222,8 +222,10 @@ static inline void radix__set_pte_at(struct mm_struct *mm, unsigned long addr,
+ 	 * from ptesync, it should probably go into update_mmu_cache, rather
+ 	 * than set_pte_at (which is used to set ptes unrelated to faults).
+ 	 *
+-	 * Spurious faults to vmalloc region are not tolerated, so there is
+-	 * a ptesync in flush_cache_vmap.
++	 * Spurious faults from the kernel memory are not tolerated, so there
++	 * is a ptesync in flush_cache_vmap, and __map_kernel_page() follows
++	 * the pte update sequence from ISA Book III 6.10 Translation Table
++	 * Update Synchronization Requirements.
+ 	 */
  }
  
--#define FLUSH_CHUNK_SIZE SZ_1G
--/**
-- * flush_dcache_range_chunked(): Write any modified data cache blocks out to
-- * memory and invalidate them, in chunks of up to FLUSH_CHUNK_SIZE
-- * Does not invalidate the corresponding instruction cache blocks.
-- *
-- * @start: the start address
-- * @stop: the stop address (exclusive)
-- * @chunk: the max size of the chunks
-- */
--static void flush_dcache_range_chunked(unsigned long start, unsigned long stop,
--				       unsigned long chunk)
--{
--	unsigned long i;
--
--	for (i = start; i < stop; i += chunk) {
--		flush_dcache_range(i, min(stop, i + chunk));
--		cond_resched();
--	}
--}
--
- int __ref arch_create_linear_mapping(int nid, u64 start, u64 size,
- 				     struct mhp_params *params)
- {
-@@ -136,7 +115,6 @@ void __ref arch_remove_linear_mapping(u64 start, u64 size)
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 3adcf730f478..001e2350bc51 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -108,7 +108,7 @@ static int early_map_kernel_page(unsigned long ea, unsigned long pa,
  
- 	/* Remove htab bolted mappings for this section of memory */
- 	start = (unsigned long)__va(start);
--	flush_dcache_range_chunked(start, start + size, FLUSH_CHUNK_SIZE);
- 
- 	mutex_lock(&linear_mapping_mutex);
- 	ret = remove_section_mapping(start, start + size);
-diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
-index 5fc9408bb0b3..019669eb21d2 100644
---- a/arch/powerpc/platforms/powernv/memtrace.c
-+++ b/arch/powerpc/platforms/powernv/memtrace.c
-@@ -19,6 +19,7 @@
- #include <linux/numa.h>
- #include <asm/machdep.h>
- #include <asm/debugfs.h>
-+#include <asm/cacheflush.h>
- 
- /* This enables us to keep track of the memory removed from each node. */
- struct memtrace_entry {
-@@ -51,6 +52,27 @@ static const struct file_operations memtrace_fops = {
- 	.open	= simple_open,
- };
- 
-+#define FLUSH_CHUNK_SIZE SZ_1G
-+/**
-+ * flush_dcache_range_chunked(): Write any modified data cache blocks out to
-+ * memory and invalidate them, in chunks of up to FLUSH_CHUNK_SIZE
-+ * Does not invalidate the corresponding instruction cache blocks.
-+ *
-+ * @start: the start address
-+ * @stop: the stop address (exclusive)
-+ * @chunk: the max size of the chunks
-+ */
-+static void flush_dcache_range_chunked(unsigned long start, unsigned long stop,
-+				       unsigned long chunk)
-+{
-+	unsigned long i;
-+
-+	for (i = start; i < stop; i += chunk) {
-+		flush_dcache_range(i, min(stop, i + chunk));
-+		cond_resched();
-+	}
-+}
-+
- static void memtrace_clear_range(unsigned long start_pfn,
- 				 unsigned long nr_pages)
- {
-@@ -62,6 +84,13 @@ static void memtrace_clear_range(unsigned long start_pfn,
- 			cond_resched();
- 		clear_page(__va(PFN_PHYS(pfn)));
- 	}
-+	/*
-+	 * Before we go ahead and use this range as cache inhibited range
-+	 * flush the cache.
-+	 */
-+	flush_dcache_range_chunked(PFN_PHYS(start_pfn),
-+				   PFN_PHYS(start_pfn + nr_pages),
-+				   FLUSH_CHUNK_SIZE);
+ set_the_pte:
+ 	set_pte_at(&init_mm, ea, ptep, pfn_pte(pfn, flags));
+-	smp_wmb();
++	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+ 	return 0;
  }
  
- static u64 memtrace_alloc_node(u32 nid, u64 size)
+@@ -168,7 +168,7 @@ static int __map_kernel_page(unsigned long ea, unsigned long pa,
+ 
+ set_the_pte:
+ 	set_pte_at(&init_mm, ea, ptep, pfn_pte(pfn, flags));
+-	smp_wmb();
++	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+ 	return 0;
+ }
+ 
 -- 
-2.29.2
+2.25.1
 
