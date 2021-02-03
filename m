@@ -1,48 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6BEB30D410
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 08:34:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D50B30D580
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 09:46:33 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVtjG0FnmzDwvT
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 18:34:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVwJk4F8WzDwvT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 19:46:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVth943FXzDwqx
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 18:33:12 +1100 (AEDT)
-IronPort-SDR: Tldra8kPSxIZXJy4ZrPD06INPb/dLKQaNzeu0vhp9IYUbKNLvLHrbnAzQIVyKXVI+EF214EGN1
- +9ZuhK78fU/A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9883"; a="199950647"
-X-IronPort-AV: E=Sophos;i="5.79,397,1602572400"; d="scan'208";a="199950647"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Feb 2021 23:33:05 -0800
-IronPort-SDR: dXYfsR+qD5ADE696/gouiMmSeSD2RGNv4gyjJCPxfNPOnqVERjBA/cQMHxGU1/QLmNTLhpWSKv
- VC7hHaNvRYSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,397,1602572400"; d="scan'208";a="371312392"
-Received: from lkp-server02.sh.intel.com (HELO 8b832f01bb9c) ([10.239.97.151])
- by fmsmga008.fm.intel.com with ESMTP; 02 Feb 2021 23:33:01 -0800
-Received: from kbuild by 8b832f01bb9c with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1l7Cer-00009H-28; Wed, 03 Feb 2021 07:33:01 +0000
-Date: Wed, 03 Feb 2021 15:32:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD REGRESSION
- a4d002e384ba1909c1c03799603f00c5909d6097
-Message-ID: <601a51a9.XG4nsVnyCwa8Q9Gl%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVwHC5LJ9zDwsr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 19:45:11 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id B82D7AD6A;
+ Wed,  3 Feb 2021 08:45:05 +0000 (UTC)
+Date: Wed, 3 Feb 2021 09:45:03 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH kernel] powerpc/kuap: Restore AMR after replaying soft
+ interrupts
+Message-ID: <20210203084503.GX6564@kitsune.suse.cz>
+References: <20210202091541.36499-1-aik@ozlabs.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20210202091541.36499-1-aik@ozlabs.ru>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,215 +45,184 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: a4d002e384ba1909c1c03799603f00c5909d6097  powerpc: remove unneeded semicolons
+Hello,
 
-Error/Warning reports:
+On Tue, Feb 02, 2021 at 08:15:41PM +1100, Alexey Kardashevskiy wrote:
+> Since de78a9c "powerpc: Add a framework for Kernel Userspace Access
+> Protection", user access helpers call user_{read|write}_access_{begin|end}
+> when user space access is allowed.
+> 
+> 890274c "powerpc/64s: Implement KUAP for Radix MMU" made the mentioned
+> helpers program a AMR special register to allow such access for a short
+> period of time, most of the time AMR is expected to block user memory
+> access by the kernel.
+> 
+> Since the code accesses the user space memory, unsafe_get_user()
+> calls might_fault() which calls arch_local_irq_restore() if either
+> CONFIG_PROVE_LOCKING or CONFIG_DEBUG_ATOMIC_SLEEP is enabled.
+> arch_local_irq_restore() then attempts to replay pending soft interrupts
+> as KUAP regions have hardware interrupts enabled.
+> If a pending interrupt happens to do user access (performance interrupts
+> do that), it enables access for a short period of time so after returning
+> from the replay, the user access state remains blocked and if a user page
+> fault happens - "Bug: Read fault blocked by AMR!" appears and SIGSEGV is
+> sent.
+> 
+> This saves/restores AMR when replaying interrupts.
+> 
+> This adds a check if AMR was not blocked when before replaying interrupts.
+> 
+> Found by syzkaller. The call stack for the bug is:
+> 
+> copy_from_user_nofault+0xf8/0x250
+> perf_callchain_user_64+0x3d8/0x8d0
+> perf_callchain_user+0x38/0x50
+> get_perf_callchain+0x28c/0x300
+> perf_callchain+0xb0/0x130
+> perf_prepare_sample+0x364/0xbf0
+> perf_event_output_forward+0xe0/0x280
+> __perf_event_overflow+0xa4/0x240
+> perf_swevent_hrtimer+0x1d4/0x1f0
+> __hrtimer_run_queues+0x328/0x900
+> hrtimer_interrupt+0x128/0x350
+> timer_interrupt+0x180/0x600
+> replay_soft_interrupts+0x21c/0x4f0
+> arch_local_irq_restore+0x94/0x150
+> lock_is_held_type+0x140/0x200
+> ___might_sleep+0x220/0x330
+> __might_fault+0x88/0x120
+> do_strncpy_from_user+0x108/0x2b0
+> strncpy_from_user+0x1d0/0x2a0
+> getname_flags+0x88/0x2c0
+> do_sys_openat2+0x2d4/0x5f0
+> do_sys_open+0xcc/0x140
+> system_call_exception+0x160/0x240
+> system_call_common+0xf0/0x27c
+> 
+Can we get a Fixes tag?
 
-https://lore.kernel.org/linuxppc-dev/202102030601.iJkLZMTX-lkp@intel.com
-https://lore.kernel.org/linuxppc-dev/202102031026.HFU4AdQ8-lkp@intel.com
-https://lore.kernel.org/linuxppc-dev/202102031251.hW2Tyxj2-lkp@intel.com
+Thanks
 
-Error/Warning in current branch:
-
-arch/powerpc/kernel/pci-common.c:1704:12: error: no previous prototype for function 'discover_phbs' [-Werror,-Wmissing-prototypes]
-arch/powerpc/kernel/tau_6xx.c:103:1: error: no previous prototype for function 'DEFINE_INTERRUPT_HANDLER_ASYNC' [-Werror,-Wmissing-prototypes]
-arch/powerpc/kernel/tau_6xx.c:103:1: warning: no previous prototype for function 'DEFINE_INTERRUPT_HANDLER_ASYNC' [-Wmissing-prototypes]
-arch/powerpc/kernel/tau_6xx.c:103:31: error: this old-style function definition is not preceded by a prototype [-Werror,-Wstrict-prototypes]
-arch/powerpc/kernel/tau_6xx.c:110:1: error: non-void function does not return a value [-Werror,-Wreturn-type]
-arch/powerpc/kernel/tau_6xx.c:113:1: error: non-void function does not return a value [-Werror,-Wreturn-type]
-
-Error/Warning ids grouped by kconfigs:
-
-clang_recent_errors
-|-- powerpc-randconfig-r003-20210202
-|   |-- arch-powerpc-kernel-tau_6xx.c:error:non-void-function-does-not-return-a-value-Werror-Wreturn-type
-|   |-- arch-powerpc-kernel-tau_6xx.c:error:this-old-style-function-definition-is-not-preceded-by-a-prototype-Werror-Wstrict-prototypes
-|   `-- arch-powerpc-kernel-tau_6xx.c:warning:no-previous-prototype-for-function-DEFINE_INTERRUPT_HANDLER_ASYNC
-`-- powerpc64-randconfig-r035-20210202
-    |-- arch-powerpc-kernel-pci-common.c:error:no-previous-prototype-for-function-discover_phbs-Werror-Wmissing-prototypes
-    |-- arch-powerpc-kernel-tau_6xx.c:error:no-previous-prototype-for-function-DEFINE_INTERRUPT_HANDLER_ASYNC-Werror-Wmissing-prototypes
-    |-- arch-powerpc-kernel-tau_6xx.c:error:non-void-function-does-not-return-a-value-Werror-Wreturn-type
-    `-- arch-powerpc-kernel-tau_6xx.c:error:this-old-style-function-definition-is-not-preceded-by-a-prototype-Werror-Wstrict-prototypes
-
-elapsed time: 727m
-
-configs tested: 164
-configs skipped: 3
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                       omap2plus_defconfig
-h8300                     edosk2674_defconfig
-arm                          ep93xx_defconfig
-h8300                               defconfig
-arm                           viper_defconfig
-c6x                        evmc6457_defconfig
-powerpc                      mgcoge_defconfig
-mips                        qi_lb60_defconfig
-mips                        nlm_xlr_defconfig
-powerpc                     kilauea_defconfig
-arm                         socfpga_defconfig
-mips                      malta_kvm_defconfig
-powerpc                    klondike_defconfig
-powerpc                     ep8248e_defconfig
-parisc                generic-32bit_defconfig
-powerpc                     mpc5200_defconfig
-arm                             pxa_defconfig
-powerpc                      acadia_defconfig
-m68k                        m5272c3_defconfig
-arm                        neponset_defconfig
-powerpc                      tqm8xx_defconfig
-m68k                        m5407c3_defconfig
-arm                         lubbock_defconfig
-arm                            dove_defconfig
-mips                        vocore2_defconfig
-mips                     loongson1c_defconfig
-mips                          malta_defconfig
-sh                        apsh4ad0a_defconfig
-powerpc                    ge_imp3a_defconfig
-xtensa                    xip_kc705_defconfig
-m68k                        mvme16x_defconfig
-arm                          collie_defconfig
-arm                         cm_x300_defconfig
-sh                           se7206_defconfig
-powerpc                     pq2fads_defconfig
-mips                             allyesconfig
-arm                      integrator_defconfig
-mips                        bcm63xx_defconfig
-sh                          landisk_defconfig
-m68k                            q40_defconfig
-arc                    vdk_hs38_smp_defconfig
-arc                           tb10x_defconfig
-c6x                        evmc6474_defconfig
-openrisc                  or1klitex_defconfig
-arm                          pcm027_defconfig
-powerpc                    adder875_defconfig
-powerpc                 mpc8313_rdb_defconfig
-mips                           mtx1_defconfig
-riscv                            allyesconfig
-arm                        keystone_defconfig
-powerpc                 mpc85xx_cds_defconfig
-m68k                       m5208evb_defconfig
-powerpc                        warp_defconfig
-xtensa                  audio_kc705_defconfig
-sh                     magicpanelr2_defconfig
-sh                         ap325rxa_defconfig
-arc                         haps_hs_defconfig
-powerpc                      katmai_defconfig
-arm                           h5000_defconfig
-powerpc                     tqm8560_defconfig
-arm                        multi_v7_defconfig
-nios2                         3c120_defconfig
-arm                            pleb_defconfig
-sh                           se7343_defconfig
-arm                          badge4_defconfig
-powerpc                       holly_defconfig
-mips                       rbtx49xx_defconfig
-mips                           ip32_defconfig
-mips                      maltasmvp_defconfig
-sh                             espt_defconfig
-arm                           stm32_defconfig
-powerpc                     tqm8555_defconfig
-c6x                        evmc6472_defconfig
-c6x                              alldefconfig
-microblaze                      mmu_defconfig
-um                             i386_defconfig
-powerpc                  storcenter_defconfig
-mips                    maltaup_xpa_defconfig
-mips                       lemote2f_defconfig
-arm                        realview_defconfig
-m68k                        mvme147_defconfig
-powerpc64                        alldefconfig
-mips                      bmips_stb_defconfig
-powerpc                      cm5200_defconfig
-powerpc                     skiroot_defconfig
-microblaze                          defconfig
-powerpc                          allyesconfig
-powerpc                 mpc832x_rdb_defconfig
-powerpc                        fsp2_defconfig
-powerpc                      ppc40x_defconfig
-sh                            migor_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                               tinyconfig
-i386                                defconfig
-mips                             allmodconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20210202
-i386                 randconfig-a005-20210202
-i386                 randconfig-a003-20210202
-i386                 randconfig-a006-20210202
-i386                 randconfig-a002-20210202
-i386                 randconfig-a004-20210202
-x86_64               randconfig-a013-20210202
-x86_64               randconfig-a014-20210202
-x86_64               randconfig-a015-20210202
-x86_64               randconfig-a016-20210202
-x86_64               randconfig-a011-20210202
-x86_64               randconfig-a012-20210202
-i386                 randconfig-a013-20210202
-i386                 randconfig-a016-20210202
-i386                 randconfig-a014-20210202
-i386                 randconfig-a012-20210202
-i386                 randconfig-a015-20210202
-i386                 randconfig-a011-20210202
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a006-20210202
-x86_64               randconfig-a001-20210202
-x86_64               randconfig-a005-20210202
-x86_64               randconfig-a002-20210202
-x86_64               randconfig-a004-20210202
-x86_64               randconfig-a003-20210202
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Michal
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> Changes:
+> v3:
+> * do not block/unblock if AMR was blocked
+> * reverted move of AMR_KUAP_***
+> * added pr_warn
+> 
+> v2:
+> * fixed compile on hash
+> * moved get/set to arch_local_irq_restore
+> * block KUAP before replaying
+> 
+> ---
+> 
+> This is an example:
+> 
+> ------------[ cut here ]------------
+> Bug: Read fault blocked by AMR!
+> WARNING: CPU: 0 PID: 1603 at /home/aik/p/kernel/arch/powerpc/include/asm/book3s/64/kup-radix.h:145 __do_page_fau
+> 
+> Modules linked in:
+> CPU: 0 PID: 1603 Comm: amr Not tainted 5.10.0-rc6_v5.10-rc6_a+fstn1 #24
+> NIP:  c00000000009ece8 LR: c00000000009ece4 CTR: 0000000000000000
+> REGS: c00000000dc63560 TRAP: 0700   Not tainted  (5.10.0-rc6_v5.10-rc6_a+fstn1)
+> MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 28002888  XER: 20040000
+> CFAR: c0000000001fa928 IRQMASK: 1
+> GPR00: c00000000009ece4 c00000000dc637f0 c000000002397600 000000000000001f
+> GPR04: c0000000020eb318 0000000000000000 c00000000dc63494 0000000000000027
+> GPR08: c00000007fe4de68 c00000000dfe9180 0000000000000000 0000000000000001
+> GPR12: 0000000000002000 c0000000030a0000 0000000000000000 0000000000000000
+> GPR16: 0000000000000000 0000000000000000 0000000000000000 bfffffffffffffff
+> GPR20: 0000000000000000 c0000000134a4020 c0000000019c2218 0000000000000fe0
+> GPR24: 0000000000000000 0000000000000000 c00000000d106200 0000000040000000
+> GPR28: 0000000000000000 0000000000000300 c00000000dc63910 c000000001946730
+> NIP [c00000000009ece8] __do_page_fault+0xb38/0xde0
+> LR [c00000000009ece4] __do_page_fault+0xb34/0xde0
+> Call Trace:
+> [c00000000dc637f0] [c00000000009ece4] __do_page_fault+0xb34/0xde0 (unreliable)
+> [c00000000dc638a0] [c00000000000c968] handle_page_fault+0x10/0x2c
+> --- interrupt: 300 at strncpy_from_user+0x290/0x440
+>     LR = strncpy_from_user+0x284/0x440
+> [c00000000dc63ba0] [c000000000c3dcb0] strncpy_from_user+0x2f0/0x440 (unreliable)
+> [c00000000dc63c30] [c00000000068b888] getname_flags+0x88/0x2c0
+> [c00000000dc63c90] [c000000000662a44] do_sys_openat2+0x2d4/0x5f0
+> [c00000000dc63d30] [c00000000066560c] do_sys_open+0xcc/0x140
+> [c00000000dc63dc0] [c000000000045e10] system_call_exception+0x160/0x240
+> [c00000000dc63e20] [c00000000000da60] system_call_common+0xf0/0x27c
+> Instruction dump:
+> 409c0048 3fe2ff5b 3bfff128 fac10060 fae10068 482f7a85 60000000 3c62ff5b
+> 7fe4fb78 3863f250 4815bbd9 60000000 <0fe00000> 3c62ff5b 3863f2b8 4815c8b5
+> irq event stamp: 254
+> hardirqs last  enabled at (253): [<c000000000019550>] arch_local_irq_restore+0xa0/0x150
+> hardirqs last disabled at (254): [<c000000000008a10>] data_access_common_virt+0x1b0/0x1d0
+> softirqs last  enabled at (0): [<c0000000001f6d5c>] copy_process+0x78c/0x2120
+> softirqs last disabled at (0): [<0000000000000000>] 0x0
+> ---[ end trace ba98aec5151f3aeb ]---
+> ---
+>  arch/powerpc/kernel/irq.c | 27 ++++++++++++++++++++++++++-
+>  1 file changed, 26 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+> index cc7a6271b6b4..592abc798826 100644
+> --- a/arch/powerpc/kernel/irq.c
+> +++ b/arch/powerpc/kernel/irq.c
+> @@ -269,6 +269,23 @@ void replay_soft_interrupts(void)
+>  	}
+>  }
+>  
+> +#if defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_PPC_KUAP)
+> +static inline void replay_soft_interrupts_irqrestore(void)
+> +{
+> +	unsigned long kuap_state = get_kuap();
+> +
+> +	if (kuap_state != AMR_KUAP_BLOCKED)
+> +		set_kuap(AMR_KUAP_BLOCKED);
+> +
+> +	replay_soft_interrupts();
+> +
+> +	if (kuap_state != AMR_KUAP_BLOCKED)
+> +		set_kuap(kuap_state);
+> +}
+> +#else
+> +#define replay_soft_interrupts_irqrestore() replay_soft_interrupts()
+> +#endif
+> +
+>  notrace void arch_local_irq_restore(unsigned long mask)
+>  {
+>  	unsigned char irq_happened;
+> @@ -278,6 +295,14 @@ notrace void arch_local_irq_restore(unsigned long mask)
+>  	if (mask)
+>  		return;
+>  
+> +	/*
+> +	 * It fires if anything calls local_irq_enable or restore when
+> +	 * KUAP is enabled, and the code handles that just fine by saving
+> +	 * and re-locking AMR but we would like to remove those calls,
+> +	 * hence the warning.
+> +	 */
+> +	kuap_check_amr();
+> +
+>  	/*
+>  	 * From this point onward, we can take interrupts, preempt,
+>  	 * etc... unless we got hard-disabled. We check if an event
+> @@ -332,7 +357,7 @@ notrace void arch_local_irq_restore(unsigned long mask)
+>  	irq_soft_mask_set(IRQS_ALL_DISABLED);
+>  	trace_hardirqs_off();
+>  
+> -	replay_soft_interrupts();
+> +	replay_soft_interrupts_irqrestore();
+>  	local_paca->irq_happened = 0;
+>  
+>  	trace_hardirqs_on();
+> -- 
+> 2.17.1
+> 
