@@ -1,39 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D50B30D580
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 09:46:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A96530D5A1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 09:56:13 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DVwJk4F8WzDwvT
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 19:46:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DVwWt2gMDzDwy3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 19:56:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=C+V1UFzD; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DVwHC5LJ9zDwsr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 19:45:11 +1100 (AEDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id B82D7AD6A;
- Wed,  3 Feb 2021 08:45:05 +0000 (UTC)
-Date: Wed, 3 Feb 2021 09:45:03 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel] powerpc/kuap: Restore AMR after replaying soft
- interrupts
-Message-ID: <20210203084503.GX6564@kitsune.suse.cz>
-References: <20210202091541.36499-1-aik@ozlabs.ru>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210202091541.36499-1-aik@ozlabs.ru>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DVwVZ5LXGzDwlg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 19:55:02 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 1138bxCi146086; Wed, 3 Feb 2021 03:54:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=Afwl5Q2gkFlUBN/dM6JCMYjVZDAfQoPApOvJIFg/hcY=;
+ b=C+V1UFzDWUOsuM1rODpKe1hfYRHwCC+xyR6/nKrrLMNr5unwn8iQGB2GrBFQ3ueH4nU0
+ 6MDO8uECbvjWc25p1fKpG0hlV6piYyCY6IPFeDAHaNlk086YPy5CulYCQtIzv1fsRhKb
+ U0uDRBWGEjLToW/CxLwhf5PRUh9fVb9y+ZcfefsCybql8/PWT2Whk0z3WPCqv07BogIB
+ XJm9nCQrZsVFL7SlE68mNI5B3MeyekAEkCTrHua3QRkDh4bJHmHHo8A5PqLDDdQMmMwD
+ kcVD3Q+RQupJRSvBifs11/tTG8cZteCF5dcJbFE4lrW9PtyOEF5+0DMbEcFkZJzDQqwq wg== 
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36fqt29gtk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Feb 2021 03:54:53 -0500
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1138qDvL006818;
+ Wed, 3 Feb 2021 08:54:50 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma05fra.de.ibm.com with ESMTP id 36cy381x0x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Feb 2021 08:54:50 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1138smvY41353570
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 3 Feb 2021 08:54:48 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 487704C046;
+ Wed,  3 Feb 2021 08:54:48 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D92CC4C04A;
+ Wed,  3 Feb 2021 08:54:45 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.79.230.139])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  3 Feb 2021 08:54:45 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/perf: Record counter overflow always if SAMPLE_IP is
+ unset
+Date: Wed,  3 Feb 2021 03:54:44 -0500
+Message-Id: <1612342484-1404-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
+ definitions=2021-02-03_03:2021-02-02,
+ 2021-02-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ priorityscore=1501 clxscore=1011 suspectscore=0 malwarescore=0
+ impostorscore=0 phishscore=0 mlxlogscore=999 adultscore=0 spamscore=0
+ mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102030053
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,184 +89,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+While sampling for marked events, currently we record the sample only
+if the SIAR valid bit of Sampled Instruction Event Register (SIER) is
+set. SIAR_VALID bit is used for fetching the instruction address from
+Sampled Instruction Address Register(SIAR). But there are some usecases,
+where the user is interested only in the PMU stats at each counter
+overflow and the exact IP of the overflow event is not required.
+Dropping SIAR invalid samples will fail to record some of the counter
+overflows in such cases.
 
-On Tue, Feb 02, 2021 at 08:15:41PM +1100, Alexey Kardashevskiy wrote:
-> Since de78a9c "powerpc: Add a framework for Kernel Userspace Access
-> Protection", user access helpers call user_{read|write}_access_{begin|end}
-> when user space access is allowed.
-> 
-> 890274c "powerpc/64s: Implement KUAP for Radix MMU" made the mentioned
-> helpers program a AMR special register to allow such access for a short
-> period of time, most of the time AMR is expected to block user memory
-> access by the kernel.
-> 
-> Since the code accesses the user space memory, unsafe_get_user()
-> calls might_fault() which calls arch_local_irq_restore() if either
-> CONFIG_PROVE_LOCKING or CONFIG_DEBUG_ATOMIC_SLEEP is enabled.
-> arch_local_irq_restore() then attempts to replay pending soft interrupts
-> as KUAP regions have hardware interrupts enabled.
-> If a pending interrupt happens to do user access (performance interrupts
-> do that), it enables access for a short period of time so after returning
-> from the replay, the user access state remains blocked and if a user page
-> fault happens - "Bug: Read fault blocked by AMR!" appears and SIGSEGV is
-> sent.
-> 
-> This saves/restores AMR when replaying interrupts.
-> 
-> This adds a check if AMR was not blocked when before replaying interrupts.
-> 
-> Found by syzkaller. The call stack for the bug is:
-> 
-> copy_from_user_nofault+0xf8/0x250
-> perf_callchain_user_64+0x3d8/0x8d0
-> perf_callchain_user+0x38/0x50
-> get_perf_callchain+0x28c/0x300
-> perf_callchain+0xb0/0x130
-> perf_prepare_sample+0x364/0xbf0
-> perf_event_output_forward+0xe0/0x280
-> __perf_event_overflow+0xa4/0x240
-> perf_swevent_hrtimer+0x1d4/0x1f0
-> __hrtimer_run_queues+0x328/0x900
-> hrtimer_interrupt+0x128/0x350
-> timer_interrupt+0x180/0x600
-> replay_soft_interrupts+0x21c/0x4f0
-> arch_local_irq_restore+0x94/0x150
-> lock_is_held_type+0x140/0x200
-> ___might_sleep+0x220/0x330
-> __might_fault+0x88/0x120
-> do_strncpy_from_user+0x108/0x2b0
-> strncpy_from_user+0x1d0/0x2a0
-> getname_flags+0x88/0x2c0
-> do_sys_openat2+0x2d4/0x5f0
-> do_sys_open+0xcc/0x140
-> system_call_exception+0x160/0x240
-> system_call_common+0xf0/0x27c
-> 
-Can we get a Fixes tag?
+Example of such usecase is dumping the PMU stats (event counts)
+after some regular amount of instructions/events from the userspace
+(ex: via ptrace). Here counter overflow is indicated to userspace via
+signal handler, and captured by monitoring and enabling I/O
+signaling on the event file descriptor. In these cases, we expect to
+get sample/overflow indication after each specified sample_period.
 
-Thanks
+Perf event attribute will not have PERF_SAMPLE_IP set in the
+sample_type if exact IP of the overflow event is not requested. So
+while profiling if SAMPLE_IP is not set, just record the counter overflow
+irrespective of SIAR_VALID check.
 
-Michal
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> Changes:
-> v3:
-> * do not block/unblock if AMR was blocked
-> * reverted move of AMR_KUAP_***
-> * added pr_warn
-> 
-> v2:
-> * fixed compile on hash
-> * moved get/set to arch_local_irq_restore
-> * block KUAP before replaying
-> 
-> ---
-> 
-> This is an example:
-> 
-> ------------[ cut here ]------------
-> Bug: Read fault blocked by AMR!
-> WARNING: CPU: 0 PID: 1603 at /home/aik/p/kernel/arch/powerpc/include/asm/book3s/64/kup-radix.h:145 __do_page_fau
-> 
-> Modules linked in:
-> CPU: 0 PID: 1603 Comm: amr Not tainted 5.10.0-rc6_v5.10-rc6_a+fstn1 #24
-> NIP:  c00000000009ece8 LR: c00000000009ece4 CTR: 0000000000000000
-> REGS: c00000000dc63560 TRAP: 0700   Not tainted  (5.10.0-rc6_v5.10-rc6_a+fstn1)
-> MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 28002888  XER: 20040000
-> CFAR: c0000000001fa928 IRQMASK: 1
-> GPR00: c00000000009ece4 c00000000dc637f0 c000000002397600 000000000000001f
-> GPR04: c0000000020eb318 0000000000000000 c00000000dc63494 0000000000000027
-> GPR08: c00000007fe4de68 c00000000dfe9180 0000000000000000 0000000000000001
-> GPR12: 0000000000002000 c0000000030a0000 0000000000000000 0000000000000000
-> GPR16: 0000000000000000 0000000000000000 0000000000000000 bfffffffffffffff
-> GPR20: 0000000000000000 c0000000134a4020 c0000000019c2218 0000000000000fe0
-> GPR24: 0000000000000000 0000000000000000 c00000000d106200 0000000040000000
-> GPR28: 0000000000000000 0000000000000300 c00000000dc63910 c000000001946730
-> NIP [c00000000009ece8] __do_page_fault+0xb38/0xde0
-> LR [c00000000009ece4] __do_page_fault+0xb34/0xde0
-> Call Trace:
-> [c00000000dc637f0] [c00000000009ece4] __do_page_fault+0xb34/0xde0 (unreliable)
-> [c00000000dc638a0] [c00000000000c968] handle_page_fault+0x10/0x2c
-> --- interrupt: 300 at strncpy_from_user+0x290/0x440
->     LR = strncpy_from_user+0x284/0x440
-> [c00000000dc63ba0] [c000000000c3dcb0] strncpy_from_user+0x2f0/0x440 (unreliable)
-> [c00000000dc63c30] [c00000000068b888] getname_flags+0x88/0x2c0
-> [c00000000dc63c90] [c000000000662a44] do_sys_openat2+0x2d4/0x5f0
-> [c00000000dc63d30] [c00000000066560c] do_sys_open+0xcc/0x140
-> [c00000000dc63dc0] [c000000000045e10] system_call_exception+0x160/0x240
-> [c00000000dc63e20] [c00000000000da60] system_call_common+0xf0/0x27c
-> Instruction dump:
-> 409c0048 3fe2ff5b 3bfff128 fac10060 fae10068 482f7a85 60000000 3c62ff5b
-> 7fe4fb78 3863f250 4815bbd9 60000000 <0fe00000> 3c62ff5b 3863f2b8 4815c8b5
-> irq event stamp: 254
-> hardirqs last  enabled at (253): [<c000000000019550>] arch_local_irq_restore+0xa0/0x150
-> hardirqs last disabled at (254): [<c000000000008a10>] data_access_common_virt+0x1b0/0x1d0
-> softirqs last  enabled at (0): [<c0000000001f6d5c>] copy_process+0x78c/0x2120
-> softirqs last disabled at (0): [<0000000000000000>] 0x0
-> ---[ end trace ba98aec5151f3aeb ]---
-> ---
->  arch/powerpc/kernel/irq.c | 27 ++++++++++++++++++++++++++-
->  1 file changed, 26 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-> index cc7a6271b6b4..592abc798826 100644
-> --- a/arch/powerpc/kernel/irq.c
-> +++ b/arch/powerpc/kernel/irq.c
-> @@ -269,6 +269,23 @@ void replay_soft_interrupts(void)
->  	}
->  }
->  
-> +#if defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_PPC_KUAP)
-> +static inline void replay_soft_interrupts_irqrestore(void)
-> +{
-> +	unsigned long kuap_state = get_kuap();
-> +
-> +	if (kuap_state != AMR_KUAP_BLOCKED)
-> +		set_kuap(AMR_KUAP_BLOCKED);
-> +
-> +	replay_soft_interrupts();
-> +
-> +	if (kuap_state != AMR_KUAP_BLOCKED)
-> +		set_kuap(kuap_state);
-> +}
-> +#else
-> +#define replay_soft_interrupts_irqrestore() replay_soft_interrupts()
-> +#endif
-> +
->  notrace void arch_local_irq_restore(unsigned long mask)
->  {
->  	unsigned char irq_happened;
-> @@ -278,6 +295,14 @@ notrace void arch_local_irq_restore(unsigned long mask)
->  	if (mask)
->  		return;
->  
-> +	/*
-> +	 * It fires if anything calls local_irq_enable or restore when
-> +	 * KUAP is enabled, and the code handles that just fine by saving
-> +	 * and re-locking AMR but we would like to remove those calls,
-> +	 * hence the warning.
-> +	 */
-> +	kuap_check_amr();
-> +
->  	/*
->  	 * From this point onward, we can take interrupts, preempt,
->  	 * etc... unless we got hard-disabled. We check if an event
-> @@ -332,7 +357,7 @@ notrace void arch_local_irq_restore(unsigned long mask)
->  	irq_soft_mask_set(IRQS_ALL_DISABLED);
->  	trace_hardirqs_off();
->  
-> -	replay_soft_interrupts();
-> +	replay_soft_interrupts_irqrestore();
->  	local_paca->irq_happened = 0;
->  
->  	trace_hardirqs_on();
-> -- 
-> 2.17.1
-> 
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+ arch/powerpc/perf/core-book3s.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 28206b1fe172..bb4828a05e4d 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2166,10 +2166,16 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 	 * address even when freeze on supervisor state (kernel) is set in
+ 	 * MMCR2. Check attr.exclude_kernel and address to drop the sample in
+ 	 * these cases.
++	 *
++	 * If address is not requested in the sample
++	 * via PERF_SAMPLE_IP, just record that sample
++	 * irrespective of SIAR valid check.
+ 	 */
+-	if (event->attr.exclude_kernel && record)
+-		if (is_kernel_addr(mfspr(SPRN_SIAR)))
++	if (event->attr.exclude_kernel && record) {
++		if (is_kernel_addr(mfspr(SPRN_SIAR)) && (event->attr.sample_type & PERF_SAMPLE_IP))
+ 			record = 0;
++	} else if (!record && !(event->attr.sample_type & PERF_SAMPLE_IP))
++		record = 1;
+ 
+ 	/*
+ 	 * Finally record data if requested.
+-- 
+1.8.3.1
+
