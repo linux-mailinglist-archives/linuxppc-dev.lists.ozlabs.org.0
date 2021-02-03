@@ -2,40 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB4030E2D1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 19:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E3030E4D8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 22:22:05 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DW9mY1t85zF325
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 05:53:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DWF4V4sl7zDx1s
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 08:22:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=codefail.de (client-ip=68.65.122.27;
- helo=mta-07-4.privateemail.com; envelope-from=cmr@codefail.de;
- receiver=<UNKNOWN>)
-Received: from MTA-07-4.privateemail.com (mta-07-4.privateemail.com
- [68.65.122.27])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DW9Yg4XNszDwtn
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 05:43:34 +1100 (AEDT)
-Received: from MTA-07.privateemail.com (localhost [127.0.0.1])
- by MTA-07.privateemail.com (Postfix) with ESMTP id B255A60060
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 13:43:32 -0500 (EST)
-Received: from oc8246131445.ibm.com (unknown [10.20.151.227])
- by MTA-07.privateemail.com (Postfix) with ESMTPA id 8362160064
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 18:43:32 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@codefail.de>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 10/10] powerpc/signal64: Use __get_user() to copy sigset_t
-Date: Wed,  3 Feb 2021 12:43:23 -0600
-Message-Id: <20210203184323.20792-11-cmr@codefail.de>
-X-Mailer: git-send-email 2.26.1
-In-Reply-To: <20210203184323.20792-1-cmr@codefail.de>
-References: <20210203184323.20792-1-cmr@codefail.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DWF2z5S4XzDqM1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 08:20:40 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 113LHYGb014316;
+ Wed, 3 Feb 2021 15:17:34 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 113LHXCH014310;
+ Wed, 3 Feb 2021 15:17:33 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 3 Feb 2021 15:17:33 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 1/3] powerpc: sstep: Fix load and update emulation
+Message-ID: <20210203211732.GD30983@gate.crashing.org>
+References: <20210203063841.431063-1-sandipan@linux.ibm.com>
+ <20210203094909.GD210@DESKTOP-TDPLP67.localdomain>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210203094909.GD210@DESKTOP-TDPLP67.localdomain>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,62 +48,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: ravi.bangoria@linux.ibm.com, ananth@linux.ibm.com, jniethe5@gmail.com,
+ paulus@samba.org, Sandipan Das <sandipan@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Usually sigset_t is exactly 8B which is a "trivial" size and does not
-warrant using __copy_from_user(). Use __get_user() directly in
-anticipation of future work to remove the trivial size optimizations
-from __copy_from_user(). Calling __get_user() also results in a small
-boost to signal handling throughput here.
+On Wed, Feb 03, 2021 at 03:19:09PM +0530, Naveen N. Rao wrote:
+> On 2021/02/03 12:08PM, Sandipan Das wrote:
+> > The Power ISA says that the fixed-point load and update
+> > instructions must neither use R0 for the base address (RA)
+> > nor have the destination (RT) and the base address (RA) as
+> > the same register. In these cases, the instruction is
+> > invalid.
 
-Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
----
- arch/powerpc/kernel/signal_64.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+> > However, the following behaviour is observed using some
+> > invalid opcodes where RA = RT.
+> > 
+> > An userspace program using an invalid instruction word like
+> > 0xe9ce0001, i.e. "ldu r14, 0(r14)", runs and exits without
+> > getting terminated abruptly. The instruction performs the
+> > load operation but does not write the effective address to
+> > the base address register. 
+> 
+> While the processor (p8 in my test) doesn't seem to be throwing an 
+> exception, I don't think it is necessarily loading the value. Qemu 
+> throws an exception though. It's probably best to term the behavior as 
+> being undefined.
 
-diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index 817b64e1e409..42fdc4a7ff72 100644
---- a/arch/powerpc/kernel/signal_64.c
-+++ b/arch/powerpc/kernel/signal_64.c
-@@ -97,6 +97,14 @@ static void prepare_setup_sigcontext(struct task_struct *tsk, int ctx_has_vsx_re
- #endif /* CONFIG_VSX */
- }
- 
-+static inline int get_user_sigset(sigset_t *dst, const sigset_t *src)
-+{
-+	if (sizeof(sigset_t) <= 8)
-+		return __get_user(dst->sig[0], &src->sig[0]);
-+	else
-+		return __copy_from_user(dst, src, sizeof(sigset_t));
-+}
-+
- /*
-  * Set up the sigcontext for the signal frame.
-  */
-@@ -701,8 +709,9 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
- 	 * We kill the task with a SIGSEGV in this situation.
- 	 */
- 
--	if (__copy_from_user(&set, &new_ctx->uc_sigmask, sizeof(set)))
-+	if (get_user_sigset(&set, &new_ctx->uc_sigmask))
- 		do_exit(SIGSEGV);
-+
- 	set_current_blocked(&set);
- 
- 	if (!user_read_access_begin(new_ctx, ctx_size))
-@@ -740,8 +749,9 @@ SYSCALL_DEFINE0(rt_sigreturn)
- 	if (!access_ok(uc, sizeof(*uc)))
- 		goto badframe;
- 
--	if (__copy_from_user(&set, &uc->uc_sigmask, sizeof(set)))
-+	if (get_user_sigset(&set, &uc->uc_sigmask))
- 		goto badframe;
-+
- 	set_current_blocked(&set);
- 
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
--- 
-2.26.1
+Power8 does:
 
+  Load with Update Instructions (RA = 0)
+    EA is placed into R0.
+  Load with Update Instructions (RA = RT)
+    EA is placed into RT. The storage operand addressed by EA is
+    accessed, but the data returned by the load is discarded.
+
+Power9 does:
+
+  Load with Update Instructions (RA = 0)
+    EA is placed into R0.
+  Load with Update Instructions (RA = RT)
+    The storage operand addressed by EA is accessed. The displacement
+    field is added to the data returned by the load and placed into RT.
+
+Both UMs also say
+
+  Invalid Forms
+    In general, the POWER9 core handles invalid forms of instructions in
+    the manner that is most convenient for the particular case (within
+    the scope of meeting the boundedly-undefined definition described in
+    the Power ISA). This document specifies the behavior for these
+    cases.  However, it is not recommended that software or other system
+    facilities make use of the POWER9 behavior in these cases because
+    such behavior might be different in another processor that
+    implements the Power ISA.
+
+(or POWER8 instead of POWER9 of course).  Always complaining about most
+invalid forms seems wise, certainly if not all recent CPUs behave the
+same :-)
+
+
+Segher
