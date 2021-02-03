@@ -1,32 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F94B30D9E5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 13:40:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB15D30D9FC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 13:43:30 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DW1VQ48lmzF3M9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 23:40:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DW1Z75P3czDyxD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Feb 2021 23:43:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4DW09g6nZfzDwt7
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 22:40:39 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DW09k6dqjzDwv6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Feb 2021 22:40:42 +1100 (AEDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4DW09f5Zvlz9vG1; Wed,  3 Feb 2021 22:40:38 +1100 (AEDT)
+ id 4DW09h1qQFz9vFx; Wed,  3 Feb 2021 22:40:39 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Andrew Donnellan <ajd@linux.ibm.com>,
- Arnd Bergmann <arnd@arndb.de>, Markus Elfring <Markus.Elfring@web.de>,
- Frederic Barrat <fbarrat@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-In-Reply-To: <5cee2b25-71e0-15aa-fba6-12211b8308aa@web.de>
-References: <5cee2b25-71e0-15aa-fba6-12211b8308aa@web.de>
-Subject: Re: [PATCH] cxl: Reduce scope for the variable “mm” in cxllib_get_PE_attributes()
-Message-Id: <161235200902.1516112.15792189842810233641.b4-ty@ellerman.id.au>
-Date: Wed,  3 Feb 2021 22:40:38 +1100 (AEDT)
+To: linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Markus Elfring <Markus.Elfring@web.de>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, Paul Mackerras <paulus@samba.org>
+In-Reply-To: <5b62379e-a35f-4f56-f1b5-6350f76007e7@web.de>
+References: <5b62379e-a35f-4f56-f1b5-6350f76007e7@web.de>
+Subject: Re: [PATCH] powerpc/setup: Adjust six seq_printf() calls in
+ show_cpuinfo()
+Message-Id: <161235201005.1516112.10488411245763781267.b4-ty@ellerman.id.au>
+Date: Wed,  3 Feb 2021 22:40:39 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,16 +46,16 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 10 Dec 2020 15:35:38 +0100, Markus Elfring wrote:
-> A local variable was used only within an if branch.
-> Thus move the definition for the variable “mm” into the corresponding
-> code block.
+On Tue, 2 Jul 2019 14:56:46 +0200, Markus Elfring wrote:
+> A bit of information should be put into a sequence.
+> Thus improve the execution speed for this data output by better usage
+> of corresponding functions.
 > 
 > This issue was detected by using the Coccinelle software.
 
 Applied to powerpc/next.
 
-[1/1] cxl: Reduce scope for the variable “mm” in cxllib_get_PE_attributes()
-      https://git.kernel.org/powerpc/c/245a389c6ded15a7d308dbe988aec8a96e8aa8cf
+[1/1] powerpc/setup: Adjust six seq_printf() calls in show_cpuinfo()
+      https://git.kernel.org/powerpc/c/675b963e2b6007818fe1b0a64b47be40c125246e
 
 cheers
