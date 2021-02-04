@@ -1,98 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B67730F138
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 11:51:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F6130F1E8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 12:19:12 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DWb2z1d7yzDrdS
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 21:51:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DWbfM076mzDwrm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 22:19:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::434;
+ helo=mail-wr1-x434.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hZlh/8TD; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=XJX470yf; dkim-atps=neutral
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com
+ [IPv6:2a00:1450:4864:20::434])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DWb195xbDzDqRv
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 21:50:20 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 114AgTUw002255; Thu, 4 Feb 2021 05:49:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=3upmjPHk1Jp16W7e/Lhw3FXopwlhH4hy8FhsNbN6oAg=;
- b=hZlh/8TDj0JVnfLPup2pGaoB3Y43sa8iYvkxigRERaPcjqcYx7lPR22Oj9Q232+/4Ypn
- hdK46puSp5FRWP8PZBdwNOJcXhjbGx5HHbBNPzkkCf1wkhgY8kcJ8zxgkxPAUXnRt9rS
- 2DwV3/u9r7p81Y+YJdbung0nvu1Xi+RsLXjnAhKEdCz0aWyrAEMaOS/Fu0CIfpaIRCHq
- 50AcbUyDKVUlZxR48FdRieVrv4b22TuVnv29xcnHNg4HeL0niepCcvwy1oJOq39Uas8l
- 6upjrI2jLaFKCRiSyAA1BV6J9TXZ64GR6yFN7//iaQQg9s/RxmKTCGah3j33bsva9udq 8Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36gfdg06h8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 04 Feb 2021 05:49:48 -0500
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 114AgcSk002555;
- Thu, 4 Feb 2021 05:49:48 -0500
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36gfdg06gk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 04 Feb 2021 05:49:47 -0500
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 114AmRjV022467;
- Thu, 4 Feb 2021 10:49:46 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03ams.nl.ibm.com with ESMTP id 36fwcw0ts0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 04 Feb 2021 10:49:45 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 114AnYRH37814674
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 4 Feb 2021 10:49:34 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 067F2AE053;
- Thu,  4 Feb 2021 10:49:43 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ECE67AE04D;
- Thu,  4 Feb 2021 10:49:40 +0000 (GMT)
-Received: from [9.199.39.112] (unknown [9.199.39.112])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  4 Feb 2021 10:49:40 +0000 (GMT)
-Subject: Re: [PATCH v2] powerpc/uprobes: Validation for prefixed instruction
-To: mpe@ellerman.id.au
-References: <20210204104703.273429-1-ravi.bangoria@linux.ibm.com>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Message-ID: <79b0bed7-8b98-d58d-dc47-644195bbc095@linux.ibm.com>
-Date: Thu, 4 Feb 2021 16:19:40 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DWbS55S58zDqyn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 22:10:10 +1100 (AEDT)
+Received: by mail-wr1-x434.google.com with SMTP id 7so3061981wrz.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Feb 2021 03:10:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=nlC+PhXfp+ifxVEhlW1JzBacSpYjJjXYHNmas4fv5Ds=;
+ b=XJX470yfUpu4a/FA4lANKEzvueSTWsxfPj0W1Cfn9V3WbozDGwDKWnVRa6TIhBnVAs
+ 4LWFWuDhCanTjkjwrXkSW/2MYEzugl2aG9eyn1ApqjsEqgQsbgWpc2FusWzJoQV7lhdf
+ zgWQJ21RrKQeKmi3XBHakKY9HNdswliGWOQZVaJKokVyRDEMZeAeKrhHLFc4VBaKOocu
+ KQBrM54/2pMfprhRBw+7NqdnywjG7g/tY/8wvVBep3sQ58iJi853mTn7jBjGBv2pIKMO
+ vgMX/GgphIpsy5g34uM4sT9YaB6sYhYzMtUDw6aM/0hUZx9YsmwRBmWHxDpVMNd0LARO
+ Qncg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=nlC+PhXfp+ifxVEhlW1JzBacSpYjJjXYHNmas4fv5Ds=;
+ b=RQXiFXP2O4mvhCU6Q0QV2pyOA+86ox5EdmJX8igpST/oP4AWLw+BOwlWAcKqA+79Ch
+ yDOhuKbUebXZOlCFiVGNSyDc1/j2tM0PQAewy/0cUYVvOLxsB4ymcBBrwAFMu25wUKj5
+ I4rMy3GWySK3w2cNWlp9eiSmnhYJutHLixC3am/raVyVW+lUAHbvCbsWmlhQ9emopzIW
+ hBKlAA+bUT4+Z1BSCNb2n5+zMTQIYwBjzf0J+JyNeJ2uXKY1RPLLk/UUWkccdKuZew3J
+ UBzb9xeBL6/GoYurpFdfMOJJPJCJvbXoHdXzaqaFcjen4Lj/cQJJEKeWTcv+32BGT52X
+ pQUQ==
+X-Gm-Message-State: AOAM531LM74KGtxlnlFhHMIY2Y7LWao+5vdjPEZ2Sh7TgT5PWjBguwer
+ b69RvowxjjIUnc4R+HYCTG6pcw==
+X-Google-Smtp-Source: ABdhPJyLKDXyanH7L5GdxNPOqprdRtf1XwWUk17K9MS9MutmvHQHiDcu2KbNGqAlqOoC8tLO+lBQhg==
+X-Received: by 2002:a05:6000:1105:: with SMTP id
+ z5mr8634911wrw.15.1612437003994; 
+ Thu, 04 Feb 2021 03:10:03 -0800 (PST)
+Received: from dell.default ([91.110.221.188])
+ by smtp.gmail.com with ESMTPSA id y18sm7696218wrt.19.2021.02.04.03.10.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Feb 2021 03:10:03 -0800 (PST)
+From: Lee Jones <lee.jones@linaro.org>
+To: lee.jones@linaro.org
+Subject: [PATCH 00/20] Rid W=1 warnings in Crypto
+Date: Thu,  4 Feb 2021 11:09:40 +0000
+Message-Id: <20210204111000.2800436-1-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20210204104703.273429-1-ravi.bangoria@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
- definitions=2021-02-04_05:2021-02-04,
- 2021-02-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015
- malwarescore=0 bulkscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- phishscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2102040062
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,36 +76,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, jniethe5@gmail.com,
- oleg@redhat.com, rostedt@goodmis.org, linux-kernel@vger.kernel.org,
- paulus@samba.org, sandipan@linux.ibm.com, naveen.n.rao@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Aymen Sghaier <aymen.sghaier@nxp.com>, Takashi Iwai <tiwai@suse.de>,
+ Kent Yoder <yoder1@us.ibm.com>, Ayush Sawal <ayush.sawal@chelsio.com>,
+ Joakim Bech <joakim.xx.bech@stericsson.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Andreas Westin <andreas.westin@stericsson.com>,
+ =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
+ Atul Gupta <atul.gupta@chelsio.com>,
+ Niklas Hernaeus <niklas.hernaeus@stericsson.com>,
+ M R Gowda <yeshaswi@chelsio.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+ Rohit Maheshwari <rohitm@chelsio.com>, Nayna Jain <nayna@linux.ibm.com>,
+ Manoj Malviya <manojmalviya@chelsio.com>,
+ Ludovic Desroches <ludovic.desroches@microchip.com>,
+ Jonas Linde <jonas.linde@stericsson.com>, Rob Rice <rob.rice@broadcom.com>,
+ Zaibo Xu <xuzaibo@huawei.com>, Harsh Jain <harsh@chelsio.com>,
+ Declan Murphy <declan.murphy@intel.com>,
+ Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+ Tudor Ambarus <tudor.ambarus@microchip.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Shujuan Chen <shujuan.chen@stericsson.com>,
+ Henrique Cerri <mhcerri@br.ibm.com>,
+ Daniele Alessandrelli <daniele.alessandrelli@intel.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, linux-kernel@vger.kernel.org,
+ Berne Hebark <berne.herbark@stericsson.com>, linux-crypto@vger.kernel.org,
+ Jitendra Lulla <jlulla@chelsio.com>,
+ Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This set is part of a larger effort attempting to clean-up W=1
+kernel builds, which are currently overwhelmingly riddled with
+niggly little warnings.
 
+This is set 1 of 2 sets required to fully clean Crypto.
 
-On 2/4/21 4:17 PM, Ravi Bangoria wrote:
-> Don't allow Uprobe on 2nd word of a prefixed instruction. As per
-> ISA 3.1, prefixed instruction should not cross 64-byte boundary.
-> So don't allow Uprobe on such prefixed instruction as well.
-> 
-> There are two ways probed instruction is changed in mapped pages.
-> First, when Uprobe is activated, it searches for all the relevant
-> pages and replace instruction in them. In this case, if we notice
-> that probe is on the 2nd word of prefixed instruction, error out
-> directly. Second, when Uprobe is already active and user maps a
-> relevant page via mmap(), instruction is replaced via mmap() code
-> path. But because Uprobe is invalid, entire mmap() operation can
-> not be stopped. In this case just print an error and continue.
+Lee Jones (20):
+  crypto: hisilicon: sec_drv: Supply missing description for
+    'sec_queue_empty()'s 'queue' param
+  crypto: bcm: util: Repair a couple of documentation formatting issues
+  crypto: chelsio: chcr_core: File headers are not good candidates for
+    kernel-doc
+  crypto: ux500: hash: hash_core: Fix worthy kernel-doc headers and
+    remove others
+  crypto: bcm: spu: Fix formatting and misspelling issues
+  crypto: keembay: ocs-hcu: Fix incorrectly named functions/structs
+  crypto: bcm: spu2: Fix a whole host of kernel-doc misdemeanours
+  crypto: ux500: cryp: Demote some conformant non-kernel headers fix
+    another
+  crypto: ux500: cryp_irq: File headers are not good kernel-doc
+    candidates
+  crypto: chelsio: chcr_algo: Fix a couple of kernel-doc issues caused
+    by doc-rot
+  crypto: ux500: cryp_core: Fix formatting issue and add description for
+    'session_id'
+  crypto: atmel-ecc: Struct headers need to start with keyword 'struct'
+  crypto: bcm: cipher: Provide description for 'req' and fix formatting
+    issues
+  crypto: caam: caampkc: Provide the name of the function
+  crypto: caam: caamalg_qi2: Supply a couple of 'fallback' related
+    descriptions
+  crypto: vmx: Source headers are not good kernel-doc candidates
+  crypto: nx: nx-aes-cbc: Headers comments should not be kernel-doc
+  crypto: nx: nx_debugfs: Header comments should not be kernel-doc
+  crypto: nx: Demote header comment and add description for 'nbytes'
+  crypto: cavium: nitrox_isr: Demote non-compliant kernel-doc headers
 
-@mpe,
+ drivers/crypto/atmel-ecc.c                |  2 +-
+ drivers/crypto/bcm/cipher.c               |  7 ++--
+ drivers/crypto/bcm/spu.c                  | 16 ++++-----
+ drivers/crypto/bcm/spu2.c                 | 43 +++++++++++++----------
+ drivers/crypto/bcm/util.c                 |  4 +--
+ drivers/crypto/caam/caamalg_qi2.c         |  2 ++
+ drivers/crypto/caam/caampkc.c             |  3 +-
+ drivers/crypto/cavium/nitrox/nitrox_isr.c |  4 +--
+ drivers/crypto/chelsio/chcr_algo.c        |  8 ++---
+ drivers/crypto/chelsio/chcr_core.c        |  2 +-
+ drivers/crypto/hisilicon/sec/sec_drv.c    |  1 +
+ drivers/crypto/keembay/ocs-hcu.c          |  6 ++--
+ drivers/crypto/nx/nx-aes-cbc.c            |  2 +-
+ drivers/crypto/nx/nx.c                    |  5 +--
+ drivers/crypto/nx/nx_debugfs.c            |  2 +-
+ drivers/crypto/ux500/cryp/cryp.c          |  5 +--
+ drivers/crypto/ux500/cryp/cryp_core.c     |  5 +--
+ drivers/crypto/ux500/cryp/cryp_irq.c      |  2 +-
+ drivers/crypto/ux500/hash/hash_core.c     | 15 +++-----
+ drivers/crypto/vmx/vmx.c                  |  2 +-
+ 20 files changed, 71 insertions(+), 65 deletions(-)
 
-arch_uprobe_analyze_insn() can return early if
-cpu_has_feature(CPU_FTR_ARCH_31) is not set. But that will
-miss out a rare scenario of user running binary with prefixed
-instruction on p10 predecessors. Please let me know if I
-should add cpu_has_feature(CPU_FTR_ARCH_31) or not.
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Andreas Westin <andreas.westin@stericsson.com>
+Cc: Atul Gupta <atul.gupta@chelsio.com>
+Cc: Aymen Sghaier <aymen.sghaier@nxp.com>
+Cc: Ayush Sawal <ayush.sawal@chelsio.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Berne Hebark <berne.herbark@stericsson.com>
+Cc: "Breno Leitão" <leitao@debian.org>
+Cc: Daniele Alessandrelli <daniele.alessandrelli@intel.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Declan Murphy <declan.murphy@intel.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Harsh Jain <harsh@chelsio.com>
+Cc: Henrique Cerri <mhcerri@br.ibm.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "Horia Geantă" <horia.geanta@nxp.com>
+Cc: Jitendra Lulla <jlulla@chelsio.com>
+Cc: Joakim Bech <joakim.xx.bech@stericsson.com>
+Cc: Jonas Linde <jonas.linde@stericsson.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Kent Yoder <yoder1@us.ibm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-crypto@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+Cc: Manoj Malviya <manojmalviya@chelsio.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: M R Gowda <yeshaswi@chelsio.com>
+Cc: Nayna Jain <nayna@linux.ibm.com>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Niklas Hernaeus <niklas.hernaeus@stericsson.com>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
+Cc: Rob Rice <rob.rice@broadcom.com>
+Cc: Rohit Maheshwari <rohitm@chelsio.com>
+Cc: Shujuan Chen <shujuan.chen@stericsson.com>
+Cc: Takashi Iwai <tiwai@suse.de>
+Cc: Tudor Ambarus <tudor.ambarus@microchip.com>
+Cc: Vinay Kumar Yadav <vinay.yadav@chelsio.com>
+Cc: Zaibo Xu <xuzaibo@huawei.com>
+-- 
+2.25.1
 
-- Ravi
