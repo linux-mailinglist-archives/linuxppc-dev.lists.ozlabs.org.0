@@ -2,100 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E854F30FDA2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 21:03:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE8D30FDBD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 21:07:08 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DWqHl1TWjzDx0r
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 07:03:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DWqMY3HVNzDwyC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 07:07:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=live.com (client-ip=40.92.253.59;
- helo=apc01-sg2-obe.outbound.protection.outlook.com;
- envelope-from=mayanksuman@live.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=live.com header.i=@live.com header.a=rsa-sha256
- header.s=selector1 header.b=qMyK/Gv4; 
- dkim-atps=neutral
-Received: from APC01-SG2-obe.outbound.protection.outlook.com
- (mail-oln040092253059.outbound.protection.outlook.com [40.92.253.59])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Ni/yFHlC; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DWmxC70nkzDwtg
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 05:17:35 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GSFx0bS2/wX1SHWBnUE8Jpi13vIpN9Gf+/AAt7mJx8HAuHhrWgQ2K3aDmGRwC0x3IJ0CZteIzqQAFJxUkPeFStpWSHn3BbgIUCNCy1oI/XEkhijeZvWiwR81Bc/xPA0/MObXzJQqZTcO1wq6SN9OMprb94Zp+be/X/Nwu54JF1/cg8uyMJz5WkBqSGN3F8VLdlsh9wEeKWTE2tz1oc+s+LP847wWHyOIzi/UGFntDxF3JH0tlvsIjD2570oi6HzV0ywYu6aNibykefkxskmw6eGocXBlqYwVE75HDassm0v6YxEixbbt7IMDBX5Y89zYJghS4ENiGqYr89wNJz+7XQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SlYsMWXWF+KXz/FIg6j2qXaxFe4kC57zApJSPPxG0aY=;
- b=Z76Sgzua+wiqh6iLbR2Y5sXCASHIDz/+Pib6YUi2WiI5rqZ4j5U9Fp3l6DFj5MvoDm2+y4maQm6HReGr3t+rQN9fT+10+e9GvV3/aXzHioxfWbEEMHj+NAgeK+w9dQEZ29XaW5ZuSJpo/4bEtol3isgCCettChRbEBu+GUrBp8Bo+IvQ/hk9xBAGhcFYpoxUakkUCDWabs9+8l8KGsRuiH3G0WpcW1P6pALqsO5UH7yW40b7Qm+W+OUCtFNEzsYgJEdftULlqPpaq1RG73890IiUmNQvMkrvPfXd8N64hPw7kMSnZT2F+JN1Ol5mP1Mzr+2VMo8zPOZqO4UiHPIH2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SlYsMWXWF+KXz/FIg6j2qXaxFe4kC57zApJSPPxG0aY=;
- b=qMyK/Gv4KINHcUm+q4LmzqZ3vN63wNWoGbBG6MGnxHiJB/C1CQpSUb82PpapqRu7zXcL9b8hBKrbMxFq2rJkQlEwBJKJfdi9j4iLYK0R7WM87IJYk10E4tXABI/uqG/jS0xTdYUKo40QGu+EQaB4m6mjzYMJj88tWBTSuB2OTNt2xFTPC87FcmCPRyNCAIwP6vrc8GLSWYdBx9J35aGzFARhYOL3JLqPdW0g524gtfFsPxmIUMyfrzjUkX94eTWpy6DkD2IrgCPdJsVQ7xSBtOCNTwgMwtK9fBja0nzVdg0RxiLGTd8bN8Ii35pDadvT+YjdYvnTq3/XXrUthMIOtA==
-Received: from HK2APC01FT048.eop-APC01.prod.protection.outlook.com
- (2a01:111:e400:7ebc::47) by
- HK2APC01HT153.eop-APC01.prod.protection.outlook.com (2a01:111:e400:7ebc::468)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.11; Thu, 4 Feb
- 2021 18:17:27 +0000
-Received: from PS1PR04MB2934.apcprd04.prod.outlook.com
- (2a01:111:e400:7ebc::53) by HK2APC01FT048.mail.protection.outlook.com
- (2a01:111:e400:7ebc::456) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.11 via Frontend
- Transport; Thu, 4 Feb 2021 18:17:27 +0000
-X-IncomingTopHeaderMarker: OriginalChecksum:8CB2F55384BD21EEA04F41EE72D1D29426A6C1CD0BE3FA5D7FD2BC0CD48A952C;
- UpperCasedChecksum:6054BF7ADE1E1C06637334551DD0E75CA799F85326622B6D661EC613D54CA32C;
- SizeAsReceived:7465; Count:45
-Received: from PS1PR04MB2934.apcprd04.prod.outlook.com
- ([fe80::55d8:45ac:a6c8:b297]) by PS1PR04MB2934.apcprd04.prod.outlook.com
- ([fe80::55d8:45ac:a6c8:b297%3]) with mapi id 15.20.3825.019; Thu, 4 Feb 2021
- 18:17:26 +0000
-From: Mayank Suman <mayanksuman@live.com>
-To: ruscur@russell.cc, oohall@gmail.com, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH] arch:powerpc simple_write_to_buffer return check
-Date: Thu,  4 Feb 2021 23:46:19 +0530
-Message-ID: <PS1PR04MB29345AB59076B370A4F99F75D6B39@PS1PR04MB2934.apcprd04.prod.outlook.com>
-X-Mailer: git-send-email 2.30.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN: [sz0/pP+HJz3bSQLnDnIBTmKeRFbFDrxn/z2WqLxnna0=]
-X-ClientProxiedBy: BM1PR0101CA0053.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:b00:19::15) To PS1PR04MB2934.apcprd04.prod.outlook.com
- (2603:1096:803:3e::21)
-X-Microsoft-Original-Message-ID: <20210204181618.1123522-1-mayanksuman@live.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DWqKl31wNzDqs8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 07:05:31 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 114K1J2g033196; Thu, 4 Feb 2021 15:05:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=kjgmLOqy2IHSMC4krSKZvVE2p3Tr66l0k7MC5Clqlj8=;
+ b=Ni/yFHlCsslX/JkrpllvIEWkFqS9b6IKdXGTvHPL5WKYM5BIBVd8FAaMrXcrJJjjGnnw
+ LyKaXF2wivncgmi7EOqWoXgyMtpkivT9cTZH1a2FxJUj9loKmkSzaGH6KtQIedKCQwsp
+ wOsXBl8sYS43I0BB9gsyQxSWmVx+w0kMiiXu6BjiHja2n3O1Cem77ZamPeuSjCGeE5jN
+ WoH+CbcfQN46RzsQAaSbWrfZ8LfxBpeERlPjM8v1ER35B9sL/ng/uS29Wtqn0pSH5+4B
+ 2o1kkVu1DVvqKMNp+TE/viN4zwl+cz328jb8HHEVpu2MqUrW8Jf3wl8xmWkJ7sPCFFse FA== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36gqb9rqk4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Feb 2021 15:05:25 -0500
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 114K2A8M012565;
+ Thu, 4 Feb 2021 20:05:22 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma03wdc.us.ibm.com with ESMTP id 36f2nxcm3y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Feb 2021 20:05:22 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 114K5Moc23790074
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 4 Feb 2021 20:05:22 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 39B04AE05F;
+ Thu,  4 Feb 2021 20:05:22 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 69F6AAE062;
+ Thu,  4 Feb 2021 20:05:20 +0000 (GMT)
+Received: from farosas.linux.ibm.com.com (unknown [9.163.38.10])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu,  4 Feb 2021 20:05:20 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: kvm-ppc@vger.kernel.org
+Subject: [PATCH] KVM: PPC: Book3S HV: Save and restore FSCR in the P9 path
+Date: Thu,  4 Feb 2021 17:05:17 -0300
+Message-Id: <20210204200517.1481811-1-farosas@linux.ibm.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (103.127.101.171) by
- BM1PR0101CA0053.INDPRD01.PROD.OUTLOOK.COM (2603:1096:b00:19::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.19 via Frontend
- Transport; Thu, 4 Feb 2021 18:17:23 +0000
-X-MS-PublicTrafficType: Email
-X-IncomingHeaderCount: 45
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-Correlation-Id: 6d5bf29e-4fa6-4257-6a65-08d8c9391ffb
-X-MS-Exchange-SLBlob-MailProps: NS9Gj58uCj1me8yJ5sSHKRjxNogQRwJMRwHwgD8E8ny6/MSlvU8mjfGRo2I3sVr3jUheImFF/O2JgsRDDZmEi9h707sO0kQCMBc5x1Nh8Z7AentdZW6wC8anZs1IiVfOSWYbkdRViEFSzDrUZ0UvoRCcKEz3xjif6ysVUmX9vz6vanffttQy2XpzWj4h8RH7wy9Wxoiu34o2QIb4VklLTsCUQmD6lSvR3+xGO81LF117/TEtQPvEgszfl6a1Nys8m+18Rw5/Gk4Ggju6Aefs0aY6xOSQUzCuUfko8fGncLaWA2POoy5OYQVLPv+W0+r1PZaYqhwUlJ3Pbqeq2JB/CPS2ZkO+ATLZWutmqLXYAgVBtXTRc15uUHSCp8G5mLZPJyJv3KwucbljuDWjpjb8fUAFa8Qro1utUWeyB8CixYQkciJQo0jWnLqQ2VExswHIt/Po2IPYVpvZ244mdT5SAkvy1lInR0WcSaDbw5/Cb3NXcnd87TZbjA0M0zK/rfGdn3S+pKJt3LiwbiDSZ4GdHruWTAPqML1+d1sgKH1hk0GGgDBbt1WpML/SRlcvoNN+jkkdeM+cueq+tji4okdHfYdY1F0bZEz9DbAnUxqTxGwVcbfmEmLAUKQ90NDAXYj04YJw3h6QbyKzHKxObYEUP/jVVnIcYHM8EJsJjd+CDm0fC+NgKwqvTqsJIarljcx/W0QVOFyBzTj6wDcXIGq+QA==
-X-MS-TrafficTypeDiagnostic: HK2APC01HT153:
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7LkhaMl+kJUsXNgFRds+0P8tkAm4sM1/e/v1re1vVkhQedzVZ6j7zTmuYnN992Duk9XKBzMPBEIzZGpc5S/5s0FbIZVUeCdEZ3arPANBwB7BiFvuKWq8cBDYcmLTwTyJD3k4yOieh7FThP7jgbb7Uh4Xgev/UgWFlH+XMAgjs+LYin4kjx+H+P1wxWNDGqwHIdlHZ+4v9DhQd0R6ZgdjdXF0Kb9GzaeLYklZkT+2sD0Rm+f1idoYgsUbvxKgras58w0BTyXLDhHeJglntMQWz0PIG1I960X/71B83Zg8yAVbQ+2FDh/zAbT0QOfKgvw5l/h/9QmLT1NxFZZ8RrV8mvpnpqnjijcdSFHzg0cgEgdaMUXhZHg0Ew6HruXT6SD+ajKiAJKcgEFYCrclQIC5DA==
-X-MS-Exchange-AntiSpam-MessageData: 7wDfaMnfXNQmnZ5Gf3LUs0LvHYWIl3uDVvnRGRDOu4GK9qOvlNyBuCU9Bl1IdtEGBfPVXunj872SmLKyHnRwT5JYuxPOQMq+YuScJAH9KwudcnKgHUMueXDuz+GoXnfYz4bpemIAcs+xtwZTfmPDiA==
-X-OriginatorOrg: live.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d5bf29e-4fa6-4257-6a65-08d8c9391ffb
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2021 18:17:26.5199 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-AuthSource: HK2APC01FT048.eop-APC01.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: HK2APC01HT153
-X-Mailman-Approved-At: Fri, 05 Feb 2021 07:02:38 +1100
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
+ definitions=2021-02-04_10:2021-02-04,
+ 2021-02-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ impostorscore=0 spamscore=0 malwarescore=0 suspectscore=0 mlxlogscore=881
+ mlxscore=0 bulkscore=0 clxscore=1011 adultscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102040118
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,65 +90,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mayank Suman <mayanksuman@live.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Signed-off-by: Mayank Suman <mayanksuman@live.com>
----
- arch/powerpc/kernel/eeh.c                    | 8 ++++----
- arch/powerpc/platforms/powernv/eeh-powernv.c | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+The Facility Status and Control Register is a privileged SPR that
+defines the availability of some features in problem state. Since it
+can be written by the guest, we must restore it to the previous host
+value after guest exit.
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index 813713c9120c..2dbe1558a71f 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1628,8 +1628,8 @@ static ssize_t eeh_force_recover_write(struct file *filp,
- 	char buf[20];
- 	int ret;
+This restoration is currently done by taking the value from
+current->thread.fscr, which in the P9 path is not enough anymore
+because the guest could context switch the QEMU thread, causing the
+guest-current value to be saved into the thread struct.
+
+The above situation manifested when running a QEMU linked against a
+libc with System Call Vectored support, which causes scv
+instructions to be run by QEMU early during the guest boot (during
+SLOF), at which point the FSCR is 0 due to guest entry. After a few
+scv calls (1 to a couple hundred), the context switching happens and
+the QEMU thread runs with the guest value, resulting in a Facility
+Unavailable interrupt.
+
+This patch saves and restores the host value of FSCR in the inner
+guest entry loop in a way independent of current->thread.fscr. The old
+way of doing it is still kept in place because it works for the old
+entry path.
+
+Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+---
+ arch/powerpc/kvm/book3s_hv.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 6f612d240392..f2ddf7139a2a 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -3595,6 +3595,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	unsigned long host_tidr = mfspr(SPRN_TIDR);
+ 	unsigned long host_iamr = mfspr(SPRN_IAMR);
+ 	unsigned long host_amr = mfspr(SPRN_AMR);
++	unsigned long host_fscr = mfspr(SPRN_FSCR);
+ 	s64 dec;
+ 	u64 tb;
+ 	int trap, save_pmu;
+@@ -3735,6 +3736,9 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	if (host_amr != vcpu->arch.amr)
+ 		mtspr(SPRN_AMR, host_amr);
  
--	ret = simple_write_to_buffer(buf, sizeof(buf), ppos, user_buf, count);
--	if (!ret)
-+	ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
-+	if (ret <= 0)
- 		return -EFAULT;
- 
- 	/*
-@@ -1696,7 +1696,7 @@ static ssize_t eeh_dev_check_write(struct file *filp,
- 
- 	memset(buf, 0, sizeof(buf));
- 	ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
--	if (!ret)
-+	if (ret <= 0)
- 		return -EFAULT;
- 
- 	ret = sscanf(buf, "%x:%x:%x.%x", &domain, &bus, &dev, &fn);
-@@ -1836,7 +1836,7 @@ static ssize_t eeh_dev_break_write(struct file *filp,
- 
- 	memset(buf, 0, sizeof(buf));
- 	ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
--	if (!ret)
-+	if (ret <= 0)
- 		return -EFAULT;
- 
- 	ret = sscanf(buf, "%x:%x:%x.%x", &domain, &bus, &dev, &fn);
-diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-index 89e22c460ebf..36ed2b8f7375 100644
---- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-+++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-@@ -76,8 +76,8 @@ static ssize_t pnv_eeh_ei_write(struct file *filp,
- 		return -ENXIO;
- 
- 	/* Copy over argument buffer */
--	ret = simple_write_to_buffer(buf, sizeof(buf), ppos, user_buf, count);
--	if (!ret)
-+	ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
-+	if (ret <= 0)
- 		return -EFAULT;
- 
- 	/* Retrieve parameters */
++	if (host_fscr != vcpu->arch.fscr)
++		mtspr(SPRN_FSCR, host_fscr);
++
+ 	msr_check_and_set(MSR_FP | MSR_VEC | MSR_VSX);
+ 	store_fp_state(&vcpu->arch.fp);
+ #ifdef CONFIG_ALTIVEC
 -- 
-2.30.0
+2.29.2
 
