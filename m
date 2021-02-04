@@ -2,94 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51B930EE13
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 09:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E92B630EE42
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 09:23:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DWWVB4k4VzDwnd
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 19:11:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DWWlY6KWZzDrdj
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 19:23:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535;
+ helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=KQR1wuNc; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=LxvPH9bB; dkim-atps=neutral
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
+ [IPv6:2607:f8b0:4864:20::535])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DWWPs1W2mzDqDB
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 19:08:00 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 11485ZQj046569; Thu, 4 Feb 2021 03:07:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=3MyTQe/hsdXDqlQQU5ccUD/++4CtQV5SzXHbFEQ4Rz0=;
- b=KQR1wuNcrrZlgq6+O3tBsk+W5Pv5TuhEjbaamzzRpOsp2Hsr+Vbnd6Twq32jVaigJdoC
- dD+R4ScEhvMFyoq0zHUVLv1yqCxgqyXRJPBObhWVpxq4fCCa/Xc/81X4ixN+tjjMCNNC
- pKn4cOmGJYeNHc7R/GzzMmzTdhfZ65+HtIx8VN562mBexa4guev2ZWuRYUgEms8Kvztf
- PndbwWDDdZugsoaLRN12oe3STdEVSf+JKfSA2ViL4tE0GkDPRJVIEgskDG1juR8aXrJl
- KJ9IKeYDTBS1tOtxX8urACgnluOka6KApclvNNNDI5jAPUPJ4UaRc4dEuj7yR6mJa16c mg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36gcv70dsx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 04 Feb 2021 03:07:55 -0500
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 11485tEH048207;
- Thu, 4 Feb 2021 03:07:54 -0500
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36gcv70drh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 04 Feb 2021 03:07:54 -0500
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11482Bfm015965;
- Thu, 4 Feb 2021 08:07:52 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03ams.nl.ibm.com with ESMTP id 36fwcw0pu2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 04 Feb 2021 08:07:52 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 11487eio32506178
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 4 Feb 2021 08:07:40 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6AB0FA4064;
- Thu,  4 Feb 2021 08:07:49 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A8319A405C;
- Thu,  4 Feb 2021 08:07:47 +0000 (GMT)
-Received: from fir03.in.ibm.com (unknown [9.121.59.65])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  4 Feb 2021 08:07:47 +0000 (GMT)
-From: Sandipan Das <sandipan@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v4 2/2] powerpc: sstep: Fix darn emulation
-Date: Thu,  4 Feb 2021 13:37:44 +0530
-Message-Id: <20210204080744.135785-2-sandipan@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210204080744.135785-1-sandipan@linux.ibm.com>
-References: <20210204080744.135785-1-sandipan@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DWWjc12NkzDqgf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 19:21:37 +1100 (AEDT)
+Received: by mail-pg1-x535.google.com with SMTP id g15so1571238pgu.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Feb 2021 00:21:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=XXkvcBKboNN7LGIeynhgZT6EpSB86akvi9IwRytyAz8=;
+ b=LxvPH9bB5kAaZOYcJLU2iOG2OormPkekcFLSUlN6cpK/oqo551ZRevlJQSdTj9CxB1
+ rCfZlOPlLe/FAdkjd2tYzWS9LBxKvSFzufueWwEGAGkcWFAqv25IWvqpQyhSiMt4SAVS
+ IpwD9JkOriCnJ+Q2+N5mwql7JWGZEvEdu+lsUSo2ZjViWm0HoCSwf31f0+Si9XG/N8Y+
+ ctZRHcpTf6yjXhE1LnhjgMfKCvchelCV6B1Rd/DFlkGhGVypKY6ORTk+GdVvtVOW0AFN
+ N/inRTqZVWOdJbPmt5xeAky+ZVODprxaeWovrbG6up5GSTM5MOdsUH7PHg5NhFEcKaQX
+ F6aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=XXkvcBKboNN7LGIeynhgZT6EpSB86akvi9IwRytyAz8=;
+ b=IjswIUKtiDDmsNLkmEJhv2PsW2wrNGnXVP+gfiusTd/ZezFDEzvpdWGr3HzpACX2wB
+ zOdfRbAexFMv8YSFfiEArpiFLnbKizi9R7U9xFehHRlfqmRXeWiuucu09hY+twUlhKGs
+ a9I56F2Io0/VHjPFcdzqVyQnT94euopr6b2r/uumtnx68oiXVszNK9hTlNkQ/nQqwwnY
+ 8xX4ki3i/tQC6eiFULrSWYrdXl93vIoDjjE/3WlGAaJu4fTd9S/MJ64qoBzMnWr7DnKh
+ sAhZEGY+lkNHC+XLnNsETeGUXparc74ceTKUmy40CtogSgpNaHr8QnorkZtamzDRf+aw
+ AU1g==
+X-Gm-Message-State: AOAM532zZU8DRjmcn8CVlkmqKcDZcKMysuG8Iv2Xp2pvUS4uSus9YOsx
+ 5km+J6PEZF5PmdEGCwl+9kQR0cMa7G8=
+X-Google-Smtp-Source: ABdhPJyFh2UIalFWfH9S0Gigao8PrBaKb3QduCZYTwG0z0xvXFRe3aj70yzjXDYS3R0QrYEyG2SNLA==
+X-Received: by 2002:a63:1c13:: with SMTP id c19mr7570212pgc.359.1612426893809; 
+ Thu, 04 Feb 2021 00:21:33 -0800 (PST)
+Received: from localhost ([1.132.253.145])
+ by smtp.gmail.com with ESMTPSA id 72sm4819621pfw.170.2021.02.04.00.21.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Feb 2021 00:21:33 -0800 (PST)
+Date: Thu, 04 Feb 2021 18:21:25 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 0/5] shoot lazy tlbs
+To: linux-kernel@vger.kernel.org
+References: <20201214065312.270062-1-npiggin@gmail.com>
+In-Reply-To: <20201214065312.270062-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
- definitions=2021-02-04_03:2021-02-04,
- 2021-02-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- adultscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0 phishscore=0
- malwarescore=0 bulkscore=0 mlxscore=0 impostorscore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102040044
+Message-Id: <1612426668.622xblt2lx.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,38 +76,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, ananth@linux.ibm.com, jniethe5@gmail.com,
- paulus@samba.org, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, Andy Lutomirski <luto@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 8813ff49607e ("powerpc/sstep: Check instruction
-validity against ISA version before emulation") introduced
-a proper way to skip unknown instructions. This makes sure
-that the same is used for the darn instruction when the
-range selection bits have a reserved value.
+I'll ask Andrew to put this in -mm if no objections.
 
-Fixes: a23987ef267a ("powerpc: sstep: Add support for darn instruction")
-Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
----
- arch/powerpc/lib/sstep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The series now doesn't touch other archs in non-trivial ways, and core code
+is functionally not changed much / at all if the option is not selected so
+it's actually pretty simple aside from the powerpc change.
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 11f14b209d7f..683f7c20f74b 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -1916,7 +1916,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 				goto compute_done;
- 			}
- 
--			return -1;
-+			goto unknown_opcode;
- #ifdef __powerpc64__
- 		case 777:	/* modsd */
- 			if (!cpu_has_feature(CPU_FTR_ARCH_300))
--- 
-2.25.1
+Thanks,
+Nick
 
+Excerpts from Nicholas Piggin's message of December 14, 2020 4:53 pm:
+> This is another rebase, on top of mainline now (don't need the
+> asm-generic tree), and without any x86 or membarrier changes.
+> This makes the series far smaller and more manageable and
+> without the controversial bits.
+>=20
+> Thanks,
+> Nick
+>=20
+> Nicholas Piggin (5):
+>   lazy tlb: introduce lazy mm refcount helper functions
+>   lazy tlb: allow lazy tlb mm switching to be configurable
+>   lazy tlb: shoot lazies, a non-refcounting lazy tlb option
+>   powerpc: use lazy mm refcount helper functions
+>   powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
+>=20
+>  arch/Kconfig                         | 30 ++++++++++
+>  arch/arm/mach-rpc/ecard.c            |  2 +-
+>  arch/powerpc/Kconfig                 |  1 +
+>  arch/powerpc/kernel/smp.c            |  2 +-
+>  arch/powerpc/mm/book3s64/radix_tlb.c |  4 +-
+>  fs/exec.c                            |  4 +-
+>  include/linux/sched/mm.h             | 20 +++++++
+>  kernel/cpu.c                         |  2 +-
+>  kernel/exit.c                        |  2 +-
+>  kernel/fork.c                        | 52 ++++++++++++++++
+>  kernel/kthread.c                     | 11 ++--
+>  kernel/sched/core.c                  | 88 ++++++++++++++++++++--------
+>  kernel/sched/sched.h                 |  4 +-
+>  13 files changed, 184 insertions(+), 38 deletions(-)
+>=20
+> --=20
+> 2.23.0
+>=20
+>=20
