@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05B230F8B8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 17:57:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E6F30F8E4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 18:00:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DWl8P3Xb1zDx0N
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 03:57:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DWlDX3r3yzDws7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 04:00:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,31 +15,30 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=JTggXmiW; 
+ header.a=rsa-sha256 header.s=default header.b=NRqWjZEp; 
  dkim-atps=neutral
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DWkq06fstzDrWN
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 03:42:04 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DWkq13vfyzDwmf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 03:42:05 +1100 (AEDT)
 Received: from localhost.localdomain (c-73-42-176-67.hsd1.wa.comcast.net
  [73.42.176.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id A876220B6C47;
- Thu,  4 Feb 2021 08:42:03 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A876220B6C47
+ by linux.microsoft.com (Postfix) with ESMTPSA id 6125B20B6C48;
+ Thu,  4 Feb 2021 08:42:04 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6125B20B6C48
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1612456924;
- bh=QBFOOxdcjIUDjpLpw6mCgqllaPEa7vgx5gY87SXorjY=;
+ s=default; t=1612456925;
+ bh=61Bl1Bspp/A0IcjOr2S/CLTYoF5+ZzBW8uhStMmH8Po=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=JTggXmiW/mdeqiJ7Vw9Lxk52v+WbWtyU2/uTpAUDOAlAyt468XFZkMNt0m1HsN7aJ
- TPm4vd5RyCeJ67I6cXL79TUsdYFMHgX915i946bH3fLIKAh9KMBnlhgM5PqNFFfCOn
- 9wfUEmEk1Tdu86A3bM9yUYnujEFg6AYT6ir8Wl8U=
+ b=NRqWjZEpqzUHFUtJEobG6rEoNosx9KZ6INjyMZRZcu0rqlZUJywWOF8Jp1XhafVZk
+ 8tx1K5fpb/2Vi8+nonrM8KfFUpyWW8shi2KXcRkb4VNxSuSx2Q7XrXjzoqkENw4bnb
+ xmB8vlD5JT3bPepYqeSdFkYtdjeSYvRMpShFvnAY=
 From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
 To: zohar@linux.ibm.com, bauerman@linux.ibm.com, robh@kernel.org,
  takahiro.akashi@linaro.org, gregkh@linuxfoundation.org, will@kernel.org,
  joe@perches.com, catalin.marinas@arm.com, mpe@ellerman.id.au
-Subject: [PATCH v16 07/12] kexec: Use fdt_appendprop_addrrange() to add ima
- buffer to FDT
-Date: Thu,  4 Feb 2021 08:41:30 -0800
-Message-Id: <20210204164135.29856-8-nramas@linux.microsoft.com>
+Subject: [PATCH v16 08/12] powerpc: Delete unused function delete_fdt_mem_rsv()
+Date: Thu,  4 Feb 2021 08:41:31 -0800
+Message-Id: <20210204164135.29856-9-nramas@linux.microsoft.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210204164135.29856-1-nramas@linux.microsoft.com>
 References: <20210204164135.29856-1-nramas@linux.microsoft.com>
@@ -69,107 +68,72 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-fdt_appendprop_addrrange() function adds a property, with the given name,
-to the device tree at the given node offset, and also sets the address
-and size of the property.  This function should be used to add
-"linux,ima-kexec-buffer" property to the device tree and set the address
-and size of the IMA measurement buffer, instead of using custom function.
+delete_fdt_mem_rsv() defined in "arch/powerpc/kexec/file_load.c"
+has been renamed to fdt_find_and_del_mem_rsv(), and moved to
+"drivers/of/kexec.c".
 
-Use fdt_appendprop_addrrange() to add  "linux,ima-kexec-buffer" property
-to the device tree.  This property holds the address and size of
-the IMA measurement buffer that needs to be passed from the current
-kernel to the next kernel across kexec system call.
-
-Remove custom code that is used in setup_ima_buffer() to add
-"linux,ima-kexec-buffer" property to the device tree.
+Remove delete_fdt_mem_rsv() in "arch/powerpc/kexec/file_load.c".
 
 Co-developed-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
 Signed-off-by: Prakhar Srivastava <prsriva@linux.microsoft.com>
 Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 ---
- drivers/of/kexec.c | 57 ++++------------------------------------------
- 1 file changed, 5 insertions(+), 52 deletions(-)
+ arch/powerpc/include/asm/kexec.h |  1 -
+ arch/powerpc/kexec/file_load.c   | 32 --------------------------------
+ 2 files changed, 33 deletions(-)
 
-diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
-index 7ee4f498ca19..5ae0e5d90f55 100644
---- a/drivers/of/kexec.c
-+++ b/drivers/of/kexec.c
-@@ -232,36 +232,6 @@ int of_ima_add_kexec_buffer(struct kimage *image,
+diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+index 939bc40dfa62..2c0be93d239a 100644
+--- a/arch/powerpc/include/asm/kexec.h
++++ b/arch/powerpc/include/asm/kexec.h
+@@ -118,7 +118,6 @@ char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
+ int setup_purgatory(struct kimage *image, const void *slave_code,
+ 		    const void *fdt, unsigned long kernel_load_addr,
+ 		    unsigned long fdt_load_addr);
+-int delete_fdt_mem_rsv(void *fdt, unsigned long start, unsigned long size);
+ 
+ #ifdef CONFIG_PPC64
+ struct kexec_buf;
+diff --git a/arch/powerpc/kexec/file_load.c b/arch/powerpc/kexec/file_load.c
+index 5dd3a9c45a2d..036c8fb48fc3 100644
+--- a/arch/powerpc/kexec/file_load.c
++++ b/arch/powerpc/kexec/file_load.c
+@@ -108,35 +108,3 @@ int setup_purgatory(struct kimage *image, const void *slave_code,
+ 
  	return 0;
  }
- 
+-
 -/**
-- * write_number - Convert number to big-endian format
-- *
-- * @p:		Buffer to write the number to
-- * @value:	Number to convert
-- * @cells:	Number of cells
+- * delete_fdt_mem_rsv - delete memory reservation with given address and size
 - *
 - * Return: 0 on success, or negative errno on error.
 - */
--static int write_number(void *p, u64 value, int cells)
+-int delete_fdt_mem_rsv(void *fdt, unsigned long start, unsigned long size)
 -{
--	if (cells == 1) {
--		u32 tmp;
+-	int i, ret, num_rsvs = fdt_num_mem_rsv(fdt);
 -
--		if (value > U32_MAX)
+-	for (i = 0; i < num_rsvs; i++) {
+-		uint64_t rsv_start, rsv_size;
+-
+-		ret = fdt_get_mem_rsv(fdt, i, &rsv_start, &rsv_size);
+-		if (ret) {
+-			pr_err("Malformed device tree.\n");
 -			return -EINVAL;
+-		}
 -
--		tmp = cpu_to_be32(value);
--		memcpy(p, &tmp, sizeof(tmp));
--	} else if (cells == 2) {
--		u64 tmp;
+-		if (rsv_start == start && rsv_size == size) {
+-			ret = fdt_del_mem_rsv(fdt, i);
+-			if (ret) {
+-				pr_err("Error deleting device tree reservation.\n");
+-				return -EINVAL;
+-			}
 -
--		tmp = cpu_to_be64(value);
--		memcpy(p, &tmp, sizeof(tmp));
--	} else
--		return -EINVAL;
+-			return 0;
+-		}
+-	}
 -
--	return 0;
+-	return -ENOENT;
 -}
--
- /**
-  * setup_ima_buffer - add IMA buffer information to the fdt
-  * @image:		kexec image being loaded.
-@@ -273,32 +243,15 @@ static int write_number(void *p, u64 value, int cells)
- static int setup_ima_buffer(const struct kimage *image, void *fdt,
- 			    int chosen_node)
- {
--	int ret, addr_cells, size_cells, entry_size;
--	u8 value[16];
-+	int ret;
- 
- 	if (!image->ima_buffer_size)
- 		return 0;
- 
--	ret = get_addr_size_cells(&addr_cells, &size_cells);
--	if (ret)
--		return ret;
--
--	entry_size = 4 * (addr_cells + size_cells);
--
--	if (entry_size > sizeof(value))
--		return -EINVAL;
--
--	ret = write_number(value, image->ima_buffer_addr, addr_cells);
--	if (ret)
--		return ret;
--
--	ret = write_number(value + 4 * addr_cells, image->ima_buffer_size,
--			   size_cells);
--	if (ret)
--		return ret;
--
--	ret = fdt_setprop(fdt, chosen_node, "linux,ima-kexec-buffer", value,
--			  entry_size);
-+	ret = fdt_appendprop_addrrange(fdt, 0, chosen_node,
-+				       "linux,ima-kexec-buffer",
-+				       image->ima_buffer_addr,
-+				       image->ima_buffer_size);
- 	if (ret < 0)
- 		return -EINVAL;
- 
 -- 
 2.30.0
 
