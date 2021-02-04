@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D43830F232
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 12:31:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E23630F254
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 12:36:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DWbwQ1QPxzDwkD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 22:31:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DWc2J2mwJzDwsl
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 22:36:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::335;
- helo=mail-wm1-x335.google.com; envelope-from=lee.jones@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32a;
+ helo=mail-wm1-x32a.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=yoOOHsJm; dkim-atps=neutral
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com
- [IPv6:2a00:1450:4864:20::335])
+ header.s=google header.b=pwnuFV93; dkim-atps=neutral
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com
+ [IPv6:2a00:1450:4864:20::32a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DWbSM5bXSzDqyn
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 22:10:27 +1100 (AEDT)
-Received: by mail-wm1-x335.google.com with SMTP id j11so2752487wmi.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Feb 2021 03:10:27 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DWbSS1ZjzzDwhM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 22:10:31 +1100 (AEDT)
+Received: by mail-wm1-x32a.google.com with SMTP id a16so5715486wmm.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Feb 2021 03:10:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=VZFcUa8z9ij8GsVZGG8CeCF7Ivx0FCQR9n9Ud5IB6q0=;
- b=yoOOHsJmUFa9/ZMIOvUiWAVGaV0lecpKRROSNn73bOTaoWxilhWpNvougW3IaJU11M
- BVkhVn/LG7rzlvj+VFlMOu2jZ16XdmDP7j7nFPRSoQfbQGizNQ0MysoTX/Ih0sURIkkJ
- jj2NKa4nkkgpng7ay0Yb/XckBZF6BoHaNRvJxyE0CFDhvk/OQMGNw6P52ILsu/BLONMX
- sGU9ch76oz25jqxjuLtMuFlH5wg1GQjs8Su8XyxDU7H84HQ6aUmAroBCLgq4h+/I22QB
- U8SZRrv4BsmpmnvZt6lJ9Y4abHaGLyIEQ9BJGCbmgZEEN4Cbv/Cjar+aCibvBqgV7jDz
- IW/w==
+ bh=3IEsVjEj58gpnbEtzruF6QIgBE7zuGLR+EproOK/53M=;
+ b=pwnuFV934+1NBMnFc5tehmnUsznGHtEqWZhqeblMxHAXEAiQO6GdBjD9HxbnteJQcr
+ 685CCA/s/RxaZFiIYu0DrIFt0EcTLzuxK77dJBvb+mRTMK3sUOvkv9but9M6CN43Z2J1
+ I7oJqVe5vMwwwgDcI5hJhNzeX6RutJNg35WaQCJ9FcrtDIAUFz3JXOjcPProru5uu5UK
+ 0zOkNV8vIv+vwRwAD//KlfbPZStVsvZTPQNg5fIw5RhfnWevY5A4EH/gLo7FTAROjK+4
+ 9ff74FS33cbCNPcvFgudhYPqg/Pq5qkF0Xg1xI2vN8P+tsvv96rzaDvzdNQsrA/CTTqj
+ CwSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=VZFcUa8z9ij8GsVZGG8CeCF7Ivx0FCQR9n9Ud5IB6q0=;
- b=sxXFNhQVx/luTBd+IrjbmEtrCDFxfCqvglJHsZLvHJlyL2AggPIggd8Yex34JchYcw
- mBjizCps+JqGbdZATJKDba50dWJl9KudYYCrjcZuYYI6UIx98NzihhfuOP/9Otyeuxs+
- QKoPIBWwYLkWNrKwY6zIk8G7meZ8rkMsE3rWMcREXuRft2cJqcXiGsVNRY5k/tI6poBC
- ccPxlB+ybAnjNN3Xk5BQNz+hqMSH+lETzbGepMgTkq+96hOWdR3P6kgQ9uCAARV6qMLF
- zUVkNC9pwjfnRifb13xKNQGT18dYq3UpOEuz/QD/mHN7ZK+09hGOAOJ3FuHGE59PeH+o
- QK0Q==
-X-Gm-Message-State: AOAM530hkhwMjyx4CRy0iruv9vw78bsY1ZYBi2DCpkSjpG6tUwnfez+h
- zHNOsCtsEefC/EXtVRlsKqzGDw==
-X-Google-Smtp-Source: ABdhPJyH2Oy1OTUDZXbRtCQuenPHqsyeaSnIpQ8LSjm16+yMUa9mogmKK1zeOQjPoP79U3cAkVO7Jg==
-X-Received: by 2002:a1c:1f4d:: with SMTP id f74mr7213122wmf.12.1612437022191; 
- Thu, 04 Feb 2021 03:10:22 -0800 (PST)
+ bh=3IEsVjEj58gpnbEtzruF6QIgBE7zuGLR+EproOK/53M=;
+ b=X6Af7bF4W+9EV0AWBN2jm3tkgx3RDKQ62tbYkEiIox6eI0OgjG+FW3aOFIWKPd7Cmp
+ Ap7dXd4/qU7ofOy1tGQzgNmH3JyVTalHZLhZpv4yvrPpwBhl3WFLs2u+OThAuxLyzrNa
+ fae6w4g4VxxV83txFXlrWmwP2R22pbj3JjB4KQ59xB69WBPOngEtV8Y4ylfTdvy9ny+i
+ 0NPfHD4qo75X1LO2bvDzXBHIJNz/res/ieaGvv/44N7PAWca0uHweIEIwt7XqD1Jn93+
+ /XjDfO6KkT9PeSmOz88waz/Hp7/BPfdX9Kyojpfhg3sCibsDqjBDbjKZuGtlpptMZi1k
+ BxUw==
+X-Gm-Message-State: AOAM530dfJGjc0Hi+N4SCL8TiMxQbNhPg7W9C+ilvOGXlNcYcqtcjlGX
+ +7/RkETsM82LlhL+9p8w0QLg1w==
+X-Google-Smtp-Source: ABdhPJwzTr8uy4M0IvB8VO2hwiH8qyYaC4erJaP/nR/itMDq7tvkpIn8Do6atM7jT0LKBKilP1cAUQ==
+X-Received: by 2002:a1c:f70f:: with SMTP id v15mr6821758wmh.38.1612437024780; 
+ Thu, 04 Feb 2021 03:10:24 -0800 (PST)
 Received: from dell.default ([91.110.221.188])
- by smtp.gmail.com with ESMTPSA id y18sm7696218wrt.19.2021.02.04.03.10.21
+ by smtp.gmail.com with ESMTPSA id y18sm7696218wrt.19.2021.02.04.03.10.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Feb 2021 03:10:21 -0800 (PST)
+ Thu, 04 Feb 2021 03:10:24 -0800 (PST)
 From: Lee Jones <lee.jones@linaro.org>
 To: lee.jones@linaro.org
-Subject: [PATCH 16/20] crypto: vmx: Source headers are not good kernel-doc
- candidates
-Date: Thu,  4 Feb 2021 11:09:56 +0000
-Message-Id: <20210204111000.2800436-17-lee.jones@linaro.org>
+Subject: [PATCH 18/20] crypto: nx: nx_debugfs: Header comments should not be
+ kernel-doc
+Date: Thu,  4 Feb 2021 11:09:58 +0000
+Message-Id: <20210204111000.2800436-19-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210204111000.2800436-1-lee.jones@linaro.org>
 References: <20210204111000.2800436-1-lee.jones@linaro.org>
@@ -78,8 +78,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, Nayna Jain <nayna@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Henrique Cerri <mhcerri@br.ibm.com>,
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, Kent Yoder <yoder1@us.ibm.com>,
+ Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
  Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linux-crypto@vger.kernel.org,
  =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
  Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
@@ -90,7 +90,8 @@ Sender: "Linuxppc-dev"
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/crypto/vmx/vmx.c:23: warning: expecting prototype for Routines supporting VMX instructions on the Power 8(). Prototype was for p8_init() instead
+ drivers/crypto/nx/nx_debugfs.c:34: warning: Function parameter or member 'drv' not described in 'nx_debugfs_init'
+ drivers/crypto/nx/nx_debugfs.c:34: warning: expecting prototype for Nest Accelerators driver(). Prototype was for nx_debugfs_init() instead
 
 Cc: "Breno Leitão" <leitao@debian.org>
 Cc: Nayna Jain <nayna@linux.ibm.com>
@@ -100,25 +101,25 @@ Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Cc: Paul Mackerras <paulus@samba.org>
 Cc: Herbert Xu <herbert@gondor.apana.org.au>
 Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Henrique Cerri <mhcerri@br.ibm.com>
+Cc: Kent Yoder <yoder1@us.ibm.com>
 Cc: linux-crypto@vger.kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/crypto/vmx/vmx.c | 2 +-
+ drivers/crypto/nx/nx_debugfs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/vmx/vmx.c b/drivers/crypto/vmx/vmx.c
-index a40d08e75fc0b..7eb713cc87c8c 100644
---- a/drivers/crypto/vmx/vmx.c
-+++ b/drivers/crypto/vmx/vmx.c
+diff --git a/drivers/crypto/nx/nx_debugfs.c b/drivers/crypto/nx/nx_debugfs.c
+index 1975bcbee9974..ee7cd88bb10a7 100644
+--- a/drivers/crypto/nx/nx_debugfs.c
++++ b/drivers/crypto/nx/nx_debugfs.c
 @@ -1,5 +1,5 @@
  // SPDX-License-Identifier: GPL-2.0-only
 -/**
 +/*
-  * Routines supporting VMX instructions on the Power 8
+  * debugfs routines supporting the Power 7+ Nest Accelerators driver
   *
-  * Copyright (C) 2015 International Business Machines Inc.
+  * Copyright (C) 2011-2012 International Business Machines Inc.
 -- 
 2.25.1
 
