@@ -2,83 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE8D30FDBD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 21:07:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6C2310021
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 23:37:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DWqMY3HVNzDwyC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 07:07:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DWths6QFvzDq9n
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 09:37:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::829;
+ helo=mail-qt1-x829.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Ni/yFHlC; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=cIXN/L4+; dkim-atps=neutral
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com
+ [IPv6:2607:f8b0:4864:20::829])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DWqKl31wNzDqs8
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 07:05:31 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 114K1J2g033196; Thu, 4 Feb 2021 15:05:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=kjgmLOqy2IHSMC4krSKZvVE2p3Tr66l0k7MC5Clqlj8=;
- b=Ni/yFHlCsslX/JkrpllvIEWkFqS9b6IKdXGTvHPL5WKYM5BIBVd8FAaMrXcrJJjjGnnw
- LyKaXF2wivncgmi7EOqWoXgyMtpkivT9cTZH1a2FxJUj9loKmkSzaGH6KtQIedKCQwsp
- wOsXBl8sYS43I0BB9gsyQxSWmVx+w0kMiiXu6BjiHja2n3O1Cem77ZamPeuSjCGeE5jN
- WoH+CbcfQN46RzsQAaSbWrfZ8LfxBpeERlPjM8v1ER35B9sL/ng/uS29Wtqn0pSH5+4B
- 2o1kkVu1DVvqKMNp+TE/viN4zwl+cz328jb8HHEVpu2MqUrW8Jf3wl8xmWkJ7sPCFFse FA== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 36gqb9rqk4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 04 Feb 2021 15:05:25 -0500
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 114K2A8M012565;
- Thu, 4 Feb 2021 20:05:22 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma03wdc.us.ibm.com with ESMTP id 36f2nxcm3y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 04 Feb 2021 20:05:22 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 114K5Moc23790074
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 4 Feb 2021 20:05:22 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 39B04AE05F;
- Thu,  4 Feb 2021 20:05:22 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 69F6AAE062;
- Thu,  4 Feb 2021 20:05:20 +0000 (GMT)
-Received: from farosas.linux.ibm.com.com (unknown [9.163.38.10])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu,  4 Feb 2021 20:05:20 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org
-Subject: [PATCH] KVM: PPC: Book3S HV: Save and restore FSCR in the P9 path
-Date: Thu,  4 Feb 2021 17:05:17 -0300
-Message-Id: <20210204200517.1481811-1-farosas@linux.ibm.com>
-X-Mailer: git-send-email 2.29.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DWtg70C4xzDvYn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 09:35:45 +1100 (AEDT)
+Received: by mail-qt1-x829.google.com with SMTP id o18so3657089qtp.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Feb 2021 14:35:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=c/LawSxYi3ooi+jx8tMFJRDuOSYkGLnBjCJsS5cMwW0=;
+ b=cIXN/L4+RBamqknWxJ/9/w3hWJCbFughWGOh8tKQhhbr1vyJlN2/Y6ezV8omFtTe+N
+ aMxqaH/cgxkKM5dGNBRLf/O0b/4f3Qa72sChKuupte1DJVR5Wi6XU2Rfbj3iMOw/4GCG
+ m5COjHVSDa9MjZLGnXOok4XnBUElnZSftpk2vP822PAsjPzUzpPQtzoAUvrcI+Qn9gwx
+ nbKHg3eKzrD7QogB2c0S4re7q9qa2c5fdX1sHtiYFIGIDODHUpM0x/1uQWNeuAMJEOob
+ GejXnwd3DINbfqbhuGtj+v3E/MaxIlbhRt9f83hr8NnKEhWKJPL055oj3Fzuaqtf4PIH
+ z9DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=c/LawSxYi3ooi+jx8tMFJRDuOSYkGLnBjCJsS5cMwW0=;
+ b=U7awFGam/BYsCIJPDiEXfeumBhrzcDIYqan7r7hXfDcErllj5XHGIYHeGtNXj4prYB
+ RSUoN+41HfqwdH4fGJZ4TTZWu8mpa2EBfV1DZWdQkxuUXHbDuIJYA1n8PeZ73ohQeNUY
+ Psg9xzBUHXexBltS7e/sfWV/2jtaVEiBv2EtSceHQWcFxMJihpEmnf0sMuoixx6Yj7Wv
+ sBI7gcEZ6twVdKqb24JsGMzYDbO6MAkgtCqBw0uGU8WVhZyi/THEHuGaaD6pskmqDIhK
+ PyP6NaBiOGUQe3zTLhWJ3p+Yh81nGZEnuqTi1KTIXYplSRjbIdgZN+G/dLAgZ5silIk0
+ BilQ==
+X-Gm-Message-State: AOAM531zWoixKH5vag/9dd9yTTanCd/0qoQZQBNFDME6cQYzSsl3G9s1
+ dLnYdB63DBrx6eI3zbD/LufMvuFOJCL8CfAZQ8c=
+X-Google-Smtp-Source: ABdhPJzPkXWd+YjJHiQnow5l7lj0QifzOMZJgw4xBeJPEZoWco8N8dgoxBaBvr+6FxemS1snSrLDFig/UxwA3WrBvGE=
+X-Received: by 2002:ac8:5bc4:: with SMTP id b4mr1822554qtb.240.1612478141862; 
+ Thu, 04 Feb 2021 14:35:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
- definitions=2021-02-04_10:2021-02-04,
- 2021-02-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- impostorscore=0 spamscore=0 malwarescore=0 suspectscore=0 mlxlogscore=881
- mlxscore=0 bulkscore=0 clxscore=1011 adultscore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102040118
+References: <PS1PR04MB29345AB59076B370A4F99F75D6B39@PS1PR04MB2934.apcprd04.prod.outlook.com>
+In-Reply-To: <PS1PR04MB29345AB59076B370A4F99F75D6B39@PS1PR04MB2934.apcprd04.prod.outlook.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Fri, 5 Feb 2021 09:35:31 +1100
+Message-ID: <CAOSf1CGJ6ZeowMP8Zjo3TazYyaEGuEab4-QRKRJ2jjixUGGtCA@mail.gmail.com>
+Subject: Re: [PATCH] arch:powerpc simple_write_to_buffer return check
+To: Mayank Suman <mayanksuman@live.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,61 +70,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Facility Status and Control Register is a privileged SPR that
-defines the availability of some features in problem state. Since it
-can be written by the guest, we must restore it to the previous host
-value after guest exit.
+On Fri, Feb 5, 2021 at 5:17 AM Mayank Suman <mayanksuman@live.com> wrote:
+>
+> Signed-off-by: Mayank Suman <mayanksuman@live.com>
 
-This restoration is currently done by taking the value from
-current->thread.fscr, which in the P9 path is not enough anymore
-because the guest could context switch the QEMU thread, causing the
-guest-current value to be saved into the thread struct.
+commit messages aren't optional
 
-The above situation manifested when running a QEMU linked against a
-libc with System Call Vectored support, which causes scv
-instructions to be run by QEMU early during the guest boot (during
-SLOF), at which point the FSCR is 0 due to guest entry. After a few
-scv calls (1 to a couple hundred), the context switching happens and
-the QEMU thread runs with the guest value, resulting in a Facility
-Unavailable interrupt.
+> ---
+>  arch/powerpc/kernel/eeh.c                    | 8 ++++----
+>  arch/powerpc/platforms/powernv/eeh-powernv.c | 4 ++--
+>  2 files changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+> index 813713c9120c..2dbe1558a71f 100644
+> --- a/arch/powerpc/kernel/eeh.c
+> +++ b/arch/powerpc/kernel/eeh.c
+> @@ -1628,8 +1628,8 @@ static ssize_t eeh_force_recover_write(struct file *filp,
+>         char buf[20];
+>         int ret;
+>
+> -       ret = simple_write_to_buffer(buf, sizeof(buf), ppos, user_buf, count);
+> -       if (!ret)
+> +       ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
 
-This patch saves and restores the host value of FSCR in the inner
-guest entry loop in a way independent of current->thread.fscr. The old
-way of doing it is still kept in place because it works for the old
-entry path.
+We should probably be zeroing the buffer. Reading to sizeof(buf) - 1
+is done in a few places to guarantee that the string is nul
+terminated, but without the preceeding memset() that isn't actually
+guaranteed.
 
-Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_hv.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> +       if (ret <= 0)
+>                 return -EFAULT;
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 6f612d240392..f2ddf7139a2a 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3595,6 +3595,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	unsigned long host_tidr = mfspr(SPRN_TIDR);
- 	unsigned long host_iamr = mfspr(SPRN_IAMR);
- 	unsigned long host_amr = mfspr(SPRN_AMR);
-+	unsigned long host_fscr = mfspr(SPRN_FSCR);
- 	s64 dec;
- 	u64 tb;
- 	int trap, save_pmu;
-@@ -3735,6 +3736,9 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	if (host_amr != vcpu->arch.amr)
- 		mtspr(SPRN_AMR, host_amr);
- 
-+	if (host_fscr != vcpu->arch.fscr)
-+		mtspr(SPRN_FSCR, host_fscr);
-+
- 	msr_check_and_set(MSR_FP | MSR_VEC | MSR_VSX);
- 	store_fp_state(&vcpu->arch.fp);
- #ifdef CONFIG_ALTIVEC
--- 
-2.29.2
+EFAULT is supposed to be returned when the user supplies a buffer to
+write(2) which is outside their address space. I figured letting the
+sscanf() in the next step fail if the user passes writes a zero-length
+buffer and returning EINVAL made more sense. That said, the exact
+semantics around zero length writes are pretty handwavy so I guess
+this isn't wrong, but I don't think it's better either.
 
+>         /*
+> @@ -1696,7 +1696,7 @@ static ssize_t eeh_dev_check_write(struct file *filp,
+>
+>         memset(buf, 0, sizeof(buf));
+>         ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
+> -       if (!ret)
+> +       if (ret <= 0)
+>                 return -EFAULT;
+>
+>         ret = sscanf(buf, "%x:%x:%x.%x", &domain, &bus, &dev, &fn);
+> @@ -1836,7 +1836,7 @@ static ssize_t eeh_dev_break_write(struct file *filp,
+>
+>         memset(buf, 0, sizeof(buf));
+>         ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
+> -       if (!ret)
+> +       if (ret <= 0)
+>                 return -EFAULT;
+>
+>         ret = sscanf(buf, "%x:%x:%x.%x", &domain, &bus, &dev, &fn);
+> diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
+> index 89e22c460ebf..36ed2b8f7375 100644
+> --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
+> +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+> @@ -76,8 +76,8 @@ static ssize_t pnv_eeh_ei_write(struct file *filp,
+>                 return -ENXIO;
+>
+>         /* Copy over argument buffer */
+> -       ret = simple_write_to_buffer(buf, sizeof(buf), ppos, user_buf, count);
+> -       if (!ret)
+> +       ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
+> +       if (ret <= 0)
+>                 return -EFAULT;
+>
+>         /* Retrieve parameters */
+> --
+> 2.30.0
+>
