@@ -1,57 +1,159 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32D9D30FCB4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 20:28:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3A130FD04
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 20:38:22 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DWpW50VqPzDwwW
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 06:28:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DWpkM1rcWzDwy0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 06:38:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=oracle.com (client-ip=141.146.126.79; helo=aserp2130.oracle.com;
+ envelope-from=konrad.wilk@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=WXxs/7dH; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=uoPRZ4vz; 
+ dkim=pass (1024-bit key;
+ unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
+ header.b=nN9hWOh2; dkim-atps=neutral
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DWpSx4sbczDww6
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 06:26:41 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 05C4D64F90
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 19:26:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1612466799;
- bh=IvMJSuyPBSKjwbm0NKGnjjVxnlF+lFnyli8//jgP4To=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=WXxs/7dHLkaq67YvXGWOnv2I/WzI0QGo2RQfoo8V2WtA7gnyuTom7GR07avIJJGkg
- TSfrnR42J3Ymq5oyiYtuoxeJ6fbb2DLKDygQzpFwnDYG5BDXzkCfU5If/C6yUbMm9c
- fcE18MT6x4jGswF4yGXK97jOOy2AeksQj6bDbLjQkEL7dah5jLZwlWasvUgAwoGcPr
- 3xjBiUi4RFdkp5FJY5V254KANqVislrd3ItcnJjXvTlIWr6YdHhA8CuhINmZcPsKKL
- TRPSYVj0/6fsv5dwCv9ZRmtKddt6WqUHSLf2PRUsf4Ts98MJAuDqH0Z0UTXuVxohWH
- gGVg0YnDHC2Rg==
-Received: by mail-lf1-f44.google.com with SMTP id u25so6311481lfc.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Feb 2021 11:26:38 -0800 (PST)
-X-Gm-Message-State: AOAM530wstmiPqAQ/1WH3rMYKej7OkCRK3sCuXwQYzeoxRmzrhefboDH
- lmjtIAyg/SJil+rpWalvtqhp8ydC9QjkkXjvMA==
-X-Google-Smtp-Source: ABdhPJx63WCpS5SsKFaBszMRfMahLoCwwtc3D3JN1mgTmRNm7HQGsxD6WPtyKilkAM9Ji9QNM2AWrXo4LO963CHlF9s=
-X-Received: by 2002:a17:906:4301:: with SMTP id
- j1mr643389ejm.108.1612466796391; 
- Thu, 04 Feb 2021 11:26:36 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DWphg2CDHzDwwF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 06:36:51 +1100 (AEDT)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+ by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 114JTdwm044841;
+ Thu, 4 Feb 2021 19:33:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2020-01-29;
+ bh=1mSbR7UYytrVmb9m+OjsfJQ+ECzLuT5FK3uth4D/hSw=;
+ b=uoPRZ4vz6mb4z1gMXMHFvxwBkbXKBRmCy2XhjVbaPw0jNoHu0QaiZnf3j5/B7emztro5
+ 0iztbYhLd3vDgay72tQ6v0ij5PSveEkRKdrr3wcjAKxozyU0JID7seBQmz211BJWL3/n
+ 21EHOXgDC0bsG30hLvCbhqscoLzqfAVDMG+yD0DGaFTgq86fgtsLcFNTfURcxZlBx5/k
+ FJjWBPesneE3gBMvwHtZumwjne8eT2iYPAdxJ5t4GcypklTFE0C6r4ZHlw4l5CMRCBMQ
+ jrOMtCxfZphJ9eSlzXIBH5oTU4e6e81X+VeOeNvIRXTOuKTE+Drv6PXP6ARwvuQ25MEv IA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+ by aserp2130.oracle.com with ESMTP id 36cvyb71sb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 04 Feb 2021 19:33:50 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+ by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 114JUXk4106088;
+ Thu, 4 Feb 2021 19:31:49 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10lp2103.outbound.protection.outlook.com [104.47.58.103])
+ by userp3020.oracle.com with ESMTP id 36dh7vm7bb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 04 Feb 2021 19:31:49 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JJRX8n8XulXtIXRsy8uGNsuDKgHehZ06tN4hkr9Y6Hpqe8VBz7mF4vuALeeF3RsXj6VV6Ioe+1HMiye4RgatyupMXkb9gZzMwGsHKUkZ8JQ7k3wMjdACflMNZ0QgpRNAf7eE5sQApZzzUksWAz+xfp7Bw9x54qX0YDJgpXdCRCUSpv46iRKsibQnlxkQtfzDayvDW7nfFsCpPC6IEIvHgpYeLLTIrwSqeQ7tfW6aQxULPXNk2ZL1TjCzgXRx3EDggfdVbglGophPcLovgGOrZZtxZdDQgKr83njV6y8JagEv8AMZdCRBsfuoZCLtmu4uh4DFTpLJSEvfJAk/oa+qOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1mSbR7UYytrVmb9m+OjsfJQ+ECzLuT5FK3uth4D/hSw=;
+ b=d3fos0Kh39uzd19oyhdNiV5RCgUmtGZXuOsU4vT+3gPP4jy8C91KNWGYCoHRzariSN2dsL+Vn8OvhwROsmBtGp0ZL4SEidWTl1hz1XMIEPA03QlTOSj9ekIKjKXFi2vnzEsT8Lyt3nMrJw/6XTFbduPupuhZxeJp5PR1mQmvxeUfJOLVF4lFBhkNxj0wi5k94K/FuwlN1j0QXl78BmDaALE+Q7Um8K6TtofF9+Fb9lEzBx+/lkqjN8bphoMh15JK+b3890ccbfi++FdQ9kODvO5TaCsKE1YGXcnprZxnuUMGlIshUNfXBBEwrOYXlCN3Lu/cYbqtsQokn+fPuiuB2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1mSbR7UYytrVmb9m+OjsfJQ+ECzLuT5FK3uth4D/hSw=;
+ b=nN9hWOh2tdMNz04L6MgzOKjjxEgtPjBcD0ZS7FMUKMpvtLgryAf3qEzi5GMWMiaUjUXtVqLYOx5IDYPB47nY/ZU+80CJmagSSM2aTRJEDxAIf99xx/fjlshMQjyV1BIE5WGD8JbhrwHYs/f2ROVtiJzYXdD8C5Cu0LO/4Sf27Lc=
+Authentication-Results: arm.com; dkim=none (message not signed)
+ header.d=none;arm.com; dmarc=none action=none header.from=oracle.com;
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com (2603:10b6:a03:85::27)
+ by BYAPR10MB3207.namprd10.prod.outlook.com (2603:10b6:a03:152::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3805.19; Thu, 4 Feb
+ 2021 19:31:44 +0000
+Received: from BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::e180:1ba2:d87:456]) by BYAPR10MB2999.namprd10.prod.outlook.com
+ ([fe80::e180:1ba2:d87:456%4]) with mapi id 15.20.3825.024; Thu, 4 Feb 2021
+ 19:31:44 +0000
+Date: Thu, 4 Feb 2021 14:31:36 -0500
+From: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [PATCH RFC v1 2/6] swiotlb: convert variables to arrays
+Message-ID: <20210204193136.GA333094@fedora>
+References: <20210203233709.19819-1-dongli.zhang@oracle.com>
+ <20210203233709.19819-3-dongli.zhang@oracle.com>
+ <20210204072947.GA29812@lst.de>
+ <b46ddefe-d91a-fa6a-0e0d-cf1edc343c2e@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b46ddefe-d91a-fa6a-0e0d-cf1edc343c2e@arm.com>
+X-Originating-IP: [209.6.208.110]
+X-ClientProxiedBy: BL0PR02CA0129.namprd02.prod.outlook.com
+ (2603:10b6:208:35::34) To BYAPR10MB2999.namprd10.prod.outlook.com
+ (2603:10b6:a03:85::27)
 MIME-Version: 1.0
-References: <20210204164135.29856-1-nramas@linux.microsoft.com>
- <20210204164135.29856-12-nramas@linux.microsoft.com>
-In-Reply-To: <20210204164135.29856-12-nramas@linux.microsoft.com>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 4 Feb 2021 13:26:24 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqK1Pb9nAeL84EP2U3MQgpBsm+E_0QXmzbigWXnS245WPQ@mail.gmail.com>
-Message-ID: <CAL_JsqK1Pb9nAeL84EP2U3MQgpBsm+E_0QXmzbigWXnS245WPQ@mail.gmail.com>
-Subject: Re: [PATCH v16 11/12] powerpc: Use OF alloc and free for FDT
-To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from fedora (209.6.208.110) by
+ BL0PR02CA0129.namprd02.prod.outlook.com (2603:10b6:208:35::34) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3825.20 via Frontend Transport; Thu, 4 Feb 2021 19:31:38 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: ef55351e-693f-4d96-4932-08d8c943812e
+X-MS-TrafficTypeDiagnostic: BYAPR10MB3207:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BYAPR10MB3207426DBD5DE06078DD9EE689B39@BYAPR10MB3207.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uAgalEdYjwOjJHCH2G7vN5tWQtCMtbX0n85NOzjg397fr4HPpL38hU+5XzzeT49OmKLLJVsnwxIpo+to5zKKQGIsK846HRhFER2KPTbPklCujGd8DTLblcPCup5OKFImj7oo9vISCGsDUiJZkiV/3ToqgvCCnZ6B7MuTJOyFbK32wJugnDz83jEY9ajCSyngUqObEoMU3edySoele8YHKMKQs6lZYD+ISVSsalYC0OzhTRXQE4+4oUMREmANuddjCtRwMZYVha7Km7A6VrPYzrIZUTCE+qTKTB/5qMehAd+orN5NztZ/wh0QB0yaOmm5HKNNBXGarBx77cjIGbdqh02HNg3UnBXLSrO3Vlw0yTXHrDNDI2IfSSAHFKYY8deJXB9W2dzWfmTSvLvpo+OPXRc2RGZ951S6BJ1FROzMHQhCJzBIgXYmDz/ZaD2ufs3XKyOOO17e5wOUQtMfLmh7W/1FrwiplQ115y6pFi47ExlWLvcLqtuN7NfidZI4Czy4IotM2VARalMW8UzXklor4Gvk0Bu87CDO0GQd7Z6htWQc5dBRVrO9l/fxVoYdjmAg
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BYAPR10MB2999.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(366004)(39860400002)(346002)(396003)(376002)(136003)(8936002)(26005)(4326008)(9576002)(8676002)(33656002)(86362001)(16526019)(5660300002)(53546011)(186003)(83380400001)(956004)(66556008)(52116002)(66946007)(55016002)(478600001)(7416002)(6496006)(2906002)(6916009)(66476007)(316002)(54906003)(7406005)(33716001)(9686003)(1076003)(21314003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?wawCRNyZ8ljyEuFsDq2wYljIRGRa+x/+LWf2aOYw3EPj/ts+T86ZgSpVrNI1?=
+ =?us-ascii?Q?E+hi9N0U+VHnKEi643sfk/lKPgdNcyg1X5dIqfKRQ4obHAugfVLS3yvF9uHA?=
+ =?us-ascii?Q?Et/CzMB5IJrQmQCH1De9LLITIdU4HxYUHXWeiyTewys9ZPW92hzJbHRHipFS?=
+ =?us-ascii?Q?ZjKreRgS4eenVHSWbXtGKX1RdGwsvFmGUtZmt6RPIQnBG2nQbh6uY1x8XDm+?=
+ =?us-ascii?Q?HNlo4+zCXXBRmqVsO/7K9N6zTYffAibVUCmdssjl652dJxDd3pjO60aeIy0D?=
+ =?us-ascii?Q?8V+eyWUUKndo85mK1a37h25dT8XAJwF9Su3wjpK6ufcFPfV0VuubOJHsl211?=
+ =?us-ascii?Q?eA7BLwTGejgutN/nAwdMSAZkzE2FrKGJS10H0MSnyrk04g7iNLjEZgUdKSG3?=
+ =?us-ascii?Q?dbKSyYBKbpp42miUwg9hkS08itIpYL2S9a9RkXNAde3GAtY8hBCh3qcgSHdi?=
+ =?us-ascii?Q?6Bwioin/m6tIHwT2fqnyX9f92pWdI4xt6zbdalUgmS0Nn/nWd6UBBXTVIwp3?=
+ =?us-ascii?Q?dIIm4w1C7EEb9JRK6Ur4QTI7vS8dkeShTS7EEI0vs2iqliz4Ng9rEm1Ef1AH?=
+ =?us-ascii?Q?7oWFim24xrTDWQ5X5aZEq27Kuqu+tHvo+AT6VOmALtiohgErAKdEVxNQZh0x?=
+ =?us-ascii?Q?Vml36FCg9b/IZbsngoX9D721PfCaqnU+oC4nPWWIgX0I74A33IcyRGjtiXTn?=
+ =?us-ascii?Q?Ia0ZN5cwmDDIGVeJGyG3iNUfqiIqi0y7Zeqhe9JI1OfjSliJO8W+KRBewRsa?=
+ =?us-ascii?Q?TWvEmmm8e9DHFLSpnnuNii/MUeYnKoFTiIFdCEn+7nHBcowyz281im4/anKz?=
+ =?us-ascii?Q?mlQI4Wr14VzMSyrfRi+QjA7lU5xNQGDgk4P6StAGD+ydA0roF+OAcMIs+Y0B?=
+ =?us-ascii?Q?oLhz70asx7ROi582lpwamEJbklY3Udnoslrv910cdfzXvIG+i5kqodTaRA2n?=
+ =?us-ascii?Q?H/vSpzVb3icXkkiJQGuwVwDxwg2+AvhseyrxM1QG/HMlrIT4zuO3DAM8Q+Xc?=
+ =?us-ascii?Q?WhNd8k33wXZ5x9HqOyUVfSGBgprXrx/AWC7J2VboMq8mp1zfTY0uZ5flkTcc?=
+ =?us-ascii?Q?KPICc97M?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef55351e-693f-4d96-4932-08d8c943812e
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2999.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2021 19:31:44.2409 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ezbeptdNGkgwxrYaRP+vWUR9oW8gyl3BZp7dR4e7wHu1eriSLHANm2B5ihfHQRmNh+F5kZ7Hnkdiiin0cMy+PQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR10MB3207
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9885
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ mlxscore=0
+ suspectscore=0 spamscore=0 mlxlogscore=999 phishscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102040118
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9885
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011
+ impostorscore=0
+ mlxscore=0 spamscore=0 bulkscore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102040118
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,176 +165,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Bhupesh Sharma <bhsharma@redhat.com>,
- tao.li@vivo.com, Mimi Zohar <zohar@linux.ibm.com>,
- Paul Mackerras <paulus@samba.org>, vincenzo.frascino@arm.com,
- Frank Rowand <frowand.list@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Masahiro Yamada <masahiroy@kernel.org>, James Morris <jmorris@namei.org>,
- "AKASHI, Takahiro" <takahiro.akashi@linaro.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- "Serge E. Hallyn" <serge@hallyn.com>, devicetree@vger.kernel.org,
- Pavel Tatashin <pasha.tatashin@soleen.com>, Will Deacon <will@kernel.org>,
- Prakhar Srivastava <prsriva@linux.microsoft.com>,
- Hsin-Yi Wang <hsinyi@chromium.org>, Allison Randal <allison@lohutok.net>,
- Christophe Leroy <christophe.leroy@c-s.fr>,
- Matthias Brugger <mbrugger@suse.com>, balajib@linux.microsoft.com,
- dmitry.kasatkin@gmail.com,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- James Morse <james.morse@arm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Joe Perches <joe@perches.com>,
- linux-integrity@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: ulf.hansson@linaro.org, airlied@linux.ie, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ paulus@samba.org, hpa@zytor.com, Christoph Hellwig <hch@lst.de>,
+ m.szyprowski@samsung.com, sstabellini@kernel.org, adrian.hunter@intel.com,
+ Dongli Zhang <dongli.zhang@oracle.com>, x86@kernel.org, joe.jin@oracle.com,
+ mingo@kernel.org, peterz@infradead.org, mingo@redhat.com, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ matthew.auld@intel.com, thomas.lendacky@amd.com,
+ intel-gfx@lists.freedesktop.org, jani.nikula@linux.intel.com, bp@alien8.de,
+ rodrigo.vivi@intel.com, bhelgaas@google.com,
+ Claire Chang <tientzu@chromium.org>, boris.ostrovsky@oracle.com,
+ chris@chris-wilson.co.uk, jgross@suse.com, tsbogend@alpha.franken.de,
+ nouveau@lists.freedesktop.org, linux-mmc@vger.kernel.org,
+ linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
+ tglx@linutronix.de, bauerman@linux.ibm.com, daniel@ffwll.ch,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 4, 2021 at 10:42 AM Lakshmi Ramasubramanian
-<nramas@linux.microsoft.com> wrote:
->
-> of_alloc_and_init_fdt() and of_free_fdt() have been defined in
-> drivers/of/kexec.c to allocate and free memory for FDT.
->
-> Use of_alloc_and_init_fdt() and of_free_fdt() to allocate and
-> initialize the FDT, and to free the FDT respectively.
->
-> powerpc sets the FDT address in image_loader_data field in
-> "struct kimage" and the memory is freed in
-> kimage_file_post_load_cleanup().  This cleanup function uses kfree()
-> to free the memory. But since of_alloc_and_init_fdt() uses kvmalloc()
-> for allocation, the buffer needs to be freed using kvfree().
+On Thu, Feb 04, 2021 at 11:49:23AM +0000, Robin Murphy wrote:
+> On 2021-02-04 07:29, Christoph Hellwig wrote:
+> > On Wed, Feb 03, 2021 at 03:37:05PM -0800, Dongli Zhang wrote:
+> > > This patch converts several swiotlb related variables to arrays, in
+> > > order to maintain stat/status for different swiotlb buffers. Here are
+> > > variables involved:
+> > > 
+> > > - io_tlb_start and io_tlb_end
+> > > - io_tlb_nslabs and io_tlb_used
+> > > - io_tlb_list
+> > > - io_tlb_index
+> > > - max_segment
+> > > - io_tlb_orig_addr
+> > > - no_iotlb_memory
+> > > 
+> > > There is no functional change and this is to prepare to enable 64-bit
+> > > swiotlb.
+> > 
+> > Claire Chang (on Cc) already posted a patch like this a month ago,
+> > which looks much better because it actually uses a struct instead
+> > of all the random variables.
+> 
+> Indeed, I skimmed the cover letter and immediately thought that this whole
+> thing is just the restricted DMA pool concept[1] again, only from a slightly
+> different angle.
 
-You could just change the kexec core to call kvfree() instead.
 
-> Define "fdt" field in "struct kimage_arch" for powerpc to store
-> the address of FDT, and free the memory in powerpc specific
-> arch_kimage_file_post_load_cleanup().
+Kind of. Let me lay out how some of these pieces are right now:
 
-However, given all the other buffers have an explicit field in kimage
-or kimage_arch, changing powerpc is to match arm64 is better IMO.
++-----------------------+      +----------------------+
+|                       |      |                      |
+|                       |      |                      |
+|   a)Xen-SWIOTLB       |      | b)SWIOTLB (for !Xen) |
+|                       |      |                      |
++-----------XX----------+      +-------X--------------+
+              XXXX             XXXXXXXXX
+                 XXXX     XX XXX
+                    X   XX
+                    XXXX
+         +----------XX-----------+
+         |                       |
+         |                       |
+         |   c) SWIOTLB generic  |
+         |                       |
+         +-----------------------+
 
-> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-> Suggested-by: Rob Herring <robh@kernel.org>
-> Suggested-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/kexec.h  |  2 ++
->  arch/powerpc/kexec/elf_64.c       | 26 ++++++++++++++++----------
->  arch/powerpc/kexec/file_load_64.c |  3 +++
->  3 files changed, 21 insertions(+), 10 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-> index 2c0be93d239a..d7d13cac4d31 100644
-> --- a/arch/powerpc/include/asm/kexec.h
-> +++ b/arch/powerpc/include/asm/kexec.h
-> @@ -111,6 +111,8 @@ struct kimage_arch {
->         unsigned long elf_headers_mem;
->         unsigned long elf_headers_sz;
->         void *elf_headers;
-> +
-> +       void *fdt;
->  };
->
->  char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
-> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-> index d0e459bb2f05..51d2d8eb6c1b 100644
-> --- a/arch/powerpc/kexec/elf_64.c
-> +++ b/arch/powerpc/kexec/elf_64.c
-> @@ -19,6 +19,7 @@
->  #include <linux/kexec.h>
->  #include <linux/libfdt.h>
->  #include <linux/module.h>
-> +#include <linux/of.h>
->  #include <linux/of_fdt.h>
->  #include <linux/slab.h>
->  #include <linux/types.h>
-> @@ -32,7 +33,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->         unsigned int fdt_size;
->         unsigned long kernel_load_addr;
->         unsigned long initrd_load_addr = 0, fdt_load_addr;
-> -       void *fdt;
-> +       void *fdt = NULL;
->         const void *slave_code;
->         struct elfhdr ehdr;
->         char *modified_cmdline = NULL;
-> @@ -103,18 +104,12 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->         }
->
->         fdt_size = fdt_totalsize(initial_boot_params) * 2;
-> -       fdt = kmalloc(fdt_size, GFP_KERNEL);
-> +       fdt = of_alloc_and_init_fdt(fdt_size);
->         if (!fdt) {
->                 pr_err("Not enough memory for the device tree.\n");
->                 ret = -ENOMEM;
->                 goto out;
->         }
-> -       ret = fdt_open_into(initial_boot_params, fdt, fdt_size);
-> -       if (ret < 0) {
-> -               pr_err("Error setting up the new device tree.\n");
-> -               ret = -EINVAL;
-> -               goto out;
-> -       }
->
->         ret = setup_new_fdt_ppc64(image, fdt, initrd_load_addr,
+Dongli's patches modify the SWIOTLB generic c), and Xen-SWIOTLB a)
+parts.
 
-The first thing this function does is call setup_new_fdt() which first
-calls of_kexec_setup_new_fdt(). (Note, I really don't understand the
-PPC code split. It looks like there's a 32-bit and 64-bit split, but
-32-bit looks broken to me. Nothing ever calls setup_new_fdt() except
-setup_new_fdt_ppc64()). The arm64 version is calling
-of_alloc_and_init_fdt() and then of_kexec_setup_new_fdt() directly.
+Also see the IOMMU_INIT logic which lays this a bit more deepth
+(for example how to enable SWIOTLB on AMD boxes, or IBM with Calgary
+IOMMU, etc - see iommu_table.h).
 
-So we can just make of_alloc_and_init_fdt() also call
-of_kexec_setup_new_fdt() (really, just tweak of_kexec_setup_new_fdt do
-the alloc and copy). I don't think the architecture needs to pick the
-size either. It's doubtful that either one is that sensitive to the
-amount of extra space.
+Furtheremore it lays the groundwork to allocate AMD SEV SWIOTLB buffers
+later after boot (so that you can stich different pools together).
+All the bits are kind of inside of the SWIOTLB code. And also it changes
+the Xen-SWIOTLB to do something similar.
 
->                                   initrd_len, cmdline);
-> @@ -131,6 +126,10 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->         ret = kexec_add_buffer(&kbuf);
->         if (ret)
->                 goto out;
-> +
-> +       /* FDT will be freed in arch_kimage_file_post_load_cleanup */
-> +       image->arch.fdt = fdt;
-> +
->         fdt_load_addr = kbuf.mem;
->
->         pr_debug("Loaded device tree at 0x%lx\n", fdt_load_addr);
-> @@ -145,8 +144,15 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->         kfree(modified_cmdline);
->         kexec_free_elf_info(&elf_info);
->
-> -       /* Make kimage_file_post_load_cleanup free the fdt buffer for us. */
-> -       return ret ? ERR_PTR(ret) : fdt;
-> +       /*
-> +        * Once FDT buffer has been successfully passed to kexec_add_buffer(),
-> +        * the FDT buffer address is saved in image->arch.fdt. In that case,
-> +        * the memory cannot be freed here in case of any other error.
-> +        */
-> +       if (ret && !image->arch.fdt)
-> +               of_free_fdt(fdt);
+The mempool did it similarly by taking the internal parts (aka the
+various io_tlb) of SWIOTLB and exposing them out and having
+other code:
 
-Just call kvfree() directly.
++-----------------------+      +----------------------+
+|                       |      |                      |
+|                       |      |                      |
+| a)Xen-SWIOTLB         |      | b)SWIOTLB (for !Xen) |
+|                       |      |                      |
++-----------XX----------+      +-------X--------------+
+              XXXX             XXXXXXXXX
+                 XXXX     XX XXX
+                    X   XX
+                    XXXX
+         +----------XX-----------+         +------------------+
+         |                       |         | Device tree      |
+         |                       +<--------+ enabling SWIOTLB |
+         |c) SWIOTLB generic     |         |                  |
+         |                       |         | mempool          |
+         +-----------------------+         +------------------+
 
-> +
-> +       return ret ? ERR_PTR(ret) : NULL;
->  }
->
->  const struct kexec_file_ops kexec_elf64_ops = {
-> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-> index 3cab318aa3b9..d9d5b5569a6d 100644
-> --- a/arch/powerpc/kexec/file_load_64.c
-> +++ b/arch/powerpc/kexec/file_load_64.c
-> @@ -1113,5 +1113,8 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
->         image->arch.elf_headers = NULL;
->         image->arch.elf_headers_sz = 0;
->
-> +       of_free_fdt(image->arch.fdt);
-> +       image->arch.fdt = NULL;
-> +
->         return kexec_image_post_load_cleanup_default(image);
->  }
-> --
-> 2.30.0
->
+What I was suggesting to Clarie to follow Xen model, that is
+do something like this:
+
++-----------------------+      +----------------------+   +--------------------+
+|                       |      |                      |   |                    |
+|                       |      |                      |   |                    |
+| a)Xen-SWIOTLB         |      | b)SWIOTLB (for !Xen) |   | e) DT-SWIOTLB      |
+|                       |      |                      |   |                    |
++-----------XX----------+      +-------X--------------+   +----XX-X------------+
+              XXXX             XXXXXXXXX        XXX X X XX X XX
+                 XXXX     XX XXX        XXXXXXXX
+                    X   XX XXXXXXXXXXXXX
+                    XXXXXXXX
+         +----------XXX----------+
+         |                       |
+         |                       |
+         |c) SWIOTLB generic     |
+         |                       |
+         +-----------------------+
+
+
+so using the SWIOTLB generic parts, and then bolt on top
+of the device-tree logic, along with the mempool logic.
+
+
+
+But Christopher has an interesting suggestion which is
+to squash the all the existing code (a, b, c) all together
+and pepper it with various jump-tables.
+
+
+So:
+
+
+-----------------------------+
+| SWIOTLB:                   |
+|                            |
+|  a) SWIOTLB (for non-Xen)  |
+|  b) Xen-SWIOTLB            |
+|  c) DT-SWIOTLB             |
+|                            |
+|                            |
+-----------------------------+
+
+
+with all the various bits (M2P/P2M for Xen, mempool for ARM,
+and normal allocation for BM) in one big file.
+
