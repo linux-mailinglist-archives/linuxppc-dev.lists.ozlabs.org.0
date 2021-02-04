@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16F130F8BE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 17:58:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF56830F8E7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 18:02:58 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DWlBS06cxzDsV4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 03:58:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DWlH41FMqzDwqN
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 04:02:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,30 +15,30 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=XqMv0O33; 
+ header.a=rsa-sha256 header.s=default header.b=lCYMWduI; 
  dkim-atps=neutral
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DWkq20NdqzDrWN
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 03:42:06 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DWkq32Fs6zDwqF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 03:42:07 +1100 (AEDT)
 Received: from localhost.localdomain (c-73-42-176-67.hsd1.wa.comcast.net
  [73.42.176.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id 1BE6F20B6C49;
+ by linux.microsoft.com (Postfix) with ESMTPSA id C73E620B6C4A;
  Thu,  4 Feb 2021 08:42:05 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1BE6F20B6C49
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C73E620B6C4A
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1612456925;
- bh=j+m2dR5ww3SCw8oyyZKjTEpLaO6j8YaYz0eXbFOJGks=;
+ s=default; t=1612456926;
+ bh=eteQoM8TsJLZTpLH4UcJUMfvK8vuu3EMwdBLJt4y9+8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=XqMv0O331GqkREnDVAzOHFGxCo7GVTqw2Avx6Ws9r4a3pfiBlYy3873CU7aRY8ks/
- DiUi04CRZrwWifQlps/Faz87RtB92C12EnLlTlS+pGqmEy5JzpZ6FEwAMIzds4D6nv
- RyGv80vBtgXh9fB2WwCZsGaO/ztZqb+PMV1tS3mQ=
+ b=lCYMWduI56a6WnVybP/MH51bcFWObfPHsX3LqZ74EnxNMZrULXgh05QMEZYrNkcS5
+ FwpXUdTmapdyezPwl1/M0kJpgnLz6juQecFOl7RdGUJ19OHiUL3z3XfeV+2RCTqjU2
+ 06x0mMRFKkbicN4XYXDoU0l5PspNBtA0z5lT+KGA=
 From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
 To: zohar@linux.ibm.com, bauerman@linux.ibm.com, robh@kernel.org,
  takahiro.akashi@linaro.org, gregkh@linuxfoundation.org, will@kernel.org,
  joe@perches.com, catalin.marinas@arm.com, mpe@ellerman.id.au
-Subject: [PATCH v16 09/12] of: Define functions to allocate and free FDT
-Date: Thu,  4 Feb 2021 08:41:32 -0800
-Message-Id: <20210204164135.29856-10-nramas@linux.microsoft.com>
+Subject: [PATCH v16 10/12] arm64: Use OF alloc and free functions for FDT
+Date: Thu,  4 Feb 2021 08:41:33 -0800
+Message-Id: <20210204164135.29856-11-nramas@linux.microsoft.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210204164135.29856-1-nramas@linux.microsoft.com>
 References: <20210204164135.29856-1-nramas@linux.microsoft.com>
@@ -68,91 +68,84 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kernel components that use Flattened Device Tree (FDT) allocate kernel
-memory and call fdt_open_into() to reorganize the tree into a form
-suitable for the read-write operations.  These operations can be
-combined into a single function to allocate and initialize the FDT
-so the different architecures do not have to duplicate the code.
+of_alloc_and_init_fdt() and of_free_fdt() have been defined in
+drivers/of/kexec.c to allocate and free memory for FDT.
 
-Define of_alloc_and_init_fdt() and of_free_fdt() in drivers/of/kexec.c
-to allocate and initialize FDT, and to free the FDT buffer respectively.
+Use of_alloc_and_init_fdt() and of_free_fdt() to allocate and
+initialize the FDT, and to free the FDT respectively.
 
 Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
 Suggested-by: Rob Herring <robh@kernel.org>
-Suggested-by: Joe Perches <joe@perches.com>
 ---
- drivers/of/kexec.c | 37 +++++++++++++++++++++++++++++++++++++
- include/linux/of.h |  2 ++
- 2 files changed, 39 insertions(+)
+ arch/arm64/kernel/machine_kexec_file.c | 37 +++++++-------------------
+ 1 file changed, 10 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
-index 5ae0e5d90f55..197e71104f47 100644
---- a/drivers/of/kexec.c
-+++ b/drivers/of/kexec.c
-@@ -11,6 +11,7 @@
+diff --git a/arch/arm64/kernel/machine_kexec_file.c b/arch/arm64/kernel/machine_kexec_file.c
+index 7da22bb7b9d5..7d6cc478f73c 100644
+--- a/arch/arm64/kernel/machine_kexec_file.c
++++ b/arch/arm64/kernel/machine_kexec_file.c
+@@ -29,7 +29,7 @@ const struct kexec_file_ops * const kexec_file_loaders[] = {
  
- #include <linux/kernel.h>
- #include <linux/kexec.h>
-+#include <linux/mm.h>
- #include <linux/memblock.h>
- #include <linux/libfdt.h>
- #include <linux/of.h>
-@@ -28,6 +29,42 @@
- #define FDT_PROP_RNG_SEED	"rng-seed"
- #define RNG_SEED_SIZE		128
+ int arch_kimage_file_post_load_cleanup(struct kimage *image)
+ {
+-	vfree(image->arch.dtb);
++	of_free_fdt(image->arch.dtb);
+ 	image->arch.dtb = NULL;
  
-+/**
-+ * of_alloc_and_init_fdt - Allocate and initialize a Flattened device tree
-+ *
-+ * @fdt_size:	Flattened device tree size
-+ *
-+ * Return the allocated FDT buffer on success, or NULL on error.
-+ */
-+void *of_alloc_and_init_fdt(unsigned int fdt_size)
-+{
-+	void *fdt;
-+	int ret;
-+
-+	fdt = kvmalloc(fdt_size, GFP_KERNEL);
-+	if (!fdt)
-+		return NULL;
-+
-+	ret = fdt_open_into(initial_boot_params, fdt, fdt_size);
-+	if (ret < 0) {
-+		pr_err("Error setting up the new device tree.\n");
-+		kvfree(fdt);
-+		fdt = NULL;
-+	}
-+
-+	return fdt;
-+}
-+
-+/**
-+ * of_free_fdt - Free the buffer for Flattened device tree
-+ *
-+ * @fdt:	Flattened device tree buffer to free
-+ */
-+void of_free_fdt(void *fdt)
-+{
-+	kvfree(fdt);
-+}
-+
- /**
-  * fdt_find_and_del_mem_rsv - delete memory reservation with given address and size
-  *
-diff --git a/include/linux/of.h b/include/linux/of.h
-index 19f77dd12507..9f0261761e28 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -563,6 +563,8 @@ struct kimage;
- int of_kexec_setup_new_fdt(const struct kimage *image, void *fdt,
- 			   unsigned long initrd_load_addr, unsigned long initrd_len,
- 			   const char *cmdline);
-+void *of_alloc_and_init_fdt(unsigned int fdt_size);
-+void of_free_fdt(void *fdt);
+ 	vfree(image->arch.elf_headers);
+@@ -57,36 +57,19 @@ static int create_dtb(struct kimage *image,
+ 	cmdline_len = cmdline ? strlen(cmdline) : 0;
+ 	buf_size = fdt_totalsize(initial_boot_params)
+ 			+ cmdline_len + DTB_EXTRA_SPACE;
+-
+-	for (;;) {
+-		buf = vmalloc(buf_size);
+-		if (!buf)
+-			return -ENOMEM;
+-
+-		/* duplicate a device tree blob */
+-		ret = fdt_open_into(initial_boot_params, buf, buf_size);
+-		if (ret)
+-			return -EINVAL;
+-
+-		ret = of_kexec_setup_new_fdt(image, buf, initrd_load_addr,
++	buf = of_alloc_and_init_fdt(buf_size);
++	if (!buf)
++		return -ENOMEM;
++	ret = of_kexec_setup_new_fdt(image, buf, initrd_load_addr,
+ 					     initrd_len, cmdline);
+-		if (ret) {
+-			vfree(buf);
+-			if (ret == -ENOMEM) {
+-				/* unlikely, but just in case */
+-				buf_size += DTB_EXTRA_SPACE;
+-				continue;
+-			} else {
+-				return ret;
+-			}
+-		}
+-
++	if (!ret) {
+ 		/* trim it */
+ 		fdt_pack(buf);
+ 		*dtb = buf;
++	} else
++		of_free_fdt(buf);
  
- #ifdef CONFIG_IMA_KEXEC
- int of_ima_add_kexec_buffer(struct kimage *image,
+-		return 0;
+-	}
++	return ret;
+ }
+ 
+ static int prepare_elf_headers(void **addr, unsigned long *sz)
+@@ -224,6 +207,6 @@ int load_other_segments(struct kimage *image,
+ 
+ out_err:
+ 	image->nr_segments = orig_segments;
+-	vfree(dtb);
++	of_free_fdt(dtb);
+ 	return ret;
+ }
 -- 
 2.30.0
 
