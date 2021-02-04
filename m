@@ -2,58 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84C730F0AF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 11:30:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C86F330F121
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 11:46:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DWZZn0RbVzDwp2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 21:30:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DWZwy5q7gzDwwY
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Feb 2021 21:46:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DWZXl5tl5zDwtQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 21:29:09 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-156-FUxuok8FPYibgYXVDY-O-w-1; Thu, 04 Feb 2021 10:29:02 +0000
-X-MC-Unique: FUxuok8FPYibgYXVDY-O-w-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Thu, 4 Feb 2021 10:29:00 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Thu, 4 Feb 2021 10:29:00 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Segher Boessenkool' <segher@kernel.crashing.org>, "Naveen N. Rao"
- <naveen.n.rao@linux.vnet.ibm.com>
-Subject: RE: [PATCH v2 1/3] powerpc: sstep: Fix load and update emulation
-Thread-Topic: [PATCH v2 1/3] powerpc: sstep: Fix load and update emulation
-Thread-Index: AQHW+nKP6kL5mXAGDkmDhNs6SM6B+qpHysqQ
-Date: Thu, 4 Feb 2021 10:29:00 +0000
-Message-ID: <10d7cf245bb744739de063d452065e94@AcuMS.aculab.com>
-References: <20210203063841.431063-1-sandipan@linux.ibm.com>
- <20210203094909.GD210@DESKTOP-TDPLP67.localdomain>
- <20210203211732.GD30983@gate.crashing.org>
-In-Reply-To: <20210203211732.GD30983@gate.crashing.org>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DWZtx4R23zDwpC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Feb 2021 21:44:57 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=aeithg5X; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DWZtr4RvTz9sXV;
+ Thu,  4 Feb 2021 21:44:52 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1612435496;
+ bh=7gUDiKUJsUlnyL1hzNVaMIZFOrtzUH+RnQewMgPBJXA=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=aeithg5XbYtGR3+3M0J2fWWh+BH4YzO0m/tpovXY4JTNI34gGy0ZFPKzi6lAxzbdt
+ p4lAuxnwJYSnrDXZnLVdsh8F0iA2jhQ4lDRw7p1Ocl/U6Q0wMnDs23z3/QrU4Q+lno
+ vB6Wm/ETnQGaQPRkmOAk+Cg4eN2q25qRCTLtm9IPEiw22Jg7kttOdCnyq2xIB3d3Mu
+ W6uJuZIKbssUj6v53+5imSR9JR3l28/X1jC6TANDAQeGIAHjg+1q4qg9hrQPw8eQ5U
+ eF+le40oSyflT3D2CclEO5XCqDqyoXIurBtwcjRAc2Wf+Tc0nSes3mnm+UAEcPnkf7
+ 5fFb3xrUGnKIQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christoph Hellwig <hch@lst.de>, Frederic Barrat <fbarrat@linux.ibm.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@linux.ie>,
+ Daniel Vetter <daniel@ffwll.ch>, Jessica Yu <jeyu@kernel.org>, Josh
+ Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>, Miroslav
+ Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>, Joe Lawrence
+ <joe.lawrence@redhat.com>
+Subject: Re: [PATCH 01/13] powerpc/powernv: remove get_cxl_module
+In-Reply-To: <20210202121334.1361503-2-hch@lst.de>
+References: <20210202121334.1361503-1-hch@lst.de>
+ <20210202121334.1361503-2-hch@lst.de>
+Date: Thu, 04 Feb 2021 21:44:51 +1100
+Message-ID: <87h7msp0ws.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,41 +63,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "ravi.bangoria@linux.ibm.com" <ravi.bangoria@linux.ibm.com>,
- "ananth@linux.ibm.com" <ananth@linux.ibm.com>,
- "jniethe5@gmail.com" <jniethe5@gmail.com>,
- "paulus@samba.org" <paulus@samba.org>, Sandipan Das <sandipan@linux.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "dja@axtens.net" <dja@axtens.net>
+Cc: Michal Marek <michal.lkml@markovi.net>, linux-kbuild@vger.kernel.org,
+ Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, live-patching@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Segher Boessenkool
-> Sent: 03 February 2021 21:18
-...
-> Power9 does:
->=20
->   Load with Update Instructions (RA =3D 0)
->     EA is placed into R0.
+Christoph Hellwig <hch@lst.de> writes:
+> The static inline get_cxl_module function is entirely unused since commit
+> 8bf6b91a5125a ("Revert "powerpc/powernv: Add support for the cxl kernel
+> api on the real phb"), so remove it.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/powernv/pci-cxl.c | 22 ----------------------
+>  1 file changed, 22 deletions(-)
 
-Does that change the value of 0?
-Rather reminds me of some 1960s era systems that had the small integers
-at fixed (global) addresses.
-FORTRAN always passes by reference, pass 0 and the address of the global
-zero location was passed, the called function could change 0 to 1 for
-the entire computer!
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
->   Load with Update Instructions (RA =3D RT)
->     The storage operand addressed by EA is accessed. The displacement
->     field is added to the data returned by the load and placed into RT.
-
-Shame that isn't standard - could be used to optimise some code.
-
-=09David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
-
+cheers
