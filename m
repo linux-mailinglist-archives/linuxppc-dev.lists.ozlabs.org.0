@@ -1,104 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB2B3106B2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 09:31:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F3F3106B7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 09:32:55 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DX7tG2pT8zDvYs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 19:31:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DX7w32dYszDvZK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 19:32:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=live.com (client-ip=40.92.253.83;
- helo=apc01-sg2-obe.outbound.protection.outlook.com;
- envelope-from=mayanksuman@live.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dkim=fail reason="signature verification failed" (2048-bit key;
- unprotected) header.d=live.com header.i=@live.com header.a=rsa-sha256
- header.s=selector1 header.b=PjSqO0fP; 
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=FcOUTK/C; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=FcOUTK/C; 
  dkim-atps=neutral
-Received: from APC01-SG2-obe.outbound.protection.outlook.com
- (mail-oln040092253083.outbound.protection.outlook.com [40.92.253.83])
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DX7r81vqdzDvVW
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 19:29:27 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WmUcGwxQtXHWSyVpIOOZ6VoJCLQuS0cGAwcz7ChjbHEZaWYDBKNGGOYZfKHcsu/y9XMZM6pmIhL+aFv4e48HmA7O4ahoK32FvvMvO0lrtoPoym5ZmI2+eV9iZ8QnymkXSp7XtK+K21oiPwE241NI0FlE/2e/Bf/VgW0jMcOeNK/a1KMFLUctsNESi9Zt+LDcrrlwPQen+h5OXhfHQdnI5W97ZIxFpPpl83qG+mAJwuA4vk4Qo7X8dz1YrTIhGp8RPrNA3FYvQRcR1whoaKDgXKTk26scyjflLFl88u9gmOekRnIYAPmmFiPXGH2U7TAf1vaGy/0F4KUP+8jOuSBYrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S/5QTaoq+R4i7gs8ypeSHJTVCXMm0u9PnWVSHCxRbms=;
- b=FVuhdyqhbWQNweAvxNBaOSU7lekPzzG5cPlonXiXq2XNEFI+eHk7erq3EKdfDt+hpv6jmuOUj86uIFQlkJAJBwhwJwHNRBINaP4oVF4LnEgAk/VaxGbiqGkYrKAPUEKdC1HcB7gSfeSFQ8BKhFoOqh6oj5u1q93JAnE8X5QglBqEoROXbKWrg8EUE25O+YIb/nRP/NrhGHdl/l63n7Z1tkU5N3L3OnPEnihuQR0eJl4x9dkXv6+7Aj4hpcLNJH3mIfLTgy0MTWoIBv1KdrfQtAkNeRp6e3iehcjasuKy6cBlR0ZPHrObfu1BjbddmSmJ34Fl1OsIhSbqKecMSS/srA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S/5QTaoq+R4i7gs8ypeSHJTVCXMm0u9PnWVSHCxRbms=;
- b=PjSqO0fP2wVwVvZnlxM6ZjJFlQkF5TqWcYlsrUbi1A3ajuSg1InPY4gsHto8GQJKXhnIzH3fR1KCJ8iJNE2LVhIxOH/Vp8vDAg9TbOAwmvYOwe6mE8XPfKWL25AlTMrxlwt2RvkrRFQk1/BwqPWoIhY9olmeVPLEnHD1clbpmHIdAHd9696/IE2kOZ2rDPAmuooAjbq4ax/HSuiO4HHZbvvAGzWB3Ub9WJN4oWlxOa2LEw5F/mcv8vf3feI3/1JOpJHFfgMNjsOWkmb8JgzzM6kEXflj3Pa/gODTf2WiS9SOL5i0XtTVQXroma7LkOON0tjOIgKLq39qd3UzHdVGLw==
-Received: from PU1APC01FT115.eop-APC01.prod.protection.outlook.com
- (2a01:111:e400:7ebe::49) by
- PU1APC01HT055.eop-APC01.prod.protection.outlook.com (2a01:111:e400:7ebe::336)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.11; Fri, 5 Feb
- 2021 08:29:23 +0000
-Received: from PS1PR04MB2934.apcprd04.prod.outlook.com
- (2a01:111:e400:7ebe::46) by PU1APC01FT115.mail.protection.outlook.com
- (2a01:111:e400:7ebe::208) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.11 via Frontend
- Transport; Fri, 5 Feb 2021 08:29:23 +0000
-X-IncomingTopHeaderMarker: OriginalChecksum:4B191CE3C5488061D78A877C043C0AD67FD02F31A7D2E9EE3579EF2B26E75AAA;
- UpperCasedChecksum:DC58ED774A3411FC77DE5D199673280CBCBA05E3E3EFE8EE2BA94217B5C90B42;
- SizeAsReceived:8033; Count:47
-Received: from PS1PR04MB2934.apcprd04.prod.outlook.com
- ([fe80::55d8:45ac:a6c8:b297]) by PS1PR04MB2934.apcprd04.prod.outlook.com
- ([fe80::55d8:45ac:a6c8:b297%3]) with mapi id 15.20.3825.019; Fri, 5 Feb 2021
- 08:29:22 +0000
-Subject: Re: [PATCH] arch:powerpc simple_write_to_buffer return check
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, ruscur@russell.cc,
- oohall@gmail.com, mpe@ellerman.id.au, benh@kernel.crashing.org,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <PS1PR04MB29345AB59076B370A4F99F75D6B39@PS1PR04MB2934.apcprd04.prod.outlook.com>
- <8be2b91b-cef1-ea68-836a-94c8a574d760@csgroup.eu>
-From: Mayank Suman <mayanksuman@live.com>
-Message-ID: <PS1PR04MB293467B694912148C8F3FE5FD6B29@PS1PR04MB2934.apcprd04.prod.outlook.com>
-Date: Fri, 5 Feb 2021 13:59:15 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DX7rm2cbxzDvZM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 19:29:52 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1612513787;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DWOcO3uoOpH4F+jDhXKK3Onym76g8W4DkUdj3mzQVbM=;
+ b=FcOUTK/C6UWl9iWePHxd1yHDGysVVjI7UK7GOawN5xarf+/pC4T37Z4vXt1v/x3Ld3P6HC
+ NUf1nKek8fbV+uPPW+zvxxQ9LY2BrMTzedFTaWf3kD/RjZkhD91KkiPyvOgBBxGYX5ZGNX
+ Vr2ftB0B4mWV62FVmcP+aN87/zmSw5M=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1612513787;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DWOcO3uoOpH4F+jDhXKK3Onym76g8W4DkUdj3mzQVbM=;
+ b=FcOUTK/C6UWl9iWePHxd1yHDGysVVjI7UK7GOawN5xarf+/pC4T37Z4vXt1v/x3Ld3P6HC
+ NUf1nKek8fbV+uPPW+zvxxQ9LY2BrMTzedFTaWf3kD/RjZkhD91KkiPyvOgBBxGYX5ZGNX
+ Vr2ftB0B4mWV62FVmcP+aN87/zmSw5M=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-197-MPNj4J5VPEik1K3UV8z0fA-1; Fri, 05 Feb 2021 03:29:44 -0500
+X-MC-Unique: MPNj4J5VPEik1K3UV8z0fA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 56BE8803F47;
+ Fri,  5 Feb 2021 08:29:43 +0000 (UTC)
+Received: from [10.36.113.156] (ovpn-113-156.ams2.redhat.com [10.36.113.156])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A99B85D9D7;
+ Fri,  5 Feb 2021 08:29:41 +0000 (UTC)
+Subject: Re: [PATCH] mm/pmem: Avoid inserting hugepage PTE entry with fsdax if
+ hugepage support is disabled
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linux-nvdimm@lists.01.org, dan.j.williams@intel.com,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Jan Kara <jack@suse.cz>
+References: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Message-ID: <ee1bfaf9-88a3-1d3f-0af9-36cc75f957bb@redhat.com>
+Date: Fri, 5 Feb 2021 09:29:40 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
-In-Reply-To: <8be2b91b-cef1-ea68-836a-94c8a574d760@csgroup.eu>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TMN: [j8AYjhE1A3Q3v/PCuuFVOU4R5QNs/YUzQB7QZgEJx6I=]
-X-ClientProxiedBy: PN0PR01CA0011.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:4f::16) To PS1PR04MB2934.apcprd04.prod.outlook.com
- (2603:1096:803:3e::21)
-X-Microsoft-Original-Message-ID: <09ac289b-ee71-3c19-dfdc-ab8b6d6a4f90@live.com>
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.0.120] (103.127.101.171) by
- PN0PR01CA0011.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:4f::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3825.19 via Frontend Transport; Fri, 5 Feb 2021 08:29:19 +0000
-X-MS-PublicTrafficType: Email
-X-IncomingHeaderCount: 47
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-Correlation-Id: bb59c8aa-6ab3-4adc-df94-08d8c9b023d5
-X-MS-TrafficTypeDiagnostic: PU1APC01HT055:
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Yc07yJ6IiKj7tyFLKb/jLolS1l9B4MpKTMIr7ra3kBRo2MWp2OaC3srr61mnx/vZ3sK4PavaYovhjPSOc707Jkas53C8VKC5DmmpI9ugpT3qeiddHa5KFpu3E2kqb6Sr+Qv8/E5nIRimMgPSJOZ6Qc1PUYh/j+jvZHFyPRWXz4IDaqsFrEjEiqfNQerk0EFwG/8JTEILnqQMLSmay2nEf7J/Fz/UYmC6XEnl7CeAVr+I9OpWWlD1TWMHyJ1lSNVZS1Mk24GNAb0TIjGJ/0CLFAPnFl64sFgXz0QIpktveENpzrkHYKHeFQOvnOYkksx2WQlMFDJON+uut6yHLOq2LEK1l6tgtSwiLKNb6nf23ZGV7dWGjNiywhwjgZNoCWP1YqwXJlz7F6IS3hI2DLzixw==
-X-MS-Exchange-AntiSpam-MessageData: 1YdfOaf+2p89Oudu8YwiqbZfKUBidrzGzxvt8prASV+fJbzbZdGLdFHdjRH7U/DDgByhg5ezXgcYzcnBnKzkSTKYkBEu+swa84H5sWuUpELT+ZIgJHk345MMW9h2EaLYWQFhbyaSzVLFGnL1P9brkg==
-X-OriginatorOrg: live.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb59c8aa-6ab3-4adc-df94-08d8c9b023d5
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2021 08:29:22.8939 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-AuthSource: PU1APC01FT115.eop-APC01.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PU1APC01HT055
+In-Reply-To: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,42 +92,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/02/21 12:51 pm, Christophe Leroy wrote:
-> Please provide some description of the change.
+On 05.02.21 03:39, Aneesh Kumar K.V wrote:
+> Differentiate between hardware not supporting hugepages and user disabling THP
+> via 'echo never > /sys/kernel/mm/transparent_hugepage/enabled'
 > 
-> And please clarify the patch subject, because as far as I can see, the return is already checked allthough the check seams wrong.
-
-This was my first patch. I will try to provide better description of changes and subject in later patches.
-
-> Le 04/02/2021 à 19:16, Mayank Suman a écrit :
->> Signed-off-by: Mayank Suman <mayanksuman@live.com>
->> ---
->>   arch/powerpc/kernel/eeh.c                    | 8 ++++----
->>   arch/powerpc/platforms/powernv/eeh-powernv.c | 4 ++--
->>   2 files changed, 6 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
->> index 813713c9120c..2dbe1558a71f 100644
->> --- a/arch/powerpc/kernel/eeh.c
->> +++ b/arch/powerpc/kernel/eeh.c
->> @@ -1628,8 +1628,8 @@ static ssize_t eeh_force_recover_write(struct file *filp,
->>       char buf[20];
->>       int ret;
->>   -    ret = simple_write_to_buffer(buf, sizeof(buf), ppos, user_buf, count);
->> -    if (!ret)
->> +    ret = simple_write_to_buffer(buf, sizeof(buf)-1, ppos, user_buf, count);
->> +    if (ret <= 0) >           return -EFAULT;
+> For the devdax namespace, the kernel handles the above via the
+> supported_alignment attribute and failing to initialize the namespace
+> if the namespace align value is not supported on the platform.
 > 
-> Why return -EFAULT when the function has returned -EINVAL ?
-
-If -EINVAL is returned by simple_write_to_buffer, we should return -EINVAL.
-
-> And why is it -EFAULT when ret is 0 ? EFAULT means error accessing memory.
+> For the fsdax namespace, the kernel will continue to initialize
+> the namespace. This can result in the kernel creating a huge pte
+> entry even though the hardware don't support the same.
+> 
+> We do want hugepage support with pmem even if the end-user disabled THP
+> via sysfs file (/sys/kernel/mm/transparent_hugepage/enabled). Hence
+> differentiate between hardware/firmware lacking support vs user-controlled
+> disable of THP and prevent a huge fault if the hardware lacks hugepage
+> support.
+> 
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>   include/linux/huge_mm.h | 15 +++++++++------
+>   mm/huge_memory.c        |  6 +++++-
+>   2 files changed, 14 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index 6a19f35f836b..ba973efcd369 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -78,6 +78,7 @@ static inline vm_fault_t vmf_insert_pfn_pud(struct vm_fault *vmf, pfn_t pfn,
+>   }
+>   
+>   enum transparent_hugepage_flag {
+> +	TRANSPARENT_HUGEPAGE_NEVER_DAX,
+>   	TRANSPARENT_HUGEPAGE_FLAG,
+>   	TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
+>   	TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG,
+> @@ -123,6 +124,13 @@ extern unsigned long transparent_hugepage_flags;
+>    */
+>   static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
+>   {
+> +
+> +	/*
+> +	 * If the hardware/firmware marked hugepage support disabled.
+> +	 */
+> +	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_NEVER_DAX))
+> +		return false;
+> +
+>   	if (vma->vm_flags & VM_NOHUGEPAGE)
+>   		return false;
+>   
+> @@ -134,12 +142,7 @@ static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
+>   
+>   	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_FLAG))
+>   		return true;
+> -	/*
+> -	 * For dax vmas, try to always use hugepage mappings. If the kernel does
+> -	 * not support hugepages, fsdax mappings will fallback to PAGE_SIZE
+> -	 * mappings, and device-dax namespaces, that try to guarantee a given
+> -	 * mapping size, will fail to enable
+> -	 */
+> +
+>   	if (vma_is_dax(vma))
+>   		return true;
+>   
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 9237976abe72..d698b7e27447 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -386,7 +386,11 @@ static int __init hugepage_init(void)
+>   	struct kobject *hugepage_kobj;
+>   
+>   	if (!has_transparent_hugepage()) {
+> -		transparent_hugepage_flags = 0;
+> +		/*
+> +		 * Hardware doesn't support hugepages, hence disable
+> +		 * DAX PMD support.
+> +		 */
+> +		transparent_hugepage_flags = 1 << TRANSPARENT_HUGEPAGE_NEVER_DAX;
+>   		return -EINVAL;
+>   	}
+>   
 > 
 
-The earlier check returned EFAULT when ret is 0. Most probably, there was an assumption
-that writing 0 bytes (by simple_write_to_buffer) means a fault with memory (or error accessing memory).
+Looks sane to me from my limited understanding of that code :)
+
+-- 
+Thanks,
+
+David / dhildenb
+
