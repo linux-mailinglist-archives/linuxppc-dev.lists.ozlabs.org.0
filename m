@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8568310C73
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 15:05:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FD7310C8D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 15:27:37 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DXHHX5CKWzDvWk
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Feb 2021 01:05:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DXHnL1thbzDwhq
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Feb 2021 01:27:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,38 +14,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=lkoEcfJn; 
+ header.s=k20201202 header.b=Us2R3OO+; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DXHFt1fhDzDqBx
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Feb 2021 01:03:45 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 80C5C64DF6;
- Fri,  5 Feb 2021 14:03:41 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DXHlj4msRzDvX2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Feb 2021 01:26:09 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ECCE6650CE;
+ Fri,  5 Feb 2021 14:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1612533822;
- bh=KSxIMlDA6ShJiaWSByB90Lc7u1RAy7m+dFD6RcfG6m0=;
+ s=k20201202; t=1612535166;
+ bh=vz0EpXJayRiYNc5TflA7y0RwX1/hD5Z5cZtbGrJpFV0=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=lkoEcfJnt0fU9Iij7bTJMAndSCEiVurjdE9VNRGNHVT0iEDMcEINYzsKoOZL6cfM9
- GfOJuAE3Zt4Q0+xz4xEsiG0KtPOIpRIzGy2HQoc4w+IpY7+X+3IrjQ+5OZK2Oz2Uvs
- OKws/+OMqB072shE4zH+l3F/L/tjZqYciYT+BBv76qE+apLwel9okio39bY0H+AtX4
- 1iLboaZ4fpMs3123JkGSuyFzsSUAkWKQi+T+Ujkfm5McF7oYhX87xXjjsu6yofnNw2
- JUs8822XtMP7hLe2CJ6fkhs+KnX7ZdVtUE6pvlcg6g9x4GXeMCQygAr80Q0MTJPXPc
- kOaNCClvv1m8Q==
-Date: Fri, 5 Feb 2021 14:02:51 +0000
+ b=Us2R3OO+4Wcy6hSv5VXYsF1KTJF/+0jcxZVFjtlnH4Z2jMuj41U2+Nklg6BH+Gx3A
+ uulzEKrbnFji+Fw/sUCqG571ha2Uew4bvTQT5RL/4G6H67Jpvs+g+SAlk4bvHwQVtE
+ 58nU8jYVraXqyC5f6wEWex0/cLQOWuJKUYafnXhBOyEXWNQgFq6mzMBjfo2kB5AIO9
+ zG4tZc+WlhpuACHGrQLKhXRCiRb9vqOhzbnLEMg7TsN/UXyeicMwrBq2kN863+Tjjp
+ fjzAhkE+LOvTGf6TAcnTItnT3Usc/qpztnZz2J04qniMkT1VQ44WnL0a4HOYh/dGMR
+ bEfvshfep5Lcw==
+Date: Fri, 5 Feb 2021 14:25:16 +0000
 From: Mark Brown <broonie@kernel.org>
 To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 2/7] ASoC: fsl_rpmsg: Add CPU DAI driver for audio base
- on rpmsg
-Message-ID: <20210205140251.GB4720@sirena.org.uk>
+Subject: Re: [PATCH 4/7] ASoC: imx-audio-rpmsg: Add rpmsg_driver for audio
+ channel
+Message-ID: <20210205142516.GC4720@sirena.org.uk>
 References: <1612508250-10586-1-git-send-email-shengjiu.wang@nxp.com>
- <1612508250-10586-3-git-send-email-shengjiu.wang@nxp.com>
+ <1612508250-10586-5-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="MW5yreqqjyrRcusr"
+ protocol="application/pgp-signature"; boundary="E13BgyNx05feLLmH"
 Content-Disposition: inline
-In-Reply-To: <1612508250-10586-3-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1612508250-10586-5-git-send-email-shengjiu.wang@nxp.com>
 X-Cookie: Huh?
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -68,36 +68,42 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---MW5yreqqjyrRcusr
+--E13BgyNx05feLLmH
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Feb 05, 2021 at 02:57:25PM +0800, Shengjiu Wang wrote:
-> This is a dummy cpu dai driver for rpmsg audio use case,
-> which is mainly used for getting the user's configuration
+On Fri, Feb 05, 2021 at 02:57:27PM +0800, Shengjiu Wang wrote:
 
-This is actually doing stuff, it's not a dummy driver.
+> +	/* TYPE C is notification from M core */
+> +	if (r_msg->header.type == MSG_TYPE_C) {
+> +		if (r_msg->header.cmd == TX_PERIOD_DONE) {
 
-> +static int fsl_rpmsg_remove(struct platform_device *pdev)
-> +{
-> +	return 0;
-> +}
+> +		} else if (r_msg->header.cmd == RX_PERIOD_DONE) {
 
-If this isn't needed just remove it.
+A switch statement would be clearer and more extensible...
 
---MW5yreqqjyrRcusr
+> +	/* TYPE B is response msg */
+> +	if (r_msg->header.type == MSG_TYPE_B) {
+> +		memcpy(&info->r_msg, r_msg, sizeof(struct rpmsg_r_msg));
+> +		complete(&info->cmd_complete);
+> +	}
+
+...and make this flow clearer for example.  Do we need to warn on
+unknown messages?
+
+--E13BgyNx05feLLmH
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmAdUAoACgkQJNaLcl1U
-h9CaXQf5ATE//mi5uJVW049xtEPBycAxvAbD6dNUWYwuolWDZojNk7ks+PbhTKnA
-0gUKScEIt0hL34j7/4NiKG+VZ66VHWlGKf+GOAhnku/bVm9Iu6PmTRoG72cNRiyt
-/hfXxeapZaUppPdd6/QADyoGWNnc4W3+JwC+tcSbRrIFpgrZK+fp+nLkBbmvdTtm
-rjguO81Wbie1P9vtAlWfiZhjh47ZACa6OhbNXXu4P7ndcwBUrOU9J0CMtLOWPMMU
-E9dYnRBCJVSWIHbTz51qUzzpF7DCsb8TJYDlLmMSyzCf+OsosvVQ5gCLMTE/Wsfw
-J4QgeKlJPaSNbAGIo78mYd3NJttKTw==
-=oQQq
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmAdVUsACgkQJNaLcl1U
+h9C97Af/adbNIcFNxOngffC2op8D1lsnbPhhXftOmDlTLcbbbFG1hQeuCEHsljRt
+50gewIr1JVY2DkjhAGhtO0GkX+0VpXHSqkwPYv33tOAFJTFcODtVao9i1csmyXu8
+V7i4RUPJilR6VTJiFaKLZQPL3bNUeZ+/KfqNvf/jGSydI5OqKGuH2PiomH9lEOwR
+xeteoRMiPCLSxtA2+AaKVDR85e1eJkxx3qVRWuccdOkNNjSZRbvh+ViytXoAkLQj
+qM7JYdtZd/ZbDagmISJiZM57cVv+ql+5Rw+B4Wb1pzxcwCbKNB6qEUmRmuD2OO+W
+aBb9j6QHazt7nhnsb/x34Dx2M/D1WQ==
+=ULPb
 -----END PGP SIGNATURE-----
 
---MW5yreqqjyrRcusr--
+--E13BgyNx05feLLmH--
