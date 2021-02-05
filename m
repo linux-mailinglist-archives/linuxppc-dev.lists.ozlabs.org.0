@@ -1,86 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F3F3106B7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 09:32:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66045310735
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 09:57:48 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DX7w32dYszDvZK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 19:32:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DX8Sn4t9zzDwhl
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 19:57:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=FcOUTK/C; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=FcOUTK/C; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DX7rm2cbxzDvZM
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 19:29:52 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1612513787;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DWOcO3uoOpH4F+jDhXKK3Onym76g8W4DkUdj3mzQVbM=;
- b=FcOUTK/C6UWl9iWePHxd1yHDGysVVjI7UK7GOawN5xarf+/pC4T37Z4vXt1v/x3Ld3P6HC
- NUf1nKek8fbV+uPPW+zvxxQ9LY2BrMTzedFTaWf3kD/RjZkhD91KkiPyvOgBBxGYX5ZGNX
- Vr2ftB0B4mWV62FVmcP+aN87/zmSw5M=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1612513787;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DWOcO3uoOpH4F+jDhXKK3Onym76g8W4DkUdj3mzQVbM=;
- b=FcOUTK/C6UWl9iWePHxd1yHDGysVVjI7UK7GOawN5xarf+/pC4T37Z4vXt1v/x3Ld3P6HC
- NUf1nKek8fbV+uPPW+zvxxQ9LY2BrMTzedFTaWf3kD/RjZkhD91KkiPyvOgBBxGYX5ZGNX
- Vr2ftB0B4mWV62FVmcP+aN87/zmSw5M=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-197-MPNj4J5VPEik1K3UV8z0fA-1; Fri, 05 Feb 2021 03:29:44 -0500
-X-MC-Unique: MPNj4J5VPEik1K3UV8z0fA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 56BE8803F47;
- Fri,  5 Feb 2021 08:29:43 +0000 (UTC)
-Received: from [10.36.113.156] (ovpn-113-156.ams2.redhat.com [10.36.113.156])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A99B85D9D7;
- Fri,  5 Feb 2021 08:29:41 +0000 (UTC)
-Subject: Re: [PATCH] mm/pmem: Avoid inserting hugepage PTE entry with fsdax if
- hugepage support is disabled
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linux-nvdimm@lists.01.org, dan.j.williams@intel.com,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- Jan Kara <jack@suse.cz>
-References: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <ee1bfaf9-88a3-1d3f-0af9-36cc75f957bb@redhat.com>
-Date: Fri, 5 Feb 2021 09:29:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
-MIME-Version: 1.0
-In-Reply-To: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DX8RF2vChzDwh8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 19:56:17 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DX8R12T7Fz9tx4m;
+ Fri,  5 Feb 2021 09:56:13 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id iP97ruj8Us9F; Fri,  5 Feb 2021 09:56:13 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DX8R11SdGz9tx4l;
+ Fri,  5 Feb 2021 09:56:13 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4B8998B829;
+ Fri,  5 Feb 2021 09:56:14 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Ed0NXKGKk2Ba; Fri,  5 Feb 2021 09:56:14 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F2CF58B81C;
+ Fri,  5 Feb 2021 09:56:13 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id B9C78672D7; Fri,  5 Feb 2021 08:56:13 +0000 (UTC)
+Message-Id: <ad782af87a222efc79cfb06079b0fd23d4224eaf.1612515180.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/8xx: Fix software emulation interrupt
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com
+Date: Fri,  5 Feb 2021 08:56:13 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,98 +57,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05.02.21 03:39, Aneesh Kumar K.V wrote:
-> Differentiate between hardware not supporting hugepages and user disabling THP
-> via 'echo never > /sys/kernel/mm/transparent_hugepage/enabled'
-> 
-> For the devdax namespace, the kernel handles the above via the
-> supported_alignment attribute and failing to initialize the namespace
-> if the namespace align value is not supported on the platform.
-> 
-> For the fsdax namespace, the kernel will continue to initialize
-> the namespace. This can result in the kernel creating a huge pte
-> entry even though the hardware don't support the same.
-> 
-> We do want hugepage support with pmem even if the end-user disabled THP
-> via sysfs file (/sys/kernel/mm/transparent_hugepage/enabled). Hence
-> differentiate between hardware/firmware lacking support vs user-controlled
-> disable of THP and prevent a huge fault if the hardware lacks hugepage
-> support.
-> 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->   include/linux/huge_mm.h | 15 +++++++++------
->   mm/huge_memory.c        |  6 +++++-
->   2 files changed, 14 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 6a19f35f836b..ba973efcd369 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -78,6 +78,7 @@ static inline vm_fault_t vmf_insert_pfn_pud(struct vm_fault *vmf, pfn_t pfn,
->   }
->   
->   enum transparent_hugepage_flag {
-> +	TRANSPARENT_HUGEPAGE_NEVER_DAX,
->   	TRANSPARENT_HUGEPAGE_FLAG,
->   	TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
->   	TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG,
-> @@ -123,6 +124,13 @@ extern unsigned long transparent_hugepage_flags;
->    */
->   static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
->   {
-> +
-> +	/*
-> +	 * If the hardware/firmware marked hugepage support disabled.
-> +	 */
-> +	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_NEVER_DAX))
-> +		return false;
-> +
->   	if (vma->vm_flags & VM_NOHUGEPAGE)
->   		return false;
->   
-> @@ -134,12 +142,7 @@ static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
->   
->   	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_FLAG))
->   		return true;
-> -	/*
-> -	 * For dax vmas, try to always use hugepage mappings. If the kernel does
-> -	 * not support hugepages, fsdax mappings will fallback to PAGE_SIZE
-> -	 * mappings, and device-dax namespaces, that try to guarantee a given
-> -	 * mapping size, will fail to enable
-> -	 */
-> +
->   	if (vma_is_dax(vma))
->   		return true;
->   
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 9237976abe72..d698b7e27447 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -386,7 +386,11 @@ static int __init hugepage_init(void)
->   	struct kobject *hugepage_kobj;
->   
->   	if (!has_transparent_hugepage()) {
-> -		transparent_hugepage_flags = 0;
-> +		/*
-> +		 * Hardware doesn't support hugepages, hence disable
-> +		 * DAX PMD support.
-> +		 */
-> +		transparent_hugepage_flags = 1 << TRANSPARENT_HUGEPAGE_NEVER_DAX;
->   		return -EINVAL;
->   	}
->   
-> 
+For unimplemented instructions or unimplemented SPRs, the 8xx triggers
+a "Software Emulation Exception" (0x1000). That interrupt doesn't set
+reason bits in SRR1 as the "Program Check Exception" does.
 
-Looks sane to me from my limited understanding of that code :)
+Go through emulation_assist_interrupt() to set REASON_ILLEGAL.
 
+Fixes: fbbcc3bb139e ("powerpc/8xx: Remove SoftwareEmulation()")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+I'm wondering whether it wouldn't be better to set REASON_ILLEGAL
+in the exception prolog and still call program_check_exception.
+And do the same in book3s/64 to avoid the nightmare of an
+INTERRUPT_HANDLER calling another INTERRUPT_HANDLER.
+---
+ arch/powerpc/kernel/head_8xx.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 52702f3db6df..9eb63cf6ac38 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -165,7 +165,7 @@ SystemCall:
+ /* On the MPC8xx, this is a software emulation interrupt.  It occurs
+  * for all unimplemented and illegal instructions.
+  */
+-	EXCEPTION(0x1000, SoftEmu, program_check_exception, EXC_XFER_STD)
++	EXCEPTION(0x1000, SoftEmu, emulation_assist_interrupt, EXC_XFER_STD)
+ 
+ 	. = 0x1100
+ /*
 -- 
-Thanks,
-
-David / dhildenb
+2.25.0
 
