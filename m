@@ -1,51 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8687310EE6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 18:41:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842A8310F10
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 18:49:09 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DXN500r9CzDwly
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Feb 2021 04:41:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DXNFt3sJLzDwlp
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Feb 2021 04:49:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
- helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
+ smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::536;
+ helo=mail-ed1-x536.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=pPLebMnD; 
- dkim-atps=neutral
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DXN2Z20bZzDwjk
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Feb 2021 04:39:17 +1100 (AEDT)
-Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
- [73.42.176.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id 72E6C20B6C40;
- Fri,  5 Feb 2021 09:39:15 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 72E6C20B6C40
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1612546755;
- bh=HhOAZD2n7Y5nUjPEAl7h3S686KemCI0DTcFZcZkv6EE=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=pPLebMnDJH4+oF4Wosz3wKn0HGUpcCKpETnQ1382bqaeKGAtD2BOGcDKevTLA55e1
- OsELd4GAKcCiA8pcT8fsjjgjrB1yeYfQGMhblNCu/1Du7oGfzkI/SrvdaYJ40LueW4
- 55pH9N2No/AMCipLzCvfMU/IaRxxL8Mlth5qxzbU=
-Subject: Re: [PATCH v2 1/2] ima: Free IMA measurement buffer on error
-To: Greg KH <gregkh@linuxfoundation.org>
-References: <20210204174951.25771-1-nramas@linux.microsoft.com>
- <YB0YdqbbdAdbEOQw@kroah.com>
-From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <7000d128-272e-3654-8480-e46bf7dfad74@linux.microsoft.com>
-Date: Fri, 5 Feb 2021 09:39:14 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=2Nd371ZR; dkim-atps=neutral
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com
+ [IPv6:2a00:1450:4864:20::536])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DXNDG51t5zDwl1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Feb 2021 04:47:36 +1100 (AEDT)
+Received: by mail-ed1-x536.google.com with SMTP id y8so9752137ede.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Feb 2021 09:47:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=xTcvmR9l8LCQBXYg8Iamhidu+elg0BguOpYiNarlS1o=;
+ b=2Nd371ZRFVQhcLDBl+lgRXyePXWtyxYWOJdoibdtLDcVEPAclIT57bv/pttx+PCAXR
+ hBmJqxqgfkeJaWMPk9JEWID8W0MRGpAu8y556s92b8BOiCmeYQ6ZGW0sLzda8+8lkAbp
+ REgbCb3PieFZYRK20QJtBpT5y9Gn2ftYABRS3BLWsPMs8l2VQ97KjoeIOTWmjieqzD3b
+ LEeBHKLecTpcdbD+HURjvm7ywhsihC8aaKh3ZPEkc3zgMRIWk2Ul9f2HlG26KsUDHAcS
+ 1YNsz3o+EivN53VES30cyx/UUga7OecedJiS53u8xBsqu/Mo1pb+A85aYj/4cOJ5B1fU
+ 7Akw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=xTcvmR9l8LCQBXYg8Iamhidu+elg0BguOpYiNarlS1o=;
+ b=Iy/eqbjY1zUfxQqd/SHCsm47DygXGBN4H4F1nPlopOeUXY6mtMx+rK3MyMPXm+uoZL
+ Ap6tkSOtKJRQvhq0b+DCCtBEvhHOauLuxjx4LJ9ywaGPuhgEvI1uzyEwBcvM5Hcw8UZr
+ TKWEy5VpdFNuHF5JIID26JtASlLkzk2eVe4docfpPvBweUPwsGLlAcncGtdoL03qMg94
+ 6BMdTnrXae+JnlvIsxjUiTlPTLYGv+hDSzsZ7ih+3mFStl8ZikCxfaYdLOa8ZXL4qmXV
+ KWUFSboP7tV6woCL+D7szRb6Ez/KxeDhe2Jgloxyc8ElCRmXJT1Zg566DJGOmRcwhRgo
+ L3TA==
+X-Gm-Message-State: AOAM532aHglDHDfU+lkoLDR4A31KjC6obFdOvAhZuANBOLg9jCUBr5Y6
+ sn1Iyqv844sXc7OS8hupM80uWcbolJeJ/2ZhgIpCAA==
+X-Google-Smtp-Source: ABdhPJwQ2HYUuz3zhFYfjA72qO6TZMVhKCjykClJyTdj6jByOo8Ou3oLUV5Ufxp7SoTjx4LgEXWEPC1cSmHtgRC1EyI=
+X-Received: by 2002:a05:6402:3585:: with SMTP id
+ y5mr4539433edc.97.1612547251549; 
+ Fri, 05 Feb 2021 09:47:31 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <YB0YdqbbdAdbEOQw@kroah.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 5 Feb 2021 09:47:32 -0800
+Message-ID: <CAPcyv4ghvBwKa6pCfqLxUU9UhK9R3HY4tNrNO115QN00A8zMRw@mail.gmail.com>
+Subject: Re: [PATCH] mm/pmem: Avoid inserting hugepage PTE entry with fsdax if
+ hugepage support is disabled
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,44 +74,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sashal@kernel.org, dmitry.kasatkin@gmail.com, linux-kernel@vger.kernel.org,
- zohar@linux.ibm.com, tyhicks@linux.microsoft.com, ebiederm@xmission.com,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com
+Cc: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux MM <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/5/21 2:05 AM, Greg KH wrote:
-> On Thu, Feb 04, 2021 at 09:49:50AM -0800, Lakshmi Ramasubramanian wrote:
->> IMA allocates kernel virtual memory to carry forward the measurement
->> list, from the current kernel to the next kernel on kexec system call,
->> in ima_add_kexec_buffer() function.  In error code paths this memory
->> is not freed resulting in memory leak.
->>
->> Free the memory allocated for the IMA measurement list in
->> the error code paths in ima_add_kexec_buffer() function.
->>
->> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
->> Suggested-by: Tyler Hicks <tyhicks@linux.microsoft.com>
->> Fixes: 7b8589cc29e7 ("ima: on soft reboot, save the measurement list")
->> ---
->>   security/integrity/ima/ima_kexec.c | 1 +
->>   1 file changed, 1 insertion(+)
-> 
-> <formletter>
-> 
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read:
->      https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> for how to do this properly.
-> 
-> </formletter>
-> 
+[ add Andrew ]
 
-Thanks for the info Greg.
+On Thu, Feb 4, 2021 at 6:40 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> Differentiate between hardware not supporting hugepages and user disabling THP
+> via 'echo never > /sys/kernel/mm/transparent_hugepage/enabled'
+>
+> For the devdax namespace, the kernel handles the above via the
+> supported_alignment attribute and failing to initialize the namespace
+> if the namespace align value is not supported on the platform.
+>
+> For the fsdax namespace, the kernel will continue to initialize
+> the namespace. This can result in the kernel creating a huge pte
+> entry even though the hardware don't support the same.
+>
+> We do want hugepage support with pmem even if the end-user disabled THP
+> via sysfs file (/sys/kernel/mm/transparent_hugepage/enabled). Hence
+> differentiate between hardware/firmware lacking support vs user-controlled
+> disable of THP and prevent a huge fault if the hardware lacks hugepage
+> support.
 
-I will re-submit the two patches in the proper format.
+Looks good to me.
 
-  -lakshmi
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 
+I assume this will go through Andrew.
