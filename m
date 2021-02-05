@@ -2,60 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20753104D5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 07:06:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C64963104D9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 07:09:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DX4fd11ZKzDvrG
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 17:06:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DX4k45zbfzDrdS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 17:09:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::729;
+ helo=mail-qk1-x729.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=M0eKd+0H; dkim-atps=neutral
+Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com
+ [IPv6:2607:f8b0:4864:20::729])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DX4ct3qvrzDvbW
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 17:04:24 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DX4cd3dFxz9tyVc;
- Fri,  5 Feb 2021 07:04:17 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id SABVU0qc4DPE; Fri,  5 Feb 2021 07:04:17 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DX4cd2bvCz9tyVZ;
- Fri,  5 Feb 2021 07:04:17 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 475EF8B818;
- Fri,  5 Feb 2021 07:04:18 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id feQitOVAu0Mv; Fri,  5 Feb 2021 07:04:18 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BDDE98B75F;
- Fri,  5 Feb 2021 07:04:17 +0100 (CET)
-Subject: Re: [PATCH v3 28/32] powerpc/64s: interrupt implement exit logic in C
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20200225173541.1549955-1-npiggin@gmail.com>
- <20200225173541.1549955-29-npiggin@gmail.com>
- <37c2a8e1-2c4b-2e55-6753-0a804ce00cac@csgroup.eu>
- <1612409077.fadt3kvld9.astroid@bobo.none>
- <65686b53-feb4-2788-88e1-76c3714d3e97@csgroup.eu>
- <1612428699.u023r42mj3.astroid@bobo.none> <87blczpdm3.fsf@mpe.ellerman.id.au>
- <1612491261.by5b8gr97g.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <d8e6b971-c783-fb5f-f9f2-24e7d8d0726d@csgroup.eu>
-Date: Fri, 5 Feb 2021 07:04:17 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DX4hK65MfzDqNn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 17:07:27 +1100 (AEDT)
+Received: by mail-qk1-x729.google.com with SMTP id d85so5904332qkg.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Feb 2021 22:07:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=c+rZMn81nItYMfTxQIYm4AJB4Em1cxJWX+xfGWskuj0=;
+ b=M0eKd+0HHH/kMzKnq9rLYOT8HdhYTANkxRdXNs0vIEEhqlZiGB+mPBHx1Je1rGIl3Q
+ D2+TfYASZwF5/FCGh3GAqas7MIWkmdU40IlNl5KlID2kjYHxZ4dLZ2DUTBJLlkOc27iW
+ /XuMlH6I2lAbmCH+tx0QoAop3XZ6xWMyUdM810U4DThrqH4zUzvzE34bUNQJTRofsGiN
+ a1Ebrv1yU0/0+08aucKtAzOSrmwrL5rh/kya1E8c4jJOiQnQVoz05VXFBfVIFz/6mhAv
+ 16GIb9/vouy/V4dHC3NjcOmTOlwEvy9GSk/VKyLbJiyifqsnNHyo6sxRWcs37Dmo1xzX
+ 9w7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=c+rZMn81nItYMfTxQIYm4AJB4Em1cxJWX+xfGWskuj0=;
+ b=gaA5G8wOSSjZelOFsRZqs19lUBfUOr3Fie6QvKGKZ4/Mlzn1X6DO8wzPhgwwwOeV/+
+ 68FjowXkT9mpUCSdwhx4o2Nxg+Eh6Arh7uIiiWAtDYw73IpvtikxeLywKv99uBQ8BNwk
+ iw/XZoZgHXJaolkGq1luOPbCf8D6rVa9vo2fFcOHkIc5iNC0i3nUR5e62wLLF558Xv2J
+ Oq9/YcYrMhadAUWx7z2p/zn5pfRggsC9CvvByytaGQAnurLiA3CcoiKUcN/panY7EWZl
+ wMsXdjEIyoFDVkeEqmhyJP14N4WrxQaOIN5lpyxn1m8k1de8mZhMbVxZKa7bmv500C7x
+ FMwQ==
+X-Gm-Message-State: AOAM531V/DEf7+738/YIg8GVqHl4j39WOEtYmnsma4K1GiKBmIaulIl0
+ Y6kiBPLZ5CwqMYmY4qu284c=
+X-Google-Smtp-Source: ABdhPJytFulfFj25v/hGN6HgQ33XEaNapQrRh0Va6HFsbKPJJRVrCk0eK4ifv0egqZk+weMhL6+mkQ==
+X-Received: by 2002:a37:e217:: with SMTP id g23mr2885432qki.283.1612505245360; 
+ Thu, 04 Feb 2021 22:07:25 -0800 (PST)
+Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com.com
+ (186-249-147-196.dynamic.desktop.com.br. [186.249.147.196])
+ by smtp.gmail.com with ESMTPSA id q22sm4129436qki.51.2021.02.04.22.07.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Feb 2021 22:07:24 -0800 (PST)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Paul Mackerras <paulus@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Leonardo Bras <leobras.c@gmail.com>, Jordan Niethe <jniethe5@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v2 1/1] powerpc/kvm: Save Timebase Offset to fix sched_clock()
+ while running guest code.
+Date: Fri,  5 Feb 2021 03:06:44 -0300
+Message-Id: <20210205060643.233481-1-leobras.c@gmail.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <1612491261.by5b8gr97g.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -68,82 +85,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Suchanek <msuchanek@suse.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Before guest entry, TBU40 register is changed to reflect guest timebase.
+After exitting guest, the register is reverted to it's original value.
 
+If one tries to get the timestamp from host between those changes, it
+will present an incorrect value.
 
-Le 05/02/2021 à 03:16, Nicholas Piggin a écrit :
-> Excerpts from Michael Ellerman's message of February 5, 2021 10:22 am:
->> Nicholas Piggin <npiggin@gmail.com> writes:
->>> Excerpts from Christophe Leroy's message of February 4, 2021 6:03 pm:
->>>> Le 04/02/2021 à 04:27, Nicholas Piggin a écrit :
->>>>> Excerpts from Christophe Leroy's message of February 4, 2021 2:25 am:
->>>>>> Le 25/02/2020 à 18:35, Nicholas Piggin a écrit :
->> ...
->>>>>>> +
->>>>>>> +	/*
->>>>>>> +	 * We don't need to restore AMR on the way back to userspace for KUAP.
->>>>>>> +	 * The value of AMR only matters while we're in the kernel.
->>>>>>> +	 */
->>>>>>> +	kuap_restore_amr(regs);
->>>>>>
->>>>>> Is that correct to restore KUAP state here ? Shouldn't we have it at lower level in assembly ?
->>>>>>
->>>>>> Isn't there a risk that someone manages to call interrupt_exit_kernel_prepare() or the end of it in
->>>>>> a way or another, and get the previous KUAP state restored by this way ?
->>>>>
->>>>> I'm not sure if there much more risk if it's here rather than the
->>>>> instruction being in another place in the code.
->>>>>
->>>>> There's a lot of user access around the kernel too if you want to find a
->>>>> gadget to unlock KUAP then I suppose there is a pretty large attack
->>>>> surface.
->>>>
->>>> My understanding is that user access scope is strictly limited, for instance we enforce the
->>>> begin/end of user access to be in the same function, and we refrain from calling any other function
->>>> inside the user access window. x86 even have 'objtool' to enforce it at build time. So in theory
->>>> there is no way to get out of the function while user access is open.
->>>>
->>>> Here with the interrupt exit function it is free beer. You have a place where you re-open user
->>>> access and return with a simple blr. So that's open bar. If someone manages to just call the
->>>> interrupt exit function, then user access remains open
->>>
->>> Hmm okay maybe that's a good point.
->>
->> I don't think it's a very attractive gadget, it's not just a plain blr,
->> it does a full stack frame tear down before the return. And there's no
->> LR reloads anywhere very close.
->>
->> Obviously it depends on what the compiler decides to do, it's possible
->> it could be a usable gadget. But there are other places that are more
->> attractive I think, eg:
->>
->> c00000000061d768:	a6 03 3d 7d 	mtspr   29,r9
->> c00000000061d76c:	2c 01 00 4c 	isync
->> c00000000061d770:	00 00 00 60 	nop
->> c00000000061d774:	30 00 21 38 	addi    r1,r1,48
->> c00000000061d778:	20 00 80 4e 	blr
->>
->>
->> So I don't think we should redesign the code *purely* because we're
->> worried about interrupt_exit_kernel_prepare() being a useful gadget. If
->> we can come up with a way to restructure it that reads well and is
->> maintainable, and also reduces the chance of it being a good gadget then
->> sure.
-> 
-> Okay. That would be good if we can keep it in C, the pkeys + kuap combo
-> is fairly complicated and we might want to something cleverer with it,
-> so that would make it even more difficult in asm.
-> 
+An example would be trying to add a tracepoint in
+kvmppc_guest_entry_inject_int(), which depending on last tracepoint
+acquired could actually cause the host to crash.
 
-Ok.
+Save the Timebase Offset to PACA and use it on sched_clock() to always
+get the correct timestamp.
 
-For ppc32, I prefer to keep it in assembly for the time being and move everything from ASM to C at 
-once after porting syscall and interrupts to C and wrappers.
+Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+Suggested-by: Paul Mackerras <paulus@ozlabs.org>
+---
+Changes since v1:
+- Subtracts offset only when CONFIG_KVM_BOOK3S_HANDLER and
+  CONFIG_PPC_BOOK3S_64 are defined.
+---
+ arch/powerpc/include/asm/kvm_book3s_asm.h | 1 +
+ arch/powerpc/kernel/asm-offsets.c         | 1 +
+ arch/powerpc/kernel/time.c                | 8 +++++++-
+ arch/powerpc/kvm/book3s_hv.c              | 2 ++
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S   | 2 ++
+ 5 files changed, 13 insertions(+), 1 deletion(-)
 
-Hope this is OK for you.
+diff --git a/arch/powerpc/include/asm/kvm_book3s_asm.h b/arch/powerpc/include/asm/kvm_book3s_asm.h
+index 078f4648ea27..e2c12a10eed2 100644
+--- a/arch/powerpc/include/asm/kvm_book3s_asm.h
++++ b/arch/powerpc/include/asm/kvm_book3s_asm.h
+@@ -131,6 +131,7 @@ struct kvmppc_host_state {
+ 	u64 cfar;
+ 	u64 ppr;
+ 	u64 host_fscr;
++	u64 tb_offset;		/* Timebase offset: keeps correct timebase while on guest */
+ #endif
+ };
+ 
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index b12d7c049bfe..0beb8fdc6352 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -706,6 +706,7 @@ int main(void)
+ 	HSTATE_FIELD(HSTATE_CFAR, cfar);
+ 	HSTATE_FIELD(HSTATE_PPR, ppr);
+ 	HSTATE_FIELD(HSTATE_HOST_FSCR, host_fscr);
++	HSTATE_FIELD(HSTATE_TB_OFFSET, tb_offset);
+ #endif /* CONFIG_PPC_BOOK3S_64 */
+ 
+ #else /* CONFIG_PPC_BOOK3S */
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 67feb3524460..f27f0163792b 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -699,7 +699,13 @@ EXPORT_SYMBOL_GPL(tb_to_ns);
+  */
+ notrace unsigned long long sched_clock(void)
+ {
+-	return mulhdu(get_tb() - boot_tb, tb_to_ns_scale) << tb_to_ns_shift;
++	u64 tb = get_tb() - boot_tb;
++
++#if defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_KVM_BOOK3S_HANDLER)
++	tb -= local_paca->kvm_hstate.tb_offset;
++#endif
++
++	return mulhdu(tb, tb_to_ns_scale) << tb_to_ns_shift;
+ }
+ 
+ 
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index b3731572295e..c08593c63353 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -3491,6 +3491,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		if ((tb & 0xffffff) < (new_tb & 0xffffff))
+ 			mtspr(SPRN_TBU40, new_tb + 0x1000000);
+ 		vc->tb_offset_applied = vc->tb_offset;
++		local_paca->kvm_hstate.tb_offset = vc->tb_offset;
+ 	}
+ 
+ 	if (vc->pcr)
+@@ -3594,6 +3595,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		if ((tb & 0xffffff) < (new_tb & 0xffffff))
+ 			mtspr(SPRN_TBU40, new_tb + 0x1000000);
+ 		vc->tb_offset_applied = 0;
++		local_paca->kvm_hstate.tb_offset = 0;
+ 	}
+ 
+ 	mtspr(SPRN_HDEC, 0x7fffffff);
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index b73140607875..8f7a9f7f4ee6 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -632,6 +632,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
+ 	cmpdi	r8,0
+ 	beq	37f
+ 	std	r8, VCORE_TB_OFFSET_APPL(r5)
++	std	r8, HSTATE_TB_OFFSET(r13)
+ 	mftb	r6		/* current host timebase */
+ 	add	r8,r8,r6
+ 	mtspr	SPRN_TBU40,r8	/* update upper 40 bits */
+@@ -1907,6 +1908,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
+ 	beq	17f
+ 	li	r0, 0
+ 	std	r0, VCORE_TB_OFFSET_APPL(r5)
++	std	r0, HSTATE_TB_OFFSET(r13)
+ 	mftb	r6			/* current guest timebase */
+ 	subf	r8,r8,r6
+ 	mtspr	SPRN_TBU40,r8		/* update upper 40 bits */
+-- 
+2.29.2
 
-Christophe
