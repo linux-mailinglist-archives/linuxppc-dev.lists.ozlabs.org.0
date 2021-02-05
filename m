@@ -2,68 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405C631046E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 06:18:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E20753104D5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 07:06:03 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DX3bw3vQNzDvZw
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 16:18:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DX4fd11ZKzDvrG
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 17:06:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::52b;
- helo=mail-pg1-x52b.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=ZQsAvHL5; dkim-atps=neutral
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
- [IPv6:2607:f8b0:4864:20::52b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DX3ZH55m0zDq8t
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 16:17:09 +1100 (AEDT)
-Received: by mail-pg1-x52b.google.com with SMTP id s23so3708983pgh.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Feb 2021 21:17:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:subject:in-reply-to:references:date:message-id:mime-version;
- bh=m0TlPVX0eA3PDOBMFTFNIlovGbxZA2sBbnmx/ym680s=;
- b=ZQsAvHL5GjaSy6vt3eYR8MdRD7OHrLTRlMvB+YWRszmabSc6Z8voZwsX52QHzm3/No
- 10gbgJT8BUHxXzX7KMeJyk6dy38TNyKYWyNjdW+qW8cF7PChxmdb6XFE55QTSMe0jsEO
- gObiyopwc5KOr3XYTwkiQBaF4TNZLRHpqfkTk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=m0TlPVX0eA3PDOBMFTFNIlovGbxZA2sBbnmx/ym680s=;
- b=Jz1Ntm1wtIjCNvTbUG5VSVXzVBI44X3HC2vwwgiK9/y6Wi2O+ChxJ+2KQXaA/8d7W8
- niZkJM5R7bIwPcIDB2+hVsTK44yRrxfBh0iPb11k2CYA8TD21qgD24EcCLSSUDyZW3l4
- NVcCHvQvsUcW2o+CjHnPNImhmjVpM4lqc5/6X06kfgoaAkAXKoJyogd3eDIYK7vmKwAE
- ISyMz2LkioVnkkH3sik7SMDUdOfWffpm0g+syJ+GeZUESEtqnTe2AKdu2B4anjUYpv2T
- vndegL4n7iECtzfUTnzGSJ8NsGtQozrlnoRYtcoG/jsHqhV60cKd02pe9V1JRYADGT78
- EDUg==
-X-Gm-Message-State: AOAM532O9zmV4k4jyMfPalbDSQF7dm0kX7mVOmFjeORL7ZlzA5HXSDBf
- Vn/uNzANHw7U2f6vVYCaK2nwOfT2GtOqLg==
-X-Google-Smtp-Source: ABdhPJzj64RpW9+/wGTZLEuslA58al3I9Bo0r4oZWVbSsXtj+qij0EEjC2NmHhu6gieeI3XHHvuEeg==
-X-Received: by 2002:a65:6207:: with SMTP id d7mr2747144pgv.92.1612502225520;
- Thu, 04 Feb 2021 21:17:05 -0800 (PST)
-Received: from localhost
- (2001-44b8-111e-5c00-a9fe-013b-f6b0-c0a4.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:a9fe:13b:f6b0:c0a4])
- by smtp.gmail.com with ESMTPSA id y3sm2934209pfr.125.2021.02.04.21.17.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Feb 2021 21:17:04 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: "Christopher M. Riedl" <cmr@codefail.de>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 02/10] powerpc/signal: Add unsafe_copy_{vsx,
- fpr}_from_user()
-In-Reply-To: <20210203184323.20792-3-cmr@codefail.de>
-References: <20210203184323.20792-1-cmr@codefail.de>
- <20210203184323.20792-3-cmr@codefail.de>
-Date: Fri, 05 Feb 2021 16:17:01 +1100
-Message-ID: <87h7mrdrg2.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DX4ct3qvrzDvbW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 17:04:24 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DX4cd3dFxz9tyVc;
+ Fri,  5 Feb 2021 07:04:17 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id SABVU0qc4DPE; Fri,  5 Feb 2021 07:04:17 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DX4cd2bvCz9tyVZ;
+ Fri,  5 Feb 2021 07:04:17 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 475EF8B818;
+ Fri,  5 Feb 2021 07:04:18 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id feQitOVAu0Mv; Fri,  5 Feb 2021 07:04:18 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BDDE98B75F;
+ Fri,  5 Feb 2021 07:04:17 +0100 (CET)
+Subject: Re: [PATCH v3 28/32] powerpc/64s: interrupt implement exit logic in C
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <20200225173541.1549955-29-npiggin@gmail.com>
+ <37c2a8e1-2c4b-2e55-6753-0a804ce00cac@csgroup.eu>
+ <1612409077.fadt3kvld9.astroid@bobo.none>
+ <65686b53-feb4-2788-88e1-76c3714d3e97@csgroup.eu>
+ <1612428699.u023r42mj3.astroid@bobo.none> <87blczpdm3.fsf@mpe.ellerman.id.au>
+ <1612491261.by5b8gr97g.astroid@bobo.none>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <d8e6b971-c783-fb5f-f9f2-24e7d8d0726d@csgroup.eu>
+Date: Fri, 5 Feb 2021 07:04:17 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <1612491261.by5b8gr97g.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,86 +68,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Michal Suchanek <msuchanek@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christopher,
 
-I have checked that each implementation matches the corresponding
-*_to_user implementation. We've had some debate about whether the
-overarching implementation in the to/from pairs (especially where things
-go via a bounce buffer) can be simplified - but that's probably not
-really something that this patch set should do.
 
-On that basis:
-Reviewed-by: Daniel Axtens <dja@axtens.net>
+Le 05/02/2021 à 03:16, Nicholas Piggin a écrit :
+> Excerpts from Michael Ellerman's message of February 5, 2021 10:22 am:
+>> Nicholas Piggin <npiggin@gmail.com> writes:
+>>> Excerpts from Christophe Leroy's message of February 4, 2021 6:03 pm:
+>>>> Le 04/02/2021 à 04:27, Nicholas Piggin a écrit :
+>>>>> Excerpts from Christophe Leroy's message of February 4, 2021 2:25 am:
+>>>>>> Le 25/02/2020 à 18:35, Nicholas Piggin a écrit :
+>> ...
+>>>>>>> +
+>>>>>>> +	/*
+>>>>>>> +	 * We don't need to restore AMR on the way back to userspace for KUAP.
+>>>>>>> +	 * The value of AMR only matters while we're in the kernel.
+>>>>>>> +	 */
+>>>>>>> +	kuap_restore_amr(regs);
+>>>>>>
+>>>>>> Is that correct to restore KUAP state here ? Shouldn't we have it at lower level in assembly ?
+>>>>>>
+>>>>>> Isn't there a risk that someone manages to call interrupt_exit_kernel_prepare() or the end of it in
+>>>>>> a way or another, and get the previous KUAP state restored by this way ?
+>>>>>
+>>>>> I'm not sure if there much more risk if it's here rather than the
+>>>>> instruction being in another place in the code.
+>>>>>
+>>>>> There's a lot of user access around the kernel too if you want to find a
+>>>>> gadget to unlock KUAP then I suppose there is a pretty large attack
+>>>>> surface.
+>>>>
+>>>> My understanding is that user access scope is strictly limited, for instance we enforce the
+>>>> begin/end of user access to be in the same function, and we refrain from calling any other function
+>>>> inside the user access window. x86 even have 'objtool' to enforce it at build time. So in theory
+>>>> there is no way to get out of the function while user access is open.
+>>>>
+>>>> Here with the interrupt exit function it is free beer. You have a place where you re-open user
+>>>> access and return with a simple blr. So that's open bar. If someone manages to just call the
+>>>> interrupt exit function, then user access remains open
+>>>
+>>> Hmm okay maybe that's a good point.
+>>
+>> I don't think it's a very attractive gadget, it's not just a plain blr,
+>> it does a full stack frame tear down before the return. And there's no
+>> LR reloads anywhere very close.
+>>
+>> Obviously it depends on what the compiler decides to do, it's possible
+>> it could be a usable gadget. But there are other places that are more
+>> attractive I think, eg:
+>>
+>> c00000000061d768:	a6 03 3d 7d 	mtspr   29,r9
+>> c00000000061d76c:	2c 01 00 4c 	isync
+>> c00000000061d770:	00 00 00 60 	nop
+>> c00000000061d774:	30 00 21 38 	addi    r1,r1,48
+>> c00000000061d778:	20 00 80 4e 	blr
+>>
+>>
+>> So I don't think we should redesign the code *purely* because we're
+>> worried about interrupt_exit_kernel_prepare() being a useful gadget. If
+>> we can come up with a way to restructure it that reads well and is
+>> maintainable, and also reduces the chance of it being a good gadget then
+>> sure.
+> 
+> Okay. That would be good if we can keep it in C, the pkeys + kuap combo
+> is fairly complicated and we might want to something cleverer with it,
+> so that would make it even more difficult in asm.
+> 
 
-Kind regards,
-Daniel
+Ok.
 
-> Reuse the "safe" implementation from signal.c except for calling
-> unsafe_copy_from_user() to copy into a local buffer.
->
-> Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
-> ---
->  arch/powerpc/kernel/signal.h | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
->
-> diff --git a/arch/powerpc/kernel/signal.h b/arch/powerpc/kernel/signal.h
-> index 2559a681536e..7dfc536c78ef 100644
-> --- a/arch/powerpc/kernel/signal.h
-> +++ b/arch/powerpc/kernel/signal.h
-> @@ -53,6 +53,30 @@ unsigned long copy_ckfpr_from_user(struct task_struct *task, void __user *from);
->  				&buf[i], label);\
->  } while (0)
->  
-> +#define unsafe_copy_fpr_from_user(task, from, label)	do {		\
-> +	struct task_struct *__t = task;					\
-> +	u64 __user *__f = (u64 __user *)from;				\
-> +	u64 buf[ELF_NFPREG];						\
-> +	int i;								\
-> +									\
-> +	unsafe_copy_from_user(buf, __f, sizeof(buf), label);		\
-> +	for (i = 0; i < ELF_NFPREG - 1; i++)				\
-> +		__t->thread.TS_FPR(i) = buf[i];				\
-> +	__t->thread.fp_state.fpscr = buf[i];				\
-> +} while (0)
-> +
-> +#define unsafe_copy_vsx_from_user(task, from, label)	do {		\
-> +	struct task_struct *__t = task;					\
-> +	u64 __user *__f = (u64 __user *)from;				\
-> +	u64 buf[ELF_NVSRHALFREG];					\
-> +	int i;								\
-> +									\
-> +	unsafe_copy_from_user(buf, __f, sizeof(buf), label);		\
-> +	for (i = 0; i < ELF_NVSRHALFREG ; i++)				\
-> +		__t->thread.fp_state.fpr[i][TS_VSRLOWOFFSET] = buf[i];	\
-> +} while (0)
-> +
-> +
->  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->  #define unsafe_copy_ckfpr_to_user(to, task, label)	do {		\
->  	struct task_struct *__t = task;					\
-> @@ -80,6 +104,10 @@ unsigned long copy_ckfpr_from_user(struct task_struct *task, void __user *from);
->  	unsafe_copy_to_user(to, (task)->thread.fp_state.fpr,	\
->  			    ELF_NFPREG * sizeof(double), label)
->  
-> +#define unsafe_copy_fpr_from_user(task, from, label)			\
-> +	unsafe_copy_from_user((task)->thread.fp_state.fpr, from,	\
-> +			    ELF_NFPREG * sizeof(double), label)
-> +
->  static inline unsigned long
->  copy_fpr_to_user(void __user *to, struct task_struct *task)
->  {
-> @@ -115,6 +143,8 @@ copy_ckfpr_from_user(struct task_struct *task, void __user *from)
->  #else
->  #define unsafe_copy_fpr_to_user(to, task, label) do { } while (0)
->  
-> +#define unsafe_copy_fpr_from_user(task, from, label) do { } while (0)
-> +
->  static inline unsigned long
->  copy_fpr_to_user(void __user *to, struct task_struct *task)
->  {
-> -- 
-> 2.26.1
+For ppc32, I prefer to keep it in assembly for the time being and move everything from ASM to C at 
+once after porting syscall and interrupts to C and wrappers.
+
+Hope this is OK for you.
+
+Christophe
