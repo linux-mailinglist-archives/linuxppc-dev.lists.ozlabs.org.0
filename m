@@ -1,95 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E85310C31
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 14:51:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8568310C73
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 15:05:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DXH0D2dhGzDwhc
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Feb 2021 00:51:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DXHHX5CKWzDvWk
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Feb 2021 01:05:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=qG+OKPYr; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=lkoEcfJn; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DXGxk6zhgzDwhY
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Feb 2021 00:49:45 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 115DZWqP189917; Fri, 5 Feb 2021 08:49:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=Ss+xpeNe6Ai9mYybJahU9kqkWCjpwz8PKUDwYLgYo3E=;
- b=qG+OKPYrldemS9hdD9tdDWBH0VOLnizUoCrCVOn4elMoA9p/nwh6GolXJK67nM7MRzq4
- 8qTPK1o78GdkXJSOW2mWKt4r8WD0nB3wqgjwUg2ghP3EaeOEcKjgzxo0o9aJC1kiaEqd
- 1q05WaTpHEnNphVHQIiHgboHOdc1qqUY4KYYdKaR9jJsD0fgk4EfuKBhDBu5gWd4yKEC
- vnodW7CsrI2Ka8nprbqdw+Kpw7DI7Gh+bfRk+6nHXavKi6N23qCxeh+UqEeUGi020WC5
- wRW1Qxx6qc6jLfE0O9oc1A4Jtt+NI1tc+QK+pgsqhyqXHU1PcF7/gp4nO7NYxTPzQjC6 Fg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36h6999s46-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Feb 2021 08:49:42 -0500
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 115Dgvd6028825;
- Fri, 5 Feb 2021 08:49:42 -0500
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0b-001b2d01.pphosted.com with ESMTP id 36h6999s3q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Feb 2021 08:49:42 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 115DmWIB006646;
- Fri, 5 Feb 2021 13:49:41 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma04dal.us.ibm.com with ESMTP id 36ex3pjgcb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Feb 2021 13:49:41 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 115DnfP78323676
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 5 Feb 2021 13:49:41 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ECDA6B2065;
- Fri,  5 Feb 2021 13:49:40 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 328EFB205F;
- Fri,  5 Feb 2021 13:49:39 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.102.1.215])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri,  5 Feb 2021 13:49:38 +0000 (GMT)
-X-Mailer: emacs 27.1 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Zorro Lang <zlang@redhat.com>
-Subject: Re: [PATCH] powerpc/kuap: Allow kernel thread to access userspace
- after kthread_use_mm
-In-Reply-To: <20210205095820.GI14354@localhost.localdomain>
-References: <20210205030426.430331-1-aneesh.kumar@linux.ibm.com>
- <20210205095820.GI14354@localhost.localdomain>
-Date: Fri, 05 Feb 2021 19:19:36 +0530
-Message-ID: <871rdur5e7.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DXHFt1fhDzDqBx
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Feb 2021 01:03:45 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 80C5C64DF6;
+ Fri,  5 Feb 2021 14:03:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1612533822;
+ bh=KSxIMlDA6ShJiaWSByB90Lc7u1RAy7m+dFD6RcfG6m0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=lkoEcfJnt0fU9Iij7bTJMAndSCEiVurjdE9VNRGNHVT0iEDMcEINYzsKoOZL6cfM9
+ GfOJuAE3Zt4Q0+xz4xEsiG0KtPOIpRIzGy2HQoc4w+IpY7+X+3IrjQ+5OZK2Oz2Uvs
+ OKws/+OMqB072shE4zH+l3F/L/tjZqYciYT+BBv76qE+apLwel9okio39bY0H+AtX4
+ 1iLboaZ4fpMs3123JkGSuyFzsSUAkWKQi+T+Ujkfm5McF7oYhX87xXjjsu6yofnNw2
+ JUs8822XtMP7hLe2CJ6fkhs+KnX7ZdVtUE6pvlcg6g9x4GXeMCQygAr80Q0MTJPXPc
+ kOaNCClvv1m8Q==
+Date: Fri, 5 Feb 2021 14:02:51 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH 2/7] ASoC: fsl_rpmsg: Add CPU DAI driver for audio base
+ on rpmsg
+Message-ID: <20210205140251.GB4720@sirena.org.uk>
+References: <1612508250-10586-1-git-send-email-shengjiu.wang@nxp.com>
+ <1612508250-10586-3-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
- definitions=2021-02-05_07:2021-02-05,
- 2021-02-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0
- mlxlogscore=999 adultscore=0 lowpriorityscore=0 impostorscore=0
- phishscore=0 priorityscore=1501 suspectscore=0 mlxscore=0 clxscore=1015
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102050088
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="MW5yreqqjyrRcusr"
+Content-Disposition: inline
+In-Reply-To: <1612508250-10586-3-git-send-email-shengjiu.wang@nxp.com>
+X-Cookie: Huh?
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,81 +59,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, timur@kernel.org,
+ lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com,
+ linux-kernel@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com,
+ robh+dt@kernel.org, perex@perex.cz, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Zorro Lang <zlang@redhat.com> writes:
 
-....
+--MW5yreqqjyrRcusr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> ...
-> [  530.180466] run fstests generic/617 at 2021-02-05 03:41:10
-> [  530.707969] ------------[ cut here ]------------
-> [  530.708006] kernel BUG at arch/powerpc/include/asm/book3s/64/kup.h:207!
-> [  530.708013] Oops: Exception in kernel mode, sig: 5 [#1]
-> [  530.708018] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-> [  530.708022] Modules linked in: bonding rfkill sunrpc uio_pdrv_genirq pseries_rng uio drm fuse drm_panel_orientation_quirks ip_tables xfs libcrc32c sd_mod t10_pi ibmvscsi ibmveth scsi_trans
-> port_srp xts vmx_crypto
-> [  530.708049] CPU: 13 PID: 5587 Comm: io_wqe_worker-0 Not tainted 5.11.0-r
+On Fri, Feb 05, 2021 at 02:57:25PM +0800, Shengjiu Wang wrote:
+> This is a dummy cpu dai driver for rpmsg audio use case,
+> which is mainly used for getting the user's configuration
 
-ok so we call current_thread_amr() with kthread.
+This is actually doing stuff, it's not a dummy driver.
 
-commit ae33fb7b069ebb41e32f55ae397c887031e47472
-Author: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Date:   Fri Feb 5 19:11:49 2021 +0530
+> +static int fsl_rpmsg_remove(struct platform_device *pdev)
+> +{
+> +	return 0;
+> +}
 
-    
-    The other stack that matters is
-    ...
-    [  530.710838] CPU: 13 PID: 5587 Comm: io_wqe_worker-0 Tainted: G      D           5.11.0-rc6+ #3
-    ....
-    
-     NIP [c0000000000aa0c8] pkey_access_permitted+0x28/0x90
-     LR [c0000000004b9278] gup_pte_range+0x188/0x420
-     --- interrupt: 700
-     [c00000001c4ef3f0] [0000000000000000] 0x0 (unreliable)
-     [c00000001c4ef490] [c0000000004bd39c] gup_pgd_range+0x3ac/0xa20
-     [c00000001c4ef5a0] [c0000000004bdd44] internal_get_user_pages_fast+0x334/0x410
-     [c00000001c4ef620] [c000000000852028] iov_iter_get_pages+0xf8/0x5c0
-     [c00000001c4ef6a0] [c0000000007da44c] bio_iov_iter_get_pages+0xec/0x700
-     [c00000001c4ef770] [c0000000006a325c] iomap_dio_bio_actor+0x2ac/0x4f0
-     [c00000001c4ef810] [c00000000069cd94] iomap_apply+0x2b4/0x740
-     [c00000001c4ef920] [c0000000006a38b8] __iomap_dio_rw+0x238/0x5c0
-     [c00000001c4ef9d0] [c0000000006a3c60] iomap_dio_rw+0x20/0x80
-     [c00000001c4ef9f0] [c008000001927a30] xfs_file_dio_aio_write+0x1f8/0x650 [xfs]
-     [c00000001c4efa60] [c0080000019284dc] xfs_file_write_iter+0xc4/0x130 [xfs]
-     [c00000001c4efa90] [c000000000669984] io_write+0x104/0x4b0
-     [c00000001c4efbb0] [c00000000066cea4] io_issue_sqe+0x3d4/0xf50
-     [c00000001c4efc60] [c000000000670200] io_wq_submit_work+0xb0/0x2f0
-     [c00000001c4efcb0] [c000000000674268] io_worker_handle_work+0x248/0x4a0
-     [c00000001c4efd30] [c0000000006746e8] io_wqe_worker+0x228/0x2a0
-     [c00000001c4efda0] [c00000000019d994] kthread+0x1b4/0x1c0
+If this isn't needed just remove it.
 
-diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-index 2064621ae7b6..21e59c1f0d67 100644
---- a/arch/powerpc/include/asm/book3s/64/kup.h
-+++ b/arch/powerpc/include/asm/book3s/64/kup.h
-@@ -204,14 +204,16 @@ DECLARE_STATIC_KEY_FALSE(uaccess_flush_key);
- 
- static inline u64 current_thread_amr(void)
- {
--	VM_BUG_ON(!current->thread.regs);
--	return current->thread.regs->amr;
-+	if (current->thread.regs)
-+		return current->thread.regs->amr;
-+	return 0;
- }
- 
- static inline u64 current_thread_iamr(void)
- {
--	VM_BUG_ON(!current->thread.regs);
--	return current->thread.regs->iamr;
-+	if (current->thread.regs)
-+		return current->thread.regs->iamr;
-+	return 0;
- }
- #endif /* CONFIG_PPC_PKEY */
- 
+--MW5yreqqjyrRcusr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmAdUAoACgkQJNaLcl1U
+h9CaXQf5ATE//mi5uJVW049xtEPBycAxvAbD6dNUWYwuolWDZojNk7ks+PbhTKnA
+0gUKScEIt0hL34j7/4NiKG+VZ66VHWlGKf+GOAhnku/bVm9Iu6PmTRoG72cNRiyt
+/hfXxeapZaUppPdd6/QADyoGWNnc4W3+JwC+tcSbRrIFpgrZK+fp+nLkBbmvdTtm
+rjguO81Wbie1P9vtAlWfiZhjh47ZACa6OhbNXXu4P7ndcwBUrOU9J0CMtLOWPMMU
+E9dYnRBCJVSWIHbTz51qUzzpF7DCsb8TJYDlLmMSyzCf+OsosvVQ5gCLMTE/Wsfw
+J4QgeKlJPaSNbAGIo78mYd3NJttKTw==
+=oQQq
+-----END PGP SIGNATURE-----
+
+--MW5yreqqjyrRcusr--
