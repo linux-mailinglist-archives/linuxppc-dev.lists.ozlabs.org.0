@@ -2,52 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8058C310F53
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 19:01:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9377B310FC4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 19:19:34 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DXNXX3Pq9zDwlH
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Feb 2021 05:01:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DXNwz695yzDwlT
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Feb 2021 05:19:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
- helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=VwTrdKn5; 
- dkim-atps=neutral
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DXNVC4cKSzDwl8
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Feb 2021 04:59:47 +1100 (AEDT)
-Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net
- [73.42.176.67])
- by linux.microsoft.com (Postfix) with ESMTPSA id B10A620B6C40;
- Fri,  5 Feb 2021 09:59:45 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B10A620B6C40
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1612547985;
- bh=R/hf6T7IfqycaEkvWUWCsy5KS7kYt+/f6lu60uKrZc4=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=VwTrdKn5QuH+ugavR1sYZ5ODTerDlLe18JCTYyCKTjteoD/lFzarEpsTQ4bbioy+G
- b4IYR48kTdBa6sQRz/NH/HOOJjWJAgaas5xt9LnO9E0hS525NHdqeLiswFlevo0QWi
- 400UzuFEoDfX7Xiyhc8PQTw5A601cG/sMH4Cxwak=
-Subject: Re: [PATCH v2 1/2] ima: Free IMA measurement buffer on error
-To: Mimi Zohar <zohar@linux.ibm.com>, Greg KH <gregkh@linuxfoundation.org>
-References: <20210204174951.25771-1-nramas@linux.microsoft.com>
- <YB0YdqbbdAdbEOQw@kroah.com>
- <7000d128-272e-3654-8480-e46bf7dfad74@linux.microsoft.com>
- <6a5b7a1767265122d21f185c81399692d12191f4.camel@linux.ibm.com>
-From: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <b8573374-86d0-f679-6c9f-a61b2bc6f7ea@linux.microsoft.com>
-Date: Fri, 5 Feb 2021 09:59:45 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=k4OkVC7+; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DXNvJ2hSszDwlP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Feb 2021 05:18:03 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 115I0GaE192970; Fri, 5 Feb 2021 13:17:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=wp/zYo/x4yXnzuRxL3zUh8ZHBinNBQVp6TcpqakH8xY=;
+ b=k4OkVC7+lCYLi8wrUd6bNkJ682DoQbw0QvkdYywVXSYRip/mUjuSm10TNlgZjW3mOuen
+ azqE5s61X0pJvzkHp4tiwkyq5k9iERmwob3SDYS4JvQWWvCJ5c7mzrVu35Cy2hVbtkcw
+ epR5LHfQK6qIcgesUzbY/lZeZIuGFhvyAEt/+4UwiFv9VIfvG+uP12RWIfiPIXjcgLcB
+ jyqVFpDXVt7w+fXPPGX9dwxTYw1IiLNzuXUytmTheFSapjWuCJlB8eIN0UfszfPJHjaG
+ INpJXAC6JxLPVN0goxNSRXeewmj4XHlidvmotICEzMsdgzVDp8zlZxZe0Ph/C2Pyz7yL nw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36hawkgfup-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 05 Feb 2021 13:17:46 -0500
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 115I0NR7194571;
+ Fri, 5 Feb 2021 13:17:46 -0500
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 36hawkgfts-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 05 Feb 2021 13:17:45 -0500
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 115IHd3T029776;
+ Fri, 5 Feb 2021 18:17:43 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma02wdc.us.ibm.com with ESMTP id 36cy3a0f82-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 05 Feb 2021 18:17:43 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 115IHhoV33161472
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 5 Feb 2021 18:17:43 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 57A6828059;
+ Fri,  5 Feb 2021 18:17:43 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9399628058;
+ Fri,  5 Feb 2021 18:17:40 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.102.1.215])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri,  5 Feb 2021 18:17:40 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v2] powerpc/kuap: Allow kernel thread to access userspace
+ after kthread_use_mm
+Date: Fri,  5 Feb 2021 23:47:23 +0530
+Message-Id: <20210205181723.507982-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <6a5b7a1767265122d21f185c81399692d12191f4.camel@linux.ibm.com>
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369, 18.0.737
+ definitions=2021-02-05_10:2021-02-05,
+ 2021-02-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxlogscore=999
+ lowpriorityscore=0 clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102050111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,68 +98,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sashal@kernel.org, dmitry.kasatkin@gmail.com, linux-kernel@vger.kernel.org,
- tyhicks@linux.microsoft.com, ebiederm@xmission.com,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com
+Cc: Jens Axboe <axboe@kernel.dk>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Zorro Lang <zlang@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/5/21 9:49 AM, Mimi Zohar wrote:
+This fix the bad fault reported by KUAP when io_wqe_worker access userspace.
 
-Hi Mimi,
+ Bug: Read fault blocked by KUAP!
+ WARNING: CPU: 1 PID: 101841 at arch/powerpc/mm/fault.c:229 __do_page_fault+0x6b4/0xcd0
+ NIP [c00000000009e7e4] __do_page_fault+0x6b4/0xcd0
+ LR [c00000000009e7e0] __do_page_fault+0x6b0/0xcd0
+..........
+ Call Trace:
+ [c000000016367330] [c00000000009e7e0] __do_page_fault+0x6b0/0xcd0 (unreliable)
+ [c0000000163673e0] [c00000000009ee3c] do_page_fault+0x3c/0x120
+ [c000000016367430] [c00000000000c848] handle_page_fault+0x10/0x2c
+ --- interrupt: 300 at iov_iter_fault_in_readable+0x148/0x6f0
+..........
+ NIP [c0000000008e8228] iov_iter_fault_in_readable+0x148/0x6f0
+ LR [c0000000008e834c] iov_iter_fault_in_readable+0x26c/0x6f0
+ interrupt: 300
+ [c0000000163677e0] [c0000000007154a0] iomap_write_actor+0xc0/0x280
+ [c000000016367880] [c00000000070fc94] iomap_apply+0x1c4/0x780
+ [c000000016367990] [c000000000710330] iomap_file_buffered_write+0xa0/0x120
+ [c0000000163679e0] [c00800000040791c] xfs_file_buffered_aio_write+0x314/0x5e0 [xfs]
+ [c000000016367a90] [c0000000006d74bc] io_write+0x10c/0x460
+ [c000000016367bb0] [c0000000006d80e4] io_issue_sqe+0x8d4/0x1200
+ [c000000016367c70] [c0000000006d8ad0] io_wq_submit_work+0xc0/0x250
+ [c000000016367cb0] [c0000000006e2578] io_worker_handle_work+0x498/0x800
+ [c000000016367d40] [c0000000006e2cdc] io_wqe_worker+0x3fc/0x4f0
+ [c000000016367da0] [c0000000001cb0a4] kthread+0x1c4/0x1d0
+ [c000000016367e10] [c00000000000dbf0] ret_from_kernel_thread+0x5c/0x6c
 
-> On Fri, 2021-02-05 at 09:39 -0800, Lakshmi Ramasubramanian wrote:
->> On 2/5/21 2:05 AM, Greg KH wrote:
->>> On Thu, Feb 04, 2021 at 09:49:50AM -0800, Lakshmi Ramasubramanian wrote:
->>>> IMA allocates kernel virtual memory to carry forward the measurement
->>>> list, from the current kernel to the next kernel on kexec system call,
->>>> in ima_add_kexec_buffer() function.  In error code paths this memory
->>>> is not freed resulting in memory leak.
->>>>
->>>> Free the memory allocated for the IMA measurement list in
->>>> the error code paths in ima_add_kexec_buffer() function.
->>>>
->>>> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
->>>> Suggested-by: Tyler Hicks <tyhicks@linux.microsoft.com>
->>>> Fixes: 7b8589cc29e7 ("ima: on soft reboot, save the measurement list")
->>>> ---
->>>>    security/integrity/ima/ima_kexec.c | 1 +
->>>>    1 file changed, 1 insertion(+)
->>>
->>> <formletter>
->>>
->>> This is not the correct way to submit patches for inclusion in the
->>> stable kernel tree.  Please read:
->>>       https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
->>> for how to do this properly.
->>>
->>> </formletter>
->>>
->>
->> Thanks for the info Greg.
->>
->> I will re-submit the two patches in the proper format.
-> 
-> No need.  I'm testing these patches now.  I'm not exactly sure what the
-> problem is.  Stable wasn't Cc'ed.  Is it that you sent the patch
-> directly to Greg or added "Fixes"?
-> 
-I had not Cced stable, but had "Fixes" tag in the patch.
+The kernel consider thread AMR value for kernel thread to be
+AMR_KUAP_BLOCKED. Hence access to userspace is denied. This
+of course not correct and we should allow userspace access after
+kthread_use_mm(). To be precise, kthread_use_mm() should inherit the
+AMR value of the operating address space. But, the AMR value is
+thread-specific and we inherit the address space and not thread
+access restrictions. Because of this ignore AMR value when accessing
+userspace via kernel thread.
 
-Fixes: 7b8589cc29e7 ("ima: on soft reboot, save the measurement list")
+current_thread_amr/iamr() are also updated, because we use them in the
+below stack.
+....
+[  530.710838] CPU: 13 PID: 5587 Comm: io_wqe_worker-0 Tainted: G      D           5.11.0-rc6+ #3
+....
 
-The problem is that the buffer allocated for forwarding the IMA 
-measurement list is not freed - at the end of the kexec call and also in 
-an error path. Please see the patch description for
+ NIP [c0000000000aa0c8] pkey_access_permitted+0x28/0x90
+ LR [c0000000004b9278] gup_pte_range+0x188/0x420
+ --- interrupt: 700
+ [c00000001c4ef3f0] [0000000000000000] 0x0 (unreliable)
+ [c00000001c4ef490] [c0000000004bd39c] gup_pgd_range+0x3ac/0xa20
+ [c00000001c4ef5a0] [c0000000004bdd44] internal_get_user_pages_fast+0x334/0x410
+ [c00000001c4ef620] [c000000000852028] iov_iter_get_pages+0xf8/0x5c0
+ [c00000001c4ef6a0] [c0000000007da44c] bio_iov_iter_get_pages+0xec/0x700
+ [c00000001c4ef770] [c0000000006a325c] iomap_dio_bio_actor+0x2ac/0x4f0
+ [c00000001c4ef810] [c00000000069cd94] iomap_apply+0x2b4/0x740
+ [c00000001c4ef920] [c0000000006a38b8] __iomap_dio_rw+0x238/0x5c0
+ [c00000001c4ef9d0] [c0000000006a3c60] iomap_dio_rw+0x20/0x80
+ [c00000001c4ef9f0] [c008000001927a30] xfs_file_dio_aio_write+0x1f8/0x650 [xfs]
+ [c00000001c4efa60] [c0080000019284dc] xfs_file_write_iter+0xc4/0x130 [xfs]
+ [c00000001c4efa90] [c000000000669984] io_write+0x104/0x4b0
+ [c00000001c4efbb0] [c00000000066cea4] io_issue_sqe+0x3d4/0xf50
+ [c00000001c4efc60] [c000000000670200] io_wq_submit_work+0xb0/0x2f0
+ [c00000001c4efcb0] [c000000000674268] io_worker_handle_work+0x248/0x4a0
+ [c00000001c4efd30] [c0000000006746e8] io_wqe_worker+0x228/0x2a0
+ [c00000001c4efda0] [c00000000019d994] kthread+0x1b4/0x1c0
 
-[PATCH v2 2/2] ima: Free IMA measurement buffer after kexec syscall
+Cc: Zorro Lang <zlang@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/include/asm/book3s/64/kup.h   | 16 +++++++++++-----
+ arch/powerpc/include/asm/book3s/64/pkeys.h |  4 ----
+ 2 files changed, 11 insertions(+), 9 deletions(-)
 
-IMA allocates kernel virtual memory to carry forward the measurement
-list, from the current kernel to the next kernel on kexec system call,
-in ima_add_kexec_buffer() function.  This buffer is not freed before
-completing the kexec system call resulting in memory leak.
+diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
+index f50f72e535aa..7d1ef7b9754e 100644
+--- a/arch/powerpc/include/asm/book3s/64/kup.h
++++ b/arch/powerpc/include/asm/book3s/64/kup.h
+@@ -199,25 +199,31 @@ DECLARE_STATIC_KEY_FALSE(uaccess_flush_key);
+ 
+ #ifdef CONFIG_PPC_PKEY
+ 
++extern u64 __ro_after_init default_uamor;
++extern u64 __ro_after_init default_amr;
++extern u64 __ro_after_init default_iamr;
++
+ #include <asm/mmu.h>
+ #include <asm/ptrace.h>
+ 
+-/*
+- * For kernel thread that doesn't have thread.regs return
+- * default AMR/IAMR values.
++/* usage of kthread_use_mm() should inherit the
++ * AMR value of the operating address space. But, the AMR value is
++ * thread-specific and we inherit the address space and not thread
++ * access restrictions. Because of this ignore AMR value when accessing
++ * userspace via kernel thread.
+  */
+ static inline u64 current_thread_amr(void)
+ {
+ 	if (current->thread.regs)
+ 		return current->thread.regs->amr;
+-	return AMR_KUAP_BLOCKED;
++	return default_amr;
+ }
+ 
+ static inline u64 current_thread_iamr(void)
+ {
+ 	if (current->thread.regs)
+ 		return current->thread.regs->iamr;
+-	return AMR_KUEP_BLOCKED;
++	return default_iamr;
+ }
+ #endif /* CONFIG_PPC_PKEY */
+ 
+diff --git a/arch/powerpc/include/asm/book3s/64/pkeys.h b/arch/powerpc/include/asm/book3s/64/pkeys.h
+index 3b8640498f5b..5b178139f3c0 100644
+--- a/arch/powerpc/include/asm/book3s/64/pkeys.h
++++ b/arch/powerpc/include/asm/book3s/64/pkeys.h
+@@ -5,10 +5,6 @@
+ 
+ #include <asm/book3s/64/hash-pkey.h>
+ 
+-extern u64 __ro_after_init default_uamor;
+-extern u64 __ro_after_init default_amr;
+-extern u64 __ro_after_init default_iamr;
+-
+ static inline u64 vmflag_to_pte_pkey_bits(u64 vm_flags)
+ {
+ 	if (!mmu_has_feature(MMU_FTR_PKEY))
+-- 
+2.29.2
 
-thanks,
-  -lakshmi
