@@ -2,79 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3AE310368
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 04:18:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B773103FB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 05:12:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DX0xP1lsvzDrhY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 14:18:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DX27F0jnCzDvWq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Feb 2021 15:12:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::729;
- helo=mail-qk1-x729.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=kl220aut; dkim-atps=neutral
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com
- [IPv6:2607:f8b0:4864:20::729])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DX0vS37wmzDvXQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 14:16:46 +1100 (AEDT)
-Received: by mail-qk1-x729.google.com with SMTP id u20so5645674qku.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Feb 2021 19:16:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=8WTNk9Xbw6EghApIXQgl/ogYtRuCwBqSCPnWZ2LdagU=;
- b=kl220autwj+PrnjrQxTlb2/j43lozhddaVtEdxeo3Eb1olxxUNrgM27SIT2VuHAEbQ
- UtZypHI/rURy1bC9zu6yyd6rgCtEaseSa8e/f8tSCV9L/AvOaA6Q1NquI0/7bcwOBvo/
- n/Br77ExjxcR1sTUsdJL1mY9250CfUvUypKT4l50J0xQYcfMF4ezP8p3Sho80IY07Unz
- dVX9H9NNI1dk35W20/lmJlEqpF19WFZQSdg7MBDLXFq0gnskmB8iH/spt3+RF0wOmCfd
- LMEiRVaQbuURxJ5lxjaIywwxstP2rNwlDJd/ij7rSS/AKPWJxIsfEXzpynwp1jSAsYA5
- YTTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=8WTNk9Xbw6EghApIXQgl/ogYtRuCwBqSCPnWZ2LdagU=;
- b=LYn27oj4S9+eszDbKmjJWMruqc/js0K7Cz3uMdY1QvLVuXKNTWhOgaZpedwObhJklK
- 5QnBA5g7fPCdIbAgbYgWQoqax0swpwhMaSnIvaX0eC5K36YfKwg2343lcchzQAmx+g3q
- gJXx1t6hT7voM8kKXLFok4uaGillA+DlZYE0kxqRfdzBGHMy2DiEb9h1ztiL48HTkt7F
- tkFFsrUZamsNWWIDrfsqevpwwqXwDYzFqTlUH7JTCuRY4Khmo3MipXp1H+aRlSigfiFS
- 7JlY9ymdt9XfDx08oWYkPnSwvtreM5EQ2TXhQcQMn4Wtmch8Xk3iOGR89uizV2HeSUzK
- v1xw==
-X-Gm-Message-State: AOAM530nTtoHsb/HwvbV4I6z9fU5PUx6cnJuQHo2sCK2KgcDJffaTOu7
- OWDM9PCcnZy2G/W6jQKD5oQ=
-X-Google-Smtp-Source: ABdhPJzquNM+md70FmybygGiqQluF5m3/Rm/hLyrOyr5Kt5Vk91Zinjx4QN+Nlm3uwB6RKvlBAe5dw==
-X-Received: by 2002:a37:455:: with SMTP id 82mr2590683qke.490.1612495003118;
- Thu, 04 Feb 2021 19:16:43 -0800 (PST)
-Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com.com
- (186-249-147-196.dynamic.desktop.com.br. [186.249.147.196])
- by smtp.gmail.com with ESMTPSA id o45sm6842587qto.91.2021.02.04.19.16.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Feb 2021 19:16:42 -0800 (PST)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Paul Mackerras <paulus@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Gustavo Romero <gromero@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Stephen Boyd <sboyd@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Peter Zijlstra <peterz@infradead.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Frederic Weisbecker <frederic@kernel.org>
-Subject: [PATCH 1/1] powerpc/kvm: Save Timebase Offset to fix sched_clock()
- while running guest code.
-Date: Fri,  5 Feb 2021 00:16:24 -0300
-Message-Id: <20210205031623.222730-1-leobras.c@gmail.com>
-X-Mailer: git-send-email 2.29.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4DX25h169BzDvb0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Feb 2021 15:10:42 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 14A69ED1;
+ Thu,  4 Feb 2021 20:10:39 -0800 (PST)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.93.198])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CBB903F719;
+ Thu,  4 Feb 2021 20:10:33 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH] mm/memtest: Add ARCH_USE_MEMTEST
+Date: Fri,  5 Feb 2021 09:40:42 +0530
+Message-Id: <1612498242-31579-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,112 +39,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Leonardo Bras <leobras.c@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org
+Cc: Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, linux-xtensa@linux-xtensa.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
+ Max Filippov <jcmvbkbc@gmail.com>, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Before guest entry, TBU40 register is changed to reflect guest timebase.
-After exitting guest, the register is reverted to it's original value.
+early_memtest() does not get called from all architectures. Hence enabling
+CONFIG_MEMTEST and providing a valid memtest=[1..N] kernel command line
+option might not trigger the memory pattern tests as would be expected in
+normal circumstances. This situation is misleading.
 
-If one tries to get the timestamp from host between those changes, it
-will present an incorrect value.
+The change here prevents the above mentioned problem after introducing a
+new config option ARCH_USE_MEMTEST that should be subscribed on platforms
+that call early_memtest(), in order to enable the config CONFIG_MEMTEST.
+Conversely CONFIG_MEMTEST cannot be enabled on platforms where it would
+not be tested anyway.
 
-An example would be trying to add a tracepoint in
-kvmppc_guest_entry_inject_int(), which depending on last tracepoint
-acquired could actually cause the host to crash.
-
-Save the Timebase Offset to PACA and use it on sched_clock() to always
-get the correct timestamp.
-
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-mips@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/powerpc/include/asm/kvm_book3s_asm.h | 1 +
- arch/powerpc/kernel/asm-offsets.c         | 1 +
- arch/powerpc/kernel/time.c                | 3 ++-
- arch/powerpc/kvm/book3s_hv.c              | 2 ++
- arch/powerpc/kvm/book3s_hv_rmhandlers.S   | 2 ++
- 5 files changed, 8 insertions(+), 1 deletion(-)
+This patch applies on v5.11-rc6 and has been tested on arm64 platform. But
+it has been just build tested on all other platforms.
 
-diff --git a/arch/powerpc/include/asm/kvm_book3s_asm.h b/arch/powerpc/include/asm/kvm_book3s_asm.h
-index 078f4648ea27..e2c12a10eed2 100644
---- a/arch/powerpc/include/asm/kvm_book3s_asm.h
-+++ b/arch/powerpc/include/asm/kvm_book3s_asm.h
-@@ -131,6 +131,7 @@ struct kvmppc_host_state {
- 	u64 cfar;
- 	u64 ppr;
- 	u64 host_fscr;
-+	u64 tb_offset;		/* Timebase offset: keeps correct timebase while on guest */
- #endif
- };
+ arch/arm/Kconfig     | 1 +
+ arch/arm64/Kconfig   | 1 +
+ arch/mips/Kconfig    | 1 +
+ arch/powerpc/Kconfig | 1 +
+ arch/x86/Kconfig     | 1 +
+ arch/xtensa/Kconfig  | 1 +
+ lib/Kconfig.debug    | 9 ++++++++-
+ 7 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 138248999df7..a63b53c568df 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -32,6 +32,7 @@ config ARM
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_CMPXCHG_LOCKREF
++	select ARCH_USE_MEMTEST
+ 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT if MMU
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index c4acf8230f20..dfee5831d876 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -70,6 +70,7 @@ config ARM64
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
+ 	select ARCH_USE_SYM_ANNOTATIONS
++	select ARCH_USE_MEMTEST
+ 	select ARCH_SUPPORTS_DEBUG_PAGEALLOC
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+ 	select ARCH_SUPPORTS_SHADOW_CALL_STACK if CC_HAVE_SHADOW_CALL_STACK
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 0a17bedf4f0d..1b21d8e53e6b 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -16,6 +16,7 @@ config MIPS
+ 	select ARCH_USE_CMPXCHG_LOCKREF if 64BIT
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
++	select ARCH_USE_MEMTEST
+ 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT if MMU
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select BUILDTIME_TABLE_SORT
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 107bb4319e0e..9935343a8750 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -151,6 +151,7 @@ config PPC
+ 	select ARCH_USE_CMPXCHG_LOCKREF		if PPC64
+ 	select ARCH_USE_QUEUED_RWLOCKS		if PPC_QUEUED_SPINLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS	if PPC_QUEUED_SPINLOCKS
++	select ARCH_USE_MEMTEST
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 21f851179ff0..90545348db1b 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -100,6 +100,7 @@ config X86
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
+ 	select ARCH_USE_SYM_ANNOTATIONS
++	select ARCH_USE_MEMTEST
+ 	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
+ 	select ARCH_WANT_DEFAULT_BPF_JIT	if X86_64
+ 	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
+index 37ce1489364e..8eb61fcdfc7f 100644
+--- a/arch/xtensa/Kconfig
++++ b/arch/xtensa/Kconfig
+@@ -9,6 +9,7 @@ config XTENSA
+ 	select ARCH_HAS_DMA_SET_UNCACHED if MMU
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
++	select ARCH_USE_MEMTEST
+ 	select ARCH_WANT_FRAME_POINTERS
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select BUILDTIME_TABLE_SORT
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 7937265ef879..6dd25b755a82 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -2469,11 +2469,18 @@ config TEST_FPU
  
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index b12d7c049bfe..0beb8fdc6352 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -706,6 +706,7 @@ int main(void)
- 	HSTATE_FIELD(HSTATE_CFAR, cfar);
- 	HSTATE_FIELD(HSTATE_PPR, ppr);
- 	HSTATE_FIELD(HSTATE_HOST_FSCR, host_fscr);
-+	HSTATE_FIELD(HSTATE_TB_OFFSET, tb_offset);
- #endif /* CONFIG_PPC_BOOK3S_64 */
+ endif # RUNTIME_TESTING_MENU
  
- #else /* CONFIG_PPC_BOOK3S */
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index 67feb3524460..adf6648e3572 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -699,7 +699,8 @@ EXPORT_SYMBOL_GPL(tb_to_ns);
-  */
- notrace unsigned long long sched_clock(void)
- {
--	return mulhdu(get_tb() - boot_tb, tb_to_ns_scale) << tb_to_ns_shift;
-+	return mulhdu(get_tb() - boot_tb - local_paca->kvm_hstate.tb_offset, tb_to_ns_scale)
-+			<< tb_to_ns_shift;
- }
- 
- 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index b3731572295e..c08593c63353 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3491,6 +3491,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
- 		if ((tb & 0xffffff) < (new_tb & 0xffffff))
- 			mtspr(SPRN_TBU40, new_tb + 0x1000000);
- 		vc->tb_offset_applied = vc->tb_offset;
-+		local_paca->kvm_hstate.tb_offset = vc->tb_offset;
- 	}
- 
- 	if (vc->pcr)
-@@ -3594,6 +3595,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
- 		if ((tb & 0xffffff) < (new_tb & 0xffffff))
- 			mtspr(SPRN_TBU40, new_tb + 0x1000000);
- 		vc->tb_offset_applied = 0;
-+		local_paca->kvm_hstate.tb_offset = 0;
- 	}
- 
- 	mtspr(SPRN_HDEC, 0x7fffffff);
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index b73140607875..8f7a9f7f4ee6 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -632,6 +632,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
- 	cmpdi	r8,0
- 	beq	37f
- 	std	r8, VCORE_TB_OFFSET_APPL(r5)
-+	std	r8, HSTATE_TB_OFFSET(r13)
- 	mftb	r6		/* current host timebase */
- 	add	r8,r8,r6
- 	mtspr	SPRN_TBU40,r8	/* update upper 40 bits */
-@@ -1907,6 +1908,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
- 	beq	17f
- 	li	r0, 0
- 	std	r0, VCORE_TB_OFFSET_APPL(r5)
-+	std	r0, HSTATE_TB_OFFSET(r13)
- 	mftb	r6			/* current guest timebase */
- 	subf	r8,r8,r6
- 	mtspr	SPRN_TBU40,r8		/* update upper 40 bits */
++config ARCH_USE_MEMTEST
++	bool
++	help
++	  An architecture should select this when it uses early_memtest()
++	  during boot process.
++
+ config MEMTEST
+ 	bool "Memtest"
++	depends on ARCH_USE_MEMTEST
+ 	help
+ 	  This option adds a kernel parameter 'memtest', which allows memtest
+-	  to be set.
++	  to be set and executed.
+ 	        memtest=0, mean disabled; -- default
+ 	        memtest=1, mean do 1 test pattern;
+ 	        ...
 -- 
-2.29.2
+2.20.1
 
