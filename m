@@ -1,47 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65A2311F37
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Feb 2021 18:55:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B01E311F45
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Feb 2021 19:08:45 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DY0LC0wjNzDqcY
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 04:54:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DY0f22XZYzDvbF
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 05:08:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=codefail.de (client-ip=131.153.2.45;
- helo=h4.fbrelay.privateemail.com; envelope-from=cmr@codefail.de;
+ smtp.mailfrom=redhat.com (client-ip=63.128.21.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=oleg@redhat.com;
  receiver=<UNKNOWN>)
-Received: from h4.fbrelay.privateemail.com (h4.fbrelay.privateemail.com
- [131.153.2.45])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=jEsf3S4L; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=jEsf3S4L; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [63.128.21.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DY0HT68VBzDqPn
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Feb 2021 04:52:37 +1100 (AEDT)
-Received: from MTA-08-4.privateemail.com (mta-08.privateemail.com
- [68.65.122.18])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DY0bF6XxMzDvVk
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Feb 2021 05:06:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1612634773;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+3K/ORZIshWIeyzZP4aoxZMdX04y5DfgexQ64BWXU8Y=;
+ b=jEsf3S4LG2P/SINojbxkUZG7h5zPHLijVla47fWeo5rg1QRkXiHmmi/q9J7JaM94qzzpwC
+ 5JweSlBYbpEKLcayDrnc9TLcKfXrJ4t761ViIBlhoNirJLAByzaNMXU1wUgjMk5NlB9iQ9
+ BRp6YsthZrkx+y1E5oYLpfJB7Us/g1s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1612634773;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+3K/ORZIshWIeyzZP4aoxZMdX04y5DfgexQ64BWXU8Y=;
+ b=jEsf3S4LG2P/SINojbxkUZG7h5zPHLijVla47fWeo5rg1QRkXiHmmi/q9J7JaM94qzzpwC
+ 5JweSlBYbpEKLcayDrnc9TLcKfXrJ4t761ViIBlhoNirJLAByzaNMXU1wUgjMk5NlB9iQ9
+ BRp6YsthZrkx+y1E5oYLpfJB7Us/g1s=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-204-9Li4jnmTPJ-OOFFjEqd1hQ-1; Sat, 06 Feb 2021 13:06:11 -0500
+X-MC-Unique: 9Li4jnmTPJ-OOFFjEqd1hQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id 23EEB80943
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Feb 2021 12:52:33 -0500 (EST)
-Received: from MTA-08.privateemail.com (localhost [127.0.0.1])
- by MTA-08.privateemail.com (Postfix) with ESMTP id 4A2586006A;
- Sat,  6 Feb 2021 12:52:26 -0500 (EST)
-Received: from localhost (unknown [10.20.151.208])
- by MTA-08.privateemail.com (Postfix) with ESMTPA id 1724A6003E;
- Sat,  6 Feb 2021 17:52:26 +0000 (UTC)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Subject: Re: [PATCH 2/8] powerpc/signal: Add unsafe_copy_{vsx,fpr}_from_user()
-From: "Christopher M. Riedl" <cmr@codefail.de>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- <linuxppc-dev@lists.ozlabs.org>
-Date: Sat, 06 Feb 2021 11:39:13 -0600
-Message-Id: <C92MQRHFCFEA.37OV051PFFY6@geist>
-In-Reply-To: <fce0b2d0-58a3-a94d-a8e9-d104fc2b3058@csgroup.eu>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 25DE5107ACC7;
+ Sat,  6 Feb 2021 18:06:09 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.192.37])
+ by smtp.corp.redhat.com (Postfix) with SMTP id 43FA257;
+ Sat,  6 Feb 2021 18:06:06 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+ oleg@redhat.com; Sat,  6 Feb 2021 19:06:08 +0100 (CET)
+Date: Sat, 6 Feb 2021 19:06:05 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/uprobes: Validation for prefixed instruction
+Message-ID: <20210206180604.GA8897@redhat.com>
+References: <20210204104703.273429-1-ravi.bangoria@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210204104703.273429-1-ravi.bangoria@linux.ibm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,102 +81,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-kernel@vger.kernel.org, rostedt@goodmis.org, paulus@samba.org,
+ sandipan@linux.ibm.com, jniethe5@gmail.com, naveen.n.rao@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat Feb 6, 2021 at 10:32 AM CST, Christophe Leroy wrote:
+On 02/04, Ravi Bangoria wrote:
 >
->
-> Le 20/10/2020 =C3=A0 04:01, Christopher M. Riedl a =C3=A9crit :
-> > On Fri Oct 16, 2020 at 10:48 AM CDT, Christophe Leroy wrote:
-> >>
-> >>
-> >> Le 15/10/2020 =C3=A0 17:01, Christopher M. Riedl a =C3=A9crit :
-> >>> Reuse the "safe" implementation from signal.c except for calling
-> >>> unsafe_copy_from_user() to copy into a local buffer. Unlike the
-> >>> unsafe_copy_{vsx,fpr}_to_user() functions the "copy from" functions
-> >>> cannot use unsafe_get_user() directly to bypass the local buffer sinc=
-e
-> >>> doing so significantly reduces signal handling performance.
-> >>
-> >> Why can't the functions use unsafe_get_user(), why does it significant=
-ly
-> >> reduces signal handling
-> >> performance ? How much significant ? I would expect that not going
-> >> through an intermediate memory
-> >> area would be more efficient
-> >>
-> >=20
-> > Here is a comparison, 'unsafe-signal64-regs' avoids the intermediate bu=
-ffer:
-> >=20
-> > 	|                      | hash   | radix  |
-> > 	| -------------------- | ------ | ------ |
-> > 	| linuxppc/next        | 289014 | 158408 |
-> > 	| unsafe-signal64      | 298506 | 253053 |
-> > 	| unsafe-signal64-regs | 254898 | 220831 |
-> >=20
-> > I have not figured out the 'why' yet. As you mentioned in your series,
-> > technically calling __copy_tofrom_user() is overkill for these
-> > operations. The only obvious difference between unsafe_put_user() and
-> > unsafe_get_user() is that we don't have asm-goto for the 'get' variant.
-> > Instead we wrap with unsafe_op_wrap() which inserts a conditional and
-> > then goto to the label.
-> >=20
-> > Implemenations:
-> >=20
-> > 	#define unsafe_copy_fpr_from_user(task, from, label)   do {           =
- \
-> > 	       struct task_struct *__t =3D task;                              =
-   \
-> > 	       u64 __user *buf =3D (u64 __user *)from;                        =
-   \
-> > 	       int i;                                                         =
- \
-> > 									       \
-> > 	       for (i =3D 0; i < ELF_NFPREG - 1; i++)                         =
-   \
-> > 		       unsafe_get_user(__t->thread.TS_FPR(i), &buf[i], label); \
-> > 	       unsafe_get_user(__t->thread.fp_state.fpscr, &buf[i], label);   =
- \
-> > 	} while (0)
-> >=20
-> > 	#define unsafe_copy_vsx_from_user(task, from, label)   do {           =
- \
-> > 	       struct task_struct *__t =3D task;                              =
-   \
-> > 	       u64 __user *buf =3D (u64 __user *)from;                        =
-   \
-> > 	       int i;                                                         =
- \
-> > 									       \
-> > 	       for (i =3D 0; i < ELF_NVSRHALFREG ; i++)                       =
-   \
-> > 		       unsafe_get_user(__t->thread.fp_state.fpr[i][TS_VSRLOWOFFSET], =
-\
-> > 				       &buf[i], label);                        \
-> > 	} while (0)
-> >=20
->
-> Do you have CONFIG_PROVE_LOCKING or CONFIG_DEBUG_ATOMIC_SLEEP enabled in
-> your config ?
+> +static int get_instr(struct mm_struct *mm, unsigned long addr, u32 *instr)
+> +{
+> +	struct page *page;
+> +	struct vm_area_struct *vma;
+> +	void *kaddr;
+> +	unsigned int gup_flags = FOLL_FORCE | FOLL_SPLIT_PMD;
+> +
+> +	if (get_user_pages_remote(mm, addr, 1, gup_flags, &page, &vma, NULL) <= 0)
+> +		return -EINVAL;
 
-I don't have these set in my config (ppc64le_defconfig). I think I
-figured this out - the reason for the lower signal throughput is the
-barrier_nospec() in __get_user_nocheck(). When looping we incur that
-cost on every iteration. Commenting it out results in signal performance
-of ~316K w/ hash on the unsafe-signal64-regs branch. Obviously the
-barrier is there for a reason but it is quite costly.
+"vma" is not used, and I don't think you need FOLL_SPLIT_PMD.
 
-This also explains why the copy_{fpr,vsx}_to_user() direction does not
-suffer from the slowdown because there is no need for barrier_nospec().
->
-> If yes, could you try together with the patch from Alexey
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210204121612.32=
-721-1-aik@ozlabs.ru/
-> ?
->
-> Thanks
-> Christophe
+Otherwise I can't really comment this ppc-specific change.
+
+To be honest, I don't even understand why do we need this fix. Sure, the
+breakpoint in the middle of 64-bit insn won't work, why do we care? The
+user should know what does he do.
+
+Not to mention we can't really trust get_user_pages() in that this page
+can be modified by mm owner or debugger...
+
+But I won't argue.
+
+Oleg.
 
