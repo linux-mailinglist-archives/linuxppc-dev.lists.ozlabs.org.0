@@ -1,68 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AC331234C
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 10:54:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122D1312364
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 11:10:16 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DYPcw4xt0zDwcK
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 20:54:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DYPzT06PJzDvXp
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 21:10:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f29;
- helo=mail-qv1-xf29.google.com; envelope-from=shengjiu.wang@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=pDgcBRam; dkim-atps=neutral
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com
- [IPv6:2607:f8b0:4864:20::f29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DYPY74NzvzDvZ8
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Feb 2021 20:50:51 +1100 (AEDT)
-Received: by mail-qv1-xf29.google.com with SMTP id a1so5633894qvd.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Feb 2021 01:50:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=dZ4pFx7u5BUDAgelezxkYQyF+xKN7GGALoSIhITUj+o=;
- b=pDgcBRamMSdoUB2BEpAst1f1B9nv0WmaS1Vvz3pxn90Bo2k1jjA+Rmy0x4aLBo07mY
- asda/mt0rtnitVvzATsvxfXHA32w6sTXiqJjs1JBXExweSz1LhjNLHlAe1y/uJwVoXPP
- wMZxM9NPideQw1Zn+3YhCfTxp2iE+jS49MhfAhBXlxoCTbo27Rn9tle+lHnmbjfbFvXp
- X0hAwsQSyOLaIiM0VA16unpVG4z8pP0NFOokUPDV4c6WWuDTv7Mspy8/5jiWRxPdTYZ2
- ot4n0YWlHpRfnib2YaYfQTZxNBV6VLrvkNQtRO3nOIMXZmsratGIKOhZWgirQuqokfd3
- 5XYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=dZ4pFx7u5BUDAgelezxkYQyF+xKN7GGALoSIhITUj+o=;
- b=TagdLFV9v0MHo6G4dNjOl41r2IicXCUHqOOu9izfVr2TtCegjugAbDcp7GTpysWy3e
- leOz1skToFG0NvaZYD43cs/abQrCR48FK08qVBoCvmF6h2xBASYDAjBttxF9ek8f+7ta
- VdTHQ7WQrylU1LLraB3zEsyyZA0i8dPJuXUFLI0aERGGpAJoKNZZTuc/C1pqN0WN0M0R
- HDIQjEbeHHHYxG98hHKGgIQ7HlXKeLXepQsVmU70kaQ1QAeYrccVH8H/f19WKXRa4UKG
- F3Yqy3EiEKj5VJGQcHaa/tMhnEVhYgqURcDCuTN9GskPlQ/dYhuBF8zHvx5aDuEBURrC
- J6Ag==
-X-Gm-Message-State: AOAM533afZ9FUCKcjQJIbCTP1mSyzX1qKm6flq9/+2vTyi8TIooRU4mq
- jnMaFRIQg3kHfkH7MaxkOXtEsEZ2rq0oNzkPFHg=
-X-Google-Smtp-Source: ABdhPJy645FIrmGyg3s+S/f06QE4AJor1BtSgmIOXYOPdd5fhNxXhtiMyZ5sAnnbwtjUKTyx3gqZcZrxPegIJKozRmo=
-X-Received: by 2002:a05:6214:76f:: with SMTP id
- f15mr11458355qvz.56.1612691446129; 
- Sun, 07 Feb 2021 01:50:46 -0800 (PST)
-MIME-Version: 1.0
-References: <1612508250-10586-1-git-send-email-shengjiu.wang@nxp.com>
- <1612508250-10586-6-git-send-email-shengjiu.wang@nxp.com>
- <20210205145816.GD4720@sirena.org.uk>
-In-Reply-To: <20210205145816.GD4720@sirena.org.uk>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Sun, 7 Feb 2021 17:50:35 +0800
-Message-ID: <CAA+D8AMTyxcz2nXEDemuWRwtORSfRoBRZO03WyX+XpuiOD0XiA@mail.gmail.com>
-Subject: Re: [PATCH 5/7] ASoC: imx-pcm-rpmsg: Add platform driver for audio
- base on rpmsg
-To: Mark Brown <broonie@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DYPxM24BNzDvXG
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Feb 2021 21:08:17 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DYPx466cDz9txrK;
+ Sun,  7 Feb 2021 11:08:08 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id kzuzDFmCJECz; Sun,  7 Feb 2021 11:08:08 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DYPx45CBFz9txrJ;
+ Sun,  7 Feb 2021 11:08:08 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C15038B788;
+ Sun,  7 Feb 2021 11:08:11 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id dp6qCZ_f1S0i; Sun,  7 Feb 2021 11:08:11 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7D8698B766;
+ Sun,  7 Feb 2021 11:08:11 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 4A964672C0; Sun,  7 Feb 2021 10:08:11 +0000 (UTC)
+Message-Id: <c72f014730823b413528e90ab6c4d3bcb79f8497.1612692067.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/uaccess: Perform barrier_nospec() in KUAP allowance
+ helpers
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ cmr@codefail.de
+Date: Sun,  7 Feb 2021 10:08:11 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,62 +58,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, alsa-devel@alsa-project.org,
- Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
- Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Rob Herring <robh+dt@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 5, 2021 at 11:00 PM Mark Brown <broonie@kernel.org> wrote:
->
-> On Fri, Feb 05, 2021 at 02:57:28PM +0800, Shengjiu Wang wrote:
->
-> > +     if (params_format(params) == SNDRV_PCM_FORMAT_S16_LE)
-> > +             msg->s_msg.param.format   = RPMSG_S16_LE;
-> > +     else if (params_format(params) == SNDRV_PCM_FORMAT_S24_LE)
->
-> Again this should be a switch statement.
->
-> > +     if (params_channels(params) == 1)
-> > +             msg->s_msg.param.channels = RPMSG_CH_LEFT;
-> > +     else
-> > +             msg->s_msg.param.channels = RPMSG_CH_STEREO;
->
-> Shouldn't this be reporting an error if the number of channels is more
-> than 2?
->
-> > +             /*
-> > +              * if the data in the buffer is less than one period
-> > +              * send message immediately.
-> > +              * if there is more than one period data, delay one
-> > +              * period (timer) to send the message.
-> > +              */
-> > +             if ((avail - writen_num * period_size) <= period_size) {
-> > +                     imx_rpmsg_insert_workqueue(substream, msg, info);
-> > +             } else if (rpmsg->force_lpa && !timer_pending(timer)) {
-> > +                     int time_msec;
-> > +
-> > +                     time_msec = (int)(runtime->period_size * 1000 / runtime->rate);
-> > +                     mod_timer(timer, jiffies + msecs_to_jiffies(time_msec));
-> > +             }
->
-> The comment here is at least confusing - why would we not send a full
-> buffer immediately if we have one?  This sounds like it's the opposite
-> way round to what we'd do if we were trying to cut down the number of
-> messages.  It might help to say which buffer and where?
->
-> > +     /**
-> > +      * Every work in the work queue, first we check if there
->
-> /** comments are only for kerneldoc.
+barrier_nospec() in uaccess helpers is there to protect against
+speculative accesses around access_ok().
 
-Thanks Mark, I will update them.
+When using user_access_begin() sequences together with
+unsafe_get_user() like macros, barrier_nospec() is called for
+every single read although we know the access_ok() is done
+onece.
 
-Best regards
-wang shengjiu
+Since all user accesses must be granted by a call to either
+allow_read_from_user() or allow_read_write_user() which will
+always happen after the access_ok() check, move the barrier_nospec()
+there.
+
+Reported-by: Christopher M. Riedl <cmr@codefail.de>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/kup.h     |  2 ++
+ arch/powerpc/include/asm/uaccess.h | 12 +-----------
+ 2 files changed, 3 insertions(+), 11 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+index bf221a2a523e..7ec21af49a45 100644
+--- a/arch/powerpc/include/asm/kup.h
++++ b/arch/powerpc/include/asm/kup.h
+@@ -91,6 +91,7 @@ static __always_inline void setup_kup(void)
+ 
+ static inline void allow_read_from_user(const void __user *from, unsigned long size)
+ {
++	barrier_nospec();
+ 	allow_user_access(NULL, from, size, KUAP_READ);
+ }
+ 
+@@ -102,6 +103,7 @@ static inline void allow_write_to_user(void __user *to, unsigned long size)
+ static inline void allow_read_write_user(void __user *to, const void __user *from,
+ 					 unsigned long size)
+ {
++	barrier_nospec();
+ 	allow_user_access(to, from, size, KUAP_READ_WRITE);
+ }
+ 
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 501c9a79038c..46123ae6a4c9 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -315,7 +315,6 @@ do {								\
+ 	__chk_user_ptr(__gu_addr);				\
+ 	if (!is_kernel_addr((unsigned long)__gu_addr))		\
+ 		might_fault();					\
+-	barrier_nospec();					\
+ 	if (do_allow)								\
+ 		__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err);	\
+ 	else									\
+@@ -333,10 +332,8 @@ do {								\
+ 	__typeof__(size) __gu_size = (size);				\
+ 									\
+ 	might_fault();							\
+-	if (access_ok(__gu_addr, __gu_size)) {				\
+-		barrier_nospec();					\
++	if (access_ok(__gu_addr, __gu_size))				\
+ 		__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err); \
+-	}								\
+ 	(x) = (__force __typeof__(*(ptr)))__gu_val;				\
+ 									\
+ 	__gu_err;							\
+@@ -350,7 +347,6 @@ do {								\
+ 	__typeof__(size) __gu_size = (size);			\
+ 								\
+ 	__chk_user_ptr(__gu_addr);				\
+-	barrier_nospec();					\
+ 	__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err); \
+ 	(x) = (__force __typeof__(*(ptr)))__gu_val;			\
+ 								\
+@@ -395,7 +391,6 @@ raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
+ {
+ 	unsigned long ret;
+ 
+-	barrier_nospec();
+ 	allow_read_write_user(to, from, n);
+ 	ret = __copy_tofrom_user(to, from, n);
+ 	prevent_read_write_user(to, from, n);
+@@ -412,19 +407,15 @@ static inline unsigned long raw_copy_from_user(void *to,
+ 
+ 		switch (n) {
+ 		case 1:
+-			barrier_nospec();
+ 			__get_user_size(*(u8 *)to, from, 1, ret);
+ 			break;
+ 		case 2:
+-			barrier_nospec();
+ 			__get_user_size(*(u16 *)to, from, 2, ret);
+ 			break;
+ 		case 4:
+-			barrier_nospec();
+ 			__get_user_size(*(u32 *)to, from, 4, ret);
+ 			break;
+ 		case 8:
+-			barrier_nospec();
+ 			__get_user_size(*(u64 *)to, from, 8, ret);
+ 			break;
+ 		}
+@@ -432,7 +423,6 @@ static inline unsigned long raw_copy_from_user(void *to,
+ 			return 0;
+ 	}
+ 
+-	barrier_nospec();
+ 	allow_read_from_user(from, n);
+ 	ret = __copy_tofrom_user((__force void __user *)to, from, n);
+ 	prevent_read_from_user(from, n);
+-- 
+2.25.0
+
