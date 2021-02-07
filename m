@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E283125EC
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 17:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 602FE3125F6
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 17:21:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DYZ5z0tfLzDvrJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 03:16:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DYZCS2SDtzDwsB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 03:21:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -16,33 +16,34 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=CqX4vXqb; 
+ header.s=casper.20170209 header.b=PzcY4sAI; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DYYyT55vKzDsVh
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DYYyT33StzDsSm
  for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Feb 2021 03:09:53 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=ud3Ea8LmZI8vUpOxMZKE5jSGVPMWnEsLwfRS0dNFbE0=; b=CqX4vXqbmh6QXJAg3YewZtxxcH
- a2xzhphD8VLBCm3tOSIRvmJqwHwT1+K8P/oc1ldXlA56muOJ0R30QDUGLXMU1HJMX2h3xNCEKCkPP
- 7qqxpgtnv2BkqiGDNANYGx4IELardjX+PUkA0qNFFBY1MW/3JChiJHBxfp/YWzQ0E5F3Mdp2/OVh/
- 9g6CysD+IM/6jxu/nwmnHPlUGiXtrFDZqSz6+yq/nbOb+l23UwU03aaZmuiZR4BRT9NtcFg9QyoSB
- THL9WiHFfyXyVjQSg87GaF+1IBS1WU5j2owUfxHwogo5pylPoK7SW5yRVtUK+9TksokO0o2L+sabB
- bODKCAsQ==;
+ bh=jFI2mi7dyRl0KQwCReup9amZMDdC7KVLA5/jiqTUJgc=; b=PzcY4sAIeTkV30mNeSR7f4zhev
+ 1l86naI/SQcUf0zOFqJq4KJw5/8N1oMJjS8yNc/Z8ehT98TCXfbqC0yQIJkU5+vzsX2EJcA7lqXnD
+ inxtjszyQ9sK7lZOffjVlwnAIPOGvXzlMpup2gQRm/SVMpF6REFiaCeA3V36wmiPskUOOwbKs2f2/
+ Bh9N0vS73XhuuqKUlQtGemY4mIiM6twaFuU0N84w1IvGRIOriBPhiyre+OW/45YumEnkat66MuvVP
+ iZjwGsedAM5O6qFZcTy0pBe4gMYLXotX3BJJucUjweYhEXiYYk6TIHHM3R2KLkGXZDkHwdJsP3F08
+ DtFINz5Q==;
 Received: from [2001:4bb8:184:7d04:4590:5583:6cb7:77c7] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1l8mcz-004tm4-Bg; Sun, 07 Feb 2021 16:09:38 +0000
+ id 1l8md1-004tmA-Lk; Sun, 07 Feb 2021 16:09:40 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Subject: [PATCH 1/8] powerpc/svm: stop using io_tlb_start
-Date: Sun,  7 Feb 2021 17:09:27 +0100
-Message-Id: <20210207160934.2955931-2-hch@lst.de>
+Subject: [PATCH 2/8] xen-swiotlb: use is_swiotlb_buffer in
+ is_xen_swiotlb_buffer
+Date: Sun,  7 Feb 2021 17:09:28 +0100
+Message-Id: <20210207160934.2955931-3-hch@lst.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210207160934.2955931-1-hch@lst.de>
 References: <20210207160934.2955931-1-hch@lst.de>
@@ -68,28 +69,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the local variable that is passed to swiotlb_init_with_tbl for
-freeing the memory in the failure case to isolate the code a little
-better from swiotlb internals.
+Use the is_swiotlb_buffer to check if a physical address is
+a swiotlb buffer.  This works because xen-swiotlb does use the
+same buffer as the main swiotlb code, and xen_io_tlb_{start,end}
+are just the addresses for it that went through phys_to_virt.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/powerpc/platforms/pseries/svm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/xen/swiotlb-xen.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/svm.c b/arch/powerpc/platforms/pseries/svm.c
-index 7b739cc7a8a93e..b9968ac7cc0789 100644
---- a/arch/powerpc/platforms/pseries/svm.c
-+++ b/arch/powerpc/platforms/pseries/svm.c
-@@ -56,7 +56,7 @@ void __init svm_swiotlb_init(void)
- 		return;
- 
- 	if (io_tlb_start)
--		memblock_free_early(io_tlb_start,
-+		memblock_free_early(__pa(vstart),
- 				    PAGE_ALIGN(io_tlb_nslabs << IO_TLB_SHIFT));
- 	panic("SVM: Cannot allocate SWIOTLB buffer");
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index 2b385c1b4a99cb..a4026822a889f7 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -111,10 +111,8 @@ static int is_xen_swiotlb_buffer(struct device *dev, dma_addr_t dma_addr)
+ 	 * have the same virtual address as another address
+ 	 * in our domain. Therefore _only_ check address within our domain.
+ 	 */
+-	if (pfn_valid(PFN_DOWN(paddr))) {
+-		return paddr >= virt_to_phys(xen_io_tlb_start) &&
+-		       paddr < virt_to_phys(xen_io_tlb_end);
+-	}
++	if (pfn_valid(PFN_DOWN(paddr)))
++		return is_swiotlb_buffer(paddr);
+ 	return 0;
  }
+ 
 -- 
 2.29.2
 
