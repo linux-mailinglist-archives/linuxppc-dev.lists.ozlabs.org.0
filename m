@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B5D3125F0
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 17:17:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 856503125E6
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 17:14:36 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DYZ7m1BQJzDsQH
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 03:17:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DYZ3s5kC2zDwnB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 03:14:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=YqZ4QnN1; 
+ header.s=casper.20170209 header.b=PBdwbGIJ; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DYYyT2J98zDsRH
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DYYyT52dTzDsVV
  for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Feb 2021 03:09:53 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=T8t1FwG6dE6zlEC3wLjW3JLNNjj/ykTR2lwFCEWQrxw=; b=YqZ4QnN1AVP9n/XFE9fsSrvWCF
- 8EEyVnum1O4pgtOIHD11S+iAWfm6laLkacn4Z2eWxuAyluOFTvlaedJznz/qrn3jE5wUHhthpubHU
- Apn4BjiI+OFuhTOzZH+VzHVviNaDF4pAfarvhdBIVt8KWXZ43vISJu96/HCVVesdgCAxz3eawu2lg
- 2xjUd2GoHUF+9GKve/GSvZ20KB2IuFHtrylOK3+Wn3al61Xht1ZQhvrv95mynOS4veIx/MiL2So2G
- SmG5re6h//fchVk1f1XgUNgw6TBeVkKwuHQVxG2BIwR4ROuxSMOFuG56ulMVKHCEGHViqPxAFdMAg
- CFXHUMMQ==;
+ bh=tHBexmHGDU8sjj38AZ8OoEmgptCGTXSoPlkiz2alw+s=; b=PBdwbGIJlKrg+agS8u5um5z3+E
+ lRbcNlTzG3ntexPbto0mi2062ImrpQVKR3XGI4/cKR3mfaGRiJgDHdqMFG0mP1KLhbe2zWELau6xh
+ YOi37Sez5qoaovImrcBXFeSYI28UxhVa7x6E+3aB/UaioGgM4KIS8iunU4KBsKMISwsyXxkncv/EY
+ ltEqLzdq2KfRLnJTlX6hBx+PgpoKnaxT0DPfw5Cg0VXBcqnxvcAYaken/jlwA5MX8p28MsZpw1aey
+ uebkJGJud2BW7OZYmg4y//+8KPP9MHqx0t9vTK7eomCKEuKDWTNHRowqZmVS/2c7Yhr8Mk8ky1CZU
+ OASFkWow==;
 Received: from [2001:4bb8:184:7d04:4590:5583:6cb7:77c7] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
- id 1l8md3-004tmH-BE; Sun, 07 Feb 2021 16:09:41 +0000
+ id 1l8md5-004tmP-JA; Sun, 07 Feb 2021 16:09:44 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Subject: [PATCH 3/8] xen-swiotlb: use io_tlb_end in xen_swiotlb_dma_supported
-Date: Sun,  7 Feb 2021 17:09:29 +0100
-Message-Id: <20210207160934.2955931-4-hch@lst.de>
+Subject: [PATCH 4/8] xen-swiotlb: remove xen_set_nslabs
+Date: Sun,  7 Feb 2021 17:09:30 +0100
+Message-Id: <20210207160934.2955931-5-hch@lst.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210207160934.2955931-1-hch@lst.de>
 References: <20210207160934.2955931-1-hch@lst.de>
@@ -68,58 +68,61 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the existing variable that holds the physical address for
-xen_io_tlb_end to simplify xen_swiotlb_dma_supported a bit, and remove
-the otherwise unused xen_io_tlb_end variable and the xen_virt_to_bus
-helper.
+The xen_set_nslabs function is a little weird, as it has just one
+caller, that caller passes a global variable as the argument,
+which is then overriden in the function and a derivative of it
+returned.  Just add a cpp symbol for the default size using a readable
+constant and open code the remaining three lines in the caller.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/xen/swiotlb-xen.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/xen/swiotlb-xen.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index a4026822a889f7..4298f74a083985 100644
+index 4298f74a083985..57f8d5fadc1fcd 100644
 --- a/drivers/xen/swiotlb-xen.c
 +++ b/drivers/xen/swiotlb-xen.c
-@@ -46,7 +46,7 @@
-  * API.
-  */
- 
--static char *xen_io_tlb_start, *xen_io_tlb_end;
-+static char *xen_io_tlb_start;
- static unsigned long xen_io_tlb_nslabs;
- /*
-  * Quick lookup value of the bus address of the IOTLB.
-@@ -82,11 +82,6 @@ static inline phys_addr_t xen_dma_to_phys(struct device *dev,
- 	return xen_bus_to_phys(dev, dma_to_phys(dev, dma_addr));
+@@ -138,16 +138,6 @@ xen_swiotlb_fixup(void *buf, size_t size, unsigned long nslabs)
+ 	} while (i < nslabs);
+ 	return 0;
  }
- 
--static inline dma_addr_t xen_virt_to_bus(struct device *dev, void *address)
+-static unsigned long xen_set_nslabs(unsigned long nr_tbl)
 -{
--	return xen_phys_to_dma(dev, virt_to_phys(address));
--}
+-	if (!nr_tbl) {
+-		xen_io_tlb_nslabs = (64 * 1024 * 1024 >> IO_TLB_SHIFT);
+-		xen_io_tlb_nslabs = ALIGN(xen_io_tlb_nslabs, IO_TLB_SEGSIZE);
+-	} else
+-		xen_io_tlb_nslabs = nr_tbl;
 -
- static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
- {
- 	unsigned long next_bfn, xen_pfn = XEN_PFN_DOWN(p);
-@@ -250,7 +245,6 @@ int __ref xen_swiotlb_init(int verbose, bool early)
- 		rc = swiotlb_late_init_with_tbl(xen_io_tlb_start, xen_io_tlb_nslabs);
+-	return xen_io_tlb_nslabs << IO_TLB_SHIFT;
+-}
  
- end:
--	xen_io_tlb_end = xen_io_tlb_start + bytes;
- 	if (!rc)
- 		swiotlb_set_max_segment(PAGE_SIZE);
- 
-@@ -558,7 +552,7 @@ xen_swiotlb_sync_sg_for_device(struct device *dev, struct scatterlist *sgl,
- static int
- xen_swiotlb_dma_supported(struct device *hwdev, u64 mask)
- {
--	return xen_virt_to_bus(hwdev, xen_io_tlb_end - 1) <= mask;
-+	return xen_phys_to_dma(hwdev, io_tlb_end - 1) <= mask;
+ enum xen_swiotlb_err {
+ 	XEN_SWIOTLB_UNKNOWN = 0,
+@@ -170,6 +160,9 @@ static const char *xen_swiotlb_error(enum xen_swiotlb_err err)
+ 	}
+ 	return "";
  }
++
++#define DEFAULT_NSLABS		ALIGN(SZ_64M >> IO_TLB_SHIFT, IO_TLB_SEGSIZE)
++
+ int __ref xen_swiotlb_init(int verbose, bool early)
+ {
+ 	unsigned long bytes, order;
+@@ -179,8 +172,10 @@ int __ref xen_swiotlb_init(int verbose, bool early)
  
- const struct dma_map_ops xen_swiotlb_dma_ops = {
+ 	xen_io_tlb_nslabs = swiotlb_nr_tbl();
+ retry:
+-	bytes = xen_set_nslabs(xen_io_tlb_nslabs);
+-	order = get_order(xen_io_tlb_nslabs << IO_TLB_SHIFT);
++	if (!xen_io_tlb_nslabs)
++		xen_io_tlb_nslabs = DEFAULT_NSLABS;
++	bytes = xen_io_tlb_nslabs << IO_TLB_SHIFT;
++	order = get_order(bytes);
+ 
+ 	/*
+ 	 * IO TLB memory already allocated. Just use it.
 -- 
 2.29.2
 
