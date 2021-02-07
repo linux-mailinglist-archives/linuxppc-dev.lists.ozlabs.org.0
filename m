@@ -1,73 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB80B31246C
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 14:00:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 146DB31247A
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 14:04:17 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DYTlm4k2LzDrQW
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 00:00:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DYTrG27JQzDwgD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 00:04:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633;
- helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
+ helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=E0XZu/Zz; dkim-atps=neutral
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
- [IPv6:2607:f8b0:4864:20::633])
+ header.s=20161025 header.b=LiCvSFik; dkim-atps=neutral
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
+ [IPv6:2607:f8b0:4864:20::432])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DYTgq2J0QzDvbh
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Feb 2021 23:56:53 +1100 (AEDT)
-Received: by mail-pl1-x633.google.com with SMTP id s15so6377041plr.9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Feb 2021 04:56:53 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DYTjR5mh6zDvXH
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Feb 2021 23:58:19 +1100 (AEDT)
+Received: by mail-pf1-x432.google.com with SMTP id d26so6713731pfn.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Feb 2021 04:58:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=4J8vjVTAmF7qVybMolxtFfqy7wBstph1SrcMt5nRL5Y=;
- b=E0XZu/Zzp1qXqLs5po1MpmGCUnliX0usknfGN9lnMoKQ3OJhxbArFqVk7gDUp8KAIp
- sFTXTOxExmA59TsJ8L8r7ELMXaP0Xj0gZmEEf9nTzz/RzWfUnNi+hrr4AiC+6MGaGWZn
- p4s1Gn4qQ36TsOv9OAO4/uOSxS1pX7sJ+YEq4+CmhosYCt1FuqOP5V2hk2XasdzS8OX2
- FiKcHSRBEM3xgbz3iAwoG+isQknTb6HxN4njqYvx8FHLb6dVe6evMS02J5kpyasG3trq
- wUNZYIk1+iQcK4j3L73gf+lAWMjzcc6XXDutkhcnN1gFS/lAp5l/uMi61JhGVnjQWkKT
- SF/A==
+ bh=HRil25UDzKb8yPl0jadwKZl9XNibg+TF1qy+wgizfPA=;
+ b=LiCvSFikSJam6dEvCB/xwzNAhj6Xv9B1Wh6n63vtRF9cXaOmdScndiy3N0pj5wc0vn
+ v/XFat3KtVxc+b/ye+Y7M0a/9N7rLH3MEoRlOCyoRVYSTZH1qbMMD0E5Jc0zz0pGJWGJ
+ axjyyNgdirvgkeKXZgJig1BKOmc++SPpRC8Tbb8t589VwhAC2zX+lZ/dZWApKJpNZZc0
+ t+LlyUeLxqqw4ovr6XhECFhPkDia2sv2jBsDeIE9s3FlmB+wgicces+6aPVPCSClRkHD
+ 7ktwIMt/FNHaj5eYO3/mZtTCCU/qkYkIXrlJM/GnqOhg5kLki+z9LJSEbMnaO0qK8Ygz
+ awLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=4J8vjVTAmF7qVybMolxtFfqy7wBstph1SrcMt5nRL5Y=;
- b=EgtDjFhZgzeiV8HCAxr0TqxRbbKspneXCxT2cvedGlEzZAq3HD56Fm9C6NyNjJWZq0
- lNv9LjglvNvX7mt+lvNpDY4ceASxAkOrxzlnWLWAXGTnqHKQoSKaAPPoOoOEROxh73Fe
- PBx0B2sVSjAa0uJUbZtiq0kR37bv0WczAZZ7bNiM3ic1ZlWRdtzjl1WyQfiqUzPqxjdr
- wz4DIPcrdU/WD/cAArgTynsYz1GWxK/51WMwQiC6HO9NITc3kxVWK5s6wSGysdw5EfUb
- QPVY0a04LutxdOBp6TvIIh6Q37azWvg07rWYzlC3UaC0YY0Jc6hasqNcjQzQebeDksZM
- K7UA==
-X-Gm-Message-State: AOAM530GiKfQw/YGAzlUht0Yfrh9W/JrpQZ1VX961mOUd8RGkfGz4fXv
- GIou7KHc4SPjFL+HPKIftnOCMriu68g=
-X-Google-Smtp-Source: ABdhPJx6Sr2evUuUMtJbMpsRF+Wnvcf4mTcH/eiYGU1EsfPqpSW5gD3KExlLbw5uFLrlBKeKzpla8g==
-X-Received: by 2002:a17:90b:148f:: with SMTP id
- js15mr2426084pjb.189.1612702609409; 
- Sun, 07 Feb 2021 04:56:49 -0800 (PST)
+ bh=HRil25UDzKb8yPl0jadwKZl9XNibg+TF1qy+wgizfPA=;
+ b=MIWJPKvVEZXEVBSrBa3DFOw7UC3sgWt79cdX8Q8YCOijxn3REz0pdyuiOZprrjZIQJ
+ jCKMeu2Lmzbn5spkcnecGEac2o9f6GAxnVrX2B5s643GJO6odjbPj0AEwB8dDc/xhpma
+ m5lWZrNWVwxAyECboMthwmBEKgsSm6B07BzblMdwQ/5qy4a7BY7U3LPsg2T0i1M9R7ay
+ dXxBObsKYutKDPgKzzC2H+vE/qwwKGr7KbovFlYXhv33GStHP1M5ur5j2Au3YEGJpEqk
+ ueFIIIg3Qm7A7FdtetbHm6zgkySU0Hp+JTDxSrcKo2COagDcMcN2/zgnCxjdF4JtBQOq
+ R77w==
+X-Gm-Message-State: AOAM531dSyVq0C5dmz9b7n5uzKZX68gUsFkFSRJkfM1icl1ZAUUDIJyE
+ LGquDSfT/mp8VZva2LrreLxmhtNEbOk=
+X-Google-Smtp-Source: ABdhPJyHl5Sb6OeK9Jv3hhyKwvMqFBIfkpt9btCxsfmxeEm+P/7N1rvpcbjHQg4/5TDG+pTwH8P+/Q==
+X-Received: by 2002:a62:fc83:0:b029:1d6:1767:dd1c with SMTP id
+ e125-20020a62fc830000b02901d61767dd1cmr13199440pfh.70.1612702696408; 
+ Sun, 07 Feb 2021 04:58:16 -0800 (PST)
 Received: from localhost (60-242-11-44.static.tpgi.com.au. [60.242.11.44])
- by smtp.gmail.com with ESMTPSA id d18sm11689933pjz.40.2021.02.07.04.56.47
+ by smtp.gmail.com with ESMTPSA id c188sm216726pfa.98.2021.02.07.04.58.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 07 Feb 2021 04:56:48 -0800 (PST)
-Date: Sun, 07 Feb 2021 22:56:43 +1000
+ Sun, 07 Feb 2021 04:58:15 -0800 (PST)
+Date: Sun, 07 Feb 2021 22:58:10 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v7 28/42] powerpc: convert interrupt handlers to use
- wrappers
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v7 42/42] powerpc/64s: power4 nap fixup in C
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
 References: <20210130130852.2952424-1-npiggin@gmail.com>
- <20210130130852.2952424-29-npiggin@gmail.com>
- <0e319d85-9fa0-ff97-03b2-93637ad89a99@csgroup.eu>
-In-Reply-To: <0e319d85-9fa0-ff97-03b2-93637ad89a99@csgroup.eu>
+ <20210130130852.2952424-43-npiggin@gmail.com>
+ <878s86dals.fsf@mpe.ellerman.id.au>
+In-Reply-To: <878s86dals.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1612702475.d6qyt6qtfy.astroid@bobo.none>
+Message-Id: <1612702622.n8vaboy2dx.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -86,177 +84,84 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of February 5, 2021 6:09 pm:
->=20
->=20
-> Le 30/01/2021 =C3=A0 14:08, Nicholas Piggin a =C3=A9crit=C2=A0:
+Excerpts from Michael Ellerman's message of February 2, 2021 8:31 pm:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>> There is no need for this to be in asm, use the new intrrupt entry wrapp=
+er.
+>>
 >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >> ---
+>>  arch/powerpc/include/asm/interrupt.h   | 15 +++++++++
+>>  arch/powerpc/include/asm/processor.h   |  1 +
+>>  arch/powerpc/include/asm/thread_info.h |  6 ++++
+>>  arch/powerpc/kernel/exceptions-64s.S   | 45 --------------------------
+>>  arch/powerpc/kernel/idle_book3s.S      |  4 +++
+>>  5 files changed, 26 insertions(+), 45 deletions(-)
 >=20
->> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
->> index f70d3f6174c8..7ff915aae8ec 100644
->> --- a/arch/powerpc/kernel/traps.c
->> +++ b/arch/powerpc/kernel/traps.c
+> Something in here is making my G5 not boot.
 >=20
->> @@ -1462,7 +1474,7 @@ static int emulate_math(struct pt_regs *regs)
->>   static inline int emulate_math(struct pt_regs *regs) { return -1; }
->>   #endif
->>  =20
->> -void program_check_exception(struct pt_regs *regs)
->> +DEFINE_INTERRUPT_HANDLER(program_check_exception)
->>   {
->>   	enum ctx_state prev_state =3D exception_enter();
->>   	unsigned int reason =3D get_reason(regs);
->> @@ -1587,14 +1599,14 @@ NOKPROBE_SYMBOL(program_check_exception);
->>    * This occurs when running in hypervisor mode on POWER6 or later
->>    * and an illegal instruction is encountered.
->>    */
->> -void emulation_assist_interrupt(struct pt_regs *regs)
->> +DEFINE_INTERRUPT_HANDLER(emulation_assist_interrupt)
->>   {
->>   	regs->msr |=3D REASON_ILLEGAL;
->>   	program_check_exception(regs);
+> I don't know what the problem is because that machine is in the office,
+> and I am not, and it has no serial console.
 >=20
-> Is it correct that an INTERRUPT_HANDLER calls another INTERRUPT_HANDLER ?
+> I tried turning on pstore but it doesn't record anything :/
 
-No, here is a patch for it, should go any time before the interrupt=20
-wrappers are introduced. It causes some conflicts later but are not
-too complex. I can resend the series if necessary.
+Here is an incremental patch (hopefully) should fix it. Should be
+folded with this one.
 
 Thanks,
 Nick
-
 ---
-powerpc/traps: factor common code from program check and emulation assist
+powerpc/64s: nap_adjust_return fix
 
-Move the program check handling into a function called by both, rather
-than have the emulation assist handler call the program check handler.
+This is a fix for patch "powerpc/64s: power4 nap fixup in C".
 
-This allows each of these handlers to be implemented with "interrupt
-wrappers" in a later change.
+Non-maskable interrupts should not create any exit work, so there
+should be no reason to come out of idle. So take the nap fixup out
+of NMIs.
+
+The problem with having them here is that an interrupt can come in
+and then get interrupted by an NMI, the NMI will then set its return
+to the idle wakeup and never complete the regular interrupt handling.
+
+Before the "powerpc/64s: power4 nap fixup in C" patch, this wouldn't
+occur because the true NMIs didn't call FIXUP_NAP, and the other
+interrupts would call it before running their handler, so they would
+not have a chance to call may_hard_irq_enable and allow soft-NMIs
+(watchdog, perf) to come through.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/traps.c | 38 +++++++++++++++++++++++--------------
- 1 file changed, 24 insertions(+), 14 deletions(-)
+ arch/powerpc/include/asm/interrupt.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index f70d3f6174c8..2c5986109412 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -1462,9 +1462,8 @@ static int emulate_math(struct pt_regs *regs)
- static inline int emulate_math(struct pt_regs *regs) { return -1; }
- #endif
-=20
--void program_check_exception(struct pt_regs *regs)
-+static void do_program_check(struct pt_regs *regs)
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/as=
+m/interrupt.h
+index 25f2420b1965..afdf4aba2e6b 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -12,6 +12,7 @@ static inline void nap_adjust_return(struct pt_regs *regs=
+)
  {
--	enum ctx_state prev_state =3D exception_enter();
- 	unsigned int reason =3D get_reason(regs);
-=20
- 	/* We can now get here via a FP Unavailable exception if the core
-@@ -1473,22 +1472,22 @@ void program_check_exception(struct pt_regs *regs)
- 	if (reason & REASON_FP) {
- 		/* IEEE FP exception */
- 		parse_fpe(regs);
--		goto bail;
-+		return;
+ #ifdef CONFIG_PPC_970_NAP
+ 	if (unlikely(test_thread_local_flags(_TLF_NAPPING))) {
++		/* Can avoid a test-and-clear because NMIs do not call this */
+ 		clear_thread_local_flags(_TLF_NAPPING);
+ 		regs->nip =3D (unsigned long)power4_idle_nap_return;
  	}
- 	if (reason & REASON_TRAP) {
- 		unsigned long bugaddr;
- 		/* Debugger is first in line to stop recursive faults in
- 		 * rcu_lock, notify_die, or atomic_notifier_call_chain */
- 		if (debugger_bpt(regs))
--			goto bail;
-+			return;
+@@ -164,7 +165,10 @@ static inline void interrupt_nmi_exit_prepare(struct p=
+t_regs *regs, struct inter
+ 			radix_enabled() || (mfmsr() & MSR_DR))
+ 		nmi_exit();
 =20
- 		if (kprobe_handler(regs))
--			goto bail;
-+			return;
+-	nap_adjust_return(regs);
++	/*
++	 * nmi does not call nap_adjust_return because nmi should not create
++	 * new work to do (must use irq_work for that).
++	 */
 =20
- 		/* trap exception */
- 		if (notify_die(DIE_BPT, "breakpoint", regs, 5, 5, SIGTRAP)
- 				=3D=3D NOTIFY_STOP)
--			goto bail;
-+			return;
-=20
- 		bugaddr =3D regs->nip;
- 		/*
-@@ -1500,10 +1499,10 @@ void program_check_exception(struct pt_regs *regs)
- 		if (!(regs->msr & MSR_PR) &&  /* not user-mode */
- 		    report_bug(bugaddr, regs) =3D=3D BUG_TRAP_TYPE_WARN) {
- 			regs->nip +=3D 4;
--			goto bail;
-+			return;
- 		}
- 		_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
--		goto bail;
-+		return;
- 	}
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 	if (reason & REASON_TM) {
-@@ -1524,7 +1523,7 @@ void program_check_exception(struct pt_regs *regs)
- 		 */
- 		if (user_mode(regs)) {
- 			_exception(SIGILL, regs, ILL_ILLOPN, regs->nip);
--			goto bail;
-+			return;
- 		} else {
- 			printk(KERN_EMERG "Unexpected TM Bad Thing exception "
- 			       "at %lx (msr 0x%lx) tm_scratch=3D%llx\n",
-@@ -1557,7 +1556,7 @@ void program_check_exception(struct pt_regs *regs)
- 	 * pattern to occurrences etc. -dgibson 31/Mar/2003
- 	 */
- 	if (!emulate_math(regs))
--		goto bail;
-+		return;
-=20
- 	/* Try to emulate it if we should. */
- 	if (reason & (REASON_ILLEGAL | REASON_PRIVILEGED)) {
-@@ -1565,10 +1564,10 @@ void program_check_exception(struct pt_regs *regs)
- 		case 0:
- 			regs->nip +=3D 4;
- 			emulate_single_step(regs);
--			goto bail;
-+			return;
- 		case -EFAULT:
- 			_exception(SIGSEGV, regs, SEGV_MAPERR, regs->nip);
--			goto bail;
-+			return;
- 		}
- 	}
-=20
-@@ -1578,7 +1577,14 @@ void program_check_exception(struct pt_regs *regs)
- 	else
- 		_exception(SIGILL, regs, ILL_ILLOPC, regs->nip);
-=20
--bail:
-+}
-+
-+void program_check_exception(struct pt_regs *regs)
-+{
-+	enum ctx_state prev_state =3D exception_enter();
-+
-+	do_program_check(regs);
-+
- 	exception_exit(prev_state);
- }
- NOKPROBE_SYMBOL(program_check_exception);
-@@ -1589,8 +1595,12 @@ NOKPROBE_SYMBOL(program_check_exception);
-  */
- void emulation_assist_interrupt(struct pt_regs *regs)
- {
-+	enum ctx_state prev_state =3D exception_enter();
-+
- 	regs->msr |=3D REASON_ILLEGAL;
--	program_check_exception(regs);
-+	do_program_check(regs);
-+
-+	exception_exit(prev_state);
- }
- NOKPROBE_SYMBOL(emulation_assist_interrupt);
-=20
+ #ifdef CONFIG_PPC64
+ 	if (TRAP(regs) !=3D 0x900 && TRAP(regs) !=3D 0xf00 && TRAP(regs) !=3D 0x2=
+60)
 --=20
 2.23.0
-
 
