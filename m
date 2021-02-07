@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122D1312364
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 11:10:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 431B4312366
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 11:13:27 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DYPzT06PJzDvXp
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 21:10:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DYQ3771hyzDvXn
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 21:13:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,38 +15,41 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DYPxM24BNzDvXG
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Feb 2021 21:08:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DYQ1d32RfzDvXJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Feb 2021 21:12:04 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DYPx466cDz9txrK;
- Sun,  7 Feb 2021 11:08:08 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DYQ1V5PgPz9txrW;
+ Sun,  7 Feb 2021 11:11:58 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id kzuzDFmCJECz; Sun,  7 Feb 2021 11:08:08 +0100 (CET)
+ with ESMTP id Dxu8rU2VTwHB; Sun,  7 Feb 2021 11:11:58 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DYPx45CBFz9txrJ;
- Sun,  7 Feb 2021 11:08:08 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DYQ1V3JsTz9txrV;
+ Sun,  7 Feb 2021 11:11:58 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C15038B788;
- Sun,  7 Feb 2021 11:08:11 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6C7B48B788;
+ Sun,  7 Feb 2021 11:12:01 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id dp6qCZ_f1S0i; Sun,  7 Feb 2021 11:08:11 +0100 (CET)
-Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7D8698B766;
- Sun,  7 Feb 2021 11:08:11 +0100 (CET)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 4A964672C0; Sun,  7 Feb 2021 10:08:11 +0000 (UTC)
-Message-Id: <c72f014730823b413528e90ab6c4d3bcb79f8497.1612692067.git.christophe.leroy@csgroup.eu>
+ with ESMTP id ceQZmop64mtj; Sun,  7 Feb 2021 11:12:01 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 15DE38B766;
+ Sun,  7 Feb 2021 11:12:01 +0100 (CET)
+Subject: Re: [PATCH 2/8] powerpc/signal: Add unsafe_copy_{vsx, fpr}_from_user()
+To: "Christopher M. Riedl" <cmr@codefail.de>, linuxppc-dev@lists.ozlabs.org
+References: <C92MQRHFCFEA.37OV051PFFY6@geist>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/uaccess: Perform barrier_nospec() in KUAP allowance
- helpers
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- cmr@codefail.de
-Date: Sun,  7 Feb 2021 10:08:11 +0000 (UTC)
+Message-ID: <1caa3c1e-bf4e-700e-efea-28964005bb12@csgroup.eu>
+Date: Sun, 7 Feb 2021 11:12:01 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
+MIME-Version: 1.0
+In-Reply-To: <C92MQRHFCFEA.37OV051PFFY6@geist>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,119 +61,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-barrier_nospec() in uaccess helpers is there to protect against
-speculative accesses around access_ok().
 
-When using user_access_begin() sequences together with
-unsafe_get_user() like macros, barrier_nospec() is called for
-every single read although we know the access_ok() is done
-onece.
 
-Since all user accesses must be granted by a call to either
-allow_read_from_user() or allow_read_write_user() which will
-always happen after the access_ok() check, move the barrier_nospec()
-there.
+Le 06/02/2021 à 18:39, Christopher M. Riedl a écrit :
+> On Sat Feb 6, 2021 at 10:32 AM CST, Christophe Leroy wrote:
+>>
+>>
+>> Le 20/10/2020 à 04:01, Christopher M. Riedl a écrit :
+>>> On Fri Oct 16, 2020 at 10:48 AM CDT, Christophe Leroy wrote:
+>>>>
+>>>>
+>>>> Le 15/10/2020 à 17:01, Christopher M. Riedl a écrit :
+>>>>> Reuse the "safe" implementation from signal.c except for calling
+>>>>> unsafe_copy_from_user() to copy into a local buffer. Unlike the
+>>>>> unsafe_copy_{vsx,fpr}_to_user() functions the "copy from" functions
+>>>>> cannot use unsafe_get_user() directly to bypass the local buffer since
+>>>>> doing so significantly reduces signal handling performance.
+>>>>
+>>>> Why can't the functions use unsafe_get_user(), why does it significantly
+>>>> reduces signal handling
+>>>> performance ? How much significant ? I would expect that not going
+>>>> through an intermediate memory
+>>>> area would be more efficient
+>>>>
+>>>
+>>> Here is a comparison, 'unsafe-signal64-regs' avoids the intermediate buffer:
+>>>
+>>> 	|                      | hash   | radix  |
+>>> 	| -------------------- | ------ | ------ |
+>>> 	| linuxppc/next        | 289014 | 158408 |
+>>> 	| unsafe-signal64      | 298506 | 253053 |
+>>> 	| unsafe-signal64-regs | 254898 | 220831 |
+>>>
+>>> I have not figured out the 'why' yet. As you mentioned in your series,
+>>> technically calling __copy_tofrom_user() is overkill for these
+>>> operations. The only obvious difference between unsafe_put_user() and
+>>> unsafe_get_user() is that we don't have asm-goto for the 'get' variant.
+>>> Instead we wrap with unsafe_op_wrap() which inserts a conditional and
+>>> then goto to the label.
+>>>
+>>> Implemenations:
+>>>
+>>> 	#define unsafe_copy_fpr_from_user(task, from, label)   do {            \
+>>> 	       struct task_struct *__t = task;                                 \
+>>> 	       u64 __user *buf = (u64 __user *)from;                           \
+>>> 	       int i;                                                          \
+>>> 									       \
+>>> 	       for (i = 0; i < ELF_NFPREG - 1; i++)                            \
+>>> 		       unsafe_get_user(__t->thread.TS_FPR(i), &buf[i], label); \
+>>> 	       unsafe_get_user(__t->thread.fp_state.fpscr, &buf[i], label);    \
+>>> 	} while (0)
+>>>
+>>> 	#define unsafe_copy_vsx_from_user(task, from, label)   do {            \
+>>> 	       struct task_struct *__t = task;                                 \
+>>> 	       u64 __user *buf = (u64 __user *)from;                           \
+>>> 	       int i;                                                          \
+>>> 									       \
+>>> 	       for (i = 0; i < ELF_NVSRHALFREG ; i++)                          \
+>>> 		       unsafe_get_user(__t->thread.fp_state.fpr[i][TS_VSRLOWOFFSET], \
+>>> 				       &buf[i], label);                        \
+>>> 	} while (0)
+>>>
+>>
+>> Do you have CONFIG_PROVE_LOCKING or CONFIG_DEBUG_ATOMIC_SLEEP enabled in
+>> your config ?
+> 
+> I don't have these set in my config (ppc64le_defconfig). I think I
+> figured this out - the reason for the lower signal throughput is the
+> barrier_nospec() in __get_user_nocheck(). When looping we incur that
+> cost on every iteration. Commenting it out results in signal performance
+> of ~316K w/ hash on the unsafe-signal64-regs branch. Obviously the
+> barrier is there for a reason but it is quite costly.
 
-Reported-by: Christopher M. Riedl <cmr@codefail.de>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/kup.h     |  2 ++
- arch/powerpc/include/asm/uaccess.h | 12 +-----------
- 2 files changed, 3 insertions(+), 11 deletions(-)
+Interesting.
 
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index bf221a2a523e..7ec21af49a45 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -91,6 +91,7 @@ static __always_inline void setup_kup(void)
- 
- static inline void allow_read_from_user(const void __user *from, unsigned long size)
- {
-+	barrier_nospec();
- 	allow_user_access(NULL, from, size, KUAP_READ);
- }
- 
-@@ -102,6 +103,7 @@ static inline void allow_write_to_user(void __user *to, unsigned long size)
- static inline void allow_read_write_user(void __user *to, const void __user *from,
- 					 unsigned long size)
- {
-+	barrier_nospec();
- 	allow_user_access(to, from, size, KUAP_READ_WRITE);
- }
- 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 501c9a79038c..46123ae6a4c9 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -315,7 +315,6 @@ do {								\
- 	__chk_user_ptr(__gu_addr);				\
- 	if (!is_kernel_addr((unsigned long)__gu_addr))		\
- 		might_fault();					\
--	barrier_nospec();					\
- 	if (do_allow)								\
- 		__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err);	\
- 	else									\
-@@ -333,10 +332,8 @@ do {								\
- 	__typeof__(size) __gu_size = (size);				\
- 									\
- 	might_fault();							\
--	if (access_ok(__gu_addr, __gu_size)) {				\
--		barrier_nospec();					\
-+	if (access_ok(__gu_addr, __gu_size))				\
- 		__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err); \
--	}								\
- 	(x) = (__force __typeof__(*(ptr)))__gu_val;				\
- 									\
- 	__gu_err;							\
-@@ -350,7 +347,6 @@ do {								\
- 	__typeof__(size) __gu_size = (size);			\
- 								\
- 	__chk_user_ptr(__gu_addr);				\
--	barrier_nospec();					\
- 	__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err); \
- 	(x) = (__force __typeof__(*(ptr)))__gu_val;			\
- 								\
-@@ -395,7 +391,6 @@ raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
- {
- 	unsigned long ret;
- 
--	barrier_nospec();
- 	allow_read_write_user(to, from, n);
- 	ret = __copy_tofrom_user(to, from, n);
- 	prevent_read_write_user(to, from, n);
-@@ -412,19 +407,15 @@ static inline unsigned long raw_copy_from_user(void *to,
- 
- 		switch (n) {
- 		case 1:
--			barrier_nospec();
- 			__get_user_size(*(u8 *)to, from, 1, ret);
- 			break;
- 		case 2:
--			barrier_nospec();
- 			__get_user_size(*(u16 *)to, from, 2, ret);
- 			break;
- 		case 4:
--			barrier_nospec();
- 			__get_user_size(*(u32 *)to, from, 4, ret);
- 			break;
- 		case 8:
--			barrier_nospec();
- 			__get_user_size(*(u64 *)to, from, 8, ret);
- 			break;
- 		}
-@@ -432,7 +423,6 @@ static inline unsigned long raw_copy_from_user(void *to,
- 			return 0;
- 	}
- 
--	barrier_nospec();
- 	allow_read_from_user(from, n);
- 	ret = __copy_tofrom_user((__force void __user *)to, from, n);
- 	prevent_read_from_user(from, n);
--- 
-2.25.0
+Can you try with the patch I just sent out 
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/c72f014730823b413528e90ab6c4d3bcb79f8497.1612692067.git.christophe.leroy@csgroup.eu/
 
+Thanks
+Christophe
