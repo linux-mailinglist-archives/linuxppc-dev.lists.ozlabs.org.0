@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8012131234B
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 10:52:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1AC331234C
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 10:54:11 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DYPbB2yjWzDvX5
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 20:52:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DYPcw4xt0zDwcK
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Feb 2021 20:54:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::731;
- helo=mail-qk1-x731.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f29;
+ helo=mail-qv1-xf29.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=PH/nShvu; dkim-atps=neutral
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com
- [IPv6:2607:f8b0:4864:20::731])
+ header.s=20161025 header.b=pDgcBRam; dkim-atps=neutral
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com
+ [IPv6:2607:f8b0:4864:20::f29])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DYPX31DFVzDvZT
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Feb 2021 20:49:54 +1100 (AEDT)
-Received: by mail-qk1-x731.google.com with SMTP id a19so11605619qka.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Feb 2021 01:49:54 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DYPY74NzvzDvZ8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Feb 2021 20:50:51 +1100 (AEDT)
+Received: by mail-qv1-xf29.google.com with SMTP id a1so5633894qvd.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Feb 2021 01:50:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=FYzO838l1olFuso01/LKL9EKMqYrX52CmTrPsMkBDNA=;
- b=PH/nShvusjxGG+pD98o6NOty7igDMLoVCNcNMmmjFvvckGRm0oVqX1c7mx4J+ayJWh
- PCIX7g4Xc+nZmsDqDERSkx7dzoHKAYcxNT61mIYdBwx1hNy5ilCwTdXXMmpzge2a7KDK
- /xi3ULiq5Msm+qvMpLhHXO57vX/3f1spJxrUgaN85rDrp1w1sEvYzsGlrcd6+YucJMIy
- xpjwb12qxSbsE5rw/WD7sQZxYc1mDD1QGoIma/VOnbQFQvTBcXaa5G0spS8BW5vttuJ0
- 3jcB9pb5TAKYjnK2JM/uBfQzOfoWGRZxdExX+a70dnbh3NnbAcVXlKL9exdZ+2Bb8IVh
- 24EA==
+ :cc; bh=dZ4pFx7u5BUDAgelezxkYQyF+xKN7GGALoSIhITUj+o=;
+ b=pDgcBRamMSdoUB2BEpAst1f1B9nv0WmaS1Vvz3pxn90Bo2k1jjA+Rmy0x4aLBo07mY
+ asda/mt0rtnitVvzATsvxfXHA32w6sTXiqJjs1JBXExweSz1LhjNLHlAe1y/uJwVoXPP
+ wMZxM9NPideQw1Zn+3YhCfTxp2iE+jS49MhfAhBXlxoCTbo27Rn9tle+lHnmbjfbFvXp
+ X0hAwsQSyOLaIiM0VA16unpVG4z8pP0NFOokUPDV4c6WWuDTv7Mspy8/5jiWRxPdTYZ2
+ ot4n0YWlHpRfnib2YaYfQTZxNBV6VLrvkNQtRO3nOIMXZmsratGIKOhZWgirQuqokfd3
+ 5XYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=FYzO838l1olFuso01/LKL9EKMqYrX52CmTrPsMkBDNA=;
- b=l3Zhcs5Pqxg8GAyQA+Z1lAFUlaPy+0J8awRkRr5Kcaz0Z5T4F/9Rtq1QLbzJ+PJ4bN
- wDm8alZvtlJToPTRwWPzmJnbDnsXdZPMf4mV5q6fCwz0Axga1GNPKMCf/B9DWV1LJbfb
- EeJht/uQp1nSI2fR58P52usG0tspGUSImcBx51RIAxGlLGbihMNw6VMdPaKGYJ+2qBF0
- oTqhmo3jYkdAgwZxkDQyVJtfvqCu/sbD7xBgf2IcffeFDvLtLaAzHtIuNlOtpX6feUGj
- 8BdBVoj7RIQ+7xW8i9DNre0QEueqMebZp38LGfBXhDhmwtWS4giOF9AmwMY712J02oTi
- EnxA==
-X-Gm-Message-State: AOAM5308WcJR8kvh+/ukN1dlpmPSbIDYEPmD1YbqE4qoK/SzNxvqXV+m
- LrC499FX+3WpoFeNQod/gU4y4yZmuXpDA0L+ALM=
-X-Google-Smtp-Source: ABdhPJwBFvr9P32/Q0z9GRaRw15XheT3/2z/Vbq8+UOXhCI06iB1wVa/pcAviEiXyvpKDJQ/NID21lMi+PuAC/mGLuk=
-X-Received: by 2002:a05:620a:14a6:: with SMTP id
- x6mr11806815qkj.152.1612691392406; 
- Sun, 07 Feb 2021 01:49:52 -0800 (PST)
+ bh=dZ4pFx7u5BUDAgelezxkYQyF+xKN7GGALoSIhITUj+o=;
+ b=TagdLFV9v0MHo6G4dNjOl41r2IicXCUHqOOu9izfVr2TtCegjugAbDcp7GTpysWy3e
+ leOz1skToFG0NvaZYD43cs/abQrCR48FK08qVBoCvmF6h2xBASYDAjBttxF9ek8f+7ta
+ VdTHQ7WQrylU1LLraB3zEsyyZA0i8dPJuXUFLI0aERGGpAJoKNZZTuc/C1pqN0WN0M0R
+ HDIQjEbeHHHYxG98hHKGgIQ7HlXKeLXepQsVmU70kaQ1QAeYrccVH8H/f19WKXRa4UKG
+ F3Yqy3EiEKj5VJGQcHaa/tMhnEVhYgqURcDCuTN9GskPlQ/dYhuBF8zHvx5aDuEBURrC
+ J6Ag==
+X-Gm-Message-State: AOAM533afZ9FUCKcjQJIbCTP1mSyzX1qKm6flq9/+2vTyi8TIooRU4mq
+ jnMaFRIQg3kHfkH7MaxkOXtEsEZ2rq0oNzkPFHg=
+X-Google-Smtp-Source: ABdhPJy645FIrmGyg3s+S/f06QE4AJor1BtSgmIOXYOPdd5fhNxXhtiMyZ5sAnnbwtjUKTyx3gqZcZrxPegIJKozRmo=
+X-Received: by 2002:a05:6214:76f:: with SMTP id
+ f15mr11458355qvz.56.1612691446129; 
+ Sun, 07 Feb 2021 01:50:46 -0800 (PST)
 MIME-Version: 1.0
 References: <1612508250-10586-1-git-send-email-shengjiu.wang@nxp.com>
- <1612508250-10586-5-git-send-email-shengjiu.wang@nxp.com>
- <20210205142516.GC4720@sirena.org.uk>
-In-Reply-To: <20210205142516.GC4720@sirena.org.uk>
+ <1612508250-10586-6-git-send-email-shengjiu.wang@nxp.com>
+ <20210205145816.GD4720@sirena.org.uk>
+In-Reply-To: <20210205145816.GD4720@sirena.org.uk>
 From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Sun, 7 Feb 2021 17:49:41 +0800
-Message-ID: <CAA+D8APye40DiiYtQbsaM0X5vt4-4z+=YAvf-aSHxzvBk=aBfA@mail.gmail.com>
-Subject: Re: [PATCH 4/7] ASoC: imx-audio-rpmsg: Add rpmsg_driver for audio
- channel
+Date: Sun, 7 Feb 2021 17:50:35 +0800
+Message-ID: <CAA+D8AMTyxcz2nXEDemuWRwtORSfRoBRZO03WyX+XpuiOD0XiA@mail.gmail.com>
+Subject: Re: [PATCH 5/7] ASoC: imx-pcm-rpmsg: Add platform driver for audio
+ base on rpmsg
 To: Mark Brown <broonie@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -86,28 +86,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 5, 2021 at 10:27 PM Mark Brown <broonie@kernel.org> wrote:
+On Fri, Feb 5, 2021 at 11:00 PM Mark Brown <broonie@kernel.org> wrote:
 >
-> On Fri, Feb 05, 2021 at 02:57:27PM +0800, Shengjiu Wang wrote:
+> On Fri, Feb 05, 2021 at 02:57:28PM +0800, Shengjiu Wang wrote:
 >
-> > +     /* TYPE C is notification from M core */
-> > +     if (r_msg->header.type == MSG_TYPE_C) {
-> > +             if (r_msg->header.cmd == TX_PERIOD_DONE) {
+> > +     if (params_format(params) == SNDRV_PCM_FORMAT_S16_LE)
+> > +             msg->s_msg.param.format   = RPMSG_S16_LE;
+> > +     else if (params_format(params) == SNDRV_PCM_FORMAT_S24_LE)
 >
-> > +             } else if (r_msg->header.cmd == RX_PERIOD_DONE) {
+> Again this should be a switch statement.
 >
-> A switch statement would be clearer and more extensible...
+> > +     if (params_channels(params) == 1)
+> > +             msg->s_msg.param.channels = RPMSG_CH_LEFT;
+> > +     else
+> > +             msg->s_msg.param.channels = RPMSG_CH_STEREO;
 >
-> > +     /* TYPE B is response msg */
-> > +     if (r_msg->header.type == MSG_TYPE_B) {
-> > +             memcpy(&info->r_msg, r_msg, sizeof(struct rpmsg_r_msg));
-> > +             complete(&info->cmd_complete);
-> > +     }
+> Shouldn't this be reporting an error if the number of channels is more
+> than 2?
 >
-> ...and make this flow clearer for example.  Do we need to warn on
-> unknown messages?
+> > +             /*
+> > +              * if the data in the buffer is less than one period
+> > +              * send message immediately.
+> > +              * if there is more than one period data, delay one
+> > +              * period (timer) to send the message.
+> > +              */
+> > +             if ((avail - writen_num * period_size) <= period_size) {
+> > +                     imx_rpmsg_insert_workqueue(substream, msg, info);
+> > +             } else if (rpmsg->force_lpa && !timer_pending(timer)) {
+> > +                     int time_msec;
+> > +
+> > +                     time_msec = (int)(runtime->period_size * 1000 / runtime->rate);
+> > +                     mod_timer(timer, jiffies + msecs_to_jiffies(time_msec));
+> > +             }
+>
+> The comment here is at least confusing - why would we not send a full
+> buffer immediately if we have one?  This sounds like it's the opposite
+> way round to what we'd do if we were trying to cut down the number of
+> messages.  It might help to say which buffer and where?
+>
+> > +     /**
+> > +      * Every work in the work queue, first we check if there
+>
+> /** comments are only for kerneldoc.
 
-Thanks for reviewing. I will update them.
+Thanks Mark, I will update them.
 
 Best regards
 wang shengjiu
