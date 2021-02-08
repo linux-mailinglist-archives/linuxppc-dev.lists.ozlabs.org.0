@@ -2,54 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13AD83138B8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 17:00:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 994113139A2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 17:39:24 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DZ9jd6FdnzDr6D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 03:00:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DZBZ11jDBzDvVT
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 03:39:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82f;
+ helo=mail-qt1-x82f.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ZCnSrK8L; dkim-atps=neutral
+Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com
+ [IPv6:2607:f8b0:4864:20::82f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DZ8bn5dNzzDr3l
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 02:10:45 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DZ8bd3WRJzB09ZR;
- Mon,  8 Feb 2021 16:10:37 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id KDGn82nJR8ix; Mon,  8 Feb 2021 16:10:37 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DZ8bd2PstzB09ZC;
- Mon,  8 Feb 2021 16:10:37 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A42D28B7BA;
- Mon,  8 Feb 2021 16:10:42 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id eOMfaX9gFj5Y; Mon,  8 Feb 2021 16:10:42 +0100 (CET)
-Received: from po16121vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 38CF98B7B2;
- Mon,  8 Feb 2021 16:10:42 +0100 (CET)
-Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 2DFFF6733E; Mon,  8 Feb 2021 15:10:42 +0000 (UTC)
-Message-Id: <f942059e5b0dc6366f23b7aca70dfcb29efeaf2a.1612796617.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1612796617.git.christophe.leroy@csgroup.eu>
-References: <cover.1612796617.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v5 22/22] powerpc/32: Handle bookE debugging in C in syscall
- entry/exit
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- npiggin@gmail.com, msuchanek@suse.de
-Date: Mon,  8 Feb 2021 15:10:42 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DZBX51GCSzDqWv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 03:37:38 +1100 (AEDT)
+Received: by mail-qt1-x82f.google.com with SMTP id x3so8827876qti.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Feb 2021 08:37:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :organization:user-agent:mime-version:content-transfer-encoding;
+ bh=0HGJhzf1G3q3frtQdQfHf7vZn5MRVAT2xn4qaxvZi1U=;
+ b=ZCnSrK8LjbN2c5cFVRG8Y/oJxehO4A8/tz5FWWPFXPIFK20ClWGSl1ycugUiWZv96X
+ gnzaSQox2p06FwUSGLgIjEcfLTyaVjRP3zWJ0jDIJ3pBkNuSYszTkRDAFNGc0Z+2vPmj
+ kE5KOYOGtCJ8rO1KdQXK8f29i7lWJcft/u45IPrhagQnf+B2Iho/kXPiCy2Idhksu8Gy
+ JrQo92inlAM87m/A/agpxNoW3/F2ASQXN0ZG33LgSo08ttpQpdqBGtQ7z0WFU3zPtDm8
+ LGXi1Ad9ZyFxGDBwWOmAypp/fg0KxfxrToUsRIEge7jkM8qFAj7UzxuQYPn6c3ikH7Pz
+ L9bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:organization:user-agent:mime-version
+ :content-transfer-encoding;
+ bh=0HGJhzf1G3q3frtQdQfHf7vZn5MRVAT2xn4qaxvZi1U=;
+ b=ZH1wlz60CS1VhubOXzDZoPaVKlnbboi31K/WedzlGGRmVDxtKGI8apAWoi0goxO/uU
+ r/1YW2ex8Q6zz20A3QncNlhlCpSMjaaaAXf7JV/oFQvS9KqVQaXtX9o/VBzKbwwSQe0x
+ PkJd/2k8N80Nj4zXyUi44wxEfihg7mgBXEAp2NNTnwG+dJBLabZCnnAPB4pZirHGt+YR
+ Me60fRyYsmdh1skBP1CNtEQowNMJVDoEG7rsVc4dyJpQIppxe2+zSWdc790WyiMil1yH
+ RWZHOgw6EY4YZuqVNtTfTRgaz2eFNsNkNV7aJfaEqomAk43hhmNKr4ejq+nsF5A9eM1p
+ WwoQ==
+X-Gm-Message-State: AOAM533yuodZmWIwMDrKGPuLTzGHqDjHivWjEaDt63cCrPmIzl4XKMr7
+ 3VAa6SqTwx5t1uqEpoZ24So=
+X-Google-Smtp-Source: ABdhPJxNBkhFgcpxYqi/I81KZzI4gTQD8gRxnBMkUmMMD7+YFyASMpNVveQ5vs6x229sbqpsjBgABw==
+X-Received: by 2002:a05:622a:44d:: with SMTP id
+ o13mr9623179qtx.378.1612802254979; 
+ Mon, 08 Feb 2021 08:37:34 -0800 (PST)
+Received: from li-908e0a4c-2250-11b2-a85c-f027e903211b.ibm.com
+ (186-249-147-196.dynamic.desktop.com.br. [186.249.147.196])
+ by smtp.gmail.com with ESMTPSA id c17sm16409866qka.16.2021.02.08.08.37.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Feb 2021 08:37:33 -0800 (PST)
+Message-ID: <5f267a8aec5b8199a580c96ab2b1a3c27de4eb09.camel@gmail.com>
+Subject: Re: [PATCH v2 1/1] powerpc/kvm: Save Timebase Offset to fix
+ sched_clock() while running guest code.
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V"
+ <aneesh.kumar@linux.ibm.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, 
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Frederic Weisbecker <frederic@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Jordan Niethe
+ <jniethe5@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras
+ <paulus@ozlabs.org>, Thomas Gleixner <tglx@linutronix.de>
+Date: Mon, 08 Feb 2021 13:37:04 -0300
+In-Reply-To: <1612579579.ztbklit4un.astroid@bobo.none>
+References: <20210205060643.233481-1-leobras.c@gmail.com>
+ <1612506268.6rrvx34gzu.astroid@bobo.none>
+ <7e231b91e41c3f3586ba2fd604c40f1716db228d.camel@gmail.com>
+ <1612579579.ztbklit4un.astroid@bobo.none>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3 (3.38.3-1.fc33) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,173 +91,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The handling of SPRN_DBCR0 and other registers can easily
-be done in C instead of ASM.
+Hello Nick,
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v5: New
----
- arch/powerpc/include/asm/reg_booke.h |  3 +++
- arch/powerpc/kernel/entry_32.S       |  7 -------
- arch/powerpc/kernel/head_32.h        | 15 --------------
- arch/powerpc/kernel/head_booke.h     | 19 ------------------
- arch/powerpc/kernel/interrupt.c      | 29 +++++++++++++++++++++++++++-
- 5 files changed, 31 insertions(+), 42 deletions(-)
+On Sat, 2021-02-06 at 13:03 +1000, Nicholas Piggin wrote:
+> Excerpts from Leonardo Bras's message of February 5, 2021 5:01 pm:
+> > Hey Nick, thanks for reviewing :)
+> > 
+> > On Fri, 2021-02-05 at 16:28 +1000, Nicholas Piggin wrote:
+> > > Excerpts from Leonardo Bras's message of February 5, 2021 4:06 pm:
+> > > > Before guest entry, TBU40 register is changed to reflect guest timebase.
+> > > > After exitting guest, the register is reverted to it's original value.
+> > > > 
+> > > > If one tries to get the timestamp from host between those changes, it
+> > > > will present an incorrect value.
+> > > > 
+> > > > An example would be trying to add a tracepoint in
+> > > > kvmppc_guest_entry_inject_int(), which depending on last tracepoint
+> > > > acquired could actually cause the host to crash.
+> > > > 
+> > > > Save the Timebase Offset to PACA and use it on sched_clock() to always
+> > > > get the correct timestamp.
+> > > 
+> > > Ouch. Not sure how reasonable it is to half switch into guest registers 
+> > > and expect to call into the wider kernel, fixing things up as we go. 
+> > > What if mftb is used in other places?
+> > 
+> > IIUC, the CPU is not supposed to call anything as host between guest
+> > entry and guest exit, except guest-related cases, like
+> 
+> When I say "call", I'm including tracing in that. If a function is not 
+> marked as no trace, then it will call into the tracing subsystem.
+> 
+> > kvmppc_guest_entry_inject_int(), but anyway, if something calls mftb it
+> > will still get the same value as before.
+> 
+> Right, so it'll be out of whack again.
+> 
+> > This is only supposed to change stuff that depends on sched_clock, like
+> > Tracepoints, that can happen in those exceptions.
+> 
+> If they depend on sched_clock that's one thing. Do they definitely have 
+> no dependencies on mftb from other calls?
 
-diff --git a/arch/powerpc/include/asm/reg_booke.h b/arch/powerpc/include/asm/reg_booke.h
-index 262782f08fd4..17b8dcd9a40d 100644
---- a/arch/powerpc/include/asm/reg_booke.h
-+++ b/arch/powerpc/include/asm/reg_booke.h
-@@ -691,6 +691,9 @@
- #define mttmr(rn, v)	asm volatile(MTTMR(rn, %0) : \
- 				     : "r" ((unsigned long)(v)) \
- 				     : "memory")
-+
-+extern unsigned long global_dbcr0[];
-+
- #endif /* !__ASSEMBLY__ */
- 
- #endif /* __ASM_POWERPC_REG_BOOKE_H__ */
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index a574201b0eb6..8dea4d3b1d06 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -342,13 +342,6 @@ transfer_to_syscall:
- ret_from_syscall:
- 	addi    r4,r1,STACK_FRAME_OVERHEAD
- 	bl	syscall_exit_prepare
--#if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
--	/* If the process has its own DBCR0 value, load it up.  The internal
--	   debug mode bit tells us that dbcr0 should be loaded. */
--	lwz	r0,THREAD+THREAD_DBCR0(r2)
--	andis.	r10,r0,DBCR0_IDM@h
--	bnel-	load_dbcr0
--#endif
- #ifdef CONFIG_PPC_47x
- 	lis	r4,icache_44x_need_flush@ha
- 	lwz	r5,icache_44x_need_flush@l(r4)
-diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-index 5001c6ecc3ec..961b1ce3b6bf 100644
---- a/arch/powerpc/kernel/head_32.h
-+++ b/arch/powerpc/kernel/head_32.h
-@@ -153,21 +153,6 @@
- 	SAVE_4GPRS(3, r11)
- 	SAVE_2GPRS(7, r11)
- 	addi	r2,r12,-THREAD
--#if defined(CONFIG_40x)
--	/* Check to see if the dbcr0 register is set up to debug.  Use the
--	   internal debug mode bit to do this. */
--	lwz	r12,THREAD_DBCR0(r12)
--	andis.	r12,r12,DBCR0_IDM@h
--	beq+	3f
--	/* From user and task is ptraced - load up global dbcr0 */
--	li	r12,-1			/* clear all pending debug events */
--	mtspr	SPRN_DBSR,r12
--	lis	r11,global_dbcr0@ha
--	addi	r11,r11,global_dbcr0@l
--	lwz	r12,0(r11)
--	mtspr	SPRN_DBCR0,r12
--3:
--#endif
- 	b	transfer_to_syscall		/* jump to handler */
- .endm
- 
-diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-index 5f565232b99d..47857795f50a 100644
---- a/arch/powerpc/kernel/head_booke.h
-+++ b/arch/powerpc/kernel/head_booke.h
-@@ -130,25 +130,6 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 	SAVE_2GPRS(7, r11)
- 
- 	addi	r2,r10,-THREAD
--	/* Check to see if the dbcr0 register is set up to debug.  Use the
--	   internal debug mode bit to do this. */
--	lwz	r12,THREAD_DBCR0(r10)
--	andis.	r12,r12,DBCR0_IDM@h
--	beq+	3f
--	/* From user and task is ptraced - load up global dbcr0 */
--	li	r12,-1			/* clear all pending debug events */
--	mtspr	SPRN_DBSR,r12
--	lis	r11,global_dbcr0@ha
--	addi	r11,r11,global_dbcr0@l
--#ifdef CONFIG_SMP
--	lwz	r10, TASK_CPU(r2)
--	slwi	r10, r10, 2
--	add	r11, r11, r10
--#endif
--	lwz	r12,0(r11)
--	mtspr	SPRN_DBCR0,r12
--
--3:
- 	b	transfer_to_syscall	/* jump to handler */
- .endm
- 
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index c89a8eac3e24..6111acf61373 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -76,6 +76,13 @@ notrace long system_call_exception(long r3, long r4, long r5,
- 		kuap_check_amr();
- #endif
- 
-+#ifdef CONFIG_PPC_ADV_DEBUG_REGS
-+	if (IS_ENABLED(CONFIG_PPC32) && unlikely(current->thread.debug.dbcr0 & DBCR0_IDM)) {
-+		mtspr(SPRN_DBSR, -1);
-+		mtspr(SPRN_DBCR0, global_dbcr0[smp_processor_id()]);
-+	}
-+#endif
-+
- 	account_cpu_user_entry();
- 
- 	account_stolen_time();
-@@ -324,6 +331,22 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 	local_paca->tm_scratch = regs->msr;
- #endif
- 
-+#ifdef CONFIG_PPC_ADV_DEBUG_REGS
-+	if (unlikely(current->thread.debug.dbcr0 & DBCR0_IDM)) {
-+		/*
-+		 * Check to see if the dbcr0 register is set up to debug.
-+		 * Use the internal debug mode bit to do this.
-+		 */
-+		mtmsr(mfmsr() & ~MSR_DE);
-+		if (IS_ENABLED(CONFIG_PPC32)) {
-+			isync();
-+			global_dbcr0[smp_processor_id()] = mfspr(SPRN_DBCR0);
-+		}
-+		mtspr(SPRN_DBCR0, current->thread.debug.dbcr0);
-+		mtspr(SPRN_DBSR, -1);
-+	}
-+#endif
-+
- 	account_cpu_user_exit();
- 
- #ifdef CONFIG_PPC_BOOK3S_64 /* BOOK3E and ppc32 not using this */
-@@ -401,13 +424,17 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
- 		goto again;
- 	}
- 
--#ifdef CONFIG_PPC_BOOK3E
-+#ifdef CONFIG_PPC_ADV_DEBUG_REGS
- 	if (unlikely(current->thread.debug.dbcr0 & DBCR0_IDM)) {
- 		/*
- 		 * Check to see if the dbcr0 register is set up to debug.
- 		 * Use the internal debug mode bit to do this.
- 		 */
- 		mtmsr(mfmsr() & ~MSR_DE);
-+		if (IS_ENABLED(CONFIG_PPC32)) {
-+			isync();
-+			global_dbcr0[smp_processor_id()] = mfspr(SPRN_DBCR0);
-+		}
- 		mtspr(SPRN_DBCR0, current->thread.debug.dbcr0);
- 		mtspr(SPRN_DBSR, -1);
- 	}
--- 
-2.25.0
+We could change that on get_tb() or mftb() @ timebase.h, which would
+have a broader reach, but would not reach any mftb from asm code.
+
+> > > Especially as it doesn't seem like there is a reason that function _has_
+> > > to be called after the timebase is switched to guest, that's just how 
+> > > the code is structured.
+> > 
+> > Correct, but if called, like in rb routines, used by tracepoints, the
+> > difference between last tb and current (lower) tb may cause the CPU to
+> > trap PROGRAM exception, crashing host. 
+> 
+> Yes, so I agree with Michael any function that is involved when we begin 
+> to switch into guest context (or have not completed switching back to 
+> host going the other way) should be marked as no trace (noinstr even, 
+> perhaps).
+
+Sure, that would avoid having to get paca->tb_offset for every mftb()
+called, and avoid inconsistencies when different ways to get time are
+used in code.
+
+On the other hand, it would make it very hard to debug functions like
+kvmppc_guest_entry_inject_int() as I am doing right now.
+
+> 
+> > > As a local hack to work out a bug okay. If you really need it upstream 
+> > > could you put it under a debug config option?
+> > 
+> > You mean something that is automatically selected whenever those
+> > configs are enabled? 
+> > 
+> > CONFIG_TRACEPOINT && CONFIG_KVM_BOOK3S_HANDLER && CONFIG_PPC_BOOK3S_64
+> > 
+> > Or something the user need to select himself in menuconfig?
+> 
+> Yeah I meant a default n thing under powerpc kernel debugging somewhere.
+
+So, IIUC all we can do is split this in 2 changes:
+1 - Adding notrace to those functions
+2 - Introducing a kernel debug config that reverts (1) and 'fixes' mftb
+
+If that's correct, I have some ideas we can use. 
+
+For debug option, should we add the offset on get_tb() or mftb()?
+
+Another option would be to adding this tb_offset only in the routines
+used by tracing. But this could probably mean having to add a function
+in arch-generic code, but still an option.
+
+What do you think?
+
+> 
+> Thanks,
+> Nick
+
+Thank you!
+Leonardo Bras
 
