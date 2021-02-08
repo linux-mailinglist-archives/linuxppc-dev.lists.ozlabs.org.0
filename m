@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3AD312AC3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 07:35:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59751312ACC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 07:37:23 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DYx8y5CW5zDsrY
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 17:35:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DYxCN0kDgzDqgp
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 17:37:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435;
- helo=mail-pf1-x435.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635;
+ helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gUT9EHMH; dkim-atps=neutral
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
- [IPv6:2607:f8b0:4864:20::435])
+ header.s=20161025 header.b=o8ulvJ2x; dkim-atps=neutral
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
+ [IPv6:2607:f8b0:4864:20::635])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DYx783GnxzDqBy
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Feb 2021 17:33:40 +1100 (AEDT)
-Received: by mail-pf1-x435.google.com with SMTP id q20so9057635pfu.8
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Feb 2021 22:33:39 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DYx7s5V1XzDsqM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Feb 2021 17:34:17 +1100 (AEDT)
+Received: by mail-pl1-x635.google.com with SMTP id j11so7261297plt.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Feb 2021 22:34:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=i7/hEV/Aa4hlIWU2sUnHFM/KMLogNiY7EjbGcwIqZGw=;
- b=gUT9EHMH+SULn1592OovxVEEjYYLkAhyvAltFsVO1M4K/VAcPOWgEKpAZK4XdLJBuZ
- ScMPdjkAEGH2rAhLQ3Zv6eFcLFPu9VAOWmrIYZdtBi+KTepTomJajoDY9jKZCFyNLMKJ
- 38GmnnihZ7Wre2WD3EornO5tARmbYS9fjxfFteFFW1vWEsM1WofeGcjqUy4DrFsoh9JZ
- eVlEhOU7MDv0XshSaRanFM8ncQC0edSdPJn3onIwHZ8ubG4yypRXrLVKjZ5fvjhfg8hE
- y5w6YHIZQCk1ikSaYw/8oyKumIJ4p33SdU1cEm+2M1gdtOsgSWWLrt4lx9gQmNA/Zxzf
- IfpQ==
+ bh=A5rizOXW4dqC+bufM3Tr8OQnOdP81xoMYV/zbnkwIQ0=;
+ b=o8ulvJ2xQ94gW+/prh5LYSZcHaGLxRIeJkxJOVpkz65pJMMgyzHa7YWBws/2mclq1E
+ BLx66CXxHQqxfph35oE0NsNMNO8rvRganIEd0Fb+XLGNXSBxbtfSLdt7soE27hSf09Ib
+ h2W3Qc/alYIBo3cbnLRnEHC4hWgIGdwyiZXAfN79nrBcBipI4PsvioGvz6tCpCFdKxPb
+ PCMJfTYz1Q5l2FXs1yjPKHGUwbo2Ao2cT0N9hgdSXijsoeIbSzGqsPF3HcX0PleYFE8R
+ /uJpM1PEiDBtowcEVsrib/C9h9UVhscbm+P7pfh/uP4HZ32ymgvOV+JJrS8CgNH8Riwj
+ 5CoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=i7/hEV/Aa4hlIWU2sUnHFM/KMLogNiY7EjbGcwIqZGw=;
- b=UC4TzMkBY2A/5BQPqeS42EsDgPRZDfxXc7usjrzeHr2Uq4OuJTiFuNStSzkiHUIktq
- 5N0a9L4e++eCslXdcatMqY40dwAx3s5JgF5SEjt+itPk8iKfTH8HYSDGnVVAsMB3gXNM
- bZipjoYuwLx2RZhSmen55L8Bv3QplLBKcAWD4d33zn5/7I1rw369brr0JpbxCwjEJEuY
- eLIYKW8NmfpqXbX/i6sO5aR3v+SvU0vasD3pYXBNYhf9MP7L5Y5akkI5tQEGvvSIA9g1
- 5As4M35t6K1FCqHnYjppAMt1MEHO4/ronyJY3v16tqxXAc6qZDJEhNs6w13fqS3A+UP8
- G2WQ==
-X-Gm-Message-State: AOAM533FmHyR2n2P1SxNkFP4zx4bnJJM/jhnw1YWGJNQ6JcnPSwynCKf
- 5o+J8mXuB6VFnFnHVBudqOh9uCpfjO0=
-X-Google-Smtp-Source: ABdhPJzou4+VNrCAm6E24QymR4aK41aIgin4G45ys3fUvW5jlaqYm9NM2PoKnmPvmVzJ0AaJJcc63Q==
-X-Received: by 2002:a63:5459:: with SMTP id e25mr15911103pgm.403.1612766014951; 
- Sun, 07 Feb 2021 22:33:34 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com ([1.132.136.97])
- by smtp.gmail.com with ESMTPSA id t17sm18374914pgk.25.2021.02.07.22.33.32
+ bh=A5rizOXW4dqC+bufM3Tr8OQnOdP81xoMYV/zbnkwIQ0=;
+ b=N8+lSAxdeVWqekjyR+0hgH8RxsBm21uXCOYIQ+xxoSuA2WtNSAgUa/CuuQoOBNqHB8
+ q0pwL3/JuSnFY0c60lCcD5GHyQpQKgceTTZaemAD0es3Ydm2VGAPO4DnCD8onUsfdh1D
+ vZzAhAcvf9UO9qko+DqoEYAGnSKiCD5IV97aQ2bZGDVC9gYgxg0fCbZwHUfvuuE2FFhc
+ 4UbfLvDoXeOGaWOb+0II39p+UOTCzaSiqpJSrC4M5OCGYooqlAflpZuwoY9l1G3VePpr
+ 0VnGPjS4odZf33+5cLcQXc/tI+crIEhUO3nNXOzBJ+6KC/XShMpjn95YdPNxsnvqfb0P
+ EMDA==
+X-Gm-Message-State: AOAM531wEkFM4PYnrOpqiSRQc3jQkMzda+GDFlLnnMiO6n3BT9j3IiTU
+ z/xcSsli7u9CXyG9P0gayQ86KVpOpx4=
+X-Google-Smtp-Source: ABdhPJxhpXD220BRmjjPsthfhpIYlEdUb2KYk4hKzIGyL4mf61Hnh/EC+kDxTmz7PHJEEqlQ5Go3MA==
+X-Received: by 2002:a17:90b:955:: with SMTP id
+ dw21mr729128pjb.19.1612766054454; 
+ Sun, 07 Feb 2021 22:34:14 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com ([1.132.134.221])
+ by smtp.gmail.com with ESMTPSA id hi15sm15032835pjb.19.2021.02.07.22.34.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 07 Feb 2021 22:33:34 -0800 (PST)
+ Sun, 07 Feb 2021 22:34:13 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s: syscall real mode entry use mtmsrd rather than
- rfid
-Date: Mon,  8 Feb 2021 16:33:26 +1000
-Message-Id: <20210208063326.331502-1-npiggin@gmail.com>
+Subject: [PATCH] powerpc/64s: Remove EXSLB interrupt save area
+Date: Mon,  8 Feb 2021 16:34:06 +1000
+Message-Id: <20210208063406.331655-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -80,64 +80,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Have the real mode system call entry handler branch to the kernel
-0xc000... address and then use mtmsrd to enable the MMU, rather than use
-SRRs and rfid.
+SLB faults should not be taken while the PACA save areas are live, all
+memory accesses should be fetches from the kernel text, and access to
+PACA and the current stack, before C code is called or any other
+accesses are made.
 
-Commit 8729c26e675c ("powerpc/64s/exception: Move real to virt switch
-into the common handler") implemented this style of real mode entry for
-other interrupt handlers, so this brings system calls into line with
-them, which is the main motivcation for the change.
-
-This tends to be slightly faster due to avoiding the mtsprs, and it also
-does not clobber the SRR registers, which becomes important in a
-subsequent change. The real mode entry points don't tend to be too
-important for performance these days, but it is possible for a
-hypervisor to run guests in AIL=0 mode for certian reasons.
+All of these have pinned SLBs so will not take a SLB fault. Therefore
+EXSLB is not be required.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/entry_64.S       | 6 ++++++
- arch/powerpc/kernel/exceptions-64s.S | 9 +++------
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ arch/powerpc/include/asm/paca.h      | 3 +--
+ arch/powerpc/kernel/asm-offsets.c    | 1 -
+ arch/powerpc/kernel/exceptions-64s.S | 5 -----
+ 3 files changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-index 33ddfeef4fe9..993ed95ed602 100644
---- a/arch/powerpc/kernel/entry_64.S
-+++ b/arch/powerpc/kernel/entry_64.S
-@@ -225,6 +225,12 @@ _ASM_NOKPROBE_SYMBOL(system_call_vectored_emulate)
- 	b	system_call_vectored_common
- #endif
- 
-+	.balign IFETCH_ALIGN_BYTES
-+	.globl system_call_common_real
-+system_call_common_real:
-+	ld	r10,PACAKMSR(r13)	/* get MSR value for kernel */
-+	mtmsrd	r10
+diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
+index 9454d29ff4b4..be0b00cb9fbb 100644
+--- a/arch/powerpc/include/asm/paca.h
++++ b/arch/powerpc/include/asm/paca.h
+@@ -108,8 +108,7 @@ struct paca_struct {
+ 	 */
+ 	/* used for most interrupts/exceptions */
+ 	u64 exgen[EX_SIZE] __attribute__((aligned(0x80)));
+-	u64 exslb[EX_SIZE];	/* used for SLB/segment table misses
+- 				 * on the linear mapping */
 +
- 	.balign IFETCH_ALIGN_BYTES
- 	.globl system_call_common
- system_call_common:
+ 	/* SLB related definitions */
+ 	u16 vmalloc_sllp;
+ 	u8 slb_cache_ptr;
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index b12d7c049bfe..31edd9bbce75 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -255,7 +255,6 @@ int main(void)
+ #endif /* CONFIG_PPC_MM_SLICES */
+ 	OFFSET(PACA_EXGEN, paca_struct, exgen);
+ 	OFFSET(PACA_EXMC, paca_struct, exmc);
+-	OFFSET(PACA_EXSLB, paca_struct, exslb);
+ 	OFFSET(PACA_EXNMI, paca_struct, exnmi);
+ #ifdef CONFIG_PPC_PSERIES
+ 	OFFSET(PACALPPACAPTR, paca_struct, lppaca_ptr);
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 5478ffa85603..dad35b59bcfb 100644
+index dad35b59bcfb..27fa80248406 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1905,12 +1905,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
- 	HMT_MEDIUM
- 
- 	.if ! \virt
--	__LOAD_HANDLER(r10, system_call_common)
--	mtspr	SPRN_SRR0,r10
--	ld	r10,PACAKMSR(r13)
--	mtspr	SPRN_SRR1,r10
--	RFI_TO_KERNEL
--	b	.	/* prevent speculative execution */
-+	__LOAD_HANDLER(r10, system_call_common_real)
-+	mtctr	r10
-+	bctr
- 	.else
- 	li	r10,MSR_RI
- 	mtmsrd 	r10,1			/* Set RI (EE=0) */
+@@ -1392,13 +1392,9 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+  *   on user-handler data structures.
+  *
+  *   KVM: Same as 0x300, DSLB must test for KVM guest.
+- *
+- * A dedicated save area EXSLB is used (XXX: but it actually need not be
+- * these days, we could use EXGEN).
+  */
+ INT_DEFINE_BEGIN(data_access_slb)
+ 	IVEC=0x380
+-	IAREA=PACA_EXSLB
+ 	IDAR=1
+ 	IKVM_SKIP=1
+ 	IKVM_REAL=1
+@@ -1481,7 +1477,6 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+  */
+ INT_DEFINE_BEGIN(instruction_access_slb)
+ 	IVEC=0x480
+-	IAREA=PACA_EXSLB
+ 	IISIDE=1
+ 	IDAR=1
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
 -- 
 2.23.0
 
