@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C59E3136E4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 16:18:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D66313730
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 16:22:07 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DZ8m46DHhzDsbb
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 02:17:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DZ8rr3Bf4zDr13
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 02:22:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,41 +15,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DZ8bW0HqjzDrhS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 02:10:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DZ8bW4KhPzDrhY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 02:10:31 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DZ8bG4kdjz9vBnC;
- Mon,  8 Feb 2021 16:10:18 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DZ8bH5B6Dz9vBnF;
+ Mon,  8 Feb 2021 16:10:19 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id C7rjuJzjDpqL; Mon,  8 Feb 2021 16:10:18 +0100 (CET)
+ with ESMTP id 4SQswJilCcxd; Mon,  8 Feb 2021 16:10:19 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DZ8bG3zSvz9vBn3;
- Mon,  8 Feb 2021 16:10:18 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DZ8bH43khz9vBn3;
+ Mon,  8 Feb 2021 16:10:19 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C624D8B7B3;
- Mon,  8 Feb 2021 16:10:23 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CCABC8B7BA;
+ Mon,  8 Feb 2021 16:10:24 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id VNxVEJ7nY3Ry; Mon,  8 Feb 2021 16:10:23 +0100 (CET)
+ with ESMTP id PwB26Wm6285C; Mon,  8 Feb 2021 16:10:24 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8AD4A8B7B2;
- Mon,  8 Feb 2021 16:10:23 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8F98F8B7B2;
+ Mon,  8 Feb 2021 16:10:24 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 800A56733E; Mon,  8 Feb 2021 15:10:23 +0000 (UTC)
-Message-Id: <8fa13a59f73647e058c95fc7e1c7a98f316bd20a.1612796617.git.christophe.leroy@csgroup.eu>
+ id 8641B6733E; Mon,  8 Feb 2021 15:10:24 +0000 (UTC)
+Message-Id: <5f37d1177a751fdbca79df461d283850ca3a34a2.1612796617.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1612796617.git.christophe.leroy@csgroup.eu>
 References: <cover.1612796617.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v5 04/22] powerpc/32: Reorder instructions to avoid using CTR
- in syscall entry
+Subject: [PATCH v5 05/22] powerpc/irq: Add helper to set regs->softe
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com, msuchanek@suse.de
-Date: Mon,  8 Feb 2021 15:10:23 +0000 (UTC)
+Date: Mon,  8 Feb 2021 15:10:24 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,62 +65,59 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that we are using rfi instead of mtmsr to reactivate MMU, it is
-possible to reorder instructions and avoid the need to use CTR for
-stashing SRR0.
+regs->softe doesn't exist on PPC32.
 
-null_syscall on 8xx is reduced by 3 cycles (283 => 280 cycles).
+Add irq_soft_mask_regs_set_state() helper to set regs->softe.
+This helper will void on PPC32.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/head_32.h | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ arch/powerpc/include/asm/hw_irq.h | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-index 4029c51dce5d..24dc326e0d56 100644
---- a/arch/powerpc/kernel/head_32.h
-+++ b/arch/powerpc/kernel/head_32.h
-@@ -116,30 +116,28 @@
- .endm
+diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
+index 614957f74cee..ed0c3b049dfd 100644
+--- a/arch/powerpc/include/asm/hw_irq.h
++++ b/arch/powerpc/include/asm/hw_irq.h
+@@ -38,6 +38,8 @@
+ #define PACA_IRQ_MUST_HARD_MASK	(PACA_IRQ_EE)
+ #endif
  
- .macro SYSCALL_ENTRY trapno
--	mfspr	r12,SPRN_SPRG_THREAD
- 	mfspr	r9, SPRN_SRR1
--	mfspr	r11, SPRN_SRR0
--	mtctr	r11
-+	mfspr	r10, SPRN_SRR0
- 	andi.	r11, r9, MSR_PR
-+	beq-	99f
-+	LOAD_REG_IMMEDIATE(r11, MSR_KERNEL)		/* can take exceptions */
-+	lis	r12, 1f@h
-+	ori	r12, r12, 1f@l
-+	mtspr	SPRN_SRR1, r11
-+	mtspr	SPRN_SRR0, r12
-+	mfspr	r12,SPRN_SPRG_THREAD
- 	mr	r11, r1
- 	lwz	r1,TASK_STACK-THREAD(r12)
--	beq-	99f
-+	tovirt(r12, r12)
- 	addi	r1, r1, THREAD_SIZE - INT_FRAME_SIZE
--	LOAD_REG_IMMEDIATE(r10, MSR_KERNEL)		/* can take exceptions */
--	mtspr	SPRN_SRR1, r10
--	lis	r10, 1f@h
--	ori	r10, r10, 1f@l
--	mtspr	SPRN_SRR0, r10
- 	rfi
- 1:
--	tovirt(r12, r12)
- 	stw	r11,GPR1(r1)
- 	stw	r11,0(r1)
- 	mr	r11, r1
-+	stw	r10,_NIP(r11)
- 	mflr	r10
- 	stw	r10, _LINK(r11)
--	mfctr	r10
--	stw	r10,_NIP(r11)
- 	mfcr	r10
- 	rlwinm	r10,r10,0,4,2	/* Clear SO bit in CR */
- 	stw	r10,_CCR(r11)		/* save registers */
++#endif /* CONFIG_PPC64 */
++
+ /*
+  * flags for paca->irq_soft_mask
+  */
+@@ -46,8 +48,6 @@
+ #define IRQS_PMI_DISABLED	2
+ #define IRQS_ALL_DISABLED	(IRQS_DISABLED | IRQS_PMI_DISABLED)
+ 
+-#endif /* CONFIG_PPC64 */
+-
+ #ifndef __ASSEMBLY__
+ 
+ #ifdef CONFIG_PPC64
+@@ -287,6 +287,10 @@ extern void irq_set_pending_from_srr1(unsigned long srr1);
+ 
+ extern void force_external_irq_replay(void);
+ 
++static inline void irq_soft_mask_regs_set_state(struct pt_regs *regs, unsigned long val)
++{
++	regs->softe = val;
++}
+ #else /* CONFIG_PPC64 */
+ 
+ static inline unsigned long arch_local_save_flags(void)
+@@ -355,6 +359,9 @@ static inline bool arch_irq_disabled_regs(struct pt_regs *regs)
+ 
+ static inline void may_hard_irq_enable(void) { }
+ 
++static inline void irq_soft_mask_regs_set_state(struct pt_regs *regs, unsigned long val)
++{
++}
+ #endif /* CONFIG_PPC64 */
+ 
+ #define ARCH_IRQ_INIT_FLAGS	IRQ_NOREQUEST
 -- 
 2.25.0
 
