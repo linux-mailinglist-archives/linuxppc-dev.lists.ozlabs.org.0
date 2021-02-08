@@ -2,66 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A268731295E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 04:32:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C54312968
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 04:34:19 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DYs5g6pctzDr44
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 14:32:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DYs8810dNzDrbB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 14:34:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52c;
- helo=mail-pg1-x52c.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534;
+ helo=mail-pg1-x534.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=soHoLsXg; dkim-atps=neutral
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
- [IPv6:2607:f8b0:4864:20::52c])
+ header.s=20161025 header.b=qqV60bQw; dkim-atps=neutral
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
+ [IPv6:2607:f8b0:4864:20::534])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DYs3S4HqjzDqSC
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Feb 2021 14:30:11 +1100 (AEDT)
-Received: by mail-pg1-x52c.google.com with SMTP id e7so371883pge.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Feb 2021 19:30:11 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DYs3W4WMrzDqjT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Feb 2021 14:30:15 +1100 (AEDT)
+Received: by mail-pg1-x534.google.com with SMTP id z21so9329594pgj.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Feb 2021 19:30:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=hKlCOoBOtR8VF7ujYZRrFvlh8X4qaAWJTwQR95x4Pew=;
- b=soHoLsXgTiKhWp2CU14G73RJvaU0XYDdI9vE0f6QAISrzmhjqWm6551Bar39o4tqbU
- Sgt2k226bYd5UytwQuxUx1PyQfi3n7tSiifB/zgnz9fmQ1F0bKSKy8/IH47zBGegydzx
- YzUaCuaTvM55BVVtqmbVJBZAQfPcsybRTQg9yfNISn8exmFo+ocuvbpoLvc8UxWifuQw
- Z9KN+j+lxAi5caf48DAgFqTMmvdXaI+dJHb3opXzZZdHsjwOTiCX3St8DMbe0A34u4m6
- rqB5aZEdiwcmLCDxdCihieeAGwVfnA5OKhq/vr33fFQbkfmH0XL+SYNlMMPkA5xIGvz5
- 4XPg==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=gOxFb1uYaxdQPd5dRLwyNtq0+W6S2dH/x6Yto7IMl1g=;
+ b=qqV60bQwZBljS/SijhlJDQHiThCL2BANExZJXbo4Iz1OxBuYKBNJeTLoy/ilT96sH2
+ v0qBDLP8QDXmYXFdQwKhIOYogaTCHhdEo8ZbaiMZ2LsnBNcMVT/rhUe2l7+1qQbkCNOJ
+ vdfTJui0nZA56zjpO3UZbOMhD8k8Sc9la5op8nfhzQPiFdJ+54TAF6+feZXo08vq2A0V
+ OvRG4rnE9bxE6MNjoBRwtW33d0zBHEiVV1H8MuRuREFbSEKlyg33OxPLDBXBYUscBbEJ
+ GJ4fADL4qLqeBx/diumjXfhTFIN3ZeE8t7zK4pFY5fLCd9RQ/gd0gG8QgOV65y+2dvOH
+ 75Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=hKlCOoBOtR8VF7ujYZRrFvlh8X4qaAWJTwQR95x4Pew=;
- b=kZAA7SmFGzVOyxBA/r/X2pA0yzQ6BLa9IZJBwr044I4OcKc619HiG2qSYtTsessdWD
- xeYmiXi7NmWHIYclZSvc4+JChiozwaWELLxVKcvR4p02iktmDJdz37QwY79kU19fO5tt
- RFL902EOcIIZ2saIGpPyjkcaz7f+GHfPx/+RheO5wa6oqfY88copwo7T/Ttrh+TSBAXd
- 5PdADBoU1+cEtYkIRmaWSGcRI0zeV57MzQsF7v6QRe2+3QbZC4/Fw9CrYQY6WXrUUOwC
- EyfE5XA/bgVn7HojCYBjT5GhxWe4sAGHZkUDmPZrY7n5wn+V2d9oTl2bTHbmlqIxUbfb
- +5Sw==
-X-Gm-Message-State: AOAM531J234PSvPnRC8kIBUsqpG5cNSHk2fMKoh2vkT9cEZSerAciE1t
- TofMU3Zf1EQRmFu45+QhphtpRfglnRGkbw==
-X-Google-Smtp-Source: ABdhPJwaCyM4FdJnIggDlfTRRHrEwyPBQ636TpRPWy2herROpWZ8z10ZHKaG+QE0sCKOovzNX8Epvg==
-X-Received: by 2002:a62:fc83:0:b029:1d6:1767:dd1c with SMTP id
- e125-20020a62fc830000b02901d61767dd1cmr15678931pfh.70.1612755008605; 
- Sun, 07 Feb 2021 19:30:08 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=gOxFb1uYaxdQPd5dRLwyNtq0+W6S2dH/x6Yto7IMl1g=;
+ b=mRFgrMwRyooZVUiuEGGuD4DMjrfqXEmZXcXV2j09z+AlOE4VpT8tLDr+MVoPvayBdD
+ uZ20xCk/OwL8kOomK6nDzcwnWU57xhXfXVND+/QG23inFP89JrQ+sp/itCdp7Pqg7GnW
+ Svi/WCJG2HbT6VHe3kKgsQLu7wQdDQkz1WwGAKd6Kgq4dbx3ZOAvDXiHR0IFJkoAvL5g
+ BOgAM6pbE4kdtWmT2PrLIpA6VdDCUn2s2Kbl6csI8wEglFhxQvBHouUY1fUbkX42Uvm5
+ ZuOmi7jaNKFMXW1dUbGU/X84zIL7OEzqzwDHS3MHW7wPfzWoK3piO6SUuENPgS3h2LYp
+ ZNww==
+X-Gm-Message-State: AOAM5316PK9rs630r6jUCPPCERhG7d0fQSe2eX3T4Nef39yQFWT6jV4w
+ FXBOavMuwEBdQO/V3mXENumzIEgr48mWzg==
+X-Google-Smtp-Source: ABdhPJziJmaFMSAyVeTtln2i511Kw8pAzVu0uuHsKh2pzKreJG2s9KgZ/HaFFq7ZpM08kdWqbJ0FUQ==
+X-Received: by 2002:a63:c501:: with SMTP id f1mr15026274pgd.1.1612755012252;
+ Sun, 07 Feb 2021 19:30:12 -0800 (PST)
 Received: from tee480.ibm.com ([159.196.117.139])
- by smtp.gmail.com with ESMTPSA id i25sm16738740pgb.33.2021.02.07.19.30.04
+ by smtp.gmail.com with ESMTPSA id i25sm16738740pgb.33.2021.02.07.19.30.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 07 Feb 2021 19:30:08 -0800 (PST)
+ Sun, 07 Feb 2021 19:30:11 -0800 (PST)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 1/2] powerpc/64s: Fix pte update for kernel memory on radix
-Date: Mon,  8 Feb 2021 14:29:56 +1100
-Message-Id: <20210208032957.1232102-1-jniethe5@gmail.com>
+Subject: [PATCH v3 2/2] selftests/powerpc: Test for spurious kernel memory
+ faults on radix
+Date: Mon,  8 Feb 2021 14:29:57 +1100
+Message-Id: <20210208032957.1232102-2-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210208032957.1232102-1-jniethe5@gmail.com>
+References: <20210208032957.1232102-1-jniethe5@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,145 +83,92 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When adding a pte a ptesync is needed to order the update of the pte
-with subsequent accesses otherwise a spurious fault may be raised.
+Previously when mapping kernel memory on radix, no ptesync was included
+which would periodically lead to unhandled spurious faults. Mapping
+kernel memory is used when code patching with Strict RWX enabled.  As
+suggested by Chris Riedl, turning ftrace on and off does a large amount
+of code patching so is a convenient way to see this kind of fault.
 
-radix__set_pte_at() does not do this for performance gains. For
-non-kernel memory this is not an issue as any faults of this kind are
-corrected by the page fault handler.  For kernel memory these faults are
-not handled.  The current solution is that there is a ptesync in
-flush_cache_vmap() which should be called when mapping from the vmalloc
-region.
+Add a selftest to try and trigger this kind of a spurious fault. It
+tests for 30 seconds which is usually long enough for the issue to show
+up.
 
-However, map_kernel_page() does not call flush_cache_vmap(). This is
-troublesome in particular for code patching with Strict RWX on radix. In
-do_patch_instruction() the page frame that contains the instruction to
-be patched is mapped and then immediately patched. With no ordering or
-synchronization between setting up the pte and writing to the page it is
-possible for faults.
-
-As the code patching is done using __put_user_asm_goto() the resulting
-fault is obscured - but using a normal store instead it can be seen:
-
-[  418.498768][  T757] BUG: Unable to handle kernel data access on write at 0xc008000008f24a3c
-[  418.498790][  T757] Faulting instruction address: 0xc00000000008bd74
-[  418.498805][  T757] Oops: Kernel access of bad area, sig: 11 [#1]
-[  418.498828][  T757] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
-[  418.498843][  T757] Modules linked in: nop_module(PO+) [last unloaded: nop_module]
-[  418.498872][  T757] CPU: 4 PID: 757 Comm: sh Tainted: P           O      5.10.0-rc5-01361-ge3c1b78c8440-dirty #43
-[  418.498936][  T757] NIP:  c00000000008bd74 LR: c00000000008bd50 CTR: c000000000025810
-[  418.498979][  T757] REGS: c000000016f634a0 TRAP: 0300   Tainted: P           O       (5.10.0-rc5-01361-ge3c1b78c8440-dirty)
-[  418.499033][  T757] MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 44002884  XER: 00000000
-[  418.499084][  T757] CFAR: c00000000007c68c DAR: c008000008f24a3c DSISR: 42000000 IRQMASK: 1
-
-This results in the kind of issue reported here:
-https://lore.kernel.org/linuxppc-dev/15AC5B0E-A221-4B8C-9039-FA96B8EF7C88@lca.pw/
-
-Chris Riedl suggested a reliable way to reproduce the issue:
-$ mount -t debugfs none /sys/kernel/debug
-$ (while true; do echo function > /sys/kernel/debug/tracing/current_tracer ; echo nop > /sys/kernel/debug/tracing/current_tracer ; done)&
-
-Turning ftrace on and off does a large amount of code patching which in
-usually less then 5min will crash giving a trace like:
-
-[  146.668988][  T809] ftrace-powerpc: (____ptrval____): replaced (4b473b11) != old (60000000)
-[  146.668995][  T809] ------------[ ftrace bug ]------------
-[  146.669031][  T809] ftrace failed to modify
-[  146.669039][  T809] [<c000000000bf8e5c>] napi_busy_loop+0xc/0x390
-[  146.669045][  T809]  actual:   11:3b:47:4b
-[  146.669070][  T809] Setting ftrace call site to call ftrace function
-[  146.669075][  T809] ftrace record flags: 80000001
-[  146.669081][  T809]  (1)
-[  146.669081][  T809]  expected tramp: c00000000006c96c
-[  146.669096][  T809] ------------[ cut here ]------------
-[  146.669104][  T809] WARNING: CPU: 4 PID: 809 at kernel/trace/ftrace.c:2065 ftrace_bug+0x28c/0x2e8
-[  146.669109][  T809] Modules linked in: nop_module(PO-) [last unloaded: nop_module]
-[  146.669130][  T809] CPU: 4 PID: 809 Comm: sh Tainted: P           O      5.10.0-rc5-01360-gf878ccaf250a #1
-[  146.669136][  T809] NIP:  c00000000024f334 LR: c00000000024f330 CTR: c0000000001a5af0
-[  146.669142][  T809] REGS: c000000004c8b760 TRAP: 0700   Tainted: P           O       (5.10.0-rc5-01360-gf878ccaf250a)
-[  146.669147][  T809] MSR:  900000000282b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 28008848  XER: 20040000
-[  146.669208][  T809] CFAR: c0000000001a9c98 IRQMASK: 0
-[  146.669208][  T809] GPR00: c00000000024f330 c000000004c8b9f0 c000000002770600 0000000000000022
-[  146.669208][  T809] GPR04: 00000000ffff7fff c000000004c8b6d0 0000000000000027 c0000007fe9bcdd8
-[  146.669208][  T809] GPR08: 0000000000000023 ffffffffffffffd8 0000000000000027 c000000002613118
-[  146.669208][  T809] GPR12: 0000000000008000 c0000007fffdca00 0000000000000000 0000000000000000
-[  146.669208][  T809] GPR16: 0000000023ec37c5 0000000000000000 0000000000000000 0000000000000008
-[  146.669208][  T809] GPR20: c000000004c8bc90 c0000000027a2d20 c000000004c8bcd0 c000000002612fe8
-[  146.669208][  T809] GPR24: 0000000000000038 0000000000000030 0000000000000028 0000000000000020
-[  146.669208][  T809] GPR28: c000000000ff1b68 c000000000bf8e5c c00000000312f700 c000000000fbb9b0
-[  146.669384][  T809] NIP [c00000000024f334] ftrace_bug+0x28c/0x2e8
-[  146.669391][  T809] LR [c00000000024f330] ftrace_bug+0x288/0x2e8
-[  146.669396][  T809] Call Trace:
-[  146.669403][  T809] [c000000004c8b9f0] [c00000000024f330] ftrace_bug+0x288/0x2e8 (unreliable)
-[  146.669418][  T809] [c000000004c8ba80] [c000000000248778] ftrace_modify_all_code+0x168/0x210
-[  146.669429][  T809] [c000000004c8bab0] [c00000000006c528] arch_ftrace_update_code+0x18/0x30
-[  146.669440][  T809] [c000000004c8bad0] [c000000000248954] ftrace_run_update_code+0x44/0xc0
-[  146.669451][  T809] [c000000004c8bb00] [c00000000024dc88] ftrace_startup+0xf8/0x1c0
-[  146.669461][  T809] [c000000004c8bb40] [c00000000024dd9c] register_ftrace_function+0x4c/0xc0
-[  146.669472][  T809] [c000000004c8bb70] [c00000000026e750] function_trace_init+0x80/0xb0
-[  146.669484][  T809] [c000000004c8bba0] [c000000000266b84] tracing_set_tracer+0x2a4/0x4f0
-[  146.669495][  T809] [c000000004c8bc70] [c000000000266ea4] tracing_set_trace_write+0xd4/0x130
-[  146.669506][  T809] [c000000004c8bd20] [c000000000422790] vfs_write+0xf0/0x330
-[  146.669518][  T809] [c000000004c8bd70] [c000000000422bb4] ksys_write+0x84/0x140
-[  146.669529][  T809] [c000000004c8bdc0] [c00000000003499c] system_call_exception+0x14c/0x230
-[  146.669540][  T809] [c000000004c8be20] [c00000000000d860] system_call_common+0xf0/0x27c
-[  146.669549][  T809] Instruction dump:
-[  146.669558][  T809] 48000014 3c62fe88 38631718 4bf5a941 60000000 7fc3f378 4bff877d 7c641b78
-[  146.669598][  T809] 3c62fe88 38631730 4bf5a925 60000000 <0fe00000> 38210090 3d22fd90 39000001
-[  146.669638][  T809] ---[ end trace 5ea7076ea28c0fbd ]---
-
-To fix this when updating kernel memory ptes using ptesync.
-
-Fixes: f1cb8f9beba8 ("powerpc/64s/radix: avoid ptesync after set_pte and ptep_set_access_flags")
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v2: Only ptesync is needed
-v3: Fix Fixes tag
+v3: New to series
 ---
- arch/powerpc/include/asm/book3s/64/radix.h | 6 ++++--
- arch/powerpc/mm/book3s64/radix_pgtable.c   | 4 ++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ tools/testing/selftests/powerpc/mm/Makefile   |  1 +
+ .../selftests/powerpc/mm/spurious_fault.sh    | 49 +++++++++++++++++++
+ 2 files changed, 50 insertions(+)
+ create mode 100755 tools/testing/selftests/powerpc/mm/spurious_fault.sh
 
-diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
-index c7813dc628fc..59cab558e2f0 100644
---- a/arch/powerpc/include/asm/book3s/64/radix.h
-+++ b/arch/powerpc/include/asm/book3s/64/radix.h
-@@ -222,8 +222,10 @@ static inline void radix__set_pte_at(struct mm_struct *mm, unsigned long addr,
- 	 * from ptesync, it should probably go into update_mmu_cache, rather
- 	 * than set_pte_at (which is used to set ptes unrelated to faults).
- 	 *
--	 * Spurious faults to vmalloc region are not tolerated, so there is
--	 * a ptesync in flush_cache_vmap.
-+	 * Spurious faults from the kernel memory are not tolerated, so there
-+	 * is a ptesync in flush_cache_vmap, and __map_kernel_page() follows
-+	 * the pte update sequence from ISA Book III 6.10 Translation Table
-+	 * Update Synchronization Requirements.
- 	 */
- }
+diff --git a/tools/testing/selftests/powerpc/mm/Makefile b/tools/testing/selftests/powerpc/mm/Makefile
+index defe488d6bf1..56c2896bed53 100644
+--- a/tools/testing/selftests/powerpc/mm/Makefile
++++ b/tools/testing/selftests/powerpc/mm/Makefile
+@@ -5,6 +5,7 @@ noarg:
+ TEST_GEN_PROGS := hugetlb_vs_thp_test subpage_prot prot_sao segv_errors wild_bctr \
+ 		  large_vm_fork_separation bad_accesses pkey_exec_prot \
+ 		  pkey_siginfo stack_expansion_signal stack_expansion_ldst
++TEST_PROGS := spurious_fault.sh
  
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 3adcf730f478..1d5eec847b88 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -108,7 +108,7 @@ static int early_map_kernel_page(unsigned long ea, unsigned long pa,
- 
- set_the_pte:
- 	set_pte_at(&init_mm, ea, ptep, pfn_pte(pfn, flags));
--	smp_wmb();
-+	asm volatile("ptesync": : :"memory");
- 	return 0;
- }
- 
-@@ -168,7 +168,7 @@ static int __map_kernel_page(unsigned long ea, unsigned long pa,
- 
- set_the_pte:
- 	set_pte_at(&init_mm, ea, ptep, pfn_pte(pfn, flags));
--	smp_wmb();
-+	asm volatile("ptesync": : :"memory");
- 	return 0;
- }
- 
+ TEST_GEN_PROGS_EXTENDED := tlbie_test
+ TEST_GEN_FILES := tempfile
+diff --git a/tools/testing/selftests/powerpc/mm/spurious_fault.sh b/tools/testing/selftests/powerpc/mm/spurious_fault.sh
+new file mode 100755
+index 000000000000..e454509659f6
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/mm/spurious_fault.sh
+@@ -0,0 +1,49 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++TIMEOUT=30
++
++DEBUFS_DIR=`cat /proc/mounts | grep debugfs | awk '{print $2}'`
++if [ ! -e "$DEBUFS_DIR" ]
++then
++	echo "debugfs not found, skipping" 1>&2
++	exit 4
++fi
++
++if [ ! -e "$DEBUFS_DIR/tracing/current_tracer" ]
++then
++	echo "Tracing files not found, skipping" 1>&2
++	exit 4
++fi
++
++
++echo "Testing for spurious faults when mapping kernel memory..."
++
++if grep -q "FUNCTION TRACING IS CORRUPTED" "$DEBUFS_DIR/tracing/trace"
++then
++	echo "FAILED: Ftrace already dead. Probably due to a spurious fault" 1>&2
++	exit 1
++fi
++
++dmesg -C
++START_TIME=`date +%s`
++END_TIME=`expr $START_TIME + $TIMEOUT`
++while [ `date +%s` -lt $END_TIME ]
++do
++	echo function > $DEBUFS_DIR/tracing/current_tracer
++	echo nop > $DEBUFS_DIR/tracing/current_tracer
++	if dmesg | grep -q 'ftrace bug'
++	then
++		break
++	fi
++done
++
++echo nop > $DEBUFS_DIR/tracing/current_tracer
++if dmesg | grep -q 'ftrace bug'
++then
++	echo "FAILED: Mapping kernel memory causes spurious faults" 1>&2
++	exit 1
++else
++	echo "OK: Mapping kernel memory does not cause spurious faults"
++	exit 0
++fi
 -- 
 2.25.1
 
