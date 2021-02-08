@@ -1,43 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B8B31299D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 05:02:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7291F3129A8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 05:14:35 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DYsmq6sndzDrfy
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 15:02:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DYt2c1rN3zDsYn
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Feb 2021 15:14:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=hisilicon.com (client-ip=45.249.212.190;
- helo=szxga04-in.huawei.com; envelope-from=tiantao6@hisilicon.com;
- receiver=<UNKNOWN>)
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DYsXx6R6FzDqJq
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Feb 2021 14:52:05 +1100 (AEDT)
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4DYsVW2bxKzlGtG;
- Mon,  8 Feb 2021 11:50:11 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.56) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.498.0; Mon, 8 Feb 2021 11:51:50 +0800
-From: Tian Tao <tiantao6@hisilicon.com>
-To: <timur@kernel.org>, <nicoleotsuka@gmail.com>, <Xiubo.Lee@gmail.com>,
- <perex@perex.cz>, <tiwai@suse.com>, <shawnguo@kernel.org>,
- <s.hauer@pengutronix.de>
-Subject: [PATCH] ASoC: imx-hdmi: no need to set .owner when using
- module_platform_driver
-Date: Mon, 8 Feb 2021 11:51:27 +0800
-Message-ID: <1612756287-4601-1-git-send-email-tiantao6@hisilicon.com>
-X-Mailer: git-send-email 2.7.4
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DYt104qdqzDr7Q
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Feb 2021 15:13:08 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=SQsvL45j; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4DYt0t66nsz9sVF;
+ Mon,  8 Feb 2021 15:13:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1612757588;
+ bh=OO7xGWmsUnuYQgc3bx44I7oadxiJ3c+qloWk8zo8s/E=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=SQsvL45jlKpqUCEP8e1n03m12ASsrcsFM4rulmGn0o0JHZVPyDkisCyaZygcFW+w/
+ o+aNZskRfsTmGwMpW337LVHKl/7fzsO7W/0NkNFfBpab7Nq/iTWuLQYB5o7WrlGlgR
+ vrm9InatVSOATOiUKFPVdFYZ1JXjJqQkTzJjF+50Dkp6/IBYDj8ZWuJoomQ79smix5
+ Jb09M2DIY7piouMND8uNftwaBdOiAx0C8HFgF5ekV/3yH2poxd2WulSITdHQwwW01E
+ tXf52460TJkHIrDDaHHGbop5tjAoaZRaWZb+tWdI8YhTvmkDE9J66esGpcdkyVyXAX
+ oUG7BiZkbIKyw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Rob Herring <robh@kernel.org>, Lakshmi Ramasubramanian
+ <nramas@linux.microsoft.com>
+Subject: Re: [PATCH v16 11/12] powerpc: Use OF alloc and free for FDT
+In-Reply-To: <CAL_JsqK1Pb9nAeL84EP2U3MQgpBsm+E_0QXmzbigWXnS245WPQ@mail.gmail.com>
+References: <20210204164135.29856-1-nramas@linux.microsoft.com>
+ <20210204164135.29856-12-nramas@linux.microsoft.com>
+ <CAL_JsqK1Pb9nAeL84EP2U3MQgpBsm+E_0QXmzbigWXnS245WPQ@mail.gmail.com>
+Date: Mon, 08 Feb 2021 15:12:59 +1100
+Message-ID: <87zh0fnqno.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.69.192.56]
-X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Mon, 08 Feb 2021 15:01:02 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,32 +58,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Bhupesh Sharma <bhsharma@redhat.com>,
+ tao.li@vivo.com, Mimi Zohar <zohar@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, vincenzo.frascino@arm.com,
+ Frank Rowand <frowand.list@gmail.com>, Sasha Levin <sashal@kernel.org>,
+ Will Deacon <will@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>,
+ James Morris <jmorris@namei.org>, "AKASHI,
+ Takahiro" <takahiro.akashi@linaro.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, "Serge E.
+ Hallyn" <serge@hallyn.com>, devicetree@vger.kernel.org,
+ Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Prakhar Srivastava <prsriva@linux.microsoft.com>,
+ Hsin-Yi Wang <hsinyi@chromium.org>, Allison Randal <allison@lohutok.net>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Matthias Brugger <mbrugger@suse.com>, balajib@linux.microsoft.com,
+ dmitry.kasatkin@gmail.com,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ James Morse <james.morse@arm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Joe Perches <joe@perches.com>,
+ linux-integrity@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-the module_platform_driver will call platform_driver_register.
-and It will set the .owner to THIS_MODULE
+Rob Herring <robh@kernel.org> writes:
+> On Thu, Feb 4, 2021 at 10:42 AM Lakshmi Ramasubramanian
+> <nramas@linux.microsoft.com> wrote:
+...
+>> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+>> index d0e459bb2f05..51d2d8eb6c1b 100644
+>> --- a/arch/powerpc/kexec/elf_64.c
+>> +++ b/arch/powerpc/kexec/elf_64.c
+>> @@ -19,6 +19,7 @@
+>>  #include <linux/kexec.h>
+>>  #include <linux/libfdt.h>
+>>  #include <linux/module.h>
+>> +#include <linux/of.h>
+>>  #include <linux/of_fdt.h>
+>>  #include <linux/slab.h>
+>>  #include <linux/types.h>
+>> @@ -32,7 +33,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>>         unsigned int fdt_size;
+>>         unsigned long kernel_load_addr;
+>>         unsigned long initrd_load_addr = 0, fdt_load_addr;
+>> -       void *fdt;
+>> +       void *fdt = NULL;
+>>         const void *slave_code;
+>>         struct elfhdr ehdr;
+>>         char *modified_cmdline = NULL;
+>> @@ -103,18 +104,12 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>>         }
+>>
+>>         fdt_size = fdt_totalsize(initial_boot_params) * 2;
+>> -       fdt = kmalloc(fdt_size, GFP_KERNEL);
+>> +       fdt = of_alloc_and_init_fdt(fdt_size);
+>>         if (!fdt) {
+>>                 pr_err("Not enough memory for the device tree.\n");
+>>                 ret = -ENOMEM;
+>>                 goto out;
+>>         }
+>> -       ret = fdt_open_into(initial_boot_params, fdt, fdt_size);
+>> -       if (ret < 0) {
+>> -               pr_err("Error setting up the new device tree.\n");
+>> -               ret = -EINVAL;
+>> -               goto out;
+>> -       }
+>>
+>>         ret = setup_new_fdt_ppc64(image, fdt, initrd_load_addr,
+>
+> The first thing this function does is call setup_new_fdt() which first
+> calls of_kexec_setup_new_fdt(). (Note, I really don't understand the
+> PPC code split. It looks like there's a 32-bit and 64-bit split, but
+> 32-bit looks broken to me. Nothing ever calls setup_new_fdt() except
+> setup_new_fdt_ppc64()).
 
-Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
----
- sound/soc/fsl/imx-hdmi.c | 1 -
- 1 file changed, 1 deletion(-)
+I think that's because 32-bit doesn't support kexec_file_load().
 
-diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
-index dbbb7618..cd0235a 100644
---- a/sound/soc/fsl/imx-hdmi.c
-+++ b/sound/soc/fsl/imx-hdmi.c
-@@ -223,7 +223,6 @@ MODULE_DEVICE_TABLE(of, imx_hdmi_dt_ids);
- static struct platform_driver imx_hdmi_driver = {
- 	.driver = {
- 		.name = "imx-hdmi",
--		.owner = THIS_MODULE,
- 		.pm = &snd_soc_pm_ops,
- 		.of_match_table = imx_hdmi_dt_ids,
- 	},
--- 
-2.7.4
-
+cheers
