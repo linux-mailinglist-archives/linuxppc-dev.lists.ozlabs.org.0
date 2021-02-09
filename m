@@ -1,73 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB1831460C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 03:07:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D98314688
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 03:38:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DZRB35NnjzDvZP
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 13:07:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DZRsH5VhQzDvZS
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 13:38:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d;
- helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530;
+ helo=mail-pg1-x530.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=CJZgqG3f; dkim-atps=neutral
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
- [IPv6:2607:f8b0:4864:20::62d])
+ header.s=20161025 header.b=TibI077w; dkim-atps=neutral
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
+ [IPv6:2607:f8b0:4864:20::530])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DZR871w7ZzDqDB
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 13:06:14 +1100 (AEDT)
-Received: by mail-pl1-x62d.google.com with SMTP id k22so4499510pll.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Feb 2021 18:06:14 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DZRq40qdczDsY8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 13:36:30 +1100 (AEDT)
+Received: by mail-pg1-x530.google.com with SMTP id c132so11527828pga.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Feb 2021 18:36:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=5oVfKwxdMSPd4bzfTWlB2L73D+eDnMGGdqjT45jmcxY=;
- b=CJZgqG3fU0ze1LDxxjCcL4OidXvnO1PwEBOYVWUPTwEFeyF1W3L1ktYtEho5dm/aVV
- sk+R7iOCbdtXtWiYkIUksuwUeySkja5FP7soga6gViyrd+VqpyYktEC50Y3DmlbFU1bh
- bfeHow7e2Vl2IFopPd97sJHII6XZpCN+HCLzQtwt6YCnWKeMnwNMlFu/n00EYvBs5ihO
- vf9LUL1jm5GfKJno0kMTk4zd4Im7w+Fy8zNkCl6tfkuIpTaIzRwO8Oas3gavBFQJsIyP
- jQ6JmDhr910/0PPTaTokdsqEvF1ncyPNljg5StXlr6bDKoAmgF7TMOsr1gjSH6lbspld
- 631Q==
+ bh=3QXGdYBY4GlaQjWRP3AW5oVocz08MQfpEQJa46lCHW4=;
+ b=TibI077wK5BoFL+D16v0ATZT2K15vnWdkA7lAPagP9SvPLXshPfC8RfEfTQEshqj26
+ MjWiqpkoaiRkz/RG2GZ/R19LJ1rS+KzYf5UFwmZ/r3eUgYlJRB1+LysTYC2/Msk08tkE
+ TaJ5U5riA8qILa/prHnY2a765knNriZA7zZ4vYTu98cL7L7eZ1OnIOIS3TSMCTJOTBRx
+ PEbPXjOBhcHuXIue0yq8RjEtZTC1QE2eRuzBWlXRtc7jRnki+WZ/0DBplRshX3IqgoTi
+ D09T9UiuK+iSfq7FhOdISj+tMfEPoqcY4VVaEwdlx7f3wcbl18mS+ehf9ebS14uK+ROc
+ mbUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=5oVfKwxdMSPd4bzfTWlB2L73D+eDnMGGdqjT45jmcxY=;
- b=tbNJfc9/dgArbFQVnvN4nOrEY4ouAHVw1TjVPsnTxQMdm+fuCdKxMIsW1RYsuNZOz0
- 6fZN+LzvBeLD3RqZZHx7aTkEGO/EKhrkgU+igBGpGLp1wP0BW+XJw5pmYUDcGWhwOXYQ
- Y0Cbv5S0fBhVPjGtTC4wkuovRqvuSFjAEHzTSSKasixgWDtJTbJpBsi8FTeLSVhKVAmS
- RlB4mBQu2kNSGPqVAK5pVfVy+lkRbImZqd0BVDW8GvCz77Md/9eJ8e5KHLti+nG+cw2L
- MfHu6sZzXCvKVP699ZgTBqX2hCFIWBFftpuFuQKKUepEJZSTBxa4Hznsp2BnqVFXuzlM
- adEQ==
-X-Gm-Message-State: AOAM530jtHeGH/GxAr7Ntx1ztm6q7ANrx1uwAlbU9IZUkuP5DsCcJ1wN
- KOO4M+C1/GKimxt0zAdwBR0=
-X-Google-Smtp-Source: ABdhPJzGqPWpoRbGYGl/C3R89SBWGnvbM42KuAF3cB7mfsxUIui1WbJK14P31w9OaoHtp3cTz0DwaQ==
-X-Received: by 2002:a17:902:c94d:b029:de:9b70:d886 with SMTP id
- i13-20020a170902c94db02900de9b70d886mr18475530pla.5.1612836371414; 
- Mon, 08 Feb 2021 18:06:11 -0800 (PST)
+ bh=3QXGdYBY4GlaQjWRP3AW5oVocz08MQfpEQJa46lCHW4=;
+ b=fNsy9uzEHUws1aOL0BzJ+8ZT/4ptRWgLd9xf/8F2OoTyMfeLA+W4h9RQxPGgBXL/Ic
+ tsknFRKdZ27PVZPLiA3T6k6e8gxTGAg/eiPc4AOtZZz1vMlQqZGxuumzddu0fgpGt6qG
+ yjW6Q17Hbg4QUui55thVWroFpyv6Oic+bTEQOZ1h103fjhitQgeiqvEMViRF0+UyuvJw
+ 3UVWUzLlkuMT8KgywMwlCbWpxSpOdc+6aT2uSch9BOLwknNEI1gG6fCB9TLqzY4B+3qa
+ 2XEISbBuKBnvbXRifa+l/BoJWrsO7fUMdfDO59csTm45kg5ct/3PEKxNxeZ2TG4QENzE
+ Tl5A==
+X-Gm-Message-State: AOAM5327LOVMVVqXkCgvnkD9jrYyl4IpwpFMV3/BXT6Sm3GZPgvHjTnV
+ YHxtggR6mV265Q2bXDNW0WY=
+X-Google-Smtp-Source: ABdhPJzPMPSomATF2ZyD4YSYOSlDzTQHBwvjPuxeoN6W3R/OWYq87nM9LvDS8uYPAZg7XCUdbR0vMQ==
+X-Received: by 2002:a62:cd:0:b029:1d5:da40:abf8 with SMTP id
+ 196-20020a6200cd0000b02901d5da40abf8mr20272668pfa.60.1612838187168; 
+ Mon, 08 Feb 2021 18:36:27 -0800 (PST)
 Received: from localhost ([220.240.226.199])
- by smtp.gmail.com with ESMTPSA id x190sm5635792pfx.166.2021.02.08.18.06.09
+ by smtp.gmail.com with ESMTPSA id 71sm6599001pgh.55.2021.02.08.18.36.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Feb 2021 18:06:10 -0800 (PST)
-Date: Tue, 09 Feb 2021 12:06:05 +1000
+ Mon, 08 Feb 2021 18:36:26 -0800 (PST)
+Date: Tue, 09 Feb 2021 12:36:20 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v5 19/22] powerpc/syscall: Optimise checks in beginning of
- system_call_exception()
+Subject: Re: [PATCH v5 20/22] powerpc/syscall: Avoid storing 'current' in
+ another pointer
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
  <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
  msuchanek@suse.de, Paul Mackerras <paulus@samba.org>
 References: <cover.1612796617.git.christophe.leroy@csgroup.eu>
- <3e48bb439357c6f72ae4343bf93bd29f0980eeb1.1612796617.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <3e48bb439357c6f72ae4343bf93bd29f0980eeb1.1612796617.git.christophe.leroy@csgroup.eu>
+ <24804747098369ebcdac38970b8f7a1260bdd248.1612796617.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <24804747098369ebcdac38970b8f7a1260bdd248.1612796617.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1612836170.502t0sssvi.astroid@bobo.none>
+Message-Id: <1612838134.rvncv9kzls.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,80 +87,53 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Excerpts from Christophe Leroy's message of February 9, 2021 1:10 am:
-> Combine all tests of regs->msr into a single logical one.
-
-Okay by me unless we choose to do the config option and put these all=20
-under it. I think I would prefer that because sometimes the registers
-are in a state you can't easily see what the values in the expression
-were. In this case it doesn't matter so much because they should be in
-regs in the interrupt frame.
-
-Thanks,
-Nick
-
+> By saving the pointer pointing to thread_info.flags, gcc copies r2
+> in a non-volatile register.
 >=20
-> Before the patch:
+> We know 'current' doesn't change, so avoid that intermediaite pointer.
 >=20
->    0:	81 6a 00 84 	lwz     r11,132(r10)
->    4:	90 6a 00 88 	stw     r3,136(r10)
->    8:	69 60 00 02 	xori    r0,r11,2
->    c:	54 00 ff fe 	rlwinm  r0,r0,31,31,31
->   10:	0f 00 00 00 	twnei   r0,0
->   14:	69 63 40 00 	xori    r3,r11,16384
->   18:	54 63 97 fe 	rlwinm  r3,r3,18,31,31
->   1c:	0f 03 00 00 	twnei   r3,0
->   20:	69 6b 80 00 	xori    r11,r11,32768
->   24:	55 6b 8f fe 	rlwinm  r11,r11,17,31,31
->   28:	0f 0b 00 00 	twnei   r11,0
+> Reduces null_syscall benchmark by 2 cycles (322 =3D> 320 cycles)
 >=20
-> After the patch:
->=20
->    0:	81 6a 00 84 	lwz     r11,132(r10)
->    4:	90 6a 00 88 	stw     r3,136(r10)
->    8:	7d 6b 58 f8 	not     r11,r11
->    c:	71 6b c0 02 	andi.   r11,r11,49154
->   10:	0f 0b 00 00 	twnei   r11,0
->=20
-> 6 cycles less on powerpc 8xx (328 =3D> 322 cycles).
+> On PPC64, gcc seems to know that 'current' is not changing, and it keeps
+> it in a non volatile register to avoid multiple read of 'current' in paca=
+.
 >=20
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/kernel/interrupt.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
->=20
-> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interr=
-upt.c
-> index 55e1aa18cdb9..8c38e8c95be2 100644
-> --- a/arch/powerpc/kernel/interrupt.c
-> +++ b/arch/powerpc/kernel/interrupt.c
-> @@ -28,6 +28,7 @@ notrace long system_call_exception(long r3, long r4, lo=
-ng r5,
->  				   unsigned long r0, struct pt_regs *regs)
->  {
->  	syscall_fn f;
-> +	unsigned long expected_msr;
-> =20
->  	regs->orig_gpr3 =3D r3;
-> =20
-> @@ -39,10 +40,13 @@ notrace long system_call_exception(long r3, long r4, =
-long r5,
-> =20
->  	trace_hardirqs_off(); /* finish reconciling */
-> =20
-> +	expected_msr =3D MSR_PR;
->  	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x))
-> -		BUG_ON(!(regs->msr & MSR_RI));
-> -	BUG_ON(!(regs->msr & MSR_PR));
-> -	BUG_ON(arch_irq_disabled_regs(regs));
-> +		expected_msr |=3D MSR_RI;
-> +	if (IS_ENABLED(CONFIG_PPC32))
-> +		expected_msr |=3D MSR_EE;
-> +	BUG_ON((regs->msr & expected_msr) ^ expected_msr);
-> +	BUG_ON(IS_ENABLED(CONFIG_PPC64) && arch_irq_disabled_regs(regs));
-> =20
->  #ifdef CONFIG_PPC_PKEY
->  	if (mmu_has_feature(MMU_FTR_PKEY)) {
-> --=20
-> 2.25.0
->=20
->=20
+
+What if you did this?
+
+---
+ arch/powerpc/include/asm/current.h | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/current.h b/arch/powerpc/include/asm/=
+current.h
+index bbfb94800415..59ab327972a5 100644
+--- a/arch/powerpc/include/asm/current.h
++++ b/arch/powerpc/include/asm/current.h
+@@ -23,16 +23,19 @@ static inline struct task_struct *get_current(void)
+=20
+ 	return task;
+ }
+-#define current	get_current()
+=20
+ #else
+=20
+-/*
+- * We keep `current' in r2 for speed.
+- */
+-register struct task_struct *current asm ("r2");
++static inline struct task_struct *get_current(void)
++{
++	register struct task_struct *task asm ("r2");
++
++	return task;
++}
+=20
+ #endif
+=20
++#define current	get_current()
++
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_POWERPC_CURRENT_H */
+--=20
