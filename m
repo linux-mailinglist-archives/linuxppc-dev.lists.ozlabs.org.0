@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1792314CBC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 11:19:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91790314CBE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 11:21:37 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DZf574s0VzDsdV
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 21:19:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DZf7f2r0VzDrRX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 21:21:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,40 +15,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DZdZt4457zDqlr
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DZdZt55dmzDsNZ
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 20:56:38 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DZdZp1m6tz9txg7;
+ by localhost (Postfix) with ESMTP id 4DZdZp5F3Sz9txgD;
  Tue,  9 Feb 2021 10:56:34 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id k3_82HLWE-Wx; Tue,  9 Feb 2021 10:56:34 +0100 (CET)
+ with ESMTP id XBjwnlFexga7; Tue,  9 Feb 2021 10:56:34 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DZdZp0sKTz9tx3b;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DZdZp4VSPz9txgB;
  Tue,  9 Feb 2021 10:56:34 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E02038B7D6;
- Tue,  9 Feb 2021 10:56:34 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9F2A48B7D6;
+ Tue,  9 Feb 2021 10:56:35 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id a9XAIuYelWMn; Tue,  9 Feb 2021 10:56:34 +0100 (CET)
+ with ESMTP id t_dHB3nNX8yy; Tue,  9 Feb 2021 10:56:35 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 679EE8B7D4;
- Tue,  9 Feb 2021 10:56:34 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6DAD58B7D4;
+ Tue,  9 Feb 2021 10:56:35 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 41EFA67342; Tue,  9 Feb 2021 09:56:34 +0000 (UTC)
-Message-Id: <bb5fc275f03ede032797b828dc2f6dc9e3e6dce5.1612864003.git.christophe.leroy@csgroup.eu>
+ id 4A96667342; Tue,  9 Feb 2021 09:56:35 +0000 (UTC)
+Message-Id: <6ad5503bb11a1bf9f41d8c1dffd29b8b0d6c3974.1612864003.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1612864003.git.christophe.leroy@csgroup.eu>
 References: <cover.1612864003.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [RFC PATCH v1 10/41] powerpc/32: Handle bookE debugging in C in
- exception entry
+Subject: [RFC PATCH v1 11/41] powerpc/32: Use fast instruction to set MSR RI
+ in exception prolog on 8xx
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com
-Date: Tue,  9 Feb 2021 09:56:34 +0000 (UTC)
+Date: Tue,  9 Feb 2021 09:56:35 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,70 +65,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The handling of SPRN_DBCR0 and other registers can easily
-be done in C instead of ASM.
+8xx has registers SPRN_NRI, SPRN_EID and SPRN_EIE for changing
+MSR EE and RI.
+
+Use SPRN_EID in exception prolog to set RI.
+
+On an 8xx, it reduces the null_syscall test by 3 cycles.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/interrupt.h |  7 +++++++
- arch/powerpc/kernel/entry_32.S       | 23 -----------------------
- 2 files changed, 7 insertions(+), 23 deletions(-)
+ arch/powerpc/kernel/head_32.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index e794111d7c03..d70c761edc00 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -52,6 +52,13 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
- 	if (user_mode(regs))
- 		account_cpu_user_entry();
+diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+index ac6b391f1493..25ee6b26ef5a 100644
+--- a/arch/powerpc/kernel/head_32.h
++++ b/arch/powerpc/kernel/head_32.h
+@@ -107,6 +107,8 @@
  #endif
-+
-+#ifdef CONFIG_PPC_ADV_DEBUG_REGS
-+	if (IS_ENABLED(CONFIG_PPC32) && unlikely(ts->debug.dbcr0 & DBCR0_IDM)) {
-+		mtspr(SPRN_DBSR, -1);
-+		mtspr(SPRN_DBCR0, global_dbcr0[smp_processor_id()]);
-+	}
-+#endif
- }
- 
- /*
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 87c06e241fc2..971980d71b04 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -146,32 +146,9 @@ transfer_to_handler:
- 	addi	r2, r12, -THREAD
- 	addi	r11,r1,STACK_FRAME_OVERHEAD
- 	stw	r11,PT_REGS(r12)
--#if defined(CONFIG_40x) || defined(CONFIG_BOOKE)
--	/* Check to see if the dbcr0 register is set up to debug.  Use the
--	   internal debug mode bit to do this. */
--	lwz	r12,THREAD_DBCR0(r12)
--	andis.	r12,r12,DBCR0_IDM@h
--#endif
- #ifdef CONFIG_PPC_BOOK3S_32
- 	kuep_lock r11, r12
- #endif
--#if defined(CONFIG_40x) || defined(CONFIG_BOOKE)
--	beq+	3f
--	/* From user and task is ptraced - load up global dbcr0 */
--	li	r12,-1			/* clear all pending debug events */
--	mtspr	SPRN_DBSR,r12
--	lis	r11,global_dbcr0@ha
--	tophys_novmstack r11,r11
--	addi	r11,r11,global_dbcr0@l
--#ifdef CONFIG_SMP
--	lwz	r9,TASK_CPU(r2)
--	slwi	r9,r9,2
--	add	r11,r11,r9
--#endif
--	lwz	r12,0(r11)
--	mtspr	SPRN_DBCR0,r12
--#endif
--
- 	b	3f
- 
- 2:	/* if from kernel, check interrupted DOZE/NAP mode and
+ #ifdef CONFIG_40x
+ 	rlwinm	r9,r9,0,14,12		/* clear MSR_WE (necessary?) */
++#elif defined(CONFIG_PPC_8xx)
++	mtspr	SPRN_EID, r2		/* Set MSR_RI */
+ #else
+ #ifdef CONFIG_VMAP_STACK
+ 	li	r10, MSR_KERNEL & ~MSR_IR /* can take exceptions */
 -- 
 2.25.0
 
