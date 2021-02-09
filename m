@@ -2,48 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FEE314E71
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 12:51:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E31314E7A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 12:56:28 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DZh6l1Q7KzDqvV
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 22:50:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DZhF55N4GzDqvV
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 22:56:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DZf572q29zDshL
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 21:19:23 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=TS+Xn5Hr; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4DZf562rbmz9rx8;
- Tue,  9 Feb 2021 21:19:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1612865962;
- bh=O151gfDDdxSnbws+w5Gl/2M/gAxACw1PS+d+7Fwc/dg=;
- h=Date:From:To:Cc:Subject:From;
- b=TS+Xn5HrWhjfN+wQ1BlEtDfB6vTMI4J9eJkOpjIVbggn366im563T1EfJjN+BLlzf
- 2gi+jo3ambUWRff+PajW9Tu4iCHa6Gjp7a2FTH51eiZwdeJ2nJuqd8kPBHoW+eQTKK
- nCgM/FcYBbsYIspZr3dowD9Z1Z+STEKCWdq6np3f3GszDzPdDnjOXeS3TCtQUCAJyb
- BLbdLezSOXIEfysnDERHDHLeuL+5ddOgXE06SKSC7gIgSRd/GfNi+CeYMwZQzRmP7Y
- XgHhsPrdfVARDTg8GtaAbepekXHpNSFPTLPCfUFgjpFxkcehPIt5xR0GhbpyH79IVX
- rTnO0GVP1M8Aw==
-Date: Tue, 9 Feb 2021 21:19:21 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: linux-next: build failure after merge of the powerpc tree
-Message-ID: <20210209211921.777e3053@canb.auug.org.au>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/qgUhga/cX7TmqXbGpC=4w=A";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DZfFG1mz5zDrgD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 21:26:25 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DZfF95Qgsz9tx3p;
+ Tue,  9 Feb 2021 11:26:21 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id kppz17VdpS9f; Tue,  9 Feb 2021 11:26:21 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DZfF94TDfz9tx3l;
+ Tue,  9 Feb 2021 11:26:21 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 819E08B7D8;
+ Tue,  9 Feb 2021 11:26:22 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id BUaKzDMSuPmu; Tue,  9 Feb 2021 11:26:22 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4BEDC8B7D6;
+ Tue,  9 Feb 2021 11:26:22 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 258116733E; Tue,  9 Feb 2021 10:26:22 +0000 (UTC)
+Message-Id: <decefb47c8a2070bf55d20b096b813908c7b3110.1612866360.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <99bf008e2970de7f8ed3225cda69a6d06ae1a644.1612866360.git.christophe.leroy@csgroup.eu>
+References: <99bf008e2970de7f8ed3225cda69a6d06ae1a644.1612866360.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 2/3] powerpc/time: Avoid using get_tbl()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ broonie@kernel.org
+Date: Tue,  9 Feb 2021 10:26:22 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,55 +59,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/qgUhga/cX7TmqXbGpC=4w=A
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+get_tbl() is confusing as it returns the content TBL register
+on PPC32 but the concatenation of TBL and TBU on PPC64.
 
-Hi all,
+Use mftb() instead.
 
-After merging the powerpc tree, today's linux-next build (powerpc
-allyesconfig) failed like this:
+This will allow the removal of get_tbl() in a following patch.
 
-arch/powerpc/kernel/head_64.o:(__ftr_alt_97+0x0): relocation truncated to f=
-it: R_PPC64_REL24 (OPD) against symbol `do_page_fault' defined in .opd sect=
-ion in arch/powerpc/mm/fault.o
-arch/powerpc/kernel/head_64.o:(__ftr_alt_97+0x8): relocation truncated to f=
-it: R_PPC64_REL24 (OPD) against symbol `do_page_fault' defined in .opd sect=
-ion in arch/powerpc/mm/fault.o
-arch/powerpc/kernel/head_64.o:(__ftr_alt_97+0x28): relocation truncated to =
-fit: R_PPC64_REL24 (OPD) against symbol `unknown_exception' defined in .opd=
- section in arch/powerpc/kernel/traps.o
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Not sure exactly which commit caused this, but it is most likkely part
-of a series in the powerpc tree.
+diff --git a/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c b/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
+index 05e19470d523..b91ebebd9ff2 100644
+--- a/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
++++ b/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
+@@ -229,7 +229,7 @@ static irqreturn_t mpc52xx_lpbfifo_irq(int irq, void *dev_id)
+ 	int dma, write, poll_dma;
+ 
+ 	spin_lock_irqsave(&lpbfifo.lock, flags);
+-	ts = get_tbl();
++	ts = mftb();
+ 
+ 	req = lpbfifo.req;
+ 	if (!req) {
+@@ -307,7 +307,7 @@ static irqreturn_t mpc52xx_lpbfifo_irq(int irq, void *dev_id)
+ 	if (irq != 0) /* don't increment on polled case */
+ 		req->irq_count++;
+ 
+-	req->irq_ticks += get_tbl() - ts;
++	req->irq_ticks += mftb() - ts;
+ 	spin_unlock_irqrestore(&lpbfifo.lock, flags);
+ 
+ 	/* Spinlock is released; it is now safe to call the callback */
+@@ -330,7 +330,7 @@ static irqreturn_t mpc52xx_lpbfifo_bcom_irq(int irq, void *dev_id)
+ 	u32 ts;
+ 
+ 	spin_lock_irqsave(&lpbfifo.lock, flags);
+-	ts = get_tbl();
++	ts = mftb();
+ 
+ 	req = lpbfifo.req;
+ 	if (!req || (req->flags & MPC52XX_LPBFIFO_FLAG_NO_DMA)) {
+@@ -361,7 +361,7 @@ static irqreturn_t mpc52xx_lpbfifo_bcom_irq(int irq, void *dev_id)
+ 	lpbfifo.req = NULL;
+ 
+ 	/* Release the lock before calling out to the callback. */
+-	req->irq_ticks += get_tbl() - ts;
++	req->irq_ticks += mftb() - ts;
+ 	spin_unlock_irqrestore(&lpbfifo.lock, flags);
+ 
+ 	if (req->callback)
+-- 
+2.25.0
 
-I have left the allyesconfig build broken for today.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/qgUhga/cX7TmqXbGpC=4w=A
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmAiYakACgkQAVBC80lX
-0GzODgf6Av3auGL+x8wwz7etJ4YrThQzj3Q3WnEYs/01uB6rUjwanMOKk26gwIbd
-vJIaFavzViS6MSyTci0bm/VY1kDNGkZHpeluF78dnMbUVAeHxKA+NLw3/Ha0TEjs
-y3a8JB5UoavVSga0eB2d5Dlqfzbncxcah22eChlC1D0yUKqbU0h/6NtwuAATp1xU
-WUGTEROUjigx7yO+Rb/me+41hHfpNTmDucIFT6jeFXeLAi4322W+WFemBIKQiIdf
-Vh/NPzs5HkhvW5hvOn9Pn3t1kJzMCGMO7yNExMFY1vc8IOj/g+g9b53FM7DZdcRt
-yuLEAHl3cvVmDfJu4kll/cnG742KwQ==
-=mhS3
------END PGP SIGNATURE-----
-
---Sig_/qgUhga/cX7TmqXbGpC=4w=A--
