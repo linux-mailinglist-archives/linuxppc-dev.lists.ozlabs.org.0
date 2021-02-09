@@ -2,43 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26109315117
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 15:00:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2EF315153
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 15:13:57 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DZl0f2GLlzDrWV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 01:00:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DZlHk71QfzDsgM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Feb 2021 01:13:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4DZksB2YnvzDspH
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 00:54:21 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 119Dot0b023626;
- Tue, 9 Feb 2021 07:50:55 -0600
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 119DorgE023625;
- Tue, 9 Feb 2021 07:50:53 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Tue, 9 Feb 2021 07:50:53 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v5 20/22] powerpc/syscall: Avoid storing 'current' in
- another pointer
-Message-ID: <20210209135053.GD27854@gate.crashing.org>
-References: <cover.1612796617.git.christophe.leroy@csgroup.eu>
- <24804747098369ebcdac38970b8f7a1260bdd248.1612796617.git.christophe.leroy@csgroup.eu>
- <1612838134.rvncv9kzls.astroid@bobo.none>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1612838134.rvncv9kzls.astroid@bobo.none>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DZl2W5YMtzDrcP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Feb 2021 01:02:18 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4DZl2D0xCNz9v0KD;
+ Tue,  9 Feb 2021 15:02:12 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id vzzvUCSzVgen; Tue,  9 Feb 2021 15:02:12 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DZl2D050pz9v0KB;
+ Tue,  9 Feb 2021 15:02:12 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2E4838B7EA;
+ Tue,  9 Feb 2021 15:02:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id wvj3lYxnwGWG; Tue,  9 Feb 2021 15:02:13 +0100 (CET)
+Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E0A908B7E9;
+ Tue,  9 Feb 2021 15:02:12 +0100 (CET)
+Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 84DEE67359; Tue,  9 Feb 2021 14:02:12 +0000 (UTC)
+Message-Id: <99d4ccb58a20d8408d0e19874393655ad5b40822.1612879284.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 1/3] powerpc/uaccess: get rid of small constant size cases
+ in raw_copy_{to,from}_user()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue,  9 Feb 2021 14:02:12 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,39 +57,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 09, 2021 at 12:36:20PM +1000, Nicholas Piggin wrote:
-> What if you did this?
+Copied from commit 4b842e4e25b1 ("x86: get rid of small
+constant size cases in raw_copy_{to,from}_user()")
 
-> +static inline struct task_struct *get_current(void)
-> +{
-> +	register struct task_struct *task asm ("r2");
-> +
-> +	return task;
-> +}
+Very few call sites where that would be triggered remain, and none
+of those is anywhere near hot enough to bother.
 
-Local register asm variables are *only* guaranteed to live in that
-register as operands to an asm.  See
-  https://gcc.gnu.org/onlinedocs/gcc/Local-Register-Variables.html#Local-Register-Variables
-("The only supported use" etc.)
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/uaccess.h | 41 ------------------------------
+ 1 file changed, 41 deletions(-)
 
-You can do something like
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 93d33f7e8b53..a4d2569173ac 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -398,26 +398,6 @@ static inline unsigned long raw_copy_from_user(void *to,
+ 		const void __user *from, unsigned long n)
+ {
+ 	unsigned long ret;
+-	if (__builtin_constant_p(n) && (n <= 8)) {
+-		ret = 1;
+-
+-		switch (n) {
+-		case 1:
+-			__get_user_size(*(u8 *)to, from, 1, ret);
+-			break;
+-		case 2:
+-			__get_user_size(*(u16 *)to, from, 2, ret);
+-			break;
+-		case 4:
+-			__get_user_size(*(u32 *)to, from, 4, ret);
+-			break;
+-		case 8:
+-			__get_user_size(*(u64 *)to, from, 8, ret);
+-			break;
+-		}
+-		if (ret == 0)
+-			return 0;
+-	}
+ 
+ 	allow_read_from_user(from, n);
+ 	ret = __copy_tofrom_user((__force void __user *)to, from, n);
+@@ -428,27 +408,6 @@ static inline unsigned long raw_copy_from_user(void *to,
+ static inline unsigned long
+ raw_copy_to_user_allowed(void __user *to, const void *from, unsigned long n)
+ {
+-	if (__builtin_constant_p(n) && (n <= 8)) {
+-		unsigned long ret = 1;
+-
+-		switch (n) {
+-		case 1:
+-			__put_user_size_allowed(*(u8 *)from, (u8 __user *)to, 1, ret);
+-			break;
+-		case 2:
+-			__put_user_size_allowed(*(u16 *)from, (u16 __user *)to, 2, ret);
+-			break;
+-		case 4:
+-			__put_user_size_allowed(*(u32 *)from, (u32 __user *)to, 4, ret);
+-			break;
+-		case 8:
+-			__put_user_size_allowed(*(u64 *)from, (u64 __user *)to, 8, ret);
+-			break;
+-		}
+-		if (ret == 0)
+-			return 0;
+-	}
+-
+ 	return __copy_tofrom_user(to, (__force const void __user *)from, n);
+ }
+ 
+-- 
+2.25.0
 
-static inline struct task_struct *get_current(void)
-{
-	register struct task_struct *task asm ("r2");
-
-	asm("" : "+r"(task));
-
-	return task;
-}
-
-which makes sure that "task" actually is in r2 at the point of that asm.
-
-
-Segher
