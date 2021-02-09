@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEF4314C59
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 11:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD69314C76
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 11:07:31 +0100 (CET)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4DZdkP1QfvzDsmC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 21:03:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4DZdqM3S5TzDr34
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Feb 2021 21:07:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,37 +15,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4DZdZm5Br3zDqfq
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4DZdZm59QPzDqcY
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Feb 2021 20:56:30 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4DZdZb5Mv3z9tx3c;
- Tue,  9 Feb 2021 10:56:23 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4DZdZd3tmkz9tx3q;
+ Tue,  9 Feb 2021 10:56:25 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id QauxdVRoC_Rc; Tue,  9 Feb 2021 10:56:23 +0100 (CET)
+ with ESMTP id Yoiuro041Laf; Tue,  9 Feb 2021 10:56:25 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4DZdZb4WBHz9tx3b;
- Tue,  9 Feb 2021 10:56:23 +0100 (CET)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4DZdZd35wvz9tx3b;
+ Tue,  9 Feb 2021 10:56:25 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 73E318B7D6;
- Tue,  9 Feb 2021 10:56:24 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6ACC48B7D6;
+ Tue,  9 Feb 2021 10:56:26 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 7z_eq46-55VA; Tue,  9 Feb 2021 10:56:24 +0100 (CET)
+ with ESMTP id Qj7H1GAqlY86; Tue,  9 Feb 2021 10:56:26 +0100 (CET)
 Received: from po16121vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 26AB28B7D4;
- Tue,  9 Feb 2021 10:56:24 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 234B68B7D4;
+ Tue,  9 Feb 2021 10:56:26 +0100 (CET)
 Received: by po16121vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id E48F767342; Tue,  9 Feb 2021 09:56:23 +0000 (UTC)
-Message-Id: <cover.1612864003.git.christophe.leroy@csgroup.eu>
+ id 0003167342; Tue,  9 Feb 2021 09:56:25 +0000 (UTC)
+Message-Id: <2a9ca31f1ff6fb565612b9499b040ae7d951f4bb.1612864003.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <cover.1612864003.git.christophe.leroy@csgroup.eu>
+References: <cover.1612864003.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [RFC PATCH v1 00/41] powerpc/32: Switch to interrupt entry/exit in C
+Subject: [RFC PATCH v1 02/41] powerpc/40x: Don't use SPRN_SPRG_SCRATCH0/1 in
+ TLB miss handlers
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com
-Date: Tue,  9 Feb 2021 09:56:23 +0000 (UTC)
+Date: Tue,  9 Feb 2021 09:56:25 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,106 +65,116 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series aims at porting interrupt entry/exit in C on PPC32, using
-the work already merged for PPC64.
+SPRN_SPRG_SCRATCH5 is used to save SPRN_PID.
+SPRN_SPRG_SCRATCH6 is already available.
 
-First part do minimal changes in 40x in order to be able to enable MMU
-earlier in exception entry.
+SPRN_PID is only 8 bits. We have r12 that contains CR.
+We only need to preserve CR0, so we have space available in r12
+to save PID.
 
-Second part prepares and switches interrupt exit in C.
+Keep PID in r12 and free up SPRN_SPRG_SCRATCH5.
 
-Third part moves more and more things in C, ending with KUAP management.
+Then In TLB miss handlers, instead of using SPRN_SPRG_SCRATCH0 and
+SPRN_SPRG_SCRATCH1, use SPRN_SPRG_SCRATCH5 and SPRN_SPRG_SCRATCH6
+to avoid future conflicts with normal exception prologs.
 
-v1 is boot tested on 8xx and 83xx, releasing it as an RFC to get early feedback.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/head_40x.S | 39 ++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 21 deletions(-)
 
-This series applies on top of the one switching ppc32 syscall entry/exit in C.
-
-First patch is a bug fix already submitted but not yet merged that interracts with the series.
-
-Christophe Leroy (41):
-  powerpc/32: Preserve cr1 in exception prolog stack check to fix build
-    error
-  powerpc/40x: Don't use SPRN_SPRG_SCRATCH0/1 in TLB miss handlers
-  powerpc/40x: Change CRITICAL_EXCEPTION_PROLOG macro to a gas macro
-  powerpc/40x: Save SRR0/SRR1 and r10/r11 earlier in critical exception
-  powerpc/40x: Reorder a few instructions in critical exception prolog
-  powerpc/40x: Prepare for enabling MMU in critical exception prolog
-  powerpc/40x: Prepare normal exception handler for enabling MMU early
-  powerpc/32: Reconcile interrupts in C
-  powerpc/32: Entry cpu time accounting in C
-  powerpc/32: Handle bookE debugging in C in exception entry
-  powerpc/32: Use fast instruction to set MSR RI in exception prolog on
-    8xx
-  powerpc/32: Remove ksp_limit
-  powerpc/32: Always enable data translation in exception prolog
-  powerpc/32: Tag DAR in EXCEPTION_PROLOG_2 for the 8xx
-  powerpc/32: Enable instruction translation at the same time as data
-    translation
-  powerpc/32: Statically initialise first emergency context
-  powerpc/32: Add vmap_stack_overflow label inside the macro
-  powerpc/32: Use START_EXCEPTION() as much as possible
-  powerpc/32: Move exception prolog code into .text once MMU is back on
-  powerpc/32: Provide a name to exception prolog continuation in virtual
-    mode
-  powerpc/32: Refactor booke critical registers saving
-  powerpc/32: Perform normal function call in exception entry
-  powerpc/32: Always save non volatile registers on exception entry
-  powerpc/32: Replace ASM exception exit by C exception exit from ppc64
-  powerpc/32: Set regs parameter in r3 in transfer_to_handler
-  powerpc/32: Remove handle_page_fault()
-  powerpc/32: Save trap number on stack in exception prolog
-  powerpc/32: Add a prepare_transfer_to_handler macro for exception
-    prologs
-  powerpc/32: Only restore non volatile registers when required
-  powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE
-  powerpc/32: Remove the xfer parameter in EXCEPTION() macro
-  powerpc/32: Refactor saving of volatile registers in exception prologs
-  powerpc/32: Save remaining registers in exception prolog
-  powerpc/32: Set current->thread.regs in C interrupt entry
-  powerpc/32: Return directly from power_save_ppc32_restore()
-  powerpc/32: Only use prepare_transfer_to_handler function on book3s/32
-    and e500
-  powerpc/32s: Move KUEP locking/unlocking in C
-  powerpc/64s: Make kuap_check_amr() and kuap_get_and_check_amr()
-    generic
-  powerpc/32s: Create C version of kuap save/restore/check helpers
-  powerpc/8xx: Create C version of kuap save/restore/check helpers
-  powerpc/32: Manage KUAP in C
-
- arch/powerpc/include/asm/book3s/32/kup.h     | 126 ++-
- arch/powerpc/include/asm/book3s/64/kup.h     |  24 +-
- arch/powerpc/include/asm/interrupt.h         |  21 +
- arch/powerpc/include/asm/kup.h               |  37 +-
- arch/powerpc/include/asm/nohash/32/kup-8xx.h |  58 +-
- arch/powerpc/include/asm/ppc_asm.h           |  10 -
- arch/powerpc/include/asm/processor.h         |   6 +-
- arch/powerpc/include/asm/ptrace.h            |  13 +-
- arch/powerpc/kernel/asm-offsets.c            |   4 -
- arch/powerpc/kernel/entry_32.S               | 810 ++++---------------
- arch/powerpc/kernel/fpu.S                    |   2 -
- arch/powerpc/kernel/head_32.h                | 197 ++---
- arch/powerpc/kernel/head_40x.S               | 271 ++++---
- arch/powerpc/kernel/head_44x.S               |  10 +-
- arch/powerpc/kernel/head_8xx.S               | 151 ++--
- arch/powerpc/kernel/head_book3s_32.S         | 239 +++---
- arch/powerpc/kernel/head_booke.h             | 188 +++--
- arch/powerpc/kernel/head_fsl_booke.S         |  64 +-
- arch/powerpc/kernel/idle_6xx.S               |  14 +-
- arch/powerpc/kernel/idle_e500.S              |  14 +-
- arch/powerpc/kernel/interrupt.c              |  35 +-
- arch/powerpc/kernel/misc_32.S                |  14 -
- arch/powerpc/kernel/process.c                |   6 +-
- arch/powerpc/kernel/setup_32.c               |   2 +-
- arch/powerpc/kernel/traps.c                  |   9 -
- arch/powerpc/kernel/vector.S                 |   2 -
- arch/powerpc/lib/sstep.c                     |   9 -
- arch/powerpc/mm/book3s32/Makefile            |   1 +
- arch/powerpc/mm/book3s32/hash_low.S          |  14 -
- arch/powerpc/mm/book3s32/kuep.c              |  38 +
- arch/powerpc/mm/fault.c                      |   4 +-
- 31 files changed, 875 insertions(+), 1518 deletions(-)
- create mode 100644 arch/powerpc/mm/book3s32/kuep.c
-
+diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
+index 24724a7dad49..383238a98f77 100644
+--- a/arch/powerpc/kernel/head_40x.S
++++ b/arch/powerpc/kernel/head_40x.S
+@@ -249,13 +249,13 @@ _ENTRY(saved_ksp_limit)
+  * load TLB entries from the page table if they exist.
+  */
+ 	START_EXCEPTION(0x1100,	DTLBMiss)
+-	mtspr	SPRN_SPRG_SCRATCH0, r10 /* Save some working registers */
+-	mtspr	SPRN_SPRG_SCRATCH1, r11
++	mtspr	SPRN_SPRG_SCRATCH5, r10 /* Save some working registers */
++	mtspr	SPRN_SPRG_SCRATCH6, r11
+ 	mtspr	SPRN_SPRG_SCRATCH3, r12
+ 	mtspr	SPRN_SPRG_SCRATCH4, r9
+ 	mfcr	r12
+ 	mfspr	r9, SPRN_PID
+-	mtspr	SPRN_SPRG_SCRATCH5, r9
++	rlwimi	r12, r9, 0, 0xff
+ 	mfspr	r10, SPRN_DEAR		/* Get faulting address */
+ 
+ 	/* If we are faulting a kernel address, we have to use the
+@@ -316,13 +316,12 @@ _ENTRY(saved_ksp_limit)
+ 	/* The bailout.  Restore registers to pre-exception conditions
+ 	 * and call the heavyweights to help us out.
+ 	 */
+-	mfspr	r9, SPRN_SPRG_SCRATCH5
+-	mtspr	SPRN_PID, r9
+-	mtcr	r12
++	mtspr	SPRN_PID, r12
++	mtcrf	0x80, r12
+ 	mfspr	r9, SPRN_SPRG_SCRATCH4
+ 	mfspr	r12, SPRN_SPRG_SCRATCH3
+-	mfspr	r11, SPRN_SPRG_SCRATCH1
+-	mfspr	r10, SPRN_SPRG_SCRATCH0
++	mfspr	r11, SPRN_SPRG_SCRATCH6
++	mfspr	r10, SPRN_SPRG_SCRATCH5
+ 	b	DataStorage
+ 
+ /* 0x1200 - Instruction TLB Miss Exception
+@@ -330,13 +329,13 @@ _ENTRY(saved_ksp_limit)
+  * registers and bailout to a different point.
+  */
+ 	START_EXCEPTION(0x1200,	ITLBMiss)
+-	mtspr	SPRN_SPRG_SCRATCH0, r10	 /* Save some working registers */
+-	mtspr	SPRN_SPRG_SCRATCH1, r11
++	mtspr	SPRN_SPRG_SCRATCH5, r10	 /* Save some working registers */
++	mtspr	SPRN_SPRG_SCRATCH6, r11
+ 	mtspr	SPRN_SPRG_SCRATCH3, r12
+ 	mtspr	SPRN_SPRG_SCRATCH4, r9
+ 	mfcr	r12
+ 	mfspr	r9, SPRN_PID
+-	mtspr	SPRN_SPRG_SCRATCH5, r9
++	rlwimi	r12, r9, 0, 0xff
+ 	mfspr	r10, SPRN_SRR0		/* Get faulting address */
+ 
+ 	/* If we are faulting a kernel address, we have to use the
+@@ -397,13 +396,12 @@ _ENTRY(saved_ksp_limit)
+ 	/* The bailout.  Restore registers to pre-exception conditions
+ 	 * and call the heavyweights to help us out.
+ 	 */
+-	mfspr	r9, SPRN_SPRG_SCRATCH5
+-	mtspr	SPRN_PID, r9
+-	mtcr	r12
++	mtspr	SPRN_PID, r12
++	mtcrf	0x80, r12
+ 	mfspr	r9, SPRN_SPRG_SCRATCH4
+ 	mfspr	r12, SPRN_SPRG_SCRATCH3
+-	mfspr	r11, SPRN_SPRG_SCRATCH1
+-	mfspr	r10, SPRN_SPRG_SCRATCH0
++	mfspr	r11, SPRN_SPRG_SCRATCH6
++	mfspr	r10, SPRN_SPRG_SCRATCH5
+ 	b	InstructionAccess
+ 
+ 	EXCEPTION(0x1300, Trap_13, unknown_exception, EXC_XFER_STD)
+@@ -543,13 +541,12 @@ finish_tlb_load:
+ 
+ 	/* Done...restore registers and get out of here.
+ 	*/
+-	mfspr	r9, SPRN_SPRG_SCRATCH5
+-	mtspr	SPRN_PID, r9
+-	mtcr	r12
++	mtspr	SPRN_PID, r12
++	mtcrf	0x80, r12
+ 	mfspr	r9, SPRN_SPRG_SCRATCH4
+ 	mfspr	r12, SPRN_SPRG_SCRATCH3
+-	mfspr	r11, SPRN_SPRG_SCRATCH1
+-	mfspr	r10, SPRN_SPRG_SCRATCH0
++	mfspr	r11, SPRN_SPRG_SCRATCH6
++	mfspr	r10, SPRN_SPRG_SCRATCH5
+ 	rfi			/* Should sync shadow TLBs */
+ 	b	.		/* prevent prefetch past rfi */
+ 
 -- 
 2.25.0
 
